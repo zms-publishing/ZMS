@@ -160,10 +160,11 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
           _globals.writeError( container, '[zmi_insert_actions]: can\'t get manage_access from %s'%meta_id)
       can_insert = True
       if objAttr['type']=='*':
-        can_insert = can_insert and ((type(ob_access) is not dict) or (ob_access.get( 'insert') is None) or (len( container.intersection_list( ob_access.get( 'insert'), container.getUserRoles(auth_user))) > 0))
+        user_roles = filter(lambda x: x != 'Authenticated',container.getUserRoles(auth_user))
+        can_insert = can_insert and ((type(ob_access) is not dict) or (ob_access.get( 'insert') is None) or (len( container.intersection_list( ob_access.get( 'insert'), user_roles)) > 0))
         mo_access = metaObj.get('access',{})
         mo_access_deny = mo_access.get('insert_deny',[])
-        can_insert = can_insert and len( container.intersection_list( mo_access_deny, container.getUserRoles(auth_user))) == 0
+        can_insert = can_insert and len(filter(lambda x: x not in mo_access_deny, user_roles)) > 0
         can_insert = can_insert or auth_user.has_role('Manager')
         mo_access_insert_nodes = container.string_list(mo_access.get('insert_custom','{$}'))
         sl = []

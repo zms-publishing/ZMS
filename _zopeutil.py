@@ -92,8 +92,8 @@ def initPermissions(container, id):
     ob.manage_role(role_to_manage='Authenticated',permissions=['View'])
   else:
     # activate all acquired permissions
-    manager_permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',ob.permissionsOfRole('Manager')))
-  ob.manage_acquiredPermissions(manager_permissions)
+    permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',ob.permissionsOfRole('Manager')))
+  ob.manage_acquiredPermissions(permissions)
 
 def addDTMLMethod(container, id, title, data):
   """

@@ -76,7 +76,7 @@ class pilutil:
         im.thumbnail((maxdim,maxdim),Image.ANTIALIAS)
       except:
         im.thumbnail((maxdim,maxdim))
-        im.save(infile,"JPEG", quality=qual)
+        im.convert('RGB').save(infile,"JPEG", quality=qual)
     elif mode == 'resize':
       try:
         im = im.resize(size,Image.ANTIALIAS)
@@ -102,7 +102,7 @@ class pilutil:
         im = im.resize((dst_width, dst_height), Image.ANTIALIAS)
       except:
         im.resize(size)
-    im.save(filepath,"JPEG", quality=qual)
+    im.convert('RGB').save(filepath,"JPEG", quality=qual)
     
     # Read resized image from file-system
     f = open(filepath,'rb')
@@ -143,7 +143,7 @@ class pilutil:
     # Crop image
     im = Image.open(filepath)
     im = im.crop(box)
-    im.save(filepath,"JPEG", quality=qual)
+    im.convert('RGB').save(filepath,"JPEG", quality=qual)
     
     # Read resized image from file-system
     f = open(filepath,'rb')
@@ -178,7 +178,7 @@ class pilutil:
     # Rotate image
     im = Image.open(filepath)
     im = im.rotate(direction)
-    im.save(filepath,"JPEG", quality=qual)
+    im.convert('RGB').save(filepath,"JPEG", quality=qual)
     
     # Read resized image from file-system
     f = open(filepath,'rb')

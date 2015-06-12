@@ -216,10 +216,11 @@ function ZMSGraphic_extEdit_apply() {
 		var c = ZMSGraphic_cropcoords;
 		var canvasWidth = $('div#ZMSGraphic_extEdit_image').css('width');
 		canvasWidth = parseInt(canvasWidth.substr(0,canvasWidth.length-2));
-		var v = canvasWidth/w;
+		var v = w/canvasWidth;
 		if ( w != w_orig || h != h_orig) {
 			ZMSGraphic_action = 'resize,crop';
 		}
+		$ZMI.writeDebug('ZMSGraphic_extEdit_apply: action='+ZMSGraphic_action+';width='+w+';height='+h+';v='+v+';x0='+Math.round(v*c.x)+';y0='+Math.round(v*c.y)+';x1='+Math.round(v*c.x2)+';y2='+Math.round(v*c.y2));
 		var params = {'action':ZMSGraphic_action,'width:int':w,'height:int':h,'x0:int':Math.round(v*c.x),'y0:int':Math.round(v*c.y),'x1:int':Math.round(v*c.x2),'y2:int':Math.round(v*c.y2)};
 		for (var i in ZMSGraphic_params) {
 			params[i] = ZMSGraphic_params[i];

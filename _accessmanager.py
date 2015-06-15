@@ -226,7 +226,7 @@ class AccessableObject:
     # --------------------------------------------------------------------------
     #  AccessableObject.getUserRoles:
     # --------------------------------------------------------------------------
-    def getUserRoles(self, userObj, aq_parent=1):
+    def getUserRoles(self, userObj, aq_parent=True, resolve=True):
       roles = []
       try:
         roles.extend(list(userObj.getRolesInContext(self)))
@@ -251,13 +251,14 @@ class AccessableObject:
         else:
           ob = None
       # Resolve security_roles.
-      security_roles = self.getSecurityRoles()
-      for id in filter(lambda x: x in security_roles.keys(),roles):
-        dict = security_roles.get(id,{})
-        for v in dict.values():
-          for role in map(lambda x: x.replace(' ',''),v.get('roles',[])):
-            if role not in roles:
-              roles.append( role)
+      if resolve:
+        security_roles = self.getSecurityRoles()
+        for id in filter(lambda x: x in security_roles.keys(),roles):
+          dict = security_roles.get(id,{})
+          for v in dict.values():
+            for role in map(lambda x: x.replace(' ',''),v.get('roles',[])):
+              if role not in roles:
+                roles.append( role)
       return roles
 
     # --------------------------------------------------------------------------

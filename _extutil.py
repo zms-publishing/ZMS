@@ -19,7 +19,7 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-  'zms3.formulator': ['3.2.2',
+  'zms3.formulator': ['3.2.3',
                       'JSON-based HTML-Forms',
                       'https://bitbucket.org/zms3/formulator',
                       'sponsored by University of Bern, Switzerland'],
@@ -35,7 +35,7 @@ EXTENSIONS = {
                          'Ultima HTML5 Landing Page',
                          'https://bitbucket.org/zms3/themes.ultima',
                          'based on ULTIMA Awesome Landing Page by 8Guild, Odessa, Ukraine'],
-  'Pillow': ['2.8.1',
+  'Pillow': ['2.8.2',
              'The friendly PIL (Python Imaging Library) fork',
              'https://pypi.python.org/pypi/Pillow',
              'developed by Alex Clark'],
@@ -47,6 +47,10 @@ EXTENSIONS = {
                    'Python Interface to MySQL',
                    'https://pypi.python.org/pypi/MySQL-python',
                    'developed by Andy Dustman'],
+  'SQLAlchemy': ['1.0.5',
+                   'Python SQL Toolkit and Object Relational Mapper',
+                   'https://pypi.python.org/pypi/SQLAlchemy',
+                   'developed by Mike Bayer'],
   'Products.ZMySQLDA': ['3.1.1',
                         'MySQL Database Adapter',
                         'https://pypi.python.org/pypi/Products.ZMySQLDA',
@@ -76,7 +80,7 @@ EXTENSIONS = {
            'https://github.com/zopefoundation/ZODB',
            'developed by Zope Foundation and Contributors'],
   'ZopeUndo': ['2.12.0',
-           'Used to support the undo log (Prefix object) in a ZEO server, without pulling in all of Zope2',
+           'Support the undo log (Prefix object) in a ZEO server, without pulling in all of Zope2',
            'https://github.com/zopefoundation/ZopeUndo',
            'developed by Zope Foundation and Contributors'],
   'zope.publisher': ['3.13.4',

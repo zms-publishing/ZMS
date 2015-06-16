@@ -73,12 +73,14 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
         else:
           can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
           if can_delete:
+            user_roles = filter(lambda x: x not in ['Authenticated','Owner'],context.getUserRoles(auth_user,resolve=False))
             ob_access = context.getObjProperty('manage_access',REQUEST)
-            can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( container.intersection_list( ob_access.get( 'delete'), context.getUserRoles(auth_user))) > 0))
+            can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( container.intersection_list( ob_access.get( 'delete'), user_roles)) > 0))
             metaObj = container.getMetaobj( context.meta_id)
             mo_access = metaObj.get('access',{})
             mo_access_deny = mo_access.get('delete_deny',[])
-            can_delete = can_delete and len( container.intersection_list( mo_access_deny, container.getUserRoles(auth_user))) == 0
+            can_delete = can_delete and len(filter(lambda x: x not in mo_access_deny, user_roles)) > 0
+            can_delete = can_delete or auth_user.has_role('Manager')
           if can_delete:
             actions.append((container.getZMILangStr('BTN_DELETE'),'manage_deleteObjs','icon-trash'))
         #-- Action: Cut.
@@ -160,7 +162,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
           _globals.writeError( container, '[zmi_insert_actions]: can\'t get manage_access from %s'%meta_id)
       can_insert = True
       if objAttr['type']=='*':
-        user_roles = filter(lambda x: x != 'Authenticated',container.getUserRoles(auth_user,resolve=False))
+        user_roles = filter(lambda x: x not in ['Authenticated','Owner'],container.getUserRoles(auth_user,resolve=False))
         can_insert = can_insert and ((type(ob_access) is not dict) or (ob_access.get( 'insert') is None) or (len( container.intersection_list( ob_access.get( 'insert'), user_roles)) > 0))
         mo_access = metaObj.get('access',{})
         mo_access_deny = mo_access.get('insert_deny',[])

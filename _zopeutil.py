@@ -20,6 +20,7 @@
 from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
+import os
 # Product Imports.
 import _fileutil
 
@@ -63,9 +64,10 @@ def readObject(container, id, default=None):
     data = ob.read()
   elif ob.meta_type == 'External Method':
     filepath = INSTANCE_HOME+'/Extensions/'+id+'.py'
-    f = open( filepath, 'r')
-    data = f.read()
-    f.close()
+    if os.path.exists(filepath):
+      f = open(filepath, 'r')
+      data = f.read()
+      f.close()
   return data
 
 def removeObject(container, id, removeFile=True):
@@ -76,7 +78,8 @@ def removeObject(container, id, removeFile=True):
     ob = getattr(container,id)
     if ob.meta_type == 'External Method' and removeFile:
       filepath = INSTANCE_HOME+'/Extensions/'+id+'.py'
-      _fileutil.remove( filepath)
+      if os.path.exists(filepath):
+        os.remove(filepath)
     container.manage_delObjects( ids=[ id])
 
 def initPermissions(container, id):

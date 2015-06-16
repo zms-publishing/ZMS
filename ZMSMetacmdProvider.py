@@ -228,8 +228,10 @@ class ZMSMetacmdProvider(
       # Insert Object.
       container = self.aq_parent
       if newAcquired:
-        newMethod = getattr(self.getPortalMaster(),newId).meta_type
-        newData = ''
+        portalMaster = self.getPortalMaster()
+        newMethod = getattr(portalMaster,newId).meta_type
+        metaCmd = portalMaster.getMetaCmd(newId)
+        newData = metaCmd['data']
       if newMethod is None:
         newMethod = getattr(container,id).meta_type
       newTitle = '*** DO NOT DELETE OR MODIFY ***'
@@ -286,8 +288,8 @@ class ZMSMetacmdProvider(
       metaCmd = obs[0]
       container = self.aq_parent
       src = _zopeutil.getObject(metaCmd['home'],metaCmd['id'])
-      newData = _zopeutil.readObject( metaCmd['home'], metaCmd['id'],'')
-      data = _zopeutil.readObject( container,metaCmd['id'],'')
+      newData = _zopeutil.readObject(metaCmd['home'],metaCmd['id'],'')
+      data = _zopeutil.readObject(container,metaCmd['id'],'')
       if src is not None and newData != data:
         newMethod = src.meta_type
         newId = metaCmd['id']
@@ -297,7 +299,7 @@ class ZMSMetacmdProvider(
       ob = _zopeutil.getObject(container,metaCmd['id'])
       if ob is not None:
         metaCmd['meta_type'] = ob.meta_type
-        metaCmd['data'] = _zopeutil.readObject(container,metaCmd['id'])
+        metaCmd['data'] = _zopeutil.readObject(container,metaCmd['id'],'')
         metaCmd['bobobase_modification_time'] = ob.bobobase_modification_time().timeTime()
       
       return metaCmd

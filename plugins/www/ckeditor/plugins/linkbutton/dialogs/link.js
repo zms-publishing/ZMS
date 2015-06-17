@@ -1,6 +1,32 @@
 var zmiDialog = null;
 var data_id = null;
 
+/**
+ * Preview.
+ */
+function zmiPreview(sender) {
+	var data_id = $(sender).closest('.zmi-page').attr('data-id');
+	if($('#zmi_preview_'+data_id).length > 0) {
+		$('#zmi_preview_'+data_id).remove();
+	}
+	else {
+		var coords = $ZMI.getCoords(sender);
+		var abs_url = $(sender).parent('div').children('[data-page-physical-path]').attr('data-page-physical-path');
+		$.get(abs_url+'/ajaxGetBodyContent',{lang:getZMILang(),preview:'preview'},function(data){
+				$('div.zmi-browse-iframe-preview').remove();
+				$('body').append(''
+						+'<div id="zmi_preview_'+data_id+'">'
+							+'<div class="zmi-browse-iframe-preview">'
+								+'<div class="bg-primary" style="margin:-1em -1em 0 -1em;padding:0 4px 2px 4px;cursor:pointer;text-align:right;font-size:smaller;" onclick="$(\'#zmi_preview_'+data_id+'\').remove()">'+$ZMI.icon("icon-remove")+' '+getZMILangStr('BTN_CLOSE')+'</div>'
+								+data
+							+'</div><!-- .zmi-browse-iframe-preview -->'
+						+'</div><!-- #zmi-preview -->'
+					);
+				$('div.zmi-browse-iframe-preview').css({top:coords.y+$(sender).height(),left:coords.x+$(sender).width()});
+			});
+	}
+}
+
 function showPreviewZMSGraphic(el,src,icon,filename,size) {
 	var html= '';
 	html += '<div class="img_head"><img src="'+icon+'" border="0" align="absmiddle"/> '+filename+' ('+size+')</div>';
@@ -29,21 +55,23 @@ function hidePreview() {
 function zmiAddPages(result, siblings) {
 	var html = "";
 	$("page",result).each(function() {
+			var page = this;
 			var titlealt = "";
-			var uid = $(this).attr("uid");
-			var abs_url = $(this).attr("absolute_url");
-			var link_url = $(this).attr("index_html");
-			var extra = null;
+			var page_uid = $(page).attr("uid");
+			var page_home_id = $(page).attr("home_id");
+			var page_id = $(page).attr("id").substr(page_home_id.length+1);
+			var page_absolute_url = $(page).attr("absolute_url");
+			var page_physical_path = $(page).attr("physical_path");
+			var link_url = $(page).attr("index_html");
+			var page_is_page = $(page).attr("is_page")=='1' || $(page).attr("is_page")=='True';
+			var page_meta_type = $(page).attr("meta_id");
+			var page_titlealt = $(page).attr("titlealt");
+			var page_display_icon = $(page).attr("display_icon");
 			if ($(this).attr("meta_id")=='ZMSGraphic') {
 				var $img = $("img",this);
 				if ($img.length==1) {
 					link_url = '<img src=&quot;'+$("href",$img).text()+'&quot;>';
-					var src = $("href",$img).text();
-					var icon = $("icon",$img).text();
-					var filename = $("filename",$img).text();
-					var size = $("size",$img).text();
-					titlealt = filename;
-					extra = 'showPreviewZMSGraphic(this,\''+src+'\',\''+icon+'\',\''+filename+'\',\''+size+'\');';
+					page_titlealt = filename;
 				}
 			}
 			else if ($(this).attr("meta_id")=='ZMSFile') {
@@ -52,29 +80,25 @@ function zmiAddPages(result, siblings) {
 					var $fname = $("filename",$file).text();
 					var $ext = $fname.substring($fname.lastIndexOf('.')+1,$fname.length);
 					link_url = '<a href=&quot;'+$("href",$file).text()+'&quot; target=&quot;_blank&quot;>'+$(this).attr("title")+' ('+$ext+', '+$("size",$file).text()+')</a>'; 
-					var src = $("href",$file).text();
-					var icon = $("icon",$file).text();
-					var filename = $("filename",$file).text();
-					var size = $("size",$file).text();
-					titlealt = filename;
-					extra = 'showPreviewZMSFile(this,\''+src+'\',\''+icon+'\',\''+filename+'\',\''+size+'\');';
+					page_titlealt = filename;
 				}
 			}
 			var id = $(this).attr("id").replace(/\./gi,"_").replace(/\-/gi,"_");
-			html += '<div id="div_'+id+'" style="padding:1px 2px 1px 8px; margin:0">';
-			html += '<span onclick="zmiExpandObject(\''+id+'\',\''+abs_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer">';
+			html += '<div id="div_'+id+'" data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page" style="padding:1px 2px 1px 8px; margin:0">';
+			html += '<span onclick="zmiExpandObject(\''+id+'\',\''+page_absolute_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer">';
 			html += '<img src="/misc_/zms/pl.gif" title="+" border="0" align="absmiddle"/>';
 			html += '</span>';
-			html += '<span onclick="zmiSelectObject(\''+uid+'\',\''+link_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer;text-decoration:none;" class="zmi">';
-			html += $(this).attr("display_icon");
-			if (extra != null) {
-				html += '<span class="ui-helper-clickable" onmouseover="'+extra+'" onmouseout="hidePreview();">&dArr;</span>';
+			if (!page_is_page) {
+				html += '<span style="cursor:help" onclick="zmiPreview(this)">'+page_display_icon+'</span> ';
 			}
-			if (titlealt=="") {
-				titlealt = $(this).attr("titlealt");
+			html += '<a href="#" onclick="return zmiSelectObject(\''+page_uid+'\',\''+link_url+'\',\''+page_meta_type+'\')"'
+				+ ' data-page-physical-path="'+page_physical_path+'"'
+				+ '>';
+			if (page_is_page) {
+				html += page_display_icon+' ';
 			}
-			html += titlealt;
-			html += '</span>';
+			html += page_titlealt;
+			html += '</a>';
 			html += '<div id="div_'+id+'_children" style="'+(siblings?'display:none;':'')+'padding:1px 2px 1px 8px; margin:0">';
 			if (siblings) {
 				html += '</div>';
@@ -118,6 +142,7 @@ function zmiSelectObject(id,abs_url,meta_id) {
 	data_id = id;
 	zmiDialog.getContentElement('info', 'url').setValue(abs_url);
 	zmiDialog.click("ok");
+	return false;
 }
 
 function zmiResizeObject() {
@@ -231,7 +256,6 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 
 			// Compose the URL.
 			var url = ( data.url && CKEDITOR.tools.trim( data.url.url ) ) || '';
-
 			if (url.indexOf("<") == 0) {
 				var element = CKEDITOR.dom.element.createFromHtml(url);
 				editor.insertElement(element);
@@ -242,18 +266,19 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 				// Browser need the "href" for copy/paste link to work. (#6641)
 				attributes.href = attributes[ 'data-cke-saved-href' ];
 				// Create element if current selection is collapsed.
-				var selection = editor.getSelection(),
-					ranges = selection.getRanges( true );
-				if ( ranges.length == 1 && ranges[0].collapsed ) {
-					var text = new CKEDITOR.dom.text( attributes[ 'data-cke-saved-href' ], editor.document );
-					ranges[0].insertNode( text );
-					ranges[0].selectNodeContents( text );
-					selection.selectRanges( ranges );
+				var selection = editor.getSelection();
+				var b = selection.getRanges()[0];
+				if (b.collapsed ) {
+					var a = new CKEDITOR.dom.text( attributes[ 'data-cke-saved-href' ], editor.document );
+					b.insertNode(a);
+					b.selectNodeContents(a);
 				}
 				// Apply style.
-				var style = new CKEDITOR.style( { element : 'a', attributes : attributes } );
-				style.type = CKEDITOR.STYLE_INLINE;		// need to override... dunno why.
-				style.apply( editor.document );
+				var g = editor.document;
+				var c = new CKEDITOR.style( { element : 'a', attributes : attributes } );
+				c.type = CKEDITOR.STYLE_INLINE;		// need to override... dunno why.
+				c.applyToRange(b,g);
+				b.select();
 			}
 		}
 	};

@@ -473,7 +473,8 @@ body.manage-menu .zmi-page {
 	white-space:nowrap;
 	overflow:hidden;
 }
-body.browse_iframe .zmi-preview {
+.zmi-browse-iframe-preview {
+	z-index:99999;
 	padding:1em;
 	position:absolute;
 	/* Fallback for web browsers that doesn't support RGBa */
@@ -487,7 +488,7 @@ body.browse_iframe .zmi-preview {
 	max-width:40em;
 	border:1px dotted black;
 }
-body.browse_iframe .zmi-preview .contentEditable {
+.zmi-browse-iframe-preview .contentEditable {
 	zoom: 0.6;-moz-transform:scale(0.6);
 }
 body.browse_iframe .zmi-sitemap > div,
@@ -652,6 +653,9 @@ ul.zmi-container.pages .zmi-item .contentEditable {
 }
 .zmi.properties .accordion-body.container .accordion-inner {
 	margin:0;
+}
+.zmi.properties form.form-horizontal .accordion-group .accordion-heading .accordion-toggle {
+	text-decoration:underline;
 }
 .zmi.properties form.form-horizontal .accordion-group.zmi-container .accordion-heading {
 	padding:0.5em 0;

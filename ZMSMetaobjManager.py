@@ -817,6 +817,7 @@ class ZMSMetaobjManager:
           newType = 'zpt'
         else:
           newType = 'method'
+        newName = '%s: %s'%(newId,newType)
       if newType in mapTypes.keys()+mapTypes.values():
         newCustom = newCustom.replace('\r','')
       mapTypes = {'method':'DTML Method','py':'Script (Python)','zpt':'Page Template'}

@@ -394,16 +394,11 @@ def triggerEvent(self, *args, **kwargs):
     if v is not None:
       l.append(v)
     # Process meta-object-triggers.
-    context = self.getDocumentElement()
-    while context is not None:
-      for metaObjId in context.getMetaobjIds(sort=False):
-        metaObj = context.getMetaobj(metaObjId)
-        if metaObj.get('type') in ['ZMSResource','ZMSLibrary']:
-          v = context.evalMetaobjAttr('%s.%s'%(metaObjId,name),kwargs,self)
-          writeLog( context, "[triggerEvent]: %s=%s"%('%s.%s'%(metaObjId, name),str(v)))
-          if v is not None:
-            l.append(v)
-      context = context.getPortalMaster()
+    context = self
+    v = context.evalMetaobjAttr('*.%s'%name,kwargs)
+    writeLog( context, "[triggerEvent]: *.%s=%s"%(name,str(v)))
+    if v is not None:
+      l.append(v)
     # Process zope-triggers.
     context = self
     ids = []
@@ -411,7 +406,8 @@ def triggerEvent(self, *args, **kwargs):
       for id in context.getHome().objectIds():
         if id not in ids and id.find( name) == 0:
           v = getattr(self,id)(context=context,REQUEST=self.REQUEST)
-          l.append( v)
+          if v is not None:
+            l.append(v)
           ids.append(id)
       context = context.getPortalMaster()
   return l

@@ -22,6 +22,7 @@ from OFS.Image import Image, File
 from types import StringTypes
 import ZPublisher.HTTPRequest
 import datetime
+import fnmatch
 import string
 import time
 import urllib
@@ -716,15 +717,24 @@ class ObjAttrs:
     #  ObjAttrs.evalMetaobjAttr
     # --------------------------------------------------------------------------
     def evalMetaobjAttr(self, *args, **kwargs):
+      v = None
       id = self.REQUEST.get('ZMS_INSERT',self.meta_id)
       attr_id = args[0]
       if attr_id.find('.')>0:
         id = attr_id[:attr_id.find('.')]
         attr_id = attr_id[attr_id.find('.')+1:]
-      zmscontext = self
-      if len(args) > 2:
-        zmscontext = args[2]
-      return self.getMetaobjManager().evalMetaobjAttr(id,attr_id,zmscontext=zmscontext,options=kwargs)
+        context = self.getDocumentElement()
+        while context is not None:
+          ids = filter(lambda x: fnmatch.fnmatch(x,id),context.getMetaobjIds())
+          for x in ids:
+            if attr_id in context.getMetaobjAttrIds(x):
+              v = context.getMetaobjManager().evalMetaobjAttr(x,attr_id,zmscontext=self,options=kwargs)
+              if v is not None:
+                break
+          context = context.getPortalMaster()
+      else:
+        v = self.getMetaobjManager().evalMetaobjAttr(id,attr_id,zmscontext=self,options=kwargs)
+      return v
 
 
     """

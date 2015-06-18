@@ -78,17 +78,24 @@ def subscriber(event):
     if isinstance(event.object,ZMSObject):
       print "ZMS: add", event.object, event.newParent, event.newName
       if isinstance(event.newParent,ZMSObject):
+        # ensure _p_oid exists
+        import transaction
+        transaction.commit()
+        transaction.begin()
+        # trigger object-added event
         _globals.triggerEvent(event.object,"ObjectAdded")
   elif isinstance(event,ObjectMovedEvent):
     if isinstance(event.object,ZMSObject):
       print "ZMS: move", event.object, event.newParent, event.newName
       if isinstance(event.newParent,ZMSObject):
+        # trigger object-moved event
         _globals.triggerEvent(event.object,"ObjectMoved")
       elif event.newParent is None:
         _globals.triggerEvent(event.object,"ObjectRemoved")
   elif isinstance(event,ObjectRemovedEvent):
     if isinstance(event.object,ZMSObject):
       print "ZMS: remove", event.object
+        # trigger object-removed event
       _globals.triggerEvent(event.object,"ObjectRemoved")
 zope.event.subscribers.append(subscriber)
 

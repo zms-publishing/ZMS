@@ -389,26 +389,31 @@ def triggerEvent(self, *args, **kwargs):
 
   metaObj = self.getMetaobj( self.meta_id)
   if metaObj:
-    v = self.evalMetaobjAttr('%s'%(name),kwargs)
+    v = self.evalMetaobjAttr(name,kwargs)
     writeLog( self, "[triggerEvent]: %s=%s"%(name,str(v)))
     if v is not None:
       l.append(v)
-    for metaObjId in self.getMetaobjIds():
-      metaObj = self.getMetaobj(metaObjId)
-      if metaObj.get('type') in ['ZMSResource','ZMSLibrary']:
-        v = self.evalMetaobjAttr('%s.%s'%(metaObjId,name),kwargs)
-        writeLog( self, "[triggerEvent]: %s=%s"%('%s.%s'%(metaObjId, name),str(v)))
-        if v is not None:
-          l.append(v)
-    ob = self
-    ob_ids = []
-    while ob is not None:
-      for ob_id in ob.getHome().objectIds():
-        if ob_id not in ob_ids and ob_id.find( name) == 0:
-          v = getattr(self,ob_id)(context=self,REQUEST=self.REQUEST)
+    # Process meta-object-triggers.
+    context = self.getDocumentElement()
+    while context is not None:
+      for metaObjId in context.getMetaobjIds(sort=False):
+        metaObj = context.getMetaobj(metaObjId)
+        if metaObj.get('type') in ['ZMSResource','ZMSLibrary']:
+          v = context.evalMetaobjAttr('%s.%s'%(metaObjId,name),kwargs,self)
+          writeLog( context, "[triggerEvent]: %s=%s"%('%s.%s'%(metaObjId, name),str(v)))
+          if v is not None:
+            l.append(v)
+      context = context.getPortalMaster()
+    # Process zope-triggers.
+    context = self
+    ids = []
+    while context is not None:
+      for id in context.getHome().objectIds():
+        if id not in ids and id.find( name) == 0:
+          v = getattr(self,id)(context=context,REQUEST=self.REQUEST)
           l.append( v)
-          ob_ids.append(ob_id)
-      ob = ob.getPortalMaster()
+          ids.append(id)
+      context = context.getPortalMaster()
   return l
 
 

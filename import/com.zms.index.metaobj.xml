@@ -340,11 +340,8 @@ elif zmscontext.meta_id=='ZMSIndexZCatalog' and request.get('btn')=='resync':
 # --// ObjectAdded //--
 
 print "ZMSIndexZCatalog.ObjectAdded"
-zmscontext.writeStdout("ObjectAdded")
-zmsid = zmscontext.id
-zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getDocumentElement()
-zmsindex = getattr(docelmnt,'zmsindex',None)
+zmscontext.writeStdout("ObjectAdded: "+zmscontext.absolute_url())
+zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
 if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
   catalog = getattr(zmscontext,'zcatalog_index',None)
   if catalog is not None:
@@ -378,11 +375,8 @@ return printed
 # --// ObjectMoved //--
 
 print "ZMSIndexZCatalog.ObjectMoved"
-zmscontext.writeStdout("ObjectMoved")
-zmsid = zmscontext.id
-zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getDocumentElement()
-zmsindex = getattr(docelmnt,'zmsindex',None)
+zmscontext.writeStdout("ObjectMoved: "+zmscontext.absolute_url())
+zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
 if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
   catalog = getattr(zmscontext,'zcatalog_index',None)
   if catalog is not None:
@@ -421,11 +415,8 @@ return printed
 # --// ObjectRemoved //--
 
 print "ZMSIndexZCatalog.ObjectRemoved"
-zmscontext.writeStdout("ObjectRemoved")
-zmsid = zmscontext.id
-zmspath = '%s/'%('/'.join(zmscontext.getPhysicalPath()))
-docelmnt = zmscontext.getDocumentElement()
-zmsindex = getattr(docelmnt,'zmsindex',None)
+zmscontext.writeStdout("ObjectRemoved: "+zmscontext.absolute_url())
+zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
 if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
   catalog = getattr(zmscontext,'zcatalog_index',None)
   if catalog is not None:
@@ -531,7 +522,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.6]]></item>
+          <item key="revision"><![CDATA[0.9.7]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -550,7 +541,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.6]]></item>
+          <item key="revision"><![CDATA[0.9.7]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

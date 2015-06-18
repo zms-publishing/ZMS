@@ -721,7 +721,10 @@ class ObjAttrs:
       if attr_id.find('.')>0:
         id = attr_id[:attr_id.find('.')]
         attr_id = attr_id[attr_id.find('.')+1:]
-      return self.getMetaobjManager().evalMetaobjAttr(id,attr_id,zmscontext=self,options=kwargs)
+      zmscontext = self
+      if len(args) > 2:
+        zmscontext = args[2]
+      return self.getMetaobjManager().evalMetaobjAttr(id,attr_id,zmscontext=zmscontext,options=kwargs)
 
 
     """

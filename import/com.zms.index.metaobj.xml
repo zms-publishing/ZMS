@@ -56,6 +56,7 @@ def addLexicon(catalog):
 def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
   id = 'zcatalog_index'
   func_ = args[0]
+  zmscontext.writeStdout('ZMSIndexZCatalog.%s:'%(func_))
   
   if func_ == 'reindex':
     rootelmnt = zmscontext.getRootElement()
@@ -104,14 +105,18 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
     catalog = getattr(home,id,None)
     if catalog is not None:
       query = args[1]
+      zmscontext.writeStdout('ZMSIndexZCatalog.%s: query=%s'%(func_,query))
       row = catalog(query)
+      zmscontext.writeStdout('ZMSIndexZCatalog.%s: rows=%i'%(func_,len(row)))
       if len(row)==1:
         zmspath  = '%s/'%row[0]['url']
-        zmscontext.writeLog('ZMSIndexZCatalog.%s: zmspath=%s'%(func_,zmspath))
+        zmscontext.writeStdout('ZMSIndexZCatalog.%s: zmspath=%s'%(func_,zmspath))
         l = zmspath[1:-1].split('/')
         ob = zmscontext.getPhysicalRoot()
         while ob is not None and len(l) > 0:
-          ob = getattr(ob,l[0],None)
+          id = l[0]
+          if not id.startswith('manage'):
+            ob = getattr(ob,l[0],None)
           l = l[1:]
     return ob
   
@@ -279,7 +284,7 @@ elif zmscontext.meta_id=='ZMSIndexZCatalog' and request.get('btn')=='resync':
                   r[objAttr['id']] = v
         zmscontext.operator_setattr(obj_vers,key,l)
     else:
-      for key in node.getObjAttrs().keys():
+      for key in filter(lambda x:not x.startswith('manage'),node.getObjAttrs().keys()):
         objAttr = node.getObjAttr(key)
         datatype = objAttr['datatype']
         if datatype in ['richtext','string','text','url']:
@@ -382,7 +387,11 @@ if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
   catalog = getattr(zmscontext,'zcatalog_index',None)
   if catalog is not None:
     zmscontext.writeStdout("ZMSIndexZCatalog.ObjectMoved: url=%s"%zmscontext.url())
-    catalog.uncatalog_object(zmscontext.url())
+    query = {'get_oid':zmscontext.get_oid()}
+    row = catalog(query)
+    for r in row:
+      zmscontext.writeStdout("ZMSIndexZCatalog.ObjectMoved: uncatalog_object url=%s"%r['url'])
+      catalog.uncatalog_object(r['url'])
     catalog.catalog_object(zmscontext, zmscontext.url())
 return printed
 
@@ -522,7 +531,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.4]]></item>
+          <item key="revision"><![CDATA[0.9.6]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -541,7 +550,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.4]]></item>
+          <item key="revision"><![CDATA[0.9.6]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

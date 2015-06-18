@@ -89,7 +89,7 @@ def initPermissions(container, id):
   - set View-permissions to 'Authenticated' and remove acquired permissions for manage-objects.
   """
   ob = getattr( container, id)
-  ob._proxy_roles=('Manager')
+  ob._proxy_roles=('Authenticated','Manager')
   permissions = []
   if id.find( 'manage_') >= 0:
     ob.manage_role(role_to_manage='Authenticated',permissions=['View'])

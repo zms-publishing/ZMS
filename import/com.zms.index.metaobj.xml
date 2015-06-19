@@ -105,9 +105,7 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
   
   elif func_ == 'search':
     ob = None
-    rootelmnt = zmscontext.getRootElement()
-    home = rootelmnt.getHome()
-    catalog = getattr(home,id,None)
+    catalog = getattr(zmscontext,id,None)
     if catalog is not None:
       query = args[1]
       zmscontext.writeStdout('ZMSIndexZCatalog.%s: query=%s'%(func_,query))
@@ -117,7 +115,7 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
         zmspath  = '%s/'%row[0]['url']
         zmscontext.writeStdout('ZMSIndexZCatalog.%s: zmspath=%s'%(func_,zmspath))
         l = zmspath[1:-1].split('/')
-        ob = zmscontext.getPhysicalRoot()
+        ob = zmscontext
         while ob is not None and len(l) > 0:
           id = l[0]
           if not id.startswith('manage'):
@@ -529,7 +527,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.8]]></item>
+          <item key="revision"><![CDATA[0.9.9]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -548,7 +546,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.8]]></item>
+          <item key="revision"><![CDATA[0.9.9]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

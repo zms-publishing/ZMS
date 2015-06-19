@@ -725,12 +725,13 @@ class ObjAttrs:
         attr_id = attr_id[attr_id.find('.')+1:]
         context = self.getDocumentElement()
         while context is not None:
-          ids = filter(lambda x: fnmatch.fnmatch(x,id),context.getMetaobjIds())
+          ids = [id]
+          if id.find('*') >= 0 or id.find('?') >= 0:
+            ids = filter(lambda x: fnmatch.fnmatch(x,id),context.getMetaobjIds())
           for x in ids:
             if attr_id in context.getMetaobjAttrIds(x):
               v = context.getMetaobjManager().evalMetaobjAttr(x,attr_id,zmscontext=self,options=kwargs)
-              if v is not None:
-                break
+              break
           context = context.getPortalMaster()
       else:
         v = self.getMetaobjManager().evalMetaobjAttr(id,attr_id,zmscontext=self,options=kwargs)

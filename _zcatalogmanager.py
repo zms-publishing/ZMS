@@ -17,7 +17,7 @@
 ################################################################################
 
 # Imports.
-from Products.ZCatalog import CatalogAwareness
+from Products.ZCatalog import CatalogPathAwareness
 import re
 import sys
 import zope.interface
@@ -54,7 +54,7 @@ def search_quote(s, maxlen=255, tag='&middot;'):
 ###
 ################################################################################
 ################################################################################
-class ZCatalogItem(CatalogAwareness.CatalogAware):
+class ZCatalogItem(CatalogPathAwareness.CatalogAware):
 
     # --------------------------------------------------------------------------
     #  ZCatalogItem.search_quote:

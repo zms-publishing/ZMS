@@ -503,7 +503,15 @@ class ConfManager(
         key = base64.b64decode(key)
       if OFS.misc_.misc_.zms['confdict'].has_key(key):
           default = OFS.misc_.misc_.zms['confdict'].get(key)
-      return self.getConfProperties().get( key, default)
+      value = default
+      confdict = self.getConfProperties()
+      if confdict.has_key(key):
+        value = confdict.get( key, default)
+      elif key is not None and not key.startswith('Portal.'):
+        portalMaster = self.getPortalMaster()
+        if portalMaster is not None:
+          value = portalMaster.getConfProperty( key, default)
+      return value 
 
 
     """

@@ -197,6 +197,7 @@ $ZMI.registerReady(function(){
 			<div class="form-group">
 				<label class="col-sm-2 control-label" for="conf_key">Key</label>
 				<div class="col-sm-10">
+					<input type="hidden" id="conf_old" name="conf_old" tal:attributes="value python:request.get('conf_key')">
 					<input class="form-control" type="text" id="conf_key" name="conf_key" tal:attributes="value python:request.get('conf_key')">
 				</div>
 			</div><!-- .form-group -->

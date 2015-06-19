@@ -78,10 +78,6 @@ def subscriber(event):
     if isinstance(event.object,ZMSObject):
       print "ZMS: add", event.object, event.newParent, event.newName
       if isinstance(event.newParent,ZMSObject):
-        # ensure _p_oid exists
-        import transaction
-        transaction.commit()
-        transaction.begin()
         # trigger object-added event
         _globals.triggerEvent(event.object,"ObjectAdded")
   elif isinstance(event,ObjectMovedEvent):

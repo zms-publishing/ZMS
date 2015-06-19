@@ -658,9 +658,6 @@ ul.zmi-container.pages .zmi-item .contentEditable {
 .zmi.properties .accordion-body.container .accordion-inner {
 	margin:0;
 }
-.zmi.properties form.form-horizontal .accordion-group .accordion-heading .accordion-toggle {
-	text-decoration:underline;
-}
 .zmi.properties form.form-horizontal .accordion-group.zmi-container .accordion-heading {
 	padding:0.5em 0;
 }

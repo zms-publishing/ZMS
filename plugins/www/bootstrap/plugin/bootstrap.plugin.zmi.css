@@ -726,6 +726,7 @@ div.accordion-heading a.accordion-toggle {
 div.accordion-heading a.accordion-toggle:hover, 
 div.accordion-heading a.accordion-toggle:focus {
 	text-decoration:none;
+	color:#000000;
 }
 div.accordion-heading a.accordion-toggle .icon-caret-right,
 div.accordion-heading a.accordion-toggle .icon-caret-down {

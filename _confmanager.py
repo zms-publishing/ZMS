@@ -453,8 +453,17 @@ class ConfManager(
     Returns property from configuration.
     @rtype: C{dict}
     """
-    def getConfProperties(self):
-      return getattr( self, '__attr_conf_dict__', {})
+    def getConfProperties(self, prefix=None, REQUEST=None):
+      """ ConfManager.getConfProperties """
+      d = getattr( self, '__attr_conf_dict__', {})
+      if REQUEST is not None:
+        import base64
+        prefix = base64.b64decode(prefix)
+        r = {}
+        for k in filter(lambda x:x.startswith(prefix+'.'),d.keys()):
+          r[k] = d[k]
+        return self.str_json(r)
+      return d
 
 
     """

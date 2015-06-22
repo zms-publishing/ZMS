@@ -267,17 +267,17 @@ ZMI.prototype.getReqProperty = function(key, defaultValue) {
 		data['default'] = defaultValue;
 	}
 	var url = this.getPhysicalPath();
-	this.writeDebug(url);
 	if (url.indexOf('/content/')>0) {
 		url = url.substr(0,url.indexOf('/content/')+'/content/'.length-1);
 	}
-	this.writeDebug(url+'/getReqProperty');
-	return $.ajax({
+	var r = $.ajax({
 		url: url+'/getReqProperty',
 		data: data,
 		datatype: 'text',
 		async: false
 		}).responseText;
+	this.writeDebug(url+'/getReqProperty('+key+','+defaultValue+'): '+r);
+	return r;
 }
 
 /**
@@ -290,21 +290,41 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 		data['default'] = defaultValue;
 	}
 	var url = this.getPhysicalPath();
-	this.writeDebug(url);
 	if (url.indexOf('/content/')>0) {
 		url = url.substr(0,url.indexOf('/content/')+'/content/'.length-1);
 	}
-	this.writeDebug(url+'/getConfProperty');
-	return $.ajax({
+	var r = $.ajax({
 		url: url+'/getConfProperty',
 		data: data,
 		datatype: 'text',
 		async: false
 		}).responseText;
+	this.writeDebug(url+'/getConfProperty('+key+','+defaultValue+'): '+r);
+	return r;
 }
 
 /**
- * Returns conf-property.
+ * Returns conf-properties.
+ */
+ZMI.prototype.getConfProperties = function(prefix) {
+	var data  = {}
+	data['prefix'] = btoa(prefix);
+	var url = this.getPhysicalPath();
+	if (url.indexOf('/content/')>0) {
+		url = url.substr(0,url.indexOf('/content/')+'/content/'.length-1);
+	}
+	var r = $.ajax({
+		url: url+'/getConfProperties',
+		data: data,
+		datatype: 'text',
+		async: false
+		}).responseText;
+	this.writeDebug(url+'/getConfProperties('+prefix+'): '+r);
+	return eval("("+r+")");
+}
+
+/**
+ * Returns display-icon.
  */
 ZMI.prototype.display_icon = function(meta_type) {
 	var k = "display_icon."+meta_type;

@@ -28,20 +28,33 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'about' }
 	];
 
-	// Remove some buttons, provided by the standard plugins, which we don't
-	// need to have in the Standard(s) toolbar.
-	config.removeButtons = $ZMI.getConfProperty('ckeditor.config.removeButtons','Underline,Subscript,Superscript');
+	var prefix = "ckeditor.config";
+	var confProperties = $ZMI.getConfProperties(prefix);
+	var defaultProperties = {
+		// Remove some buttons, provided by the standard plugins, which we don't
+		// need to have in the Standard(s) toolbar.
+		'removeButtons':'Underline,Subscript,Superscript',
+		// Make dialogs simpler.
+		'removeDialogTabs':'image:advanced;link:advanced',
+		// Linkbutton
+		// Mediabutton
+		// @see http://stackoverflow.com/questions/1957156/ckeditor-how-to-add-a-custom-button-to-the-toolbar-that-calls-a-javascript-funct
+		'extraPlugins':'linkbutton,mediabutton,tableresize'
+	};
+	for (var k in defaultProperties) {
+		if (typeof confProperties[prefix+"."+k] == "undefined") {
+			var v = defaultProperties[k];
+			config[k] = v;
+		}
+	}
+	for (var k in confProperties) {
+		var v = confProperties[k];
+		config[k.substr((prefix+".").length)] = v;
+	}
 
 	// Set the most common block elements.
 	$ZMI.CKEDITOR_editorConfig(config);
 
-	// Make dialogs simpler.
-	config.removeDialogTabs = $ZMI.getConfProperty('ckeditor.config.removeDialogTabs','image:advanced;link:advanced');
-
-	// Linkbutton
-	// Mediabutton
-	// @see http://stackoverflow.com/questions/1957156/ckeditor-how-to-add-a-custom-button-to-the-toolbar-that-calls-a-javascript-funct
-	config.extraPlugins = $ZMI.getConfProperty('ckeditor.config.extraPlugins','linkbutton,mediabutton,tableresize');
 
 	//  Toolbar: @see http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar
 	config.toolbar = 'ZMSBasicToolbar';

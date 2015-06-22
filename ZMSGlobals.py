@@ -950,7 +950,10 @@ class ZMSGlobals:
             i = i.encode(encoding, errors)
         else:
           i = str(i)
-        return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
+        if i in ['true','false']:
+          return i
+        else:
+          return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
       return '""'
 
 

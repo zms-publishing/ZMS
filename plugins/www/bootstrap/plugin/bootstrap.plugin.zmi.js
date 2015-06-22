@@ -611,7 +611,7 @@ ZMI.prototype.initInputFields = function(container) {
 										if (dateText) {
 											var input = $(inst).data("inputfield");
 											var e = $(inst).data("extra");
-											if (e && !dateText.endsWith(" "+e)) {
+											if (e && dateText.indexOf(" ")<0) {
 												$(input).val(dateText+" "+e);
 											}
 										}

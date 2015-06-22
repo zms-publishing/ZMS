@@ -80,7 +80,7 @@
 			<input onchange="zmiSaveBtnClick(this)" type="radio" name="id" tal:attributes="value python:si.id; checked python:here.getConfProperty('ZMS.theme','')==si.id" />
 			<img tal:attributes="src python:si.icon"/>
 			<a tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:si.id">id</a>
-			(<tal:block tal:content="python:si.title">title</tal:block>)
+			(<tal:block tal:content="python:(si.meta_type=='Filesystem Directory View' and si.getDirPath() or si.title)">title</tal:block>)
 		</td>
 	</tr>
 	</tbody>

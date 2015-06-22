@@ -362,7 +362,7 @@ class ConfManager(
       if len(self.getConfProperty('ZMS.theme','')) > 0:
         home = getattr(home,self.getConfProperty('ZMS.theme',''))
       if '*' in ids:
-        ids.extend( map(lambda x: x.id, filter(lambda x: x.id not in ids, home.objectValues(['Folder']))))
+        ids.extend( map(lambda x: x.id, filter(lambda x: x.id not in ids, home.objectValues(['Folder','Filesystem Directory View']))))
       for id in ids:
         if id == '*':
           obs.append(home)
@@ -398,7 +398,7 @@ class ConfManager(
       for container in self.getResourceFolders():
         for folder in [ getattr( container, 'css', None), container]:
           if folder is not None:
-            for ob in folder.objectValues(['DTML Method', 'DTML Document', 'File']):
+            for ob in folder.objectValues(['DTML Method', 'DTML Document', 'File', 'Filesystem File']):
               id = absattr( ob.id)
               path = ob.getPhysicalPath()
               if len(filter(lambda x: x.endswith('css'), path)) > 0 and id not in ids:

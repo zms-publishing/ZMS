@@ -82,14 +82,14 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
       extra.lexicon_id = 'Lexicon'
       catalog.manage_addIndex(index_name,index_type,extra)
     # Add columns
-    for index_name in ['id','meta_id','url','get_oid']:
+    for index_name in ['id','meta_id','getPath','get_oid']:
       catalog.manage_addColumn(index_name)
     # Visit tree
     def visit(node):
       l = []
       l.append(1)
-      zmscontext.writeStdout('[ZMSIndexZCatalog_func_] catalog_object %s'%node.url())
-      catalog.catalog_object(node, node.url())
+      zmscontext.writeStdout('[ZMSIndexZCatalog_func_] catalog_object %s'%node.getPath())
+      catalog.catalog_object(node, node.getPath())
       for childNode in node.getChildNodes():
         l.extend(visit(childNode))
       if node.meta_id == 'ZMS':
@@ -112,7 +112,7 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
       row = catalog(query)
       zmscontext.writeStdout('ZMSIndexZCatalog.%s: rows=%i'%(func_,len(row)))
       if len(row)==1:
-        zmspath  = '%s/'%row[0]['url']
+        zmspath  = '%s/'%row[0]['getPath']
         zmscontext.writeStdout('ZMSIndexZCatalog.%s: zmspath=%s'%(func_,zmspath))
         l = zmspath[1:-1].split('/')
         ob = zmscontext
@@ -305,7 +305,7 @@ elif zmscontext.meta_id=='ZMSIndexZCatalog' and request.get('btn')=='resync':
                 elif datatype in ['url']:
                   v = handleUrl(node,v)
                 if o != v:
-                  zmscontext.writeStdout('[onChangeObjEvt] resync %s.%s'%(node.url(),key))
+                  zmscontext.writeStdout('[onChangeObjEvt] resync %s.%s'%(node.getPath(),key))
                   zmscontext.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
     for childNode in node.getChildNodes():
       l.extend(visit(childNode))
@@ -350,8 +350,8 @@ if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
   if catalog is not None:
     zmscontext.writeStdout("ZMSIndexZCatalog.ObjectAdded: premature commit")
     zmscontext.ZMSIndexZCatalog_func_(zmscontext,'commit')
-    zmscontext.writeStdout("ZMSIndexZCatalog.ObjectAdded: url=%s"%zmscontext.url())
-    catalog.catalog_object(zmscontext, zmscontext.url())
+    zmscontext.writeStdout("ZMSIndexZCatalog.ObjectAdded: url=%s"%zmscontext.getPath())
+    catalog.catalog_object(zmscontext, zmscontext.getPath())
 return printed
 
 # --// /ObjectAdded //--
@@ -385,13 +385,13 @@ zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
 if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
   catalog = getattr(zmscontext,'zcatalog_index',None)
   if catalog is not None:
-    zmscontext.writeStdout("ZMSIndexZCatalog.ObjectMoved: url=%s"%zmscontext.url())
+    zmscontext.writeStdout("ZMSIndexZCatalog.ObjectMoved: url=%s"%zmscontext.getPath())
     query = {'get_oid':zmscontext.get_oid()}
     row = catalog(query)
     for r in row:
-      zmscontext.writeStdout("ZMSIndexZCatalog.ObjectMoved: uncatalog_object url=%s"%r['url'])
-      catalog.uncatalog_object(r['url'])
-    catalog.catalog_object(zmscontext, zmscontext.url())
+      zmscontext.writeStdout("ZMSIndexZCatalog.ObjectMoved: uncatalog_object url=%s"%r['getPath'])
+      catalog.uncatalog_object(r['getPath'])
+    catalog.catalog_object(zmscontext, zmscontext.getPath())
 return printed
 
 # --// /ObjectMoved //--
@@ -425,8 +425,8 @@ zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
 if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
   catalog = getattr(zmscontext,'zcatalog_index',None)
   if catalog is not None:
-    zmscontext.writeStdout("ZMSIndexZCatalog.ObjectRemoved: url=%s"%zmscontext.url())
-    catalog.uncatalog_object(zmscontext.url())
+    zmscontext.writeStdout("ZMSIndexZCatalog.ObjectRemoved: url=%s"%zmscontext.getPath())
+    catalog.uncatalog_object(zmscontext.getPath())
 return printed
 
 # --// /ObjectRemoved //--
@@ -527,7 +527,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.9]]></item>
+          <item key="revision"><![CDATA[0.9.10]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -546,7 +546,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.9]]></item>
+          <item key="revision"><![CDATA[0.9.10]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

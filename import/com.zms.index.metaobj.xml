@@ -240,6 +240,8 @@ elif zmscontext.meta_id=='ZMSIndexZCatalog' and request.get('btn')=='resync':
     p = '<a (.*?)href="(.*?)"(.*?)>(.*?)<\\/a>'
     for f in node.re_findall(p,v):
       href = f[1]
+      if href.startswith(request['SERVER_URL']):
+        href = href[len(request['SERVER_URL']):]
       if href.startswith('.') or href.startswith('/'):
         if (f[0]+f[2]).find('data-id=') < 0:
           ref = find_node(node,href)

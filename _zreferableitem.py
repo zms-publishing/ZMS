@@ -105,17 +105,16 @@ class ZReferableItem:
   def getRefObjPath(self, ob, anchor=''):
     ref = ''
     if ob is not None:
-      # Extension Point
-      ep = self.getConfProperty('ZReferableItem.getRefObjPath','')
-      if ep != '':
-        ref = self.evalMetaobjAttr(ep,ob=ob,anchor=anchor)
-      # Default
-      else:
+      def default(*args, **kwargs):
+        self = args[0]
+        ob = args[1]['ob']
+        anchor = args[1]['anchor']
         ob_path = ob.breadcrumbs_obj_path()
         homeIds = map(lambda x:x.getHome().id,filter(lambda x:x.meta_id=='ZMS',ob_path))
         pathIds = map(lambda x:x.id,filter(lambda x:x.meta_id!='ZMS',ob_path))
         path = '/'.join(homeIds) + '@' + '/'.join(pathIds)
-        ref = '{$' + path + anchor + '}'
+        return '{$' + path + anchor + '}'
+      ref = self.evalExtensionPoint('ExtensionPoint.ZReferableItem.getRefObjPath',default,ob=ob,anchor=anchor)
     return ref
 
 
@@ -417,47 +416,48 @@ class ZReferableItem:
   def getLinkObj(self, url, REQUEST={}):
     ob = None
     if isInternalLink(url):
-      _globals.writeBlock(self,'[getLinkObj]: url='+url) 
-      # Extension Point
-      ep = self.getConfProperty('ZReferableItem.getLinkObj','')
-      if ep != '':
-        ob = self.evalMetaobjAttr(ep,url=url)
-      # Default
-      elif not url.startswith('{$__'):
-        # Find document-element.
-        docElmnt = None
-        path = url[2:-1]
-        i = path.find('#')
-        if i > 0:
-          path = path[:i]
-        i = path.find('@')
-        if i > 0:
-          clientIds = path[:i].split('/')
-          path = path[i+1:]
-          clientHome = self.getHome()
-          for clientId in clientIds:
-            clientHome = getattr(clientHome,clientId,None)
-            if clientHome is None:
-              break
-          if clientHome is not None:
-            obs = clientHome.objectValues(['ZMS'])
-            if obs:
-              docElmnt = obs[0]
-        else:
-          docElmnt = self.getDocumentElement()
-        ob = docElmnt
-        # Find object.
-        if ob is not None and len(path) > 0:
-          _globals.writeLog( self, '[getLinkObj]: path=%s'%path)
-          ids = path.split( '/')
-          for id in ids:
-            ob = getattr(ob,id,None)
-            if ob is None:
-              if self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
-                ob_id = self.getHome().id+'@'+ids[-1]
-                _globals.writeBlock(self,'[getLinkObj]: ob_id='+ob_id) 
-                ob = self.synchronizeRefs( ob_id)
-              break
+      _globals.writeBlock(self,'[getLinkObj]: url='+url)
+      def default(*args, **kwargs):
+        self = args[0]
+        url = args[1]['url']
+        ob = None
+        if not url.startswith('{$__'):
+          # Find document-element.
+          docElmnt = None
+          path = url[2:-1]
+          i = path.find('#')
+          if i > 0:
+            path = path[:i]
+          i = path.find('@')
+          if i > 0:
+            clientIds = path[:i].split('/')
+            path = path[i+1:]
+            clientHome = self.getHome()
+            for clientId in clientIds:
+              clientHome = getattr(clientHome,clientId,None)
+              if clientHome is None:
+                break
+            if clientHome is not None:
+              obs = clientHome.objectValues(['ZMS'])
+              if obs:
+                docElmnt = obs[0]
+          else:
+            docElmnt = self.getDocumentElement()
+          ob = docElmnt
+          # Find object.
+          if ob is not None and len(path) > 0:
+            _globals.writeLog( self, '[getLinkObj]: path=%s'%path)
+            ids = path.split( '/')
+            for id in ids:
+              ob = getattr(ob,id,None)
+              if ob is None:
+                if self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
+                  ob_id = self.getHome().id+'@'+ids[-1]
+                  _globals.writeBlock(self,'[getLinkObj]: ob_id='+ob_id) 
+                  ob = self.synchronizeRefs( ob_id)
+                break
+        return ob
+      ob = self.evalExtensionPoint('ExtensionPoint.ZReferableItem.getLinkObj',default,url=url)
     return ob
 
 

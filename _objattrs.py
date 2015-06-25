@@ -719,23 +719,28 @@ class ObjAttrs:
     def evalMetaobjAttr(self, *args, **kwargs):
       v = None
       id = self.REQUEST.get('ZMS_INSERT',self.meta_id)
-      attr_id = args[0]
-      if attr_id.find('.')>0:
-        id = attr_id[:attr_id.find('.')]
-        attr_id = attr_id[attr_id.find('.')+1:]
-        context = self.getDocumentElement()
-        while context is not None:
-          ids = [id]
-          if id.find('*') >= 0 or id.find('?') >= 0:
-            ids = filter(lambda x: fnmatch.fnmatch(x,id),context.getMetaobjIds())
-          for x in ids:
-            if attr_id in context.getMetaobjAttrIds(x):
-              v = context.getMetaobjManager().evalMetaobjAttr(x,attr_id,zmscontext=self,options=kwargs)
-              break
-          context = context.getPortalMaster()
+      key = args[0]
+      if key.find('.')>0:
+        id = key[:key.find('.')]
+        key = key[key.find('.')+1:]
+      return self.getMetaobjManager().evalMetaobjAttr(id,key,zmscontext=self,options=kwargs)
+
+
+    # --------------------------------------------------------------------------
+    #  ObjAttrs.evalExtensionPoint
+    # --------------------------------------------------------------------------
+    def evalExtensionPoint(self, *args, **kwargs):
+      key = args[0]
+      default = args[1]
+      root = self.getRootElement()
+      ep = root.getConfProperty(key,None)
+      if ep is not None:
+        id = ep[:ep.find('.')]
+        key = ep[ep.find('.')+1:]
+        return root.getMetaobjManager().evalMetaobjAttr(id,key,zmscontext=self,options=kwargs)
       else:
-        v = self.getMetaobjManager().evalMetaobjAttr(id,attr_id,zmscontext=self,options=kwargs)
-      return v
+        print self,args,kwargs
+        return default(self,kwargs)
 
 
     """

@@ -94,9 +94,9 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
         l.extend(visit(childNode))
       if node.meta_id == 'ZMS':
         node.setConfProperty('ZMS.InternalLinks.autocorrection',1)
-        node.setConfProperty('ZReferableItem.getRefObjPath','%s.getRefObjPath'%zmscontext.meta_id)
-        node.setConfProperty('ZReferableItem.getLinkObj','%s.getLinkObj'%zmscontext.meta_id)
-        node.setConfProperty('ZMSObject.get_uid','%s.get_uid'%zmscontext.meta_id)
+        node.setConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath','%s.getRefObjPath'%zmscontext.meta_id)
+        node.setConfProperty('ExtensionPoint.ZReferableItem.getLinkObj','%s.getLinkObj'%zmscontext.meta_id)
+        node.setConfProperty('ExtensionPoint.ZMSObject.get_uid','%s.get_uid'%zmscontext.meta_id)
         for childNode in node.getPortalClients():
           l.extend(visit(childNode))
       return l
@@ -529,7 +529,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.11]]></item>
+          <item key="revision"><![CDATA[0.9.12]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -548,7 +548,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.11]]></item>
+          <item key="revision"><![CDATA[0.9.12]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

@@ -479,7 +479,8 @@ class ConfManager(
 
 
     """
-    Returns property from request.
+    Returns property from request (used to get zope-request-properties,
+    e.g. SERVER_URL oder AUTHENTICATED_USER).
     
     @param key: The key.
     @type key: C{string}
@@ -489,10 +490,9 @@ class ConfManager(
     """
     def getReqProperty(self, key, default=None, REQUEST=None):
       """ ConfManager.getReqProperty """
-      if REQUEST is not None:
-          authorized = REQUEST['AUTHENTICATED_USER'].has_role('Authenticated')
-          if not authorized:
-              raise zExceptions.Unauthorized
+      authorized = REQUEST['AUTHENTICATED_USER'].has_role('Authenticated')
+      if not authorized:
+        raise zExceptions.Unauthorized
       return REQUEST.get(key,default)
 
 
@@ -516,7 +516,7 @@ class ConfManager(
       confdict = self.getConfProperties()
       if confdict.has_key(key):
         value = confdict.get( key, default)
-      elif key is not None and not key.startswith('Portal.'):
+      elif key is not None and key.startswith('ExtensionPoint.'):
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           value = portalMaster.getConfProperty( key, default)

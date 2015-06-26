@@ -7,6 +7,12 @@ Modularity of the ZMS components and approved production processes turn ZMS into
 
 http://www.zms-publishing.com
 
+Available Extensions
+--------------------
+
+    * ZMSFormulator: https://pypi.python.org/pypi/zms3.formulator
+    * ZMSMindmap: https://pypi.python.org/pypi/zms3.mindmap  
+
 Installation (GNU/Linux, OSX/Darwin and Windows/MinGW)
 ------------------------------------------------------
 
@@ -45,6 +51,17 @@ Changelog
 
     * `latest changes... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3103&limit=200>`_
 
+
+3.1.5 (2015-06-26)
+******************
+
+    * Added ZMSIndex using ZCatalog
+    * Improved content-modelling (permission-settings, error-handling, role-definitions)
+    * Improved performance of user-management
+    * Updated to TinyMCE-4.1.10 and CKEditor-4.4.7
+    * Updated to Bootstrap-3.3.5 and jQuery-2.1.4 (1.11.3)
+    * `more in 3.1.5... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=3016&stop_rev=3187&limit=200>`_
+    
 3.1.4 (2015-05-05)
 ******************
    

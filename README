@@ -49,7 +49,7 @@ Changelog
 3.2.0dev (in development)
 *************************
 
-    * `latest changes... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3103&limit=200>`_
+    * `latest changes... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3190&limit=200>`_
 
 
 3.1.5 (2015-06-26)
@@ -60,7 +60,7 @@ Changelog
     * Improved performance of user-management
     * Updated to TinyMCE-4.1.10 and CKEditor-4.4.7
     * Updated to Bootstrap-3.3.5 and jQuery-2.1.4 (1.11.3)
-    * `more in 3.1.5... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=3016&stop_rev=3187&limit=200>`_
+    * `more in 3.1.5... <https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=3189&stop_rev=3111&limit=200>`_
     
 3.1.4 (2015-05-05)
 ******************

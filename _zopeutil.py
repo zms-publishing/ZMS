@@ -40,6 +40,8 @@ def addObject(container, meta_type, id, title, data):
     addPythonScript( container, id, title, data)
   elif meta_type == 'Folder':
     addFolder( container, id, title, data)
+  elif meta_type == 'Z SQL Method':
+    addZSqlMethod( container, id, title, data)
 
 def getObject(container, id):
   """
@@ -68,6 +70,10 @@ def readObject(container, id, default=None):
       f = open(filepath, 'r')
       data = f.read()
       f.close()
+  elif ob.meta_type == 'Z Sql Method':
+    connection = ob.connection_id 
+    params = ob.arguments_src
+    data = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
   return data
 
 def removeObject(container, id, removeFile=True):
@@ -147,3 +153,30 @@ def addFolder(container, id, title, data):
   """
   container.manage_addFolder(id,title)
   ob = getattr( container, id)
+
+def addZSqlMethod(container, id, title, data):
+  """
+  Add Z Sql Method to container.
+  """
+  print data
+  try:
+    from Products.ZSQLMethods import SQL
+    connection_id = container.SQLConnectionIDs()[0][0]
+    arguments = ''
+    template = ''
+    SQL.manage_addZSQLMethod( container, id, title, connection_id, arguments, template)
+  except:
+    pass 
+  if data:
+    ob = getattr( container, id)
+    connection = data
+    connection = connection[connection.find('<connection>'):connection.find('</connection>')]
+    connection = connection[connection.find('>')+1:]
+    arguments = data
+    arguments = arguments[arguments.find('<params>'):arguments.find('</params>')]
+    arguments = arguments[arguments.find('>')+1:]
+    template = data
+    template = template[template.find('</params>'):]
+    template = template[template.find('>')+1:]
+    template = '\n'.join(filter( lambda x: len(x) > 0, template.split('\n')))
+    ob.manage_edit(title=title,connection_id=connection,arguments=arguments,template=template) 

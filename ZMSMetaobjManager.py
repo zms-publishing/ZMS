@@ -877,18 +877,6 @@ class ZMSMetaobjManager:
             newOb.manage_delObjects(ids=newOb.objectIds())
             _ziputil.importZip2Zodb( newOb, newCustom.getData())
           attr['custom'] = ''
-        elif newType == 'Z SQL Method':
-          connection = newCustom
-          connection = connection[connection.find('<connection>'):connection.find('</connection>')]
-          connection = connection[connection.find('>')+1:]
-          arguments = newCustom
-          arguments = arguments[arguments.find('<params>'):arguments.find('</params>')]
-          arguments = arguments[arguments.find('>')+1:]
-          template = newCustom
-          template = template[template.find('</params>'):]
-          template = template[template.find('>')+1:]
-          template = '\n'.join(filter( lambda x: len(x) > 0, template.split('\n')))
-          newOb.manage_edit(title=newName,connection_id=connection,arguments=arguments,template=template)
       
       # Assign Attributes to Meta-Object.
       self.model[id] = ob

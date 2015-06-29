@@ -23,7 +23,7 @@ EXTENSIONS = {
                       'JSON-based HTML-Forms',
                       'https://bitbucket.org/zms3/formulator',
                       'developed by SNTL Publishing'],
-  'zms3.mindmap': ['0.1.0',
+  'zms3.mindmap': ['0.1.1',
                    'Browse Mindmaps using a FlashViewer',
                    'https://bitbucket.org/zms3/mindmap',
                    'developed by Christian Meier'],

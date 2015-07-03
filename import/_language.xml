@@ -4433,6 +4433,22 @@
     <Cell><Data ss:Type="String">קובץ נטען.</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">MSG_ZMSTABLE_TYPE</Data></Cell>
+    <Cell><Data ss:Type="String">Hinweis: Typ kann nachträglich nicht mehr geändert werden.</Data></Cell>
+    <Cell><Data ss:Type="String">Note: Type can not be changed later</Data></Cell>
+    <Cell><Data ss:Type="String">Opmerking: Type kan later niet worden gewijzigd</Data></Cell>
+    <Cell><Data ss:Type="String">Note: Type ne peut pas être modifié ultérieurement</Data></Cell>
+    <Cell><Data ss:Type="String">Nota: Tipo non può essere modificato in seguito</Data></Cell>
+    <Cell><Data ss:Type="String">Nota: Tipo no se puede cambiar más adelante</Data></Cell>
+    <Cell><Data ss:Type="String">注：类型不能改变以后</Data></Cell>
+    <Cell><Data ss:Type="String">رنوٹ: پروپوزل کی گذارش بعد میں تبدیل نہیں کر سکتے ہیں</Data></Cell>
+    <Cell><Data ss:Type="String">Примечание: тип не может быть изменен позднее</Data></Cell>
+    <Cell><Data ss:Type="String">नोट: प्रकार बाद में बदला नहीं जा सकता</Data></Cell>
+    <Cell><Data ss:Type="String">ملاحظة: نوع لا يمكن تغييرها لاحقا</Data></Cell>
+    <Cell><Data ss:Type="String">Lưu ý: loại không thể được thay đổi sau</Data></Cell>
+    <Cell><Data ss:Type="String">הערה: סוג לא ניתן לשנות מאוחר יותר</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">MSG_WORKFLOW</Data></Cell>
     <Cell><Data ss:Type="String">Hier können Sie Ihren eigenen Workflow für ZMS-Objekte definieren.</Data></Cell>
     <Cell><Data ss:Type="String">Define your own custom workflow on ZMS objects.</Data></Cell>

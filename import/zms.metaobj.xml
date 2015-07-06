@@ -3149,7 +3149,7 @@ function onZMSTableFormSubmit() {
 </div>
 
 <div class="form-group col-sm-12 col-sm-push-2" style="font-size: small;color: #999;" 
-	tal:content="python:zmscontext.getZMILangStr('MSG_ZMSTABLE_TYPE')">Note: Type can not be changed later
+	tal:content="python:here.getZMILangStr('MSG_ZMSTABLE_TYPE')">Note: Type can not be changed later
 </div>
 
 </tal:block>
@@ -4069,7 +4069,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.13]]></item>
+          <item key="revision"><![CDATA[3.0.14]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

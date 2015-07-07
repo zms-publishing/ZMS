@@ -39,7 +39,7 @@
 			</div><!-- .col-lg-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group"  id="tr_max_rows">
-			<label for="max_rows:int" class="col-lg-2 control-label mandatory">
+			<label for="max_rows" class="col-lg-2 control-label mandatory">
 				<span>Max. Rows</span>
 			</label>
 			<div class="col-lg-10">

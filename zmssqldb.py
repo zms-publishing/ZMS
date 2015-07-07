@@ -776,7 +776,7 @@ class ZMSSqlDb(ZMSObject):
       # +- ENTITES
       # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
       
-      #-- for custom entities please refer to $ZMS_HOME/conf/db/getEntities.Oracle.dtml
+      #-- for custom entities please refer to $ZMS_HOME/conf/db/getEntities.Oracle.py
       method = getattr(self,'getEntities%s'%self.connection_id,None)
       if method is not None:
         entities = method( self, REQUEST)
@@ -1757,9 +1757,18 @@ class ZMSSqlDb(ZMSObject):
         for attr_id in REQUEST.get('attr_ids',[]):
           col = {}
           col['id'] = REQUEST.get( 'attr_id_%s'%attr_id, attr_id).strip()
-          col['label'] = REQUEST.get( 'attr_label_%s'%attr_id, '').strip()
-          col['index'] = int(REQUEST.get( 'attr_index_%s'%attr_id))
-          col['hide'] = int(not REQUEST.get('attr_display_%s'%attr_id,0)==1)
+          try:
+            col['label'] = REQUEST.get( 'attr_label_%s'%attr_id, '').strip()
+          except:
+            col['label'] = REQUEST.get( 'attr_label_%s'%attr_id, '')[0].strip()
+          try:
+            col['index'] = int(REQUEST.get( 'attr_index_%s'%attr_id))
+          except:
+            col['index'] = int(REQUEST.get( 'attr_index_%s'%attr_id)[0])
+          try:
+            col['hide'] = int(not REQUEST.get('attr_display_%s'%attr_id,0)==1)
+          except:
+            col['hide'] = int(not REQUEST.get('attr_display_%s'%attr_id,0)[0]==1)
           if REQUEST.has_key( 'attr_auto_%s'%attr_id):
             col['auto'] = REQUEST.get( 'attr_auto_%s'%attr_id)
           if REQUEST.has_key( 'attr_type_%s'%attr_id):

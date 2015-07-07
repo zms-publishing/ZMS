@@ -2,7 +2,7 @@
 # +- ENTITES (!!! this is only an example for an Oracle_Database_Connection!!!)
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 def getEntities(here, request):
-    for node in here.getSelf(here.PAGES).filteredTreeNodes(retquest,'ZMSSqlDb'):
+    for node in here.getSelf(here.PAGES).filteredTreeNodes(request,'ZMSSqlDb'):
         tablename = ''
         entities = []
         entity = {}

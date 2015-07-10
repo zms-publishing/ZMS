@@ -71,7 +71,7 @@ function zmiAddPages(result, siblings) {
 				var $img = $("img",this);
 				if ($img.length==1) {
 					link_url = '<img src=&quot;'+$("href",$img).text()+'&quot;>';
-					page_titlealt = filename;
+					try { page_titlealt = filename; } catch(err) { };
 				}
 			}
 			else if ($(this).attr("meta_id")=='ZMSFile') {
@@ -80,7 +80,7 @@ function zmiAddPages(result, siblings) {
 					var $fname = $("filename",$file).text();
 					var $ext = $fname.substring($fname.lastIndexOf('.')+1,$fname.length);
 					link_url = '<a href=&quot;'+$("href",$file).text()+'&quot; target=&quot;_blank&quot;>'+$(this).attr("title")+' ('+$ext+', '+$("size",$file).text()+')</a>'; 
-					page_titlealt = filename;
+					try { page_titlealt = filename; } catch(err) { };
 				}
 			}
 			var id = $(this).attr("id").replace(/\./gi,"_").replace(/\-/gi,"_");

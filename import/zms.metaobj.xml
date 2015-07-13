@@ -3092,8 +3092,8 @@ function onZMSTableFormSubmit() {
 
 <div class="form-group">
 	<label class="col-sm-2 control-label mandatory" tal:content="python:here.getZMILangStr('ATTR_TYPE')">the type-label</label>
-
-		<div class="col-sm-1 checkbox" title="Type 1">
+	<div class="form-group" style="padding: 0 15px">
+		<div class="col-xs-2 checkbox" title="Type 1" style="min-width: 72px !important;">
 			<input type="radio" name="type:int" value="1" checked="checked" />
 			<table class="ZMSTable">
 				<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
@@ -3101,10 +3101,7 @@ function onZMSTableFormSubmit() {
 				<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 			</table>
 		</div>
-
-		<div class="col-sm-1">&nbsp;</div>
-
-		<div class="col-sm-1 checkbox" title="Type 2">
+		<div class="col-xs-2 checkbox" title="Type 2" style="min-width: 72px !important;">
 			<input type="radio" name="type:int" value="2" />
 			<table class="ZMSTable">
 				<tr><th colspan="3">&nbsp;</th></tr>
@@ -3112,10 +3109,7 @@ function onZMSTableFormSubmit() {
 				<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 			</table>
 		</div>
-
-		<div class="col-sm-1">&nbsp;</div>
-
-		<div class="col-sm-1 checkbox" title="Type 3">
+		<div class="col-xs-2 checkbox" title="Type 3" style="min-width: 72px !important;">
 			<input type="radio" name="type:int" value="3" />
 			<table class="ZMSTable">
 				<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -3123,10 +3117,7 @@ function onZMSTableFormSubmit() {
 				<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
 			</table>
 		</div>
-
-		<div class="col-sm-1">&nbsp;</div>
-
-		<div class="col-sm-1 checkbox" title="Type 4">
+		<div class="col-xs-2 checkbox" title="Type 4" style="min-width: 72px !important;">
 			<input type="radio" name="type:int" value="4" />
 			<table class="ZMSTable">
 				<tr><td>&nbsp;</td><th>&nbsp;</th><th>&nbsp;</th></tr>
@@ -3134,10 +3125,7 @@ function onZMSTableFormSubmit() {
 				<tr><th>&nbsp;</th><td>&nbsp;</td><td>&nbsp;</td></tr>
 			</table>
 		</div>
-
-		<div class="col-sm-1">&nbsp;</div>
-
-		<div class="col-sm-1 checkbox" title="Type 5: Custom">
+		<div class="col-xs-2 checkbox" title="Type 5: Custom" style="min-width: 72px !important;">
 			<input type="radio" name="type:int" value="5" />
 			<table class="ZMSTable">
 				<tr><th>&nbsp;</th><td>&nbsp;</td><th>&nbsp;</th></tr>
@@ -3145,7 +3133,7 @@ function onZMSTableFormSubmit() {
 				<tr><th>&nbsp;</th><td>&nbsp;</td><th>&nbsp;</th></tr>
 			</table>
 		</div>
-
+	</div>
 </div>
 
 <div class="form-group col-sm-12 col-sm-push-2" style="font-size: small;color: #999;" 
@@ -4069,7 +4057,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.14]]></item>
+          <item key="revision"><![CDATA[3.0.15]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

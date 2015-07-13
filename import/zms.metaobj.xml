@@ -3203,6 +3203,7 @@ div.zmi-interface {
 	border-radius: 4px;
 	background: #E7ECF0;
 	box-shadow: inset 0 1px 10px rgba(0,0,0,0.075);
+	margin-bottom:2em;
 }
 .div_table_cell_editor_parent {
 	position:absolute;
@@ -3939,7 +3940,7 @@ if key.startswith('table_'):
 		<tal:block tal:content="structure python:'<script>'"></tal:block>
 			$(function(){
 				$.plugin('tablesorter',{
-					files: ['<tal:block tal:content="resourceurl"></tal:block>.jquery.tablesorter.min.js']
+					files: ['<tal:block tal:content="resourceurl"></tal:block>jquery.tablesorter.min.js']
 					});
 				$.plugin('tablesorter').get('.ZMSTable.sortable',function() {
 						$(".ZMSTable.sortable").tablesorter({ 
@@ -4057,7 +4058,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.15]]></item>
+          <item key="revision"><![CDATA[3.0.16]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

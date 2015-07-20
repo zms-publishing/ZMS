@@ -92,6 +92,8 @@
 <tal:block tal:repeat="rindex python:range(pageEnd-pageStart)">
 <tr tal:define="global index python:pageStart+rindex;
 		record python:filtered_records[index];
+		record_params python:record.get('params',{});
+		params python:dict(url_params,**record_params);
 		qindex python:records.index(record);
 		name python:['qindices:list','qindex'][int('select' in actions)];
 		value python:record.get('__id__',qindex)" 
@@ -116,13 +118,13 @@
 				</button>
 				<ul class="dropdown-menu">
 					<li tal:condition="python:'insert' in actions">
-						<a tal:attributes="onclick python:options.get('insert','return window.open(\'%s?lang=%s&amp;action=insertForm%s\',\'_self\')'%(url,request['lang'],''.join([[],['&sort_id:int=%i'%(index+1)]][sorted]+map(lambda x:'&amp;'+x+'='+str(url_params[x]),url_params.keys()))))">
+						<a tal:attributes="onclick python:options.get('insert','return window.open(\'%s?lang=%s&amp;action=insertForm%s\',\'_self\')'%(url,request['lang'],''.join([[],['&sort_id:int=%i'%(index+1)]][sorted]+map(lambda x:'&amp;'+x+'='+str(record_params[x]),record_params.keys()))))">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
 							<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
 						</a>
 					</li>
 					<li tal:condition="python:'update' in actions">
-						<a tal:attributes="onclick python:options.get('update','return window.open(\'%s?lang=%s&amp;action=updateForm&amp;qindex:int=%i%s\',\'_self\')'%(url,request['lang'],qindex,''.join(map(lambda x:'&amp;'+x+'='+str(url_params[x]),url_params.keys()))))">
+						<a tal:attributes="onclick python:options.get('update','return window.open(\'%s?lang=%s&amp;action=updateForm&amp;qindex:int=%i%s\',\'_self\')'%(url,request['lang'],qindex,''.join(map(lambda x:'&amp;'+x+'='+str(record_params[x]),record_params.keys()))))">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-pencil')"></tal:block>
 							<tal:block tal:content="python:here.getZMILangStr('BTN_EDIT')">Edit</tal:block>
 						</a>

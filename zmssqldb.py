@@ -478,6 +478,8 @@ class ZMSSqlDb(ZMSObject):
           for k in r.keys():
             column = self.parent.getEntityColumn(self.tableName,k,r)
             d[k] =  column.get('value',r[k])
+          pk = self.getEntityPK(tableName)
+          d['params'] = {'rowid':d.get(pk,-1)}
           return d
       return EntityRecordHandler(self,tableName)
 

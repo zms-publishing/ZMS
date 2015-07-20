@@ -149,7 +149,7 @@
 						<div class="control-group" style="margin-top:4px;">
 							<div class="pull-right">
 								<div class="btn-group-vertical">
-									<span class="btn btn-default" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%elName" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</span>
+									<span class="btn btn-default" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%metaObjAttr['id']" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</span>
 									<span class="btn btn-default" tal:attributes="onclick python:'$(\'select#%s option\').attr(\'selected\',\'selected\')'%elName" tal:content="structure python:here.zmi_icon(name='icon-check-sign')">icon-check-sign</span>
 								</div><!-- .btn-group -->
 							</div><!-- .pull-right -->

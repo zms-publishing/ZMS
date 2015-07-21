@@ -90,19 +90,19 @@
 </thead>
 <tbody>
 <tal:block tal:repeat="rindex python:range(pageEnd-pageStart)">
-<tr tal:define="global index python:pageStart+rindex;
+<tal:block tal:define="global index python:pageStart+rindex;
 		record python:filtered_records[index];
-		record_params python:record.get('params',{});
-		params python:dict(url_params,**record_params);
 		qindex python:records.index(record);
-		name python:['qindices:list','qindex'][int('select' in actions)];
-		value python:record.get('__id__',qindex)" 
-	tal:attributes="id python:'tr_%i'%qindex; 
-		class python:['','zmi-selected'][int(str(value)==str(request.get('qindex')) or str(value) in map(lambda x:str(x),request.get('qindices',[])))]">
+		name python:['qindices:list','qindex'][int('select' in actions)]">
 <tal:block tal:condition="python:options.has_key('record_handler')">
 	<tal:block tal:define="global record python:options['record_handler'](record)"></tal:block>
 </tal:block>
-	<td tal:define="global title python:''">
+<tr tal:define="value python:record.get('__id__',qindex)" 
+		tal:attributes="id python:'tr_%i'%qindex; 
+			class python:['','zmi-selected'][int(str(value)==str(request.get('qindex')) or str(value) in map(lambda x:str(x),request.get('qindices',[])))]">
+	<td tal:define="global title python:'';
+		record_params python:record.get('params',{});
+		params python:dict(url_params,**record_params)">
 		<img class="grippy" src="/misc_/zms/spacer.gif" tal:condition="sorted" />
 		<tal:block tal:condition="python:'_change_uid' in record.keys()">
 			<tal:block tal:define="global title python:here.getLangFmtDate(record.get('_change_dt'))+' '+here.getZMILangStr('BY')+' '+str(record.get('_change_uid'))"></tal:block>
@@ -186,6 +186,7 @@
 		</tal:block>
 	</tal:block>
 </tr>
+</tal:block>
 </tal:block>
 </tbody>
 </table>

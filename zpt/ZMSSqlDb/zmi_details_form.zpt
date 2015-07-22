@@ -7,14 +7,12 @@
 		row python:{request['qentitypk']:request['qentitypkval']};
 		metaObjAttr python:here.getEntityColumn(request['qentity'],request['qcolumn'],row);
 		entity python:here.getEntity(metaObjAttr['details']['tablename']);
+		primary_key python:here.getEntityPK(entity['id']);
 		request_form_inherit python:['qcolumn','qentitypk','qentitypkval',metaObjAttr['details']['fk']];
 		res metaObjAttr/value">
 
 <tal:block tal:condition="python:request.get('action') in ['insert','update','delete'] and request.get('btn')!=here.getZMILangStr('BTN_CANCEL')">
-	<tal:block tal:define="global 
-				primary_key python:here.getEntityPK(entity['id']).lower();
-				row python:(res+[{}])[int(request.get('qindex',0))];
-				rowid python:context.operator_getitem(row,primary_key,ignorecase=True);
+	<tal:block tal:define="
 				message python:[];
 				values python:{}">
 		<tal:block tal:repeat="column python:entity['columns']">
@@ -25,21 +23,35 @@
 					tal:define="global dummy0 python:message.append(here.getZMILangStr('MSG_INSERTED')%here.getZMILangStr('ATTR_RECORD'))"></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['update']">
-			recordSet_Update=<tal:block tal:content="python:here.recordSet_Update(tablename=entity['id'],rowid=rowid,values=values)"
+			recordSet_Update=<tal:block tal:content="python:here.recordSet_Update(tablename=entity['id'],rowid=request['rowid'],values=values)"
 					tal:define="global dummy0 python:message.append(here.getZMILangStr('MSG_CHANGED'))"></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['delete']">
-			recordSet_Delete=<tal:block tal:content="python:here.recordSet_Delete(tablename=entity['id'],rowid=rowid)"
+			recordSet_Delete=<tal:block tal:content="python:here.recordSet_Delete(tablename=entity['id'],rowid=request['rowid'])"
 					tal:define="global dummy0 python:message.append(here.getZMILangStr('MSG_DELETED')%1)"></tal:block>
 		</tal:block>
 		<span id="manage_tabs_message" tal:content="structure python:'\n'.join(message)">the message</span>
 	</tal:block>
 </tal:block>
 
-<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure python:here.manage_zmi_input_form(entity=entity,action='update',qindex=request['qindex'],row=res[int(request['qindex'])],request_form_inherit=request_form_inherit)">
+<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure 
+		python:here.manage_zmi_input_form(
+			entity=entity,
+			action='update',
+			qindex=request['qindex'],
+			rowid=request['rowid'],
+			row=filter(lambda x:str(here.operator_getitem(x,primary_key,ignorecase=True))==str(request['rowid']),res)[0],
+			request_form_inherit=request_form_inherit)">
 	metaobj_recordset_input_fields
 </tal:block>
-<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.manage_zmi_input_form(entity=entity,action='insert',qindex=-1,row={metaObjAttr['details']['fk']:request['qentitypkval']},request_form_inherit=request_form_inherit)">
+<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure 
+		python:here.manage_zmi_input_form(
+			entity=entity,
+			action='insert',
+			qindex=-1,
+			rowid=-1,
+			row={metaObjAttr['details']['fk']:request['qentitypkval']},
+			request_form_inherit=request_form_inherit)">
 	metaobj_recordset_input_fields
 </tal:block>
 

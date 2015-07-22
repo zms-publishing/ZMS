@@ -1336,7 +1336,9 @@ class ZMSObject(ZMSItem.ZMSItem,
     def renderShort(self, REQUEST):
       html = ''
       try:
-        if self.getType() in [ 'ZMSDocument', 'ZMSResource', 'ZMSReference']:
+        if 'renderShort' in self.getMetaobjAttrIds(self.meta_id):
+          html = self._getBodyContentContentEditable(self.attr('renderShort'))
+        elif self.getType() in [ 'ZMSDocument', 'ZMSResource', 'ZMSReference']:
           if self.meta_id in [ 'ZMS', 'ZMSFolder', 'ZMSDocument', 'ZMSTrashcan'] and (self.getLevel()==0 or self.id in REQUEST['URL']):
             html = '<h1>'
             html += self.getTitle(REQUEST)
@@ -1346,8 +1348,6 @@ class ZMSObject(ZMSItem.ZMSItem,
           else:
             html = self.getTitlealt(REQUEST)
           html = self._getBodyContentContentEditable(html)
-        elif 'renderShort' in self.getMetaobjAttrIds(self.meta_id):
-          html = self._getBodyContentContentEditable(self.attr('renderShort'))
         else:
           html = self._getBodyContent(REQUEST)
         # Process html <form>-tags.

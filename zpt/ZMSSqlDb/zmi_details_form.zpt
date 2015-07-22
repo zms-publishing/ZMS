@@ -27,7 +27,7 @@
 					tal:define="global dummy0 python:message.append(here.getZMILangStr('MSG_CHANGED'))"></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['delete']">
-			recordSet_Delete=<tal:block tal:content="python:here.recordSet_Delete(tablename=entity['id'],rowid=request['rowid'])"
+			recordSet_Delete=<tal:block tal:content="python:here.recordSet_Delete(tablename=entity['id'],rowid=request['qindex'])"
 					tal:define="global dummy0 python:message.append(here.getZMILangStr('MSG_DELETED')%1)"></tal:block>
 		</tal:block>
 		<span id="manage_tabs_message" tal:content="structure python:'\n'.join(message)">the message</span>

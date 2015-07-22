@@ -62,7 +62,7 @@
 					tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_CHANGED'))"></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['delete']">
-			<tal:block tal:repeat="rowid python:request.get('qindices',[request['rowid']])">
+			<tal:block tal:repeat="rowid python:request.get('qindices',[request['qindex']])">
 				recordSet_Delete=<tal:block tal:content="python:here.recordSet_Delete(tablename=entity['id'],rowid=rowid)"
 						tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_DELETED')%1)"></tal:block>
 			</tal:block>

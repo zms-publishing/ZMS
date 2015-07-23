@@ -192,7 +192,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
               }
               html += ''
                 + '<div class="line row'+(c%2==0?" gray":"")+'">'
-                + '<div class="col-md-8 col-ns-9">'
+                + '<div class="col-md-8 col-sm-9">'
                 + '<h2 class="'+meta_id+'"><a href="'+href+'">'+title+'</a></h2>'
                 + (breadcrumb.length==0?'':'<div class="breadcrumb">'+breadcrumb+'</div><!-- .breadcrumb -->')
                 + '<p>'+snippet+'</p>'

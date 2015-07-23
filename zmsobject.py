@@ -1330,7 +1330,7 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # --------------------------------------------------------------------------
     #  ZMSObject.renderShort:
-    
+    #
     #  Renders short presentation of object.
     # --------------------------------------------------------------------------
     def renderShort(self, REQUEST):

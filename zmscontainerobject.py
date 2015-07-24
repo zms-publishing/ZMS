@@ -227,10 +227,17 @@ class ZMSContainerObject(
         return
       trashcan = self.getTrashcan()
       # Set deletion-date.
+      ids_copy = []
       for id in ids:
-        context = getattr(self,id)
-        context.del_uid = str(REQUEST.get('AUTHENTICATED_USER',None))
-        context.del_dt = _globals.getDateTime( time.time())
+        try:
+          context = getattr(self,id)
+          context.del_uid = str(REQUEST.get('AUTHENTICATED_USER',None))
+          context.del_dt = _globals.getDateTime( time.time())
+          ids_copy.append(id)
+        except:
+          _globals.writeBlock( self, "[moveObjsToTrashcan]: Attribute Error %s"%(id))
+      # Use only successfully tried ids
+      ids = ids_copy
       # Move (Cut & Paste).
       cb_copy_data = self.manage_cutObjects(ids,REQUEST)
       trashcan.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)

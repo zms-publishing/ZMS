@@ -199,7 +199,7 @@
 						var $div = $("#div_<tal:block tal:content="column/id">column/id</tal:block>");
 						$div.html('<img src="/misc_/zms/loading.gif" alt="Loading..."/> <tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>');
 						$.ajax({
-							url:"manage_zmi_details_grid",
+							url:"<tal:block tal:content="here/absolute_url">here/absolute_url</tal:block>manage_zmi_details_grid",
 							data:{
 								lang:'<tal:block tal:content="request/lang">request/lang</tal:block>',
 								qentity:'<tal:block tal:content="entity/id">entity/id</tal:block>',

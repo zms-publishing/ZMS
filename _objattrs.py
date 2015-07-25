@@ -739,7 +739,6 @@ class ObjAttrs:
         key = ep[ep.find('.')+1:]
         return root.getMetaobjManager().evalMetaobjAttr(id,key,zmscontext=self,options=kwargs)
       else:
-        print self,args,kwargs
         return default(self,kwargs)
 
 

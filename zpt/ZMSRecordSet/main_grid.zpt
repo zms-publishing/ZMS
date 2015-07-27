@@ -147,7 +147,7 @@
 		<tal:block tal:define="global 
 				elValue python:here.operator_getitem(record,metaObjAttr['id'],metaObjAttr.get('default'),ignorecase=True);
 				elType python:metaObjAttr.get('type','string')">
-		<td class="data">
+		<td class="data"><div tal:attributes="class elType">
 			<tal:block tal:condition="python:elType=='url'" tal:define="global target python:here.getLinkObj(elValue)">
 				<tal:block tal:condition="python:target is not None">
 					<tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
@@ -179,10 +179,13 @@
 			<tal:block tal:condition="python:elType in ['date','datetime']">
 				<tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%elType).upper())">elValue</tal:block>
 			</tal:block>
-			<tal:block tal:condition="not:python:elType in ['boolean','date','datetime','html','image','object','url']">
-				<tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block>
+      <tal:block tal:condition="python:elType in ['float','int']">
+        <tal:block tal:content="elValue">elValue</tal:block>
+      </tal:block>
+			<tal:block tal:condition="not:python:elType in ['boolean','date','datetime','float','html','image','int','object','url']">
+				<tal:block tal:on-error="python:'UTF-8-ERROR'" tal:content="structure python:unicode(elValue,'utf-8')">elValue</tal:block>
 			</tal:block>
-		</td>
+		</div></td>
 		</tal:block>
 	</tal:block>
 </tr>

@@ -54,11 +54,11 @@
 			<tal:block tal:define="dummy0 python:here.operator_setitem(values,['','blob_'][int(column.has_key('blob'))]+column['id'],request.get(column['id'].lower(),None))"></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['insert']">
-			recordSet_Insert=<tal:block tal:content="python:here.recordSet_Insert(tablename=entity['id'],values=values)"
+			recordSet_Insert=<tal:block tal:content="python:here.recordSet_Insert(tablename=entity['id'],values=values, update_intersections=True)"
 					tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_INSERTED')%here.getZMILangStr('ATTR_RECORD'))"></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['update']">
-			recordSet_Update=<tal:block tal:content="python:here.recordSet_Update(tablename=entity['id'],rowid=request['rowid'],values=values)"
+			recordSet_Update=<tal:block tal:content="python:here.recordSet_Update(tablename=entity['id'],rowid=request['rowid'],values=values, update_intersections=True)"
 					tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_CHANGED'))"></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['delete']">

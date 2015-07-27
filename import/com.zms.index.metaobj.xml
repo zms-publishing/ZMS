@@ -235,15 +235,23 @@ elif zmscontext.meta_id=='ZMSIndexZCatalog' and request.get('btn')=='resync':
         ref = childNode
     return ref
 
-  def handleInline(node,v):	
-    zmscontext.writeStdout('[onChangeObjEvt] handleInline %s'%v)
+  def handleInline(node,v): 
+    #zmscontext.writeStdout('[onChangeObjEvt] handleInline %s'%v)
     p = '<a (.*?)href="(.*?)"(.*?)>(.*?)<\\/a>'
     for f in node.re_findall(p,v):
       href = f[1]
+      zmscontext.writeStdout('[onChangeObjEvt] handleInline href=%s'%href)
       if href.startswith(request['SERVER_URL']):
         href = href[len(request['SERVER_URL']):]
+      zmscontext.writeStdout('[onChangeObjEvt] handleInline href=%s'%href)
       if href.startswith('.') or href.startswith('/'):
-        if (f[0]+f[2]).find('data-id=') < 0:
+        oid = ''
+        attr = f[0]+f[2]
+        if attr.find('data-id=') >= 0:
+          oid = attr[attr.find('data-id='):]
+          oid = oid[oid.find('"')+1:]
+          oid = oid[:oid.find('"')]
+        if not oid.startswith('oid:'):
           ref = find_node(node,href)
           if ref is not None:
             old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
@@ -253,14 +261,14 @@ elif zmscontext.meta_id=='ZMSIndexZCatalog' and request.get('btn')=='resync':
     return v
 
   def handleUrl(node,v):
-    zmscontext.writeStdout('[onChangeObjEvt] handleUrl %s'%v)
+    #zmscontext.writeStdout('[onChangeObjEvt] handleUrl %s'%v)
     if v.startswith('{$') and v.endswith('}') \
        and not (v.startswith('{$__') and v.endswith('__}')) \
        and not (v.startswith('{$oid:')):
       ref = find_node(node,v[2:-1].replace('@','/content/'))
       if ref is not None:
         old = v
-        new = ref.get_oid()
+        new = node.getRefObjPath(ref)
         zmscontext.writeStdout('[onChangeObjEvt] resync %s=>%s'%(old,new))
         v = new
     return v
@@ -529,7 +537,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.12]]></item>
+          <item key="revision"><![CDATA[0.9.14]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -548,7 +556,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.12]]></item>
+          <item key="revision"><![CDATA[0.9.14]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

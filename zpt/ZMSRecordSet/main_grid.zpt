@@ -143,11 +143,11 @@
 			</tal:block>
 		</div>
 	</td>
-	<tal:block tal:repeat="metaObjAttr metaObjAttrs">
-		<tal:block tal:define="global 
+	<tal:block tal:repeat="metaObjAttr metaObjAttrs"
+		><tal:block tal:define="global 
 				elValue python:here.operator_getitem(record,metaObjAttr['id'],metaObjAttr.get('default'),ignorecase=True);
-				elType python:metaObjAttr.get('type','string')">
-		<td class="data"><div tal:attributes="class elType"
+				elType python:metaObjAttr.get('type','string')"
+		><td class="data"><div tal:attributes="class elType"
 			><tal:block tal:condition="python:elType=='url'" tal:define="global target python:here.getLinkObj(elValue)"
 				><tal:block tal:condition="python:target is not None"
 					><tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block
@@ -182,7 +182,7 @@
 			><tal:block tal:condition="python:elType in ['float','int']"
 				><tal:block tal:content="elValue">elValue</tal:block
 			></tal:block
-			><tal:block tal:condition="not:python:elType in ['boolean','date','datetime','float','html','image','int','object','url','None']">
+			><tal:block tal:condition="not:python:elType in ['boolean','date','datetime','float','html','image','int','object','url','None']"
 				><tal:block tal:condition="python:elValue is not None" 
 					tal:on-error="string:<!-- UTF-8-ERROR -->" 
 					tal:content="structure python:unicode(elValue,'utf-8')">elValue</tal:block

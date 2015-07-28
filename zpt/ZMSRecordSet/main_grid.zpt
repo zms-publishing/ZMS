@@ -179,11 +179,13 @@
 			<tal:block tal:condition="python:elType in ['date','datetime']">
 				<tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%elType).upper())">elValue</tal:block>
 			</tal:block>
-      <tal:block tal:condition="python:elType in ['float','int']">
-        <tal:block tal:content="elValue">elValue</tal:block>
-      </tal:block>
-			<tal:block tal:condition="not:python:elType in ['boolean','date','datetime','float','html','image','int','object','url']">
-				<tal:block tal:on-error="python:'UTF-8-ERROR'" tal:content="structure python:unicode(elValue,'utf-8')">elValue</tal:block>
+			<tal:block tal:condition="python:elType in ['float','int']">
+				<tal:block tal:content="elValue">elValue</tal:block>
+			</tal:block>
+			<tal:block tal:condition="not:python:elType in ['boolean','date','datetime','float','html','image','int','object','url','None']">
+				<tal:block tal:condition="python:elValue!='None'" 
+					tal:on-error="string:<!-- UTF-8-ERROR -->" 
+					tal:content="structure python:unicode(elValue,'utf-8')">elValue</tal:block>
 			</tal:block>
 		</div></td>
 		</tal:block>

@@ -147,47 +147,47 @@
 		<tal:block tal:define="global 
 				elValue python:here.operator_getitem(record,metaObjAttr['id'],metaObjAttr.get('default'),ignorecase=True);
 				elType python:metaObjAttr.get('type','string')">
-		<td class="data"><div tal:attributes="class elType">
-			<tal:block tal:condition="python:elType=='url'" tal:define="global target python:here.getLinkObj(elValue)">
-				<tal:block tal:condition="python:target is not None">
-					<tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block>
-				</tal:block>
-				<tal:block tal:condition="not:python:target is not None">
-					<tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block>
-				</tal:block>
-			</tal:block>
-			<tal:block tal:condition="python:elType in ['html']">
-				<tal:block tal:content="structure elValue">the value</tal:block>
-			</tal:block>
-			<tal:block tal:condition="python:elType in ['object']">
-				<a tal:attributes="href python:'%s/manage_main'%elValue.absolute_url()" target="_blank">
+		<td class="data"><div tal:attributes="class elType"
+			><tal:block tal:condition="python:elType=='url'" tal:define="global target python:here.getLinkObj(elValue)"
+				><tal:block tal:condition="python:target is not None"
+					><tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block
+				></tal:block
+				><tal:block tal:condition="not:python:target is not None"
+					><tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block
+				></tal:block
+			></tal:block
+			><tal:block tal:condition="python:elType in ['html']"
+				><tal:block tal:content="structure elValue">the value</tal:block
+			></tal:block
+			><tal:block tal:condition="python:elType in ['object']"
+				><a tal:attributes="href python:'%s/manage_main'%elValue.absolute_url()" target="_blank">
 					<img tal:attributes="src python:elValue.icon"/>
 					<tal:block tal:content="python:elValue.title_or_id()">the title or id</tal:block>
 				</a>
-			</tal:block>
-			<tal:block tal:condition="python:elType in ['boolean']">
-				<center><i tal:condition="python:elValue" class="icon-ok"></i></center>
-			</tal:block>
-			<tal:block tal:condition="python:elType in ['image']">
-				<tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is not str">
-					<a tal:attributes="href python:elValue.getHref(request)" class="thumbnail" target="_blank"><img tal:attributes="src python:elValue.getHref(request)"/></a>
-				</tal:block>
-				<tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is str">
-				  <img src="data:image/png;base64," tal:attributes="data-previewbase64 elValue" width="32" height="32" />
-				</tal:block>
-			</tal:block>
-			<tal:block tal:condition="python:elType in ['date','datetime']">
-				<tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%elType).upper())">elValue</tal:block>
-			</tal:block>
-			<tal:block tal:condition="python:elType in ['float','int']">
-				<tal:block tal:content="elValue">elValue</tal:block>
-			</tal:block>
-			<tal:block tal:condition="not:python:elType in ['boolean','date','datetime','float','html','image','int','object','url','None']">
-				<tal:block tal:condition="python:elValue!='None'" 
+			</tal:block
+			><tal:block tal:condition="python:elType in ['boolean']"
+				><center><i tal:condition="python:elValue" class="icon-ok"></i></center>
+			</tal:block
+			><tal:block tal:condition="python:elType in ['image']"
+				><tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is not str"
+					><a tal:attributes="href python:elValue.getHref(request)" class="thumbnail" target="_blank"><img tal:attributes="src python:elValue.getHref(request)"/></a>
+				</tal:block
+				><tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is str">
+					<img src="data:image/png;base64," tal:attributes="data-previewbase64 elValue" width="32" height="32" />
+				</tal:block
+			></tal:block
+			><tal:block tal:condition="python:elType in ['date','datetime']"
+				><tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%elType).upper())">elValue</tal:block
+			></tal:block
+			><tal:block tal:condition="python:elType in ['float','int']"
+				><tal:block tal:content="elValue">elValue</tal:block
+			></tal:block
+			><tal:block tal:condition="not:python:elType in ['boolean','date','datetime','float','html','image','int','object','url','None']">
+				><tal:block tal:condition="python:elValue is not None" 
 					tal:on-error="string:<!-- UTF-8-ERROR -->" 
-					tal:content="structure python:unicode(elValue,'utf-8')">elValue</tal:block>
-			</tal:block>
-		</div></td>
+					tal:content="structure python:unicode(elValue,'utf-8')">elValue</tal:block
+			></tal:block
+		></div></td>
 		</tal:block>
 	</tal:block>
 </tr>
@@ -203,18 +203,17 @@
 </div>
 
 <script>
-$ZMI.registerReady(function() {
-  $("img[src='data:image/png;base64,']").each(function() {
-    var src = $(this).attr("src");
-    var dat = $(this).data("previewbase64");
-    if (dat) {
-    	$(this).attr('src',src+dat); 
-    }
-    else {
-    	$(this).remove();
-    }
-  });
-});
+	$ZMI.registerReady(function() {
+		$("img[src='data:image/png;base64,']").each(function() {
+			var src = $(this).attr("src");
+			var dat = $(this).data("previewbase64");
+			if (dat) {
+				$(this).attr('src',src+dat); 
+			} else {
+				$(this).remove();
+			}
+		});
+	});
 </script>
 
 <!-- /ZMSRecordSet/main_grid -->

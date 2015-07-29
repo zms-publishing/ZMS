@@ -10,11 +10,9 @@
 		dst python:filter(lambda x:x.get('fk') is not None and x.get('fk',{}).get('tablename')!=entity['id'],intersection['columns'])[0];
 		dstentity python:here.getEntity(dst['fk']['tablename']);">
 
-<tal:block tal:condition="python:request.get('action')=='insert'">
-</tal:block>
+<tal:block tal:condition="python:request.get('action')=='insert'"></tal:block>
 
-<tal:block tal:condition="python:request.get('action')=='update'">
-</tal:block>
+<tal:block tal:condition="python:request.get('action')=='update'"></tal:block>
 
 <tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure 
 		python:here.manage_zmi_input_form(
@@ -24,7 +22,8 @@
 			row=filter(lambda x:str(here.operator_getitem(x,primary_key,ignorecase=True))==str(request['rowid']),res)[0],
 			request_form_inherit=['intersection'])">
 	metaobj_recordset_input_fields
-</tal:block
+</tal:block>
+
 <tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure 
 	python:here.manage_zmi_input_form(
 		entity=dstentity,
@@ -39,5 +38,6 @@
 </tal:block>
 
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+
 </body>
 </html>

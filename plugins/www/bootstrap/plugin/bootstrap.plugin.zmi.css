@@ -134,9 +134,21 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	max-width: 128px;
 	overflow: hidden;
 }
+.zmi.ref form ul.breadcrumb {
+	padding:1em 0 0 0 !important;
+	margin:0 !important;
+	background-color:white !important
+}
+.zmi.ref form ul.breadcrumb li {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 172px;
+	overflow: hidden;
+}
+
 /* url popover showing breadcrumbs */
 .popover.bottom {
-    max-width:90% !important;
+	max-width:90% !important;
 }
 .zmi ol, .zmi ul, .zmi li, .zmi p, .zmi sup, .zmi sub,
 .zmi table, .zmi tr, .zmi th, .zmi td {

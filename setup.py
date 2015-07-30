@@ -28,9 +28,9 @@ for path in sys.path:
 
 # Abstract requirements to define the environment
 INSTALL_REQUIRES_ABSTRACT = [
-  'Zope2==2.13.23dev',            # due to https://github.com/zopefoundation/Zope/pull/13/files
+  'Zope2==2.13.23',
   'ExtensionClass>=4.1a1',        # required by Record-3.0
-  'Products.CMFCore==2.3.0dev',   # patched to support File Extensions svg, ttf, eot, woff
+  'Products.CMFCore==2.3.0dev',   # patched FilesystemDirectoryView to support additional file extensions [svg|ttf|eot|woff|woff2]
   'Products.ZSQLiteDA',
   'Products.ZSQLMethods',
   'zope.browserresource>4.0.1',   # due to https://github.com/zopefoundation/zope.browserresource/pull/1/files
@@ -43,8 +43,7 @@ INSTALL_REQUIRES_ABSTRACT = [
 
 # Unreleased packages including custom patches to build the environment
 DEPENDENCY_LINKS = [
-  'https://zmslabs.org/download/' # https://zmslabs.org/download/Zope2-2.13.23dev.tar.gz
-                                  # https://zmslabs.org/download/Products.CMFCore-2.3.0dev.tar.gz
+  'https://zmslabs.org/download/' # https://zmslabs.org/download/Products.CMFCore-2.3.0dev.tar.gz
 ]
 
 # Concrete requirements to build the environment
@@ -78,7 +77,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'Products.ZCTextIndex==2.13.5',
   'Products.ZSQLiteDA==0.6.1',
   'Products.ZSQLMethods==2.13.4',
-  'pytz==2014.10',
+  'pytz==2015.4',
   'Record==3.0',
   'RestrictedPython==3.6.0',
   'six==1.9.0',
@@ -138,7 +137,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'zope.traversing==4.0.0',
   'zope.untrustedpython==4.0.0',
   'zope.viewlet==4.0.0',
-  'Zope2==2.13.23dev',
+  'Zope2==2.13.23',
   'ZopeUndo==2.12.0', # due to ZopeUndo==4.0 causes ZEO DisconnectedError on manageUndo
 ]
 

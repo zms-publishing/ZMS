@@ -375,14 +375,19 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
     if bool(self.getConfProperty('ZMS.InternalLinks.autocorrection',0)):
-      p = '<a data-id="(.*?)" href="(.*?)">(.*?)<\\/a>'
+      p = '<a (.*?)data-id="(.*?)"(.*?)>(.*?)<\\/a>'
       r = re.compile(p)
       for f in r.findall(text):
+        data_id = f[1]
+        d0 = dict(re.findall('(\\w*?)="(.*?)"',f[0]))
+        d1 = dict(re.findall('(\\w*?)="(.*?)"',f[2]))
+        d = dict(d0,**d1)
         old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
-        data_id = f[0]
         href = self.getLinkUrl(url='{$%s}'%data_id)
-        title = f[2]
-        new = (p.replace('\\','').replace('(.*?)','%s'))%(data_id,href,title)
+        d['data-id'] = data_id
+        d['href'] = href
+        title = f[3]
+        new = '<a %s>%s</a>'%(' '.join(map(lambda x:'%s="%s"'%(x,d[x]),d.keys())),title)
         if old != new:
           text = text.replace(old,new)
     return text
@@ -472,6 +477,7 @@ class ZReferableItem:
       ref_anchor = ''
       if url.find('#') > 0:
         ref_anchor = url[url.find('#'):-1]
+      print "getLinkUrl",url
       ob = self.getLinkObj(url,REQUEST)
       if ob is None:
         index_html = './index_%s.html?op=not_found&url=%s'%(REQUEST.get('lang',self.getPrimaryLanguage()),url)

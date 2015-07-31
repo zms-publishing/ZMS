@@ -639,8 +639,17 @@ class ZMSMetaobjManager:
         else:
           return fn(zmscontext=zmscontext)
       value = None
-      metaObjAttr = self.getMetaobjAttr( id, attr_id, syncTypes=['*'])
-      if metaObjAttr is not None:
+      metaObjAttrs = []
+      if id == '*':
+        metaObjs = self.__get_metaobjs__()
+        for metaObjId in metaObjs.keys():
+          metaObj = metaObjs[metaObjId]
+          for metaObjAttr in filter(lambda x:x['id']==attr_id, metaObj['attrs']):
+            metaObjAttrs.append(self.getMetaobjAttr( metaObjId, attr_id, syncTypes=['*']))
+      else:
+        metaObjAttrs.append(self.getMetaobjAttr( id, attr_id, syncTypes=['*']))
+      metaObjAttrs = filter(lambda x: x is not None, metaObjAttrs)
+      for metaObjAttr in metaObjAttrs:
         if metaObjAttr['type'] == 'interface':
           if metaObjAttr.get('py') is not None:
             value = call(metaObjAttr['py'])
@@ -660,7 +669,7 @@ class ZMSMetaobjManager:
           value = metaObjAttr.get('custom','')
         elif metaObjAttr['type'] == 'resource':
           value = metaObjAttr.get('custom',None)
-      else:
+      if len(metaObjAttrs)==0:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           value = portalMaster.getMetaobjManager().evalMetaobjAttr(id,attr_id,zmscontext=zmscontext,options=options)

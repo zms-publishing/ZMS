@@ -615,7 +615,7 @@ class ObjAttrs:
         set = old != value
       
       #-- SET?
-      if set: 
+      if set and self.getConfProperty('ExtensionPoint.ObjAttrs._getObjAttrValue.setattr','')!='': 
         attr = self._getObjAttrName( obj_attr, lang)
         _globals.writeLog( self, "[_getObjAttrValue]: setattr(%s,%s)"%(attr,str(value)))
         setattr(obj_vers,attr,value)

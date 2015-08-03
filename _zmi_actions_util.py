@@ -242,7 +242,8 @@ def zmi_command_actions(context, insert_actions=False, objPath=''):
           l.append(metaCmd.get('title'))
         actions.append(tuple(l))
   
-  # Return action list.
+  # Return sorted action list
+  actions.sort()
   return actions
 
 ################################################################################

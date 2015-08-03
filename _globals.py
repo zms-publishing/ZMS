@@ -395,8 +395,8 @@ def triggerEvent(self, *args, **kwargs):
       l.append(v)
     # Process meta-object-triggers.
     context = self
-    v = context.evalMetaobjAttr('*.%s'%name,kwargs)
-    writeLog( context, "[triggerEvent]: *.%s=%s"%(name,str(v)))
+    v = context.evalMetaobjAttr(name,kwargs)
+    writeLog( context, "[triggerEvent]: %s=%s"%(name,str(v)))
     if v is not None:
       l.append(v)
     # Process zope-triggers.

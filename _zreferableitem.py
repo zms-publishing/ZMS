@@ -262,15 +262,17 @@ class ZReferableItem:
   #  Returns list of references TO other objects.
   # ----------------------------------------------------------------------------
   def getRefToObjs(self, REQUEST):
-    ref_to =  []
+    d = {}
     for key in self.getObjAttrs().keys():
-      obj_attr = self.getObjAttr(key)
-      datatype = obj_attr['datatype_key']
+      objAttr = self.getObjAttr(key)
+      v = self.getObjAttrValue(objAttr,REQUEST)
+      datatype = objAttr['datatype_key']
       if datatype == _globals.DT_URL:
-        ref = self.getObjProperty(key,REQUEST)
-        if not ref in ref_to:
-          ref_to.append(ref)
-    return ref_to
+        d[v] = 1
+      elif datatype in _globals.DT_TEXTS:
+        for iv in self.getInlineRefs(v):
+          d[iv] = 1
+    return d.keys()
 
 
   # ----------------------------------------------------------------------------
@@ -280,16 +282,11 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def synchronizeRefToObjs(self):
     _globals.writeLog( self, '[synchronizeRefToObjs]')
-    for key in self.getObjAttrs().keys():
-      obj_attr = self.getObjAttr(key)
-      datatype = obj_attr['datatype_key']
-      if datatype == _globals.DT_URL:
-        for lang in self.getLangIds():
-          req = { 'lang':lang, 'preview':'preview'}
-          ref = self.getObjProperty(key,req)
-          ref_obj = self.getLinkObj(ref)
-          if ref_obj is not None:
-            ref_obj.refreshRefObj(self,req)
+    REQUEST = self.REQUEST
+    for ref in self.getRefToObjs(REQUEST):
+      ob = self.getLinkObj(ref)
+      if ob is not None:
+        ob.refreshRefObj(self,REQUEST)
 
 
   # ----------------------------------------------------------------------------
@@ -367,6 +364,25 @@ class ZReferableItem:
   ### 
   ##############################################################################
   """
+
+  # ----------------------------------------------------------------------------
+  #  ZReferableItem.getInlineRefs:
+  #
+  #  Parses internal links.
+  # ----------------------------------------------------------------------------
+  def getInlineRefs(self, text):
+    l = []
+    p = '<a (.*?)href="(.*?)"(.*?)>(.*?)<\\/a>'
+    for f in self.re_findall(p,text):
+      ref = None
+      attr = f[0]+f[2]
+      if attr.find('data-id=') >= 0:
+        data_id = attr[attr.find('data-id='):]
+        data_id = data_id[data_id.find('"')+1:]
+        data_id = data_id[:data_id.find('"')]
+        l.append('{$%s}'%data_id)
+    return l
+
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.validateInlineLinkObj:

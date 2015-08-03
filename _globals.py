@@ -384,15 +384,15 @@ def triggerEvent(self, *args, **kwargs):
   l = []
   name = args[0]
   
-  ##### Pass custom event to zope ObjectModifiedEvent event ####
+  # Always call local trigger for global triggers.
+  if name.startswith('*.'):
+    triggerEvent(self,name[2:]+'Local')
+  
+  # Pass custom event to zope ObjectModifiedEvent event.
   notify(ObjectModifiedEvent(self, name))
-
+  
   metaObj = self.getMetaobj( self.meta_id)
   if metaObj:
-    v = self.evalMetaobjAttr(name,kwargs)
-    writeLog( self, "[triggerEvent]: %s=%s"%(name,str(v)))
-    if v is not None:
-      l.append(v)
     # Process meta-object-triggers.
     context = self
     v = context.evalMetaobjAttr(name,kwargs)

@@ -184,6 +184,7 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
                 ref = find_node(node,href)
             zmscontext.writeStdout('[ZMSIndexZCatalog_func_] handleInline ref=%s'%str(ref))
             if ref is not None:
+              ref.refreshRefObj(node,request)
               old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
               new = '<a data-id="'+ref.get_oid()+'" '+re.sub('data-id="(.*?)"','',f[0])+'href="'+f[1]+'"'+re.sub('data-id="(.*?)"','',f[2])+'>'+f[3]+'</a>'
               zmscontext.writeStdout('[ZMSIndexZCatalog_func_] resync old:\'%s\''%old)
@@ -198,6 +199,7 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
              and not (v.startswith('{$oid:')):
             ref = find_node(node,v[2:-1].replace('@','/content/'))
             if ref is not None:
+              ref.refreshRefObj(node,request)
               old = v
               new = node.getRefObjPath(ref)
               zmscontext.writeStdout('[ZMSIndexZCatalog_func_] resync %s=>%s'%(old,new))
@@ -567,7 +569,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.17]]></item>
+          <item key="revision"><![CDATA[0.9.18]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -586,7 +588,7 @@ return zmscontext.get_oid()
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.17]]></item>
+          <item key="revision"><![CDATA[0.9.18]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

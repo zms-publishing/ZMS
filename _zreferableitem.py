@@ -493,7 +493,6 @@ class ZReferableItem:
       ref_anchor = ''
       if url.find('#') > 0:
         ref_anchor = url[url.find('#'):-1]
-      print "getLinkUrl",url
       ob = self.getLinkObj(url,REQUEST)
       if ob is None:
         index_html = './index_%s.html?op=not_found&url=%s'%(REQUEST.get('lang',self.getPrimaryLanguage()),url)

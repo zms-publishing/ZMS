@@ -12,7 +12,10 @@
 			dummy0 python:request.set('qindex',request.get('qindex',request.SESSION.get('qindex_%s'%id,-1)));
 			dummy0 python:request.set('qstart_%s'%here.id,request.get('qstart'));
 			dummy0 python:request.set('qbatch_%s'%here.id,request.get('qbatch'));
-			whereClause python:['1=1']">
+			whereClause python:['1=1'];
+			pk request/primary_key;
+			resSlctStmnt python:'SELECT '+pk+' , '+' , '.join(request['qcolumns'])+' AS displayvalue FROM '+entity['id']+' WHERE '+' AND '.join(whereClause)+' ORDER BY '+','.join(request['qcolumns']);
+			">
 
 <form method="get" class="form-horizontal" style="background:#DCE3F0">
 	<input type="hidden" name="id" tal:attributes="value request/id">
@@ -20,6 +23,7 @@
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
 	<input type="hidden" name="qstart" tal:attributes="value request/qstart">
 	<input type="hidden" name="qentity" tal:attributes="value request/qentity">
+	<input type="hidden" name="primary_key" tal:attributes="value request/primary_key">
 				<div class="form-group col-lg-12" tal:repeat="filterIndex python:range(len(request['qcolumns']))">
 					<input type="hidden" name="qcolumns:list" tal:attributes="value python:request['qcolumns'][filterIndex]"/>
 					<tal:block tal:condition="python:request.get('filtervalue%i'%filterIndex,'')!=''">
@@ -38,19 +42,20 @@
 						<button type="submit" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_REFRESH')">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
 						</button>
+						&nbsp;<span class="ui-helper-clickable" onclick="$('#manage_main_div_sql').toggle()" title="Show SQL Code">&middot;</span>
 					</div>
 				</div><!-- .form-group -->
+				<div id="manage_main_div_sql" class="ui-helper-hidden well" style="padding:1em;margin: 1em 0 0 0;"><code tal:content="structure python:resSlctStmnt.replace('\n','<br>')">resSlctStmnt</code></div>
 </form>
 
 	<tal:block tal:define="global
-			pk python:here.getEntityPK(entity['id']);
-			resSlctStmnt python:'SELECT '+pk+' , '+','.join(request['qcolumns'])+' AS displayvalue FROM '+entity['id']+' WHERE '+' AND '.join(whereClause)+' ORDER BY '+','.join(request['qcolumns']);
 			query python:here.query(resSlctStmnt,encoding=encoding);
-			metaObjAttrIds python:[pk,'displayvalue'];
+			metaObjAttrIds python:['displayvalue'];
 			metaObjAttrs python:filter(lambda x:x['id'].upper() in map(lambda x2:x2.upper(),metaObjAttrIds),entity['columns'])+[{'id':'displayvalue','label':entity['label']}];
 			dummy0 python:map(lambda x:here.operator_setitem(x,'name',x['label']),metaObjAttrs);
 			res python:query['records'];
-			dummy0 python:map(lambda x:here.operator_setitem(x,'__id__',here.operator_getitem(x,pk,ignorecase=True)),res)">
+			dummy0 python:map(lambda x:here.operator_setitem(x,'__id__',here.operator_getitem(x,pk,ignorecase=True)),res);
+			">
 	<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(metaObjAttrIds=metaObjAttrIds,metaObjAttrs=filter(lambda x:x.get('id') in metaObjAttrIds or x.get('hide',0)==0,metaObjAttrs),filtered_records=res,records=res,url_params={'id':request['id'],'qentity':request['qentity']},actions=request.get('actions',[]))">
 		metaobj_recordset_main_grid
 	</tal:block>

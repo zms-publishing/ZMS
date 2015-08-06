@@ -106,30 +106,29 @@ function zmiRefresh() {
 	catch(e) {
 		$ZMI.writeDebug('zmiRefresh: cannot get physical-path from parent - ' + e);
 	}
-	$ZMI.writeDebug('zmiRefresh: href.0='+href);
 	href = href.substr(href.indexOf(homeId));
-	$ZMI.writeDebug('zmiRefresh: href.1='+href);
+	$ZMI.writeDebug('zmiRefresh: href='+href);
 	var ids = href.split('/');
 	var fn = function() {
+			$ZMI.writeDebug("zmiRefresh.ids= "+ids.join(', '));
+			var oldHomeId = homeId;
 			if (ids.length > 0) {
 				var id = ids[0];
-				$ZMI.writeDebug("zmiRefesh.id= "+id);
 				ids = ids.slice(1,ids.length);
-				$ZMI.writeDebug("zmiRefesh.ids= "+ids.length);
-				$ZMI.writeDebug("zmiRefesh.fn.1: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
 				if (id == homeId) {
 					id = 'content'
-					if (ids.length > 0 && ids[0] == id) {
-						ids = ids.slice(1,ids.length);
-					}
 				}
-				$ZMI.writeDebug("zmiRefesh.fn.2: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
 				if ($('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length==0) {
 					homeId = id;
-					id = ids[0];
+					id = 'content';
+				}
+				if (homeId!=oldHomeId) {
+					$('*[data-id!="content"][data-home-id="'+oldHomeId+'"]').hide();
+				}
+				if (ids.length > 0 && ids[0] == id) {
 					ids = ids.slice(1,ids.length);
 				}
-				$ZMI.writeDebug("zmiRefesh.fn.3: $'*[data-id="+id+"][data-home-id="+homeId+"]')="+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
+				$ZMI.writeDebug("zmiRefesh.id= "+id+",home-id="+homeId+"->"+$('*[data-id="'+id+'"][data-home-id="'+homeId+'"]').length);
 				zmiToggleClick($('*[data-id="'+id+'"][data-home-id="'+homeId+'"] .toggle'),arguments.callee);
 			}
 		};

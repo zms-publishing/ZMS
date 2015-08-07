@@ -313,11 +313,7 @@ class ZMSZCatalogConnector(
           _globals.writeLog( self, "[search]: %s=%i"%(str(query),len(qr)))
           for item in qr:
             if item not in items:
-            # Quickfix cmp-Error: mybrains.__cmp__(x,y) requires y to be a 'mybrains', not a 'Acquisition.ImplicitAcquisitionWrapper'
-              try:
-                items.extend( qr)
-              except:
-                pass
+              items.append( item.aq_base )
       
       # Process search-results.
       results = []

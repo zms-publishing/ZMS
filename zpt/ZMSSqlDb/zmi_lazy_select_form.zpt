@@ -12,7 +12,7 @@
 			dummy0 python:request.set('qindex',request.get('qindex',request.SESSION.get('qindex_%s'%id,-1)));
 			dummy0 python:request.set('qstart_%s'%here.id,request.get('qstart'));
 			dummy0 python:request.set('qbatch_%s'%here.id,request.get('qbatch'));
-			whereClause python:['1=1'];
+			whereClause python:request.get('filtervalue0','')=='' and ['1=1'] or ['%s %s \'%s\''%( ' , '.join(request['qcolumns']), request.get('filterop0','LIKE'), request.get('filtervalue0','%') ) ];
 			pk request/primary_key;
 			resSlctStmnt python:'SELECT '+pk+' , '+' , '.join(request['qcolumns'])+' AS displayvalue FROM '+entity['id']+' WHERE '+' AND '.join(whereClause)+' ORDER BY '+','.join(request['qcolumns']);
 			">

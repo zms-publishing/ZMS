@@ -437,7 +437,6 @@ class ZReferableItem:
   def getLinkObj(self, url, REQUEST={}):
     ob = None
     if isInternalLink(url):
-      _globals.writeBlock(self,'[getLinkObj]: url='+url)
       def default(*args, **kwargs):
         self = args[0]
         url = args[1]['url']
@@ -467,14 +466,12 @@ class ZReferableItem:
           ob = docElmnt
           # Find object.
           if ob is not None and len(path) > 0:
-            _globals.writeLog( self, '[getLinkObj]: path=%s'%path)
             ids = path.split( '/')
             for id in ids:
               ob = getattr(ob,id,None)
               if ob is None:
                 if self.getConfProperty('ZMS.InternalLinks.autocorrection',0)==1:
                   ob_id = self.getHome().id+'@'+ids[-1]
-                  _globals.writeBlock(self,'[getLinkObj]: ob_id='+ob_id) 
                   ob = self.synchronizeRefs( ob_id)
                 break
         return ob

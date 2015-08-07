@@ -657,7 +657,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           el_name = self.getObjAttrName( obj_attr, lang)
           if request.has_key( el_name) and request.has_key( 'resource_%s'%el_name):
             v = request.get( 'resource_%s'%el_name)
-            if isinstance(v,ZPublisher.HTTPrequest.FileUpload):
+            if isinstance(v,ZPublisher.HTTPRequest.FileUpload):
               if len(getattr(v,'filename',''))>0:
                 v = _blobfields.createBlobField(self,_globals.DT_FILE,v)
                 resources.append( v)

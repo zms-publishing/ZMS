@@ -49,7 +49,7 @@
 				elName python:metaObjAttr['id'];
 				elLabel python:metaObjAttr['name'];
 				elType python:metaObjAttr.get('type','string');
-				elDefault python:metaObjAttr.get('default','');
+				elDefault python:here.dt_exec(metaObjAttr.get('default',''));
 				elValue python:here.formatObjAttrValue(obj_attr,here.operator_getitem(row,elName,elDefault),request['lang']);">
 			<div class="form-group">
 				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">

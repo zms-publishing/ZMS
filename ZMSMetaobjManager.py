@@ -644,7 +644,7 @@ class ZMSMetaobjManager:
         metaObjs = self.__get_metaobjs__()
         for metaObjId in metaObjs.keys():
           metaObj = metaObjs[metaObjId]
-          for metaObjAttr in filter(lambda x:x['id']==attr_id, metaObj['attrs']):
+          for metaObjAttr in filter(lambda x:x['id']==attr_id, metaObj.get('attrs',[])):
             metaObjAttrs.append(self.getMetaobjAttr( metaObjId, attr_id, syncTypes=['*']))
       else:
         metaObjAttrs.append(self.getMetaobjAttr( id, attr_id, syncTypes=['*']))

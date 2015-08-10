@@ -5,7 +5,7 @@ svn+https://zmslabs.org/svn/zmslabs/ZMS/trunk#egg=ZMS3
 
 AccessControl==3.0.11
 Acquisition==4.1
-BTrees==4.1.1
+BTrees==4.1.4
 DateTime==4.0.1
 DocumentTemplate==2.13.2
 docutils==0.12
@@ -18,7 +18,7 @@ Missing==3.0
 MultiMapping==2.13.0
 nt-svcutils==2.13.0
 Persistence==2.13.2
-persistent==4.0.8
+persistent==4.1.1
 Products.BTreeFolder2==2.13.4
 Products.CMFCore==2.3.0dev
 Products.ExternalMethod==2.13.1
@@ -38,7 +38,7 @@ RestrictedPython==3.6.0
 six==1.9.0
 tempstorage==2.12.2
 ThreadLock==2.13.0
-transaction==1.4.3
+transaction==1.4.4
 zc.lockfile==1.1.0
 ZConfig==3.0.4
 zdaemon==4.0.0
@@ -47,7 +47,8 @@ zExceptions==2.13.0
 zLOG==2.12.0
 zms3.formulator==3.2.4
 zms3.mindmap==0.1.1
-ZODB==4.1.0
+zodbpickle==0.6.0
+ZODB==4.2.0
 ZODB3==3.11.0
 zope.annotation==4.4.1
 zope.app.publication==3.14.0

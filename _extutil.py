@@ -19,11 +19,11 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-  'zms3.formulator': ['3.2.4',
+  'zms3.formulator': ['3.2.5',
                       'JSON-based HTML-Forms',
                       'https://bitbucket.org/zms3/formulator',
                       'developed by SNTL Publishing'],
-  'zms3.mindmap': ['0.1.1',
+  'zms3.mindmap': ['0.1.2',
                    'Browse Mindmaps using a FlashViewer',
                    'https://bitbucket.org/zms3/mindmap',
                    'developed by Christian Meier'],
@@ -43,6 +43,10 @@ EXTENSIONS = {
                    'Python SQL Toolkit and Object Relational Mapper',
                    'https://pypi.python.org/pypi/SQLAlchemy',
                    'developed by Mike Bayer'],
+  'Products.ZCatalog': ['3.1',
+                   'Built in search engine of Zope',
+                   'https://pypi.python.org/pypi/Products.ZCatalog',
+                   'developed by Zope Foundation and Contributors'],
   'Products.ZMySQLDA': ['3.1.1',
                         'MySQL Database Adapter',
                         'https://pypi.python.org/pypi/Products.ZMySQLDA',

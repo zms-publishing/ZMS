@@ -868,15 +868,16 @@ class ZMSMetaobjManager:
             container.manage_addFolder(id=ob_id,title='Folder: %s'%id)
           container = getattr( container, ob_id)
         newObId = newId.split('/')[-1]
+        _zopeutil.removeObject(container, newObId)
         # Get container (old).
         if oldId is not None:
           oldContainer = self.getHome()
           for ob_id in oldId.split('/')[:-1]:
-            oldContainer = getattr(oldContainer,ob_id,None)
-          oldObId = oldId.split('/')[-1]
-        # Remove Zope-Object (if exists)
-        _zopeutil.removeObject(container, oldObId)
-        _zopeutil.removeObject(container, newObId)
+            if oldContainer is not None:
+              oldContainer = getattr(oldContainer,ob_id,None)
+          if oldContainer is not None:
+            oldObId = oldId.split('/')[-1]
+            _zopeutil.removeObject(oldContainer, oldObId)
         # Insert Zope-Object.
         _zopeutil.addObject(container, newType, newObId, newName, newCustom)
         # Change Zope-Object (special).

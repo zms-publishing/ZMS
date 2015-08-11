@@ -16,49 +16,33 @@
 				><tal:block tal:content="elLabel">the heading</tal:block
 			></a>
 		</div><!-- accordion-heading -->
-		<div tal:attributes="id python:'#detailstable_%s'%(elLabel)" class="accordion-body">
-			<tal:block tal:define="global details python:here.getEntity(metaObjAttr['details']['tablename']);"
-				><tal:block tal:condition="python:details['type']!='intersection'"
-					><tal:block tal:define="global
-									r metaObjAttr/value;
-									metaObjAttrs python:filter(lambda x:not x.get('fk',{}).get('tablename')==entity['id'],details['columns']);
-									metaObjAttrIds python:map(lambda x:x['id'],metaObjAttrs);"
-						><tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
-									metaObjAttrIds=metaObjAttrIds,
-									metaObjAttrs=metaObjAttrs,
-									records=r,
-									form_action=request['URL'],
-									url_params={'qentity':details['id']},
-									actions=['insert','update','delete'],
-									insert='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'insertForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),entity['id'],primary_key,qentitypkval,metaObjAttr['id'],elLabel),
-									update='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'updateForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),entity['id'],primary_key,qentitypkval,metaObjAttr['id'],elLabel),
-									delete='if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))) {$ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'delete\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_DELETE\')+\': %s\',iframe:true,width:800,height:600})} return false;'%(here.absolute_url(),entity['id'],primary_key,qentitypkval,metaObjAttr['id'],elLabel),
-								)">
-								metaobj_recordset_main_grid
-						</tal:block
-					></tal:block
-				></tal:block
-				><tal:block tal:condition="python:details['type']=='intersection'"
-					><tal:block tal:define="global
-									r metaObjAttr/value;
-									metaObjAttrs python:metaObjAttr['dst']['columns'];
-									metaObjAttrIds python:map(lambda x:x['id'],metaObjAttrs);"
-						><tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
-									metaObjAttrIds=metaObjAttrIds,
-									metaObjAttrs=metaObjAttrs,
-									records=r,
-									form_action=request['URL'],
-									url_params={'qentity':details['id']},
-									actions=['insert','update','delete'],
-									insert='return $ZMI.iframe(\'%s/manage_zmi_intersection_form\',{action:\'insert\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),entity['id'],details['id'],elLabel),
-									update='return $ZMI.iframe(\'%s/manage_zmi_intersection_form\',{action:\'update\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\'})'%(here.absolute_url(),entity['id'],details['id'],elLabel),
-									delete='if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))) {$ZMI.iframe(\'%s/manage_zmi_intersection_form\',{action:\'delete\',qentity:\'%s\',intersection:\'%s\'},{title:getZMILangStr(\'BTN_DELETE\')+\': %s\'})} return false;'%(here.absolute_url(),entity['id'],details['id'],elLabel),
-								)">
-								metaobj_recordset_main_grid
-						</tal:block
-					></tal:block
-				></tal:block
-			></tal:block>
+		<div class="accordion-body"
+				tal:attributes="id python:'#detailstable_%s'%(elLabel)"
+				tal:define="global details python:here.getEntity(metaObjAttr['details']['tablename']);"
+			><span class="ui-helper-clickable" onclick="$('.zmi_details_grid').toggle()" title="Show SQL Code">&middot;</span>
+				<code tal:attributes="style python:['','display:none'][len(metaObjAttr.get('error',''))==0]" class="zmi_details_grid">
+					<tal:block tal:content="python:metaObjAttr['valuesql']"></tal:block>
+					<tal:block tal:content="python:metaObjAttr.get('error','')"></tal:block>
+				</code>
+				<tal:block tal:define="global
+								r metaObjAttr/value;
+								metaObjAttrs python:filter(lambda x:not x.get('pk') and not x.get('fk',{}).get('tablename')==entity['id'],details['columns']);
+								metaObjAttrs python:map(lambda x:{'id':[x['id'],'%s_label'%x['id']][int(x.has_key('fk'))],'name':x.get('name',x.get('label',x['id'].capitalize())),'type':x['type']},metaObjAttrs);
+								metaObjAttrIds python:map(lambda x:x['id'],metaObjAttrs);">
+					<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
+								metaObjAttrIds=metaObjAttrIds,
+								metaObjAttrs=metaObjAttrs,
+								records=r,
+								form_action=request['URL'],
+								url_params={'qentity':details['id']},
+								actions=['insert','update','delete'],
+								insert='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'insertForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\'},{title:getZMILangStr(\'BTN_INSERT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),entity['id'],primary_key,qentitypkval,metaObjAttr['id'],elLabel),
+								update='return $ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'updateForm\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_EDIT\')+\': %s\',iframe:true,width:800,height:600})'%(here.absolute_url(),entity['id'],primary_key,qentitypkval,metaObjAttr['id'],elLabel),
+								delete='if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))) {$ZMI.iframe(\'%s/manage_zmi_details_form\',{action:\'delete\',qentity:\'%s\',qentitypk:\'%s\',qentitypkval:\'%s\',qcolumn:\'%s\',qindex:$(\'input:checkbox\',$(this).parents(\'tr\')).val()},{title:getZMILangStr(\'BTN_DELETE\')+\': %s\',iframe:true,width:800,height:600})} return false;'%(here.absolute_url(),entity['id'],primary_key,qentitypkval,metaObjAttr['id'],elLabel),
+							)">
+							metaobj_recordset_main_grid
+					</tal:block>
+			</tal:block>
 		</div><!-- .accordion-body -->
 	</div><!-- .accordion-group -->
 </tal:block>

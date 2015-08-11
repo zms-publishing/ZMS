@@ -11,6 +11,12 @@
 	request_form_inherit python:['qcolumn','qentitypk','qentitypkval',metaObjAttr['details']['fk']];
 	res metaObjAttr/value">
 
+	<span class="ui-helper-clickable" onclick="$('.zmi_details_form').toggle()" title="Show SQL Code">&middot;</span>
+	<code tal:attributes="style python:['','display:none'][len(metaObjAttr.get('error',''))==0]" class="zmi_details_form">
+		<tal:block tal:content="python:metaObjAttr['valuesql'].replace('\n','<br>')"></tal:block>
+		<tal:block tal:content="python:metaObjAttr.get('error','').replace('\n','<br>')"></tal:block>
+	</code>
+
 <tal:block tal:condition="python:request.get('action') in ['insert','update','delete'] and request.get('btn')!=here.getZMILangStr('BTN_CANCEL')">
 	<tal:block tal:define="global
 		row python:(res+[{}])[int(request.get('qindex',0))];
@@ -40,12 +46,24 @@
 	<tal:block tal:define="
 		row python:(res+[{}])[int(request.get('qindex',0))];
 		rowid python:context.operator_getitem(row,primary_key,ignorecase=True);">
-	<tal:block tal:content="structure python:here.manage_zmi_input_form(entity=entity,action='update',qindex=request['qindex'],rowid=rowid,row=row,request_form_inherit=request_form_inherit)">
+	<tal:block tal:content="structure python:here.manage_zmi_input_form(
+			entity=entity,
+			action='update',
+			qindex=request['qindex'],
+			rowid=rowid,
+			row=row,
+			request_form_inherit=request_form_inherit)">
 		metaobj_recordset_input_fields
 	</tal:block>
 	</tal:block>
 </tal:block>
-<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.manage_zmi_input_form(entity=entity,action='insert',qindex=-1,rowid=-1,row={metaObjAttr['details']['fk']:request['qentitypkval']},request_form_inherit=request_form_inherit)">
+<tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.manage_zmi_input_form(
+			entity=entity,
+			action='insert',
+			qindex=-1,
+			rowid=-1,
+			row={metaObjAttr['details']['fk']:request['qentitypkval']},
+			request_form_inherit=request_form_inherit)">
 	metaobj_recordset_input_fields
 </tal:block>
 

@@ -1019,7 +1019,6 @@ class ConfManager(
       adapter.setIds(['ZMSFolder','ZMSDocument','ZMSFile'])
       adapter.setAttrIds(['title','titlealt','attr_dc_description','standard_html'])
       adapter.addConnector('ZMSZCatalogConnector')
-      adapter.reindex_all()
       return adapter
 
 

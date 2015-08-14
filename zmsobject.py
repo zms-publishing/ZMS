@@ -185,7 +185,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       def default(*args, **kwargs):
         self = args[0]
         return self.id
-      return self.evalExtensionPoint('ExtensionPoint.ZMSObject.get_uid',default)
+      return 'uid:%s'%self.evalExtensionPoint('ExtensionPoint.ZMSObject.get_uid',default)
 
     # --------------------------------------------------------------------------
     #  ZMSObject.get_oid:

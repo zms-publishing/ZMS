@@ -76,13 +76,11 @@ except:
 def subscriber(event):
   if isinstance(event,ObjectAddedEvent):
     if isinstance(event.object,ZMSObject):
-      print "ZMS: add", event.object, event.newParent, event.newName
       if isinstance(event.newParent,ZMSObject):
         # trigger object-added event
         _globals.triggerEvent(event.object,"*.ObjectAdded")
   elif isinstance(event,ObjectMovedEvent):
     if isinstance(event.object,ZMSObject):
-      print "ZMS: move", event.object, event.newParent, event.newName
       if isinstance(event.newParent,ZMSObject):
         # trigger object-moved event
         _globals.triggerEvent(event.object,"*.ObjectMoved")
@@ -90,7 +88,6 @@ def subscriber(event):
         _globals.triggerEvent(event.object,"*.ObjectRemoved")
   elif isinstance(event,ObjectRemovedEvent):
     if isinstance(event.object,ZMSObject):
-      print "ZMS: remove", event.object
         # trigger object-removed event
       _globals.triggerEvent(event.object,"*.ObjectRemoved")
 zope.event.subscribers.append(subscriber)

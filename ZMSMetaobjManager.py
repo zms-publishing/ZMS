@@ -669,10 +669,6 @@ class ZMSMetaobjManager:
           value = metaObjAttr.get('custom','')
         elif metaObjAttr['type'] == 'resource':
           value = metaObjAttr.get('custom',None)
-      if len(metaObjAttrs)==0:
-        portalMaster = self.getPortalMaster()
-        if portalMaster is not None:
-          value = portalMaster.getMetaobjManager().evalMetaobjAttr(id,attr_id,zmscontext=zmscontext,options=options)
       return value
 
 

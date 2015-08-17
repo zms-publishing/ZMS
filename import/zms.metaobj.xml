@@ -531,7 +531,7 @@ div.ZMSFile div.description, div.ZMSLinkElement div.description
 		zmscontext options/zmscontext">
 
 <script type="text/javascript">
-
+<!--
 function elFileChange(el) {
 	var filename = $(el).val();
 	var i = Math.max(filename.lastIndexOf('/'),filename.lastIndexOf('\\'));
@@ -551,7 +551,7 @@ function elFileChange(el) {
 $ZMI.registerReady(function(){
 	$("#file_"+getZMILang()).change( function() { elFileChange(this); } );
 });
-
+-->
 </script>
 
 </tal:block>]]>
@@ -1412,48 +1412,50 @@ return context.str_json(result)
 		zmscontext options/zmscontext">
 	<tal:block tal:condition="python:zmscontext.getHistory()">
 		<script>
-              function showHistory(el) {
-                var v = $(el).val();
-                var version_nr = v.substr(0,v.indexOf(" "));
-                var version_dt = v.substr(v.indexOf(" ")+1);
-                $(el).prop('selectedIndex',0);
-                $.get("ajaxBodyContentObjHistory",{lang:$("input#lang").val(),version_nr:version_nr,revision:1,ts:new Date()},function(data) {
-                    var $xml = $( data );
-                    var body = $xml.find( "ObjHistory" );
-                    var title = $xml.find("title").text();
-                    var description = $xml.find("description").text();
-                    if ($("div#revision").length==0) {
-                      $("body").append('<'+'div id="revision"><'+'/div>');
-                    }
-                    var html = ''
-                      + '<'+'div id="flow" class="hyphenate">'
-                      + '<'+'article>'
-                        + '<'+'header>'
-                          + '<'+'h1 style="font-weight:bold!important">'+title+'<'+'/h1>'
-                          + '<'+'p style="text-decoration:italic!important" class="description">'+description+'<'+'/p>'
-                        + '<'+'/header>'
-                        + '<'+'/section>';
-                    for (var i = 0; i < body.length; i++) {
-                      html += $(body[i]).text();
-                    }
-                    html += ''
-                          + '<'+'/section>';
-                        + '<'+'/article>';
-                      + '<'+'/div>';
-                    $("div#revision").html(html);
-                  	showFancybox({
-                  			'href':'#revision',
-                  			'title':'r'+v,
-                  			'autoDimensions':true,
-                  			'transitionIn':'fade',
-                  			'transitionOut':'fade',
-                  			onCleanup:function() {
-                  					$("div#revision").remove();
-                  				}
-                  		});
-                    $("div#revision>div").show();
-                  });
-              }
+		<!--
+			function showHistory(el) {
+				var v = $(el).val();
+				var version_nr = v.substr(0,v.indexOf(" "));
+				var version_dt = v.substr(v.indexOf(" ")+1);
+				$(el).prop('selectedIndex',0);
+				$.get("ajaxBodyContentObjHistory",{lang:$("input#lang").val(),version_nr:version_nr,revision:1,ts:new Date()},function(data) {
+					var $xml = $( data );
+					var body = $xml.find( "ObjHistory" );
+					var title = $xml.find("title").text();
+					var description = $xml.find("description").text();
+					if ($("div#revision").length==0) {
+						$("body").append('<'+'div id="revision"><'+'/div>');
+					}
+					var html = ''
+						+ '<'+'div id="flow" class="hyphenate">'
+						+ '<'+'article>'
+						+ '<'+'header>'
+							+ '<'+'h1 style="font-weight:bold!important">'+title+'<'+'/h1>'
+							+ '<'+'p style="text-decoration:italic!important" class="description">'+description+'<'+'/p>'
+						+ '<'+'/header>'
+						+ '<'+'/section>';
+					for (var i = 0; i < body.length; i++) {
+						html += $(body[i]).text();
+					}
+					html += ''
+							+ '<'+'/section>';
+						+ '<'+'/article>';
+						+ '<'+'/div>';
+					$("div#revision").html(html);
+						showFancybox({
+								'href':'#revision',
+								'title':'r'+v,
+								'autoDimensions':true,
+								'transitionIn':'fade',
+								'transitionOut':'fade',
+								onCleanup:function() {
+										$("div#revision").remove();
+									}
+							});
+					$("div#revision>div").show();
+					});
+				}
+		-->
 		</script>
 		<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang"/>
 		<select onchange="showHistory(this)">

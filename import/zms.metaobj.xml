@@ -3215,6 +3215,9 @@ div.zmi-interface {
 	width:65em;
 	margin:1em;
 }
+#table_cell_editor #colgrouping td {
+	min-width:6em
+}
 .celltypes select {
 	width:10em;
 }
@@ -4058,7 +4061,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.16]]></item>
+          <item key="revision"><![CDATA[3.0.17]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

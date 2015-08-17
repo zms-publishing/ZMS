@@ -106,12 +106,12 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
       catalog = getattr(zmscontext,id,None)
       if catalog is not None:
         query = args[1]
-        zmscontext.writeBlock('ZMSIndexZCatalog.%s: query=%s'%(func_,query))
+        zmscontext.writeLog('ZMSIndexZCatalog.%s: query=%s'%(func_,query))
         row = catalog(query)
-        zmscontext.writeBlock('ZMSIndexZCatalog.%s: rows=%i'%(func_,len(row)))
+        zmscontext.writeLog('ZMSIndexZCatalog.%s: rows=%i'%(func_,len(row)))
         if len(row)==1:
           zmspath  = '%s/'%row[0]['getPath']
-          zmscontext.writeBlock('ZMSIndexZCatalog.%s: zmspath=%s'%(func_,zmspath))
+          zmscontext.writeLog('ZMSIndexZCatalog.%s: zmspath=%s'%(func_,zmspath))
           l = zmspath[1:-1].split('/')
           ob = zmscontext
           while ob is not None and len(l) > 0:
@@ -171,6 +171,26 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
       catalog = getattr(zmscontext,id,None)
       if catalog is not None:
         
+        duid = {}
+        def get_oid2uid(id):
+          if id.startswith('{$') and id.find('oid:')>0 and id.endswith('}'):
+            if len(duid.keys())==0:
+              zmscontext.writeBlock('[ZMSIndexZCatalog_func_] get_oid2uid')
+              def visit(node):
+                duid[node.get_oid()] = node.get_uid()
+                for childNode in node.getChildNodes():
+                  visit(childNode)
+              visit(zmscontext.getDocumentElement())
+              zmscontext.writeBlock('[ZMSIndexZCatalog_func_] get_oid2uid[%i]'%len(duid.keys()))
+            oid = id
+            oid = oid[2:-1]
+            if oid.startswith('__') and oid.endswith('__'):
+              oid = oid[2:-2]
+            zmscontext.writeBlock('[ZMSIndexZCatalog_func_] get_oid2uid[%s]'%oid)
+            if duid.has_key(oid):
+              id = '{$%s}'%duid[oid]
+          return id
+        
         def find_node(base,path):
           ref = base
           for id in path.split('/'):
@@ -189,7 +209,7 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
           #zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleInline %s'%v)
           p = '<a (.*?)href="(.*?)"(.*?)>(.*?)<\\/a>'
           for f in node.re_findall(p,v):
-            zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleInline f=%s'%str(f))
+            #zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleInline f=%s'%str(f))
             ref = None
             attr = f[0]+f[2]
             if attr.find('data-id=') >= 0:
@@ -198,16 +218,17 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
               data_id = data_id[:data_id.find('"')]
               zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleInline data_id=%s'%data_id)
               if data_id.find('id:')<0:
-                ref = node.getLinkObj('{$%s}'%data_id)
+                data_id = get_oid2uid('{$%s}'%data_id)
+                ref = node.getLinkObj(data_id)
             if ref is None:
               href = f[1]
               for prefix in [request['SERVER_URL'],zmscontext.getConfProperty('ASP.ip_or_domain','?')]:
                 if href.startswith(prefix):
                   href = href[len(prefix):]
-              zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleInline href=%s'%href)
+              #zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleInline href=%s'%href)
               if href.startswith('.') or href.startswith('/'):
                 ref = find_node(node,href)
-            zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleInline ref=%s'%str(ref))
+            #zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleInline ref=%s'%str(ref))
             if ref is not None:
               ref.refreshRefObj(node,request) 
               old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
@@ -218,17 +239,23 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
           return v
         
         def handleUrl(node,v):
-          #zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleUrl %s'%v)
-          if v.startswith('{$') and v.endswith('}') \
-             and not (v.startswith('{$__') and v.endswith('__}')) \
-             and not (v.startswith('{') and v.find('id:')>0 and v.endswith('}')):
-            ref = find_node(node,v[2:-1].replace('@','/content/'))
-            if ref is not None:
-              ref.refreshRefObj(node,request) 
+          zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleUrl %s'%v)
+          if v.startswith('{$') and v.endswith('}'):
+            if not (v.startswith('{$__') and v.endswith('__}')) \
+               and not (v.startswith('{$') and v.find('id:')>0 and v.endswith('}')):
+              ref = find_node(node,v[2:-1].replace('@','/content/'))
+              if ref is not None:
+                ref.refreshRefObj(node,request) 
+                old = v
+                new = node.getRefObjPath(ref)
+                zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
+                v = new
+            elif v.startswith('{$') and v.find('id:')>0 and v.endswith('}'):
               old = v
-              new = node.getRefObjPath(ref)
-              zmscontext.writeBlock('[ZMSIndexZCatalog_func_] resync %s=>%s'%(old,new))
-              v = new
+              new = get_oid2uid(v)
+              zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
+              if old != new:
+                v = new
           return v
         
         def visit(node):
@@ -283,7 +310,7 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
               l.extend(visit(childNode))
           return l
         
-        index = visit(zmscontext.getDocumentElement()) # .portal.content.siteObjMap)
+        index = visit(zmscontext.getDocumentElement())
         zmscontext.writeBlock('[ZMSIndexZCatalog_func_] resync %i'%len(index))
   except:
     t,v,tb = sys.exc_info()
@@ -317,12 +344,12 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
 query = None
 obj = None
 url = options['url']
-zmscontext.writeStdout('ZMSIndexZCatalog.getLinkObj: url='+url)
+zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: url='+url)
 zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
 if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
   if url.startswith('{') and url.find('id:')>0 and url.endswith('}'):
     uid = url[5:-1]
-    zmscontext.writeStdout('ZMSIndexZCatalog.getLinkObj: uid='+uid)
+    zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: uid='+uid)
     query = {'get_uid':uid}
   elif url.startswith('{$') and url.endswith('}') and not (url.startswith('{$__') and url.endswith('__}')):
     docelmnt = None
@@ -349,9 +376,9 @@ if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
       return docelmnt 
     elif docelmnt is not None:
       zmsid = url.split('/')[-1]
-      zmscontext.writeStdout('ZMSIndexZCatalog.getLinkObj: zmsid='+zmsid)
+      zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: zmsid='+zmsid)
       query = {'id':zmsid}
-zmscontext.writeStdout('ZMSIndexZCatalog.getLinkObj: query='+str(query))
+zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: query='+str(query))
 ob = zmscontext.ZMSIndexZCatalog_func_(zmscontext,'search',query)
 return ob
 
@@ -382,7 +409,7 @@ return ob
 
 request = container.REQUEST
 if zmscontext.meta_id=='ZMSIndexZCatalog' and request.get('btn') in ['reindex','resync']:
-  zmscontext.writeStdout('[onChangeObjEvt] func=%s'%str(zmscontext.ZMSIndexZCatalog_func_(zmscontext,request.get('btn'))))
+  zmscontext.writeLog('[onChangeObjEvt] func=%s'%str(zmscontext.ZMSIndexZCatalog_func_(zmscontext,request.get('btn'))))
 
 # --// /onChangeObjEvt //--
 ]]>
@@ -575,11 +602,17 @@ return zmscontext.ZMSIndexZCatalog_func_(zmscontext,'get_uid')
               <item key="delete_custom"></item>
               <item key="delete_deny" type="list">
                 <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
                 </list>
               </item>
               <item key="insert_custom"><![CDATA[{$}]]></item>
               <item key="insert_deny" type="list">
                 <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
                 </list>
               </item>
             </dictionary>
@@ -588,7 +621,7 @@ return zmscontext.ZMSIndexZCatalog_func_(zmscontext,'get_uid')
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.21]]></item>
+          <item key="revision"><![CDATA[0.9.22]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -607,7 +640,7 @@ return zmscontext.ZMSIndexZCatalog_func_(zmscontext,'get_uid')
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.21]]></item>
+          <item key="revision"><![CDATA[0.9.22]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

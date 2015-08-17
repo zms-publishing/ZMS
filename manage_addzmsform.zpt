@@ -113,6 +113,7 @@
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/i18n/eng.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/bootstrap/bootstrap-all.min.js"></script>
 <script>
+<!--
 function themeChange(el) {
     var i = el.selectedIndex;
     var v = el.options[i].value;
@@ -170,15 +171,15 @@ $ZMI.registerReady(function() {
                 themeChange($("#theme")[0]);
             });
     });
+-->
 </script>
 </form>
 
 <footer>
-    <div class="pull-left">
-        &#169; <tal:block tal:content="python:here.ZopeTime().year()">the year</tal:block> 
-        <a href="http://www.hoffmannliebenberg.de" target="_blank">HOFFMANN+LIEBENBERG</a>
-    </div><!-- .pull-left -->
-    <div class="clearfix"></div><!-- .clearfix -->
+	<div class="pull-left" title="&#169; 2015 HOFFMANN+LIEBENBERG">
+		<a href="http://www.zms-publishing.com" target="_blank">ZMS 3.1</a> Python-based Content Management System for Science, Technology and Medicine
+	</div><!-- .pull-left -->
+	<div class="clearfix"></div><!-- .clearfix -->
 </footer>
 
 </body>

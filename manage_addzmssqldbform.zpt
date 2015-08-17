@@ -3,12 +3,12 @@
 		dummy0 python:request.set('fmName',request.get('fmName','form0'));
 		dummy0 python:here.zmi_page_request(here,request)">
 	<form class="form-horizontal form-insert" id="form0" name="form0" tal:attributes="action python:'%s/manage_addZMSSqlDb'%request['URL1'][len(request['BASE0']):]" method="post" enctype="multipart/form-data">
-		<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
-		<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
-		<input type="hidden" name="form_id" tal:attributes="value python:DateTime().timeTime()">
-		<input type="hidden" name="id_prefix" tal:attributes="value python:request['id_prefix']">
-		<input type="hidden" name="_sort_id:int" tal:attributes="value python:request['_sort_id']">
-		<input type="hidden" name="ZMS_INSERT" tal:attributes="value python:request['ZMS_INSERT']">
+		<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']" />
+		<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']" />
+		<input type="hidden" name="form_id" tal:attributes="value python:DateTime().timeTime()" />
+		<input type="hidden" name="id_prefix" tal:attributes="value python:request['id_prefix']" />
+		<input type="hidden" name="_sort_id:int" tal:attributes="value python:request['_sort_id']" />
+		<input type="hidden" name="ZMS_INSERT" tal:attributes="value python:request['ZMS_INSERT']" />
 		<div class="form-group"  id="tr_connection_id">
 			<label for="connection_id" class="col-lg-2 control-label mandatory">
 				<span>Connection ID</span>

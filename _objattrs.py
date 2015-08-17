@@ -718,7 +718,8 @@ class ObjAttrs:
     # --------------------------------------------------------------------------
     def evalMetaobjAttr(self, *args, **kwargs):
       root = self.getDocumentElement()
-      id = self.meta_id
+      request = self.REQUEST
+      id = request.get('ZMS_INSERT',self.meta_id)
       key = args[0]
       if key.find('.')>0:
         id = key[:key.find('.')]

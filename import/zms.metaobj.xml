@@ -1408,8 +1408,7 @@ return context.str_json(result)
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- ZMSLib.show_version -->
 
-<tal:block tal:define="global 
-		zmscontext options/zmscontext">
+<tal:block tal:define="global zmscontext options/zmscontext">
 	<tal:block tal:condition="python:zmscontext.getHistory()">
 		<script>
 		<!--
@@ -1430,31 +1429,31 @@ return context.str_json(result)
 						+ '<'+'div id="flow" class="hyphenate">'
 						+ '<'+'article>'
 						+ '<'+'header>'
-							+ '<'+'h1 style="font-weight:bold!important">'+title+'<'+'/h1>'
-							+ '<'+'p style="text-decoration:italic!important" class="description">'+description+'<'+'/p>'
+						+ '<'+'h1 style="font-weight:bold!important">'+title+'<'+'/h1>'
+						+ '<'+'p style="text-decoration:italic!important" class="description">'+description+'<'+'/p>'
 						+ '<'+'/header>'
 						+ '<'+'/section>';
 					for (var i = 0; i < body.length; i++) {
 						html += $(body[i]).text();
 					}
 					html += ''
-							+ '<'+'/section>';
+						+ '<'+'/section>';
 						+ '<'+'/article>';
 						+ '<'+'/div>';
 					$("div#revision").html(html);
-						showFancybox({
-								'href':'#revision',
-								'title':'r'+v,
-								'autoDimensions':true,
-								'transitionIn':'fade',
-								'transitionOut':'fade',
-								onCleanup:function() {
-										$("div#revision").remove();
-									}
-							});
-					$("div#revision>div").show();
+					showFancybox({
+						'href':'#revision',
+						'title':'r'+v,
+						'autoDimensions':true,
+						'transitionIn':'fade',
+						'transitionOut':'fade',
+						onCleanup:function() {
+							$("div#revision").remove();
+						}
 					});
-				}
+					$("div#revision>div").show();
+				});
+			}
 		-->
 		</script>
 		<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang"/>

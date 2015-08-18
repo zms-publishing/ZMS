@@ -747,6 +747,16 @@ class ConfManager(
               return True
             else:
               return False
+        elif btn == 'InstallTheme':
+          if self.isFeatureEnabled('%zms3.extensions%'):
+            zmsext = REQUEST.get('zmsext','')
+            target = 'manage_main'
+            ZMSExtension  = self.extutil()
+            print "###InstallTheme:", zmsext
+            if ZMSExtension.installTheme(self, zmsext):
+              return True
+            else:
+              return False            
 
       ##### Instance ####
       elif key == 'Instance':

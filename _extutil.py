@@ -98,9 +98,9 @@ class ZMSExtensions():
     Utility to handle zms3.extensions
   
     Management interface is at ZMS > Configuration > System > Installed Libraries
-    @see zpt/ZMS/manage_customize.zpt line 452
-    @see _confmanager.py line 665
-    @see ZMSGlobals.py line 1118
+    @see zpt/ZMS/manage_customize.zpt line 446
+    @see _confmanager.py line 698
+    @see ZMSGlobals.py line 1154
   """
   getAll__roles__ = None
   getAllExtensions__roles__ = None
@@ -110,6 +110,8 @@ class ZMSExtensions():
   getAllProjspecs__roles__ = None
   getAllFramework__roles__ = None
   isEnabled__roles__ = None  
+  isThemeInstalled__roles__ = None
+  installTheme__roles__ = None
   getHint__roles__ = None  
   getInfo__roles__ = None  
   getVersionAvailable__roles__ = None  
@@ -119,9 +121,6 @@ class ZMSExtensions():
   getExample__roles__ = None  
   getExampleToImport__roles__ = None
   importExample__roles__ = None
-  getTemplates__roles__ = None  
-  getTemplatesToImport__roles__ = None
-  importTemplates__roles__ = None
   getUrl__roles__ = None
       
   def __init__(self):
@@ -177,19 +176,55 @@ class ZMSExtensions():
     """
       Return all zms3.* extensions
     """
-    pkg = filter(lambda x: x.startswith('zms3.') and not x.startswith('zms3.themes.') and x.find('theme') < 0, self.pkg_names)
+    pkg = filter(lambda x: x.startswith('zms3.'), self.pkg_names)
     if prj is not None:
       pkg = filter(lambda x: x not in self.getAllProjspecs(prj), pkg)
     return pkg
 
   def getAllThemes(self, prj=None):
     """
-      Return all zms3.themes.* extensions
+      Return all themes identified by an entry in configure.zcml representing a subfolder of /skins
     """
-    pkg = filter(lambda x: x.startswith('zms3.themes.') or x.find('theme') >= 0, self.pkg_names)
+    pkg = []
+    try:
+      import Products.CMFCore.DirectoryView
+      for directory in Products.CMFCore.DirectoryView.manage_listAvailableDirectories():
+        if 'Products.zms:skins' in directory or 'zms3.themes:skins' in directory:
+          d = directory.split('/', 1)[1]
+          if '/' not in d:
+            pkg.append(d)
+    except:
+      pass
     if prj is not None:
-      pkg = filter(lambda x: x not in self.getAllProjspecs(prj), pkg)
+      pkg = filter(lambda x: x not in self.getAllProjspecs(prj), pkg)    
     return pkg
+
+  def isThemeInstalled(self, context, ext=None):
+    """
+      Return TRUE if given theme is available as Filesystem Directory View in root folder of ZMS
+      otherwise FALSE
+    """
+    if ext in map(lambda x: x.getId(), context.getHome().objectValues('Filesystem Directory View')):
+      return True
+    else:
+      return False
+
+  def installTheme(self, context, ext=None):
+    """
+      Create Filesystem Directory View of given theme in root folder of ZMS
+    """
+    try:
+      import Products.CMFCore.DirectoryView
+      for directory in Products.CMFCore.DirectoryView.manage_listAvailableDirectories():
+        if 'Products.zms:skins' in directory or 'zms3.themes:skins' in directory:
+          d = directory.split('/', 1)[1]
+          if '/' not in d:
+            if ext in directory:
+              Products.CMFCore.DirectoryView.manage_addDirectoryView(context.getHome(), directory)
+              break
+      return True
+    except:
+      return False    
 
   def getAllProducts(self):
     """
@@ -328,24 +363,6 @@ class ZMSExtensions():
       contents = open(_fileutil.getOSPath(filename), 'rb')
       _importable.importFile(context, contents, request, _importable.importContent)
       contents.close()
-      
-  def getTemplates(self, ext=None):
-
-    # TODO: _extutil.getTemplates()
-    
-    return None
-  
-  def getTemplatesToImport(self, ext=None):
-
-    # TODO: _extutil.getTemplatesToImport()
-    
-    return None
-  
-  def importTemplates(self, ext=None, context=None, request=None):
-
-    # TODO: _extutil.importTemplates()
-
-    return None
       
   def getUrl(self, ext=None):
     """

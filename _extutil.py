@@ -19,8 +19,8 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-  'zms3.formulator': ['3.2.5',
-                      'JSON-based HTML-Forms',
+  'zms3.formulator': ['3.3.0',
+                      'Submit JSON-based HTML-Forms into a SQL-Storage with protection by reCAPTCHA',
                       'https://bitbucket.org/zms3/formulator',
                       'developed by SNTL Publishing'],
   'zms3.mindmap': ['0.1.2',

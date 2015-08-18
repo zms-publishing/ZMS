@@ -228,6 +228,11 @@ class Builder:
                   self.oCurrNode._setObject(newNode.id, newNode)
                   newNode = getattr(self.oCurrNode,newNode.id)
                 
+                ##### Uid ####
+                if 'uid' in attrs.keys():
+                  uid = attrs.get( 'uid')
+                  newNode.set_uid(uid)
+                
                 ##### Identify Content-Object ####
                 if newNode.meta_type == 'ZMSCustom':
                   meta_id = attrs.get( 'meta_id')

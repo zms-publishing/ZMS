@@ -29,19 +29,37 @@ import _globals
 import _objattrs
 
 # ------------------------------------------------------------------------------
-#  _zreferableitem.isMailLink:
+#  isMailLink:
 # ------------------------------------------------------------------------------
 def isMailLink(url):
   rtn = type(url) is str and url.lower().startswith('mailto:')
   return rtn
 
 # ------------------------------------------------------------------------------
-#  _zreferableitem.isInternalLink:
+#  isInternalLink:
 # ------------------------------------------------------------------------------
 def isInternalLink(url):
   rtn = type(url) is str and url.startswith('{$') and url.endswith('}')
   return rtn
 
+# ----------------------------------------------------------------------------
+#  getInlineRefs:
+#
+#  Parses internal links.
+# ----------------------------------------------------------------------------
+def getInlineRefs(text):
+  l = []
+  p = '<a (.*?)href="(.*?)"(.*?)>(.*?)<\\/a>'
+  r = re.compile(p)
+  for f in r.findall(text):
+    ref = None
+    attr = f[0]+f[2]
+    if attr.find('data-id=') >= 0:
+      data_id = attr[attr.find('data-id='):]
+      data_id = data_id[data_id.find('"')+1:]
+      data_id = data_id[:data_id.find('"')]
+      l.append('{$%s}'%data_id)
+  return l
 
 ################################################################################
 ################################################################################
@@ -121,7 +139,7 @@ class ZReferableItem:
   """
   ##############################################################################
   ###  
-  ###  Links FROM other objects.
+  ###  References FROM other objects.
   ### 
   ##############################################################################
   """
@@ -129,125 +147,68 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   #  ZReferableItem.getRefByObjs:
   #
-  #  Returns references BY other objects.
+  #  Returns references FROM other objects.
   # ----------------------------------------------------------------------------
-  def getRefByObjs(self, REQUEST={}):
+  def getRefByObjs(self):
     ref_by = []
-    key = 'ref_by'
-    if key in self.__dict__.keys():
-      ref_by = getattr(self,key,[])
+    if 'ref_by' in self.__dict__.keys():
+      ref_by = self.ref_by
       ref_by = list(set(ref_by))
     return ref_by
 
 
   # ----------------------------------------------------------------------------
-  #  ZReferableItem.delRefByObjs:
-  #
-  #  Deletes references BY other objects.
-  # ----------------------------------------------------------------------------
-  def delRefByObjs(self, ids=[]):
-    key = 'ref_by'
-    v = getattr(self,key,[])
-    ref_by = []
-    for i in v:
-      l = i
-      l = l[2:-1]
-      l = l.split('/')
-      b = len(filter(lambda x: x in l, ids)) > 0
-      if not b:
-        ref_by.append(i)
-    if len(ref_by) < len(v):
-      setattr(self,'ref_by',ref_by)
-
-
-  # ----------------------------------------------------------------------------
   #  ZReferableItem.synchronizeRefByObjs:
   #
-  #  Synchronizes references BY other objects.
+  #  Synchronizes references FROM other objects.
   # ----------------------------------------------------------------------------
   def synchronizeRefByObjs(self, strict=1):
-    key = 'ref_by'
-    v = getattr(self,key,[])
+    v = self.getRefByObjs()
     ref_by = []
     for i in v:
       ob = self.getLinkObj(i)
-      if ob is not None and ob.meta_type.startswith('ZMS'):
-        has_ref = False
-        for key in ob.getObjAttrs().keys():
-          obj_attr = ob.getObjAttr( key)
-          if obj_attr['datatype_key'] in _globals.DT_STRINGS:
-            for lang in self.getLangIds():
-              req = {'lang':lang,'preview':'preview'}
-              obj_vers = ob.getObjVersion(req)
-              value = ob._getObjAttrValue(obj_attr,obj_vers,lang)
-              svalue = ob.str_item(value)
-              lvalue = []
-              for exp in ['"(.*?)/%s"','{\$%s}','{\$(.*?)/%s}']:
-                lvalue.extend( ob.re_search( exp%self.id, svalue))
-              if len(lvalue) > 0 and obj_attr['datatype_key'] == _globals.DT_URL:
-                has_ref = True
-                new_value = ob.getRefObjPath(self)
-                if value != new_value:
-                  _objattrs.setobjattr(self, obj_vers, obj_attr, new_value, lang)
-        if has_ref:
-          ob_path = self.getRefObjPath(ob)
-          if not ob_path in ref_by:
-            ref_by.append(ob_path)
+      if ob is not None:
+        for ref_to in ob.getRefToObjs():
+          ref_ob = self.getLinkObj(ref_to)
+          if self == ref_ob:
+            ref = self.getRefObjPath(ob)
+            ref_by.append(ref)
+            break
     ref_by = list(set(ref_by))
     ref_by.sort()
     if ref_by != v:
-      setattr(self,key,ref_by)
+      self.ref_by = ref_by
+    return ref_by
 
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.clearRegisteredRefObjs:
-  #
-  #  Clears registered referencing objects.
-  # ----------------------------------------------------------------------------
-  def clearRegisteredRefObjs(self, REQUEST):
-    ref_by = []
-    setattr(self,'ref_by',ref_by)
-
-    
   # ----------------------------------------------------------------------------
   #  ZReferableItem.registerRefObj:
   #
-  #  Registers referencing object.
+  #  Registers reference FROM other object.
   # ----------------------------------------------------------------------------
-  def registerRefObj(self, ob, REQUEST):
+  def registerRefObj(self, ob):
     ref = self.getRefObjPath(ob)
-    _globals.writeLog( self, "[registerRefObj]: %s(%s) - add %s"%(ob.id,ob.meta_type,ref))
-    ref_by = self.getRefByObjs(REQUEST)
-    if not ref in ref_by:
+    _globals.writeLog(self,'[registerRefObj]: ref='+ref)
+    ref_by = self.synchronizeRefByObjs()
+    if ref not in ref_by:
       ref_by.append(ref)
-    ##### Set Attribute ####
-    setattr(self,'ref_by',ref_by)
+      self.ref_by = ref_by
 
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.unregisterRefObj:
   #
-  #  Unregisters referencing object.
+  #  Unregisters reference FROM other object.
   # ----------------------------------------------------------------------------
-  def unregisterRefObj(self, ob, REQUEST):
-    _globals.writeLog( self, "[unregisterRefObj]: %s(%s)"%(ob.id,ob.meta_type))
-    ref_by = self.getRefByObjs(REQUEST)
-    ref_by = filter( lambda x: x[2:-1].split('/')[-1]!=ob.id,ref_by)
-    ##### Set Attribute ####
-    setattr(self,'ref_by',ref_by)
+  def unregisterRefObj(self, ob):
+    ref = self.getRefObjPath(ob)
+    _globals.writeLog(self,'[unregisterRefObj]: ref='+ref)
+    ref_by = self.synchronizeRefByObjs()
+    if ref in ref_by:
+      ref_by = filter( lambda x: x!=ref,ref_by)
+      self.ref_by = ref_by
 
 
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.refreshRefObj:
-  #
-  #  Refreshs referencing object.
-  # ----------------------------------------------------------------------------
-  def refreshRefObj(self, ob, REQUEST):
-    _globals.writeLog( self, "[refreshRefObj]: %s(%s) -> %s(%s)"%(self.id,self.meta_type,ob.id,ob.meta_type))
-    self.unregisterRefObj(ob,REQUEST)
-    self.registerRefObj(ob,REQUEST)
-
-    
   """
   ##############################################################################
   ###  
@@ -261,100 +222,69 @@ class ZReferableItem:
   #
   #  Returns list of references TO other objects.
   # ----------------------------------------------------------------------------
-  def getRefToObjs(self, REQUEST):
+  def getRefToObjs(self):
     d = {}
     for key in self.getObjAttrs().keys():
       objAttr = self.getObjAttr(key)
-      v = self.getObjAttrValue(objAttr,REQUEST)
-      datatype = objAttr['datatype_key']
-      if datatype == _globals.DT_URL:
-        d[v] = 1
-      elif datatype in _globals.DT_TEXTS:
-        for iv in self.getInlineRefs(v):
-          d[iv] = 1
+      datatype = objAttr['datatype']
+      if datatype in ['richtext','string','text','url']:
+        lang_suffixes = ['']
+        if objAttr['multilang']:
+          lang_suffixes = map(lambda x:'_%s'%x,self.getLangIds())
+        for lang_suffix in lang_suffixes:
+          for obj_vers in self.getObjVersions():
+            v = getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
+            if v is not None:
+              if datatype in ['richtext','string','text']:
+                for iv in getInlineRefs(v):
+                  ref_ob = self.getLinkObj(iv)
+                  if ref_ob is not None:
+                    ref = self.getRefObjPath(ref_ob)
+                    d[ref] = 1
+              elif datatype in ['url']:
+                ref_ob = self.getLinkObj(v)
+                if ref_ob is not None:
+                  ref = self.getRefObjPath(ref_ob)
+                  d[ref] = 1
     return d.keys()
 
 
   # ----------------------------------------------------------------------------
-  #  ZReferableItem.synchronizeRefToObjs:
+  #  ZReferableItem.prepareRefreshRefToObjs:
+  #
+  #  Prepare refresh of references TO other objects.
+  # ----------------------------------------------------------------------------
+  def prepareRefreshRefToObjs(self):
+    _globals.writeBlock( self, '[prepareRefreshRefToObjs]')
+    if 'ref_to' not in self.__dict__.keys():
+      self.ref_to = self.getRefToObjs()
+
+
+  # ----------------------------------------------------------------------------
+  #  ZReferableItem.refreshRefToObjs:
   #
   #  Synchronizes references TO other objects.
   # ----------------------------------------------------------------------------
-  def synchronizeRefToObjs(self):
-    _globals.writeLog( self, '[synchronizeRefToObjs]')
-    REQUEST = self.REQUEST
-    for ref in self.getRefToObjs(REQUEST):
-      ob = self.getLinkObj(ref)
-      if ob is not None:
-        ob.refreshRefObj(self,REQUEST)
-
-
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.refreshRefToObj:
-  #
-  #  Refreshs reference TO given destination.
-  # ----------------------------------------------------------------------------
-  def refreshRefToObj(self, dest_obj, REQUEST):
-    _globals.writeLog( self, '[refreshRefToObj]: %s -> dest_obj=%s(%s)'%(self.id,dest_obj.absolute_url(),dest_obj.meta_type))
-    ref_to =  []
-    for key in self.getObjAttrs().keys():
-      obj_attr = self.getObjAttr(key)
-      datatype = obj_attr['datatype_key']
-      if datatype == _globals.DT_URL:
-        ref = self.getObjProperty(key,REQUEST)
-        ref_obj = self.getLinkObj(ref)
-        if ref_obj is not None:
-          if dest_obj.id == ref_obj.id:
-            ##### Set Property ####
-            dest_obj_path = self.getRefObjPath(dest_obj)
-            self.setObjProperty(key,dest_obj_path,REQUEST['lang'],1)
-
-
-  """
-  ##############################################################################
-  ###  
-  ###  Process Events 
-  ### 
-  ##############################################################################
-  """
-
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.onMoveRefObj:
-  #
-  #  This method is executed after an object has been moved.
-  # ----------------------------------------------------------------------------
-  def onMoveRefObj(self, REQUEST, deep=0):
-    _globals.writeLog( self, "[onMoveRefObj]")
-    
-    ##### Update references TO other objects ####
-    for ref in self.getRefToObjs(REQUEST):
-      ob = self.getLinkObj(ref)
-      if ob is not None:
-        ob.refreshRefObj(self,REQUEST)
-    
-    ##### Update references FROM other objects ####
-    for ref in self.getRefByObjs(REQUEST):
-      ob = self.getLinkObj(ref)
-      if ob is not None:
-        ob.refreshRefToObj(self,REQUEST)
-
-
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.onCopyRefObj:
-  #
-  #  This method is executed after an object has been copied.
-  # ----------------------------------------------------------------------------
-  def onCopyRefObj(self, REQUEST, deep=0):
-    _globals.writeLog( self, "[onCopyRefObj]")
-    
-    ##### Register copy in references TO other objects ####
-    for ref in self.getRefToObjs(REQUEST):
-      ob = self.getLinkObj(ref)
-      if ob is not None:
-        ob.registerRefObj(self,REQUEST)
-    
-    ##### Clear references FROM other objects ####
-    self.clearRegisteredRefObjs(REQUEST)
+  def refreshRefToObjs(self):
+    _globals.writeBlock( self, '[refreshRefToObjs]')
+    if 'ref_to' in self.__dict__.keys():
+      old_ref_to = self.ref_to
+      _globals.writeBlock( self, '[refreshRefToObjs]: old=%s'%str(old_ref_to))
+      new_ref_to = self.getRefToObjs()
+      _globals.writeBlock( self, '[refreshRefToObjs] new=%s'%str(old_ref_to))
+      delattr(self,'ref_to')
+      for ref in old_ref_to:
+        ref_ob = self.getLinkObj(ref)
+        if ref_ob is not None:
+          self_ref = ref_ob.getRefObjPath(self)
+          if ref not in new_ref_to and self_ref in ref_ob.synchronizeRefByObjs():
+            ref_ob.unregisterRefObj(self)
+      for ref in new_ref_to:
+        ref_ob = self.getLinkObj(ref)
+        if ref_ob is not None:
+          self_ref = ref_ob.getRefObjPath(self)
+          if ref not in old_ref_to or self_ref not in ref_ob.synchronizeRefByObjs():
+            ref_ob.registerRefObj(self)
 
 
   """
@@ -364,25 +294,6 @@ class ZReferableItem:
   ### 
   ##############################################################################
   """
-
-  # ----------------------------------------------------------------------------
-  #  ZReferableItem.getInlineRefs:
-  #
-  #  Parses internal links.
-  # ----------------------------------------------------------------------------
-  def getInlineRefs(self, text):
-    l = []
-    p = '<a (.*?)href="(.*?)"(.*?)>(.*?)<\\/a>'
-    for f in self.re_findall(p,text):
-      ref = None
-      attr = f[0]+f[2]
-      if attr.find('data-id=') >= 0:
-        data_id = attr[attr.find('data-id='):]
-        data_id = data_id[data_id.find('"')+1:]
-        data_id = data_id[:data_id.find('"')]
-        l.append('{$%s}'%data_id)
-    return l
-
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.validateInlineLinkObj:

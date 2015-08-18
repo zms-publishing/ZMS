@@ -676,6 +676,7 @@ def getObjToXml(self, REQUEST, incl_embedded=False, deep=True, base_path='', dat
   xml = []
   # Start tag.
   xml.append('<%s'%ob.xmlGetTagName())
+  xml.append(' uid="%s"'%ob.get_uid())
   id = self.id 
   prefix = _globals.id_prefix(id)
   if id == prefix:

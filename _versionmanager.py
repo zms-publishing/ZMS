@@ -347,6 +347,7 @@ class VersionItem:
       self.__work_state__.states = copy.deepcopy(states)
       self.__work_state__ = copy.deepcopy(self.__work_state__)
 
+
     # --------------------------------------------------------------------------
     #  VersionItem.delObjStates:
     #
@@ -463,7 +464,9 @@ class VersionItem:
     def setObjStateModified(self, REQUEST):
       obj_state = 'STATE_MODIFIED'
       setChangedBy( self, REQUEST)
+      self.getRefToObjs()
       self.setObjState(obj_state,REQUEST['lang'])
+      self.prepareRefreshRefToObjs()
 
     # --------------------------------------------------------------------------
     #  VersionItem.setObjStateDeleted
@@ -504,7 +507,7 @@ class VersionItem:
           self.autoWfTransition(REQUEST)
         _globals.writeLog( self, "[onChangeObj]: Finished!")
       except Exception as e:
-        _globals.writeLog( self, "[onChangeObj]: abort transaction")
+        _globals.writeError( self, "[onChangeObj]: abort transaction")
         import transaction
         transaction.abort()
         raise e
@@ -513,19 +516,18 @@ class VersionItem:
     #  VersionItem.onSynchronizeObj:
     # --------------------------------------------------------------------------
     def onSynchronizeObj(self, REQUEST):
-      _globals.writeLog( self, "[onSynchronizeObj]")
+      _globals.writeBlock( self, "[onSynchronizeObj]")
       # Access
       self.synchronizePublicAccess()
       # References
-      self.synchronizeRefToObjs()
-      self.synchronizeRefByObjs()
+      self.refreshRefToObjs()
 
 
     # --------------------------------------------------------------------------
     #  VersionItem.commitObjChanges
     # --------------------------------------------------------------------------
     def _commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
-      _globals.writeLog( self, "[_commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
+      _globals.writeBlock( self, "[_commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
       delete = False
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang',prim_lang)
@@ -629,7 +631,7 @@ class VersionItem:
       return delete
 
     def commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
-      _globals.writeLog( self, "[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
+      _globals.writeBlock( self, "[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
       delete = self._commitObjChanges( parent, REQUEST, forced, do_history, do_delete)
       # Synchronize search.
       self.getCatalogAdapter().reindex_node(self)
@@ -649,7 +651,7 @@ class VersionItem:
     #  VersionItem.rollbackObjChanges
     # --------------------------------------------------------------------------
     def _rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
-      _globals.writeLog( self, "[_rollbackObjChanges]")
+      _globals.writeBlock( self, "[_rollbackObjChanges]")
       delete = False
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang',prim_lang)
@@ -737,6 +739,7 @@ class VersionItem:
       return delete
 
     def rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
+      _globals.writeBlock( self, "[rollbackObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
       delete = self._rollbackObjChanges( parent, REQUEST, forced, do_delete)
       # Return flag for deleted objects.
       return delete

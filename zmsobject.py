@@ -181,11 +181,18 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.get_uid:
     # --------------------------------------------------------------------------
-    def get_uid(self):
-      def default(*args, **kwargs):
-        self = args[0]
-        return self.id
-      return 'uid:%s'%self.evalExtensionPoint('ExtensionPoint.ZMSObject.get_uid',default)
+    def get_uid(self, forced=False):
+      if forced or '_uid' not in self.__dict__.keys():
+        import uuid
+        uid = str(uuid.uuid4())
+        self._uid = uid
+      return 'uid:%s'%self._uid
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.set_uid:
+    # --------------------------------------------------------------------------
+    def set_uid(self, uid):
+      self._uid = uid.replace('uid:','')
 
     # --------------------------------------------------------------------------
     #  ZMSObject.get_oid:
@@ -201,17 +208,6 @@ class ZMSObject(ZMSItem.ZMSItem,
       return 'oid:%s'%oid
 
     # --------------------------------------------------------------------------
-    #  ZMSObject.find_oid:
-    # --------------------------------------------------------------------------
-    def find_oid(self, oid):
-      from ZODB.utils import p64
-      if oid.find(':')>0:
-        oid = oid[oid.find(':')+1:]
-      ob = self._p_jar[p64(oid)]
-      return ob
-
-
-    # --------------------------------------------------------------------------
     #  ZMSObject.title:
     # --------------------------------------------------------------------------
     def title(self):
@@ -220,13 +216,11 @@ class ZMSObject(ZMSItem.ZMSItem,
       except:
         return 'ZMS'
 
-
     # --------------------------------------------------------------------------
     #  ZMSObject.__proxy__:
     # --------------------------------------------------------------------------
     def __proxy__(self):
       return self
-
 
     # --------------------------------------------------------------------------
     #  ZMSObject.get_conf_blob:
@@ -261,7 +255,6 @@ class ZMSObject(ZMSItem.ZMSItem,
         else:
           _globals.writeError(self,"[get_conf_blob]: path=%s"%str(path))
       return v
-
 
     # --------------------------------------------------------------------------
     #  ZMSObject.isMetaType:

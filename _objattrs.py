@@ -604,15 +604,11 @@ class ObjAttrs:
       
       #-- Text-Fields
       elif datatype == _globals.DT_TEXT:
-        old = value
         value = self.validateInlineLinkObj(value)
-        set = old != value
       
       #-- Url-Fields
       elif datatype == _globals.DT_URL:
-        old = value
         value = self.validateLinkObj(value)
-        set = old != value
       
       #-- SET?
       if set and self.getConfProperty('ExtensionPoint.ObjAttrs._getObjAttrValue.setattr','')!='': 
@@ -1062,34 +1058,17 @@ class ObjAttrs:
         self.getObjProperty('setObjProperty',self.REQUEST)
         return
       
-      #-- DEFINITION
+      #-- Get definition.
       obj_attr = self.getObjAttr(key)
       
-      #-- DATATYPE
-      datatype = obj_attr['datatype_key']
-      
-      #-- VALUE
+      #-- Format value.
       value = self.formatObjAttrValue(obj_attr,value,lang)
-      
-      #-- Url-Fields
-      if datatype == _globals.DT_URL:
-        # Unregister old reference.
-        req = {'lang' : lang, 'prevew' : 'preview'}
-        old_value = self.getObjProperty(key,req)
-        ref_obj = self.getLinkObj(old_value)
-        if ref_obj is not None:
-          ref_obj.unregisterRefObj(self,self.REQUEST)
-        # Register new reference.
-        ref_obj = self.getLinkObj(value)
-        if ref_obj is not None:
-          ref_obj.registerRefObj(self,self.REQUEST)
-        value = self.validateLinkObj(value)
       
       #-- Notify metaobj_manager.
       self.notifyMetaobjAttrAboutValue( self.meta_id, key, value)
       
       #-- SET!
-      _globals.writeLog( self, "[setObjProperty]: %s(%s)=%s"%(key,str(datatype),str(value)))
+      _globals.writeLog( self, "[setObjProperty]: %s=%s"%(key,str(value)))
       ob = self.getObjVersion({'preview':'preview'})
       setobjattr(self,ob,obj_attr,value,lang)
       if forced:

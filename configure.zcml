@@ -10,4 +10,13 @@
       directory="plugins/www"
       />
 
+  <configure    
+      xmlns:cmf="http://namespaces.zope.org/cmf"
+      xmlns:zcml="http://namespaces.zope.org/zcml"   
+      zcml:condition="installed Products.CMFCore"
+      >
+    <cmf:registerDirectory name="myZMStheme33" recursive="True" />
+    <include zcml:condition="installed zms3.themes" package="zms3.themes" />
+  </configure>
+
 </configure>

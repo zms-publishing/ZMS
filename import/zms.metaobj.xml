@@ -3657,10 +3657,10 @@ function onKeyUpZMSTableDivContenteditable() {
 							<input type="hidden" tal:attributes="id python:'format_%i_%i'%(col_index,row_index); value cell_format">
 							<tal:block tal:content="structure python:here.getTextArea(request['fmName'],'content_%i_%i'%(col_index,row_index),10,1,value=cell_content,enabled=True,REQUEST=request,extra=' style=\042border:none;background-color:transparent;width:100%;\042')"></tal:block>
 						</div>
-						<div tal:attributes="id python:'preview_%i_%i'%(col_index,row_index);class python:['ui-helper-hidden',''][richedit_preview]">
-							<tal:block tal:condition="cell/content" tal:content="structure cell_content">the cell-content</tal:block>
-							<tal:block tal:condition="not:cell/content">&nbsp;</tal:block>
-						</div>
+						<div tal:attributes="id python:'preview_%i_%i'%(col_index,row_index);class python:['ui-helper-hidden',''][richedit_preview]"
+							><tal:block tal:condition="cell/content" tal:content="structure cell_content">the cell-content</tal:block
+							><tal:block tal:condition="not:cell/content">&nbsp;</tal:block
+						></div>
 						<tal:block tal:content="structure python:'</%s><!-- .table_cell_editable -->'%cell['tag']">end-tag</tal:block>
 					</tr>
 					</table><!-- .ZMSTable -->
@@ -4062,7 +4062,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.17]]></item>
+          <item key="revision"><![CDATA[3.0.18]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

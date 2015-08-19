@@ -373,6 +373,13 @@ function zmiModalInsertUserOpen(context) {
 </div><!-- #insertUser -->
 
 <div class="pull-left">
+
+			<div class="alert alert-success" tal:condition="python:request.get('btn')=='Purge'">
+				Purge local users<br/>
+				<tal:block tal:content="structure python:here.purgeLocalUsers()">purgeLocalUsers</tal:block>
+				(<tal:block tal:content="python:here.getLangFmtDate(DateTime())"></tal:block>)
+			</div><!-- .alert -->
+
 <form class="form-horizontal" action="manage_userProperties" method="get">
 	<input type="hidden" name="btn" value="">
 	<input type="hidden" name="key" value="">
@@ -383,6 +390,7 @@ function zmiModalInsertUserOpen(context) {
 	<div class="pull-right">
 		<div class="btn-group">
 			<a class="btn btn-primary" tal:attributes="href python:'?lang=%s&search_term='%request['lang']; title python:here.getZMILangStr('BTN_INSERT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></a>
+			<a class="btn btn-default" tal:attributes="href python:'?lang=%s&btn=Purge'%request['lang']; title python:'Purge'" tal:condition="python:request['AUTHENTICATED_USER'].has_role('Manager')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-ambulance text-danger')"></tal:block></a>
 			<span class="btn btn-default" onclick="zmiModal('#importUsers',{title:$(this).attr('title')})" tal:attributes="title python:'%s...'%here.getZMILangStr('BTN_IMPORT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 			<span class="btn btn-default" onclick="var $fm=$(this).closest('form');$('input[name=btn]',$fm).val('export');$fm.attr('target','_blank').submit();" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 		</div><!-- .btn-group -->

@@ -34,7 +34,7 @@ import ZMSMetaobjManager
 
 
 # ------------------------------------------------------------------------------
-#  _objattrs.utf8:
+#  utf8
 # ------------------------------------------------------------------------------
 def utf8(v, encoding = 'latin-1'):
   if type( v) in StringTypes:
@@ -99,7 +99,7 @@ def utf8(v, encoding = 'latin-1'):
 
 
 # ------------------------------------------------------------------------------
-#  _objattrs.setutf8attr:
+#  setutf8attr
 # ------------------------------------------------------------------------------
 def setutf8attr(self, obj_vers, obj_attr, langId):
   charset = self.getLang(langId).get('charset','')
@@ -112,7 +112,7 @@ def setutf8attr(self, obj_vers, obj_attr, langId):
 
 
 # ------------------------------------------------------------------------------
-#  _objattrs.getobjattr:
+#  getobjattr
 # ------------------------------------------------------------------------------
 def getobjattr(self, obj, obj_attr, lang):
   v = None
@@ -145,7 +145,7 @@ def getobjattr(self, obj, obj_attr, lang):
   return v
 
 # ------------------------------------------------------------------------------
-#  _objattrs.setobjattr:
+#  setobjattr:
 # ------------------------------------------------------------------------------
 def setobjattr(self, obj, obj_attr, value, lang):
   key = self._getObjAttrName(obj_attr,lang)
@@ -153,7 +153,7 @@ def setobjattr(self, obj, obj_attr, value, lang):
   setattr(obj,key,value)
 
 # ------------------------------------------------------------------------------
-#  _objattrs.cloneobjattr:
+#  cloneobjattr:
 # ------------------------------------------------------------------------------
 def cloneobjattr(self, src, dst, obj_attr, lang):
   _globals.writeLog( self, "[cloneobjattr]: Clone object-attributes from '%s' to '%s'"%(str(src),str(dst)))
@@ -180,7 +180,7 @@ def cloneobjattr(self, src, dst, obj_attr, lang):
 ################################################################################
 ################################################################################
 ###
-###   Object Attributes
+###   class ObjAttrs
 ###
 ################################################################################
 ################################################################################
@@ -209,21 +209,6 @@ class ObjAttrs:
       if fmt == 'json':
         return self.str_json(l)
       return '\n'.join(l)
-
-
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.ajaxGetObjAttrs:
-    # --------------------------------------------------------------------------
-    def ajaxGetObjAttrs(self, meta_id, REQUEST):
-      """ ObjAttrs.ajaxGetObjAttrs """
-      RESPONSE = REQUEST.RESPONSE
-      content_type = 'text/xml; charset=utf-8'
-      filename = 'ajaxGetObjAttrs.xml'
-      RESPONSE.setHeader('Content-Type',content_type)
-      RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
-      return self.getXmlHeader() + self.toXmlString( self.getObjAttrs( meta_id))
 
 
     # --------------------------------------------------------------------------
@@ -519,29 +504,6 @@ class ObjAttrs:
       return self.getObjAttrInput( fmName, obj_attr, value, REQUEST)
 
 
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.hasObjProperty:
-    #
-    #  Checks if object has specified property.
-    # --------------------------------------------------------------------------
-    def hasObjProperty(self, key, REQUEST):
-
-      #-- REQUEST
-      lang = REQUEST.get('lang',self.getPrimaryLanguage())
-      
-      #-- DEFINITION
-      obj_attr = self.getObjAttr(key)
-      
-      #-- OBJECT (Live / Work).
-      ob = self.getObjVersion(REQUEST)
-      
-      #-- ATTR
-      attr = self._getObjAttrName(obj_attr,lang)
-      
-      #-- Return true if object has specified property, false else.
-      return ob.__dict__.get(attr,None) is not None
-
-
     """
     ############################################################################
     #
@@ -555,15 +517,14 @@ class ObjAttrs:
     # --------------------------------------------------------------------------
     def _getObjAttrValue(self, obj_attr, obj_vers, lang):
       
+      # Get value.
       datatype = obj_attr['datatype_key']
-      set, value = False, getobjattr(self,obj_vers,obj_attr,lang)
-      
-      obj_default = _globals.dtMapping[datatype][1]
+      value = getobjattr(self,obj_vers,obj_attr,lang)
       
       #-- Blob-Fields
       if datatype in _globals.DT_BLOBS:
         if type(value) in StringTypes:
-          set, value = True, None
+          value = None
         elif value is not None:
           value = value._createCopy( self, obj_attr['id'])
           value.lang = lang
@@ -577,30 +538,28 @@ class ObjAttrs:
               fmt_str = 'DATE_FMT'
             elif datatype == _globals.DT_TIME:
               fmt_str = 'TIME_FMT'
-            _globals.writeLog( self, "[_getObjAttrValue]: type(value) is type(string) - parseLangFmtDate(%s)"%(str(value)))
-            set, value = True, self.parseLangFmtDate(value)
+            value = self.parseLangFmtDate(value)
           elif type(value) is not time.struct_time:
-            _globals.writeLog( self, "[_getObjAttrValue]: type(value) is not time.struct_time - getDateTime(%s)"%(str(value)))
-            set, value = True, _globals.getDateTime(value)
+            value = _globals.getDateTime(value)
       
       #-- List-Fields.
       elif datatype == _globals.DT_LIST:
-        if not type(value) is type(obj_default):
-          set, value = True, [value]
+        if not type(value) is list:
+          value = [value]
       
       #-- Integer-Fields.
-      elif datatype in _globals.DT_INTS and not type(value) is type(obj_default):
+      elif datatype in _globals.DT_INTS and not type(value) is int:
         try:
-          set, value = type( value) is not int, int(value)
+          value = int(value)
         except:
-          value = obj_default
+          value = 0
       
       #-- Float-Fields.
-      elif datatype == _globals.DT_FLOAT and not type(value) is type(obj_default):
+      elif datatype == _globals.DT_FLOAT and not type(value) is float:
         try:
-          set, value = type( value) is not float, float( value)
+          value = float( value)
         except:
-          value = obj_default
+          value = 0.0
       
       #-- Text-Fields
       elif datatype == _globals.DT_TEXT:
@@ -609,12 +568,6 @@ class ObjAttrs:
       #-- Url-Fields
       elif datatype == _globals.DT_URL:
         value = self.validateLinkObj(value)
-      
-      #-- SET?
-      if set and self.getConfProperty('ExtensionPoint.ObjAttrs._getObjAttrValue.setattr','')!='': 
-        attr = self._getObjAttrName( obj_attr, lang)
-        _globals.writeLog( self, "[_getObjAttrValue]: setattr(%s,%s)"%(attr,str(value)))
-        setattr(obj_vers,attr,value)
       
       # Return value.
       return value
@@ -840,7 +793,9 @@ class ObjAttrs:
       if datatype in _globals.DT_BLOBS:
         if self.getType()=='ZMSRecordSet' and \
            str(v) == str(_blobfields.createBlobField(self,datatype)):
-          l = self.getObjProperty(self.getMetaobj(self.meta_id)['attrs'][0]['id'],self.REQUEST)
+          metaObj = self.getMetaobj(self.meta_id)
+          metaObjAttrId = metaObj['attrs'][0]['id']
+          l = self.attr(metaObjAttrId)
           r = filter(lambda x: v.equals(x.get(obj_attr['id'],None)),l)
           if len( r) == 0:
             v = None
@@ -986,7 +941,7 @@ class ObjAttrs:
           set, value = True, value
         
         # Delete
-        elif REQUEST.has_key('del_%s'%elName) and int(REQUEST['del_%s'%elName]) == 1:
+        elif int(REQUEST.get('del_%s'%elName,0)) == 1:
           set, value = True, None
         
         # Preload

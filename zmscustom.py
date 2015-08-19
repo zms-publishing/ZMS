@@ -515,12 +515,15 @@ class ZMSCustom(ZMSContainerObject):
               objAttrName = self.getObjAttrName(objAttr,lang)
               if metaObjAttr['type'] in self.metaobj_manager.valid_types or \
                  metaObjAttr['type'] not in self.metaobj_manager.valid_xtypes+self.metaobj_manager.valid_zopetypes:
-                value = self.formatObjAttrValue(objAttr,REQUEST.get(objAttrName),lang)
+                set,value = True,self.formatObjAttrValue(objAttr,REQUEST.get(objAttrName),lang)
                 try: del value['aq_parent']
                 except: pass
-                if metaObjAttr['id'] == 'sort_id' and value is None:
+                if value is None and metaObjAttr['id'] == 'sort_id':
                   value = len(res_abs)
-                row[metaObjAttr['id']] = value
+                if value is None and metaObjAttr['type'] in ['file','image'] and int(REQUEST.get('del_%s'%objAttrName,0)) == 0:
+                  set = False
+                if set:
+                  row[metaObjAttr['id']] = value
             res_abs[REQUEST['qindex']] = row
             params['qindex'] = REQUEST['qindex']
             message = self.getZMILangStr('MSG_CHANGED')

@@ -13,15 +13,38 @@
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<tal:block tal:define="zmscontext options/zmscontext">
+                  <item key="name"><![CDATA[<tal:block tal:define="zmscontext options/zmscontext; 
+	initialized python:'zcatalog_index' in zmscontext.getRootElement().getHome().objectIds();
+	uid python:request.form.get('uid','')">
 <div class="form-group">
   <label class="col-sm-2">Index</label>
   <div class="col-sm-10">
-    <tal:block tal:condition="python:'zcatalog_index' in zmscontext.getRootElement().getHome().objectIds()">
+    <tal:block tal:condition="initialized">
       <a class="btn btn-default" tal:attributes="href python:'%s/manage_catalogView'%zmscontext.zcatalog_index.absolute_url()" target="_blank"><img tal:attributes="src python:zmscontext.zcatalog_index.icon"/> zcatalog_index</a>
     </tal:block>
     <button class="btn btn-danger" name="btn" value="reindex">Reindex</button>
     <button class="btn btn-danger" name="btn" value="resync">Resync</button>
+  </div>
+</div><!-- .form-group -->
+<div class="form-group">
+  <label class="col-sm-2">Uid</label>
+  <div class="col-sm-10">
+    <div class="input-group">
+      <input class="form-control" type="text" name="uid" tal:attributes="value uid" placeholder="Enter uid"/>
+      <span class="input-group-btn">
+        <button class="btn btn-primary" name="btn" value="search" onclick="$(this).parents('form').attr({action:self.location.href,method:'GET'})" tal:content="structure python:zmscontext.zmi_icon(name='icon-search')">search</button>
+     </span>
+    </div><!-- .input-group -->
+    <div class="well" tal:condition="uid">
+      <tal:block tal:define="q python:zmscontext.zcatalog_index({'get_uid':uid})">
+        <strong><tal:block tal:content="python:zmscontext.getZMILangStr('SEARCH_RETURNEDRESULTS')">returned results</tal:block>: <tal:block tal:content="python:len(q)">#q</tal:block></strong>
+        <ul>
+        <tal:block tal:repeat="r q">
+          <li><a tal:attributes="href python:'%s/manage'%r['getPath']" target="_blank" tal:content="python:r['getPath']">the path</a></li>
+        </tal:block>
+        </ul>
+      </tal:block>
+    </div>
   </div>
 </div><!-- .form-group -->
 </tal:block>]]>
@@ -227,22 +250,20 @@ def ZMSIndexZCatalog_func_( zmscontext, *args, **kwargs):
         
         def handleUrl(node,v):
           zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleUrl %s'%v)
+          ref = None
           if v.startswith('{$') and v.endswith('}'):
             if not (v.startswith('{$__') and v.endswith('__}')) \
                and not (v.startswith('{$') and v.find('id:')>0 and v.endswith('}')):
               ref = find_node(node,v[2:-1].replace('@','/content/'))
-              if ref is not None:
-                ref.registerRefObj(node) 
-                old = v
-                new = node.getRefObjPath(ref)
-                zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
-                v = new
             elif v.startswith('{$') and v.find('id:')>0 and v.endswith('}'):
-              old = v
-              new = get_oid2uid(v)
-              zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
-              if old != new:
-                v = new
+              data_id = get_oid2uid(v)
+              ref = node.getLinkObj(data_id)
+          if ref is not None:
+            ref.registerRefObj(node) 
+            old = v
+            new = node.getRefObjPath(ref)
+            zmscontext.writeBlock('[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
+            v = new
           return v
         
         def visit(node):
@@ -587,7 +608,7 @@ return '{$%s}'%ref
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.23]]></item>
+          <item key="revision"><![CDATA[0.9.25]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -606,7 +627,7 @@ return '{$%s}'%ref
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.23]]></item>
+          <item key="revision"><![CDATA[0.9.25]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

@@ -519,6 +519,48 @@ ZMI.prototype.initInputFields = function(container) {
 			});
 			// Url-Picker
 			$("input.url-input",this).each(function() {
+					var $input = $(this);
+					var fmName = $input.parents("form").attr("name");
+					var elName = $input.attr("name");
+					$input.wrap('<div class="input-group"></div>');
+					var $inputgroup = $(this).parent();
+					$inputgroup.append(''
+								+ '<span class="input-group-addon ui-helper-clickable" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+									+ $ZMI.icon("icon-link")
+								+ '</span>'
+						);
+          /*
+					$inputgroup.next(".breadcrumb").each(function() {
+							var $breadcrumb = $(this);
+							var resizeListener = function() {
+									$breadcrumb.css({
+											"z-index":9999
+											,"cursor":"grab"
+											,"position":"absolute"
+											,"top":$inputgroup.css("top")
+											,"left":$inputgroup.css("left")
+											,"width":$input.css("width")
+											,"height":$inputgroup.css("height")
+											,"margin":"0 0 0 1em"
+											,"padding":".4em 0 0 .2em"
+											,"overflow":"hidden"
+											,"white-space":"nowrap"
+											,"border":"1px solid #CCC"
+										})
+								}
+							$(window).resize(function() {
+									resizeListener();
+								});
+							resizeListener();
+							$breadcrumb.click(function() {
+										$breadcrumb.hide();
+										$input.focus();
+									});
+							$input.blur(function() {
+										$breadcrumb.show();
+								});
+						});
+
 					var $clone = $(this).clone();
 					var id = $clone.attr('id');
 					$clone.addClass('form-control');
@@ -548,6 +590,7 @@ ZMI.prototype.initInputFields = function(container) {
 								content:content
 							});
 					}
+          */
 				});
 				// Richedit
 				var $richedits = $('div[id^="zmiStandardEditor"]',this);

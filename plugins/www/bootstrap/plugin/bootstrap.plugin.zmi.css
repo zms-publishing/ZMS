@@ -145,6 +145,20 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	max-width: 172px;
 	overflow: hidden;
 }
+.form-group.controls-row ul.breadcrumb {
+	padding: 0.4em 1em 0 1em;
+	white-space: nowrap;
+	font-size: 80%;
+	display: block;
+	background-color: transparent;
+}
+#attr_ref_preview .contentEditable {
+	background-color: #fff;
+	box-shadow: 0 2px 10px #ccc;
+	border-radius: 4px;
+	padding: 1em;
+	margin: 0 0 1em;
+}
 
 /* url popover showing breadcrumbs */
 .popover.bottom {

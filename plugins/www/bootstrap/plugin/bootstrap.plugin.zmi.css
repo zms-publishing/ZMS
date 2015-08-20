@@ -159,6 +159,14 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	padding: 1em;
 	margin: 0 0 1em;
 }
+#attr_ref_preview .contentEditable:before {
+	content: 'preview';
+	display: inline-block;
+	text-align: right;
+	position: relative;
+	float: right;
+	color: silver;
+}
 
 /* url popover showing breadcrumbs */
 .popover.bottom {

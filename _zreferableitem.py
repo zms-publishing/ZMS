@@ -51,7 +51,7 @@ def getInlineRefs(text):
   l = []
   p = '<a (.*?)href="(.*?)"(.*?)>(.*?)<\\/a>'
   r = re.compile(p)
-  for f in r.findall(text):
+  for f in r.findall(str(text)):
     ref = None
     attr = f[0]+f[2]
     if attr.find('data-id=') >= 0:

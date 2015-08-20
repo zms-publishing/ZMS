@@ -145,7 +145,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	max-width: 172px;
 	overflow: hidden;
 }
-.form-group.controls-row ul.breadcrumb {
+.form-group ul.breadcrumb {
 	padding: 0.4em 1em 0 1em;
 	white-space: nowrap;
 	font-size: 80%;

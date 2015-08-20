@@ -675,7 +675,7 @@ class ObjAttrs:
         key = key[key.find('.')+1:]
       if id == '*':
         root = self.getRootElement()
-      return self.getMetaobjManager().evalMetaobjAttr(id,key,zmscontext=self,options=kwargs)
+      return root.getMetaobjManager().evalMetaobjAttr(id,key,zmscontext=self,options=kwargs)
 
 
     # --------------------------------------------------------------------------

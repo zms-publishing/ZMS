@@ -65,7 +65,7 @@ class CopySupport:
           cp=_cb_decode(cp)
         except: 
           _globals.writeError( self, '[CopySupport._get_obs]: eInvalid')
-          raise CopyError, eInvalid
+          #raise CopyError, eInvalid
         
         oblist=[]
         op=cp[0]
@@ -77,7 +77,7 @@ class CopySupport:
             ob = m.bind(app)
           except: 
             _globals.writeError( self, '[CopySupport._get_obs]: eNotFound')
-            raise CopyError, eNotFound
+            #raise CopyError, eNotFound
           self._verifyObjectPaste(ob)
           oblist.append(ob)
         

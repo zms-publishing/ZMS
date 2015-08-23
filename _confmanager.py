@@ -516,7 +516,7 @@ class ConfManager(
       confdict = self.getConfProperties()
       if confdict.has_key(key):
         value = confdict.get( key, default)
-      elif key is not None and key.startswith('ExtensionPoint.'):
+      elif key is not None and (key in ['ZMS.theme'] or key.startswith('ExtensionPoint.')):
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           value = portalMaster.getConfProperty( key, default)

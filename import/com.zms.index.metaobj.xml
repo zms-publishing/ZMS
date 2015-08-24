@@ -18,17 +18,26 @@
 		initialized python:'zcatalog_index' in zmscontext.getRootElement().getHome().objectIds();
 		uid python:request.form.get('uid','')">
 	<div class="form-group">
-		<label class="col-sm-2">Index</label>
+		<label class="col-sm-2 control-label">Index</label>
 		<div class="col-sm-10">
 			<tal:block tal:condition="initialized">
 				<a class="btn btn-default" tal:attributes="href python:'%s/manage_catalogView'%zmscontext.zcatalog_index.absolute_url()" target="_blank"><img tal:attributes="src python:zmscontext.zcatalog_index.icon"/> zcatalog_index</a>
 			</tal:block>
 			<button class="btn btn-danger" name="btn" onclick="window.open('zmsindex/ZMSIndexZCatalog_func_?func_=reindex');return false;">Reindex</button>
-			<button class="btn btn-danger" name="btn" onclick="window.open('zmsindex/ZMSIndexZCatalog_func_?func_=resync');return false;" tal:condition="initialized">Resync</button>
 		</div>
 	</div><!-- .form-group -->
 	<div class="form-group" tal:condition="initialized">
-		<label class="col-sm-2">Uid</label>
+		<label class="col-sm-2 control-label">References</label>
+		<div class="col-sm-10">
+			<input class="form-control url-input" id="resync-url" value="{$}"/>
+			<div class="col-sm-12" tal:condition="python:len(zmscontext.getPortalClients())>0">
+				<input type="checkbox" id="resync-clients" checked="checked"/> Clients
+			</div>
+			<button class="btn btn-danger" name="btn" onclick="window.open('zmsindex/ZMSIndexZCatalog_func_?func_=resync&url='+escape($('#resync-url').val())+($('#resync-clients').prop('checked')==true?'&clients:int=1':''));return false;" tal:condition="initialized">Resync</button>
+		</div>
+	</div><!-- .form-group -->
+	<div class="form-group" tal:condition="initialized">
+		<label class="col-sm-2 control-label">Uid</label>
 		<div class="col-sm-10">
 			<div class="input-group">
 				<input class="form-control" type="text" name="uid" tal:attributes="value uid" placeholder="Enter uid"/>
@@ -333,12 +342,13 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                         self.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
           for childNode in node.getChildNodes():
             l.extend(visit(childNode))
-          if node.meta_id == 'ZMS':
+          if node.meta_id == 'ZMS' and request.get('clients',0)==1:
             for childNode in node.getPortalClients():
               l.extend(visit(childNode))
           return l
         
-        index = visit(self.getDocumentElement())
+        base = self.getLinkObj(request['url'])
+        index = visit(base)
         write(self,'[ZMSIndexZCatalog_func_] resync %i'%len(index))
   except:
     t,v,tb = sys.exc_info()
@@ -600,7 +610,7 @@ return '{$%s}'%ref
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.26]]></item>
+          <item key="revision"><![CDATA[0.9.27]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -619,7 +629,7 @@ return '{$%s}'%ref
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.26]]></item>
+          <item key="revision"><![CDATA[0.9.27]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

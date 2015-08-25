@@ -141,7 +141,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       if catalog is not None:
         path = self.getPath()
         # Sanity check: if uid is already catalogued we have to generate new uid
-        q = catalog({'get_uid':znscontext.get_uid()})
+        q = catalog({'get_uid':self.get_uid()})
         if len(q) > 0:
           self.get_uid(True)
         # Catalog object.
@@ -624,7 +624,7 @@ return '{$%s}'%ref
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.30]]></item>
+          <item key="revision"><![CDATA[0.9.31]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -643,7 +643,7 @@ return '{$%s}'%ref
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.30]]></item>
+          <item key="revision"><![CDATA[0.9.31]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

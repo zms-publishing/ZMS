@@ -20,9 +20,8 @@
 	<div class="form-group">
 		<label class="col-sm-2 control-label">Index</label>
 		<div class="col-sm-10">
-			<div class="row col-sm-4">
-				<a tal:condition="initialized"
-					class="btn btn-default col-sm-12" 
+			<div class="row col-sm-4" tal:condition="initialized">
+				<a class="btn btn-default col-sm-12" 
 					tal:attributes="href python:'%s/manage_catalogView'%zmscontext.zcatalog_index.absolute_url()" target="_blank"
 					><img tal:attributes="src python:zmscontext.zcatalog_index.icon"/> zcatalog_index</a>
 			</div>
@@ -625,7 +624,7 @@ return '{$%s}'%ref
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.29]]></item>
+          <item key="revision"><![CDATA[0.9.30]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -644,7 +643,7 @@ return '{$%s}'%ref
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.29]]></item>
+          <item key="revision"><![CDATA[0.9.30]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

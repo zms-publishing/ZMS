@@ -301,21 +301,20 @@ class ZReferableItem:
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
-    p = '<a (.*?)data-id="(.*?)"(.*?)>(.*?)<\\/a>'
+    p = '<a(.*?)>(.*?)<\\/a>'
     r = re.compile(p)
     for f in r.findall(text):
-      data_id = f[1]
-      d0 = dict(re.findall('(\\w*?)="(.*?)"',f[0]))
-      d1 = dict(re.findall('(\\w*?)="(.*?)"',f[2]))
-      d = dict(d0,**d1)
-      old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
-      href = self.getLinkUrl(url='{$%s}'%data_id)
-      d['data-id'] = data_id
-      d['href'] = href
-      title = f[3]
-      new = '<a %s>%s</a>'%(' '.join(map(lambda x:'%s="%s"'%(x,d[x]),d.keys())),title)
-      if old != new:
-        text = text.replace(old,new)
+      d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
+      if d.has_key('data-id'):
+        old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
+        ob = self.getLinkObj(url='{$%s}'%d['data-id'])
+        if ob is not None:
+          href = self.getLinkUrl(url='{$%s}'%d['data-id'])
+          d['href'] = href
+        title = f[1]
+        new = '<a %s>%s</a>'%(' '.join(map(lambda x:'%s="%s"'%(x,d[x]),d.keys())),title)
+        if old != new:
+          text = text.replace(old,new)
     return text
 
 

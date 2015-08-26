@@ -446,7 +446,13 @@ textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 .zmi .navbar-inner{border-radius:0 !important}
 .zmi footer{left:0px;bottom:0px;height:26px;width:100%;padding:0.5em;font-size:11px !important}
 .zmi ul.breadcrumb{clear:left;padding:1em 0 1em 1.8em;margin-bottom:0px !important}
-.zmi #zmi-tab > ul.breadcrumb li{white-space:nowrap;text-overflow:ellipsis;max-width:128px;overflow:hidden}
+.zmi #zmi-tab > ul.breadcrumb li,.popover.bottom ul.breadcrumb li{white-space:nowrap;text-overflow:ellipsis;max-width:128px;overflow:hidden}
+.zmi.ref form ul.breadcrumb{padding:1em 0 0 0 !important;margin:0 !important;background-color:white !important}
+.zmi.ref form ul.breadcrumb li{white-space:nowrap;text-overflow:ellipsis;max-width:172px;overflow:hidden}
+.form-group ul.breadcrumb{padding:0.4em 1em 0 1em;white-space:nowrap;font-size:80%;display:block;background-color:transparent}
+#attr_ref_preview .contentEditable{background-color:#fff;box-shadow:0 2px 10px #ccc;border-radius:4px;padding:1em;margin:0 0 1em}
+#attr_ref_preview .contentEditable:before{content:'preview';display:inline-block;text-align:right;position:relative;float:right;color:silver}
+.popover.bottom{max-width:90% !important}
 .zmi ol,.zmi ul,.zmi li,.zmi p,.zmi sup,.zmi sub,.zmi table,.zmi tr,.zmi th,.zmi td{color:#333}
 .zmi a{color:#08c}
 .zmi a.btn-primary{color:#fff}
@@ -485,7 +491,7 @@ ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId{text-alig
 .zmi.Manager ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manage-main-change{visibility:visible}
 ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS{float:left;position:absolute}
 ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS h1{padding:.35em 0 0 1em;font-size:large;margin-top:0}
-table.table tbody tr td.data{white-space:nowrap;overflow:hidden}
+table.table tbody tr td.data > div{white-space:nowrap;overflow:hidden;max-width:50em;max-height:30px;padding:0;margin:0}
 table.table.zmi-sortable select.zmi-sort{direction:rtl;width:4em}
 table.table.zmi-sortable input{margin-bottom:10px}
 table.table.zmi-sortable .input-group input{margin-bottom:0px}
@@ -560,7 +566,6 @@ ul.zmi-container.pages .zmi-item .contentEditable{padding-left:1.0em !important;
 .zmi.properties .accordion-group{background-color:#fff;padding:1em}
 .zmi.properties .accordion-group .accordion-inner{padding:0.5em 0;margin:0.5em 0}
 .zmi.properties .accordion-body.container .accordion-inner{margin:0}
-.zmi.properties form.form-horizontal .accordion-group .accordion-heading .accordion-toggle{text-decoration:underline}
 .zmi.properties form.form-horizontal .accordion-group.zmi-container .accordion-heading{padding:0.5em 0}
 .zmi.properties form.form-horizontal{background-color:transparent;padding:0}
 .zmi.properties form.form-horizontal .accordion-group{width:100%;background-color:#fff}
@@ -579,7 +584,7 @@ ul.zmi-container.pages .zmi-item .contentEditable{padding-left:1.0em !important;
 .form-horizontal .col-lg-2.control-label.mandatory span.glyphicon-exclamation,.form-horizontal .col-lg-2.control-label.mandatory i.icon-exclamation{color:red}
 .form-horizontal .col-lg-10 .pull-left{padding-right:.5em}
 div.accordion-heading a.accordion-toggle{font-weight:bold}
-div.accordion-heading a.accordion-toggle:hover,div.accordion-heading a.accordion-toggle:focus{text-decoration:none}
+div.accordion-heading a.accordion-toggle:hover,div.accordion-heading a.accordion-toggle:focus{text-decoration:none;color:#000000}
 div.accordion-heading a.accordion-toggle .icon-caret-right,div.accordion-heading a.accordion-toggle .icon-caret-down{margin-right:0.3em}
 div.accordion-heading div.pull-left{padding-top:0.5em}
 .accordion-body.container .accordion-inner{padding:0;margin:0}

@@ -182,11 +182,12 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.get_uid:
     # --------------------------------------------------------------------------
     def get_uid(self, forced=False):
-      if forced or '_uid' not in self.__dict__.keys():
-        import uuid
-        uid = str(uuid.uuid4())
-        self._uid = uid
-      return 'uid:%s'%self._uid
+      def default(*args, **kwargs):
+        self = args[0]
+        forced = args[1]['forced']
+        return self.id
+      uid = self.evalExtensionPoint('ExtensionPoint.ZMSObject.get_uid',default,forced=forced)
+      return uid
 
     # --------------------------------------------------------------------------
     #  ZMSObject.set_uid:

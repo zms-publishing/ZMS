@@ -39,11 +39,13 @@ INSTALL_REQUIRES_ABSTRACT = [
   'zope.publisher==3.13.4',       # due to zope.publisher>=4.0.0 causes errors on rendering legacy DTML-Methods
   'zms3.formulator',
   'zms3.mindmap',
+  'zms3.deployment',
 ]
 
 # Unreleased packages including custom patches to build the environment
 DEPENDENCY_LINKS = [
-  'https://zmslabs.org/download/' # https://zmslabs.org/download/Products.CMFCore-2.3.0dev.tar.gz
+  'https://zmslabs.org/download/',                # https://zmslabs.org/download/Products.CMFCore-2.3.0dev.tar.gz
+  'https://bitbucket.org/zms3/patches/downloads', # https://bitbucket.org/zms3/patches/downloads/zms3.deployment-0.2.3.zip
 ]
 
 # Concrete requirements to build the environment

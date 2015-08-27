@@ -135,6 +135,17 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       return None
     
     ##############################################################################
+    # Get uid
+    ##############################################################################
+    elif func_ == 'get_uid':
+      forced = args[1]
+      if forced or '_uid' not in self.__dict__.keys() or getattr(self,'_uid',None) is None: 
+        import uuid 
+        uid = str(uuid.uuid4()) 
+        self._uid = uid 
+      return 'uid:%s'%self._uid
+    
+    ##############################################################################
     # Catalog Object
     ##############################################################################
     elif func_ == 'catalog_object':
@@ -194,7 +205,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       catalog = getattr(home,id,None)
       addLexicon(catalog)
       # Add indices.
-      for index_name in ['id','meta_id','get_uid']:
+      for index_name in ['id','meta_id','get_uid','get_oid']:
         index_type = 'ZCTextIndex'
         extra = Clazz()
         extra.doc_attr = index_name
@@ -202,7 +213,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         extra.lexicon_id = 'Lexicon'
         catalog.manage_addIndex(index_name,index_type,extra)
       # Add columns
-      for index_name in ['id','meta_id','getPath','get_uid']:
+      for index_name in ['id','meta_id','getPath','get_uid','get_oid']:
         catalog.manage_addColumn(index_name)
       # Visit tree
       def visit(node):
@@ -229,24 +240,17 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     elif func_ == 'resync':
       if catalog is not None:
         
-        duid = {}
         def get_oid2uid(id):
           if id.startswith('{$') and id.find('oid:')>0 and id.endswith('}'):
-            if len(duid.keys())==0:
-              write(self,'[ZMSIndexZCatalog_func_] get_oid2uid')
-              def visit(node):
-                duid[node.get_oid()] = node.get_uid()
-                for childNode in node.getChildNodes():
-                  visit(childNode)
-              visit(self.getDocumentElement())
-              write(self,'[ZMSIndexZCatalog_func_] get_oid2uid[%i]'%len(duid.keys()))
             oid = id
             oid = oid[2:-1]
             if oid.startswith('__') and oid.endswith('__'):
               oid = oid[2:-2]
-            write(self,'[ZMSIndexZCatalog_func_] get_oid2uid[%s]'%oid)
-            if duid.has_key(oid):
-              id = '{$%s}'%duid[oid]
+            q = catalog({'get_oid':oid})
+            for r in q:
+              id = '{$%s}'%r['get_uid']
+              write(self,'[ZMSIndexZCatalog_func_] get_oid2uid[%s]'%id)
+              break
           return id
         
         def find_node(base,path):
@@ -258,15 +262,24 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                 ref = ref.getParentNode()
             elif id not in ['','.'] and id.find('.')<0:
               childNode = getattr(ref,id,None)
-              if childNode is None:
-                break
+              if childNode is None and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
+                for o in ref.getChildNodes():
+                  for lang in self.getLanguages():
+                    r = {'lang':lang}
+                    if o.getDeclId(r)==id:
+                      childNode = o
+                    if childNode is not None:
+                      break
+                  if childNode is not None:
+                    break
               ref = childNode
+              if ref is None:
+                break
           return ref
         
         def handleInline(node,v): 
           p = '<a (.*?)href="(.*?)"(.*?)>(.*?)<\\/a>'
           for f in node.re_findall(p,v):
-            write(node,'[ZMSIndexZCatalog_func_] handleInline f=%s'%str(f))
             ref = None
             attr = f[0]+f[2]
             if attr.find('data-id=') >= 0:
@@ -493,7 +506,9 @@ return '{$%s}'%ref
 ##
 # --// get_uid //--
 
-return 'uid:%s'%zmscontext.operator_getattr(zmscontext,'_uid')
+forced = options['forced']
+uid = zmscontext.ZMSIndexZCatalog_func_(zmscontext,'get_uid',forced)
+return uid
 
 # --// /get_uid //--
 ]]>
@@ -636,11 +651,31 @@ traverse(zmscontext)
                   <item></item>
                   <item></item>
                   <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
                 </list>
               </item>
               <item key="insert_custom"><![CDATA[{$}]]></item>
               <item key="insert_deny" type="list">
                 <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                  <item></item>
                   <item></item>
                   <item></item>
                   <item></item>
@@ -652,7 +687,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.32]]></item>
+          <item key="revision"><![CDATA[0.9.35]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -671,7 +706,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.32]]></item>
+          <item key="revision"><![CDATA[0.9.35]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

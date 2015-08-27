@@ -711,7 +711,7 @@ class ConfManager(
             isProcessed = False
             try:
               ZMSExtension  = self.extutil()
-              filesToImport = ZMSExtension.getFilesToImport(zmsext)
+              filesToImport = ZMSExtension.getFilesToImport(zmsext, self.getDocumentElement())
               if len(filesToImport)>0:
                 for f in filesToImport:
                   self.importConf(f, createIfNotExists=True, syncIfNecessary=False)

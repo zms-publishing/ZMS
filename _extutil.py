@@ -317,7 +317,7 @@ class ZMSExtensions():
     else:
       return None
       
-  def getFilesToImport(self, ext=None):
+  def getFilesToImport(self, ext=None, context=None):
     """
       Return list of configuration files of given extension with full pathnames
     """
@@ -328,6 +328,10 @@ class ZMSExtensions():
         for f in files:
           filename = ResourceManager().resource_filename(ext, 'conf/' + f)
           filenames.append(filename)
+          # if ZMSActions are included but no Provider available - create it
+          if ('.metacmd.' in f) and ('ZMSMetacmdProvider' not in map(lambda x: x.meta_type, context.objectValues())):
+            context.REQUEST.set('meta_type', 'ZMSMetacmdProvider')
+            context.manage_customizeSystem('Add', 'Manager', context.REQUEST['lang'], context.REQUEST)
         return filenames
     return []
   

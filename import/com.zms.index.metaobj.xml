@@ -264,8 +264,8 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               childNode = getattr(ref,id,None)
               if childNode is None and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
                 for o in ref.getChildNodes():
-                  for lang in self.getLanguages():
-                    r = {'lang':lang}
+                  for l in o.getLanguages():
+                    r = {'lang':l}
                     try:
                       if o.getDeclId(r)==id:
                         childNode = o

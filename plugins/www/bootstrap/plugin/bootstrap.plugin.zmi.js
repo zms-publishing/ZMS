@@ -522,13 +522,27 @@ ZMI.prototype.initInputFields = function(container) {
 					var $input = $(this);
 					var fmName = $input.parents("form").attr("name");
 					var elName = $input.attr("name");
-					$input.wrap('<div class="input-group"></div>');
+					$input
+						.wrap('<div class="input-group"></div>');
 					var $inputgroup = $(this).parent();
 					$inputgroup.append(''
 								+ '<span class="input-group-addon ui-helper-clickable" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
 									+ $ZMI.icon("icon-link")
 								+ '</span>'
 						);
+					var fn = function() {
+							$inputgroup.next(".breadcrumb").remove();
+							$.ajax({
+									url: 'zmi_breadcrumbs_obj_path',
+									data:{lang:getZMILang(),zmi_breadcrumbs_ref_obj_path:$input.val()},
+									datatype:'text',
+									success:function(response) {
+											$inputgroup.next(".breadcrumb").remove();
+											$inputgroup.after(response.replace(/<!--(.*?)-->/gi,'').trim());
+										}
+								});
+						};
+					$input.change(fn).change();
           /*
 					$inputgroup.next(".breadcrumb").each(function() {
 							var $breadcrumb = $(this);
@@ -1168,11 +1182,11 @@ function zmiBrowseObjs(fmName, elName, lang) {
 }
 
 function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue, elTitle) {
-	$('form[name='+fmName+'] input[name='+elName+']').val(elValue);
+	$('form[name='+fmName+'] input[name='+elName+']').val(elValue).change();
 	if (typeof elTitle != "undefined") {
 		$('form[name='+fmName+'] input[name^=title]:text').each(function() {
 				if ($(this).val()=='') {
-					$(this).val(elTitle);
+					$(this).val(elTitle).change();
 				} 
 			});
 	}

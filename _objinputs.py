@@ -37,13 +37,7 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getUrlInput(self, fmName, elName, elTextName, size, value, enabled, REQUEST, css='form-control'):
-    lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
-    html = []
-    html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css+' url-input'))
-    ref_obj = self.getLinkObj(value,REQUEST)
-    if ref_obj is not None:
-      html.append(ref_obj.zmi_breadcrumbs_obj_path(ref_obj,REQUEST))
-    return ''.join(html)
+    return self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css+' url-input')
 
 
   # ----------------------------------------------------------------------------

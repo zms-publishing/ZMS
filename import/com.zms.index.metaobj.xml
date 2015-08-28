@@ -277,20 +277,18 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                 break
           return ref
         
-        def handleInline(node,v): 
-          p = '<a (.*?)href="(.*?)"(.*?)>(.*?)<\\/a>'
-          for f in node.re_findall(p,v):
-            ref = None
-            attr = f[0]+f[2]
-            if attr.find('data-id=') >= 0:
-              data_id = attr[attr.find('data-id='):]
-              data_id = data_id[data_id.find('"')+1:]
-              data_id = data_id[:data_id.find('"')]
+        def handleInline(node,v):
+          p = '<a(.*?)>(.*?)<\\/a>'
+          r = re.compile(p)
+          for f in r.findall(v):
+            d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
+            if d.has_key('data-id'):
+              data_id = d['data-id']
               write(node,'[ZMSIndexZCatalog_func_] handleInline data_id=%s'%data_id)
               data_id = get_oid2uid('{$%s}'%data_id)
               ref = node.getLinkObj(data_id)
-            if ref is None:
-              href = f[1]
+            if ref is None and d.has_key('href'):
+              href = d['href']
               for prefix in [request['SERVER_URL'],self.getConfProperty('ASP.ip_or_domain','?')]:
                 if href.startswith(prefix):
                   href = href[len(prefix):]
@@ -300,10 +298,12 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             if ref is not None:
               ref.registerRefObj(node) 
               old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
-              new = '<a data-id="'+ref.get_uid()+'" '+re.sub('data-id="(.*?)"','',f[0])+'href="'+f[1]+'"'+re.sub('data-id="(.*?)"','',f[2])+'>'+f[3]+'</a>'
-              write(node,'[ZMSIndexZCatalog_func_] handleInline old:\'%s\''%old)
-              write(node,'[ZMSIndexZCatalog_func_] handleInline new:\'%s\''%new)
-              v = v.replace(old,new)
+              title = f[1]
+              new = '<a %s>%s</a>'%(' '.join(map(lambda x:'%s="%s"'%(x,d[x]),d.keys())),title)
+              if old != new:
+                write(node,'[ZMSIndexZCatalog_func_] handleInline old:\'%s\''%old)
+                write(node,'[ZMSIndexZCatalog_func_] handleInline new:\'%s\''%new)
+                v = v.replace(old,new)
           return v
         
         def handleUrl(node,v):
@@ -651,31 +651,11 @@ traverse(zmscontext)
                   <item></item>
                   <item></item>
                   <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
                 </list>
               </item>
               <item key="insert_custom"><![CDATA[{$}]]></item>
               <item key="insert_deny" type="list">
                 <list>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
-                  <item></item>
                   <item></item>
                   <item></item>
                   <item></item>
@@ -687,7 +667,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.35]]></item>
+          <item key="revision"><![CDATA[0.9.36]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -706,7 +686,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.35]]></item>
+          <item key="revision"><![CDATA[0.9.36]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

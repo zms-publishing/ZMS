@@ -1,11 +1,18 @@
 <!-- common/zmi_breadcrumbs_obj_path -->
 
+<tal:block tal:condition="not:python:request.form.has_key('zmi_breadcrumbs_ref_obj_path')">
+	<tal:block tal:define="global zmscontext here"></tal:block>
+</tal:block>
+<tal:block tal:condition="python:request.form.has_key('zmi_breadcrumbs_ref_obj_path')">
+	<tal:block tal:define="global zmscontext python:here.getLinkObj(request.form['zmi_breadcrumbs_ref_obj_path'])"></tal:block>
+</tal:block>
+<tal:block tal:condition="python:zmscontext is not None">
 <ul class="breadcrumb" tal:define="
-		middot python:options.get('middot','metaobj_manager/manage_main?lang=%s&id=%s'%(request['lang'],here.meta_id));
-		childNodes python:here.breadcrumbs_obj_path()"
+		middot python:options.get('middot','metaobj_manager/manage_main?lang=%s&id=%s'%(request['lang'],zmscontext.meta_id));
+		childNodes python:zmscontext.breadcrumbs_obj_path()"
 	><li tal:repeat="childNode childNodes" tal:attributes="class python:' '.join([['','active'][int(childNode==childNodes[-1])]])"
-		><span tal:omit-tag="python:not request['AUTHENTICATED_USER'].has_permission('ZMS Administrator',here)"
-			tal:attributes="onclick python:'javascript:window.open(\'%s/%s\',\'MetaObjectManagerWindow\')'%(here.getDocumentElement().absolute_url(),middot)"
+		><span tal:omit-tag="python:not request['AUTHENTICATED_USER'].has_permission('ZMS Administrator',zmscontext)"
+			tal:attributes="onclick python:'javascript:window.open(\'%s/%s\',\'MetaObjectManagerWindow\')'%(zmscontext.getDocumentElement().absolute_url(),middot)"
 			><tal:block tal:condition="python:childNode==childNodes[-1]" 
 				tal:content="structure python:childNode.display_icon(request,zpt=True)">the icon</tal:block
 		></span>&nbsp;<a tal:define="titlealt python:childNode.getTitlealt(request).replace(' & ',' &amp; ');title python:childNode.getTitle(request).replace(' & ',' &amp; ');" 
@@ -13,5 +20,6 @@
 			tal:content="structure titlealt">the titlealt
 	</a></li>
 </ul>
+</tal:block>
 
 <!-- /common/zmi_breadcrumbs_obj_path -->

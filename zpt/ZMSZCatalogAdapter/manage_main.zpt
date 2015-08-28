@@ -114,7 +114,7 @@ $ZMI.registerReady(function(){
 			<div class="form-group" tal:condition="python:len(here.getPortalClients())>0">
 				<label class="col-sm-2 control-label" for="catalog_portal_clients"><span>Clients</span></label>
 				<div class="col-sm-10">
-					<input type="checkbox" value="1" id="catalog_portal_clients" name="options:list" tal:attributes="checked python:['','checked'][int('catalog_portal_clients' in request.form.get('options',[]))]"/>
+					<input type="checkbox" value="1" id="catalog_portal_clients" name="catalog_portal_clients:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZCatalog.portalClients',1)==1)]"/>
 				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group">

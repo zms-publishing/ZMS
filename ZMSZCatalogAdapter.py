@@ -339,6 +339,7 @@ class ZMSZCatalogAdapter(
         # -----
         elif btn == 'Save':
           self.setConfProperty('ZMS.CatalogAwareness.active',REQUEST.get('catalog_awareness_active')==1)
+          self.setConfProperty('ZCatalog.portalClients',REQUEST.get('catalog_portal_clients')==1)
           self._ids = REQUEST.get('ids',[])
           attrs = {}
           for attr_id in REQUEST.get('attr_ids',[]):

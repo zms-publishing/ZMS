@@ -23,7 +23,7 @@ EXTENSIONS = {
                       'Submit JSON-based HTML-Forms into a SQL-Storage with protection by reCAPTCHA',
                       'https://bitbucket.org/zms3/formulator',
                       'developed by SNTL Publishing'],
-  'zms3.mindmap': ['0.1.2',
+  'zms3.mindmap': ['0.1.4',
                    'Browse Mindmaps using a FlashViewer',
                    'https://bitbucket.org/zms3/mindmap',
                    'developed by Christian Meier'],
@@ -329,9 +329,12 @@ class ZMSExtensions():
           filename = ResourceManager().resource_filename(ext, 'conf/' + f)
           filenames.append(filename)
           # if ZMSActions are included but no Provider available - create it
-          if ('.metacmd.' in f) and ('ZMSMetacmdProvider' not in map(lambda x: x.meta_type, context.objectValues())):
-            context.REQUEST.set('meta_type', 'ZMSMetacmdProvider')
-            context.manage_customizeSystem('Add', 'Manager', context.REQUEST['lang'], context.REQUEST)
+          if context is not None:
+            if ('.metacmd.' in f) \
+              and ('ZMSMetacmdProvider' not in map(lambda x: x.meta_type, context.objectValues())) \
+              and ('ZMSMetacmdProviderAcquired' not in map(lambda x: x.meta_type, context.objectValues())):
+              context.REQUEST.set('meta_type', 'ZMSMetacmdProvider')
+              context.manage_customizeSystem('Add', 'Manager', context.REQUEST['lang'], context.REQUEST)
         return filenames
     return []
   

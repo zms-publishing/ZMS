@@ -311,6 +311,12 @@ class ZReferableItem:
         if ob is not None:
           href = self.getLinkUrl(url='{$%s}'%d['data-id'])
           d['href'] = href
+          if not ob.isActive(self.REQUEST):
+            d['data-target'] = "inactive"
+          elif self.getTrashcan().isAnchestor(ob):
+            d['data-target'] = 'trashcan'
+        else:
+          d['data-target'] = "missing"
         title = f[1]
         new = '<a %s>%s</a>'%(' '.join(map(lambda x:'%s="%s"'%(x,d[x]),d.keys())),title)
         if old != new:

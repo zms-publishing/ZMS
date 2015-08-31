@@ -166,7 +166,6 @@ class ZMSZCatalogAdapter(
           nodes.reverse()
           for node in nodes:
             if node.meta_id in self.getIds():
-              print connector, node
               connector.reindex_node(node)
               break
 

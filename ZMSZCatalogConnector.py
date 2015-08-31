@@ -29,6 +29,9 @@ import ZMSZCatalogAdapter
 import ZMSItem
 
 
+extra_column_ids = ['index_html','custom']
+
+
 # ------------------------------------------------------------------------------
 #  ZMSZCatalogConnector.intValue:
 # ------------------------------------------------------------------------------
@@ -97,7 +100,7 @@ def recreateCatalog(self, zcm, lang):
   addLexicon( self, zcatalog)
   
   #-- Add columns
-  for index_name in ['id','meta_id','absolute_url','zcat_column_custom']:
+  for index_name in ['id','meta_id','absolute_url']+map(lambda x:'zcat_column_%s'%x,extra_column_ids):
     zcatalog.manage_addColumn(index_name)
   
   #-- Add Indexes (incl. Columns)
@@ -228,6 +231,8 @@ class ZMSZCatalogConnector(
             v = result[k]
             if k == 'absolute_url':
               k = 'loc'
+            elif k == 'zcat_column_index_html':
+              k = 'index_html'
             elif k == 'zcat_column_custom':
               k = 'custom'
             elif k == 'standard_html':
@@ -374,7 +379,6 @@ class ZMSZCatalogConnector(
       zcm = self.getCatalogAdapter()
       lang = self.REQUEST.get('lang')
       # Prepare object.
-      extra_column_ids = ['custom']
       for attr_id in extra_column_ids:
         attr_name = 'zcat_column_%s'%attr_id
         value = d.get(attr_id)

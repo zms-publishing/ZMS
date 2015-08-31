@@ -242,13 +242,14 @@ class ZMSZCatalogAdapter(
         d = {}
         d['id'] = node.id
         d['loc'] = node.absolute_url()
+        d['index_html'] = node.getHref2IndexHtmlInContext(node,request)
         d['meta_id'] = node.meta_id
         d['custom'] = d.get('custom',{})
         d['custom']['breadcrumbs'] = []
         for obj in filter(lambda x:x.isPage(),node.breadcrumbs_obj_path()[1:-1]):
           d['custom']['breadcrumbs'].append({
               '__nodeName__':'breadcrumb',
-              'loc':obj.getHref2IndexHtml(request),
+              'loc':obj.getHref2IndexHtmlInContext(obj,request),
               'title':obj.getTitlealt(request),
             })
         return d

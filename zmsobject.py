@@ -880,7 +880,8 @@ class ZMSObject(ZMSItem.ZMSItem,
       return index_html
     
     #++
-    def getHref2IndexHtml(self, REQUEST, deep=1): 
+    def getHref2IndexHtml(self, REQUEST, deep=1):
+      deep = self.getConfProperty('ZMSObject.getHref2IndexHtml.deep',deep) 
       if not REQUEST.has_key('lang'):
         try: REQUEST.set('lang',self.getLanguage(REQUEST))
         except: REQUEST['lang'] = self.getPrimaryLanguage()

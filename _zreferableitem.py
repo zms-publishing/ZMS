@@ -313,7 +313,7 @@ class ZReferableItem:
           d['href'] = href
           if not ob.isActive(self.REQUEST):
             d['data-target'] = "inactive"
-          elif self.getTrashcan().isAnchestor(ob):
+          elif self.getTrashcan().isAncestor(ob):
             d['data-target'] = 'trashcan'
         else:
           d['data-target'] = "missing"

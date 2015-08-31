@@ -220,14 +220,15 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         l = []
         l.append(1)
         write(self,'[ZMSIndexZCatalog_func_] catalog_object %s'%node.getPath())
-        catalog.catalog_object(node, node.getPath())
-        for childNode in node.getChildNodes():
-          l.extend(visit(childNode))
         if node.meta_id == 'ZMS':
           node.setConfProperty('ZMS.InternalLinks.autocorrection',1)
           node.setConfProperty('ExtensionPoint.ZMSObject.get_uid','%s.get_uid'%self.meta_id)
           node.setConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath','%s.getRefObjPath'%self.meta_id)
           node.setConfProperty('ExtensionPoint.ZReferableItem.getLinkObj','%s.getLinkObj'%self.meta_id)
+        catalog.catalog_object(node, node.getPath())
+        for childNode in node.getChildNodes():
+          l.extend(visit(childNode))
+        if node.meta_id == 'ZMS':
           for childNode in node.getPortalClients():
             l.extend(visit(childNode))
         return l

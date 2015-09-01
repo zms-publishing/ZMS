@@ -388,9 +388,10 @@ class ZMSZCatalogConnector(
         value = node.attr(attr_id)
         setattr(node,attr_name,value)
       # Reindex object.
-      catalog = getattr(self,'catalog_%s'%lang)
-      catalog.uncatalog_object(node.getPath())
-      catalog.catalog_object(node,node.getPath())
+      catalog = getattr(self,'catalog_%s'%lang,None)
+      if catalog is not None:
+        catalog.uncatalog_object(node.getPath())
+        catalog.catalog_object(node,node.getPath())
       # Unprepare object.
       for attr_id in extra_column_ids:
         attr_name = 'zcat_column_%s'%attr_id

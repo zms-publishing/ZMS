@@ -54,7 +54,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
   REQUEST = container.REQUEST
   lang = REQUEST['lang']
   auth_user = REQUEST['AUTHENTICATED_USER']
-  userdef_roles = list(container.getDocumentElement().aq_parent.userdefined_roles())+list(container.getDocumentElement().userdefined_roles())
+  userdef_roles = list(container.getRootElement().aq_parent.userdefined_roles())+list(container.getRootElement().userdefined_roles())
   
   repetitive = objAttr.get('repetitive',0)==1
   mandatory = objAttr.get('mandatory',0)==1
@@ -131,7 +131,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   REQUEST = container.REQUEST
   auth_user = REQUEST['AUTHENTICATED_USER']
   absolute_url = '/'.join(list(container.getPhysicalPath())+[''])
-  userdef_roles = list(container.getDocumentElement().aq_parent.userdefined_roles())+list(container.getDocumentElement().userdefined_roles())
+  userdef_roles = list(container.getRootElement().aq_parent.userdefined_roles())+list(container.getRootElement().userdefined_roles())
   
   repetitive = objAttr.get('repetitive',0)==1
   mandatory = objAttr.get('mandatory',0)==1

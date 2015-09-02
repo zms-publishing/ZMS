@@ -271,7 +271,7 @@ class ZMSMetaobjManager:
           attrs = []
           for attr in ob['attrs']:
             attr_id = attr['id']
-            syncType( self, id, attr)
+            syncType( context, id, attr)
             for key in ['keys','custom','default']:
               if attr.has_key(key) and not attr[key]:
                 del attr[key]

@@ -958,9 +958,9 @@ class ObjAttrs:
               filename = getattr( temp_folder, id).title
               mt, enc = _globals.guess_contenttype( filename, f)
               set, value = True, {'data':str(f),'filename':filename,'content_type':mt}
-              if not self.pilutil().enabled() and datatype == _globals.DT_IMAGE and REQUEST.get('width_%s'%attr) and REQUEST.get('height_%s'%attr):
-                w = REQUEST['width_%s'%attr]
-                h = REQUEST['height_%s'%attr]
+              if not self.pilutil().enabled() and datatype == _globals.DT_IMAGE and REQUEST.get('width_%s'%elName) and REQUEST.get('height_%s'%elName):
+                w = REQUEST['width_%s'%elName]
+                h = REQUEST['height_%s'%elName]
                 if w != int(o.width) or h != int(o.height):
                   value = _blobfields.createBlobField( self, datatype, value)
                   value.width = w

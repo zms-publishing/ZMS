@@ -332,13 +332,19 @@ class ZReferableItem:
   def validateLinkObj(self, url):
     if isInternalLink(url):
       if not url.startswith('{$__'):
+        # Params.
+        ref_params = ''
+        if url.find(';') > 0:
+          ref_params = url[url.find(';'):-1]
+          url = '{$%s}'%url[2:url.find(';')]
         ref_obj = self.getLinkObj(url)
+        # Anchor.
         ref_anchor = ''
         if url.find('#') > 0:
           ref_anchor = url[url.find('#'):-1]
         if ref_obj is not None:
           # Repair link.
-          url = self.getRefObjPath( ref_obj, ref_anchor)
+          url = '{$%s%s}'%(self.getRefObjPath( ref_obj, ref_anchor)[2:-1],ref_params)
         else:
           # Broken link.
           url = '{$__' + url[2:-1] + '__}'
@@ -388,6 +394,8 @@ class ZReferableItem:
               if ob is None:
                 break
         return ob
+      if url.find(';')>0:
+        url = '{$%s}'%url[2:url.find(';')]
       ob = self.evalExtensionPoint('ExtensionPoint.ZReferableItem.getLinkObj',default,url=url)
     return ob
 
@@ -400,9 +408,21 @@ class ZReferableItem:
   def getLinkUrl( self, url, REQUEST=None):
     REQUEST = _globals.nvl( REQUEST, self.REQUEST)
     if isInternalLink(url):
+      # Params.
+      ref_params = {}
+      if url.find(';') > 0:
+        ref_params = dict(re.findall(';(\w*)=(\w*)',url[url.find(';'):-1]))
+        url = '{$%s}'%url[2:url.find(';')]
+      # Anchor.
       ref_anchor = ''
       if url.find('#') > 0:
         ref_anchor = url[url.find('#'):-1]
+      # Prepare request.
+      bak_params = {}
+      for key in ref_params.keys():
+        bak_params = REQUEST.get(key,None)
+        REQUEST.set(key,ref_params[key])
+      # Get index_html.
       ob = self.getLinkObj(url,REQUEST)
       if ob is None:
         index_html = './index_%s.html?op=not_found&url=%s'%(REQUEST.get('lang',self.getPrimaryLanguage()),url)
@@ -410,6 +430,11 @@ class ZReferableItem:
         index_html = ob.getObjProperty('getHref2IndexHtml',REQUEST)
         if not index_html:
           index_html = ob.getHref2IndexHtmlInContext(self,REQUEST)
+      # Unprepare request.
+      bak_params = {}
+      for key in bak_params.keys():
+        REQUEST.set(key,bak_params[key])
+      # Return index_html.
       return index_html + ref_anchor
     elif isMailLink (url): 
       prefix = 'mailto:'

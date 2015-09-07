@@ -81,7 +81,8 @@ function getInternalUrl(physical_path) {
 	if ( $ZMI.getConfProperty('ZMS.internalLinks.home',1)==1 || currntHome != targetHome) {
 		path = (targetHome.length>0?targetHome:home) + "@" + path;
 	}
-	path = "{$" + path + "}";
+	var lang = self.window.parent.getZMILang();
+	path = "{$"+path+(lang==getZMILang()?'':';lang='+getZMILang())+"}";
 	$ZMI.writeDebug('EO getInternalUrl: path='+path);
 	return path;
 }

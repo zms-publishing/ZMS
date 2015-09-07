@@ -606,7 +606,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea{margin-left:1em}
  .zmi.metas .horizontal-group .meta_revision input{width:14.2em}
  .zmi.metas .horizontal-group .meta_type select{width:14.2em}
  .zmi.metas .horizontal-group .meta_package select{width:20.5em}
- .zmi.ZMSRecordSet .filters label,.zmi.ZMSSqlDb .filters label,.zmi.ZMSRecordSet .filters input,.zmi.ZMSSqlDb .filters input,.zmi.ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select{display:block}}
+ .zmi .ZMSRecordSet .filters label,.zmi .ZMSSqlDb .filters label,.zmi .ZMSRecordSet .filters input,.zmi .ZMSSqlDb .filters input,.zmi .ZMSRecordSet .filters select,.zmi .ZMSSqlDb .filters select{display:block}}
 .zmi.metas table.table-striped td.meta-id input,.zmi.metas table.table-striped td.meta-name input,.zmi.metas table.table-striped td.meta-type select,.zmi.metas table.meta-access textarea{width:160px}
 .zmi.metas .form-group.meta_id div,.zmi.metas .form-group.meta_name div,.zmi.metas .form-group.meta_type div,.zmi.metas .form-group.meta_revision div,.zmi.metas .form-group.meta_package div{padding-left:1em}
 .zmi.metas .meta-code,.zmi.metas .meta-resource{overflow:hidden}
@@ -671,16 +671,16 @@ input.btn.btn-file{background-color:#eee;margin-bottom:0.5em}
 .ZMSSqlDb .table ul.dropdown-menu{font-size:14px}
 .ZMSSqlDb .table ul.dropdown-menu i{padding-right:0.5em}
 .ZMSSqlDb .table ul.dropdown-menu li{cursor:pointer}
-.zmi.ZMSRecordSet #attrProperties .form-group select,.zmi.ZMSSqlDb #attrProperties .form-group select,.zmi.ZMSRecordSet #attrProperties .form-group input,.zmi.ZMSSqlDb #attrProperties .form-group input{width:167px;float:left}
-.zmi.ZMSRecordSet .accordion-group,.zmi.ZMSSqlDb .accordion-group{border:0}
-.zmi.ZMSRecordSet .form-horizontal,.zmi.ZMSSqlDb .form-horizontal{border:1px solid #e5e5e5;border-radius:4px}
-.zmi.ZMSRecordSet .accordion-group.perc100 .accordion-heading,.zmi.ZMSSqlDb .accordion-group.perc100 .accordion-heading{padding:8px 3px 8px 15px}
-.zmi.ZMSRecordSet .accordion-heading.filters a.accordion-toggle.pull-left,.zmi.ZMSSqlDb .accordion-heading.filters a.accordion-toggle.pull-left{padding-top:6px}
-.zmi.ZMSRecordSet .filters label,.zmi.ZMSSqlDb .filters label,.zmi.ZMSRecordSet .filters input,.zmi.ZMSSqlDb .filters input,.zmi.ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select{display:inline-block !important;width:auto !important}
-.zmi.ZMSRecordSet #qentity,.zmi.ZMSSqlDb #qentity,.zmi.ZMSRecordSet #qsize,.zmi.ZMSSqlDb #qsize{margin-right:0.5em}
-.zmi.ZMSRecordSet #attrProperties,.zmi.ZMSSqlDb #attrProperties{border:0}
-.zmi.ZMSRecordSet #attrProperties .accordion-inner,.zmi.ZMSSqlDb #attrProperties .accordion-inner{padding-top:0.5em}
-.zmi.ZMSRecordSet #attrProperties .accordion-inner label,.zmi.ZMSSqlDb #attrProperties .accordion-inner label{color:#999}
+.zmi .ZMSRecordSet #attrProperties .form-group select,.zmi .ZMSSqlDb #attrProperties .form-group select,.zmi .ZMSRecordSet #attrProperties .form-group input,.zmi .ZMSSqlDb #attrProperties .form-group input{width:167px;float:left}
+.zmi .ZMSRecordSet .accordion-group,.zmi .ZMSSqlDb .accordion-group{border:0}
+.zmi .ZMSRecordSet .form-horizontal,.zmi .ZMSSqlDb .form-horizontal{border:1px solid #e5e5e5;border-radius:4px}
+.zmi .ZMSRecordSet .accordion-group.perc100 .accordion-heading,.zmi .ZMSSqlDb .accordion-group.perc100 .accordion-heading{padding:8px 3px 8px 15px}
+.zmi .ZMSRecordSet .accordion-heading.filters a.accordion-toggle.pull-left,.zmi .ZMSSqlDb .accordion-heading.filters a.accordion-toggle.pull-left{padding-top:6px}
+.zmi .ZMSRecordSet .filters label,.zmi .ZMSSqlDb .filters label,.zmi .ZMSRecordSet .filters input,.zmi .ZMSSqlDb .filters input,.zmi .ZMSRecordSet .filters select,.zmi .ZMSSqlDb .filters select{display:inline-block;width:auto}
+.zmi .ZMSRecordSet #qentity,.zmi .ZMSSqlDb #qentity,.zmi .ZMSRecordSet #qsize,.zmi .ZMSSqlDb #qsize{margin-right:0.5em}
+.zmi .ZMSRecordSet #attrProperties,.zmi .ZMSSqlDb #attrProperties{border:0}
+.zmi .ZMSRecordSet #attrProperties .accordion-inner,.zmi .ZMSSqlDb #attrProperties .accordion-inner{padding-top:0.5em}
+.zmi .ZMSRecordSet #attrProperties .accordion-inner label,.zmi .ZMSSqlDb #attrProperties .accordion-inner label{color:#999}
 #insertUserForm .ZMSRecordSet{overflow:hidden;margin-left:-15px;padding-left:1px}
 #insertUserForm .ZMSRecordSet .pagination{margin-left:0}
 #insertUserForm .ZMSRecordSet table div.btn-group span.split-left{overflow:visible}

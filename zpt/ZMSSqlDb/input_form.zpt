@@ -76,8 +76,8 @@
 								<input class="lazy" type="hidden" tal:attributes="id metaObjAttr/id; name elName; value python:option[0]"/>
 								<input class="form-control" type="text" tal:attributes="id python:'label_%s'%(elName); value python:option[1]" disabled="disabled"/>
 							</div><!-- .pull-left -->
-							<div class="pull-left">
-								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['fk']['tablename'],str(metaObjAttr['fk']['fieldname']).replace('\'','\\\''),str(metaObjAttr['fk']['displayfield']).replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
+							<div class="pull-left" tal:define="actions python:['select']+[[],['insert','update','delete']][int(metaObjAttr['fk'].get('editable',0))]">
+								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions\':\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['fk']['tablename'],str(metaObjAttr['fk']['fieldname']).replace('\'','\\\''),str(metaObjAttr['fk']['displayfield']).replace('\'','\\\''),','.join(actions),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
 							</div><!-- .pull-left -->
 						</tal:block>
 					</tal:block>

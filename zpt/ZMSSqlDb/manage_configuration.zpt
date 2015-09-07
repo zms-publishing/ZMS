@@ -360,6 +360,10 @@ function mms_normalize_rows(el_tbody) {
 							<td>A.Lazy</td>
 							<td><input type="checkbox" tal:attributes="name python:'attr_fk_lazy_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('lazy') in [1,True])]" value="1"/></td>
 						</tr>
+            <tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+              <td>A.Editable</td>
+              <td><input type="checkbox" tal:attributes="name python:'attr_fk_editable_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('editable') in [1,True])]" value="1"/></td>
+            </tr>
 						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
 							<td>B.MySQL-Set</td>
 							<td><input type="checkbox" tal:attributes="name python:'attr_fk_mysqlset_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('mysqlset') in [1,True])]" value="1"/></td>

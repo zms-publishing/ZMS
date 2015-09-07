@@ -84,6 +84,7 @@ from traceback import format_exception
 import logging
 import re
 import sys
+import time
 
 class Clazz:
   pass
@@ -232,8 +233,9 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           for childNode in node.getPortalClients():
             l.extend(visit(childNode))
         return l
+      t0 = time.time()
       index = visit(self.getDocumentElement())
-      write(self,'[ZMSIndexZCatalog_func_] reindex %i'%len(index))
+      write(self,'[ZMSIndexZCatalog_func_] reindex done: %i in %.2fsecs.'%(len(index),time.time()-t0))
     
     ##############################################################################
     # Resync
@@ -262,6 +264,8 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               if parent is not None:
                 ref = ref.getParentNode()
             elif id not in ['','.'] and id.find('.')<0:
+              if id.startswith('#'):
+                id = id[1:]
               childNode = getattr(ref,id,None)
               if childNode is None and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
                 for o in filter(lambda x:x.meta_type not in ['External Method'],ref.getChildNodes()):
@@ -302,13 +306,14 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               if href.startswith('.') or href.startswith('/'):
                 ref = find_node(node,href)
             if ref is not None:
+              d['data-id'] = node.getRefObjPath(ref)
               ref.registerRefObj(node) 
               old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
               title = f[1]
               new = '<a %s>%s</a>'%(' '.join(map(lambda x:'%s="%s"'%(x,d[x]),d.keys())),title)
               if old != new:
-                write(node,'[ZMSIndexZCatalog_func_] handleInline old:\'%s\''%old)
-                write(node,'[ZMSIndexZCatalog_func_] handleInline new:\'%s\''%new)
+                write(node,'[ZMSIndexZCatalog_func_] handleInline old=%s'%old)
+                write(node,'[ZMSIndexZCatalog_func_] handleInline new=%s'%new)
                 v = v.replace(old,new)
           return v
         
@@ -381,9 +386,11 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               l.extend(visit(childNode))
           return l
         
-        base = self.getLinkObj(request['url'])
+        t0 = time.time()
+        url = request['url']
+        base = self.getLinkObj(url)
         index = visit(base)
-        write(self,'[ZMSIndexZCatalog_func_] resync %i'%len(index))
+        write(self,'[ZMSIndexZCatalog_func_] resync for %s done: %i in %.2fsecs.'%(url,len(index),time.time()-t0))
   except:
     t,v,tb = sys.exc_info()
     msg = "[%s@%s]"%(self.meta_id,self.absolute_url())+''.join(format_exception(t, v, tb))
@@ -673,7 +680,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.39]]></item>
+          <item key="revision"><![CDATA[0.9.40]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -692,7 +699,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.39]]></item>
+          <item key="revision"><![CDATA[0.9.40]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

@@ -244,10 +244,10 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   ### Init Configuration.
   obj.setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))
   obj.setConfProperty('ZMS.autocommit',1)
-  obj.setConfProperty('ZMS.Version.autopack',2)
 
   ### Init ZMS object-model.
-  _confmanager.initConf(obj, 'zms')
+  _confmanager.initConf(obj, 'com.zms.foundation')
+  _confmanager.initConf(obj, 'com.zms.foundation.theme')
 
   ### Init default-configuration.
   _confmanager.initConf(obj, 'default')
@@ -310,14 +310,10 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     ##### Configuration ####
 
     #-- Index
-    if REQUEST.get('specobj_index',0) == 1:
-      # Init configuration.
-      _confmanager.initConf(obj, 'com.zms.index')
+    _confmanager.initConf(obj, 'com.zms.index')
 
     #-- Search
-    if REQUEST.get('specobj_search',0) == 1:
-      # Init content.
-      initContent(obj,'com.zms.search.content.xml',REQUEST)
+    initContent(obj,'com.zms.search.content.xml',REQUEST)
 
     #-- QUnit
     if REQUEST.get('specobj_qunit',0) == 1:

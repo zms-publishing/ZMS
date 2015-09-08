@@ -4,17 +4,18 @@ $(function() {
 			$('.form-multiautocomplete').each(function() {
 					var id = $(this).attr('id');
 					$ZMI.writeDebug('multiautocomplete:'+id);
-					var key = $(this).attr('data-key');
-					var meta_id = $(this).attr('data-meta-id');
+					var ajax_url = $(this).attr('data-ajax-url');
+					var obj_id = $(this).attr('data-obj-id');
+					var attr_id = $(this).attr('data-attr-id');
 					zmiAutocomplete('#'+id,{
 						source: function( request, response) {
 							var term = request.term;
 							var params = {};
 							params.q = term;
-							params.key = key;
-							params.meta_id = meta_id;
+							params.attr_id = attr_id;
+							params.obj_id = obj_id;
 							params.fmt = 'json';
-							$.get( "ajaxGetObjOptions", params, function( data) {
+							$.get( ajax_url, params, function( data) {
 								if (data.length>0) {
 									response(zmiAutocompleteDefaultFormatter(eval('('+data+')'),term));
 								}
@@ -48,7 +49,7 @@ function zmiMultiAutocompleteRemoveBtnClick(sender) {
 }
 </script>
 <div class="input-group">
-	<input type="text" tal:attributes="id python:'_%s'%options['name']; name python:'_%s'%options['name']; data-key options/key; data-meta-id here/meta_id" class="form-control form-multiautocomplete ui-autocomplete-input"/>
+	<input type="text" tal:attributes="id python:'_%s'%options['name']; name python:'_%s'%options['name']; data-ajax-url options/ajax_url; data-attr-id options/attr_id; data-obj-id options/obj_id" class="form-control form-multiautocomplete ui-autocomplete-input"/>
 	<span class="input-group-addon ui-helper-clickable" tal:attributes="title python:here.getZMILangStr('BTN_ADD'); onclick python:'zmiMultiAutocompleteAddBtnClick(this)'">
 		<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')">icon-plus</tal:block>
 	</span>
@@ -71,17 +72,18 @@ $(function() {
 		$('.form-autocomplete').each(function() {
 				var id = $(this).attr('id');
 				$ZMI.writeDebug('autocomplete:'+id);
-				var key = $(this).attr('data-key');
-				var meta_id = $(this).attr('data-meta-id');
+				var ajax_url = $(this).attr('data-ajax-url');
+				var obj_id = $(this).attr('data-obj-id');
+				var attr_id = $(this).attr('data-attr-id');
 				zmiAutocomplete('#'+id,{
 						source: function( request, response) {
 						var term = request.term;
 						var params = {};
 						params.q = term;
-						params.key = key;
-						params.meta_id = meta_id;
+						params.attr_id = attr_id;
+						params.obj_id = obj_id;
 						params.fmt = 'json';
-						$.get( "ajaxGetObjOptions", params, function( data) {
+						$.get( ajax_url, params, function( data) {
 							if (data.length>0) {
 								response(zmiAutocompleteDefaultFormatter(eval('('+data+')'),term));
 							}
@@ -91,5 +93,5 @@ $(function() {
 		});
 });
 </script>
-<input type="text" tal:attributes="id options/name; name options/name; value options/value; data-key options/key; data-meta-id here/meta_id" class="form-control form-autocomplete ui-autocomplete-input"/>
+<input type="text" tal:attributes="id options/name; name options/name; value options/value; data-ajax-url options/ajax_url; data-attr-id options/attr_id; data-obj-id options/obj_id" class="form-control form-autocomplete ui-autocomplete-input"/>
 </tal:block>

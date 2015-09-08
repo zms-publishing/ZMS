@@ -70,21 +70,32 @@
 				##### Fk ###############################################################
 				</tal:block>
 				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-fk" tal:condition="python:not done and metaObjAttr.get('fk') not in ['',None]">
+				<tal:block tal:define="
+						tablename python:metaObjAttr['fk'].get('tablename','');
+						fieldname python:str(metaObjAttr['fk'].get('fieldname','')).replace('\'','\\\'');
+						displayfield python:str(metaObjAttr['fk'].get('displayfield','')).replace('\'','\\\'');">
 					<tal:block tal:condition="python:metaObjAttr['fk'].get('lazy')">
 						<tal:block tal:repeat="option python:[(metaObjAttr['options']+[['','']])[0]]">
-							<div class="pull-left">
+							<div class="input-group">
 								<input class="lazy" type="hidden" tal:attributes="id metaObjAttr/id; name elName; value python:option[0]"/>
 								<input class="form-control" type="text" tal:attributes="id python:'label_%s'%(elName); value python:option[1]" disabled="disabled"/>
-							</div><!-- .pull-left -->
-							<div class="pull-left" tal:define="actions python:['select']+[[],['insert','update','delete']][int(metaObjAttr['fk'].get('editable',0))]">
-								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions\':\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['fk']['tablename'],str(metaObjAttr['fk']['fieldname']).replace('\'','\\\''),str(metaObjAttr['fk']['displayfield']).replace('\'','\\\''),','.join(actions),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
-							</div><!-- .pull-left -->
+							<tal:block tal:define="actions python:['select']+[[],['insert']][int(metaObjAttr['fk'].get('editable',0))]">
+								<span class="input-group-addon btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions\':\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],tablename,fieldname,displayfield,','.join(actions),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
+							</tal:block>
 						</tal:block>
 					</tal:block>
-					<tal:block tal:condition="not:python:metaObjAttr['fk'].get('lazy')">
+					<tal:block tal:condition="python:metaObjAttr['fk'].get('editable') and not metaObjAttr['fk'].get('lazy')">
+						<tal:block tal:define="
+                pk python:here.getEntityPK(tablename); 
+                displayValue python:(here.query('SELECT %s AS displayfield FROM %s WHERE %s=%s'%(displayfield,tablename,pk,here.sql_quote__(tablename,pk,elValue)),encoding=encoding)['records']+[{'displayfield':''}])[0]['displayfield']">
+							<tal:block tal:content="structure python:here.zmi_input_autocomplete(here,name='form_autocomplete_%s'%elName,value=displayValue,lang_str=elLabel,type='autocomplete',ajax_url='ajaxGetObjOptions',obj_id=tablename,attr_id=displayfield)">the control</tal:block>
+						</tal:block>
+					</tal:block>
+					<tal:block tal:condition="python:not metaObjAttr['fk'].get('editable') and not metaObjAttr['fk'].get('lazy')">
 						<tal:block tal:content="structure python:here.zmi_input_select(here,name=elName,value=elValue,lang_str=elLabel,options=metaObjAttr['options'])">the control</tal:block>
 					</tal:block>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
+				</tal:block>
 				</div>
 
 				<tal:block tal:replace="nothing">

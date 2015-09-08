@@ -109,7 +109,7 @@
 		</tal:block>
 		<div class="btn-group" tal:attributes="title title">
 			<span class="checkbox split-left btn">
-				<input tal:attributes="name name; type python:['checkbox','radio'][int('select' in actions)]; value value" />
+				<input tal:attributes="name name; type python:['checkbox','radio'][int('select' in actions)]; class python:['','radio-inline'][int('select' in actions)]; value value" />
 				<span class="index"><tal:block tal:content="python:index+1">index</tal:block>.</span>
 			</span>
 			<tal:block tal:condition="python:'update' in actions or 'delete' in actions or 'sort' in actions">

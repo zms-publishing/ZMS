@@ -1209,7 +1209,7 @@ input.btn.btn-file {
 	float:left;
 }
 .ZMSSqlDb .index, .ZMSRecordSet .index {
-	margin-left:2em;
+	margin-left:1em;
 }
 body.zmi .ZMSRecordSet.main_grid table {
 	cursor:pointer;

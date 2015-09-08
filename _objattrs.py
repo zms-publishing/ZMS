@@ -189,8 +189,10 @@ class ObjAttrs:
     # --------------------------------------------------------------------------
     #  ObjAttrs.ajaxGetObjOptions:
     # --------------------------------------------------------------------------
-    def ajaxGetObjOptions(self, key, meta_id, fmt=None, REQUEST=None):
+    def ajaxGetObjOptions(self, REQUEST):
       """ ObjAttrs.ajaxGetObjOptions """
+      meta_id = REQUEST['obj_id']
+      key = REQUEST['attr_id']
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/plain; charset=utf-8'
       filename = 'ajaxGetObjOptions.txt'
@@ -206,7 +208,7 @@ class ObjAttrs:
       limit = int(REQUEST.get('limit',self.getConfProperty('ZMS.input.autocomplete.limit',15)))
       if len(l) > limit:
         l = l[:limit]
-      if fmt == 'json':
+      if REQUEST.get('fmt') == 'json':
         return self.str_json(l)
       return '\n'.join(l)
 
@@ -437,7 +439,7 @@ class ObjAttrs:
       
       #-- Autocomplete-Fields.
       elif inputtype in ['autocomplete','multiautocomplete']:
-        return self.zmi_input_autocomplete(self,name=elName,value=value,type=inputtype,key=obj_attr['id'],lang_str=lang_str,enabled=enabled)
+        return self.zmi_input_autocomplete(self,name=elName,value=value,type=inputtype,ajax_url='ajaxGetObjOptions',obj_id=meta_id,attr_id=obj_attr['id'],lang_str=lang_str,enabled=enabled)
       
       #-- Select-Fields.
       elif inputtype in ['multiselect','select']:

@@ -88,7 +88,7 @@
 						<tal:block tal:define="
                 pk python:here.getEntityPK(tablename); 
                 displayValue python:(here.query('SELECT %s AS displayfield FROM %s WHERE %s=%s'%(displayfield,tablename,pk,here.sql_quote__(tablename,pk,elValue)),encoding=encoding)['records']+[{'displayfield':''}])[0]['displayfield']">
-							<tal:block tal:content="structure python:here.zmi_input_autocomplete(here,name='form_autocomplete_%s'%elName,value=displayValue,lang_str=elLabel,type='autocomplete',ajax_url='ajaxGetObjOptions',obj_id=tablename,attr_id=displayfield)">the control</tal:block>
+							<tal:block tal:content="structure python:here.zmi_input_autocomplete(here,name=elName,value=displayValue,lang_str=elLabel,type='autocomplete',ajax_url='ajaxGetObjOptions',obj_id=tablename,attr_id=displayfield)">the control</tal:block>
 						</tal:block>
 					</tal:block>
 					<tal:block tal:condition="python:not metaObjAttr['fk'].get('editable') and not metaObjAttr['fk'].get('lazy')">

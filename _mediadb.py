@@ -143,7 +143,6 @@ def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
 ###   
 ################################################################################
 def recurse_delMediaDb(self, mediadb):
-  #++ print "[%s.recurse_delMediaDb]:"%(self.meta_id)
 
   # Process recordset.
   if self.getType()=='ZMSRecordSet':
@@ -265,36 +264,12 @@ class MediaDb(
       return _fileutil.getFilePath(path)
 
     # --------------------------------------------------------------------------
-    #  MediaDb.getDateStr
-    # --------------------------------------------------------------------------
-    def getDateStr(self, tTime, sFmt='DATETIME_FMT'):
-      dateFmt = {
-          'TIME_FMT':'%H:%M:%S',
-          'DATE_FMT':'%Y/%m/%d',
-          'DATETIME_FMT':'%Y/%m/%d %H:%M:%S',
-         }
-      try:
-        s = time.strftime(dateFmt[sFmt],time.localtime(tTime))
-      except:
-        s = str(tTime)
-      return s
-
-
-    # --------------------------------------------------------------------------
-    #  MediaDb.getDataSizeStr
-    # --------------------------------------------------------------------------
-    def getDataSizeStr(self, len): 
-      return _fileutil.getDataSizeStr(len)
-
-
-    # --------------------------------------------------------------------------
     #  MediaDb.getFile
     # --------------------------------------------------------------------------
     def getFile(self, REQUEST,RESPONSE): 
       filename = _fileutil.extractFilename( self.getPath( REQUEST))
       parent.set_response_headers( filename)
       return self.retrieveFileStreamIterator( filename, REQUEST)
-
 
     # --------------------------------------------------------------------------
     #	MediaDb.storeFile
@@ -308,7 +283,6 @@ class MediaDb(
         _fileutil.exportObj(file,filepath)
       return filename
 
-
     # --------------------------------------------------------------------------
     # MediaDb.manage_index_html
     # --------------------------------------------------------------------------
@@ -316,7 +290,6 @@ class MediaDb(
     def manage_index_html(self, filename, REQUEST=None):
       """ MediaDb.manage_index_html """
       return self.retrieveFileStreamIterator(filename,REQUEST)
-
 
     # --------------------------------------------------------------------------
     # MediaDb.retrieveFileStreamIterator
@@ -342,6 +315,8 @@ class MediaDb(
         mt, enc = _globals.guess_contenttype( local_filename, data)
       except:
         mt, enc = 'content/unknown', ''
+      # Remove timestamp from filename.
+      filename = filename[:filename.rfind('_')-1]+filename[filename.rfind('.'):]
       REQUEST.RESPONSE.setHeader('Content-Type' ,mt)
       REQUEST.RESPONSE.setHeader('Content-Length' ,fsize)
       REQUEST.RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
@@ -362,7 +337,6 @@ class MediaDb(
         data = ''
       return data
 
-
     # --------------------------------------------------------------------------
     #	MediaDb.getFileSize
     # --------------------------------------------------------------------------
@@ -370,18 +344,6 @@ class MediaDb(
       local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
       fsize = os.path.getsize( local_filename)
       return fsize
-
-
-    # --------------------------------------------------------------------------
-    #	MediaDb.destroyFile
-    # --------------------------------------------------------------------------
-    def destroyFile(self, filename):
-      try:
-        filepath = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
-        _fileutil.remove(filepath)
-      except:
-        pass
-
 
     # --------------------------------------------------------------------------
     #  MediaDb.valid_filenames

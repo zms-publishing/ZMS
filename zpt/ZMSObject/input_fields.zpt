@@ -132,6 +132,27 @@
 
 		<div id="tabProperties" class="accordion-body">
 			<div class="accordion-inner">
+				<tal:block tal:define="actions python:here.filtered_workflow_actions()">
+					<div class="form-group" tal:condition="python:len(actions)>0">
+						<label class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('TAB_WORKFLOW')">Workflow</span></label>
+						<div class="col-sm-10">
+							<div class="btn-group zmi-action" tal:define="button python:actions[0][0]">
+								<span class="btn btn-danger split-left" tal:content="python:button[button.find(' '):button.rfind(' ')]"></span>
+								<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown" tal:content="structure python:here.zmi_icon(name='icon-chevron-down')"></button>
+								<ul class="dropdown-menu">
+									<tal:block tal:repeat="action python:actions[1:]">
+										<li tal:condition="python:len(action)==3">
+											<a tal:attributes="href python:'javascript:$ZMI.actionList.exec($(\'#tabProperties\'),\'%s\',\'%s\')'%(action[0],action[1])">
+												<tal:block tal:content="structure python:here.zmi_icon(name=action[2])">the icon</tal:block>
+												<tal:block tal:content="structure python:action[0]">the title</tal:block>
+											</a>
+										</li>
+									</tal:block>
+								</ul>
+							</div>
+						</div>
+					</div><!-- .form-group -->
+				</tal:block>
 				<tal:block tal:content="structure python:here.obj_input_elements(action=action,meta_id=meta_id)">obj_input_elements</tal:block>
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->

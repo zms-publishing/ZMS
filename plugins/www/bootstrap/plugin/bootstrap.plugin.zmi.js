@@ -357,7 +357,8 @@ ZMI.prototype.initInputFields = function(container) {
 				var b = true;
 				var context = this;
 				// Button
-				if( self.btnClicked==getZMILangStr("BTN_BACK") ||
+				if( typeof self.btnClicked=="undefined" ||
+						self.btnClicked==getZMILangStr("BTN_BACK") ||
 						self.btnClicked==getZMILangStr("BTN_CANCEL") ||
 						self.btnClicked==getZMILangStr("BTN_DELETE") ) {
 					return b;
@@ -1003,8 +1004,11 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 	}
 	var $el = $(".zmi-action",sender);
 	var $fm = $el.parents("form");
+	var sort_id = $(".zmi-sort-id",$el).text();
 	$("input[name='custom']").val(label);
-	$("input[name='_sort_id:int']").val($(".zmi-sort-id",$el).text());
+	if (typeof sort_id!="undefined"&&sort_id.length>0&&!isNaN(sort_id)) {
+		$("input[name='_sort_id:int']").val(sort_id);
+	}
 	if (target.toLowerCase().indexOf('manage_addproduct/')==0 && target.toLowerCase().indexOf('form')>0) {
 		// Parameters
 		var inputs = $("input:hidden",$fm);

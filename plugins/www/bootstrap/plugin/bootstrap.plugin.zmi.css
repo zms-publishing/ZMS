@@ -655,11 +655,14 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 .checkbox.split-left input {
 	margin:.2em .5em 0 0;
 }
+.zmi-action .btn.btn-default.split-left,
+.zmi-action .btn.btn-default.split-right {
+	background-color: #eee;
+	color:#333;
+}
 .zmi-action .btn.split-left,
 .zmi-action .btn.split-right {
-	background-color: #eee;
 	border-color: #eee;
-	color:#333;
 	font-weight:bold;
 	height:2.7em;
 	margin-left:0;

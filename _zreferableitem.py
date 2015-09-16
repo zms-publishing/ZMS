@@ -149,7 +149,7 @@ class ZReferableItem:
   #
   #  Returns references FROM other objects.
   # ----------------------------------------------------------------------------
-  def getRefByObjs(self):
+  def getRefByObjs(self, REQUEST=None):
     ref_by = []
     if 'ref_by' in self.__dict__.keys():
       ref_by = self.ref_by

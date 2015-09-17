@@ -2,6 +2,9 @@
 
 #git+https://github.com/zopefoundation/Zope@2.13#egg=Zope2
 svn+https://zmslabs.org/svn/zmslabs/ZMS/trunk#egg=ZMS3
+git+https://bitbucket.org/zms3/formulator.git#egg=zms3.formulator
+git+https://bitbucket.org/zms3/mindmap.git#egg=zms3.mindmap
+git+https://bitbucket.org/zms3/themes.git#egg=zms3.themes
 
 AccessControl==3.0.11
 Acquisition==4.1
@@ -45,12 +48,10 @@ zdaemon==4.0.0
 ZEO==4.1.0
 zExceptions==2.13.0
 zLOG==2.12.0
-zms3.formulator==3.3.0
-zms3.mindmap==0.1.2
-zms3.deployment==0.2.3
 zodbpickle==0.6.0
 ZODB==4.2.0
 ZODB3==3.11.0
+zms3.deployment==0.2.3
 zope.annotation==4.4.1
 zope.app.publication==3.14.0
 zope.authentication==4.1.0

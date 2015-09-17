@@ -2,15 +2,15 @@
 The ZMS3 environment consists of an application server based on pegged versions 
 of depending packages (see INSTALL_REQUIRES_CONCRETE below or requirements.txt).
 
-  Use 'pip install ZMS3 [--process-dependency-links]'
+  Use 'pip install ZMS3 --process-dependency-links'
   to install the environment based on releases at https://pypi.python.org/pypi/
   (include dependency links for unreleased packages at PyPI)
 
-  Use 'pip install https://zmslabs.org/download/ZMS3-latest.tar.gz [--process-dependency-links]'
+  Use 'pip install https://zmslabs.org/download/ZMS3-latest.tar.gz --process-dependency-links'
   to install the environment fetching the latest nightly build from ZMSLabs
   (maybe unstable)
 
-  Use 'pip install -r https://zmslabs.org/svn/zmslabs/ZMS/trunk/requirements.txt'
+  Use 'pip install -r https://zmslabs.org/svn/zmslabs/ZMS/trunk/requirements.txt --process-dependency-links'
   to install the environment fetching the latest development snapshots from SVN/GIT-Repositories
   (maybe unstable)
 
@@ -37,9 +37,10 @@ INSTALL_REQUIRES_ABSTRACT = [
   'zope.globalrequest',
   'zope.untrustedpython',
   'zope.publisher==3.13.4',       # due to zope.publisher>=4.0.0 causes errors on rendering legacy DTML-Methods
+  'zms3.deployment',
   'zms3.formulator',
   'zms3.mindmap',
-  'zms3.deployment',
+  'zms3.themes',
 ]
 
 # Unreleased packages including custom patches to build the environment

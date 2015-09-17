@@ -19,7 +19,7 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-  'zms3.formulator': ['3.3.0',
+  'zms3.formulator': ['3.3.2',
                       'Submit JSON-based HTML-Forms into a SQL-Storage with protection by reCAPTCHA',
                       'https://bitbucket.org/zms3/formulator',
                       'developed by SNTL Publishing'],
@@ -31,7 +31,11 @@ EXTENSIONS = {
                    'Deployment Library',
                    'https://bitbucket.org/zms3/deployment',
                    'developed by SNTL Publishing'],
-  'Pillow': ['2.8.2',
+  'zms3.themes': ['0.1.2',
+                   'Additional Themes based on Start Bootstrap',
+                   'https://bitbucket.org/zms3/themes',
+                   'developed by SNTL Publishing and Contributors'],
+  'Pillow': ['2.9.0',
              'The friendly PIL (Python Imaging Library) fork',
              'https://pypi.python.org/pypi/Pillow',
              'developed by Alex Clark'],

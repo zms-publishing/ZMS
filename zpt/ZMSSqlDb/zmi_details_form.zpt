@@ -4,6 +4,8 @@
 <body tal:attributes="class python:here.zmi_body_class(id='intersection_form')">
 
 <tal:block tal:define="global
+	rowid request/qindex;
+	dummy0 python:request.set('rowid',rowid);
 	row python:{request['qentitypk']:request['qentitypkval']};
 	metaObjAttr python:here.getEntityColumn(request['qentity'],request['qcolumn'],row);
 	entity python:here.getEntity(metaObjAttr['details']['tablename']);
@@ -19,8 +21,6 @@
 
 <tal:block tal:condition="python:request.get('action') in ['insert','update','delete'] and request.get('btn')!=here.getZMILangStr('BTN_CANCEL')">
 	<tal:block tal:define="global
-		row python:(res+[{}])[int(request.get('qindex',0))];
-		rowid python:context.operator_getitem(row,primary_key,ignorecase=True);
 		message python:[];
 		values python:{}">
 	<tal:block tal:repeat="column python:entity['columns']">
@@ -43,18 +43,14 @@
 </tal:block>
 
 <tal:block tal:condition="python:request.get('action')=='updateForm'">
-	<tal:block tal:define="
-		row python:(res+[{}])[int(request.get('qindex',0))];
-		rowid python:context.operator_getitem(row,primary_key,ignorecase=True);">
 	<tal:block tal:content="structure python:here.manage_zmi_input_form(
 			entity=entity,
 			action='update',
 			qindex=request['qindex'],
-			rowid=rowid,
-			row=row,
+			rowid=request['rowid'],
+			row=filter(lambda x:str(here.operator_getitem(x,primary_key,ignorecase=True))==str(request['rowid']),res)[0],
 			request_form_inherit=request_form_inherit)">
 		metaobj_recordset_input_fields
-	</tal:block>
 	</tal:block>
 </tal:block>
 <tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure python:here.manage_zmi_input_form(

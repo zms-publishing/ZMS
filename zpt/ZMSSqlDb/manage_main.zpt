@@ -126,8 +126,8 @@
 				<label tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</label>
 				<div class="form-group col-lg-12" tal:repeat="filterIndex python:range(request.get('qfilters',1))">
 					<select class="form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
-						<tal:block tal:repeat="column entity/columns">
-							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,'').lower())]" tal:content="column/label">column</option>
+						<tal:block tal:repeat="column python:map(lambda x:here.getEntityColumn(entity['id'],x['id']),filter(lambda x:len(here.intersection_list(['blob','details','fk','multiselect','multimultiselect'],x.keys()))==0,entity['columns']))">
+							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,'').lower())]" tal:content="python:'%s (%s)'%(column['label'],column['type'])">column</option>
 						</tal:block>
 					</select>
 					<select class="form-control input-sm" tal:attributes="name python:'filterop%i'%filterIndex">

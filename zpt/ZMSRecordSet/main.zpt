@@ -21,9 +21,9 @@
 			records python:here.attr(metaObjAttrIds[0]);
 			metaObjAttrs python:filter(lambda x:
 					x['id'] not in ['__sort_id']
-					and x['custom']
 					and x['type'] in here.metaobj_manager.valid_types+here.getMetaobjIds()
-					and not x['type'] in ['password']
+					and x['type'] not in ['password','resource']
+					and x['custom']
 					,metaObj['attrs'][1:])">
 
 <form method="get" tal:condition="python:request.get('action') not in ['updateForm','insertForm']">

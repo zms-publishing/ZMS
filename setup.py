@@ -45,7 +45,7 @@ INSTALL_REQUIRES_ABSTRACT = [
 
 # Unreleased packages including custom patches to build the environment
 DEPENDENCY_LINKS = [
-  'http://zmslabs.org/download/',                # https://zmslabs.org/download/Products.CMFCore-2.3.0dev.tar.gz
+  'https://zmslabs.org/download/',                # https://zmslabs.org/download/Products.CMFCore-2.3.0dev.tar.gz
 ]
 
 # Concrete requirements to build the environment

@@ -385,7 +385,7 @@ class ZMSZCatalogConnector(
         setattr(node,attr_name,value)
       for attr_id in zcm.getAttrIds():
         attr_name = 'zcat_index_%s'%attr_id
-        value = node.attr(attr_id)
+        value = self.search_encode(node.attr(attr_id))
         setattr(node,attr_name,value)
       # Reindex object.
       catalog = getattr(self,'catalog_%s'%lang,None)

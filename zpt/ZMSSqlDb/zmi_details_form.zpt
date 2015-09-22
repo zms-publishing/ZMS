@@ -4,7 +4,7 @@
 <body tal:attributes="class python:here.zmi_body_class(id='intersection_form')">
 
 <tal:block tal:define="global
-	rowid request/qindex;
+	rowid python:request.get('qindex',-1);
 	dummy0 python:request.set('rowid',rowid);
 	row python:{request['qentitypk']:request['qentitypkval']};
 	metaObjAttr python:here.getEntityColumn(request['qentity'],request['qcolumn'],row);

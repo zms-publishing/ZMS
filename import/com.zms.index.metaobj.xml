@@ -222,7 +222,6 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         l.append(1)
         write(self,'[ZMSIndexZCatalog_func_] catalog_object %s'%node.getPath())
         if node.meta_id == 'ZMS':
-          node.setConfProperty('ZMS.InternalLinks.autocorrection',1)
           node.setConfProperty('ExtensionPoint.ZMSObject.get_uid','%s.get_uid'%self.meta_id)
           node.setConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath','%s.getRefObjPath'%self.meta_id)
           node.setConfProperty('ExtensionPoint.ZReferableItem.getLinkObj','%s.getLinkObj'%self.meta_id)

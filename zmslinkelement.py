@@ -44,83 +44,6 @@ def initZMSLinkElement(oItem, REQUEST):
       oItem.setObjProperty('title',oItem.getObjProperty('attr_ref',REQUEST),lang)
 
 
-# ------------------------------------------------------------------------------
-#  zmslinkelement.setZMSLinkElement: 
-#
-#  Sets properties of ZMSLinkElement (from ZMSLinkContainer).
-# ------------------------------------------------------------------------------
-def setZMSLinkElement(oItem, title, url, description, REQUEST):
-  lang = REQUEST['lang']
-  
-  if title != oItem.getObjProperty('titlealt',REQUEST) or \
-     title != oItem.getObjProperty('title',REQUEST) or \
-     url != oItem.getObjProperty('attr_ref',REQUEST) or \
-     description != oItem.getObjProperty('attr_dc_description',REQUEST):
-    
-    type = 'new'
-    if _zreferableitem.isInternalLink(url):
-      type = 'replace'
-    
-    ##### Object State ####
-    oItem.setObjStateModified(REQUEST)
-    
-    ##### Set Metadata ####
-    oItem.setObjProperty('attr_dc_description',description,lang)
-    
-    ##### Set Properties ####
-    oItem.setObjProperty('titlealt',title,lang)
-    oItem.setObjProperty('title',title,lang)
-    oItem.setObjProperty('attr_ref',url,lang)
-    oItem.setObjProperty('attr_type',type,lang)
-    initZMSLinkElement(oItem,REQUEST)
-    
-    ##### VersionManager ####
-    oItem.onChangeObj(REQUEST)
-
-
-# ------------------------------------------------------------------------------
-#  zmslinkelement.addZMSLinkElement: 
-#
-#  Adds ZMSLinkElement (to ZMSLinkContainer).
-# ------------------------------------------------------------------------------
-def addZMSLinkElement(self, title, url, description, REQUEST):
-  lang = REQUEST['lang']
-  type = 'new'
-  if _zreferableitem.isInternalLink(url):
-    type = 'replace'
-  
-  ##### Create ####
-  id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
-  new_id = self.getNewId(id_prefix)
-  obj = ZMSLinkElement(new_id)
-  self._setObject(obj.id, obj)
-  
-  obj = getattr(self,obj.id)
-  
-  ##### Object State ####
-  obj.setObjStateNew(REQUEST)
-  
-  ##### Init Metadata (Important: DC.Coverage!) ####
-  obj.setObjProperty("attr_dc_coverage","local."+lang,lang)
-  obj.setObjProperty("attr_dc_description",description,lang)
-  
-  ##### Init Properties ####
-  obj.setObjProperty("titlealt",title,lang)
-  obj.setObjProperty("title",title,lang)
-  obj.setObjProperty("active",1,lang)
-  obj.setObjProperty("attr_ref",url,lang)
-  obj.setObjProperty("attr_type",type,lang)
-  initZMSLinkElement(obj,REQUEST)
-  
-  ##### VersionManager ####
-  obj.onChangeObj(REQUEST)
-  
-  ##### Normalize Sort-IDs ####
-  self.normalizeSortIds(id_prefix)
-  
-  return obj
-
-
 """
 ################################################################################
 # class ConstraintViolation(Exception):
@@ -215,8 +138,12 @@ class ZMSLinkElement(ZMSContainerObject):
         'manage_ajaxDragDrop','manage_ajaxZMIActions',
         'manage_userForm','manage_user',
         )
+    __viewPermissions__ = (
+        'manage_ajaxGetChildNodes',
+        )
     __ac_permissions__=(
         ('ZMS Author', __authorPermissions__),
+        ('View', __viewPermissions__),
         )
 
 

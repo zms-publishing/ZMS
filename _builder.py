@@ -183,10 +183,6 @@ class Builder:
         if name in self.getMetaobjIds(sort=0) and not self.dGlobalAttrs.has_key(name):
           attrs['meta_id'] = name
           name = 'ZMSCustom'
-        # handle alias for zms2go
-        if name == 'ZMS' and self.oRootNode is not None:
-          attrs['meta_id'] = name
-          name = 'ZMSCustom'
         
         if self.bInRootTag or \
            self.oRoot == None or \
@@ -224,7 +220,10 @@ class Builder:
                 
                 ##### Create ####
                 if newNode is None:
-                  newNode = self.dGlobalAttrs[name]['obj_class'](id,sort_id)
+                  meta_id = name
+                  globalAttr = self.dGlobalAttrs.get(meta_id,self.dGlobalAttrs['ZMSCustom'])
+                  constructor = globalAttr['obj_class']
+                  newNode = constructor(id,sort_id)
                   self.oCurrNode._setObject(newNode.id, newNode)
                   newNode = getattr(self.oCurrNode,newNode.id)
                 

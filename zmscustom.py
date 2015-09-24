@@ -72,7 +72,9 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
     # Create
     id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
     new_id = self.getNewId(id_prefix)
-    obj = ZMSCustom(new_id,_sort_id+1,meta_id)
+    globalAttr = self.dGlobalAttrs.get(meta_id,self.dGlobalAttrs['ZMSCustom'])
+    constructor = globalAttr['obj_class']
+    obj = constructor(new_id,_sort_id+1,meta_id)
     self._setObject(obj.id, obj)
     
     metaObj = self.getMetaobj( meta_id)
@@ -171,7 +173,6 @@ class ZMSCustom(ZMSContainerObject):
         'manage_wfTransition', 'manage_wfTransitionFinalize',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
-        'GET', 'PUT',
         )
     __viewPermissions__ = (
         'manage_ajaxGetChildNodes',
@@ -209,59 +210,6 @@ class ZMSCustom(ZMSContainerObject):
       """ ZMSCustom.__init__ """
       ZMSContainerObject.__init__(self,id,sort_id)
       self.meta_id = meta_id
-
-
-    """
-    ############################################################################
-    ###
-    ###   Http
-    ###
-    ############################################################################
-    """
-
-    # --------------------------------------------------------------------------
-    #  ZMSCustom.GET: 
-    #
-    #  Handle HTTP GET requests.
-    # --------------------------------------------------------------------------
-    def GET(self, REQUEST, RESPONSE):
-      """Handle HTTP GET requests."""
-      metaObjAttrs = self.getMetaobj(self.meta_id)['attrs']
-      i = 0
-      while 1:
-        if i >= len(metaObjAttrs): break
-        objAttr = self.getMetaobjAttr(self.meta_id,metaObjAttrs[i]['id'])
-        if objAttr['type'] in ['string','text']:
-          lang = self.getPrimaryLanguage()
-          REQUEST.set('lang',lang)
-          REQUEST.set('preview','preview')
-          return self.getObjProperty(objAttr['id'],REQUEST)
-        i = i + 1
-      return ''
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSCustom.PUT: 
-    #
-    #  Handle HTTP PUT requests.
-    # --------------------------------------------------------------------------
-    def PUT(self, REQUEST, RESPONSE):
-      """Handle HTTP PUT requests."""
-      metaObjAttrs = self.getMetaobj(self.meta_id)['attrs']
-      i = 0
-      while 1:
-        if i >= len(metaObjAttrs): break
-        objAttr = self.getMetaobjAttr(self.meta_id,metaObjAttrs[i]['id'])
-        if objAttr['type'] in ['string','text']:
-          lang = self.getPrimaryLanguage()
-          REQUEST.set('lang',lang)
-          self.setObjStateModified(REQUEST)
-          self.setObjProperty(objAttr['id'],REQUEST.get('BODY', ''),lang)
-          self.onChangeObj(REQUEST)
-          break
-        i = i + 1
-      RESPONSE.setStatus(204)
-      return RESPONSE
 
 
     ############################################################################

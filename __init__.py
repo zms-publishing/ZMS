@@ -83,7 +83,7 @@ def initialize(context):
         context.registerClass(
             zmslinkcontainer.ZMSLinkContainer,
             permission = 'Add ZMSs',
-            constructors = (zmslinkcontainer.manage_addZMSLinkContainer, zmslinkcontainer.manage_addZMSLinkContainer),
+            constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom),
             container_filter = zmscustom.containerFilter,
             )
         context.registerClass(

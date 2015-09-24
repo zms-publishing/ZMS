@@ -5,14 +5,17 @@
 			metaObj python:here.getMetaobj(meta_id);
 			metaObjIds python:here.getMetaobjIds();
 			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
-			dummy0 python:request.set('qstart',request.get('qstart',request.SESSION.get('qstart_%s'%id,0)));
-			dummy0 python:request.set('qbatch',request.get('qbatch',request.SESSION.get('qbatch_%s'%id,3)));
-			dummy0 python:request.set('qsize',request.get('qsize',request.SESSION.get('qsize_%s'%id,20)));
-			dummy0 python:request.set('qindex',request.get('qindex',request.SESSION.get('qindex_%s'%id,-1)));
+			SESSION request/SESSION;
+			dummy0 python:request.set('qstart',request.get('qstart',SESSION.get('qstart_%s'%here.id,0)));
+			dummy0 python:request.set('qbatch',request.get('qbatch',SESSION.get('qbatch_%s'%here.id,3)));
+			dummy0 python:request.set('qsize',request.get('qsize',SESSION.get('qsize_%s'%here.id,20)));
+			dummy0 python:request.set('qfilters',request.get('qfilters',SESSION.get('qfilters_%s'%here.id,1)));
+			dummy0 python:request.set('qindex',request.get('qindex',request.SESSION.get('qindex_%s'%here.id,-1)));
 			dummy0 python:request.set('qstart_%s'%here.id,request.get('qstart'));
 			dummy0 python:request.set('qbatch_%s'%here.id,request.get('qbatch'));
-			dummy0 python:request.SESSION.set('qsize_%s'%here.id,request.get('qsize'));
-			dummy0 python:request.SESSION.set('qindex_%s'%here.id,request.get('qindex'));
+			dummy0 python:SESSION.set('qsize_%s'%here.id,request.get('qsize'));
+			dummy0 python:SESSION.set('qfilters_%s'%here.id,request.get('qfilters'));
+			dummy0 python:SESSION.set('qindex_%s'%here.id,request.get('qindex'));
 			dummy0 python:here.recordSet_Init(request);
 			dummy0 python:here.recordSet_Filter(request);
 			dummy0 python:here.recordSet_Sort(request)">
@@ -55,7 +58,11 @@
 			<label class="control-label" for="qsize" tal:content="python:here.getZMILangStr('ATTR_ROWS')" >Rows</label>
 			<input class="form-control input-sm" size="3" type="text" id="qsize" name="qsize:int" tal:define="global dummy0 python:request.set('qsize',request.get('qsize',10))" tal:attributes="value request/qsize">
 			<label class="control-label" tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</label>
-			<input class="form-control input-sm" size="3" type="text" name="qfilters:int" tal:define="global dummy0 python:request.set('qfilters',request.get('qfilters',1))" tal:attributes="value request/qfilters">
+			<select class="form-control input-sm" name="qfilters:int" onchange="$('#btn-search').click()">
+				<tal:block tal:repeat="i python:range(len(metaObjAttrIds))">
+					<option tal:attributes="value python:i+1; selected python:['','selected'][int(request.get('qfilters',1)==i+1)]" tal:content="python:i+1">the #filters</option>
+				</tal:block>
+			</select>
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
 		<div id="attrZMSRecordSet" class="accordion-body collapse">
@@ -76,11 +83,11 @@
 						</div>
 				</div><!-- .form-inline -->
 				<div class="" style="margin-top:1em">
-					<button type="submit" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_SEARCH')">
+					<button type="submit" id="btn-search" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_SEARCH')">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
 						<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>
 					</button>
-					<button type="submit" class="btn btn-default" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
+					<button type="submit" id="btn-reset" class="btn btn-default" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
 						<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
 					</button>
 				</div>
@@ -128,5 +135,6 @@
 </tal:block>
 
 </div>
+
 
 <!-- /ZMSRecordSet/main -->

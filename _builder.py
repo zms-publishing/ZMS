@@ -180,7 +180,7 @@ class Builder:
         attrs = _globals.unencode( attrs)
         
         # handle alias
-        if name in self.getMetaobjIds(sort=0) and not self.dGlobalAttrs.has_key(name):
+        if name in self.getMetaobjIds(sort=0) and not self.dGlobalAttrs.get(name,{}).has_key('obj_class'):
           attrs['meta_id'] = name
           name = 'ZMSCustom'
         

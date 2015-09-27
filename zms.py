@@ -421,7 +421,7 @@ class ZMS(
     'ZMSCustom':{
                 'obj_class':ZMSCustom},
     'ZMSLinkContainer':{
-                'obj_class':ZMSCustom},
+                },
     'ZMSLinkElement':{
                 'obj_class':ZMSLinkElement,
                 'constructor':'manage_addzmslinkelementform'},

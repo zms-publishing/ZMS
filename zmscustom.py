@@ -73,7 +73,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
     id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
     new_id = self.getNewId(id_prefix)
     globalAttr = self.dGlobalAttrs.get(meta_id,self.dGlobalAttrs['ZMSCustom'])
-    constructor = globalAttr['obj_class']
+    constructor = globalAttr.get('obj_class',self.dGlobalAttrs['ZMSCustom']['obj_class'])
     obj = constructor(new_id,_sort_id+1,meta_id)
     self._setObject(obj.id, obj)
     

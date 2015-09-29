@@ -1187,7 +1187,7 @@ class VersionManagerContainer:
       log = log + self.display_type(REQUEST) + '\t'
       log = log + uid + '\t'
       log = log + desc
-      self.workflow_manager.writeProtocol(log)
+      self.getWorkflowManager().writeProtocol(log)
 
     # --------------------------------------------------------------------------
     #  VersionManagerContainer.autoWfTransition

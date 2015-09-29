@@ -25,26 +25,21 @@ class ZMSWorkflowItem:
     Returns true if auto-commit is active (workflow is inactive), false otherwise.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getAutocommit(self):
-      workflow_manager = getattr(self,'workflow_manager',None)
-      if workflow_manager is None:
-        autocommit = True
-      else:
-        autocommit = False
-        if not autocommit:
-          autocommit = autocommit or workflow_manager.getAutocommit()
-        if not autocommit:
-          baseurl = self.getDocumentElement().absolute_url()
-          url = self.absolute_url()
-          if len( url) > len( baseurl):
-            url = url[ len( baseurl)+1:]
-          url = '$'+url
-          found = False
-          nodes = workflow_manager.getNodes()
-          for node in nodes:
-            if url.find(node[1:-1]) == 0:
-              found = True
-              break
-          autocommit = autocommit or not found
+      workflow_manager = self.getWorkflowManager()
+      autocommit = workflow_manager.getAutocommit()
+      if not autocommit:
+        baseurl = self.getDocumentElement().absolute_url()
+        url = self.absolute_url()
+        if len( url) > len( baseurl):
+          url = url[ len( baseurl)+1:]
+        url = '$'+url
+        found = False
+        nodes = workflow_manager.getNodes()
+        for node in nodes:
+          if url.find(node[1:-1]) == 0:
+            found = True
+            break
+        autocommit = autocommit or not found
       return autocommit
 
 
@@ -60,7 +55,7 @@ class ZMSWorkflowItem:
       #-- Workflow.
       if not self.getAutocommit() and self.isVersionContainer():
         wfStates = self.getWfStates(REQUEST)
-        transitions = self.workflow_manager.getTransitions()
+        transitions = self.getWorkflowManager().getTransitions()
         roles = self.getUserRoles(auth_user)
         for transition in transitions:
           wfFrom = transition.get('from',[])

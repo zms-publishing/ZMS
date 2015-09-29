@@ -96,49 +96,49 @@ class ZMSWorkflowProviderAcquired(
     ZMSWorkflowProviderAcquired.writeProtocol
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def writeProtocol(self, entry):
-      self.getPortalMaster().workflow_manager.writeProtocol(entry)
+      self.getPortalMaster().getWorkflowManager().writeProtocol(entry)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     @see IZMSWorkflowProvider.getActivities()
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getActivities(self):
-      return self.getPortalMaster().workflow_manager.getActivities()
+      return self.getPortalMaster().getWorkflowManager().getActivities()
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     @see IZMSWorkflowProvider.getActitiesIds()
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getActivityIds(self):
-      return self.getPortalMaster().workflow_manager.getActivityIds()
+      return self.getPortalMaster().getWorkflowManager().getActivityIds()
   
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     @see IZMSWorkflowProvider.getActivity()
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getActivity(self, id):
-      return self.getPortalMaster().workflow_manager.getActivity(id)
+      return self.getPortalMaster().getWorkflowManager().getActivity(id)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     @see IZMSWorkflowProvider.getActivityDetails()
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getActivityDetails(self, id):
-      return self.getPortalMaster().workflow_manager.getActivityDetails(id)
+      return self.getPortalMaster().getWorkflowManager().getActivityDetails(id)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     @see IZMSWorkflowProvider.getTransitions()
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getTransitions(self):
-      return self.getPortalMaster().workflow_manager.getTransitions()
+      return self.getPortalMaster().getWorkflowManager().getTransitions()
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     @see IZMSWorkflowProvider.getTransitionIds()
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getTransitionIds(self):
-      return self.getPortalMaster().workflow_manager.getTransitionIds()
+      return self.getPortalMaster().getWorkflowManager().getTransitionIds()
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     @see IZMSWorkflowProvider.getTransition()
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getTransition(self, id, for_export=False):
-      return self.getPortalMaster().workflow_manager.getTransition(id,for_export)
+      return self.getPortalMaster().getWorkflowManager().getTransition(id,for_export)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProviderAcquired.manage_changeWorkflow:

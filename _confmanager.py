@@ -910,8 +910,8 @@ class ConfManager(
     ############################################################################
 
     def getMetaobjManager(self):
-      metaobj_manager = getattr(self,'metaobj_manager',None)
-      if metaobj_manager is None:
+      manager = filter(lambda x:absattr(x.id)=='metaobj_manager',self.getDocumentElement().objectValues())
+      if len(manager)==0:
         class DefaultMetaobjManager:
           def getMetaobjId(self, name): return None
           def getMetaobjIds(self, sort=1, excl_ids=[]): return []
@@ -921,8 +921,8 @@ class ConfManager(
           def getMetaobjAttr(self, id, attr_id, syncTypes=['resource']): return None
           def getMetaobjAttrIdentifierId(self, meta_id): return None
           def notifyMetaobjAttrAboutValue(self, meta_id, key, value): return None
-        metaobj_manager = DefaultMetaobjManager()
-      return metaobj_manager
+        manager = [DefaultMetaobjManager()]
+      return manager[0]
 
     def getMetaobjRevision(self, id):
       return self.getMetaobjManager().getMetaobjRevision( id)
@@ -989,6 +989,28 @@ class ConfManager(
 
     def getMetaCmds(self, sort=True):
       return self.getMetacmdManager().getMetaCmds(sort)
+
+
+    ############################################################################
+    ###
+    ###   Interface IZMSWorkflowProvider: delegate
+    ###
+    ############################################################################
+
+    def getWorkflowManager(self):
+      manager = filter(lambda x:absattr(x.id)=='workflow_manager',self.getDocumentElement().objectValues())
+      if len(manager)==0:
+        class DefaultManager:
+          def writeProtocol(self, log): pass
+          def getAutocommit(self): return True
+          def getActivities(self): return []
+          def getActivityIds(self): return []
+          def getActivity(self, id): return None
+          def getActivityDetails(self, id): return None
+          def getTransitions(self): return []
+          def getTransitionIds(self): return []
+        manager = [DefaultManager()]
+      return manager[0]
 
 
     ############################################################################

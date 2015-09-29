@@ -21,6 +21,16 @@ from zope.interface import Interface
 
 class IZMSWorkflowProvider(Interface):
 
+  def writeProtocol(self, log):
+    """
+    @rtype: None
+    """
+
+  def getAutocommit(self):
+    """
+    @rtype: C{Boolean}
+    """
+
   def getActivities(self):
     """
     @rtype: C{list}
@@ -36,7 +46,17 @@ class IZMSWorkflowProvider(Interface):
     @rtype: C{dict}
     """
 
+  def getActivityDetails(self, id):
+    """
+    @rtype: C{dict}
+    """
+
   def getTransitions(self):
+    """
+    @rtype: C{list}
+    """
+
+  def getTransitionIds(self):
     """
     @rtype: C{list}
     """

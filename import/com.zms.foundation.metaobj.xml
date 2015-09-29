@@ -3306,6 +3306,9 @@ img.hbutton {
 	width:16px!important;
 	border-radius:3px;
 }
+td .btn-group {
+	width:80px;
+}
 .ZMSTable-cell {
 	border:1px solid #CCC;
 }
@@ -3365,40 +3368,42 @@ $(function() {
 
 function onZMSTableFormSubmit() {
 	var xml = '';
-	xml += '<'+'list>\n';
-	var el_tbody = $($("#table_cell_editor").children()[0]);
-	var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
-	for ( var i=0; i < el_trs.length; i++) {
-		xml += '<'+'item type="list"><'+'list>\n';
-		var el_tds = $(el_trs[i]).children().filter(":gt(0)").filter(":not(:last)");
-		for ( var j=0; j < el_tds.length; j++) {
-			xml += '<'+'item type="dictionary"><'+'dictionary>\n';
-			var colspan = $(el_tds[j]).prop("colspan");
-			if (typeof colspan=="undefined") {
-				colspan = 1;
+	var empty = false;
+	$('tr[id^="table_row_"]').each(function() {
+			xml += '<'+'item type="list"><'+'list>\n';
+			var el_tds = $(this).children().filter(":gt(0)").filter(":not(:last)");
+			for ( var j=0; j < el_tds.length; j++) {
+				xml += '<'+'item type="dictionary"><'+'dictionary>\n';
+				var colspan = $(el_tds[j]).prop("colspan");
+				if (typeof colspan=="undefined") {
+					colspan = 1;
+				}
+				xml += '<'+'item key="colspan" type="int">'+colspan+'<'+'/item>\n';
+				var el_inputs = $("textarea,input",el_tds[j]);
+				for ( var k=0; k < el_inputs.length; k++) {
+					var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
+					xml += '<'+'item key="'+key+'"><'+'![CDATA'+'['+$(el_inputs[k]).val()+']'+']><'+'/item>\n';
+				}
+				xml += '<'+'/dictionary><'+'/item>\n';
 			}
-			xml += '<'+'item key="colspan" type="int">'+colspan+'<'+'/item>\n';
-			var el_inputs = $("textarea,input",el_tds[j]);
-			for ( var k=0; k < el_inputs.length; k++) {
-				var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
-				xml += '<'+'item key="'+key+'"><'+'![CDATA'+'['+$(el_inputs[k]).val()+']'+']><'+'/item>\n';
-			}
-			xml += '<'+'/dictionary><'+'/item>\n';
-		}
-		xml += '<'+'/list><'+'/item>\n';
+			xml += '<'+'/list><'+'/item>\n';
+		});
+	if (empty) {
+		xml = '';
 	}
-	xml += '<'+'/list>\n';
+	xml = '<'+'list>\n'+xml+'<'+'/list>\n';
 	$("#table_table").val( xml);
 	xml = '';
-	xml += '<'+'list>\n';
-	var el_trs = el_tbody.children().filter(":eq(1)");
-	for ( var i=0; i < el_trs.length; i++) {
-		var el_inputs = $("input:text",el_trs[i]);
-		for ( var j = 0; j < el_inputs.length; j++) {
-			xml += '<'+'item type="string">'+$(el_inputs[j]).val()+'<'+'/item>\n';
-		}
+	empty = false;
+	$("tr#colgrouping input:text").each(function() {
+			var v = $(this).val();
+			empty |= v.length == 0;
+			xml += '<'+'item type="string">'+v+'<'+'/item>\n';
+		});
+	if (empty) {
+		xml = '';
 	}
-	xml += '<'+'/list>\n';
+	xml = '<'+'list>\n'+xml+'<'+'/list>\n';
 	$("#table_colgroup_cols").val( xml);
 	return onFormSubmit(fmName);
 }
@@ -3656,14 +3661,20 @@ function onKeyUpZMSTableDivContenteditable() {
 		</label>
 		</div>
 	</td>
-	<td tal:repeat="col_index python:range(table_cols)" style="padding-bottom:0.5em;">
-		<tal:block tal:condition="python:zmscontext.attr('colgroup')">
-			<input class="form-control input-sm" style="display:inline;width:3em;" type="text" size="3" 
-			tal:attributes="name python:'col%i'%col_index; value python:(table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))];placeholder python:table_widths[col_index];title python: 'Calculated Average-Width = %s'%(table_widths[col_index])" />
-			&#37;
-		</tal:block>
-			&nbsp;
-	</td>
+	<tal:block tal:repeat="col_index python:range(table_cols)">
+		<td tal:attributes="style python:'padding-bottom:0.5em;;width:%s'%([ 'initial', '%s%%'%((table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))]) ][zmscontext.attr('colgroup')] )">
+			<tal:block tal:condition="python:zmscontext.attr('colgroup')">
+				<input class="form-control input-sm" type="text" size="3"
+					style="display:inline;width:3em;"
+					onchange="$(this).parent().css('width',$(this).val()+'%')"
+					tal:attributes="name python:'col%i'%col_index;
+						value python:(table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))];
+						title python: 'Calculated Average-Width = %s%%'%(table_widths[col_index])" />
+				&#37;
+			</tal:block>
+				&nbsp;
+		</td>
+	</tal:block>
 	<td>&nbsp;</td>
 </tr>
 
@@ -3678,13 +3689,11 @@ function onKeyUpZMSTableDivContenteditable() {
 		</div><!-- .btn-group -->
 	</td>
 	<td>
-		<div class="btn-group">
-			<span class="btn btn-default" onclick="actionBtnClick(this,'insert_col')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-expand-alt',extra='title=\042%s\042'%here.getZMILangStr('ACTION_INSERT_COL'))">icon-expand-alt</tal:block></span>
-		</div><!-- .btn-group -->
+		<span class="btn btn-default" onclick="actionBtnClick(this,'insert_col')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-expand-alt',extra='title=\042%s\042'%here.getZMILangStr('ACTION_INSERT_COL'))">icon-expand-alt</tal:block></span>
 	</td>
 </tr>
 
-<tr tal:repeat="row_index python:range(table_rows)">
+<tr tal:repeat="row_index python:range(table_rows)" tal:attributes="id python:'table_row_%i'%row_index">
 	<td>
 		<div class="btn-group">
 			<span class="btn btn-default" onclick="actionBtnClick(this,'move_row_up')" tal:condition="python:row_index>0 or table_type==3"><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-up',extra='title=\042%s\042'%here.getZMILangStr('ACTION_MOVEUP'))">icon-caret-up</tal:block></span>
@@ -3732,9 +3741,7 @@ function onKeyUpZMSTableDivContenteditable() {
 
 <tr>
 	<td>
-		<div class="btn-group">
-			<span class="btn btn-default" onclick="actionBtnClick(this,'insert_row')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-expand-alt',extra='title=\042%s\042'%here.getZMILangStr('ACTION_INSERT_ROW'))">icon-expand-alt</tal:block></span>
-		</div><!-- .btn-group -->
+		<span class="btn btn-default" onclick="actionBtnClick(this,'insert_row')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-expand-alt',extra='title=\042%s\042'%here.getZMILangStr('ACTION_INSERT_ROW'))">icon-expand-alt</tal:block></span>
 	</td>
 </tr>
 
@@ -4124,7 +4131,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.20]]></item>
+          <item key="revision"><![CDATA[3.0.22]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

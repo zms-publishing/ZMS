@@ -262,6 +262,8 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               parent = ref.getParentNode()
               if parent is not None:
                 ref = ref.getParentNode()
+            elif id.startswith('manage'):
+              ref = None
             elif id not in ['','.'] and id.find('.')<0:
               if id.startswith('#'):
                 id = id[1:]
@@ -280,8 +282,10 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                   if childNode is not None:
                     break
               ref = childNode
-              if ref is None:
-                break
+            if ref is not None and ref.meta_type not in ['Folder']+self.dGlobalAttrs.keys():
+              ref = None
+            if ref is None:
+              break
           return ref
         
         def handleInline(node,v):
@@ -679,7 +683,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.40]]></item>
+          <item key="revision"><![CDATA[0.9.41]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -698,7 +702,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.40]]></item>
+          <item key="revision"><![CDATA[0.9.41]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

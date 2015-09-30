@@ -36,6 +36,7 @@ function zmiToggleClick(toggle, callback) {
 				var pages = $("pages",data).children("page");
 				if ( pages.length == 0) {
 					$(toggle).removeClass($ZMI.icon_clazz("icon-caret-down")).attr({title:''});
+					callback = null;
 				}
 				else {
 					for (var i = 0; i < pages.length; i++) {

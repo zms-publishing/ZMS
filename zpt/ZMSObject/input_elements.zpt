@@ -12,7 +12,7 @@
 				><tal:block tal:define="global 
 						elName python:here.getObjAttrName(metaObjAttr,request['lang']);
 						elLabel python:here.getObjAttrLabel(metaObjAttr);
-						elValue python:here.attr(metaObjAttrId)"
+						elValue python:here.attr(metaObjAttrId);"
 					><tal:block tal:condition="python:metaObjAttr['type']=='delimiter'"
 						><tal:block tal:content="structure python:'</div><!-- .accordion-inner --></div><!-- .accordion-body -->'"></tal:block>
 						<div class="accordion-heading">
@@ -31,7 +31,7 @@
 						><div class="zmi-interface" tal:content="structure elValue">the interface</div>
 					</tal:block
 					><tal:block tal:condition="python:metaObjAttr['type']=='richtext'"
-						><div class="zmi-richtext" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the richtext</div>
+						><div tal:attributes="class python:' '.join(['zmi-richtext']+[[],['is-modified']][int(here.attr_is_modified(metaObjAttrId))])" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the richtext</div>
 					</tal:block
 					><tal:block tal:condition="python:metaObjAttr['type'] in metaObjIds and here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource' and action.lower()!='insert'"
 						><tal:block tal:content="structure python:'</div><!-- .accordion-inner --></div><!-- .accordion-body -->'"></tal:block
@@ -74,7 +74,7 @@
 							and not (metaObjAttr['id'] in ['displaytype','format'])
 							and not (metaObjAttr['id'].find('align') > 0 and len(here.filter_list(metaObj['attrs'],'id',metaObjAttr['id'][:metaObjAttr['id'].find('align')],'=='))>0)
 							and (metaObjAttr['id']!='imgsuperres' or (here.pilutil().enabled() and here.getConfProperty('InstalledProducts.pil.thumbnail.max',0)>0 and here.getConfProperty('ZMSGraphic.superres',0)==1))">
-						<div class="form-group" tal:attributes="id python:'tr_%s'%(elName)">
+						<div class="form-group" tal:attributes="id python:'tr_%s'%(elName); class python:' '.join(['form-group']+[[],['is-modified']][int(here.attr_is_modified(metaObjAttrId))])">
 							<label tal:attributes="for elName; class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
 								<span tal:content="elLabel">the label</span>
 							</label>

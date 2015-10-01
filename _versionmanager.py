@@ -739,7 +739,7 @@ class VersionItem:
       return delete
 
     def rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
-      _globals.writeBlock( self, "[rollbackObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
+      _globals.writeBlock( self, "[rollbackObjChanges]: forced=%s, do_delete=%s"%(str(forced),str(do_delete)))
       delete = self._rollbackObjChanges( parent, REQUEST, forced, do_delete)
       # Return flag for deleted objects.
       return delete

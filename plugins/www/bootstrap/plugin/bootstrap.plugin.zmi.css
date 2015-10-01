@@ -82,7 +82,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	text-decoration:none;
 }
 .zmi.preview_top .navbar .pull-right a:hover {
-	color:#fff;
+	color:#FFF;
 }
 .zmi.preview_top .zmi header .pull-right span.zmi-top-active {
 	color:#FFF;
@@ -153,7 +153,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	background-color: transparent;
 }
 #attr_ref_preview .contentEditable {
-	background-color: #fff;
+	background-color: #FFF;
 	box-shadow: 0 2px 10px #ccc;
 	border-radius: 4px;
 	padding: 1em;
@@ -180,7 +180,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	color:#08c;
 }
 .zmi a.btn-primary {
-	color:#fff;
+	color:#FFF;
 }
 .zmi a.btn-default {
 	color:#000;
@@ -408,7 +408,7 @@ ul.zmi-container .zmi-item .clearboth {
 	clear:both;
 }
 ul.zmi-container .zmi-item.pageelement .center {
-	background-color:white!important;
+	background-color:#FFF;
 	min-height:4em;
 }
 ul.zmi-container .zmi-item .center .contentEditable {
@@ -497,16 +497,26 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 .form-horizontal .form-group.activity {
 	margin-bottom: 7px !important;
 }
-.form-initialized .attr_last_modified,
 .form-horizontal .attr_last_modified {
 	white-space:nowrap;
-	overflow:hidden;
 	color:#888;
+}
+.form-horizontal .accordion-heading.attr_last_modified .btn.btn-default.split-right {
+	border-color: rgba(0,0,0,0.1);
+	padding:0 4px 4px 4px;
+	height:22px;
 }
 .form-initialized .attr_last_modified div.pull-left,
 .form-horizontal .attr_last_modified div.pull-left {
 	padding:0 0 0 1em !important;
 	margin:0 !important;
+}
+.is-modified label span {
+	font-style:italic;
+	font-weight:bold;
+}
+.is-modified input, .is-modified select, .is-modified textarea, .zmi-item.is-modified .center {
+	background-color:#FFEFEF!important;
 }
 
 /*  Sitemap Menu 
@@ -672,7 +682,7 @@ ul.zmi-container.pages .zmi-item .contentEditable {
 	font-size:large;
 }
 .zmi .form-horizontal {
-	background-color:#fff;
+	background-color:#FFF;
 	margin-left:1.5em;
 	margin-right:1.5em;
 	padding:0.5em;
@@ -689,7 +699,7 @@ ul.zmi-container.pages .zmi-item .contentEditable {
 	margin-left:3px;
 }
 .zmi.properties .accordion-group {
-	background-color: #fff;
+	background-color: #FFF;
 	padding:1em;
 }
 .zmi.properties .accordion-group .accordion-inner {
@@ -708,7 +718,7 @@ ul.zmi-container.pages .zmi-item .contentEditable {
 }
 .zmi.properties form.form-horizontal .accordion-group {
 	width: 100%;
-	background-color: #fff;
+	background-color: #FFF;
 }
 .zmi.properties form.form-horizontal .accordion-group.zmi-container {
 	width: 100%;
@@ -718,17 +728,13 @@ ul.zmi-container.pages .zmi-item .contentEditable {
 	margin-left: -1em;
 	max-width:2600px !important;
 	width:100% !important;
-	background-color: #fff;
+	background-color: #FFF;
 }
 .zmi.properties form.form-horizontal .accordion-group .accordion-group.zmi-container .accordion-body.container {
 	margin-left: 0em;
 }
 .properties.zmi form.form-horizontal .accordion-group .accordion-group.zmi-container {
 	padding:1em 0 1em 0;
-}
-.zmi.properties form.form-horizontal .accordion-body.container .contentEditable {
-	padding: 1em;
-	background-color: #fff;
 }
 .zmi.properties form.form-horizontal .accordion-body.container .accordion-inner {
 	background-color:#f5f5f5!important;
@@ -1318,7 +1324,7 @@ div.right .btn .caret {
 		width: auto;
 		min-width: 160px;
 		margin-top: 2px;
-		background-color: #fff;
+		background-color: #FFF;
 		border: 1px solid rgba(0,0,0,0.15);
 		-webkit-box-shadow: 0 6px 12px rgba(0,0,0,0.175);
 		box-shadow: 0 6px 12px rgba(0,0,0,0.175);
@@ -1342,7 +1348,7 @@ div.right .btn .caret {
 	}
 	.navbar-inverse .navbar-nav .open .dropdown-menu>li>a:hover,
 	.navbar-inverse .navbar-nav .open .dropdown-menu>li>a:focus {
-		color: #fff;
+		color: #FFF;
 		text-decoration: none;
 		background-color: #428bca;
 	}
@@ -1501,7 +1507,7 @@ div.right .btn .caret {
 	}
 	.zmi.properties form.form-horizontal .accordion-group {
 		/* width: 78.75%; */
-		background-color: #fff;
+		background-color: #FFF;
 	}
 	.ZMSLinkContainer.zmi.properties form.form-horizontal .accordion-group {
 		width: 100% !important;
@@ -1525,7 +1531,7 @@ button.ui-dialog-titlebar-close {
 	font-size: inherit;
 	color: #fff !important;
 	background-color: #818EA2;
-	border-bottom:1px solid #ffffff;
+	border-bottom:1px solid #FFFFFF;
 }
 li.zmi-item .btn.split-left,
 li.zmi-item .btn.split-right.dropdown-toggle {
@@ -1601,7 +1607,7 @@ body.zmi select.zmi-sort {
 	padding:4px 2px 4px 6px;
 	color: #555555;
 	vertical-align: middle;
-	background-color: #ffffff;
+	background-color: #FFFFFF;
 	border: 1px solid #cccccc;
 	border-radius: 4px;
 	border-top-right-radius:0px;
@@ -1653,7 +1659,7 @@ body.tasks table.table tbody tr td.data {
 	white-space:normal;
 }
 body.tasks table.table {
-	background-color:#fff;
+	background-color:#FFF;
 	font-size: smaller;
 }
 body.tasks table.table ul.breadcrumb {

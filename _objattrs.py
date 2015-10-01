@@ -598,6 +598,22 @@ class ObjAttrs:
 
 
     # --------------------------------------------------------------------------
+    #  ObjAttrs.attr_is_modified:
+    # --------------------------------------------------------------------------
+    def attr_is_modified(self, key):
+      modified = False
+      request = self.REQUEST
+      if not request.has_key('ZMS_INSERT') and not self.getAutocommit():
+        obj_attr = self.getObjAttr(key,self.meta_id)
+        datatype = obj_attr['datatype_key']
+        lang = request['lang']
+        work = self.getObjProperty(key,{'fetchReqBuff':False,'lang':lang,'preview':'preview'})
+        live = self.getObjProperty(key,{'fetchReqBuff':False,'lang':lang})
+        modified = modified or (datatype not in _globals.DT_BLOBS and work != live)
+        modified = modified or (datatype in _globals.DT_BLOBS and (str(work) != str(live) or (work is not None and live is not None and str(work.getData()) != str(live.getData()))))
+      return modified
+
+    # --------------------------------------------------------------------------
     #  ObjAttrs.getObjProperty:
     #
     #  Retrieves value for specified property.

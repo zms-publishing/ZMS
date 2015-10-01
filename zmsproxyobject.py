@@ -154,6 +154,15 @@ class ZMSProxyObject(ZMSContainerObject):
 
 
     # --------------------------------------------------------------------------
+    #  ZMSProxyObject.getRootElement
+    # --------------------------------------------------------------------------
+    def getRootElement(self):
+      base = self.base
+      rtn = base.getRootElement( )
+      return rtn
+
+
+    # --------------------------------------------------------------------------
     #  ZMSProxyObject.getDocumentElement
     # --------------------------------------------------------------------------
     def getDocumentElement(self):

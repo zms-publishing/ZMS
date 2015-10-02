@@ -511,12 +511,24 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 	padding:0 0 0 1em !important;
 	margin:0 !important;
 }
-.is-modified label span {
-	font-style:italic;
-	font-weight:bold;
+.form-initialized .attr_last_modified div.pull-left .btn-group.zmi-action,
+.form-horizontal .attr_last_modified div.pull-left .btn-group.zmi-action {
+	margin-right:.4em;
 }
-.is-modified input, .is-modified select, .is-modified textarea, .zmi-item.is-modified .center {
-	background-color:#FFEFEF!important;
+.is-modified input, .is-modified select, 
+.is-modified textarea, .zmi-item.is-modified .center {
+	background-color:#EFF7FF !important;
+}
+.is-modified label span:before {
+	/* icon-pencil */
+	content: "\f040";
+	font-family: FontAwesome;
+	font-weight: normal;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	speak: none;
+	display:inline-block;
+	margin-right:.3em
 }
 
 /*  Sitemap Menu 

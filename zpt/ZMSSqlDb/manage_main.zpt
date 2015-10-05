@@ -175,14 +175,20 @@
 
 </tal:block>
 
-<tal:block tal:condition="python:request.get('action')=='updateForm'" tal:content="structure 
-		python:here.manage_zmi_input_form(
-			entity=entity,
-			action='update',
-			qindex=request['qindex'],
-			rowid=request['rowid'],
-			row=filter(lambda x:str(here.operator_getitem(x,primary_key,ignorecase=True))==str(request['rowid']),res)[0])">
-	metaobj_recordset_input_fields
+<tal:block tal:condition="python:request.get('action')=='updateForm'">
+	<tal:block tal:define="
+		sql python:here.recordSet_Select(tablename=entity['id'],where='%s=%s'%(primary_key,here.sql_quote__(entity['id'],primary_key,request['rowid'])));
+		row python:here.query(sql,encoding=encoding)['records'][0]">
+		<tal:block tal:content="structure 
+			python:here.manage_zmi_input_form(
+				entity=entity,
+				action='update',
+				qindex=request['qindex'],
+				rowid=request['rowid'],
+				row=row)">
+			metaobj_recordset_input_fields
+		</tal:block>
+	</tal:block>
 </tal:block>
 <tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure 
     python:here.manage_zmi_input_form(

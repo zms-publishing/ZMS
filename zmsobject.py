@@ -1012,6 +1012,44 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
+    #  ZMSObject.ajaxGetNodes:
+    # --------------------------------------------------------------------------
+    security.declareProtected('View', 'ajaxGetNodes')
+    def ajaxGetNodes(self, context=None, lang=None, xml_header=True, REQUEST=None):
+      """ ZMSObject.ajaxGetNodes """
+      context = _globals.nvl(context,self)
+      refs = REQUEST.get('refs',[])
+      if len(refs)==0:
+        for key in REQUEST.keys():
+          if key.startswith('ref') and key[3:].isdigit():
+            refs.append((int(key[3:]),REQUEST[key]))
+        refs.sort()
+        refs = map(lambda x:x[1],refs)
+      
+      #-- Build xml.
+      xml = ''
+      if xml_header:
+        RESPONSE = REQUEST.RESPONSE
+        content_type = 'text/plain; charset=utf-8'
+        filename = 'ajaxGetNodes.xml'
+        RESPONSE.setHeader('Content-Type',content_type)
+        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+        RESPONSE.setHeader('Cache-Control', 'no-cache')
+        RESPONSE.setHeader('Pragma', 'no-cache')
+        self.f_standard_html_request( self, REQUEST)
+        xml += self.getXmlHeader()
+      xml += '<pages>'
+      for ref in refs:
+        ob = self.getLinkObj(ref)
+        if ob is None:
+          xml += '<page ref="%s" not_found="1"/>'%ref
+        else:
+          xml += ob.ajaxGetNode(context=context,lang=lang,xml_header=False,REQUEST=REQUEST)
+      xml += "</pages>"
+      return xml
+
+
+    # --------------------------------------------------------------------------
     #  ZMSObject.ajaxGetNode:
     # --------------------------------------------------------------------------
     security.declareProtected('View', 'ajaxGetNode')
@@ -1024,7 +1062,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       if xml_header:
         RESPONSE = REQUEST.RESPONSE
         content_type = 'text/xml; charset=utf-8'
-        filename = 'ajaxGetChildNodes.xml'
+        filename = 'ajaxGetNode.xml'
         RESPONSE.setHeader('Content-Type',content_type)
         RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
         RESPONSE.setHeader('Cache-Control', 'no-cache')

@@ -5,11 +5,17 @@
 	<tal:block tal:condition="is_sitemap">
 		<!DOCTYPE html>
 		<html lang="en">
-			<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-			<frameset tal:attributes="cols python:'%s,*'%str(request.get('manage_menu_width',224))" border="0" frameborder="0" framespacing="1">
-			<frame name="manage_menu" marginWidth="1" marginHeight="1" tal:attributes="src python:'manage_menu?lang=%s&preview=preview'%request.get('lang','ger')+['','&zmi-debug=True'][int(request.has_key('zmi-debug'))]"/>
-				<frame tal:condition="is_system" name="manage_main" marginWidth="1" marginHeight="1" tal:attributes="src python:'manage_system?lang=%s'%request.get('lang','ger')+['','&zmi-debug=True'][int(request.has_key('zmi-debug'))]"/>
-				<frame tal:condition="not:is_system" name="manage_main" marginWidth="1" marginHeight="1" tal:attributes="src target"/>
+			<head tal:define="dummy python:here.zmi_page_request(here,request)">
+				<title tal:content="python:'ZMS | %s | %s'%(here.display_type(),request['lang'])">the title</title>
+				<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+				<meta name="version_container_abs_url" tal:attributes="content python:here.getVersionContainer().absolute_url()" />
+				<meta name="physical_path" tal:attributes="content python:'/'.join(here.getPhysicalPath())" />
+			</head>
+			<frameset tal:attributes="cols python:'%s,*'%str(request.get('manage_menu_width',224))">
+				<frame marginwidth="2" marginheight="2" scrolling="auto" name="manage_menu" tal:attributes="src python:'manage_menu?lang=%s&preview=preview'%request.get('lang','ger')+['','&zmi-debug=True'][int(request.has_key('zmi-debug'))]"/>
+				<frame marginwidth="2" marginheight="2" scrolling="auto" tal:condition="is_system" name="manage_main" tal:attributes="src python:'manage_system?lang=%s'%request.get('lang','ger')+['','&zmi-debug=True'][int(request.has_key('zmi-debug'))]"/>
+				<frame marginwidth="2" marginheight="2" scrolling="auto"tal:condition="not:is_system" name="manage_main" tal:attributes="src target"/>
 			</frameset>
 		</html>
 	</tal:block>

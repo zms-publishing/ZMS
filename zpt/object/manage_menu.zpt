@@ -2,23 +2,24 @@
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 
-<body tal:attributes="class python:here.zmi_body_class(id='manage-menu')">
+<body tal:attributes="data-root python:here.getRootElement().getHome().id;data-client python:here.getHome().id;id python:'zmsid_%s'%(here.id);class python:here.zmi_body_class(id='manage-menu')">
 
-<div id="zmi-sitemap-header">
-	<div class="navbar" style="position: static;">
-				<a class="navbar-brand zmi-helper-clickable" target="_blank" 
+<header>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<a class="navbar-brand zmi-helper-clickable" target="_blank" 
 					style="max-width: 66%;overflow: hidden;white-space: nowrap;"
 					tal:attributes="href python:'%s/manage'%here.breadcrumbs_obj_path()[0].getHome().id">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block>
 					<span class="zmi-home-id" tal:content="python:here.breadcrumbs_obj_path()[0].getHome().id">Home-Id</span>
-				</a>
-				<div class="pull-right" style="cursor:pointer;padding:8px 12px;">
-					<i class="icon-angle-left" title="Move To Left" onclick="frmresize(-30)" style="color:#aaa;">&nbsp;</i>
-					<i class="icon-ellipsis-horizontal" title="Set Default Width" onclick="frmresize()" style="color:#aaa;">&nbsp;</i>
-					<i class="icon-angle-right" title="Move To Right" onclick="frmresize(60)" style="color:#aaa">&nbsp;</i>
-				</div>
+		</a>
+		<ul class="nav navbar-nav navbar-right">
+      <li id="zmi-history" class="dropdown">
+      </li>
+      <li id="zmi-bookmarks" class="dropdown">
+      </li>
+		</ul>
 	</div><!-- .navbar -->
-</div><!-- #zmi-sitemap-header -->
+</header>
 
 <div class="zmi-sitemap"
 	tal:define="accessNodes python:filter(lambda ob: ob.hasAccess(request), here.breadcrumbs_obj_path());
@@ -32,7 +33,7 @@
 			<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 			<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>
 		</a>
-		<span class="dropdown" tal:condition="python:len(here.getLangIds())>1" tal:attributes="title python:here.getZMILangStr('TAB_LANGUAGES')">
+		<span class="dropdown dropdown-lang" tal:condition="python:len(here.getLangIds())>1" tal:attributes="title python:here.getZMILangStr('TAB_LANGUAGES')">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 				<i title="Language" tal:condition="python:len(here.getLangIds())>1" 
 					tal:attributes="title python:here.getLanguageLabel(request['lang'])" 

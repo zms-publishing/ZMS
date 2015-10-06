@@ -1,11 +1,11 @@
 <!-- common/zmi_body_header -->
 
 <header tal:define="global actions python:map(lambda x: x.get('action'),here.getDocumentElement().filtered_manage_options())">
-	<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar navbar-main navbar-inverse navbar-fixed-top">
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 		<ul class="nav navbar-nav pull-right navbar-right">
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:here.getZMILangStr('TAB_CONFIGURATION')">
+					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:here.getZMILangStr('TAB_CONFIGURATION')">
 						<tal:block tal:content="request/AUTHENTICATED_USER">the authenticated-user</tal:block>&nbsp;
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-cog')"></tal:block>
 						<b class="caret"></b>
@@ -27,12 +27,6 @@
 							<a tal:attributes="href python:'manage_main?lang=%s&zmi-manage-system=%i'%(request['lang'],int(not int(request.SESSION.get('zmi-manage-system',0))))">
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-bolt')"></tal:block>
 								<tal:block tal:content="python:'Zope'">Zope</tal:block>
-							</a>
-						</li>
-						<li>
-							<a tal:attributes="href python:'manage?lang=%s'%request['lang']" class="toggle-sitemap">
-								<tal:block tal:content="structure python:here.zmi_icon(name='icon-sitemap')"></tal:block>
-								<tal:block tal:content="python:here.getZMILangStr('TAB_SITEMAP')">Sitemap</tal:block>
 							</a>
 						</li>
 						<li tal:define="global trashcan python:here.getTrashcan()">

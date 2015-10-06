@@ -16,7 +16,8 @@
                   <item key="name"><![CDATA[<tal:block tal:define="
 		zmscontext options/zmscontext;
 		initialized python:'zcatalog_index' in zmscontext.getRootElement().getHome().objectIds();
-		uid python:request.form.get('uid','')">
+		uid python:request.form.get('uid','');
+		loglevels python:['DEBUG','INFO','ERROR'];">
 	<div class="form-group">
 		<label class="col-sm-2 control-label">Index</label>
 		<div class="col-sm-10">
@@ -25,9 +26,14 @@
 					tal:attributes="href python:'%s/manage_catalogView'%zmscontext.zcatalog_index.absolute_url()" target="_blank"
 					><img tal:attributes="src python:zmscontext.zcatalog_index.icon"/> zcatalog_index</a>
 			</div>
+			<div class="row col-sm-2">
+				<select class="form-control" id="reindex-loglevel" name="reindex-loglevel">
+					<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','seleced'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
+				</select>
+			</div>
 			<button title="REINDEX: Fully rebuilding the ZCatalog index of all (multisite) hierarchy objects."
 				class="btn btn-danger col-sm-2" name="btn" style="margin-left:1em"
-				onclick="window.open('zmsindex/ZMSIndexZCatalog_func_?func_=reindex');return false;">Reindex
+				onclick="window.open('zmsindex/ZMSIndexZCatalog_func_?func_=reindex'+'&loglevel='+$('#reindex-loglevel').val());return false;">Reindex
 			</button>
 		</div>
 	</div><!-- .form-group -->
@@ -37,9 +43,14 @@
 			<div class="row col-sm-4">
 				<input class="form-control url-input" id="resync-url" name="resync-url" value="{$}" />
 			</div>
+			<div class="row col-sm-2">
+				<select class="form-control" id="resync-loglevel" name="resync-loglevel">
+					<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','seleced'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
+				</select>
+			</div>
 			<button title="RESYNC: Validating and refreshing link objects, inline links and backlink on the selected node (default: full hierarchy)."
 				class="btn btn-danger col-sm-2" name="btn" style="margin-left:1em"
-				onclick="window.open('zmsindex/ZMSIndexZCatalog_func_?func_=resync&url='+escape($('#resync-url').val())+($('#resync-clients').prop('checked')==true?'&clients:int=1':''));return false;" tal:condition="initialized">Resync
+				onclick="window.open('zmsindex/ZMSIndexZCatalog_func_?func_=resync&url='+escape($('#resync-url').val())+'&loglevel='+$('#resync-loglevel').val()+($('#resync-clients').prop('checked')==true?'&clients:int=1':''));return false;" tal:condition="initialized">Resync
 			</button>
 			<span title="RESYNC runs over the subordinate clients." 
 				tal:condition="python:len(zmscontext.getPortalClients())>0"
@@ -89,13 +100,6 @@ import time
 class Clazz:
   pass
 
-printed = []
-def write(c,s):
-  from DateTime import DateTime
-  dt = DateTime()
-  c.writeBlock(s)
-  printed.append('%s %s@%s %s'%(dt.strftime("%Y-%m-%d %H:%M:%S,%f"),c.meta_id,c.getPath(),str(s)))
-
 def addLexicon(catalog):
   elements = []
   wordSplitter = Clazz()
@@ -113,9 +117,24 @@ def addLexicon(catalog):
   catalog.manage_addProduct['ZCTextIndex'].manage_addLexicon('Lexicon', 'Default lexicon', elements)
 
 def ZMSIndexZCatalog_func_( self, *args, **kwargs):
-  logger = logging.getLogger('event.ZMS')
+  
   request = self.REQUEST
   response = request.RESPONSE
+  logger = logging.getLogger('event.ZMS')
+  loglevels = ['DEBUG','INFO','ERROR']
+  loglevel = loglevels[loglevels.index(request.get('loglevel','INFO')):]
+  
+  printed = []
+  def write(l,c,s):
+    from DateTime import DateTime
+    dt = DateTime()
+    c.writeBlock(s)
+    if l in loglevel:
+      printed.append('%s %s@%s %s'%(dt.strftime("%Y-%m-%d %H:%M:%S,%f"),c.meta_id,c.getPath(),str(s)))
+  def writeDebug(c,s): write('DEBUG',c,s)
+  def writeInfo(c,s): write('INFO',c,s)
+  def writeError(c,s): write('ERROR',c,s)
+  
   try:
     id = 'zcatalog_index'
     catalog = getattr(self,id,None)
@@ -220,13 +239,13 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       def visit(node):
         l = []
         l.append(1)
-        write(self,'[ZMSIndexZCatalog_func_] catalog_object %s'%node.getPath())
+        writeInfo(self,'[ZMSIndexZCatalog_func_] catalog_object %s'%node.getPath())
         if node.meta_id == 'ZMS':
           node.setConfProperty('ExtensionPoint.ZMSObject.get_uid','%s.get_uid'%self.meta_id)
           node.setConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath','%s.getRefObjPath'%self.meta_id)
           node.setConfProperty('ExtensionPoint.ZReferableItem.getLinkObj','%s.getLinkObj'%self.meta_id)
         catalog.catalog_object(node, node.getPath())
-        for childNode in node.getChildNodes():
+        for childNode in node.objectValues(self.dGlobalAttrs.keys()):
           l.extend(visit(childNode))
         if node.meta_id == 'ZMS':
           for childNode in node.getPortalClients():
@@ -234,13 +253,14 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         return l
       t0 = time.time()
       index = visit(self.getDocumentElement())
-      write(self,'[ZMSIndexZCatalog_func_] reindex done: %i in %.2fsecs.'%(len(index),time.time()-t0))
+      writeInfo(self,'[ZMSIndexZCatalog_func_] reindex done: %i in %.2fsecs.'%(len(index),time.time()-t0))
     
     ##############################################################################
     # Resync
     ##############################################################################
     elif func_ == 'resync':
       if catalog is not None:
+        domains = {request['SERVER_URL']:''}
         
         def get_oid2uid(id):
           if id.startswith('{$') and id.find('oid:')>0 and id.endswith('}'):
@@ -251,7 +271,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             q = catalog({'get_oid':oid})
             for r in q:
               id = '{$%s}'%r['get_uid']
-              write(self,'[ZMSIndexZCatalog_func_] get_oid2uid[%s]'%id)
+              writeDebug(self,'[ZMSIndexZCatalog_func_] get_oid2uid[%s]'%id)
               break
           return id
         
@@ -269,7 +289,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                 id = id[1:]
               childNode = getattr(ref,id,None)
               if childNode is None and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-                for o in filter(lambda x:x.meta_type not in ['External Method'],ref.getChildNodes()):
+                for o in filter(lambda x:x.meta_type not in ['External Method'],ref.objectValues(self.dGlobalAttrs.keys())):
                   for l in o.getLanguages():
                     r = {'lang':l}
                     try:
@@ -296,16 +316,16 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
             if d.has_key('data-id'):
               data_id = d['data-id']
-              write(node,'[ZMSIndexZCatalog_func_] handleInline data_id=%s'%data_id)
+              writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline data_id=%s'%data_id)
               data_id = get_oid2uid('{$%s}'%data_id)
               ref = node.getLinkObj(data_id)
             if ref is None and d.has_key('href'):
               href = d['href']
               href = re.sub('http://localhost:(\\d)*/','',href)
-              for prefix in [request['SERVER_URL'],self.getConfProperty('ASP.ip_or_domain','?')]:
-                if href.startswith(prefix):
-                  href = href[len(prefix):]
-              write(node,'[ZMSIndexZCatalog_func_] handleInline href=%s'%href)
+              for domain in domains.keys():
+                path = domains[domain]
+                href = re.sub(domain,path,href)
+              writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline href=%s'%href)
               if href.startswith('.') or href.startswith('/'):
                 ref = find_node(node,href)
             if ref is not None:
@@ -315,13 +335,13 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               title = f[1]
               new = '<a %s>%s</a>'%(' '.join(map(lambda x:'%s="%s"'%(x,d[x]),d.keys())),title)
               if old != new:
-                write(node,'[ZMSIndexZCatalog_func_] handleInline old=%s'%old)
-                write(node,'[ZMSIndexZCatalog_func_] handleInline new=%s'%new)
+                writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline old=%s'%old)
+                writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline new=%s'%new)
                 v = v.replace(old,new)
           return v
         
         def handleUrl(node,v):
-          write(node,'[ZMSIndexZCatalog_func_] handleUrl %s'%v)
+          writeDebug(node,'[ZMSIndexZCatalog_func_] handleUrl %s'%v)
           ref = None
           if v.startswith('{$') and v.endswith('}'):
             if not (v.startswith('{$__') and v.endswith('__}')) \
@@ -334,12 +354,12 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             ref.registerRefObj(node) 
             old = v
             new = node.getRefObjPath(ref)
-            write(node,'[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
+            writeDebug(node,'[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
             v = new
           return v
         
         def visit(node):
-          write(node,'[ZMSIndexZCatalog_func_] resync')
+          writeInfo(node,'[ZMSIndexZCatalog_func_] resync')
           l = []
           l.append(1)
           if node.meta_id!='ZMSLinkElement' and node.getType()=='ZMSRecordSet':
@@ -382,23 +402,35 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                         v = handleUrl(node,v)
                       if o != v:
                         self.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
-          for childNode in node.getChildNodes():
+          for childNode in node.objectValues(self.dGlobalAttrs.keys()):
             l.extend(visit(childNode))
           if node.meta_id == 'ZMS' and request.get('clients',0)==1:
             for childNode in node.getPortalClients():
               l.extend(visit(childNode))
           return l
         
+        def init_domains(doc,domains):
+          domain = self.getConfProperty('ASP.ip_or_domain','?')
+          if domain != '?':
+            domain = '^http(\\w)?://%s'%domain
+            path = '/'.join(doc.getPhysicalPath())
+            domains[domain] = path
+            writeInfo(doc,'[ZMSIndexZCatalog_func_] init_domains %s=%s'%(domain,path))
+          for portalClient in doc.getPortalClients():
+            init_domains(portalClient,domains) 
+        
         t0 = time.time()
         url = request['url']
         base = self.getLinkObj(url)
+        root = self.getRootElement()
+        init_domains(root,domains)
         index = visit(base)
-        write(self,'[ZMSIndexZCatalog_func_] resync for %s done: %i in %.2fsecs.'%(url,len(index),time.time()-t0))
+        writeInfo(self,'[ZMSIndexZCatalog_func_] resync for %s done: %i in %.2fsecs.'%(url,len(index),time.time()-t0))
   except:
     t,v,tb = sys.exc_info()
     msg = "[%s@%s]"%(self.meta_id,self.absolute_url())+''.join(format_exception(t, v, tb))
     logger.error(msg)
-    write(self,'[ZMSIndexZCatalog_func_] except %s'%msg)
+    writeError(self,'[ZMSIndexZCatalog_func_] except %s'%msg)
   
   response.setHeader('Content-Type','text/plain')
   return '\n'.join(printed)]]>
@@ -683,7 +715,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.41]]></item>
+          <item key="revision"><![CDATA[0.9.43]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -702,7 +734,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.41]]></item>
+          <item key="revision"><![CDATA[0.9.43]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

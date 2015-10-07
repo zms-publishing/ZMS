@@ -177,7 +177,7 @@
 
 <tal:block tal:condition="python:request.get('action')=='updateForm'">
 	<tal:block tal:define="
-		sql python:here.recordSet_Select(tablename=entity['id'],where='%s=%s'%(primary_key,here.sql_quote__(entity['id'],primary_key,request['rowid'])));
+		sql python:here.recordSet_Select(tablename=entity['id'],select='*',where='%s=%s'%(primary_key,here.sql_quote__(entity['id'],primary_key,request['rowid'])));
 		row python:here.query(sql,encoding=encoding)['records'][0]">
 		<tal:block tal:content="structure 
 			python:here.manage_zmi_input_form(

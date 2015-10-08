@@ -545,9 +545,18 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 }
 /*  Sitemap Menu 
     ------------------------------------------------------- */
-body.manage-menu .zmi-page {
+.zmi.manage-menu .zmi-page {
 	white-space:nowrap;
 	overflow:hidden;
+}
+.zmi.manage-menu .dropdown-header {
+	color: #C0C0C0 !important;
+	background-color: transparent !important;
+	border-bottom: 1px solid #818EA2!important;
+}
+.zmi .breadcrumb a[title=Bookmark] {
+	margin-left: .15em;
+	margin-bottom: -1px;
 }
 .zmi-browse-iframe-preview {
 	z-index:99999;
@@ -570,14 +579,14 @@ body.manage-menu .zmi-page {
 body.browse_iframe .zmi-sitemap > div,
 body.browse_iframe .zmi-sitemap ul, 
 body.browse_iframe .zmi-sitemap ol,
-body.manage-menu .zmi-sitemap > div,
-body.manage-menu .zmi-sitemap ul, 
-body.manage-menu .zmi-sitemap ol {
+.zmi.manage-menu .zmi-sitemap > div,
+.zmi.manage-menu .zmi-sitemap ul, 
+.zmi.manage-menu .zmi-sitemap ol {
 	margin-top:0.3em;
 	margin-left:0;
 	padding-left:1em;
 }
-body.manage-menu .navbar-brand {
+.zmi.manage-menu .navbar-brand {
 	font-size:100%!important;
 }
 body.browse_iframe .toggle {
@@ -589,7 +598,7 @@ body.browse_iframe .toggle {
 	display:inline-block;
 	cursor:pointer;
 }
-body.manage-menu .toggle {
+.zmi.manage-menu .toggle {
 	color:#CCC;
 	font-size:120%;
 	vertical-align:bottom;
@@ -599,43 +608,42 @@ body.manage-menu .toggle {
 	display:inline-block;
 	cursor:pointer;
 }
-body.manage-menu .ZMSDocument .toggle {
+.zmi.manage-menu .ZMSDocument .toggle {
 	color:#404040;
 }
-body.manage-menu {
+.zmi.manage-menu {
 	background-color:#404040;
 }
-body.manage-menu .zmi header {
+.zmi.manage-menu .zmi header {
 	background-color: transparent !important;
 }
-body.manage-menu a {
+.zmi.manage-menu a {
 	color:#FFF;
 }
-body.manage-menu .zmi-sitemap .inactive a,
-body.manage-menu .zmi-helper-clickable {
+.zmi.manage-menu .zmi-sitemap .inactive a,
+.zmi.manage-menu .zmi-helper-clickable {
 	color:#999;
 }
-body.manage-menu div.restricted > a > i {
+.zmi.manage-menu div.restricted > a > i {
 	color:orange;
 }
-body.manage-menu .zmi-helper-clickable:hover {
+.zmi.manage-menu .zmi-helper-clickable:hover {
 	color:#FFF;
 }
-body.manage-menu .dropdown-menu {
+.zmi.manage-menu .dropdown-menu {
 	filter:Alpha(opacity=90);-moz-opacity:0.90;opacity:0.90;
 }
-body.manage-menu .dropdown-menu > li > a {
-	color:#333!important;;
+.zmi.manage-menu .dropdown-menu > li > a {
+	color: #FFFFFF !important;
 }
-body.manage-menu .dropdown-lang .dropdown-menu > li > a {
-	clear: both;
-	color: #CCC!important;
-	display: block;
-	font-size: 13px;
-	padding: 3px 8px 3px 0;
-	white-space: nowrap;
+.zmi.manage-menu .navbar-nav .open .dropdown-menu {
+	background-color: #000;
 }
-body.manage-menu .dropdown-lang .dropdown-menu {
+.zmi.manage-menu .navbar-nav .dropdown-menu > li > a:hover,
+.zmi.manage-menu .navbar-nav .dropdown-menu > li > a:focus {
+	background-color: #337AB7 !important;
+}
+.zmi.manage-menu .dropdown-lang .dropdown-menu {
 	background-color: #222;
 	border: 1px solid #888;
 	color: #000;
@@ -643,8 +651,8 @@ body.manage-menu .dropdown-lang .dropdown-menu {
 	position: absolute;
 	min-width: 110px;
 }
-body.manage-menu .dropdown-lang .dropdown-menu > li > a:focus,
-body.manage-menu .dropdown-lang .dropdown-menu > li > a:hover {
+.zmi.manage-menu .dropdown-lang .dropdown-menu > li > a:focus,
+.zmi.manage-menu .dropdown-lang .dropdown-menu > li > a:hover {
 	background-color:transparent !important;
 	color:#fff !important;
 }

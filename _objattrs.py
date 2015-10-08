@@ -564,7 +564,7 @@ class ObjAttrs:
           value = 0.0
       
       #-- Text-Fields
-      elif datatype == _globals.DT_TEXT:
+      elif datatype in _globals.DT_TEXTS:
         value = self.validateInlineLinkObj(value)
       
       #-- Url-Fields
@@ -905,7 +905,7 @@ class ObjAttrs:
           v = ''
       
       #-- Text-Fields
-      elif datatype == _globals.DT_TEXT:
+      elif datatype in _globals.DT_TEXTS:
         v = self.validateInlineLinkObj(v)
       
       #-- Url-Fields

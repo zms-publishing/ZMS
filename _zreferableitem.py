@@ -58,7 +58,7 @@ def getInlineRefs(text):
       data_id = attr[attr.find('data-id='):]
       data_id = data_id[data_id.find('"')+1:]
       data_id = data_id[:data_id.find('"')]
-      l.append('{$%s}'%data_id)
+      l.append(data_id)
   return l
 
 ################################################################################
@@ -307,9 +307,9 @@ class ZReferableItem:
       d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
       if d.has_key('data-id'):
         old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
-        ob = self.getLinkObj(url='{$%s}'%d['data-id'])
+        ob = self.getLinkObj(url=d['data-id'])
         if ob is not None:
-          href = self.getLinkUrl(url='{$%s}'%d['data-id'])
+          href = self.getLinkUrl(url=d['data-id'])
           d['href'] = href
           if not ob.isActive(self.REQUEST):
             d['data-target'] = "inactive"

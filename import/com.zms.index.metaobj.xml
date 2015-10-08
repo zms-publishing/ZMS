@@ -128,12 +128,16 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
   def write(l,c,s):
     from DateTime import DateTime
     dt = DateTime()
-    c.writeBlock(s)
     if l in loglevel:
-      printed.append('%s %s@%s %s'%(dt.strftime("%Y-%m-%d %H:%M:%S,%f"),c.meta_id,c.getPath(),str(s)))
-  def writeDebug(c,s): write('DEBUG',c,s)
-  def writeInfo(c,s): write('INFO',c,s)
-  def writeError(c,s): write('ERROR',c,s)
+      line = '%s %s@%s %s'%(dt.strftime("%Y-%m-%d %H:%M:%S,%f"),c.meta_id,c.getPath(),str(s))
+      self.writeBlock(line)
+      printed.append(line)
+  def writeDebug(c,s):
+    write('DEBUG',c,s)
+  def writeInfo(c,s):
+    write('INFO',c,s)
+  def writeError(c,s):
+    write('ERROR',c,s)
   
   try:
     id = 'zcatalog_index'
@@ -305,6 +309,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             if ref is not None and ref.meta_type not in ['Folder']+self.dGlobalAttrs.keys():
               ref = None
             if ref is None:
+              ref = '{$uid:not_found}'
               break
           return ref
         
@@ -321,7 +326,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               ref = node.getLinkObj(data_id)
             if ref is None and d.has_key('href'):
               href = d['href']
-              href = re.sub('http://localhost:(\\d)*/','',href)
+              href = re.sub('http://localhost:(\\d)*','',href)
               for domain in domains.keys():
                 path = domains[domain]
                 href = re.sub(domain,path,href)
@@ -410,7 +415,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           return l
         
         def init_domains(doc,domains):
-          domain = self.getConfProperty('ASP.ip_or_domain','?')
+          domain = doc.getConfProperty('ASP.ip_or_domain','?')
           if domain != '?':
             domain = '^http(\\w)?://%s'%domain
             path = '/'.join(doc.getPhysicalPath())
@@ -715,7 +720,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.43]]></item>
+          <item key="revision"><![CDATA[0.9.44]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -734,7 +739,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.43]]></item>
+          <item key="revision"><![CDATA[0.9.44]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

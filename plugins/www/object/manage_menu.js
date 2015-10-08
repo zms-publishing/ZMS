@@ -157,14 +157,19 @@ function zmiBookmarksChanged() {
 						if (typeof not_found=="undefined" || not_found!="1") {
 							var titlealt = $(this).attr("titlealt");
 							var absolute_url = $(this).attr("absolute_url");
+							var icon = $(this).attr("display_icon");
+							if (icon.indexOf('<')!=0) {
+								icon = $ZMI.icon(icon);
+							}
 							if (i==0) {
-								html += '<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="Bookmarks">';
+								html += '<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="Favoriten">';
 								html += $ZMI.icon('icon-bookmark')+' ';
 								html += '<b class="caret"></b>';
 								html += '</a>';
 								html += '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
+								html += '<li class="dropdown-header">'+$ZMI.icon('icon-bookmark')+' Favoriten</li>';
 							}
-							html += '<li role="presentation"><a href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main">'+$ZMI.icon('icon-bookmark text-primary')+' '+titlealt+'</a></li>';
+							html += '<li role="presentation"><a href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main">'+' '+icon+' '+titlealt+'</a></li>';
 							i++;
 						}
 					});
@@ -196,14 +201,19 @@ function zmiHistoryChanged() {
 						if (typeof not_found=="undefined" || not_found!="1") {
 							var titlealt = $(this).attr("titlealt");
 							var absolute_url = $(this).attr("absolute_url");
+							var icon = $(this).attr("display_icon");
+							if (icon.indexOf('<')!=0) {
+								icon = $ZMI.icon(icon);
+							}
 							if (i==0) {
 								html += '<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="Verlauf">';
-								html += $ZMI.icon('icon-bookmark-empty')+' ';
+								html += $ZMI.icon('icon-time')+' ';
 								html += '<b class="caret"></b>';
 								html += '</a>';
 								html += '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
+								html += '<li class="dropdown-header">'+$ZMI.icon('icon-time')+' Verlauf</li>';
 							}
-							html += '<li role="presentation"><a href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main">'+$ZMI.icon('icon-bookmark-empty')+' '+(i+1)+'. '+titlealt+'</a></li>';
+							html += '<li role="presentation"><a href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main">'+(i+1)+'. '+icon+' '+titlealt+'</a></li>';
 							i++;
 						}
 					});

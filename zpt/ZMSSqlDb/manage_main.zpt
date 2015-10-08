@@ -9,16 +9,16 @@
 <tal:block tal:define="global
 			entities python:here.getEntities();
 			tables python:filter(lambda x:x['type'].upper()=='TABLE',entities);
-      SESSION request/SESSION;
+			SESSION request/SESSION;
 			dummy0 python:request.set('qstart',request.get('qstart',SESSION.get('qstart_%s'%here.id,0)));
 			dummy0 python:request.set('qbatch',request.get('qbatch',SESSION.get('qbatch_%s'%here.id,3)));
 			dummy0 python:request.set('qsize',request.get('qsize',SESSION.get('qsize_%s'%here.id,20)));
-      dummy0 python:request.set('qfilters',request.get('qfilters',SESSION.get('qfilters_%s'%here.id,1)));
+			dummy0 python:request.set('qfilters',request.get('qfilters',SESSION.get('qfilters_%s'%here.id,1)));
 			dummy0 python:request.set('qindex',request.get('qindex',SESSION.get('qindex_%s'%here.id,-1)));
 			dummy0 python:request.set('qstart_%s'%here.id,request.get('qstart'));
 			dummy0 python:request.set('qbatch_%s'%here.id,request.get('qbatch'));
 			dummy0 python:SESSION.set('qsize_%s'%here.id,request.get('qsize'));
-      dummy0 python:SESSION.set('qfilters_%s'%here.id,request.get('qfilters'));
+			dummy0 python:SESSION.set('qfilters_%s'%here.id,request.get('qfilters'));
 			dummy0 python:SESSION.set('qindex_%s'%here.id,request.get('qindex'));
 			dummy0 python:here.recordSet_Init(request);
 			dummy0 python:here.recordSet_Filter(request);
@@ -80,7 +80,7 @@
 
 <tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
 
-<form method="get" class="form-horizontal" tal:define="filter_columns python:filter(lambda x:len(here.intersection_list(['blob','details','fk','multiselect','multimultiselect'],x.keys()))==0,entity['columns'])">
+<form method="get" class="form-horizontal" tal:define="filter_columns python:filter(lambda x:len(here.intersection_list(['blob','details','multiselect','multimultiselect'],x.keys()))==0,entity['columns'])">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
 	<input type="hidden" name="qorder"  tal:attributes="value request/qorder">
@@ -119,11 +119,11 @@
 			<label class="control-label" for="qsize" tal:content="python:here.getZMILangStr('ATTR_ROWS')" tal:define="global dummy0 python:request.set('qsize',request.get('qsize',10))">Rows</label>
 			<input class="form-control input-sm" size="2" id="qsize" class="input-mini " type="text" name="qsize:int" tal:attributes="value request/qsize" />
 			<label class="control-label" for="qfilters" tal:content="python:here.getZMILangStr('ATTR_FILTER')" tal:define="global dummy0 python:request.set('qfilters',request.get('qfilters',1))">Filter</label>
-      <select class="form-control input-sm" name="qfilters:int" onchange="$('#btn-search').click()">
-        <tal:block tal:repeat="i python:range(len(filter_columns))">
-          <option tal:attributes="value python:i+1; selected python:['','selected'][int(request.get('qfilters',1)==i+1)]" tal:content="python:i+1">the #filters</option>
-        </tal:block>
-      </select>
+			<select class="form-control input-sm" name="qfilters:int" onchange="$('#btn-search').click()">
+				<tal:block tal:repeat="i python:range(len(filter_columns))">
+					<option tal:attributes="value python:i+1; selected python:['','selected'][int(request.get('qfilters',1)==i+1)]" tal:content="python:i+1">the #filters</option>
+				</tal:block>
+			</select>
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
 
@@ -133,7 +133,7 @@
 				<div class="form-group col-lg-12" tal:repeat="filterIndex python:range(request.get('qfilters',1))">
 					<select class="form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
 						<tal:block tal:repeat="column python:map(lambda x:here.getEntityColumn(entity['id'],x['id']),filter_columns)">
-							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,'').lower())]" tal:content="python:'%s (%s)'%(column['label'],column['type'])">column</option>
+							<option tal:attributes="value column/id; title column/type; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,'').lower())]" tal:content="column/label">column</option>
 						</tal:block>
 					</select>
 					<select class="form-control input-sm" tal:attributes="name python:'filterop%i'%filterIndex">
@@ -168,7 +168,7 @@
 			records=res,
 			form_action=request['URL'],
 			url_params={'qentity':request.get('qentity')},
-			record_handler=here.getEntityRecordHandler(entity['id']))">
+			record_handler=here.getEntityRecordHandler(entity['id'],handleColumns=False))">
 		metaobj_recordset_main_grid
 	</tal:block>
 </tal:block>
@@ -191,7 +191,7 @@
 	</tal:block>
 </tal:block>
 <tal:block tal:condition="python:request.get('action')=='insertForm'" tal:content="structure 
-    python:here.manage_zmi_input_form(
+		python:here.manage_zmi_input_form(
 			entity=entity,
 			action='insert',
 			qindex=-1,

@@ -550,9 +550,9 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 	overflow:hidden;
 }
 .zmi.manage-menu .dropdown-header {
-	color: #C0C0C0 !important;
+	color: #999 !important;
 	background-color: transparent !important;
-	border-bottom: 1px solid #818EA2!important;
+	border-bottom: 1px solid #666 !important;
 }
 .zmi .breadcrumb a[title=Bookmark] {
 	margin-left: .15em;
@@ -633,7 +633,7 @@ body.browse_iframe .toggle {
 .zmi.manage-menu .dropdown-menu {
 	filter:Alpha(opacity=90);-moz-opacity:0.90;opacity:0.90;
 }
-.zmi.manage-menu .dropdown-menu > li > a {
+.zmi.manage-menu .navbar-inverse .navbar-nav .dropdown-menu > li > a {
 	color: #FFFFFF !important;
 }
 .zmi.manage-menu .navbar-nav .open .dropdown-menu {

@@ -309,7 +309,6 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             if ref is not None and ref.meta_type not in ['Folder']+self.dGlobalAttrs.keys():
               ref = None
             if ref is None:
-              ref = '{$uid:not_found}'
               break
           return ref
         
@@ -332,6 +331,17 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                 href = re.sub(domain,path,href)
               writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline href=%s'%href)
               if href.startswith('.') or href.startswith('/'):
+                nf = re.compile('(.*?)\\?op=not_found&url={\\$(.*?)}').findall(href)
+                if nf:
+                  writeDebug(node,'[ZMSIndexZCatalog_func_] nf=%s'%str(nf))
+                  url = nf[0][1]
+                  obid = url.split('/')[-1]
+                  writeDebug(node,'[ZMSIndexZCatalog_func_] obid=%s'%str(obid))
+                  q = catalog({'id':obid})
+                  writeDebug(node,'[ZMSIndexZCatalog_func_] q=%i'%len(q))
+                  if len(q) == 1:
+                    href = q[0]['getPath']
+                  writeDebug(node,'[ZMSIndexZCatalog_func_] href=%s'%href)
                 ref = find_node(node,href)
             if ref is not None:
               d['data-id'] = node.getRefObjPath(ref)
@@ -720,7 +730,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.44]]></item>
+          <item key="revision"><![CDATA[0.9.45]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -739,7 +749,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.44]]></item>
+          <item key="revision"><![CDATA[0.9.45]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

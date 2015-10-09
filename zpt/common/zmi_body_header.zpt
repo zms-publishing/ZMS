@@ -6,7 +6,7 @@
 		<ul class="nav navbar-nav pull-right navbar-right">
 				<li class="dropdown">
 					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:here.getZMILangStr('TAB_CONFIGURATION')">
-						<tal:block tal:content="request/AUTHENTICATED_USER">the authenticated-user</tal:block>&nbsp;
+						<span class="authenticated_user" tal:content="request/AUTHENTICATED_USER">the authenticated-user</span>&nbsp;
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-cog')"></tal:block>
 						<b class="caret"></b>
 					</a>

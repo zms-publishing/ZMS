@@ -15,7 +15,7 @@
 			<frameset tal:attributes="cols python:'%s,*'%str(request.get('manage_menu_width',224))">
 				<frame marginwidth="2" marginheight="2" scrolling="auto" name="manage_menu" tal:attributes="src python:'manage_menu?lang=%s&preview=preview'%request.get('lang','ger')+['','&zmi-debug=True'][int(request.has_key('zmi-debug'))]"/>
 				<frame marginwidth="2" marginheight="2" scrolling="auto" tal:condition="is_system" name="manage_main" tal:attributes="src python:'manage_system?lang=%s'%request.get('lang','ger')+['','&zmi-debug=True'][int(request.has_key('zmi-debug'))]"/>
-				<frame marginwidth="2" marginheight="2" scrolling="auto"tal:condition="not:is_system" name="manage_main" tal:attributes="src target"/>
+				<frame marginwidth="2" marginheight="2" scrolling="auto" tal:condition="not:is_system" name="manage_main" tal:attributes="src target"/>
 			</frameset>
 		</html>
 	</tal:block>

@@ -133,7 +133,7 @@
 				<div class="form-group col-lg-12" tal:repeat="filterIndex python:range(request.get('qfilters',1))">
 					<select class="form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
 						<tal:block tal:repeat="column python:map(lambda x:here.getEntityColumn(entity['id'],x['id']),filter_columns)">
-							<option tal:attributes="value column/id; title column/type; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,'').lower())]" tal:content="column/label">column</option>
+							<option tal:attributes="value column/id; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,'').lower())]" tal:content="python:'%s (%s)'%(column['label'],column['type'])">column</option>
 						</tal:block>
 					</select>
 					<select class="form-control input-sm" tal:attributes="name python:'filterop%i'%filterIndex">
@@ -167,8 +167,7 @@
 			metaObjAttrs=metaObjAttrs,
 			records=res,
 			form_action=request['URL'],
-			url_params={'qentity':request.get('qentity')},
-			record_handler=here.getEntityRecordHandler(entity['id'],handleColumns=False))">
+			url_params={'qentity':request.get('qentity')})">
 		metaobj_recordset_main_grid
 	</tal:block>
 </tal:block>

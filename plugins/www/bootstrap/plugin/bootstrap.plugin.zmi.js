@@ -76,10 +76,13 @@ $(function(){
 		+ ' title="Sitemap">'
 		+ $ZMI.icon('icon-reorder')
 		+ '</a>');
-	$('.zmi header a.toggle-sitemap')
-		.attr({'target':(manage_menu?'_parent':'_self'),
-				'href':'manage?lang='+getZMILang()+(manage_menu?'':'&dtpref_sitemap=1')
+	if (manage_menu) {
+		$('.zmi header a.toggle-sitemap').each(function() {
+				var $a = $(this);
+				$a.attr('target','_parent');
+				$a.attr('href','manage?lang='+getZMILang());
 			});
+	}
 
 	// Toggle: Lang
 	if (manage_menu) {

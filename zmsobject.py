@@ -877,6 +877,9 @@ class ZMSObject(ZMSItem.ZMSItem,
           i = index_html.find(s)
           if i > 0:
             index_html = protocol + '://' + domain + '/' + index_html[i+len(s):]
+      elif self.getHome() == context.getHome():
+        path = context.getHref2IndexHtml(REQUEST,deep)
+        index_html = self.getRelativeUrl(path,index_html)
       return index_html
     
     #++
@@ -1079,7 +1082,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       except:
         xml += " display_icon=\"&lt;i class=&quot;icon-file-alt&quot; title=&quot;ICON ERROR&quot;>&lt;/i>\""
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
-      xml += " uid=\"%s\""%(self.get_uid())
+      xml += " uid=\"{$%s}\""%(self.get_uid())
       xml += " id=\"%s_%s\""%(self.getHome().id,self.id)
       xml += " home_id=\"%s\""%(self.getHome().id)
       xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtmlInContext(context,REQUEST,deep=0))

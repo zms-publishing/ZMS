@@ -49,16 +49,12 @@ def isInternalLink(url):
 # ----------------------------------------------------------------------------
 def getInlineRefs(text):
   l = []
-  p = '<a (.*?)href="(.*?)"(.*?)>(.*?)<\\/a>'
+  p = '<a(.*?)>(.*?)<\\/a>'
   r = re.compile(p)
-  for f in r.findall(str(text)):
-    ref = None
-    attr = f[0]+f[2]
-    if attr.find('data-id=') >= 0:
-      data_id = attr[attr.find('data-id='):]
-      data_id = data_id[data_id.find('"')+1:]
-      data_id = data_id[:data_id.find('"')]
-      l.append(data_id)
+  for f in r.findall(text):
+    d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
+    if d.has_key('data-id'):
+      l.append(d['data-id'])
   return l
 
 ################################################################################
@@ -88,34 +84,18 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   #  ZReferableItem.getRelativeUrl:
   # ----------------------------------------------------------------------------
-  def getRelativeUrl(self, path, url, sep='/'):
-    ref = '.'
-    SERVER_URL = self.REQUEST['SERVER_URL']
-    currntPath = path
-    if currntPath.startswith(SERVER_URL):
-      currntPath = currntPath[len(SERVER_URL)+1:]
-    elif currntPath.startswith(sep):
-      currntPath = currntPath[1:]
-    targetPath = url;
-    if targetPath.startswith(SERVER_URL):
-      targetPath = targetPath[len(SERVER_URL)+1:]
-    elif targetPath.startswith(sep):
-      targetPath = targetPath[1:]
-    currntElmnts = currntPath.split(sep)
-    targetElmnts = targetPath.split(sep)
-    i = 0
-    while i < len( currntElmnts) and \
-          i < len( targetElmnts) and \
-          currntElmnts[ i] == targetElmnts[ i]:
-      i = i + 1
-    currntElmnts = currntElmnts[ i:]
-    targetElmnts = targetElmnts[ i:]
-    for currntElmnt in currntElmnts:
-      ref = ref + sep + '..'
-    for targetElmnt in targetElmnts:
-      ref = ref + sep + targetElmnt
-    return ref
-
+  def getRelativeUrl(self, path, url):
+    import urlparse
+    import posixpath
+    u_dest = urlparse.urlsplit(url)
+    u_src = urlparse.urlsplit(path)
+    _uc1 = urlparse.urlunsplit(u_dest[:2]+tuple('' for i in range(3)))
+    _uc2 = urlparse.urlunsplit(u_src[:2]+tuple('' for i in range(3)))
+    if _uc1 != _uc2:
+        ## This is a different domain
+        return destination
+    _relpath = posixpath.relpath(u_dest.path, posixpath.dirname(u_src.path))
+    return './%s'%urlparse.urlunsplit(('', '', _relpath, u_dest.query, u_dest.fragment))
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.getRefObjPath:

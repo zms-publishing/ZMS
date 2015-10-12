@@ -10,33 +10,34 @@
 			objAttrs python:here.getObjAttrs(metaObj['id'])">
 	<div class="accordion-group">
 		<div class="accordion-heading attr_last_modified"
-			><a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrActivity"
+			><a class="accordion-toggle" data-toggle="collapse" href="#attrActivity"
+				tal:attributes="class python:'%s'%(request.get('ZMS_INSERT',False) and 'accordion-toggle' or 'accordion-toggle pull-left')"
 				><tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block
 				><tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
 			></a>
-			<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
-			<div class="pull-left">
-				<tal:block tal:define="actions python:
-					[[],[(here.getZMILangStr('BTN_UNDO'),'../manage_undoObjs?ids:list=%s'%here.id,'icon-undo')]][here.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request)]+
-					here.filtered_workflow_actions()">
-					<div class="btn-group zmi-action" tal:attributes="title python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')" tal:condition="python:len(actions)>0">
-						<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown" tal:content="structure python:here.zmi_icon(name='icon-chevron-down')"></button>
-						<ul class="dropdown-menu">
-							<tal:block tal:repeat="action actions">
-								<li tal:condition="python:len(action)==3">
-									<a tal:attributes="href python:'javascript:$ZMI.actionList.exec($(\'.attr_last_modified\'),\'%s\',\'%s\')'%(action[0],action[1])">
-										<tal:block tal:content="structure python:here.zmi_icon(name=action[2])">the icon</tal:block>
-										<tal:block tal:content="structure python:action[0]">the title</tal:block>
-									</a>
-								</li>
-							</tal:block>
-						</ul>
-					</div>
-				</tal:block>
-				<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</tal:block>
-				<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
-			</div>
-			<div class="clearfix"></div>
+			<tal:block tal:condition="not:python:request.get('ZMS_INSERT',False)">
+				<div class="pull-left">
+					<tal:block tal:define="actions python:
+						[[],[(here.getZMILangStr('BTN_UNDO'),'../manage_undoObjs?ids:list=%s'%here.id,'icon-undo')]][here.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request)]+
+						here.filtered_workflow_actions()">
+						<div class="btn-group zmi-action" tal:condition="python:len(actions)>0" tal:attributes="title python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">
+							<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown" tal:content="structure python:here.zmi_icon(name='icon-chevron-down')"></button>
+							<ul class="dropdown-menu">
+								<tal:block tal:repeat="action actions">
+									<li tal:condition="python:len(action)==3">
+										<a tal:attributes="href python:'javascript:$ZMI.actionList.exec($(\'.attr_last_modified\'),\'%s\',\'%s\')'%(action[0],action[1])">
+											<tal:block tal:content="structure python:here.zmi_icon(name=action[2])">the icon</tal:block>
+											<tal:block tal:content="structure python:action[0]">the title</tal:block>
+										</a>
+									</li>
+								</tal:block>
+							</ul>
+						</div>
+					</tal:block>
+					<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</tal:block>
+					<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
+				</div>
+				<div class="clearfix"></div>
 			</tal:block>
 		</div><!-- .accordion-heading -->
 		<div id="attrActivity" class="accordion-body collapse">

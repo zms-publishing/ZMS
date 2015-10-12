@@ -36,7 +36,7 @@
 					</td>
 					<td>
 						<div id="ZMSGraphic_extEdit_image" style="border: 1px solid #000;margin:1px;background-image:url(/misc_/zms/bg_imgpreview.gif);">
-							<img src="/misc_/zms/spacer.gif" alt="" border="0">
+							<img src="/misc_/zms/spacer.gif" alt="" border="0" />
 						</div>
 					</td>
 				</tr>
@@ -53,8 +53,8 @@
 	</tal:block>
 
 	<div class="zmi-image" tal:attributes="id python:'zmi-image-%s'%elName">
-		<input type="hidden" tal:attributes="name python:'exists_%s'%elName; value python:request.get('ZMS_INSERT',None) is None and value not in [None,'']">
-		<input type="hidden" tal:attributes="name python:'del_%s'%elName" value="0">
+		<input type="hidden" tal:attributes="name python:'exists_%s'%elName; value python:request.get('ZMS_INSERT',None) is None and value not in [None,'']" />
+		<input type="hidden" tal:attributes="name python:'del_%s'%elName" value="0" />
 
 	<div class="pull-left">
 

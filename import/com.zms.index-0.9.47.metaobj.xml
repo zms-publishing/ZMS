@@ -121,23 +121,23 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
   request = self.REQUEST
   response = request.RESPONSE
   logger = logging.getLogger('event.ZMS')
-  loglevels = ['DEBUG','INFO','ERROR']
-  loglevel = loglevels[loglevels.index(request.get('loglevel','INFO')):]
+  loglevels = [logging.DEBUG,logging.INFO,logging.ERROR]
+  loglevel = loglevels[loglevels.index({'DEBUG':logging.DEBUG,'INFO':logging.INFO,'ERROR':logging.ERROR}[request.get('loglevel','INFO')]):]
   
   printed = []
   def write(l,c,s):
     from DateTime import DateTime
     dt = DateTime()
+    line = '%s %s@%s %s'%(dt.strftime("%Y-%m-%d %H:%M:%S,%f"),c.meta_id,c.getPath(),str(s))
+    logger.log(l,line)
     if l in loglevel:
-      line = '%s %s@%s %s'%(dt.strftime("%Y-%m-%d %H:%M:%S,%f"),c.meta_id,c.getPath(),str(s))
-      self.writeBlock(line)
       printed.append(line)
   def writeDebug(c,s):
-    write('DEBUG',c,s)
+    write(logging.DEBUG,c,s)
   def writeInfo(c,s):
-    write('INFO',c,s)
+    write(logging.INFO,c,s)
   def writeError(c,s):
-    write('ERROR',c,s)
+    write(logging.ERROR,c,s)
   
   try:
     id = 'zcatalog_index'
@@ -147,7 +147,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       func_ = args[0]
     else:
       func_ = request.get('func_')
-    self.writeLog('ZMSIndexZCatalog.%s:'%(func_))
+    writeDebug(self,'ZMSIndexZCatalog.%s:'%(func_))
     
     ##############################################################################
     # Commit
@@ -198,12 +198,12 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     elif func_ == 'search':
       if catalog is not None:
         query = args[1]
-        self.writeLog('ZMSIndexZCatalog.%s: query=%s'%(func_,query))
+        writeDebug(self,'ZMSIndexZCatalog.%s: query=%s'%(func_,query))
         q = catalog(query)
         self.writeLog('ZMSIndexZCatalog.%s: rows=%i'%(func_,len(q)))
         for r in q:
           zmspath  = '%s/'%r['getPath']
-          self.writeLog('ZMSIndexZCatalog.%s: zmspath=%s'%(func_,zmspath))
+          writeDebug(self,'ZMSIndexZCatalog.%s: zmspath=%s'%(func_,zmspath))
           l = zmspath[1:-1].split('/')
           ob = self
           while ob is not None and len(l) > 0:
@@ -306,7 +306,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                   if childNode is not None:
                     break
               ref = childNode
-            if ref is not None and ref.meta_type not in ['Folder']+self.dGlobalAttrs.keys():
+            if ref is not None and not type(ref) is str and ref.meta_type not in ['Folder']+self.dGlobalAttrs.keys():
               ref = None
             if ref is None:
               break
@@ -444,7 +444,6 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
   except:
     t,v,tb = sys.exc_info()
     msg = "[%s@%s]"%(self.meta_id,self.absolute_url())+''.join(format_exception(t, v, tb))
-    logger.error(msg)
     writeError(self,'[ZMSIndexZCatalog_func_] except %s'%msg)
   
   response.setHeader('Content-Type','text/plain')
@@ -730,7 +729,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.45]]></item>
+          <item key="revision"><![CDATA[0.9.46]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -749,7 +748,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.45]]></item>
+          <item key="revision"><![CDATA[0.9.46]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

@@ -216,7 +216,7 @@ class ZReferableItem:
             v = getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
             if v is not None:
               if datatype in ['richtext','string','text']:
-                for iv in getInlineRefs(v):
+                for iv in getInlineRefs(str(v)):
                   ref_ob = self.getLinkObj(iv)
                   if ref_ob is not None:
                     ref = self.getRefObjPath(ref_ob)

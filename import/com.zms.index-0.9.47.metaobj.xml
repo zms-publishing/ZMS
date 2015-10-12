@@ -292,7 +292,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               if id.startswith('#'):
                 id = id[1:]
               childNode = getattr(ref,id,None)
-              if childNode is None and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
+              if (childNode is None and ref is not None) and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
                 for o in filter(lambda x:x.meta_type not in ['External Method'],ref.objectValues(self.dGlobalAttrs.keys())):
                   for l in o.getLanguages():
                     r = {'lang':l}
@@ -748,7 +748,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.46]]></item>
+          <item key="revision"><![CDATA[0.9.47]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

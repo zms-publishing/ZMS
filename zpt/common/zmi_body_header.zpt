@@ -111,6 +111,7 @@
 						</li>
 					</ul>
 				</li><!-- .dropdown -->
+				<tal:block tal:condition="python: here.getTrashcan().getId()!=here.getId()">
 				<li>
 					<a tal:attributes="href python:'preview_html?lang=%s&preview=preview'%request['lang']"
 						tal:content="python:here.getZMILangStr('TAB_PREVIEW')">preview</a>
@@ -124,6 +125,7 @@
 					<a target="_blank" tal:attributes="href href;title href"
 						tal:content="python:here.getZMILangStr('TAB_LIVE')">live</a>
 				</li>
+				</tal:block>
 		</ul><!-- .navbar-nav -->
 	</div><!-- .navbar -->
 </header>

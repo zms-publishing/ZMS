@@ -67,7 +67,7 @@ $(function(){
 			}
 		});
 
-	// Sitemap
+	// New Sitemap Icon
 	$(".navbar-main .navbar-brand").before(""
 		+ '<a id="navbar-sitemap"'
 		+ ' href="manage?lang='+getZMILang()+(manage_menu?'':'&dtpref_sitemap=1')+'"'
@@ -83,6 +83,17 @@ $(function(){
 				$a.attr('href','manage?lang='+getZMILang());
 			});
 	}
+
+	// Toggle: Classical Sitemap Icon
+	$('.zmi header a.toggle-sitemap').each(function() {
+		var $a = $(this);
+		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && (self.window.parent.location+"").indexOf('dtpref_sitemap=1') > 0) {
+			$a.attr('target','_parent');
+		}
+		else {
+			$a.attr('href',$a.attr('href')+'&dtpref_sitemap=1');
+		}
+	});
 
 	// Toggle: Lang
 	if (manage_menu) {

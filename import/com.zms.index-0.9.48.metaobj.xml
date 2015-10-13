@@ -292,19 +292,22 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               if id.startswith('#'):
                 id = id[1:]
               childNode = getattr(ref,id,None)
-              if (childNode is None and ref is not None) and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-                for o in filter(lambda x:x.meta_type not in ['External Method'],ref.objectValues(self.dGlobalAttrs.keys())):
-                  for l in o.getLanguages():
-                    r = {'lang':l}
-                    try:
-                      if o.getDeclId(r)==id:
-                        childNode = o
-                    except:
-                      pass
+              try:
+                if (childNode is None and ref is not None) and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
+                  for o in filter(lambda x:x.meta_type not in ['External Method'],ref.objectValues(self.dGlobalAttrs.keys())):
+                    for l in o.getLanguages():
+                      r = {'lang':l}
+                      try:
+                        if o.getDeclId(r)==id:
+                          childNode = o
+                      except:
+                        pass
+                      if childNode is not None:
+                        break
                     if childNode is not None:
                       break
-                  if childNode is not None:
-                    break
+              except:
+                ref= None
               ref = childNode
             if ref is not None and not type(ref) is str and ref.meta_type not in ['Folder']+self.dGlobalAttrs.keys():
               ref = None
@@ -729,7 +732,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.47]]></item>
+          <item key="revision"><![CDATA[0.9.48]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -748,7 +751,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.47]]></item>
+          <item key="revision"><![CDATA[0.9.48]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

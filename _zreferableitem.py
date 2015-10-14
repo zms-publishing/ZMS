@@ -283,7 +283,7 @@ class ZReferableItem:
   def validateInlineLinkObj(self, text):
     p = '<a(.*?)>(.*?)<\\/a>'
     r = re.compile(p)
-    for f in r.findall(text):
+    for f in r.findall(str(text)):
       d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
       if d.has_key('data-id'):
         old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)

@@ -19,7 +19,7 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-  'zms3.formulator': ['3.3.2',
+  'zms3.formulator': ['3.3.3',
                       'Submit JSON-based HTML-Forms into a SQL-Storage with protection by reCAPTCHA',
                       'https://bitbucket.org/zms3/formulator',
                       'developed by SNTL Publishing'],
@@ -35,7 +35,7 @@ EXTENSIONS = {
                    'Additional Themes based on Start Bootstrap',
                    'https://bitbucket.org/zms3/themes',
                    'developed by SNTL Publishing and Contributors'],
-  'Pillow': ['2.9.0',
+  'Pillow': ['3.0.0',
              'The friendly PIL (Python Imaging Library) fork',
              'https://pypi.python.org/pypi/Pillow',
              'developed by Alex Clark'],
@@ -67,7 +67,7 @@ EXTENSIONS = {
                            'SQL Method Support',
                            'https://pypi.python.org/pypi/Products.ZSQLMethods',
                            'developed by Zope Foundation and Contributors'],
-  'Products.CMFCore': ['2.3.0dev',
+  'Products.CMFCore': ['2.2.10',
                        'Filesystem Directory Views',
                        'https://pypi.python.org/pypi/Products.CMFCore',
                        'developed by Zope Foundation and Contributors / patched by SNTL Publishing, Berlin, Germany'],

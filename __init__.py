@@ -51,6 +51,17 @@ import ZMSFormatProvider, ZMSFormatProviderAcquired
 import ZMSMetacmdProvider, ZMSMetacmdProviderAcquired
 import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 
+try:
+  from Products.CMFCore.DirectoryView import registerFileExtension
+  from Products.CMFCore.FSFile import FSFile
+  registerFileExtension('map', FSFile)
+  registerFileExtension('svg', FSFile)
+  registerFileExtension('ttf', FSFile)
+  registerFileExtension('eot', FSFile)
+  registerFileExtension('woff', FSFile)
+  registerFileExtension('woff2', FSFile)
+except:
+  pass
 
 ################################################################################
 # Define the initialize() function.

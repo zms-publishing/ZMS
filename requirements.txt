@@ -1,11 +1,16 @@
 --index-url https://pypi.python.org/simple/
 
+# fetch latest development snapshots from SVN/GIT-Repositories
 #git+https://github.com/zopefoundation/Zope@2.13#egg=Zope2
 svn+https://zmslabs.org/svn/zmslabs/ZMS/trunk#egg=ZMS3
 git+https://bitbucket.org/zms3/formulator.git#egg=zms3.formulator
 git+https://bitbucket.org/zms3/mindmap.git#egg=zms3.mindmap
 git+https://bitbucket.org/zms3/themes.git#egg=zms3.themes
 
+# install explicitly to avoid dependency-links
+# $ pip install https://zmslabs.org/download/zms3.deployment-0.2.3.zip
+
+# fetch official releases from PyPI
 AccessControl==3.0.11
 Acquisition==4.1
 BTrees==4.1.4
@@ -23,7 +28,7 @@ nt-svcutils==2.13.0
 Persistence==2.13.2
 persistent==4.1.1
 Products.BTreeFolder2==2.13.4
-Products.CMFCore==2.3.0dev
+Products.CMFCore==2.2.10
 Products.ExternalMethod==2.13.1
 Products.GenericSetup==1.7.5
 Products.MailHost==2.13.2
@@ -51,7 +56,6 @@ zLOG==2.12.0
 zodbpickle==0.6.0
 ZODB==4.2.0
 ZODB3==3.11.0
-zms3.deployment==0.2.3
 zope.annotation==4.4.1
 zope.app.publication==3.14.0
 zope.authentication==4.1.0

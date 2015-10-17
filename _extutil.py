@@ -19,7 +19,7 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
-  'zms3.formulator': ['3.3.3',
+  'zms3.formulator': ['3.3.4',
                       'Submit JSON-based HTML-Forms into a SQL-Storage with protection by reCAPTCHA',
                       'https://bitbucket.org/zms3/formulator',
                       'developed by SNTL Publishing'],
@@ -34,7 +34,7 @@ EXTENSIONS = {
   'zms3.themes': ['0.1.2',
                    'Additional Themes based on Start Bootstrap',
                    'https://bitbucket.org/zms3/themes',
-                   'developed by SNTL Publishing and Contributors'],
+                   'developed by SNTL Publishing'],
   'Pillow': ['3.0.0',
              'The friendly PIL (Python Imaging Library) fork',
              'https://pypi.python.org/pypi/Pillow',
@@ -68,9 +68,9 @@ EXTENSIONS = {
                            'https://pypi.python.org/pypi/Products.ZSQLMethods',
                            'developed by Zope Foundation and Contributors'],
   'Products.CMFCore': ['2.2.10',
-                       'Filesystem Directory Views',
+                       'File System Directory Views',
                        'https://pypi.python.org/pypi/Products.CMFCore',
-                       'developed by Zope Foundation and Contributors / patched by SNTL Publishing, Berlin, Germany'],
+                       'developed by Zope Foundation and Contributors'],
   'lesscpy': ['0.10.2',
               'Python LESS Compiler',
               'https://pypi.python.org/pypi/lesscpy',
@@ -78,7 +78,7 @@ EXTENSIONS = {
   'Zope2': ['2.13.23',
             'Open-source web application server',
             'https://github.com/zopefoundation/Zope',
-            'developed by Zope Foundation and Contributors / patched by SNTL Publishing, Berlin, Germany'],
+            'developed by Zope Foundation and Contributors'],
   'ZODB': ['4.2.0',
            'Set of tools for using the Zope Object Database',
            'https://github.com/zopefoundation/ZODB',
@@ -130,7 +130,8 @@ class ZMSExtensions():
   getExampleToImport__roles__ = None
   importExample__roles__ = None
   getUrl__roles__ = None
-      
+  getUrlPackage__roles__ = None
+
   def __init__(self):
     self.pkg = {}
     self.pkg_names = []
@@ -388,3 +389,21 @@ class ZMSExtensions():
     else:
       return None 
   
+  def getUrlPackage(self, ext=None, mode='install'):
+    """
+      Return url to package download of given extension for install/update
+    """
+    if ext in self.pkg_names:
+      str_ins = '%s/get/%s.zip'%(self.getUrl(ext),self.getVersionAvailable(ext))
+      str_upd = '%s/get/HEAD.zip'%(self.getUrl(ext))
+      if ext=='zms3.deployment':
+        str_ins = str_upd = 'https://zmslabs.org/download/zms3.deployment-0.2.3.zip'
+      
+      if mode=='install':
+        return str_ins
+      elif mode=='update':
+        return str_upd
+      else:
+        return 'n/a'
+    else:
+      return None 

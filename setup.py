@@ -26,20 +26,16 @@ for path in sys.path:
   if path.endswith('site-packages'):
     site_packages = path
 
-# Abstract requirements to define the environment
+# Abstract requirements to build the environment
+# catch latest versions from PyPI
 INSTALL_REQUIRES_ABSTRACT = [
-  'Zope2',
-  'ZODB',
-  'ZEO',
-  'Products.CMFCore',
-  'Products.ZSQLiteDA',
-  'Products.ZSQLMethods',
   'zms3.formulator',
   'zms3.mindmap',
   'zms3.themes',
 ]
 
 # Concrete requirements to build the environment
+# catch pegged versions from PyPI
 INSTALL_REQUIRES_CONCRETE = [
   'AccessControl==3.0.11',
   'Acquisition==4.1',
@@ -70,7 +66,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'Products.ZCTextIndex==2.13.5',
   'Products.ZSQLiteDA==0.6.1',
   'Products.ZSQLMethods==2.13.4',
-  'pytz==2015.4',
+  'pytz==2015.6',
   'Record==3.0',
   'RestrictedPython==3.6.0',
   'six==1.9.0',

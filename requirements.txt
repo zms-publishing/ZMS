@@ -7,9 +7,6 @@ git+https://bitbucket.org/zms3/formulator.git#egg=zms3.formulator
 git+https://bitbucket.org/zms3/mindmap.git#egg=zms3.mindmap
 git+https://bitbucket.org/zms3/themes.git#egg=zms3.themes
 
-# install explicitly to avoid dependency-links
-# $ pip install https://zmslabs.org/download/zms3.deployment-0.2.3.zip
-
 # fetch official releases from PyPI
 AccessControl==3.0.11
 Acquisition==4.1
@@ -40,7 +37,7 @@ Products.ZCatalog==3.1
 Products.ZCTextIndex==2.13.5
 Products.ZSQLiteDA==0.6.1
 Products.ZSQLMethods==2.13.4
-pytz==2015.4
+pytz==2015.6
 Record==3.0
 RestrictedPython==3.6.0
 six==1.9.0

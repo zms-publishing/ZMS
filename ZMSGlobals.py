@@ -1152,11 +1152,8 @@ class ZMSGlobals:
     Returns util to handle zms3.extensions
     """
     def extutil(self):
-      if self.isFeatureEnabled('%zms3.extensions%'):
-        import _extutil
-        return _extutil.ZMSExtensions()
-      else:
-        return None
+      import _extutil
+      return _extutil.ZMSExtensions()
 
 
     """

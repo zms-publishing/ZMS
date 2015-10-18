@@ -190,23 +190,24 @@ class ConfManager(
       message = ''
       syncNecessary = False
       filename, xmlfile = self.getConfXmlFile( file)
-      if filename.find('.charfmt.') > 0:
-        self.format_manager.importCharformatXml(xmlfile, createIfNotExists)
-      elif filename.find('.filter.') > 0:
-        _filtermanager.importXml(self, xmlfile, createIfNotExists)
-      elif filename.find('.metadict.') > 0:
-        self.getMetaobjManager().importMetadictXml(xmlfile, createIfNotExists)
-        syncNecessary = True
-      elif filename.find('.metaobj.') > 0:
-        self.getMetaobjManager().importMetaobjXml(xmlfile, createIfNotExists)
-        syncNecessary = True
-      elif filename.find('.metacmd.') > 0:
-        self.getMetacmdManager().importXml(xmlfile, createIfNotExists)
-      elif filename.find('.langdict.') > 0:
-        _multilangmanager.importXml(self, xmlfile, createIfNotExists)
-      elif filename.find('.textfmt.') > 0:
-        self.format_manager.importTextformatXml(xmlfile, createIfNotExists)
-      xmlfile.close()
+      if not filename.startswith('._'): # ignore hidden files in ZIP created by MacOSX
+        if filename.find('.charfmt.') > 0:
+          self.format_manager.importCharformatXml(xmlfile, createIfNotExists)
+        elif filename.find('.filter.') > 0:
+          _filtermanager.importXml(self, xmlfile, createIfNotExists)
+        elif filename.find('.metadict.') > 0:
+          self.getMetaobjManager().importMetadictXml(xmlfile, createIfNotExists)
+          syncNecessary = True
+        elif filename.find('.metaobj.') > 0:
+          self.getMetaobjManager().importMetaobjXml(xmlfile, createIfNotExists)
+          syncNecessary = True
+        elif filename.find('.metacmd.') > 0:
+          self.getMetacmdManager().importXml(xmlfile, createIfNotExists)
+        elif filename.find('.langdict.') > 0:
+          _multilangmanager.importXml(self, xmlfile, createIfNotExists)
+        elif filename.find('.textfmt.') > 0:
+          self.format_manager.importTextformatXml(xmlfile, createIfNotExists)
+        xmlfile.close()
       if syncIfNecessary and syncNecessary:
         self.synchronizeObjAttrs()
       return message
@@ -696,67 +697,64 @@ class ConfManager(
           self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max',REQUEST.get('pil_hires_thumbnail_max',600))
           message = self.getZMILangStr('MSG_CHANGED')
         elif btn == 'Import':
-          if self.isFeatureEnabled('%zms3.extensions%'):
-            zmsext = REQUEST.get('zmsext','')
-            # hand over import to Deployment Library if available
-            revobj = self.getMetaobjRevision('zms3.deployment')
-            revreq = '0.2.0'
-            if revobj >= revreq:
-              target = 'manage_deployment'
-              target = self.url_append_params(target, {'zmsext': zmsext})
-              return RESPONSE.redirect(target)
-            # otherwise import now
-            from _globals import writeError
-            target = 'manage_customize'
+          zmsext = REQUEST.get('zmsext','')
+          # hand over import to Deployment Library if available
+          revobj = self.getMetaobjRevision('zms3.deployment')
+          revreq = '0.2.0'
+          if revobj >= revreq:
+            target = 'manage_deployment'
+            target = self.url_append_params(target, {'zmsext': zmsext})
+            return RESPONSE.redirect(target)
+          # otherwise import now
+          from _globals import writeError
+          target = 'manage_customize'
+          isProcessed = False
+          try:
+            ZMSExtension  = self.extutil()
+            filesToImport = ZMSExtension.getFilesToImport(zmsext, self.getDocumentElement())
+            if len(filesToImport)>0:
+              for f in filesToImport:
+                self.importConf(f, createIfNotExists=True, syncIfNecessary=False)
+              self.synchronizeObjAttrs()
+              isProcessed = True
+          except:
             isProcessed = False
-            try:
-              ZMSExtension  = self.extutil()
-              filesToImport = ZMSExtension.getFilesToImport(zmsext, self.getDocumentElement())
-              if len(filesToImport)>0:
-                for f in filesToImport:
-                  self.importConf(f, createIfNotExists=True, syncIfNecessary=False)
-                self.synchronizeObjAttrs()
-                isProcessed = True
-            except:
-              isProcessed = False
-            if isProcessed:
-              message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+self.str_item(ZMSExtension.getFiles(zmsext))+'</code>')
-              target = self.url_append_params(target, {'manage_tabs_message': message})
-            else:
-              message = self.getZMILangStr('MSG_EXCEPTION') 
-              message += ': <code class="alert-danger">%s</code>'%('No conf files found.')
-              target = self.url_append_params(target, {'manage_tabs_error_message': message})
-              writeError(self, '[ConfManager.manage_customizeSystem] No conf files found.')
-            return RESPONSE.redirect(target + '#%s'%key)
+          if isProcessed:
+            message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+self.str_item(ZMSExtension.getFiles(zmsext))+'</code>')
+            target = self.url_append_params(target, {'manage_tabs_message': message})
+          else:
+            message = self.getZMILangStr('MSG_EXCEPTION') 
+            message += ': <code class="alert-danger">%s</code>'%('No conf files found.')
+            target = self.url_append_params(target, {'manage_tabs_error_message': message})
+            writeError(self, '[ConfManager.manage_customizeSystem] No conf files found.')
+          return RESPONSE.redirect(target + '#%s'%key)
         elif btn == 'ImportExample':
-          if self.isFeatureEnabled('%zms3.extensions%'):
-            zmsext = REQUEST.get('zmsext','')
-            target = 'manage_main'
-            ZMSExtension  = self.extutil()
+          zmsext = REQUEST.get('zmsext','')
+          target = 'manage_main'
+          ZMSExtension  = self.extutil()
+          isProcessed = False
+          try:
+            if ZMSExtension.getExample(zmsext) is not None:
+              destination = self.getLinkObj(self.getConfProperty('ZMS.Examples',{}))
+              if destination is None:
+                destination = self.getDocumentElement()
+              ZMSExtension.importExample(zmsext,destination,REQUEST)
+              isProcessed = True
+          except:
             isProcessed = False
-            try:
-              if ZMSExtension.getExample(zmsext) is not None:
-                destination = self.getLinkObj(self.getConfProperty('ZMS.Examples',{}))
-                if destination is None:
-                  destination = self.getDocumentElement()
-                ZMSExtension.importExample(zmsext,destination,REQUEST)
-                isProcessed = True
-            except:
-              isProcessed = False
-            if isProcessed:
-              return True
-            else:
-              return False
+          if isProcessed:
+            return True
+          else:
+            return False
         elif btn == 'InstallTheme':
-          if self.isFeatureEnabled('%zms3.extensions%'):
-            zmsext = REQUEST.get('zmsext','')
-            target = 'manage_main'
-            ZMSExtension  = self.extutil()
-            print "###InstallTheme:", zmsext
-            if ZMSExtension.installTheme(self, zmsext):
-              return True
-            else:
-              return False            
+          zmsext = REQUEST.get('zmsext','')
+          target = 'manage_main'
+          ZMSExtension  = self.extutil()
+          print "###InstallTheme:", zmsext
+          if ZMSExtension.installTheme(self, zmsext):
+            return True
+          else:
+            return False            
 
       ##### Instance ####
       elif key == 'Instance':

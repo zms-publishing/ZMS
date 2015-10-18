@@ -31,6 +31,7 @@ for path in sys.path:
 INSTALL_REQUIRES_ABSTRACT = [
   'zms3.formulator',
   'zms3.mindmap',
+  'zms3.photodb',
   'zms3.themes',
 ]
 
@@ -43,7 +44,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'DateTime==4.0.1',
   'DocumentTemplate==2.13.2',
   'docutils==0.12',
-  'ExtensionClass==4.1',  # ExtensionClass>=4.1a1 required by Record-3.0
+  'ExtensionClass==4.1.2',  # ExtensionClass>=4.1a1 required by Record-3.0
   'five.globalrequest==1.0',
   'five.localsitemanager==2.0.5',
   'initgroups==2.13.0',
@@ -53,7 +54,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'nt-svcutils==2.13.0',
   'Persistence==2.13.2',
   'persistent==4.1.1',
-  'Products.BTreeFolder2==2.13.4',
+  'Products.BTreeFolder2==2.14.0',
   'Products.CMFCore==2.2.10',
   'Products.ExternalMethod==2.13.1',
   'Products.GenericSetup==1.7.5',

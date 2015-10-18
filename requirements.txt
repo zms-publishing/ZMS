@@ -5,6 +5,7 @@
 svn+https://zmslabs.org/svn/zmslabs/ZMS/trunk#egg=ZMS3
 git+https://bitbucket.org/zms3/formulator.git#egg=zms3.formulator
 git+https://bitbucket.org/zms3/mindmap.git#egg=zms3.mindmap
+git+https://bitbucket.org/zms3/photodb.git#egg=zms3.photodb
 git+https://bitbucket.org/zms3/themes.git#egg=zms3.themes
 
 # fetch official releases from PyPI
@@ -14,7 +15,7 @@ BTrees==4.1.4
 DateTime==4.0.1
 DocumentTemplate==2.13.2
 docutils==0.12
-ExtensionClass==4.1
+ExtensionClass==4.1.2
 five.globalrequest==1.0
 five.localsitemanager==2.0.5
 initgroups==2.13.0
@@ -24,7 +25,7 @@ MultiMapping==2.13.0
 nt-svcutils==2.13.0
 Persistence==2.13.2
 persistent==4.1.1
-Products.BTreeFolder2==2.13.4
+Products.BTreeFolder2==2.14.0
 Products.CMFCore==2.2.10
 Products.ExternalMethod==2.13.1
 Products.GenericSetup==1.7.5

@@ -908,8 +908,8 @@ class ConfManager(
     ############################################################################
 
     def getMetaobjManager(self):
-      manager = filter(lambda x:absattr(x.id)=='metaobj_manager',self.getDocumentElement().objectValues())
-      if len(manager)==0:
+      manager = getattr(self,'metaobj_manager',None)
+      if manager is None:
         class DefaultMetaobjManager:
           def getMetaobjId(self, name): return None
           def getMetaobjIds(self, sort=1, excl_ids=[]): return []
@@ -919,8 +919,8 @@ class ConfManager(
           def getMetaobjAttr(self, id, attr_id, syncTypes=['resource']): return None
           def getMetaobjAttrIdentifierId(self, meta_id): return None
           def notifyMetaobjAttrAboutValue(self, meta_id, key, value): return None
-        manager = [DefaultMetaobjManager()]
-      return manager[0]
+        manager = DefaultMetaobjManager()
+      return manager
 
     def getMetaobjRevision(self, id):
       return self.getMetaobjManager().getMetaobjRevision( id)

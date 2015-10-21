@@ -78,7 +78,9 @@
 							<label tal:attributes="for elName; class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
 								<span tal:content="elLabel">the label</span>
 							</label>
-							<div class="col-sm-10" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the control</div><!-- .col-lg-10 -->
+							<div class="col-sm-10"
+								tal:on-error="structure python:'<pre class=\042alert alert-danger\042>ERROR - Please Check Field Definition</pre>'"
+								tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the control</div><!-- .col-lg-10 -->
 						</div><!-- .form-group -->
 					</tal:block>
 				</tal:block>

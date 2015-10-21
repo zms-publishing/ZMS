@@ -54,11 +54,14 @@ def export(self, data, meta=None):
     l.append('<Row>')
     if type(row) is dict:
       for col in meta:
-        cell = row[col]
-        l.append('<Cell ss:StyleID="string"><Data ss:Type="String">%s</Data></Cell>'%str(cell))
+        try:
+          cell = row[col]
+        except:
+          cell = 'NONE'
+        l.append('<Cell ss:StyleID="string"><Data ss:Type="String"><![CDATA[%s]]></Data></Cell>'%str(cell))
     else:
       for cell in row:
-        l.append('<Cell ss:StyleID="string"><Data ss:Type="String">%s</Data></Cell>'%str(cell))
+        l.append('<Cell ss:StyleID="string"><Data ss:Type="String"><![CDATA[%s]]></Data></Cell>'%str(cell))
     l.append('</Row>')
   l.append('</Table>')
   l.append('</Worksheet>')

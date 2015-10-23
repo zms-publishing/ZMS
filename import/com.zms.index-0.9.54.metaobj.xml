@@ -73,7 +73,7 @@
 		</div>
 	</div><!-- .form-group -->
 	<div class="well" tal:condition="uid">
-		<tal:block tal:define="q python:zmscontext.zcatalog_index({'get_uid':uid})">
+		<tal:block tal:define="q python:zmscontext.zcatalog_index({'get_uid':uid[2:-1]})">
 			<strong><tal:block tal:content="python:zmscontext.getZMILangStr('SEARCH_RETURNEDRESULTS')">returned results</tal:block>: <tal:block tal:content="python:len(q)">#q</tal:block></strong>
 			<ul>
 				<tal:block tal:repeat="r q">
@@ -96,25 +96,7 @@ import logging
 import re
 import sys
 import time
-
-class Clazz:
-  pass
-
-def addLexicon(catalog):
-  elements = []
-  wordSplitter = Clazz()
-  wordSplitter.group = 'Word Splitter'
-  wordSplitter.name = 'HTML aware splitter'
-  elements.append(wordSplitter)
-  caseNormalizer = Clazz()
-  caseNormalizer.group = 'Case Normalizer'
-  caseNormalizer.name = 'Case Normalizer'
-  elements.append(caseNormalizer)
-  stopWords = Clazz()
-  stopWords.group = 'Stop Words'
-  stopWords.name = 'Remove listed and single char words'
-  elements.append(stopWords)
-  catalog.manage_addProduct['ZCTextIndex'].manage_addLexicon('Lexicon', 'Default lexicon', elements)
+import uuid
 
 def ZMSIndexZCatalog_func_( self, *args, **kwargs):
   
@@ -138,6 +120,15 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     write(logging.INFO,c,s)
   def writeError(c,s):
     write(logging.ERROR,c,s)
+  
+  def catalog_object(catalog,node):
+    path = node.getPath()
+    # Sanity check: if uid is already catalogued we have to generate new uid
+    q = catalog({'get_uid':node.get_uid()})
+    if len(q) > 0:
+      node._uid = str(uuid.uuid4())
+    # Catalog object.
+    catalog.catalog_object(node, path)
   
   try:
     id = 'zcatalog_index'
@@ -164,9 +155,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     elif func_ == 'get_uid':
       forced = args[1]
       if forced or '_uid' not in self.__dict__.keys() or getattr(self,'_uid',None) is None: 
-        import uuid 
-        uid = str(uuid.uuid4()) 
-        self._uid = uid 
+        self._uid = str(uuid.uuid4())
       return 'uid:%s'%self._uid
     
     ##############################################################################
@@ -174,13 +163,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     ##############################################################################
     elif func_ == 'catalog_object':
       if catalog is not None:
-        path = self.getPath()
-        # Sanity check: if uid is already catalogued we have to generate new uid
-        q = catalog({'get_uid':self.get_uid()})
-        if len(q) > 0:
-          self.get_uid(True)
-        # Catalog object.
-        catalog.catalog_object(self, path)
+        catalog_object(catalog,self)
       return None
     
     ##############################################################################
@@ -190,34 +173,6 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       if catalog is not None:
         path = args[1]
         catalog.uncatalog_object(path)
-      return None
-    
-    ##############################################################################
-    # Search
-    ##############################################################################
-    elif func_ == 'search':
-      if catalog is not None:
-        query = args[1]
-        writeDebug(self,'ZMSIndexZCatalog.%s: query=%s'%(func_,query))
-        q = catalog(query)
-        try:
-          if query.has_key('home_id'):
-            q = filter(lambda x:x['getPath'].find('/%s/content'%query['home_id'])>= 0,q)
-        except:
-          pass
-        self.writeLog('ZMSIndexZCatalog.%s: rows=%i'%(func_,len(q)))
-        for r in q:
-          zmspath  = '%s/'%r['getPath']
-          writeDebug(self,'ZMSIndexZCatalog.%s: zmspath=%s'%(func_,zmspath))
-          l = zmspath[1:-1].split('/')
-          ob = self
-          while ob is not None and len(l) > 0:
-            id = l[0]
-            if not id.startswith('manage'):
-              ob = getattr(ob,l[0],None)
-            l = l[1:]
-          if ob is not None:
-            return ob
       return None
     
     ##############################################################################
@@ -232,15 +187,9 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       catalog = ZCatalog.ZCatalog(id=id, title=self.meta_id, container=home)
       home._setObject(catalog.id, catalog)
       catalog = getattr(home,id,None)
-      addLexicon(catalog)
       # Add indices.
       for index_name in ['id','meta_id','get_uid','get_oid']:
-        index_type = 'ZCTextIndex'
-        extra = Clazz()
-        extra.doc_attr = index_name
-        extra.index_type = 'Okapi BM25 Rank'
-        extra.lexicon_id = 'Lexicon'
-        catalog.manage_addIndex(index_name,index_type,extra)
+        catalog.manage_addIndex(index_name,'FieldIndex')
       # Add columns
       for index_name in ['id','meta_id','getPath','get_uid','get_oid']:
         catalog.manage_addColumn(index_name)
@@ -253,7 +202,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           node.setConfProperty('ExtensionPoint.ZMSObject.get_uid','%s.get_uid'%self.meta_id)
           node.setConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath','%s.getRefObjPath'%self.meta_id)
           node.setConfProperty('ExtensionPoint.ZReferableItem.getLinkObj','%s.getLinkObj'%self.meta_id)
-        catalog.catalog_object(node, node.getPath())
+        catalog_object(catalog,node)
         for childNode in node.objectValues(self.dGlobalAttrs.keys()):
           l.extend(visit(childNode))
         if node.meta_id == 'ZMS':
@@ -478,47 +427,63 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
 ##
 # --// ZMSIndexZCatalog.getLinkObj //--
 
+request = zmscontext.REQUEST
+zmsroot = zmscontext.getRootElement()
+url = options['url']
+try: return zmsroot.fetchReqBuff(url,request,forced=True)
+except: pass
+
 query = None
 obj = None
-url = options['url']
-zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: url='+url)
-zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
-if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
-  if url.startswith('{') and url.find('id:')>0 and url.endswith('}'):
-    uid = url[5:-1]
-    zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: uid='+uid)
-    query = {'get_uid':uid}
-  elif url.startswith('{$') and url.endswith('}') and not (url.startswith('{$__') and url.endswith('__}')):
-    docelmnt = None
-    url = url[2:-1]
-    i = url.find('#')
-    if i > 0:
-      url = url[:i]
-    i = url.find('@')
-    if i > 0:
-      clientIds = url[:i].split('/')
-      clientHome = zmscontext.getHome()
-      for clientId in clientIds:
-        clientHome = getattr(clientHome,clientId,None)
-        if clientHome is None:
-          break
-      if clientHome is not None:
-        obs = clientHome.objectValues(['ZMS'])
-        if obs:
-          docelmnt = obs[0]
-      url = url[i+1:]
-    else:
-      docelmnt = zmscontext.getDocumentElement()
-    if len(url) == 0:
-      return docelmnt 
-    elif docelmnt is not None:
-      zmsid = url.split('/')[-1]
-      zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: zmsid='+zmsid)
-      # query = {'id':zmsid}
-      query = {'home_id':docelmnt.getHome().id,'id':zmsid}
-zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: query='+str(query))
-ob = zmscontext.ZMSIndexZCatalog_func_(zmscontext,'search',query)
-return ob
+# zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: url='+url)
+if url.startswith('{$') and url.find('id:')>0 and url.endswith('}'):
+  uid = url[2:-1]
+  query = {'get_uid':uid}
+elif url.startswith('{$') and url.endswith('}') and not (url.startswith('{$__') and url.endswith('__}')):
+  docelmnt = None
+  url = url[2:-1]
+  i = url.find('#')
+  if i > 0:
+    url = url[:i]
+  i = url.find('@')
+  if i > 0:
+    clientIds = url[:i].split('/')
+    clientHome = zmscontext.getHome()
+    for clientId in clientIds:
+      clientHome = getattr(clientHome,clientId,None)
+      if clientHome is None:
+        break
+    if clientHome is not None:
+      obs = clientHome.objectValues(['ZMS'])
+      if obs:
+        docelmnt = obs[0]
+    url = url[i+1:]
+  else:
+    docelmnt = zmscontext.getDocumentElement()
+  if len(url) == 0:
+    return docelmnt 
+  elif docelmnt is not None:
+    zmsid = url.split('/')[-1]
+    # zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: zmsid='+zmsid)
+    # query = {'id':zmsid}
+    query = {'home_id':docelmnt.getHome().id,'id':zmsid}
+q = zmscontext.zcatalog_index(query)
+try:
+  q = filter(lambda x:x['getPath'].find('/%s/content'%query['home_id'])>= 0,q)
+except:
+  pass
+ob = None
+for r in q:
+  zmspath  = '%s/'%r['getPath']
+  l = zmspath[1:-1].split('/')
+  ob = zmscontext
+  try:
+    for id in l:
+      ob = getattr(ob,id)
+    break
+  except:
+    pass
+return zmsroot.storeReqBuff(url,ob,request)
 
 # --// /ZMSIndexZCatalog.getLinkObj //--
 ]]>
@@ -738,7 +703,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[0.9.50]]></item>
+          <item key="revision"><![CDATA[0.9.54]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -757,7 +722,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.9.50]]></item>
+          <item key="revision"><![CDATA[0.9.54]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

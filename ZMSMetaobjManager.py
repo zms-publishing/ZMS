@@ -356,45 +356,44 @@ class ZMSMetaobjManager:
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
       reqBuffId = '__get_metaobjs__'
       try:
-        forced = \
-          not self.REQUEST.get( '__get_metaobjs__', False) and \
-          not self.REQUEST.get( 'recurse_updateVersionBuild', False)
-        obs = self.fetchReqBuff( reqBuffId, self.REQUEST, forced)
-        return obs
+        forced = not self.REQUEST.get(reqBuffId,False)
+        return self.fetchReqBuff( reqBuffId, self.REQUEST, forced)
       except:
-        obs = {}
-        raw = self.model
-        master_obs = None
-        for ob_id in raw.keys():
-          ob = raw.get(ob_id)
-          # Acquire from parent.
-          if ob.get('acquired',0) == 1:
-            acquired = 1
-            subobjects = ob.get('subobjects',1)
-            if master_obs is None:
-              portalMaster = self.getPortalMaster()
-              if portalMaster is not None:
-                master_obs = portalMaster.metaobj_manager.__get_metaobjs__()
-            if master_obs is not None:
-              if master_obs.has_key(ob_id):
+        pass
+      
+      obs = {}
+      raw = self.model
+      master_obs = None
+      for ob_id in raw.keys():
+        ob = raw.get(ob_id)
+        # Acquire from parent.
+        if ob.get('acquired',0) == 1:
+          acquired = 1
+          subobjects = ob.get('subobjects',1)
+          if master_obs is None:
+            portalMaster = self.getPortalMaster()
+            if portalMaster is not None:
+              master_obs = portalMaster.metaobj_manager.__get_metaobjs__()
+          if master_obs is not None:
+            if master_obs.has_key(ob_id):
+              ob = master_obs[ob_id].copy()
+            else:
+              ob = {'id':ob_id,'type':'ZMSUnknown'}
+            ob['acquired'] = acquired
+            ob['subobjects'] = subobjects
+            obs[ob_id] =  ob
+            if ob['type'] == 'ZMSPackage' and ob['subobjects'] == 1:
+              package = ob_id
+              for ob_id in master_obs.keys():
                 ob = master_obs[ob_id].copy()
-              else:
-                ob = {'id':ob_id,'type':'ZMSUnknown'}
-              ob['acquired'] = acquired
-              ob['subobjects'] = subobjects
-              obs[ob_id] =  ob
-              if ob['type'] == 'ZMSPackage' and ob['subobjects'] == 1:
-                package = ob_id
-                for ob_id in master_obs.keys():
-                  ob = master_obs[ob_id].copy()
-                  if ob.get( 'package') == package:
-                    ob['acquired'] = 1
-                    obs[ob_id] =  ob
-          else:
-            obs[ob_id] = ob
-        
-        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-        return self.storeReqBuff( reqBuffId, obs, self.REQUEST)
+                if ob.get( 'package') == package:
+                  ob['acquired'] = 1
+                  obs[ob_id] =  ob
+        else:
+          obs[ob_id] = ob
+      
+      #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
+      return self.storeReqBuff( reqBuffId, obs, self.REQUEST)
 
 
     # --------------------------------------------------------------------------
@@ -415,18 +414,18 @@ class ZMSMetaobjManager:
       
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
       reqBuffId = '__%s_is_page_container__'%id
-      try:
-        forced = True
-        return self.fetchReqBuff( reqBuffId, self.REQUEST, forced)
-      except:
-        rtnVal = False
-        ob = self.__get_metaobj__( id)
-        if type( ob) is dict and (ob.get('type') == 'ZMSDocument' or ob.get('id') == 'ZMSTeaserContainer'):
-          ids = map( lambda x: x['id'], filter( lambda x: x['type']=='*', ob['attrs']))
-          rtnVal = 'e' in ids
-        
-        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-        return self.storeReqBuff( reqBuffId, rtnVal, self.REQUEST)
+      try: return self.fetchReqBuff( reqBuffId, self.REQUEST, forced=True)
+      except: pass
+      
+      #-- Get value.
+      rtn = False
+      ob = self.__get_metaobj__( id)
+      if type(ob) is dict and ob.get('type')=='ZMSDocument':
+        ids = map( lambda x: x['id'], filter( lambda x: x['type']=='*', ob['attrs']))
+        rtn = 'e' in ids
+      
+      #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
+      return self.storeReqBuff( reqBuffId, rtn, self.REQUEST)
 
 
     # --------------------------------------------------------------------------
@@ -661,8 +660,12 @@ class ZMSMetaobjManager:
         elif metaObjAttr['type'] == 'method':
           value = zmscontext.dt_exec(metaObjAttr.get('custom',''))
         elif metaObjAttr['type'] == 'py':
+          if not metaObjAttr.has_key(metaObjAttr['type']):
+            raise zExceptions.InternalError("evalMetaobjAttr: %s.%s (%s) not found!"%(id,metaObjAttr['id'],metaObjAttr['type']))
           value = call(metaObjAttr['py'])
         elif metaObjAttr['type'] == 'zpt':
+          if not metaObjAttr.has_key(metaObjAttr['type']):
+            raise zExceptions.InternalError("evalMetaobjAttr: %s.%s (%s) not found!"%(id,metaObjAttr['id'],metaObjAttr['type']))
           value = call(metaObjAttr['zpt'])
           value = unicode(value).encode('utf-8')
         elif metaObjAttr['type'] == 'constant':

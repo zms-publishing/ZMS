@@ -173,22 +173,11 @@ class MultiLanguageObject:
       """
       Returns IDs of languages (primary language 1st)
       """
-      
-      #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      reqBuffId = 'getLanguages'
-      try:
-        value = self.fetchReqBuff( reqBuffId, REQUEST)
-        return value
-      except:
-        
-        #-- Get value.
-        value = ['*']
-        if REQUEST is not None:
-          value = self.getUserLangs(str(REQUEST['AUTHENTICATED_USER']))
-        value = filter(lambda x: ('*' in value) or (x in value), map(lambda x:x[0],self.getLangTree()))
-        
-        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-        return self.storeReqBuff( reqBuffId, value, REQUEST)
+      value = ['*']
+      if REQUEST is not None:
+        value = self.getUserLangs(str(REQUEST['AUTHENTICATED_USER']))
+      value = filter(lambda x: ('*' in value) or (x in value), map(lambda x:x[0],self.getLangTree()))
+      return value
 
 
     def getDescendantLanguages(self, id, REQUEST=None):

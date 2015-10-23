@@ -100,73 +100,6 @@ zope.event.subscribers.append(subscriber)
 ################################################################################
 
 # ------------------------------------------------------------------------------
-#  ZMS.recurse_updateVersionBuild:
-#
-#  Update version build.
-# ------------------------------------------------------------------------------
-def recurse_updateVersionBuild(docElmnt, self, REQUEST):
-  message = ''
-
-  ##### Build 133a: Create workflow-managers ####
-  if getattr( docElmnt, 'build', '000') < '133':
-    if self.meta_type == 'ZMS':
-      autocommit = self.getConfProperty('ZMS.autocommit',1)
-      nodes = self.getConfProperty('ZMS.workflow.nodes',['{$}'])
-      acquired = self.getConfProperty('ZMS.workflow.acquire',0)
-      activities = self.getConfProperty('ZMS.workflow.activities',[])
-      transitions = self.getConfProperty('ZMS.workflow.transitions',[])
-      if acquired or len(activities+transitions)>0:
-        if acquired:
-          manager = ZMSWorkflowProviderAcquired.ZMSWorkflowProviderAcquired(autocommit,nodes)
-        else:
-          manager = ZMSWorkflowProvider.ZMSWorkflowProvider(autocommit,nodes,activities,transitions)
-        if manager.id in self.objectIds():
-          self.manage_delObjects(manager.id)
-        self._setObject( manager.id, manager)
-      self.delConfProperty('ZMS.autocommit')
-      self.delConfProperty('ZMS.workflow.nodes')
-      self.delConfProperty('ZMS.workflow.acquire')
-      self.delConfProperty('ZMS.workflow.activities')
-      self.delConfProperty('ZMS.workflow.transitions')
-
-  ##### Build 134c: Store object-state for modified sub-objects in version-container ####
-  if getattr( docElmnt, 'build', '000') < '134':
-    if not self.getAutocommit() and self.isVersionContainer():
-      self.syncObjModifiedChildren( REQUEST)
-
-  ##### Build 130a: ZMS Standard-Objects ####
-  if getattr( docElmnt, 'build', '000') < '130':
-    if self.meta_type == 'ZMS':
-      users = self.getConfProperty('ZMS.security.users',{})
-      for user in users.keys():
-        nodes = users[user].get('nodes',{})
-        try:
-          for node_ref in nodes.keys():
-            node_ob = self.getLinkObj(node_ref)
-            node_dict = nodes[node_ref]
-            if node_ob:
-              self.setLocalUser( user, node_ref, node_dict['roles'], node_dict['langs'])
-        except:
-          pass
-
-  # Return with message.
-  return message
-
-
-# ------------------------------------------------------------------------------
-#  ZMS.recurse_updateVersionPatch:
-#
-#  Update version patch.
-# ------------------------------------------------------------------------------
-def recurse_updateVersionPatch(docElmnt, self, REQUEST):
-  message = ''
-  # _confmanager.updateConf(self)
-  # self.getSequence()
-  # self.synchronizeObjAttrs()
-  return message
-
-
-# ------------------------------------------------------------------------------
 #  importTheme:
 # ------------------------------------------------------------------------------
 def importTheme(folder, theme):
@@ -257,7 +190,6 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
 
   ### Init Properties: active, titlealt, title.
   obj.setObjStateNew(REQUEST)
-  obj.updateVersion(lang,REQUEST)
   obj.setObjProperty('active',1,lang)
   obj.setObjProperty('titlealt',titlealt,lang)
   obj.setObjProperty('title',title,lang)
@@ -423,8 +355,7 @@ class ZMS(
     'ZMSLinkContainer':{
                 },
     'ZMSLinkElement':{
-                'obj_class':ZMSLinkElement,
-                'constructor':'manage_addzmslinkelementform'},
+                'obj_class':ZMSLinkElement},
     'ZMSSqlDb':{
                 'obj_class':ZMSSqlDb,
                 'constructor':'manage_addzmssqldbform'},
@@ -652,40 +583,6 @@ class ZMS(
           except:
             _globals.writeError(self, '[getPortalClients]: %s not found!'%str(id))
       return docElmnts
-
-
-    ############################################################################
-    #
-    #   ZMS - Versions
-    #
-    ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMS.updateVersion:
-    #
-    #  Update version.
-    # --------------------------------------------------------------------------
-    def updateVersion(self, lang, REQUEST, maintenance=True):
-      message = ''
-      build = getattr( self, 'build', '000')
-      patch = getattr( self, 'patch', '000')
-      if build != self.zms_build:
-        REQUEST.set('recurse_updateVersionBuild',True)
-        _globals.writeBlock(self,'[ZMS.updateVersion]: Synchronize object-model from build #%s%s to #%s%s...'%(build,patch,self.zms_build,self.zms_patch))
-        message += recurse_updateVersionBuild( self, self, REQUEST)
-        _globals.writeBlock(self,'[ZMS.updateVersion]: Synchronize object-model from build #%s%s to #%s%s - Finished!'%(build,patch,self.zms_build,self.zms_patch))
-        setattr( self, 'build', self.zms_build)
-        transaction.commit()
-        message += 'Synchronized object-model from build #%s%s to #%s%s!<br/>'%(build,patch,self.zms_build,self.zms_patch)
-      if build != self.zms_build or patch != self.zms_patch:
-        REQUEST.set('recurse_updateVersionPatch',True)
-        _globals.writeBlock(self,'[ZMS.updateVersion]: Synchronize object-model from patch #%s%s to #%s%s...'%(build,patch,self.zms_build,self.zms_patch))
-        message += recurse_updateVersionPatch( self, self, REQUEST)
-        _globals.writeBlock(self,'[ZMS.updateVersion]: Synchronize object-model from patch #%s%s to #%s%s - Finished!'%(build,patch,self.zms_build,self.zms_patch))
-        setattr( self, 'patch', self.zms_patch)
-        transaction.commit()
-        message += 'Synchronized object-model from patch #%s%s to #%s%s!<br/>'%(build,patch,self.zms_build,self.zms_patch)
-      return message
 
 
     ############################################################################

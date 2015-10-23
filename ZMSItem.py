@@ -139,7 +139,7 @@ class ZMSItem(
       if request.get('manage_lang') not in self.getLocale().get_manage_langs():
         request.set('manage_lang',self.get_manage_lang())
       if not request.get('manage_tabs_message'):
-        request.set( 'manage_tabs_message',self.updateVersion(request['lang'],request)+self.getConfProperty('ZMS.manage_tabs_message',''))
+        request.set( 'manage_tabs_message',self.getConfProperty('ZMS.manage_tabs_message',''))
       # manage_system
       if request.form.has_key('zmi-manage-system'):
         request.SESSION.set('zmi-manage-system',int(request.get('zmi-manage-system')))

@@ -115,16 +115,6 @@ class DeprecatedAPI:
   #  Returns list of URLs of links.
   # ----------------------------------------------------------------------------
   def getLinkList(self, REQUEST=None, allow_none=0):
-    print "[getLinkList]: @deprecated: use own implementation!"
-    
-    #-- [ReqBuff]: Fetch buffered value from Http-Request.
-    try:
-      reqBuffId = 'getLinkList%i'%allow_none
-      value = self.fetchReqBuff(reqBuffId,REQUEST)
-      return value
-    except:
-      
-      #-- Get value.
       value = []
       if self.meta_id == 'ZMSLinkElement' and self.getObjProperty('align',REQUEST) in ['','NONE']:
         if self.isEmbedded(REQUEST):
@@ -152,9 +142,7 @@ class DeprecatedAPI:
           elif ob.meta_id == 'ZMSLinkElement' and ob.getObjProperty('align',REQUEST) in ['','NONE']:
             if not ob.isEmbedded(REQUEST):
               value.extend( getLinkList_ZMSLinkElement( ob, REQUEST, allow_none))
-      
-      #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-      return self.storeReqBuff(reqBuffId,value,REQUEST)
+      return value
 
   # ----------------------------------------------------------------------------
   #  DeprecatedAPI.getLinkHtml:

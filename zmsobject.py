@@ -375,6 +375,14 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
+    #  ZMSObject.is_resource:
+    #
+    #  alias for isResource(request)
+    # --------------------------------------------------------------------------
+    def is_resource(self):
+      return self.isResource(self.REQUEST)
+
+    # --------------------------------------------------------------------------
     #  ZMSObject.isResource
     # --------------------------------------------------------------------------
     def isResource(self, REQUEST):
@@ -383,12 +391,19 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
+    #  ZMSObject.is_translated:
+    #
+    #  alias for isTranslated(lang,request)
+    # --------------------------------------------------------------------------
+    def is_translated(self,lang):
+      return self.isTranslated(lang,self.REQUEST)
+
+    # --------------------------------------------------------------------------
     #  ZMSObject.isTranslated
     #
     #  Returns True if current object is translated to given language.
     # --------------------------------------------------------------------------
     def isTranslated(self, lang, REQUEST):
-      REQUEST = _globals.nvl(REQUEST,self.REQUEST)
       rtnVal = False
       req = {'lang':lang,'preview':REQUEST.get('preview','')}
       value = self.getObjProperty('change_uid',req)
@@ -416,6 +431,14 @@ class ZMSObject(ZMSItem.ZMSItem,
           _globals.writeError(self,"[isModifiedInParentLanguage]: Unexpected exception: change_dt_lang=%s, change_dt_parent=%s!"%(str(change_dt_lang),str(change_dt_parent)))
       return rtnVal
 
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.visible:
+    #
+    #  alias for isVisible(request)
+    # --------------------------------------------------------------------------
+    def is_visible(self):
+      return self.isVisible(self.REQUEST)
 
     # --------------------------------------------------------------------------
     #  ZMSObject.isVisible:
@@ -464,17 +487,6 @@ class ZMSObject(ZMSItem.ZMSItem,
       if coverage in coverages: 
         coverage = 'global.' + self.getPrimaryLanguage()
       return coverage
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getDCType
-    #
-    #  Returns "Dublin Core: Type".
-    #
-    #  @param REQUEST
-    # --------------------------------------------------------------------------
-    def getDCType(self, REQUEST):
-      return self.getObjProperty('attr_dc_type',REQUEST)
 
 
     # --------------------------------------------------------------------------
@@ -885,34 +897,20 @@ class ZMSObject(ZMSItem.ZMSItem,
     #++
     def getHref2IndexHtml(self, REQUEST, deep=1):
       deep = int(self.getConfProperty('ZMSObject.getHref2IndexHtml.deep',deep))
-      if not REQUEST.has_key('lang'):
-        try: REQUEST.set('lang',self.getLanguage(REQUEST))
-        except: REQUEST['lang'] = self.getPrimaryLanguage()
-      
-      #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      try:
-        reqBuffId = 'getHref2IndexHtml_%i'%deep
-        value = self.fetchReqBuff(reqBuffId,REQUEST)
-        return value
-      except:
-        
-        #-- Get value.
-        ob = self
-        fct = REQUEST.get('ZMS_SKIN','index')
-        fct = {'sitemap':'index','search':'index'}.get(fct,fct)
-        if fct == 'index' and 'index_html' in self.objectIds():
-          value = self.absolute_url()
-          if REQUEST.get('lang','') != '': 
-            value = self.url_append_params(value,{'lang':REQUEST['lang']})
-          if REQUEST.get('preview','') != '': 
-            value = self.url_append_params(value,{'preview':REQUEST['preview']})
-        else:
-          if deep:
-            ob = _globals.getPageWithElements( self, REQUEST)
-          value = ob.getHref2Html( fct, ob.getPageExt(REQUEST), REQUEST)
-        
-        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-        return self.storeReqBuff(reqBuffId,value,REQUEST)
+      ob = self
+      fct = REQUEST.get('ZMS_SKIN','index')
+      fct = {'sitemap':'index','search':'index'}.get(fct,fct)
+      if fct == 'index' and 'index_html' in self.objectIds():
+        value = self.absolute_url()
+        if REQUEST.get('lang','') != '': 
+          value = self.url_append_params(value,{'lang':REQUEST['lang']})
+        if REQUEST.get('preview','') != '': 
+          value = self.url_append_params(value,{'preview':REQUEST['preview']})
+      else:
+        if deep:
+          ob = _globals.getPageWithElements( self, REQUEST)
+        value = ob.getHref2Html( fct, ob.getPageExt(REQUEST), REQUEST)
+      return value
 
 
     ############################################################################
@@ -934,11 +932,11 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
-    #  ZMSObject.isChild:
+    #  ZMSObject.is_child:
     #
     #  True if self is child of given object.
     # --------------------------------------------------------------------------
-    def isChild(self, ob):
+    def is_child_of(self, ob):
       if ob is not None:
         path = '/'.join(self.getPhysicalPath())
         obPath = '/'.join(ob.getPhysicalPath())

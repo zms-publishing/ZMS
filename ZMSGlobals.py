@@ -1453,12 +1453,13 @@ class ZMSGlobals:
     Try to execute given value.
     """
     def dt_exec(self, v):
-      if v.find('<dtml-') >= 0:
-        return self.dt_html(v,self.REQUEST)
-      elif v.startswith('##'):
-        return self.dt_py(v)
-      elif v.find('<tal:') >= 0:
-        return self.dt_tal(v)
+      if type(v) in StringTypes:
+        if v.find('<dtml-') >= 0:
+          v = self.dt_html(v,self.REQUEST)
+        elif v.startswith('##'):
+          v = self.dt_py(v)
+        elif v.find('<tal:') >= 0:
+          v = self.dt_tal(v)
       return v
 
     """

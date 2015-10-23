@@ -36,8 +36,8 @@ def validateId(self, id, REQUEST):
   lang = REQUEST.get( 'lang')
   if lang is None:
     for lang in self.getLanguages():
-      req={ 'lang': lang, 'preview': REQUEST.get('preview','')}
-      decl_id = self.getDeclId( req)
+      request = { 'lang': lang, 'preview': REQUEST.get('preview','')}
+      decl_id = self.getDeclId(request)
       if id == decl_id:
         langs.append( lang)
     if len( langs) == 1:
@@ -62,8 +62,7 @@ def filterId(self, id, REQUEST):
   if len( filtered_obs) > 0:
     return filtered_obs[0]
   elif self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-    req = { 'lang': REQUEST.get('lang'), 'preview': REQUEST.get('preview')}
-    filtered_obs = filter( lambda x: x.isVisible( req) and x.isPage() and validateId( x, id, req), obs)
+    filtered_obs = filter( lambda x: x.isVisible(REQUEST) and x.isPage() and validateId( x, id, REQUEST), obs)
     if len( filtered_obs) > 0:
       return filtered_obs[0]
   return None
@@ -130,55 +129,58 @@ class PathHandler:
     def __bobo_traverse__(self, TraversalRequest, name):
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
-      req = self.REQUEST
-      url = self.REQUEST.get('URL','')
+      request = self.REQUEST
+      url = request.get('URL','')
       zmi = url.find('/manage') >= 0
       
       if not TraversalRequest.has_key('path_to_handle'):
-      
-          # Make a reversed copy of the TraversalRequestNameStack
-          TraversalRequestNameStackReversed=copy.copy(TraversalRequest['TraversalRequestNameStack'])
-          TraversalRequestNameStackReversed.reverse()
-          
-          # Set path_to_handle in the TraversalRequest.
-          TraversalRequest['path_to_handle']=[name]+TraversalRequestNameStackReversed
-          
-          # Set path_to_handle for VirtualHosts.
-          if '/' in TraversalRequest[ 'path_to_handle']:
-            path_physical = req.get( 'path_physical', list( self.getDocumentElement().getPhysicalPath())[1:])
-            if len( path_physical) > 1:
-              b = TraversalRequest[ 'path_to_handle'].index( '/')
-              TraversalRequest[ 'path_to_handle'] = TraversalRequest[ 'path_to_handle'][ b+1:]
-              for i in range( 1, len( path_physical)):
-                TraversalRequest[ 'path_to_handle'].insert( i-1, path_physical[ i])
+        
+        # Make a reversed copy of the TraversalRequestNameStack
+        TraversalRequestNameStackReversed=copy.copy(TraversalRequest['TraversalRequestNameStack'])
+        TraversalRequestNameStackReversed.reverse()
+        
+        # Set path_to_handle in the TraversalRequest.
+        TraversalRequest['path_to_handle']=[name]+TraversalRequestNameStackReversed
+        
+        # Set path_to_handle for VirtualHosts.
+        if '/' in TraversalRequest[ 'path_to_handle']:
+          path_physical = request.get( 'path_physical', list( self.getDocumentElement().getPhysicalPath())[1:])
+          if len( path_physical) > 1:
+            b = TraversalRequest[ 'path_to_handle'].index( '/')
+            TraversalRequest[ 'path_to_handle'] = TraversalRequest[ 'path_to_handle'][ b+1:]
+            for i in range( 1, len( path_physical)):
+              TraversalRequest[ 'path_to_handle'].insert( i-1, path_physical[ i])
       
       # Set language.
-      lang = req.get( 'lang')
+      lang = request.get( 'lang')
       if lang is None:
-        lang = self.getLanguageFromName( TraversalRequest['path_to_handle'][-1])
+        lang = self.getLanguageFromName(TraversalRequest['path_to_handle'][-1])
       if lang is not None:
-        req.set( 'lang', lang)
+        request.set( 'lang', lang)
      
       # If the name is in the list of attributes, call it.
       ob = getattr( self, name, None)
       if ob is None or getattr(ob,'meta_type',None) == 'Folder':
-        obContext = filterId( self, name, req)
+        obContext = filterId( self, name, request)
         if obContext is not None:
           ob = obContext
       if ob is not None:
-        meta_type = getattr(ob,'meta_type','?')
         if not zmi and TraversalRequest['path_to_handle'][-1] == name:
-          lang = req.get( 'lang')
+          lang = request.get('lang')
           if lang is None:
-            lang = self.getHttpAcceptLanguage( self.REQUEST)
+            lang = self.getHttpAcceptLanguage( request)
           if lang is not None:
-            self.REQUEST.set( 'lang', lang)
+            request.set( 'lang', lang)
         
         return ob
       
       # otherwise do some 'magic'
       else:
         _globals.writeLog( self, '[__bobo_traverse__]: otherwise do some magic')
+        
+        if request.get('lang') is None:
+          lang = self.getPrimaryLanguage()
+          request.set('lang',lang)
         
         # Package-Home.
         if name == '$ZMS_HOME':
@@ -189,24 +191,24 @@ class PathHandler:
           f = self.FileFromData( data, filename, mt)
           f.aq_parent = self
           f.key = name
-          f.lang = req.get('lang', self.getPrimaryLanguage())
+          f.lang = reques['lang']
           return f
         
         # Pathhandler-Hook.
         if 'pathhandler' in self.getMetaobjAttrIds( self.meta_id, types=['method','py']):
           if name == TraversalRequest['path_to_handle'][-1]:
-            req.set( 'path_', '/'.join(req.get('path_',[])+[name]))
-            return self.getObjProperty('pathhandler',req)
+            request.set( 'path_', '/'.join(request.get('path_',[])+[name]))
+            return self.attr('pathhandler')
           else:
-            req.set( 'path_', req.get('path_',[])+[name])
+            request.set( 'path_', request.get('path_',[])+[name])
             return self
         
-        if not zmi or req.get( 'ZMS_PATH_HANDLER', False):
+        if not zmi or request.get( 'ZMS_PATH_HANDLER', False):
           
           # Recursive inclusions.
-          thisOb = _globals.nvl( filterId( self, name, req), self)
+          thisOb = _globals.nvl( filterId( self, name, request), self)
           if thisOb.meta_type == 'ZMSLinkElement':
-            recursive = thisOb.isEmbeddedRecursive( req)
+            recursive = thisOb.isEmbeddedRecursive(request)
             if recursive:
               ob = thisOb.getRefObj()
               proxy = thisOb.initProxy( thisOb.aq_parent, thisOb.absolute_url(), ob, recursive)
@@ -214,12 +216,12 @@ class PathHandler:
               l = TraversalRequest[ 'path_to_handle']
               if thisOb.id in l:
                 i = l.index( thisOb.id) + 1
-              elif thisOb.getDeclId( req) in l:
-                i = l.index( thisOb.getDeclId( req)) + 1
+              elif thisOb.getDeclId(request) in l:
+                i = l.index(thisOb.getDeclId(request)) + 1
               for k in range( i, len(l)):
                 newOb = None
-                obs = ob.getChildNodes( req)
-                filtered_obs = filter( lambda x: ( x.id == l[k] or x.getDeclId( req) == l[k]), obs)
+                obs = ob.getChildNodes(request)
+                filtered_obs = filter( lambda x: ( x.id == l[k] or x.getDeclId(request) == l[k]), obs)
                 if len( filtered_obs) == 1:
                   newOb = filtered_obs[0]
                 try:
@@ -233,15 +235,15 @@ class PathHandler:
                 proxy = thisOb.initProxy( proxy, proxy.absolute_url()+'/'+ob.id, ob, recursive)
                 c += 1
               if c > 0:
-                req.set( 'ZMS_PROXY_%s'%self.id, proxy)
-            if req.get( 'ZMS_PROXY_%s'%self.id) and req.get( 'ZMS_PROXY_%s'%self.id).id != TraversalRequest[ 'path_to_handle'][-1]:
-              v = handleBlobAttrs( req.get( 'ZMS_PROXY_%s'%self.id).proxy, TraversalRequest[ 'path_to_handle'][-1], req)
+                request.set( 'ZMS_PROXY_%s'%self.id, proxy)
+            if request.get( 'ZMS_PROXY_%s'%self.id) and request.get( 'ZMS_PROXY_%s'%self.id).id != TraversalRequest[ 'path_to_handle'][-1]:
+              v = handleBlobAttrs(request.get( 'ZMS_PROXY_%s'%self.id).proxy, TraversalRequest[ 'path_to_handle'][-1],request)
               if v is not None: 
                 return v
             return thisOb
         
         # Declarative Urls.
-        ob = self.pathob([name],self.REQUEST)
+        ob = self.pathob([name],request)
         if ob is not None:
           return ob
         
@@ -251,7 +253,7 @@ class PathHandler:
           if self.getType()=='ZMSRecordSet':
             try:
               i = int( name[1:])
-              r = self.getObjProperty( self.getMetaobj( self.meta_id)['attrs'][0]['id'], self.REQUEST)
+              r = self.getObjProperty( self.getMetaobj( self.meta_id)['attrs'][0]['id'], request)
               d = r[i]
               for key in d.keys():
                 value = d[key]
@@ -259,8 +261,8 @@ class PathHandler:
                   value = value._getCopy()
                   value.aq_parent = self
                   value.key = key
-                  value.lang = req.get('lang', self.getPrimaryLanguage())
-                  langfilename = value.getHref( req).split( '/')[ -1]
+                  value.lang = request['lang']
+                  langfilename = value.getHref(request).split( '/')[ -1]
                   if langfilename.find( '?') > 0:
                     langfilename = langfilename[ :langfilename.find( '?')]
                   if langfilename == TraversalRequest['path_to_handle'][-1]:
@@ -275,33 +277,31 @@ class PathHandler:
                 obj_attr = obj_attrs[ key]
                 if obj_attr['datatype_key'] == _globals.DT_LIST and \
                    obj_attr['repetitive']:
-                  lp = [ self.REQUEST.get('preview')]
+                  lp = [ request.get('preview')]
                   if lp[ 0] != 'preview':
                     lp.append( 'preview')
-                  par = None
                   for ip in lp:
                     try:
-                      self.REQUEST.set( 'preview', ip)
-                      r = self.getObjProperty( key, self.REQUEST, par)
+                      request.set( 'preview', ip)
+                      r = self.attr( key)
                       value = r[i]
                       value = value._getCopy()
                       value.aq_parent = self
                       value.key = key
-                      value.lang = req.get('lang', self.getPrimaryLanguage())
-                      langfilename = value.getHref( req).split( '/')[ -1]
+                      value.lang = request['lang']
+                      langfilename = value.getHref(request).split( '/')[ -1]
                       if langfilename.find( '?') > 0:
                         langfilename = langfilename[ :langfilename.find( '?')]
                       if langfilename == TraversalRequest['path_to_handle'][-1]:
                         return value
                     except:
                       _globals.writeError( self, '[__bobo_traverse__]: ip=%s'%str(ip))
-                    par = {'fetchReqBuff':0}
-                  self.REQUEST.set( 'preview', lp[ 0])
+                  request.set( 'preview', lp[ 0])
             except:
               _globals.writeError( self, '[__bobo_traverse__]')
         
         # If the object has blob-fields find by filename and display data.
-        v = handleBlobAttrs( self, name, req)
+        v = handleBlobAttrs( self, name, request)
         if v is not None: return v
         
         # If the object has executable-fields find by name and display data.
@@ -312,7 +312,7 @@ class PathHandler:
               v = self.FileFromData( v, content_type='text/plain;charset=utf-8')
               v.aq_parent = self
               v.key = name
-              v.lang = req.get('lang', self.getPrimaryLanguage())
+              v.lang = request['lang']
             return v
         
         # Skins
@@ -323,19 +323,15 @@ class PathHandler:
           if i > 0 and j > 0:
             lang = l[i+1:j]
             if lang in self.getLangIds():
-              auth_user = self.REQUEST.get('AUTHENTICATED_USER')
+              auth_user = request.get('AUTHENTICATED_USER')
               zms_skin = l[:i]
               zms_ext = l[j+1:]
-              if zms_skin in map(lambda x:x.strip(),self.getConfProperty('ZMS.skins','index,search,sitemap,mobile').split(',')) and \
-                 zms_ext == self.getPageExt(self.REQUEST)[1:]:
-                access = True
-                #--access = (auth_user is None and self.hasPublicAccess()) or \
-                #--         (auth_user is not None and auth_user.has_permission( 'View', self) in [ 1, True])
-                if access:
-                  self.REQUEST.set('ZMS_SKIN',zms_skin)
-                  self.REQUEST.set('ZMS_EXT',zms_ext)
-                  self.REQUEST.set('lang',lang)
-                  return self
+              if zms_skin in map(lambda x:x.strip(),self.getConfProperty('ZMS.skins','index,search,sitemap').split(',')) and \
+                 zms_ext == self.getPageExt(request)[1:]:
+                request.set('ZMS_SKIN',zms_skin)
+                request.set('ZMS_EXT',zms_ext)
+                request.set('lang',lang)
+                return self
         
         # If there's no more names left to handle, return the path handling 
         # method to the traversal machinery so it gets called next
@@ -343,7 +339,7 @@ class PathHandler:
         return self.standard_error_message( self, 
           exc_type='Resource not found', 
           exc_value=exc_value, 
-          REQUEST=self.REQUEST)
+          REQUEST=request)
 
 
     # --------------------------------------------------------------------------

@@ -510,7 +510,6 @@ class Exportable(_filtermanager.FilterItem):
         # Get html.
         REQUEST.set('op',dctOp[key])
         REQUEST.set('ZMS_PATH_HANDLER', True)
-        REQUEST.set('ZMS_FETCH_REQ_BUFF',False)
         
         try:
           

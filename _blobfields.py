@@ -280,7 +280,7 @@ def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
   message = ''
   try:
     if hiresKey in self.getObjAttrs().keys():
-      req = {'lang':lang,'preview':'preview','fetchReqBuff':False}
+      req = {'lang':lang,'preview':'preview'}
       hiresImg = self.getObjProperty(hiresKey,req)
       if hiresImg is not None and REQUEST.get('generate_preview_%s_%s'%(hiresKey,lang),0) == 1:
         _globals.writeLog( self, '[thumbnailImage]: Create >%s< from >%s<...'%(loresKey,hiresKey))

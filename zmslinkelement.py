@@ -18,30 +18,17 @@
 
 # Imports.
 from AccessControl import ClassSecurityInfo
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import Globals
 import sys
 import urllib
 # Product Imports.
 from zmscontainerobject import ZMSContainerObject
+from zmscustom import ZMSCustom
 from zmsobject import ZMSObject
 from zmsproxyobject import ZMSProxyObject
 import _confmanager
 import _globals
 import _zreferableitem
-
-
-# ------------------------------------------------------------------------------
-#  zmslinkelement.initZMSLinkElement: 
-#
-#  Inits properties of ZMSLinkElement.
-# ------------------------------------------------------------------------------
-def initZMSLinkElement(oItem, REQUEST):
-  lang = REQUEST['lang']
-  ref_obj = oItem.getRefObj()
-  if ref_obj is None:
-    if len(_globals.nvl(oItem.getObjProperty('title',REQUEST),'')) == 0:
-      oItem.setObjProperty('title',oItem.getObjProperty('attr_ref',REQUEST),lang)
 
 
 """
@@ -57,60 +44,11 @@ class ConstraintViolation(Exception): pass
 ################################################################################
 ################################################################################
 ###
-###  Constructor
-###
-################################################################################
-################################################################################
-manage_addZMSLinkElementForm = PageTemplateFile('manage_addzmslinkelementform', globals()) 
-def manage_addZMSLinkElement(self, lang, _sort_id, REQUEST, RESPONSE):
-  """ manage_addZMSLinkElement """
-  meta_id = 'ZMSLinkElement'
-  
-  if REQUEST['btn'] == self.getZMILangStr('BTN_INSERT'):
-    
-    ##### Create ####
-    id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
-    new_id = self.getNewId(id_prefix)
-    obj = ZMSLinkElement(new_id,_sort_id+1)
-    self._setObject(obj.id, obj)
-    
-    redirect_self = bool( REQUEST.get('redirect_self',0)) or REQUEST.get('btn','') == ''
-    for attr in self.getMetaobj(meta_id)['attrs']:
-      attr_type = attr['type']
-      redirect_self = redirect_self or attr_type in self.getMetaobjIds()+['*']
-    redirect_self = redirect_self and not REQUEST.get('btn','') in  [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]
-    
-    obj = getattr(self,obj.id)
-    ##### Object State ####
-    obj.setObjStateNew(REQUEST)
-    ##### Init Coverage ####
-    obj.setReqProperty('attr_dc_coverage',REQUEST)
-    ##### Init Properties ####
-    obj.manage_changeProperties(lang,REQUEST,RESPONSE)
-    initZMSLinkElement(obj,REQUEST)
-    
-    ##### VersionManager ####
-    obj.onChangeObj(REQUEST)
-    
-    # Return with message.
-    message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
-    if redirect_self:
-      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(),obj.id,lang,urllib.quote(message)))
-    else:
-      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(self.absolute_url(),lang,urllib.quote(message),obj.id))
-  
-  else:
-    RESPONSE.redirect('%s/manage_main?lang=%s'%(self.absolute_url(),lang))
-
-
-################################################################################
-################################################################################
-###
 ###  Class
 ###
 ################################################################################
 ################################################################################
-class ZMSLinkElement(ZMSContainerObject):
+class ZMSLinkElement(ZMSCustom):
 
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security
@@ -266,24 +204,14 @@ class ZMSLinkElement(ZMSContainerObject):
     #  ZMSLinkElement.getRemoteObj:
     # --------------------------------------------------------------------------
     def getRemoteObj(self):
-      
-      REQUEST = self.REQUEST
-      lang = REQUEST['lang']
-      #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      reqBuffId = 'getRemoteObj'
+      value = None
+      ref = self.getRef()
       try:
-        value = self.fetchReqBuff( reqBuffId, REQUEST)
-        return value
+        value = self.http_import( ref + '/ajaxGetNode?lang=%s'%lang)
+        value = self.xmlParse( value)
       except:
-        value = None
-        ref = self.getRef()
-        try:
-          value = self.http_import( ref + '/ajaxGetNode?lang=%s'%lang)
-          value = self.xmlParse( value)
-        except:
-          _globals.writeError(self,'[getRemoteObj]: can\'t embed from remote: ref=%s'%ref)
-        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-        return self.storeReqBuff( reqBuffId, value, REQUEST)
+        _globals.writeError(self,'[getRemoteObj]: can\'t embed from remote: ref=%s'%ref)
+      return value
 
 
     # --------------------------------------------------------------------------
@@ -415,10 +343,9 @@ class ZMSLinkElement(ZMSContainerObject):
       if ref_obj is None or not self.isEmbedded(REQUEST):
         ref_obj = self
       if meta_type is None:
-        if self.isActive(REQUEST):
-          return ZMSObject.display_icon(ref_obj,REQUEST,key=key)
-        else:
-          return ZMSObject.display_icon(ref_obj,REQUEST,key='icon_disabled')
+        if not self.isActive(REQUEST):
+          key = 'icon_disabled'
+        return ZMSObject.display_icon(ref_obj,REQUEST,key)
       else:
         return ZMSObject.display_icon(ref_obj,REQUEST,meta_type,key)
 

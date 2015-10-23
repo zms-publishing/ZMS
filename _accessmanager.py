@@ -406,7 +406,7 @@ class AccessableContainer(AccessableObject):
         d = security_roles.get(id,{})
         for nodekey in d.keys():
           node = root.getLinkObj(nodekey)
-          if self.isChild(node):
+          if self.is_child_of(node):
             _globals.writeLog(self,'[synchronizeRolesAccess]: security_role=%s, nodekey=%s'%(id,nodekey))
             l.append((id,d[nodekey]['roles']))
       manager_permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',self.permissionsOfRole('Manager')))

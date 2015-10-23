@@ -23,6 +23,7 @@ from types import StringTypes
 import ZPublisher.HTTPRequest
 import datetime
 import fnmatch
+import math
 import string
 import time
 import urllib
@@ -469,11 +470,13 @@ class ObjAttrs:
           extra = ''
           if obj_attr.has_key('size'):
             size = obj_attr['size']
-          elif datatype in [_globals.DT_INT]:
+          elif datatype in _globals.DT_INTS:
             size = 5
-          elif datatype in [_globals.DT_FLOAT]:
+            extra = 'style="text-align: right;"'
+          elif datatype == _globals.DT_FLOAT:
             size = 8
-          elif datatype in [_globals.DT_AMOUNT]:
+            extra = 'style="text-align: right;"'
+          elif datatype == _globals.DT_AMOUNT:
             size = 8
             extra = 'style="text-align: right;"'
             if value is not None:
@@ -550,16 +553,16 @@ class ObjAttrs:
           value = [value]
       
       #-- Integer-Fields.
-      elif datatype in _globals.DT_INTS and not type(value) is int:
+      elif datatype in _globals.DT_INTS:
         try:
-          value = int(value)
+          value = int(math.floor(float(value)))
         except:
           value = 0
       
       #-- Float-Fields.
-      elif datatype == _globals.DT_FLOAT and not type(value) is float:
+      elif datatype == _globals.DT_FLOAT:
         try:
-          value = float( value)
+          value = float(value)
         except:
           value = 0.0
       
@@ -607,8 +610,8 @@ class ObjAttrs:
         obj_attr = self.getObjAttr(key,self.meta_id)
         datatype = obj_attr['datatype_key']
         lang = request['lang']
-        work = self.getObjProperty(key,{'fetchReqBuff':False,'lang':lang,'preview':'preview'})
-        live = self.getObjProperty(key,{'fetchReqBuff':False,'lang':lang})
+        work = self.getObjProperty(key,{'lang':lang,'preview':'preview'})
+        live = self.getObjProperty(key,{'lang':lang})
         modified = modified or (datatype not in _globals.DT_BLOBS and work != live)
         modified = modified or (datatype in _globals.DT_BLOBS and (str(work) != str(live) or (work is not None and live is not None and str(work.getData()) != str(live.getData()))))
       return modified
@@ -621,43 +624,25 @@ class ObjAttrs:
     #  @deprecated: use attr(key) instead! 
     # --------------------------------------------------------------------------
     def getObjProperty(self, key, REQUEST={}, par=None):
+      objAttrs = self.getObjAttrs()
       
-      #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      reqBuffId = '%s_%s'%('getObjProperty',key)
-      try:
-        if ( type( par) is dict and par.get( 'fetchReqBuff') in [ 0, False]) or \
-           ( REQUEST.get( 'ZMS_VERSION_%s'%self.id) is not None):
-          raise zExceptions.InternalError('ReqBuff set inactive!')
-        forced = type( par) is dict and par.get( 'fetchReqBuff') in [ 1, True]
-        value = self.fetchReqBuff( reqBuffId, REQUEST, forced)
-        return value
-      except:
-        try:
-          objAttrs = self.getObjAttrs()
-          
-          #-- Special attributes.
-          if key not in objAttrs.keys():
-            value = self.nvl(self.evalMetaobjAttr(key),'')
-            if isinstance(value,Image) or isinstance(value,File):
-              value = _blobfields.MyBlobWrapper(value)
-          
-          #-- Standard attributes.
-          elif key in objAttrs.keys():
-            objAttr = objAttrs[key]
-            datatype = objAttr['datatype_key']
-            value = self.getObjAttrValue( objAttr, REQUEST)
-            if datatype == _globals.DT_TEXT and  type(value) in StringTypes and (value.find('<dtml-') >= 0 or value.startswith('##') or value.find('<tal:')>=0):
-              value = self.dt_exec(value)
-          
-          #-- Undefined attributes.
-          else:
-            value = ''
-        
-        except:
-          value = _globals.writeError(self,'[getObjProperty]: key=%s'%key)
-        
-        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-        return self.storeReqBuff( reqBuffId, value, REQUEST)
+      #-- Special attributes.
+      if key not in objAttrs.keys():
+        value = self.nvl(self.evalMetaobjAttr(key),'')
+        if isinstance(value,Image) or isinstance(value,File):
+          value = _blobfields.MyBlobWrapper(value)
+      
+      #-- Standard attributes.
+      elif key in objAttrs.keys():
+        objAttr = objAttrs[key]
+        value = self.getObjAttrValue( objAttr, REQUEST)
+        value = self.dt_exec(value)
+      
+      #-- Undefined attributes.
+      else:
+        value = ''
+      
+      return value
 
 
     # --------------------------------------------------------------------------
@@ -684,7 +669,7 @@ class ObjAttrs:
     #  ObjAttrs.evalMetaobjAttr
     # --------------------------------------------------------------------------
     def evalMetaobjAttr(self, *args, **kwargs):
-      root = self.getDocumentElement()
+      root = self
       request = self.REQUEST
       id = request.get('ZMS_INSERT',self.meta_id)
       key = args[0]
@@ -719,6 +704,14 @@ class ObjAttrs:
     ### 
     ############################################################################
     """
+
+    # --------------------------------------------------------------------------
+    #  ObjAttrs.is_active:
+    #
+    #  alias for isActive(request)
+    # --------------------------------------------------------------------------
+    def is_active(self):
+      return self.isActive(self.REQUEST)
 
     # --------------------------------------------------------------------------
     #  ObjAttrs.isActive:
@@ -1020,10 +1013,6 @@ class ObjAttrs:
     # --------------------------------------------------------------------------
     def setObjProperty(self, key, value, lang=None, forced=0):
       
-      #-- [ReqBuff]: Clear buffered value from Http-Request.
-      reqBuffId = '%s_%s'%('getObjProperty',key)
-      self.clearReqBuff(reqBuffId,self.REQUEST)
-      
       #-- CUSTOM
       if key not in self.getObjAttrs().keys():
         self.REQUEST.set('pKey',key)
@@ -1238,20 +1227,6 @@ class ObjAttrs:
 
 
     # --------------------------------------------------------------------------
-    #  ObjAttrs.convertObjPropertyUtf8
-    # --------------------------------------------------------------------------
-    def convertObjPropertyUtf8(self, key):
-      obj_attr = self.getObjAttr(key)
-      for obj_vers in self.getObjVersions():
-        if obj_attr['multilang']:
-          for langId in self.getLangIds():
-            setutf8attr(self, obj_vers, obj_attr, langId)
-        else:
-          langId = self.getPrimaryLanguage()
-          setutf8attr(self, obj_vers, obj_attr, langId)
-
-
-    # --------------------------------------------------------------------------
     #  ObjAttrs.utf8
     # --------------------------------------------------------------------------
     def utf8(self, s, encoding='latin-1'):
@@ -1271,14 +1246,9 @@ class ObjAttrs:
     #
     #  Clone object-attributes.
     # --------------------------------------------------------------------------
-    def cloneObjAttrs(self, src, dst, REQUEST={}):
+    def cloneObjAttrs(self, src, dst, lang):
       _globals.writeBlock( self, "[cloneObjAttrs]: Clone object-attributes from '%s' to '%s'"%(str(src),str(dst)))
-    
-      #-- REQUEST
       prim_lang = self.getPrimaryLanguage()
-      lang = REQUEST.get('lang',prim_lang)
-      
-      #-- Clone
       keys = self.getObjAttrs().keys()
       if self.getType()=='ZMSRecordSet':
         keys = self.difference_list( keys, self.getMetaobjAttrIds(self.meta_id)[1:])

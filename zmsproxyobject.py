@@ -190,15 +190,6 @@ class ZMSProxyObject(ZMSContainerObject):
 
 
     # --------------------------------------------------------------------------
-    #  ZMSProxyObject.getDCType
-    # --------------------------------------------------------------------------
-    def getDCType(self, REQUEST):
-      proxy = self.proxy
-      rtn = proxy.getDCType( REQUEST)
-      return rtn
-
-
-    # --------------------------------------------------------------------------
     #  ZMSProxyObject.getDCDescription
     # --------------------------------------------------------------------------
     def getDCDescription(self, REQUEST):

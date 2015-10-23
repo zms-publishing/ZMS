@@ -52,15 +52,14 @@ def setChangedBy(self, REQUEST, createWorkAttrCntnr=True):
       elif has_version_live:
         oldAttrCntnr = getattr( self, self.version_live_id)
       if ((lang == prim_lang or self.getDCCoverage(REQUEST).find('.%s'%lang) > 0) and self.getHistory()) or not has_version_work:
-        request = {'lang':'*'}
         newAttrCntnr = _zmsattributecontainer.manage_addZMSAttributeContainer(self)
         _globals.writeLog( self, "[setChangedBy]: Create new work-version: %s"%newAttrCntnr.id)
-        self.cloneObjAttrs(oldAttrCntnr,newAttrCntnr,request)
+        self.cloneObjAttrs(oldAttrCntnr,newAttrCntnr,lang='*')
         self.version_work_id = newAttrCntnr.id
       #-- Set minor-version.
       if ((lang == prim_lang or self.getDCCoverage(REQUEST).endswith('.%s'%lang)) and self.getHistory()) or not has_version_work:
         try:
-          req = {'lang':lang,'preview':'preview','fetchReqBuff':False}
+          req = {'lang':lang,'preview':'preview'}
           minor_version = self.getObjProperty( 'minor_version', req) + 1
         except:
           minor_version = 1
@@ -551,9 +550,8 @@ class VersionItem:
              self.version_work_id is not None:
             # Clone current live-version to history-version.
             if self.version_live_id is not None and self.version_live_id in self.objectIds(['ZMSAttributeContainer']):
-              request = {'lang':'*'}
               histAttrCntnr = _zmsattributecontainer.manage_addZMSAttributeContainer(self)
-              self.cloneObjAttrs(getattr(self,self.version_live_id),histAttrCntnr,request)
+              self.cloneObjAttrs(getattr(self,self.version_live_id),histAttrCntnr,lang='*')
               version_hist_id = histAttrCntnr.id
             # Replace current live-version by work-version.
             if self.version_work_id is not None and self.version_work_id in self.objectIds(['ZMSAttributeContainer']):
@@ -583,7 +581,7 @@ class VersionItem:
               self.version_work_id = None
             elif self.version_live_id != self.version_work_id:
               # Clone current work-version to live-version.
-              self.cloneObjAttrs(getattr(self,self.version_work_id),getattr(self,self.version_live_id),REQUEST)
+              self.cloneObjAttrs(getattr(self,self.version_work_id),getattr(self,self.version_live_id),lang)
           # Reset version-number.
           if self.getHistory() and not do_history:
             self.setObjProperty( 'major_version', 0)
@@ -695,7 +693,7 @@ class VersionItem:
             elif self.version_live_id is not None and self.version_live_id != self.version_work_id:
               # Clone current live-version to work-version.
               _globals.writeLog( self, "[_rollbackObjChanges]: Clone current live-version '%s' to work-version '%s'"%(self.version_live_id,self.version_work_id))
-              self.cloneObjAttrs(getattr(self,self.version_live_id),getattr(self,self.version_work_id),REQUEST)
+              self.cloneObjAttrs(getattr(self,self.version_live_id),getattr(self,self.version_work_id),lang)
       
       ##### Rollback version-items. ####
       if not delete:
@@ -917,7 +915,7 @@ class VersionItem:
         ob_version_major_version = getattr( ob_version, 'major_version', 0)
         ob_version_minor_version = getattr( ob_version, 'minor_version', 0)
         ob_version_nr = '%i.%i.%i'%(ob_version_master_version,ob_version_major_version,ob_version_minor_version)
-        ob_version_change_dt = ob_version.getObjProperty( 'change_dt', REQUEST, {'fetchReqBuff':0})
+        ob_version_change_dt = ob_version.getObjProperty( 'change_dt', REQUEST)
         if ob_version_nr <= version_nr:
           if not children:
             _globals.writeLog( self, '[getObjHistory]: return %s'%str(last_ob_version.id))
@@ -929,7 +927,7 @@ class VersionItem:
               ob_child_major_version = getattr( ob_child_version, 'major_version', 0)
               ob_child_minor_version = getattr( ob_child_version, 'minor_version', 0)
               ob_child_nr = '%i.%i.%i'%(ob_child_master_version,ob_child_major_version,ob_child_minor_version)
-              ob_child_change_dt = ob_child.getObjProperty( 'change_dt', REQUEST, {'fetchReqBuff':0})
+              ob_child_change_dt = ob_child.getObjProperty( 'change_dt', REQUEST)
               if ( version_dt is None and \
                    ((ob_child_master_version == 0 and ob_child_major_version == 0 and ob_child_minor_version == 0) or \
                     (len( change_history) == 0 and ob_version_change_dt >= ob_child_change_dt))) or \
@@ -1033,7 +1031,7 @@ class VersionItem:
         minor_version = self.getObjProperty('minor_version',REQUEST) + 1
         # Restore attributes.
         self.setObjStateModified( REQUEST)
-        self.cloneObjAttrs(ob_version,getattr(self,self.version_work_id),REQUEST)
+        self.cloneObjAttrs(ob_version,getattr(self,self.version_work_id),REQUEST['lang'])
         setChangedBy(self, REQUEST, createWorkAttrCntnr=False)
         if 'change_history' in self.getObjAttrs().keys():
           self.setObjProperty('change_history',change_history)

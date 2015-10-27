@@ -284,7 +284,7 @@ def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
       hiresImg = self.getObjProperty(hiresKey,req)
       if hiresImg is not None and REQUEST.get('generate_preview_%s_%s'%(hiresKey,lang),0) == 1:
         _globals.writeLog( self, '[thumbnailImage]: Create >%s< from >%s<...'%(loresKey,hiresKey))
-        thumb = self.pilutil().thumbnail( hiresImg, maxdim)
+        thumb = self.pilutil().thumbnail( hiresImg, int(maxdim))
         self.setObjProperty(loresKey,thumb,lang)
   except:
     _globals.writeError( self, '[thumbnailImage]')

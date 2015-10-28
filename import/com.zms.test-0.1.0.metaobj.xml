@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key"><![CDATA[ZMSQunit]]></item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-dashboard]]></item>
+                  <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[constant]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[from traceback import format_exception
+import logging
+import re
+import sys
+import time
+
+def ZMSQunit_func_( self, *args, **kwargs):
+
+  request = self.REQUEST
+  request.set('lang',request.get('lang',self.getPrimaryLanguage()))
+  lang = request['lang']
+  response = request.RESPONSE
+  logger = logging.getLogger('event.ZMS')
+  loglevels = [logging.DEBUG,logging.INFO,logging.ERROR]
+  loglevel = loglevels[loglevels.index({'DEBUG':logging.DEBUG,'INFO':logging.INFO,'ERROR':logging.ERROR}[request.get('loglevel','DEBUG')]):]
+  
+  printed = []
+  def write(l,c,s):
+    from DateTime import DateTime
+    dt = DateTime()
+    line = '%s %s@%s %s'%(dt.strftime("%Y-%m-%d %H:%M:%S,%f"),c.meta_id,c.getPath(),str(s))
+    logger.log(l,line)
+    if l in loglevel:
+      printed.append(line)
+  def writeDebug(c,s):
+    write(logging.DEBUG,c,s)
+  def writeInfo(c,s):
+    write(logging.INFO,c,s)
+  def writeError(c,s):
+    write(logging.ERROR,c,s)
+  
+  def assertTrue(message, actual):
+    assertEquals(message,True,actual)
+  
+  def assertEquals(message, expected, actual):
+    clazz = ''
+    details = ''
+    if expected == actual:
+      clazz = 'success'
+      details = str(actual)
+    else:
+      clazz = 'danger'
+      details = 'expected %s but was %s'%(str(expected),str(actual))
+    writeInfo(self,'[ZMSQunit_func_] assertEquals <span class="bg-%s text-%s">%s - <strong>%s</strong></span>'%(clazz,clazz,message,details))
+  
+  container = self.getSelf(self.PAGES)
+  try:
+    writeInfo(container,'[ZMSQunit_func_] setup')
+    
+    writeInfo(container,'[ZMSQunit_func_] >>>>>>>>>> test common-functions')
+    def testGetRelativeUrl(path,url,expected):
+      assertEquals("getRelativeUrl: %s->%s"%(path,url),expected,self.getRelativeUrl(path,url))
+    testGetRelativeUrl('/e1/e2/e3','/e1/e4/e5/e6','./../e4/e5/e6')
+    testGetRelativeUrl('http://host:port/e1/e2/e3#e4','http://host:port/e5?preview=preview#e6','./../../e5?preview=preview#e6')
+    
+    writeInfo(container,'[ZMSQunit_func_] >>>>>>>>>> test tree-operations')
+    writeInfo(container,'[ZMSQunit_func_] create temp-test (folder)')
+    folder = container.manage_addZMSCustom('ZMSFolder',{'title':'temp-test','titlealt':'temp-test'},request)
+    writeInfo(container,'[ZMSQunit_func_] create docs with textareas')
+    ta1 = folder.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
+    doc1 = folder.manage_addZMSCustom('ZMSDocument',{'title':'document-1','titlealt':'doc-1'},request)
+    ta11 = doc1.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
+    doc2 = folder.manage_addZMSCustom('ZMSDocument',{'title':'document-2','titlealt':'doc-2'},request)
+    ta21 = doc2.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
+    doc3 = folder.manage_addZMSCustom('ZMSDocument',{'title':'document-3','titlealt':'doc-3'},request)
+    ta31 = doc3.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
+    assertEquals("%s.#child_nodes"%folder.id,4,len(folder.getChildNodes(request)))
+    assertEquals("%s.#child_nodes:pageelements"%folder.id,1,len(folder.getChildNodes(request,self.PAGEELEMENTS)))
+    assertEquals("%s.#child_nodes:pages"%folder.id,3,len(folder.getChildNodes(request,self.PAGES)))
+    assertEquals("%s.#tree_nodes"%folder.id,7,len(folder.getTreeNodes(request)))
+    
+    writeInfo(container,'[ZMSQunit_func_] >>>>>>>>>> test zmsindex')
+    catalog = getattr(self,'zcatalog_index',None)
+    if catalog is None:
+      writeInfo(container,'[ZMSQunit_func_] skip')
+    else:
+      writeDebug(container,'[ZMSQunit_func_] inline-link from ta11 (%s) to doc2 (%s)'%(ta11.absolute_url(),doc2.absolute_url()))
+      ta11.setObjProperty('text','Lorem <a data-id="{$%s}" href="test.html">ipsum</a> dolor'%doc2.get_uid(),lang)
+      href = self.getRelativeUrl(ta11.getHref2IndexHtml(request),doc2.getHref2IndexHtml(request))
+      writeDebug(container,'[ZMSQunit_func_] inline-link from ta11 to doc2: '+href)
+      assertTrue('%s.text:contains(href="%s")'%(ta11.id,href),ta11.attr('text').find('href="%s"'%href)>0)
+  except:
+    t,v,tb = sys.exc_info()
+    msg = "[%s@%s]"%(self.meta_id,self.absolute_url())+''.join(format_exception(t, v, tb))
+    writeError(self,'[ZMSQunit_func_] can\'t setup - except %s'%msg)
+  
+  try:
+    writeInfo(container,'[ZMSQunit_func_] teardown')
+    ids = []
+    for node in container.getChildNodes(request,'ZMSFolder'):
+      if node.attr('title') == 'temp-test':
+        ids.append(node.id)
+    writeInfo(container,'[ZMSQunit_func_] remove temp-test [%i]'%len(ids))
+    container.manage_delObjects(ids)
+  except:
+    t,v,tb = sys.exc_info()
+    msg = "[%s@%s]"%(self.meta_id,self.absolute_url())+''.join(format_exception(t, v, tb))
+    writeError(self,'[ZMSQunit_func_] can\'t teardown - except %s'%msg)
+  
+  writeInfo(container,'[ZMSQunit_func_] Finished!')
+  return '\n'.join(printed)]]>
+                  </item>
+                  <item key="id"><![CDATA[ZMSQunit_func_]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Trusted functions]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[External Method]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- ZMSQunit.renderShort -->
+
+<div class="well">
+	<button class="btn btn-default" onclick="$(this).parents('form').children('input:hidden').remove()" name="btn" value="test_ui" type="submit">
+		Test UI
+	</button>
+	<button class="btn btn-default" onclick="$(this).parents('form').children('input:hidden').remove()" name="btn" value="test_backend" type="submit">
+		Test Backend
+	</button>
+</div>
+
+<div tal:condition="python:request.get('btn')=='test_ui'">
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+	<link rel="stylesheet" tal:attributes="src python:here.getConfProperty('qunit.css')">
+	<tal:block tal:repeat="lib python:here.getConfProperty('qunit.libs').split(',')">
+		<script tal:attributes="src python:here.getConfProperty(lib)"></script>
+	</tal:block>
+</div>
+
+<div tal:condition="python:request.get('btn')=='test_backend'" tal:define="Std modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br">
+	<code style="color:#666" tal:content="structure python:newline_to_br(here.ZMSQunit_func_(here))"></code>
+</div>
+
+<!-- /ZMSQunit.renderShort -->]]>
+                  </item>
+                  <item key="id"><![CDATA[renderShort]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: ZMSQunit]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[zpt]]></item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete_custom"></item>
+              <item key="delete_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+              <item key="insert_custom"><![CDATA[{$}]]></item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">0</item>
+          <item key="id"><![CDATA[ZMSQunit]]></item>
+          <item key="name"><![CDATA[ZMSQunit]]></item>
+          <item key="package"><![CDATA[com.zms.test]]></item>
+          <item key="revision"><![CDATA[0.1.0]]></item>
+          <item key="type"><![CDATA[ZMSObject]]></item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key"><![CDATA[com.zms.test]]></item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+            </list>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id"><![CDATA[com.zms.test]]></item>
+          <item key="name"><![CDATA[com.zms.test]]></item>
+          <item key="package"></item>
+          <item key="revision"><![CDATA[0.1.0]]></item>
+          <item key="type"><![CDATA[ZMSPackage]]></item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+</list>

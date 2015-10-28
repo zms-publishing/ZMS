@@ -51,7 +51,7 @@ EXTENSIONS = {
                    'Python Interface to MySQL',
                    'https://pypi.python.org/pypi/MySQL-python',
                    'developed by Andy Dustman'],
-  'SQLAlchemy': ['1.0.8',
+  'SQLAlchemy': ['1.0.9',
                    'Python SQL Toolkit and Object Relational Mapper',
                    'https://pypi.python.org/pypi/SQLAlchemy',
                    'developed by Mike Bayer'],

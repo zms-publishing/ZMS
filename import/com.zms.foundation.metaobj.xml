@@ -1751,7 +1751,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
     title = request['title%s'%id].strip()
     description = request['description%s'%id].strip()
     attr_type = ['new','replace'][int(url.startswith('{$') and url.endswith('}'))]
-    d = {'title':title,'titlalt':title,'attr_ref':url,'attr_dc_description':description,'attr_type':attr_type,'align':align}
+    d = {'title':title,'titlealt':title,'attr_ref':url,'attr_dc_description':description,'attr_type':attr_type,'align':align}
     if not equals(childNode,d):
       childNode.setObjStateModified(request)
       for k in d.keys():
@@ -1764,7 +1764,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
     title = request['title%s'%id].strip()
     description = request['description%s'%id].strip()
     attr_type = ['new','replace'][int(url.startswith('{$') and url.endswith('}'))]
-    d = {'title':title,'titlalt':title,'attr_ref':url,'attr_dc_description':description,'attr_type':attr_type,'align':align}
+    d = {'title':title,'titlealt':title,'attr_ref':url,'attr_dc_description':description,'attr_type':attr_type,'align':align}
     childNode = zmscontext.manage_addZMSCustom('ZMSLinkElement',d,request)
 
 # --// EO onChangeObjEvt //--
@@ -1839,7 +1839,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
           <item key="id"><![CDATA[ZMSLinkContainer]]></item>
           <item key="name"><![CDATA[ZMSLinkContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.2]]></item>
+          <item key="revision"><![CDATA[3.1.3]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

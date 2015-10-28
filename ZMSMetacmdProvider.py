@@ -147,6 +147,7 @@ class ZMSMetacmdProvider(
         # Initialize attributes of new object.
         newId = id
         newAcquired = 0
+        newRevision = item.get('revision','0.0.0')
         newName = item['name']
         newTitle = item.get('title','')
         newMethod = item['meta_type']
@@ -159,7 +160,7 @@ class ZMSMetacmdProvider(
         newData = item['data']
         
         # Return with new id.
-        return self.setMetacmd(None, newId, newAcquired, newName, newTitle, newMethod, \
+        return self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, \
           newData, newExec, newDescription, newIconClazz, newMetaTypes, newRoles, \
           newNodes)
 
@@ -200,7 +201,7 @@ class ZMSMetacmdProvider(
     #
     #  Set/add Action specified by given Id.
     # ------------------------------------------------------------------------------
-    def setMetacmd(self, id, newId, newAcquired, newName='', newTitle='', newMethod=None, \
+    def setMetacmd(self, id, newId, newAcquired, newRevision='0.0.0', newName='', newTitle='', newMethod=None, \
           newData=None, newExec=0, newDescription='', newIconClazz='', newMetaTypes=[], \
           newRoles=['ZMSAdministrator'], newNodes='{$}'):
       
@@ -214,6 +215,7 @@ class ZMSMetacmdProvider(
       new = {}
       new['id'] = newId
       new['acquired'] = newAcquired
+      new['revision'] = newRevision
       new['name'] = newName
       new['title'] = newTitle
       new['description'] = newDescription
@@ -372,6 +374,7 @@ class ZMSMetacmdProvider(
           id = REQUEST['id']
           newId = REQUEST['el_id']
           newAcquired = 0
+          newRevision = REQUEST.get('el_revision','0.0.0').strip()
           newName = REQUEST.get('el_name','').strip()
           newTitle = REQUEST.get('el_title','').strip()
           newMethod = None
@@ -382,7 +385,7 @@ class ZMSMetacmdProvider(
           newMetaTypes = REQUEST.get('el_meta_types',[])
           newRoles = REQUEST.get('el_roles',[])
           newNodes = REQUEST.get('el_nodes','')
-          id = self.setMetacmd(id, newId, newAcquired, newName, newTitle, \
+          id = self.setMetacmd(id, newId, newAcquired, newRevision, newName, newTitle, \
             newMethod, newData, newExec, newDescription, newIconClazz, \
             newMetaTypes, newRoles, newNodes)
           message = self.getZMILangStr('MSG_CHANGED')
@@ -414,12 +417,13 @@ class ZMSMetacmdProvider(
         # Export.
         # -------
         elif btn == self.getZMILangStr('BTN_EXPORT'):
+          revision = '0.0.0'
           value = []
           ids = REQUEST.get('ids',[])
           for id in self.getMetaCmdIds():
             if id in ids or len(ids) == 0:
               metaCmd = self.getMetaCmd(id)
-              # Catalog.
+              revision = metaCmd.get('revision','0.0.0')
               el_id = metaCmd['id']
               el_name = metaCmd['name']
               el_title = metaCmd.get('title','')
@@ -431,11 +435,10 @@ class ZMSMetacmdProvider(
               el_exec = metaCmd['exec']
               el_data = _zopeutil.readObject(metaCmd['home'],metaCmd['id'])
               # Value.
-              value.append({'id':el_id,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'exec':el_exec,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
+              value.append({'id':el_id,'revision':revision,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'exec':el_exec,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
           # XML.
-          if len(value)==1:
-            value = value[0]
-            filename = '%s.metacmd.xml'%value['id']
+          if len(ids)==1:
+            filename = '%s-%s.metacmd.xml'%(ids[0],revision)
           else:
             filename = 'export.metacmd.xml'
           content_type = 'text/xml; charset=utf-8'
@@ -461,13 +464,14 @@ class ZMSMetacmdProvider(
         elif btn == self.getZMILangStr('BTN_INSERT'):
           newId = REQUEST.get('_id').strip()
           newAcquired = 0
+          newRevision = REQUEST.get('_revision','0.0.0').strip()
           newName = REQUEST.get('_name').strip()
           newTitle = REQUEST.get('_title').strip()
           newMethod = REQUEST.get('_type','DTML Method')
           newData = None
           newExec = REQUEST.get('_exec',0)
           newIconClazz = REQUEST.get('_icon_clazz','')
-          id = self.setMetacmd(None, newId, newAcquired, newName, newTitle, newMethod, newData, newExec, newIconClazz=newIconClazz)
+          id = self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, newData, newExec, newIconClazz=newIconClazz)
           message = self.getZMILangStr('MSG_INSERTED')%id
         
         # Return with message.

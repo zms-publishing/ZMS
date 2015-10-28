@@ -17,7 +17,9 @@
 		<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group">
 				<label for="el_id" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-sm-9"><input type="text" name="el_id" class="form-control input-sm" tal:attributes="value python:metaCmd['id']"/></div>
+				<div class="col-sm-6"><input type="text" name="el_id" class="form-control input-sm" tal:attributes="value python:metaCmd['id']"/></div>
+				<label for="el_revision" class="col-sm-1 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_VERSION')">Version</span></label>
+				<div class="col-sm-2"><input type="text" name="el_revision" class="form-control input-sm" tal:attributes="value python:metaCmd.get('revision','0.0.0')"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="el_icon_clazz" class="col-sm-3 control-label"><span>Icon</span></label>
@@ -192,7 +194,7 @@
 		</tr>
 		<tr>
 			<th></th>
-			<th tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
+			<th tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</th>
 			<th tal:content="python:here.getZMILangStr('ATTR_SIZE')">Size</th>
 			<th tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last Modified</th>
 		</tr>
@@ -218,6 +220,8 @@
 							<tal:block tal:content="python:metaCmd['name']">the name</tal:block>
 						</a>
 					</tal:block>
+					<tal:block tal:content="python:metaCmd.get('revision','0.0.0')">the version</tal:block>
+					(<tal:block tal:content="python:metaCmd['meta_type']">the type</tal:block>)
 				</tal:block>
 				<div class="text-danger bg-danger" tal:condition="python:ob is None">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-warning-sign',extra='title=\042%s not found\042'%metaCmd['id'])">the warning sign</tal:block>

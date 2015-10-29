@@ -415,12 +415,7 @@
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[div.ZMSFile, div.ZMSLinkElement 
-	{ 
-	background-color: #F8F8F8;
-	margin: 4px;
-	}
-
+                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[
 div.ZMSFile.none, div.ZMSLinkElement.none 
 	{
 	background-color: transparent;
@@ -439,29 +434,11 @@ div.ZMSFile.floatright, div.ZMSLinkElement.floatright
 	width:50%
 	}
 
-div.ZMSFile div.title, div.ZMSLinkElement div.title 
-	{
-	font-size:x-small;
-	white-space:nowrap;
-	}
-
 div.ZMSFile div.title a:link, div.ZMSFile div.title a:visited, 
 div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited 
 	{
 	font-weight:bold;
-	font-size:x-small;
 	text-decoration:none;
-	color:black;
-	}
-
-div.ZMSFile div.text, div.ZMSLinkElement div.text 
-	{
-	font-size:xx-small;
-	}
-
-div.ZMSFile div.description, div.ZMSLinkElement div.description 
-	{
-	font-size:x-small;
 	}
 ]]></data>
                   </item>
@@ -772,7 +749,7 @@ return ''
           <item key="id"><![CDATA[ZMSFile]]></item>
           <item key="name"><![CDATA[ZMSFile]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.0]]></item>
+          <item key="revision"><![CDATA[3.0.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

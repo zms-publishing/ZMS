@@ -339,15 +339,12 @@ class ZMSLinkElement(ZMSCustom):
     #  ZMSLinkElement.display_icon:
     # --------------------------------------------------------------------------
     def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=None): 
-      ref_obj = self.getRefObj()
-      if ref_obj is None or not self.isEmbedded(REQUEST):
-        ref_obj = self
-      if meta_type is None:
-        if not self.isActive(REQUEST):
-          key = 'icon_disabled'
-        return ZMSObject.display_icon(ref_obj,REQUEST,key)
-      else:
-        return ZMSObject.display_icon(ref_obj,REQUEST,meta_type,key)
+      ref_obj = self
+      if self.isEmbedded(REQUEST):
+        ref_obj = self.getRefObj()
+      if meta_type is None and not self.isActive(REQUEST):
+        key = 'icon_disabled'
+      return ZMSObject.display_icon(ref_obj,REQUEST=REQUEST,meta_type=meta_type,key=key,zpt=zpt)
 
 
     # --------------------------------------------------------------------------

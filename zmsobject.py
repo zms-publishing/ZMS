@@ -570,7 +570,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           elif metaObj[ 'type'] == 'ZMSReference':
             return self.zmi_icon(self,name='icon-link')
           return self.zmi_icon(self,name='icon-file-alt')
-      return self.zmi_icon(self,name='icon-warning-sign text-danger bg-danger',extra='title="%s not found!"'%str(obj_type))
+      return self.zmi_icon(self,name='icon-warning-sign text-danger',extra='title="%s not found!"'%str(obj_type))
 
 
     # --------------------------------------------------------------------------

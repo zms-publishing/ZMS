@@ -344,7 +344,10 @@ class ZMSLinkElement(ZMSCustom):
         ref_obj = self.getRefObj()
       if meta_type is None and not self.isActive(REQUEST):
         key = 'icon_disabled'
-      return ZMSObject.display_icon(ref_obj,REQUEST=REQUEST,meta_type=meta_type,key=key,zpt=zpt)
+      if ref_obj is not None:
+        return ZMSObject.display_icon(ref_obj,REQUEST=REQUEST,meta_type=meta_type,key=key,zpt=zpt)
+      else:
+        return '<i class=\042icon-warning-sign text-danger\042 title=\042ERROR: Icon not found\042></i>'
 
 
     # --------------------------------------------------------------------------

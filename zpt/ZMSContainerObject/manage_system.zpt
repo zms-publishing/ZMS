@@ -59,8 +59,8 @@
 <tr tal:repeat="item items">
 	<td><input type="checkbox" name="ids:list" tal:attributes="value python:item[0]"/></td>
 	<td tal:define="icon python:zmscontext.operator_absattr(item[1].icon)">
-		<img tal:condition="python:'class=' not in icon" tal:attributes="src icon" />
-		<img tal:condition="python:'class=' in icon" tal:replace="structure icon" />
+		<img tal:on-error="structure string:<!-- ERROR: Icon not found -->" tal:condition="python:'class=' not in icon" tal:attributes="src icon" />
+		<img tal:on-error="structure string:<!-- ERROR: Icon not found -->" tal:condition="python:'class=' in icon" tal:replace="structure icon" />
 	</td>
 	<td>
 		<a tal:attributes="href python:'%s/manage_workspace'%item[1].absolute_url()">

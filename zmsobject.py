@@ -851,7 +851,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         href = self.getDeclUrl(REQUEST)+'/'
         # Assemble href.
         if REQUEST.get('ZMS_INDEX_HTML',0)==1 or fct != 'index' or len(self.getLangIds())>1:
-          href += '%s_%s%s'%(fct,REQUEST['lang'],pageext)
+          href += '%s_%s%s'%(fct,REQUEST.get('lang',self.getPrimaryLanguage()),pageext)
         if REQUEST.get('preview','')=='preview': href=self.url_append_params(href,{'preview':'preview'})
       if (REQUEST.get('ZMS_PATHCROPPING',False) or self.getConfProperty('ZMS.pathcropping',0)==1) and REQUEST.get('export_format','') == '':
         base = REQUEST.get('BASE0','')

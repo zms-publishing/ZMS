@@ -400,7 +400,7 @@ class ZReferableItem:
       # Prepare request.
       bak_params = {}
       for key in ref_params.keys():
-        bak_params = REQUEST.get(key,None)
+        bak_params[key] = REQUEST.get(key,None)
         REQUEST.set(key,ref_params[key])
       # Get index_html.
       ob = self.getLinkObj(url,REQUEST)

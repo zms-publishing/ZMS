@@ -53,7 +53,7 @@ def updateVersion(root):
 #  remove_tags:
 # ------------------------------------------------------------------------------
 def remove_tags(self, s):
-  s = s \
+  s = str(s) \
     .replace('&ndash;','-') \
     .replace('&middot;','.') \
     .replace('&nbsp;',' ') \

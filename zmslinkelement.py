@@ -338,7 +338,7 @@ class ZMSLinkElement(ZMSCustom):
     # --------------------------------------------------------------------------
     #  ZMSLinkElement.display_icon:
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=None): 
+    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True): 
       zmsobject = self
       if self.isEmbedded(REQUEST):
         ref_obj = self.getRefObj()

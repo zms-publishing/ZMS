@@ -411,7 +411,6 @@ class ZReferableItem:
         if not index_html:
           index_html = ob.getHref2IndexHtmlInContext(self,REQUEST)
       # Unprepare request.
-      bak_params = {}
       for key in bak_params.keys():
         REQUEST.set(key,bak_params[key])
       # Return index_html.

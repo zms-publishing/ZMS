@@ -401,8 +401,10 @@ class ZMSExtensions():
       Return url to package download of given extension for install/update
     """
     if ext in self.pkg_names:
-      str_ins = '%s/get/%s.zip'%(self.getUrl(ext),self.getVersionAvailable(ext))
-      str_upd = '%s/get/HEAD.zip'%(self.getUrl(ext))
+      str_ins = str_upd = str_url = self.getUrl(ext)
+      if str_url.startswith('https://bitbucket.org') and str_url.endswith('/downloads'):
+        str_ins = '%s/get/%s.zip'%(str_url[:-10], self.getVersionAvailable(ext))
+        str_upd = '%s/get/HEAD.zip'%(str_url[:-10])
       if ext=='zms3.deployment':
         str_ins = str_upd = 'zms3.deployment==0.2.4'
       

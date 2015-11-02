@@ -12,7 +12,7 @@ Changelog
 
     * Changes: https://zmslabs.org/trac/wiki/CHANGES
     * Revisions: https://zmslabs.org/trac/log/ZMS/trunk
-    * Browse Source: https://zmslabs.org/trac/browser/ZMS/trunk
+    * Source: https://zmslabs.org/trac/browser/ZMS/trunk
 
 Installation (GNU/Linux, OSX/Darwin and Windows/MinGW)
 ------------------------------------------------------
@@ -47,6 +47,7 @@ $ ./ZMS3/instance/bin/zopectl start
 Integrated Extensions
 ---------------------
 
+    * ZMSDeployment: https://pypi.python.org/pypi/zms3.deployment
     * ZMSFormulator: https://pypi.python.org/pypi/zms3.formulator
     * ZMSMindmap: https://pypi.python.org/pypi/zms3.mindmap
     * ZMSPhotoDB: https://pypi.python.org/pypi/zms3.photodb

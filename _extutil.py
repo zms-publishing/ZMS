@@ -27,9 +27,9 @@ EXTENSIONS = {
                    'Browse Mindmaps using a FlashViewer',
                    'https://bitbucket.org/zms3/mindmap',
                    'developed by Christian Meier'],
-  'zms3.deployment': ['0.2.3',
+  'zms3.deployment': ['0.2.4',
                    'Deployment Library',
-                   'https://bitbucket.org/zms3/deployment',
+                   'https://pypi.python.org/pypi/zms3.deployment',
                    'developed by SNTL Publishing'],
   'zms3.themes': ['0.1.2',
                    'Additional Themes based on Start Bootstrap',
@@ -389,7 +389,10 @@ class ZMSExtensions():
       Return url to package website of given extension if available
     """    
     if ext in self.pkg_names:
-      return self.pkg_urls[self.pkg_names.index(ext)]
+      str_url = self.pkg_urls[self.pkg_names.index(ext)]
+      if str_url.startswith('https://bitbucket.org'):
+        str_url += '/downloads'
+      return str_url
     else:
       return None 
   
@@ -401,7 +404,7 @@ class ZMSExtensions():
       str_ins = '%s/get/%s.zip'%(self.getUrl(ext),self.getVersionAvailable(ext))
       str_upd = '%s/get/HEAD.zip'%(self.getUrl(ext))
       if ext=='zms3.deployment':
-        str_ins = str_upd = 'https://zmslabs.org/download/zms3.deployment-0.2.3.zip'
+        str_ins = str_upd = 'zms3.deployment==0.2.4'
       
       if mode=='install':
         return str_ins

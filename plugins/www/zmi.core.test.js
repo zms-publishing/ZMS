@@ -19,3 +19,10 @@ test( "zmi.core.js::test.Array.prototype", function() {
 	ok( a0.contains('b'), "contains passed!" );
 	ok( !a0.contains('d'), "!contains passed!" );
 });
+
+test( "zmi.core.js::test.ZMI", function() {
+	equal($ZMI.getLangStr("DC.Creator"), "Autor", "getLangStr(key,lang) passed!" );
+	equal($ZMI.getLangStr("DC.Creator","ger"), "Autor", "getLangStr(key,lang) passed!" );
+	equal(getZMILangStr("DC.Creator"), "Autor", "getZMILangStr(key) passed!" );
+	equal(getZMILangStr("ATTR_ATTRS"), "Attribute", "getZMILangStr(key) passed!" );
+});

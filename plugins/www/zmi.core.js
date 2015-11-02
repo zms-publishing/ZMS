@@ -237,17 +237,44 @@ function getZMILang() {
 }
 
 /**
- * Returns language-string.
+ * Returns language-string for current manage-language.
  */
 function getZMILangStr(key, data) {
-	if (typeof data == "undefined") {
-		data = {};
+	var langStr = $ZMI.getLangStr(key);
+	if (typeof langStr=="undefined") {
+		if (typeof zmiLangStr!="undefined") {
+			langStr = zmiLangStr[key];
+		}
+		if (typeof langStr=='undefined') {
+			langStr = key
+		}
 	}
-	data['key'] = key; // @TODO
-	if (typeof zmiLangStr[key] == 'undefined') {
-		zmiLangStr[key] = key
+	return langStr;
+}
+
+/**
+ * Returns language-string for current content-language.
+ */
+ZMI.prototype.getLangStr = function(key, lang) {
+	var k = "get_lang_dict";
+	var v = this.getCachedValue(k);
+	if (typeof v=="undefined") {
+		v = $.ajax({
+			url: "get_lang_dict",
+			datatype: 'text',
+			async: false
+			}).responseText;
+		v = eval("("+v+")");
+		this.setCachedValue(k,v);
 	}
-	return zmiLangStr[key];
+	if (typeof lang=="undefined") {
+		lang = getZMILang();
+	}
+	var langStr;
+	if (typeof v[key]!="undefined") {
+		langStr = v[key][lang];
+	}
+	return langStr;
 }
 
 /**

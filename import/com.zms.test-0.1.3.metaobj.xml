@@ -60,9 +60,7 @@ def ZMSQunit_func_( self, *args, **kwargs):
 	<div id="qunit"></div>
 	<div id="qunit-fixture"></div>
 	<link rel="stylesheet" tal:attributes="src python:here.getConfProperty('qunit.css')">
-	<tal:block tal:repeat="lib python:here.getConfProperty('qunit.libs').split(',')">
-		<script tal:attributes="src python:here.getConfProperty(lib)"></script>
-	</tal:block>
+	<tal:block tal:define="dummy0 python:request.set('ZMI_LIBS_JS',request.get('ZMI_LIBS_JS',[])+here.getConfProperty('qunit.libs').split(','))"></tal:block>
 </div>
 
 <div tal:condition="python:request.get('btn')=='test_backend'" tal:define="Std modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br">
@@ -105,7 +103,7 @@ def ZMSQunit_func_( self, *args, **kwargs):
           <item key="id"><![CDATA[ZMSQunit]]></item>
           <item key="name"><![CDATA[ZMSQunit]]></item>
           <item key="package"><![CDATA[com.zms.test]]></item>
-          <item key="revision"><![CDATA[0.1.2]]></item>
+          <item key="revision"><![CDATA[0.1.3]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -124,7 +122,7 @@ def ZMSQunit_func_( self, *args, **kwargs):
           <item key="id"><![CDATA[com.zms.test]]></item>
           <item key="name"><![CDATA[com.zms.test]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.1.2]]></item>
+          <item key="revision"><![CDATA[0.1.3]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

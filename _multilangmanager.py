@@ -504,7 +504,10 @@ class MultiLanguageManager:
     #
     #  Returns language-dictionary.
     # --------------------------------------------------------------------------
-    def get_lang_dict(self, forcedReqBuff=False):
+    def get_lang_dict(self, forcedReqBuff=False, REQUEST=None):
+      """
+      MultiLanguageManager.get_lang_dict
+      """
       
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
       reqBuffId = 'get_lang_dict'
@@ -533,6 +536,8 @@ class MultiLanguageManager:
             d[key] = lang_dict[key].copy()
         
         #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
+        if REQUEST is not None:
+          return self.str_json(d)
         return self.storeReqBuff( reqBuffId, d, self.REQUEST)
 
 

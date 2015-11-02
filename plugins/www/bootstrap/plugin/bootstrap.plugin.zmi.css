@@ -747,6 +747,10 @@ ul.zmi-container.pages .zmi-item .contentEditable {
 	padding:0.5em 0;
 	margin:0.5em 0;
 }
+.zmi.properties .ZMSRecordSet.main #attrActivity .accordion-inner,
+.zmi.properties.ZMSSqlDb #attrActivity .accordion-inner {
+	margin: 0.5em 1.55em;
+}
 .zmi.properties .accordion-body.container .accordion-inner {
 	margin:0;
 }
@@ -1173,11 +1177,15 @@ input.btn.btn-file {
 	min-width:52px;
 	overflow:hidden;
 	height:28px;
-	}
-.ZMSSqlDb .table tr td:first-child .checkbox input {
-	opacity:0.5;
-	width:auto;
-	margin:-2px 0px 0px 0px
+}
+.ZMSSqlDb .table tr td:first-child .checkbox input,
+td .btn-group .checkbox.split-left.btn input {
+	opacity: 0.5;
+	height: auto;
+	width: auto;
+	text-align: left;
+	display: block;
+	margin: 0 0 0 0;
 }
 .table.zmi-selectable tr th:first-child span:hover ,
 .table.zmi-selectable tr td:first-child span:hover {

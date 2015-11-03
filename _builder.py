@@ -88,7 +88,6 @@ class Builder:
         """ Builder.__init__ """
         self.oRoot      = None   # root node of object tree
         self.oCurrNode  = None   # current node
-        self.bInRootTag = False  # inside root tag?
         self.bInCData   = False  # inside CDATA section?
 
 
@@ -110,11 +109,9 @@ class Builder:
         """ Builder.parse """
         
         # prepare builder
-        self._unknownTagName  = None
         self.oRoot            = root
         self.oRootNode        = None
         self.oCurrNode        = None
-        self.bInRootTag       = bInRootTag
         self.bInCData         = False
         if bInRootTag:
           self.oCurrNode = root
@@ -156,7 +153,7 @@ class Builder:
             raise ParseError('%s at line %s' % (pyexpat.ErrorString(p.ErrorCode), p.ErrorLineNumber))
         ####
         
-        return self.oRootNode
+        return root
 
 
     ############################################################################
@@ -174,122 +171,80 @@ class Builder:
     ############################################################################
     def OnStartElement(self, name, attrs):
         """ Builder.OnStartElement """
-        _globals.writeLog( self, "[Builder.OnStartElement(" + str(name) + ")]")
+        _globals.writeBlock( self, "[Builder.OnStartElement(" + str(name) + ")]")
         
         name = _globals.unencode( name)
         attrs = _globals.unencode( attrs)
         
+        if not attrs.has_key('meta_id') and name in self.getMetaobjIds(sort=0):
+          attrs['meta_id'] = name
+        
         # handle alias
         if name in self.getMetaobjIds(sort=0) and not self.dGlobalAttrs.get(name,{}).has_key('obj_class'):
           attrs['meta_id'] = name
-          name = 'ZMSCustom'
-        
-        if self.bInRootTag or \
-           self.oRoot == None or \
-           (self.oRoot.id == self.getDocumentElement().id and \
-            self.dGlobalAttrs.has_key(name) and \
-            self.dGlobalAttrs[name]['obj_class'] is not None):
-            
-            _globals.writeLog( self, "[Builder.OnStartElement]: " + \
-                "We are inside the XML root tag OR no root object is set" + \
-                "-> instanciate node object in any case")
-            
-            if self.dGlobalAttrs.has_key(name) and \
-               self.dGlobalAttrs[name]['obj_class'] is not None:
-                
-                # class defined for tag!
-                if self.oCurrNode==None and self.oRoot!=None and self.oRoot.id==self.getDocumentElement().id:
-                  self.oCurrNode = self.oRoot
-                    
-                # create node instance
-                _globals.writeBlock( self, "[Builder.OnStartElement]: create new object <" + str(name) + "> in " + str(self.oCurrNode))
-                newNode = None
-                if 'id_fix' in attrs.keys():
-                  id = attrs.get( 'id_fix')
-                  newNode = getattr(self.oCurrNode,id,None)
-                elif 'id_prefix' in attrs.keys():
-                  prefix = attrs.get( 'id_prefix')
-                  id = self.oCurrNode.getNewId(prefix)
-                elif 'id' in attrs.keys():
-                  id = attrs.get( 'id')
-                  prefix = _globals.id_prefix(id)
-                  id = self.oCurrNode.getNewId(prefix)
-                else:
-                  id = self.oCurrNode.getNewId()
-                sort_id = self.oCurrNode.getNewSortId()
-                
-                ##### Create ####
-                if newNode is None:
-                  meta_id = name
-                  globalAttr = self.dGlobalAttrs.get(meta_id,self.dGlobalAttrs['ZMSCustom'])
-                  constructor = globalAttr['obj_class']
-                  newNode = constructor(id,sort_id)
-                  self.oCurrNode._setObject(newNode.id, newNode)
-                  newNode = getattr(self.oCurrNode,newNode.id)
-                
-                ##### Uid ####
-                if 'uid' in attrs.keys():
-                  uid = attrs.get( 'uid')
-                  newNode.set_uid(uid)
-                
-                ##### Identify Content-Object ####
-                if newNode.meta_type == 'ZMSCustom':
-                  meta_id = attrs.get( 'meta_id')
-                  if meta_id not in self.getMetaobjIds( sort=0):
-                    _globals.writeError(newNode,'[_builder.OnStartElement]: no object-definition available ('+str(meta_id)+')!')
-                  newNode.meta_id = meta_id
-                
-                ##### Object State ####
-                newNode.initializeWorkVersion()
-                obj_attrs = newNode.getObjAttrs()
-                langs = self.getLangIds()
-                for lang in langs:
-                  req = {'lang':lang,'preview':'preview'}
-                  ##### Object State ####
-                  newNode.setObjStateNew(req)
-                  ##### Init Properties ####
-                  if 'active' in obj_attrs.keys():
-                    newNode.setObjProperty('active',1,lang)
-                  if len( langs) == 1:
-                    newNode.setObjProperty('change_uid','xml',lang)
-                    newNode.setObjProperty('change_dt',time.time(),lang)
-                
-                _globals.writeLog( self, "[Builder.OnStartElement]: object with id " + str(newNode.id) + " of class " + str(newNode.__class__) + " created in " + str(self.oCurrNode.__class__))
-                
-                if self.oRoot is None:   # root object set?
-                    self.oRoot = newNode # -> set root node
-                
-                # notify new node
-                newNode.xmlOnStartElement(name, attrs, self.oCurrNode, self.oRoot)
-                
-                # set new node as current node
-                self.oCurrNode = newNode
-            
+          
+        if attrs.has_key('meta_id'):
+          meta_id = attrs['meta_id']
+          globalAttr = self.dGlobalAttrs.get(meta_id,self.dGlobalAttrs['ZMSCustom'])
+          constructor = globalAttr.get('obj_class',self.dGlobalAttrs['ZMSCustom']['obj_class'])
+          if constructor is None:
+            newNode = self
+          else:
+            # Get new id.
+            if 'id_fix' in attrs.keys():
+              id = attrs.get( 'id_fix')
+            elif 'id_prefix' in attrs.keys():
+              prefix = attrs.get( 'id_prefix')
+              id = self.getNewId(prefix)
+            elif 'id' in attrs.keys():
+              id = attrs.get( 'id')
+              prefix = _globals.id_prefix(id)
+              id = self.getNewId(prefix)
             else:
-                # no class defined for tag 
-                # -> offer to current object
-                if self.oCurrNode==None:
-                    raise ParseError("Unknown tag (" + name + "): no current object available!")  # no current object available!
-                
-                if not self.oCurrNode.xmlOnUnknownStartTag(name, attrs):
-                    if self._unknownTagName == None:
-                        self._unknownTagName = name
-                    _globals.writeLog( self, "[Builder.OnStartElement]: Unknown start-tag (" + name + "): current object did not accept tag!")  # current object did not accept tag!
-                    # raise ParseError("Unknown start-tag (" + name + "): current object did not accept tag!")  # current object did not accept tag!
+              id = self.oCurrNode.getNewId()
+            
+            # Get new sort-id.
+            sort_id = self.getNewSortId()
+            
+            ##### Init ####
+            newNode = constructor(id,sort_id,meta_id)
+            self.oCurrNode._setObject(newNode.id, newNode)
+            newNode = getattr(self.oCurrNode,newNode.id)
+            _globals.writeBlock( self, "[Builder.OnStartElement]: object with id " + str(newNode.id) + " of class " + str(newNode.__class__) + " created in " + str(self.oCurrNode.__class__))
+            
+            ##### Uid ####
+            if 'uid' in attrs.keys():
+              uid = attrs.get( 'uid')
+              newNode.set_uid(uid)
+          
+          ##### Object State ####
+          newNode.initializeWorkVersion()
+          obj_attrs = newNode.getObjAttrs()
+          langs = self.getLangIds()
+          for lang in langs:
+            req = {'lang':lang,'preview':'preview'}
+            ##### Object State ####
+            newNode.setObjStateNew(req)
+            ##### Init Properties ####
+            if 'active' in obj_attrs.keys():
+              newNode.setObjProperty('active',1,lang)
+            if len( langs) == 1:
+              newNode.setObjProperty('change_uid','xml',lang)
+              newNode.setObjProperty('change_dt',time.time(),lang)
+          
+          if self.oRoot is None: # root object set?
+            self.oRoot = newNode # -> set root node
+          
+          # notify new node
+          newNode.xmlOnStartElement(name, attrs, self.oCurrNode, self.oRoot)
+          
+          # set new node as current node
+          self.oCurrNode = newNode
           
         else:
-            _globals.writeLog( self, "[Builder.OnStartElement]: " + 
-                "we have encountered the XML root tag and a root object is predefined" + \
-                "-> simply notify root object")
-            self.oRoot.xmlOnStartElement(name, attrs, None, self.oRoot)
-            
-            # set root node as current node
-            self.oCurrNode = self.oRoot
-        
-        # we are inside the XML root now!
-        self.bInRootTag=1
-        if self.oRootNode is None:
-          self.oRootNode = self.oCurrNode
+            # tag name is unknown -> offer it to current object
+            if not self.oCurrNode.xmlOnUnknownStartTag(name, attrs):
+              _globals.writeLog( self, "[Builder.OnStartElement]: Unknown start-tag (" + name + "): current object did not accept tag!")  # current object did not accept tag!
 
 
     ############################################################################
@@ -302,42 +257,27 @@ class Builder:
     ############################################################################
     def OnEndElement(self, name):
         """ Builder.OnEndElement """
-        _globals.writeLog( self, "[Builder.OnEndElement(" + str(name) + ")]")
+        _globals.writeBlock( self, "[Builder.OnEndElement(" + str(name) + ")]")
         
-        # do we have a current node?
-        if self.oCurrNode==None:
-            raise ParseError("Unmatching end tag (" + name + ")")
-        
-        # is this the right tag name?
-        if name==self.oCurrNode.xmlGetTagName() or name==self.oCurrNode.meta_type:
-          
-          ##### VersionManager ####
-          self.oCurrNode.resetObjStates()
-          
-          # notify current node
-          self.oCurrNode.xmlOnEndElement()
-          
-          parent = self.oCurrNode.xmlGetParent()
-          
-          # set parent node as current node
-          self.oCurrNode = parent
-          
+        if name == self.oCurrNode.meta_id or name == self.oCurrNode.meta_type:
+            _globals.writeBlock( self, "[Builder.OnEndElement]: object finished")
+            
+            ##### VersionManager ####
+            self.oCurrNode.resetObjStates()
+            
+            # notify current node
+            self.oCurrNode.xmlOnEndElement()
+            
+            parent = self.oCurrNode.xmlGetParent()
+            
+            # set parent node as current node
+            self.oCurrNode = parent
         
         else:
-            if self.dGlobalAttrs.has_key(name) and \
-               self.dGlobalAttrs[name]['obj_class'] is not None:
-                if self.dGlobalAttrs.has_key(self.oCurrNode.xmlGetTagName()) and \
-                   self.dGlobalAttrs[self.oCurrNode.xmlGetTagName()]['obj_class'] is not None:
-                    # tag name is known, but not valid at this place!
-                    raise ParseError("Unmatching end tag (/" + name + "), expected(/" + self.oCurrNode.xmlGetTagName() + ")")
-            
-            else:
-                # tag name is unknown -> offer it to current object
-                if not self.oCurrNode.xmlOnUnknownEndTag(name):
-                    if name == self._unknownTagName:
-                      self._unknownTagName = None
-                    _globals.writeLog( self, "[Builder.OnEndElement]: Unknown end-tag (/" + name + ")")  # current object did not accept tag!
-                    # raise ParseError("Unknown end-tag (" + name + ")")  # current object did not accept tag!
+          # tag name is unknown -> offer it to current object
+          if not self.oCurrNode.xmlOnUnknownEndTag(name):
+            _globals.writeLog( self, "[Builder.OnEndElement]: Unknown end-tag (/" + name + ")")  # current object did not accept tag!
+            # raise ParseError("Unknown end-tag (" + name + ")")  # current object did not accept tag!
 
 
     ############################################################################

@@ -179,11 +179,11 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setConfProperty('ZMS.autocommit',1)
 
   ### Init ZMS object-model.
-  _confmanager.initConf(obj, 'com.zms.foundation')
-  _confmanager.initConf(obj, 'com.zms.foundation.theme')
+  _confmanager.initConf(obj, 'com.zms.foundation', remote=False)
+  _confmanager.initConf(obj, 'com.zms.foundation.theme', remote=False)
 
   ### Init default-configuration.
-  _confmanager.initConf(obj, 'default')
+  _confmanager.initConf(obj, 'default', remote=False)
 
   ### Init Role-Definitions and Permission Settings.
   obj.initRoleDefs()
@@ -242,7 +242,7 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     ##### Configuration ####
 
     #-- Index
-    _confmanager.initConf(obj, 'com.zms.index')
+    _confmanager.initConf(obj, 'com.zms.index', remote=False)
 
     #-- Search
     initContent(obj,'com.zms.search.content.xml',REQUEST)
@@ -250,7 +250,7 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     #-- QUnit
     if REQUEST.get('specobj_qunit',0) == 1:
       # Init configuration.
-      _confmanager.initConf(obj, 'com.zms.test')
+      _confmanager.initConf(obj, 'com.zms.test', remote=False)
       # Init content.
       initContent(obj,'com.zms.test.content.xml',REQUEST)
 
@@ -598,7 +598,6 @@ class ZMS(
     def getParentNode(self):
       return None
 
-
     ############################################################################
     ###
     ###   XML-Builder
@@ -613,9 +612,6 @@ class ZMS(
 
       # remove all ZMS-objects.
       self.manage_delObjects(self.objectIds(self.dGlobalAttrs.keys()))
-      # remove all languages.
-      for s_lang in self.getLangIds():
-        self.delLanguage(s_lang)
 
       self.dTagStack = _globals.MyStack()
       self.dValueStack  = _globals.MyStack()

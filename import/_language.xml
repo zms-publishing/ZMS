@@ -47,7 +47,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="_language.py">
-  <Table ss:ExpandedColumnCount="14" ss:ExpandedRowCount="459" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="14" ss:ExpandedRowCount="461" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="Default" ss:DefaultColumnWidth="120">
    <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="200"/>
    <Column ss:StyleID="s23" ss:AutoFitWidth="0" ss:Index="9"/>
@@ -6647,6 +6647,24 @@
     <Cell><Data ss:Type="String">أهلا بك</Data></Cell>
     <Cell><Data ss:Type="String">Quý vị là</Data></Cell>
     <Cell><Data ss:Type="String">אתה\את\אתם</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TODAY</Data></Cell>
+    <Cell><Data ss:Type="String">heute</Data></Cell>
+    <Cell><Data ss:Type="String">today</Data></Cell>
+    <Cell><Data ss:Type="String">vandaag</Data></Cell>
+    <Cell><Data ss:Type="String">aujourd'hui</Data></Cell>
+    <Cell><Data ss:Type="String">oggi</Data></Cell>
+    <Cell><Data ss:Type="String">hoy</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">YESTERDAY</Data></Cell>
+    <Cell><Data ss:Type="String">gestern</Data></Cell>
+    <Cell><Data ss:Type="String">yesterday</Data></Cell>
+    <Cell><Data ss:Type="String">gisteren</Data></Cell>
+    <Cell><Data ss:Type="String">hier</Data></Cell>
+    <Cell><Data ss:Type="String">ieri</Data></Cell>
+    <Cell><Data ss:Type="String">ayer</Data></Cell>
    </Row>
   </Table>
   <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">

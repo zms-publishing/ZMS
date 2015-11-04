@@ -516,21 +516,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.icon:
     # --------------------------------------------------------------------------
     def icon(self):
-      try:
-        icon = self.display_icon( self.REQUEST, zpt=False)
-        if icon.find( '://') > 0:
-          icon = icon[ icon.find( '://')+3:]
-          icon = icon[ icon.find( '/'):]
-          BASEPATH1 = self.REQUEST.get('BASEPATH1','?')
-          if icon.startswith( BASEPATH1):
-            icon = icon[ len( BASEPATH1):]
-        if icon.startswith( '/'):
-          icon = icon[1:]
-        if icon.startswith('<'):
-          icon = 'misc_/zms/ico_document.gif'
-        return icon
-      except:
-        _globals.writeError( self, '[icon]: An unexpected error occured!')
+      return "++resource++zms_/img/ZMSObject.png"
 
 
     # --------------------------------------------------------------------------
@@ -538,39 +524,36 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  @param REQUEST
     # --------------------------------------------------------------------------
-    def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
+    def display_icon(self, REQUEST={}, meta_type=None, key='icon', zpt=True):
       """ ZMSObject.display_icon """
-      icon_title = self.display_type(REQUEST,meta_type)
-      pattern = '%s'
-      if zpt:
-        pattern = '<img src="%s" title="'+icon_title+'"/>'
-      obj_type = meta_type
-      if obj_type is None:
-        if not self.isActive(REQUEST):
-          key = 'icon_disabled'
-        obj_type = self.meta_id
-      if obj_type in self.getMetaobjIds( sort=0):
-        if zpt:
-          icon_clazz = self.evalMetaobjAttr( '%s.%s'%(obj_type,'icon_clazz'))
-          if icon_clazz is not None:
-            return self.zmi_icon(self,name=icon_clazz,extra='title="%s"'%unicode(icon_title,'utf-8'))
-        value = self.evalMetaobjAttr( '%s.%s'%(obj_type,key)) 
-        if value is not None and type(value) is not str:
-          return pattern%value.absolute_url()
-        metaObj = self.getMetaobj( obj_type)
-        if metaObj:
-          if metaObj[ 'type'] == 'ZMSResource':
-            return self.zmi_icon(self,name='icon-asterisk')
-          elif metaObj[ 'type'] == 'ZMSLibrary':
-            return self.zmi_icon(self,name='icon-beaker')
-          elif metaObj[ 'type'] == 'ZMSPackage':
-            return self.zmi_icon(self,name='icon-suitcase')
-          elif metaObj[ 'type'] == 'ZMSRecordSet':
-            return self.zmi_icon(self,name='icon-list')
-          elif metaObj[ 'type'] == 'ZMSReference':
-            return self.zmi_icon(self,name='icon-link')
-          return self.zmi_icon(self,name='icon-file-alt')
-      return self.zmi_icon(self,name='icon-warning-sign text-danger',extra='title="%s not found!"'%str(obj_type))
+      id = _globals.nvl(meta_type,self.meta_id)
+      icon_title = self.display_type(meta_type=id)
+      if id in self.getMetaobjIds( sort=0):
+        name = self.evalMetaobjAttr( '%s.%s'%(id,'icon_clazz'))
+        if name is None:
+          value = self.evalMetaobjAttr( '%s.%s'%(id,key)) 
+          if value is not None and type(value) is not str:
+            return '<img src="%s" title="%s"/>'%(value.absolute_url(),icon_title)
+          else:
+            metaObj = self.getMetaobj(id)
+            names = {'ZMSResource':'icon-asterisk','ZMSLibrary':'icon-beaker','ZMSPackage':'icon-suitcase','ZMSRecordSet':'icon-list','ZMSReference':'icon-link'}
+            name = names.get(metaObj.get('type'),'icon-file-alt')
+        if meta_type is None:
+          constraints = self.attr('check_constraints')
+          if type(constraints) is dict:
+            if constraints.has_key('ERRORS'):
+              name += ' constraint-error'
+              icon_title += '; '+';'.join(map(lambda x:'ERROR: '+x[1],constraints['ERRORS']))
+            elif constraints.has_key('WARNINGS'):
+              name += ' constraint-warning'
+              icon_title += '; '+'; '.join(map(lambda x:'WARNING: '+x[1],constraints['WARNINGS']))
+            elif constraints.has_key('RESTRICTIONS'):
+              name += ' constraint-restriction'
+              icon_title += '; '+'; '.join(map(lambda x:'RESTRICTION: '+x[1],constraints['RESTRICTIONS']))
+      else:
+        name = 'icon-warning-sign constraint-error'
+        icon_title = '%s not found!'%str(id)
+      return self.zmi_icon(self,name=name,extra='title="%s"'%unicode(icon_title,'utf-8'))
 
 
     # --------------------------------------------------------------------------
@@ -579,14 +562,14 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  @param REQUEST
     # --------------------------------------------------------------------------
     def display_type(self, REQUEST={}, meta_type=None):
-      obj_type = _globals.nvl( meta_type, self.meta_id)
-      metaObj = self.getMetaobj( obj_type)
+      meta_type = _globals.nvl( meta_type, self.meta_id)
+      metaObj = self.getMetaobj( meta_type)
       if type( metaObj) is dict and metaObj.has_key( 'name'):
-        obj_type = metaObj[ 'name']
-      lang_key = 'TYPE_%s'%obj_type.upper()
+        meta_type = metaObj[ 'name']
+      lang_key = 'TYPE_%s'%meta_type.upper()
       lang_str = self.getZMILangStr( lang_key)
       if lang_key == lang_str:
-        return obj_type
+        return meta_type
       else:
         return lang_str
 
@@ -1438,7 +1421,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     # ZMSObject.xmlOnEndElement(self):
     # ZMSObject.xmlOnUnknownStartTag(self, sTagName, dTagAttrs)
     # ZMSObject.xmlOnUnknownEndTag(self, sTagName)
-    # ZMSObject.xmlGetTagName(self):
     # ZMSObject.xmlGetParent(self):
     #
     # handler for XML-Builder (_builder.py)
@@ -1474,10 +1456,6 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     def xmlGetParent(self):
         return self.oParent
-
-
-    def xmlGetTagName(self):
-        return self.meta_id
 
 
 # call this to initialize framework classes, which

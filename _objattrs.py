@@ -378,8 +378,8 @@ class ObjAttrs:
             data = ''
           else:
             fmt = self.getObjProperty('format',REQUEST)
-            txt = self.getObjProperty('text',REQUEST)
-            data = self.renderText(None,'text',txt,REQUEST)
+            txt = self.getObjAttrValue(obj_attr,REQUEST)
+            data = self.renderText(None,obj_attr['id'],txt,REQUEST)
           REQUEST.set('format',fmt)
           REQUEST.set('data',data)
           text_fmt = self.getTextFormat(fmt,REQUEST)

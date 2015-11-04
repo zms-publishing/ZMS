@@ -11,8 +11,7 @@
 				><tal:block tal:condition="python:metaObjAttr['id'].find('_')!=0 and metaObjAttr['id'] not in request.get('ZMS_HIDE_ELEMENTS',[]) and metaObjAttr['type'] not in here.metaobj_manager.valid_zopetypes+[ 'constant', 'method', 'py', 'zpt', 'resource']"
 				><tal:block tal:define="global 
 						elName python:here.getObjAttrName(metaObjAttr,request['lang']);
-						elLabel python:here.getObjAttrLabel(metaObjAttr);
-						elValue python:here.attr(metaObjAttrId);"
+						elLabel python:here.getObjAttrLabel(metaObjAttr);"
 					><tal:block tal:condition="python:metaObjAttr['type']=='delimiter'"
 						><tal:block tal:content="structure python:'</div><!-- .accordion-inner --></div><!-- .accordion-body -->'"></tal:block>
 						<div class="accordion-heading">
@@ -28,7 +27,7 @@
 						><div class="zmi-hint" tal:content="structure elLabel">the hint</div>
 					</tal:block
 					><tal:block tal:condition="python:metaObjAttr['type']=='interface'"
-						><div class="zmi-interface" tal:content="structure elValue">the interface</div>
+						><div class="zmi-interface" tal:content="structure python:here.attr(metaObjAttrId)">the interface</div>
 					</tal:block
 					><tal:block tal:condition="python:metaObjAttr['type']=='richtext'"
 						><div tal:attributes="class python:' '.join(['zmi-richtext']+[[],['is-modified']][int(here.attr_is_modified(metaObjAttrId))])" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the richtext</div>

@@ -856,17 +856,6 @@ class MyBlob:
       return '/misc_/zms/' + _mimetypes.dctMimeType.get( self.getContentType(), _mimetypes.content_unknown)
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.xmlGetTagName: 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def xmlGetTagName(self):
-      """
-      Returns <XML> Tag-Name.
-      @rtype: C{string}
-      """
-      return 'data'
-
-
 ################################################################################
 ################################################################################
 
@@ -913,13 +902,13 @@ class MyImage(MyBlob,Image):
         filename = self.getFilename()
         filename = getLangFilename(sender,filename,self.lang)
         filename = '%s%s'%(base_path,filename)
-      xml = '\n<%s'%self.xmlGetTagName()
+      xml = '\n<data'
       xml += ' width="%s"'%str(getattr(self,'width',''))
       xml += ' height="%s"'%str(getattr(self,'height',''))
       xml += ' content_type="%s"'%str(getattr(self,'content_type',''))
       xml += ' filename="%s"'%filename
       xml += objtype + '>' + data
-      xml += '</%s>'%self.xmlGetTagName()
+      xml += '</data>'
       return xml
 
 
@@ -985,11 +974,11 @@ class MyFile(MyBlob,File):
         filename = self.getFilename()
         filename = getLangFilename(sender,filename,self.lang)
         filename = '%s%s'%(base_path,filename)
-      xml = '\n<%s'%self.xmlGetTagName()
+      xml = '\n<data'
       xml += ' content_type="%s"'%str(getattr(self,'content_type',''))
       xml += ' filename="%s"'%filename
       xml += objtype + '>' + data
-      xml += '</%s>'%self.xmlGetTagName()
+      xml += '</data>'
       return xml
 
 

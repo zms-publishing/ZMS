@@ -3,12 +3,18 @@
 </tal:block
 ><span class="version_object_state" tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</span
 
-><tal:block tal:condition="python:here.attr('change_uid') is not None"
-	><tal:block tal:content="structure python:here.string_maxlen(here.attr('change_uid'),20)">the change-uid</tal:block
-></tal:block>
-<tal:block tal:condition="python:here.attr('change_dt') is not None"
-	><tal:block tal:content="structure python:here.getLangFmtDate(here.attr('change_dt'),request['manage_lang'],'BOBOBASE_MODIFICATION_FMT')">the change-dt</tal:block
-></tal:block
+><tal:block tal:define="
+		change_uid python:here.attr('change_uid');
+		change_dt  python:here.attr('change_dt');
+		constraints python:here.attr('check_constraints');">
+	<span class="zmi-change-uid" tal:content="structure python:here.string_maxlen(change_uid,20)">the change-uid</span>
+	<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
+	<tal:block tal:on-error="nothing" tal:repeat="category python:constraints.keys()">
+		<div tal:attributes="class python:'constraint-%s'%category[:-1].lower()">
+			<tal:block tal:content="structure python:'<strong>'+category[:-1]+':</strong> '+'; '.join(map(lambda x:x[1],constraints[category]))"></tal:block>
+		</div>
+	</tal:block>
+</tal:block
 
 ><tal:block tal:replace="nothing">
 ##### Custom ###################################################################

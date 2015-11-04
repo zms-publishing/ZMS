@@ -675,7 +675,7 @@ def getObjToXml(self, REQUEST, incl_embedded=False, deep=True, base_path='', dat
     ob = ob.getRefObj()
   xml = []
   # Start tag.
-  xml.append('<%s'%ob.xmlGetTagName())
+  xml.append('<%s'%ob.meta_id)
   xml.append(' uid="%s"'%ob.get_uid())
   id = self.id 
   prefix = _globals.id_prefix(id)
@@ -700,7 +700,7 @@ def getObjToXml(self, REQUEST, incl_embedded=False, deep=True, base_path='', dat
   if deep:
     xml.extend(map(lambda x: getObjToXml( x, REQUEST, incl_embedded, deep, base_path+x.id+'/', data2hex), ob.getChildNodes()))
   # End tag.
-  xml.append('</%s>\n'%ob.xmlGetTagName())
+  xml.append('</%s>\n'%ob.meta_id)
   # Return xml.
   return ''.join(xml)
 

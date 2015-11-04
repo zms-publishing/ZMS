@@ -307,6 +307,7 @@ class PathHandler:
         # If the object has executable-fields find by name and display data.
         if name in self.getMetaobjAttrIds( self.meta_id, types=['method','py']):
           v = self.attr(name)
+          print v,name
           if v is not None:
             if type(v) is str:
               v = self.FileFromData( v, content_type='text/plain;charset=utf-8')

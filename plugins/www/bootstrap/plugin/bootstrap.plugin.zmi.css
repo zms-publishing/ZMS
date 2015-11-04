@@ -260,11 +260,6 @@ ul.nav-buttons li {
 	float:left;
 	list-style-type:none;
 }
-ul.zmi-container {
-	margin:0;
-	padding:0;
-	display:block;
-}
 div#zmi-tab {
 	background-color:#f5f5f5!important;
 	border-bottom: 1px solid #ddd;
@@ -299,12 +294,10 @@ div.grippy {
 	background-color:white !important;
 	opacity:.9;
 }
-ul.zmi-container {
-	width:75%;
-	padding-top:0;
-	padding-bottom:0;
-	margin-top:0;
-	margin-bottom:0;
+.zmi-container {
+	margin:0;
+	padding:0;
+	width:98% !important;
 }
 ul.zmi-container .contentEditable {
 	cursor:pointer;
@@ -410,9 +403,6 @@ form.form-insert a.accordion-toggle {
 ul.zmi-container > .zmi-item > .center {
 	float:left;
 	width:80% !important;
-}
-ul.zmi-container {
-	width:98% !important;
 }
 ul.zmi-container > .zmi-item > .right {
 	float:left;
@@ -679,6 +669,42 @@ div.cke_panel {
 	width: 280px !important;
 }
 
+div.constraint-error {
+	background-color:#F2DEDE;
+	color:#A94442;
+	padding:2px;
+	border-radius:2px;
+}
+i.constraint-error {
+	background-color:#A94442;
+	color:#FFFFFF;
+	padding:2px;
+	border-radius:2px;
+}
+div.constraint-warning {
+	background-color:#FCF8E3;
+	color:#8A6D3B;
+	padding:2px;
+	border-radius:2px;
+}
+i.constraint-warning {
+	background-color:#FCF8E3;
+	color:#8A6D3B;
+	padding:2px;
+	border-radius:2px;
+}
+div.constraint-restriction {
+	background-color:#D9EDF7;
+	color:#31708F;
+	padding:2px;
+	border-radius:2px;
+}
+i.constraint-restriction {
+	background-color:#D9EDF7;
+	color:#31708F;
+	padding:2px;
+	border-radius:2px;
+}
 
 .zmi-container .right li span[class^="glyphicon-"],
 .zmi-container .right li span[class*=" glyphicon-"],

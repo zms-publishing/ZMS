@@ -68,7 +68,6 @@ class ParseError(Exception): pass
 #    - xmlOnEndElement(self)
 #    - xmlOnUnknownStartTag(self, sTagName, dTagAttrs)
 #    - xmlOnUnknownEndTag(self, sTagName)
-#    - xmlGetTagName(self)
 #    - xmlGetParent(self)
 #
 ################################################################################

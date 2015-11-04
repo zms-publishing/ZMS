@@ -67,6 +67,35 @@ $(function(){
 			}
 		});
 
+  $(".zmi-change-dt").each(function() {
+      var mydate = $(this).text();
+      var myformat = getZMILangStr('DATETIME_FMT');
+      var dtsplit=mydate.split(/[\/ .:]/);
+      var dfsplit=myformat.split(/[\/ .:]/);
+      // creates assoc array for date
+      df = new Array();
+      for(dc=0;dc<dtsplit.length;dc++) {
+        df[dfsplit[dc]]=dtsplit[dc];
+        df[dfsplit[dc].substr(1)]=parseInt(dtsplit[dc]);
+      }
+      var dstring = df['%Y']+'-'+df['%m']+'-'+df['%d']+' '+df['%H']+':'+df['%M']+':'+df['%S'];
+      var date = new Date(df['Y'],df['m']-1,df['d'],df['H'],df['M'],df['S']);
+      var now = new Date();
+      var secondsBetween = (now.valueOf()-date.valueOf())/(1000);
+      var minutesBetween = secondsBetween/(60);
+      var daysBetween = minutesBetween/(24*60);
+      if (daysBetween<1) {
+        $(this).text(getZMILangStr('TODAY')+" "+(minutesBetween<60?Math.floor(minutesBetween)+"min.":df['%H']+':'+df['%M']));
+      }
+      else if (daysBetween<2) {
+        $(this).text(getZMILangStr('YESTERDAY')+" "+df['%H']+':'+df['%M']);
+      }
+      else {
+        $(this).text(getZMILangStr('DATE_FMT').replace('%Y',df['%Y']).replace('%m',df['%m']).replace('%d',df['%d']));
+      }
+      $(this).attr('title',mydate);
+    });
+
 	// New Sitemap Icon
 	$(".navbar-main .navbar-brand").before(""
 		+ '<a id="navbar-sitemap"'

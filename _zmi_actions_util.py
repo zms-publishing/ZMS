@@ -61,7 +61,17 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
   
   #-- Action: Edit.
   if context is not None:
-    actions.append((container.getZMILangStr('BTN_EDIT'),objPath+'manage_main','icon-edit'))
+    can_edit = True
+    constraints = context.attr('check_constraints')
+    if type(constraints) is dict and 'RESTRICTIONS' in constraints.keys():
+      for restriction in constraints.get('RESTRICTIONS'):
+        permissions = restriction[2]
+        for permission in permissions:
+          can_edit = auth_user.has_permission(permission,context)
+          if not can_edit:
+            break
+    if can_edit:
+      actions.append((container.getZMILangStr('BTN_EDIT'),objPath+'manage_main','icon-edit'))
     if context.getLevel() > 0:
       if repetitive or not mandatory:
         #-- Action: Undo.

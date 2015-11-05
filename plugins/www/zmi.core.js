@@ -69,6 +69,14 @@ $(function(){
 				if (evt.target != "undefined" && $.inArray(evt.target.nodeName.toLowerCase(),['a','button','input','select','textarea']) > -1) {
 					return;
 				}
+				var $li = $(this).parents("li.zmi-item");
+				if ($li.length>0) {
+					var $action = $(".right .zmi-action",$li);
+					$ZMI.actionList.over($action,"click",evt,function() {
+							$(".split-left",$action).click();
+						});
+					return;
+				}
 				var href = ""+self.location.href;
 				if (href.indexOf('?')>0) {
 					href = href.substr(0,href.indexOf('?'));

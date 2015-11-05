@@ -67,34 +67,37 @@ $(function(){
 			}
 		});
 
-  $(".zmi-change-dt").each(function() {
-      var mydate = $(this).text();
-      var myformat = getZMILangStr('DATETIME_FMT');
-      var dtsplit=mydate.split(/[\/ .:]/);
-      var dfsplit=myformat.split(/[\/ .:]/);
-      // creates assoc array for date
-      df = new Array();
-      for(dc=0;dc<dtsplit.length;dc++) {
-        df[dfsplit[dc]]=dtsplit[dc];
-        df[dfsplit[dc].substr(1)]=parseInt(dtsplit[dc]);
-      }
-      var dstring = df['%Y']+'-'+df['%m']+'-'+df['%d']+' '+df['%H']+':'+df['%M']+':'+df['%S'];
-      var date = new Date(df['Y'],df['m']-1,df['d'],df['H'],df['M'],df['S']);
-      var now = new Date();
-      var secondsBetween = (now.valueOf()-date.valueOf())/(1000);
-      var minutesBetween = secondsBetween/(60);
-      var daysBetween = minutesBetween/(24*60);
-      if (daysBetween<1) {
-        $(this).text(getZMILangStr('TODAY')+" "+(minutesBetween<60?Math.floor(minutesBetween)+"min.":df['%H']+':'+df['%M']));
-      }
-      else if (daysBetween<2) {
-        $(this).text(getZMILangStr('YESTERDAY')+" "+df['%H']+':'+df['%M']);
-      }
-      else {
-        $(this).text(getZMILangStr('DATE_FMT').replace('%Y',df['%Y']).replace('%m',df['%m']).replace('%d',df['%d']));
-      }
-      $(this).attr('title',mydate);
-    });
+	$(".zmi-change-dt").each(function() {
+			var mydate = $(this).text();
+			var myformat = getZMILangStr('DATETIME_FMT');
+			var dtsplit=mydate.split(/[\/ .:]/);
+			var dfsplit=myformat.split(/[\/ .:]/);
+			// creates assoc array for date
+			df = new Array();
+			for(dc=0;dc<dtsplit.length;dc++) {
+				df[dfsplit[dc]]=dtsplit[dc];
+				df[dfsplit[dc].substr(1)]=parseInt(dtsplit[dc]);
+			}
+			var dstring = df['%Y']+'-'+df['%m']+'-'+df['%d']+' '+df['%H']+':'+df['%M']+':'+df['%S'];
+			var date = new Date(df['Y'],df['m']-1,df['d']);
+			var now = new Date();
+			now.setHours(0,0,0);      
+			var daysBetween = (now.valueOf()-date.valueOf())/(24*60*60*1000);
+			if (daysBetween<1) {
+				date = new Date(df['Y'],df['m']-1,df['d'],df['H'],df['M'],df['S']);
+				now = new Date();        
+				var secondsBetween = (now.valueOf()-date.valueOf())/(1000);
+				var minutesBetween = secondsBetween/(60);
+				$(this).text(getZMILangStr('TODAY')+" "+(minutesBetween<60?Math.floor(minutesBetween)+" min. ":df['%H']+':'+df['%M']));
+			}
+			else if (daysBetween<2) {
+				$(this).text(getZMILangStr('YESTERDAY')+" "+df['%H']+':'+df['%M']);
+			}
+			else {
+				$(this).text(getZMILangStr('DATE_FMT').replace('%Y',df['%Y']).replace('%m',df['%m']).replace('%d',df['%d']));
+			}
+		$(this).attr('title',mydate);
+	});
 
 	// New Sitemap Icon
 	$(".navbar-main .navbar-brand").before(""
@@ -329,10 +332,9 @@ $(function(){
 	runPluginCookies(function() {
 			var key = 'zmi-manage-main-change';
 			var value = $.cookies.get(key);
-			$(".zmi-container .zmi-item .zmi-manage-main-change:first")
-				.each( function() {
-						$('<span class="zmi-manage-main-toggle">'+$ZMI.icon("icon-info-sign")+'</span>').insertBefore($(this));
-					});
+			$(".zmi-container .zmi-item .zmi-manage-main-change:first").each( function() {
+					$('<span class="zmi-manage-main-toggle">'+$ZMI.icon("icon-info-sign")+'</span>').insertBefore($(this));
+				});
 			$('.zmi-manage-main-toggle '+$ZMI.icon_selector("icon-info-sign")).on('click',function(event,programmatically,speed) {
 					if (!programmatically) {
 						$ZMI.toggleCookie(key);
@@ -650,68 +652,6 @@ ZMI.prototype.initInputFields = function(container) {
 								});
 						};
 					$input.change(fn).change();
-          /*
-					$inputgroup.next(".breadcrumb").each(function() {
-							var $breadcrumb = $(this);
-							var resizeListener = function() {
-									$breadcrumb.css({
-											"z-index":9999
-											,"cursor":"grab"
-											,"position":"absolute"
-											,"top":$inputgroup.css("top")
-											,"left":$inputgroup.css("left")
-											,"width":$input.css("width")
-											,"height":$inputgroup.css("height")
-											,"margin":"0 0 0 1em"
-											,"padding":".4em 0 0 .2em"
-											,"overflow":"hidden"
-											,"white-space":"nowrap"
-											,"border":"1px solid #CCC"
-										})
-								}
-							$(window).resize(function() {
-									resizeListener();
-								});
-							resizeListener();
-							$breadcrumb.click(function() {
-										$breadcrumb.hide();
-										$input.focus();
-									});
-							$input.blur(function() {
-										$breadcrumb.show();
-								});
-						});
-
-					var $clone = $(this).clone();
-					var id = $clone.attr('id');
-					$clone.addClass('form-control');
-					var html = $("<div/>").append($clone).html();
-					var fmName = $(this).parents("form").attr("name");
-					var elName = $(this).attr("name");
-					var $breadcrumb = $(this).siblings("ul.breadcrumb");
-					var content = '';
-					if ($breadcrumb.length > 0) {
-						content = $("<div/>").append($breadcrumb).html();
-						$breadcrumb.hide();
-					}
-					$(this).replaceWith(''
-							+ '<div class="input-group">'
-								+ html
-								+ '<span class="input-group-addon ui-helper-clickable" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
-									+ $ZMI.icon("icon-link")
-								+ '</span>'
-							+ '</div>'
-						);
-					if (content.length > 0) {
-						$('#'+id).popover({
-								container:'body',
-								html:true,
-								placement:'bottom',
-								trigger:'click|hover|focus',
-								content:content
-							});
-					}
-          */
 				});
 				// Richedit
 				var $richedits = $('div[id^="zmiStandardEditor"]',this);
@@ -965,11 +905,17 @@ ZMIActionList.prototype.getContextId = function(el) {
  *
  * @param el
  */
-ZMIActionList.prototype.over = function(el, evt, e) {
+ZMIActionList.prototype.over = function(el, evt, e, cb) {
+	var that = this;
 	$("button.split-left",el).css({visibility:"visible"});
 	// Exit.
 	var $ul = $("ul.dropdown-menu",el);
-	if($("button.split-left",el).length==0 || $ul.length>0) return;
+	if($("button.split-left",el).length==0 || $ul.length>0) {
+		if (typeof cb=="function") {
+			cb();
+		}
+		return;
+	}
 	// Set wait-cursor.
 	$(document.body).css( "cursor", "wait");
 	// Initialize.
@@ -979,8 +925,16 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 	$("button.split-left",el).click(function() {
 			if ($($ZMI.icon_selector("icon-plus-sign"),this).length==0) {
 				var action = self.location.href;
-				action = action.substr(0,action.lastIndexOf("/"));
-				action += context_id==""?"/manage_properties":"/"+context_id+"/manage_main";
+				action = action.substr(0,action.lastIndexOf("/")+1);
+				if (context_id=="") {
+					action += "manage_properties";
+				}
+				else {
+					if ($ul.html().indexOf(context_id+"/manage_main")<0) {
+						return false;
+					}
+					action += context_id+"/manage_main";
+				}
 				action += "?lang=" + lang;
 				self.location.href = action;
 			}
@@ -998,7 +952,6 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 	params['context_id'] = context_id;
 	// JQuery.AJAX.get
 	$.get( action, params, function(data) {
-		$ZMI.writeDebug("[ZMIActionList.over]: data="+data);
 		// Reset wait-cursor.
 		$(document.body).css( "cursor", "auto");
 		// Exit.
@@ -1085,6 +1038,7 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 						}
 					}
 				});
+		that.over(el, evt, e, cb);
 	});
 }
 

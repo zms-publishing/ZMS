@@ -151,23 +151,34 @@ class ZMSZCatalogAdapter(
     #  ZMSZCatalogAdapter.reindex_all:
     # --------------------------------------------------------------------------
     def reindex_all(self):
-      for connector in self.getConnectors():
-        connector.reindex_all()
+      try:
+        for connector in self.getConnectors():
+          connector.reindex_all()
+        return True
+      except:
+        _globals.writeError( self, "can't reindex_all")
+        return False
 
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.reindex_node:
     # --------------------------------------------------------------------------
     def reindex_node(self, node, forced=False):
-      if self.getConfProperty('ZMS.CatalogAwareness.active',1) or forced:
-        for connector in self.getConnectors():
-          # Check meta-id.
-          nodes = node.breadcrumbs_obj_path()
-          nodes.reverse()
-          for node in nodes:
-            if node.meta_id in self.getIds():
-              connector.reindex_node(node)
-              break
+      try:
+        if self.getConfProperty('ZMS.CatalogAwareness.active',1) or forced:
+          for connector in self.getConnectors():
+            # Check meta-id.
+            nodes = node.breadcrumbs_obj_path()
+            nodes.reverse()
+            for node in nodes:
+              if node.meta_id in self.getIds():
+                connector.reindex_node(node)
+                break
+        return True
+      except:
+        _globals.writeError( self, "can't reindex_node")
+        return False
+
 
 
     # --------------------------------------------------------------------------

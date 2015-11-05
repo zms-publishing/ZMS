@@ -669,26 +669,32 @@ div.cke_panel {
 	width: 280px !important;
 }
 
-i.constraint-error {
+div.right {
+	position: relative;
+}
+div.right div.constraint {
+	position: absolute;
+	width: 80%;
+	top:1px;
+	left:0;
+	margin-left:-200px;
+	width:200px;
+	text-align: right;
+	font-size: 11px;
+	padding: 8px 36px 0 0;
+	background-color:white;
+	filter:Alpha(opacity=80);
+	-moz-opacity:0.80;
+	opacity:0.80
+}
+.constraint-error {
 	color:red;
 }
-div.constraint-error {
-	color:red;
-	padding-bottom:4px;
-}
-i.constraint-warning {
-	color:orange;
-	padding-bottom:4px;
-}
-div.constraint-warning {
+.constraint-warning {
 	color:orange;
 }
-i.constraint-restriction {
+.constraint-restriction {
 	color:steelblue;
-}
-div.constraint-restriction {
-	color:steelblue;
-	padding-bottom:4px;
 }
 
 .zmi-container .right li span[class^="glyphicon-"],
@@ -710,6 +716,7 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 	width:160px;
 	visibility:hidden;
 	text-align:left;
+	z-index:9999;
 }
 .checkbox.split-left {
 	height:1em;
@@ -1625,7 +1632,7 @@ li.zmi-item span.zmi-ids {
 }
 .zmi-manage-main-toggle {
 	display: inline-block;
-	margin: 0;
+	margin: 6px;
 	cursor:pointer;
 }
 .zmi-manage-main-toggle .icon-info-sign {

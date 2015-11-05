@@ -669,32 +669,30 @@ div.cke_panel {
 	width: 280px !important;
 }
 
-div.right {
-	position: relative;
+.zmi-manage-main-change div.constraint {
+  display:none;
 }
-div.right div.constraint {
-	position: absolute;
-	width: 80%;
-	top:1px;
-	left:0;
-	margin-left:-200px;
-	width:200px;
-	text-align: right;
+div.constraint {
 	font-size: 11px;
-	padding: 8px 36px 0 0;
-	background-color:white;
-	filter:Alpha(opacity=80);
-	-moz-opacity:0.80;
-	opacity:0.80
+	padding: 8px;
 }
 .constraint-error {
-	color:red;
+  color:#A94442;
+}
+div.constraint-error {
+  background-color:#F2DEDE;
 }
 .constraint-warning {
-	color:orange;
+  color:#8A6D3B; 
+}
+div.constraint-warning {
+  background-color:#FCF8E3;
 }
 .constraint-restriction {
-	color:steelblue;
+  color:#31708F;
+}
+div.constraint-restriction {
+  background-color:#D9EDF7;
 }
 
 .zmi-container .right li span[class^="glyphicon-"],

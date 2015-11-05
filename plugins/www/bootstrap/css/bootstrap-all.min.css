@@ -560,11 +560,14 @@ body.browse_iframe .toggle{font-size:120%;vertical-align:bottom;width:12px;margi
 .zmi.manage-menu #loading,.zmi.manage-menu #loading .icon{color:#CCCCCC !important}
 .cke_reset_all span[class^="glyphicon-"],.cke_reset_all span[class*=" glyphicon-"],.cke_reset_all i[class^="icon-"],.cke_reset_all i[class*=" icon-"]{font-family:FontAwesome !important;margin-right:4px !important;font-size:14px}
 div.cke_panel{width:280px !important}
-div.right{position:relative}
-div.right div.constraint{position:absolute;width:80%;top:1px;left:0;margin-left:-200px;width:200px;text-align:right;font-size:11px;padding:8px 36px 0 0;background-color:white;filter:Alpha(opacity=80);-moz-opacity:0.80;opacity:0.80}
-.constraint-error{color:red}
-.constraint-warning{color:orange}
-.constraint-restriction{color:steelblue}
+.zmi-manage-main-change div.constraint{display:none}
+div.constraint{font-size:11px;padding:8px}
+.constraint-error{color:#A94442}
+div.constraint-error{background-color:#F2DEDE}
+.constraint-warning{color:#8A6D3B}
+div.constraint-warning{background-color:#FCF8E3}
+.constraint-restriction{color:#31708F}
+div.constraint-restriction{background-color:#D9EDF7}
 .zmi-container .right li span[class^="glyphicon-"],.zmi-container .right li span[class*=" glyphicon-"],.zmi-container .right li i[class^="icon-"],.zmi-container .right li i[class*=" icon-"]{display:inline-block;width:1.5em;font-size:14px}
 ul.zmi-container .right div input{margin:8px}
 ul.zmi-container .zmi-item .zmi-action{margin-left:-159px}

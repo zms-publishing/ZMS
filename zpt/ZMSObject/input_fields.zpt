@@ -44,8 +44,8 @@
             <span class="zmi-change-uid" tal:content="structure python:here.string_maxlen(change_uid,20)">the change-uid</span>
 						<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 						<tal:block tal:on-error="nothing" tal:repeat="category python:constraints.keys()">
-							<div tal:attributes="class python:'constraint-%s'%category[:-1].lower()">
-								<tal:block tal:content="structure python:'<strong>'+category[:-1]+':</strong> '+'; '.join(map(lambda x:x[1],constraints[category]))"></tal:block>
+							<div tal:attributes="class python:'constraint constraint-%s'%category[:-1].lower()">
+								<tal:block tal:content="structure python:'<strong>'+here.zmi_icon(name='icon-warning-sign',extra='title=\042%s\042'%category[:-1])+' '+category[:-1]+'</strong>: '+'; '.join(map(lambda x:x[1],constraints[category]))"></tal:block>
 							</div>
 						</tal:block>
 					</tal:block>

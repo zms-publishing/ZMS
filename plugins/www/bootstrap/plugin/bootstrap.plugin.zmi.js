@@ -324,11 +324,15 @@ $(function(){
 	$(".zmi-container .right input[name='ids:list']")
 		.change(zmiActionButtonsRefresh)
 		;
+	// Constraints
+	$(".split-left i.constraint").each(function() {
+	    var $container = $(this).parents(".right");
+	    $(".split-right",$container).tooltip({html:true,title:$("div.constraint",$container)[0].outerHTML});
+	  });
 	// Detail-Info
-	$(".zmi-container .zmi-item .zmi-manage-main-change")
-		.each( function() {
-				$(this).html($(this).html().replace(/<span([^<]*?)>(\r|\n|\t|\s)*?<\/span>/gi,''));
-			});
+	$(".zmi-container .zmi-item .zmi-manage-main-change").each( function() {
+			$(this).html($(this).html().replace(/<span([^<]*?)>(\r|\n|\t|\s)*?<\/span>/gi,''));
+		});
 	runPluginCookies(function() {
 			var key = 'zmi-manage-main-change';
 			var value = $.cookies.get(key);
@@ -1038,7 +1042,9 @@ ZMIActionList.prototype.over = function(el, evt, e, cb) {
 						}
 					}
 				});
-		that.over(el, evt, e, cb);
+    if (typeof cb=="function") {
+      cb();
+    }
 	});
 }
 

@@ -541,6 +541,8 @@ class ZMSObject(ZMSItem.ZMSItem,
         if meta_type is None:
           constraints = self.attr('check_constraints')
           if type(constraints) is dict:
+            if len(constraints.keys()) > 0:
+              name += ' constraint'
             if constraints.has_key('ERRORS'):
               name += ' constraint-error'
               icon_title += '; '+';'.join(map(lambda x:'ERROR: '+x[1],constraints['ERRORS']))

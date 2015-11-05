@@ -669,41 +669,26 @@ div.cke_panel {
 	width: 280px !important;
 }
 
-div.constraint-error {
-	background-color:#F2DEDE;
-	color:#A94442;
-	padding:2px;
-	border-radius:2px;
-}
 i.constraint-error {
-	background-color:#A94442;
-	color:#FFFFFF;
-	padding:2px;
-	border-radius:2px;
+	color:red;
 }
-div.constraint-warning {
-	background-color:#FCF8E3;
-	color:#8A6D3B;
-	padding:2px;
-	border-radius:2px;
+div.constraint-error {
+	color:red;
+	padding-bottom:4px;
 }
 i.constraint-warning {
-	background-color:#FCF8E3;
-	color:#8A6D3B;
-	padding:2px;
-	border-radius:2px;
+	color:orange;
+	padding-bottom:4px;
 }
-div.constraint-restriction {
-	background-color:#D9EDF7;
-	color:#31708F;
-	padding:2px;
-	border-radius:2px;
+div.constraint-warning {
+	color:orange;
 }
 i.constraint-restriction {
-	background-color:#D9EDF7;
-	color:#31708F;
-	padding:2px;
-	border-radius:2px;
+	color:steelblue;
+}
+div.constraint-restriction {
+	color:steelblue;
+	padding-bottom:4px;
 }
 
 .zmi-container .right li span[class^="glyphicon-"],

@@ -56,7 +56,7 @@ $(function(){
 
 	// Content-Editable ////////////////////////////////////////////////////////
 	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
-		$("<style type='text/css'>.contentEditable.zmi-highlight{background-color:#f7f7f9;} </style>").appendTo("head");
+		$("<style type='text/css'>.contentEditable.zmi-highlight{background-color:#f7f7f9;}</style>").appendTo("head");
 		$('.contentEditable')
 			.mouseover( function(evt) {
 					$(this).addClass('zmi-highlight'); 
@@ -69,51 +69,9 @@ $(function(){
 				if (evt.target != "undefined" && $.inArray(evt.target.nodeName.toLowerCase(),['a','button','input','select','textarea']) > -1) {
 					return;
 				}
-				var $li = $(this).parents("li.zmi-item");
-				if ($li.length>0) {
-					var $action = $(".right .zmi-action",$li);
-					$ZMI.actionList.over($action,"click",evt,function() {
-							$(".split-left",$action).click();
-						});
-					return;
-				}
-				var href = ""+self.location.href;
-				if (href.indexOf('?')>0) {
-					href = href.substr(0,href.indexOf('?'));
-				}
-				if (href.lastIndexOf('/')>0) {
-					href = href.substr(0,href.lastIndexOf('/'));
-				}
-				var lang = null;
-				var parents = $(this).parents('.contentEditable');
-				for ( var i = 0; i <= parents.length; i++) {
-					var pid;
-					if ( i==parents.length) {
-						pid = $(this).attr('id');
-					}
-					else {
-						var $el = $(parents[parents.length-i-1]);
-						if ($el.hasClass("portalClient")) {
-							if (href.lastIndexOf('/')>0) {
-								href = href.substr(0,href.lastIndexOf('/'));
-							}
-						}
-						pid = $el.attr('id');
-					}
-					if (pid.length > 0) {
-						if (lang == null) {
-							lang = pid.substr(pid.lastIndexOf('_')+1);
-						}
-						pid = pid.substr(pid.indexOf('_')+1);
-						if(pid.substr(pid.length-('_'+lang).length)==('_'+lang)) {
-							pid = pid.substr(0,pid.length-('_'+lang).length);
-						}
-						if (!href.endsWith('/'+pid)) {
-							href += '/'+pid;
-						}
-					}
-				}
-				if (self.location.href.indexOf(href+'/manage_main')==0) {
+				var href = $(this).attr("data-absolute-url");
+				var lang = getZMILang();
+				if (self.location.href.indexOf(href+'/manage_main')>=0) {
 					href += '/manage_properties';
 				}
 				else {

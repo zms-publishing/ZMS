@@ -101,6 +101,14 @@ ZMILocalStorageAPI.prototype.del = function(k,r) {
 		self.location.reload();
 	}
 }
+ZMILocalStorageAPI.prototype.toggle = function(k,r) {
+	if (this.get(k,null)==null) {
+		this.set(k,"1",r);
+	}
+	else {
+		this.del(k,r);
+	}
+}
 ZMILocalStorageAPI.prototype.replace = function(k,v,r) {
 	this._del(k);
 	this._set(k,v);

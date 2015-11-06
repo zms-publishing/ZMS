@@ -151,17 +151,6 @@ function runPluginJcrop(c) {
 }
 
 /**
- * jQuery Cookies
- * @see http://code.google.com/p/cookies
- */
-function runPluginCookies(c) {
-	$.plugin('cookies',{
-		files: ['/++resource++zms_/jquery/jquery.cookies.2.2.0.min.js']
-		});
-	$.plugin('cookies').get('body',c);
-}
-
-/**
  * jQuery JSON
  */
 function runPluginJSON(c) {

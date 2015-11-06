@@ -804,7 +804,6 @@ body.tasks .form-horizontal,body.tasks table.table tbody tr td.data{background-c
 body.tasks table.table{background-color:#FFF;font-size:smaller}
 body.tasks table.table ul.breadcrumb{margin-left:0;padding:0 0 1em 0;background:transparent}
 body.tasks .zmi-container .center .contentEditable{padding-left:0 !important}
-#ui-datepicker-div .ui-widget-header .ui-icon{background-image:url(/++resource++zms_/bootstrap/plugin/ui-bootstrap-addyosmani/images/ui-icons_222222_256x240.png)}
 #zmiIframeAddDialog #form0 input.hasDatepicker{z-index:2000}
 .zmi.zmslog .logitem{margin-top:2em}
 .zmi.zmslog .logitem span.pull-left{padding:0 .5em;font-size:200%;color:#c7254e}

@@ -1318,9 +1318,8 @@ class ZMSObject(ZMSItem.ZMSItem,
       request = self.REQUEST
       if _globals.isPreviewRequest(request) and \
          (request.get('URL').find('/manage')>0 or self.getConfProperty('ZMS.preview.contentEditable',1)==1):
-        ids = ['contentEditable',self.id,request['lang']]
         css = ['contentEditable', self.meta_id]
-        html = '<div class="%s" id="%s">%s</div>'%(' '.join(css),'_'.join(ids),html)
+        html = '<div class="%s" data-absolute-url="%s">%s</div>'%(' '.join(css),self.absolute_url()[len(self.REQUEST['BASE0']):],html)
       return html
 
     def _getBodyContent(self, REQUEST):

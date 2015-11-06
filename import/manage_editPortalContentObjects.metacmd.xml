@@ -8,7 +8,7 @@ RESPONSE =  request.RESPONSE
 
 print context.manage_page_header(context,request)
 print context.manage_tabs(context,request)
-print context.f_headline(context,headline='<big><img src="%sbtn_custom.gif" align="absmiddle" border="0"/> Edit Portal Content-Objects</big>'%context.MISC_ZMS)
+print context.f_headline(context,headline='<big>Edit Portal Content-Objects</big>')
 print '<form method="post" enctype="multipart/form-data">'
 print '<input type="hidden" name="form_id" value="manage_editPortalContentObjects"/>'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']

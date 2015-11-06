@@ -696,14 +696,14 @@ div.constraint-restriction {
 	background-color:#D9EDF7;
 }
 /* Contraint as Tooltip */
-.btn-group.zmi-action.dropup .tooltip-inner {
+.btn-group.zmi-action .tooltip-inner {
 	padding: 1px;
 	background-color: #888
 }
-.btn-group.zmi-action.dropup .tooltip-arrow {
+.btn-group.zmi-action .tooltip-arrow {
 	border-top-color: #888;
 }
-.btn-group.zmi-action.dropup .tooltip-inner .constraint {
+.btn-group.zmi-action .tooltip-inner .constraint {
 	border-radius: 4px;
 }
 

@@ -669,31 +669,44 @@ div.cke_panel {
 	width: 280px !important;
 }
 
+/* Contraint Messages */
 .zmi-manage-main-change div.constraint {
-  display:none;
+	display:none;
 }
 div.constraint {
 	font-size: 11px;
 	padding: 8px;
 }
 .constraint-error {
-  color:#A94442;
+	color:#A94442;
 }
 div.constraint-error {
-  background-color:#F2DEDE;
+	background-color:#F2DEDE;
 }
 .constraint-warning {
-  color:#8A6D3B; 
+	color:#8A6D3B; 
 }
 div.constraint-warning {
-  background-color:#FCF8E3;
+	background-color:#FCF8E3;
 }
 .constraint-restriction {
-  color:#31708F;
+	color:#31708F;
 }
 div.constraint-restriction {
-  background-color:#D9EDF7;
+	background-color:#D9EDF7;
 }
+/* Contraint as Tooltip */
+.btn-group.zmi-action.dropup .tooltip-inner {
+	padding: 1px;
+	background-color: #888
+}
+.btn-group.zmi-action.dropup .tooltip-arrow {
+	border-top-color: #888;
+}
+.btn-group.zmi-action.dropup .tooltip-inner .constraint {
+	border-radius: 4px;
+}
+
 
 .zmi-container .right li span[class^="glyphicon-"],
 .zmi-container .right li span[class*=" glyphicon-"],

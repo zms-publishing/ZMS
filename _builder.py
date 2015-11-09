@@ -203,7 +203,7 @@ class Builder:
               id = self.oCurrNode.getNewId()
             
             # Get new sort-id.
-            sort_id = self.getNewSortId()
+            sort_id = self.oCurrNode.getNewSortId()
             
             ##### Init ####
             newNode = constructor(id,sort_id,meta_id)

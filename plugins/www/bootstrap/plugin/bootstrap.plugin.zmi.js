@@ -888,6 +888,110 @@ ZMI.prototype.iframe = function(href, data, opt) {
 }
 
 // #############################################################################
+// ### ZMI ObjectTree
+// #############################################################################
+
+ZMIObjectTree = function() {};
+$ZMI.objectTree = new ZMIObjectTree();
+
+ZMIObjectTree.prototype.init = function(s,href,p) {
+	var that = this;
+	that.p = p;
+	href = href.substr(0,href.lastIndexOf("/"))+"/ajaxGetParentNodes";
+	$(s).html($ZMI.icon("icon-spinner icon-spin")+'&nbsp;'+getZMILangStr('MSG_LOADING'));
+	$.get(href,{lang:getZMILang()},function(result) {
+			var html = that.addPages(result,false);
+			$(s).html(html);
+		});
+}
+
+ZMIObjectTree.prototype.addPages = function(d,siblings) {
+	var that = this;
+	var html = "";
+	$("page",d).each(function() {
+			var page = this;
+			var titlealt = "";
+			var page_uid = $(page).attr("uid");
+			var page_home_id = $(page).attr("home_id");
+			var page_id = $(page).attr("id").substr(page_home_id.length+1);
+			var page_absolute_url = $(page).attr("absolute_url");
+			var page_physical_path = $(page).attr("physical_path");
+			var link_url = $(page).attr("index_html");
+			var page_is_page = $(page).attr("is_page")=='1' || $(page).attr("is_page")=='True';
+			var page_is_pageelement = $(page).attr("is_pageelement")=='1' || $(page).attr("is_pageelement")=='True';
+			var page_meta_type = $(page).attr("meta_id");
+			var page_titlealt = $(page).attr("titlealt");
+			var page_display_icon = $(page).attr("display_icon");
+			var anchor = "";
+			if ( page_is_pageelement) {
+				var file_filename = $("file>filename",page);
+				if (file_filename.length) {
+					anchor = "/" + file_filename.text();
+				}
+			}
+			if ($(this).attr("meta_id")=='ZMSGraphic') {
+				var $img = $("img",this);
+				if ($img.length==1) {
+					link_url = '<img data-id=&quot;'+page_uid+'&quot; src=&quot;'+$("href",$img).text()+'&quot;>';
+					try { page_titlealt = filename; } catch(err) { };
+				}
+			}
+			else if ($(this).attr("meta_id")=='ZMSFile') {
+				var $file = $("file",this);
+				if ($file.length==1) {
+					var $fname = $("filename",$file).text();
+					var $ext = $fname.substring($fname.lastIndexOf('.')+1,$fname.length);
+					link_url = '<a data-id=&quot;'+page_uid+'&quot; href=&quot;'+$("href",$file).text()+'&quot; target=&quot;_blank&quot;>'+$(this).attr("title")+' ('+$ext+', '+$("size",$file).text()+')</a>'; 
+					try { page_titlealt = filename; } catch(err) { };
+				}
+			}
+			var id = $(this).attr("id").replace(/\./gi,"_").replace(/\-/gi,"_");
+			var css = [];
+			html += '<ol data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page '+page_meta_type+'">';
+			html += '<div class="';
+			/*
+			if ($(page).attr("permissions")) {
+				html += 'restricted ';
+			}
+			*/
+			if ($(page).attr("active")== "0") {
+				html += 'inactive ';
+			} else {
+				html += 'active ';
+			}
+			var callback = that.p['zmiToggleClick.callback'];
+			html += '">'
+				+ $ZMI.icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this'+(typeof callback=="undefined"?'':','+callback)+')"')+' ';
+			if (!page_is_page) {
+				html += '<span style="cursor:help!important" onclick="zmiPreview(this)">'+page_display_icon+'</span> ';
+			}
+			html += '<a href="'+page_absolute_url+'"'
+				+ ' data-uid="'+page_uid+'"'
+				+ ' data-page-physical-path="'+page_physical_path+'"'
+				+ ' data-anchor="'+anchor+'"'
+				+ ' data-page-is-page="'+page_is_page+'"'
+				+ ' data-page-titlealt="'+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'"'
+				+ ' onclick="return zmiSelectObject(this)">';
+			if (page_is_page) {
+				html += page_display_icon+' ';
+			}
+			html += page_titlealt;
+			html += '</a>';
+			if (siblings) {
+				html += '</div>';
+				html += '</ol>';
+			}
+		});
+	$("page",d).each(function() {
+			if (!siblings) {
+				html += '</div>';
+				html += '</ol>';
+			}
+		});
+	return html;
+}
+
+// #############################################################################
 // ### ZMI Action-Lists
 // #############################################################################
 

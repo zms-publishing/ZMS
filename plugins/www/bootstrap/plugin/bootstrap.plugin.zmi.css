@@ -569,40 +569,21 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 	zoom: 0.6;
 	-moz-transform:scale(0.6);
 }
-body.browse_iframe .zmi-sitemap > div,
-body.browse_iframe .zmi-sitemap ul,
-body.browse_iframe .zmi-sitemap ol,
-.zmi.manage-menu .zmi-sitemap > div,
-.zmi.manage-menu .zmi-sitemap ul,
-.zmi.manage-menu .zmi-sitemap ol {
+.zmi-sitemap > div,
+.zmi-sitemap ul,
+.zmi-sitemap ol {
 	margin-top:0.3em;
 	margin-left:0;
 	padding-left:1em;
 }
-.zmi.manage-menu .navbar-brand {
-	font-size:100%!important;
-}
-body.browse_iframe .toggle {
-	font-size:120%;
+.zmi-sitemap .toggle {
 	vertical-align:bottom;
 	width:12px;
 	margin-right:2px;
 	text-align:center;
 	display:inline-block;
 	cursor:pointer;
-}
-.zmi.manage-menu .toggle {
-	color:#CCC;
 	font-size:120%;
-	vertical-align:bottom;
-	width:12px;
-	margin-right:2px;
-	text-align:center;
-	display:inline-block;
-	cursor:pointer;
-}
-.zmi.manage-menu .ZMSDocument .toggle {
-	color:#404040;
 }
 .zmi.manage-menu {
 	background-color:#404040;
@@ -610,10 +591,16 @@ body.browse_iframe .toggle {
 .zmi.manage-menu .zmi header {
 	background-color: transparent !important;
 }
+.zmi.manage-menu .navbar-brand {
+	font-size:100%!important;
+}
+.zmi.manage-menu .toggle {
+	color:#CCC;
+}
 .zmi.manage-menu a {
 	color:#FFF;
 }
-.zmi.manage-menu .zmi-sitemap .inactive a,
+.zmi-sitemap .inactive a,
 .zmi.manage-menu .zmi-helper-clickable {
 	color:#999;
 }

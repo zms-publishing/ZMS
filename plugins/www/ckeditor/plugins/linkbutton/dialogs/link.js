@@ -52,99 +52,80 @@ function hidePreview() {
 	$("div#CKEDITOR_preview").hide();
 }
 
-function zmiAddPages(result, siblings) {
-	var html = "";
-	$("page",result).each(function() {
-			var page = this;
-			var titlealt = "";
-			var page_uid = $(page).attr("uid");
-			var page_home_id = $(page).attr("home_id");
-			var page_id = $(page).attr("id").substr(page_home_id.length+1);
-			var page_absolute_url = $(page).attr("absolute_url");
-			var page_physical_path = $(page).attr("physical_path");
-			var link_url = $(page).attr("index_html");
-			var page_is_page = $(page).attr("is_page")=='1' || $(page).attr("is_page")=='True';
-			var page_meta_type = $(page).attr("meta_id");
-			var page_titlealt = $(page).attr("titlealt");
-			var page_display_icon = $(page).attr("display_icon");
-			if ($(this).attr("meta_id")=='ZMSGraphic') {
-				var $img = $("img",this);
-				if ($img.length==1) {
-					link_url = '<img data-id=&quot;'+page_uid+'&quot; src=&quot;'+$("href",$img).text()+'&quot;>';
-					try { page_titlealt = filename; } catch(err) { };
+/**
+ * Click toggle.
+ */
+function zmiToggleClick(toggle, callback) {
+	$ZMI.writeDebug('zmiToggleClick: '+toggle+'['+($(toggle).length)+'];callback='+(typeof callback));
+	var $container = $(toggle).parents("ol:first");
+	$container.children(".zmi-page").remove();
+	if ($(toggle).hasClass($ZMI.icon_clazz("icon-caret-right"))) {
+		$(toggle).removeClass($ZMI.icon_clazz("icon-caret-right")).addClass($ZMI.icon_clazz("icon-caret-down")).attr({title:'-'});
+		var href = '';
+		var homeId = null;
+		$(toggle).parents(".zmi-page").each(function(){
+				var dataId = $(this).attr("data-id");
+				var dataHomeId = $(this).attr("data-home-id");
+				if (homeId == null) {
+					homeId = dataHomeId;
 				}
-			}
-			else if ($(this).attr("meta_id")=='ZMSFile') {
-				var $file = $("file",this);
-				if ($file.length==1) {
-					var $fname = $("filename",$file).text();
-					var $ext = $fname.substring($fname.lastIndexOf('.')+1,$fname.length);
-					link_url = '<a data-id=&quot;'+page_uid+'&quot; href=&quot;'+$("href",$file).text()+'&quot; target=&quot;_blank&quot;>'+$(this).attr("title")+' ('+$ext+', '+$("size",$file).text()+')</a>'; 
-					try { page_titlealt = filename; } catch(err) { };
+				if (homeId != dataHomeId) {
+					href = '/'+dataHomeId+'/'+homeId+href;
+					homeId = dataHomeId;
 				}
-			}
-			var id = $(this).attr("id").replace(/\./gi,"_").replace(/\-/gi,"_");
-			html += '<div id="div_'+id+'" data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page" style="padding:1px 2px 1px 8px; margin:0">';
-			html += '<span onclick="zmiExpandObject(\''+id+'\',\''+page_absolute_url+'\',\''+$(this).attr("meta_id")+'\');" style="cursor:pointer">';
-			html += '<img src="/misc_/zms/pl.gif" title="+" border="0" align="absmiddle"/>';
-			html += '</span>';
-			if (!page_is_page) {
-				html += '<span style="cursor:help" onclick="zmiPreview(this)">'+page_display_icon+'</span> ';
-			}
-			html += '<a href="#" onclick="return zmiSelectObject(\''+page_uid+'\',\''+link_url+'\',\''+page_meta_type+'\')"'
-				+ ' data-page-physical-path="'+page_physical_path+'"'
-				+ '>';
-			if (page_is_page) {
-				html += page_display_icon+' ';
-			}
-			html += page_titlealt;
-			html += '</a>';
-			html += '<div id="div_'+id+'_children" style="'+(siblings?'display:none;':'')+'padding:1px 2px 1px 8px; margin:0">';
-			if (siblings) {
-				html += '</div>';
-				html += '</div>';
-			}
-		});
-	$("page",result).each(function() {
-			if (!siblings) {
-				html += '</div>';
-				html += '</div>';
-			}
-		});
-	return html;
-}
-
-function zmiExpandObject(id,abs_url,meta_id) {
-	var $img = $("#div_"+id+" img:first");
-	if ($img.attr("title").length==1) {
-		var $div = $("#div_"+id+"_children");
-		if ($img.attr("title")=="+") {
-			$div.html('<i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')).show("normal");
-			$img.attr({src:"/misc_/zms/mi.gif",title:"-"});
-			var href = abs_url + "/ajaxGetChildNodes";
-			$.get(href,{lang:getZMILang(),physical_path:$('meta[name=physical_path]').attr('content')},function(result) {
-					var html = zmiAddPages(result,true);
-					if (html.length==0) {
-						$img.attr({src:"/misc_/zms/spacer.gif",title:""}).css({width:"16px",height:"16px"});
-					}
-					$div.html(html).addClass("loaded");
-				});
+				else {
+					href = '/'+dataId+href;
+				}
+			});
+		if (!href.indexOf('/'+homeId)==0) {
+			href = '/'+homeId+href;
 		}
-		else {
-			$div.hide("normal");
-			$img.attr({src:"/misc_/zms/pl.gif",title:"+"});
+		var base = $ZMI.getPhysicalPath();
+		base = base.substr(0,base.indexOf('/'+homeId));
+		// Set wait-cursor.
+		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
+		// JQuery.AJAX.get
+		$ZMI.writeDebug('zmiToggleClick:'+base+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
+		$.get(base+href+'/manage_ajaxGetChildNodes',{lang:getZMILang(),physical_path:$('meta[name=physical_path]').attr('content')},function(data){
+				// Reset wait-cursor.
+				$("#loading").remove();
+				// Get and iterate pages.
+				var pages = $("pages",data).children("page");
+				if ( pages.length == 0) {
+					$(toggle).removeClass($ZMI.icon_clazz("icon-caret-down")).attr({title:''});
+				}
+				else {
+					var html = $ZMI.objectTree.addPages(data,true);
+					$container.append(html);
+				}
+				if (typeof callback == 'function') {
+					callback();
+				}
+			});
+	}
+	else if ($(toggle).hasClass($ZMI.icon_clazz("icon-caret-down"))) {
+		$(toggle).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right")).attr({title:'+'});
+		if (typeof callback == 'function') {
+			callback();
 		}
-		zmiResizeObject();
 	}
 }
 
-function zmiSelectObject(id,abs_url,meta_id) {
-	data_id = id;
+/**
+ * Select object.
+ */
+function zmiSelectObject(sender) {
+	var uid = $(sender).attr('data-uid');
+	var abs_url = $(sender).attr('href');
+	data_id = uid;
 	zmiDialog.getContentElement('info', 'url').setValue(abs_url);
 	zmiDialog.click("ok");
 	return false;
 }
 
+/**
+ * Resize object.
+ */
 function zmiResizeObject() {
 	var $myDiv = $("#myDiv");
 	var $cke_dialog = $myDiv.parents(".cke_dialog");
@@ -191,16 +172,7 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 							zmiDialog = this.getDialog();
 							zmiDialog.on("resize",function(event){zmiResizeObject()});
 							zmiResizeObject();
-							var href = self.location.href;
-							href = href.substr(0,href.lastIndexOf("/"))+"/ajaxGetParentNodes";
-							$('#myDiv').html('<i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING'));
-							$.get(href,{lang:getZMILang()},function(result) {
-									var html = zmiAddPages(result,false);
-									$("#myDiv").html(html);
-									// Open siblings of current page-element.
-									var last_page_id = $("page[is_page=1]:last",result).attr("id");
-									$("div#div_"+last_page_id+" > span:first").click();
-								});
+							$ZMI.objectTree.init("#myDiv",self.location.href,{'zmiToggleClick.callback':'zmiResizeObject'});
 						},
 						validate : function()
 						{
@@ -225,7 +197,7 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 					},
 					{
 						type: 'html',
-						html : '<div id="myDiv" style="overflow:auto"></div>'
+						html : '<div id="myDiv" class="zmi-sitemap" style="overflow:auto"></div>'
 					}
 				]
 			}

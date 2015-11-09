@@ -163,7 +163,7 @@ function zmiToggleClick(toggle, callback) {
 							html += 'active ';
 						}
 						html += '">'
-							+ $ZMI.icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this)"')+' '
+							+ $ZMI.icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this)"')+' ';
 						if (!page_is_page) {
 							html += '<span style="cursor:help" onclick="zmiPreview(this)">'+page_display_icon+'</span> ';
 						}
@@ -300,7 +300,12 @@ $(function(){
 			}
 			selectUrl(url);
 		});
-	zmiRefresh();
+	var physical_path = $('span[name=physical_path]').text();
+	var href = physical_path;
+	if (typeof href == "undefined" || href == "") {
+		href = $ZMI.getPhysicalPath();
+	}
+	$ZMI.objectTree.init(".zmi-sitemap",href,{});
 });
 
 var URLParser = (function (document) {

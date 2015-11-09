@@ -40,8 +40,6 @@ class ZMSTrashcan(ZMSContainerObject):
     # Properties.
     # -----------
     meta_type = meta_id = "ZMSTrashcan"
-    icon = "misc_/zms/ZMSTrashcan.gif"
-    icon_disabled = "misc_/zms/ZMSTrashcan_disabled.gif"
 
     # Management Options.
     # -------------------
@@ -98,18 +96,8 @@ class ZMSTrashcan(ZMSContainerObject):
     # --------------------------------------------------------------------------
     def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
       icon_title = self.display_type(REQUEST,meta_type)
-      pattern = '%s'
-      if zpt:
-        pattern = '<img src="%s" title="'+icon_title+'"/>'
-      obj_type = meta_type
-      if obj_type is None:
-        if not self.isActive(REQUEST):
-          key = 'icon_disabled'
-        obj_type = self.meta_id
-      if zpt:
-        icon_clazz = 'icon-trash'
-        return self.zmi_icon(self,name=icon_clazz,extra='title="%s"'%icon_title)
-      return pattern%getattr(self,key)
+      icon_clazz = 'icon-trash'
+      return self.zmi_icon(self,name=icon_clazz,extra='title="%s"'%icon_title)
 
 
     """

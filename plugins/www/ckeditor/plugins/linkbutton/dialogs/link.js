@@ -53,65 +53,6 @@ function hidePreview() {
 }
 
 /**
- * Click toggle.
- */
-function zmiToggleClick(toggle, callback) {
-	$ZMI.writeDebug('zmiToggleClick: '+toggle+'['+($(toggle).length)+'];callback='+(typeof callback));
-	var $container = $(toggle).parents("ol:first");
-	$container.children(".zmi-page").remove();
-	if ($(toggle).hasClass($ZMI.icon_clazz("icon-caret-right"))) {
-		$(toggle).removeClass($ZMI.icon_clazz("icon-caret-right")).addClass($ZMI.icon_clazz("icon-caret-down")).attr({title:'-'});
-		var href = '';
-		var homeId = null;
-		$(toggle).parents(".zmi-page").each(function(){
-				var dataId = $(this).attr("data-id");
-				var dataHomeId = $(this).attr("data-home-id");
-				if (homeId == null) {
-					homeId = dataHomeId;
-				}
-				if (homeId != dataHomeId) {
-					href = '/'+dataHomeId+'/'+homeId+href;
-					homeId = dataHomeId;
-				}
-				else {
-					href = '/'+dataId+href;
-				}
-			});
-		if (!href.indexOf('/'+homeId)==0) {
-			href = '/'+homeId+href;
-		}
-		var base = $ZMI.getPhysicalPath();
-		base = base.substr(0,base.indexOf('/'+homeId));
-		// Set wait-cursor.
-		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
-		// JQuery.AJAX.get
-		$ZMI.writeDebug('zmiToggleClick:'+base+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
-		$.get(base+href+'/manage_ajaxGetChildNodes',{lang:getZMILang(),physical_path:$('meta[name=physical_path]').attr('content')},function(data){
-				// Reset wait-cursor.
-				$("#loading").remove();
-				// Get and iterate pages.
-				var pages = $("pages",data).children("page");
-				if ( pages.length == 0) {
-					$(toggle).removeClass($ZMI.icon_clazz("icon-caret-down")).attr({title:''});
-				}
-				else {
-					var html = $ZMI.objectTree.addPages(data,true);
-					$container.append(html);
-				}
-				if (typeof callback == 'function') {
-					callback();
-				}
-			});
-	}
-	else if ($(toggle).hasClass($ZMI.icon_clazz("icon-caret-down"))) {
-		$(toggle).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right")).attr({title:'+'});
-		if (typeof callback == 'function') {
-			callback();
-		}
-	}
-}
-
-/**
  * Select object.
  */
 function zmiSelectObject(sender) {
@@ -172,7 +113,9 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 							zmiDialog = this.getDialog();
 							zmiDialog.on("resize",function(event){zmiResizeObject()});
 							zmiResizeObject();
-							$ZMI.objectTree.init("#myDiv",self.location.href,{'zmiToggleClick.callback':'zmiResizeObject'});
+							var href = self.location.href;
+							href = href.substr(0,href.lastIndexOf("/"));
+							$ZMI.objectTree.init("#myDiv",href,{'toggleClick.callback':'zmiResizeObject'});
 						},
 						validate : function()
 						{

@@ -897,7 +897,7 @@ $ZMI.objectTree = new ZMIObjectTree();
 ZMIObjectTree.prototype.init = function(s,href,p) {
 	var that = this;
 	that.p = p;
-	href = href.substr(0,href.lastIndexOf("/"))+"/ajaxGetParentNodes";
+	href = href+"/ajaxGetParentNodes";
 	$(s).html($ZMI.icon("icon-spinner icon-spin")+'&nbsp;'+getZMILangStr('MSG_LOADING'));
 	$.get(href,{lang:getZMILang()},function(result) {
 			var html = that.addPages(result,false);
@@ -959,9 +959,9 @@ ZMIObjectTree.prototype.addPages = function(d,siblings) {
 			} else {
 				html += 'active ';
 			}
-			var callback = that.p['zmiToggleClick.callback'];
+			var callback = that.p['toggleClick.callback'];
 			html += '">'
-				+ $ZMI.icon("icon-caret-right toggle",'title="+" onclick="zmiToggleClick(this'+(typeof callback=="undefined"?'':','+callback)+')"')+' ';
+				+ $ZMI.icon("icon-caret-right toggle",'title="+" onclick="$ZMI.objectTree.toggleClick(this'+(typeof callback=="undefined"?'':','+callback)+')"')+' ';
 			if (!page_is_page) {
 				html += '<span style="cursor:help!important" onclick="zmiPreview(this)">'+page_display_icon+'</span> ';
 			}
@@ -989,6 +989,65 @@ ZMIObjectTree.prototype.addPages = function(d,siblings) {
 			}
 		});
 	return html;
+}
+
+/**
+ * Click toggle.
+ */
+ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
+  $ZMI.writeDebug('zmiToggleClick: '+toggle+'['+($(toggle).length)+'];callback='+(typeof callback));
+  var $container = $(toggle).parents("div:first");
+  $container.children("ol").remove();
+  if ($(toggle).hasClass($ZMI.icon_clazz("icon-caret-right"))) {
+    $(toggle).removeClass($ZMI.icon_clazz("icon-caret-right")).addClass($ZMI.icon_clazz("icon-caret-down")).attr({title:'-'});
+    var href = '';
+    var homeId = null;
+    $(toggle).parents(".zmi-page").each(function(){
+        var dataId = $(this).attr("data-id");
+        var dataHomeId = $(this).attr("data-home-id");
+        if (homeId == null) {
+          homeId = dataHomeId;
+        }
+        if (homeId != dataHomeId) {
+          href = '/'+dataHomeId+'/'+homeId+href;
+          homeId = dataHomeId;
+        }
+        else {
+          href = '/'+dataId+href;
+        }
+      });
+    if (!href.indexOf('/'+homeId)==0) {
+      href = '/'+homeId+href;
+    }
+    var base = $ZMI.getPhysicalPath();
+    base = base.substr(0,base.indexOf('/'+homeId));
+    // Set wait-cursor.
+    $container.append('<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
+    // JQuery.AJAX.get
+    $ZMI.writeDebug('zmiToggleClick:'+base+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
+    $.get(base+href+'/manage_ajaxGetChildNodes',{lang:getZMILang(),physical_path:$('meta[name=physical_path]').attr('content')},function(data){
+        // Reset wait-cursor.
+        $("#loading").remove();
+        // Get and iterate pages.
+        var pages = $("page",data);
+        if ( pages.length == 0) {
+          $(toggle).removeClass($ZMI.icon_clazz("icon-caret-down")).attr({title:''});
+        }
+        else {
+          var html = $ZMI.objectTree.addPages(data,true);
+          $container.append(html);
+        }
+        if (typeof callback == 'function') {
+          callback();
+        }
+      });
+  }
+  else if ($(toggle).hasClass($ZMI.icon_clazz("icon-caret-down"))) {
+    $(toggle).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right")).attr({title:'+'});
+    if (typeof callback == 'function') {
+      callback();
+    }
+  }
 }
 
 // #############################################################################

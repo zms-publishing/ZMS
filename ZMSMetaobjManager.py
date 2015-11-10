@@ -650,13 +650,16 @@ class ZMSMetaobjManager:
       metaObjAttrs = filter(lambda x: x is not None, metaObjAttrs)
       for metaObjAttr in metaObjAttrs:
         if metaObjAttr['type'] == 'interface':
-          if metaObjAttr.get('py') is not None:
-            value = call(metaObjAttr['py'])
-          elif metaObjAttr.get('zpt') is not None:
-            value = call(metaObjAttr['zpt'])
-            value = unicode(value).encode('utf-8')
-          else:
-            value = zmscontext.dt_exec(metaObjAttr.get('name',''))
+          try:
+            if metaObjAttr.get('py') is not None:
+              value = call(metaObjAttr['py'])
+            elif metaObjAttr.get('zpt') is not None:
+              value = call(metaObjAttr['zpt'])
+              value = unicode(value).encode('utf-8')
+            else:
+              value = zmscontext.dt_exec(metaObjAttr.get('name',''))
+          except:
+            value = _globals.writeError(self,'[evalMetaobjAttr]: can\'t %s.%s'%(id,attr_id))
         elif metaObjAttr['type'] == 'method':
           value = zmscontext.dt_exec(metaObjAttr.get('custom',''))
         elif metaObjAttr['type'] == 'py':

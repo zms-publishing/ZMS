@@ -13,54 +13,18 @@
 					<span class="zmi-home-id" tal:content="python:here.breadcrumbs_obj_path()[0].getHome().id">Home-Id</span>
 		</a>
 		<ul class="nav navbar-nav navbar-right">
-      <li id="zmi-history" class="dropdown">
-      </li>
-      <li id="zmi-bookmarks" class="dropdown">
-      </li>
+			<li id="zmi-history" class="dropdown"></li>
+			<li id="zmi-bookmarks" class="dropdown"></li>
 		</ul>
 	</div><!-- .navbar -->
 </header>
 
-<div class="zmi-sitemap"
-	tal:define="accessNodes python:filter(lambda ob: ob.hasAccess(request), here.breadcrumbs_obj_path());
-				childNode python:accessNodes[0]"
-	><tal:block tal:content="structure python:'<ol data-home-id=\042%s\042 data-id=\042%s\042 class=\042zmi-page\042>'%(childNode.getHome().id,childNode.id)"></tal:block
-	><div tal:attributes="class python:['inactive','active'][childNode.isActive(request)]"
-		><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right toggle',extra='title=\042+\042 onclick=\042zmiToggleClick(this)\042')"
-			></tal:block><a 
-				tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang'])" 
-				onclick="return zmiFollowHref(this)">
-			<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
-			<span tal:content="python:childNode.getTitlealt(request)">the titlealt</span>
-		</a>
-		<span class="dropdown dropdown-lang" tal:condition="python:len(here.getLangIds())>1" tal:attributes="title python:here.getZMILangStr('TAB_LANGUAGES')">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				<i title="Language" tal:condition="python:len(here.getLangIds())>1" 
-					tal:attributes="title python:here.getLanguageLabel(request['lang'])" 
-					style="color:#999;text-decoration:none;cursor:pointer" class="icon-flag"></i>
-			</a>
-			<ul class="dropdown-menu" tal:define="global coverage python:here.getDCCoverage(request); languages python:[]">
-				<tal:block tal:condition="python:coverage.startswith('global.')">
-					<tal:block tal:define="dummy0 python:languages.extend(here.getDescendantLanguages(coverage[len('global.'):],request))"></tal:block>
-				</tal:block>
-				<tal:block tal:condition="python:not coverage.startswith('global.')">
-					<tal:block tal:define="dummy0 python:languages.append(coverage[len('local.'):])"></tal:block>
-				</tal:block>
-				<li tal:repeat="language languages">
-					<a tal:attributes="href python:here.url_append_params(request['URL'],{'lang':language})">
-						<tal:block tal:content="structure python:here.zmi_icon(name=['icon-check-empty','icon-check'][int(language==request['lang'])])"></tal:block>
-						<tal:block tal:content="python:here.getLanguageLabel(language)">the language</tal:block>
-						<tal:block tal:condition="python:language==here.getPrimaryLanguage()">[*]</tal:block>
-					</a>
-				</li>
-			</ul>
-		</span><!-- .dropdown -->
-	</div>
-	<tal:block tal:content="structure python:'</ol>'"></tal:block>
-	<div>
-		<span class="zmi-helper-clickable" onclick="zmiRefresh()"><i class="icon-refresh"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block></span>
-	</div>
+<div class="zmi-sitemap">
 </div><!-- .zmi-sitemap -->
+
+<footer>
+	<span class="zmi-helper-clickable" onclick="zmiRefresh()"><i class="icon-refresh"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block></span>
+</footer>
 
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/object/manage_menu.js"></script>

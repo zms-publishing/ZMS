@@ -569,12 +569,14 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 	zoom: 0.6;
 	-moz-transform:scale(0.6);
 }
-.zmi-sitemap > div,
-.zmi-sitemap ul,
-.zmi-sitemap ol {
+.zmi-sitemap ul {
 	margin-top:0.3em;
 	margin-left:0;
 	padding-left:1em;
+	list-style:outside none none;
+}
+.zmi-sitemap li.active > a {
+	font-weight:bold;
 }
 .zmi-sitemap .toggle {
 	vertical-align:bottom;
@@ -586,19 +588,10 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 	font-size:120%;
 }
 .zmi.manage-menu {
-	background-color:#404040;
-}
-.zmi.manage-menu .zmi header {
-	background-color: transparent !important;
+	background-color:#F5F5F5;
 }
 .zmi.manage-menu .navbar-brand {
 	font-size:100%!important;
-}
-.zmi.manage-menu .toggle {
-	color:#CCC;
-}
-.zmi.manage-menu a {
-	color:#FFF;
 }
 .zmi-sitemap .inactive a,
 .zmi.manage-menu .zmi-helper-clickable {

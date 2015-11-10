@@ -2,57 +2,6 @@ var zmiDialog = null;
 var data_id = null;
 
 /**
- * Preview.
- */
-function zmiPreview(sender) {
-	var data_id = $(sender).closest('.zmi-page').attr('data-id');
-	if($('#zmi_preview_'+data_id).length > 0) {
-		$('#zmi_preview_'+data_id).remove();
-	}
-	else {
-		var coords = $ZMI.getCoords(sender);
-		var abs_url = $(sender).parent('div').children('[data-page-physical-path]').attr('data-page-physical-path');
-		$.get(abs_url+'/ajaxGetBodyContent',{lang:getZMILang(),preview:'preview'},function(data){
-				$('div.zmi-browse-iframe-preview').remove();
-				$('body').append(''
-						+'<div id="zmi_preview_'+data_id+'">'
-							+'<div class="zmi-browse-iframe-preview">'
-								+'<div class="bg-primary" style="margin:-1em -1em 0 -1em;padding:0 4px 2px 4px;cursor:pointer;text-align:right;font-size:smaller;" onclick="$(\'#zmi_preview_'+data_id+'\').remove()">'+$ZMI.icon("icon-remove")+' '+getZMILangStr('BTN_CLOSE')+'</div>'
-								+data
-							+'</div><!-- .zmi-browse-iframe-preview -->'
-						+'</div><!-- #zmi-preview -->'
-					);
-				$('div.zmi-browse-iframe-preview').css({top:coords.y+$(sender).height(),left:coords.x+$(sender).width()});
-			});
-	}
-}
-
-function showPreviewZMSGraphic(el,src,icon,filename,size) {
-	var html= '';
-	html += '<div class="img_head"><img src="'+icon+'" border="0" align="absmiddle"/> '+filename+' ('+size+')</div>';
-	html += '<div class="img_img"><img src="'+src+'" border="0" align="absmiddle" style="max-width:200px;"/></div>';
-	showPreview(el,html);
-}
-
-function showPreviewZMSFile(el,href,icon,filename,size) {
-	var html= '';
-	html += '<div class="file_head"><a href="'+href+'" target="_blank" class="zmi"><img src="'+icon+'" border="0" align="absmiddle"/> '+filename+' ('+size+')</a></div>';
-	showPreview(el,html);
-}
-
-function showPreview(el,html) {
-	var coords = $(el).offset();
-	if ($("div#CKEDITOR_preview").length==0) {
-		$('body').append('<div id="CKEDITOR_preview" class="form-small ui-helper-hidden" style="z-index:99999;background-color:white;position:absolute;"></div>');
-	}
-	$("div#CKEDITOR_preview").html(html).css({left:coords.left+20,top:coords.top+20}).show();
-}
-
-function hidePreview() {
-	$("div#CKEDITOR_preview").hide();
-}
-
-/**
  * Select object.
  */
 function zmiSelectObject(sender) {

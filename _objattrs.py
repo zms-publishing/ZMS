@@ -237,7 +237,7 @@ class ObjAttrs:
     #  ObjAttrs.getObjAttrLabel:
     # --------------------------------------------------------------------------
     def getObjAttrLabel(self, obj_attr):
-      lang = self.REQUEST.get('manage_lang',self.REQUEST.get('lang','ger'))
+      lang = self.REQUEST.get('manage_lang',self.REQUEST.get('lang',self.getPrimaryLanguage()))
       for key in [ 'name', 'id']:
         if obj_attr.has_key( key):
           name = obj_attr.get( key)

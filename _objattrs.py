@@ -451,6 +451,7 @@ class ObjAttrs:
       else: 
         css = 'form-control'
         if disabled: css += '-disabled'
+        css += ' datatype-%s'%(datatype)
         if datatype in _globals.DT_DATETIMES:
           size = 12
           fmt_str = 'DATETIME_FMT'
@@ -472,13 +473,10 @@ class ObjAttrs:
             size = obj_attr['size']
           elif datatype in _globals.DT_INTS:
             size = 5
-            extra = 'style="text-align: right;"'
           elif datatype == _globals.DT_FLOAT:
             size = 8
-            extra = 'style="text-align: right;"'
           elif datatype == _globals.DT_AMOUNT:
             size = 8
-            extra = 'style="text-align: right;"'
             if value is not None:
               try:
                 value = '%1.2f'%float(value)

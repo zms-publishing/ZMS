@@ -540,15 +540,12 @@ ul.zmi-container .zmi-item.page .center .contentEditable{padding-top:.4em;margin
 .zmi .breadcrumb a[title=Bookmark]{margin-left:.15em;margin-bottom:-1px}
 .zmi-browse-iframe-preview{z-index:99999;padding:1em;position:absolute;background:white;background:rgba(255,255,255,0.6);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF,endColorstr=#99FFFFFF);ms-filter:"progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF,endColorstr=#99FFFFFF)";max-width:40em;border:1px dotted black}
 .zmi-browse-iframe-preview .contentEditable{zoom:0.6;-moz-transform:scale(0.6)}
-body.browse_iframe .zmi-sitemap > div,body.browse_iframe .zmi-sitemap ul,body.browse_iframe .zmi-sitemap ol,.zmi.manage-menu .zmi-sitemap > div,.zmi.manage-menu .zmi-sitemap ul,.zmi.manage-menu .zmi-sitemap ol{margin-top:0.3em;margin-left:0;padding-left:1em}
+.zmi-sitemap ul{margin-top:0.3em;margin-left:0;padding-left:1em;list-style:outside none none}
+.zmi-sitemap li.active > a{font-weight:bold}
+.zmi-sitemap .toggle{vertical-align:bottom;width:12px;margin-right:2px;text-align:center;display:inline-block;cursor:pointer;font-size:120%}
+.zmi.manage-menu{background-color:#F5F5F5}
 .zmi.manage-menu .navbar-brand{font-size:100%!important}
-body.browse_iframe .toggle{font-size:120%;vertical-align:bottom;width:12px;margin-right:2px;text-align:center;display:inline-block;cursor:pointer}
-.zmi.manage-menu .toggle{color:#CCC;font-size:120%;vertical-align:bottom;width:12px;margin-right:2px;text-align:center;display:inline-block;cursor:pointer}
-.zmi.manage-menu .ZMSDocument .toggle{color:#404040}
-.zmi.manage-menu{background-color:#404040}
-.zmi.manage-menu .zmi header{background-color:transparent !important}
-.zmi.manage-menu a{color:#FFF}
-.zmi.manage-menu .zmi-sitemap .inactive a,.zmi.manage-menu .zmi-helper-clickable{color:#999}
+.zmi-sitemap .inactive a,.zmi.manage-menu .zmi-helper-clickable{color:#999}
 .zmi.manage-menu div.restricted > a > i{color:orange}
 .zmi.manage-menu .zmi-helper-clickable:hover{color:#FFF}
 .zmi.manage-menu .dropdown-menu{filter:Alpha(opacity=90);-moz-opacity:0.90;opacity:0.90}
@@ -568,6 +565,9 @@ div.constraint-error{background-color:#F2DEDE}
 div.constraint-warning{background-color:#FCF8E3}
 .constraint-restriction{color:#31708F}
 div.constraint-restriction{background-color:#D9EDF7}
+.btn-group.zmi-action .tooltip-inner{padding:1px;background-color:#888}
+.btn-group.zmi-action .tooltip-arrow{border-top-color:#888}
+.btn-group.zmi-action .tooltip-inner .constraint{border-radius:4px}
 .zmi-container .right li span[class^="glyphicon-"],.zmi-container .right li span[class*=" glyphicon-"],.zmi-container .right li i[class^="icon-"],.zmi-container .right li i[class*=" icon-"]{display:inline-block;width:1.5em;font-size:14px}
 ul.zmi-container .right div input{margin:8px}
 ul.zmi-container .zmi-item .zmi-action{margin-left:-159px}

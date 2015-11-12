@@ -23,7 +23,7 @@
 </div><!-- .zmi-sitemap -->
 
 <footer>
-	<span class="zmi-helper-clickable" onclick="zmiRefresh()"><i class="icon-refresh"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block></span>
+	<span class="zmi-helper-clickable refresh" onclick="zmiRefresh()"><i class="icon-refresh"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block></span>
 </footer>
 
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>

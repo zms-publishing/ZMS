@@ -541,6 +541,9 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 	white-space:nowrap;
 	overflow:hidden;
 }
+.zmi.manage-menu .zmi-sitemap {
+	margin-top:1em
+}
 .zmi.manage-menu .dropdown-header {
 	color: #999 !important;
 	background-color: transparent !important;
@@ -604,20 +607,23 @@ body.browse_iframe .toggle {
 	display:inline-block;
 	cursor:pointer;
 }
-.zmi.manage-menu .ZMSDocument .toggle {
-	color:#404040;
-}
 .zmi.manage-menu {
 	background-color:#404040;
+}
+.zmi.manage-menu .ZMSDocument .toggle {
+	color:#404040;
 }
 .zmi.manage-menu .zmi header {
 	background-color: transparent !important;
 }
-.zmi.manage-menu a {
-	color:#FFF;
+.zmi.manage-menu .zmi-sitemap a,
+.zmi.manage-menu .zmi-sitemap li > span i {
+	color:#ccc;
 }
-.zmi-sitemap li.active > a {
-	font-weight:bold;
+li li.active > a,
+li > a:hover {
+	color:white !important;
+	text-decoration:none;
 }
 .zmi-sitemap .inactive a,
 .zmi.manage-menu .zmi-helper-clickable {
@@ -658,6 +664,10 @@ body.browse_iframe .toggle {
 .zmi.manage-menu #loading,
 .zmi.manage-menu #loading .icon {
 	color: #CCCCCC !important;
+}
+.zmi.manage-menu .zmi-helper-clickable.refresh {
+	font-size: 14px;
+	margin-left: .7em;
 }
 
 /*  Font Awesome styles: prevent resetting by CK Editor

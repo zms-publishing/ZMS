@@ -485,7 +485,7 @@ ZMI.prototype.initInputFields = function(container) {
 					});
 				// Mandatory
 				$(".has-error",this).removeClass("has-error");
-				$(".form-group label.control-label.mandatory",this).each(function() {
+				$(".form-group label.control-label.mandatory",this).filter(":visible").each(function() {
 						var $label = $(this);
 						var forName = $(this).attr("for");
 						var labelText = $label.text().basicTrim();

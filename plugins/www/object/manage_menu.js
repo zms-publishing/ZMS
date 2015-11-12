@@ -51,7 +51,16 @@ function zmiBookmarksChanged() {
 								html += '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
 								html += '<li class="dropdown-header">'+$ZMI.icon('icon-bookmark')+' Favoriten</li>';
 							}
-							html += '<li role="presentation"><a href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main">'+' '+icon+' '+titlealt+'</a></li>';
+							html += ''
+								+ '<li role="presentation">'
+									+ '<a href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main"'
+											+ ' onmouseover="$(\'.icon-remove.text-muted\').removeClass(\'text-muted\').addClass(\'text-danger\')"'
+											+ ' onmouseout="$(\'.icon-remove.text-danger\').removeClass(\'text-danger\').addClass(\'text-muted\')"'
+										+ '>'+icon+' '+titlealt+'</span> '
+										+ '<span title="Favorit entfernen" data-path="'+bookmarks[i]+'"'
+											+ '>'+$ZMI.icon('icon-remove text-muted')+'</span>'
+									+ '</a>'
+								+ '</li>';
 							i++;
 						}
 					});
@@ -59,6 +68,17 @@ function zmiBookmarksChanged() {
 					html += '</ul><!-- .dropdown-menu --> ';
 				}
 				$("#zmi-bookmarks").html(html);
+				$("#zmi-bookmarks .icon-remove.text-muted").click(function(event) {
+						event.preventDefault();
+						event.stopPropagation();
+						var data_path = $(this).parent().attr('data-path');
+						if(confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))){
+							var index = bookmarks.indexOf(data_path);
+							bookmarks.splice(index,1);
+							$ZMILocalStorageAPI.replace(key,bookmarks);
+							zmiBookmarksChanged();
+						}
+					});
 			});
 }
 

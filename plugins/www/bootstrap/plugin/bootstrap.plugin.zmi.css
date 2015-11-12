@@ -620,8 +620,8 @@ body.browse_iframe .toggle {
 .zmi.manage-menu .zmi-sitemap li > span i {
 	color:#ccc;
 }
-li li.active > a,
-li > a:hover {
+.zmi.manage-menu li li.active > a,
+.zmi.manage-menu li > a:hover {
 	color:white !important;
 	text-decoration:none;
 }

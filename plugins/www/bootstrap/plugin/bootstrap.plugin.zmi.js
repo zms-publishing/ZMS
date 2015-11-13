@@ -944,6 +944,7 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 		var page_is_page = $page.attr("is_page")=='1' || $page.attr("is_page")=='True';
 		var page_is_pageelement = $page.attr("is_pageelement")=='1' || $page.attr("is_pageelement")=='True';
 		var page_meta_type = $page.attr("meta_id");
+		var page_type = $page.attr("attr_dc_type");
 		var page_titlealt = $page.attr("titlealt");
 		var page_display_icon = $page.attr("display_icon");
 		var anchor = "";
@@ -973,9 +974,14 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 		var css = [];
 		if (!page_is_active) {
 		  css.push("inactive");
-		}
+		};
+		if (typeof(page_type) != 'undefined') { 
+			if ( page_type.length > 0 ) {
+				css.push('type-'+page_type)
+			}
+		};
 		html += '<ul data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page '+page_meta_type+'">';
-		html += '<li class="'+css.join(" ")+'">';
+		html += '<li class="'+css.join(' ')+'">';
 		html += $ZMI.icon("icon-caret-right toggle",'title="+" onclick="$ZMI.objectTree.toggleClick(this'+(typeof callback=="undefined"?'':','+callback)+')"')+' ';
 		if (!page_is_page) {
 			html += '<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)">'+page_display_icon+'</span> ';

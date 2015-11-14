@@ -938,7 +938,8 @@ return ''
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[a.fancybox img {
+                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[
+a.fancybox img {
 	padding:1px 1px 21px 1px;
 	background:transparent url(/misc_/zms/zoom.gif) bottom right no-repeat;
 	background-color:transparent; 
@@ -946,6 +947,10 @@ return ''
 
 div.ZMSGraphic_extEdit_action {
 	margin:0px 0px 20px 0px;
+}
+
+#zmiModalZMSGraphic_extEdit_actions .slider.slider-vertical {
+	margin-left:0.6em
 }
 
 a.ZMSGraphic_extEdit_action img {
@@ -1231,7 +1236,7 @@ return context.getTextFormatDefault()]]>
           <item key="id"><![CDATA[ZMSGraphic]]></item>
           <item key="name"><![CDATA[ZMSGraphic]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.1]]></item>
+          <item key="revision"><![CDATA[3.0.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4704,7 +4709,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.1.4]]></item>
+          <item key="revision"><![CDATA[3.1.5]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

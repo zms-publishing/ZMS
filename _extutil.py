@@ -43,7 +43,7 @@ EXTENSIONS = {
              'The friendly PIL (Python Imaging Library) fork',
              'https://pypi.python.org/pypi/Pillow',
              'developed by Alex Clark'],
-  'python-ldap': ['2.4.19',
+  'python-ldap': ['2.4.22',
              'Object-oriented API to access LDAP servers',
              'https://pypi.python.org/pypi/python-ldap',
              'developed by python-ldap.org'],

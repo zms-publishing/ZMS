@@ -680,7 +680,7 @@ return ''
 					<a tal:attributes="href python:file.getHref(request)" tal:content="structure python:titlealt" target="_blank">The titlealt</a>
 					(<span tal:content="python:file.getDataSizeStr()">The data-size string</span>)
 				</div>
-				<div tal:condition="python:title" tal:content="structure title" class="text">The title</div>
+				<div tal:condition="python:title and title!=titlealt" tal:content="structure title" class="text">The title</div>
 				<div tal:condition="python:abstract" tal:content="structure python:newline_to_br(abstract)" class="description">The abstract</div>
 			</span>
 			<span tal:omit-tag="" tal:condition="python:not (file)" tal:content="python:zmscontext.getZMILangStr('ATTR_NONE')">
@@ -726,7 +726,7 @@ return ''
           <item key="id"><![CDATA[ZMSFile]]></item>
           <item key="name"><![CDATA[ZMSFile]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.0]]></item>
+          <item key="revision"><![CDATA[3.1.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4709,7 +4709,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.1.5]]></item>
+          <item key="revision"><![CDATA[3.1.6]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

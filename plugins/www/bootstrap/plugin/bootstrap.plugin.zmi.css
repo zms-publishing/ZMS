@@ -1693,7 +1693,8 @@ ul.zmi-container li.zmi-item div.contentEditable {
 	.zmi header .navbar-nav.pull-right {
 		float:left;
 	}
-	.zmi header .navbar .authenticated_user {
+	.zmi header .navbar .authenticated_user,
+	.zmi header .navbar .language_label {
 		display:none;
 	}
 }

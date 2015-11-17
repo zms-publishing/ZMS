@@ -66,6 +66,16 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	font-size:x-small;
 	margin-left:15px;
 }
+@media (max-width: 767px) {
+	.zmi header .navbar-nav.pull-right {
+		position: absolute;
+		right: 0;
+	}
+	.zmi header .navbar .authenticated_user,
+	.zmi header .navbar .language_label {
+		display:none;
+	}
+}
 @media (max-width: 992px) {
 	.zmi header .navbar-brand .slogan {
 		display:none;
@@ -1688,15 +1698,6 @@ ul.zmi-container li.zmi-item div.contentEditable {
 .zmi header .navbar-nav.pull-right {
 	width:auto;
 	margin:4px 0 !important;
-}
-@media (max-width: 420px) {
-	.zmi header .navbar-nav.pull-right {
-		float:left;
-	}
-	.zmi header .navbar .authenticated_user,
-	.zmi header .navbar .language_label {
-		display:none;
-	}
 }
 
 body.zmi.metas .input-group-addon {

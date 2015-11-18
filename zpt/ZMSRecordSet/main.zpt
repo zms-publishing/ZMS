@@ -6,13 +6,9 @@
 			metaObjIds python:here.getMetaobjIds();
 			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
 			SESSION request/SESSION;
-			dummy0 python:request.set('qstart',request.get('qstart',SESSION.get('qstart_%s'%here.id,0)));
-			dummy0 python:request.set('qbatch',request.get('qbatch',SESSION.get('qbatch_%s'%here.id,3)));
 			dummy0 python:request.set('qsize',request.get('qsize',SESSION.get('qsize_%s'%here.id,20)));
 			dummy0 python:request.set('qfilters',request.get('qfilters',SESSION.get('qfilters_%s'%here.id,1)));
 			dummy0 python:request.set('qindex',request.get('qindex',request.SESSION.get('qindex_%s'%here.id,-1)));
-			dummy0 python:request.set('qstart_%s'%here.id,request.get('qstart'));
-			dummy0 python:request.set('qbatch_%s'%here.id,request.get('qbatch'));
 			dummy0 python:SESSION.set('qsize_%s'%here.id,request.get('qsize'));
 			dummy0 python:SESSION.set('qfilters_%s'%here.id,request.get('qfilters'));
 			dummy0 python:SESSION.set('qindex_%s'%here.id,request.get('qindex'));

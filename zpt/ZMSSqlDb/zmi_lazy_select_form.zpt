@@ -8,12 +8,8 @@
 			encoding python:getattr(here,'charset','utf-8');
 			actions python:request.get('actions','select');
 			actions python:[actions,','.join(actions)][int(here.operator_gettype(actions) is list)];
-			dummy0 python:request.set('qstart',request.get('qstart',request.SESSION.get('qstart_%s'%id,0)));
-			dummy0 python:request.set('qbatch',request.get('qbatch',request.SESSION.get('qbatch_%s'%id,3)));
 			dummy0 python:request.set('qsize',request.get('qsize',request.SESSION.get('qsize_%s'%id,20)));
 			dummy0 python:request.set('qindex',request.get('qindex',request.SESSION.get('qindex_%s'%id,-1)));
-			dummy0 python:request.set('qstart_%s'%here.id,request.get('qstart'));
-			dummy0 python:request.set('qbatch_%s'%here.id,request.get('qbatch'));
 			columns python:','.join(request['qcolumns']);
 			whereClause python:here.assembleFilter([{'tablename':entity['id'],'columnname':columns,'op':request.get('filterop0','LIKE'),'value':request.get('filtervalue0','%')}]);
 			pk request/primary_key;
@@ -25,7 +21,6 @@
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
 	<input type="hidden" name="actions" tal:attributes="value actions">
-	<input type="hidden" name="qstart" tal:attributes="value request/qstart">
 	<input type="hidden" name="qentity" tal:attributes="value request/qentity">
 	<input type="hidden" name="primary_key" tal:attributes="value request/primary_key">
 	<input type="hidden" name="qcolumns:list" tal:attributes="value columns"/>

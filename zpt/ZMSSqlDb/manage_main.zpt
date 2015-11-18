@@ -10,19 +10,19 @@
 			entities python:here.getEntities();
 			tables python:filter(lambda x:x['type'].upper()=='TABLE',entities);
 			SESSION request/SESSION;
-			dummy0 python:request.set('qstart',request.get('qstart',SESSION.get('qstart_%s'%here.id,0)));
-			dummy0 python:request.set('qbatch',request.get('qbatch',SESSION.get('qbatch_%s'%here.id,3)));
 			dummy0 python:request.set('qsize',request.get('qsize',SESSION.get('qsize_%s'%here.id,20)));
 			dummy0 python:request.set('qfilters',request.get('qfilters',SESSION.get('qfilters_%s'%here.id,1)));
 			dummy0 python:request.set('qindex',request.get('qindex',SESSION.get('qindex_%s'%here.id,-1)));
-			dummy0 python:request.set('qstart_%s'%here.id,request.get('qstart'));
-			dummy0 python:request.set('qbatch_%s'%here.id,request.get('qbatch'));
 			dummy0 python:SESSION.set('qsize_%s'%here.id,request.get('qsize'));
 			dummy0 python:SESSION.set('qfilters_%s'%here.id,request.get('qfilters'));
 			dummy0 python:SESSION.set('qindex_%s'%here.id,request.get('qindex'));
 			dummy0 python:here.recordSet_Init(request);
 			dummy0 python:here.recordSet_Filter(request);
-			dummy0 python:here.recordSet_Sort(request)">
+			dummy0 python:here.recordSet_Sort(request);
+			pageSize python:request.get('qsize',20);
+			pageIndex python:request.get('pageIndex',0);
+			pageStart python:pageIndex*pageSize;
+			">
 
 <tal:block tal:condition="tables">
 
@@ -32,11 +32,10 @@
 			entity python:filter(lambda x:x['id']==request['qentity'],tables)[0];
 			primary_key python:here.getEntityPK(entity['id']);
 			encoding python:getattr(here,'charset','utf-8');
-			row_max python:getattr(here,'max_rows',999);
 			metaObjAttrIds python:[];
 			metaObjAttrs python:[];
 			res python:[];
-			resSlctStmnt python:''.join(request.get('sqlStatement',[]));
+			resSlctStmnt python:''.join(request.get('sqlStatement',[]))+' LIMIT %s OFFSET %s'%(str(pageSize),str(pageStart));
 			cntSlctStmnt python:here.re_sub('SELECT (.*?) FROM','SELECT COUNT(*) AS rcount FROM',resSlctStmnt[:resSlctStmnt.find('ORDER BY')]);
 			row_count python:here.query(cntSlctStmnt)['records'][0]['rcount']">
 
@@ -85,7 +84,6 @@
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
 	<input type="hidden" name="qorder"  tal:attributes="value request/qorder">
 	<input type="hidden" name="qorderdir" tal:attributes="value request/qorderdir">
-	<input type="hidden" name="qstart" tal:attributes="value request/qstart">
 	<div class="accordion-group perc100">
 		<div class="accordion-heading attr_last_modified">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
@@ -166,6 +164,9 @@
 			metaObjAttrIds=metaObjAttrIds,
 			metaObjAttrs=metaObjAttrs,
 			records=res,
+			size=row_count,
+			total=row_count,
+			offset=0,
 			form_action=request['URL'],
 			url_params={'qentity':request.get('qentity')},
 			record_handler=here.getEntityRecordHandler(entity['id'],handleColumns=False))">

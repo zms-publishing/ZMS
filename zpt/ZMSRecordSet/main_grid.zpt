@@ -10,14 +10,14 @@
 		url_params python:options.get('url_params',{});
 		actions python:options.get('actions',['insert','update','delete','sort']);
 		records python:options['records'];
-		filtered_records python:options.get('filtered_records',records)">
-
-	<tal:block tal:define="global
-			size python:len(filtered_records);
-			pageSize python:request.get('qsize',10);
-			pageIndex python:request.get('pageIndex',0);
-			pageStart python:pageIndex*pageSize;
-			pageEnd python:min(pageStart+pageSize,size)">
+		filtered_records python:options.get('filtered_records',records);
+		size python:options.get('size',len(filtered_records));
+		total python:options.get('total',len(records));
+		pageSize python:request.get('qsize',20);
+		pageIndex python:request.get('pageIndex',0);
+		pageStart python:pageIndex*pageSize;
+		pageEnd python:min(pageStart+pageSize,size);
+		offset python:options.get('offset',pageStart);">
 
 		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 
@@ -47,8 +47,8 @@
 	<th>
 		<div class="btn-group">
 			<span class="checkbox split-left btn"
-				tal:attributes="title python:'%s / %s'%(len(filtered_records),len(records))"
-				tal:content="python:'%s / %s'%(len(filtered_records),len(records))">
+				tal:attributes="title python:'%s / %s'%(size,total)"
+				tal:content="python:'%s / %s'%(size,total)">
 				filtered_records / records
 			</span>
 			<tal:block tal:condition="python:'insert' in actions or 'delete' in actions">
@@ -56,7 +56,7 @@
 					<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu">
-					<li tal:condition="python:len(filtered_records)>0 and not 'select' in actions">
+					<li tal:condition="python:size>0 and not 'select' in actions">
 						<a href="#" onclick="zmiToggleSelectionButtonClick(this)">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block>
 							<tal:block tal:content="python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">Select all/none</tal:block>
@@ -90,7 +90,8 @@
 </thead>
 <tbody>
 <tal:block tal:repeat="rindex python:range(pageEnd-pageStart)">
-<tal:block tal:define="global index python:pageStart+rindex;
+<tal:block tal:define="
+		index python:offset+rindex;
 		record python:filtered_records[index];
 		qindex python:records.index(record);
 		name python:['qindices:list','qindex'][int('select' in actions)]">
@@ -110,7 +111,7 @@
 		<div class="btn-group" tal:attributes="title title">
 			<span class="checkbox split-left btn">
 				<input tal:attributes="name name; type python:['checkbox','radio'][int('select' in actions)]; class python:['','radio-inline'][int('select' in actions)]; value value" />
-				<span class="index"><tal:block tal:content="python:index+1">index</tal:block>.</span>
+				<span class="index"><tal:block tal:content="python:pageStart+rindex+1">index</tal:block>.</span>
 			</span>
 			<tal:block tal:condition="python:'update' in actions or 'delete' in actions or 'sort' in actions">
 				<button class="split-right btn dropdown-toggle" data-toggle="dropdown">
@@ -199,11 +200,10 @@
 
 		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 
-	</tal:block>
 </div>
 
 <script>
-	$ZMI.registerReady(function() {
+	$(function() {
 		$("img[src='data:image/png;base64,']").each(function() {
 			var src = $(this).attr("src");
 			var dat = $(this).data("previewbase64");

@@ -536,6 +536,16 @@ $ZMI.registerReady(function(){
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="id"><![CDATA[titlealt]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[titlealt]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="custom"><![CDATA[## Script (Python) "ZMSFile.attr_img_src"
 ##bind container=container
 ##bind context=context
@@ -2044,6 +2054,16 @@ $ZMI.registerReady(function(){
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="id"><![CDATA[attr_dc_creator]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[attr_dc_creator]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="custom"><![CDATA[## Script (Python) "ZMSLinkElement.check_constraints"
 ##bind container=container
 ##bind context=context
@@ -2952,8 +2972,8 @@ body.print table.ZMSTable td {
 <tal:block tal:condition="python:request.get('ZMS_INSERT')">
 <input type="hidden" name="redirect_self:int" value="1"/>
 
-<span class="ui-helper-hidden" id="fmName" tal:content="request/fmName"></span>
-<span class="ui-helper-hidden" id="textFormatDefault" tal:content="textFormatDefault"></span>
+<span class="hidden" id="fmName" tal:content="request/fmName"></span>
+<span class="hidden" id="textFormatDefault" tal:content="textFormatDefault"></span>
 <style>
 table.ZMSTable tr th,
 table.ZMSTable tr td {
@@ -3113,8 +3133,8 @@ function onZMSTableFormSubmit() {
 --------------------------------------------------------------------------------
 -->
 <tal:block tal:define="celltypes python:[['td','td'],['th','th']];custom python:'<div class=\042pull-left celltypes\042>%s</div>'%(here.zmi_input_select(name='tag',value='',lang_str=here.getZMILangStr('ATTR_FORMAT'),options=celltypes))">
-	<div class="ui-helper-hidden ui-helper-overlay">&nbsp;</div>
-	<div class="ui-helper-hidden">
+	<div class="modal-backdrop in hidden">&nbsp;</div>
+	<div class="hidden">
 		<div id="div_table_cell_editor">
 			<tal:block tal:content="structure python:here.f_selectRichtext(ob=here,fmName=request['fmName'],elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=request['lang'],lang_str=here.getZMILangStr('ACTION_EDIT_CELL'),custom_str=custom,REQUEST=request,wrap='virtual',format='')"></tal:block>
 			<div class="control-group">
@@ -3137,12 +3157,12 @@ function onZMSTableFormSubmit() {
 --------------------------------------------------------------------------------
 -->
 
-<span class="ui-helper-hidden" id="fmName" tal:content="request/fmName"></span>
-<span class="ui-helper-hidden" id="elName" tal:content="request/elName"></span>
-<span class="ui-helper-hidden" id="textFormatDefault" tal:content="textFormatDefault"></span>
-<tal:block tal:condition="python:request.get('richedit_fmt',None)"><span class="ui-helper-hidden" id="richedit_fmt" tal:content="python:request.get('richedit_fmt').getId()"></span></tal:block>
-<span class="ui-helper-hidden" id="table_type" tal:content="table_type"></span>
-<span class="ui-helper-hidden" id="table_cell_uid" tal:content="python:table_cols*table_rows"></span>
+<span class="hidden" id="fmName" tal:content="request/fmName"></span>
+<span class="hidden" id="elName" tal:content="request/elName"></span>
+<span class="hidden" id="textFormatDefault" tal:content="textFormatDefault"></span>
+<tal:block tal:condition="python:request.get('richedit_fmt',None)"><span class="hidden" id="richedit_fmt" tal:content="python:request.get('richedit_fmt').getId()"></span></tal:block>
+<span class="hidden" id="table_type" tal:content="table_type"></span>
+<span class="hidden" id="table_cell_uid" tal:content="python:table_cols*table_rows"></span>
 <style>
 #table_cell_editor .btn {
 	padding: 0 .3em;
@@ -3170,16 +3190,6 @@ div.zmi-interface {
 }
 .celltypes select {
 	width:10em;
-}
-.ui-helper-overlay {
-	position:absolute!important;
-	top:0!important;
-	left:0!important;
-	background-color:black!important;
-	width:100%!important;
-	height:100%!important;
-	filter:Alpha(opacity=40);-moz-opacity:0.40;opacity:0.40;
-	z-index:9998!important;
 }
 table#table_cell_editor > thead > tr > th,
 table#table_cell_editor > tbody > tr > td {
@@ -3320,17 +3330,14 @@ function table_cell_edit(el_td) {
 		}
 	}
 	// Open cell editor.
-	/*
-	zmiModal('#div_table_cell_editor',{
-			title:getZMILangStr('ATTR_COL')+': '+getZMILangStr('BTN_EDIT'),
-			close: function(event, ui) {
-					table_cell_cancel(event);
-				}
-	});
-	*/
 	var offset = $(el_td).offset();
-	$('.ui-helper-overlay').removeClass('ui-helper-hidden');
-	$('#div_table_cell_editor').parent().addClass('div_table_cell_editor_parent').css({left:offset.left,top:offset.top}).removeClass('ui-helper-hidden');
+	var height = $(el_td).height();
+	$('.modal-backdrop').removeClass("hidden");
+	$('#div_table_cell_editor')
+		.parent()
+			.addClass('div_table_cell_editor_parent')
+			.css({left:offset.left,top:offset.top+height})
+			.removeClass('hidden');
 	$('div#zmiRichtextEditor'+'content_editor').height(300);
 	zmiRichtextResize('content_editor');
 }
@@ -3360,11 +3367,8 @@ function table_cell_cancel(event) {
 	el_td.removeClass("active");
 	// Close cell editor.
 	if (!event) {
-		/*
-		$('#div_table_cell_editor').dialog('close');
-		*/
-		$('.ui-helper-overlay').addClass('ui-helper-hidden');
-		$('#div_table_cell_editor').parent().addClass('ui-helper-hidden');
+		$('.modal-backdrop').addClass('hidden');
+		$('#div_table_cell_editor').parent().addClass('hidden');
 	}
 	return false;
 }
@@ -3612,10 +3616,10 @@ function onKeyUpZMSTableDivContenteditable() {
 						<tal:block tal:content="structure python:'<%s title=\042onDblClick: %s\042 class=\042table_cell_editable\042>'%(['td',cell['tag']][cell['tag']!=''],here.getZMILangStr('ACTION_EDIT_CELL'))">start-tag</tal:block>
 						<input type="hidden" tal:attributes="id python:'tag_%i_%i'%(col_index,row_index); value cell/tag"/>
 						<input type="hidden" tal:attributes="id python:'format_%i_%i'%(col_index,row_index); value cell_format">
-						<div tal:attributes="id python:'input_%i_%i'%(col_index,row_index); class python:['','ui-helper-hidden'][richedit_preview]">
+						<div tal:attributes="id python:'input_%i_%i'%(col_index,row_index); class python:['','hidden'][richedit_preview]">
 							<tal:block tal:content="structure python:here.getTextArea(request['fmName'],'content_%i_%i'%(col_index,row_index),10,1,value=cell_content,enabled=True,REQUEST=request,extra=' style=\042border:none;background-color:transparent;width:100%;\042')"></tal:block>
 						</div>
-						<div tal:attributes="id python:'preview_%i_%i'%(col_index,row_index);class python:['ui-helper-hidden',''][richedit_preview]"
+						<div tal:attributes="id python:'preview_%i_%i'%(col_index,row_index);class python:['hidden',''][richedit_preview]"
 							><tal:block tal:condition="cell/content" tal:content="structure cell_content">the cell-content</tal:block
 							><tal:block tal:condition="not:cell/content">&nbsp;</tal:block
 						></div>
@@ -4022,7 +4026,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.22]]></item>
+          <item key="revision"><![CDATA[3.0.23]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

@@ -19,6 +19,10 @@
 from pkg_resources import WorkingSet, Requirement, ResourceManager
 
 EXTENSIONS = {
+  'zms3.behave': ['0.1.0',
+                  'Manage tests based on feature/scenario/step descriptions using Behavior-driven development (BDD) practices',
+                  'https://bitbucket.org/zms3/behave',
+                  'developed by Christian Meier'],              
   'zms3.formulator': ['3.3.6',
                       'Submit JSON-based HTML-Forms into a SQL-Storage with protection by reCAPTCHA',
                       'https://bitbucket.org/zms3/formulator',

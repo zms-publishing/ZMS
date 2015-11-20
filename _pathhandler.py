@@ -191,7 +191,7 @@ class PathHandler:
           f = self.FileFromData( data, filename, mt)
           f.aq_parent = self
           f.key = name
-          f.lang = reques['lang']
+          f.lang = request['lang']
           return f
         
         # Pathhandler-Hook.

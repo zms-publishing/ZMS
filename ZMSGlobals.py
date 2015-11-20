@@ -650,7 +650,7 @@ class ZMSGlobals:
     @type info: C{any}
     """
     def writeLog(self, info):
-      _globals.writeLog( self, info)
+      return _globals.writeLog( self, info)
 
     """
     Log information.
@@ -658,7 +658,15 @@ class ZMSGlobals:
     @type info: C{any}
     """
     def writeBlock(self, info):
-      _globals.writeBlock( self, info)
+      return _globals.writeBlock( self, info)
+
+    """
+    Log error.
+    @param info: Information
+    @type info: C{any}
+    """
+    def writeError(self, info):
+      return _globals.writeError( self, info)
 
     #)
 

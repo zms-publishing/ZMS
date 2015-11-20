@@ -136,7 +136,7 @@ class ZMSContainerObject(
     # --------------------------------------------------------------------------
     #  ZMSContainerObject.manage_addZMSObject:
     # --------------------------------------------------------------------------
-    def manage_addZMSObject(self, meta_type, values, REQUEST):
+    def manage_addZMSObject(self, meta_id, values, REQUEST):
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang',prim_lang)
       
@@ -144,44 +144,45 @@ class ZMSContainerObject(
       for key in values.keys():
         attrs.extend([key,values[key]])
       
-      # Get id.
+      # Get new id.
       if 'id_prefix' in attrs:
         i = attrs.index('id_prefix')
         id_prefix = attrs[i+1]
-        id = self.getNewId(id_prefix)
+        new_id = self.getNewId(id_prefix)
         del attrs[i] # Key.
         del attrs[i] # Value.
       elif 'id' in attrs:
         i = attrs.index('id')
-        id = attrs[i+1]
+        new_id = attrs[i+1]
         del attrs[i] # Key.
         del attrs[i] # Value.
       else:
-        id = self.getNewId()
+        new_id = self.getNewId()
       
       # Get sort id.
       key = 'sort_id'
       if key in attrs and attrs.index(key)%2 == 0:
         i = attrs.index(key)
-        sort_id = attrs[i+1]
+        _sort_id = attrs[i+1]
         del attrs[i] # Key.
         del attrs[i] # Value.
       else:
-        sort_id = 99999
+        _sort_id = 99999
       
-      # Create new object.
-      newNode = self.dGlobalAttrs[meta_type]['obj_class'](id,sort_id)
-      self._setObject(newNode.id, newNode)
-      node = getattr(self,newNode.id)
-      
-      # Init meta object.
+      # Type of new object.
       key = 'meta_id'
-      if meta_type == 'ZMSCustom' and key in attrs and attrs.index(key)%2 == 0:
+      if meta_id == 'ZMSCustom' and key in attrs and attrs.index(key)%2 == 0:
         i = attrs.index(key)
         meta_id = attrs[i+1]
-        setattr(node,key,meta_id)
         del attrs[i] # Key.
         del attrs[i] # Value.
+      
+      # Create new object.
+      globalAttr = self.dGlobalAttrs.get(meta_id,self.dGlobalAttrs['ZMSCustom'])
+      constructor = globalAttr.get('obj_class',self.dGlobalAttrs['ZMSCustom']['obj_class'])
+      obj = constructor(new_id,_sort_id+1,meta_id)
+      self._setObject(obj.id, obj)
+      node = getattr(self,obj.id)
       
       # Object state.
       node.setObjStateNew(REQUEST)
@@ -203,7 +204,7 @@ class ZMSContainerObject(
       
       # Normalize sort-ids.
       if values.get('normalize_sort_ids',True):
-        self.normalizeSortIds(_globals.id_prefix(id))
+        self.normalizeSortIds(_globals.id_prefix(node.id))
       
       # Return object.
       return node

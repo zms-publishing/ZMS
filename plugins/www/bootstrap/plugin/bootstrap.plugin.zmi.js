@@ -648,6 +648,7 @@ ZMI.prototype.initInputFields = function(container) {
 									success:function(response) {
 											$inputgroup.next(".breadcrumb").remove();
 											$inputgroup.after(response.replace(/<!--(.*?)-->/gi,'').trim());
+											$inputgroup.next(".breadcrumb").addClass("small");
 										}
 								});
 						};

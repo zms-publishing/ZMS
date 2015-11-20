@@ -555,7 +555,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       else:
         name = 'icon-warning-sign constraint-error'
         icon_title = '%s not found!'%str(id)
-      return self.zmi_icon(self,name=name,extra='title="%s"'%unicode(icon_title,'utf-8'))
+      return self.zmi_icon(self,name=name,extra='title="%s"'%(unicode(icon_title,'utf-8').replace('"','\'')))
 
 
     # --------------------------------------------------------------------------

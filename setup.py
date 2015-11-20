@@ -31,7 +31,6 @@ for path in sys.path:
 INSTALL_REQUIRES_ABSTRACT = [
   'zms3.deployment',
   'zms3.formulator',
-  'zms3.mindmap',
   'zms3.photodb',
   'zms3.themes',
 ]

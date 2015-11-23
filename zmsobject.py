@@ -185,7 +185,9 @@ class ZMSObject(ZMSItem.ZMSItem,
       def default(*args, **kwargs):
         self = args[0]
         forced = args[1]['forced']
-        return self.id
+        physical_path = self.getPhysicalPath()
+        physical_path = physical_path[physical_path.index('content')+1:]
+        return '%s@%s'%(self.getHome().id,'/'.join(physical_path))
       uid = self.evalExtensionPoint('ExtensionPoint.ZMSObject.get_uid',default,forced=forced)
       return uid
 

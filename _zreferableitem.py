@@ -289,9 +289,11 @@ class ZReferableItem:
         old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
         ob = self.getLinkObj(url=d['data-id'])
         if ob is not None:
-          href = self.getLinkUrl(url=d['data-id'])
+          context = self
+          REQUEST = context.REQUEST
+          href = ob.getHref2IndexHtmlInContext(context,REQUEST)
           d['href'] = href
-          if not ob.isActive(self.REQUEST):
+          if not ob.isActive(REQUEST):
             d['data-target'] = "inactive"
           elif self.getTrashcan().isAncestor(ob):
             d['data-target'] = 'trashcan'

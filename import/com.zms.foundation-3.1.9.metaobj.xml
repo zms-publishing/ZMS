@@ -3614,8 +3614,10 @@ function onKeyUpZMSTableDivContenteditable() {
 
 <tr>
 	<td>
-		<tal:block tal:content="structure python:zmscontext.getObjInput('sortable',request)"></tal:block>
-		<small>sortable&nbsp;</small>
+		<span id="tr_sortable">
+			<tal:block tal:content="structure python:zmscontext.getObjInput('sortable',request)"></tal:block>
+			<small>sortable&nbsp;</small>
+		</span>
 	</td>
 	<td align="center" tal:repeat="col_index python:range(table_cols)">
 		<div class="btn-group">

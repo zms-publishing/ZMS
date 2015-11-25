@@ -16,22 +16,22 @@
 		stat0 python:{};
 		dummy0 python:map(lambda x:here.operator_setitem(stat0,x,[]),attrIds+subObjectIds)">
 
-	<tal:block tal:repeat="ob res">
-		<tal:block tal:define="global statrec python:[{'abs_url':ob.absolute_url(),'titlealt':ob.getTitlealt(request)}]">
-			<tal:block tal:repeat="key attrIds">
-				<tal:block tal:define="global value python:ob.attr(key)">
-					<tal:block tal:condition="python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat1,key,stat1[key]+statrec)"></tal:block></tal:block>
-					<tal:block tal:condition="not:python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat0,key,stat0[key]+statrec)"></tal:block></tal:block>
-				</tal:block>
-			</tal:block>
-			<tal:block tal:repeat="key subObjectIds">
-				<tal:block tal:define="global value python:ob.getObjChildren(key,request)">
-					<tal:block tal:condition="python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat1,key,stat1[key]+statrec)"></tal:block></tal:block>
-					<tal:block tal:condition="not:python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat0,key,stat0[key]+statrec)"></tal:block></tal:block>
-				</tal:block>
-			</tal:block>
-		</tal:block>
-	</tal:block>
+	<tal:block tal:repeat="ob res"
+		><tal:block tal:define="global statrec python:[{'abs_url':ob.absolute_url(),'titlealt':ob.getTitlealt(request)}]"
+			><tal:block tal:repeat="key attrIds"
+				><tal:block tal:define="global value python:ob.attr(key)"
+					><tal:block tal:condition="python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat1,key,stat1[key]+statrec)"></tal:block></tal:block
+					><tal:block tal:condition="not:python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat0,key,stat0[key]+statrec)"></tal:block></tal:block
+				></tal:block
+			></tal:block
+			><tal:block tal:repeat="key subObjectIds"
+				><tal:block tal:define="global value python:ob.getObjChildren(key,request)"
+					><tal:block tal:condition="python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat1,key,stat1[key]+statrec)"></tal:block></tal:block
+					><tal:block tal:condition="not:python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat0,key,stat0[key]+statrec)"></tal:block></tal:block
+				></tal:block
+			></tal:block
+		></tal:block
+	></tal:block>
 
 	<legend tal:content="python:here.display_type(request,meta_id)">the display-type</legend>
 	<table class="table">
@@ -50,17 +50,21 @@
 				(<tal:block tal:content="metaObjAttr/id">the id</tal:block>: <tal:block tal:content="metaObjAttr/type">the type</tal:block>)
 			</td>
 			<td>
-				<a tal:attributes="href python:'javascript:toggleElement(\'img_%s1\',\'ol_%s1\')'%(metaObjAttr['id'],metaObjAttr['id'])"><img tal:attributes="id python:'img_%s1'%metaObjAttr['id']" src="/misc_/zms/pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a>
-				<tal:block tal:on-error="string: 0"
-					tal:content="python:100*len(stat1[metaObjAttr['id']])/len(res)">perc</tal:block>% (<tal:block tal:content="python:len(stat1[metaObjAttr['id']])">abs</tal:block>)
+				<a tal:attributes="href python:'javascript:toggleElement(\'img_%s1\',\'ol_%s1\')'%(metaObjAttr['id'],metaObjAttr['id'])" style="text-decoration:none;">
+					<i tal:attributes="id python:'img_%s1'%metaObjAttr['id']" class="icon-caret-right toggle"></i>
+					<tal:block tal:on-error="string: 0"
+						tal:content="python:100*len(stat1[metaObjAttr['id']])/len(res)">perc</tal:block>% (<tal:block tal:content="python:len(stat1[metaObjAttr['id']])">abs</tal:block>)
+				</a>
 				<ol tal:attributes="id python:'ol_%s1'%metaObjAttr['id']" style="visibility:hidden;display:none;">
 					<li tal:repeat="ob python:stat1[metaObjAttr['id']]"><a tal:attributes="href python:'%s/manage_main'%ob['abs_url']" target="_blank" tal:content="python:ob['abs_url']">the url</a></li>
 				</ol>
 			</td>
 			<td>
-				<a tal:attributes="href python:'javascript:toggleElement(\'img_%s0\',\'ol_%s0\')'%(metaObjAttr['id'],metaObjAttr['id'])"><img tal:attributes="id python:'img_%s0'%metaObjAttr['id']" src="/misc_/zms/pl.gif" alt="+" title="+" border="0" align="absmiddle"/></a>
-				<tal:block tal:on-error="string: 0"
-					tal:content="python:100*len(stat0[metaObjAttr['id']])/len(res)">perc</tal:block>% (<tal:block tal:content="python:len(stat0[metaObjAttr['id']])">abs</tal:block>)
+				<a tal:attributes="href python:'javascript:toggleElement(\'img_%s0\',\'ol_%s0\')'%(metaObjAttr['id'],metaObjAttr['id'])"  style="text-decoration:none;">
+					<i tal:attributes="id python:'img_%s1'%metaObjAttr['id']" class="icon-caret-right toggle"></i>
+					<tal:block tal:on-error="string: 0"
+						tal:content="python:100*len(stat0[metaObjAttr['id']])/len(res)">perc</tal:block>% (<tal:block tal:content="python:len(stat0[metaObjAttr['id']])">abs</tal:block>)
+				</a>
 				<ol tal:attributes="id python:'ol_%s0'%metaObjAttr['id']" style="visibility:hidden;display:none;">
 					<li tal:repeat="ob python:stat0[metaObjAttr['id']]"><a tal:attributes="href python:'%s/manage_main'%ob['abs_url']" target="_blank" tal:content="python:ob['abs_url']">the url</a></li>
 				</ol>
@@ -83,12 +87,12 @@ function toggleElement( sender, id) {
 	var img = $('#'+sender);
 	var el = $('#'+id);
 	if ( el.css("display").toLowerCase()=="none") {
-		img.attr( { src: "/misc_/zms/mi.gif", title: "-", alt: "-"});
+		img.attr( { class: "icon-caret-down toggle", title: "-"});
 		el.css({'visibility':'visible','display':''});
 	}
 	else {
-		img.attr( { src: "/misc_/zms/pl.gif", title: "+", alt: "+"});
-	el.css({'visibility':'hidden','display':'none'});
+		img.attr( { class: "icon-caret-right toggle", title: "+"});
+		el.css({'visibility':'hidden','display':'none'});
 	}
 }
 </script>

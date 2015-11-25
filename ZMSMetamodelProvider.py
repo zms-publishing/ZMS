@@ -68,6 +68,7 @@ class ZMSMetamodelProvider(
     manage_main_import = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main_import',globals())
     manage_main_acquire = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main_acquire',globals())
     manage_bigpicture = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_bigpicture', globals())
+    manage_analyze = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_analyze', globals())
     manage_metas = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_metas',globals())
 
     # Management Permissions.

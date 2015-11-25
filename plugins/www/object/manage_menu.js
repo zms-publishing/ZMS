@@ -4,7 +4,7 @@
 function zmiSelectObject(sender) {
 	$(".zmi-sitemap .active").removeClass("active");
 	$(sender).parents("li").addClass("active");
-	window.parent.manage_main.location.href=$(sender).attr("href")+"/manage_main?lang="+getZMILang();
+	window.parent.location.href=$(sender).attr("href")+"/manage?lang="+getZMILang()+"&dtpref_sitemap=1";
 	return false;
 }
 function zmiRefresh() {

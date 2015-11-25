@@ -572,7 +572,6 @@ class MyBlob:
       value = self._getCopy()
       value.is_blob = True
       value.aq_parent = aq_parent
-      value.base_url = aq_parent.base_url()
       value.key = key
       value.lang = aq_parent.REQUEST.get( 'lang')
       return value
@@ -742,15 +741,7 @@ class MyBlob:
         qs = _globals.qs_append( qs, zms_version_key,REQUEST.get( zms_version_key))
       elif _globals.isPreviewRequest( REQUEST):
         qs = _globals.qs_append( qs, 'preview', 'preview')
-      base_url = getattr( self, 'base_url', None)
-      if base_url is not None:
-        filename = base_url+rownum+'/'+filename
-      else:
-        try:
-          filename=parent.absolute_url()+rownum+'/'+filename
-        except:
-          filename=parent.id+rownum+'/'+filename
-      href = filename + qs
+      href = parent.absolute_url()+rownum+'/'+filename+qs
       if (REQUEST.get('ZMS_PATHCROPPING',False) or parent.getConfProperty('ZMS.pathcropping',0)==1) and REQUEST.get('export_format','') == '':
         base = REQUEST.get('BASE0','')
         if href.find( base) == 0:

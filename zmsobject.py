@@ -181,14 +181,23 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.get_uid:
     # --------------------------------------------------------------------------
-    def get_uid(self, forced=False):
+    def get_uid(self, forced=False, implementation=None):
       def default(*args, **kwargs):
         self = args[0]
         forced = args[1]['forced']
+        root_id = self.getRootElement().getHome().id
         physical_path = self.getPhysicalPath()
-        physical_path = physical_path[physical_path.index('content')+1:]
-        return '%s@%s'%(self.getHome().id,'/'.join(physical_path))
-      uid = self.evalExtensionPoint('ExtensionPoint.ZMSObject.get_uid',default,forced=forced)
+        home_path = physical_path[physical_path.index(root_id):physical_path.index('content')]
+        object_path = physical_path[physical_path.index('content')+1:]
+        return '%s@%s'%('/'.join(home_path),'/'.join(object_path))
+      can_ep = True
+      if type(implementation) is str:
+        ep = self.getConfProperty('ExtensionPoint.ZMSObject.get_uid','')
+        can_ep = ep.startswith(implementation)
+      if can_ep:
+        uid = self.evalExtensionPoint('ExtensionPoint.ZMSObject.get_uid',default,forced=forced)
+      else:
+        uid = default(self,{'forced':forced})
       return uid
 
     # --------------------------------------------------------------------------
@@ -1067,7 +1076,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       except:
         xml += " display_icon=\"&lt;i class=&quot;icon-file-alt&quot; title=&quot;ICON ERROR&quot;>&lt;/i>\""
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
-      xml += " uid=\"{$%s}\""%(self.get_uid())
+      xml += " uid=\"{$%s}\""%(self.get_uid(implementation=self.getConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation','undefined')))
       xml += " id=\"%s_%s\""%(self.getHome().id,self.id)
       xml += " home_id=\"%s\""%(self.getHome().id)
       xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtmlInContext(context,REQUEST,deep=0))
@@ -1296,15 +1305,24 @@ class ZMSObject(ZMSItem.ZMSItem,
     def manage_moveObjToPos(self, lang, pos, fmt=None, REQUEST=None, RESPONSE=None):
       """ ZMSObject.manage_moveObjToPos """
       parent = self.getParentNode()
-      sibling_sort_ids = map(lambda x: x.sort_id,parent.getChildNodes(REQUEST))
-      sibling_sort_ids.remove(self.sort_id)
-      pos = pos - 1
-      if pos < len(sibling_sort_ids):
-        new_sort_id = int(sibling_sort_ids[pos][1:])-1
+      if parent is not None:
+        sibling_sort_ids = map(lambda x: x.sort_id,parent.getChildNodes(REQUEST))
+        sibling_sort_ids.remove(self.sort_id)
+        pos = pos - 1
+        if pos < len(sibling_sort_ids):
+          new_sort_id = int(sibling_sort_ids[pos][1:])-1
+        else:
+          new_sort_id = int(sibling_sort_ids[-1][1:])+1
+        self.setSortId(new_sort_id)
+        parent.normalizeSortIds(_globals.id_prefix(self.id))
       else:
-        new_sort_id = int(sibling_sort_ids[-1][1:])+1
-      self.setSortId(new_sort_id)
-      parent.normalizeSortIds(_globals.id_prefix(self.id))
+        id = REQUEST['URL'].split('/')[-2]
+        ids = self.getConfProperty('Portal.Clients',[])
+        if id in ids:
+          offset = len(self.getChildNodes(REQUEST))
+          pos = pos - offset - 1
+          ids.insert(pos, ids.pop(ids.index(id)))
+          self.setConfProperty('Portal.Clients',ids)
       # Return with message.
       message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%self.display_type(REQUEST)),(pos+1))
       if fmt == 'json':

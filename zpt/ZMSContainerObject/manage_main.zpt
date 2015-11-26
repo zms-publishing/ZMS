@@ -80,9 +80,10 @@
 		</ul><!-- .zmi-container.zmi-sortable -->
 	</tal:block>
 
-	<ul class="zmi-container portalClients" tal:condition="python:len(here.getPortalClients())>0 and here.getLevel()==0">
+	<ul class="zmi-container zmi-sortable portalClients" tal:condition="python:len(here.getPortalClients())>0 and here.getLevel()==0">
 		<tal:block tal:repeat="childNode python:here.getPortalClients()">
-			<li class="zmi-item zmi-selectable" tal:attributes="id python:'zmi_item_%s'%childNode.id">
+			<li class="zmi-item zmi-selectable" tal:attributes="id python:'zmi_item_%s'%childNode.getHome().id">
+				<div class="grippy icon-reorder" title="Move"></div>
 				<div class="center">
 					<div class="contentEditable portalClient" tal:attributes="data-absolute-url python:childNode.absolute_url()[len(request['BASE0']):]">
 						<div class="portalClientId zmi-manage-main-change" tal:content="structure python:childNode.getHome().id">

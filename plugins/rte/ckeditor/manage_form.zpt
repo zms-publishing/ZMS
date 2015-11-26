@@ -175,7 +175,7 @@ function zmiRichtextInit(id) {
 			};
 
 		loadCkeditor( 'editor_'+id, {
-<tal:block define="global toolbar python:[['ZMSBasicToolbar','ZMSBasicInsertToolbar'][int(request.get('ZMS_INSERT') is not None)]]">
+<tal:block define="toolbar python:['ZMSBasicToolbar']">
 	<tal:block tal:condition="python:here.getConfProperty('plugin.rte.ckeditor.Config','')">
 				customConfig:'<tal:block tal:content="python:'%s/%s'%(here.getHome().absolute_url(),here.getConfProperty('plugin.rte.ckeditor.Config',''))"></tal:block>',
 		<tal:block tal:define="dummy0 python:toolbar.insert(0,'ZMSCustomToolbar')"></tal:block>

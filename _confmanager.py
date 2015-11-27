@@ -649,7 +649,11 @@ class ConfManager(
           if s != home.id:
             self.setConfProperty('Portal.Master',s)
           l = []
-          for id in REQUEST.get('portal_clients',[]):
+          portal_clients = REQUEST.get('portal_clients',[])
+          portal_clients = map(lambda x:(int(x[:x.find(':')]),x[x.find(':')+1:]),portal_clients)
+          portal_clients.sort()
+          portal_clients = map(lambda x:x[1],portal_clients)
+          for id in portal_clients:
             folder = getattr(home,id,None)
             if folder is not None:
               for node in folder.objectValues('ZMS'):

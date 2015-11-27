@@ -1938,6 +1938,9 @@ initAttrRef = function() {
 $ZMI.registerReady(function(){
 	$("input#attr_ref").change(initAttrRef).change();
 	$("#tr_attr_ref_type select").css("width", "100%");
+	if ( $('#ref_lang option').length < 3 ) {
+		$('#tr_ref_lang').hide();
+	}
 });
 
 //-->
@@ -2008,6 +2011,21 @@ $ZMI.registerReady(function(){
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="id"><![CDATA[ref_lang]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                        <item><![CDATA[<dtml-let langs="[]"><dtml-in "getLangIds()"><dtml-call "langs.append([_['sequence-item'],'%s (%s)'%(getLanguageLabel(_['sequence-item']),_['sequence-item'])])"></dtml-in><dtml-return langs></dtml-let>]]></item>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[ATTR_LINK_CROSSLANGUAGE]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[select]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="id"><![CDATA[align]]></item>
                   <item key="keys" type="list">
                     <list>
@@ -2043,16 +2061,6 @@ $ZMI.registerReady(function(){
                   <item key="name"><![CDATA[DC.Description]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[attr_dc_description]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="id"><![CDATA[attr_dc_creator]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">1</item>
-                  <item key="name"><![CDATA[DC.Creator]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_creator]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2158,6 +2166,8 @@ return constraints
 		title         python:unicode(zmscontext.attr('title'),'utf-8');
 		titlealt      python:unicode(zmscontext.attr('titlealt'),'utf-8');
 		ref           python:zmscontext.attr('attr_url');
+		ref_lang      python:zmscontext.attr('ref_lang');
+		ref_url       python:int(ref.startswith('{$') and ref.endswith('}')) and zmscontext.getLinkObj(ref).getHref2IndexHtml({'lang':ref_lang}) or zmscontext.getLinkUrl(ref,request);
 		target        python:zmscontext.attr('attr_type');
 		align         python:zmscontext.attr('align');
 		abstract      python:unicode(zmscontext.attr('attr_abstract').replace('\n','<br/>'),'utf-8');
@@ -2171,39 +2181,44 @@ return constraints
 		></tal:block
 		><tal:block tal:condition="python:align in [ 'RIGHT_FLOAT']"
 			><tal:block tal:define="global subclass python:subclass+['floatright']"></tal:block
-		></tal:block>
-	<div tal:condition="python:zmscontext.getParentNode().meta_id=='ZMSLinkContainer' or align not in ['','NONE'] or request.get('URL','').find('/manage')>0"
+		></tal:block
+		><div tal:condition="python:zmscontext.getParentNode().meta_id=='ZMSLinkContainer' or align not in ['','NONE'] or request.get('URL','').find('/manage')>0"
 			tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
-		<div class="title" tal:condition="title">
-			<tal:block tal:content="structure python:zmscontext.tal_anchor(zmscontext.getLinkUrl(ref,request),target=['','_blank'][int(zmscontext.attr('attr_type')=='new')],content=titlealt)">the link</tal:block>
+			<tal:block tal:condition="python:ref_lang!=''">
+				<div class="title" tal:condition="title">
+					<tal:block tal:content="structure python:zmscontext.tal_anchor(ref_url,target=['','_blank'][int(zmscontext.attr('attr_type')=='new')],content=titlealt)">the link</tal:block>
+				</div>
+			</tal:block>
+			<tal:block tal:condition="python:ref_lang==''">
+				<div class="title" tal:condition="title">
+					<tal:block tal:content="structure python:zmscontext.tal_anchor(zmscontext.getLinkUrl(ref,request),target=['','_blank'][int(zmscontext.attr('attr_type')=='new')],content=titlealt)">the link</tal:block>
+				</div>
+			</tal:block>
+			<div tal:condition="python:title and title!=titlealt" class="text" tal:content="structure title">The title</div>
+			<div tal:condition="python:abstract" class="description" tal:content="structure abstract">The abstract</div>
 		</div>
-		<div tal:condition="python:title and title!=titlealt" class="text" tal:content="structure title">
-			The title
-		</div>
-		<div tal:condition="python:abstract" class="description" tal:content="structure abstract">
-			The abstract
-		</div>
-	</div>
 	</tal:block
-	><iframe class="ZMSLinkElement" tal:condition="python:target=='iframe'" style="width:100%;padding:0;margin:0;border:0;min-height:260px;background-color:#f5f5f5" tal:attributes="src ref; id zmsid">IFRAME CONTENT</iframe>
-	<tal:block tal:replace="structure python:'<script type=\042text/javascript\042>'"></tal:block>
-		// $ZMI Register function: On Docment Ready the iFrameResizer Script will be Executed
-		// IMOPRTANT HINT: Targetted Content Needs to be linked to the iframeResizer.contentWindow Script:
-		// /++resource++zms_/iframeresizer/iframeResizer.contentWindow.min.js
-		// SOURCE: https://github.com/davidjbradshaw/iframe-resizer/blob/master/js/iframeResizer.contentWindow.min.js 
-		if (typeof(ZMI)!='undefined') {
-			$ZMI.registerReady(function() {
-				try {
-					<tal:block tal:replace="python:'iFrameResize({},\047iframe#%s.ZMSLinkElement\047);'%(zmsid)"></tal:block>
-				}
-				catch(err) {
-				}
-			})
-		}
-	<tal:block tal:replace="structure string:</script>"></tal:block>
-	<script tal:condition="python:request.get('link_iframeResizer',True)" 
-		src="/++resource++zms_/iframeresizer/iframeResizer.min.js"></script>
-	<tal:block tal:define="iframeexists python:request.set('link_iframeResizer',False)"></tal:block>
+	><tal:block tal:condition="python:target=='iframe'"
+		><iframe class="ZMSLinkElement" tal:attributes="src ref; id zmsid" style="width:100%;padding:0;margin:0;border:0;min-height:260px;background-color:#f5f5f5">IFRAME CONTENT</iframe>
+		<tal:block tal:replace="structure python:'<script type=\042text/javascript\042>'"></tal:block>
+			// $ZMI Register function: On Docment Ready the iFrameResizer Script will be Executed
+			// IMOPRTANT HINT: Targetted Content Needs to be linked to the iframeResizer.contentWindow Script:
+			// /++resource++zms_/iframeresizer/iframeResizer.contentWindow.min.js
+			// SOURCE: https://github.com/davidjbradshaw/iframe-resizer/blob/master/js/iframeResizer.contentWindow.min.js
+			if (typeof(ZMI)!='undefined') {
+				$ZMI.registerReady(function() {
+					try {
+						<tal:block tal:replace="python:'iFrameResize({},\047iframe#%s.ZMSLinkElement\047);'%(zmsid)"></tal:block>
+					}
+					catch(err) {
+					}
+				})
+			}
+		<tal:block tal:replace="structure string:</script>"></tal:block>
+		<script tal:condition="python:request.get('link_iframeResizer',True)"
+			src="/++resource++zms_/iframeresizer/iframeResizer.min.js"></script>
+		<tal:block tal:define="iframeexists python:request.set('link_iframeResizer',False)"></tal:block>
+	</tal:block>
 </tal:block>
 
 <!-- /ZMSLinkElement.standard_html -->]]>
@@ -2242,7 +2257,7 @@ return constraints
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.10]]></item>
+          <item key="revision"><![CDATA[3.1.11]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4768,7 +4783,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.1.9]]></item>
+          <item key="revision"><![CDATA[3.1.11]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

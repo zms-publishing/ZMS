@@ -7,7 +7,7 @@
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
   <LastAuthor>FH</LastAuthor>
   <Created>2007-05-16T21:18:05Z</Created>
-  <LastSaved>2013-10-16T08:17:21Z</LastSaved>
+  <LastSaved>2015-27-11T08:17:21Z</LastSaved>
   <Version>10.6871</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
@@ -47,7 +47,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="_language.py">
-  <Table ss:ExpandedColumnCount="14" ss:ExpandedRowCount="461" x:FullColumns="1"
+  <Table ss:ExpandedColumnCount="14" x:FullColumns="1"
    x:FullRows="1" ss:StyleID="Default" ss:DefaultColumnWidth="120">
    <Column ss:StyleID="s22" ss:AutoFitWidth="0" ss:Width="200"/>
    <Column ss:StyleID="s23" ss:AutoFitWidth="0" ss:Index="9"/>
@@ -1583,9 +1583,12 @@
     <Cell><Data ss:Type="String">ATTR_LINK_EXTERNAL</Data></Cell>
     <Cell><Data ss:Type="String">Externer Link</Data></Cell>
     <Cell><Data ss:Type="String">External Link</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Liens interne</Data></Cell>
+    <Cell><Data ss:Type="String">Externe Link</Data></Cell>
+    <Cell><Data ss:Type="String">Lien interne</Data></Cell>
     <Cell><Data ss:Type="String">Link esterno</Data></Cell>
-    <Cell ss:Index="9"/>
+    <Cell><Data ss:Type="String">Enlace externo</Data></Cell>
+    <Cell><Data ss:Type="String">外部链接</Data></Cell>
+    <Cell><Data ss:Type="String">بیرونی لنک</Data></Cell>
     <Cell><Data ss:Type="String">екстерная ссылка</Data></Cell>
     <Cell><Data ss:Type="String">बाहारी कड़ी</Data></Cell>
     <Cell><Data ss:Type="String">رابط خارجي</Data></Cell>
@@ -1596,14 +1599,33 @@
     <Cell><Data ss:Type="String">ATTR_LINK_INTERNAL</Data></Cell>
     <Cell><Data ss:Type="String">Interner Link</Data></Cell>
     <Cell><Data ss:Type="String">Internal Link</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Liens externe</Data></Cell>
+    <Cell><Data ss:Type="String">Interne Link</Data></Cell>
+    <Cell><Data ss:Type="String">Lien interne</Data></Cell>
     <Cell><Data ss:Type="String">Link interno</Data></Cell>
-    <Cell ss:Index="9"/>
+    <Cell><Data ss:Type="String">Enlace Interno</Data></Cell>
+    <Cell><Data ss:Type="String">内部链接</Data></Cell>
+    <Cell><Data ss:Type="String">اندرونی لنک</Data></Cell>
     <Cell><Data ss:Type="String">внутренняя ссылка</Data></Cell>
     <Cell><Data ss:Type="String">आंतरिक कड़ी</Data></Cell>
     <Cell><Data ss:Type="String">رابط داخلي</Data></Cell>
     <Cell><Data ss:Type="String">Liên kết trong</Data></Cell>
     <Cell><Data ss:Type="String">קישור פנימי</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">ATTR_LINK_CROSSLANGUAGE</Data></Cell>
+    <Cell><Data ss:Type="String">Sprachwechsel</Data></Cell>
+    <Cell><Data ss:Type="String">Change Language</Data></Cell>
+    <Cell><Data ss:Type="String">Wijzig Taal</Data></Cell>
+    <Cell><Data ss:Type="String">Changer de langue</Data></Cell>
+    <Cell><Data ss:Type="String">Cambia lingua</Data></Cell>
+    <Cell><Data ss:Type="String">Cambiar el idioma</Data></Cell>
+    <Cell><Data ss:Type="String">更改语言</Data></Cell>
+    <Cell><Data ss:Type="String">زبان تبدیل کریں</Data></Cell>
+    <Cell><Data ss:Type="String">Изменить язык</Data></Cell>
+    <Cell><Data ss:Type="String">भाषा बदलें</Data></Cell>
+    <Cell><Data ss:Type="String">تغيير اللغة</Data></Cell>
+    <Cell><Data ss:Type="String">Thay đổi ngôn ngữ</Data></Cell>
+    <Cell><Data ss:Type="String">שנת שפה</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ATTR_MANDATORY</Data></Cell>

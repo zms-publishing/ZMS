@@ -1728,10 +1728,13 @@ class ZMSGlobals:
     """
     Sends Mail via MailHost.
     """
-    def sendMail(self, mto, msubject, mbody, REQUEST=None):
+    def sendMail(self, mto, msubject, mbody, REQUEST=None, mattach=None):
       from email.mime.multipart import MIMEMultipart
       from email.mime.text import MIMEText
-      
+      from email.mime.image import MIMEImage
+      from email.mime.audio import MIMEAudio
+      from email.mime.application import MIMEApplication
+
       # Check constraints.
       if type(mto) is str:
         mto = {'To':mto}
@@ -1752,7 +1755,8 @@ class ZMSGlobals:
         mailhost = getattr(homeElmnt,'MailHost',None)
       
       # Assemble MIME object.
-      mime_msg = MIMEMultipart('related')
+      #mime_msg = MIMEMultipart('related') # => attachments do not show up in iOS Mail (just as paperclip indicator)
+      mime_msg = MIMEMultipart()
       mime_msg['Subject'] = msubject
       for k in mto.keys():
         mime_msg[k] = mto[k]
@@ -1766,10 +1770,61 @@ class ZMSGlobals:
       for ibody in mbody:
         msg = MIMEText(ibody['text'], _subtype=ibody.get('subtype','plain'), _charset=ibody.get('charset','unicode-1-1-utf-8'))
         msgAlternative.attach(msg)
+
+      # Handle attachments
+      if mattach is not None:
+        if not isinstance(mattach, list):
+          mattach = [mattach]
+        for filedata in mattach:
+          # Send base64-encoded data stream
+          # Give optional prefix naming filename, mimetype and encoding 
+          # Example: 'filename:MyImageFile.png;data:image/png;base64,......'
+          if isinstance(filedata, str):
+            mimetype = 'unknown'
+            maintype = 'unknown'
+            encoding = 'unknown'
+            filename = 'unknown'
+            filetype = 'attachment'
+            fileextn = 'dat'
+            metadata = self.re_search('(^.*,)', filedata)
+            # extract filename, mimetype and encoding if available
+            if (type(metadata)==list and len(metadata)==1):          
+              mimetype = self.re_search('data:([^;,]+[;,][^,]*)', metadata[0])
+              filename = self.re_search('filename:([^;]+)', metadata[0])
+              filedata = filedata.replace(metadata[0], '')           
+            if (type(mimetype)==list and len(mimetype)==1): 
+              mimetype = mimetype[0].split(';')
+              if type(mimetype)==list and len(mimetype)==2:
+                maintype = mimetype[0]
+                encoding = mimetype[1]
+            if (type(filename)==list and len(filename)==1):
+              filename = filename[0]
+            else:
+              subtypes = maintype.split('/')
+              if (type(subtypes)==list and len(subtypes)==2):
+                filetype = subtypes[0]
+                fileextn = subtypes[1]            
+              filename = '%s.%s'%(filetype,fileextn)
+            # decode if already encoded because MIME* is encoding by default
+            if encoding=='base64':
+              filedata = base64.b64decode(filedata)
+            # create mime attachment
+            if (filetype=='image'):
+              part = MIMEImage(filedata, fileextn)                
+            elif (filetype=='audio'):
+              part = MIMEAudio(filedata, fileextn)              
+            else:
+              part = MIMEApplication(filedata)
+            part.add_header('Content-Disposition', 'attachment; filename="%s"'%filename)
+            mime_msg.attach(part)
+            
+          # TODO: Handle data from filesystem or other sources
+          elif isinstance(filedata, file):
+            raise NotImplementedError
       
       # Send mail.
       try:
-        _globals.writeBlock( self, "[sendMail]: %s"%mime_msg.as_string())
+        #_globals.writeBlock( self, "[sendMail]: %s"%mime_msg.as_string())
         mailhost.send(mime_msg.as_string())
         return 0
       except:

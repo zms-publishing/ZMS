@@ -10,14 +10,14 @@ function pluginLanguage() {
  * jQuery UI
  */
 function pluginUI(s, c) {
-	$ZMI.setCursorWait("pluginUI");
+	//$ZMI.setCursorWait("pluginUI");
 	$.plugin('ui',{
 		files: [
 				$ZMI.getConfProperty('jquery.ui'),
 				$ZMI.getConfProperty('zmi.ui')
 		]});
 	$.plugin('ui').get(s,function(){
-			$ZMI.setCursorAuto("pluginUI");
+			//$ZMI.setCursorAuto("pluginUI");
 			c();
 		});
 }
@@ -26,14 +26,14 @@ function pluginUI(s, c) {
  * jQuery UI Datepicker
  */
 function pluginUIDatepicker(s, c) {
-	$ZMI.setCursorWait("pluginUIDatepicker");
+	//$ZMI.setCursorWait("pluginUIDatepicker");
 	var lang = pluginLanguage();
 	$.plugin('ui_datepicker',{
 		files: [
 				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+lang+'.js'
 		]});
 	pluginUI(s,function() {
-			$ZMI.setCursorAuto("pluginUIDatepicker");
+			//$ZMI.setCursorAuto("pluginUIDatepicker");
 			$.plugin('ui_datepicker').get(s,c);
 		});
 }
@@ -62,9 +62,9 @@ function zmiAutocompleteDefaultFormatter(l, q) {
 }
 
 function zmiAutocomplete(s, o) {
-	$ZMI.setCursorWait("zmiAutocomplete");
+	//$ZMI.setCursorWait("zmiAutocomplete");
 	pluginUI(s,function() {
-		$ZMI.setCursorAuto("zmiAutocomplete");
+		//$ZMI.setCursorAuto("zmiAutocomplete");
 		$(s).autocomplete(o)
 		.data("ui-autocomplete")._renderItem = function( ul, item ) {
 				return $( "<li></li>" )

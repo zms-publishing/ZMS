@@ -1,36 +1,15 @@
 <!-- objattrs/zmi_input_multiselect -->
 
-<div class="form-multiselect" tal:define="global 
-		name    python:'%s:list'%options['name'];
-		srcname python:'zms_mms_src_%s:list'%options['name'];
-		value   python:map(lambda x:str(x),here.nvl(options.get('value'),[]));
-		opts    python:here.sort_list(options.get('options',[]),1);">
-	<div class="pull-left">
-		<label tal:attributes="for srcname" tal:content="python:here.getZMILangStr('ATTR_AVAILABLE')">Available</label>
-		<select class="form-control" multiple="multiple" tal:attributes="name srcname; ondblclick python:'$ZMI.selectFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)">
-			<tal:block tal:repeat="opt opts">
-				<option tal:condition="not:python:str(opt[0]) in value" tal:attributes="value python:opt[0]" tal:content="structure python:opt[1]">the label</option>
-			</tal:block>
-		</select>
-	</div><!-- .pull-left -->
-	<div class="pull-left">
-		<label>&nbsp;</label><br/>
-		<div class="btn-group-vertical">
-			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'return $ZMI.selectFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)" tal:content="structure python:here.zmi_icon(name='icon-angle-right')"></button>
-			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'return $ZMI.selectAllFromMultiselect(this.form,\'%s\',\'%s\')'%(srcname,name)" tal:content="structure python:here.zmi_icon(name='icon-double-angle-right')"></button>
-			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'return $ZMI.selectAllFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)" tal:content="structure python:here.zmi_icon(name='icon-double-angle-left')"></button>
-			<button class="btn btn-default btn-sm" tal:attributes="onclick python:'return $ZMI.selectFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)" tal:content="structure python:here.zmi_icon(name='icon-angle-left')"></button>
-		</div><!-- .btn-group-vertical -->
-	</div><!-- .pull-left -->
-	<div class="pull-left">
-		<label tal:attributes="for name" tal:content="python:here.getZMILangStr('ATTR_SELECTED')">Selected</label>
-		<select class="form-control" multiple="multiple" tal:attributes="name name; ondblclick python:'$ZMI.selectFromMultiselect(this.form,\'%s\',\'%s\')'%(name,srcname)">
-			<tal:block tal:repeat="opt opts">
-				<option tal:condition="python:str(opt[0]) in value" tal:attributes="value python:opt[0]" selected="selected" tal:content="structure python:opt[1]">the label</option>
-			</tal:block>
-		</select>
-	</div><!-- .pull-left -->
-	<div class="clearfix"></div><!-- .clearfix -->
-</div><!-- .form-multiselect -->
+<select multiple="multiple"
+    tal:attributes="
+      name python:'%s:list'%options['name'];
+      class python:' '.join(['zmi-select']+options.get('css',[]));"
+    tal:define="
+      value   python:map(lambda x:str(x),here.nvl(options.get('value'),[]));
+      opts    python:here.sort_list(options.get('options',[]),1);">
+	<tal:block tal:repeat="opt opts">
+		<option tal:attributes="value python:opt[0]; selected python:['','selected'][str(opt[0]) in value]" tal:content="structure python:opt[1]">the label</option>
+	</tal:block>
+</select>
 
 <!-- /objattrs/zmi_input_multiselect --> 

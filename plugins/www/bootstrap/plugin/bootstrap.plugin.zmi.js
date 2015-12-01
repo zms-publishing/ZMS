@@ -67,37 +67,50 @@ $(function(){
 			}
 		});
 
-	$(".zmi-change-dt").each(function() {
-			var mydate = $(this).text();
-			var myformat = getZMILangStr('DATETIME_FMT');
-			var dtsplit=mydate.split(/[\/ .:]/);
-			var dfsplit=myformat.split(/[\/ .:]/);
-			// creates assoc array for date
-			df = new Array();
-			for(dc=0;dc<dtsplit.length;dc++) {
-				df[dfsplit[dc]]=dtsplit[dc];
-				df[dfsplit[dc].substr(1)]=parseInt(dtsplit[dc]);
-			}
-			var dstring = df['%Y']+'-'+df['%m']+'-'+df['%d']+' '+df['%H']+':'+df['%M']+':'+df['%S'];
-			var date = new Date(df['Y'],df['m']-1,df['d']);
-			var now = new Date();
-			now.setHours(0,0,0);      
-			var daysBetween = (now.valueOf()-date.valueOf())/(24*60*60*1000);
-			if (daysBetween<1) {
-				date = new Date(df['Y'],df['m']-1,df['d'],df['H'],df['M'],df['S']);
-				now = new Date();        
-				var secondsBetween = (now.valueOf()-date.valueOf())/(1000);
-				var minutesBetween = secondsBetween/(60);
-				$(this).text(getZMILangStr('TODAY')+" "+(minutesBetween<60?Math.floor(minutesBetween)+" min. ":df['%H']+':'+df['%M']));
-			}
-			else if (daysBetween<2) {
-				$(this).text(getZMILangStr('YESTERDAY')+" "+df['%H']+':'+df['%M']);
-			}
-			else {
-				$(this).text(getZMILangStr('DATE_FMT').replace('%Y',df['%Y']).replace('%m',df['%m']).replace('%d',df['%d']));
-			}
-		$(this).attr('title',mydate);
-	});
+  var $change_dt = $(".zmi-change-dt");
+  if ($change_dt.length > 0) {
+    var fn = function() {
+        $ZMI.writeDebug("change_dt");
+        $change_dt.each(function() {
+          var $el = $(this);
+          var mydate = $el.attr("title");
+          if (typeof mydate=="undefined") {
+            mydate = $el.text();
+          }
+          var myformat = getZMILangStr('DATETIME_FMT');
+          var dtsplit=mydate.split(/[\/ .:]/);
+          var dfsplit=myformat.split(/[\/ .:]/);
+          // creates assoc array for date
+          df = new Array();
+          for(dc=0;dc<dtsplit.length;dc++) {
+            df[dfsplit[dc]]=dtsplit[dc];
+            df[dfsplit[dc].substr(1)]=parseInt(dtsplit[dc]);
+          }
+          var dstring = df['%Y']+'-'+df['%m']+'-'+df['%d']+' '+df['%H']+':'+df['%M']+':'+df['%S'];
+          var date = new Date(df['Y'],df['m']-1,df['d']);
+          var now = new Date();
+          now.setHours(0,0,0);
+          var daysBetween = (now.valueOf()-date.valueOf())/(24*60*60*1000);
+          if (daysBetween<1) {
+            date = new Date(df['Y'],df['m']-1,df['d'],df['H'],df['M'],df['S']);
+            now = new Date();
+            var secondsBetween = (now.valueOf()-date.valueOf())/(1000);
+            var minutesBetween = secondsBetween/(60);
+            $ZMI.writeDebug("change_dt: mydate="+mydate+"; now="+now+"; dm="+minutesBetween+"; ds="+secondsBetween);
+            $(this).text(getZMILangStr('TODAY')+" "+(minutesBetween<60?Math.floor(minutesBetween)+" min. ":df['%H']+':'+df['%M']));
+          }
+          else if (daysBetween<2) {
+            $(this).text(getZMILangStr('YESTERDAY')+" "+df['%H']+':'+df['%M']);
+          }
+          else {
+            $(this).text(getZMILangStr('DATE_FMT').replace('%Y',df['%Y']).replace('%m',df['%m']).replace('%d',df['%d']));
+          }
+        $(this).attr("title",mydate);
+      })
+      setTimeout(fn,10000);
+    };
+    fn();
+  }
 
 	// New Sitemap Icon
 	$(".navbar-main .navbar-brand").before(""
@@ -416,6 +429,93 @@ ZMI.prototype.initInputFields = function(container) {
 	$(container)
 		.each(function() {
 			var context = this;
+      // Multiselect
+      var refreshContainer = function($container) {
+          var c = 0;
+          var $select = $container.prev();
+          $("option",$select).prop("selected","");
+          $container.children().each(function() {
+              var data_value = $(this).attr("data-value");
+              var val = ($container.hasClass("zmi-sortable")?c+":":"")+data_value;
+              $("option[data-value='"+data_value+"']",$select).prop("selected","selected").val(val);
+              c++;
+            });
+        }
+      var refreshDropdown = function($dropdown) {
+          if ($("li.hidden",$dropdown).length==$("li",$dropdown).length) {
+            $dropdown.hide("normal");
+          }
+          else {
+            $dropdown.show("normal");
+          }
+        }
+      $("select.zmi-select[multiple]").each(function() {
+          var $select = $(this);
+          var html = ''
+            + '<div class="'+$(this).attr('class')+'">'
+            + '</div>'
+            + '<div class="btn-group btn-group-sortable">\n'
+            + '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
+            + $ZMI.icon('icon-plus')
+            + '</button>'
+            + '<ul class="dropdown-menu">';
+          var c = 0;
+          $("option",$select).each(function() {
+              var v = $(this).attr('value');
+              $(this).attr('data-value',v);
+              html += ''
+                + '<li>\n'
+                + '<a href="javascript:;" data-value="'+v+'">\n'
+                + $(this).text()
+                + '</a>\n'
+                + '</li>\n';
+              c++;
+            });
+          html += ''
+            + '</ul>'
+            + '</div>';
+          $(this).addClass("hidden").after(html);
+          var $container = $select.next();
+          var $dropdown = $container.next();
+          $("li a",$dropdown).click(function() {
+              $(this).parent().addClass("hidden");
+              refreshDropdown($dropdown);
+              var v = $(this).attr('data-value');
+              $("option[data-value='"+v+"']",$select).prop('selected','selected');
+              $container.append(''
+                  +'<div class="btn" data-value="'+v+'">'
+                  +'<a href="javascript:;">'+$ZMI.icon('icon-remove')+'</a> '
+                  +$(this).text()
+                  +'</div>'
+                );
+              $(".btn a:last",$container).click(function() {
+                  var $parent = $(this).parent();
+                  var data_value = $parent.attr("data-value");
+                  $("li a[data-value='"+data_value+"']",$dropdown).parent().removeClass("hidden");
+                  $parent.remove();
+                  refreshDropdown($dropdown);
+                  refreshContainer($container);
+                });
+                refreshDropdown($dropdown);
+                refreshContainer($container);
+            });
+          $("option:selected",this).each(function() {
+              var v = $(this).attr('data-value');
+              $("li a[data-value='"+v+"']",$dropdown).click();
+            });
+        });
+      pluginUI("div.zmi-select.zmi-sortable",function() {
+        $("div.zmi-select.zmi-sortable").sortable({
+          tolerance:'pointer',
+          forcePlaceholderSize:true,
+          forceHelperSize:true,
+          placeholder: "ui-state-highlight",
+          revert: true,
+          stop: function(event, ui) {
+              refreshContainer($(this).parent());
+            }
+        });
+      });
 			// Accordion:
 			// highlight default collapse item
 			var data_root = $("body").attr('data-root');

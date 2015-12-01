@@ -1782,3 +1782,32 @@ body.tasks .zmi-container .center .contentEditable {
 .zmi.zmslog .logitem code {
 	white-space:pre-wrap !important;
 }
+/*----- Multiselect ---------------------------------------------------------*/
+.btn-group.btn-group-sortable, .zmi-select {
+  float:left;
+  display:inline;
+}
+.btn-group.btn-group-sortable .btn {
+  margin: 0 .5em .5em 0;
+  height:28px;
+  padding:2px 8px;
+}
+.zmi-select .btn {
+  margin: 0 .5em .5em 0;
+  height:28px;
+  padding:2px 8px;
+  border-color:#CCC;
+  cursor:default;
+}
+.zmi-select.zmi-sortable .btn {
+  cursor:move;
+}
+.zmi-select.zmi-sortable .ui-state-highlight {
+  display:inline-block;
+  height: 28px;
+  vertical-align: middle;
+  margin-bottom:0px;
+  margin-right:.5em;
+  min-width: 5em;
+  background: #D8DEE4;
+}

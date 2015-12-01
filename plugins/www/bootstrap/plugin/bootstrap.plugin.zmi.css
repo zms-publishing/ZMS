@@ -1114,6 +1114,11 @@ input.btn.btn-file {
 .customize.config #InstalledProducts .tab-content .col-sm-8 button.btn {
 	min-width:160px;
 }
+.customize.config #Clients .zmi-multiselect .btn,
+.customize.config #Clients .ui-state-highlight {
+	display: block;
+	text-align: left;
+}
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Users-Form

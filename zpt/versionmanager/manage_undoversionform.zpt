@@ -6,13 +6,114 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="form-horizontal" onsubmit="return false" tal:define="global
+<form class="form-horizontal" tal:define="global
 		level python:here.getLevel();
 		obj_versions python:[];
 		change_history python:here.attr('change_history')[::-1]">
 
 	<legend tal:content="python:here.getZMILangStr('TAB_HISTORY')">History</legend>
 	<p class="well" tal:content="structure python:here.getZMILangStr('MSG_UNDOVERSION')">well</p>
+
+<tal:block tal:condition="python:request.get('btn')==here.getZMILangStr('BTN_COMPARE')" tal:define="ids python:request.get('ids',[]); ids python:map(lambda x:x.id,filter(lambda x:x.id in ids,here.getObjVersions()));">
+	<tal:block tal:condition="python:len(ids)>1">
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle" data-toggle="collapse" href="#compare">
+				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
+				<tal:block tal:content="python:here.getZMILangStr('BTN_COMPARE')">the heading</tal:block>
+			</a>
+		</div><!-- .accordion-heading -->
+		<div class="accordion-body collapse in" id="compare"">
+			<div class="accordion-inner">
+		<table class="table-bordered table-striped diff">
+		<tr>
+			<th>&nbsp;</th>
+			<tal:block tal:repeat="id python:ids[:-1]">
+				<tal:block tal:define="dummy0 python:request.set('ZMS_VERSION_%s'%here.id,id); obj_version python:here.getObjVersion(request); childNode python:obj_version.aq_parent">
+					<th>
+						<tal:block tal:content="python:'v.%i.%i.%i'%(childNode.attr('master_version'),childNode.attr('major_version'),childNode.attr('minor_version'))">v.0.0.0</tal:block>
+					</th>
+				</tal:block>
+			</tal:block>
+		</tr>
+		<tal:block tal:repeat="metaObjAttr python:filter(lambda x:x['type'] in here.metaobj_manager.valid_types,map(lambda x:here.getMetaobjAttr(here.meta_id,x),here.getMetaobjAttrIds(here.meta_id)))">
+			<tal:block tal:define="values python:[]">
+				<tal:block tal:repeat="id ids">
+					<tal:block tal:define="dummy0 python:request.set('ZMS_VERSION_%s'%here.id,id);
+							obj_version python:here.getObjVersion(request);
+							childNode python:obj_version.aq_parent;
+							value python:childNode.attr(metaObjAttr['id']);">
+						<tal:block tal:condition="python:metaObjAttr['type'] in ['date','datetime']">
+							<tal:block tal:define="dummy0 python:values.append(here.getLangFmtDate(value,request['lang']));"></tal:block>
+						</tal:block>
+						<tal:block tal:condition="python:metaObjAttr['type'] in ['list','multiautocomplete','multiselect']">
+							<tal:block tal:define="dummy0 python:values.append(', '.join(value));"></tal:block>
+						</tal:block>
+						<tal:block tal:condition="not:python:metaObjAttr['type'] in ['date','datetime','list','multiautocomplete','multiselect']">
+							<tal:block tal:define="dummy0 python:values.append(value);"></tal:block>
+						</tal:block>
+					</tal:block>
+				</tal:block>
+				<tr class="diff" tal:condition="python:len(filter(lambda x:x==values[0],values[1:]))!=len(values)-1">
+					<th tal:attributes="title metaObjAttr/id" tal:content="python:here.getObjAttrLabel(metaObjAttr)">the key</th>
+					<tal:block tal:define="
+							dummy0 python:values.append(values[-1])"></tal:block>
+					<tal:block tal:repeat="i python:range(len(values)-2)">
+						<td tal:attributes="id python:'data-%s-%i'%(metaObjAttr['id'],i)">
+							<tal:block tal:condition="python:values[i]==values[i+1]">
+								<div class="text-muted"><tal:block tal:content="structure python:values[i+1]">the original-value</tal:block></div>
+							</tal:block>
+							<tal:block tal:condition="not:python:values[i]==values[i+1]">
+								<div class="original"><tal:block tal:content="structure python:values[i+1]">the original-value</tal:block></div>
+								<div class="changed"><tal:block tal:content="structure python:values[i]">the changed-value</tal:block></div>
+								<div class="diff"></div>
+							</tal:block>
+						</td>
+					</tal:block>
+				</tr>
+			</tal:block>
+		</tal:block>
+		</table>
+			</div><!-- .accordion-inner -->
+		</div><!-- .accordion-body -->
+	</div><!-- .accordion-group -->
+	</tal:block>
+
+	<style>
+		del {
+			color:#777!important;
+			background-color:#F2DEDE!important;
+			text-decoration:line-through;
+		}
+		ins {
+			color: #3C763D!important;
+			background-color: #DFF0D8!important;
+			text-decoration:none;
+		}
+		table.diff > tbody > tr > th:first-child {
+			min-width:10em;
+		}
+		tr.diff .original, tr.diff .changed {
+			display:none;
+		}
+	</style>
+	<script>
+	$(function() {
+		$("tr.diff").each(function() {
+				var $tr = $(this);
+				$("td",$tr).each(function() {
+						$("#"+$(this).attr("id")).prettyTextDiff({
+								cleanupt:true,
+								originalContainer:".original",
+								changedContainer:".changed",
+								diffContainer:".diff"
+							});
+					});
+			});
+		});
+	</script>
+	<hr/>
+</tal:block>
 
 	<tal:block tal:define="global
 			size python:len(change_history);
@@ -28,15 +129,15 @@
 				<ul class="zmi-container">
 					<tal:block tal:repeat="change_item python:change_history[pageStart:pageEnd]">
 						<tal:block tal:repeat="obj_version python:here.getObjVersions()">
-							<tal:block tal:define="global childNode python:obj_version.aq_parent; dummy0 python:request.set('ZMS_VERSION_%s'%childNode.id,obj_version.id)">
-								<li tal:condition="python:childNode.attr('master_version')==change_item.get('master_version',0) and childNode.attr('major_version')==change_item.get('major_version',0)" tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join(['zmi-item','zmi-selectable']+[['pageelement'],[]][int(childNode.isPage())])">
+							<tal:block tal:define="global childNode python:obj_version.aq_parent; dummy0 python:request.set('ZMS_VERSION_%s'%childNode.id,obj_version.id); selected python:obj_version.id in request.get('ids',[])">
+								<li tal:condition="python:childNode.attr('master_version')==change_item.get('master_version',0) and childNode.attr('major_version')==change_item.get('major_version',0)" tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join(['zmi-item','zmi-selectable']+[[],['zmi-selected']][selected]+[['pageelement'],[]][int(childNode.isPage())])">
 									<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
 										tal:content="structure python:childNode.renderShort(request)">
 										the rendered child-node
 									</div><!-- .center -->
 									<div class="right">
 										<span class="zmi-ids">
-											<input type="checkbox" name="ids:list" tal:attributes="value python:obj_version.id"/> <strong tal:content="python:here.getVersionNr(change_item)">version_nr</strong>
+											<input type="checkbox" name="ids:list" tal:attributes="value python:obj_version.id; checked python:['','checked'][selected]"/> <strong tal:content="python:here.getVersionNr(change_item)">version_nr</strong>
 										</span>
 										<div class="zmi-manage-main-change">
 											<tal:block tal:content="python:here.getLangFmtDate(change_item['version_dt'],request['manage_lang'],'BOBOBASE_MODIFICATION_FMT')">version_dt</tal:block>
@@ -48,9 +149,12 @@
 							</tal:block>
 						</tal:block>
 					</tal:block>
-					<li class="zmi-item pageelement">
-						<div class="center">&nbsp;</div><!-- .center -->
-						<div class="right" style="padding:.5em;">
+				</ul><!-- .zmi-container -->
+			</div><!-- .accordion-inner -->
+		</div><!-- .accordion-body.collapse.container.in -->
+
+<div class="form-group">
+	<div class="controls save">
 							<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COMPARE')">
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-random')"></tal:block>
 								<tal:block tal:content="python:here.getZMILangStr('BTN_COMPARE')">Compare</tal:block>
@@ -59,12 +163,8 @@
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block>
 								<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
 							</button>
-						</div><!-- .right -->
-						<div class="clearboth"></div>
-					</li>
-				</ul><!-- .zmi-container -->
-			</div><!-- .accordion-inner -->
-		</div><!-- .accordion-body.collapse.container.in -->
+	</div>
+</div>
 
 		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 
@@ -75,5 +175,7 @@
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/diff/diff_match_patch.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/diff/jquery.pretty-text-diff.min.js"></script>
 </body>
 </html>

@@ -273,6 +273,7 @@ div.grippy {
 	overflow: hidden;
 	position: absolute;
 	left:0;
+	z-index:100;
 }
 .zmi-item.ui-sortable-helper {
 	box-shadow:2px 5px 8px #ccc;

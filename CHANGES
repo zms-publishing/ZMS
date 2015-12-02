@@ -2,11 +2,20 @@
 
 == 3.3.0dev (in development) ==
 
-  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3385&limit=200 latest changes...]
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3493&limit=200 latest changes...]
 
-== 3.2.1 (2015-12-30) ==
+== 3.2.2 (2015-12-30) ==
 
   * TBA
+
+== 3.2.1 (2015-12-02) ==
+
+  * Updated to Bootstrap v3.3.6
+  * Updated Content Models (ZMSTable, ZMSSQLDB, ZMSFile, ZMSLinkElement)
+  * Updated zms3.formulator-3.3.7
+  * Better Performance for SQL-Grids
+  * Added Support for Object Content Checking Constraints
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=3492&stop_rev=3385&limit=200 more in 3.2.1...]
 
 == 3.2.0 (2015-10-28) ==
 

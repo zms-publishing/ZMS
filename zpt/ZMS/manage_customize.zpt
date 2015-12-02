@@ -405,10 +405,10 @@ $(function(){
               <li tal:condition="python:zmsprj is not None"><a href="#tab5" data-toggle="tab"><strong tal:content="zmsprj">ZMS.Project</strong> <span class="badge" tal:content="python:'%s / %s'%(len(filter(lambda x: ZMSExtension.isEnabled(x), ZMSExtension.getAllProjspecs(zmsprj))), len(ZMSExtension.getAllProjspecs(zmsprj)))">11 / 99</span></a></li>
               <li><a href="#tab1" data-toggle="tab"><strong>Extensions</strong> <span class="badge" tal:content="python:'%s / %s'%(len(filter(lambda x: ZMSExtension.isEnabled(x), ZMSExtension.getAllExtensions(zmsprj))), len(ZMSExtension.getAllExtensions(zmsprj)))">11 / 99</span></a></li>
               <li><a href="#tab2" data-toggle="tab"><strong>Themes</strong> <span class="badge" tal:content="python:'%s / %s'%(len(filter(lambda x: ZMSExtension.isThemeInstalled(context, x), ZMSExtension.getAllThemes(zmsprj))), len(ZMSExtension.getAllThemes(zmsprj)))">3 / 7</span></a></li>
+              <li><a href="#tab6" data-toggle="tab"><strong>Framework</strong> <span class="badge" tal:content="python:'%s / %s'%(len(filter(lambda x: ZMSExtension.isEnabled(x), ZMSExtension.getAllFramework())), len(ZMSExtension.getAllFramework()))">1 / 3</span></a></li>
               <li><a href="#tab3" data-toggle="tab"><strong>Products</strong> <span class="badge" tal:content="python:'%s / %s'%(len(filter(lambda x: ZMSExtension.isEnabled(x), ZMSExtension.getAllProducts())), len(ZMSExtension.getAllProducts()))">3 / 7</span></a></li>
               <li><a href="#tab4" data-toggle="tab"><strong>Others</strong> <span class="badge" tal:content="python:'%s / %s'%(len(filter(lambda x: ZMSExtension.isEnabled(x), ZMSExtension.getAllOthers())), len(ZMSExtension.getAllOthers()))">1 / 3</span></a></li>
-              <li><a href="#tab6" data-toggle="tab"><strong>Framework</strong> <span class="badge" tal:content="python:'%s / %s'%(len(filter(lambda x: ZMSExtension.isEnabled(x), ZMSExtension.getAllFramework())), len(ZMSExtension.getAllFramework()))">1 / 3</span></a></li>
-            </ul>
+             </ul>
           </div>
         </div>
       </div><!-- .form-group -->      

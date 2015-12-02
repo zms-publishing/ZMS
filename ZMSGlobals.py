@@ -1786,11 +1786,11 @@ class ZMSGlobals:
             filename = 'unknown'
             filetype = 'attachment'
             fileextn = 'dat'
-            metadata = self.re_search('(^.*,)', filedata)
+            metadata = self.re_search('(^.*[;,])', filedata)
             # extract filename, mimetype and encoding if available
             if (type(metadata)==list and len(metadata)==1):          
-              mimetype = self.re_search('data:([^;,]+[;,][^,]*)', metadata[0])
-              filename = self.re_search('filename:([^;]+)', metadata[0])
+              mimetype = self.re_search('data:([^;,]+[;,][^;,]*)', metadata[0])
+              filename = self.re_search('filename:([^;,]+)', metadata[0])
               filedata = filedata.replace(metadata[0], '')           
             if (type(mimetype)==list and len(mimetype)==1): 
               mimetype = mimetype[0].split(';')

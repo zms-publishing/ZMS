@@ -1097,8 +1097,9 @@ input.btn.btn-file {
 	min-width:160px;
 }
 .customize.config #Clients .zmi-multiselect .btn,
+.customize.config #Clients .zmi-select.zmi-sortable .btn,
 .customize.config #Clients .ui-state-highlight {
-	display: block;
+	display: block !important;
 	text-align: left;
 }
 

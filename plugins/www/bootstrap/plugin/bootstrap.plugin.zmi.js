@@ -106,7 +106,7 @@ $(function(){
             $(this).text(getZMILangStr('DATE_FMT').replace('%Y',df['%Y']).replace('%m',df['%m']).replace('%d',df['%d']));
           }
         $(this).attr("title",mydate);
-      })
+      });
       setTimeout(fn,10000);
     };
     fn();

@@ -29,10 +29,7 @@ for path in sys.path:
 # Abstract requirements to build the environment
 # catch latest versions from PyPI
 INSTALL_REQUIRES_ABSTRACT = [
-  'zms3.deployment',
-  'zms3.formulator',
-  'zms3.photodb',
-  'zms3.themes',
+
 ]
 
 # Concrete requirements to build the environment
@@ -65,8 +62,6 @@ INSTALL_REQUIRES_CONCRETE = [
   'Products.StandardCacheManagers==2.13.1',
   'Products.ZCatalog==3.1',
   'Products.ZCTextIndex==2.13.5',
-  'Products.ZSQLiteDA==0.6.1',
-  'Products.ZSQLMethods==2.13.4',
   'pytz==2015.7',
   'Record==3.0',
   'RestrictedPython==3.6.0',

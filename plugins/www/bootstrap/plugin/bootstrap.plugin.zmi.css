@@ -1312,22 +1312,16 @@ td .btn-group .checkbox.split-left.btn input {
 .ZMSSqlDb .index, .ZMSRecordSet .index {
 	margin-left:1em;
 }
-body.zmi .ZMSRecordSet.main_grid table {
+.zmi .ZMSRecordSet.main_grid table {
 	cursor:pointer;
 }
-body.zmi .ZMSRecordSet.main_grid form.form-initialized > table thead th div.btn-group span.split-left {
+.zmi .ZMSRecordSet.main_grid form.form-initialized > table thead th div.btn-group span.split-left {
 	max-width:48px;
 	overflow:hidden;
 }
-body.zmi.properties.ZMSSqlDb form .form-group .form-group {
+.zmi.properties.ZMSSqlDb form .form-group .form-group {
 	margin-left:0;
 	margin-right:0;
-}
-body.zmi #zmiModalupdateEntity .form-group .col-xs-10 {
-	overflow:hidden;
-}
-body.zmi #zmiModalupdateEntity table td {
-	font-size:11px;
 }
 
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1682,11 +1676,11 @@ ul.zmi-container li.zmi-item div.contentEditable {
 	margin:4px 0 !important;
 }
 
-body.zmi.metas .input-group-addon {
+.zmi.metas .input-group-addon {
 	padding: 0px 8px;
 }
 /* ##### METAS ##### */
-body.zmi select.zmi-sort {
+.zmi select.zmi-sort {
 /* = BS30 form-control */
 	direction:rtl;
 	width: 3.8em;
@@ -1706,7 +1700,7 @@ body.zmi select.zmi-sort {
 	float:left
 }
 
-body.zmi .meta-sort .add-on.btn {
+.zmi .meta-sort .add-on.btn {
 	color: #888;
 	background: #eee;
 	border-top-left-radius: 0;
@@ -1714,7 +1708,7 @@ body.zmi .meta-sort .add-on.btn {
 	border: 1px solid #ccc;
 	padding: 3px 6px;
 }
-body.zmi .meta-sort .add-on.btn:hover {
+.zmi .meta-sort .add-on.btn:hover {
 	background: #ddd;
 	color: #A03F3F !important;
 

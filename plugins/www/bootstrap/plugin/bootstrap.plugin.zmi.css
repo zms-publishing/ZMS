@@ -1793,3 +1793,14 @@ body.tasks .zmi-container .center .contentEditable {
   min-width: 5em!important;
   background: #D8DEE4;
 }
+
+/* ####################### */
+/* ZMSTable defaults       */
+/* ####################### */
+
+table.ZMSTable th {
+	background-color:#DDEFFC; 
+}
+table.ZMSTable td {
+	background-color:#EEEEEE; 
+}

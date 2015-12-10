@@ -3057,7 +3057,7 @@ function onZMSTableFormSubmit() {
 </script>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label mandatory"><span tal:content="structure python:'%s x %s'%(here.getZMILangStr('ATTR_COLS'),here.getZMILangStr('ATTR_ROWS'))">Cols x Rows</span></label>
+	<label class="col-sm-2 control-label mandatory"><span tal:content="structure python:here.getZMILangStr('ATTR_COLS')">Cols</span></label>
 	<div class="col-sm-2">
 		<tal:block tal:content="structure python:here.getTextInput(fmName=request['fmName'],elName='cols',value='3',size=2)"></tal:block>
 	</div>
@@ -3197,6 +3197,16 @@ div.zmi-interface {
 }
 .celltypes select {
 	width:10em;
+}
+/* Compensate Preview Styles */
+#table_cell_editor table.ZMSTable {
+	margin:0
+}
+#table_cell_editor table.ZMSTable td,
+#table_cell_editor table.ZMSTable th {
+	border:0 !important;
+	margin:0;
+	padding:0;
 }
 table#table_cell_editor > thead > tr > th,
 table#table_cell_editor > tbody > tr > td {
@@ -3566,7 +3576,7 @@ function onKeyUpZMSTableDivContenteditable() {
 		<td align="center" tal:attributes="style python:'width:%s'%([ 'initial', '%s%%'%((table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))]) ][zmscontext.attr('colgroup')] )">
 			<tal:block tal:condition="python:zmscontext.attr('colgroup')">
 				<input class="form-control input-sm" type="text" size="3"
-					style="display:inline;width:3em;"
+					style="display:inline;width:4em;"
 					onchange="$(this).parent().css('width',$(this).val()+'%')"
 					tal:attributes="name python:'col%i'%col_index;
 						value python:(table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))];

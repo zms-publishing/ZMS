@@ -3229,6 +3229,7 @@ td .btn-group {
 }
 .ZMSTable-cell {
 	border:1px solid #CCC;
+	background: #f8f8f8;
 }
 .ZMSTable-cell.top {
 	border-top:2px solid #666;

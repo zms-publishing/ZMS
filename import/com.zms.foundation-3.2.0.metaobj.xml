@@ -2987,22 +2987,17 @@ zmscontext.attr('text',text)
 <span class="hidden" id="fmName" tal:content="request/fmName"></span>
 <span class="hidden" id="textFormatDefault" tal:content="textFormatDefault"></span>
 <style>
-	.ZMSTable {
+	.modal {
+		z-index:10000;
 	}
-	table.ZMSTable th {
-		background-color:#DDEFFC;
+	.modal table.ZMSTable {
+		margin:0;
 	}
-	table.ZMSTable td {
-		background-color:#EEEEEE;
+	.modal table.ZMSTable tr th,
+	.modal table.ZMSTable tr td {
+		padding:0 .5em;
 	}
-
-	.ZMSTable * {
-		font-size:x-small;
-		padding:.5em!important;
-		margin:0!important;
-	}
-	div.checkbox {
-		margin-left:2em;
+	.modal div.checkbox {
 		float:left;
 	}
 </style>

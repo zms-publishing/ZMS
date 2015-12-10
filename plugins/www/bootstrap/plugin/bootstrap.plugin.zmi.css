@@ -1799,8 +1799,15 @@ body.tasks .zmi-container .center .contentEditable {
 /* ####################### */
 
 table.ZMSTable th {
-	background-color:#DDEFFC; 
+	background-color:#DDEFFC;
+	border:1px solid #ccc !important;
+	overflow:hidden !important;
 }
 table.ZMSTable td {
-	background-color:#EEEEEE; 
+	background-color:#f9f9f9;
+	border:1px solid #ccc !important;
+	overflow:hidden !important;
+}
+table.ZMSTable {
+	margin:1em 0;
 }

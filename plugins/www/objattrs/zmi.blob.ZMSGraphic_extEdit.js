@@ -13,15 +13,21 @@ var ZMSGraphic_cropcoords = null;
 var ZMSGraphic_action = null;
 var ZMSGraphic_act_width = null;
 var ZMSGraphic_act_height = null;
-var ZMSGraphic_extEdit_initialized = false;
 var ZMSGraphic_extEdit_slider = false;
 
 function ZMSGraphic_extEdit_initialize() {
-	if (ZMSGraphic_extEdit_initialized) {
-		$ZMSGraphic_buttons = $('span[id^=ZMSGraphic_extEdit_]');
-		$ZMSGraphic_buttons.click(ZMSGraphic_extEdit_clickedAction);
-		ZMSGraphic_extEdit_initialized = true;
-	}
+	$("body").append("<style>div.jcrop-holder input {display:none;visibility:hidden;}</style>");
+	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_crop").click(function() {
+			ZMSGraphic_action = 'crop';
+			changeJcropAvailability(true,true);
+		});
+	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_preview").click(function() {
+			ZMSGraphic_action = 'preview';
+			if (confirm($(this).attr('title')+'?')) {
+				ZMSGraphic_extEdit_apply();
+			}
+			ZMSGraphic_action = null;
+		});
 }
 
 /**
@@ -29,7 +35,6 @@ function ZMSGraphic_extEdit_initialize() {
  */
 function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 	$ZMI.setCursorWait("ZMSGraphic_extEdit_action");
-	ZMSGraphic_extEdit_initialize();
 	if (typeof pil != 'undefined') {
 		ZMSGraphic_pil = pil;
 	}
@@ -126,6 +131,7 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 										$('input#ZMSGraphic_extEdit_height').val(h);
 										$ZMSGraphic_img.attr({width:v+'%'});
 									});
+							ZMSGraphic_extEdit_initialize();
 							$ZMI.setCursorAuto("ZMSGraphic_extEdit_action");
 					});
 					$ZMI.writeDebug("EO open");
@@ -282,20 +288,6 @@ function changeJcropAvailability(available, cropping)
 					$ZMSGraphic_cropapi.focus();
 				});
 		});
-	}
-}
-
-function ZMSGraphic_extEdit_clickedAction() {
-	var temp_action = ZMSGraphic_action;
-	ZMSGraphic_action = $(this).attr('id').toLowerCase().replace(/zmsgraphic_extedit_/g, '');
-	if (ZMSGraphic_action == 'crop') {
-		changeJcropAvailability(true,true);
-	}
-	else if (ZMSGraphic_action == 'preview') {
-		if (confirm($(this).attr('title')+'?')) {
-			ZMSGraphic_extEdit_apply();
-		}
-		ZMSGraphic_action = null;
 	}
 }
 

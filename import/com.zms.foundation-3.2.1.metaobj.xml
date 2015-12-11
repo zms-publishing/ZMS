@@ -3298,11 +3298,12 @@ function onZMSTableFormSubmit() {
 					colspan = 1;
 				}
 				xml += '<'+'item key="colspan" type="int">'+colspan+'<'+'/item>\n';
-				var el_inputs = $("textarea,input",el_tds[j]);
-				for ( var k=0; k < el_inputs.length; k++) {
-					var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
-					xml += '<'+'item key="'+key+'"><'+'![CDATA'+'['+$(el_inputs[k]).val()+']'+']><'+'/item>\n';
-				}
+				$("textarea,input",el_tds[j]).each(function() {
+						var id = $(this).attr("id");
+						var key = id.substr(0,id.indexOf("_"));
+						var val = $(this).val().replace(/^(&nbsp;)/,'').replace(/^<p>(\w|\W)*?<\/p>$/,'$1');
+						xml += '<'+'item key="'+key+'"><'+'![CDATA'+'['+val+']'+']><'+'/item>\n';
+					});
 				xml += '<'+'/dictionary><'+'/item>\n';
 			}
 			xml += '<'+'/list><'+'/item>\n';
@@ -3786,16 +3787,6 @@ function onKeyUpZMSTableDivContenteditable() {
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[attr_dc_type_layout]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Layout-Spalten]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_type_layout]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="custom"><![CDATA[## Script (Python) "ZMSTable.titlealt"
 ##bind container=container
 ##bind context=context
@@ -4015,7 +4006,9 @@ if key.startswith('table_'):
 							replacement   python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
 							content       python:zmscontext.re_sub(pattern,replacement,column.get('content',''));
 							content       python:[content,newline_to_br(content)][format==''];
-							col_text      python:[zmscontext.dt_exec(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in map(lambda x: x.getId(),rteformats)]">
+							col_text      python:[zmscontext.dt_exec(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in map(lambda x: x.getId(),rteformats)];
+							col_text      python:zmscontext.re_sub('^(&nbsp\073)','',col_text);
+							col_text      python:zmscontext.re_sub('^<p>((\\w|\\W)*?)</p>$','\\1',col_text)">
 						<tal:block tal:condition="python:tag in ['td','th']">
 							<tal:block tal:content="structure python:'<%s%s>'%(tag,['',' colspan=\042%i\042'%colspan][int(colspan>1)])"></tal:block>
 								<tal:block tal:condition="python:col_text" tal:content="structure col_text">The cell</tal:block>
@@ -4068,7 +4061,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.2.0]]></item>
+          <item key="revision"><![CDATA[3.2.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4755,7 +4748,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.2.0]]></item>
+          <item key="revision"><![CDATA[3.2.1]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

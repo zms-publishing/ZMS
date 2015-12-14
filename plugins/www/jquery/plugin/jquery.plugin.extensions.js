@@ -144,8 +144,8 @@ function pluginAutocomplete(s, c) {
  */
 function runPluginJcrop(c) {
 	$.plugin('jcrop',{
-		files: ['/++resource++zms_/jquery/jcrop/jquery.Jcrop.min.js?ts='+escape(new Date()),
-				'/++resource++zms_/jquery/jcrop/jquery.Jcrop.css?ts='+escape(new Date())]
+		files: ['/++resource++zms_/jquery/jcrop/jquery.Jcrop.min.js',
+				'/++resource++zms_/jquery/jcrop/jquery.Jcrop.css']
 		});
 	$.plugin('jcrop').get('body',c);
 }

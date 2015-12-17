@@ -69,7 +69,7 @@ function zmiFormSubmit(sender,d) {
 			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
-</div><!-- #importConf -->
+</div><!-- #acquireConf -->
 
 <div class="ui-helper-hidden">
 	<div id="importConf" class="inner">
@@ -85,7 +85,7 @@ function zmiFormSubmit(sender,d) {
 			<div class="form-group">
 				<label for="or" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
 				<div class="col-lg-10">
-					<select class="form-control input-sm" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.metadict.')" onmouseover="zmiExpandConfFiles(this,'.metaobj.')">
+					<select class="form-control input-sm" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.metadict.')" onmouseover="zmiExpandConfFiles(this,'.metadict.')">
 						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
 					</select>
 				</div><!-- .col-lg-10 -->

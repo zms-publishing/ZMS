@@ -19,15 +19,6 @@
 div.help, p.well {
 	display:none;
 }
-img.desaturate {
-	filter: url("data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'><filter%20id='grayscale'><feColorMatrix%20type='matrix'%20values='0.3333%200.3333%200.3333%200%200%200.3333%200.3333%200.3333%200%200%200.3333%200.3333%200.3333%200%200%200%200%200%201%200'/></filter></svg>#grayscale"); /* Firefox 3.5+ */
-	filter: gray; /* IE6+ */
-	filter: grayscale(100%); /* Current draft standard */
-	-webkit-filter: grayscale(100%); /* New WebKit */
-	-moz-filter: grayscale(100%);
-	-ms-filter: grayscale(100%);
-	-o-filter: grayscale(100%);
-}
 .zmi-helper-hidden, .ui-helper-hidden {
 	display:none;
 }
@@ -89,24 +80,6 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 .zmi.preview_top .zmi header .pull-right span.zmi-top-active {
 	color:#FFF;
 	font-weight:bold;
-}
-#zmi-overlay {
-	background-color:black;
-	display:block;
-	position:absolute;
-	top:0;
-	left:0;
-	width:100%;
-	height:100%;
-	filter:Alpha(opacity=40);
-	-moz-opacity:0.40;
-	opacity:0.40
-}
-#zmi-progressbox {
-	padding:20px 40px 20px 40px;
-	background-color:#FFF;
-	color:black;
-	position:absolute
 }
 .zmi ul.main-nav {
 	margin-top:0.5em;
@@ -497,12 +470,10 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 	padding:0 4px 4px 4px;
 	height:22px;
 }
-.form-initialized .attr_last_modified div.pull-left,
 .form-horizontal .attr_last_modified div.pull-left {
 	padding:0 0 0 1em !important;
 	margin:0 !important;
 }
-.form-initialized .attr_last_modified div.pull-left .btn-group.zmi-action,
 .form-horizontal .attr_last_modified div.pull-left .btn-group.zmi-action {
 	margin-right:.4em;
 }
@@ -1315,7 +1286,7 @@ td .btn-group .checkbox.split-left.btn input {
 .zmi .ZMSRecordSet.main_grid table {
 	cursor:pointer;
 }
-.zmi .ZMSRecordSet.main_grid form.form-initialized > table thead th div.btn-group span.split-left {
+.zmi .ZMSRecordSet.main_grid form > table thead th div.btn-group span.split-left {
 	max-width:48px;
 	overflow:hidden;
 }
@@ -1645,13 +1616,10 @@ li.zmi-item span.zmi-ids {
 }
 .zmi-manage-main-toggle {
 	display: inline-block;
+	margin: 6px;
 	cursor:pointer;
-	position: absolute;
 }
 .zmi-manage-main-toggle .icon-info-sign {
-	display: inline-block;
-	padding: 9px 12px 7px 12px;
-	position: absolute;
 	color:#888;
 	vertical-align: text-bottom;
 }

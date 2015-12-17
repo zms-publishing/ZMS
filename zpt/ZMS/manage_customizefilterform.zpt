@@ -244,7 +244,7 @@ $ZMI.registerReady(function(){
 			<tbody tal:define="global filterProcesses python:here.getFilterProcesses(filter['id'])">
 			<tr tal:repeat="pid python:range(len(filterProcesses))">
 			<tal:block tal:define="global filterProcess python:filterProcesses[pid]; process python:here.getProcess(filterProcess['id'])">
-				<td class="meta-sort" style="min-width: 6em;">
+				<td class="meta-sort">
 					<div class="input-append">
 						<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pid:int\':%i,key:\'attr\',\'pos:int\':this.selectedIndex})'%(filter['id'],pid)">
 							<option tal:repeat="i python:range(0,len(filterProcesses))" tal:attributes="selected python:['','selected'][int(i==pid)]" tal:content="python:i+1">i+1</option>

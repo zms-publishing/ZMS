@@ -287,11 +287,11 @@ class ZReferableItem:
       d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
       if d.has_key('data-id'):
         old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
-        ob = self.getLinkObj(url=d['data-id'])
+        url = d['data-id']
+        ob = self.getLinkObj(url)
         if ob is not None:
-          context = self
-          REQUEST = context.REQUEST
-          href = ob.getHref2IndexHtmlInContext(context,REQUEST)
+          REQUEST = self.REQUEST
+          href = self.getLinkUrl(url)
           d['href'] = href
           if not ob.isActive(REQUEST):
             d['data-target'] = "inactive"
@@ -411,8 +411,9 @@ class ZReferableItem:
       else:
         index_html = ob.getObjProperty('getHref2IndexHtml',REQUEST)
         if not index_html:
-          context = REQUEST.get('ZMS_THIS',self)
-          index_html = ob.getHref2IndexHtmlInContext(context,REQUEST)
+          index_html = ob.getHref2IndexHtml(REQUEST)
+        context = REQUEST.get('ZMS_THIS',self)
+        index_html = ob.getHref2IndexHtmlInContext(context,index_html,REQUEST)
       # Unprepare request.
       for key in bak_params.keys():
         REQUEST.set(key,bak_params[key])

@@ -829,8 +829,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.getHref2Html:
     #  ZMSObject.getHref2IndexHtml:
-    #  ZMSObject.getHref2PrintHtml:
-    #  ZMSObject.getHref2SitemapHtml:
     #
     #  "Sans-Document"-Navigation: reference to first page that contains visible 
     #  page-elements.
@@ -856,27 +854,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       return href
       
     #++
-    def getHref2SitemapHtml(self, REQUEST): 
-      if not REQUEST.has_key('lang'): REQUEST.set('lang',self.getLanguage(REQUEST))
-      href = 'sitemap_%s%s'%(REQUEST['lang'],self.getPageExt(REQUEST))
-      if REQUEST.get('preview','')=='preview': href = self.url_append_params(href,{'preview':'preview'})
-      return href
-      
-    #++
-    def getHref2PrintHtml(self, REQUEST): 
-      if not REQUEST.has_key('lang'):
-        REQUEST.set('lang',self.getLanguage(REQUEST))
-      href = 'index_print_%s%s'%(REQUEST['lang'],self.getPageExt(REQUEST))
-      qs = REQUEST.get('QUERY_STRING','')
-      if len(qs)>0:
-        href += '?' + qs
-      if REQUEST.get('preview','')=='preview':
-        href = self.url_append_params(href,{'preview':'preview'})
-      return href
-    
-    #++
-    def getHref2IndexHtmlInContext(self, context, REQUEST, deep=1):
-      index_html = self.getHref2IndexHtml(REQUEST,deep)
+    def getHref2IndexHtmlInContext(self, context, index_html, REQUEST, deep=1):
       if self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.forced',False) or self.getHome() != context.getHome():
         protocol = self.getConfProperty('ASP.protocol','http')
         domain = self.getConfProperty('ASP.ip_or_domain',None)
@@ -885,7 +863,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           i = index_html.find(s)
           if i > 0:
             index_html = protocol + '://' + domain + '/' + index_html[i+len(s):]
-      elif self.getHome() == context.getHome():
+      elif self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.relativate',True) and self.getHome() == context.getHome():
         path = context.getHref2IndexHtml(REQUEST,deep)
         index_html = self.getRelativeUrl(path,index_html)
       return index_html
@@ -1052,7 +1030,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     security.declareProtected('View', 'ajaxGetNode')
     def ajaxGetNode(self, context=None, lang=None, xml_header=True, meta_types=None, REQUEST=None):
       """ ZMSObject.ajaxGetNode """
-      context = _globals.nvl(context,self)
       
       #-- Build xml.
       xml = ''
@@ -1079,7 +1056,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " uid=\"{$%s}\""%(self.get_uid(implementation=self.getConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation','undefined')))
       xml += " id=\"%s_%s\""%(self.getHome().id,self.id)
       xml += " home_id=\"%s\""%(self.getHome().id)
-      xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtmlInContext(context,REQUEST,deep=0))
+      xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtml(REQUEST))
       xml += " is_page=\"%s\""%str(int(self.isPage()))
       xml += " is_pageelement=\"%s\""%str(int(self.isPageElement()))
       xml += " meta_id=\"%s\""%(self.meta_id)

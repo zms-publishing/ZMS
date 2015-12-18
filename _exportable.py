@@ -203,9 +203,8 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
    s_old = '(misc_/zms/'
    html = html.replace(s_old,s_new)
    
-   # Process preview parameters.
-   if not REQUEST.get('ZMS_PREVIEW_PRESERVE',False):
-     html = re.sub('(\?|&)preview=preview','',html)
+   # Remove preview parameters.
+   html = re.sub('(\?|&)preview=preview','',html)
    
    # Process declarative URLs
    if self.getConfProperty('ZMS.pathhandler',0):
@@ -243,12 +242,6 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
          s_new = pageext
          s_old = '/index_%s%s'%(REQUEST['lang'],pageext)
          html = html.replace( s_old, s_new)
-         # Replace 'index_print' & 'sitemap' in declarative URLs
-         if obj.getLevel() > 0:
-           for key in [ 'index_print', 'sitemap']:
-             s_old = '"%s_%s%s'%(key,REQUEST['lang'],pageext)
-             s_new = '"%s/%s_%s%s'%(obj.getDeclId(REQUEST),key,REQUEST['lang'],pageext)
-             html = html.replace( s_old, s_new)
        # Restore links to root.
        html = html.replace( newTmp, oldTmp)
    
@@ -503,7 +496,7 @@ class Exportable(_filtermanager.FilterItem):
       if obj.meta_id.find('ZMSSys') == 0:
         exportFolder( obj, obj.getParentNode(), path[:path.rfind('/')], obj.id, REQUEST)
       else:
-        dctOp = REQUEST.get('ZMS_EXPORT_OP',{'index':'index','index_print':'print','sitemap':'sitemap'})
+        dctOp = REQUEST.get('ZMS_EXPORT_OP',{'index':'index','sitemap':'sitemap'})
       
       for key in dctOp.keys():
         

@@ -37,7 +37,8 @@ class ZMSWorkflowProviderAcquired(
     Properties
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     meta_type = 'ZMSWorkflowProviderAcquired'
-    icon = "misc_/zms/ZMSWorkflowProvider.png"
+    icon = "/++resource++zms_/img/ZMSWorkflowProvider.png"
+    icon_clazz = "icon-random"
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Options

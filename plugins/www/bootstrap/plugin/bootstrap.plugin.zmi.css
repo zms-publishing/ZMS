@@ -1705,6 +1705,9 @@ ul.zmi-container li.zmi-item div.contentEditable {
 	box-shadow: 0px 0px 1px #888;
 	min-height: 320px;
 }
+.tabbable #Manager.tab-pane .btn img {
+	margin: -4px 4px 0 0;
+}
 body.tasks .form-horizontal,
 body.tasks table.table tbody tr td.data {
 	background-color:transparent;

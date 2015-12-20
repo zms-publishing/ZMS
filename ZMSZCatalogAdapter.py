@@ -98,6 +98,7 @@ class ZMSZCatalogAdapter(
     # -----------
     meta_type = 'ZMSZCatalogAdapter'
     icon = "/++resource++zms_/img/ZMSZCatalogAdapter.png"
+    icon_clazz = "icon-search"
 
     # Management Options.
     # -------------------

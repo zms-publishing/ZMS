@@ -204,7 +204,7 @@ class MediaDb(
     # Properties.
     # -----------
     meta_type = 'MediaDb'
-    icon_clazz = "icon-stackexchange"
+    icon_clazz = "icon-folder-close"
 
     # Management Options.
     # -------------------

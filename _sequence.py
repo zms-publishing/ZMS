@@ -35,7 +35,7 @@ class Sequence(ZMSItem.ZMSItem):
     # Properties.
     # -----------
     meta_type = 'Sequence'
-    icon = "misc_/zms/Sequence.gif"
+    icon = "/++resource++zms_/img/Sequence.png"
     icon_clazz = "icon-sort-by-order"
 
     # Management Options.

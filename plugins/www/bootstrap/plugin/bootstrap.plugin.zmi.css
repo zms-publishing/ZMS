@@ -1708,6 +1708,30 @@ ul.zmi-container li.zmi-item div.contentEditable {
 .tabbable #Manager.tab-pane .btn img {
 	margin: -4px 4px 0 0;
 }
+
+@media (max-width:768px) {
+	body.zmi.customize.config #zmi-tab .tabbable .nav-tabs {
+		display:none
+	}
+	body.zmi.customize.config #zmi-tab #Manager label[for="meta_type"] {
+		margin-left:-15px;
+		color:#888;
+		font-weight:normal;
+	}
+	body.zmi.customize.config #zmi-tab > .tabbable > .tab-content > .tab-pane {
+		display:block;
+	}
+	body.zmi.customize.config #zmi-tab >.tabbable .tab-pane form {
+		margin: 2em;
+		background:#fcfcfc;
+	}
+	body.zmi.customize.config #zmi-tab .tabbable legend {
+		display: block;
+		margin: 0;
+		padding: 0 0 1em 0;
+	}
+}
+
 body.tasks .form-horizontal,
 body.tasks table.table tbody tr td.data {
 	background-color:transparent;

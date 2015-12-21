@@ -58,7 +58,7 @@ $(function(){
           <button style="display:inline-block;" name="btn" type="submit" class="btn btn-default" value="Add">Add</button>
         </div>
       </div><!-- .form-group -->
-      <tal:block tal:repeat="si python:here.objectValues(['ZCatalog','MediaDb']+map(lambda x: x['name'],meta_types))">
+      <tal:block tal:repeat="si python:here.objectValues(['MediaDb']+map(lambda x: x['name'],meta_types))">
       <div class="form-group col-sm-12">
         <label>
           <span class="btn btn-default">
@@ -286,7 +286,7 @@ $(function(){
       <div class="form-group">
         <label class="col-sm-2 control-label" for="mediadb_location">Location</label>
         <div class="col-sm-10">
-          <input class="form-control" type="text" name="mediadb_location">
+          <input class="form-control" type="text" name="mediadb_location" tal:attributes="placeholder python:'%s/var/%s'%(here.getINSTANCE_HOME(),here.getHome().id)">
         </div>
       </div><!-- .form-group -->
       <div class="form-group">
@@ -326,7 +326,7 @@ $(function(){
           <div class="pull-left">
             <span class="btn btn-default"><input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]" /></span>
           </div>
-          <div class="col-md-6 col-sm-8 col-xs-11">
+          <div class="col-md-6 col-xs-10">
             <div class="single-line input-append zmi-nodes">
               <textarea class="form-control" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
             </div>

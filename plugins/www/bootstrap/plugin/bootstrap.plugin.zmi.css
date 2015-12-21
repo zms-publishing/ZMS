@@ -885,6 +885,10 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 		float:left;
 		margin-right:0.5em;
 	}
+	.zmi.metas .horizontal-group .form-group input,
+	.zmi.metas .horizontal-group .form-group select {
+		background-color: #F5F5F5!important;
+	}
 	.zmi.metas .horizontal-group .form-group.pull-right {
 		margin-right:0;
 	}
@@ -908,10 +912,12 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 		display: block;
 	}
 }
+.zmi.metas table.table-striped td.meta-sort,
 .zmi.metas table.table-striped td.meta-id input,
 .zmi.metas table.table-striped td.meta-name input,
 .zmi.metas table.table-striped td.meta-type select,
 .zmi.metas table.meta-access textarea  {
+	min-width: 7em;
 	width:160px;
 }
 .zmi.metas .form-group.meta_id div,
@@ -1701,26 +1707,26 @@ ul.zmi-container li.zmi-item div.contentEditable {
 	margin: -4px 4px 0 0;
 }
 @media (max-width:768px) {
-  body.zmi.customize.config #zmi-tab .tabbable .nav-tabs {
-    display:none
-  }
-  body.zmi.customize.config #zmi-tab #Manager label[for="meta_type"] {
-    margin-left:-15px;
-    color:#888;
-    font-weight:normal;
-  }
-  body.zmi.customize.config #zmi-tab > .tabbable > .tab-content > .tab-pane {
-    display:block;
-  }
-  body.zmi.customize.config #zmi-tab >.tabbable .tab-pane form {
-    margin: 2em;
-    background:#fcfcfc;
-  }
-  body.zmi.customize.config #zmi-tab .tabbable legend {
-    display: block;
-    margin: 0;
-    padding: 0 0 1em 0;
-  }
+	body.zmi.customize.config #zmi-tab .tabbable .nav-tabs {
+		display:none
+	}
+	body.zmi.customize.config #zmi-tab #Manager label[for="meta_type"] {
+		margin-left:-15px;
+		color:#888;
+		font-weight:normal;
+	}
+	body.zmi.customize.config #zmi-tab > .tabbable > .tab-content > .tab-pane {
+		display:block;
+	}
+	body.zmi.customize.config #zmi-tab >.tabbable .tab-pane form {
+		margin: 2em;
+		background:#fcfcfc;
+	}
+	body.zmi.customize.config #zmi-tab .tabbable legend {
+		display: block;
+		margin: 0;
+		padding: 0 0 1em 0;
+	}
 }
 body.tasks .form-horizontal,
 body.tasks table.table tbody tr td.data {

@@ -83,11 +83,12 @@
 
 	<legend>
 		<span tal:attributes="id metaObj/id">
-			<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
-				<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
-				<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</tal:block>
-				<tal:block tal:content="python:metaObj.get('name')">Name</tal:block>
-			</a>
+			<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
+			<a target="_blank" style="text-decoration:none;" 
+				tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" 
+				tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</a>
+			<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])" 
+				tal:content="python:metaObj.get('name')">Name</a>
 		</span>
 	</legend>
 	<div class="horizontal-group">
@@ -137,7 +138,7 @@
 
 	<table class="table table-striped table-bordered zmi-sortable">
 		<colgroup>
-			<col style="width:6em" />
+			<col style="width:7em" />
 			<col />
 			<col />
 			<col />

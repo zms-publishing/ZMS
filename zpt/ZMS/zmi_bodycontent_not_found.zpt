@@ -1,2 +1,0 @@
-@TODO: not found
-<tal:block tal:content="structure request">the request</tal:block>

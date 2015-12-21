@@ -492,75 +492,61 @@ class Exportable(_filtermanager.FilterItem):
         pass
       
       level = obj.getLevel()
-      dctOp = {}
-      if obj.meta_id.find('ZMSSys') == 0:
-        exportFolder( obj, obj.getParentNode(), path[:path.rfind('/')], obj.id, REQUEST)
-      else:
-        dctOp = REQUEST.get('ZMS_EXPORT_OP',{'index':'index','sitemap':'sitemap'})
-      
-      for key in dctOp.keys():
+      key = 'index'
+      REQUEST.set('ZMS_PATH_HANDLER', True)
+      try:
         
-        # Get html.
-        REQUEST.set('op',dctOp[key])
-        REQUEST.set('ZMS_PATH_HANDLER', True)
+        # Remember others.
+        others = copy.copy(REQUEST.other.keys())
         
-        try:
-          
-          # Remember others.
-          others = copy.copy(REQUEST.other.keys())
-          
-          root = getattr( obj, '__root__', None)
-          if root is not None:
-            REQUEST.set('ZMS_PROXY_%s'%root.id,obj)
-            html = root.f_index_html( root, REQUEST)
-          else:
-            html = obj.f_index_html( obj, REQUEST)
-          
-          # Remove new others.
-          for rk in REQUEST.other.keys():
-            if rk not in others:
-              try:
-                del REQUEST.other[rk]
-              except:
-                pass
-          
-          # Blank lines in includes cause PHP session errors
-          # @see http://bugs.php.net/bug.php?id=8974
-          html = self.re_sub('^\s*', '', html)
-          
-          # Localize html.
-          html = localHtml( obj, html)
-          
-          # Save html to file.
-          if key == 'index' and \
-             level > 0 and \
-             self.getConfProperty('ZMS.pathhandler',0) != 0 and \
-             self.getConfProperty('ZMS.export.pathhandler',0) == 1:
-            html = localIndexHtml( self, obj, level - 1, html)
-            filename = '%s/../%s%s'%( path, obj.getDeclId(REQUEST), obj.getPageExt(REQUEST))
-          else:
-            if key == 'sitemap':
-              pageext = '.html'
-            else:
-              pageext = obj.getPageExt( REQUEST)
-            html = localIndexHtml( self, obj, level - self.getLevel(), html)
-            filename = '%s/%s_%s%s'%( path, key, lang, pageext)
-          
-          html = self.exportExternalResources( obj, html, path, REQUEST)
-          
-          # @see http://docs.python.org/howto/unicode.html (Reading and Writing Unicode Data)
-          encoding = REQUEST.get( 'ZMS_CHARSET', 'utf-8')
-          mode = 'w'
+        root = getattr( obj, '__root__', None)
+        if root is not None:
+          REQUEST.set('ZMS_PROXY_%s'%root.id,obj)
+          html = root.f_index_html( root, REQUEST)
+        else:
+          html = obj.f_index_html( obj, REQUEST)
+        
+        # Remove new others.
+        for rk in REQUEST.other.keys():
+          if rk not in others:
+            try:
+              del REQUEST.other[rk]
+            except:
+              pass
+        
+        # Blank lines in includes cause PHP session errors
+        # @see http://bugs.php.net/bug.php?id=8974
+        html = self.re_sub('^\s*', '', html)
+        
+        # Localize html.
+        html = localHtml( obj, html)
+        
+        # Save html to file.
+        if level > 0 and \
+           self.getConfProperty('ZMS.pathhandler',0) != 0 and \
+           self.getConfProperty('ZMS.export.pathhandler',0) == 1:
+          html = localIndexHtml( self, obj, level - 1, html)
+          filename = '%s/../%s%s'%( path, obj.getDeclId(REQUEST), obj.getPageExt(REQUEST))
+        else:
+          pageext = obj.getPageExt( REQUEST)
+          html = localIndexHtml( self, obj, level - self.getLevel(), html)
+          filename = '%s/%s_%s%s'%( path, key, lang, pageext)
+        
+        html = self.exportExternalResources( obj, html, path, REQUEST)
+        
+        # @see http://docs.python.org/howto/unicode.html (Reading and Writing Unicode Data)
+        encoding = REQUEST.get( 'ZMS_CHARSET', 'utf-8')
+        mode = 'w'
+        writeFile( obj, filename, html, mode, encoding)
+        
+        # Root folder requires and defaults to "index.html" at most systems.
+        if lang == self.getPrimaryLanguage():
+          filename = '%s/%s%s'%( path, key, obj.getPageExt( REQUEST))
           writeFile( obj, filename, html, mode, encoding)
-          
-          # Root folder requires and defaults to "index.html" at most systems.
-          if key == 'index' and lang == self.getPrimaryLanguage():
-            filename = '%s/%s%s'%( path, key, obj.getPageExt( REQUEST))
-            writeFile( obj, filename, html, mode, encoding)
-        
-        except:
-          _globals.writeError( obj, "[recurse_downloadHtmlPages]: Can't get html '%s'"%key)
-        
+      
+      except:
+        _globals.writeError( obj, "[recurse_downloadHtmlPages]: Can't get html '%s'"%key)
+      
       # Process methods of meta-objects.
       for metadictAttrId in self.getMetaobjAttrIds( obj.meta_id):
         try:

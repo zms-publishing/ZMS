@@ -20,7 +20,6 @@
 from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
-from OFS.Image import Image
 from sys import *
 import copy
 import os
@@ -317,7 +316,6 @@ class ZMS(
 
     # Management Permissions.
     # -----------------------
-    zmi_logo__roles__ = None
     __administratorPermissions__ = (
         'manage_customize', 'manage_customizeSystem',
         'manage_changeLanguages', 'manage_customizeLanguagesForm',
@@ -365,10 +363,6 @@ class ZMS(
     # ----------
     index_html = PageTemplateFile('zpt/ZMS/index', globals()) # index_html
     f_index_html = PageTemplateFile('zpt/ZMS/index', globals()) # index_html
-    zmi_bodycontent_inactive = PageTemplateFile('zpt/ZMS/zmi_bodycontent_inactive', globals())
-    zmi_body_content_sitemap = PageTemplateFile('zpt/ZMS/zmi_bodycontent_sitemap', globals())
-    zmi_body_content_search = PageTemplateFile('zpt/ZMS/zmi_bodycontent_search', globals())
-    zmi_body_content_not_found = PageTemplateFile('zpt/ZMS/zmi_bodycontent_not_found', globals())
     f_headDoctype = PageTemplateFile('zpt/ZMS/f_headdoctype', globals()) # Head.DOCTYPE
     f_headTitle = PageTemplateFile('zpt/ZMS/f_headtitle', globals()) # Head.Title
     f_headMeta_DC = PageTemplateFile('zpt/ZMS/f_headmeta_dc', globals()) # Head.Meta.DC (Dublic-Core))
@@ -401,9 +395,6 @@ class ZMS(
     """
     def __init__(self):
       self.id = 'content'
-      file = open(_fileutil.getOSPath(package_home(globals())+'/www/spacer.gif'),'rb')
-      self.zmi_logo = Image(id='logo', title='', file=file.read())
-      file.close()
 
 
     # --------------------------------------------------------------------------

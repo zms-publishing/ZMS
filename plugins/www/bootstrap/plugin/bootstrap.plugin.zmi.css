@@ -881,34 +881,26 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 		white-space:nowrap;
 		margin-left:0;
 	}
-	.zmi.metas .horizontal-group .meta_name,
-	.zmi.metas .horizontal-group .meta_revision,
-	.zmi.metas .horizontal-group .meta_type,
-	.zmi.metas .horizontal-group .meta_package {
+	.zmi.metas .horizontal-group .form-group {
 		float:left;
 		margin-right:0.5em;
+	}
+	.zmi.metas .horizontal-group .form-group.pull-right {
+		margin-right:0;
 	}
 	.zmi.metas .horizontal-group .controls.save {
 		margin-top:1.7em;
 		margin-left:2.1em;
-	}
-	.zmi.metas .horizontal-group .meta_name input,
-	.zmi.metas .horizontal-group .meta_revision input,
-	.zmi.metas .horizontal-group .meta_type select,
-	.zmi.metas .horizontal-group .meta_package select {
-		background-color: #f9f9f9 !important;
-	}
-	.zmi.metas .horizontal-group .meta_name input {
-		width:8.5em;
+		padding-right:0;
 	}
 	.zmi.metas .horizontal-group .meta_revision input {
-		width:14.2em
+		width:5em
 	}
 	.zmi.metas .horizontal-group .meta_type select {
-		width:14.2em
+		max-width:15em
 	}
 	.zmi.metas .horizontal-group .meta_package select {
-		width:20.5em;
+		max-width:25em;
 	}
 	.zmi .ZMSRecordSet .filters label, .zmi.ZMSSqlDb .filters label,
 	.zmi .ZMSRecordSet .filters input, .zmi.ZMSSqlDb .filters input,
@@ -1708,30 +1700,28 @@ ul.zmi-container li.zmi-item div.contentEditable {
 .tabbable #Manager.tab-pane .btn img {
 	margin: -4px 4px 0 0;
 }
-
 @media (max-width:768px) {
-	body.zmi.customize.config #zmi-tab .tabbable .nav-tabs {
-		display:none
-	}
-	body.zmi.customize.config #zmi-tab #Manager label[for="meta_type"] {
-		margin-left:-15px;
-		color:#888;
-		font-weight:normal;
-	}
-	body.zmi.customize.config #zmi-tab > .tabbable > .tab-content > .tab-pane {
-		display:block;
-	}
-	body.zmi.customize.config #zmi-tab >.tabbable .tab-pane form {
-		margin: 2em;
-		background:#fcfcfc;
-	}
-	body.zmi.customize.config #zmi-tab .tabbable legend {
-		display: block;
-		margin: 0;
-		padding: 0 0 1em 0;
-	}
+  body.zmi.customize.config #zmi-tab .tabbable .nav-tabs {
+    display:none
+  }
+  body.zmi.customize.config #zmi-tab #Manager label[for="meta_type"] {
+    margin-left:-15px;
+    color:#888;
+    font-weight:normal;
+  }
+  body.zmi.customize.config #zmi-tab > .tabbable > .tab-content > .tab-pane {
+    display:block;
+  }
+  body.zmi.customize.config #zmi-tab >.tabbable .tab-pane form {
+    margin: 2em;
+    background:#fcfcfc;
+  }
+  body.zmi.customize.config #zmi-tab .tabbable legend {
+    display: block;
+    margin: 0;
+    padding: 0 0 1em 0;
+  }
 }
-
 body.tasks .form-horizontal,
 body.tasks table.table tbody tr td.data {
 	background-color:transparent;

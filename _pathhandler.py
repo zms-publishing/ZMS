@@ -313,10 +313,9 @@ class PathHandler:
           if i > 0 and j > 0:
             lang = l[i+1:j]
             if lang in self.getLangIds():
-              auth_user = request.get('AUTHENTICATED_USER')
               zms_skin = l[:i]
               zms_ext = l[j+1:]
-              if zms_skin in map(lambda x:x.strip(),self.getConfProperty('ZMS.skins','index,search,sitemap').split(',')) and \
+              if zms_skin in map(lambda x:x.strip(),self.getConfProperty('ZMS.skins','index').split(',')) and \
                  zms_ext == self.getPageExt(request)[1:]:
                 request.set('ZMS_SKIN',zms_skin)
                 request.set('ZMS_EXT',zms_ext)

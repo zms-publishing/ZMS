@@ -59,11 +59,18 @@ class ZMSItem(
 
     # Templates.
     # ----------
-    zmi_body_content = PageTemplateFile('zpt/object/zmi_body_content', globals())
     manage = PageTemplateFile('zpt/object/manage', globals())
     manage_workspace = PageTemplateFile('zpt/object/manage', globals())
     manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
     manage_main_iframe = PageTemplateFile('zpt/ZMSObject/manage_main_iframe', globals())
+
+    # --------------------------------------------------------------------------
+    #  ZMSItem.zmi_body_content:
+    # --------------------------------------------------------------------------
+    def zmi_body_content(self, *args, **kwargs):
+      request = self.REQUEST
+      response = request.RESPONSE
+      return self.getBodyContent(request)
 
     # --------------------------------------------------------------------------
     #  ZMSItem.zmi_manage_css:

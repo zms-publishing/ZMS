@@ -863,51 +863,21 @@ div.single-line textarea {
 div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	margin-left:1em;
 }
-.zmi.metas .horizontal-group .mandatory span {
-	background: none !important;
-	padding-left: 0 !important;
-}
-.zmi.metas .horizontal-group .controls {
-	margin-left: 0px;
-}
-.zmi.metas .horizontal-group label {
-	width: auto;
-	float:none;
-	text-align:left;
-}
-
 
 @media (min-width: 767px) {
-	.zmi.metas .horizontal-group,
-	.zmi.metas .horizontal-group .controls {
-		white-space:nowrap;
-		margin-left:0;
-	}
-	.zmi.metas .horizontal-group .form-group {
-		float:left;
-		margin-right:0.5em;
-	}
-	.zmi.metas .horizontal-group .form-group.meta_revision input {
-		width:8.1em
-	}
-	.zmi.metas .horizontal-group .form-group input,
-	.zmi.metas .horizontal-group .form-group select {
-		background-color: #F5F5F5!important;
-		width:170px;
-	}
-	.zmi.metas .horizontal-group .form-group.pull-right {
-		margin-right:0;
-	}
-	.zmi.metas .horizontal-group .controls.save {
-		margin-top:1.7em;
-		margin-left:2.1em;
-		padding-right:0;
-	}
 	.zmi .ZMSRecordSet .filters label, .zmi.ZMSSqlDb .filters label,
 	.zmi .ZMSRecordSet .filters input, .zmi.ZMSSqlDb .filters input,
 	.zmi .ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select {
 		display: block;
 	}
+}
+.zmi.metas tr.row_metadata td span,
+.zmi.metas tr.row_metadata input,
+.zmi.metas tr.row_metadata select {
+	color: #337AB7 !important;
+}
+.zmi.metas tr.row_metadata td span {
+	opacity:0.4;
 }
 .zmi.metas table.table-striped td.meta-sort,
 .zmi.metas table.table-striped td.meta-id input,
@@ -999,6 +969,7 @@ th.rolename > div > span {
 	margin-right:0.3em;
 	color:#08c;
 }
+tr.row_metadata td,
 tr.row_insert td {
 	background-color:#EDF5FE !important;
 }

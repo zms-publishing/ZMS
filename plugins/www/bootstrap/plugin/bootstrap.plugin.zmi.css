@@ -875,6 +875,8 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	float:none;
 	text-align:left;
 }
+
+
 @media (min-width: 767px) {
 	.zmi.metas .horizontal-group,
 	.zmi.metas .horizontal-group .controls {
@@ -885,9 +887,13 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 		float:left;
 		margin-right:0.5em;
 	}
+	.zmi.metas .horizontal-group .form-group.meta_revision input {
+		width:8.1em
+	}
 	.zmi.metas .horizontal-group .form-group input,
 	.zmi.metas .horizontal-group .form-group select {
 		background-color: #F5F5F5!important;
+		width:170px;
 	}
 	.zmi.metas .horizontal-group .form-group.pull-right {
 		margin-right:0;
@@ -896,15 +902,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 		margin-top:1.7em;
 		margin-left:2.1em;
 		padding-right:0;
-	}
-	.zmi.metas .horizontal-group .meta_revision input {
-		width:5em
-	}
-	.zmi.metas .horizontal-group .meta_type select {
-		max-width:15em
-	}
-	.zmi.metas .horizontal-group .meta_package select {
-		max-width:25em;
 	}
 	.zmi .ZMSRecordSet .filters label, .zmi.ZMSSqlDb .filters label,
 	.zmi .ZMSRecordSet .filters input, .zmi.ZMSSqlDb .filters input,

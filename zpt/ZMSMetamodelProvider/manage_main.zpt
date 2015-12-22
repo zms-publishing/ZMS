@@ -90,8 +90,40 @@
 			<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])" 
 				tal:content="python:metaObj.get('name')">Name</a>
 		</span>
+
+		<div class="btn-group zmi-action" tal:attributes="title python:here.getZMILangStr('CAPTION_CHOOSEOBJ')">
+			<button class="btn btn-default" style="border:0" data-toggle="dropdown" tal:content="structure python:here.zmi_icon(name='icon-caret-down')"></button>
+			<ul class="dropdown-menu">
+				<li class="dropdown-header" tal:content="structure python:here.getZMILangStr('CAPTION_CHOOSEOBJ')">choose object</li>
+				<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
+					<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
+						<tal:block tal:condition="python:metaObjPackage">
+							<li tal:define="metaObj python:here.getMetaobj(metaObjPackage)">
+								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
+									<strong tal:on-error="string:ERROR" tal:content="metaObjPackage">the id</strong>
+								</a>
+							</li>
+						</tal:block>
+					</tal:block>
+					<tal:block tal:repeat="metaObj metaObjs">
+						<li tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage" style="padding-left:1em">
+							<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
+								<span tal:on-error="string:ERROR" tal:replace="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</span>
+								<span tal:on-error="string:ERROR" tal:replace="metaObj/name">the name</span>
+							</a>
+						</li>
+					</tal:block>
+				</tal:block>
+			</ul>
+		</div>
+
 	</legend>
 	<div class="horizontal-group">
+		<div class="form-group meta_revision">
+			<label for="obj_revision" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_VERSION')">Version</span></label>
+			<div><input class="form-control input-sm" type="text" id="obj_revision" name="obj_revision" size="6" tal:attributes="value python:here.getMetaobjRevision(metaObj['id'])"/></div>
+		</div><!-- .form-group -->
 		<div class="form-group meta_id">
 			<label for="id" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
 			<div><input class="form-control input-sm" type="text" id="id" name="id" tal:attributes="value metaObj/id"/></div>
@@ -99,10 +131,6 @@
 		<div class="form-group meta_name">
 			<label for="obj_name" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 			<div><input class="form-control input-sm" type="text" id="obj_name" name="obj_name" tal:attributes="value python:metaObj.get('name','')"/></div>
-		</div><!-- .form-group -->
-		<div class="form-group meta_revision">
-			<label for="obj_revision" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_VERSION')">Version</span></label>
-			<div><input class="form-control input-sm" type="text" id="obj_revision" name="obj_revision" size="6" tal:attributes="value python:here.getMetaobjRevision(metaObj['id'])"/></div>
 		</div><!-- .form-group -->
 		<div class="form-group meta_type">
 			<label for="obj_type" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>

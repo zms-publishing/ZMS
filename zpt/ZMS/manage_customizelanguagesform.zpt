@@ -161,7 +161,7 @@ function zmiFormSubmit(sender,d) {
 		<td tal:attributes="title python:'getLangStr(\'%s\',lang)'%langDict['key']" tal:content="python:langDict['key']">Key</td>
 		<td tal:repeat="langId langIds"><input class="form-control input-sm" type="text" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); value python:langDict.get(langId,''); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]"/></td>
 	</tr>
-	<tr>
+	<tr class="row_insert">
 		<td style="text-align:center;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
 		<td><input class="form-control input-sm" type="text" name="_key" /></td>
 		<td tal:repeat="langId langIds"><input class="form-control input-sm" type="text" tal:attributes="name python:'_value_%s'%(langId)"/></td>

@@ -907,6 +907,13 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi.metas input[type="file"] {
 	display: inline-block;
 }
+.zmi.metas table.table-striped td.meta-id input {
+	background: rgba(237, 245, 254, 0.64);
+}
+.zmi.metas table.table-striped .row_metadata td.meta-id input,
+.zmi.metas table.table-striped .row_insert td.meta-id input {
+	background: #fff;
+}
 @media (max-width: 767px) {
 	zmi.metas table#meta_properties {
 		display: inline-table;

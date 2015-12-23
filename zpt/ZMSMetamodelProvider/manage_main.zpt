@@ -175,7 +175,7 @@
 			</tr>
 
 		<tr class="row_tableheader">
-			<th class="meta-sort" tal:attributes="title python:here.getZMILangStr('ATTR_ATTRS')" tal:content="python:here.getZMILangStr('ATTR_ATTRS')"></th>
+			<th class="meta-sort" tal:attributes="title python:here.getZMILangStr('ATTR_ATTR')" tal:content="python:here.getZMILangStr('ATTR_ATTR')">Attribute</th>
 			<th class="meta-id" tal:attributes="title python:here.getZMILangStr('ATTR_ID')" tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
 			<th class="meta-name" tal:attributes="title python:here.getZMILangStr('ATTR_DISPLAY')" tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
 			<th class="meta-type"  tal:attributes="title python:here.getZMILangStr('ATTR_TYPE')" tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>

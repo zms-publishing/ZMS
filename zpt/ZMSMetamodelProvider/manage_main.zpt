@@ -81,7 +81,7 @@
 		</tal:block>
 	</select>
 
-	<legend class="pull-left col-xs-6">
+	<legend class="pull-left col-sm-6">
 		<span tal:attributes="id metaObj/id">
 			<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
 			<a target="_blank" style="text-decoration:none;" 
@@ -119,7 +119,7 @@
 		</div>
 
 	</legend>
-	<div class="form-group pull-right col-xs-6">
+	<div class="form-group pull-right col-sm-6">
 		<div class="controls save">
 			<button tal:condition="python:not metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			<button tal:condition="python:metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COPY')" tal:content="python:here.getZMILangStr('BTN_COPY')">Copy</button>

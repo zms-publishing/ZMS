@@ -131,7 +131,7 @@
 
 <tal:block tal:condition="not:python:metaObj['acquired'] or metaObj['type']=='ZMSPackage'">
 
-	<table class="table table-striped table-bordered zmi-sortable">
+	<table id="meta_properties" class="table table-striped table-bordered zmi-sortable">
 		<colgroup>
 			<col style="width:7em" />
 			<col />
@@ -175,15 +175,15 @@
 			</tr>
 
 		<tr class="row_tableheader">
-			<th class="meta-sort"></th>
-			<th class="meta-id" tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
-			<th class="meta-name" tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
-			<th class="meta-type" tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
+			<th class="meta-sort" tal:attributes="title python:here.getZMILangStr('ATTR_ATTRS')" tal:content="python:here.getZMILangStr('ATTR_ATTRS')"></th>
+			<th class="meta-id" tal:attributes="title python:here.getZMILangStr('ATTR_ID')" tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
+			<th class="meta-name" tal:attributes="title python:here.getZMILangStr('ATTR_DISPLAY')" tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
+			<th class="meta-type"  tal:attributes="title python:here.getZMILangStr('ATTR_TYPE')" tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
 			<th class="meta-mandatory" tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-exclamation-sign')"></tal:block></th>
 			<th class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><tal:block tal:content="structure python:here.zmi_icon(name='icon-columns')"></tal:block></th>
 			<th class="meta-multilang" tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-globe')"></tal:block></th>
 			<th class="meta-repetitive" tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-list-ol')"></tal:block></th>
-			<th></th>
+			<th class="meta-default" tal:attributes="title python:here.getZMILangStr('ATTR_DEFAULT')" tal:content="python:'%s/%s'%(here.getZMILangStr('ATTR_DEFAULT'),here.getZMILangStr('OPT_S_CODE'))"></th>
 		</tr>
 
 		<tbody tal:define="global objAttrIds python:here.getMetaobjAttrIds(metaObj['id'])">
@@ -651,7 +651,14 @@ $(function(){
 			;
 		$("select[name=_type],select[name^=attr_type_]")
 			.focus(function(){zmiPopulateTypeSelect(this)})
-			.hover(function(){zmiPopulateTypeSelect(this)});
+			.hover(function(){zmiPopulateTypeSelect(this)})
+			;
+		if ( $(window).width() < 767 ) {
+			var $th = $("#meta_properties th");
+			$('#meta_properties tr[class!="row_metadata"] td').prepend( function () {
+				return '<span class="title">' + $th.eq($(this).index()).attr('title') +  '</span>';
+			})
+		};
 	});
 
 </script>

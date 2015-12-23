@@ -1261,7 +1261,8 @@
     <Cell><Data ss:Type="String">Export</Data></Cell>
     <Cell><Data ss:Type="String">Export</Data></Cell>
     <Cell><Data ss:Type="String">Esportare</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">导出</Data></Cell>
+    <Cell><Data ss:Type="String">Export</Data></Cell>
+    <Cell><Data ss:Type="String">导出</Data></Cell>
     <Cell><Data ss:Type="String">صادرات</Data></Cell>
     <Cell><Data ss:Type="String">экспорт</Data></Cell>
     <Cell><Data ss:Type="String">निर्यात</Data></Cell>
@@ -1271,7 +1272,7 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">ATTR_FGCOLOR</Data></Cell>
-    <Cell><Data ss:Type="String">Vordergrundfarbe</Data></Cell>
+    <Cell><Data ss:Type="String">Vordergrund-Farbe</Data></Cell>
     <Cell><Data ss:Type="String">Foreground Color</Data></Cell>
     <Cell><Data ss:Type="String">Voorgrond kleur</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Colore del primo piano</Data></Cell>
@@ -3403,7 +3404,7 @@
     <Cell><Data ss:Type="String">Tạo vai trò mới cho %s</Data></Cell>
     <Cell><Data ss:Type="String">צור תפקיד חדש ל%s</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="15.75">
+   <Row>
     <Cell><Data ss:Type="String">CAPTION_ADDUSER</Data></Cell>
     <Cell><Data ss:Type="String">Neuen Benutzer zu %s hinzufügen</Data></Cell>
     <Cell><Data ss:Type="String">Create new user for %s</Data></Cell>
@@ -3560,6 +3561,22 @@
     <Cell><Data ss:Type="String">s% مغلق</Data></Cell>
     <Cell><Data ss:Type="String">%s bị khóa</Data></Cell>
     <Cell><Data ss:Type="String">%s נעול</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">CAPTION_NUMBER</Data></Cell>
+    <Cell><Data ss:Type="String">Nummer</Data></Cell>
+    <Cell><Data ss:Type="String">Number</Data></Cell>
+    <Cell><Data ss:Type="String">Volgnummer</Data></Cell>
+    <Cell><Data ss:Type="String">Numéro</Data></Cell>
+    <Cell><Data ss:Type="String">Numero</Data></Cell>
+    <Cell><Data ss:Type="String">Número</Data></Cell>
+    <Cell><Data ss:Type="String">号码</Data></Cell>
+    <Cell><Data ss:Type="String">نمبر</Data></Cell>
+    <Cell><Data ss:Type="String">количество</Data></Cell>
+    <Cell><Data ss:Type="String">संख्या</Data></Cell>
+    <Cell><Data ss:Type="String">عدد</Data></Cell>
+    <Cell><Data ss:Type="String">số</Data></Cell>
+    <Cell><Data ss:Type="String">מספר</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">CAPTION_PROPERTIES</Data></Cell>
@@ -3891,7 +3908,7 @@
     <Cell><Data ss:Type="String">Hơn nữa</Data></Cell>
     <Cell><Data ss:Type="String">עוד</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row>
     <Cell><Data ss:Type="String">MSG_ACCESS_FORBIDDEN</Data></Cell>
     <Cell><Data ss:Type="String">Zugriff auf %s nicht erlaubt!</Data></Cell>
     <Cell><Data ss:Type="String">Access to %s forbidden!</Data></Cell>
@@ -3904,7 +3921,7 @@
     <Cell><Data ss:Type="String">Truy cập tới %s bị cấm!</Data></Cell>
     <Cell><Data ss:Type="String">גישה ל %s אסורה!</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row>
     <Cell><Data ss:Type="String">MSG_AFTER_INSERT</Data></Cell>
     <Cell><Data ss:Type="String">Ändern erst nach Einfügen von %s!</Data></Cell>
     <Cell><Data ss:Type="String">Can be changed after insert of %s!</Data></Cell>
@@ -3945,7 +3962,7 @@
     <Cell><Data ss:Type="String">Lưu lại những thay đổi dù bất kì giá nào?</Data></Cell>
     <Cell><Data ss:Type="String">לשמור שינויים בכל זאת?</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="38.25">
+   <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_CUTOBJS</Data></Cell>
     <Cell><Data ss:Type="String">Soll(en) %i ausgewählte(s) Objekt(e) wirklich ausgeschnitten werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to cut %i selected object(s)?</Data></Cell>
@@ -3973,7 +3990,7 @@
     <Cell><Data ss:Type="String">Quý vị thực sự muốn xóa đối tượng này?</Data></Cell>
     <Cell><Data ss:Type="String">האם אתה באמת רוצה למחוק את הפריט?</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="38.25">
+   <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_DELOBJS</Data></Cell>
     <Cell><Data ss:Type="String">Soll(en) %i ausgewählte(s) Objekt(e) wirklich gelöscht werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to delete %i selected object(s)?</Data></Cell>
@@ -3987,7 +4004,7 @@
     <Cell><Data ss:Type="String">Quý vị thực sự muốn xóa %i  (các) đối tượng được lựa chọn?</Data></Cell>
     <Cell><Data ss:Type="String">האם אתה באמת רוצה למחוק %i פריט(ים) שנבחר(ו)</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="51">
+   <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_DESCENDANT_LANGS</Data></Cell>
     <Cell><Data ss:Type="String">Diese Aktion kann sich auf abhängige Sprachen (%s) auswirken. Wollen Sie trotzdem fortfahren?</Data></Cell>
     <Cell><Data ss:Type="String">This action may affect descendant languages (%s). Do you want to proceed anyway?</Data></Cell>
@@ -4000,7 +4017,7 @@
     <Cell><Data ss:Type="String">Hành động này có thể ảnh hướng tới các ngôn ngữ kế thừa (%s). Dù sao quý vị thực sự vẫn muốn tiếp tục?</Data></Cell>
     <Cell><Data ss:Type="String">הפעולה הזו עלולה להשפיע על השפות מתחת(%s). האם אתה רוצה להמשיך בכל זאת?</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_DISCARD_CHANGES</Data></Cell>
     <Cell><Data ss:Type="String">Sollen Eingaben verworfen werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to discard changes?</Data></Cell>
@@ -4015,7 +4032,7 @@
     <Cell><Data ss:Type="String">Quý vị thực sự muốn loại bỏ những thay đổi?</Data></Cell>
     <Cell><Data ss:Type="String">האם אתה בטוח רוצה להפטר מהשינויים?</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_MOVEOBJ</Data></Cell>
     <Cell><Data ss:Type="String">Soll Objekt wirklich hierhin verschoben werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to move object here?</Data></Cell>
@@ -4026,7 +4043,7 @@
     <Cell><Data ss:Type="String">Quý vị thực sự muốn chuyển đối tượng khỏi đây?</Data></Cell>
     <Cell><Data ss:Type="String">להזיז באמת את האובייקט לכאן?</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="38.25">
+   <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_TRASHOBJS</Data></Cell>
     <Cell><Data ss:Type="String">Soll(en) %i ausgewählte(s) Objekt(e) wirklich in den Papierkorb verschoben werden?</Data></Cell>
     <Cell><Data ss:Type="String">Do you really want to move %i selected object(s) to trashcan?</Data></Cell>
@@ -4039,7 +4056,7 @@
     <Cell><Data ss:Type="String">Quý vị thực sự muốn chuyển %i (các) đối tượng được lựa chọn tới thùng rác?</Data></Cell>
     <Cell><Data ss:Type="String">האם להשליך %i פריט(ים) שנבחר(ו) לסל המחזור?</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row>
     <Cell><Data ss:Type="String">MSG_DELETED</Data></Cell>
     <Cell><Data ss:Type="String">%i Objekt(e) gelöscht.</Data></Cell>
     <Cell><Data ss:Type="String">%i Object(s) deleted.</Data></Cell>
@@ -4153,7 +4170,7 @@
     <Cell><Data ss:Type="String">MÁY CHỦ - LỖI&lt;br/&gt;&lt;br/&gt;&#10;Tài liệu không được tìm thấy&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&#10;Tài liệu được yêu cầu không tồn tại trong máy chủ này.&lt;br/&gt;&lt;br/&gt;&#10;Hãy kiểm tra lại URL hoặc sử dụng chức năng tìm kiếm trên trang này để tìm ra những gì quý vị tìm kiếm.&lt;br/&gt;&lt;br/&gt;&#10;Nếu quý vị dùng hoàn toàn đúng tên địa chỉ URL và quý vị vẫn gặp lỗi, hãy thông báo với Webmasster của quý vị. Cám ơn.&lt;br/&gt;&lt;br/&gt;&#10;</Data></Cell>
     <Cell><Data ss:Type="String">שרת-שגיאה &lt;br/&gt;&lt;br/&gt; &#10;המסמך לא נמצא &lt;br/&gt;&lt;br/&gt;&#10;המסמך הדרוש אינו קיים על השרת הזה &lt;br/&gt;&lt;br/&gt;&#10;אנא בדוק שוב את כתובת האינטרנט או השתמש באפשרות חיפוש בדף הנוכחי כדי למצוא את מה שאתה מחפש &lt;br/&gt;&lt;br/&gt;&#10;אם הקשת בוודאות את כתובת האינטרנט הנכונה ואתה עדיין מקבל שגיאה, אנא יידע את האחראי על תמיכת הרשת שלנו. תודה &lt;br/&gt;&lt;br/&gt;</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="15.75">
+   <Row>
     <Cell><Data ss:Type="String">MSG_INSERTED</Data></Cell>
     <Cell><Data ss:Type="String">%s eingefügt.</Data></Cell>
     <Cell><Data ss:Type="String">%s inserted.</Data></Cell>
@@ -4274,7 +4291,7 @@
     <Cell><Data ss:Type="String">Trong môi trường đa ngôn ngữ có hệ thống, đối với mỗi ngôn ngữ, sự thay đổi đồng nhất của tất cả các đối tượng cây nội dung được hiện thực hóa.</Data></Cell>
     <Cell><Data ss:Type="String">ברב-לשונות סימטרית ממומשת לכל שפה גרסה זהה של כל פריטי העץ. </Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="38.25">
+   <Row>
     <Cell><Data ss:Type="String">MSG_MULTILANGDICT</Data></Cell>
     <Cell><Data ss:Type="String">Im Wörterbuch werden Schlüsselwörter für multilinguale Templates hinterlegt.</Data></Cell>
     <Cell><Data ss:Type="String">Register keywords for multilingual templates in the dictionary.</Data></Cell>
@@ -4286,7 +4303,7 @@
     <Cell><Data ss:Type="String">Đăng kí những từ khóa cho các bản mẫu đa ngôn ngữ trong từ điển.</Data></Cell>
     <Cell><Data ss:Type="String">הכנס מילות מפתח לתבנית רב-לשונית במילון</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row>
     <Cell><Data ss:Type="String">MSG_NOITEMSSPECIFIED</Data></Cell>
     <Cell><Data ss:Type="String">Es wurden keine Einträge ausgewählt!</Data></Cell>
     <Cell><Data ss:Type="String">No items have been specified!</Data></Cell>
@@ -4299,7 +4316,7 @@
     <Cell><Data ss:Type="String">Không có hạng mục nào được xác định cụ thể!</Data></Cell>
     <Cell><Data ss:Type="String">לא הוגדרו פריטים!</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row>
     <Cell><Data ss:Type="String">MSG_NOREFERENCES</Data></Cell>
     <Cell><Data ss:Type="String">Es gibt keine internen Referenzen auf %s</Data></Cell>
     <Cell><Data ss:Type="String">There are currently no internal references to %s</Data></Cell>
@@ -4314,7 +4331,7 @@
     <Cell><Data ss:Type="String">Hiện tại không có những tham chiếu bên trong tới %s</Data></Cell>
     <Cell><Data ss:Type="String">אין כרגע התייחסויות פנימיות לs%</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row>
     <Cell><Data ss:Type="String">MSG_NOTASKS</Data></Cell>
     <Cell><Data ss:Type="String">Es gibt keine Aufgaben in</Data></Cell>
     <Cell><Data ss:Type="String">There are currently no tasks in</Data></Cell>
@@ -5063,7 +5080,7 @@
     <Cell><Data ss:Type="String">Danh sách được gạch đầu dòng</Data></Cell>
     <Cell><Data ss:Type="String">רשימת תבליטים</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="25.5">
+   <Row>
     <Cell><Data ss:Type="String">OPT_L_0</Data></Cell>
     <Cell><Data ss:Type="String">Arabisch (1, 2, 3)</Data></Cell>
     <Cell><Data ss:Type="String">Arabic (1, 2, 3)</Data></Cell>
@@ -5076,7 +5093,7 @@
     <Cell><Data ss:Type="String">Ả-rập (1, 2,3)</Data></Cell>
     <Cell><Data ss:Type="String">ערבית(1,2,3)</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="38.25">
+   <Row>
     <Cell><Data ss:Type="String">OPT_L_1</Data></Cell>
     <Cell><Data ss:Type="String">Großbuchstaben (A, B, C)</Data></Cell>
     <Cell><Data ss:Type="String">Uppercase letter (A, B, C)</Data></Cell>
@@ -5089,7 +5106,7 @@
     <Cell><Data ss:Type="String">Chữ viết hoa (A, B, C)</Data></Cell>
     <Cell><Data ss:Type="String">אותיות גדולות  (A, B, C)</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="15.75">
+   <Row>
     <Cell><Data ss:Type="String">OPT_L_2</Data></Cell>
     <Cell><Data ss:Type="String">Kleinbuchstaben (a, b, c)</Data></Cell>
     <Cell><Data ss:Type="String">Lowercase letter (a, b, c)</Data></Cell>
@@ -5135,8 +5152,11 @@
     <Cell><Data ss:Type="String">OPT_S_CODE</Data></Cell>
     <Cell><Data ss:Type="String">Code</Data></Cell>
     <Cell><Data ss:Type="String">Code</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Codice</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">代砿</Data></Cell>
+    <Cell><Data ss:Type="String">Code</Data></Cell>
+    <Cell><Data ss:Type="String">Code</Data></Cell>
+    <Cell><Data ss:Type="String">Codice</Data></Cell>
+    <Cell><Data ss:Type="String">Código</Data></Cell>
+    <Cell><Data ss:Type="String">代砿</Data></Cell>
     <Cell><Data ss:Type="String">کد</Data></Cell>
     <Cell><Data ss:Type="String">код</Data></Cell>
     <Cell><Data ss:Type="String">कूट संकेत</Data></Cell>

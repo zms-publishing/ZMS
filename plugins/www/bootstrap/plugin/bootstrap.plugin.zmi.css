@@ -871,6 +871,16 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 		display: block;
 	}
 }
+.zmi.metas .row_tableheader {
+	background: #EEEEEE;
+}
+.zmi.metas .row_tableheader th {
+	font-weight: normal;
+}
+.zmi.metas .row_tableheader th.meta-sort {
+	font-weight: bold;
+	color:#888;
+}
 .zmi.metas tr.row_metadata td span,
 .zmi.metas tr.row_metadata input,
 .zmi.metas tr.row_metadata select {
@@ -887,12 +897,8 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	min-width: 7em;
 	width:160px;
 }
-.zmi.metas .form-group.meta_id div,
-.zmi.metas .form-group.meta_name div,
-.zmi.metas .form-group.meta_type div,
-.zmi.metas .form-group.meta_revision div,
-.zmi.metas .form-group.meta_package div {
-	padding-left:1em;
+.zmi.metas td span.title {
+	display:none;
 }
 .zmi.metas .meta-code,
 .zmi.metas .meta-resource {
@@ -900,6 +906,37 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 }
 .zmi.metas input[type="file"] {
 	display: inline-block;
+}
+@media (max-width: 767px) {
+	zmi.metas table#meta_properties {
+		display: inline-table;
+		border:none;
+	}
+	.zmi.metas table#meta_properties tr {
+		display: block;
+		border-bottom:4px solid #CCC;
+	}
+	.zmi.metas table#meta_properties tr.row_tableheader {
+		display: none !important;
+	}
+	.zmi.metas table#meta_properties td,
+	.zmi.metas table#meta_properties th {
+		display:block;
+		text-align:left !important;
+		margin-top:-1px
+	}
+	.zmi.metas table#meta_properties td.meta-sort,
+	.zmi.metas table#meta_properties td.meta-id input,
+	.zmi.metas table#meta_properties td.meta-name input,
+	.zmi.metas table#meta_properties td.meta-type select,
+	.zmi.metas table#meta_properties textarea {
+		min-width: 100%;
+		width: 100%;
+	}
+	.zmi.metas table#meta_properties td span.title {
+		display:block;
+		margin-right:1em;
+	}
 }
 .zmi.metas div.meta-access {
 	overflow-x: scroll;

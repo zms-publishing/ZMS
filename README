@@ -44,15 +44,6 @@ $ ./ZMS3/instance/bin/zopectl start
     |   http://localhost:8080/manage_addProduct/zms/manage_addzmsform
     |   (replace "localhost" with your system's IP address or domain name if no local installation)
 
-Integrated Extensions
----------------------
-
-    * ZMSDeployment: https://pypi.python.org/pypi/zms3.deployment
-    * ZMSFormulator: https://pypi.python.org/pypi/zms3.formulator
-    * ZMSMindmap: https://pypi.python.org/pypi/zms3.mindmap
-    * ZMSPhotoDB: https://pypi.python.org/pypi/zms3.photodb
-    * ZMSThemes: https://pypi.python.org/pypi/zms3.themes
-
 Prerequisites
 -------------
 

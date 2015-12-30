@@ -1,12 +1,22 @@
 = ZMS3 Changelog =
 
 == 3.3.0dev (in development) ==
+ 
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3525&limit=200 latest changes...]
 
-  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3493&limit=200 latest changes...]
+== 3.2.3 (2016-02-24) ==
+ 
+  * TBA
 
 == 3.2.2 (2015-12-30) ==
 
-  * TBA
+  * Added system property ZMSObject.getHref2IndexHtmlInContext.relativate for rendering relative links
+  * Fixed ZMSSQLDB binary handling error and resident filter names
+  * Fixed ZMSGraphic image cropping tool for bootstrap
+  * Some GUI improvements for mobile devices
+  * Removed deprecated api
+  * Removed optional packages in default system
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=3524&stop_rev=3493&limit=200 more in 3.2.2...]
 
 == 3.2.1 (2015-12-02) ==
 

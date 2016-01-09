@@ -93,7 +93,7 @@ class ZReferableItem:
     _uc2 = urlparse.urlunsplit(u_src[:2]+tuple('' for i in range(3)))
     if _uc1 != _uc2:
         ## This is a different domain
-        return destination
+        return url
     _relpath = posixpath.relpath(u_dest.path, posixpath.dirname(u_src.path))
     return './%s'%urlparse.urlunsplit(('', '', _relpath, u_dest.query, u_dest.fragment))
 

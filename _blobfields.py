@@ -606,15 +606,8 @@ class MyBlob:
           except:
             _globals.writeError(parent,'[__call__]: can\'t %s'%name)
         # Raise unauthorized error.
-        if not access:
-          if getattr(parent,'login_form',None):
-            target = '%s/login_form'%parent.absolute_url()
-            target = parent.url_append_params(target,{'came_from':REQUEST.get('URL')})
-            if REQUEST.get('QUERY_STRING'):
-              target = parent.url_append_params(target,{'QUERY_STRING':REQUEST.get('QUERY_STRING')})
-            return RESPONSE.redirect(target)
-          else:
-            raise zExceptions.Unauthorized
+        else:
+          raise zExceptions.Unauthorized
         
         if self._if_modified_since_request_handler(REQUEST, RESPONSE):
             # we were able to handle this by returning a 304 (not modified) 
@@ -741,11 +734,7 @@ class MyBlob:
         qs = _globals.qs_append( qs, zms_version_key,REQUEST.get( zms_version_key))
       elif _globals.isPreviewRequest( REQUEST):
         qs = _globals.qs_append( qs, 'preview', 'preview')
-      href = parent.absolute_url()+rownum+'/'+filename+qs
-      if (REQUEST.get('ZMS_PATHCROPPING',False) or parent.getConfProperty('ZMS.pathcropping',0)==1) and REQUEST.get('export_format','') == '':
-        base = REQUEST.get('BASE0','')
-        if href.find( base) == 0:
-          href = href[len(base):]
+      href = '/'.join(parent.getPhysicalPath())+rownum+'/'+filename+qs
       return href
 
 

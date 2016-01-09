@@ -536,6 +536,8 @@ class ZMSLinkElement(ZMSCustom):
         except:
           rtn += _globals.writeError(self,'[_getBodyContent]: can\'t embed from remote: ref=%s'%ref)
       else:
+        if self.isEmbedded(REQUEST):
+          REQUEST.set('ZMS_RELATIVATE_URL',False)
         proxy = self.getProxy()
         if proxy != self and proxy is not None and self.isEmbeddedRecursive( self.REQUEST):
           rtn += proxy._getBodyContent(REQUEST)
@@ -548,6 +550,8 @@ class ZMSLinkElement(ZMSCustom):
             rtn += ref_obj._getBodyContent( REQUEST)
         else:
           rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate( self))
+        if self.isEmbedded(REQUEST):
+          REQUEST.set('ZMS_RELATIVATE_URL',True)
       return rtn
 
 
@@ -559,25 +563,10 @@ class ZMSLinkElement(ZMSCustom):
     def renderShort(self, REQUEST):
       rtn = ''
       ref_obj = self.getRefObj()
-      ref = self.getObjProperty('attr_ref',REQUEST)
-      
-      if self.getEmbedType() == 'remote':
-        try:
-          rtn += self.http_import( ref+'/renderShort')
-        except:
-          rtn += _globals.writeError(self,'[renderShort]: can\'t embed from remote: ref=%s'%ref)
-      
-      elif self.isEmbedded(REQUEST):
-        if ref_obj is None:
-          ref_obj = self.getLinkObj(ref)
-        if ref_obj is None or ref_obj.isPage():
-          rtn += super(ZMSLinkElement,self).renderShort(REQUEST)
-        else:
-          rtn += ref_obj.renderShort(REQUEST)
-      
+      if ref_obj is None or ref_obj.isPage():
+        rtn += super(ZMSLinkElement,self).renderShort(REQUEST)
       else:
-          rtn += self._getBodyContent( REQUEST)
-      
+        rtn += self._getBodyContent( REQUEST)
       return rtn
 
 

@@ -858,12 +858,15 @@ class ZMSObject(ZMSItem.ZMSItem,
       if self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.forced',False) or self.getHome() != context.getHome():
         protocol = self.getConfProperty('ASP.protocol','http')
         domain = self.getConfProperty('ASP.ip_or_domain',None)
-        if protocol is not None and domain is not None:
-          s = '/content/'
-          i = index_html.find(s)
-          if i > 0:
-            index_html = protocol + '://' + domain + '/' + index_html[i+len(s):]
-      elif self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.relativate',True) and self.getHome() == context.getHome():
+        if domain is not None:
+          l = index_html.split('/')
+          if 'content' in l:
+            i = l.index('content')
+            if l[i-1] != self.getHome().id:
+              i = l.index(self.getRootElement().getHome().id)
+            l = l[i:]
+            index_html = protocol + '://' + domain + '/' + '/'.join(l)
+      elif REQUEST.get('ZMS_RELATIVATE_URL',True) and self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.relativate',True) and self.getHome() == context.getHome():
         path = context.getHref2IndexHtml(REQUEST,deep)
         index_html = self.getRelativeUrl(path,index_html)
       return index_html

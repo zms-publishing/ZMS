@@ -862,7 +862,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           l = index_html.split('/')
           if 'content' in l:
             i = l.index('content')
-            if l[i-1] != self.getHome().id:
+            if l[i-1] != self.getHome().id and self.getRootElement().getHome().id in l:
               i = l.index(self.getRootElement().getHome().id)
             l = l[i:]
             index_html = protocol + '://' + domain + '/' + '/'.join(l)

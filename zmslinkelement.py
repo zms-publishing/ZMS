@@ -563,10 +563,25 @@ class ZMSLinkElement(ZMSCustom):
     def renderShort(self, REQUEST):
       rtn = ''
       ref_obj = self.getRefObj()
-      if ref_obj is None or ref_obj.isPage():
-        rtn += super(ZMSLinkElement,self).renderShort(REQUEST)
-      else:
-        rtn += self._getBodyContent( REQUEST)
+      ref = self.getObjProperty('attr_ref',REQUEST) 
+       
+      if self.getEmbedType() == 'remote': 
+        try: 
+          rtn += self.http_import( ref+'/renderShort') 
+        except: 
+          rtn += _globals.writeError(self,'[renderShort]: can\'t embed from remote: ref=%s'%ref) 
+       
+      elif self.isEmbedded(REQUEST): 
+        REQUEST.set('ZMS_RELATIVATE_URL',False)
+        if ref_obj is None: 
+          ref_obj = self.getLinkObj(ref) 
+        if ref_obj is None or ref_obj.isPage(): 
+          rtn += super(ZMSLinkElement,self).renderShort(REQUEST) 
+        else: 
+          rtn += ref_obj.renderShort(REQUEST) 
+        REQUEST.set('ZMS_RELATIVATE_URL',True)
+      else: 
+          rtn += self._getBodyContent( REQUEST) 
       return rtn
 
 

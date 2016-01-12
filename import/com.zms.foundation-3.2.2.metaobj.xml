@@ -2984,8 +2984,8 @@ zmscontext.attr('text',text)
 <tal:block tal:condition="python:request.get('ZMS_INSERT')">
 <input type="hidden" name="redirect_self:int" value="1"/>
 
-<span class="hidden" id="fmName" tal:content="request/fmName"></span>
-<span class="hidden" id="textFormatDefault" tal:content="textFormatDefault"></span>
+<span class="ui-helper-hidden" id="fmName" tal:content="request/fmName"></span>
+<span class="ui-helper-hidden" id="textFormatDefault" tal:content="textFormatDefault"></span>
 <style>
 	.modal {
 		z-index:10000;
@@ -3140,8 +3140,8 @@ function onZMSTableFormSubmit() {
 --------------------------------------------------------------------------------
 -->
 <tal:block tal:define="celltypes python:[['td','td'],['th','th']];custom python:'<div class=\042pull-left celltypes\042>%s</div>'%(here.zmi_input_select(name='tag',value='',lang_str=here.getZMILangStr('ATTR_FORMAT'),options=celltypes))">
-	<div class="modal-backdrop in hidden">&nbsp;</div>
-	<div class="hidden">
+	<div class="ui-helper-hidden ui-helper-overlay modal-backdrop in">&nbsp;</div>
+	<div class="ui-helper-hidden">
 		<div id="div_table_cell_editor">
 			<tal:block tal:content="structure python:here.f_selectRichtext(ob=here,fmName=request['fmName'],elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=request['lang'],lang_str=here.getZMILangStr('ACTION_EDIT_CELL'),custom_str=custom,REQUEST=request,wrap='virtual',format='')"></tal:block>
 			<div class="control-group">
@@ -3164,12 +3164,12 @@ function onZMSTableFormSubmit() {
 --------------------------------------------------------------------------------
 -->
 
-<span class="hidden" id="fmName" tal:content="request/fmName"></span>
-<span class="hidden" id="elName" tal:content="request/elName"></span>
-<span class="hidden" id="textFormatDefault" tal:content="textFormatDefault"></span>
-<tal:block tal:condition="python:request.get('richedit_fmt',None)"><span class="hidden" id="richedit_fmt" tal:content="python:request.get('richedit_fmt').getId()"></span></tal:block>
-<span class="hidden" id="table_type" tal:content="table_type"></span>
-<span class="hidden" id="table_cell_uid" tal:content="python:table_cols*table_rows"></span>
+<span class="ui-helper-hidden" id="fmName" tal:content="request/fmName"></span>
+<span class="ui-helper-hidden" id="elName" tal:content="request/elName"></span>
+<span class="ui-helper-hidden" id="textFormatDefault" tal:content="textFormatDefault"></span>
+<tal:block tal:condition="python:request.get('richedit_fmt',None)"><span class="ui-helper-hidden" id="richedit_fmt" tal:content="python:request.get('richedit_fmt').getId()"></span></tal:block>
+<span class="ui-helper-hidden" id="table_type" tal:content="table_type"></span>
+<span class="ui-helper-hidden" id="table_cell_uid" tal:content="python:table_cols*table_rows"></span>
 <style>
 #table_cell_editor .btn {
 	padding: 0 .3em;
@@ -3182,11 +3182,16 @@ div.zmi-interface {
 	box-shadow: inset 0 1px 10px rgba(0,0,0,0.075);
 	margin-bottom:2em;
 }
+.zmi.ZMSTable.properties .modal-backdrop.in {
+	filter: alpha(opacity=30);
+	opacity: .3;
+}
 .div_table_cell_editor_parent {
 	position:absolute;
 	background:#FEFEFE;
-	border:1px solid #000;
 	z-index:9999;
+	border-radius: 4px;
+	box-shadow: 0 4px 16px #333;
 }
 #div_table_cell_editor {
 	width:65em;
@@ -3287,47 +3292,43 @@ $(function() {
 
 function onZMSTableFormSubmit() {
 	var xml = '';
-	var empty = false;
-	$('tr[id^="table_row_"]').each(function() {
-			xml += '<'+'item type="list"><'+'list>\n';
-			var el_tds = $(this).children().filter(":gt(0)").filter(":not(:last)");
-			for ( var j=0; j < el_tds.length; j++) {
-				xml += '<'+'item type="dictionary"><'+'dictionary>\n';
-				var colspan = $(el_tds[j]).prop("colspan");
-				if (typeof colspan=="undefined") {
-					colspan = 1;
-				}
-				xml += '<'+'item key="colspan" type="int">'+colspan+'<'+'/item>\n';
-				$("textarea,input",el_tds[j]).each(function() {
-						var id = $(this).attr("id");
-						var key = id.substr(0,id.indexOf("_"));
-						var val = $(this).val().replace(/^(&nbsp;)/,'').replace(/^<p>(\w|\W)*?<\/p>$/,'$1');
-						xml += '<'+'item key="'+key+'"><'+'![CDATA'+'['+val+']'+']><'+'/item>\n';
-					});
-				xml += '<'+'/dictionary><'+'/item>\n';
+	xml += '<'+'list>\n';
+	var el_tbody = $($("#table_cell_editor").children()[0]);
+	var el_trs = el_tbody.children().filter(":gt(1)").filter(":not(:last)");
+	for ( var i=0; i < el_trs.length; i++) {
+		xml += '<'+'item type="list"><'+'list>\n';
+		var el_tds = $(el_trs[i]).children().filter(":gt(0)").filter(":not(:last)");
+		for ( var j=0; j < el_tds.length; j++) {
+			xml += '<'+'item type="dictionary"><'+'dictionary>\n';
+			var colspan = $(el_tds[j]).prop("colspan");
+			if (typeof colspan=="undefined") {
+				colspan = 1;
 			}
-			xml += '<'+'/list><'+'/item>\n';
-		});
-	if (empty) {
-		xml = '';
+			xml += '<'+'item key="colspan" type="int">'+colspan+'<'+'/item>\n';
+			var el_inputs = $("textarea,input",el_tds[j]);
+			for ( var k=0; k < el_inputs.length; k++) {
+				var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
+				xml += '<'+'item key="'+key+'"><'+'![CDATA'+'['+$(el_inputs[k]).val()+']'+']><'+'/item>\n';
+			}
+			xml += '<'+'/dictionary><'+'/item>\n';
+		}
+		xml += '<'+'/list><'+'/item>\n';
 	}
-	xml = '<'+'list>\n'+xml+'<'+'/list>\n';
+	xml += '<'+'/list>\n';
 	$("#table_table").val( xml);
 	xml = '';
-	empty = false;
-	$("tr#colgrouping input:text").each(function() {
-			var v = $(this).val();
-			empty |= v.length == 0;
-			xml += '<'+'item type="string">'+v+'<'+'/item>\n';
-		});
-	if (empty) {
-		xml = '';
+	xml += '<'+'list>\n';
+	var el_trs = el_tbody.children().filter(":eq(1)");
+	for ( var i=0; i < el_trs.length; i++) {
+		var el_inputs = $("input:text",el_trs[i]);
+		for ( var j = 0; j < el_inputs.length; j++) {
+			xml += '<'+'item type="string">'+$(el_inputs[j]).val()+'<'+'/item>\n';
+		}
 	}
-	xml = '<'+'list>\n'+xml+'<'+'/list>\n';
+	xml += '<'+'/list>\n';
 	$("#table_colgroup_cols").val( xml);
 	return onFormSubmit(fmName);
 }
-
 function table_cell_edit(el_td) {
 	var el = $('textarea',el_td);
 	var el_name = el.attr('name');
@@ -3349,37 +3350,37 @@ function table_cell_edit(el_td) {
 		}
 	}
 	// Open cell editor.
-	var offset = $(el_td).offset();
-	var height = $(el_td).height();
-	$('.modal-backdrop').removeClass("hidden");
-	$('#div_table_cell_editor')
-		.parent()
-			.addClass('div_table_cell_editor_parent')
-			.css({left:offset.left,top:offset.top+height})
-			.removeClass('hidden');
+	/*
+	zmiModal('#div_table_cell_editor',{
+			title:getZMILangStr('ATTR_COL')+': '+getZMILangStr('BTN_EDIT'),
+			close: function(event, ui) {
+					table_cell_cancel(event);
+				}
+	});
+	*/
+var offset = $(el_td).offset();
+	$('.ui-helper-overlay').removeClass('ui-helper-hidden');
+	$('#div_table_cell_editor').parent().addClass('div_table_cell_editor_parent').css({left:offset.left,top:offset.top}).removeClass('ui-helper-hidden');
 	$('div#zmiRichtextEditor'+'content_editor').height(300);
 	zmiRichtextResize('content_editor');
 }
 
 function table_cell_change() {
-	var fmt = $('#format').val();
 	if (typeof richedit_fmt != 'undefined') {
-		if ( fmt==richedit_fmt) {
+		if ( $('#format').val()==richedit_fmt) {
 			zmiRichtextOnSubmitEventHandler();
-			$('#input_'+ table_cell_id).addClass("hidden");
-			$('#preview_'+ table_cell_id).removeClass("hidden");
+			$('#input_'+ table_cell_id).hide();
+			$('#preview_'+ table_cell_id).show();
 		}
 		else {
-			$('#input_'+ table_cell_id).removeClass("hidden");
-			$('#preview_'+ table_cell_id).addClass("hidden");
+			$('#input_'+ table_cell_id).show();
+			$('#preview_'+ table_cell_id).hide();
 		}
 	}
-	$('#format_'+ table_cell_id).val(fmt);
-	var tag = $('select[name="tag"]').val();
-	$('#tag_'+ table_cell_id).val(tag);
-	var content = $('#content_editor').val();
-	$('#content_'+ table_cell_id).val(content);
-	$('#preview_'+ table_cell_id).html(content);
+	$('#format_'+ table_cell_id).val($('#format').val());
+	$('#tag_'+ table_cell_id).val($('select[name="tag"]').val());
+	$('#content_'+ table_cell_id).val($('#content_editor').val());
+	$('#preview_'+ table_cell_id).html($('#content_editor').val());
 	return table_cell_cancel();
 }
 
@@ -3389,11 +3390,15 @@ function table_cell_cancel(event) {
 	el_td.removeClass("active");
 	// Close cell editor.
 	if (!event) {
-		$('.modal-backdrop').addClass('hidden');
-		$('#div_table_cell_editor').parent().addClass('hidden');
+		/*
+		$('#div_table_cell_editor').dialog('close');
+		*/
+		$('.ui-helper-overlay').addClass('ui-helper-hidden');
+		$('#div_table_cell_editor').parent().addClass('ui-helper-hidden');
 	}
 	return false;
 }
+
 
 function table_cell_init() {
 	$("form[name="+fmName+"] input[type=hidden]+textarea").change( function () { $(this).parents(".table_cell_editable").addClass('changed').removeClass('changed',1000);});
@@ -3626,7 +3631,7 @@ function onKeyUpZMSTableDivContenteditable() {
 				pattern python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
 				replacement python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
 				cell_content python:here.re_sub(pattern,replacement,cell.get('content',''));
-				cell_format python:cell.get('format',textFormatDefault);
+				cell_format python:[cell.get('format',textFormatDefault),textFormatDefault][int(len(textFormatDefault)>0)];
 				richedit_preview python:int(request.get('richedit_fmt') is not None and cell_format==request.get('richedit_fmt').getId())">
 			<tal:block tal:condition="python:table_type==4 and row_index==0 and col_index==0">
 				<td tal:attributes="colspan cell/colspan">&nbsp;</td>
@@ -3637,12 +3642,12 @@ function onKeyUpZMSTableDivContenteditable() {
 					<table style="width:100%" class="ZMSTable">
 					<tr>
 						<tal:block tal:content="structure python:'<%s title=\042onDblClick: %s\042 class=\042table_cell_editable\042>'%(['td',cell['tag']][cell['tag']!=''],here.getZMILangStr('ACTION_EDIT_CELL'))">start-tag</tal:block>
-						<input type="hidden" tal:attributes="id python:'tag_%i_%i'%(col_index,row_index); value cell/tag"/>
-						<input type="hidden" tal:attributes="id python:'format_%i_%i'%(col_index,row_index); value cell_format">
-						<div tal:attributes="id python:'input_%i_%i'%(col_index,row_index); class python:['','hidden'][richedit_preview]">
+						<div tal:attributes="id python:'input_%i_%i'%(col_index,row_index); class python:['','ui-helper-hidden'][richedit_preview]">
+						<input type="hidden" tal:attributes="id python:'tag_%i_%i'%(col_index,row_index); value cell/tag" />
+						<input type="hidden" tal:attributes="id python:'format_%i_%i'%(col_index,row_index); value cell_format" />
 							<tal:block tal:content="structure python:here.getTextArea(request['fmName'],'content_%i_%i'%(col_index,row_index),10,1,value=cell_content,enabled=True,REQUEST=request,extra=' style=\042border:none;background-color:transparent;width:100%;\042')"></tal:block>
 						</div>
-						<div tal:attributes="id python:'preview_%i_%i'%(col_index,row_index);class python:['hidden',''][richedit_preview]"
+						<div tal:attributes="id python:'preview_%i_%i'%(col_index,row_index);class python:['ui-helper-hidden',''][richedit_preview]"
 							><tal:block tal:condition="cell/content" tal:content="structure cell_content">the cell-content</tal:block
 							><tal:block tal:condition="not:cell/content">&nbsp;</tal:block
 						></div>
@@ -4061,7 +4066,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.2.1]]></item>
+          <item key="revision"><![CDATA[3.2.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4748,7 +4753,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.2.1]]></item>
+          <item key="revision"><![CDATA[3.2.2]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

@@ -43,7 +43,7 @@ EXTENSIONS = {
                    'Handle EXIF/XMP/IPTC metadata',
                    'https://bitbucket.org/zms3/photodb',
                    'developed by Christian Meier'],              
-  'Pillow': ['3.0.0',
+  'Pillow': ['3.1.0',
              'The friendly PIL (Python Imaging Library) fork',
              'https://pypi.python.org/pypi/Pillow',
              'developed by Alex Clark'],
@@ -426,7 +426,7 @@ class ZMSExtensions():
         str_ins = '%s/get/%s.zip'%(str_url[:-10], self.getVersionAvailable(ext))
         str_upd = '%s/get/HEAD.zip'%(str_url[:-10])
       if ext=='zms3.deployment':
-        str_ins = str_upd = 'zms3.deployment==0.2.4'
+        str_ins = str_upd = 'zms3.deployment==0.2.5'
       
       if mode=='install':
         return str_ins

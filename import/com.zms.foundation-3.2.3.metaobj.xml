@@ -3318,7 +3318,7 @@ function onZMSTableFormSubmit() {
 	$("#table_table").val( xml);
 	xml = '';
 	xml += '<'+'list>\n';
-	var el_trs = el_tbody.children().filter(":eq(1)");
+	var el_trs = el_tbody.children().filter(":eq(0)");
 	for ( var i=0; i < el_trs.length; i++) {
 		var el_inputs = $("input:text",el_trs[i]);
 		for ( var j = 0; j < el_inputs.length; j++) {
@@ -4066,7 +4066,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.2.2]]></item>
+          <item key="revision"><![CDATA[3.2.3]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4753,7 +4753,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.2.2]]></item>
+          <item key="revision"><![CDATA[3.2.3]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

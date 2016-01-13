@@ -678,6 +678,7 @@ div.constraint-restriction {
 }
 .btn-group.zmi-action .tooltip-inner .constraint {
 	border-radius: 4px;
+	overflow:hidden;
 }
 
 

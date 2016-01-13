@@ -2160,14 +2160,14 @@ return constraints
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- ZMSLinkElement.standard_html -->
 
-<tal:block tal:define="global 
+<tal:block tal:on-error="structure string:<!-- URL ERROR -->" tal:define="global 
 		zmscontext options/zmscontext;
 		zmsid         python:zmscontext.getId();
 		title         python:unicode(zmscontext.attr('title'),'utf-8');
 		titlealt      python:unicode(zmscontext.attr('titlealt'),'utf-8');
 		ref           python:zmscontext.attr('attr_url');
 		ref_lang      python:zmscontext.attr('ref_lang');
-		ref_url       python:int(ref.startswith('{$') and ref.endswith('}')) and zmscontext.getLinkObj(ref).getHref2IndexHtml({'lang':ref_lang}) or zmscontext.getLinkUrl(ref,request);
+		ref_url       python:int(ref.startswith('{$') and not ref.startswith('{$__') and ref.endswith('}')) and zmscontext.getLinkObj(ref).getHref2IndexHtml({'lang':ref_lang}) or zmscontext.getLinkUrl(ref,request);
 		target        python:zmscontext.attr('attr_type');
 		align         python:zmscontext.attr('align');
 		abstract      python:unicode(zmscontext.attr('attr_abstract').replace('\n','<br/>'),'utf-8');
@@ -2257,7 +2257,7 @@ return constraints
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.11]]></item>
+          <item key="revision"><![CDATA[3.1.12]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4753,7 +4753,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.2.3]]></item>
+          <item key="revision"><![CDATA[3.2.4]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

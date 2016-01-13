@@ -1087,6 +1087,7 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 			html += '<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)">'+page_display_icon+'</span> ';
 		}
 		html += '<a href="'+page_absolute_url+'"'
+			+ ' data-link-url="'+link_url+'"'
 			+ ' data-uid="'+page_uid+'"'
 			+ ' data-page-physical-path="'+page_physical_path+'"'
 			+ ' data-anchor="'+anchor+'"'

@@ -470,6 +470,17 @@ ZMI.prototype.initInputFields = function(container) {
 						$ZMILocalStorageAPI.set(key,'1');
 					}
 				});
+				// Password
+				$("input[type=password]",this).focus(function() {
+						if ($(this).val()=='******') {
+							$(this).val('');
+						}
+					})
+				.blur(function() {
+						if ($(this).val()=='') {
+							$(this).val('******');
+						}
+					});
 			});
 	$('form:not(.form-initialized)',container)
 		.submit(function() {
@@ -548,6 +559,18 @@ ZMI.prototype.initInputFields = function(container) {
 							}
 						}
 					});
+				// Password
+				var $password = $("input[type=password]",this).filter(":visible");
+				if ($password.length==2 
+					&& $($password[0]).attr("name")!="confirm"
+					&& $($password[1]).attr("name")=="confirm"
+					&& $($password[0]).val().length == 0
+					&& $($password[0]).val() != $($password[1]).val()) {
+					var $controlGroup = $password.parents(".form-group");
+					var $label = $("label.control-label",$controlGroup);
+					$controlGroup.addClass("has-error");
+					b = false;
+				}
 				// Lock
 				if (b && $('input[name="form_unlock"]',this).length==0) {
 					var result = $.ajax({
@@ -1066,7 +1089,7 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 			if ($file.length==1) {
 				var $fname = $("filename",$file).text();
 				var $ext = $fname.substring($fname.lastIndexOf('.')+1,$fname.length);
-				link_url = '<a data-id=&quot;'+page_uid+'&quot; href=&quot;'+$("href",$file).text()+'&quot; target=&quot;_blank&quot;>'+$(this).attr("title")+' ('+$ext+', '+$("size",$file).text()+')</a>'; 
+				link_url = '<a data-id=&quot;'+page_uid+'&quot; href=&quot;'+$("href",$file).text()+'&quot; target=&quot;_blank&quot;>'+$page.attr("titlealt")+'&#32;('+$ext.toUpperCase()+',&#32;'+$("size",$file).text()+')</a>'; 
 				try { page_titlealt = filename; } catch(err) { };
 			}
 		}

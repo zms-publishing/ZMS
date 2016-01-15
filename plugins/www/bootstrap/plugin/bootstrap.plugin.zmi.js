@@ -561,11 +561,11 @@ ZMI.prototype.initInputFields = function(container) {
 					});
 				// Password
 				var $password = $("input[type=password]",this).filter(":visible");
-				if ($password.length==2 
-					&& $($password[0]).attr("name")!="confirm"
-					&& $($password[1]).attr("name")=="confirm"
-					&& $($password[0]).val().length == 0
-					&& $($password[0]).val() != $($password[1]).val()) {
+				if (($password.length==2)
+					&& ($($password[0]).prop("name").toLowerCase().indexOf("confirm")<0)
+					&& ($($password[1]).prop("name").toLowerCase().indexOf("confirm")>=0)
+					&& ($($password[0]).val().length == 0
+						|| $($password[0]).val() != $($password[1]).val())) {
 					var $controlGroup = $password.parents(".form-group");
 					var $label = $("label.control-label",$controlGroup);
 					$controlGroup.addClass("has-error");

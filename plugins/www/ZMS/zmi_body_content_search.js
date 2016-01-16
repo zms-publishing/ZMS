@@ -190,6 +190,7 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
                   breadcrumb += '<a href="'+loc+'">'+title+'</a>';
                 });
               }
+              href = document.location.toString().indexOf('manage_search') > 0 ? href+ '/manage':href;
               html += ''
                 + '<div class="line row'+(c%2==0?" gray":"")+'">'
                 + '<div class="col-md-8 col-sm-9">'

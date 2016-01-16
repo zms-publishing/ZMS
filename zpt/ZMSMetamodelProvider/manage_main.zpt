@@ -656,7 +656,7 @@ $(function(){
 		if ( $(window).width() < 767 ) {
 			var $th = $("#meta_properties th");
 			$('#meta_properties tr[class!="row_metadata"] td').prepend( function () {
-				return '<span class="title">' + $th.eq($(this).index()).attr('title') +  '</span>';
+				return '<span class="title">' + $th.eq($(this).index()).attr('title') + '<' + '/span>';
 			})
 		};
 	});

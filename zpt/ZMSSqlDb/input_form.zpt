@@ -40,7 +40,7 @@
 					elValue python:here.operator_getitem(row,elName,ignorecase=True)">
 
 			<input tal:condition="python:column['id'].lower() in request_form_inherit" type="hidden" tal:attributes="name elName; value elValue"/>
-			<div tal:condition="not:python:column['id'].lower() in request_form_inherit" class="form-group" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
+			<div tal:condition="python:column['id'].lower() not in request_form_inherit" class="form-group" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
 
 				<tal:block tal:on-error="structure string: <!-- INTERFACE ERROR -->" tal:replace="python:metaObjAttr.get('interface','')">table interface element</tal:block>
 
@@ -51,6 +51,14 @@
 					<tal:block tal:condition="python:metaObjAttr.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
 					<span tal:content="elLabel">the label</span>
 				</label>
+
+				<tal:block tal:replace="nothing">
+				##### Password #########################################################
+				</tal:block>
+				<div class="col-sm-9 col-md-10" tal:condition="python:not done and metaObjAttr.get('password') in ['1',1,'True',True]">
+					<input class="form-control" type="password" tal:attributes="name elName" value="******"/>
+					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
+				</div>
 
 				<tal:block tal:replace="nothing">
 				##### Auto #############################################################
@@ -87,8 +95,8 @@
 					</tal:block>
 					<tal:block tal:condition="python:metaObjAttr['fk'].get('editable') and not metaObjAttr['fk'].get('lazy')">
 						<tal:block tal:define="
-                pk python:here.getEntityPK(tablename); 
-                displayValue python:(here.query('SELECT %s AS displayfield FROM %s WHERE %s=%s'%(displayfield,tablename,pk,here.sql_quote__(tablename,pk,elValue)),encoding=encoding)['records']+[{'displayfield':''}])[0]['displayfield']">
+								pk python:here.getEntityPK(tablename); 
+								displayValue python:(here.query('SELECT %s AS displayfield FROM %s WHERE %s=%s'%(displayfield,tablename,pk,here.sql_quote__(tablename,pk,elValue)),encoding=encoding)['records']+[{'displayfield':''}])[0]['displayfield']">
 							<tal:block tal:content="structure python:here.zmi_input_autocomplete(here,name=elName,value=displayValue,lang_str=elLabel,type='autocomplete',ajax_url='ajaxGetObjOptions',obj_id=tablename,attr_id=displayfield)">the control</tal:block>
 						</tal:block>
 					</tal:block>
@@ -187,6 +195,18 @@
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 				</div>
 
+			</div><!-- .form-group -->
+
+			<tal:block tal:replace="nothing">
+			##### Password (Confirm) #################################################
+				</tal:block>
+			<div tal:condition="python:column['id'].lower() not in request_form_inherit and metaObjAttr.get('password') in ['1',1,'True',True]" class="form-group" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
+				<label for="confirm" class="col-sm-3 col-md-2 control-label">
+					<span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">the label</span>
+				</label>
+				<div class="col-sm-9 col-md-10">
+					<input class="form-control" type="password" name="confirm" value="******"/>
+				</div>
 			</div><!-- .form-group -->
 
 			</tal:block>

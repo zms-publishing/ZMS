@@ -318,7 +318,7 @@ class ZMSZCatalogAdapter(
           for childNode in node.filteredChildNodes(request):
             traverse(childNode,recursive)
       
-      self.REQUEST.set('lang',self.getPrimaryLanguage())
+      self.REQUEST.set('lang',self.REQUEST.get('lang',self.getPrimaryLanguage()))
       traverse(root,recursive)
       
       # Process clients.

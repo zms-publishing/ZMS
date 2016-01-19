@@ -1626,7 +1626,6 @@ li.zmi-item span.zmi-ids {
 	vertical-align:top;
 }
 .zmi-manage-main-toggle {
-	display: inline-block;
 	margin: 6px;
 	cursor:pointer;
 }

@@ -81,14 +81,8 @@
 			<tal:block tal:content="python:here.getLanguageLabel(request['lang'])">the language</tal:block>
 			<b class="caret"></b>
 		</a>
-		<ul class="dropdown-menu" tal:define="global coverage python:here.getDCCoverage(request); languages python:[]">
-			<tal:block tal:condition="python:coverage.startswith('global.')">
-				<tal:block tal:define="dummy0 python:languages.extend(here.getDescendantLanguages(coverage[len('global.'):],request))"></tal:block>
-			</tal:block>
-			<tal:block tal:condition="python:not coverage.startswith('global.')">
-				<tal:block tal:define="dummy0 python:languages.append(coverage[len('local.'):])"></tal:block>
-			</tal:block>
-			<li tal:repeat="language languages">
+		<ul class="dropdown-menu">
+			<li tal:repeat="language python:here.getLangIds()">
 				<a tal:attributes="href python:here.url_append_params(here.url_inherit_params(request['URL'],request,['lang'],sep='&'),{'lang':language},sep='&'); data-language language" class="toggle-lang">
 					<tal:block tal:content="structure python:here.zmi_icon(name=['icon-check-empty','icon-check'][int(language==request['lang'])])"></tal:block>
 					<tal:block tal:content="python:here.getLanguageLabel(language)">the language</tal:block>

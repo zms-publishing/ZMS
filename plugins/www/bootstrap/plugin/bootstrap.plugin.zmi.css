@@ -586,7 +586,7 @@ body.browse_iframe .toggle {
 .zmi.manage-menu .zmi-helper-clickable {
 	color:#999;
 }
-.zmi.manage-menu div.restricted > a > i {
+.zmi.manage-menu li.restricted > a > i {
 	color:orange;
 }
 .zmi.manage-menu .zmi-helper-clickable:hover {

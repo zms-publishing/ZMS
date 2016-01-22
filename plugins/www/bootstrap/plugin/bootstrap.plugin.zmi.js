@@ -424,6 +424,12 @@ function zmiUnlockForm(form_id) {
 /**
  * Init input_fields
  */
+ZMI.prototype.afterInitInputFields = function(h) {
+	if (typeof this.afterInitInputFieldsHandler == "undefined") {
+		this.afterInitInputFieldsHandler = [];
+	}
+	this.afterInitInputFieldsHandler.push(h);
+}
 ZMI.prototype.initInputFields = function(container) {
 	$ZMI.setCursorWait("BO zmiInitInputFields["+$('form:not(.form-initialized)',container).length+"]");
 	$(container).each(function() {
@@ -753,14 +759,22 @@ ZMI.prototype.initInputFields = function(container) {
 					var $input = $(this);
 					var fmName = $input.parents("form").attr("name");
 					var elName = $input.attr("name");
-					$input
-						.wrap('<div class="input-group"></div>');
-					var $inputgroup = $(this).parent();
-					$inputgroup.append(''
-								+ '<span class="input-group-addon ui-helper-clickable" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
-									+ $ZMI.icon("icon-link")
+					$input.wrap('<div class="input-group"></div>');
+					var $inputgroup = $input.parent();
+					if ($input.prop("disabled")) {
+						$inputgroup.append(''
+								+ '<span class="input-group-addon">'
+								+ $ZMI.icon("icon-ban-circle")
 								+ '</span>'
-						);
+							);
+					}
+					else {
+						$inputgroup.append(''
+									+ '<span class="input-group-addon ui-helper-clickable" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+										+ $ZMI.icon("icon-link")
+									+ '</span>'
+							);
+					}
 					var fn = function() {
 							$inputgroup.next(".breadcrumb").remove();
 							$.ajax({
@@ -848,6 +862,11 @@ ZMI.prototype.initInputFields = function(container) {
 				}
 			});
 		});
+	if (typeof this.afterInitInputFieldsHandler != "undefined") {
+		for (var i in this.afterInitInputFieldsHandler) {
+			this.afterInitInputFieldsHandler[i]();
+		}
+	}
 	$ZMI.setCursorAuto("EO zmiInitInputFields");
 }
 
@@ -1561,6 +1580,7 @@ function zmiBrowseObjs(fmName, elName, lang) {
 	var title = getZMILangStr('CAPTION_CHOOSEOBJ');
 	var href = "manage_browse_iframe";
 	href += '?lang='+lang;
+	href += '&defaultLang='+lang;
 	href += '&fmName='+fmName;
 	href += '&elName='+elName;
 	href += '&elValue='+escape(elValue);

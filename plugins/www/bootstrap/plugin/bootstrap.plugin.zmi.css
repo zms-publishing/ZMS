@@ -202,15 +202,11 @@ ul.portalClients .zmi-item .center small {
 .form-small {
 	font-size:smaller;
 }
-select.form-small {
-	width:auto;
-	font-size:12px;
-}
 .nav-tabs {
 	margin-bottom:0;
 	margin-top:1em;
 }
-.nav-tabs li.active a {
+.nav-tabs li.active > a {
 	background-color: #f5f5f5 !important;
 	font-weight:bold;
 }
@@ -529,17 +525,16 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 	zoom: 0.6;
 	-moz-transform:scale(0.6);
 }
-body.browse_iframe .zmi-sitemap > div,
-body.browse_iframe .zmi-sitemap ul,
-body.browse_iframe .zmi-sitemap ol,
-.zmi.manage-menu .zmi-sitemap > div,
-.zmi.manage-menu .zmi-sitemap ul,
-.zmi.manage-menu .zmi-sitemap ol,
-.zmi-sitemap ul {
+.zmi-sitemap > div,
+.zmi-sitemap ul,
+.zmi-sitemap ol {
 	margin-top:0.3em;
 	margin-left:0;
 	padding-left:1em;
 	list-style:outside none none;
+}
+.zmi-sitemap li.active > a  {
+	font-weight:bold;
 }
 .zmi.manage-menu .navbar-brand {
 	font-size:100%!important;
@@ -1816,4 +1811,13 @@ table.ZMSTable td {
 }
 table.ZMSTable {
 	margin:1em 0;
+}
+
+.input-group-addon.input-group-dropdown {
+	padding:0;
+}
+.input-group-addon.input-group-dropdown .btn {
+	border:0;
+	border-top-left-radius:0;
+	border-bottom-left-radius:0;
 }

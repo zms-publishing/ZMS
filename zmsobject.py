@@ -864,6 +864,8 @@ class ZMSObject(ZMSItem.ZMSItem,
             i = l.index('content')
             if l[i-1] != self.getHome().id and self.getRootElement().getHome().id in l:
               i = l.index(self.getRootElement().getHome().id)
+            else:
+              i += 1
             l = l[i:]
             index_html = protocol + '://' + domain + '/' + '/'.join(l)
       elif REQUEST.get('ZMS_RELATIVATE_URL',True) and self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.relativate',True) and self.getHome() == context.getHome():

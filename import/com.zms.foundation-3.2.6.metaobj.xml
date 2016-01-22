@@ -1935,7 +1935,57 @@ initAttrRef = function() {
 		});
 	};
 
-$ZMI.registerReady(function(){
+$(function(){
+
+	$ZMI.afterInitInputFields(function() {
+		$("input#attr_ref").each(function() {
+				var $input = $(this);
+				var $inputgroup = $input.parent();
+				if ($input.val().indexOf('{$')==0 && $input.prop("disabled")) {
+					$input.attr("data-value",$input.val());
+					if ($(".dropdown.languages .dropdown-menu li").length>0) {
+						var html = ''
+							+ '<div class="btn-group">'
+							+ '<button type="button" class="dropdown-toggle btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+								+ $ZMI.icon("icon-flag")
+							+ '</button>'
+							+ '<ul class="dropdown-menu">'
+							+ '<li><a href="#" data-language="">'+$ZMI.icon("icon-check-empty")+' Default</a></li>';
+						$(".dropdown.languages .dropdown-menu li").each(function() {
+								html += '<li><a href="#" data-language="'+$("a",this).attr("data-language")+'">'+$ZMI.icon("icon-check-empty")+' '+$("a",this).text()+'</a></li>';
+							});
+						html += ''
+							+ '</ul>'
+							+ '</div><!-- .btn-group -->';
+						$(".input-group-addon",$inputgroup).html(html).addClass("input-group-dropdown");
+						var fn = function() {
+								var v = $("#ref_lang").val();
+								var attr_ref = $input.attr("data-value");
+								if (v!="") {
+									attr_ref = attr_ref.replace(/;lang\=\w*/gi,'');
+									attr_ref = attr_ref.substr(0,attr_ref.indexOf('}'));
+									attr_ref += ';lang='+v+'}';
+								}
+								$input.val(attr_ref);
+								$(".input-group-addon button .icon-flag",$inputgroup).removeClass("text-muted text-primary").addClass(v==""?"text-muted":"text-primary");
+								$(".input-group-addon .dropdown-menu li a",$inputgroup).each(function() {
+										$(".icon-check",this).toggleClass("icon-check-empty icon-check");
+										if (v==$(this).attr("data-language")) {
+											$(".icon-check-empty",this).toggleClass("icon-check-empty icon-check");
+										}
+									});
+							};
+						fn();
+						$(".input-group-addon .dropdown-menu li a",$inputgroup)
+							.click(function() {
+									$("#ref_lang").val($(this).attr("data-language"));
+									fn();
+								});
+					}
+				}
+			});
+		});
+
 	$("input#attr_ref").change(initAttrRef).change();
 	$("#tr_attr_ref_type select").css("width", "100%");
 });
@@ -1947,6 +1997,7 @@ $ZMI.registerReady(function(){
 ##### Ref & Type: EDIT
 ################################################################################
 -->
+<input type="hidden" id="ref_lang" tal:attributes="name python:'ref_lang_%s'%request['lang']; value python:zmscontext.attr('ref_lang')"/>
 <div class="form-group controls-row" id="tr_attr_ref">
 	<label class="col-sm-2 col-md-2 col-lg-2 control-label mandatory" for="attr_ref"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url</span></label>
 	<div class="col-sm-10">
@@ -1969,7 +2020,7 @@ $ZMI.registerReady(function(){
 			renderShort
 	</div>
 </div>
-<tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['attr_ref','attr_type'])"></tal:block>
+<tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['attr_ref','ref_lang','attr_type'])"></tal:block>
 </div>]]>
                   </item>
                   <item key="repetitive" type="int">0</item>
@@ -1984,6 +2035,16 @@ $ZMI.registerReady(function(){
                   <item key="name"><![CDATA[Reference]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[url]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[ref_lang]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Reference (lang)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2047,6 +2108,16 @@ $ZMI.registerReady(function(){
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="id"><![CDATA[attr_dc_creator]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[DC.Creator]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[attr_dc_creator]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="custom"><![CDATA[## Script (Python) "ZMSLinkElement.attr_url"
 ##bind container=container
 ##bind context=context
@@ -2058,7 +2129,14 @@ $ZMI.registerReady(function(){
 ##
 # --// attr_url //--
 
-return zmscontext.attr('attr_ref')
+ref = zmscontext.attr('attr_ref')
+if ref.startswith('{$') and ref.endswith('}'):
+  ref_lang = zmscontext.attr('ref_lang')
+  if len(ref_lang) > 0:
+    ref = zmscontext.re_sub(';lang\\=\\w*','',ref)
+    ref = ref[:-1]
+    ref += ';lang='+ref_lang+'}'
+return ref
 
 # --// /attr_url //--
 ]]>
@@ -2066,7 +2144,7 @@ return zmscontext.attr('attr_ref')
                   <item key="errors"></item>
                   <item key="id"><![CDATA[attr_url]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Url]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
@@ -2142,7 +2220,7 @@ return constraints
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- ZMSLinkElement.standard_html -->
 
-<tal:block tal:on-error="structure string:<!-- URL ERROR -->" tal:define="global 
+<tal:block tal:on-error="structure string:<!-- URL ERROR -->" tal:define="global
 		zmscontext options/zmscontext;
 		zmsid         python:zmscontext.getId();
 		title         python:unicode(zmscontext.attr('title'),'utf-8');
@@ -2165,7 +2243,7 @@ return constraints
 		><div tal:condition="python:zmscontext.getParentNode().meta_id=='ZMSLinkContainer' or align not in ['','NONE'] or request.get('URL','').find('/manage')>0"
 				tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
 			<div class="title" tal:condition="title">
-				<tal:block tal:content="structure python:zmscontext.tal_anchor(zmscontext.getLinkUrl(ref,request),target=['','_blank'][int(zmscontext.attr('attr_type')=='new')],content=titlealt)">the link</tal:block> 
+				<tal:block tal:content="structure python:zmscontext.tal_anchor(zmscontext.getLinkUrl(ref,request),target=['','_blank'][int(zmscontext.attr('attr_type')=='new')],content=titlealt)">the link</tal:block>
 			</div>
 			<div tal:condition="python:title and title!=titlealt" class="text" tal:content="structure title">The title</div>
 			<div tal:condition="python:abstract" class="description" tal:content="structure abstract">The abstract</div>
@@ -2230,7 +2308,7 @@ return constraints
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.13]]></item>
+          <item key="revision"><![CDATA[3.1.14]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4726,7 +4804,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.2.5]]></item>
+          <item key="revision"><![CDATA[3.2.6]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

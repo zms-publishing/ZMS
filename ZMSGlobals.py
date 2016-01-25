@@ -1209,7 +1209,7 @@ class ZMSGlobals:
 
 
     security.declareProtected('View', 'localfs_read')
-    def localfs_read(self, filename, mode='b', REQUEST=None):
+    def localfs_read(self, filename, mode='b', cache='public, max-age=3600', REQUEST=None):
       """
       Reads file from local file-system.
       You must grant permissions for reading from local file-system to
@@ -1218,6 +1218,8 @@ class ZMSGlobals:
       @type filename: C{string}
       @param filename: Access mode
       @type filename: C{string}, values are 'b' - binary
+      @param cache Cache-Headers
+      @type cache C{bool}
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
       @return: Contents of file
@@ -1254,6 +1256,7 @@ class ZMSGlobals:
       if REQUEST is not None:
         RESPONSE = REQUEST.RESPONSE
         self.set_response_headers( filename, mt)
+        RESPONSE.setHeader('Cache-Control', cache)
         RESPONSE.setHeader('Content-Encoding', enc)
         RESPONSE.setHeader('Content-Length', fsize)
       return fdata

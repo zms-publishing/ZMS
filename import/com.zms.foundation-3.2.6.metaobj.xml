@@ -1983,6 +1983,9 @@ $(function(){
 								});
 					}
 				}
+				else {
+				$("#ref_lang").val("");
+				}
 			});
 		});
 
@@ -2308,7 +2311,7 @@ return constraints
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.14]]></item>
+          <item key="revision"><![CDATA[3.1.15]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

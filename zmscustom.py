@@ -148,13 +148,12 @@ class ZMSCustom(ZMSContainerObject):
       if pc:
         opts.append({'label': 'TAB_PROPERTIES', 'action': 'manage_properties'})
       opts.append({'label': 'TAB_IMPORTEXPORT', 'action': 'manage_importexport'})
-      if pc:
-        opts.append({'label': 'TAB_TASKS',        'action': 'manage_tasks'})
       opts.append({'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'})
       if not self.getAutocommit() or self.getHistory():
-        opts.append({'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'})
-      if pc:
-        opts.append({'label': 'TAB_SEARCH',       'action': 'manage_search'})
+        opts.append({'label': 'TAB_HISTORY',    'action': 'manage_UndoVersionForm'})
+      for metaCmd in filter(lambda x:x['stereotype']=='tab', self.getMetaCmds(self)):
+        opt = {'label': metaCmd['name'],        'action': 'manage_executeMetacmd', 'alias':metaCmd['id'], 'params':{'id':metaCmd['id']}}
+        opts.append(opt)
       return tuple(opts)
 
     # Management Permissions.
@@ -168,11 +167,11 @@ class ZMSCustom(ZMSContainerObject):
         'manage_deleteObjs','manage_undoObjs','manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
         'manage_ajaxDragDrop','manage_ajaxZMIActions',
-        'manage_search','manage_tasks',
         'manage_UndoVersionForm','manage_UndoVersion',
         'manage_wfTransition', 'manage_wfTransitionFinalize',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
+        'manage_executeMetacmd',
         )
     __viewPermissions__ = (
         'manage_ajaxGetChildNodes',

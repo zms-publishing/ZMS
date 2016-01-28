@@ -210,6 +210,7 @@ class ObjInputs:
     html.append('<input ')
     if type(elId) is str:
       html.append(' id="%s"'%elId)
+    print css,elId,lang
     html.append(' class="%s"'%' '.join([css,elId,lang]))
     html.append(' type="checkbox"')
     if not enabled:

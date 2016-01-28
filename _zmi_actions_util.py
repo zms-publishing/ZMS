@@ -124,7 +124,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
         actions.append((container.getZMILangStr('BTN_PASTE'),'manage_pasteObjs','icon-paste'))
   
   #-- Custom Commands.
-  actions.extend(zmi_command_actions(context, insert_actions=False, objPath=objPath))
+  actions.extend(zmi_command_actions(context, stereotype='', objPath=objPath))
   
   # Return action list.
   return actions
@@ -199,7 +199,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
           actions.append( action)
   
   #-- Insert Commands.
-  actions.extend(zmi_command_actions(container, insert_actions=True))
+  actions.extend(zmi_command_actions(container, stereotype='insert'))
   
   #-- Sort.
   actions.sort()
@@ -212,48 +212,26 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   return actions
 
 
-def zmi_command_actions(context, insert_actions=False, objPath=''):
+def zmi_command_actions(context, stereotype='', objPath=''):
   """
   Returns list of custom commands.
   """
   actions = []
-  if context is None:
-    return actions
   
-  REQUEST = context.REQUEST
-  auth_user = REQUEST['AUTHENTICATED_USER']
-  absolute_url = '/'.join(list(context.getPhysicalPath())+[''])
+  #-- Context Commands.
+  if context is not None:
+    for metaCmd in filter(lambda x:x['stereotype']==stereotype, context.getMetaCmds(context)):
+      l = [metaCmd['name'],objPath+'manage_executeMetacmd']
+      if metaCmd.get('icon_clazz'):
+        l.append(metaCmd.get('icon_clazz'))
+      if metaCmd.get('title'):
+        l.append(metaCmd.get('title'))
+      actions.append(tuple(l))
   
-  for metaCmd in context.getMetaCmds():
-    if (insert_actions and metaCmd['id'].startswith('manage_add')) or \
-       (not insert_actions and not metaCmd['id'].startswith('manage_add')):
-      canExecute = True
-      if canExecute:
-        hasMetaType = context.meta_id in metaCmd['meta_types'] or 'type(%s)'%context.getType() in metaCmd['meta_types']
-        canExecute = canExecute and hasMetaType
-      if canExecute:
-        hasRole = False
-        hasRole = hasRole or '*' in metaCmd['roles']
-        hasRole = hasRole or len(context.intersection_list(context.getUserRoles(auth_user),metaCmd['roles'])) > 0
-        hasRole = hasRole or auth_user.has_role('Manager')
-        canExecute = canExecute and hasRole
-      if canExecute:
-        nodes = context.string_list(metaCmd.get('nodes','{$}'))
-        sl = []
-        sl.extend(map( lambda x: (context.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,nodes)))
-        sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,nodes)))
-        hasNode = len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
-        canExecute = canExecute and hasNode
-      if canExecute:
-        l = [metaCmd['name'],objPath+'manage_executeMetacmd']
-        if metaCmd.get('icon_clazz'):
-          l.append(metaCmd.get('icon_clazz'))
-        if metaCmd.get('title'):
-          l.append(metaCmd.get('title'))
-        actions.append(tuple(l))
+  #-- Sort.
+  actions.sort()
   
   # Return sorted action list
-  actions.sort()
   return actions
 
 ################################################################################

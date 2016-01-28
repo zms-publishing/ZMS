@@ -51,11 +51,11 @@ class ZMSMetacmdProviderAcquired(
        """ getMetaCmdDescription """
        return self.getPortalMaster().getMetaCmdDescription(id,name)
 
-    def getMetaCmdIds(self, sort=1):
+    def getMetaCmdIds(self, sort=True):
        return self.getPortalMaster().getMetaCmdIds(sort)
 
-    def getMetaCmds(self, sort=True):
-      metaCmds = self.getPortalMaster().getMetaCmds(sort)
+    def getMetaCmds(self, context=None, sort=True):
+      metaCmds = self.getPortalMaster().getMetaCmds(context,sort)
       for metaCmd in metaCmds:
         metaCmd['acquired'] = 1
       return metaCmds

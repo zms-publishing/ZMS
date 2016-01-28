@@ -1295,20 +1295,6 @@ class VersionManagerContainer:
 
     """
     ############################################################################
-    #  Tasks 
-    ############################################################################
-    """
-
-    # Management Interface.
-    # ---------------------
-    task_wf = PageTemplateFile('zpt/versionmanager/task_wf', globals()) 
-    task_zmsnote = PageTemplateFile('zpt/versionmanager/task_zmsnote', globals()) 
-    task_untranslated = PageTemplateFile('zpt/versionmanager/task_untranslated', globals()) 
-    task_changed_by_date = PageTemplateFile('zpt/versionmanager/task_changed_by_date', globals()) 
-
-
-    """
-    ############################################################################
     #  Commit
     ############################################################################
     """

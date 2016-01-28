@@ -972,8 +972,8 @@ class ConfManager(
         class DefaultManager:
           def getMetaCmdDescription(self, id=None, name=None): return None
           def getMetaCmd(self, id=None, name=None): return None
-          def getMetaCmdIds(self, sort=1): return []
-          def getMetaCmds(self, sort=True): return []
+          def getMetaCmdIds(self, sort=True): return []
+          def getMetaCmds(self, context=None, sort=True): return []
         metacmd_manager = DefaultManager()
       return metacmd_manager
 
@@ -987,8 +987,8 @@ class ConfManager(
     def getMetaCmdIds(self, sort=1):
        return self.getMetacmdManager().getMetaCmdIds(sort)
 
-    def getMetaCmds(self, sort=True):
-      return self.getMetacmdManager().getMetaCmds(sort)
+    def getMetaCmds(self, context=None, sort=True):
+      return self.getMetacmdManager().getMetaCmds(context,sort)
 
 
     ############################################################################

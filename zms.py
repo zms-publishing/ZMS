@@ -42,7 +42,7 @@ import _objattrs
 import _xmllib
 import _zcatalogmanager
 import _zmsattributecontainer
-import ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
+import  ZMSMetacmdProvider, ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider
 from zmscustom import ZMSCustom
 from zmslinkcontainer import ZMSLinkContainer
 from zmslinkelement import ZMSLinkElement
@@ -161,6 +161,8 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
 
   ### Manager.
   manager = ZMSMetamodelProvider.ZMSMetamodelProvider()
+  obj._setObject( manager.id, manager)
+  manager = ZMSMetacmdProvider.ZMSMetacmdProvider()
   obj._setObject( manager.id, manager)
   manager = ZMSFormatProvider.ZMSFormatProvider()
   obj._setObject( manager.id, manager)
@@ -298,20 +300,9 @@ class ZMS(
     # Management Options.
     # -------------------
     def manage_options(self):
-      pc = self.isPageContainer()
-      root = self.getLevel() == 0
-      opts = []
-      opts.append({'label': 'TAB_EDIT',         'action': 'manage_main'})
-      if pc:
-        opts.append({'label': 'TAB_PROPERTIES',   'action': 'manage_properties'})
+      opts = list(super( self.__class__, self).manage_options())
       opts.append({'label': 'TAB_ACCESS',       'action': 'manage_users'})
-      opts.append({'label': 'TAB_IMPORTEXPORT', 'action': 'manage_importexport'})
-      opts.append({'label': 'TAB_TASKS',        'action': 'manage_tasks'})
-      opts.append({'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'})
-      if not self.getAutocommit() or self.getHistory():
-        opts.append({'label': 'TAB_HISTORY',      'action': 'manage_UndoVersionForm'})
       opts.append({'label': 'TAB_CONFIGURATION','action': 'manage_customize'})
-      opts.append({'label': 'TAB_SEARCH',       'action': 'manage_search'})
       return tuple(opts)
 
     # Management Permissions.
@@ -329,10 +320,10 @@ class ZMS(
         'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
         'manage_ajaxDragDrop','manage_ajaxZMIActions',
         'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',
-        'manage_search','manage_tasks',
         'manage_wfTransition', 'manage_wfTransitionFinalize',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
+        'manage_executeMetacmd',
         )
     __userAdministratorPermissions__ = (
         'manage_users', 'manage_users_sitemap', 'manage_userProperties', 'manage_roleProperties', 'userdefined_roles',

@@ -35,13 +35,13 @@ class IZMSMetacmdProvider(Interface,IZMSActionListContributor.IZMSActionListCont
     @rtype: C{dict}
     """
 
-  def getMetaCmdIds(self, sort=1):
+  def getMetaCmdIds(self, sort=True):
     """
     Returns list of action-ids.
     @rtype: C{list}
     """
 
-  def getMetaCmds(self, sort=True):
+  def getMetaCmds(self, context=None, sort=True):
     """
     Returns list of actions.
     @rtype: C{list}

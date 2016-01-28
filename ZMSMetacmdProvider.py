@@ -313,7 +313,7 @@ class ZMSMetacmdProvider(
     #
     #  Returns list of action-ids.
     # --------------------------------------------------------------------------
-    def getMetaCmdIds(self, sort=1):
+    def getMetaCmdIds(self, sort=True):
       obs = self.commands
       if sort:
         obs = map(lambda x: self.getMetaCmd(x['id']), obs)
@@ -330,7 +330,7 @@ class ZMSMetacmdProvider(
     #
     #  Returns list of actions.
     # --------------------------------------------------------------------------
-    def getMetaCmds(self, sort=True):
+    def getMetaCmds(self, context=None, sort=True):
       metaCmds = []
       portalMasterMetaCmds = None
       for metaCmd in self.commands:
@@ -346,7 +346,34 @@ class ZMSMetacmdProvider(
         else:
           metaCmd = metaCmd.copy()
           metaCmd['home'] = self.aq_parent
+          metaCmd['stereotype'] = ['','insert'][metaCmd['id'].startswith('manage_add')] + ['','tab'][metaCmd['id'].startswith('manage_tab')]
         metaCmds.append(metaCmd)
+      if context is not None:
+        request = context.REQUEST
+        auth_user = request['AUTHENTICATED_USER']
+        absolute_url = '/'.join(list(context.getPhysicalPath())+[''])
+        l = []
+        for metaCmd in metaCmds:
+          canExecute = True
+          if canExecute:
+            hasMetaType = context.meta_id in metaCmd['meta_types'] or 'type(%s)'%context.getType() in metaCmd['meta_types']
+            canExecute = canExecute and hasMetaType
+          if canExecute:
+            hasRole = False
+            hasRole = hasRole or '*' in metaCmd['roles']
+            hasRole = hasRole or len(context.intersection_list(context.getUserRoles(auth_user),metaCmd['roles'])) > 0
+            hasRole = hasRole or auth_user.has_role('Manager')
+            canExecute = canExecute and hasRole
+          if canExecute:
+            nodes = context.string_list(metaCmd.get('nodes','{$}'))
+            sl = []
+            sl.extend(map( lambda x: (context.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,nodes)))
+            sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,nodes)))
+            hasNode = len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
+            canExecute = canExecute and hasNode
+          if canExecute:
+            l.append(metaCmd)
+        metaCmds = l
       return metaCmds
 
 

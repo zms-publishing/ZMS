@@ -33,14 +33,14 @@ class MetacmdObject:
     #
     #  Execute Meta-Command.
     ############################################################################
-    def manage_executeMetacmd(self, custom, lang, REQUEST, RESPONSE):
+    def manage_executeMetacmd(self, lang, REQUEST, RESPONSE):
       """ MetacmdObject.manage_executeMetacmd """
       message = ''
       target = self
       
       # Execute.
       # --------
-      metaCmd = self.getMetaCmd(name=custom)
+      metaCmd = self.getMetaCmd(id=REQUEST.get('id'),name=REQUEST.get('custom'))
       if metaCmd is not None:
         # Execute directly.
         if metaCmd.get('exec',0) == 1:

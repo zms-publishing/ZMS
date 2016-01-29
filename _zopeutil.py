@@ -158,7 +158,6 @@ def addZSqlMethod(container, id, title, data):
   """
   Add Z Sql Method to container.
   """
-  print data
   try:
     from Products.ZSQLMethods import SQL
     connection_id = container.SQLConnectionIDs()[0][0]

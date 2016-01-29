@@ -151,7 +151,7 @@ class ZMSCustom(ZMSContainerObject):
       opts.append({'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'})
       if not self.getAutocommit() or self.getHistory():
         opts.append({'label': 'TAB_HISTORY',    'action': 'manage_UndoVersionForm'})
-      for metaCmd in filter(lambda x:x['stereotype']=='tab', self.getMetaCmds(self)):
+      for metaCmd in self.getMetaCmds(self,'tab'):
         opt = {'label': metaCmd['name'],        'action': 'manage_executeMetacmd', 'alias':metaCmd['id'], 'params':{'id':metaCmd['id']}}
         opts.append(opt)
       return tuple(opts)
@@ -475,7 +475,6 @@ class ZMSCustom(ZMSContainerObject):
             params['qindex'] = REQUEST['qindex']
             message = self.getZMILangStr('MSG_CHANGED')
           elif action == 'delete':
-            print REQUEST.get('qindices',[])
             rows = map(lambda x: res_abs[int(x)], REQUEST.get('qindices',[]))
             for row in rows:
               del res_abs[res_abs.index(row)]

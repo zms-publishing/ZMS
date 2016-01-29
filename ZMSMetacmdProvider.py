@@ -330,15 +330,16 @@ class ZMSMetacmdProvider(
     #
     #  Returns list of actions.
     # --------------------------------------------------------------------------
-    def getMetaCmds(self, context=None, sort=True):
+    def getMetaCmds(self, context=None, stereotype='', sort=True):
+      stereotypes = {'insert':'manage_add','tab':'manage_tab'}
       metaCmds = []
       portalMasterMetaCmds = None
-      for metaCmd in self.commands:
+      for metaCmd in filter(lambda x:x['id'].startswith(stereotypes.get(stereotype,'')),self.commands):
         # Acquire from parent.
         if metaCmd.get('acquired',0)==1:
           if portalMasterMetaCmds is None:
             portalMaster = self.getPortalMaster()
-            portalMasterMetaCmds = portalMaster.getMetaCmds()
+            portalMasterMetaCmds = portalMaster.getMetaCmds(stereotype=stereotype)
           l = filter(lambda x: x['id']==metaCmd['id'], portalMasterMetaCmds)
           if len(l) > 0:
             metaCmd = l[0]
@@ -346,7 +347,7 @@ class ZMSMetacmdProvider(
         else:
           metaCmd = metaCmd.copy()
           metaCmd['home'] = self.aq_parent
-          metaCmd['stereotype'] = ['','insert'][metaCmd['id'].startswith('manage_add')] + ['','tab'][metaCmd['id'].startswith('manage_tab')]
+          metaCmd['stereotype'] = ' '.join(filter(lambda x:metaCmd['id'].startswith(stereotypes[x]),stereotypes.keys()))
         metaCmds.append(metaCmd)
       if context is not None:
         request = context.REQUEST

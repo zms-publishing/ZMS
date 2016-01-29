@@ -42,7 +42,7 @@ pageTemplateExampleCode = \
   '<html lang="en">\n' + \
   '<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>\n' + \
   '<body class="zmi">\n' + \
-  '<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>\n' + \
+  '<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>\n' + \
   '<div id="zmi-tab">\n' + \
   '<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>\n' + \
   '<div style="clear:both;">&nbsp;</div>\n' + \

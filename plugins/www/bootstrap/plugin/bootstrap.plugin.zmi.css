@@ -1300,7 +1300,16 @@ td .btn-group .checkbox.split-left.btn input {
 	margin-left:0;
 	margin-right:0;
 }
-
+.zmi.importexport.ZMSSqlDb form.form-horizontal {
+	padding:1.5em;
+	margin-bottom:2em
+}
+.zmi.importexport.ZMSSqlDb form.form-horizontal button {
+	margin-top:1em
+}
+.zmi.importexport.ZMSSqlDb form.form-horizontal select {
+	height:12em
+}
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * +- [ZMI] Image
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

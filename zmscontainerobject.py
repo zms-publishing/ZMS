@@ -610,6 +610,7 @@ class ZMSContainerObject(
               opt['cssclass'] = ''
             items.append('>\n')
           css = []
+          css.append( ob.id)
           if ob.id == current.id:
             css.append( 'current')
             css.append( 'active')

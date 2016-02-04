@@ -1201,6 +1201,9 @@ td .btn-group .checkbox.split-left.btn input {
 	display: block;
 	margin: 0 0 0 0;
 }
+.lazy_select_form.ZMSSqlDb td .btn-group .checkbox.split-left.btn input {
+	display: inline-block;
+}
 .table.zmi-selectable tr th:first-child span:hover ,
 .table.zmi-selectable tr td:first-child span:hover {
 	color:#000 !important

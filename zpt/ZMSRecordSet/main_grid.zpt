@@ -47,9 +47,9 @@
 	<th>
 		<div class="btn-group">
 			<span class="checkbox split-left btn"
-				tal:attributes="title python:'%s / %s'%(size,total)"
-				tal:content="python:'%s / %s'%(size,total)">
-				filtered_records / records
+				tal:attributes="title python:'Counted Records: %s'%(total)"
+				tal:content="python:'%s'%(total)">
+				Counted Records
 			</span>
 			<tal:block tal:condition="python:'insert' in actions or 'delete' in actions">
 				<button class="split-right btn dropdown-toggle" data-toggle="dropdown">

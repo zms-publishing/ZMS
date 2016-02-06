@@ -1348,6 +1348,9 @@ div.zmi-action > ul.dropdown-menu .icon-caret-down {
 div.zmi-action > ul.dropdown-menu li a {
 	padding-left:13px;
 }
+div.zmi-action ul.dropdown-menu li[title*="TAB_"] {
+	display: none;
+}
 div.right .zmi-ids input[type="checkbox"] {
 	margin-left: 3px;
 	margin-top: 3px;

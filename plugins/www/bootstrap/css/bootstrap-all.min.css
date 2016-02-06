@@ -427,7 +427,13 @@ textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 .zmi.preview_top .navbar .pull-right a:hover{color:#FFF}
 .zmi.preview_top .zmi header .pull-right span.zmi-top-active{color:#FFF;font-weight:bold}
 .zmi ul.main-nav{margin-top:0.5em;padding-left:1em}
-.zmi.config .main-nav{min-width:1160px}
+nav .wrapper{position:relative;margin:0 auto;overflow:hidden;padding:0px;height:44px;top:1.3px}
+nav .main-nav.nav-tabs{position:absolute;left:0px;top:0px;min-width:1600px}
+nav .main-nav.nav-tabs li{display:table-cell;position:relative;text-align:center;cursor:grab;cursor:-webkit-grab;vertical-align:middle}
+nav .scroller{color:white;background-color:rgb(81,142,212);text-align:center;cursor:pointer;display:none;padding:12.5px 8px 12.5px 8px;white-space:no-wrap;vertical-align:middle}
+nav .scroller,nav .scroller i.glyphicon,nav .scroller i.glyphicon:hover{color:white !important}
+nav .scroller-right{float:right}
+nav .scroller-left{float:left}
 .zmi .navbar-inner{border-radius:0 !important}
 .zmi footer{left:0px;bottom:0px;height:26px;width:100%;padding:0.5em;font-size:11px !important}
 .zmi ul.breadcrumb{clear:left;padding:1em 0 1em 1.8em;margin-bottom:0px !important}
@@ -613,7 +619,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea{margin-left:1em}
 .zmi.metas input[type="file"]{display:inline-block}
 .zmi.metas table.table-striped td.meta-id input{background:rgba(237,245,254,0.64)}
 .zmi.metas table.table-striped .row_metadata td.meta-id input,.zmi.metas table.table-striped .row_insert td.meta-id input{background:#fff}
-@media(max-width:767px){zmi.metas table#meta_properties{display:inline-table;border:none}
+@media(max-width:767px){.zmi.metas table#meta_properties{display:inline-table;border:none}
+ 
+ .zmi.metas table#meta_properties colgroup{display:none}
  .zmi.metas table#meta_properties tr{display:block;border-bottom:4px solid #CCC}
  .zmi.metas table#meta_properties tr.row_tableheader{display:none !important}
  .zmi.metas table#meta_properties td,.zmi.metas table#meta_properties th{display:block;text-align:left !important;margin-top:-1px}
@@ -709,6 +717,7 @@ div.zmi-action .dropdown-header{cursor:default}
 div.zmi-action > ul.dropdown-menu .icon-double-angle-up,div.zmi-action > ul.dropdown-menu .icon-double-angle-down,div.zmi-action > ul.dropdown-menu .icon-caret-right{padding-left:3px}
 div.zmi-action > ul.dropdown-menu .icon-caret-down{padding-left:2px}
 div.zmi-action > ul.dropdown-menu li a{padding-left:13px}
+div.zmi-action ul.dropdown-menu li[title*="TAB_"]{display:none}
 div.right .zmi-ids input[type="checkbox"]{margin-left:3px;margin-top:3px;opacity:0.5}
 div.right span.form-small{display:block;color:#888;margin-left:8px}
 div.right .version_object_state{float:left;margin:1px 4px 0px 0px}
@@ -745,13 +754,6 @@ div.right .btn .caret{}
  .right span,.right span.form-small,.right span.zmi-ids{display:none !important}
  img.grippy,div.grippy{visibility:hidden}
  .navbar-nav>li{float:left}
- .zmi ul.breadcrumb{padding:1em 0 1em 1em;background:#ddd;border-radius:0}
- .zmi nav ul.main-nav.nav.nav-tabs{width:101%;padding:0;padding-left:0;margin:-1px 0 0 -1px;min-width:0}
- .zmi .main-nav li{margin:1px;display:none;float:none}
- .zmi .main-nav li.active{display:block !important}
- .zmi .nav-tabs>li>a,.zmi .nav-tabs>li>a:hover,.zmi .nav-tabs>li>a.active,.zmi .nav-tabs>li>a.active:hover{border-radius:0 !important;border:0;padding:.8em 1em;cursor:pointer;max-height:42px}
- .zmi .main-nav li.active a{display:block !important;background-color:#0088cc !important;color:#fff !important}
- .zmi .main-nav li.active a:hover{background-color:#888 !important}
  .zmi .form-horizontal{margin-left:0;margin-right:0;padding:1em}
  .zmi.properties .accordion-group{width:100%}
  .zmi.properties .accordion-group.zmi-container{width:100%;padding:0}

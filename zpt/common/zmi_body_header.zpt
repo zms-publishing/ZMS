@@ -130,8 +130,12 @@
 	</div><!-- .navbar -->
 </header>
 <nav>
-	<tal:block tal:condition="python:options.get('options')" tal:content="structure python:here.zmi_tabs(here,request,options=options['options'],special_options=options.get('special_options',[]))">zmi_tabs</tal:block>
-	<tal:block tal:condition="not:python:options.get('options')" tal:content="structure python:here.zmi_tabs(here,request,options=here.filtered_manage_options(),special_options=['manage_users','manage_customize'])">zmi_tabs</tal:block>
+	<div class="scroller scroller-left"><i class="glyphicon glyphicon-chevron-left"></i></div>
+	<div class="scroller scroller-right"><i class="glyphicon glyphicon-chevron-right"></i></div>
+		<div class="wrapper">
+			<tal:block tal:condition="python:options.get('options')" tal:content="structure python:here.zmi_tabs(here,request,options=options['options'],special_options=options.get('special_options',[]))">zmi_tabs</tal:block>
+			<tal:block tal:condition="not:python:options.get('options')" tal:content="structure python:here.zmi_tabs(here,request,options=here.filtered_manage_options(),special_options=['manage_users','manage_customize'])">zmi_tabs</tal:block>
+		</div>
 </nav>
 
 <!-- /common/zmi_body_header -->

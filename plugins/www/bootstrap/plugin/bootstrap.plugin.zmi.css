@@ -85,9 +85,52 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	margin-top:0.5em;
 	padding-left:1em;
 }
-.zmi.config .main-nav {
-	min-width:1160px
+/* BO HORIZONTAL SCROLLING MAIN NAVIGATION */
+nav .wrapper {
+	position:relative;
+	margin:0 auto;
+	overflow:hidden;
+	padding:0px;
+	height:44px;
+	top:1.3px
 }
+nav .main-nav.nav-tabs {
+	position:absolute;
+	left:0px;
+	top:0px;
+	min-width:1600px;
+}
+nav .main-nav.nav-tabs li{
+	display:table-cell;
+	position:relative;
+	text-align:center;
+	cursor:grab;
+	cursor:-webkit-grab;
+	vertical-align:middle;
+}
+nav .scroller {
+	color:white;
+	background-color:rgb(81, 142, 212);
+	text-align:center;
+	cursor:pointer;
+	display:none;
+	padding:12.5px 8px 12.5px 8px;
+	white-space:no-wrap;
+	vertical-align:middle;
+}
+nav .scroller,
+nav .scroller i.glyphicon,
+nav .scroller i.glyphicon:hover {
+	color:white !important;
+} 
+nav .scroller-right{
+	float:right;
+}
+nav .scroller-left {
+	float:left;
+}
+/* EO HORIZONTAL SCROLLING MAIN NAVIGATION */
+
 .zmi .navbar-inner {
 	border-radius:0 !important;
 }
@@ -911,9 +954,13 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	background: #fff;
 }
 @media (max-width: 767px) {
-	zmi.metas table#meta_properties {
+	.zmi.metas table#meta_properties {
 		display: inline-table;
 		border:none;
+	}
+	/* FF Patch */
+	.zmi.metas table#meta_properties colgroup {
+		display:none;
 	}
 	.zmi.metas table#meta_properties tr {
 		display: block;
@@ -1494,44 +1541,6 @@ div.right .btn .caret {
 	}
 	.navbar-nav>li {
 		float: left;
-	}
-	.zmi ul.breadcrumb {
-		padding: 1em 0 1em 1em;
-		background: #ddd;
-		border-radius:0;
-	}
-	.zmi nav ul.main-nav.nav.nav-tabs {
-		width: 101%;
-		padding:0;
-		padding-left: 0;
-		margin:-1px 0 0 -1px;
-		min-width:0;
-	}
-	.zmi .main-nav li {
-		margin: 1px;
-		display: none;
-		float:none;
-	}
-	.zmi .main-nav li.active {
-		display: block !important;
-	}
-	.zmi .nav-tabs>li>a,
-	.zmi .nav-tabs>li>a:hover,
-	.zmi .nav-tabs>li>a.active,
-	.zmi .nav-tabs>li>a.active:hover {
-		border-radius: 0 !important;
-		border:0;
-		padding:.8em 1em;
-		cursor: pointer;
-		max-height:42px;
-	}
-	.zmi .main-nav li.active a {
-	display: block !important;
-	background-color: #0088cc !important;
-	color:#fff !important;
-	}
-	.zmi .main-nav li.active a:hover {
-	background-color: #888 !important;
 	}
 	.zmi .form-horizontal {
 		margin-left:0;

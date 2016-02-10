@@ -1891,7 +1891,11 @@ $(function() {
 		return (($('.wrapper').outerWidth())-widthOfList()-getLeftPosi())-scrollBarWidths;
 	};
 	var getLeftPosi = function(){
-		return $('.main-nav.nav-tabs').position().left;
+		try {
+			return $('.main-nav.nav-tabs').position().left;
+		} catch(err) {
+			return 0
+		}
 	};
 	var reAdjust = function(){
 		if (($('.wrapper').outerWidth()) < widthOfList()) {

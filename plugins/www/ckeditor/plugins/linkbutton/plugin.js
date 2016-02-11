@@ -6,7 +6,7 @@ CKEDITOR.plugins.add('linkbutton', {
 	init : function( editor )
 	{
 		editor.addCommand( 'linkbuttonDlg', new CKEDITOR.dialogCommand( 'linkbuttonDlg', {
-					allowedContent:'a[data-id,href]'
+					allowedContent:'a[data-id,href]; img[data-id,src]'
 				}
 		) );
  

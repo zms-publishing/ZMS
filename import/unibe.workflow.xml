@@ -160,9 +160,6 @@
           </item>
           <item key="from" type="list">
             <list>
-              <item><![CDATA[AC_CHANGED]]></item>
-              <item><![CDATA[AC_REQUESTED]]></item>
-              <item><![CDATA[AC_REJECTED]]></item>
             </list>
           </item>
           <item key="id"><![CDATA[TR_EXPRESSCOMMIT]]></item>
@@ -170,8 +167,6 @@
           <item key="ob"><![CDATA[<ZopePageTemplate at TR_EXPRESSCOMMIT>]]></item>
           <item key="performer" type="list">
             <list>
-              <item><![CDATA[ZMSAdministrator]]></item>
-              <item><![CDATA[ZMSEditor]]></item>
             </list>
           </item>
           <item key="to" type="list">
@@ -204,10 +199,25 @@
 	<legend tal:content="request/custom">the headline</legend>
 	<div class="control-group">
 
-	<div class="form-group"
-		tal:define="
-			myusers python:map(lambda u: [zmscontext.content.getUserAttr(u, 'email', ''),u],zmscontext.content.getUsers(request).keys());
-			myeditors python:filter(lambda u:'ZMSEditor' in zmscontext.content.getUserRoles(u[1]),myusers)">
+	<div class="form-group" tal:define="myeditors python:[]">
+		<tal:block tal:define="sec_users python:zmscontext.getSecurityUsers()">
+			<tal:block tal:repeat="user_id python:sec_users.keys()">
+				<tal:block tal:define="sec_user python:sec_users[user_id]">
+					<tal:block tal:repeat="node_key python:sec_user['nodes'].keys()">
+						<tal:block tal:define="node python:here.getLinkObj(node_key)">
+							<tal:block tal:condition="python:
+									node is not None
+									and node.id in zmscontext.getPhysicalPath()
+									and 'ZMSEditor' in sec_user['nodes'][node_key]['roles']
+									and 'email' in sec_user.keys()
+									and not (sec_user['email'],user_id) in myeditors">
+								<tal:block tal:define="dummy0 python:myeditors.append((sec_user['email'],user_id))"></tal:block>
+							</tal:block>
+						</tal:block>
+					</tal:block>
+				</tal:block>
+			</tal:block>
+		</tal:block>
 		<label style="text-align:left !important" for="recipients" class="col-sm-12 control-label mandatory"><span tal:content="python:here.getZMILangStr('ROLE_ZMSEDITOR')">ROLE_ZMSEDITOR</span></label>
 		<div class="col-sm-12" tal:content="structure python:here.zmi_input_multiselect(here,name='recipients',value=[],lang_str='ROLE_ZMSEDITOR',options=myeditors)">the control</div>
 	</div><!-- .form-group -->

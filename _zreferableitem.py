@@ -281,28 +281,28 @@ class ZReferableItem:
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
-    p = '<a(.*?)>(.*?)<\\/a>'
-    r = re.compile(p)
-    for f in r.findall(str(text)):
-      d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
-      if d.has_key('data-id'):
-        old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
-        url = d['data-id']
-        ob = self.getLinkObj(url)
-        if ob is not None:
-          REQUEST = self.REQUEST
-          href = self.getLinkUrl(url)
-          d['href'] = href
-          if not ob.isActive(REQUEST):
-            d['data-target'] = "inactive"
-          elif self.getTrashcan().isAncestor(ob):
-            d['data-target'] = 'trashcan'
-        else:
-          d['data-target'] = "missing"
-        title = f[1]
-        new = '<a %s>%s</a>'%(' '.join(map(lambda x:'%s="%s"'%(x,d[x]),d.keys())),title)
-        if old != new:
-          text = text.replace(old,new)
+    for pq in [('<a(.*?)>','href'),('<img(.*?)>','src')]:
+      p = pq[0]
+      q = pq[1]
+      r = re.compile(p)
+      for f in r.findall(str(text)):
+        d = dict(re.findall('\\s(.*?)="(.*?)"',f))
+        if d.has_key('data-id'):
+          old = p.replace('(.*?)',f)
+          url = d['data-id']
+          ob = self.getLinkObj(url)
+          if ob is not None:
+            REQUEST = self.REQUEST
+            d[q] = self.getLinkUrl(url)
+            if not ob.isActive(REQUEST):
+              d['data-target'] = "inactive"
+            elif self.getTrashcan().isAncestor(ob):
+              d['data-target'] = 'trashcan'
+          else:
+            d['data-target'] = "missing"
+          new = p.replace('(.*?)',' '.join(['']+map(lambda x:'%s="%s"'%(x,d[x]),d.keys())))
+          if old != new:
+            text = text.replace(old,new)
     return text
 
 

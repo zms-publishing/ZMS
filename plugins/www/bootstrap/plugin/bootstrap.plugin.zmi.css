@@ -39,8 +39,17 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	font-size:x-small;
 	margin-left:15px;
 }
+@media (max-width: 367px) {
+  .zmi header .navbar-nav.pull-right {
+    display: none!important;
+  }
+  .zmi header .navbar-main {
+    min-width:367px;
+  }
+}
 @media (max-width: 767px) {
 	.zmi header .navbar-nav.pull-right {
+    display: block;
 		position: absolute;
 		right: 0;
 	}

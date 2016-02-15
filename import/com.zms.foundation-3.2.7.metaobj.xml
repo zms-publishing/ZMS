@@ -1376,7 +1376,7 @@ if file and file.filename:
   content_type = blob.getContentType()
   if content_type.startswith('image'):
     image = context.ImageFromData(file,file.filename)
-    maxdims = int(context.getConfProperty('InstalledProducts.pil.thumbnail.max',100))
+    maxdims = int(context.getConfProperty('InstalledProducts.pil.thumbnail.max'))
     if image.getWidth() > maxdims:
       result['imghires'] = create_blob(temp_folder,image)
       result['image'] = create_blob(temp_folder,resize_image(context, image, maxdims))

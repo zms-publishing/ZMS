@@ -1120,7 +1120,7 @@ class ObjAttrs:
         orig = self.ImageFromData(file.data,file.title)
         orig.lang = lang
         if action == 'preview':
-          maxdim = self.getConfProperty('InstalledProducts.pil.thumbnail.max',100)
+          maxdim = self.getConfProperty('InstalledProducts.pil.thumbnail.max')
           blob = self.pilutil().thumbnail( orig, maxdim)
           thumbkey = key
           for suffix in ['hires','superres']:

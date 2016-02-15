@@ -695,8 +695,8 @@ class ConfManager(
       elif key == 'InstalledProducts':
         if btn == 'Change':
           self.setConfProperty('InstalledProducts.lesscss',REQUEST.get('lesscss',''))
-          self.setConfProperty('InstalledProducts.pil.thumbnail.max',REQUEST.get('pil_thumbnail_max',100))
-          self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max',REQUEST.get('pil_hires_thumbnail_max',600))
+          self.setConfProperty('InstalledProducts.pil.thumbnail.max',REQUEST.get('pil_thumbnail_max',self.getConfProperty('InstalledProducts.pil.thumbnail.max')))
+          self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max',REQUEST.get('pil_hires_thumbnail_max',self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')))
           message = self.getZMILangStr('MSG_CHANGED')
         elif btn == 'Import':
           zmsext = REQUEST.get('zmsext','')
@@ -756,7 +756,7 @@ class ConfManager(
           if ZMSExtension.installTheme(self, zmsext):
             return True
           else:
-            return False            
+            return False
 
       ##### Instance ####
       elif key == 'Instance':

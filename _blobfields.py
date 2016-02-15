@@ -265,8 +265,8 @@ def thumbnailImageFields(self, lang, REQUEST):
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
       if datatype == _globals.DT_IMAGE:
-        message += thumbnailImage(self,'%ssuperres'%key,'%shires'%key,self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max',600),lang,REQUEST)
-        message += thumbnailImage(self,'%shires'%key,'%s'%key,self.getConfProperty('InstalledProducts.pil.thumbnail.max',100),lang,REQUEST)
+        message += thumbnailImage(self,'%ssuperres'%key,'%shires'%key,self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max'),lang,REQUEST)
+        message += thumbnailImage(self,'%shires'%key,'%s'%key,self.getConfProperty('InstalledProducts.pil.thumbnail.max'),lang,REQUEST)
   return message
 
 

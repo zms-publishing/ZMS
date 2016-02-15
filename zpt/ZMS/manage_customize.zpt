@@ -375,13 +375,13 @@ $(function(){
             <table class="input-append">
               <tr>
                 <td>HighRes with Auto-Thumbnail max.&nbsp;</td>
-                <td><input class="form-control input-sm" type="text" name="pil_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.thumbnail.max',400)" size="4" style="text-align:right" /></td>
+                <td><input class="form-control input-sm" type="text" name="pil_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.thumbnail.max')" size="4" style="text-align:right" /></td>
                 <td>&nbsp;px</td>
               </tr>
               <tr><td colspan="3">&nbsp;</td></tr>
               <tr>
                 <td>SuperRes with Auto-HighRes max.&nbsp;</td>
-                <td><input class="form-control input-sm" type="text" name="pil_hires_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.hires.thumbnail.max',800)" size="4" style="text-align:right" /></td>
+                <td><input class="form-control input-sm" type="text" name="pil_hires_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')" size="4" style="text-align:right" /></td>
                 <td>&nbsp;px</td>
               </tr>
             </table>
@@ -391,7 +391,7 @@ $(function(){
       <div class="form-group" style="margin-bottom:3em">
         <div class="col-sm-4">&nbsp;</div>
         <div class="col-sm-8">
-          <button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
+          <button name="btn" type="submit" class="btn btn-primary" value="Change" onclick="$('input[name=btn]:hidden').remove()">Change</button>
         </div>
       </div><!-- .form-group -->
       <tal:block tal:on-error="structure string:<!-- ERROR: ZMSExtensionUtility -->">

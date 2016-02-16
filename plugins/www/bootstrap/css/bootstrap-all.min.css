@@ -416,7 +416,9 @@ textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 .zmi header{background-color:black;height:42px}
 .zmi header .product{font-weight:bold}
 .zmi header .navbar-brand .slogan{font-size:x-small;margin-left:15px}
-@media(max-width:767px){.zmi header .navbar-nav.pull-right{position:absolute;right:0}
+@media(max-width:367px){.zmi header .navbar-nav.pull-right{display:none!important}
+ .zmi header .navbar-main{min-width:367px}}
+@media(max-width:767px){.zmi header .navbar-nav.pull-right{display:block;position:absolute;right:0}
  .zmi header .navbar .authenticated_user,.zmi header .navbar .language_label{display:none}}
 @media(max-width:992px){.zmi header .navbar-brand .slogan{display:none}}
 .zmi header .navbar{margin:0;height:42px;min-height:42px}

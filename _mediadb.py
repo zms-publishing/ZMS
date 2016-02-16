@@ -316,7 +316,7 @@ class MediaDb(
       except:
         mt, enc = 'content/unknown', ''
       # Remove timestamp from filename.
-      filename = filename[:filename.rfind('_')-1]+filename[filename.rfind('.'):]
+      filename = filename[:filename.rfind('_')]+filename[filename.rfind('.'):]
       REQUEST.RESPONSE.setHeader('Content-Type' ,mt)
       REQUEST.RESPONSE.setHeader('Content-Length' ,fsize)
       REQUEST.RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)

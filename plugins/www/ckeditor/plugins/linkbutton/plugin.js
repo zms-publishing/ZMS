@@ -14,7 +14,7 @@ CKEDITOR.plugins.add('linkbutton', {
 			{
 				label : 'Toolbox',
 				command : 'linkbuttonDlg',
-				icon: '/misc_/zms/btn_paste1.gif'
+				icon: '/++resource++zms_/ckeditor/plugins/linkbutton/images/linkbutton.png'
 			});
 
 		CKEDITOR.dialog.add( 'linkbuttonDlg', this.path+'dialogs/link.js?ts='+new Date());

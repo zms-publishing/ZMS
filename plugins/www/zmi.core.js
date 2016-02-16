@@ -259,10 +259,10 @@ ZMI.prototype.getReqProperty = function(key, defaultValue) {
 	if (typeof defaultValue != "undefined") {
 		data['default'] = defaultValue;
 	}
-	var url = '';
-	if (url.indexOf('/content/')>0) {
-		url = this.getPhysicalPath();
-		url = url.substr(0,url.indexOf('/content/')+'/content/'.length-1);
+	if (url.indexOf('/content')>0) {
+		url = url.substr(0,url.indexOf('/content')+'/content'.length);
+	} else {
+		url='';
 	}
 	var r = $.ajax({
 		url: url+'/getReqProperty',
@@ -283,10 +283,11 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 	if (typeof defaultValue != "undefined") {
 		data['default'] = defaultValue;
 	}
-	var url = '';
-	if (url.indexOf('/content/')>0) {
-		url = this.getPhysicalPath();
-		url = url.substr(0,url.indexOf('/content/')+'/content/'.length-1);
+	var url = this.getPhysicalPath();
+	if (url.indexOf('/content')>0) {
+		url = url.substr(0,url.indexOf('/content')+'/content'.length);
+	} else {
+		url='';
 	}
 	var r = $.ajax({
 		url: url+'/getConfProperty',
@@ -304,10 +305,11 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 ZMI.prototype.getConfProperties = function(prefix) {
 	var data  = {}
 	data['prefix'] = btoa(prefix);
-	var url = '';
-	if (url.indexOf('/content/')>0) {
-		url = this.getPhysicalPath();
-		url = url.substr(0,url.indexOf('/content/')+'/content/'.length-1);
+	var url = this.getPhysicalPath();
+	if (url.indexOf('/content')>0) {
+		url = url.substr(0,url.indexOf('/content')+'/content'.length);
+	} else {
+		url='';
 	}
 	var r = $.ajax({
 		url: url+'/getConfProperties',
@@ -328,10 +330,11 @@ ZMI.prototype.display_icon = function(meta_type) {
 	if (typeof v=="undefined") {
 		var data  = {}
 		data['meta_type'] = meta_type;
-		var url = '';
-		if (url.indexOf('/content/')>0) {
-			url = this.getPhysicalPath();
-			url = url.substr(0,url.indexOf('/content/')+'/content/'.length-1);
+		var url = this.getPhysicalPath();
+		if (url.indexOf('/content')>0) {
+			url = url.substr(0,url.indexOf('/content')+'/content'.length);
+		} else {
+			url='';
 		}
 		this.writeDebug(url+'/display_icon');
 		v = $.ajax({

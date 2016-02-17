@@ -260,7 +260,7 @@ ZMI.prototype.getReqProperty = function(key, defaultValue) {
 		data['default'] = defaultValue;
 	};
 	var url = this.getPhysicalPath();
-	if (url.indexOf('/content')>0) {
+	if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
 		url = url.substr(0,url.indexOf('/content')+'/content'.length);
 	} else {
 		url='';
@@ -285,7 +285,7 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 		data['default'] = defaultValue;
 	};
 	var url = this.getPhysicalPath();
-	if (url.indexOf('/content')>0) {
+	if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
 		url = url.substr(0,url.indexOf('/content')+'/content'.length);
 	} else {
 		url='';
@@ -307,7 +307,7 @@ ZMI.prototype.getConfProperties = function(prefix) {
 	var data  = {};
 	data['prefix'] = btoa(prefix);
 	var url = this.getPhysicalPath();
-	if (url.indexOf('/content')>0) {
+	if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
 		url = url.substr(0,url.indexOf('/content')+'/content'.length);
 	} else {
 		url='';
@@ -332,7 +332,7 @@ ZMI.prototype.display_icon = function(meta_type) {
 		var data  = {}
 		data['meta_type'] = meta_type;
 		var url = this.getPhysicalPath();
-		if (url.indexOf('/content')>0) {
+		if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
 			url = url.substr(0,url.indexOf('/content')+'/content'.length);
 		} else {
 			url='';

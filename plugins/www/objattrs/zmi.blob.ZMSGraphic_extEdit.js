@@ -179,7 +179,7 @@ function ZMSGraphic_extEdit_set(elName, src, filename, width, height, elParams, 
 		zmiUndoBlobDelete(elName);
 	}
 	img = $('img#img_'+elName);
-	img.attr('src',src).css('background-color','#FF9900');
+	img.parent().addClass('changed');
 	$('input#width_'+elName).val(width);
 	$('input#height_'+elName).val(height);
 	$('span#filename_'+elName).html(filename);

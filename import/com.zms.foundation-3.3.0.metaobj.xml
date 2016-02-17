@@ -954,20 +954,6 @@ a.fancybox img {
 	background:transparent url(/misc_/zms/zoom.gif) bottom right no-repeat;
 	background-color:transparent;
 }
-div.ZMSGraphic_extEdit_action {
-	margin:0px 0px 20px 0px;
-}
-#zmiModalZMSGraphic_extEdit_actions .slider.slider-vertical {
-	margin-left:0.6em
-}
-a.ZMSGraphic_extEdit_action img {
-	padding:1px 1px 9px 1px;
-	background:transparent url(/misc_/zms/ico_plus.gif) bottom right no-repeat;
-}
-div.ZMSGraphic {
-	background-color: transparent;
-	margin: 4px;
-}
 .zmi div.ZMSGraphic {
 	margin:0;
 }
@@ -1011,8 +997,7 @@ div.ZMSGraphic.right div.graphic img {
 	display:inline !important;
 }
 a.zoom img.zoom,
-a.superzoom img.superzoom,
-a.download img.download {
+a.superzoom img.superzoom {
 	width: 26px;
 	height: 21px;
 	background-position:top right;
@@ -1022,9 +1007,6 @@ a.download img.download {
 }
 a.zoom img.zoom {
 	background-image: url(/misc_/zms/zoom.gif);
-}
-a.download img.download {
-	background-image: url(/misc_/zms/download.gif);
 }
 a.superzoom img.superzoom {
 	background-image: url(/misc_/zms/superzoom.gif);
@@ -1268,7 +1250,7 @@ return ''
           <item key="id"><![CDATA[ZMSGraphic]]></item>
           <item key="name"><![CDATA[ZMSGraphic]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.2.7]]></item>
+          <item key="revision"><![CDATA[3.3.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4305,8 +4287,11 @@ return unicode(printed).encode('utf-8')
 <tal:block tal:define="global 
 		zmscontext options/zmscontext">
 	<div class="form-small" tal:repeat="teaserElmnt python:zmscontext.getChildNodes(request)">
-		<a tal:attributes="href python:'%s/manage_main?lang=%s'%(teaserElmnt.absolute_url(),request['lang'])">
-			<img tal:attributes="src python:'/misc_/zms/internal_link.gif'; title python:zmscontext.getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(request)" alt="Internal link"/>
+		<a tal:attributes="
+						href python:'%s/manage_main?lang=%s'%(teaserElmnt.absolute_url(),request['lang']); 
+						title python:zmscontext.getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(request)"
+				tal:content="structure python:teaserElmnt.display_icon(request)">
+			the internal link
 		</a>
 		<tal:block tal:define="global 
 				url      python:zmscontext.getLinkUrl(teaserElmnt.attr('attr_url'));
@@ -4319,14 +4304,13 @@ return unicode(printed).encode('utf-8')
 			</tal:block>
 			<tal:block tal:condition="python:not title">
 				<tal:block tal:condition="python:img_src">
-					<div><i>&laquo;<span tal:omit-tag="" tal:content="python:img_src[img_src.rfind('/')+1:img_src.find('?')]"></span>&raquo;</i></div>
+					<div><i>&laquo;<tal:block tal:content="python:img_src[img_src.rfind('/')+1:img_src.find('?')]"></tal:block>&raquo;</i></div>
 				</tal:block>
 			</tal:block>
 			<div tal:content="structure abstract">The abstract</div>
 		</tal:block>
 	</div>
 </tal:block>
-
 
 <!-- /ZMSTeaserContainer.renderShort -->]]>
                   </item>
@@ -4364,7 +4348,7 @@ return unicode(printed).encode('utf-8')
           <item key="id"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="name"><![CDATA[ZMSTeaserContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.0]]></item>
+          <item key="revision"><![CDATA[3.3.0]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

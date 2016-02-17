@@ -284,20 +284,23 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 	if (typeof defaultValue != "undefined") {
 		data['default'] = defaultValue;
 	};
-	var url = this.getPhysicalPath();
-	if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
-		url = url.substr(0,url.indexOf('/content')+'/content'.length);
-	} else {
-		url='';
-	};
-	var r = $.ajax({
-		url: url+'/getConfProperty',
-		data: data,
-		datatype: 'text',
-		async: false
-		}).responseText;
-	this.writeDebug(url+'/getConfProperty('+key+','+defaultValue+'): '+r);
-	return r;
+	if ( !window['existConfProperty_' + data['key']] ) {
+		var url = this.getPhysicalPath();
+		if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
+			url = url.substr(0,url.indexOf('/content')+'/content'.length);
+		} else {
+			url='';
+		};
+		var r = $.ajax({
+			url: url+'/getConfProperty',
+			data: data,
+			datatype: 'text',
+			async: false
+			}).responseText;
+		this.writeDebug(url+'/getConfProperty('+key+','+defaultValue+'): '+r);
+		window['existConfProperty_' + data['key']] = true;
+		return r;
+	}
 }
 
 /**

@@ -279,12 +279,13 @@ ZMI.prototype.getReqProperty = function(key, defaultValue) {
  * Returns conf-property.
  */
 ZMI.prototype.getConfProperty = function(key, defaultValue) {
-	var data  = {};
-	data['key'] = btoa(key);
-	if (typeof defaultValue != "undefined") {
-		data['default'] = defaultValue;
-	};
-	if ( !window['existConfProperty_' + data['key']] ) {
+	var r = this.getCachedValue(key);
+	if (typeof r=="undefined") {
+		var data  = {};
+		data['key'] = btoa(key);
+		if (typeof defaultValue != "undefined") {
+			data['default'] = defaultValue;
+		};
 		var url = this.getPhysicalPath();
 		if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
 			url = url.substr(0,url.indexOf('/content')+'/content'.length);
@@ -298,9 +299,9 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 			async: false
 			}).responseText;
 		this.writeDebug(url+'/getConfProperty('+key+','+defaultValue+'): '+r);
-		window['existConfProperty_' + data['key']] = true;
-		return r;
+		this.setCachedValue(key,r);
 	}
+	return r;
 }
 
 /**

@@ -20,13 +20,11 @@
 """ Globals. """
 
 application_epub = "mime_type.application_epub+zip.gif"
-application_msaccess = "mime_type.application_msaccess.gif"
 application_docx = "mime_type.application_docx.png"
 application_octet_stream = "mime_type.application_octet_stream.gif"
 application_pdf = "mime_type.application_pdf.gif"
 application_rtf = "mime_type.application_rtf.gif"
 application_sh = "mime_type.application_sh.gif"
-application_shockwave_flash = "mime_type.application_shockwave_flash.gif"
 application_x_director = "mime_type.application_x_director.gif"
 application_x_x509_ca_cert = "mime_type.application_x_x509_ca_cert.gif"
 application_visio = "mime_type.application_visio.gif"
@@ -37,7 +35,6 @@ audio_basic = "mime_type.audio_basic.gif"
 audio_midi = "mime_type.audio_midi.gif"
 content_unknown = "mime_type.application_octet_stream.gif"
 image_basic = "mime_type.image_basic.gif"
-image_bmp = "mime_type.image_bmp.gif"
 image_gif = "mime_type.image_gif.gif"
 image_jpeg = "mime_type.image_jpeg.gif"
 image_tiff = "mime_type.image_tiff.gif"
@@ -51,7 +48,6 @@ video_basic = "mime_type.video_basic.gif"
 dctMimeType = {
 	 'application/epub+zip':application_epub
 	,'application/mspowerpoint':application_pptx
-	,'application/vnd.ms-access':application_msaccess
 	,'application/vnd.ms-excel':application_xlsx
 	,'application/vnd.ms-powerpoint':application_pptx
 	,'application/vnd.openxmlformats-officedocument.wordprocessingml.document':application_docx
@@ -68,7 +64,6 @@ dctMimeType = {
 	,'application/x-gzip':application_zip
 	,'application/x-pdf':application_pdf
 	,'application/x-sh':application_sh
-	,'application/x-shockwave-flash':application_shockwave_flash
 	,'application/x-tar':application_zip
 	,'application/x-unknown-content-type-Visio.Drawing.4':application_visio
 	,'application/x-x509-ca-cert':application_x_x509_ca_cert
@@ -89,7 +84,6 @@ dctMimeType = {
 	,'audio/x-twinvq':audio_basic
 	,'audio/x-twinvq-plugin':audio_basic
 	,'audio/x-wav':audio_basic
-	,'image/bmp':image_bmp
 	,'image/fif':image_basic
 	,'image/gif':image_gif
 	,'image/ief':image_basic

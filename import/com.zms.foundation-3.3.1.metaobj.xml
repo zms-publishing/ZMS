@@ -936,7 +936,45 @@ return ''
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[icon-picture]]></item>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSGraphic.titlealt"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: DC.Title.Alt
+##
+# --// BO titlealt //--
+
+try:
+    titlealt = zmscontext.attr('text')
+    img = zmscontext.attr('img')
+    if titlealt:
+        if len(titlealt) < 24:
+            return titlealt
+        else:
+            return '%s...'%(titlealt)
+    else:
+        return img.getFilename() 
+except:
+    return zmscontext.display_type(zmscontext.REQUEST)
+
+# --// EO titlealt //--
+]]>
+                  </item>
+                  <item key="errors"></item>
+                  <item key="id"><![CDATA[titlealt]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[DC.Title.Alt]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[icon-picture fa fa-picture-o]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
@@ -1068,7 +1106,7 @@ a.superzoom img.superzoom {
                   <item key="id"><![CDATA[img_attrs_spec]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Image (Special-Attributes)]]></item>
+                  <item key="name"><![CDATA[WAI-Attributes]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[string]]></item>
                 </dictionary>
@@ -1250,7 +1288,7 @@ return ''
           <item key="id"><![CDATA[ZMSGraphic]]></item>
           <item key="name"><![CDATA[ZMSGraphic]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.3.0]]></item>
+          <item key="revision"><![CDATA[3.3.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4813,7 +4851,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.2.7]]></item>
+          <item key="revision"><![CDATA[3.3.1]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

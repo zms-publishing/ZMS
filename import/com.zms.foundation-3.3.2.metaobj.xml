@@ -409,7 +409,7 @@ div.ZMSFile.none, div.ZMSLinkElement.none
 	border: 2px dashed #eee;
 	}
 
-div.ZMSFile.floatleft, div..floatleft 
+div.ZMSFile.floatleft, div.ZMSLinkElement.floatleft 
 	{ 
 	float:left;
 	width:50%

@@ -653,12 +653,7 @@ tr.row_insert td.meta-sort{padding:0.9em 1.35em !important}
 #zmi-single-line-edit textarea{font-family:"Courier New",Courier,monospace}
 .zmi.metas span.input-group-addon{width:29px !important}
 div.zmi-nodes span{cursor:pointer}
-.zmi-image del,.zmi-image del *,.zmi-file del,.zmi-file del *{color:#888!important}
-.zmi-image .btn-group a.btn.btn-default,.zmi-file .btn-group a.btn.btn-default{color:#333;background-color:#f5f5f5;border-color:#ccc;max-width:30em!important;overflow:hidden}
 input.btn.btn-file{background-color:#eee;margin-bottom:0.5em}
-.zmi-image .filename,.zmi-file .filename{color:#08c}
-.zmi-image-preview{max-width:100px;background:#CCC}
-.zmi-image-generate-preview *{float:left;padding-left:0.5em;padding-right:0.5em;color:#888}
 .zmi.customize #Custom table td.nowrap{min-width:92px}
 .customize.config #extwizard ul.nav-pills li,.customize.config #InstalledProducts .tab-content .col-sm-8 button.btn{min-width:160px}
 .customize.config #Clients .zmi-multiselect .btn,.customize.config #Clients .zmi-select.zmi-sortable .btn,.customize.config #Clients .ui-state-highlight{display:block !important;text-align:left}
@@ -691,23 +686,23 @@ input.btn.btn-file{background-color:#eee;margin-bottom:0.5em}
 .ZMSSqlDb .table ul.dropdown-menu{font-size:14px}
 .ZMSSqlDb .table ul.dropdown-menu i{padding-right:0.5em}
 .ZMSSqlDb .table ul.dropdown-menu li{cursor:pointer}
-.zmi .ZMSRecordSet #attrProperties .form-group select,.zmi.ZMSSqlDb #attrProperties .form-group select,.zmi .ZMSRecordSet #attrProperties .form-group input,.zmi.ZMSSqlDb #attrProperties .form-group input{width:167px;float:left}
-.zmi .ZMSRecordSet .accordion-group,.zmi.ZMSSqlDb .accordion-group{border:0}
-.zmi .ZMSRecordSet .form-horizontal,.zmi.ZMSSqlDb .form-horizontal{border:1px solid #e5e5e5;border-radius:4px}
-.zmi .ZMSRecordSet .accordion-group.perc100 .accordion-heading,.zmi.ZMSSqlDb .accordion-group.perc100 .accordion-heading{padding:8px 3px 8px 15px}
-.zmi .ZMSRecordSet .accordion-heading.filters a.accordion-toggle.pull-left,.zmi.ZMSSqlDb .accordion-heading.filters a.accordion-toggle.pull-left{padding-top:6px}
-.zmi .ZMSRecordSet .filters label,.zmi.ZMSSqlDb .filters label,.zmi .ZMSRecordSet .filters input,.zmi.ZMSSqlDb .filters input,.zmi .ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select{display:inline-block;width:auto}
-.zmi .ZMSRecordSet #qentity,.zmi.ZMSSqlDb #qentity,.zmi .ZMSRecordSet #qsize,.zmi.ZMSSqlDb #qsize{margin-right:0.5em}
-.zmi .ZMSRecordSet #attrProperties,.zmi.ZMSSqlDb #attrProperties{border:0}
-.zmi .ZMSRecordSet #attrProperties .accordion-inner,.zmi.ZMSSqlDb #attrProperties .accordion-inner{padding-top:0.5em}
-.zmi .ZMSRecordSet #attrProperties .accordion-inner label,.zmi.ZMSSqlDb #attrProperties .accordion-inner label{color:#999}
+.ZMSRecordSet #attrProperties .form-group select,.ZMSSqlDb #attrProperties .form-group select,.ZMSRecordSet #attrProperties .form-group input,.ZMSSqlDb #attrProperties .form-group input{width:167px;float:left}
+.ZMSRecordSet .accordion-group,.ZMSSqlDb .accordion-group{border:0}
+.ZMSRecordSet .form-horizontal,.ZMSSqlDb .form-horizontal{border:1px solid #e5e5e5;border-radius:4px}
+.ZMSRecordSet .accordion-group.perc100 .accordion-heading,.ZMSSqlDb .accordion-group.perc100 .accordion-heading{padding:8px 3px 8px 15px}
+.ZMSRecordSet .accordion-heading.filters a.accordion-toggle.pull-left,.ZMSSqlDb .accordion-heading.filters a.accordion-toggle.pull-left{padding-top:6px}
+.ZMSRecordSet .filters label,.ZMSSqlDb .filters label,.ZMSRecordSet .filters input,.ZMSSqlDb .filters input,.ZMSRecordSet .filters select,.ZMSSqlDb .filters select{display:inline-block;width:auto}
+.ZMSRecordSet #qentity,.ZMSSqlDb #qentity,.ZMSRecordSet #qsize,.ZMSSqlDb #qsize{margin-right:0.5em}
+.ZMSRecordSet #attrProperties,.ZMSSqlDb #attrProperties{border:0}
+.ZMSRecordSet #attrProperties .accordion-inner,.ZMSSqlDb #attrProperties .accordion-inner{padding-top:0.5em}
+.ZMSRecordSet #attrProperties .accordion-inner label,.ZMSSqlDb #attrProperties .accordion-inner label{color:#999}
 #insertUserForm .ZMSRecordSet{overflow:hidden;margin-left:-15px;padding-left:1px}
 #insertUserForm .ZMSRecordSet .pagination{margin-left:0}
 #insertUserForm .ZMSRecordSet table div.btn-group span.split-left{overflow:visible}
 #insertUserForm .ZMSRecordSet.main_grid table tbody .btn-group span.split-left input{margin:-2px 0 0 4px;float:left}
 .ZMSSqlDb .index,.ZMSRecordSet .index{margin-left:1em}
-.zmi .ZMSRecordSet.main_grid table{cursor:pointer}
-.zmi .ZMSRecordSet.main_grid form > table thead th div.btn-group span.split-left{max-width:48px;overflow:hidden}
+.ZMSRecordSet.main_grid table{cursor:pointer}
+.ZMSRecordSet.main_grid form > table thead th div.btn-group span.split-left{max-width:48px;overflow:hidden}
 .zmi.properties.ZMSSqlDb form .form-group .form-group{margin-left:0;margin-right:0}
 .zmi.importexport.ZMSSqlDb form.form-horizontal{padding:1.5em;margin-bottom:2em}
 .zmi.importexport.ZMSSqlDb form.form-horizontal button{margin-top:1em}
@@ -814,6 +809,20 @@ body.tasks .zmi-container .center .contentEditable{padding-left:0 !important}
 .zmi-select .btn{margin:0 .5em .5em 0;height:28px;padding:2px 8px;border-color:#CCC;cursor:default}
 .zmi-select.zmi-sortable .btn{cursor:move}
 .zmi-select.zmi-sortable .ui-state-highlight{display:inline-block!important;height:28px!important;vertical-align:middle;margin:-8px .5em 0 0!important;min-width:5em!important;background:#D8DEE4}
+.zmi-image del,.zmi-image del *,.zmi-file del,.zmi-file del *{color:#888!important}
+.zmi-image .btn-group a.btn.btn-default,.zmi-file .btn-group a.btn.btn-default{color:#333;background-color:#f5f5f5;border-color:#ccc;max-width:30em!important;overflow:hidden}
+.zmi-image .filename,.zmi-file .filename{color:#08c}
+.zmi-image-preview{max-width:100px}
+.zmi-image-generate-preview *{float:left;padding-left:0.5em;padding-right:0.5em;color:#888}
+div.ZMSGraphic_extEdit_action{margin:0px 0px 20px 0px}
+.slider.slider-vertical{margin-left:0.6em}
+.slider-handle{background-image:none}
+a.ZMSGraphic_extEdit_action{text-decoration:none}
+a.ZMSGraphic_extEdit_action.changed{background-color:#F90}
+a.ZMSGraphic_extEdit_action .zmi-zoom-in{color:#333;background-color:#FFF;border:1px solid #CCC;border-radius:12px;opacity:0.5;padding-left:4px;width:24px;height:24px;margin-top:-26px;margin-left:2px}
+a.ZMSGraphic_extEdit_action img,#ZMSGraphic_extEdit_image{border:1px solid #666;margin:1px;background:#CCC}
+#ZMSGraphic_extEdit_actions .form-group{margin:0.3em 0 1em 0.3em}
+#ZMSGraphic_extEdit_actions .form-group .form-control{width:4em}
 table.ZMSTable th{background-color:#DDEFFC;border:1px solid #ccc !important;overflow:hidden !important}
 table.ZMSTable td{background-color:#f9f9f9;border:1px solid #ccc !important;overflow:hidden !important}
 table.ZMSTable{margin:1em 0}

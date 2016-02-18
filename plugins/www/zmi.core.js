@@ -307,22 +307,27 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 /**
  * Returns conf-properties.
  */
+
 ZMI.prototype.getConfProperties = function(prefix) {
-	var data  = {};
-	data['prefix'] = btoa(prefix);
-	var url = this.getPhysicalPath();
-	if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
-		url = url.substr(0,url.indexOf('/content')+'/content'.length);
-	} else {
-		url='';
-	};
-	var r = $.ajax({
-		url: url+'/getConfProperties',
-		data: data,
-		datatype: 'text',
-		async: false
-		}).responseText;
-	this.writeDebug(url+'/getConfProperties('+prefix+'): '+r);
+	var r = this.getCachedValue(prefix);
+	if (typeof r=="undefined") {
+		var data  = {};
+		data['prefix'] = btoa(prefix);
+		var url = this.getPhysicalPath();
+		if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
+			url = url.substr(0,url.indexOf('/content')+'/content'.length);
+		} else {
+			url='';
+		};
+		var r = $.ajax({
+			url: url+'/getConfProperties',
+			data: data,
+			datatype: 'text',
+			async: false
+			}).responseText;
+		this.writeDebug(url+'/getConfProperties('+prefix+'): '+r);
+		this.setCachedValue(prefix,r);
+	}
 	return eval("("+r+")");
 }
 

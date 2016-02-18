@@ -409,7 +409,7 @@ div.ZMSFile.none, div.ZMSLinkElement.none
 	border: 2px dashed #eee;
 	}
 
-div.ZMSFile.floatleft, div.ZMSLinkElement.floatleft 
+div.ZMSFile.floatleft, div..floatleft 
 	{ 
 	float:left;
 	width:50%
@@ -2174,10 +2174,12 @@ $(function(){
 ##
 # --// attr_url //--
 
+request = zmscontext.REQUEST
+lang = request.get('lang',zmscontext.getPrimaryLanguage())
 ref = zmscontext.attr('attr_ref')
 if ref.startswith('{$') and ref.endswith('}'):
   ref_lang = zmscontext.attr('ref_lang')
-  if len(ref_lang) > 0:
+  if lang != zmscontext.getPrimaryLanguage() and len(ref_lang) > 0:
     ref = zmscontext.re_sub(';lang\\=\\w*','',ref)
     ref = ref[:-1]
     ref += ';lang='+ref_lang+'}'
@@ -2353,7 +2355,7 @@ return constraints
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.15]]></item>
+          <item key="revision"><![CDATA[3.1.17]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

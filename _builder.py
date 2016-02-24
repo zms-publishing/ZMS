@@ -171,19 +171,11 @@ class Builder:
     def OnStartElement(self, name, attrs):
         """ Builder.OnStartElement """
         _globals.writeBlock( self, "[Builder.OnStartElement(" + str(name) + ")]")
-        
         name = _globals.unencode( name)
         attrs = _globals.unencode( attrs)
-        
-        if not attrs.has_key('meta_id') and name in self.getMetaobjIds(sort=0):
-          attrs['meta_id'] = name
-        
-        # handle alias
-        if name in self.getMetaobjIds(sort=0) and not self.dGlobalAttrs.get(name,{}).has_key('obj_class'):
-          attrs['meta_id'] = name
-          
-        if attrs.has_key('meta_id'):
-          meta_id = attrs['meta_id']
+        skip = self.oCurrNode is not None and len(filter(lambda x:x.get('skip'),self.oCurrNode.dTagStack.get_all())) > 0
+        if not skip and name in self.getMetaobjIds(sort=0):
+          meta_id = name
           globalAttr = self.dGlobalAttrs.get(meta_id,self.dGlobalAttrs['ZMSCustom'])
           constructor = globalAttr.get('obj_class',self.dGlobalAttrs['ZMSCustom']['obj_class'])
           if constructor is None:
@@ -210,11 +202,11 @@ class Builder:
             self.oCurrNode._setObject(newNode.id, newNode)
             newNode = getattr(self.oCurrNode,newNode.id)
             _globals.writeBlock( self, "[Builder.OnStartElement]: object with id " + str(newNode.id) + " of class " + str(newNode.__class__) + " created in " + str(self.oCurrNode.__class__))
-            
-            ##### Uid ####
-            if 'uid' in attrs.keys():
-              uid = attrs.get( 'uid')
-              newNode.set_uid(uid)
+          
+          ##### Uid ####
+          if 'uid' in attrs.keys():
+            uid = attrs.get( 'uid')
+            newNode.set_uid(uid)
           
           ##### Object State ####
           newNode.initializeWorkVersion()
@@ -241,9 +233,9 @@ class Builder:
           self.oCurrNode = newNode
           
         else:
-            # tag name is unknown -> offer it to current object
-            if not self.oCurrNode.xmlOnUnknownStartTag(name, attrs):
-              _globals.writeLog( self, "[Builder.OnStartElement]: Unknown start-tag (" + name + "): current object did not accept tag!")  # current object did not accept tag!
+          # tag name is unknown -> offer it to current object
+          if not self.oCurrNode.xmlOnUnknownStartTag(name, attrs):
+            _globals.writeLog( self, "[Builder.OnStartElement]: Unknown start-tag (" + name + "): current object did not accept tag!")  # current object did not accept tag!
 
 
     ############################################################################
@@ -257,8 +249,9 @@ class Builder:
     def OnEndElement(self, name):
         """ Builder.OnEndElement """
         _globals.writeBlock( self, "[Builder.OnEndElement(" + str(name) + ")]")
-        
-        if name == self.oCurrNode.meta_id or name == self.oCurrNode.meta_type:
+        skip = self.oCurrNode is not None and len(filter(lambda x:x.get('skip'),self.oCurrNode.dTagStack.get_all())) > 0
+        if not skip and name in self.getMetaobjIds(sort=0):
+          if name == self.oCurrNode.meta_id:
             _globals.writeBlock( self, "[Builder.OnEndElement]: object finished")
             
             ##### VersionManager ####
@@ -271,12 +264,17 @@ class Builder:
             
             # set parent node as current node
             self.oCurrNode = parent
+          else:
+            # tag name is unknown -> offer it to current object
+            if not self.oCurrNode.xmlOnUnknownEndTag(name):
+              _globals.writeLog( self, "[Builder.OnEndElement]: Unknown end-tag (/" + name + ")")  # current object did not accept tag!
+              raise ParseError("Unknown end-tag (" + name + ")")  # current object did not accept tag!
         
         else:
           # tag name is unknown -> offer it to current object
           if not self.oCurrNode.xmlOnUnknownEndTag(name):
             _globals.writeLog( self, "[Builder.OnEndElement]: Unknown end-tag (/" + name + ")")  # current object did not accept tag!
-            # raise ParseError("Unknown end-tag (" + name + ")")  # current object did not accept tag!
+            raise ParseError("Unknown end-tag (" + name + ")")  # current object did not accept tag!
 
 
     ############################################################################

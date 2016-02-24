@@ -960,7 +960,7 @@ class MyStack:
     # --------------------------------------------------------------------------
     def __init__(self):
       self.clear()
-        
+
     # --------------------------------------------------------------------------
     #  MyStack.__str__:
     #
@@ -986,6 +986,9 @@ class MyStack:
         return self._stack.pop()
       else:
         return None
+
+    def get_all(self):
+      return self._stack
 
     def get(self, i=0):
       if len(self._stack) > 0 and abs(i) < len(self._stack):

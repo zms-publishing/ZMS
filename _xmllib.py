@@ -230,14 +230,37 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
   self.dTagStack.push(tag)
   
   #-- VALUE-STACK
-  if sTagName == 'lang':
-    if self.dValueStack.size()==0:
-      self.dValueStack.push({})
-  elif sTagName == 'dictionary':
+  
+  #-- ITEM (DICTIONARY|LIST) --
+  #----------------------------
+  if sTagName in ['dict','dictionary']:
     self.dValueStack.push({})
   elif sTagName == 'list':
     self.dValueStack.push([])
-    
+  elif sTagName == 'item':
+    pass
+  
+  #-- DATA (IMAGE|FILE) --
+  #-----------------------
+  elif sTagName=='data':
+    pass
+  
+  #-- LANGUAGE --
+  #--------------
+  elif sTagName == 'lang':
+    if self.dValueStack.size()==0:
+      self.dValueStack.push({})
+  
+  #-- OBJECT-ATTRIBUTES --
+  #-----------------------
+  elif sTagName in self.getObjAttrs().keys():
+    pass
+  
+  #-- OTHERS --
+  #------------
+  else:
+    tag['skip'] = True
+  
   #-- Return
   return 1  # accept any unknown tag
 
@@ -248,66 +271,65 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
 def xmlOnUnknownEndTag(self, sTagName):
   
   #-- TAG-STACK
+  skip = len(filter(lambda x:x.get('skip'),self.dTagStack.get_all())) > 0
   tag = self.dTagStack.pop()
   name = tag['name']
-  if name==sTagName:
-    
-    attrs = _globals.unencode( tag['attrs'])
-    cdata = _globals.unencode( tag['cdata'])
-    
-    #-- ITEM (DICTIONARY|LIST) --
-    #----------------------------
-    if sTagName in ['list','dictionary']:
-      pass
-    elif sTagName in ['item']:
+  if name != sTagName: return 0  # don't accept any unknown tag
+  
+  attrs = _globals.unencode( tag['attrs'])
+  cdata = _globals.unencode( tag['cdata'])
+  
+  #-- ITEM (DICTIONARY|LIST) --
+  #----------------------------
+  if sTagName in ['dict','dictionary']:
+    pass
+  elif sTagName == 'list':
+    pass
+  elif sTagName == 'item':
+    item = cdata
+    if tag['dValueStack'] < self.dValueStack.size():
+      item = self.dValueStack.pop()
+    else:
       item = cdata
-      if tag['dValueStack'] < self.dValueStack.size():
-        item = self.dValueStack.pop()
+    item = getXmlTypeSaveValue(item,attrs)
+    value = self.dValueStack.pop()
+    if type(value) is dict:
+      key = attrs.get( 'key')
+      value[key] = item
+    if type(value) is list:
+      value.append(item)
+    self.dValueStack.push(value)
+  
+  #-- DATA (IMAGE|FILE) --
+  #-----------------------
+  elif sTagName=='data':
+    value = attrs
+    if cdata is not None and len( cdata) > 0:
+      filename = attrs.get( 'filename')
+      content_type = attrs.get( 'content_type')
+      if content_type.find('text/') == 0:
+        data = cdata
       else:
-        item = cdata
-      item = getXmlTypeSaveValue(item,attrs)
-      value = self.dValueStack.pop()
-      if type(value) is dict:
-        key = attrs.get( 'key')
-        value[key] = item
-      if type(value) is list:
-        value.append(item)
-      self.dValueStack.push(value)
-    
-    #-- DATA (IMAGE|FILE) --
-    #-----------------------
-    elif sTagName=='data':
-      value = attrs
-      if cdata is not None and len( cdata) > 0:
-        filename = attrs.get( 'filename')
-        content_type = attrs.get( 'content_type')
-        if content_type.find('text/') == 0:
-          data = cdata
-        else:
-          data = _globals.hex2bin(cdata)
-        value['data'] = data
-      self.dValueStack.push(value)
-    
-    #-- LANGUAGE --
-    #--------------
-    elif sTagName=='lang':
-      lang = attrs.get( 'id', self.getPrimaryLanguage())
-      if self.dValueStack.size()==1:
-        item = cdata
-      else:
-        item = self.dValueStack.pop()
-      values = self.dValueStack.pop()
-      values[lang] = item
-      self.dValueStack.push(values)
-      ##### Object State ####
-      req = {}
-      req['lang'] = lang
-      req['AUTHENTICATED_USER'] = 'xml'
-      self.setObjStateNew(req,reset=0)
-    
-    #-- OBJECT-ATTRIBUTES --
-    #-----------------------
-    elif sTagName in self.getObjAttrs().keys():
+        data = _globals.hex2bin(cdata)
+      value['data'] = data
+    self.dValueStack.push(value)
+  
+  #-- LANGUAGE --
+  #--------------
+  elif sTagName=='lang':
+    lang = attrs.get( 'id', self.getPrimaryLanguage())
+    if self.dValueStack.size()==1:
+      item = cdata
+    else:
+      item = self.dValueStack.pop()
+    values = self.dValueStack.pop()
+    values[lang] = item
+    self.dValueStack.push(values)
+  
+  #-- OBJECT-ATTRIBUTES --
+  #-----------------------
+  elif sTagName in self.getObjAttrs().keys():
+    if not skip:
       obj_attr = self.getObjAttr(sTagName)
       
       #-- DATATYPE
@@ -397,25 +419,23 @@ def xmlOnUnknownEndTag(self, sTagName):
       
       # Clear value stack.
       self.dValueStack.clear()
-    
-    #-- OTHERS --
-    #------------
-    else:
-      value = self.dTagStack.pop()
-      if value is None: value = {'cdata':''}
-      cdata = value.get('cdata','')
-      cdata += '<' + tag['name'] 
-      for attr_name in attrs.keys():
-        attr_value = attrs.get( attr_name)
-        cdata += ' ' + attr_name + '="' + attr_value + '"'
-      cdata += '>' + tag['cdata'] 
-      cdata += '</' + tag['name'] + '>'
-      value['cdata'] = cdata
-      self.dTagStack.push(value)
-    
-    return 1 # accept matching end tag
+      
+  #-- OTHERS --
+  #------------
   else:
-    return 0  # don't accept any unknown tag
+    value = self.dTagStack.pop()
+    if value is None: value = {'cdata':''}
+    cdata = value.get('cdata','')
+    cdata += '<' + tag['name'] 
+    for attr_name in attrs.keys():
+      attr_value = attrs.get( attr_name)
+      cdata += ' ' + attr_name + '="' + attr_value + '"'
+    cdata += '>' + tag['cdata'] 
+    cdata += '</' + tag['name'] + '>'
+    value['cdata'] = cdata
+    self.dTagStack.push(value)
+  
+  return 1 # accept matching end tag
 
 
 """

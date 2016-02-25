@@ -18,10 +18,8 @@
 
 
 # Imports.
-from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
-from Products.PythonScripts import PythonScript
 import copy
 import urllib
 import zope.interface
@@ -352,6 +350,7 @@ class ZMSMetacmdProvider(
       if context is not None:
         request = context.REQUEST
         auth_user = request['AUTHENTICATED_USER']
+        user_roles = context.getUserRoles(auth_user)
         absolute_url = '/'.join(list(context.getPhysicalPath())+[''])
         l = []
         for metaCmd in metaCmds:
@@ -362,7 +361,7 @@ class ZMSMetacmdProvider(
           if canExecute:
             hasRole = False
             hasRole = hasRole or '*' in metaCmd['roles']
-            hasRole = hasRole or len(context.intersection_list(context.getUserRoles(auth_user),metaCmd['roles'])) > 0
+            hasRole = hasRole or len(context.intersection_list(user_roles,metaCmd['roles'])) > 0
             hasRole = hasRole or auth_user.has_role('Manager')
             canExecute = canExecute and hasRole
           if canExecute:

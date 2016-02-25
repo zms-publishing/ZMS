@@ -16,9 +16,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
-# Product imports.
-import _globals
-
 def zmi_actions(container, context, attr_id='e'):
   """
   Returns list of actions.
@@ -55,6 +52,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
   lang = REQUEST['lang']
   auth_user = REQUEST['AUTHENTICATED_USER']
   userdef_roles = list(container.getRootElement().aq_parent.userdefined_roles())+list(container.getRootElement().userdefined_roles())
+  user_roles = filter(lambda x: x in userdef_roles,context.getUserRoles(auth_user,resolve=False))
   
   repetitive = objAttr.get('repetitive',0)==1
   mandatory = objAttr.get('mandatory',0)==1
@@ -84,7 +82,6 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
         else:
           can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
           if can_delete:
-            user_roles = filter(lambda x: x in userdef_roles,context.getUserRoles(auth_user,resolve=False))
             ob_access = context.getObjProperty('manage_access',REQUEST)
             can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( container.intersection_list( ob_access.get( 'delete'), user_roles)) > 0))
             metaObj = container.getMetaobj( context.meta_id)
@@ -142,6 +139,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   auth_user = REQUEST['AUTHENTICATED_USER']
   absolute_url = '/'.join(list(container.getPhysicalPath())+[''])
   userdef_roles = list(container.getRootElement().aq_parent.userdefined_roles())+list(container.getRootElement().userdefined_roles())
+  user_roles = filter(lambda x: x in userdef_roles,container.getUserRoles(auth_user,resolve=False))
   
   repetitive = objAttr.get('repetitive',0)==1
   mandatory = objAttr.get('mandatory',0)==1
@@ -160,7 +158,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
         elif meta_id in metaObjIds:
           meta_ids.append( meta_id)
         else:
-          _globals.writeError( container, '[zmi_insert_actions]: %s.%s contains invalid meta_id \'%s\''%(container.meta_id,objAttr['id'],meta_id))
+          container.writeError( '[zmi_insert_actions]: %s.%s contains invalid meta_id \'%s\''%(container.meta_id,objAttr['id'],meta_id))
     else:
       meta_ids.append( objAttr['type'])
     for meta_id in meta_ids:
@@ -171,10 +169,9 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
         try:
           ob_access = container.dt_exec(ob_manage_access['custom'])
         except:
-          _globals.writeError( container, '[zmi_insert_actions]: can\'t get manage_access from %s'%meta_id)
+          container.writeError( '[zmi_insert_actions]: can\'t get manage_access from %s'%meta_id)
       can_insert = True
       if objAttr['type']=='*':
-        user_roles = filter(lambda x: x in userdef_roles,container.getUserRoles(auth_user,resolve=False))
         can_insert = can_insert and ((type(ob_access) is not dict) or (ob_access.get( 'insert') is None) or (len( container.intersection_list( ob_access.get( 'insert'), user_roles)) > 0))
         mo_access = metaObj.get('access',{})
         mo_access_deny = mo_access.get('insert_deny',[])

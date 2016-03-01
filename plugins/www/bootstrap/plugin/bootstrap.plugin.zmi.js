@@ -1138,7 +1138,7 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 				+ ' data-page-physical-path="'+page_physical_path+'"'
 				+ ' data-anchor="'+anchor+'"'
 				+ ' data-page-is-page="'+page_is_page+'"'
-				+ ' data-page-titlealt="'+page_titlealt.replace(/"/g,'\\"').replace(/'/g,"\\'")+'"'
+				+ ' data-page-titlealt="'+page_titlealt.replace(/"/g,'').replace(/'/g,'')+'"'
 				+ ' onclick="return zmiSelectObject(this)">';
 		if (page_is_page) {
 			html += page_display_icon+' ';

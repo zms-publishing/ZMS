@@ -307,9 +307,15 @@ class VersionItem:
       # States.
       self.__work_state__ = _globals.MyClass()
       # Create new work-version.
-      if len(self.objectValues(['ZMSAttributeContainer']))==0:
+      attr_containers = self.objectValues(['ZMSAttributeContainer'])
+      if len(attr_containers)==0:
         newAttrCntnr = _zmsattributecontainer.manage_addZMSAttributeContainer(self)
         _globals.writeLog( self, "[initializeWorkVersion]: Create new work-version: %s"%newAttrCntnr.id)
+        self.version_work_id = newAttrCntnr.id
+        self.version_live_id = None
+      elif getattr(self,'version_work_id',None) is None:
+        newAttrCntnr = attr_containers[0]
+        _globals.writeLog( self, "[initializeWorkVersion]: Reassign new work-version: %s"%newAttrCntnr.id)
         self.version_work_id = newAttrCntnr.id
         self.version_live_id = None
 

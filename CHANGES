@@ -2,11 +2,20 @@
 
 == 3.3.0dev (in development) ==
  
-  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3525&limit=200 latest changes...]
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3594&limit=200 latest changes...]
 
-== 3.2.3 (2016-02-24) ==
- 
+== 3.2.4 (2016-04-27) ==
+
   * TBA
+
+== 3.2.3 (2016-03-02) ==
+ 
+  * Added cross-language linking
+  * Cached config requests
+  * Added tab-type actions to expand the zmi main menu with custom tabs (IMPORTANT: please import default.metacmd to restore menu-tabs)
+  * Improved gui responsiveness
+  * Improved gui performance (loading context menu faster)
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=3593&stop_rev=3525&limit=200 more in 3.2.3...]
 
 == 3.2.2 (2015-12-30) ==
 

@@ -8,7 +8,7 @@
 		<tal:block tal:define="dummy0 python:request.set('f_zmiBlobJs',False)"></tal:block>
 	</tal:block>
 
-	<div class="zmi-file" tal:attributes="id python:'zmi-file-%s'%elName">
+	<div class="zmi-file" tal:attributes="id python:'zmi-file-%s'%elName;data-type python:str(here.operator_gettype(value))">
 		<input type="hidden" tal:attributes="name python:'exists_%s'%elName; value python:request.get('ZMS_INSERT',None) is None and value not in [None,'']">
 		<input type="hidden" tal:attributes="name python:'del_%s'%elName" value="0">
 
@@ -30,6 +30,7 @@
 		</tal:block>
 
 			<div class="zmi-input-file"
+					tal:attributes="title python:(value is not None and here.operator_gettype(value) is str) and 'File uploaded: %s'%value or None"
 					tal:condition="python:request['lang'] in here.getLanguages(request)"
 					tal:define="dummy0 python:request.set('ZMS_ALLOWED_EXTENSIONS',[])"
 					tal:content="structure python:here.getPlugin('fileupload/'+here.getConfProperty('ZMS.input.file.plugin','input_file')+'/input.zpt',{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.file.maxlength',''),'key':key})">

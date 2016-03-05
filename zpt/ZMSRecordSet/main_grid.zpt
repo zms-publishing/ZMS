@@ -145,10 +145,10 @@
 		</div>
 	</td>
 	<tal:block tal:repeat="metaObjAttr metaObjAttrs"
-		><tal:block tal:define="global 
-				elValue python:here.operator_getitem(record,metaObjAttr['id'],metaObjAttr.get('default'),ignorecase=True);
+		><tal:block tal:define="elName python:metaObjAttr['id'];
+				elValue python:here.operator_getitem(record,elName,metaObjAttr.get('default'),ignorecase=True);
 				elType python:metaObjAttr.get('type','string')"
-		><td class="data"><div tal:attributes="class elType"
+		><td class="data" tal:attributes="class python:'data data-%s'%(elName)"><div tal:attributes="class elType"
 			><tal:block tal:condition="python:elType=='url'" tal:define="global target python:here.getLinkObj(elValue)"
 				><tal:block tal:condition="python:target is not None"
 					><tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block
@@ -177,13 +177,18 @@
 					<img src="data:image/png;base64," tal:attributes="data-previewbase64 elValue" width="32" height="32" />
 				</tal:block
 			></tal:block
+			><tal:block tal:condition="python:elType in ['file'] and elValue is not None"
+				><i class="icon-download-alt"></i> <tal:block 
+					tal:on-error="string:<!-- FILENAME-ERROR -->" 
+					tal:content="structure python:(here.operator_gettype(elValue) is not str) and elValue.getFilename() or unicode(str(elValue),'utf-8')">filename</tal:block
+			></tal:block
 			><tal:block tal:condition="python:elType in ['date','datetime']"
 				><tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%elType).upper())">elValue</tal:block
 			></tal:block
 			><tal:block tal:condition="python:elType in ['float','int']"
 				><tal:block tal:content="elValue">elValue</tal:block
 			></tal:block
-			><tal:block tal:condition="not:python:elType in ['boolean','date','datetime','float','html','image','int','object','url','None']"
+			><tal:block tal:condition="not:python:elType in ['boolean','date','datetime','float','html','image','file','int','object','url','None']"
 				><tal:block tal:condition="python:elValue is not None" 
 					tal:on-error="string:<!-- UTF-8-ERROR -->" 
 					tal:content="structure python:unicode(str(elValue),'utf-8')">elValue</tal:block

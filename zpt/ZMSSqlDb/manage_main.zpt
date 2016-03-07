@@ -54,6 +54,7 @@
 				values python:{}">
 		<tal:block tal:repeat="column python:entity['columns']">
 			<tal:block tal:define="dummy0 python:here.operator_setitem(values,['','blob_'][int(column.has_key('blob'))]+column['id'],request.get(column['id'].lower(),None))"></tal:block>
+      <tal:block tal:condition="python:column.has_key('blob') and int(request.get('del_%s'%column['id'].lower(),0))==1"><tal:block tal:define="dummy0 python:here.operator_setitem(values,'delete_blob_%s'%column['id'],True)"></tal:block></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['insert']">
 			recordSet_Insert=<tal:block tal:content="python:here.recordSet_Insert(tablename=entity['id'],values=values, update_intersections=True)"

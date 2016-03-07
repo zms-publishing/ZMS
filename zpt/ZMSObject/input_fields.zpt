@@ -18,15 +18,20 @@
 			<tal:block tal:condition="not:python:request.get('ZMS_INSERT',False)">
 				<div class="pull-left">
 					<tal:block tal:define="actions python:
-						[[],[(here.getZMILangStr('BTN_UNDO'),'../manage_undoObjs?ids:list=%s'%here.id,'icon-undo')]][here.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request)]+
-						here.filtered_workflow_actions()">
+						[[],[(here.getZMILangStr('BTN_UNDO'),'../manage_undoObjs?ids:list=%s'%here.id,'icon-undo')]][here.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request)]
+						+map(lambda x:[x['name'],'manage_executeMetacmd',x.get('icon_clazz'),x.get('title')],filter(lambda x:x['stereotype']=='',here.getMetaCmds(here,'')))
+						+here.filtered_workflow_actions()">
 						<div class="btn-group zmi-action" tal:condition="python:len(actions)>0" tal:attributes="title python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">
 							<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown" tal:content="structure python:here.zmi_icon(name='icon-chevron-down')"></button>
 							<ul class="dropdown-menu">
 								<tal:block tal:repeat="action actions">
-									<li tal:condition="python:len(action)==3">
+									<li tal:condition="python:action[0].startswith('-----') and action[0].endswith('-----')" class="dropdown-header">
+										<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-down')">the icon</tal:block>
+										<tal:block tal:content="structure python:action[0][5:-5].strip()">the title</tal:block>
+									</li>
+									<li tal:condition="not:python:action[0].startswith('-----') and action[0].endswith('-----')">
 										<a tal:attributes="href python:'javascript:$ZMI.actionList.exec($(\'.attr_last_modified\'),\'%s\',\'%s\')'%(action[0],action[1])">
-											<tal:block tal:content="structure python:here.zmi_icon(name=action[2])">the icon</tal:block>
+											<tal:block tal:condition="python:len(action)>=3 and action[2] is not None" tal:content="structure python:here.zmi_icon(name=action[2])">the icon</tal:block>
 											<tal:block tal:content="structure python:action[0]">the title</tal:block>
 										</a>
 									</li>

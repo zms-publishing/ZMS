@@ -582,7 +582,7 @@ class ObjAttrs:
     def getObjAttrValue(self, obj_attr, REQUEST):
       datatype = obj_attr['datatype_key']
       obj_vers = self.getObjVersion(REQUEST)
-      lang = REQUEST.get('lang',self.getPrimaryLanguage())
+      lang = self.get_request_context(REQUEST,'lang',self.getPrimaryLanguage())
       while True:
         value = self._getObjAttrValue(obj_attr,obj_vers,lang)
         empty = False
@@ -729,7 +729,7 @@ class ObjAttrs:
       for key in ['active','attr_active_start','attr_active_end']:
         if obj_attrs.has_key(key):
           obj_attr = obj_attrs[key]
-          lang = REQUEST.get('lang',self.getPrimaryLanguage())
+          lang = self.get_request_context(REQUEST,'lang',self.getPrimaryLanguage())
           while True:
             value = self._getObjAttrValue(obj_attr,obj_vers,lang)
             empty = False

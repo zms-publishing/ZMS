@@ -220,6 +220,34 @@ class ZMSObject(ZMSItem.ZMSItem,
       return 'oid:%s'%oid
 
     # --------------------------------------------------------------------------
+    #  ZMSObject.set_request_context:
+    # --------------------------------------------------------------------------
+    def set_request_context(self, REQUEST, d):
+      prefix = '%s_'%(self.id_quote(self.get_oid()))
+      # Remove old context-values.
+      for key in filter(lambda x:x.startswith(prefix),REQUEST.keys()):
+        _globals.writeLog(self,"[set_request_context]: DEL "+key)
+        REQUEST.set(key,None)
+      # Set new context-values.
+      for key in d.keys():
+        context = prefix+key
+        value = d[key]
+        _globals.writeLog(self,"[set_request_context]: SET "+context+"="+str(value))
+        REQUEST.set(context,value)
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.get_request_context:
+    # --------------------------------------------------------------------------
+    def get_request_context(self, REQUEST, key, defaultValue=None):
+      context = '%s_%s'%(self.id_quote(self.get_oid()),key)
+      # Get context-value.
+      value = REQUEST.get(context,None)
+      if value is not None:
+        _globals.writeLog(self,"[get_request_context]: GET "+context+"="+str(value))
+        return value 
+      return REQUEST.get(key,defaultValue)
+
+    # --------------------------------------------------------------------------
     #  ZMSObject.title:
     # --------------------------------------------------------------------------
     def title(self):

@@ -376,9 +376,17 @@ class ZReferableItem:
               if ob is None:
                 break
         return ob
-      if url.find(';')>0:
+      # Params.
+      ref_params = {}
+      if url.find(';') > 0:
+        ref_params = dict(re.findall(';(\w*)=(\w*)',url[url.find(';'):-1]))
         url = '{$%s}'%url[2:url.find(';')]
+      # Get object.
       ob = self.evalExtensionPoint('ExtensionPoint.ZReferableItem.getLinkObj',default,url=url)
+      # Prepare request
+      if ob is not None:
+        request = self.REQUEST
+        ob.set_request_context(request,ref_params)
     return ob
 
 

@@ -190,9 +190,7 @@ class ZMSLinkElement(ZMSCustom):
     #  ZMSLinkElement.getRefObj:
     # --------------------------------------------------------------------------
     def getRefObj(self):
-      coverage = self.getDCCoverage()
-      req = {'preview':'preview','lang':coverage[coverage.find('.')+1:]}
-      ref_obj = self.getLinkObj( self.getRef(), req)
+      ref_obj = self.getLinkObj(self.getRef())
       if ref_obj == self:
         ref_obj = None
       if ref_obj is not None and ref_obj.meta_type == 'ZMSLinkElement':

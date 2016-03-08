@@ -170,7 +170,7 @@
 			offset=0,
 			form_action=request['URL'],
 			url_params={'qentity':request.get('qentity')},
-			record_handler=here.getEntityRecordHandler(entity['id']))">
+			record_handler=here.getEntityRecordHandler(entity['id'],['blob']))">
 		metaobj_recordset_main_grid
 	</tal:block>
 </tal:block>

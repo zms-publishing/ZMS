@@ -772,7 +772,7 @@ class ZMSGlobals:
         try:
           colormap = self.parse_stylesheet()
         except:
-          # Destroy Colorrmap on Error
+          # Destroy Colormap on Error
           colormap = {}
           self.setConfProperty('ZMS.colormap',colormap)
       return colormap

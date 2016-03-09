@@ -2008,7 +2008,7 @@ $(function(){
 									attr_ref = attr_ref.substr(0,attr_ref.indexOf('}'));
 									attr_ref += ';lang='+v+'}';
 								}
-								$input.val(attr_ref);
+								$input.val(attr_ref).change();
 								$(".input-group-addon button .icon-flag",$inputgroup).removeClass("text-muted text-primary").addClass(v==""?"text-muted":"text-primary");
 								$(".input-group-addon .dropdown-menu li a",$inputgroup).each(function() {
 										$(".icon-check",this).toggleClass("icon-check-empty icon-check");
@@ -2355,7 +2355,7 @@ return constraints
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.17]]></item>
+          <item key="revision"><![CDATA[3.1.18]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4853,7 +4853,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.3.1]]></item>
+          <item key="revision"><![CDATA[3.3.2]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

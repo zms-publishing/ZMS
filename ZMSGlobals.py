@@ -769,7 +769,12 @@ class ZMSGlobals:
     def get_colormap(self):
       colormap = self.getConfProperty('ZMS.colormap',None)
       if colormap is None:
-        colormap = self.parse_stylesheet()
+        try:
+          colormap = self.parse_stylesheet()
+        except:
+          # Destroy Colorrmap on Error
+          colormap = {}
+          self.setConfProperty('ZMS.colormap',colormap)
       return colormap
 
     #)

@@ -52,7 +52,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
   lang = REQUEST['lang']
   auth_user = REQUEST['AUTHENTICATED_USER']
   userdef_roles = list(container.getRootElement().aq_parent.userdefined_roles())+list(container.getRootElement().userdefined_roles())
-  user_roles = filter(lambda x: x in userdef_roles,context.getUserRoles(auth_user,resolve=False))
+  user_roles = filter(lambda x: x in userdef_roles,container.getUserRoles(auth_user,resolve=False))
   
   repetitive = objAttr.get('repetitive',0)==1
   mandatory = objAttr.get('mandatory',0)==1

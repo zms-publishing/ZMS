@@ -51,14 +51,14 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
   REQUEST = container.REQUEST
   lang = REQUEST['lang']
   auth_user = REQUEST['AUTHENTICATED_USER']
-  userdef_roles = list(container.getRootElement().aq_parent.userdefined_roles())+list(container.getRootElement().userdefined_roles())
-  user_roles = filter(lambda x: x in userdef_roles,container.getUserRoles(auth_user,resolve=False))
   
   repetitive = objAttr.get('repetitive',0)==1
   mandatory = objAttr.get('mandatory',0)==1
   
   #-- Action: Edit.
   if context is not None:
+    userdef_roles = list(container.getRootElement().aq_parent.userdefined_roles())+list(container.getRootElement().userdefined_roles())
+    user_roles = filter(lambda x: x in userdef_roles,context.getUserRoles(auth_user,resolve=False))
     can_edit = True
     constraints = context.attr('check_constraints')
     if type(constraints) is dict and 'RESTRICTIONS' in constraints.keys():

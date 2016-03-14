@@ -1368,6 +1368,12 @@ td .btn-group .checkbox.split-left.btn input {
 	opacity:0.85;
 }
 
+.dropdown-menu.scrollable-menu {
+	height: auto;
+	max-height: 200px;
+	overflow-x: hidden;
+}
+
 li.dropdown-submenu ul.dropdown-menu li a img {
 	margin-right:0.5em
 }

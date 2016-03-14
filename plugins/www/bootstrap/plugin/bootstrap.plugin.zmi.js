@@ -646,7 +646,7 @@ ZMI.prototype.initInputFields = function(container) {
 					+ '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
 					+ $ZMI.icon('icon-plus')
 					+ '</button>'
-					+ '<ul class="dropdown-menu">';
+					+ '<ul class="dropdown-menu scrollable-menu">';
 				var c = 0;
 				$("option",$select).each(function() {
 					var v = $(this).attr('value');

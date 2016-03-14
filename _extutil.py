@@ -35,7 +35,7 @@ EXTENSIONS = {
                       'Handle continuous delivery by automation of deployment and installation tasks',
                       'https://pypi.python.org/pypi/zms3.deployment',
                       'developed by SNTL Publishing'],
-  'zms3.themes': ['0.1.2',
+  'zms3.themes': ['0.2.0',
                   'Additional Themes based on Start Bootstrap',
                   'https://bitbucket.org/zms3/themes',
                   'developed by SNTL Publishing'],

@@ -482,6 +482,8 @@ ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId{text-alig
 ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS{float:left;position:absolute}
 ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS h1{padding:.35em 0 0 1em;font-size:large;margin-top:0}
 table.table tbody tr td.data > div{white-space:nowrap;overflow:hidden;max-width:50em;max-height:30px;padding:0;margin:0}
+table.table tbody tr td.data > div.string,table.table tbody tr td.data > div.text{text-overflow:ellipsis;max-width:36em}
+table.table tbody tr td.data > div.file{text-overflow:ellipsis;max-width:12em}
 table.table.zmi-sortable select.zmi-sort{direction:rtl;width:4em}
 table.table.zmi-sortable input{margin-bottom:10px}
 table.table.zmi-sortable .input-group input{margin-bottom:0px}
@@ -609,7 +611,7 @@ div.single-line{width:100%}
 div.single-line.input-append{width:100%}
 div.single-line textarea{overflow:hidden;font-family:"Courier New",Courier,monospace;width:100%}
 div.pull-left div.single-line.input-append.zmi-nodes textarea{margin-left:1em}
-@media(min-width:767px){.zmi .ZMSRecordSet .filters label,.zmi.ZMSSqlDb .filters label,.zmi .ZMSRecordSet .filters input,.zmi.ZMSSqlDb .filters input,.zmi .ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select{display:block}}
+@media(max-width:767px){.zmi .ZMSRecordSet .filters label,.zmi.ZMSSqlDb .filters label,.zmi .ZMSRecordSet .filters input,.zmi.ZMSSqlDb .filters input,.zmi .ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select{display:block}}
 .zmi.metas .row_tableheader{background:#EEEEEE}
 .zmi.metas .row_tableheader th{font-weight:normal}
 .zmi.metas .row_tableheader th.meta-sort{font-weight:bold;color:#888}

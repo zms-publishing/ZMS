@@ -245,11 +245,11 @@ ul.portalClients .zmi-item .center small {
 .ui-autocomplete-input {
 	background:white url(/misc_/zms/ico_autocomplete.gif) right bottom no-repeat;
 }
-.form-multiselect .pull-left {
-	padding-right:.5em;
+.twosided_multiselect > .col-xs-5:first-child select {
+	background: #f8f8f8;
 }
-.form-multiselect select {
-	height:8.4em;
+.twosided_multiselect.searchable > .col-xs-2 {
+	padding-top: 2.35em;
 }
 .form-small {
 	font-size:smaller;

@@ -116,7 +116,12 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
     p['hl.fragsize'] = 200;
     p['page_size'] = pageSize;
     p['page_index'] = pageIndex;
-    var baseurl = zmiParams['base_url'];
+    try {
+        var baseurl = zmiParams['base_url'];
+    } catch(e) {
+        console.log(e);
+        var baseurl = window.location['pathname'].split('content')[0];
+    }
     if (baseurl.indexOf("/content")>0) {
       baseurl = baseurl.substr(0,baseurl.indexOf("/content")+"/content".length);
     }

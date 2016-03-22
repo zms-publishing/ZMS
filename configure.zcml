@@ -16,8 +16,8 @@
       zcml:condition="installed Products.CMFCore"
       >
     <cmf:registerDirectory name="myZMStheme33" recursive="True" />
-    <!-- cmf:registerDirectory name="C:\\home\\zope\\unify" recursive="True" / -->
-    <!-- cmf:registerDirectory name="C:\\home\\zope\\common" recursive="True" / -->
+    <!-- cmf:registerDirectory name="C:\\home\\zope\\zms-skins\\mytemplateset" recursive="True" / -->
+    <!-- cmf:registerDirectory name="/home/zope/zms-skins/mytemplateset" recursive="True" / -->
     <include zcml:condition="installed zms3.themes" package="zms3.themes" />
   </configure>
 

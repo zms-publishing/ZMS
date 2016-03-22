@@ -987,10 +987,15 @@ except:
                 <dictionary>
                   <item key="custom">
                     <data content_type="text/css" filename="default.css" type="file"><![CDATA[
+/*--------- .ZMSGraphic --------------*/
 a.fancybox img {
 	padding:1px 1px 21px 1px;
 	background:transparent url(/misc_/zms/zoom.gif) bottom right no-repeat;
 	background-color:transparent;
+}
+div.ZMSGraphic {
+	background-color: transparent;
+	margin: 1em 0;
 }
 .zmi div.ZMSGraphic {
 	margin:0;
@@ -1006,15 +1011,21 @@ div.ZMSGraphic.center {
 }
 div.ZMSGraphic.floatleft {
 	float:left;
-	margin-right:10px;
+	margin-right:2em;
 }
 div.ZMSGraphic.floatright {
 	float:right;
-	margin-left:10px;
+	margin-left:2em;
+}
+div.ZMSGraphic .alignleft {
+	margin-right:10px;
 }
 div.ZMSGraphic.center div.graphic {
 	text-align:center;
 	margin:0px auto;
+}
+div.graphic {
+	max-width:100% !important;
 }
 div.graphic.alignleft {
 	float:left;
@@ -1026,6 +1037,27 @@ div.graphic.alignright {
 }
 div.ZMSGraphic div.text {
 	padding: 4px;
+}
+.ZMSGraphic .text {
+	background-color:transparent;
+	padding:.5em 1em 0em 1em;
+	font-size:smaller;
+	font-style:italic;
+}
+.ZMSGraphic .graphic {
+	margin-bottom: 7px;
+}
+.ZMSGraphic.center div.graphic  {
+	margin:0 auto
+}
+.ZMSGraphic.left .graphic.alignleft {
+	float:left;
+	margin-right:15px;
+}
+.ZMSGraphic.left .text,
+.ZMSGraphic.right .graphic,
+.ZMSGraphic.right .text {
+	width: auto !important;
 }
 /*-- ## FF Patch ## --*/
 div.ZMSGraphic.right div.graphic {
@@ -1049,6 +1081,7 @@ a.zoom img.zoom {
 a.superzoom img.superzoom {
 	background-image: url(/misc_/zms/superzoom.gif);
 }
+/*--------- /.ZMSGraphic --------------*/
 ]]></data>
                   </item>
                   <item key="id"><![CDATA[f_css_defaults]]></item>
@@ -1223,7 +1256,7 @@ return ''
 		displaytype   python:zmscontext.dctDisplaytype.get(str(zmscontext.attr('displaytype')),'left');
 		align         python:zmscontext.attr('align');
 		textalign     python:zmscontext.attr('textalign');
-		imgclass      python:'img';
+		imgclass      python:'img img-responsive';
 		imgurl        python:zmscontext.getLinkUrl(zmscontext.attr('attr_url'),request);
 		isimghires    python:zmscontext.attr('imghires');
 		imgthumb      python:request['URL'].find('/manage')>0;
@@ -1288,7 +1321,7 @@ return ''
           <item key="id"><![CDATA[ZMSGraphic]]></item>
           <item key="name"><![CDATA[ZMSGraphic]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.3.1]]></item>
+          <item key="revision"><![CDATA[3.3.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

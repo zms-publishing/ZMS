@@ -8,7 +8,8 @@ CKEDITOR.editorConfig = function( config ) {
 	// For the complete reference:
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
 	config.emailProtection = 'encode';
-	config.forcePasteAsPlainText = true
+	// config.forcePasteAsPlainText = true
+	config.skin = 'bootstrapck';
 
 	// The toolbar groups arrangement, optimized for two toolbar rows.
 	config.toolbarGroups = [

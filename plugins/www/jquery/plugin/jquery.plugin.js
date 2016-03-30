@@ -227,7 +227,7 @@
 		
 		return this;
 	};
-	
+
 	Plugin.prototype.run = function(){
 		var that = this;
 		for (var i=0;i<this.tmp_callback.length;i++) {
@@ -238,7 +238,14 @@
 		}
 		this.tmp_callback = [];
 	}
-	
+
+	Plugin.prototype.set = function(settings){
+		var that = this;
+		for (var key in settings) {
+			that[key] = settings[key];
+		}
+	}
+
 	Plugin.prototype.get = function(){
 		var that = this,
 			files = (typeof this.files == 'string') ? [this.files] : this.files,

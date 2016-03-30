@@ -616,14 +616,14 @@ ZMI.prototype.initInputFields = function(container) {
 			}
 			$(this).addClass('form-initialized');
 			// Multiselect
-				$.plugin('multiselect',{
-					context: context,
-					files: [
-						$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js')
-					]});
-				$.plugin('multiselect').get("select.zmi-select[multiple]:not(.hidden)",function(){
-						$ZMI.multiselect(context);
-					});
+			$.plugin('multiselect',{
+				files: [
+					$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js')
+				]});
+			$.plugin('multiselect').set({context:context});
+			$.plugin('multiselect').get("select.zmi-select[multiple]:not(.hidden)",function(){
+					$ZMI.multiselect(context);
+				});
 			// Button-Clicked
 			$ZMI.writeDebug("zmiInitInputFields: submit["+$('input[type="submit"],button[type="submit"]',context).length+"]");
 			$('input[type="submit"],button[type="submit"]',context)

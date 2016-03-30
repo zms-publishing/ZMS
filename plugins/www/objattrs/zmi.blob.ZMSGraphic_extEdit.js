@@ -77,6 +77,7 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 							$('input#ZMSGraphic_extEdit_width').val(w)
 								.keyup(function(){
 										var w = parseInt($(this).val());
+										$('input#ZMSGraphic_extEdit_width').val(w);
 										if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
 											var v = w/ZMSGraphic_act_width;
 											var h = Math.round(v*ZMSGraphic_act_height);
@@ -88,6 +89,7 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 							$('input#ZMSGraphic_extEdit_height').val(h)
 								.keyup(function(){
 										var h = parseInt($(this).val());
+										$('input#ZMSGraphic_extEdit_height').val(h);
 										if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
 											var v = h/ZMSGraphic_act_height;
 											var w = Math.round(v*ZMSGraphic_act_width);

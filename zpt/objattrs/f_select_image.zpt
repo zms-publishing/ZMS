@@ -12,6 +12,9 @@
 		<div class="ui-helper-hidden">
 			<div id="ZMSGraphic_extEdit_actions">
 				<table class="table">
+				<colgroup>
+					<col width="50px"/>
+				</colgroup>
 				<tr>
 					<td colspan="2">
 						<div class="form-inline">
@@ -40,7 +43,7 @@
 						</div>
 						<div id="ZMSGraphic_extEdit_vslider" class="vslider"></div>
 					</td>
-					<td>
+					<td style="background-color:#F5F5F5">
 						<div id="ZMSGraphic_extEdit_image">
 							<img src="/misc_/zms/spacer.gif" alt="" border="0" />
 						</div>

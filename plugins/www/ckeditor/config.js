@@ -1,6 +1,6 @@
 /**
- * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.html or http://ckeditor.com/license
+ * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
 CKEDITOR.editorConfig = function( config ) {
@@ -40,7 +40,7 @@ CKEDITOR.editorConfig = function( config ) {
 		// Linkbutton
 		// Mediabutton
 		// @see http://stackoverflow.com/questions/1957156/ckeditor-how-to-add-a-custom-button-to-the-toolbar-that-calls-a-javascript-funct
-		'extraPlugins':'linkbutton,mediabutton,tableresize'
+		'extraPlugins':'linkbutton,mediabutton'
 	};
 	for (var k in defaultProperties) {
 		if (typeof confProperties[prefix+"."+k] == "undefined") {
@@ -57,15 +57,15 @@ CKEDITOR.editorConfig = function( config ) {
 	$ZMI.CKEDITOR_editorConfig(config);
 
 
-	//  Toolbar: @see http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar
+	//  Toolbar: @see http://docs.ckeditor.com/#!/guide/dev_toolbar
 	config.toolbar = 'ZMSBasicToolbar';
 	config.toolbar_ZMSBasicToolbar =[
 		['Format'],
 		['Bold','Italic','Underline','NumberedList','BulletedList','Outdent','Indent'],
 		['Undo','Redo'],
-		['Find','linkbutton','Link','Unlink'],
+		['Find','linkbutton','Unlink'],
 		['Image','Anchor','Table'],
-		['Source','ShowBlocks','Maximize','About']
+		['Source','ShowBlocks','Maximize','Scayt','About']
 	];
 	config.toolbar_ZMSBasicInsertToolbar =[
 		['Format'],

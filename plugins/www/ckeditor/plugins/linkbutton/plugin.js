@@ -6,7 +6,7 @@ CKEDITOR.plugins.add('linkbutton', {
 	init : function( editor )
 	{
 		editor.addCommand( 'linkbuttonDlg', new CKEDITOR.dialogCommand( 'linkbuttonDlg', {
-					allowedContent:'a[data-id,href]; img[data-id,src]'
+					allowedContent:'a[data-id,href,target]; img[data-id,src]'
 				}
 		) );
  
@@ -16,8 +16,7 @@ CKEDITOR.plugins.add('linkbutton', {
 				command : 'linkbuttonDlg',
 				icon: '/++resource++zms_/ckeditor/plugins/linkbutton/images/linkbutton.png'
 			});
-
-		CKEDITOR.dialog.add( 'linkbuttonDlg', this.path+'dialogs/link.js?ts='+new Date());
+		CKEDITOR.dialog.add( 'linkbuttonDlg', this.path+'dialogs/link.js');
 
 	}
 });

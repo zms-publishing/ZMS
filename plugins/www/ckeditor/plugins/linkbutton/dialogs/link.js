@@ -26,7 +26,18 @@ function zmiResizeObject() {
 
 CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 {
-	var plugin = CKEDITOR.plugins.link;
+	var plugin = CKEDITOR.plugins.linkbutton,
+			p = function() {
+					var a = this.getDialog(),
+						b = a.getContentElement("target", "popupFeatures"),
+						a = a.getContentElement("target", "linkTargetName"),
+						m = this.getValue();
+						if (b && a)
+							switch (b = b.getElement(), b.hide(), a.setValue(""), m) {
+								default:
+									a.setValue(m), a.getElement().hide()
+							}
+				};
 
 	var parseLink = function( editor, element )
 	{
@@ -42,8 +53,8 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 
 	return {
 		title : getZMILangStr('CAPTION_CHOOSEOBJ'),
-		minWidth : 250,
-		minHeight : 180,
+		minWidth : 280,
+		minHeight : 360,
 		contents : [
 			{
 				id : 'info',
@@ -92,6 +103,35 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 						html : '<div id="myDiv" class="zmi-sitemap" style="overflow:auto"></div>'
 					}
 				]
+			},
+			{
+				id : 'target',
+				label : linkLang.target,
+				title : linkLang.target,
+				elements : [{
+						type: "select",
+						id: "linkTargetType",
+						label: commonLang.target,
+						"default": "notSet",
+						style: "width : 100%;",
+						items: [
+								[commonLang.notSet, "notSet"],
+								[commonLang.targetNew, "_blank"],
+								[commonLang.targetTop, "_top"],
+								[commonLang.targetSelf, "_self"],
+								[commonLang.targetParent, "_parent"]
+							],
+						onChange: p,
+						setup: function(data) {
+								data.target && this.setValue(data.target.type || "notSet");
+								p.call(this)
+							},
+						commit: function(data) {
+								data.target || (data.target = {});
+								data.target.type = this.getValue()
+							}
+						}
+				]
 			}
 		],
 		onShow : function()
@@ -101,17 +141,20 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 				element = null;
 
 			// Fill in all the relevant fields if there's already one link selected.
-			if ( ( element = plugin.getSelectedLink( editor ) ) && element.hasAttribute( 'href' ) )
-				selection.selectElement( element );
-			else
+			try {
+				if ( ( element = plugin.getSelectedLink( editor ) ) && element.hasAttribute( 'href' ) )
+					selection.selectElement( element );
+				else
+					element = null;
+			} catch(err) {
 				element = null;
+			}
 
 			this.setupContent( parseLink.apply( this, [ editor, element ] ) );
 		},
 		onOk : function()
 		{
 			var attributes = {},
-				removeAttributes = [],
 				data = {},
 				me = this,
 				editor = this.getParentEditor();
@@ -120,20 +163,22 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 
 			// Compose the URL.
 			var url = ( data.url && CKEDITOR.tools.trim( data.url.url ) ) || '';
+			var target = ( data.target && CKEDITOR.tools.trim( data.target.type ) ) || '';
 			if (url.indexOf("<") == 0) {
 				var element = CKEDITOR.dom.element.createFromHtml(url);
 				editor.insertElement(element);
 			}
 			else {
 				attributes[ 'data-id' ] = data_id;
-				attributes[ 'data-cke-saved-href' ] = url;
-				// Browser need the "href" for copy/paste link to work. (#6641)
-				attributes.href = attributes[ 'data-cke-saved-href' ];
+				attributes[ 'href' ] = url;
+				if (target != "notSet") {
+					attributes[ 'target' ] = target;
+				}
 				// Create element if current selection is collapsed.
 				var selection = editor.getSelection();
 				var b = selection.getRanges()[0];
 				if (b.collapsed ) {
-					var a = new CKEDITOR.dom.text( attributes[ 'data-cke-saved-href' ], editor.document );
+					var a = new CKEDITOR.dom.text( url, editor.document );
 					b.insertNode(a);
 					b.selectNodeContents(a);
 				}

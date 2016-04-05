@@ -897,7 +897,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             l = l[i:]
             index_html = protocol + '://' + domain + '/' + '/'.join(l)
       elif REQUEST.get('ZMS_RELATIVATE_URL',True) and self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.relativate',True) and self.getHome() == context.getHome():
-        path = context.getHref2IndexHtml(REQUEST,deep)
+        path = REQUEST.get('URL',context.getHref2IndexHtml(REQUEST,deep))
         index_html = self.getRelativeUrl(path,index_html)
       return index_html
     

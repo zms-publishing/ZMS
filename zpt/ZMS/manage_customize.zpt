@@ -673,13 +673,13 @@ $(function() {
           });
       }
   });
-  $("i[class*='icon']").mouseenter(function() {
+  $("#InstalledProducts i[class*='icon']").mouseenter(function() {
     $(this).css("color", "#3071a9");
   });
-  $("i[class*='icon']").mouseleave(function() {
+  $("#InstalledProducts i[class*='icon']").mouseleave(function() {
     $(this).css("color", "#428bca");
   });  
-  $("i[class*='icon-info-sign']").mouseleave(function() {
+  $("#InstalledProducts i[class*='icon-info-sign']").mouseleave(function() {
     $(this).css("color", "#ccc");
   });
   $('#BTN_Restart').click(function() {

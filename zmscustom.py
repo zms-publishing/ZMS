@@ -205,10 +205,10 @@ class ZMSCustom(ZMSContainerObject):
     #
     # Constructor (initialise a new instance of ZMSCustom).
     ############################################################################
-    def __init__(self, id='', sort_id=0, meta_id=''):
+    def __init__(self, id='', sort_id=0, meta_id=None):
       """ ZMSCustom.__init__ """
       ZMSContainerObject.__init__(self,id,sort_id)
-      self.meta_id = meta_id
+      self.meta_id = _globals.nvl(meta_id,self.meta_type)
 
 
     ############################################################################

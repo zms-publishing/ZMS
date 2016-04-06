@@ -639,7 +639,9 @@ body.browse_iframe .toggle {
 	color:white !important;
 	text-decoration:none;
 }
-.zmi-sitemap .inactive a,
+.zmi.manage-menu .zmi-sitemap li.inactive > a {
+	color:#888;
+}
 .zmi.manage-menu .zmi-helper-clickable {
 	color:#999;
 }

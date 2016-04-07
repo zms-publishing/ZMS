@@ -3104,8 +3104,7 @@ zmscontext.attr('text',text)
                   <item key="id"><![CDATA[interface0]]></item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<tal:block tal:define="global
-		textFormatDefault python:here.getConfProperty('ZMSTable.getTextFormatDefault',here.getTextFormatDefault())">
+                  <item key="name"><![CDATA[<tal:block tal:define="textFormatDefault python:here.getConfProperty('ZMSTable.getTextFormatDefault',here.getTextFormatDefault())">
 
 <!--
 ################################################################################
@@ -3698,10 +3697,7 @@ function onKeyUpZMSTableDivContenteditable() {
 	$textarea.val($(this).html());
 }
 
-// -->
 </script>
-
-<img src="/misc_/zms/spacer.gif" alt="" border="0" height="2"/>
 
 <table id="table_cell_editor" cellspacing="0" cellpadding="0" border="0">
 
@@ -3762,7 +3758,7 @@ function onKeyUpZMSTableDivContenteditable() {
 				pattern python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
 				replacement python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
 				cell_content python:here.re_sub(pattern,replacement,cell.get('content',''));
-				cell_format python:[cell.get('format',textFormatDefault),textFormatDefault][int(len(textFormatDefault)>0)];
+				cell_format python:cell.get('format',textFormatDefault);
 				richedit_preview python:int(request.get('richedit_fmt') is not None and cell_format==request.get('richedit_fmt').getId())">
 			<tal:block tal:condition="python:table_type==4 and row_index==0 and col_index==0">
 				<td tal:attributes="colspan cell/colspan">&nbsp;</td>
@@ -3773,9 +3769,9 @@ function onKeyUpZMSTableDivContenteditable() {
 					<table style="width:100%" class="ZMSTable">
 					<tr>
 						<tal:block tal:content="structure python:'<%s title=\042onDblClick: %s\042 class=\042table_cell_editable\042>'%(['td',cell['tag']][cell['tag']!=''],here.getZMILangStr('ACTION_EDIT_CELL'))">start-tag</tal:block>
-						<div tal:attributes="id python:'input_%i_%i'%(col_index,row_index); class python:['','ui-helper-hidden'][richedit_preview]">
 						<input type="hidden" tal:attributes="id python:'tag_%i_%i'%(col_index,row_index); value cell/tag" />
 						<input type="hidden" tal:attributes="id python:'format_%i_%i'%(col_index,row_index); value cell_format" />
+						<div tal:attributes="id python:'input_%i_%i'%(col_index,row_index); class python:['','ui-helper-hidden'][richedit_preview]">
 							<tal:block tal:content="structure python:here.getTextArea(request['fmName'],'content_%i_%i'%(col_index,row_index),10,1,value=cell_content,enabled=True,REQUEST=request,extra=' style=\042border:none;background-color:transparent;width:100%;\042')"></tal:block>
 						</div>
 						<div tal:attributes="id python:'preview_%i_%i'%(col_index,row_index);class python:['ui-helper-hidden',''][richedit_preview]"
@@ -4197,7 +4193,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.2.3]]></item>
+          <item key="revision"><![CDATA[3.2.4]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4886,7 +4882,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.3.2]]></item>
+          <item key="revision"><![CDATA[3.3.4]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

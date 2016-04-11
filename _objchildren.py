@@ -70,13 +70,12 @@ class ObjChildren:
       ##### Create ####
       oItem = getattr(self,id,None)
       if oItem is None or id not in self.objectIds():
-        if self.dGlobalAttrs.has_key(type):
-          obj = self.dGlobalAttrs[type]['obj_class'](id,_sort_id+1)
-        else:
-          obj = self.dGlobalAttrs['ZMSCustom']['obj_class'](id,_sort_id+1,type)
-        self._setObject(obj.id, obj)
+        globalAttr = self.dGlobalAttrs.get(type,self.dGlobalAttrs['ZMSCustom'])
+        constructor = globalAttr.get('obj_class',self.dGlobalAttrs['ZMSCustom']['obj_class'])
+        newNode = constructor(id,sort_id+1,type)
+        self._setObject(newNode.id, newNode)
         oItem = getattr(self,id)
-        
+      
       ##### Object State ####
       oItem.setObjStateNew(REQUEST)
       ##### Init Properties ####

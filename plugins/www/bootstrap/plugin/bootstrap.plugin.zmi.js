@@ -1330,7 +1330,7 @@ ZMIActionList.prototype.out = function(el, evt) {
 ZMIActionList.prototype.exec = function(sender, label, target) {
 	var id_prefix = this.getContextId(sender);
 	if (typeof id_prefix != 'undefined' && id_prefix != '') {
-		id_prefix = id_prefix.replace(/\d/gi,'');
+		id_prefix = id_prefix.replace(/(\d*?)$/gi,'');
 	}
 	else {
 		id_prefix = 'e';

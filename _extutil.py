@@ -23,7 +23,7 @@ EXTENSIONS = {
                   'Manage tests based on feature/scenario/step descriptions using Behavior-driven development (BDD) practices',
                   'https://bitbucket.org/zms3/behave',
                   'developed by Christian Meier'],
-  'zms3.formulator': ['3.3.9',
+  'zms3.formulator': ['3.4.0',
                       'Submit JSON-based HTML-Forms into a SQL-Storage with protection by reCAPTCHA',
                       'https://bitbucket.org/zms3/formulator',
                       'developed by SNTL Publishing'],

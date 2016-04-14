@@ -510,11 +510,11 @@ class ConfManager(
         import base64
         key = base64.b64decode(key)
       if OFS.misc_.misc_.zms['confdict'].has_key(key):
-          default = OFS.misc_.misc_.zms['confdict'].get(key)
+        default = OFS.misc_.misc_.zms['confdict'].get(key)
       value = default
       confdict = self.getConfProperties()
       if confdict.has_key(key):
-        value = confdict.get( key, default)
+        value = confdict.get(key)
       elif key is not None and (key in ['ZMS.theme'] or key.startswith('ExtensionPoint.')):
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:

@@ -566,7 +566,7 @@ class ZMSGlobals:
     """
     def operator_getitem(self, a, b, c=None, ignorecase=True):
       if ignorecase and type(b) is str:
-        flags = int(self.getConfProperty('operator_getitem.ignorecase.flags','0'))
+        flags = int(self.getConfProperty('operator_getitem.ignorecase.flags',re.IGNORECASE))
         pattern = self.getConfProperty('operator_getitem.ignorecase..pattern','^*$').replace('*',b)
         for key in a.keys():
           if re.search(pattern,key,flags) is not None:

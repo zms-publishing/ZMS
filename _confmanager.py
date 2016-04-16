@@ -452,7 +452,7 @@ class ConfManager(
     Returns property from configuration.
     @rtype: C{dict}
     """
-    def getConfProperties(self, prefix=None, REQUEST=None):
+    def getConfProperties(self, prefix=None, inherited=False, REQUEST=None):
       """ ConfManager.getConfProperties """
       d = getattr( self, '__attr_conf_dict__', {})
       if REQUEST is not None:
@@ -462,6 +462,11 @@ class ConfManager(
         for k in filter(lambda x:x.startswith(prefix+'.'),d.keys()):
           r[k] = d[k]
         return self.str_json(r)
+      if inherited:
+        d = d.keys()
+        portalMaster = self.getPortalMaster()
+        if portalMaster is not None:
+          d.extend(filter(lambda x:x not in d,portalMaster.getConfProperties(prefix,inherited,REQUEST)))
       return d
 
 
@@ -515,7 +520,7 @@ class ConfManager(
       confdict = self.getConfProperties()
       if confdict.has_key(key):
         value = confdict.get(key)
-      elif key is not None and (key in ['ZMS.theme'] or key.startswith('ExtensionPoint.')):
+      elif key is not None and not key.startswith('Portal.'):
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           value = portalMaster.getConfProperty( key, default)

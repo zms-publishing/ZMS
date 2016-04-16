@@ -1,9 +1,8 @@
 <tal:block tal:condition="python:request.has_key('existsUser')"
 	><tal:block tal:define="global
-			search_term python:request.get('existsUser');
-			users python:here.searchUsers(search_term);
-			found python:int(len(filter(lambda x:x==search_term,users))==1)"
-		><tal:block tal:content="found">found</tal:block
+			name python:request.get('existsUser');
+			user python:here.findUser(name);"
+		><tal:block tal:content="python:here.str_json(user)">user</tal:block
 	></tal:block
 ></tal:block
 ><tal:block tal:condition="not:python:request.has_key('existsUser')"
@@ -500,11 +499,20 @@ $(function(){
 				var $this = $(this);
 				var id = $this.attr("id");
 				$.get(self.location.href,{existsUser:id},function(result) {
-						if (result=="0") {
+						var v = eval("("+result+")");
+						if (result=="") {
 							$("a>span",$this).addClass("text-danger bg-danger");
 							$("a>span>i",$this).attr("class","icon-remove");
 						}
 						else {
+							var details = v.details;
+							if (typeof details != "undefined") {
+								var title = "";
+								for (var i=0; i < details.length; i++) {
+									title += details[i]["label"]+"="+details[i]["value"] + "; ";
+								}
+									$("a",$this).attr("title",title);
+							}
 							$("a>span>i",$this).attr("class","icon-user");
 						}
 					});

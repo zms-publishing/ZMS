@@ -84,7 +84,7 @@ class ZMSMetacmdProvider(
     # Properties.
     # -----------
     meta_type = 'ZMSMetacmdProvider'
-    icon = "/++resource++zms_/img/ZMSMetacmdProvider.png"
+    icon = "++resource++zms_/img/ZMSMetacmdProvider.png"
     icon_clazz = "icon-wrench"
 
     # Management Options.

@@ -46,7 +46,7 @@ class ZMSFormatProvider(
     # Properties.
     # -----------
     meta_type = 'ZMSFormatProvider'
-    icon = "/++resource++zms_/img/ZMSFormatProvider.png"
+    icon = "++resource++zms_/img/ZMSFormatProvider.png"
     icon_clazz = "icon-font"
 
     # Management Options.

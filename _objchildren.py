@@ -72,7 +72,7 @@ class ObjChildren:
       if oItem is None or id not in self.objectIds():
         globalAttr = self.dGlobalAttrs.get(type,self.dGlobalAttrs['ZMSCustom'])
         constructor = globalAttr.get('obj_class',self.dGlobalAttrs['ZMSCustom']['obj_class'])
-        newNode = constructor(id,sort_id+1,type)
+        newNode = constructor(id,_sort_id+1,type)
         self._setObject(newNode.id, newNode)
         oItem = getattr(self,id)
       

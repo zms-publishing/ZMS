@@ -29,6 +29,7 @@ import zExceptions
 import _confmanager
 import _globals
 import _xmllib
+import re
 
 
 # ------------------------------------------------------------------------------
@@ -1183,7 +1184,13 @@ class AccessManager(AccessableContainer):
           xml += '<userlist>'
           userDefs = self.getSecurityUsers()
           userNames = userDefs.keys()
+          max_users = int(self.getConfProperty('ZMS.max_users_export','0'))
+          z = 0
           for userName in userNames:
+            z += 1
+            if max_users != 0:
+              if z > max_users:
+                break;
             xml += '<user>'
             xml += '<uid>%s</uid>'%_globals.html_quote(userName)
             email = self.getUserAttr(userName,'email')
@@ -1194,6 +1201,15 @@ class AccessManager(AccessableContainer):
             for nodekey in nodes.keys():
               xml += '<node>'
               xml += '<nodeid>%s</nodeid>'%nodekey
+              try:
+                xml += '<nodeurl>%s</nodeurl>'%(self.getLinkObj(nodekey).getDeclUrl(REQUEST))
+              except:
+                xml += '<nodeurl></nodeurl>'
+              try:  
+                title = re.sub('&.*;','', self.getLinkObj(nodekey).getTitle(REQUEST).strip())
+                xml += '<nodetitle>%s</nodetitle>'%title
+              except:
+                xml += '<nodetitle></nodetitle>'
               xml += '<langlist>'
               for langid in nodes.get(nodekey,{}).get('langs',[]):
                 xml += '<lang>%s</lang>'%_globals.html_quote(langid)

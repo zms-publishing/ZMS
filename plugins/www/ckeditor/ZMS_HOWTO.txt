@@ -1,14 +1,9 @@
 HOWTO: install ckeditor in zms-distribution
 ================================================================================
-1.) Download from http://ckeditor.com
-2.) extract to /ckeditor.
-2.a) Remove /ckeditor/samples.
-3.a) Remove all languages except de.js and en.js from /ckeditor/lang.
-3.b) /ckeditor/build-config.js: remove all languages except 'de.js' and 'en.js'.
-4.a) /ckeditor/build-config.js: add 'find' and 'showblocks' to plugins.
-4.b) /ckeditor/skins: add skin-folder bootstrapck :http://ckeditor.com/addon/bootstrapck
-4.c) /ckeditor/ckeditor.js: replace 'moono' by 'bootstrapck'
-4.d) /ckeditor/ckeditor.js: add "config.skin = 'bootstrapck';"
-5.a) Copy /ckeditor/lang to /ckeditor/lingua.
-5.b) /ckeditor/ckeditor.js: replace '"lang/"' by '"lingua/"'
-6.) /ckeditor/config.js: overwrite with file from zms-distribution
+1. Upload build-config.js to http://ckeditor.com/builder
+2. Download custom build as zip
+3. Extract to /ckeditor.
+4. Remove /ckeditor/samples.
+5. Copy /ckeditor/lang to /ckeditor/lingua.
+6. /ckeditor/ckeditor.js: replace '"lang/"' by '"lingua/"'
+7. /ckeditor/config.js: overwrite with file from zms-distribution

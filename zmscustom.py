@@ -142,7 +142,7 @@ class ZMSCustom(ZMSContainerObject):
     # Management Options.
     # -------------------
     def manage_options(self):
-      pc = self.isPageContainer()
+      pc = 'e' in map(lambda x:x['id'],self.getMetaobjAttrs(self.meta_id,types=['*']))
       opts = []
       opts.append({'label': 'TAB_EDIT',         'action': 'manage_main'})
       if pc:
@@ -308,7 +308,7 @@ class ZMSCustom(ZMSContainerObject):
       res = request['res']
       
       if 'sort_id' in map(lambda x:x['id'],metaObj['attrs']):
-        l = map(lambda x:(x['sort_id'],x),res)
+        l = map(lambda x:(x.get('sort_id',1),x),res)
         # Sort (FK).
         for metaObjAttr in metaObj['attrs'][1:]:
           if metaObjAttr.get('type','') in self.getMetaobjIds():
@@ -481,7 +481,7 @@ class ZMSCustom(ZMSContainerObject):
             message = self.getZMILangStr('MSG_DELETED')%len(rows)
           elif action == 'move':
             for row in res_abs:
-              row['sort_id'] = row['sort_id']*10
+              row['sort_id'] = row.get('sort_id',1)*10
             pos = REQUEST['pos']
             newpos = REQUEST['newpos']
             row = res_abs[REQUEST['qindex']]

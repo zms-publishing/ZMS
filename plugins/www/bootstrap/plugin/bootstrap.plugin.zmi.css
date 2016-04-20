@@ -776,10 +776,11 @@ ul.zmi-container .right div input {
 	margin:8px;
 }
 ul.zmi-container .zmi-item .zmi-action {
-	margin-left:-159px;
+	margin-left:-179px;
 }
 ul.zmi-container .zmi-item .zmi-action .split-left {
-	width:160px;
+	width:180px;
+	overflow:hidden;
 	visibility:hidden;
 	text-align:left;
 	z-index:9999;

@@ -332,3 +332,13 @@ def assembleConfProperties(path, pattern):
   return l
 
 ################################################################################
+
+################################################################################
+# HOOK: ZOPE CUSTOM STYLE
+################################################################################
+# from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+# from App.Management import Navigation
+# file = PageTemplateFile('zpt/ZMS/manage_page_style.css.zpt', globals())
+# setattr(Navigation, 'manage_page_style.css', file)
+
+

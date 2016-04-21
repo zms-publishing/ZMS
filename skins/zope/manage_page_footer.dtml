@@ -1,17 +1,23 @@
 <!-- ZMS CUSTOM FOOTER -->
 <script>
 
-	$('img[src*=Folder]').replaceWith('<i class="icon-folder-close-alt">&nbsp;</i>');
-	$('img[src*=Template]').replaceWith('<i class="icon icon-code">&nbsp;</i>');
-	$('img[src*=ZMS]').replaceWith('<i class="icon icon-home">&nbsp;</i>');
-	$('img[src*=Control]').replaceWith('<i class="icon icon-cogs">&nbsp;</i>');
-	$('img[src*="Database"]').replaceWith('<i class="icon icon-archive"></i>');
-	$('img[src*="Product"]').replaceWith('<i class="icon icon-gift"></i>');
-	$('img[src*="/p_/pl"]').replaceWith('<i class="icon icon-expand-alt"></i>');
-	$('img[src*="/p_/mi"]').replaceWith('<i class="icon icon-collapse-alt"></i>');
+	$('img[src*=Folder]').replaceWith('<i title="Folder" class="icon-folder-close-alt">&nbsp;</i>');
+	$('img[src*=Template]').replaceWith('<i title="Page Template" class="icon icon-file-text-alt">&nbsp;</i>');
+	$('img[src*=dtml]').replaceWith('<i title="DTML" class="icon icon-file-alt">&nbsp;</i>');
+	$('img[src*=Mail]').replaceWith('<i title="Mail Folder" class="icon icon-envelope">&nbsp;</i>');
+	$('img[src*=ZMS]').replaceWith('<i title="ZMS" class="icon icon-home">&nbsp;</i>');
+	$('img[src*=Image]').replaceWith('<i title="ZMS" class="icon icon-picture">&nbsp;</i>');
+	$('img[src*=Control]').replaceWith('<i title="Control Panel" class="icon icon-cogs">&nbsp;</i>');
+	$('img[src*="Database"]').replaceWith('<i title="Database" class="icon icon-table"></i>');
+	$('img[src*="Product"]').replaceWith('<i title="Installed Product" class="icon icon-gift"></i>');
+	$('img[src*="Script"]').replaceWith('<i title="Script (Python)" class="icon icon-terminal"></i>');
+	$('img[src*="acl"]').replaceWith('<i title="Access Control List" class="icon icon-user"></i>');
+	$('img[src*="/p_/pl"]').replaceWith('<i title="Expand..." class="icon icon-expand-alt"></i>');
+	$('img[src*="/p_/mi"]').replaceWith('<i title="Collapse..." class="icon icon-collapse-alt"></i>');
+	$('img[src*="/p_/davlocked"]').replaceWith('<i title="WebDAV" class="icon icon-retweet"></i>');
 
 
-	$('img[src*=misc_]').replaceWith('<i class="icon icon-file">&nbsp;</i>');
+	$('img[src*=misc_]').replaceWith('<i class="icon icon-circle-blank">&nbsp;</i>');
 
 </script>
 

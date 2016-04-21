@@ -206,3 +206,12 @@ p.form-help {
 i.icon-home {
 	color:#9DDDFF;
 }
+form[action='manage_changePermissions'] {
+	margin-top:1em;
+}
+form[action='manage_changePermissions'] table td {
+	border: 1px solid silver;
+	padding: .3em 1em;
+}
+
+

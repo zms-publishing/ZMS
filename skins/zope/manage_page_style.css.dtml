@@ -4,173 +4,176 @@
 <dtml-call "RESPONSE.setHeader('Content-Type','text/css')">
 <dtml-call "RESPONSE.setHeader('Cache-Control','public,max-age=3600')">
 </dtml-unless>
-h1 {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 24pt;
-  font-weight: bold;
-}
 
-h2 {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 18pt;
-  font-weight: bold;
-}
 
-h3 {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 14pt;
-  font-weight: bold;
-}
 
-a:hover {
-  font-family: Verdana, Helvetica, sans-serif;
-  text-decoration: underline;
-  color: #333333;
+body {
+	color: #ddd;
+	background-color: #1D2D4A;
+	background-color: #404040;
 }
-
-a:link {
-  font-family: Verdana, Helvetica, sans-serif;
-  text-decoration: none;
-  color: #000099;
+td img {
+	visibility:hidden;
 }
-
 a {
-  font-family: Verdana, Helvetica, sans-serif;
-  text-decoration: none;
-  color: #000099;
+	color:white;
+}
+a:focus, a:hover {
+	color: #9DDDFF;
+	text-decoration: none;
+}
+.breadcrumb {
+	background-color:transparent;
+	margin:1em 2em;
+}
+.breadcrumb img {
+	visibility:hidden;
+}
+.breadcrumb a {
+	margin:0 .5em;
+}
+.breadcrumb a {
+	margin:0 .1em 0 .1em;
+	padding:0.1em .3em;
+	border:1px solid #888;
+}
+.breadcrumb a:hover {
+	background:black;
 }
 
-a.strong-link {
-  font-family: Verdana, Helvetica, sans-serif;
-  text-decoration: underline;
-  color: #000099;
+.nav-tabs li.active > a {
+	background-color: #1D2D4A !important;
+	background-color: #404040 !important;
+	font-weight: bold;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+	color: #FFF;
+}
+.table-striped>tbody>tr:nth-of-type(odd) {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
+	border-top: 1px solid rgba(255,255,255,.15);
+}
+table td {
+	padding:0.5em 0.5em 0.5em 0;
 }
 
-a img {
-  border: 0;
+.table>tbody>tr:hover,
+.nav>li>a:focus,
+.nav>li>a:hover {
+	background: rgba(240, 248, 255, 0.15) !important;
 }
-
-p {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 10pt;
-  color: #333333;
+.table>tbody>tr:hover *,
+a[href*='content/'] {
+	color: #9DDDFF;
 }
-
-th {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-weight: bold;
-  font-size: 10pt;
-  color: #333333;
+a[href*='content/'] {
+	font-weight:bold
 }
-
-.form-help {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 10pt;
-  color: #333333;
+.form-control {
+	background-color: transparent;
 }
-
-.std-text {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 10pt;
-  color: #333333;
-}
-
-.tab-small {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 8pt;
-  color: #333333;
-}
-
-.location-bar {
-  background-color: #efefef;
-  border: none;
-}
-
-.strong-header {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 12pt;
-  font-weight: bold;
-  background-color: #000000;
-  color: #ffffff;
-}
-
-.list-header {
-  background-color: #c0c0c0;
-  border: none;
-}
-
-.list-item {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 10pt;
-}
-
-.list-nav {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 10pt;
-  font-weight: bold;
-}
-
-.row-normal {
-  background-color: #ffffff;
-  border: none;
-}
-
-.row-hilite {
-  background-color: #efefef;
-  border: none;
-}
-
-.section-bar {
-  background-color: #c0c0c0;
-  border: none;
-}
-
-.system-msg {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 10pt;
-  background-color: #ffffff;
-  border:  1px solid #000000;
-  margin-bottom: 6px;
-  margin-top: 6px;
-  padding: 4px;
-  color: #660033;
-}
-
-.form-title {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-weight: bold;
-  font-size: 12pt;
-  color: #333333;
-}
-
 .form-label {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-weight: bold;
-  font-size: 10pt;
-  color: #333333;
+	margin-right: 1em;
+}
+input.form-element {
+	background: transparent;
+	padding: 6px 12px;
+	border: 1px solid silver;
+	border-radius: 4px;
+	margin-right: .5em;
 }
 
-.form-optional {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-weight: bold;
-  font-style: italic;
-  font-size: 10pt;
-  color: #333333;
+.form-inline input.form-control {
+	margin-right: 0.5em;
+	color:#ddd;
+}
+form.form-initialized {
+	margin:0 3em;
+}
+form.form_main.form-initialized {
+	margin:0;
 }
 
-.form-element {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 10pt;
+select {
+	display: inline-block;
+	width: auto;
+	vertical-align: middle;
+	background-color: #404040;
+	box-shadow: none;
+	color: #ddd;
+	border: 1px solid #ccc;
+	text-transform: none;
+	display: block;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	background-image: none;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.zope_actions {
+	margin: -3.5em .25em 0 0;
+}
+.zope_actions select {
+	border:0;
+	background-color: #1D2D4A;
+	background-color: #404040;
+	box-shadow:none;
+	color:#ddd;
+	border: 1px solid #ccc;
 }
 
-.form-text {
-  font-family: Verdana, Helvetica, sans-serif;
-  font-size: 10pt;
-  color: #333333;
+textarea {
+	overflow: auto;
+	color: chartreuse;
+	color:#00EEFF;
+	font-family: courier !important;
+	padding: 1em;
+	background: black;
+	border-radius: 6px;
+	padding: .3em;
+	margin: 1em 0;
 }
-
-.form-mono {
-  font-family: monospace;
-  font-size: 12px;
-  text-decoration: none;
+input[type="text"],
+input[type="password"],
+input[type="file"] {
+	background: black;
+	border: 1px solid silver;
+	padding: 6px 12px;
+	border-radius: 6px;
+	font-family: courier;
+	color: chartreuse;
+	color:#00EEFF;
+}
+input[type="file"] {
+	color:silver;
+}
+input[type="file" i]::-webkit-file-upload-button {
+	padding: 6px 12px;
+	background: #404040;
+	border: 1px solid #00EEFF;
+	border-radius:4px;
+	color: #00EEFF;
+}
+input[type="file" i]::-webkit-file-upload-button:hover {
+	background: #00EEFF;
+	color: black;
+}
+p.form-help {
+	margin:1em 3em 2em;
+}
+i.icon-home {
+	color:#9DDDFF;
 }

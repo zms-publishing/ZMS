@@ -344,15 +344,15 @@ def assembleConfProperties(path, pattern):
 # zope_manage_page_style = DTMLFile('skins/zope/manage_page_style.css', globals())
 # zope_manage_page_header = DTMLFile('skins/zope/manage_page_header', globals())
 # zope_manage_tabs = DTMLFile('skins/zope/manage_tabs', globals())
+# zope_manage_menu = DTMLFile('skins/zope/menu', globals())
 # zope_manage_main = DTMLFile('skins/zope/main', globals())
+# zope_manage_top_frame  =DTMLFile('skins/zope/manage_top_frame', globals())
 # zope_manage_page_footer = DTMLFile('skins/zope/manage_page_footer', globals())
 # setattr(Navigation, 'manage_page_style.css', zope_manage_page_style)
 # setattr(Navigation, 'manage_page_header', zope_manage_page_header)
 # setattr(Navigation, 'manage_page_footer', zope_manage_page_footer)
+# setattr(Navigation, 'manage_menu', zope_manage_menu)
+# setattr(Navigation, 'manage_top_frame', zope_manage_top_frame)
 # setattr(Tabs, 'manage_tabs', zope_manage_tabs)
 # setattr(ObjectManager, 'manage_main', zope_manage_main)
-
-
-
-
 

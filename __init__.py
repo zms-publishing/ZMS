@@ -334,11 +334,27 @@ def assembleConfProperties(path, pattern):
 ################################################################################
 
 ################################################################################
-# HOOK: ZOPE CUSTOM STYLE
+# EXPERIMENTAL HOOK FOR ZOPE CUSTOM SKIN
 ################################################################################
-# from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+# from App.special_dtml import HTMLFile
+# from App.special_dtml import DTMLFile
 # from App.Management import Navigation
-# file = PageTemplateFile('zpt/ZMS/manage_page_style.css.zpt', globals())
-# setattr(Navigation, 'manage_page_style.css', file)
+# from OFS.ObjectManager import ObjectManager
+# from OFS.PropertyManager import PropertyManager
+# zope_manage_page_style = DTMLFile('skins/zope/manage_page_style.css', globals())
+# zope_manage_page_header = DTMLFile('skins/zope/manage_page_header', globals())
+# zope_manage_tabs = DTMLFile('skins/zope/manage_tabs', globals())
+# zope_manage_main = DTMLFile('skins/zope/main', globals())
+# zope_manage_page_footer = DTMLFile('skins/zope/manage_page_footer', globals())
+# setattr(Navigation, 'manage_page_style.css', zope_manage_page_style)
+# setattr(Navigation, 'manage_page_header', zope_manage_page_header)
+# setattr(Navigation, 'manage_tabs', zope_manage_tabs)
+# setattr(Navigation, 'manage_page_footer', zope_manage_page_footer)
+# setattr(ObjectManager, 'manage_main', zope_manage_main)
+# setattr(ObjectManager, 'manage_tabs', zope_manage_tabs)
+# setattr(PropertyManager, 'manage_tabs', zope_manage_tabs)
+
+
+
 
 

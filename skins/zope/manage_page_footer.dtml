@@ -1,0 +1,13 @@
+<!-- ZMS CUSTOM FOOTER -->
+<script>
+
+	$('img[src*=Folder]').replaceWith('<i class="icon-folder-close-alt">&nbsp;&nbsp;</i>');
+	$('img[src*=Template]').replaceWith('<i class="icon icon-code">&nbsp;</i>');
+	$('img[src*=ZMS]').replaceWith('<i class="icon icon-home">&nbsp;</i>');
+	$('img[src*=Control]').replaceWith('<i class="icon icon-cogs">&nbsp;</i>');
+	$('img[src*=misc_]').replaceWith('<i class="icon icon-file">&nbsp;</i>');
+
+</script>
+
+</body>
+</html>

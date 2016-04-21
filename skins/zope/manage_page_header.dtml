@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- ZMS CUSTOM HEADER -->
+<dtml-unless management_page_charset>
+<dtml-call "REQUEST.set('management_page_charset','utf-8')">
+</dtml-unless>
+<meta http-equiv="content-type" content="text/html;charset=&dtml-management_page_charset;" />
+<dtml-call "RESPONSE and RESPONSE.setHeader('content-type','text/html;charset='+management_page_charset)">
+<title><dtml-if title_or_id><dtml-var title_or_id><dtml-else>Zope</dtml-if></title>
+<dtml-let ag="REQUEST.get('HTTP_USER_AGENT', '')"
+     is_nav4="ag[:9] == 'Mozilla/4' and _.string.find(ag, 'MSIE') < 0"
+     use_css="REQUEST.get('zmi_use_css', '1')"
+     zmi_embedded_css="1">
+<dtml-if use_css>
+<dtml-if is_nav4>
+<style type="text/css">
+<!--
+
+<dtml-var manage_page_style.css>
+
+-->
+</style>
+<dtml-else>
+<!-- link rel="stylesheet" type="text/css" href="&dtml-BASEPATH1;/manage_page_style.css" /-->
+<link type="text/css" rel="stylesheet" href="/++resource++zms_/bootstrap/css/bootstrap-all.min.css" />
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/i18n/ger.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/bootstrap/bootstrap-all.min.js"></script>
+</dtml-if>
+</dtml-if>
+</dtml-let>
+
+<style>
+
+body {
+	color: #ddd;
+	background-color: #1D2D4A;
+	background-color: #404040;
+}
+a {
+	color:white;
+}
+a:focus, a:hover {
+	color: #9DDDFF;
+	text-decoration: none;
+}
+.breadcrumb {
+	background-color:transparent;
+	margin:1em 2em;
+}
+.nav-tabs li.active > a {
+	background-color: #1D2D4A !important;
+	background-color: #404040 !important;
+	font-weight: bold;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+	color: #FFF;
+}
+.table-striped>tbody>tr:nth-of-type(odd) {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+.table>tbody>tr>td,
+.table>tbody>tr>th,
+.table>tfoot>tr>td,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>thead>tr>th {
+	border-top: 1px solid rgba(255,255,255,.15);
+}
+.table>tbody>tr:hover,
+.nav>li>a:focus,
+.nav>li>a:hover {
+	background: rgba(240, 248, 255, 0.15) !important;
+}
+.form-control {
+	background-color: transparent;
+}
+
+input.form-element {
+	background: transparent;
+	padding: 6px 12px;
+	border: 1px solid silver;
+	border-radius: 4px;
+	margin-right: .5em;
+}
+
+.form-inline input.form-control {
+	margin-right: 0.5em;
+	color:#ddd;
+}
+form.form-initialized {
+	margin:0 3em;
+}
+form.form_main.form-initialized {
+	margin:0;
+}
+
+.zope_actions {
+	margin: -3.5em .25em 0 0;
+}
+.zope_actions select {
+	border:0;
+	background-color: #1D2D4A;
+	background-color: #404040;
+	box-shadow:none;
+	color:#ddd;
+	border: 1px solid #ccc;
+}
+textarea {
+	overflow: auto;
+	color: chartreuse;
+	color:#00EEFF;
+	font-family: courier !important;
+	padding: 1em;
+	background: black;
+	border-radius: 6px;
+	padding: .3em;
+	margin: 1em 0;
+}
+input[type="text"] {
+	background: black;
+	border: 1px solid silver;
+	padding: 6px 12px;
+	border-radius: 6px;
+	font-family: courier;
+	color: chartreuse;
+	color:#00EEFF;
+}
+
+p.form-help {
+	margin:1em 3em 2em;
+}
+
+i.icon-home {
+	color:#9DDDFF;
+}
+
+
+</style>
+
+</head>
+<body>

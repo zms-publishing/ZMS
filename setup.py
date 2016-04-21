@@ -123,7 +123,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'zope.traversing==4.0.0',
   'zope.untrustedpython==4.0.0',
   'zope.viewlet==4.0.0',
-  'Zope2==2.13.23',
+  'Zope2==2.13.24',
   'ZopeUndo==2.12.0', # due to ZopeUndo==4.0 causes ZEO DisconnectedError on manageUndo
 ]
 

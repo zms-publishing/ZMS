@@ -67,7 +67,7 @@ function toggleSelect() {
   </dtml-unless>
   <dtml-unless rkey><dtml-call expr="REQUEST.set('rkey', '')"></dtml-unless>
 
-<table class="table table-striped">
+<table class="row table table-striped">
 <tr class="list-header">
   <td width="5%" align="right" colspan="2"><div 
    class="list-item"><a href="./manage_main?skey=meta_type<dtml-if 

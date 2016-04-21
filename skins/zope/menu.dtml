@@ -15,7 +15,7 @@
 	div#menu_tree {
 		width:100%;
 		background-color:transparent;
-		margin-left:0.7em;
+		margin-left:-0.3em;
 	}
 	table#mennu_title td {
 		padding:.8em .3em .6em .4em !important;

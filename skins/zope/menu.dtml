@@ -26,7 +26,7 @@
 	}
 	table#mennu_buttons td {
 		min-width:1em;
-		white-space:no-wrap !important;
+		white-space:nowrap !important;
 	}
 	table#mennu_buttons a {
 		color:#aaa;
@@ -64,15 +64,15 @@
 <table id="mennu_buttons" style="width:100%;">
 <tr>
   <td>&nbsp;</td>
-  <td><a href="manage_copyright" target="manage_main">&copy; Zope Foundation</a></td>
+  <td style="width:100%"><a href="manage_copyright" target="manage_main">&copy; Zope Foundation</a></td>
 </tr>
 <tr>
   <td>&nbsp;</td>
-  <td><a href="manage_menu">Refresh</a></td>
+  <td style="width:100%"><a href="manage_menu">Refresh</a></td>
 </tr>
 <tr>
   <td>&nbsp;</td>
-  <td><a href="manage_menu?save_layout=1">Save layout</a></td>
+  <td style="width:100%"><a href="manage_menu?save_layout=1">Save layout</a></td>
 </tr>
 </table>
 

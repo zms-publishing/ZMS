@@ -271,3 +271,49 @@ body#manage_top_frame td#zope_logo a img {
 body#manage_top_frame td#zope_logo a img:hover {
 	opacity:1.0;
 }
+
+
+td.main-icon {
+	text-align: center;
+	border-right:1px solid silver;
+}
+td.main-icon.checked {
+	background-color: #0088CC;
+}
+td.main-icon i {
+	cursor:pointer;
+	width:1.5em;
+}
+td.main-icon.checked i {
+	color:white;
+}
+
+td.main-icon input {
+	position: absolute;
+	z-index:-100;
+	visibility:hidden;
+}
+
+/*
+td.main-icon.Template {
+	background-color: #008AFF;
+}
+td.main-icon.Browser {
+	background-color: darkred;
+}
+td.main-icon.Mail {
+	background-color: #E78B00;
+}
+td.main-icon.Script {
+	background-color: #039303;
+}
+td.main-icon.DTML {
+	background-color: #C000FF;
+}
+td.main-icon.Image {
+	background-color: #E10000;
+}
+td.main-icon.Folder {
+	background-color: #888888;
+}
+*/

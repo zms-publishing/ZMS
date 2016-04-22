@@ -1,16 +1,10 @@
-/* ZMS CUSTOM STYLES  */
-
-<dtml-unless zmi_embedded_css>
-<dtml-call "RESPONSE.setHeader('Content-Type','text/css')">
-<dtml-call "RESPONSE.setHeader('Cache-Control','public,max-age=3600')">
-</dtml-unless>
-
-
+/* ZMS CUSTOM STYLES: LIGHT  */
+/* <dtml-call "RESPONSE.setHeader('Content-Type','text/css')"> */
+/* <dtml-call "RESPONSE.setHeader('Cache-Control','public,max-age=3600')"> */
 
 body {
-	color: #ddd;
-	background-color: #1D2D4A;
-	background-color: #404040;
+	background-color:#f6f6f6;
+	color: #333;
 	margin: 0;
 	padding: 0 15px !important;
 	font-family:Arial,Helvetica,sans-serif;
@@ -22,15 +16,15 @@ img[src*='logo'] {
 	visibility:visible !important;
 }
 a {
-	color:white;
+	color:black;
 }
 a:focus, a:hover {
-	color: #9DDDFF;
 	text-decoration: none;
 }
 .breadcrumb {
-	background-color:transparent;
-	margin:1em 0;
+	margin:0 -15px 1em;
+	padding:1em 2em;
+
 }
 .breadcrumb img {
 	visibility:hidden;
@@ -41,24 +35,32 @@ a:focus, a:hover {
 .breadcrumb a {
 	margin:0 .1em 0 .1em;
 	padding:0.1em .3em;
-	border:1px solid #888;
+	border:1px solid #ccc;
 }
 .breadcrumb a:hover {
-	background:black;
+	background:#ddd;
 }
 .nav-tabs {
-	margin:15px -15px 0 -15px;
+	margin:0 -15px 0 -15px;
+	background:red;
+	padding-top:1em;
+	background-color:white;
 }
 .nav-tabs li.active > a {
-	background-color: #1D2D4A !important;
-	background-color: #404040 !important;
 	font-weight: bold;
 }
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
-	color: #FFF;
+
 }
+
+table.table.row {
+	width: inherit !important;
+	max-width: inherit !important;
+	min-width: 100%;
+}
+
 .table-striped>tbody>tr:nth-of-type(odd) {
-	background-color: rgba(0, 0, 0, 0.2);
+ background-color: rgb(222, 226, 229);
 }
 .table>tbody>tr>td,
 .table>tbody>tr>th,
@@ -74,11 +76,11 @@ table td {
 .table>tbody>tr:hover,
 .nav>li>a:focus,
 .nav>li>a:hover {
-	background: rgba(240, 248, 255, 0.15) !important;
+	 background-color: rgba(154, 181, 204, 0.69) !important
 }
 .table>tbody>tr:hover *,
 a[href*='content/'] {
-	color: #9DDDFF;
+	color: #295274;
 }
 a[href*='content/'] {
 	font-weight:bold
@@ -99,10 +101,10 @@ input.form-element {
 
 .form-inline input.form-control {
 	margin-right: 0.5em;
-	color:#ddd;
 }
 form.form-initialized {
 	margin:0 1em;
+
 }
 form.form_main.form-initialized {
 	margin:0;
@@ -112,10 +114,8 @@ select {
 	display: inline-block;
 	width: auto;
 	vertical-align: middle;
-	background-color: #404040;
 	box-shadow: none;
-	color: #ddd;
-	border: 1px solid #ccc;
+	border: 1px solid #aaa;
 	text-transform: none;
 	display: block;
 	height: 34px;
@@ -135,28 +135,25 @@ select {
 }
 .zope_actions select {
 	border:0;
-	background-color: #1D2D4A;
-	background-color: #404040;
 	box-shadow:none;
-	color:#ddd;
-	border: 1px solid #ccc;
+	color:#333;
+	border: 1px solid silver;
 }
 
 textarea {
 	overflow: auto;
-	color: chartreuse;
-	color:#00EEFF;
+	color:#000;
 	font-family: courier !important;
 	padding: 1em;
-	background: black;
 	border-radius: 6px;
 	padding: .3em;
 	margin: 1em 0;
+	font-size: 90%;
 }
 
 input[type="submit"] {
 	margin-right: 0.5em;
-	color: #ddd;
+
 	display: inline-block;
 	width: auto;
 	vertical-align: middle;
@@ -167,7 +164,7 @@ input[type="submit"] {
 	padding: 6px 12px;
 	font-size: 14px;
 	line-height: 1.42857143;
-	border: 1px solid #ccc;
+	border: 1px solid silver;
 	border-radius: 4px;
 	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
 	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
@@ -180,33 +177,27 @@ input[type="text"],
 input[type="password"],
 input[type="file"],
 input[name='encoding'] {
-	background: black;
 	border: 1px solid silver;
 	padding: 6px 12px;
 	border-radius: 6px;
 	font-family: courier;
-	color: chartreuse;
-	color:#00EEFF;
+
 }
 input[type="file"] {
 	color:silver;
 }
 input[type="file" i]::-webkit-file-upload-button {
 	padding: 6px 12px;
-	background: #404040;
-	border: 1px solid #00EEFF;
+	border: 1px solid silver;
 	border-radius:4px;
-	color: #00EEFF;
 }
 input[type="file" i]::-webkit-file-upload-button:hover {
-	background: #00EEFF;
 	color: black;
 }
 p.form-help {
 	margin:1em 1em 2em;
 }
 i.icon-home {
-	color:#9DDDFF;
 }
 form[action='manage_changePermissions'] {
 	margin-top:1em;
@@ -216,4 +207,55 @@ form[action='manage_changePermissions'] table td {
 	padding: .3em 1em;
 }
 
+/* ZMS CUSTOM MENU */
+table#menu_title td,
+div#menu_tree table td,
+table#menu_buttons td {
+	padding:0.2em .3em 0 .4em !important;
+	min-width:1em;
+	white-space:nowrap !important;
+}
+div#menu_title a {
+	color:inherit;
+}
+div#menu_tree i.icon.icon-expand-alt,
+div#menu_tree i.icon.icon-collapse-alt {
+	vertical-align:top;
+	color:#aaa;
+}
+table#menu_title,
+div#menu_tree {
+	width:100%;
+	background-color:transparent;
+	margin-left:-0.3em;
+}
+table#menu_title td {
+	padding:.8em .3em .6em .4em !important;
+}
+table#menu_buttons {
+	width:100%;
+	margin-top:1em;
+}
+table#menu_buttons a {
+	color:#aaa;
+}
 
+body#manage_top_frame {
+	background-color:#9AB5CC;
+	padding:0 !important;
+}
+body#manage_top_frame input {
+	color:#888;
+	border: 1px solid #888;
+	padding:3px 12px;
+	height:2em;
+	background-color:#eee;
+}
+body#manage_top_frame select {
+	color:#888;
+	border: 1px solid #888;
+	display:inline-block;
+	height:2em;
+	padding:4px 12px;
+	background-color:#eee;
+}

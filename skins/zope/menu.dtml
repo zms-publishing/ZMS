@@ -1,48 +1,14 @@
 <dtml-var manage_page_header>
 
-<style type="text/css">
-<!--
-	/* ZMS CUSTOM MENU */
-	table td {
-		padding:0.2em .3em 0 .4em !important;
-	}
-	i.icon.icon-expand-alt,
-	i.icon.icon-collapse-alt {
-		vertical-align:top;
-		color:#aaa;
-	}
-	table#mennu_title,
-	div#menu_tree {
-		width:100%;
-		background-color:transparent;
-		margin-left:-0.3em;
-	}
-	table#mennu_title td {
-		padding:.8em .3em .6em .4em !important;
-	}
-	table#mennu_buttons {
-		width:100%;
-		margin-top:1em;
-	}
-	table#mennu_buttons td {
-		min-width:1em;
-		white-space:nowrap !important;
-	}
-	table#mennu_buttons a {
-		color:#aaa;
-	}
--->
-</style>
-
-<table id="mennu_title">
+<table id="menu_title">
 <tr>
   <td>
   <dtml-if icon>
-  <a href="manage_workspace" target="manage_main"><img 
+  <a href="manage_workspace" target="manage_main"><img
    src="&dtml-BASEPATH1;/&dtml-icon;" border="0"
-   title="Click to open this item" alt="&dtml-meta_type;" /></a> 
+   title="Click to open this item" alt="&dtml-meta_type;" /></a>
   </dtml-if>
-  <a href="manage_workspace" target="manage_main" style="color:white">
+  <a href="manage_workspace" target="manage_main">
   <dtml-if expr="URLPATH1==BASEPATH1">Root Folder<dtml-else>&dtml-id;</dtml-if>
   </a>
   </td>
@@ -52,16 +18,16 @@
 <div id="menu_tree">
 <dtml-tree nowrap=1>
 <dtml-if icon>
-<a href="&dtml.url_quote-tree-item-url;/manage_workspace" 
+<a href="&dtml.url_quote-tree-item-url;/manage_workspace"
  target="manage_main"><img src="&dtml-BASEPATH1;/&dtml-icon;" border="0"
- title="Click to open this item" alt="&dtml-meta_type;" /></a> 
+ title="Click to open this item" alt="&dtml-meta_type;" /></a>
 </dtml-if>
-<a href="&dtml.url_quote-tree-item-url;/manage_workspace" 
+<a href="&dtml.url_quote-tree-item-url;/manage_workspace"
  target="manage_main">&dtml-id;</a>
 </dtml-tree>
 </div>
 
-<table id="mennu_buttons" style="width:100%;">
+<table id="menu_buttons" style="width:100%;">
 <tr>
   <td>&nbsp;</td>
   <td style="width:100%"><a href="manage_copyright" target="manage_main">&copy; Zope Foundation</a></td>
@@ -93,7 +59,7 @@
 <option value="manage_zmi_prefs">Set Preferences</option>
 <option value="manage_zmi_logout">Logout</option>
 </dtml-if>
-</select> 
+</select>
 <input class="form-element" type="submit" name="submit" value=" Go " />
 &nbsp;
 </form>

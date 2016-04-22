@@ -4,7 +4,7 @@
 <title></title>
 <link rel="stylesheet" type="text/css" href="&dtml-BASEPATH1;/manage_page_style.css">
 </head>
-<body style="background-color:#222;padding:0 !important">
+<body id="manage_top_frame">
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr>
@@ -17,13 +17,13 @@ height="28" width="81" border="0" alt="Zope Logo" />
 <form action="&dtml-BASEPATH1;/" method="POST" target="manage_main" class="form-inline">
 <div class="form-group" style="margin-top:2px">
 <span class="std-text">Logged in as <em>&dtml-AUTHENTICATED_USER;</em></span> &nbsp;&nbsp;
-<select class="form-element" style="display:inline-block;height:2em;padding:4px 12px;" name=":action" onChange="window.parent.manage_main.location.href='&dtml-BASEPATH1;/'+this.options[this.selectedIndex].value">
+<select class="form-element" name=":action" onChange="window.parent.manage_main.location.href='&dtml-BASEPATH1;/'+this.options[this.selectedIndex].value">
 <dtml-if "AUTHENTICATED_USER.getUserName() != 'Anonymous User'">
 <option value="manage_zmi_prefs">Set Preferences</option>
 <option value="manage_zmi_logout">Logout</option>
 </dtml-if>
 </select> 
-<input class="form-element" style="color:silver;padding:3px 12px;height:2em;"
+<input class="form-element"
 type="submit" name="submit" value=" Go " />
 &nbsp;
 </div>

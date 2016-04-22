@@ -341,7 +341,7 @@ def assembleConfProperties(path, pattern):
 # from App.Management import Navigation
 # from App.Management import Tabs
 # from OFS.ObjectManager import ObjectManager
-# zope_manage_page_style = DTMLFile('skins/zope/manage_page_style.css', globals())
+# zope_manage_page_style = DTMLFile('skins/zope/manage_page_style_dark.css', globals())
 # zope_manage_page_header = DTMLFile('skins/zope/manage_page_header', globals())
 # zope_manage_tabs = DTMLFile('skins/zope/manage_tabs', globals())
 # zope_manage_menu = DTMLFile('skins/zope/menu', globals())

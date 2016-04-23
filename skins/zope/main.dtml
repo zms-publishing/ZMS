@@ -56,7 +56,7 @@ function toggleSelect() {
 	</div>
 </dtml-if>
 
-<form class="form_main" action="<dtml-var "REQUEST.URL1" html_quote>/" name="objectItems" method="post">
+<form class="row form_main" action="<dtml-var "REQUEST.URL1" html_quote>/" name="objectItems" method="post">
 <dtml-if objectItems>
   <dtml-let hasOrderSupport="_.getattr(this().aq_explicit, 'has_order_support', 0)">
   <dtml-unless skey>
@@ -69,9 +69,9 @@ function toggleSelect() {
   </dtml-unless>
   <dtml-unless rkey><dtml-call expr="REQUEST.set('rkey', '')"></dtml-unless>
 
-<table class="row table table-striped">
+<table class="table main-table table-striped">
 <tr class="list-header">
-  <td width="1%" align="right" ><div
+  <td width="5%" colspan="2" style="text-align:right;"><div
    class="list-item"><a title="Type" href="./manage_main?skey=meta_type<dtml-if
    "skey == 'meta_type' and not rkey">&amp;rkey=meta_type</dtml-if>"
    onMouseOver="window.status='Sort objects by type'; return true"
@@ -79,7 +79,7 @@ function toggleSelect() {
    "skey == 'meta_type' or rkey == 'meta_type'"
    ><i class="icon icon-sort-by-attributes meta_type">&nbsp;</i><dtml-else><i class="icon icon-sort-by-attributes">&nbsp;</i></dtml-if></a></div>
   </td>
-  <td width="50%" align="left"><div class="list-item"><a
+  <td width="50%"><div class="list-item"><a
    href="./manage_main?skey=id<dtml-if
    "skey == 'id' and not rkey">&amp;rkey=id</dtml-if>"
    onMouseOver="window.status='Sort objects by name'; return true"
@@ -87,7 +87,7 @@ function toggleSelect() {
    "skey == 'id' or rkey == 'id'"
    ><strong>Name</strong><dtml-else>Name</dtml-if></a></div>
   </td>
-  <td width="15%" align="left"><div class="list-item"><a
+  <td width="15%"><div class="list-item"><a
    href="./manage_main?skey=get_size<dtml-if
    "skey == 'get_size' and not rkey">&amp;rkey=get_size</dtml-if>"
    onMouseOver="window.status='Sort objects by size'; return true"
@@ -95,7 +95,7 @@ function toggleSelect() {
    "skey == 'get_size' or rkey == 'get_size'"
    ><strong>Size</strong><dtml-else>Size</dtml-if></a></div>
   </td>
-  <td width="19%" align="left"><div class="list-item"><a
+  <td width="19%"><div class="list-item"><a
    href="./manage_main?skey=bobobase_modification_time<dtml-if
    "skey == 'bobobase_modification_time' and not rkey"
    >&amp;rkey=bobobase_modification_time</dtml-if>"
@@ -105,7 +105,7 @@ function toggleSelect() {
    ><strong>Last Modified</strong><dtml-else>Last Modified</dtml-if></a></div>
   </td>
   <dtml-if hasOrderSupport>
-  <td width="10%" align="left"><div class="list-item"><a
+  <td width="10%"><div class="list-item"><a
    href="./manage_main?skey=position"
    onMouseOver="window.status='Sort objects by position'; return true"
    onMouseOut="window.status=''; return true"><dtml-if
@@ -116,47 +116,46 @@ function toggleSelect() {
 </tr>
 
 <dtml-in objectItems sort_expr="skey+'/cmp/asc'" reverse_expr="rkey">
-<dtml-if sequence-odd>
-<tr class="row-normal">
-<dtml-else>
-<tr class="row-hilite">
-</dtml-if>
-  <td align="left" valign="top" nowrap="1" class="main-icon &dtml-meta_type;">
-  <input type="checkbox" name="ids:list" value="&dtml-sequence-key;" />
-  <dtml-if om_icons>
-  <dtml-in om_icons mapping>
-  <img src="&dtml-BASEPATH1;/&dtml.url_quote-path;" alt="&dtml.missing-alt;"
-   title="&dtml.missing-title;" border="0" width="16" height="16"/></dtml-in>
-  <dtml-else>
+<dtml-if sequence-odd
+	><tr class="row-normal"
+><dtml-else
+	><tr class="row-hilite"
+></dtml-if>
+	<td>&nbsp;</td>
+	<td class="main-icon &dtml-meta_type;"
+		><input type="checkbox" name="ids:list" value="&dtml-sequence-key;"
+		/><dtml-if om_icons
+		><dtml-in om_icons mapping
+			><img src="&dtml-BASEPATH1;/&dtml.url_quote-path;" alt="&dtml.missing-alt;"
+				title="&dtml.missing-title;" border="0" width="16" height="16"
+			/></dtml-in
+		><dtml-else
+			><dtml-if icon
+				><img src="&dtml-BASEPATH1;/&dtml-icon;"
+					alt="&dtml-meta_type;"
+					title="&dtml-meta_type;" border="0"
+			/><dtml-else
+				>&nbsp;
+			</dtml-if
+		></dtml-if>
+	</td>
 
-  <dtml-if icon>
-  <img src="&dtml-BASEPATH1;/&dtml-icon;" alt="&dtml-meta_type;"
-   title="&dtml-meta_type;" border="0" />
-  <dtml-else>
-  &nbsp;
-  </dtml-if>
-
-  </dtml-if>
-
-
-  </td>
-
-  <td align="left" valign="top">
-  <div class="list-item">
-  <a href="&dtml.url_quote-sequence-key;/manage_workspace">
-  &dtml-sequence-key; <dtml-if title>(&dtml-title;)</dtml-if>
-  </a>
-  <dtml-try>
-    <dtml-if "wl_isLocked()==1">
-      <img src="/p_/davlocked">
-    </dtml-if>
-  <dtml-except>
-  </dtml-try>
-  </div>
-  </td>
+	<td class="main-title">
+		<div class="list-item">
+			<a title="&dtml-meta_type;" href="&dtml.url_quote-sequence-key;/manage_workspace"
+				>&dtml-sequence-key; <dtml-if title>(&dtml-title;)</dtml-if>
+			</a>
+			<dtml-try>
+				<dtml-if "wl_isLocked()==1">
+					<img src="/p_/davlocked" />
+				</dtml-if>
+			<dtml-except>
+			</dtml-try>
+		</div>
+	</td>
 
   <dtml-with sequence-key>
-  <td>
+  <td class="main-size">
   <div class="list-item">
   <dtml-try>
   <dtml-if get_size>
@@ -178,7 +177,7 @@ function toggleSelect() {
   </div>
   </td>
 
-  <td>
+  <td class="main-time">
   <div class="list-item">
   <dtml-var bobobase_modification_time fmt="%Y-%m-%d %H:%M">
   </div>
@@ -186,7 +185,7 @@ function toggleSelect() {
   </dtml-with>
 
   <dtml-if hasOrderSupport>
-  <td>
+  <td class="main-position">
   <div class="list-item">
   <dtml-if "skey == 'position'">
   <dtml-var sequence-number>
@@ -273,30 +272,29 @@ if (document.forms[0]) {
 <div>
 
   </dtml-let>
+
 <dtml-else>
-<table cellspacing="0" cellpadding="2" border="0">
-<tr>
-<td>
-<div class="std-text">
-There are currently no items in <em>&dtml-title_or_id;</em>
-<br /><br />
-</div>
-<dtml-unless dontAllowCopyAndPaste>
-<dtml-if cb_dataValid>
-<div class="form-element">
-<input class="form-element" type="submit" name="manage_pasteObjects:method"
- value="Paste" />
-</div>
-</dtml-if>
-</dtml-unless>
-<dtml-if "_.SecurityCheckPermission('Import/Export objects', this())">
-<input class="form-element" type="submit"
-  name="manage_importExportForm:method" value="Import/Export" />
-</dtml-if>
-</td>
-</tr>
+
+	<table class="main-table-empty">
+		<tr>
+			<td>
+				<div class="std-text">There are currently no items in <em>&dtml-title_or_id;</em><br /><br /></div>
+					<dtml-unless dontAllowCopyAndPaste>
+						<dtml-if cb_dataValid>
+							<div class="form-element">
+								<input class="form-element" type="submit" name="manage_pasteObjects:method" value="Paste" />
+							</div>
+						</dtml-if>
+					</dtml-unless>
+					<dtml-if "_.SecurityCheckPermission('Import/Export objects', this())">
+						<input class="form-element" type="submit" name="manage_importExportForm:method" value="Import/Export" />
+					</dtml-if>
+			</td>
+		</tr>
 </table>
+
 </dtml-if>
+
 </form>
 
 <dtml-if update_menu>

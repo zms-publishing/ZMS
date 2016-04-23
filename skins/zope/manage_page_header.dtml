@@ -9,12 +9,12 @@
 <dtml-call "RESPONSE and RESPONSE.setHeader('content-type','text/html;charset='+management_page_charset)">
 <title><dtml-if title_or_id><dtml-var title_or_id><dtml-else>Zope</dtml-if></title>
 
-<link type="text/css" rel="stylesheet" href="/++resource++zms_/bootstrap/css/bootstrap-all.min.css" />
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/i18n/ger.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/i18n/eng.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/bootstrap/bootstrap-all.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="&dtml-BASEPATH1;/manage_page_style.css" />
 
 </head>
 <body>
+<dtml-call "REQUEST.set('used_zms_custom_manage_page_header',True)">

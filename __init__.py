@@ -334,25 +334,30 @@ def assembleConfProperties(path, pattern):
 ################################################################################
 
 ################################################################################
-# EXPERIMENTAL HOOK FOR ZOPE CUSTOM SKIN
+# Dynamic Modification of the Zope Skin
 ################################################################################
-# from App.special_dtml import HTMLFile
-# from App.special_dtml import DTMLFile
-# from App.Management import Navigation
-# from App.Management import Tabs
-# from OFS.ObjectManager import ObjectManager
-# zope_manage_page_style = DTMLFile('skins/zope/manage_page_style_dark.css', globals())
-# zope_manage_page_header = DTMLFile('skins/zope/manage_page_header', globals())
-# zope_manage_tabs = DTMLFile('skins/zope/manage_tabs', globals())
-# zope_manage_menu = DTMLFile('skins/zope/menu', globals())
-# zope_manage_main = DTMLFile('skins/zope/main', globals())
-# zope_manage_top_frame  =DTMLFile('skins/zope/manage_top_frame', globals())
-# zope_manage_page_footer = DTMLFile('skins/zope/manage_page_footer', globals())
-# setattr(Navigation, 'manage_page_style.css', zope_manage_page_style)
-# setattr(Navigation, 'manage_page_header', zope_manage_page_header)
-# setattr(Navigation, 'manage_page_footer', zope_manage_page_footer)
-# setattr(Navigation, 'manage_menu', zope_manage_menu)
-# setattr(Navigation, 'manage_top_frame', zope_manage_top_frame)
-# setattr(Tabs, 'manage_tabs', zope_manage_tabs)
-# setattr(ObjectManager, 'manage_main', zope_manage_main)
+confdict = _confmanager.ConfDict.get()
+if confdict['zmi.console'] in ['light','dark']:
+  from App.special_dtml import HTMLFile
+  from App.special_dtml import DTMLFile
+  from App.Management import Navigation
+  from App.Management import Tabs
+  from App.ApplicationManager import DebugManager
+  from OFS.ObjectManager import ObjectManager
+  zope_manage_page_style = DTMLFile('skins/zope/manage_page_style_%s.css'%(confdict['zmi.console']), globals())
+  zope_manage_page_header = DTMLFile('skins/zope/manage_page_header', globals())
+  zope_manage_tabs = DTMLFile('skins/zope/manage_tabs', globals())
+  zope_manage_menu = DTMLFile('skins/zope/menu', globals())
+  zope_manage_main = DTMLFile('skins/zope/main', globals())
+  zope_manage_top_frame  =DTMLFile('skins/zope/manage_top_frame', globals())
+  zope_manage_page_footer = DTMLFile('skins/zope/manage_page_footer', globals())
+  zope_manage_debug = DTMLFile('skins/zope/debug', globals())  
+  setattr(Navigation, 'manage_page_style.css', zope_manage_page_style)
+  setattr(Navigation, 'manage_page_header', zope_manage_page_header)
+  setattr(Navigation, 'manage_page_footer', zope_manage_page_footer)
+  setattr(Navigation, 'manage_menu', zope_manage_menu)
+  setattr(Navigation, 'manage_top_frame', zope_manage_top_frame)
+  setattr(Tabs, 'manage_tabs', zope_manage_tabs)
+  setattr(ObjectManager, 'manage_main', zope_manage_main)
+  setattr(DebugManager, 'manage_main', zope_manage_debug)
 

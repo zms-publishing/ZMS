@@ -2,18 +2,18 @@
 /* <dtml-call "RESPONSE.setHeader('Content-Type','text/css')"> */
 /* <dtml-call "RESPONSE.setHeader('Cache-Control','public,max-age=3600')"> */
 
+@import url("/++resource++zms_/bootstrap/css/bootstrap-all.min.css");
+
 body {
-	color: #ddd;
 	background-color: #404040;
+	color: #ddd;
 	margin: 0;
 	padding: 0 15px !important;
 	font-family:Arial,Helvetica,sans-serif;
+	min-width:640px;
 }
-td img {
-	visibility:hidden;
-}
-img[src*='logo'] {
-	visibility:visible !important;
+h1, h2, h3, p {
+	margin:1em;
 }
 a {
 	color:white;
@@ -41,23 +41,29 @@ a:focus, a:hover {
 	background:black;
 }
 .nav-tabs {
-	margin:15px -15px 0 -15px;
+	margin:0 -15px 0 -15px;
+	padding-top:15px;
+	background-color:transparent;
 }
 .nav-tabs li.active > a {
-	background-color: #1D2D4A !important;
 	background-color: #404040 !important;
 	font-weight: bold;
 }
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
 	color: #FFF;
 }
-
-table.table.row {
-	width: inherit !important;
-	max-width: inherit !important;
-	min-width: 100%;
+table {
+	margin:0 2em 2em 2em;
 }
-
+table th {
+	font-weight:normal;
+}
+table.main-table {
+	margin:0 0 2em 0 !important;
+}
+table.main-table td img {
+	visibility:hidden;
+}
 .table-striped>tbody>tr:nth-of-type(odd) {
 	background-color: rgba(0, 0, 0, 0.2);
 }
@@ -98,15 +104,11 @@ input.form-element {
 	margin-right: .5em;
 }
 
-.form-inline input.form-control {
-	margin-right: 0.5em;
-	color:#ddd;
-}
 form.form-initialized {
 	margin:0 1em;
 }
-form.form_main.form-initialized {
-	margin:0;
+form.row.form-initialized {
+	margin:0 -15px 0 -15px;
 }
 
 select {
@@ -132,15 +134,18 @@ select {
 	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 .zope_actions {
-	margin: -3.5em .25em 0 0;
+	position:absolute;
+	top:4.5em;
+	right:0;
 }
-.zope_actions select {
+.zope_actions select,
+.zope_actions input {
 	border:0;
-	background-color: #1D2D4A;
 	background-color: #404040;
 	box-shadow:none;
 	color:#ddd;
 	border: 1px solid #ccc;
+	display:inline-block !important;
 }
 
 textarea {
@@ -203,14 +208,14 @@ input[type="file" i]::-webkit-file-upload-button:hover {
 	background: #00EEFF;
 	color: black;
 }
-p.form-help {
-	margin:1em 1em 2em;
-}
 i.icon-home {
 	color:#9DDDFF;
 }
 form[action='manage_changePermissions'] {
 	margin-top:1em;
+}
+form[action='manage_changePermissions'] table {
+	margin:0 !important;
 }
 form[action='manage_changePermissions'] table td {
 	border: 1px solid silver;
@@ -281,17 +286,19 @@ body#manage_top_frame td#zope_logo a img:hover {
 	opacity:0.8;
 }
 
-
 td.main-icon {
 	text-align: center;
 	border-right:1px solid silver;
+	font-size:2rem;
+	padding:3px 0 0 3px !important;
+	vertical-align:top;
+	white-space:nowrap !important;
 }
 td.main-icon.checked {
 	background-color: #0088CC;
 }
 td.main-icon i {
 	cursor:pointer;
-	width:1.5em;
 }
 td.main-icon.checked i {
 	color:white;
@@ -301,6 +308,11 @@ td.main-icon input {
 	position: absolute;
 	z-index:-100;
 	visibility:hidden;
+}
+
+td.main-size div.list-item,
+td.main-time div.list-item {
+	white-space:nowrap;
 }
 
 /*

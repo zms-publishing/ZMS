@@ -10,7 +10,6 @@ body {
 	margin: 0;
 	padding: 0 15px !important;
 	font-family:Arial,Helvetica,sans-serif;
-	min-width:640px;
 }
 h1, h2, h3, p {
 	margin:1em;
@@ -55,12 +54,21 @@ a:focus, a:hover {
 table {
 	margin:0 2em 2em 2em;
 }
-table th {
-	font-weight:normal;
+#manage_top_frame table,
+table#menu_title,
+#menu_tree table,
+table#menu_buttons {
+	margin:0;
 }
 table.main-table {
 	margin:0 0 2em 0 !important;
 }
+table th {
+	font-weight:normal;
+}
+
+table#menu_title td img,
+#menu_tree table td img,
 table.main-table td img {
 	visibility:hidden;
 }
@@ -245,7 +253,7 @@ div#menu_tree {
 	margin-left:-0.3em;
 }
 table#menu_title td {
-	padding:.8em .3em .6em .4em !important;
+	padding: 1em .3em .0em .4em !important;
 }
 table#menu_buttons {
 	width:100%;

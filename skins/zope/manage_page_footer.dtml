@@ -19,6 +19,9 @@
 	$('img[src*="/p_/pl"]').replaceWith('<i title="Expand..." class="icon icon-expand-alt"></i>');
 	$('img[src*="/p_/mi"]').replaceWith('<i title="Collapse..." class="icon icon-collapse-alt"></i>');
 	$('img[src*="/p_/davlocked"]').replaceWith('<i title="WebDAV" class="icon icon-retweet"></i>');
+	$('img[src*="DebugManager"]').replaceWith('<i title="Debug Manager" class="icon icon-bug"></i>');
+	$('img[src*="SiteErrorLog"]').replaceWith('<i title="Site Error Log" class="icon icon-bug"></i>');
+
 
 // ALL THE OTHER ICONS
 	$('img[src*=misc_]').replaceWith('<i class="icon icon-circle-blank">&nbsp;</i>');

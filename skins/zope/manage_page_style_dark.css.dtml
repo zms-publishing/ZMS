@@ -95,9 +95,6 @@ table td {
 a[href*='content/'] {
 	color: #9DDDFF;
 }
-a[href*='content/'] {
-	font-weight:bold
-}
 .form-control {
 	background-color: transparent;
 }

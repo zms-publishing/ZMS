@@ -91,10 +91,7 @@ table td {
 }
 .table>tbody>tr:hover *,
 a[href*='content/'] {
-	color: #295274;
-}
-a[href*='content/'] {
-	font-weight:bold
+	color: #337ab7;
 }
 .form-control {
 	background-color: transparent;
@@ -206,6 +203,7 @@ input[type="file" i]::-webkit-file-upload-button:hover {
 }
 
 i.icon-home {
+	color:#337ab7;
 }
 form[action='manage_changePermissions'] {
 	margin-top:1em;

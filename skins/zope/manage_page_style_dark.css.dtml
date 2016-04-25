@@ -3,13 +3,17 @@
 /* <dtml-call "RESPONSE.setHeader('Cache-Control','public,max-age=3600')"> */
 
 @import url("/++resource++zms_/bootstrap/css/bootstrap-all.min.css");
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,400italic);
 
 body {
 	background-color: #404040;
 	color: #ddd;
 	margin: 0;
 	padding: 0 15px !important;
-	font-family:Arial,Helvetica,sans-serif;
+	font-family:'Roboto',Arial,Helvetica,sans-serif;
+	/* ROBOTO needs 15px */
+	font-size:15px;
 }
 h1, h2, h3, p {
 	margin:1em;
@@ -176,7 +180,6 @@ input[type="submit"] {
 	background-color: transparent;
 	height: 34px;
 	padding: 6px 12px;
-	font-size: 14px;
 	line-height: 1.42857143;
 	border: 1px solid #ccc;
 	border-radius: 4px;
@@ -266,12 +269,23 @@ table#menu_buttons a {
 
 body#manage_top_frame {
 	background-color:#222;
-	padding:0 !important;
+	margin:0;
+	padding:7px 0 0 7px !important
+}
+body#manage_top_frame table td {
+	padding: 0;
+}
+body#manage_top_frame div.form-element {
+	text-align: right;
+	font-size: 13px;
+	margin: 0;
+	padding: 0;
 }
 body#manage_top_frame input {
 	color:silver;
 	padding:3px 12px;
 	height:2em;
+	font-size: 14px;
 }
 body#manage_top_frame select {
 	display:inline-block;
@@ -282,7 +296,7 @@ body#manage_top_frame td#zope_logo {
 	width:180px;
 	text-align:left;
 	vertical-align:top;
-	padding:0.2em 1em 0.1em 0.5em;
+	padding:1px 2px;
 }
 body#manage_top_frame td#zope_logo a img {
 	opacity:0.4;
@@ -320,26 +334,44 @@ td.main-time div.list-item {
 	white-space:nowrap;
 }
 
-/*
-td.main-icon.Template {
-	background-color: #008AFF;
+
+/* TEST: REFRESH BANNER
+body#manage_top_frame td#zope_logo a img {
+	display: none;
 }
-td.main-icon.Browser {
-	background-color: darkred;
+body#manage_top_frame #zope_logo a:before {
+	content: 'Z Object Python Environment';
+	width: 300px;
+	display: block;
+	padding: .2em .5em;
+	font-size: 19px;
+	color: white;
+	font-family: “Roboto Condensed”;
+	font-weight: 300;
 }
-td.main-icon.Mail {
-	background-color: #E78B00;
+body#manage_top_frame,
+body#manage_top_frame select,
+body#manage_top_frame input, {
+	background-color: #0088CC;
 }
-td.main-icon.Script {
-	background-color: #039303;
+body#manage_top_frame select,
+body#manage_top_frame input {
+	border: 1px solid white;
+	color: white;
 }
-td.main-icon.DTML {
-	background-color: #C000FF;
+body#manage_top_frame:before {
+	display:none
 }
-td.main-icon.Image {
-	background-color: #E10000;
-}
-td.main-icon.Folder {
-	background-color: #888888;
+body:before {
+	content: "";
+	position: fixed;
+	top: -10px;
+	left: 0;
+	width: 100%;
+	height: 10px;
+	-webkit-box-shadow: 0px 0px 10px rgba(0,0,0,.8);
+	-moz-box-shadow: 0px 0px 10px rgba(0,0,0,.8);
+	box-shadow: 0px 0px 10px rgba(0,0,0,.8);
+	z-index: 100;
 }
 */

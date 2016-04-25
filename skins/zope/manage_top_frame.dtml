@@ -8,14 +8,14 @@
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr>
-<td id="zope_logo"><a
+<td id="zope_logo" width="*"><a
 href="http://www.zope.org" target="_new" title="http://www.zope.org"><img src="&dtml-BASEPATH1;/misc_/zms/zope_logo.png"
 height="28" width="81" border="0" alt="Zope Logo" />
 </td>
-<td style="width:100%;text-align:right;vertical-align:top;padding:0.1em 1em 0.1em 0.5em;font-size:80%">
+<td width="100%">
 <div class="form-element">
 <form action="&dtml-BASEPATH1;/" method="POST" target="manage_main" class="form-inline">
-<div class="form-group" style="margin-top:2px">
+<div class="form-group">
 <span class="std-text">Logged in as <em>&dtml-AUTHENTICATED_USER;</em></span> &nbsp;&nbsp;
 <select class="form-element" name=":action" onChange="window.parent.manage_main.location.href='&dtml-BASEPATH1;/'+this.options[this.selectedIndex].value">
 <dtml-if "AUTHENTICATED_USER.getUserName() != 'Anonymous User'">

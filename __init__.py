@@ -344,6 +344,7 @@ if confdict['zmi.console'] in ['light','dark']:
   from App.Management import Tabs
   from App.ApplicationManager import DebugManager
   from OFS.ObjectManager import ObjectManager
+  zope_manage = DTMLFile('skins/zope/manage', globals())
   zope_manage_page_style = DTMLFile('skins/zope/manage_page_style_%s.css'%(confdict['zmi.console']), globals())
   zope_manage_page_header = DTMLFile('skins/zope/manage_page_header', globals())
   zope_manage_tabs = DTMLFile('skins/zope/manage_tabs', globals())
@@ -352,6 +353,7 @@ if confdict['zmi.console'] in ['light','dark']:
   zope_manage_top_frame  =DTMLFile('skins/zope/manage_top_frame', globals())
   zope_manage_page_footer = DTMLFile('skins/zope/manage_page_footer', globals())
   zope_manage_debug = DTMLFile('skins/zope/debug', globals())  
+  setattr(Navigation, 'manage', zope_manage)
   setattr(Navigation, 'manage_page_style.css', zope_manage_page_style)
   setattr(Navigation, 'manage_page_header', zope_manage_page_header)
   setattr(Navigation, 'manage_page_footer', zope_manage_page_footer)

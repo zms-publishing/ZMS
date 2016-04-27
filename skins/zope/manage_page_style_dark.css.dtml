@@ -49,6 +49,9 @@ a:focus, a:hover {
 	background-color:transparent;
 	min-width: 640px;
 }
+.nav-tabs li.first-tab {
+	margin-left:3em;
+} 
 .nav-tabs li.active > a {
 	background-color: #404040 !important;
 	font-weight: bold;
@@ -101,6 +104,7 @@ a[href*='content/'] {
 }
 .form-control {
 	background-color: transparent;
+	font-size:15px;
 }
 .form-label {
 	margin-right: 1em;
@@ -147,6 +151,38 @@ select {
 	top:4.5em;
 	right:0;
 }
+@media (max-width: 750px) {
+	body {
+		overflow-x: hidden;
+	}
+	.nav-tabs li.first-tab {
+		margin-left:0.5em;
+	} 
+	div.zope_actions.pull-right {
+		position:relative !important;
+		top:inherit !important;
+		right:inherit !important;
+		float:none !important;
+	}
+	td.main-size {
+		display:none;
+	}
+	td.main-time {
+		display:none;
+	}
+	h1, h2, h3, p {
+		margin: 1em 0;
+	}
+	.breadcrumb {
+		padding: 0
+	}
+	form.form-initialized {
+		margin: 0;
+	}
+	table {
+		margin: 0 0 1em 0;
+	}
+}
 .zope_actions select,
 .zope_actions input {
 	border:0;
@@ -191,6 +227,7 @@ input[type="submit"] {
 	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
+.form-group.form-inline input,
 form[action='manage_edit'] input[type='submit'] {
 	margin: 0 0.5em .75em 0;
 }

@@ -23,8 +23,7 @@
 <dtml-in manage_options mapping>
 <dtml-let s_item=sequence-item s_index=sequence-index>
 <li
-	<dtml-if "s_index==0">style="margin-left: 3em;"</dtml-if>
-	<dtml-if "s_index==a_">class="active"</dtml-if>
+	<dtml-var "'class=\042%s %s\042'%(['','first-tab'][s_index==0],['','active'][s_index==a_])">
 	><a <dtml-if "s_item.get('action')">href="&dtml-action;"<dtml-else>href="<dtml-var "REQUEST.URL1" html_quote>"</dtml-if
 	><dtml-if "s_item.get('target')"> target="&dtml-target;"</dtml-if>><dtml-var "s_item['label']"></a></li>
 </dtml-let>

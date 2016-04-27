@@ -71,7 +71,7 @@ function toggleSelect() {
 
 <table class="table main-table table-striped">
 <tr class="list-header">
-  <td width="5%" colspan="2" style="text-align:right;"><div
+  <td class="main-icon" width="5%" colspan="2" style="text-align:right;"><div
    class="list-item"><a title="Type" href="./manage_main?skey=meta_type<dtml-if
    "skey == 'meta_type' and not rkey">&amp;rkey=meta_type</dtml-if>"
    onMouseOver="window.status='Sort objects by type'; return true"
@@ -79,7 +79,7 @@ function toggleSelect() {
    "skey == 'meta_type' or rkey == 'meta_type'"
    ><i class="icon icon-sort-by-attributes meta_type">&nbsp;</i><dtml-else><i class="icon icon-sort-by-attributes">&nbsp;</i></dtml-if></a></div>
   </td>
-  <td width="50%"><div class="list-item"><a
+  <td class="main-title" width="50%"><div class="list-item"><a
    href="./manage_main?skey=id<dtml-if
    "skey == 'id' and not rkey">&amp;rkey=id</dtml-if>"
    onMouseOver="window.status='Sort objects by name'; return true"
@@ -87,7 +87,7 @@ function toggleSelect() {
    "skey == 'id' or rkey == 'id'"
    ><strong>Name</strong><dtml-else>Name</dtml-if></a></div>
   </td>
-  <td width="15%"><div class="list-item"><a
+  <td class="main-size" width="15%"><div class="list-item"><a
    href="./manage_main?skey=get_size<dtml-if
    "skey == 'get_size' and not rkey">&amp;rkey=get_size</dtml-if>"
    onMouseOver="window.status='Sort objects by size'; return true"
@@ -95,7 +95,7 @@ function toggleSelect() {
    "skey == 'get_size' or rkey == 'get_size'"
    ><strong>Size</strong><dtml-else>Size</dtml-if></a></div>
   </td>
-  <td width="19%"><div class="list-item"><a
+  <td class="main-time" width="19%"><div class="list-item"><a
    href="./manage_main?skey=bobobase_modification_time<dtml-if
    "skey == 'bobobase_modification_time' and not rkey"
    >&amp;rkey=bobobase_modification_time</dtml-if>"
@@ -105,7 +105,7 @@ function toggleSelect() {
    ><strong>Last Modified</strong><dtml-else>Last Modified</dtml-if></a></div>
   </td>
   <dtml-if hasOrderSupport>
-  <td width="10%"><div class="list-item"><a
+  <td class="main-position" width="10%"><div class="list-item"><a
    href="./manage_main?skey=position"
    onMouseOver="window.status='Sort objects by position'; return true"
    onMouseOut="window.status=''; return true"><dtml-if

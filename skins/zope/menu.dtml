@@ -1,18 +1,33 @@
 <dtml-var manage_page_header>
 
+
+<div class="dropdown" id="menu_buttons">
+	<button title="Logged in as" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+		<span class="caret"></span>Login: &dtml-AUTHENTICATED_USER; 
+	</button>
+	<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+		<li><a id="menu_refresh" href="manage_menu">Refresh</a></li>
+		<li><a id="menu_save" href="manage_menu?save_layout=1">Save layout</a></li>
+		<li><a id="menu_logout" href="manage_zmi_logout">Logout</a></li>
+		<li role="separator" class="divider"></li>
+		<li><a id="menu_copyright" href="manage_copyright">&copy; Zope Foundation</a></li>
+	</ul>
+</div>
+
+
 <table id="menu_title">
-<tr>
-  <td>
-  <dtml-if icon>
-  <a href="manage_workspace" target="manage_main"><img
-   src="&dtml-BASEPATH1;/&dtml-icon;" border="0"
-   title="Click to open this item" alt="&dtml-meta_type;" /></a>
-  </dtml-if>
-  <a href="manage_workspace" target="manage_main">
-  <dtml-if expr="URLPATH1==BASEPATH1">Root Folder<dtml-else>&dtml-id;</dtml-if>
-  </a>
-  </td>
-</tr>
+	<tr>
+		<td id="menu_workspace">
+			<dtml-if icon>
+				<a href="manage_workspace" target="manage_main"><img
+				src="&dtml-BASEPATH1;/&dtml-icon;" border="0"
+				title="Click to open this item" alt="&dtml-meta_type;" /></a>
+ 			</dtml-if>
+ 			<a href="manage_workspace" target="manage_main">
+				<dtml-if expr="URLPATH1==BASEPATH1">Root Folder<dtml-else>&dtml-id;</dtml-if>
+			</a>
+		</td>
+	</tr>
 </table>
 
 <div id="menu_tree">
@@ -27,47 +42,10 @@
 </dtml-tree>
 </div>
 
-<table id="menu_buttons" style="width:100%;">
-<tr>
-  <td>&nbsp;</td>
-  <td style="width:100%"><a href="manage_copyright" target="manage_main">&copy; Zope Foundation</a></td>
-</tr>
-<tr>
-  <td>&nbsp;</td>
-  <td style="width:100%"><a href="manage_menu">Refresh</a></td>
-</tr>
-<tr>
-  <td>&nbsp;</td>
-  <td style="width:100%"><a href="manage_menu?save_layout=1">Save layout</a></td>
-</tr>
-</table>
 
 <dtml-if save_layout>
   <dtml-call "RESPONSE.setCookie('tree-s', REQUEST.get('tree-s'), expires=ZopeTime('2975-05-26').rfc822())">
 </dtml-if>
-
-<dtml-unless expr="REQUEST.get('zmi_top_frame', '1')">
-<table>
-<tr>
-<td>
-<div class="form-element">
-<form action="&dtml-BASEPATH1;/" method="POST" target="manage_main">
-<span class="std-text">Logged in as <strong>&dtml-AUTHENTICATED_USER;</strong></span> &nbsp;&nbsp;
-<br />
-<select class="form-element" name=":action" onChange="window.parent.manage_main.location.href='&dtml-BASEPATH1;/'+this.options[this.selectedIndex].value">
-<dtml-if "AUTHENTICATED_USER.getUserName() != 'Anonymous User'">
-<option value="manage_zmi_prefs">Set Preferences</option>
-<option value="manage_zmi_logout">Logout</option>
-</dtml-if>
-</select>
-<input class="form-element" type="submit" name="submit" value=" Go " />
-&nbsp;
-</form>
-</div>
-</td>
-</tr>
-</table>
-</dtml-unless>
 
 <dtml-var manage_page_footer>
 

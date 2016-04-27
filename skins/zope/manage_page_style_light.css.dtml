@@ -45,6 +45,7 @@ a:focus, a:hover {
 	margin:0 -15px 0 -15px;
 	padding-top:15px;
 	background-color:white;
+	min-width: 640px;
 }
 .nav-tabs li.active > a {
 	font-weight: bold;
@@ -55,7 +56,6 @@ a:focus, a:hover {
 table {
 	margin:0 2em 2em 2em;
 }
-#manage_top_frame table,
 table#menu_title,
 #menu_tree table,
 table#menu_buttons {
@@ -150,7 +150,9 @@ select {
 	border: 1px solid silver;
 	display:inline-block !important;
 }
-
+.zope_actions select {
+	max-width: 75%;
+}
 textarea {
 	overflow: auto;
 	color:#000;
@@ -181,7 +183,10 @@ input[type="submit"] {
 	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
-
+form[action='manage_edit'] input[type='submit'] {
+	margin: 0 0.5em .75em 0;
+}
+input:not([type]),
 input[type="text"],
 input[type="password"],
 input[type="file"],
@@ -218,9 +223,26 @@ form[action='manage_changePermissions'] table td {
 }
 
 /* ZMS CUSTOM MENU */
+#menu_buttons {
+	padding: 1.4em 0 .6em 0;
+	border-bottom: 1px solid silver;
+}
+#menu_buttons button {
+	width: 100%;
+	background: transparent;
+	color: black;
+	text-align: left;
+	border: 0;
+	padding: 0;
+}
+#menu_buttons button .caret {
+	margin-right: 0.75em;
+}
+#menu_buttons ul.dropdown-menu {
+	margin:-6px 0 0;
+}
 table#menu_title td,
-div#menu_tree table td,
-table#menu_buttons td {
+div#menu_tree table td{
 	padding:0.2em .3em 0 .4em !important;
 	min-width:1em;
 	white-space:nowrap !important;
@@ -241,60 +263,6 @@ div#menu_tree {
 }
 table#menu_title td {
 	padding: 1em .3em .0em .4em !important;
-}
-table#menu_buttons {
-	width:100%;
-	margin-top:1em;
-}
-table#menu_buttons td {
-	min-width:1em;
-	white-space:nowrap !important;
-}
-table#menu_buttons a {
-	color:#aaa;
-}
-
-body#manage_top_frame {
-	background-color:#9AB5CC;
-	margin:0;
-	padding:7px 0 0 7px !important
-}
-body#manage_top_frame table td {
-	padding: 0;
-}
-body#manage_top_frame div.form-element {
-	text-align: right;
-	font-size: 13px;
-	margin: 0;
-	padding: 0;
-}
-body#manage_top_frame input {
-	color:#888;
-	border: 1px solid #888;
-	padding:3px 12px;
-	height:2em;
-	background-color:#eee;
-	font-size: 14px;
-}
-body#manage_top_frame select {
-	color:#888;
-	border: 1px solid #888;
-	display:inline-block;
-	height:2em;
-	padding:4px 12px;
-	background-color:#eee;
-}
-body#manage_top_frame td#zope_logo {
-	width:180px;
-	text-align:left;
-	vertical-align:top;
-	padding:1px 2px;
-}
-body#manage_top_frame td#zope_logo a img {
-	opacity:0.8;
-}
-body#manage_top_frame td#zope_logo a img:hover {
-	opacity:1.0;
 }
 
 td.main-icon {

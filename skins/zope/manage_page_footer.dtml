@@ -1,6 +1,8 @@
 <!-- ZMS CUSTOM FOOTER -->
 <script>
 
+	$('img[src*="UserFolder"]').replaceWith('<i title="Access Control List" class="icon icon-user"></i>');
+	$('#menu_tree img[src*="Folder"]').replaceWith('<i title="Folder" class="icon-folder-close-alt">&nbsp;</i>');
 	$('img[src*="Folder"]').replaceWith('<i title="Folder" class="icon-folder-close-alt">&nbsp;</i>');
 	$('img[src*="Template"]').replaceWith('<i title="Page Template" class="icon icon-file-text-alt">&nbsp;</i>');
 	$('img[src*="Script"]').replaceWith('<i title="Script (Python)" class="icon icon-terminal"></i>');
@@ -13,15 +15,15 @@
 	$('img[src*="Database"]').replaceWith('<i title="Database" class="icon icon-table"></i>');
 	$('img[src*="ZMySQLDA"]').replaceWith('<i title="MySQL-Database Adapter" class="icon icon-table"></i>');
 	$('img[src*="Product"]').replaceWith('<i title="Installed Product" class="icon icon-gift"></i>');
-	$('img[src*="UserFolder"]').replaceWith('<i title="Access Control List" class="icon icon-user"></i>');
 	$('img[src*="ZSQL"]').replaceWith('<i title="ZSQL-Method" class="icon icon-puzzle-piece"></i>');
 	$('img[src*="/p_/pl"]').replaceWith('<i title="Expand..." class="icon icon-expand-alt"></i>');
 	$('img[src*="/p_/mi"]').replaceWith('<i title="Collapse..." class="icon icon-collapse-alt"></i>');
 	$('img[src*="/p_/davlocked"]').replaceWith('<i title="WebDAV" class="icon icon-retweet"></i>');
 	$('img[src*="DebugManager"]').replaceWith('<i title="Debug Manager" class="icon icon-bug"></i>');
 	$('img[src*="SiteErrorLog"]').replaceWith('<i title="Site Error Log" class="icon icon-bug"></i>');
-	$('img[src*="ZMS.png"]').replaceWith('<i title="ZMS" class="icon icon-home">&nbsp;</i>');
-	$('img[src*="ZMSObject.png"]').replaceWith('<i title="ZMS" class="icon icon-file-alt">&nbsp;</i>');
+	$('img[src*="ZMS.png"]').replaceWith('<i title="ZMS Root" class="icon icon-home">&nbsp;</i>');
+	$('img[src*="ZMSObject.png"]').replaceWith('<i title="ZMS Content" class="icon icon-file-alt">&nbsp;</i>');
+	$('img[src*="Monster"]').replaceWith('<i title="Virtual Host Monster" class="icon icon-road">&nbsp;</i>');
 
 // ALL THE OTHER ICONS
 	$('img[src*="misc_"]').replaceWith('<i class="icon icon-circle-blank">&nbsp;</i>');

@@ -71,7 +71,7 @@ function toggleSelect() {
 
 <table class="table main-table table-striped">
 <tr class="list-header">
-  <td class="main-icon" width="5%" colspan="2" style="text-align:right;"><div
+  <td width="5%" colspan="2" style="text-align:right;"><div
    class="list-item"><a title="Type" href="./manage_main?skey=meta_type<dtml-if
    "skey == 'meta_type' and not rkey">&amp;rkey=meta_type</dtml-if>"
    onMouseOver="window.status='Sort objects by type'; return true"
@@ -200,7 +200,7 @@ function toggleSelect() {
 </table>
 
 
-  <div class="form-inline form-group" style="margin:1em;">
+  <div class="controls form-inline form-group">
   <dtml-unless dontAllowCopyAndPaste>
   <input class="form-control" type="submit" name="manage_renameForm:method"
    value="Rename" />

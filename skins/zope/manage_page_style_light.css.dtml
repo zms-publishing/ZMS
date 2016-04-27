@@ -9,13 +9,13 @@ body {
 	background-color:#f6f6f6;
 	color: #333;
 	margin: 0;
-	padding: 0 15px !important;
+	padding: 0 30px !important;
 	font-family:'Roboto',Arial,Helvetica,sans-serif;
 	/* ROBOTO needs 15px */
 	font-size:15px;
 }
 h1, h2, h3, p {
-	margin:1em;
+	margin:1em 0;
 }
 a {
 	color:black;
@@ -25,7 +25,8 @@ a:focus, a:hover {
 }
 .breadcrumb {
 	background-color:transparent;
-	margin:1em 0;
+	margin:1.6em 0;
+	padding:0;
 }
 .breadcrumb img {
 	visibility:hidden;
@@ -42,7 +43,7 @@ a:focus, a:hover {
 	background:#ddd;
 }
 .nav-tabs {
-	margin:0 -15px 0 -15px;
+	margin:0 -30px 0 -30px;
 	padding-top:15px;
 	background-color:white;
 	min-width: 640px;
@@ -57,18 +58,24 @@ a:focus, a:hover {
 
 }
 table {
-	margin:0 2em 2em 2em;
+	margin:0 0em 2em 0em;
+}
+table th {
+	font-weight:normal;
+}
+table td {
+	min-width:2em;
+}
+table.main-table td {
+	min-width:0;
 }
 table#menu_title,
 #menu_tree table,
 table#menu_buttons {
 	margin:0;
 }
-table.main-table {
-	margin:0 0 2em 0 !important;
-}
-table th {
-	font-weight:normal;
+table#menu_title {
+	margin-top:0.6em;
 }
 table#menu_title td img,
 #menu_tree table td img,
@@ -114,12 +121,14 @@ input.form-element {
 }
 
 form.form-initialized {
-	margin:0 1em;
+	margin:0;
 }
 form.row.form-initialized {
-	margin:0 -15px 0 -15px;
+	margin:0 -30px 0 -30px;
 }
-
+form.row.form-initialized .controls {
+	margin:1em 30px;
+}
 select {
 	display: inline-block;
 	width: auto;
@@ -148,6 +157,10 @@ select {
 @media (max-width: 750px) {
 	body {
 		overflow-x: hidden;
+		padding: 0 15px !important;
+	}
+	.nav-tabs {
+		margin:0 -15px 0 -15px;
 	}
 	.nav-tabs li.first-tab {
 		margin-left:0.5em;

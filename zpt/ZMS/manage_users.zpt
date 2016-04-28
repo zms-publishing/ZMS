@@ -2,7 +2,7 @@
 	><tal:block tal:define="global
 			name python:request.get('existsUser');
 			user python:here.findUser(name);"
-		><tal:block tal:content="python:here.str_json(user)">user</tal:block
+    ><tal:block tal:condition="user"><tal:block tal:content="python:context.str_json(user['details'])">user-details</tal:block></tal:block
 	></tal:block
 ></tal:block
 ><tal:block tal:condition="not:python:request.has_key('existsUser')"
@@ -499,20 +499,17 @@ $(function(){
 				var $this = $(this);
 				var id = $this.attr("id");
 				$.get(self.location.href,{existsUser:id},function(result) {
-						var v = eval("("+result+")");
 						if (result=="") {
 							$("a>span",$this).addClass("text-danger bg-danger");
 							$("a>span>i",$this).attr("class","icon-remove");
 						}
 						else {
-							var details = v.details;
-							if (typeof details != "undefined") {
-								var title = "";
-								for (var i=0; i < details.length; i++) {
-									title += details[i]["label"]+"="+details[i]["value"] + "; ";
-								}
-									$("a",$this).attr("title",title);
+							var details =  eval("("+result+")");
+							var title = "";
+							for (var i=0; i < details.length; i++) {
+								title += details[i]["label"]+"="+details[i]["value"] + "; ";
 							}
+							$("a",$this).attr("title",title);
 							$("a>span>i",$this).attr("class","icon-user");
 						}
 					});

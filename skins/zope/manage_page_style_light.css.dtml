@@ -152,6 +152,10 @@ form.row.form-initialized {
 form.row.form-initialized .controls {
 	margin:1em 30px;
 }
+form.row.form-initialized .controls input:hover {
+	background: #000;
+	color: white;
+}
 select {
 	display: inline-block;
 	width: auto;
@@ -228,6 +232,13 @@ select {
 .zope_actions select {
 	max-width: 75%;
 }
+.system-msg {
+	background-color: rgba(0, 136, 204, 0.10);
+	border: 1px solid silver;
+	margin: 1em 0 !important;
+	padding: 15px;
+	border-radius: 4px;
+}
 textarea {
 	overflow: auto;
 	color:#000;
@@ -238,7 +249,6 @@ textarea {
 	margin: 1em 0;
 	font-size: 90%;
 }
-
 input[type="submit"] {
 	margin-right: 0.5em;
 	display: inline-block;

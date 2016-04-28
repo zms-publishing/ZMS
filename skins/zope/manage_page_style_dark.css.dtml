@@ -155,7 +155,10 @@ form.row.form-initialized {
 form.row.form-initialized .controls {
 	margin:1em 30px;
 }
-
+form.row.form-initialized .controls input:hover {
+	background: #000;
+	color: white;
+}
 select {
 	display: inline-block;
 	width: auto;
@@ -234,10 +237,17 @@ select {
 .zope_actions select {
 	max-width: 75%;
 }
+.system-msg {
+	background-color: #08c;
+	border: 0px solid black;
+	margin: 1em 0 !important;
+	padding: 15px;
+	border-radius: 4px;
+}
 textarea {
 	overflow: auto;
 	color: chartreuse;
-	color:#00EEFF;
+	color:#00CCFF;
 	font-family: courier !important;
 	padding: 1em;
 	background: black;
@@ -245,7 +255,6 @@ textarea {
 	padding: .3em;
 	margin: 1em 0;
 }
-
 input[type="submit"] {
 	margin-right: 0.5em;
 	color: #ddd;
@@ -281,7 +290,7 @@ input[name='encoding'] {
 	border-radius: 6px;
 	font-family: courier;
 	color: chartreuse;
-	color:#00EEFF;
+	color:#00CCFF;
 }
 input[type="file"] {
 	color:silver;
@@ -289,12 +298,12 @@ input[type="file"] {
 input[type="file" i]::-webkit-file-upload-button {
 	padding: 6px 12px;
 	background: #404040;
-	border: 1px solid #00EEFF;
+	border: 1px solid #00CCFF;
 	border-radius:4px;
-	color: #00EEFF;
+	color: #00CCFF;
 }
 input[type="file" i]::-webkit-file-upload-button:hover {
-	background: #00EEFF;
+	background: #00CCFF;
 	color: black;
 }
 i.icon-home {

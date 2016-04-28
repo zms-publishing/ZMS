@@ -1,7 +1,8 @@
 <!-- ZMS CUSTOM FOOTER -->
 <script>
 
-	$('img[src*="UserFolder"]').replaceWith('<i data-title="Access Control List" class="icon icon-user"></i>');
+	$('img[src*="UserFolder"]').replaceWith('<i data-title="Access Control List" class="icon icon-group"></i>');
+	$('img[src*="/p_/User_icon"]').replaceWith('<i data-title="User" class="icon icon-user"></i>');
 	$('#menu_tree img[src*="Folder"]').replaceWith('<i data-title="Folder" class="icon-folder-close-alt">&nbsp;</i>');
 	$('img[src*="Folder"]').replaceWith('<i data-title="Folder" class="icon-folder-close-alt">&nbsp;</i>');
 	$('img[src*="zpt.gif"]').replaceWith('<i data-title="Page Template" class="icon icon-file-text-alt">&nbsp;</i>');

@@ -14,10 +14,12 @@
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/bootstrap/bootstrap-all.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="&dtml-BASEPATH1;/manage_page_style.css" />
+<script>
+ZMI.prototype.initInputFields = function(container) { return false }
+</script>
 
 </head>
-<body  id="nodeid_<dtml-var "(REQUEST['URL1'].split(REQUEST['BASE0'])[1]).split('/')[-1]">"
-	class="<dtml-var "this().meta_type">">
+<body  id="nodeid_<dtml-var "(REQUEST['URL1'].split(REQUEST['BASE0'])[1]).split('/')[-1]">" class="<dtml-var "this().meta_type">">
 <dtml-call "REQUEST.set('used_zms_custom_manage_page_header',True)">
 
 <dtml-unless "'manage_menu' in REQUEST['URL']">

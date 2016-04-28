@@ -4,7 +4,8 @@
 	$('img[src*="UserFolder"]').replaceWith('<i title="Access Control List" class="icon icon-user"></i>');
 	$('#menu_tree img[src*="Folder"]').replaceWith('<i title="Folder" class="icon-folder-close-alt">&nbsp;</i>');
 	$('img[src*="Folder"]').replaceWith('<i title="Folder" class="icon-folder-close-alt">&nbsp;</i>');
-	$('img[src*="Template"]').replaceWith('<i title="Page Template" class="icon icon-file-text-alt">&nbsp;</i>');
+	$('img[src*="zpt.gif"]').replaceWith('<i title="Page Template" class="icon icon-file-text-alt">&nbsp;</i>');
+	$('img[src*="exclamation.gif"]').replaceWith('<i title="Error" class="icon icon-exclamation">&nbsp;</i>');
 	$('img[src*="Script"]').replaceWith('<i title="Script (Python)" class="icon icon-terminal"></i>');
 	$('img[src*="ExternalMethod"]').replaceWith('<i title="External Python Method" class="icon icon-external-link-sign">&nbsp;</i>');
 	$('img[src*="dtml"]').replaceWith('<i title="DTML" class="icon icon-file-alt">&nbsp;</i>');

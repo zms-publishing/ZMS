@@ -71,7 +71,13 @@ a:focus, a:hover {
 .nav-tabs li.active > a {
 	font-weight: bold;
 }
-.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+.nav>li>a {
+	font-size: 15px;
+}
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:focus,
+.nav-tabs>li.active>a:hover {
+	color: inherit;
 
 }
 table {
@@ -361,13 +367,23 @@ td.main-icon i {
 td.main-icon.checked i {
 	color:white;
 }
-
 td.main-icon input {
 	position: absolute;
 	z-index:-100;
 	visibility:hidden;
 }
-
+/* ERROR MESSAGES */
+td.main-icon .icon-exclamation {
+	color: red;
+}
+td[style='background-color: #FFDDDD'] {
+	padding:0;
+}
+td[style='background-color: #FFDDDD'] pre {
+	background-color:#FFDDDD;
+	margin-bottom:0;
+	color:darkred;
+}
 td.main-size div.list-item,
 td.main-time div.list-item {
 	white-space:nowrap;

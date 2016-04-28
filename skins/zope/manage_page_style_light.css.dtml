@@ -14,6 +14,23 @@ body {
 	/* ROBOTO needs 15px */
 	font-size:15px;
 }
+#toggle_menu {
+	position: absolute;
+	z-index: 1000;
+	right: 0;
+}
+#toggle_menu a {
+	position: relative;
+	color: #888;
+	right: 1.9em;
+	z-index: 1001;
+	font-size: 90%;
+	display: inline-block;
+	top: 1.2em;
+}
+#toggle_menu a:hover i {
+	color:black;
+}
 h1, h2, h3, p {
 	margin:1em 0;
 }
@@ -155,6 +172,9 @@ select {
 	right:0;
 }
 @media (max-width: 750px) {
+	.desktop {
+		display:none;
+	}
 	body {
 		overflow-x: hidden;
 		padding: 0 15px !important;

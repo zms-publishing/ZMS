@@ -19,43 +19,21 @@
 <body id="nodeid_<dtml-var "(REQUEST['URL1'].split(REQUEST['BASE0'])[1]).split('/')[-1]">">
 <dtml-call "REQUEST.set('used_zms_custom_manage_page_header',True)">
 
-<dtml-comment>
-<!--  EXPERIMENTAL: IFRAMED TREE MENU -->
-<div id="zminav" style="
-		position: fixed;
-		z-index: 1000;
-		right: 0;
-">
-<a href="#" onclick="javascript:toggle_menu()" style="
-		position: fixed;
-		color: silver;
-		right: .5em;
-		z-index: 1001;
-		font-size: 120%;
-		display: inline-block;
-		top: 0.5em;
-	"><i class="icon icon-reorder"
-		title="Show/Hide Tree Menu">&nbsp;</i></a>
-	<iframe style="
-		position: fixed;
-		width:38%;
-		height: 100%;
-		right: 0px;
-		box-shadow: black 0px 0px 20px;
-		border-width: 0px 0px 0px 1px;
-		border-left-style: solid;
-		border-left-color: silver;
-		background: black;
-		display:none;
-		" id="iframe_menu">iframe_menu</iframe>
+<dtml-unless "'manage_menu' in REQUEST['URL']">
+<!--  EXPERIMENTAL: TOGGLE FRAMED TREE MENU -->
+	<div id="toggle_menu" class="desktop">
+		<a href="#" onclick="javascript:toggle_menu()" target="_parent"
+			><i class="icon icon-reorder"
+				title="Show/Hide Tree Menu of the Contextual Folder">&nbsp;</i></a>
+	</div>
 	<script>
 		function toggle_menu() {
-			$('#iframe_menu').toggle();
-			if ( $('#iframe_menu').css('display') != 'none' && !$('#iframe_menu').attr('src') ) {
-				$('#iframe_menu').attr('src','/manage_menu');
+			if (document.referrer.endsWith('/manage')) {
+				window.parent.location.href="manage_main";
+			} else {
+				window.parent.location.href="manage";
 			};
 		}
 	</script>
-</div>
-</dtml-comment>
+</dtml-unless>
 

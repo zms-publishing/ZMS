@@ -388,4 +388,19 @@ td.main-size div.list-item,
 td.main-time div.list-item {
 	white-space:nowrap;
 }
-
+#nodeid_error_log div div table {
+	background: #888;
+	width: 100%;
+	border-radius:6px;
+}
+#nodeid_error_log div div table tr th {
+	white-space: nowrap;
+	padding: .3em 1em .3em .5em;
+	color:white
+}
+#nodeid_error_log div div table tr td {
+	padding: .3em .5em;
+	font-family: Courier;
+	color: white;
+	width: 100%;
+}

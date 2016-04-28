@@ -117,16 +117,17 @@ function toggleSelect() {
 
 <dtml-in objectItems sort_expr="skey+'/cmp/asc'" reverse_expr="rkey">
 <dtml-if sequence-odd
-	><tr class="row-normal"
+	><tr class="row-normal &dtml-meta_type;" title="&dtml-meta_type;"
 ><dtml-else
-	><tr class="row-hilite"
+	><tr class="row-hilite &dtml-meta_type;" title="&dtml-meta_type;"
 ></dtml-if>
 	<td>&nbsp;</td>
 	<td class="main-icon &dtml-meta_type;"
 		><input type="checkbox" name="ids:list" value="&dtml-sequence-key;"
 		/><dtml-if om_icons
 		><dtml-in om_icons mapping
-			><img src="&dtml-BASEPATH1;/&dtml.url_quote-path;" alt="&dtml.missing-alt;"
+			><img src="&dtml-BASEPATH1;/&dtml.url_quote-path;"
+				alt="&dtml.missing-alt;"
 				title="&dtml.missing-title;" border="0" width="16" height="16"
 			/></dtml-in
 		><dtml-else
@@ -142,7 +143,8 @@ function toggleSelect() {
 
 	<td class="main-title">
 		<div class="list-item">
-			<a title="&dtml-meta_type;" href="&dtml.url_quote-sequence-key;/manage_workspace"
+			<a title="&dtml-meta_type;"
+				href="&dtml.url_quote-sequence-key;/manage_workspace"
 				>&dtml-sequence-key; <dtml-if title>(&dtml-title;)</dtml-if>
 			</a>
 			<dtml-try>

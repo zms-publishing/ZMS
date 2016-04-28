@@ -290,7 +290,16 @@ form[action='manage_changePermissions'] table td {
 }
 #menu_buttons ul.dropdown-menu {
 	margin:-6px 0 0;
+
 }
+#menu_buttons ul.dropdown-menu a {
+
+}
+#menu_buttons .dropdown-menu>li>a:focus,
+#menu_buttons .dropdown-menu>li>a:hover {
+
+}
+
 table#menu_title td,
 div#menu_tree table td{
 	padding:0.2em .3em 0 .4em !important;

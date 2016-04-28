@@ -303,7 +303,16 @@ form[action='manage_changePermissions'] table td {
 }
 #menu_buttons ul.dropdown-menu {
 	margin:-6px 0 0;
+	background: #888;
 }
+#menu_buttons ul.dropdown-menu a {
+	color: white;
+}
+#menu_buttons .dropdown-menu>li>a:focus,
+#menu_buttons .dropdown-menu>li>a:hover {
+	background:rgba(0, 0, 0, 0.22) !important;
+}
+
 table#menu_title td,
 div#menu_tree table td {
 	padding:0.2em .3em 0 .4em !important;

@@ -16,5 +16,46 @@
 <link rel="stylesheet" type="text/css" href="&dtml-BASEPATH1;/manage_page_style.css" />
 
 </head>
-<body>
+<body id="nodeid_<dtml-var "(REQUEST['URL1'].split(REQUEST['BASE0'])[1]).split('/')[-1]">">
 <dtml-call "REQUEST.set('used_zms_custom_manage_page_header',True)">
+
+<dtml-comment>
+<!--  EXPERIMENTAL: IFRAMED TREE MENU -->
+<div id="zminav" style="
+		position: fixed;
+		z-index: 1000;
+		right: 0;
+">
+<a href="#" onclick="javascript:toggle_menu()" style="
+		position: fixed;
+		color: silver;
+		right: .5em;
+		z-index: 1001;
+		font-size: 120%;
+		display: inline-block;
+		top: 0.5em;
+	"><i class="icon icon-reorder"
+		title="Show/Hide Tree Menu">&nbsp;</i></a>
+	<iframe style="
+		position: fixed;
+		width:38%;
+		height: 100%;
+		right: 0px;
+		box-shadow: black 0px 0px 20px;
+		border-width: 0px 0px 0px 1px;
+		border-left-style: solid;
+		border-left-color: silver;
+		background: black;
+		display:none;
+		" id="iframe_menu">iframe_menu</iframe>
+	<script>
+		function toggle_menu() {
+			$('#iframe_menu').toggle();
+			if ( $('#iframe_menu').css('display') != 'none' && !$('#iframe_menu').attr('src') ) {
+				$('#iframe_menu').attr('src','/manage_menu');
+			};
+		}
+	</script>
+</div>
+</dtml-comment>
+

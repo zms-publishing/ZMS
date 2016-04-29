@@ -5,7 +5,7 @@
 
 CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here.
-	// For the complete reference:
+	// For complete reference see:
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
 	config.emailProtection = 'encode';
 	// config.forcePasteAsPlainText = true
@@ -61,9 +61,9 @@ CKEDITOR.editorConfig = function( config ) {
 	config.toolbar = 'ZMSBasicToolbar';
 	config.toolbar_ZMSBasicToolbar =[
 		['Format'],
-		['Bold','Italic','Underline','NumberedList','BulletedList','Outdent','Indent'],
+		['Bold','Italic','Underline','JustifyLeft','JustifyRight','NumberedList','BulletedList','Outdent','Indent'],
 		['Undo','Redo'],
-		['Find','linkbutton','Unlink'],
+		['Find','linkbutton','Link','Unlink'],
 		['Image','Anchor','Table'],
 		['Source','ShowBlocks','Maximize','Scayt','About']
 	];
@@ -78,16 +78,16 @@ CKEDITOR.editorConfig = function( config ) {
 };
 
 CKEDITOR.on( 'dialogDefinition', function( event ) {
-    var dialogDefinition = event.data.definition,
-        genericOnShow = dialogDefinition.onShow;
-      dialogDefinition.onShow = function() {
-          genericOnShow.apply( this );
-            var dialog = CKEDITOR.dialog.getCurrent();
-            if (dialog.getName() == 'link') {
-              subject = dialog.getContentElement('info','emailSubject');
-              if (subject.getValue() == '') {
-                subject.setValue(' ');
-              }
-            }
-      }
+	var dialogDefinition = event.data.definition,
+		genericOnShow = dialogDefinition.onShow;
+	dialogDefinition.onShow = function() {
+		genericOnShow.apply( this );
+		var dialog = CKEDITOR.dialog.getCurrent();
+		if (dialog.getName() == 'link') {
+			subject = dialog.getContentElement('info','emailSubject');
+			if (subject.getValue() == '') {
+				subject.setValue(' ');
+			}
+		}
+	}
 });

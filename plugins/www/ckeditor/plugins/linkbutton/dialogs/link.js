@@ -53,7 +53,7 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
 
 	return {
 		title : getZMILangStr('CAPTION_CHOOSEOBJ'),
-		minWidth : 280,
+		minWidth : 450,
 		minHeight : 360,
 		contents : [
 			{

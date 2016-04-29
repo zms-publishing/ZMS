@@ -425,3 +425,6 @@ td.main-time div.list-item {
 	color: white;
 	width: 100%;
 }
+div.tooltip .tooltip-inner {
+	color: #9DDDFF !important;
+}

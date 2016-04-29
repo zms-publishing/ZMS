@@ -142,18 +142,17 @@ input.form-element {
 	border-radius: 4px;
 	margin-right: .5em;
 }
-
-form.form-initialized {
+form {
 	margin:0;
 }
-form.row.form-initialized {
+form.row {
 	margin:0 -30px 0 -30px;
 }
-form.row.form-initialized .controls {
+form.row .controls {
 	margin:1em 30px;
 }
-form.row.form-initialized .controls input:hover {
-	background: #000;
+form.row .controls input:hover {
+	background: #0088CC;
 	color: white;
 }
 select {
@@ -413,4 +412,7 @@ td.main-time div.list-item {
 	font-family: Courier;
 	color: white;
 	width: 100%;
+}
+div.tooltip .tooltip-inner {
+	color: #9DDDFF !important;
 }

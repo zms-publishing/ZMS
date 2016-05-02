@@ -61,7 +61,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.toolbar = 'ZMSBasicToolbar';
 	config.toolbar_ZMSBasicToolbar =[
 		['Format'],
-		['Bold','Italic','Underline','JustifyLeft','JustifyRight','NumberedList','BulletedList','Outdent','Indent'],
+		['Bold','Italic','Underline','JustifyLeft','JustifyCenter','JustifyRight','NumberedList','BulletedList','Outdent','Indent'],
 		['Undo','Redo'],
 		['Find','linkbutton','Link','Unlink'],
 		['Image','Anchor','Table'],

@@ -31,6 +31,14 @@
 	$('img[src*="misc_"]').replaceWith('<i class="icon icon-circle-blank">&nbsp;</i>');
 	$('img[src*="zms_"]').replaceWith('<i class="icon icon-circle-blank">&nbsp;</i>');
 
+
+// SHOW MENU TOGGLE ONLY ON LIST PAGES
+	if ($('.nav a[href="manage_findForm"]').length > 0 ) {
+		$('#toggle_menu').show();
+	} else {
+		$('#toggle_menu').hide();
+	}
+
 </script>
 
 </body>

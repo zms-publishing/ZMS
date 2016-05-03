@@ -38,7 +38,6 @@ function toggleSelect() {
 					<select class="form-control" name=":action"
 						onChange="location.href='<dtml-var "REQUEST.URL1" html_quote>/'+this.options[this.selectedIndex].value">
 						<option value="manage_workspace" disabled="disabled">Select type to add...</option>
-						<option value="manage_addProduct/zms/manage_addzmsform">ZMS</option>
 						<dtml-in filtered_meta_types mapping sort=name>
 							<dtml-if action>
 								<option value="&dtml.html_quote-action;"<dtml-if "name=='ZMS'"> selected="selected"</dtml-if>>&dtml-name;</option>

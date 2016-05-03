@@ -225,8 +225,9 @@ ZMI.prototype.getLangStr = function(key, lang) {
 	var k = "get_lang_dict";
 	var v = this.getCachedValue(k);
 	if (typeof v=="undefined") {
+		var url = this.getBaseUrl();
 		v = $.ajax({
-			url: "get_lang_dict",
+			url: url+'/get_lang_dict',
 			datatype: 'text',
 			async: false
 			}).responseText;
@@ -276,6 +277,19 @@ ZMI.prototype.getReqProperty = function(key, defaultValue) {
 }
 
 /**
+ *  Returns base-url.
+ */
+ZMI.prototype.getBaseUrl = function(key, defaultValue) {
+		var url = this.getPhysicalPath();
+		if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
+			url = url.substr(0,url.indexOf('/content')+'/content'.length);
+		} else {
+			url='';
+		};
+		return url;
+}
+
+/**
  * Returns conf-property.
  */
 ZMI.prototype.getConfProperty = function(key, defaultValue) {
@@ -286,12 +300,7 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 		if (typeof defaultValue != "undefined") {
 			data['default'] = defaultValue;
 		};
-		var url = this.getPhysicalPath();
-		if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
-			url = url.substr(0,url.indexOf('/content')+'/content'.length);
-		} else {
-			url='';
-		};
+		var url = this.getBaseUrl();
 		var r = $.ajax({
 			url: url+'/getConfProperty',
 			data: data,
@@ -313,12 +322,7 @@ ZMI.prototype.getConfProperties = function(prefix) {
 	if (typeof r=="undefined") {
 		var data  = {};
 		data['prefix'] = btoa(prefix);
-		var url = this.getPhysicalPath();
-		if (url.indexOf('/content/')>0 || url.slice(-8)=='/content' ) {
-			url = url.substr(0,url.indexOf('/content')+'/content'.length);
-		} else {
-			url='';
-		};
+		var url = this.getBaseUrl();
 		var r = $.ajax({
 			url: url+'/getConfProperties',
 			data: data,

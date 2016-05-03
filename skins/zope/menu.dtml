@@ -16,11 +16,6 @@
 
 
 <table id="menu_title">
-  <tr>
-    <td id="menu_workspace">
-      <a href="/manage_addProduct/zms/manage_addzmsform" target="manage_main"><strong>Init a new ZMS-Instance</strong></a>
-    </td>
-  </tr>
 	<tr>
 		<td id="menu_workspace">
 			<dtml-if icon>

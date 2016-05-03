@@ -155,8 +155,10 @@ form.row {
 form.row .controls {
 	margin:1em 30px;
 }
+form[name='form0'] input.form-submit:hover,
 form.row .controls input:hover {
 	background: #000;
+	border: 1px solid #ccc;
 	color: white;
 }
 select {
@@ -255,6 +257,7 @@ textarea {
 	padding: .3em;
 	margin: 1em 0;
 }
+input[type="reset"],
 input[type="submit"] {
 	margin-right: 0.5em;
 	color: #ddd;

@@ -43,7 +43,7 @@ EXTENSIONS = {
                    'Handle EXIF/XMP/IPTC metadata',
                    'https://bitbucket.org/zms3/photodb',
                    'developed by Christian Meier'],
-  'zms3.qrcode': ['0.1.0',
+  'zms3.qrcode': ['0.1.1',
                    'Generate Quick Response Codes (QR codes)',
                    'https://bitbucket.org/zms3/qrcode',
                    'developed by Christian Meier'],

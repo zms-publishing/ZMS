@@ -4124,7 +4124,7 @@ if key.startswith('table_'):
 		<caption tal:condition="python:caption" tal:content="structure caption">The caption</caption>
 		<tal:block tal:repeat="row table">
 			<tal:block tal:condition="python:table_type==1 and row==table[0]" tal:content="structure python:'<thead>'"></tal:block>
-			<tal:block tal:condition="python:table_type==1 and row==table[1]" tal:content="structure python:'<tbody>'"></tal:block>
+			<tal:block on-error="structure string:<!-- INDEX ERROR -->" tal:condition="python:table_type==1 and row==table[1]" tal:content="structure python:'<tbody>'"></tal:block>
 			<tal:block tal:condition="repeat/row/odd"><tal:block tal:define="global tr_class python:'odd'"></tal:block></tal:block>
 			<tal:block tal:condition="repeat/row/even"><tal:block tal:define="global tr_class python:'even'"></tal:block></tal:block>
 			<tr tal:attributes="class tr_class">
@@ -4153,7 +4153,7 @@ if key.startswith('table_'):
 				</tal:block>
 			</tr>
 			<tal:block tal:condition="python:table_type==1 and row==table[0]" tal:content="structure python:'</thead>'"></tal:block>
-			<tal:block tal:condition="python:table_type==1 and row==table[-1]" tal:content="structure python:'</tbody>'"></tal:block>
+			<tal:block on-error="structure string:<!-- INDEX ERROR -->" tal:condition="python:table_type==1 and row==table[-1]" tal:content="structure python:'</tbody>'"></tal:block>
 		</tal:block>
 	</table>
 </div>
@@ -4194,7 +4194,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.2.6]]></item>
+          <item key="revision"><![CDATA[3.2.7]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4883,7 +4883,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.3.6]]></item>
+          <item key="revision"><![CDATA[3.3.7]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

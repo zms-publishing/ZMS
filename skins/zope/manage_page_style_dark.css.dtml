@@ -15,6 +15,9 @@ body {
 	/* ROBOTO needs 15px */
 	font-size:15px;
 }
+[bgcolor*='#'] {
+	background: transparent;
+}
 #toggle_menu {
 	position: absolute;
 	z-index: 1000;

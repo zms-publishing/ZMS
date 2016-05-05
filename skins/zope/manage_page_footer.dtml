@@ -5,8 +5,10 @@
 	$('img[src*="PluggableAuthService"]').replaceWith('<i data-title="Pluggable Auth Service" class="icon icon-group"></i>');
 	$('img[src*="/p_/User_icon"]').replaceWith('<i data-title="User" class="icon icon-user"></i>');
 	$('#menu_tree img[src*="Folder"]').replaceWith('<i data-title="Folder" class="icon-folder-close-alt">&nbsp;</i>');
-	$('img[src*="Folder"]').replaceWith('<i data-title="Folder" class="icon-folder-close-alt">&nbsp;</i>');
+	$('img[src*="TemporaryFolder"]').replaceWith('<i data-title="Folder" class="icon icon-folder-open-alt">&nbsp;</i>');
+	$('img[src*="Folder"]').replaceWith('<i data-title="Folder" class="icon icon-folder-close-alt">&nbsp;</i>');
 	$('img[src*="zpt.gif"]').replaceWith('<i data-title="Page Template" class="icon icon-file-text-alt">&nbsp;</i>');
+	$('img[src*="fspt.gif"]').replaceWith('<i data-title="Filesystem Page Template" class="icon icon-file-text-alt">&nbsp;</i>');
 	$('img[src*="exclamation.gif"]').replaceWith('<i data-title="Error" class="icon icon-exclamation">&nbsp;</i>');
 	$('img[src*="Script"]').replaceWith('<i data-title="Script (Python)" class="icon icon-terminal"></i>');
 	$('img[src*="ExternalMethod"]').replaceWith('<i data-title="External Python Method" class="icon icon-external-link-sign">&nbsp;</i>');
@@ -27,7 +29,11 @@
 	$('img[src*="ZMS.png"]').replaceWith('<i data-title="ZMS Root" class="icon icon-home">&nbsp;</i>');
 	$('img[src*="ZMSObject.png"]').replaceWith('<i data-title="ZMS Content" class="icon icon-file-alt">&nbsp;</i>');
 	$('img[src*="Monster"]').replaceWith('<i data-title="Virtual Host Monster" class="icon icon-road">&nbsp;</i>');
-
+	$('img[src*="ZCatalog"]').replaceWith('<i data-title="ZCatalog" class="icon icon-search">&nbsp;</i>');
+	$('img[src*="idmgr.gif"]').replaceWith('<i data-title="Browser Session Manager" class="icon icon-bookmark-empty">&nbsp;</i>');
+	$('img[src*="datamgr.gif"]').replaceWith('<i data-title="Session Data Manager" class="icon icon-bookmark">&nbsp;</i>');
+	
+	
 // ALL THE OTHER ICONS
 	$('img[src*="misc_"]').replaceWith('<i class="icon icon-circle-blank">&nbsp;</i>');
 	$('img[src*="zms_"]').replaceWith('<i class="icon icon-circle-blank">&nbsp;</i>');

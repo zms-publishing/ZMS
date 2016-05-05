@@ -84,6 +84,9 @@ function toggleSelect() {
 						"skey == 'id' and not rkey">&amp;rkey=id</dtml-if>"
 						><dtml-if "skey == 'id' or rkey == 'id'"
 						><strong class="sortkey">Name</strong><dtml-else>Name</dtml-if></a>
+						&nbsp;&nbsp;<input title="Filter Name by Input String" 
+							style="padding:0 1em;background:none;border:none;box-shadow:none;"
+							id="tablefilter" type="text" name="tablefilter"></input>
 					</td>
 					<td class="main-size" width="15%" title="Sort Objects by Size"><a
 						href="./manage_main?skey=get_size<dtml-if
@@ -109,9 +112,9 @@ function toggleSelect() {
 
 				<dtml-in objectItems sort_expr="skey+'/cmp/asc'" reverse_expr="rkey">
 					<dtml-if sequence-odd
-						><tr class="row-normal &dtml-meta_type;"
+						><tr class="list-item row-normal &dtml-meta_type;"
 					><dtml-else
-						><tr class="row-hilite &dtml-meta_type;"
+						><tr class="list-item row-hilite &dtml-meta_type;"
 					></dtml-if>
 						<td>&nbsp;</td>
 						<td class="main-icon &dtml-meta_type;" title="Click for Item Selection"
@@ -284,7 +287,15 @@ function toggleSelect() {
 			$(this).parent().toggleClass('checked');
 			$(this).parent().children('input').click();
 		});
+
 		$('td.main-icon span').tooltip({'placement':'top'});
+
+		$('#tablefilter').keyup( function (e) {
+			var tablefilter = $(this).val();
+			console.log('You pressed ' + tablefilter);
+			$('table').find("tr.list-item").hide();
+			$('table').find("tr.list-item td.main-title a:contains(" + tablefilter+ ")").closest('tr.list-item').show();
+		});
 	});
 //-->
 </script>

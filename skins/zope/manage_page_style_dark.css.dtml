@@ -130,7 +130,7 @@ table td {
 .nav>li>a:hover {
 	background: rgba(240, 248, 255, 0.15) !important;
 }
-.table>tbody>tr:hover *,
+.table>tbody>tr.list-item:hover *,
 a[href*='content/'] {
 	color: #9DDDFF;
 }

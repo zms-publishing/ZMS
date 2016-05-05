@@ -72,14 +72,16 @@ function toggleSelect() {
 
 			<table class="table main-table table-striped">
 				<tr class="list-header">
-					<td width="5%" colspan="2" title="Sort Objects by Type" style="text-align:right;"
+					<td width="15">&nbsp;</td>
+					<td width="2%" title="Sort Objects by Type" 
+						style="text-align:center;overflow: hidden;white-space: nowrap;"
 						><a href="./manage_main?skey=meta_type<dtml-if
 							"skey == 'meta_type' and not rkey">&amp;rkey=meta_type</dtml-if>"
 							><dtml-if "skey == 'meta_type' or rkey == 'meta_type'"
 							><i class="icon icon-sort-by-attributes meta_type sortkey">&nbsp;
 						</i><dtml-else><i class="icon icon-sort-by-attributes">&nbsp;</i></dtml-if></a>
 					</td>
-					<td class="main-title" width="50%" title="Sort Objects by Name"><a
+					<td class="main-title" width="*" title="Sort Objects by Name"><a
 						href="./manage_main?skey=id<dtml-if
 						"skey == 'id' and not rkey">&amp;rkey=id</dtml-if>"
 						><dtml-if "skey == 'id' or rkey == 'id'"
@@ -296,6 +298,7 @@ function toggleSelect() {
 			$('table').find("tr.list-item").hide();
 			$('table').find("tr.list-item td.main-title a:contains(" + tablefilter+ ")").closest('tr.list-item').show();
 		});
+		$(document).keypress(function() {$('#tablefilter').focus()})
 	});
 //-->
 </script>

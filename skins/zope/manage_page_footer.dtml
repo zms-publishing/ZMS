@@ -47,13 +47,13 @@
 	}
 
 // HILIGHT ZMS IN ADD-LIST
-	var $select = $('#nodeid_ > div.zope_actions.pull-right > form > div > select');
-	if ($select.children(':selected').val() === 'manage_addProduct/zms/manage_addzmsform') {
-		$select.css('color', '#9DDDFF');
-		$select.css('border-color', '#9DDDFF');  
-		$select.next('input').css('color', '#9DDDFF');
-		$select.next('input').css('border-color', '#9DDDFF');
-	}
+	// var $select = $('#nodeid_ > div.zope_actions.pull-right > form > div > select');
+	// if ($select.children(':selected').val() === 'manage_addProduct/zms/manage_addzmsform') {
+	// 	$select.css('color', '#9DDDFF');
+	// 	$select.css('border-color', '#9DDDFF');  
+	// 	$select.next('input').css('color', '#9DDDFF');
+	// 	$select.next('input').css('border-color', '#9DDDFF');
+	// }
 
 </script>
 

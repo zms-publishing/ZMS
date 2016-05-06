@@ -78,7 +78,7 @@ function GetPagination(fn, size, pageSize, pageIndex) {
       + '<ul class="pagination">';
     html += ''
       + '<li class="'+(pageIndex==0?"disabled":"")+'">'
-      + '<a href="'+(pageIndex==0?'javascript:;':fn(pageIndex-1))+'">'+$ZMI.icon('icon-chevron-left')+'</span></a>'
+      + '<a href="'+(pageIndex==0?'javascript:;':fn(pageIndex-1))+'">'+$ZMI.icon('fa fa-chevron-left icon-chevron-left')+'</span></a>'
       + '</li>';
     for (var page = 0; page < pageCount; page++) {
       if (pageCount>=10 && page==pageCount-1 && pageIndex<pageCount-(3+1)-1) {
@@ -96,7 +96,7 @@ function GetPagination(fn, size, pageSize, pageIndex) {
     }
     html += ''
       + '<li class="last' + (pageIndex==pageCount-1?" disabled":"") + '">'
-      + '<a href="'+(pageIndex==pageCount-1?'javascript:;':fn(pageIndex+1))+'">'+$ZMI.icon('icon-chevron-right')+'</a>'
+      + '<a href="'+(pageIndex==pageCount-1?'javascript:;':fn(pageIndex+1))+'">'+$ZMI.icon('fa fa-chevron-right icon-chevron-right')+'</a>'
       + '</li>'
       + '</ul><!-- .pagination -->';
   }

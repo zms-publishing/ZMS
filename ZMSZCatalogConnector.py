@@ -406,17 +406,19 @@ class ZMSZCatalogConnector(
     #  ZMSZCatalogConnector.reindex_all:
     # --------------------------------------------------------------------------
     def reindex_all(self):
+      result = []
       zcm = self.getCatalogAdapter()
       request = self.REQUEST
       container = self.getDocumentElement()
       for lang in container.getLangIds():
         request.set('lang',lang)
         # Recreate catalog.
-        recreateCatalog(container,self.aq_parent,lang)
+        result.append(recreateCatalog(container,self.aq_parent,lang))
         # Reindex items to catalog.
         def cb(node,d):
           self._update(node,d)
-        zcm.get_sitemap(cb,container,recursive=True)
+        result.append(zcm.get_sitemap(cb,container,recursive=True))
+      return ', '.join(filter(lambda x:x,result))
 
 
     # --------------------------------------------------------------------------

@@ -246,6 +246,7 @@ class ZMSZCatalogAdapter(
     #  @param  cb  callback
     # --------------------------------------------------------------------------
     def get_sitemap(self, cb, root, recursive):
+      result = []
       request = self.REQUEST
       
       # Add node.
@@ -291,7 +292,15 @@ class ZMSZCatalogAdapter(
         d['lang'] = lang
         for attr_id in self.getAttrIds():
           attr_type = self.getAttrs().get(attr_id,{}).get('type','string')
-          value = node.attr(attr_id)
+          value = ''
+          try:
+            value = node.attr(attr_id)
+          except:
+            msg = '[@%s.get_sitemap]: can\'t get attr \'%s\' - see error-log for details'%(self.getHome().id,attr_id)
+            _globals.writeError(self,msg)
+            msg += ' - see error-log for details'%(self.getHome().id,attr_id)
+            if msg not in result:
+              result.append(msg)
           if attr_type in ['date','datetime']:
             value = self.getLangFmtDate(value,'eng','ISO8601')
           if type(value) in [str,unicode]:
@@ -324,7 +333,9 @@ class ZMSZCatalogAdapter(
       # Process clients.
       if self.getConfProperty('ZCatalog.portalClients',1) == 1 and recursive:
         for portalClient in self.getPortalClients():
-          portalClient.getCatalogAdapter().get_sitemap(cb,portalClient,recursive)
+          result.append(portalClient.getCatalogAdapter().get_sitemap(cb,portalClient,recursive))
+      
+      return ', '.join(filter(lambda x:x,result))
 
 
     ############################################################################

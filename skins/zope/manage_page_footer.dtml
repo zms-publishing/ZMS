@@ -45,6 +45,10 @@
 	} else {
 		$('#toggle_menu').hide();
 	}
+// HELP ICON
+	$('a[href*="HelpSys"]').empty() 
+		.append('<i class="icon icon-question-sign"></i>') 
+		.css('border-color','transparent');
 
 // HILIGHT ZMS IN ADD-LIST
 	// var $select = $('#nodeid_ > div.zope_actions.pull-right > form > div > select');

@@ -39,7 +39,6 @@ import _copysupport
 import _deprecatedapi
 import _exportable
 import _globals
-import _metacmdmanager
 import _multilangmanager
 import _objattrs
 import _objchildren
@@ -70,7 +69,6 @@ class ZMSObject(ZMSItem.ZMSItem,
 	_copysupport.CopySupport,		# Copy Support (Paste Objects).
 	_cachemanager.ReqBuff,		# Request Buffer (Cache).
 	_deprecatedapi.DeprecatedAPI,		# Deprecated API.
-	_metacmdmanager.MetacmdObject,		# Meta-Commands.
 	_multilangmanager.MultiLanguageObject,	# Multi-Language.
 	_exportable.Exportable,			# XML Export.
 	_objattrs.ObjAttrs,			# Object-Attributes.
@@ -1339,6 +1337,47 @@ class ZMSObject(ZMSItem.ZMSItem,
         return self.str_json(message)
       else:
         RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
+
+
+    ############################################################################
+    #  MetacmdObject.manage_executeMetacmd:
+    #
+    #  Execute Meta-Command.
+    ############################################################################
+    def manage_executeMetacmd(self, lang, REQUEST, RESPONSE):
+      """ MetacmdObject.manage_executeMetacmd """
+      message = ''
+      target = self
+      
+      # METAOBJ
+      metaObjAttr = self.getMetaobjAttr(self.meta_id,REQUEST.get('id'))
+      if metaObjAttr is not None:
+        # Execute directly.
+        return self.attr(REQUEST.get('id'))
+      
+      # METACMD
+      metaCmd = self.getMetaCmd(id=REQUEST.get('id'),name=REQUEST.get('custom'))
+      if metaCmd is not None:
+        # Execute directly.
+        if metaCmd.get('exec',0) == 1:
+          ob = getattr(self,metaCmd['id'],None)
+          if ob.meta_type in ['DTML Method','DTML Document']:
+            value = ob(self,REQUEST,RESPONSE)
+          elif ob.meta_type in ['External Method','Page Template','Script (Python)']:
+            value = ob()
+          if type(value) is str:
+            message = value
+          elif type(value) is tuple:
+            target = value[0]
+            message = value[1]
+        # Execute redirect.
+        else:
+          params = {'lang':REQUEST.get('lang'),'id_prefix':REQUEST.get('id_prefix'),'ids':REQUEST.get('ids',[])}
+          return RESPONSE.redirect(self.url_append_params(metaCmd['id'],params,sep='&'))
+      
+      # Return with message.
+      message = urllib.quote(message)
+      return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(),lang,message))
 
 
     # --------------------------------------------------------------------------

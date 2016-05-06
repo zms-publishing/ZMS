@@ -1,8 +1,35 @@
 <!-- ZMS CUSTOM TABS -->
-<dtml-if "REQUEST.get('used_zms_custom_manage_page_header',False)==False">
-<!-- EMERGENCY-CASE: ZMI does not use manage_page_header  Method -->
+<dtml-if "REQUEST.get('used_zms_custom_manage_page_header',False)==False and 'HelpSys' not in REQUEST.get('URL0','')">
+<!-- COMPLICATION 1: ZMI does not use manage_page_header Method -->
 <link rel="stylesheet" type="text/css" href="&dtml-BASEPATH1;/manage_page_style.css" />
 </dtml-if>
+<dtml-if "'HelpSys' in REQUEST.get('URL0','')">
+<style>
+/* COMPLICATION 2: Zope Help-System */
+ul.nav.nav-tabs {
+	margin: 0 0 1em 0;
+	padding: .5em 0 0 .5em;
+	border-bottom: 1px solid silver;
+}
+ul.nav.nav-tabs li {
+	display: inline-block;
+	padding: .4em .5em;
+	border: 1px solid silver;
+	background: #eee;
+	margin-bottom: -1px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
+ul.nav.nav-tabs li.active {
+	background: white;
+	border-bottom: 1px solid white;
+}
+ul.nav.nav-tabs li a {
+	text-decoration:none;
+}
+</style>
+</dtml-if>
+
 
 <dtml-with "_(manage_options=filtered_manage_options())">
 <dtml-if manage_options>

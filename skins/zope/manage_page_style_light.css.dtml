@@ -6,7 +6,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
 
 body {
-	background-color:#f6f6f6;
+	background-color:#f6f6f6 !important;
 	color: #333;
 	margin: 0;
 	padding: 0 30px !important;

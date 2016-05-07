@@ -8,7 +8,7 @@
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<a class="navbar-brand zmi-helper-clickable" target="_blank" 
 					style="max-width: 66%;overflow: hidden;white-space: nowrap;"
-					tal:attributes="href python:'%s/manage'%here.breadcrumbs_obj_path()[0].getHome().id">
+					tal:attributes="href python:'../../%s/manage'%here.breadcrumbs_obj_path()[0].getHome().id">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block>
 					<span class="zmi-home-id" tal:content="python:here.breadcrumbs_obj_path()[0].getHome().id">Home-Id</span>
 		</a>

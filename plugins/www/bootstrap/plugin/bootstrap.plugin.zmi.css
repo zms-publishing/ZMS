@@ -254,6 +254,10 @@ ul.portalClients .zmi-item .center small {
 .form-small {
 	font-size:smaller;
 }
+.form-disabled {
+  color:#666!important;
+  background-color:#EEE!important;
+}
 .nav-tabs {
 	margin-bottom:0;
 	margin-top:1em;
@@ -948,9 +952,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 }
 
 @media (max-width: 767px) {
-	.zmi .ZMSRecordSet .filters label, .zmi.ZMSSqlDb .filters label,
-	.zmi .ZMSRecordSet .filters input, .zmi.ZMSSqlDb .filters input,
-	.zmi .ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select {
+	.zmi .accordion-heading.filters label,
+	.zmi .accordion-heading.filters input,
+	.zmi .accordion-heading.filters select {
 		display: block;
 	}
 }
@@ -1182,14 +1186,47 @@ input.btn.btn-file {
  * +- [ZMI] ZMSSQLDB / ZMSRecordset
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap {
+	background-color:#DCE3F0;
+	overflow:hidden;
+	padding-right:4px;
+}
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap a {
+	margin:0 2px 0 2px;
+}
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap input.form-control {
+	background-color:#E5EAF4;
+	border:0;
+	color:#000;
+	display:inline!important;
+	font-weight:bold;
+	margin-bottom:0;
+	padding-left:4px!important;
+}
+/* do not group these rules */
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap input.form-control::-webkit-input-placeholder {
+	color:#08c;
+}
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap input.form-control:-moz-placeholder {
+	color:#08c; /* FF 4-18 */
+}
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap input.form-control::-moz-placeholder {
+	color:#08c; /* FF 19+ */
+}
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap input.form-control:-ms-input-placeholder {
+	color:#08c; /* IE 10+ */
+}
 .nowrap {
 	white-space:nowrap;
 }
 .pagination {
+	margin:1em 0 0 0;
 	white-space:nowrap;
 }
+.pagination-pre .pull-right {
+	margin:1em 0 1.5em 0;
+}
 .pagination-centered {
-	margin:1em 2em;
 }
 .pagination > .active > a {
 	font-weight:bold;
@@ -1310,24 +1347,24 @@ td .btn-group .checkbox.split-left.btn input {
 	padding: 8px 3px 8px 15px;
 }
 
-.ZMSRecordSet .accordion-heading.filters a.accordion-toggle.pull-left,
-.ZMSSqlDb .accordion-heading.filters a.accordion-toggle.pull-left {
+.zmi .accordion-heading.filters a.accordion-toggle.pull-left {
 	padding-top: 6px;
 }
-.ZMSRecordSet .filters label,
-.ZMSSqlDb .filters label,
-.ZMSRecordSet .filters input,
-.ZMSSqlDb .filters input,
-.ZMSRecordSet .filters select,
-.ZMSSqlDb .filters select {
+.zmi .accordion-heading.filters label,
+.zmi .accordion-heading.filters input,
+.zmi .accordion-heading.filters select {
 	display: inline-block;
 	width: auto;
 }
-.ZMSRecordSet #qentity,
-.ZMSSqlDb #qentity,
-.ZMSRecordSet #qsize,
-.ZMSSqlDb #qsize {
-	margin-right:0.5em;
+.zmi .accordion-body.filters .accordion-inner {
+  margin:1em;
+  padding:1em !important;
+  background:#DCE3F0;
+  border-radius:4px;
+}
+.zmi #qsize {
+	display:inline-block;
+	width:5em;
 }
 .ZMSRecordSet #attrProperties,
 .ZMSSqlDb #attrProperties {

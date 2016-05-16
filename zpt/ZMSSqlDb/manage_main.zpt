@@ -7,37 +7,37 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <tal:block tal:define="global
-			entities python:here.getEntities();
-			tables python:filter(lambda x:x['type'].upper()=='TABLE',entities);
-			SESSION request/SESSION;
-			dummy0 python:request.set('qsize',request.get('qsize',SESSION.get('qsize_%s'%here.id,20)));
-			dummy0 python:request.set('qfilters',request.get('qfilters',SESSION.get('qfilters_%s'%here.id,1)));
-			dummy0 python:request.set('qindex',request.get('qindex',SESSION.get('qindex_%s'%here.id,-1)));
-			dummy0 python:SESSION.set('qsize_%s'%here.id,request.get('qsize'));
-			dummy0 python:SESSION.set('qfilters_%s'%here.id,request.get('qfilters'));
-			dummy0 python:SESSION.set('qindex_%s'%here.id,request.get('qindex'));
-			dummy0 python:here.recordSet_Init(request);
-			dummy0 python:here.recordSet_Filter(request);
-			dummy0 python:here.recordSet_Sort(request);
-			pageSize python:request.get('qsize',20);
-			pageIndex python:request.get('pageIndex',0);
-			pageStart python:pageIndex*pageSize;
-			">
+		entities python:here.getEntities();
+		tables python:filter(lambda x:x['type'].upper()=='TABLE',entities);
+		SESSION request/SESSION;
+		dummy0 python:request.set('qsize',request.get('qsize',SESSION.get('qsize_%s'%here.id,20)));
+		dummy0 python:request.set('qfilters',request.get('qfilters',SESSION.get('qfilters_%s'%here.id,1)));
+		dummy0 python:request.set('qindex',request.get('qindex',SESSION.get('qindex_%s'%here.id,-1)));
+		dummy0 python:SESSION.set('qsize_%s'%here.id,request.get('qsize'));
+		dummy0 python:SESSION.set('qfilters_%s'%here.id,request.get('qfilters'));
+		dummy0 python:SESSION.set('qindex_%s'%here.id,request.get('qindex'));
+		dummy0 python:here.recordSet_Init(request);
+		dummy0 python:here.recordSet_Filter(request);
+		dummy0 python:here.recordSet_Sort(request);
+		pageSize python:request.get('qsize',20);
+		pageIndex python:request.get('pageIndex',0);
+		pageStart python:pageIndex*pageSize;
+		">
 
 <tal:block tal:condition="tables">
 
 <tal:block tal:define="global
-			sessqentitykey python:'qentity_%s'%here.id;
-			sessqfilterskey python:'qfilters_%s'%id;
-			entity python:filter(lambda x:x['id']==request['qentity'],tables)[0];
-			primary_key python:here.getEntityPK(entity['id']);
-			encoding python:getattr(here,'charset','utf-8');
-			metaObjAttrIds python:[];
-			metaObjAttrs python:[];
-			res python:[];
-			resSlctStmnt python:''.join(request.get('sqlStatement',[]))+' LIMIT %s OFFSET %s'%(str(pageSize),str(pageStart));
-			cntSlctStmnt python:here.re_sub('^(SELECT (.*?) FROM)','SELECT COUNT(*) AS rcount FROM',resSlctStmnt[:resSlctStmnt.find('ORDER BY')]);
-			row_count python:here.query(cntSlctStmnt)['records'][0]['rcount']">
+		sessqentitykey python:'qentity_%s'%here.id;
+		sessqfilterskey python:'qfilters_%s'%id;
+		entity python:filter(lambda x:x['id']==request['qentity'],tables)[0];
+		primary_key python:here.getEntityPK(entity['id']);
+		encoding python:getattr(here,'charset','utf-8');
+		metaObjAttrIds python:[];
+		metaObjAttrs python:[];
+		res python:[];
+		resSlctStmnt python:''.join(request.get('sqlStatement',[]))+' LIMIT %s OFFSET %s'%(str(pageSize),str(pageStart));
+		cntSlctStmnt python:here.re_sub('^(SELECT (.*?) FROM)','SELECT COUNT(*) AS rcount FROM',resSlctStmnt[:resSlctStmnt.find('ORDER BY')]);
+		row_count python:here.query(cntSlctStmnt)['records'][0]['rcount']">
 
 	<tal:block tal:define="global
 			query python:here.query(resSlctStmnt,encoding=encoding);
@@ -54,7 +54,7 @@
 				values python:{}">
 		<tal:block tal:repeat="column python:entity['columns']">
 			<tal:block tal:define="dummy0 python:here.operator_setitem(values,['','blob_'][int(column.has_key('blob'))]+column['id'],request.get(column['id'].lower(),None))"></tal:block>
-      <tal:block tal:condition="python:column.has_key('blob') and int(request.get('del_%s'%column['id'].lower(),0))==1"><tal:block tal:define="dummy0 python:here.operator_setitem(values,'delete_blob_%s'%column['id'],True)"></tal:block></tal:block>
+			<tal:block tal:condition="python:column.has_key('blob') and int(request.get('del_%s'%column['id'].lower(),0))==1"><tal:block tal:define="dummy0 python:here.operator_setitem(values,'delete_blob_%s'%column['id'],True)"></tal:block></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['insert']">
 			recordSet_Insert=<tal:block tal:content="python:here.recordSet_Insert(tablename=entity['id'],values=values, update_intersections=True)"
@@ -67,7 +67,7 @@
 		<tal:block tal:condition="python:request.get('action') in ['delete']">
 			<tal:block tal:repeat="rowid python:request.get('qindices',[request['qindex']])">
 				recordSet_Delete=<tal:block tal:content="python:here.recordSet_Delete(tablename=entity['id'],rowid=rowid)"
-						tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_DELETED')%1)"></tal:block>
+					tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_DELETED')%1)"></tal:block>
 			</tal:block>
 		</tal:block>
 		<tal:block tal:define="dummy0 python:request.RESPONSE.redirect(here.url_append_params(request['URL'],{
@@ -96,52 +96,49 @@
 		</div><!-- .accordion-heading -->
 		<div id="attrActivity" class="accordion-body collapse">
 			<div class="accordion-inner">
-				(
 				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
 					<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
 				</tal:block>
-				<span tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
-				<span tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>
-				)
+				<span title="This Node Contains ..." tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
+				<span title="Data Size" class="get_size" tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>,
+				<span title="Unique ID" class="get_uid" tal:content="python:'ID:%s'%(here.get_uid())">unique-id</span>
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
 		<div class="accordion-heading filters">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrProperties">
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-down')"></tal:block>
 			</a>
-			<label class="control-label" for="qentity" tal:content="python:here.getZMILangStr('ATTR_TABLE')">Table</label>
+			<label class="control-label">
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-filter')">the icon</tal:block>
+				<tal:block tal:content="structure python:here.getZMILangStr('ATTR_FILTER')">the label</tal:block>
+			</label>
 			<select class="form-control input-sm" id="qentity" name="qentity" onchange="this.form.submit()">
 				<tal:block tal:repeat="table tables">
 					<option tal:attributes="value table/id; selected python:['','selected'][int(table['id'].upper()==entity['id'].upper())]" tal:content="table/label">table</option>
 				</tal:block>
 			</select>
-			<label class="control-label" for="qsize" tal:content="python:here.getZMILangStr('ATTR_ROWS')" tal:define="global dummy0 python:request.set('qsize',request.get('qsize',10))">Rows</label>
-			<input class="form-control input-sm" size="2" id="qsize" class="input-mini " type="text" name="qsize:int" tal:attributes="value request/qsize" />
-			<label class="control-label" for="qfilters" tal:content="python:here.getZMILangStr('ATTR_FILTER')" tal:define="global dummy0 python:request.set('qfilters',request.get('qfilters',1))">Filter</label>
-			<select class="form-control input-sm" name="qfilters:int" onchange="$('#btn-search').click()">
-				<tal:block tal:repeat="i python:range(len(filter_columns))">
-					<option tal:attributes="value python:i+1; selected python:['','selected'][int(request.get('qfilters',1)==i+1)]" tal:content="python:i+1">the #filters</option>
-				</tal:block>
-			</select>
+			<input type="hidden" id="qfilters" name="qfilters:int" tal:attributes="value request/qfilters"/>
 			<div class="clearfix"></div>
 		</div><!-- .accordion-heading -->
 
-		<div id="attrProperties" class="accordion-body collapse in">
-			<div class="accordion-inner" style="margin:1em;padding:1em;background:#DCE3F0;border-radius:4px;">
-				<label tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</label>
-				<div class="form-group col-lg-12" tal:repeat="filterIndex python:range(request.get('qfilters',1))">
-					<select class="form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
-						<tal:block tal:repeat="column python:map(lambda x:here.getEntityColumn(entity['id'],x['id']),filter_columns)">
-							<option tal:attributes="value column/id; title column/type; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,SESSION.get('filterattr%i_%s'%(filterIndex,here.id),'')).lower())]" tal:content="column/label">column</option>
-						</tal:block>
-					</select>
-					<select class="form-control input-sm" tal:attributes="name python:'filterop%i'%filterIndex">
-						<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
-							<option tal:attributes="value python:op; selected python:['','selected'][op.lower()==request.get('filterop%i'%filterIndex, request.SESSION.get('filterop%i_%s'%(filterIndex,here.id),'')).lower()]" tal:content="python:op">op</option>
-						</tal:block>
-					</select>
-					<input class="form-control input-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />
-				</div><!-- .form-group -->
+		<div id="attrProperties" class="accordion-body filters collapse in">
+			<div class="accordion-inner">
+				<tal:block tal:repeat="filterIndex python:range(request.get('qfilters',1)+1)">
+					<div tal:attributes="class python:' '.join(['form-group','col-lg-12']+[[],['hidden']][int(filterIndex==request.get('qfilters',1))])">
+						<select class="form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
+							<option value="" tal:content="python:here.getZMILangStr('CAPTION_SELECT')">the option</option>
+							<tal:block tal:repeat="column python:map(lambda x:here.getEntityColumn(entity['id'],x['id']),filter_columns)">
+								<option tal:attributes="value column/id; title column/type; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,SESSION.get('filterattr%i_%s'%(filterIndex,here.id),'')).lower())]" tal:content="column/label">column</option>
+							</tal:block>
+						</select>
+						<select class="form-control input-sm" tal:attributes="name python:'filterop%i'%filterIndex">
+							<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
+								<option tal:attributes="value python:op; selected python:['','selected'][op.lower()==request.get('filterop%i'%filterIndex, request.SESSION.get('filterop%i_%s'%(filterIndex,here.id),'')).lower()]" tal:content="python:op">op</option>
+							</tal:block>
+						</select>
+						<input class="form-control input-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />
+					</div><!-- .form-group -->
+				</tal:block>
 				<div class="form-group">
 					<div class="col-lg-12">
 						<button type="submit" id="btn-search" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_REFRESH')">
@@ -168,6 +165,7 @@
 			size=row_count,
 			total=row_count,
 			offset=0,
+			filtered=True,
 			form_action=request['URL'],
 			url_params={'qentity':request.get('qentity')},
 			record_handler=here.getEntityRecordHandler(entity['id'],['blob']))">

@@ -181,6 +181,78 @@ $(function(){
 		}
 	});
 
+  // Filters
+  $(".accordion-body.filters").each(function() {
+      var $body = $(this);
+      var f = function() {
+          // Ensure at least one empty filter (cloned from hidden prototype).
+          var $hidden = $(".form-group.hidden",$body);
+          var $other = $hidden.prevAll(".form-group");
+          var $selects = $("select[name^='filterattr']",$other);
+          var i = 0;
+          var c = 0;
+          $selects.each(function() {
+              i++;
+              if ($(this).val()=='') {
+                if (i<$selects.length) {
+                  $(this).parents(".form-group").remove();
+                }
+                c++;
+              }
+            });
+          if (c==0) {
+            var $cloned = $hidden.clone(true);
+            $cloned.insertBefore($hidden).removeClass("hidden");
+          }
+          // Rename filters (ordered by DOM).
+          var qfilters = 0;
+          var d = {}
+          $("*[name^='filter']",$body).each(function() {
+              var nodeName = this.nodeName.toLowerCase();
+              if (nodeName=='input' || nodeName=='select') {
+                var name = $(this).attr("name").replace(/\d/gi,'');
+                if (typeof d[name]=="undefined") {
+                  d[name] = 0;
+                }
+                $(this).attr("name",name+d[name]);
+                qfilters = d[name];
+                d[name]++;
+              }
+            });
+          $("input#qfilters").val(qfilters);
+        };
+      $("select[name^=filterattr]",$body).each(function() {
+          var that = this;
+          $(that).click(f).keyup(f);
+        });
+      f();
+    });
+
+  // Filters (ii)
+  // @see zpt/ZMSRecordSet/main_grid.zpt
+  var filter_timeout = null;
+  $('table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable input.form-control:text').keyup(function(e) {
+    var that = this;
+    if ($(that).hasClass("form-disabled")) {
+      return false;
+    }
+    var f = function() {
+        $(that).addClass("form-disabled");
+        var form = that.form;
+        form.action = self.location.href;
+        form.submit();
+      }
+    clearTimeout(filter_timeout);
+    switch (e.keyCode) {
+      case 13:
+        f();
+        return false;
+      default:
+        filter_timeout = setTimeout(f, 500);
+        return true;
+    }
+  });
+
 	// Textarea:
 	// single-line
 	$('div.single-line').each(function() {

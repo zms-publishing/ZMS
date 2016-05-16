@@ -241,12 +241,10 @@ class ZMSCustom(ZMSContainerObject):
     @rtype: C{list}
     """
     def recordSet_Filter(self, REQUEST):
-      request = self.REQUEST
+      SESSION = REQUEST.SESSION
       metaObj = self.getMetaobj(self.meta_id)
       res = REQUEST['res']
-      
-      # Filter (FK).
-      SESSION = REQUEST.SESSION
+      # foreign key
       filterattr='fk_key'
       filtervalue='fk_val'
       sessionattr='%s_%s'%(filterattr,self.id)
@@ -267,35 +265,27 @@ class ZMSCustom(ZMSContainerObject):
         masterRows = self.filter_list(masterRows,masterAttrs[1]['id'],SESSION.get(sessionvalue),'==')
         REQUEST.set('masterMetaObj',masterMetaObj)
         REQUEST.set('masterRow',masterRows[0])
-      
-      # Filter (Custom).
-      SESSION.set('qfilters',REQUEST.form.get('qfilters',SESSION.get('qfilters',1)))
-      for i in range(SESSION['qfilters']):
-        filterattr='filterattr%i'%i
-        filtervalue='filtervalue%i'%i
-        sessionattr='%s_%s'%(filterattr,self.id)
-        sessionvalue='%s_%s'%(filtervalue,self.id)
-        
-        #-- Set filter parameters in Session
-        if REQUEST.get('action','')=='':
+      # init filter from request.
+      for filterIndex in range(100):
+        for filterStereotype in ['attr','op','value']:
+          requestkey = 'filter%s%i'%(filterStereotype,filterIndex)
+          sessionkey = '%s_%s'%(requestkey,self.id)
+          requestvalue = REQUEST.form.get(requestkey,SESSION.get(sessionkey,''))
           if REQUEST.get('btn','')==self.getZMILangStr('BTN_RESET'):
-            SESSION.set(sessionattr,'')
-            SESSION.set(sessionvalue,'')
-          elif REQUEST.get('btn','') in [self.getZMILangStr('BTN_REFRESH'),self.getZMILangStr('BTN_SEARCH')]:
-            SESSION.set(sessionattr,REQUEST.form.get(filterattr,''))
-            SESSION.set(sessionvalue,REQUEST.form.get(filtervalue,''))
-        
-        #-- Apply filter parameters 
-        for attr in metaObj['attrs'][1:]:
-          if attr.get('name','')!='':
-            if SESSION.get(sessionattr,'') == attr['id'] and \
-               SESSION.get(sessionvalue,'') != '':
-              attr['datatype_key'] = _globals.datatype_key(attr['type'])
-              if attr['datatype_key'] in _globals.DT_NUMBERS:
-                res = self.filter_list(res,attr['id'],self.formatObjAttrValue(attr,SESSION.get(sessionvalue,''),REQUEST['lang']))
-              else:
-                res = self.filter_list(res,attr['id'],SESSION.get(sessionvalue,''))
-      
+            requestvalue = ''
+          REQUEST.set(requestkey,requestvalue)
+          SESSION.set(sessionkey,requestvalue)
+      SESSION.set('qfilters_%s'%self.id,REQUEST.form.get('qfilters',SESSION.get('qfilters_%s'%self.id,1)))
+      # apply filter
+      for filterIndex in range(100):
+        suffix = '%i_%s'%(filterIndex,self.id)
+        sessionattr = SESSION.get('filterattr%s'%suffix,'')
+        sessionop = SESSION.get('filterop%s'%suffix,'%')
+        sessionvalue = SESSION.get('filtervalue%s'%suffix,'')
+        if sessionattr and sessionvalue:
+          metaObjAttr = self.getMetaobjAttr(self.meta_id,sessionattr)
+          sessionvalue = self.formatObjAttrValue(metaObjAttr,sessionvalue,REQUEST['lang'])
+          res = self.filter_list(res,sessionattr,sessionvalue,sessionop)
       REQUEST.set('res',res)
       return res
 

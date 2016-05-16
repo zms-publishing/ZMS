@@ -314,10 +314,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.isPageContainer:
     # --------------------------------------------------------------------------
     def isPageContainer(self):
-      metaobj_manager = getattr(self,'metaobj_manager',None)
-      if metaobj_manager is not None:
-        return metaobj_manager.__is_page_container__( self.meta_id)
-      return False
+	  return self.getType() in [ 'ZMSDocument']
 
 
     # --------------------------------------------------------------------------
@@ -1425,12 +1422,13 @@ class ZMSObject(ZMSItem.ZMSItem,
       try:
         if 'renderShort' in self.getMetaobjAttrIds(self.meta_id):
           html = self._getBodyContentContentEditable(self.attr('renderShort'))
-        elif self.getType() in [ 'ZMSDocument', 'ZMSResource', 'ZMSReference']:
-          if self.meta_id in [ 'ZMS', 'ZMSFolder', 'ZMSDocument', 'ZMSTrashcan'] and (self.getLevel()==0 or self.id in REQUEST['URL']):
+        elif self.isPage():
+          if  self.id in REQUEST['URL']:
             html = '<h1>'
             html += self.getTitle(REQUEST)
-            if self.getDCDescription(REQUEST):
-              html += '<small>%s</small></h1>'%(self.getDCDescription(REQUEST))
+            desc = self.getDCDescription(REQUEST)
+            if desc:
+              html += '<small>%s</small>'%desc
             html+= '</h1>'
           else:
             html = self.getTitlealt(REQUEST)

@@ -408,27 +408,6 @@ class ZMSMetaobjManager:
 
 
     # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.__is_page_container__:
-    # --------------------------------------------------------------------------
-    def __is_page_container__(self, id):
-      
-      #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      reqBuffId = '__%s_is_page_container__'%id
-      try: return self.fetchReqBuff( reqBuffId, self.REQUEST, forced=True)
-      except: pass
-      
-      #-- Get value.
-      rtn = False
-      ob = self.__get_metaobj__( id)
-      if type(ob) is dict and ob.get('type')=='ZMSDocument':
-        ids = map( lambda x: x['id'], filter( lambda x: x['type']=='*', ob['attrs']))
-        rtn = 'e' in ids
-      
-      #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-      return self.storeReqBuff( reqBuffId, rtn, self.REQUEST)
-
-
-    # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.getMetaobjIds:
     #
     #  Returns list of all meta-ids in model.

@@ -749,7 +749,7 @@ ZMI.prototype.initInputFields = function(container) {
 				$(this).change(fn).keyup(fn).change();
 			});
 			// Url-Picker
-			$("input.url-input",this).each(function() {
+			var fn_url_input_each = function() {
 					var $input = $(this);
 					var fmName = $input.parents("form").attr("name");
 					var elName = $input.attr("name");
@@ -783,6 +783,43 @@ ZMI.prototype.initInputFields = function(container) {
 								});
 						};
 					$input.change(fn).change();
+				}
+			$("input.url-input",this).each(fn_url_input_each);
+			$("textarea.url-input",this).each(function() {
+					var $input = $(this);
+					var fmName = $input.parents("form").attr("name");
+					var elName = $input.attr("name");
+					var $container = $input.parent();
+					$input.hide();
+					$container.append('<div class="url-input-container"></div><input type="hidden" name="new_'+elName+'"/><a href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'new_' + elName + '\',getZMILang())" class="btn btn-default">'+$ZMI.icon('icon-plus')+'</a>');
+					$("input[name='new_"+elName+"']",$container).change(function() {
+							var v = $(this).val();
+							var l = $input.val().split("\n");
+							if (!l.contains()) {
+								l.push(v);
+								$input.val(l.join("\n")).change();
+							}
+							$(this).val("");
+						});
+					$input.change(function() {
+							var v = $(this).val();
+							var l = $input.val().split("\n");
+							var $inputContainer = $(".url-input-container",$container);
+							$inputContainer.html('');
+							for (var i = 0; i < l.length; i++) {
+								$inputContainer.append('<input class="form-control url-input" type="text" value="'+l[i]+'" disabled="disabled"> ');
+							}
+							$("input.url-input",$inputContainer).each(fn_url_input_each);
+							$(".input-group-addon "+$ZMI.icon_selector(),$inputContainer).replaceWith($ZMI.icon('icon-remove text-danger'));
+							$(".input-group-addon",$inputContainer).addClass("ui-helper-clickable").click(function() {
+									$(this).parents(".input-group").remove();
+									var l = [];
+									$("input",$inputContainer).each(function() {
+											l.push($(this).val());
+										});
+									$input.val(l.join("\n")).change();
+								});
+						}).change();
 				});
 				// Richedit
 				var $richedits = $('div[id^="zmiStandardEditor"]',this);

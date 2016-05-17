@@ -12,7 +12,7 @@
 
 <div class="ui-helper-hidden" tal:condition="python:request.get('id','') in metaCmdIds">
 	<div id="editObj" class="inner" tal:define="global metaCmd python:here.getMetaCmd(request['id'])">
-		<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
+		<form class="form-horizontal" name="editForm" tal:attributes="action action" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="id" tal:attributes="value request/id">
 		<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group">
@@ -58,9 +58,7 @@
 				<tr valign="top">
 					<td tal:content="python:here.getZMILangStr('BTN_EXECUTE')">Execute</td>
 					<td>
-						<div class="single-line input-append zmi-nodes">
-							<textarea tal:attributes="title python:here.getZMILangStr('ATTR_NODE')" name="el_nodes" tal:content="python:metaCmd.get('nodes','{$}')"></textarea>
-						</div>
+						<textarea class="form-control url-input" name="el_nodes" tal:content="python:metaCmd.get('nodes','{$}')"></textarea>
 					</td>
 					<td tal:define="roles python:['*']+list(here.getDocumentElement().aq_parent.userdefined_roles())+list(here.getDocumentElement().userdefined_roles())">
 						<select name="el_roles:list" multiple="multiple" class="form-control" style="font-size:inherit;"

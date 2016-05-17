@@ -340,9 +340,7 @@ $(function(){
             <span class="btn btn-default"><input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]" /></span>
           </div>
           <div class="col-md-6 col-sm-8 col-xs-10">
-            <div class="single-line input-append zmi-nodes">
-              <textarea class="form-control" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
-            </div>
+            <textarea class="form-control url-input" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
           </div>
         </div>
       </div><!-- .form-group -->

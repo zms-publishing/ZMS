@@ -738,7 +738,8 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def getUserAttr(self, user, name=None, default=None):
       user = getUserId(user)
-      d = self.getSecurityUsers()
+      root = self.getRootElement()
+      d = root.getConfProperty('ZMS.security.users',{})
       if name is None:
         v = d.get(user,None)
       else:

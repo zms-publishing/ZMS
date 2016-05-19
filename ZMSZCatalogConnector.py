@@ -20,6 +20,7 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog import ZCatalog
+from types import StringTypes
 import urllib
 import zope.interface
 # Product Imports.
@@ -241,8 +242,12 @@ class ZMSZCatalogConnector(
             xml += '<arr name="%s">'%k
             if k == 'custom':
               xml += '<str>%s</str>'%v 
-            else: 
-              xml += '<str><![CDATA[%s]]></str>'%v 
+            else:
+              if type(v) in StringTypes:
+                for x in range(16):
+                  v = v.replace(unichr(x),'')
+              print (k,v)
+              xml += '<str><![CDATA[%s]]></str>'%v
             xml += '</arr>'
           xml += '</doc>'
         xml += '</result>'

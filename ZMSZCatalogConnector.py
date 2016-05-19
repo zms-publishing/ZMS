@@ -246,7 +246,6 @@ class ZMSZCatalogConnector(
               if type(v) in StringTypes:
                 for x in range(16):
                   v = v.replace(unichr(x),'')
-              print (k,v)
               xml += '<str><![CDATA[%s]]></str>'%v
             xml += '</arr>'
           xml += '</doc>'

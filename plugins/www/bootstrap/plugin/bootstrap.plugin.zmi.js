@@ -515,7 +515,7 @@ ZMI.prototype.initInputFields = function(container) {
 						var $toggle = $('a.accordion-toggle[href=\'#'+id+'\']');
 						if ($toggle.length > 0) {
 							var key = "ZMS."+data_root+".accordion-body-"+id;
-							var value = $ZMILocalStorageAPI.get(key,'0');
+							var value = $ZMILocalStorageAPI.get(key,'1');
 							if (value != null) {
 								if ($(this).hasClass('in')) {
 									if (value == '0') {
@@ -695,6 +695,19 @@ ZMI.prototype.initInputFields = function(container) {
 			$.plugin('multiselect').set({context:context});
 			$.plugin('multiselect').get("select.zmi-select[multiple]:not(.hidden)",function(){
 					$ZMI.multiselect(context);
+				});
+			// Activity-Toggle
+			$("#attrActivity").each(function() {
+					var $input = $(".activity input:checkbox",this);
+					if ($input.length>0) {
+						$(this).prev(".attr_last_modified").each(function() {
+								$("div.pull-left",this).prepend('<span id="zmi-toggle-activity" title="'+getZMILangStr('ATTR_ACTIVE')+'">'+$ZMI.icon(($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable')+'</span>&nbsp;');
+								$("#zmi-toggle-activity").click(function() {
+										$input.click();
+										$($ZMI.icon_selector(),this).attr("class",$ZMI.icon_clazz($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable')
+									});
+							});
+					}
 				});
 			// Button-Clicked
 			$ZMI.writeDebug("zmiInitInputFields: submit["+$('input[type="submit"],button[type="submit"]',context).length+"]");

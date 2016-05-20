@@ -374,6 +374,14 @@ div#menu_tree i.icon.icon-collapse-alt {
 	vertical-align:top;
 	color:#aaa;
 }
+div#menu_tree i.icon.icon-expand-alt:hover,
+div#menu_tree i.icon.icon-collapse-alt:hover {
+	color: #fff !important;
+}
+div#menu_tree i.icon.icon-expand-alt:focus,
+div#menu_tree i.icon.icon-collapse-alt:focus {
+	outline-color: transparent !important;
+}
 table#menu_title,
 div#menu_tree {
 	width:100%;

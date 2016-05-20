@@ -75,15 +75,15 @@
 					</div><!-- .col-sm-8 -->
 				</div><!-- .form-group -->
 				<div class="form-group activity" tal:condition="python:'active' in objAttrs.keys()">
-					<label class="col-sm-2 control-label" for="attrActive"><span tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">the label</span></label>
+					<label class="col-sm-2 control-label" tal:attributes="for python:here.getObjAttrName(here.getObjAttr('active'),request['lang'])"><span tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">the label</span></label>
 					<div class="col-sm-10"><tal:block tal:content="structure python:here.getObjInput('active',request)">the control</tal:block></div>
 				</div>
 				<div class="form-group activity_start" tal:condition="python:'attr_active_start' in objAttrs.keys()">
-					<label class="col-sm-2 control-label" for="attr_active_start"><span tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</span></label>
+					<label class="col-sm-2 control-label" tal:attributes="for python:here.getObjAttrName(here.getObjAttr('attr_active_start'),request['lang'])"><span tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</span></label>
 					<div class="input-group" tal:content="structure python:here.getObjInput('attr_active_start',request)">the control</div>
 				</div>
 				<div class="form-group activity_end" tal:condition="python:'attr_active_end' in objAttrs.keys()">
-					<label class="col-sm-2 control-label" for="attr_active_end"><span tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span></label>
+					<label class="col-sm-2 control-label" tal:attributes="for python:here.getObjAttrName(here.getObjAttr('attr_active_end'),request['lang'])"><span tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span></label>
 					<div class="input-group" tal:content="structure python:here.getObjInput('attr_active_end',request)">the control</div>
 				</div>
 				</tal:block>

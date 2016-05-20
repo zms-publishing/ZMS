@@ -365,6 +365,7 @@ div#menu_tree i.icon.icon-expand-alt:hover,
 div#menu_tree i.icon.icon-collapse-alt:hover {
 	color: #000 !important;
 }
+div#menu_tree a:focus,
 div#menu_tree i.icon.icon-expand-alt:focus,
 div#menu_tree i.icon.icon-collapse-alt:focus {
 	outline-color: transparent !important;

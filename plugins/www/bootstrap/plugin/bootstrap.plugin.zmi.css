@@ -1484,6 +1484,10 @@ div.right .version_object_state i.wf-icon,
 .attr_last_modified i.wf-icon,
 .zmi-state {
 	margin-right: .3em;
+	background-color:transparent !important
+}
+div.right .version_object_state .zmi-state.bg-info.text-info {
+	background-color:transparent;
 }
 div.right a:hover,
 div.right a:focus {

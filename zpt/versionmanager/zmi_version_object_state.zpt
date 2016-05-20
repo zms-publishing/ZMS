@@ -4,7 +4,7 @@
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
 </tal:block>
 <tal:block tal:define="global refByObjs python:here.getRefByObjs()"
-	><a class="zmi-state bg-info text-info" 
+	><a class="zmi-state text-info" 
 		tal:condition="refByObjs" tal:attributes="href python:'%s/manage_RefForm?lang=%s'%(here.absolute_url(),request['lang'])"
 		><i class="icon-link" tal:attributes="title python:here.getZMILangStr('MSG_REFERENCEDBY')%''+' %i %s'%(len(refByObjs),here.getZMILangStr('ATTR_OBJECTS'))"></i></a>
 </tal:block

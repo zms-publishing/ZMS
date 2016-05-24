@@ -21,8 +21,10 @@
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog import ZCatalog
 from types import StringTypes
+import sys
 import urllib
 import zope.interface
+import zExceptions
 # Product Imports.
 import _globals
 import IZMSCatalogConnector
@@ -167,11 +169,11 @@ class ZMSZCatalogConnector(
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-		'manage_changeProperties', 'manage_main',
-		)
+        'manage_changeProperties', 'manage_main',
+        )
     __ac_permissions__=(
-		('ZMS Administrator', __administratorPermissions__),
-		)
+        ('ZMS Administrator', __administratorPermissions__),
+        )
 
     ############################################################################
     #  ZMSZCatalogConnector.__init__: 
@@ -203,7 +205,6 @@ class ZMSZCatalogConnector(
       try: 
         results = self.search(q)
       except:
-        import sys
         _globals.writeError(self,'[search_xml]')
         t,v,tb = sys.exc_info()
         status = 400
@@ -218,38 +219,48 @@ class ZMSZCatalogConnector(
         xml += '<int name="%s">%s</int>'%(key,str(REQUEST.form[key]))
       xml += '</lst>'
       xml += '</lst>'
-      if status > 0:
-        xml += '<lst name="error">'
-        xml += '<int name="msg">%s</int>'%msg
-        xml += '<int name="code">%i</int>'%status
-        xml += '</lst>'
-      else:
-        xml += '<result name="response" numFound="%i" start="%i">'%(len(results),page_index*page_size)
+      xmlr = ''
+      if status <= 0:
+        xmlr += '<result name="response" numFound="%i" start="%i">'%(len(results),page_index*page_size)
         if len(results) > page_size:
           results = results[page_index*page_size:(page_index+1)*page_size]
         for result in results:
-          xml += '<doc>'
+          xmlr += '<doc>'
           for k in result.keys():
-            v = result[k]
-            if k == 'absolute_url':
-              k = 'loc'
-            elif k == 'zcat_column_index_html':
-              k = 'index_html'
-            elif k == 'zcat_column_custom':
-              k = 'custom'
-            elif k == 'standard_html':
-              v = ZMSZCatalogAdapter.remove_tags(self,v)
-            xml += '<arr name="%s">'%k
-            if k == 'custom':
-              xml += '<str>%s</str>'%v 
-            else:
-              if type(v) in StringTypes:
-                for x in range(16):
-                  v = v.replace(unichr(x),'')
-              xml += '<str><![CDATA[%s]]></str>'%v
-            xml += '</arr>'
-          xml += '</doc>'
-        xml += '</result>'
+            try:
+              v = result[k]
+              if k == 'absolute_url':
+                k = 'loc'
+              elif k == 'zcat_column_index_html':
+                k = 'index_html'
+              elif k == 'zcat_column_custom':
+                k = 'custom'
+              elif k == 'standard_html':
+                v = ZMSZCatalogAdapter.remove_tags(self,v)
+              xmlr += '<arr name="%s">'%k
+              if k == 'custom':
+                xmlr += '<str>%s</str>'%unicode(v,'utf-8')
+              else:
+                if type(v) in StringTypes:
+                  for x in range(16):
+                    v = v.replace(unichr(x),'')
+                xmlr += '<str><![CDATA[%s]]></str>'%v
+              xmlr += '</arr>'
+            except:
+              _globals.writeError(self,'[search_xml]: result=%s, k=%s'%(str(result),k))
+              t,v,tb = sys.exc_info()
+              status = 400
+              msg = v
+              break
+          xmlr += '</doc>'
+        xmlr += '</result>'
+      if status > 0:
+        xmlr = ''
+        xmlr += '<lst name="error">'
+        xmlr += '<str name="msg">%s</str>'%msg
+        xmlr += '<int name="code">%i</int>'%status
+        xmlr += '</lst>'
+      xml += xmlr
       xml += '</response>'
       return xml
 
@@ -273,7 +284,6 @@ class ZMSZCatalogConnector(
       try: 
         results = self.suggest(q,limit)
       except:
-        import sys
         _globals.writeError(self,'[suggest_xml]')
         t,v,tb = sys.exc_info()
         status = 400

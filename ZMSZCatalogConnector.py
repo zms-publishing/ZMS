@@ -238,12 +238,13 @@ class ZMSZCatalogConnector(
               elif k == 'standard_html':
                 v = ZMSZCatalogAdapter.remove_tags(self,v)
               xmlr += '<arr name="%s">'%k
+              if type(v) in StringTypes:
+                v = unicode(v,'utf-8')
+                for x in range(16):
+                  v = v.replace(unichr(x),'')
               if k == 'custom':
-                xmlr += '<str>%s</str>'%unicode(v,'utf-8')
+                xmlr += '<str>%s</str>'%v
               else:
-                if type(v) in StringTypes:
-                  for x in range(16):
-                    v = v.replace(unichr(x),'')
                 xmlr += '<str><![CDATA[%s]]></str>'%v
               xmlr += '</arr>'
             except:
@@ -260,7 +261,7 @@ class ZMSZCatalogConnector(
         xmlr += '<str name="msg">%s</str>'%msg
         xmlr += '<int name="code">%i</int>'%status
         xmlr += '</lst>'
-      xml += xmlr
+      xml += unicode(xmlr)
       xml += '</response>'
       return xml
 

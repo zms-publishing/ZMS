@@ -655,6 +655,8 @@ class ConfManager(
             self.setConfProperty('Portal.Master',s)
           l = []
           portal_clients = REQUEST.get('portal_clients',[])
+          if type(portal_clients) is not list:
+            portal_clients  = [portal_clients]
           portal_clients = map(lambda x:(int(x[:x.find(':')]),x[x.find(':')+1:]),portal_clients)
           portal_clients.sort()
           portal_clients = map(lambda x:x[1],portal_clients)

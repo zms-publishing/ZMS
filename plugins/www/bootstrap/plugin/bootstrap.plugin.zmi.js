@@ -1097,19 +1097,25 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 			$(s).html(html);
 			var i = 0;
 			var fn = function() {
-    			if (i<pages.length) {
-  					var $page = $(pages[i]);
-  					var page_home_id = $page.attr("home_id");
-  					var page_id = $page.attr("id").substr(page_home_id.length+1);
-  					var $ul = $("ul[data-home-id="+page_home_id+"][data-id="+page_id+"]");
-  					var $toggle = $(".toggle",$ul);
-  					$("li",$ul).addClass("active");
-  					i++;
-  					if (pages.length==1 || i<pages.length) {
-  						that.toggleClick($toggle,fn);
-  					}
-  				}
-  			}
+					if (i<pages.length) {
+						var $page = $(pages[i]);
+						var page_home_id = $page.attr("home_id");
+						var page_id = $page.attr("id").substr(page_home_id.length+1);
+						var $ul = $("ul[data-home-id="+page_home_id+"][data-id="+page_id+"]");
+						var $toggle = $(".toggle",$ul);
+						$("li",$ul).addClass("active");
+						i++;
+						if (pages.length==1 || i<pages.length) {
+							that.toggleClick($toggle,fn);
+						}
+					}
+					else {
+						var callback = that.p['init.callback'];
+						if (typeof callback != "undefined") {
+							callback();
+						}
+					}
+				}
 			fn();
 		});
 }

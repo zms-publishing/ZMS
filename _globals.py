@@ -584,12 +584,26 @@ def get_size(v):
 """
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_globals.getLog:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def getLog(self):
+  request = self.REQUEST
+  if request.has_key('ZMSLOG'):
+    zms_log = request.get('ZMSLOG')
+  else:
+    zms_log = getattr(self,'zms_log',None)
+    if zms_log is None:
+      zms_log = getattr(self.getPortalMaster(),'zms_log',None)
+    request.set('ZMSLOG',zms_log)
+  return zms_log
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.debug:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def debug(self):
   b = False
   try:
-    zms_log = self.zms_log
+    zms_log = getLog(self)
     severity = logging.DEBUG
     b = zms_log.hasSeverity(severity)
   except:
@@ -614,7 +628,7 @@ _globals.writeBlock:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def writeBlock(self, info):
   try:
-    zms_log = self.zms_log
+    zms_log = getLog(self)
     severity = logging.INFO
     if zms_log.hasSeverity(severity):
       info = "[%s@%s]"%(self.meta_id,self.absolute_url()[len(self.REQUEST['SERVER_URL']):]) + info
@@ -638,7 +652,7 @@ def writeError(self, info):
     severity = logging.ERROR
     info += ''.join(format_exception(t, v, tb))
     info = "[%s@%s]"%(self.meta_id,self.absolute_url()[len(self.REQUEST['SERVER_URL']):]) + info
-    zms_log = self.zms_log
+    zms_log = getLog(self)
     if zms_log.hasSeverity(severity):
       zms_log.LOG( severity, info)
     t = t.__name__.upper()

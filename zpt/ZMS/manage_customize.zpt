@@ -189,7 +189,6 @@ $(function(){
         {'key':'ZMS.input.file.maxlength','title':'File.upload maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
         {'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
         {'key':'ZMSGraphic.superres','title':'Image superres-attribute','desc':'Super-resolution attribute for ZMS standard image-objects.','datatype':'boolean','default':0},
-        {'key':'ZCatalog.portalClients','title':'Search portal-clients','desc':'Allow search in portal-clients','datatype':'boolean','default':1},
         {'key':'ZCatalog.TextIndexNG','title':'Search binaries with TextIndexNG','desc':'Use TextIndexNG for catalog-indexing of binaries.','datatype':'boolean'},
         {'key':'ZCatalog.TextIndexType','title':'Search with TextIndex-type','desc':'Use specified TextIndex-type (default: ZCTextIndex)','datatype':'string','default':'ZCTextIndex'},
         ];

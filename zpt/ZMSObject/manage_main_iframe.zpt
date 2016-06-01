@@ -1,8 +1,8 @@
 <tal:block tal:define="global
-  dummy0 python:here.f_standard_html_request(here,request);
-  lurl python:request['URL'].replace('?','/').split('/');
-  bnobody python:int(request.get('ZMS_NO_BODY','')!='');
-  bcontainer python:here.isPageContainer() and ('manage' in lurl or 'manage_main' in lurl or 'manage_workspace' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)"
+	dummy0 python:here.f_standard_html_request(here,request);
+	lurl python:request['URL'].replace('?','/').split('/');
+	bnobody python:int(request.get('ZMS_NO_BODY','')!='');
+	bcontainer python:'e' in map(lambda x:x['id'],here.getMetaobjAttrs(here.meta_id,types=['*'])) and ('manage' in lurl or 'manage_main' in lurl or 'manage_workspace' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)"
 ><tal:block tal:condition="python:bcontainer" tal:content="structure python:here.manage_container(here,request)">manage_container</tal:block
 ><tal:block tal:condition="python:not bcontainer"
 ><!DOCTYPE html>

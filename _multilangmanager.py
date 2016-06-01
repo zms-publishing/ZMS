@@ -305,12 +305,14 @@ class MultiLanguageManager:
     # Returns label of language specified by ID.
     # --------------------------------------------------------------------------
     def getParentLanguage(self, id):
+      """ getParentLanguage """
       return self.getLang(id).get('parent')
 
     # --------------------------------------------------------------------------
     # Returns label of language specified by ID.
     # --------------------------------------------------------------------------
     def getLanguageLabel(self, id):
+      """ getLanguageLabel """
       return self.getLang(id).get('label',id)
 
     # --------------------------------------------------------------------------

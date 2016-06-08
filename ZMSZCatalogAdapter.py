@@ -20,6 +20,7 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
+import time
 import urllib
 import zope.interface
 # Product Imports.
@@ -119,7 +120,7 @@ class ZMSZCatalogAdapter(
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-		'manage_changeProperties', 'manage_main',
+		'manage_changeProperties', 'manage_main', 'manage_reindex',
 		)
     __ac_permissions__=(
 		('ZMS Administrator', __administratorPermissions__),
@@ -195,6 +196,9 @@ class ZMSZCatalogAdapter(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.attr_ids: getter and setter
     # --------------------------------------------------------------------------
+    def _getAttrIds(self):
+      return ['home_id']+self.getAttrIds()
+
     def getAttrIds(self):
       return self.getAttrs().keys()
 
@@ -253,7 +257,8 @@ class ZMSZCatalogAdapter(
       def get_catalog_index(node):
         d = {}
         d['id'] = node.id
-        d['loc'] = node.absolute_url()
+        d['home_id'] = node.getHome().id
+        d['loc'] = '/'+'/'.join(node.getPhysicalPath())
         d['index_html'] = node.getHref2IndexHtml(request)
         d['meta_id'] = node.meta_id
         d['custom'] = d.get('custom',{})
@@ -296,9 +301,8 @@ class ZMSZCatalogAdapter(
           try:
             value = node.attr(attr_id)
           except:
-            msg = '[@%s.get_sitemap]: can\'t get attr \'%s\' - see error-log for details'%(self.getHome().id,attr_id)
+            msg = '[@%s.get_sitemap]: can\'t get attr \'%s.%s\' - see error-log for details'%(node.getHome().id,node.meta_id,attr_id)
             _globals.writeError(self,msg)
-            msg += ' - see error-log for details'%(self.getHome().id,attr_id)
             if msg not in result:
               result.append(msg)
           if attr_type in ['date','datetime']:
@@ -310,6 +314,7 @@ class ZMSZCatalogAdapter(
       
       # Traverse tree.
       def traverse(node,recursive):
+        l = []
         can_add = True
         if 'catalog_indexable' in self.getMetaobjAttrIds(node.meta_id):
           can_add = node.attr('catalog_indexable')
@@ -318,24 +323,36 @@ class ZMSZCatalogAdapter(
           if 'catalog_index' in self.getMetaobjAttrIds(node.meta_id):
             for d in node.attr('catalog_index'):
               add_catalog_index(node,d)
+              l.append(1)
           # Check meta-id.
           if node.meta_id in self.getIds():
             d = get_catalog_index(node)
             add_catalog_index(node,d)
+            l.append(1)
         # Handle child-nodes.
         if recursive:
           for childNode in node.filteredChildNodes(request):
-            traverse(childNode,recursive)
+            l.extend(traverse(childNode,recursive))
+        return l
       
       self.REQUEST.set('lang',self.REQUEST.get('lang',self.getPrimaryLanguage()))
-      traverse(root,recursive)
-      
-      # Process clients.
-      if self.getConfProperty('ZCatalog.portalClients',1) == 1 and recursive:
-        for portalClient in self.getPortalClients():
-          result.append(portalClient.getCatalogAdapter().get_sitemap(cb,portalClient,recursive))
-      
+      result.append('%i objects cataloged'%len(traverse(root,recursive)))
       return ', '.join(filter(lambda x:x,result))
+
+
+    ############################################################################
+    #  ZMSZCatalogAdapter.manage_reindex:
+    #
+    #  Reindex.
+    ############################################################################
+    def manage_reindex(self, uid, REQUEST, RESPONSE):
+        """ ZMSZCatalogAdapter.manage_reindex """
+        result = []
+        t0 = time.time()
+        for connector in self.getConnectors():
+          result.append(connector.reindex_self(uid))
+        result.append('done!')
+        return ', '.join(filter(lambda x:x,result))+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
 
 
     ############################################################################
@@ -344,7 +361,7 @@ class ZMSZCatalogAdapter(
     #  Change properties.
     ############################################################################
     def manage_changeProperties(self, btn, lang, REQUEST, RESPONSE):
-        """ ZMSZCatalogAdapter.manage_changeProperties: """
+        """ ZMSZCatalogAdapter.manage_changeProperties """
         message = ''
         ids = REQUEST.get('objectIds',[])
         
@@ -366,7 +383,6 @@ class ZMSZCatalogAdapter(
         # -----
         elif btn == 'Save':
           self.setConfProperty('ZMS.CatalogAwareness.active',REQUEST.get('catalog_awareness_active')==1)
-          self.setConfProperty('ZCatalog.portalClients',REQUEST.get('catalog_portal_clients')==1)
           self._ids = REQUEST.get('ids',[])
           attrs = {}
           for attr_id in REQUEST.get('attr_ids',[]):

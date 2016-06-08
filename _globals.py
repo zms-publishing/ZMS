@@ -622,6 +622,7 @@ def writeLog(self, info):
       zms_log.LOG( severity, info)
   except:
     pass
+  return info
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.writeBlock:
@@ -635,6 +636,7 @@ def writeBlock(self, info):
       zms_log.LOG( severity, info)
   except:
     pass
+  return info
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _globals.writeError:

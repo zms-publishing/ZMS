@@ -21,7 +21,9 @@
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog import ZCatalog
 from types import StringTypes
+import copy
 import sys
+import time
 import urllib
 import zope.interface
 import zExceptions
@@ -32,7 +34,7 @@ import ZMSZCatalogAdapter
 import ZMSItem
 
 
-extra_column_ids = ['index_html','custom']
+extra_column_ids = ['loc','index_html','custom']
 
 
 # ------------------------------------------------------------------------------
@@ -86,6 +88,29 @@ def addLexicon( container, cat):
 
 
 # ------------------------------------------------------------------------------
+#  ZMSZCatalogConnector.getZCatalog:
+# ------------------------------------------------------------------------------
+def getZCatalog(self,lang):
+  cat_id = 'catalog_%s'%lang
+  root = self.getRootElement()
+  if root != self and cat_id in self.objectIds():
+    self.manage_delObjects([cat_id])
+  zcatalog = getattr(root,cat_id,None)
+  return zcatalog
+
+
+# ------------------------------------------------------------------------------
+#  ZMSZCatalogConnector.writeChangesLog:
+# ------------------------------------------------------------------------------
+def writeChangesLog(zcatalog,info):
+  if not zcatalog.hasProperty('changes_log'):
+    zcatalog.manage_addProperty('changes_log', '', 'text')
+  changes_log = zcatalog.getProperty('changes_log')
+  changes_log += '\n' + zcatalog.getLangFmtDate(time.time(),'eng') + ' ' + zcatalog.writeBlock(info)
+  zcatalog.manage_changeProperties({'changes_log':changes_log})
+
+
+# ------------------------------------------------------------------------------
 #  ZMSZCatalogConnector.recreateCatalog:
 # ------------------------------------------------------------------------------
 def recreateCatalog(self, zcm, lang):
@@ -97,18 +122,19 @@ def recreateCatalog(self, zcm, lang):
   cat_title = 'Default catalog'
   zcatalog = ZCatalog.ZCatalog(id=cat_id, title=cat_title, container=self)
   self._setObject(zcatalog.id, zcatalog)
-  zcatalog = getattr(self,cat_id)
+  zcatalog = getZCatalog(self,lang)
+  writeChangesLog('[recreateCatalog]: '+self.getZMILangStr('MSG_INSERTED')%zcatalog.meta_type)
   
   #-- Add lexicon
   addLexicon( self, zcatalog)
   
   #-- Add columns
-  for index_name in ['id','meta_id','absolute_url']+map(lambda x:'zcat_column_%s'%x,extra_column_ids):
+  for index_name in ['id','meta_id']+map(lambda x:'zcat_column_%s'%x,extra_column_ids):
     zcatalog.manage_addColumn(index_name)
   
   #-- Add Indexes (incl. Columns)
   index_type = zcm.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
-  for attr_id in zcm.getAttrIds():
+  for attr_id in zcm._getAttrIds():
     index_name = 'zcat_index_%s'%attr_id
     extra = None
     if index_type == 'ZCTextIndex':
@@ -203,7 +229,7 @@ class ZMSZCatalogConnector(
       msg = ''
       results = []
       try: 
-        results = self.search(q)
+        results = self.search(q,REQUEST.get('fq[]',''))
       except:
         _globals.writeError(self,'[search_xml]')
         t,v,tb = sys.exc_info()
@@ -216,7 +242,7 @@ class ZMSZCatalogConnector(
       xml += '<int name="status">%i</int>'%status
       xml += '<lst name="params">'
       for key in REQUEST.form.keys():
-        xml += '<int name="%s">%s</int>'%(key,str(REQUEST.form[key]))
+        xml += '<str name="%s">%s</str>'%(key,_globals.html_quote(str(REQUEST.form[key])))
       xml += '</lst>'
       xml += '</lst>'
       xmlr = ''
@@ -229,7 +255,7 @@ class ZMSZCatalogConnector(
           for k in result.keys():
             try:
               v = result[k]
-              if k == 'absolute_url':
+              if k == 'zcat_column_loc':
                 k = 'loc'
               elif k == 'zcat_column_index_html':
                 k = 'index_html'
@@ -269,7 +295,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.suggest_xml:
     # --------------------------------------------------------------------------
-    def suggest_xml(self, q, limit=5, REQUEST=None, RESPONSE=None):
+    def suggest_xml(self, q, fq='', limit=5, REQUEST=None, RESPONSE=None):
       """ ZMSZCatalogConnector.suggest_xml """
       # Check constraints.
       REQUEST.set('lang',REQUEST.get('lang',self.getPrimaryLanguage()))
@@ -317,19 +343,30 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.search:
     # --------------------------------------------------------------------------
-    def search(self, qs, order=None):
+    def search(self, q, fq='', order=None):
       rtn = []
       
       # ZCatalog.
       request = self.REQUEST
       lang = request.get('lang',self.getPrimaryLanguage())
-      zcatalog = getattr(self,'catalog_%s'%lang)
+      zcatalog = getZCatalog(self,lang)
       
       # Find search-results.
       items = []
+      prototype = {}
+      for fqs in fq.split(','):
+        attr_id = fqs[:fqs.find(':')]
+        if attr_id.endswith('_s'):
+          attr_id = attr_id[:-2]
+        fqk = 'zcat_index_%s'%attr_id
+        if fqk in zcatalog.indexes():
+          fqv = fqs[fqs.find(':')+1:]
+          fqv = self.search_encode(fqv)
+          prototype[fqk] = fqv
       for index in zcatalog.indexes():
         if index.find('zcat_index_')==0:
-          query = {index:self.search_encode( qs)}
+          query = copy.deepcopy(prototype)
+          query[index] = self.search_encode(q)
           qr = zcatalog(query)
           _globals.writeLog( self, "[search]: %s=%i"%(str(query),len(qr)))
           for item in qr:
@@ -374,7 +411,7 @@ class ZMSZCatalogConnector(
       # ZCatalog.
       request = self.REQUEST
       lang = request.get('lang',self.getPrimaryLanguage())
-      zcatalog = getattr(self,'catalog_%s'%lang)
+      zcatalog = getZCatalog(self,lang)
       
       # Lexicon.
       lexicon = zcatalog.Lexicon
@@ -393,26 +430,28 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     def _update(self, node, d):
       zcm = self.getCatalogAdapter()
-      lang = self.REQUEST.get('lang')
       # Prepare object.
       for attr_id in extra_column_ids:
         attr_name = 'zcat_column_%s'%attr_id
         value = d.get(attr_id)
         setattr(node,attr_name,value)
-      for attr_id in zcm.getAttrIds():
+      for attr_id in zcm._getAttrIds():
+        last_id = attr_id
         attr_name = 'zcat_index_%s'%attr_id
-        value = self.search_encode(node.attr(attr_id))
+        value = self.search_encode(d.get(attr_id))
         setattr(node,attr_name,value)
       # Reindex object.
-      catalog = getattr(self,'catalog_%s'%lang,None)
-      if catalog is not None:
-        catalog.uncatalog_object(node.getPath())
-        catalog.catalog_object(node,node.getPath())
+      request = self.REQUEST
+      lang = request.get('lang',self.getPrimaryLanguage())
+      zcatalog = getZCatalog(self,lang)
+      if zcatalog is not None:
+        zcatalog.uncatalog_object(node.getPath())
+        zcatalog.catalog_object(node,node.getPath())
       # Unprepare object.
       for attr_id in extra_column_ids:
         attr_name = 'zcat_column_%s'%attr_id
         delattr(node,attr_name)
-      for attr_id in zcm.getAttrIds():
+      for attr_id in zcm._getAttrIds():
         attr_name = 'zcat_index_%s'%attr_id
         delattr(node,attr_name)
 
@@ -432,7 +471,46 @@ class ZMSZCatalogConnector(
         # Reindex items to catalog.
         def cb(node,d):
           self._update(node,d)
-        result.append(zcm.get_sitemap(cb,container,recursive=True))
+        for root in container+[self.getPortalClients()]:
+          result.append(zcm.get_sitemap(cb,root,recursive=True))
+      return ', '.join(filter(lambda x:x,result))
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.reindex_self:
+    # --------------------------------------------------------------------------
+    def reindex_self(self, uid):
+      result = []
+      zcm = self.getCatalogAdapter()
+      request = self.REQUEST
+      container = self.getLinkObj(uid)
+      home_id = container.getHome().id
+      try:
+        lresult = []
+        for lang in container.getLangIds():
+          request.set('lang',lang)
+          lresult.append('language: %s'%lang)
+          # Clear catalog.
+          zcatalog = getZCatalog(self,lang)
+          if zcatalog is None:
+            lresult.append(recreateCatalog(container,self.aq_parent,lang))
+          else:
+            qr = zcatalog({'zcat_index_home_id':home_id})
+            lresult.append('%i objects removed from catalog'%len(qr))
+            for item in qr:
+              data_record_id = item.data_record_id_
+              path = zcatalog.getpath(data_record_id)
+              zcatalog.uncatalog_object(path)
+          # Reindex items to catalog.
+          def cb(node,d):
+            self._update(node,d)
+          lresult.append(zcm.get_sitemap(cb,container,recursive=True))
+          result.extend(lresult)
+          # Log changes.
+          zcatalog = getZCatalog(self,lang)
+          writeChangesLog(zcatalog, '[reindex_self]: '+'\n'.join(filter(lambda x:x,lresult)))
+      except:
+        result.append(_globals.writeError(self,'can\'t reindex_self'))
       return ', '.join(filter(lambda x:x,result))
 
 
@@ -472,15 +550,9 @@ class ZMSZCatalogConnector(
     def manage_changeProperties(self, selected, btn, lang, REQUEST):
         message = ''
         
-        # Reindex.
-        # --------
-        if btn == 'Reindex' and selected:
-          reindex = self.reindex_all()
-          message += '%s reindexed (%s)\n'%(self.id,str(reindex))
-        
         # Remove.
         # -------
-        elif btn == 'Remove':
+        if btn == 'Remove':
           ids = REQUEST.get('zcatalog_objectIds',[])
           if len(ids) > 0:
             self.getDocumentElement().manage_delObjects(ids)

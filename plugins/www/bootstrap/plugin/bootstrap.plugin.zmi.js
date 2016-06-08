@@ -1083,7 +1083,7 @@ $ZMI.objectTree = new ZMIObjectTree();
 ZMIObjectTree.prototype.init = function(s,href,p) {
 	var that = this;
 	that.p = p;
-	href = href+"/ajaxGetParentNodes";
+	href = href+"/"+(typeof p['init.href'] != "undefined"?p['init.href']:"ajaxGetParentNodes");
 	$(s).html($ZMI.icon("icon-spinner icon-spin")+'&nbsp;'+getZMILangStr('MSG_LOADING'));
 	var params = {lang:getZMILang(),preview:'preview'};
 	if (typeof that.p["params"] == "object") {
@@ -1107,6 +1107,9 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 						i++;
 						if (pages.length==1 || i<pages.length) {
 							that.toggleClick($toggle,fn);
+						}
+						else {
+							fn();
 						}
 					}
 					else {
@@ -1257,8 +1260,10 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 				}
 			});
 	}
-	else if ($(toggle).hasClass($ZMI.icon_clazz("icon-caret-down"))) {
-		$(toggle).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right")).attr({title:'+'});
+	else {
+		if ($(toggle).hasClass($ZMI.icon_clazz("icon-caret-down"))) {
+			$(toggle).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right")).attr({title:'+'});
+		}
 		if (typeof callback == 'function') {
 			callback();
 		}

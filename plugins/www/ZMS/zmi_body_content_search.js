@@ -104,18 +104,29 @@ function GetPagination(fn, size, pageSize, pageIndex) {
 }
 
 function zmiBodyContentSearch(q,pageSize,pageIndex) {
-    if (q.length==0) {
-      return;
-    }
-    $("#search_results").show();
-    $("input[name=search]").val(q).change();
-    $(".line.row:first").html('');
-    $(".line.row:gt(0)").remove();
-    var p = {};
-    p['q'] = q;
-    p['hl.fragsize'] = 200;
-    p['page_size'] = pageSize;
-    p['page_index'] = pageIndex;
+		if (q.length==0) {
+			return;
+		}
+		var zmi = document.location.toString().indexOf('/manage') > 0;
+		$("#search_results").show();
+		$("input[name=search]").val(q).change();
+		$(".line.row:first").html('');
+		$(".line.row:gt(0)").remove();
+		var p = {};
+		p['q'] = q;
+		p['hl.fragsize'] = 200;
+		p['hl.simple.pre'] = '<span class="highlight">';
+		p['hl.simple.post'] = '</span>';
+		p['page_size'] = pageSize;
+		p['page_index'] = pageIndex;
+		var fq = [];
+		if (zmi) {
+			var home_id = $ZMI.getPhysicalPath();
+			home_id = home_id.substr(0,home_id.indexOf('/content'));
+			home_id = home_id.substr(home_id.lastIndexOf('/')+1);
+			fq.push('home_id_s:'+home_id);
+		}
+		p['fq'] = fq;
     try {
         var baseurl = zmiParams['base_url'];
     } catch(e) {
@@ -199,10 +210,10 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
                   breadcrumb += '<a href="'+loc+'">'+title+'</a>';
                 });
               }
-              href = document.location.toString().indexOf('/manage') > 0 ? href+ '/manage':href;
+              href = zmi ? href+ '/manage':href;
               html += ''
                 + '<div class="line row'+(c%2==0?" gray":"")+'">'
-                + '<div class="col-md-8 col-sm-9">'
+                + '<div class="col-sm-12">'
                 + '<h2 class="'+meta_id+'"><a href="'+href+'">'+title+'</a></h2>'
                 + (breadcrumb.length==0?'':'<div class="breadcrumb">'+breadcrumb+'</div><!-- .breadcrumb -->')
                 + '<p>'+snippet+'</p>'

@@ -205,12 +205,31 @@ class ZMSZCatalogSolrConnector(
     #  ZMSZCatalogSolrConnector.reindex_all:
     # --------------------------------------------------------------------------
     def reindex_all(self):
-      self._update(self.__get_delete_xml())
-      xml =  self.__get_add_xml(self.getDocumentElement(),recursive=True)
-      result = self._update(xml)
-      self._update(self.__get_command_xml('commit'))
-      self._update(self.__get_command_xml('optimize'))
-      return result
+      result = []
+      result.append(self._update(self.__get_delete_xml()))
+      container = self.getDocumentElement()
+      for root in container+[self.getPortalClients()]:
+        result.append(self._update(self.__get_add_xml(root,recursive=True)))
+      result.append(self._update(self.__get_command_xml('commit')))
+      result.append(self._update(self.__get_command_xml('optimize')))
+      return ', '.join(filter(lambda x:x,result))
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSZCatalogConnector.reindex_self:
+    # --------------------------------------------------------------------------
+    def reindex_self(self, uid):
+      result = []
+      container = self.getLinkObj(uid)
+      home_id = container.getHome().id
+      try:
+        result.append(self._update(self.__get_delete_xml(query='home_id_s:%s'%home_id)))
+        result.append(self._update(self.__get_add_xml(container,recursive=True)))
+        result.append(self._update(self.__get_command_xml('commit')))
+        result.append(self._update(self.__get_command_xml('optimize')))
+      except:
+        result.append(_globals.writeError(self,'can\'t reindex_self'))
+      return ', '.join(filter(lambda x:x,result))
 
 
     # --------------------------------------------------------------------------
@@ -241,15 +260,9 @@ class ZMSZCatalogSolrConnector(
     def manage_changeProperties(self, selected, btn, lang, REQUEST):
         message = ''
         
-        # Reindex.
-        # --------
-        if btn == 'Reindex' and selected:
-          reindex = self.reindex_all()
-          message += '%s reindexed (%s)\n'%(self.id,str(reindex))
-          
         # Save.
         # -----
-        elif btn == 'Save':
+        if btn == 'Save':
           self.setConfProperty('solr.url',REQUEST['solr_url'])
           self.setConfProperty('solr.core',REQUEST['solr_core'])
         

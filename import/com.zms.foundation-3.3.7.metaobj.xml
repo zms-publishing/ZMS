@@ -3262,7 +3262,8 @@ function onZMSTableFormSubmit() {
 		table_colgroup_cols python:zmscontext.attr('cols');
 		table_cols python:len(table_table[-1]);
 		table_rows python:len(table_table);
-		table_widths python:zmscontext.attr('widths');">
+		table_widths python:zmscontext.attr('widths');
+		">
 
 <!--
 --------------------------------------------------------------------------------
@@ -3480,19 +3481,10 @@ function table_cell_edit(el_td) {
 		}
 	}
 	// Open cell editor.
-	/*
-	zmiModal('#div_table_cell_editor',{
-			title:getZMILangStr('ATTR_COL')+': '+getZMILangStr('BTN_EDIT'),
-			close: function(event, ui) {
-					table_cell_cancel(event);
-				}
-	});
-	*/
-var offset = $(el_td).offset();
+	var offset = $(el_td).offset();
 	$('.ui-helper-overlay').removeClass('ui-helper-hidden');
-	$('#cke_14,#cke_15,#cke_16').attr('style','display:none;');
 	$('#div_table_cell_editor').parent().addClass('div_table_cell_editor_parent').css({left:offset.left,top:offset.top}).removeClass('ui-helper-hidden');
-	$('div#zmiRichtextEditor'+'content_editor').height(300);
+	$('#zmiRichtextEditor'+'content_editor').height(300);
 	zmiRichtextResize('content_editor');
 }
 
@@ -4194,7 +4186,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.2.7]]></item>
+          <item key="revision"><![CDATA[3.2.9]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4693,6 +4685,56 @@ return zmscontext.attr('text')
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="id"><![CDATA[interface0]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[<tal:block tal:define="
+	zmscontext options/zmscontext;
+	dummy0 python:request.set('CKEDITOR_config_removeButtons','JustifyLeft,JustifyCenter,JustifyRight')">
+<script type="text/javascript">
+
+$(function(){
+	$('#text_'+getZMILang()).parent('form').submit(function() {
+			var b = true;
+			if (self.btnClicked != getZMILangStr('BTN_CANCEL') &&
+					self.btnClicked != getZMILangStr('BTN_BACK')) {
+				var txt = '<'+'xml>'+$('#text_'+getZMILang()).val().replace('&','')+'<'+'/xml>';
+				if ( txt.indexOf( '<'+'dtml-') < 0) {
+					try {
+						var xmlString = txt.replace(/\&(\w*)\;/g,'');
+						if (window.DOMParser) {
+							var parser=new DOMParser();
+							var doc=parser.parseFromString(xmlString,"text/xml");
+							if ( doc.childNodes[0].nodeName == 'parsererror') {
+								b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+doc.childNodes[0].childNodes[0].nodeValue+'\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
+							}
+						} else if (window.ActiveXObject) {
+							var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+							xmlDoc.async="false";
+							xmlDoc.loadXML(xmlString);
+							if ( xmlDoc.childNodes.length == 0) {
+								b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+'Invalid (X)HTML!\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
+							}
+						}
+					}
+					catch(e) {
+						alert(e.message);
+					}
+				}
+			}
+			return b;
+		}});
+	});
+
+</script>
+</tal:block>]]>
+                  </item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[interface]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="default"><![CDATA[##
 return context.getTextFormatDefault()]]>
                   </item>
@@ -4712,59 +4754,6 @@ return context.getTextFormatDefault()]]>
                   <item key="name"><![CDATA[Text]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[richtext]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="id"><![CDATA[interface0]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<tal:block tal:define="global
-		zmscontext options/zmscontext">
-
-<script type="text/javascript">
-
-function onZMSTextareaFormSubmit() {
-	var b = true;
-	if (self.btnClicked != getZMILangStr('BTN_CANCEL') &&
-			self.btnClicked != getZMILangStr('BTN_BACK')) {
-		var txt = '<'+'xml>'+$('#text_'+getZMILang()).val().replace('&','')+'<'+'/xml>';
-		if ( txt.indexOf( '<'+'dtml-') < 0) {
-			try {
-				var xmlString = txt.replace(/\&(\w*)\;/g,'');
-				if (window.DOMParser) {
-					var parser=new DOMParser();
-					var doc=parser.parseFromString(xmlString,"text/xml");
-					if ( doc.childNodes[0].nodeName == 'parsererror') {
-						b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+doc.childNodes[0].childNodes[0].nodeValue+'\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
-					}
-				} else if (window.ActiveXObject) {
-					var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
-					xmlDoc.async="false";
-					xmlDoc.loadXML(xmlString);
-					if ( xmlDoc.childNodes.length == 0) {
-						b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+'Invalid (X)HTML!\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
-					}
-				}
-			}
-			catch(e) {
-				alert(e.message);
-			}
-		}
-	}
-	return b;
-}
-
-$ZMI.registerReady(function(){
-	$('#text_'+getZMILang()).parent('form').submit(onZMSTextareaFormSubmit);
-});
-
-</script>
-
-</tal:block>]]>
-                  </item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -4795,7 +4784,7 @@ return constraints
                   <item key="errors"></item>
                   <item key="id"><![CDATA[check_constraints]]></item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Hook: check constraints]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
@@ -4850,7 +4839,7 @@ return constraints
           <item key="id"><![CDATA[ZMSTextarea]]></item>
           <item key="name"><![CDATA[ZMSTextarea]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.0]]></item>
+          <item key="revision"><![CDATA[3.1.1]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

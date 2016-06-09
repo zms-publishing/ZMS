@@ -184,6 +184,11 @@ function zmiRichtextInit(id) {
         config.toolbar_ZMSConfigToolbar = <tal:block tal:content="python:here.str_json(request['CKEDITOR_config_toolbar'])"></tal:block>;
 </tal:block>
 
+<tal:block tal:condition="python:request.has_key('CKEDITOR_config_removeButtons')">
+// RemoveButtons
+        config.removeButtons = '<tal:block tal:content="python:request['CKEDITOR_config_removeButtons']"></tal:block>';
+</tal:block>
+
       };
 
     loadCkeditor( 'editor_'+id, {

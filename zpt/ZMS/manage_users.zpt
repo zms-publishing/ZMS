@@ -194,7 +194,7 @@ function zmiModalInsertUserOpen(context) {
 </tal:block>
 
 <tal:block tal:condition="editRole">
-<tal:block tal:define="global nodes python:here.getSecurityRoles().get(request['id'],{})">
+<tal:block tal:define="global nodes python:here.getSecurityRoles().get(request['id'],{'nodes':{}})['nodes']">
   <legend>
     <a onclick="self.location.reload()">
       <tal:block tal:content="structure python:here.zmi_icon(name='icon-group')"></tal:block> <tal:block tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_ROLE'),request['id'])">Role: Id</tal:block>
@@ -443,7 +443,7 @@ function zmiModalInsertUserOpen(context) {
   <div id="insertRole" class="inner">
   <form class="form-horizontal" action="manage_roleProperties" method="post" enctype="multipart/form-data">
     <input type="hidden" name="key" value="obj">
-    <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
+    <input type="hidden" name="lang" tal:attributes="value request/lang">
     <div class="form-group">
       <label for="newId" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
       <div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='roleform',elName='newId',size=15,value='')">the control</div><!-- .col-sm-10 -->
@@ -469,6 +469,9 @@ function zmiModalInsertUserOpen(context) {
       </div><!-- .controls.save -->
     </div><!-- .form-group -->
   </div><!-- .inner -->
+  
+  
+  
 </div><!-- #insertRole -->
 
 <div class="pull-right">
@@ -487,7 +490,7 @@ function zmiModalInsertUserOpen(context) {
     <td>
       <input type="checkbox" name="ids:list" tal:attributes="value validRole"/>
       <a target="" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],validRole)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-group')"></tal:block> <tal:block tal:content="validRole">validRole</tal:block></a>
-      (<tal:block tal:content="python:'%i %s'%(len(roleDefs[validRole]),here.getZMILangStr('ATTR_NODE'))"># nodes</tal:block>)
+      (<tal:block tal:content="python:'%i %s'%(len(roleDefs[validRole]['nodes']),here.getZMILangStr('ATTR_NODE'))"># nodes</tal:block>)
     </td>
   </tr>
   <tr tal:condition="python:len(roleDefs)<5" tal:repeat="i python:range(5-len(roleDefs))">

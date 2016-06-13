@@ -2,13 +2,13 @@
 	dummy0 python:here.f_standard_html_request(here,request);
 	lurl python:request['URL'].replace('?','/').split('/');
 	bnobody python:int(request.get('ZMS_NO_BODY','')!='');
-	bcontainer python:'e' in map(lambda x:x['id'],here.getMetaobjAttrs(here.meta_id,types=['*'])) and ('manage' in lurl or 'manage_main' in lurl or 'manage_workspace' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)"
-><tal:block tal:condition="python:bcontainer" tal:content="structure python:here.manage_container(here,request)">manage_container</tal:block
-><tal:block tal:condition="python:not bcontainer"
+  bcontainer python:( 'e' in map(lambda x:x['id'],here.getMetaobjAttrs(here.meta_id,types=['*'])) or not here.meta_id in here.getMetaobjIds()) and ('manage' in lurl or 'manage_main' in lurl or 'manage_workspace' in lurl or 'manage_copyObjects' in lurl or 'manage_cutObjects' in lurl)"
+><tal:block tal:condition="bcontainer" tal:content="structure python:here.manage_container(here,request)">manage_container</tal:block
+><tal:block tal:condition="not:bcontainer"
 ><!DOCTYPE html>
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
-<script tal:condition="python:not bnobody">
+<script tal:condition="not:bnobody">
 	$(function(){
 			if (self.location.href.indexOf('manage_tabs_message=') > 0) {
 				if (parent.$.fancybox) {

@@ -16,6 +16,9 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
+# Product imports.
+import _globals
+
 def zmi_actions(container, context, attr_id='e'):
   """
   Returns list of actions.
@@ -23,10 +26,7 @@ def zmi_actions(container, context, attr_id='e'):
   actions = []
   
   REQUEST = container.REQUEST
-  if container.meta_id == 'ZMSTrashcan':
-    objAttr = {}
-  else:
-    objAttr = container.getMetaobjAttr( container.meta_id, attr_id)
+  objAttr = _globals.nvl(container.getMetaobjAttr( container.meta_id, attr_id),{})
   objChildren = len(container.getObjChildren(attr_id,REQUEST))
   objPath = ''
   if context is not None and context != container:
@@ -77,7 +77,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
         if can_undo:
           actions.append((container.getZMILangStr('BTN_UNDO'),'manage_undoObjs','icon-undo'))
         #-- Action: Delete.
-        if context.getParentByLevel(1).meta_id == 'ZMSTrashcan':
+        if not objAttr.keys():
           actions.append((container.getZMILangStr('BTN_DELETE'),'manage_eraseObjs','icon-trash'))
         else:
           can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
@@ -132,7 +132,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   Returns sorted list of insert actions. 
   """
   actions = []
-  if container.meta_id == 'ZMSTrashcan':
+  if not objAttr.keys():
     return actions
   
   REQUEST = container.REQUEST

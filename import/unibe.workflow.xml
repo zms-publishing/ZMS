@@ -129,7 +129,7 @@
 				+ 'MANAGE: \t%s/manage\n'%zmscontext.absolute_url()
 				+ 'PREVIEW: \t%s/preview_html\n\n'%zmscontext.absolute_url()
 				+ '\n\n'
-				+ 'Meldung von %s:\n'%request['AUTHENTICATED_USER'].getId()
+				+ 'Meldung von %s:\n'%(str(request['AUTHENTICATED_USER']))
 				+ '================================================\n'
 				+ '%s\r\n'%request.get('comment','k.A.')
 				+ '================================================\n\n\n'
@@ -264,7 +264,7 @@
 	<tal:block tal:define="global
 			dummy0 python:mbody.append(''
 				+ '\n\n'
-				+ 'Meldung von %s:\n'%request['AUTHENTICATED_USER'].getId()
+				+ 'Meldung von %s:\n'%(str(request['AUTHENTICATED_USER']))
 				+ '================================================\n'
 				+ '%s\r\n'%request.get('comment','k.A.')
 				+ '================================================\n\n\n'
@@ -380,7 +380,7 @@
 	<tal:block tal:define="global
 			dummy0 python:mbody.append(''
 				+ '\n\n'
-				+ 'Meldung von %s:\n'%request['AUTHENTICATED_USER'].getId()
+				+ 'Meldung von %s:\n'%(str(request['AUTHENTICATED_USER']))
 				+ '================================================\n'
 				+ '%s\r\n'%request.get('comment','k.A.')
 				+ '================================================\n\n\n'
@@ -455,7 +455,7 @@ msubject = '[ZMS::%s]: Änderungen wurden publiziert.'%zmscontext.getDocumentEle
 # Body
 mbody = []
 mbody.append('INFO: Änderungen wurden publiziert von:\n')
-mbody.append('%s\r\n\n\n'%request['AUTHENTICATED_USER'].getId())
+mbody.append('%s\r\n\n\n'%(str(request['AUTHENTICATED_USER'])))
 mbody.append('------------------------------------------------\n')
 mbody.append('Diese Nachricht wurde automatisch generiert.\n')
 # Send notification via MailHost
@@ -463,15 +463,27 @@ zmscontext.sendMail(mto, msubject, ''.join(mbody), request)
 
 ##### Commit ####
 zmscontext.commitObj(request)
+message += 'Changes were committed'
 
 ##### Purge Cache ####
 try:
   request.set('preview','')
-  zmscontext.purgecache(zmscontext.getHref2IndexHtml(request))
+  request.set('url',zmscontext.getHref2IndexHtml(request))
+  zmscontext.purge_cache()
+  # zmscontext.purgecache(zmscontext.getHref2IndexHtml(request))
   request.set('preview','preview')
-  message += 'Cache purged and '
+  message += ', Cache were purged'
 except:
-  pass
+  message += ', ERROR: No Cache Purging'
+
+##### Automatic Document Tranfer to Alumni Portal ####
+# if (zmscontext.objMap('aktuell') in zmscontext.breadcrumbs_obj_path(False)) and (zmscontext.meta_id in ['ZMSDocument','media_news','UniBEEvent']):
+#   try:
+#     alumni_feedback = zmscontext.manage_alumnitransfer()
+#     message += ', Transfer to Alumni Portal responsed: '
+#     message += str(alumni_feedback)[:64]
+#   except:
+#     message += ', ERROR: No Transfer to Alumni Portal'
 
 # Return with message
 message += 'Changes were committed.'
@@ -528,7 +540,7 @@ msubject = '[ZMS::%s]: Änderungen wurden zurück gezogen'%zmscontext.getDocumen
 # Body
 mbody = []
 mbody.append('INFO: Ihre Änderungen wurden rückgängig gemacht von\n\n')
-mbody.append('%s\r\n\n\n'%request['AUTHENTICATED_USER'].getId())
+mbody.append('%s\r\n\n\n'%(str(request['AUTHENTICATED_USER']))
 mbody.append('------------------------------------------------\n')
 mbody.append('Diese Nachricht wurde automatisch generiert.\n')
 # Send notification via MailHost

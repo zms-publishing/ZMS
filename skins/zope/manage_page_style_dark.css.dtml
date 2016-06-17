@@ -84,7 +84,6 @@ a:focus, a:hover {
 .nav-tabs>li.active>a:focus,
 .nav-tabs>li.active>a:hover {
 	color: white;
-
 }
 table {
 	margin:0 0em 2em 0em;
@@ -94,6 +93,19 @@ table th {
 }
 table td {
 	min-width:2em;
+}
+/* Warnings */
+table td[style='background-color: #FFEEDD'] {
+	background-color: transparent !important;
+}
+table td[style='background-color: #FFEEDD'] pre {
+	background-color: #f2dede;
+	color: #a94442;
+	border-color: #ebccd1 !important;
+	padding: 15px;
+	margin: 0;
+	font-family: inherit;
+	font-size: 100%;
 }
 table.main-table td {
 	min-width:0;

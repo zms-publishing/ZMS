@@ -18,6 +18,7 @@
 	$('img[src*="Image"]').replaceWith('<i data-title="Image" class="icon icon-picture">&nbsp;</i>');
 	$('img[src*="Control"]').replaceWith('<i data-title="Control Panel" class="icon icon-cogs">&nbsp;</i>');
 	$('img[src*="Database"]').replaceWith('<i data-title="Database" class="icon icon-table"></i>');
+	$('img[src*="ZSQLiteDA"]').replaceWith('<i data-title="Database" class="icon icon-table"></i>');
 	$('img[src*="ZMySQLDA"]').replaceWith('<i data-title="MySQL-Database Adapter" class="icon icon-table"></i>');
 	$('img[src*="Product"]').replaceWith('<i data-title="Installed Product" class="icon icon-gift"></i>');
 	$('img[src*="ZSQL"]').replaceWith('<i data-title="ZSQL-Method" class="icon icon-puzzle-piece"></i>');

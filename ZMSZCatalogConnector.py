@@ -123,7 +123,7 @@ def recreateCatalog(self, zcm, lang):
   zcatalog = ZCatalog.ZCatalog(id=cat_id, title=cat_title, container=self)
   self._setObject(zcatalog.id, zcatalog)
   zcatalog = getZCatalog(self,lang)
-  writeChangesLog('[recreateCatalog]: '+self.getZMILangStr('MSG_INSERTED')%zcatalog.meta_type)
+  writeChangesLog(zcatalog,'[recreateCatalog]: '+self.getZMILangStr('MSG_INSERTED')%zcatalog.meta_type)
   
   #-- Add lexicon
   addLexicon( self, zcatalog)
@@ -471,7 +471,7 @@ class ZMSZCatalogConnector(
         # Reindex items to catalog.
         def cb(node,d):
           self._update(node,d)
-        for root in container+[self.getPortalClients()]:
+        for root in container+self.getPortalClients():
           result.append(zcm.get_sitemap(cb,root,recursive=True))
       return ', '.join(filter(lambda x:x,result))
 

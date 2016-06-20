@@ -471,7 +471,7 @@ class ZMSZCatalogConnector(
         # Reindex items to catalog.
         def cb(node,d):
           self._update(node,d)
-        for root in container+self.getPortalClients():
+        for root in [container]+self.getPortalClients():
           result.append(zcm.get_sitemap(cb,root,recursive=True))
       return ', '.join(filter(lambda x:x,result))
 

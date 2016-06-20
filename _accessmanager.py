@@ -90,7 +90,7 @@ def updateVersion(root):
       for name in d.keys():
         value = d[name]
         newvalue = {'nodes':{}}
-        for nodekey in values.keys():
+        for nodekey in value.keys():
           node = docelmnt.getLinkObj(nodekey)
           if node is not None:
             newvalue[nodekey] = {'home_id':node.getHome().id,'roles':value.get('roles',[])}

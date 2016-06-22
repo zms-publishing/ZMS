@@ -198,6 +198,8 @@ class ConfManager(
         elif filename.find('.metaobj.') > 0:
           self.getMetaobjManager().importMetaobjXml(xmlfile, createIfNotExists)
           syncNecessary = True
+        elif filename.find('.workflow.') > 0:
+          self.getWorkflowManager().importXml(xmlfile, createIfNotExists)
         elif filename.find('.metacmd.') > 0:
           self.getMetacmdManager().importXml(xmlfile, createIfNotExists)
         elif filename.find('.langdict.') > 0:
@@ -920,6 +922,7 @@ class ConfManager(
       manager = getattr(self,'metaobj_manager',None)
       if manager is None:
         class DefaultMetaobjManager:
+          def importXml(self, xml): pass
           def getMetaobjId(self, name): return None
           def getMetaobjIds(self, sort=1, excl_ids=[]): return []
           def getMetaobj(self, id): return None
@@ -977,6 +980,7 @@ class ConfManager(
       metacmd_manager = getattr(self,'metacmd_manager',None)
       if metacmd_manager is None:
         class DefaultManager:
+          def importXml(self, xml): pass
           def getMetaCmdDescription(self, id=None, name=None): return None
           def getMetaCmd(self, id=None, name=None): return None
           def getMetaCmdIds(self, sort=True): return []
@@ -1008,6 +1012,7 @@ class ConfManager(
       manager = filter(lambda x:absattr(x.id)=='workflow_manager',self.getDocumentElement().objectValues())
       if len(manager)==0:
         class DefaultManager:
+          def importXml(self, xml): pass
           def writeProtocol(self, log): pass
           def getAutocommit(self): return True
           def getActivities(self): return []

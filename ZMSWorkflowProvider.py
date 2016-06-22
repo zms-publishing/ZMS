@@ -26,6 +26,7 @@ import zope.interface
 import IZMSConfigurationProvider
 import IZMSWorkflowProvider, ZMSWorkflowActivitiesManager, ZMSWorkflowTransitionsManager
 import ZMSItem
+import _accessmanager
 import _fileutil
 
 
@@ -64,49 +65,6 @@ def doAutocommit(self, REQUEST):
 #
 ################################################################################
 """
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-ZMSWorkflowProvider.initConf:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def initConf(self, filename, REQUEST):
-  xmlfile = open(_fileutil.getOSPath(filename),'rb')
-  importXml(self, xmlfile, REQUEST)
-  # Return filename.
-  return filename
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-ZMSWorkflowProvider.importXml
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def importXml(self, xml, REQUEST):
-  ids = map(lambda x: self.activities[x*2], range(len(self.activities)/2))
-  for id in ids:
-    self.delItem(id,'activities')
-  ids = map(lambda x: self.transitions[x*2], range(len(self.transitions)/2))
-  for id in ids:
-    self.delItem(id,'transitions')
-  v = self.parseXmlString(xml)
-  l = v.get('activities',[])
-  for li in range(len(l)/2):
-    id = l[li*2]
-    i = l[li*2+1]
-    self.setActivity(id=None,newId=id,newName=i['name'],newIconClazz=i.get('icon_clazz',''),newIcon=i.get('icon'))
-  l = v.get('transitions',[])
-  for li in range(len(l)/2):
-    id = l[li*2]
-    i = l[li*2+1]
-    newDtml = i.get('dtml','')
-    newType = i.get('type',['','DTML Method'][int(len(newDtml)>0)])
-    self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
-  # Roles.
-  roles = []
-  for transition in self.getTransitions():
-    roles = self.concat_list(roles,transition.get('performer',[]))
-  for newRole in self.difference_list(roles, self.userdefined_roles()):
-    REQUEST.set('newId', newRole)
-    lang = REQUEST.get('lang')
-    key = 'obj'
-    btn = self.getZMILangStr('BTN_INSERT')
-    self.manage_roleProperties(btn, key, lang, REQUEST)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ZMSWorkflowProvider.exportXml
@@ -204,6 +162,37 @@ class ZMSWorkflowProvider(
         newDtml = i.get('dtml','')
         newType = i.get('type',['','DTML Method'][int(len(dtml)>0)])
         self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
+
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    ZMSWorkflowProvider.importXml
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    def importXml(self, xml, createIfNotExists=1):
+      ids = map(lambda x: self.activities[x*2], range(len(self.activities)/2))
+      for id in ids:
+        self.delItem(id,'activities')
+      ids = map(lambda x: self.transitions[x*2], range(len(self.transitions)/2))
+      for id in ids:
+        self.delItem(id,'transitions')
+      v = self.parseXmlString(xml)
+      l = v.get('activities',[])
+      for li in range(len(l)/2):
+        id = l[li*2]
+        i = l[li*2+1]
+        self.setActivity(id=None,newId=id,newName=i['name'],newIconClazz=i.get('icon_clazz',''),newIcon=i.get('icon'))
+      l = v.get('transitions',[])
+      for li in range(len(l)/2):
+        id = l[li*2]
+        i = l[li*2+1]
+        newDtml = i.get('dtml','')
+        newType = i.get('type',['','DTML Method'][int(len(newDtml)>0)])
+        self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
+      # Create non existant roles.
+      roles = []
+      for transition in self.getTransitions():
+        roles = self.concat_list(roles,transition.get('performer',[]))
+      for newRole in filter(lambda x: x not in self.userdefined_roles(),roles):
+        _accessmanager.addRole(self,newRole)
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -316,11 +305,12 @@ class ZMSWorkflowProvider(
         f = REQUEST['file']
         if f:
           filename = f.filename
-          importXml(self, xml=f, REQUEST=REQUEST)
+          xml = f
         else:
           filename = REQUEST.get('init')
-          filename = initConf(self, filename, REQUEST)
-        message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%f.filename)
+          xml = open(_fileutil.getOSPath(filename),'rb')
+        self.importXml(xml)
+        message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       # Return with message.
       message = urllib.quote(message)

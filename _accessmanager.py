@@ -157,6 +157,20 @@ def updateUserPassword(self, user, password, confirm):
   return False
 
 # ------------------------------------------------------------------------------
+#  _accessmanager.addRole:
+# ------------------------------------------------------------------------------
+def addRole(self, id):
+  #-- Add local role.
+  root = self.getRootElement()
+  home = root.getHome()
+  if id not in home.valid_roles():
+    home._addRole(role=id,REQUEST=REQUEST)
+  #-- Prepare nodes from config-properties.
+  security_roles = root.getConfProperty('ZMS.security.roles',{})
+  security_roles[id] = security_roles.get(id,{'nodes':{}})
+  root.setConfProperty('ZMS.security.roles',security_roles)
+
+# ------------------------------------------------------------------------------
 #  _accessmanager.setLocalRoles:
 # ------------------------------------------------------------------------------
 def setLocalRoles(self, id, roles=[]):
@@ -982,15 +996,7 @@ class AccessManager(AccessableContainer):
           if btn == self.getZMILangStr('BTN_INSERT'):
             if key=='obj':
               id = REQUEST.get('newId').strip()
-              root = self.getRootElement()
-              #-- Add local role.
-              home = root.getHome()
-              if id not in home.valid_roles():
-                home._addRole(role=id,REQUEST=REQUEST)
-              #-- Prepare nodes from config-properties.
-              security_roles = root.getConfProperty('ZMS.security.roles',{})
-              security_roles[id] = security_roles.get(id,{'nodes':{}})
-              root.setConfProperty('ZMS.security.roles',security_roles)
+              addRole(self,id)
               #-- Assemble message.
               message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_ROLE')
             elif key=='attr':

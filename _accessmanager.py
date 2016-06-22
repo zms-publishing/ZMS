@@ -530,7 +530,7 @@ class AccessManager(AccessableContainer):
         for name in d.keys():
           value = d[name]
           nodes = value.get('nodes',{})
-          nodekeys = filter(lambda x:nodes[x]['home_id']==home_id, nodes.keys())
+          nodekeys = filter(lambda x:nodes[x].get('home_id')==home_id, nodes.keys())
           if len(nodekeys) > 0:
             roleDef = {'nodes':{}}
             for key in value.keys():
@@ -555,7 +555,7 @@ class AccessManager(AccessableContainer):
         for name in d.keys():
           value = d[name]
           nodes = value.get('nodes',{})
-          nodekeys = filter(lambda x:nodes[x]['home_id']==home_id, nodes.keys())
+          nodekeys = filter(lambda x:nodes[x].get('home_id')==home_id, nodes.keys())
           if len(nodekeys) > 0:
             userDef = {'nodes':{}}
             for key in value.keys():

@@ -47,7 +47,7 @@ ThreadLock==2.13.0
 transaction==1.5.0
 zc.lockfile==1.1.0
 ZConfig==3.1.0
-zdaemon==4.1.0
+zdaemon==4.0.0
 ZEO==4.2.0b1
 zExceptions==3.0
 zLOG==3.0
@@ -58,7 +58,7 @@ zope.annotation==4.4.1
 zope.app.publication==3.14.0
 zope.authentication==4.1.0
 zope.browser==2.1.0
-zope.browsermenu==4.1.1
+zope.browsermenu==4.1.0
 zope.browserpage==4.1.0
 zope.browserresource==4.1.0
 zope.component==4.2.2
@@ -84,7 +84,7 @@ zope.pagetemplate==4.2.1
 zope.processlifetime==2.1.0
 zope.proxy==4.2.0
 zope.ptresource==4.0.0
-zope.publisher==4.2.2
+zope.publisher=3.13.4
 zope.schema==4.4.2
 zope.security==4.0.3
 zope.sendmail==3.7.5
@@ -100,4 +100,4 @@ zope.traversing==4.0.0
 zope.untrustedpython==4.0.0
 zope.viewlet==4.0.0
 Zope2==2.13.24
-ZopeUndo==4.1
+ZopeUndo==2.12.0

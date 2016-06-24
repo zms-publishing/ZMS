@@ -93,7 +93,7 @@ def updateVersion(root):
         for nodekey in value.keys():
           node = root.getLinkObj(nodekey)
           if node is not None:
-            newvalue[nodekey] = {'home_id':node.getHome().id,'roles':value.get('roles',[])}
+            newvalue['nodes'][nodekey] = {'home_id':node.getHome().id,'roles':value[nodekey].get('roles',[])}
         d[name] = newvalue
       root.setConfProperty('ZMS.security.roles',d)
       d = root.getConfProperty('ZMS.security.users',{})

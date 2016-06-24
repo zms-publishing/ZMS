@@ -164,7 +164,7 @@ def addRole(self, id):
   root = self.getRootElement()
   home = root.getHome()
   if id not in home.valid_roles():
-    home._addRole(role=id,REQUEST=REQUEST)
+    home._addRole(role=id,REQUEST=self.REQUEST)
   #-- Prepare nodes from config-properties.
   security_roles = root.getConfProperty('ZMS.security.roles',{})
   security_roles[id] = security_roles.get(id,{'nodes':{}})

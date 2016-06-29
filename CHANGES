@@ -2,12 +2,25 @@
 
 == 3.3.0dev (in development) ==
  
-  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3594&limit=200 latest changes...]
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3745&limit=200 latest changes...]
 
-== 3.2.4 (2016-04-27) ==
+== 3.2.5 (2016-08-31) ==
 
   * TBA
 
+== 3.2.4 (2016-06-29) ==
+
+  * Added new GUI element: multiple url-inputs
+  * Improved Access-Tab: user-details in grid-view
+  * Added interactive column-filters to ZMSSqlDb/ZMSRecordSet
+  * Refactored ZMSZCatalogAdapter: index content in central ZCatalog
+  * Updated ZMSIndex-1.0.0: stable
+  * Updated CKEditor-4.5.7
+  * Updated jquery-2.2.2
+  * Replaced classic Zope GUI on "console pages" by a ZMS generated skin (zms.conf: zmi.console=dark|light|classic)
+  * Updated and added several python modules to setup
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=3744&stop_rev=3594&limit=200 more in 3.2.4...]
+  
 == 3.2.3 (2016-03-02) ==
  
   * Added cross-language linking

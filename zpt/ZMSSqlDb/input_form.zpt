@@ -238,7 +238,7 @@
 								'qentity':'<tal:block tal:content="entity/id">entity/id</tal:block>',
 								'qcolumn':'<tal:block tal:content="column/id">column/id</tal:block>',
 								'qentitypk':'<tal:block tal:content="primary_key">primary_key</tal:block>',
-								'qentitypkval':<tal:block tal:content="python:here.operator_getitem(row,primary_key,ignorecase=True)">primary_key/value</tal:block>,
+								'qentitypkval':<tal:block tal:content="python:same_type(here.operator_getitem(row,primary_key,ignorecase=True),1) and here.operator_getitem(row,primary_key,ignorecase=True) or '\'%s\''%(here.operator_getitem(row,primary_key,ignorecase=True))">primary_key/value</tal:block>,
 								'qsize:int':999
 							},
 							error: function (xhr, ajaxOptions, thrownError) {

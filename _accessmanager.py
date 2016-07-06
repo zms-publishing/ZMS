@@ -931,7 +931,7 @@ class AccessManager(AccessableContainer):
       nodes = root.getUserAttr(id,'nodes',{})
       ob = self.getLinkObj(node)
       newkey = root.getRefObjPath(ob)
-      nodes[newkey] = {'langs':langs,'roles':roles}
+      nodes[newkey] = {'home_id':ob.getHome().id,'langs':langs,'roles':roles}
       root.setUserAttr(id,'nodes',nodes)
       roles = list(roles)
       if 'ZMSAdministrator' in roles:

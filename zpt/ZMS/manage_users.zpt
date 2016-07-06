@@ -298,7 +298,7 @@ function zmiModalInsertUserOpen(context) {
           </tal:block>
         </td>
         <td>
-          <tal:block tal:repeat="role python:here.sort_list(map(lambda x:(here.getRoleName(x),x),here.distinct_list(map(lambda x: [x],sum(map(lambda x: nodes[x].get('roles',[]),nodes.keys()),[])),0)))">
+          <tal:block tal:repeat="role python:here.sort_list(map(lambda x:(here.getRoleName(x),x),node.get('value',{}).get('roles',[])))">
             <tal:block tal:condition="not:python:role[1] in roleDefs.keys()" tal:content="python:role[0]">the role</tal:block>
             <a tal:condition="python:role[1] in roleDefs.keys()" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],role[1])" tal:content="python:role[0]">the role</a>
             <tal:block tal:condition="not:repeat/role/end">,</tal:block>

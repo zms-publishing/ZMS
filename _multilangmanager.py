@@ -539,6 +539,7 @@ class MultiLanguageManager:
         
         #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
         if REQUEST is not None:
+          REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')
           REQUEST.RESPONSE.setHeader('Content-Type','text/plain; charset=utf-8')
           return self.str_json(d)
         return self.storeReqBuff( reqBuffId, d, self.REQUEST)

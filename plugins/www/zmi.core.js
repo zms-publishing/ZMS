@@ -228,10 +228,10 @@ ZMI.prototype.getLangStr = function(key, lang) {
 		var url = this.getBaseUrl();
 		v = $.ajax({
 			url: url+'/get_lang_dict',
-			datatype: 'text',
+			datatype: 'json',
+			contentType:'text/plain; charset=UTF-8',
 			async: false
 			}).responseText;
-		v = eval("("+v+")");
 		this.setCachedValue(k,v);
 	};
 	if (typeof lang=="undefined") {

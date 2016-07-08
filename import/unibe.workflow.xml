@@ -476,15 +476,6 @@ try:
 except:
   message += ', ERROR: No Cache Purging'
 
-##### Automatic Document Tranfer to Alumni Portal ####
-# if (zmscontext.objMap('aktuell') in zmscontext.breadcrumbs_obj_path(False)) and (zmscontext.meta_id in ['ZMSDocument','media_news','UniBEEvent']):
-#   try:
-#     alumni_feedback = zmscontext.manage_alumnitransfer()
-#     message += ', Transfer to Alumni Portal responsed: '
-#     message += str(alumni_feedback)[:64]
-#   except:
-#     message += ', ERROR: No Transfer to Alumni Portal'
-
 # Return with message
 message += 'Changes were committed.'
 return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransitionFinalize',{

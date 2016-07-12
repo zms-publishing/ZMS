@@ -93,6 +93,9 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
                   var href = self.location.href;
                   href = href.substr(0,href.lastIndexOf("/"));
                   $ZMI.objectTree.init("#myDiv",href,{'toggleClick.callback':'zmiResizeObject'});
+                  // Workaround for ZMSINSERT case
+                  urllabel = $('body.zmi.modal-open .cke_dialog_body label')[1];
+                  $(urllabel).html('URL <span style="color:silver;font-weight:normal">inactive until text block is inserted</span>');
                 },
                 validate : function() {
                   var dialog = this.getDialog();

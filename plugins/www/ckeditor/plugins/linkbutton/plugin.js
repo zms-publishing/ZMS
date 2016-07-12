@@ -12,7 +12,7 @@ CKEDITOR.plugins.add('linkbutton', {
  
 		editor.ui.addButton( 'linkbutton',
 			{
-				label : 'Toolbox',
+				label : 'Link einfügen/editieren',
 				command : 'linkbuttonDlg',
 				icon: '/++resource++zms_/ckeditor/plugins/linkbutton/images/linkbutton.png'
 			});

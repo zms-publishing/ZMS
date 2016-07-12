@@ -705,28 +705,15 @@ div.cke_panel {
 	width: 280px !important;
 }
 /* ZMS Linkbutton for CKEditor */
-.cke_button_icon.cke_button__linkbutton_icon {
-	background-image: none !important;
-	background-position: 0% 0% !important;
-	background-repeat: repeat !important;
-	font-family: FontAwesome !important;
-	font-weight: normal;
-	font-style: normal;
-	text-decoration:none !important;
-	-webkit-font-smoothing: antialiased;
-	display: inline;
-	width: auto;
-	height: auto;
-	line-height: 1;
-	vertical-align: baseline;
-	margin: 3px 0 0 2px;
-	box-sizing: border-box;
-	font-size:120%;
+.cke_button_icon.cke_button__linkbutton_icon{
+ background-image:url('/++resource++zms_/ckeditor/plugins/icons.png') !important;
+ background-position:0 -696px !important;;
+ background-size:auto !important;;
 }
-.cke_button_icon.cke_button__linkbutton_icon:before {
-	content: "\f0c1";
-	box-sizing: border-box;
+.cke_button_icon.cke_button__linkbutton_icon:before{
+ box-sizing:border-box;
 }
+
 /* Contraint Messages */
 .zmi-manage-main-change div.constraint {
 	display:none;

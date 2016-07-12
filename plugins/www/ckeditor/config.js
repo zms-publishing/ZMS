@@ -63,7 +63,7 @@ CKEDITOR.editorConfig = function( config ) {
 		['Format'],
 		['Bold','Italic','Underline','JustifyLeft','JustifyCenter','JustifyRight','NumberedList','BulletedList','Outdent','Indent'],
 		['Undo','Redo'],
-		['Find','linkbutton','Link','Unlink'],
+		['Find','linkbutton','Unlink'],
 		['Image','Anchor','Table'],
 		['Source','ShowBlocks','Maximize','Scayt','About']
 	];

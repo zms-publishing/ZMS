@@ -461,6 +461,7 @@ ul.portalClients .zmi-item .center small{display:none}
 .twosided_multiselect > .col-xs-5:first-child select{background:#f8f8f8}
 .twosided_multiselect.searchable > .col-xs-2{padding-top:2.35em}
 .form-small{font-size:smaller}
+.form-disabled{color:#666!important;background-color:#EEE!important}
 .nav-tabs{margin-bottom:0;margin-top:1em}
 .nav-tabs li.active > a{background-color:#f5f5f5 !important;font-weight:bold}
 ul.nav-buttons li{float:left;list-style-type:none}
@@ -542,7 +543,8 @@ body.browse_iframe .toggle{font-size:120%;vertical-align:bottom;width:12px;margi
 .zmi.manage-menu .zmi header{background-color:transparent !important}
 .zmi.manage-menu .zmi-sitemap a,.zmi.manage-menu .zmi-sitemap li > span i{color:#ccc}
 .zmi.manage-menu li.active > a,.zmi.manage-menu li > a:hover{color:white !important;text-decoration:none}
-.zmi-sitemap .inactive a,.zmi.manage-menu .zmi-helper-clickable{color:#999}
+.zmi.manage-menu .zmi-sitemap li.inactive > a{color:#888}
+.zmi.manage-menu .zmi-helper-clickable{color:#999}
 .zmi.manage-menu li.restricted > a > i{color:orange}
 .zmi.manage-menu .zmi-helper-clickable:hover{color:#FFF}
 .zmi.manage-menu .dropdown-menu{filter:Alpha(opacity=90);-moz-opacity:0.90;opacity:0.90}
@@ -555,8 +557,8 @@ body.browse_iframe .toggle{font-size:120%;vertical-align:bottom;width:12px;margi
 .zmi.manage-menu .zmi-helper-clickable.refresh{font-size:14px;margin-left:.7em}
 .cke_reset_all span[class^="glyphicon-"],.cke_reset_all span[class*=" glyphicon-"],.cke_reset_all i[class^="icon-"],.cke_reset_all i[class*=" icon-"]{font-family:FontAwesome !important;margin-right:4px !important;font-size:14px}
 div.cke_panel{width:280px !important}
-.cke_button_icon.cke_button__linkbutton_icon{background-image:none !important;background-position:0% 0% !important;background-repeat:repeat !important;font-family:FontAwesome !important;font-weight:normal;font-style:normal;text-decoration:none !important;-webkit-font-smoothing:antialiased;display:inline;width:auto;height:auto;line-height:1;vertical-align:baseline;margin:3px 0 0 2px;box-sizing:border-box;font-size:120%}
-.cke_button_icon.cke_button__linkbutton_icon:before{content:"\f0c1";box-sizing:border-box}
+.cke_button_icon.cke_button__linkbutton_icon{background-image:url('/++resource++zms_/ckeditor/plugins/icons.png') !important;background-position:0 -696px !important;;background-size:auto !important}
+.cke_button_icon.cke_button__linkbutton_icon:before{box-sizing:border-box}
 .zmi-manage-main-change div.constraint{display:none}
 div.constraint{font-size:11px;padding:8px}
 .constraint-error{color:#A94442}
@@ -570,8 +572,8 @@ div.constraint-restriction{background-color:#D9EDF7}
 .btn-group.zmi-action .tooltip-inner .constraint{border-radius:4px;overflow:hidden}
 .zmi-container .right li span[class^="glyphicon-"],.zmi-container .right li span[class*=" glyphicon-"],.zmi-container .right li i[class^="icon-"],.zmi-container .right li i[class*=" icon-"]{display:inline-block;width:1.5em;font-size:14px}
 ul.zmi-container .right div input{margin:8px}
-ul.zmi-container .zmi-item .zmi-action{margin-left:-159px}
-ul.zmi-container .zmi-item .zmi-action .split-left{width:160px;visibility:hidden;text-align:left;z-index:9999}
+ul.zmi-container .zmi-item .zmi-action{margin-left:-179px}
+ul.zmi-container .zmi-item .zmi-action .split-left{width:180px;overflow:hidden;visibility:hidden;text-align:left;z-index:9999}
 .checkbox.split-left{height:1em}
 .checkbox.split-left input{margin:.2em .5em 0 0}
 .zmi-action .btn.btn-default.split-left,.zmi-action .btn.btn-default.split-right{background-color:#eee;color:#333}
@@ -613,7 +615,7 @@ div.single-line{width:100%}
 div.single-line.input-append{width:100%}
 div.single-line textarea{overflow:hidden;font-family:"Courier New",Courier,monospace;width:100%}
 div.pull-left div.single-line.input-append.zmi-nodes textarea{margin-left:1em}
-@media(max-width:767px){.zmi .ZMSRecordSet .filters label,.zmi.ZMSSqlDb .filters label,.zmi .ZMSRecordSet .filters input,.zmi.ZMSSqlDb .filters input,.zmi .ZMSRecordSet .filters select,.zmi.ZMSSqlDb .filters select{display:block}}
+@media(max-width:767px){.zmi .accordion-heading.filters label,.zmi .accordion-heading.filters input,.zmi .accordion-heading.filters select{display:block}}
 .zmi.metas .row_tableheader{background:#EEEEEE}
 .zmi.metas .row_tableheader th{font-weight:normal}
 .zmi.metas .row_tableheader th.meta-sort{font-weight:bold;color:#888}
@@ -668,9 +670,17 @@ input.btn.btn-file{background-color:#eee;margin-bottom:0.5em}
 .zmi.users form table .breadcrumb{background-color:transparent !important;padding:0 !important}
 .table.zmi-sortable td{white-space:nowrap}
 .table.zmi-sortable td img.grippy,.table.zmi-sortable input{margin-bottom:0px}
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap{background-color:#DCE3F0;overflow:hidden;padding-right:4px}
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap a{margin:0 2px 0 2px}
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap input.form-control{background-color:#E5EAF4;border:0;color:#000;display:inline!important;font-weight:bold;margin-bottom:0;padding-left:4px!important}
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap input.form-control::-webkit-input-placeholder{color:#08c}
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap input.form-control:-moz-placeholder{color:#08c}
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap input.form-control::-moz-placeholder{color:#08c}
+table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap input.form-control:-ms-input-placeholder{color:#08c}
 .nowrap{white-space:nowrap}
-.pagination{white-space:nowrap}
-.pagination-centered{margin:1em 2em}
+.pagination{margin:1em 0 0 0;white-space:nowrap}
+.pagination-pre .pull-right{margin:1em 0 1.5em 0}
+.pagination-centered{}
 .pagination > .active > a{font-weight:bold}
 .ZMSRecordSet form{margin-left:2em;margin-right:2em}
 .ZMSRecordSet a.thumbnail{max-width:3.0em!important;max-height:3.0em!important;padding:.2em!important;margin:0!important}
@@ -694,9 +704,10 @@ input.btn.btn-file{background-color:#eee;margin-bottom:0.5em}
 .ZMSRecordSet .accordion-group,.ZMSSqlDb .accordion-group{border:0}
 .ZMSRecordSet .form-horizontal,.ZMSSqlDb .form-horizontal{border:1px solid #e5e5e5;border-radius:4px}
 .ZMSRecordSet .accordion-group.perc100 .accordion-heading,.ZMSSqlDb .accordion-group.perc100 .accordion-heading{padding:8px 3px 8px 15px}
-.ZMSRecordSet .accordion-heading.filters a.accordion-toggle.pull-left,.ZMSSqlDb .accordion-heading.filters a.accordion-toggle.pull-left{padding-top:6px}
-.ZMSRecordSet .filters label,.ZMSSqlDb .filters label,.ZMSRecordSet .filters input,.ZMSSqlDb .filters input,.ZMSRecordSet .filters select,.ZMSSqlDb .filters select{display:inline-block;width:auto}
-.ZMSRecordSet #qentity,.ZMSSqlDb #qentity,.ZMSRecordSet #qsize,.ZMSSqlDb #qsize{margin-right:0.5em}
+.zmi .accordion-heading.filters a.accordion-toggle.pull-left{padding-top:6px}
+.zmi .accordion-heading.filters label,.zmi .accordion-heading.filters input,.zmi .accordion-heading.filters select{display:inline-block;width:auto}
+.zmi .accordion-body.filters .accordion-inner{margin:1em;padding:1em !important;background:#DCE3F0;border-radius:4px}
+.zmi #qsize{display:inline-block;width:5em}
 .ZMSRecordSet #attrProperties,.ZMSSqlDb #attrProperties{border:0}
 .ZMSRecordSet #attrProperties .accordion-inner,.ZMSSqlDb #attrProperties .accordion-inner{padding-top:0.5em}
 .ZMSRecordSet #attrProperties .accordion-inner label,.ZMSSqlDb #attrProperties .accordion-inner label{color:#999}
@@ -724,7 +735,8 @@ div.right .zmi-ids input[type="checkbox"]{margin-left:3px;margin-top:3px;opacity
 div.right span.form-small{display:block;color:#888;margin-left:8px}
 div.right .version_object_state{float:left;margin:1px 4px 0px 0px}
 div.right .version_object_state i{font-size:120%}
-div.right .version_object_state i.wf-icon,.attr_last_modified i.wf-icon,.zmi-state{margin-right:.3em}
+div.right .version_object_state i.wf-icon,.attr_last_modified i.wf-icon,.zmi-state{margin-right:.3em;background-color:transparent !important}
+div.right .version_object_state .zmi-state.bg-info.text-info{background-color:transparent}
 div.right a:hover,div.right a:focus{text-decoration:none}
 .zmi-item .center .contentEditable{border-left:none !important;border-right:none !important;border-bottom:none !important;border-top:1px dotted #ccc !important}
 div.right .btn .caret{}

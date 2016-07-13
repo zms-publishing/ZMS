@@ -442,7 +442,8 @@ class AccessableContainer(AccessableObject):
       security_roles = self.getSecurityRoles()
       for id in security_roles.keys():
         self.manage_role(role_to_manage=id,permissions=[])
-        d = security_roles.get(id,{})
+        d_id = security_roles.get(id,{})
+        d = d_id.get('nodes',{})
         for nodekey in d.keys():
           node = root.getLinkObj(nodekey)
           if self.is_child_of(node):

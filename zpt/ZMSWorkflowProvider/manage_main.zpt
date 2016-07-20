@@ -105,6 +105,16 @@ ul.performer {
 <script>
 
 /**
+ * Transfer selected object to node list.
+ */
+function selectObject(ignoredUrl, ignoredTitle, nodeName) {
+	var form = $('form.form-initialized[action="manage_changeWorkflow"]');
+	var textArea = form.find('textarea.url-input');
+	var newVal = textArea.val() + '\n' + nodeName;
+	textArea.val(newVal).trigger('change');
+}
+
+/**
  * Delete object.
  */
 function zmiDeleteObjBtnClick(sender,d) {

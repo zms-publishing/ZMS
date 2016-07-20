@@ -7,6 +7,20 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
+<script>
+
+/**
+ * Transfer selected object to node list.
+ */
+function selectObject(ignoredUrl, ignoredTitle, nodeName) {
+	var form = $('form.form-initialized[action="manage_changeWorkflow"]');
+	var textArea = form.find('textarea.url-input');
+	var newVal = textArea.val() + '\n' + nodeName;
+	textArea.val(newVal).trigger('change');
+}
+
+</script>
+
 <form class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<input type="hidden" name="key" value="custom"/>

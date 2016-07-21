@@ -950,7 +950,7 @@ class ConfManager(
       return self.getMetaobjManager().getMetaobjAttrIds( meta_id, types)
 
     def getMetaobjAttrs(self, meta_id,  types=[]):
-      return self.getMetaobjManager().getMetaobjAttrs( meta_id)
+      return self.getMetaobjManager().getMetaobjAttrs( meta_id, types)
 
     def getMetaobjAttr(self, id, attr_id, syncTypes=['resource']):
       return self.getMetaobjManager().getMetaobjAttr(id,attr_id,syncTypes)

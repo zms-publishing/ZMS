@@ -384,7 +384,7 @@ class ZReferableItem:
       # Get object.
       ob = self.evalExtensionPoint('ExtensionPoint.ZReferableItem.getLinkObj',default,url=url)
       # Prepare request
-      if ob is not None:
+      if ob is not None and ob.id not in self.getPhysicalPath():
         request = self.REQUEST
         ob.set_request_context(request,ref_params)
     return ob

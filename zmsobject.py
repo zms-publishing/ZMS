@@ -24,9 +24,9 @@ from types import StringTypes
 import Globals
 import ZPublisher.HTTPRequest
 import urllib
+import re
 import string
 import time
-import re
 # Product Imports.
 import zmscontainerobject
 import ZMSItem
@@ -882,7 +882,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       if self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.forced',False) or self.getHome() != context.getHome():
         protocol = self.getConfProperty('ASP.protocol','http')
         domain = self.getConfProperty('ASP.ip_or_domain',None)
-        if domain is not None:
+        if domain is not None and len(domain) > 0:
           l = index_html.split('/')
           if 'content' in l:
             i = l.index('content')
@@ -1425,7 +1425,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       try:
         if 'renderShort' in self.getMetaobjAttrIds(self.meta_id):
           html = self._getBodyContentContentEditable(self.attr('renderShort'))
-        elif self.isPage():
+        elif 'e' in map(lambda x:x['id'],self.getMetaobjAttrs(self.meta_id,types=['*'])) or not self.meta_id in self.getMetaobjIds():
           if  self.id in REQUEST['URL']:
             html = '<h1>'
             html += self.getTitle(REQUEST)

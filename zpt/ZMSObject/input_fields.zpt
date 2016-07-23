@@ -191,7 +191,10 @@
 					metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId);
 					elName python:here.getObjAttrName(metaObjAttr,request['lang']);
 					elLabel python:here.getObjAttrLabel(metaObjAttr)"
-				><tal:block tal:condition="python:metaObjAttr['id'].find('_')!=0 and metaObjAttr['id'] not in request.get('ZMS_HIDE_ELEMENTS',[])"
+				><tal:block tal:condition="python:
+							not metaObjAttr['id'].startswith('_')
+							and not (metaObjAttr['id']=='e' and metaObjAttr['type']=='*')
+							and not (metaObjAttr['id'] in request.get('ZMS_HIDE_ELEMENTS',[]))"
 					><tal:block tal:condition="python:(metaObjAttr['type']=='*' or (metaObjAttr['type'] in metaObjIds and not here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource')) and not request.get('ZMS_INSERT') and not (here.isPageContainer() and metaObjAttr['id']=='e')"
 						><tal:block tal:define="global
 									objChildren python:here.getObjChildren(metaObjAttr['id'],request);

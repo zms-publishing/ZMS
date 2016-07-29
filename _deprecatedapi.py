@@ -109,7 +109,7 @@ class DeprecatedAPI:
   #  DeprecatedAPI.getFormat
   # ----------------------------------------------------------------------------
   def getFormat(self,REQUEST):
-    print "[getFormat]: @deprecated: returns \"getObjProperty('format',REQUEST)\" for compatibility reasons!"
+    warnings.warn("[getFormat]: @deprecated: returns \"getObjProperty('format',REQUEST)\" for compatibility reasons!")
     return self.getObjProperty('format',REQUEST)
 
   # ----------------------------------------------------------------------------
@@ -153,7 +153,7 @@ class DeprecatedAPI:
   #  Resolves internal/external links and returns Html.
   # ----------------------------------------------------------------------------
   def getLinkHtml( self, url, html='<a href="%s">&raquo;</a>', REQUEST=None):
-    print "[getLinkHtml]: @deprecated: use own implementation!"
+    warnings.warn("[getLinkHtml]: @deprecated: use own implementation!")
     REQUEST = _globals.nvl( REQUEST, self.REQUEST)
     s = ''
     ob = self
@@ -177,14 +177,14 @@ class DeprecatedAPI:
   #  DeprecatedAPI.meta_id_or_type:
   # ----------------------------------------------------------------------------
   def meta_id_or_type(self):
-    print "[meta_id_or_type]: @deprecated: use meta_id!"
+    warnings.warn("[meta_id_or_type]: @deprecated: use meta_id!")
     return self.meta_id
 
   # ----------------------------------------------------------------------------
   #  DeprecatedAPI.absolute_obj_path:
   # ----------------------------------------------------------------------------
   def absolute_obj_path(self):
-    print "[absolute_obj_path]: @deprecated!"
+    warnings.warn("[absolute_obj_path]: @deprecated!")
     ob = self.getDocumentElement()
     return '%s/%s/'%(ob.aq_parent.id,self.absolute_url()[len(ob.aq_parent.absolute_url())+1:])
 

@@ -9,20 +9,20 @@
 			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
 			objAttrs python:here.getObjAttrs(metaObj['id'])">
 	<div class="accordion-group">
-		<div class="accordion-heading attr_last_modified"
-			><a class="accordion-toggle" data-toggle="collapse" href="#attrActivity"
-				tal:attributes="class python:'%s'%(request.get('ZMS_INSERT',False) and 'accordion-toggle' or 'accordion-toggle pull-left')"
-				><tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block
-				><tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
-			></a>
-			<tal:block tal:condition="not:python:request.get('ZMS_INSERT',False)">
-				<div class="pull-left">
+		<div class="accordion-heading attr_last_modified">
+			<div class="btn-group inline"> 
+				<tal:block tal:condition="not:python: request.get('ZMS_INSERT',False)">
 					<tal:block tal:define="actions python:
-						[[],[(here.getZMILangStr('BTN_UNDO'),'../manage_undoObjs?ids:list=%s'%here.id,'icon-undo')]][here.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request)]
-						+map(lambda x:[x['name'],'manage_executeMetacmd',x.get('icon_clazz'),x.get('title')],filter(lambda x:x['stereotype']=='',here.getMetaCmds(here,'')))
-						+here.filtered_workflow_actions()">
-						<div class="btn-group zmi-action" tal:condition="python:len(actions)>0" tal:attributes="title python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">
-							<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown" tal:content="structure python:here.zmi_icon(name='icon-chevron-down')"></button>
+							[[],[(here.getZMILangStr('BTN_UNDO'),'../manage_undoObjs?ids:list=%s'%here.id,'icon-undo')]][here.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request)]
+							+map(lambda x:[x['name'],'manage_executeMetacmd',x.get('icon_clazz'),x.get('title')],filter(lambda x:x['stereotype']=='',here.getMetaCmds(here,'')))
+							+here.filtered_workflow_actions()"
+						><tal:block tal:condition="python:len(actions)>0">
+							<button class="btn btn-default dropdown-toggle" 
+								data-toggle="dropdown"
+								tal:attributes="title python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')" 
+								tal:content="structure python:here.zmi_icon(name='icon-chevron-down')"
+								style="padding:3px 7px;margin-right:10px;"
+							></button>
 							<ul class="dropdown-menu">
 								<tal:block tal:repeat="action actions">
 									<li tal:condition="python:action[0].startswith('-----') and action[0].endswith('-----')" class="dropdown-header">
@@ -37,20 +37,25 @@
 									</li>
 								</tal:block>
 							</ul>
-						</div>
+						</tal:block>
 					</tal:block>
-					<tal:block tal:define="
-							change_uid python:here.attr('change_uid');
-							change_dt  python:here.attr('change_dt')">
-						<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
-						<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
-						<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
-						<span class="zmi-change-uid" tal:content="structure python:here.string_maxlen(change_uid,20)">the change-uid</span>
-						<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
-					</tal:block>
-				</div>
-				<div class="clearfix"></div>
-			</tal:block>
+				</tal:block>
+				<div id="zmi-toggle-activity-btn" 
+						class="btn accordion-toggle" data-toggle="collapse" href="#attrActivity"
+						style="padding:3px 0;box-shadow: none;"
+					><tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
+					>&nbsp;&nbsp;<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block
+				></div>
+			</div>
+			<div class="btn" style="padding:3px 0px;box-shadow:none"
+					tal:condition="not:python:request.get('ZMS_INSERT',False)" 
+					tal:define="change_uid python:here.attr('change_uid');change_dt python:here.attr('change_dt')">
+					<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
+				<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
+				<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
+				<span class="zmi-change-uid" tal:content="structure python:here.string_maxlen(change_uid,20)">the change-uid</span>
+				<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
+			</div>
 		</div><!-- .accordion-heading -->
 		<div id="attrActivity" class="accordion-body collapse">
 			<div class="accordion-inner">

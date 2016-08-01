@@ -1,6 +1,6 @@
 <div class="form-group form-richtext form-richtext-wysiwyg" tal:define="global options python:options['args'][2]">
 
-	<div class="col-sm-12 col-md-12 col-lg-12">
+	<div class="col-sm-12">
 
 		<div class="pull-left">
 			<label class="control-label" tal:attributes="for options/elName"><span tal:content="options/lang_str">the label</span></label>
@@ -17,7 +17,7 @@
 		<div class="clearfix"></div>
 
 	</div>
-	<div class="col-sm-12 col-md-12 col-lg-12">
+	<div class="col-sm-12">
 		<tal:block tal:content="structure python:here.getPlugin('rte/'+here.getConfProperty('ZMS.richtext.plugin','ckeditor')+'/manage_form.zpt')">the richedit</tal:block>
 	</div>
 </div>

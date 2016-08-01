@@ -1425,7 +1425,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       try:
         if 'renderShort' in self.getMetaobjAttrIds(self.meta_id):
           html = self._getBodyContentContentEditable(self.attr('renderShort'))
-        elif 'e' in map(lambda x:x['id'],self.getMetaobjAttrs(self.meta_id,types=['*'])) or not self.meta_id in self.getMetaobjIds():
+        elif self.isPage() or 'e' in map(lambda x:x['id'],self.getMetaobjAttrs(self.meta_id,types=['*'])) or not self.meta_id in self.getMetaobjIds():
           if  self.id in REQUEST['URL']:
             html = '<h1>'
             html += self.getTitle(REQUEST)

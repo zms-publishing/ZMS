@@ -41,18 +41,12 @@
 					</tal:block>
 					<tal:block tal:define="
 							change_uid python:here.attr('change_uid');
-							change_dt  python:here.attr('change_dt');
-							constraints python:here.attr('check_constraints');">
+							change_dt  python:here.attr('change_dt')">
 						<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
 						<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
 						<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
 						<span class="zmi-change-uid" tal:content="structure python:here.string_maxlen(change_uid,20)">the change-uid</span>
 						<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
-						<tal:block tal:on-error="nothing" tal:repeat="category python:constraints.keys()">
-							<div tal:attributes="class python:'constraint constraint-%s'%category[:-1].lower()">
-								<tal:block tal:content="structure python:'<strong>'+here.zmi_icon(name='icon-warning-sign',extra='title=\042%s\042'%category[:-1])+' '+category[:-1]+'</strong>: '+'; '.join(map(lambda x:x[1],constraints[category]))"></tal:block>
-							</div>
-						</tal:block>
 					</tal:block>
 				</div>
 				<div class="clearfix"></div>
@@ -165,7 +159,15 @@
 				</tal:block>
 			</div><!-- .accordion-inner -->
 		</div><!-- .accordion-body -->
-
+		<tal:block 
+			tal:define="constraints python:here.attr('check_constraints')"
+			tal:condition="constraints">
+			<tal:block tal:on-error="nothing" tal:repeat="category python:constraints.keys()">
+				<div tal:attributes="class python:'constraint constraint-%s'%category[:-1].lower()">
+					<tal:block tal:content="structure python:'<strong>'+here.zmi_icon(name='icon-warning-sign',extra='title=\042%s\042'%category[:-1])+' '+category[:-1]+'</strong>: '+'; '.join(map(lambda x:x[1],constraints[category]))"></tal:block>
+				</div>
+			</tal:block>
+		</tal:block>
 		<div id="tabProperties" class="accordion-body">
 			<div class="accordion-inner">
 				<tal:block tal:content="structure python:here.obj_input_elements(action=action,meta_id=meta_id)">obj_input_elements</tal:block>

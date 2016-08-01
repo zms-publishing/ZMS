@@ -722,11 +722,18 @@ div.constraint {
 	font-size: 11px;
 	padding: 8px;
 }
+.zmi.properties div.constraint {
+	border-radius: 4px;
+	margin: 1.5em 0;
+}
 .constraint-error {
 	color:#A94442;
 }
 div.constraint-error {
 	background-color:#F2DEDE;
+}
+.zmi.properties div.constraint-warning {
+	border: 1px solid rgba(169,68,66,0.25);
 }
 .constraint-warning {
 	color:#8A6D3B; 
@@ -734,12 +741,19 @@ div.constraint-error {
 div.constraint-warning {
 	background-color:#FCF8E3;
 }
+.zmi.properties div.constraint-warning {
+	border: 1px solid rgba(138, 109, 59, 0.25);
+}
 .constraint-restriction {
 	color:#31708F;
 }
 div.constraint-restriction {
 	background-color:#D9EDF7;
 }
+.zmi.properties div.constraint-restriction {
+	border: 1px solid rgba(49, 112, 143, 0.25);
+}
+
 /* Contraint as Tooltip */
 .btn-group.zmi-action .tooltip-inner {
 	padding: 1px;

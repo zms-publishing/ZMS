@@ -531,7 +531,7 @@ ZMI.prototype.initInputFields = function(container) {
 						}
 					}
 				});
-			$($ZMI.icon_selector()+":not('.dropdown-toggle i'):first",$(".accordion-body.collapse",context).prev('.accordion-heading')).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right"));
+			$($ZMI.icon_selector()+":first",$(".accordion-body.collapse",context).prev('.accordion-heading')).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right"));
 			$($ZMI.icon_selector()+":first",$(".accordion-body.collapse.in",context).prev('.accordion-heading')).removeClass($ZMI.icon_clazz("icon-caret-right")).addClass($ZMI.icon_clazz("icon-caret-down"));
 			$("a.accordion-toggle",this).click(function(){
 					$(this).blur();
@@ -701,7 +701,7 @@ ZMI.prototype.initInputFields = function(container) {
 					var $input = $(".activity input:checkbox",this);
 					if ($input.length>0) {
 						$(this).prev(".attr_last_modified").each(function() {
-								$("#zmi-toggle-activity-btn i",this).replaceWith('<span id="zmi-toggle-activity" title="'+getZMILangStr('ATTR_ACTIVE')+'">'+$ZMI.icon(($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable')+'</span>');
+								$("#zmi-toggle-activity-btn",this).append('<span id="zmi-toggle-activity" style="vertical-align:inherit" title="'+getZMILangStr('ATTR_ACTIVE')+'">'+$ZMI.icon(($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable')+'</span>&nbsp;');
 								$("#zmi-toggle-activity").click(function() {
 										$input.click();
 										$($ZMI.icon_selector(),this).attr("class",$ZMI.icon_clazz($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable')

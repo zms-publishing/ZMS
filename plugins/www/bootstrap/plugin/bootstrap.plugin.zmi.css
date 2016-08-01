@@ -462,6 +462,22 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 	padding-top: .4em;
 	margin:0;
 }
+.properties .attr_last_modified #zmi-toggle-activity-btn {
+	padding:3px 0;
+	box-shadow: none;
+}
+.properties .attr_last_modified #zmi-toggle-activity-btn #zmi-toggle-activity {
+	vertical-align:inherit;
+	margin: 0 .3em;
+}
+.properties .attr_last_modified .btn.zmi-changes {
+	padding:3px 0px;
+	box-shadow:none;
+}
+.properties .attr_last_modified button.btn.btn-default.dropdown-toggle {
+	padding:6px 9px;
+}
+
 .properties .form-group.activity input.form-element.datetimepicker {
 	width:12.7em !important;
 }

@@ -20,8 +20,8 @@
 		margin-bottom:.1em;
 	}
 	.form-richtext span.btn {
-		padding-left:.5em;
-		padding-right:.5em;
+		padding-left:.6em;
+		padding-right:.6em;
 	}
 	.form-richtext textarea {
 		margin-top:.3em;

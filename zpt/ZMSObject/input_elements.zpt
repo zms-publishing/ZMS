@@ -40,7 +40,7 @@
 								<tal:block tal:content="elLabel">the label</tal:block>
 							</a>
 							<div class="btn-group zmi-action pull-right" tal:condition="python:not metaObjAttr.get('mandatory',False)">
-								<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown"
+								<button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
 									tal:content="structure python:here.zmi_icon(name='icon-chevron-down')">
 								></button>
 								<ul class="dropdown-menu">

@@ -474,7 +474,7 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 	padding:3px 0px;
 	box-shadow:none;
 }
-.properties .attr_last_modified button.btn.btn-default.dropdown-toggle {
+.properties .accordion-heading button.btn.btn-default.dropdown-toggle {
 	padding:6px 9px;
 }
 

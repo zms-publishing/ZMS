@@ -25,7 +25,7 @@
 						<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 					</div>
 			</div>
-			<div class="btn-group pull-right" tal:condition="not:python: request.get('ZMS_INSERT',False)">
+			<div class="btn-group zmi-action pull-right" tal:condition="not:python: request.get('ZMS_INSERT',False)">
 				<tal:block tal:define="actions python:
 						[[],[(here.getZMILangStr('BTN_UNDO'),'../manage_undoObjs?ids:list=%s'%here.id,'icon-undo')]][here.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request)]
 						+map(lambda x:[x['name'],'manage_executeMetacmd',x.get('icon_clazz'),x.get('title')],filter(lambda x:x['stereotype']=='',here.getMetaCmds(here,'')))

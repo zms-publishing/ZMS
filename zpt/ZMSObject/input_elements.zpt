@@ -39,10 +39,10 @@
 								<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 								<tal:block tal:content="elLabel">the label</tal:block>
 							</a>
-							<div class="btn-group pull-right" tal:condition="python:not metaObjAttr.get('mandatory',False)">
-								<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
-									<span class="caret"></span>
-								</button>
+							<div class="btn-group zmi-action pull-right" tal:condition="python:not metaObjAttr.get('mandatory',False)">
+								<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown"
+									tal:content="structure python:here.zmi_icon(name='icon-chevron-down')">
+								></button>
 								<ul class="dropdown-menu">
 									<li tal:condition="python:len(here.getObjChildren(metaObjAttr['id'],request))==0">
 										<a tal:attributes="href python:'manage_initObjChild?id=%s&type=%s&lang=%s&manage_target=%s'%(metaObjAttr['id'],metaObjAttr['type'],request['lang'],request['URL'])">

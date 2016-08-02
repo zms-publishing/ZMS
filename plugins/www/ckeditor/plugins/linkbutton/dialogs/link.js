@@ -192,7 +192,11 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
       }
       else {
         if (linkType == 'email' && (url.indexOf('mailto:')<0)) {
-          url = 'mailto:'+url;
+          var enc = [];
+          for (var i = 0; i < url.length; i++) {
+            enc.push(url.charCodeAt(i));
+          }
+          url = 'javascript:void(location.href=\'mailto:\'+String.fromCharCode('+enc.join()+'))';
         }
         if (linkType == 'url' && (url.indexOf('.')!=0 && url.indexOf('://')<0)) {
           url = 'http://'+url;

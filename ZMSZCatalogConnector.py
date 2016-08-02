@@ -242,7 +242,7 @@ class ZMSZCatalogConnector(
       xml += '<int name="status">%i</int>'%status
       xml += '<lst name="params">'
       for key in REQUEST.form.keys():
-        xml += '<str name="%s">%s</str>'%(key,_globals.html_quote(str(REQUEST.form[key])))
+        xml += '<str name="%s">%s</str>'%(key,_globals.html_quote(unicode(REQUEST.form[key],'utf-8')))
       xml += '</lst>'
       xml += '</lst>'
       xmlr = ''

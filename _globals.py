@@ -229,7 +229,9 @@ def format_sort_id(i_sort_id):
 _globals.html_quote:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def html_quote(v, name='(Unknown name)', md={}):
-  return cgi.escape(str(v), 1)
+  if not type(v) in StringTypes:
+    v = str(v)
+  return cgi.escape(v, 1)
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

@@ -177,9 +177,12 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
               }
               var did = getattr("id");
               var meta_id = getattr("meta_id");
-              var href = getattr("loc");
-              // Remove Domain Name from URL
-              // href = href.replace(/https?:\/\/[^\/]+/i, "");
+              var href;
+              if (zmi) {
+                href = getattr("loc")+"/manage";
+              } else {
+                href = getattr("index_html");
+              }
               var title = getattr("title");
               var snippet = getattr("standard_html");
               var custom = getattr("custom");
@@ -203,14 +206,16 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
                 var $custom = $("<xml>"+custom+"<xml>");
                 $("custom>breadcrumbs>breadcrumb",$custom).each(function() {
                   var title = $(">title",this).text();
-                  var loc = $(">loc",this).text();
-                  // Remove Domain Name from URL
-                  // loc = loc.replace(/https?:\/\/[^\/]+/i, "");
+                  var loc;
+                  if (zmi) {
+                    loc = $(">loc",this).text()+"/manage";
+                  } else {
+                    loc = $(">index_html",this).text();
+                  }
                   breadcrumb += breadcrumb.length==0?'':' &raquo; '
                   breadcrumb += '<a href="'+loc+'">'+title+'</a>';
                 });
               }
-              href = zmi ? href+ '/manage':href;
               html += ''
                 + '<div class="line row'+(c%2==0?" gray":"")+'">'
                 + '<div class="col-sm-12">'

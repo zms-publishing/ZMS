@@ -255,18 +255,20 @@ class ZMSZCatalogAdapter(
       
       # Add node.
       def get_catalog_index(node):
+        request.set('ZMS_CONTEXT_URL',True)
         d = {}
         d['id'] = node.id
         d['home_id'] = node.getHome().id
-        d['loc'] = '/'+'/'.join(node.getPhysicalPath())
-        d['index_html'] = node.getHref2IndexHtml(request)
+        d['loc'] = '/'.join(node.getPhysicalPath())
+        d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(),node.getHref2IndexHtml(request),request)
         d['meta_id'] = node.meta_id
         d['custom'] = d.get('custom',{})
         d['custom']['breadcrumbs'] = []
         for obj in filter(lambda x:x.isPage(),node.breadcrumbs_obj_path()[1:-1]):
           d['custom']['breadcrumbs'].append({
               '__nodeName__':'breadcrumb',
-              'loc':obj.getHref2IndexHtml(request),
+              'loc':'/'.join(obj.getPhysicalPath()),
+              'index_html':obj.getHref2IndexHtmlInContext(obj.getRootElement(),obj.getHref2IndexHtml(request),request),
               'title':obj.getTitlealt(request),
             })
         return d

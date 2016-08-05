@@ -154,7 +154,7 @@ class ConfManager(
     # --------------------------------------------------------------------------
     def importConfPackage(self, file, createIfNotExists=0):
       if type( file) is str:
-        if file.startswith('http://'):
+        if file.startswith('http://') or file.startswith('https://'):
           file = StringIO( self.http_import(file))
         else:
           file = open(_fileutil.getOSPath(file),'rb')
@@ -171,7 +171,7 @@ class ConfManager(
       if type(file) is dict:
         filename = file['filename']
         xmlfile = StringIO( file['data'])
-      elif type(file) is str and file.startswith('http://'):
+      elif type(file) is str and (file.startswith('http://') or file.startswith('https://')):
         filename = _fileutil.extractFilename(file)
         xmlfile = StringIO( self.http_import(file))
       else:
@@ -246,7 +246,7 @@ class ConfManager(
       conf_xml = self.xmlParse( conf)
       for source in self.xmlNodeSet(conf_xml,'source'):
         location = source['attrs']['location']
-        if location.startswith('http://'):
+        if location.startswith('http://') or location.startswith('https://'):
           if remote:
             try:
               remote_conf = self.http_import(location+'configure.zcml')

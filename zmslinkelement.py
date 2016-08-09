@@ -437,7 +437,8 @@ class ZMSLinkElement(ZMSCustom):
       value = proxy.getObjAttrValue( obj_attr, REQUEST) 
       return value
 
-    def getObjProperty(self, key, REQUEST={}, default=None): 
+    def getObjProperty(self, key, REQUEST={}, default=None):
+      value = None
       value = self.getObjPropertyPROXY( self, key, REQUEST, default)
       # First exit...
       if (value is None or len(str(value)) == 0 or (value == 0 and not type(value) is bool)) and \
@@ -445,7 +446,7 @@ class ZMSLinkElement(ZMSCustom):
         value = ZMSObject.getObjProperty( self, key, REQUEST, default)
       # Second exit...
       if (value is None or len(str(value)) == 0 or (value == 0 and not type(value) is bool)) and \
-        key not in ['attr_ref','attr_dc_coverage','work_dt','work_uid']:
+          key not in ['active','change_uid','change_dt','work_uid','work_dt','internal_dict','attr_ref','attr_dc_coverage']:
         recursive = self.isEmbeddedRecursive( REQUEST)
         if recursive:
           proxy = self.getProxy()

@@ -5,10 +5,10 @@ class ZMSContainerObjectTest(test_util.BaseTest):
   temp_title = 'temp-test'
 
   def setUp(self):
-    context = self.context
+    zmscontext = self.context
     request = self.REQUEST
     self.writeInfo('[setUp] create %s'%self.temp_title)
-    self.folder = context.manage_addZMSCustom('ZMSFolder',{'title':self.temp_title,'titlealt':self.temp_title},request)
+    self.folder = zmscontext.manage_addZMSCustom('ZMSFolder',{'title':self.temp_title,'titlealt':self.temp_title},request)
 
   def test_tree(self):
     context = self.context
@@ -40,7 +40,7 @@ class ZMSContainerObjectTest(test_util.BaseTest):
       self.assertTrue('%s.text:contains(href="%s")'%(ta11.id,href),ta11.attr('text').find('href="%s"'%href)>0)
 
   def tearDown(self):
-    context = self.context
+    zmscontext = self.context
     request = self.REQUEST
     self.writeInfo('[tearDown] remove %s'%self.temp_title)
-    context.manage_delObjects([self.folder.id])
+    zmscontext.manage_delObjects([self.folder.id])

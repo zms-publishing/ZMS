@@ -130,7 +130,7 @@ def getobjattr(self, obj, obj_attr, lang):
     datatype = obj_attr['datatype_key']
     default = obj_attr.get('default',_globals.dtMapping[datatype][1])
     # Default inactive in untranslated languages.
-    if obj_attr['id'] == 'active' and len(self.getLangIds()) > 1 and not self.isTranslated(lang,self.REQUEST):
+    if obj_attr['id'] == 'active' and len(self.getLangIds()) > 1:
         default = 0
     if default is not None:
       if datatype in _globals.DT_DATETIMES and default == '{now}':
@@ -230,7 +230,7 @@ class ObjAttrs:
     # --------------------------------------------------------------------------
     def getObjAttr(self, key, meta_id=None):
       obj_attrs = self.getObjAttrs( meta_id)
-      return obj_attrs.get(key,{'id':key,'key':key,'xml':False,'multilang':False,'lang_inherit':False,'name':'UNKNOWN','datatype':'string','datatype_key':_globals.DT_UNKNOWN})
+      return obj_attrs.get(key,{'id':key,'key':key,'xml':False,'multilang':False,'name':'UNKNOWN','datatype':'string','datatype_key':_globals.DT_UNKNOWN})
 
 
     # --------------------------------------------------------------------------
@@ -587,7 +587,7 @@ class ObjAttrs:
         value = self._getObjAttrValue(obj_attr,obj_vers,lang)
         empty = False
         if obj_attr['multilang'] and \
-           obj_attr['lang_inherit']:
+           obj_attr['id'] not in ['active','change_uid','change_dt','work_uid','work_dt','internal_dict']:
           lang = self.getParentLanguage(lang)
           if lang is not None:
             empty = empty or (value is None)
@@ -1292,7 +1292,6 @@ class ObjAttrsManager:
           dct['type'] = attr['type']
           dct['key'] = attr['id']
           dct['xml'] = attr['id'] not in ['created_uid','created_dt','change_uid','change_dt','work_uid','work_dt','internal_dict','change_history','master_version','major_version','minor_version']
-          dct['lang_inherit'] = attr['id'] not in ['change_uid','change_dt','work_uid','work_dt','internal_dict']
           dct['datatype'] = attr['type']
           if attr['type'] in ['autocomplete','password','select']:
             dct['type'] = attr['type']

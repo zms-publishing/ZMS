@@ -22,6 +22,9 @@ class BaseTest(object):
   def assertTrue(self, message, actual):
     self.assertEquals(message,True,actual)
 
+  def assertFalse(self, message, actual):
+    self.assertEquals(message,False,actual)
+
   def assertEquals(self, message, expected, actual):
     clazz = ''
     details = ''

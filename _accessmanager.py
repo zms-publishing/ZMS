@@ -1041,13 +1041,12 @@ class AccessManager(AccessableContainer):
                 #-- Delete node from config-properties.
                 if d['nodes'].has_key(nodekey):
                   del d['nodes'][nodekey]
-                #-- Delete permissions in node.
+                  security_roles[id] = d
+                  root.setConfProperty('ZMS.security.roles',security_roles)
                 #-- Set permissions in node.
                 node = self.getLinkObj(nodekey)
                 if node is not None:
                   node.synchronizeRolesAccess()
-              security_roles[id] = d
-              root.setConfProperty('ZMS.security.roles',security_roles)
             #-- Assemble message.
             message = self.getZMILangStr('MSG_DELETED')%int(1)
       

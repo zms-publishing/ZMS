@@ -67,7 +67,7 @@
 		><tal:block tal:condition="python:getattr(here.getHome(),'standard_html_request',None) is not None"
 			><tal:block tal:content="structure python:getattr(here,'standard_html_request',None)(here,request)">standard_html_request</tal:block
 		></tal:block
-		><tal:block tal:content="structure python:here.f_standard_html_header(here,request)">f_standard_html_header</tal:block
+		><tal:block tal:on-error="string:ERROR index_zpt.f_standard_html_header" tal:content="structure python:here.f_standard_html_header(here,request)">f_standard_html_header</tal:block
 		><tal:block tal:condition="python:here.isPreviewRequest(request) or here.isActive(request)"
 			><tal:block tal:content="structure python:here.zmi_body_content(here,request)">zmi_body_content</tal:block
 		></tal:block
@@ -75,7 +75,7 @@
 			><p class="standard" tal:content="python:here.getLangStr('MSG_INACTIVE',request['lang'])">Message inactive</p
 			><tal:block tal:define="dummy0 python:request.RESPONSE.setStatus(503)"></tal:block
 		></tal:block
-		><tal:block tal:content="structure python:here.f_standard_html_footer(here,request)">f_standard_html_footer</tal:block
+		><tal:block tal:on-error="string:ERROR index_zpt.f_standard_html_footer" tal:content="structure python:here.f_standard_html_footer(here,request)">f_standard_html_footer</tal:block
 		><tal:block tal:define="dummy0 python:done.append(True)"></tal:block
 	></tal:block
 

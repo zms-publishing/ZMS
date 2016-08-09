@@ -206,7 +206,7 @@ function zmiModalInsertUserOpen(context) {
         <button type="submit" name="btn" class="btn btn-default" 
           tal:attributes="value python:here.getZMILangStr('BTN_DELETE');
            disabled python:'' if is_deletable else 'disabled';
-           title python:'' if is_deletable else 'Hint: Role cannot be deleted, because it is still in use'"
+           title python:'' if is_deletable else 'HINT Role cannot be deleted, because it is still in use: containing declared nodes and/or given to users'"
         ><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
         &nbsp;&nbsp;
       <button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>

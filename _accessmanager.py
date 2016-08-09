@@ -841,19 +841,6 @@ class AccessManager(AccessableContainer):
         home._setObject(userFldr.id, userFldr)
       return userFldr
 
-    # --------------------------------------------------------------------------
-    #  AccessManager.isUsedRole:
-    # --------------------------------------------------------------------------
-    def isUsedRole(self, role):
-      searchRole = "['" + role + "']"
-      zms_sec_users = self.getSecurityUsers()
-      for user in zms_sec_users:
-        userData = str(zms_sec_users[user])
-        if userData.find(searchRole) >= 0:
-          return True
-      return False
-
-
     ############################################################################
     ###
     ###  Local Users

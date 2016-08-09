@@ -201,11 +201,14 @@ function zmiModalInsertUserOpen(context) {
     </a>
   </legend>
   <div class="form-group">
-    <div class="controls save">
-      <tal:block tal:condition="python:len(here.getRootElement().getSecurityRoles().get(request['id'],{}).get('nodes',{}).keys())==0">
-        <button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
+    <div class="controls save"
+         tal:define="is_deletable python:len(here.getRootElement().getSecurityRoles().get(request['id'],{}).get('nodes',{}).keys())==0 and not here.getRootElement().isUsedRole(request['id'])">
+        <button type="submit" name="btn" class="btn btn-default" 
+          tal:attributes="value python:here.getZMILangStr('BTN_DELETE');
+           disabled python:'' if is_deletable else 'disabled';
+           title python:'' if is_deletable else 'Hint: Role cannot be deleted, because it is still in use'"
+        ><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
         &nbsp;&nbsp;
-      </tal:block>
       <button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
     </div><!-- .controls.save -->
   </div><!-- .form-group -->

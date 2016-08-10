@@ -381,3 +381,17 @@ ZMI.prototype.HTMLDecode = function(str) {
 	}
 	return str;
 }
+
+/**
+ * Copy to clipboard.
+ */
+ZMI.prototype.CopyToClipboard = function(str) {
+	var $temp = $("<textarea></textarea>")
+	$("body").append($temp);
+	try {
+		$temp.val(str).select();
+		document.execCommand("copy");
+	} catch (e) {
+	}
+	$temp.remove();
+}

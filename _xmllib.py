@@ -691,7 +691,7 @@ def getObjToXml(self, REQUEST, incl_embedded=False, deep=True, base_path='', dat
   if root is not None:
     return ''
   ob = self
-  if ob.meta_type == 'ZMSLinkElement' and ob.isEmbedded( REQUEST) and incl_embedded:
+  if incl_embedded and ob.meta_type == 'ZMSLinkElement' and ob.isEmbedded( REQUEST) and ob.getRefObj():
     ob = ob.getRefObj()
   xml = []
   # Start tag.

@@ -56,7 +56,7 @@ def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
   if root is not None:
     return ressources
   ob = self
-  if ob.meta_id == 'ZMSLinkElement' and ob.isEmbedded( REQUEST) and incl_embedded:
+  if incl_embedded and ob.meta_id == 'ZMSLinkElement' and ob.isEmbedded( REQUEST)  and ob.getRefObj():
     ob = ob.getRefObj()
   # Attributes.
   langs = ob.getLangIds()

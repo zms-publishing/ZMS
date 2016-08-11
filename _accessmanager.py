@@ -1183,7 +1183,7 @@ class AccessManager(AccessableContainer):
                   if target is not None:
                     mbody.append('\n * '+target.getTitlealt(REQUEST)+' ['+self.getZMILangStr('ATTR_ROLES')+': '+', '.join(map(lambda x:self.getRoleName(x),zms_roles))+']: '+target.absolute_url()+'/manage')
                 for security_role in filter(lambda x:x in security_roles.keys(),roles):
-                  for role_nodekey in security_roles[security_role]:
+                  for role_nodekey in security_roles[security_role].get('nodes',{}).keys():
                     target = self.getLinkObj(role_nodekey)
                     if target is not None:
                       mbody.append('\n * '+target.getTitlealt(REQUEST)+' ['+self.getZMILangStr('ATTR_ROLES')+': '+self.getRoleName(security_role)+']: '+target.absolute_url()+'/manage')

@@ -22,7 +22,6 @@
 						<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
 						<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
 						<span class="zmi-change-uid" tal:content="structure python:here.string_maxlen(change_uid,20)">the change-uid</span>
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-link get_uid',extra='onclick=\042$ZMI.CopyToClipboard(\'{$%s}\')\042 title=\042Unique ID: %s\042'%(here.get_uid(),here.get_uid()))">unique-id</tal:block>
 						<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 					</div>
 			</div>
@@ -69,6 +68,9 @@
 						</tal:block>
 						<span title="This Node Contains ..." tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
 						<span title="Data Size" class="get_size" tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>,
+						<span title="Unique ID: Click to Clipboard Copy" class="get_uid"
+							tal:attributes="onclick python:'$ZMI.CopyToClipboard(\'{$%s}\')'%(here.get_uid())" 
+							tal:content="python:'ID:%s'%(here.get_uid())">unique-id</span> 
 					</div><!-- .col-sm-8 -->
 				</div><!-- .form-group -->
 				<div class="form-group activity" tal:condition="python:'active' in objAttrs.keys()">

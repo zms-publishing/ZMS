@@ -488,6 +488,9 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 	margin-top: -3px;
 	display: block;
 }
+#attrActivity .get_uid {
+	cursor: pointer;
+}
 .horizontal-group .mandatory span {
 	background: none !important;
 	padding-left: 0 !important;

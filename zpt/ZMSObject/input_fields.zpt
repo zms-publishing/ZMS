@@ -22,6 +22,7 @@
 						<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
 						<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
 						<span class="zmi-change-uid" tal:content="structure python:here.string_maxlen(change_uid,20)">the change-uid</span>
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-link get_uid',extra='onclick=\042$ZMI.CopyToClipboard(\'{$%s}\')\042 title=\042Unique ID: %s\042'%(here.get_uid(),here.get_uid()))">unique-id</tal:block>
 						<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 					</div>
 			</div>
@@ -68,7 +69,6 @@
 						</tal:block>
 						<span title="This Node Contains ..." tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
 						<span title="Data Size" class="get_size" tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>,
-						<span title="Unique ID" class="get_uid" tal:content="python:'ID:%s'%(here.get_uid())">unique-id</span>
 					</div><!-- .col-sm-8 -->
 				</div><!-- .form-group -->
 				<div class="form-group activity" tal:condition="python:'active' in objAttrs.keys()">
@@ -235,7 +235,10 @@
 									+'<div class=\042accordion-inner\042>'"></tal:block>
 								<ul class="zmi-container zmi-sortable">
 									<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id">
-										<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable']+[['pageelement'],[]][int(childNode.isPage())]+[[],['is-modified']][int(childNode.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request))])">
+										<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable']+[['pageelement'],[]][int(childNode.isPage())]
+												+[[],['is-new']][int(childNode.inObjStates(['STATE_NEW'],request))]
+												+[[],['is-modified']][int(childNode.inObjStates(['STATE_MODIFIED'],request))]
+												+[[],['is-deleted']][int(childNode.inObjStates(['STATE_DELETED'],request))])">
 											<div class="grippy icon-reorder" title="Move"></div>
 											<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
 												tal:content="structure python:childNode.renderShort(request)">

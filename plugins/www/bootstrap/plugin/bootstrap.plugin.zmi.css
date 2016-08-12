@@ -555,8 +555,12 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 .form-horizontal .attr_last_modified div.pull-left .btn-group.zmi-action {
 	margin-right:.4em;
 }
-.is-modified input, .is-modified select,
-.is-modified textarea, .zmi-item.is-modified .center {
+.is-modified input,
+.is-modified select,
+.is-modified textarea,
+.zmi-item.is-new .center,
+.zmi-item.is-modified .center,
+.zmi-item.is-deleted .center {
 	background-color:#EFF7FF !important;
 }
 .is-modified label span:before {
@@ -570,6 +574,13 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 	display:inline-block;
 	margin-right:.3em
 }
+.zmi-item.is-deleted .center div * {
+	text-decoration: line-through!important;
+}
+.zmi-item.is-deleted .center div > *  {
+	opacity:0.5;
+}
+
 /*  Sitemap Menu
     ------------------------------------------------------- */
 .zmi.manage-menu .zmi-page {
@@ -824,8 +835,7 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 	height:2.7em;
 	margin-left:0;
 }
-ul.zmi-container.pages .zmi-item .contentEditable,
-ul.zmi-container.portalClients .zmi-item .contentEditable {
+ul.zmi-container.pages .zmi-item .contentEditable {
 	padding-left:1.0em !important;
 	font-size:large;
 }
@@ -1490,18 +1500,18 @@ div.right span.form-small {
 	color:#888;
 	margin-left: 8px;
 }
+
 div.right .version_object_state {
-	float: left;
-	margin: 1px 4px 0px 0px;
+	display: inline-block;
 }
 div.right .version_object_state i {
 	font-size: 120%;
-
 }
 div.right .version_object_state i.wf-icon,
 .attr_last_modified i.wf-icon,
 .zmi-state {
-	margin-right: .3em;
+	display: inline-block;
+	margin-right: .2em;
 	background-color:transparent !important
 }
 div.right .version_object_state .zmi-state.bg-info.text-info {
@@ -1745,7 +1755,9 @@ li.zmi-item span.zmi-ids {
 	display:none;
 	color:#888;
 	font-size:11px;
-	margin:2px 0 0 10px;
+	margin:4px 0 0 11px;
+	overflow: hidden;
+	white-space: nowrap;
 }
 ul.zmi-container li.zmi-item div.contentEditable {
 	min-height:60px;

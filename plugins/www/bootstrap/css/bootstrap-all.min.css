@@ -509,7 +509,7 @@ ul.zmi-container .zmi-item.page .center .contentEditable{padding-top:.4em;margin
 .properties .attr_last_modified #zmi-toggle-activity-btn{padding:3px 0;box-shadow:none}
 .properties .attr_last_modified #zmi-toggle-activity-btn #zmi-toggle-activity{vertical-align:inherit;margin:0 .3em}
 .properties .attr_last_modified .btn.zmi-changes{padding:3px 0px;box-shadow:none}
-.properties .attr_last_modified button.btn.btn-default.dropdown-toggle{padding:6px 9px}
+.properties .accordion-heading button.btn.btn-default.dropdown-toggle{padding:6px 9px}
 .properties .form-group.activity input.form-element.datetimepicker{width:12.7em !important}
 #zmiIframe .form-group.activity input.form-element.datetimepicker{width:8.4em !important}
 #attrActivity .icon-info-sign{margin-top:-3px;display:block}
@@ -529,8 +529,10 @@ ul.zmi-container .zmi-item.page .center .contentEditable{padding-top:.4em;margin
 .form-horizontal .accordion-heading.attr_last_modified .btn.btn-default.split-right{border-color:rgba(0,0,0,0.1);padding:0 4px 4px 4px;height:22px}
 .form-horizontal .attr_last_modified div.pull-left{padding:0 0 0 1em !important;margin:0 !important}
 .form-horizontal .attr_last_modified div.pull-left .btn-group.zmi-action{margin-right:.4em}
-.is-modified input,.is-modified select,.is-modified textarea,.zmi-item.is-modified .center{background-color:#EFF7FF !important}
+.is-modified input,.is-modified select,.is-modified textarea,.zmi-item.is-new .center,.zmi-item.is-modified .center,.zmi-item.is-deleted .center{background-color:#EFF7FF !important}
 .is-modified label span:before{content:"\f040";font-family:FontAwesome;font-weight:normal;font-style:normal;-webkit-font-smoothing:antialiased;speak:none;display:inline-block;margin-right:.3em}
+.zmi-item.is-deleted .center div *{text-decoration:line-through!important}
+.zmi-item.is-deleted .center div > *{opacity:0.5}
 .zmi.manage-menu .zmi-page{white-space:nowrap;overflow:hidden}
 .zmi.manage-menu .zmi-sitemap{margin-top:1em}
 .zmi.manage-menu .dropdown-header{color:#999 !important;background-color:transparent !important;border-bottom:1px solid #666 !important}
@@ -741,9 +743,9 @@ div.zmi-action > ul.dropdown-menu li a{padding-left:13px}
 div.zmi-action ul.dropdown-menu li[title*="TAB_"]{display:none}
 div.right .zmi-ids input[type="checkbox"]{margin-left:3px;margin-top:3px;opacity:0.5}
 div.right span.form-small{display:block;color:#888;margin-left:8px}
-div.right .version_object_state{float:left;margin:1px 4px 0px 0px}
+div.right .version_object_state{display:inline-block}
 div.right .version_object_state i{font-size:120%}
-div.right .version_object_state i.wf-icon,.attr_last_modified i.wf-icon,.zmi-state{margin-right:.3em;background-color:transparent !important}
+div.right .version_object_state i.wf-icon,.attr_last_modified i.wf-icon,.zmi-state{display:inline-block;margin-right:.2em;background-color:transparent !important}
 div.right .version_object_state .zmi-state.bg-info.text-info{background-color:transparent}
 div.right a:hover,div.right a:focus{text-decoration:none}
 .zmi-item .center .contentEditable{border-left:none !important;border-right:none !important;border-bottom:none !important;border-top:1px dotted #ccc !important}
@@ -802,7 +804,7 @@ li.zmi-item span.zmi-ids{display:inline-block;margin:6px;vertical-align:top}
 .zmi-manage-main-toggle{margin:6px;cursor:pointer}
 .zmi-manage-main-toggle .icon-info-sign{color:#888;vertical-align:text-bottom}
 .zmi-manage-main-toggle .icon-info-sign.active{color:#08c}
-.zmi-manage-main-change{display:none;color:#888;font-size:11px;margin:2px 0 0 10px}
+.zmi-manage-main-change{display:none;color:#888;font-size:11px;margin:4px 0 0 11px;overflow:hidden;white-space:nowrap}
 ul.zmi-container li.zmi-item div.contentEditable{min-height:60px}
 .nav>li>a{padding:8px 10px 7px 10px;font-size:14px}
 .zmi header .navbar-nav{margin:2px 0 0 0}

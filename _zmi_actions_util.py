@@ -75,10 +75,10 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
         #-- Action: Undo.
         can_undo = context.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST)
         if can_undo:
-          actions.append((container.getZMILangStr('BTN_UNDO'),'manage_undoObjs','icon-undo'))
+          actions.append((container.getZMILangStr('BTN_UNDO'),'manage_undoObjs?lang='+lang,'icon-undo'))
         #-- Action: Delete.
         if not objAttr.keys():
-          actions.append((container.getZMILangStr('BTN_DELETE'),'manage_eraseObjs','icon-trash'))
+          actions.append((container.getZMILangStr('BTN_DELETE'),'manage_eraseObjs?lang='+lang,'icon-trash'))
         else:
           can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
           if can_delete:
@@ -90,18 +90,18 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
             can_delete = can_delete and len(filter(lambda x: x not in mo_access_deny, user_roles)) > 0
             can_delete = can_delete or auth_user.has_role('Manager')
           if can_delete:
-            actions.append((container.getZMILangStr('BTN_DELETE'),'manage_deleteObjs','icon-trash'))
+            actions.append((container.getZMILangStr('BTN_DELETE'),'manage_deleteObjs?lang='+lang,'icon-trash'))
         #-- Action: Cut.
         can_cut = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
         if can_cut:
-          actions.append((container.getZMILangStr('BTN_CUT'),'manage_cutObjects','icon-cut')) 
+          actions.append((container.getZMILangStr('BTN_CUT'),'manage_cutObjects?lang='+lang,'icon-cut')) 
       #-- Action: Copy.
-      actions.append((container.getZMILangStr('BTN_COPY'),'manage_copyObjects','icon-copy'))
+      actions.append((container.getZMILangStr('BTN_COPY'),'manage_copyObjects?lang='+lang,'icon-copy'))
       #-- Actions: Move.
       can_move = objChildren > 1
       if can_move:
-        actions.append((container.getZMILangStr('ACTION_MOVEUP'),objPath+'manage_moveObjUp','icon-double-angle-up'))
-        actions.append((container.getZMILangStr('ACTION_MOVEDOWN'),objPath+'manage_moveObjDown','icon-double-angle-down'))
+        actions.append((container.getZMILangStr('ACTION_MOVEUP'),objPath+'manage_moveObjUp?lang'+lang,'icon-double-angle-up'))
+        actions.append((container.getZMILangStr('ACTION_MOVEDOWN'),objPath+'manage_moveObjDown?lang'+lang,'icon-double-angle-down'))
   
   #-- Action: Paste.
   if repetitive or objChildren==0:
@@ -118,7 +118,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
       except:
         append = False
       if append:
-        actions.append((container.getZMILangStr('BTN_PASTE'),'manage_pasteObjs','icon-paste'))
+        actions.append((container.getZMILangStr('BTN_PASTE'),'manage_pasteObjs?lang='+lang,'icon-paste'))
   
   #-- Custom Commands.
   actions.extend(zmi_command_actions(context, stereotype='', objPath=objPath))

@@ -130,7 +130,7 @@ def getobjattr(self, obj, obj_attr, lang):
     datatype = obj_attr['datatype_key']
     default = obj_attr.get('default',_globals.dtMapping[datatype][1])
     # Default inactive in untranslated languages.
-    if obj_attr['id'] == 'active' and len(self.getLangIds()) > 1 and not self.isTranslated(lang,self.REQUEST):
+    if obj_attr['id'] == 'active' and len(self.getLangIds()) > 1:
         default = 0
     if default is not None:
       if datatype in _globals.DT_DATETIMES and default == '{now}':
@@ -609,15 +609,14 @@ class ObjAttrs:
           obj_attr = self.getObjAttr(key,self.meta_id)
           datatype = obj_attr['datatype_key']
           lang = request['lang']
-          work = self.getObjProperty(key,{'lang':lang,'preview':'preview'})
-          live = self.getObjProperty(key,{'lang':lang})
+          work = self.getObjAttrValue(obj_attr,{'lang':lang,'preview':'preview'})
+          live = self.getObjAttrValue(obj_attr,{'lang':lang})
           modified = modified or (datatype not in _globals.DT_BLOBS and work != live)
           modified = modified or (datatype in _globals.DT_BLOBS and (str(work) != str(live) or (work is not None and live is not None and str(work.getData()) != str(live.getData()))))
       except:
         _globals.writeError(self,'[attr_is_modified]: key=%s'%key)
       return modified
-  
-  
+
     # --------------------------------------------------------------------------
     #  ObjAttrs.getObjProperty:
     #

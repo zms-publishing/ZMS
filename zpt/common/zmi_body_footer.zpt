@@ -1,8 +1,8 @@
 <!-- common/zmi_body_footer -->
 
 <footer>
-	<div class="pull-left" title="&#169; 2016 HOFFMANN+LIEBENBERG">
-		<a href="http://www.zms-publishing.com" target="_blank">ZMS 3.2</a> Python-based Content Management System for Science, Technology and Medicine
+	<div class="pull-left" title="&#169; 2000-2016 HOFFMANN+LIEBENBERG">
+		<a href="http://www.zms-publishing.com" target="_blank">ZMS 3.3</a> Python-based Content Management System for Science, Technology and Medicine
 	</div><!-- .pull-left -->
 	<div class="pull-right">
 		<a href="#top" tal:attributes="title python:'%.2fsecs.'%(int((DateTime().timeTime()-request['ZMI_TIME'])*100.0)/100.0)" tal:content="python:here.getZMILangStr('PAGETOP')">pagetop</a>

@@ -39,9 +39,9 @@ $ ./ZMS3/bin/pip install ZMS3 [--upgrade]
 $ ./ZMS3/bin/mkzopeinstance --dir ZMS3/instance
 $ ./ZMS3/instance/bin/zopectl start
 
-    and finally initialize the new ZMS3 instance via web user interface
+    and finally "Add ZMS" via web user interface
 
-    |   http://localhost:8080/manage_addProduct/zms/manage_addzmsform
+    |   http://localhost:8080/manage
     |   (replace "localhost" with your system's IP address or domain name if no local installation)
 
 Prerequisites

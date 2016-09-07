@@ -630,7 +630,7 @@ class ObjAttrs:
       #-- Special attributes.
       if key not in objAttrs.keys():
         value = self.nvl(self.evalMetaobjAttr(key),'')
-        if isinstance(value,Image) or isinstance(value,File):
+        if not isinstance(value,_blobfields.MyBlob) and (isinstance(value,Image) or isinstance(value,File)):
           value = _blobfields.MyBlobWrapper(value)
       
       #-- Standard attributes.

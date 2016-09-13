@@ -107,8 +107,10 @@ class ZMSItem(
       l.append(request['lang'])
       l.extend(map(lambda x:kwargs[x],kwargs.keys()))
       l.append(self.meta_id)
-      # FOR EVALUATION: declare ontaining page object class  
-      l.append('page_%s'%(filter( lambda obj: obj.isPage(), self.breadcrumbs_obj_path(portalMaster=False) )[-1].meta_id))
+      # FOR EVALUATION: adding node specific css classes [list]
+      internal_dict = self.attr('internal_dict')
+      if internal_dict.get('css_classes',None):
+        l.extend( internal_dict['css_classes'] )
       l.extend(request['AUTHENTICATED_USER'].getRolesInContext(self))
       return ' '.join(l)
 

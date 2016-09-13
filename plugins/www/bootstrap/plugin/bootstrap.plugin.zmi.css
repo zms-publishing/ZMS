@@ -444,12 +444,7 @@ ul.zmi-container .zmi-item .center .contentEditable {
 	border-top:1px dotted #ccc !important;
 	padding-top:0.2em;
 }
-ul.zmi-container .zmi-item .center .contentEditable .contentEditable {
-	padding:0 !important;
-	margin:0 !important;
-	border:none !important;
-	min-height:0 !important;
-}
+
 ul.zmi-container .zmi-item.pageelement .center > * {
 	padding-left:.8em;
 }

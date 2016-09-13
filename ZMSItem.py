@@ -107,6 +107,8 @@ class ZMSItem(
       l.append(request['lang'])
       l.extend(map(lambda x:kwargs[x],kwargs.keys()))
       l.append(self.meta_id)
+      # FOR EVALUATION: declare ontaining page object class  
+      l.append('page_%s'%(filter( lambda obj: obj.isPage(), self.breadcrumbs_obj_path(portalMaster=False) )[-1].meta_id))
       l.extend(request['AUTHENTICATED_USER'].getRolesInContext(self))
       return ' '.join(l)
 

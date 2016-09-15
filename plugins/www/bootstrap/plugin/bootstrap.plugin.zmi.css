@@ -354,11 +354,8 @@ ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId {
 }
 ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS {
 	float:left;
- 	position:absolute;
-}
-ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS h1 {
+	position:absolute;
 	padding:.35em 0 0 1em;
-	font-size: large;
 	margin-top: 0;
 }
 table.table tbody tr td.data > div {

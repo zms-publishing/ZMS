@@ -2,14 +2,24 @@
 
 == 3.4.0dev (in development) ==
  
-  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3794&limit=200 latest changes...]
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3804&limit=200 latest changes...]
 
-== 3.3.1 (2016-10-31) ==
+== 3.3.2 (2016-10-31) ==
 
   * TBA
 
+== 3.3.1 (2016-09-15) ==
+
+  * fixed initial activity of primary language in multilingual sites
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=3803&stop_rev=3794&limit=200 more in 3.3.1...]
+
 == 3.3.0 (2016-09-01) ==
 
+  * GUI improvements of main menu 'properties'
+  * Improved error handling on deprecated API calls
+  * Replaced CKEditor linking menu by the ZMS-own linking menu
+  * Fixed custom role deleting and snychronizing over a multi-site
+  * Added a lot of minor fixes and improvements
   * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=3793&stop_rev=3745&limit=200 more in 3.3.0...]
 
 == 3.2.4 (2016-06-29) ==

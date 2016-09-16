@@ -153,7 +153,7 @@ nav .scroller-left {
 }
 .zmi footer .back-to-top {
 	display:none;
-	color: #08f;
+	color: rgb(81,142,212);
 	cursor:pointer;
 	text-align:center;
 	margin: 0;
@@ -167,7 +167,7 @@ nav .scroller-left {
 }
 .zmi footer .back-to-top:hover {
 	color: #fff;
-	background: #08f;
+	background: rgb(81,142,212);
 }
 .zmi ul.breadcrumb {
 	clear:left;

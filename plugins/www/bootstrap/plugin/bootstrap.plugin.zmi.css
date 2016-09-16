@@ -151,6 +151,24 @@ nav .scroller-left {
 	padding:0.5em;
 	font-size:11px !important;
 }
+.zmi footer .back-to-top {
+	display:none;
+	color: #08f;
+	cursor:pointer;
+	text-align:center;
+	margin: 0;
+	position: fixed;
+	bottom: .2em;
+	right: .4em;
+	padding:.2em .3em;
+	z-index: 100;
+	border:none;
+	border-radius:4px;
+}
+.zmi footer .back-to-top:hover {
+	color: #fff;
+	background: #08f;
+}
 .zmi ul.breadcrumb {
 	clear:left;
 	padding: 1em 0 1em 1.8em;

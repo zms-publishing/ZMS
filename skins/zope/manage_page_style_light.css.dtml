@@ -81,10 +81,22 @@ a:focus, a:hover {
 .nav-tabs>li.active>a:focus,
 .nav-tabs>li.active>a:hover {
 	color: inherit;
-
+}
+.location-bar .form-title {
+	margin: -.5em -30px;
+	padding: 1em 2em;
+	background: #fff;
+	width: 100%;
+	position: absolute;
+	font-weight: bold;
+	color:#333;
+	border-bottom:1px solid #ddd
 }
 table {
 	margin:0 0em 2em 0em;
+}
+body.Filesystem.Directory.View table {
+	width:100%;
 }
 table th {
 	font-weight:normal;

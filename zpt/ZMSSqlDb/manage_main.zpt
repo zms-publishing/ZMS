@@ -83,8 +83,8 @@
 <form method="get" class="form-horizontal" tal:define="filter_columns python:filter(lambda x:len(here.intersection_list(['blob','details','multiselect','multimultiselect'],x.keys()))==0,entity['columns'])">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
-	<input type="hidden" name="qorder"  tal:attributes="value request/qorder">
-	<input type="hidden" name="qorderdir" tal:attributes="value request/qorderdir">
+	<input tal:condition="python:request.has_key('qorder')" type="hidden" name="qorder" tal:attributes="value request/qorder">
+	<input tal:condition="python:request.has_key('qorderdir')" type="hidden" name="qorderdir" tal:attributes="value request/qorderdir">
 	<div class="accordion-group perc100">
 		<div class="accordion-heading attr_last_modified">
 			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrActivity" aria-expanded="false"

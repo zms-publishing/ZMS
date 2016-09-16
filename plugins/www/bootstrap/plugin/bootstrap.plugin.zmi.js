@@ -712,7 +712,7 @@ ZMI.prototype.initInputFields = function(container) {
 								$("#zmi-toggle-activity-btn",this).append('<span id="zmi-toggle-activity" style="vertical-align:inherit" title="'+getZMILangStr('ATTR_ACTIVE')+'">'+$ZMI.icon(($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable')+'</span>&nbsp;');
 								$("#zmi-toggle-activity").click(function(event) {
 										$input.click();
-										$($ZMI.icon_selector(),this).attr("class",$ZMI.icon_clazz($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable')
+										$($ZMI.icon_selector(),this).attr("class",$ZMI.icon_clazz($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable');
 										event.stopPropagation();
 									});
 							});

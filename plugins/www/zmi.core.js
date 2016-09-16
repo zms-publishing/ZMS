@@ -386,7 +386,7 @@ ZMI.prototype.HTMLDecode = function(str) {
  * Copy to clipboard.
  */
 ZMI.prototype.CopyToClipboard = function(str) {
-	var $temp = $("<textarea></textarea>")
+	var $temp = $("<textarea></textarea>");
 	$("body").append($temp);
 	try {
 		$temp.val(str).select();

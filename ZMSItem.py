@@ -33,11 +33,11 @@ import string
 ################################################################################
 ################################################################################
 class ZMSItem(
-	OFS.ObjectManager.ObjectManager,
-	OFS.SimpleItem.Item,
-	Persistent,				# Persistent. 
-	Implicit,				# Acquisition. 
-	):
+    OFS.ObjectManager.ObjectManager,
+    OFS.SimpleItem.Item,
+    Persistent,  # Persistent.
+    Implicit,    # Acquisition.
+    ):
 
     # Documentation string.
     __doc__ = """ZMS product module."""
@@ -47,15 +47,15 @@ class ZMSItem(
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-		'manage_page_header', 'manage_page_footer', 'manage_tabs', 'manage_main_iframe' 
-		)
+      'manage_page_header', 'manage_page_footer', 'manage_tabs', 'manage_main_iframe' 
+      )
     __viewPermissions__ = (
-		'manage_menu',
-		)
+      'manage_menu',
+      )
     __ac_permissions__=(
-		('ZMS Author', __authorPermissions__),
-		('View', __viewPermissions__),
-		)
+      ('ZMS Author', __authorPermissions__),
+      ('View', __viewPermissions__),
+      )
 
     # Templates.
     # ----------
@@ -109,7 +109,7 @@ class ZMSItem(
       l.append(self.meta_id)
       # FOR EVALUATION: adding node specific css classes [list]
       internal_dict = self.attr('internal_dict')
-      if internal_dict.get('css_classes',None):
+      if isinstance(internal_dict,dict) and internal_dict.get('css_classes',None):
         l.extend( internal_dict['css_classes'] )
       l.extend(request['AUTHENTICATED_USER'].getRolesInContext(self))
       return ' '.join(l)

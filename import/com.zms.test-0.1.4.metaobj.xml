@@ -24,16 +24,14 @@
                   <item key="custom"><![CDATA[import Products.zms.tests
 
 def ZMSQunit_func_( self, *args, **kwargs):
+  request = self.REQUEST
   container = self.getSelf(self.PAGES)
   test_suite = Products.zms.tests.test_util.TestSuite(container)
-  out = []
-  for line in test_suite.run():
-    if line.lower().find('| success |')>0:
-      line = '<span class="text-success bg-success">%s</span>'%line
-    elif line.lower().find('| failed |')>0:
-      line = '<span class="text-danger bg-danger">%s</span>'%line
-    out.append(line)
-  return '\n'.join(out)]]>
+  if request.get('find'):
+    return self.str_json(map(lambda x:x[0],test_suite.find_tests()))
+  elif request.get('run'):
+    return self.str_json(test_suite.run_single(name=request.get('name')))
+]]>
                   </item>
                   <item key="id"><![CDATA[ZMSQunit_func_]]></item>
                   <item key="mandatory" type="int">0</item>
@@ -47,13 +45,94 @@ def ZMSQunit_func_( self, *args, **kwargs):
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- ZMSQunit.renderShort -->
 
+<script>
+	function test_backend(sender,name,init,all) {
+		if (typeof all=='undefined') {
+			all = false;
+		}
+		if (init) {
+			$("#test_backend").remove();
+			$(sender).parent("div").after('<div id="test_backend">Running tests...</div>');
+			if (name=='' || name=='*') {
+				all = true;
+			}
+		}
+		var $div = $("#test_backend");
+		function write(s) {
+			var css = 'text-muted';
+			if (s.toLowerCase().indexOf('success')>=0) {
+				css = 'text-success bg-success';
+			}
+			if (s.toLowerCase().indexOf('fail')>=0) {
+				css = 'text-danger bg-danger';
+			}
+			if (s.toLowerCase().indexOf('performance')>=0) {
+				css = 'text-info bg-info';
+			}
+			$div.html($div.html()+'<br/><code class="'+css+'">'+s+'</code>');
+		}
+		$div.html($div.html()+'<hr/>');
+		$.ajax({
+				url:'ZMSQunit_func_',
+				data:{run:1,name:name},
+				timeout:30000,
+				error: function (xhr, ajaxOptions, thrownError) {
+						write(xhr.status + ': ' + thrownError);
+						},
+				success:function(response) {
+						var l = eval('('+response+')');
+						var next = l['next'];
+						var printed = l['printed'];
+						for (var i = 0; i < printed.length; i++) {
+							write(printed[i]);
+						}
+						if (typeof next != 'undefined' && all) {
+							test_backend(sender,next,false,all);
+						}
+						else {
+							$div.html($div.html()+'<hr/>Finished!');
+						}
+				}
+		});
+		return false;
+	}
+$(function() {
+	$(".well").click(function(evt) {
+				evt.stopPropagation();
+		});
+	$.ajax({
+			url:'ZMSQunit_func_',
+			data:{find:1},
+			timeout:30000,
+			error: function (xhr, ajaxOptions, thrownError) {
+					confirm(xhr.status + ': ' + thrownError);
+					},
+			success:function(response) {
+					var l = eval('('+response+')');
+					for (var i = 0; i < l.length; i++) {
+						$("select[name=name]").append('<option value="'+l[i]+'">'+l[i]+'</option>');
+					}
+			}
+	});
+});
+</script>
+
 <div class="well">
-	<button class="btn btn-default" onclick="$(this).parents('form').children('input:hidden').remove()" name="btn" value="test_ui" type="submit">
-		Test UI
-	</button>
-	<button class="btn btn-default" onclick="$(this).parents('form').children('input:hidden').remove()" name="btn" value="test_backend" type="submit">
-		Test Backend
-	</button>
+	<div class="row">
+		<div class="col-sm-6">
+			<select class="form-control" name="name">
+				<option value="">*</option>
+			</select>
+		</div>
+		<div class="col-sm-6">
+			<button class="btn btn-default" onclick="return test_backend(this,$('select[name=name]').val(),true);" name="btn" value="test_backend" type="submit">
+				Test Backend
+			</button>
+			<button class="btn btn-default" onclick="$(this).parents('form').children('input:hidden').remove()" name="btn" value="test_ui" type="submit">
+				Test UI
+			</button>
+		</div>
+	</div>
 </div>
 
 <div tal:condition="python:request.get('btn')=='test_ui'">
@@ -103,7 +182,7 @@ def ZMSQunit_func_( self, *args, **kwargs):
           <item key="id"><![CDATA[ZMSQunit]]></item>
           <item key="name"><![CDATA[ZMSQunit]]></item>
           <item key="package"><![CDATA[com.zms.test]]></item>
-          <item key="revision"><![CDATA[0.1.3]]></item>
+          <item key="revision"><![CDATA[0.1.4]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -122,7 +201,7 @@ def ZMSQunit_func_( self, *args, **kwargs):
           <item key="id"><![CDATA[com.zms.test]]></item>
           <item key="name"><![CDATA[com.zms.test]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[0.1.3]]></item>
+          <item key="revision"><![CDATA[0.1.4]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

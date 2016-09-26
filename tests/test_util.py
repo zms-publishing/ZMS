@@ -2,8 +2,12 @@ from traceback import format_exception
 import inspect
 import logging
 import sys
+import time
+import transaction
 
 class BaseTest(object):
+
+  measurements = {}
 
   def __init__(self, test_suite):
     self.test_suite = test_suite
@@ -18,6 +22,14 @@ class BaseTest(object):
 
   def writeError(self, s):
     self.test_suite.write(logging.ERROR,s)
+
+  def startMeasurement(self, category):
+    self.measurements[category] = time.time()
+
+  def stopMeasurement(self, category):
+    if self.measurements.has_key(category):
+      self.writeInfo('[stopMeasurement] | PERFORMANCE | %s | %.2fsecs.'%(category,time.time()-self.measurements[category]))
+      del self.measurements[category]
 
   def assertTrue(self, message, actual):
     self.assertEquals(message,True,actual)
@@ -57,24 +69,72 @@ class TestSuite(object):
     if l in self.loglevel:
       self.printed.append(line)
 
-  def run(self):
+  def find_tests(self):
+    l = []
     mod_tests = 'Products.zms.tests'
     for mod_name, mod_obj in inspect.getmembers(sys.modules[mod_tests],inspect.ismodule):
       for cls_name, cls_obj in inspect.getmembers(sys.modules['%s.%s'%(mod_tests,mod_name)],inspect.isclass):
         if cls_name.endswith('Test'):
-          self.write(logging.INFO,cls_name)
           inst = cls_obj(self)
           keys = map(lambda x:x[0],inspect.getmembers(cls_obj,inspect.ismethod))
           filtered = []
           filtered.extend(filter(lambda x:x=='setUp',keys))
           filtered.extend(filter(lambda x:x.startswith('test_'),keys))
           filtered.extend(filter(lambda x:x=='tearDown',keys))
-          for key in filtered:
-            self.write(logging.INFO,'%s.%s'%(cls_name,key))
-            try:
-              getattr(inst,key)()
-            except:
-              t,v,tb = sys.exc_info()
-              msg = 'can\'t %s.%s - exception: '%(cls_name,key)+''.join(format_exception(t, v, tb))
-              self.write(logging.ERROR,msg)
+          if filtered:
+            l.append((cls_name, cls_obj))
+    return l
+
+  def run_all(self):
+    mod_tests = 'Products.zms.tests'
+    for mod_name, mod_obj in inspect.getmembers(sys.modules[mod_tests],inspect.ismodule):
+      for cls_name, cls_obj in inspect.getmembers(sys.modules['%s.%s'%(mod_tests,mod_name)],inspect.isclass):
+        if cls_name.endswith('Test'):
+          inst = cls_obj(self)
+          keys = map(lambda x:x[0],inspect.getmembers(cls_obj,inspect.ismethod))
+          filtered = []
+          filtered.extend(filter(lambda x:x=='setUp',keys))
+          filtered.extend(filter(lambda x:x.startswith('test_'),keys))
+          filtered.extend(filter(lambda x:x=='tearDown',keys))
+          if filtered:
+            self.write(logging.INFO,cls_name)
+            for key in filtered:
+              self.write(logging.INFO,'%s.%s'%(cls_name,key))
+              try:
+                getattr(inst,key)()
+              except:
+                t,v,tb = sys.exc_info()
+                msg = 'can\'t %s.%s - exception: '%(cls_name,key)+''.join(format_exception(t, v, tb))
+                self.write(logging.ERROR,msg)
+            transaction.abort()
     return self.printed
+
+  def run_single(self, name=None):
+    rtn = {}
+    mod_tests = 'Products.zms.tests'
+    for mod_name, mod_obj in inspect.getmembers(sys.modules[mod_tests],inspect.ismodule):
+      for cls_name, cls_obj in inspect.getmembers(sys.modules['%s.%s'%(mod_tests,mod_name)],inspect.isclass):
+        if cls_name.endswith('Test'):
+          inst = cls_obj(self)
+          keys = map(lambda x:x[0],inspect.getmembers(cls_obj,inspect.ismethod))
+          filtered = []
+          filtered.extend(filter(lambda x:x=='setUp',keys))
+          filtered.extend(filter(lambda x:x.startswith('test_'),keys))
+          filtered.extend(filter(lambda x:x=='tearDown',keys))
+          if filtered:
+            if rtn.has_key('printed'):
+              rtn['next'] = cls_name
+              return rtn
+            elif not name or name == cls_name:
+              self.write(logging.INFO,cls_name)
+              for key in filtered:
+                self.write(logging.INFO,'%s.%s'%(cls_name,key))
+                try:
+                  getattr(inst,key)()
+                except:
+                  t,v,tb = sys.exc_info()
+                  msg = 'can\'t %s.%s - exception: '%(cls_name,key)+''.join(format_exception(t, v, tb))
+                  self.write(logging.ERROR,msg)
+              transaction.abort()
+              rtn['printed'] = self.printed
+    return rtn

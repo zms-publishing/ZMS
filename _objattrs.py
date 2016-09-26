@@ -1367,7 +1367,7 @@ class ObjAttrsManager:
       if sync_id is None or sync_id == [ None]:
         self.dObjAttrs = {}
         meta_ids = self.dGlobalAttrs.keys()
-        for meta_id in self.getMetaobjIds( sort=0):
+        for meta_id in self.getMetaobjIds():
           if meta_id not in meta_ids:
             meta_ids.append( meta_id)
       else:
@@ -1402,7 +1402,7 @@ class ObjAttrsManager:
           if not b:
             b = sync_id is None
           if not b:
-            metaObjIds = portalClient.getMetaobjIds(sort=0)
+            metaObjIds = portalClient.getMetaobjIds()
             for id in sync_id:
               if not b:
                 b = id in metaObjIds and portalClient.getMetaobj(id).get('acquired',0)==1

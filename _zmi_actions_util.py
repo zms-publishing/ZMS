@@ -146,7 +146,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   
   #-- Objects.
   if repetitive or len(container.getObjChildren(objAttr['id'],REQUEST))==0:
-    metaObjIds = container.getMetaobjIds()
+    metaObjIds = container.getMetaobjIds(sort=True)
     meta_ids = []
     if objAttr['type']=='*':
       for meta_id in objAttr['keys']:

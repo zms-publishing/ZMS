@@ -140,7 +140,7 @@ class ObjChildren:
       _globals.writeLog( self, "[initObjChildren]")
       self.getObjProperty( 'initObjChildren' ,REQUEST)
       metaObj = self.getMetaobj(self.meta_id)
-      metaObjIds = self.getMetaobjIds(sort=0)+['*']
+      metaObjIds = self.getMetaobjIds()+['*']
       for metaObjAttrId in self.getMetaobjAttrIds( self.meta_id):
         metaObjAttr = self.getMetaobjAttr( self.meta_id, metaObjAttrId)
         if metaObjAttr['type'] in metaObjIds:
@@ -153,7 +153,7 @@ class ObjChildren:
     def getObjChildrenAttr(self, key, meta_type=None):
       meta_type = _globals.nvl(meta_type,self.meta_id)
       ##### Meta-Objects ####
-      if meta_type in self.getMetaobjIds(sort=0) and key in self.getMetaobjAttrIds(meta_type):
+      if meta_type in self.getMetaobjIds() and key in self.getMetaobjAttrIds(meta_type):
         obj_attr = self.getMetaobjAttr(meta_type,key)
       ##### Default ####
       else:

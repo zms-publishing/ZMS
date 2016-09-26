@@ -84,7 +84,7 @@ def renderLangSelector():
 def renderContentClassSelector():
   s='<select class="form-control" id="cselected" name="cselected" title="Content-Klassen" onchange="javascript:ajaxAttrSelector(this.options[selectedIndex].value); return true;">\n'
   s+='<option value="">Content-Klasse w&auml;hlen:</option>\n'
-  for i in zms.getMetaobjIds(sort=1, excl_ids=excl_ids):
+  for i in zms.getMetaobjIds(excl_ids=excl_ids):
     s+='<option value="%s">%s</option>\n'%(i,i)
   s+='</select>'
   return s

@@ -35,17 +35,29 @@ class ReqBuff:
       return '%s#%s'%('_'.join(self.getPhysicalPath()),key)
 
     # --------------------------------------------------------------------------
+    #  clearReqBuff:
+    #
+    #  Clear buffered values from Http-Request.
+    # --------------------------------------------------------------------------
+    def clearReqBuff(self, prefix, REQUEST=None):
+      request = self.REQUEST
+      reqBuffId = self.getReqBuffId(prefix)+'.'
+      buff = request.get('__buff__',Buff())
+      for key in buff.__dict__.keys():
+        if key.startswith(reqBuffId):
+          delattr(buff,key)
+ 
+    # --------------------------------------------------------------------------
     #  fetchReqBuff:
     #
     #  Fetch buffered value from Http-Request.
     #
     #  @throws Exception
     # --------------------------------------------------------------------------
-    def fetchReqBuff(self, key, REQUEST, forced=False):
-      buff = None
-      if forced or not REQUEST.get('URL','/manage').find('/manage') >= 0:
-        reqBuffId = self.getReqBuffId(key)
-        buff = REQUEST.get('__buff__',Buff())
+    def fetchReqBuff(self, key, REQUEST=None):
+      request = self.REQUEST
+      reqBuffId = self.getReqBuffId(key)
+      buff = request.get('__buff__',Buff())
       return getattr(buff,reqBuffId)
 
     # --------------------------------------------------------------------------
@@ -53,11 +65,12 @@ class ReqBuff:
     #
     #  Returns value and stores it in buffer of Http-Request.
     # --------------------------------------------------------------------------
-    def storeReqBuff(self, key, value, REQUEST):
+    def storeReqBuff(self, key, value, REQUEST=None):
+      request = self.REQUEST
       reqBuffId = self.getReqBuffId(key)
-      buff = REQUEST.get('__buff__',Buff())
+      buff = request.get('__buff__',Buff())
       setattr(buff,reqBuffId,value)
-      REQUEST.set('__buff__',buff)
+      request.set('__buff__',buff)
       return value
 
 ################################################################################

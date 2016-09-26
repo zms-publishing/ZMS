@@ -174,7 +174,7 @@ class Builder:
         name = _globals.unencode( name)
         attrs = _globals.unencode( attrs)
         skip = self.oCurrNode is not None and len(filter(lambda x:x.get('skip'),self.oCurrNode.dTagStack.get_all())) > 0
-        if not skip and name in self.getMetaobjIds(sort=0):
+        if not skip and name in self.getMetaobjIds():
           meta_id = name
           globalAttr = self.dGlobalAttrs.get(meta_id,self.dGlobalAttrs['ZMSCustom'])
           constructor = globalAttr.get('obj_class',self.dGlobalAttrs['ZMSCustom']['obj_class'])
@@ -250,7 +250,7 @@ class Builder:
         """ Builder.OnEndElement """
         _globals.writeBlock( self, "[Builder.OnEndElement(" + str(name) + ")]")
         skip = self.oCurrNode is not None and len(filter(lambda x:x.get('skip'),self.oCurrNode.dTagStack.get_all())) > 0
-        if not skip and name in self.getMetaobjIds(sort=0):
+        if not skip and name in self.getMetaobjIds():
           if name == self.oCurrNode.meta_id:
             _globals.writeBlock( self, "[Builder.OnEndElement]: object finished")
             

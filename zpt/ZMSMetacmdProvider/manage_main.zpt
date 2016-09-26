@@ -71,7 +71,7 @@
 					<td>
 						<select name="el_meta_types:list" multiple="multiple" class="form-control" style="font-size:inherit;"
 							tal:attributes="size python:min(10,len(here.getMetaobjIds()+here.metaobj_manager.valid_objtypes))">
-							<tal:block tal:repeat="meta_type python:here.getMetaobjIds()">
+							<tal:block tal:repeat="meta_type python:here.getMetaobjIds(sorted=True)">
 								<option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
 							</tal:block>
 							<tal:block tal:repeat="objtype python:here.metaobj_manager.valid_objtypes">

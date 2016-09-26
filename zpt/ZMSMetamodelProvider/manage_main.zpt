@@ -10,7 +10,7 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <tal:block tal:define="global
-		metaObjIds python:here.getMetaobjIds();
+		metaObjIds python:here.getMetaobjIds(sort=True);
 		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
 		metaObjPackages python:here.sort_list(['']+map(lambda x: x['id'],filter(lambda x: x['type']=='ZMSPackage', metaObjs)));
 		metaObjPackages2 python:filter(lambda x: x not in metaObjPackages, map(lambda x: x.get('package'), metaObjs))">

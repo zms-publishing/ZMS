@@ -354,13 +354,11 @@ class ZMSMetaobjManager:
     def __get_metaobjs__(self):
       
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      reqBuffId = '__get_metaobjs__'
-      try:
-        forced = not self.REQUEST.get(reqBuffId,False)
-        return self.fetchReqBuff( reqBuffId, self.REQUEST, forced)
-      except:
-        pass
+      reqBuffId = 'ZMSMetaobjManager.__get_metaobjs__'
+      try: return self.fetchReqBuff(reqBuffId)
+      except: pass
       
+      #-- Get value.
       obs = {}
       raw = self.model
       master_obs = None
@@ -393,7 +391,7 @@ class ZMSMetaobjManager:
           obs[ob_id] = ob
       
       #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-      return self.storeReqBuff( reqBuffId, obs, self.REQUEST)
+      return self.storeReqBuff( reqBuffId, obs)
 
 
     # --------------------------------------------------------------------------
@@ -412,16 +410,14 @@ class ZMSMetaobjManager:
     #
     #  Returns list of all meta-ids in model.
     # --------------------------------------------------------------------------
-    def getMetaobjIds(self, sort=1, excl_ids=[]):
-      obs = self.__get_metaobjs__()
-      ids = obs.keys()
-      if len( excl_ids) > 0:
-        excl_types = [ 'ZMSPackage']
-        ids = filter( lambda x: x not in excl_ids and obs[x]['type'] not in excl_types, ids)
+    def getMetaobjIds(self, sort=False, excl_ids=[]):
+      ids = self.model.keys()
       if sort:
         mapping = map(lambda x: (self.display_type(self.REQUEST,x),x),ids)
         mapping.sort()
         ids = map(lambda x: x[1],mapping)
+      if excl_ids:
+        ids = filter(lambda x: x not in excl_ids,ids)
       return ids
 
 
@@ -473,6 +469,7 @@ class ZMSMetaobjManager:
     #  Sets meta-object with specified values.
     # --------------------------------------------------------------------------
     def setMetaobj(self, ob):
+      self.clearReqBuff('ZMSMetaobjManager')
       obs = self.model
       ob = ob.copy()
       ob[ 'name'] = ob.get( 'name', '')
@@ -495,6 +492,7 @@ class ZMSMetaobjManager:
     #  Acquires meta-object specified by id.
     # --------------------------------------------------------------------------
     def acquireMetaobj(self, id, subobjects=1):
+      self.clearReqBuff('ZMSMetaobjManager')
       obs = self.model
       ob = self.getMetaobj( id)
       if ob is not None and len( ob.keys()) > 0 and subobjects == 1:
@@ -519,6 +517,7 @@ class ZMSMetaobjManager:
     #  Delete meta-object specified by id.
     # --------------------------------------------------------------------------
     def delMetaobj(self, id):
+      self.clearReqBuff('ZMSMetaobjManager')
       # Handle type.
       ids = filter( lambda x: x.startswith(id+'.'), self.objectIds())
       if ids:
@@ -712,7 +711,7 @@ class ZMSMetaobjManager:
         newKeys = []
       if newType in self.getMetadictAttrs():
         newId = newType
-      if newType in self.getMetaobjIds(sort=0)+['*']:
+      if newType in self.getMetaobjIds()+['*']:
         newMultilang = 0
       
       # Defaults for Insert

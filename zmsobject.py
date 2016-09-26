@@ -157,7 +157,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         RESPONSE.setHeader('Cache-Control','public, max-age=3600')
       REQUEST.RESPONSE.setHeader('Content-Type','text/css')
       l = []
-      for metaObjId in self.getMetaobjIds(sort=0):
+      for metaObjId in self.getMetaobjIds():
         metaObj = self.getMetaobj(metaObjId)
         for metaObjAttr in filter(lambda x: x['type']=='css' or x['id']=='f_css_defaults', metaObj.get('attrs',[])):
             id = metaObjAttr['id']
@@ -707,7 +707,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       self.onChangeObj(request)
       
       ##### Resource-Objects #####
-      metaObjIds = self.getMetaobjIds(sort=0)
+      metaObjIds = self.getMetaobjIds()
       metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
       for metaObjAttrId in metaObjAttrIds:
         metaObjAttr = self.getMetaobjAttr(self.meta_id,metaObjAttrId)

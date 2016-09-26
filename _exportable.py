@@ -551,7 +551,7 @@ class Exportable(_filtermanager.FilterItem):
       for metadictAttrId in self.getMetaobjAttrIds( obj.meta_id):
         try:
           metadictAttr = self.getMetaobjAttr( obj.meta_id, metadictAttrId)
-          if metadictAttr is not None and metadictAttr['meta_type'] and metadictAttr['type'] in self.getMetaobjIds( sort=0):
+          if metadictAttr is not None and metadictAttr['meta_type'] and metadictAttr['type'] in self.getMetaobjIds():
             metaObj = self.getMetaobj( metadictAttr['type'])
             if metaObj['type'] == 'ZMSResource':
               for metadictObj in obj.getObjChildren( metadictAttr['id'], REQUEST):

@@ -550,6 +550,13 @@ class ZMS(
     Returns portal-master, none if it does not exist.
     """
     def getPortalMaster(self):
+      try:
+        phys_path = self.getPhysicalPath()
+        master_id = phys_path[phys_path.index('content')-2]
+        return getattr( getattr( self, master_id), 'content')
+      except:
+        return None
+      """
       v = self.getConfProperty('Portal.Master','')
       if len(v) > 0:
         try:
@@ -557,6 +564,7 @@ class ZMS(
         except:
           _globals.writeError(self, '[getPortalMaster]: %s not found!'%str(v))
       return None
+      """
 
     """
     Returns portal-clients, empty list if none exist.

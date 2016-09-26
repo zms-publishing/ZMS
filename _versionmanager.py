@@ -232,7 +232,7 @@ class VersionItem:
     def getVersionItems(self, REQUEST):
       children = []
       if not self.getAutocommit():
-        types = self.getMetaobjIds(sort=0)+['*']
+        types = self.getMetaobjIds()+['*']
         for metaobjAttrId in self.getMetaobjAttrIds( self.meta_id, types=types):
           for child in self.getObjChildren( metaobjAttrId , REQUEST):
             if not child.isVersionContainer():

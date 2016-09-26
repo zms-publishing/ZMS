@@ -27,7 +27,7 @@ class IZMSMetamodelProvider(Interface):
     @rtype: C{string}
     """
 
-  def getMetaobjIds(self, sort=1, excl_ids=[]):
+  def getMetaobjIds(self, sort=False, excl_ids=[]):
     """ 
     Returns list of all meta-ids in model.
     @rtype: C{list}

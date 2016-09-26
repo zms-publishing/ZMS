@@ -158,7 +158,7 @@ class DeprecatedAPI:
     s = ''
     ob = self
     while ob is not None:
-      if html in ob.getMetaobjIds( sort=0):
+      if html in ob.getMetaobjIds():
         metaObj = ob.getMetaobj( html)
         metaObjAttr = ob.getMetaobjAttr( metaObj['id'], 'getLinkHtml',syncTypes=['*'])
         if type(metaObjAttr) is dict:

@@ -233,7 +233,7 @@ $ZMI.registerReady(function(){
 					<label for="inpDescription" class="col-sm-3 control-label"><span tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</span></label>
 					<div class="col-sm-9">
 						<select class="form-control" id="inpMetaTypes" name="inpMetaTypes:list" multiple="multiple">
-							<tal:block tal:repeat="meta_id python:here.getMetaobjIds(sorted=True)">
+							<tal:block tal:repeat="meta_id python:here.getMetaobjIds(sort=True)">
 								<option tal:attributes="value meta_id; selected python:['','selected'][int(meta_id in filter.get('meta_types',[]))]" tal:content="python:here.display_type(request,meta_id)">the meta-type</option>
 							</tal:block>
 						</select>

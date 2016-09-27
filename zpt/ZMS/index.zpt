@@ -7,7 +7,7 @@
 		site_active python:here.getHome().content.isActive(request);
 		done python:[]"
 
-><<tal:block tal:condition="not: site_active"
+><tal:block tal:condition="not: site_active"
 	><tal:block tal:define="global 
 		dummy0 python:request.RESPONSE.redirect('/standard_error_message?error_type=NotFound&error_value=Site%20is%20not%20active');
 		dummy0 python:done.append(True)"

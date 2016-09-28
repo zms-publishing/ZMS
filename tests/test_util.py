@@ -48,6 +48,25 @@ class BaseTest(object):
       details = 'expected %s but was %s'%(str(expected),str(actual))
     self.writeInfo('[assertEquals] | %s | %s | %s'%(clazz.upper(),message,details))
 
+  def addClient(self, zmscontext, id):
+    request = zmscontext.REQUEST
+    home = zmscontext.getHome()
+    home.manage_addFolder(id=id,title=id.capitalize())
+    folder_inst = getattr(home,id)
+    request.set('lang_label',zmscontext.getLanguageLabel(request['lang']))
+    zms_inst = zmscontext.initZMS(folder_inst, 'content', 'Title of %s'%id, 'Titlealt of %s'%id, request['lang'], request['lang'], request)
+    zms_inst.setConfProperty('Portal.Master',home.id)
+    for metaObjId in zmscontext.getMetaobjIds():
+      zms_inst.metaobj_manager.acquireMetaobj(metaObjId)
+    zmscontext.setConfProperty('Portal.Clients',zmscontext.getConfProperty('Portal.Clients',[])+[id])
+    return zms_inst
+
+  def removeClient(self, zmscontext, id):
+    request = zmscontext.REQUEST
+    home = zmscontext.getHome()
+    home.manage_delObjects(ids=[id])
+    zmscontext.setConfProperty('Portal.Clients',filter(lambda x:x!=id,zmscontext.getConfProperty('Portal.Clients',[])))
+
 
 class TestSuite(object):
 

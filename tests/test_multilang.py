@@ -7,6 +7,7 @@ class MultiLanguageTest(test_util.BaseTest):
 
   def setUp(self):
     zmscontext = self.context
+    # create language
     prim_lang = zmscontext.getPrimaryLanguage()
     request = self.REQUEST
     request.set('lang',prim_lang)
@@ -17,6 +18,41 @@ class MultiLanguageTest(test_util.BaseTest):
     zmscontext.setLanguage(self.temp_lang, newLabel, newParent, newManage)
     self.writeInfo('[setUp] create %s'%self.temp_title)
     self.folder = zmscontext.manage_addZMSCustom('ZMSFolder',{'title':self.temp_title,'titlealt':self.temp_title},request)
+    # create lang-string
+    lang_dict = zmscontext.get_lang_dict()
+    key = 'ATTR_XXX'
+    lang_dict[key] = {'ger':'Xxx','eng':'Yyy',self.temp_lang:'Zzz'}
+    zmscontext.set_lang_dict(lang_dict)
+
+  def test_getLangStr(self):
+    zmscontext = self.context
+    # create portal-client
+    self.writeInfo('[test_metaobj_manager] create portal-client')
+    zmsclient0 = self.addClient(zmscontext,'client0')
+    # create portal-client
+    self.writeInfo('[test_metaobj_manager] create client-client')
+    zmsclient00 = self.addClient(zmsclient0,'client00')
+    # Test lang-strings
+    for context in [zmscontext,zmsclient0,zmsclient00]:
+      key = 'ATTR_DC_COVERAGE'
+      self.assertEquals('%s.getLangStr(%s,ger)'%(context.getHome().id,key),'Reichweite',context.getLangStr(key,'ger'))
+      self.assertEquals('%s.getLangStr(%s,eng)'%(context.getHome().id,key),'Coverage',context.getLangStr(key,'eng'))
+      self.assertEquals('%s.getLangStr(%s,ned)'%(context.getHome().id,key),'Draagwijte',context.getLangStr(key,'ned'))
+      self.assertEquals('%s.getLangStr(%s,fra)'%(context.getHome().id,key),'Envergure',context.getLangStr(key,'fra'))
+      self.assertEquals('%s.getLangStr(%s,ita)'%(context.getHome().id,key),'Copertura',context.getLangStr(key,'ita'))
+      self.assertEquals('%s.getLangStr(%s,esp)'%(context.getHome().id,key),'Cobertura',context.getLangStr(key,'esp'))
+      self.assertEquals('%s.getLangStr(%s,%s)'%(context.getHome().id,key,self.temp_lang),context.getLangStr(key,'eng'),context.getLangStr(key,self.temp_lang))
+      key = 'ATTR_XXX'
+      self.assertEquals('%s.getLangStr(%s,ger)'%(context.getHome().id,key),'Xxx',context.getLangStr(key,'ger'))
+      self.assertEquals('%s.getLangStr(%s,eng)'%(context.getHome().id,key),'Yyy',context.getLangStr(key,'eng'))
+      self.assertEquals('%s.getLangStr(%s,ned)'%(context.getHome().id,key),key,context.getLangStr(key,'ned'))
+      self.assertEquals('%s.getLangStr(%s,fra)'%(context.getHome().id,key),key,context.getLangStr(key,'fra'))
+      self.assertEquals('%s.getLangStr(%s,ita)'%(context.getHome().id,key),key,context.getLangStr(key,'ita'))
+      self.assertEquals('%s.getLangStr(%s,esp)'%(context.getHome().id,key),key,context.getLangStr(key,'esp'))
+      self.assertEquals('%s.getLangStr(%s,%s)'%(context.getHome().id,key,self.temp_lang),'Zzz',context.getLangStr(key,self.temp_lang))
+    # remove portal-client (and client-client)
+    self.writeInfo('[test_metaobj_manager] remove portal-client %s'%zmsclient0.id)
+    self.removeClient(zmscontext,zmsclient0.getHome().id)
 
   def test_multiLanguageManager(self):
     zmscontext = self.context
@@ -63,6 +99,12 @@ class MultiLanguageTest(test_util.BaseTest):
 
   def tearDown(self):
     zmscontext = self.context
+    # create lang-string
+    lang_dict = zmscontext.get_lang_dict()
+    key = 'ATTR_XXX'
+    del lang_dict[key]
+    zmscontext.set_lang_dict(lang_dict)
+    # remove language
     prim_lang = zmscontext.getPrimaryLanguage()
     request = self.REQUEST
     request.set('lang',prim_lang)

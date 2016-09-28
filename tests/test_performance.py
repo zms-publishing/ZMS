@@ -5,25 +5,6 @@ class PerformanceTest(test_util.BaseTest):
   lp = 5
   lc = 10
 
-  def addClient(self, zmscontext, id):
-    request = zmscontext.REQUEST
-    home = zmscontext.getHome()
-    home.manage_addFolder(id=id,title=id.capitalize())
-    folder_inst = getattr(home,id)
-    request.set('lang_label',zmscontext.getLanguageLabel(request['lang']))
-    zms_inst = zmscontext.initZMS(folder_inst, 'content', 'Title of %s'%id, 'Titlealt of %s'%id, request['lang'], request['lang'], request)
-    zms_inst.setConfProperty('Portal.Master',home.id)
-    for metaObjId in zmscontext.getMetaobjIds():
-      zms_inst.metaobj_manager.acquireMetaobj(metaObjId)
-    zmscontext.setConfProperty('Portal.Clients',zmscontext.getConfProperty('Portal.Clients',[])+[id])
-    return zms_inst
-
-  def removeClient(self, zmscontext, id):
-    request = zmscontext.REQUEST
-    home = zmscontext.getHome()
-    home.manage_delObjects(ids=[id])
-    zmscontext.setConfProperty('Portal.Clients',filter(lambda x:x!=id,zmscontext.getConfProperty('Portal.Clients',[])))
-
   def setUp(self):
     pass
 
@@ -62,7 +43,6 @@ class PerformanceTest(test_util.BaseTest):
     # create portal-client
     self.writeInfo('[test_metaobj_manager] create client-client')
     zmsclient00 = self.addClient(zmsclient0,'client00')
-    
     
     def testMetaobjAttrIds(zmscontext):
       self.startMeasurement('%s.getMetaobjAttr'%zmscontext.getHome().id)
@@ -103,6 +83,30 @@ class PerformanceTest(test_util.BaseTest):
     # no test-content-objects
     ids = filter(lambda x: x.startswith('com.zms.test.package') or x.startswith('LgTest_'),zmscontext.getMetaobjIds())
     self.assertEquals("#%s.metaobj_ids"%zmscontext.getHome().id,0,len(ids))
+
+
+  def test_content(self):
+    zmscontext = self.context
+    request = self.REQUEST
+    
+    # create test-folder
+    self.writeInfo('[test_content] create test-folder')
+    folder = zmscontext.manage_addZMSCustom('ZMSFolder',{'title':'Temp-Folder','titlealt':'Temp-Folder'},request)
+    for i in range(10):
+      ta = folder.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
+    for i in range(20):
+      doc = folder.manage_addZMSCustom('ZMSDocument',{'title':'Temp-Document-%i'%i,'titlealt':'Temp-Document-%i'%i},request)
+      for j in range(3):
+        ta = doc.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
+    
+    # render manage_main
+    self.startMeasurement('manage_main')
+    html = folder.manage_main(folder,request)
+    self.stopMeasurement('manage_main')
+    
+    # remove test-folder
+    self.writeInfo('[test_content] remove test-folder')
+    zmscontext.manage_delObjects([folder.id])
 
 
   def tearDown(self):

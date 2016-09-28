@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key"><![CDATA[ZMSIndexZCatalog]]></item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[interface0]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[<tal:block tal:define="
+		zmscontext options/zmscontext;
+		active python:zmscontext.getConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation','')==zmscontext.meta_id;
+		initialized python:'zcatalog_index' in zmscontext.getRootElement().getHome().objectIds();
+		uid python:request.form.get('uid','');
+		loglevels python:['DEBUG','INFO','ERROR'];">
+<script>
+function openWindow(url) {
+	var newWindow = window.open(url);
+	newWindow.addEventListener('load',function(){self.location.reload()},false);
+	return false;
+}
+</script>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Index</label>
+		<div class="col-sm-10">
+			<div class="row col-sm-4" tal:condition="initialized">
+				<a class="btn btn-default col-sm-12" 
+					tal:attributes="href python:'%s/manage_catalogView'%zmscontext.zcatalog_index.absolute_url()" target="_blank"
+					><img src="++resource++zms_/img/ZCatalog.png"/> zcatalog_index</a>
+			</div>
+			<div class="row col-sm-2">
+				<select class="form-control" id="reindex-loglevel" name="reindex-loglevel">
+					<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
+				</select>
+			</div>
+			<button title="REINDEX: Fully rebuilding the ZCatalog index of all (multisite) hierarchy objects."
+				class="btn btn-danger col-sm-2" name="btn" style="margin-left:1em"
+				onclick="return openWindow('zmsindex/ZMSIndexZCatalog_func_?func_=reindex'+'&loglevel='+$('#reindex-loglevel').val());">Reindex
+			</button>
+			<button title="ACTIVATE: Activate ZCatalog index for links."
+				class="btn btn-danger col-sm-2" name="btn" style="margin-left:1em"
+				onclick="return openWindow('zmsindex/ZMSIndexZCatalog_func_?func_=activate'+'&loglevel='+$('#reindex-loglevel').val());">Activate
+			</button>
+		</div>
+	</div><!-- .form-group -->
+	<div class="form-group" tal:condition="python:initialized and active">
+		<label class="col-sm-2 control-label">References</label>
+		<div class="col-sm-10">
+			<div class="row col-sm-4">
+				<textarea class="form-control url-input" id="resync-url" name="resync-url" tal:content="python:'\n'.join(['{$}'])"></textarea>
+			</div>
+			<div class="row col-sm-2">
+				<select class="form-control" id="resync-loglevel" name="resync-loglevel">
+					<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
+				</select>
+			</div>
+			<button title="RESYNC: Validating and refreshing link objects, inline links and backlink on the selected node (default: full hierarchy)."
+				class="btn btn-danger col-sm-2" name="btn" style="margin-left:1em"
+				onclick="return openWindow('zmsindex/ZMSIndexZCatalog_func_?func_=resync&url='+escape($('#resync-url').val().replace(/\n/gi,','))+'&loglevel='+$('#resync-loglevel').val()+($('#resync-clients').prop('checked')==true?'&clients:int=1':''));" tal:condition="initialized">Resync
+			</button>
+			<span title="RESYNC runs over the subordinate clients." 
+				tal:condition="python:len(zmscontext.getPortalClients())>0"
+				class="btn btn-default" style="margin-left:1em"
+				><input type="checkbox" id="resync-clients" name="resync-clients" checked="checked"/> Clients
+			</span>
+		</div>
+	</div><!-- .form-group -->
+
+	<div class="form-group" tal:condition="initialized">
+		<label class="col-sm-2 control-label">Uid</label>
+		<div class="col-sm-5">
+			<div class="input-group" title="SEARCH for a given uid and show the index details.">
+				<input class="form-control" type="text" name="uid" tal:attributes="value uid" placeholder="Enter uid"/>
+				<span class="input-group-btn">
+					<button class="btn btn-primary" name="btn" value="search"
+						onclick="$(this).parents('form').attr({action:self.location.href})" tal:content="structure python:zmscontext.zmi_icon(name='icon-search')">search</button>
+				</span>
+			</div><!-- .input-group -->
+		</div>
+	</div><!-- .form-group -->
+	<div class="well" tal:condition="uid">
+		<tal:block tal:define="q python:zmscontext.zcatalog_index({'get_uid':uid[2:-1]})">
+			<strong><tal:block tal:content="python:zmscontext.getZMILangStr('SEARCH_RETURNEDRESULTS')">returned results</tal:block>: <tal:block tal:content="python:len(q)">#q</tal:block></strong>
+			<ul>
+				<tal:block tal:repeat="r q">
+					<li><a tal:attributes="href python:'%s/manage'%r['getPath']" target="_blank" tal:content="python:r['getPath']">the path</a></li>
+				</tal:block>
+			</ul>
+		</tal:block>
+	</div>
+</tal:block>]]>
+                  </item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[interface]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[from Products.ZCatalog import ZCatalog
+from traceback import format_exception
+import logging
+import re
+import sys
+import time
+import uuid
+
+def ZMSIndexZCatalog_func_( self, *args, **kwargs):
+  
+  request = self.REQUEST
+  response = request.RESPONSE
+  logger = logging.getLogger('event.ZMS')
+  loglevels = [logging.DEBUG,logging.INFO,logging.ERROR]
+  loglevel = loglevels[loglevels.index({'DEBUG':logging.DEBUG,'INFO':logging.INFO,'ERROR':logging.ERROR}[request.get('loglevel','INFO')]):]
+  
+  printed = []
+  def write(l,c,s):
+    from DateTime import DateTime
+    dt = DateTime()
+    line = '%s %s@%s %s'%(dt.strftime("%Y-%m-%d %H:%M:%S,%f"),c.meta_id,c.getPath(),str(s))
+    logger.log(l,line)
+    if l in loglevel:
+      printed.append(line)
+  def writeDebug(c,s):
+    write(logging.DEBUG,c,s)
+  def writeInfo(c,s):
+    write(logging.INFO,c,s)
+  def writeError(c,s):
+    write(logging.ERROR,c,s)
+  
+  def catalog_object(catalog,node):
+    path = node.getPath()
+    # Sanity check: if uid is already catalogued we have to generate new uid
+    q = catalog({'get_uid':node.get_uid()})
+    if len(q) > 0:
+      node._uid = str(uuid.uuid4())
+    # Catalog object.
+    catalog.catalog_object(node, path)
+  
+  try:
+    id = 'zcatalog_index'
+    catalog = getattr(self,id,None)
+    func_ = None
+    if len(args) > 0:
+      func_ = args[0]
+    else:
+      func_ = request.get('func_')
+    writeDebug(self,'ZMSIndexZCatalog.%s:'%(func_))
+    
+    ##############################################################################
+    # Get uid
+    ##############################################################################
+    if func_ == 'get_uid':
+      forced = args[1]
+      if forced or '_uid' not in self.__dict__.keys() or getattr(self,'_uid',None) is None: 
+        self._uid = str(uuid.uuid4())
+      return 'uid:%s'%self._uid
+    
+    ##############################################################################
+    # Catalog Object
+    ##############################################################################
+    elif func_ == 'catalog_object':
+      if catalog is not None:
+        catalog_object(catalog,self)
+      return None
+    
+    ##############################################################################
+    # Uncatalog Object
+    ##############################################################################
+    elif func_ == 'uncatalog_object':
+      if catalog is not None:
+        path = args[1]
+        catalog.uncatalog_object(path)
+      return None
+    
+    ##############################################################################
+    # Reindex
+    ##############################################################################
+    elif func_ == 'reindex':
+      rootelmnt = self.getRootElement()
+      home = rootelmnt.getHome()
+      # (Re-)create catalog.)
+      if id in home.objectIds(['ZCatalog']):
+        home.manage_delObjects(ids=[id])
+      catalog = ZCatalog.ZCatalog(id=id, title=self.meta_id, container=home)
+      home._setObject(catalog.id, catalog)
+      catalog = getattr(home,id,None)
+      # Add indices.
+      for index_name in ['id','meta_id','get_uid']:
+        catalog.manage_addIndex(index_name,'FieldIndex')
+      # Add columns
+      for index_name in ['id','meta_id','getPath','get_uid']:
+        catalog.manage_addColumn(index_name)
+      # Visit tree
+      def visit(node):
+        l = []
+        l.append(1)
+        writeInfo(self,'[ZMSIndexZCatalog_func_] catalog_object %s'%node.getPath())
+        if node.meta_id == 'ZMS':
+          node.setConfProperty('ExtensionPoint.ZMSObject.get_uid','%s.get_uid'%self.meta_id)
+        catalog_object(catalog,node)
+        for childNode in node.objectValues(self.dGlobalAttrs.keys()):
+          l.extend(visit(childNode))
+        if node.meta_id == 'ZMS':
+          for childNode in node.getPortalClients():
+            l.extend(visit(childNode))
+        return l
+      t0 = time.time()
+      index = visit(self.getDocumentElement())
+      writeInfo(self,'[ZMSIndexZCatalog_func_] reindex done: %i in %.2fsecs.'%(len(index),time.time()-t0))
+    
+    ##############################################################################
+    # Activate
+    ##############################################################################
+    elif func_ == 'activate':
+      rootelmnt = self.getRootElement()
+      home = rootelmnt.getHome()
+      # Visit tree
+      def visit(node):
+        l = []
+        l.append(1)
+        writeInfo(self,'[ZMSIndexZCatalog_func_] activate_object %s'%node.getPath())
+        node.setConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation',self.meta_id)
+        node.setConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath','%s.getRefObjPath'%self.meta_id)
+        node.setConfProperty('ExtensionPoint.ZReferableItem.getLinkObj','%s.getLinkObj'%self.meta_id)
+        return l
+      t0 = time.time()
+      index = visit(self.getDocumentElement())
+      writeInfo(self,'[ZMSIndexZCatalog_func_] activate done: %i in %.2fsecs.'%(len(index),time.time()-t0))
+    
+    ##############################################################################
+    # Resync
+    ##############################################################################
+    elif func_ == 'resync':
+      if catalog is not None:
+        domains = {request['SERVER_URL']:''}
+        
+        def find_node(base,path):
+          ref = base
+          if path.find('?')>0:
+            if path.find('#')>path.find('?'):
+              path = path[:path.find('?')]+path[path.find('#'):]
+            else:
+              path = path[:path.find('?')]
+          ids = []
+          for id in path.split('/'):
+            if id.find('#')==0:
+              ids.append(id[1:])
+            elif id.find('#')>0:
+              ids.append(id[:id.find('#')])
+              ids.append(id[id.find('#')+1:])
+            else:
+              ids.append(id)
+          for id in ids:
+            if id == '..':
+              parent = ref.getParentNode()
+              if parent is not None:
+                ref = ref.getParentNode()
+            elif id.startswith('manage'):
+              ref = None
+            elif id not in ['','.'] and id.find('.')<0:
+              childNode = getattr(ref,id,None)
+              try:
+                if (childNode is None and ref is not None) and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
+                  for o in filter(lambda x:x.meta_type not in ['External Method'],ref.objectValues(self.dGlobalAttrs.keys())):
+                    for l in o.getLanguages():
+                      r = {'lang':l}
+                      try:
+                        if o.getDeclId(r)==id:
+                          childNode = o
+                      except:
+                        pass
+                      if childNode is not None:
+                        break
+                    if childNode is not None:
+                      break
+              except:
+                ref= None
+              ref = childNode
+            if ref is not None and not type(ref) is str and ref.meta_type not in ['Folder']+self.dGlobalAttrs.keys():
+              ref = None
+            if ref is None:
+              break
+          return ref
+        
+        def handleInline(node,v):
+          p = '<a(.*?)>(.*?)<\\/a>'
+          r = re.compile(p)
+          for f in r.findall(v):
+            ref = None
+            d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
+            if d.has_key('data-id'):
+              data_id = d['data-id']
+              writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline data_id=%s'%data_id)
+              ref = node.getLinkObj(data_id)
+            if ref is None and d.has_key('href'):
+              href = d['href']
+              href = re.sub('http://localhost:(\\d)*','',href)
+              for domain in domains.keys():
+                path = domains[domain]
+                href = re.sub(domain,path,href)
+              writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline href=%s'%href)
+              if href.startswith('.') or href.startswith('/'):
+                nf = re.compile('(.*?)\\?op=not_found&url={\\$(.*?)}').findall(href)
+                if nf:
+                  writeDebug(node,'[ZMSIndexZCatalog_func_] nf=%s'%str(nf))
+                  url = nf[0][1]
+                  obid = url.split('/')[-1]
+                  writeDebug(node,'[ZMSIndexZCatalog_func_] obid=%s'%str(obid))
+                  q = catalog({'id':obid})
+                  writeDebug(node,'[ZMSIndexZCatalog_func_] q=%i'%len(q))
+                  if len(q) == 1:
+                    href = q[0]['getPath']
+                  writeDebug(node,'[ZMSIndexZCatalog_func_] href=%s'%href)
+                ref = find_node(node,href)
+            if ref is not None:
+              d['data-id'] = node.getRefObjPath(ref)
+              ref.registerRefObj(node) 
+              old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
+              title = f[1]
+              new = '<a %s>%s</a>'%(' '.join(map(lambda x:'%s="%s"'%(x,d[x]),d.keys())),title)
+              if old != new:
+                writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline old=%s'%old)
+                writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline new=%s'%new)
+                v = v.replace(old,new)
+          return v
+        
+        def handleUrl(node,v):
+          writeDebug(node,'[ZMSIndexZCatalog_func_] handleUrl %s'%v)
+          ref = None
+          if v.startswith('{$') and v.endswith('}'):
+            if not (v.startswith('{$__') and v.endswith('__}')) \
+               and not (v.startswith('{$') and v.find('id:')>0 and v.endswith('}')):
+              ref = find_node(node,v[2:-1].replace('@','/content/'))
+            elif v.startswith('{$') and v.find('id:')>0 and v.endswith('}'):
+              data_id = v
+              ref = node.getLinkObj(data_id)
+          if ref is not None:
+            ref.registerRefObj(node) 
+            old = v
+            new = node.getRefObjPath(ref)
+            writeDebug(node,'[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
+            v = new
+          return v
+        
+        def visit(node):
+          writeInfo(node,'[ZMSIndexZCatalog_func_] resync')
+          l = []
+          l.append(1)
+          if node.meta_id!='ZMSLinkElement' and node.getType()=='ZMSRecordSet':
+            objAttrs = node.getMetaobjAttrs(node.meta_id)
+            key = filter(lambda x:x['type']=='list',objAttrs)[0]['id']
+            for obj_vers in node.getObjVersions():
+              l = self.operator_getattr(obj_vers,key,[])
+              for r in l:
+                for objAttr in objAttrs:
+                  datatype = objAttr['type']
+                  if datatype in ['richtext','string','text','url']:
+                    v = r.get(objAttr['id'],None)
+                    if v is not None:
+                      v = str(v)
+                      o = v
+                      if datatype in ['richtext','string','text']:
+                        v = handleInline(node,v)
+                      elif datatype in ['url']:
+                        v = handleUrl(node,v)
+                      if o != v:
+                        r[objAttr['id']] = v
+              self.operator_setattr(obj_vers,key,l)
+          else:
+            for key in filter(lambda x:not x.startswith('manage'),node.getObjAttrs().keys()):
+              objAttr = node.getObjAttr(key)
+              datatype = objAttr['datatype']
+              if datatype in ['richtext','string','text','url']:
+                lang_suffixes = ['']
+                if objAttr['multilang']:
+                  lang_suffixes = map(lambda x:'_%s'%x,self.getLangIds())
+                for lang_suffix in lang_suffixes:
+                  for obj_vers in node.getObjVersions():
+                    v = self.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
+                    if v is not None:
+                      v = str(v)
+                      o = v
+                      if datatype in ['richtext','string','text']:
+                        v = handleInline(node,v)
+                      elif datatype in ['url']:
+                        v = handleUrl(node,v)
+                      if o != v:
+                        self.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
+          for childNode in node.objectValues(self.dGlobalAttrs.keys()):
+            l.extend(visit(childNode))
+          if node.meta_id == 'ZMS' and request.get('clients',0)==1:
+            for childNode in node.getPortalClients():
+              l.extend(visit(childNode))
+          return l
+        
+        def init_domains(doc,domains):
+          domain = doc.getConfProperty('ASP.ip_or_domain','?')
+          if domain != '?':
+            domain = '^http(\\w)?://%s'%domain
+            path = '/'.join(doc.getPhysicalPath())
+            domains[domain] = path
+            writeInfo(doc,'[ZMSIndexZCatalog_func_] init_domains %s=%s'%(domain,path))
+          for portalClient in doc.getPortalClients():
+            init_domains(portalClient,domains) 
+        init_domains(self.getRootElement(),domains)
+        
+        for url in request['url'].split(','):
+          t0 = time.time()
+          base = self.getLinkObj(url)
+          index = visit(base)
+          writeInfo(self,'[ZMSIndexZCatalog_func_] resync for %s done: %i in %.2fsecs.'%(url,len(index),time.time()-t0))
+  except:
+    t,v,tb = sys.exc_info()
+    msg = "[%s@%s]"%(self.meta_id,self.absolute_url())+''.join(format_exception(t, v, tb))
+    writeError(self,'[ZMSIndexZCatalog_func_] except %s'%msg)
+  
+  response.setHeader('Content-Type','text/plain')
+  return '\n'.join(printed)]]>
+                  </item>
+                  <item key="id"><![CDATA[ZMSIndexZCatalog_func_]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Trusted functions]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[External Method]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndexZCatalog.getLinkObj"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None,options=None
+##title=py: Hook: Get link object
+##
+# --// ZMSIndexZCatalog.getLinkObj //--
+
+request = zmscontext.REQUEST
+zmsroot = zmscontext.getRootElement()
+url = options['url']
+try: return zmsroot.fetchReqBuff(url,request,forced=True)
+except: pass
+
+query = None
+obj = None
+# zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: url='+url)
+if url.startswith('{$') and url.find('id:')>0 and url.endswith('}'):
+  uid = url[2:-1]
+  query = {'get_uid':uid}
+elif url.startswith('{$') and url.endswith('}') and not (url.startswith('{$__') and url.endswith('__}')):
+  docelmnt = None
+  url = url[2:-1]
+  i = url.find('#')
+  if i > 0:
+    url = url[:i]
+  i = url.find('@')
+  if i > 0:
+    clientIds = url[:i].split('/')
+    clientHome = zmscontext.getHome()
+    for clientId in clientIds:
+      clientHome = getattr(clientHome,clientId,None)
+      if clientHome is None:
+        break
+    if clientHome is not None:
+      obs = clientHome.objectValues(['ZMS'])
+      if obs:
+        docelmnt = obs[0]
+    url = url[i+1:]
+  else:
+    docelmnt = zmscontext.getDocumentElement()
+  if len(url) == 0:
+    return docelmnt 
+  elif docelmnt is not None:
+    zmsid = url.split('/')[-1]
+    # zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: zmsid='+zmsid)
+    # query = {'id':zmsid}
+    query = {'home_id':docelmnt.getHome().id,'id':zmsid}
+q = zmscontext.zcatalog_index(query)
+try:
+  q = filter(lambda x:x['getPath'].find('/%s/content'%query['home_id'])>= 0,q)
+except:
+  pass
+ob = None
+for r in q:
+  zmspath  = '%s/'%r['getPath']
+  l = zmspath[1:-1].split('/')
+  ob = zmscontext
+  try:
+    for id in l:
+      ob = getattr(ob,id)
+    break
+  except:
+    pass
+return zmsroot.storeReqBuff(url,ob,request)
+
+# --// /ZMSIndexZCatalog.getLinkObj //--
+]]>
+                  </item>
+                  <item key="errors"></item>
+                  <item key="id"><![CDATA[getLinkObj]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Extension-Point: Get link object]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndexZCatalog.getRefObjPath"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None,options=None
+##title=py: Hook: Get ref object path
+##
+# --// ZMSIndexZCatalog.getRefObjPath //--
+
+ob = options['ob']
+anchor = options['anchor']
+ref = ob.get_uid()
+if anchor:
+  ref += '#'+anchor
+return '{$%s}'%ref
+
+# --// /ZMSIndexZCatalog.getRefObjPath //--
+]]>
+                  </item>
+                  <item key="errors"></item>
+                  <item key="id"><![CDATA[getRefObjPath]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Extension-Point: Get ref object path]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndexZCatalog.get_uid"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None,options=None
+##title=py: Extension-Point: get uid
+##
+# --// get_uid //--
+
+forced = options['forced']
+uid = zmscontext.ZMSIndexZCatalog_func_(zmscontext,'get_uid',forced)
+return uid
+
+# --// /get_uid //--
+]]>
+                  </item>
+                  <item key="errors"></item>
+                  <item key="id"><![CDATA[get_uid]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Extension-Point: Get uid]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndexZCatalog.ObjectAdded"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Event: object added
+##
+# --// ObjectAdded //--
+
+zmscontext.writeBlock("[ZMSIndexZCatalog.ObjectAdded]: "+zmscontext.absolute_url())
+def traverse(node):
+  # Create new uid.
+  node.get_uid(True)
+  # Catalog object.
+  node.writeBlock("ZMSIndexZCatalog.ObjectAdded: url=%s"%node.getPath())
+  node.ZMSIndexZCatalog_func_(node,'catalog_object')
+  # Traverse.
+  for childNode in node.getChildNodes():
+    traverse(childNode)
+traverse(zmscontext)
+return True
+
+# --// /ObjectAdded //--
+]]>
+                  </item>
+                  <item key="errors"></item>
+                  <item key="id"><![CDATA[ObjectAdded]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: object added]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndexZCatalog.ObjectMoved"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Event: object moved
+##
+# --// ZMSIndexZCatalog.ObjectMoved //--
+
+zmscontext.writeBlock("[ZMSIndexZCatalog.ObjectMoved]: "+zmscontext.absolute_url())
+zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
+if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
+  catalog = getattr(zmscontext,'zcatalog_index',None)
+  if catalog is not None:
+    def traverse(node):
+      # Refresh index: add and remove.
+      node.writeBlock("[ZMSIndexZCatalog.ObjectMoved]: path=%s"%node.getPath())
+      query = {'get_uid':node.get_uid()}
+      row = catalog(query)
+      for r in row:
+        node.writeBlock("[ZMSIndexZCatalog.ObjectMoved]: uncatalog_object url=%s"%r['getPath'])
+        node.ZMSIndexZCatalog_func_(node,'uncatalog_object',r['getPath'])
+      node.ZMSIndexZCatalog_func_(node,'catalog_object')
+      # Traverse.
+      for childNode in node.getChildNodes():
+        traverse(childNode)
+    traverse(zmscontext)
+
+# --// /ZMSIndexZCatalog.ObjectMoved //--
+]]>
+                  </item>
+                  <item key="errors"></item>
+                  <item key="id"><![CDATA[ObjectMoved]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: object moved]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndexZCatalog.ObjectRemoved"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: Event: object removed
+##
+# --// ZMSIndexZCatalog.ObjectRemoved //--
+
+zmscontext.writeBlock("[ZMSIndexZCatalog.ObjectRemoved]: "+zmscontext.absolute_url())
+def traverse(node):
+  # Uncatalog object.
+  node.writeBlock("ZMSIndexZCatalog.ObjectRemoved: url=%s"%node.getPath())
+  node.ZMSIndexZCatalog_func_(node,'uncatalog_object',node.getPath())
+  # Traverse.
+  for childNode in node.getChildNodes():
+    traverse(childNode)
+traverse(zmscontext)
+
+# --// /ZMSIndexZCatalog.ObjectRemoved //--
+]]>
+                  </item>
+                  <item key="errors"></item>
+                  <item key="id"><![CDATA[ObjectRemoved]]></item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: object removed]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[py]]></item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete_custom"></item>
+              <item key="delete_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+              <item key="insert_custom"><![CDATA[{$}]]></item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">0</item>
+          <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
+          <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
+          <item key="package"><![CDATA[com.zms.index]]></item>
+          <item key="revision"><![CDATA[1.1.0]]></item>
+          <item key="type"><![CDATA[ZMSResource]]></item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key"><![CDATA[com.zms.index]]></item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+            </list>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id"><![CDATA[com.zms.index]]></item>
+          <item key="name"><![CDATA[com.zms.index]]></item>
+          <item key="package"></item>
+          <item key="revision"><![CDATA[1.1.0]]></item>
+          <item key="type"><![CDATA[ZMSPackage]]></item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+</list>

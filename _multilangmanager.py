@@ -259,7 +259,7 @@ class MultiLanguageManager:
       
       # Return custom value.
       try:
-        d = self.get_lang_dict(forcedReqBuff=True)
+        d = self.get_lang_dict()
         if d.has_key(key):
           if d[key].has_key(lang):
             return d[key][lang]
@@ -540,7 +540,18 @@ class MultiLanguageManager:
         REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')
         REQUEST.RESPONSE.setHeader('Content-Type','text/plain; charset=utf-8')
         return self.str_json(d)
+      
       return self.storeReqBuff( reqBuffId, d)
+
+
+    # --------------------------------------------------------------------------
+    #  MultiLanguageManager.set_lang_dict:
+    #
+    #  Sets language-dictionary.
+    # --------------------------------------------------------------------------
+    def set_lang_dict(self, d):
+      self.clearReqBuff('MultiLanguageManager')
+      self.setConfProperty('ZMS.custom.langs.dict',d.copy())
 
 
     # --------------------------------------------------------------------------
@@ -577,7 +588,7 @@ class MultiLanguageManager:
           for id in dict.keys():
             if not id in ids:
               lang_dict[id] = dict[id]
-          self.setConfProperty('ZMS.custom.langs.dict',lang_dict.copy())
+          self.set_lang_dict(lang_dict)
         
         # Change.
         # -------
@@ -597,7 +608,7 @@ class MultiLanguageManager:
             lang_dict[key] = {}
             for lang_id in self.getLangIds():
               lang_dict[key][lang_id] = REQUEST['_value_%s'%lang_id].strip()
-          self.setConfProperty('ZMS.custom.langs.dict',lang_dict.copy())
+          self.set_lang_dict(lang_dict)
         
         # Export.
         # -------

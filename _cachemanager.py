@@ -41,8 +41,8 @@ class ReqBuff:
     # --------------------------------------------------------------------------
     def clearReqBuff(self, prefix, REQUEST=None):
       request = self.REQUEST
-      reqBuffId = self.getReqBuffId(prefix)+'.'
       buff = request.get('__buff__',Buff())
+      reqBuffId = self.getReqBuffId(prefix)+'.'
       for key in buff.__dict__.keys():
         if key.startswith(reqBuffId):
           delattr(buff,key)
@@ -56,8 +56,8 @@ class ReqBuff:
     # --------------------------------------------------------------------------
     def fetchReqBuff(self, key, REQUEST=None):
       request = self.REQUEST
+      buff = request['__buff__']
       reqBuffId = self.getReqBuffId(key)
-      buff = request.get('__buff__',Buff())
       return getattr(buff,reqBuffId)
 
     # --------------------------------------------------------------------------
@@ -67,8 +67,8 @@ class ReqBuff:
     # --------------------------------------------------------------------------
     def storeReqBuff(self, key, value, REQUEST=None):
       request = self.REQUEST
-      reqBuffId = self.getReqBuffId(key)
       buff = request.get('__buff__',Buff())
+      reqBuffId = self.getReqBuffId(key)
       setattr(buff,reqBuffId,value)
       request.set('__buff__',buff)
       return value

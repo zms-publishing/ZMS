@@ -120,7 +120,7 @@
 								zmsroot python:here.getDocumentElement().absolute_url();
 								domain python:here.getConfProperty( 'ASP.ip_or_domain',zmsroot.split('://')[1] );
 								node python:here.getHref2IndexHtml(REQUEST={'lang':request.get('lang','ger'),'preview':''});
-								href python:'%s://%s%s'%(protocol, domain ,node[len(zmsroot):])">
+								href python:['%s://%s%s'%(protocol, domain ,node[len(zmsroot):]), './index_%s.html'%request.get('lang','ger')][domain == '']">
 					<a target="_blank" tal:attributes="href href;title href"
 						tal:content="python:here.getZMILangStr('TAB_LIVE')">live</a>
 				</li>

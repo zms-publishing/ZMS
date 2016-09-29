@@ -32,7 +32,7 @@ class ReqBuff:
     #  Gets buffer-id in Http-Request.
     # ------------------------------------------------------------------------------
     def getReqBuffId(self, key):
-      return '%s#%s'%('_'.join(self.getPhysicalPath()),key)
+      return '%s#%s'%('_'.join(self.getPhysicalPath()[2:]),key)
 
     # --------------------------------------------------------------------------
     #  clearReqBuff:

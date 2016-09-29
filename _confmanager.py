@@ -449,6 +449,11 @@ class ConfManager(
     def getConfManager(self):
       return self
 
+    """
+    Returns conf-properties.
+    """
+    def get_conf_properties(self):
+      return getattr( self, '__attr_conf_dict__', {})
 
     """
     Returns property from configuration.
@@ -456,7 +461,7 @@ class ConfManager(
     """
     def getConfProperties(self, prefix=None, inherited=False, REQUEST=None):
       """ ConfManager.getConfProperties """
-      d = getattr( self, '__attr_conf_dict__', {})
+      d = self.get_conf_properties()
       if REQUEST is not None:
         import base64
         prefix = base64.b64decode(prefix)
@@ -522,7 +527,7 @@ class ConfManager(
       confdict = self.getConfProperties()
       if confdict.has_key(key):
         value = confdict.get(key)
-      elif key is not None and not key.startswith('Portal.'):
+      elif key is not None:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           value = portalMaster.getConfProperty( key, default)

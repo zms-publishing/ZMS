@@ -550,7 +550,7 @@ class ZMS(
     Returns portal-master, none if it does not exist.
     """
     def getPortalMaster(self):
-      v = self.getConfProperty('Portal.Master','')
+      v = self.get_conf_properties().get('Portal.Master','')
       if len(v) > 0:
         try:
           return getattr( self, v).content
@@ -563,7 +563,7 @@ class ZMS(
     """
     def getPortalClients(self):
       docElmnts = []
-      v = self.getConfProperty('Portal.Clients',[])
+      v = self.get_conf_properties().get('Portal.Clients',[])
       if len(v) > 0:
         thisHome = self.getHome()
         for id in v:

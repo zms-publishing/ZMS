@@ -358,37 +358,35 @@ class ZMSMetaobjManager:
       try: return self.fetchReqBuff(reqBuffId)
       except: pass
       
-      #-- Get value.
       obs = {}
-      raw = self.model
-      master_obs = None
-      for ob_id in raw.keys():
-        ob = raw.get(ob_id)
-        # Acquire from parent.
+      m = self.model
+      aq_obs = None
+      for id in m.keys():
+        ob = m[id]
+        # handle acquisition
         if ob.get('acquired',0) == 1:
           acquired = 1
           subobjects = ob.get('subobjects',1)
-          if master_obs is None:
+          if aq_obs is None:
             portalMaster = self.getPortalMaster()
             if portalMaster is not None:
-              master_obs = portalMaster.metaobj_manager.__get_metaobjs__()
-          if master_obs is not None:
-            if master_obs.has_key(ob_id):
-              ob = master_obs[ob_id].copy()
+              aq_obs = portalMaster.metaobj_manager.__get_metaobjs__()
+          if aq_obs is not None:
+            if aq_obs.has_key(id):
+              ob = aq_obs[id].copy()
             else:
-              ob = {'id':ob_id,'type':'ZMSUnknown'}
+              ob = {'id':id,'type':'ZMSUnknown'}
             ob['acquired'] = acquired
             ob['subobjects'] = subobjects
-            obs[ob_id] =  ob
+            obs[id] =  ob
             if ob['type'] == 'ZMSPackage' and ob['subobjects'] == 1:
-              package = ob_id
-              for ob_id in master_obs.keys():
-                ob = master_obs[ob_id].copy()
-                if ob.get( 'package') == package:
+              for aq_id in aq_obs.keys():
+                ob = aq_obs[aq_id].copy()
+                if ob.get( 'package') == id:
                   ob['acquired'] = 1
-                  obs[ob_id] =  ob
+                  obs[aq_id] =  ob
         else:
-          obs[ob_id] = ob
+          obs[id] = ob
       
       #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
       return self.storeReqBuff( reqBuffId, obs)
@@ -411,13 +409,16 @@ class ZMSMetaobjManager:
     #  Returns list of all meta-ids in model.
     # --------------------------------------------------------------------------
     def getMetaobjIds(self, sort=False, excl_ids=[]):
-      ids = self.model.keys()
+      obs = self.__get_metaobjs__()
+      ids = map(lambda x:obs[x]['id'],obs.keys())
+      # exclude ids
+      if excl_ids:
+        ids = filter(lambda x: x not in excl_ids,ids)
+      # sort
       if sort:
         mapping = map(lambda x: (self.display_type(self.REQUEST,x),x),ids)
         mapping.sort()
         ids = map(lambda x: x[1],mapping)
-      if excl_ids:
-        ids = filter(lambda x: x not in excl_ids,ids)
       return ids
 
 

@@ -16,6 +16,8 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
+import time
+
 class Buff:
   pass
 
@@ -72,5 +74,56 @@ class ReqBuff:
       setattr(buff,reqBuffId,value)
       request.set('__buff__',buff)
       return value
+
+    # --------------------------------------------------------------------------
+    #  startMeasurement:
+    #
+    #  Starts measurement.
+    # --------------------------------------------------------------------------
+    def startMeasurement(self, category):
+      request = self.REQUEST
+      if request.get('zmi-measurement'):
+        buff = request.get('__buff__',Buff())
+        measurements = getattr(buff,'measurements',{})
+        measurement = measurements.get(category,{}) 
+        measurement['start'] = time.time()
+        measurements[category] = measurement
+        setattr(buff,'measurements',measurements)
+        request.set('__buff__',buff)
+
+    # --------------------------------------------------------------------------
+    #  stopMeasurement:
+    #
+    #  Stops measurement.
+    # --------------------------------------------------------------------------
+    def stopMeasurement(self, category):
+      request = self.REQUEST
+      if request.get('zmi-measurement'):
+        buff = request.get('__buff__',Buff())
+        measurements = getattr(buff,'measurements',{})
+        measurement = measurements.get(category,{})
+        if measurement.has_key('start'):
+          millis = time.time() - measurement['start']
+          measurement['category'] = category
+          measurement['count'] = measurement.get('count',0)+1
+          measurement['total'] = measurement.get('total',0)+millis
+          measurement['min'] = [measurement.get('min',millis),millis][measurement.get('min',millis)>millis]
+          measurement['max'] = [measurement.get('max',millis),millis][measurement.get('max',millis)<millis]
+          measurement['avg'] = measurement['total']/measurement['count']
+          del measurement['start']
+          measurements[category] = measurement
+          setattr(buff,'measurements',measurements)
+          request.set('__buff__',buff)
+
+    # --------------------------------------------------------------------------
+    #  getMeasurement:
+    #
+    #  Gets measurement.
+    # --------------------------------------------------------------------------
+    def getMeasurement(self):
+      request = self.REQUEST
+      buff = request.get('__buff__',Buff())
+      measurements = getattr(buff,'measurements',{})
+      return self.sort_list(measurements.values(),'total','desc')
 
 ################################################################################

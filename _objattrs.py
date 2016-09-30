@@ -625,24 +625,30 @@ class ObjAttrs:
     #  @deprecated: use attr(key) instead! 
     # --------------------------------------------------------------------------
     def getObjProperty(self, key, REQUEST={}, par=None):
+      self.startMeasurement("%s.%s"%(self.meta_id,key))
+      
       objAttrs = self.getObjAttrs()
       
-      #-- Special attributes.
+      # Special attributes.
       if key not in objAttrs.keys():
         value = self.nvl(self.evalMetaobjAttr(key),'')
         if not isinstance(value,_blobfields.MyBlob) and (isinstance(value,Image) or isinstance(value,File)):
           value = _blobfields.MyBlobWrapper(value)
       
-      #-- Standard attributes.
+      # Standard attributes.
       elif key in objAttrs.keys():
         objAttr = objAttrs[key]
         value = self.getObjAttrValue( objAttr, REQUEST)
         value = self.dt_exec(value)
       
-      #-- Undefined attributes.
+      # Undefined attributes.
       else:
         value = ''
       
+      # Stop measurment.
+      self.stopMeasurement("%s.%s"%(self.meta_id,key))
+      
+      # Return value.
       return value
 
 

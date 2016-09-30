@@ -8,6 +8,21 @@ class PerformanceTest(test_util.BaseTest):
   def setUp(self):
     pass
 
+  def test_c(self):
+    zmscontext = self.context
+    r = 100000
+    """
+    self.startMeasurement('getReqBuffId')
+    for i in range(r):
+      reqBuffId = zmscontext.getReqBuffId('xxx')
+    self.stopMeasurement('getReqBuffId')
+    self.startMeasurement('getReqBuffId2')
+    for i in range(r):
+      reqBuffId = zmscontext.getReqBuffId2('xxx')
+    self.stopMeasurement('getReqBuffId2')
+    """
+    pass
+
   def test_metaobj_manager(self):
     zmscontext = self.context
     request = zmscontext.REQUEST

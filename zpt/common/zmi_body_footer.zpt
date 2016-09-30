@@ -12,6 +12,10 @@
 	<div class="clearfix"></div><!-- .clearfix -->
 </footer>
 
+<div tal:condition="python:request.get('zmi-measurement')" class="row">
+  <code tal:content="python:here.getMeasurement()"></code>
+</div>
+
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 
 <!-- /common/zmi_body_footer -->

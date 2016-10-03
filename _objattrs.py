@@ -564,14 +564,6 @@ class ObjAttrs:
         except:
           value = 0.0
       
-      #-- Text-Fields
-      elif datatype in _globals.DT_TEXTS:
-        value = self.validateInlineLinkObj(value)
-      
-      #-- Url-Fields
-      elif datatype == _globals.DT_URL:
-        value = self.validateLinkObj(value)
-      
       # Return value.
       return value
 
@@ -627,18 +619,26 @@ class ObjAttrs:
     def getObjProperty(self, key, REQUEST={}, par=None):
       self.startMeasurement("%s.%s"%(self.meta_id,key))
       
-      objAttrs = self.getObjAttrs()
+      obj_attrs = self.getObjAttrs()
       
       # Special attributes.
-      if key not in objAttrs.keys():
+      if key not in obj_attrs.keys():
         value = self.nvl(self.evalMetaobjAttr(key),'')
         if not isinstance(value,_blobfields.MyBlob) and (isinstance(value,Image) or isinstance(value,File)):
           value = _blobfields.MyBlobWrapper(value)
       
       # Standard attributes.
-      elif key in objAttrs.keys():
-        objAttr = objAttrs[key]
-        value = self.getObjAttrValue( objAttr, REQUEST)
+      elif key in obj_attrs.keys():
+        obj_attr = obj_attrs[key]
+        datatype = obj_attr['datatype_key']
+        value = self.getObjAttrValue( obj_attr, REQUEST)
+        # Text-Fields
+        if datatype in _globals.DT_TEXTS:
+          value = self.validateInlineLinkObj(value)
+        # Url-Fields
+        elif datatype == _globals.DT_URL:
+          value = self.validateLinkObj(value)
+        # Executable fields.
         value = self.dt_exec(value)
       
       # Undefined attributes.
@@ -1003,7 +1003,7 @@ class ObjAttrs:
       
       #-- Other-Fields
       else:
-        set, value = True, self.formatObjAttrValue(obj_attr,value,lang)
+        set = True
       
       #-- SET?
       if set:

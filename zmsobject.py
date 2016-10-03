@@ -1410,8 +1410,6 @@ class ZMSObject(ZMSItem.ZMSItem,
         name = 'getCustomBodyContent'
         if hasattr(self,name):
           html = getattr(self,name)(context=self,html=html,REQUEST=REQUEST)
-        # Process inline links.
-        html = self.validateInlineLinkObj(html)
       return html
 
 
@@ -1440,8 +1438,6 @@ class ZMSObject(ZMSItem.ZMSItem,
           html = self._getBodyContent(REQUEST)
         # Process html <form>-tags.
         html = _globals.form_quote(html,REQUEST)
-        # Process inline links.
-        html = self.validateInlineLinkObj(html)
       except:
         html = _globals.writeError(self,"[renderShort]")
         html = '<br/>'.join(html.split('\n'))

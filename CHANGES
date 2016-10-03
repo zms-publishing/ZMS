@@ -2,11 +2,17 @@
 
 == 3.4.0dev (in development) ==
  
-  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3804&limit=200 latest changes...]
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3822&limit=200 latest changes...]
 
-== 3.3.2 (2016-10-31) ==
+== 3.3.3 (2016-10-31) ==
 
   * TBA
+  
+== 3.3.2 (2016-09-30) ==
+
+  * added smooth top-scrolling button
+  * fixed missing JS delimiter, fixed record set sorting
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=3821&stop_rev=3804&limit=200 more in 3.3.2...]
 
 == 3.3.1 (2016-09-15) ==
 

@@ -26,21 +26,24 @@ class ZMSWorkflowItem:
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getAutocommit(self):
       workflow_manager = self.getWorkflowManager()
-      autocommit = workflow_manager.getAutocommit()
-      if not autocommit:
-        baseurl = self.getDocumentElement().absolute_url()
-        url = self.absolute_url()
-        if len( url) > len( baseurl):
-          url = url[ len( baseurl)+1:]
-        url = '$'+url
-        found = False
-        nodes = workflow_manager.getNodes()
+      if not workflow_manager.getAutocommit():
+        #-- [ReqBuff]: Fetch buffered value from Http-Request.
+        nodes = []
+        reqBuffId = 'ZMSWorkflowManager.getNodes'
+        try: nodes = self.fetchReqBuff(reqBuffId)
+        except:
+          for node in workflow_manager.getNodes():
+            ob = self.getLinkObj(node)
+            if ob is not None:
+              nodes.append(ob.getPhysicalPath())
+        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
+        self.storeReqBuff( reqBuffId, nodes)
+        # Test nodes.
+        phys_path = self.getPhysicalPath()
         for node in nodes:
-          if url.find(node[1:-1]) == 0:
-            found = True
-            break
-        autocommit = autocommit or not found
-      return autocommit
+          if len(node) <= len(phys_path) and phys_path[:len(node)] == node:
+            return False
+      return True
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

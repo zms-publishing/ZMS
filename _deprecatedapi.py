@@ -18,29 +18,6 @@
 
 # Imports.
 import warnings
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-# Product Imports.
-import _globals
-import _zreferableitem
-
-
-# ------------------------------------------------------------------------------
-#  getLinkList_ZMSLinkElement:
-#
-#  Returns list of URLs of links.
-# ------------------------------------------------------------------------------
-def getLinkList_ZMSLinkElement(self, REQUEST=None, allow_none=0):
-  value = []
-  ref = self.getObjAttrValue(self.getObjAttr('attr_ref'),REQUEST)
-  dct = {}
-  dct['dst'] = self.getLinkObj(ref,REQUEST)
-  dct['url'] = self.getLinkUrl(ref,REQUEST)
-  dct['title'] = self.getObjProperty('title',REQUEST)
-  dct['description'] = self.getObjProperty('attr_dc_description',REQUEST)
-  dct['internal'] = _zreferableitem.isInternalLink(ref)
-  if dct['url'] is not None or allow_none:
-    value.append(dct)
-  return value
 
 
 ################################################################################
@@ -111,67 +88,6 @@ class DeprecatedAPI:
   def getFormat(self,REQUEST):
     warnings.warn("[getFormat]: @deprecated: returns \"getObjProperty('format',REQUEST)\" for compatibility reasons!")
     return self.getObjProperty('format',REQUEST)
-
-  # ----------------------------------------------------------------------------
-  #  DeprecatedAPI.getLinkList: 
-  #
-  #  Returns list of URLs of links.
-  # ----------------------------------------------------------------------------
-  def getLinkList(self, REQUEST=None, allow_none=0):
-      value = []
-      if self.meta_id == 'ZMSLinkElement' and self.getObjProperty('align',REQUEST) in ['','NONE']:
-        if self.isEmbedded(REQUEST):
-          if self.isPage():
-            ref_obj = self.getRefObj()
-            if ref_obj is not None:
-              value.extend( ref_obj.getLinkList( REQUEST, allow_none))
-        else:
-          value.extend( getLinkList_ZMSLinkElement( self, REQUEST, allow_none))
-      else:
-        for ob in self.filteredChildNodes(REQUEST,['ZMSFile','ZMSLinkContainer','ZMSLinkElement']):
-          if ob.meta_id == 'ZMSLinkContainer':
-            for sub_ob in ob.filteredChildNodes(REQUEST,['ZMSLinkElement']):
-              value.extend( getLinkList_ZMSLinkElement( sub_ob, REQUEST, allow_none))
-          elif ob.meta_id == 'ZMSFile' and ob.getObjProperty('align',REQUEST) in ['','NONE']:
-            f = ob.getFile(REQUEST)
-            if f:
-              dct = {}
-              dct['dst'] = ob
-              dct['url'] = f.getHref(REQUEST)
-              dct['title'] = ob.getTitle(REQUEST)
-              dct['description'] = _globals.nvl(ob.getObjProperty('attr_dc_description',REQUEST),'')
-              dct['internal'] = 1
-              value.append(dct)
-          elif ob.meta_id == 'ZMSLinkElement' and ob.getObjProperty('align',REQUEST) in ['','NONE']:
-            if not ob.isEmbedded(REQUEST):
-              value.extend( getLinkList_ZMSLinkElement( ob, REQUEST, allow_none))
-      return value
-
-  # ----------------------------------------------------------------------------
-  #  DeprecatedAPI.getLinkHtml:
-  #
-  #  Resolves internal/external links and returns Html.
-  # ----------------------------------------------------------------------------
-  def getLinkHtml( self, url, html='<a href="%s">&raquo;</a>', REQUEST=None):
-    warnings.warn("[getLinkHtml]: @deprecated: use own implementation!")
-    REQUEST = _globals.nvl( REQUEST, self.REQUEST)
-    s = ''
-    ob = self
-    while ob is not None:
-      if html in ob.getMetaobjIds():
-        metaObj = ob.getMetaobj( html)
-        metaObjAttr = ob.getMetaobjAttr( metaObj['id'], 'getLinkHtml',syncTypes=['*'])
-        if type(metaObjAttr) is dict:
-          REQUEST.set( 'ref_id', url)
-          return self.dt_exec( metaObjAttr['custom'])
-      ob = self.getPortalMaster()
-    ob = self.getLinkObj(url,REQUEST)
-    if ob is not None:
-      if ob.isActive(REQUEST) and \
-         ob.isVisible(REQUEST):
-        url = ob.getHref2IndexHtml(REQUEST)
-        s = html%url
-    return s
 
   # ----------------------------------------------------------------------------
   #  DeprecatedAPI.meta_id_or_type:

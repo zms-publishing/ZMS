@@ -527,7 +527,7 @@ class ConfManager(
       confdict = self.getConfProperties()
       if confdict.has_key(key):
         value = confdict.get(key)
-      elif key is not None:
+      elif key is not None and not key.startswith('ASP.') and not key.startswith('Portal.'):
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           value = portalMaster.getConfProperty( key, default)

@@ -103,10 +103,12 @@ class ReqBuff:
         measurements = getattr(buff,'measurements',{})
         measurement = measurements.get(category,{})
         if measurement.has_key('start'):
+          hotspot = '/'.join(self.getPhysicalPath())
           millis = time.time() - measurement['start']
           measurement['category'] = category
           measurement['count'] = measurement.get('count',0)+1
           measurement['total'] = measurement.get('total',0)+millis
+          measurement['hotspot'] = [measurement.get('hotspot',hotspot),hotspot][measurement.get('max',millis)<millis]
           measurement['min'] = [measurement.get('min',millis),millis][measurement.get('min',millis)>millis]
           measurement['max'] = [measurement.get('max',millis),millis][measurement.get('max',millis)<millis]
           measurement['avg'] = measurement['total']/measurement['count']

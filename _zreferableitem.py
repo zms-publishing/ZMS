@@ -42,6 +42,27 @@ def isInternalLink(url):
   rtn = type(url) is str and url.startswith('{$') and url.endswith('}')
   return rtn
 
+# ------------------------------------------------------------------------------
+#  getInternalLinkUrl:
+# ------------------------------------------------------------------------------
+def getInternalLinkUrl(self, ob):
+  self.startMeasurement('%s.getInternalLinkUrl'%self.meta_id)
+  request = self.REQUEST
+  if ob is None:
+    index_html = './index_%s.html?op=not_found&url=%s'%(request.get('lang',self.getPrimaryLanguage()),url)
+  else:
+    # Get index_html.
+    index_html = None
+    if 'getHref2IndexHtml' in ob.getMetaobjAttrIds(ob.meta_id):
+      index_html = ob.attr('getHref2IndexHtml')
+    else:
+      index_html = ob.getHref2IndexHtml(request)
+    # Contextualize index_html.
+    context = request.get('ZMS_THIS',self)
+    index_html = ob.getHref2IndexHtmlInContext(context,index_html,request)
+  self.stopMeasurement('%s.getInternalLinkUrl'%self.meta_id)
+  return index_html
+
 # ----------------------------------------------------------------------------
 #  getInlineRefs:
 #
@@ -281,6 +302,9 @@ class ZReferableItem:
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
+    self.startMeasurement('%s.validateInlineLinkObj'%self.meta_id)
+    import time
+    t0 = time.time()
     for pq in [('<a(.*?)>','href'),('<img(.*?)>','src')]:
       p = pq[0]
       q = pq[1]
@@ -290,19 +314,27 @@ class ZReferableItem:
         if d.has_key('data-id'):
           old = p.replace('(.*?)',f)
           url = d['data-id']
-          ob = self.getLinkObj(url)
-          if ob is not None:
-            REQUEST = self.REQUEST
-            d[q] = self.getLinkUrl(url)
-            if not ob.isActive(REQUEST):
+          # Params.
+          ref_params = ''
+          if url.find(';') > 0:
+            ref_params = url[url.find(';'):-1]
+            url = '{$%s}'%url[2:url.find(';')]
+          ref_obj = self.getLinkObj(url)
+          if ref_obj is not None:
+            request = self.REQUEST
+            url = '{$%s%s}'%(self.getRefObjPath( ref_obj)[2:-1],ref_params)
+            d['data-id'] = url
+            d[q] = getInternalLinkUrl(self,ref_obj)
+            if not ref_obj.isActive(request):
               d['data-target'] = "inactive"
-            elif self.getTrashcan().isAncestor(ob):
+            elif self.getTrashcan().isAncestor(ref_obj):
               d['data-target'] = 'trashcan'
           else:
             d['data-target'] = "missing"
           new = p.replace('(.*?)',' '.join(['']+map(lambda x:'%s="%s"'%(x,d[x]),d.keys())))
           if old != new:
             text = text.replace(old,new)
+    self.stopMeasurement('%s.validateInlineLinkObj'%self.meta_id)
     return text
 
 
@@ -312,6 +344,7 @@ class ZReferableItem:
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
+    self.startMeasurement('%s.validateLinkObj'%self.meta_id)
     if isInternalLink(url):
       if not url.startswith('{$__'):
         # Params.
@@ -320,16 +353,13 @@ class ZReferableItem:
           ref_params = url[url.find(';'):-1]
           url = '{$%s}'%url[2:url.find(';')]
         ref_obj = self.getLinkObj(url)
-        # Anchor.
-        ref_anchor = ''
-        if url.find('#') > 0:
-          ref_anchor = url[url.find('#'):-1]
         if ref_obj is not None:
           # Repair link.
-          url = '{$%s%s}'%(self.getRefObjPath( ref_obj, ref_anchor)[2:-1],ref_params)
+          url = '{$%s%s}'%(self.getRefObjPath( ref_obj)[2:-1],ref_params)
         else:
           # Broken link.
           url = '{$__' + url[2:-1] + '__}'
+    self.stopMeasurement('%s.validateLinkObj'%self.meta_id)
     return url
 
 
@@ -339,6 +369,7 @@ class ZReferableItem:
   #  Resolves internal/external links and returns Object.
   # ----------------------------------------------------------------------------
   def getLinkObj(self, url, REQUEST=None):
+    self.startMeasurement('%s.getLinkObj'%self.meta_id)
     ob = None
     if isInternalLink(url):
       def default(*args, **kwargs):
@@ -387,6 +418,7 @@ class ZReferableItem:
       if ob is not None and ob.id not in self.getPhysicalPath():
         request = self.REQUEST
         ob.set_request_context(request,ref_params)
+    self.stopMeasurement('%s.getLinkObj'%self.meta_id)
     return ob
 
 
@@ -396,7 +428,8 @@ class ZReferableItem:
   #  Resolves internal/external links and returns URL.
   # ----------------------------------------------------------------------------
   def getLinkUrl( self, url, REQUEST=None):
-    REQUEST = _globals.nvl( REQUEST, self.REQUEST)
+    self.startMeasurement('%s.getLinkUrl'%self.meta_id)
+    request = self.REQUEST
     if isInternalLink(url):
       # Params.
       ref_params = {}
@@ -410,26 +443,19 @@ class ZReferableItem:
       # Prepare request.
       bak_params = {}
       for key in ref_params.keys():
-        bak_params[key] = REQUEST.get(key,None)
-        REQUEST.set(key,ref_params[key])
+        bak_params[key] = request.get(key,None)
+        request.set(key,ref_params[key])
       # Get index_html.
-      ob = self.getLinkObj(url,REQUEST)
-      if ob is None:
-        index_html = './index_%s.html?op=not_found&url=%s'%(REQUEST.get('lang',self.getPrimaryLanguage()),url)
-      else:
-        index_html = ob.getObjProperty('getHref2IndexHtml',REQUEST)
-        if not index_html:
-          index_html = ob.getHref2IndexHtml(REQUEST)
-        context = REQUEST.get('ZMS_THIS',self)
-        index_html = ob.getHref2IndexHtmlInContext(context,index_html,REQUEST)
+      index_html = getInternalLinkUrl(self,ob)
       # Unprepare request.
       for key in bak_params.keys():
-        REQUEST.set(key,bak_params[key])
+        request.set(key,bak_params[key])
       # Return index_html.
       return index_html + ref_anchor
     elif isMailLink (url): 
       prefix = 'mailto:'
       return prefix + self.encrypt_ordtype(url[len(prefix):])
+    self.stopMeasurement('%s.getLinkUrl'%self.meta_id)
     return url
 
   # ----------------------------------------------------------------------------

@@ -99,29 +99,49 @@ class PerformanceTest(test_util.BaseTest):
     ids = filter(lambda x: x.startswith('com.zms.test.package') or x.startswith('LgTest_'),zmscontext.getMetaobjIds())
     self.assertEquals("#%s.metaobj_ids"%zmscontext.getHome().id,0,len(ids))
 
-
   def test_content(self):
     zmscontext = self.context
     request = self.REQUEST
+    #request.set('zmi-measurement',True)
     
     # create test-folder
     self.writeInfo('[test_content] create test-folder')
     folder = zmscontext.manage_addZMSCustom('ZMSFolder',{'title':'Temp-Folder','titlealt':'Temp-Folder'},request)
+    lta = []
     for i in range(10):
-      ta = folder.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
-    for i in range(20):
+      lta.append(folder.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request))
+    for i in range(40):
       doc = folder.manage_addZMSCustom('ZMSDocument',{'title':'Temp-Document-%i'%i,'titlealt':'Temp-Document-%i'%i},request)
-      for j in range(3):
-        ta = doc.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request)
+      for j in range(5):
+        lta.append(doc.manage_addZMSCustom('ZMSTextarea',{'text':'Lorem ipsum dolor'},request))
+    folder2 = zmscontext.manage_addZMSCustom('ZMSFolder',{'title':'Temp-Folder','titlealt':'Temp-Folder'},request)
+    text = 'Lorem ipsum dolor '
+    for ta in lta:
+      text += '<a data-id="%s" href="index_html">Textarea %i</a> '%(folder2.getRefObjPath(ta),lta.index(ta))
+    ta2 = folder2.manage_addZMSCustom('ZMSTextarea',{'text':text},request)
+    #self.writeInfo('[test_content] %s'%text)
     
-    # render manage_main
-    self.startMeasurement('manage_main')
-    html = folder.manage_main(folder,request)
-    self.stopMeasurement('manage_main')
+    # render manage_container
+    zmscontext.clearMeasurement()
+    self.startMeasurement('manage_container')
+    html = folder.manage_container(folder,request)
+    self.writeInfo('[test_content] folder.manage_container [%i]'%len(html))
+    #self.writeInfo('[test_content] folder.manage_container [%s]'%html.encode('ascii', 'xmlcharrefreplace'))
+    self.stopMeasurement('manage_container')
+    self.writeInfo('[test_content] %s'%str(zmscontext.getMeasurement()))
+    
+    # render manage_container
+    zmscontext.clearMeasurement()
+    self.startMeasurement('manage_container')
+    html = folder2.manage_container(folder2,request)
+    self.writeInfo('[test_content] folder2.manage_container [%i]'%len(html))
+    #self.writeInfo('[test_content] folder2.manage_container [%s]'%html.encode('ascii', 'xmlcharrefreplace'))
+    self.stopMeasurement('manage_container')
+    self.writeInfo('[test_content] %s'%str(zmscontext.getMeasurement()))
     
     # remove test-folder
     self.writeInfo('[test_content] remove test-folder')
-    zmscontext.manage_delObjects([folder.id])
+    zmscontext.manage_delObjects([folder.id,folder2.id])
 
 
   def tearDown(self):

@@ -76,6 +76,22 @@ class ReqBuff:
       return value
 
     # --------------------------------------------------------------------------
+    #  clearMeasurement:
+    #
+    #  Clears measurement.
+    # --------------------------------------------------------------------------
+    def clearMeasurement(self, category=''):
+      request = self.REQUEST
+      if request.get('zmi-measurement'):
+        buff = request.get('__buff__',Buff())
+        measurements = getattr(buff,'measurements',{})
+        for key in measurements.keys():
+          if key.find(category)>=0:
+            del measurements[key]
+        setattr(buff,'measurements',measurements)
+        request.set('__buff__',buff)
+
+    # --------------------------------------------------------------------------
     #  startMeasurement:
     #
     #  Starts measurement.
@@ -103,12 +119,12 @@ class ReqBuff:
         measurements = getattr(buff,'measurements',{})
         measurement = measurements.get(category,{})
         if measurement.has_key('start'):
-          hotspot = '/'.join(self.getPhysicalPath())
+          hotspot = '/'.join(self.getPhysicalPath()) 
           millis = time.time() - measurement['start']
           measurement['category'] = category
           measurement['count'] = measurement.get('count',0)+1
           measurement['total'] = measurement.get('total',0)+millis
-          measurement['hotspot'] = [measurement.get('hotspot',hotspot),hotspot][measurement.get('max',millis)<millis]
+          measurement['hotspot'] = [measurement.get('hotspot',hotspot),hotspot][measurement.get('max',millis)<millis] 
           measurement['min'] = [measurement.get('min',millis),millis][measurement.get('min',millis)>millis]
           measurement['max'] = [measurement.get('max',millis),millis][measurement.get('max',millis)<millis]
           measurement['avg'] = measurement['total']/measurement['count']
@@ -122,10 +138,10 @@ class ReqBuff:
     #
     #  Gets measurement.
     # --------------------------------------------------------------------------
-    def getMeasurement(self):
+    def getMeasurement(self, category=''):
       request = self.REQUEST
       buff = request.get('__buff__',Buff())
       measurements = getattr(buff,'measurements',{})
-      return self.sort_list(measurements.values(),'total','desc')
+      return self.sort_list(filter(lambda x:x['category'].find(category)>=0,measurements.values()),'total','desc')
 
 ################################################################################

@@ -1223,7 +1223,7 @@ class ZMSMetaobjManager:
           types = self.valid_types+map(lambda x:self.metas[x*2],range(len(self.metas)/2))
           for k in self.getMetaobjIds():
             if k not in sync_id:
-              if old_model.has_key(k):
+              if self.model.has_key(k) and old_model.has_key(k):
                 d = self.model[k]
                 types_attrs = map(lambda x: (x['id'],x), filter(lambda x: x['type'] in types, d.get('attrs',[])))
                 d = old_model[k]

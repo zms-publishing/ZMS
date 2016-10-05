@@ -1419,8 +1419,9 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def renderShort(self, REQUEST, manage_main=False):
       html = ''
+      metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
       try:
-        if 'renderShort' in self.getMetaobjAttrIds(self.meta_id):
+        if 'renderShort' in metaObjAttrIds and (not manage_main or 'standard_html' in metaObjAttrIds or "bodyContentZMSCustom_%s"%self.meta_id in metaObjAttrIds):
           html = self._getBodyContentContentEditable(self.attr('renderShort'))
         elif self.isPage() or manage_main:
           if manage_main:

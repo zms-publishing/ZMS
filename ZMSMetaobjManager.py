@@ -307,15 +307,6 @@ class ZMSMetaobjManager:
     #
     ############################################################################
 
-    # -------------------------------------------------------------------------- 
-    #  ZMSMetaobjManager.getTemplateId 
-    # 
-    #  Returns template-id for meta-object specified by given Id. 
-    #  @deprecated
-    # -------------------------------------------------------------------------- 
-    def getTemplateId(self, id): 
-      return "bodyContentZMSCustom_%s"%id 
-
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.renderTemplate
     #

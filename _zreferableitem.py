@@ -446,15 +446,16 @@ class ZReferableItem:
         bak_params[key] = request.get(key,None)
         request.set(key,ref_params[key])
       # Get index_html.
-      index_html = getInternalLinkUrl(self,ob)
+      ref_obj = self.getLinkObj(url)
+      index_html = getInternalLinkUrl(self,ref_obj)
       # Unprepare request.
       for key in bak_params.keys():
         request.set(key,bak_params[key])
       # Return index_html.
-      return index_html + ref_anchor
+      url = index_html + ref_anchor
     elif isMailLink (url): 
       prefix = 'mailto:'
-      return prefix + self.encrypt_ordtype(url[len(prefix):])
+      url = prefix + self.encrypt_ordtype(url[len(prefix):])
     self.stopMeasurement('%s.getLinkUrl'%self.meta_id)
     return url
 

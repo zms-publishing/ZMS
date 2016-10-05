@@ -378,34 +378,14 @@ class ZReferableItem:
         ob = None
         if not url.startswith('{$__'):
           # Find document-element.
-          docElmnt = None
-          path = url[2:-1]
-          i = path.find('#')
-          if i > 0:
-            path = path[:i]
-          i = path.find('@')
-          if i > 0:
-            clientIds = path[:i].split('/')
-            path = path[i+1:]
-            clientHome = self.getHome()
-            for clientId in clientIds:
-              clientHome = getattr(clientHome,clientId,None)
-              if clientHome is None:
-                break
-            if clientHome is not None:
-              obs = clientHome.objectValues(['ZMS'])
-              if obs:
-                docElmnt = obs[0]
-          else:
-            docElmnt = self.getDocumentElement()
-          ob = docElmnt
-          # Find object.
-          if ob is not None and len(path) > 0:
-            ids = path.split( '/')
-            for id in ids:
-              ob = getattr(ob,id,None)
-              if ob is None:
-                break
+          zmspath = url[2:-1].replace('@','/content/')
+          l = zmspath.split('/') 
+          ob = self
+          try:
+            for id in l:
+              ob = getattr(ob,id)
+          except:
+            pass
         return ob
       # Params.
       ref_params = {}

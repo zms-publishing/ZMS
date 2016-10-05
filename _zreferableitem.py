@@ -128,10 +128,11 @@ class ZReferableItem:
         self = args[0]
         ob = args[1]['ob']
         anchor = args[1]['anchor']
-        ob_path = ob.breadcrumbs_obj_path()
-        homeIds = map(lambda x:x.getHome().id,filter(lambda x:x.meta_id=='ZMS',ob_path))
-        pathIds = map(lambda x:x.id,filter(lambda x:x.meta_id!='ZMS',ob_path))
-        path = '/'.join(homeIds) + '@' + '/'.join(pathIds)
+        abs_home = self.getAbsoluteHome().getPhysicalPath()
+        ob_home = ob.getPhysicalPath()[len(abs_home):]
+        path = '/'.join(ob_home).replace('/content/','@')
+        if path.startswith('@'):
+          path = path[1:]
         return '{$' + path + anchor + '}'
       ref = self.evalExtensionPoint('ExtensionPoint.ZReferableItem.getRefObjPath',default,ob=ob,anchor=anchor)
     return ref

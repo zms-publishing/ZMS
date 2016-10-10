@@ -129,7 +129,7 @@ class ZReferableItem:
         ob = args[1]['ob']
         anchor = args[1]['anchor']
         abs_home = self.getAbsoluteHome().getPhysicalPath()
-        ob_home = ob.getPhysicalPath()[len(abs_home):]
+        ob_home = ob.getPhysicalPath()[len(abs_home)-1:]
         path = '/'.join(ob_home).replace('/content/','@')
         if path.startswith('@'):
           path = path[1:]

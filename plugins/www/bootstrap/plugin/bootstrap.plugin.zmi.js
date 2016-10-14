@@ -723,10 +723,12 @@ ZMI.prototype.initInputFields = function(container) {
 							var $input = $(this).prev();
 							var v = $input.val();
 							if (v.length>0) {
-								$input.val("");
-								$select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+v+'</option>').removeClass("hidden");
-								// rebuild multiselect
-								$ZMI.multiselect(context);
+								$input.val("")
+								if ($select.children("option[value='"+v+"']").length==0) {
+								  $select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+v+'</option>').removeClass("hidden");
+								  // rebuild multiselect
+								  $ZMI.multiselect(context);
+								}
 							}
 						});
 				});
@@ -756,11 +758,15 @@ ZMI.prototype.initInputFields = function(container) {
 									var $select = $("select.form-multiautocomplete[multiple]#"+id.substr(1));
 									if ($select.length==1 && ui.item) {
 										// get value
-										$select.append('<option selected="selected" value="'+ui.item.value+'" data-value="'+ui.item.value+'">'+ui.item.label+'</option>').removeClass("hidden");
-										// rebuild multiselect
-										$ZMI.multiselect(context);
-										// reset value
-										ui.item.value = '';
+										var v = ui.item.value;
+										if (v.length>0) { 
+										  ui.item.value = '';
+										  if ($select.children("option[value='"+v+"']").length==0) {
+										    $select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+ui.item.label+'</option>').removeClass("hidden");
+										    // rebuild multiselect
+										    $ZMI.multiselect(context);
+										  }
+										}
 									}
 								}
 						});

@@ -695,10 +695,80 @@ ZMI.prototype.initInputFields = function(container) {
 				return;
 			}
 			$(this).addClass('form-initialized');
+			// Multi-Autocomplete
+			$('select.form-multiautocomplete[multiple]:not(.hidden)',context).each(function() {
+					var $select = $(this);
+					var id = $select.attr('id');
+					var ajax_url = $select.attr('data-ajax-url');
+					var obj_id = $select.attr('data-obj-id');
+					var attr_id = $select.attr('data-attr-id');
+					$select.removeClass("form-control").addClass("zmi-select").attr({"data-autocomplete-add":false});
+					$select.before('<div class="input-group form-multiautocomplete">'
+						+ '<input type="text" id="_'+id+'" class="form-control form-autocomplete" data-ajax-url="'+ajax_url+'" data-obj-id="'+obj_id+'" data-attr-id="'+attr_id+'"/>'
+						+ '<span class="input-group-addon ui-helper-clickable">'
+						+ $ZMI.icon('icon-plus text-primary')
+						+ '</span>'
+						+ '</div><!-- .input-group -->');
+					var $inputgroup = $select.prev();
+					$("input",$inputgroup).keydown(function(e) {
+							if (e.which==13) {
+								e.preventDefault();
+								e.stopPropagation();
+								$(".input-group-addon",$inputgroup).trigger("click");
+								return false;
+							}
+						});
+					$(".input-group-addon",$inputgroup).click(function() {
+							// get value
+							var $input = $(this).prev();
+							var v = $input.val();
+							if (v.length>0) {
+								$input.val("");
+								$select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+v+'</option>').removeClass("hidden");
+								// rebuild multiselect
+								$ZMI.multiselect(context);
+							}
+						});
+				});
+			// Autocomplete
+			$('.form-autocomplete:not(.hidden)',context).each(function() {
+					$(this).addClass("ui-autocomplete-input");
+					var id = $(this).attr('id');
+					$ZMI.writeDebug('autocomplete:'+id);
+					var ajax_url = $(this).attr('data-ajax-url');
+					var obj_id = $(this).attr('data-obj-id');
+					var attr_id = $(this).attr('data-attr-id');
+					zmiAutocomplete('#'+id,{
+							source: function( request, response) {
+									var term = request.term;
+									var params = {};
+									params.q = term;
+									params.attr_id = attr_id;
+									params.obj_id = obj_id;
+									params.fmt = 'json';
+									$.get( ajax_url, params, function( data) {
+											if (data.length>0) {
+												response(zmiAutocompleteDefaultFormatter(eval('('+data+')'),term));
+											}
+										});
+								},
+							select: function( event, ui ) {
+									var $select = $("select.form-multiautocomplete[multiple]#"+id.substr(1));
+									if ($select.length==1 && ui.item) {
+										// get value
+										$select.append('<option selected="selected" value="'+ui.item.value+'" data-value="'+ui.item.value+'">'+ui.item.label+'</option>').removeClass("hidden");
+										// rebuild multiselect
+										$ZMI.multiselect(context);
+										// reset value
+										ui.item.value = '';
+									}
+								}
+						});
+				});
 			// Multiselect
 			$.plugin('multiselect',{
 				files: [
-					$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js')
+					$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js?ts='+new Date())
 				]});
 			$.plugin('multiselect').set({context:context});
 			$.plugin('multiselect').get("select.zmi-select[multiple]:not(.hidden)",function(){

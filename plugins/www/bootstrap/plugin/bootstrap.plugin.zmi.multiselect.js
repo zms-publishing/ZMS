@@ -1,7 +1,7 @@
 ZMI.prototype.multiselect = function(context) {
 				var refreshContainer = function($container) {
 					var c = 0;
-					var $select = $container.prev();
+					var $select = $container.parent().prev();
 					$("option",$select).prop("selected","");
 					$container.children().each(function() {
 						var data_value = $(this).attr("data-value");
@@ -12,8 +12,8 @@ ZMI.prototype.multiselect = function(context) {
 						c++;
 					});
 				}
-				var refreshDropdown = function($dropdown) {
-					if ($("li.hidden",$dropdown).length==$("li",$dropdown).length) {
+				var refreshDropdown = function($select,$dropdown) {
+					if ($select.attr('data-autocomplete-add')=="false" || $("li.hidden",$dropdown).length==$("li",$dropdown).length) {
 						$dropdown.hide("normal");
 					}
 					else {
@@ -22,8 +22,10 @@ ZMI.prototype.multiselect = function(context) {
 				}
 				$("select.zmi-select[multiple]:not(.hidden)",context).each(function() {
 					var $select = $(this);
+					$select.next(".zmi-select-container").remove();
 					var html = ''
-						+ '<div class="'+$(this).attr('class')+'">'
+						+ '<div class="zmi-select-container">'
+						+ '<div class="'+$select.attr('class')+'">'
 						+ '</div>'
 						+ '<div class="btn-group btn-group-sortable">\n'
 						+ '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
@@ -44,13 +46,14 @@ ZMI.prototype.multiselect = function(context) {
 					});
 					html += ''
 						+ '</ul>'
+						+ '</div>'
 						+ '</div>';
-					$(this).addClass("hidden").after(html);
-					var $container = $select.next();
+					$select.addClass("hidden").after(html);
+					var $container = $select.next().children(":first");
 					var $dropdown = $container.next();
+					refreshDropdown($select,$dropdown);
 					$("li a",$dropdown).click(function() {
 						$(this).parent().addClass("hidden");
-						refreshDropdown($dropdown);
 						var data_value = $(this).attr('data-value');
 						$container.append(''
 							+'<div class="btn" data-value="'+data_value+'">'
@@ -62,10 +65,10 @@ ZMI.prototype.multiselect = function(context) {
 							var $parent = $(this).parent();
 							$("li a[data-value='"+data_value+"']",$dropdown).parent().removeClass("hidden");
 							$parent.remove();
-							refreshDropdown($dropdown);
+							refreshDropdown($select,$dropdown);
 							refreshContainer($container);
 						});
-						refreshDropdown($dropdown);
+						refreshDropdown($select,$dropdown);
 						refreshContainer($container);
 					});
 					$("option:selected",this).each(function() {

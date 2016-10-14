@@ -260,8 +260,23 @@ ul.portalClients .zmi-item .center h1 {
 ul.portalClients .zmi-item .center small {
 	display:none;
 }
+.form-multiautocomplete {
+	margin-bottom:4px;
+}
 .ui-autocomplete-input {
 	background:white url(/misc_/zms/ico_autocomplete.gif) right bottom no-repeat;
+}
+.ui-autocomplete {
+	list-style: none;
+	padding:0;
+}
+.ui-autocomplete .ui-menu-item .ui-corner-all {
+	display: block;
+	padding: 4px;
+}
+.ui-autocomplete .ui-menu-item .ui-state-focus,
+.ui-autocomplete .ui-menu-item .ui-state-hover {
+	background:#eee;
 }
 .twosided_multiselect > .col-xs-5:first-child select {
 	background: #f8f8f8;

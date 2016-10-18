@@ -723,7 +723,7 @@ ZMI.prototype.initInputFields = function(container) {
 							var $input = $(this).prev();
 							var v = $input.val();
 							if (v.length>0) {
-								$input.val("")
+								$input.val("");
 								if ($select.children("option[value='"+v+"']").length==0) {
 								  $select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+v+'</option>').removeClass("hidden");
 								  // rebuild multiselect

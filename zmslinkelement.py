@@ -552,7 +552,7 @@ class ZMSLinkElement(ZMSCustom):
           if ref_obj is None:
             ref = self.getObjProperty('attr_ref',REQUEST)
             ref_obj = self.getLinkObj(ref)
-          if ref_obj is not None:
+          if ref_obj is not None and ref_obj != self:
             rtn += ref_obj._getBodyContent( REQUEST)
         else:
           rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate( self))
@@ -583,7 +583,7 @@ class ZMSLinkElement(ZMSCustom):
           ref_obj = self.getLinkObj(ref) 
         if ref_obj is None or ref_obj.isPage(): 
           rtn += super(ZMSLinkElement,self).renderShort(REQUEST) 
-        else: 
+        elif ref_obj != self: 
           rtn += ref_obj.renderShort(REQUEST) 
         REQUEST.set('ZMS_RELATIVATE_URL',True)
       else: 

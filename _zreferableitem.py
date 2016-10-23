@@ -384,7 +384,7 @@ class ZReferableItem:
           ob = self
           try:
             for id in l:
-              ob = getattr(ob,id)
+              ob = getattr(ob,id,None)
           except:
             pass
         return ob

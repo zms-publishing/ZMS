@@ -496,7 +496,7 @@ for r in q:
   ob = zmscontext
   try:
     for id in l:
-      ob = getattr(ob,id)
+      ob = getattr(ob,id,None)
     break
   except:
     pass

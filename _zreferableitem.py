@@ -45,11 +45,11 @@ def isInternalLink(url):
 # ------------------------------------------------------------------------------
 #  getInternalLinkUrl:
 # ------------------------------------------------------------------------------
-def getInternalLinkUrl(self, ob):
+def getInternalLinkUrl(self, url, ob):
   self.startMeasurement('%s.getInternalLinkUrl'%self.meta_id)
   request = self.REQUEST
   if ob is None:
-    index_html = './index_%s.html?op=not_found&url=%s'%(request.get('lang',self.getPrimaryLanguage()),url)
+    index_html = './index_%s.html?op=not_found&url=%s'%(request.get('lang',self.getPrimaryLanguage()),str(url))
   else:
     # Get index_html.
     index_html = None
@@ -325,7 +325,7 @@ class ZReferableItem:
             request = self.REQUEST
             url = '{$%s%s}'%(self.getRefObjPath( ref_obj)[2:-1],ref_params)
             d['data-id'] = url
-            d[q] = getInternalLinkUrl(self,ref_obj)
+            d[q] = getInternalLinkUrl(self,url,ref_obj)
             if not ref_obj.isActive(request):
               d['data-target'] = "inactive"
             elif self.getTrashcan().isAncestor(ref_obj):
@@ -428,7 +428,7 @@ class ZReferableItem:
         request.set(key,ref_params[key])
       # Get index_html.
       ref_obj = self.getLinkObj(url)
-      index_html = getInternalLinkUrl(self,ref_obj)
+      index_html = getInternalLinkUrl(self,url,ref_obj)
       # Unprepare request.
       for key in bak_params.keys():
         request.set(key,bak_params[key])

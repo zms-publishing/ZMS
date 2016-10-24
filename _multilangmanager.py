@@ -258,13 +258,10 @@ class MultiLanguageManager:
         lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
       
       # Return custom value.
-      try:
-        d = self.get_lang_dict()
-        if d.has_key(key):
-          if d[key].has_key(lang):
-            return d[key][lang]
-      except:
-        pass
+      d = self.get_lang_dict()
+      if d.has_key(key):
+        if d[key].has_key(lang):
+          return d[key][lang]
       
       # Return system value.
       d = OFS.misc_.misc_.zms['langdict'].get_langdict()
@@ -536,12 +533,13 @@ class MultiLanguageManager:
           d[key] = lang_dict[key].copy()
       
       #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
+      self.storeReqBuff( reqBuffId, d)
       if REQUEST is not None:
         REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')
         REQUEST.RESPONSE.setHeader('Content-Type','text/plain; charset=utf-8')
         return self.str_json(d)
       
-      return self.storeReqBuff( reqBuffId, d)
+      return d
 
 
     # --------------------------------------------------------------------------

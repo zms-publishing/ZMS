@@ -41,10 +41,12 @@ class ReqBuff:
     #
     #  Clear buffered values from Http-Request.
     # --------------------------------------------------------------------------
-    def clearReqBuff(self, prefix, REQUEST=None):
+    def clearReqBuff(self, prefix='', REQUEST=None):
       request = self.REQUEST
       buff = request.get('__buff__',Buff())
-      reqBuffId = self.getReqBuffId(prefix)+'.'
+      reqBuffId = self.getReqBuffId(prefix)
+      if len(prefix) > 0:
+        reqBuffId += '.'
       for key in buff.__dict__.keys():
         if key.startswith(reqBuffId):
           delattr(buff,key)

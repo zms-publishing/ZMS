@@ -545,6 +545,8 @@ class ConfManager(
     """
     security.declareProtected('ZMS Administrator', 'setConfProperty')
     def setConfProperty(self, key, value):
+      if key.startswith("Portal"):
+        self.clearReqBuff()
       d = self.getConfProperties()
       if value is None:
         if d.has_key(key):

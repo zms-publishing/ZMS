@@ -97,6 +97,20 @@ class MultiLanguageTest(test_util.BaseTest):
     self.writeInfo('[test_multiLanguageManager] remove test-link')
     zmscontainer.manage_delObjects([zmslinkelement.id])
 
+  def test_getLinkUrl(self):
+    zmscontext = self.context
+    request = self.REQUEST
+    folder = self.folder
+    request = {'lang':zmscontext.getPrimaryLanguage()}
+    ref = zmscontext.getRefObjPath(folder)
+    self.assertEquals("getLinkUrl(%s)"%ref,zmscontext.getLinkUrl(ref,request),folder.getHref2IndexHtml(request))
+    request = {'lang':zmscontext.getPrimaryLanguage()}
+    newref = '{$%s;lang=%s}'%(ref[2:-1],request['lang'])
+    self.assertEquals("getLinkUrl(%s)"%newref,zmscontext.getLinkUrl(newref,request),folder.getHref2IndexHtml(request))
+    request = {'lang':self.temp_lang}
+    newref = '{$%s;lang=%s}'%(ref[2:-1],request['lang'])
+    self.assertEquals("getLinkUrl(%s)"%newref,zmscontext.getLinkUrl(newref,request),folder.getHref2IndexHtml(request))
+
   def tearDown(self):
     zmscontext = self.context
     # create lang-string

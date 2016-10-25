@@ -383,7 +383,7 @@ class ZReferableItem:
           l = zmspath.split('/') 
           ob = self
           try:
-            for id in l:
+            for id in filter(lambda x:len(x)>0,l):
               ob = getattr(ob,id,None)
           except:
             pass

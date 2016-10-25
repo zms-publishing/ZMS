@@ -495,7 +495,7 @@ for r in q:
   l = zmspath[1:-1].split('/')
   ob = zmscontext
   try:
-    for id in l:
+    for id in filter(lambda x:len(x)>0,l):
       ob = getattr(ob,id,None)
     break
   except:

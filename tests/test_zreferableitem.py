@@ -28,6 +28,21 @@ class ZReferableItemTest(test_util.BaseTest):
     ref = '{$%s}'%('/'.join(folder.getPhysicalPath()[-folder.getLevel():]))
     self.assertEquals("getLinkObj(!@)",folder,zmscontext.getLinkObj(ref))
 
+    # create portal-client
+    self.writeInfo('[test_metaobj_manager] create portal-client')
+    zmsclient0 = self.addClient(zmscontext,'client0')
+    # create portal-client
+    self.writeInfo('[test_metaobj_manager] create client-client')
+    zmsclient00 = self.addClient(zmsclient0,'client00')
+    # Test refs.
+    for docelmnt in [zmscontext.getDocumentElement(),zmsclient0,zmsclient00]:
+      self.assertEquals("%s.getLinkObj(getRefObjPath())"%zmscontext.getHome().id,zmscontext,docelmnt.getLinkObj(docelmnt.getRefObjPath(zmscontext)))
+      self.assertEquals("%s.getLinkObj(getRefObjPath())"%docelmnt.getHome().id,docelmnt,zmscontext.getLinkObj(zmscontext.getRefObjPath(docelmnt)))
+    # remove portal-client (and client-client)
+    self.writeInfo('[test_metaobj_manager] remove portal-client %s'%zmsclient0.id)
+    self.removeClient(zmscontext,zmsclient0.getHome().id)
+
+
   def tearDown(self):
     zmscontext = self.context
     request = self.REQUEST

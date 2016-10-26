@@ -1419,23 +1419,27 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 	var context_id = this.getContextId(el);
 	// Edit action
 	$("button.split-left",el).click(function() {
-			if ($($ZMI.icon_selector("icon-plus-sign"),this).length==0) {
-				var action = self.location.href;
-				action = action.substr(0,action.lastIndexOf("/")+1);
-				if (context_id=="") {
-					action += "manage_properties";
+			var el = $(this).parent(".btn-group");
+			var $ul = $("ul.dropdown-menu",el);
+			if ($ul.length>0) {
+				if ($($ZMI.icon_selector("icon-plus-sign"),this).length==0) {
+					var action = self.location.href;
+					action = action.substr(0,action.lastIndexOf("/")+1);
+					if (context_id=="") {
+						action += "manage_properties";
+					}
+					else {
+						if ($ul.html().indexOf(context_id+"/manage_main")<0) {
+							return false;
+						}
+						action += context_id+"/manage_main";
+					}
+					action += "?lang=" + lang;
+					self.location.href = action;
 				}
 				else {
-					if ($ul.html().indexOf(context_id+"/manage_main")<0) {
-						return false;
-					}
-					action += context_id+"/manage_main";
+					$('button.btn.split-right.dropdown-toggle',el).click();
 				}
-				action += "?lang=" + lang;
-				self.location.href = action;
-			}
-			else {
-				$('button.btn.split-right.dropdown-toggle',el).click();
 			}
 			return false;
 		});

@@ -218,7 +218,12 @@
 						<td class="meta-name"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
 						<tal:block tal:condition="python:objAttr['type'] not in ['resource','Folder'] and objAttr['type'] in ['method','py','zpt']+here.valid_zopetypes">
 							<td colspan="5" class="meta-code">
-								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
+								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:[objAttr.get('type'),objAttr.get('meta_type')][objAttr.get('meta_type') in here.getMetadictAttrs()]"/>
+								<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is None and objAttr.get('meta_type') in here.getMetadictAttrs()">
+										<textarea class="form-control input-sm" style="background:#eee"
+											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:objAttr.get('errors','%s (%s)'%(objAttr['id'],objAttr['type']));"
+											tal:content="objAttr/custom">custom</textarea>
+								</div>
 								<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is not None"
 									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
 										<textarea class="form-control input-sm"

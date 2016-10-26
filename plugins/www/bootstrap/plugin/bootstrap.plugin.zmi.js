@@ -1056,7 +1056,7 @@ function zmiModal(s, opt) {
 			if (typeof buttons == 'object') {
 				for (var i = 0; i < buttons.length; i++) {
 					var button = buttons[i];
-					$('#'+id+' .modal-footer').append('<button type="button">'+button['text']+'</button> ');
+					$('#'+id+' .modal-footer').append('<button type="submit">'+button['text']+'</button> ');
 					var $button = $('#'+id+' .modal-footer button:last');
 					for (var k in button) {
 						var v = button[k];
@@ -1590,6 +1590,7 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 				open:function(event,ui) {
 					$ZMI.runReady();
 					$('#addInsertBtn').click(function() {
+								self.btnClicked = $(this).text();
 								var $fm = $(".modal form.form-horizontal");
 								$("input[name=btn]:hidden",$fm).remove();
 								$fm.append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_INSERT')+'">');

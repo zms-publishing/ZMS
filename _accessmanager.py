@@ -293,8 +293,8 @@ class AccessableObject:
       if resolve:
         security_roles = self.getSecurityRoles()
         for id in filter(lambda x: x in security_roles.keys(),roles):
-          dict = security_roles.get(id,{})
-          for v in dict.values():
+          d = security_roles.get(id,{}).get('nodes',{})
+          for v in d.values():
             for role in map(lambda x: x.replace(' ',''),v.get('roles',[])):
               if role not in roles:
                 roles.append( role)

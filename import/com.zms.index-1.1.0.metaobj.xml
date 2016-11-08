@@ -447,7 +447,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
 request = zmscontext.REQUEST
 zmsroot = zmscontext.getRootElement()
 url = options['url']
-try: return zmsroot.fetchReqBuff(url,request,forced=True)
+try: return zmsroot.fetchReqBuff(url,request)
 except: pass
 
 query = None
@@ -500,7 +500,7 @@ for r in q:
     break
   except:
     pass
-return zmsroot.storeReqBuff(url,ob,request)
+return zmsroot.storeReqBuff(url,ob)
 
 # --// /ZMSIndexZCatalog.getLinkObj //--
 ]]>

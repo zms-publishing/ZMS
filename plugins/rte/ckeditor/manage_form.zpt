@@ -117,7 +117,7 @@ function zmiRichtextInit(id) {
           var scayt_sLang = {'eng':'en_GB','fra':'fr_FR','ger':'de_DE','ita':'it_IT','ned':'nl_NL'};
           if (typeof scayt_sLang[getZMILang()]!="undefined") {
             config.scayt_sLang = scayt_sLang[getZMILang()];
-            config.scayt_autoStartup = true;
+            config.scayt_autoStartup = false;
           }
         }
 

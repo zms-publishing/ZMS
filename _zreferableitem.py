@@ -303,6 +303,7 @@ class ZReferableItem:
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
+    if not int(self.getConfProperty('ZReferableItem.validateLinkObj',1)): return text
     self.startMeasurement('%s.validateInlineLinkObj'%self.meta_id)
     import time
     t0 = time.time()
@@ -345,6 +346,7 @@ class ZReferableItem:
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
+    if not int(self.getConfProperty('ZReferableItem.validateLinkObj',1)): return url
     self.startMeasurement('%s.validateLinkObj'%self.meta_id)
     if isInternalLink(url):
       if not url.startswith('{$__'):

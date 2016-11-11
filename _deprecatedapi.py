@@ -123,7 +123,7 @@ class DeprecatedAPI:
         if type(metaObjAttr) is dict: 
           REQUEST.set( 'ref_id', url) 
           return self.dt_exec( metaObjAttr['custom']) 
-      ob = self.getPortalMaster() 
+      ob = ob.getPortalMaster() 
     ob = self.getLinkObj(url) 
     if ob is not None: 
       if ob.isActive(REQUEST) and \

@@ -774,7 +774,7 @@ ZMI.prototype.initInputFields = function(container) {
 			// Multiselect
 			$.plugin('multiselect',{
 				files: [
-					$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js?ts='+new Date())
+					$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js')
 				]});
 			$.plugin('multiselect').set({context:context});
 			$.plugin('multiselect').get("select.zmi-select[multiple]:not(.hidden)",function(){

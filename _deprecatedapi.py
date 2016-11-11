@@ -104,6 +104,32 @@ class DeprecatedAPI:
     ob = self.getDocumentElement()
     return '%s/%s/'%(ob.aq_parent.id,self.absolute_url()[len(ob.aq_parent.absolute_url())+1:])
 
+  # ---------------------------------------------------------------------------- 
+  #  DeprecatedAPI.getLinkHtml: 
+  # 
+  #  Resolves internal/external links and returns Html. 
+  # ---------------------------------------------------------------------------- 
+  def getLinkHtml( self, url, html='<a href="%s">&raquo;</a>', REQUEST=None): 
+    warnings.warn("[getLinkHtml]: @deprecated: use own implementation!") 
+    REQUEST = _globals.nvl( REQUEST, self.REQUEST) 
+    s = '' 
+    ob = self 
+    while ob is not None: 
+      if html in ob.getMetaobjIds(): 
+        metaObj = ob.getMetaobj( html) 
+        metaObjAttr = ob.getMetaobjAttr( metaObj['id'], 'getLinkHtml',syncTypes=['*']) 
+        if type(metaObjAttr) is dict: 
+          REQUEST.set( 'ref_id', url) 
+          return self.dt_exec( metaObjAttr['custom']) 
+      ob = self.getPortalMaster() 
+    ob = self.getLinkObj(url) 
+    if ob is not None: 
+      if ob.isActive(REQUEST) and \
+         ob.isVisible(REQUEST): 
+        url = ob.getHref2IndexHtml(REQUEST) 
+        s = html%url 
+    return s 
+
   # --------------------------------------------------------------------------
   #  DeprecatedAPI.pil_img_*:
   # --------------------------------------------------------------------------

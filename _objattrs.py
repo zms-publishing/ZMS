@@ -827,6 +827,7 @@ class ObjAttrs:
             v = None
           else:
             v = _blobfields.createBlobField(self,datatype,v)
+            v.filename = _globals.umlaut_quote(self,v.filename,{':':'_','<':'_','>':'_','*':'_','?':'_','"':'_','|':'_',',':'_'})
         if type(v) is dict:
           if len(v.get('filename',''))==0:
             v = None

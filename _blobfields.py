@@ -208,12 +208,10 @@ def uploadBlobField(self, objtype, file='', filename='', mediadbStorable=True):
   elif objtype == _globals.DT_FILE:
     clazz = MyFile
     maxlength_prop = 'ZMS.input.file.maxlength'
-  filename = _globals.umlaut_quote(self,filename,{':':'_','<':'_','>':'_','*':'_','?':'_','"':'_','|':'_',',':'_'})
-  filename = _fileutil.extractFilename( filename, undoable=True).encode('utf-8')
   blob = clazz( id='',title='',file=file)
   blob.aq_parent = self
   blob.mediadbfile = None
-  blob.filename = filename
+  blob.filename = _fileutil.extractFilename( filename, undoable=True).encode('utf-8')
   # Check size.
   if self is not None:
     maxlength = self.getConfProperty(maxlength_prop,'')

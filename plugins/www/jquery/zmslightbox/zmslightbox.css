@@ -1,8 +1,16 @@
 body.zmslightbox {
 	overflow:initial;
 }
+body.zmslightbox.masked {
+	background:rgba(0,0,0,.7);
+}
 img.hiresimg {
 	cursor:zoom-in;
+}
+figure#zmslightbox {
+	margin:0 !important;
+	padding:0 !important;
+	z-index:10000;
 }
 #zmslightbox-bg {
 	position:absolute;
@@ -11,34 +19,32 @@ img.hiresimg {
 	top:0;
 	left:0;
 	width:100%;
+	height:100%;
+}
+body.zmslightbox.masked #zmslightbox-bg {
+	background:none;
 }
 #zmslightbox-wrapper {
 	position:absolute;
-	overflow:hidden;
 	text-align:center;
+	vertical-align:center;
 	min-width:100%;
+	min-height:100%;
 }
-#zmslightbox-wrapper.fullimage {
-	overflow:auto;
-	max-width:100%;
-}
-#zmslightbox-wrapper.fullimage.fullscreen {
-	overflow:hidden;
-}
-#zmslightbox-wrapper.fullimage.fullscreen img {
-	cursor: not-allowed;
-}
-#zmslightbox-wrapper img {
+#zmslightbox-wrapper img,
+#zmslightbox-wrapper img.fullscreen {
 	/* fullscreen */
 	cursor: zoom-in;
 	margin:0 auto;
 	max-width:100%;
+	max-height:100vh;
 }
 #zmslightbox-wrapper img.fullimage {
 	/* fullimage */
-	cursor: all-scroll;
+	cursor: zoom-out;
 	margin:0 auto;
 	max-width:none;
+	max-height:none;
 }
 #zmslightbox-controls {
 	position:fixed;
@@ -48,9 +54,6 @@ img.hiresimg {
 	right:0;
 	z-index:502;
 	background:rgba(0,0,0,.1);
-}
-.zmi #zmslightbox-controls {
-	top:40px;
 }
 #close-zmslightbox {
 	display:block;

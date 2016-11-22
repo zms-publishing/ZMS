@@ -159,12 +159,12 @@ function zmiFormSubmit(sender,d) {
 	<tr tal:repeat="langDict python:here.getLangDict()">
 		<td style="text-align:center;"><input type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/></td>
 		<td tal:attributes="title python:'getLangStr(\'%s\',lang)'%langDict['key']" tal:content="python:langDict['key']">Key</td>
-		<td tal:repeat="langId langIds"><input class="form-control input-sm" type="text" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); value python:langDict.get(langId,''); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]"/></td>
+		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control input-sm" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]" tal:content="python:langDict.get(langId,'')"></textarea></div></td>
 	</tr>
 	<tr class="row_insert">
 		<td style="text-align:center;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
 		<td><input class="form-control input-sm" type="text" name="_key" /></td>
-		<td tal:repeat="langId langIds"><input class="form-control input-sm" type="text" tal:attributes="name python:'_value_%s'%(langId)"/></td>
+		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control input-sm" tal:attributes="name python:'_value_%s'%(langId)"></textarea></div></td>
 	</tr>
 	</tbody>
 	</table>

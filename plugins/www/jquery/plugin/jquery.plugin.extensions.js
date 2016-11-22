@@ -92,8 +92,8 @@ $(function(){
 
 function pluginFancybox(s, c) {
 	$.plugin('zmslightbox',{
-		files: ['/++resource++zms_/jquery/zmslightbox/zmslightbox.js?ts='+new Date(),
-				'/++resource++zms_/jquery/zmslightbox/zmslightbox.css?ts='+new Date()]
+		files: ['/++resource++zms_/jquery/zmslightbox/zmslightbox.js',
+				'/++resource++zms_/jquery/zmslightbox/zmslightbox.css']
 		});
 	$.plugin('zmslightbox').get(s,c);
 }

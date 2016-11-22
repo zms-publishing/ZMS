@@ -23,7 +23,6 @@ function add_zmslightbox(hiurl) {
 			center_zmslightbox($('#zmslightbox-wrapper img'));
 	});
 	$('#zmslightbox-wrapper img').hide();
-	$('#zmslightbox-bg').css('height',$('body').height()+'px');
 	$('body').addClass('zmslightbox');
 };
 
@@ -47,6 +46,11 @@ function center_zmslightbox(imgobj) {
 	var iw = imgobj.width();
 	var ih = imgobj.height();
 	// console.log('imgobj.height: ' + ih);
+	if ( wh > $('body').height() ) {
+		$('#zmslightbox-bg').css('height', wh+'px');
+	} else {
+		$('#zmslightbox-bg').css('height',$('body').height()+'px');
+	};
 	if ( ih > wh && !( imgobj.hasClass('fullimage') ) ) {
 		imgobj.css('height',$(window).height() + 'px');
 		iw = imgobj.width();

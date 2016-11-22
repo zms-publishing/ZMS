@@ -124,6 +124,7 @@
 			<button tal:condition="python:not metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			<button tal:condition="python:metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COPY')" tal:content="python:here.getZMILangStr('BTN_COPY')">Copy</button>
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
+			<button type="button" name="btn" class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')" onclick="return zmiExportBtnClick(this)" tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></button>
 		</div>
 	</div><!-- .form-group -->
 
@@ -361,7 +362,7 @@
 		<table class="table table-bordered meta-access"
 			tal:condition="python:metaObj['type'] not in ['ZMSLibrary','ZMSPackage']"
 			tal:define="global roleOptpl python:[]"
-			><tal:block tal:repeat="role python:list(here.getDocumentElement().aq_parent.userdefined_roles())+list(here.getDocumentElement().userdefined_roles())"
+			><tal:block tal:repeat="role python:here.getUserDefinedRoles()"
 				><tal:block
 					tal:define="role_str python:'ROLE_%s'%role.upper(); role_lang_str python:here.getZMILangStr(role_str)"
 					tal:condition="python: role not in ['ZMSSubscriber','ZMSUserAdministrator']"
@@ -601,8 +602,8 @@ function zmiEnabledBtnClick(sender) {
 function zmiExportBtnClick(sender) {
 	var $fm = $(sender).closest("form");
 	var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn='+getZMILangStr('BTN_EXPORT');
-	$('input[name="ids:list"]:checked',$fm).each(function(){
-			href += '&'+$(this).attr("name")+'='+$(this).val();
+	$('input[name="id"]:text,input[name="ids:list"]:checked',$fm).each(function(){
+			href += '&ids:list='+$(this).val();
 		});
 	window.open(href);
 	return false;

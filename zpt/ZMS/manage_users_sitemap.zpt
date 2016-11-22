@@ -15,7 +15,7 @@
 		userDefs python:here.getSecurityUsers();
 		roleDefs python:here.getSecurityRoles();
 		userNames python:here.sort_list(userDefs.keys());
-		valid_roles python:here.difference_list(here.aq_parent.userdefined_roles()+here.userdefined_roles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']);
+		valid_roles python:here.difference_list(here.getUserDefinedRoles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']);
 		langs_optpl python:map(lambda x: [x,here.getLanguageLabel(x)],here.getLanguages(request));
 		roles_optpl python:[['ZMSAdministrator',here.getZMILangStr('ROLE_ZMSADMINISTRATOR')],
 												['ZMSEditor',here.getZMILangStr('ROLE_ZMSEDITOR')],

@@ -254,7 +254,7 @@ function mms_normalize_rows(el_tbody) {
 			</tr>
 			<tr tal:repeat="action python:['insert','update','delete','select']">
 				<td><strong tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())">the action</strong></td>
-				<td style="text-align:center;" tal:repeat="role python:filter(lambda x: x not in ['ZMSSubscriber','ZMSUserAdministrator'],here.getDocumentElement().userdefined_roles())">
+				<td style="text-align:center;" tal:repeat="role python:filter(lambda x: x not in ['ZMSSubscriber','ZMSUserAdministrator'],here.getUserDefinedRoles())">
 					<input tal:attributes="name python:'access_%s:list'%action; value role; checked python:['','checked'][int(role in access.get(action,[role]))]" type="checkbox"/>
 				</td>
 				<td style="width:100%;">&nbsp;</td>

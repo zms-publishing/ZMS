@@ -841,6 +841,12 @@ class AccessManager(AccessableContainer):
         home._setObject(userFldr.id, userFldr)
       return userFldr
 
+    # --------------------------------------------------------------------------
+    #  AccessManager.getUserDefinedRoles:
+    # --------------------------------------------------------------------------
+    def getUserDefinedRoles(self):
+      return list(self.aq_parent.userdefined_roles())+list(self.userdefined_roles())
+
     ############################################################################
     ###
     ###  Local Users

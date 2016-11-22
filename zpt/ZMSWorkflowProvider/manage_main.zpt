@@ -265,7 +265,7 @@ $(function(){
 					<label for="inpPerformer" class="col-lg-2 control-label"><span>Performer</span></label>
 					<div class="col-lg-10">
 						<select class="form-control" name="inpPerformer:list" multiple="multiple">
-							<tal:block tal:repeat="performer python:here.userdefined_roles()"><tal:block tal:define="global lang_key python:'ROLE_%s'%performer.upper(); lang_str python:here.getZMILangStr(lang_key)">
+							<tal:block tal:repeat="performer python:here.getUserDefinedRoles()"><tal:block tal:define="global lang_key python:'ROLE_%s'%performer.upper(); lang_str python:here.getZMILangStr(lang_key)">
 								<option tal:attributes="value performer; selected python:['','selected'][int(performer in transition.get('performer',[]))]" tal:content="python:[lang_str,performer][int(lang_key==lang_str)]">the performer</option>
 							</tal:block></tal:block>
 						</select>

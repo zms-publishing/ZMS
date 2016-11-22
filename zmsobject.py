@@ -515,13 +515,9 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  @param REQUEST
     # --------------------------------------------------------------------------
     def getDCCoverage(self, REQUEST={}):
-      key_coverage = 'attr_dc_coverage'
       obj_vers = self.getObjVersion(REQUEST)
-      coverage = getattr( obj_vers, key_coverage, '') # Take a performant shortcut to get object-property.
-      coverages = [ '', 'obligation', None]
-      if coverage in coverages: 
-        coverage = 'global.' + self.getPrimaryLanguage()
-      return coverage
+      obj_attr = {'id':'attr_dc_coverage'}
+      return _objattrs.getobjattr(self,obj_vers,obj_attr,REQUEST.get('lang'))
 
 
     # --------------------------------------------------------------------------

@@ -116,6 +116,14 @@ def setutf8attr(self, obj_vers, obj_attr, langId):
 #  getobjattr
 # ------------------------------------------------------------------------------
 def getobjattr(self, obj, obj_attr, lang):
+  # Get coverage.
+  if obj_attr['id'] == 'attr_dc_coverage':
+    coverage = getattr(obj,obj_attr['id'],'')
+    coverages = ['','obligation',None]
+    if coverage in coverages: 
+      coverage = 'global.' + self.getPrimaryLanguage()
+    return coverage
+  # Get other.
   v = None
   key = self._getObjAttrName(obj_attr,lang)
   if key in obj.__dict__.keys():

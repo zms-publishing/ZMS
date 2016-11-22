@@ -77,48 +77,31 @@ function zmiAutocomplete(s, o) {
 
 
 /**
- * Fancybox
- * @see http://fancybox.net/
+ * ZMSLightbox
  */
-var pluginFancyboxDefaultOptions = {
-			'autoScale'		: false,
-			'titleShow'		: false,
-			'hideOnContentClick': true,
-			'transitionIn'	: 'elastic',
-			'transitionOut'	: 'elastic'
-		};
-
 $(function(){
-	$('a.fancybox')
-		.click(function() {
-			pluginFancyboxDefaultOptions['href'] = $(this).attr('href');
-			// Ensure that this link will be opened as an image!
-			if ($("img.img",this).length==1) {
-				pluginFancyboxDefaultOptions['type'] = 'image';
-			}
-			return showFancybox(pluginFancyboxDefaultOptions);
-		});
+	$('a.zmslightbox,a.fancybox')
+		.each(function() {
+				var $img = $("img",$(this));
+				$img.attr("data-hiresimg",$(this).attr("href"));
+				$(this).click(function() {
+						return showFancybox($img);
+					});
+			});
 });
 
 function pluginFancybox(s, c) {
-	$.plugin('fancybox',{
-		files: ['/++resource++zms_/jquery/fancybox/jquery.easing-1.3.pack.js',
-				'/++resource++zms_/jquery/fancybox/jquery.mousewheel-3.0.6.pack.js',
-				'/++resource++zms_/jquery/fancybox/jquery.fancybox.js',
-				'/++resource++zms_/jquery/fancybox/jquery.fancybox.css']
+	$.plugin('zmslightbox',{
+		files: ['/++resource++zms_/jquery/zmslightbox/zmslightbox.js?ts='+new Date(),
+				'/++resource++zms_/jquery/zmslightbox/zmslightbox.css?ts='+new Date()]
 		});
-	$.plugin('fancybox').get(s,c);
+	$.plugin('zmslightbox').get(s,c);
 }
 
-function showFancybox(p) {
+function showFancybox($sender) {
 	pluginFancybox('body',function() {
-		$.fancybox(p);
-		try {
-			$("#fancybox-wrap").draggable();
-		}
-		catch(e) {
-		}
-	});
+			show_zmslightbox($sender);
+		});
 	return false;
 }
 

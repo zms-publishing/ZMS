@@ -1,0 +1,92 @@
+body.zmslightbox {
+	overflow:initial;
+}
+img.hiresimg {
+	cursor:zoom-in;
+}
+#zmslightbox-bg {
+	position:absolute;
+	overflow:hidden;
+	background:rgba(0,0,0,.7);
+	top:0;
+	left:0;
+	width:100%;
+}
+#zmslightbox-wrapper {
+	position:absolute;
+	overflow:hidden;
+	text-align:center;
+	min-width:100%;
+}
+#zmslightbox-wrapper.fullimage {
+	overflow:auto;
+	max-width:100%;
+}
+#zmslightbox-wrapper.fullimage.fullscreen {
+	overflow:hidden;
+}
+#zmslightbox-wrapper.fullimage.fullscreen img {
+	cursor: not-allowed;
+}
+#zmslightbox-wrapper img {
+	/* fullscreen */
+	cursor: zoom-in;
+	margin:0 auto;
+	max-width:100%;
+}
+#zmslightbox-wrapper img.fullimage {
+	/* fullimage */
+	cursor: all-scroll;
+	margin:0 auto;
+	max-width:none;
+}
+#zmslightbox-controls {
+	position:fixed;
+	height:70px;
+	width:70px;
+	top:0;
+	right:0;
+	z-index:502;
+	background:rgba(0,0,0,.1);
+}
+.zmi #zmslightbox-controls {
+	top:40px;
+}
+#close-zmslightbox {
+	display:block;
+	position:absolute;
+	overflow:hidden;
+	height:50px;
+	width:50px;
+	text-indent:-5000px;
+	right:10px;
+	top:10px;
+	-webkit-transform:rotate(45deg);
+	-moz-transform:rotate(45deg);
+	-ms-transform:rotate(45deg);
+	-o-transform:rotate(45deg);
+	transform:rotate(45deg);
+}
+#close-zmslightbox:before {
+	content:'';
+	display:block;
+	position:absolute;
+	height:50px;
+	width:3px;
+	left:24px;
+	top:0;
+	background:white;
+	border-radius:2px;
+}
+
+#close-zmslightbox:after {
+	content:'';
+	display:block;
+	position:absolute;
+	width:50px;
+	height:3px;
+	top:24px;
+	left:0;
+	background:white;
+	border-radius:2px;
+}

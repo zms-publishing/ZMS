@@ -26,8 +26,8 @@ function add_zmslightbox(hiurl) {
 			$(this).toggleClass('fullimage');
 			if ( $(this).width() > $(window).width() || $(this).height() > $(window).height() ){
 				release_zmslightbox();
-				scal_x = $(this).width()/iw;
-				scal_y = $(this).height()/ih;
+				scal_x = $(this).width()/(1.5*iw);
+				scal_y = $(this).height()/(1.5*ih);
 				// console.log('IMG SCALE: x=' + scal_x + ' y=' + scal_y);
 				$(window).scrollLeft(curXPos*scal_x)
 				$(window).scrollTop(curYPos*scal_y)

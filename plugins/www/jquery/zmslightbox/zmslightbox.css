@@ -46,6 +46,9 @@ body.zmslightbox.masked #zmslightbox-bg {
 	max-width:none;
 	max-height:none;
 }
+#zmslightbox-wrapper img.fullimage:focus {
+	cursor: move;
+}
 #zmslightbox-controls {
 	position:fixed;
 	height:70px;

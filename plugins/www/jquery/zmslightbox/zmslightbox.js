@@ -1,7 +1,15 @@
 // GLOBALS
-// Remember the zmslightboxed object
 var zmslightbox_obj;
 var viewport = $('meta[name="viewport"]').attr('content');
+var curXPos = 0;                 // mouse position X
+var curYPos = 0;                 // mouse position Y
+var ww = $(window).width();      // window width
+var wh = $(window).height();     // window height
+var wt = $(window).scrollTop();  // vertical scroll position
+var cx = ww/2;                   // window centerX
+var cy = wt + wh/2;              // window centerY
+var iw = 0;                      // real imgobj.width
+var ih = 0;                      // real imgobj.height
 
 // CONSTRUCTION
 function add_zmslightbox(hiurl) {
@@ -11,15 +19,20 @@ function add_zmslightbox(hiurl) {
 			<div id="zmslightbox-controls" onclick="remove_zmslightbox()"><span id="close-zmslightbox">Close Lightbox</span></div>\
 			<div id="zmslightbox-wrapper"><img src="'+hiurl+'" /></div>\
 		</figure>');
-	$('#zmslightbox-wrapper img').on('click', function() {
+	$('#zmslightbox-wrapper img').on('click', function(evt) {
+			curXPos = evt.clientX - $(this).offset().left;
+			curYPos = evt.clientY - $(this).offset().top;
+			// console.log('MOUSE COORDS: x=' + curXPos + ' y=' + curYPos);
 			$(this).toggleClass('fullimage');
-			// console.log($(this).width() + ' x ' + $(this).height());
 			if ( $(this).width() > $(window).width() || $(this).height() > $(window).height() ){
 				release_zmslightbox();
-				$(window).scrollLeft($(window).width()/2);
-				$(window).scrollTop($(window).height()/2);
+				scal_x = $(this).width()/iw;
+				scal_y = $(this).height()/ih;
+				// console.log('IMG SCALE: x=' + scal_x + ' y=' + scal_y);
+				$(window).scrollLeft(curXPos*scal_x)
+				$(window).scrollTop(curYPos*scal_y)
 			} else {
-			 	$(this).addClass('fullscreen');
+				$(this).addClass('fullscreen');
 			};
 			center_zmslightbox($('#zmslightbox-wrapper img'));
 	});
@@ -42,13 +55,13 @@ function remove_zmslightbox(evt_from_history) {
 
 // CENTERING
 function center_zmslightbox(imgobj) {
-	var ww = $(window).width();
-	var wh = $(window).height();
-	var wt = $(window).scrollTop();
-	var cx = ww/2;
-	var cy = wt + wh/2;
-	var iw = imgobj.width();
-	var ih = imgobj.height();
+	ww = $(window).width();
+	wh = $(window).height();
+	wt = $(window).scrollTop();
+	cx = ww/2;
+	cy = wt + wh/2;
+	iw = imgobj.width();
+	ih = imgobj.height();
 	// console.log('imgobj.height: ' + ih);
 	if ( wh > $('body').height() ) {
 		$('#zmslightbox-bg').css('height', wh+'px');

@@ -1,8 +1,9 @@
-// REMEMBER ZMSLIGHTBOXED OBJECT
+// GLOBALS
+// Remember the zmslightboxed object
 var zmslightbox_obj;
 var viewport = $('meta[name="viewport"]').attr('content');
 
-// MODAL CONSTRUCTOR
+// CONSTRUCTION
 function add_zmslightbox(hiurl) {
 	$('body').wrapInner('<section id="zmslightbox-mask"></section>')
 	$('body').append('<figure id="zmslightbox">\
@@ -24,19 +25,22 @@ function add_zmslightbox(hiurl) {
 	});
 	$('#zmslightbox-wrapper img').hide();
 	$('body').addClass('zmslightbox');
+	handle_zmslightbox_history();
 };
 
-// MODAL REVOVAL
-function remove_zmslightbox() {
+// REMOVAL
+function remove_zmslightbox(evt_from_history) {
+	evt_from_history = evt_from_history || false;
 	$('meta[name="viewport"]').attr('content',viewport);
 	$('#zmslightbox').remove();
 	$('body > #zmslightbox-mask').contents().unwrap();
 	$('body').removeClass('zmslightbox');
 	$('body').removeClass('masked');
 	$('html, body').scrollTop( zmslightbox_obj.offset().top );
+	if (!evt_from_history) { history.back() };
 };
 
-// CENTER MODAL CONTENT
+// CENTERING
 function center_zmslightbox(imgobj) {
 	var ww = $(window).width();
 	var wh = $(window).height();
@@ -67,7 +71,8 @@ function center_zmslightbox(imgobj) {
 	$('#zmslightbox-wrapper img').show('slow');
 };
 
-// SUPERSIZING: SHOW MODAL CONTENT EXCLUSIVLY TO USE WINDOW SCROLLING
+// SUPERSIZING
+// Show modal content exclusively to allow window scrolling
 function release_zmslightbox(){
 	if ($('meta[name="viewport"]')) {
 		$('meta[name="viewport"]').attr('content','width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
@@ -80,7 +85,8 @@ function release_zmslightbox(){
 	$('#zmslightbox-bg').css('height','100%');
 };
 
-// ON WINDOW RESIZE OR ROTATION
+// HANDLE WINDOW EVENTS:
+// Resize, Device Rotation, History-Back
 $(window).resize(function() {
 	try {
 		center_zmslightbox($('#zmslightbox-wrapper img'))
@@ -94,16 +100,28 @@ window.onorientationchange = function() {
 	} catch(err) {
 		return false;
 	}
-}
-
-// ON ESCPAE BUTTON REMOVE ZMSLIGHTBOX
+};
 $(document).on('keyup',function(evt) {
-	if (evt.keyCode ==27) {
+	if (evt.keyCode ==27 || evt.keyCode == 8 ) {
 		remove_zmslightbox();
 	};
 });
+function handle_zmslightbox_history() {
+	if (typeof history.pushState === 'function') {
+		history.pushState(null, 'ZMSLightBox', null);
+		window.onpopstate = function () {
+			if ($('#zmslightbox') ) {
+				// HISTORY.BACK TO CONTENT PAGE
+				remove_zmslightbox(evt_from_history=true);
+			};
+		};
+	};
+};
 
-// EXECUTE
+
+// #################################
+// EXECUTION
+// #################################
 function show_zmslightbox(img) {
 	zmslightbox_obj = img;
 	add_zmslightbox(img.attr('data-hiresimg'));

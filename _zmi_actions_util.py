@@ -149,7 +149,13 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
     metaObjIds = container.getMetaobjIds(sort=True)
     meta_ids = []
     if objAttr['type']=='*':
-      for meta_id in objAttr['keys']:
+      # get types
+      meta_keys = objAttr['keys']
+      # dynamic list of types
+      if context.dt_executable('\n'.join(meta_keys)):
+        meta_keys = context.dt_exec('\n'.join(meta_keys))
+      # iterate types
+      for meta_id in meta_keys:
         if meta_id.startswith('type(') and meta_id.endswith(')'):
           for metaObjId in metaObjIds:
             metaObj = container.getMetaobj( metaObjId)

@@ -19,6 +19,7 @@
 # Imports.
 from OFS.CopySupport import absattr
 import copy
+import re
 # Product Imports.
 import _blobfields
 import _confmanager
@@ -294,7 +295,8 @@ class PathHandler:
         if v is not None: return v
         
         # If the object has executable-fields find by name and display data.
-        if name in self.getMetaobjAttrIds( self.meta_id, types=['method','py']):
+        pattern = self.getConfProperty('ZMS.metaobj.attr.publicExecutablePattern','public(.*?)')
+        if re.compile(pattern).match(name) and name in self.getMetaobjAttrIds( self.meta_id, types=['method','py']):
           v = self.attr(name)
           if v is not None:
             if type(v) is str:

@@ -236,7 +236,7 @@ function zmiModalInsertUserOpen(context) {
 						</button>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="#" onclick="zmiModal('#insertNode',{title:$(this).attr('title')});">
+								<a href="#" onclick="zmiModal('#insertNode',{title:$(this).attr('title')});" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')">
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
 									<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
 								</a>

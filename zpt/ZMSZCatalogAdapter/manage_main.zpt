@@ -324,7 +324,7 @@ function zmiReindexCatalog() {
 				var $input = $($inputs[i]);
 				var uid = $input.val();
 				var $a = $input.next("a");
-				$a.after('<span class="response"> '+$ZMI.icon('icon-spinner')+' </span>');
+				$a.after('<'+'span class="response"> '+$ZMI.icon('icon-spinner')+' <'+'/span>');
 				$.ajax({
 					url:"manage_reindex",
 					data:{uid:uid},

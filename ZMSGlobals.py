@@ -1466,6 +1466,19 @@ class ZMSGlobals:
     ############################################################################
 
     """
+    Returns if given value is executable.
+    """
+    def dt_executable(self, v):
+      if type(v) in StringTypes:
+        if v.find('<dtml-') >= 0:
+          return True
+        elif v.startswith('##'):
+          return True
+        elif v.find('<tal:') >= 0:
+          return True
+      return False
+
+    """
     Try to execute given value.
     """
     def dt_exec(self, v):

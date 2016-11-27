@@ -1,15 +1,19 @@
-// GLOBALS
+// GLOBALS zlb = _zms_light_box
 var zmslightbox_obj;
-var viewport = $('meta[name="viewport"]').attr('content');
-var curXPos = 0;                 // mouse position X
-var curYPos = 0;                 // mouse position Y
-var ww = $(window).width();      // window width
-var wh = $(window).height();     // window height
-var wt = $(window).scrollTop();  // vertical scroll position
-var cx = ww/2;                   // window centerX
-var cy = wt + wh/2;              // window centerY
-var iw = 0;                      // real imgobj.width
-var ih = 0;                      // real imgobj.height
+var zlb_viewport = $('meta[name="viewport"]').attr('content');
+var zlb_cur_xpos = 0;                // mouse position X
+var zlb_cur_ypos = 0;                // mouse position Y
+var zlb_ww = $(window).width();      // window width
+var zlb_wh = $(window).height();     // window height
+var zlb_wt = $(window).scrollTop();  // vertical scroll position
+var zlb_cx = zlb_ww/2;               // window centerX
+var zlb_cy = zlb_wt + zlb_wh/2;      // window centerY
+var zlb_iw = 0;                      // visible imgobj.width
+var zlb_ih = 0;                      // visible imgobj.height
+var zlb_iw_f = 0;                    // full imgobj.width
+var zlb_ih_f = 0;                    // full imgobj.height
+var zlb_img_scale = 1                // imgobj scaling
+
 
 // CONSTRUCTION
 function add_zmslightbox(hiurl) {
@@ -20,21 +24,25 @@ function add_zmslightbox(hiurl) {
 			<div id="zmslightbox-wrapper"><img src="'+hiurl+'" /></div>\
 		</figure>');
 	$('#zmslightbox-wrapper img').on('click', function(evt) {
-			curXPos = evt.clientX - $(this).offset().left;
-			curYPos = evt.clientY - $(this).offset().top;
-			// console.log('MOUSE COORDS: x=' + curXPos + ' y=' + curYPos);
+
+			zlb_cur_xpos = evt.pageX - $(this).offset().left;
+			zlb_cur_ypos = evt.pageY - $(this).offset().top;
 			$(this).toggleClass('fullimage');
-			if ( $(this).width() > $(window).width() || $(this).height() > $(window).height() ){
+			zlb_iw_f = $(this).width();
+			zlb_ih_f = $(this).height();
+			if ( zlb_iw_f > zlb_ww || zlb_ih_f > zlb_wh ){
 				release_zmslightbox();
-				scal_x = $(this).width()/(1.5*iw);
-				scal_y = $(this).height()/(1.5*ih);
-				// console.log('IMG SCALE: x=' + scal_x + ' y=' + scal_y);
-				$(window).scrollLeft(curXPos*scal_x)
-				$(window).scrollTop(curYPos*scal_y)
+				zlb_img_scale = zlb_iw_f/zlb_iw;
+				center_zmslightbox($('#zmslightbox-wrapper img'));
+				zlb_shift_x = (zlb_cur_xpos * zlb_img_scale)-zlb_ww/2;
+				zlb_shift_y = (zlb_cur_ypos * zlb_img_scale)-zlb_wh/2;
+				// console.log('COORDS: izlb_mg_scale=' + zlb_img_scale + ' zlb_shift_x=' + zlb_shift_x + ' zlb_shift_y=' + zlb_shift_y);
+				$(window).scrollLeft(zlb_shift_x);
+				$(window).scrollTop(zlb_shift_y);
 			} else {
 				$(this).addClass('fullscreen');
+				center_zmslightbox($('#zmslightbox-wrapper img'));
 			};
-			center_zmslightbox($('#zmslightbox-wrapper img'));
 	});
 	$('#zmslightbox-wrapper img').hide();
 	$('body').addClass('zmslightbox');
@@ -44,7 +52,7 @@ function add_zmslightbox(hiurl) {
 // REMOVAL
 function remove_zmslightbox(evt_from_history) {
 	evt_from_history = evt_from_history || false;
-	$('meta[name="viewport"]').attr('content',viewport);
+	$('meta[name="viewport"]').attr('content',zlb_viewport);
 	$('#zmslightbox').remove();
 	$('body > #zmslightbox-mask').contents().unwrap();
 	$('body').removeClass('zmslightbox');
@@ -55,30 +63,30 @@ function remove_zmslightbox(evt_from_history) {
 
 // CENTERING
 function center_zmslightbox(imgobj) {
-	ww = $(window).width();
-	wh = $(window).height();
-	wt = $(window).scrollTop();
-	cx = ww/2;
-	cy = wt + wh/2;
-	iw = imgobj.width();
-	ih = imgobj.height();
+	zlb_ww = $(window).width();
+	zlb_wh = $(window).height();
+	zlb_wt = $(window).scrollTop();
+	zlb_cx = zlb_ww/2;
+	zlb_cy = zlb_wt + zlb_wh/2;
+	zlb_iw = imgobj.width();
+	zlb_ih = imgobj.height();
 	// console.log('imgobj.height: ' + ih);
-	if ( wh > $('body').height() ) {
-		$('#zmslightbox-bg').css('height', wh+'px');
+	if ( zlb_wh > $('body').height() ) {
+		$('#zmslightbox-bg').css('height', zlb_wh+'px');
 	} else {
 		$('#zmslightbox-bg').css('height',$('body').height()+'px');
 	};
-	if ( ih > wh && !( imgobj.hasClass('fullimage') ) ) {
+	if ( zlb_ih > zlb_wh && !( imgobj.hasClass('fullimage') ) ) {
 		imgobj.css('height',$(window).height() + 'px');
-		iw = imgobj.width();
-		ih = imgobj.height();
+		zlb_iw = imgobj.width();
+		zlb_ih = imgobj.height();
 	} else {
 		imgobj.css('height','auto');
 	};
-	var c_il = cx-(0.5*iw);
-	var c_it = cy-(0.5*ih);
-	$('#zmslightbox-wrapper').css('top',c_it + 'px');
-	if ( ih + c_it > $(window).height() && $('body').hasClass('masked') ) {
+	var zlb_c_il = zlb_cx-(zlb_iw/2);
+	var zlb_c_it = zlb_cy-(zlb_ih/2);
+	$('#zmslightbox-wrapper').css('top',zlb_c_it + 'px');
+	if ( zlb_ih + zlb_c_it > $(window).height() && $('body').hasClass('masked') ) {
 		$('#zmslightbox-wrapper').css('top',0);
 	};
 	$('#zmslightbox-wrapper img').show('slow');
@@ -96,6 +104,7 @@ function release_zmslightbox(){
 	$('body > #zmslightbox-mask').hide();
 	$('#zmslightbox-wrapper').css('top',0);
 	$('#zmslightbox-bg').css('height','100%');
+	zlb_wt = 0;
 };
 
 // HANDLE WINDOW EVENTS:

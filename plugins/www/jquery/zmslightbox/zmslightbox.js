@@ -124,7 +124,7 @@ window.onorientationchange = function() {
 	}
 };
 $(document).on('keyup',function(evt) {
-	if (evt.keyCode ==27 || evt.keyCode == 8 ) {
+	if ( ( $('#zmslightbox-wrapper').length > 0 ) && ( evt.keyCode ==27 || evt.keyCode == 8 ) ) {
 		remove_zmslightbox();
 	};
 });

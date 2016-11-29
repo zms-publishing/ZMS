@@ -1284,9 +1284,12 @@ class AccessManager(AccessableContainer):
               for roleElement in nodeElement.getElementsByTagName('role'):
                 roles.append(_xmllib.getText(roleElement))
               ob = self.getLinkObj(node)
-              docElmnt = ob.getRootElement()
-              node = docElmnt.getRefObjPath(ob)
-              docElmnt.setLocalUser(userName, node, roles, langs)
+              try:
+                docElmnt = ob.getRootElement()
+                node = docElmnt.getRefObjPath(ob)
+                docElmnt.setLocalUser(userName, node, roles, langs)
+              except:
+                _globals.writeError(self,'can\'t setLocalUser nodekey=%s'%userName)
           message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%filename)
       
       except:

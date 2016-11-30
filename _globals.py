@@ -520,7 +520,7 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, head
     userpass = auth['username']+':'+auth['password']
     userpass = base64.encodestring(urllib.unquote(userpass)).strip()
     headers['Authorization'] =  'Basic '+userpass
-  if method == 'GET':
+  if method == 'GET' and query:
     path += '?' + query
     query = ''
   conn.request(method, path, query, headers)

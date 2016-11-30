@@ -51,15 +51,9 @@ def getInternalLinkUrl(self, url, ob):
   if ob is None:
     index_html = './index_%s.html?op=not_found&url=%s'%(request.get('lang',self.getPrimaryLanguage()),str(url))
   else:
-    # Get index_html.
-    index_html = None
-    if 'getHref2IndexHtml' in ob.getMetaobjAttrIds(ob.meta_id):
-      index_html = ob.attr('getHref2IndexHtml')
-    else:
-      index_html = ob.getHref2IndexHtml(request)
-    # Contextualize index_html.
+    # Contextualized index_html.
     context = request.get('ZMS_THIS',self)
-    index_html = ob.getHref2IndexHtmlInContext(context,index_html,request)
+    index_html = ob.getHref2IndexHtmlInContext(context,REQUEST=request)
   self.stopMeasurement('%s.getInternalLinkUrl'%self.meta_id)
   return index_html
 

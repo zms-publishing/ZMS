@@ -260,7 +260,7 @@ class ZMSZCatalogAdapter(
         d['id'] = node.id
         d['home_id'] = node.getHome().id
         d['loc'] = '/'.join(node.getPhysicalPath())
-        d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(),node.getHref2IndexHtml(request),request)
+        d['index_html'] = node.getHref2IndexHtmlInContext(node.getRootElement(),REQUEST=request)
         d['meta_id'] = node.meta_id
         d['custom'] = d.get('custom',{})
         d['custom']['breadcrumbs'] = []
@@ -268,7 +268,7 @@ class ZMSZCatalogAdapter(
           d['custom']['breadcrumbs'].append({
               '__nodeName__':'breadcrumb',
               'loc':'/'.join(obj.getPhysicalPath()),
-              'index_html':obj.getHref2IndexHtmlInContext(obj.getRootElement(),obj.getHref2IndexHtml(request),request),
+              'index_html':obj.getHref2IndexHtmlInContext(obj.getRootElement(),REQUEST=request),
               'title':obj.getTitlealt(request),
             })
         return d

@@ -874,7 +874,9 @@ class ZMSObject(ZMSItem.ZMSItem,
       return href
       
     #++
-    def getHref2IndexHtmlInContext(self, context, index_html, REQUEST, deep=1):
+    def getHref2IndexHtmlInContext(self, context, index_html=None, REQUEST=None, deep=1):
+      if index_html is None:
+        index_html = self.getHref2IndexHtml(REQUEST,deep)
       if REQUEST.get('ZMS_CONTEXT_URL',False) or self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.forced',False) or self.getHome() != context.getHome():
         protocol = self.getConfProperty('ASP.protocol','http')
         domain = self.getConfProperty('ASP.ip_or_domain',None)
@@ -898,18 +900,19 @@ class ZMSObject(ZMSItem.ZMSItem,
     def getHref2IndexHtml(self, REQUEST, deep=1):
       deep = int(self.getConfProperty('ZMSObject.getHref2IndexHtml.deep',deep))
       ob = self
-      fct = REQUEST.get('ZMS_SKIN','index')
-      fct = {'sitemap':'index','search':'index'}.get(fct,fct)
-      if fct == 'index' and 'index_html' in self.objectIds():
-        value = self.absolute_url()
-        if REQUEST.get('lang','') != '': 
-          value = self.url_append_params(value,{'lang':REQUEST['lang']})
-        if REQUEST.get('preview','') != '': 
-          value = self.url_append_params(value,{'preview':REQUEST['preview']})
+      if 'getHref2IndexHtml' in ob.getMetaobjAttrIds(ob.meta_id):
+        value = ob.attr('getHref2IndexHtml')
       else:
-        if deep:
-          ob = _globals.getPageWithElements( self, REQUEST)
-        value = ob.getHref2Html( fct, ob.getPageExt(REQUEST), REQUEST)
+        fct = REQUEST.get('ZMS_SKIN','index')
+        if fct == 'index' and 'index_html' in self.objectIds():
+          value = self.absolute_url()
+          for param in ['lang','preview']:
+            if REQUEST.get(param,'') != '': 
+              value = self.url_append_params(value,{param:REQUEST[param]})
+        else:
+          if deep:
+            ob = _globals.getPageWithElements( self, REQUEST)
+          value = ob.getHref2Html( fct, ob.getPageExt(REQUEST), REQUEST)
       return value
 
 

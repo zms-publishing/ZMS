@@ -11,18 +11,26 @@
 						<b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu">
-						<li tal:condition="python:'Manager' in request['AUTHENTICATED_USER'].getRolesInContext(here)">
+						<li>
+							<a href="#" id="manage_userForm" onclick="$ZMI.iframe('manage_userForm',{lang:getZMILang()},{iframe:true,height:400,width:640,title:$(this).text(),modal:{backdrop:'static',keyboard:false}})">
+								<tal:block tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
+								<tal:block tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">password</tal:block>
+							</a>
+						</li>
+						<tal:block tal:condition="python:'Manager' in request['AUTHENTICATED_USER'].getRolesInContext(here)">
+						<li>
 							<a tal:attributes="href python:'f_api_html?lang=%s'%(request['lang'])">
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-question-sign')"></tal:block>
 								<tal:block tal:content="python:'API'">API</tal:block>
 							</a>
 						</li>
-						<li tal:condition="python:'Manager' in request['AUTHENTICATED_USER'].getRolesInContext(here)">
+						<li>
 							<a tal:attributes="href python:'manage_main?lang=%s&zmi-manage-system=%i'%(request['lang'],int(not int(request.SESSION.get('zmi-manage-system',0))))">
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-bolt')"></tal:block>
 								<tal:block tal:content="python:'Zope'">Zope</tal:block>
 							</a>
 						</li>
+						</tal:block>
 						<li> 
 							<a tal:attributes="href python:'manage?lang=%s'%request['lang']" class="toggle-sitemap"> 
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-reorder')"></tal:block> 
@@ -48,25 +56,11 @@
 							</li>
 						</tal:block>
 						</tal:block>
-						<li class="dropdown-header">
-							<tal:block tal:content="structure python:here.zmi_icon(name='icon-user')"></tal:block>
-							<tal:block tal:content="request/AUTHENTICATED_USER">the authenticated-user</tal:block>
-						</li>
+						<li class="divider"></li> 
 						<li>
-							<a href="#" id="manage_userForm" onclick="$ZMI.iframe('manage_userForm',{lang:getZMILang()},{iframe:true,height:400,width:640,title:$(this).text(),modal:{backdrop:'static',keyboard:false}})">
-								<tal:block tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
-								<tal:block tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">password</tal:block>
-							</a>
-						</li>
-						<li tal:condition="python:here.getConfProperty('ZMS.logout.href','')==''">
-							<a href="manage_zmi_logout">
-								<tal:block tal:content="structure python:here.zmi_icon(name='icon-off')"></tal:block>
-								Logout
-							</a>
-						</li>
-						<li tal:condition="python:here.getConfProperty('ZMS.logout.href','')!=''">
-							<a tal:attributes="href python:here.getConfProperty('ZMS.logout.href','')">
-								<tal:block tal:content="structure python:here.zmi_icon(name='icon-off')"></tal:block>
+							<a href="manage_zmi_logout" 
+								tal:attributes="href python:here.getConfProperty('ZMS.logout.href','')!='' and here.getConfProperty('ZMS.logout.href','') or 'manage_zmi_logout'"
+								><tal:block tal:content="structure python:here.zmi_icon(name='icon-off')"></tal:block>
 								Logout
 							</a>
 						</li>

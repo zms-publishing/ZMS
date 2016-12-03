@@ -7,7 +7,7 @@
  <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
   <LastAuthor>FH</LastAuthor>
   <Created>2007-05-16T21:18:05Z</Created>
-  <LastSaved>2015-27-11T08:17:21Z</LastSaved>
+  <LastSaved>2016-12-03T18:00:00Z</LastSaved>
   <Version>10.6871</Version>
  </DocumentProperties>
  <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
@@ -2603,6 +2603,7 @@
     <Cell><Data ss:Type="String">ATTR_USERS</Data></Cell>
     <Cell><Data ss:Type="String">Benutzer</Data></Cell>
     <Cell><Data ss:Type="String">Users</Data></Cell>
+    <Cell><Data ss:Type="String">gebruikers</Data></Cell>
     <Cell ss:Index="5"><Data ss:Type="String">Utilisateurs</Data></Cell>
     <Cell><Data ss:Type="String">Utenti</Data></Cell>
     <Cell><Data ss:Type="String">Usuarios</Data></Cell>
@@ -5601,7 +5602,7 @@
     <Cell><Data ss:Type="String">Dọc</Data></Cell>
     <Cell><Data ss:Type="String">מאונך</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="13.5">
+   <Row>
     <Cell><Data ss:Type="String">SITEMAPLAYOUT3</Data></Cell>
     <Cell><Data ss:Type="String">Explorer-Style (AJAX)</Data></Cell>
     <Cell><Data ss:Type="String">Explorer-Style (AJAX)</Data></Cell>
@@ -6058,9 +6059,11 @@
     <Cell><Data ss:Type="String">ZMSFormatProvider</Data></Cell>
     <Cell><Data ss:Type="String">Formate</Data></Cell>
     <Cell><Data ss:Type="String">Formats</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Formats</Data></Cell>
+    <Cell><Data ss:Type="String">Formats</Data></Cell>
+    <Cell><Data ss:Type="String">Formats</Data></Cell>
     <Cell><Data ss:Type="String">Formato del testo</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">格弿</Data></Cell>
+    <Cell><Data ss:Type="String">Formats</Data></Cell>
+    <Cell><Data ss:Type="String">格弿</Data></Cell>
     <Cell><Data ss:Type="String">ساختار</Data></Cell>
     <Cell><Data ss:Type="String">Форматы</Data></Cell>
     <Cell><Data ss:Type="String">संरूपें</Data></Cell>
@@ -6094,7 +6097,8 @@
     <Cell><Data ss:Type="String">TAB_PREVIEW</Data></Cell>
     <Cell><Data ss:Type="String">Vorschau</Data></Cell>
     <Cell><Data ss:Type="String">Preview</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Prévision</Data></Cell>
+    <Cell><Data ss:Type="String">Voorbeschouwing</Data></Cell>
+    <Cell><Data ss:Type="String">Prévision</Data></Cell>
     <Cell><Data ss:Type="String">Previsione</Data></Cell>
     <Cell><Data ss:Type="String">Previo</Data></Cell>
     <Cell><Data ss:Type="String">预览</Data></Cell>
@@ -6109,7 +6113,8 @@
     <Cell><Data ss:Type="String">TAB_PROPERTIES</Data></Cell>
     <Cell><Data ss:Type="String">Eigenschaften</Data></Cell>
     <Cell><Data ss:Type="String">Properties</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Propriétés</Data></Cell>
+    <Cell><Data ss:Type="String">Eigenschappen</Data></Cell>
+    <Cell><Data ss:Type="String">Propriétés</Data></Cell>
     <Cell><Data ss:Type="String">Proprieta</Data></Cell>
     <Cell><Data ss:Type="String">Propiedades</Data></Cell>
     <Cell><Data ss:Type="String">属性</Data></Cell>
@@ -6124,7 +6129,8 @@
     <Cell><Data ss:Type="String">TAB_REFERENCES</Data></Cell>
     <Cell><Data ss:Type="String">Linkquellen</Data></Cell>
     <Cell><Data ss:Type="String">Linksources</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Sources de lien</Data></Cell>
+    <Cell><Data ss:Type="String">Linksources</Data></Cell>
+    <Cell><Data ss:Type="String">Sources de lien</Data></Cell>
     <Cell><Data ss:Type="String">Fonti di collegamento</Data></Cell>
     <Cell><Data ss:Type="String">Fuentes del acoplamiento</Data></Cell>
     <Cell><Data ss:Type="String">链接溿</Data></Cell>
@@ -6155,13 +6161,13 @@
     <Cell><Data ss:Type="String">TAB_SECURITY</Data></Cell>
     <Cell><Data ss:Type="String">Sicherheit</Data></Cell>
     <Cell><Data ss:Type="String">Security</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">sécurité</Data></Cell>
+    <Cell><Data ss:Type="String">Veiligheid</Data></Cell>
+    <Cell><Data ss:Type="String">sécurité</Data></Cell>
     <Cell><Data ss:Type="String">Sicurezza</Data></Cell>
     <Cell><Data ss:Type="String">Seguridad</Data></Cell>
     <Cell><Data ss:Type="String">安全</Data></Cell>
     <Cell><Data ss:Type="String">امنيت</Data></Cell>
     <Cell><Data ss:Type="String">Надежность</Data></Cell>
-
     <Cell><Data ss:Type="String">सुरक्षा</Data></Cell>
     <Cell><Data ss:Type="String">الحماية</Data></Cell>
     <Cell><Data ss:Type="String">An ninh</Data></Cell>
@@ -6171,8 +6177,11 @@
     <Cell><Data ss:Type="String">TAB_SITEMAP</Data></Cell>
     <Cell><Data ss:Type="String">Sitemap</Data></Cell>
     <Cell><Data ss:Type="String">Sitemap</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Mappa del sito</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">网站地图</Data></Cell>
+    <Cell><Data ss:Type="String">Sitemap</Data></Cell>
+    <Cell><Data ss:Type="String">Sitemap</Data></Cell>
+    <Cell><Data ss:Type="String">Mappa del sito</Data></Cell>
+    <Cell><Data ss:Type="String">Sitemap</Data></Cell>
+    <Cell><Data ss:Type="String">网站地图</Data></Cell>
     <Cell><Data ss:Type="String">نقشه سايت</Data></Cell>
     <Cell><Data ss:Type="String">обзор сейта</Data></Cell>
     <Cell><Data ss:Type="String">स्थल नक्षा</Data></Cell>
@@ -6184,8 +6193,12 @@
     <Cell><Data ss:Type="String">TAB_SYSTEM</Data></Cell>
     <Cell><Data ss:Type="String">System</Data></Cell>
     <Cell><Data ss:Type="String">System</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Sistema</Data></Cell>
-    <Cell ss:Index="9"/>
+    <Cell><Data ss:Type="String">Systeem</Data></Cell>
+    <Cell><Data ss:Type="String">Systèm</Data></Cell>
+    <Cell><Data ss:Type="String">Sistema</Data></Cell>
+    <Cell><Data ss:Type="String">Sistema</Data></Cell>
+    <Cell><Data ss:Type="String">系统</Data></Cell>
+    <Cell><Data ss:Type="String">سیستم</Data></Cell>
     <Cell><Data ss:Type="String">Система</Data></Cell>
     <Cell><Data ss:Type="String">समुदाय</Data></Cell>
     <Cell><Data ss:Type="String">نظام</Data></Cell>
@@ -6196,7 +6209,8 @@
     <Cell><Data ss:Type="String">TAB_TASKS</Data></Cell>
     <Cell><Data ss:Type="String">Aufgaben</Data></Cell>
     <Cell><Data ss:Type="String">Tasks</Data></Cell>
-    <Cell ss:Index="5"><Data ss:Type="String">Tâches</Data></Cell>
+    <Cell><Data ss:Type="String">Taken</Data></Cell>
+    <Cell><Data ss:Type="String">Tâches</Data></Cell>
     <Cell><Data ss:Type="String">Incarichi</Data></Cell>
     <Cell><Data ss:Type="String">Tareas</Data></Cell>
     <Cell><Data ss:Type="String">任务</Data></Cell>
@@ -6220,6 +6234,38 @@
     <Cell><Data ss:Type="String">تنضيد</Data></Cell>
     <Cell><Data ss:Type="String">Các định dạng đoạn văn</Data></Cell>
     <Cell><Data ss:Type="String">עיצוב פסקה</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TAB_USERS</Data></Cell>
+    <Cell><Data ss:Type="String">Benutzer</Data></Cell>
+    <Cell><Data ss:Type="String">Users</Data></Cell>
+    <Cell><Data ss:Type="String">gebruikers</Data></Cell>
+    <Cell ss:Index="5"><Data ss:Type="String">Utilisateurs</Data></Cell>
+    <Cell><Data ss:Type="String">Utenti</Data></Cell>
+    <Cell><Data ss:Type="String">Usuarios</Data></Cell>
+    <Cell><Data ss:Type="String">Users</Data></Cell>
+    <Cell><Data ss:Type="String">کد کاربر</Data></Cell>
+    <Cell><Data ss:Type="String">участники</Data></Cell>
+    <Cell><Data ss:Type="String">प्रयोगकर्त्तायें</Data></Cell>
+    <Cell><Data ss:Type="String">مستخدمين</Data></Cell>
+    <Cell><Data ss:Type="String">Các người sử dụng</Data></Cell>
+    <Cell><Data ss:Type="String">משתמשים</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TAB_USERSITEMAP</Data></Cell>
+    <Cell><Data ss:Type="String">Benutzer-Sitemap</Data></Cell>
+    <Cell><Data ss:Type="String">User Sitemap</Data></Cell>
+    <Cell><Data ss:Type="String">Gebruiker Sitemap</Data></Cell>
+    <Cell><Data ss:Type="String">Plan du site utilisateur</Data></Cell>
+    <Cell><Data ss:Type="String">Mappa del sito l'utente</Data></Cell>
+    <Cell><Data ss:Type="String">Mapa del sitio del usuario</Data></Cell>
+    <Cell><Data ss:Type="String">网站地图</Data></Cell>
+    <Cell><Data ss:Type="String">نقشه سایت کاربر</Data></Cell>
+    <Cell><Data ss:Type="String">Карта сайта Пользователь</Data></Cell>
+    <Cell><Data ss:Type="String">उपयोगकर्ता साइटमैप</Data></Cell>
+    <Cell><Data ss:Type="String">خريطة الموقع المستخدم</Data></Cell>
+    <Cell><Data ss:Type="String">người sử dụng Sơ đồ trang web</Data></Cell>
+    <Cell><Data ss:Type="String">מפת האתר משתמש</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TAB_WORKFLOW</Data></Cell>

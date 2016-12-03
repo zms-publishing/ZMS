@@ -1756,6 +1756,9 @@ button.ui-dialog-titlebar-close {
 	background-color: #818EA2;
 	border-bottom:1px solid #FFFFFF;
 }
+.navbar-inverse .navbar-nav .dropdown-menu > .dropdown-header {
+	margin-top:9px;
+}
 li.zmi-item .btn.split-left,
 li.zmi-item .btn.split-right.dropdown-toggle {
 	width: 30px;

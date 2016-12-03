@@ -426,8 +426,8 @@ class ConfManager(
     def customize_manage_options(self):
       l = []
       l.append({'label':'TAB_EDIT','action':'manage_main'})
+      l.append({'label':'TAB_USERS','action':'manage_users'})
       l.append({'label':'TAB_SYSTEM','action':'manage_customize'})
-      l.append({'label':'TAB_ACCESS','action':'manage_users'})
       l.append({'label':'TAB_LANGUAGES','action':'manage_customizeLanguagesForm'})
       for ob in self.objectValues():
         if IZMSConfigurationProvider in list(zope.interface.providedBy(ob)):

@@ -895,10 +895,11 @@ class ZMSGlobals:
     Split string by given separator and trim items.
     @rtype: C{list}
     """
-    def string_list(self, s, sep='\n'):
+    def string_list(self, s, sep='\n', trim=True):
       l = []
       for i in s.split(sep):
-        i = i.strip()
+        if trim:
+          i = i.strip()
         while len(i) > 0 and ord(i[-1]) < 32:
           i = i[:-1]
         if len(i) > 0:

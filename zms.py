@@ -297,14 +297,6 @@ class ZMS(
     # -----------
     meta_type = meta_id = "ZMS"
 
-    # Management Options.
-    # -------------------
-    def manage_options(self):
-      opts = list(super( self.__class__, self).manage_options())
-      opts.append({'label': 'TAB_ACCESS',       'action': 'manage_users'})
-      opts.append({'label': 'TAB_CONFIGURATION','action': 'manage_customize'})
-      return tuple(opts)
-
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (

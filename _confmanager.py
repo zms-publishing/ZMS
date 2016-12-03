@@ -427,6 +427,7 @@ class ConfManager(
       l = []
       l.append({'label':'TAB_EDIT','action':'manage_main'})
       l.append({'label':'TAB_SYSTEM','action':'manage_customize'})
+      l.append({'label':'TAB_ACCESS','action':'manage_users'})
       l.append({'label':'TAB_LANGUAGES','action':'manage_customizeLanguagesForm'})
       for ob in self.objectValues():
         if IZMSConfigurationProvider in list(zope.interface.providedBy(ob)):
@@ -434,6 +435,8 @@ class ConfManager(
             l.append(self.operator_setitem(d.copy(),'action',ob.id+'/'+d['action']))
       l.append({'label':'TAB_FILTER','action':'manage_customizeFilterForm'})
       l.append({'label':'TAB_DESIGN','action':'manage_customizeDesignForm'})
+      # return filtered_manage_options (@see /App/Management.py)
+      l = filter(lambda x:self.restrictedTraverse(x['action'], None) is not None,l)
       return l
 
 

@@ -2,11 +2,7 @@
 
 <ul class="main-nav nav nav-tabs" tal:define="global
 			current python:request['URL'].split('/')[-1];
-			all_options options/options;
-			special_options options/special_options;
-			current_options python:filter(lambda x: current.startswith(x['action']),all_options);
-			filtered_options python:filter(lambda x: len(filter(lambda y: x['action'].startswith(y),special_options))==0,all_options);
-			options python:[filtered_options,current_options][int(len(filter(lambda x: current.startswith(x),special_options))>0)];
+			options options/options;
 			actions python:map(lambda x: x.get('alias',x['action']), options);
 			active python:map(lambda x: int(
 						(x==current and not here.id+'/'+current in actions) or 

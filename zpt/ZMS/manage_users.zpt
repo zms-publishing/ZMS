@@ -18,11 +18,7 @@
 <html lang="en">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'users config',here.meta_id])">
-<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=[
-		{'label':'TAB_EDIT','action':'manage_main'},
-		{'label':'TAB_ACCESS','action': 'manage_users'},
-		{'label':'TAB_SITEMAP','action': 'manage_users_sitemap'},
-		])">zmi_body_header</tal:block>
+<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 <script>
@@ -405,6 +401,7 @@ function zmiModalInsertUserOpen(context) {
 		<div class="btn-group">
 			<a class="btn btn-primary" tal:attributes="href python:'?lang=%s&search_term='%request['lang']; title python:here.getZMILangStr('BTN_INSERT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></a>
 			<a class="btn btn-default" tal:attributes="href python:'?lang=%s&btn=Purge'%request['lang']; title python:'Purge'" tal:condition="python:request['AUTHENTICATED_USER'].has_role('Manager')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-ambulance text-danger')"></tal:block></a>
+      <a class="btn btn-default" tal:attributes="href python:'manage_users_sitemap?lang=%s'%request['lang']; title python:here.getZMILangStr('TAB_SITEMAP')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-sitemap')"></tal:block></a>
 			<span class="btn btn-default" onclick="zmiModal('#importUsers',{title:$(this).attr('title')})" tal:attributes="title python:'%s...'%here.getZMILangStr('BTN_IMPORT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 			<span class="btn btn-default" onclick="var $fm=$(this).closest('form');$('input[name=btn]',$fm).val('export');$fm.attr('target','_blank').submit();" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 		</div><!-- .btn-group -->

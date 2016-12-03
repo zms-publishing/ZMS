@@ -890,6 +890,10 @@ ul.zmi-container.pages .zmi-item .contentEditable {
 	border-bottom: none;
 	color:#888;
 }
+.zmi legend.pull-left {
+	margin-bottom: .5em;
+	width:auto;
+}
 .system table.zopeobjects i {
 	margin-left:3px;
 }

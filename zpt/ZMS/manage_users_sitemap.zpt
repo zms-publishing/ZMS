@@ -32,16 +32,14 @@
 </tal:block>
 
 <form class="form-horizontal">
-<div class="pull-left">
-	<legend>
-		<tal:block tal:content="structure python:here.zmi_icon(name='icon-sitemap',title=here.getZMILangStr('TAB_SITEMAP'))"></tal:block>
+	<legend class="pull-left">
+		<tal:block tal:content="structure python:here.zmi_icon(name='icon-sitemap',title=here.getZMILangStr('TAB_USERSITEMAP'))"></tal:block>
 		<tal:block tal:content="python:here.getZMILangStr('TAB_USERSITEMAP')">User Sitemap</tal:block>
 	</legend>
-</div>
 <div class="pull-right">
-	<a class="btn" href="manage_users" title="Back"
-		tal:attributes="href python:'manage_users?lang=%s'%(request['lang']);title python:here.getZMILangStr('BACK')"
-	><i class="icon-reply"></i></a>
+	<a class="btn btn-default" href="manage_users" title="Back"
+		tal:attributes="href python:'manage_users?lang=%s'%(request['lang']);title python:here.getZMILangStr('TAB_USERS')"
+		tal:content="python:here.getZMILangStr('BACK')">Back</a>
 </div>
 <table class="table table-striped">
 <tbody>

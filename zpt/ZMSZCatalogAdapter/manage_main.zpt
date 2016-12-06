@@ -219,6 +219,14 @@ $ZMI.registerReady(function(){
 				<div class="form-group">
 					<div class="col-sm-2"></div>
 					<div class="col-sm-10">
+						<div class="zmi-languages">
+							<select class="zmi-select" id="langs" name="langs:list" multiple="multiple">
+								<tal:block tal:repeat="langId python:here.getLangIds()">
+									<option selected="selected" tal:attributes="value langId" tal:content="python:'%s (%s)'%(here.getLanguageLabel(langId),langId)">the label</option>
+								</tal:block>
+							</select>
+						</div><!-- .zmi-languages -->
+						<div class="clearfix"></div><!-- .clearfix -->
 						<div class="zmi-sitemap">
 						</div><!-- .zmi-sitemap -->
 					</div><!-- .col-sm-10 -->
@@ -323,11 +331,13 @@ function zmiReindexCatalog() {
 			if (i < $inputs.length) {
 				var $input = $($inputs[i]);
 				var uid = $input.val();
+				var langs = $("#langs").val().join(';');
+				var data = {uid:uid,langs:langs};
 				var $a = $input.next("a");
 				$a.after('<'+'span class="response"> '+$ZMI.icon('icon-spinner')+' <'+'/span>');
 				$.ajax({
 					url:"manage_reindex",
-					data:{uid:uid},
+					data:data,
 					error: function (xhr, ajaxOptions, thrownError) {
 							$a.next('.response').addClass('text-danger').html('( '+thrownError+' )');
 							i++;

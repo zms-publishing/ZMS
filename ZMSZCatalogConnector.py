@@ -487,7 +487,8 @@ class ZMSZCatalogConnector(
       home_id = container.getHome().id
       try:
         lresult = []
-        for lang in container.getLangIds():
+        langs = request.get('langs',';'.join(container.getLangIds())).split(';')
+        for lang in langs:
           request.set('lang',lang)
           lresult.append('language: %s'%lang)
           # Clear catalog.

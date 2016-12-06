@@ -1271,8 +1271,8 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 		html += '<ul data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page '+page_meta_type+'">';
 		html += '<li class="'+css.join(' ')+'">';
 		html += $ZMI.icon("icon-caret-right toggle",'title="+" onclick="$ZMI.objectTree.toggleClick(this'+(typeof callback=="undefined"?'':','+callback)+')"')+' ';
-		if (!page_is_page) {
-			html += '<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)">'+page_display_icon+'</span> ';
+		if (page_is_pageelement) {
+			html += '<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="'+$ZMI.getLangStr('TAB_PREVIEW')+'">'+page_display_icon+'</span> ';
 		}
 		html += '<a href="'+page_absolute_url+'"'
 				+ ' data-link-url="'+link_url+'"'
@@ -1282,7 +1282,7 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 				+ ' data-page-is-page="'+page_is_page+'"'
 				+ ' data-page-titlealt="'+page_titlealt.replace(/"/g,'&quot;').replace(/'/g,'&apos;')+'"'
 				+ ' onclick="return zmiSelectObject(this)">';
-		if (page_is_page) {
+		if (!page_is_pageelement) {
 			html += page_display_icon+' ';
 		}
 		html += page_titlealt;

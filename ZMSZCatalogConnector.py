@@ -454,6 +454,14 @@ class ZMSZCatalogConnector(
       for attr_id in zcm._getAttrIds():
         attr_name = 'zcat_index_%s'%attr_id
         delattr(node,attr_name)
+      # premature commit
+      req_key = 'ZMSZCatalogConnector._update.transaction_count'
+      cfg_key = 'ZMSZCatalogConnector._update.transaction_size'
+      if request.get(req_key,0)>=int(self.getConfProperty(cfg_key,99)):
+        import transaction
+        transaction.commit()
+      request.set(req_key,request.get(req_key,0)+1)
+
 
 
     # --------------------------------------------------------------------------

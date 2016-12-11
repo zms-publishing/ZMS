@@ -43,6 +43,37 @@ def isInternalLink(url):
   return rtn
 
 # ------------------------------------------------------------------------------
+#  getInternalLinkDict:
+# ------------------------------------------------------------------------------
+def getInternalLinkDict(self, url):
+  #-- [ReqBuff]: Fetch buffered value from Http-Request.
+  docelmnt = self.getDocumentElement()
+  reqBuffId = 'getInternalLinkDict'
+  try: return docelmnt.fetchReqBuff(reqBuffId)
+  except: pass
+  d = {}
+  # Params.
+  ref_params = ''
+  if url.find(';') > 0:
+    ref_params = url[url.find(';'):-1]
+    url = '{$%s}'%url[2:url.find(';')]
+  ref_obj = self.getLinkObj(url)
+  if ref_obj is not None:
+    request = self.REQUEST
+    url = '{$%s%s}'%(self.getRefObjPath( ref_obj)[2:-1],ref_params)
+    d['data-id'] = url
+    d['data-url'] = getInternalLinkUrl(self,url,ref_obj)
+    if not ref_obj.isActive(request):
+      d['data-target'] = "inactive"
+    elif self.getTrashcan().isAncestor(ref_obj):
+      d['data-target'] = 'trashcan'
+  else:
+    d['data-id'] = "{$__%s__}"%url[2:-1]
+    d['data-target'] = "missing"
+  #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
+  return docelmnt.storeReqBuff( reqBuffId, d)
+
+# ------------------------------------------------------------------------------
 #  getInternalLinkUrl:
 # ------------------------------------------------------------------------------
 def getInternalLinkUrl(self, url, ob):
@@ -299,8 +330,6 @@ class ZReferableItem:
   def validateInlineLinkObj(self, text):
     if not int(self.getConfProperty('ZReferableItem.validateLinkObj',1)): return text
     self.startMeasurement('%s.validateInlineLinkObj'%self.meta_id)
-    import time
-    t0 = time.time()
     for pq in [('<a(.*?)>','href'),('<img(.*?)>','src')]:
       p = pq[0]
       q = pq[1]
@@ -310,23 +339,9 @@ class ZReferableItem:
         if d.has_key('data-id'):
           old = p.replace('(.*?)',f)
           url = d['data-id']
-          # Params.
-          ref_params = ''
-          if url.find(';') > 0:
-            ref_params = url[url.find(';'):-1]
-            url = '{$%s}'%url[2:url.find(';')]
-          ref_obj = self.getLinkObj(url)
-          if ref_obj is not None:
-            request = self.REQUEST
-            url = '{$%s%s}'%(self.getRefObjPath( ref_obj)[2:-1],ref_params)
-            d['data-id'] = url
-            d[q] = getInternalLinkUrl(self,url,ref_obj)
-            if not ref_obj.isActive(request):
-              d['data-target'] = "inactive"
-            elif self.getTrashcan().isAncestor(ref_obj):
-              d['data-target'] = 'trashcan'
-          else:
-            d['data-target'] = "missing"
+          ild = getInternalLinkDict(self,url)
+          for k in ild.keys():
+            d[{'data-url':q}.get(k,k)] = ild[k]
           new = p.replace('(.*?)',' '.join(['']+map(lambda x:'%s="%s"'%(x,d[x]),d.keys())))
           if old != new:
             text = text.replace(old,new)
@@ -340,22 +355,12 @@ class ZReferableItem:
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
-    if not int(self.getConfProperty('ZReferableItem.validateLinkObj',1)): return url
+    if not int(self.getConfProperty('ZReferableItem.validateLinkObj',1)): return text
     self.startMeasurement('%s.validateLinkObj'%self.meta_id)
     if isInternalLink(url):
       if not url.startswith('{$__'):
-        # Params.
-        ref_params = ''
-        if url.find(';') > 0:
-          ref_params = url[url.find(';'):-1]
-          url = '{$%s}'%url[2:url.find(';')]
-        ref_obj = self.getLinkObj(url)
-        if ref_obj is not None:
-          # Repair link.
-          url = '{$%s%s}'%(self.getRefObjPath( ref_obj)[2:-1],ref_params)
-        else:
-          # Broken link.
-          url = '{$__' + url[2:-1] + '__}'
+        ild = getInternalLinkDict(self,url)
+        url = ild['data-id']
     self.stopMeasurement('%s.validateLinkObj'%self.meta_id)
     return url
 

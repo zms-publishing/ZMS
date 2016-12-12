@@ -471,9 +471,7 @@ class ObjAttrs:
             fmt_str = 'TIME_FMT'
           return self.getDateTimeInput(fmName,elName,size,value,enabled,fmt_str,REQUEST,css)
         elif datatype == _globals.DT_URL:
-          size = 22
-          elTextName = ''
-          return self.getUrlInput( fmName, elName, elTextName, size, value, enabled, REQUEST, css )
+          return self.getUrlInput(fmName,elName,value=value,enabled=enabled,REQUEST=REQUEST,css=css)
         else:
           size = None
           extra = ''

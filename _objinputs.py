@@ -36,7 +36,7 @@ class ObjInputs:
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getUrlInput(self, fmName, elName, elTextName, size, value, enabled, REQUEST, css='form-control'):
+  def getUrlInput(self, fmName, elName, elTextName='', size=None, value='', enabled=True, REQUEST=None, css='form-control'):
     return self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css+' url-input')
 
 

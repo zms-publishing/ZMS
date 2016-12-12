@@ -84,7 +84,7 @@ function zmiModalInsertUserOpen(context) {
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group">
 				<label for="node" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_NODE')">Node</span></label>
-				<div class="col-sm-10" tal:content="structure python:here.getUrlInput(fmName='insertNodeForm',elName='node',elTextName='',size=25,value='{$}',enabled=True,REQUEST=request)">the control</div><!-- .col-sm-10 -->
+				<div class="col-sm-10" tal:content="structure python:here.getUrlInput(fmName='insertNodeForm',elName='node',value='{$}',REQUEST=request)">the control</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<input tal:condition="python:not multilang" type="hidden" name="langs:list" tal:attributes="value python:here.getLangIds()[0]">
 			<div tal:condition="python:multilang" class="form-group">
@@ -175,7 +175,7 @@ function zmiModalInsertUserOpen(context) {
 	</div><!-- .form-group -->
 	<div id="tr_profile" class="form-group">
 		<label for="profile" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_PROFILE')">Profile</span></label>
-		<div class="col-sm-10" tal:content="structure python:here.getUrlInput(fmName='userform',elName='profile',elTextName='',size=25,value=here.getUserAttr(userObj['name'],'profile',''),enabled=True,REQUEST=request)">the control</div><!-- .col-sm-10 -->
+		<div class="col-sm-10" tal:content="structure python:here.getUrlInput(fmName='userform',elName='profile',value=here.getUserAttr(userObj['name'],'profile',''),REQUEST=request)">the control</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
 	</tal:block>
 	<div class="form-group">

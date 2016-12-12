@@ -644,7 +644,7 @@ class ObjAttrs:
         if datatype in _globals.DT_TEXTS:
           value = self.validateInlineLinkObj(value)
         # Url-Fields
-        elif datatype == _globals.DT_URL:
+        if datatype == _globals.DT_URL:
           value = self.validateLinkObj(value)
         # Executable fields.
         value = self.dt_exec(value)
@@ -843,7 +843,7 @@ class ObjAttrs:
             v = _blobfields.createBlobField(self,datatype,v)
       
       #-- DateTime-Fields.
-      elif datatype in _globals.DT_DATETIMES:
+      if datatype in _globals.DT_DATETIMES:
         if type(v) in StringTypes:
           fmt_str = 'DATETIME_FMT'
           if datatype == _globals.DT_DATE:
@@ -855,7 +855,7 @@ class ObjAttrs:
           v = _globals.getDateTime(v)
       
       #-- Dictionary-Fields
-      elif datatype == _globals.DT_DICT:
+      if datatype == _globals.DT_DICT:
         if v is None:
           v = {}
         if type(v) in StringTypes:
@@ -868,7 +868,7 @@ class ObjAttrs:
           v = v.copy()
       
       #-- List-Fields
-      elif datatype == _globals.DT_LIST:
+      if datatype == _globals.DT_LIST:
         if obj_attr['repetitive'] and not type(v) is list:
           if obj_attr['type'] in ['file','image']:
             l = self.getObjProperty(obj_attr['id'],self.REQUEST)
@@ -897,28 +897,28 @@ class ObjAttrs:
               v = self.copy_list(v)
       
       #-- Integer-Fields
-      elif datatype in _globals.DT_INTS:
+      if datatype in _globals.DT_INTS:
         if type(v) in StringTypes and len(v) > 0:
           if v[-1] == '.':
             v = v[:-1]
           v = int(v)
       
       #-- Float-Fields
-      elif datatype == _globals.DT_FLOAT:
+      if datatype == _globals.DT_FLOAT:
         if type(v) in StringTypes and len(v) > 0:
           v = float(v)
       
       #-- String-Fields.
-      elif datatype in _globals.DT_STRINGS:
+      if datatype in _globals.DT_STRINGS:
         if v is None:
           v = ''
       
       #-- Text-Fields
-      elif datatype in _globals.DT_TEXTS:
+      if datatype in _globals.DT_TEXTS:
         v = self.validateInlineLinkObj(v)
       
       #-- Url-Fields
-      elif datatype == _globals.DT_URL:
+      if datatype == _globals.DT_URL:
         v = self.validateLinkObj(v)
       
       # Hook for custom formatting.

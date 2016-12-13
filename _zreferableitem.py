@@ -48,7 +48,7 @@ def isInternalLink(url):
 def getInternalLinkDict(self, url):
   #-- [ReqBuff]: Fetch buffered value from Http-Request.
   docelmnt = self.getDocumentElement()
-  reqBuffId = 'getInternalLinkDict'
+  reqBuffId = 'getInternalLinkDict.%s'%url
   try: return docelmnt.fetchReqBuff(reqBuffId)
   except: pass
   d = {}

@@ -60,9 +60,8 @@ DT_URL = 14
 DT_ID = 15
 DT_XML = 16
 DT_AMOUNT = 17
-DT_COLOR = 18
 DT_TEXTS = [ DT_STRING, DT_TEXT ]
-DT_STRINGS = [ DT_STRING, DT_TEXT, DT_URL, DT_PASSWORD, DT_XML, DT_COLOR ]
+DT_STRINGS = [ DT_STRING, DT_TEXT, DT_URL, DT_PASSWORD, DT_XML ]
 DT_BLOBS = [ DT_IMAGE, DT_FILE ]
 DT_INTS = [ DT_INT, DT_BOOLEAN ]
 DT_NUMBERS = [ DT_INT, DT_FLOAT, DT_AMOUNT ]
@@ -87,7 +86,6 @@ dtMapping = [
   [ 'identifier',''],
   [ 'xml',''],
   [ 'amount',0.0],
-  [ 'color',''],
 ]
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

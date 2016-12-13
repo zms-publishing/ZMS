@@ -442,10 +442,6 @@ class ObjAttrs:
       elif inputtype == 'boolean':
         return self.getCheckbox(fmName=fmName,elName=elName,elId=obj_attr['id'],value=value,enabled=enabled,hidden=False,btn=True,REQUEST=REQUEST)
       
-      #-- Color-Fields.
-      elif inputtype == 'color':
-        return self.zmi_input_color(self,name=elName,value=value,type=inputtype,key=obj_attr['id'],lang_str=lang_str,enabled=enabled)
-      
       #-- Autocomplete-Fields.
       elif inputtype in ['autocomplete','multiautocomplete']:
         return self.zmi_input_autocomplete(self,name=elName,value=value,type=inputtype,ajax_url='ajaxGetObjOptions',obj_id=meta_id,attr_id=obj_attr['id'],lang_str=lang_str,enabled=enabled)

@@ -48,10 +48,6 @@ class ObjTypes:
     zmi_input_multiselect = PageTemplateFile('zpt/objattrs/zmi_input_multiselect', globals())
     zmi_input_select = PageTemplateFile('zpt/objattrs/zmi_input_select', globals())
 
-    # Color.
-    # ------
-    zmi_input_color = PageTemplateFile('zpt/objattrs/zmi_input_color', globals())
-
     # Richtext.
     # ---------
     f_selectRichtext = PageTemplateFile('zpt/objattrs/f_select_richtext', globals())

@@ -123,7 +123,7 @@ class ZMSMetaobjManager:
 
     # Globals.
     # --------
-    valid_types =     ['amount','autocomplete','boolean','color','date','datetime','dictionary','file','float','identifier','image','int','list','multiautocomplete','multiselect','password','richtext','select','string','text','time','url','xml']
+    valid_types =     ['amount','autocomplete','boolean','date','datetime','dictionary','file','float','identifier','image','int','list','multiautocomplete','multiselect','password','richtext','select','string','text','time','url','xml']
     valid_xtypes =    ['constant','delimiter','hint','interface','method','py','zpt','resource']
     valid_datatypes = valid_types+valid_xtypes
     valid_datatypes.sort()

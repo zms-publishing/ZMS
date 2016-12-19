@@ -4132,6 +4132,7 @@ if key.startswith('table_'):
 							content       python:zmscontext.re_sub(pattern,replacement,column.get('content',''));
 							content       python:[content,newline_to_br(content)][format==''];
 							col_text      python:[zmscontext.dt_exec(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in map(lambda x: x.getId(),rteformats)];
+							col_text      python:zmscontext.validateInlineLinkObj(col_text);
 							col_text      python:zmscontext.re_sub('^(&nbsp\073)','',col_text);
 							col_text      python:zmscontext.re_sub('^<p>((\\w|\\W)*?)</p>$','\\1',col_text)">
 						<tal:block tal:condition="python:tag in ['td','th']">
@@ -4186,7 +4187,7 @@ if key.startswith('table_'):
           <item key="id"><![CDATA[ZMSTable]]></item>
           <item key="name"><![CDATA[ZMSTable]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.2.9]]></item>
+          <item key="revision"><![CDATA[3.2.10]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

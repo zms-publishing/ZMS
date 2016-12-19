@@ -21,6 +21,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.userfolder import UserFolder
 from types import StringTypes
 import copy
+import pickle
 import sys
 import time
 import urllib
@@ -1291,6 +1292,26 @@ class AccessManager(AccessableContainer):
               except:
                 _globals.writeError(self,'can\'t setLocalUser nodekey=%s'%userName)
           message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%filename)
+        
+        # Fast-Export
+        # -----------
+        elif btn == 'fastexport':
+          path = '%s/var/fastexport.pkl'%self.Control_Panel.getINSTANCE_HOME()
+          data = self.getRootElement().getConfProperty('ZMS.security.users',{})
+          output = open(path, 'wb')
+          pickle.dump(data, output)
+          output.close()
+          message = self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%path)
+        
+        # Fast-Import
+        # -----------
+        elif btn == 'fastimport':
+          path = '%s/var/fastexport.pkl'%self.Control_Panel.getINSTANCE_HOME()
+          input = open(path, 'rb')
+          data = pickle.load(input)
+          input.close()
+          self.getRootElement().setConfProperty('ZMS.security.users', data)
+          message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%path)
       
       except:
         message = _globals.writeError(self,"[manage_userProperties]")

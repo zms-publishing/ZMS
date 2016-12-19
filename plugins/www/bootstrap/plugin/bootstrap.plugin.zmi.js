@@ -1710,7 +1710,7 @@ function zmiActionButtonsRefresh(sender,evt) {
  */
 function zmiToggleSelectionButtonClick(sender,v) {
 	var $fm = $(sender).parents('form');
-	var $inputs = $('input:checkbox:not([name~="active"])',$fm);
+	var $inputs = $('input:checkbox:not([id~="active"]):not([id~="attr_dc_coverage"])',$fm);
 	if (typeof v == "undefined") {
 		v = !$inputs.prop('checked');
 	}

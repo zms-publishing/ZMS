@@ -609,6 +609,9 @@ ZMI.prototype.initInputFields = function(container) {
 							var nodeName = $control.prop("nodeName").toLowerCase();
 							var nodeType = $control.prop("type").toLowerCase();
 							if (nodeName=="input") {
+								if ($control.val().basicTrim().length==0 && typeof $control.attr("data-value-attr")!="undefined") {
+									$control.val($control.attr($control.attr("data-value-attr")));
+								}
 								isBlank = $control.val().basicTrim().length==0;
 								if (isBlank && nodeType=="file") {
 									var name = $control.attr("name");

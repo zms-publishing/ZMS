@@ -511,20 +511,18 @@ return zmscontext.attr('title')
                   <item key="name"><![CDATA[<script type="text/javascript" tal:define="global
 		zmscontext options/zmscontext">
 
-function elFileChange(el) {
-	var filename = $(el).val();
-	var i = Math.max(filename.lastIndexOf('/'),filename.lastIndexOf('\\'));
-	if ( i > 0) {
-		filename = filename.substring(i+1);
-	}
-	var title = $("#title_"+getZMILang());
-	if ( title.val().length == 0) {
-		title.attr('placeholder',filename);
-	}
-}
-
 $(function(){
-	$("#file_"+getZMILang()).change( function() { elFileChange(this); } );
+	$("#file_"+getZMILang()).change( function() {
+			var filename = $(this).val();
+			var i = Math.max(filename.lastIndexOf('/'),filename.lastIndexOf('\\'));
+			if (i > 0) {
+				filename = filename.substring(i+1);
+			}
+			var title = $("#title_"+getZMILang());
+			if (title.val().length == 0) {
+				title.attr({'data-value-attr':'placeholder','placeholder':filename});
+			}
+		});
 });
 
 </script>]]>

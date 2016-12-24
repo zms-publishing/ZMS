@@ -1602,7 +1602,7 @@ div.right .btn .caret {
 	}
 	.navbar-nav .open .dropdown-menu>li>a,
 	.navbar-nav .open .dropdown-menu .dropdown-header {
-		padding: 3px 20px;
+		padding: 3px 13px;
 	}
 	.navbar-inverse .navbar-nav .dropdown-menu > .dropdown-header {
 		border: none;
@@ -1759,6 +1759,18 @@ button.ui-dialog-titlebar-close {
 	color: #fff !important;
 	background-color: #818EA2;
 	border-bottom:1px solid #FFFFFF;
+}
+.navbar-nav .open .dropdown-menu a {
+	padding:3px 13px;
+}
+.navbar-nav .open .dropdown-menu a i,
+.navbar-nav .open .dropdown-menu .dropdown-header i {
+	width:1.2em ;
+	display:inline-block;
+}
+.navbar-nav .open .dropdown-menu .dropdown-header i.icon-caret-down,
+.navbar-nav .open .dropdown-menu .dropdown-header i.icon-caret-right {
+	padding:2px;
 }
 .navbar-inverse .navbar-nav .dropdown-menu > .dropdown-header {
 	margin-top:9px;

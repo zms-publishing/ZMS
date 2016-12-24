@@ -438,6 +438,8 @@ nav .scroller-right{float:right}
 nav .scroller-left{float:left}
 .zmi .navbar-inner{border-radius:0 !important}
 .zmi footer{left:0px;bottom:0px;height:26px;width:100%;padding:0.5em;font-size:11px !important}
+.zmi footer .back-to-top{display:none;color:rgb(81,142,212);cursor:pointer;text-align:center;margin:0;position:fixed;bottom:.2em;right:.4em;padding:.2em .3em;z-index:100;border:none;border-radius:4px}
+.zmi footer .back-to-top:hover{color:#fff;background:rgb(81,142,212)}
 .zmi ul.breadcrumb{clear:left;padding:1em 0 1em 1.8em;margin-bottom:0px !important}
 .zmi #zmi-tab > ul.breadcrumb li a,.zmi #zmi-tab > ul.breadcrumb li span{display:inline-block;white-space:nowrap;text-overflow:ellipsis;max-width:128px;overflow:hidden;vertical-align:bottom}
 .zmi ul.breadcrumb.small{padding:0.4em 0 0 0 !important;margin:0 !important;background-color:transparent !important;font-size:80%}
@@ -457,7 +459,11 @@ nav .scroller-left{float:left}
 #zmi_item_ .center h1{padding:0.5em 0;margin:0}
 ul.portalClients .zmi-item .center h1{padding:0.5em 0;margin:0}
 ul.portalClients .zmi-item .center small{display:none}
+.form-multiautocomplete{margin-bottom:4px}
 .ui-autocomplete-input{background:white url(/misc_/zms/ico_autocomplete.gif) right bottom no-repeat}
+.ui-autocomplete{list-style:none;padding:0}
+.ui-autocomplete .ui-menu-item .ui-corner-all{display:block;padding:4px}
+.ui-autocomplete .ui-menu-item .ui-state-focus,.ui-autocomplete .ui-menu-item .ui-state-hover{background:#eee}
 .twosided_multiselect > .col-xs-5:first-child select{background:#f8f8f8}
 .twosided_multiselect.searchable > .col-xs-2{padding-top:2.35em}
 .form-small{font-size:smaller}
@@ -469,7 +475,7 @@ div#zmi-tab{background-color:#f5f5f5!important;border-bottom:1px solid #ddd}
 div.alert{margin:1em 1.5em}
 .contentEditable.ZMSNote div.alert{margin:2px 0 !important}
 img.grippy{width:6px!important;height:14px!important;background:url(/misc_/zms/grippy.png);vertical-align:middle;cursor:move}
-div.grippy{width:8px!important;height:16px!important;cursor:move;display:inline-block;color:#DDD;font-size:14px;overflow:hidden;position:absolute;left:0;z-index:100}
+div.grippy{width:8px!important;height:16px!important;cursor:move;display:inline-block;color:#DDD;font-size:14px;overflow:hidden;position:absolute;left:0}
 .zmi-item.ui-sortable-helper{box-shadow:2px 5px 8px #ccc;background-color:white !important;opacity:.9}
 .zmi-container{margin:0;padding:0;width:98% !important}
 ul.zmi-container .contentEditable{cursor:pointer}
@@ -480,8 +486,7 @@ ul.portalClients.zmi-container .zmi-item .portalClient .contentEditable{border-t
 ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId{text-align:right;float:right;margin:.6em .15em !important;color:#aaa;font-size:12px}
 .zmi ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manage-main-change{visibility:hidden}
 .zmi.Manager ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manage-main-change{visibility:visible}
-ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS{float:left;position:absolute}
-ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS h1{padding:.35em 0 0 1em;font-size:large;margin-top:0}
+ul.portalClients.zmi-container .zmi-item .portalClient div.ZMS{float:left;position:absolute;padding:.35em 0 0 1em;margin-top:0}
 table.table tbody tr td.data > div{white-space:nowrap;overflow:hidden;max-width:50em;max-height:30px;padding:0;margin:0}
 table.table tbody tr td.data > div.string,table.table tbody tr td.data > div.text{text-overflow:ellipsis;max-width:36em}
 table.table tbody tr td.data > div.file{text-overflow:ellipsis;max-width:12em}
@@ -502,7 +507,8 @@ ul.zmi-container > .zmi-item > .right{float:left;width:20% !important}
 ul.zmi-container .zmi-item .clearboth{float:none;clear:both}
 ul.zmi-container .zmi-item.pageelement .center{background-color:#FFF;min-height:4em}
 ul.zmi-container .zmi-item .center .contentEditable{border-left:none !important;border-right:none !important;border-bottom:none !important;border-top:1px dotted #ccc !important;padding-top:0.2em}
-ul.zmi-container .zmi-item .center .contentEditable .contentEditable{padding:0 !important;margin:0 !important;border:none !important;min-height:0 !important}
+.zmi-container li.zmi-item .center .contentEditable .contentEditable{padding:0;margin:0;border:none !important;min-height:1em}
+.zmi-container .zmi-item .center .contentEditable h1,.zmi-container .zmi-item .center .contentEditable h2{padding:.3em 0;margin:0}
 ul.zmi-container .zmi-item.pageelement .center > *{padding-left:.8em}
 ul.zmi-container .zmi-item.pageelement .center .contentEditable{border:1px solid white;padding:3px 6px 3px 1.5em;overflow:hidden}
 ul.zmi-container .zmi-item.page .center .contentEditable{padding-top:.4em;margin:0}
@@ -513,6 +519,7 @@ ul.zmi-container .zmi-item.page .center .contentEditable{padding-top:.4em;margin
 .properties .form-group.activity input.form-element.datetimepicker{width:12.7em !important}
 #zmiIframe .form-group.activity input.form-element.datetimepicker{width:8.4em !important}
 #attrActivity .icon-info-sign{margin-top:-3px;display:block}
+#attrActivity .get_uid{cursor:pointer}
 .horizontal-group .mandatory span{background:none !important;padding-left:0 !important}
 .horizontal-group .controls{margin-left:0px}
 .horizontal-group .form-group label{float:none;width:auto;text-align:left}
@@ -592,6 +599,7 @@ ul.zmi-container.pages .zmi-item .contentEditable{padding-left:1.0em !important;
 .zmi .form-horizontal{background-color:#FFF;margin-left:1.5em;margin-right:1.5em;padding:0.5em}
 .zmi form.form-horizontal.form-insert{margin:0}
 .zmi legend{margin-bottom:.35em;border-bottom:none;color:#888}
+.zmi legend.pull-left{margin-bottom:.5em;width:auto}
 .system table.zopeobjects i{margin-left:3px}
 .zmi.properties .accordion-group{background-color:#FFF;padding:1em}
 .zmi.properties .accordion-group .accordion-inner{padding:0.5em 0;margin:0.5em 0}
@@ -755,7 +763,6 @@ div.right .btn .caret{}
  
  .navbar-nav .open .dropdown-menu{position:absolute;float:left;width:auto;min-width:160px;margin-top:2px;background-color:#FFF;border:1px solid rgba(0,0,0,0.15);-webkit-box-shadow:0 6px 12px rgba(0,0,0,0.175);box-shadow:0 6px 12px rgba(0,0,0,0.175)}
  .navbar-nav .localisation .dropdown-menu{right:0;left:auto}
- .navbar-nav .open .dropdown-menu>li>a,.navbar-nav .open .dropdown-menu .dropdown-header{padding:3px 20px}
  .navbar-inverse .navbar-nav .dropdown-menu > .dropdown-header{border:none}
  .navbar-inverse .navbar-nav .dropdown-menu>li>a{color:#333 !important}
  .navbar-inverse .navbar-nav .dropdown-menu .divider{background-color:#E5E5E5!important}
@@ -797,6 +804,10 @@ div.right .btn .caret{}
 .ui-dialog .ui-dialog-title{padding:0!important}
 button.ui-dialog-titlebar-close{color:#FFF!important;background-color:#999!important;background-image:url(/++resource++zms_/bootstrap/img/glyphicons-halflings.png)!important;background-position:-309px 2px!important;background-repeat:no-repeat!important}
 .dropdown-header{padding:3px 13px;font-size:inherit;color:#fff !important;background-color:#818EA2;border-bottom:1px solid #FFFFFF}
+.navbar-nav .open .dropdown-menu a{padding:3px 13px}
+.navbar-nav .open .dropdown-menu a i,.navbar-nav .open .dropdown-menu .dropdown-header i{width:1.2em;display:inline-block}
+.navbar-nav .open .dropdown-menu .dropdown-header i.icon-caret-down,.navbar-nav .open .dropdown-menu .dropdown-header i.icon-caret-right{padding:2px}
+.navbar-inverse .navbar-nav .dropdown-menu > .dropdown-header{margin-top:9px}
 li.zmi-item .btn.split-left,li.zmi-item .btn.split-right.dropdown-toggle{width:30px;height:30px;padding:3px 0px 0px 0px;background-color:#eee;border-color:rgba(0,0,0,0.1)}
 li.zmi-item .btn.split-left{padding:2px 0px 0px 10px;color:#08c}
 li.zmi-item .btn.split-left:hover{color:#222}
@@ -805,7 +816,7 @@ li.zmi-item span.zmi-ids{display:inline-block;margin:6px;vertical-align:top}
 .zmi-manage-main-toggle .icon-info-sign{color:#888;vertical-align:text-bottom}
 .zmi-manage-main-toggle .icon-info-sign.active{color:#08c}
 .zmi-manage-main-change{display:none;color:#888;font-size:11px;margin:4px 0 0 11px;overflow:hidden;white-space:nowrap}
-ul.zmi-container li.zmi-item div.contentEditable{min-height:60px}
+ul.zmi-container li.zmi-item .center > div.contentEditable{min-height:60px}
 .nav>li>a{padding:8px 10px 7px 10px;font-size:14px}
 .zmi header .navbar-nav{margin:2px 0 0 0}
 .zmi header .navbar-nav.pull-right{width:auto;margin:4px 0 !important}

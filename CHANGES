@@ -2,13 +2,22 @@
 
 == 3.4.0dev (in development) ==
  
-  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3822&limit=200 latest changes...]
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3902&limit=200 latest changes...]
 
-== 3.3.3 (2016-10-31) ==
+== 3.3.4 (2017-MM-DD) ==
 
   * TBA
+
+== 3.3.3 (2017-01-04) ==
+
+  * Performance: made ZMI faster with link validation
+  * GUI: moved access menu to the configuration menu set
+  * Plugins: replaced fancybox plugin with ZMSlightbox
+  * Content modelling: enabled dynamic insertable sub-objects using the Custom(*)-Element option in combination with a list generating python code (starting with ‘##’!!) as default value
+  * several minor fixes
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=3901&stop_rev=3822&limit=200 more in 3.3.3...]
   
-== 3.3.2 (2016-09-30) ==
+== 3.3.2 (2016-10-03) ==
 
   * added smooth top-scrolling button
   * fixed missing JS delimiter, fixed record set sorting

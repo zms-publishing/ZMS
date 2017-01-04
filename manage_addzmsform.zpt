@@ -170,7 +170,7 @@ $ZMI.registerReady(function() {
 </form>
 
 <footer>
-	<div class="pull-left" title="&#169; 2000-2016 HOFFMANN+LIEBENBERG">
+	<div class="pull-left" title="&#169; 2000-2017 HOFFMANN+LIEBENBERG">
 		<a href="http://www.zms-publishing.com" target="_blank">ZMS 3.3</a> Python-based Content Management System for Science, Technology and Medicine
 	</div><!-- .pull-left -->
 	<div class="clearfix"></div><!-- .clearfix -->

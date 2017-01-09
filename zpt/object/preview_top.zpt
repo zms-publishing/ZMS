@@ -50,12 +50,6 @@
 				<tal:block tal:content="python:here.getZMILangStr('TAB_LIVE')">live</tal:block>
 			</span>
 			</tal:block>
-			&nbsp;&nbsp;
-			<tal:block tal:condition="python:len(here.getConfProperty('InstalledProducts.lesscss',''))>0">
-				<span class="btn btn-primary" title="Compile lesscss!" onclick="compile_lesscss(this,false);">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block> {lessc}
-			</span>
-			</tal:block>
 		</div><!-- .pull-right -->
 	</div><!-- .navbar -->
 </header>

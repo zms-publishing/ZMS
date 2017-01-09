@@ -360,23 +360,6 @@ $(function(){
       <p class="well well-small">Further python libraries and products extending ZMS.</p>
       <div class="form-group">
       <label class="col-sm-4 control-label">
-        <strong><a href="http://lesscss.org" target="_blank">{less}</a> - CSS pre-processor</strong>
-        <input type="checkbox" id="pil" disabled="disabled" value="1" tal:attributes="checked python:['','checked'][int(len(here.getConfProperty('InstalledProducts.lesscss',''))>0)]" />
-      </label>
-        <div class="col-sm-8">
-          <div class="pull-left">
-            <table class="input-append">
-              <tr>
-                <td>Path.&nbsp;</td>
-                <td><input class="form-control input-sm" type="text" name="lesscss" tal:attributes="value python:here.getConfProperty('InstalledProducts.lesscss','')"></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div><!-- .form-group -->
-
-      <div class="form-group">
-      <label class="col-sm-4 control-label">
         <strong><a href="http://www.pythonware.com/products/pil/" target="_blank">PIL</a> - Python Imaging Library</strong>
         <input type="checkbox" id="pil" disabled="disabled" value="1" tal:attributes="checked python:['','checked'][int(here.pilutil().enabled())]" />
       </label>

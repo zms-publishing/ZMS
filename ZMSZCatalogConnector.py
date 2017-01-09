@@ -457,7 +457,7 @@ class ZMSZCatalogConnector(
       # premature commit
       req_key = 'ZMSZCatalogConnector._update.transaction_count'
       cfg_key = 'ZMSZCatalogConnector._update.transaction_size'
-      if request.get(req_key,0)>=int(self.getConfProperty(cfg_key,99)):
+      if request.get(req_key,0)>=int(self.getConfProperty(cfg_key,999)):
         import transaction
         transaction.commit()
       request.set(req_key,request.get(req_key,0)+1)

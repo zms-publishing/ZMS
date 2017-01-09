@@ -75,7 +75,7 @@ def ZMSQunit_func_( self, *args, **kwargs):
 		$.ajax({
 				url:'ZMSQunit_func_',
 				data:{run:1,name:name},
-				timeout:30000,
+				timeout:60000,
 				error: function (xhr, ajaxOptions, thrownError) {
 						write(xhr.status + ': ' + thrownError);
 						},

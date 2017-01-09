@@ -21,6 +21,7 @@
 from zope.interface import implements
 from cStringIO import StringIO
 import ZPublisher.HTTPRequest
+import collections
 import copy
 import os
 import sys
@@ -38,78 +39,55 @@ import _zopeutil
 #  Synchronize type.
 # ------------------------------------------------------------------------------
 syncTypes = ['method','py','zpt','interface','resource']
-def syncType( self, id, attr, forced=False):
+def syncType( self, id, attr):
   try:
-    if attr['type'] not in self.valid_zopetypes+syncTypes:
-      return
+    ob = None
     attr_id = attr['id']
+    if attr['type'] in syncTypes:
+      ob = getattr(self,id+'.'+attr_id,None)
     if attr['type'] in self.valid_zopetypes:
       container = self.getHome()
       for ob_id in attr_id.split('/')[:-1]:
          container = getattr( container, ob_id)
       ob_id = attr['id'].split('/')[-1]
       ob = getattr( container, ob_id)
+    if ob is not None:
       attr['ob'] = ob
-      if ob.meta_type in [ 'DTML Method', 'DTML Document']:
-        attr['custom'] = ob.raw
-      elif ob.meta_type in [ 'Folder']:
-        zip = _ziputil.exportZodb2Zip(ob)
-        blob = _blobfields.createBlobField( self,_globals.DT_FILE, zip, mediadbStorable=False)
-        attr['custom'] = blob
-      elif ob.meta_type in [ 'Page Template']:
-        attr['custom'] = unicode(ob.read()).encode('utf-8')
-      elif ob.meta_type in [ 'Script (Python)']:
-        data = ob.read()
-        errors = ''
-        lines = data.split('\n')
-        if '## Errors:' in lines:
-          i = lines.index('## Errors:')
-          errors = lines[i+1][2:].strip()
-        attr['custom'] = data
-        attr['errors'] = errors
-      elif ob.meta_type in [ 'Z SQL Method']:
-        connection = ob.connection_id
-        params = ob.arguments_src
-        attr['custom'] = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
-    else:
-      ob = getattr(self,id+'.'+attr_id,None)
-      if ob is not None:
-        attr['ob'] = ob
-        if attr['type'] == 'method':
-          attr['custom'] = ob.raw
-        elif attr['type'] == 'py':
-          data = ob.read()
+      attr['mtime'] = ob.bobobase_modification_time().timeTime()
+      if attr['type'] == 'resource':
+        attr['custom'] = ob
+      else:
+        attr['custom'] = _zopeutil.readData(ob)
+        if ob.meta_type in [ 'Script (Python)']:
+          data = attr['custom']
           errors = ''
           lines = data.split('\n')
           if '## Errors:' in lines:
             i = lines.index('## Errors:')
             errors = lines[i+1][2:].strip()
-          attr['py'] = ob
-          attr['custom'] = data
           attr['errors'] = errors
-        elif attr['type'] == 'zpt':
-          attr['zpt'] = ob
-          attr['custom'] = unicode(ob.read()).encode('utf-8')
-        elif attr['type'] == 'interface':
-          if ob.meta_type in ['Page Template']:
-            attr['zpt'] = ob
-            attr['name'] = unicode(ob.read()).encode('utf-8')
-          elif ob.meta_type in [ 'Script (Python)']:
-            data = ob.read()
-            errors = ''
-            lines = data.split('\n')
-            if '## Errors:' in lines:
-              i = lines.index('## Errors:')
-              errors = lines[i+1][2:].strip()
-            attr['py'] = ob
-            attr['name'] = data
-            attr['errors'] = errors
-          else:
-            attr['name'] = ob.raw
-        elif attr['type'] == 'resource':
-          attr['custom'] = ob
   except:
     value = _globals.writeError(self,'[syncType]')
+
+# ------------------------------------------------------------------------------
+#  Effective ids.
+# ------------------------------------------------------------------------------
+def effective_ids(self, ids):
+  l = []
+  keys = self.model.keys()
+  if ids:
+    for id in filter(lambda x:x in keys,ids):
+      metaObj = self.getMetaobj( id)
+      l.append(id)
+      if metaObj['type'] == 'ZMSPackage':
+        for pkgMetaObjId in self.getMetaobjIds():
+            pkgMetaObj = self.getMetaobj( pkgMetaObjId)
+            if pkgMetaObj[ 'package'] == metaObj[ 'id']:
+              l.append( pkgMetaObjId)
+  else:
+    l = keys
+  l.sort()
+  return l
 
 
 ################################################################################
@@ -130,6 +108,112 @@ class ZMSMetaobjManager:
     valid_objtypes =  [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
     valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'Folder', 'Page Template', 'Script (Python)', 'Z SQL Method']
     deprecated_types = [ 'DTML Method', 'DTML Document', 'method']
+
+
+    ############################################################################
+    #
+    #  CLOUD GET/SET
+    #
+    ############################################################################
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.cloud_basepath
+    # --------------------------------------------------------------------------
+    def cloud_basepath(self):
+      basepath = os.path.join(self.getINSTANCE_HOME(),'var',self.getHome().id,self.id)
+      return basepath
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.cloud_get
+    # --------------------------------------------------------------------------
+    def cloud_get(self, id, artefacts=False):
+      basepath = self.cloud_basepath()
+      filename = os.path.join(basepath,id,"__init__.xml")
+      d = {}
+      if os.path.exists(filename):
+        f = open(filename,"r")
+        xml = f.read()
+        f.close()
+        d = self.parseXmlString( xml, mediadbStorable=False)
+        if artefacts:
+          attrs = d['attrs']
+          for attr in attrs:
+            if attr['type'] in syncTypes or attr['type'] in self.valid_zopetypes:
+              filepath = os.path.join(basepath,id)
+              for file in os.listdir(filepath):
+                if file.startswith('%s.'%attr['id']):
+                  filename = os.path.join(filepath,file)
+                  f = open(filename,"r")
+                  data = f.read()
+                  f.close()
+                  key = {'interface':'name'}.get(attr['type'],'custom')
+                  attr[key] = data
+                  attr['mtime'] = os.path.getmtime(filename)
+                  break
+      return d
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.cloud_import
+    # --------------------------------------------------------------------------
+    def cloud_import(self, ids):
+      basepath = self.cloud_basepath()
+      success = []
+      for id in effective_ids(self,ids):
+        metaObj = self.getMetaobj(id)
+        if metaObj and not metaObj.get('acquired',0):
+          d = self.cloud_get(id,artefacts=True)
+          if d:
+            self.delMetaobj(id)
+            self.setMetaobj(d)
+            for attr in d['attrs']:
+              if attr['type'] in syncTypes or attr['type'] in self.valid_zopetypes:
+                self.setMetaobjAttr(id,attr['id'],attr['id'],attr['name'],attr.get('mandatory',0),attr.get('multilang',0),attr.get('repetitive',0),attr['type'],attr.get('keys',[]),attr.get('custom',''),attr.get('default',''))
+            success.append(id)
+      return self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success))
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.cloud_export
+    # --------------------------------------------------------------------------
+    def cloud_export(self, ids):
+      basepath = self.cloud_basepath()
+      _fileutil.mkDir(basepath)
+      success = []
+      for id in effective_ids(self,ids):
+        metaObj = self.getMetaobj(id)
+        if metaObj and not metaObj.get('acquired',0):
+          _fileutil.mkDir(os.path.join(basepath,id))
+          metaObj = copy.deepcopy(metaObj)
+          attrs = metaObj['attrs']
+          for attr in attrs:
+            if attr['type'] in syncTypes or attr['type'] in self.valid_zopetypes:
+              syncType(self,id,attr)
+              ob = attr.get('ob')
+              if ob is not None:
+                fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
+                filename = os.path.join(basepath,id,"%s%s"%(attr['id'],fileexts.get(ob.meta_type,'')))
+                data = _zopeutil.readData(ob)
+                f = open(filename,"w")
+                f.write(data)
+                f.close()
+            mandatory_keys = ['custom','default','id','name','type','keys','mandatory','multilang','repetitive']
+            custom_types = ['constant'] 
+            for key in attr.keys():
+              if not attr[key] or \
+                 (key not in mandatory_keys) or \
+                 (key == 'custom' and attr['type'] not in custom_types):
+                del attr[key]
+          json = self.str_json(metaObj,encoding="utf-8",formatted=True)
+          filename = os.path.join(basepath,id,"__init__.json")
+          f = open(filename,"w")
+          f.write(json)
+          f.close()
+          xml = self.getXmlHeader() + self.toXmlString(metaObj,xhtml=True)
+          filename = os.path.join(basepath,id,"__init__.xml")
+          f = open(filename,"w")
+          f.write(xml)
+          f.close()
+          success.append(id)
+      return self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%' '.join(success))
 
 
     ############################################################################
@@ -156,7 +240,6 @@ class ZMSMetaobjManager:
           for metaObjAttr in metaObj['attrs']:
             if metaObjAttr['type'] not in valid_types+metadictAttrs:
               metadictAttrs.append( metaObjAttr['type'])
-        newDtml = item.get('dtml')
         newValue = item.get('value')
         newAttrs = newValue.get('attrs',newValue.get('__obj_attrs__'))
         newValue['attrs'] = []
@@ -217,15 +300,6 @@ class ZMSMetaobjManager:
           if attr_id not in attr_ids:
             self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             attr_ids.append(attr_id)
-        # Set Template (backwards compatibility).
-        if newValue['type'] not in [ 'ZMSLibrary', 'ZMSModule', 'ZMSPackage'] and newDtml is not None:
-          tmpltId = 'standard_html'
-          tmpltName = 'Template: %s'%newValue['name']
-          tmpltCustom = newDtml
-          newType = 'DTML Method'
-          newKeys = []
-          newDefault = ''
-          self.setMetaobjAttr(id,tmpltId,tmpltId,tmpltName,0,0,0, newType, newKeys, tmpltCustom, newDefault)
       _globals.writeBlock( self, '[ZMSMetaobjManager._importMetaobjXml]: id=%s'%str(id))
       return id
 
@@ -245,46 +319,34 @@ class ZMSMetaobjManager:
 
     def exportMetaobjXml(self, ids, REQUEST=None, RESPONSE=None):
       value = []
-      export_ids = []
-      for id in ids:
-        metaObj = self.getMetaobj( id)
-        export_ids.append(id)
-        if metaObj['type'] == 'ZMSPackage':
-          for pkgMetaObjId in self.getMetaobjIds():
-              pkgMetaObj = self.getMetaobj( pkgMetaObjId)
-              if pkgMetaObj[ 'package'] == metaObj[ 'id']:
-                export_ids.append( pkgMetaObjId)
-      keys = self.model.keys()
-      keys.sort()
       revision = '0.0.0'
-      for id in keys:
-        if id in export_ids or len(export_ids) == 0:
-          ob = None
-          context = self
-          while ob is None:
-            ob = context.__get_metaobj__(id)
-            if ob.get('acquired',0):
-              ob = None
-              context = context.getPortalMaster().metaobj_manager
-          ob = copy.deepcopy(ob)
-          revision = self.getMetaobjRevision(id)
-          attrs = []
-          for attr in ob['attrs']:
-            attr_id = attr['id']
-            syncType( context, id, attr)
-            for key in ['keys','custom','default']:
-              if attr.has_key(key) and not attr[key]:
-                del attr[key]
-            for key in ['sync','ob','py','zpt']:
-              if attr.has_key(key):
-                del attr[key]
-            attrs.append( attr)
-          ob['__obj_attrs__'] = attrs
-          for key in ['attrs','acquired']:
-            if ob.has_key(key):
-              del ob[key]
-          # Value.
-          value.append({'key':id,'value':ob})
+      for id in effective_ids(self,ids):
+        ob = None
+        context = self
+        while ob is None:
+          ob = context.__get_metaobj__(id)
+          if ob.get('acquired',0):
+            ob = None
+            context = context.getPortalMaster().metaobj_manager
+        ob = copy.deepcopy(ob)
+        revision = self.getMetaobjRevision(id)
+        attrs = []
+        for attr in ob['attrs']:
+          attr_id = attr['id']
+          syncType( context, id, attr)
+          for key in ['keys','custom','default']:
+            if attr.has_key(key) and not attr[key]:
+              del attr[key]
+          for key in ['sync','ob','py','zpt']:
+            if attr.has_key(key):
+              del attr[key]
+          attrs.append( attr)
+        ob['__obj_attrs__'] = attrs
+        for key in ['attrs','acquired']:
+          if ob.has_key(key):
+            del ob[key]
+        # Value.
+        value.append({'key':id,'value':ob})
       if len(value)==1:
         value = value[0]
       # XML.
@@ -293,7 +355,7 @@ class ZMSMetaobjManager:
       else:
         filename = 'export.metaobj.xml'
       content_type = 'text/xml; charset=utf-8'
-      export = self.getXmlHeader() + self.toXmlString(value,1)
+      export = self.getXmlHeader() + self.toXmlString(value,xhtml=True)
       
       if RESPONSE:
         RESPONSE.setHeader('Content-Type',content_type)
@@ -602,49 +664,31 @@ class ZMSMetaobjManager:
     #  ZMSMetaobjManager.evalMetaobjAttr
     # --------------------------------------------------------------------------
     def evalMetaobjAttr(self, id, attr_id, zmscontext=None, options={}):
-      def call(fn):
-        if options:
-          return fn(zmscontext=zmscontext,options=options)
-        else:
-          return fn(zmscontext=zmscontext)
       value = None
+      # Find meta-object attributes by given id.
       metaObjAttrs = []
+      # all meta-objects:
       if id == '*':
         metaObjs = self.__get_metaobjs__()
         for metaObjId in metaObjs.keys():
           metaObj = metaObjs[metaObjId]
           for metaObjAttr in filter(lambda x:x['id']==attr_id, metaObj.get('attrs',[])):
             metaObjAttrs.append(self.getMetaobjAttr( metaObjId, attr_id, syncTypes=['*']))
+      # single meta-object:
       else:
         metaObjAttrs.append(self.getMetaobjAttr( id, attr_id, syncTypes=['*']))
       metaObjAttrs = filter(lambda x: x is not None, metaObjAttrs)
+      # Process meta-object attributes.
       for metaObjAttr in metaObjAttrs:
-        if metaObjAttr['type'] == 'interface':
-          try:
-            if metaObjAttr.get('py') is not None:
-              value = call(metaObjAttr['py'])
-            elif metaObjAttr.get('zpt') is not None:
-              value = call(metaObjAttr['zpt'])
-              value = unicode(value).encode('utf-8')
-            else:
-              value = zmscontext.dt_exec(metaObjAttr.get('name',''))
-          except:
-            value = _globals.writeError(self,'[evalMetaobjAttr]: can\'t %s.%s'%(id,attr_id))
-        elif metaObjAttr['type'] == 'method':
-          value = zmscontext.dt_exec(metaObjAttr.get('custom',''))
-        elif metaObjAttr['type'] == 'py':
-          if not metaObjAttr.has_key(metaObjAttr['type']):
-            raise zExceptions.InternalError("evalMetaobjAttr: %s.%s (%s) not found!"%(id,metaObjAttr['id'],metaObjAttr['type']))
-          value = call(metaObjAttr['py'])
-        elif metaObjAttr['type'] == 'zpt':
-          if not metaObjAttr.has_key(metaObjAttr['type']):
-            raise zExceptions.InternalError("evalMetaobjAttr: %s.%s (%s) not found!"%(id,metaObjAttr['id'],metaObjAttr['type']))
-          value = call(metaObjAttr['zpt'])
-          value = unicode(value).encode('utf-8')
-        elif metaObjAttr['type'] == 'constant':
+        if metaObjAttr['type'] == 'constant':
           value = metaObjAttr.get('custom','')
         elif metaObjAttr['type'] == 'resource':
-          value = metaObjAttr.get('custom',None)
+          value = metaObjAttr.get('ob',None)
+        elif metaObjAttr['type'] in syncTypes:
+          ob = metaObjAttr.get('ob',None)
+          if ob:
+            value = _zopeutil.callObject(ob,zmscontext,options)
+      # Return value.
       return value
 
 
@@ -1209,6 +1253,18 @@ class ZMSMetaobjManager:
             attr_id = REQUEST['attr_id']
             self.moveMetaobjAttr( id, attr_id, pos)
             message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<em>%s</em>"%attr_id),(pos+1))
+          
+          # Cloud import.
+          # -------------
+          elif btn == 'cloud_import':
+            ids = REQUEST.get('ids',[])
+            message = self.cloud_import(ids)
+          
+          # Cloud export.
+          # -------------
+          elif btn == 'cloud_export':
+            ids = REQUEST.get('ids',[])
+            message = self.cloud_export(ids)
           
           ##### SYNCHRONIZE ####
           types = self.valid_types+map(lambda x:self.metas[x*2],range(len(self.metas)/2))

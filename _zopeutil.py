@@ -34,6 +34,8 @@ def addObject(container, meta_type, id, title, data):
     addDTMLMethod( container, id, title, data)
   elif meta_type == 'External Method':
     addExternalMethod( container, id, title, data)
+  elif meta_type == 'File':
+    addFile( container, id, title, data)
   elif meta_type == 'Page Template':
     addPageTemplate( container, id, title, data)
   elif meta_type == 'Script (Python)':
@@ -50,31 +52,48 @@ def getObject(container, id):
   ob = getattr(container,id,None)
   return ob
 
-def readObject(container, id, default=None):
+def callObject(ob, zmscontext=None, options={}):
   """
-  Read Zope-object from container.
+  Call Zope-object.
+  """
+  v = None
+  if options:
+    v = ob(zmscontext=zmscontext,options=options)
+  else:
+    v = ob(zmscontext=zmscontext)
+  return v
+
+def readData(ob, default=None):
+  """
+  Read data of Zope-object.
   """
   data = default
-  ob = getObject(container,id)
   if ob is None and default is not None:
     return default
   if ob.meta_type in [ 'DTML Method', 'DTML Document']:
     data = ob.raw
-  elif ob.meta_type == 'Page Template':
-    data = ob.read()
-  elif ob.meta_type == 'Script (Python)':
+  elif ob.meta_type in [ 'Image', 'File']:
+    data = ob.data
+  elif ob.meta_type in [ 'Page Template', 'Script (Python)']:
     data = ob.read()
   elif ob.meta_type == 'External Method':
-    filepath = INSTANCE_HOME+'/Extensions/'+id+'.py'
+    filepath = INSTANCE_HOME+'/Extensions/'+ob.id+'.py'
     if os.path.exists(filepath):
       f = open(filepath, 'r')
       data = f.read()
       f.close()
-  elif ob.meta_type == 'Z Sql Method':
+  elif ob.meta_type == 'Z SQL Method':
     connection = ob.connection_id 
     params = ob.arguments_src
     data = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
   return data
+
+def readObject(container, id, default=None):
+  """
+  Read Zope-object from container.
+  """
+  ob = getObject(container,id)
+  return readData(ob,default)
 
 def removeObject(container, id, removeFile=True):
   """
@@ -147,12 +166,21 @@ def addPythonScript(container, id, title, data):
   ob.write( data)
   initPermissions(container, id)
 
+def addFile(container, id, title, data):
+  """
+  Add File to container.
+  """
+  container.manage_addFile(id,title,file=data)
+  ob = getattr( container, id)
+  return ob
+
 def addFolder(container, id, title, data):
   """
   Add Folder to container.
   """
   container.manage_addFolder(id,title)
   ob = getattr( container, id)
+  return ob
 
 def addZSqlMethod(container, id, title, data):
   """

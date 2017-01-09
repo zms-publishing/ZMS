@@ -26,6 +26,70 @@ from OFS.CopySupport import _cb_decode, _cb_encode, absattr, CopyError, eNoData,
 import _globals
 
 
+# --------------------------------------------------------------------------
+#  CopySupport._normalize_ids_after_copy:
+# --------------------------------------------------------------------------
+def normalize_ids_after_copy(node, ids=[]):
+  request = node.REQUEST
+  copy_of_prefix = 'copy_of_'
+  for childNode in node.getChildNodes():
+    # validate id
+    id = absattr(childNode.id)
+    if '*' in ids or id in ids or id.startswith(copy_of_prefix):
+      # init object-state
+      if not '*' in ids:
+        lang = request.get('lang')
+        for langId in node.getLangIds():
+          request.set('lang',langId)
+          childNode.setObjStateNew(request,reset=0)
+          childNode.onChangeObj(request)
+        request.set('lang',lang)
+      # reset ref_by
+      childNode.ref_by = []
+      # reset id
+      new_id = id
+      if new_id.startswith(copy_of_prefix):
+        new_id = new_id[len(copy_of_prefix):]
+      id_prefix = _globals.id_prefix(new_id)
+      new_id = node.getNewId(id_prefix)
+      _globals.writeBlock(node,'[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
+      if id != new_id:
+        node.manage_renameObject(id=id,new_id=new_id)
+      node.initObjChildren(request)
+      # traverse tree
+      normalize_ids_after_copy(childNode, ids=['*'])
+
+
+# --------------------------------------------------------------------------
+#  CopySupport._normalize_ids_after_move:
+# --------------------------------------------------------------------------
+def normalize_ids_after_move(node, ids=[]):
+  request = node.REQUEST
+  copy_of_prefix = 'copy_of_'
+  for childNode in node.getChildNodes():
+    # validate id
+    id = absattr(childNode.id)
+    if '*' in ids or id in ids or id.startswith(copy_of_prefix):
+      # init object-state
+      if not '*' in ids:
+        lang = request.get('lang')
+        for langId in node.getLangIds():
+          request.set('lang',langId)
+          childNode.setObjStateModified(request,reset=0)
+          childNode.onChangeObj(request)
+        request.set('lang',lang)
+      # reset id
+      new_id = id
+      if new_id.startswith(copy_of_prefix):
+        new_id = new_id[len(copy_of_prefix):]
+      id_prefix = _globals.id_prefix(new_id)
+      new_id = node.getNewId(id_prefix)
+      _globals.writeBlock(node,'[CopySupport._normalize_ids_after_move]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
+      if id != new_id:
+        node.manage_renameObject(id=id,new_id=new_id)
+      node.initObjChildren(request)
+
+
 ################################################################################
 ################################################################################
 ###
@@ -55,6 +119,7 @@ class CopySupport:
         raise CopyError, eInvalid
       
       return cp
+
 
     # --------------------------------------------------------------------------
     #  CopySupport._get_obs:
@@ -92,13 +157,6 @@ class CopySupport:
 
 
     # --------------------------------------------------------------------------
-    #  CopySupport._get_ids:
-    # --------------------------------------------------------------------------
-    def _get_ids(self, cp):
-      return map(lambda ob: self._get_id(absattr(ob.id)),self._get_obs(cp))
-
-
-    # --------------------------------------------------------------------------
     #  CopySupport._get_id:
     #
     #  Allow containers to override the generation of
@@ -106,7 +164,8 @@ class CopySupport:
     #  method, if it exists.
     # --------------------------------------------------------------------------
     def _get_id(self, id):
-      return 'copy_of_%s'%id
+      copy_of_prefix = 'copy_of_'
+      return copy_of_prefix+id
 
 
     # --------------------------------------------------------------------------
@@ -122,107 +181,9 @@ class CopySupport:
       sort_id = REQUEST.get('_sort_id',0) + 1
       for ob in self.getChildNodes():
         id = absattr(ob.id)
-        if id in ids or (op==1 and copy_of_prefix + id in ids):
-          setattr( ob, 'sort_id', _globals.format_sort_id(sort_id))
+        if id in ids or copy_of_prefix+id in ids:
+          setattr(ob,'sort_id',_globals.format_sort_id(sort_id))
           sort_id += 1
-
-
-    # --------------------------------------------------------------------------
-    #  CopySupport._normalize_ids_after_copy:
-    # --------------------------------------------------------------------------
-    def _normalize_ids_after_copy(self, ids=[], forced=0, REQUEST=None):
-      _globals.writeLog( self, "[CopySupport._normalize_ids_after_copy]: %s"%self.absolute_url())
-      
-      copy_of_prefix = 'copy_of_'
-      id_prefix = REQUEST.get( 'id_prefix')
-      REQUEST.set( 'id_prefix', None)
-      
-      childNodes = self.getChildNodes()
-      for ob in childNodes:
-        id = absattr(ob.id)
-        if forced or id in ids:
-          _globals.writeBlock( self, '[CopySupport._normalize_ids_after_copy]: %s(%s)'%(id,ob.meta_id))
-          
-          if id_prefix:
-            id_prefix = _globals.id_prefix(id_prefix)
-            if id_prefix != _globals.id_prefix(id): 
-              new_id = self.getNewId(id_prefix)
-              _globals.writeBlock( self, '[CopySupport._normalize_ids_after_copy]: Rename %s(%s) to %s'%(id,ob.meta_id,new_id))
-              self.manage_renameObject(id=id,new_id=new_id)
-              self.initObjChildren(REQUEST)
-              id = new_id
-          
-          # Init: Assign new id.
-          prefix = _globals.id_prefix(id)
-          if prefix.startswith(copy_of_prefix):
-            prefix = prefix[len(copy_of_prefix):]
-          if prefix != id:
-            new_id = self.getNewId(prefix)
-            self.manage_renameObject(id=id,new_id=new_id)
-            self.initObjChildren(REQUEST)
-          
-          # Init: Clear ref_by.
-          ob.ref_by = []
-          
-          # Object-State and Version-Manager.
-          if forced==0 and not ob.getAutocommit():
-            bk_lang = REQUEST.get('lang')
-            for lang in self.getLangIds():
-              REQUEST.set('lang',lang)
-              ob.setObjStateNew(REQUEST,reset=0)
-              ob.onChangeObj(REQUEST)
-            REQUEST.set('lang',bk_lang)
-          
-          # Process tree.
-          ob._normalize_ids_after_copy(ids=ids,forced=1,REQUEST=REQUEST)
-
-
-    # --------------------------------------------------------------------------
-    #  CopySupport._normalize_ids_after_move:
-    # --------------------------------------------------------------------------
-    def _normalize_ids_after_move(self, ids=[], forced=0, REQUEST=None):
-      _globals.writeLog( self, "[CopySupport._normalize_ids_after_move]: %s"%self.absolute_url())
-      
-      copy_of_prefix = 'copy_of_'
-      id_prefix = REQUEST.get( 'id_prefix')
-      REQUEST.set( 'id_prefix', None)
-      
-      childNodes = self.getChildNodes()
-      ob_ids = map(lambda x:absattr(x.id),childNodes)
-      for ob in childNodes:
-        id = absattr(ob.id)
-        if forced or (id in ids and not copy_of_prefix + id in ob_ids) or (copy_of_prefix + id in ids):
-          _globals.writeBlock( self, '[CopySupport._normalize_ids_after_move]: %s(%s)'%(id,ob.meta_id))
-          
-          if id_prefix:
-            id_prefix = _globals.id_prefix(id_prefix)
-            if id_prefix != _globals.id_prefix(id): 
-              new_id = self.getNewId(id_prefix)
-              _globals.writeBlock( self, '[CopySupport._normalize_ids_after_move]: Rename %s(%s) to %s'%(id,ob.meta_id,new_id))
-              self.manage_renameObject(id=id,new_id=new_id)
-              self.initObjChildren(REQUEST)
-              id = new_id
-          
-          # Init: Re-Assign old id.
-          if id.startswith(copy_of_prefix):
-            try:
-              new_id = id[len(copy_of_prefix):]
-              self.manage_renameObject(id=id,new_id=new_id)
-              self.initObjChildren(REQUEST)
-            except:
-              pass
-            
-          # Object-State and Version-Manager.
-          if forced==0 and not ob.getAutocommit():
-            bk_lang = REQUEST.get('lang')
-            for lang in self.getLangIds():
-              REQUEST.set('lang',lang)
-              ob.setObjStateModified(REQUEST)
-              ob.onChangeObj(REQUEST)
-            REQUEST.set('lang',bk_lang)
-          
-          # Process tree.
-          ob._normalize_ids_after_move(ids=ids,forced=1,REQUEST=REQUEST)
 
 
     ############################################################################
@@ -269,7 +230,7 @@ class CopySupport:
       op=cp[0]
       cp = (0,cp[1])
       cp = _cb_encode(cp)
-      ids = self._get_ids(cp)
+      ids = map(lambda x: self._get_id(absattr(x.id)),self._get_obs(cp))
       oblist = self._get_obs(cp)
       
       # Paste objects.
@@ -280,10 +241,10 @@ class CopySupport:
       
       # Move objects.
       if op==1:
-        self._normalize_ids_after_move(ids=ids,forced=0,REQUEST=REQUEST)
+        normalize_ids_after_move(self,ids=ids)
       # Copy objects.
       else:
-        self._normalize_ids_after_copy(ids=ids,forced=0,REQUEST=REQUEST)
+        normalize_ids_after_copy(self,ids=ids)
       
       # Sort order (II).
       self.normalizeSortIds()

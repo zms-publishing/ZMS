@@ -12,6 +12,7 @@
 <tal:block tal:define="global
 		metaObjIds python:here.getMetaobjIds(sort=True);
 		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
+		metaObjsCloud python:map(lambda x: here.cloud_get(x), metaObjIds);
 		metaObjPackages python:here.sort_list(['']+map(lambda x: x['id'],filter(lambda x: x['type']=='ZMSPackage', metaObjs)));
 		metaObjPackages2 python:filter(lambda x: x not in metaObjPackages, map(lambda x: x.get('package'), metaObjs))">
 
@@ -440,6 +441,8 @@
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
+					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_import','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-reply text-danger')"></tal:block> <tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block></span>
+					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_export','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share-alt text-danger')"></tal:block> <tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-close')"></tal:block></span>
 				</div>
 			</th>
 		</tr>
@@ -476,13 +479,16 @@
 				</td>
 			</tr>
 		</tal:block>
-		<tal:block tal:repeat="metaObj metaObjs">
+		<tal:block tal:repeat="i python:range(len(metaObjs))">
+		<tal:block tal:define="
+				metaObj python:metaObjs[i];
+				revision python:here.getMetaobjRevision(metaObj['id']);">
 			<tr class="zmi-selectable" tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 				<td style="text-align:center;">
 					<input type="checkbox" name="ids:list" tal:attributes="value python:metaObj['id']"/>
 				</td>
 				<td></td>
-				<td>
+				<td tal:define="metaObjCloud python:metaObjsCloud[i]; cloud_revision python:metaObjCloud.get('revision','-.-.-');">
 					<span tal:attributes="id python:metaObj['id'];title python:metaObj['id'];class python:' '.join([[''],['enabled']][here.boolint(metaObj.get('enabled',0))])">
 						<i tal:condition="python:metaObj.get('acquired',None)" class="icon-share" title="acquired"></i>
 						<i tal:attributes="class python:' '.join(['enabled-toggle','ui-helper-clickable']+[['icon-check-empty'],['icon-check']][here.boolint(metaObj.get('enabled',0))])" onclick="zmiEnabledBtnClick(this)"></i>
@@ -492,11 +498,16 @@
 						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
 							<span tal:on-error="string:ERROR" tal:replace="metaObj/name">the name</span>
 						</a>
-						<tal:block tal:content="python:here.getMetaobjRevision(metaObj['id'])">the revision</tal:block>
+						<span tal:attributes="class python:' '.join([[],['text-danger']][not metaObj.get('acquired',None) and revision<cloud_revision])">
+						<tal:block tal:content="revision">the revision</tal:block>
+						<tal:block tal:condition="python:not metaObj.get('acquired',None) and revision<cloud_revision"><tal:block tal:content="structure python:here.zmi_icon(name='icon-reply',extra='title=\042%s\042'%cloud_revision)"></tal:block></tal:block>
+						<tal:block tal:condition="python:not metaObj.get('acquired',None) and revision>cloud_revision"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share-alt',extra='title=\042%s\042'%cloud_revision)"></tal:block></tal:block>
+						</span>
 						(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">the type</tal:block>)
 					</span>
 				</td>
 			</tr>
+		</tal:block>
 		</tal:block>
 	</tal:block>
 	</tbody>
@@ -599,13 +610,26 @@ function zmiEnabledBtnClick(sender) {
 /**
  * Export xml.
  */
-function zmiExportBtnClick(sender) {
+function zmiExportBtnClick(sender,btn,target) {
+	if (typeof btn=="undefined") {
+		btn = getZMILangStr('BTN_EXPORT');
+	}
+	if (typeof target=="undefined") {
+		target="_blank";
+	}
 	var $fm = $(sender).closest("form");
-	var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn='+getZMILangStr('BTN_EXPORT');
-	$('input[name="id"]:text,input[name="ids:list"]:checked',$fm).each(function(){
-			href += '&ids:list='+$(this).val();
-		});
-	window.open(href);
+	if (target=="_blank") {
+		var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn='+btn;
+		$('input[name="id"]:text,input[name="ids:list"]:checked',$fm).each(function(){
+				href += '&ids:list='+$(this).val();
+			});
+		window.open(href);
+	}
+	else {
+		$fm.attr("target",target);
+		$fm.append('<input type="hidden" name="btn" value="'+btn+'"/>');
+		$fm.submit();
+	}
 	return false;
 }
 

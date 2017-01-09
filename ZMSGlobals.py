@@ -23,6 +23,7 @@ from App.Common import package_home
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from Products.PageTemplates.Expressions import SecureModuleImporter
 from cStringIO import StringIO
 from types import StringTypes
 from binascii import b2a_base64, a2b_base64
@@ -941,11 +942,15 @@ class ZMSGlobals:
     Returns a json-string representation of the object.
     @rtype: C{string}
     """
-    def str_json(self, i, encoding='ascii', errors='xmlcharrefreplace'):
+    def str_json(self, i, encoding='ascii', errors='xmlcharrefreplace', formatted=False):
       if type(i) is list or type(i) is tuple:
-        return '['+','.join(map(lambda x: self.str_json(x,encoding,errors),i))+']'
+        return '[' \
+            + (['','\n'][formatted]+','+['','\t'][formatted]).join(map(lambda x: self.str_json(x,encoding,errors,formatted),i)) \
+            + ']'
       elif type(i) is dict:
-        return '{'+','.join(map(lambda x: '"%s":%s'%(x,self.str_json(i[x],encoding,errors)),i.keys()))+'}'
+        return '{' \
+            + (['','\n'][formatted]+','+['','\t'][formatted]).join(map(lambda x: '"%s":%s'%(x,self.str_json(i[x],encoding,errors,formatted)),i.keys())) \
+            + '}'
       elif type(i) is time.struct_time:
         try:
           return '"%s"'%self.getLangFmtDate(i)
@@ -1482,14 +1487,14 @@ class ZMSGlobals:
     """
     Try to execute given value.
     """
-    def dt_exec(self, v):
+    def dt_exec(self, v, o={}):
       if type(v) in StringTypes:
         if v.find('<dtml-') >= 0:
           v = self.dt_html(v,self.REQUEST)
         elif v.startswith('##'):
-          v = self.dt_py(v)
+          v = self.dt_py(v,o)
         elif v.find('<tal:') >= 0:
-          v = self.dt_tal(v)
+          v = self.dt_tal(v,dict(o))
       return v
 
     """
@@ -1579,6 +1584,7 @@ class ZMSGlobals:
                'options': options,
                'root': root,
                'request': getattr(root, 'REQUEST', None),
+               'modules': SecureModuleImporter,
                }
           return c
         def _cook_check(self):

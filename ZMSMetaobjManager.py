@@ -137,9 +137,12 @@ class ZMSMetaobjManager:
         exec(py)
         d = eval("%s.__dict__"%self.id_quote(id.replace('.','_')))
         metaObj = {'id':id,'attrs':[]}
-        for k in d.keys():
+        for k in filter(lambda x:not x.startswith("__"),d.keys()):
           v = d[k]
           if type(v) is dict and v.has_key('type'):
+            defaults = {'keys':[], 'custom':'', 'default':''}
+            for dk in defaults.keys():
+              v[dk] = v.get(dk,defaults[dk])
             metaObj['attrs'].append(v)
           else:
             metaObj[k] = v

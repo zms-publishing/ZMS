@@ -129,7 +129,7 @@ class ZMSMetaobjManager:
     def cloud_get(self, id, artefacts=False):
       basepath = self.cloud_basepath()
       filename = os.path.join(basepath,id,"__init__.py")
-      d = {}
+      metaObj = {}
       if os.path.exists(filename):
         f = open(filename,"r")
         py = f.read()
@@ -158,7 +158,7 @@ class ZMSMetaobjManager:
                   attr[key] = data
                   attr['mtime'] = os.path.getmtime(filename)
                   break
-      return d
+      return metaObj
 
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.cloud_import

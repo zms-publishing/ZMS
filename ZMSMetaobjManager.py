@@ -128,15 +128,23 @@ class ZMSMetaobjManager:
     # --------------------------------------------------------------------------
     def cloud_get(self, id, artefacts=False):
       basepath = self.cloud_basepath()
-      filename = os.path.join(basepath,id,"__init__.xml")
+      filename = os.path.join(basepath,id,"__init__.py")
       d = {}
       if os.path.exists(filename):
         f = open(filename,"r")
-        xml = f.read()
+        py = f.read()
         f.close()
-        d = self.parseXmlString( xml, mediadbStorable=False)
+        exec(py)
+        d = eval("%s.__dict__"%self.id_quote(id.replace('.','_')))
+        metaObj = {'id':id,'attrs':[]}
+        for k in d.keys():
+          v = d[k]
+          if type(v) is dict and v.has_key('type'):
+            metaObj['attrs'].append(v)
+          else:
+            metaObj[k] = v
         if artefacts:
-          attrs = d['attrs']
+          attrs = metaObj['attrs']
           for attr in attrs:
             if attr['type'] in syncTypes or attr['type'] in self.valid_zopetypes:
               filepath = os.path.join(basepath,id)
@@ -202,15 +210,27 @@ class ZMSMetaobjManager:
                  (key not in mandatory_keys) or \
                  (key == 'custom' and attr['type'] not in custom_types):
                 del attr[key]
-          json = self.str_json(metaObj,encoding="utf-8",formatted=True)
-          filename = os.path.join(basepath,id,"__init__.json")
+          py = []
+          py.append('class %s:'%self.id_quote(id.replace('.','_')))
+          py.append('\t"""')
+          py.append('\tpython-representation of content-object %s'%metaObj['id'])
+          py.append('\t"""')
+          py.append('')
+          keys = filter(lambda x:x not in ['attrs'],metaObj.keys())
+          keys.sort()
+          for key in keys:
+            if metaObj[key]:
+              py.append('\t# %s'%key.capitalize())
+              py.append('\t%s = %s'%(key,self.str_json(metaObj[key],encoding="utf-8",formatted=True,level=2)))
+              py.append('')
+          py.append('\t# Attributes')
+          for attr in metaObj['attrs']:
+            py.append('\t%s = %s'%(self.id_quote(attr['id']),self.str_json(attr,encoding="utf-8",formatted=True,level=2)))
+            py.append('')
+          py = '\n'.join(py)
+          filename = os.path.join(basepath,id,"__init__.py")
           f = open(filename,"w")
-          f.write(json)
-          f.close()
-          xml = self.getXmlHeader() + self.toXmlString(metaObj,xhtml=True)
-          filename = os.path.join(basepath,id,"__init__.xml")
-          f = open(filename,"w")
-          f.write(xml)
+          f.write(py)
           f.close()
           success.append(id)
       return self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%' '.join(success))

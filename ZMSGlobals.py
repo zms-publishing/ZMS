@@ -942,14 +942,14 @@ class ZMSGlobals:
     Returns a json-string representation of the object.
     @rtype: C{string}
     """
-    def str_json(self, i, encoding='ascii', errors='xmlcharrefreplace', formatted=False):
+    def str_json(self, i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, level=0):
       if type(i) is list or type(i) is tuple:
         return '[' \
-            + (['','\n'][formatted]+','+['','\t'][formatted]).join(map(lambda x: self.str_json(x,encoding,errors,formatted),i)) \
+            + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(map(lambda x: self.str_json(x,encoding,errors,formatted,level+1),i)) \
             + ']'
       elif type(i) is dict:
         return '{' \
-            + (['','\n'][formatted]+','+['','\t'][formatted]).join(map(lambda x: '"%s":%s'%(x,self.str_json(i[x],encoding,errors,formatted)),i.keys())) \
+            + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(map(lambda x: '"%s":%s'%(x,self.str_json(i[x],encoding,errors,formatted,level+1)),i.keys())) \
             + '}'
       elif type(i) is time.struct_time:
         try:

@@ -110,6 +110,7 @@ class ZMSMetaobjManager:
     deprecated_types = [ 'DTML Method', 'DTML Document', 'method']
 
 
+
     ############################################################################
     #
     #  CLOUD GET/SET
@@ -140,20 +141,23 @@ class ZMSMetaobjManager:
         exec(py)
         d = eval("%s.__dict__"%self.id_quote(id.replace('.','_')))
         metaObj = {'id':id,'attrs':[]}
+        attrs = []
         for k in filter(lambda x:not x.startswith("__"),d.keys()):
           v = d[k]
-          if type(v) is dict and v.has_key('type'):
+          if type(v) is dict and v.has_key("id") and v.has_key('type'):
             defaults = {'keys':[], 'custom':'', 'default':''}
             for dk in defaults.keys():
               v[dk] = v.get(dk,defaults[dk])
-            metaObj['attrs'].append(v)
+            attrs.append((py.find('\t%s ='%k),v))
           else:
             metaObj[k] = v
+        attrs.sort()
+        metaObj['attrs'] = map(lambda x:x[1],attrs)
         # Read artefacts of content-object
         if artefacts:
           attrs = metaObj['attrs']
           for attr in attrs:
-            if attr['type'] in syncTypes or attr['type'] in self.valid_zopetypes:
+            if attr['type'] in syncTypes+self.valid_zopetypes:
               filepath = os.path.join(basepath,id)
               fileprefix = attr['id'].split('/')[-1]
               for file in os.listdir(filepath):
@@ -169,22 +173,30 @@ class ZMSMetaobjManager:
       return metaObj
 
     # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.cloud_sync
+    # --------------------------------------------------------------------------
+    def cloud_sync(self, id):
+      basepath = self.cloud_basepath()
+      metaObj = self.__get_metaobj__(id)
+      if metaObj and not metaObj.get('acquired',0):
+        d = self.cloud_get(id,artefacts=True)
+        if d:
+          self.delMetaobj(id)
+          self.setMetaobj(d)
+          for attr in d['attrs']:
+            if attr['type'] in syncTypes+self.valid_zopetypes:
+              self.setMetaobjAttr(id,attr['id'],attr['id'],attr['name'],attr.get('mandatory',0),attr.get('multilang',0),attr.get('repetitive',0),attr['type'],attr.get('keys',[]),attr.get('custom',''),attr.get('default',''))
+          return id
+      return None
+
+    # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.cloud_import
     # --------------------------------------------------------------------------
     def cloud_import(self, ids):
-      basepath = self.cloud_basepath()
       success = []
       for id in effective_ids(self,ids):
-        metaObj = self.getMetaobj(id)
-        if metaObj and not metaObj.get('acquired',0):
-          d = self.cloud_get(id,artefacts=True)
-          if d:
-            self.delMetaobj(id)
-            self.setMetaobj(d)
-            for attr in d['attrs']:
-              if attr['type'] in syncTypes or attr['type'] in self.valid_zopetypes:
-                self.setMetaobjAttr(id,attr['id'],attr['id'],attr['name'],attr.get('mandatory',0),attr.get('multilang',0),attr.get('repetitive',0),attr['type'],attr.get('keys',[]),attr.get('custom',''),attr.get('default',''))
-            success.append(id)
+        if self.cloud_sync(id):
+          success.append(id)
       return self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success))
 
     # --------------------------------------------------------------------------
@@ -206,7 +218,7 @@ class ZMSMetaobjManager:
           metaObj = copy.deepcopy(metaObj)
           attrs = metaObj['attrs']
           for attr in attrs:
-            if attr['type'] in syncTypes or attr['type'] in self.valid_zopetypes:
+            if attr['type'] in syncTypes+self.valid_zopetypes:
               syncType(self,id,attr)
               ob = attr.get('ob')
               if ob is not None:
@@ -366,13 +378,12 @@ class ZMSMetaobjManager:
         ob = copy.deepcopy(ob)
         revision = self.getMetaobjRevision(id)
         attrs = []
-        for attr in ob['attrs']:
-          attr_id = attr['id']
-          syncType( context, id, attr)
+        for attr_id in map(lambda x:x['id'],ob['attrs']):
+          attr = self.getMetaobjAttr(id, attr_id, syncTypes=['*'])
           for key in ['keys','custom','default']:
             if attr.has_key(key) and not attr[key]:
               del attr[key]
-          for key in ['sync','ob','py','zpt']:
+          for key in ['ob']:
             if attr.has_key(key):
               del attr[key]
           attrs.append( attr)
@@ -516,13 +527,23 @@ class ZMSMetaobjManager:
     #  Returns meta-object specified by id.
     # --------------------------------------------------------------------------
     def getMetaobj(self, id):
+      #-- [ReqBuff]: Fetch buffered value from Http-Request.
+      reqBuffId = 'getMetaobj_%s'%id
+      try: return self.fetchReqBuff(reqBuffId)
+      except: pass
+        
+      #-- Get value.
+      if self.getConfProperty('ZMS.debug',0):
+        self.cloud_sync(id)
       ob = _globals.nvl( self.__get_metaobj__(id), {'id':id, 'attrs':[], })
       if ob is not None and ob.get('acquired',0) == 1:
         for k in ob.keys():
           v = self.getConfProperty('%s.%s'%(id,k),None)
           if v is not None:
             ob[k] = v
-      return ob
+      
+      #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
+      return self.storeReqBuff( reqBuffId, ob)
 
 
     # --------------------------------------------------------------------------
@@ -758,7 +779,8 @@ class ZMSMetaobjManager:
           attr['multilang'] = attr.get('multilang',1)
           attr['errors'] = attr.get('errors','')
           attr['meta_type'] = ['','?'][int(attr['type']==attr['id'] and not valid_datatype)]
-          if '*' in syncTypes or attr['type'] in syncTypes: syncType( self, id, attr)
+          if '*' in syncTypes or attr['type'] in syncTypes:
+            syncType( self, id, attr)
           return attr
       return None
 
@@ -857,7 +879,6 @@ class ZMSMetaobjManager:
           newCustom = ''
       
       attr = {}
-      attr['sync'] = False
       attr['id'] = newId
       attr['name'] = newName
       attr['mandatory'] = newMandatory

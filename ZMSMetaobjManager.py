@@ -174,6 +174,8 @@ class ZMSMetaobjManager:
 
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.cloud_sync
+    #
+    # Sync filesystem to ZODB.
     # --------------------------------------------------------------------------
     def cloud_sync(self, id):
       basepath = self.cloud_basepath()

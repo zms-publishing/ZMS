@@ -57,7 +57,9 @@ def callObject(ob, zmscontext=None, options={}):
   Call Zope-object.
   """
   v = None
-  if options:
+  if ob.meta_type in [ 'DTML Method', 'DTML Document']:
+    v = ob(zmscontext,zmscontext.REQUEST)
+  elif options:
     v = ob(zmscontext=zmscontext,options=options)
   else:
     v = ob(zmscontext=zmscontext)

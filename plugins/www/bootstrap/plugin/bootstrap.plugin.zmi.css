@@ -819,18 +819,19 @@ div.constraint-restriction {
 }
 
 /* Contraint as Tooltip */
-.btn-group.zmi-action .tooltip-inner {
+
+.btn-group.zmi-action .tooltip .tooltip-inner {
 	padding: 1px;
 	background-color: #888
+}
+.btn-group.zmi-action .tooltip .tooltip-inner .constraint {
+	border-radius: 4px;
+	overflow:hidden;
+	margin: 0;
 }
 .btn-group.zmi-action .tooltip-arrow {
 	border-top-color: #888;
 }
-.btn-group.zmi-action .tooltip-inner .constraint {
-	border-radius: 4px;
-	overflow:hidden;
-}
-
 
 .zmi-container .right li span[class^="glyphicon-"],
 .zmi-container .right li span[class*=" glyphicon-"],

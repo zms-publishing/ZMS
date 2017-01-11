@@ -128,12 +128,15 @@ class ZMSMetaobjManager:
     # --------------------------------------------------------------------------
     def cloud_get(self, id, artefacts=False):
       basepath = self.cloud_basepath()
-      filename = os.path.join(basepath,id,"__init__.py")
+      filepath = os.path.join(basepath,id)
+      filename = os.path.join(filepath,"__init__.py")
       metaObj = {}
       if os.path.exists(filename):
+        # Read python-representation of content-object
         f = open(filename,"r")
         py = f.read()
         f.close()
+        # Analyze python-representation of content-object
         exec(py)
         d = eval("%s.__dict__"%self.id_quote(id.replace('.','_')))
         metaObj = {'id':id,'attrs':[]}
@@ -146,13 +149,15 @@ class ZMSMetaobjManager:
             metaObj['attrs'].append(v)
           else:
             metaObj[k] = v
+        # Read artefacts of content-object
         if artefacts:
           attrs = metaObj['attrs']
           for attr in attrs:
             if attr['type'] in syncTypes or attr['type'] in self.valid_zopetypes:
               filepath = os.path.join(basepath,id)
+              fileprefix = attr['id'].split('/')[-1]
               for file in os.listdir(filepath):
-                if file.startswith('%s.'%attr['id']):
+                if file.startswith('%s.'%fileprefix):
                   filename = os.path.join(filepath,file)
                   f = open(filename,"r")
                   data = f.read()
@@ -192,7 +197,12 @@ class ZMSMetaobjManager:
       for id in effective_ids(self,ids):
         metaObj = self.getMetaobj(id)
         if metaObj and not metaObj.get('acquired',0):
-          _fileutil.mkDir(os.path.join(basepath,id))
+          # Recreate folder.
+          filepath = os.path.join(basepath,id)
+          if os.path.exists(filepath):
+            _fileutil.remove(filepath)
+          _fileutil.mkDir(filepath)
+          # Write artefacts of content-object
           metaObj = copy.deepcopy(metaObj)
           attrs = metaObj['attrs']
           for attr in attrs:
@@ -201,7 +211,8 @@ class ZMSMetaobjManager:
               ob = attr.get('ob')
               if ob is not None:
                 fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
-                filename = os.path.join(basepath,id,"%s%s"%(attr['id'],fileexts.get(ob.meta_type,'')))
+                fileprefix = attr['id'].split('/')[-1]
+                filename = os.path.join(filepath,"%s%s"%(fileprefix,fileexts.get(ob.meta_type,'')))
                 data = _zopeutil.readData(ob)
                 f = open(filename,"w")
                 f.write(data)
@@ -213,6 +224,7 @@ class ZMSMetaobjManager:
                  (key not in mandatory_keys) or \
                  (key == 'custom' and attr['type'] not in custom_types):
                 del attr[key]
+          # Write python-representation of content-object
           py = []
           py.append('class %s:'%self.id_quote(id.replace('.','_')))
           py.append('\t"""')

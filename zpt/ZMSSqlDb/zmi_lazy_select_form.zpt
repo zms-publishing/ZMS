@@ -39,6 +39,10 @@
 			<button type="submit" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_REFRESH')">
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
 			</button>
+			<button class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_ADD');
+			   onclick python:'javascript:window.open(\'manage_main?lang=ger&action=insertForm&qentity=%s\',\'%s\')'%(entity['id'],here.getZMILangStr('BTN_ADD'))">
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
+			</button>
 			&nbsp;<span class="ui-helper-clickable" onclick="$('#manage_main_div_sql').toggle()" title="Show SQL Code">&middot;</span>
 		</div>
 	</div><!-- .form-group -->

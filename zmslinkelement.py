@@ -442,12 +442,12 @@ class ZMSLinkElement(ZMSCustom):
       value = self.getObjPropertyPROXY( self, key, REQUEST, default)
       if type(value) == str: value = unicode(value, "utf-8", errors="ignore")
       # First exit...
-      if (value is None or len(str(value)) == 0 or (value == 0 and not type(value) is bool)) and \
+      if (value is None or len(unicode(value)) == 0 or (value == 0 and not type(value) is bool)) and \
         key in self.getMetaobjAttrIds( self.meta_id):
         value = ZMSObject.getObjProperty( self, key, REQUEST, default)
         if type(value) == str: value = unicode(value, "utf-8", errors="ignore")
       # Second exit...
-      if (value is None or len(str(value)) == 0 or (value == 0 and not type(value) is bool)) and \
+      if (value is None or len(unicode(value)) == 0 or (value == 0 and not type(value) is bool)) and \
           key not in ['active','change_uid','change_dt','work_uid','work_dt','internal_dict','attr_ref','attr_dc_coverage']:
         recursive = self.isEmbeddedRecursive( REQUEST)
         if recursive:

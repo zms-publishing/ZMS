@@ -75,7 +75,7 @@ def normalize_ids_after_move(node, ids=[]):
         lang = request.get('lang')
         for langId in node.getLangIds():
           request.set('lang',langId)
-          childNode.setObjStateModified(request,reset=0)
+          childNode.setObjStateModified(request)
           childNode.onChangeObj(request)
         request.set('lang',lang)
       # reset id

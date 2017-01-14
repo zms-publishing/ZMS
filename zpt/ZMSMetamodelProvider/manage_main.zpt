@@ -435,15 +435,22 @@
 				</div>
 			</th>
 			<th colspan="2">
-				<div class="btn-group">
-					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_import','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-reply text-danger')"></tal:block> <tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_export','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share-alt text-danger')"></tal:block> <tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-close')"></tal:block></span>
-				</div>
+				<div class="btn-toolbar" role="toolbar">
+					<div class="btn-group">
+						<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
+					</div><!-- .btn-group -->
+					<div class="btn-group">
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
+					</div><!-- .btn-group -->
+					<div class="btn-group">
+						<span class="btn btn-default"><tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block> <tal:block tal:content="python:here.cloud_basepath()"></tal:block> </span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_import','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt text-danger')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_export','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt text-danger')"></tal:block></span>
+					</div><!-- .btn-group -->
+				</div><!-- .btn-toolbar -->
 			</th>
 		</tr>
 	</thead>

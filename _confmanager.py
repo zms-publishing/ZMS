@@ -459,6 +459,48 @@ class ConfManager(
       return getattr( self, '__attr_conf_dict__', {})
 
     """
+    Returns defaults for configuration-properties.
+    @rtype: C{dict}
+    """
+    def getConfPropertiesDefaults(self):
+      return [
+        {'key':'ZMS.conf.path','title':'ZMS conf-path','desc':'ZMS conf-path','datatype':'string','default':os.path.join(self.getINSTANCE_HOME(),'var',self.getHome().id)}, 
+        {'key':'ZMS.debug','title':'ZMS debug','desc':'ZMS debug','datatype':'boolean','default':0}, 
+        {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
+        {'key':'ASP.protocol','title':'ASP Protocol','desc':'ASP Protocol.','datatype':'string','options':['http','https'],'default':'http'},
+        {'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
+        {'key':'HTTP.proxy','title':'HTTP proxy','desc':'HTTP proxy (host:port).','datatype':'string'},
+        {'key':'jquery.version','title':'JQuery version','desc':'JQuery version.','datatype':'string'},
+        {'key':'jquery.ui','title':'JQuery UI version','desc':'JQuery UI version.','datatype':'string'},
+        {'key':'jquery.plugin.version','title':'JQuery plugin version','desc':'JQuery plugin version','datatype':'string'},
+        {'key':'jquery.plugin.extensions','title':'JQuery plugin extensions','desc':'JQuery plugin extensions','datatype':'string'},
+        {'key':'ZMS.blobfields.grant_public_access','title':'Grant public access to blob-fields','desc':'Blob-fields in restricted nodes are not visible. You may grant public access to blob-fields by activating this option.','datatype':'boolean'},
+        {'key':'ZMS.blobfields.accept_ranges','title':'Http-Header Accept-Ranges for blob-fields','desc':'Http-Header Accept-Ranges for blob-fields.','datatype':'string','default':'bytes'},
+        {'key':'ZMS.locale.amount.unit','title':'Currency unit for amount-types','desc':'The currency unit used for amount-types.','datatype':'string','default':'EUR'},
+        {'key':'ZMS.password.regexp','title':'Password Regular Expression','desc':'Regular Expression for validation of new passwords.','datatype':'string','default':''},
+        {'key':'ZMS.password.hint','title':'Password Hint','desc':'Hint for validation of new passwords.','datatype':'string','default':''},
+        {'key':'ZMS.pathhandler','title':'Declarative URLs','desc':'ZMS can use declarative URLs based on DC.Identifier.Url.Node (or DC.Title.Alt).','datatype':'boolean'},
+        {'key':'EmailMandatory','title':'Email Mandatory?','desc':'Email for users','datatype':'boolean','default':0}, 
+        {'key':'ZMS.pathhandler.id_quote.mapping','title':'Declarative IDs-Mapping','desc':'ZMS can map characters in DC.Title.Alt to declarative IDs.','datatype':'string','default':' _-_/_'},
+        {'key':'ZMS.preview.contentEditable','title':'Content-Editable Preview','desc':'Make content in ZMS preview editable','datatype':'boolean','default':1},
+        {'key':'ZMS.pathcropping','title':'Crop URLs','desc':'ZMS can crop the SERVER_NAME from URLs.','datatype':'boolean'},
+        {'key':'ZMS.manage_tabs_message','title':'Global Message','desc':'ZMS can display a global message for all users in the management interface.','datatype':'text'},
+        {'key':'ZMS.http_accept_language','title':'Http Accept Language','desc':'ZMS can use the HTTP_ACCEPT_LANGUAGE request-parameter to determine initial language.','datatype':'boolean'},
+        {'key':'ZMS.export.domains','title':'Export resources from external domains','desc':'ZMS can export resources from external domains in the HTML export.','datatype':'string'},
+        {'key':'ZMS.export.pathhandler','title':'Export XHTML with decl. Document Ids','desc':'Please activate this option, if you would like to generate declarative document URLs for static XHTML-Export: /documentname/index_eng.html will be transformed to /documentname.html','datatype':'boolean'},
+        {'key':'ZMS.export.xml.tidy','title':'Export with HTML Tidy Library','desc':'ZMS can use the HTML Tidy Library to process inline (X)HTML in the XML export to avoid CDATA-sections.','datatype':'boolean'},
+        {'key':'ZMS.localfs_read','title':'LocalFS read','desc':'List of directories with permission for LocalFS read (semicolon separated).','datatype':'string','default':''},
+        {'key':'ZMS.localfs_write','title':'LocalFS write','desc':'List of directories with permission for LocalFS write (semicolon separated).','datatype':'string','default':''},
+        {'key':'ZMS.logout.href','title':'Logout URL','desc':'URL for logout from ZMS.','datatype':'string','default':''},
+        {'key':'ZMS.richtext.plugin','title':'Richtext plugin','desc':'Select your preferred richtext plugin','datatype':'string','options':self.getPluginIds(['rte']),'default':'ckeditor'},
+        {'key':'ZMS.input.file.plugin','title':'File.upload input','desc':'ZMS can use custom input-fields for file-upload.','datatype':'string','options':['input_file','jquery_upload'],'default':'input_file'},
+        {'key':'ZMS.input.file.maxlength','title':'File.upload maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
+        {'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
+        {'key':'ZMSGraphic.superres','title':'Image superres-attribute','desc':'Super-resolution attribute for ZMS standard image-objects.','datatype':'boolean','default':0},
+        {'key':'ZCatalog.TextIndexType','title':'Search with TextIndex-type','desc':'Use specified TextIndex-type (default: ZCTextIndex)','datatype':'string','default':'ZCTextIndex'},
+        ];
+    
+    """
     Returns property from configuration.
     @rtype: C{dict}
     """
@@ -534,6 +576,9 @@ class ConfManager(
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           value = portalMaster.getConfProperty( key, default)
+        if value is None:
+          for default in filter(lambda x:x['key']==key,self.getConfPropertiesDefaults()):
+            value = default.get('default',None)
       return value 
 
 

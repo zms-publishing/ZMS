@@ -121,7 +121,7 @@ class ZMSMetaobjManager:
     #  ZMSMetaobjManager.cloud_basepath
     # --------------------------------------------------------------------------
     def cloud_basepath(self):
-      basepath = os.path.join(self.getINSTANCE_HOME(),'var',self.getHome().id,self.id)
+      basepath = os.path.join(self.getConfProperty('ZMS.conf.path'),self.id)
       return basepath
 
     # --------------------------------------------------------------------------
@@ -139,19 +139,24 @@ class ZMSMetaobjManager:
         f.close()
         # Analyze python-representation of content-object
         exec(py)
-        d = eval("%s.__dict__"%self.id_quote(id.replace('.','_')))
+        # Class
         metaObj = {'id':id,'attrs':[]}
-        attrs = []
-        for k in filter(lambda x:not x.startswith("__"),d.keys()):
+        d = eval("%s.__dict__"%self.id_quote(id.replace('.','_')))
+        for k in filter(lambda x:not x.startswith("__") and not x in ['Attributes'],d.keys()):
           v = d[k]
-          if type(v) is dict and v.has_key("id") and v.has_key('type'):
-            defaults = {'keys':[], 'custom':'', 'default':''}
+          metaObj[k] = v
+        # Attributes
+        attrs = []
+        if 'attrs' in d.keys():
+          py = py[py.find('class attrs:'):]
+          d = eval("%s.attrs.__dict__"%self.id_quote(id.replace('.','_')))
+          for k in filter(lambda x:not x.startswith("__"),d.keys()):
+            v = d[k]
+            defaults = {'name':'','keys':[], 'custom':'', 'default':''}
             for dk in defaults.keys():
               v[dk] = v.get(dk,defaults[dk])
-            attrs.append((py.find('\t%s ='%k),v))
-          else:
-            metaObj[k] = v
-        attrs.sort()
+            attrs.append((py.find('\t\t%s ='%k),v))
+          attrs.sort()
         metaObj['attrs'] = map(lambda x:x[1],attrs)
         # Read artefacts of content-object
         if artefacts:
@@ -231,12 +236,14 @@ class ZMSMetaobjManager:
                 f = open(filename,"w")
                 f.write(data)
                 f.close()
-            mandatory_keys = ['custom','default','id','name','type','keys','mandatory','multilang','repetitive']
-            custom_types = ['constant'] 
+            mandatory_keys = ['id','name','type','default','keys','mandatory','multilang','repetitive']
+            if attr['type']=='interface':
+              attr['name'] = attr['id']
+            if attr['type']=='constant':
+              mandatory_keys += ['custom']
             for key in attr.keys():
               if not attr[key] or \
-                 (key not in mandatory_keys) or \
-                 (key == 'custom' and attr['type'] not in custom_types):
+                 not key in mandatory_keys:
                 del attr[key]
           # Write python-representation of content-object
           py = []
@@ -252,10 +259,13 @@ class ZMSMetaobjManager:
               py.append('\t# %s'%key.capitalize())
               py.append('\t%s = %s'%(key,self.str_json(metaObj[key],encoding="utf-8",formatted=True,level=2)))
               py.append('')
-          py.append('\t# Attributes')
-          for attr in metaObj['attrs']:
-            py.append('\t%s = %s'%(self.id_quote(attr['id']),self.str_json(attr,encoding="utf-8",formatted=True,level=2)))
-            py.append('')
+          attrs = metaObj['attrs']
+          if attrs:
+            py.append('\t# Attributes')
+            py.append('\tclass attrs:')
+            for attr in attrs:
+              py.append('\t\t%s = %s'%(self.id_quote(attr['id']),self.str_json(attr,encoding="utf-8",formatted=True,level=3)))
+              py.append('')
           py = '\n'.join(py)
           filename = os.path.join(basepath,id,"__init__.py")
           f = open(filename,"w")

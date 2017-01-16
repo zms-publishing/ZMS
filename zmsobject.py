@@ -1154,7 +1154,11 @@ class ZMSObject(ZMSItem.ZMSItem,
       # Process nodes.
       REQUEST.form['get_attrs'] = REQUEST.form.get('get_attrs', 0)
       for node in self.breadcrumbs_obj_path():
-        xml += node.ajaxGetNode( context=context, lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
+        nodexml = node.ajaxGetNode( context=context, lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
+        try:
+          xml += unicode(nodexml,'utf-8',errors='ignore')
+        except:
+          xml += nodexml
       # End-tag.
       xml += "</pages>"
       # Return xml.

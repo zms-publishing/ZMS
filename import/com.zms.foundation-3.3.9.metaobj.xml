@@ -2310,12 +2310,12 @@ return constraints
 <tal:block tal:on-error="structure string:<!-- URL ERROR -->" tal:define="global
 		zmscontext options/zmscontext;
 		zmsid         python:zmscontext.getId();
-		title         python:unicode(zmscontext.attr('title'),'utf-8');
-		titlealt      python:unicode(zmscontext.attr('titlealt'),'utf-8');
+		title         python:zmscontext.attr('title');
+		titlealt      python:zmscontext.attr('titlealt');
 		ref           python:zmscontext.attr('attr_url');
 		target        python:zmscontext.attr('attr_type');
 		align         python:zmscontext.attr('align');
-		abstract      python:unicode(zmscontext.attr('attr_abstract').replace('\n','<br/>'),'utf-8');
+		abstract      python:zmscontext.attr('attr_abstract').replace('\n','<br/>');
 		subclass      python:[zmscontext.meta_id]+[['external','internal'][int(ref.startswith('{$') and ref.endswith('}'))]];"
 	><tal:block tal:condition="python:target!='iframe'"
 		><tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']"
@@ -2395,7 +2395,7 @@ return constraints
           <item key="id"><![CDATA[ZMSLinkElement]]></item>
           <item key="name"><![CDATA[ZMSLinkElement]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.18]]></item>
+          <item key="revision"><![CDATA[3.1.19]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4880,7 +4880,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.3.8]]></item>
+          <item key="revision"><![CDATA[3.3.9]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

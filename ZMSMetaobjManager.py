@@ -106,17 +106,10 @@ class ZMSMetaobjManager:
     ############################################################################
 
     # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.cloud_basepath
-    # --------------------------------------------------------------------------
-    def cloud_basepath(self):
-      basepath = os.path.join(self.getConfProperty('ZMS.conf.path'),self.id)
-      return basepath
-
-    # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.cloud_get
     # --------------------------------------------------------------------------
     def cloud_get(self, id, artefacts=False):
-      basepath = self.cloud_basepath()
+      basepath = self.get_conf_basepath(self.id)
       filepath = os.path.join(basepath,id)
       filename = os.path.join(filepath,"__init__.py")
       metaObj = {}
@@ -170,7 +163,7 @@ class ZMSMetaobjManager:
     # Sync filesystem to ZODB.
     # --------------------------------------------------------------------------
     def cloud_sync(self, id):
-      basepath = self.cloud_basepath()
+      basepath = self.get_conf_basepath(self.id)
       metaObj = self.__get_metaobj__(id)
       if metaObj and not metaObj.get('acquired',0):
         d = self.cloud_get(id,artefacts=True)
@@ -197,7 +190,7 @@ class ZMSMetaobjManager:
     #  ZMSMetaobjManager.cloud_export
     # --------------------------------------------------------------------------
     def cloud_export(self, ids):
-      basepath = self.cloud_basepath()
+      basepath = self.get_conf_basepath(self.id)
       _fileutil.mkDir(basepath)
       success = []
       for id in effective_ids(self,ids):

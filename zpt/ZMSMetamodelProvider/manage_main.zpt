@@ -419,7 +419,7 @@
 						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 					</div><!-- .btn-group -->
 					<div class="btn-group syncronizing">
-						<span class="btn btn-default basepath"><tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open text-primary')"></tal:block> <tal:block tal:content="python:here.cloud_basepath()"></tal:block> </span>
+						<span class="btn btn-default basepath"><tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open text-primary')"></tal:block> <tal:block tal:content="python:here.get_conf_basepath(here.id)"></tal:block> </span>
 						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_import','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt text-primary')"></tal:block></span>
 						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_export','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt text-primary')"></tal:block></span>
 					</div><!-- .btn-group -->

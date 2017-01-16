@@ -458,13 +458,24 @@ class ConfManager(
     def get_conf_properties(self):
       return getattr( self, '__attr_conf_dict__', {})
 
+
+    """
+    Returns conf-basepath.
+    """
+    def get_conf_basepath(self, id):
+      basepath = self.getConfProperty('ZMS.conf.path')
+      basepath = basepath.replace('$INSTANCE_HOME',self.getINSTANCE_HOME())
+      basepath = basepath.replace('$HOME_ID',self.getHome().id)
+      basepath = os.path.join(basepath,id)
+      return basepath
+
     """
     Returns defaults for configuration-properties.
     @rtype: C{dict}
     """
     def getConfPropertiesDefaults(self):
       return [
-        {'key':'ZMS.conf.path','title':'ZMS conf-path','desc':'ZMS conf-path','datatype':'string','default':os.path.join(self.getINSTANCE_HOME(),'var',self.getHome().id)}, 
+        {'key':'ZMS.conf.path','title':'ZMS conf-path','desc':'ZMS conf-path','datatype':'string','default':'$INSTANCE_HOME/var/$HOME_ID'}, 
         {'key':'ZMS.debug','title':'ZMS debug','desc':'ZMS debug','datatype':'boolean','default':0}, 
         {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
         {'key':'ASP.protocol','title':'ASP Protocol','desc':'ASP Protocol.','datatype':'string','options':['http','https'],'default':'http'},

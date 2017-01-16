@@ -1204,6 +1204,14 @@ tr.row_insert td.meta-sort {
 .zmi.metas .btn-group.syncronizing .btn-default.basepath:hover {
 	background: none;
 }
+@media (max-width: 767px) {
+	.zmi.metas .btn-group.syncronizing .btn-default.basepath {
+		color: white !important;
+		width:2.6em;
+		overflow:hidden;
+	}
+}
+
 div.zmi-nodes span {
 	cursor:pointer;
 }

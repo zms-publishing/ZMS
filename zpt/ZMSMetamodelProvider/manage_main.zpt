@@ -85,10 +85,10 @@
 	<legend class="pull-left col-sm-6">
 		<span tal:attributes="id metaObj/id">
 			<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
-			<a target="_blank" style="text-decoration:none;" 
-				tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" 
+			<a target="_blank" style="text-decoration:none;"
+				tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']"
 				tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</a>
-			<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])" 
+			<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])"
 				tal:content="python:metaObj.get('name')">Name</a>
 		</span>
 
@@ -315,7 +315,7 @@
 				<tal:block tal:repeat="objAttrId objAttrIds">
 					<tal:block tal:define="global objAttr python:here.getMetaobjAttr(metaObj2['id'],objAttrId); isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None])">
 						<tal:block tal:condition="python:
-								(objAttr['type']==metaObj['id']) or 
+								(objAttr['type']==metaObj['id']) or
 								(objAttr['type']=='*' and metaObj['id'] in objAttr['keys'])">
 							<strong tal:condition="python:len(l)==0">Usage:</strong>
 							<tal:block tal:condition="not:python:len(l)==0">,</tal:block>
@@ -419,7 +419,7 @@
 						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 					</div><!-- .btn-group -->
 					<div class="btn-group syncronizing">
-						<span class="btn btn-default basepath"><tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open text-primary')"></tal:block> <tal:block tal:content="python:here.get_conf_basepath(here.id)"></tal:block> </span>
+						<span class="btn btn-default basepath" tal:attributes="title python:'Filesystem Path: %s'%(here.get_conf_basepath(here.id))"><tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open text-primary')"></tal:block> <tal:block tal:content="python:here.get_conf_basepath(here.id)"></tal:block> </span>
 						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_import','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt text-primary')"></tal:block></span>
 						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_export','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt text-primary')"></tal:block></span>
 					</div><!-- .btn-group -->

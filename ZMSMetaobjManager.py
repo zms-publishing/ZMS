@@ -20,6 +20,7 @@
 # Imports.
 from zope.interface import implements
 from cStringIO import StringIO
+from types import StringTypes
 import ZPublisher.HTTPRequest
 import collections
 import copy
@@ -53,19 +54,6 @@ def syncType( self, id, attr):
       ob = getattr( container, ob_id)
     if ob is not None:
       attr['ob'] = ob
-      attr['mtime'] = ob.bobobase_modification_time().timeTime()
-      if attr['type'] == 'resource':
-        attr['custom'] = ob
-      else:
-        attr['custom'] = _zopeutil.readData(ob)
-        if ob.meta_type in [ 'Script (Python)']:
-          data = attr['custom']
-          errors = ''
-          lines = data.split('\n')
-          if '## Errors:' in lines:
-            i = lines.index('## Errors:')
-            errors = lines[i+1][2:].strip()
-          attr['errors'] = errors
   except:
     value = _globals.writeError(self,'[syncType]')
 
@@ -171,8 +159,7 @@ class ZMSMetaobjManager:
                   f = open(filename,"r")
                   data = f.read()
                   f.close()
-                  key = {'interface':'name'}.get(attr['type'],'custom')
-                  attr[key] = data
+                  attr['custom'] = data
                   attr['mtime'] = os.path.getmtime(filename)
                   break
       return metaObj
@@ -324,6 +311,10 @@ class ZMSMetaobjManager:
           newKeys = attr.get('keys',[])
           newCustom = attr.get('custom','')
           newDefault = attr.get('default','')
+          # Backwards compatibility: map interface.name to interface.custom.
+          if newType == 'interface' and newName and not newCustom:
+            newCustom = newName
+            newName = ''
           # Old Attribute.
           if type(oldAttrs) is list and len(oldAttrs) > 0:
             while len(oldAttrs) > 0 and not (attr_id == oldAttrs[0]['id'] and newType == oldAttrs[0]['type']):
@@ -392,12 +383,13 @@ class ZMSMetaobjManager:
         attrs = []
         for attr_id in map(lambda x:x['id'],ob['attrs']):
           attr = self.getMetaobjAttr(id, attr_id, syncTypes=['*'])
-          for key in ['keys','custom','default']:
+          for key in ['keys','custom','default','errors']:
             if attr.has_key(key) and not attr[key]:
               del attr[key]
-          for key in ['ob']:
-            if attr.has_key(key):
-              del attr[key]
+          if attr.has_key('ob'):
+            if attr['ob'] is not None:
+              attr['custom'] = _zopeutil.readData(attr['ob'])
+            del attr['ob']
           attrs.append( attr)
         ob['__obj_attrs__'] = attrs
         for key in ['attrs','acquired']:
@@ -772,7 +764,7 @@ class ZMSMetaobjManager:
         if portalMaster is not None:
           attr = portalMaster.getMetaobjAttr( id, attr_id, syncTypes)
           return attr
-      meta_obj = meta_objs.get(id,{})
+      meta_obj = self.getMetaobj(id)
       attrs = meta_obj.get('attrs',meta_obj.get('__obj_attrs__',[]))
       for attr in attrs:
         valid_datatype = attr['type'] in self.valid_datatypes
@@ -808,7 +800,7 @@ class ZMSMetaobjManager:
       attrs = copy.copy(ob['attrs'])
       
       # Set Attributes.
-      if newType in ['delimiter','hint','interface']:
+      if newType in ['delimiter','hint']:
         newCustom = ''
       if newType in ['resource'] and (type(newCustom) is str or type(newCustom) is int):
         newCustom = None
@@ -904,16 +896,11 @@ class ZMSMetaobjManager:
       # Handle special methods and interfaces.
       mapTypes = {'method':'DTML Method','py':'Script (Python)','zpt':'Page Template'}
       message = ''
-      if newType in [ 'delimiter', 'hint', 'interface']:
-        newCustom = newName
-        if newCustom.find('<tal:') >= 0:
-          newType = 'zpt'
-        else:
+      if newType in ['interface']:
+        newType = self.dt_executable(newCustom)
+        if not newType:
           newType = 'method'
         newName = '%s: %s'%(newId,newType)
-      if newType in mapTypes.keys()+mapTypes.values():
-        newCustom = newCustom.replace('\r','')
-      mapTypes = {'method':'DTML Method','py':'Script (Python)','zpt':'Page Template'}
       if newType in mapTypes.keys():
         oldObId = '%s.%s'%(id,oldId)
         newObId = '%s.%s'%(id,newId)
@@ -921,7 +908,9 @@ class ZMSMetaobjManager:
         _zopeutil.removeObject(self, oldObId)
         _zopeutil.removeObject(self, newObId)
         # Insert Zope-Object.
+        if type(newCustom) in StringTypes: newCustom = newCustom.replace('\r','')
         _zopeutil.addObject(self, mapTypes[newType], newObId, newName, newCustom)
+        del attr['custom']
       
       # Replace
       ids = map( lambda x: x['id'], attrs)
@@ -935,7 +924,7 @@ class ZMSMetaobjManager:
         # Insert new attributes before methods
         else:
           i = len( attrs)
-          while i > 0 and attrs[ i - 1][ 'type'] in method_types:
+          while i > 0 and attrs[i-1][ 'type'] in method_types:
             i -= 1
           if i < len(attrs):
             attrs.insert( i, attr)
@@ -963,14 +952,15 @@ class ZMSMetaobjManager:
             oldObId = oldId.split('/')[-1]
             _zopeutil.removeObject(oldContainer, oldObId)
         # Insert Zope-Object.
+        if type(newCustom) in StringTypes: newCustom = newCustom.replace('\r','')
         _zopeutil.addObject(container, newType, newObId, newName, newCustom)
+        del attr['custom']
         # Change Zope-Object (special).
         newOb = _zopeutil.getObject(container, newObId)
         if newType == 'Folder':
           if isinstance( newCustom, _blobfields.MyFile) and len(newCustom.getData()) > 0:
             newOb.manage_delObjects(ids=newOb.objectIds())
             _ziputil.importZip2Zodb( newOb, newCustom.getData())
-          attr['custom'] = ''
       
       # Assign Attributes to Meta-Object.
       self.model[id] = ob
@@ -1147,7 +1137,7 @@ class ZMSMetaobjManager:
             # Change attributes.
             for old_id in REQUEST.get('old_ids',[]):
               attr_id = REQUEST['attr_id_%s'%old_id].strip()
-              newName = REQUEST['attr_name_%s'%old_id].strip()
+              newName = REQUEST.get('attr_name_%s'%old_id,'').strip()
               newMandatory = REQUEST.get( 'attr_mandatory_%s'%old_id, 0)
               newMultilang = REQUEST.get( 'attr_multilang_%s'%old_id, 0)
               newRepetitive = REQUEST.get( 'attr_repetitive_%s'%old_id, 0)

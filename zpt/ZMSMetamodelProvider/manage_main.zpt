@@ -1,4 +1,4 @@
-<tal:block tal:define="global dummy0 python:here.zmi_page_request(here,request)"></tal:block
+<tal:block tal:define="global dummy0 python:here.zmi_page_request(here,request); global zopeutil modules/Products/zms/_zopeutil"></tal:block
 ><tal:block tal:condition="python:request.SESSION.get('zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
 ><tal:block tal:condition="not:python:request.SESSION.get('zmi-manage-system',0)==1"
 ><!DOCTYPE html>
@@ -200,73 +200,46 @@
 							<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',key:\'attr\',attr_id:\'%s\'})'%objAttrId; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
 						</div>
 					</td>
-					<tal:block tal:condition="python:objAttr['type'] in ['interface']">
-						<td colspan="7" class="meta-interface">
-							<input type="hidden" tal:attributes="name python:'attr_id_%s'%objAttr['id']; value python:objAttr['id']"/>
-							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:objAttr['type']"/>
+					<td class="meta-id"><input type="text" tal:attributes="name python:'attr_id_%s'%objAttrId; value python:objAttr['id']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
+					<td class="meta-name" tal:condition="not:python:objAttr['type'] in ['interface']"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
+
+					<tal:block tal:condition="python:objAttr['type'] in ['interface','method','py','resource','zpt']+here.valid_zopetypes">
+						<td tal:attributes="colspan python:[5,6][objAttr['type'] in ['interface']]" class="meta-code" tal:condition="python:objAttr['type'] not in ['resource','Folder'] and objAttr.get('ob') is not None">
+							<tal:block tal:define="global readData python:here.operator_getattr(zopeutil,'readData')(objAttr['ob']); global errors python:''"></tal:block>
+							<tal:block tal:condition="python:'## Errors:' in readData.split('\n')">
+								<tal:block tal:define="lines python:readData.split('\n'); global errors python:lines[lines.index('## Errors:')+1][2:]"></tal:block>
+							</tal:block>
+							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:[objAttr.get('type'),objAttr.get('meta_type')][objAttr.get('meta_type') in here.getMetadictAttrs()]"/>
 							<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is not None"
 								tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
 									<textarea class="form-control input-sm"
-										tal:attributes="name python:'attr_name_%s'%objAttr['id']; title python:'%s (%s)'%(objAttr['id'],objAttr['type']);
-												class python:'form-control input-sm %s'%(''.join(objAttr['type'].lower().split(' ')));
-												data-style python:'background: #eee url(/misc_/zms/ico_interface.gif) 6px 6px no-repeat no-repeat';
-												data-dblclickhandler python:'window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])"
-										tal:content="objAttr/name">name</textarea>
+										tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:['%s (%s)'%(objAttr['id'],objAttr['type']),errors][int(len(errors)>0)];
+											class python:' '.join(['form-control','input-sm']+objAttr['type'].lower().split(' ')+[[],['bg-danger']][int(len(errors)>0)]);
+											style python:'\073'.join([[],['color:#a94442','background:#fee']][int(len(errors)>0)]);
+											data-style python:'background: #eee url(%s) 6px 6px no-repeat no-repeat'%(ob.icon);
+											data-dblclickhandler python:'window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),'%s (%s)'%(objAttr['id'],objAttr['type']))"
+										tal:content="readData">ob.data</textarea>
 							</div>
 						</td>
-					</tal:block>
-					<tal:block tal:condition="python:objAttr['type'] not in ['interface']">
-						<td class="meta-id"><input type="text" tal:attributes="name python:'attr_id_%s'%objAttrId; value python:objAttr['id']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
-						<td class="meta-name"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
-						<tal:block tal:condition="python:objAttr['type'] not in ['resource','Folder'] and objAttr['type'] in ['method','py','zpt']+here.valid_zopetypes">
-							<td colspan="5" class="meta-code">
-								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:[objAttr.get('type'),objAttr.get('meta_type')][objAttr.get('meta_type') in here.getMetadictAttrs()]"/>
-								<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is None and objAttr.get('meta_type') in here.getMetadictAttrs()">
-										<textarea class="form-control input-sm" style="background:#eee"
-											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:objAttr.get('errors','%s (%s)'%(objAttr['id'],objAttr['type']));"
-											tal:content="objAttr/custom">custom</textarea>
-								</div>
-								<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is not None"
-									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
-										<textarea class="form-control input-sm"
-											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:objAttr.get('errors','%s (%s)'%(objAttr['id'],objAttr['type']));
-												class python:' '.join(['form-control','input-sm']+objAttr['type'].lower().split(' ')+[[],['bg-danger']][int(len(objAttr.get('errors',''))>0)]);
-												style python:'\073'.join([[],['color:#a94442','background:#fee']][int(len(objAttr.get('errors',''))>0)]);
-												data-style python:'background: #eee url(%s) 6px 6px no-repeat no-repeat'%(ob.icon);
-												data-dblclickhandler python:'window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),objAttr['type'])"
-											tal:content="objAttr/custom">custom</textarea>
-								</div>
-								<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is None and objAttr['type'] in here.valid_zopetypes">
-										<textarea class="form-control input-sm"
-											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:'not found: %s (%s)'%(objAttr['id'],objAttr['type']);
-												class python:'form-control input-sm %s'%(''.join(objAttr['type'].lower().split(' ')));
-												style python:'\073'.join(['color:#a94442','background:#fee']);
-												data-style python:'background: #eee'"
-											tal:content="objAttr/custom">custom</textarea>
-								</div>
-							</td>
-						</tal:block>
-						<tal:block tal:condition="python:objAttr['type'] in ['resource']">
-							<td colspan="5" class="meta-resource">
-								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
-								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']" />
-								<tal:block tal:condition="python:objAttr.get('custom')">
-									<input type="checkbox" tal:attributes="name python:'attr_custom_%s_active'%objAttr['id']" value="1" checked="checked"/>
-									<tal:block tal:condition="python:objAttr['custom'] is not None">
-										<a tal:define="fname python:objAttr['custom'].title" tal:attributes="href python:objAttr['custom'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['custom'].get_size()))" target="_blank" style="text-decoration:none;">
-											<tal:block tal:content="fname">FILE NAME</tal:block>
-										</a>
-									</tal:block>
+						<td colspan="5" class="meta-resource" tal:condition="python:objAttr['type'] in ['resource']">
+							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
+							<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']" />
+							<tal:block tal:condition="python:objAttr.get('custom')">
+								<input type="checkbox" tal:attributes="name python:'attr_custom_%s_active'%objAttr['id']" value="1" checked="checked"/>
+								<tal:block tal:condition="python:objAttr['custom'] is not None">
+									<a tal:define="fname python:objAttr['custom'].title" tal:attributes="href python:objAttr['custom'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['custom'].get_size()))" target="_blank" style="text-decoration:none;">
+										<tal:block tal:content="fname">FILE NAME</tal:block>
+									</a>
 								</tal:block>
-							</td>
-						</tal:block>
-						<tal:block tal:condition="python:objAttr['type'] in ['Folder']">
-							<td colspan="5" class="meta-resource">
-								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
-								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']" />
-							</td>
-						</tal:block>
-						<tal:block tal:condition="python:objAttr['type'] not in ['method','py','resource','zpt']+here.valid_zopetypes">
+							</tal:block>
+						</td>
+						<td colspan="5" class="meta-resource" tal:condition="python:objAttr['type'] in ['Folder']">
+							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
+							<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']" />
+						</td>
+					</tal:block>
+
+						<tal:block tal:condition="not:python:objAttr['type'] in ['interface','method','py','resource','zpt']+here.valid_zopetypes">
 							<td class="meta-type">
 								<select tal:attributes="name python:'attr_type_%s'%objAttrId; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]">
 									<option
@@ -307,7 +280,7 @@
 								</div>
 							</td>
 						</tal:block>
-					</tal:block>
+
 				</tal:block>
 			</tr>
 			<tr class="row_insert">

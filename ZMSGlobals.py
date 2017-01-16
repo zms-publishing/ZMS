@@ -1477,11 +1477,11 @@ class ZMSGlobals:
     def dt_executable(self, v):
       if type(v) in StringTypes:
         if v.find('<dtml-') >= 0:
-          return True
+          return 'method'
         elif v.startswith('##'):
-          return True
+          return 'py'
         elif v.find('<tal:') >= 0:
-          return True
+          return 'zpt'
       return False
 
     """

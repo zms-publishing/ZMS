@@ -1198,7 +1198,12 @@ tr.row_insert td.meta-sort {
 .zmi.metas span.input-group-addon {
 	width:29px !important;
 }
-
+.zmi.metas .btn-group.syncronizing .btn-default.basepath {
+	color: silver !important;
+}
+.zmi.metas .btn-group.syncronizing .btn-default.basepath:hover {
+	background: none;
+}
 div.zmi-nodes span {
 	cursor:pointer;
 }

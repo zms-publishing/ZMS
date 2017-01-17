@@ -181,13 +181,22 @@
 				</div>
 			</th>
 			<th colspan="3">
-				<div class="btn-group">
-					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
-				</div>
+				<div class="btn-toolbar" role="toolbar">
+					<div class="btn-group managing">
+						<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
+					</div><!-- .btn-group -->
+					<div class="btn-group packaging">
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
+					</div><!-- .btn-group -->
+					<div class="btn-group syncronizing">
+						<span class="btn btn-default basepath" tal:attributes="title python:'Filesystem Path: %s'%(here.get_conf_basepath(here.id))"><tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open text-primary')"></tal:block> <tal:block tal:content="python:here.get_conf_basepath(here.id)"></tal:block> </span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_import','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt text-primary')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_export','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt text-primary')"></tal:block></span>
+					</div><!-- .btn-group -->
+				</div><!-- .btn-toolbar -->
 			</th>
 		</tr>
 		<tr>
@@ -199,7 +208,12 @@
 	</thead>
 	<tbody>
 	<tal:block tal:repeat="metaCmdId metaCmdIds">
-		<tr tal:define="global metaCmd python:here.getMetaCmd(metaCmdId); ob python:getattr(here,metaCmdId,None)">
+		<tr tal:define="
+				metaCmd python:here.getMetaCmd(metaCmdId);
+				metaCmdCloud python:here.cloud_get(metaCmdId);
+				ob python:getattr(here,metaCmdId,None);
+				revision python:metaCmd.get('revision','0.0.0');
+				cloud_revision python:metaCmdCloud.get('revision','-.-.-');">
 			<td style="text-align:center;">
 				<input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id">
 			</td>
@@ -218,7 +232,9 @@
 							<tal:block tal:content="python:metaCmd['name']">the name</tal:block>
 						</a>
 					</tal:block>
-					<tal:block tal:content="python:metaCmd.get('revision','0.0.0')">the version</tal:block>
+					<tal:block tal:content="revision">the version</tal:block>
+					<tal:block tal:condition="python:not metaCmd.get('acquired',None) and revision<cloud_revision"><tal:block tal:content="structure python:here.zmi_icon(name='icon-reply',extra='title=\042%s\042'%cloud_revision)"></tal:block></tal:block>
+					<tal:block tal:condition="python:not metaCmd.get('acquired',None) and revision>cloud_revision"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share-alt',extra='title=\042%s\042'%cloud_revision)"></tal:block></tal:block>
 					(<tal:block tal:content="python:metaCmd['meta_type']">the type</tal:block>)
 				</tal:block>
 				<div class="text-danger bg-danger" tal:condition="python:ob is None">
@@ -264,13 +280,26 @@
 /**
  * Export xml.
  */
-function zmiExportBtnClick(sender) {
-	var fm = $(sender).parents("form")[0];
-	var href = fm.action+'?lang='+getZMILang()+'&btn='+getZMILangStr('BTN_EXPORT');
-	$('input[name="ids:list"]:checked',fm).each(function(){
-			href += '&'+$(this).attr("name")+'='+$(this).val();
-		});
-	window.open(href);
+function zmiExportBtnClick(sender,btn,target) {
+	if (typeof btn=="undefined") {
+		btn = getZMILangStr('BTN_EXPORT');
+	}
+	if (typeof target=="undefined") {
+		target="_blank";
+	}
+	var $fm = $(sender).closest("form");
+	if (target=="_blank") {
+		var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn='+btn;
+		$('input[name="id"]:text,input[name="ids:list"]:checked',$fm).each(function(){
+				href += '&ids:list='+$(this).val();
+			});
+		window.open(href);
+	}
+	else {
+		$fm.attr("target",target);
+		$fm.append('<input type="hidden" name="btn" value="'+btn+'"/>');
+		$fm.submit();
+	}
 	return false;
 }
 

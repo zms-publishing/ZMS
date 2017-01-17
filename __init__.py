@@ -50,6 +50,7 @@ import ZMSZCatalogAdapter
 import ZMSFormatProvider, ZMSFormatProviderAcquired
 import ZMSMetacmdProvider, ZMSMetacmdProviderAcquired
 import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
+import ZMSRepositoryManager, ZMSRepositoryManagerAcquired
 
 try:
   from Products.CMFCore.DirectoryView import registerFileExtension

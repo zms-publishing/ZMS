@@ -998,19 +998,19 @@ class ConfManager(
       if metacmd_manager is None:
         class DefaultManager:
           def importXml(self, xml): pass
-          def getMetaCmdDescription(self, id=None, name=None): return None
-          def getMetaCmd(self, id=None, name=None): return None
+          def getMetaCmdDescription(self, id): return None
+          def getMetaCmd(self, id): return None
           def getMetaCmdIds(self, sort=True): return []
           def getMetaCmds(self, context=None, stereotype='', sort=True): return []
         metacmd_manager = DefaultManager()
       return metacmd_manager
 
-    def getMetaCmdDescription(self, id=None, name=None):
+    def getMetaCmdDescription(self, id):
        """ getMetaCmdDescription """
-       return self.getMetacmdManager().getMetaCmdDescription(id,name)
+       return self.getMetacmdManager().getMetaCmdDescription(id)
 
-    def getMetaCmd(self, id=None, name=None):
-       return self.getMetacmdManager().getMetaCmd(id,name)
+    def getMetaCmd(self, id):
+       return self.getMetacmdManager().getMetaCmd(id)
 
     def getMetaCmdIds(self, sort=1):
        return self.getMetacmdManager().getMetaCmdIds(sort)

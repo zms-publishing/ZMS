@@ -65,6 +65,7 @@ def callObject(ob, zmscontext=None, options={}):
     v = ob(zmscontext=zmscontext)
   return v
 
+readData__roles__ = None
 def readData(ob, default=None):
   """
   Read data of Zope-object.

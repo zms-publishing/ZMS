@@ -44,7 +44,8 @@ $(function(){
           +map(lambda x: {'name':x,'action':x,},['Sequence','ZMSLog','ZMSZCatalogAdapter'
               ,'ZMSFormatProvider','ZMSFormatProviderAcquired'
               ,'ZMSMetacmdProvider','ZMSMetacmdProviderAcquired'
-              ,'ZMSWorkflowProvider','ZMSWorkflowProviderAcquired'])">
+              ,'ZMSWorkflowProvider','ZMSWorkflowProviderAcquired'
+              ,'ZMSRepositoryManager','ZMSRepositoryManagerAcquired'])">
       <div class="col-sm-12">
         <label for="meta_type">ZMS base-components</label>
         <div class="form-group">

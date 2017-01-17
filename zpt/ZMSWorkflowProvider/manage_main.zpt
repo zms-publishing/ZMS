@@ -374,12 +374,23 @@ $(function(){
 	<input type="hidden" name="key" value="custom"/>
 	<legend tal:content="python:here.getZMILangStr('TAB_WORKFLOW')">Workflow</legend>
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_WORKFLOW')">well</p>
-	<div class="row container">
-		<div class="btn-group pull-left">
-			<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).text(),closeText:getZMILangStr('BTN_CLOSE')});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
-			<a class="btn btn-default" tal:attributes="href python:'manage_changeWorkflow?lang=%s&key=export&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></a>
-			<a class="btn btn-default" tal:attributes="href python:'javascript:if(confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_changeWorkflow?lang=%s&key=clear&btn=%s\'}'%(request['lang'],here.getZMILangStr('BTN_CLEAR')); title python:here.getZMILangStr('BTN_CLEAR')+'...'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></a>
-		</div>
+	<div class="form-group container">
+			<div class="btn-toolbar" role="toolbar">
+				<div class="btn-group managing">
+					<a class="btn btn-default" tal:attributes="href python:'javascript:if(confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_changeWorkflow?lang=%s&key=clear&btn=%s\'}'%(request['lang'],here.getZMILangStr('BTN_CLEAR')); title python:here.getZMILangStr('BTN_CLEAR')+'...'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></a>
+				</div><!-- .btn-group -->
+				<div class="btn-group packaging">
+					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).text(),closeText:getZMILangStr('BTN_CLOSE')});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+					<a class="btn btn-default" tal:attributes="href python:'manage_changeWorkflow?lang=%s&key=export&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></a>
+				</div><!-- .btn-group -->
+				<div class="btn-group syncronizing">
+					<span class="btn btn-default basepath" tal:attributes="title python:'Filesystem Path: %s'%(here.get_conf_basepath(here.id))"><tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open text-primary')"></tal:block> <tal:block tal:content="python:here.get_conf_basepath(here.id)"></tal:block> </span>
+					<a class="btn btn-default" tal:attributes="href python:'manage_changeWorkflow?lang=%s&btn=cloud_import'%(request['lang']); title python:here.getZMILangStr('BTN_IMPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_import','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt text-primary')"></tal:block></a>
+					<a class="btn btn-default" tal:attributes="href python:'manage_changeWorkflow?lang=%s&btn=cloud_export'%(request['lang']); title python:here.getZMILangStr('BTN_EXPORT')+' (Server-Filesystem)...'" onclick="zmiExportBtnClick(this,'cloud_export','_self')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt text-primary')"></tal:block></a>
+				</div><!-- .btn-group -->
+			</div><!-- .btn-toolbar -->
+	</div><!-- .row.container -->
+	<div class="form-group container">
 		<label for="workflow" class="control-label pull-left"><span style="padding-left:2em;padding-right:1em;" tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">Active</span></label>
 		<span class="btn btn-default pull-left"><input type="checkbox" id="workflow" name="workflow:int" value="1" tal:attributes="checked python:['','checked'][int(not here.getAutocommit())]"/></span>
 		<div class="col-xs-3 col-sm-4 col-md-5">

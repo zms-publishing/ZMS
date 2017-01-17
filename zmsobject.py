@@ -51,6 +51,7 @@ import _xmllib
 import _textformatmanager
 import _zcatalogmanager
 import _zmsattributecontainer
+import _zopeutil
 import _zreferableitem
 
 __all__= ['ZMSObject']
@@ -1346,28 +1347,25 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  Execute Meta-Command.
     ############################################################################
-    def manage_executeMetacmd(self, lang, REQUEST, RESPONSE):
+    def manage_executeMetacmd(self, id, lang, REQUEST, RESPONSE):
       """ MetacmdObject.manage_executeMetacmd """
       message = ''
       target = self
       
       # METAOBJ
-      metaObjAttr = self.getMetaobjAttr(self.meta_id,REQUEST.get('id'))
+      metaObjAttr = self.getMetaobjAttr(self.meta_id,id)
       if metaObjAttr is not None:
         # Execute directly.
         return self.attr(REQUEST.get('id'))
       
       # METACMD
-      metaCmd = self.getMetaCmd(id=REQUEST.get('id'),name=REQUEST.get('custom'))
+      metaCmd = self.getMetaCmd(id)
       if metaCmd is not None:
         # Execute directly.
         if metaCmd.get('exec',0) == 1:
-          ob = getattr(self,metaCmd['id'],None)
-          if ob.meta_type in ['DTML Method','DTML Document']:
-            value = ob(self,REQUEST,RESPONSE)
-          elif ob.meta_type in ['External Method','Page Template','Script (Python)']:
-            value = ob()
-          if type(value) is str:
+          ob = _zopeutil.getObject(self,id)
+          value = _zopeutil.callObject(ob,zmscontext=self)
+          if type(value) in StringTypes:
             message = value
           elif type(value) is tuple:
             target = value[0]

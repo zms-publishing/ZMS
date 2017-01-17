@@ -224,7 +224,7 @@ def zmi_command_actions(context, stereotype='', objPath=''):
   #-- Context Commands.
   if context is not None:
     for metaCmd in filter(lambda x:x['stereotype']==stereotype,context.getMetaCmds(context,stereotype)):
-      l = [metaCmd['name'],objPath+'manage_executeMetacmd']
+      l = [metaCmd['name'],objPath+'manage_executeMetacmd?id='+metaCmd['id']]
       if metaCmd.get('icon_clazz'):
         l.append(metaCmd.get('icon_clazz'))
       if metaCmd.get('title'):

@@ -1620,7 +1620,12 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 		var $input = $("input[name='ids:list']",$div);
 		$input.prop("checked",true);
 		zmiActionButtonsRefresh(sender);
-		if (this.confirm($fm,target,label)) {
+		var params = $ZMI.parseURLParams(target);
+		var target = target.indexOf("?")>0?target.substr(0,target.indexOf("?")):target;
+		if (this.confirm($fm,target,params)) {
+			for (var k in params) {
+				$fm.append('<input type="hidden" name="'+k+'" value="'+params[k]+'">');
+			}
 			$("input[name='id_prefix']",$fm).val(id_prefix);
 			$fm.attr("action",target);
 			$fm.attr("method","POST");
@@ -1638,9 +1643,9 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
  *
  * @param fm
  * @param target
- * @param label
+ * @param data
  */
-ZMIActionList.prototype.confirm = function(fm, target, label) {
+ZMIActionList.prototype.confirm = function(fm, target, data) {
 	var b = true;
 	var i = $("input[name='ids:list']:checkbox:checked").length;
 	if (target.indexOf("../") == 0) {
@@ -1674,8 +1679,9 @@ ZMIActionList.prototype.confirm = function(fm, target, label) {
 	else if (target.indexOf("manage_executeMetacmd") >=0 ) {
 		var description = $.ajax({
 			url: 'getMetaCmdDescription',
-			data:{name:label},
+			data:data,
 			datatype:'text',
+			traditional: true,
 			async: false
 			}).responseText;
 		if (typeof description != 'undefined' && description.length > 0) {

@@ -18,7 +18,6 @@
 
 
 # Imports.
-from zope.interface import implements
 from cStringIO import StringIO
 from types import StringTypes
 import ZPublisher.HTTPRequest
@@ -28,7 +27,9 @@ import os
 import sys
 import time
 import zExceptions
+import zope.interface
 # Product Imports.
+import IZMSRepositoryProvider
 import _blobfields
 import _fileutil
 import _globals
@@ -54,6 +55,7 @@ def syncType( self, id, attr):
       ob = getattr( container, ob_id)
     if ob is not None:
       attr['ob'] = ob
+      attr['mtime'] = ob.bobobase_modification_time().timeTime()
   except:
     value = _globals.writeError(self,'[syncType]')
 
@@ -86,6 +88,8 @@ def effective_ids(self, ids):
 ################################################################################
 ################################################################################
 class ZMSMetaobjManager:
+    zope.interface.implements(
+        IZMSRepositoryProvider.IZMSRepositoryProvider)
 
     # Globals.
     # --------
@@ -96,7 +100,6 @@ class ZMSMetaobjManager:
     valid_objtypes =  [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
     valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'Folder', 'Page Template', 'Script (Python)', 'Z SQL Method']
     deprecated_types = [ 'DTML Method', 'DTML Document', 'method']
-
 
 
     ############################################################################
@@ -201,7 +204,7 @@ class ZMSMetaobjManager:
           if os.path.exists(filepath):
             _fileutil.remove(filepath)
           _fileutil.mkDir(filepath)
-          # Write artefacts of content-object
+          # Write artefacts.
           metaObj = copy.deepcopy(metaObj)
           attrs = metaObj['attrs']
           for attr in attrs:
@@ -225,7 +228,7 @@ class ZMSMetaobjManager:
               if not attr[key] or \
                  not key in mandatory_keys:
                 del attr[key]
-          # Write python-representation of content-object
+          # Write python-representation.
           py = []
           py.append('class %s:'%self.id_quote(id.replace('.','_')))
           py.append('\t"""')
@@ -247,12 +250,45 @@ class ZMSMetaobjManager:
               py.append('\t\t%s = %s'%(self.id_quote(attr['id']),self.str_json(attr,encoding="utf-8",formatted=True,level=3)))
               py.append('')
           py = '\n'.join(py)
-          filename = os.path.join(basepath,id,"__init__.py")
+          filename = os.path.join(filepath,"__init__.py")
           f = open(filename,"w")
           f.write(py)
           f.close()
           success.append(id)
       return self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%' '.join(success))
+
+
+    """
+    @see IRepositoryProvider
+    """
+    def provideRepository(self):
+      r = {}
+      for id in self.getMetaobjIds():
+        o = self.getMetaobj(id)
+        if o and not o.get('acquired',0):
+          d = copy.deepcopy(o)
+          for dk in ['acquired']:
+            if d.has_key(dk):
+              del d[dk]
+          for attr in d['attrs']:
+            syncType(self,id,attr)
+            mandatory_keys = ['id','name','type','default','keys','mandatory','multilang','ob','repetitive']
+            if attr['type']=='interface':
+              attr['name'] = attr['id']
+            if attr['type']=='constant':
+              mandatory_keys += ['custom']
+            for key in attr.keys():
+              if not attr[key] or \
+                 not key in mandatory_keys:
+                del attr[key]
+          r[id] = d
+      return r
+
+    """
+    @see IRepositoryProvider
+    """
+    def updateRepository(self, id):
+      pass
 
 
     ############################################################################
@@ -264,7 +300,6 @@ class ZMSMetaobjManager:
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.importMetaobjXml
     # --------------------------------------------------------------------------
-
     def _importMetaobjXml(self, item, createIfNotExists=1, createIdsFilter=None):
       ids = []
       id = item['key']

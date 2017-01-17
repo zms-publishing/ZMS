@@ -21,12 +21,14 @@
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 import copy
+import os
 import urllib
 import zope.interface
 # Product Imports.
+import _fileutil
 import _globals
 import _zopeutil
-import IZMSMetacmdProvider,IZMSConfigurationProvider
+import IZMSMetacmdProvider,IZMSConfigurationProvider,IZMSRepositoryProvider
 import ZMSItem
 
 
@@ -79,7 +81,8 @@ class ZMSMetacmdProvider(
         ZMSItem.ZMSItem):
     zope.interface.implements(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
-        IZMSMetacmdProvider.IZMSMetacmdProvider)
+        IZMSMetacmdProvider.IZMSMetacmdProvider,
+        IZMSRepositoryProvider.IZMSRepositoryProvider)
 
     # Properties.
     # -----------
@@ -122,20 +125,151 @@ class ZMSMetacmdProvider(
       self.id = 'metacmd_manager'
       self.commands = copy.deepcopy(commands)
 
-    """
-    ################################################################################
+
+    ############################################################################
     #
-    #   X M L   I M / E X P O R T
+    #  CLOUD GET/SET
     #
-    ################################################################################
+    ############################################################################
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetacmdProvider.cloud_get
+    # --------------------------------------------------------------------------
+    def cloud_get(self, id, artefacts=False):
+      basepath = self.get_conf_basepath(self.id)
+      filepath = os.path.join(basepath,id)
+      filename = os.path.join(filepath,"__init__.py")
+      metaCmd = {}
+      if os.path.exists(filename):
+        # Read python-representation of content-object
+        f = open(filename,"r")
+        py = f.read()
+        f.close()
+        # Analyze python-representation.
+        exec(py)
+        # Class
+        metaCmd = {'id':id}
+        d = eval("%s.__dict__"%self.id_quote(id.replace('.','_')))
+        for k in filter(lambda x:not x.startswith("__") and not x in ['Attributes'],d.keys()):
+          v = d[k]
+          metaCmd[k] = v
+        # Read artefacts.
+        if artefacts:
+          filepath = os.path.join(basepath,id)
+          fileprefix = attr['id'].split('/')[-1]
+          for file in os.listdir(filepath):
+            if file.startswith('%s.'%fileprefix):
+              filename = os.path.join(filepath,file)
+              f = open(filename,"r")
+              data = f.read()
+              f.close()
+              metaCmd['data'] = data
+              break
+      return metaCmd
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetacmdProvider.cloud_sync
+    #
+    # Sync filesystem to ZODB.
+    # --------------------------------------------------------------------------
+    def cloud_sync(self, id):
+      basepath = self.get_conf_basepath(self.id)
+      metaCmd = self.__get_metacmd__(id)
+      if metaCmd and not metaCmd.get('acquired',0):
+        d = self.cloud_get(id,artefacts=True)
+        if d:
+          self.delMetaCmd(id)
+          self.setMetaCmd(d)
+          return id
+      return None
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetacmdProvider.cloud_import
+    # --------------------------------------------------------------------------
+    def cloud_import(self, ids):
+      success = []
+      for id in filter(lambda x:x in ids or len(ids)==0,self.getMetaCmdIds()):
+        if self.cloud_sync(id):
+          success.append(id)
+      return self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success))
+
+    # --------------------------------------------------------------------------
+    #  ZMSMetacmdProvider.cloud_export
+    # --------------------------------------------------------------------------
+    def cloud_export(self, ids):
+      basepath = self.get_conf_basepath(self.id)
+      _fileutil.mkDir(basepath)
+      success = []
+      for id in filter(lambda x:x in ids or len(ids)==0,self.getMetaCmdIds()):
+        metaCmd = self.getMetaCmd(id)
+        if metaCmd and not metaCmd.get('acquired',0):
+          # Recreate folder.
+          filepath = os.path.join(basepath,id)
+          if os.path.exists(filepath):
+            _fileutil.remove(filepath)
+          _fileutil.mkDir(filepath)
+          # Write artefacts.
+          fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
+          fileprefix = id
+          filename = os.path.join(filepath,"%s%s"%(fileprefix,fileexts.get(metaCmd['meta_type'],'')))
+          data = metaCmd['data']
+          f = open(filename,"w")
+          f.write(data)
+          f.close()
+          # Write python-representation.
+          py = []
+          py.append('class %s:'%id)
+          py.append('\t"""')
+          py.append('\tpython-representation of ZMS-action %s'%metaCmd['id'])
+          py.append('\t"""')
+          py.append('')
+          keys = filter(lambda x:x not in ['bobobase_modification_time','data'],metaCmd.keys())
+          keys.sort()
+          for key in keys:
+            if metaCmd[key]:
+              py.append('\t# %s'%key.capitalize())
+              py.append('\t%s = %s'%(key,self.str_json(metaCmd[key],encoding="utf-8",formatted=True,level=2)))
+              py.append('')
+          py = '\n'.join(py)
+          filename = os.path.join(filepath,"__init__.py")
+          f = open(filename,"w")
+          f.write(py)
+          f.close()
+          success.append(id)
+      return self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%' '.join(success))
+
+
     """
-    
+    @see IRepositoryProvider
+    """
+    def provideRepository(self):
+      r = {}
+      for id in self.getMetaCmdIds():
+        o = self.getMetaCmd(id)
+        if o and not o.get('acquired',0):
+          d = {}
+          for k in o.keys():
+            d[k] = o[k]
+          r[id] = d
+      return r
+
+    """
+    @see IRepositoryProvider
+    """
+    def updateRepository(self, id):
+      pass
+
+
+    ############################################################################
+    #
+    #  XML IM/EXPORT
+    #
+    ############################################################################
+
     # ------------------------------------------------------------------------------
     #  ZMSMetacmdProvider.importXml
     # ------------------------------------------------------------------------------
-    
     def _importXml(self, item, createIfNotExists=1):
-      
       id = item['id']
       if createIfNotExists == 1:
         
@@ -163,7 +297,6 @@ class ZMSMetacmdProvider(
           newData, newExec, newDescription, newIconClazz, newMetaTypes, newRoles, \
           newNodes)
 
-
     def importXml(self, xml, createIfNotExists=1):
       v = self.parseXmlString(xml)
       if type(v) is list:
@@ -171,6 +304,13 @@ class ZMSMetacmdProvider(
           id = self._importXml(item,createIfNotExists)
       else:
         id = self._importXml(v,createIfNotExists)
+
+
+    # ------------------------------------------------------------------------------
+    #  ZMSMetacmdProvider.__get_metacmd__
+    # ------------------------------------------------------------------------------
+    def __get_metacmd__(self, id):
+      return (filter(lambda x:x['id']==id,self.commands)+[None])[0]
 
 
     # ------------------------------------------------------------------------------
@@ -260,11 +400,12 @@ class ZMSMetacmdProvider(
     # --------------------------------------------------------------------------
     #  ZMSMetacmdProvider.getMetaCmdDescription
     # --------------------------------------------------------------------------
-    def getMetaCmdDescription(self, id=None, name=None):
+    def getMetaCmdDescription(self, id):
       """
       Returns description of meta-command specified by ID.
       """
-      return self.getMetaCmd(id,name).get('description','')
+      metaCmd = self.getMetaCmd(id)
+      return metaCmd.get('description','')
 
 
     # --------------------------------------------------------------------------
@@ -272,26 +413,22 @@ class ZMSMetacmdProvider(
     # 
     # Returns action.
     # --------------------------------------------------------------------------
-    def getMetaCmd(self, id=None, name=None):
-      
+    def getMetaCmd(self, id):
       obs = self.getMetaCmds(sort=False)
-      # Filter by Id.
-      if id is not None:
-        obs = filter(lambda x: x['id']==id, obs)
-      # Filter by Name.
-      if name is not None:
-        obs = filter(lambda x: x['name']==name, obs)
+      # Filter by id.
+      obs = filter(lambda x: x['id']==id, obs)
       # Not found!
       if len(obs) == 0:
         return None
-      
       # Refresh Object.
       metaCmd = obs[0]
+      if self.getConfProperty('ZMS.debug',0):
+        self.cloud_sync(metaCmd['id'])
       container = self.aq_parent
       src = _zopeutil.getObject(metaCmd['home'],metaCmd['id'])
       newData = _zopeutil.readObject(metaCmd['home'],metaCmd['id'],'')
       data = _zopeutil.readObject(container,metaCmd['id'],'')
-      if src is not None and ((name is not None and src.meta_type=='External Method') or (newData != data)):
+      if src is not None and (src.meta_type=='External Method' or newData != data):
         newMethod = src.meta_type
         newId = metaCmd['id']
         newTitle = '*** DO NOT DELETE OR MODIFY ***'
@@ -501,6 +638,18 @@ class ZMSMetacmdProvider(
           newIconClazz = REQUEST.get('_icon_clazz','')
           id = self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, newData, newExec, newIconClazz=newIconClazz)
           message = self.getZMILangStr('MSG_INSERTED')%id
+        
+        # Cloud import.
+        # -------------
+        elif btn == 'cloud_import':
+          ids = REQUEST.get('ids',[])
+          message = self.cloud_import(ids)
+        
+        # Cloud export.
+        # -------------
+        elif btn == 'cloud_export':
+          ids = REQUEST.get('ids',[])
+          message = self.cloud_export(ids)
         
         # Return with message.
         message = urllib.quote(message)

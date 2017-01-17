@@ -1,5 +1,5 @@
 ################################################################################
-# IZMSConfigurationProvider.py
+# IZMSRepositoryManager.py
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,23 +19,6 @@
 # Imports.
 from zope.interface import Interface
 
-class IZMSConfigurationProvider(Interface):
+class IZMSRepositoryManager(Interface):
 
-  def manage_sub_options(self):
-    """
-    Returns sub-options 
-    @rtype: C{string}
-    """
-
-  def getArtefacts(self):
-    """
-    Returns list of artefacts.
-    @rtype: C{list}
-    """
-  
-  def setArtefacts(self, artefacts):
-    """
-    Applies list of artefacts.
-    @param artefacts: the artefacts
-    @type artefacts: C{list}
-    """
+  pass

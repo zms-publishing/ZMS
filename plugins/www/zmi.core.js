@@ -9,8 +9,23 @@ Array.prototype.indexOf = function(obj) {var i,idx=-1;for(i=0;i<this.length;i++)
 Array.prototype.lastIndexOf = function(obj) {this.reverse();var i,idx=-1;for(i=0;i<this.length;i++){if(this[i]==obj){idx=(this.length-1-i);break;}}this.reverse();return idx;};
 Array.prototype.contains = function(obj) {var i,listed=false;for(i=0;i<this.length;i++){if(this[i]==obj){listed=true;break;}}return listed;};
 
-var zmiParams = {};
+/**
+ * Parse url-params.
+ */
+ZMI.prototype.parseURLParams = function(url) {
+	var qd = {};
+	var search = url.indexOf("?")>0?url.substr(url.indexOf("?")):"?";
+	search.substr(1).split("&").forEach(function(item) {
+				var s = item.split("="),
+					k = s[0],
+					v = s[1] && decodeURIComponent(s[1]);
+				(qd[k] = qd[k] || []).push(v);
+			}
+		)
+	return qd;
+}
 
+var zmiParams = {};
 $(function(){
 	// Parse params (?) and pseudo-params (#).
 	var href = self.location.href;

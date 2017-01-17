@@ -23,13 +23,13 @@ import IZMSActionListContributor
 
 class IZMSMetacmdProvider(Interface,IZMSActionListContributor.IZMSActionListContributor):
 
-  def getMetaCmdDescription(self, id=None, name=None):
+  def getMetaCmdDescription(self, id):
     """
     Returns description of meta-command specified by ID.
     @rtype: C{str}
     """
 
-  def getMetaCmd(self, id=None, name=None):
+  def getMetaCmd(self, id):
     """
     Returns action.
     @rtype: C{dict}

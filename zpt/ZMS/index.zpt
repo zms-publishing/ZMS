@@ -20,8 +20,8 @@
 ><tal:block tal:condition="python:not done
 			and here.getDeclId({'lang':request['lang']})!=here.id
 			and not request['URL']=='%sindex_html'%target
-			and (request['URL'].endswith(here.getDeclId({'lang':request['lang']})+'/index_html')
-				or request['URL'].endswith(here.id+'/index_html'))"
+			and (request['URL'].endswith('/%s/index_html'%here.getDeclId({'lang':request['lang']}))
+				or request['URL'].endswith('/%s/index_html'%here.id))"
 	><tal:block tal:define="global
 			dummy0 python:request.set('ZMS_INDEX_HTML',1);
 			dummy0 python:request.RESPONSE.redirect(target,301);

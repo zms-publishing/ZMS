@@ -1017,10 +1017,10 @@ class ZMSMetaobjManager:
             savedAttrs = copy.copy(self.getMetaobj(id)['attrs'])
             # Change object.
             newValue = {}
-            newValue['id'] = id
-            newValue['name'] = REQUEST.get('obj_name').strip()
-            newValue['revision'] = REQUEST.get('obj_revision','').strip()
-            newValue['type'] = REQUEST.get('obj_type').strip()
+            newValue['id'] = id.strip()
+            newValue['name'] = REQUEST['obj_name'].strip()
+            newValue['revision'] = IZMSRepositoryProvider.increaseVersion(REQUEST.get('obj_revision','').strip(),2)
+            newValue['type'] = REQUEST['obj_type'].strip()
             newValue['package'] = REQUEST.get('obj_package','').strip()
             newValue['attrs'] = savedAttrs
             newValue['enabled'] = REQUEST.get('obj_enabled',0)

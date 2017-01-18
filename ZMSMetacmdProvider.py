@@ -457,9 +457,9 @@ class ZMSMetacmdProvider(
         # -------
         elif btn == self.getZMILangStr('BTN_SAVE'):
           id = REQUEST['id']
-          newId = REQUEST['el_id']
+          newId = REQUEST['el_id'].strip()
           newAcquired = 0
-          newRevision = REQUEST.get('el_revision','0.0.0').strip()
+          newRevision = IZMSRepositoryProvider.increaseVersion(REQUEST.get('el_revision','').strip(),2)
           newName = REQUEST.get('el_name','').strip()
           newTitle = REQUEST.get('el_title','').strip()
           newMethod = None

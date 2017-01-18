@@ -40,12 +40,12 @@ import _zopeutil
 # ------------------------------------------------------------------------------
 #  Synchronize type.
 # ------------------------------------------------------------------------------
-syncTypes = ['method','py','zpt','interface','resource']
-def syncType( self, id, attr):
+def syncZopeMetaobjAttr( self, metaObj, attr):
   try:
+    id = metaObj['id']
     ob = None
     attr_id = attr['id']
-    if attr['type'] in syncTypes:
+    if attr['type'] in self.valid_zopeattrs:
       ob = getattr(self,id+'.'+attr_id,None)
     if attr['type'] in self.valid_zopetypes:
       container = self.getHome()
@@ -54,10 +54,23 @@ def syncType( self, id, attr):
       ob_id = attr['id'].split('/')[-1]
       ob = getattr( container, ob_id)
     if ob is not None:
+      mtime = ob.bobobase_modification_time()
+      ptime = attr.get('mtime')
+      if ptime is None or ptime.timeTime()<mtime.timeTime():
+        self.clearReqBuff('ZMSMetaobjManager')
+        # Remember modification-time.
+        for a in self.model[id]['attrs']:
+          if a['id']==attr['id']:
+            a['mtime'] = mtime
+        # Increase version-numer.
+        if ptime is not None and ptime.timeTime()<mtime.timeTime():
+          self.model[id]['revision'] = IZMSRepositoryProvider.increaseVersion(self.model[id].get('revision',''),2)
+        # Make persistent.
+        self.model = self.model.copy()
       attr['ob'] = ob
-      attr['mtime'] = ob.bobobase_modification_time().timeTime()
+      attr['mtime'] = mtime.timeTime()
   except:
-    value = _globals.writeError(self,'[syncType]')
+    value = _globals.writeError(self,'[syncZopeMetaobjAttr]')
 
 # ------------------------------------------------------------------------------
 #  Effective ids.
@@ -94,7 +107,8 @@ class ZMSMetaobjManager:
     # Globals.
     # --------
     valid_types =     ['amount','autocomplete','boolean','date','datetime','dictionary','file','float','identifier','image','int','list','multiautocomplete','multiselect','password','richtext','select','string','text','time','url','xml']
-    valid_xtypes =    ['constant','delimiter','hint','interface','method','py','zpt','resource']
+    valid_zopeattrs = ['method','py','zpt','interface','resource']
+    valid_xtypes =    ['constant','delimiter','hint']+valid_zopeattrs
     valid_datatypes = valid_types+valid_xtypes
     valid_datatypes.sort()
     valid_objtypes =  [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
@@ -123,7 +137,7 @@ class ZMSMetaobjManager:
             if d.has_key(dk):
               del d[dk]
           for attr in d['attrs']:
-            syncType(self,id,attr)
+            syncZopeMetaobjAttr(self,o,attr)
             mandatory_keys = ['id','name','type','default','keys','mandatory','multilang','ob','repetitive']
             if attr['type']=='interface':
               attr['name'] = attr['id']
@@ -144,7 +158,7 @@ class ZMSMetaobjManager:
       self.delMetaobj(id)
       self.setMetaobj(r)
       for attr in r['attrs']:
-        if attr['type'] in syncTypes+self.valid_zopetypes:
+        if attr['type'] in self.valid_zopeattrs+self.valid_zopetypes:
           oldId = attr['id']
           newId = attr['id']
           newName = attr['name']
@@ -278,7 +292,7 @@ class ZMSMetaobjManager:
         revision = self.getMetaobjRevision(id)
         attrs = []
         for attr_id in map(lambda x:x['id'],ob['attrs']):
-          attr = self.getMetaobjAttr(id, attr_id, syncTypes=['*'])
+          attr = self.getMetaobjAttr(id, attr_id)
           for key in ['keys','custom','default','errors']:
             if attr.has_key(key) and not attr[key]:
               del attr[key]
@@ -433,9 +447,6 @@ class ZMSMetaobjManager:
       except: pass
         
       #-- Get value.
-      if self.getConfProperty('ZMS.debug',0):
-        # TODO: self.repository_manager.cloud_sync(self,id)
-        pass
       ob = _globals.nvl( self.__get_metaobj__(id), {'id':id, 'attrs':[], })
       if ob is not None and ob.get('acquired',0) == 1:
         for k in ob.keys():
@@ -630,10 +641,10 @@ class ZMSMetaobjManager:
         for metaObjId in metaObjs.keys():
           metaObj = metaObjs[metaObjId]
           for metaObjAttr in filter(lambda x:x['id']==attr_id, metaObj.get('attrs',[])):
-            metaObjAttrs.append(self.getMetaobjAttr( metaObjId, attr_id, syncTypes=['*']))
+            metaObjAttrs.append(self.getMetaobjAttr( metaObjId, attr_id))
       # single meta-object:
       else:
-        metaObjAttrs.append(self.getMetaobjAttr( id, attr_id, syncTypes=['*']))
+        metaObjAttrs.append(self.getMetaobjAttr( id, attr_id))
       metaObjAttrs = filter(lambda x: x is not None, metaObjAttrs)
       # Process meta-object attributes.
       for metaObjAttr in metaObjAttrs:
@@ -641,7 +652,7 @@ class ZMSMetaobjManager:
           value = metaObjAttr.get('custom','')
         elif metaObjAttr['type'] == 'resource':
           value = metaObjAttr.get('ob',None)
-        elif metaObjAttr['type'] in syncTypes:
+        elif metaObjAttr['type'] in self.valid_zopeattrs:
           ob = metaObjAttr.get('ob',None)
           if ob:
             value = _zopeutil.callObject(ob,zmscontext,options)
@@ -654,12 +665,12 @@ class ZMSMetaobjManager:
     # 
     #  Get attribute for meta-object specified by attribute-id.
     # --------------------------------------------------------------------------
-    def getMetaobjAttr(self, id, attr_id, syncTypes=['resource']):
+    def getMetaobjAttr(self, id, attr_id):
       meta_objs = self.__get_metaobjs__()
       if meta_objs.get(id,{}).get('acquired',0) == 1:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
-          attr = portalMaster.getMetaobjAttr( id, attr_id, syncTypes)
+          attr = portalMaster.getMetaobjAttr( id, attr_id)
           return attr
       meta_obj = self.getMetaobj(id)
       attrs = meta_obj.get('attrs',meta_obj.get('__obj_attrs__',[]))
@@ -680,8 +691,7 @@ class ZMSMetaobjManager:
           attr['multilang'] = attr.get('multilang',1)
           attr['errors'] = attr.get('errors','')
           attr['meta_type'] = ['','?'][int(attr['type']==attr['id'] and not valid_datatype)]
-          if '*' in syncTypes or attr['type'] in syncTypes:
-            syncType( self, id, attr)
+          syncZopeMetaobjAttr( self, meta_obj, attr)
           return attr
       return None
 
@@ -1052,8 +1062,8 @@ class ZMSMetaobjManager:
               if REQUEST.get('attr_custom_%s_modified'%old_id,'1') == '0' and \
                  REQUEST.get('attr_custom_%s_active'%old_id,'0') == '1':
                   savedAttr = filter(lambda x: x['id']==old_id, savedAttrs)[0]
-                  syncType( self, id, savedAttr)
-                  newCustom = savedAttr['custom']
+                  syncZopeMetaobjAttr( self, newValue, savedAttr)
+                  newCustom = _zopeutil.readData(savedAttr['ob'])
               # Change attribute.
               message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             # Return with message.

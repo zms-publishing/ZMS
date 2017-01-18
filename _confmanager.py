@@ -460,16 +460,6 @@ class ConfManager(
 
 
     """
-    Returns conf-basepath.
-    """
-    def get_conf_basepath(self, id):
-      basepath = self.getConfProperty('ZMS.conf.path')
-      basepath = basepath.replace('$INSTANCE_HOME',self.getINSTANCE_HOME())
-      basepath = basepath.replace('$HOME_ID',self.getHome().id)
-      basepath = os.path.join(basepath,id)
-      return basepath
-
-    """
     Returns defaults for configuration-properties.
     @rtype: C{dict}
     """
@@ -945,7 +935,7 @@ class ConfManager(
           def getMetaobj(self, id): return None
           def getMetaobjAttrIds(self, meta_id, types=[]): return []
           def getMetaobjAttrs(self, meta_id,  types=[]): return []
-          def getMetaobjAttr(self, id, attr_id, syncTypes=['resource']): return None
+          def getMetaobjAttr(self, id, attr_id): return None
           def getMetaobjAttrIdentifierId(self, meta_id): return None
           def notifyMetaobjAttrAboutValue(self, meta_id, key, value): return None
         manager = DefaultMetaobjManager()
@@ -969,8 +959,8 @@ class ConfManager(
     def getMetaobjAttrs(self, meta_id,  types=[]):
       return self.getMetaobjManager().getMetaobjAttrs( meta_id, types)
 
-    def getMetaobjAttr(self, id, attr_id, syncTypes=['resource']):
-      return self.getMetaobjManager().getMetaobjAttr(id,attr_id,syncTypes)
+    def getMetaobjAttr(self, id, attr_id):
+      return self.getMetaobjManager().getMetaobjAttr(id,attr_id)
 
     def getMetaobjAttrIdentifierId(self, meta_id):
       return self.getMetaobjManager().getMetaobjAttrIdentifierId( meta_id)

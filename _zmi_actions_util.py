@@ -170,7 +170,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
     for meta_id in meta_ids:
       metaObj = container.getMetaobj(meta_id)
       ob_access = True
-      ob_manage_access = container.getMetaobjAttr(meta_id,'manage_access',syncTypes=['*'])
+      ob_manage_access = container.getMetaobjAttr(meta_id,'manage_access')
       if ob_manage_access is not None:
         try:
           ob_access = container.dt_exec(ob_manage_access['custom'])

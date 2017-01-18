@@ -8,19 +8,21 @@
 <style>
 .arrow-right {
 	display:inline-block;
+	margin-left:.5em;
 	width: 0; 
 	height: 0; 
-	border-top: 6px solid transparent;
-	border-bottom: 6px solid transparent;
-	border-left: 6px solid #101010;
+	border-top: 4px solid transparent;
+	border-bottom: 4px solid transparent;
+	border-left: 4px solid #101010;
 }
 .arrow-left {
 	display:inline-block;
+	margin-left:.5em;
 	width: 0; 
 	height: 0; 
-	border-top: 6px solid transparent;
-	border-bottom: 6px solid transparent; 
-	border-right:6px solid #418CF1; 
+	border-top: 4px solid transparent;
+	border-bottom: 4px solid transparent; 
+	border-right:4px solid #418CF1; 
 	}
 	.state {
 		display:inline-block;
@@ -49,23 +51,39 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="form-horizontal" action="manage_change" method="post">
-	<input type="hidden" name="lang" tal:attributes="value request/lang" />
+<script>
+$(function(){
+    // Select tab.
+    var $tabs_left = $("div.tabs-left");
+    var anchor = $("a:first",$tabs_left).attr("href");
+    if (self.location.href.indexOf("#")>0) {
+      anchor = self.location.href.substr(self.location.href.indexOf("#")+1);
+      if (anchor.indexOf('_')==0) {
+        anchor = anchor.substr(1);
+      }
+      anchor = '#'+anchor;
+    }
+    $("a[href='"+anchor+"']",$tabs_left).tab("show");
+  });
+</script>
 
-	<div class="form-group">
-		<label class="col-sm-2">Repository</label>
-		<div class="col-sm-10">
-			<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block> <tal:block tal:content="python:here.get_conf_basepath('')"></tal:block>
-		</div><!-- .col-sm-10 -->
-	</div><!-- .form-group -->
+<div class="tabbable tabs-left">
+	<ul class="nav nav-tabs">
+		<li><a href="#diff" data-toggle="tab">Diff</a></li>
+		<li><a href="#properties" data-toggle="tab">Properties</a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="diff">
+			<form class="form-horizontal" action="manage_change" method="post">
+			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 
 	<div class="form-group">
 		<label class="col-sm-2"></label>
 		<div class="col-sm-10">
 			<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
-			<button class="btn btn-default" name="btn" value="update"><tal:block tal:content="structure python:here.zmi_icon(name='icon-reply')"></tal:block> Update</button>
-			<button class="btn btn-default" name="btn" value="override"><tal:block tal:content="structure python:here.zmi_icon(name='icon-reply text-danger')"></tal:block> Override and Update</button>
-			<button class="btn btn-default" name="btn" value="commit">Commit <tal:block tal:content="structure python:here.zmi_icon(name='icon-share-alt text-success')"></tal:block></button>
+			<button type="submit" class="btn btn-default" name="btn" value="update"><tal:block tal:content="structure python:here.zmi_icon(name='icon-reply')"></tal:block> Update</button>
+			<!--<button type="submit" class="btn btn-default" name="btn" value="override"><tal:block tal:content="structure python:here.zmi_icon(name='icon-reply text-danger')"></tal:block> Override and Update</button>-->
+			<button type="submit" class="btn btn-default" name="btn" value="commit">Commit <tal:block tal:content="structure python:here.zmi_icon(name='icon-share-alt text-success')"></tal:block></button>
 		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
 
@@ -74,7 +92,7 @@
 	<tal:block tal:repeat="provider_diff provider_diffs">
 	<tal:block tal:define="provider python:provider_diff[0]; diffs python:provider_diff[1];">
 	<div class="form-group">
-		<label class="col-sm-2">
+		<label class="col-sm-2" style="text-align:right">
 			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
 		</label>
 		<div class="col-sm-10">
@@ -108,8 +126,8 @@
 											+[[],['bg-danger']][is_removed]
 											)">&nbsp;</span>
 									<a tal:attributes="href python:'#%s'%here.id_quote(filename)" tal:content="python:filename[len(id)+1:]">the filename</a>
-									<tal:block tal:condition="is_incoming"><div class="arrow-left" tal:attributes="title python:'Incoming - ZODB: %s;; Repository: %s'%(l.get('version',''),r.get('version',''))"></div></tal:block>
-									<tal:block tal:condition="is_outgoing"><div class="arrow-right" tal:attributes="title python:'Outgoing - ZODB: %s;; Repository: %s'%(l.get('version',''),r.get('version',''))"></div></tal:block>
+									<tal:block tal:condition="is_incoming"><div class="arrow-left" tal:attributes="title python:'Incoming - ZODB: %s;; Repository: %s'%(str(l.get('version','')),str(r.get('version','')))"></div></tal:block>
+									<tal:block tal:condition="is_outgoing"><div class="arrow-right" tal:attributes="title python:'Outgoing - ZODB: %s;; Repository: %s'%(str(l.get('version','')),str(r.get('version','')))"></div></tal:block>
 						</tal:block>
 					</div>
 					</td>
@@ -151,12 +169,12 @@
 				<small>
 					<tal:block tal:condition="r">
 						Repository: 
-						<tal:block tal:content="python:'%s;; %i Bytes'%(r['version'],len(rd))"></tal:block>
+						<tal:block tal:content="python:'%s;; %i Bytes'%(str(r['version']),len(rd))"></tal:block>
 					</tal:block>
 					->
 					<tal:block tal:condition="l">
 						ZODB: 
-						<tal:block tal:content="python:'%s;; %i Bytes'%(l['version'],len(ld))"></tal:block>
+						<tal:block tal:content="python:'%s;; %i Bytes'%(str(l['version']),len(ld))"></tal:block>
 					</tal:block>
 				</small>
 				<a href="#zmi-tab"><tal:block tal:content="structure python:here.zmi_icon(name='icon-collapse-top')"></tal:block></a>
@@ -177,7 +195,33 @@
 
 	</tal:block>
 
-</form>
+			</form>
+		</div><!-- .tab-pane -->
+		<div class="tab-pane" id="properties">
+			<form class="form-horizontal" action="manage_change" method="post">
+				<input type="hidden" name="lang" tal:attributes="value request/lang" />
+				<div class="form-group">
+					<label class="col-sm-2 control-label"><span>Auto-Update</span></label>
+					<div class="col-sm-10">
+						 <input type="checkbox" name="auto_update" value="1" tal:attributes="checked python:['','checked'][here.get_auto_update()]">
+					</div><!-- .col-sm-10 -->
+				</div><!-- .form-group -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label mandatory"><span>Repository <tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block></span></label>
+					<div class="col-sm-10">
+						 <input class="form-control" type="text" name="basepath" tal:attributes="value python:here.get_conf_basepath('')">
+					</div><!-- .col-sm-10 -->
+				</div><!-- .form-group -->
+				<div class="form-group">
+					<label class="col-sm-2"></label>
+					<div class="col-sm-10">
+						<button type="submit" name="btn" class="btn btn-default" value="save">Save</button>
+					</div><!-- .col-sm-10 -->
+				</div><!-- .form-group -->
+			</form>
+		</div><!-- .tab-pane -->
+	</div><!-- .tab-content -->
+</div><!-- .tabbable- -->
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->

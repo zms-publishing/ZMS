@@ -1,4 +1,4 @@
-<tal:block tal:define="global dummy0 python:here.zmi_page_request(here,request); global zopeutil modules/Products/zms/_zopeutil"></tal:block
+<tal:block tal:define="dummy0 python:here.zmi_page_request(here,request); global zopeutil modules/Products/zms/_zopeutil"></tal:block
 ><tal:block tal:condition="python:request.SESSION.get('zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
 ><tal:block tal:condition="not:python:request.SESSION.get('zmi-manage-system',0)==1"
 ><!DOCTYPE html>
@@ -48,7 +48,12 @@
 </div><!-- #insertObj -->
 
 <form tal:condition="python:request.get('id')" class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
-<tal:block tal:define="global metaObj python:here.getMetaobj(request['id']); metaObjRecordSet python:int(metaObj['type']=='ZMSRecordSet')">
+<tal:block tal:define="
+				id request/id;
+				objAttrIds python:here.getMetaobjAttrIds(id);
+				metaObjAttrs python:map(lambda x:here.getMetaobjAttr(id,x),objAttrIds);
+				metaObj python:here.getMetaobj(id);
+				metaObjRecordSet python:int(metaObj['type']=='ZMSRecordSet')">
 	<input type="hidden" name="key" value="all"/>
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 
@@ -187,9 +192,11 @@
 			<th class="meta-default" tal:attributes="title python:here.getZMILangStr('ATTR_DEFAULT')" tal:content="python:'%s/%s'%(here.getZMILangStr('ATTR_DEFAULT'),here.getZMILangStr('OPT_S_CODE'))"></th>
 		</tr>
 
-		<tbody tal:define="global objAttrIds python:here.getMetaobjAttrIds(metaObj['id'])">
+		<tbody>
 			<tr tal:repeat="objAttrId objAttrIds" tal:attributes="class python:' '.join([]+[[],['zmi-selected']][int(objAttrId==request.get('attr_id'))])">
-				<tal:block tal:define="global objAttr python:here.getMetaobjAttr(metaObj['id'],objAttrId,syncTypes=['*']); isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None])">
+				<tal:block tal:define="
+						objAttr python:metaObjAttrs[objAttrIds.index(objAttrId)];
+						isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None]);">
 					<td class="meta-sort">
 						<input type="hidden" name="old_ids:list" tal:attributes="value objAttr/id"/>
 						<div class="input-append">

@@ -92,6 +92,25 @@ class ZMSRepositoryManager(
     def __init__(self):
       self.id = 'repository_manager'
 
+
+    """
+    Returns auto-update.
+    """
+    def get_auto_update(self):
+      return getattr(self,'auto_update',False)
+
+
+    """
+    Returns conf-basepath.
+    """
+    def get_conf_basepath(self, id):
+      basepath = self.getConfProperty('ZMS.conf.path')
+      basepath = basepath.replace('$INSTANCE_HOME',self.getINSTANCE_HOME())
+      basepath = basepath.replace('$HOME_ID',self.getHome().id)
+      basepath = os.path.join(basepath,id)
+      return basepath
+
+
     def getDiffs(self, provider):
       diff = []
       local = self.localFiles(provider)
@@ -164,7 +183,7 @@ class ZMSRepositoryManager(
         d['id'] = id
         d['filename'] = os.path.join(id,'__init__.py')
         d['data'] = '\n'.join(py)
-        d['version'] = o.get('revision','0.0.0')
+        d['version'] = map(lambda x:int(x),o.get('revision','0.0.0').split('.'))
         d['meta_type'] = 'Script (Python)'
         l[d['filename']] = d
       return l
@@ -186,7 +205,7 @@ class ZMSRepositoryManager(
               version = None
               revision = re.findall('revision = "(.*?)"',data)
               if revision:
-                version = revision[0]
+                version = map(lambda x:int(x),revision[0].split('.'))
               else:
                 version = self.getLangFmtDate(os.path.getmtime(filename),'eng')
               d = {}
@@ -302,6 +321,10 @@ class ZMSRepositoryManager(
     def manage_change(self, btn, lang, REQUEST=None, RESPONSE=None):
       """ ZMSRepositoryManager.manage_change """
       message = ''
+      
+      if btn == 'save':
+        self.auto_update = REQUEST.get('auto_update','')!=''
+        self.setConfProperty('ZMS.conf.path',REQUEST.get('basepath',''))
       
       if btn == 'commit':
         success = self.commitChanges(REQUEST.get('ids',[]))

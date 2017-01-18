@@ -342,9 +342,6 @@ class ZMSMetacmdProvider(
         return None
       # Refresh Object.
       metaCmd = obs[0]
-      if self.getConfProperty('ZMS.debug',0):
-        # TODO: self.repository_manager.cloud_sync(self,id)
-        pass
       container = self.aq_parent
       src = _zopeutil.getObject(metaCmd['home'],metaCmd['id'])
       newData = _zopeutil.readObject(metaCmd['home'],metaCmd['id'],'')

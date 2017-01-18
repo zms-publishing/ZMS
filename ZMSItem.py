@@ -118,6 +118,9 @@ class ZMSItem(
     #  ZMSItem.zmi_page_request:
     # --------------------------------------------------------------------------
     def _zmi_page_request(self, *args, **kwargs):
+      repository_manager = getattr(self,'repository_manager',None)
+      if repository_manager:
+        repository_manager.exec_auto_update()
       request = self.REQUEST
       request.set( 'ZMS_THIS',self.getSelf())
       request.set( 'ZMS_DOCELMNT',self.breadcrumbs_obj_path()[0])

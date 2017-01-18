@@ -22,6 +22,7 @@ import inspect
 import os
 import re
 import stat
+import time
 import urllib
 import zope.interface
 # Product Imports.
@@ -101,14 +102,58 @@ class ZMSRepositoryManager(
 
 
     """
+    Returns last-update.
+    """
+    def get_last_update(self):
+      return getattr(self,'last_update',None)
+
+
+    """
     Returns conf-basepath.
     """
-    def get_conf_basepath(self, id):
+    def get_conf_basepath(self, id=''):
       basepath = self.getConfProperty('ZMS.conf.path')
+      basepath = basepath.replace("/",os.path.sep)
       basepath = basepath.replace('$INSTANCE_HOME',self.getINSTANCE_HOME())
       basepath = basepath.replace('$HOME_ID',self.getHome().id)
       basepath = os.path.join(basepath,id)
       return basepath
+
+
+    def exec_auto_update(self):
+      #-- [ReqBuff]: Fetch buffered value from Http-Request.
+      reqBuffId = 'ZMSRepositoryManager.exec_auto_update'
+      try: return self.fetchReqBuff(reqBuffId)
+      except: pass
+      # Execute.
+      self.writeLog("[exec_auto_update]")
+      t0 = time.time()
+      if self.get_auto_update() and self.getConfProperty('ZMS.debug',0):
+        def traverse(path):
+          l = []
+          if os.path.exists(path):
+            for file in os.listdir(path):
+              filepath = os.path.join(path,file)
+              mode = os.stat(filepath)[stat.ST_MODE]
+              if stat.S_ISDIR(mode):
+                l.extend(traverse(filepath))
+              else:
+                l.append((os.path.getmtime(filepath),filepath))
+          return l
+        basepath = self.get_conf_basepath()
+        files = traverse(basepath)
+        mtime = max(map(lambda x:x[0],files))
+        last_update = self.get_last_update()
+        self.writeLog("[exec_auto_update]: %s<%s"%(str(last_update),str(mtime)))
+        if last_update is None or last_update<mtime:
+          self.last_update = mtime
+          update_files = map(lambda x:x[1][len(basepath):],filter(lambda x:last_update is None or x[0]<last_update,files))
+          ids = list(set(map(lambda x:':'.join(x.split(os.path.sep)[0:2]),update_files)))
+          self.writeLog("[exec_auto_update]: %s"%str(ids))
+          self.updateChanges(ids, override=True)
+      self.writeLog("[exec_auto_update]: %s"%str(time.time()-t0))
+      #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
+      return self.storeReqBuff(reqBuffId,True)
 
 
     def getDiffs(self, provider):
@@ -324,6 +369,7 @@ class ZMSRepositoryManager(
       
       if btn == 'save':
         self.auto_update = REQUEST.get('auto_update','')!=''
+        self.last_update = self.parseLangFmtDate(REQUEST.get('last_update',''))
         self.setConfProperty('ZMS.conf.path',REQUEST.get('basepath',''))
       
       if btn == 'commit':

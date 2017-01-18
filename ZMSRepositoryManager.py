@@ -20,13 +20,17 @@
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import inspect
 import os
+import re
 import stat
+import urllib
 import zope.interface
 # Product Imports.
 import IZMSConfigurationProvider
 import IZMSRepositoryManager
 import IZMSRepositoryProvider
 import ZMSItem
+import _fileutil
+import _globals
 import _zopeutil
 
 
@@ -97,8 +101,10 @@ class ZMSRepositoryManager(
       for filename in filenames:
         l = local.get(filename,{})
         r = remote.get(filename,{})
-        if l.get('data','').strip() != r.get('data','').strip():
-          diff.append((filename,l,r))
+        if l.get('data','') != r.get('data',''):
+          data = l.get('data',r.get('data',''))
+          mt, enc = _globals.guess_contenttype(filename,data)
+          diff.append((filename,mt,l.get('id',r.get('id','?')),l,r))
       return diff
 
 
@@ -144,8 +150,10 @@ class ZMSRepositoryManager(
                 fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
                 fileprefix = i['id'].split('/')[-1]
                 d = {}
+                d['id'] = id
                 d['filename'] = os.path.join(id,'%s%s'%(fileprefix,fileexts.get(ob.meta_type,'')))
                 d['data'] = _zopeutil.readData(ob)
+                d['version'] = self.getLangFmtDate(ob.bobobase_modification_time().timeTime(),'eng')
                 d['meta_type'] = ob.meta_type
                 l[d['filename']] = d
               if i.has_key('ob'):
@@ -153,8 +161,10 @@ class ZMSRepositoryManager(
               py.append('\t\t%s = %s'%(self.id_quote(i['id']),self.str_json(i,encoding="utf-8",formatted=True,level=3)))
               py.append('')
         d = {}
+        d['id'] = id
         d['filename'] = os.path.join(id,'__init__.py')
         d['data'] = '\n'.join(py)
+        d['version'] = o.get('revision','0.0.0')
         d['meta_type'] = 'Script (Python)'
         l[d['filename']] = d
       return l
@@ -173,10 +183,17 @@ class ZMSRepositoryManager(
               f = open(filename,"r")
               data = f.read()
               f.close()
+              version = None
+              revision = re.findall('revision = "(.*?)"',data)
+              if revision:
+                version = revision[0]
+              else:
+                version = self.getLangFmtDate(os.path.getmtime(filename),'eng')
               d = {}
+              d['id'] = id
               d['filename'] = os.path.join(id,file)
               d['data'] = data
-              d['mtime'] = os.path.getmtime(filename)
+              d['version'] = version
               r[d['filename']] = d
       return r
 
@@ -204,7 +221,7 @@ class ZMSRepositoryManager(
                 if inspect.isclass(v):
                   dd = eval("%s.%s.__dict__"%(self.id_quote(id.replace('.','_')),k))
                   v = []
-                  for kk in filter(lambda x:not x.startswith("__"),dd.keys()):
+                  for kk in filter(lambda x:x in ['__impl__'] or not x.startswith("__"),dd.keys()):
                     vv = dd[kk]
                     # Try to read artefact.
                     if vv.has_key('id'):
@@ -225,17 +242,77 @@ class ZMSRepositoryManager(
       return r
 
 
+    """
+    Commit ZODB to repository.
+    """
+    def commitChanges(self, ids):
+      success = []
+      files = {}
+      for i in ids:
+        # Initialize.
+        provider_id = i[:i.find(':')]
+        id = i[i.find(':')+1:]
+        provider = getattr(self,provider_id)
+        # Read local-files from provider.
+        if not files.has_key(provider_id):
+          files[provider_id] = self.localFiles(provider)
+        providerFiles = files[provider_id]
+        # Recreate folder.
+        basepath = self.get_conf_basepath(provider.id)
+        filepath = os.path.join(basepath,id)
+        if os.path.exists(filepath):
+          _fileutil.remove(filepath)
+        _fileutil.mkDir(filepath)
+        # Write artefacts.
+        for file in filter(lambda x:providerFiles[x]['id']==id,providerFiles.keys()):
+          artefact = os.path.join(basepath,file)
+          f = open(artefact,"w")
+          f.write(providerFiles[file]['data'])
+          f.close()
+        success.append(id)
+      return success
+
+    """
+    Update ZODB from repository.
+    """
+    def updateChanges(self, ids, override=False):
+      success = []
+      repositories = {}
+      for i in ids:
+        # Initialize.
+        provider_id = i[:i.find(':')]
+        id = i[i.find(':')+1:]
+        provider = getattr(self,provider_id)
+        # Read repositories for provider.
+        if not repositories.has_key(provider_id):
+          repositories[provider_id] = self.readRepository(provider)
+        repository = repositories[provider_id]
+        # Update.
+        r = repository[id]
+        provider.updateRepository(r)
+        success.append(id)
+      return success
+
+
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSRepositoryManager.manage_change:
     
     Change.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def manage_change(self, REQUEST=None, RESPONSE=None):
+    def manage_change(self, btn, lang, REQUEST=None, RESPONSE=None):
       """ ZMSRepositoryManager.manage_change """
       message = ''
       
+      if btn == 'commit':
+        success = self.commitChanges(REQUEST.get('ids',[]))
+        message = self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%' '.join(success))
+      
+      if btn in ['override','update']:
+        success = self.updateChanges(REQUEST.get('ids',[]),btn=='override')
+        message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success))
+      
       # Return with message.
       message = urllib.quote(message)
-      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang,message,key))
+      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
 
 ################################################################################

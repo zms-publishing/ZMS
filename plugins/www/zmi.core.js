@@ -21,7 +21,7 @@ ZMI.prototype.parseURLParams = function(url) {
 					v = s[1] && decodeURIComponent(s[1]);
 				(qd[k] = qd[k] || []).push(v);
 			}
-		)
+		);
 	return qd;
 }
 
@@ -125,7 +125,6 @@ $(function(){
 			});
 		$.plugin('zmi_highlight').get('body',function(){});
 	}
-
 	$ZMI.setCursorAuto("EO zmi.extensions");
 });
 

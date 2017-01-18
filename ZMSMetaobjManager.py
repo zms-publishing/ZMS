@@ -104,166 +104,18 @@ class ZMSMetaobjManager:
 
     ############################################################################
     #
-    #  CLOUD GET/SET
+    #  IRepositoryProvider
     #
     ############################################################################
-
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.cloud_get
-    # --------------------------------------------------------------------------
-    def cloud_get(self, id, artefacts=False):
-      basepath = self.get_conf_basepath(self.id)
-      filepath = os.path.join(basepath,id)
-      filename = os.path.join(filepath,"__init__.py")
-      metaObj = {}
-      if os.path.exists(filename):
-        # Read python-representation of content-object
-        f = open(filename,"r")
-        py = f.read()
-        f.close()
-        # Analyze python-representation of content-object
-        exec(py)
-        # Class
-        metaObj = {'id':id,'attrs':[]}
-        d = eval("%s.__dict__"%self.id_quote(id.replace('.','_')))
-        for k in filter(lambda x:not x.startswith("__") and not x in ['Attributes'],d.keys()):
-          v = d[k]
-          metaObj[k] = v
-        # Attributes
-        attrs = []
-        if 'attrs' in d.keys():
-          py = py[py.find('class attrs:'):]
-          d = eval("%s.attrs.__dict__"%self.id_quote(id.replace('.','_')))
-          for k in filter(lambda x:not x.startswith("__"),d.keys()):
-            v = d[k]
-            defaults = {'name':'','keys':[], 'custom':'', 'default':''}
-            for dk in defaults.keys():
-              v[dk] = v.get(dk,defaults[dk])
-            attrs.append((py.find('\t\t%s ='%k),v))
-          attrs.sort()
-        metaObj['attrs'] = map(lambda x:x[1],attrs)
-        # Read artefacts of content-object
-        if artefacts:
-          attrs = metaObj['attrs']
-          for attr in attrs:
-            if attr['type'] in syncTypes+self.valid_zopetypes:
-              filepath = os.path.join(basepath,id)
-              fileprefix = attr['id'].split('/')[-1]
-              for file in os.listdir(filepath):
-                if file.startswith('%s.'%fileprefix):
-                  filename = os.path.join(filepath,file)
-                  f = open(filename,"r")
-                  data = f.read()
-                  f.close()
-                  attr['custom'] = data
-                  attr['mtime'] = os.path.getmtime(filename)
-                  break
-      return metaObj
-
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.cloud_sync
-    #
-    # Sync filesystem to ZODB.
-    # --------------------------------------------------------------------------
-    def cloud_sync(self, id):
-      basepath = self.get_conf_basepath(self.id)
-      metaObj = self.__get_metaobj__(id)
-      if metaObj and not metaObj.get('acquired',0):
-        d = self.cloud_get(id,artefacts=True)
-        if d:
-          self.delMetaobj(id)
-          self.setMetaobj(d)
-          for attr in d['attrs']:
-            if attr['type'] in syncTypes+self.valid_zopetypes:
-              self.setMetaobjAttr(id,attr['id'],attr['id'],attr['name'],attr.get('mandatory',0),attr.get('multilang',0),attr.get('repetitive',0),attr['type'],attr.get('keys',[]),attr.get('custom',''),attr.get('default',''))
-          return id
-      return None
-
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.cloud_import
-    # --------------------------------------------------------------------------
-    def cloud_import(self, ids):
-      success = []
-      for id in effective_ids(self,ids):
-        if self.cloud_sync(id):
-          success.append(id)
-      return self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success))
-
-    # --------------------------------------------------------------------------
-    #  ZMSMetaobjManager.cloud_export
-    # --------------------------------------------------------------------------
-    def cloud_export(self, ids):
-      basepath = self.get_conf_basepath(self.id)
-      _fileutil.mkDir(basepath)
-      success = []
-      for id in effective_ids(self,ids):
-        metaObj = self.getMetaobj(id)
-        if metaObj and not metaObj.get('acquired',0):
-          # Recreate folder.
-          filepath = os.path.join(basepath,id)
-          if os.path.exists(filepath):
-            _fileutil.remove(filepath)
-          _fileutil.mkDir(filepath)
-          # Write artefacts.
-          metaObj = copy.deepcopy(metaObj)
-          attrs = metaObj['attrs']
-          for attr in attrs:
-            if attr['type'] in syncTypes+self.valid_zopetypes:
-              syncType(self,id,attr)
-              ob = attr.get('ob')
-              if ob is not None:
-                fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
-                fileprefix = attr['id'].split('/')[-1]
-                filename = os.path.join(filepath,"%s%s"%(fileprefix,fileexts.get(ob.meta_type,'')))
-                data = _zopeutil.readData(ob)
-                f = open(filename,"w")
-                f.write(data)
-                f.close()
-            mandatory_keys = ['id','name','type','default','keys','mandatory','multilang','repetitive']
-            if attr['type']=='interface':
-              attr['name'] = attr['id']
-            if attr['type']=='constant':
-              mandatory_keys += ['custom']
-            for key in attr.keys():
-              if not attr[key] or \
-                 not key in mandatory_keys:
-                del attr[key]
-          # Write python-representation.
-          py = []
-          py.append('class %s:'%self.id_quote(id.replace('.','_')))
-          py.append('\t"""')
-          py.append('\tpython-representation of content-object %s'%metaObj['id'])
-          py.append('\t"""')
-          py.append('')
-          keys = filter(lambda x:x not in ['attrs'],metaObj.keys())
-          keys.sort()
-          for key in keys:
-            if metaObj[key]:
-              py.append('\t# %s'%key.capitalize())
-              py.append('\t%s = %s'%(key,self.str_json(metaObj[key],encoding="utf-8",formatted=True,level=2)))
-              py.append('')
-          attrs = metaObj['attrs']
-          if attrs:
-            py.append('\t# Attributes')
-            py.append('\tclass attrs:')
-            for attr in attrs:
-              py.append('\t\t%s = %s'%(self.id_quote(attr['id']),self.str_json(attr,encoding="utf-8",formatted=True,level=3)))
-              py.append('')
-          py = '\n'.join(py)
-          filename = os.path.join(filepath,"__init__.py")
-          f = open(filename,"w")
-          f.write(py)
-          f.close()
-          success.append(id)
-      return self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%' '.join(success))
-
 
     """
     @see IRepositoryProvider
     """
-    def provideRepository(self):
+    def provideRepository(self, ids=None):
       r = {}
-      for id in self.getMetaobjIds():
+      if ids is None:
+        ids = self.getMetaobjIds()
+      for id in ids:
         o = self.getMetaobj(id)
         if o and not o.get('acquired',0):
           d = copy.deepcopy(o)
@@ -287,8 +139,24 @@ class ZMSMetaobjManager:
     """
     @see IRepositoryProvider
     """
-    def updateRepository(self, id):
-      pass
+    def updateRepository(self, r):
+      id = r['id']
+      self.delMetaobj(id)
+      self.setMetaobj(r)
+      for attr in r['attrs']:
+        if attr['type'] in syncTypes+self.valid_zopetypes:
+          oldId = attr['id']
+          newId = attr['id']
+          newName = attr['name']
+          newMandatory = attr.get('mandatory',0)
+          newMultilang = attr.get('multilang',0)
+          newRepetitive = attr.get('repetitive',0)
+          newType = attr['type']
+          newKeys = attr.get('keys',[])
+          newCustom = attr.get('data','')
+          newDefault = attr.get('default','')
+          self.setMetaobjAttr(id,oldId,newId,newName,newMandatory,newMultilang,newRepetitive,newType,newKeys,newCustom,newDefault)
+      return id
 
 
     ############################################################################
@@ -566,7 +434,8 @@ class ZMSMetaobjManager:
         
       #-- Get value.
       if self.getConfProperty('ZMS.debug',0):
-        self.cloud_sync(id)
+        # TODO: self.repository_manager.cloud_sync(self,id)
+        pass
       ob = _globals.nvl( self.__get_metaobj__(id), {'id':id, 'attrs':[], })
       if ob is not None and ob.get('acquired',0) == 1:
         for k in ob.keys():
@@ -1339,18 +1208,6 @@ class ZMSMetaobjManager:
             attr_id = REQUEST['attr_id']
             self.moveMetaobjAttr( id, attr_id, pos)
             message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<em>%s</em>"%attr_id),(pos+1))
-          
-          # Cloud import.
-          # -------------
-          elif btn == 'cloud_import':
-            ids = REQUEST.get('ids',[])
-            message = self.cloud_import(ids)
-          
-          # Cloud export.
-          # -------------
-          elif btn == 'cloud_export':
-            ids = REQUEST.get('ids',[])
-            message = self.cloud_export(ids)
           
           ##### SYNCHRONIZE ####
           types = self.valid_types+map(lambda x:self.metas[x*2],range(len(self.metas)/2))

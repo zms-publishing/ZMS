@@ -39,6 +39,23 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	font-size:x-small;
 	margin-left:15px;
 }
+.zmi header .zmsdebug .navbar-brand .product:after {
+	content: "DEBUG MODE";
+	font-size: 13px;
+	color: white;
+	font-weight: normal;
+	line-height: 1;
+	display: block;
+	height: 42px;
+	padding: 14px 8px;
+	background: #337ab7;
+	position: absolute;
+	top: 0;
+	left: 105px;
+}
+.zmi header .zmsdebug .navbar-brand .slogan {
+	visibility:collapse;
+}
 @media (max-width: 367px) {
 	.zmi header .navbar-nav.pull-right {
 		display: none!important;

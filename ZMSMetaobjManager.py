@@ -41,36 +41,53 @@ import _zopeutil
 #  Synchronize type.
 # ------------------------------------------------------------------------------
 def syncZopeMetaobjAttr( self, metaObj, attr):
+  id = metaObj['id']
+  attr_id = attr['id']
   try:
-    id = metaObj['id']
-    ob = None
-    attr_id = attr['id']
+    artefact = None
     if attr['type'] in self.valid_zopeattrs:
-      ob = getattr(self,id+'.'+attr_id,None)
+      artefact = getattr(self,id+'.'+attr_id,None)
     if attr['type'] in self.valid_zopetypes:
       container = self.getHome()
-      for ob_id in attr_id.split('/')[:-1]:
-         container = getattr( container, ob_id)
-      ob_id = attr['id'].split('/')[-1]
-      ob = getattr( container, ob_id)
-    if ob is not None:
-      mtime = ob.bobobase_modification_time()
-      ptime = attr.get('mtime')
-      if ptime is None or ptime.timeTime()<mtime.timeTime():
-        self.clearReqBuff('ZMSMetaobjManager')
-        # Remember modification-time.
-        for a in self.model[id]['attrs']:
-          if a['id']==attr['id']:
-            a['mtime'] = mtime
-        # Increase version-numer.
-        if ptime is not None and ptime.timeTime()<mtime.timeTime():
-          self.model[id]['revision'] = IZMSRepositoryProvider.increaseVersion(self.model[id].get('revision',''),2)
-        # Make persistent.
-        self.model = self.model.copy()
-      attr['ob'] = ob
-      attr['mtime'] = mtime.timeTime()
+      for artefact_id in attr_id.split('/')[:-1]:
+         container = getattr( container, artefact_id)
+      artefact_id = attr['id'].split('/')[-1]
+      artefact = getattr( container, artefact_id)
+    if artefact is not None:
+      """
+      @TODO: find a better solution...
+      
+      mtime = artefact.bobobase_modification_time().timeTime()
+      #-- [ReqBuff]: Fetch buffered value from Http-Request.
+      reqBuffId = 'syncZopeMetaobjAttr.%s.%s'%(id,attr_id)
+      try: self.fetchReqBuff(reqBuffId)
+      except:
+        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
+        self.storeReqBuff(reqBuffId,True)
+        # Execute once.
+        ptime = attr.get('mtime')
+        if ptime is None or ptime<mtime:
+          self.writeBlock("[syncZopeMetaobjAttr]: %s.%s - %s<%s"%(id,attr_id,str(ptime),str(mtime)))
+          self.clearReqBuff('ZMSMetaobjManager')
+          # Remember modification-time.
+          for a in self.model[id]['attrs']:
+            if a['id']==attr_id:
+              a['mtime'] = mtime
+          # Increase version-number.
+          if ptime is not None and ptime<mtime:
+            old_revision = self.model[id].get('revision','')
+            new_revision = IZMSRepositoryProvider.increaseVersion(old_revision,2)
+            self.writeBlock("[syncZopeMetaobjAttr]: %s.%s - %s->%s"%(id,attr_id,str(old_revision),str(new_revision)))
+            self.model[id]['revision'] = new_revision
+          # Make persistent.
+          self.model = self.model.copy()
+          # Sync with repository.
+          self.getRepositoryManager().exec_auto_commit(self,id)
+      attr['mtime'] = mtime
+      """
+      attr['ob'] = artefact
   except:
-    value = _globals.writeError(self,'[syncZopeMetaobjAttr]')
+    _globals.writeError(self,"[syncZopeMetaobjAttr]: %s.%s"%(id,attr_id))
 
 # ------------------------------------------------------------------------------
 #  Effective ids.
@@ -126,6 +143,7 @@ class ZMSMetaobjManager:
     @see IRepositoryProvider
     """
     def provideRepository(self, ids=None):
+      self.writeBlock("[provideRepository]: ids=%s"%str(ids))
       r = {}
       if ids is None:
         ids = self.getMetaobjIds()
@@ -155,9 +173,10 @@ class ZMSMetaobjManager:
     """
     def updateRepository(self, r):
       id = r['id']
+      self.writeBlock("[updateRepository]: id=%s"%id)
       self.delMetaobj(id)
       self.setMetaobj(r)
-      for attr in r['attrs']:
+      for attr in r.get('attrs',[]):
         if attr['type'] in self.valid_zopeattrs+self.valid_zopetypes:
           oldId = attr['id']
           newId = attr['id']
@@ -293,8 +312,14 @@ class ZMSMetaobjManager:
         attrs = []
         for attr_id in map(lambda x:x['id'],ob['attrs']):
           attr = self.getMetaobjAttr(id, attr_id)
-          for key in ['keys','custom','default','errors']:
-            if attr.has_key(key) and not attr[key]:
+          mandatory_keys = ['id','name','type','default','keys','mandatory','multilang','ob','repetitive']
+          if attr['type']=='interface':
+            attr['name'] = attr['id']
+          if attr['type']=='constant':
+            mandatory_keys += ['custom']
+          for key in attr.keys():
+            if not attr[key] or \
+               not key in mandatory_keys:
               del attr[key]
           if attr.has_key('ob'):
             if attr['ob'] is not None:
@@ -365,12 +390,11 @@ class ZMSMetaobjManager:
     #  Returns all meta-objects (including acquisitions).
     # --------------------------------------------------------------------------
     def __get_metaobjs__(self):
-      
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
       reqBuffId = 'ZMSMetaobjManager.__get_metaobjs__'
       try: return self.fetchReqBuff(reqBuffId)
       except: pass
-      
+      # Get value.
       obs = {}
       m = self.model
       aq_obs = None
@@ -400,7 +424,6 @@ class ZMSMetaobjManager:
                   obs[aq_id] =  ob
         else:
           obs[id] = ob
-      
       #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
       return self.storeReqBuff( reqBuffId, obs)
 
@@ -441,21 +464,13 @@ class ZMSMetaobjManager:
     #  Returns meta-object specified by id.
     # --------------------------------------------------------------------------
     def getMetaobj(self, id):
-      #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      reqBuffId = 'getMetaobj_%s'%id
-      try: return self.fetchReqBuff(reqBuffId)
-      except: pass
-        
-      #-- Get value.
       ob = _globals.nvl( self.__get_metaobj__(id), {'id':id, 'attrs':[], })
       if ob is not None and ob.get('acquired',0) == 1:
         for k in ob.keys():
           v = self.getConfProperty('%s.%s'%(id,k),None)
           if v is not None:
             ob[k] = v
-      
-      #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-      return self.storeReqBuff( reqBuffId, ob)
+      return ob
 
 
     # --------------------------------------------------------------------------
@@ -665,7 +680,7 @@ class ZMSMetaobjManager:
     # 
     #  Get attribute for meta-object specified by attribute-id.
     # --------------------------------------------------------------------------
-    def getMetaobjAttr(self, id, attr_id):
+    def getMetaobjAttr(self, id, attr_id, sync=True):
       meta_objs = self.__get_metaobjs__()
       if meta_objs.get(id,{}).get('acquired',0) == 1:
         portalMaster = self.getPortalMaster()
@@ -691,7 +706,8 @@ class ZMSMetaobjManager:
           attr['multilang'] = attr.get('multilang',1)
           attr['errors'] = attr.get('errors','')
           attr['meta_type'] = ['','?'][int(attr['type']==attr['id'] and not valid_datatype)]
-          syncZopeMetaobjAttr( self, meta_obj, attr)
+          if sync:
+            syncZopeMetaobjAttr( self, meta_obj, attr)
           return attr
       return None
 
@@ -702,6 +718,8 @@ class ZMSMetaobjManager:
     #  Set/add meta-object attribute with specified values.
     # --------------------------------------------------------------------------
     def setMetaobjAttr(self, id, oldId, newId, newName='', newMandatory=0, newMultilang=1, newRepetitive=0, newType='string', newKeys=[], newCustom='', newDefault=''):
+      self.writeBlock("[setMetaobjAttr]: %s %s %s"%(str(id),str(oldId),str(newId)))
+      self.clearReqBuff('ZMSMetaobjManager')
       ob = self.__get_metaobj__(id)
       if ob is None: return
       attrs = copy.copy(ob['attrs'])
@@ -824,14 +842,16 @@ class ZMSMetaobjManager:
       if oldId in ids:
         i = ids.index(oldId)
         attrs[i] = attr
+      elif newId in ids:
+        i = ids.index(newId)
+        attrs[i] = attr
+      # Always append new methods at the end.
+      elif newType in method_types:
+        attrs.append( attr)
+      # Insert new attributes before methods
       else:
-        # Always append new methods at the end.
-        if oldId == newId or newType in method_types:
-          attrs.append( attr)
-        # Insert new attributes before methods
-        else:
           i = len( attrs)
-          while i > 0 and attrs[i-1][ 'type'] in method_types:
+          while i > 0 and attrs[i-1]['type'] in method_types:
             i -= 1
           if i < len(attrs):
             attrs.insert( i, attr)
@@ -861,6 +881,7 @@ class ZMSMetaobjManager:
         # Insert Zope-Object.
         if type(newCustom) in StringTypes: newCustom = newCustom.replace('\r','')
         _zopeutil.addObject(container, newType, newObId, newName, newCustom)
+        artefact = _zopeutil.getObject(container, newObId)
         del attr['custom']
         # Change Zope-Object (special).
         newOb = _zopeutil.getObject(container, newObId)
@@ -869,9 +890,8 @@ class ZMSMetaobjManager:
             newOb.manage_delObjects(ids=newOb.objectIds())
             _ziputil.importZip2Zodb( newOb, newCustom.getData())
       
-      # Assign Attributes to Meta-Object.
+      # Assign attributes to meta-object.
       self.model[id] = ob
-      
       # Make persistent.
       self.model = self.model.copy()
       
@@ -1233,8 +1253,10 @@ class ZMSMetaobjManager:
               else:
                 sync_id.append(k)
           if len(sync_id) > 0:
-            _globals.writeBlock( self, '[ZMSMetaobjManager.manage_changeProperties]: sync_id=%s'%str(sync_id))
             self.synchronizeObjAttrs( sync_id)
+        
+          # Sync with repository.
+          self.getRepositoryManager().exec_auto_commit(self,id)
         
         # Handle exception.
         except:

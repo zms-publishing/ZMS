@@ -28,6 +28,8 @@ def addObject(container, meta_type, id, title, data):
   """
   Add Zope-object to container.
   """
+  #try: container.writeBlock("[_zopeutil.addObject]: %s@%s +%s(%s)"%(container.meta_type,container.absolute_url(),id,meta_type))
+  #except: pass
   if meta_type == 'DTML Document':
     addDTMLDocument( container, id, title, data)
   elif meta_type == 'DTML Method':
@@ -50,7 +52,7 @@ def getObject(container, id):
   Get Zope-object from container.
   """
   ob = getattr(container,id,None)
-  return ob
+  return ob 
 
 def callObject(ob, zmscontext=None, options={}):
   """
@@ -102,6 +104,8 @@ def removeObject(container, id, removeFile=True):
   """
   Remove Zope-object from container.
   """
+  #try: container.writeBlock("[_zopeutil.removeObject]: %s@%s -%s"%(container.meta_type,container.absolute_url(),id))
+  #except: pass
   if id in container.objectIds():
     ob = getattr(container,id)
     if ob.meta_type == 'External Method' and removeFile:

@@ -948,8 +948,10 @@ class ZMSGlobals:
             + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(map(lambda x: self.str_json(x,encoding,errors,formatted,level+1),i)) \
             + ']'
       elif type(i) is dict:
+        k = i.keys()
+        k.sort()
         return '{' \
-            + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(map(lambda x: '"%s":%s'%(x,self.str_json(i[x],encoding,errors,formatted,level+1)),i.keys())) \
+            + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(map(lambda x: '"%s":%s'%(x,self.str_json(i[x],encoding,errors,formatted,level+1)),k)) \
             + '}'
       elif type(i) is time.struct_time:
         try:

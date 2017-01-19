@@ -39,8 +39,7 @@ import zExceptions
 import zope.interface
 # Product imports.
 from IZMSConfigurationProvider import IZMSConfigurationProvider
-from IZMSNotificationService import IZMSNotificationService
-import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter
+import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
 import _globals
 import _exportable
 import _fileutil
@@ -256,7 +255,7 @@ class ConfManager(
                 if filename not in filenames.keys():
                   filenames[location+filename] = filename+' ('+remote_file['attrs']['title']+')'
             except:
-              _globals.writeError( self, "[getConfFiles]: can't get conf-files from remote URL=%s"%location)
+              self.writeError("[getConfFiles]: can't get conf-files from remote URL=%s"%location)
         else:
           for filepath in filepaths:
             if os.path.exists( filepath):
@@ -724,7 +723,6 @@ class ConfManager(
             target = self.url_append_params(target, {'zmsext': zmsext})
             return RESPONSE.redirect(target)
           # otherwise import now
-          from _globals import writeError
           target = 'manage_customize'
           isProcessed = False
           try:
@@ -744,7 +742,7 @@ class ConfManager(
             message = self.getZMILangStr('MSG_EXCEPTION') 
             message += ': <code class="alert-danger">%s</code>'%('No conf files found.')
             target = self.url_append_params(target, {'manage_tabs_error_message': message})
-            writeError(self, '[ConfManager.manage_customizeSystem] No conf files found.')
+            self.writeError("[ConfManager.manage_customizeSystem] No conf files found.")
           return RESPONSE.redirect(target + '#%s'%key)
         elif btn == 'ImportExample':
           zmsext = REQUEST.get('zmsext','')
@@ -959,8 +957,8 @@ class ConfManager(
     def getMetaobjAttrs(self, meta_id,  types=[]):
       return self.getMetaobjManager().getMetaobjAttrs( meta_id, types)
 
-    def getMetaobjAttr(self, id, attr_id):
-      return self.getMetaobjManager().getMetaobjAttr(id,attr_id)
+    def getMetaobjAttr(self, id, attr_id, sync=True):
+      return self.getMetaobjManager().getMetaobjAttr( id, attr_id, sync)
 
     def getMetaobjAttrIdentifierId(self, meta_id):
       return self.getMetaobjManager().getMetaobjAttrIdentifierId( meta_id)
@@ -1007,6 +1005,22 @@ class ConfManager(
 
     def getMetaCmds(self, context=None, stereotype='', sort=True):
       return self.getMetacmdManager().getMetaCmds(context,stereotype,sort)
+
+
+    ############################################################################
+    ###
+    ###   Interface IZMSRepositoryManager: delegate
+    ###
+    ############################################################################
+
+    def getRepositoryManager(self):
+      manager = filter(lambda x:IZMSRepositoryManager.IZMSRepositoryManager in list(zope.interface.providedBy(x)),self.getDocumentElement().objectValues())
+      if len(manager)==0:
+        class DefaultManager:
+          def exec_auto_commit(self, provider, id): return True
+          def exec_auto_update(self): return True
+        manager = [DefaultManager()]
+      return manager[0]
 
 
     ############################################################################

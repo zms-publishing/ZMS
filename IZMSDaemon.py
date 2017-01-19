@@ -1,5 +1,5 @@
 ################################################################################
-# IZMSRepositoryManager.py
+# IZMSDaemon.py
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,16 +19,10 @@
 # Imports.
 from zope.interface import Interface
 
-class IZMSRepositoryManager(Interface):
+class IZMSDaemon(Interface):
 
-  def exec_auto_commit(self, provider, id):
+  def startDaemon(self):
     """
-    Execute auto-commit.
-    @rtype: C{Bool}
-    """
-
-  def exec_auto_update(self):
-    """
-    Execute auto-update.
+    Starts daemon.
     @rtype: C{Bool}
     """

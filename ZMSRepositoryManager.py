@@ -27,6 +27,7 @@ import urllib
 import zope.interface
 # Product Imports.
 import IZMSConfigurationProvider
+import IZMSDaemon
 import IZMSRepositoryManager
 import IZMSRepositoryProvider
 import ZMSItem
@@ -46,6 +47,7 @@ class ZMSRepositoryManager(
         ZMSItem.ZMSItem):
     zope.interface.implements(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
+        IZMSDaemon.IZMSDaemon,
         IZMSRepositoryManager.IZMSRepositoryManager)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -119,44 +121,66 @@ class ZMSRepositoryManager(
       basepath = os.path.join(basepath,id)
       return basepath
 
+    """
+    @see IZMSDaemon
+    """
+    def startDaemon(self):
+      self.writeLog("[startDaemon]")
+      self.exec_auto_update()
 
+    """
+    @see IZMSRepositoryManager
+    """
+    def exec_auto_commit(self, provider, id):
+      if self.get_auto_update():
+        ids = [':'.join([provider.id,id])]
+        self.writeLog("[exec_auto_commit]: Run... %s"%str(ids))
+        self.commitChanges(ids)
+
+
+    """
+    @see IZMSRepositoryManager
+    """
     def exec_auto_update(self):
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
       reqBuffId = 'ZMSRepositoryManager.exec_auto_update'
       try: return self.fetchReqBuff(reqBuffId)
-      except: pass
-      # Execute.
-      self.writeLog("[exec_auto_update]")
-      t0 = time.time()
-      if self.get_auto_update() and self.getConfProperty('ZMS.debug',0):
-        def traverse(path):
-          l = []
-          if os.path.exists(path):
-            for file in os.listdir(path):
-              filepath = os.path.join(path,file)
-              mode = os.stat(filepath)[stat.ST_MODE]
-              if stat.S_ISDIR(mode):
-                l.extend(traverse(filepath))
-              else:
-                l.append((os.path.getmtime(filepath),filepath))
-          return l
-        basepath = self.get_conf_basepath()
-        files = traverse(basepath)
-        mtime = max(map(lambda x:x[0],files))
-        last_update = self.get_last_update()
-        self.writeLog("[exec_auto_update]: %s<%s"%(str(last_update),str(mtime)))
-        if last_update is None or last_update<mtime:
-          self.last_update = mtime
-          update_files = map(lambda x:x[1][len(basepath):],filter(lambda x:last_update is None or x[0]<last_update,files))
-          ids = list(set(map(lambda x:':'.join(x.split(os.path.sep)[0:2]),update_files)))
-          self.writeLog("[exec_auto_update]: %s"%str(ids))
-          self.updateChanges(ids, override=True)
-      self.writeLog("[exec_auto_update]: %s"%str(time.time()-t0))
-      #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-      return self.storeReqBuff(reqBuffId,True)
+      except:
+        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
+        self.storeReqBuff(reqBuffId,True)
+        # Execute once.
+        self.writeLog("[exec_auto_update]")
+        current_time = time.time()
+        if self.get_auto_update():
+          last_update = self.get_last_update()
+          if last_update is None or last_update < self.Control_Panel.process_start or self.getConfProperty('ZMS.debug',0):
+            self.writeLog("[exec_auto_update]: Run...")
+            def traverse(path):
+              l = []
+              if os.path.exists(path):
+                for file in os.listdir(path):
+                  filepath = os.path.join(path,file)
+                  mode = os.stat(filepath)[stat.ST_MODE]
+                  if stat.S_ISDIR(mode):
+                    l.extend(traverse(filepath))
+                  else:
+                    l.append((os.path.getmtime(filepath),filepath))
+              return l
+            basepath = self.get_conf_basepath()
+            files = traverse(basepath)
+            mtime = max(map(lambda x:x[0],files))
+            self.writeBlock("[exec_auto_update]: %s<%s"%(str(last_update),str(mtime)))
+            if last_update is None or last_update<mtime:
+              self.last_update = current_time
+              update_files = map(lambda x:x[1][len(basepath):],filter(lambda x:last_update is None or x[0]<last_update,files))
+              ids = list(set(map(lambda x:':'.join(x.split(os.path.sep)[0:2]),update_files)))
+              self.writeLog("[exec_auto_update]: %s"%str(ids))
+              self.updateChanges(ids, override=True)
+        self.writeLog("[exec_auto_update]: %s"%str(time.time()-current_time))
 
 
     def getDiffs(self, provider):
+      self.writeBlock("[getDiffs]: provider=%s"%str(provider))
       diff = []
       local = self.localFiles(provider)
       remote = self.remoteFiles(provider)
@@ -177,9 +201,10 @@ class ZMSRepositoryManager(
       return filter(lambda x:IZMSRepositoryProvider.IZMSRepositoryProvider in list(zope.interface.providedBy(x)),obs)
 
 
-    def localFiles(self, provider):
+    def localFiles(self, provider, ids=None):
+      self.writeBlock("[localFiles]: provider=%s"%str(provider))
       l = {}
-      local = provider.provideRepository()
+      local = provider.provideRepository(ids)
       for id in local.keys():
         o = local[id]
         # Write python-representation.
@@ -235,6 +260,7 @@ class ZMSRepositoryManager(
 
 
     def remoteFiles(self, provider):
+      self.writeBlock("[remoteFiles]: provider=%s"%str(provider))
       r = {}
       basepath = self.get_conf_basepath(provider.id)
       if os.path.exists(basepath):
@@ -263,6 +289,7 @@ class ZMSRepositoryManager(
 
 
     def readRepository(self, provider):
+      self.writeBlock("[readRepository]: provider=%s"%str(provider))
       r = {}
       basepath = self.get_conf_basepath(provider.id)
       if os.path.exists(basepath):
@@ -297,7 +324,6 @@ class ZMSRepositoryManager(
                           data = f.read()
                           f.close()
                           vv['data'] = data
-                          vv['mtime'] = os.path.getmtime(artefact)
                           break
                     v.append((py.find('\t\t%s ='%kk),vv))
                   v.sort()
@@ -310,36 +336,33 @@ class ZMSRepositoryManager(
     Commit ZODB to repository.
     """
     def commitChanges(self, ids):
+      self.writeBlock("[commitChanges]: ids=%s"%str(ids))
       success = []
-      files = {}
-      for i in ids:
-        # Initialize.
-        provider_id = i[:i.find(':')]
-        id = i[i.find(':')+1:]
+      for provider_id in list(set(map(lambda x:x.split(':')[0],ids))):
         provider = getattr(self,provider_id)
-        # Read local-files from provider.
-        if not files.has_key(provider_id):
-          files[provider_id] = self.localFiles(provider)
-        providerFiles = files[provider_id]
-        # Recreate folder.
-        basepath = self.get_conf_basepath(provider.id)
-        filepath = os.path.join(basepath,id)
-        if os.path.exists(filepath):
-          _fileutil.remove(filepath)
-        _fileutil.mkDir(filepath)
-        # Write artefacts.
-        for file in filter(lambda x:providerFiles[x]['id']==id,providerFiles.keys()):
-          artefact = os.path.join(basepath,file)
-          f = open(artefact,"w")
-          f.write(providerFiles[file]['data'])
-          f.close()
-        success.append(id)
+        for id in list(set(map(lambda x:x.split(':')[1],filter(lambda x:x.split(':')[0]==provider_id,ids)))):
+          # Read local-files from provider.
+          files = self.localFiles(provider,[id])
+          # Recreate folder.
+          basepath = self.get_conf_basepath(provider.id)
+          filepath = os.path.join(basepath,id)
+          if os.path.exists(filepath):
+            _fileutil.remove(filepath)
+          _fileutil.mkDir(filepath)
+          # Write artefacts.
+          for file in files.keys():
+            artefact = os.path.join(basepath,file)
+            f = open(artefact,"w")
+            f.write(files[file]['data'])
+            f.close()
+          success.append(id)
       return success
 
     """
     Update ZODB from repository.
     """
     def updateChanges(self, ids, override=False):
+      self.writeBlock("[updateChanges]: ids=%s"%str(ids))
       success = []
       repositories = {}
       for i in ids:

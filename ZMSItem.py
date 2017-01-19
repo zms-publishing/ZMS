@@ -22,7 +22,9 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from Acquisition import Implicit
 import OFS.SimpleItem, OFS.ObjectManager
-import string
+import zope.interface
+# Product Imports.
+import IZMSDaemon
 
 
 ################################################################################
@@ -118,9 +120,8 @@ class ZMSItem(
     #  ZMSItem.zmi_page_request:
     # --------------------------------------------------------------------------
     def _zmi_page_request(self, *args, **kwargs):
-      repository_manager = getattr(self,'repository_manager',None)
-      if repository_manager:
-        repository_manager.exec_auto_update()
+      for daemon in filter(lambda x:IZMSDaemon.IZMSDaemon in list(zope.interface.providedBy(x)),self.getDocumentElement().objectValues()):
+        daemon.startDaemon()
       request = self.REQUEST
       request.set( 'ZMS_THIS',self.getSelf())
       request.set( 'ZMS_DOCELMNT',self.breadcrumbs_obj_path()[0])

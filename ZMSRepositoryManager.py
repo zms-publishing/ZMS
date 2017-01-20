@@ -153,8 +153,8 @@ class ZMSRepositoryManager(
         current_time = time.time()
         if self.get_auto_update():
           last_update = self.get_last_update()
-          if last_update is None or last_update < self.Control_Panel.process_start or self.getConfProperty('ZMS.debug',0):
-            self.writeLog("[exec_auto_update]: Run...")
+          if last_update is None or _globals.getDateTime(last_update)<_globals.getDateTime(self.Control_Panel.process_start) or self.getConfProperty('ZMS.debug',0):
+            self.writeBlock("[exec_auto_update]: Run...")
             def traverse(path):
               l = []
               if os.path.exists(path):
@@ -170,12 +170,12 @@ class ZMSRepositoryManager(
             files = traverse(basepath)
             mtime = max(map(lambda x:x[0],files))
             self.writeBlock("[exec_auto_update]: %s<%s"%(str(last_update),str(mtime)))
-            if last_update is None or last_update<mtime:
-              self.last_update = current_time
-              update_files = map(lambda x:x[1][len(basepath):],filter(lambda x:last_update is None or x[0]<last_update,files))
+            if last_update is None or _globals.getDateTime(last_update)<_globals.getDateTime(mtime):
+              update_files = map(lambda x:x[1][len(basepath):],filter(lambda x:last_update is None or _globals.getDateTime(x[0])<_globals.getDateTime(last_update),files))
               ids = list(set(map(lambda x:':'.join(x.split(os.path.sep)[0:2]),update_files)))
-              self.writeLog("[exec_auto_update]: %s"%str(ids))
+              self.writeBlock("[exec_auto_update]: %s"%str(ids))
               self.updateChanges(ids, override=True)
+            self.last_update = _globals.getDateTime(current_time)
         self.writeLog("[exec_auto_update]: %s"%str(time.time()-current_time))
 
 

@@ -1,14 +1,10 @@
 <!-- common/zmi_body_header -->
 
 <header tal:define="admin python:request['AUTHENTICATED_USER'].has_permission('ZMS Administrator',here)">
-	<div class="navbar navbar-main navbar-inverse navbar-fixed-top">
+	<div class="navbar navbar-main navbar-inverse navbar-fixed-top"
+		tal:attributes="class python:'navbar navbar-main navbar-inverse navbar-fixed-top%s'%((admin and here.getConfProperty('ZMS.debug',0)) and ' zmsdebug' or '')">
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 		<ul class="nav navbar-nav pull-right navbar-right">
-				<li>
-					<a href="javascript:;">
-						<span class="label label-danger" tal:condition="python:admin and here.getConfProperty('ZMS.debug',0)">Debug</span>
-					</a>
-				</li>
 				<li>
 					<a href="javascript:;" id="manage_userForm" onclick="$ZMI.iframe('manage_userForm',{lang:getZMILang()},{iframe:true,height:400,width:640,title:$(this).text(),modal:{backdrop:'static',keyboard:false}})">
 						<span class="authenticated_user" tal:content="request/AUTHENTICATED_USER">the authenticated-user</span>&nbsp;

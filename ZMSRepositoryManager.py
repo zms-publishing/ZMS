@@ -211,11 +211,11 @@ class ZMSRepositoryManager(
         py = []
         py.append('class %s:'%self.id_quote(id.replace('.','_')))
         py.append('\t"""')
-        py.append('\tpython-representation of content-object %s'%o['id'])
+        py.append('\tpython-representation of %s'%o['id'])
         py.append('\t"""')
         py.append('')
         e = ['attrs']
-        keys = filter(lambda x:x not in e,o.keys())
+        keys = filter(lambda x:x not in e and not x.startswith('__'),o.keys())
         keys.sort()
         # TODO: get e dynamically
         for k in keys:
@@ -251,7 +251,7 @@ class ZMSRepositoryManager(
               py.append('')
         d = {}
         d['id'] = id
-        d['filename'] = os.path.join(id,'__init__.py')
+        d['filename'] = os.path.sep.join(o.get('__filename__',[id,'__init__.py']))
         d['data'] = '\n'.join(py)
         d['version'] = map(lambda x:int(x),o.get('revision','0.0.0').split('.'))
         d['meta_type'] = 'Script (Python)'
@@ -264,13 +264,18 @@ class ZMSRepositoryManager(
       r = {}
       basepath = self.get_conf_basepath(provider.id)
       if os.path.exists(basepath):
-        for id in os.listdir(basepath):
-          filepath = os.path.join(basepath,id)
-          mode = os.stat(filepath)[stat.ST_MODE]
-          if stat.S_ISDIR(mode):
-            for file in os.listdir(filepath):
-              filename = os.path.join(filepath,file)
-              f = open(filename,"r")
+        def traverse(base,path):
+          for name in os.listdir(path):
+            filepath = os.path.join(path,name)
+            mode = os.stat(filepath)[stat.ST_MODE]
+            if stat.S_ISDIR(mode):
+              traverse(base,filepath)
+            else:
+              if base==path and name.startswith('__') and name.endswith('__.py'):
+                id = name[2:-5]
+              else:
+                id = os.path.split(path)[-1]
+              f = open(filepath,"r")
               data = f.read()
               f.close()
               version = None
@@ -278,13 +283,14 @@ class ZMSRepositoryManager(
               if revision:
                 version = map(lambda x:int(x),revision[0].split('.'))
               else:
-                version = self.getLangFmtDate(os.path.getmtime(filename),'eng')
+                version = self.getLangFmtDate(os.path.getmtime(filepath),'eng')
               d = {}
               d['id'] = id
-              d['filename'] = os.path.join(id,file)
+              d['filename'] = filepath[len(base)+1:]
               d['data'] = data
               d['version'] = version
               r[d['filename']] = d
+        traverse(basepath,basepath)
       return r
 
 
@@ -293,18 +299,23 @@ class ZMSRepositoryManager(
       r = {}
       basepath = self.get_conf_basepath(provider.id)
       if os.path.exists(basepath):
-        for id in os.listdir(basepath):
-          filepath = os.path.join(basepath,id)
-          mode = os.stat(filepath)[stat.ST_MODE]
-          if stat.S_ISDIR(mode):
-            filename = os.path.join(filepath,'__init__.py')
-            if os.path.exists(filename):
+        def traverse(base,path):
+          for name in os.listdir(path):
+            filepath = os.path.join(path,name)
+            mode = os.stat(filepath)[stat.ST_MODE]
+            if stat.S_ISDIR(mode):
+              traverse(base,filepath)
+            elif name.startswith('__') and name.endswith('__.py'):
+              if base==path and name.startswith('__') and name.endswith('__.py'):
+                id = name[2:-5]
+              else:
+                id = os.path.split(path)[-1]
               # Read python-representation of content-object
-              f = open(filename,"r")
+              f = open(filepath,"r")
               py = f.read()
               f.close()
               # Analyze python-representation of content-object
-              exec(py)
+              exec(py,{})
               d = eval("%s.__dict__"%self.id_quote(id.replace('.','_')))
               r[id] = {}
               for k in filter(lambda x:not x.startswith('__'),d.keys()):
@@ -329,6 +340,7 @@ class ZMSRepositoryManager(
                   v.sort()
                   v = map(lambda x:x[1],v)
                 r[id][k] = v
+        traverse(basepath,basepath)
       return r
 
 
@@ -345,14 +357,17 @@ class ZMSRepositoryManager(
           files = self.localFiles(provider,[id])
           # Recreate folder.
           basepath = self.get_conf_basepath(provider.id)
-          filepath = os.path.join(basepath,id)
-          if os.path.exists(filepath):
-            _fileutil.remove(filepath)
-          _fileutil.mkDir(filepath)
-          # Write artefacts.
+          for name in os.listdir(basepath):
+            if name == id or name == '%s.py'%id:
+              filepath = os.path.join(basepath,name)
+              _fileutil.remove(filepath)
+          # Write files.
           for file in files.keys():
-            artefact = os.path.join(basepath,file)
-            f = open(artefact,"w")
+            filepath = os.path.join(basepath,file)
+            folder = filepath[:filepath.rfind(os.path.sep)]
+            if not os.path.exists(folder):
+              _fileutil.mkDir(folder)
+            f = open(filepath,"w")
             f.write(files[file]['data'])
             f.close()
           success.append(id)

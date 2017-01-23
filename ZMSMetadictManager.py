@@ -36,6 +36,35 @@ class ZMSMetadictManager:
 
     ############################################################################
     #
+    #  IRepositoryProvider
+    #
+    ############################################################################
+
+    """
+    @see IRepositoryProvider
+    """
+    def provideRepositoryMetas(self, r, ids=None):
+      self.writeBlock("[provideRepositoryMetas]: ids=%s"%str(ids))
+      valid_ids = ['__metas__']
+      if ids is None:
+        ids = valid_ids
+      for id in filter(lambda x:x in valid_ids, ids):
+        d = {'id':id,'__filename__':['__metas__.py'],'attrs':[]}
+        map(lambda x:d['attrs'].append(self.metas[x*2+1]),range(len(self.metas)/2))
+        r[id] = d
+
+    """
+    @see IRepositoryProvider
+    """
+    def updateRepositoryMetas(self, r):
+      id = r['id']
+      self.writeBlock("[updateRepositoryMetas]: id=%s"%id)
+      print r
+      return id
+
+
+    ############################################################################
+    #
     #  XML IM/EXPORT
     #
     ############################################################################

@@ -118,8 +118,6 @@ def effective_ids(self, ids):
 ################################################################################
 ################################################################################
 class ZMSMetaobjManager:
-    zope.interface.implements(
-        IZMSRepositoryProvider.IZMSRepositoryProvider)
 
     # Globals.
     # --------
@@ -142,12 +140,12 @@ class ZMSMetaobjManager:
     """
     @see IRepositoryProvider
     """
-    def provideRepository(self, ids=None):
-      self.writeBlock("[provideRepository]: ids=%s"%str(ids))
-      r = {}
+    def provideRepositoryModel(self, r, ids=None):
+      self.writeBlock("[provideRepositoryModel]: ids=%s"%str(ids))
+      valid_ids = self.getMetaobjIds()
       if ids is None:
-        ids = self.getMetaobjIds()
-      for id in ids:
+        ids = valid_ids
+      for id in filter(lambda x:x in valid_ids, ids):
         o = self.getMetaobj(id)
         if o and not o.get('acquired',0):
           d = copy.deepcopy(o)
@@ -166,14 +164,13 @@ class ZMSMetaobjManager:
                  not key in mandatory_keys:
                 del attr[key]
           r[id] = d
-      return r
 
     """
     @see IRepositoryProvider
     """
-    def updateRepository(self, r):
+    def updateRepositoryModel(self, r):
       id = r['id']
-      self.writeBlock("[updateRepository]: id=%s"%id)
+      self.writeBlock("[updateRepositoryModel]: id=%s"%id)
       self.delMetaobj(id)
       self.setMetaobj(r)
       for attr in r.get('attrs',[]):

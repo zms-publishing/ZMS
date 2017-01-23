@@ -25,6 +25,7 @@ import zope.interface
 import _confmanager
 import _globals
 import IZMSConfigurationProvider
+import IZMSRepositoryProvider
 import IZMSMetamodelProvider, ZMSMetaobjManager, ZMSMetadictManager
 import ZMSItem
 
@@ -42,7 +43,8 @@ class ZMSMetamodelProvider(
         ZMSMetadictManager.ZMSMetadictManager):
     zope.interface.implements(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
-        IZMSMetamodelProvider.IZMSMetamodelProvider)
+        IZMSMetamodelProvider.IZMSMetamodelProvider,
+        IZMSRepositoryProvider.IZMSRepositoryProvider,)
 
     # Properties.
     # -----------
@@ -127,5 +129,32 @@ class ZMSMetamodelProvider(
                 return attr
           ob = getattr( ob, 'aq_parent', None)
         return None
+
+
+
+    ############################################################################
+    #
+    #  IRepositoryProvider
+    #
+    ############################################################################
+
+    """
+    @see IRepositoryProvider
+    """
+    def provideRepository(self, ids=None):
+      self.writeBlock("[provideRepository]: ids=%s"%str(ids))
+      r = {}
+      self.provideRepositoryMetas(r,ids)
+      self.provideRepositoryModel(r,ids)
+      return r
+
+    """
+    @see IRepositoryProvider
+    """
+    def updateRepository(self, r):
+      id = r['id']
+      self.updateRepositoryMetas(r)
+      self.updateRepositoryModel(r)
+      return id
 
 ################################################################################

@@ -284,6 +284,8 @@ class ZMSRepositoryManager(
               f = open(filepath,"r")
               data = f.read()
               f.close()
+              if filepath.endswith('.zpt'):
+                data = data.decode('utf-8')
               version = None
               revision = re.findall('revision = "(.*?)"',data)
               if revision:
@@ -317,6 +319,7 @@ class ZMSRepositoryManager(
               else:
                 id = os.path.split(path)[-1]
               # Read python-representation of content-object
+              self.writeBlock("[readRepository]: read %s"%filepath)
               f = open(filepath,"r")
               py = f.read()
               f.close()
@@ -341,9 +344,12 @@ class ZMSRepositoryManager(
                           for file in os.listdir(artefactpath):
                             if file.startswith('%s.'%fileprefix):
                               artefact = os.path.join(filepath,file)
+                              self.writeBlock("[readRepository]: read artefact %s"%artefact)
                               f = open(artefact,"r")
                               data = f.read()
                               f.close()
+                              if artefact.endswith('.zpt'):
+                                data = data.decode('utf-8')
                               vv['data'] = data
                               break
                     v.append((py.find('\t\t%s ='%kk),vv))

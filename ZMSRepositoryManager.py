@@ -212,6 +212,7 @@ class ZMSRepositoryManager(
       local = provider.provideRepository(ids)
       for id in local.keys():
         o = local[id]
+        filename = o.get('__filename__',[id,'__init__.py'])
         # Write python-representation.
         py = []
         py.append('class %s:'%id.replace('.','_'))
@@ -245,7 +246,7 @@ class ZMSRepositoryManager(
                 fileprefix = i['id'].split('/')[-1]
                 d = {}
                 d['id'] = id
-                d['filename'] = os.path.join(id,'%s%s'%(fileprefix,fileexts.get(ob.meta_type,'')))
+                d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix,fileexts.get(ob.meta_type,''))])
                 d['data'] = _zopeutil.readData(ob)
                 d['version'] = self.getLangFmtDate(ob.bobobase_modification_time().timeTime(),'eng')
                 d['meta_type'] = ob.meta_type
@@ -256,7 +257,7 @@ class ZMSRepositoryManager(
               py.append('')
         d = {}
         d['id'] = id
-        d['filename'] = os.path.sep.join(o.get('__filename__',[id,'__init__.py']))
+        d['filename'] = os.path.sep.join(filename)
         d['data'] = '\n'.join(py)
         d['version'] = map(lambda x:int(x),o.get('revision','0.0.0').split('.'))
         d['meta_type'] = 'Script (Python)'
@@ -375,10 +376,15 @@ class ZMSRepositoryManager(
           for file in files.keys():
             filepath = os.path.join(basepath,file)
             folder = filepath[:filepath.rfind(os.path.sep)]
+            self.writeBlock("[commitChanges]: create folder %s if not exists"%folder)
             if not os.path.exists(folder):
               _fileutil.mkDir(folder)
+            self.writeBlock("[commitChanges]: write %s"%filepath)
+            data = files[file]['data']
+            if files[file]['meta_type'] == 'Page Template':
+              data = unicode(data).encode('utf-8')
             f = open(filepath,"w")
-            f.write(files[file]['data'])
+            f.write(data)
             f.close()
           success.append(id)
       return success

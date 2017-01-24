@@ -95,7 +95,6 @@ $(function(){
 		<div class="col-sm-10">
 			<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
 			<button type="submit" class="btn btn-default" name="btn" value="update"><tal:block tal:content="structure python:here.zmi_icon(name='icon-reply')"></tal:block> Update</button>
-			<!--<button type="submit" class="btn btn-default" name="btn" value="override"><tal:block tal:content="structure python:here.zmi_icon(name='icon-reply text-danger')"></tal:block> Override and Update</button>-->
 			<button type="submit" class="btn btn-default" name="btn" value="commit">Commit <tal:block tal:content="structure python:here.zmi_icon(name='icon-share-alt text-success')"></tal:block></button>
 		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
@@ -142,7 +141,7 @@ $(function(){
 											+[[],['bg-warning']][is_modified]
 											+[[],['bg-danger']][is_removed]
 											)">&nbsp;</span>
-									<a tal:attributes="href python:'#%s'%here.id_quote(filename)" tal:content="python:filename[len(id)+1:]">the filename</a>
+									<a tal:attributes="href python:'#%s'%here.id_quote(filename)" tal:content="python:filename">the filename</a>
 									<tal:block tal:condition="is_incoming"><div class="arrow-left" tal:attributes="title python:'Incoming - ZODB: %s;; Repository: %s'%(str(l.get('version','')),str(r.get('version','')))"></div></tal:block>
 									<tal:block tal:condition="is_outgoing"><div class="arrow-right" tal:attributes="title python:'Outgoing - ZODB: %s;; Repository: %s'%(str(l.get('version','')),str(r.get('version','')))"></div></tal:block>
 						</tal:block>
@@ -181,7 +180,7 @@ $(function(){
 		<table class="table" tal:attributes="id python:here.id_quote(filename)">
 		<tr>
 			<td>
-				<strong tal:content="python:here.get_conf_basepath(filename)"></strong>
+				<strong tal:content="python:here.get_conf_basepath(provider.id+'/'+filename)"></strong>
 				(<em tal:content="mt"></em>)
 				<small>
 					<tal:block tal:condition="r">

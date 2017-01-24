@@ -23,6 +23,7 @@ import sys
 import time
 import urllib
 # Product Imports.
+import IZMSRepositoryProvider
 import _blobfields
 import _globals
 
@@ -35,6 +36,27 @@ import _globals
 ################################################################################
 ################################################################################
 class ZMSWorkflowActivitiesManager:
+
+  ############################################################################
+  #
+  #  IRepositoryProvider
+  #
+  ############################################################################
+
+  """
+  @see IRepositoryProvider
+  """
+  def provideRepositoryActivities(self, r, ids=None):
+    self.writeBlock("[provideRepositoryActivities]: ids=%s"%str(ids))
+
+  """
+  @see IRepositoryProvider
+  """
+  def updateRepositoryActivities(self, r):
+    id = r['id']
+    self.writeBlock("[updateRepositoryActivities]: id=%s"%id)
+    return id
+
 
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowActivitiesManager.setActivity
@@ -193,8 +215,12 @@ class ZMSWorkflowActivitiesManager:
       message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%id),(pos+1))
       id = ''
     
+    # Increase version.
+    if id:
+      self.setRevision(IZMSRepositoryProvider.increaseVersion(self.getRevision(),2))
+    
     # Return with message.
     message = urllib.quote(message)
-    return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_Activities'%(lang,message))
+    return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
 
 ################################################################################

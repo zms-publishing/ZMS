@@ -24,8 +24,7 @@ import zope.interface
 # Product Imports.
 import _confmanager
 import _globals
-import IZMSConfigurationProvider
-import IZMSRepositoryProvider
+import IZMSConfigurationProvider, IZMSRepositoryProvider
 import IZMSMetamodelProvider, ZMSMetaobjManager, ZMSMetadictManager
 import ZMSItem
 
@@ -129,7 +128,6 @@ class ZMSMetamodelProvider(
                 return attr
           ob = getattr( ob, 'aq_parent', None)
         return None
-
 
 
     ############################################################################

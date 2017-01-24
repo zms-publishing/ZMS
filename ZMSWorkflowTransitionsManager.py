@@ -24,6 +24,7 @@ import sys
 import time
 import urllib
 # Product Imports.
+import IZMSRepositoryProvider
 import _globals
 
 
@@ -35,6 +36,27 @@ import _globals
 ################################################################################
 ################################################################################
 class ZMSWorkflowTransitionsManager:
+
+  ############################################################################
+  #
+  #  IRepositoryProvider
+  #
+  ############################################################################
+
+  """
+  @see IRepositoryProvider
+  """
+  def provideRepositoryTransitions(self, r, ids=None):
+    self.writeBlock("[provideRepositoryTransitions]: ids=%s"%str(ids))
+
+  """
+  @see IRepositoryProvider
+  """
+  def updateRepositoryTransitions(self, r):
+    id = r['id']
+    self.writeBlock("[updateRepositoryTransitions]: id=%s"%id)
+    return id
+
 
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowTransitionsManager.setTransition
@@ -175,8 +197,12 @@ class ZMSWorkflowTransitionsManager:
       message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%id),(pos+1))
       id = ''
     
+    # Increase version.
+    if id:
+      self.setRevision(IZMSRepositoryProvider.increaseVersion(self.getRevision(),2))
+    
     # Return with message.
     message = urllib.quote(message)
-    return RESPONSE.redirect('manage_main?id=%s&lang=%s&manage_tabs_message=%s#_Transitions'%(id,lang,message))
+    return RESPONSE.redirect('manage_main?id=%s&lang=%s&manage_tabs_message=%s'%(id,lang,message))
 
 ################################################################################

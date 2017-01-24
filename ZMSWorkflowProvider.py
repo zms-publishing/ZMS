@@ -22,7 +22,7 @@ import copy
 import urllib
 import zope.interface
 # Product Imports.
-import IZMSConfigurationProvider
+import IZMSConfigurationProvider, IZMSRepositoryProvider
 import IZMSWorkflowProvider, ZMSWorkflowActivitiesManager, ZMSWorkflowTransitionsManager
 import ZMSItem
 import _accessmanager
@@ -97,7 +97,8 @@ class ZMSWorkflowProvider(
         ZMSWorkflowTransitionsManager.ZMSWorkflowTransitionsManager):
     zope.interface.implements(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
-        IZMSWorkflowProvider.IZMSWorkflowProvider)
+        IZMSWorkflowProvider.IZMSWorkflowProvider,
+        IZMSRepositoryProvider.IZMSRepositoryProvider,)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Properties
@@ -163,6 +164,35 @@ class ZMSWorkflowProvider(
         self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
 
 
+    ############################################################################
+    #
+    #  IRepositoryProvider
+    #
+    ############################################################################
+
+    """
+    @see IRepositoryProvider
+    """
+    def provideRepository(self, r, ids=None):
+      self.writeBlock("[provideRepository]: ids=%s"%str(ids))
+      r = {}
+      id = 'workflow'
+      d = {'id':id,'revision':self.getRevision(),'attrs':[]}
+      r[id] = d
+      self.provideRepositoryActivities(r,ids)
+      self.provideRepositoryTransitions(r,ids)
+      return r
+
+    """
+    @see IRepositoryProvider
+    """
+    def updateRepository(self, r):
+      id = r['id']
+      self.updateRepositoryActivities(r)
+      self.updateRepositoryTransitions(r)
+      return id
+
+
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProvider.importXml
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -192,6 +222,16 @@ class ZMSWorkflowProvider(
         roles = self.concat_list(roles,transition.get('performer',[]))
       for newRole in filter(lambda x: x not in self.userdefined_roles(),roles):
         _accessmanager.addRole(self,newRole)
+
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    ZMSWorkflowProvider.revision
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    def getRevision(self):
+      return getattr(self,'revision','0.0.0')
+
+    def setRevision(self, revision):
+      self.revision = revision
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -268,16 +308,17 @@ class ZMSWorkflowProvider(
     
     Chang workflow.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def manage_changeWorkflow(self, lang, key='', btn='', REQUEST=None, RESPONSE=None):
+    def manage_changeWorkflow(self, lang, btn='', REQUEST=None, RESPONSE=None):
       """ ZMSWorkflowProvider.manage_changeWorkflow """
       message = ''
       
-      # Active.
-      # -------
-      if key == 'custom' and btn == self.getZMILangStr('BTN_SAVE'):
+      # Properties.
+      # -----------
+      if btn == self.getZMILangStr('BTN_SAVE'):
         # Autocommit & Nodes.
         old_autocommit = self.autocommit
         new_autocommit = REQUEST.get('workflow',0) == 0
+        self.revision = REQUEST.get('revision','0.0.0')
         self.autocommit = new_autocommit
         self.nodes = self.string_list(REQUEST.get('nodes',''))
         if old_autocommit == 0 and new_autocommit == 1:
@@ -286,7 +327,7 @@ class ZMSWorkflowProvider(
       
       # Clear.
       # ------
-      elif key == 'clear' and btn == self.getZMILangStr('BTN_CLEAR'):
+      elif btn == self.getZMILangStr('BTN_CLEAR'):
         self.doAutocommit(lang,REQUEST)
         self.autocommit = 1
         self.activities = []
@@ -295,12 +336,12 @@ class ZMSWorkflowProvider(
      
       # Export.
       # -------
-      elif key == 'export' and btn == self.getZMILangStr('BTN_EXPORT'):
+      elif btn == self.getZMILangStr('BTN_EXPORT'):
         return exportXml(self, REQUEST, RESPONSE)
       
       # Import.
       # -------
-      elif key == 'import' and btn == self.getZMILangStr('BTN_IMPORT'):
+      elif btn == self.getZMILangStr('BTN_IMPORT'):
         f = REQUEST['file']
         if f:
           filename = f.filename
@@ -313,6 +354,6 @@ class ZMSWorkflowProvider(
       
       # Return with message.
       message = urllib.quote(message)
-      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang,message,key))
+      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_properties'%(lang,message))
 
 ################################################################################

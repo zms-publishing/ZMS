@@ -48,6 +48,12 @@ class ZMSWorkflowActivitiesManager:
   """
   def provideRepositoryActivities(self, r, ids=None):
     self.writeBlock("[provideRepositoryActivities]: ids=%s"%str(ids))
+    for i in range(len(self.activities)/2):
+      id = self.activities[i*2]
+      d = copy.deepcopy(self.activities[i*2+1])
+      d['id'] = id
+      d['stereotype'] = 'activity'
+      r['workflow']['attrs'].append(d)
 
   """
   @see IRepositoryProvider

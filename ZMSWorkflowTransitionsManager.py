@@ -26,6 +26,7 @@ import urllib
 # Product Imports.
 import IZMSRepositoryProvider
 import _globals
+import _zopeutil
 
 
 ################################################################################
@@ -48,6 +49,12 @@ class ZMSWorkflowTransitionsManager:
   """
   def provideRepositoryTransitions(self, r, ids=None):
     self.writeBlock("[provideRepositoryTransitions]: ids=%s"%str(ids))
+    for id in self.getTransitionIds():
+      d = self.getTransition(id)
+      d['id'] = id
+      d['stereotype'] = 'transition'
+      del d['dtml']
+      r['workflow']['attrs'].append(d)
 
   """
   @see IRepositoryProvider
@@ -131,7 +138,7 @@ class ZMSWorkflowTransitionsManager:
   def getTransition(self, id, for_export=False):
     transition = filter(lambda x: x['id']==id, self.getTransitions())[0]
     transition = copy.deepcopy(transition)
-    ob = getattr(self,transition['id'],None)
+    ob = _zopeutil.getObject(self,transition['id'])
     if ob is not None:
       transition['ob'] = ob
       transition['type'] = ob.meta_type

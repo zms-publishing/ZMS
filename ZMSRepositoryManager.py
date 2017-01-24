@@ -366,10 +366,11 @@ class ZMSRepositoryManager(
           files = self.localFiles(provider,[id])
           # Recreate folder.
           basepath = self.get_conf_basepath(provider.id)
-          for name in os.listdir(basepath):
-            if name == id or name == '%s.py'%id:
-              filepath = os.path.join(basepath,name)
-              _fileutil.remove(filepath)
+          if os.path.exists(basepath):
+            for name in os.listdir(basepath):
+              if name == id or name == '%s.py'%id:
+                filepath = os.path.join(basepath,name)
+                _fileutil.remove(filepath)
           # Write files.
           for file in files.keys():
             filepath = os.path.join(basepath,file)

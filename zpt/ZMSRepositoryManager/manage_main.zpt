@@ -90,13 +90,17 @@ $(function(){
 	<tal:block tal:define="provider_diffs python:map(lambda x:(x,here.getDiffs(x)),here.getRepositoryProviders())">
 
 	<tal:block tal:repeat="provider_diff provider_diffs">
-	<tal:block tal:define="provider python:provider_diff[0]; diffs python:provider_diff[1];">
-	<div class="form-group">
+	<tal:block tal:define="
+			provider python:provider_diff[0]; 
+			diffs python:provider_diff[1]; 
+			ids python:here.distinct_list(map(lambda x:x[2],diffs)); 
+			dummy0 python:ids.sort();">
+	<div class="form-group" tal:condition="ids">
 		<label class="col-sm-2" style="text-align:right">
 			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
 		</label>
 		<div class="col-sm-10">
-			<table class="table" tal:define="ids python:here.distinct_list(map(lambda x:x[2],diffs)); dummy0 python:ids.sort();">
+			<table class="table">
 			<colgroup>
 				<col width="1em"/>
 				<col width="20%"/>

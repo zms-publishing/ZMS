@@ -36,6 +36,11 @@ import _globals
 import _zopeutil
 
 
+def get_class(id, py):
+  exec(py)
+  return eval(id)
+
+
 ################################################################################
 ################################################################################
 ###
@@ -209,7 +214,7 @@ class ZMSRepositoryManager(
         o = local[id]
         # Write python-representation.
         py = []
-        py.append('class %s:'%self.id_quote(id.replace('.','_')))
+        py.append('class %s:'%id.replace('.','_'))
         py.append('\t"""')
         py.append('\tpython-representation of %s'%o['id'])
         py.append('\t"""')
@@ -272,7 +277,7 @@ class ZMSRepositoryManager(
               traverse(base,filepath)
             else:
               if base==path and name.startswith('__') and name.endswith('__.py'):
-                id = name[2:-5]
+                id = name[:name.rfind('.')]
               else:
                 id = os.path.split(path)[-1]
               f = open(filepath,"r")
@@ -307,7 +312,7 @@ class ZMSRepositoryManager(
               traverse(base,filepath)
             elif name.startswith('__') and name.endswith('__.py'):
               if base==path and name.startswith('__') and name.endswith('__.py'):
-                id = name[2:-5]
+                id = name[:name.rfind('.')]
               else:
                 id = os.path.split(path)[-1]
               # Read python-representation of content-object
@@ -315,27 +320,31 @@ class ZMSRepositoryManager(
               py = f.read()
               f.close()
               # Analyze python-representation of content-object
-              exec(py,{})
-              d = eval("%s.__dict__"%self.id_quote(id.replace('.','_')))
+              c = get_class(id.replace('.','_'),py)
+              d = c.__dict__
               r[id] = {}
               for k in filter(lambda x:not x.startswith('__'),d.keys()):
                 v = d[k]
                 if inspect.isclass(v):
-                  dd = eval("%s.%s.__dict__"%(self.id_quote(id.replace('.','_')),k))
+                  dd = v.__dict__
                   v = []
                   for kk in filter(lambda x:x in ['__impl__'] or not x.startswith("__"),dd.keys()):
                     vv = dd[kk]
                     # Try to read artefact.
                     if vv.has_key('id'):
-                      fileprefix = vv['id'].split('/')[-1]
-                      for file in os.listdir(filepath):
-                        if file.startswith('%s.'%fileprefix):
-                          artefact = os.path.join(filepath,file)
-                          f = open(artefact,"r")
-                          data = f.read()
-                          f.close()
-                          vv['data'] = data
-                          break
+                      artefactpath = os.path.join(path,id)
+                      if os.path.exists(artefactpath):
+                        mode = os.stat(artefactpath)[stat.ST_MODE]
+                        if stat.S_ISDIR(mode):
+                          fileprefix = vv['id'].split('/')[-1]
+                          for file in os.listdir(artefactpath):
+                            if file.startswith('%s.'%fileprefix):
+                              artefact = os.path.join(filepath,file)
+                              f = open(artefact,"r")
+                              data = f.read()
+                              f.close()
+                              vv['data'] = data
+                              break
                     v.append((py.find('\t\t%s ='%kk),vv))
                   v.sort()
                   v = map(lambda x:x[1],v)

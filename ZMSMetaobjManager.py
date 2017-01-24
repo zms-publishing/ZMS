@@ -170,22 +170,23 @@ class ZMSMetaobjManager:
     """
     def updateRepositoryModel(self, r):
       id = r['id']
-      self.writeBlock("[updateRepositoryModel]: id=%s"%id)
-      self.delMetaobj(id)
-      self.setMetaobj(r)
-      for attr in r.get('attrs',[]):
-        if attr['type'] in self.valid_zopeattrs+self.valid_zopetypes:
-          oldId = attr['id']
-          newId = attr['id']
-          newName = attr['name']
-          newMandatory = attr.get('mandatory',0)
-          newMultilang = attr.get('multilang',0)
-          newRepetitive = attr.get('repetitive',0)
-          newType = attr['type']
-          newKeys = attr.get('keys',[])
-          newCustom = attr.get('data','')
-          newDefault = attr.get('default','')
-          self.setMetaobjAttr(id,oldId,newId,newName,newMandatory,newMultilang,newRepetitive,newType,newKeys,newCustom,newDefault)
+      if not id.startswith('__') and not id.endswith('__'):
+        self.writeBlock("[updateRepositoryModel]: id=%s"%id)
+        self.delMetaobj(id)
+        self.setMetaobj(r)
+        for attr in r.get('attrs',[]):
+          if attr['type'] in self.valid_zopeattrs+self.valid_zopetypes:
+            oldId = attr['id']
+            newId = attr['id']
+            newName = attr['name']
+            newMandatory = attr.get('mandatory',0)
+            newMultilang = attr.get('multilang',0)
+            newRepetitive = attr.get('repetitive',0)
+            newType = attr['type']
+            newKeys = attr.get('keys',[])
+            newCustom = attr.get('data','')
+            newDefault = attr.get('default','')
+            self.setMetaobjAttr(id,oldId,newId,newName,newMandatory,newMultilang,newRepetitive,newType,newKeys,newCustom,newDefault)
       return id
 
 

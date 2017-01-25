@@ -48,9 +48,8 @@ class ZMSWorkflowActivitiesManager:
   """
   def provideRepositoryActivities(self, r, ids=None):
     self.writeBlock("[provideRepositoryActivities]: ids=%s"%str(ids))
-    for i in range(len(self.activities)/2):
-      id = self.activities[i*2]
-      d = copy.deepcopy(self.activities[i*2+1])
+    for id in self.getActivityIds():
+      d = self.getActivity(id)
       d['id'] = id
       d['stereotype'] = 'activity'
       r['workflow']['attrs'].append(d)
@@ -61,6 +60,11 @@ class ZMSWorkflowActivitiesManager:
   def updateRepositoryActivities(self, r):
     id = r['id']
     self.writeBlock("[updateRepositoryActivities]: id=%s"%id)
+    # Clear.
+    self.activities = []
+    # Set.
+    for attr in filter(lambda x:x['stereotype']=='activity',r['attrs']):
+      self.setActivity(attr['id'],attr['id'],attr['name'], attr.get('icon_clazz'),attr.get('icon'))
     return id
 
 

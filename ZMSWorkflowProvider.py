@@ -188,6 +188,7 @@ class ZMSWorkflowProvider(
     """
     def updateRepository(self, r):
       id = r['id']
+      self.setRevision(r['revision'])
       self.updateRepositoryActivities(r)
       self.updateRepositoryTransitions(r)
       return id

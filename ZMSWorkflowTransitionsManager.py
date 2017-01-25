@@ -62,6 +62,11 @@ class ZMSWorkflowTransitionsManager:
   def updateRepositoryTransitions(self, r):
     id = r['id']
     self.writeBlock("[updateRepositoryTransitions]: id=%s"%id)
+    # Clear.
+    self.transitions = []
+    # Set.
+    for attr in filter(lambda x:x['stereotype']=='transition',r['attrs']):
+      self.setTransition(attr['id'], attr['id'], attr['name'], attr.get('type'), attr.get('from',[]), attr.get('to',''), attr.get('performer',''), attr.get('data',''))
     return id
 
 

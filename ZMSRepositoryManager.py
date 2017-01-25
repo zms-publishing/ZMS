@@ -36,7 +36,8 @@ import _globals
 import _zopeutil
 
 
-def get_class(id, py):
+def get_class(py):
+  id = re.findall('class (.*?):',py)[0]
   exec(py)
   return eval(id)
 
@@ -271,33 +272,53 @@ class ZMSRepositoryManager(
       basepath = self.get_conf_basepath(provider.id)
       if os.path.exists(basepath):
         def traverse(base,path):
-          for name in os.listdir(path):
+          names = os.listdir(path)
+          for name in names:
             filepath = os.path.join(path,name)
             mode = os.stat(filepath)[stat.ST_MODE]
             if stat.S_ISDIR(mode):
               traverse(base,filepath)
-            else:
-              if base==path and name.startswith('__') and name.endswith('__.py'):
-                id = name[:name.rfind('.')]
-              else:
-                id = os.path.split(path)[-1]
+            elif not name in ['__impl__.py'] and name.startswith('__') and name.endswith('__.py'):
+              # Read python-representation of repository-object
+              self.writeBlock("[remoteFiles]: read %s"%filepath)
               f = open(filepath,"r")
-              data = f.read()
+              py = f.read()
               f.close()
-              if filepath.endswith('.zpt'):
-                data = data.decode('utf-8')
-              version = None
-              revision = re.findall('revision = "(.*?)"',data)
-              if revision:
-                version = map(lambda x:int(x),revision[0].split('.'))
-              else:
-                version = self.getLangFmtDate(os.path.getmtime(filepath),'eng')
-              d = {}
-              d['id'] = id
-              d['filename'] = filepath[len(base)+1:]
-              d['data'] = data
-              d['version'] = version
-              r[d['filename']] = d
+              # Analyze python-representation of repository-object
+              c = get_class(py)
+              d = c.__dict__
+              id = d["id"]
+              rd = {}
+              rd['id'] = id
+              rd['filename'] = filepath[len(base)+1:]
+              rd['data'] = py
+              rd['version'] = d.get("revision",self.getLangFmtDate(os.path.getmtime(filepath),'eng'))
+              r[rd['filename']] = rd
+              for k in filter(lambda x:not x.startswith('__'),d.keys()):
+                v = d[k]
+                if inspect.isclass(v):
+                  dd = v.__dict__
+                  v = []
+                  for kk in filter(lambda x:x in ['__impl__'] or not x.startswith("__"),dd.keys()):
+                    vv = dd[kk]
+                    # Try to read artefact.
+                    if vv.has_key('id'):
+                      fileprefix = vv['id'].split('/')[-1]
+                      for file in filter(lambda x: x.startswith('%s.'%fileprefix),names):
+                        artefact = os.path.join(path,file)
+                        self.writeBlock("[remoteFiles]: read artefact %s"%artefact)
+                        f = open(artefact,"r")
+                        data = f.read()
+                        f.close()
+                        if artefact.endswith('.zpt'):
+                          data = data.decode('utf-8')
+                        rd = {}
+                        rd['id'] = id
+                        rd['filename'] = artefact[len(base)+1:]
+                        rd['data'] = data
+                        rd['version'] = self.getLangFmtDate(os.path.getmtime(artefact),'eng')
+                        r[rd['filename']] = rd
+                        break
         traverse(basepath,basepath)
       return r
 
@@ -308,24 +329,22 @@ class ZMSRepositoryManager(
       basepath = self.get_conf_basepath(provider.id)
       if os.path.exists(basepath):
         def traverse(base,path):
-          for name in os.listdir(path):
+          names = os.listdir(path)
+          for name in names:
             filepath = os.path.join(path,name)
             mode = os.stat(filepath)[stat.ST_MODE]
             if stat.S_ISDIR(mode):
               traverse(base,filepath)
-            elif name.startswith('__') and name.endswith('__.py'):
-              if base==path and name.startswith('__') and name.endswith('__.py'):
-                id = name[:name.rfind('.')]
-              else:
-                id = os.path.split(path)[-1]
-              # Read python-representation of content-object
+            elif not name in ['__impl__.py'] and name.startswith('__') and name.endswith('__.py'):
+              # Read python-representation of repository-object
               self.writeBlock("[readRepository]: read %s"%filepath)
               f = open(filepath,"r")
               py = f.read()
               f.close()
-              # Analyze python-representation of content-object
-              c = get_class(id.replace('.','_'),py)
+              # Analyze python-representation of repository-object
+              c = get_class(py)
               d = c.__dict__
+              id = d["id"]
               r[id] = {}
               for k in filter(lambda x:not x.startswith('__'),d.keys()):
                 v = d[k]
@@ -336,22 +355,17 @@ class ZMSRepositoryManager(
                     vv = dd[kk]
                     # Try to read artefact.
                     if vv.has_key('id'):
-                      artefactpath = os.path.join(path,id)
-                      if os.path.exists(artefactpath):
-                        mode = os.stat(artefactpath)[stat.ST_MODE]
-                        if stat.S_ISDIR(mode):
-                          fileprefix = vv['id'].split('/')[-1]
-                          for file in os.listdir(artefactpath):
-                            if file.startswith('%s.'%fileprefix):
-                              artefact = os.path.join(filepath,file)
-                              self.writeBlock("[readRepository]: read artefact %s"%artefact)
-                              f = open(artefact,"r")
-                              data = f.read()
-                              f.close()
-                              if artefact.endswith('.zpt'):
-                                data = data.decode('utf-8')
-                              vv['data'] = data
-                              break
+                      fileprefix = vv['id'].split('/')[-1]
+                      for file in filter(lambda x: x.startswith('%s.'%fileprefix),names):
+                        artefact = os.path.join(path,file)
+                        self.writeBlock("[readRepository]: read artefact %s"%artefact)
+                        f = open(artefact,"r")
+                        data = f.read()
+                        f.close()
+                        if artefact.endswith('.zpt'):
+                          data = data.decode('utf-8')
+                        vv['data'] = data
+                        break
                     v.append((py.find('\t\t%s ='%kk),vv))
                   v.sort()
                   v = map(lambda x:x[1],v)

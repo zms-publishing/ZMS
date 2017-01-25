@@ -230,13 +230,12 @@
 						<td colspan="5" class="meta-resource" tal:condition="python:objAttr['type'] in ['resource']">
 							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
 							<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']" />
-							<tal:block tal:condition="python:objAttr.get('custom')">
+							<tal:block tal:condition="python:objAttr.get('ob')">
 								<input type="checkbox" tal:attributes="name python:'attr_custom_%s_active'%objAttr['id']" value="1" checked="checked"/>
-								<tal:block tal:condition="python:objAttr['custom'] is not None">
-									<a tal:define="fname python:objAttr['custom'].title" tal:attributes="href python:objAttr['custom'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['custom'].get_size()))" target="_blank" style="text-decoration:none;">
-										<tal:block tal:content="fname">FILE NAME</tal:block>
-									</a>
-								</tal:block>
+								<a tal:define="fname python:objAttr['ob'].title" tal:attributes="href python:objAttr['ob'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['ob'].get_size()))" target="_blank" style="text-decoration:none;">
+									<tal:block tal:content="structure python:here.zmi_icon(name='icon-file-alt')">FILE ICON</tal:block>
+									<tal:block tal:content="fname">FILE NAME</tal:block>
+								</a>
 							</tal:block>
 						</td>
 						<td colspan="5" class="meta-resource" tal:condition="python:objAttr['type'] in ['Folder']">

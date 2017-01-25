@@ -186,6 +186,8 @@ class ZMSMetaobjManager:
             newKeys = attr.get('keys',[])
             newCustom = attr.get('data','')
             newDefault = attr.get('default','')
+            if newType in ['resource']:
+              newCustom = _blobfields.createBlobField( self,_globals.DT_FILE, {'data':newCustom,'filename':newId}, mediadbStorable=False)
             self.setMetaobjAttr(id,oldId,newId,newName,newMandatory,newMultilang,newRepetitive,newType,newKeys,newCustom,newDefault)
       return id
 

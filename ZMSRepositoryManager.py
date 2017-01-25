@@ -280,7 +280,7 @@ class ZMSRepositoryManager(
               traverse(base,filepath)
             elif not name in ['__impl__.py'] and name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
-              self.writeBlock("[remoteFiles]: read %s"%filepath)
+              self.writeLog("[remoteFiles]: read %s"%filepath)
               f = open(filepath,"r")
               py = f.read()
               f.close()
@@ -304,9 +304,9 @@ class ZMSRepositoryManager(
                     # Try to read artefact.
                     if vv.has_key('id'):
                       fileprefix = vv['id'].split('/')[-1]
-                      for file in filter(lambda x: x.startswith('%s.'%fileprefix),names):
+                      for file in filter(lambda x: x==fileprefix or x.startswith('%s.'%fileprefix),names):
                         artefact = os.path.join(path,file)
-                        self.writeBlock("[remoteFiles]: read artefact %s"%artefact)
+                        self.writeLog("[remoteFiles]: read artefact %s"%artefact)
                         f = open(artefact,"r")
                         data = f.read()
                         f.close()
@@ -356,7 +356,7 @@ class ZMSRepositoryManager(
                     # Try to read artefact.
                     if vv.has_key('id'):
                       fileprefix = vv['id'].split('/')[-1]
-                      for file in filter(lambda x: x.startswith('%s.'%fileprefix),names):
+                      for file in filter(lambda x: x==fileprefix or x.startswith('%s.'%fileprefix),names):
                         artefact = os.path.join(path,file)
                         self.writeBlock("[readRepository]: read artefact %s"%artefact)
                         f = open(artefact,"r")

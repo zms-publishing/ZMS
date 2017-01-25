@@ -90,6 +90,36 @@ $(function(){
 			<form class="form-horizontal" action="manage_change" method="post">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 
+	<tal:block tal:define="
+			provider_diffs python:map(lambda x:(x,here.getDiffs(x)),here.getRepositoryProviders());
+			provider_diffs_count python:sum(map(lambda x:len(x[1]),provider_diffs)+[0])">
+
+	<tal:block tal:condition="not:provider_diffs_count">
+		<div class="form-group">
+			<label class="col-sm-2"></label>
+			<div class="col-sm-10">
+				<button type="submit" class="btn btn-default" name="btn" value="refresh"><tal:block tal:content="structure python:here.zmi_icon(name='icon-refresh')"></tal:block> Refresh</button>
+			</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+		<div class="form-group" tal:repeat="provider python:here.getRepositoryProviders()">
+			<label class="col-sm-2" style="text-align:right">
+				<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
+			</label>
+			<div class="col-sm-10" tal:define="
+					local_files python:here.localFiles(provider).values();
+					ids python:here.distinct_list(map(lambda x:x['id'],local_files));
+					dummy0 python:ids.sort();
+					">
+				<div tal:repeat="id ids">
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-ok text-success')"></tal:block>
+					<tal:block tal:content="id"></tal:block>
+				</div>
+			</div>
+		</div>
+	</tal:block>
+
+	<tal:block tal:condition="provider_diffs_count">
+	
 	<div class="form-group">
 		<label class="col-sm-2"></label>
 		<div class="col-sm-10">
@@ -98,8 +128,6 @@ $(function(){
 			<button type="submit" class="btn btn-default" name="btn" value="commit">Commit <tal:block tal:content="structure python:here.zmi_icon(name='icon-share-alt text-success')"></tal:block></button>
 		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
-
-	<tal:block tal:define="provider_diffs python:map(lambda x:(x,here.getDiffs(x)),here.getRepositoryProviders())">
 
 	<tal:block tal:repeat="provider_diff provider_diffs">
 	<tal:block tal:define="
@@ -210,6 +238,7 @@ $(function(){
 	</tal:block>
 	</tal:block>
 
+	</tal:block>
 	</tal:block>
 
 			</form>

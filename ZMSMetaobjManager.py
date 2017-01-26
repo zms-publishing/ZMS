@@ -148,7 +148,9 @@ class ZMSMetaobjManager:
       for id in filter(lambda x:x in valid_ids, ids):
         o = self.getMetaobj(id)
         if o and not o.get('acquired',0):
+          package = o.get('package','')
           d = copy.deepcopy(o)
+          d['__filename__'] = [[],[package]][len(package)>0]+[id,'__init__.py']
           for dk in ['acquired']:
             if d.has_key(dk):
               del d[dk]
@@ -163,6 +165,8 @@ class ZMSMetaobjManager:
               if not attr[key] or \
                  not key in mandatory_keys:
                 del attr[key]
+          d['Attrs'] = d['attrs']
+          del d['attrs']
           r[id] = d
 
     """
@@ -172,6 +176,8 @@ class ZMSMetaobjManager:
       id = r['id']
       if not id.startswith('__') and not id.endswith('__'):
         self.writeBlock("[updateRepositoryModel]: id=%s"%id)
+        r['attrs'] = r['Attrs']
+        del r['Attrs']
         self.delMetaobj(id)
         self.setMetaobj(r)
         for attr in r.get('attrs',[]):

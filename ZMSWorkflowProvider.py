@@ -177,7 +177,7 @@ class ZMSWorkflowProvider(
       self.writeBlock("[provideRepository]: ids=%s"%str(ids))
       r = {}
       id = 'workflow'
-      d = {'id':id,'revision':self.getRevision(),'__filename__':['__init__.py'],'attrs':[]}
+      d = {'id':id,'revision':self.getRevision(),'__filename__':['__init__.py']}
       r[id] = d
       self.provideRepositoryActivities(r,ids)
       self.provideRepositoryTransitions(r,ids)

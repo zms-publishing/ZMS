@@ -221,14 +221,10 @@ class ZMSRepositoryManager(
         py.append('\tpython-representation of %s'%o['id'])
         py.append('\t"""')
         py.append('')
-        e = ['attrs']
-        keys = filter(lambda x:x not in e and not x.startswith('__'),o.keys())
+        e = filter(lambda x:not x.startswith('__') and x==x.capitalize() and type(o[x]) is list,o.keys())
+        e.sort()
+        keys = filter(lambda x:not x.startswith('__') and x not in e,o.keys())
         keys.sort()
-        # TODO: get e dynamically
-        for k in keys:
-          v = o.get(k)
-          if v and type(v) is list:
-            pass
         for k in keys:
           v = o.get(k)
           if v:
@@ -351,7 +347,7 @@ class ZMSRepositoryManager(
                 if inspect.isclass(v):
                   dd = v.__dict__
                   v = []
-                  for kk in filter(lambda x:x in ['__impl__'] or not x.startswith("__"),dd.keys()):
+                  for kk in filter(lambda x:not x.startswith('__'),dd.keys()):
                     vv = dd[kk]
                     # Try to read artefact.
                     if vv.has_key('id'):

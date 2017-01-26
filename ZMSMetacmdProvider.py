@@ -148,10 +148,10 @@ class ZMSMetacmdProvider(
           ob = getattr(self,id)
           if ob:
             attr = {}
-            attr['id'] = '__impl__'
+            attr['id'] = id
             attr['ob'] = ob
             attr['type'] = ob.meta_type
-            d['attrs'] = [attr]
+            d['Impl'] = [attr]
           r[id] = d
       return r
 
@@ -160,7 +160,7 @@ class ZMSMetacmdProvider(
     """
     def updateRepository(self, r):
       id = r['id']
-      impl = filter(lambda x:x['id']=='__impl__',r['attrs'])[0]
+      impl = r['Impl'][0]
       newId = id
       newAcquired = 0
       newRevision = r.get('revision','0.0.0')

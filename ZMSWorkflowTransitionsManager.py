@@ -49,12 +49,12 @@ class ZMSWorkflowTransitionsManager:
   """
   def provideRepositoryTransitions(self, r, ids=None):
     self.writeBlock("[provideRepositoryTransitions]: ids=%s"%str(ids))
+    r['workflow']['Transitions'] = []
     for id in self.getTransitionIds():
       d = self.getTransition(id)
       d['id'] = id
-      d['stereotype'] = 'transition'
       del d['dtml']
-      r['workflow']['attrs'].append(d)
+      r['workflow']['Transitions'].append(d)
 
   """
   @see IRepositoryProvider
@@ -65,7 +65,7 @@ class ZMSWorkflowTransitionsManager:
     # Clear.
     self.transitions = []
     # Set.
-    for attr in filter(lambda x:x['stereotype']=='transition',r['attrs']):
+    for attr in r.get('Transitions',[]):
       self.setTransition(attr['id'], attr['id'], attr['name'], attr.get('type'), attr.get('from',[]), attr.get('to',''), attr.get('performer',''), attr.get('data',''))
     return id
 

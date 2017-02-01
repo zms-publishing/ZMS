@@ -47,9 +47,9 @@ class ZMSMetacmdProviderAcquired(
     def __init__(self, commands=[]):
       self.id = 'metacmd_manager'
 
-    def getMetaCmdDescription(self, id=None, name=None):
+    def getMetaCmdDescription(self, id):
        """ getMetaCmdDescription """
-       return self.getPortalMaster().getMetaCmdDescription(id,name)
+       return self.getPortalMaster().getMetaCmdDescription(id)
 
     def getMetaCmdIds(self, sort=True):
        return self.getPortalMaster().getMetaCmdIds(sort)

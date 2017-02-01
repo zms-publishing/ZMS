@@ -19,6 +19,7 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 # Product Imports.
+import _blobfields
 import _confmanager
 import _fileutil
 import _globals
@@ -135,7 +136,7 @@ class ObjTypes:
       imgzoom = ''
       
       #-- IMAGE-PROPERTIES 
-      if img is None or img.get_real_size() == 0:
+      if img is None or img == '' or (isinstance(img,_blobfields.MyBlob) and img.get_real_size() == 0):
         width = ''
         height = ''
         

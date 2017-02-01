@@ -897,7 +897,10 @@ class MyImage(MyBlob,Image):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getWidth__roles__ = None
     def getWidth(self):
-      return self.width
+      w = self.width
+      if not w:
+        w = self.aq_parent.getConfProperty('ZMS.image.default.width',640)
+      return w
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -905,7 +908,10 @@ class MyImage(MyBlob,Image):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getHeight__roles__ = None
     def getHeight(self):
-      return self.height
+      h = self.width
+      if not h:
+        h = self.aq_parent.getConfProperty('ZMS.image.default.height',400)
+      return h
 
 
 ################################################################################

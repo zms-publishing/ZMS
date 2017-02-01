@@ -986,7 +986,13 @@ class ObjAttrs:
               if not self.pilutil().enabled() and datatype == _globals.DT_IMAGE and REQUEST.get('width_%s'%elName) and REQUEST.get('height_%s'%elName):
                 w = REQUEST['width_%s'%elName]
                 h = REQUEST['height_%s'%elName]
-                if w != int(o.width) or h != int(o.height):
+                width = o.getProperty('width')
+                if not width:
+                  width = self.getConfProperty('ZMS.image.default.width',640)
+                height = o.getProperty('height')
+                if not height:
+                  height = self.getConfProperty('ZMS.image.default.height',400)
+                if w != int(width) or h != int(height):
                   value = _blobfields.createBlobField( self, datatype, value)
                   value.width = w
                   value.height = h
@@ -1152,8 +1158,14 @@ class ObjAttrs:
           obj_attr = self.getObjAttr(thumbkey,meta_id)
           elName = self.getObjAttrName(obj_attr,lang)
           rtn['elName'] = elName
-          rtn['height'] = int(file.getProperty('height'))
-          rtn['width'] = int(file.getProperty('width'))
+          w = file.getProperty('width')
+          if not w:
+            w = self.getConfProperty('ZMS.image.default.width',640)
+          rtn['width'] = int(w)
+          h = file.getProperty('height')
+          if not h:
+            h = self.getConfProperty('ZMS.image.default.height',400)
+          rtn['height'] = int(h)
           rtn['filename'] = blob.getFilename()
           rtn['src'] = self.url_append_params(file.absolute_url(),{'ts':time.time()})
           # extra
@@ -1179,6 +1191,8 @@ class ObjAttrs:
             rtn['height'] = y2-y0
             rtn['width'] = x1-x0
           file.manage_upload(blob.getData())
+          file.setProperty('height',rtn['height'])
+          file.setProperty('width',rtn['width'])
           rtn['filename'] = blob.getFilename()
           rtn['src'] = src
       # Return JSON.
@@ -1203,14 +1217,23 @@ class ObjAttrs:
           blob = self.getObjProperty(key,REQUEST)
           filename = blob.getFilename()
           value = blob.getData()
+          content_type = None
           if datatype == _globals.DT_IMAGE:
-            file = temp_folder.manage_addImage( id=id, title=filename, file=value)
+            if filename.endswith('.svg'):
+              content_type = 'image/svg+xml'
+            file = temp_folder.manage_addImage( id=id, title=filename, file=value, content_type=content_type)
           else:
-            file = temp_folder.manage_addFile( id=id, title=filename, file=value)
+            file = temp_folder.manage_addFile( id=id, title=filename, file=value, content_type=content_type)
         file = getattr( temp_folder, id)
         if file.meta_type == 'Image':
-          rtn['height'] = int(file.getProperty('height'))
-          rtn['width'] = int(file.getProperty('width'))
+          w = file.getProperty('width')
+          if not w:
+            w = self.getConfProperty('ZMS.image.default.width',640)
+          rtn['width'] = int(w)
+          h = file.getProperty('height')
+          if not h:
+            h = self.getConfProperty('ZMS.image.default.height',400)
+          rtn['height'] = int(h)
         rtn['content_type'] = file.content_type
         rtn['filename'] = file.title
         rtn['src'] = self.url_append_params(file.absolute_url(),{'ts':time.time()})

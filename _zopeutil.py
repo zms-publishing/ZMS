@@ -63,6 +63,8 @@ def callObject(ob, zmscontext=None, options={}):
     v = ob(zmscontext,zmscontext.REQUEST)
   elif options:
     v = ob(zmscontext=zmscontext,options=options)
+  elif ob.meta_type in [ 'Script (Python)'] and readData(ob).find('##parameters=zmscontext')<0:
+    v = ob()
   else:
     v = ob(zmscontext=zmscontext)
   return v
@@ -214,3 +216,13 @@ def addZSqlMethod(container, id, title, data):
     template = template[template.find('>')+1:]
     template = '\n'.join(filter( lambda x: len(x) > 0, template.split('\n')))
     ob.manage_edit(title=title,connection_id=connection,arguments=arguments,template=template) 
+
+def addFile(container, id, title, data, content_type=None):
+  """
+  Add File to container.
+  """
+  container.manage_addFolder(id,title,file=data,content_type=content_type)
+  ob = getattr( container, id)
+  return ob
+
+    

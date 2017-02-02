@@ -30,6 +30,7 @@ from Products.PythonScripts import PythonScript
 import ConfigParser
 import Globals
 import OFS.misc_
+import operator
 import os
 import stat
 import tempfile
@@ -561,8 +562,12 @@ class ConfManager(
     @type default: C{any}
     @rtype: C{any}
     """
-    def getConfProperty(self, key, default=None, REQUEST=None):
-      """ ConfManager.getConfProperty """
+    def _getConfProperty(self, *args, **kwargs):
+      params = ('key','default','REQUEST')
+      map(lambda x:operator.setitem(kwargs,params[x],args[x]),range(len(args)))
+      key = kwargs['key']
+      default = kwargs.get('default')
+      REQUEST = kwargs.get('REQUEST')
       if REQUEST is not None:
         import base64
         key = base64.b64decode(key)
@@ -575,11 +580,18 @@ class ConfManager(
       elif key is not None and not key.startswith('ASP.') and not key.startswith('Portal.') and not key in ['UniBE.Alias', 'UniBE.Server']:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
-          value = portalMaster.getConfProperty( key, default)
+          value = portalMaster.getConfProperty( key)
         if value is None:
-          for default in filter(lambda x:x['key']==key,self.getConfPropertiesDefaults()):
-            value = default.get('default',None)
+          if kwargs.has_key('default'):
+            value = default
+          else:
+            for default in filter(lambda x:x['key']==key,self.getConfPropertiesDefaults()):
+              value = default.get('default',None)
       return value 
+
+    def getConfProperty(self, key, default=None, REQUEST=None):
+      """ ConfManager.getConfProperty """
+      return self._getConfProperty(key, default, REQUEST)
 
 
     """

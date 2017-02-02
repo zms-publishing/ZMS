@@ -2096,3 +2096,14 @@ table.ZMSTable {
 	border-top-left-radius:0;
 	border-bottom-left-radius:0;
 }
+#zmi-measurement .table {
+	background-color:#333;
+}
+#zmi-measurement .table th, #zmi-measurement .table td {
+	color:#40FF40!important;
+	font-size:smaller;
+	font-family:"Courier New", Courier, monospace;
+}
+#zmi-measurement .table.table-striped > tbody > tr:nth-of-type(2n+1) {
+	background-color:#222;
+}

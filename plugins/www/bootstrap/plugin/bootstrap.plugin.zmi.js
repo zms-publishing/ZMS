@@ -5,6 +5,48 @@ function onFormSubmit() {
 
 $(function(){
 
+	$("#zmi-measurement").each(function(){
+			function format_secs(secs) {
+				var prec = 1000.0;
+				var s = "000"+Math.round(secs*prec);
+				s = s.substr(0,s.length-3)+'.'+s.substr(s.length-3);
+				while (s.indexOf("0")==0 && s.indexOf("0.")!=0) {
+					s = s.substr(1);
+				}
+				s = '<span title="'+secs+'">'+s+'</span>';
+				return s;
+			}
+			var html = "";
+			html += ''
+				+ '<table class="table table-striped">'
+				+ '<tr>'
+				+ '<th>Category</th>'
+				+ '<th style="text-align:right">#</th>'
+				+ '<th style="text-align:right">Avg [s]</th>'
+				+ '<th style="text-align:right">Min [s]</th>'
+				+ '<th style="text-align:right">Max [s]</th>'
+				+ '<th style="text-align:right">Tot [s]</th>'
+				+ '<th>Hotspot</th>'
+				+ '</tr>';
+			var l = eval("("+$(this).text()+")");
+			for (var i=0; i<l.length; i++) {
+				var d = l[i];
+				html += ''
+					+ '<tr>'
+					+ '<td>'+d.category+'</td>'
+					+ '<td style="text-align:right">'+d.count+'</td>'
+					+ '<td style="text-align:right">'+format_secs(d.avg)+'</td>'
+					+ '<td style="text-align:right">'+format_secs(d.min)+'</td>'
+					+ '<td style="text-align:right">'+format_secs(d.max)+'</td>'
+					+ '<td style="text-align:right">'+format_secs(d.total)+'</td>'
+					+ '<td>'+d.hotspot+'</td>'
+					+ '</tr>';
+			} 
+			html += ''
+				+ '</table>';
+			$(this).html(html);
+		});
+
 	$ZMI.setCursorWait("BO bootstrap.plugin.zmi");
 
 	var manage_menu = typeof window.parent.frames!="undefined"&&typeof window.parent.frames.manage_menu!="undefined";

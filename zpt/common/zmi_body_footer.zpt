@@ -12,7 +12,7 @@
 	<div class="clearfix"></div><!-- .clearfix -->
 </footer>
 
-<div tal:condition="python:request.get('zmi-measurement')" class="row">
+<div tal:condition="python:request.get('zmi-measurement')" id="zmi-measurement">
   <code tal:content="python:here.getMeasurement()"></code>
 </div>
 

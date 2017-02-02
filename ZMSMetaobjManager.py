@@ -472,10 +472,9 @@ class ZMSMetaobjManager:
     def getMetaobj(self, id):
       ob = _globals.nvl( self.__get_metaobj__(id), {'id':id, 'attrs':[], })
       if ob is not None and ob.get('acquired',0) == 1:
-        for k in ob.keys():
-          v = self.getConfProperty('%s.%s'%(id,k),None)
-          if v is not None:
-            ob[k] = v
+        enabled = self._getConfProperty('%s.enabled'%id,None)
+        if enabled is not None:
+          ob['enabled'] = enabled
       return ob
 
 
@@ -691,7 +690,7 @@ class ZMSMetaobjManager:
       if meta_objs.get(id,{}).get('acquired',0) == 1:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
-          attr = portalMaster.getMetaobjAttr( id, attr_id)
+          attr = portalMaster.getMetaobjAttr( id, attr_id, sync)
           return attr
       meta_obj = self.getMetaobj(id)
       attrs = meta_obj.get('attrs',meta_obj.get('__obj_attrs__',[]))

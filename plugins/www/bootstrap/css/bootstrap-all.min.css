@@ -416,6 +416,8 @@ textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 .zmi header{background-color:black;height:42px}
 .zmi header .product{font-weight:bold}
 .zmi header .navbar-brand .slogan{font-size:x-small;margin-left:15px}
+.zmi header .zmsdebug .navbar-brand .product:after{content:"DEBUG MODE";font-size:13px;color:white;font-weight:normal;line-height:1;display:block;height:42px;padding:14px 8px;background:#337ab7;position:absolute;top:0;left:105px}
+.zmi header .zmsdebug .navbar-brand .slogan{visibility:collapse}
 @media(max-width:367px){.zmi header .navbar-nav.pull-right{display:none!important}
  .zmi header .navbar-main{min-width:367px}}
 @media(max-width:767px){.zmi header .navbar-nav.pull-right{display:block;position:absolute;right:0}
@@ -584,9 +586,9 @@ div.constraint-warning{background-color:#FCF8E3}
 .constraint-restriction{color:#31708F}
 div.constraint-restriction{background-color:#D9EDF7}
 .zmi.properties div.constraint-restriction{border:1px solid rgba(49,112,143,0.25)}
-.btn-group.zmi-action .tooltip-inner{padding:1px;background-color:#888}
+.btn-group.zmi-action .tooltip .tooltip-inner{padding:1px;background-color:#888}
+.btn-group.zmi-action .tooltip .tooltip-inner .constraint{border-radius:4px;overflow:hidden;margin:0}
 .btn-group.zmi-action .tooltip-arrow{border-top-color:#888}
-.btn-group.zmi-action .tooltip-inner .constraint{border-radius:4px;overflow:hidden}
 .zmi-container .right li span[class^="glyphicon-"],.zmi-container .right li span[class*=" glyphicon-"],.zmi-container .right li i[class^="icon-"],.zmi-container .right li i[class*=" icon-"]{display:inline-block;width:1.5em;font-size:14px}
 ul.zmi-container .right div input{margin:8px}
 ul.zmi-container .zmi-item .zmi-action{margin-left:-179px}
@@ -676,6 +678,9 @@ tr.row_insert td.meta-sort{padding:0.9em 1.35em !important}
 .zmi.metas td.meta-mandatory,.zmi.metas td.meta-multilang,.zmi.metas td.meta-repetitive,.zmi.metas td.meta-displaycol{text-align:center;padding-top:0.9em}
 #zmi-single-line-edit textarea{font-family:"Courier New",Courier,monospace}
 .zmi.metas span.input-group-addon{width:29px !important}
+.zmi.metas .btn-group.syncronizing .btn-default.basepath{color:silver !important}
+.zmi.metas .btn-group.syncronizing .btn-default.basepath:hover{background:none}
+@media(max-width:767px){.zmi.metas .btn-group.syncronizing .btn-default.basepath{color:white !important;width:2.6em;overflow:hidden}}
 div.zmi-nodes span{cursor:pointer}
 input.btn.btn-file{background-color:#eee;margin-bottom:0.5em}
 .zmi.customize #Custom table td.nowrap{min-width:92px}
@@ -763,6 +768,7 @@ div.right .btn .caret{}
  
  .navbar-nav .open .dropdown-menu{position:absolute;float:left;width:auto;min-width:160px;margin-top:2px;background-color:#FFF;border:1px solid rgba(0,0,0,0.15);-webkit-box-shadow:0 6px 12px rgba(0,0,0,0.175);box-shadow:0 6px 12px rgba(0,0,0,0.175)}
  .navbar-nav .localisation .dropdown-menu{right:0;left:auto}
+ .navbar-nav .open .dropdown-menu>li>a,.navbar-nav .open .dropdown-menu .dropdown-header{padding:3px 13px}
  .navbar-inverse .navbar-nav .dropdown-menu > .dropdown-header{border:none}
  .navbar-inverse .navbar-nav .dropdown-menu>li>a{color:#333 !important}
  .navbar-inverse .navbar-nav .dropdown-menu .divider{background-color:#E5E5E5!important}
@@ -865,7 +871,10 @@ table.ZMSTable th{background-color:#DDEFFC;border:1px solid #ccc !important;over
 table.ZMSTable td{background-color:#f9f9f9;border:1px solid #ccc !important;overflow:hidden !important}
 table.ZMSTable{margin:1em 0}
 .input-group-addon.input-group-dropdown{padding:0}
-.input-group-addon.input-group-dropdown .btn{border:0;border-top-left-radius:0;border-bottom-left-radius:0}/*! =======================================================
+.input-group-addon.input-group-dropdown .btn{border:0;border-top-left-radius:0;border-bottom-left-radius:0}
+#zmi-measurement .table{background-color:#333}
+#zmi-measurement .table th,#zmi-measurement .table td{color:#40FF40!important;font-size:smaller;font-family:"Courier New",Courier,monospace}
+#zmi-measurement .table.table-striped > tbody > tr:nth-of-type(2n+1){background-color:#222}/*! =======================================================
                       VERSION  5.2.6              
 ========================================================= */
 /*! =========================================================

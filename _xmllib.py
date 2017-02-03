@@ -27,6 +27,7 @@ import os
 import re
 import tempfile
 import time
+import unicodedata
 # Product Imports.
 from _objattrs import *
 import _blobfields
@@ -605,7 +606,10 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
   
     # Others
     else:
-      s_value = str(value)
+      if type(value) is not unicode:
+        s_value = str(value)
+      else:
+        s_value = str(unicodedata.normalize('NFKD', value).encode('ascii','ignore').decode('utf-8'))
       if len(s_value) > 0:
         xml.append(toCdata(self,s_value,xhtml))
   

@@ -564,7 +564,7 @@ class ConfManager(
     @type REQUEST: ZPublisher.HTTPRequest
     @rtype: C{any}
     """
-    def _getConfProperty(self, *args, **kwargs):
+    def get_conf_property(self, *args, **kwargs):
       params = ('key','default','REQUEST')
       map(lambda x:operator.setitem(kwargs,params[x],args[x]),range(len(args)))
       key = kwargs['key']
@@ -593,7 +593,7 @@ class ConfManager(
 
     def getConfProperty(self, key, default=None, REQUEST=None):
       """ ConfManager.getConfProperty """
-      return self._getConfProperty(key, default, REQUEST)
+      return self.get_conf_property(key, default, REQUEST)
 
 
     """

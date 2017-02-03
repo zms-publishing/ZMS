@@ -472,7 +472,7 @@ class ZMSMetaobjManager:
     def getMetaobj(self, id):
       ob = _globals.nvl( self.__get_metaobj__(id), {'id':id, 'attrs':[], })
       if ob is not None and ob.get('acquired',0) == 1:
-        enabled = self._getConfProperty('%s.enabled'%id,None)
+        enabled = self.get_conf_property('%s.enabled'%id,None)
         if enabled is not None:
           ob['enabled'] = enabled
       return ob

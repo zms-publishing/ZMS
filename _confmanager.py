@@ -560,6 +560,8 @@ class ConfManager(
     @type key: C{string}
     @param default: The default-value.
     @type default: C{any}
+    @var REQUEST: the triggering request
+    @type REQUEST: ZPublisher.HTTPRequest
     @rtype: C{any}
     """
     def _getConfProperty(self, *args, **kwargs):

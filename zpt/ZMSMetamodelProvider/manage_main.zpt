@@ -11,7 +11,7 @@
 
 <tal:block tal:define="global
 		metaObjIds python:here.getMetaobjIds(sort=True);
-		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
+		metaObjs python:map(lambda x: here.getMetaobj(x,aq_attrs=['enabled']), metaObjIds);
 		metaObjPackages python:here.sort_list(['']+map(lambda x: x['id'],filter(lambda x: x['type']=='ZMSPackage', metaObjs)));
 		metaObjPackages2 python:filter(lambda x: x not in metaObjPackages, map(lambda x: x.get('package'), metaObjs))">
 
@@ -52,7 +52,7 @@
 				id request/id;
 				objAttrIds python:here.getMetaobjAttrIds(id);
 				metaObjAttrs python:map(lambda x:here.getMetaobjAttr(id,x),objAttrIds);
-				metaObj python:here.getMetaobj(id);
+				metaObj python:here.getMetaobj(id,aq_attrs=['enabled']);
 				metaObjRecordSet python:int(metaObj['type']=='ZMSRecordSet')">
 	<input type="hidden" name="key" value="all"/>
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
@@ -358,7 +358,7 @@
 			<tr>
 				<th tal:content="structure python:here.getZMILangStr('TAB_ACCESS')">TAB_ACCESS</th>
 				<th tal:content="structure python:here.getZMILangStr('ATTR_ACTIVE')">ATTR_ACTIVE</th>
-				<th tal:content="structure python:here.getZMILangStr('ATTR_NODE')">ATTR_NODE</th>
+				<th style="min-width:15em;" tal:content="structure python:here.getZMILangStr('ATTR_NODE')">ATTR_NODE</th>
 				<th tal:repeat="role roleOptpl" class="rolename" tal:attributes="title python:role[1]"><div><span tal:content="structure python:role[1]">ROLENAME</span></div></th>
 				<th style="width:100%;">&nbsp;</th>
 			</tr>
@@ -373,7 +373,7 @@
 					</tal:block>
 				</td>
 				<td>
-					<textarea class="form-control input-sm" cols="80" rows="1" wrap="virtual"
+					<textarea class="form-control url-input input-sm" cols="80" rows="1" wrap="virtual"
 						tal:condition="python:action=='insert'"
 						tal:attributes="name python:'access_%s_custom'%(action)"
 						tal:content="structure python:metaObj.get('access',{}).get('%s_custom'%action,'{$}')">
@@ -470,13 +470,8 @@
 				<td></td>
 				<td>
 					<span tal:attributes="id python:metaObj['id'];title python:metaObj['id'];class python:' '.join([[''],['enabled']][here.boolint(metaObj.get('enabled',0))])">
-						<tal:block tal:condition="python:metaObj.get('acquired')">
-							<i class="icon-share" title="acquired"></i>
-							<i tal:attributes="class python:' '.join(['enabled-toggle']+[['icon-check-empty'],['icon-check']][here.boolint(metaObj.get('enabled',0))])"></i>
-						</tal:block>
-						<tal:block tal:condition="not:python:metaObj.get('acquired')">
-							<i tal:attributes="class python:' '.join(['enabled-toggle','ui-helper-clickable']+[['icon-check-empty'],['icon-check']][here.boolint(metaObj.get('enabled',0))])" onclick="zmiEnabledBtnClick(this)"></i>
-						</tal:block>
+						<i tal:condition="python:metaObj.get('acquired',None)" class="icon-share" title="acquired"></i>
+						<i tal:attributes="class python:' '.join(['enabled-toggle','ui-helper-clickable']+[['icon-check-empty'],['icon-check']][here.boolint(metaObj.get('enabled',0))])" onclick="zmiEnabledBtnClick(this)"></i>
 						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank">
 							<span tal:on-error="string:ERROR" tal:replace="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</span>
 						</a>
@@ -654,6 +649,16 @@ function zmiPopulateTypeSelect(sender) {
 				}
 			});
 	}
+}
+
+/**
+ * Transfer selected object to node list.
+ */
+function selectObject(ignoredUrl, ignoredTitle, nodeName) {
+	var form = $('form.form-initialized');
+	var textArea = form.find('textarea.url-input');
+	var newVal = textArea.val() + '\n' + nodeName;
+	textArea.val(newVal).trigger('change');
 }
 
 $(function(){

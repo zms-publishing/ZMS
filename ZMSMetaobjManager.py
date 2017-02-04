@@ -469,8 +469,13 @@ class ZMSMetaobjManager:
     #
     #  Returns meta-object specified by id.
     # --------------------------------------------------------------------------
-    def getMetaobj(self, id):
+    def getMetaobj(self, id, aq_attrs=[]):
       ob = _globals.nvl( self.__get_metaobj__(id), {'id':id, 'attrs':[], })
+      if ob.get('acquired'):
+        for k in aq_attrs:
+          v = self.get_conf_property('%s.%s'%(id,k),None)
+          if v is not None:
+            ob[k] = v
       return ob
 
 
@@ -977,7 +982,10 @@ class ZMSMetaobjManager:
           k = key[len(prefix):].lower()
           v = REQUEST.form.get(key)
           if k in ob.keys():
-            ob[k] = v
+            if ob.get('acquired'):
+              self.setConfProperty('%s.%s'%(id,k),v)
+            else:
+              ob[k] = v
             xml += ' %s="%s"'%(k,str(v))
       xml += '/>'
       # Assign Attributes to Meta-Object.

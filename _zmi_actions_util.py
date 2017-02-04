@@ -155,10 +155,11 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
       if container.dt_executable('\n'.join(meta_keys)):
         meta_keys = container.dt_exec('\n'.join(meta_keys))
       # iterate types
+      metaobj_manager = container.getMetaobjManager()
       for meta_id in meta_keys:
         if meta_id.startswith('type(') and meta_id.endswith(')'):
           for metaObjId in metaObjIds:
-            metaObj = container.getMetaobj( metaObjId)
+            metaObj = metaobj_manager.getMetaobj( metaObjId,aq_attrs=['enabled'])
             if metaObj['type'] == meta_id[5:-1] and metaObj['enabled'] == 1:
               meta_ids.append( metaObj['id'])
         elif meta_id in metaObjIds:

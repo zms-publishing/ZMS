@@ -470,8 +470,13 @@
 				<td></td>
 				<td>
 					<span tal:attributes="id python:metaObj['id'];title python:metaObj['id'];class python:' '.join([[''],['enabled']][here.boolint(metaObj.get('enabled',0))])">
-						<i tal:condition="python:metaObj.get('acquired',None)" class="icon-share" title="acquired"></i>
-						<i tal:attributes="class python:' '.join(['enabled-toggle','ui-helper-clickable']+[['icon-check-empty'],['icon-check']][here.boolint(metaObj.get('enabled',0))])" onclick="zmiEnabledBtnClick(this)"></i>
+						<tal:block tal:condition="python:metaObj.get('acquired')">
+							<i class="icon-share" title="acquired"></i>
+							<i tal:attributes="class python:' '.join(['enabled-toggle']+[['icon-check-empty'],['icon-check']][here.boolint(metaObj.get('enabled',0))])"></i>
+						</tal:block>
+						<tal:block tal:condition="not:python:metaObj.get('acquired')">
+							<i tal:attributes="class python:' '.join(['enabled-toggle','ui-helper-clickable']+[['icon-check-empty'],['icon-check']][here.boolint(metaObj.get('enabled',0))])" onclick="zmiEnabledBtnClick(this)"></i>
+						</tal:block>
 						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank">
 							<span tal:on-error="string:ERROR" tal:replace="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</span>
 						</a>

@@ -471,10 +471,6 @@ class ZMSMetaobjManager:
     # --------------------------------------------------------------------------
     def getMetaobj(self, id):
       ob = _globals.nvl( self.__get_metaobj__(id), {'id':id, 'attrs':[], })
-      if ob is not None and ob.get('acquired',0) == 1:
-        enabled = self.get_conf_property('%s.enabled'%id,None)
-        if enabled is not None:
-          ob['enabled'] = enabled
       return ob
 
 
@@ -981,10 +977,7 @@ class ZMSMetaobjManager:
           k = key[len(prefix):].lower()
           v = REQUEST.form.get(key)
           if k in ob.keys():
-            if ob.get('acquired'):
-              self.setConfProperty('%s.%s'%(id,k),v)
-            else:
-              ob[k] = v
+            ob[k] = v
             xml += ' %s="%s"'%(k,str(v))
       xml += '/>'
       # Assign Attributes to Meta-Object.

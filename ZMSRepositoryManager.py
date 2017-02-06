@@ -120,7 +120,7 @@ class ZMSRepositoryManager(
     Returns conf-basepath.
     """
     def get_conf_basepath(self, id=''):
-      basepath = self.getConfProperty('ZMS.conf.path')
+      basepath = self.get_conf_property('ZMS.conf.path')
       basepath = basepath.replace("/",os.path.sep)
       basepath = basepath.replace('$INSTANCE_HOME',self.getINSTANCE_HOME())
       basepath = basepath.replace('$HOME_ID',self.getHome().id)

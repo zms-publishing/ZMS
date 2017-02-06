@@ -49,7 +49,7 @@ class ZMSMetadictManager:
       if ids is None:
         ids = valid_ids
       for id in filter(lambda x:x in valid_ids, ids):
-        d = {'id':id,'revision':'0.0.0','__filename__':['__metas__.py'],'Metas':[]}
+        d = {'id':id,'__filename__':['__metas__.py'],'Metas':[]}
         map(lambda x:d['Metas'].append(self.metas[x*2+1]),range(len(self.metas)/2))
         r[id] = d
 

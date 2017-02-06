@@ -188,11 +188,11 @@ class ZMSMetaobjManager:
       id = r['id']
       if not id.startswith('__') and not id.endswith('__'):
         self.writeBlock("[updateRepositoryModel]: id=%s"%id)
-        r['attrs'] = r['Attrs']
-        del r['Attrs']
+        r['attrs'] = r.get('Attrs',[])
+        if r.has_key('Attrs'): del r['Attrs']
         self.delMetaobj(id)
         self.setMetaobj(r)
-        for attr in r.get('attrs',[]):
+        for attr in r['attrs']:
           if attr['type'] in self.valid_zopeattrs+self.valid_zopetypes:
             oldId = attr['id']
             newId = attr['id']

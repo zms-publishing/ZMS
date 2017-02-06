@@ -52,7 +52,19 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
       for artefact_id in attr_id.split('/')[:-1]:
          container = getattr( container, artefact_id)
       artefact_id = attr['id'].split('/')[-1]
-      artefact = getattr( container, artefact_id)
+      artefact = getattr(container,artefact_id,None)
+    if artefact is None and attr['type'] in ['External Method']:
+      class MissingArtefactProxy:
+        def __init__(self,id,meta_type):
+          self.id=id
+          self.meta_type=meta_type
+        icon__roles__=None
+        def icon(self):
+          return {'External Method':'/misc_/ExternalMethod/extmethod.gif'}.get(self.meta_type,'/misc_/OFSP/File_icon.gif')
+        absolute_url__roles__=None
+        def absolute_url(self):
+          return '#'
+      artefact = MissingArtefactProxy(attr['id'],attr['type'])
     if artefact is not None:
       """
       @TODO: find a better solution...

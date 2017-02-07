@@ -385,8 +385,15 @@ class ZMSRepositoryManager(
           basepath = self.get_conf_basepath(provider.id)
           if os.path.exists(basepath):
             for name in os.listdir(basepath):
-              if name == id or name == '%s.py'%id:
-                filepath = os.path.join(basepath,name)
+              filepath = os.path.join(basepath,name)
+              mode = os.stat(filepath)[stat.ST_MODE]
+              if stat.S_ISDIR(mode) and name == id:
+                self.writeBlock("[commitChanges]: clear dir %s"%filepath)
+                dir = map(lambda x:os.path.join(filepath,x),os.listdir(filepath))
+                dir = filter(lambda x:not stat.S_ISDIR(os.stat(x)[stat.ST_MODE]),dir)
+                map(lambda x:_fileutil.remove(x),dir)
+              elif not stat.S_ISDIR(mode) and name == '%s.py'%id:
+                self.writeBlock("[commitChanges]: remove file %s"%filepath)
                 _fileutil.remove(filepath)
           # Write files.
           for file in files.keys():

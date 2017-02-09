@@ -49,8 +49,10 @@ class ZMSMetadictManager:
       if ids is None:
         ids = valid_ids
       for id in filter(lambda x:x in valid_ids, ids):
-        d = {'id':id,'__filename__':['__metas__.py'],'Metas':[]}
-        map(lambda x:d['Metas'].append(self.metas[x*2+1]),range(len(self.metas)/2))
+        metas = copy.deepcopy(self.metas)
+        metas = map(lambda x:metas[x*2+1],range(len(metas)/2))
+        map(lambda x:self.operator_delitem(x,'acquired'),filter(lambda x:x.has_key('acquired'),metas))
+        d = {'id':id,'__filename__':['__metas__.py'],'Metas':metas}
         r[id] = d
 
     """

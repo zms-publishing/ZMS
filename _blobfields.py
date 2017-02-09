@@ -908,7 +908,7 @@ class MyImage(MyBlob,Image):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getHeight__roles__ = None
     def getHeight(self):
-      h = self.width
+      h = self.height
       if not h:
         h = self.aq_parent.getConfProperty('ZMS.image.default.height',400)
       return h

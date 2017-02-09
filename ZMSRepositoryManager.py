@@ -178,7 +178,11 @@ class ZMSRepositoryManager(
             self.writeBlock("[exec_auto_update]: %s<%s"%(str(last_update),str(mtime)))
             if last_update is None or _globals.getDateTime(last_update)<_globals.getDateTime(mtime):
               update_files = map(lambda x:x[1][len(basepath):],filter(lambda x:last_update is None or _globals.getDateTime(x[0])<_globals.getDateTime(last_update),files))
-              ids = list(set(map(lambda x:':'.join(x.split(os.path.sep)[0:2]),update_files)))
+              temp_files = map(lambda x:x.split(os.path.sep),update_files)
+              temp_files = \
+                map(lambda x:[x[0],x[-1].replace('.py','')],filter(lambda x:len(x)==2,temp_files)) + \
+                map(lambda x:[x[0],x[-2]],filter(lambda x:len(x)>2,temp_files))
+              ids = list(set(map(lambda x:':'.join(x),temp_files)))
               self.writeBlock("[exec_auto_update]: %s"%str(ids))
               self.updateChanges(ids, override=True)
             self.last_update = _globals.getDateTime(current_time)

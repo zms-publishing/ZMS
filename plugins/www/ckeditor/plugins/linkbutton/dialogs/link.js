@@ -201,7 +201,9 @@ CKEDITOR.dialog.add( 'linkbuttonDlg', function( editor )
         if (linkType == 'url' && (url.indexOf('.')!=0 && url.indexOf('://')<0)) {
           url = 'http://'+url;
         }
-        attributes[ 'data-id' ] = data_id;
+        if (data_id != null) {
+        	attributes[ 'data-id' ] = data_id;
+        }
         attributes[ 'href' ] = url;
         if (target != "notSet") {
           attributes[ 'target' ] = target;

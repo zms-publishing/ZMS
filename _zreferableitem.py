@@ -67,7 +67,7 @@ def getInternalLinkDict(self, url):
       d['data-target'] = "inactive"
     elif self.getTrashcan().isAncestor(ref_obj):
       d['data-target'] = 'trashcan'
-  else:
+  elif url != "null":
     d['data-id'] = "{$__%s__}"%url[2:-1]
     d['data-target'] = "missing"
   #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
@@ -99,7 +99,7 @@ def getInlineRefs(text):
   r = re.compile(p)
   for f in r.findall(str(text)):
     d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
-    if d.has_key('data-id'):
+    if d.has_key('data-id') and d['data-id']!='null':
       l.append(d['data-id'])
   return l
 
@@ -336,7 +336,7 @@ class ZReferableItem:
       r = re.compile(p)
       for f in r.findall(str(text)):
         d = dict(re.findall('\\s(.*?)="(.*?)"',f))
-        if d.has_key('data-id'):
+        if d.has_key('data-id') and d['data-id']!='null':
           old = p.replace('(.*?)',f)
           url = d['data-id']
           ild = getInternalLinkDict(self,url)
@@ -360,7 +360,8 @@ class ZReferableItem:
     if isInternalLink(url):
       if not url.startswith('{$__'):
         ild = getInternalLinkDict(self,url)
-        url = ild['data-id']
+        if ild.has_key('data-id') and ild['data-id']!='null':
+          url = ild['data-id']
     self.stopMeasurement('%s.validateLinkObj'%self.meta_id)
     return url
 

@@ -117,44 +117,56 @@ class ZMSGlobals:
     NORESOLVEREF = 5  #: virtual meta_type-flag for not resolving meta-type of ZMSLinkElement-target-object.
 
 
-    security.declarePrivate('getPRODUCT_HOME')
+    """
+    Returns home-folder of this Product.
+    """
     def getPRODUCT_HOME( self):
-      """
-      Returns home-folder of this Product.
-      """
       PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
       return PRODUCT_HOME
 
 
-    security.declarePrivate('getPACKAGE_HOME')
+    """
+    Returns path to lib/site-packages
+    """
     def getPACKAGE_HOME( self):
-      """
-      Returns path to lib/site-packages
-      """
       from distutils.sysconfig import get_python_lib
       return get_python_lib()
 
 
-    security.declarePrivate('getINSTANCE_HOME')
+    """
+    Returns path to Instance
+    """
     def getINSTANCE_HOME( self):
-      """
-      Returns path to Instance
-      """
       INSTANCE_HOME = self.Control_Panel.getINSTANCE_HOME()
       return INSTANCE_HOME
 
 
-    security.declarePrivate('FileFromData')
+    """
+    Creates a new Zope native-representative (Image/File) of given blob in container.
+    @return: New instance of Zope-object.
+    @rtype: L{object}
+    """
+    def createBlobInContext( self, id, blob, container):
+      filename = blob.getFilename()
+      data = blob.getData()
+      if blob.getContentType().startswith('image'):
+        container.manage_addImage( id=id, title=filename, file=data)
+      else:
+        container.manage_addFile( id=id, title=filename, file=data)
+      ob = getattr(container,id)
+      return ob
+
+
+    """
+    Creates a new instance of a file from given data.
+    @param data: File-data (binary)
+    @type data: C{string}
+    @param filename: Filename
+    @type filename: C{string}
+    @return: New instance of file.
+    @rtype: L{MyFile}
+    """
     def FileFromData( self, data, filename='', content_type=None, mediadbStorable=False):
-      """
-      Creates a new instance of a file from given data.
-      @param data: File-data (binary)
-      @type data: C{string}
-      @param filename: Filename
-      @type filename: C{string}
-      @return: New instance of file.
-      @rtype: L{MyFile}
-      """
       file = {}
       file['data'] = data
       file['filename'] = filename
@@ -162,62 +174,74 @@ class ZMSGlobals:
       return _blobfields.createBlobField( self, _globals.DT_FILE, file=file, mediadbStorable=mediadbStorable)
 
 
-    security.declarePrivate('ImageFromData')
+    """
+    Creates a new instance of an image from given data.
+    @param data: Image-data (binary)
+    @type data: C{string}
+    @param filename: Filename
+    @type filename: C{string}
+    @return: New instance of image.
+    @rtype: L{MyImage}
+    """
     def ImageFromData( self, data, filename='', content_type=None, mediadbStorable=False):
-      """
-      Creates a new instance of an image from given data.
-      @param data: Image-data (binary)
-      @type data: C{string}
-      @param filename: Filename
-      @type filename: C{string}
-      @return: New instance of image.
-      @rtype: L{MyImage}
-      """
       f = _blobfields.createBlobField( self, _globals.DT_IMAGE, file={'data':data,'filename':filename,'content_type':content_type}, mediadbStorable=mediadbStorable)
       f.aq_parent = self
       return f
 
 
-    security.declarePrivate('nvl')
+    """
+    Inline condition 
+    @param c: condition
+    @type c: C{boolean}
+    @param t: return value if condition is true
+    @type t: C{any}
+    @param f: return value if condition is false
+    @type f: C{any}
+    @rtype: C{any}
+    """
+    def boolint(self, c, t=1, f=0):
+      if c in [1,True,'1','True']:
+        return t
+      return f
+
+
+    """
+    Returns its first argument if it is not equal to third argument (None), 
+    otherwise it returns its second argument.
+    @param a1: 1st argument
+    @type a1: C{any}
+    @param a2: 2nd argument
+    @type a2: C{any}
+    @rtype: C{any}
+    """
     def nvl(self, a1, a2, n=None):
-      """
-      Returns its first argument if it is not equal to third argument (None), 
-      otherwise it returns its second argument.
-      @param a1: 1st argument
-      @type a1: C{any}
-      @param a2: 2nd argument
-      @type a2: C{any}
-      @rtype: C{any}
-      """
       return _globals.nvl( a1, a2, n)
 
 
-    security.declarePrivate('encrypt_schemes')
+    """
+    Available encryption-schemes.
+    @return: list of encryption-scheme ids
+    @rtype: C{list}
+    """
     def encrypt_schemes(self):
-      """
-      Available encryption-schemes.
-      @return: list of encryption-scheme ids
-      @rtype: C{list}
-      """
       ids = []
       for id, prefix, scheme in AuthEncoding._schemes:
         ids.append( id)
       return ids
 
 
-    security.declarePrivate('encrypt_password')
+    """
+    Encrypts given password.
+    @param pw: Password
+    @type pw: C{string}
+    @param algorithm: Encryption-algorithm (md5, sha-1, etc.)
+    @type algorithm: C{string}
+    @param hex: Hexlify
+    @type hex: C{bool}
+    @return: Encrypted password
+    @rtype: C{string}
+    """
     def encrypt_password(self, pw, algorithm='md5', hex=False):
-      """
-      Encrypts given password.
-      @param pw: Password
-      @type pw: C{string}
-      @param algorithm: Encryption-algorithm (md5, sha-1, etc.)
-      @type algorithm: C{string}
-      @param hex: Hexlify
-      @type hex: C{bool}
-      @return: Encrypted password
-      @rtype: C{string}
-      """
       enc = None
       if algorithm.upper() == 'SHA-1':
         import sha
@@ -233,15 +257,14 @@ class ZMSGlobals:
       return enc
 
 
-    security.declarePrivate('encrypt_ordtype')
+    """
+    Encrypts given string with entities by random algorithm.
+    @param s: String
+    @type s: C{string}
+    @return: Encrypted string
+    @rtype: C{string}
+    """
     def encrypt_ordtype(self, s):
-      """
-      Encrypts given string with entities by random algorithm.
-      @param s: String
-      @type s: C{string}
-      @return: Encrypted string
-      @rtype: C{string}
-      """
       from binascii import hexlify
       new = ''
       for ch in s:
@@ -255,34 +278,32 @@ class ZMSGlobals:
       return new
 
 
-    security.declarePrivate('rand_int')
+    """
+    Random integer in given range.
+    @param n: Range
+    @type n: C{int}
+    @return: Random integer
+    @rtype: C{int}
+    """
     def rand_int(self, n):
-      """
-      Random integer in given range.
-      @param n: Range
-      @type n: C{int}
-      @return: Random integer
-      @rtype: C{int}
-      """
       from random import randint
       return randint(0,n)
 
 
-    security.declarePrivate('string_maxlen')
+    """
+    Returns string with specified maximum-length. If original string exceeds 
+    maximum-length '...' is appended at the end.
+    @param s: String
+    @type s: C{string}
+    @param maxlen: Maximum-length
+    @type maxlen: C{int}
+    @param etc: Characters to be appended if maximum-length is exceeded
+    @type etc: C{string}
+    @param encoding: Encoding
+    @type encoding: C{string}
+    @rtype: C{string}
+    """
     def string_maxlen(self, s, maxlen=20, etc='...', encoding=None):
-      """
-      Returns string with specified maximum-length. If original string exceeds 
-      maximum-length '...' is appended at the end.
-      @param s: String
-      @type s: C{string}
-      @param maxlen: Maximum-length
-      @type maxlen: C{int}
-      @param etc: Characters to be appended if maximum-length is exceeded
-      @type etc: C{string}
-      @param encoding: Encoding
-      @type encoding: C{string}
-      @rtype: C{string}
-      """
       if encoding is not None:
         s = unicode( s, encoding)
       # remove all tags.
@@ -299,51 +320,50 @@ class ZMSGlobals:
       return s
 
 
+    """
+    Replace special characters in string using the %xx escape. Letters, digits, 
+    and the characters '_.-' are never quoted. By default, this function is 
+    intended for quoting the path section of the URL. The optional safe 
+    parameter specifies additional characters that should not be quoted,
+    its default value is '/'.
+    @return: the quoted string
+    @rtype: C{string}
+    """
     def url_quote(self, string, safe='/'):
-      """
-      Replace special characters in string using the %xx escape. Letters, digits, 
-      and the characters '_.-' are never quoted. By default, this function is 
-      intended for quoting the path section of the URL. The optional safe 
-      parameter specifies additional characters that should not be quoted,
-      its default value is '/'.
-      @return: the quoted string
-      @rtype: C{string}
-      """
       return urllib.quote(string,safe)
 
 
-    security.declarePrivate('http_import')
+    """
+    Send Http-Request and return Response-Body.
+    @param url: Remote-URL
+    @type url: C{string}
+    @param method: Method
+    @type method: C{string}, values are GET or POST
+    @param auth: Authentication
+    @type auth: C{string}
+    @param parse_qs: Parse Query-String
+    @type parse_qs: C{int}, values are 0 or 1
+    @param timeout: Time-Out [s]
+    @type timeout: C{int}, values in seconds
+    @param headers: Request-Headers
+    @type headers: C{dict}
+    @return: Response-Body
+    @rtype: C{string}
+    """
     def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
-      """
-      Send Http-Request and return Response-Body.
-      @param url: Remote-URL
-      @type url: C{string}
-      @param method: Method
-      @type method: C{string}, values are GET or POST
-      @param auth: Authentication
-      @type auth: C{string}
-      @param parse_qs: Parse Query-String
-      @type parse_qs: C{int}, values are 0 or 1
-      @param timeout: Time-Out [s]
-      @type timeout: C{int}, values in seconds
-      @param headers: Request-Headers
-      @type headers: C{dict}
-      @return: Response-Body
-      @rtype: C{string}
-     """
       return _globals.http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers)
 
 
+    """
+    Append params from dict to given url.
+    @param url: Url
+    @type url: C{string}
+    @param dict: dictionary of params (key/value pairs)
+    @type dict: C{dict}
+    @return: New url
+    @rtype: C{string}
+    """
     def url_append_params(self, url, dict, sep='&amp;'):
-      """
-      Append params from dict to given url.
-      @param url: Url
-      @type url: C{string}
-      @param dict: dictionary of params (key/value pairs)
-      @type dict: C{dict}
-      @return: New url
-      @rtype: C{string}
-      """
       anchor = ''
       i = url.rfind('#')
       if i > 0:
@@ -380,16 +400,16 @@ class ZMSGlobals:
       return url+anchor
 
 
+    """
+    Inerits params from request to given url.
+    @param url: Url
+    @type url: C{string}
+    @param REQUEST: the triggering request
+    @type REQUEST: C{ZPublisher.HTTPRequest}
+    @return: New url
+    @rtype: C{string}
+    """
     def url_inherit_params(self, url, REQUEST, exclude=[], sep='&amp;'):
-      """
-      Inerits params from request to given url.
-      @param url: Url
-      @type url: C{string}
-      @param REQUEST: the triggering request
-      @type REQUEST: C{ZPublisher.HTTPRequest}
-      @return: New url
-      @rtype: C{string}
-      """
       anchor = ''
       i = url.rfind('#')
       if i > 0:
@@ -420,19 +440,19 @@ class ZMSGlobals:
       return url+anchor
 
 
+    """
+    Converts given string to identifier (removes special-characters and 
+    replaces German umlauts).
+    @param s: String
+    @type s: C{string}
+    @return: Identifier
+    @rtype: C{string}
+    """
     def id_quote(self, s, mapping={
             '\x20':'_',
             '-':'_',
             '/':'_',
     }):
-      """
-      Converts given string to identifier (removes special-characters and 
-      replaces German umlauts).
-      @param s: String
-      @type s: C{string}
-      @return: Identifier
-      @rtype: C{string}
-      """
       s = _globals.umlaut_quote(self, s, mapping)
       valid = map( lambda x: ord(x[0]), mapping.values()) + [ord('_')] + range(ord('0'),ord('9')+1) + range(ord('A'),ord('Z')+1) + range(ord('a'),ord('z')+1)
       s = filter( lambda x: ord(x) in valid, s)
@@ -442,22 +462,22 @@ class ZMSGlobals:
       return s
 
 
+    """
+    Returns prefix from identifier (which is the non-numeric part at the 
+    beginning).
+    @param s: Identifier
+    @type s: C{string}
+    @return: Prefix
+    @rtype: C{string}
+    """
     def get_id_prefix(self, s):
-      """
-      Returns prefix from identifier (which is the non-numeric part at the 
-      beginning).
-      @param s: Identifier
-      @type s: C{string}
-      @return: Prefix
-      @rtype: C{string}
-      """
       return _globals.id_prefix(s)
 
 
+    """
+    Replace special characters in string for javascript.
+    """
     def js_quote(self, text, charset=None):
-      """
-      Replace special characters in string for javascript.
-      """
       if type(text) is unicode:
         text= text.encode([charset, 'utf-8'][charset==None])
       text = text.replace("\r", "\\r").replace("\n", "\\n")
@@ -465,23 +485,33 @@ class ZMSGlobals:
       return text
 
 
+    """
+    Checks if given request is preview.
+    @param REQUEST: the triggering request
+    @type REQUEST: C{ZPublisher.HTTPRequest}
+    @rtype: C{Boolean}
+    """
+    def isPreviewRequest(self, REQUEST):
+      return _globals.isPreviewRequest(REQUEST)
+
+
+    """
+    Returns display string for file-size (KB).
+    @param len: length (bytes)
+    @type len: C{int}
+    @rtype: C{string}
+    """
     def getDataSizeStr(self, len):
-      """
-      Returns display string for file-size (KB).
-      @param len: length (bytes)
-      @type len: C{int}
-      @rtype: C{string}
-      """
       return _fileutil.getDataSizeStr(len)
 
 
+    """
+    Returns the absolute-url of an icon representing the specified MIME-type.
+    @param mt: MIME-Type (e.g. image/gif, text/xml).
+    @type mt: C{string}
+    @rtype: C{string}
+    """
     def getMimeTypeIconSrc(self, mt):
-      """
-      Returns the absolute-url of an icon representing the specified MIME-type.
-      @param mt: MIME-Type (e.g. image/gif, text/xml).
-      @type mt: C{string}
-      @rtype: C{string}
-      """
       return'/misc_/zms/%s'%_mimetypes.dctMimeType.get( mt, _mimetypes.content_unknown)
 
 
@@ -491,55 +521,51 @@ class ZMSGlobals:
     #
     ############################################################################
 
-    security.declarePrivate('operator_absattr')
+    """
+    Returns absolute-attribute of given value.
+    @param v: Value
+    @type v: C{any}
+    @rtype: C{type}
+    """
     def operator_absattr(self, v):
-      """
-      Returns absolute-attribute of given value.
-      @param v: Value
-      @type v: C{any}
-      @rtype: C{type}
-      """
       return absattr(v)
 
-    security.declarePrivate('operator_gettype')
+    """
+    Returns python-type of given value.
+    @param v: Value
+    @type v: C{any}
+    @rtype: C{type}
+    """
     def operator_gettype(self, v):
-      """
-      Returns python-type of given value.
-      @param v: Value
-      @type v: C{any}
-      @rtype: C{type}
-      """
       return type(v)
 
-    security.declarePrivate('operator_setitem')
+    """
+    Applies value for key in python-dictionary.
+    This is a convenience-function since it is not possible to use expressions
+    like a[b]=c in DTML.
+    @param a: Dictionary
+    @type a: C{dict}
+    @param b: Key
+    @type b: C{any}
+    @param c: Value
+    @type c: C{any}
+    @rtype: C{dict}
+    """
     def operator_setitem(self, a, b, c):
-      """
-      Applies value for key in python-dictionary.
-      This is a convenience-function since it is not possible to use expressions
-      like a[b]=c in DTML.
-      @param a: Dictionary
-      @type a: C{dict}
-      @param b: Key
-      @type b: C{any}
-      @param c: Value
-      @type c: C{any}
-      @rtype: C{dict}
-      """
       operator.setitem(a,b,c)
       return a
 
-    security.declarePrivate('operator_getitem')
+    """
+    Retrieves value for key from python-dictionary.
+    @param a: Dictionary
+    @type a: C{dict}
+    @param b: Key
+    @type b: C{any}
+    @param c: Default-Value
+    @type c: C{any}
+    @rtype: C{any}
+    """
     def operator_getitem(self, a, b, c=None, ignorecase=True):
-      """
-      Retrieves value for key from python-dictionary.
-      @param a: Dictionary
-      @type a: C{dict}
-      @param b: Key
-      @type b: C{any}
-      @param c: Default-Value
-      @type c: C{any}
-      @rtype: C{any}
-      """
       if ignorecase and type(b) is str:
         flags = int(self.getConfProperty('operator_getitem.ignorecase.flags',re.IGNORECASE))
         pattern = self.getConfProperty('operator_getitem.ignorecase..pattern','^*$').replace('*',b)
@@ -1151,50 +1177,46 @@ class ZMSGlobals:
       return _extutil.ZMSExtensions()
 
 
-    security.declarePrivate('getZipArchive')
+    """
+    Extract files from zip-archive and return list of extracted files.
+    @return: Extracted files (binary)
+    @rtype: C{list}
+    """
     def getZipArchive(self, f):
-      """
-      Extract files from zip-archive and return list of extracted files.
-      @return: Extracted files (binary)
-      @rtype: C{list}
-      """
       return _fileutil.getZipArchive(f)
 
 
+    """
+    Extract zip-archive.
+    """
     security.declarePrivate('extractZipArchive')
     def extractZipArchive(self, f):
-      """
-      Extract zip-archive.
-      """
       return _fileutil.extractZipArchive(f)
 
 
-    security.declarePrivate('buildZipArchive')
+    """
+    Pack zip-archive and return data.
+    @return: zip-archive (binary)
+    @rtype: C{string}
+    """
     def buildZipArchive( self, files, get_data=True):
-      """
-      Pack zip-archive and return data.
-      @return: zip-archive (binary)
-      @rtype: C{string}
-      """
       return _fileutil.buildZipArchive( files, get_data)
 
 
-    security.declarePrivate('localfs_package_home')
+    """
+    Returns package_home on local file-system.
+    @return: package_home()
+    @rtype: C{string}
+    """
     def localfs_package_home(self):
-      """
-      Returns package_home on local file-system.
-      @return: package_home()
-      @rtype: C{string}
-      """
       return package_home(globals())
 
 
-    security.declarePrivate('localfs_tempfile')
+    """
+    Creates temp-folder on local file-system.
+    @rtype: C{string}
+    """
     def localfs_tempfile(self):
-      """
-      Creates temp-folder on local file-system.
-      @rtype: C{string}
-      """
       tempfolder = tempfile.mktemp()
       return tempfolder
 

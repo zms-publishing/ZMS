@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" tal:define="standard modules/Products.zms/standard; Std modules/Products/PythonScripts/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='preview_top')">
 <script>
@@ -21,7 +21,7 @@
 		<div class="pull-right">
 			&nbsp;|&nbsp;<a tal:attributes="href python:'manage_main?lang=%s'%request['lang']" target="_parent">
 				<tal:block tal:content="python:'%s %s %s'%(here.getZMILangStr('BACK'),here.getZMILangStr('TO'),here.display_type(request))">back to display_type</tal:block>
-				<tal:block tal:condition="python:here.display_type(request)!=here.getTitlealt(request)" tal:content="python:': %s'%here.string_maxlen(here.getTitlealt(request),25)">: titlealt</tal:block>
+				<tal:block tal:condition="python:here.display_type(request)!=here.getTitlealt(request)" tal:content="python:': %s'%standard.string_maxlen(here.getTitlealt(request),25)">: titlealt</tal:block>
 			</a>
 			&nbsp;|&nbsp;<span class="ui-helper-clickable zmi-top-active" tal:attributes="onclick python:'open_partner(this,\'%s/$ZMS_HOME/doc/index.html\')'%here.getDocumentElement().absolute_url()">
 				ZMS API

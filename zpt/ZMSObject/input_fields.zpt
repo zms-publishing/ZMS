@@ -21,7 +21,7 @@
 							<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
 						<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
 						<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
-						<span class="zmi-change-uid" tal:content="structure python:here.string_maxlen(change_uid,20)">the change-uid</span>
+						<span class="zmi-change-uid" tal:content="change_uid">the change-uid</span>
 						<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 					</div>
 			</div>

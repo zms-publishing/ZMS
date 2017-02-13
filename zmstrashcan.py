@@ -25,7 +25,7 @@ import urllib
 # Product Imports.
 from zmscontainerobject import ZMSContainerObject
 import _confmanager
-import _globals
+import standard
 
 
 ################################################################################
@@ -140,7 +140,7 @@ class ZMSTrashcan(ZMSContainerObject):
       last_run = getattr(self,'last_garbage_collection',None)
       if forced or \
          last_run is None or \
-         _globals.daysBetween(last_run,now)>1:
+         standard.daysBetween(last_run,now)>1:
         # Get days.
         days = int(getattr(self,'garbage_collection','2'))
         # Get IDs.
@@ -148,7 +148,7 @@ class ZMSTrashcan(ZMSContainerObject):
         for context in self.objectValues(self.dGlobalAttrs.keys()):
           delete = True
           try:
-            delete = delete and _globals.daysBetween(context.del_dt,now)>=days
+            delete = delete and standard.daysBetween(context.del_dt,now)>=days
           except:
             pass
           if delete:

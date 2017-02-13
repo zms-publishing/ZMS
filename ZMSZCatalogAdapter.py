@@ -25,7 +25,7 @@ import urllib
 import zope.interface
 # Product Imports.
 import _confmanager
-import _globals
+import standard
 import IZMSCatalogAdapter,IZMSConfigurationProvider
 import ZMSItem
 
@@ -158,7 +158,7 @@ class ZMSZCatalogAdapter(
           connector.reindex_all()
         return True
       except:
-        _globals.writeError( self, "can't reindex_all")
+        standard.writeError( self, "can't reindex_all")
         return False
 
 
@@ -178,7 +178,7 @@ class ZMSZCatalogAdapter(
                 break
         return True
       except:
-        _globals.writeError( self, "can't reindex_node")
+        standard.writeError( self, "can't reindex_node")
         return False
 
 
@@ -304,7 +304,7 @@ class ZMSZCatalogAdapter(
             value = node.attr(attr_id)
           except:
             msg = '[@%s.get_sitemap]: can\'t get attr \'%s.%s\' - see error-log for details'%(node.getHome().id,node.meta_id,attr_id)
-            _globals.writeError(self,msg)
+            standard.writeError(self,msg)
             if msg not in result:
               result.append(msg)
           if attr_type in ['date','datetime']:

@@ -28,7 +28,7 @@ import urllib
 import zExceptions
 # Product Imports.
 import _confmanager
-import _globals
+import standard
 import _xmllib
 import re
 
@@ -437,7 +437,7 @@ class AccessableContainer(AccessableObject):
     #  AccessableContainer.synchronizeRolesAccess:
     # --------------------------------------------------------------------------
     def synchronizeRolesAccess(self):
-      _globals.writeLog(self,'[synchronizeRolesAccess]')
+      standard.writeLog(self,'[synchronizeRolesAccess]')
       root = self.getRootElement()
       l = map(lambda x:(x,[x]), role_defs.keys())
       security_roles = self.getSecurityRoles()
@@ -448,25 +448,25 @@ class AccessableContainer(AccessableObject):
         for nodekey in d.keys():
           node = root.getLinkObj(nodekey)
           if self.is_child_of(node):
-            _globals.writeLog(self,'[synchronizeRolesAccess]: security_role=%s, nodekey=%s'%(id,nodekey))
+            standard.writeLog(self,'[synchronizeRolesAccess]: security_role=%s, nodekey=%s'%(id,nodekey))
             l.append((id,d[nodekey]['roles']))
       manager_permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',self.permissionsOfRole('Manager')))
       for i in l:
-        _globals.writeLog(self,'[synchronizeRolesAccess]: role=%s, role_permissions=%s'%(i[0],str(i[1])))
+        standard.writeLog(self,'[synchronizeRolesAccess]: role=%s, role_permissions=%s'%(i[0],str(i[1])))
         permissions = []
         for role in i[1]:
           role_permissions = role_defs.get(role,[])
           if '*' in role_permissions:
             role_permissions = manager_permissions
           permissions = self.concat_list(permissions,role_permissions)
-        _globals.writeLog(self,'[synchronizeRolesAccess]: role_to_manage=%s, permissions=%s'%(i[0],str(permissions)))
+        standard.writeLog(self,'[synchronizeRolesAccess]: role_to_manage=%s, permissions=%s'%(i[0],str(permissions)))
         self.manage_role(role_to_manage=i[0],permissions=permissions)
 
     # --------------------------------------------------------------------------
     #  AccessableContainer.grantPublicAccess:
     # --------------------------------------------------------------------------
     def grantPublicAccess(self):
-      _globals.writeLog(self,'[grantPublicAccess]')
+      standard.writeLog(self,'[grantPublicAccess]')
       self.synchronizeRolesAccess()
       manager_permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',self.permissionsOfRole('Manager')))
       # activate all acquired permissions
@@ -479,7 +479,7 @@ class AccessableContainer(AccessableObject):
     #  AccessableContainer.revokePublicAccess:
     # --------------------------------------------------------------------------
     def revokePublicAccess(self):
-      _globals.writeLog(self,'[revokePublicAccess]')
+      standard.writeLog(self,'[revokePublicAccess]')
       self.synchronizeRolesAccess()
       manager_permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',self.permissionsOfRole('Manager')))
       # deactivate all acquired permissions
@@ -676,7 +676,7 @@ class AccessManager(AccessableContainer):
               import binascii
               uid = binascii.b2a_hex(buffer(uid))
           except:
-            _globals.writeError(self,'[getValidUserids]: _uid_attr=%s'%_uid_attr)
+            standard.writeError(self,'[getValidUserids]: _uid_attr=%s'%_uid_attr)
           d['user_id'] = uid
           if len(filter(lambda x:x['id']=='user_id',c))==0:
             c.append({'id':'user_id','name':_uid_attr.capitalize(),'type':'string'})
@@ -810,7 +810,7 @@ class AccessManager(AccessableContainer):
         del d[user]
         root.setConfProperty('ZMS.security.users',d)
       except:
-        _globals.writeError(root,'[delUserAttr]: user=%s not deleted!'%user)
+        standard.writeError(root,'[delUserAttr]: user=%s not deleted!'%user)
 
 
     # --------------------------------------------------------------------------
@@ -1057,7 +1057,7 @@ class AccessManager(AccessableContainer):
             message = self.getZMILangStr('MSG_DELETED')%int(1)
       
       except:
-        message = _globals.writeError(self,"[manage_roleProperties]")
+        message = standard.writeError(self,"[manage_roleProperties]")
         messagekey = 'manage_tabs_error_message'
       
       # Return with message.
@@ -1157,7 +1157,7 @@ class AccessManager(AccessableContainer):
               try:
                 self.delLocalUser(id, nodekey)
               except:
-                _globals.writeError(self,'can\'t delLocalUser for nodekey=%s'%nodekey)
+                standard.writeError(self,'can\'t delLocalUser for nodekey=%s'%nodekey)
             #-- Assemble message.
             message = self.getZMILangStr('MSG_DELETED')%int(len(nodekeys))
         
@@ -1233,10 +1233,10 @@ class AccessManager(AccessableContainer):
               if z > max_users:
                 break;
             xml += '<user>'
-            xml += '<uid>%s</uid>'%_globals.html_quote(userName)
+            xml += '<uid>%s</uid>'%standard.html_quote(userName)
             email = self.getUserAttr(userName,'email')
             if email is not None and email:
-              xml += '<email>%s</email>'%_globals.html_quote(email)
+              xml += '<email>%s</email>'%standard.html_quote(email)
             nodes = self.getUserAttr(userName,'nodes',{})
             xml += '<nodelist>'
             for nodekey in nodes.keys():
@@ -1253,11 +1253,11 @@ class AccessManager(AccessableContainer):
                 xml += '<nodetitle></nodetitle>'
               xml += '<langlist>'
               for langid in nodes.get(nodekey,{}).get('langs',[]):
-                xml += '<lang>%s</lang>'%_globals.html_quote(langid)
+                xml += '<lang>%s</lang>'%standard.html_quote(langid)
               xml += '</langlist>'
               xml += '<rolelist>'
               for roleid in nodes.get(nodekey,{}).get('roles',[]):
-                xml += '<role>%s</role>'%_globals.html_quote(roleid)
+                xml += '<role>%s</role>'%standard.html_quote(roleid)
               xml += '</rolelist>'
               xml += '</node>'
             xml += '</nodelist>'
@@ -1290,7 +1290,7 @@ class AccessManager(AccessableContainer):
                 node = docElmnt.getRefObjPath(ob)
                 docElmnt.setLocalUser(userName, node, roles, langs)
               except:
-                _globals.writeError(self,'can\'t setLocalUser nodekey=%s'%userName)
+                standard.writeError(self,'can\'t setLocalUser nodekey=%s'%userName)
           message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%filename)
         
         # Fast-Export
@@ -1314,7 +1314,7 @@ class AccessManager(AccessableContainer):
           message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%path)
       
       except:
-        message = _globals.writeError(self,"[manage_userProperties]")
+        message = standard.writeError(self,"[manage_userProperties]")
         messagekey = 'manage_tabs_error_message'
       
       # Return with message.

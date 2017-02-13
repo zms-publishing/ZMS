@@ -28,7 +28,7 @@ from zmscustom import ZMSCustom
 from zmsobject import ZMSObject
 from zmsproxyobject import ZMSProxyObject
 import _confmanager
-import _globals
+import standard
 import _zreferableitem
 
 
@@ -209,7 +209,7 @@ class ZMSLinkElement(ZMSCustom):
         value = self.http_import( ref + '/ajaxGetNode?lang=%s'%lang)
         value = self.xmlParse( value)
       except:
-        _globals.writeError(self,'[getRemoteObj]: can\'t embed from remote: ref=%s'%ref)
+        standard.writeError(self,'[getRemoteObj]: can\'t embed from remote: ref=%s'%ref)
       return value
 
 
@@ -541,7 +541,7 @@ class ZMSLinkElement(ZMSCustom):
         try:
           rtn += self.http_import( ref+'/ajaxGetBodyContent')
         except:
-          rtn += _globals.writeError(self,'[_getBodyContent]: can\'t embed from remote: ref=%s'%ref)
+          rtn += standard.writeError(self,'[_getBodyContent]: can\'t embed from remote: ref=%s'%ref)
       else:
         if self.isEmbedded(REQUEST):
           REQUEST.set('ZMS_RELATIVATE_URL',False)
@@ -576,7 +576,7 @@ class ZMSLinkElement(ZMSCustom):
         try: 
           rtn += self.http_import( ref+'/renderShort') 
         except: 
-          rtn += _globals.writeError(self,'[renderShort]: can\'t embed from remote: ref=%s'%ref) 
+          rtn += standard.writeError(self,'[renderShort]: can\'t embed from remote: ref=%s'%ref) 
        
       elif self.isEmbedded(REQUEST): 
         REQUEST.set('ZMS_RELATIVATE_URL',False)
@@ -590,21 +590,6 @@ class ZMSLinkElement(ZMSCustom):
       else: 
           rtn += self._getBodyContent( REQUEST) 
       return rtn
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSLinkElement.catalogText:
-    #
-    #  Catalog text of Link (overwrite method from ZCatalogItem).
-    # --------------------------------------------------------------------------
-    def catalogText(self, REQUEST):
-      s = ''
-      ref_obj = self.getRefObj()
-      if ref_obj is not None and self.isEmbedded(REQUEST):
-        s = ZMSObject.catalogText(ref_obj,REQUEST)
-      else:
-        s = ZMSObject.catalogText(self,REQUEST)
-      return s
 
 
     ############################################################################

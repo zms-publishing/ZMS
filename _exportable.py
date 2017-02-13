@@ -29,6 +29,7 @@ import os
 import re
 import sys
 # Product Imports.
+import standard
 import _accessmanager
 import _blobfields
 import _fileutil
@@ -43,7 +44,7 @@ def writeFile(self, filename, data, mode='w', encoding='utf-8'):
     f.write( data)
     f.close()
   except:
-    _globals.writeError( self, "[writeFile]")
+    standard.writeError( self, "[writeFile]")
     f = open( filename, mode=mode)
     f.write( data)
     f.close()
@@ -88,7 +89,7 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
             v = localIndexHtml( self, ob, len(ob.absolute_url().split('/'))-len(root.absolute_url().split('/'))+depth, v)
             ob = v
           except:
-            _globals.writeError( self, "[exportFolder]")
+            standard.writeError( self, "[exportFolder]")
         _fileutil.exportObj(ob,'%s/%s/%s'%(path,id,ob_id))
 
 
@@ -130,7 +131,7 @@ def localHtml(self, html):
       html = unicode( html, default_charset)
     html = html.encode( charset)
   except ( UnicodeDecodeError, UnicodeEncodeError):
-    _globals.writeError( self, "[localHtml]")
+    standard.writeError( self, "[localHtml]")
     v = str(sys.exc_value)
     STR_POSITION = ' position '
     i = v.find(STR_POSITION)
@@ -364,7 +365,7 @@ class Exportable(_filtermanager.FilterItem):
     #  (X)HTML
     # --------------------------------------------------------------------------
     def toXhtml(self, REQUEST, deep=True):
-      _globals.writeLog( self, '[toXhtml]')
+      standard.writeLog( self, '[toXhtml]')
       level = 0
       html = ''
       if REQUEST.has_key( 'ZMS_PAGE_HTML_HEADER'):
@@ -380,7 +381,7 @@ class Exportable(_filtermanager.FilterItem):
       try:
         html += print_html
       except:
-        html += _globals.writeError(self,"[toXhtml]: can't append printHtml")
+        html += standard.writeError(self,"[toXhtml]: can't append printHtml")
       if REQUEST.has_key( 'ZMS_PAGE_HTML_FOOTER'):
         html += getattr( self, REQUEST.get( 'ZMS_PAGE_HTML_FOOTER'))( self, REQUEST)
       else:
@@ -454,7 +455,7 @@ class Exportable(_filtermanager.FilterItem):
             for domain in domains:
               if domain in url:
                 try:
-                  _globals.writeLog( self, '[exportExternalResources]: url=%s'%url)
+                  standard.writeLog( self, '[exportExternalResources]: url=%s'%url)
                   s_new = s_old = url
                   for repl in ':/%&?;=':
                     s_new = s_new.replace(repl, '_')
@@ -476,7 +477,7 @@ class Exportable(_filtermanager.FilterItem):
                     f.close()
                   html = html.replace( s_old, s_new)
                 except:
-                  _globals.writeError( self, '[exportExternalResources]: url=%s'%url)
+                  standard.writeError( self, '[exportExternalResources]: url=%s'%url)
                 break
           i = html.find( http_prefix, i + len( http_prefix))
       return html
@@ -545,7 +546,7 @@ class Exportable(_filtermanager.FilterItem):
           writeFile( obj, filename, html, mode, encoding)
       
       except:
-        _globals.writeError( obj, "[recurse_downloadHtmlPages]: Can't get html '%s'"%key)
+        standard.writeError( obj, "[recurse_downloadHtmlPages]: Can't get html '%s'"%key)
       
       # Process methods of meta-objects.
       for metadictAttrId in self.getMetaobjAttrIds( obj.meta_id):
@@ -565,7 +566,7 @@ class Exportable(_filtermanager.FilterItem):
                     f.write(html)
                     f.close()
         except:
-          _globals.writeError( self, "[recurse_downloadHtmlPages]: can't process method '%s' of meta-object"%metadictAttr)
+          standard.writeError( self, "[recurse_downloadHtmlPages]: can't process method '%s' of meta-object"%metadictAttr)
       
       # Process children.
       for child in obj.filteredChildNodes(REQUEST,self.PAGES):
@@ -594,7 +595,7 @@ class Exportable(_filtermanager.FilterItem):
       rtn = _fileutil.buildZipArchive( zipfiles, get_data)
       
       #-- Remove temporary folder.
-      if not _globals.debug( self):
+      if not standard.debug( self):
         _fileutil.remove( tempfolder, deep=1)
       
       return rtn
@@ -621,7 +622,7 @@ class Exportable(_filtermanager.FilterItem):
       rtn = _fileutil.buildZipArchive( zipfiles, get_data)
       
       #-- Remove temporary folder.
-      if not _globals.debug( self):
+      if not standard.debug( self):
         _fileutil.remove( tempfolder, deep=1)
       
       return rtn

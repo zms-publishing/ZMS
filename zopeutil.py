@@ -1,5 +1,5 @@
 ################################################################################
-# _zopeutil.py
+# zopeutil.py
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@
 ################################################################################
 
 # Imports.
+from AccessControl.SecurityInfo import ModuleSecurityInfo
 from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
@@ -24,11 +25,14 @@ import os
 # Product Imports.
 import _fileutil
 
+security = ModuleSecurityInfo('Products.zms.zopeutil')
+
+security.declarePublic('addObject')
 def addObject(container, meta_type, id, title, data):
   """
   Add Zope-object to container.
   """
-  #try: container.writeBlock("[_zopeutil.addObject]: %s@%s +%s(%s)"%(container.meta_type,container.absolute_url(),id,meta_type))
+  #try: container.writeBlock("[zopeutil.addObject]: %s@%s +%s(%s)"%(container.meta_type,container.absolute_url(),id,meta_type))
   #except: pass
   if meta_type == 'DTML Document':
     addDTMLDocument( container, id, title, data)
@@ -38,6 +42,8 @@ def addObject(container, meta_type, id, title, data):
     addExternalMethod( container, id, title, data)
   elif meta_type == 'File':
     addFile( container, id, title, data)
+  elif meta_type == 'Image':
+    addImage( container, id, title, data)
   elif meta_type == 'Page Template':
     addPageTemplate( container, id, title, data)
   elif meta_type == 'Script (Python)':
@@ -47,6 +53,7 @@ def addObject(container, meta_type, id, title, data):
   elif meta_type == 'Z SQL Method':
     addZSqlMethod( container, id, title, data)
 
+security.declarePublic('getObject')
 def getObject(container, id):
   """
   Get Zope-object from container.
@@ -54,6 +61,7 @@ def getObject(container, id):
   ob = getattr(container,id,None)
   return ob 
 
+security.declarePublic('callObject')
 def callObject(ob, zmscontext=None, options={}):
   """
   Call Zope-object.
@@ -69,7 +77,7 @@ def callObject(ob, zmscontext=None, options={}):
     v = ob(zmscontext=zmscontext)
   return v
 
-readData__roles__ = None
+security.declarePublic('readData')
 def readData(ob, default=None):
   """
   Read data of Zope-object.
@@ -95,6 +103,7 @@ def readData(ob, default=None):
     data = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
   return data
 
+security.declarePublic('readObject')
 def readObject(container, id, default=None):
   """
   Read Zope-object from container.
@@ -102,11 +111,12 @@ def readObject(container, id, default=None):
   ob = getObject(container,id)
   return readData(ob,default)
 
+security.declarePublic('removeObject')
 def removeObject(container, id, removeFile=True):
   """
   Remove Zope-object from container.
   """
-  #try: container.writeBlock("[_zopeutil.removeObject]: %s@%s -%s"%(container.meta_type,container.absolute_url(),id))
+  #try: container.writeBlock("[zopeutil.removeObject]: %s@%s -%s"%(container.meta_type,container.absolute_url(),id))
   #except: pass
   if id in container.objectIds():
     ob = getattr(container,id)
@@ -116,6 +126,7 @@ def removeObject(container, id, removeFile=True):
         os.remove(filepath)
     container.manage_delObjects( ids=[ id])
 
+security.declarePublic('initPermissions')
 def initPermissions(container, id):
   """
   Init permissions for Zope-object:
@@ -221,8 +232,16 @@ def addFile(container, id, title, data, content_type=None):
   """
   Add File to container.
   """
-  container.manage_addFolder(id,title,file=data,content_type=content_type)
+  container.manage_addFile(id,title,file=data,content_type=content_type)
   ob = getattr( container, id)
   return ob
 
-    
+def addImage(container, id, title, data, content_type=None):
+  """
+  Add Image to container.
+  """
+  container.manage_addImage(id,title,file=data,content_type=content_type)
+  ob = getattr( container, id)
+  return ob
+
+security.apply(globals())

@@ -25,7 +25,7 @@ import time
 import urllib
 # Product Imports.
 import _confmanager
-import _globals
+import standard
 import _objattrs
 
 # ------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ def getInternalLinkDict(self, url):
       d['data-target'] = "inactive"
     elif self.getTrashcan().isAncestor(ref_obj):
       d['data-target'] = 'trashcan'
-  elif url != "null":
+  else:
     d['data-id'] = "{$__%s__}"%url[2:-1]
     d['data-target'] = "missing"
   #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
@@ -99,7 +99,7 @@ def getInlineRefs(text):
   r = re.compile(p)
   for f in r.findall(str(text)):
     d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
-    if d.has_key('data-id') and d['data-id']!='null':
+    if d.has_key('data-id'):
       l.append(d['data-id'])
   return l
 
@@ -215,7 +215,7 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def registerRefObj(self, ob):
     ref = self.getRefObjPath(ob)
-    _globals.writeLog(self,'[registerRefObj]: ref='+ref)
+    standard.writeLog(self,'[registerRefObj]: ref='+ref)
     ref_by = self.synchronizeRefByObjs()
     if ref not in ref_by:
       ref_by.append(ref)
@@ -229,7 +229,7 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def unregisterRefObj(self, ob):
     ref = self.getRefObjPath(ob)
-    _globals.writeLog(self,'[unregisterRefObj]: ref='+ref)
+    standard.writeLog(self,'[unregisterRefObj]: ref='+ref)
     ref_by = self.synchronizeRefByObjs()
     if ref in ref_by:
       ref_by = filter( lambda x: x!=ref,ref_by)
@@ -282,7 +282,7 @@ class ZReferableItem:
   #  Prepare refresh of references TO other objects.
   # ----------------------------------------------------------------------------
   def prepareRefreshRefToObjs(self):
-    _globals.writeBlock( self, '[prepareRefreshRefToObjs]')
+    standard.writeBlock( self, '[prepareRefreshRefToObjs]')
     if 'ref_to' not in self.__dict__.keys():
       self.ref_to = self.getRefToObjs()
 
@@ -293,12 +293,12 @@ class ZReferableItem:
   #  Synchronizes references TO other objects.
   # ----------------------------------------------------------------------------
   def refreshRefToObjs(self):
-    _globals.writeBlock( self, '[refreshRefToObjs]')
+    standard.writeBlock( self, '[refreshRefToObjs]')
     if 'ref_to' in self.__dict__.keys():
       old_ref_to = self.ref_to
-      _globals.writeBlock( self, '[refreshRefToObjs]: old=%s'%str(old_ref_to))
+      standard.writeBlock( self, '[refreshRefToObjs]: old=%s'%str(old_ref_to))
       new_ref_to = self.getRefToObjs()
-      _globals.writeBlock( self, '[refreshRefToObjs] new=%s'%str(old_ref_to))
+      standard.writeBlock( self, '[refreshRefToObjs] new=%s'%str(old_ref_to))
       delattr(self,'ref_to')
       for ref in old_ref_to:
         ref_ob = self.getLinkObj(ref)
@@ -336,7 +336,7 @@ class ZReferableItem:
       r = re.compile(p)
       for f in r.findall(str(text)):
         d = dict(re.findall('\\s(.*?)="(.*?)"',f))
-        if d.has_key('data-id') and d['data-id']!='null':
+        if d.has_key('data-id'):
           old = p.replace('(.*?)',f)
           url = d['data-id']
           ild = getInternalLinkDict(self,url)
@@ -360,8 +360,7 @@ class ZReferableItem:
     if isInternalLink(url):
       if not url.startswith('{$__'):
         ild = getInternalLinkDict(self,url)
-        if ild.has_key('data-id') and ild['data-id']!='null':
-          url = ild['data-id']
+        url = ild['data-id']
     self.stopMeasurement('%s.validateLinkObj'%self.meta_id)
     return url
 

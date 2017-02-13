@@ -28,7 +28,7 @@ import urllib
 import zope.interface
 import zExceptions
 # Product Imports.
-import _globals
+import standard
 import IZMSCatalogConnector
 import ZMSZCatalogAdapter
 import ZMSItem
@@ -231,7 +231,7 @@ class ZMSZCatalogConnector(
       try: 
         results = self.search(q,REQUEST.get('fq[]',''))
       except:
-        _globals.writeError(self,'[search_xml]')
+        standard.writeError(self,'[search_xml]')
         t,v,tb = sys.exc_info()
         status = 400
         msg = v
@@ -242,7 +242,7 @@ class ZMSZCatalogConnector(
       xml += '<int name="status">%i</int>'%status
       xml += '<lst name="params">'
       for key in REQUEST.form.keys():
-        xml += '<str name="%s">%s</str>'%(key,_globals.html_quote(unicode(REQUEST.form[key],'utf-8')))
+        xml += '<str name="%s">%s</str>'%(key,standard.html_quote(unicode(REQUEST.form[key],'utf-8')))
       xml += '</lst>'
       xml += '</lst>'
       xmlr = ''
@@ -274,7 +274,7 @@ class ZMSZCatalogConnector(
                 xmlr += '<str><![CDATA[%s]]></str>'%v
               xmlr += '</arr>'
             except:
-              _globals.writeError(self,'[search_xml]: result=%s, k=%s'%(str(result),k))
+              standard.writeError(self,'[search_xml]: result=%s, k=%s'%(str(result),k))
               t,v,tb = sys.exc_info()
               status = 400
               msg = v
@@ -311,7 +311,7 @@ class ZMSZCatalogConnector(
       try: 
         results = self.suggest(q,limit)
       except:
-        _globals.writeError(self,'[suggest_xml]')
+        standard.writeError(self,'[suggest_xml]')
         t,v,tb = sys.exc_info()
         status = 400
         msg = v
@@ -361,14 +361,14 @@ class ZMSZCatalogConnector(
         fqk = 'zcat_index_%s'%attr_id
         if fqk in zcatalog.indexes():
           fqv = fqs[fqs.find(':')+1:]
-          fqv = self.search_encode(fqv)
+          fqv = standard.umlaut_quote(fqv)
           prototype[fqk] = fqv
       for index in zcatalog.indexes():
         if index.find('zcat_index_')==0:
           query = copy.deepcopy(prototype)
-          query[index] = self.search_encode(q)
+          query[index] = standard.umlaut_quote(q)
           qr = zcatalog(query)
-          _globals.writeLog( self, "[search]: %s=%i"%(str(query),len(qr)))
+          standard.writeLog( self, "[search]: %s=%i"%(str(query),len(qr)))
           for item in qr:
             if item not in items:
               items.append( item.aq_base )
@@ -438,7 +438,7 @@ class ZMSZCatalogConnector(
       for attr_id in zcm._getAttrIds():
         last_id = attr_id
         attr_name = 'zcat_index_%s'%attr_id
-        value = self.search_encode(d.get(attr_id))
+        value = standard.umlaut_quote(d.get(attr_id))
         setattr(node,attr_name,value)
       # Reindex object.
       request = self.REQUEST
@@ -519,7 +519,7 @@ class ZMSZCatalogConnector(
           zcatalog = getZCatalog(self,lang)
           writeChangesLog(zcatalog, '[reindex_self]: '+'\n'.join(filter(lambda x:x,lresult)))
       except:
-        result.append(_globals.writeError(self,'can\'t reindex_self'))
+        result.append(standard.writeError(self,'can\'t reindex_self'))
       return ', '.join(filter(lambda x:x,result))
 
 

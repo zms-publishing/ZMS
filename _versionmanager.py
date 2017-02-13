@@ -27,9 +27,10 @@ import time
 import urllib
 import zExceptions
 # Product Imports.
-import _globals 
+import standard 
 import _blobfields
-import _confmanager 
+import _confmanager
+import _globals
 import _zmsattributecontainer
 
 
@@ -53,7 +54,7 @@ def setChangedBy(self, REQUEST, createWorkAttrCntnr=True):
         oldAttrCntnr = getattr( self, self.version_live_id)
       if ((lang == prim_lang or self.getDCCoverage(REQUEST).find('.%s'%lang) > 0) and self.getHistory()) or not has_version_work:
         newAttrCntnr = _zmsattributecontainer.manage_addZMSAttributeContainer(self)
-        _globals.writeLog( self, "[setChangedBy]: Create new work-version: %s"%newAttrCntnr.id)
+        standard.writeLog( self, "[setChangedBy]: Create new work-version: %s"%newAttrCntnr.id)
         self.cloneObjAttrs(oldAttrCntnr,newAttrCntnr,lang='*')
         self.version_work_id = newAttrCntnr.id
       #-- Set minor-version.
@@ -64,10 +65,10 @@ def setChangedBy(self, REQUEST, createWorkAttrCntnr=True):
         except:
           minor_version = 1
         self.setObjProperty( 'minor_version' ,minor_version, lang)
-        _globals.writeLog( self, "[setChangedBy]: Set minor-version: %i"%minor_version)
+        standard.writeLog( self, "[setChangedBy]: Set minor-version: %i"%minor_version)
     #-- Set properties.
     self.setObjProperty( 'change_uid' ,str(auth_user) ,lang)
-    self.setObjProperty( 'change_dt' ,_globals.getDateTime( time.time()) ,lang)
+    self.setObjProperty( 'change_dt' ,standard.getDateTime( time.time()) ,lang)
 
 
 # ------------------------------------------------------------------------------
@@ -79,9 +80,9 @@ def setCreatedBy(self, REQUEST):
   auth_user = REQUEST.get('AUTHENTICATED_USER',None)
   if auth_user is not None:
     #-- Set properties.
-    _globals.writeLog( self, "[setCreatedBy]: Set created by: %s"%str(auth_user))
+    standard.writeLog( self, "[setCreatedBy]: Set created by: %s"%str(auth_user))
     self.setObjProperty( 'created_uid' ,str(auth_user))
-    self.setObjProperty( 'created_dt' ,_globals.getDateTime( time.time()))
+    self.setObjProperty( 'created_dt' ,standard.getDateTime( time.time()))
 
 
 # ------------------------------------------------------------------------------
@@ -122,7 +123,7 @@ class VersionItem:
     #  Tag object-versions.
     # --------------------------------------------------------------------------
     def tagObjVersions(self, master_version, REQUEST, checkPending=None):
-      _globals.writeLog( self, "[tagObjVersions]")
+      standard.writeLog( self, "[tagObjVersions]")
       count = 1
       if checkPending is None:
         self.tagObjVersions( master_version, REQUEST, checkPending=True)
@@ -142,7 +143,7 @@ class VersionItem:
           if 'change_history' in self.getObjAttrs().keys():
             change_history = []
             record = {}
-            record[ 'version_dt'] = _globals.getDateTime( time.time())
+            record[ 'version_dt'] = standard.getDateTime( time.time())
             record[ 'version_uid'] = str( REQUEST.get( 'AUTHENTICATED_USER'))
             record[ 'master_version'] = master_version
             record[ 'major_version'] = 0
@@ -310,12 +311,12 @@ class VersionItem:
       attr_containers = self.objectValues(['ZMSAttributeContainer'])
       if len(attr_containers)==0:
         newAttrCntnr = _zmsattributecontainer.manage_addZMSAttributeContainer(self)
-        _globals.writeLog( self, "[initializeWorkVersion]: Create new work-version: %s"%newAttrCntnr.id)
+        standard.writeLog( self, "[initializeWorkVersion]: Create new work-version: %s"%newAttrCntnr.id)
         self.version_work_id = newAttrCntnr.id
         self.version_live_id = None
       elif getattr(self,'version_work_id',None) is None:
         newAttrCntnr = attr_containers[0]
-        _globals.writeLog( self, "[initializeWorkVersion]: Reassign new work-version: %s"%newAttrCntnr.id)
+        standard.writeLog( self, "[initializeWorkVersion]: Reassign new work-version: %s"%newAttrCntnr.id)
         self.version_work_id = newAttrCntnr.id
         self.version_live_id = None
 
@@ -326,7 +327,7 @@ class VersionItem:
     #  Checks if object can by displayed.
     # --------------------------------------------------------------------------
     def isCommitted(self, REQUEST):
-      if _globals.isPreviewRequest( REQUEST):
+      if standard.isPreviewRequest( REQUEST):
         committed = not self.inObjStates( [ 'STATE_DELETED'], REQUEST)
       else:
         committed = not self.inObjStates( [ 'STATE_NEW'], REQUEST)
@@ -495,7 +496,7 @@ class VersionItem:
     # --------------------------------------------------------------------------
     def onChangeObj(self, REQUEST, forced=False, do_history=True):
       try:
-        _globals.writeLog( self, "[onChangeObj]")
+        standard.writeLog( self, "[onChangeObj]")
         prim_lang = self.getPrimaryLanguage()
         lang = REQUEST.get('lang',prim_lang)
         
@@ -503,16 +504,16 @@ class VersionItem:
         _blobfields.thumbnailImageFields( self, lang, REQUEST)
         
         ##### Trigger custom onChangeObj-Event (if there is one) ####
-        _globals.triggerEvent( self, 'onChangeObjEvt')
+        standard.triggerEvent( self, 'onChangeObjEvt')
         
         ##### Commit or initiate workflow transition ####
         if self.getAutocommit() or forced:
           self.commitObj(REQUEST,forced,do_history)
         else:
           self.autoWfTransition(REQUEST)
-        _globals.writeLog( self, "[onChangeObj]: Finished!")
+        standard.writeLog( self, "[onChangeObj]: Finished!")
       except Exception as e:
-        _globals.writeError( self, "[onChangeObj]: abort transaction")
+        standard.writeError( self, "[onChangeObj]: abort transaction")
         import transaction
         transaction.abort()
         raise e
@@ -521,7 +522,7 @@ class VersionItem:
     #  VersionItem.onSynchronizeObj:
     # --------------------------------------------------------------------------
     def onSynchronizeObj(self, REQUEST):
-      _globals.writeBlock( self, "[onSynchronizeObj]")
+      standard.writeBlock( self, "[onSynchronizeObj]")
       # Access
       self.synchronizePublicAccess()
       # References
@@ -532,13 +533,13 @@ class VersionItem:
     #  VersionItem.commitObjChanges
     # --------------------------------------------------------------------------
     def _commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
-      _globals.writeBlock( self, "[_commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
+      standard.writeBlock( self, "[_commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
       delete = False
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang',prim_lang)
       
       ##### Trigger custom beforeCommitObjChanges-Event (if there is one) ####
-      _globals.triggerEvent( self, 'beforeCommitObjChangesEvt')
+      standard.triggerEvent( self, 'beforeCommitObjChangesEvt')
       
       ##### Commit delete. ####
       if self.inObjStates(['STATE_DELETED'],REQUEST):
@@ -573,7 +574,7 @@ class VersionItem:
             if ob_version.id != version_hist_id and \
                ob_version.getObjProperty('major_version',REQUEST) == major_version:
               ids.append( ob_version.id)
-          _globals.writeLog( self, "[_commitObjChanges]: Remove previous minor-versions: ids=%s"%str(ids))
+          standard.writeLog( self, "[_commitObjChanges]: Remove previous minor-versions: ids=%s"%str(ids))
           self.manage_delObjects( ids=ids)
         
         else:
@@ -618,7 +619,7 @@ class VersionItem:
                 ids.append( id)
           self.version_work_id = None
           if len( ids) > 0:
-            _globals.writeLog( self, "[_commitObjChanges]: Remove work-version: ids=%s"%str(ids))
+            standard.writeLog( self, "[_commitObjChanges]: Remove work-version: ids=%s"%str(ids))
           self.manage_delObjects( ids=ids)
         elif self.version_work_id in attrCntnrIds:
           self.version_live_id = self.version_work_id
@@ -629,13 +630,13 @@ class VersionItem:
         self.onSynchronizeObj(REQUEST)
       
       ##### Trigger custom afterCommitObjChanges-Event (if there is one) ####
-      _globals.triggerEvent( self, 'afterCommitObjChangesEvt')
+      standard.triggerEvent( self, 'afterCommitObjChangesEvt')
       
       # Return flag for deleted objects.
       return delete
 
     def commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
-      _globals.writeBlock( self, "[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
+      standard.writeBlock( self, "[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
       delete = self._commitObjChanges( parent, REQUEST, forced, do_history, do_delete)
       # Synchronize search.
       self.getCatalogAdapter().reindex_node(self)
@@ -655,13 +656,13 @@ class VersionItem:
     #  VersionItem.rollbackObjChanges
     # --------------------------------------------------------------------------
     def _rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
-      _globals.writeBlock( self, "[_rollbackObjChanges]")
+      standard.writeBlock( self, "[_rollbackObjChanges]")
       delete = False
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang',prim_lang)
       
       ##### Trigger custom beforeRollbackObjChanges-Event (if there is one) ####
-      _globals.triggerEvent( self, 'beforeRollbackObjChangesEvt')
+      standard.triggerEvent( self, 'beforeRollbackObjChangesEvt')
       
       ##### Rollback insert. ####
       # Self.
@@ -685,7 +686,7 @@ class VersionItem:
             if ob_version.getObjProperty('major_version',REQUEST) == major_version and \
                ob_version.getObjProperty('minor_version',REQUEST) > 0:
               ids.append( ob_version.id)
-          _globals.writeLog( self, "[_rollbackObjChanges]: Remove next minor-versions: ids=%s"%str(ids))
+          standard.writeLog( self, "[_rollbackObjChanges]: Remove next minor-versions: ids=%s"%str(ids))
           self.manage_delObjects( ids=ids)
         
         else:
@@ -698,7 +699,7 @@ class VersionItem:
               self.version_work_id = None
             elif self.version_live_id is not None and self.version_live_id != self.version_work_id:
               # Clone current live-version to work-version.
-              _globals.writeLog( self, "[_rollbackObjChanges]: Clone current live-version '%s' to work-version '%s'"%(self.version_live_id,self.version_work_id))
+              standard.writeLog( self, "[_rollbackObjChanges]: Clone current live-version '%s' to work-version '%s'"%(self.version_live_id,self.version_work_id))
               self.cloneObjAttrs(getattr(self,self.version_live_id),getattr(self,self.version_work_id),lang)
       
       ##### Rollback version-items. ####
@@ -726,7 +727,7 @@ class VersionItem:
                 ids.append( id)
           self.version_work_id = None
           if len( ids) > 0:
-            _globals.writeLog( self, "[_rollbackObjChanges]: Remove work-version: ids=%s"%str(ids))
+            standard.writeLog( self, "[_rollbackObjChanges]: Remove work-version: ids=%s"%str(ids))
           self.manage_delObjects( ids=ids)
         elif self.version_work_id in attrCntnrIds:
           self.version_live_id = self.version_work_id
@@ -737,13 +738,13 @@ class VersionItem:
         self.onSynchronizeObj(REQUEST)
       
       ##### Trigger custom afterRollbackObjChanges-Event (if there is one) ####
-      _globals.triggerEvent( self, 'afterRollbackObjChangesEvt')
+      standard.triggerEvent( self, 'afterRollbackObjChangesEvt')
       
       # Return flag for deleted objects.
       return delete
 
     def rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
-      _globals.writeBlock( self, "[rollbackObjChanges]: forced=%s, do_delete=%s"%(str(forced),str(do_delete)))
+      standard.writeBlock( self, "[rollbackObjChanges]: forced=%s, do_delete=%s"%(str(forced),str(do_delete)))
       delete = self._rollbackObjChanges( parent, REQUEST, forced, do_delete)
       # Return flag for deleted objects.
       return delete
@@ -852,8 +853,8 @@ class VersionItem:
       if REQUEST.get('revision'):
         obj_version = self.getObjHistory( version_nr, REQUEST, False)
         REQUEST.set( 'ZMS_VERSION_%s'%self.id, obj_version.id)
-        xml += '<title><![CDATA[%s]]></title>'%_globals.html_quote(obj_version.getTitle(REQUEST))
-        xml += '<description><![CDATA[%s]]></description>'%_globals.html_quote(obj_version.getDCDescription(REQUEST))
+        xml += '<title><![CDATA[%s]]></title>'%standard.html_quote(obj_version.getTitle(REQUEST))
+        xml += '<description><![CDATA[%s]]></description>'%standard.html_quote(obj_version.getDCDescription(REQUEST))
         obj_history = self.getObjHistory( version_nr, REQUEST)
         for history_version in obj_history:
           if history_version.isVisible(REQUEST):
@@ -871,8 +872,8 @@ class VersionItem:
           REQUEST.set( 'ZMS_VERSION_%s'%self.id, obj_version.id)
           xml += '<ObjHistory'
           xml += ' id="%s"'%obj_version.id
-          xml += ' title="%s"'%_globals.html_quote(obj_version.getTitle(REQUEST))
-          xml += ' description="%s"'%_globals.html_quote(obj_version.getDCDescription(REQUEST))
+          xml += ' title="%s"'%standard.html_quote(obj_version.getTitle(REQUEST))
+          xml += ' description="%s"'%standard.html_quote(obj_version.getDCDescription(REQUEST))
           xml += '>'
           xml += '<![CDATA[' + obj_version.getBodyContent( REQUEST) + ']]>'
           xml += '</ObjHistory>\n'
@@ -893,7 +894,7 @@ class VersionItem:
     #  Returns object-history for given version-nr.
     # --------------------------------------------------------------------------
     def getObjHistory(self, version_nr, REQUEST, children=True, deleted=True):
-      _globals.writeLog( self, '[getObjHistory]: version_nr=%s'%str(version_nr))
+      standard.writeLog( self, '[getObjHistory]: version_nr=%s'%str(version_nr))
       obs = []
       ZMS_VERSION = REQUEST.get( 'ZMS_VERSION_%s'%self.id)
       master_version = int( version_nr[ :version_nr.find( '.')])
@@ -911,7 +912,7 @@ class VersionItem:
              item.get( 'major_version', 0) <= major_version:
             version_dt = item[ 'version_dt']
             break
-      _globals.writeLog( self, '[getObjHistory]: version_dt=%s'%str(version_dt))
+      standard.writeLog( self, '[getObjHistory]: version_dt=%s'%str(version_dt))
       found = False
       last_ob_version = None
       for ob_version in self.getObjVersions():
@@ -924,7 +925,7 @@ class VersionItem:
         ob_version_change_dt = ob_version.getObjProperty( 'change_dt', REQUEST)
         if ob_version_nr <= version_nr:
           if not children:
-            _globals.writeLog( self, '[getObjHistory]: return %s'%str(last_ob_version.id))
+            standard.writeLog( self, '[getObjHistory]: return %s'%str(last_ob_version.id))
             return last_ob_version
           for ob_child in self.getVersionItems( REQUEST):
             for ob_child_version in ob_child.getObjVersions():
@@ -946,7 +947,7 @@ class VersionItem:
           break
       if not found:
         if not children:
-          _globals.writeLog( self, '[getObjHistory]: return %s'%str(last_ob_version.id))
+          standard.writeLog( self, '[getObjHistory]: return %s'%str(last_ob_version.id))
           return last_ob_version
         for ob_child in self.getVersionItems( REQUEST):
           for ob_child_version in ob_child.getObjVersions():
@@ -991,7 +992,7 @@ class VersionItem:
             s = ob.id # Never delete this line!
             return ob
         except:
-            raise zExceptions.InternalError(_globals.writeError( self, '[getObjVersion]: an unexpected error occured!'))
+            raise zExceptions.InternalError(standard.writeError( self, '[getObjVersion]: an unexpected error occured!'))
 
 
     # --------------------------------------------------------------------------
@@ -1018,7 +1019,7 @@ class VersionItem:
         # return object-items
         return obs
       except:
-        raise zExceptions.InternalError(_globals.writeError( self, '[getObjVersions]: an unexpected error occured!'))
+        raise zExceptions.InternalError(standard.writeError( self, '[getObjVersions]: an unexpected error occured!'))
 
 
     # --------------------------------------------------------------------------
@@ -1178,10 +1179,10 @@ class VersionManagerContainer:
     #  VersionManagerContainer.logWfTransition
     # --------------------------------------------------------------------------
     def logWfTransition(self, id, desc, REQUEST=None):
-      REQUEST = _globals.nvl( REQUEST, self.REQUEST)
+      REQUEST = standard.nvl( REQUEST, self.REQUEST)
       lang = REQUEST.get('lang')
       # Set Properties.
-      dt = _globals.getDateTime( time.time())
+      dt = standard.getDateTime( time.time())
       uid = str(REQUEST.get('AUTHENTICATED_USER'))
       # Log Protocol.
       log = ''
@@ -1197,7 +1198,7 @@ class VersionManagerContainer:
     #  VersionManagerContainer.autoWfTransition
     # --------------------------------------------------------------------------
     def autoWfTransition(self, REQUEST):
-      _globals.writeBlock( self, "[autoWfTransition]")
+      standard.writeBlock( self, "[autoWfTransition]")
       lang = REQUEST['lang']
       # Enter Container.
       if not self.isVersionContainer():
@@ -1208,7 +1209,7 @@ class VersionManagerContainer:
       # Enter Workflow.
       self.syncObjModifiedChildren(REQUEST)
       wfStates = self.getWfStates(REQUEST)
-      _globals.writeBlock( self, "[autoWfTransition]: wfStates=%s"%str(wfStates))
+      standard.writeBlock( self, "[autoWfTransition]: wfStates=%s"%str(wfStates))
       modified = self.isObjModified(REQUEST) or self.hasObjModifiedChildren(REQUEST)
       # Check if current workflow-state is empty.
       enter = len(wfStates) == 0
@@ -1217,7 +1218,7 @@ class VersionManagerContainer:
         for wfTransition in self.getWfTransitions():
           if len(self.intersection_list(wfStates, wfTransition.get('from',[]))) > 0 and \
              len(wfTransition.get('to',[])) == 0:
-            _globals.writeBlock( self, "[autoWfTransition]: enter name=%s, id=%s, to=%s"%(wfTransition['name'],wfTransition['id'],str(wfTransition['to'])))
+            standard.writeBlock( self, "[autoWfTransition]: enter name=%s, id=%s, to=%s"%(wfTransition['name'],wfTransition['id'],str(wfTransition['to'])))
             enter = True
             break
       if modified and enter:
@@ -1225,15 +1226,15 @@ class VersionManagerContainer:
         for wfTransition in self.getWfTransitions():
           if len(wfTransition.get('from',[])) == 0 and \
              len(wfTransition.get('to',[])) == 1:
-            _globals.writeBlock( self, "[autoWfTransition]: name=%s, id=%s, to=%s"%(wfTransition['name'],wfTransition['id'],str(wfTransition['to'])))
+            standard.writeBlock( self, "[autoWfTransition]: name=%s, id=%s, to=%s"%(wfTransition['name'],wfTransition['id'],str(wfTransition['to'])))
             # Delete old state.
-            _globals.writeBlock( self, "[autoWfTransition]: delObjStates(%s)"%str(wfStates))
+            standard.writeBlock( self, "[autoWfTransition]: delObjStates(%s)"%str(wfStates))
             self.delObjStates(wfStates, REQUEST)
             # Add new state.
             self.setObjState(wfTransition.get('to',[])[0], lang)
             # Set Properties.
             self.setObjProperty('work_uid',str(REQUEST.get('AUTHENTICATED_USER')),lang)
-            self.setObjProperty('work_dt',_globals.getDateTime( time.time()),lang)
+            self.setObjProperty('work_dt',standard.getDateTime( time.time()),lang)
             break
 
 
@@ -1244,7 +1245,7 @@ class VersionManagerContainer:
     ############################################################################
     def manage_wfTransition(self, lang, custom, REQUEST, RESPONSE):
       """ WorkflowContainer.manage_wfTransition """
-      _globals.writeBlock( self, "[manage_wfTransition]")
+      standard.writeBlock( self, "[manage_wfTransition]")
       wfTransitions = self.getWfTransitions()
       for wfTransition in filter(lambda x: x['name']==custom, wfTransitions):
         transition = self.getWfTransition(wfTransition['id'])
@@ -1268,25 +1269,25 @@ class VersionManagerContainer:
     ############################################################################
     def manage_wfTransitionFinalize(self, lang, custom, REQUEST, RESPONSE=None):
       """ WorkflowContainer.manage_wfTransitionFinalize """
-      _globals.writeBlock( self, "[manage_wfTransitionFinalize]")
+      standard.writeBlock( self, "[manage_wfTransitionFinalize]")
       url = ''
       message = ''
       wfTransitions = self.getWfTransitions()
-      _globals.writeBlock( self, "[manage_wfTransition]: wfTransitions.0=%s"%str(map(lambda x: x['id'],wfTransitions)))
+      standard.writeBlock( self, "[manage_wfTransition]: wfTransitions.0=%s"%str(map(lambda x: x['id'],wfTransitions)))
       wfTransitions = filter(lambda x: x['name']==custom, wfTransitions)
-      _globals.writeBlock( self, "[manage_wfTransition]: wfTransitions.1=%s"%str(map(lambda x: x['id'],wfTransitions)))
+      standard.writeBlock( self, "[manage_wfTransition]: wfTransitions.1=%s"%str(map(lambda x: x['id'],wfTransitions)))
       for wfTransition in wfTransitions:
         # Delete old state.
         wfStates = self.getWfStates(REQUEST)
-        _globals.writeBlock( self, "[manage_wfTransition]: delObjStates(%s)"%str(wfStates))
+        standard.writeBlock( self, "[manage_wfTransition]: delObjStates(%s)"%str(wfStates))
         self.delObjStates(wfStates, REQUEST)
         # Add new state.
         for wfState in wfTransition.get('to',[]):
-          _globals.writeBlock( self, "[manage_wfTransition]: Add %s"%wfState)
+          standard.writeBlock( self, "[manage_wfTransition]: Add %s"%wfState)
           self.setObjState(wfState, lang)
           message += REQUEST.get('manage_tabs_message', filter(lambda x: x['id']==wfState,self.getWfActivities())[0]['name'])
         # Set Properties.
-        work_dt = _globals.getDateTime( time.time())
+        work_dt = standard.getDateTime( time.time())
         work_uid = str(REQUEST.get('AUTHENTICATED_USER'))
         work_desc = REQUEST.get('work_desc','')
         self.setObjProperty('work_uid',work_uid,lang)
@@ -1311,7 +1312,7 @@ class VersionManagerContainer:
     #  Commit container.
     # --------------------------------------------------------------------------
     def commitObj(self, REQUEST={}, forced=False, do_history=True):
-      _globals.writeLog( self, "[commitObj]: forced=%s, do_history=%s"%(str(forced),str(do_history)))
+      standard.writeLog( self, "[commitObj]: forced=%s, do_history=%s"%(str(forced),str(do_history)))
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang',prim_lang)
       
@@ -1341,7 +1342,7 @@ class VersionManagerContainer:
               record[ 'major_version'] = self.getObjProperty( 'major_version', REQUEST)
               change_history.append( record)
             record = {}
-            record[ 'version_dt'] = _globals.getDateTime( time.time())
+            record[ 'version_dt'] = standard.getDateTime( time.time())
             record[ 'version_uid'] = str( REQUEST.get( 'AUTHENTICATED_USER', None))
             record[ 'master_version'] = self.getObjProperty( 'master_version', REQUEST)
             record[ 'major_version'] = self.getObjProperty( 'major_version', REQUEST) + 1
@@ -1360,7 +1361,7 @@ class VersionManagerContainer:
         except: REQUEST['ZMS_REDIRECT_PARENT'] = True
         
       # Return new URL.
-      _globals.writeLog( self, "[commitObj]: Finished!")
+      standard.writeLog( self, "[commitObj]: Finished!")
       return url
 
 
@@ -1374,7 +1375,7 @@ class VersionManagerContainer:
     #  VersionManagerContainer.rollbackObj
     # --------------------------------------------------------------------------
     def rollbackObj(self, REQUEST):
-      _globals.writeBlock( self, "[rollbackObj]")
+      standard.writeBlock( self, "[rollbackObj]")
         
       ##### Self ####
       if REQUEST.has_key('lang'): self.resetWfStates(REQUEST)
@@ -1386,7 +1387,7 @@ class VersionManagerContainer:
         try: REQUEST.set('ZMS_REDIRECT_PARENT',True)
         except: REQUEST['ZMS_REDIRECT_PARENT'] = True
         
-      _globals.writeLog( self, "[rollbackObj]: Finished!")
+      standard.writeLog( self, "[rollbackObj]: Finished!")
       # Return new URL.
       return url
 

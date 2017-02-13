@@ -28,7 +28,7 @@ import urllib
 from zmscontainerobject import ZMSContainerObject
 import _confmanager
 import _fileutil
-import _globals
+import standard
 import _importable
 import _ziputil
 
@@ -37,7 +37,7 @@ import _ziputil
 #  zmscustom.parseXmlString
 # ------------------------------------------------------------------------------
 def parseXmlString(self, file):
-  _globals.writeBlock( self, '[parseXmlString]')
+  standard.writeBlock( self, '[parseXmlString]')
   message = ''
   REQUEST = self.REQUEST
   lang = REQUEST.get( 'lang', self.getPrimaryLanguage())
@@ -70,7 +70,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
   if REQUEST['btn'] == self.getZMILangStr('BTN_INSERT'):
     
     # Create
-    id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
+    id_prefix = standard.id_prefix(REQUEST.get('id_prefix','e'))
     new_id = self.getNewId(id_prefix)
     globalAttr = self.dGlobalAttrs.get(meta_id,self.dGlobalAttrs['ZMSCustom'])
     constructor = globalAttr.get('obj_class',self.dGlobalAttrs['ZMSCustom']['obj_class'])
@@ -101,7 +101,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
       # Message
       message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
     except:
-      message = _globals.writeError(self,"[manage_addZMSCustom]")
+      message = standard.writeError(self,"[manage_addZMSCustom]")
       messagekey = 'manage_tabs_error_message'
     message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
     
@@ -211,7 +211,7 @@ class ZMSCustom(ZMSContainerObject):
     def __init__(self, id='', sort_id=0, meta_id=None):
       """ ZMSCustom.__init__ """
       ZMSContainerObject.__init__(self,id,sort_id)
-      self.meta_id = _globals.nvl(meta_id,self.meta_type)
+      self.meta_id = standard.nvl(meta_id,self.meta_type)
 
 
     ############################################################################
@@ -429,9 +429,9 @@ class ZMSCustom(ZMSContainerObject):
           if action == 'insert':
             row = {}
             row['_created_uid'] = REQUEST['AUTHENTICATED_USER'].getUserName()
-            row['_created_dt'] = _globals.getDateTime( time.time())
+            row['_created_dt'] = standard.getDateTime( time.time())
             row['_change_uid'] = REQUEST['AUTHENTICATED_USER'].getUserName()
-            row['_change_dt'] = _globals.getDateTime( time.time())
+            row['_change_dt'] = standard.getDateTime( time.time())
             for metaObjAttr in metaObj['attrs'][1:]:
               objAttr = self.getObjAttr(metaObjAttr['id'])
               objAttrName = self.getObjAttrName(objAttr,lang)
@@ -449,7 +449,7 @@ class ZMSCustom(ZMSContainerObject):
           elif action == 'update':
             row = res_abs[REQUEST['qindex']]
             row['_change_uid'] = REQUEST['AUTHENTICATED_USER'].getUserName()
-            row['_change_dt'] = _globals.getDateTime( time.time())
+            row['_change_dt'] = standard.getDateTime( time.time())
             for metaObjAttr in metaObj['attrs'][1:]:
               objAttr = self.getObjAttr(metaObjAttr['id'])
               objAttrName = self.getObjAttrName(objAttr,lang)
@@ -492,7 +492,7 @@ class ZMSCustom(ZMSContainerObject):
           ##### VersionManager ####
           self.onChangeObj(REQUEST)
         except:
-          message = _globals.writeError(self,"[manage_changeProperties]")
+          message = standard.writeError(self,"[manage_changeProperties]")
           messagekey = 'manage_tabs_error_message'
         
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'

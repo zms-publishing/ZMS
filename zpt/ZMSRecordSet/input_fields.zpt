@@ -1,6 +1,6 @@
 <!-- ZMSRecordSet/input_fields -->
 
-	<tal:block tal:define="global
+	<tal:block tal:define="standard modules/Products.zms/standard;
 			meta_id options/meta_id;
 			action options/action;
 			qindex options/qindex;
@@ -77,7 +77,7 @@
 								<tal:block tal:define="global
 										fkMetaObjAttrs python:filter(lambda x:x['type']=='string' and fkMetaObjRecord.get(x['id'],'')!='',fkMetaObj['attrs']);
 										fkSummary python:', '.join(map(lambda x:str(fkMetaObjRecord.get(x['id'])),fkMetaObjAttrs))">
-									<tal:block tal:define="global dummy0 python:options.append((here.string_maxlen(fkSummary,50),fkMetaObjRecord[fkMetaObjIdId]))"></tal:block>
+									<tal:block tal:define="global dummy0 python:options.append((standard.string_maxlen(fkSummary,50),fkMetaObjRecord[fkMetaObjIdId]))"></tal:block>
 								</tal:block>
 							</tal:block>
 							<tal:block tal:define="global dummy0 python:options.sort()"></tal:block>

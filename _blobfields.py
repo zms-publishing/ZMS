@@ -31,7 +31,7 @@ import warnings
 import zExceptions 
 # Product Imports.
 import _fileutil
-import _globals
+import standard
 import _mimetypes
 import _pilutil
 
@@ -65,7 +65,7 @@ def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
   for key in obj_attrs.keys():
     obj_attr = ob.getObjAttr(key)
     datatype = obj_attr['datatype_key']
-    if datatype in _globals.DT_BLOBS:
+    if datatype in standard.DT_BLOBS:
       for lang in langs:
         try:
           if obj_attr['multilang'] or lang==prim_lang or (obj_attr['multilang']==0 and lang!=prim_lang):
@@ -80,8 +80,8 @@ def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
               _fileutil.exportObj(blob,filename)
               ressources.append( { 'filepath':filename, 'content_type':blob.getContentType()})
         except:
-          _globals.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
-    elif datatype == _globals.DT_LIST:
+          standard.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+    elif datatype == standard.DT_LIST:
       for lang in langs:
         try:
           if obj_attr['multilang'] or lang==prim_lang or (obj_attr['multilang']==0 and lang!=prim_lang):
@@ -107,7 +107,7 @@ def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
                 ressources.append( { 'filepath':filename, 'content_type':u.getContentType()})
               i = i + 1
         except:
-          _globals.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+          standard.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
   # Process children.
   for child in ob.getChildNodes():
     ressources.extend( recurse_downloadRessources( child, base_path+child.id+'/', REQUEST, incl_embedded))
@@ -143,7 +143,7 @@ def uploadRessources(self, folder='.', mediadbStorable=True):
   for key in obj_attrs.keys():
     obj_attr = self.getObjAttr(key)
     datatype = obj_attr['datatype_key']
-    if datatype in _globals.DT_BLOBS:
+    if datatype in standard.DT_BLOBS:
       for lang in langs:
         try:
           if obj_attr['multilang'] or lang==prim_lang:
@@ -152,7 +152,7 @@ def uploadRessources(self, folder='.', mediadbStorable=True):
             blob = self._getObjAttrValue(obj_attr,obj_vers,lang)
             if blob is not None:
               filename = _fileutil.getOSPath('%s/%s'%(folder,blob.filename))
-              _globals.writeBlock( self, '[uploadRessources]: filename=%s'%filename)
+              standard.writeBlock( self, '[uploadRessources]: filename=%s'%filename)
               # Backup properties (otherwise manage_upload sets it).
               bk = {}
               for __xml_attr__ in blob.__xml_attrs__:
@@ -170,7 +170,7 @@ def uploadRessources(self, folder='.', mediadbStorable=True):
               blob.getFilename() # Normalize filename
               self.setObjProperty(key,blob,lang)
         except:
-          _globals.writeError(self,"[uploadRessources]")
+          standard.writeError(self,"[uploadRessources]")
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -202,10 +202,10 @@ def createBlobField(self, objtype, file='', mediadbStorable=True):
 _blobfields.uploadBlobField
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def uploadBlobField(self, objtype, file='', filename='', mediadbStorable=True):
-  if objtype == _globals.DT_IMAGE:
+  if objtype == standard.DT_IMAGE:
     clazz = MyImage
     maxlength_prop = 'ZMS.input.image.maxlength'
-  elif objtype == _globals.DT_FILE:
+  elif objtype == standard.DT_FILE:
     clazz = MyFile
     maxlength_prop = 'ZMS.input.file.maxlength'
   blob = clazz( id='',title='',file=file)
@@ -264,7 +264,7 @@ def thumbnailImageFields(self, lang, REQUEST):
     for key in obj_attrs.keys():
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
-      if datatype == _globals.DT_IMAGE:
+      if datatype == standard.DT_IMAGE:
         message += thumbnailImage(self,'%ssuperres'%key,'%shires'%key,self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max'),lang,REQUEST)
         message += thumbnailImage(self,'%shires'%key,'%s'%key,self.getConfProperty('InstalledProducts.pil.thumbnail.max'),lang,REQUEST)
   return message
@@ -283,11 +283,11 @@ def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
       req = {'lang':lang,'preview':'preview'}
       hiresImg = self.getObjProperty(hiresKey,req)
       if hiresImg is not None and REQUEST.get('generate_preview_%s_%s'%(hiresKey,lang),0) == 1:
-        _globals.writeLog( self, '[thumbnailImage]: Create >%s< from >%s<...'%(loresKey,hiresKey))
+        standard.writeLog( self, '[thumbnailImage]: Create >%s< from >%s<...'%(loresKey,hiresKey))
         thumb = self.pilutil().thumbnail( hiresImg, int(maxdim))
         self.setObjProperty(loresKey,thumb,lang)
   except:
-    _globals.writeError( self, '[thumbnailImage]')
+    standard.writeError( self, '[thumbnailImage]')
   return message
 
 
@@ -604,7 +604,7 @@ class MyBlob:
               elif type( v) is int and v == 404:
                 return ''
           except:
-            _globals.writeError(parent,'[__call__]: can\'t %s'%name)
+            standard.writeError(parent,'[__call__]: can\'t %s'%name)
         # Raise unauthorized error.
         else:
           raise zExceptions.Unauthorized
@@ -638,7 +638,7 @@ class MyBlob:
               if type( v) is bool:
                 cacheable = cacheable and v
           except:
-            _globals.writeError(parent,'[__call__]: can\'t %s'%name)
+            standard.writeError(parent,'[__call__]: can\'t %s'%name)
         if not cacheable:
           RESPONSE.setHeader('Expires', '-1')
           RESPONSE.setHeader('Cache-Control', 'no-cache')
@@ -704,7 +704,7 @@ class MyBlob:
           try:
             data = mediadb.retrieveFile( mediadbfile)
           except:
-            _globals.writeError( parent, "[getData]: can't retrieve file from mediadb: %s"%str(mediadbfile))
+            standard.writeError( parent, "[getData]: can't retrieve file from mediadb: %s"%str(mediadbfile))
       else:
         data = str(getattr(self,'data',''))
       return data
@@ -727,13 +727,13 @@ class MyBlob:
       if i > 0:
         rownum = '/@%s'%key[ i+1:]
       filename = getLangFilename( parent, self.getFilename(), self.lang)
-      filename = _globals.url_encode( filename)
+      filename = standard.url_encode( filename)
       qs = ''
       zms_version_key = 'ZMS_VERSION_%s'%parent.id
       if REQUEST.get( zms_version_key, None) is not None:
-        qs = _globals.qs_append( qs, zms_version_key,REQUEST.get( zms_version_key))
-      elif _globals.isPreviewRequest( REQUEST):
-        qs = _globals.qs_append( qs, 'preview', 'preview')
+        qs = standard.qs_append( qs, zms_version_key,REQUEST.get( zms_version_key))
+      elif standard.isPreviewRequest( REQUEST):
+        qs = standard.qs_append( qs, 'preview', 'preview')
       href = '/'.join(parent.getPhysicalPath())+rownum+'/'+filename+qs
       return href
 
@@ -876,7 +876,7 @@ class MyImage(MyBlob,Image):
         if getattr(self,'content_type','').find('text/') == 0:
           data = '<![CDATA[%s]]>'%str(self.getData( sender))
         else:
-          data = _globals.bin2hex(self.getData( sender))
+          data = standard.bin2hex(self.getData( sender))
         objtype = ' type="image"'
       else:
         filename = self.getFilename()
@@ -954,7 +954,7 @@ class MyFile(MyBlob,File):
         if getattr(self,'content_type','').find('text/') == 0:
           data = '<![CDATA[%s]]>'%str(self.getData( sender))
         else:
-          data = _globals.bin2hex(self.getData( sender))
+          data = standard.bin2hex(self.getData( sender))
         objtype = ' type="file"'
       else:
         filename = self.getFilename()

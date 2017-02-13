@@ -1,6 +1,6 @@
 <!-- ZMSRecordSet/main_grid -->
 
-<div class="ZMSRecordSet main_grid" tal:define="global
+<div class="ZMSRecordSet main_grid" tal:define="standard modules/Products.zms/standard;
     form_action python:options.get('form_action','manage_changeRecordSet');
     input_target python:options.get('input_target','');
     metaObjAttrIds options/metaObjAttrIds;
@@ -165,7 +165,7 @@
           ><tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block
         ></tal:block
         ><tal:block tal:condition="not:python:target is not None"
-          ><tal:block tal:content="python:here.string_maxlen(str(elValue),50)">elValue</tal:block
+          ><tal:block tal:content="python:standard.string_maxlen(str(elValue),50)">elValue</tal:block
         ></tal:block
       ></tal:block
       ><tal:block tal:condition="python:elType in ['html']"

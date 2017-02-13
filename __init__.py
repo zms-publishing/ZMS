@@ -35,7 +35,7 @@ import os
 import re
 import stat
 # Product Imports.
-import _globals
+import standard
 import zms
 import zmscustom
 import zmssqldb

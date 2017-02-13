@@ -1,7 +1,7 @@
 <tal:block tal:replace="nothing">
 ### Initialize request.
 </tal:block
-><tal:block tal:define="global
+><tal:block tal:define="standard modules/Products.zms/standard;
 		dummy0 python:request.RESPONSE.setHeader('Content-Type', 'text/html\073charset=utf-8');
 		dummy0 python:request.set('lang',request.get('lang',here.getLanguage(request)));
 		site_active python:here.getHome().content.isActive(request);
@@ -69,16 +69,16 @@
 	><tal:block tal:replace="nothing">
 	### Display only active
 	</tal:block
-	><tal:block tal:condition="python:not done and (here.isPreviewRequest(request) or here.getDocumentElement().isActive(request))"
+	><tal:block tal:condition="python:not done and (standard.isPreviewRequest(request) or here.getDocumentElement().isActive(request))"
 		><tal:block tal:content="structure python:here.f_standard_html_request(here,request)">f_standard_html_request</tal:block
 		><tal:block tal:condition="python:getattr(here.getHome(),'standard_html_request',None) is not None"
 			><tal:block tal:content="structure python:getattr(here,'standard_html_request',None)(here,request)">standard_html_request</tal:block
 		></tal:block
 		><tal:block tal:on-error="string:ERROR index_zpt.f_standard_html_header" tal:content="structure python:here.f_standard_html_header(here,request)">f_standard_html_header</tal:block
-		><tal:block tal:condition="python:here.isPreviewRequest(request) or here.isActive(request)"
+		><tal:block tal:condition="python:standard.isPreviewRequest(request) or here.isActive(request)"
 			><tal:block tal:content="structure python:here.zmi_body_content(here,request)">zmi_body_content</tal:block
 		></tal:block
-		><tal:block tal:condition="not:python:here.isPreviewRequest(request) or here.isActive(request)"
+		><tal:block tal:condition="not:python:standard.isPreviewRequest(request) or here.isActive(request)"
 			><p class="standard" tal:content="python:here.getLangStr('MSG_INACTIVE',request['lang'])">Message inactive</p
 			><tal:block tal:define="dummy0 python:request.RESPONSE.setStatus(503)"></tal:block
 		></tal:block

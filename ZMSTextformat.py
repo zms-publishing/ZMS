@@ -21,7 +21,7 @@ from types import StringTypes
 import copy
 import re
 # Product Imports.
-import _globals
+import standard
 
 
 # ------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ def br_quote(text, subtag, REQUEST):
   qcr = ''
   qtab = '&nbsp;'*6
   
-  if _globals.isManagementInterface(REQUEST):
+  if standard.isManagementInterface(REQUEST):
     if not REQUEST.has_key('format'):
       qcr = '<span class="unicode">&crarr;</span>'
       qtab = '<span class="unicode">&rarr;</span>' + '&nbsp;' * 5

@@ -28,6 +28,7 @@ import transaction
 import urllib
 import zExceptions
 # Product Imports.
+import standard
 import _fileutil
 import _filtermanager
 import _globals
@@ -92,7 +93,7 @@ def importFile(self, file, REQUEST, handler):
     filename = file.filename
   else: 
     filename = file.name
-  _globals.writeBlock( self, '[importFile]: filename='+filename)
+  standard.writeBlock( self, '[importFile]: filename='+filename)
   
   # Create temporary folder.
   folder = tempfile.mktemp()
@@ -119,7 +120,7 @@ def importFile(self, file, REQUEST, handler):
     filename = _filtermanager.importFilter(self, filename, REQUEST.get('filter',''), REQUEST)
   
   # Import XML-file.
-  _globals.writeBlock( self, '[importFile]: filename='+filename)
+  standard.writeBlock( self, '[importFile]: filename='+filename)
   f = open(filename, 'r')
   ob = handler(self, f)
   f.close()

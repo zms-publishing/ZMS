@@ -31,7 +31,7 @@ from zmsobject import ZMSObject
 import _accessmanager
 import _confmanager
 import _fileutil
-import _globals
+import standard
 import _objattrs
 import _versionmanager
 import _zmi_actions_util
@@ -202,7 +202,7 @@ class ZMSContainerObject(
       
       # Normalize sort-ids.
       if values.get('normalize_sort_ids',True):
-        self.normalizeSortIds(_globals.id_prefix(node.id))
+        self.normalizeSortIds(standard.id_prefix(node.id))
       
       # Return object.
       return node
@@ -231,10 +231,10 @@ class ZMSContainerObject(
         try:
           context = getattr(self,id)
           context.del_uid = str(REQUEST.get('AUTHENTICATED_USER',None))
-          context.del_dt = _globals.getDateTime( time.time())
+          context.del_dt = standard.getDateTime( time.time())
           ids_copy.append(id)
         except:
-          _globals.writeBlock( self, "[moveObjsToTrashcan]: Attribute Error %s"%(id))
+          standard.writeBlock( self, "[moveObjsToTrashcan]: Attribute Error %s"%(id))
       # Use only successfully tried ids
       ids = ids_copy
       # Move (Cut & Paste).
@@ -401,7 +401,7 @@ class ZMSContainerObject(
             sort_id = sort_id - 1
           else:
             sort_id = sort_id + 1
-        setattr( self, 'sort_id', _globals.format_sort_id(sort_id))
+        setattr( self, 'sort_id', standard.format_sort_id(sort_id))
         cb_copy_data = self.getParentNode().manage_cutObjects([self.id])
         ob.manage_pasteObjects(cb_copy_data)
         ob.normalizeSortIds()
@@ -409,7 +409,7 @@ class ZMSContainerObject(
         tp, vl, tb = sys.exc_info()
         rc = -1
         message = str(tp)+': '+str(vl)
-        _globals.writeError(self,'[manage_ajaxDragDrop]')
+        standard.writeError(self,'[manage_ajaxDragDrop]')
       #-- Build xml.
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml; charset=utf-8'
@@ -443,7 +443,7 @@ class ZMSContainerObject(
       @return: the first page
       @rtype: C{zmsobject.ZMSObject}
       """
-      root = _globals.nvl(root,self.getDocumentElement())
+      root = standard.nvl(root,self.getDocumentElement())
       return root
     
     # --------------------------------------------------------------------------
@@ -451,7 +451,7 @@ class ZMSContainerObject(
     # --------------------------------------------------------------------------
     def getPrevPage(self, REQUEST, incResource=False, root=None):
       ob = None
-      root = _globals.nvl(root,self.getDocumentElement())
+      root = standard.nvl(root,self.getDocumentElement())
       while True:
         ob = getPrevSibling(self,REQUEST,incResource)
         if ob is None:
@@ -474,7 +474,7 @@ class ZMSContainerObject(
     # --------------------------------------------------------------------------
     def getNextPage(self, REQUEST, incResource=False, root=None): 
       ob = None
-      root = _globals.nvl(root,self.getDocumentElement())
+      root = standard.nvl(root,self.getDocumentElement())
       while True:
         children = self.filteredChildNodes(REQUEST,self.PAGES)
         if len(children) > 0:
@@ -503,7 +503,7 @@ class ZMSContainerObject(
       @rtype: C{zmsobject.ZMSObject}
       """
       ob = None
-      root = _globals.nvl(root,self.getDocumentElement())
+      root = standard.nvl(root,self.getDocumentElement())
       children = [root]
       while len( children) > 0:
         i = len( children)-1
@@ -543,7 +543,7 @@ class ZMSContainerObject(
         context = container
         actions.extend( _zmi_actions_util.zmi_actions(self,self))
       else:
-        attr_id = _globals.id_prefix(context_id)
+        attr_id = standard.id_prefix(context_id)
         if context_id in container.objectIds():
             context = getattr(container,context_id,None)
         actions.extend( _zmi_actions_util.zmi_actions(container,context,attr_id))
@@ -908,7 +908,7 @@ class ZMSContainerObject(
       key = self.getMetaobjAttrIds( meta_id)[0]
       attr = self.getMetaobjAttr( meta_id, key)
       zexp = attr[ 'custom']
-      id_prefix = _globals.id_prefix(REQUEST.get('id_prefix','e'))
+      id_prefix = standard.id_prefix(REQUEST.get('id_prefix','e'))
       new_id = self.getNewId(id_prefix)
       _fileutil.import_zexp(self,zexp,new_id,id_prefix,_sort_id)
       

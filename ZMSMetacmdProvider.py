@@ -26,8 +26,8 @@ import urllib
 import zope.interface
 # Product Imports.
 import _fileutil
-import _globals
-import _zopeutil
+import standard
+import zopeutil
 import IZMSMetacmdProvider,IZMSConfigurationProvider,IZMSRepositoryProvider
 import ZMSItem
 
@@ -250,7 +250,7 @@ class ZMSMetacmdProvider(
       
       # Remove Template.
       container = self.aq_parent
-      _zopeutil.removeObject(container,id)
+      zopeutil.removeObject(container,id)
       
       # Return with empty id.
       return ''
@@ -309,9 +309,9 @@ class ZMSMetacmdProvider(
           newData += '\n'
           newData += 'def ' + newId + '( self):\n'
           newData += '  return "This is the external method ' + newId + '"\n'
-      _zopeutil.removeObject(container, id)
-      _zopeutil.removeObject(container, newId)
-      _zopeutil.addObject(container, newMethod, newId, newTitle, newData)
+      zopeutil.removeObject(container, id)
+      zopeutil.removeObject(container, newId)
+      zopeutil.addObject(container, newMethod, newId, newTitle, newData)
       
       # Return with new id.
       return newId
@@ -343,19 +343,19 @@ class ZMSMetacmdProvider(
       # Refresh Object.
       metaCmd = obs[0]
       container = self.aq_parent
-      src = _zopeutil.getObject(metaCmd['home'],metaCmd['id'])
-      newData = _zopeutil.readObject(metaCmd['home'],metaCmd['id'],'')
-      data = _zopeutil.readObject(container,metaCmd['id'],'')
+      src = zopeutil.getObject(metaCmd['home'],metaCmd['id'])
+      newData = zopeutil.readObject(metaCmd['home'],metaCmd['id'],'')
+      data = zopeutil.readObject(container,metaCmd['id'],'')
       if src is not None and (newData != data or (metaCmd.get('acquired',0) and src.meta_type=='External Method')):
         newMethod = src.meta_type
         newId = metaCmd['id']
         newTitle = '*** DO NOT DELETE OR MODIFY ***'
-        _zopeutil.removeObject(container, newId, removeFile=False)
-        _zopeutil.addObject(container, newMethod, newId, newTitle, newData)
-      ob = _zopeutil.getObject(container,metaCmd['id'])
+        zopeutil.removeObject(container, newId, removeFile=False)
+        zopeutil.addObject(container, newMethod, newId, newTitle, newData)
+      ob = zopeutil.getObject(container,metaCmd['id'])
       if ob is not None:
         metaCmd['meta_type'] = ob.meta_type
-        metaCmd['data'] = _zopeutil.readObject(container,metaCmd['id'],'')
+        metaCmd['data'] = zopeutil.readObject(container,metaCmd['id'],'')
         metaCmd['bobobase_modification_time'] = ob.bobobase_modification_time().timeTime()
       return metaCmd
 
@@ -515,7 +515,7 @@ class ZMSMetacmdProvider(
               el_meta_types = metaCmd['meta_types']
               el_roles = metaCmd['roles']
               el_exec = metaCmd['exec']
-              el_data = _zopeutil.readObject(metaCmd['home'],metaCmd['id'])
+              el_data = zopeutil.readObject(metaCmd['home'],metaCmd['id'])
               # Value.
               value.append({'id':el_id,'revision':revision,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'exec':el_exec,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
           # XML.

@@ -23,7 +23,7 @@ import pyexpat
 import time
 import Globals
 # Product Imports.
-import _globals
+import standard
 
 ################################################################################
 # class ParseError(Exception):
@@ -130,7 +130,7 @@ class Builder:
         p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
         
         #### parsing ####
-        _globals.writeLog( self, "#### parsing ####")
+        standard.writeLog( self, "#### parsing ####")
         if type(input) is str:
           # input is a string!
           rv = p.Parse(input, 1)
@@ -170,9 +170,9 @@ class Builder:
     ############################################################################
     def OnStartElement(self, name, attrs):
         """ Builder.OnStartElement """
-        _globals.writeBlock( self, "[Builder.OnStartElement(" + str(name) + ")]")
-        name = _globals.unencode( name)
-        attrs = _globals.unencode( attrs)
+        standard.writeBlock( self, "[Builder.OnStartElement(" + str(name) + ")]")
+        name = standard.unencode( name)
+        attrs = standard.unencode( attrs)
         skip = self.oCurrNode is not None and len(filter(lambda x:x.get('skip'),self.oCurrNode.dTagStack.get_all())) > 0
         if not skip and name in self.getMetaobjIds():
           meta_id = name
@@ -189,7 +189,7 @@ class Builder:
               id = self.getNewId(prefix)
             elif 'id' in attrs.keys():
               id = attrs.get( 'id')
-              prefix = _globals.id_prefix(id)
+              prefix = standard.id_prefix(id)
               id = self.getNewId(prefix)
             else:
               id = self.oCurrNode.getNewId()
@@ -201,7 +201,7 @@ class Builder:
             newNode = constructor(id,sort_id,meta_id)
             self.oCurrNode._setObject(newNode.id, newNode)
             newNode = getattr(self.oCurrNode,newNode.id)
-            _globals.writeBlock( self, "[Builder.OnStartElement]: object with id " + str(newNode.id) + " of class " + str(newNode.__class__) + " created in " + str(self.oCurrNode.__class__))
+            standard.writeBlock( self, "[Builder.OnStartElement]: object with id " + str(newNode.id) + " of class " + str(newNode.__class__) + " created in " + str(self.oCurrNode.__class__))
           
           ##### Uid ####
           if 'uid' in attrs.keys():
@@ -235,7 +235,7 @@ class Builder:
         else:
           # tag name is unknown -> offer it to current object
           if not self.oCurrNode.xmlOnUnknownStartTag(name, attrs):
-            _globals.writeLog( self, "[Builder.OnStartElement]: Unknown start-tag (" + name + "): current object did not accept tag!")  # current object did not accept tag!
+            standard.writeLog( self, "[Builder.OnStartElement]: Unknown start-tag (" + name + "): current object did not accept tag!")  # current object did not accept tag!
 
 
     ############################################################################
@@ -248,11 +248,11 @@ class Builder:
     ############################################################################
     def OnEndElement(self, name):
         """ Builder.OnEndElement """
-        _globals.writeBlock( self, "[Builder.OnEndElement(" + str(name) + ")]")
+        standard.writeBlock( self, "[Builder.OnEndElement(" + str(name) + ")]")
         skip = self.oCurrNode is not None and len(filter(lambda x:x.get('skip'),self.oCurrNode.dTagStack.get_all())) > 0
         if not skip and name in self.getMetaobjIds():
           if name == self.oCurrNode.meta_id:
-            _globals.writeBlock( self, "[Builder.OnEndElement]: object finished")
+            standard.writeBlock( self, "[Builder.OnEndElement]: object finished")
             
             ##### VersionManager ####
             self.oCurrNode.resetObjStates()
@@ -267,13 +267,13 @@ class Builder:
           else:
             # tag name is unknown -> offer it to current object
             if not self.oCurrNode.xmlOnUnknownEndTag(name):
-              _globals.writeLog( self, "[Builder.OnEndElement]: Unknown end-tag (/" + name + ")")  # current object did not accept tag!
+              standard.writeLog( self, "[Builder.OnEndElement]: Unknown end-tag (/" + name + ")")  # current object did not accept tag!
               raise ParseError("Unknown end-tag (" + name + ")")  # current object did not accept tag!
         
         else:
           # tag name is unknown -> offer it to current object
           if not self.oCurrNode.xmlOnUnknownEndTag(name):
-            _globals.writeLog( self, "[Builder.OnEndElement]: Unknown end-tag (/" + name + ")")  # current object did not accept tag!
+            standard.writeLog( self, "[Builder.OnEndElement]: Unknown end-tag (/" + name + ")")  # current object did not accept tag!
             raise ParseError("Unknown end-tag (" + name + ")")  # current object did not accept tag!
 
 
@@ -289,7 +289,7 @@ class Builder:
     ############################################################################
     def OnCharacterData(self, data):
         """ Builder.OnCharacterData """
-        _globals.writeLog( self, "[Builder.OnCharacterData]")
+        standard.writeLog( self, "[Builder.OnCharacterData]")
         
         # do we have a current node?
         if self.oCurrNode==None:

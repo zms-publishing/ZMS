@@ -4,7 +4,7 @@
   <item type="dictionary">
     <dictionary>
       <item key="data"><![CDATA[<!DOCTYPE html>
-<html lang="en">
+<html lang="en" tal:define="standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='search')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
@@ -114,7 +114,7 @@
   <item type="dictionary">
     <dictionary>
       <item key="data"><![CDATA[<!DOCTYPE html>
-<html lang="en">
+<html lang="en" tal:define="standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='tasks')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>

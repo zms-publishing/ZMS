@@ -32,8 +32,8 @@ import IZMSRepositoryManager
 import IZMSRepositoryProvider
 import ZMSItem
 import _fileutil
-import _globals
-import _zopeutil
+import standard
+import zopeutil
 
 
 def get_class(py):
@@ -159,7 +159,7 @@ class ZMSRepositoryManager(
         current_time = time.time()
         if self.get_auto_update():
           last_update = self.get_last_update()
-          if last_update is None or _globals.getDateTime(last_update)<_globals.getDateTime(self.Control_Panel.process_start) or self.getConfProperty('ZMS.debug',0):
+          if last_update is None or standard.getDateTime(last_update)<standard.getDateTime(self.Control_Panel.process_start) or self.getConfProperty('ZMS.debug',0):
             self.writeBlock("[exec_auto_update]: Run...")
             def traverse(path):
               l = []
@@ -176,8 +176,8 @@ class ZMSRepositoryManager(
             files = traverse(basepath)
             mtime = max(map(lambda x:x[0],files))
             self.writeBlock("[exec_auto_update]: %s<%s"%(str(last_update),str(mtime)))
-            if last_update is None or _globals.getDateTime(last_update)<_globals.getDateTime(mtime):
-              update_files = map(lambda x:x[1][len(basepath):],filter(lambda x:last_update is None or _globals.getDateTime(x[0])<_globals.getDateTime(last_update),files))
+            if last_update is None or standard.getDateTime(last_update)<standard.getDateTime(mtime):
+              update_files = map(lambda x:x[1][len(basepath):],filter(lambda x:last_update is None or standard.getDateTime(x[0])<standard.getDateTime(last_update),files))
               temp_files = map(lambda x:x.split(os.path.sep),update_files)
               temp_files = \
                 map(lambda x:[x[0],x[-1].replace('.py','')],filter(lambda x:len(x)==2,temp_files)) + \
@@ -185,7 +185,7 @@ class ZMSRepositoryManager(
               ids = list(set(map(lambda x:':'.join(x),temp_files)))
               self.writeBlock("[exec_auto_update]: %s"%str(ids))
               self.updateChanges(ids, override=True)
-            self.last_update = _globals.getDateTime(current_time)
+            self.last_update = standard.getDateTime(current_time)
         self.writeLog("[exec_auto_update]: %s"%str(time.time()-current_time))
 
 
@@ -201,7 +201,7 @@ class ZMSRepositoryManager(
         r = remote.get(filename,{})
         if l.get('data','') != r.get('data',''):
           data = l.get('data',r.get('data',''))
-          mt, enc = _globals.guess_contenttype(filename,data)
+          mt, enc = standard.guess_content_type(filename,data)
           diff.append((filename,mt,l.get('id',r.get('id','?')),l,r))
       return diff
 
@@ -248,7 +248,7 @@ class ZMSRepositoryManager(
                 d = {}
                 d['id'] = id
                 d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix,fileexts.get(ob.meta_type,''))])
-                d['data'] = _zopeutil.readData(ob)
+                d['data'] = zopeutil.readData(ob)
                 d['version'] = self.getLangFmtDate(ob.bobobase_modification_time().timeTime(),'eng')
                 d['meta_type'] = ob.meta_type
                 l[d['filename']] = d

@@ -22,7 +22,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import urllib
 import zope.interface
 # Product Imports.
-import _globals
+import standard
 import _xmllib
 import IZMSCatalogConnector
 import ZMSZCatalogAdapter
@@ -228,7 +228,7 @@ class ZMSZCatalogSolrConnector(
         result.append(self._update(self.__get_command_xml('commit')))
         result.append(self._update(self.__get_command_xml('optimize')))
       except:
-        result.append(_globals.writeError(self,'can\'t reindex_self'))
+        result.append(standard.writeError(self,'can\'t reindex_self'))
       return ', '.join(filter(lambda x:x,result))
 
 

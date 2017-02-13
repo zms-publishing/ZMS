@@ -30,7 +30,7 @@ import urllib
 import zExceptions
 # Product Imports.
 import _blobfields
-import _globals
+import standard
 import ZMSMetaobjManager
 
 
@@ -94,7 +94,7 @@ def utf8(v, encoding = 'latin-1'):
   elif type( v) is dict:
     keys = v.keys()
     vals = map(lambda x: utf8(v[x],encoding), keys)
-    return _globals.map_key_vals(keys, vals)
+    return standard.map_key_vals(keys, vals)
   else:
     return v
 
@@ -136,12 +136,12 @@ def getobjattr(self, obj, obj_attr, lang):
   # Default value.
   if v is None:
     datatype = obj_attr['datatype_key']
-    default = obj_attr.get('default',_globals.dtMapping[datatype][1])
+    default = obj_attr.get('default',standard.dtMapping[datatype][1])
     # Default inactive in untranslated languages.
     if obj_attr['id'] == 'active' and len(self.getLangIds()) > 1 and not ( self.isTranslated(lang,self.REQUEST) or lang == self.getPrimaryLanguage() ):
         default = 0
     if default is not None:
-      if datatype in _globals.DT_DATETIMES and default == '{now}':
+      if datatype in standard.DT_DATETIMES and default == '{now}':
         default = time.time()
       elif type(default) is list or type(default) is tuple:
         v = self.copy_list(default)
@@ -165,18 +165,18 @@ def setobjattr(self, obj, obj_attr, value, lang):
 #  cloneobjattr:
 # ------------------------------------------------------------------------------
 def cloneobjattr(self, src, dst, obj_attr, lang):
-  _globals.writeLog( self, "[cloneobjattr]: Clone object-attributes from '%s' to '%s'"%(str(src),str(dst)))
+  standard.writeLog( self, "[cloneobjattr]: Clone object-attributes from '%s' to '%s'"%(str(src),str(dst)))
   # Fetch value.
   v = getobjattr(self,src,obj_attr,lang)
   # Clone value.
   if v is not None:
     datatype = obj_attr['datatype_key']
-    if datatype in _globals.DT_BLOBS:
+    if datatype in standard.DT_BLOBS:
       try:
         v = v._getCopy()
       except:
         e = "[cloneobjattr]: Can't clone object-attribute: obj_attr=%s, lang=%s, v=%s!"%(str(obj_attr), str(lang), str(v))
-        _globals.writeError( self, e)
+        standard.writeError( self, e)
         raise zExceptions.InternalError(e)
     elif type(v) is list or type(v) is tuple:
       v = self.copy_list(v)
@@ -228,7 +228,7 @@ class ObjAttrs:
     #  Returns object-attributes and resolves meta-dictionaries.
     # --------------------------------------------------------------------------
     def getObjAttrs(self, meta_id=None):
-      meta_id = _globals.nvl( meta_id, self.meta_id)
+      meta_id = standard.nvl( meta_id, self.meta_id)
       obj_attrs = getattr( self, 'dObjAttrs', {})
       return obj_attrs.get(meta_id,{})
 
@@ -238,7 +238,7 @@ class ObjAttrs:
     # --------------------------------------------------------------------------
     def getObjAttr(self, key, meta_id=None):
       obj_attrs = self.getObjAttrs( meta_id)
-      return obj_attrs.get(key,{'id':key,'key':key,'xml':False,'multilang':False,'name':'UNKNOWN','datatype':'string','datatype_key':_globals.DT_UNKNOWN})
+      return obj_attrs.get(key,{'id':key,'key':key,'xml':False,'multilang':False,'name':'UNKNOWN','datatype':'string','datatype_key':standard.DT_UNKNOWN})
 
 
     # --------------------------------------------------------------------------
@@ -285,7 +285,7 @@ class ObjAttrs:
             try:
               opts = self.dt_exec(v)
             except:
-              opts = _globals.writeError(self,'[getObjOptions]: key=%s'%obj_attr['id'])
+              opts = standard.writeError(self,'[getObjOptions]: key=%s'%obj_attr['id'])
           else:
             for i in range(len(obj_attropts)/2):
               opts.append([obj_attropts[i*2],obj_attropts[i*2+1]])
@@ -456,28 +456,28 @@ class ObjAttrs:
         css = 'form-control'
         if disabled: css += '-disabled'
         css += ' datatype-%s'%(datatype)
-        if datatype in _globals.DT_DATETIMES:
+        if datatype in standard.DT_DATETIMES:
           size = 12
           fmt_str = 'DATETIME_FMT'
-          if datatype == _globals.DT_DATE:
+          if datatype == standard.DT_DATE:
             size = 8
             fmt_str = 'DATE_FMT'
-          elif datatype == _globals.DT_TIME:
+          elif datatype == standard.DT_TIME:
             size = 8
             fmt_str = 'TIME_FMT'
           return self.getDateTimeInput(fmName,elName,size,value,enabled,fmt_str,REQUEST,css)
-        elif datatype == _globals.DT_URL:
+        elif datatype == standard.DT_URL:
           return self.getUrlInput(fmName,elName,value=value,enabled=enabled,REQUEST=REQUEST,css=css)
         else:
           size = None
           extra = ''
           if obj_attr.has_key('size'):
             size = obj_attr['size']
-          elif datatype in _globals.DT_INTS:
+          elif datatype in standard.DT_INTS:
             size = 5
-          elif datatype == _globals.DT_FLOAT:
+          elif datatype == standard.DT_FLOAT:
             size = 8
-          elif datatype == _globals.DT_AMOUNT:
+          elif datatype == standard.DT_AMOUNT:
             size = 8
             if value is not None:
               try:
@@ -486,7 +486,7 @@ class ObjAttrs:
                 pass
           inp = []
           inp.append(self.getTextInput( fmName, elName, size, value, 'text', enabled, REQUEST, css, extra ))
-          if datatype in [_globals.DT_AMOUNT]:
+          if datatype in [standard.DT_AMOUNT]:
             inp.append('&nbsp;'+self.getConfProperty('ZMS.locale.amount.unit','EUR'))
           return ''.join(inp)
 
@@ -497,13 +497,13 @@ class ObjAttrs:
       id = self.id
       fmName = REQUEST.get( 'fmName' ,REQUEST.get('fmName','form0_%s'%id))
       meta_id = REQUEST.get( 'ZMS_INSERT', None)
-      obj_attr = self.getObjAttr( key, _globals.nvl( meta_id, self.meta_id))
+      obj_attr = self.getObjAttr( key, standard.nvl( meta_id, self.meta_id))
       if meta_id is None:
         value = self.getObjAttrValue( obj_attr, REQUEST)
       else:
         default = ''
         datatype = obj_attr['datatype_key']
-        if datatype == _globals.DT_BOOLEAN:
+        if datatype == standard.DT_BOOLEAN:
           default = 0
         value = REQUEST.get( '%s_value'%key, obj_attr.get( 'default', default))
       return self.getObjAttrInput( fmName, obj_attr, value, REQUEST)
@@ -527,7 +527,7 @@ class ObjAttrs:
       value = getobjattr(self,obj_vers,obj_attr,lang)
       
       #-- Blob-Fields
-      if datatype in _globals.DT_BLOBS:
+      if datatype in standard.DT_BLOBS:
         if type(value) in StringTypes:
           value = None
         elif value is not None:
@@ -535,32 +535,32 @@ class ObjAttrs:
           value.lang = lang
       
       #-- DateTime-Fields.
-      elif datatype in _globals.DT_DATETIMES:
+      elif datatype in standard.DT_DATETIMES:
         if value is not None:
           if type(value) in StringTypes: 
             fmt_str = 'DATETIME_FMT'
-            if datatype == _globals.DT_DATE:
+            if datatype == standard.DT_DATE:
               fmt_str = 'DATE_FMT'
-            elif datatype == _globals.DT_TIME:
+            elif datatype == standard.DT_TIME:
               fmt_str = 'TIME_FMT'
             value = self.parseLangFmtDate(value)
           elif type(value) is not time.struct_time:
-            value = _globals.getDateTime(value)
+            value = standard.getDateTime(value)
       
       #-- List-Fields.
-      elif datatype == _globals.DT_LIST:
+      elif datatype == standard.DT_LIST:
         if not type(value) is list:
           value = [value]
       
       #-- Integer-Fields.
-      elif datatype in _globals.DT_INTS:
+      elif datatype in standard.DT_INTS:
         try:
           value = int(math.floor(float(value)))
         except:
           value = 0
       
       #-- Float-Fields.
-      elif datatype == _globals.DT_FLOAT:
+      elif datatype == standard.DT_FLOAT:
         try:
           value = float(value)
         except:
@@ -585,9 +585,9 @@ class ObjAttrs:
           lang = self.getParentLanguage(lang)
           if lang is not None:
             empty = empty or (value is None)
-            empty = empty or (datatype in _globals.DT_NUMBERS and value==0)
-            empty = empty or (datatype in _globals.DT_STRINGS and value=='')
-            empty = empty or (datatype == _globals.DT_LIST and value==[])
+            empty = empty or (datatype in standard.DT_NUMBERS and value==0)
+            empty = empty or (datatype in standard.DT_STRINGS and value=='')
+            empty = empty or (datatype == standard.DT_LIST and value==[])
         if not empty: break
       return value
 
@@ -605,10 +605,10 @@ class ObjAttrs:
           lang = request['lang']
           work = self.getObjAttrValue(obj_attr,{'lang':lang,'preview':'preview'})
           live = self.getObjAttrValue(obj_attr,{'lang':lang})
-          modified = modified or (datatype not in _globals.DT_BLOBS and work != live)
-          modified = modified or (datatype in _globals.DT_BLOBS and (str(work) != str(live) or (work is not None and live is not None and str(work.getData()) != str(live.getData()))))
+          modified = modified or (datatype not in standard.DT_BLOBS and work != live)
+          modified = modified or (datatype in standard.DT_BLOBS and (str(work) != str(live) or (work is not None and live is not None and str(work.getData()) != str(live.getData()))))
       except:
-        _globals.writeError(self,'[attr_is_modified]: key=%s'%key)
+        standard.writeError(self,'[attr_is_modified]: key=%s'%key)
       return modified
 
     # --------------------------------------------------------------------------
@@ -635,10 +635,10 @@ class ObjAttrs:
         datatype = obj_attr['datatype_key']
         value = self.getObjAttrValue( obj_attr, REQUEST)
         # Text-Fields
-        if datatype in _globals.DT_TEXTS:
+        if datatype in standard.DT_TEXTS:
           value = self.validateInlineLinkObj(value)
         # Url-Fields
-        if datatype == _globals.DT_URL:
+        if datatype == standard.DT_URL:
           value = self.validateLinkObj(value)
         # Executable fields.
         value = self.dt_exec(value)
@@ -794,7 +794,7 @@ class ObjAttrs:
     def formatObjAttrValue(self, obj_attr, v, lang=None):
       
       #-- DATATYPE
-      datatype = obj_attr.get('datatype_key',_globals.DT_UNKNOWN)
+      datatype = obj_attr.get('datatype_key',standard.DT_UNKNOWN)
       
       #-- VALUE
       if type(v) in StringTypes:
@@ -814,7 +814,7 @@ class ObjAttrs:
             pass
       
       #-- Blob-Fields
-      if datatype in _globals.DT_BLOBS:
+      if datatype in standard.DT_BLOBS:
         if self.getType()=='ZMSRecordSet' and \
            str(v) == str(_blobfields.createBlobField(self,datatype)):
           metaObj = self.getMetaobj(self.meta_id)
@@ -833,7 +833,7 @@ class ObjAttrs:
             v = None
           else:
             v = _blobfields.createBlobField(self,datatype,v)
-            v.filename = _globals.umlaut_quote(self,v.filename,{':':'_','<':'_','>':'_','*':'_','?':'_','"':'_','|':'_',',':'_'})
+            v.filename = standard.umlaut_quote(self,v.filename,{':':'_','<':'_','>':'_','*':'_','?':'_','"':'_','|':'_',',':'_'})
         if type(v) is dict:
           if len(v.get('filename',''))==0:
             v = None
@@ -841,32 +841,32 @@ class ObjAttrs:
             v = _blobfields.createBlobField(self,datatype,v)
       
       #-- DateTime-Fields.
-      if datatype in _globals.DT_DATETIMES:
+      if datatype in standard.DT_DATETIMES:
         if type(v) in StringTypes:
           fmt_str = 'DATETIME_FMT'
-          if datatype == _globals.DT_DATE:
+          if datatype == standard.DT_DATE:
             fmt_str = 'DATE_FMT'
-          elif datatype == _globals.DT_TIME:
+          elif datatype == standard.DT_TIME:
             fmt_str = 'TIME_FMT'
           v = self.parseLangFmtDate(v)
         elif type(v) is not time.struct_time:
-          v = _globals.getDateTime(v)
+          v = standard.getDateTime(v)
       
       #-- Dictionary-Fields
-      if datatype == _globals.DT_DICT:
+      if datatype == standard.DT_DICT:
         if v is None:
           v = {}
         if type(v) in StringTypes:
           try:
            v = self.parseXmlString(self.getXmlHeader() + v)
           except:
-            _globals.writeError( self, "[formatObjAttrValue]: can't parse dict from xml - exception ignored!")
+            standard.writeError( self, "[formatObjAttrValue]: can't parse dict from xml - exception ignored!")
             pass
         if type(v) is dict:
           v = v.copy()
       
       #-- List-Fields
-      if datatype == _globals.DT_LIST:
+      if datatype == standard.DT_LIST:
         if obj_attr['repetitive'] and not type(v) is list:
           if obj_attr['type'] in ['file','image']:
             l = self.getObjProperty(obj_attr['id'],self.REQUEST)
@@ -885,7 +885,7 @@ class ObjAttrs:
             try:
               l = self.parseXmlString(self.getXmlHeader() + v)
             except:
-              _globals.writeError( self, "[formatObjAttrValue]: can't parse list from xml - exception ignored!")
+              standard.writeError( self, "[formatObjAttrValue]: can't parse list from xml - exception ignored!")
               l = None
             if l is not None:
               v = l
@@ -895,28 +895,28 @@ class ObjAttrs:
               v = self.copy_list(v)
       
       #-- Integer-Fields
-      if datatype in _globals.DT_INTS:
+      if datatype in standard.DT_INTS:
         if type(v) in StringTypes and len(v) > 0:
           if v[-1] == '.':
             v = v[:-1]
           v = int(v)
       
       #-- Float-Fields
-      if datatype == _globals.DT_FLOAT:
+      if datatype == standard.DT_FLOAT:
         if type(v) in StringTypes and len(v) > 0:
           v = float(v)
       
       #-- String-Fields.
-      if datatype in _globals.DT_STRINGS:
+      if datatype in standard.DT_STRINGS:
         if v is None:
           v = ''
       
       #-- Text-Fields
-      if datatype in _globals.DT_TEXTS:
+      if datatype in standard.DT_TEXTS:
         v = self.validateInlineLinkObj(v)
       
       #-- Url-Fields
-      if datatype == _globals.DT_URL:
+      if datatype == standard.DT_URL:
         v = self.validateLinkObj(v)
       
       # Hook for custom formatting.
@@ -951,7 +951,7 @@ class ObjAttrs:
       if ( not enabled) or \
          ( not obj_attr['xml']) or \
          ( obj_attr['id'].find('_') == 0 and not REQUEST.form.has_key(elName)) or \
-         ( datatype == _globals.DT_UNKNOWN): 
+         ( datatype == standard.DT_UNKNOWN): 
         if not forced: 
           return
       
@@ -959,7 +959,7 @@ class ObjAttrs:
       set, value =False, REQUEST.get(elName,None)
       
       #-- Blob-Fields
-      if datatype in _globals.DT_BLOBS:
+      if datatype in standard.DT_BLOBS:
         
         # Upload
         if isinstance(value,ZPublisher.HTTPRequest.FileUpload) and len(value.filename) > 0:
@@ -981,9 +981,9 @@ class ObjAttrs:
               o = getattr( temp_folder, id)
               f = o.data
               filename = getattr( temp_folder, id).title
-              mt, enc = _globals.guess_contenttype( filename, f)
+              mt, enc = standard.guess_content_type( filename, f)
               set, value = True, {'data':str(f),'filename':filename,'content_type':mt}
-              if not self.pilutil().enabled() and datatype == _globals.DT_IMAGE and REQUEST.get('width_%s'%elName) and REQUEST.get('height_%s'%elName):
+              if not self.pilutil().enabled() and datatype == standard.DT_IMAGE and REQUEST.get('width_%s'%elName) and REQUEST.get('height_%s'%elName):
                 w = REQUEST['width_%s'%elName]
                 h = REQUEST['height_%s'%elName]
                 width = o.getProperty('width')
@@ -999,7 +999,7 @@ class ObjAttrs:
               temp_folder.manage_delObjects([id])
       
       #-- Integer-Fields
-      elif datatype in _globals.DT_INTS:
+      elif datatype in standard.DT_INTS:
         if value is not None:
           if type(value) is str and len(value) == 0:
             set, value = True, None
@@ -1007,7 +1007,7 @@ class ObjAttrs:
             set, value = True, int(value)
       
       #-- Float-Fields
-      elif datatype == _globals.DT_FLOAT:
+      elif datatype == standard.DT_FLOAT:
         if value is not None:
           if type(value) is str and len(value) == 0:
             set, value = True, None
@@ -1020,7 +1020,7 @@ class ObjAttrs:
       
       #-- SET?
       if set:
-        _globals.writeLog( self, "[setReqProperty] %s=%s"%(key,str(value)))
+        standard.writeLog( self, "[setReqProperty] %s=%s"%(key,str(value)))
         self.setObjProperty(key,value,lang)
 
 
@@ -1050,7 +1050,7 @@ class ObjAttrs:
       self.notifyMetaobjAttrAboutValue( self.meta_id, key, value)
       
       #-- SET!
-      _globals.writeLog( self, "[setObjProperty]: %s=%s"%(key,str(value)))
+      standard.writeLog( self, "[setObjProperty]: %s=%s"%(key,str(value)))
       ob = self.getObjVersion({'preview':'preview'})
       setobjattr(self,ob,obj_attr,value,lang)
       if forced:
@@ -1090,7 +1090,7 @@ class ObjAttrs:
           filename = value
           value = REQUEST['BODY']
           if filenameUnescape:
-            filename = _globals.unescape(filename)
+            filename = standard.unescape(filename)
       else:
         value = REQUEST['userfile[0]']
         filename = value.filename
@@ -1107,7 +1107,7 @@ class ObjAttrs:
       meta_id = REQUEST.get('meta_id',self.meta_id)
       obj_attr = self.getObjAttr(key,meta_id)
       datatype = obj_attr['datatype_key']
-      if datatype == _globals.DT_IMAGE:
+      if datatype == standard.DT_IMAGE:
         file = temp_folder.manage_addImage( id=id, title=filename, file=value)
       else:
         file = temp_folder.manage_addFile( id=id, title=filename, file=value)
@@ -1218,7 +1218,7 @@ class ObjAttrs:
           filename = blob.getFilename()
           value = blob.getData()
           content_type = None
-          if datatype == _globals.DT_IMAGE:
+          if datatype == standard.DT_IMAGE:
             if filename.endswith('.svg'):
               content_type = 'image/svg+xml'
             file = temp_folder.manage_addImage( id=id, title=filename, file=value, content_type=content_type)
@@ -1284,7 +1284,7 @@ class ObjAttrs:
     #  Clone object-attributes.
     # --------------------------------------------------------------------------
     def cloneObjAttrs(self, src, dst, lang):
-      _globals.writeBlock( self, "[cloneObjAttrs]: Clone object-attributes from '%s' to '%s'"%(str(src),str(dst)))
+      standard.writeBlock( self, "[cloneObjAttrs]: Clone object-attributes from '%s' to '%s'"%(str(src),str(dst)))
       prim_lang = self.getPrimaryLanguage()
       keys = self.getObjAttrs().keys()
       if self.getType()=='ZMSRecordSet':
@@ -1354,10 +1354,10 @@ class ObjAttrsManager:
               options.append(option)
               options.append(option)
             dct['options'] = options
-          dct['datatype_key'] = _globals.datatype_key(dct['datatype'])
+          dct['datatype_key'] = standard.datatype_key(dct['datatype'])
           return dct
       except:
-        _globals.writeError( self, '[synchronizeObjAttr]')
+        standard.writeError( self, '[synchronizeObjAttr]')
       return None
 
     def synchronizeObjAttrs(self, sync_id=None):
@@ -1367,7 +1367,7 @@ class ObjAttrsManager:
       """
       rtn = []
       rtn.append('[%s.synchronizeObjAttrs]: %s'%(self.absolute_url(),str(sync_id)))
-      _globals.writeLog( self, '[synchronizeObjAttrs]')
+      standard.writeLog( self, '[synchronizeObjAttrs]')
       
       # Prepare defaults.
       defaults_obj_attrs = {}
@@ -1445,7 +1445,7 @@ class ObjAttrsManager:
           if b:
             rtn.append(portalClient.synchronizeObjAttrs(sync_id))
         except:
-          _globals.writeError( self, '[synchronizeObjAttrs]: Can\'t process %s'%portalClient.absolute_url())
+          standard.writeError( self, '[synchronizeObjAttrs]: Can\'t process %s'%portalClient.absolute_url())
       
       return '\n'.join(rtn)
 

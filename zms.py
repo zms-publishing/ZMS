@@ -30,6 +30,7 @@ import transaction
 import urllib
 import zExceptions
 # Product imports.
+import standard
 import _accessmanager
 import _builder
 import _confmanager
@@ -77,18 +78,18 @@ def subscriber(event):
     if isinstance(event.object,ZMSObject):
       if isinstance(event.newParent,ZMSObject):
         # trigger object-added event
-        _globals.triggerEvent(event.object,"*.ObjectAdded")
+        standard.triggerEvent(event.object,"*.ObjectAdded")
   elif isinstance(event,ObjectMovedEvent):
     if isinstance(event.object,ZMSObject):
       if isinstance(event.newParent,ZMSObject):
         # trigger object-moved event
-        _globals.triggerEvent(event.object,"*.ObjectMoved")
+        standard.triggerEvent(event.object,"*.ObjectMoved")
       elif event.newParent is None:
-        _globals.triggerEvent(event.object,"*.ObjectRemoved")
+        standard.triggerEvent(event.object,"*.ObjectRemoved")
   elif isinstance(event,ObjectRemovedEvent):
     if isinstance(event.object,ZMSObject):
         # trigger object-removed event
-      _globals.triggerEvent(event.object,"*.ObjectRemoved")
+      standard.triggerEvent(event.object,"*.ObjectRemoved")
 zope.event.subscribers.append(subscriber)
 
 
@@ -109,9 +110,9 @@ def importTheme(folder, theme):
   ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
   filepath = INSTANCE_HOME + '/import/' + filename
   if theme.startswith('http://'):
-    initutil = _globals.initutil()
+    initutil = standard.initutil()
     initutil.setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))
-    zexp = _globals.http_import( initutil, theme)
+    zexp = standard.http_import( initutil, theme)
     _fileutil.exportObj( zexp, filepath)
   else:
     packagepath = package_home(globals()) + '/import/' + filename
@@ -547,7 +548,7 @@ class ZMS(
         try:
           return getattr( self, v).content
         except:
-          _globals.writeError(self, '[getPortalMaster]: %s not found!'%str(v))
+          standard.writeError(self, '[getPortalMaster]: %s not found!'%str(v))
       return None
 
     """
@@ -562,7 +563,7 @@ class ZMS(
           try:
             docElmnts.append(getattr(thisHome,id).content)
           except:
-            _globals.writeError(self, '[getPortalClients]: %s not found!'%str(id))
+            standard.writeError(self, '[getPortalClients]: %s not found!'%str(id))
       return docElmnts
 
 
@@ -589,7 +590,7 @@ class ZMS(
     # Handler for XML-Builder (_builder.py)
     # --------------------------------------------------------------------------
     def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode, oRoot):
-      _globals.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
+      standard.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
 
       # remove all ZMS-objects.
       self.manage_delObjects(self.objectIds(self.dGlobalAttrs.keys()))

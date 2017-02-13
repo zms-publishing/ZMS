@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>zms.zms.ZMS</title>
+  <title>Products.zms.zms.ZMS</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -39,8 +39,9 @@
   <tr valign="top">
     <td width="100%">
       <span class="breadcrumbs">
+        Package&nbsp;Products ::
         Package&nbsp;zms ::
-        <a href="zms.zms-module.html">Module&nbsp;zms</a> ::
+        <a href="Products.zms.zms-module.html">Module&nbsp;zms</a> ::
         Class&nbsp;ZMS
       </span>
     </td>
@@ -49,7 +50,7 @@
         <!-- hide/show private -->
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="zms.zms.ZMS-class.html"
+            >]&nbsp;|&nbsp;<a href="Products.zms.zms.ZMS-class.html"
             target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
@@ -58,19 +59,23 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class ZMS</h1><p class="nomargin-top"></p>
 <pre class="base-tree">
-             zmscustom.ZMSCustom --+
-                                   |
-    _accessmanager.AccessManager --+
-                                   |
-                _builder.Builder --+
-                                   |
-        _confmanager.ConfManager --+
-                                   |
-       _objattrs.ObjAttrsManager --+
-                                   |
-_zcatalogmanager.ZCatalogManager --+
-                                   |
-                                  <strong class="uidshort">ZMS</strong>
+                       zmscustom.ZMSCustom --+
+                                             |
+              _accessmanager.AccessManager --+
+                                             |
+                          _builder.Builder --+
+                                             |
+_multilangmanager.MultiLanguageManager --+   |
+                                         |   |
+          _filtermanager.FilterManager --+   |
+                                         |   |
+                  <a href="Products.zms._confmanager.ConfManager-class.html">_confmanager.ConfManager</a> --+
+                                             |
+                 _objattrs.ObjAttrsManager --+
+                                             |
+          _zcatalogmanager.ZCatalogManager --+
+                                             |
+                                            <strong class="uidshort">ZMS</strong>
 </pre>
 
 <hr />
@@ -88,7 +93,7 @@ _zcatalogmanager.ZCatalogManager --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="manage_options"></a><span class="summary-sig-name">manage_options</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
             
             
@@ -104,7 +109,7 @@ _zcatalogmanager.ZCatalogManager --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="icon"></a><span class="summary-sig-name">icon</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
             
             
@@ -143,7 +148,28 @@ _zcatalogmanager.ZCatalogManager --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="zms_version"></a><span class="summary-sig-name">zms_version</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="manage_addMediaDb"></a><span class="summary-sig-name">manage_addMediaDb</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">location</span>,
+        <span class="summary-sig-arg">REQUEST</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">RESPONSE</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.zms.ZMS-class.html#zms_version" class="summary-sig-name">zms_version</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Try to obtain the version from package info if installed by pip 
+      otherwise read from version.txt and from svnversion</td>
           <td align="right" valign="top">
             
             
@@ -160,6 +186,22 @@ _zcatalogmanager.ZCatalogManager --+
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="getDocumentElement"></a><span class="summary-sig-name">getDocumentElement</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getRootElement"></a><span class="summary-sig-name">getRootElement</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
             
             
@@ -289,25 +331,6 @@ _zcatalogmanager.ZCatalogManager --+
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="updateVersion"></a><span class="summary-sig-name">updateVersion</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">lang</span>,
-        <span class="summary-sig-arg">REQUEST</span>,
-        <span class="summary-sig-arg">maintenance</span>=<span class="summary-sig-default">True</span>)</span></td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a name="getParentNode"></a><span class="summary-sig-name">getParentNode</span>(<span class="summary-sig-arg">self</span>)</span></td>
           <td align="right" valign="top">
             
@@ -338,6 +361,64 @@ _zcatalogmanager.ZCatalogManager --+
       
     </td>
   </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="Products.zms._confmanager.ConfManager-class.html">_confmanager.ConfManager</a></code></b>:
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#customize_manage_options">customize_manage_options</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#delConfProperty">delConfProperty</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getCatalogAdapter">getCatalogAdapter</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getCharFormats">getCharFormats</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getConfFiles">getConfFiles</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getConfManager">getConfManager</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getConfProperties">getConfProperties</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getConfPropertiesDefaults">getConfPropertiesDefaults</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getConfProperty">getConfProperty</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getConfXmlFile">getConfXmlFile</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getFormatManager">getFormatManager</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getLocale">getLocale</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMediaDb">getMediaDb</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaCmd">getMetaCmd</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaCmdDescription">getMetaCmdDescription</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaCmdIds">getMetaCmdIds</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaCmds">getMetaCmds</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetacmdManager">getMetacmdManager</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaobj">getMetaobj</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaobjAttr">getMetaobjAttr</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaobjAttrIdentifierId">getMetaobjAttrIdentifierId</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaobjAttrIds">getMetaobjAttrIds</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaobjAttrs">getMetaobjAttrs</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaobjId">getMetaobjId</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaobjIds">getMetaobjIds</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaobjManager">getMetaobjManager</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getMetaobjRevision">getMetaobjRevision</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getPluginIds">getPluginIds</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getRepositoryManager">getRepositoryManager</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getReqProperty">getReqProperty</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getResourceFolders">getResourceFolders</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getSequence">getSequence</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getStylesheet">getStylesheet</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getStylesheets">getStylesheets</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getTextFormat">getTextFormat</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getTextFormatDefault">getTextFormatDefault</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getTextFormats">getTextFormats</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getThemes">getThemes</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getWfActivities">getWfActivities</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getWfActivitiesIds">getWfActivitiesIds</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getWfActivity">getWfActivity</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getWfTransition">getWfTransition</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getWfTransitions">getWfTransitions</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#getWorkflowManager">getWorkflowManager</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#get_conf_properties">get_conf_properties</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#get_conf_property">get_conf_property</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#importConf">importConf</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#importConfPackage">importConfPackage</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#manage_customizeDesign">manage_customizeDesign</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#manage_customizeSystem">manage_customizeSystem</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#notifyMetaobjAttrAboutValue">notifyMetaobjAttrAboutValue</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#setConfProperty">setConfProperty</a></code>
+      </p>
+    </td>
+  </tr>
 </table>
 <!-- ==================== CLASS VARIABLES ==================== -->
 <a name="section-ClassVariables"></a>
@@ -351,7 +432,7 @@ _zcatalogmanager.ZCatalogManager --+
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="zms_build"></a><span class="summary-name">zms_build</span> = <code title="'135'">'135'</code>
+        <a name="zms_build"></a><span class="summary-name">zms_build</span> = <code title="'134'">'134'</code>
     </td>
   </tr>
 <tr>
@@ -379,14 +460,7 @@ _zcatalogmanager.ZCatalogManager --+
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="zmi_logo__roles__"></a><span class="summary-name">zmi_logo__roles__</span> = <code title="None">None</code>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#__administratorPermissions__" class="summary-name">__administratorPermissions__</a> = <code title="'manage_customize', 'manage_customizeSystem', 'manage_changeLanguages'\
+        <a href="Products.zms.zms.ZMS-class.html#__administratorPermissions__" class="summary-name">__administratorPermissions__</a> = <code title="'manage_customize', 'manage_customizeSystem', 'manage_changeLanguages'\
 , 'manage_customizeLanguagesForm', 'manage_customizeDesign', 'manage_c\
 ustomizeDesignForm',">'manage_customize', 'manage_cus<code class="variable-ellipsis">...</code></code>
     </td>
@@ -395,30 +469,29 @@ ustomizeDesignForm',">'manage_customize', 'manage_cus<code class="variable-ellip
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#__authorPermissions__" class="summary-name">__authorPermissions__</a> = <code title="'manage', 'manage_main', 'manage_main_iframe', 'manage_workspace', 'ma\
+        <a href="Products.zms.zms.ZMS-class.html#__authorPermissions__" class="summary-name">__authorPermissions__</a> = <code title="'manage', 'manage_main', 'manage_main_iframe', 'manage_workspace', 'ma\
 nage_addZMSModule', 'manage_deleteObjs', 'manage_undoObjs', 'manage_mo\
 veObjUp', 'manage_moveObjDown', 'manage_moveObjToPos', 'manage_cutObje\
 cts', 'manage_copyObjects', 'manage_pasteObjs', 'manage_ajaxDragDrop',\
  'manage_ajaxZMIActions', 'manage_properties', 'manage_changePropertie\
-s', 'manage_changeTempBlobjProperty', 'manage_search', 'manage_tasks',\
- 'manage_wfTransition', 'manage_wfTransitionFinalize', 'manage_userFor\
-m', 'manage_user', 'manage_importexport', 'manage_import', 'manage_exp\
-...">'manage', 'manage_main', 'manage_main_<code class="variable-ellipsis">...</code></code>
+s', 'manage_changeTempBlobjProperty', 'manage_wfTransition', 'manage_w\
+fTransitionFinalize', 'manage_userForm', 'manage_user', 'manage_import\
+export', 'manage_import', 'manage_export', 'manage_executeMetacmd',">'manage', 'manage_main', 'manage_main_<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#__userAdministratorPermissions__" class="summary-name">__userAdministratorPermissions__</a> = <code title="'manage_users', 'manage_userProperties', 'manage_roleProperties', 'use\
-rdefined_roles',">'manage_users', 'manage_use<code class="variable-ellipsis">...</code></code>
+        <a href="Products.zms.zms.ZMS-class.html#__userAdministratorPermissions__" class="summary-name">__userAdministratorPermissions__</a> = <code title="'manage_users', 'manage_users_sitemap', 'manage_userProperties', 'mana\
+ge_roleProperties', 'userdefined_roles',">'manage_users', 'manage_use<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#__ac_permissions__" class="summary-name">__ac_permissions__</a> = <code title="'ZMS Administrator', __administratorPermissions__, ('ZMS Author', __au\
+        <a href="Products.zms.zms.ZMS-class.html#__ac_permissions__" class="summary-name">__ac_permissions__</a> = <code title="'ZMS Administrator', __administratorPermissions__, ('ZMS Author', __au\
 thorPermissions__), ('ZMS UserAdministrator', __userAdministratorPermi\
 ssions__),">'ZMS Administrator', __administratorPermi<code class="variable-ellipsis">...</code></code>
     </td>
@@ -427,11 +500,10 @@ ssions__),">'ZMS Administrator', __administratorPermi<code class="variable-ellip
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#dGlobalAttrs" class="summary-name">dGlobalAttrs</a> = <code title="{'ZMS': {'obj_class': None}, 'ZMSCustom': {'obj_class': ZMSCustom}, 'Z\
-MSLinkContainer': {'obj_class': ZMSLinkContainer, 'constructor': 'mana\
-ge_addZMSLinkContainer'}, 'ZMSLinkElement': {'obj_class': ZMSLinkEleme\
-nt, 'constructor': 'manage_addzmslinkelementform'}, 'ZMSSqlDb': {'obj_\
-class': ZMSSqlDb, 'constructor': 'manage_addzmssqldbform'},}">{'ZMS': {'obj_class': None}, 'ZMSCustom': {'obj<code class="variable-ellipsis">...</code></code>
+        <a href="Products.zms.zms.ZMS-class.html#dGlobalAttrs" class="summary-name">dGlobalAttrs</a> = <code title="{'ZMS': {'obj_class': None}, 'ZMSCustom': {'obj_class': ZMSCustom}, 'Z\
+MSLinkContainer': {}, 'ZMSLinkElement': {'obj_class': ZMSLinkElement},\
+ 'ZMSSqlDb': {'obj_class': ZMSSqlDb, 'constructor': 'manage_addzmssqld\
+bform'},}">{'ZMS': {'obj_class': None}, 'ZMSCustom': {'obj<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
@@ -452,35 +524,7 @@ class': ZMSSqlDb, 'constructor': 'manage_addzmssqldbform'},}">{'ZMS': {'obj_clas
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#zmi_bodycontent_inactive" class="summary-name">zmi_bodycontent_inactive</a> = <code title="PageTemplateFile('zpt/ZMS/zmi_bodycontent_inactive', globals())">PageTemplateFile('zpt/ZMS/zmi_bodyc<code class="variable-ellipsis">...</code></code>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#zmi_body_content_sitemap" class="summary-name">zmi_body_content_sitemap</a> = <code title="PageTemplateFile('zpt/ZMS/zmi_bodycontent_sitemap', globals())">PageTemplateFile('zpt/ZMS/zmi_bodyc<code class="variable-ellipsis">...</code></code>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#zmi_body_content_search" class="summary-name">zmi_body_content_search</a> = <code title="PageTemplateFile('zpt/ZMS/zmi_bodycontent_search', globals())">PageTemplateFile('zpt/ZMS/zmi_bodyco<code class="variable-ellipsis">...</code></code>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#zmi_body_content_not_found" class="summary-name">zmi_body_content_not_found</a> = <code title="PageTemplateFile('zpt/ZMS/zmi_bodycontent_not_found', globals())">PageTemplateFile('zpt/ZMS/zmi_bod<code class="variable-ellipsis">...</code></code>
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#f_headDoctype" class="summary-name">f_headDoctype</a> = <code title="PageTemplateFile('zpt/ZMS/f_headdoctype', globals())">PageTemplateFile('zpt/ZMS/f_headdoctype', glob<code class="variable-ellipsis">...</code></code>
+        <a href="Products.zms.zms.ZMS-class.html#f_headDoctype" class="summary-name">f_headDoctype</a> = <code title="PageTemplateFile('zpt/ZMS/f_headdoctype', globals())">PageTemplateFile('zpt/ZMS/f_headdoctype', glob<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
@@ -494,28 +538,28 @@ class': ZMSSqlDb, 'constructor': 'manage_addzmssqldbform'},}">{'ZMS': {'obj_clas
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#f_headMeta_DC" class="summary-name">f_headMeta_DC</a> = <code title="PageTemplateFile('zpt/ZMS/f_headmeta_dc', globals())">PageTemplateFile('zpt/ZMS/f_headmeta_dc', glob<code class="variable-ellipsis">...</code></code>
+        <a href="Products.zms.zms.ZMS-class.html#f_headMeta_DC" class="summary-name">f_headMeta_DC</a> = <code title="PageTemplateFile('zpt/ZMS/f_headmeta_dc', globals())">PageTemplateFile('zpt/ZMS/f_headmeta_dc', glob<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#f_headMeta_Locale" class="summary-name">f_headMeta_Locale</a> = <code title="PageTemplateFile('zpt/ZMS/f_headmeta_locale', globals())">PageTemplateFile('zpt/ZMS/f_headmeta_local<code class="variable-ellipsis">...</code></code>
+        <a href="Products.zms.zms.ZMS-class.html#f_headMeta_Locale" class="summary-name">f_headMeta_Locale</a> = <code title="PageTemplateFile('zpt/ZMS/f_headmeta_locale', globals())">PageTemplateFile('zpt/ZMS/f_headmeta_local<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#f_standard_html_header" class="summary-name">f_standard_html_header</a> = <code title="PageTemplateFile('zpt/ZMS/f_standard_html_header', globals())">PageTemplateFile('zpt/ZMS/f_standard_<code class="variable-ellipsis">...</code></code>
+        <a href="Products.zms.zms.ZMS-class.html#f_standard_html_header" class="summary-name">f_standard_html_header</a> = <code title="PageTemplateFile('zpt/ZMS/f_standard_html_header', globals())">PageTemplateFile('zpt/ZMS/f_standard_<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#f_standard_html_footer" class="summary-name">f_standard_html_footer</a> = <code title="PageTemplateFile('zpt/ZMS/f_standard_html_footer', globals())">PageTemplateFile('zpt/ZMS/f_standard_<code class="variable-ellipsis">...</code></code>
+        <a href="Products.zms.zms.ZMS-class.html#f_standard_html_footer" class="summary-name">f_standard_html_footer</a> = <code title="PageTemplateFile('zpt/ZMS/f_standard_html_footer', globals())">PageTemplateFile('zpt/ZMS/f_standard_<code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
@@ -536,7 +580,7 @@ class': ZMSSqlDb, 'constructor': 'manage_addzmssqldbform'},}">{'ZMS': {'obj_clas
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a href="zms.zms.ZMS-class.html#headCStyleSheet" class="summary-name">headCStyleSheet</a> = <code title="PageTemplateFile('zpt/ZMS/headcstylesheet', globals())">PageTemplateFile('zpt/ZMS/headcstylesheet', <code class="variable-ellipsis">...</code></code>
+        <a href="Products.zms.zms.ZMS-class.html#headCStyleSheet" class="summary-name">headCStyleSheet</a> = <code title="PageTemplateFile('zpt/ZMS/headcstylesheet', globals())">PageTemplateFile('zpt/ZMS/headcstylesheet', <code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
 <tr>
@@ -556,7 +600,88 @@ class': ZMSSqlDb, 'constructor': 'manage_addzmssqldbform'},}">{'ZMS': {'obj_clas
       ############################################################################
     </td>
   </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="Products.zms._confmanager.ConfManager-class.html">_confmanager.ConfManager</a></code></b>:
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#customize_manage_options__roles__">customize_manage_options__roles__</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#manage_customize">manage_customize</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#manage_customizeDesignForm">manage_customizeDesignForm</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#manage_customizeFilterForm">manage_customizeFilterForm</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#manage_customizeLanguagesForm">manage_customizeLanguagesForm</a></code>,
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#security">security</a></code>
+      </p>
+    </td>
+  </tr>
 </table>
+<!-- ==================== INSTANCE VARIABLES ==================== -->
+<a name="section-InstanceVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Variables</span></td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="Products.zms._confmanager.ConfManager-class.html">_confmanager.ConfManager</a></code></b>:
+      <code><a href="Products.zms._confmanager.ConfManager-class.html#__attr_conf_dict__">__attr_conf_dict__</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Method Details</span></td>
+</tr>
+</table>
+<a name="zms_version"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">zms_version</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Try to obtain the version from package info if installed by pip 
+  otherwise read from version.txt and from svnversion</p>
+  <ol start="1">
+    <li>
+      installed by pip from PyPI (revision 'XXXX' in version.txt - package 
+      info of official releases does not contain revision)
+    </li>
+    <li>
+      installed by pip from ZMSLabs w/ info by svn (revision 'svn-rXXXX' in
+      package info due to setup.cfg)
+    </li>
+    <li>
+      installed by pip from TAR-Ball w/o info by svn (revision 'XXXX' in 
+      version.txt due to nightly build - 'svn0' in package info due to 
+      setup.cfg)
+    </li>
+    <li>
+      deployed to instance/Products (revision 'XXXX' in version.txt, maybe 
+      installed but unused package)
+    </li>
+    <li>
+      checked out to instance/Products as working copy from svn (revision 
+      'REV' in version.txt, maybe installed but unused package)
+    </li>
+  </ol>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
 <!-- ==================== CLASS VARIABLE DETAILS ==================== -->
 <a name="section-ClassVariableDetails"></a>
 <table class="details" border="1" cellpadding="3"
@@ -603,10 +728,9 @@ nage_addZMSModule', 'manage_deleteObjs', 'manage_undoObjs', 'manage_mo<span clas
 veObjUp', 'manage_moveObjDown', 'manage_moveObjToPos', 'manage_cutObje<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
 cts', 'manage_copyObjects', 'manage_pasteObjs', 'manage_ajaxDragDrop',<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
  'manage_ajaxZMIActions', 'manage_properties', 'manage_changePropertie<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-s', 'manage_changeTempBlobjProperty', 'manage_search', 'manage_tasks',<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
- 'manage_wfTransition', 'manage_wfTransitionFinalize', 'manage_userFor<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-m', 'manage_user', 'manage_importexport', 'manage_import', 'manage_exp<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-<code class="variable-ellipsis">...</code>
+s', 'manage_changeTempBlobjProperty', 'manage_wfTransition', 'manage_w<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+fTransitionFinalize', 'manage_userForm', 'manage_user', 'manage_import<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+export', 'manage_import', 'manage_export', 'manage_executeMetacmd',
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -624,8 +748,8 @@ m', 'manage_user', 'manage_importexport', 'manage_import', 'manage_exp<span clas
   <dl class="fields">
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
-'manage_users', 'manage_userProperties', 'manage_roleProperties', 'use<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-rdefined_roles',
+'manage_users', 'manage_users_sitemap', 'manage_userProperties', 'mana<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ge_roleProperties', 'userdefined_roles',
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -664,82 +788,9 @@ ssions__),
     <dt>Value:</dt>
       <dd><table><tr><td><pre class="variable">
 {'ZMS': {'obj_class': None}, 'ZMSCustom': {'obj_class': ZMSCustom}, 'Z<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-MSLinkContainer': {'obj_class': ZMSLinkContainer, 'constructor': 'mana<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-ge_addZMSLinkContainer'}, 'ZMSLinkElement': {'obj_class': ZMSLinkEleme<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-nt, 'constructor': 'manage_addzmslinkelementform'}, 'ZMSSqlDb': {'obj_<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
-class': ZMSSqlDb, 'constructor': 'manage_addzmssqldbform'},}
-</pre></td></tr></table>
-</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="zmi_bodycontent_inactive"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <h3 class="epydoc">zmi_bodycontent_inactive</h3>
-  
-  <dl class="fields">
-  </dl>
-  <dl class="fields">
-    <dt>Value:</dt>
-      <dd><table><tr><td><pre class="variable">
-PageTemplateFile('zpt/ZMS/zmi_bodycontent_inactive', globals())
-</pre></td></tr></table>
-</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="zmi_body_content_sitemap"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <h3 class="epydoc">zmi_body_content_sitemap</h3>
-  
-  <dl class="fields">
-  </dl>
-  <dl class="fields">
-    <dt>Value:</dt>
-      <dd><table><tr><td><pre class="variable">
-PageTemplateFile('zpt/ZMS/zmi_bodycontent_sitemap', globals())
-</pre></td></tr></table>
-</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="zmi_body_content_search"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <h3 class="epydoc">zmi_body_content_search</h3>
-  
-  <dl class="fields">
-  </dl>
-  <dl class="fields">
-    <dt>Value:</dt>
-      <dd><table><tr><td><pre class="variable">
-PageTemplateFile('zpt/ZMS/zmi_bodycontent_search', globals())
-</pre></td></tr></table>
-</dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="zmi_body_content_not_found"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <h3 class="epydoc">zmi_body_content_not_found</h3>
-  
-  <dl class="fields">
-  </dl>
-  <dl class="fields">
-    <dt>Value:</dt>
-      <dd><table><tr><td><pre class="variable">
-PageTemplateFile('zpt/ZMS/zmi_bodycontent_not_found', globals())
+MSLinkContainer': {}, 'ZMSLinkElement': {'obj_class': ZMSLinkElement},<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+ 'ZMSSqlDb': {'obj_class': ZMSSqlDb, 'constructor': 'manage_addzmssqld<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+bform'},}
 </pre></td></tr></table>
 </dd>
   </dl>
@@ -882,7 +933,7 @@ PageTemplateFile('zpt/ZMS/headcstylesheet', globals())
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Aug 30 21:25:40 2014
+    Generated by Epydoc 3.0.1 on Mon Feb 13 21:11:51 2017
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

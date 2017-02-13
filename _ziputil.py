@@ -23,7 +23,7 @@ import os
 import tempfile
 import zipfile
 # Product Imports.
-import _globals
+import standard
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -48,7 +48,7 @@ def _exportZodb2Zip(zf, root, container):
           bytes = str(bytes)
         zf.writestr(arcname,bytes)
       except:
-        _globals.writeError(root.content,"_exportZodb2Zip")
+        standard.writeError(root.content,"_exportZodb2Zip")
 
 def exportZodb2Zip(root):
   # Create temporary zip-file.
@@ -90,7 +90,7 @@ def importZip2Zodb(root, data):
     id = ids[-1]
     if id:
       file = zf.read( name)
-      mt, enc  = _globals.guess_contenttype( id, file)
+      mt, enc  = standard.guess_content_type( id, file)
       if id in container.objectIds():
         container.manage_delObjects( [id])
       if mt.startswith('image'):

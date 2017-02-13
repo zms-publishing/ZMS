@@ -32,7 +32,7 @@ import zExceptions
 # Product Imports.
 import _blobfields
 import _fileutil
-import _globals
+import standard
 
 
 ################################################################################
@@ -76,7 +76,7 @@ def _importXml(self, item, createIfNotExists=1):
       delProcess(self, newId)
       setProcess(self, newId, newAcquired, newName, newType, newCommand)
   else:
-    _globals.writeError(self,"[_importXml]: Unknown type >%s<"%itemType)
+    standard.writeError(self,"[_importXml]: Unknown type >%s<"%itemType)
 
 def importXml(self, xml, createIfNotExists=1):
   v = self.parseXmlString(xml)
@@ -347,7 +347,7 @@ def delFilterProcess(self, id, pid):
 #  Move filter-process specified by given Ids to specified position.
 # ------------------------------------------------------------------------------
 def moveFilterProcess(self, id, pid, pos):
-  _globals.writeLog( self, '[moveFilterProcess]:id=%s; pid=%s; dir=%s'%(id,str(pid),str(dir)))
+  standard.writeLog( self, '[moveFilterProcess]:id=%s; pid=%s; dir=%s'%(id,str(pid),str(dir)))
   # Set.
   obs = getRawFilters(self)
   pobs = obs[id].get('processes',[])
@@ -391,7 +391,7 @@ def processData(self, processId, data, trans=None):
   data = f.read()
   f.close()
   # Remove temporary folder.
-  if not _globals.debug( self):
+  if not standard.debug( self):
     _fileutil.remove(folder, deep=1)
   # Return data.
   return data
@@ -403,7 +403,7 @@ def processData(self, processId, data, trans=None):
 #  Process DTML method.
 # ------------------------------------------------------------------------------
 def processMethod(self, processId, filename, trans, REQUEST):
-  _globals.writeLog( self, '[processMethod]: processId=%s'%processId)
+  standard.writeLog( self, '[processMethod]: processId=%s'%processId)
   infilename = filename
   outfilename = filename
   REQUEST.set( 'ZMS_FILTER_IN', infilename)
@@ -413,7 +413,7 @@ def processMethod(self, processId, filename, trans, REQUEST):
   try:
     value = getattr( self, processId)( self, REQUEST)
   except:
-    value = _globals.writeError( self, '[processMethod]: processId=%s'%processId)
+    value = standard.writeError( self, '[processMethod]: processId=%s'%processId)
   outfilename = REQUEST.get( 'ZMS_FILTER_OUT')
   # Return filename.
   return outfilename
@@ -425,7 +425,7 @@ def processMethod(self, processId, filename, trans, REQUEST):
 #  Process file with command.
 # ------------------------------------------------------------------------------
 def processCommand(self, filename, command):
-  _globals.writeLog( self, '[processCommand]: infilename=%s'%filename)
+  standard.writeLog( self, '[processCommand]: infilename=%s'%filename)
   infilename = _fileutil.getOSPath( filename)
   outfilename = _fileutil.getOSPath( filename)
   mZmsHome = '{zms_home}'
@@ -454,15 +454,15 @@ def processCommand(self, filename, command):
   # Change directory (deprecated!).
   if self.getConfProperty('ZMS.filtermanager.processCommand.chdir',0):
     path = _fileutil.getFilePath(filename)
-    _globals.writeLog( self, '[processCommand]: path=%s'%path)
+    standard.writeLog( self, '[processCommand]: path=%s'%path)
     os.chdir(path)
   # Execute command.
-  _globals.writeLog( self, '[processCommand]: command=%s'%command)
+  standard.writeLog( self, '[processCommand]: command=%s'%command)
   os.system(command)
   # Check if output file exists.
   try: 
     os.stat( _fileutil.getOSPath( tmpoutfilename)) 
-    _globals.writeLog( self, '[processCommand]: rename %s to %s'%( tmpoutfilename, outfilename))
+    standard.writeLog( self, '[processCommand]: rename %s to %s'%( tmpoutfilename, outfilename))
     try:
       os.remove( outfilename)
     except OSError:
@@ -474,7 +474,7 @@ def processCommand(self, filename, command):
   if outfilename != infilename:
     os.remove( infilename)
   # Return filename.
-  _globals.writeLog( self, '[processCommand]: outfilename=%s'%( outfilename))
+  standard.writeLog( self, '[processCommand]: outfilename=%s'%( outfilename))
   return outfilename
 
 
@@ -484,7 +484,7 @@ def processCommand(self, filename, command):
 #  Process file with custom transformation.
 # ------------------------------------------------------------------------------
 def processFile(self, processId, filename, trans=None):
-  _globals.writeLog( self, '[processFile]: processId=%s'%processId)
+  standard.writeLog( self, '[processFile]: processId=%s'%processId)
   folder = _fileutil.getFilePath(filename)
   processOb = self.getProcess(processId)
   command = processOb.get('command')
@@ -539,12 +539,12 @@ def exportFilter(self, id, REQUEST):
     data = _fileutil.buildZipArchive( outfilename, get_data=True)
   # Read File.
   else:
-    _globals.writeLog( self, '[exportFilter]: Read %s'%outfilename)
+    standard.writeLog( self, '[exportFilter]: Read %s'%outfilename)
     f = open(outfilename, 'rb')
     data = f.read()
     f.close()
   # Remove temporary folder.
-  if not _globals.debug( self):
+  if not standard.debug( self):
     _fileutil.remove( tempfolder, deep=1)
   # Return.
   return filename, data, content_type
@@ -787,7 +787,7 @@ class FilterManager:
             if len(getattr(newProcessFile, 'filename',''))==0:
               newProcessFile = filterProcess.get('file', None)
             else:
-              newProcessFile = _blobfields.createBlobField(self, _globals.DT_FILE, newProcessFile)
+              newProcessFile = _blobfields.createBlobField(self, standard.DT_FILE, newProcessFile)
           setFilterProcess(self, id, newProcessId, newProcessFile)
           c += 1
         newProcessId = REQUEST.get('newFilterProcessId_%i'%c,'').strip()
@@ -845,7 +845,7 @@ class FilterManager:
             if len(getattr(newProcessFile, 'filename',''))==0:
               newProcessFile = None
             else:
-              newProcessFile = _blobfields.createBlobField(self, _globals.DT_FILE, newProcessFile)
+              newProcessFile = _blobfields.createBlobField(self, standard.DT_FILE, newProcessFile)
           pid = setFilterProcess(self, id, newProcessId, newProcessFile)
           message = self.getZMILangStr('MSG_INSERTED')%newProcessId
       

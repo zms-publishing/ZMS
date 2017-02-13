@@ -30,7 +30,7 @@ import time
 # Product Imports.
 import _blobfields
 import _fileutil
-import _globals
+import standard
 import _objattrs
 
 
@@ -79,7 +79,7 @@ def recurse_addMediaDb(self, mediadb):
     for key in self.getObjAttrs().keys():
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
-      if datatype in _globals.DT_BLOBS:
+      if datatype in standard.DT_BLOBS:
         for lang in self.getLangIds():
           for obj_vers in self.getObjVersions():
             v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
@@ -130,7 +130,7 @@ def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
     t += 1
   
   # Debug.
-  _globals.writeLog( self, "[manage_packMediaDb]: files deleted %s"%str(filenames))
+  standard.writeLog( self, "[manage_packMediaDb]: files deleted %s"%str(filenames))
   
   # Return with message.
   message = 'Packed Media-Folder: %i files (total %i) deleted.'%(c,t)
@@ -163,7 +163,7 @@ def recurse_delMediaDb(self, mediadb):
     for key in self.getObjAttrs().keys():
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
-      if datatype in _globals.DT_BLOBS:
+      if datatype in standard.DT_BLOBS:
         for lang in self.getLangIds():
           for obj_vers in self.getObjVersions():
             v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
@@ -312,7 +312,7 @@ class MediaDb(
       else:
         data = filestream_iterator( local_filename, 'rb')
       try:
-        mt, enc = _globals.guess_contenttype( local_filename, data)
+        mt, enc = standard.guess_content_type( local_filename, data)
       except:
         mt, enc = 'content/unknown', ''
       # Remove timestamp from filename.

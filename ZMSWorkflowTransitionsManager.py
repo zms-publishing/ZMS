@@ -25,8 +25,8 @@ import time
 import urllib
 # Product Imports.
 import IZMSRepositoryProvider
-import _globals
-import _zopeutil
+import standard
+import zopeutil
 
 
 ################################################################################
@@ -143,7 +143,7 @@ class ZMSWorkflowTransitionsManager:
   def getTransition(self, id, for_export=False):
     transition = filter(lambda x: x['id']==id, self.getTransitions())[0]
     transition = copy.deepcopy(transition)
-    ob = _zopeutil.getObject(self,transition['id'])
+    ob = zopeutil.getObject(self,transition['id'])
     if ob is not None:
       transition['ob'] = ob
       transition['type'] = ob.meta_type

@@ -17,7 +17,7 @@
 ################################################################################
 
 # Product imports.
-import _globals
+import standard
 
 def zmi_actions(container, context, attr_id='e'):
   """
@@ -26,7 +26,7 @@ def zmi_actions(container, context, attr_id='e'):
   actions = []
   
   REQUEST = container.REQUEST
-  objAttr = _globals.nvl(container.getMetaobjAttr( container.meta_id, attr_id),{})
+  objAttr = standard.nvl(container.getMetaobjAttr( container.meta_id, attr_id),{})
   objChildren = len(container.getObjChildren(attr_id,REQUEST))
   objPath = ''
   if context is not None and context != container:

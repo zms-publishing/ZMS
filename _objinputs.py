@@ -17,7 +17,7 @@
 ################################################################################
 
 # Product Imports.
-import _globals
+import standard
 import _zreferableitem
 
 
@@ -143,7 +143,7 @@ class ObjInputs:
     if size:
       html.append(' size="%i"'%size)
     if value is not None:
-      html.append(' value="%s"'%_globals.html_quote(value))
+      html.append(' value="%s"'%standard.html_quote(value))
     if not enabled:
       html.append(' disabled="disabled"')
     html.append(' %s/>'%extra)
@@ -203,7 +203,7 @@ class ObjInputs:
     html.append('<input ')
     html.append(' type="hidden"')
     html.append(' name="%s"'%elName)
-    html.append(' value="%s"'%str(_globals.nvl(value,options[0])))
+    html.append(' value="%s"'%str(standard.nvl(value,options[0])))
     html.append(' />')
     if btn:
       html.append('<span class="btn btn-default">')
@@ -259,9 +259,9 @@ class ObjInputs:
     if value is not None:
       if type(value) is list:
         for item in value:
-          html.append('%s\n'%_globals.html_quote(item))
+          html.append('%s\n'%standard.html_quote(item))
       else:
-        html.append('%s'%_globals.html_quote(value))
+        html.append('%s'%standard.html_quote(value))
     html.append('</textarea>')
     return ''.join(html)
 

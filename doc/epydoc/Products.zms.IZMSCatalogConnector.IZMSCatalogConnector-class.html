@@ -3,7 +3,7 @@
           "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-  <title>zms.zmssqldb</title>
+  <title>Products.zms.IZMSCatalogConnector.IZMSCatalogConnector</title>
   <link rel="stylesheet" href="epydoc.css" type="text/css" />
   <script type="text/javascript" src="epydoc.js"></script>
 </head>
@@ -39,8 +39,10 @@
   <tr valign="top">
     <td width="100%">
       <span class="breadcrumbs">
+        Package&nbsp;Products ::
         Package&nbsp;zms ::
-        Module&nbsp;zmssqldb
+        <a href="Products.zms.IZMSCatalogConnector-module.html">Module&nbsp;IZMSCatalogConnector</a> ::
+        Class&nbsp;IZMSCatalogConnector
       </span>
     </td>
     <td>
@@ -48,50 +50,91 @@
         <!-- hide/show private -->
         <tr><td align="right"><span class="options"
             >[<a href="frames.html" target="_top">frames</a
-            >]&nbsp;|&nbsp;<a href="zms.zmssqldb-module.html"
+            >]&nbsp;|&nbsp;<a href="Products.zms.IZMSCatalogConnector.IZMSCatalogConnector-class.html"
             target="_top">no&nbsp;frames</a>]</span></td></tr>
       </table>
     </td>
   </tr>
 </table>
-<!-- ==================== MODULE DESCRIPTION ==================== -->
-<h1 class="epydoc">Module zmssqldb</h1><p class="nomargin-top"></p>
-<!-- ==================== CLASSES ==================== -->
-<a name="section-Classes"></a>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class IZMSCatalogConnector</h1><p class="nomargin-top"></p>
+<pre class="base-tree">
+zope.interface.Interface --+
+                           |
+                          <strong class="uidshort">IZMSCatalogConnector</strong>
+</pre>
+
+<hr />
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
 <table class="summary" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
   <td align="left" colspan="2" class="table-header">
-    <span class="table-header">Classes</span></td>
+    <span class="table-header">Instance Methods</span></td>
 </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="zms.zmssqldb.ZMSSqlDb-class.html" class="summary-name">ZMSSqlDb</a>
-    </td>
-  </tr>
-</table>
-<!-- ==================== FUNCTIONS ==================== -->
-<a name="section-Functions"></a>
-<table class="summary" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="table-header">
-  <td align="left" colspan="2" class="table-header">
-    <span class="table-header">Functions</span></td>
-</tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>list</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="manage_addZMSSqlDb"></a><span class="summary-sig-name">manage_addZMSSqlDb</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">lang</span>,
-        <span class="summary-sig-arg">_sort_id</span>,
-        <span class="summary-sig-arg">REQUEST</span>,
-        <span class="summary-sig-arg">RESPONSE</span>)</span><br />
-      manage_addZMSSqlDb</td>
+          <td><span class="summary-sig"><a href="Products.zms.IZMSCatalogConnector.IZMSCatalogConnector-class.html#search" class="summary-sig-name">search</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">qs</span>,
+        <span class="summary-sig-arg">order</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Search.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="reindex_all"></a><span class="summary-sig-name">reindex_all</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Reindex.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="reindex_node"></a><span class="summary-sig-name">reindex_node</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node</span>)</span><br />
+      Reindex single node.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>list</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_sitemap"></a><span class="summary-sig-name">get_sitemap</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns sitemap.</td>
           <td align="right" valign="top">
             
             
@@ -102,46 +145,34 @@
     </td>
   </tr>
 </table>
-<!-- ==================== VARIABLES ==================== -->
-<a name="section-Variables"></a>
-<table class="summary" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="table-header">
-  <td align="left" colspan="2" class="table-header">
-    <span class="table-header">Variables</span></td>
-</tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-        <a href="zms.zmssqldb-module.html#manage_addZMSSqlDbForm" class="summary-name">manage_addZMSSqlDbForm</a> = <code title="PageTemplateFile('manage_addzmssqldbform', globals())">PageTemplateFile('manage_addzmssqldbf<code class="variable-ellipsis">...</code></code>
-    </td>
-  </tr>
-</table>
-<!-- ==================== VARIABLES DETAILS ==================== -->
-<a name="section-VariablesDetails"></a>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr bgcolor="#70b0f0" class="table-header">
   <td align="left" colspan="2" class="table-header">
-    <span class="table-header">Variables Details</span></td>
+    <span class="table-header">Method Details</span></td>
 </tr>
 </table>
-<a name="manage_addZMSSqlDbForm"></a>
+<a name="search"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
        cellspacing="0" width="100%" bgcolor="white">
 <tr><td>
-  <h3 class="epydoc">manage_addZMSSqlDbForm</h3>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">search</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">qs</span>,
+        <span class="sig-arg">order</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
   
+  <p>Search. @param qs query-string @param order</p>
   <dl class="fields">
-  </dl>
-  <dl class="fields">
-    <dt>Value:</dt>
-      <dd><table><tr><td><pre class="variable">
-PageTemplateFile('manage_addzmssqldbform', globals())
-</pre></td></tr></table>
-</dd>
+    <dt>Returns: <code>list</code></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -174,7 +205,7 @@ PageTemplateFile('manage_addzmssqldbform', globals())
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Aug 30 21:25:39 2014
+    Generated by Epydoc 3.0.1 on Mon Feb 13 21:11:51 2017
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

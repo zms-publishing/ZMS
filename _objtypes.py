@@ -22,7 +22,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import _blobfields
 import _confmanager
 import _fileutil
-import _globals
+import standard
 import _zreferableitem
 
 

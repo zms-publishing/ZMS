@@ -24,7 +24,7 @@ import re
 import _blobfields
 import _confmanager
 import _fileutil
-import _globals
+import standard
 
 
 # ------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ def handleBlobAttrs(self, name, REQUEST):
     for key in ob.getObjAttrs().keys():
       obj_attr = ob.getObjAttr(key)
       datatype = obj_attr['datatype_key']
-      if datatype in _globals.DT_BLOBS:
+      if datatype in standard.DT_BLOBS:
         lang = ob.getLanguageFromName( REQUEST['URL'])
         REQUEST.set( 'lang', lang)
         value = ob.getObjProperty( key, REQUEST)
@@ -93,9 +93,9 @@ def handleBlobAttrs(self, name, REQUEST):
           if langfilename.find( '?') > 0:
             langfilename = langfilename[ :langfilename.find( '?')]
           if langfilename == name or \
-             langfilename == _globals.url_encode(name) or \
+             langfilename == standard.url_encode(name) or \
              langfilename == name_without_lang_suffix or \
-             langfilename == _globals.url_encode(name_without_lang_suffix):
+             langfilename == standard.url_encode(name_without_lang_suffix):
             return value
   return None
 
@@ -166,7 +166,7 @@ class PathHandler:
       
       # otherwise do some 'magic'
       else:
-        _globals.writeLog( self, '[__bobo_traverse__]: otherwise do some magic')
+        standard.writeLog( self, '[__bobo_traverse__]: otherwise do some magic')
         
         if request.get('lang') is None:
           lang = self.getPrimaryLanguage()
@@ -196,7 +196,7 @@ class PathHandler:
         if not zmi or request.get( 'ZMS_PATH_HANDLER', False):
           
           # Recursive inclusions.
-          thisOb = _globals.nvl( filterId( self, name, request), self)
+          thisOb = standard.nvl( filterId( self, name, request), self)
           if thisOb.meta_type == 'ZMSLinkElement':
             recursive = thisOb.isEmbeddedRecursive(request)
             if recursive:
@@ -258,14 +258,14 @@ class PathHandler:
                   if langfilename == TraversalRequest['path_to_handle'][-1]:
                     return value
             except:
-              _globals.writeError( self, '[__bobo_traverse__]')
+              standard.writeError( self, '[__bobo_traverse__]')
           else:
             try:
               i = int( name[1:])
               obj_attrs = self.getObjAttrs()
               for key in self.getObjAttrs().keys():
                 obj_attr = obj_attrs[ key]
-                if obj_attr['datatype_key'] == _globals.DT_LIST and \
+                if obj_attr['datatype_key'] == standard.DT_LIST and \
                    obj_attr['repetitive']:
                   lp = [ request.get('preview')]
                   if lp[ 0] != 'preview':
@@ -285,10 +285,10 @@ class PathHandler:
                       if langfilename == TraversalRequest['path_to_handle'][-1]:
                         return value
                     except:
-                      _globals.writeError( self, '[__bobo_traverse__]: ip=%s'%str(ip))
+                      standard.writeError( self, '[__bobo_traverse__]: ip=%s'%str(ip))
                   request.set( 'preview', lp[ 0])
             except:
-              _globals.writeError( self, '[__bobo_traverse__]')
+              standard.writeError( self, '[__bobo_traverse__]')
         
         # If the object has blob-fields find by filename and display data.
         v = handleBlobAttrs( self, name, request)

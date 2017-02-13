@@ -26,7 +26,7 @@ import sys
 import tempfile
 import zipfile
 # Product Imports.
-import _globals
+import standard
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -209,7 +209,7 @@ def readPath(path, data=True, recursive=True):
             d['encoding']=enc
           else:
             try:
-              mt, enc = _globals.guess_contenttype( local_filename)
+              mt, enc = standard.guess_content_type( local_filename)
             except:
               mt, enc = 'content/unknown', ''
             d['content_type']=mt
@@ -245,7 +245,7 @@ def readFile(filename, mode='b', threshold=2 << 16):
   else:
     data = filestream_iterator( filename, 'r'+mode)
   try:
-    mt, enc  = _globals.guess_contenttype( filename, data)
+    mt, enc  = standard.guess_content_type( filename, data)
   except:
     mt, enc = 'content/unknown', ''
   return data, mt, enc, size

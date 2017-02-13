@@ -17,6 +17,7 @@
 ################################################################################
 
 # Product Imports.
+import standard
 import _globals
 import _objattrs
 
@@ -53,7 +54,7 @@ class TextFormatObject:
           if sibling.isPageElement():
             format = sibling.attr('format')
             if format is not None and format.find('headline') == 0:
-              level = int(format[len(_globals.id_prefix(format)):])-1
+              level = int(format[len(standard.id_prefix(format)):])-1
           elif sibling.isPage():
             level = 1
           if level > 0:
@@ -78,7 +79,7 @@ class TextFormatObject:
       sec_no = self.getSecNo()
       if len(sec_no) > 0:
         s = sec_no + ' ' + s
-    s = _globals.form_quote(s,REQUEST)
+    s = standard.form_quote(s,REQUEST)
     return s
 
 
@@ -97,7 +98,7 @@ class TextFormatObject:
       if hasattr(self,name):
         text = getattr(self,name)(context=self,key=key,text=text,REQUEST=REQUEST)
     except:
-      _globals.writeError( self, '[renderText]: can\'t %s'%name)
+      standard.writeError( self, '[renderText]: can\'t %s'%name)
     # Return.
     return text
 

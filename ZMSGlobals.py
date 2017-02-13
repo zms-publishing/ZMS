@@ -18,7 +18,6 @@
 
 # Imports.
 from AccessControl import AuthEncoding
-from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
@@ -43,11 +42,11 @@ import zope.interface
 import _blobfields
 import _fileutil
 import _filtermanager
-import _globals
+import standard
 import _mimetypes
 import _pilutil
 import _xmllib
-import _zopeutil
+import zopeutil
 
 __all__= ['ZMSGlobals']
 
@@ -76,7 +75,7 @@ AuthEncoding.registerScheme('MD5', MD5DigestScheme())
 def sort_item( i):
   if type( i) is str:
     i = unicode(i,'utf-8')
-    mapping = _globals.umlautMapping
+    mapping = standard.umlautMapping
     for key in mapping.keys():
       try: i = i.replace(key,mapping[key])
       except: pass
@@ -101,11 +100,6 @@ class ZMSGlobals:
     @group Regular Expressions: re_*
     @group: XML: getXmlHeader, toXmlString, parseXmlString, xslProcess, processData, xmlParse, xmlNodeSet
     """
-
-    # Create a SecurityInfo for this class. We will use this
-    # in the rest of our class definition to make security
-    # assertions.
-    security = ClassSecurityInfo()
 
 
     # --------------------------------------------------------------------------
@@ -142,22 +136,6 @@ class ZMSGlobals:
 
 
     """
-    Creates a new Zope native-representative (Image/File) of given blob in container.
-    @return: New instance of Zope-object.
-    @rtype: L{object}
-    """
-    def createBlobInContext( self, id, blob, container):
-      filename = blob.getFilename()
-      data = blob.getData()
-      if blob.getContentType().startswith('image'):
-        container.manage_addImage( id=id, title=filename, file=data)
-      else:
-        container.manage_addFile( id=id, title=filename, file=data)
-      ob = getattr(container,id)
-      return ob
-
-
-    """
     Creates a new instance of a file from given data.
     @param data: File-data (binary)
     @type data: C{string}
@@ -171,7 +149,7 @@ class ZMSGlobals:
       file['data'] = data
       file['filename'] = filename
       if content_type: file['content_type'] = content_type
-      return _blobfields.createBlobField( self, _globals.DT_FILE, file=file, mediadbStorable=mediadbStorable)
+      return _blobfields.createBlobField( self, standard.DT_FILE, file=file, mediadbStorable=mediadbStorable)
 
 
     """
@@ -184,24 +162,8 @@ class ZMSGlobals:
     @rtype: L{MyImage}
     """
     def ImageFromData( self, data, filename='', content_type=None, mediadbStorable=False):
-      f = _blobfields.createBlobField( self, _globals.DT_IMAGE, file={'data':data,'filename':filename,'content_type':content_type}, mediadbStorable=mediadbStorable)
+      f = _blobfields.createBlobField( self, standard.DT_IMAGE, file={'data':data,'filename':filename,'content_type':content_type}, mediadbStorable=mediadbStorable)
       f.aq_parent = self
-      return f
-
-
-    """
-    Inline condition 
-    @param c: condition
-    @type c: C{boolean}
-    @param t: return value if condition is true
-    @type t: C{any}
-    @param f: return value if condition is false
-    @type f: C{any}
-    @rtype: C{any}
-    """
-    def boolint(self, c, t=1, f=0):
-      if c in [1,True,'1','True']:
-        return t
       return f
 
 
@@ -215,7 +177,7 @@ class ZMSGlobals:
     @rtype: C{any}
     """
     def nvl(self, a1, a2, n=None):
-      return _globals.nvl( a1, a2, n)
+      return standard.nvl( a1, a2, n)
 
 
     """
@@ -291,36 +253,6 @@ class ZMSGlobals:
 
 
     """
-    Returns string with specified maximum-length. If original string exceeds 
-    maximum-length '...' is appended at the end.
-    @param s: String
-    @type s: C{string}
-    @param maxlen: Maximum-length
-    @type maxlen: C{int}
-    @param etc: Characters to be appended if maximum-length is exceeded
-    @type etc: C{string}
-    @param encoding: Encoding
-    @type encoding: C{string}
-    @rtype: C{string}
-    """
-    def string_maxlen(self, s, maxlen=20, etc='...', encoding=None):
-      if encoding is not None:
-        s = unicode( s, encoding)
-      # remove all tags.
-      s = re.sub( '<script((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</script>', '', s)
-      s = re.sub( '<style((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</style>', '', s)
-      s = re.sub( '<((.|\n|\r|\t)*?)>', '', s)
-      if len(s) > maxlen:
-        if s[:maxlen].rfind('&') >= 0 and not s[:maxlen].rfind('&') < s[:maxlen].rfind(';') and \
-           s[maxlen:].find(';') >= 0 and not s[maxlen:].find(';') > s[maxlen:].find('&'):
-          maxlen = maxlen + s[maxlen:].find(';')
-        if s[:maxlen].endswith(chr(195)) and maxlen < len(s):
-          maxlen += 1
-        s = s[:maxlen] + etc
-      return s
-
-
-    """
     Replace special characters in string using the %xx escape. Letters, digits, 
     and the characters '_.-' are never quoted. By default, this function is 
     intended for quoting the path section of the URL. The optional safe 
@@ -331,27 +263,6 @@ class ZMSGlobals:
     """
     def url_quote(self, string, safe='/'):
       return urllib.quote(string,safe)
-
-
-    """
-    Send Http-Request and return Response-Body.
-    @param url: Remote-URL
-    @type url: C{string}
-    @param method: Method
-    @type method: C{string}, values are GET or POST
-    @param auth: Authentication
-    @type auth: C{string}
-    @param parse_qs: Parse Query-String
-    @type parse_qs: C{int}, values are 0 or 1
-    @param timeout: Time-Out [s]
-    @type timeout: C{int}, values in seconds
-    @param headers: Request-Headers
-    @type headers: C{dict}
-    @return: Response-Body
-    @rtype: C{string}
-    """
-    def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
-      return _globals.http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers)
 
 
     """
@@ -453,46 +364,13 @@ class ZMSGlobals:
             '-':'_',
             '/':'_',
     }):
-      s = _globals.umlaut_quote(self, s, mapping)
+      s = standard.umlaut_quote(self, s, mapping)
       valid = map( lambda x: ord(x[0]), mapping.values()) + [ord('_')] + range(ord('0'),ord('9')+1) + range(ord('A'),ord('Z')+1) + range(ord('a'),ord('z')+1)
       s = filter( lambda x: ord(x) in valid, s)
       while len(s) > 0 and s[0] == '_':
           s = s[1:]
       s = s.lower()
       return s
-
-
-    """
-    Returns prefix from identifier (which is the non-numeric part at the 
-    beginning).
-    @param s: Identifier
-    @type s: C{string}
-    @return: Prefix
-    @rtype: C{string}
-    """
-    def get_id_prefix(self, s):
-      return _globals.id_prefix(s)
-
-
-    """
-    Replace special characters in string for javascript.
-    """
-    def js_quote(self, text, charset=None):
-      if type(text) is unicode:
-        text= text.encode([charset, 'utf-8'][charset==None])
-      text = text.replace("\r", "\\r").replace("\n", "\\n")
-      text = text.replace('"', '\\"').replace("'", "\\'")
-      return text
-
-
-    """
-    Checks if given request is preview.
-    @param REQUEST: the triggering request
-    @type REQUEST: C{ZPublisher.HTTPRequest}
-    @rtype: C{Boolean}
-    """
-    def isPreviewRequest(self, REQUEST):
-      return _globals.isPreviewRequest(REQUEST)
 
 
     """
@@ -651,7 +529,7 @@ class ZMSGlobals:
     @type info: C{any}
     """
     def writeLog(self, info):
-      return _globals.writeLog( self, info)
+      return standard.writeLog( self, info)
 
     """
     Log information.
@@ -659,7 +537,7 @@ class ZMSGlobals:
     @type info: C{any}
     """
     def writeBlock(self, info):
-      return _globals.writeBlock( self, info)
+      return standard.writeBlock( self, info)
 
     """
     Log error.
@@ -667,116 +545,7 @@ class ZMSGlobals:
     @type info: C{any}
     """
     def writeError(self, info):
-      return _globals.writeError( self, info)
-
-    #)
-
-
-    ############################################################################
-    #
-    #( Regular Expressions
-    #
-    ############################################################################
-
-    """
-    Performs a search-and-replace across subject, replacing all matches of 
-    regex in subject with replacement. The result is returned by the sub() 
-    function. The subject string you pass is not modified.
-    @rtype: C{string}
-    """
-    def re_sub( self, pattern, replacement, subject, ignorecase=False):
-      if ignorecase:
-        return re.compile( pattern, re.IGNORECASE).sub( replacement, subject)
-      else:
-        return re.compile( pattern).sub( replacement, subject)
-
-
-    """
-    Scan through string looking for a location where the regular expression 
-    pattern produces a match, and return a corresponding MatchObject 
-    instance. Return None if no position in the string matches the pattern; 
-    note that this is different from finding a zero-length match at some
-    point in the string.
-    """
-    def re_search( self, pattern, subject, ignorecase=False):
-      if ignorecase:
-        s = re.compile( pattern, re.IGNORECASE).split( subject)
-      else:
-        s = re.compile( pattern).split( subject)
-      return map( lambda x: s[x*2+1], range(len(s)/2))
-
-
-    """
-    Return all non-overlapping matches of pattern in string, as a list of strings. 
-    The string is scanned left-to-right, and matches are returned in the order found. 
-    If one or more groups are present in the pattern, return a list of groups; 
-    this will be a list of tuples if the pattern has more than one group. 
-    Empty matches are included in the result unless they touch the beginning of another match
-    """
-    def re_findall( self, pattern, text, ignorecase=False):
-      if ignorecase:
-        r = re.compile( pattern, re.IGNORECASE)
-      else:
-        r = re.compile( pattern)
-      return r.findall(text)
-
-    #)
-
-
-    ############################################################################
-    #
-    #( Styles / CSS
-    #
-    ############################################################################
-
-    """
-    Parses default-stylesheet and returns elements.
-    @deprecated
-    @return: Elements
-    @rtype: C{dict}
-    """
-    def parse_stylesheet(self):
-      stylesheet = self.getStylesheet()
-      if stylesheet.meta_type in ['DTML Document','DTML Method']:
-        data = stylesheet.raw
-      elif stylesheet.meta_type in ['File']:
-        data = stylesheet.data
-      data = re.sub( '/\*(.*?)\*/', '', data)
-      value = {}
-      for elmnt in data.split('}'):
-        i = elmnt.find('{')
-        keys = elmnt[:i].strip()
-        v = elmnt[i+1:].strip()
-        for key in keys.split(','):
-          key = key.strip()
-          if len(key) > 0:
-            value[key] = value.get(key,'') + v
-      colormap = {}
-      for key in value.keys():
-        if key.startswith('.') and \
-           key.find('Color') > 0 and \
-           key.find('.cms') < 0 and \
-           key.find('.zmi') < 0:
-          for elmnt in value[key].split(';'):
-            i = elmnt.find(':')
-            if i > 0:
-              elmntKey = elmnt[:i].strip().lower()
-              elmntValue = elmnt[i+1:].strip().lower()
-              if elmntKey == 'color' or elmntKey == 'background-color':
-                colormap[key[1:]] = elmntValue
-      self.setConfProperty('ZMS.colormap',colormap)
-      return colormap
-
-    def get_colormap(self):
-      colormap = self.getConfProperty('ZMS.colormap',None)
-      if colormap is None:
-        try:
-          colormap = self.parse_stylesheet()
-        except:
-          # Destroy Colormap on Error
-          colormap = {}
-          self.setConfProperty('ZMS.colormap',colormap)
-      return colormap
+      return standard.writeError( self, info)
 
     #)
 
@@ -1020,20 +789,20 @@ class ZMSGlobals:
           for s in v.split(' OR '):
             s = s.replace('*','').strip()
             if len( s) > 0:
-              s = _globals.umlaut_quote(self, s).lower()
-              k.extend(filter(lambda x: x not in k and _globals.umlaut_quote(self, str_item(x)).lower().find(s)>=0, l))
+              s = standard.umlaut_quote(self, s).lower()
+              k.extend(filter(lambda x: x not in k and standard.umlaut_quote(self, str_item(x)).lower().find(s)>=0, l))
         elif len(v.split(' AND '))>1:
           k = l
           for s in v.split(' AND '):
             s = s.replace('*','').strip()
             if len( s) > 0:
-              s = _globals.umlaut_quote(self, s).lower()
-              k = filter(lambda x: _globals.umlaut_quote(self, str_item(x)).lower().find(s)>=0, k)
+              s = standard.umlaut_quote(self, s).lower()
+              k = filter(lambda x: standard.umlaut_quote(self, str_item(x)).lower().find(s)>=0, k)
         else:
           v = v.replace('*','').strip().lower()
           if len( v) > 0:
-            v = _globals.umlaut_quote(self, v).lower()
-            k = filter(lambda x: _globals.umlaut_quote(self, str_item(x)).lower().find(v)>=0, l)
+            v = standard.umlaut_quote(self, v).lower()
+            k = filter(lambda x: standard.umlaut_quote(self, str_item(x)).lower().find(v)>=0, l)
         return k
       # Extract Items.
       if type(i) is str:
@@ -1078,7 +847,7 @@ class ZMSGlobals:
           k=filter(lambda x: x[0] in v, k)
       # Filter DateTimes.
       elif isinstance(v,DateTime):
-        dt = _globals.getDateTime
+        dt = standard.getDateTime
         k=filter(lambda x: x[0] is not None, k)
         k=map(lambda x: (dt(x[0]),x[1]), k)
         k=map(lambda x: (DateTime('%4d/%2d/%2d'%(x[0][0],x[0][1],x[0][2])),x[1]), k)
@@ -1189,7 +958,6 @@ class ZMSGlobals:
     """
     Extract zip-archive.
     """
-    security.declarePrivate('extractZipArchive')
     def extractZipArchive(self, f):
       return _fileutil.extractZipArchive(f)
 
@@ -1221,7 +989,6 @@ class ZMSGlobals:
       return tempfolder
 
 
-    security.declareProtected('View', 'localfs_read')
     def localfs_read(self, filename, mode='b', cache='public, max-age=3600', REQUEST=None):
       """
       Reads file from local file-system.
@@ -1242,7 +1009,7 @@ class ZMSGlobals:
         filename = unicode(filename,'utf-8').encode('latin-1')
       except:
         pass
-      _globals.writeLog( self, '[localfs_read]: filename=%s'%filename)
+      standard.writeLog( self, '[localfs_read]: filename=%s'%filename)
       
       # Get absolute filename.
       filename = _fileutil.absoluteOSPath(filename)
@@ -1293,7 +1060,7 @@ class ZMSGlobals:
     Writes file to local file-system.
     """
     def localfs_write(self, filename, v, mode='b', REQUEST=None):
-      _globals.writeLog( self, '[localfs_write]: filename=%s'%filename)
+      standard.writeLog( self, '[localfs_write]: filename=%s'%filename)
       
       # Get absolute filename.
       filename = _fileutil.absoluteOSPath(filename)
@@ -1320,7 +1087,7 @@ class ZMSGlobals:
     Removes file from local file-system.
     """
     def localfs_remove(self, path, deep=0):
-      _globals.writeLog( self, '[localfs_remove]: path=%s'%path)
+      standard.writeLog( self, '[localfs_remove]: path=%s'%path)
       
       # Get absolute filename.
       filename = _fileutil.absoluteOSPath(path)
@@ -1352,7 +1119,7 @@ class ZMSGlobals:
         filename = unicode(filename,'utf-8').encode('latin-1')
       except:
         pass
-      _globals.writeLog( self, '[localfs_readPath]: filename=%s'%filename)
+      standard.writeLog( self, '[localfs_readPath]: filename=%s'%filename)
       
       # Get absolute filename.
       filename = _fileutil.absoluteOSPath(filename)
@@ -1449,22 +1216,6 @@ class ZMSGlobals:
     """
     def xmlNodeSet(self, mNode, sTagName='', iDeep=0):
       return _xmllib.xmlNodeSet( mNode, sTagName, iDeep)
-
-
-    ############################################################################
-    #
-    #  Zope-Util
-    #
-    ############################################################################
-
-    """
-    Read Zope-object from container.
-    """
-    def readObject(self, ob, default=None):
-      data = default
-      if ob is not None:
-        data= _zopeutil.readObject(ob.aq_parent,absattr(ob.id),default)
-      return data
 
 
     ############################################################################
@@ -1635,7 +1386,7 @@ class ZMSGlobals:
         pt.setEnv(self,options)
         rtn = pt.pt_render(extra_context={'here':self,'request':self.REQUEST})
       except:
-        rtn = _globals.writeError( self, '[getPlugin]')
+        rtn = standard.writeError( self, '[getPlugin]')
       return rtn
 
 
@@ -1672,7 +1423,7 @@ class ZMSGlobals:
         if lang is None:
           lang = self.get_manage_lang()
         # Convert to struct_time
-        t = _globals.getDateTime(t)
+        t = standard.getDateTime(t)
         # Return ModificationTime
         if fmt_str == 'BOBOBASE_MODIFICATION_FMT':
           sdtf = self.getLangFmtDate(t, lang, fmt_str='SHORTDATETIME_FMT')
@@ -1730,29 +1481,8 @@ class ZMSGlobals:
         fmt = fmt.strip()
         return time.strftime(fmt,t)
       except:
-        #-- _globals.writeError(self,"[getLangFmtDate]: t=%s"%str(t))
+        #-- standard.writeError(self,"[getLangFmtDate]: t=%s"%str(t))
         return str(t)
-
-    """
-    Parse date in locale-format
-    @rtype: C{struct_time}
-    """
-    def parseLangFmtDate(self, s, lang=None, fmt_str=None, recflag=None):
-      return _globals.parseLangFmtDate(s)
-
-    """
-    Compare two dates.
-    @rtype: C{int}
-    """ 
-    def compareDate(self, t0, t1):
-      return _globals.compareDate(t0, t1) 
-
-    """
-    Calculate days between two dates.
-    @rtype: C{int}
-    """ 
-    def daysBetween(self, t0, t1):
-      return _globals.daysBetween(t0, t1) 
 
 
     """
@@ -1854,7 +1584,7 @@ class ZMSGlobals:
       
       # Send mail.
       try:
-        #_globals.writeBlock( self, "[sendMail]: %s"%mime_msg.as_string())
+        #standard.writeBlock( self, "[sendMail]: %s"%mime_msg.as_string())
         mailhost.send(mime_msg.as_string())
         return 0
       except:
@@ -1878,9 +1608,3 @@ class ZMSGlobals:
         return True
       else:
         return False
-
-# call this to initialize framework classes, which
-# does the right thing with the security assertions.
-Globals.InitializeClass(ZMSGlobals)
-
-################################################################################

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" tal:define="standard modules/Products.zms/standard; Std modules/Products/PythonScripts/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='configuration')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
@@ -282,7 +282,7 @@ function mms_normalize_rows(el_tbody) {
 						<input type="hidden" name="attr_ids:list" tal:attributes="value column/id"/>
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-th-list')"></tal:block>
 						<span class="column-id" tal:content="column/id">column-id</span>
-						<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python:here.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
+						<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python:standard.string_maxlen(s=column.get('description',''),maxlen=50)">column-description</span>
 						(<span class="column-datatype" tal:content="column/datatype">column-datatype</span>)
 					</td>
 					<td><input class="form-control input-xs" tal:attributes="name python:'attr_label_%s'%column['id']; value column/label" type="text"></td>
@@ -553,7 +553,7 @@ function mms_normalize_rows(el_tbody) {
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-th-list')"></tal:block>
 							<tal:block tal:condition="python:column.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
 							<span class="column-id" tal:content="column/id">column-id</span>
-							<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python:here.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
+							<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python:standard.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
 							<tal:block tal:condition="python:column.get('fk') and column.get('fk').get('tablename')">
 								<span class="column-datatype">
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['fk'].get('fieldname','?'))"></tal:block>

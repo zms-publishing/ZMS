@@ -4,7 +4,7 @@
 		target python:request.get('came_from',['manage_main','manage_system'][int(is_system)]+'?lang=%s'%request.get('lang',here.getPrimaryLanguage())+['','&zmi-debug=True'][int(request.has_key('zmi-debug'))]);">
 	<tal:block tal:condition="is_sitemap">
 		<!DOCTYPE html>
-		<html lang="en">
+		<html lang="en" tal:define="standard modules/Products.zms/standard">
 			<head tal:define="dummy python:here.zmi_page_request(here,request)">
 				<title tal:content="python:'ZMS | %s | %s'%(here.display_type(),request['lang'])">the title</title>
 				<meta http-equiv="content-type" content="text/html; charset=utf-8"/>

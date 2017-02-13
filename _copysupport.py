@@ -23,7 +23,7 @@ import urllib
 from OFS import Moniker
 from OFS.CopySupport import _cb_decode, _cb_encode, absattr, CopyError, eNoData, eNotFound, eInvalid
 # Product Imports.
-import _globals
+import standard
 
 
 # --------------------------------------------------------------------------
@@ -50,9 +50,9 @@ def normalize_ids_after_copy(node, ids=[]):
       new_id = id
       if new_id.startswith(copy_of_prefix):
         new_id = new_id[len(copy_of_prefix):]
-      id_prefix = _globals.id_prefix(new_id)
+      id_prefix = standard.id_prefix(new_id)
       new_id = node.getNewId(id_prefix)
-      _globals.writeBlock(node,'[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
+      standard.writeBlock(node,'[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
       if id != new_id:
         node.manage_renameObject(id=id,new_id=new_id)
       node.initObjChildren(request)
@@ -82,9 +82,9 @@ def normalize_ids_after_move(node, ids=[]):
       new_id = id
       if new_id.startswith(copy_of_prefix):
         new_id = new_id[len(copy_of_prefix):]
-      id_prefix = _globals.id_prefix(new_id)
+      id_prefix = standard.id_prefix(new_id)
       new_id = node.getNewId(id_prefix)
-      _globals.writeBlock(node,'[CopySupport._normalize_ids_after_move]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
+      standard.writeBlock(node,'[CopySupport._normalize_ids_after_move]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
       if id != new_id:
         node.manage_renameObject(id=id,new_id=new_id)
       node.initObjChildren(request)
@@ -115,7 +115,7 @@ class CopySupport:
       try: 
         cp=_cb_decode(cp)
       except: 
-        _globals.writeError( self, '[CopySupport._get_cb_copy_data]: eInvalid')
+        standard.writeError( self, '[CopySupport._get_cb_copy_data]: eInvalid')
         raise CopyError, eInvalid
       
       return cp
@@ -129,7 +129,7 @@ class CopySupport:
         try: 
           cp=_cb_decode(cp)
         except: 
-          _globals.writeError( self, '[CopySupport._get_obs]: eInvalid')
+          standard.writeError( self, '[CopySupport._get_obs]: eInvalid')
           #raise CopyError, eInvalid
         
         oblist=[]
@@ -141,7 +141,7 @@ class CopySupport:
           try: 
             ob = m.bind(app)
           except: 
-            _globals.writeError( self, '[CopySupport._get_obs]: eNotFound')
+            standard.writeError( self, '[CopySupport._get_obs]: eNotFound')
             #raise CopyError, eNotFound
           self._verifyObjectPaste(ob)
           oblist.append(ob)
@@ -175,14 +175,14 @@ class CopySupport:
     #  in correct sort-order.
     # --------------------------------------------------------------------------
     def _set_sort_ids(self, ids, op, REQUEST):
-      _globals.writeLog( self, "[CopySupport._set_sort_ids]: %s"%self.absolute_url())
+      standard.writeLog( self, "[CopySupport._set_sort_ids]: %s"%self.absolute_url())
       
       copy_of_prefix = 'copy_of_'
       sort_id = REQUEST.get('_sort_id',0) + 1
       for ob in self.getChildNodes():
         id = absattr(ob.id)
         if id in ids or copy_of_prefix+id in ids:
-          setattr(ob,'sort_id',_globals.format_sort_id(sort_id))
+          setattr(ob,'sort_id',standard.format_sort_id(sort_id))
           sort_id += 1
 
 
@@ -191,7 +191,7 @@ class CopySupport:
     ############################################################################
     def manage_copyObjects(self, ids=None, REQUEST=None):
       """Put a reference to the objects named in ids in the clip board"""
-      _globals.writeLog( self, "[CopySupport.manage_copyObjects]")
+      standard.writeLog( self, "[CopySupport.manage_copyObjects]")
       super( self.__class__, self).manage_copyObjects( ids, REQUEST)
       # Return with message.
       if REQUEST is not None:
@@ -204,7 +204,7 @@ class CopySupport:
     ############################################################################
     def manage_cutObjects(self, ids=None, REQUEST=None):
       """Put a reference to the objects named in ids in the clip board"""
-      _globals.writeLog( self, "[CopySupport.manage_cutObjects]")
+      standard.writeLog( self, "[CopySupport.manage_cutObjects]")
       super( self.__class__, self).manage_cutObjects( ids, REQUEST)
       # Return with message.
       if REQUEST is not None:
@@ -222,7 +222,7 @@ class CopySupport:
     ############################################################################
     def manage_pasteObjs(self, REQUEST, RESPONSE=None):
       """ CopySupport.manage_pasteObjs """
-      _globals.writeBlock( self, "[CopySupport.manage_pasteObjs]")
+      standard.writeBlock( self, "[CopySupport.manage_pasteObjs]")
       t0 = time.time()
       
       # Analyze request

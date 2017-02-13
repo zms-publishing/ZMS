@@ -22,68 +22,7 @@ import re
 import sys
 import zope.interface
 # Product Imports.
-import _globals
-
-
-# ------------------------------------------------------------------------------
-#  _zcatalogmanager.search_quote:
-#
-#  Remove HTML-Tags from given string.
-# ------------------------------------------------------------------------------
-def search_quote(s, maxlen=255, tag='&middot;'):
-  # remove all tags.
-  s = re.sub( '<script((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</script>', '', s)
-  s = re.sub( '<style((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</style>', '', s)
-  s = re.sub( '<((.|\n|\r|\t)*?)>', '', s)
-  # limit characters.
-  if len(s) > maxlen:
-    if s[:maxlen].rfind('&') >= 0 and not s[:maxlen].rfind('&') < s[:maxlen].rfind(';') and \
-       s[maxlen:].find(';') >= 0 and not s[maxlen:].find(';') > s[maxlen:].find('&'):
-      maxlen = maxlen + s[maxlen:].find(';')
-    if s[:maxlen].endswith(chr(195)) and maxlen < len(s):
-      maxlen += 1
-    s = s[:maxlen] + tag * 3
-  # return quoted search string.
-  return s
-
-
-################################################################################
-################################################################################
-###
-###   class ZCatalogItem
-###
-################################################################################
-################################################################################
-class ZCatalogItem(CatalogPathAwareness.CatalogAware):
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.search_quote:
-    #
-    #  Remove HTML-Tags.
-    #  @deprecated
-    # --------------------------------------------------------------------------
-    def search_quote(self, s, maxlen=255, tag='&middot;'):
-      return search_quote(s,maxlen,tag)
-
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.search_encode:
-    #
-    #  Encodes given string.
-    #  @deprecated
-    # --------------------------------------------------------------------------
-    def search_encode(self, s):
-      return _globals.umlaut_quote(self, s)
-
-
-    # --------------------------------------------------------------------------
-    #  ZCatalogItem.getCatalogNavUrl:
-    #
-    #  Returns catalog-navigation url.
-    #  @deprecated
-    # --------------------------------------------------------------------------
-    def getCatalogNavUrl(self, REQUEST):
-      return self.url_inherit_params(REQUEST['URL'],REQUEST,['qs'])
+import standard
 
 
 ################################################################################

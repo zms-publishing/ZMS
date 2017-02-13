@@ -1,7 +1,7 @@
 <tal:block 
 	tal:define="global bnobody python:int(request.get('ZMS_NO_BODY','')!='');"
 ><!DOCTYPE html>
-<html lang="en">
+<html lang="en" tal:define="standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <script tal:condition="python:not bnobody">
 	$ZMI.registerReady(function(){

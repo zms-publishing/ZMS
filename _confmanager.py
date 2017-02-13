@@ -41,14 +41,14 @@ import zope.interface
 # Product imports.
 from IZMSConfigurationProvider import IZMSConfigurationProvider
 import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
-import _globals
+import standard
 import _exportable
 import _fileutil
 import _filtermanager
 import _mediadb
 import _multilangmanager
 import _sequence
-import _zopeutil
+import zopeutil
 import zmslog
 
 
@@ -95,13 +95,13 @@ class ConfDict:
 #  _confmanager.initConf:
 # ------------------------------------------------------------------------------
 def initConf(self, profile, remote=True):
-  _globals.writeBlock( self, '[initConf]: profile='+profile)
+  standard.writeBlock( self, '[initConf]: profile='+profile)
   createIfNotExists = True
   files = self.getConfFiles(remote)
   for filename in files.keys():
     label = files[filename]
     if label.startswith(profile + '.') or label.startswith(profile + '-'):
-      _globals.writeBlock( self, '[initConf]: filename='+filename)
+      standard.writeBlock( self, '[initConf]: filename='+filename)
       if filename.find('.zip') > 0:
         self.importConfPackage(filename,createIfNotExists)
       elif filename.find('.xml') > 0:
@@ -239,10 +239,10 @@ class ConfManager(
         package_home(globals())+'/import/',]
       try:
         conf = open( filepaths[0]+'configure.zcml','r')
-        _globals.writeBlock( self, "[getConfFiles]: Read from "+filepaths[0]+"configure.zcml")
+        standard.writeBlock( self, "[getConfFiles]: Read from "+filepaths[0]+"configure.zcml")
       except:
         conf = open( filepaths[1]+'configure.zcml','r')
-        _globals.writeBlock( self, "[getConfFiles]: Read from "+filepaths[0]+"configure.zcml")
+        standard.writeBlock( self, "[getConfFiles]: Read from "+filepaths[0]+"configure.zcml")
       conf_xml = self.xmlParse( conf)
       for source in self.xmlNodeSet(conf_xml,'source'):
         location = source['attrs']['location']
@@ -794,7 +794,7 @@ class ConfManager(
           if 'ZMANAGED' in os.environ:
             from Lifetime import shutdown
             from cgi import escape
-            from _globals import writeBlock
+            from standard import writeBlock
             try:
               user = '"%s"' % REQUEST['AUTHENTICATED_USER']
             except:
@@ -886,7 +886,7 @@ class ConfManager(
         newTitle = REQUEST['newTitle']
         home.manage_addFolder(id=newId,title=newTitle)
         folder = getattr(home,newId)
-        _zopeutil.addPageTemplate(folder, id='standard_html', title='', data='<!DOCTYPE html>\n<htmltal:define="zmscontext options/zmscontext">\n</html>')
+        zopeutil.addPageTemplate(folder, id='standard_html', title='', data='<!DOCTYPE html>\n<htmltal:define="zmscontext options/zmscontext">\n</html>')
         message = self.getZMILangStr('MSG_INSERTED')%newId
       
       # Return with message.

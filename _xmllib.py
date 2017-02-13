@@ -29,10 +29,11 @@ import tempfile
 import time
 import unicodedata
 # Product Imports.
+import standard
 from _objattrs import *
 import _blobfields
-import _globals
 import _fileutil
+import _globals
 
 
 INDENTSTR = '  '
@@ -128,14 +129,14 @@ def getXmlTypeSaveValue(v, attrs):
     try:
       v = float(v)
     except:
-      _globals.writeError(self,"[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!"%(t,str(v)))
+      standard.writeError(self,"[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!"%(t,str(v)))
   elif t == 'int':
     try:
       v = int(v)
     except:
-      _globals.writeError(self,"[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!"%(t,str(v)))
+      standard.writeError(self,"[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!"%(t,str(v)))
   elif t == 'datetime':
-    new = _globals.parseLangFmtDate(v)
+    new = standard.parseLangFmtDate(v)
     if new is not None:
       v = new
   # Return value.
@@ -185,19 +186,19 @@ def xmlInitObjProperty(self, key, value, lang=None):
     if type(value) is str:
       value = value.strip()
     #-- Date-Fields
-    if datatype in _globals.DT_DATETIMES:
+    if datatype in standard.DT_DATETIMES:
       if type(value) is str and len(value) > 0:
         value = self.parseLangFmtDate(value)
     #-- Integer-Fields
-    elif datatype in _globals.DT_INTS:
+    elif datatype in standard.DT_INTS:
       if type(value) is str and len(value) > 0:
         value = int(value)
     #-- Float-Fields
-    elif datatype == _globals.DT_FLOAT:
+    elif datatype == standard.DT_FLOAT:
       if type(value) is str and len(value) > 0:
         value = float(value)
     #-- String-Fields
-    elif datatype in _globals.DT_STRINGS:
+    elif datatype in standard.DT_STRINGS:
       value = str(value)
   
   #-- INIT
@@ -277,8 +278,8 @@ def xmlOnUnknownEndTag(self, sTagName):
   name = tag['name']
   if name != sTagName: return 0  # don't accept any unknown tag
   
-  attrs = _globals.unencode( tag['attrs'])
-  cdata = _globals.unencode( tag['cdata'])
+  attrs = standard.unencode( tag['attrs'])
+  cdata = standard.unencode( tag['cdata'])
   
   #-- ITEM (DICTIONARY|LIST) --
   #----------------------------
@@ -311,7 +312,7 @@ def xmlOnUnknownEndTag(self, sTagName):
       if content_type.find('text/') == 0:
         data = cdata
       else:
-        data = _globals.hex2bin(cdata)
+        data = standard.hex2bin(cdata)
       value['data'] = data
     self.dValueStack.push(value)
   
@@ -345,7 +346,7 @@ def xmlOnUnknownEndTag(self, sTagName):
           for s_lang in item.keys():
             value = item[s_lang]
             # Data
-            if datatype in _globals.DT_BLOBS:
+            if datatype in standard.DT_BLOBS:
               if type(value) is dict and len(value.keys()) > 0:
                 ob = _blobfields.createBlobField(self,datatype)
                 for key in value.keys():
@@ -364,11 +365,11 @@ def xmlOnUnknownEndTag(self, sTagName):
         if self.dValueStack.size() > 0:
           value = self.dValueStack.pop()
         if value is not None and \
-           ( datatype in _globals.DT_BLOBS or \
-             datatype == _globals.DT_LIST or \
-             datatype == _globals.DT_DICT):
+           ( datatype in standard.DT_BLOBS or \
+             datatype == standard.DT_LIST or \
+             datatype == standard.DT_DICT):
           # Data
-          if datatype in _globals.DT_BLOBS:
+          if datatype in standard.DT_BLOBS:
             if type(value) is dict and len(value.keys()) > 0:
               ob = _blobfields.createBlobField(self,datatype)
               for key in value.keys():
@@ -383,7 +384,7 @@ def xmlOnUnknownEndTag(self, sTagName):
                     for key in item.keys():
                       item_obj_attr = self.getObjAttr( key)
                       item_datatype = item_obj_attr['datatype_key']
-                      if item_datatype in _globals.DT_BLOBS:
+                      if item_datatype in standard.DT_BLOBS:
                         item_data = item[ key]
                         if type( item_data) is dict:
                           blob = _blobfields.createBlobField( self, item_datatype, item_data)
@@ -401,7 +402,7 @@ def xmlOnUnknownEndTag(self, sTagName):
         #-- Simple Attributes (String, Integer, etc.)
         else:
           if value is not None:
-            _globals.writeBlock( self, "[xmlOnUnknownEndTag]: WARNING - Skip %s=%s"%(sTagName,str(value)))
+            standard.writeBlock( self, "[xmlOnUnknownEndTag]: WARNING - Skip %s=%s"%(sTagName,str(value)))
           value = cdata
           #-- OPTIONS
           if obj_attr.has_key('options'):
@@ -548,7 +549,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
       if value.content_type.find( 'text/') == 0:
         xml.append( '<![CDATA[%s]]>'%str(value.data))
       else:
-        xml.append( _globals.bin2hex(str(value.data)))
+        xml.append( standard.bin2hex(str(value.data)))
       xml.append( '</%s>'%tagname)
     
     # Dictionaries
@@ -646,13 +647,13 @@ def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
           pass
     
     # Objects.
-    if datatype in _globals.DT_BLOBS:
+    if datatype in standard.DT_BLOBS:
       xml += value.toXml( self, base_path, data2hex)
     
     # XML.
-    elif datatype == _globals.DT_XML or \
-         datatype == _globals.DT_BOOLEAN or \
-         datatype in _globals.DT_NUMBERS:
+    elif datatype == standard.DT_XML or \
+         datatype == standard.DT_BOOLEAN or \
+         datatype in standard.DT_NUMBERS:
       xml += toXml( self, value, -1)
 
     # Others.
@@ -702,13 +703,13 @@ def getObjToXml(self, REQUEST, incl_embedded=False, deep=True, base_path='', dat
   xml.append('<%s'%ob.meta_id)
   xml.append(' uid="%s"'%ob.get_uid())
   id = self.id 
-  prefix = _globals.id_prefix(id)
+  prefix = standard.id_prefix(id)
   if id == prefix:
     xml.append(' id_fix="%s"'%id)
   else:
     xml.append(' id="%s"'%id)
   if ob.getParentNode() is not None and ob.getParentNode().meta_type == 'ZMSCustom':
-    xml.append('\n id_prefix="%s"'%_globals.id_prefix(ob.id))
+    xml.append('\n id_prefix="%s"'%standard.id_prefix(ob.id))
   xml.append('>')
   # Attributes.
   keys = ob.getObjAttrs().keys()
@@ -862,9 +863,9 @@ class XmlAttrBuilder:
       
       #-- TAG-STACK
       tag = self.dTagStack.pop()
-      name = _globals.unencode( tag['name'])
-      attrs = _globals.unencode( tag['attrs'])
-      cdata = _globals.unencode( tag['cdata'])
+      name = standard.unencode( tag['name'])
+      attrs = standard.unencode( tag['attrs'])
+      cdata = standard.unencode( tag['cdata'])
       # Hack for nested CDATA
       cdata = re.compile( '\<\!\{CDATA\{(.*?)\}\}\>').sub( '<![CDATA[\\1]]>', cdata)
       
@@ -878,14 +879,14 @@ class XmlAttrBuilder:
         if content_type.find('text/') == 0:
           data = cdata
         else:
-          data = _globals.hex2bin( cdata)
+          data = standard.hex2bin( cdata)
         file = {'data':data,'filename':filename,'content_type':content_type}
         objtype = attrs.get('type')
         item = None
         if objtype == 'image':
-          item = _blobfields.createBlobField( None, _globals.DT_IMAGE, file, self.mediadbStorable)
+          item = _blobfields.createBlobField( None, standard.DT_IMAGE, file, self.mediadbStorable)
         elif objtype == 'file':
-          item = _blobfields.createBlobField( None, _globals.DT_FILE, file, self.mediadbStorable)
+          item = _blobfields.createBlobField( None, standard.DT_FILE, file, self.mediadbStorable)
         for key in attrs.keys():
           value = attrs.get( key)
           setattr(item,key,value)
@@ -1132,10 +1133,10 @@ class XmlBuilder:
     def OnEndElement(self, sTagName):
       """ XmlBuilder.OnEndElement """
       lTag = self.dTagStack.pop()
-      name = _globals.unencode( lTag['name'])
-      attrs = _globals.unencode( lTag['attrs'])
-      lCdata = _globals.unencode( lTag['cdata'])
-      lTags = _globals.unencode( lTag['tags'])
+      name = standard.unencode( lTag['name'])
+      attrs = standard.unencode( lTag['attrs'])
+      lCdata = standard.unencode( lTag['cdata'])
+      lTags = standard.unencode( lTag['tags'])
 
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + sTagName + ")")

@@ -20,6 +20,7 @@
 from AccessControl import ClassSecurityInfo
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from Products.ZCatalog import CatalogPathAwareness
 from types import StringTypes
 import Globals
 import ZPublisher.HTTPRequest
@@ -28,6 +29,7 @@ import re
 import string
 import time
 # Product Imports.
+import standard
 import zmscontainerobject
 import ZMSItem
 import ZMSGlobals
@@ -49,9 +51,8 @@ import _pathhandler
 import _versionmanager
 import _xmllib
 import _textformatmanager
-import _zcatalogmanager
 import _zmsattributecontainer
-import _zopeutil
+import zopeutil
 import _zreferableitem
 
 __all__= ['ZMSObject']
@@ -65,6 +66,7 @@ __all__= ['ZMSObject']
 ################################################################################
 ################################################################################
 class ZMSObject(ZMSItem.ZMSItem,
+	CatalogPathAwareness.CatalogAware,  # Catalog awareness.
 	_accessmanager.AccessableObject,	# Access manager.
 	_versionmanager.VersionItem,		# Version Item.
 	ZMSWorkflowItem.ZMSWorkflowItem,
@@ -79,7 +81,6 @@ class ZMSObject(ZMSItem.ZMSItem,
 	_objtypes.ObjTypes,			# Object-Types.
 	_pathhandler.PathHandler,		# Path-Handler.
 	_textformatmanager.TextFormatObject,	# Text-Formats.
-	_zcatalogmanager.ZCatalogItem,		# ZCatalog Item.
 	ZMSGlobals.ZMSGlobals,			# ZMS Global Functions and Definitions.
 	_zreferableitem.ZReferableItem		# ZReferable Item.
 	): 
@@ -137,7 +138,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     def __init__(self, id='', sort_id=0):
       """ ZMSObject.__init__ """
       self.id = id
-      self.sort_id = _globals.format_sort_id(sort_id)
+      self.sort_id = standard.format_sort_id(sort_id)
       self.ref_by = []
 
 
@@ -169,7 +170,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             try:
               l.append(self.attr(s))
             except:
-              l.append('/* >>>>>>>>>> ERROR in %s <<<<<<<<<< */'%_globals.writeError(self,"[zmi_css_defaults]: %s"%s))
+              l.append('/* >>>>>>>>>> ERROR in %s <<<<<<<<<< */'%standard.writeError(self,"[zmi_css_defaults]: %s"%s))
       return '\n'.join(map(lambda x:str(x),l))
 
     ############################################################################
@@ -226,13 +227,13 @@ class ZMSObject(ZMSItem.ZMSItem,
       prefix = '%s_'%(self.id_quote(self.get_oid()))
       # Remove old context-values.
       for key in filter(lambda x:x.startswith(prefix),REQUEST.keys()):
-        _globals.writeLog(self,"[set_request_context]: DEL "+key)
+        standard.writeLog(self,"[set_request_context]: DEL "+key)
         REQUEST.set(key,None)
       # Set new context-values.
       for key in d.keys():
         context = prefix+key
         value = d[key]
-        _globals.writeLog(self,"[set_request_context]: SET "+context+"="+str(value))
+        standard.writeLog(self,"[set_request_context]: SET "+context+"="+str(value))
         REQUEST.set(context,value)
 
     # --------------------------------------------------------------------------
@@ -243,7 +244,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       # Get context-value.
       value = REQUEST.get(context,None)
       if value is not None:
-        _globals.writeLog(self,"[get_request_context]: GET "+context+"="+str(value))
+        standard.writeLog(self,"[get_request_context]: GET "+context+"="+str(value))
         return value 
       return REQUEST.get(key,defaultValue)
 
@@ -293,7 +294,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           masterDocElmnt = masterHome.content
           v = masterDocElmnt.get_conf_blob(path, REQUEST, RESPONSE)
         else:
-          _globals.writeError(self,"[get_conf_blob]: path=%s"%str(path))
+          standard.writeError(self,"[get_conf_blob]: path=%s"%str(path))
       return v
 
     # --------------------------------------------------------------------------
@@ -462,9 +463,9 @@ class ZMSObject(ZMSItem.ZMSItem,
         change_dt_parent = self.getObjProperty('change_dt',req)
         try:
           if change_dt_lang is not None and change_dt_parent is not None:
-            rtnVal = _globals.compareDate(change_dt_lang, change_dt_parent) > 0
+            rtnVal = standard.compareDate(change_dt_lang, change_dt_parent) > 0
         except:
-          _globals.writeError(self,"[isModifiedInParentLanguage]: Unexpected exception: change_dt_lang=%s, change_dt_parent=%s!"%(str(change_dt_lang),str(change_dt_parent)))
+          standard.writeError(self,"[isModifiedInParentLanguage]: Unexpected exception: change_dt_lang=%s, change_dt_parent=%s!"%(str(change_dt_lang),str(change_dt_parent)))
       return rtnVal
 
 
@@ -482,7 +483,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  Returns 1 if current object is visible.
     # --------------------------------------------------------------------------
     def isVisible(self, REQUEST):
-      REQUEST = _globals.nvl(REQUEST,self.REQUEST)
+      REQUEST = standard.nvl(REQUEST,self.REQUEST)
       lang = REQUEST.get('lang',self.getPrimaryLanguage())
       visible = True
       visible = visible and self.isTranslated(lang,REQUEST) # Object is translated.
@@ -504,7 +505,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       for key in keys:
         objAttr = self.getObjAttr(key)
         value = self.getObjAttrValue( objAttr, REQUEST)
-        size = size + _globals.get_size(value)
+        size = size + standard.get_size(value)
       return size
 
 
@@ -558,7 +559,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def display_icon(self, REQUEST={}, meta_type=None, key='icon', zpt=True):
       """ ZMSObject.display_icon """
-      id = _globals.nvl(meta_type,self.meta_id)
+      id = standard.nvl(meta_type,self.meta_id)
       icon_title = self.display_type(meta_type=id)
       if id in self.getMetaobjIds( sort=0):
         name = self.evalMetaobjAttr( '%s.%s'%(id,'icon_clazz'))
@@ -596,7 +597,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  @param REQUEST
     # --------------------------------------------------------------------------
     def display_type(self, REQUEST={}, meta_type=None):
-      meta_type = _globals.nvl( meta_type, self.meta_id)
+      meta_type = standard.nvl( meta_type, self.meta_id)
       metaObj = self.getMetaobj( meta_type)
       if type( metaObj) is dict and metaObj.has_key( 'name'):
         meta_type = metaObj[ 'name']
@@ -633,7 +634,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             obj_item.extend(rtn)
             rtn = obj_item
         except:
-          _globals.writeError( self, '[breadcrumbs_obj_path]: An unexpected error occured while handling portal master!')
+          standard.writeError( self, '[breadcrumbs_obj_path]: An unexpected error occured while handling portal master!')
       return rtn
 
 
@@ -682,7 +683,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             v = request.get( 'resource_%s'%el_name)
             if isinstance(v,ZPublisher.HTTPRequest.FileUpload):
               if len(getattr(v,'filename',''))>0:
-                v = _blobfields.createBlobField(self,_globals.DT_FILE,v)
+                v = _blobfields.createBlobField(self,standard.DT_FILE,v)
                 resources.append( v)
                 el_value = request.get( el_name)
                 if el_value is not None:
@@ -747,7 +748,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           # Message
           message = self.getZMILangStr('MSG_CHANGED')
         except:
-          message = _globals.writeError(self,"[manage_changeProperties]")
+          message = standard.writeError(self,"[manage_changeProperties]")
           messagekey = 'manage_tabs_error_message'
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
       
@@ -788,7 +789,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           mapping = self.dict_list(self.getConfProperty('ZMS.pathhandler.id_quote.mapping',' _-_/_\'_'))
           declId = self.id_quote( declId, mapping)
       except:
-        _globals.writeError(self,'[getDeclId]: can\'t get declarative id')
+        standard.writeError(self,'[getDeclId]: can\'t get declarative id')
       if len( declId) == 0:
         declId = self.id
       return declId
@@ -912,7 +913,16 @@ class ZMSObject(ZMSItem.ZMSItem,
               value = self.url_append_params(value,{param:REQUEST[param]})
         else:
           if deep:
-            ob = _globals.getPageWithElements( self, REQUEST)
+            def get_page_with_elements(node):
+              if node.isPageContainer():
+                for childNode in node.getChildNodes(REQUEST):
+                  if childNode.isVisible(REQUEST):
+                    if childNode.isPageElement():
+                      return node
+                    elif childNode.isPage():
+                      return get_page_with_elements(childNode)
+              return node
+            ob = get_page_with_elements(self)
           value = ob.getHref2Html( fct, ob.getPageExt(REQUEST), REQUEST)
       return value
 
@@ -1022,7 +1032,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     security.declareProtected('View', 'ajaxGetNodes')
     def ajaxGetNodes(self, context=None, lang=None, xml_header=True, REQUEST=None):
       """ ZMSObject.ajaxGetNodes """
-      context = _globals.nvl(context,self)
+      context = standard.nvl(context,self)
       refs = REQUEST.get('refs',[])
       if len(refs)==0:
         for key in REQUEST.keys():
@@ -1086,12 +1096,12 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " uid=\"{$%s}\""%(self.get_uid(implementation=self.getConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation','undefined')))
       xml += " id=\"%s_%s\""%(self.getHome().id,self.id)
       xml += " home_id=\"%s\""%(self.getHome().id)
-      xml += " index_html=\"%s\""%_globals.html_quote(self.getHref2IndexHtml(REQUEST))
+      xml += " index_html=\"%s\""%standard.html_quote(self.getHref2IndexHtml(REQUEST))
       xml += " is_page=\"%s\""%str(int(self.isPage()))
       xml += " is_pageelement=\"%s\""%str(int(self.isPageElement()))
       xml += " meta_id=\"%s\""%(self.meta_id)
-      xml += " title=\"%s\""%_globals.html_quote(self.getTitle(REQUEST))
-      xml += " titlealt=\"%s\""%_globals.html_quote(self.getTitlealt(REQUEST))
+      xml += " title=\"%s\""%standard.html_quote(self.getTitle(REQUEST))
+      xml += " titlealt=\"%s\""%standard.html_quote(self.getTitlealt(REQUEST))
       xml += " restricted=\"%s\""%str(self.hasRestrictedAccess())
       xml += " attr_dc_type=\"%s\""%(self.attr('attr_dc_type'))
       xml += ">"
@@ -1099,19 +1109,19 @@ class ZMSObject(ZMSItem.ZMSItem,
         obj_attrs = self.getObjAttrs()
         for key in filter(lambda x: x not in ['title','titlealt','change_dt','change_uid','change_history','created_dt','created_uid','attr_dc_coverage','attr_cacheable','work_dt','work_uid'],obj_attrs.keys()):
           obj_attr = obj_attrs[ key]
-          if obj_attr['datatype_key'] in _globals.DT_TEXTS or \
-             obj_attr['datatype_key'] in _globals.DT_NUMBERS or \
-             obj_attr['datatype_key'] in _globals.DT_DATETIMES:
+          if obj_attr['datatype_key'] in standard.DT_TEXTS or \
+             obj_attr['datatype_key'] in standard.DT_NUMBERS or \
+             obj_attr['datatype_key'] in standard.DT_DATETIMES:
             v = self.attr(key)
             if v:
               xml += "<%s>%s</%s>"%(key,self.toXmlString(v),key)
-          elif obj_attr['datatype_key'] in _globals.DT_BLOBS:
+          elif obj_attr['datatype_key'] in standard.DT_BLOBS:
             v = self.attr(key)
             if v:
               xml += "<%s>"%key
-              xml += "<href>%s</href>"%_globals.html_quote(v.getHref(REQUEST))
-              xml += "<filename>%s</filename>"%_globals.html_quote(v.getFilename())
-              xml += "<content_type>%s</content_type>"%_globals.html_quote(v.getContentType())
+              xml += "<href>%s</href>"%standard.html_quote(v.getHref(REQUEST))
+              xml += "<filename>%s</filename>"%standard.html_quote(v.getFilename())
+              xml += "<content_type>%s</content_type>"%standard.html_quote(v.getContentType())
               xml += "<size>%s</size>"%self.getDataSizeStr(v.get_size())
               xml += "<icon>%s</icon>"%self.getMimeTypeIconSrc(v.getContentType())
               xml += "</%s>"%key
@@ -1259,7 +1269,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  Sets Sort-ID (integer).
     # --------------------------------------------------------------------------
     def setSortId(self, sort_id):
-      setattr( self, 'sort_id', _globals.format_sort_id(sort_id))
+      setattr( self, 'sort_id', standard.format_sort_id(sort_id))
 
 
     # --------------------------------------------------------------------------
@@ -1270,7 +1280,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     def getSortId(self, REQUEST=None): 
       try:
         sort_id = getattr( self, 'sort_id')
-        rtnVal = string.atoi(sort_id[len(_globals.id_prefix(sort_id)):])
+        rtnVal = string.atoi(sort_id[len(standard.id_prefix(sort_id)):])
       except:
         rtnVal = 0
       return rtnVal
@@ -1286,7 +1296,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       parent = self.getParentNode()
       sort_id = self.getSortId()
       self.setSortId(sort_id - 15)
-      parent.normalizeSortIds(_globals.id_prefix(self.id))
+      parent.normalizeSortIds(standard.id_prefix(self.id))
       # Return with message.
       message = self.getZMILangStr('MSG_MOVEDOBJUP')%("<i>%s</i>"%self.display_type(REQUEST))
       RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
@@ -1302,7 +1312,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       parent = self.getParentNode()
       sort_id = self.getSortId()
       self.setSortId(sort_id + 15)
-      parent.normalizeSortIds(_globals.id_prefix(self.id))
+      parent.normalizeSortIds(standard.id_prefix(self.id))
       # Return with message.
       message = self.getZMILangStr('MSG_MOVEDOBJDOWN')%("<i>%s</i>"%self.display_type(REQUEST))
       RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
@@ -1325,7 +1335,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         else:
           new_sort_id = int(sibling_sort_ids[-1][1:])+1
         self.setSortId(new_sort_id)
-        parent.normalizeSortIds(_globals.id_prefix(self.id))
+        parent.normalizeSortIds(standard.id_prefix(self.id))
       else:
         id = REQUEST['URL'].split('/')[-2]
         ids = self.getConfProperty('Portal.Clients',[])
@@ -1363,8 +1373,8 @@ class ZMSObject(ZMSItem.ZMSItem,
       if metaCmd is not None:
         # Execute directly.
         if metaCmd.get('exec',0) == 1:
-          ob = _zopeutil.getObject(self,id)
-          value = _zopeutil.callObject(ob,zmscontext=self)
+          ob = zopeutil.getObject(self,id)
+          value = zopeutil.callObject(ob,zmscontext=self)
           if type(value) in StringTypes:
             message = value
           elif type(value) is tuple:
@@ -1385,7 +1395,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def _getBodyContentContentEditable(self, html):
       request = self.REQUEST
-      if _globals.isPreviewRequest(request) and \
+      if standard.isPreviewRequest(request) and \
          (request.get('URL').find('/manage')>0 or self.getConfProperty('ZMS.preview.contentEditable',1)==1):
         css = ['contentEditable', self.meta_id]
         html = '<div class="%s" data-absolute-url="%s">%s</div>'%(' '.join(css),self.absolute_url()[len(self.REQUEST['BASE0']):],html)
@@ -1438,9 +1448,9 @@ class ZMSObject(ZMSItem.ZMSItem,
         else:
           html = self._getBodyContent(REQUEST)
         # Process html <form>-tags.
-        html = _globals.form_quote(html,REQUEST)
+        html = standard.form_quote(html,REQUEST)
       except:
-        html = _globals.writeError(self,"[renderShort]")
+        html = standard.writeError(self,"[renderShort]")
         html = '<br/>'.join(html.split('\n'))
       # Return <html>.
       return html
@@ -1495,7 +1505,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # handler for XML-Builder (_builder.py)
     ############################################################################
     def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode, oRoot):
-        _globals.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
+        standard.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
         
         self.dTagStack    = _globals.MyStack()
         self.dValueStack  = _globals.MyStack()

@@ -21,7 +21,7 @@ import copy
 import sys
 import time
 # Product Imports.
-import _globals
+import standard
 
 
 ################################################################################
@@ -383,7 +383,7 @@ class ZMSMetadictManager:
         
         # Handle exception.
         except:
-          _globals.writeError(self,"[manage_changeMetaProperties]")
+          standard.writeError(self,"[manage_changeMetaProperties]")
           error = str( sys.exc_type)
           if sys.exc_value:
             error += ': ' + str( sys.exc_value)

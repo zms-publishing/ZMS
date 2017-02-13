@@ -28,7 +28,7 @@ import urllib
 # Product Imports.
 import _blobfields
 import _fileutil
-import _globals
+import standard
 
 
 ################################################################################
@@ -86,7 +86,7 @@ class ObjChildren:
       oItem.onChangeObj(REQUEST)
           
       ##### Normalize Sort-IDs ####
-      self.normalizeSortIds(_globals.id_prefix(id))
+      self.normalizeSortIds(standard.id_prefix(id))
         
       return oItem
 
@@ -114,7 +114,7 @@ class ObjChildren:
       if repetitive:
         if id in ids:
           new_id = self.getNewId(id)
-          _globals.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(id,new_id))
+          standard.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(id,new_id))
           if new_id not in self.objectIds():
             try:
               self.manage_renameObject(id=id,new_id=new_id)
@@ -124,7 +124,7 @@ class ObjChildren:
       else:
         if not id in ids and len(ids)>0:
           old_id = ids[0]
-          _globals.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(old_id,id))
+          standard.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(old_id,id))
           if id not in self.objectIds():
             try:
               self.manage_renameObject(id=old_id,new_id=id)
@@ -137,7 +137,7 @@ class ObjChildren:
     #	ObjChildren.initObjChildren
     # --------------------------------------------------------------------------
     def initObjChildren(self, REQUEST):
-      _globals.writeLog( self, "[initObjChildren]")
+      standard.writeLog( self, "[initObjChildren]")
       self.getObjProperty( 'initObjChildren' ,REQUEST)
       metaObj = self.getMetaobj(self.meta_id)
       metaObjIds = self.getMetaobjIds()+['*']
@@ -151,7 +151,7 @@ class ObjChildren:
     #  ObjChildren.getObjChildrenAttr:
     # --------------------------------------------------------------------------
     def getObjChildrenAttr(self, key, meta_type=None):
-      meta_type = _globals.nvl(meta_type,self.meta_id)
+      meta_type = standard.nvl(meta_type,self.meta_id)
       ##### Meta-Objects ####
       if meta_type in self.getMetaobjIds() and key in self.getMetaobjAttrIds(meta_type):
         obj_attr = self.getMetaobjAttr(meta_type,key)

@@ -107,7 +107,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type"><code>string</code></span>
+      <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -203,6 +203,76 @@
         <tr>
           <td><span class="summary-sig"><a href="Products.zms.standard-module.html#hex2bin" class="summary-sig-name">hex2bin</a>(<span class="summary-sig-arg">m</span>)</span><br />
       Converts a hexadecimal-string m to an integer.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>list</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#encrypt_schemes" class="summary-sig-name">encrypt_schemes</a>()</span><br />
+      Available encryption-schemes.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#encrypt_password" class="summary-sig-name">encrypt_password</a>(<span class="summary-sig-arg">pw</span>,
+        <span class="summary-sig-arg">algorithm</span>=<span class="summary-sig-default">'md5'</span>,
+        <span class="summary-sig-arg">hex</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Encrypts given password.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#encrypt_ordtype" class="summary-sig-name">encrypt_ordtype</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      Encrypts given string with entities by random algorithm.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>int</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#rand_int" class="summary-sig-name">rand_int</a>(<span class="summary-sig-arg">n</span>)</span><br />
+      Random integer in given range.</td>
           <td align="right" valign="top">
             
             
@@ -422,7 +492,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type"><code>string</code></span>
+      <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -434,22 +504,6 @@
         <span class="summary-sig-arg">timeout</span>=<span class="summary-sig-default">10</span>,
         <span class="summary-sig-arg">headers</span>=<span class="summary-sig-default">{'Accept': '*/*'}</span>)</span><br />
       Send Http-Request and return Response-Body.</td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="get_size"></a><span class="summary-sig-name">get_size</span>(<span class="summary-sig-arg">v</span>)</span></td>
           <td align="right" valign="top">
             
             
@@ -544,7 +598,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type"><code>string</code></span>
+      <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -565,7 +619,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type"><code>string</code></span>
+      <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -586,7 +640,7 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type"><code>string</code></span>
+      <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -783,12 +837,12 @@ u'&#1101;': 'e', u'&#1102;': 'ju', u'&#1103;': 'ja', u'&#1040;': 'A', u'&#1041;'
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>s</code></strong> (<code>string</code>) - String</li>
+        <li><strong class="pname"><code>s</code></strong> (<code>str</code>) - String</li>
         <li><strong class="pname"><code>maxlen</code></strong> (<code>int</code>) - Maximum-length</li>
-        <li><strong class="pname"><code>etc</code></strong> (<code>string</code>) - Characters to be appended if maximum-length is exceeded</li>
-        <li><strong class="pname"><code>encoding</code></strong> (<code>string</code>) - Encoding</li>
+        <li><strong class="pname"><code>etc</code></strong> (<code>str</code>) - Characters to be appended if maximum-length is exceeded</li>
+        <li><strong class="pname"><code>encoding</code></strong> (<code>str</code>) - Encoding</li>
     </ul></dd>
-    <dt>Returns: <code>string</code></dt>
+    <dt>Returns: <code>str</code></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -891,10 +945,110 @@ u'&#1101;': 'e', u'&#1102;': 'ju', u'&#1103;': 'ja', u'&#1040;': 'A', u'&#1041;'
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>m</code></strong> (<code>int</code>) - Hexadecimal.</li>
+        <li><strong class="pname"><code>m</code></strong> (<code>str</code>) - Hexadecimal.</li>
     </ul></dd>
     <dt>Returns: <code>str</code></dt>
         <dd>Integer</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="encrypt_schemes"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">encrypt_schemes</span>()</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Available encryption-schemes.</p>
+  <dl class="fields">
+    <dt>Returns: <code>list</code></dt>
+        <dd>list of encryption-scheme ids</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="encrypt_password"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">encrypt_password</span>(<span class="sig-arg">pw</span>,
+        <span class="sig-arg">algorithm</span>=<span class="sig-default">'md5'</span>,
+        <span class="sig-arg">hex</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Encrypts given password.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pw</code></strong> (<code>str</code>) - Password</li>
+        <li><strong class="pname"><code>algorithm</code></strong> (<code>str</code>) - Encryption-algorithm (md5, sha-1, etc.)</li>
+        <li><strong class="pname"><code>hex</code></strong> (<code>bool</code>) - Hexlify</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+        <dd>Encrypted password</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="encrypt_ordtype"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">encrypt_ordtype</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Encrypts given string with entities by random algorithm.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>s</code></strong> (<code>str</code>) - String</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+        <dd>Encrypted string</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="rand_int"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">rand_int</span>(<span class="sig-arg">n</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Random integer in given range.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>n</code></strong> (<code>int</code>) - Range</li>
+    </ul></dd>
+    <dt>Returns: <code>int</code></dt>
+        <dd>Random integer</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -917,7 +1071,7 @@ u'&#1101;': 'e', u'&#1102;': 'ju', u'&#1103;': 'ja', u'&#1040;': 'A', u'&#1041;'
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>s</code></strong> (<code>string</code>) - Identifier</li>
+        <li><strong class="pname"><code>s</code></strong> (<code>str</code>) - Identifier</li>
     </ul></dd>
     <dt>Returns: <code>str</code></dt>
         <dd>Id-prefix</dd>
@@ -976,14 +1130,14 @@ u'&#1101;': 'e', u'&#1102;': 'ju', u'&#1103;': 'ja', u'&#1040;': 'A', u'&#1041;'
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>url</code></strong> (<code>string</code>) - Remote-URL</li>
-        <li><strong class="pname"><code>method</code></strong> (<code>string</code>, values are GET or POST) - Method</li>
-        <li><strong class="pname"><code>auth</code></strong> (<code>string</code>) - Authentication</li>
+        <li><strong class="pname"><code>url</code></strong> (<code>str</code>) - Remote-URL</li>
+        <li><strong class="pname"><code>method</code></strong> (<code>str</code>, values are GET or POST) - Method</li>
+        <li><strong class="pname"><code>auth</code></strong> (<code>str</code>) - Authentication</li>
         <li><strong class="pname"><code>parse_qs</code></strong> (<code>int</code>, values are 0 or 1) - Parse Query-String</li>
         <li><strong class="pname"><code>timeout</code></strong> (<code>int</code>, values in seconds) - Time-Out [s]</li>
         <li><strong class="pname"><code>headers</code></strong> (<code>dict</code>) - Request-Headers</li>
     </ul></dd>
-    <dt>Returns: <code>string</code></dt>
+    <dt>Returns: <code>str</code></dt>
         <dd>Response-Body</dd>
   </dl>
 </td></tr></table>
@@ -1009,7 +1163,7 @@ u'&#1101;': 'e', u'&#1102;': 'ju', u'&#1103;': 'ja', u'&#1040;': 'A', u'&#1041;'
   regex in subject with replacement. The result is returned by the sub() 
   function. The subject string you pass is not modified.</p>
   <dl class="fields">
-    <dt>Returns: <code>string</code></dt>
+    <dt>Returns: <code>str</code></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -1035,7 +1189,7 @@ u'&#1101;': 'e', u'&#1102;': 'ju', u'&#1103;': 'ja', u'&#1040;': 'A', u'&#1041;'
   the pattern; note that this is different from finding a zero-length match
   at some point in the string.</p>
   <dl class="fields">
-    <dt>Returns: <code>string</code></dt>
+    <dt>Returns: <code>str</code></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -1062,7 +1216,7 @@ u'&#1101;': 'e', u'&#1102;': 'ju', u'&#1103;': 'ja', u'&#1040;': 'A', u'&#1041;'
   than one group. Empty matches are included in the result unless they 
   touch the beginning of another match</p>
   <dl class="fields">
-    <dt>Returns: <code>string</code></dt>
+    <dt>Returns: <code>str</code></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -1184,7 +1338,7 @@ u'&#1101;': 'e', u'&#1102;': 'ju', u'&#1103;': 'ja', u'&#1040;': 'A', u'&#1041;'
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Tue Feb 14 21:21:54 2017
+    Generated by Epydoc 3.0.1 on Tue Feb 14 22:42:18 2017
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

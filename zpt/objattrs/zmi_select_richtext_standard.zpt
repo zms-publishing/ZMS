@@ -52,7 +52,7 @@ function zmiRicheditInsertTab( fmName, elName) {
 
 </tal:block>
 
-<div class="form-group form-richtext form-richtext-standard" tal:define="global options python:options['args'][2]">
+<div class="form-group form-richtext form-richtext-standard" tal:define="standard modules/Products.zms/standard; global options python:options['args'][2]">
 
 		<tal:block tal:replace="nothing">
 		### Label
@@ -135,7 +135,7 @@ function zmiRicheditInsertTab( fmName, elName) {
 		### Align
 		</tal:block
 		><div class="btn-group btn-radiogroup pull-left" data-value="textalign" tal:condition="python:options.has_key('metaObj') and options.has_key('key') and len(here.filter_list(options['metaObj']['attrs'],'id',options['key']+'align','=='))>0"
-			><tal:block tal:define="global textalign python:here.nvl(here.attr('textalign'),'LEFT',['',None]); aligns python:['left','right','center']"
+			><tal:block tal:define="global textalign python:standard.nvl(here.attr('textalign'),'LEFT',['',None]); aligns python:['left','right','center']"
 				><input type="hidden" id="textalign" name="textalign" tal:attributes="value python:['',textalign][int(textalign is not None)]"
 				><tal:block tal:condition="python:not here.isDisabledAttr(here.getObjAttr('textalign'),request)"
 					><tal:block tal:repeat="align aligns"

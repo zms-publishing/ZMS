@@ -169,91 +169,6 @@ class ZMSGlobals:
 
 
     """
-    Returns its first argument if it is not equal to third argument (None), 
-    otherwise it returns its second argument.
-    @param a1: 1st argument
-    @type a1: C{any}
-    @param a2: 2nd argument
-    @type a2: C{any}
-    @rtype: C{any}
-    """
-    def nvl(self, a1, a2, n=None):
-      return standard.nvl( a1, a2, n)
-
-
-    """
-    Available encryption-schemes.
-    @return: list of encryption-scheme ids
-    @rtype: C{list}
-    """
-    def encrypt_schemes(self):
-      ids = []
-      for id, prefix, scheme in AuthEncoding._schemes:
-        ids.append( id)
-      return ids
-
-
-    """
-    Encrypts given password.
-    @param pw: Password
-    @type pw: C{string}
-    @param algorithm: Encryption-algorithm (md5, sha-1, etc.)
-    @type algorithm: C{string}
-    @param hex: Hexlify
-    @type hex: C{bool}
-    @return: Encrypted password
-    @rtype: C{string}
-    """
-    def encrypt_password(self, pw, algorithm='md5', hex=False):
-      enc = None
-      if algorithm.upper() == 'SHA-1':
-        import sha
-        enc = sha.new(pw)
-        if hex:
-          enc = enc.hexdigest()
-        else:
-          enc = enc.digest()
-      else:
-        for id, prefix, scheme in AuthEncoding._schemes:
-          if algorithm.upper() == id:
-            enc = scheme.encrypt(pw)
-      return enc
-
-
-    """
-    Encrypts given string with entities by random algorithm.
-    @param s: String
-    @type s: C{string}
-    @return: Encrypted string
-    @rtype: C{string}
-    """
-    def encrypt_ordtype(self, s):
-      from binascii import hexlify
-      new = ''
-      for ch in s:
-        whichCode=self.rand_int(2)
-        if whichCode==0:
-          new += ch
-        elif whichCode==1:
-          new += '&#%d;'%ord(ch)
-        else:
-          new += '&#x%s;'%str(hexlify(ch))
-      return new
-
-
-    """
-    Random integer in given range.
-    @param n: Range
-    @type n: C{int}
-    @return: Random integer
-    @rtype: C{int}
-    """
-    def rand_int(self, n):
-      from random import randint
-      return randint(0,n)
-
-
-    """
     Replace special characters in string using the %xx escape. Letters, digits, 
     and the characters '_.-' are never quoted. By default, this function is 
     intended for quoting the path section of the URL. The optional safe 
@@ -447,7 +362,7 @@ class ZMSGlobals:
     def operator_getitem(self, a, b, c=None, ignorecase=True):
       if ignorecase and type(b) is str:
         flags = int(self.getConfProperty('operator_getitem.ignorecase.flags',re.IGNORECASE))
-        pattern = self.getConfProperty('operator_getitem.ignorecase..pattern','^*$').replace('*',b)
+        pattern = self.getConfProperty('operator_getitem.ignorecase.pattern','^*$').replace('*',b)
         for key in a.keys():
           if re.search(pattern,key,flags) is not None:
             return operator.getitem(a,key)

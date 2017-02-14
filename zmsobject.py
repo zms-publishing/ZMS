@@ -505,7 +505,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       for key in keys:
         objAttr = self.getObjAttr(key)
         value = self.getObjAttrValue( objAttr, REQUEST)
-        size = size + standard.get_size(value)
+        size = size + _globals.get_size(value)
       return size
 
 

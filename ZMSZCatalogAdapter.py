@@ -67,9 +67,9 @@ def remove_tags(self, s):
     .replace('&ouml;','\xc2\x94') \
     .replace('&uuml;','\xc2\x81') \
     .replace('&szlig;','\xc3\xa1')
-  s = self.re_sub('<script(.*?)>(.|\\n|\\r|\\t)*?</script>',' ',s)
-  s = self.re_sub('<style(.*?)>(.|\\n|\\r|\\t)*?</style>',' ',s)
-  s = self.re_sub('<[^>]*>',' ',s)
+  s = standard.re_sub('<script(.*?)>(.|\\n|\\r|\\t)*?</script>',' ',s)
+  s = standard.re_sub('<style(.*?)>(.|\\n|\\r|\\t)*?</style>',' ',s)
+  s = standard.re_sub('<[^>]*>',' ',s)
   while s.find('\t') >= 0:
     s = s.replace('\t',' ')
   while s.find('\n') >= 0:

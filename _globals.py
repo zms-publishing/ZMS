@@ -67,11 +67,40 @@ datatype_map = [
 ]
 
 def datatype_key(datatype):
-  for dtIndex in range(len(dtMapping)):
-    if dtMapping[dtIndex][0] == datatype:
-      return dtIndex
+  for dt_index in range(len(datatype_map)):
+    if datatype_map[dt_index][0] == datatype:
+      return dt_index
   else:
     return DT_UNKNOWN
+
+
+def get_size(v):
+  """
+  Returns size of given object v in bytes.
+  @return: Size in bytes
+  @rtype: C{int}
+  """
+  size = 0
+  if v is not None:
+    if type(v) in StringTypes:
+      size = size + len(v)
+    elif type(v) is list:
+      size = sum( map( lambda x: get_size(x), v))
+    elif type(v) is dict:
+      size = sum( map( lambda x: get_size(x) + get_size(v[x]), v.keys()))
+    elif type(v) is int or type(v) is float:
+      size = size + 4
+    elif hasattr(v,'get_real_size') and callable(getattr(v,'get_real_size')):
+      try:
+        size = size + v.get_real_size()
+      except:
+        pass
+    elif hasattr(v,'get_size') and callable(getattr(v,'get_size')):
+      try:
+        size = size + v.get_size()
+      except:
+        pass
+  return size
 
 
 ################################################################################

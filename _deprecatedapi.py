@@ -280,14 +280,35 @@ class DeprecatedAPI:
     warn(self,'daysBetween','Products.zms.standard.daysBetween')
     return standard.daysBetween(t0, t1) 
 
-  def re_sub( self, pattern, replacement, subject, ignorecase=False):
-    warn(self,'re_sub','Products.zms.standard.re_sub')
-    return standard.re_sub(pattern, replacement, subject, ignorecase)
+  def encrypt_ordtype(self, s):
+    warn(self,'encrypt_ordtype','Products.zms.standard.encrypt_ordtype')
+    return standard.encrypt_ordtype(s)
+
+  def encrypt_password(self, pw, algorithm='md5', hex=False):
+    warn(self,'encrypt_password','Products.zms.encrypt_password')
+    return standard.encrypt_password(pw,algorithm,hex)
+
+  def encrypt_schemes(self):
+    warn(self,'encrypt_schemes','Products.zms.encrypt_schemes')
+    return standard.encrypt_schemes()
+
+  def nvl(self, a1, a2, n=None):
+    warn(self,'nvl','Products.zms.standard.nvl')
+    return standard.nvl( a1, a2, n)
+
+  def rand_int(self, n):
+    warn(self,'rand_int','Products.zms.standard.rand_int')
+    return standard.rand_int(n)
+
+  def re_findall( self, pattern, text, ignorecase=False):
+    warn(self,'re_findall','Products.zms.standard.re_findall')
+    return standard.re_findall(pattern, text, ignorecase)
 
   def re_search( self, pattern, subject, ignorecase=False):
     warn(self,'re_search','Products.zms.standard.re_search')
     return standard.re_search(pattern, subject, ignorecase)
 
-  def re_findall( self, pattern, text, ignorecase=False):
-    warn(self,'re_findall','Products.zms.standard.re_findall')
-    return standard.re_findall(pattern, text, ignorecase)
+  def re_sub( self, pattern, replacement, subject, ignorecase=False):
+    warn(self,'re_sub','Products.zms.standard.re_sub')
+    return standard.re_sub(pattern, replacement, subject, ignorecase)
+

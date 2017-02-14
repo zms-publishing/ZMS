@@ -158,14 +158,14 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
   Returns string with specified maximum-length. If original string exceeds 
   maximum-length '...' is appended at the end.
   @param s: String
-  @type s: C{string}
+  @type s: C{str}
   @param maxlen: Maximum-length
   @type maxlen: C{int}
   @param etc: Characters to be appended if maximum-length is exceeded
-  @type etc: C{string}
+  @type etc: C{str}
   @param encoding: Encoding
-  @type encoding: C{string}
-  @rtype: C{string}
+  @type encoding: C{str}
+  @rtype: C{str}
   """
   if encoding is not None:
     s = unicode( s, encoding)
@@ -237,11 +237,87 @@ def hex2bin(m):
   """
   Converts a hexadecimal-string m to an integer.
   @param m: Hexadecimal.
-  @type m: C{int}
+  @type m: C{str}
   @return: Integer
   @rtype: C{str}
   """
   return ''.join(map(lambda x: chr(16*int('0x%s'%m[x*2],0)+int('0x%s'%m[x*2+1],0)),range(len(m)/2)))
+
+
+security.declarePublic('encrypt_schemes')
+def encrypt_schemes():
+  """
+  Available encryption-schemes.
+  @return: list of encryption-scheme ids
+  @rtype: C{list}
+  """
+  ids = []
+  for id, prefix, scheme in AuthEncoding._schemes:
+    ids.append( id)
+  return ids
+
+
+security.declarePublic('encrypt_password')
+def encrypt_password(pw, algorithm='md5', hex=False):
+  """
+  Encrypts given password.
+  @param pw: Password
+  @type pw: C{str}
+  @param algorithm: Encryption-algorithm (md5, sha-1, etc.)
+  @type algorithm: C{str}
+  @param hex: Hexlify
+  @type hex: C{bool}
+  @return: Encrypted password
+  @rtype: C{str}
+  """
+  enc = None
+  if algorithm.upper() == 'SHA-1':
+    import sha
+    enc = sha.new(pw)
+    if hex:
+      enc = enc.hexdigest()
+    else:
+      enc = enc.digest()
+  else:
+    for id, prefix, scheme in AuthEncoding._schemes:
+      if algorithm.upper() == id:
+        enc = scheme.encrypt(pw)
+  return enc
+
+
+security.declarePublic('encrypt_ordtype')
+def encrypt_ordtype(s):
+  """
+  Encrypts given string with entities by random algorithm.
+  @param s: String
+  @type s: C{str}
+  @return: Encrypted string
+  @rtype: C{str}
+  """
+  from binascii import hexlify
+  new = ''
+  for ch in s:
+    whichCode=self.rand_int(2)
+    if whichCode==0:
+      new += ch
+    elif whichCode==1:
+      new += '&#%d;'%ord(ch)
+    else:
+      new += '&#x%s;'%str(hexlify(ch))
+  return new
+
+
+security.declarePublic('rand_int')
+def rand_int(n):
+  """
+  Random integer in given range.
+  @param n: Range
+  @type n: C{int}
+  @return: Random integer
+  @rtype: C{int}
+  """
+  from random import randint
+  return randint(0,n)
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -272,7 +348,7 @@ def id_prefix(s):
   """
   Returns prefix from identifier (which is the non-numeric part at the beginning).
   @param s: Identifier
-  @type s: C{string}
+  @type s: C{str}
   @return: Id-prefix
   @rtype: C{str}
   """
@@ -454,11 +530,11 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, head
   """
   Send Http-Request and return Response-Body.
   @param url: Remote-URL
-  @type url: C{string}
+  @type url: C{str}
   @param method: Method
-  @type method: C{string}, values are GET or POST
+  @type method: C{str}, values are GET or POST
   @param auth: Authentication
-  @type auth: C{string}
+  @type auth: C{str}
   @param parse_qs: Parse Query-String
   @type parse_qs: C{int}, values are 0 or 1
   @param timeout: Time-Out [s]
@@ -466,7 +542,7 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, head
   @param headers: Request-Headers
   @type headers: C{dict}
   @return: Response-Body
-  @rtype: C{string}
+  @rtype: C{str}
   """
   # Parse URL.
   import urlparse
@@ -534,33 +610,6 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, head
     return result
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.get_size:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def get_size(v):
-  size = 0
-  if v is not None:
-    if type(v) in StringTypes:
-      size = size + len(v)
-    elif type(v) is list:
-      size = sum( map( lambda x: get_size(x), v))
-    elif type(v) is dict:
-      size = sum( map( lambda x: get_size(x) + get_size(v[x]), v.keys()))
-    elif type(v) is int or type(v) is float:
-      size = size + 4
-    elif hasattr(v,'get_real_size') and callable(getattr(v,'get_real_size')):
-      try:
-        size = size + v.get_real_size()
-      except:
-        pass
-    elif hasattr(v,'get_size') and callable(getattr(v,'get_size')):
-      try:
-        size = size + v.get_size()
-      except:
-        pass
-  return size
-
-
 """
 ################################################################################
 #
@@ -604,7 +653,7 @@ def writeLog(self, info):
     zms_log = self.zms_log
     severity = logging.DEBUG
     if zms_log.hasSeverity(severity):
-      info = "[%s@%s]"%(self.meta_id,self.absolute_url()[len(self.REQUEST['SERVER_URL']):]) + info
+      info = "[%s@%s]"%(self.meta_id,'/'.join(self.getPhysicalPath())) + info
       zms_log.LOG( severity, info)
   except:
     pass
@@ -618,7 +667,7 @@ def writeBlock(self, info):
     zms_log = getLog(self)
     severity = logging.INFO
     if zms_log.hasSeverity(severity):
-      info = "[%s@%s]"%(self.meta_id,self.absolute_url()[len(self.REQUEST['SERVER_URL']):]) + info
+      info = "[%s@%s]"%(self.meta_id,'/'.join(self.getPhysicalPath())) + info
       zms_log.LOG( severity, info)
   except:
     pass
@@ -634,12 +683,12 @@ def writeError(self, info):
     v = str(v)
     # Strip HTML tags from the error value
     for pattern in [r"<[^<>]*>", r"&[A-Za-z]+;"]:
-      v = re_sub(self, pattern,' ', v)
+      v = re_sub(pattern,' ', v)
     if info: 
       info += '\n'
     severity = logging.ERROR
     info += ''.join(format_exception(t, v, tb))
-    info = "[%s@%s]"%(self.meta_id,self.absolute_url()[len(self.REQUEST['SERVER_URL']):]) + info
+    info = "[%s@%s]"%(self.meta_id,'/'.join(self.getPhysicalPath())) + info
     zms_log = getLog(self)
     if zms_log.hasSeverity(severity):
       zms_log.LOG( severity, info)
@@ -662,7 +711,7 @@ def re_sub( pattern, replacement, subject, ignorecase=False):
   Performs a search-and-replace across subject, replacing all matches of 
   regex in subject with replacement. The result is returned by the sub() 
   function. The subject string you pass is not modified.
-  @rtype: C{string}
+  @rtype: C{str}
   """
   if ignorecase:
     return re.compile( pattern, re.IGNORECASE).sub( replacement, subject)
@@ -676,7 +725,7 @@ def re_search( pattern, subject, ignorecase=False):
   instance. Return None if no position in the string matches the pattern; 
   note that this is different from finding a zero-length match at some
   point in the string.
-  @rtype: C{string}
+  @rtype: C{str}
   """
   if ignorecase:
     s = re.compile( pattern, re.IGNORECASE).split( subject)
@@ -691,7 +740,7 @@ def re_findall( pattern, text, ignorecase=False):
   If one or more groups are present in the pattern, return a list of groups; 
   this will be a list of tuples if the pattern has more than one group. 
   Empty matches are included in the result unless they touch the beginning of another match
-  @rtype: C{string}
+  @rtype: C{str}
   """
   if ignorecase:
     r = re.compile( pattern, re.IGNORECASE)

@@ -517,7 +517,7 @@ class Exportable(_filtermanager.FilterItem):
         
         # Blank lines in includes cause PHP session errors
         # @see http://bugs.php.net/bug.php?id=8974
-        html = self.re_sub('^\s*', '', html)
+        html = standard.re_sub('^\s*', '', html)
         
         # Localize html.
         html = localHtml( obj, html)

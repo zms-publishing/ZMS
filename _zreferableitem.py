@@ -24,8 +24,8 @@ import re
 import time
 import urllib
 # Product Imports.
-import _confmanager
 import standard
+import _confmanager
 import _objattrs
 
 # ------------------------------------------------------------------------------
@@ -437,7 +437,7 @@ class ZReferableItem:
       url = index_html + ref_anchor
     elif isMailLink (url): 
       prefix = 'mailto:'
-      url = prefix + self.encrypt_ordtype(url[len(prefix):])
+      url = prefix + standard.encrypt_ordtype(url[len(prefix):])
     self.stopMeasurement('%s.getLinkUrl'%self.meta_id)
     return url
 

@@ -28,10 +28,10 @@ import urllib
 import time
 # Product Imports.
 from zmsobject import ZMSObject
+import standard
 import _accessmanager
 import _confmanager
 import _fileutil
-import standard
 import _objattrs
 import _versionmanager
 import _zmi_actions_util
@@ -401,7 +401,7 @@ class ZMSContainerObject(
             sort_id = sort_id - 1
           else:
             sort_id = sort_id + 1
-        setattr( self, 'sort_id', standard.format_sort_id(sort_id))
+        self.setSortId(sort_id)
         cb_copy_data = self.getParentNode().manage_cutObjects([self.id])
         ob.manage_pasteObjects(cb_copy_data)
         ob.normalizeSortIds()

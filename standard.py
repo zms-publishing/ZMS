@@ -48,63 +48,6 @@ import zExceptions
 
 security = ModuleSecurityInfo('Products.zms.standard')
 
-""" Globals. """
-
-# Datatypes.
-DT_UNKNOWN = 0
-DT_BOOLEAN = 1
-DT_DATE = 2
-DT_DATETIME = 3
-DT_DICT = 4
-DT_FILE = 5
-DT_FLOAT = 6
-DT_IMAGE = 7
-DT_INT = 8
-DT_LIST = 9
-DT_PASSWORD = 10
-DT_STRING = 11
-DT_TEXT = 12
-DT_TIME = 13
-DT_URL = 14
-DT_ID = 15
-DT_XML = 16
-DT_AMOUNT = 17
-DT_TEXTS = [ DT_STRING, DT_TEXT ]
-DT_STRINGS = [ DT_STRING, DT_TEXT, DT_URL, DT_PASSWORD, DT_XML ]
-DT_BLOBS = [ DT_IMAGE, DT_FILE ]
-DT_INTS = [ DT_INT, DT_BOOLEAN ]
-DT_NUMBERS = [ DT_INT, DT_FLOAT, DT_AMOUNT ]
-DT_DATETIMES = [ DT_DATE, DT_TIME, DT_DATETIME ]
-
-dtMapping = [
-  [ 'unknown',''],
-  [ 'boolean',0],
-  [ 'date',None],
-  [ 'datetime',None],
-  [ 'dictionary',{}],
-  [ 'file',None],
-  [ 'float',0.0],
-  [ 'image',None],
-  [ 'int',0],
-  [ 'list',[]],
-  [ 'password',''],
-  [ 'string',''],
-  [ 'text',''],
-  [ 'time',None],
-  [ 'url',''],
-  [ 'identifier',''],
-  [ 'xml',''],
-  [ 'amount',0.0],
-]
-
-def datatype_key(datatype):
-  for dtIndex in range(len(dtMapping)):
-    if dtMapping[dtIndex][0] == datatype:
-      return dtIndex
-  else:
-    return DT_UNKNOWN
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 German umlaute.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -246,6 +189,10 @@ def url_encode(url):
   """
   All unsafe characters must always be encoded within a URL.
   @see: http://www.ietf.org/rfc/rfc1738.txt
+  @param url: Url
+  @type s: C{str}
+  @return: Encoded string
+  @rtype: C{str}
   """
   for ch in ['[',']',' ','(',')']:
     url = url.replace(ch,'%'+bin2hex(ch).upper())
@@ -255,20 +202,16 @@ security.declarePublic('guess_content_type')
 def guess_content_type(filename, data):
   """
   Guess the type of a file based on its filename and the data.
+  @param filename: Filename
+  @type filename: C{str}
+  @param data: Data
+  @type data: C{str}
+  @return: Tuple of MIME-type and encoding.
   @rtype: C{tuple}
   """
   import zope.contenttype
   mt, enc  = zope.contenttype.guess_content_type( filename, data)
   return mt, enc
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.format_sort_id:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def format_sort_id(i_sort_id):
-  sort_id = '0000%i'%i_sort_id
-  sort_id = 's' + sort_id[-4:]
-  return sort_id
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 standard.html_quote:
@@ -279,17 +222,25 @@ def html_quote(v, name='(Unknown name)', md={}):
   return cgi.escape(v, 1)
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.bin2hex:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def bin2hex(m):
+  """
+  Returns a string with the hexadecimal representation of integer m.
+  @param m: Binary
+  @type m: C{int}
+  @return: String
+  @rtype: C{str}
+  """
   return ''.join(map(lambda x: hex(ord(x)/16)[-1]+hex(ord(x)%16)[-1],m))
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.hex2bin:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def hex2bin(m):
+  """
+  Converts a hexadecimal-string m to an integer.
+  @param m: Hexadecimal.
+  @type m: C{int}
+  @return: Integer
+  @rtype: C{str}
+  """
   return ''.join(map(lambda x: chr(16*int('0x%s'%m[x*2],0)+int('0x%s'%m[x*2+1],0)),range(len(m)/2)))
 
 

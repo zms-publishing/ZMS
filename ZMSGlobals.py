@@ -39,10 +39,11 @@ import urllib
 import zExceptions
 import zope.interface
 # Product Imports.
+import standard
 import _blobfields
 import _fileutil
 import _filtermanager
-import standard
+import _globals
 import _mimetypes
 import _pilutil
 import _xmllib
@@ -149,7 +150,7 @@ class ZMSGlobals:
       file['data'] = data
       file['filename'] = filename
       if content_type: file['content_type'] = content_type
-      return _blobfields.createBlobField( self, standard.DT_FILE, file=file, mediadbStorable=mediadbStorable)
+      return _blobfields.createBlobField( self, _globals.DT_FILE, file=file, mediadbStorable=mediadbStorable)
 
 
     """
@@ -162,7 +163,7 @@ class ZMSGlobals:
     @rtype: L{MyImage}
     """
     def ImageFromData( self, data, filename='', content_type=None, mediadbStorable=False):
-      f = _blobfields.createBlobField( self, standard.DT_IMAGE, file={'data':data,'filename':filename,'content_type':content_type}, mediadbStorable=mediadbStorable)
+      f = _blobfields.createBlobField( self, _globals.DT_IMAGE, file={'data':data,'filename':filename,'content_type':content_type}, mediadbStorable=mediadbStorable)
       f.aq_parent = self
       return f
 

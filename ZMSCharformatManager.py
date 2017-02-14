@@ -21,8 +21,9 @@ import ZPublisher.HTTPRequest
 import copy
 import urllib
 # Product Imports.
-import _blobfields
 import standard
+import _blobfields
+import _globals
 
 
 ################################################################################
@@ -155,7 +156,7 @@ class ZMSCharformatManager:
         newId = REQUEST['new_id'].strip()
         newBtn = REQUEST.get('new_btn','')
         if isinstance(newBtn,ZPublisher.HTTPRequest.FileUpload) and newBtn.filename != '':
-          newBtn = _blobfields.createBlobField(self,standard.DT_IMAGE,newBtn)
+          newBtn = _blobfields.createBlobField(self,_globals.DT_IMAGE,newBtn)
         newDisplay = REQUEST['new_display'].strip()
         newTag = REQUEST['new_tag'].strip()
         newAttrs = REQUEST['new_attrs'].strip()
@@ -182,7 +183,7 @@ class ZMSCharformatManager:
         newId = REQUEST['_id'].strip()
         newBtn = REQUEST.get('_btn','')
         if isinstance(newBtn,ZPublisher.HTTPRequest.FileUpload) and newBtn.filename != '':
-          newBtn = _blobfields.createBlobField(self,standard.DT_IMAGE,newBtn)
+          newBtn = _blobfields.createBlobField(self,_globals.DT_IMAGE,newBtn)
         newDisplay = REQUEST['_display'].strip()
         id = self.setCharformat(None,newId,newBtn,newDisplay)
         message = self.getZMILangStr('MSG_INSERTED')%id
@@ -195,7 +196,7 @@ class ZMSCharformatManager:
         value = map( lambda x: x.copy(), value)
         for x in value:
           if x.get('btn'):
-            x['btn'] = _blobfields.createBlobField( self, standard.DT_IMAGE, file={'data':getattr( self, x.get('btn')).data,'filename':x.get('btn')})
+            x['btn'] = _blobfields.createBlobField( self, _globals.DT_IMAGE, file={'data':getattr( self, x.get('btn')).data,'filename':x.get('btn')})
         if len(value)==1:
           value = value[0]
         content_type = 'text/xml; charset=utf-8'

@@ -22,15 +22,15 @@ from OFS.userfolder import UserFolder
 from types import StringTypes
 import copy
 import pickle
+import re
 import sys
 import time
 import urllib
 import zExceptions
 # Product Imports.
-import _confmanager
 import standard
+import _confmanager
 import _xmllib
-import re
 
 
 # ------------------------------------------------------------------------------

@@ -176,13 +176,12 @@ class CopySupport:
     # --------------------------------------------------------------------------
     def _set_sort_ids(self, ids, op, REQUEST):
       standard.writeLog( self, "[CopySupport._set_sort_ids]: %s"%self.absolute_url())
-      
       copy_of_prefix = 'copy_of_'
       sort_id = REQUEST.get('_sort_id',0) + 1
       for ob in self.getChildNodes():
         id = absattr(ob.id)
         if id in ids or copy_of_prefix+id in ids:
-          setattr(ob,'sort_id',standard.format_sort_id(sort_id))
+          ob.setSortId(sort_id)
           sort_id += 1
 
 

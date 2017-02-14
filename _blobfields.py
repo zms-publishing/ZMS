@@ -30,8 +30,9 @@ import urllib
 import warnings
 import zExceptions 
 # Product Imports.
-import _fileutil
 import standard
+import _fileutil
+import _globals
 import _mimetypes
 import _pilutil
 
@@ -65,7 +66,7 @@ def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
   for key in obj_attrs.keys():
     obj_attr = ob.getObjAttr(key)
     datatype = obj_attr['datatype_key']
-    if datatype in standard.DT_BLOBS:
+    if datatype in _globals.DT_BLOBS:
       for lang in langs:
         try:
           if obj_attr['multilang'] or lang==prim_lang or (obj_attr['multilang']==0 and lang!=prim_lang):
@@ -81,7 +82,7 @@ def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
               ressources.append( { 'filepath':filename, 'content_type':blob.getContentType()})
         except:
           standard.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
-    elif datatype == standard.DT_LIST:
+    elif datatype == _globals.DT_LIST:
       for lang in langs:
         try:
           if obj_attr['multilang'] or lang==prim_lang or (obj_attr['multilang']==0 and lang!=prim_lang):
@@ -143,7 +144,7 @@ def uploadRessources(self, folder='.', mediadbStorable=True):
   for key in obj_attrs.keys():
     obj_attr = self.getObjAttr(key)
     datatype = obj_attr['datatype_key']
-    if datatype in standard.DT_BLOBS:
+    if datatype in _globals.DT_BLOBS:
       for lang in langs:
         try:
           if obj_attr['multilang'] or lang==prim_lang:
@@ -202,10 +203,10 @@ def createBlobField(self, objtype, file='', mediadbStorable=True):
 _blobfields.uploadBlobField
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def uploadBlobField(self, objtype, file='', filename='', mediadbStorable=True):
-  if objtype == standard.DT_IMAGE:
+  if objtype == _globals.DT_IMAGE:
     clazz = MyImage
     maxlength_prop = 'ZMS.input.image.maxlength'
-  elif objtype == standard.DT_FILE:
+  elif objtype == _globals.DT_FILE:
     clazz = MyFile
     maxlength_prop = 'ZMS.input.file.maxlength'
   blob = clazz( id='',title='',file=file)
@@ -264,7 +265,7 @@ def thumbnailImageFields(self, lang, REQUEST):
     for key in obj_attrs.keys():
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
-      if datatype == standard.DT_IMAGE:
+      if datatype == _globals.DT_IMAGE:
         message += thumbnailImage(self,'%ssuperres'%key,'%shires'%key,self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max'),lang,REQUEST)
         message += thumbnailImage(self,'%shires'%key,'%s'%key,self.getConfProperty('InstalledProducts.pil.thumbnail.max'),lang,REQUEST)
   return message

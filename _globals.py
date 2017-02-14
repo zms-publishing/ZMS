@@ -19,6 +19,61 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
+# Datatypes.
+DT_UNKNOWN = 0
+DT_BOOLEAN = 1
+DT_DATE = 2
+DT_DATETIME = 3
+DT_DICT = 4
+DT_FILE = 5
+DT_FLOAT = 6
+DT_IMAGE = 7
+DT_INT = 8
+DT_LIST = 9
+DT_PASSWORD = 10
+DT_STRING = 11
+DT_TEXT = 12
+DT_TIME = 13
+DT_URL = 14
+DT_ID = 15
+DT_XML = 16
+DT_AMOUNT = 17
+DT_TEXTS = [ DT_STRING, DT_TEXT ]
+DT_STRINGS = [ DT_STRING, DT_TEXT, DT_URL, DT_PASSWORD, DT_XML ]
+DT_BLOBS = [ DT_IMAGE, DT_FILE ]
+DT_INTS = [ DT_INT, DT_BOOLEAN ]
+DT_NUMBERS = [ DT_INT, DT_FLOAT, DT_AMOUNT ]
+DT_DATETIMES = [ DT_DATE, DT_TIME, DT_DATETIME ]
+
+datatype_map = [
+  [ 'unknown',''],
+  [ 'boolean',0],
+  [ 'date',None],
+  [ 'datetime',None],
+  [ 'dictionary',{}],
+  [ 'file',None],
+  [ 'float',0.0],
+  [ 'image',None],
+  [ 'int',0],
+  [ 'list',[]],
+  [ 'password',''],
+  [ 'string',''],
+  [ 'text',''],
+  [ 'time',None],
+  [ 'url',''],
+  [ 'identifier',''],
+  [ 'xml',''],
+  [ 'amount',0.0],
+]
+
+def datatype_key(datatype):
+  for dtIndex in range(len(dtMapping)):
+    if dtMapping[dtIndex][0] == datatype:
+      return dtIndex
+  else:
+    return DT_UNKNOWN
+
+
 ################################################################################
 # Define MyClass.
 ################################################################################

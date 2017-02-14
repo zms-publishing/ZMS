@@ -30,11 +30,12 @@ import zExceptions
 import zope.interface
 # Product Imports.
 import IZMSRepositoryProvider
+import standard
+import zopeutil
 import _blobfields
 import _fileutil
-import standard
+import _globals
 import _ziputil
-import zopeutil
 
 
 # ------------------------------------------------------------------------------
@@ -205,7 +206,7 @@ class ZMSMetaobjManager:
             newCustom = attr.get('data','')
             newDefault = attr.get('default','')
             if newType in ['resource']:
-              newCustom = _blobfields.createBlobField( self,standard.DT_FILE, {'data':newCustom,'filename':newId}, mediadbStorable=False)
+              newCustom = _blobfields.createBlobField( self,_globals.DT_FILE, {'data':newCustom,'filename':newId}, mediadbStorable=False)
             self.setMetaobjAttr(id,oldId,newId,newName,newMandatory,newMultilang,newRepetitive,newType,newKeys,newCustom,newDefault)
       return id
 
@@ -719,7 +720,7 @@ class ZMSMetaobjManager:
             return attr
         if attr_id == attr['id']:
           attr = attr.copy()
-          attr['datatype_key'] = standard.datatype_key(attr['type'])
+          attr['datatype_key'] = _globals.datatype_key(attr['type'])
           attr['mandatory'] = attr.get('mandatory',0)
           attr['multilang'] = attr.get('multilang',1)
           attr['errors'] = attr.get('errors','')
@@ -1093,7 +1094,7 @@ class ZMSMetaobjManager:
               # Upload resource.
               if isinstance(newCustom,ZPublisher.HTTPRequest.FileUpload):
                   if len(getattr(newCustom,'filename','')) > 0:
-                      newCustom = _blobfields.createBlobField( self,standard.DT_FILE, newCustom, mediadbStorable=False)
+                      newCustom = _blobfields.createBlobField( self,_globals.DT_FILE, newCustom, mediadbStorable=False)
                   else:
                       REQUEST.set('attr_custom_%s_modified'%old_id,'0')
               # Restore resource.

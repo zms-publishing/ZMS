@@ -21,10 +21,11 @@ from OFS.CopySupport import absattr
 import copy
 import re
 # Product Imports.
+import standard
 import _blobfields
 import _confmanager
 import _fileutil
-import standard
+import _globals
 
 
 # ------------------------------------------------------------------------------
@@ -83,7 +84,7 @@ def handleBlobAttrs(self, name, REQUEST):
     for key in ob.getObjAttrs().keys():
       obj_attr = ob.getObjAttr(key)
       datatype = obj_attr['datatype_key']
-      if datatype in standard.DT_BLOBS:
+      if datatype in _globals.DT_BLOBS:
         lang = ob.getLanguageFromName( REQUEST['URL'])
         REQUEST.set( 'lang', lang)
         value = ob.getObjProperty( key, REQUEST)
@@ -265,7 +266,7 @@ class PathHandler:
               obj_attrs = self.getObjAttrs()
               for key in self.getObjAttrs().keys():
                 obj_attr = obj_attrs[ key]
-                if obj_attr['datatype_key'] == standard.DT_LIST and \
+                if obj_attr['datatype_key'] == _globals.DT_LIST and \
                    obj_attr['repetitive']:
                   lp = [ request.get('preview')]
                   if lp[ 0] != 'preview':

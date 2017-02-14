@@ -138,8 +138,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     def __init__(self, id='', sort_id=0):
       """ ZMSObject.__init__ """
       self.id = id
-      self.sort_id = standard.format_sort_id(sort_id)
       self.ref_by = []
+      self.setSortId(sort_id)
 
 
     # --------------------------------------------------------------------------
@@ -683,7 +683,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             v = request.get( 'resource_%s'%el_name)
             if isinstance(v,ZPublisher.HTTPRequest.FileUpload):
               if len(getattr(v,'filename',''))>0:
-                v = _blobfields.createBlobField(self,standard.DT_FILE,v)
+                v = _blobfields.createBlobField(self,_globals.DT_FILE,v)
                 resources.append( v)
                 el_value = request.get( el_name)
                 if el_value is not None:
@@ -1109,13 +1109,13 @@ class ZMSObject(ZMSItem.ZMSItem,
         obj_attrs = self.getObjAttrs()
         for key in filter(lambda x: x not in ['title','titlealt','change_dt','change_uid','change_history','created_dt','created_uid','attr_dc_coverage','attr_cacheable','work_dt','work_uid'],obj_attrs.keys()):
           obj_attr = obj_attrs[ key]
-          if obj_attr['datatype_key'] in standard.DT_TEXTS or \
-             obj_attr['datatype_key'] in standard.DT_NUMBERS or \
-             obj_attr['datatype_key'] in standard.DT_DATETIMES:
+          if obj_attr['datatype_key'] in _globals.DT_TEXTS or \
+             obj_attr['datatype_key'] in _globals.DT_NUMBERS or \
+             obj_attr['datatype_key'] in _globals.DT_DATETIMES:
             v = self.attr(key)
             if v:
               xml += "<%s>%s</%s>"%(key,self.toXmlString(v),key)
-          elif obj_attr['datatype_key'] in standard.DT_BLOBS:
+          elif obj_attr['datatype_key'] in _globals.DT_BLOBS:
             v = self.attr(key)
             if v:
               xml += "<%s>"%key
@@ -1269,7 +1269,9 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  Sets Sort-ID (integer).
     # --------------------------------------------------------------------------
     def setSortId(self, sort_id):
-      setattr( self, 'sort_id', standard.format_sort_id(sort_id))
+      sort_id = '0000%i'%sort_id
+      sort_id = 's' + sort_id[-4:]
+      self.sort_id = sort_id
 
 
     # --------------------------------------------------------------------------

@@ -28,9 +28,10 @@ import os
 import urllib
 import time
 # Product Imports.
+import standard
 import _blobfields
 import _fileutil
-import standard
+import _globals
 import _objattrs
 
 
@@ -79,7 +80,7 @@ def recurse_addMediaDb(self, mediadb):
     for key in self.getObjAttrs().keys():
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
-      if datatype in standard.DT_BLOBS:
+      if datatype in _globals.DT_BLOBS:
         for lang in self.getLangIds():
           for obj_vers in self.getObjVersions():
             v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
@@ -163,7 +164,7 @@ def recurse_delMediaDb(self, mediadb):
     for key in self.getObjAttrs().keys():
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
-      if datatype in standard.DT_BLOBS:
+      if datatype in _globals.DT_BLOBS:
         for lang in self.getLangIds():
           for obj_vers in self.getObjVersions():
             v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)

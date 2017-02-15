@@ -186,19 +186,19 @@ def xmlInitObjProperty(self, key, value, lang=None):
     if type(value) is str:
       value = value.strip()
     #-- Date-Fields
-    if datatype in standard.DT_DATETIMES:
+    if datatype in _globals.DT_DATETIMES:
       if type(value) is str and len(value) > 0:
         value = self.parseLangFmtDate(value)
     #-- Integer-Fields
-    elif datatype in standard.DT_INTS:
+    elif datatype in _globals.DT_INTS:
       if type(value) is str and len(value) > 0:
         value = int(value)
     #-- Float-Fields
-    elif datatype == standard.DT_FLOAT:
+    elif datatype == _globals.DT_FLOAT:
       if type(value) is str and len(value) > 0:
         value = float(value)
     #-- String-Fields
-    elif datatype in standard.DT_STRINGS:
+    elif datatype in _globals.DT_STRINGS:
       value = str(value)
   
   #-- INIT
@@ -346,7 +346,7 @@ def xmlOnUnknownEndTag(self, sTagName):
           for s_lang in item.keys():
             value = item[s_lang]
             # Data
-            if datatype in standard.DT_BLOBS:
+            if datatype in _globals.DT_BLOBS:
               if type(value) is dict and len(value.keys()) > 0:
                 ob = _blobfields.createBlobField(self,datatype)
                 for key in value.keys():
@@ -365,11 +365,11 @@ def xmlOnUnknownEndTag(self, sTagName):
         if self.dValueStack.size() > 0:
           value = self.dValueStack.pop()
         if value is not None and \
-           ( datatype in standard.DT_BLOBS or \
-             datatype == standard.DT_LIST or \
-             datatype == standard.DT_DICT):
+           ( datatype in _globals.DT_BLOBS or \
+             datatype == _globals.DT_LIST or \
+             datatype == _globals.DT_DICT):
           # Data
-          if datatype in standard.DT_BLOBS:
+          if datatype in _globals.DT_BLOBS:
             if type(value) is dict and len(value.keys()) > 0:
               ob = _blobfields.createBlobField(self,datatype)
               for key in value.keys():
@@ -384,7 +384,7 @@ def xmlOnUnknownEndTag(self, sTagName):
                     for key in item.keys():
                       item_obj_attr = self.getObjAttr( key)
                       item_datatype = item_obj_attr['datatype_key']
-                      if item_datatype in standard.DT_BLOBS:
+                      if item_datatype in _globals.DT_BLOBS:
                         item_data = item[ key]
                         if type( item_data) is dict:
                           blob = _blobfields.createBlobField( self, item_datatype, item_data)
@@ -647,13 +647,13 @@ def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
           pass
     
     # Objects.
-    if datatype in standard.DT_BLOBS:
+    if datatype in _globals.DT_BLOBS:
       xml += value.toXml( self, base_path, data2hex)
     
     # XML.
-    elif datatype == standard.DT_XML or \
-         datatype == standard.DT_BOOLEAN or \
-         datatype in standard.DT_NUMBERS:
+    elif datatype == _globals.DT_XML or \
+         datatype == _globals.DT_BOOLEAN or \
+         datatype in _globals.DT_NUMBERS:
       xml += toXml( self, value, -1)
 
     # Others.
@@ -884,9 +884,9 @@ class XmlAttrBuilder:
         objtype = attrs.get('type')
         item = None
         if objtype == 'image':
-          item = _blobfields.createBlobField( None, standard.DT_IMAGE, file, self.mediadbStorable)
+          item = _blobfields.createBlobField( None, _globals.DT_IMAGE, file, self.mediadbStorable)
         elif objtype == 'file':
-          item = _blobfields.createBlobField( None, standard.DT_FILE, file, self.mediadbStorable)
+          item = _blobfields.createBlobField( None, _globals.DT_FILE, file, self.mediadbStorable)
         for key in attrs.keys():
           value = attrs.get( key)
           setattr(item,key,value)

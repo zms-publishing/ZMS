@@ -45,89 +45,10 @@ import sys
 import time
 import urllib
 import zExceptions
+# Product Imports.
+import _globals
 
 security = ModuleSecurityInfo('Products.zms.standard')
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-German umlaute.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-umlautMapping = {
-        # German
-        u'ä' : 'ae',
-        u'ö' : 'oe',
-        u'ü' : 'ue',
-        u'Ä' : 'Ae',
-        u'Ö' : 'Oe',
-        u'Ü' : 'Ue',
-        u'ß' : 'ss',
-        # Cyrillic
-        u'а' : 'a',
-        u'б' : 'b',
-        u'в' : 'v',
-        u'г' : 'g',
-        u'д' : 'd',
-        u'е' : 'e',
-        u'ё' : 'e',
-        u'ж' : 'zh',
-        u'з' : 'z',
-        u'и' : 'i',
-        u'й' : 'j',
-        u'к' : 'k',
-        u'л' : 'l',
-        u'м' : 'm',
-        u'н' : 'n',
-        u'о' : 'o',
-        u'п' : 'p',
-        u'р' : 'r',
-        u'с' : 's',
-        u'т' : 't',
-        u'у' : 'u',
-        u'ф' : 'f',
-        u'х' : 'h',
-        u'ц' : 'c',
-        u'ч' : 'ch',
-        u'ш' : 'sh',
-        u'щ' : 'sch',
-        u'ь' : "'",
-        u'ы' : 'y',
-        u'ь' : "'",
-        u'э' : 'e',
-        u'ю' : 'ju',
-        u'я' : 'ja',
-        u'А' : 'A',
-        u'Б' : 'B',
-        u'В' : 'V',
-        u'Г' : 'G',
-        u'Д' : 'D',
-        u'Е' : 'E',
-        u'Ё' : 'E',
-        u'Ж' : 'ZH',
-        u'З' : 'Z',
-        u'И' : 'I',
-        u'Й' : 'J',
-        u'К' : 'K',
-        u'Л' : 'L',
-        u'М' : 'M',
-        u'Н' : 'N',
-        u'О' : 'O',
-        u'П' : 'P',
-        u'Р' : 'R',
-        u'С' : 'S',
-        u'Т' : 'T',
-        u'У' : 'U',
-        u'Ф' : 'F',
-        u'Х' : 'H',
-        u'Ц' : 'C',
-        u'Ч' : 'CH',
-        u'Ш' : 'SH',
-        u'Щ' : 'SCH',
-        u'Ъ' : "'",
-        u'Ы' : 'Y',
-        u'Ь' : "'",
-        u'Э' : 'E',
-        u'Ю' : 'JU',
-        u'Я' : 'JA',}
-
 
 security.declarePublic('umlaut_quote')
 def umlaut_quote(self, s, mapping={}):
@@ -143,7 +64,7 @@ def umlaut_quote(self, s, mapping={}):
   try:
     if type(s) is not unicode:
       s = unicode(s,'utf-8')
-    map( lambda x: operator.setitem( mapping, x, umlautMapping[x]), umlautMapping.keys())
+    map( lambda x: operator.setitem( mapping, x, _globals.umlaut_map[x]), _globals.umlaut_map.keys())
     for key in mapping.keys():
       s = s.replace(key,mapping[key])
     s = s.encode('utf-8')
@@ -297,7 +218,7 @@ def encrypt_ordtype(s):
   from binascii import hexlify
   new = ''
   for ch in s:
-    whichCode=self.rand_int(2)
+    whichCode=rand_int(2)
     if whichCode==0:
       new += ch
     elif whichCode==1:
@@ -410,9 +331,6 @@ def qs_append(qs, p, v):
   return qs
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.nvl:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def nvl(a1, a2, n=None):
   """
   Returns its first argument if it is not equal to third argument (None), 
@@ -751,26 +669,103 @@ def re_findall( pattern, text, ignorecase=False):
 #)
 
 
-"""
-################################################################################
+############################################################################
 #
-#{ DateTime
+#  DATE TIME
 #
-################################################################################
-"""
+############################################################################
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Index  Field  Values  
-0  year (for example, 1993) 
-1  month range [1,12] 
-2  day range [1,31] 
-3  hour range [0,23] 
-4  minute range [0,59] 
-5  second range [0,61]; see (1) in strftime() description 
-6  weekday range [0,6], Monday is 0 
-7  Julian day range [1,366] 
-8  daylight savings flag 0, 1 or -1; see below 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+# ==========================================================================
+# Index  Field  Values  
+# 0  year (for example, 1993) 
+# 1  month range [1,12] 
+# 2  day range [1,31] 
+# 3  hour range [0,23] 
+# 4  minute range [0,59] 
+# 5  second range [0,61]; see (1) in strftime() description 
+# 6  weekday range [0,6], Monday is 0 
+# 7  Julian day range [1,366] 
+# 8  daylight savings flag 0, 1 or -1; see below 
+# ==========================================================================
+
+def format_datetime_iso(t):
+  # DST is Daylight Saving Time, an adjustment of the timezone by 
+  # (usually) one hour during part of the year. DST rules are magic 
+  # (determined by local law) and can change from year to year.
+  # 
+  # DST in t[8] ! -1 (unknown), 0 (off), 1 (on)
+  if t[8] == 1:
+    tz = time.altzone
+  elif t[8] == 0:
+    tz = time.timezone
+  else:
+    tz = 0
+  #  The offset of the local (non-DST) timezone, in seconds west of UTC
+  # (negative in most of Western Europe, positive in the US, zero in the
+  # UK).
+  #
+  # ==> quite the opposite to the usual definition as eg in RFC 822.
+  tch = '-'
+  if tz < 0:
+    tch = '+'
+  tz = abs(tz)
+  tzh = tz/60/60
+  tzm = (tz-tzh*60*60)/60
+  colon = ''
+  if fmt_str.replace('-','').replace(' ','') in ['ISO8601']:
+    colon = ':'
+  return time.strftime('%Y-%m-%dT%H:%M:%S',t)+tch+('00%d'%tzh)[-2:]+colon+('00%d'%tzm)[-2:]
+
+def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
+  """
+  Formats date in locale-format
+  @param t: Datetime
+  @type t: C{struct_time}
+  @param lang: Locale
+  @type lang: C{str}
+  @param fmt_str: Format-String, possible values SHORTDATETIME_FMT (default),
+  SHORTDATE_FMT, DATETIME_FMT, DATE_FMT, DateTime, Day, Month, ISO8601, RFC2822
+  """
+  try:
+    if lang is None:
+      lang = self.get_manage_lang()
+    # Convert to struct_time
+    t = getDateTime(t)
+    # Return ModificationTime
+    if fmt_str == 'BOBOBASE_MODIFICATION_FMT':
+      sdtf = self.getLangFmtDate(t, lang, fmt_str='SHORTDATETIME_FMT')
+      if self.daysBetween(t,DateTime()) > self.getConfProperty('ZMS.shortDateFormat.daysBetween',5):
+        sdf = self.getLangFmtDate(t, lang, fmt_str='SHORTDATE_FMT')
+        return '<span title="%s">%s</span>'%(sdtf,sdf)
+      return sdtf
+    # Return DateTime
+    if fmt_str == 'DateTime':
+      dt = DateTime('%4d/%2d/%2d'%(t[0],t[1],t[2]))
+      return dt
+    # Return name of weekday
+    elif fmt_str == 'Day':
+      dt = DateTime('%4d/%2d/%2d'%(t[0],t[1],t[2]))
+      return self.getLangStr('DAYOFWEEK%i'%(dt.dow()%7),lang)
+    # Return name of month
+    elif fmt_str == 'Month':
+      return self.getLangStr('MONTH%i'%t[1],lang)
+    elif fmt_str.replace('-','').replace(' ','') in ['ISO8601','RFC2822']:
+      return format_datetime_iso(t)
+    # Return date/time
+    fmt = self.getLangStr(fmt_str,lang)
+    time_fmt = self.getLangStr('TIME_FMT',lang)
+    date_fmt = self.getLangStr('DATE_FMT',lang)
+    if fmt.find(time_fmt) >= 0:
+      if t[3] == 0 and \
+         t[4] == 0 and \
+         t[5]== 0:
+        fmt = fmt[:-len(time_fmt)]
+    fmt = fmt.strip()
+    return time.strftime(fmt,t)
+  except:
+    #-- writeError(self,"[getLangFmtDate]: t=%s"%str(t))
+    return str(t)
+
 
 security.declarePublic('getDateTime')
 def getDateTime(t):
@@ -900,6 +895,463 @@ def parseLangFmtDate(s):
       except:
         pass
   return value
+
+#)
+
+
+############################################################################
+#
+#( Operators
+#
+############################################################################
+
+def operator_absattr(v):
+  """
+  Returns absolute-attribute of given value.
+  @param v: Value
+  @type v: C{any}
+  @rtype: C{type}
+  """
+  return absattr(v)
+
+def operator_gettype(v):
+  """
+  Returns python-type of given value.
+  @param v: Value
+  @type v: C{any}
+  @rtype: C{type}
+  """
+  return type(v)
+
+def operator_setitem(a, b, c):
+  """
+  Applies value for key in python-dictionary.
+  This is a convenience-function since it is not possible to use expressions
+  like a[b]=c in DTML.
+  @param a: Dictionary
+  @type a: C{dict}
+  @param b: Key
+  @type b: C{any}
+  @param c: Value
+  @type c: C{any}
+  @rtype: C{dict}
+  """
+  operator.setitem(a,b,c)
+  return a
+
+def operator_getitem(a, b, c=None, ignorecase=True):
+  """
+  Retrieves value for key from python-dictionary.
+  @param a: Dictionary
+  @type a: C{dict}
+  @param b: Key
+  @type b: C{any}
+  @param c: Default-Value
+  @type c: C{any}
+  @rtype: C{any}
+  """
+  if ignorecase and type(b) in StringTypes:
+    flags = re.IGNORECASE
+    pattern = '^%s$'%b
+    for key in a.keys():
+      if re.search(pattern,key,flags) is not None:
+        return operator.getitem(a,key)
+  if b in a.keys():
+    return operator.getitem(a,b)
+  return c
+
+def operator_delitem(a, b):
+  """
+  Delete key from python-dictionary.
+  @param a: Dictionary
+  @type a: C{dict}
+  @param b: Key
+  @type b: C{any}
+  """
+  operator.delitem(a, b)
+
+def operator_setattr(a, b, c):
+  """
+  Applies value for key to python-object.
+  This is a convenience-function since the use expressions like
+  setattr(a,b,c) is restricted in DTML.
+  @param a: Object
+  @type a: C{any}
+  @param b: Key
+  @type b: C{string}
+  @param c: Value
+  @type c: C{any}
+  @rtype: C{object}
+  """
+  setattr(a,b,c)
+  return a
+
+def operator_getattr(a, b, c=None):
+  """
+  Retrieves value for key from python-object.
+  This is a convenience-function since the use expressions like
+  getattr(a,b,c) is restricted in DTML.
+  @param a: Object
+  @type a: C{any}
+  @param b: Key
+  @type b: C{any}
+  @param c: Default-Value
+  @type c: C{any}
+  @rtype: C{any}
+  """
+  return getattr(a,b,c)
+
+def operator_delattr(a, b):
+  """
+  Delete key from python-object.
+  @param a: Object
+  @type a: C{any}
+  @param b: Key
+  @type b: C{any}
+  """
+  return delattr(a,b)
+
+#)
+
+
+############################################################################
+#
+#( Mappings
+#
+############################################################################
+
+def intersection_list(l1, l2):
+  """
+  Intersection of two lists (li & l2).
+  @param l1: List #1
+  @type l1: C{list}
+  @param l2: List #2
+  @type l2: C{list}
+  @returns: Intersection list
+  @rtype: C{list}
+  """
+  l1 = list(l1)
+  l2 = list(l2)
+  return filter(lambda x: x in l2, l1)
+
+
+def difference_list(l1, l2):
+  """
+  Difference of two lists (l1 - l2).
+  @param l1: List #1
+  @type l1: C{list}
+  @param l2: List #2
+  @type l2: C{list}
+  @returns: Difference list
+  @rtype: C{list}
+  """
+  l1 = list(l1)
+  l2 = list(l2)
+  return filter(lambda x: x not in l2, l1)
+
+
+def concat_list(l1, l2):
+  """
+  Concatenates two lists (l1 + l2).
+  @param l1: List #1
+  @type l1: list
+  @param l2: List #2
+  @type l2: list
+  @returns: Concatinated list
+  @rtype: C{list}
+  """
+  l1 = list(l1)
+  l2 = list(l2)
+  l = copy_list(l1)
+  l.extend(filter(lambda x: x not in l1, l2))
+  return l
+
+
+def dict_list(l):
+  """
+  Converts list to dictionary: key=l[x*2], value=l[x*2+1]
+  @param l: List
+  @type l: C{list}
+  @return: Dictionary
+  @rtype: C{dict}
+  """
+  dict = {}
+  for i in range(0,len(l)/2):
+    key = l[i*2]
+    value = l[i*2+1]
+    dict[key] = value
+  return dict
+
+
+def distinct_list(l, i=None):
+  """
+  Returns distinct values of given field from list.
+  @param l: List
+  @type l: C{list}
+  @rtype: C{list}
+  """
+  k = []
+  for x in l:
+    if i is None:
+      v = x
+    elif type(i) is str:
+      v = x.get(i,None)
+    else:
+      v = x[i]
+    if not v in k:
+      k.append(v)
+  return k
+
+
+def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1): 
+  """
+  Sorts list by given field.
+  @return: Sorted list.
+  @rtype: C{list}
+  """
+  if qorder is None:
+    sorted = map(lambda x: (x, x), l)
+  elif type(qorder) is str:
+    sorted = map(lambda x: (_globals.sort_item(x.get(qorder,None)),x),l)
+  elif type(qorder) is list:
+    sorted = map(lambda x: (map(lambda y: _globals.sort_item(x[y]), qorder),x),l)
+  else:
+    sorted = map(lambda x: (_globals.sort_item(x[qorder]),x),l)
+  if ignorecase==1 and len(sorted) > 0 and type(sorted[0][0]) is str:
+    sorted = map(lambda x: (str(x[0]).upper(),x[1]),sorted)
+  sorted.sort()
+  sorted = map(lambda x: x[1],sorted)
+  if qorderdir == 'desc': sorted.reverse()
+  return sorted
+
+
+def string_list(s, sep='\n', trim=True):
+  """
+  Split string by given separator and trim items.
+  @rtype: C{list}
+  """
+  l = []
+  for i in s.split(sep):
+    if trim:
+      i = i.strip()
+    while len(i) > 0 and ord(i[-1]) < 32:
+      i = i[:-1]
+    if len(i) > 0:
+      l.append(i)
+  return l
+
+
+def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, level=0):
+  """
+  Returns a json-string representation of the object.
+  @rtype: C{str}
+  """
+  if type(i) is list or type(i) is tuple:
+    return '[' \
+        + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(map(lambda x: str_json(x,encoding,errors,formatted,level+1),i)) \
+        + ']'
+  elif type(i) is dict:
+    k = i.keys()
+    k.sort()
+    return '{' \
+        + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(map(lambda x: '"%s":%s'%(x,str_json(i[x],encoding,errors,formatted,level+1)),k)) \
+        + '}'
+  elif type(i) is time.struct_time:
+    try:
+      return '"%s"'%format_datetime_iso(i)
+    except:
+      pass
+  elif type(i) is int or type(i) is float:
+    return str(i)
+  elif type(i) is bool:
+    return str(i).lower()
+  elif i is not None:
+    if type(i) is unicode:
+      if not (i.strip().startswith('<') and i.strip().endswith('>')):
+        import cgi
+        i = cgi.escape(i).encode(encoding, errors)
+      else:
+        i = i.encode(encoding, errors)
+    else:
+      i = str(i)
+    if i in ['true','false']:
+      return i
+    else:
+      return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
+  return '""'
+
+
+def str_item(i):
+  """
+  Returns a string representation of the item.
+  @rtype: C{str}
+  """
+  if type(i) is list or type(i) is tuple:
+    return '\n'.join(map(lambda x: str_item(x),i))
+  elif type(i) is dict:
+    return '\n'.join(map(lambda x: str_item(i[x]),i.keys()))
+  elif type(i) is time.struct_time:
+    try:
+      return format_datetime_iso(i)
+    except:
+      pass
+  if i is not None:
+    return str(i)
+  return ''
+
+
+def filter_list(l, i, v, o='%'):
+  """
+  Filters list by given field.
+  @param l: List
+  @type l: C{list}
+  @param i: Field-name or -index
+  @type i: C{str} or C{int}
+  @param v: Field-value
+  @type v: C{any}
+  @param v: Match-operator
+  @type v: C{str}, values are '%' (full-text), '=', '==', '>', '<', '>=', '<=', '!=', '<>'
+  @return: Filtered list.
+  @rtype: C{list}
+  """
+  # Full-text scan.
+  if i is None or len(str(i))==0:
+    v = str(v)
+    k = []
+    if len(v.split(' OR '))>1:
+      for s in v.split(' OR '):
+        s = s.replace('*','').strip()
+        if len( s) > 0:
+          s = umlaut_quote(s).lower()
+          k.extend(filter(lambda x: x not in k and umlaut_quote(str_item(x)).lower().find(s)>=0, l))
+    elif len(v.split(' AND '))>1:
+      k = l
+      for s in v.split(' AND '):
+        s = s.replace('*','').strip()
+        if len( s) > 0:
+          s = umlaut_quote(s).lower()
+          k = filter(lambda x: umlaut_quote(str_item(x)).lower().find(s)>=0, k)
+    else:
+      v = v.replace('*','').strip().lower()
+      if len( v) > 0:
+        v = umlaut_quote(v).lower()
+        k = filter(lambda x: umlaut_quote(str_item(x)).lower().find(v)>=0, l)
+    return k
+  # Extract Items.
+  if type(i) is str:
+    k=map(lambda x: (x.get(i,None),x), l)
+  else:
+    k=map(lambda x: (x[i],x), l)
+  # Filter Date-Tuples
+  if type(v) is tuple or type(v) is time.struct_time:
+    v = DateTime('%4d/%2d/%2d'%(v[0],v[1],v[2]))
+  # Filter Strings.
+  if type(v) is str or o=='%':
+    if o=='=' or o=='==':
+      k=filter(lambda x: str_item(x[0])==v, k)
+    elif o=='<>' or o=='!=':
+      k=filter(lambda x: str_item(x[0])!=v, k)
+    else:
+      v = str_item(v).lower()
+      if v.find('*')>=0 or v.find('?')>=0:
+        k=filter(lambda x: fnmatch.fnmatch(str_item(x[0]).lower(),v), k)
+      else:
+        k=filter(lambda x: str_item(x[0]).lower().find(v)>=0, k)
+  # Filter Numbers.
+  elif type(v) is int or type(v) is float:
+    if o=='=' or o=='==':
+      k=filter(lambda x: x[0]==v, k)
+    elif o=='<':
+      k=filter(lambda x: x[0]<v, k)
+    elif o=='>':
+      k=filter(lambda x: x[0]>v, k)
+    elif o=='<=':
+      k=filter(lambda x: x[0]<=v, k)
+    elif o=='>=':
+      k=filter(lambda x: x[0]>=v, k)
+    elif o=='<>' or o=='!=':
+      k=filter(lambda x: x[0]!=v, k)
+  # Filter Lists.
+  elif type(v) is list:
+    if o=='=' or o=='==':
+      k=filter(lambda x: x[0]==v, k)
+    elif o=='in':
+      k=filter(lambda x: x[0] in v, k)
+  # Filter DateTimes.
+  elif isinstance(v,DateTime):
+    k=filter(lambda x: x[0] is not None, k)
+    k=map(lambda x: (getDateTime(x[0]),x[1]), k)
+    k=map(lambda x: (DateTime('%4d/%2d/%2d'%(x[0][0],x[0][1],x[0][2])),x[1]), k)
+    if o=='=' or o=='==':
+      k=filter(lambda x: x[0].equalTo(v), k)
+    elif o=='<':
+      k=filter(lambda x: x[0].lessThan(v), k)
+    elif o=='>':
+      k=filter(lambda x: x[0].greaterThan(v), k)
+    elif o=='<=':
+      k=filter(lambda x: x[0].lessThanEqualTo(v), k)
+    elif o=='>=':
+      k=filter(lambda x: x[0].greaterThanEqualTo(v), k)
+    elif o=='<>':
+      k=filter(lambda x: not x[0].equalTo(v), k)
+  return map(lambda x: x[1], k)
+
+
+def copy_list(l):
+  """
+  Copies list l.
+  @param l: List
+  @type l: C{list}
+  @return: Copy of list.
+  @rtype: C{list}
+  """
+  try:
+    v = copy.deepcopy(l)
+  except:
+    v = copy.copy(l)
+  return v
+
+
+def sync_list(l, nl, i):
+  """
+  Synchronizes list l with new list nl using the column i as identifier.
+  """
+  k = []
+  for x in l:
+    k.extend([x[i],x])
+  for x in nl:
+    if x[i] in k:
+      j = k.index(x[i])+1
+      if type(x) is dict:
+        v = k[j]
+        for xk in x.keys():
+          v[xk] = x[xk]
+        x = v
+      k[j] = x
+    else:
+      k.extend([x[i],x])
+  return map(lambda x: k[x*2+1], range(0,len(k)/2))
+
+
+def aggregate_list(l, i):
+  """
+  Aggregates given field in list.
+  """
+  k = []
+  for li in copy.deepcopy(l):
+    del li[i]
+    if li not in k:
+      k.append(li)
+  m = []
+  for ki in k:
+    mi = copy.deepcopy(ki)
+    mi[i] = []
+    ks = ki.keys()
+    for li in l:
+      if len(ks) == len(filter(lambda x: x==i or ki[x]==li[x],ks)):
+        mi[i].append(li[i])
+    m.append(mi)
+  return m
 
 #)
 

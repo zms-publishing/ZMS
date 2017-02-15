@@ -256,13 +256,39 @@ class DeprecatedAPI:
         self.setConfProperty('ZMS.colormap',colormap)
     return colormap
 
+  """
+  Returns parents for linked list.
+  @rtype: C{list}
+  """
+  def tree_parents(self, l, i='id', r='idId', v='', deep=1, reverse=1):
+    warn(self,'tree_parents','None')
+    k = []
+    for x in l:
+      if x.get(i)==v:
+        k.append(x)
+        if deep:
+          k.extend(self.tree_parents(l,i,r,x[r],deep,0))
+    if reverse:
+      k.reverse()
+    return k
+
+  """
+  Returns children for linked list.
+  @rtype: C{list}
+  """
+  def tree_list(self, l, i='id', r='idId', v='', deep=0):
+    warn(self,'tree_list','None')
+    k = []
+    for x in l:
+      if x.get(r)==v:
+        k.append(x)
+        if deep:
+          k.extend(self.tree_list(l,i,r,x[i],deep))
+    return k
+
   def string_maxlen(self, s, maxlen=20, etc='...', encoding=None):
     warn(self,'string_maxlen','Products.zms.standard.string_maxlen')
     return standard.string_maxlen(s,maxlen,etc,encoding)
-
-  def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
-    warn(self,'http_import','Products.zms.standard.http_import')
-    return standard.http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers)
 
   def get_id_prefix(self, s):
     warn(self,'get_id_prefix','Products.zms.standard.id_prefix')
@@ -312,3 +338,86 @@ class DeprecatedAPI:
     warn(self,'re_sub','Products.zms.standard.re_sub')
     return standard.re_sub(pattern, replacement, subject, ignorecase)
 
+  def operator_absattr(self, v):
+    warn(self,'operator_absattr','Products.zms.standard.operator_absattr')
+    return standard.operator_absattr(v)
+  
+  def operator_gettype(self, v):
+    warn(self,'operator_gettype','Products.zms.standard.operator_gettype')
+    return standard.operator_gettype(v)
+  
+  def operator_setitem(self, a, b, c):
+    warn(self,'operator_setitem','Products.zms.standard.operator_setitem')
+    return standard.operator_setitem(a, b, c)
+  
+  def operator_getitem(self, a, b, c=None, ignorecase=True):
+    warn(self,'operator_getitem','Products.zms.standard.operator_getitem')
+    return standard.operator_getitem(a, b, c, ignorecase)
+  
+  def operator_delitem(self, a, b):
+    warn(self,'operator_delitem','Products.zms.standard.operator_delitem')
+    return standard.operator_delitem(a, b)
+  
+  def operator_setattr(self, a, b, c):
+    warn(self,'operator_setattr','Products.zms.standard.operator_setattr')
+    return standard.operator_setattr(a, b, c)
+  
+  def operator_getattr(self, a, b, c=None):
+    warn(self,'operator_getattr','Products.zms.standard.operator_getattr')
+    return standard.operator_getattr(a, b, c)
+  
+  def operator_delattr(self, a, b):
+    warn(self,'operator_absattr','Products.zms.standard.operator_delattr')
+    return standard.operator_delattr(a, b)
+  
+  def intersection_list(self, l1, l2):
+    warn(self,'intersection_list','Products.zms.standard.intersection_list')
+    return standard.intersection_list(l1, l2)
+
+  def difference_list(self, l1, l2):
+    warn(self,'difference_list','Products.zms.standard.difference_list')
+    return standard.difference_list(l1, l2)
+
+  def concat_list(self, l1, l2):
+    warn(self,'concat_list','Products.zms.standard.concat_list')
+    return standard.concat_list(l1, l2)
+
+  def dict_list(self, l):
+    warn(self,'dict_list','Products.zms.standard.dict_list')
+    return standard.dict_list(l)
+
+  def distinct_list(self, l, i=None):
+    warn(self,'distinct_list','Products.zms.standard.distinct_list')
+    return standard.distinct_list(l, i)
+
+  def sort_list(self, l, qorder=None, qorderdir='asc', ignorecase=1): 
+    warn(self,'sort_list','Products.zms.standard.sort_list')
+    return standard.sort_list(l, qorder, qorderdir, ignorecase)
+
+  def string_list(self, s, sep='\n', trim=True):
+    warn(self,'string_list','Products.zms.standard.string_list')
+    return standard.string_list(s, sep, trim)
+
+  def str_json(self, i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, level=0):
+    warn(self,'str_json','Products.zms.standard.str_json')
+    return standard.str_json(i, encoding, errors, formatted, level)
+
+  def str_item(self, i):
+    warn(self,'str_item','Products.zms.standard.str_item')
+    return standard.str_item(i)
+
+  def filter_list(self, l, i, v, o='%'):
+    warn(self,'filter_list','Products.zms.standard.filter_list')
+    return standard.filter_list(l, i, v, o)
+
+  def copy_list(self, l):
+    warn(self,'copy_list','Products.zms.standard.copy_list')
+    return standard.copy_list(l)
+
+  def sync_list(self, l, nl, i):
+    warn(self,'sync_list','Products.zms.standard.sync_list')
+    return standard.sync_list(l, nl, i)
+
+  def aggregate_list(self, l, i):
+    warn(self,'aggregate_list','Products.zms.standard.aggregate_list')
+    return standard.aggregate_list(l, i)

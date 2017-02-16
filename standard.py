@@ -331,6 +331,8 @@ def qs_append(qs, p, v):
   return qs
 
 
+
+security.declarePublic('nvl')
 def nvl(a1, a2, n=None):
   """
   Returns its first argument if it is not equal to third argument (None), 
@@ -711,10 +713,7 @@ def format_datetime_iso(t):
   tz = abs(tz)
   tzh = tz/60/60
   tzm = (tz-tzh*60*60)/60
-  colon = ''
-  if fmt_str.replace('-','').replace(' ','') in ['ISO8601']:
-    colon = ':'
-  return time.strftime('%Y-%m-%dT%H:%M:%S',t)+tch+('00%d'%tzh)[-2:]+colon+('00%d'%tzm)[-2:]
+  return time.strftime('%Y-%m-%dT%H:%M:%S',t)+tch+('00%d'%tzh)[-2:]+':'+('00%d'%tzm)[-2:]
 
 def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
   """

@@ -618,7 +618,7 @@ class AccessManager(AccessableContainer):
           login_attr = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
           users.extend(userFldr.findUser(search_param=login_attr,search_term=search_term))
       elif userFldr.meta_type == 'Pluggable Auth Service':
-        if search_term != '':
+        if search_term and search_term != '':
           login_attr = 'login'
           for user in userFldr.searchUsers(login=search_term,id=None):
             plugin = getattr(userFldr,user['pluginid'])

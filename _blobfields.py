@@ -117,64 +117,6 @@ def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_blobfields.recurse_uploadRessources:
-
-Upload from file-system to ZODB during Import.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def recurse_uploadRessources(self, folder='.', mediadbStorable=True):
-  message = ''
-  # Upload blob-fields.
-  uploadRessources(self,folder,mediadbStorable)
-  # Process children.
-  for child in self.getChildNodes():
-    message += recurse_uploadRessources(child,folder,mediadbStorable)
-  # Return message.
-  return message
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_blobfields.uploadRessources:
-
-Upload blob-fields from file-system to ZODB during import.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def uploadRessources(self, folder='.', mediadbStorable=True):
-  langs = self.getLangIds()
-  prim_lang = self.getPrimaryLanguage()
-  obj_attrs = self.getObjAttrs()
-  for key in obj_attrs.keys():
-    obj_attr = self.getObjAttr(key)
-    datatype = obj_attr['datatype_key']
-    if datatype in _globals.DT_BLOBS:
-      for lang in langs:
-        try:
-          if obj_attr['multilang'] or lang==prim_lang:
-            req = {'lang':lang,'preview':'preview'}
-            obj_vers = self.getObjVersion(req)
-            blob = self._getObjAttrValue(obj_attr,obj_vers,lang)
-            if blob is not None:
-              filename = _fileutil.getOSPath('%s/%s'%(folder,blob.filename))
-              standard.writeBlock( self, '[uploadRessources]: filename=%s'%filename)
-              # Backup properties (otherwise manage_upload sets it).
-              bk = {}
-              for __xml_attr__ in blob.__xml_attrs__:
-                bk[__xml_attr__] = getattr(blob,__xml_attr__,'')
-              # Read file to ZODB.
-              f = open( filename, 'rb')
-              try:
-                blob = createBlobField( self, datatype, file={'data':f,'filename':filename})
-              finally:
-                f.close()
-              # Restore properties.
-              for __xml_attr__ in blob.__xml_attrs__:
-                if bk.get(__xml_attr__,'') not in ['','text/x-unknown-content-type']:
-                  setattr(blob,__xml_attr__,bk[__xml_attr__])
-              blob.getFilename() # Normalize filename
-              self.setObjProperty(key,blob,lang)
-        except:
-          standard.writeError(self,"[uploadRessources]")
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _blobfields.createBlobField:
 
 Create blob-field of desired object-type and initialize it with given file.
@@ -619,13 +561,12 @@ class MyBlob:
             # unfortunately.
             self.ZCacheable_set(None)
             return ''
-
+        
         if isinstance(self,MyImage) and self._range_request_handler(REQUEST, RESPONSE):
             # we served a chunk of content in response to a range request.
             return ''
-
-        parent.set_response_headers( self.getFilename(), self.getContentType())
-        RESPONSE.setHeader('Content-Length', self.get_size())
+        
+        standard.set_response_headers(self.getFilename(),self.getContentType(),self.get_size(),REQUEST)
         RESPONSE.setHeader('Last-Modified', rfc1123_date(parent._p_mtime))
         cacheable = not REQUEST.get('preview') == 'preview'
         if cacheable: 

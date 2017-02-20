@@ -1,4 +1,5 @@
-<tal:block tal:define="global
+<tal:block tal:define="
+			standard modules/Products.zms/standard;
 			action options/action;
 			qindex options/qindex;
 			rowid options/rowid;
@@ -334,7 +335,7 @@ function zmiIframeClose(id, message) {
 </script>
 
 <!-- interface -->
-<tal:block tal:content="structure python:here.dt_exec(entity.get('interface',''))">the interface</tal:block>
+<tal:block tal:content="structure python:standard.dt_exec(here,entity.get('interface',''))">the interface</tal:block>
 <!-- /interface -->
 
 </tal:block>

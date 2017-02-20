@@ -1253,7 +1253,7 @@ class VersionManagerContainer:
         tDtml = transition.get('dtml','')
         if len(tDtml) > 0:
           if tType == 'DTML Method':
-            return self.dt_html(tDtml, REQUEST) 
+            return standard.dt_exec(self, tDtml, REQUEST) 
           if tType == 'Page Template':
             return transition['ob'](zmscontext=self) 
           elif tType == 'Script (Python)':
@@ -1357,9 +1357,7 @@ class VersionManagerContainer:
       url = self.absolute_url()
       if delete: 
         url = parent.absolute_url()
-        try: REQUEST.set('ZMS_REDIRECT_PARENT',True)
-        except: REQUEST['ZMS_REDIRECT_PARENT'] = True
-        
+      
       # Return new URL.
       standard.writeLog( self, "[commitObj]: Finished!")
       return url
@@ -1384,9 +1382,7 @@ class VersionManagerContainer:
       url = self.absolute_url()
       if delete: 
         url = parent.absolute_url()
-        try: REQUEST.set('ZMS_REDIRECT_PARENT',True)
-        except: REQUEST['ZMS_REDIRECT_PARENT'] = True
-        
+      
       standard.writeLog( self, "[rollbackObj]: Finished!")
       # Return new URL.
       return url

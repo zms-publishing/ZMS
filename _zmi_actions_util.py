@@ -152,8 +152,8 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
       # get types
       meta_keys = objAttr['keys']
       # dynamic list of types
-      if container.dt_executable('\n'.join(meta_keys)):
-        meta_keys = container.dt_exec('\n'.join(meta_keys))
+      if standard.dt_executable(container,'\n'.join(meta_keys)):
+        meta_keys = standard.dt_exec(container,'\n'.join(meta_keys))
       # iterate types
       metaobj_manager = container.getMetaobjManager()
       for meta_id in meta_keys:
@@ -174,9 +174,9 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
       ob_manage_access = container.getMetaobjAttr(meta_id,'manage_access')
       if ob_manage_access is not None:
         try:
-          ob_access = container.dt_exec(ob_manage_access['custom'])
+          ob_access = standard.dt_exec(container,ob_manage_access['custom'])
         except:
-          container.writeError( '[zmi_insert_actions]: can\'t get manage_access from %s'%meta_id)
+          standard.writeError(container,'[zmi_insert_actions]: can\'t get manage_access from %s'%meta_id)
       can_insert = True
       if objAttr['type']=='*':
         can_insert = can_insert and ((type(ob_access) is not dict) or (ob_access.get( 'insert') is None) or (len( container.intersection_list( ob_access.get( 'insert'), user_roles)) > 0))

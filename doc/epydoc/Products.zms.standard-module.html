@@ -88,14 +88,89 @@
 </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getPRODUCT_HOME"></a><span class="summary-sig-name">getPRODUCT_HOME</span>()</span><br />
+      Returns home-folder of this Product.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_response_headers"></a><span class="summary-sig-name">set_response_headers</span>(<span class="summary-sig-arg">fn</span>,
+        <span class="summary-sig-arg">mt</span>=<span class="summary-sig-default">'application/octet-stream'</span>,
+        <span class="summary-sig-arg">size</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Set content-type and -disposition to response-headers.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#umlaut_quote" class="summary-sig-name">umlaut_quote</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">s</span>,
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#umlaut_quote" class="summary-sig-name">umlaut_quote</a>(<span class="summary-sig-arg">s</span>,
         <span class="summary-sig-arg">mapping</span>=<span class="summary-sig-default">{}</span>)</span><br />
       Replace umlauts in s using given mapping.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#url_append_params" class="summary-sig-name">url_append_params</a>(<span class="summary-sig-arg">url</span>,
+        <span class="summary-sig-arg">dict</span>,
+        <span class="summary-sig-arg">sep</span>=<span class="summary-sig-default">'&amp;amp;'</span>)</span><br />
+      Append params from dict to given url.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#url_inherit_params" class="summary-sig-name">url_inherit_params</a>(<span class="summary-sig-arg">url</span>,
+        <span class="summary-sig-arg">REQUEST</span>,
+        <span class="summary-sig-arg">exclude</span>=<span class="summary-sig-default">[]</span>,
+        <span class="summary-sig-arg">sep</span>=<span class="summary-sig-default">'&amp;amp;'</span>)</span><br />
+      Inerits params from request to given url.</td>
           <td align="right" valign="top">
             
             
@@ -323,40 +398,6 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="map_key_vals"></a><span class="summary-sig-name">map_key_vals</span>(<span class="summary-sig-arg">keys</span>,
-        <span class="summary-sig-arg">vals</span>)</span></td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td><span class="summary-sig"><a name="objectTree"></a><span class="summary-sig-name">objectTree</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">clients</span>=<span class="summary-sig-default">False</span>)</span></td>
-          <td align="right" valign="top">
-            
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a name="form_quote"></a><span class="summary-sig-name">form_quote</span>(<span class="summary-sig-arg">text</span>,
         <span class="summary-sig-arg">REQUEST</span>)</span></td>
           <td align="right" valign="top">
@@ -412,7 +453,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_session"></a><span class="summary-sig-name">get_session</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="get_session"></a><span class="summary-sig-name">get_session</span>(<span class="summary-sig-arg">context</span>)</span></td>
           <td align="right" valign="top">
             
             
@@ -428,7 +469,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="triggerEvent"></a><span class="summary-sig-name">triggerEvent</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a name="triggerEvent"></a><span class="summary-sig-name">triggerEvent</span>(<span class="summary-sig-arg">context</span>,
         <span class="summary-sig-arg">*args</span>,
         <span class="summary-sig-arg">**kwargs</span>)</span></td>
           <td align="right" valign="top">
@@ -476,11 +517,12 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="unescape"></a><span class="summary-sig-name">unescape</span>(<span class="summary-sig-arg">s</span>)</span></td>
+          <td><span class="summary-sig"><a name="unescape"></a><span class="summary-sig-name">unescape</span>(<span class="summary-sig-arg">s</span>)</span><br />
+      Unescape</td>
           <td align="right" valign="top">
             
             
@@ -496,7 +538,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#http_import" class="summary-sig-name">http_import</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#http_import" class="summary-sig-name">http_import</a>(<span class="summary-sig-arg">context</span>,
         <span class="summary-sig-arg">url</span>,
         <span class="summary-sig-arg">method</span>=<span class="summary-sig-default">'GET'</span>,
         <span class="summary-sig-arg">auth</span>=<span class="summary-sig-default">None</span>,
@@ -513,13 +555,17 @@
       
     </td>
   </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Logging</th></tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="getLog"></a><span class="summary-sig-name">getLog</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a name="getLog"></a><span class="summary-sig-name">getLog</span>(<span class="summary-sig-arg">context</span>)</span><br />
+      Get zms_log.</td>
           <td align="right" valign="top">
             
             
@@ -531,11 +577,13 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="debug"></a><span class="summary-sig-name">debug</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#writeStdout" class="summary-sig-name">writeStdout</a>(<span class="summary-sig-arg">context</span>,
+        <span class="summary-sig-arg">info</span>)</span><br />
+      Write to standard-out (only allowed for development-purposes!).</td>
           <td align="right" valign="top">
             
             
@@ -547,12 +595,13 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="writeLog"></a><span class="summary-sig-name">writeLog</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">info</span>)</span></td>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#writeLog" class="summary-sig-name">writeLog</a>(<span class="summary-sig-arg">context</span>,
+        <span class="summary-sig-arg">info</span>)</span><br />
+      Log debug-information.</td>
           <td align="right" valign="top">
             
             
@@ -564,12 +613,13 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="writeBlock"></a><span class="summary-sig-name">writeBlock</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">info</span>)</span></td>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#writeBlock" class="summary-sig-name">writeBlock</a>(<span class="summary-sig-arg">context</span>,
+        <span class="summary-sig-arg">info</span>)</span><br />
+      Log information.</td>
           <td align="right" valign="top">
             
             
@@ -581,12 +631,13 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="writeError"></a><span class="summary-sig-name">writeError</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">info</span>)</span></td>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#writeError" class="summary-sig-name">writeError</a>(<span class="summary-sig-arg">context</span>,
+        <span class="summary-sig-arg">info</span>)</span><br />
+      Log error.</td>
           <td align="right" valign="top">
             
             
@@ -680,7 +731,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#getLangFmtDate" class="summary-sig-name">getLangFmtDate</a>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#getLangFmtDate" class="summary-sig-name">getLangFmtDate</a>(<span class="summary-sig-arg">context</span>,
         <span class="summary-sig-arg">t</span>,
         <span class="summary-sig-arg">lang</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">fmt_str</span>=<span class="summary-sig-default">'SHORTDATETIME_FMT'</span>)</span><br />
@@ -931,6 +982,84 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>string</code> or <code>filestream_iterator</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#localfs_read" class="summary-sig-name">localfs_read</a>(<span class="summary-sig-arg">filename</span>,
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">'b'</span>,
+        <span class="summary-sig-arg">cache</span>=<span class="summary-sig-default">'public, max-age=3600'</span>,
+        <span class="summary-sig-arg">REQUEST</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Reads file from local file-system.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="localfs_write"></a><span class="summary-sig-name">localfs_write</span>(<span class="summary-sig-arg">filename</span>,
+        <span class="summary-sig-arg">v</span>,
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">'b'</span>,
+        <span class="summary-sig-arg">REQUEST</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Writes file to local file-system.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="localfs_remove"></a><span class="summary-sig-name">localfs_remove</span>(<span class="summary-sig-arg">path</span>,
+        <span class="summary-sig-arg">deep</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Removes file from local file-system.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>list</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="localfs_readPath"></a><span class="summary-sig-name">localfs_readPath</span>(<span class="summary-sig-arg">filename</span>,
+        <span class="summary-sig-arg">data</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">recursive</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">REQUEST</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Reads path from local file-system.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type"><code>list</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -1170,6 +1299,219 @@
       
     </td>
   </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;XML</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#getXmlHeader" class="summary-sig-name">getXmlHeader</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">encoding</span>=<span class="summary-sig-default">'utf-8'</span>)</span><br />
+      Returns XML-Header (encoding=utf-8)</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>string</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#toXmlString" class="summary-sig-name">toXmlString</a>(<span class="summary-sig-arg">context</span>,
+        <span class="summary-sig-arg">v</span>,
+        <span class="summary-sig-arg">xhtml</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">encoding</span>=<span class="summary-sig-default">'utf-8'</span>)</span><br />
+      Serializes value to ZMS XML-Structure.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>any</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#parseXmlString" class="summary-sig-name">parseXmlString</a>(<span class="summary-sig-arg">xml</span>)</span><br />
+      Parse value from ZMS XML-Structure.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#processData" class="summary-sig-name">processData</a>(<span class="summary-sig-arg">context</span>,
+        <span class="summary-sig-arg">processId</span>,
+        <span class="summary-sig-arg">data</span>,
+        <span class="summary-sig-arg">trans</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Process data with custom transformation.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>dict</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#xmlParse" class="summary-sig-name">xmlParse</a>(<span class="summary-sig-arg">xml</span>)</span><br />
+      Parse arbitrary XML-Structure into dictionary.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>list</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#xmlNodeSet" class="summary-sig-name">xmlNodeSet</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mNode</span>,
+        <span class="summary-sig-arg">sTagName</span>=<span class="summary-sig-default">''</span>,
+        <span class="summary-sig-arg">iDeep</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Retrieve node-set for given tag-name from dictionary of 
+      XML-Node-Structure.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr bgcolor="#e8f0f8" >
+  <th colspan="2" class="group-header"
+    >&nbsp;&nbsp;&nbsp;&nbsp;Executable</th></tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>Bool</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#dt_executable" class="summary-sig-name">dt_executable</a>(<span class="summary-sig-arg">context</span>,
+        <span class="summary-sig-arg">v</span>)</span><br />
+      Returns if given value is executable.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>any</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#dt_exec" class="summary-sig-name">dt_exec</a>(<span class="summary-sig-arg">context</span>,
+        <span class="summary-sig-arg">v</span>,
+        <span class="summary-sig-arg">o</span>=<span class="summary-sig-default">{}</span>)</span><br />
+      Try to execute given value.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>any</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#dt_html" class="summary-sig-name">dt_html</a>(<span class="summary-sig-arg">context</span>,
+        <span class="summary-sig-arg">value</span>,
+        <span class="summary-sig-arg">REQUEST</span>)</span><br />
+      Execute given DTML-snippet.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>any</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#dt_py" class="summary-sig-name">dt_py</a>(<span class="summary-sig-arg">context</span>,
+        <span class="summary-sig-arg">script</span>,
+        <span class="summary-sig-arg">kw</span>=<span class="summary-sig-default">{}</span>)</span><br />
+      Execute given Python-script.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>any</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#dt_tal" class="summary-sig-name">dt_tal</a>(<span class="summary-sig-arg">context</span>,
+        <span class="summary-sig-arg">text</span>,
+        <span class="summary-sig-arg">options</span>=<span class="summary-sig-default">{}</span>)</span><br />
+      Execute given TAL-snippet.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 </table>
 <!-- ==================== VARIABLES ==================== -->
 <a name="section-Variables"></a>
@@ -1203,8 +1545,7 @@
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">umlaut_quote</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">s</span>,
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">umlaut_quote</span>(<span class="sig-arg">s</span>,
         <span class="sig-arg">mapping</span>=<span class="sig-default">{}</span>)</span>
   </h3>
   </td><td align="right" valign="top"
@@ -1221,6 +1562,63 @@
     </ul></dd>
     <dt>Returns: <code>str</code></dt>
         <dd>Quoted string</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="url_append_params"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">url_append_params</span>(<span class="sig-arg">url</span>,
+        <span class="sig-arg">dict</span>,
+        <span class="sig-arg">sep</span>=<span class="sig-default">'&amp;amp;'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Append params from dict to given url.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>url</code></strong> (<code>str</code>) - Url</li>
+        <li><strong class="pname"><code>dict</code></strong> (<code>dict</code>) - dictionary of params (key/value pairs)</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+        <dd>New url</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="url_inherit_params"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">url_inherit_params</span>(<span class="sig-arg">url</span>,
+        <span class="sig-arg">REQUEST</span>,
+        <span class="sig-arg">exclude</span>=<span class="sig-default">[]</span>,
+        <span class="sig-arg">sep</span>=<span class="sig-default">'&amp;amp;'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Inerits params from request to given url.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>url</code></strong> (<code>str</code>) - Url</li>
+        <li><strong class="pname"><code>REQUEST</code></strong> (<code>ZPublisher.HTTPRequest</code>) - the triggering request</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+        <dd>New url</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -1522,7 +1920,7 @@
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">http_import</span>(<span class="sig-arg">self</span>,
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">http_import</span>(<span class="sig-arg">context</span>,
         <span class="sig-arg">url</span>,
         <span class="sig-arg">method</span>=<span class="sig-default">'GET'</span>,
         <span class="sig-arg">auth</span>=<span class="sig-default">None</span>,
@@ -1548,6 +1946,106 @@
     </ul></dd>
     <dt>Returns: <code>str</code></dt>
         <dd>Response-Body</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="writeStdout"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">writeStdout</span>(<span class="sig-arg">context</span>,
+        <span class="sig-arg">info</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Write to standard-out (only allowed for development-purposes!).</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>info</code></strong> (<code>any</code>) - Object</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="writeLog"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">writeLog</span>(<span class="sig-arg">context</span>,
+        <span class="sig-arg">info</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Log debug-information.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>info</code></strong> (<code>any</code>) - Debug-information</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="writeBlock"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">writeBlock</span>(<span class="sig-arg">context</span>,
+        <span class="sig-arg">info</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Log information.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>info</code></strong> (<code>any</code>) - Information</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="writeError"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">writeError</span>(<span class="sig-arg">context</span>,
+        <span class="sig-arg">info</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Log error.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>info</code></strong> (<code>any</code>) - Information</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
   </dl>
 </td></tr></table>
 </div>
@@ -1636,7 +2134,7 @@
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">getLangFmtDate</span>(<span class="sig-arg">self</span>,
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getLangFmtDate</span>(<span class="sig-arg">context</span>,
         <span class="sig-arg">t</span>,
         <span class="sig-arg">lang</span>=<span class="sig-default">None</span>,
         <span class="sig-arg">fmt_str</span>=<span class="sig-default">'SHORTDATETIME_FMT'</span>)</span>
@@ -1928,6 +2426,38 @@ Compares two dates t0 and t1 and returns result.
   </dl>
 </td></tr></table>
 </div>
+<a name="localfs_read"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">localfs_read</span>(<span class="sig-arg">filename</span>,
+        <span class="sig-arg">mode</span>=<span class="sig-default">'b'</span>,
+        <span class="sig-arg">cache</span>=<span class="sig-default">'public, max-age=3600'</span>,
+        <span class="sig-arg">REQUEST</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Reads file from local file-system. You must grant permissions for 
+  reading from local file-system to directories in Config-Tab / 
+  Miscelleaneous-Section.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>filename</code></strong> (<code>string</code>) - Filepath</li>
+        <li><strong class="pname"><code>filename</code></strong> (<code>string</code>) - Access mode</li>
+        <li><strong class="pname"><code>REQUEST</code></strong> (<code>ZPublisher.HTTPRequest</code>) - the triggering request</li>
+    </ul></dd>
+    <dt>Returns: <code>string</code> or <code>filestream_iterator</code></dt>
+        <dd>Contents of file</dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="intersection_list"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -2139,6 +2669,307 @@ Compares two dates t0 and t1 and returns result.
   </dl>
 </td></tr></table>
 </div>
+<a name="getXmlHeader"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getXmlHeader</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">encoding</span>=<span class="sig-default">'utf-8'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns XML-Header (encoding=utf-8)</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>encoding</code></strong> (<code>str</code>) - Encoding</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="toXmlString"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">toXmlString</span>(<span class="sig-arg">context</span>,
+        <span class="sig-arg">v</span>,
+        <span class="sig-arg">xhtml</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">encoding</span>=<span class="sig-default">'utf-8'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Serializes value to ZMS XML-Structure. @param context @type context 
+  @param v @type v @param xhtml @type xhtml @param encoding @type 
+  encoding</p>
+  <dl class="fields">
+    <dt>Returns: <code>string</code></dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="parseXmlString"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">parseXmlString</span>(<span class="sig-arg">xml</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Parse value from ZMS XML-Structure. @param xml</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>xml</code></strong> (<code>str</code> or <code>StringIO</code>)</li>
+    </ul></dd>
+    <dt>Returns: <code>any</code></dt>
+        <dd><code>list</code> or <code>dict</code></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="processData"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">processData</span>(<span class="sig-arg">context</span>,
+        <span class="sig-arg">processId</span>,
+        <span class="sig-arg">data</span>,
+        <span class="sig-arg">trans</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Process data with custom transformation. @param context</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>processId</code></strong> (<code>str</code>) - the process-id</li>
+        <li><strong class="pname"><code>data</code></strong> (<code>str</code> or <code>StringIO</code>) - the xml-data</li>
+        <li><strong class="pname"><code>trans</code></strong> (<code>str</code>) - the transformation</li>
+        <li><strong class="pname"><code>context</code></strong> (<code>ZMSObject</code>)</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+        <dd>the transformed data</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="xmlParse"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">xmlParse</span>(<span class="sig-arg">xml</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Parse arbitrary XML-Structure into dictionary.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>data</code></strong> (<code>str</code> or <code>StringIO</code>) - the xml</li>
+    </ul></dd>
+    <dt>Returns: <code>dict</code></dt>
+        <dd>Dictionary of XML-Structure.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="xmlNodeSet"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">xmlNodeSet</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mNode</span>,
+        <span class="sig-arg">sTagName</span>=<span class="sig-default">''</span>,
+        <span class="sig-arg">iDeep</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Retrieve node-set for given tag-name from dictionary of 
+  XML-Node-Structure. @param mNode @type mNode @param sTagName</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>iDeep</code></strong> (<code>int</code>)</li>
+        <li><strong class="pname"><code>sTagName</code></strong> (<code>str</code> @param iDeep)</li>
+    </ul></dd>
+    <dt>Returns: <code>list</code></dt>
+        <dd>List of dictionaries of XML-Structure.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dt_executable"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dt_executable</span>(<span class="sig-arg">context</span>,
+        <span class="sig-arg">v</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns if given value is executable.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>context</code></strong> (<code>ZMSObject</code>) - the context</li>
+        <li><strong class="pname"><code>v</code></strong> (<code>str</code>) - the executable code</li>
+    </ul></dd>
+    <dt>Returns: <code>Bool</code></dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dt_exec"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dt_exec</span>(<span class="sig-arg">context</span>,
+        <span class="sig-arg">v</span>,
+        <span class="sig-arg">o</span>=<span class="sig-default">{}</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Try to execute given value.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>context</code></strong> (<code>ZMSObject</code>) - the context</li>
+        <li><strong class="pname"><code>v</code></strong> (<code>str</code>) - the executable code</li>
+        <li><strong class="pname"><code>o</code></strong> (<code>dict</code>) - the options</li>
+    </ul></dd>
+    <dt>Returns: <code>any</code></dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dt_html"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dt_html</span>(<span class="sig-arg">context</span>,
+        <span class="sig-arg">value</span>,
+        <span class="sig-arg">REQUEST</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Execute given DTML-snippet.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>context</code></strong> (<code>ZMSObject</code>) - the context</li>
+        <li><strong class="pname"><code>value</code></strong> (<code>string</code>) - DTML-snippet</li>
+        <li><strong class="pname"><code>REQUEST</code></strong> (<code>ZPublisher.HTTPRequest</code>) - the triggering request</li>
+    </ul></dd>
+    <dt>Returns: <code>any</code></dt>
+        <dd>Result of the execution or None</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dt_py"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dt_py</span>(<span class="sig-arg">context</span>,
+        <span class="sig-arg">script</span>,
+        <span class="sig-arg">kw</span>=<span class="sig-default">{}</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Execute given Python-script.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>context</code></strong> (<code>ZMSObject</code>) - the context</li>
+        <li><strong class="pname"><code>script</code></strong> (<code>string</code>) - the Python-script</li>
+        <li><strong class="pname"><code>kw</code></strong> (<code>dict</code>) - additional options</li>
+    </ul></dd>
+    <dt>Returns: <code>any</code></dt>
+        <dd>Result of the execution or None</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="dt_tal"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">dt_tal</span>(<span class="sig-arg">context</span>,
+        <span class="sig-arg">text</span>,
+        <span class="sig-arg">options</span>=<span class="sig-default">{}</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Execute given TAL-snippet.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>context</code></strong> (<code>ZMSObject</code>) - the context</li>
+        <li><strong class="pname"><code>value</code></strong> (<code>string</code>) - TAL-snippet</li>
+    </ul></dd>
+    <dt>Returns: <code>any</code></dt>
+        <dd>Result of the execution or None</dd>
+  </dl>
+</td></tr></table>
+</div>
 <br />
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
@@ -2168,7 +2999,7 @@ Compares two dates t0 and t1 and returns result.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Feb 15 16:36:01 2017
+    Generated by Epydoc 3.0.1 on Mon Feb 20 18:18:08 2017
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

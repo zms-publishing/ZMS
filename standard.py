@@ -47,11 +47,47 @@ import urllib
 import zExceptions
 # Product Imports.
 import _globals
+import _filtermanager
+import _xmllib
 
 security = ModuleSecurityInfo('Products.zms.standard')
 
+"""
+@group PIL (Python Imaging Library): pil_img_*
+@group Local File-System: localfs_*
+@group Logging: writeBlock, writeLog
+@group Mappings: *_list
+@group Operators: operator_*
+@group Styles / CSS: parse_stylesheet, get_colormap
+@group Regular Expressions: re_*
+@group: XML: getXmlHeader, toXmlString, parseXmlString, xslProcess, processData, xmlParse, xmlNodeSet
+"""
+
+security.declarePublic('getPRODUCT_HOME')
+def getPRODUCT_HOME():
+  """
+  Returns home-folder of this Product.
+  """
+  PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
+  return PRODUCT_HOME
+
+
+security.declarePublic('set_response_headers')
+def set_response_headers(fn, mt='application/octet-stream', size=None, request=None):
+  """
+  Set content-type and -disposition to response-headers.
+  """
+  RESPONSE = request.RESPONSE
+  RESPONSE.setHeader('Content-Type', mt)
+  if request.get('HTTP_USER_AGENT','').find('Android') < 0:
+    RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%_fileutil.extractFilename(fn))
+  if length:
+    RESPONSE.setHeader('Content-Length',size)
+  RESPONSE.setHeader('Accept-Ranges','bytes')
+
+
 security.declarePublic('umlaut_quote')
-def umlaut_quote(self, s, mapping={}):
+def umlaut_quote(s, mapping={}):
   """
   Replace umlauts in s using given mapping.
   @param s: String
@@ -61,16 +97,95 @@ def umlaut_quote(self, s, mapping={}):
   @return: Quoted string
   @rtype: C{str}
   """
-  try:
-    if type(s) is not unicode:
-      s = unicode(s,'utf-8')
-    map( lambda x: operator.setitem( mapping, x, _globals.umlaut_map[x]), _globals.umlaut_map.keys())
-    for key in mapping.keys():
-      s = s.replace(key,mapping[key])
-    s = s.encode('utf-8')
-  except:
-    writeError(self,'[umlaut_quote]')
+  if type(s) is not unicode:
+    s = unicode(s,'utf-8')
+  map( lambda x: operator.setitem( mapping, x, _globals.umlaut_map[x]), _globals.umlaut_map.keys())
+  for key in mapping.keys():
+    s = s.replace(key,mapping[key])
+  s = s.encode('utf-8')
   return s
+
+
+security.declarePublic('url_append_params')
+def url_append_params(url, dict, sep='&amp;'):
+  """
+  Append params from dict to given url.
+  @param url: Url
+  @type url: C{str}
+  @param dict: dictionary of params (key/value pairs)
+  @type dict: C{dict}
+  @return: New url
+  @rtype: C{str}
+  """
+  anchor = ''
+  i = url.rfind('#')
+  if i > 0:
+    anchor = url[i:]
+    url = url[:i]
+  targetdef = ''
+  i = url.find('#')
+  if i >= 0:
+    targetdef = url[i:]
+    url = url[:i]
+  qs = '?'
+  i = url.find(qs)
+  if i >= 0:
+    qs = sep
+  for key in dict.keys():
+    value = dict[key]
+    if type(value) is list:
+      for item in value:
+        qi = key + ':list=' + urllib.quote(str(item))
+        url += qs + qi
+        qs = sep
+    else:
+      qi = key + '=' + urllib.quote(str(value))
+      if url.find( '?' + qi) < 0 and url.find( '&' + qi) < 0 and url.find( '&amp;' + qi) < 0:
+        url += qs + qi
+      qs = sep
+  url += targetdef
+  return url+anchor
+
+
+security.declarePublic('url_inherit_params')
+def url_inherit_params(url, REQUEST, exclude=[], sep='&amp;'):
+  """
+  Inerits params from request to given url.
+  @param url: Url
+  @type url: C{str}
+  @param REQUEST: the triggering request
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @return: New url
+  @rtype: C{str}
+  """
+  anchor = ''
+  i = url.rfind('#')
+  if i > 0:
+    anchor = url[i:]
+    url = url[:i]
+  if REQUEST.form:
+    for key in REQUEST.form.keys():
+      if not key in exclude:
+        v = REQUEST.form.get( key, None )
+        if key is not None:
+          if url.find('?') < 0:
+            url += '?'
+          else:
+            url += sep
+          if type(v) is int:
+            url += urllib.quote(key+':int') + '=' + urllib.quote(str(v))
+          elif type(v) is float:
+            url += urllib.quote(key+':float') + '=' + urllib.quote(str(v))
+          elif type(v) is list:
+            c = 0
+            for i in v:
+              if c > 0:
+                url += sep
+              url += urllib.quote(key+':list') + '=' + urllib.quote(str(i))
+              c = c + 1
+          else:
+            url += key + '=' + urllib.quote(str(v))
+  return url+anchor
 
 
 security.declarePublic('string_maxlen')
@@ -119,6 +234,7 @@ def url_encode(url):
     url = url.replace(ch,'%'+bin2hex(ch).upper())
   return url
 
+
 security.declarePublic('guess_content_type')
 def guess_content_type(filename, data):
   """
@@ -133,6 +249,7 @@ def guess_content_type(filename, data):
   import zope.contenttype
   mt, enc  = zope.contenttype.guess_content_type( filename, data)
   return mt, enc
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 standard.html_quote:
@@ -277,33 +394,6 @@ def id_prefix(s):
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.map_key_vals:
-
-Maps list of keys and list of values to new dictionary.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def map_key_vals(keys, vals):
-  d = {}
-  map(operator.setitem, [d]*len(keys), keys, vals)
-  return d
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.objectTree:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def objectTree(self, clients=False):
-  rtn = [ self]
-  try:
-    for ob in self.objectValues( self.dGlobalAttrs.keys()):
-      rtn.extend( objectTree( ob))
-  except:
-    writeError( self, '[objectTree]')
-  if clients:
-    for ob in self.getPortalClients():
-      rtn.extend( objectTree( ob, clients))
-  return rtn
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 standard.form_quote
 
 Remove <form>-tags for Management Interface.
@@ -352,9 +442,9 @@ def nvl(a1, a2, n=None):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 standard.get_session:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def get_session(self):
-  return getattr(self, 'session_data_manager', None) and \
-    self.session_data_manager.getSessionData(create=0)
+def get_session(context):
+  return getattr(context, 'session_data_manager', None) and \
+    context.session_data_manager.getSessionData(create=0)
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -362,32 +452,32 @@ standard.triggerEvent:
 
 Hook for trigger of custom event (if there is one)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def triggerEvent(self, *args, **kwargs):
+def triggerEvent(context, *args, **kwargs):
   l = []
   name = args[0]
   
   # Always call local trigger for global triggers.
   if name.startswith('*.'):
-    triggerEvent(self,name[2:]+'Local')
+    triggerEvent(context,name[2:]+'Local')
   
   # Pass custom event to zope ObjectModifiedEvent event.
-  notify(ObjectModifiedEvent(self, name))
+  notify(ObjectModifiedEvent(context, name))
   
-  metaObj = self.getMetaobj( self.meta_id)
+  metaObj = context.getMetaobj( context.meta_id)
   if metaObj:
     # Process meta-object-triggers.
-    context = self
+    context = context
     v = context.evalMetaobjAttr(name,kwargs)
     writeLog( context, "[triggerEvent]: %s=%s"%(name,str(v)))
     if v is not None:
       l.append(v)
     # Process zope-triggers.
-    context = self
+    context = context
     ids = []
     while context is not None:
       for id in context.getHome().objectIds():
         if id not in ids and id.find( name) == 0:
-          v = getattr(self,id)(context=context,REQUEST=self.REQUEST)
+          v = getattr(context,id)(context=context,REQUEST=context.REQUEST)
           if v is not None:
             l.append(v)
           ids.append(id)
@@ -425,10 +515,12 @@ def isPreviewRequest(REQUEST):
 ################################################################################
 """
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.unescape:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+security.declarePublic('unescape')
 def unescape(s):
+  """
+  Unescape
+  @rtype: C{str}
+  """
   while True:
     i = s.find('%')
     if i < 0: break
@@ -446,7 +538,7 @@ def unescape(s):
 
 
 security.declarePublic('http_import')
-def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
+def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
   """
   Send Http-Request and return Response-Body.
   @param url: Remote-URL
@@ -467,7 +559,7 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, head
   # Parse URL.
   import urlparse
   u = urlparse.urlparse(url)
-  writeLog( self, "[http_import.%s]: %s"%(method,str(u)))
+  writeLog( context, "[http_import.%s]: %s"%(method,str(u)))
   scheme = u[0]
   netloc = u[1]
   path = u[2]
@@ -475,20 +567,20 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, head
   
   # Get Proxy.
   useproxy = True
-  noproxy = ['localhost','127.0.0.1']+filter(lambda x: len(x)>0,map(lambda x: x.strip(),self.getConfProperty('%s.noproxy'%scheme.upper(),'').split(',')))
+  noproxy = ['localhost','127.0.0.1']+filter(lambda x: len(x)>0,map(lambda x: x.strip(),context.getConfProperty('%s.noproxy'%scheme.upper(),'').split(',')))
   for noproxyurl in noproxy:
     if fnmatch.fnmatch(netloc,noproxyurl):
       useproxy = False
       break
   if useproxy:
-    proxy = self.getConfProperty('%s.proxy'%scheme.upper(),'')
+    proxy = context.getConfProperty('%s.proxy'%scheme.upper(),'')
     if len(proxy) > 0:
       path = '%s://%s%s'%(scheme,netloc,path) 
       netloc = proxy
 
   # Open HTTP connection.
   import httplib
-  writeLog( self, "[http_import.%s]: %sConnection(%s) -> %s"%(method,scheme,netloc,path))
+  writeLog( context, "[http_import.%s]: %sConnection(%s) -> %s"%(method,scheme,netloc,path))
   if scheme == 'http':
     conn = httplib.HTTPConnection(netloc,timeout=timeout)
   else:
@@ -511,7 +603,7 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, head
   #### get parameter from content
   if reply_code == 404 or reply_code >= 500:
     error = "[%i]: %s at %s [%s]"%(reply_code,message,url,method)
-    writeLog( self, "[http_import.error]: %s"%error)
+    writeLog( context, "[http_import.error]: %s"%error)
     raise zExceptions.InternalError(error)
   elif reply_code==200:
     # get content
@@ -522,81 +614,88 @@ def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, head
         # return dictionary of value lists
         data = cgi.parse_qs(data, keep_blank_values=1, strict_parsing=1)
       except:
-        writeError(self,'[http_import]: can\'t parse_qs')
+        writeError(context,'[http_import]: can\'t parse_qs')
     return data
   else:
     result = '['+str(reply_code)+']: '+str(message)
-    writeLog( self, "[http_import.result]: %s"%result)
+    writeLog( context, "[http_import.result]: %s"%result)
     return result
 
 
-"""
 ################################################################################
 #
-#  Logging
+#{ Logging
 #
 ################################################################################
-"""
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.getLog:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def getLog(self):
-  request = self.REQUEST
+def getLog(context):
+  """
+  Get zms_log.
+  """
+  request = context.REQUEST
   if request.has_key('ZMSLOG'):
     zms_log = request.get('ZMSLOG')
   else:
-    zms_log = getattr(self,'zms_log',None)
+    zms_log = getattr(context,'zms_log',None)
     if zms_log is None:
-      zms_log = getattr(self.getPortalMaster(),'zms_log',None)
+      zms_log = getattr(context.getPortalMaster(),'zms_log',None)
     request.set('ZMSLOG',zms_log)
   return zms_log
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.debug:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def debug(self):
-  b = False
-  try:
-    zms_log = getLog(self)
-    severity = logging.DEBUG
-    b = zms_log.hasSeverity(severity)
-  except:
-    pass
-  return b
+def writeStdout(context, info):
+  """
+  Write to standard-out (only allowed for development-purposes!).
+  @param info: Object
+  @type info: C{any}
+  @rtype: C{str}
+  """
+  print info
+  return info
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.writeLog:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def writeLog(self, info):
+security.declarePublic('writeLog')
+def writeLog(context, info):
+  """
+  Log debug-information.
+  @param info: Debug-information
+  @type info: C{any}
+  @rtype: C{str}
+  """
   try:
-    zms_log = self.zms_log
+    zms_log = getLog(context)
     severity = logging.DEBUG
     if zms_log.hasSeverity(severity):
-      info = "[%s@%s]"%(self.meta_id,'/'.join(self.getPhysicalPath())) + info
+      info = "[%s@%s]"%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
       zms_log.LOG( severity, info)
   except:
     pass
   return info
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.writeBlock:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def writeBlock(self, info):
+security.declarePublic('writeBlock')
+def writeBlock(context, info):
+  """
+  Log information.
+  @param info: Information
+  @type info: C{any}
+  @rtype: C{str}
+  """
   try:
-    zms_log = getLog(self)
+    zms_log = getLog(context)
     severity = logging.INFO
     if zms_log.hasSeverity(severity):
-      info = "[%s@%s]"%(self.meta_id,'/'.join(self.getPhysicalPath())) + info
+      info = "[%s@%s]"%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
       zms_log.LOG( severity, info)
   except:
     pass
   return info
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.writeError:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def writeError(self, info):
+security.declarePublic('writeError')
+def writeError(context, info):
+  """
+  Log error.
+  @param info: Information
+  @type info: C{any}
+  @rtype: C{str}
+  """
   t,v='?','?'
   try:
     t,v,tb = sys.exc_info()
@@ -608,8 +707,8 @@ def writeError(self, info):
       info += '\n'
     severity = logging.ERROR
     info += ''.join(format_exception(t, v, tb))
-    info = "[%s@%s]"%(self.meta_id,'/'.join(self.getPhysicalPath())) + info
-    zms_log = getLog(self)
+    info = "[%s@%s]"%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
+    zms_log = getLog(context)
     if zms_log.hasSeverity(severity):
       zms_log.LOG( severity, info)
     t = t.__name__.upper()
@@ -617,15 +716,16 @@ def writeError(self, info):
     pass
   return '%s: %s <!-- %s -->'%(t,v,info)
 
+#)
 
-"""
+
 ################################################################################
 #
 #( Regular Expressions
 #
 ################################################################################
-"""
 
+security.declarePublic('re_sub')
 def re_sub( pattern, replacement, subject, ignorecase=False):
   """
   Performs a search-and-replace across subject, replacing all matches of 
@@ -638,6 +738,7 @@ def re_sub( pattern, replacement, subject, ignorecase=False):
   else:
     return re.compile( pattern).sub( replacement, subject)
 
+security.declarePublic('re_search')
 def re_search( pattern, subject, ignorecase=False):
   """
   Scan through string looking for a location where the regular expression 
@@ -653,6 +754,7 @@ def re_search( pattern, subject, ignorecase=False):
     s = re.compile( pattern).split( subject)
   return map( lambda x: s[x*2+1], range(len(s)/2))
 
+security.declarePublic('re_findall')
 def re_findall( pattern, text, ignorecase=False):
   """
   Return all non-overlapping matches of pattern in string, as a list of strings. 
@@ -690,6 +792,7 @@ def re_findall( pattern, text, ignorecase=False):
 # 8  daylight savings flag 0, 1 or -1; see below 
 # ==========================================================================
 
+security.declarePublic('format_datetime_iso')
 def format_datetime_iso(t):
   # DST is Daylight Saving Time, an adjustment of the timezone by 
   # (usually) one hour during part of the year. DST rules are magic 
@@ -715,7 +818,7 @@ def format_datetime_iso(t):
   tzm = (tz-tzh*60*60)/60
   return time.strftime('%Y-%m-%dT%H:%M:%S',t)+tch+('00%d'%tzh)[-2:]+':'+('00%d'%tzm)[-2:]
 
-def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
+def getLangFmtDate(context, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
   """
   Formats date in locale-format
   @param t: Datetime
@@ -727,14 +830,14 @@ def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
   """
   try:
     if lang is None:
-      lang = self.get_manage_lang()
+      lang = context.get_manage_lang()
     # Convert to struct_time
     t = getDateTime(t)
     # Return ModificationTime
     if fmt_str == 'BOBOBASE_MODIFICATION_FMT':
-      sdtf = self.getLangFmtDate(t, lang, fmt_str='SHORTDATETIME_FMT')
-      if self.daysBetween(t,DateTime()) > self.getConfProperty('ZMS.shortDateFormat.daysBetween',5):
-        sdf = self.getLangFmtDate(t, lang, fmt_str='SHORTDATE_FMT')
+      sdtf = context.getLangFmtDate(t, lang, fmt_str='SHORTDATETIME_FMT')
+      if context.daysBetween(t,DateTime()) > context.getConfProperty('ZMS.shortDateFormat.daysBetween',5):
+        sdf = context.getLangFmtDate(t, lang, fmt_str='SHORTDATE_FMT')
         return '<span title="%s">%s</span>'%(sdtf,sdf)
       return sdtf
     # Return DateTime
@@ -744,16 +847,16 @@ def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
     # Return name of weekday
     elif fmt_str == 'Day':
       dt = DateTime('%4d/%2d/%2d'%(t[0],t[1],t[2]))
-      return self.getLangStr('DAYOFWEEK%i'%(dt.dow()%7),lang)
+      return context.getLangStr('DAYOFWEEK%i'%(dt.dow()%7),lang)
     # Return name of month
     elif fmt_str == 'Month':
-      return self.getLangStr('MONTH%i'%t[1],lang)
+      return context.getLangStr('MONTH%i'%t[1],lang)
     elif fmt_str.replace('-','').replace(' ','') in ['ISO8601','RFC2822']:
       return format_datetime_iso(t)
     # Return date/time
-    fmt = self.getLangStr(fmt_str,lang)
-    time_fmt = self.getLangStr('TIME_FMT',lang)
-    date_fmt = self.getLangStr('DATE_FMT',lang)
+    fmt = context.getLangStr(fmt_str,lang)
+    time_fmt = context.getLangStr('TIME_FMT',lang)
+    date_fmt = context.getLangStr('DATE_FMT',lang)
     if fmt.find(time_fmt) >= 0:
       if t[3] == 0 and \
          t[4] == 0 and \
@@ -762,7 +865,7 @@ def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
     fmt = fmt.strip()
     return time.strftime(fmt,t)
   except:
-    #-- writeError(self,"[getLangFmtDate]: t=%s"%str(t))
+    #-- writeError(context,"[getLangFmtDate]: t=%s"%str(t))
     return str(t)
 
 
@@ -904,6 +1007,7 @@ def parseLangFmtDate(s):
 #
 ############################################################################
 
+security.declarePublic('operator_absattr')
 def operator_absattr(v):
   """
   Returns absolute-attribute of given value.
@@ -913,6 +1017,7 @@ def operator_absattr(v):
   """
   return absattr(v)
 
+security.declarePublic('operator_gettype')
 def operator_gettype(v):
   """
   Returns python-type of given value.
@@ -922,6 +1027,7 @@ def operator_gettype(v):
   """
   return type(v)
 
+security.declarePublic('operator_setitem')
 def operator_setitem(a, b, c):
   """
   Applies value for key in python-dictionary.
@@ -938,6 +1044,7 @@ def operator_setitem(a, b, c):
   operator.setitem(a,b,c)
   return a
 
+security.declarePublic('operator_getitem')
 def operator_getitem(a, b, c=None, ignorecase=True):
   """
   Retrieves value for key from python-dictionary.
@@ -959,6 +1066,7 @@ def operator_getitem(a, b, c=None, ignorecase=True):
     return operator.getitem(a,b)
   return c
 
+security.declarePublic('operator_delitem')
 def operator_delitem(a, b):
   """
   Delete key from python-dictionary.
@@ -969,6 +1077,7 @@ def operator_delitem(a, b):
   """
   operator.delitem(a, b)
 
+security.declarePublic('operator_setattr')
 def operator_setattr(a, b, c):
   """
   Applies value for key to python-object.
@@ -985,6 +1094,7 @@ def operator_setattr(a, b, c):
   setattr(a,b,c)
   return a
 
+security.declarePublic('operator_getattr')
 def operator_getattr(a, b, c=None):
   """
   Retrieves value for key from python-object.
@@ -1000,6 +1110,7 @@ def operator_getattr(a, b, c=None):
   """
   return getattr(a,b,c)
 
+security.declarePublic('operator_delattr')
 def operator_delattr(a, b):
   """
   Delete key from python-object.
@@ -1015,10 +1126,93 @@ def operator_delattr(a, b):
 
 ############################################################################
 #
+#() Local File-System
+#
+############################################################################
+
+security.declarePublic('localfs_read')
+def localfs_read(filename, mode='b', cache='public, max-age=3600', REQUEST=None):
+  """
+  Reads file from local file-system.
+  You must grant permissions for reading from local file-system to
+  directories in Config-Tab / Miscelleaneous-Section.
+  @param filename: Filepath
+  @type filename: C{string}
+  @param filename: Access mode
+  @type filename: C{string}, values are 'b' - binary
+  @param cache Cache-Headers
+  @type cache C{bool}
+  @param REQUEST: the triggering request
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @return: Contents of file
+  @rtype: C{string} or C{filestream_iterator}
+  """
+  try:
+    filename = unicode(filename,'utf-8').encode('latin-1')
+  except:
+    pass
+  # Get absolute filename.
+  filename = _fileutil.absoluteOSPath(filename)
+  # Read file.
+  if type( mode) is dict:
+    fdata, mt, enc, fsize = _fileutil.readFile( filename, mode.get('mode','b'), mode.get('threshold',-1))
+  else:
+    fdata, mt, enc, fsize = _fileutil.readFile( filename, mode)
+  if REQUEST is not None:
+    RESPONSE = REQUEST.RESPONSE
+    standard.set_response_headers(filename,mt,fsize,REQUEST)
+    RESPONSE.setHeader('Cache-Control', cache)
+    RESPONSE.setHeader('Content-Encoding', enc)
+  return fdata
+
+
+security.declarePublic('localfs_write')
+def localfs_write(filename, v, mode='b', REQUEST=None):
+  """
+  Writes file to local file-system.
+  """
+  # Get absolute filename.
+  filename = _fileutil.absoluteOSPath(filename)
+  # Write file.
+  _fileutil.exportObj( v, filename, mode)
+
+
+security.declarePublic('localfs_remove')
+def localfs_remove(path, deep=0):
+  """
+  Removes file from local file-system.
+  """
+  # Get absolute filename.
+  filename = _fileutil.absoluteOSPath(path)
+  # Remove file.
+  _fileutil.remove( path, deep)
+
+
+security.declarePublic('localfs_readPath')
+def localfs_readPath(filename, data=False, recursive=False, REQUEST=None):
+  """
+  Reads path from local file-system.
+  @rtype: C{list}
+  """
+  try:
+    filename = unicode(filename,'utf-8').encode('latin-1')
+  except:
+    pass
+  # Get absolute filename.
+  filename = _fileutil.absoluteOSPath(filename)
+  # Read path.
+  return _fileutil.readPath(filename, data, recursive)
+
+#)
+
+
+############################################################################
+#
 #( Mappings
 #
 ############################################################################
 
+security.declarePublic('intersection_list')
 def intersection_list(l1, l2):
   """
   Intersection of two lists (li & l2).
@@ -1034,6 +1228,7 @@ def intersection_list(l1, l2):
   return filter(lambda x: x in l2, l1)
 
 
+security.declarePublic('difference_list')
 def difference_list(l1, l2):
   """
   Difference of two lists (l1 - l2).
@@ -1049,6 +1244,7 @@ def difference_list(l1, l2):
   return filter(lambda x: x not in l2, l1)
 
 
+security.declarePublic('concat_list')
 def concat_list(l1, l2):
   """
   Concatenates two lists (l1 + l2).
@@ -1066,6 +1262,7 @@ def concat_list(l1, l2):
   return l
 
 
+security.declarePublic('dict_list')
 def dict_list(l):
   """
   Converts list to dictionary: key=l[x*2], value=l[x*2+1]
@@ -1082,6 +1279,7 @@ def dict_list(l):
   return dict
 
 
+security.declarePublic('distinct_list')
 def distinct_list(l, i=None):
   """
   Returns distinct values of given field from list.
@@ -1102,6 +1300,7 @@ def distinct_list(l, i=None):
   return k
 
 
+security.declarePublic('sort_list')
 def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1): 
   """
   Sorts list by given field.
@@ -1124,6 +1323,7 @@ def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
   return sorted
 
 
+security.declarePublic('string_list')
 def string_list(s, sep='\n', trim=True):
   """
   Split string by given separator and trim items.
@@ -1140,6 +1340,7 @@ def string_list(s, sep='\n', trim=True):
   return l
 
 
+security.declarePublic('str_json')
 def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, level=0):
   """
   Returns a json-string representation of the object.
@@ -1180,6 +1381,7 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
   return '""'
 
 
+security.declarePublic('str_item')
 def str_item(i):
   """
   Returns a string representation of the item.
@@ -1199,6 +1401,7 @@ def str_item(i):
   return ''
 
 
+security.declarePublic('filter_list')
 def filter_list(l, i, v, o='%'):
   """
   Filters list by given field.
@@ -1296,6 +1499,7 @@ def filter_list(l, i, v, o='%'):
   return map(lambda x: x[1], k)
 
 
+security.declarePublic('copy_list')
 def copy_list(l):
   """
   Copies list l.
@@ -1311,6 +1515,7 @@ def copy_list(l):
   return v
 
 
+security.declarePublic('sync_list')
 def sync_list(l, nl, i):
   """
   Synchronizes list l with new list nl using the column i as identifier.
@@ -1332,6 +1537,7 @@ def sync_list(l, nl, i):
   return map(lambda x: k[x*2+1], range(0,len(k)/2))
 
 
+security.declarePublic('aggregate_list')
 def aggregate_list(l, i):
   """
   Aggregates given field in list.
@@ -1353,6 +1559,264 @@ def aggregate_list(l, i):
   return m
 
 #)
+
+
+############################################################################
+#
+#{ XML
+#
+############################################################################
+
+security.declarePublic('getXmlHeader')
+def getXmlHeader(self, encoding='utf-8'):
+  """
+  Returns XML-Header (encoding=utf-8)
+  @param encoding: Encoding
+  @type encoding: C{str}
+  @rtype: C{str}
+  """
+  return _xmllib.xml_header(encoding)
+
+
+security.declarePublic('toXmlString')
+def toXmlString(context, v, xhtml=False, encoding='utf-8'):
+  """
+  Serializes value to ZMS XML-Structure.
+  @param context
+  @type context
+  @param v
+  @type v
+  @param xhtml
+  @type xhtml
+  @param encoding
+  @type encoding
+  @rtype: C{string}
+  """
+  return _xmllib.toXml(context, v, xhtml=xhtml, encoding=encoding)
+
+
+security.declarePublic('parseXmlString')
+def parseXmlString(xml):
+  """
+  Parse value from ZMS XML-Structure.
+  @param xml
+  @type xml: C{str} or C{StringIO}
+  @return: C{list} or C{dict}
+  @rtype: C{any}
+  """
+  builder = _xmllib.XmlAttrBuilder()
+  if type(xml) is str:
+    xml = StringIO(xml)
+  v = builder.parse(xml)
+  return v
+
+
+security.declarePublic('processData')
+def processData(context, processId, data, trans=None):
+  """
+  Process data with custom transformation.
+  @param context
+  @type context: C{ZMSObject}
+  @param processId: the process-id
+  @type processId: C{str}
+  @param data: the xml-data
+  @type data: C{str} or C{StringIO}
+  @param trans: the transformation
+  @type trans: C{str}
+  @return: the transformed data
+  @rtype: C{str}
+  """
+  return _filtermanager.processData(context, processId, data, trans)
+
+
+security.declarePublic('xmlParse')
+def xmlParse(xml):
+  """
+  Parse arbitrary XML-Structure into dictionary.
+  @param data: the xml
+  @type data: C{str} or C{StringIO}
+  @return: Dictionary of XML-Structure.
+  @rtype: C{dict}
+  """
+  builder = _xmllib.XmlBuilder()
+  if type(xml) is str:
+    xml = StringIO(xml)
+  v = builder.parse(xml)
+  return v
+
+
+security.declarePublic('xmlNodeSet')
+def xmlNodeSet(self, mNode, sTagName='', iDeep=0):
+  """
+  Retrieve node-set for given tag-name from dictionary of XML-Node-Structure.
+  @param mNode
+  @type mNode
+  @param sTagName
+  @type sTagName: C{str}
+  @param iDeep
+  @type iDeep: C{int} 
+  @return: List of dictionaries of XML-Structure.
+  @rtype: C{list}
+  """
+  return _xmllib.xmlNodeSet( mNode, sTagName, iDeep)
+
+
+############################################################################
+#
+#{  Executable
+#
+############################################################################
+
+security.declarePublic('dt_executable')
+def dt_executable(context, v):
+  """
+  Returns if given value is executable.
+  @param context: the context
+  @type context: C{ZMSObject}
+  @param v: the executable code
+  @type v: C{str}
+  @return: 
+  @rtype: C{Bool}
+  """
+  if type(v) in StringTypes:
+    if v.startswith('##'):
+      return 'py'
+    elif v.find('<tal:') >= 0:
+      return 'zpt'
+    elif v.find('<dtml-') >= 0:
+      return 'method'
+  return False
+
+security.declarePublic('dt_executable')
+def dt_exec(context, v, o={}):
+  """
+  Try to execute given value.
+  @param context: the context
+  @type context: C{ZMSObject}
+  @param v: the executable code
+  @type v: C{str}
+  @param o: the options
+  @type o: C{dict}
+  @return:
+  @rtype: C{any}
+  """
+  if type(v) in StringTypes:
+    if v.startswith('##'):
+      v = dt_py(context,v,o)
+    elif v.find('<tal:') >= 0:
+      v = dt_tal(context,v,dict(o))
+    elif v.find('<dtml-') >= 0:
+      v = dt_html(context,v,context.REQUEST)
+  return v
+
+def dt_html(context, value, REQUEST):
+  """
+  Execute given DTML-snippet.
+  @param context: the context
+  @type context: C{ZMSObject}
+  @param value: DTML-snippet
+  @type value: C{string}
+  @param REQUEST: the triggering request
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @return: Result of the execution or None
+  @rtype: C{any}
+  """
+  import DocumentTemplate.DT_HTML
+  i = 0
+  while True:
+    i = value.find( '<dtml-', i)
+    if i < 0:
+      break
+    j = value.find( '>', i)
+    if j < 0:
+      break
+    if value[ j-1] == '/':
+      value = value[ :j-1] + value[ j:]
+    i = j
+  value = re.sub( '<dtml-sendmail(.*?)>(\r\n|\n)','<dtml-sendmail\\1>',value)
+  value = re.sub( '</dtml-var>', '', value)
+  dtml = DocumentTemplate.DT_HTML.HTML(value)
+  value = dtml( context, REQUEST)
+  return value
+
+def dt_py( context, script, kw={}):
+  """
+  Execute given Python-script.
+  @param context: the context
+  @type context: C{ZMSObject}
+  @param script: the Python-script
+  @type script: C{string}
+  @param kw: additional options
+  @type kw: C{dict}
+  @return: Result of the execution or None
+  @rtype: C{any}
+  """
+  from Products.PythonScripts.PythonScript import PythonScript
+  id = '~temp'
+  header = []
+  header.append('## Script (Python) "%s"'%id)
+  header.append('##bind container=container')
+  header.append('##bind context=context')
+  header.append('##bind namespace=')
+  header.append('##bind script=script')
+  header.append('##bind subpath=traverse_subpath')
+  header.append('##parameters='+','.join(kw.keys()))
+  header.append('##title=')
+  header.append('##')
+  header.append('')
+  data = '\n'.join(header)+script
+  ps = PythonScript("~temp")
+  ps.write(data)
+  bound_names = {
+      'traverse_subpath':[],
+      'container':context,
+      'context':context,
+      'script':ps,
+    }
+  args = ()
+  return ps._exec(bound_names,args,kw)
+
+def dt_tal(context, text, options={}):
+  """
+  Execute given TAL-snippet.
+  @param context: the context
+  @type context: C{ZMSObject}
+  @param value: TAL-snippet
+  @type value: C{string}
+  @return: Result of the execution or None
+  @rtype: C{any}
+  """
+  from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+  class StaticPageTemplateFile(PageTemplateFile):
+    def setText(self,text):
+      self.text = text
+    def setEnv(self,context,options):
+      self.context = context
+      self.options = options
+    def pt_getContext(self):
+      root = self.context.getPhysicalRoot()
+      context = self.context
+      options = self.options
+      c = {'template': self,
+           'here': context,
+           'context': context,
+           'options': options,
+           'root': root,
+           'request': getattr(root, 'REQUEST', None),
+           'modules': SecureModuleImporter,
+           }
+      return c
+    def _cook_check(self):
+      t = 'text/html'
+      self.pt_edit(self.text, t)
+      self._cook()
+  pt = StaticPageTemplateFile(filename='None')
+  pt.setText(text)
+  pt.setEnv(context,options)
+  request = context.REQUEST
+  return unicode(pt.pt_render(extra_context={'here':context,'request':request})).encode('utf-8')
+
+#}
 
 
 ################################################################################

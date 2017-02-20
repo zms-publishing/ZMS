@@ -29,10 +29,10 @@ import urllib
 import zExceptions
 # Product Imports.
 import standard
+import _blobfields
 import _fileutil
 import _filtermanager
 import _globals
-from _blobfields import recurse_uploadRessources, uploadRessources
 
 
 # ------------------------------------------------------------------------------
@@ -47,7 +47,40 @@ def recurse_importContent(self, folder):
     except: pass
   
   # Upload ressources.
-  uploadRessources(self,folder)
+  langs = self.getLangIds()
+  prim_lang = self.getPrimaryLanguage()
+  obj_attrs = self.getObjAttrs()
+  for key in obj_attrs.keys():
+    obj_attr = self.getObjAttr(key)
+    datatype = obj_attr['datatype_key']
+    if datatype in _globals.DT_BLOBS:
+      for lang in langs:
+        try:
+          if obj_attr['multilang'] or lang==prim_lang:
+            req = {'lang':lang,'preview':'preview'}
+            obj_vers = self.getObjVersion(req)
+            blob = self._getObjAttrValue(obj_attr,obj_vers,lang)
+            if blob is not None:
+              filename = _fileutil.getOSPath('%s/%s'%(folder,blob.filename))
+              standard.writeBlock( self, '[recurse_importContent]: filename=%s'%filename)
+              # Backup properties (otherwise manage_upload sets it).
+              bk = {}
+              for __xml_attr__ in blob.__xml_attrs__:
+                bk[__xml_attr__] = getattr(blob,__xml_attr__,'')
+              # Read file to ZODB.
+              f = open( filename, 'rb')
+              try:
+                blob = _blobfields.createBlobField( self, datatype, file={'data':f,'filename':filename})
+              finally:
+                f.close()
+              # Restore properties.
+              for __xml_attr__ in blob.__xml_attrs__:
+                if bk.get(__xml_attr__,'') not in ['','text/x-unknown-content-type']:
+                  setattr(blob,__xml_attr__,bk[__xml_attr__])
+              blob.getFilename() # Normalize filename
+              self.setObjProperty(key,blob,lang)
+        except:
+          standard.writeError(self,"[recurse_importContent]")
   
   # Commit object.
   self.onChangeObj( self.REQUEST, forced=1)

@@ -16,8 +16,11 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
+# Imports.
+import tempfile
 # Product Imports.
 import standard
+import _fileutil
 
 def warn(self,old,new=None):
   import warnings
@@ -100,7 +103,7 @@ class DeprecatedAPI:
         metaObjAttr = ob.getMetaobjAttr( metaObj['id'], 'getLinkHtml') 
         if type(metaObjAttr) is dict: 
           REQUEST.set( 'ref_id', url) 
-          return self.dt_exec( metaObjAttr['custom']) 
+          return standard.dt_exec(self,metaObjAttr['custom']) 
       ob = ob.getPortalMaster() 
     ob = self.getLinkObj(url) 
     if ob is not None: 
@@ -184,7 +187,7 @@ class DeprecatedAPI:
 
   def search_encode(self, s):
     warn(self,'search_encode','Products.zms.standard.umlaut_quote')
-    return standard.umlaut_quote(self, s)
+    return standard.umlaut_quote(s)
 
   def getCatalogNavUrl(self, REQUEST):
     warn(self,'getCatalogNavUrl','None')
@@ -421,3 +424,151 @@ class DeprecatedAPI:
   def aggregate_list(self, l, i):
     warn(self,'aggregate_list','Products.zms.standard.aggregate_list')
     return standard.aggregate_list(l, i)
+
+  def url_append_params(self, url, dict, sep='&amp;'):
+    warn(self,'url_append_params','Products.zms.standard.url_append_params')
+    return standard.url_append_params(url, dict, sep)
+
+  def url_inherit_params(self, url, REQUEST, exclude=[], sep='&amp;'):
+    warn(self,'url_inherit_params','Products.zms.standard.url_inherit_params')
+    return standard.url_inherit_params(url, REQUEST, exclude, sep)
+
+  def getZipArchive(self, f):
+    warn(self,'getZipArchive','None')
+    return _fileutil.getZipArchive(f)
+
+  def extractZipArchive(self, f):
+    warn(self,'extractZipArchive','None')
+    return _fileutil.extractZipArchive(f)
+
+  def buildZipArchive( self, files, get_data=True):
+    warn(self,'buildZipArchive','None')
+    return _fileutil.buildZipArchive( files, get_data)
+
+  def localfs_tempfile(self):
+    warn(self,'localfs_tempfile','None')
+    tempfolder = tempfile.mktemp()
+    return tempfolder
+
+  def localfs_read(self, filename, mode='b', cache='public, max-age=3600', REQUEST=None):
+    """
+    Reads file from local file-system.
+    """
+    warn(self,'localfs_read','Products.zms.standard.localfs_read')
+    # Get absolute filename.
+    filename = _fileutil.absoluteOSPath(filename)
+    # Check read permissions.
+    authorized = False
+    perms = self.getConfProperty('ZMS.localfs_read','').split(';')
+    perms.append(tempfile.gettempdir())
+    perms.append(package_home(globals()))
+    mediadb = self.getMediaDb()
+    if mediadb:
+        perms.append(mediadb.getLocation())
+    for perm in map(lambda x: x.strip(), perms):
+        authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
+    if not authorized:
+        raise zExceptions.Unauthorized
+    # Delegate to standard.
+    return standard.localfs_read(filename, mode, cache, REQUEST)
+
+  def localfs_write(self, filename, v, mode='b', REQUEST=None):
+    warn(self,'localfs_write','Products.zms.standard.localfs_write')
+    # Get absolute filename.
+    filename = _fileutil.absoluteOSPath(filename)
+    # Check write permissions.
+    authorized = False
+    perms = self.getConfProperty('ZMS.localfs_write','').split(';')
+    perms.append(tempfile.gettempdir())
+    perms.append(package_home(globals()))
+    mediadb = self.getMediaDb()
+    if mediadb:
+        perms.append(mediadb.getLocation())
+    for perm in map(lambda x: x.strip(), perms):
+        authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
+    if not authorized:
+        raise zExceptions.Unauthorized
+    # Delegate to standard.
+    return standard.localfs_write(filename, v, mode, REQUEST)
+
+  def localfs_remove(self, path, deep=0):
+    warn(self,'localfs_remove','Products.zms.standard.localfs_remove')
+    # Check write permissions.
+    authorized = False
+    perms = self.getConfProperty('ZMS.localfs_write','').split(';')
+    perms.append(tempfile.gettempdir())
+    perms.append(package_home(globals()))
+    mediadb = self.getMediaDb()
+    if mediadb:
+        perms.append(mediadb.getLocation())
+    for perm in map(lambda x: x.strip(), perms):
+        authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
+    if not authorized:
+        raise zExceptions.Unauthorized
+    # Delegate to standard.
+    return standard.localfs_remove(path,deep)
+
+  def localfs_readPath(self, filename, data=False, recursive=False, REQUEST=None):
+    warn(self,'localfs_readPath','Products.zms.standard.localfs_readPath')
+    # Check read permissions.
+    authorized = False
+    perms = self.getConfProperty('ZMS.localfs_read','').split(';')
+    perms.append(tempfile.gettempdir())
+    perms.append(package_home(globals()))
+    mediadb = self.getMediaDb()
+    if mediadb:
+        perms.append(mediadb.getLocation())
+    for perm in map(lambda x: x.strip(), perms):
+        authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
+    if not authorized:
+        raise zExceptions.Unauthorized
+    # Delegate to standard.
+    return standard.localfs_readPath(filename,data,recursive,REQUEST)
+
+  def getXmlHeader(self, encoding='utf-8'):
+    warn(self,'getXmlHeader','Products.zms.standard.getXmlHeader')
+    return standard.getXmlHeader(encoding)
+
+  def toXmlString(self, v, xhtml=False, encoding='utf-8'):
+    warn(self,'toXmlString','Products.zms.standard.toXmlString')
+    return standard.toXmlString(self, v, xhtml, encoding)
+
+  def parseXmlString(self, xml, mediadbStorable=True):
+    warn(self,'parseXmlString','Products.zms.standard.parseXmlString')
+    return standard.parseXmlString(xml)
+
+  def xslProcess(self, xsl, xml):
+    warn(self,'xslProcess','None')
+    return self.processData('xslt', xml, xsl)
+
+  def processData(self, processId, data, trans=None):
+    warn(self,'processData','Products.zms.standard.processData')
+    return standard.processData(self, processId, data, trans)
+
+  def xmlParse(self, xml):
+    warn(self,'xmlParse','Products.zms.standard.xmlParse')
+    return standard.xmlParse(xml)
+
+  def xmlNodeSet(self, mNode, sTagName='', iDeep=0):
+    warn(self,'xmlNodeSet','Products.zms.standard.xmlNodeSet')
+    return standard.xmlNodeSet( mNode, sTagName, iDeep)
+
+  def dt_executable(self, v):
+    warn(self,'dt_executable','Products.zms.standard.dt_executable')
+    return standard.dt_executable(self,v)
+
+  def dt_exec(self, v, o={}):
+    warn(self,'dt_exec','Products.zms.standard.dt_exec')
+    return standard.dt_exec(self,v,o)
+
+  def dt_html(self, value, REQUEST):
+    warn(self,'dt_html','Products.zms.standard.dt_html')
+    return standard.dt_html(self,value,REQUEST)
+
+  def dt_py( self, script, kw={}):
+    warn(self,'dt_py','Products.zms.standard.dt_py')
+    return standard.dt_py(self,script,kw)
+  
+  def dt_tal(self, text, options={}):
+    warn(self,'dt_tal','Products.zms.standard.dt_tal')
+    return standard.dt_tal(self,text,options)

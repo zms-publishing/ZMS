@@ -3959,6 +3959,7 @@ return zmscontext.display_type(zmscontext.REQUEST)
 ##title=py: Col-Widths [list]
 ##
 # --// BO widths //--
+from Products.zms import standard
 
 REQUEST = zmscontext.REQUEST
 table = zmscontext.attr('table')
@@ -3967,7 +3968,7 @@ weights = map(lambda x: 1, range( ncols))
 for row in table:
     i = 0
     for cell in row:
-        weight = len(zmscontext.re_sub('<(.*?)>', '',zmscontext.dt_exec(cell.get('content',''))))
+        weight = len(standard.re_sub('<(.*?)>', '',standard.dt_exec(zmscontext,cell.get('content',''))))
         weights[i] = weights[i] + weight
         i += 1
 return map(lambda x: int((x*100.0)/sum(weights)), weights)
@@ -4060,7 +4061,8 @@ if key.startswith('table_'):
 
 <div class="table-responsive" tal:define="global
 		zmscontext options/zmscontext;
-		Std modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br;
+		standard      modules/Products.zms/standard;
+		Std           modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br;
 		rteformats    python:filter(lambda x: str(x.getRichedit())=='1',here.getTextFormats(request)); 
 		table         python:zmscontext.attr('table');
 		sortable      python:int(zmscontext.attr('sortable') in [1,True]);
@@ -4136,12 +4138,12 @@ if key.startswith('table_'):
 							format        python:column.get('format','');
 							pattern       python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
 							replacement   python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
-							content       python:zmscontext.re_sub(pattern,replacement,column.get('content',''));
+							content       python:standard.re_sub(pattern,replacement,column.get('content',''));
 							content       python:[content,newline_to_br(content)][format==''];
-							col_text      python:[zmscontext.dt_exec(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in map(lambda x: x.getId(),rteformats)];
+							col_text      python:[standard.dt_exec(zmscontext,zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in map(lambda x: x.getId(),rteformats)];
 							col_text      python:zmscontext.validateInlineLinkObj(col_text);
-							col_text      python:zmscontext.re_sub('^(&nbsp\073)','',col_text);
-							col_text      python:zmscontext.re_sub('^<p>((\\w|\\W)*?)</p>$','\\1',col_text)">
+							col_text      python:standard.re_sub('^(&nbsp\073)','',col_text);
+							col_text      python:standard.re_sub('^<p>((\\w|\\W)*?)</p>$','\\1',col_text)">
 						<tal:block tal:condition="python:tag in ['td','th']">
 							<tal:block tal:content="structure python:'<%s%s>'%(tag,['',' colspan=\042%i\042'%colspan][int(colspan>1)])"></tal:block>
 								<tal:block tal:condition="python:col_text" tal:content="structure col_text">The cell</tal:block>

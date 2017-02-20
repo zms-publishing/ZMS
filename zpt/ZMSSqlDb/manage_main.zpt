@@ -36,7 +36,7 @@
 		metaObjAttrs python:[];
 		res python:[];
 		resSlctStmnt python:''.join(request.get('sqlStatement',[]))+' LIMIT %s OFFSET %s'%(str(pageSize),str(pageStart));
-		cntSlctStmnt python:here.re_sub('^(SELECT (.*?) FROM)','SELECT COUNT(*) AS rcount FROM',resSlctStmnt[:resSlctStmnt.find('ORDER BY')]);
+		cntSlctStmnt python:standard.re_sub('^(SELECT (.*?) FROM)','SELECT COUNT(*) AS rcount FROM',resSlctStmnt[:resSlctStmnt.find('ORDER BY')]);
 		row_count python:here.query(cntSlctStmnt)['records'][0]['rcount']">
 
 	<tal:block tal:define="global

@@ -55,16 +55,12 @@
 ##parameters=self, REQUEST
 ##title=Epub-Process
 ##
-## Warnings:
-##  Prints, but never reads 'printed' variable.
-##
 # --// BO epub_process //--
+from Products.zms import standard
 
 context.f_standard_html_request( context, REQUEST)
 
 tempfolder = REQUEST['ZMS_FILTER_CUR_DIR']
-print tempfolder
-
 base_url = context.absolute_url()[len(REQUEST['BASE0']):]+'/'
 c = 0
 items = []
@@ -73,7 +69,6 @@ for ob in [context]+context.filteredTreeNodes( REQUEST, context.PAGES):
   id = 'main%i'%len(items)
   href = id+'.xhtml'
   filepath = '%s/%s'%(tempfolder,href)
-  print ob.absolute_url(), filepath
   xml = []
   xml.append(ob.getXmlHeader())
   xml.append('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">')
@@ -92,7 +87,7 @@ for ob in [context]+context.filteredTreeNodes( REQUEST, context.PAGES):
   xml.append('</body>')
   xml.append('</html>')
   context.writeStdout('[epub_process]: %s'%filepath)
-  context.localfs_write( filepath, '\n'.join(xml))
+  standard.localfs_write( filepath, '\n'.join(xml))
   items.append({'id':id,'href':href,'titlealt':ob.getTitlealt(REQUEST),'level':ob.getLevel(),})
 
 # Generate toc.ncx (Table of Contents)
@@ -127,7 +122,7 @@ xml.append('</navMap>')
 xml.append('</ncx>')
 filepath = '%s/toc.ncx'%(tempfolder)
 context.writeStdout( '[epub_process]: %s'%filepath)
-context.localfs_write( filepath, '\n'.join(xml))
+standard.localfs_write( filepath, '\n'.join(xml))
 
 # Generate content.opf
 xml = []
@@ -171,7 +166,7 @@ xml.append('</spine>')
 xml.append('</package>')
 filepath = '%s/content.opf'%(tempfolder)
 context.writeStdout( '[epub_process]: %s'%filepath)
-context.localfs_write( filepath, '\n'.join(xml))
+standard.localfs_write( filepath, '\n'.join(xml))
 
 # Generate container.xml
 xml = []
@@ -183,18 +178,18 @@ xml.append('</rootfiles>')
 xml.append('</container>')
 filepath = '%s/META-INF/container.xml'%(tempfolder)
 context.writeStdout( '[epub_process]: %s'%filepath)
-context.localfs_write( filepath, '\n'.join(xml))
+standard.localfs_write( filepath, '\n'.join(xml))
 
 # Convert transition to css.
 css = REQUEST['ZMS_FILTER_TRANS'].getData()
 filepath = '%s/css/style.css'%(tempfolder)
 context.writeStdout( '[epub_process]: %s'%filepath)
-context.localfs_write( filepath, css)
+standard.localfs_write( filepath, css)
 
 # Build zip-archive
 zip = context.buildZipArchive( tempfolder+'/*')
 context.writeStdout( '[epub_process]: %i bytes'%len(zip))
-context.localfs_write( REQUEST.get('ZMS_FILTER_OUT'), zip)
+standard.localfs_write( REQUEST.get('ZMS_FILTER_OUT'), zip)
 return zip
 
 # --// EO epub_process //--

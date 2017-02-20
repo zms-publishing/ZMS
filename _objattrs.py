@@ -93,9 +93,7 @@ def utf8(v, encoding = 'latin-1'):
   elif type( v) is tuple:
     return tuple(map(lambda x: utf8( x, encoding), list(v)))
   elif type( v) is dict:
-    keys = v.keys()
-    vals = map(lambda x: utf8(v[x],encoding), keys)
-    return standard.map_key_vals(keys, vals)
+    return dict((key,value) for (key,value) in map(lambda x: (x,utf8(v[x],encoding)), keys))
   else:
     return v
 
@@ -145,12 +143,12 @@ def getobjattr(self, obj, obj_attr, lang):
       if datatype in _globals.DT_DATETIMES and default == '{now}':
         default = time.time()
       elif type(default) is list or type(default) is tuple:
-        v = self.copy_list(default)
+        v = standard.copy_list(default)
       elif type(default) is dict:
         v = default.copy()
       else:
         if type( default) is str and len( default) > 0:
-          default = self.dt_exec(default)
+          default = standard.dt_exec(self,default)
         v = default
   return v
 
@@ -284,7 +282,7 @@ class ObjAttrs:
             opts = map(lambda x: [x['key'],x['value']],res)
           elif v.find('<dtml-') >= 0 or v.startswith('##') or v.find('<tal:') >= 0:
             try:
-              opts = self.dt_exec(v)
+              opts = standard.dt_exec(self,v)
             except:
               opts = standard.writeError(self,'[getObjOptions]: key=%s'%obj_attr['id'])
           else:
@@ -379,7 +377,7 @@ class ObjAttrs:
         filteredMetaObjAttrs = filter( lambda x: x['id']=='format', metaObj['attrs'])
         if len(filteredMetaObjAttrs) == 1:
           if REQUEST.get('ZMS_INSERT'):
-            default = self.dt_exec(str( filteredMetaObjAttrs[0].get('default','')))
+            default = standard.dt_exec(self,str( filteredMetaObjAttrs[0].get('default','')))
             if default:
               fmt = default
             else:
@@ -642,7 +640,7 @@ class ObjAttrs:
         if datatype == _globals.DT_URL:
           value = self.validateLinkObj(value)
         # Executable fields.
-        value = self.dt_exec(value)
+        value = standard.dt_exec(self,value)
       
       # Undefined attributes.
       else:
@@ -834,7 +832,7 @@ class ObjAttrs:
             v = None
           else:
             v = _blobfields.createBlobField(self,datatype,v)
-            v.filename = standard.umlaut_quote(self,v.filename,{':':'_','<':'_','>':'_','*':'_','?':'_','"':'_','|':'_',',':'_'})
+            v.filename = standard.umlaut_quote(v.filename,{':':'_','<':'_','>':'_','*':'_','?':'_','"':'_','|':'_',',':'_'})
         if type(v) is dict:
           if len(v.get('filename',''))==0:
             v = None
@@ -934,7 +932,7 @@ class ObjAttrs:
     #  Assigns value to specified property from Request-Object.
     # --------------------------------------------------------------------------
     def setReqProperty(self, key, REQUEST, forced=0):
-    
+      
       #-- REQUEST
       lang = REQUEST['lang']
       

@@ -506,7 +506,7 @@ $(function(){
       <div class="form-group" style="margin-bottom:0;">
         <label class="col-sm-4 control-label">Product Home</label>
         <div class="col-sm-8">
-          <p class="form-control-static" style="font-family:monospace;font-size:0.9em;" tal:content="python:here.getPRODUCT_HOME()">PROCUCT_HOME</p>
+          <p class="form-control-static" style="font-family:monospace;font-size:0.9em;" tal:content="python:standard.getPRODUCT_HOME()">PROCUCT_HOME</p>
         </div>
       </div><!-- .form-group -->
       <div class="form-group">

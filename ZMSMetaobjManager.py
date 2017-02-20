@@ -841,7 +841,7 @@ class ZMSMetaobjManager:
       mapTypes = {'method':'DTML Method','py':'Script (Python)','zpt':'Page Template'}
       message = ''
       if newType in ['interface']:
-        newType = self.dt_executable(newCustom)
+        newType = standard.dt_executable(self,newCustom)
         if not newType:
           newType = 'method'
         newName = '%s: %s'%(newId,newType)

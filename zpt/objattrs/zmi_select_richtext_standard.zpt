@@ -115,8 +115,8 @@ function zmiRicheditInsertTab( fmName, elName) {
 		><tal:block tal:repeat="charFormat python:here.getCharFormats()"
 			><tal:block tal:define="global 
 					btn     python:charFormat.get('btn');
-					js      python:here.dt_exec(charFormat.get('js','')).strip();
-					attrs   python:here.dt_exec(charFormat.get('attrs','')).strip();
+					js      python:standard.dt_exec(here,charFormat.get('js','')).strip();
+					attrs   python:standard.dt_exec(here,charFormat.get('attrs','')).strip();
 					onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%((charFormat['tag']+' '+attrs).replace('\042','\'+unescape(\'\%'+'22\')+\'').strip(),options['fmName'],options['elName'])"
 				><tal:block tal:condition="python:btn is not None"
 					><tal:block tal:condition="python:len(js)>0"

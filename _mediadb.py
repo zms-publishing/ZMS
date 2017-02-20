@@ -269,7 +269,6 @@ class MediaDb(
     # --------------------------------------------------------------------------
     def getFile(self, REQUEST,RESPONSE): 
       filename = _fileutil.extractFilename( self.getPath( REQUEST))
-      parent.set_response_headers( filename)
       return self.retrieveFileStreamIterator( filename, REQUEST)
 
     # --------------------------------------------------------------------------
@@ -318,9 +317,7 @@ class MediaDb(
         mt, enc = 'content/unknown', ''
       # Remove timestamp from filename.
       filename = filename[:filename.rfind('_')]+filename[filename.rfind('.'):]
-      REQUEST.RESPONSE.setHeader('Content-Type' ,mt)
-      REQUEST.RESPONSE.setHeader('Content-Length' ,fsize)
-      REQUEST.RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+      standard.set_response_headers(filename,mt,fsize,REQUEST)
       return data
 
 

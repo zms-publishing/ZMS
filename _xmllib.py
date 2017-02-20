@@ -774,11 +774,10 @@ class XmlAttrBuilder:
     #            = XML document as file object
     # OUT: value or None, if nothing was parsed
     ############################################################################
-    def parse(self, input, mediadbStorable=True):
+    def parse(self, input):
       """ XmlAttrBuilder.parse """
       
       # prepare builder
-      self.mediadbStorable = mediadbStorable
       self.dValueStack     = _globals.MyStack()
       self.dTagStack       = _globals.MyStack()
       
@@ -884,9 +883,9 @@ class XmlAttrBuilder:
         objtype = attrs.get('type')
         item = None
         if objtype == 'image':
-          item = _blobfields.createBlobField( None, _globals.DT_IMAGE, file, self.mediadbStorable)
+          item = _blobfields.createBlobField( None, _globals.DT_IMAGE, file)
         elif objtype == 'file':
-          item = _blobfields.createBlobField( None, _globals.DT_FILE, file, self.mediadbStorable)
+          item = _blobfields.createBlobField( None, _globals.DT_FILE, file)
         for key in attrs.keys():
           value = attrs.get( key)
           setattr(item,key,value)

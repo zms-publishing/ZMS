@@ -1687,7 +1687,7 @@ def dt_executable(context, v):
       return 'method'
   return False
 
-security.declarePublic('dt_executable')
+security.declarePublic('dt_exec')
 def dt_exec(context, v, o={}):
   """
   Try to execute given value.
@@ -1817,6 +1817,121 @@ def dt_tal(context, text, options={}):
   return unicode(pt.pt_render(extra_context={'here':context,'request':request})).encode('utf-8')
 
 #}
+
+
+def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
+  """
+  Sends Mail via MailHost.
+  @param context: the context
+  @type context: C{ZMSObject}
+  @param mto: the recipient(s)
+  @type mto: C{str} or C{dict}
+  @param msubject: the subject
+  @type mto: C{str}
+  @param mbody: the body
+  @type mbody: C{str} or C{dict}
+  @rtype: C{Bool}
+  """
+  from email.mime.multipart import MIMEMultipart
+  from email.mime.text import MIMEText
+  from email.mime.image import MIMEImage
+  from email.mime.audio import MIMEAudio
+  from email.mime.application import MIMEApplication
+  
+  # Check constraints.
+  if type(mto) is str:
+    mto = {'To':mto}
+  if type(mbody) is str:
+    mbody = [{'text':mbody}]
+  
+  # Get sender.
+  if REQUEST is not None:
+    auth_user = REQUEST['AUTHENTICATED_USER']
+    mto['From'] = mto.get('From',context.getUserAttr(auth_user,'email',context.getConfProperty('ZMSAdministrator.email','')))
+  
+  # Get MailHost.
+  mailhost = None
+  homeElmnt = context.getHome()
+  if len(homeElmnt.objectValues(['Mail Host'])) == 1:
+    mailhost = homeElmnt.objectValues(['Mail Host'])[0]
+  elif getattr(homeElmnt,'MailHost',None) is not None:
+    mailhost = getattr(homeElmnt,'MailHost',None)
+  
+  # Assemble MIME object.
+  #mime_msg = MIMEMultipart('related') # => attachments do not show up in iOS Mail (just as paperclip indicator)
+  mime_msg = MIMEMultipart()
+  mime_msg['Subject'] = msubject
+  for k in mto.keys():
+    mime_msg[k] = mto[k]
+  mime_msg.preamble = 'This is a multi-part message in MIME format.'
+  
+  # Encapsulate the plain and HTML versions of the message body 
+  # in an 'alternative' part, so message agents can decide 
+  # which they want to display.
+  msgAlternative = MIMEMultipart('alternative')
+  mime_msg.attach(msgAlternative)
+  for ibody in mbody:
+    msg = MIMEText(ibody['text'], _subtype=ibody.get('subtype','plain'), _charset=ibody.get('charset','unicode-1-1-utf-8'))
+    msgAlternative.attach(msg)
+
+  # Handle attachments
+  if mattach is not None:
+    if not isinstance(mattach, list):
+      mattach = [mattach]
+    for filedata in mattach:
+      # Send base64-encoded data stream
+      # Give optional prefix naming filename, mimetype and encoding 
+      # Example: 'filename:MyImageFile.png;data:image/png;base64,......'
+      if isinstance(filedata, str):
+        mimetype = 'unknown'
+        maintype = 'unknown'
+        encoding = 'unknown'
+        filename = 'unknown'
+        filetype = 'attachment'
+        fileextn = 'dat'
+        metadata = standard.re_search('(^.*[;,])', filedata)
+        # extract filename, mimetype and encoding if available
+        if (type(metadata)==list and len(metadata)==1):          
+          mimetype = standard.re_search('data:([^;,]+[;,][^;,]*)', metadata[0])
+          filename = standard.re_search('filename:([^;,]+)', metadata[0])
+          filedata = filedata.replace(metadata[0], '')           
+        if (type(mimetype)==list and len(mimetype)==1): 
+          mimetype = mimetype[0].split(';')
+          if type(mimetype)==list and len(mimetype)==2:
+            maintype = mimetype[0]
+            encoding = mimetype[1]
+        if (type(filename)==list and len(filename)==1):
+          filename = filename[0]
+        else:
+          subtypes = maintype.split('/')
+          if (type(subtypes)==list and len(subtypes)==2):
+            filetype = subtypes[0]
+            fileextn = subtypes[1]            
+          filename = '%s.%s'%(filetype,fileextn)
+        # decode if already encoded because MIME* is encoding by default
+        if encoding=='base64':
+          filedata = base64.b64decode(filedata)
+        # create mime attachment
+        if (filetype=='image'):
+          part = MIMEImage(filedata, fileextn)                
+        elif (filetype=='audio'):
+          part = MIMEAudio(filedata, fileextn)              
+        else:
+          part = MIMEApplication(filedata)
+        part.add_header('Content-Disposition', 'attachment; filename="%s"'%filename)
+        mime_msg.attach(part)
+        
+      # TODO: Handle data from filesystem or other sources
+      elif isinstance(filedata, file):
+        raise NotImplementedError
+  
+  # Send mail.
+  try:
+    #standard.writeBlock( context, "[sendMail]: %s"%mime_msg.as_string())
+    mailhost.send(mime_msg.as_string())
+    return 0
+  except:
+    return -1
 
 
 ################################################################################

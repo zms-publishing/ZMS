@@ -561,14 +561,6 @@ class DeprecatedAPI:
     warn(self,'dt_exec','Products.zms.standard.dt_exec')
     return standard.dt_exec(self,v,o)
 
-  def dt_html(self, value, REQUEST):
-    warn(self,'dt_html','Products.zms.standard.dt_html')
-    return standard.dt_html(self,value,REQUEST)
-
-  def dt_py( self, script, kw={}):
-    warn(self,'dt_py','Products.zms.standard.dt_py')
-    return standard.dt_py(self,script,kw)
-  
-  def dt_tal(self, text, options={}):
-    warn(self,'dt_tal','Products.zms.standard.dt_tal')
-    return standard.dt_tal(self,text,options)
+  def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
+    warn(self,'sendMail','Products.zms.standard.sendMail')
+    return standard.sendMail(self, mto, msubject, mbody, REQUEST, mattach)

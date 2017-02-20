@@ -26,6 +26,7 @@ Products.zms.standard.xmlParse	Products.zms.standard-module.html#xmlParse
 Products.zms.standard.nvl	Products.zms.standard-module.html#nvl
 Products.zms.standard.copy_list	Products.zms.standard-module.html#copy_list
 Products.zms.standard.parseXmlString	Products.zms.standard-module.html#parseXmlString
+Products.zms.standard.sendMail	Products.zms.standard-module.html#sendMail
 Products.zms.standard.operator_gettype	Products.zms.standard-module.html#operator_gettype
 Products.zms.standard.string_list	Products.zms.standard-module.html#string_list
 Products.zms.standard.security	Products.zms.standard-module.html#security
@@ -137,7 +138,6 @@ Products.zms._blobfields.MyBlob.getMediadbfile__roles__	Products.zms._blobfields
 Products.zms._blobfields.MyBlob.getFilename__roles__	Products.zms._blobfields.MyBlob-class.html#getFilename__roles__
 Products.zms._blobfields.MyBlob.getData__roles__	Products.zms._blobfields.MyBlob-class.html#getData__roles__
 Products.zms._blobfields.MyBlob._range_request_handler	Products.zms._blobfields.MyBlob-class.html#_range_request_handler
-Products.zms._blobfields.MyBlob.getMimeTypeIconSrc__roles__	Products.zms._blobfields.MyBlob-class.html#getMimeTypeIconSrc__roles__
 Products.zms._blobfields.MyBlob.get_size__roles__	Products.zms._blobfields.MyBlob-class.html#get_size__roles__
 Products.zms._blobfields.MyBlob.getDataSizeStr	Products.zms._blobfields.MyBlob-class.html#getDataSizeStr
 Products.zms._blobfields.MyBlob.__call__	Products.zms._blobfields.MyBlob-class.html#__call__
@@ -155,7 +155,7 @@ Products.zms._blobfields.MyBlob.getObjAttrs__roles__	Products.zms._blobfields.My
 Products.zms._blobfields.MyBlob.getMediadbfile	Products.zms._blobfields.MyBlob-class.html#getMediadbfile
 Products.zms._blobfields.MyBlob.getContentType__roles__	Products.zms._blobfields.MyBlob-class.html#getContentType__roles__
 Products.zms._blobfields.MyBlob.index_html	Products.zms._blobfields.MyBlob-class.html#index_html
-Products.zms._blobfields.MyBlob.getMimeTypeIconSrc	Products.zms._blobfields.MyBlob-class.html#getMimeTypeIconSrc
+Products.zms._blobfields.MyBlob.storeMediadbfile	Products.zms._blobfields.MyBlob-class.html#storeMediadbfile
 Products.zms._blobfields.MyBlob._if_modified_since_request_handler	Products.zms._blobfields.MyBlob-class.html#_if_modified_since_request_handler
 Products.zms._blobfields.MyBlob.getHref	Products.zms._blobfields.MyBlob-class.html#getHref
 Products.zms._blobfields.MyFile	Products.zms._blobfields.MyFile-class.html
@@ -169,12 +169,10 @@ Products.zms._blobfields.MyBlob._createCopy	Products.zms._blobfields.MyBlob-clas
 Products.zms._blobfields.MyBlob.get_real_size__roles__	Products.zms._blobfields.MyBlob-class.html#get_real_size__roles__
 Products.zms._blobfields.MyBlob.getMediadbfile	Products.zms._blobfields.MyBlob-class.html#getMediadbfile
 Products.zms._blobfields.MyBlob.getContentType__roles__	Products.zms._blobfields.MyBlob-class.html#getContentType__roles__
-Products.zms._blobfields.MyBlob.getMimeTypeIconSrc	Products.zms._blobfields.MyBlob-class.html#getMimeTypeIconSrc
 Products.zms._blobfields.MyBlob.get_real_size	Products.zms._blobfields.MyBlob-class.html#get_real_size
 Products.zms._blobfields.MyFile._getCopy	Products.zms._blobfields.MyFile-class.html#_getCopy
 Products.zms._blobfields.MyBlob.getFilename__roles__	Products.zms._blobfields.MyBlob-class.html#getFilename__roles__
 Products.zms._blobfields.MyBlob._range_request_handler	Products.zms._blobfields.MyBlob-class.html#_range_request_handler
-Products.zms._blobfields.MyBlob.getMimeTypeIconSrc__roles__	Products.zms._blobfields.MyBlob-class.html#getMimeTypeIconSrc__roles__
 Products.zms._blobfields.MyBlob.getFilename	Products.zms._blobfields.MyBlob-class.html#getFilename
 Products.zms._blobfields.MyBlob.equals	Products.zms._blobfields.MyBlob-class.html#equals
 Products.zms._blobfields.MyFile.__xml_attrs__	Products.zms._blobfields.MyFile-class.html#__xml_attrs__
@@ -192,6 +190,7 @@ Products.zms._blobfields.MyBlob.get_size__roles__	Products.zms._blobfields.MyBlo
 Products.zms._blobfields.MyBlob.getDataSizeStr	Products.zms._blobfields.MyBlob-class.html#getDataSizeStr
 Products.zms._blobfields.MyBlob.getData	Products.zms._blobfields.MyBlob-class.html#getData
 Products.zms._blobfields.MyBlob.getObjAttrs	Products.zms._blobfields.MyBlob-class.html#getObjAttrs
+Products.zms._blobfields.MyBlob.storeMediadbfile	Products.zms._blobfields.MyBlob-class.html#storeMediadbfile
 Products.zms._blobfields.MyFile.__obj_attrs__	Products.zms._blobfields.MyFile-class.html#__obj_attrs__
 Products.zms._blobfields.MyImage	Products.zms._blobfields.MyImage-class.html
 Products.zms._blobfields.MyBlob.__str__	Products.zms._blobfields.MyBlob-class.html#__str__
@@ -205,12 +204,10 @@ Products.zms._blobfields.MyBlob.get_real_size__roles__	Products.zms._blobfields.
 Products.zms._blobfields.MyBlob.getMediadbfile	Products.zms._blobfields.MyBlob-class.html#getMediadbfile
 Products.zms._blobfields.MyBlob.getContentType__roles__	Products.zms._blobfields.MyBlob-class.html#getContentType__roles__
 Products.zms._blobfields.MyImage.getHeight__roles__	Products.zms._blobfields.MyImage-class.html#getHeight__roles__
-Products.zms._blobfields.MyBlob.getMimeTypeIconSrc	Products.zms._blobfields.MyBlob-class.html#getMimeTypeIconSrc
 Products.zms._blobfields.MyBlob.get_real_size	Products.zms._blobfields.MyBlob-class.html#get_real_size
 Products.zms._blobfields.MyImage._getCopy	Products.zms._blobfields.MyImage-class.html#_getCopy
 Products.zms._blobfields.MyBlob.getFilename__roles__	Products.zms._blobfields.MyBlob-class.html#getFilename__roles__
 Products.zms._blobfields.MyBlob._range_request_handler	Products.zms._blobfields.MyBlob-class.html#_range_request_handler
-Products.zms._blobfields.MyBlob.getMimeTypeIconSrc__roles__	Products.zms._blobfields.MyBlob-class.html#getMimeTypeIconSrc__roles__
 Products.zms._blobfields.MyBlob.getFilename	Products.zms._blobfields.MyBlob-class.html#getFilename
 Products.zms._blobfields.MyBlob.equals	Products.zms._blobfields.MyBlob-class.html#equals
 Products.zms._blobfields.MyImage.__xml_attrs__	Products.zms._blobfields.MyImage-class.html#__xml_attrs__
@@ -231,6 +228,7 @@ Products.zms._blobfields.MyImage.getHeight	Products.zms._blobfields.MyImage-clas
 Products.zms._blobfields.MyBlob.getDataSizeStr	Products.zms._blobfields.MyBlob-class.html#getDataSizeStr
 Products.zms._blobfields.MyBlob.getData	Products.zms._blobfields.MyBlob-class.html#getData
 Products.zms._blobfields.MyBlob.getObjAttrs	Products.zms._blobfields.MyBlob-class.html#getObjAttrs
+Products.zms._blobfields.MyBlob.storeMediadbfile	Products.zms._blobfields.MyBlob-class.html#storeMediadbfile
 Products.zms._blobfields.MyImage.__obj_attrs__	Products.zms._blobfields.MyImage-class.html#__obj_attrs__
 Products.zms._confmanager.ConfDict	Products.zms._confmanager.ConfDict-class.html
 Products.zms._confmanager.ConfDict.__confdict__	Products.zms._confmanager.ConfDict-class.html#__confdict__

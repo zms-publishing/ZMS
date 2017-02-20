@@ -33,8 +33,6 @@ import zExceptions
 import standard
 import _fileutil
 import _globals
-import _mimetypes
-import _pilutil
 
 __all__= ['MyBlob','MyImage','MyFile']
 
@@ -123,28 +121,27 @@ Create blob-field of desired object-type and initialize it with given file.
 
 IN:    objtype        [DT_IMAGE|DT_FILE]
   file        [ZPublisher.HTTPRequest.FileUpload|dictionary]
-     mediadbStorable    [True|False]
 OUT:    blob        [MyImage|MyFile]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def createBlobField(self, objtype, file='', mediadbStorable=True):
+def createBlobField(self, objtype, file=''):
   if type( file) in StringTypes:
     blob = uploadBlobField( self, objtype, file)
   elif type( file) is dict:
     data = file.get( 'data', '')
     if type( data) is StringType:
       data = StringIO( data)
-    blob = uploadBlobField( self, objtype, data, file.get('filename',''), mediadbStorable)
+    blob = uploadBlobField( self, objtype, data, file.get('filename',''))
     if file.get('content_type'):
       blob.content_type = file.get('content_type')
   else:
-    blob = uploadBlobField( self, objtype, file, file.filename, mediadbStorable)
+    blob = uploadBlobField( self, objtype, file, file.filename)
   return blob
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _blobfields.uploadBlobField
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def uploadBlobField(self, objtype, file='', filename='', mediadbStorable=True):
+def uploadBlobField(self, objtype, file='', filename=''):
   if objtype == _globals.DT_IMAGE:
     clazz = MyImage
     maxlength_prop = 'ZMS.input.image.maxlength'
@@ -162,12 +159,6 @@ def uploadBlobField(self, objtype, file='', filename='', mediadbStorable=True):
       size = blob.get_size()
       if size > int(maxlength):
         raise zExceptions.Forbidden('size=%i > %s=%i' %(size,maxlength_prop,int(maxlength)))
-  # Store data in media-db.
-  if self is not None and mediadbStorable:
-    mediadb = self.getMediaDb()
-    if mediadb is not None:
-      blob.mediadbfile = mediadb.storeFile( blob)
-      blob.data = ''
   return blob
 
 
@@ -681,6 +672,20 @@ class MyBlob:
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.setMediadbfile: 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    def storeMediadbfile(self):
+      """
+      Store data in media-db.
+      """
+      parent = self.aq_parent
+      if parent is not None:
+        mediadb = parent.getMediaDb()
+        if mediadb is not None:
+          self.mediadbfile = mediadb.storeFile( blob)
+          self.data = ''
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlob.getMediadbfile: 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getMediadbfile__roles__ = None
@@ -759,23 +764,6 @@ class MyBlob:
       @rtype: C{string}
       """
       return self.content_type
-
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.getMimeTypeIconSrc:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    getMimeTypeIconSrc__roles__ = None
-    def getMimeTypeIconSrc(self):
-      """
-      Returns the absolute-url of an icon representing the MIME-type of this MyBlob-object.
-      @rtype: C{string}
-      @deprecated: Use ZMSGlobals.getMimeTypeIconSrc(mt) instead!
-      """
-      warnings.warn('Using MyBlob.getMimeTypeIconSrc() is deprecated.'
-                   ' Use ZMSGlobals.getMimeTypeIconSrc(mt) instead.',
-                     DeprecationWarning, 
-                     stacklevel=2)
-      return '/misc_/zms/' + _mimetypes.dctMimeType.get( self.getContentType(), _mimetypes.content_unknown)
 
 
 ################################################################################

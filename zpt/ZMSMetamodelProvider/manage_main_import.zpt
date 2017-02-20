@@ -51,7 +51,7 @@
 	<tal:block tal:condition="python:request.get('temp_import_file_id')">
 		<tal:block tal:define="global
 				f python:getattr(here.temp_folder,request.get('temp_import_file_id'));
-				xml python:here.parseXmlString(str(f.data),mediadbStorable=False);
+				xml python:here.parseXmlString(str(f.data));
 				packages python:[];
 				importObjs python:[]">
 			<tal:block tal:repeat="item xml">

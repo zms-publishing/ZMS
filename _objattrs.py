@@ -157,6 +157,9 @@ def getobjattr(self, obj, obj_attr, lang):
 # ------------------------------------------------------------------------------
 def setobjattr(self, obj, obj_attr, value, lang):
   key = self._getObjAttrName(obj_attr,lang)
+  # Handle value.
+  if isinstance(value,_blobfields.MyBlob):
+    value.storeMediadbfile()
   # Assign value.
   setattr(obj,key,value)
 

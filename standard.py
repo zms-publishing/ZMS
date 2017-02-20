@@ -47,6 +47,7 @@ import urllib
 import zExceptions
 # Product Imports.
 import _globals
+import _fileutil
 import _filtermanager
 import _xmllib
 
@@ -81,7 +82,7 @@ def set_response_headers(fn, mt='application/octet-stream', size=None, request=N
   RESPONSE.setHeader('Content-Type', mt)
   if request.get('HTTP_USER_AGENT','').find('Android') < 0:
     RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%_fileutil.extractFilename(fn))
-  if length:
+  if size:
     RESPONSE.setHeader('Content-Length',size)
   RESPONSE.setHeader('Accept-Ranges','bytes')
 

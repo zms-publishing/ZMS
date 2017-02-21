@@ -243,15 +243,15 @@ class ConfManager(
       except:
         conf = open( filepaths[1]+'configure.zcml','r')
         standard.writeBlock( self, "[getConfFiles]: Read from "+filepaths[0]+"configure.zcml")
-      conf_xml = self.xmlParse( conf)
-      for source in self.xmlNodeSet(conf_xml,'source'):
+      conf_xml = standard.xmlParse( conf)
+      for source in standard.xmlNodeSet(conf_xml,'source'):
         location = source['attrs']['location']
         if location.startswith('http://') or location.startswith('https://'):
           if remote:
             try:
-              remote_conf = self.http_import(location+'configure.zcml')
-              remote_conf_xml = self.xmlParse( remote_conf)
-              for remote_file in self.xmlNodeSet(remote_conf_xml,'file'):
+              remote_conf = standard.http_import(self,location+'configure.zcml')
+              remote_conf_xml = standard.xmlParse( remote_conf)
+              for remote_file in standard.xmlNodeSet(remote_conf_xml,'file'):
                 filename = remote_file['attrs']['id']
                 if filename not in filenames.keys():
                   filenames[location+filename] = filename+' ('+remote_file['attrs']['title']+')'

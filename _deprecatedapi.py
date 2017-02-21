@@ -555,6 +555,7 @@ class DeprecatedAPI:
 
   def xmlNodeSet(self, mNode, sTagName='', iDeep=0):
     warn(self,'xmlNodeSet','Products.zms.standard.xmlNodeSet')
+    print 1,mNode,sTagName,iDeep
     return standard.xmlNodeSet( mNode, sTagName, iDeep)
 
   def dt_executable(self, v):

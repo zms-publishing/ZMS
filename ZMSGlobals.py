@@ -22,7 +22,6 @@ from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
 from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from cStringIO import StringIO
 from types import StringTypes
 import Globals
 import base64

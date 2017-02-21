@@ -31,6 +31,7 @@ from AccessControl.SecurityInfo import ModuleSecurityInfo
 from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
+from cStringIO import StringIO
 from types import StringTypes
 from traceback import format_exception
 from zope.event import notify

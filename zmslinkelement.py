@@ -27,8 +27,9 @@ from zmscontainerobject import ZMSContainerObject
 from zmscustom import ZMSCustom
 from zmsobject import ZMSObject
 from zmsproxyobject import ZMSProxyObject
-import _confmanager
 import standard
+import _confmanager
+import _xmllib
 import _zreferableitem
 
 
@@ -293,7 +294,7 @@ class ZMSLinkElement(ZMSCustom):
       if self.getEmbedType() == 'remote':
         remote_obj = self.getRemoteObj()
         if type( remote_obj) is list:
-          for node in self.xmlNodeSet( remote_obj, 'titlealt'):
+          for node in _xmllib.xmlNodeSet( remote_obj, 'titlealt'):
             rtn = node['cdata']
       else:
         proxy = self.getProxy()
@@ -324,7 +325,7 @@ class ZMSLinkElement(ZMSCustom):
       if self.getEmbedType() == 'remote':
         remote_obj = self.getRemoteObj()
         if type( remote_obj) is list:
-          for node in self.xmlNodeSet( remote_obj, 'title'):
+          for node in _xmllib.xmlNodeSet( remote_obj, 'title'):
             rtn = node['cdata']
       else:
         proxy = self.getProxy()

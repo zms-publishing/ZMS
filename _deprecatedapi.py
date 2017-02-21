@@ -18,6 +18,7 @@
 
 # Imports.
 import tempfile
+from App.Common import package_home
 # Product Imports.
 import standard
 import _fileutil

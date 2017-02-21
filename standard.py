@@ -31,6 +31,8 @@ from AccessControl.SecurityInfo import ModuleSecurityInfo
 from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
+from Products.PageTemplates.Expressions import SecureModuleImporter
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from cStringIO import StringIO
 from types import StringTypes
 from traceback import format_exception
@@ -1699,38 +1701,6 @@ def processData(context, processId, data, trans=None):
   return _filtermanager.processData(context, processId, data, trans)
 
 
-security.declarePublic('xmlParse')
-def xmlParse(xml):
-  """
-  Parse arbitrary XML-Structure into dictionary.
-  @param data: the xml
-  @type data: C{str} or C{StringIO}
-  @return: Dictionary of XML-Structure.
-  @rtype: C{dict}
-  """
-  builder = _xmllib.XmlBuilder()
-  if type(xml) is str:
-    xml = StringIO(xml)
-  v = builder.parse(xml)
-  return v
-
-
-security.declarePublic('xmlNodeSet')
-def xmlNodeSet(mNode, sTagName='', iDeep=0):
-  """
-  Retrieve node-set for given tag-name from dictionary of XML-Node-Structure.
-  @param mNode
-  @type mNode
-  @param sTagName
-  @type sTagName: C{str}
-  @param iDeep
-  @type iDeep: C{int} 
-  @return: List of dictionaries of XML-Structure.
-  @rtype: C{list}
-  """
-  return _xmllib.xmlNodeSet( mNode, sTagName, iDeep)
-
-
 ############################################################################
 #
 #{  Executable
@@ -1856,7 +1826,6 @@ def dt_tal(context, text, options={}):
   @return: Result of the execution or None
   @rtype: C{any}
   """
-  from Products.PageTemplates.PageTemplateFile import PageTemplateFile
   class StaticPageTemplateFile(PageTemplateFile):
     def setText(self,text):
       self.text = text

@@ -208,7 +208,7 @@ class ZMSLinkElement(ZMSCustom):
       ref = self.getRef()
       try:
         value = self.http_import( ref + '/ajaxGetNode?lang=%s'%lang)
-        value = self.xmlParse( value)
+        value = _xmllib.xmlParse( value)
       except:
         standard.writeError(self,'[getRemoteObj]: can\'t embed from remote: ref=%s'%ref)
       return value

@@ -22,6 +22,7 @@ from App.Common import package_home
 # Product Imports.
 import standard
 import _fileutil
+import _xmllib
 
 def warn(self,old,new=None):
   import warnings
@@ -551,13 +552,12 @@ class DeprecatedAPI:
     return standard.processData(self, processId, data, trans)
 
   def xmlParse(self, xml):
-    warn(self,'xmlParse','Products.zms.standard.xmlParse')
-    return standard.xmlParse(xml)
+    warn(self,'xmlParse','None')
+    return _xmllib.xmlParse(xml)
 
   def xmlNodeSet(self, mNode, sTagName='', iDeep=0):
     warn(self,'xmlNodeSet','Products.zms.standard.xmlNodeSet')
-    print 1,mNode,sTagName,iDeep
-    return standard.xmlNodeSet( mNode, sTagName, iDeep)
+    return _xmllib.xmlNodeSet( mNode, sTagName, iDeep)
 
   def dt_executable(self, v):
     warn(self,'dt_executable','Products.zms.standard.dt_executable')

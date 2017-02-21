@@ -20,6 +20,7 @@
 import pyexpat
 from App.Common import package_home
 from OFS.Image import File
+from cStringIO import StringIO
 import xml.dom
 import Globals
 import copy
@@ -1032,6 +1033,22 @@ def xmlNodeSet(mNode, sTagName='', iDeep=0):
 # Parser for custom xml.
 ################################################################################
 """
+
+def xmlParse(xml):
+  """
+  Parse arbitrary XML-Structure into dictionary.
+  @param data: the xml
+  @type data: C{str} or C{StringIO}
+  @return: Dictionary of XML-Structure.
+  @rtype: C{dict}
+  """
+  builder = XmlBuilder()
+  if type(xml) is str:
+    xml = StringIO(xml)
+  v = builder.parse(xml)
+  return v
+
+
 class XmlBuilder:
     "class XmlBuilder"
 

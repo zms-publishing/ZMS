@@ -297,6 +297,10 @@ class DeprecatedAPI:
     warn(self,'get_id_prefix','Products.zms.standard.id_prefix')
     return standard.id_prefix(s)
 
+  def id_quote(self, s, mapping={'\x20':'_','-':'_','/':'_',}):
+    warn(self,'id_quote','Products.zms.standard.id_quote')
+    return standard.id_quote(s,mapping)
+
   def parseLangFmtDate(self, s, lang=None, fmt_str=None, recflag=None):
     warn(self,'parseLangFmtDate','Products.zms.standard.parseLangFmtDate')
     return standard.parseLangFmtDate(s)
@@ -564,3 +568,31 @@ class DeprecatedAPI:
   def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
     warn(self,'sendMail','Products.zms.standard.sendMail')
     return standard.sendMail(self, mto, msubject, mbody, REQUEST, mattach)
+
+  def getPRODUCT_HOME(self):
+    warn(self,'getPRODUCT_HOME','Products.zms.standard.getPRODUCT_HOME')
+    return standard.getPRODUCT_HOME()
+
+  def getPACKAGE_HOME(self):
+    warn(self,'getPACKAGE_HOME','Products.zms.standard.getPACKAGE_HOME')
+    return standard.getPACKAGE_HOME()
+
+  def writeLog(self, info):
+    warn(self,'writeLog','Products.zms.standard.writeLog')
+    return standard.writeLog( self, info)
+
+  def writeBlock(self, info):
+    warn(self,'writeBlock','Products.zms.standard.writeBlock')
+    return standard.writeBlock( self, info)
+
+  def writeError(self, info):
+    warn(self,'writeError','Products.zms.standard.writeError')
+    return standard.writeError( self, info)
+
+  def getDataSizeStr(self, len):
+    warn(self,'getDataSizeStr','Products.zms.standard.getDataSizeStr')
+    return standard.getDataSizeStr(len)
+
+  def getMimeTypeIconSrc(self, mt):
+    warn(self,'getMimeTypeIconSrc','Products.zms.standard.getMimeTypeIconSrc')
+    return standard.getMimeTypeIconSrc(mt)

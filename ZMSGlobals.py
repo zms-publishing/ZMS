@@ -35,7 +35,6 @@ import standard
 import _blobfields
 import _fileutil
 import _globals
-import _mimetypes
 import _pilutil
 
 __all__= ['ZMSGlobals']
@@ -57,14 +56,6 @@ class ZMSGlobals:
     PAGEELEMENTS = 1  #: virtual meta_type for all Page-Elements
     NOREF = 4         #: virtual meta_type-flag for resolving meta-type of ZMSLinkElement-target-object.
     NORESOLVEREF = 5  #: virtual meta_type-flag for not resolving meta-type of ZMSLinkElement-target-object.
-
-
-    """
-    Returns path to lib/site-packages
-    """
-    def getPACKAGE_HOME( self):
-      from distutils.sysconfig import get_python_lib
-      return get_python_lib()
 
 
     """
@@ -105,66 +96,6 @@ class ZMSGlobals:
       f = _blobfields.createBlobField( self, _globals.DT_IMAGE, file={'data':data,'filename':filename,'content_type':content_type})
       f.aq_parent = self
       return f
-
-
-    """
-    Converts given string to identifier (removes special-characters and 
-    replaces German umlauts).
-    @param s: String
-    @type s: C{string}
-    @return: Identifier
-    @rtype: C{string}
-    """
-    def id_quote(self, s, mapping={
-            '\x20':'_',
-            '-':'_',
-            '/':'_',
-    }):
-      s = standard.umlaut_quote(s, mapping)
-      valid = map( lambda x: ord(x[0]), mapping.values()) + [ord('_')] + range(ord('0'),ord('9')+1) + range(ord('A'),ord('Z')+1) + range(ord('a'),ord('z')+1)
-      s = filter( lambda x: ord(x) in valid, s)
-      while len(s) > 0 and s[0] == '_':
-          s = s[1:]
-      s = s.lower()
-      return s
-
-
-    """
-    Returns display string for file-size (KB).
-    @param len: length (bytes)
-    @type len: C{int}
-    @rtype: C{string}
-    """
-    def getDataSizeStr(self, len):
-      return _fileutil.getDataSizeStr(len)
-
-
-    """
-    Returns the absolute-url of an icon representing the specified MIME-type.
-    @param mt: MIME-Type (e.g. image/gif, text/xml).
-    @type mt: C{string}
-    @rtype: C{string}
-    """
-    def getMimeTypeIconSrc(self, mt):
-      return'/misc_/zms/%s'%_mimetypes.dctMimeType.get( mt, _mimetypes.content_unknown)
-
-
-    ############################################################################
-    #
-    #( Logging
-    #
-    ############################################################################
-
-    def writeLog(self, info):
-      return standard.writeLog( self, info)
-
-    def writeBlock(self, info):
-      return standard.writeBlock( self, info)
-
-    def writeError(self, info):
-      return standard.writeError( self, info)
-
-    #)
 
 
     """

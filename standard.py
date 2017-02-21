@@ -49,6 +49,7 @@ import zExceptions
 import _globals
 import _fileutil
 import _filtermanager
+import _mimetypes
 import _xmllib
 
 security = ModuleSecurityInfo('Products.zms.standard')
@@ -68,9 +69,20 @@ security.declarePublic('getPRODUCT_HOME')
 def getPRODUCT_HOME():
   """
   Returns home-folder of this Product.
+  @rtype: C{str}
   """
   PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
   return PRODUCT_HOME
+
+
+security.declarePublic('getPACKAGE_HOME')
+def getPACKAGE_HOME():
+  """
+  Returns path to lib/site-packages.
+  @rtype: C{str}
+  """
+  from distutils.sysconfig import get_python_lib
+  return get_python_lib()
 
 
 security.declarePublic('set_response_headers')
@@ -359,12 +371,33 @@ def rand_int(n):
   return randint(0,n)
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.unencode:
+security.declarePublic('getDataSizeStr')
+def getDataSizeStr(len):
+  """
+  Returns display string for file-size (KB).
+  @param len: length (bytes)
+  @type len: C{int}
+  @rtype: C{str}
+  """
+  return _fileutil.getDataSizeStr(len)
 
-Unencodes given parameter.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+security.declarePublic('getMimeTypeIconSrc')
+def getMimeTypeIconSrc(self, mt):
+  """
+  Returns the absolute-url of an icon representing the specified MIME-type.
+  @param mt: MIME-Type (e.g. image/gif, text/xml).
+  @type mt: C{str}
+  @rtype: C{str}
+  """
+  return'/misc_/zms/%s'%_mimetypes.dctMimeType.get( mt, _mimetypes.content_unknown)
+
+
+security.declarePublic('unencode')
 def unencode( p, enc='utf-8'):
+  """
+  Unencodes given parameter.
+  """
   if type( p) is dict:
     for key in p.keys():
       if type( p[ key]) is unicode:
@@ -394,12 +427,34 @@ def id_prefix(s):
   return re.findall('^(\\D*)',s)[0]
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.form_quote
+security.declarePublic('id_quote')
+def id_quote(s, mapping={
+        '\x20':'_',
+        '-':'_',
+        '/':'_',
+}):
+  """
+  Converts given string to identifier (removes special-characters and 
+  replaces German umlauts).
+  @param s: String
+  @type s: C{str}
+  @return: Identifier
+  @rtype: C{str}
+  """
+  s = umlaut_quote(s, mapping)
+  valid = map( lambda x: ord(x[0]), mapping.values()) + [ord('_')] + range(ord('0'),ord('9')+1) + range(ord('A'),ord('Z')+1) + range(ord('a'),ord('z')+1)
+  s = filter( lambda x: ord(x) in valid, s)
+  while len(s) > 0 and s[0] == '_':
+      s = s[1:]
+  s = s.lower()
+  return s
 
-Remove <form>-tags for Management Interface.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+security.declarePublic('form_quote')
 def form_quote(text, REQUEST):
+  """
+  Remove <form>-tags for Management Interface.
+  """
   rtn = text
   if isManagementInterface(REQUEST):
     rtn = re.sub( '<form(.*?)>', '<noform\\1>', rtn)
@@ -408,12 +463,10 @@ def form_quote(text, REQUEST):
   return rtn
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.qs_append:
-
-Append to Query-String.
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def qs_append(qs, p, v):
+  """
+    Append to query-string.
+  """
   if len(qs) == 0:
     qs += '?'
   else:
@@ -440,20 +493,18 @@ def nvl(a1, a2, n=None):
     return a2
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.get_session:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def get_session(context):
+  """
+  Get http-session.
+  """
   return getattr(context, 'session_data_manager', None) and \
     context.session_data_manager.getSessionData(create=0)
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.triggerEvent:
-
-Hook for trigger of custom event (if there is one)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def triggerEvent(context, *args, **kwargs):
+  """
+  Hook for trigger of custom event (if there is one)
+  """
   l = []
   name = args[0]
   

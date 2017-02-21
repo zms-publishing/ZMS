@@ -88,12 +88,46 @@
 </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="getPRODUCT_HOME"></a><span class="summary-sig-name">getPRODUCT_HOME</span>()</span><br />
       Returns home-folder of this Product.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getPACKAGE_HOME"></a><span class="summary-sig-name">getPACKAGE_HOME</span>()</span><br />
+      Returns path to lib/site-packages.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getINSTANCE_HOME"></a><span class="summary-sig-name">getINSTANCE_HOME</span>()</span><br />
+      Returns path to Instance</td>
           <td align="right" valign="top">
             
             
@@ -359,12 +393,48 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#getDataSizeStr" class="summary-sig-name">getDataSizeStr</a>(<span class="summary-sig-arg">len</span>)</span><br />
+      Returns display string for file-size (KB).</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#getMimeTypeIconSrc" class="summary-sig-name">getMimeTypeIconSrc</a>(<span class="summary-sig-arg">mt</span>)</span><br />
+      Returns the absolute-url of an icon representing the specified 
+      MIME-type.</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="unencode"></a><span class="summary-sig-name">unencode</span>(<span class="summary-sig-arg">p</span>,
-        <span class="summary-sig-arg">enc</span>=<span class="summary-sig-default">'utf-8'</span>)</span></td>
+        <span class="summary-sig-arg">enc</span>=<span class="summary-sig-default">'utf-8'</span>)</span><br />
+      Unencodes given parameter.</td>
           <td align="right" valign="top">
             
             
@@ -394,12 +464,32 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type"><code>str</code></span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#id_quote" class="summary-sig-name">id_quote</a>(<span class="summary-sig-arg">s</span>,
+        <span class="summary-sig-arg">mapping</span>=<span class="summary-sig-default">{'\x20': '_','-': '_','/': '_',}</span>)</span><br />
+      Converts given string to identifier (removes special-characters and 
+      replaces German umlauts).</td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a name="form_quote"></a><span class="summary-sig-name">form_quote</span>(<span class="summary-sig-arg">text</span>,
-        <span class="summary-sig-arg">REQUEST</span>)</span></td>
+        <span class="summary-sig-arg">REQUEST</span>)</span><br />
+      Remove &lt;form&gt;-tags for Management Interface.</td>
           <td align="right" valign="top">
             
             
@@ -417,7 +507,8 @@
         <tr>
           <td><span class="summary-sig"><a name="qs_append"></a><span class="summary-sig-name">qs_append</span>(<span class="summary-sig-arg">qs</span>,
         <span class="summary-sig-arg">p</span>,
-        <span class="summary-sig-arg">v</span>)</span></td>
+        <span class="summary-sig-arg">v</span>)</span><br />
+      Append to query-string.</td>
           <td align="right" valign="top">
             
             
@@ -453,7 +544,8 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="get_session"></a><span class="summary-sig-name">get_session</span>(<span class="summary-sig-arg">context</span>)</span></td>
+          <td><span class="summary-sig"><a name="get_session"></a><span class="summary-sig-name">get_session</span>(<span class="summary-sig-arg">context</span>)</span><br />
+      Get http-session.</td>
           <td align="right" valign="top">
             
             
@@ -471,7 +563,8 @@
         <tr>
           <td><span class="summary-sig"><a name="triggerEvent"></a><span class="summary-sig-name">triggerEvent</span>(<span class="summary-sig-arg">context</span>,
         <span class="summary-sig-arg">*args</span>,
-        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Hook for trigger of custom event (if there is one)</td>
           <td align="right" valign="top">
             
             
@@ -844,8 +937,9 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="parseLangFmtDate"></a><span class="summary-sig-name">parseLangFmtDate</span>(<span class="summary-sig-arg">s</span>)</span><br />
-      Parse date in locale-format</td>
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#parseLangFmtDate" class="summary-sig-name">parseLangFmtDate</a>(<span class="summary-sig-arg">s</span>)</span><br />
+      Parses a string representing a date by trying a variety of different 
+      parsers.</td>
           <td align="right" valign="top">
             
             
@@ -1330,8 +1424,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#getXmlHeader" class="summary-sig-name">getXmlHeader</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">encoding</span>=<span class="summary-sig-default">'utf-8'</span>)</span><br />
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#getXmlHeader" class="summary-sig-name">getXmlHeader</a>(<span class="summary-sig-arg">encoding</span>=<span class="summary-sig-default">'utf-8'</span>)</span><br />
       Returns XML-Header (encoding=utf-8)</td>
           <td align="right" valign="top">
             
@@ -1422,8 +1515,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#xmlNodeSet" class="summary-sig-name">xmlNodeSet</a>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">mNode</span>,
+          <td><span class="summary-sig"><a href="Products.zms.standard-module.html#xmlNodeSet" class="summary-sig-name">xmlNodeSet</a>(<span class="summary-sig-arg">mNode</span>,
         <span class="summary-sig-arg">sTagName</span>=<span class="summary-sig-default">''</span>,
         <span class="summary-sig-arg">iDeep</span>=<span class="summary-sig-default">0</span>)</span><br />
       Retrieve node-set for given tag-name from dictionary of 
@@ -1881,6 +1973,55 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="getDataSizeStr"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getDataSizeStr</span>(<span class="sig-arg">len</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns display string for file-size (KB).</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>len</code></strong> (<code>int</code>) - length (bytes)</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="getMimeTypeIconSrc"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getMimeTypeIconSrc</span>(<span class="sig-arg">mt</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns the absolute-url of an icon representing the specified 
+  MIME-type.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>mt</code></strong> (<code>str</code>) - MIME-Type (e.g. image/gif, text/xml).</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+  </dl>
+</td></tr></table>
+</div>
 <a name="id_prefix"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -1904,6 +2045,33 @@
     </ul></dd>
     <dt>Returns: <code>str</code></dt>
         <dd>Id-prefix</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="id_quote"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">id_quote</span>(<span class="sig-arg">s</span>,
+        <span class="sig-arg">mapping</span>=<span class="sig-default">{'\x20': '_','-': '_','/': '_',}</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Converts given string to identifier (removes special-characters and 
+  replaces German umlauts).</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>s</code></strong> (<code>str</code>) - String</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+        <dd>Identifier</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -2225,10 +2393,39 @@ Compares two dates t0 and t1 and returns result.
  +1: t0 &lt; t1
   0: t0 == t1
  -1: t0 &gt; t1
+@returns: A negative number if date t0 is before t1, zero if they are equal, or positive if t0 is after t1.
 @rtype: C{int}
 
 </pre>
   <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="parseLangFmtDate"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">parseLangFmtDate</span>(<span class="sig-arg">s</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Parses a string representing a date by trying a variety of different 
+  parsers. The parse will try each parse pattern in turn. A parse is only 
+  deemed successful if it parses the whole of the input string. If no parse
+  patterns match, None is returned.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>s</code></strong> (<code>s</code>) - the date to parse</li>
+    </ul></dd>
+    <dt>Returns: <code>struct_time</code></dt>
+        <dd>the parsed date.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -2698,8 +2895,7 @@ Compares two dates t0 and t1 and returns result.
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">getXmlHeader</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">encoding</span>=<span class="sig-default">'utf-8'</span>)</span>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getXmlHeader</span>(<span class="sig-arg">encoding</span>=<span class="sig-default">'utf-8'</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     >&nbsp;
@@ -2829,8 +3025,7 @@ Compares two dates t0 and t1 and returns result.
 <tr><td>
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">xmlNodeSet</span>(<span class="sig-arg">self</span>,
-        <span class="sig-arg">mNode</span>,
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">xmlNodeSet</span>(<span class="sig-arg">mNode</span>,
         <span class="sig-arg">sTagName</span>=<span class="sig-default">''</span>,
         <span class="sig-arg">iDeep</span>=<span class="sig-default">0</span>)</span>
   </h3>
@@ -3053,7 +3248,7 @@ Compares two dates t0 and t1 and returns result.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon Feb 20 21:34:56 2017
+    Generated by Epydoc 3.0.1 on Tue Feb 21 18:16:34 2017
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

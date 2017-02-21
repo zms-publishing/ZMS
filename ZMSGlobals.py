@@ -59,14 +59,6 @@ class ZMSGlobals:
 
 
     """
-    Returns path to Instance
-    """
-    def getINSTANCE_HOME( self):
-      INSTANCE_HOME = self.Control_Panel.getINSTANCE_HOME()
-      return INSTANCE_HOME
-
-
-    """
     Creates a new instance of a file from given data.
     @param data: File-data (binary)
     @type data: C{string}
@@ -151,14 +143,6 @@ class ZMSGlobals:
       except:
         rtn = standard.writeError( self, '[getPlugin]')
       return rtn
-
-    def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
-      return standard.http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers)
-
-
-    def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
-      return standard.getLangFmtDate(self, t, lang, fmt_str)
-
 
     """
     Check if feature toggle is set.

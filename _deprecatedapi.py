@@ -577,6 +577,10 @@ class DeprecatedAPI:
     warn(self,'getPACKAGE_HOME','Products.zms.standard.getPACKAGE_HOME')
     return standard.getPACKAGE_HOME()
 
+  def getINSTANCE_HOME(self):
+    warn(self,'getINSTANCE_HOME','Products.zms.standard.getINSTANCE_HOME')
+    return standard.getINSTANCE_HOME()
+
   def writeLog(self, info):
     warn(self,'writeLog','Products.zms.standard.writeLog')
     return standard.writeLog( self, info)
@@ -596,3 +600,11 @@ class DeprecatedAPI:
   def getMimeTypeIconSrc(self, mt):
     warn(self,'getMimeTypeIconSrc','Products.zms.standard.getMimeTypeIconSrc')
     return standard.getMimeTypeIconSrc(mt)
+    
+  def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
+    warn(self,'http_import','Products.zms.standard.http_import')
+    return standard.http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers)
+
+  def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
+    warn(self,'getLangFmtDate','Products.zms.standard.getLangFmtDate')
+    return standard.getLangFmtDate(self, t, lang, fmt_str)

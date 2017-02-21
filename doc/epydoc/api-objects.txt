@@ -29,6 +29,7 @@ Products.zms.standard.parseXmlString	Products.zms.standard-module.html#parseXmlS
 Products.zms.standard.sendMail	Products.zms.standard-module.html#sendMail
 Products.zms.standard.operator_gettype	Products.zms.standard-module.html#operator_gettype
 Products.zms.standard.string_list	Products.zms.standard-module.html#string_list
+Products.zms.standard.getMimeTypeIconSrc	Products.zms.standard-module.html#getMimeTypeIconSrc
 Products.zms.standard.security	Products.zms.standard-module.html#security
 Products.zms.standard.dt_tal	Products.zms.standard-module.html#dt_tal
 Products.zms.standard.processData	Products.zms.standard-module.html#processData
@@ -39,11 +40,11 @@ Products.zms.standard.encrypt_schemes	Products.zms.standard-module.html#encrypt_
 Products.zms.standard.intersection_list	Products.zms.standard-module.html#intersection_list
 Products.zms.standard.rand_int	Products.zms.standard-module.html#rand_int
 Products.zms.standard.getLog	Products.zms.standard-module.html#getLog
+Products.zms.standard.id_quote	Products.zms.standard-module.html#id_quote
 Products.zms.standard.unescape	Products.zms.standard-module.html#unescape
 Products.zms.standard.stripDateTime	Products.zms.standard-module.html#stripDateTime
 Products.zms.standard.unencode	Products.zms.standard-module.html#unencode
 Products.zms.standard.dt_html	Products.zms.standard-module.html#dt_html
-Products.zms.standard.str_json	Products.zms.standard-module.html#str_json
 Products.zms.standard.getDateTime	Products.zms.standard-module.html#getDateTime
 Products.zms.standard.url_inherit_params	Products.zms.standard-module.html#url_inherit_params
 Products.zms.standard.getPRODUCT_HOME	Products.zms.standard-module.html#getPRODUCT_HOME
@@ -51,10 +52,12 @@ Products.zms.standard.parseLangFmtDate	Products.zms.standard-module.html#parseLa
 Products.zms.standard.isManagementInterface	Products.zms.standard-module.html#isManagementInterface
 Products.zms.standard.writeLog	Products.zms.standard-module.html#writeLog
 Products.zms.standard.compareDate	Products.zms.standard-module.html#compareDate
+Products.zms.standard.getPACKAGE_HOME	Products.zms.standard-module.html#getPACKAGE_HOME
 Products.zms.standard.localfs_write	Products.zms.standard-module.html#localfs_write
 Products.zms.standard.get_session	Products.zms.standard-module.html#get_session
 Products.zms.standard.form_quote	Products.zms.standard-module.html#form_quote
 Products.zms.standard.operator_setitem	Products.zms.standard-module.html#operator_setitem
+Products.zms.standard.getINSTANCE_HOME	Products.zms.standard-module.html#getINSTANCE_HOME
 Products.zms.standard.id_prefix	Products.zms.standard-module.html#id_prefix
 Products.zms.standard.qs_append	Products.zms.standard-module.html#qs_append
 Products.zms.standard.url_append_params	Products.zms.standard-module.html#url_append_params
@@ -74,6 +77,7 @@ Products.zms.standard.dt_py	Products.zms.standard-module.html#dt_py
 Products.zms.standard.re_sub	Products.zms.standard-module.html#re_sub
 Products.zms.standard.concat_list	Products.zms.standard-module.html#concat_list
 Products.zms.standard.umlaut_quote	Products.zms.standard-module.html#umlaut_quote
+Products.zms.standard.getDataSizeStr	Products.zms.standard-module.html#getDataSizeStr
 Products.zms.standard.url_encode	Products.zms.standard-module.html#url_encode
 Products.zms.standard.localfs_read	Products.zms.standard-module.html#localfs_read
 Products.zms.standard.str_item	Products.zms.standard-module.html#str_item
@@ -91,6 +95,7 @@ Products.zms.standard.filter_list	Products.zms.standard-module.html#filter_list
 Products.zms.standard.triggerEvent	Products.zms.standard-module.html#triggerEvent
 Products.zms.standard.toXmlString	Products.zms.standard-module.html#toXmlString
 Products.zms.standard.operator_delitem	Products.zms.standard-module.html#operator_delitem
+Products.zms.standard.str_json	Products.zms.standard-module.html#str_json
 Products.zms.standard.aggregate_list	Products.zms.standard-module.html#aggregate_list
 Products.zms.standard.encrypt_ordtype	Products.zms.standard-module.html#encrypt_ordtype
 Products.zms.zms	Products.zms.zms-module.html

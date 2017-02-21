@@ -29,6 +29,7 @@ Scripts.  It can be accessed from Python with the statement
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 from App.Common import package_home
+from App.config import getConfiguration
 from DateTime.DateTime import DateTime
 from types import StringTypes
 from traceback import format_exception
@@ -83,6 +84,15 @@ def getPACKAGE_HOME():
   """
   from distutils.sysconfig import get_python_lib
   return get_python_lib()
+
+
+security.declarePublic('getINSTANCE_HOME')
+def getINSTANCE_HOME():
+  """
+  Returns path to Instance
+  @rtype: C{str}
+  """
+  return getConfiguration().instancehome
 
 
 security.declarePublic('set_response_headers')
@@ -383,7 +393,7 @@ def getDataSizeStr(len):
 
 
 security.declarePublic('getMimeTypeIconSrc')
-def getMimeTypeIconSrc(self, mt):
+def getMimeTypeIconSrc(mt):
   """
   Returns the absolute-url of an icon representing the specified MIME-type.
   @param mt: MIME-Type (e.g. image/gif, text/xml).
@@ -980,6 +990,7 @@ def compareDate(t0, t1):
    +1: t0 < t1
     0: t0 == t1
    -1: t0 > t1
+  @returns: A negative number if date t0 is before t1, zero if they are equal, or positive if t0 is after t1.
   @rtype: C{int}
   """
   mt0 = time.mktime(stripDateTime(getDateTime(t0)))
@@ -994,7 +1005,11 @@ def compareDate(t0, t1):
 security.declarePublic('parseLangFmtDate')
 def parseLangFmtDate(s):
   """
-  Parse date in locale-format
+  Parses a string representing a date by trying a variety of different parsers.
+  The parse will try each parse pattern in turn. A parse is only deemed successful if it parses the whole of the input string. If no parse patterns match, None is returned.
+  @param s: the date to parse
+  @type s:C{s}
+  @return: the parsed date.
   @rtype: C{struct_time}
   """
   def strip_int(s):
@@ -1065,6 +1080,7 @@ def operator_absattr(v):
   Returns absolute-attribute of given value.
   @param v: Value
   @type v: C{any}
+  @return: the absolute-attribute of the value
   @rtype: C{type}
   """
   return absattr(v)
@@ -1075,6 +1091,7 @@ def operator_gettype(v):
   Returns python-type of given value.
   @param v: Value
   @type v: C{any}
+  @return: the type of the value
   @rtype: C{type}
   """
   return type(v)
@@ -1620,7 +1637,7 @@ def aggregate_list(l, i):
 ############################################################################
 
 security.declarePublic('getXmlHeader')
-def getXmlHeader(self, encoding='utf-8'):
+def getXmlHeader(encoding='utf-8'):
   """
   Returns XML-Header (encoding=utf-8)
   @param encoding: Encoding
@@ -1698,7 +1715,7 @@ def xmlParse(xml):
 
 
 security.declarePublic('xmlNodeSet')
-def xmlNodeSet(self, mNode, sTagName='', iDeep=0):
+def xmlNodeSet(mNode, sTagName='', iDeep=0):
   """
   Retrieve node-set for given tag-name from dictionary of XML-Node-Structure.
   @param mNode

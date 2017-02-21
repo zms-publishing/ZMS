@@ -567,7 +567,7 @@ class DeprecatedAPI:
     warn(self,'dt_exec','Products.zms.standard.dt_exec')
     return standard.dt_exec(self,v,o)
 
-  def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
+  def sendMail(self, mto, msubject, mbody, REQUEST=None, mattach=None):
     warn(self,'sendMail','Products.zms.standard.sendMail')
     return standard.sendMail(self, mto, msubject, mbody, REQUEST, mattach)
 

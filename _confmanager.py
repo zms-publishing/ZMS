@@ -36,6 +36,7 @@ import stat
 import tempfile
 import time
 import urllib
+import xml.dom
 import zExceptions
 import zope.interface
 # Product imports.
@@ -48,7 +49,6 @@ import _filtermanager
 import _mediadb
 import _multilangmanager
 import _sequence
-import _xmllib
 import zopeutil
 import zmslog
 
@@ -238,36 +238,35 @@ class ConfManager(
       filepaths = [
         self.Control_Panel.getINSTANCE_HOME()+'/etc/zms/import/',
         package_home(globals())+'/import/',]
-      try:
-        conf = open( filepaths[0]+'configure.zcml','r')
-        standard.writeBlock( self, "[getConfFiles]: Read from "+filepaths[0]+"configure.zcml")
-      except:
-        conf = open( filepaths[1]+'configure.zcml','r')
-        standard.writeBlock( self, "[getConfFiles]: Read from "+filepaths[0]+"configure.zcml")
-      conf_xml = _xmllib.xmlParse( conf)
-      for source in _xmllib.xmlNodeSet(conf_xml,'source'):
-        location = source['attrs']['location']
-        if location.startswith('http://') or location.startswith('https://'):
-          if remote:
-            try:
-              remote_conf = standard.http_import(self,location+'configure.zcml')
-              remote_conf_xml = _xmllib.xmlParse( remote_conf)
-              for remote_file in _xmllib.xmlNodeSet(remote_conf_xml,'file'):
-                filename = remote_file['attrs']['id']
-                if filename not in filenames.keys():
-                  filenames[location+filename] = filename+' ('+remote_file['attrs']['title']+')'
-            except:
-              self.writeError("[getConfFiles]: can't get conf-files from remote URL=%s"%location)
-        else:
-          for filepath in filepaths:
-            if os.path.exists( filepath):
-              for filename in os.listdir(filepath+location):
-                path = filepath + filename
-                mode = os.stat(path)[stat.ST_MODE]
-                if not stat.S_ISDIR(mode):
-                  if filename not in filenames:
-                    filenames[path] = filename
-      conf.close()
+      for filepath in filepaths:
+        filename = os.path.join(filepath,'configure.zcml')
+        if os.path.exists(filename):
+          standard.writeBlock( self, "[getConfFiles]: Read from "+filename)
+          xmldoc = xml.dom.minidom.parse(filename)
+          for source in xmldoc.getElementsByTagName('source'):
+            location = source.attributes['location'].value
+            if location.startswith('http://') or location.startswith('https://'):
+              if remote:
+                remote_location = location+'configure.zcml'
+                try:
+                  remote_xml = standard.http_import(self,remote_location)
+                  remote_xmldoc = xml.dom.minidom.parseString(remote_xml)
+                  for remote_file in remote_xmldoc.getElementsByTagName('file'):
+                    filename = remote_file.attributes['id'].value
+                    if filename not in filenames.keys():
+                      filenames[location+filename] = filename+' ('+remote_file.attributes['title'].value+')'
+                except:
+                  self.writeError("[getConfFiles]: can't get conf-files from remote URL=%s"%remote_location)
+            else:
+              for filepath in filepaths:
+                if os.path.exists( filepath):
+                  for filename in os.listdir(filepath+location):
+                    path = filepath + filename
+                    mode = os.stat(path)[stat.ST_MODE]
+                    if not stat.S_ISDIR(mode):
+                      if filename not in filenames:
+                        filenames[path] = filename
+          break
       # Filter.
       if pattern is not None:
         for k in filenames.keys():

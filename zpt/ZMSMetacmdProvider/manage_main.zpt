@@ -4,13 +4,14 @@
 <body tal:attributes="class python:here.zmi_body_class(id='metas config')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
-<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
-
-<tal:block tal:define="global
+<tal:block tal:define="
 		action python:'manage_changeMetacmds';
-		metaCmdIds python:here.getMetaCmdIds()">
+		metaCmdIds python:here.getMetaCmdIds();
+		metaCmds python:map(lambda x:here.getMetaCmd(x),metaCmdIds)">
 
-<div class="ui-helper-hidden" tal:condition="python:request.get('id','') in metaCmdIds">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]]+map(lambda x:{'action':'?id=%s'%x['id'],'label':x['name']},filter(lambda x:x['id']==request.get('id'),metaCmds)))">zmi_breadcrumbs</tal:block>
+
+<div class="ui-helper-hidden" tal:condition="python:request.get('id') in metaCmdIds">
 	<div id="editObj" class="inner" tal:define="global metaCmd python:here.getMetaCmd(request['id'])">
 		<form class="form-horizontal" name="editForm" tal:attributes="action action" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="id" tal:attributes="value request/id">

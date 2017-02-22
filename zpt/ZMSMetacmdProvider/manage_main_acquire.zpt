@@ -3,12 +3,12 @@
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='metas_acquire')">
 
-<tal:block tal:define="global
+<tal:block tal:define="
 		master python:here.getPortalMaster();
 		masterMetaCmdIds python:master.getMetaCmdIds();
 		acquireObjs python:map(lambda x:(None,x,master.getMetaCmd(x)['name']),masterMetaCmdIds)">
 
-<tal:block tal:define="global dummy0 python:acquireObjs.sort()"></tal:block>
+<tal:block tal:define="dummy0 python:acquireObjs.sort()"></tal:block>
 	<div class="container">
 	<tal:block tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</tal:block>
 	<form class="form-horizontal col-xs-10" action="manage_changeMetacmds" method="post" enctype="multipart/form-data" target="_parent">

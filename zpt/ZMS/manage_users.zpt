@@ -20,7 +20,7 @@
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'users config',here.meta_id])">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
-<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'action':'manage_users','label':'TAB_USERS'}])">zmi_breadcrumbs</tal:block>
 <script>
 function zmiModalAddUserOpen(context) {
 	zmiModal('#addUser',{title:getZMILangStr('BTN_ADD')});

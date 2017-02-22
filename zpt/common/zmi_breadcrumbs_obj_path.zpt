@@ -22,6 +22,9 @@
 			tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang']);title title" 
 			tal:content="structure titlealt">the titlealt
 	</a></li>
+	<li tal:repeat="extra python:options.get('extra',[])">
+		<a tal:attributes="href extra/action" tal:content="python:here.getZMILangStr(extra['label'])">the label</a>
+	</li>
 </ul>
 </tal:block>
 

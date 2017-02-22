@@ -772,7 +772,6 @@ class ZMSContainerObject(
 
     # --------------------------------------------------------------------------
     #  ZMSContainerObject.filteredChildNodes:
-    #
     # --------------------------------------------------------------------------
     def filteredChildNodes(self, REQUEST={}, meta_types=None):
       """
@@ -784,8 +783,11 @@ class ZMSContainerObject(
 
     # --------------------------------------------------------------------------
     #  ZMSContainerObject.getChildNodes:
-    #
     # --------------------------------------------------------------------------
+    PAGES        = 0 # virtual meta_type for all Pages (Containers)
+    PAGEELEMENTS = 1 # virtual meta_type for all Page-Elements
+    NOREF        = 4 # virtual meta_type for resolving meta-type of ZMSLinkElement-target-object.
+    NORESOLVEREF = 5 # virtual meta_type for not resolving meta-type of ZMSLinkElement-target-object.
     def getChildNodes(self, REQUEST=None, meta_types=None, reid=None):
       """
       Returns a NodeList that contains all children of this node in correct 

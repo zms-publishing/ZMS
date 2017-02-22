@@ -119,8 +119,8 @@ _blobfields.createBlobField:
 
 Create blob-field of desired object-type and initialize it with given file.
 
-IN:    objtype        [DT_IMAGE|DT_FILE]
-  file        [ZPublisher.HTTPRequest.FileUpload|dictionary]
+IN:    clazz        [C{MyImage}|C{MyFile}]
+        file        [ZPublisher.HTTPRequest.FileUpload|dictionary]
 OUT:    blob        [MyImage|MyFile]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def createBlobField(self, objtype, file=''):
@@ -141,20 +141,18 @@ def createBlobField(self, objtype, file=''):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _blobfields.uploadBlobField
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def uploadBlobField(self, objtype, file='', filename=''):
-  if objtype == _globals.DT_IMAGE:
+def uploadBlobField(self, clazz, file='', filename=''):
+  if clazz in [_globals.DT_IMAGE,'image']:
     clazz = MyImage
-    maxlength_prop = 'ZMS.input.image.maxlength'
-  elif objtype == _globals.DT_FILE:
+  elif clazz in [_globals.DT_FILE,'file']:
     clazz = MyFile
-    maxlength_prop = 'ZMS.input.file.maxlength'
   blob = clazz( id='',title='',file=file)
   blob.aq_parent = self
   blob.mediadbfile = None
   blob.filename = _fileutil.extractFilename( filename, undoable=True).encode('utf-8')
   # Check size.
   if self is not None:
-    maxlength = self.getConfProperty(maxlength_prop,'')
+    maxlength = self.getConfProperty('ZMS.input.%s.maxlength'%['file','image'][isinstance(blob,MyImage)],'')
     if len(maxlength) > 0:
       size = blob.get_size()
       if size > int(maxlength):

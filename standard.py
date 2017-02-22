@@ -31,6 +31,7 @@ from AccessControl.SecurityInfo import ModuleSecurityInfo
 from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
+from OFS.CopySupport import absattr
 from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from cStringIO import StringIO
@@ -38,6 +39,7 @@ from types import StringTypes
 from traceback import format_exception
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
+import base64
 import cgi
 import copy
 import fnmatch
@@ -50,6 +52,7 @@ import time
 import urllib
 import zExceptions
 # Product Imports.
+import _blobfields
 import _globals
 import _fileutil
 import _filtermanager
@@ -96,6 +99,42 @@ def getINSTANCE_HOME():
   @rtype: C{str}
   """
   return getConfiguration().instancehome
+
+
+security.declarePublic('FileFromData')
+def FileFromData( context, data, filename='', content_type=None):
+  """
+  Creates a new instance of a file from given data.
+  @param data: File-data (binary)
+  @type data: C{string}
+  @param filename: Filename
+  @type filename: C{string}
+  @return: New instance of file.
+  @rtype: L{MyFile}
+  """
+  file = {}
+  file['data'] = data
+  file['filename'] = filename
+  if content_type: file['content_type'] = content_type
+  return _blobfields.createBlobField( context, _blobfields.MyFile, file=file)
+
+
+security.declarePublic('ImageFromData')
+def ImageFromData( context, data, filename='', content_type=None):
+  """
+  Creates a new instance of an image from given data.
+  @param data: Image-data (binary)
+  @type data: C{string}
+  @param filename: Filename
+  @type filename: C{string}
+  @return: New instance of image.
+  @rtype: L{MyImage}
+  """
+  file = {}
+  file['data'] = data
+  file['filename'] = filename
+  if content_type: file['content_type'] = content_type
+  return _blobfields.createBlobField( context, _blobfields.MyImage, file=file)
 
 
 security.declarePublic('set_response_headers')
@@ -653,7 +692,6 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   
   # Set request-headers.
   if auth is not None:
-    import base64
     userpass = auth['username']+':'+auth['password']
     userpass = base64.encodestring(urllib.unquote(userpass)).strip()
     headers['Authorization'] =  'Basic '+userpass

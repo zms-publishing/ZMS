@@ -206,7 +206,7 @@ class ZMSMetaobjManager:
             newCustom = attr.get('data','')
             newDefault = attr.get('default','')
             if newType in ['resource']:
-              newCustom = _blobfields.createBlobField( self,_globals.DT_FILE, {'data':newCustom,'filename':newId})
+              newCustom = _blobfields.createBlobField( self,_blobfields.MyFile, {'data':newCustom,'filename':newId})
             self.setMetaobjAttr(id,oldId,newId,newName,newMandatory,newMultilang,newRepetitive,newType,newKeys,newCustom,newDefault)
       return id
 
@@ -1094,7 +1094,7 @@ class ZMSMetaobjManager:
               # Upload resource.
               if isinstance(newCustom,ZPublisher.HTTPRequest.FileUpload):
                   if len(getattr(newCustom,'filename','')) > 0:
-                      newCustom = _blobfields.createBlobField( self,_globals.DT_FILE, newCustom)
+                      newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, newCustom)
                   else:
                       REQUEST.set('attr_custom_%s_modified'%old_id,'0')
               # Restore resource.

@@ -882,11 +882,7 @@ class XmlAttrBuilder:
           data = standard.hex2bin( cdata)
         file = {'data':data,'filename':filename,'content_type':content_type}
         objtype = attrs.get('type')
-        item = None
-        if objtype == 'image':
-          item = _blobfields.createBlobField( None, _globals.DT_IMAGE, file)
-        elif objtype == 'file':
-          item = _blobfields.createBlobField( None, _globals.DT_FILE, file)
+        item = _blobfields.createBlobField( None, objtype, file)
         for key in attrs.keys():
           value = attrs.get( key)
           setattr(item,key,value)

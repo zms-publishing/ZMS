@@ -30,7 +30,7 @@ import string
 import time
 # Product Imports.
 import standard
-import zmscontainerobject
+import zopeutil
 import ZMSItem
 import ZMSGlobals
 import ZMSWorkflowItem
@@ -52,7 +52,6 @@ import _versionmanager
 import _xmllib
 import _textformatmanager
 import _zmsattributecontainer
-import zopeutil
 import _zreferableitem
 
 __all__= ['ZMSObject']
@@ -683,7 +682,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             v = request.get( 'resource_%s'%el_name)
             if isinstance(v,ZPublisher.HTTPRequest.FileUpload):
               if len(getattr(v,'filename',''))>0:
-                v = _blobfields.createBlobField(self,_globals.DT_FILE,v)
+                v = _blobfields.createBlobField(self,_blobfields.MyFile,v)
                 resources.append( v)
                 el_value = request.get( el_name)
                 if el_value is not None:
@@ -1122,8 +1121,8 @@ class ZMSObject(ZMSItem.ZMSItem,
               xml += "<href>%s</href>"%standard.html_quote(v.getHref(REQUEST))
               xml += "<filename>%s</filename>"%standard.html_quote(v.getFilename())
               xml += "<content_type>%s</content_type>"%standard.html_quote(v.getContentType())
-              xml += "<size>%s</size>"%self.getDataSizeStr(v.get_size())
-              xml += "<icon>%s</icon>"%self.getMimeTypeIconSrc(v.getContentType())
+              xml += "<size>%s</size>"%standard.getDataSizeStr(v.get_size())
+              xml += "<icon>%s</icon>"%standard.getMimeTypeIconSrc(v.getContentType())
               xml += "</%s>"%key
       xml += "</page>"
       return xml
@@ -1245,16 +1244,6 @@ class ZMSObject(ZMSItem.ZMSItem,
         del REQUEST.RESPONSE.headers['location']
       
       return xml
-
-
-    # --------------------------------------------------------------------------
-    #  ZMSObject.getChildNodes:
-    #
-    #  Returns a NodeList that contains all children of this node, 
-    #  if none, this is a empty NodeList. 
-    # --------------------------------------------------------------------------
-    def getChildNodes(self, REQUEST={}, meta_types=None, reid=None):
-      return []
 
 
     ############################################################################

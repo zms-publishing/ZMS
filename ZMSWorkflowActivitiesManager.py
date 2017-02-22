@@ -24,7 +24,6 @@ import urllib
 import IZMSRepositoryProvider
 import standard
 import _blobfields
-import _globals
 
 
 ################################################################################
@@ -188,7 +187,7 @@ class ZMSWorkflowActivitiesManager:
           if len(getattr(newIcon,'filename',''))==0:
             newIcon = item.get('icon',None)
           else:
-            newIcon = _blobfields.createBlobField(self,_globals.DT_IMAGE,newIcon)
+            newIcon = _blobfields.createBlobField(self,_blobfields.MyImage,newIcon)
       id = self.setActivity( item.get('id',None), newId, newName, newIconClazz, newIcon)
       message = self.getZMILangStr('MSG_CHANGED')
     
@@ -212,7 +211,7 @@ class ZMSWorkflowActivitiesManager:
           if len(getattr(newIcon,'filename',''))==0:
             newIcon = item.get('icon',None)
           else:
-            newIcon = _blobfields.createBlobField(self,_globals.DT_IMAGE,newIcon)
+            newIcon = _blobfields.createBlobField(self,_blobfields.MyImage,newIcon)
       id = self.setActivity( item.get('id',None), newId, newName, newIconClazz, newIcon)
       message = self.getZMILangStr('MSG_INSERTED')%id
     

@@ -817,8 +817,7 @@ class ObjAttrs:
       
       #-- Blob-Fields
       if datatype in _globals.DT_BLOBS:
-        if self.getType()=='ZMSRecordSet' and \
-           str(v) == str(_blobfields.createBlobField(self,datatype)):
+        if self.getType()=='ZMSRecordSet' and isinstance(v,_blobfields.MyBlob):
           metaObj = self.getMetaobj(self.meta_id)
           metaObjAttrId = metaObj['attrs'][0]['id']
           l = self.attr(metaObjAttrId)

@@ -18,22 +18,13 @@
 
 # Imports.
 from App.Common import package_home
-from DateTime.DateTime import DateTime
-from OFS.CopySupport import absattr
-from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from types import StringTypes
 import Globals
-import base64
-import copy
 import os
-import time
 import zExceptions
 # Product Imports.
 import standard
-import _blobfields
-import _fileutil
-import _globals
 import _pilutil
 
 __all__= ['ZMSGlobals']
@@ -46,47 +37,6 @@ __all__= ['ZMSGlobals']
 ################################################################################
 ################################################################################
 class ZMSGlobals:
-
-
-    # --------------------------------------------------------------------------
-    #  Meta-Type Selectors.
-    # --------------------------------------------------------------------------
-    PAGES = 0         #: virtual meta_type for all Pages (Containers)
-    PAGEELEMENTS = 1  #: virtual meta_type for all Page-Elements
-    NOREF = 4         #: virtual meta_type-flag for resolving meta-type of ZMSLinkElement-target-object.
-    NORESOLVEREF = 5  #: virtual meta_type-flag for not resolving meta-type of ZMSLinkElement-target-object.
-
-
-    """
-    Creates a new instance of a file from given data.
-    @param data: File-data (binary)
-    @type data: C{string}
-    @param filename: Filename
-    @type filename: C{string}
-    @return: New instance of file.
-    @rtype: L{MyFile}
-    """
-    def FileFromData( self, data, filename='', content_type=None, mediadbStorable=False):
-      file = {}
-      file['data'] = data
-      file['filename'] = filename
-      if content_type: file['content_type'] = content_type
-      return _blobfields.createBlobField( self, _globals.DT_FILE, file=file)
-
-
-    """
-    Creates a new instance of an image from given data.
-    @param data: Image-data (binary)
-    @type data: C{string}
-    @param filename: Filename
-    @type filename: C{string}
-    @return: New instance of image.
-    @rtype: L{MyImage}
-    """
-    def ImageFromData( self, data, filename='', content_type=None, mediadbStorable=False):
-      f = _blobfields.createBlobField( self, _globals.DT_IMAGE, file={'data':data,'filename':filename,'content_type':content_type})
-      f.aq_parent = self
-      return f
 
 
     """

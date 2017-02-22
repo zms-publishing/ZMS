@@ -33,7 +33,6 @@ import zExceptions
 import standard
 import _blobfields
 import _fileutil
-import _globals
 
 
 ################################################################################
@@ -788,7 +787,7 @@ class FilterManager:
             if len(getattr(newProcessFile, 'filename',''))==0:
               newProcessFile = filterProcess.get('file', None)
             else:
-              newProcessFile = _blobfields.createBlobField(self, _globals.DT_FILE, newProcessFile)
+              newProcessFile = _blobfields.createBlobField(self, _blobfields.MyFile, newProcessFile)
           setFilterProcess(self, id, newProcessId, newProcessFile)
           c += 1
         newProcessId = REQUEST.get('newFilterProcessId_%i'%c,'').strip()
@@ -846,7 +845,7 @@ class FilterManager:
             if len(getattr(newProcessFile, 'filename',''))==0:
               newProcessFile = None
             else:
-              newProcessFile = _blobfields.createBlobField(self, _globals.DT_FILE, newProcessFile)
+              newProcessFile = _blobfields.createBlobField(self, _blobfields.MyFile, newProcessFile)
           pid = setFilterProcess(self, id, newProcessId, newProcessFile)
           message = self.getZMILangStr('MSG_INSERTED')%newProcessId
       

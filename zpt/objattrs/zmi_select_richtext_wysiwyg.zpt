@@ -1,4 +1,6 @@
-<div class="form-group form-richtext form-richtext-wysiwyg" tal:define="global options python:options['args'][2]">
+<div class="form-group form-richtext form-richtext-wysiwyg" tal:define="
+		standard 	modules/Products.zms/standard;
+		options 	python:options['args'][2]">
 
 	<div class="col-sm-12">
 
@@ -18,6 +20,6 @@
 
 	</div>
 	<div class="col-sm-12">
-		<tal:block tal:content="structure python:here.getPlugin('rte/'+here.getConfProperty('ZMS.richtext.plugin','ckeditor')+'/manage_form.zpt')">the richedit</tal:block>
+		<tal:block tal:content="structure python:standard.getPlugin(here,'rte/'+here.getConfProperty('ZMS.richtext.plugin','ckeditor')+'/manage_form.zpt')">the richedit</tal:block>
 	</div>
 </div>

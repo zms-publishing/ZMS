@@ -6,11 +6,11 @@
 <tal:block tal:define="global
 		metaObjIds python:here.getMetaobjIds();
 		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
-		metaObjPackages python:here.sort_list(here.distinct_list(map(lambda x: x.get('package'), metaObjs)));
+		metaObjPackages python:here.sort_list(standard.distinct_list(map(lambda x: x.get('package'), metaObjs)));
 		master python:here.getPortalMaster();
 		masterMetaObjIds python:master.getMetaobjIds();
 		masterMetaObjs python:map(lambda x: master.getMetaobj(x), masterMetaObjIds);
-		masterMetaObjPackages python:here.sort_list(here.distinct_list(map(lambda x: x.get('package'), masterMetaObjs)));
+		masterMetaObjPackages python:here.sort_list(standard.distinct_list(map(lambda x: x.get('package'), masterMetaObjs)));
 		acquireObjs python:[]">
 
 <tal:block tal:repeat="metaObjId python:filter(lambda x: x not in metaObjIds or not here.getMetaobj(x).get('acquired'),masterMetaObjIds)">

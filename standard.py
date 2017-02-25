@@ -32,8 +32,6 @@ from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
-from Products.PageTemplates.Expressions import SecureModuleImporter
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from cStringIO import StringIO
 from types import StringTypes
 from traceback import format_exception
@@ -1864,28 +1862,12 @@ def dt_tal(context, text, options={}):
   @return: Result of the execution or None
   @rtype: C{any}
   """
-  class StaticPageTemplateFile(PageTemplateFile):
+  class StaticPageTemplateFile(_globals.StaticPageTemplateFile):
     def setText(self,text):
       self.text = text
-    def setEnv(self,context,options):
-      self.context = context
-      self.options = options
-    def pt_getContext(self):
-      root = self.context.getPhysicalRoot()
-      context = self.context
-      options = self.options
-      c = {'template': self,
-           'here': context,
-           'context': context,
-           'options': options,
-           'root': root,
-           'request': getattr(root, 'REQUEST', None),
-           'modules': SecureModuleImporter,
-           }
-      return c
     def _cook_check(self):
       t = 'text/html'
-      self.pt_edit(self.text, t)
+      self.pt_edit(text, t)
       self._cook()
   pt = StaticPageTemplateFile(filename='None')
   pt.setText(text)
@@ -1896,6 +1878,7 @@ def dt_tal(context, text, options={}):
 #}
 
 
+security.declarePublic('sendMail')
 def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
   """
   Sends Mail via MailHost.
@@ -2009,6 +1992,42 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
     return 0
   except:
     return -1
+
+
+security.declarePublic('extutil')
+def extutil():
+  """
+  Returns util to handle zms3.extensions
+  """
+  import _extutil
+  return _extutil.ZMSExtensions()
+
+
+security.declarePublic('getPlugin')
+def getPlugin( context, path, options={}):
+  """
+  Executes plugin.
+  @param context: the context
+  @type context: C{ZMSObject}
+  @param path: the plugin path in $ZMS_HOME/plugins/
+  @type path: C{string}
+  @param options: the options
+  @type options: C{dict}
+  """
+  # Check permissions.
+  request = context.REQUEST
+  authorized = path.find('..') < 0
+  if not authorized:
+    raise zExceptions.Unauthorized
+  # Execute plugin.
+  try:
+    filename = os.path.join(package_home(globals()),'plugins',path)
+    pt = _globals.StaticPageTemplateFile(filename)
+    pt.setEnv(context,options)
+    rtn = pt.pt_render(extra_context={'here':context,'request':request})
+  except:
+    rtn = writeError(context,'[getPlugin]')
+  return rtn
 
 
 ################################################################################

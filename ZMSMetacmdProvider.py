@@ -415,11 +415,11 @@ class ZMSMetacmdProvider(
           if canExecute:
             hasRole = False
             hasRole = hasRole or '*' in metaCmd['roles']
-            hasRole = hasRole or len(context.intersection_list(user_roles,metaCmd['roles'])) > 0
+            hasRole = hasRole or len(standard.intersection_list(user_roles,metaCmd['roles'])) > 0
             hasRole = hasRole or auth_user.has_role('Manager')
             canExecute = canExecute and hasRole
           if canExecute:
-            nodes = context.string_list(metaCmd.get('nodes','{$}'))
+            nodes = standard.string_list(metaCmd.get('nodes','{$}'))
             sl = []
             sl.extend(map( lambda x: (context.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,nodes)))
             sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,nodes)))

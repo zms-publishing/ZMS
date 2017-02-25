@@ -20,6 +20,8 @@
 ################################################################################
 
 # Imports.
+from Products.PageTemplates.Expressions import SecureModuleImporter
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from types import StringTypes
 
 
@@ -211,6 +213,28 @@ def get_size(v):
       except:
         pass
   return size
+
+
+################################################################################
+# Define StaticPageTemplateFile.
+################################################################################
+class StaticPageTemplateFile(PageTemplateFile):
+  def setEnv(self,context,options):
+    self.context = context
+    self.options = options
+  def pt_getContext(self):
+    root = self.context.getPhysicalRoot()
+    context = self.context
+    options = self.options
+    c = {'template': self,
+         'here': context,
+         'context': context,
+         'options': options,
+         'root': root,
+         'request': getattr(root, 'REQUEST', None),
+         'modules': SecureModuleImporter,
+         }
+    return c
 
 
 ################################################################################

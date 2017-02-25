@@ -155,7 +155,7 @@ class ZMSWorkflowActivitiesManager:
               tos.append(idx)
     froms.sort()
     tos.sort()
-    idxs = self.concat_list(froms,tos)
+    idxs = standard.concat_list(froms,tos)
     idx = ids.index(id)
     return {'froms':froms, 'tos': tos, 'idxs': idxs, 'idx': idx}
 

@@ -83,7 +83,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
           can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
           if can_delete:
             ob_access = context.getObjProperty('manage_access',REQUEST)
-            can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( container.intersection_list( ob_access.get( 'delete'), user_roles)) > 0))
+            can_delete = can_delete and ((not type(ob_access) is dict) or (ob_access.get( 'delete') is None) or (len( standard.intersection_list( ob_access.get( 'delete'), user_roles)) > 0))
             metaObj = container.getMetaobj( context.meta_id)
             mo_access = metaObj.get('access',{})
             mo_access_deny = mo_access.get('delete_deny',[])
@@ -179,12 +179,12 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
           standard.writeError(container,'[zmi_insert_actions]: can\'t get manage_access from %s'%meta_id)
       can_insert = True
       if objAttr['type']=='*':
-        can_insert = can_insert and ((type(ob_access) is not dict) or (ob_access.get( 'insert') is None) or (len( container.intersection_list( ob_access.get( 'insert'), user_roles)) > 0))
+        can_insert = can_insert and ((type(ob_access) is not dict) or (ob_access.get( 'insert') is None) or (len( standard.intersection_list( ob_access.get( 'insert'), user_roles)) > 0))
         mo_access = metaObj.get('access',{})
         mo_access_deny = mo_access.get('insert_deny',[])
         can_insert = can_insert and len(filter(lambda x: x not in mo_access_deny, user_roles)) > 0
         can_insert = can_insert or auth_user.has_role('Manager')
-        mo_access_insert_nodes = container.string_list(mo_access.get('insert_custom','{$}'))
+        mo_access_insert_nodes = standard.string_list(mo_access.get('insert_custom','{$}'))
         sl = []
         sl.extend(map( lambda x: (container.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,mo_access_insert_nodes)))
         sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,mo_access_insert_nodes)))

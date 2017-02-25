@@ -1088,7 +1088,7 @@ class ZMSMetaobjManager:
               newMultilang = REQUEST.get( 'attr_multilang_%s'%old_id, 0)
               newRepetitive = REQUEST.get( 'attr_repetitive_%s'%old_id, 0)
               newType = REQUEST.get( 'attr_type_%s'%old_id)
-              newKeys = self.string_list(REQUEST.get('attr_keys_%s'%old_id,''),trim=False)
+              newKeys = standard.string_list(REQUEST.get('attr_keys_%s'%old_id,''),trim=False)
               newCustom = REQUEST.get('attr_custom_%s'%old_id,'')
               newDefault = REQUEST.get('attr_default_%s'%old_id,'')
               # Upload resource.

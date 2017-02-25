@@ -271,7 +271,7 @@ class AccessableObject:
       try:
         roles.extend(list(userObj.getRolesInContext(self)))
         if 'Manager' in roles:
-          roles = self.concat_list(roles,['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator'])
+          roles = standard.concat_list(roles,['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator'])
       except:
         pass
       root = self.getRootElement()
@@ -284,7 +284,7 @@ class AccessableObject:
         depth = depth + 1
         nodekey = root.getRefObjPath(ob)
         if nodekey in nodes.keys():
-          roles = self.concat_list(roles,nodes[nodekey]['roles'])
+          roles = standard.concat_list(roles,nodes[nodekey]['roles'])
           break
         if aq_parent:
           ob = ob.getParentNode()
@@ -458,7 +458,7 @@ class AccessableContainer(AccessableObject):
           role_permissions = role_defs.get(role,[])
           if '*' in role_permissions:
             role_permissions = manager_permissions
-          permissions = self.concat_list(permissions,role_permissions)
+          permissions = standard.concat_list(permissions,role_permissions)
         standard.writeLog(self,'[synchronizeRolesAccess]: role_to_manage=%s, permissions=%s'%(i[0],str(permissions)))
         self.manage_role(role_to_manage=i[0],permissions=permissions)
 

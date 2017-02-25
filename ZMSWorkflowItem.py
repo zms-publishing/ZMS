@@ -16,6 +16,9 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
+# Product Imports.
+import standard
+
 
 class ZMSWorkflowItem: 
 
@@ -66,8 +69,8 @@ class ZMSWorkflowItem:
           wfTo = transition.get('to',[])
           append = False
           append = append or ((wfFrom is None or len(wfFrom) == 0) and len(wfTo) == 0)
-          append = append or (len(self.intersection_list(wfStates,wfFrom)) > 0 and len(wfTo) > 0)
-          append = append and (len(self.intersection_list(roles,wfPerformer)) > 0 or auth_user.has_permission('Manager',self))
+          append = append or (len(standard.intersection_list(wfStates,wfFrom)) > 0 and len(wfTo) > 0)
+          append = append and (len(standard.intersection_list(roles,wfPerformer)) > 0 or auth_user.has_permission('Manager',self))
           if append:
             actions.append((transition['name'],path+'manage_wfTransition','icon-check-empty'))
       

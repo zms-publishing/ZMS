@@ -256,7 +256,7 @@ class ConfManager(
                     if filename not in filenames.keys():
                       filenames[location+filename] = filename+' ('+remote_file.attributes['title'].value+')'
                 except:
-                  self.writeError("[getConfFiles]: can't get conf-files from remote URL=%s"%remote_location)
+                  standard.writeError(self,"[getConfFiles]: can't get conf-files from remote URL=%s"%remote_location)
             else:
               for filepath in filepaths:
                 if os.path.exists( filepath):
@@ -654,14 +654,14 @@ class ConfManager(
         old_active = self.getConfProperty('ZMS.Version.active',0)
         new_active = REQUEST.get('active',0)
         old_nodes = self.getConfProperty('ZMS.Version.nodes',['{$}'])
-        new_nodes = self.string_list(REQUEST.get('nodes',''))
+        new_nodes = standard.string_list(REQUEST.get('nodes',''))
         self.setConfProperty('ZMS.Version.active',new_active)
         self.setConfProperty('ZMS.Version.nodes',new_nodes)
         nodes = []
         if old_active == 1 and new_active == 0:
           nodes = old_nodes
         if old_active == 1 and new_active == 1:
-          nodes = self.difference_list( old_nodes, self.getConfProperty('ZMS.Version.nodes',['{$}']))
+          nodes = standard.difference_list( old_nodes, self.getConfProperty('ZMS.Version.nodes',['{$}']))
         for node in nodes:
           ob = self.getLinkObj( node)
           if ob is not None:
@@ -740,7 +740,7 @@ class ConfManager(
           target = 'manage_customize'
           isProcessed = False
           try:
-            ZMSExtension  = self.extutil()
+            ZMSExtension  = standard.extutil()
             filesToImport = ZMSExtension.getFilesToImport(zmsext, self.getDocumentElement())
             if len(filesToImport)>0:
               for f in filesToImport:
@@ -756,12 +756,12 @@ class ConfManager(
             message = self.getZMILangStr('MSG_EXCEPTION') 
             message += ': <code class="alert-danger">%s</code>'%('No conf files found.')
             target = self.url_append_params(target, {'manage_tabs_error_message': message})
-            self.writeError("[ConfManager.manage_customizeSystem] No conf files found.")
+            standard.writeError(self,"[ConfManager.manage_customizeSystem] No conf files found.")
           return RESPONSE.redirect(target + '#%s'%key)
         elif btn == 'ImportExample':
           zmsext = REQUEST.get('zmsext','')
           target = 'manage_main'
-          ZMSExtension  = self.extutil()
+          ZMSExtension  = standard.extutil()
           isProcessed = False
           try:
             if ZMSExtension.getExample(zmsext) is not None:
@@ -779,7 +779,7 @@ class ConfManager(
         elif btn == 'InstallTheme':
           zmsext = REQUEST.get('zmsext','')
           target = 'manage_main'
-          ZMSExtension  = self.extutil()
+          ZMSExtension  = standard.extutil()
           print "###InstallTheme:", zmsext
           if ZMSExtension.installTheme(self, zmsext):
             return True

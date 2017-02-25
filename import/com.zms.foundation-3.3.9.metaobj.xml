@@ -1389,6 +1389,7 @@ return ''
 ##title=py: Upload: Media
 ##
 # --// BO uploadMedia //--
+from Products.zms import pilutil
 
 result = {}
 temp_folder = context.temp_folder
@@ -1399,7 +1400,6 @@ form_id = request.get('form_id')
 file = request.get('file')
 
 def resize_image(context, orig, maxdims):
-  pilutil = context.pilutil()
   width = orig.getWidth()
   height = orig.getHeight()
   while width > maxdims or height > maxdims:
@@ -2955,6 +2955,7 @@ zmscontext.attr('text',text)
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 <tal:block tal:define="global
+		standard modules/Products.zms/standard;
 		zmscontext options/zmscontext;
 		SecurityManager modules/AccessControl/getSecurityManager;
 		skey python:request.get('skey', 'id');
@@ -2969,7 +2970,7 @@ zmscontext.attr('text',text)
 	<select class="form-control" style="background-color: aliceblue;"
 			name=":action"	tal:attributes="onchange python:'location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
 		<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type(request)">----- Insert -----</option>
-		<tal:block tal:repeat="meta_type python:filter(lambda x:x['name'].find('ZMS')<>0,zmscontext.sort_list(zmscontext.filtered_meta_types(),'name'))">
+		<tal:block tal:repeat="meta_type python:filter(lambda x:x['name'].find('ZMS')<>0,standard.sort_list(zmscontext.filtered_meta_types(),'name'))">
 			<option tal:attributes="value python:meta_type['action']" tal:content="python:meta_type['name']">the name</option>
 		</tal:block>
 	</select>

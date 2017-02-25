@@ -1,6 +1,7 @@
-<tal:block tal:define="global
-		fmName					options/fmName;
-		elName					options/elName;
+<tal:block tal:define="
+		standard 			modules/Products.zms/standard;
+		fmName				options/fmName;
+		elName				options/elName;
 		key						options/key;
 		value					options/value">
 	<tal:block tal:condition="python:request.get('f_zmiBlobJs',True)">
@@ -32,7 +33,7 @@
 			<div class="zmi-input-file"
 					tal:condition="python:request['lang'] in here.getLanguages(request)"
 					tal:define="dummy0 python:request.set('ZMS_ALLOWED_EXTENSIONS',[])"
-					tal:content="structure python:here.getPlugin('fileupload/'+here.getConfProperty('ZMS.input.file.plugin','input_file')+'/input.zpt',{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.file.maxlength',''),'key':key})">
+					tal:content="structure python:standard.getPlugin(here,'fileupload/'+here.getConfProperty('ZMS.input.file.plugin','input_file')+'/input.zpt',{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.file.maxlength',''),'key':key})">
 				the input-file
 			</div>
 

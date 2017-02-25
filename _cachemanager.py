@@ -16,7 +16,10 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
+# Imports.
 import time
+# Product Imports.
+import standard
 
 class Buff:
   pass
@@ -144,6 +147,6 @@ class ReqBuff:
       request = self.REQUEST
       buff = request.get('__buff__',Buff())
       measurements = getattr(buff,'measurements',{})
-      return self.sort_list(filter(lambda x:x['category'].find(category)>=0,measurements.values()),'total','desc')
+      return standard.sort_list(filter(lambda x:x['category'].find(category)>=0,measurements.values()),'total','desc')
 
 ################################################################################

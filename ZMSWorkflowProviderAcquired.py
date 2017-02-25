@@ -22,6 +22,7 @@ import copy
 import urllib
 import zope.interface
 # Product Imports.
+import standard
 import IZMSConfigurationProvider
 import IZMSWorkflowProvider, ZMSWorkflowProvider
 import ZMSItem
@@ -157,7 +158,7 @@ class ZMSWorkflowProviderAcquired(
         old_autocommit = getattr(self,'autocommit',1)
         new_autocommit = REQUEST.get('workflow',0) == 0
         self.autocommit = new_autocommit
-        self.nodes = self.string_list(REQUEST.get('nodes',''))
+        self.nodes = standard.string_list(REQUEST.get('nodes',''))
         if old_autocommit == 0 and new_autocommit == 1:
           self.doAutocommit(lang,REQUEST)
         message = self.getZMILangStr('MSG_CHANGED')

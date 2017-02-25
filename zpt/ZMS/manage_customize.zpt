@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" tal:define="standard modules/Products.zms/standard; Std modules/Products/PythonScripts/standard">
+<html lang="en" tal:define="
+		standard modules/Products.zms/standard;
+		pilutil modules/Products.zms/pilutil;
+		Std modules/Products/PythonScripts/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='customize config')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
@@ -326,10 +329,10 @@ $(function(){
       <div class="form-group">
       <label class="col-sm-4 control-label">
         <strong><a href="http://www.pythonware.com/products/pil/" target="_blank">PIL</a> - Python Imaging Library</strong>
-        <input type="checkbox" id="pil" disabled="disabled" value="1" tal:attributes="checked python:['','checked'][int(here.pilutil().enabled())]" />
+        <input type="checkbox" id="pil" disabled="disabled" value="1" tal:attributes="checked python:['','checked'][int(pilutil.enabled())]" />
       </label>
         <div class="col-sm-8">
-          <div class="pull-left" tal:condition="python: here.pilutil().enabled()">
+          <div class="pull-left" tal:condition="python: pilutil.enabled()">
             <table class="input-append">
               <tr>
                 <td>HighRes with Auto-Thumbnail max.&nbsp;</td>
@@ -353,7 +356,7 @@ $(function(){
         </div>
       </div><!-- .form-group -->
       <tal:block tal:on-error="structure string:<!-- ERROR: ZMSExtensionUtility -->">
-      <tal:block tal:define="ZMSExtension python:here.extutil(); zmsprj python:here.getConfProperty('ZMS.Project',None)">
+      <tal:block tal:define="ZMSExtension python:standard.extutil(); zmsprj python:here.getConfProperty('ZMS.Project',None)">
       <div class="form-group">
         <div class="col-sm-4"></div>
         <div class="col-sm-8">

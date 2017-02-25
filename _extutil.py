@@ -142,9 +142,8 @@ class ZMSExtensions():
     Utility to handle zms3.extensions
   
     Management interface is at ZMS > Configuration > System > Installed Libraries
-    @see zpt/ZMS/manage_customize.zpt line 446
-    @see _confmanager.py line 698
-    @see ZMSGlobals.py line 1154
+    @see zpt/ZMS/manage_customize.zpt
+    @see _confmanager.py
   """
   getAll__roles__ = None
   getAllExtensions__roles__ = None

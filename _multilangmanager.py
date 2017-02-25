@@ -521,7 +521,7 @@ class MultiLanguageManager:
         for key in lang_dict.keys():
           d[key] = lang_dict[key].copy()
           lang_ids = lang_dict[key].keys()
-          d[key]['acquired'] = self.concat_list(d[key].get('acquired',[]),lang_ids)
+          d[key]['acquired'] = standard.concat_list(d[key].get('acquired',[]),lang_ids)
       lang_dict = self.getConfProperty('ZMS.custom.langs.dict',{})
       for key in lang_dict.keys():
         if d.has_key(key):

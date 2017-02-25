@@ -1,9 +1,11 @@
 <tal:block tal:define="global
-		fmName					options/fmName;
-		elName					options/elName;
-		key							options/key;
+		standard 			modules/Products.zms/standard;
+		pilutil 			modules/Products.zms/pilutil;
+		fmName				options/fmName;
+		elName				options/elName;
+		key						options/key;
 		value						options/value;
-		can_generate_preview	python:here.pilutil().enabled() and (key.endswith('hires') or key.endswith('superres'));
+		can_generate_preview	python:pilutil.enabled() and (key.endswith('hires') or key.endswith('superres'));
 		max_generate_preview	python:{
 			'imghires':'InstalledProducts.pil.thumbnail.max',
 			'imgsuperres':'InstalledProducts.pil.hires.thumbnail.max'}.get(key,None)">
@@ -108,7 +110,7 @@
 			<div class="zmi-input-file"
 					tal:condition="python:request['lang'] in here.getLanguages(request)"
 					tal:define="dummy0 python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif'])"
-					tal:content="structure python:here.getPlugin('fileupload/'+here.getConfProperty('ZMS.input.file.plugin','input_file')+'/input.zpt',{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
+					tal:content="structure python:standard.getPlugin(here,'fileupload/'+here.getConfProperty('ZMS.input.file.plugin','input_file')+'/input.zpt',{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
 				the input-file
 			</div>
 
@@ -127,7 +129,7 @@
 			<div class="zmi-image-preview" tal:attributes="id python:'ZMSGraphic_extEdit_preview_%s'%elName" tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
 				<input type="hidden" tal:attributes="id python:'width_%s'%elName; name python:'width_%s:int'%elName; value python:value.getWidth()"/>
 				<input type="hidden" tal:attributes="id python:'height_%s'%elName; name python:'height_%s:int'%elName; value python:value.getHeight()"/>
-				<a tal:attributes="href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&lang=%s&key=%s&form_id=%s'%(request.get('ZMS_INSERT',here.meta_id),request['lang'],key,str(request['ZMI_TIME'])),int(here.pilutil().enabled()))" class="thumbnail ZMSGraphic_extEdit_action">
+				<a tal:attributes="href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&lang=%s&key=%s&form_id=%s'%(request.get('ZMS_INSERT',here.meta_id),request['lang'],key,str(request['ZMI_TIME'])),int(pilutil.enabled()))" class="thumbnail ZMSGraphic_extEdit_action">
 					<img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
 					<div class="zmi-zoom-in" tal:content="structure python:here.zmi_icon(name='icon-zoom-in')"></div><!-- .zmi-zoom-in -->
 				</a>

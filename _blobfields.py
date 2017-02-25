@@ -31,6 +31,7 @@ import warnings
 import zExceptions 
 # Product Imports.
 import standard
+import pilutil
 import _fileutil
 import _globals
 
@@ -191,7 +192,7 @@ Process image-fields and shrink superres to hires and hires to lores.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def thumbnailImageFields(self, lang, REQUEST):
   message = ''
-  if self.pilutil().enabled():
+  if pilutil.enabled():
     obj_attrs = self.getObjAttrs()
     for key in obj_attrs.keys():
       obj_attr = self.getObjAttr(key)
@@ -216,7 +217,7 @@ def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
       hiresImg = self.getObjProperty(hiresKey,req)
       if hiresImg is not None and REQUEST.get('generate_preview_%s_%s'%(hiresKey,lang),0) == 1:
         standard.writeLog( self, '[thumbnailImage]: Create >%s< from >%s<...'%(loresKey,hiresKey))
-        thumb = self.pilutil().thumbnail( hiresImg, int(maxdim))
+        thumb = pilutil.thumbnail( hiresImg, int(maxdim))
         self.setObjProperty(loresKey,thumb,lang)
   except:
     standard.writeError( self, '[thumbnailImage]')
@@ -743,10 +744,10 @@ class MyBlob:
       """
       Returns display string for file-size (KB).
       @rtype: C{string}
-      @deprecated: Use ZMSGlobals.getDataSizeStr(len) instead!
+      @deprecated: Use standard.getDataSizeStr(len) instead!
       """
       warnings.warn('Using MyBlob.getDataSizeStr() is deprecated.'
-                   ' Use ZMSGlobals.getDataSizeStr(len) instead.',
+                   ' Use standard.getDataSizeStr(len) instead.',
                      DeprecationWarning, 
                      stacklevel=2)
       return _fileutil.getDataSizeStr(self.get_size())

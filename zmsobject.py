@@ -32,7 +32,6 @@ import time
 import standard
 import zopeutil
 import ZMSItem
-import ZMSGlobals
 import ZMSWorkflowItem
 import _accessmanager
 import _blobfields
@@ -80,7 +79,6 @@ class ZMSObject(ZMSItem.ZMSItem,
 	_objtypes.ObjTypes,			# Object-Types.
 	_pathhandler.PathHandler,		# Path-Handler.
 	_textformatmanager.TextFormatObject,	# Text-Formats.
-	ZMSGlobals.ZMSGlobals,			# ZMS Global Functions and Definitions.
 	_zreferableitem.ZReferableItem		# ZReferable Item.
 	): 
 
@@ -139,6 +137,26 @@ class ZMSObject(ZMSItem.ZMSItem,
       self.id = id
       self.ref_by = []
       self.setSortId(sort_id)
+
+
+    """
+    Check if feature toggle is set.
+    @rtype: C{boolean}
+    """ 
+    def isFeatureEnabled(self, feature=''):
+    
+      # get conf from current client
+      confprop = self.breadcrumbs_obj_path(False)[0].getConfProperty('ZMS.Features.enabled','')
+      features = confprop.replace(',',';').split(';')
+      # get conf from top master if there is no feature toggle set at client
+      if len(features)==1 and features[0].strip()=='':
+        confprop = self.breadcrumbs_obj_path(True)[0].getConfProperty('ZMS.Features.enabled','')
+        features = confprop.replace(',',';').split(';')
+    
+      if len(filter(lambda ob: ob.strip()==feature.strip(), features))>0:
+        return True
+      else:
+        return False
 
 
     # --------------------------------------------------------------------------
@@ -785,8 +803,8 @@ class ZMSObject(ZMSItem.ZMSItem,
                 break
           if len(declId) == 0:
             declId = self.getTitlealt( REQUEST)
-          mapping = self.dict_list(self.getConfProperty('ZMS.pathhandler.id_quote.mapping',' _-_/_\'_'))
-          declId = self.id_quote( declId, mapping)
+          mapping = standard.dict_list(self.getConfProperty('ZMS.pathhandler.id_quote.mapping',' _-_/_\'_'))
+          declId = standard.id_quote( declId, mapping)
       except:
         standard.writeError(self,'[getDeclId]: can\'t get declarative id')
       if len( declId) == 0:

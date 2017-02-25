@@ -22,6 +22,7 @@ import copy
 import urllib
 import zope.interface
 # Product Imports.
+import standard
 import IZMSConfigurationProvider, IZMSRepositoryProvider
 import IZMSWorkflowProvider, ZMSWorkflowActivitiesManager, ZMSWorkflowTransitionsManager
 import ZMSItem
@@ -220,7 +221,7 @@ class ZMSWorkflowProvider(
       # Create non existant roles.
       roles = []
       for transition in self.getTransitions():
-        roles = self.concat_list(roles,transition.get('performer',[]))
+        roles = standard.concat_list(roles,transition.get('performer',[]))
       for newRole in filter(lambda x: x not in self.userdefined_roles(),roles):
         _accessmanager.addRole(self,newRole)
 
@@ -321,7 +322,7 @@ class ZMSWorkflowProvider(
         new_autocommit = REQUEST.get('workflow',0) == 0
         self.revision = REQUEST.get('revision','0.0.0')
         self.autocommit = new_autocommit
-        self.nodes = self.string_list(REQUEST.get('nodes',''))
+        self.nodes = standard.string_list(REQUEST.get('nodes',''))
         if old_autocommit == 0 and new_autocommit == 1:
           self.doAutocommit(lang,REQUEST)
         message = self.getZMILangStr('MSG_CHANGED')

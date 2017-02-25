@@ -107,7 +107,7 @@ $(function(){
 			</label>
 			<div class="col-sm-10" tal:define="
 					local_files python:here.localFiles(provider).values();
-					ids python:here.distinct_list(map(lambda x:x['id'],local_files));
+					ids python:standard.distinct_list(map(lambda x:x['id'],local_files));
 					dummy0 python:ids.sort();
 					">
 				<div tal:repeat="id ids">
@@ -133,7 +133,7 @@ $(function(){
 	<tal:block tal:define="
 			provider python:provider_diff[0]; 
 			diffs python:provider_diff[1]; 
-			ids python:here.distinct_list(map(lambda x:x[2],diffs)); 
+			ids python:standard.distinct_list(map(lambda x:x[2],diffs)); 
 			dummy0 python:ids.sort();">
 	<div class="form-group" tal:condition="ids">
 		<label class="col-sm-2" style="text-align:right">

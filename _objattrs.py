@@ -31,6 +31,7 @@ import zExceptions
 # Product Imports.
 import ZMSMetaobjManager
 import standard
+import pilutil
 import _blobfields
 import _globals
 
@@ -181,7 +182,7 @@ def cloneobjattr(self, src, dst, obj_attr, lang):
         standard.writeError( self, e)
         raise zExceptions.InternalError(e)
     elif type(v) is list or type(v) is tuple:
-      v = self.copy_list(v)
+      v = standard.copy_list(v)
     elif type(v) is dict:
       v = v.copy()
   # Assign value.
@@ -281,7 +282,7 @@ class ObjAttrs:
             metaObj = self.getMetaobj(ob.meta_id)
             res = ob.getObjProperty(metaObj['attrs'][0]['id'],REQUEST)
             res = map(lambda x: {'key':x['key'],'value':x.get('value',x.get('value_%s'%REQUEST['lang']))},res)
-            res = self.sort_list(res,'value','asc')
+            res = standard.sort_list(res,'value','asc')
             opts = map(lambda x: [x['key'],x['value']],res)
           elif v.find('<dtml-') >= 0 or v.startswith('##') or v.find('<tal:') >= 0:
             try:
@@ -496,19 +497,22 @@ class ObjAttrs:
     #  ObjAttrs.getObjInput:
     # --------------------------------------------------------------------------
     def getObjInput(self, key, REQUEST):
-      id = self.id
-      fmName = REQUEST.get( 'fmName' ,REQUEST.get('fmName','form0_%s'%id))
-      meta_id = REQUEST.get( 'ZMS_INSERT', None)
-      obj_attr = self.getObjAttr( key, standard.nvl( meta_id, self.meta_id))
-      if meta_id is None:
-        value = self.getObjAttrValue( obj_attr, REQUEST)
-      else:
-        default = ''
-        datatype = obj_attr['datatype_key']
-        if datatype == _globals.DT_BOOLEAN:
-          default = 0
-        value = REQUEST.get( '%s_value'%key, obj_attr.get( 'default', default))
-      return self.getObjAttrInput( fmName, obj_attr, value, REQUEST)
+      try:
+        id = self.id
+        fmName = REQUEST.get( 'fmName' ,REQUEST.get('fmName','form0_%s'%id))
+        meta_id = REQUEST.get( 'ZMS_INSERT', None)
+        obj_attr = self.getObjAttr( key, standard.nvl( meta_id, self.meta_id))
+        if meta_id is None:
+          value = self.getObjAttrValue( obj_attr, REQUEST)
+        else:
+          default = ''
+          datatype = obj_attr['datatype_key']
+          if datatype == _globals.DT_BOOLEAN:
+            default = 0
+          value = REQUEST.get( '%s_value'%key, obj_attr.get( 'default', default))
+        return self.getObjAttrInput( fmName, obj_attr, value, REQUEST)
+      except:
+        return standard.writeError(self,'can\'t getObjInput')
 
 
     """
@@ -893,7 +897,7 @@ class ObjAttrs:
             else:
               v = [v.strip()]
             if type(v) is list or type(v) is tuple:
-              v = self.copy_list(v)
+              v = standard.copy_list(v)
       
       #-- Integer-Fields
       if datatype in _globals.DT_INTS:
@@ -984,7 +988,7 @@ class ObjAttrs:
               filename = getattr( temp_folder, id).title
               mt, enc = standard.guess_content_type( filename, f)
               set, value = True, {'data':str(f),'filename':filename,'content_type':mt}
-              if not self.pilutil().enabled() and datatype == _globals.DT_IMAGE and REQUEST.get('width_%s'%elName) and REQUEST.get('height_%s'%elName):
+              if not pilutil.enabled() and datatype == _globals.DT_IMAGE and REQUEST.get('width_%s'%elName) and REQUEST.get('height_%s'%elName):
                 w = REQUEST['width_%s'%elName]
                 h = REQUEST['height_%s'%elName]
                 width = o.getProperty('width')
@@ -1144,7 +1148,7 @@ class ObjAttrs:
         orig.lang = lang
         if action == 'preview':
           maxdim = self.getConfProperty('InstalledProducts.pil.thumbnail.max')
-          blob = self.pilutil().thumbnail( orig, maxdim)
+          blob = pilutil.thumbnail( orig, maxdim)
           thumbkey = key
           for suffix in ['hires','superres']:
             if thumbkey.endswith(suffix):
@@ -1179,7 +1183,7 @@ class ObjAttrs:
             width = REQUEST['width']
             height = REQUEST['height']
             size = (width,height)
-            blob = self.pilutil().resize( blob, size)
+            blob = pilutil.resize( blob, size)
             rtn['height'] = height
             rtn['width'] = width
           if 'crop' in action.split(','):
@@ -1188,7 +1192,7 @@ class ObjAttrs:
             x1 = REQUEST['x1']
             y2 = REQUEST['y2']
             box = (x0, y0, x1, y2)
-            blob = self.pilutil().crop( blob, box)
+            blob = pilutil.crop( blob, box)
             rtn['height'] = y2-y0
             rtn['width'] = x1-x0
           file.manage_upload(blob.getData())
@@ -1289,7 +1293,7 @@ class ObjAttrs:
       prim_lang = self.getPrimaryLanguage()
       keys = self.getObjAttrs().keys()
       if self.getType()=='ZMSRecordSet':
-        keys = self.difference_list( keys, self.getMetaobjAttrIds(self.meta_id)[1:])
+        keys = standard.difference_list( keys, self.getMetaobjAttrIds(self.meta_id)[1:])
       for key in keys:
         obj_attr = self.getObjAttr(key)
         # Multi-Language Attributes.

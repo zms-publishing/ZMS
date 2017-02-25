@@ -289,7 +289,7 @@ class ZMSMetadictManager:
                 newMandatory = REQUEST.get('attr_mandatory_%s'%oldId, 0)
                 newMultilang = REQUEST.get('attr_multilang_%s'%oldId, 0)
                 newRepetitive = REQUEST.get('attr_repetitive_%s'%oldId, 0)
-                newKeys = self.string_list(REQUEST.get('attr_keys_%s'%oldId,''), '\n')
+                newKeys = standard.string_list(REQUEST.get('attr_keys_%s'%oldId,''), '\n')
                 newCustom = REQUEST.get('attr_custom_%s'%oldId, '')
                 newDefault = REQUEST.get('attr_default_%s'%oldId, '')
                 self.setMetadictAttr( oldId, newId, newAcquired, newName, newType, newMandatory, newMultilang, newRepetitive, newCustom, newKeys, newDefault)

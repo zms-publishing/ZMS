@@ -1148,8 +1148,8 @@ class VersionManagerContainer:
           userObj = self.findUser(name)
           mto = self.getUserAttr(name,'email','')
           if userObj is not None and len(mto) > 0 and \
-             len(self.intersection_list(roles, ob.getUserRoles(userObj, aq_parent=0))) > 0 and \
-             len(self.intersection_list(langs, ob.getUserLangs(userObj, aq_parent=0))) > 0:
+             len(standard.intersection_list(roles, ob.getUserRoles(userObj, aq_parent=0))) > 0 and \
+             len(standard.intersection_list(langs, ob.getUserLangs(userObj, aq_parent=0))) > 0:
             if raw:
               recipients.append( userObj)
             else:
@@ -1216,7 +1216,7 @@ class VersionManagerContainer:
       if not enter:
         # Check if current workflow-state is from-state of a workflow-exit (empty to-state).
         for wfTransition in self.getWfTransitions():
-          if len(self.intersection_list(wfStates, wfTransition.get('from',[]))) > 0 and \
+          if len(standard.intersection_list(wfStates, wfTransition.get('from',[]))) > 0 and \
              len(wfTransition.get('to',[])) == 0:
             standard.writeBlock( self, "[autoWfTransition]: enter name=%s, id=%s, to=%s"%(wfTransition['name'],wfTransition['id'],str(wfTransition['to'])))
             enter = True

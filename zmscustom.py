@@ -256,13 +256,13 @@ class ZMSCustom(ZMSContainerObject):
         SESSION.set(sessionvalue,'')
       if SESSION.get(sessionattr,'') != '' and \
          SESSION.get(sessionvalue,''):
-        res = self.filter_list(res,SESSION.get(sessionattr),SESSION.get(sessionvalue),'==')
+        res = standard.filter_list(res,SESSION.get(sessionattr),SESSION.get(sessionvalue),'==')
         masterType = filter(lambda x: x['id']==SESSION.get(sessionattr),metaObj['attrs'][1:])[0]['type']
         master = filter(lambda x: x.meta_id==masterType,self.getParentNode().objectValues(['ZMSCustom']))[0]
         masterMetaObj = self.getMetaobj(masterType)
         masterAttrs = masterMetaObj['attrs']
         masterRows = master.getObjProperty(masterAttrs[0]['id'],REQUEST)
-        masterRows = self.filter_list(masterRows,masterAttrs[1]['id'],SESSION.get(sessionvalue),'==')
+        masterRows = standard.filter_list(masterRows,masterAttrs[1]['id'],SESSION.get(sessionvalue),'==')
         REQUEST.set('masterMetaObj',masterMetaObj)
         REQUEST.set('masterRow',masterRows[0])
       # init filter from request.
@@ -285,7 +285,7 @@ class ZMSCustom(ZMSContainerObject):
         if sessionattr and sessionvalue:
           metaObjAttr = self.getMetaobjAttr(self.meta_id,sessionattr)
           sessionvalue = self.formatObjAttrValue(metaObjAttr,sessionvalue,REQUEST['lang'])
-          res = self.filter_list(res,sessionattr,sessionvalue,sessionop)
+          res = standard.filter_list(res,sessionattr,sessionvalue,sessionop)
       REQUEST.set('res',res)
       return res
 
@@ -483,7 +483,7 @@ class ZMSCustom(ZMSContainerObject):
             message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%('%s %i'%(self.getZMILangStr('ATTR_RECORD'),pos),newpos)
           # Normalize sort-ids.
           if 'sort_id' in metaObjAttrIds:
-            res_abs = self.sort_list(res_abs,'sort_id')
+            res_abs = standard.sort_list(res_abs,'sort_id')
             for i in range(len(res_abs)):
               row = res_abs[i]
               row['sort_id'] = i+1

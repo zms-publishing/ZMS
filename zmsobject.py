@@ -1014,13 +1014,11 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # --------------------------------------------------------------------------
     #  ZMSObject.getParentNode:
+    #
+    #  The parent of this node. 
+    #  All nodes except root may have a parent.
     # --------------------------------------------------------------------------
-    security.declarePublic('getParentNode')
     def getParentNode(self):
-      """
-      The parent of this node. 
-      All nodes except root may have a parent.
-      """
       rtn = getattr(self, 'aq_parent', None)
       # Handle ZMSProxyObjects.
       if hasattr( rtn, 'is_blob') or hasattr( rtn, 'base'):
@@ -1030,12 +1028,11 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # --------------------------------------------------------------------------
     #  ZMSObject.getTreeNodes:
+    #
+    #  Returns a NodeList that contains all children of this subtree in correct order.
+    #  If none, this is a empty NodeList. 
     # --------------------------------------------------------------------------
     def getTreeNodes(self, REQUEST={}, meta_types=None):
-      """
-      Returns a NodeList that contains all children of this subtree in correct order.
-      If none, this is a empty NodeList. 
-      """
       rtn = []
       for ob in self.getChildNodes(REQUEST):
         if ob.isMetaType(meta_types): rtn.append(ob)

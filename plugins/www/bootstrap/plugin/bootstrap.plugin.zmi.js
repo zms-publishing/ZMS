@@ -337,7 +337,7 @@ $(function(){
 									html = html
 											+ '<div class="col-lg-10">'
 												+ '<div class="input-group">'
-													+ '<input class="form-control" type="text" name="zmi-nodespicker-url-input" class="url-input">'
+													+ '<input class="form-control url-input" type="text" name="zmi-nodespicker-url-input">'
 													+ '<span class="input-group-addon btn btn-default" onclick="zmiBrowseObjs(\'zmi-single-line-form\',\'zmi-nodespicker-url-input\',getZMILang())">...</span>'
 												+ '</div><!-- .input-append -->'
 											+ '</div><!-- .col-lg-10 -->';

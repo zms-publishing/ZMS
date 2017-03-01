@@ -35,6 +35,7 @@ import zopeutil
 import _blobfields
 import _fileutil
 import _globals
+import _xmllib
 import _ziputil
 
 
@@ -341,8 +342,7 @@ class ZMSMetaobjManager:
                not key in mandatory_keys:
               del attr[key]
           if attr.has_key('ob'):
-            if attr['ob'] is not None:
-              attr['custom'] = zopeutil.readData(attr['ob'])
+            attr['custom'] = attr['ob']
             del attr['ob']
           attrs.append( attr)
         ob['__obj_attrs__'] = attrs
@@ -359,7 +359,7 @@ class ZMSMetaobjManager:
       else:
         filename = 'export.metaobj.xml'
       content_type = 'text/xml; charset=utf-8'
-      export = self.getXmlHeader() + self.toXmlString(value,xhtml=True)
+      export = self.getXmlHeader() + _xmllib.toXml(self,value,xhtml=True)
       
       if RESPONSE:
         RESPONSE.setHeader('Content-Type',content_type)

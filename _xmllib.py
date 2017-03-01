@@ -454,6 +454,7 @@ def xmlOnUnknownEndTag(self, sTagName):
 # ------------------------------------------------------------------------------
 def toCdata(self, s, xhtml=0):
   rtn = ''
+  st = str(type(s))
   
   # Return Text (HTML) in CDATA as XHTML.
   from _filtermanager import processCommand
@@ -516,7 +517,7 @@ def toCdata(self, s, xhtml=0):
     s = s.replace(chr(30),'')
     # Hack for nested CDATA
     s = re.compile( '\<\!\[CDATA\[(.*?)\]\]\>').sub( '<!{CDATA{\\1}}>', s)
-    rtn = '<![CDATA[%s]]>'%s
+    rtn = st+'<![CDATA[%s]]>'%s
 
   # Return.
   return rtn

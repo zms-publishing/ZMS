@@ -12,10 +12,7 @@
                 <dictionary>
                   <item key="custom"><![CDATA[icon-home]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
@@ -25,8 +22,7 @@
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[titlealt]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -35,17 +31,14 @@
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[title]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[titleimage]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Titleimage]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[image]]></item>
                 </dictionary>
               </item>
@@ -59,70 +52,114 @@
                       <item><![CDATA[2]]></item>
                     </list>
                   </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Level]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[TAB_METADATA]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[TAB_METADATA]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[delimiter]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_description]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_description]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_subject]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Subject]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_subject]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_type]]></item>
-                  <item key="mandatory" type="int">0</item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item><![CDATA[Home]]></item>
+                      <item><![CDATA[Artikel]]></item>
+                      <item><![CDATA[Forum]]></item>
+                      <item><![CDATA[News]]></item>
+                      <item><![CDATA[Resource]]></item>
+                    </list>
+                  </item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Type]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_type]]></item>
+                  <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_creator]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Creator]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_creator]]></item>
+                  <item key="type"><![CDATA[string]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[delimiter_permalinks]]></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Permalinks]]></item>
+                  <item key="type"><![CDATA[delimiter]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- ZMS.interface_permalinks -->
+
+<div class="control-group" tal:define="zmscontext options/zmscontext">
+	<label class="control-label col-sm-2"><span>Permalinks</span></label>
+	<div class="col-sm-10" style="padding:0 0 1em 5px">
+		<table class="table table-bordered" style="margin:0">
+		<colgroup>
+			<col width="2em"/>
+		</colgroup>
+		<tbody tal:define="prefix python:'%s.permalink.'%zmscontext.meta_id;
+			keys python:filter(lambda x:x.startswith(prefix),zmscontext.getConfProperties().keys());
+			dummy0 python:keys.sort();">
+		<tal:block tal:repeat="key keys">
+		<tr tal:define="id python:key[len(prefix):]">
+			<td class="meta-sort">
+				<div class="btn-group">
+					<span class="btn btn-default" tal:attributes="onclick python:'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){$(this).parents(\'tr\').remove()}'; title python:here.getZMILangStr('BTN_DELETE')">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+					</span>
+				</div><!-- .btn-group -->
+			</td>
+			<td class="meta-id"><input class="form-control input-sm" tal:attributes="name python:'permalink_key_%s'%id; value id;"/>
+			<td class="meta-url"><input class="form-control input-sm url-input" tal:attributes="name python:'permalink_val_%s'%id; value python:zmscontext.getConfProperty(key)"/>
+		</tr>
+		</tal:block>
+		<tr class="row_insert">
+			<td class="meta-sort"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></tal:block></td>
+			<td class="meta-id"><input class="form-control input-sm" name="permalink_key__" placeholder="Enter Id..."/>
+			<td class="meta-url"><input class="form-control input-sm url-input" name="permalink_val__" placeholder="Select Url..."/>
+		</tr>
+		</tbody>
+		</table>
+	</div>
+</div>
+
+<!-- /ZMS.interface_permalinks -->]]>
+                  </item>
+                  <item key="id"><![CDATA[interface_permalinks]]></item>
+                  <item key="name"><![CDATA[interface_permalinks]]></item>
+                  <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[zmsindex]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMSIndex]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[ZMSIndexZCatalog]]></item>
                 </dictionary>
               </item>
@@ -138,11 +175,47 @@
                       <item><![CDATA[type(ZMSModule)]]></item>
                     </list>
                   </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Objects]]></item>
                   <item key="repetitive" type="int">1</item>
                   <item key="type"><![CDATA[*]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMS.onChangeObjEvt"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext
+##title=py: Event: onChange
+##
+# --// ZMS.onChangeObjEvt //--
+
+request = zmscontext.REQUEST
+# permalinks
+if request.has_key('permalink_key__') and request.has_key('permalink_val__'):
+  prefix = '%s.permalink.'%zmscontext.meta_id
+  # delete all conf-properties
+  for key in filter(lambda x:x.startswith(prefix),zmscontext.getConfProperties()):
+    zmscontext.delConfProperty(key)
+  # set new conf-properties
+  reqprefix = 'permalink_key_'
+  for reqkey in request.form.keys():
+    if reqkey.find(reqprefix) >= 0:
+      id = reqkey[len(reqprefix):]
+      k = request.get('permalink_key_%s'%id)
+      v = request.get('permalink_val_%s'%id)
+      if k and v:
+        zmscontext.setConfProperty(prefix+k,v)
+
+# --// /ZMS.onChangeObjEvt //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[onChangeObjEvt]]></item>
+                  <item key="name"><![CDATA[Event: onChange]]></item>
+                  <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -158,10 +231,7 @@
 <!-- /ZMS.standard_html -->]]>
                   </item>
                   <item key="id"><![CDATA[standard_html]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMS]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -191,7 +261,7 @@
           <item key="id"><![CDATA[ZMS]]></item>
           <item key="name"><![CDATA[ZMS]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.4]]></item>
+          <item key="revision"><![CDATA[3.2.6]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>
@@ -208,10 +278,7 @@
                 <dictionary>
                   <item key="custom"><![CDATA[icon-file-alt]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
@@ -221,8 +288,7 @@
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[titlealt]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -231,17 +297,14 @@
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[title]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[titleimage]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Titleimage]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[image]]></item>
                 </dictionary>
               </item>
@@ -255,61 +318,56 @@
                       <item><![CDATA[2]]></item>
                     </list>
                   </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Level]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[TAB_METADATA]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[TAB_METADATA]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[delimiter]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_description]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_description]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_subject]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Subject]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_subject]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_type]]></item>
-                  <item key="mandatory" type="int">0</item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item><![CDATA[Home]]></item>
+                      <item><![CDATA[Artikel]]></item>
+                      <item><![CDATA[Forum]]></item>
+                      <item><![CDATA[News]]></item>
+                      <item><![CDATA[Resource]]></item>
+                    </list>
+                  </item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Type]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_type]]></item>
+                  <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_creator]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Creator]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_creator]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -322,8 +380,6 @@
                       <item><![CDATA[type(ZMSModule)]]></item>
                     </list>
                   </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Objects]]></item>
                   <item key="repetitive" type="int">1</item>
                   <item key="type"><![CDATA[*]]></item>
@@ -342,10 +398,7 @@
 <!-- /ZMSDocument.standard_html -->]]>
                   </item>
                   <item key="id"><![CDATA[standard_html]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSDocument]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -392,17 +445,13 @@
                 <dictionary>
                   <item key="custom"><![CDATA[icon-download-alt]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[
+                  <item key="custom"><![CDATA[
 div.ZMSFile.none, div.ZMSLinkElement.none 
 	{
 	background-color: transparent;
@@ -427,14 +476,46 @@ div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited
 	font-weight:bold;
 	text-decoration:none;
 	}
-]]></data>
+]]>
                   </item>
                   <item key="id"><![CDATA[f_css_defaults]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Default]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[title]]></item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[DC.Title]]></item>
+                  <item key="type"><![CDATA[string]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[file]]></item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[File]]></item>
+                  <item key="type"><![CDATA[file]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="id"><![CDATA[align]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item><![CDATA[LEFT]]></item>
+                      <item><![CDATA[LEFT_FLOAT]]></item>
+                      <item><![CDATA[RIGHT]]></item>
+                      <item><![CDATA[RIGHT_FLOAT]]></item>
+                      <item><![CDATA[NONE]]></item>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="name"><![CDATA[Align]]></item>
+                  <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -455,60 +536,14 @@ return zmscontext.attr('title')
 # --// /titlealt //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[titlealt]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[title]]></item>
-                  <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">1</item>
-                  <item key="name"><![CDATA[DC.Title]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[title]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="id"><![CDATA[file]]></item>
-                  <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">1</item>
-                  <item key="name"><![CDATA[File]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[file]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="id"><![CDATA[align]]></item>
-                  <item key="keys" type="list">
-                    <list>
-                      <item><![CDATA[LEFT]]></item>
-                      <item><![CDATA[LEFT_FLOAT]]></item>
-                      <item><![CDATA[RIGHT]]></item>
-                      <item><![CDATA[RIGHT_FLOAT]]></item>
-                      <item><![CDATA[NONE]]></item>
-                    </list>
-                  </item>
-                  <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Align]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[select]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="id"><![CDATA[interface0]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<script type="text/javascript" tal:define="global
+                  <item key="custom"><![CDATA[<script type="text/javascript" tal:define="global
 		zmscontext options/zmscontext">
 
 $(function(){
@@ -527,28 +562,24 @@ $(function(){
 
 </script>]]>
                   </item>
-                  <item key="repetitive" type="int">0</item>
+                  <item key="id"><![CDATA[interface0]]></item>
+                  <item key="name"><![CDATA[interface0]]></item>
                   <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[TAB_METADATA]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[TAB_METADATA]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[delimiter]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_description]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_description]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -570,12 +601,8 @@ return file.getMimeTypeIconSrc()
 # --// EO attr_img_src //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[attr_img_src]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Teaser.Image]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -598,12 +625,8 @@ return file.getHref(zmscontext.REQUEST)
 # --// EO attr_url //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[attr_url]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Teaser.Url]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -625,12 +648,8 @@ return zmscontext.attr('attr_dc_description')
 # --// EO attr_abstract //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[attr_abstract]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Teaser.Abstract]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -655,12 +674,8 @@ return ''
 # --// EO getHref2IndexHtml //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[getHref2IndexHtml]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Function: index_html]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -710,10 +725,7 @@ return ''
 <!-- /ZMSFile.standard_html -->]]>
                   </item>
                   <item key="id"><![CDATA[standard_html]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSFile]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -760,10 +772,7 @@ return ''
                 <dictionary>
                   <item key="custom"><![CDATA[icon-folder-close-alt]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
@@ -773,8 +782,7 @@ return ''
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[titlealt]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -783,17 +791,14 @@ return ''
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[title]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[titleimage]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Titleimage]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[image]]></item>
                 </dictionary>
               </item>
@@ -807,61 +812,56 @@ return ''
                       <item><![CDATA[2]]></item>
                     </list>
                   </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Level]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[TAB_METADATA]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[TAB_METADATA]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[delimiter]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_description]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_description]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_subject]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Subject]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_subject]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_type]]></item>
-                  <item key="mandatory" type="int">0</item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item><![CDATA[Home]]></item>
+                      <item><![CDATA[Artikel]]></item>
+                      <item><![CDATA[Forum]]></item>
+                      <item><![CDATA[News]]></item>
+                      <item><![CDATA[Resource]]></item>
+                    </list>
+                  </item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Type]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_type]]></item>
+                  <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_creator]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Creator]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_creator]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -875,8 +875,6 @@ return ''
                       <item><![CDATA[type(ZMSModule)]]></item>
                     </list>
                   </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Objects]]></item>
                   <item key="repetitive" type="int">1</item>
                   <item key="type"><![CDATA[*]]></item>
@@ -895,10 +893,7 @@ return ''
 <!-- /ZMSFolder.standard_html -->]]>
                   </item>
                   <item key="id"><![CDATA[standard_html]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSFolder]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -943,57 +938,15 @@ return ''
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[## Script (Python) "ZMSGraphic.titlealt"
-##bind container=container
-##bind context=context
-##bind namespace=
-##bind script=script
-##bind subpath=traverse_subpath
-##parameters=zmscontext=None
-##title=py: DC.Title.Alt
-##
-# --// BO titlealt //--
-
-try:
-    titlealt = zmscontext.attr('text')
-    img = zmscontext.attr('img')
-    if titlealt:
-        if len(titlealt) < 24:
-            return titlealt
-        else:
-            return '%s...'%(titlealt)
-    else:
-        return img.getFilename() 
-except:
-    return zmscontext.display_type(zmscontext.REQUEST)
-
-# --// EO titlealt //--
-]]>
-                  </item>
-                  <item key="errors"></item>
-                  <item key="id"><![CDATA[titlealt]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[DC.Title.Alt]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[py]]></item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
                   <item key="custom"><![CDATA[icon-picture fa fa-picture-o]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[
+                  <item key="custom"><![CDATA[
 /*--------- .ZMSGraphic --------------*/
 a.fancybox img {
 	padding:1px 1px 21px 1px;
@@ -1089,13 +1042,10 @@ a.superzoom img.superzoom {
 	background-image: url(/misc_/zms/superzoom.gif);
 }
 /*--------- /.ZMSGraphic --------------*/
-]]></data>
+]]>
                   </item>
                   <item key="id"><![CDATA[f_css_defaults]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Default]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
@@ -1104,9 +1054,7 @@ a.superzoom img.superzoom {
                   <item key="default"><![CDATA[2]]></item>
                   <item key="id"><![CDATA[displaytype]]></item>
                   <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Display-Type]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[int]]></item>
                 </dictionary>
               </item>
@@ -1116,27 +1064,22 @@ a.superzoom img.superzoom {
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Image]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[image]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[imghires]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Image (Hires)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[image]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[imgsuperres]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Image (Superres)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[image]]></item>
                 </dictionary>
               </item>
@@ -1144,20 +1087,15 @@ a.superzoom img.superzoom {
                 <dictionary>
                   <item key="default"><![CDATA[alt=""]]></item>
                   <item key="id"><![CDATA[img_attrs_spec]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[WAI-Attributes]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_url]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Image (URL)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[url]]></item>
                 </dictionary>
               </item>
@@ -1174,19 +1112,15 @@ a.superzoom img.superzoom {
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Align]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[text]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Text]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[richtext]]></item>
                 </dictionary>
               </item>
@@ -1197,9 +1131,7 @@ return context.getTextFormatDefault()]]>
                   </item>
                   <item key="id"><![CDATA[format]]></item>
                   <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Format]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
@@ -1214,10 +1146,42 @@ return context.getTextFormatDefault()]]>
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Text-Align]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[select]]></item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSGraphic.titlealt"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: DC.Title.Alt
+##
+# --// BO titlealt //--
+
+try:
+    titlealt = zmscontext.attr('text')
+    img = zmscontext.attr('img')
+    if titlealt:
+        if len(titlealt) < 24:
+            return titlealt
+        else:
+            return '%s...'%(titlealt)
+    else:
+        return img.getFilename() 
+except:
+    return zmscontext.display_type(zmscontext.REQUEST)
+
+# --// EO titlealt //--
+]]>
+                  </item>
+                  <item key="id"><![CDATA[titlealt]]></item>
+                  <item key="name"><![CDATA[DC.Title.Alt]]></item>
+                  <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -1241,12 +1205,8 @@ return ''
 # --// /getHref2IndexHtml //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[getHref2IndexHtml]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Function: index_html]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -1295,10 +1255,7 @@ return ''
 <!-- /ZMSGraphic.standard_html -->]]>
                   </item>
                   <item key="id"><![CDATA[standard_html]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSGraphic]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -1344,10 +1301,7 @@ return ''
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[f_css_defaults]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Default]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
@@ -1370,10 +1324,7 @@ return ''
 <!-- /bodyContentZMSLib_page -->]]>
                   </item>
                   <item key="id"><![CDATA[bodyContentZMSLib_page]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: Page]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[Page Template]]></item>
                 </dictionary>
               </item>
@@ -1451,12 +1402,8 @@ return context.str_json(result)
 # --// EO uploadMedia //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[uploadMedia]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Upload: Media]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -1530,10 +1477,7 @@ return context.str_json(result)
 <!-- /ZMSLib.show_version -->]]>
                   </item>
                   <item key="id"><![CDATA[show_version]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Show version]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -1557,12 +1501,8 @@ RESPONSE.redirect(context.objectValues(['ZMS'])[0].getHref2IndexHtml(request,dee
 # --// /index_html //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[index_html]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Index-Html]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[Script (Python)]]></item>
                 </dictionary>
               </item>
@@ -1603,34 +1543,24 @@ RESPONSE.redirect(context.objectValues(['ZMS'])[0].getHref2IndexHtml(request,dee
                 <dictionary>
                   <item key="custom"><![CDATA[icon-link]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[div.ZMSLinkContainer {
+                  <item key="custom"><![CDATA[div.ZMSLinkContainer {
 	background-color: #eee;
-}]]></data>
+}]]>
                   </item>
                   <item key="id"><![CDATA[f_css_defaults]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Defaults]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[interface0]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
+                  <item key="custom"><![CDATA[<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 <tal:block tal:define="global
 		zmscontext options/zmscontext;">
 
@@ -1732,7 +1662,8 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
 </tal:block>
 <tal:block tal:define="dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['align','e'])"></tal:block>]]>
                   </item>
-                  <item key="repetitive" type="int">0</item>
+                  <item key="id"><![CDATA[interface0]]></item>
+                  <item key="name"><![CDATA[interface0]]></item>
                   <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
@@ -1749,17 +1680,13 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Align]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[e]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Link-Elements]]></item>
                   <item key="repetitive" type="int">1</item>
                   <item key="type"><![CDATA[ZMSLinkElement]]></item>
@@ -1814,12 +1741,8 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
 # --// EO onChangeObjEvt //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[onChangeObjEvt]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: onChangeObj]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -1850,10 +1773,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
 <!-- /ZMSLinkContainer.standard_html -->]]>
                   </item>
                   <item key="id"><![CDATA[standard_html]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSLinkContainer]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -1900,23 +1820,15 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
                 <dictionary>
                   <item key="custom"><![CDATA[icon-link]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[/* @see ZMSFile.f_css_defaults */]]></data>
-                  </item>
+                  <item key="custom"><![CDATA[/* @see ZMSFile.f_css_defaults */]]></item>
                   <item key="id"><![CDATA[f_css_defaults]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Default]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
@@ -1926,8 +1838,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[titlealt]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -1936,16 +1847,12 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[title]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[inferface0]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<div id="inferface0" tal:define="global
+                  <item key="custom"><![CDATA[<div id="inferface0" tal:define="global
 		zmscontext options/zmscontext;
 		dummy0 python:request.set('beforeSubmitBtnClick','if ( zmiOnSubmitEventHandler(this)) { ');
 		dummy0 python:request.set('afterSubmitBtnClick',' } ')">
@@ -2108,7 +2015,8 @@ $(function(){
 <tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['attr_ref','ref_lang','attr_type'])"></tal:block>
 </div>]]>
                   </item>
-                  <item key="repetitive" type="int">0</item>
+                  <item key="id"><![CDATA[inferface0]]></item>
+                  <item key="name"><![CDATA[inferface0]]></item>
                   <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
@@ -2116,19 +2024,15 @@ $(function(){
                 <dictionary>
                   <item key="id"><![CDATA[attr_ref]]></item>
                   <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Reference]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[url]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[ref_lang]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Reference (lang)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
@@ -2146,9 +2050,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Type]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
@@ -2165,40 +2067,31 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Align]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[TAB_METADATA]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[TAB_METADATA]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[delimiter]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_description]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_description]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_creator]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Creator]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_creator]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2228,12 +2121,8 @@ return ref
 # --// /attr_url //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[attr_url]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Url]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -2255,12 +2144,8 @@ return zmscontext.attr('attr_dc_description')
 # --// /attr_abstract //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[attr_abstract]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Abstract]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -2294,12 +2179,8 @@ return constraints
 # --// /check_constraints //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[check_constraints]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Hook: Check constraints]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -2362,10 +2243,7 @@ return constraints
 <!-- /ZMSLinkElement.standard_html -->]]>
                   </item>
                   <item key="id"><![CDATA[standard_html]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSLinkElement]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -2412,59 +2290,44 @@ return constraints
                 <dictionary>
                   <item key="custom"><![CDATA[icon-comment-alt]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="zmsnote_bg.gif" type="file">4749463839610d000d00b30000fcce64fcf6bcfcda8cfcd274fffffffcce6cfcfecc000077788268ed00211200e80000009002fe0000ff0000ff0000ff21f90400000000002c000000000d000d0003042cb09049eb04c26a1086ae8011641f118ade778aa4b5a29b21cba33bcf1d78e3ed7bd7a6dd2f5300188f486304003b</data>
-                  </item>
+                  <item key="custom"><![CDATA[GIF89a  ³  üÎdüö¼üÚŒüÒtÿÿÿüÎlüþÌ  wx‚hí ! è   þ  ÿ  ÿ  ÿ!ù     ,      ,°IëÂj†®€dŠÞwŠ¤µ¢›!Ë£;Ïxãí{×¦Ý/S Hc ;]]></item>
                   <item key="id"><![CDATA[zmsnote_bg.gif]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Resource: Background]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[text]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Memotext]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[interface]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<script language="JavaScript">
+                  <item key="custom"><![CDATA[<script language="JavaScript">
 	$ZMI.registerReady(function(){
 		$('#zmiIframeAddDialog textarea').attr('title','INFO: the note element is just for internal usage - it is not published');
 		$('#zmiIframeAddDialog textarea').attr('placeholder','INFO: the note element is just for internal usage - it is not published');
 	});
 	</script>]]>
                   </item>
-                  <item key="repetitive" type="int">0</item>
+                  <item key="id"><![CDATA[interface]]></item>
+                  <item key="name"><![CDATA[interface]]></item>
                   <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[catalogText]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Hook: Catalog-Text]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
@@ -2533,10 +2396,7 @@ function onChangeZMSNoteDiv(id) {
 <!-- /ZMSNote.renderShort -->]]>
                   </item>
                   <item key="id"><![CDATA[renderShort]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -2559,12 +2419,8 @@ zmscontext.commitObj(request)
 # --// EO onChangeObjEvt //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[onChangeObjEvt]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: onChangeObj]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -2611,19 +2467,13 @@ zmscontext.commitObj(request)
                 <dictionary>
                   <item key="custom"><![CDATA[icon-file-text-alt]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[interface0]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<tal:block tal:define="global
+                  <item key="custom"><![CDATA[<tal:block tal:define="global
 		zmscontext options/zmscontext;
 		session_id python:request.SESSION.getId();
 		dummy0 python:request.set('CKEDITOR_config_toolbar',[
@@ -2666,17 +2516,16 @@ $(function(){
 
 </tal:block>]]>
                   </item>
-                  <item key="repetitive" type="int">0</item>
+                  <item key="id"><![CDATA[interface0]]></item>
+                  <item key="name"><![CDATA[interface0]]></item>
                   <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[text]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Text]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[richtext]]></item>
                 </dictionary>
               </item>
@@ -2737,12 +2586,8 @@ zmscontext.attr('text',text)
 # --// EO onChangeObjEvt //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[onChangeObjEvt]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: onChange-Object]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -2762,10 +2607,7 @@ zmscontext.attr('text',text)
 <!-- /ZMSRichtext.standard_html -->]]>
                   </item>
                   <item key="id"><![CDATA[standard_html]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSRichtext]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -2812,10 +2654,7 @@ zmscontext.attr('text',text)
                 <dictionary>
                   <item key="custom"><![CDATA[icon-building]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
@@ -2840,10 +2679,7 @@ zmscontext.attr('text',text)
 <!-- /ZMSSqlDb.renderShort -->]]>
                   </item>
                   <item key="id"><![CDATA[renderShort]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -2890,10 +2726,7 @@ zmscontext.attr('text',text)
                 <dictionary>
                   <item key="custom"><![CDATA[icon-folder-close]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
@@ -2903,8 +2736,7 @@ zmscontext.attr('text',text)
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[titlealt]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -2913,47 +2745,35 @@ zmscontext.attr('text',text)
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[title]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[0]]></item>
                   <item key="id"><![CDATA[attr_cacheable]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Cacheable]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[TAB_METADATA]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[TAB_METADATA]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[delimiter]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_description]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_description]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[interface0]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
+                  <item key="custom"><![CDATA[<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 <tal:block tal:define="global
 		standard modules/Products.zms/standard;
 		zmscontext options/zmscontext;
@@ -3033,7 +2853,8 @@ zmscontext.attr('text',text)
 </tal:block>
 </tal:block>]]>
                   </item>
-                  <item key="repetitive" type="int">0</item>
+                  <item key="id"><![CDATA[interface0]]></item>
+                  <item key="name"><![CDATA[interface0]]></item>
                   <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
@@ -3080,39 +2901,29 @@ zmscontext.attr('text',text)
                 <dictionary>
                   <item key="custom"><![CDATA[icon-table]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[caption]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Caption]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_dc_description]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Description]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[attr_dc_description]]></item>
+                  <item key="type"><![CDATA[text]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[interface0]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<tal:block tal:define="textFormatDefault python:here.getConfProperty('ZMSTable.getTextFormatDefault',here.getTextFormatDefault())">
+                  <item key="custom"><![CDATA[<tal:block tal:define="textFormatDefault python:here.getConfProperty('ZMSTable.getTextFormatDefault',here.getTextFormatDefault())">
 
 <!--
 ################################################################################
@@ -3810,7 +3621,8 @@ function onKeyUpZMSTableDivContenteditable() {
 
 </tal:block>]]>
                   </item>
-                  <item key="repetitive" type="int">0</item>
+                  <item key="id"><![CDATA[interface0]]></item>
+                  <item key="name"><![CDATA[interface0]]></item>
                   <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
@@ -3818,10 +3630,7 @@ function onKeyUpZMSTableDivContenteditable() {
                 <dictionary>
                   <item key="default"><![CDATA[0]]></item>
                   <item key="id"><![CDATA[sortable]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Sortable]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[boolean]]></item>
                 </dictionary>
               </item>
@@ -3829,9 +3638,7 @@ function onKeyUpZMSTableDivContenteditable() {
                 <dictionary>
                   <item key="id"><![CDATA[type]]></item>
                   <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Type]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[int]]></item>
                 </dictionary>
               </item>
@@ -3841,7 +3648,6 @@ function onKeyUpZMSTableDivContenteditable() {
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Table]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[list]]></item>
                 </dictionary>
               </item>
@@ -3849,10 +3655,7 @@ function onKeyUpZMSTableDivContenteditable() {
                 <dictionary>
                   <item key="default"><![CDATA[1]]></item>
                   <item key="id"><![CDATA[colgroup]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Colgroup]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[boolean]]></item>
                 </dictionary>
               </item>
@@ -3862,59 +3665,42 @@ function onKeyUpZMSTableDivContenteditable() {
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Cols]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[list]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="application/x-javascript" filename="jquery.tablesorter.min.js" type="file">0a2866756e6374696f6e2824297b242e657874656e64287b7461626c65736f727465723a6e65770a66756e6374696f6e28297b76617220706172736572733d5b5d2c776964676574733d5b5d3b746869732e64656661756c74733d7b6373734865616465723a22686561646572222c6373734173633a22686561646572536f72745570222c637373446573633a22686561646572536f7274446f776e222c6373734368696c64526f773a22657870616e642d6368696c64222c736f7274496e697469616c4f726465723a22617363222c736f72744d756c7469536f72744b65793a2273686966744b6579222c736f7274466f7263653a6e756c6c2c736f7274417070656e643a6e756c6c2c736f72744c6f63616c65436f6d706172653a747275652c7465787445787472616374696f6e3a2273696d706c65222c706172736572733a7b7d2c776964676574733a5b5d2c7769646765745a656272613a7b6373733a5b226576656e222c226f6464225d7d2c686561646572733a7b7d2c776964746846697865643a66616c73652c63616e63656c53656c656374696f6e3a747275652c736f72744c6973743a5b5d2c6865616465724c6973743a5b5d2c64617465466f726d61743a227573222c646563696d616c3a272f5c2e7c5c2c2f67272c6f6e52656e6465724865616465723a6e756c6c2c73656c6563746f72486561646572733a277468656164207468272c64656275673a66616c73657d3b66756e6374696f6e2062656e63686d61726b28732c64297b6c6f6728732b222c222b286e6577204461746528292e67657454696d6528292d642e67657454696d652829292b226d7322293b7d746869732e62656e63686d61726b3d62656e63686d61726b3b66756e6374696f6e206c6f672873297b696628747970656f6620636f6e736f6c65213d22756e646566696e6564222626747970656f6620636f6e736f6c652e6465627567213d22756e646566696e656422297b636f6e736f6c652e6c6f672873293b7d656c73657b616c6572742873293b7d7d66756e6374696f6e206275696c645061727365724361636865287461626c652c2468656164657273297b6966287461626c652e636f6e6669672e6465627567297b766172207061727365727344656275673d22223b7d6966287461626c652e74426f646965732e6c656e6774683d3d302972657475726e3b76617220726f77733d7461626c652e74426f646965735b305d2e726f77733b696628726f77735b305d297b766172206c6973743d5b5d2c63656c6c733d726f77735b305d2e63656c6c732c6c3d63656c6c732e6c656e6774683b666f722876617220693d303b693c6c3b692b2b297b76617220703d66616c73653b696628242e6d65746164617461262628242824686561646572735b695d292e6d6574616461746128292626242824686561646572735b695d292e6d6574616461746128292e736f7274657229297b703d6765745061727365724279496428242824686561646572735b695d292e6d6574616461746128292e736f72746572293b7d656c736520696628287461626c652e636f6e6669672e686561646572735b695d26267461626c652e636f6e6669672e686561646572735b695d2e736f7274657229297b703d67657450617273657242794964287461626c652e636f6e6669672e686561646572735b695d2e736f72746572293b7d6966282170297b703d646574656374506172736572466f72436f6c756d6e287461626c652c726f77732c2d312c69293b7d6966287461626c652e636f6e6669672e6465627567297b7061727365727344656275672b3d22636f6c756d6e3a222b692b22207061727365723a222b702e69642b225c6e223b7d6c6973742e707573682870293b7d7d6966287461626c652e636f6e6669672e6465627567297b6c6f6728706172736572734465627567293b7d72657475726e206c6973743b7d3b66756e6374696f6e20646574656374506172736572466f72436f6c756d6e287461626c652c726f77732c726f77496e6465782c63656c6c496e646578297b766172206c3d706172736572732e6c656e6774682c6e6f64653d66616c73652c6e6f646556616c75653d66616c73652c6b6565704c6f6f6b696e673d747275653b7768696c65286e6f646556616c75653d3d272726266b6565704c6f6f6b696e67297b726f77496e6465782b2b3b696628726f77735b726f77496e6465785d297b6e6f64653d6765744e6f646546726f6d526f77416e6443656c6c496e64657828726f77732c726f77496e6465782c63656c6c496e646578293b6e6f646556616c75653d7472696d416e644765744e6f646554657874287461626c652e636f6e6669672c6e6f6465293b6966287461626c652e636f6e6669672e6465627567297b6c6f672827436865636b696e672069662076616c75652077617320656d707479206f6e20726f773a272b726f77496e646578293b7d7d656c73657b6b6565704c6f6f6b696e673d66616c73653b7d7d666f722876617220693d313b693c6c3b692b2b297b696628706172736572735b695d2e6973286e6f646556616c75652c7461626c652c6e6f646529297b72657475726e20706172736572735b695d3b7d7d72657475726e20706172736572735b305d3b7d66756e6374696f6e206765744e6f646546726f6d526f77416e6443656c6c496e64657828726f77732c726f77496e6465782c63656c6c496e646578297b72657475726e20726f77735b726f77496e6465785d2e63656c6c735b63656c6c496e6465785d3b7d66756e6374696f6e207472696d416e644765744e6f64655465787428636f6e6669672c6e6f6465297b72657475726e20242e7472696d28676574456c656d656e745465787428636f6e6669672c6e6f646529293b7d66756e6374696f6e2067657450617273657242794964286e616d65297b766172206c3d706172736572732e6c656e6774683b666f722876617220693d303b693c6c3b692b2b297b696628706172736572735b695d2e69642e746f4c6f7765724361736528293d3d6e616d652e746f4c6f776572436173652829297b72657475726e20706172736572735b695d3b7d7d72657475726e2066616c73653b7d66756e6374696f6e206275696c644361636865287461626c65297b6966287461626c652e636f6e6669672e6465627567297b76617220636163686554696d653d6e6577204461746528293b7d76617220746f74616c526f77733d287461626c652e74426f646965735b305d26267461626c652e74426f646965735b305d2e726f77732e6c656e677468297c7c302c746f74616c43656c6c733d287461626c652e74426f646965735b305d2e726f77735b305d26267461626c652e74426f646965735b305d2e726f77735b305d2e63656c6c732e6c656e677468297c7c302c706172736572733d7461626c652e636f6e6669672e706172736572732c63616368653d7b726f773a5b5d2c6e6f726d616c697a65643a5b5d7d3b666f722876617220693d303b693c746f74616c526f77733b2b2b69297b76617220633d24287461626c652e74426f646965735b305d2e726f77735b695d292c636f6c733d5b5d3b696628632e686173436c617373287461626c652e636f6e6669672e6373734368696c64526f7729297b63616368652e726f775b63616368652e726f772e6c656e6774682d315d3d63616368652e726f775b63616368652e726f772e6c656e6774682d315d2e6164642863293b636f6e74696e75653b7d63616368652e726f772e707573682863293b666f7228766172206a3d303b6a3c746f74616c43656c6c733b2b2b6a297b636f6c732e7075736828706172736572735b6a5d2e666f726d617428676574456c656d656e7454657874287461626c652e636f6e6669672c635b305d2e63656c6c735b6a5d292c7461626c652c635b305d2e63656c6c735b6a5d29293b7d636f6c732e707573682863616368652e6e6f726d616c697a65642e6c656e677468293b63616368652e6e6f726d616c697a65642e7075736828636f6c73293b636f6c733d6e756c6c3b7d3b6966287461626c652e636f6e6669672e6465627567297b62656e63686d61726b28224275696c64696e6720636163686520666f7220222b746f74616c526f77732b2220726f77733a222c636163686554696d65293b7d72657475726e2063616368653b7d3b66756e6374696f6e20676574456c656d656e745465787428636f6e6669672c6e6f6465297b76617220746578743d22223b696628216e6f64652972657475726e22223b69662821636f6e6669672e737570706f72747354657874436f6e74656e7429636f6e6669672e737570706f72747354657874436f6e74656e743d6e6f64652e74657874436f6e74656e747c7c66616c73653b696628636f6e6669672e7465787445787472616374696f6e3d3d2273696d706c6522297b696628636f6e6669672e737570706f72747354657874436f6e74656e74297b746578743d6e6f64652e74657874436f6e74656e743b7d656c73657b6966286e6f64652e6368696c644e6f6465735b305d26266e6f64652e6368696c644e6f6465735b305d2e6861734368696c644e6f6465732829297b746578743d6e6f64652e6368696c644e6f6465735b305d2e696e6e657248544d4c3b7d656c73657b746578743d6e6f64652e696e6e657248544d4c3b7d7d7d656c73657b696628747970656f6628636f6e6669672e7465787445787472616374696f6e293d3d2266756e6374696f6e22297b746578743d636f6e6669672e7465787445787472616374696f6e286e6f6465293b7d656c73657b746578743d24286e6f6465292e7465787428293b7d7d72657475726e20746578743b7d66756e6374696f6e20617070656e64546f5461626c65287461626c652c6361636865297b6966287461626c652e636f6e6669672e6465627567297b76617220617070656e6454696d653d6e6577204461746528297d76617220633d63616368652c723d632e726f772c6e3d632e6e6f726d616c697a65642c746f74616c526f77733d6e2e6c656e6774682c636865636b43656c6c3d286e5b305d2e6c656e6774682d31292c7461626c65426f64793d24287461626c652e74426f646965735b305d292c726f77733d5b5d3b666f722876617220693d303b693c746f74616c526f77733b692b2b297b76617220706f733d6e5b695d5b636865636b43656c6c5d3b726f77732e7075736828725b706f735d293b696628217461626c652e636f6e6669672e617070656e646572297b766172206c3d725b706f735d2e6c656e6774683b666f7228766172206a3d303b6a3c6c3b6a2b2b297b7461626c65426f64795b305d2e617070656e644368696c6428725b706f735d5b6a5d293b7d7d7d6966287461626c652e636f6e6669672e617070656e646572297b7461626c652e636f6e6669672e617070656e646572287461626c652c726f7773293b7d726f77733d6e756c6c3b6966287461626c652e636f6e6669672e6465627567297b62656e63686d61726b282252656275696c74207461626c653a222c617070656e6454696d65293b7d6170706c79576964676574287461626c65293b73657454696d656f75742866756e6374696f6e28297b24287461626c65292e747269676765722822736f7274456e6422293b7d2c30293b7d3b66756e6374696f6e206275696c6448656164657273287461626c65297b6966287461626c652e636f6e6669672e6465627567297b7661722074696d653d6e6577204461746528293b7d766172206d6574613d28242e6d65746164617461293f747275653a66616c73653b766172206865616465725f696e6465783d636f6d707574655461626c6548656164657243656c6c496e6465786573287461626c65293b247461626c65486561646572733d24287461626c652e636f6e6669672e73656c6563746f72486561646572732c7461626c65292e656163682866756e6374696f6e28696e646578297b746869732e636f6c756d6e3d6865616465725f696e6465785b746869732e706172656e744e6f64652e726f77496e6465782b222d222b746869732e63656c6c496e6465785d3b746869732e6f726465723d666f726d6174536f7274696e674f72646572287461626c652e636f6e6669672e736f7274496e697469616c4f72646572293b746869732e636f756e743d746869732e6f726465723b696628636865636b4865616465724d657461646174612874686973297c7c636865636b4865616465724f7074696f6e73287461626c652c696e6465782929746869732e736f727444697361626c65643d747275653b696628636865636b4865616465724f7074696f6e73536f7274696e674c6f636b6564287461626c652c696e6465782929746869732e6f726465723d746869732e6c6f636b65644f726465723d636865636b4865616465724f7074696f6e73536f7274696e674c6f636b6564287461626c652c696e646578293b69662821746869732e736f727444697361626c6564297b766172202474683d242874686973292e616464436c617373287461626c652e636f6e6669672e637373486561646572293b6966287461626c652e636f6e6669672e6f6e52656e646572486561646572297461626c652e636f6e6669672e6f6e52656e6465724865616465722e6170706c7928247468293b7d7461626c652e636f6e6669672e6865616465724c6973745b696e6465785d3d746869733b7d293b6966287461626c652e636f6e6669672e6465627567297b62656e63686d61726b28224275696c7420686561646572733a222c74696d65293b6c6f6728247461626c6548656164657273293b7d72657475726e20247461626c65486561646572733b7d3b66756e6374696f6e20636f6d707574655461626c6548656164657243656c6c496e64657865732874297b766172206d61747269783d5b5d3b766172206c6f6f6b75703d7b7d3b7661722074686561643d742e676574456c656d656e747342795461674e616d652827544845414427295b305d3b766172207472733d74686561642e676574456c656d656e747342795461674e616d652827545227293b666f722876617220693d303b693c7472732e6c656e6774683b692b2b297b7661722063656c6c733d7472735b695d2e63656c6c733b666f7228766172206a3d303b6a3c63656c6c732e6c656e6774683b6a2b2b297b76617220633d63656c6c735b6a5d3b76617220726f77496e6465783d632e706172656e744e6f64652e726f77496e6465783b7661722063656c6c49643d726f77496e6465782b222d222b632e63656c6c496e6465783b76617220726f775370616e3d632e726f775370616e7c7c313b76617220636f6c5370616e3d632e636f6c5370616e7c7c310a766172206669727374417661696c436f6c3b696628747970656f66286d61747269785b726f77496e6465785d293d3d22756e646566696e656422297b6d61747269785b726f77496e6465785d3d5b5d3b7d666f7228766172206b3d303b6b3c6d61747269785b726f77496e6465785d2e6c656e6774682b313b6b2b2b297b696628747970656f66286d61747269785b726f77496e6465785d5b6b5d293d3d22756e646566696e656422297b6669727374417661696c436f6c3d6b3b627265616b3b7d7d6c6f6f6b75705b63656c6c49645d3d6669727374417661696c436f6c3b666f7228766172206b3d726f77496e6465783b6b3c726f77496e6465782b726f775370616e3b6b2b2b297b696628747970656f66286d61747269785b6b5d293d3d22756e646566696e656422297b6d61747269785b6b5d3d5b5d3b7d766172206d6174726978726f773d6d61747269785b6b5d3b666f7228766172206c3d6669727374417661696c436f6c3b6c3c6669727374417661696c436f6c2b636f6c5370616e3b6c2b2b297b6d6174726978726f775b6c5d3d2278223b7d7d7d7d72657475726e206c6f6f6b75703b7d66756e6374696f6e20636865636b43656c6c436f6c5370616e287461626c652c726f77732c726f77297b766172206172723d5b5d2c723d7461626c652e74486561642e726f77732c633d725b726f775d2e63656c6c733b666f722876617220693d303b693c632e6c656e6774683b692b2b297b7661722063656c6c3d635b695d3b69662863656c6c2e636f6c5370616e3e31297b6172723d6172722e636f6e63617428636865636b43656c6c436f6c5370616e287461626c652c6865616465724172722c726f772b2b29293b7d656c73657b6966287461626c652e74486561642e6c656e6774683d3d317c7c2863656c6c2e726f775370616e3e317c7c21725b726f772b315d29297b6172722e707573682863656c6c293b7d7d7d72657475726e206172723b7d3b66756e6374696f6e20636865636b4865616465724d657461646174612863656c6c297b69662828242e6d6574616461746129262628242863656c6c292e6d6574616461746128292e736f727465723d3d3d66616c736529297b72657475726e20747275653b7d3b72657475726e2066616c73653b7d66756e6374696f6e20636865636b4865616465724f7074696f6e73287461626c652c69297b696628287461626c652e636f6e6669672e686561646572735b695d292626287461626c652e636f6e6669672e686561646572735b695d2e736f727465723d3d3d66616c736529297b72657475726e20747275653b7d3b72657475726e2066616c73653b7d66756e6374696f6e20636865636b4865616465724f7074696f6e73536f7274696e674c6f636b6564287461626c652c69297b696628287461626c652e636f6e6669672e686561646572735b695d292626287461626c652e636f6e6669672e686561646572735b695d2e6c6f636b65644f72646572292972657475726e207461626c652e636f6e6669672e686561646572735b695d2e6c6f636b65644f726465723b72657475726e2066616c73653b7d66756e6374696f6e206170706c79576964676574287461626c65297b76617220633d7461626c652e636f6e6669672e776964676574733b766172206c3d632e6c656e6774683b666f722876617220693d303b693c6c3b692b2b297b6765745769646765744279496428635b695d292e666f726d6174287461626c65293b7d7d66756e6374696f6e2067657457696467657442794964286e616d65297b766172206c3d776964676574732e6c656e6774683b666f722876617220693d303b693c6c3b692b2b297b696628776964676574735b695d2e69642e746f4c6f7765724361736528293d3d6e616d652e746f4c6f776572436173652829297b72657475726e20776964676574735b695d3b7d7d7d3b66756e6374696f6e20666f726d6174536f7274696e674f726465722876297b696628747970656f66287629213d224e756d62657222297b72657475726e28762e746f4c6f7765724361736528293d3d226465736322293f313a303b7d656c73657b72657475726e28763d3d31293f313a303b7d7d66756e6374696f6e20697356616c7565496e417272617928762c61297b766172206c3d612e6c656e6774683b666f722876617220693d303b693c6c3b692b2b297b696628615b695d5b305d3d3d76297b72657475726e20747275653b7d7d72657475726e2066616c73653b7d66756e6374696f6e2073657448656164657273437373287461626c652c24686561646572732c6c6973742c637373297b24686561646572732e72656d6f7665436c617373286373735b305d292e72656d6f7665436c617373286373735b315d293b76617220683d5b5d3b24686561646572732e656163682866756e6374696f6e286f6666736574297b69662821746869732e736f727444697361626c6564297b685b746869732e636f6c756d6e5d3d242874686973293b7d7d293b766172206c3d6c6973742e6c656e6774683b666f722876617220693d303b693c6c3b692b2b297b685b6c6973745b695d5b305d5d2e616464436c617373286373735b6c6973745b695d5b315d5d293b7d7d66756e6374696f6e20666978436f6c756d6e5769647468287461626c652c2468656164657273297b76617220633d7461626c652e636f6e6669673b696628632e77696474684669786564297b76617220636f6c67726f75703d2428273c636f6c67726f75703e27293b24282274723a6669727374207464222c7461626c652e74426f646965735b305d292e656163682866756e6374696f6e28297b636f6c67726f75702e617070656e64282428273c636f6c3e27292e63737328277769647468272c242874686973292e7769647468282929293b7d293b24287461626c65292e70726570656e6428636f6c67726f7570293b7d3b7d66756e6374696f6e20757064617465486561646572536f7274436f756e74287461626c652c736f72744c697374297b76617220633d7461626c652e636f6e6669672c6c3d736f72744c6973742e6c656e6774683b666f722876617220693d303b693c6c3b692b2b297b76617220733d736f72744c6973745b695d2c6f3d632e6865616465724c6973745b735b305d5d3b6f2e636f756e743d735b315d3b6f2e636f756e742b2b3b7d7d66756e6374696f6e206d756c7469736f7274287461626c652c736f72744c6973742c6361636865297b6966287461626c652e636f6e6669672e6465627567297b76617220736f727454696d653d6e6577204461746528293b7d7661722064796e616d69634578703d2276617220736f727457726170706572203d2066756e6374696f6e28612c6229207b222c6c3d736f72744c6973742e6c656e6774683b666f722876617220693d303b693c6c3b692b2b297b76617220633d736f72744c6973745b695d5b305d3b766172206f726465723d736f72744c6973745b695d5b315d3b76617220733d287461626c652e636f6e6669672e706172736572735b635d2e747970653d3d227465787422293f28286f726465723d3d30293f6d616b65536f727446756e6374696f6e282274657874222c22617363222c63293a6d616b65536f727446756e6374696f6e282274657874222c2264657363222c6329293a28286f726465723d3d30293f6d616b65536f727446756e6374696f6e28226e756d65726963222c22617363222c63293a6d616b65536f727446756e6374696f6e28226e756d65726963222c2264657363222c6329293b76617220653d2265222b693b64796e616d69634578702b3d2276617220222b652b22203d20222b733b64796e616d69634578702b3d22696628222b652b2229207b2072657475726e20222b652b223b207d20223b64796e616d69634578702b3d22656c7365207b20223b7d766172206f72674f72646572436f6c3d63616368652e6e6f726d616c697a65645b305d2e6c656e6774682d313b64796e616d69634578702b3d2272657475726e20615b222b6f72674f72646572436f6c2b225d2d625b222b6f72674f72646572436f6c2b225d3b223b666f722876617220693d303b693c6c3b692b2b297b64796e616d69634578702b3d227d3b20223b7d64796e616d69634578702b3d2272657475726e20303b20223b64796e616d69634578702b3d227d3b20223b6966287461626c652e636f6e6669672e6465627567297b62656e63686d61726b28224576616c696e672065787072657373696f6e3a222b64796e616d69634578702c6e657720446174652829293b7d6576616c2864796e616d6963457870293b63616368652e6e6f726d616c697a65642e736f727428736f727457726170706572293b6966287461626c652e636f6e6669672e6465627567297b62656e63686d61726b2822536f7274696e67206f6e20222b736f72744c6973742e746f537472696e6728292b2220616e642064697220222b6f726465722b222074696d653a222c736f727454696d65293b7d72657475726e2063616368653b7d3b66756e6374696f6e206d616b65536f727446756e6374696f6e28747970652c646972656374696f6e2c696e646578297b76617220613d22615b222b696e6465782b225d222c623d22625b222b696e6465782b225d223b696628747970653d3d2774657874272626646972656374696f6e3d3d2761736327297b72657475726e2228222b612b22203d3d20222b622b22203f2030203a2028222b612b22203d3d3d206e756c6c203f204e756d6265722e504f5349544956455f494e46494e495459203a2028222b622b22203d3d3d206e756c6c203f204e756d6265722e4e454741544956455f494e46494e495459203a2028222b612b22203c20222b622b2229203f202d31203a2031202929293b223b7d656c736520696628747970653d3d2774657874272626646972656374696f6e3d3d276465736327297b72657475726e2228222b612b22203d3d20222b622b22203f2030203a2028222b612b22203d3d3d206e756c6c203f204e756d6265722e504f5349544956455f494e46494e495459203a2028222b622b22203d3d3d206e756c6c203f204e756d6265722e4e454741544956455f494e46494e495459203a2028222b622b22203c20222b612b2229203f202d31203a2031202929293b223b7d656c736520696628747970653d3d276e756d65726963272626646972656374696f6e3d3d2761736327297b72657475726e2228222b612b22203d3d3d206e756c6c20262620222b622b22203d3d3d206e756c6c29203f2030203a28222b612b22203d3d3d206e756c6c203f204e756d6265722e504f5349544956455f494e46494e495459203a2028222b622b22203d3d3d206e756c6c203f204e756d6265722e4e454741544956455f494e46494e495459203a20222b612b22202d20222b622b2229293b223b7d656c736520696628747970653d3d276e756d65726963272626646972656374696f6e3d3d276465736327297b72657475726e2228222b612b22203d3d3d206e756c6c20262620222b622b22203d3d3d206e756c6c29203f2030203a28222b612b22203d3d3d206e756c6c203f204e756d6265722e504f5349544956455f494e46494e495459203a2028222b622b22203d3d3d206e756c6c203f204e756d6265722e4e454741544956455f494e46494e495459203a20222b622b22202d20222b612b2229293b223b7d7d3b66756e6374696f6e206d616b65536f7274546578742869297b72657475726e222828615b222b692b225d203c20625b222b692b225d29203f202d31203a202828615b222b692b225d203e20625b222b692b225d29203f2031203a203029293b223b7d3b66756e6374696f6e206d616b65536f727454657874446573632869297b72657475726e222828625b222b692b225d203c20615b222b692b225d29203f202d31203a202828625b222b692b225d203e20615b222b692b225d29203f2031203a203029293b223b7d3b66756e6374696f6e206d616b65536f72744e756d657269632869297b72657475726e22615b222b692b225d2d625b222b692b225d3b223b7d3b66756e6374696f6e206d616b65536f72744e756d65726963446573632869297b72657475726e22625b222b692b225d2d615b222b692b225d3b223b7d3b66756e6374696f6e20736f72745465787428612c62297b6966287461626c652e636f6e6669672e736f72744c6f63616c65436f6d706172652972657475726e20612e6c6f63616c65436f6d706172652862293b72657475726e2828613c62293f2d313a2828613e62293f313a3029293b7d3b66756e6374696f6e20736f7274546578744465736328612c62297b6966287461626c652e636f6e6669672e736f72744c6f63616c65436f6d706172652972657475726e20622e6c6f63616c65436f6d706172652861293b72657475726e2828623c61293f2d313a2828623e61293f313a3029293b7d3b66756e6374696f6e20736f72744e756d6572696328612c62297b72657475726e20612d623b7d3b66756e6374696f6e20736f72744e756d657269634465736328612c62297b72657475726e20622d613b7d3b66756e6374696f6e20676574436163686564536f72745479706528706172736572732c69297b72657475726e20706172736572735b695d2e747970653b7d3b746869732e636f6e7374727563743d66756e6374696f6e2873657474696e6773297b72657475726e20746869732e656163682866756e6374696f6e28297b69662821746869732e74486561647c7c21746869732e74426f646965732972657475726e3b7661722024746869732c24646f63756d656e742c24686561646572732c63616368652c636f6e6669672c7368696674446f776e3d302c736f72744f726465723b746869732e636f6e6669673d7b7d3b636f6e6669673d242e657874656e6428746869732e636f6e6669672c242e7461626c65736f727465722e64656661756c74732c73657474696e6773293b24746869733d242874686973293b242e6461746128746869732c227461626c65736f72746572222c636f6e666967293b24686561646572733d6275696c64486561646572732874686973293b746869732e636f6e6669672e706172736572733d6275696c64506172736572436163686528746869732c2468656164657273293b63616368653d6275696c6443616368652874686973293b76617220736f72744353533d5b636f6e6669672e637373446573632c636f6e6669672e6373734173635d3b666978436f6c756d6e57696474682874686973293b24686561646572732e636c69636b2866756e6374696f6e2865297b76617220746f74616c526f77733d2824746869735b305d2e74426f646965735b305d262624746869735b305d2e74426f646965735b305d2e726f77732e6c656e677468297c7c303b69662821746869732e736f727444697361626c65642626746f74616c526f77733e30297b24746869732e747269676765722822736f7274537461727422293b766172202463656c6c3d242874686973293b76617220693d746869732e636f6c756d6e3b746869732e6f726465723d746869732e636f756e742b2b25323b696628746869732e6c6f636b65644f7264657229746869732e6f726465723d746869732e6c6f636b65644f726465723b69662821655b636f6e6669672e736f72744d756c7469536f72744b65795d297b636f6e6669672e736f72744c6973743d5b5d3b696628636f6e6669672e736f7274466f726365213d6e756c6c297b76617220613d636f6e6669672e736f7274466f7263653b666f7228766172206a3d303b6a3c612e6c656e6774683b6a2b2b297b696628615b6a5d5b305d213d69297b636f6e6669672e736f72744c6973742e7075736828615b6a5d293b7d7d7d636f6e6669672e736f72744c6973742e70757368285b692c746869732e6f726465725d293b7d656c73657b696628697356616c7565496e417272617928692c636f6e6669672e736f72744c69737429297b666f7228766172206a3d303b6a3c636f6e6669672e736f72744c6973742e6c656e6774683b6a2b2b297b76617220733d636f6e6669672e736f72744c6973745b6a5d2c6f3d636f6e6669672e6865616465724c6973745b735b305d5d3b696628735b305d3d3d69297b6f2e636f756e743d735b315d3b6f2e636f756e742b2b3b735b315d3d6f2e636f756e7425323b7d7d7d656c73657b636f6e6669672e736f72744c6973742e70757368285b692c746869732e6f726465725d293b7d7d3b73657454696d656f75742866756e6374696f6e28297b736574486561646572734373732824746869735b305d2c24686561646572732c636f6e6669672e736f72744c6973742c736f7274435353293b617070656e64546f5461626c652824746869735b305d2c6d756c7469736f72742824746869735b305d2c636f6e6669672e736f72744c6973742c636163686529293b7d2c31293b72657475726e2066616c73653b7d7d292e6d6f757365646f776e2866756e6374696f6e28297b696628636f6e6669672e63616e63656c53656c656374696f6e297b746869732e6f6e73656c65637473746172743d66756e6374696f6e28297b72657475726e2066616c73657d3b72657475726e2066616c73653b7d7d293b24746869732e62696e642822757064617465222c66756e6374696f6e28297b766172206d653d746869733b73657454696d656f75742866756e6374696f6e28297b6d652e636f6e6669672e706172736572733d6275696c645061727365724361636865286d652c2468656164657273293b63616368653d6275696c644361636865286d65293b7d2c31293b7d292e62696e64282275706461746543656c6c222c66756e6374696f6e28652c63656c6c297b76617220636f6e6669673d746869732e636f6e6669673b76617220706f733d5b2863656c6c2e706172656e744e6f64652e726f77496e6465782d31292c63656c6c2e63656c6c496e6465785d3b63616368652e6e6f726d616c697a65645b706f735b305d5d5b706f735b315d5d3d636f6e6669672e706172736572735b706f735b315d5d2e666f726d617428676574456c656d656e745465787428636f6e6669672c63656c6c292c63656c6c293b7d292e62696e642822736f72746f6e222c66756e6374696f6e28652c6c697374297b242874686973292e747269676765722822736f7274537461727422293b636f6e6669672e736f72744c6973743d6c6973743b76617220736f72744c6973743d636f6e6669672e736f72744c6973743b757064617465486561646572536f7274436f756e7428746869732c736f72744c697374293b7365744865616465727343737328746869732c24686561646572732c736f72744c6973742c736f7274435353293b617070656e64546f5461626c6528746869732c6d756c7469736f727428746869732c736f72744c6973742c636163686529293b7d292e62696e642822617070656e644361636865222c66756e6374696f6e28297b617070656e64546f5461626c6528746869732c6361636865293b7d292e62696e6428226170706c795769646765744964222c66756e6374696f6e28652c6964297b67657457696467657442794964286964292e666f726d61742874686973293b7d292e62696e6428226170706c7957696467657473222c66756e6374696f6e28297b6170706c795769646765742874686973293b7d293b696628242e6d65746164617461262628242874686973292e6d6574616461746128292626242874686973292e6d6574616461746128292e736f72746c69737429297b636f6e6669672e736f72744c6973743d242874686973292e6d6574616461746128292e736f72746c6973743b7d696628636f6e6669672e736f72744c6973742e6c656e6774683e30297b24746869732e747269676765722822736f72746f6e222c5b636f6e6669672e736f72744c6973745d293b7d6170706c795769646765742874686973293b7d293b7d3b746869732e6164645061727365723d66756e6374696f6e28706172736572297b766172206c3d706172736572732e6c656e6774682c613d747275653b666f722876617220693d303b693c6c3b692b2b297b696628706172736572735b695d2e69642e746f4c6f7765724361736528293d3d7061727365722e69642e746f4c6f776572436173652829297b613d66616c73653b7d7d69662861297b706172736572732e7075736828706172736572293b7d3b7d3b746869732e6164645769646765743d66756e6374696f6e28776964676574297b776964676574732e7075736828776964676574293b7d3b746869732e666f726d6174466c6f61743d66756e6374696f6e2873297b76617220693d7061727365466c6f61742873293b72657475726e2869734e614e286929293f303a693b7d3b746869732e666f726d6174496e743d66756e6374696f6e2873297b76617220693d7061727365496e742873293b72657475726e2869734e614e286929293f303a693b7d3b746869732e697344696769743d66756e6374696f6e28732c636f6e666967297b72657475726e2f5e5b2d2b5d3f5c642a242f2e7465737428242e7472696d28732e7265706c616365282f5b2c2e275d2f672c27272929293b7d3b746869732e636c6561725461626c65426f64793d66756e6374696f6e287461626c65297b696628242e62726f777365722e6d736965297b66756e6374696f6e20656d70747928297b7768696c6528746869732e66697273744368696c6429746869732e72656d6f76654368696c6428746869732e66697273744368696c64293b7d656d7074792e6170706c79287461626c652e74426f646965735b305d293b7d656c73657b7461626c652e74426f646965735b305d2e696e6e657248544d4c3d22223b7d7d3b7d7d293b242e666e2e657874656e64287b7461626c65736f727465723a242e7461626c65736f727465722e636f6e7374727563747d293b7661722074733d242e7461626c65736f727465723b74732e616464506172736572287b69643a2274657874222c69733a66756e6374696f6e2873297b72657475726e20747275653b7d2c666f726d61743a66756e6374696f6e2873297b72657475726e20242e7472696d28732e746f4c6f63616c654c6f776572436173652829293b7d2c747970653a2274657874227d293b74732e616464506172736572287b69643a226469676974222c69733a66756e6374696f6e28732c7461626c65297b76617220633d7461626c652e636f6e6669673b72657475726e20242e7461626c65736f727465722e6973446967697428732c63293b7d2c666f726d61743a66756e6374696f6e2873297b72657475726e20242e7461626c65736f727465722e666f726d6174466c6f61742873293b7d2c747970653a226e756d65726963227d293b74732e616464506172736572287b69643a2263757272656e6379222c69733a66756e6374696f6e2873297b72657475726e2f5e5bc2a324e282ac3f2e5d2f2e746573742873293b7d2c666f726d61743a66756e6374696f6e2873297b72657475726e20242e7461626c65736f727465722e666f726d6174466c6f617428732e7265706c616365286e657720526567457870282f5bc2a324e282ac5d2f67292c222229293b7d2c747970653a226e756d65726963227d293b74732e616464506172736572287b69643a22697041646472657373222c69733a66756e6374696f6e2873297b72657475726e2f5e5c647b322c337d5b5c2e5d5c647b322c337d5b5c2e5d5c647b322c337d5b5c2e5d5c647b322c337d242f2e746573742873293b7d2c666f726d61743a66756e6374696f6e2873297b76617220613d732e73706c697428222e22292c723d22222c6c3d612e6c656e6774683b666f722876617220693d303b693c6c3b692b2b297b766172206974656d3d615b695d3b6966286974656d2e6c656e6774683d3d32297b722b3d2230222b6974656d3b7d656c73657b722b3d6974656d3b7d7d72657475726e20242e7461626c65736f727465722e666f726d6174466c6f61742872293b7d2c747970653a226e756d65726963227d293b74732e616464506172736572287b69643a2275726c222c69733a66756e6374696f6e2873297b72657475726e2f5e2868747470733f7c6674707c66696c65293a5c2f5c2f242f2e746573742873293b7d2c666f726d61743a66756e6374696f6e2873297b72657475726e206a51756572792e7472696d28732e7265706c616365286e657720526567457870282f2868747470733f7c6674707c66696c65293a5c2f5c2f2f292c272729293b7d2c747970653a2274657874227d293b74732e616464506172736572287b69643a2269736f44617465222c69733a66756e6374696f6e2873297b72657475726e2f5e5c647b347d5b5c2f2d5d5c647b312c327d5b5c2f2d5d5c647b312c327d242f2e746573742873293b7d2c666f726d61743a66756e6374696f6e2873297b72657475726e20242e7461626c65736f727465722e666f726d6174466c6f6174282873213d2222293f6e6577204461746528732e7265706c616365286e657720526567457870282f2d2f67292c222f2229292e67657454696d6528293a223022293b7d2c747970653a226e756d65726963227d293b74732e616464506172736572287b69643a2270657263656e74222c69733a66756e6374696f6e2873297b72657475726e2f5c25242f2e7465737428242e7472696d287329293b7d2c666f726d61743a66756e6374696f6e2873297b72657475726e20242e7461626c65736f727465722e666f726d6174466c6f617428732e7265706c616365286e657720526567457870282f252f67292c222229293b7d2c747970653a226e756d65726963227d293b74732e616464506172736572287b69643a2275734c6f6e6744617465222c69733a66756e6374696f6e2873297b72657475726e20732e6d61746368286e657720526567457870282f5e5b412d5a612d7a5d7b332c31307d5c2e3f205b302d395d7b312c327d2c20285b302d395d7b347d7c273f5b302d395d7b327d292028285b302d325d3f5b302d395d3a5b302d355d5b302d395d297c285b302d315d3f5b302d395d3a5b302d355d5b302d395d5c7328414d7c504d292929242f29293b7d2c666f726d61743a66756e6374696f6e2873297b72657475726e20242e7461626c65736f727465722e666f726d6174466c6f6174286e657720446174652873292e67657454696d652829293b7d2c747970653a226e756d65726963227d293b74732e616464506172736572287b69643a2273686f727444617465222c69733a66756e6374696f6e2873297b72657475726e2f5c647b312c327d5b5c2f5c2d5d5c647b312c327d5b5c2f5c2d5d5c647b322c347d2f2e746573742873293b7d2c666f726d61743a66756e6374696f6e28732c7461626c65297b76617220633d7461626c652e636f6e6669673b733d732e7265706c616365282f5c2d2f672c222f22293b696628632e64617465466f726d61743d3d22757322297b733d732e7265706c616365282f285c647b312c327d295b5c2f5c2d5d285c647b312c327d295b5c2f5c2d5d285c647b347d292f2c2224332f24312f243222293b7d656c736520696628632e64617465466f726d61743d3d22756b22297b733d732e7265706c616365282f285c647b312c327d295b5c2f5c2d5d285c647b312c327d295b5c2f5c2d5d285c647b347d292f2c2224332f24322f243122293b7d656c736520696628632e64617465466f726d61743d3d2264642f6d6d2f7979227c7c632e64617465466f726d61743d3d2264642d6d6d2d797922297b733d732e7265706c616365282f285c647b312c327d295b5c2f5c2d5d285c647b312c327d295b5c2f5c2d5d285c647b327d292f2c2224312f24322f243322293b7d72657475726e20242e7461626c65736f727465722e666f726d6174466c6f6174286e657720446174652873292e67657454696d652829293b7d2c747970653a226e756d65726963227d293b74732e616464506172736572287b69643a2274696d65222c69733a66756e6374696f6e2873297b72657475726e2f5e28285b302d325d3f5b302d395d3a5b302d355d5b302d395d297c285b302d315d3f5b302d395d3a5b302d355d5b302d395d5c7328616d7c706d292929242f2e746573742873293b7d2c666f726d61743a66756e6374696f6e2873297b72657475726e20242e7461626c65736f727465722e666f726d6174466c6f6174286e657720446174652822323030302f30312f303120222b73292e67657454696d652829293b7d2c747970653a226e756d65726963227d293b74732e616464506172736572287b69643a226d65746164617461222c69733a66756e6374696f6e2873297b72657475726e2066616c73653b7d2c666f726d61743a66756e6374696f6e28732c7461626c652c63656c6c297b76617220633d7461626c652e636f6e6669672c703d2821632e7061727365724d657461646174614e616d65293f27736f727456616c7565273a632e7061727365724d657461646174614e616d653b72657475726e20242863656c6c292e6d6574616461746128295b705d3b7d2c747970653a226e756d65726963227d293b74732e616464576964676574287b69643a227a65627261222c666f726d61743a66756e6374696f6e287461626c65297b6966287461626c652e636f6e6669672e6465627567297b7661722074696d653d6e6577204461746528293b7d766172202474722c726f773d2d312c6f64643b24282274723a76697369626c65222c7461626c652e74426f646965735b305d292e656163682866756e6374696f6e2869297b2474723d242874686973293b696628212474722e686173436c617373287461626c652e636f6e6669672e6373734368696c64526f772929726f772b2b3b6f64643d28726f7725323d3d30293b2474722e72656d6f7665436c617373287461626c652e636f6e6669672e7769646765745a656272612e6373735b6f64643f303a315d292e616464436c617373287461626c652e636f6e6669672e7769646765745a656272612e6373735b6f64643f313a305d297d293b6966287461626c652e636f6e6669672e6465627567297b242e7461626c65736f727465722e62656e63686d61726b28224170706c79696e67205a6562726120776964676574222c74696d65293b7d7d7d293b7d29286a5175657279293b</data>
+                  <item key="custom"><![CDATA[
+(function($){$.extend({tablesorter:new
+function(){var parsers=[],widgets=[];this.defaults={cssHeader:"header",cssAsc:"headerSortUp",cssDesc:"headerSortDown",cssChildRow:"expand-child",sortInitialOrder:"asc",sortMultiSortKey:"shiftKey",sortForce:null,sortAppend:null,sortLocaleCompare:true,textExtraction:"simple",parsers:{},widgets:[],widgetZebra:{css:["even","odd"]},headers:{},widthFixed:false,cancelSelection:true,sortList:[],headerList:[],dateFormat:"us",decimal:'/\.|\,/g',onRenderHeader:null,selectorHeaders:'thead th',debug:false};function benchmark(s,d){log(s+","+(new Date().getTime()-d.getTime())+"ms");}this.benchmark=benchmark;function log(s){if(typeof console!="undefined"&&typeof console.debug!="undefined"){console.log(s);}else{alert(s);}}function buildParserCache(table,$headers){if(table.config.debug){var parsersDebug="";}if(table.tBodies.length==0)return;var rows=table.tBodies[0].rows;if(rows[0]){var list=[],cells=rows[0].cells,l=cells.length;for(var i=0;i<l;i++){var p=false;if($.metadata&&($($headers[i]).metadata()&&$($headers[i]).metadata().sorter)){p=getParserById($($headers[i]).metadata().sorter);}else if((table.config.headers[i]&&table.config.headers[i].sorter)){p=getParserById(table.config.headers[i].sorter);}if(!p){p=detectParserForColumn(table,rows,-1,i);}if(table.config.debug){parsersDebug+="column:"+i+" parser:"+p.id+"\n";}list.push(p);}}if(table.config.debug){log(parsersDebug);}return list;};function detectParserForColumn(table,rows,rowIndex,cellIndex){var l=parsers.length,node=false,nodeValue=false,keepLooking=true;while(nodeValue==''&&keepLooking){rowIndex++;if(rows[rowIndex]){node=getNodeFromRowAndCellIndex(rows,rowIndex,cellIndex);nodeValue=trimAndGetNodeText(table.config,node);if(table.config.debug){log('Checking if value was empty on row:'+rowIndex);}}else{keepLooking=false;}}for(var i=1;i<l;i++){if(parsers[i].is(nodeValue,table,node)){return parsers[i];}}return parsers[0];}function getNodeFromRowAndCellIndex(rows,rowIndex,cellIndex){return rows[rowIndex].cells[cellIndex];}function trimAndGetNodeText(config,node){return $.trim(getElementText(config,node));}function getParserById(name){var l=parsers.length;for(var i=0;i<l;i++){if(parsers[i].id.toLowerCase()==name.toLowerCase()){return parsers[i];}}return false;}function buildCache(table){if(table.config.debug){var cacheTime=new Date();}var totalRows=(table.tBodies[0]&&table.tBodies[0].rows.length)||0,totalCells=(table.tBodies[0].rows[0]&&table.tBodies[0].rows[0].cells.length)||0,parsers=table.config.parsers,cache={row:[],normalized:[]};for(var i=0;i<totalRows;++i){var c=$(table.tBodies[0].rows[i]),cols=[];if(c.hasClass(table.config.cssChildRow)){cache.row[cache.row.length-1]=cache.row[cache.row.length-1].add(c);continue;}cache.row.push(c);for(var j=0;j<totalCells;++j){cols.push(parsers[j].format(getElementText(table.config,c[0].cells[j]),table,c[0].cells[j]));}cols.push(cache.normalized.length);cache.normalized.push(cols);cols=null;};if(table.config.debug){benchmark("Building cache for "+totalRows+" rows:",cacheTime);}return cache;};function getElementText(config,node){var text="";if(!node)return"";if(!config.supportsTextContent)config.supportsTextContent=node.textContent||false;if(config.textExtraction=="simple"){if(config.supportsTextContent){text=node.textContent;}else{if(node.childNodes[0]&&node.childNodes[0].hasChildNodes()){text=node.childNodes[0].innerHTML;}else{text=node.innerHTML;}}}else{if(typeof(config.textExtraction)=="function"){text=config.textExtraction(node);}else{text=$(node).text();}}return text;}function appendToTable(table,cache){if(table.config.debug){var appendTime=new Date()}var c=cache,r=c.row,n=c.normalized,totalRows=n.length,checkCell=(n[0].length-1),tableBody=$(table.tBodies[0]),rows=[];for(var i=0;i<totalRows;i++){var pos=n[i][checkCell];rows.push(r[pos]);if(!table.config.appender){var l=r[pos].length;for(var j=0;j<l;j++){tableBody[0].appendChild(r[pos][j]);}}}if(table.config.appender){table.config.appender(table,rows);}rows=null;if(table.config.debug){benchmark("Rebuilt table:",appendTime);}applyWidget(table);setTimeout(function(){$(table).trigger("sortEnd");},0);};function buildHeaders(table){if(table.config.debug){var time=new Date();}var meta=($.metadata)?true:false;var header_index=computeTableHeaderCellIndexes(table);$tableHeaders=$(table.config.selectorHeaders,table).each(function(index){this.column=header_index[this.parentNode.rowIndex+"-"+this.cellIndex];this.order=formatSortingOrder(table.config.sortInitialOrder);this.count=this.order;if(checkHeaderMetadata(this)||checkHeaderOptions(table,index))this.sortDisabled=true;if(checkHeaderOptionsSortingLocked(table,index))this.order=this.lockedOrder=checkHeaderOptionsSortingLocked(table,index);if(!this.sortDisabled){var $th=$(this).addClass(table.config.cssHeader);if(table.config.onRenderHeader)table.config.onRenderHeader.apply($th);}table.config.headerList[index]=this;});if(table.config.debug){benchmark("Built headers:",time);log($tableHeaders);}return $tableHeaders;};function computeTableHeaderCellIndexes(t){var matrix=[];var lookup={};var thead=t.getElementsByTagName('THEAD')[0];var trs=thead.getElementsByTagName('TR');for(var i=0;i<trs.length;i++){var cells=trs[i].cells;for(var j=0;j<cells.length;j++){var c=cells[j];var rowIndex=c.parentNode.rowIndex;var cellId=rowIndex+"-"+c.cellIndex;var rowSpan=c.rowSpan||1;var colSpan=c.colSpan||1
+var firstAvailCol;if(typeof(matrix[rowIndex])=="undefined"){matrix[rowIndex]=[];}for(var k=0;k<matrix[rowIndex].length+1;k++){if(typeof(matrix[rowIndex][k])=="undefined"){firstAvailCol=k;break;}}lookup[cellId]=firstAvailCol;for(var k=rowIndex;k<rowIndex+rowSpan;k++){if(typeof(matrix[k])=="undefined"){matrix[k]=[];}var matrixrow=matrix[k];for(var l=firstAvailCol;l<firstAvailCol+colSpan;l++){matrixrow[l]="x";}}}}return lookup;}function checkCellColSpan(table,rows,row){var arr=[],r=table.tHead.rows,c=r[row].cells;for(var i=0;i<c.length;i++){var cell=c[i];if(cell.colSpan>1){arr=arr.concat(checkCellColSpan(table,headerArr,row++));}else{if(table.tHead.length==1||(cell.rowSpan>1||!r[row+1])){arr.push(cell);}}}return arr;};function checkHeaderMetadata(cell){if(($.metadata)&&($(cell).metadata().sorter===false)){return true;};return false;}function checkHeaderOptions(table,i){if((table.config.headers[i])&&(table.config.headers[i].sorter===false)){return true;};return false;}function checkHeaderOptionsSortingLocked(table,i){if((table.config.headers[i])&&(table.config.headers[i].lockedOrder))return table.config.headers[i].lockedOrder;return false;}function applyWidget(table){var c=table.config.widgets;var l=c.length;for(var i=0;i<l;i++){getWidgetById(c[i]).format(table);}}function getWidgetById(name){var l=widgets.length;for(var i=0;i<l;i++){if(widgets[i].id.toLowerCase()==name.toLowerCase()){return widgets[i];}}};function formatSortingOrder(v){if(typeof(v)!="Number"){return(v.toLowerCase()=="desc")?1:0;}else{return(v==1)?1:0;}}function isValueInArray(v,a){var l=a.length;for(var i=0;i<l;i++){if(a[i][0]==v){return true;}}return false;}function setHeadersCss(table,$headers,list,css){$headers.removeClass(css[0]).removeClass(css[1]);var h=[];$headers.each(function(offset){if(!this.sortDisabled){h[this.column]=$(this);}});var l=list.length;for(var i=0;i<l;i++){h[list[i][0]].addClass(css[list[i][1]]);}}function fixColumnWidth(table,$headers){var c=table.config;if(c.widthFixed){var colgroup=$('<colgroup>');$("tr:first td",table.tBodies[0]).each(function(){colgroup.append($('<col>').css('width',$(this).width()));});$(table).prepend(colgroup);};}function updateHeaderSortCount(table,sortList){var c=table.config,l=sortList.length;for(var i=0;i<l;i++){var s=sortList[i],o=c.headerList[s[0]];o.count=s[1];o.count++;}}function multisort(table,sortList,cache){if(table.config.debug){var sortTime=new Date();}var dynamicExp="var sortWrapper = function(a,b) {",l=sortList.length;for(var i=0;i<l;i++){var c=sortList[i][0];var order=sortList[i][1];var s=(table.config.parsers[c].type=="text")?((order==0)?makeSortFunction("text","asc",c):makeSortFunction("text","desc",c)):((order==0)?makeSortFunction("numeric","asc",c):makeSortFunction("numeric","desc",c));var e="e"+i;dynamicExp+="var "+e+" = "+s;dynamicExp+="if("+e+") { return "+e+"; } ";dynamicExp+="else { ";}var orgOrderCol=cache.normalized[0].length-1;dynamicExp+="return a["+orgOrderCol+"]-b["+orgOrderCol+"];";for(var i=0;i<l;i++){dynamicExp+="}; ";}dynamicExp+="return 0; ";dynamicExp+="}; ";if(table.config.debug){benchmark("Evaling expression:"+dynamicExp,new Date());}eval(dynamicExp);cache.normalized.sort(sortWrapper);if(table.config.debug){benchmark("Sorting on "+sortList.toString()+" and dir "+order+" time:",sortTime);}return cache;};function makeSortFunction(type,direction,index){var a="a["+index+"]",b="b["+index+"]";if(type=='text'&&direction=='asc'){return"("+a+" == "+b+" ? 0 : ("+a+" === null ? Number.POSITIVE_INFINITY : ("+b+" === null ? Number.NEGATIVE_INFINITY : ("+a+" < "+b+") ? -1 : 1 )));";}else if(type=='text'&&direction=='desc'){return"("+a+" == "+b+" ? 0 : ("+a+" === null ? Number.POSITIVE_INFINITY : ("+b+" === null ? Number.NEGATIVE_INFINITY : ("+b+" < "+a+") ? -1 : 1 )));";}else if(type=='numeric'&&direction=='asc'){return"("+a+" === null && "+b+" === null) ? 0 :("+a+" === null ? Number.POSITIVE_INFINITY : ("+b+" === null ? Number.NEGATIVE_INFINITY : "+a+" - "+b+"));";}else if(type=='numeric'&&direction=='desc'){return"("+a+" === null && "+b+" === null) ? 0 :("+a+" === null ? Number.POSITIVE_INFINITY : ("+b+" === null ? Number.NEGATIVE_INFINITY : "+b+" - "+a+"));";}};function makeSortText(i){return"((a["+i+"] < b["+i+"]) ? -1 : ((a["+i+"] > b["+i+"]) ? 1 : 0));";};function makeSortTextDesc(i){return"((b["+i+"] < a["+i+"]) ? -1 : ((b["+i+"] > a["+i+"]) ? 1 : 0));";};function makeSortNumeric(i){return"a["+i+"]-b["+i+"];";};function makeSortNumericDesc(i){return"b["+i+"]-a["+i+"];";};function sortText(a,b){if(table.config.sortLocaleCompare)return a.localeCompare(b);return((a<b)?-1:((a>b)?1:0));};function sortTextDesc(a,b){if(table.config.sortLocaleCompare)return b.localeCompare(a);return((b<a)?-1:((b>a)?1:0));};function sortNumeric(a,b){return a-b;};function sortNumericDesc(a,b){return b-a;};function getCachedSortType(parsers,i){return parsers[i].type;};this.construct=function(settings){return this.each(function(){if(!this.tHead||!this.tBodies)return;var $this,$document,$headers,cache,config,shiftDown=0,sortOrder;this.config={};config=$.extend(this.config,$.tablesorter.defaults,settings);$this=$(this);$.data(this,"tablesorter",config);$headers=buildHeaders(this);this.config.parsers=buildParserCache(this,$headers);cache=buildCache(this);var sortCSS=[config.cssDesc,config.cssAsc];fixColumnWidth(this);$headers.click(function(e){var totalRows=($this[0].tBodies[0]&&$this[0].tBodies[0].rows.length)||0;if(!this.sortDisabled&&totalRows>0){$this.trigger("sortStart");var $cell=$(this);var i=this.column;this.order=this.count++%2;if(this.lockedOrder)this.order=this.lockedOrder;if(!e[config.sortMultiSortKey]){config.sortList=[];if(config.sortForce!=null){var a=config.sortForce;for(var j=0;j<a.length;j++){if(a[j][0]!=i){config.sortList.push(a[j]);}}}config.sortList.push([i,this.order]);}else{if(isValueInArray(i,config.sortList)){for(var j=0;j<config.sortList.length;j++){var s=config.sortList[j],o=config.headerList[s[0]];if(s[0]==i){o.count=s[1];o.count++;s[1]=o.count%2;}}}else{config.sortList.push([i,this.order]);}};setTimeout(function(){setHeadersCss($this[0],$headers,config.sortList,sortCSS);appendToTable($this[0],multisort($this[0],config.sortList,cache));},1);return false;}}).mousedown(function(){if(config.cancelSelection){this.onselectstart=function(){return false};return false;}});$this.bind("update",function(){var me=this;setTimeout(function(){me.config.parsers=buildParserCache(me,$headers);cache=buildCache(me);},1);}).bind("updateCell",function(e,cell){var config=this.config;var pos=[(cell.parentNode.rowIndex-1),cell.cellIndex];cache.normalized[pos[0]][pos[1]]=config.parsers[pos[1]].format(getElementText(config,cell),cell);}).bind("sorton",function(e,list){$(this).trigger("sortStart");config.sortList=list;var sortList=config.sortList;updateHeaderSortCount(this,sortList);setHeadersCss(this,$headers,sortList,sortCSS);appendToTable(this,multisort(this,sortList,cache));}).bind("appendCache",function(){appendToTable(this,cache);}).bind("applyWidgetId",function(e,id){getWidgetById(id).format(this);}).bind("applyWidgets",function(){applyWidget(this);});if($.metadata&&($(this).metadata()&&$(this).metadata().sortlist)){config.sortList=$(this).metadata().sortlist;}if(config.sortList.length>0){$this.trigger("sorton",[config.sortList]);}applyWidget(this);});};this.addParser=function(parser){var l=parsers.length,a=true;for(var i=0;i<l;i++){if(parsers[i].id.toLowerCase()==parser.id.toLowerCase()){a=false;}}if(a){parsers.push(parser);};};this.addWidget=function(widget){widgets.push(widget);};this.formatFloat=function(s){var i=parseFloat(s);return(isNaN(i))?0:i;};this.formatInt=function(s){var i=parseInt(s);return(isNaN(i))?0:i;};this.isDigit=function(s,config){return/^[-+]?\d*$/.test($.trim(s.replace(/[,.']/g,'')));};this.clearTableBody=function(table){if($.browser.msie){function empty(){while(this.firstChild)this.removeChild(this.firstChild);}empty.apply(table.tBodies[0]);}else{table.tBodies[0].innerHTML="";}};}});$.fn.extend({tablesorter:$.tablesorter.construct});var ts=$.tablesorter;ts.addParser({id:"text",is:function(s){return true;},format:function(s){return $.trim(s.toLocaleLowerCase());},type:"text"});ts.addParser({id:"digit",is:function(s,table){var c=table.config;return $.tablesorter.isDigit(s,c);},format:function(s){return $.tablesorter.formatFloat(s);},type:"numeric"});ts.addParser({id:"currency",is:function(s){return/^[Â£$â‚¬?.]/.test(s);},format:function(s){return $.tablesorter.formatFloat(s.replace(new RegExp(/[Â£$â‚¬]/g),""));},type:"numeric"});ts.addParser({id:"ipAddress",is:function(s){return/^\d{2,3}[\.]\d{2,3}[\.]\d{2,3}[\.]\d{2,3}$/.test(s);},format:function(s){var a=s.split("."),r="",l=a.length;for(var i=0;i<l;i++){var item=a[i];if(item.length==2){r+="0"+item;}else{r+=item;}}return $.tablesorter.formatFloat(r);},type:"numeric"});ts.addParser({id:"url",is:function(s){return/^(https?|ftp|file):\/\/$/.test(s);},format:function(s){return jQuery.trim(s.replace(new RegExp(/(https?|ftp|file):\/\//),''));},type:"text"});ts.addParser({id:"isoDate",is:function(s){return/^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}$/.test(s);},format:function(s){return $.tablesorter.formatFloat((s!="")?new Date(s.replace(new RegExp(/-/g),"/")).getTime():"0");},type:"numeric"});ts.addParser({id:"percent",is:function(s){return/\%$/.test($.trim(s));},format:function(s){return $.tablesorter.formatFloat(s.replace(new RegExp(/%/g),""));},type:"numeric"});ts.addParser({id:"usLongDate",is:function(s){return s.match(new RegExp(/^[A-Za-z]{3,10}\.? [0-9]{1,2}, ([0-9]{4}|'?[0-9]{2}) (([0-2]?[0-9]:[0-5][0-9])|([0-1]?[0-9]:[0-5][0-9]\s(AM|PM)))$/));},format:function(s){return $.tablesorter.formatFloat(new Date(s).getTime());},type:"numeric"});ts.addParser({id:"shortDate",is:function(s){return/\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/.test(s);},format:function(s,table){var c=table.config;s=s.replace(/\-/g,"/");if(c.dateFormat=="us"){s=s.replace(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/,"$3/$1/$2");}else if(c.dateFormat=="uk"){s=s.replace(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/,"$3/$2/$1");}else if(c.dateFormat=="dd/mm/yy"||c.dateFormat=="dd-mm-yy"){s=s.replace(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2})/,"$1/$2/$3");}return $.tablesorter.formatFloat(new Date(s).getTime());},type:"numeric"});ts.addParser({id:"time",is:function(s){return/^(([0-2]?[0-9]:[0-5][0-9])|([0-1]?[0-9]:[0-5][0-9]\s(am|pm)))$/.test(s);},format:function(s){return $.tablesorter.formatFloat(new Date("2000/01/01 "+s).getTime());},type:"numeric"});ts.addParser({id:"metadata",is:function(s){return false;},format:function(s,table,cell){var c=table.config,p=(!c.parserMetadataName)?'sortValue':c.parserMetadataName;return $(cell).metadata()[p];},type:"numeric"});ts.addWidget({id:"zebra",format:function(table){if(table.config.debug){var time=new Date();}var $tr,row=-1,odd;$("tr:visible",table.tBodies[0]).each(function(i){$tr=$(this);if(!$tr.hasClass(table.config.cssChildRow))row++;odd=(row%2==0);$tr.removeClass(table.config.widgetZebra.css[odd?0:1]).addClass(table.config.widgetZebra.css[odd?1:0])});if(table.config.debug){$.tablesorter.benchmark("Applying Zebra widget",time);}}});})(jQuery);]]>
                   </item>
                   <item key="id"><![CDATA[jquery.tablesorter.min.js]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[jQuery tablesorter plugin: http://tablesorter.com]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="asc.gif" type="file">47494638396115000400800000232d30ffffff21f90401000001002c000000001500040000020d8c1fa00be8cfda9b67d16b242d003b</data>
-                  </item>
+                  <item key="custom"><![CDATA[GIF89a  €  #-0ÿÿÿ!ù   ,       Œ èÏÚ›gÑk$- ;]]></item>
                   <item key="id"><![CDATA[small_asc.gif]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[tablesorter: Asc]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="desc.gif" type="file">47494638396115000400800000232d30ffffff21f90401000001002c000000001500040000020d8c8f01c9adb09c8354328a5901003b</data>
-                  </item>
+                  <item key="custom"><![CDATA[GIF89a  €  #-0ÿÿÿ!ù   ,       ŒÉ­°œƒT2ŠY ;]]></item>
                   <item key="id"><![CDATA[small_desc.gif]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[tablesorter: Desc]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">
-                    <data content_type="image/gif" filename="bg.gif" type="file">47494638396115000900800000232d30ffffff21f90401000001002c00000000150009000002178c8f80cb09da627854328aadde06573e6560f78c895500003b</data>
-                  </item>
+                  <item key="custom"><![CDATA[GIF89a 	 €  #-0ÿÿÿ!ù   ,     	  Œ€Ë	ÚbxT2Š­ÞW>e`÷Œ‰U  ;]]></item>
                   <item key="id"><![CDATA[small.gif]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[tablesorter: Small]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
@@ -3939,12 +3725,8 @@ return zmscontext.display_type(zmscontext.REQUEST)
 # --// EO titlealt //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[titlealt]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[DC.Title.Alt]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -3977,12 +3759,8 @@ return map(lambda x: int((x*100.0)/sum(weights)), weights)
 # --// EO widths //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[widths]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Col-Widths [list]]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -4011,12 +3789,8 @@ return ''
 # --// EO format //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[format]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[contentEditable.Cell: Get format (@key)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -4033,26 +3807,22 @@ return ''
 ##
 # --// BO setObjProperty //--
 
-REQUEST = zmscontext.REQUEST
-key = REQUEST.get('pKey')
-value = REQUEST.get('pValue')
+request = zmscontext.REQUEST
+key = request.get('pKey')
+value = request.get('pValue')
 if key.startswith('table_'):
     table = zmscontext.attr('table')
     col = int(key[key.find('_')+1:key.rfind('_')])
     row = int(key[key.rfind('_')+1:])
     table[row][col]['content'] = value
-    lang = REQUEST.get('lang')
+    lang = request.get('lang')
     zmscontext.setObjProperty('table',table_table,lang)
 
 # --// EO setObjProperty //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[setObjProperty]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[contentEditable.Cell: Set property (@pKey,@pValue)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -4164,10 +3934,7 @@ if key.startswith('table_'):
 <!-- /ZMSTable.standard_html -->]]>
                   </item>
                   <item key="id"><![CDATA[standard_html]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSTable]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -4214,20 +3981,14 @@ if key.startswith('table_'):
                 <dictionary>
                   <item key="custom"><![CDATA[icon-bullhorn]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[f_css_defaults]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Default]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
@@ -4241,8 +4002,6 @@ if key.startswith('table_'):
                       <item><![CDATA[type(ZMSTeaserElement)]]></item>
                     </list>
                   </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Teaser-Elements]]></item>
                   <item key="repetitive" type="int">1</item>
                   <item key="type"><![CDATA[*]]></item>
@@ -4292,12 +4051,8 @@ return teaserElmnts
 # --// EO getTeaserElements //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[getTeaserElements]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Function: Teaser-Elements]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[Script (Python)]]></item>
                 </dictionary>
               </item>
@@ -4344,12 +4099,8 @@ return unicode(printed).encode('utf-8')
 # --// EO pageelement_Teaser //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[pageelement_Teaser]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: Teaser]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[Script (Python)]]></item>
                 </dictionary>
               </item>
@@ -4388,10 +4139,7 @@ return unicode(printed).encode('utf-8')
 <!-- /ZMSTeaserContainer.renderShort -->]]>
                   </item>
                   <item key="id"><![CDATA[renderShort]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -4438,20 +4186,14 @@ return unicode(printed).encode('utf-8')
                 <dictionary>
                   <item key="custom"><![CDATA[icon-bullhorn]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[f_css_defaults]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Default]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
@@ -4466,29 +4208,23 @@ return unicode(printed).encode('utf-8')
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Penetrance]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_url]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Url]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[url]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[attr_img]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Image]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[image]]></item>
                 </dictionary>
               </item>
@@ -4498,17 +4234,14 @@ return unicode(printed).encode('utf-8')
                   <item key="mandatory" type="int">1</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[DC.Title]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type"><![CDATA[title]]></item>
+                  <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[text]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Text]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[richtext]]></item>
                 </dictionary>
               </item>
@@ -4533,12 +4266,8 @@ return ''
 # --// EO attr_img_src //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[attr_img_src]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Image]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -4560,12 +4289,8 @@ return zmscontext.attr('text')
 # --// EO attr_abstract //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[attr_abstract]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Abstract]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -4611,10 +4336,7 @@ return zmscontext.attr('text')
 <!-- /pageelement_TeaserElement -->]]>
                   </item>
                   <item key="id"><![CDATA[pageelement_TeaserElement]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: Teaser-Element]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[Page Template]]></item>
                 </dictionary>
               </item>
@@ -4637,10 +4359,7 @@ return zmscontext.attr('text')
 <!-- /ZMSTeaserElement.standard_html -->]]>
                   </item>
                   <item key="id"><![CDATA[standard_html]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSTeaserElement]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -4687,19 +4406,13 @@ return zmscontext.attr('text')
                 <dictionary>
                   <item key="custom"><![CDATA[icon-align-left]]></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="id"><![CDATA[interface0]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[<tal:block tal:define="
+                  <item key="custom"><![CDATA[<tal:block tal:define="
 	zmscontext options/zmscontext;
 	dummy0 python:request.set('CKEDITOR_config_removeButtons','JustifyLeft,JustifyCenter,JustifyRight')">
 <script type="text/javascript">
@@ -4740,7 +4453,8 @@ $(function(){
 </script>
 </tal:block>]]>
                   </item>
-                  <item key="repetitive" type="int">0</item>
+                  <item key="id"><![CDATA[interface0]]></item>
+                  <item key="name"><![CDATA[interface0]]></item>
                   <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
@@ -4751,19 +4465,15 @@ return context.getTextFormatDefault()]]>
                   </item>
                   <item key="id"><![CDATA[format]]></item>
                   <item key="mandatory" type="int">1</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Format]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[string]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="id"><![CDATA[text]]></item>
-                  <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Text]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[richtext]]></item>
                 </dictionary>
               </item>
@@ -4792,12 +4502,8 @@ return constraints
 # --// /check_constraints //--
 ]]>
                   </item>
-                  <item key="errors"></item>
                   <item key="id"><![CDATA[check_constraints]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Hook: check constraints]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -4817,10 +4523,7 @@ return constraints
 <!-- /ZMSTextarea.standard_html -->]]>
                   </item>
                   <item key="id"><![CDATA[standard_html]]></item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSTextarwa]]></item>
-                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>

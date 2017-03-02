@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-import pyexpat
 from App.Common import package_home
 from OFS.Image import File
 from cStringIO import StringIO
@@ -25,12 +24,14 @@ import xml.dom
 import Globals
 import copy
 import os
+import pyexpat
 import re
 import tempfile
 import time
 import unicodedata
 # Product Imports.
 import standard
+import zopeutil
 from _objattrs import *
 import _blobfields
 import _fileutil
@@ -454,7 +455,6 @@ def xmlOnUnknownEndTag(self, sTagName):
 # ------------------------------------------------------------------------------
 def toCdata(self, s, xhtml=0):
   rtn = ''
-  st = str(type(s))
   
   # Return Text (HTML) in CDATA as XHTML.
   from _filtermanager import processCommand
@@ -517,7 +517,7 @@ def toCdata(self, s, xhtml=0):
     s = s.replace(chr(30),'')
     # Hack for nested CDATA
     s = re.compile( '\<\!\[CDATA\[(.*?)\]\]\>').sub( '<!{CDATA{\\1}}>', s)
-    rtn = st+'<![CDATA[%s]]>'%s
+    rtn = '<![CDATA[%s]]>'%s
 
   # Return.
   return rtn
@@ -606,13 +606,19 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
     # Numbers
     elif type(value) is int or type(value) is float:
       xml.append(str(value))
-  
-    # Others
+    
     else:
-      if type(value) is not unicode:
-        s_value = str(value)
+      # Zope-Objects
+      try: meta_type = value.meta_type
+      except: meta_type = None
+      if meta_type is not None:
+        s_value = zopeutil.readData(value)
+      # Others
       else:
-        s_value = str(unicodedata.normalize('NFKD', value).encode('ascii','ignore').decode('utf-8'))
+        if type(value) is not unicode:
+          s_value = str(value)
+        else:
+          s_value = str(unicodedata.normalize('NFKD', value).encode('ascii','ignore').decode('utf-8'))
       if len(s_value) > 0:
         xml.append(toCdata(self,s_value,xhtml))
   

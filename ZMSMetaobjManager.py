@@ -250,12 +250,12 @@ class ZMSMetaobjManager:
         attr_ids = []
         for attr in newAttrs:
           # Mandatory.
-          attr_id = attr.get('id')
-          newName = attr.get('name')
-          newMandatory = attr.get('mandatory')
-          newMultilang = attr.get('multilang')
-          newRepetitive = attr.get('repetitive')
-          newType = attr.get('type')
+          attr_id = attr['id']
+          newName = attr['name']
+          newMandatory = attr.get('mandatory',0)
+          newMultilang = attr.get('multilang',0)
+          newRepetitive = attr.get('repetitive',0)
+          newType = attr['type']
           # Optional.
           newKeys = attr.get('keys',[])
           newCustom = attr.get('custom','')

@@ -1454,28 +1454,22 @@ def is_equal(x, y):
   Compare the two objects x and y for equality.
   @rtype: C{Bool}
   """
-  if type(x) != type(y):
-    return False
-  elif type(x) is list or type(x) is tuple:
-    if len(x) != len(y):
-      return False
-    else:
-      for i in range(len(x)):
-        if not is_equal(x[i],y[i]):
-          return False
-      return True
-  elif type(x) is dict:
-    if len(x.keys()) != len(y.keys()):
-      return False
-    else:
-      for k in x.keys():
-        if not x.has_key(k) or not y.has_key(k) or not is_equal(x.get(k),y.get(k)):
-          return False
-      return True
-  elif isinstance(x,_blobfields.MyBlob):
-    return cmp(x.toXml(),y.toXml())==0
-  else:
-    return cmp(x,y)==0
+  if type(x) == type(y):
+    if type(x) is list or type(x) is tuple:
+      if len(x) == len(y):
+        for i in range(len(x)):
+          if not is_equal(x[i],y[i]):
+            return False
+        return True
+    elif type(x) is dict:
+      if len(x.keys()) == len(y.keys()):
+        for k in x.keys():
+          if not x.has_key(k) or not y.has_key(k) or not is_equal(x.get(k),y.get(k)):
+            return False
+        return True
+    elif isinstance(x,_blobfields.MyBlob):
+      return cmp(x.toXml(),y.toXml())==0
+  return cmp(x,y)==0
 
 
 security.declarePublic('str_json')

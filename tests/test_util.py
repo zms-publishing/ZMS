@@ -1,3 +1,4 @@
+from Products.zms import standard
 from traceback import format_exception
 import inspect
 import logging
@@ -40,7 +41,7 @@ class BaseTest(object):
   def assertEquals(self, message, expected, actual):
     clazz = ''
     details = ''
-    if expected == actual:
+    if standard.is_equal(expected,actual):
       clazz = 'success'
       details = str(actual)
     else:
@@ -86,7 +87,7 @@ class TestSuite(object):
     line = '%s %s'%(dt.strftime("%Y-%m-%d %H:%M:%S,%f"),str(s))
     self.logger.log(l,line)
     if l in self.loglevel:
-      self.printed.append(line)
+      self.printed.append(standard.html_quote(line))
 
   def find_tests(self):
     l = []

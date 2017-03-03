@@ -27,10 +27,10 @@ class MultiLanguageTest(test_util.BaseTest):
   def test_getLangStr(self):
     zmscontext = self.context
     # create portal-client
-    self.writeInfo('[test_metaobj_manager] create portal-client')
+    self.writeInfo('[test_multilang] create portal-client')
     zmsclient0 = self.addClient(zmscontext,'client0')
     # create portal-client
-    self.writeInfo('[test_metaobj_manager] create client-client')
+    self.writeInfo('[test_multilang] create client-client')
     zmsclient00 = self.addClient(zmsclient0,'client00')
     # Test lang-strings
     for context in [zmscontext,zmsclient0,zmsclient00]:
@@ -51,7 +51,7 @@ class MultiLanguageTest(test_util.BaseTest):
       self.assertEquals('%s.getLangStr(%s,esp)'%(context.getHome().id,key),key,context.getLangStr(key,'esp'))
       self.assertEquals('%s.getLangStr(%s,%s)'%(context.getHome().id,key,self.temp_lang),'Zzz',context.getLangStr(key,self.temp_lang))
     # remove portal-client (and client-client)
-    self.writeInfo('[test_metaobj_manager] remove portal-client %s'%zmsclient0.id)
+    self.writeInfo('[test_multilang] remove portal-client %s'%zmsclient0.id)
     self.removeClient(zmscontext,zmsclient0.getHome().id)
 
   def test_multiLanguageManager(self):

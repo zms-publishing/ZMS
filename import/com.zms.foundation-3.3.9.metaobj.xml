@@ -2795,7 +2795,7 @@ zmscontext.attr('text',text)
 -->
 <div class="pull-right" style="margin:1.5em 0 0.5em">
 	<select class="form-control" style="background-color: aliceblue;"
-			name=":action"	tal:attributes="onchange python:'location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
+			name=":action" tal:attributes="onchange python:'this.name=\':action\';;location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
 		<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type(request)">----- Insert -----</option>
 		<tal:block tal:repeat="meta_type python:filter(lambda x:x['name'].find('ZMS')<>0,standard.sort_list(zmscontext.filtered_meta_types(),'name'))">
 			<option tal:attributes="value python:meta_type['action']" tal:content="python:meta_type['name']">the name</option>
@@ -2891,7 +2891,7 @@ zmscontext.attr('text',text)
           <item key="id"><![CDATA[ZMSSysFolder]]></item>
           <item key="name"><![CDATA[ZMSSysFolder]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.0.1]]></item>
+          <item key="revision"><![CDATA[3.0.2]]></item>
           <item key="type"><![CDATA[ZMSDocument]]></item>
         </dictionary>
       </item>

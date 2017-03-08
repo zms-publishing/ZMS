@@ -18,6 +18,7 @@
 
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
+from OFS.CopySupport import absattr
 from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
@@ -26,6 +27,14 @@ import os
 import _fileutil
 
 security = ModuleSecurityInfo('Products.zms.zopeutil')
+
+def nextObject(container, meta_type):
+  """
+  Get next parent Zope-object with given meta_type.
+  """
+  while not container.meta_type == meta_type:
+    container = container.aq_parent
+  return container
 
 security.declarePublic('addObject')
 def addObject(container, meta_type, id, title, data):
@@ -121,7 +130,8 @@ def removeObject(container, id, removeFile=True):
   if id in container.objectIds():
     ob = getattr(container,id)
     if ob.meta_type == 'External Method' and removeFile:
-      filepath = INSTANCE_HOME+'/Extensions/'+id+'.py'
+      m = '%s.%s'%(absattr(nextObject(container,'Folder').id),id)
+      filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
       if os.path.exists(filepath):
         os.remove(filepath)
     container.manage_delObjects( ids=[ id])
@@ -163,10 +173,12 @@ def addExternalMethod(container, id, title, data):
   """
   Add External Method to container.
   """
+  m = '%s.%s'%(absattr(nextObject(container,'Folder').id),id)
+  f = id
   if data != '':
-    filepath = INSTANCE_HOME+'/Extensions/'+id+'.py'
+    filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
     _fileutil.exportObj( data, filepath)
-  ExternalMethod.manage_addExternalMethod( container, id, title, id, id)
+  ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
 
 def addPageTemplate(container, id, title, data):
   """

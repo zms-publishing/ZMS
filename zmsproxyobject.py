@@ -330,7 +330,8 @@ class ZMSProxyObject(ZMSContainerObject):
     # --------------------------------------------------------------------------
     def isActive(self, REQUEST):
       proxy = self.proxy
-      rtn = proxy.isActive( REQUEST)
+      root = self.__root__
+      rtn = proxy.isActive(REQUEST) and root.isActive(REQUEST)
       return rtn
 
 

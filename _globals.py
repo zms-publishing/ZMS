@@ -40,6 +40,7 @@ class MD5DigestScheme:
     compare = self.encrypt(attempt)[:-1]
     return (compare == reference)
 
+import AccessControl.AuthEncoding
 AccessControl.AuthEncoding.registerScheme('MD5', MD5DigestScheme())
 
 

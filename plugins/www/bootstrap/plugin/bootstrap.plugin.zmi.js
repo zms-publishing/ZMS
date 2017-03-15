@@ -1226,7 +1226,19 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 		}
 	}
 	$.get(href,params,function(result) {
+			$(s).html("");
+			var context = s;
 			var pages = $("page",result);
+			for (var i = 0; i < pages.length; i++) {
+				var $page = $(pages[i]);
+				var page_home_id = $page.attr("home_id");
+				var page_id = $page.attr("id").substr(page_home_id.length+1);
+				var html = that.addPages([pages[i]]);
+				$(context).append(html);
+				context = "ul[data-home-id="+page_home_id+"][data-id="+page_id+"]";
+			}
+			$("li",s).addClass("active");
+      /*
 			var html = that.addPages([pages[0]]);
 			$(s).html(html);
 			var i = 0;
@@ -1236,17 +1248,15 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 						var page_home_id = $page.attr("home_id");
 						var page_id = $page.attr("id").substr(page_home_id.length+1);
 						var $ul = $("ul[data-home-id="+page_home_id+"][data-id="+page_id+"]");
+						// Remove other siblings.
+						$ul.siblings("ul").remove();
 						var $toggle = $(".toggle",$ul);
 						$("li",$ul).addClass("active");
 						i++;
-						if (pages.length==1 || i<pages.length) {
-							that.toggleClick($toggle,fn);
-						}
-						else {
-							fn();
-						}
+						that.toggleClick($toggle,fn);
 					}
 					else {
+						$(".toggle",$(s)).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right")).attr({title:'+'});
 						var callback = that.p['init.callback'];
 						if (typeof callback != "undefined") {
 							callback();
@@ -1254,6 +1264,7 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 					}
 				}
 			fn();
+      */
 		});
 }
 

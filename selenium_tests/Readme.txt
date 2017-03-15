@@ -32,6 +32,6 @@ Here `selenium_tests.login_test.LoginTestCase` would run all tests in that class
 
 Great overview of the Selenium Python API: https://selenium-python.readthedocs.io/
 Official API documentation: https://seleniumhq.github.io/selenium/docs/api/py/api.html
-Examples of Selenium-Python-API Usage: http://www.yuma.sk/selenium-python-testing
+Consider to use PageObjects: https://selenium-python.readthedocs.io/page-objects.html
 
 Wait for everything! If something is not waited for, the test will sometimes not work.

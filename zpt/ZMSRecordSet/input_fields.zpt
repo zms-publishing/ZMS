@@ -14,7 +14,7 @@
 			records python:here.attr(metaObjAttrIds[0]);
 			metaObjAttrs python:filter(lambda x:
 				not x['id'].startswith('_')
-				and x['type'] in here.metaobj_manager.valid_types+metaObjIds
+				and x['type'] in here.metaobj_manager.valid_types+metaObjIds+['delimiter','hint','interface']
 				,metaObj['attrs'][1:])">
 
 <form class="form-horizontal" id="form0" name="form0" action="manage_changeRecordSet" method="post" enctype="multipart/form-data">
@@ -44,14 +44,22 @@
 		</div>
 
 		<tal:block tal:repeat="metaObjAttr metaObjAttrs">
-			<tal:block tal:define="global 
+			<tal:block tal:define="global
+				metaObjAttrId python:metaObjAttr['id'];
 				obj_attr python:here.getObjAttr(metaObjAttr['id']);
 				elName python:metaObjAttr['id'];
 				elLabel python:metaObjAttr['name'];
-				elType python:metaObjAttr.get('type','string');
 				elDefault python:standard.dt_exec(here,metaObjAttr.get('default',''));
-				elValue python:here.formatObjAttrValue(obj_attr,here.operator_getitem(row,elName,elDefault),request['lang']);">
-			<div class="form-group">
+				elValue python:here.formatObjAttrValue(obj_attr,here.operator_getitem(row,elName,elDefault),request['lang']);"
+
+			><tal:block tal:condition="python:metaObjAttr['type']=='hint'"
+				><div class="zmi-hint" tal:content="structure elLabel">the hint</div>
+			</tal:block
+			><tal:block tal:condition="python:metaObjAttr['type']=='interface'"
+				><div class="zmi-interface" tal:content="structure python:here.attr(metaObjAttrId)">the interface</div
+			></tal:block
+
+			><div class="form-group" tal:condition="not:python:metaObjAttr['type'] in ['delimiter','hint','interface']">
 				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
 					<span tal:content="elLabel">the label</span>
 				</label>
@@ -61,7 +69,7 @@
 							python:here.getObjAttrInput(fmName='form0',obj_attr=here.getObjAttr(elName),value=elValue,REQUEST=request)">
 						the control
 					</tal:block>
-					<tal:block tal:condition="python:elType in ['image'] and elValue is not None and here.operator_gettype(elValue) is str">
+					<tal:block tal:condition="python:metaObjAttr['type'] in ['image'] and elValue is not None and here.operator_gettype(elValue) is str">
 						<img src="data:image/png;base64," tal:attributes="data-previewbase64 elValue" width="32" height="32" />
 						<input type="hidden" tal:attributes="value elValue" />
 					</tal:block>

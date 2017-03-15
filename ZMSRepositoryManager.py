@@ -174,7 +174,7 @@ class ZMSRepositoryManager(
               return l
             basepath = self.get_conf_basepath()
             files = traverse(basepath)
-            mtime = max(map(lambda x:x[0],files))
+            mtime = max(map(lambda x:x[0],files)+[None])
             self.writeBlock("[exec_auto_update]: %s<%s"%(str(last_update),str(mtime)))
             if last_update is None or standard.getDateTime(last_update)<standard.getDateTime(mtime):
               update_files = map(lambda x:x[1][len(basepath):],filter(lambda x:last_update is None or standard.getDateTime(x[0])<standard.getDateTime(last_update),files))

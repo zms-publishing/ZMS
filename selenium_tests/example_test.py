@@ -9,6 +9,10 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class SeleniumTestCase(unittest.TestCase):
     
+    @classmethod
+    def setUpClass(cls):
+        cls._annotate_test_methods_to_make_a_screenshot_if_they_fail()
+    
     def setUp(self):
         self.driver = webdriver.Firefox()
         
@@ -62,6 +66,20 @@ class SeleniumTestCase(unittest.TestCase):
     def _save_screenshot_of_current_page(self, optional_file_name_suffix=''):
         target_filename = self._unique_test_output_filename(optional_file_name_suffix, 'png')
         self.driver.get_screenshot_as_file(target_filename)
+    
+    @classmethod
+    def _annotate_test_methods_to_make_a_screenshot_if_they_fail(cls):
+        test_methods = { name: getattr(cls, name) for name in dir(cls) if name.startswith('test') }
+        for name, method in test_methods.items():
+            import functools
+            functools.wraps(method)
+            def wrapper(self, *args, **kwargs):
+                try:
+                    return method(self, *args, **kwargs)
+                except:
+                    self._save_screenshot_of_current_page()
+                    raise
+            setattr(cls, name, wrapper)
 
 class LoginTest(SeleniumTestCase):
     
@@ -82,7 +100,14 @@ class ScreenshotDemonstrationTest(SeleniumTestCase):
         self._wait_for_text('Contents')
         self._save_screenshot_of_current_page('after-wait')
     
-    # TODO save screenshot
+
+class ScreenshotAfterFailingTest(SeleniumTestCase):
+    
+    def test_smoke(self):
+        self._login()
+        self._wait_for_text('Contents')
+        self.fail('Intentionally failed test')
+        
 
 if __name__ == "__main__":
     unittest.main()

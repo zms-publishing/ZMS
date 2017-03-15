@@ -94,7 +94,7 @@ class LoginTest(SeleniumTestCase):
 
 class ScreenshotDemonstrationTest(SeleniumTestCase):
     
-    def test_smoke(self):
+    def test_the_importance_of_waiting(self):
         self._login()
         self._save_screenshot_of_current_page('before-wait')
         self._wait_for_text('Contents')
@@ -103,7 +103,7 @@ class ScreenshotDemonstrationTest(SeleniumTestCase):
 
 class ScreenshotAfterFailingTest(SeleniumTestCase):
     
-    def test_smoke(self):
+    def test_that_demonstrates_that_failing_tests_take_screenshots(self):
         self._login()
         self._wait_for_text('Contents')
         self.fail('Intentionally failed test')

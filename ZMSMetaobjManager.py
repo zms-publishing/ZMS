@@ -834,7 +834,7 @@ class ZMSMetaobjManager:
       attr['repetitive'] = newRepetitive
       attr['type'] = newType
       attr['keys'] = newKeys
-      attr['custom'] = newCustom
+      attr['custom'] = newCustom if type(newCustom) in (int,str,unicode) else None
       attr['default'] = newDefault
       
       # Handle special methods and interfaces.
@@ -1102,7 +1102,10 @@ class ZMSMetaobjManager:
                  REQUEST.get('attr_custom_%s_active'%old_id,'0') == '1':
                   savedAttr = filter(lambda x: x['id']==old_id, savedAttrs)[0]
                   syncZopeMetaobjAttr( self, newValue, savedAttr)
-                  newCustom = zopeutil.readData(savedAttr['ob'])
+                  if savedAttr['ob']:
+                    filename = savedAttr['ob'].title
+                    data = zopeutil.readData(savedAttr['ob'])
+                    newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
               # Change attribute.
               message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             # Return with message.

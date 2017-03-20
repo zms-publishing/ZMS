@@ -96,7 +96,7 @@ class SeleniumTestCase(unittest.TestCase):
             folder_id = self._find_element(By.ID, 'folder_id')
             folder_id.clear()
             folder_id.send_keys('zms')
-            with self._wait_for_page_load():
+            with self._wait_for_page_load(timeout=50): # this can take a while
                 self._find_element(By.CSS_SELECTOR, 'button[value="Add"]').click()
         else:
             with self._wait_for_page_load():

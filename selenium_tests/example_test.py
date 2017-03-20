@@ -84,7 +84,7 @@ class SeleniumTestCase(unittest.TestCase):
             self._find_element(By.LINK_TEXT, 'sites').click()
             
         # detail page has loaded
-        if 'href="zms/manage_workspace"' not in self.driver.page_source:
+        if 0 == len(self.driver.find_elements(By.PARTIAL_LINK_TEXT, 'zms (ZMS - Python-based contentmanagement')):
             # create zms
             # if no link with zms is there
             Select(self._find_element(By.CSS_SELECTOR, 'select[name=":action"]')).select_by_visible_text('ZMS')

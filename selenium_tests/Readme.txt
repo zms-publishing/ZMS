@@ -10,6 +10,16 @@ Install the testing requirements via:
 
 The tests expect a running zope instance on http://localhost:8080 with login admin:admin
 
+When starting from scratch, the full sequence of commands to get a working checkout to run unit tests from should be:
+
+    $ cd /path/where/the/virtualenv/should/be
+    $ virtualenv zms_virtualenv
+    $ source zms_virtualenv/bin/activate # on windows probably $ path/to/zms_virtualenv/bin/activate.bat
+    $ cd /path/to/zms3/repo/checkout
+    $ pip install -r requirements.txt
+    $ pip install -r selenium_tests/requirements.txt
+    $ pip install -e . # equivalent to python setup.py develop
+
 ## Run them
 
 To run all tests:
@@ -24,9 +34,10 @@ or
 
 To run a specific test:
 
-    python -m unittest selenium_tests.login_test.LoginTestCase.test_login
+    python -m unittest selenium_tests.example_test.LoginTestCase.test_login
 
 Here `selenium_tests.login_test.LoginTestCase` would run all tests in that class or `selenium_tests.login_test` all tests in all `unittest.TestCase` subclasses in the module.
+
 
 ## Write new tests
 

@@ -26,7 +26,10 @@ class SeleniumTestCase(unittest.TestCase):
         
         # this ensures all find_element* methods retry up to 10 seconds for the searched 
         # element to appear in the dom. Essential if testing AJAX stuff.
-        self.driver.implicitly_wait(self.DEFAULT_TIMEOUT)
+        # This however requires a firefox newer than 45.8 (which is what we are stuck on the AC server right now)
+        # self.driver.implicitly_wait(self.DEFAULT_TIMEOUT)
+        # So until then, explicit waits have to be used.
+        # @see http://selenium-python.readthedocs.io/waits.html#explicit-waits
         
         # self.addCleanup(self.driver.close) # doesn't work on mac?
         self.addCleanup(self.driver.quit)
@@ -224,9 +227,9 @@ class EditPageExample(SeleniumTestCase):
         create_paragraph.click()
         
         # wait until ckeditor is loaded
-        iframe = self.driver.find_element_by_css_selector('iframe.cke_wysiwyg_frame')
+        iframe = self._find_element(By.CSS_SELECTOR, 'iframe.cke_wysiwyg_frame')
         self.driver.switch_to.frame(iframe)
-        self.driver.find_element_by_css_selector('body').send_keys(MARKER)
+        self._find_element(By.CSS_SELECTOR, 'body').send_keys(MARKER)
         
         # click insert
         self.driver.switch_to.default_content()
@@ -234,7 +237,7 @@ class EditPageExample(SeleniumTestCase):
         self._find_element(By.XPATH, '//button[text()="Einfügen"]').click()
         
         # wait until saved
-        self.driver.find_element_by_css_selector('.alert-success')
+        self._find_element(By.CSS_SELECTOR, '.alert-success')
         
         # open preview
         with self._wait_for_page_load():
@@ -243,11 +246,11 @@ class EditPageExample(SeleniumTestCase):
             self._find_element(By.LINK_TEXT, "Vorschau").click()
             self._find_element(By.LINK_TEXT, "Vorschau").click()
         
-        frame = self.driver.find_element_by_name("partner")
+        frame = self._find_element(By.NAME, "partner")
         self.driver.switch_to.frame(frame)
         
         # ensure text is there
-        self.driver.find_element_by_xpath('//p[text()="%s"]' % MARKER)
+        self._find_element(By.XPATH, '//p[text()="%s"]' % MARKER)
 
 if __name__ == "__main__":
     unittest.main()

@@ -70,6 +70,7 @@ class SeleniumTestCase(unittest.TestCase):
         # ensure we're on the manage_main page
         self._wait_for_text('Control_Panel')
         
+        import sys; sys.stdout = sys.__stdout__; from pdb import set_trace; set_trace()
         if 'href="sites/manage_workspace"' not in self.driver.page_source:
             # create folder
             select = Select(self._find_element(By.CSS_SELECTOR, 'select[name=":action"]'))
@@ -84,6 +85,7 @@ class SeleniumTestCase(unittest.TestCase):
             self._find_element(By.LINK_TEXT, 'sites').click()
             
         # detail page has loaded
+        self._find_element(By.CSS_SELECTOR, 'input[value="Rename"]') # finished loading
         if 0 == len(self.driver.find_elements(By.PARTIAL_LINK_TEXT, 'zms (ZMS - Python-based contentmanagement')):
             # create zms
             # if no link with zms is there

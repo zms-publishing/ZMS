@@ -4,6 +4,7 @@ import unittest
 import os
 import random
 from contextlib import contextmanager
+from urlparse import urljoin
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -18,6 +19,7 @@ class SeleniumTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls._annotate_test_methods_to_make_a_screenshot_if_they_fail()
+        cls._read_credentials()
     
     def setUp(self):
         self.driver = webdriver.Firefox()
@@ -29,15 +31,7 @@ class SeleniumTestCase(unittest.TestCase):
         # self.addCleanup(self.driver.close) # doesn't work on mac?
         self.addCleanup(self.driver.quit)
     
-    ## Generic helpers
-    
-    def _login(self):
-        self.driver.get("http://localhost:8080/manage_main")
-        
-        # would be the propper way to login, but seems to not be supported by geckodriver yet
-        # self.driver.switch_to.alert.authenticate('admin', 'admin')
-        self.driver.switch_to.alert.send_keys('admin' + Keys.TAB + 'admin')
-        self.driver.switch_to.alert.accept()
+    ## Low level test helpers
     
     def _wait(self, condition, timeout=DEFAULT_TIMEOUT):
         return WebDriverWait(self.driver, timeout).until(condition)
@@ -57,6 +51,60 @@ class SeleniumTestCase(unittest.TestCase):
         WebDriverWait(self.driver, timeout).until(
             EC.staleness_of(old_page)
         )
+    
+    ## High level test helpers
+    
+    def _login(self):
+        self.driver.get(urljoin(self.base_url, '/manage_main'))
+        
+        # would be the propper way to login, but seems to not be supported by geckodriver yet
+        # self.driver.switch_to.alert.authenticate(self.login, self.password)
+        self.driver.switch_to.alert.send_keys(self.login + Keys.TAB + self.password)
+        self.driver.switch_to.alert.accept()
+    
+    def _create_or_navigate_to_zms(self):
+        # expects to be logged in
+        # ensure we're on the manage_main page
+        self._wait_for_text('Control_Panel')
+        
+        if 'href="sites/manage_workspace"' not in self.driver.page_source:
+            # create folder
+            select = Select(self._find_element(By.CSS_SELECTOR, 'select[name=":action"]'))
+            with self._wait_for_page_load():
+                select.select_by_visible_text('Folder') # already navigates to next page
+            
+            self._find_element(By.NAME, 'id').send_keys('sites')
+            with self._wait_for_page_load():
+                self._find_element(By.CSS_SELECTOR, 'input[type="submit"][value="Add"]').click()
+        
+        with self._wait_for_page_load():
+            self._find_element(By.LINK_TEXT, 'sites').click()
+            
+        # detail page has loaded
+        if 'href="zms/manage_workspace"' not in self.driver.page_source:
+            # create zms
+            # if no link with zms is there
+            Select(self._find_element(By.CSS_SELECTOR, 'select[name=":action"]')).select_by_visible_text('ZMS')
+            with self._wait_for_page_load():
+                self._find_element(By.NAME, 'submit').click()
+        
+            # zms add page has loaded
+            self._wait_for_text('Add ZMS-Instance')
+            folder_id = self._find_element(By.ID, 'folder_id')
+            folder_id.clear()
+            folder_id.send_keys('zms')
+            with self._wait_for_page_load():
+                self._find_element(By.CSS_SELECTOR, 'button[value="Add"]').click()
+        else:
+            with self._wait_for_page_load():
+                self._find_element(By.PARTIAL_LINK_TEXT, 'zms (ZMS - Python-based contentmanagement').click()
+            with self._wait_for_page_load():
+                self._find_element(By.PARTIAL_LINK_TEXT, 'content').click()
+        
+        # zms content edit page has loaded
+        self._wait_for_text('ZMS - Python-based contentmanagement system')
+    
+    ## Plumbing
     
     def _unique_test_output_filename(self, file_name_suffix, file_type):
         assert None not in (file_name_suffix, file_type), 'need strings here'
@@ -100,47 +148,16 @@ class SeleniumTestCase(unittest.TestCase):
                     raise
             setattr(cls, name, wrapper)
     
-    def _create_or_navigate_to_zms(self):
-        # expects to be logged in
-        # ensure we're on the manage_main page
-        self._wait_for_text('Control_Panel')
-        
-        if 'sites' not in self.driver.page_source:
-            # create folder
-            select = Select(self._find_element(By.CSS_SELECTOR, 'select[name=":action"]'))
-            with self._wait_for_page_load():
-                select.select_by_visible_text('Folder') # already navigates to next page
-            
-            self._find_element(By.NAME, 'id').send_keys('sites')
-            with self._wait_for_page_load():
-                self._find_element(By.CSS_SELECTOR, 'input[type="submit"][value="Add"]').click()
-        
-        with self._wait_for_page_load():
-            self._find_element(By.LINK_TEXT, 'sites').click()
-            
-        # detail page has loaded
-        if 'href="zms/manage_workspace"' not in self.driver.page_source:
-            # create zms
-            # if no link with zms is there
-            Select(self._find_element(By.CSS_SELECTOR, 'select[name=":action"]')).select_by_visible_text('ZMS')
-            with self._wait_for_page_load():
-                self._find_element(By.NAME, 'submit').click()
-        
-            # zms add page has loaded
-            self._wait_for_text('Add ZMS-Instance')
-            folder_id = self._find_element(By.ID, 'folder_id')
-            folder_id.clear()
-            folder_id.send_keys('zms')
-            with self._wait_for_page_load():
-                self._find_element(By.CSS_SELECTOR, 'button[value="Add"]').click()
-        else:
-            with self._wait_for_page_load():
-                self._find_element(By.PARTIAL_LINK_TEXT, 'zms').click()
-            with self._wait_for_page_load():
-                self._find_element(By.PARTIAL_LINK_TEXT, 'content').click()
-        
-        # zms content edit page has loaded
-        self._wait_for_text('ZMS - Python-based contentmanagement system')
+    @classmethod
+    def _read_credentials(cls):
+        here = os.path.dirname(os.path.abspath(__file__))
+        credentials_path = os.path.join(here, 'credentials.txt')
+        from ConfigParser import SafeConfigParser
+        parser = SafeConfigParser()
+        parser.read(credentials_path)
+        cls.base_url = parser.get('ac_server', 'base_url')
+        cls.login = parser.get('ac_server', 'login')
+        cls.password = parser.get('ac_server', 'password')
     
 
 class LoginTest(SeleniumTestCase):
@@ -161,7 +178,6 @@ class ScreenshotDemonstrationTest(SeleniumTestCase):
         self._save_screenshot_of_current_page('before-wait')
         self._wait_for_text('Contents')
         self._save_screenshot_of_current_page('after-wait')
-    
 
 class ScreenshotAfterFailingTest(SeleniumTestCase):
     
@@ -186,8 +202,9 @@ class EditPageExample(SeleniumTestCase):
         def hide_zmi_actions():
             # remove stray 'Textabschnitt' elements that linger and could catch later clicks 
             # on buttons because they overlap them
-            self.driver.execute_script("$('.zmi-item.ZMSTextarea .zmi-action').mouseleave()")
-            
+            self.driver.execute_script("$('.zmi-item .zmi-action').mouseleave()")
+        
+        self.driver.get(self.driver.current_url)
         # seems the popup is only initialized once it is shown
         self.driver.execute_script("$('.zmi-item.ZMSTextarea .zmi-action').mouseenter()")
         el = self._find_element(By.CSS_SELECTOR, '.zmi-item.ZMSTextarea .zmi-action')
@@ -221,7 +238,11 @@ class EditPageExample(SeleniumTestCase):
         
         # open preview
         with self._wait_for_page_load():
-            self.driver.find_element_by_link_text("Vorschau").click()
+            # workaround for https://github.com/mozilla/geckodriver/issues/322
+            # where the click sometimes is swallowed. Should be fixed in the comming weeks
+            self._find_element(By.LINK_TEXT, "Vorschau").click()
+            self._find_element(By.LINK_TEXT, "Vorschau").click()
+        
         frame = self.driver.find_element_by_name("partner")
         self.driver.switch_to.frame(frame)
         

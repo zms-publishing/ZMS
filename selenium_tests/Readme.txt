@@ -8,7 +8,14 @@ Install the testing requirements via:
 
     pip install -r selenium_tests/requirements.txt
 
-The tests expect a running zope instance on http://localhost:8080 with login admin:admin
+The tests expect a running zope instance on http://localhost:8080 with login admin:admin - and you will have to create a file `zms/selenium_tests/credentials.txt` with content:
+
+    [ac_server]
+    base_url=http://localhost:8080
+    login=admin
+    password=admin
+
+If you want to test against a different server, you will have to modify / swap this file accoringly.
 
 When starting from scratch, the full sequence of commands to get a working checkout to run unit tests from should be:
 

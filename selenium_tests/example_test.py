@@ -12,6 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 class SeleniumTestCase(unittest.TestCase):
     DEFAULT_TIMEOUT = 10 # seconds
@@ -73,8 +74,13 @@ class SeleniumTestCase(unittest.TestCase):
         if 0 == len(self.driver.find_elements(By.LINK_TEXT, 'sites')):
             # create folder
             select = Select(self._find_element(By.CSS_SELECTOR, 'select[name=":action"]'))
-            with self._wait_for_page_load():
-                select.select_by_visible_text('Folder') # already navigates to next page
+            try:
+                with self._wait_for_page_load(timeout=5):
+                    # doesn't trigger the page load if 'Folder' is already the choice made last time
+                    select.select_by_visible_text('Folder')
+            except TimeoutException:
+                with self._wait_for_page_load():
+                    self._find_element(By.NAME, 'submit').click()
             
             self._find_element(By.NAME, 'id').send_keys('sites')
             with self._wait_for_page_load():
@@ -84,13 +90,17 @@ class SeleniumTestCase(unittest.TestCase):
             self._find_element(By.LINK_TEXT, 'sites').click()
         
         # detail page has loaded
-        self._find_element(By.CSS_SELECTOR, 'input[value="Rename"]') # finished loading
+        self._find_element(By.CSS_SELECTOR, 'input[value="Import/Export"]') # finished loading
         if 0 == len(self.driver.find_elements(By.PARTIAL_LINK_TEXT, 'zms (ZMS - Python-based contentmanagement')):
             # create zms
             # if no link with zms is there
-            Select(self._find_element(By.CSS_SELECTOR, 'select[name=":action"]')).select_by_visible_text('ZMS')
-            with self._wait_for_page_load():
-                self._find_element(By.NAME, 'submit').click()
+            try:
+                with self._wait_for_page_load(timeout=5):
+                    # doesn't trigger the page load if 'ZMS' is already the choice made last time
+                    Select(self._find_element(By.CSS_SELECTOR, 'select[name=":action"]')).select_by_visible_text('ZMS')
+            except TimeoutException:
+                with self._wait_for_page_load():
+                    self._find_element(By.NAME, 'submit').click()
         
             # zms add page has loaded
             self._wait_for_text('Add ZMS-Instance')

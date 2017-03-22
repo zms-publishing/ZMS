@@ -47,6 +47,19 @@ class SeleniumTestCase(unittest.TestCase):
         self._wait(EC.presence_of_element_located((by, value)), timeout=timeout)
         return self.driver.find_element(by, value)
     
+    def _wait_for_element(self, selector, timeout=DEFAULT_TIMEOUT):
+      import time
+      print "_wait_for_element",selector
+      element = None
+      start = time.time()
+      while True:
+        script = "return $('"+selector+"').get(0);"
+        element = self.driver.execute_script(script)
+        if time.time()-start > timeout or element is not None:
+          break
+        time.sleep(1)
+      return element
+    
     # Modeled after http://www.obeythetestinggoat.com/how-to-get-selenium-to-wait-for-page-load-after-a-click.html
     @contextmanager
     def _wait_for_page_load(self, timeout=DEFAULT_TIMEOUT):
@@ -262,6 +275,34 @@ class EditPageExample(SeleniumTestCase):
         
         # ensure text is there
         self._find_element(By.XPATH, '//p[text()="%s"]' % MARKER)
+
+
+class EditDocExample(SeleniumTestCase):
+    
+      def test_edit_doc(self):
+        self._login()
+        self._create_or_navigate_to_zms()
+        self.driver.get(self.driver.current_url)
+        
+        # open actions-dropdown-menu
+        zmi_item = self._wait_for_element('.zmi-item.ZMSTextarea:last')
+        id = zmi_item.get_attribute("id")
+        self.driver.execute_script("$('#"+id+" .zmi-action').mouseenter()")
+        el = self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action')
+        
+        # Dropdown-Toggle
+        dd_toggle = el.find_element_by_css_selector('.dropdown-toggle')
+        self._wait(lambda driver: dd_toggle.is_displayed() and dd_toggle.is_enabled())
+        dd_toggle.click()
+        
+        # Click create document
+        create_doc = el.find_element_by_link_text('Dokument')
+        self._wait(lambda driver: create_doc.is_displayed())
+        create_doc.click()
+        
+        import time; time.sleep(10)
+        print "Done"
+
 
 if __name__ == "__main__":
     unittest.main()

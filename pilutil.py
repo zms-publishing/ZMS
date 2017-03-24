@@ -21,6 +21,7 @@ from AccessControl.SecurityInfo import ModuleSecurityInfo
 import tempfile
 # Product Imports.
 import _fileutil
+import standard
 
 security = ModuleSecurityInfo('Products.zms.pilutil')
 
@@ -39,12 +40,17 @@ def enabled():
 
 security.declarePublic('thumbnail')
 def thumbnail(img, maxdim, qual=75):
+  """
+  Tumbnail image.
+  @rtype: C{MyImage}
+  """
   # Resize image
+  context = img.aq_parent
   size = (maxdim, maxdim)
   thumb = resize( img, size, mode='thumbnail', qual=qual)
   
   # Returns resulting image
-  image = standard.ImageFromData(thumb.getData(),thumb.getFilename())
+  image = standard.ImageFromData(context,thumb.getData(),thumb.getFilename())
   return image
 
 
@@ -52,6 +58,7 @@ security.declarePublic('resize')
 def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
   """
   Resize image.
+  @rtype: C{MyImage}
   """
   try:
     from PIL import Image
@@ -59,6 +66,7 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
     import Image
   
   # Save image in temp-folder
+  context = img.aq_parent
   tempfolder = tempfile.mktemp()
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder,img.filename))
   _fileutil.exportObj(img,filepath)
@@ -72,7 +80,6 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
       im.thumbnail((maxdim,maxdim),Image.ANTIALIAS)
     except:
       im.thumbnail((maxdim,maxdim))
-      im.convert('RGB').save(infile,"JPEG", quality=qual)
   elif mode == 'resize':
     try:
       im = im.resize(size,Image.ANTIALIAS)
@@ -98,7 +105,7 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
       im = im.resize((dst_width, dst_height), Image.ANTIALIAS)
     except:
       im.resize(size)
-  im.convert('RGB').save(filepath,"JPEG", quality=qual)
+  im.convert('RGB').save(filepath,"JPEG", quality=qual, optimize=True)
   
   # Read resized image from file-system
   f = open(filepath,'rb')
@@ -117,7 +124,7 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
   _fileutil.remove(tempfolder,deep=1)
   
   # Returns resulting image
-  image = standard.ImageFromData(result['data'],result['filename'])
+  image = standard.ImageFromData(context,result['data'],result['filename'])
   return image
 
 
@@ -125,6 +132,7 @@ security.declarePublic('crop')
 def crop(img, box, qual=75):
   """
   Crop image.
+  @rtype: C{MyImage}
   """
   try:
     from PIL import Image
@@ -132,6 +140,7 @@ def crop(img, box, qual=75):
     import Image
   
   # Save image in temp-folder
+  context = img.aq_parent
   tempfolder = tempfile.mktemp()
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder,img.filename))
   _fileutil.exportObj(img,filepath)
@@ -152,7 +161,7 @@ def crop(img, box, qual=75):
   _fileutil.remove(tempfolder,deep=1)
   
   # Returns resulting image
-  image = standard.ImageFromData(result['data'],result['filename'])
+  image = standard.ImageFromData(context,result['data'],result['filename'])
   return image
 
 
@@ -167,6 +176,7 @@ def rotate(img, direction, qual=75):
     import Image
   
   # Save image in temp-folder
+  context = img.aq_parent
   tempfolder = tempfile.mktemp()
   filepath = _fileutil.getOSPath('%s/%s'%(tempfolder,img.filename))
   _fileutil.exportObj(img,filepath)
@@ -174,21 +184,58 @@ def rotate(img, direction, qual=75):
   # Rotate image
   im = Image.open(filepath)
   im = im.rotate(direction)
-  im.convert('RGB').save(filepath,"JPEG", quality=qual)
+  im.convert('RGB').save(filepath,"JPEG", quality=qual, optimize=True)
   
-  # Read resized image from file-system
+  # Read rotated image from file-system
   f = open(filepath,'rb')
-  result_data = f.read()
+  data = f.read()
   result_filename = _fileutil.extractFilename(filepath)
-  result = {'data':result_data,'filename':result_filename}
+  result = {'data':data,'filename':img.filename}
   f.close()
   
   # Remove temp-folder and images
   _fileutil.remove(tempfolder,deep=1)
   
   # Returns resulting image
-  image = standard.ImageFromData(result['data'],result['filename'])
+  image = standard.ImageFromData(context,result['data'],result['filename'])
   return image
+
+
+security.declarePublic('optimize')
+def optimize(img, qual=75):
+  """
+  Optimize image.
+  @rtype: C{MyImage}
+  """
+  try:
+    from PIL import Image
+  except:
+    import Image
+  
+  # Save image in temp-folder
+  context = img.aq_parent
+  tempfolder = tempfile.mktemp()
+  filepath = _fileutil.getOSPath('%s/%s'%(tempfolder,img.filename))
+  _fileutil.exportObj(img,filepath)
+  
+  # Resize image
+  im = Image.open(filepath)
+  im = im.convert('RGB')
+  im.convert('RGB').save(filepath,"JPEG", quality=qual, optimize=True)
+  
+  # Read optimized image from file-system
+  f = open(filepath,'rb')
+  data = f.read()
+  result = {'data':data,'filename':img.filename}
+  f.close()
+  
+  # Remove temp-folder and images
+  _fileutil.remove(tempfolder,deep=1)
+  
+  # Returns resulting image
+  image = standard.ImageFromData(context,result['data'],result['filename'])
+  return image
+
 
 security.apply(globals())
 

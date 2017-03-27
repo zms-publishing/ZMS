@@ -69,6 +69,9 @@ class SeleniumTestCase(unittest.TestCase):
             EC.staleness_of(old_page)
         )
     
+    def _reload_page(self):
+        return self.driver.get(self.driver.current_url)
+    
     ## High level test helpers
     
     def _login(self):
@@ -231,7 +234,6 @@ class EditPageExample(SeleniumTestCase):
             # on buttons because they overlap them
             self.driver.execute_script("$('.zmi-item .zmi-action').mouseleave()")
         
-        self.driver.get(self.driver.current_url)
         # seems the popup is only initialized once it is shown
         self.driver.execute_script("$('.zmi-item.ZMSTextarea .zmi-action').mouseenter()")
         el = self._find_element(By.CSS_SELECTOR, '.zmi-item.ZMSTextarea .zmi-action')

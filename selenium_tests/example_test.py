@@ -204,6 +204,12 @@ class LoginTest(SeleniumTestCase):
 class ScreenshotDemonstrationTest(SeleniumTestCase):
     
     def test_the_importance_of_waiting(self):
+        # On fast systems, this test makes a screen shot before
+        # the page is loaded (showing a white screen).
+        # The take-away here is that you should always explicitly
+        # declare what element you want to wait for before interacting
+        # with it. Otherwise, tests will behave flakily, failing on
+        # particularly fast or slow systems.
         self._login()
         self._save_screenshot_of_current_page('before-wait')
         self._wait_for_text('Contents')

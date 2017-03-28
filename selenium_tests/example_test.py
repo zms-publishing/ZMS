@@ -44,6 +44,7 @@ class SeleniumTestCase(unittest.TestCase):
         return self._wait(EC.text_to_be_present_in_element((By.CSS_SELECTOR, 'body'), text), timeout=timeout)
     
     def _find_element(self, by, value, timeout=DEFAULT_TIMEOUT):
+        print "_find_element",by,value
         self._wait(EC.presence_of_element_located((by, value)), timeout=timeout)
         return self.driver.find_element(by, value)
     
@@ -222,6 +223,7 @@ class ScreenshotAfterFailingTest(SeleniumTestCase):
         self._wait_for_text('Contents')
         self.fail('Intentionally failed test')
 
+# python -m unittest selenium_tests.example_test.EditPageExample
 class EditPageExample(SeleniumTestCase):
     
     def test_edit_page(self):
@@ -240,6 +242,7 @@ class EditPageExample(SeleniumTestCase):
             # on buttons because they overlap them
             self.driver.execute_script("$('.zmi-item .zmi-action').mouseleave()")
         
+        self.driver.get(self.driver.current_url)
         # seems the popup is only initialized once it is shown
         self.driver.execute_script("$('.zmi-item.ZMSTextarea .zmi-action').mouseenter()")
         el = self._find_element(By.CSS_SELECTOR, '.zmi-item.ZMSTextarea .zmi-action')
@@ -285,9 +288,14 @@ class EditPageExample(SeleniumTestCase):
         self._find_element(By.XPATH, '//p[text()="%s"]' % MARKER)
 
 
+# python -m unittest selenium_tests.example_test.EditDocExample
 class EditDocExample(SeleniumTestCase):
     
       def test_edit_doc(self):
+        
+        # this string will be added to the page
+        MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
+        
         self._login()
         self._create_or_navigate_to_zms()
         self.driver.get(self.driver.current_url)
@@ -303,12 +311,22 @@ class EditDocExample(SeleniumTestCase):
         self._wait(lambda driver: dd_toggle.is_displayed() and dd_toggle.is_enabled())
         dd_toggle.click()
         
-        # Click create document
+        # click create document
         create_doc = el.find_element_by_link_text('Dokument')
         self._wait(lambda driver: create_doc.is_displayed())
         create_doc.click()
         
-        import time; time.sleep(10)
+        # insert frame
+        self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog .title').send_keys(MARKER)
+        self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog .titlealt').send_keys(MARKER)
+        
+        # click insert
+        self._find_element(By.XPATH, '//button[text()="Einfügen"]').click()
+        
+        # wait until saved
+        self._find_element(By.CSS_SELECTOR, '.alert-success')
+        
+        import time; time.sleep(1)
         print "Done"
 
 

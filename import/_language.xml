@@ -3743,6 +3743,7 @@
     <Cell><Data ss:Type="String">Oktober</Data></Cell>
     <Cell><Data ss:Type="String">October</Data></Cell>
     <Cell><Data ss:Type="String">Oktober</Data></Cell>
+    <Cell><Data ss:Type="String">Octobre</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Ottobre</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">忿月</Data></Cell>
     <Cell><Data ss:Type="String">اکتبر</Data></Cell>
@@ -3757,6 +3758,7 @@
     <Cell><Data ss:Type="String">November</Data></Cell>
     <Cell><Data ss:Type="String">November</Data></Cell>
     <Cell><Data ss:Type="String">November</Data></Cell>
+    <Cell><Data ss:Type="String">Novembre</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Novembre</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">忿一月</Data></Cell>
     <Cell><Data ss:Type="String">نوامبر</Data></Cell>
@@ -3771,6 +3773,7 @@
     <Cell><Data ss:Type="String">Dezember</Data></Cell>
     <Cell><Data ss:Type="String">December</Data></Cell>
     <Cell><Data ss:Type="String">December</Data></Cell>
+    <Cell><Data ss:Type="String">Décembre</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Dicembre</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">忿二月</Data></Cell>
     <Cell><Data ss:Type="String">دسامبر</Data></Cell>
@@ -3800,6 +3803,7 @@
     <Cell><Data ss:Type="String">März</Data></Cell>
     <Cell><Data ss:Type="String">March</Data></Cell>
     <Cell><Data ss:Type="String">Maart</Data></Cell>
+    <Cell><Data ss:Type="String">Mars</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Marzo</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">三月</Data></Cell>
     <Cell><Data ss:Type="String">مارس</Data></Cell>
@@ -3814,6 +3818,7 @@
     <Cell><Data ss:Type="String">April</Data></Cell>
     <Cell><Data ss:Type="String">April</Data></Cell>
     <Cell><Data ss:Type="String">April</Data></Cell>
+    <Cell><Data ss:Type="String">Avril</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Aprile</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">四月</Data></Cell>
     <Cell><Data ss:Type="String">آوريل</Data></Cell>
@@ -3828,6 +3833,7 @@
     <Cell><Data ss:Type="String">Mai</Data></Cell>
     <Cell><Data ss:Type="String">May</Data></Cell>
     <Cell><Data ss:Type="String">Mei</Data></Cell>
+    <Cell><Data ss:Type="String">Mai</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Maggio</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">五月</Data></Cell>
     <Cell><Data ss:Type="String">مه</Data></Cell>
@@ -3842,6 +3848,7 @@
     <Cell><Data ss:Type="String">Juni</Data></Cell>
     <Cell><Data ss:Type="String">June</Data></Cell>
     <Cell><Data ss:Type="String">Juni</Data></Cell>
+    <Cell><Data ss:Type="String">Juin</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Guigno</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">六月</Data></Cell>
     <Cell><Data ss:Type="String">ژون</Data></Cell>
@@ -3856,6 +3863,7 @@
     <Cell><Data ss:Type="String">Juli</Data></Cell>
     <Cell><Data ss:Type="String">July</Data></Cell>
     <Cell><Data ss:Type="String">Juli</Data></Cell>
+    <Cell><Data ss:Type="String">Juillet</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Luglio</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">七月</Data></Cell>
     <Cell><Data ss:Type="String">جولای</Data></Cell>
@@ -3870,6 +3878,7 @@
     <Cell><Data ss:Type="String">August</Data></Cell>
     <Cell><Data ss:Type="String">August</Data></Cell>
     <Cell><Data ss:Type="String">Augustus</Data></Cell>
+    <Cell><Data ss:Type="String">Août</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Agosto</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">八月</Data></Cell>
     <Cell><Data ss:Type="String">اوت</Data></Cell>
@@ -3884,6 +3893,7 @@
     <Cell><Data ss:Type="String">September</Data></Cell>
     <Cell><Data ss:Type="String">September</Data></Cell>
     <Cell><Data ss:Type="String">September</Data></Cell>
+    <Cell><Data ss:Type="String">Septembre</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Settembre</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">乿月</Data></Cell>
     <Cell><Data ss:Type="String">سپتامبر</Data></Cell>

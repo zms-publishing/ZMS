@@ -1238,33 +1238,10 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 				context = "ul[data-home-id="+page_home_id+"][data-id="+page_id+"]";
 			}
 			$("li",s).addClass("active");
-      /*
-			var html = that.addPages([pages[0]]);
-			$(s).html(html);
-			var i = 0;
-			var fn = function() {
-					if (i<pages.length) {
-						var $page = $(pages[i]);
-						var page_home_id = $page.attr("home_id");
-						var page_id = $page.attr("id").substr(page_home_id.length+1);
-						var $ul = $("ul[data-home-id="+page_home_id+"][data-id="+page_id+"]");
-						// Remove other siblings.
-						$ul.siblings("ul").remove();
-						var $toggle = $(".toggle",$ul);
-						$("li",$ul).addClass("active");
-						i++;
-						that.toggleClick($toggle,fn);
-					}
-					else {
-						$(".toggle",$(s)).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right")).attr({title:'+'});
-						var callback = that.p['init.callback'];
-						if (typeof callback != "undefined") {
-							callback();
-						}
-					}
-				}
-			fn();
-      */
+			var callback = that.p['init.callback'];
+			if (typeof callback != "undefined") {
+				callback();
+			}
 		});
 }
 

@@ -59,7 +59,9 @@
 				><div class="zmi-interface" tal:content="structure python:here.attr(metaObjAttrId)">the interface</div
 			></tal:block
 
-			><div class="form-group" tal:condition="not:python:metaObjAttr['type'] in ['delimiter','hint','interface']">
+			><div class="form-group"
+					tal:attributes="id python:'tr_%s'%(elName)"
+					tal:condition="not:python:metaObjAttr['type'] in ['delimiter','hint','interface']">
 				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
 					<span tal:content="elLabel">the label</span>
 				</label>

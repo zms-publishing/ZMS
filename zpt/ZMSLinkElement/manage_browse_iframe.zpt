@@ -108,6 +108,7 @@
 <div class="tab-pane" id="search">
 <form name="searchform" method="get" tal:attributes="action python:'%s#search'%request['URL']">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
+	<input type="hidden" name="defaultLang" tal:attributes="value python:request['defaultLang']" />
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
 	<input type="hidden" name="fmName" tal:condition="python:request.has_key('fmName')" tal:attributes="value python:request.get('fmName','')" />
 	<input type="hidden" name="elName" tal:condition="python:request.has_key('elName')" tal:attributes="value python:request.get('elName','')" />

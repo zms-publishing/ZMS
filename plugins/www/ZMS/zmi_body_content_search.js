@@ -177,9 +177,11 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
               }
               var did = getattr("id");
               var meta_id = getattr("meta_id");
-              var href;
+              var href = '';
               if (zmi) {
-                href = getattr("loc")+"/manage";
+                if (href=='') href = getattr("loc");
+                if (href=='') href = getattr("absolute_url");
+                href += '/manage';
               } else {
                 href = getattr("index_html");
               }

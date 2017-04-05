@@ -765,7 +765,7 @@ def writeLog(context, info):
     zms_log = getLog(context)
     severity = logging.DEBUG
     if zms_log.hasSeverity(severity):
-      info = "[%s@%s]"%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
+      info = "[%s@%s] "%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
       zms_log.LOG( severity, info)
   except:
     pass
@@ -783,7 +783,7 @@ def writeBlock(context, info):
     zms_log = getLog(context)
     severity = logging.INFO
     if zms_log.hasSeverity(severity):
-      info = "[%s@%s]"%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
+      info = "[%s@%s] "%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
       zms_log.LOG( severity, info)
   except:
     pass
@@ -800,16 +800,17 @@ def writeError(context, info):
   t,v='?','?'
   try:
     t,v,tb = sys.exc_info()
-    v = str(v)
-    # Strip HTML tags from the error value
-    for pattern in [r"<[^<>]*>", r"&[A-Za-z]+;"]:
-      v = re_sub(pattern,' ', v)
-    if info: 
-      info += '\n'
-    severity = logging.ERROR
-    info += ''.join(format_exception(t, v, tb))
-    info = "[%s@%s]"%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
+    if t is not None:
+      v = str(v)
+      # Strip HTML tags from the error value
+      for pattern in [r"<[^<>]*>", r"&[A-Za-z]+;"]:
+        v = re_sub(pattern,' ', v)
+      if info: 
+        info += '\n'
+      info += ''.join(format_exception(t, v, tb))
+    info = "[%s@%s] "%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
     zms_log = getLog(context)
+    severity = logging.ERROR
     if zms_log.hasSeverity(severity):
       zms_log.LOG( severity, info)
     t = t.__name__.upper()

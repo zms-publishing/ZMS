@@ -38,6 +38,15 @@ extra_column_ids = ['loc','index_html','custom']
 
 
 # ------------------------------------------------------------------------------
+#  ZMSZCatalogConnector.umlaut_quote:
+# ------------------------------------------------------------------------------
+def umlaut_quote(self, v):
+  if int(self.getConfProperty('ZMSZCatalogConnector.umlaut_quote',0)):
+    return standard.umlaut_quote(v)
+  return v
+
+
+# ------------------------------------------------------------------------------
 #  ZMSZCatalogConnector.intValue:
 # ------------------------------------------------------------------------------
 def intValue(v):
@@ -361,12 +370,12 @@ class ZMSZCatalogConnector(
         fqk = 'zcat_index_%s'%attr_id
         if fqk in zcatalog.indexes():
           fqv = fqs[fqs.find(':')+1:]
-          fqv = standard.umlaut_quote(fqv)
+          fqv = umlaut_quote(self,fqv)
           prototype[fqk] = fqv
       for index in zcatalog.indexes():
         if index.find('zcat_index_')==0:
           query = copy.deepcopy(prototype)
-          query[index] = standard.umlaut_quote(q)
+          query[index] = umlaut_quote(self,q)
           qr = zcatalog(query)
           standard.writeLog( self, "[search]: %s=%i"%(str(query),len(qr)))
           for item in qr:
@@ -438,7 +447,7 @@ class ZMSZCatalogConnector(
       for attr_id in zcm._getAttrIds():
         last_id = attr_id
         attr_name = 'zcat_index_%s'%attr_id
-        value = standard.umlaut_quote(d.get(attr_id))
+        value = umlaut_quote(self,d.get(attr_id))
         setattr(node,attr_name,value)
       # Reindex object.
       request = self.REQUEST

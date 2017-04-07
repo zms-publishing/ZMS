@@ -681,7 +681,7 @@ class MyBlob:
       if parent is not None:
         mediadb = parent.getMediaDb()
         if mediadb is not None:
-          self.mediadbfile = mediadb.storeFile( blob)
+          self.mediadbfile = mediadb.storeFile( self)
           self.data = ''
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

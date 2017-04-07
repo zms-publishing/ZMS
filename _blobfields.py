@@ -776,7 +776,7 @@ class MyImage(MyBlob,Image):
     __version__ = '0.1' 
     
 
-    __obj_attrs__  = ['content_type','size','data','filename','mediadbfile','width','height']
+    __obj_attrs__  = ['content_type','size','data','filename','mediadbfile','width','height','aq_parent']
     __xml_attrs__  = ['content_type','width','height']
 
 
@@ -854,7 +854,7 @@ class MyFile(MyBlob,File):
     __version__ = '0.1' 
 
 
-    __obj_attrs__  = ['content_type','size','data','filename','mediadbfile']
+    __obj_attrs__  = ['content_type','size','data','filename','mediadbfile','aq_parent']
     __xml_attrs__  = ['content_type']
     __class_name__ = '{{MyFile}}'
 

@@ -192,38 +192,6 @@ class SeleniumTestCase(unittest.TestCase):
         cls.password = parser.get('ac_server', 'password')
    
 
-class LoginTest(SeleniumTestCase):
-   
-    def test_login(self):
-        self._login()
-       
-        # only accessible if login worked
-        self._wait(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, 'Control_Panel')))
-        self.driver.find_element_by_partial_link_text('Control_Panel').click()
-        self._wait_for_text('ZServer.HTTPServer.zhttp_server')
-        self.assertIn('ZServer.HTTPServer.zhttp_server', self.driver.page_source)
-
-class ScreenshotDemonstrationTest(SeleniumTestCase):
-   
-    def test_the_importance_of_waiting(self):
-        # On fast systems, this test makes a screen shot before
-        # the page is loaded (showing a white screen).
-        # The take-away here is that you should always explicitly
-        # declare what element you want to wait for before interacting
-        # with it. Otherwise, tests will behave flakily, failing on
-        # particularly fast or slow systems.
-        self._login()
-        self._save_screenshot_of_current_page('before-wait')
-        self._wait_for_text('Contents')
-        self._save_screenshot_of_current_page('after-wait')
-
-class ScreenshotAfterFailingTest(SeleniumTestCase):
-   
-    def test_that_demonstrates_that_failing_tests_take_screenshots(self):
-        self._login()
-        self._wait_for_text('Contents')
-        self.fail('Intentionally failed test')
-
 # python -m unittest selenium_tests.example_test.EditDocTest
 class EditDocTest(SeleniumTestCase):
    

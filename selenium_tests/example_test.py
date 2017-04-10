@@ -216,12 +216,14 @@ class ScreenshotDemonstrationTest(SeleniumTestCase):
         self._wait_for_text('Contents')
         self._save_screenshot_of_current_page('after-wait')
 
+"""
 class ScreenshotAfterFailingTest(SeleniumTestCase):
     
     def test_that_demonstrates_that_failing_tests_take_screenshots(self):
         self._login()
         self._wait_for_text('Contents')
         self.fail('Intentionally failed test')
+"""
 
 # python -m unittest selenium_tests.example_test.EditPageExample
 class EditPageExample(SeleniumTestCase):
@@ -286,48 +288,6 @@ class EditPageExample(SeleniumTestCase):
         
         # ensure text is there
         self._find_element(By.XPATH, '//p[text()="%s"]' % MARKER)
-
-
-# python -m unittest selenium_tests.example_test.EditDocExample
-class EditDocExample(SeleniumTestCase):
-    
-      def test_edit_doc(self):
-        
-        # this string will be added to the page
-        MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
-        
-        self._login()
-        self._create_or_navigate_to_zms()
-        self.driver.get(self.driver.current_url)
-        
-        # open actions-dropdown-menu
-        zmi_item = self._wait_for_element('.zmi-item.ZMSTextarea:last')
-        id = zmi_item.get_attribute("id")
-        self.driver.execute_script("$('#"+id+" .zmi-action').mouseenter()")
-        el = self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action')
-        
-        # Dropdown-Toggle
-        dd_toggle = el.find_element_by_css_selector('.dropdown-toggle')
-        self._wait(lambda driver: dd_toggle.is_displayed() and dd_toggle.is_enabled())
-        dd_toggle.click()
-        
-        # click create document
-        create_doc = el.find_element_by_link_text('Dokument')
-        self._wait(lambda driver: create_doc.is_displayed())
-        create_doc.click()
-        
-        # insert frame
-        self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog .title').send_keys(MARKER)
-        self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog .titlealt').send_keys(MARKER)
-        
-        # click insert
-        self._find_element(By.XPATH, '//button[text()="Einfügen"]').click()
-        
-        # wait until saved
-        self._find_element(By.CSS_SELECTOR, '.alert-success')
-        
-        import time; time.sleep(1)
-        print "Done"
 
 
 if __name__ == "__main__":

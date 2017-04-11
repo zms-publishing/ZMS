@@ -197,9 +197,6 @@ class EditDocTest(SeleniumTestCase):
    
       def test_edit_doc(self):
        
-        # this string will be added to the page
-        MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
-       
         self._login()
         self._create_or_navigate_to_zms()
         self.driver.get(self.driver.current_url)
@@ -223,11 +220,26 @@ class EditDocTest(SeleniumTestCase):
         create_doc.click()
        
         # insert frame
+        MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
         self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog .title').send_keys(MARKER)
         self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog .titlealt').send_keys(MARKER)
        
         # click insert
         self._find_element(By.XPATH, '//button[text()="Einfügen"]').click()
+       
+        # wait until saved
+        self._find_element(By.CSS_SELECTOR, '.alert-success')
+       
+        # open properties tab
+        self._find_element(By.XPATH, '//ul/li/a[text()="Eigenschaften"]').click()
+       
+        # change properties
+        MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
+        self._find_element(By.CSS_SELECTOR, '#tabProperties .title').send_keys(MARKER)
+        self._find_element(By.CSS_SELECTOR, '#tabProperties .titlealt').send_keys(MARKER)
+       
+        # click save
+        self._find_element(By.XPATH, '//button[text()="Speichern"]').click()
        
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')

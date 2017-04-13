@@ -1217,6 +1217,8 @@ $ZMI.objectTree = new ZMIObjectTree();
 ZMIObjectTree.prototype.init = function(s,href,p) {
 	var that = this;
 	that.p = p;
+	// Init preselected active.
+	that.active = [];
 	href = href+"/"+(typeof p['init.href'] != "undefined"?p['init.href']:"ajaxGetParentNodes");
 	$(s).html($ZMI.icon("icon-spinner icon-spin")+'&nbsp;'+getZMILangStr('MSG_LOADING'));
 	var params = {lang:getZMILang(),preview:'preview'};
@@ -1235,7 +1237,9 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 				var page_id = $page.attr("id").substr(page_home_id.length+1);
 				var html = that.addPages([pages[i]]);
 				$(context).append(html);
-				context = "ul[data-home-id="+page_home_id+"][data-id="+page_id+"]";
+				context = "ul[data-home-id="+page_home_id+"][data-id="+page_id+"] li";
+				// Remember preselected active.
+				that.active.push({id:page_id,home_id:page_home_id});
 			}
 			$("li",s).addClass("active");
 			var callback = that.p['init.callback'];
@@ -1369,13 +1373,18 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 				// Reset wait-cursor.
 				$("#loading").remove();
 				// Get and iterate pages.
-				var pages = $("page",result);
+				var pages = $('page',result);
 				if ( pages.length == 0) {
 					$(toggle).removeClass($ZMI.icon_clazz("icon-caret-down")).attr({title:''});
 				}
 				else {
 					var html = that.addPages(pages);
 					$container.append(html);
+					// Set preselected active.
+					for (var i = 0; i < that.active.length; i++) {
+						var d = that.active[i];
+						$('ul[data-id='+d.id+'][data-home-id='+d.home_id+'] > li').addClass('active');
+					}
 				}
 				if (typeof callback == 'function') {
 					callback();

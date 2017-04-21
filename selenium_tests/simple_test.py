@@ -11,7 +11,7 @@ from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from Products.zms.selenium_tests import example_test
+import example_test
 
 # python -m unittest selenium_tests.simple_test.EditDocTest
 class EditDocTest(example_test.SeleniumTestCase):

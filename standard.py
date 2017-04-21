@@ -277,8 +277,11 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
     if s[:maxlen].rfind('&') >= 0 and not s[:maxlen].rfind('&') < s[:maxlen].rfind(';') and \
        s[maxlen:].find(';') >= 0 and not s[maxlen:].find(';') > s[maxlen:].find('&'):
       maxlen = maxlen + s[maxlen:].find(';')
-    if s[:maxlen].endswith(chr(195)) and maxlen < len(s):
-      maxlen += 1
+    try:
+      if s[:maxlen].endswith(chr(195)) and maxlen < len(s):
+        maxlen += 1
+    except:
+      pass
     s = s[:maxlen] + etc
   return s
 

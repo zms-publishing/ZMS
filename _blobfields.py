@@ -765,6 +765,24 @@ class MyBlob:
       return self.content_type
 
 
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.getMimeTypeIconSrc:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    getMimeTypeIconSrc__roles__ = None
+    def getMimeTypeIconSrc(self):
+      """
+      Returns the absolute-url of an icon representing the MIME-type of this MyBlob-object.
+      @rtype: C{string}
+      @deprecated: Use zmscontext.getMimeTypeIconSrc(mt) instead!
+      """
+      import _mimetypes
+      warnings.warn('Using MyBlob.getMimeTypeIconSrc() is deprecated.'
+                   ' Use zmscontext.getMimeTypeIconSrc(mt) instead.',
+                     DeprecationWarning, 
+                     stacklevel=2)
+      return '/misc_/zms/' + _mimetypes.dctMimeType.get( self.getContentType(), _mimetypes.content_unknown)
+
+
 ################################################################################
 ################################################################################
 

@@ -597,7 +597,8 @@ $(function(){
 # --// BO attr_img_src //--
 
 file = zmscontext.attr('file')
-return file.getMimeTypeIconSrc()
+mt = file.getContentType()
+return zmscontext.getMimeTypeIconSrc(mt)
 
 # --// EO attr_img_src //--
 ]]>
@@ -707,18 +708,18 @@ return ''
 			<tal:block tal:define="global subclass python:subclass+['floatright']"></tal:block>
 		</tal:block>
 		<div tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
-			<span tal:omit-tag="" tal:condition="python:file">
-				<div class="title">
-					<img tal:attributes="src python:file.getMimeTypeIconSrc(); title python:'%s (%s)'%(file.getContentType(),file.getDataSizeStr())" border="0" alt="Icon" align="absmiddle"/>
+			<tal:block tal:condition="python:file">
+				<div class="title" tal:define="mt python:file.getContentType()">
+					<img tal:attributes="src python:zmscontext.getMimeTypeIconSrc(mt); title python:'%s (%s)'%(mt,file.getDataSizeStr())" border="0" alt="Icon" align="absmiddle"/>
 					<a tal:attributes="href python:file.getHref(request)" tal:content="structure python:titlealt" target="_blank">The titlealt</a>
 					(<span tal:content="python:file.getDataSizeStr()">The data-size string</span>)
 				</div>
 				<div tal:condition="python:title and title!=titlealt" tal:content="structure title" class="text">The title</div>
 				<div tal:condition="python:abstract" tal:content="structure python:newline_to_br(abstract)" class="description">The abstract</div>
-			</span>
-			<span tal:omit-tag="" tal:condition="python:not (file)" tal:content="python:zmscontext.getZMILangStr('ATTR_NONE')">
+			</tal:block>
+			<tal:block tal:condition="python:not (file)" tal:content="python:zmscontext.getZMILangStr('ATTR_NONE')">
 				None
-			</span>
+			</tal:block>
 		</div>
 	</tal:block>
 </tal:block>
@@ -756,7 +757,7 @@ return ''
           <item key="id"><![CDATA[ZMSFile]]></item>
           <item key="name"><![CDATA[ZMSFile]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.3.8]]></item>
+          <item key="revision"><![CDATA[3.3.9]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

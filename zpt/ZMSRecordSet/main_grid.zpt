@@ -200,9 +200,9 @@
         ><tal:block tal:content="elValue">elValue</tal:block
       ></tal:block
       ><tal:block tal:condition="not:python:elType in ['boolean','date','datetime','float','html','image','file','int','object','url','None']"
-        ><tal:block tal:condition="python:elValue is not None" 
+        ><tal:block tal:condition="python:elValue is not None"
           tal:on-error="string:<!-- UTF-8-ERROR -->" 
-          tal:content="structure python:unicode(str(elValue),'utf-8')">elValue</tal:block
+          tal:content="structure python:unicode(elValue)">elValue</tal:block
       ></tal:block
     ></div></td>
     </tal:block>

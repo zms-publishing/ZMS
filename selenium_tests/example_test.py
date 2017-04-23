@@ -23,7 +23,10 @@ class SeleniumTestCase(unittest.TestCase):
         cls._read_credentials()
     
     def setUp(self):
-        self.driver = webdriver.Firefox()
+        if self.ac_driver == 'Chrome':
+          self.driver = webdriver.Chrome()
+        else:
+          self.driver = webdriver.Firefox()
         
         # this ensures all find_element* methods retry up to 10 seconds for the searched 
         # element to appear in the dom. Essential if testing AJAX stuff.
@@ -186,6 +189,8 @@ class SeleniumTestCase(unittest.TestCase):
         from ConfigParser import SafeConfigParser
         parser = SafeConfigParser()
         parser.read(credentials_path)
+        parser.defaults()['driver'] = 'Firefox'
+        cls.ac_driver = parser.get('ac_server', 'driver')
         cls.base_url = parser.get('ac_server', 'base_url')
         cls.login = parser.get('ac_server', 'login')
         cls.password = parser.get('ac_server', 'password')

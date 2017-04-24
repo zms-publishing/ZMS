@@ -619,7 +619,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
       try: meta_type = value.meta_type
       except: meta_type = None
       if meta_type is not None:
-        s_value = zopeutil.readData(value)
+        value = zopeutil.readData(value)
       s_value = unistr(value)
       if len(s_value) > 0:
         xml.append(toCdata(self,s_value,xhtml))

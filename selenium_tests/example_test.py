@@ -28,7 +28,7 @@ class SeleniumTestCase(unittest.TestCase):
         else:
             profile = webdriver.FirefoxProfile();
             profile.set_preference("network.http.phishy-userpass-length", 255)
-            self.driver = webdriver.Firefox(profile)
+            self.driver = webdriver.Firefox(profile, firefox_binary=self.firefox_path)
         
         # this ensures all find_element* methods retry up to 10 seconds for the searched 
         # element to appear in the dom. Essential if testing AJAX stuff.
@@ -201,6 +201,9 @@ class SeleniumTestCase(unittest.TestCase):
         cls.base_url = parser.get('ac_server', 'base_url')
         cls.login = parser.get('ac_server', 'login')
         cls.password = parser.get('ac_server', 'password')
+        cls.firefox_path = None
+        if parser.has_option('ac_server', 'firefox_path'):
+            cls.firefox_path = parser.get('ac_server', 'firefox_path')
     
 
 class LoginTest(SeleniumTestCase):

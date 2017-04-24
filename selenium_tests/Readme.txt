@@ -3,6 +3,7 @@
 ## Setup
 
 Geckodriver needs to be installed in the $PATH from: https://github.com/mozilla/geckodriver/releases
+Firefox Extended Support Release needs to be installed from: https://www.mozilla.org/en-US/firefox/organizations/all/
 
 Install the testing requirements via:
 
@@ -14,6 +15,8 @@ The tests expect a running zope instance on http://localhost:8080 with login adm
     base_url=http://localhost:8080
     login=admin
     password=admin
+    firefox_path=/absolute/path/to/your/extended/support/version/of/firefox
+    # last key is optional. If it is missing, the system firefox has to be an ESR build
 
 If you want to test against a different server, you will have to modify / swap this file accoringly.
 

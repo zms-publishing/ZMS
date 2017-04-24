@@ -21,6 +21,7 @@ class MetaobjManagerTest(example_test.SeleniumTestCase):
         self.driver.get(self.driver.current_url)
        
         # open config
+        self._find_element(By.CSS_SELECTOR, 'a[title="Konfiguration"]').click()
         navbar = self._wait_for_element('.navbar-main')
         navbar_item = navbar.find_element_by_link_text('Content-Objekte')
         navbar_item.click()

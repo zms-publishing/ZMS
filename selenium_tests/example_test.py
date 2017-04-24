@@ -4,7 +4,7 @@ import unittest
 import os
 import random
 from contextlib import contextmanager
-from urlparse import urljoin
+from urlparse import urlparse, urljoin
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -24,9 +24,11 @@ class SeleniumTestCase(unittest.TestCase):
     
     def setUp(self):
         if self.ac_driver == 'Chrome':
-          self.driver = webdriver.Chrome()
+            self.driver = webdriver.Chrome()
         else:
-          self.driver = webdriver.Firefox()
+            profile = webdriver.FirefoxProfile();
+            profile.set_preference("network.http.phishy-userpass-length", 255)
+            self.driver = webdriver.Firefox(profile)
         
         # this ensures all find_element* methods retry up to 10 seconds for the searched 
         # element to appear in the dom. Essential if testing AJAX stuff.
@@ -79,12 +81,17 @@ class SeleniumTestCase(unittest.TestCase):
     ## High level test helpers
     
     def _login(self):
-        self.driver.get(urljoin(self.base_url, '/manage_main'))
-        
-        # would be the propper way to login, but seems to not be supported by geckodriver yet
+        # would be the propper way to login, but is not supported by geckodriver yet
         # self.driver.switch_to.alert.authenticate(self.login, self.password)
-        self.driver.switch_to.alert.send_keys(self.login + Keys.TAB + self.password)
-        self.driver.switch_to.alert.accept()
+        # This stopped working with firefox 53
+        # self.driver.switch_to.alert.send_keys(self.login + Keys.TAB + self.password)
+        # self.driver.switch_to.alert.accept()
+        
+        # So we have to use the really old way (requires the network.http.phishy-userpass-length setting)
+        login_url = urljoin(self.base_url, '/manage_main')
+        parsed = urlparse(login_url)
+        parsed = parsed._replace(netloc="%s:%s@%s" % (self.login, self.password, parsed.netloc))
+        self.driver.get(parsed.geturl())
     
     def _create_or_navigate_to_zms(self):
         # expects to be logged in

@@ -218,9 +218,9 @@
 							<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is not None"
 								tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
 									<textarea class="form-control input-sm"
-										tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:['%s (%s)'%(objAttr['id'],objAttr['type']),errors][int(len(errors)>0)];
-											class python:' '.join(['form-control','input-sm']+objAttr['type'].lower().split(' ')+[[],['bg-danger']][int(len(errors)>0)]);
-											style python:'\073'.join([[],['color:#a94442','background:#fee']][int(len(errors)>0)]);
+										tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:['%s (%s)'%(objAttr['id'],objAttr['type']),errors][len(errors)>0];
+											class python:' '.join(['form-control','input-sm']+objAttr['type'].lower().split(' ')+[[],['bg-danger']][len(errors)>0]);
+											style python:'\073'.join([[],['color:#a94442','background:#fee']][len(errors)>0]);
 											data-style python:'background: #eee url(%s) 6px 6px no-repeat no-repeat'%(ob.icon);
 											data-dblclickhandler python:'window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),'%s (%s)'%(objAttr['id'],objAttr['type']))"
 										tal:content="readData">ob.data</textarea>
@@ -260,10 +260,10 @@
 									</option>
 								</select>
 							</td>
-							<td class="meta-mandatory"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('mandatory',0)==1)]" value="1"/></td>
-							<td class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2"><input type="checkbox" tal:attributes="name python:'attr_custom_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('custom',0)==1)]" value="1"/></td>
-							<td class="meta-multilang" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('multilang',0)==1)]" value="1"/></td>
-							<td class="meta-repetitive" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][int(objAttr.get('repetitive',0)==1)]" value="1"/></td>
+							<td class="meta-mandatory"><input type="checkbox" tal:attributes="name python:'attr_mandatory_%s:int'%objAttr['id']; checked python:['','checked'][objAttr.get('mandatory',0) in [1,True]]" value="1"/></td>
+							<td class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2"><input type="checkbox" tal:attributes="name python:'attr_custom_%s:int'%objAttr['id']; checked python:['','checked'][objAttr.get('custom',0) in [1,True]]" value="1"/></td>
+							<td class="meta-multilang" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%objAttr['id']; checked python:['','checked'][objAttr.get('multilang',0) in [1,True]]" value="1"/></td>
+							<td class="meta-repetitive" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][objAttr.get('repetitive',0) in [1,True]]" value="1"/></td>
 							<td class="meta-default">
 								<div class="single-line" tal:condition="python:objAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','*']">
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-key')">icon</tal:block>
@@ -367,7 +367,7 @@
 				</td>
 				<td style="text-align:center">
 					<tal:block tal:condition="python:action=='insert'"
-						tal:content="structure python:here.getCheckbox(fmName='form0',elName='obj_enabled:int',value=int(metaObj.get('enabled',0)))">
+						tal:content="structure python:here.getCheckbox(fmName='form0',elName='obj_enabled:int',value=int(metaObj.get('enabled',0) in [1,True]))">
 						CHECKBOX
 					</tal:block>
 				</td>
@@ -468,9 +468,9 @@
 				</td>
 				<td></td>
 				<td>
-					<span tal:attributes="id python:metaObj['id'];title python:metaObj['id'];class python:' '.join([[''],['enabled']][int(metaObj.get('enabled',0))])">
+					<span tal:attributes="id python:metaObj['id'];title python:metaObj['id'];class python:' '.join([[''],['enabled']][metaObj.get('enabled',0) in [1,True]])">
 						<i tal:condition="python:metaObj.get('acquired',None)" class="icon-share" title="acquired"></i>
-						<i tal:attributes="class python:' '.join(['enabled-toggle','ui-helper-clickable']+[['icon-check-empty'],['icon-check']][int(metaObj.get('enabled',0))])" onclick="zmiEnabledBtnClick(this)"></i>
+						<i tal:attributes="class python:' '.join(['enabled-toggle','ui-helper-clickable']+[['icon-check-empty'],['icon-check']][metaObj.get('enabled',0) in [1,True]])" onclick="zmiEnabledBtnClick(this)"></i>
 						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank">
 							<span tal:on-error="string:ERROR" tal:replace="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</span>
 						</a>

@@ -2171,12 +2171,13 @@ return zmscontext.attr('attr_dc_description')
 constraints = {}
 request = zmscontext.REQUEST
 try:
-  ref = zmscontext.getRef()
-  if ref.startswith('{$') and ref.endswith('}'):
-    ref_obj = zmscontext.getRefObj()
-    if ref_obj is None:
-      constraints['ERRORS'] = constraints.get('ERRORS',[])
-      constraints['ERRORS'].append(('ref-obj','link-target not found: '+str(ref)))
+  if not request.get('ZMS_INSERT')=='ZMSLinkElement':
+    ref = zmscontext.getRef()
+    if ref.startswith('{$') and ref.endswith('}'):
+      ref_obj = zmscontext.getRefObj()
+      if ref_obj is None:
+        constraints['ERRORS'] = constraints.get('ERRORS',[])
+        constraints['ERRORS'].append(('ref-obj','link-target not found: '+str(ref)))
 except:
   constraints['ERRORS'] = constraints.get('ERRORS',[])
   constraints['ERRORS'].append(('ref-obj',zmscontext.writeError('can\'t check_constraints')))

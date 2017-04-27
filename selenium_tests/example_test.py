@@ -81,17 +81,13 @@ class SeleniumTestCase(unittest.TestCase):
     ## High level test helpers
     
     def _login(self):
+        login_url = urljoin(self.base_url, '/manage_main')
         # would be the propper way to login, but is not supported by geckodriver yet
         # self.driver.switch_to.alert.authenticate(self.login, self.password)
         # This stopped working with firefox 53
-        # self.driver.switch_to.alert.send_keys(self.login + Keys.TAB + self.password)
-        # self.driver.switch_to.alert.accept()
-        
-        # So we have to use the really old way (requires the network.http.phishy-userpass-length setting)
-        login_url = urljoin(self.base_url, '/manage_main')
-        parsed = urlparse(login_url)
-        parsed = parsed._replace(netloc="%s:%s@%s" % (self.login, self.password, parsed.netloc))
-        self.driver.get(parsed.geturl())
+        self.driver.get(login_url)
+        self.driver.switch_to.alert.send_keys(self.login + Keys.TAB + self.password)
+        self.driver.switch_to.alert.accept()
     
     def _create_or_navigate_to_zms(self):
         # expects to be logged in

@@ -49,7 +49,7 @@ function zmiFormSubmit(sender,d) {
 
 <tal:block tal:define="global langIds python:here.getLangIds(sort=True)">
 
-<form class="form-horizontal" action="manage_changeLanguages" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" id="changeLanguagesForm" action="manage_changeLanguages" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('TAB_LANGUAGES')">Languages</legend>
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_MULTILANG')">well</p>
@@ -125,7 +125,7 @@ function zmiFormSubmit(sender,d) {
 	</div>
 </form>
 
-<form class="form-horizontal" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" id="changeLangDictForm" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('ATTR_DICTIONARY')">Dictionary</legend>
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_MULTILANGDICT')">well</p>

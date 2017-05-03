@@ -15,7 +15,7 @@ import example_test
 class MetaobjManagerTest(example_test.SeleniumTestCase):
    
       def test_metaobj_conf(self):
-        print '<test_metaobj_conf>'
+        print '<MetaobjManagerTest.test_conf>'
         self._login()
         self._create_or_navigate_to_zms()
         self.driver.get(self.driver.current_url)
@@ -53,11 +53,14 @@ class MetaobjManagerTest(example_test.SeleniumTestCase):
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
         time.sleep(1)
-        print '</test_metaobj_conf>'
+        print '</MetaobjManagerTest.test_conf>'
 
 
-      def test_metadict_conf(self):
-        print '<test_metadict_conf>'
+# python -m unittest selenium_tests.metaobj_manager_test.MetadictManagerTest
+class MetadictManagerTest(example_test.SeleniumTestCase):
+
+      def test_conf(self):
+        print '<MetadictManagerTest.test_conf>'
         self._login()
         self._create_or_navigate_to_zms()
         self.driver.get(self.driver.current_url)
@@ -78,7 +81,7 @@ class MetaobjManagerTest(example_test.SeleniumTestCase):
         #dialog.find_element_by_css_selector('.btn.btn-primary[value="Importieren"]').click()
         
         time.sleep(1)
-        print '</test_metadict_conf>'
+        print '</MetadictManagerTest.test_conf>'
 
 
 if __name__ == "__main__":

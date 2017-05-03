@@ -42,11 +42,11 @@ class MetaobjManagerTest(example_test.SeleniumTestCase):
         # open config
         navtabs = self._wait_for_element('.nav.nav-tabs')
         navtabs.find_element_by_link_text('Content-Objekte').click()
+        time.sleep(1)
         
         # open delete dialog
         self._find_element(By.CSS_SELECTOR, 'input[name="ids:list"][value="LgTest"]').click()
         self._find_element(By.CSS_SELECTOR, '.btn.btn-default[title="Löschen..."]').click()
-        time.sleep(1)
         self.driver.switch_to_alert().accept()
         
         # wait until saved

@@ -14,7 +14,7 @@ import example_test
 # python -m unittest selenium_tests.metaobj_manager_test.MetaobjManagerTest
 class MetaobjManagerTest(example_test.SeleniumTestCase):
    
-      def test_metaobj_conf(self):
+      def test_conf(self):
         print '<MetaobjManagerTest.test_conf>'
         self._login()
         self._create_or_navigate_to_zms()

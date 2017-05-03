@@ -42,7 +42,7 @@ class MultilangManagerTest(example_test.SeleniumTestCase):
         
         # open delete dialog
         self._find_element(By.CSS_SELECTOR, '#changeLanguagesForm input[name="ids:list"][value="eng"]').click()
-        self._find_element(By.CSS_SELECTOR, '#changeLanguagesForm .btn.btn-default[title="Löschen..."]').click()
+        self._find_element(By.CSS_SELECTOR, '#changeLanguagesForm .btn.btn-default[value="Löschen..."]').click()
         time.sleep(1)
         self.driver.switch_to_alert().accept()
         

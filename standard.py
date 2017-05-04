@@ -577,16 +577,9 @@ def triggerEvent(context, *args, **kwargs):
     if v is not None:
       l.append(v)
     # Process zope-triggers.
-    context = context
-    ids = []
-    while context is not None:
-      for id in context.getHome().objectIds():
-        if id not in ids and id.find( name) == 0:
-          v = getattr(context,id)(context=context,REQUEST=context.REQUEST)
-          if v is not None:
-            l.append(v)
-          ids.append(id)
-      context = context.getPortalMaster()
+    m = getattr(context,name,None)
+    if m is not None:
+      m(context=context,REQUEST=context.REQUEST)
   return l
 
 

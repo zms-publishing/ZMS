@@ -136,9 +136,9 @@
 				+ '------------------------------------------------\n'
 				+ 'Diese Nachricht wurde automatisch generiert.\n');
 			dummy0 python:['No Recipients',zmscontext.sendMail(mto, msubject, ''.join(mbody), request)][len(mto)>0];
-			dummy0 python:zmscontext.commitObj(request);
+			newcontext python:zmscontext.commitObj(request);
 			message python:'Aktuelle Ãnderungen wurden sofort publiziert%s'%([', ohne dass eine Nachricht versendet wurde.','.'][len(mto)>0]);
-			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
+			dummy0 python:request.RESPONSE.redirect(here.url_append_params('%s/manage_main'%newcontext.absolute_url(),{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
 	</tal:block>
 </tal:block>
 
@@ -462,7 +462,7 @@ mbody.append('Diese Nachricht wurde automatisch generiert.\n')
 zmscontext.sendMail(mto, msubject, ''.join(mbody), request)
 
 ##### Commit ####
-zmscontext.commitObj(request)
+newcontext = zmscontext.commitObj(request)
 message += 'Changes were committed'
 
 ##### Purge Cache ####
@@ -478,7 +478,7 @@ except:
 
 # Return with message
 message += 'Changes were committed.'
-return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransitionFinalize',{
+return request.RESPONSE.redirect(zmscontext.url_append_params('%s/manage_wfTransitionFinalize'%newcontext.absolute_url(),{
     'lang':request['lang'],
     'custom': request['custom'],
     'manage_tabs_message':message}))

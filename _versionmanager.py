@@ -1313,6 +1313,7 @@ class VersionManagerContainer:
     # --------------------------------------------------------------------------
     def commitObj(self, REQUEST={}, forced=False, do_history=True):
       standard.writeLog( self, "[commitObj]: forced=%s, do_history=%s"%(str(forced),str(do_history)))
+      zmscontext = self
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang',prim_lang)
       
@@ -1354,13 +1355,12 @@ class VersionManagerContainer:
         self.resetWfStates(REQUEST)
       parent = self.getParentNode()
       delete = self.commitObjChanges(parent,REQUEST,forced,do_history)
-      url = self.absolute_url()
       if delete: 
-        url = parent.absolute_url()
+        zmscontext = parent
       
-      # Return new URL.
+      # Return new context.
       standard.writeLog( self, "[commitObj]: Finished!")
-      return url
+      return zmscontext
 
 
     """
@@ -1374,18 +1374,18 @@ class VersionManagerContainer:
     # --------------------------------------------------------------------------
     def rollbackObj(self, REQUEST):
       standard.writeBlock( self, "[rollbackObj]")
-        
+      zmscontext = self
+      
       ##### Self ####
       if REQUEST.has_key('lang'): self.resetWfStates(REQUEST)
       parent = self.getParentNode()
       delete = self.rollbackObjChanges(parent,REQUEST)
-      url = self.absolute_url()
       if delete: 
-        url = parent.absolute_url()
+        zmscontext = parent
       
       standard.writeLog( self, "[rollbackObj]: Finished!")
-      # Return new URL.
-      return url
+      # Return new context.
+      return zmscontext
 
 
 # call this to initialize framework classes, which

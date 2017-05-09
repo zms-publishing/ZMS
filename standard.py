@@ -739,6 +739,7 @@ def getLog(context):
     request.set('ZMSLOG',zms_log)
   return zms_log
 
+security.declarePublic('writeStdout')
 def writeStdout(context, info):
   """
   Write to standard-out (only allowed for development-purposes!).

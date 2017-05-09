@@ -454,6 +454,8 @@ mto = zmscontext.getRecipientWf(request)
 msubject = '[ZMS::%s]: Änderungen wurden publiziert.'%zmscontext.getDocumentElement().getTitle(request)
 # Body
 mbody = []
+mbody.append('MANAGE: \t<%s/manage>\n'%(zmscontext.absolute_url()))
+mbody.append('PREVIEW: \t<%s/preview_html>\n'%(zmscontext.absolute_url()))
 mbody.append('INFO: Änderungen wurden publiziert von:\n')
 mbody.append('%s\r\n\n\n'%(str(request['AUTHENTICATED_USER'])))
 mbody.append('------------------------------------------------\n')
@@ -477,7 +479,6 @@ except:
   message += ', ERROR: No Cache Purging'
 
 # Return with message
-message += 'Changes were committed.'
 return request.RESPONSE.redirect(zmscontext.url_append_params('%s/manage_wfTransitionFinalize'%newcontext.absolute_url(),{
     'lang':request['lang'],
     'custom': request['custom'],
@@ -530,8 +531,10 @@ mto = zmscontext.getRecipientWf(request)
 msubject = '[ZMS::%s]: Änderungen wurden zurück gezogen'%zmscontext.getDocumentElement().getTitle(request)
 # Body
 mbody = []
+mbody.append('MANAGE: \t<%s/manage>\n'%(zmscontext.absolute_url()))
+mbody.append('PREVIEW: \t<%s/preview_html>\n'%(zmscontext.absolute_url()))
 mbody.append('INFO: Ihre Änderungen wurden rückgängig gemacht von\n\n')
-mbody.append('%s\r\n\n\n'%(str(request['AUTHENTICATED_USER']))
+mbody.append('%s\r\n\n\n'%(str(request['AUTHENTICATED_USER'])))
 mbody.append('------------------------------------------------\n')
 mbody.append('Diese Nachricht wurde automatisch generiert.\n')
 # Send notification via MailHost

@@ -162,7 +162,7 @@ class ZMSItem(
       physical_path = self.getPhysicalPath()
       path_to_handle = request['URL0'][len(request['BASE0']):].split('/')
       path = path_to_handle[:-1]
-      if len(filter(lambda x:x.find('.')>0 or x.startswith('manage_'),path))==0:
+      if self.getDocumentElement().id in path and len(filter(lambda x:x.find('.')>0 or x.startswith('manage_'),path))==0:
         for i in range(len(path)):
           if path[:-(i+1)] != physical_path[:-(i+1)]:
             path[:-(i+1)] = physical_path[:-(i+1)]

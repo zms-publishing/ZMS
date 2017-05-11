@@ -36,6 +36,15 @@ def nextObject(container, meta_type):
     container = container.aq_parent
   return container
 
+def getExternalMethodModuleName(container, id):
+  """
+  Add context-folder-id to module-name (to prevent deleting artefacts from other clients).
+  """
+  m = id
+  if int(container.content.getConfProperty('zopeutil.getExternalMethodModuleName.addContextFolderId',True)):
+    m = '%s.%s'%(absattr(nextObject(container,'Folder').id),m)
+  return m
+
 security.declarePublic('addObject')
 def addObject(container, meta_type, id, title, data):
   """
@@ -130,11 +139,11 @@ def removeObject(container, id, removeFile=True):
   if id in container.objectIds():
     ob = getattr(container,id)
     if ob.meta_type == 'External Method' and removeFile:
-      m = '%s.%s'%(absattr(nextObject(container,'Folder').id),id)
+      m = getExternalMethodModuleName(container, id)
       filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
       if os.path.exists(filepath):
         os.remove(filepath)
-    container.manage_delObjects( ids=[ id])
+    container.manage_delObjects(ids=[id])
 
 security.declarePublic('initPermissions')
 def initPermissions(container, id):
@@ -173,7 +182,7 @@ def addExternalMethod(container, id, title, data):
   """
   Add External Method to container.
   """
-  m = '%s.%s'%(absattr(nextObject(container,'Folder').id),id)
+  m = getExternalMethodModuleName(container, id)
   f = id
   if data != '':
     filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'

@@ -68,37 +68,6 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
           return '#'
       artefact = MissingArtefactProxy(attr['id'],attr['type'])
     if artefact is not None:
-      """
-      @TODO: find a better solution...
-      
-      mtime = artefact.bobobase_modification_time().timeTime()
-      #-- [ReqBuff]: Fetch buffered value from Http-Request.
-      reqBuffId = 'syncZopeMetaobjAttr.%s.%s'%(id,attr_id)
-      try: self.fetchReqBuff(reqBuffId)
-      except:
-        #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
-        self.storeReqBuff(reqBuffId,True)
-        # Execute once.
-        ptime = attr.get('mtime')
-        if ptime is None or ptime<mtime:
-          self.writeBlock("[syncZopeMetaobjAttr]: %s.%s - %s<%s"%(id,attr_id,str(ptime),str(mtime)))
-          self.clearReqBuff('ZMSMetaobjManager')
-          # Remember modification-time.
-          for a in self.model[id]['attrs']:
-            if a['id']==attr_id:
-              a['mtime'] = mtime
-          # Increase version-number.
-          if ptime is not None and ptime<mtime:
-            old_revision = self.model[id].get('revision','')
-            new_revision = IZMSRepositoryProvider.increaseVersion(old_revision,2)
-            self.writeBlock("[syncZopeMetaobjAttr]: %s.%s - %s->%s"%(id,attr_id,str(old_revision),str(new_revision)))
-            self.model[id]['revision'] = new_revision
-          # Make persistent.
-          self.model = self.model.copy()
-          # Sync with repository.
-          self.getRepositoryManager().exec_auto_commit(self,id)
-      attr['mtime'] = mtime
-      """
       attr['ob'] = artefact
   except:
     standard.writeError(self,"[syncZopeMetaobjAttr]: %s.%s"%(id,attr_id))
@@ -932,20 +901,16 @@ class ZMSMetaobjManager:
       for attr in attrs:
         if attr['id'] == attr_id:
           if id+'.'+attr['id'] in self.objectIds():
-            self.manage_delObjects(ids=[id+'.'+attr['id']])
+            ob_id = id+'.'+attr['id']
+            zopeutil.removeObject(container, ob_id, removeFile=True)
           if attr['type'] in self.valid_zopetypes:
             # Get container.
             container = self.getHome()
-            for ob_id in attr['id'].split('/')[:-1]:
+            ids = attr['id'].split('/')
+            for ob_id in ids[:-1]:
               container = getattr( container, ob_id)
-            ob_id = attr['id'].split('/')[-1]
-            if ob_id in container.objectIds([attr['type']]):
-              container.manage_delObjects(ids=[ob_id])
-            if attr['type'] == 'External Method':
-              try:
-                _fileutil.remove( INSTANCE_HOME+'/Extensions/'+ob_id+'.py')
-              except:
-                pass
+            ob_id = ids[-1]
+            zopeutil.removeObject(container, ob_id, removeFile=True)
         else:
           cp.append(attr)
       ob['attrs'] = cp

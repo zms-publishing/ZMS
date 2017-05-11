@@ -47,15 +47,15 @@
 }
 .filterProcessFile {
 	text-align:left;
-	background-color:white;
+	background-color:#ffffdd;
 	border:1px #CCC solid;
-	border-radius:5px;
+	border-radius:4px;
 	font-weight:normal;
 	padding: 4px 1em;
-	min-width: 10em;
-	max-width:20em;
-	min-width:10em;
+	width: 10em;
 	overflow:hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .layoutTable th, .layoutTable td {
 	padding:0;
@@ -127,7 +127,7 @@
 								<tal:block tal:condition="python:filterProcess.get('file_filename')">
 									<td><hr style="margin:1em 0;width:120px;border-top:1px solid #888;padding:0;" /></td>
 									<td><div class="filterProcessFile">
-										<a tal:attributes="href filterProcess/file_href; title python:filterProcess['file_content_type']" target="_blank">
+										<a tal:attributes="href filterProcess/file_href; title python:'%s (%s)'%(filterProcess['file_file_filename'], filterProcess['file_content_type'])" target="_blank">
 											<img tal:attributes="src python:here.getMimeTypeIconSrc(filterProcess['file_content_type']); alt filterProcess/file_filename"/>
 											<tal:block tal:content="filterProcess/file_filename"></tal:block>
 										</a>

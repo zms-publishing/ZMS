@@ -1971,11 +1971,11 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
         filename = 'unknown'
         filetype = 'attachment'
         fileextn = 'dat'
-        metadata = standard.re_search('(^.*[;,])', filedata)
+        metadata = re_search('(^.*[;,])', filedata)
         # extract filename, mimetype and encoding if available
         if (type(metadata)==list and len(metadata)==1):          
-          mimetype = standard.re_search('data:([^;,]+[;,][^;,]*)', metadata[0])
-          filename = standard.re_search('filename:([^;,]+)', metadata[0])
+          mimetype = re_search('data:([^;,]+[;,][^;,]*)', metadata[0])
+          filename = re_search('filename:([^;,]+)', metadata[0])
           filedata = filedata.replace(metadata[0], '')           
         if (type(mimetype)==list and len(mimetype)==1): 
           mimetype = mimetype[0].split(';')

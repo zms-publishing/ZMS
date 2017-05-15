@@ -459,7 +459,7 @@ $ZMI.registerReady(function(){
 								<tal:block tal:condition="python:filterProcess.get('file_filename')">
 									<td><hr style="margin:1em 0;width:120px;border-top:1px solid #888;padding:0;" /></td>
 									<td><div class="filterProcessFile">
-										<a tal:attributes="href filterProcess/file_href; title python:'%s (%s)'%(filterProcess['file_file_filename'], filterProcess['file_content_type'])" target="_blank">
+										<a tal:attributes="href filterProcess/file_href; title python:'%s (%s)'%(filterProcess['file_filename'], filterProcess['file_content_type'])" target="_blank">
 											<img tal:attributes="src python:here.getMimeTypeIconSrc(filterProcess['file_content_type']); alt filterProcess/file_filename"/>
 											<tal:block tal:content="filterProcess/file_filename"></tal:block>
 										</a>

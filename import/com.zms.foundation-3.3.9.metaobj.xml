@@ -1166,8 +1166,9 @@ return context.getTextFormatDefault()]]>
 ##
 # --// BO titlealt //--
 
+from Products.zms import standard
 try:
-    titlealt = zmscontext.attr('text')
+    titlealt = standard.string_maxlen(zmscontext.attr('text'),24)
     img = zmscontext.attr('img')
     if titlealt:
         if len(titlealt) < 24:

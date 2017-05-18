@@ -671,18 +671,18 @@ class MyBlob:
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyBlob.setMediadbfile: 
+    MyBlob.on_setobjattr: 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def storeMediadbfile(self):
-      """
-      Store data in media-db.
-      """
+    def on_setobjattr(self):
+      # store data in media-db.
       parent = self.aq_parent
       if parent is not None:
         mediadb = parent.getMediaDb()
         if mediadb is not None:
           self.mediadbfile = mediadb.storeFile( self)
           self.data = ''
+      # unset parent to avoid TypeError: Can't pickle objects in acquisition wrappers.
+      self.aq_parent = None
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlob.getMediadbfile: 

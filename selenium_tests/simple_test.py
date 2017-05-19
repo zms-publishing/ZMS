@@ -99,7 +99,7 @@ class EditDocTest(example_test.SeleniumTestCase):
         # wait until deleted
         self._find_element(By.CSS_SELECTOR, '.alert-success')
        
-        time.sleep(5)
+        time.sleep(1)
         print "Done"
 
 

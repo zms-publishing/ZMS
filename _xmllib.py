@@ -17,11 +17,7 @@
 ################################################################################
 
 # Imports.
-from App.Common import package_home
-from OFS.Image import File
 from cStringIO import StringIO
-import xml.dom
-import Globals
 import copy
 import os
 import pyexpat
@@ -29,15 +25,21 @@ import re
 import tempfile
 import time
 import unicodedata
-# Product Imports.
-import standard
-import zopeutil
-from _objattrs import *
+import xml.dom
+
+from App.Common import package_home
+import Globals
+from OFS.Image import File
+
 import _blobfields
 import _fileutil
 import _globals
+from _objattrs import *
+import standard
+import zopeutil
 
 
+# Product Imports.
 INDENTSTR = '  '
 
 
@@ -57,7 +59,7 @@ def serialize(node):
   if node.nodeType == node.ELEMENT_NODE:
     xml += '<' + node.nodeName
     for attribute in node.attributes.keys():
-      xml += ' '+attribute+'="'+node.attributes[attribute].value+'"'
+      xml += ' ' + attribute + '="' + node.attributes[attribute].value + '"'
     xml += '>'
     for childNode in node.childNodes:
       xml += serialize(childNode)
@@ -70,7 +72,7 @@ def serialize(node):
 # ------------------------------------------------------------------------------
 def getText(nodelist, encoding='utf-8'):
   rc = []
-  if not isinstance(nodelist,list):
+  if not isinstance(nodelist, list):
     nodelist = [nodelist]
   for node in nodelist:
     for childNode in node.childNodes:
@@ -108,9 +110,9 @@ def getXmlType(v):
     t = ' type="list"'
   elif type(v) is tuple or type(v) is time.struct_time:
     t = ' type="datetime"'
-  elif isinstance(v,_blobfields.MyImage):
+  elif isinstance(v, _blobfields.MyImage):
     t = ' type="image"'
-  elif isinstance(v,_blobfields.MyFile):
+  elif isinstance(v, _blobfields.MyFile):
     t = ' type="file"'
   return t
 
@@ -126,17 +128,17 @@ def getXmlTypeSaveValue(v, attrs):
     while len(v) > 0 and v[-1] <= ' ':
       v = v[:-1]
   # Type.
-  t = attrs.get( 'type', '?')
+  t = attrs.get('type', '?')
   if t == 'float':
     try:
       v = float(v)
     except:
-      standard.writeError(self,"[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!"%(t,str(v)))
+      standard.writeError(self, "[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!" % (t, str(v)))
   elif t == 'int':
     try:
       v = int(v)
     except:
-      standard.writeError(self,"[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!"%(t,str(v)))
+      standard.writeError(self, "[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!" % (t, str(v)))
   elif t == 'datetime':
     new = standard.parseLangFmtDate(v)
     if new is not None:
@@ -157,7 +159,7 @@ def getXmlTypeSaveValue(v, attrs):
 #  _xmllib.xml_header:
 # ------------------------------------------------------------------------------
 def xml_header(encoding='utf-8'):
-  return '<?xml version="1.0" encoding="%s"?>\n'%encoding
+  return '<?xml version="1.0" encoding="%s"?>\n' % encoding
 
 
 """
@@ -175,37 +177,37 @@ def xml_header(encoding='utf-8'):
 # ------------------------------------------------------------------------------
 def xmlInitObjProperty(self, key, value, lang=None):
   
-  #-- DEFINITION
+  # -- DEFINITION
   obj_attr = self.getObjAttr(key)
   
-  #-- ATTR
-  attr = self.getObjAttrName(obj_attr,lang)
+  # -- ATTR
+  attr = self.getObjAttrName(obj_attr, lang)
   
-  #-- DATATYPE
+  # -- DATATYPE
   datatype = obj_attr['datatype_key']
   
   if value is not None:
     if type(value) is str:
       value = value.strip()
-    #-- Date-Fields
+    # -- Date-Fields
     if datatype in _globals.DT_DATETIMES:
       if type(value) is str and len(value) > 0:
         value = self.parseLangFmtDate(value)
-    #-- Integer-Fields
+    # -- Integer-Fields
     elif datatype in _globals.DT_INTS:
       if type(value) is str and len(value) > 0:
         value = int(value)
-    #-- Float-Fields
+    # -- Float-Fields
     elif datatype == _globals.DT_FLOAT:
       if type(value) is str and len(value) > 0:
         value = float(value)
-    #-- String-Fields
+    # -- String-Fields
     elif datatype in _globals.DT_STRINGS:
       value = str(value)
   
-  #-- INIT
+  # -- INIT
   for ob in self.objectValues(['ZMSAttributeContainer']):
-    setattr(ob,attr,value)
+    setattr(ob, attr, value)
 
 
 # ------------------------------------------------------------------------------
@@ -213,13 +215,13 @@ def xmlInitObjProperty(self, key, value, lang=None):
 # ------------------------------------------------------------------------------
 def xmlOnCharacterData(self, sData, bInCData):
 
-  #-- TAG-STACK
+  # -- TAG-STACK
   if self.dTagStack.size() > 0:
     tag = self.dTagStack.pop()
     tag['cdata'] += sData
     self.dTagStack.push(tag)
 
-  #-- Return
+  # -- Return
   return 1  # accept any character data
 
 
@@ -228,44 +230,44 @@ def xmlOnCharacterData(self, sData, bInCData):
 # ------------------------------------------------------------------------------
 def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
   
-  #-- TAG-STACK
-  tag = {'name':sTagName,'attrs':dTagAttrs,'cdata':''}
+  # -- TAG-STACK
+  tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
   tag['dValueStack'] = self.dValueStack.size()
   self.dTagStack.push(tag)
   
-  #-- VALUE-STACK
+  # -- VALUE-STACK
   
-  #-- ITEM (DICTIONARY|LIST) --
+  # -- ITEM (DICTIONARY|LIST) --
   #----------------------------
-  if sTagName in ['dict','dictionary']:
+  if sTagName in ['dict', 'dictionary']:
     self.dValueStack.push({})
   elif sTagName == 'list':
     self.dValueStack.push([])
   elif sTagName == 'item':
     pass
   
-  #-- DATA (IMAGE|FILE) --
+  # -- DATA (IMAGE|FILE) --
   #-----------------------
-  elif sTagName=='data':
+  elif sTagName == 'data':
     pass
   
-  #-- LANGUAGE --
+  # -- LANGUAGE --
   #--------------
   elif sTagName == 'lang':
-    if self.dValueStack.size()==0:
+    if self.dValueStack.size() == 0:
       self.dValueStack.push({})
   
-  #-- OBJECT-ATTRIBUTES --
+  # -- OBJECT-ATTRIBUTES --
   #-----------------------
   elif sTagName in self.getObjAttrs().keys():
     pass
   
-  #-- OTHERS --
+  # -- OTHERS --
   #------------
   else:
     tag['skip'] = True
   
-  #-- Return
+  # -- Return
   return 1  # accept any unknown tag
 
 
@@ -274,18 +276,18 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
 # ------------------------------------------------------------------------------
 def xmlOnUnknownEndTag(self, sTagName):
   
-  #-- TAG-STACK
-  skip = len(filter(lambda x:x.get('skip'),self.dTagStack.get_all())) > 0
+  # -- TAG-STACK
+  skip = len(filter(lambda x:x.get('skip'), self.dTagStack.get_all())) > 0
   tag = self.dTagStack.pop()
   name = tag['name']
   if name != sTagName: return 0  # don't accept any unknown tag
   
-  attrs = standard.unencode( tag['attrs'])
-  cdata = standard.unencode( tag['cdata'])
+  attrs = standard.unencode(tag['attrs'])
+  cdata = standard.unencode(tag['cdata'])
   
-  #-- ITEM (DICTIONARY|LIST) --
+  # -- ITEM (DICTIONARY|LIST) --
   #----------------------------
-  if sTagName in ['dict','dictionary']:
+  if sTagName in ['dict', 'dictionary']:
     pass
   elif sTagName == 'list':
     pass
@@ -295,22 +297,22 @@ def xmlOnUnknownEndTag(self, sTagName):
       item = self.dValueStack.pop()
     else:
       item = cdata
-    item = getXmlTypeSaveValue(item,attrs)
+    item = getXmlTypeSaveValue(item, attrs)
     value = self.dValueStack.pop()
     if type(value) is dict:
-      key = attrs.get( 'key')
+      key = attrs.get('key')
       value[key] = item
     if type(value) is list:
       value.append(item)
     self.dValueStack.push(value)
   
-  #-- DATA (IMAGE|FILE) --
+  # -- DATA (IMAGE|FILE) --
   #-----------------------
-  elif sTagName=='data':
+  elif sTagName == 'data':
     value = attrs
-    if cdata is not None and len( cdata) > 0:
-      filename = attrs.get( 'filename')
-      content_type = attrs.get( 'content_type')
+    if cdata is not None and len(cdata) > 0:
+      filename = attrs.get('filename')
+      content_type = attrs.get('content_type')
       if content_type.find('text/') == 0:
         data = cdata
       else:
@@ -318,11 +320,11 @@ def xmlOnUnknownEndTag(self, sTagName):
       value['data'] = data
     self.dValueStack.push(value)
   
-  #-- LANGUAGE --
+  # -- LANGUAGE --
   #--------------
-  elif sTagName=='lang':
-    lang = attrs.get( 'id', self.getPrimaryLanguage())
-    if self.dValueStack.size()==1:
+  elif sTagName == 'lang':
+    lang = attrs.get('id', self.getPrimaryLanguage())
+    if self.dValueStack.size() == 1:
       item = cdata
     else:
       item = self.dValueStack.pop()
@@ -330,16 +332,16 @@ def xmlOnUnknownEndTag(self, sTagName):
     values[lang] = item
     self.dValueStack.push(values)
   
-  #-- OBJECT-ATTRIBUTES --
+  # -- OBJECT-ATTRIBUTES --
   #-----------------------
   elif sTagName in self.getObjAttrs().keys():
     if not skip:
       obj_attr = self.getObjAttr(sTagName)
       
-      #-- DATATYPE
+      # -- DATATYPE
       datatype = obj_attr['datatype_key']
       
-      #-- Multi-Language Attributes.
+      # -- Multi-Language Attributes.
       if obj_attr['multilang']:
         item = self.dValueStack.pop()
         if item is not None:
@@ -350,96 +352,96 @@ def xmlOnUnknownEndTag(self, sTagName):
             # Data
             if datatype in _globals.DT_BLOBS:
               if type(value) is dict and len(value.keys()) > 0:
-                ob = _blobfields.createBlobField(self,datatype)
+                ob = _blobfields.createBlobField(self, datatype)
                 for key in value.keys():
-                  setattr(ob,key,value[key])
-                xmlInitObjProperty(self,sTagName,ob,s_lang)
+                  setattr(ob, key, value[key])
+                xmlInitObjProperty(self, sTagName, ob, s_lang)
             # Others
             else:
-              #-- Init Properties.
-              self.setObjProperty('change_uid','xml',s_lang)
-              self.setObjProperty('change_dt',time.time(),s_lang)
-              xmlInitObjProperty(self,sTagName,value,s_lang)
+              # -- Init Properties.
+              self.setObjProperty('change_uid', 'xml', s_lang)
+              self.setObjProperty('change_dt', time.time(), s_lang)
+              xmlInitObjProperty(self, sTagName, value, s_lang)
       
       else:
-        #-- Complex Attributes (Blob|Dictionary|List).
+        # -- Complex Attributes (Blob|Dictionary|List).
         value = None
         if self.dValueStack.size() > 0:
           value = self.dValueStack.pop()
         if value is not None and \
-           ( datatype in _globals.DT_BLOBS or \
+           (datatype in _globals.DT_BLOBS or \
              datatype == _globals.DT_LIST or \
              datatype == _globals.DT_DICT):
           # Data
           if datatype in _globals.DT_BLOBS:
             if type(value) is dict and len(value.keys()) > 0:
-              ob = _blobfields.createBlobField(self,datatype)
+              ob = _blobfields.createBlobField(self, datatype)
               for key in value.keys():
-                setattr(ob,key,value[key])
-              xmlInitObjProperty(self,sTagName,ob)
+                setattr(ob, key, value[key])
+              xmlInitObjProperty(self, sTagName, ob)
           # Others
           else:
             if self.getType() == 'ZMSRecordSet':
-              if type( value) is list:
+              if type(value) is list:
                 for item in value:
-                  if type( item) is dict:
+                  if type(item) is dict:
                     for key in item.keys():
-                      item_obj_attr = self.getObjAttr( key)
+                      item_obj_attr = self.getObjAttr(key)
                       item_datatype = item_obj_attr['datatype_key']
                       if item_datatype in _globals.DT_BLOBS:
                         item_data = item[ key]
-                        if type( item_data) is dict:
-                          blob = _blobfields.createBlobField( self, item_datatype, item_data)
+                        if type(item_data) is dict:
+                          blob = _blobfields.createBlobField(self, item_datatype, item_data)
                           item[ key] = blob
-            #-- Convert multilingual to monolingual attributes.
-            if obj_attr['multilang']==0 and \
+            # -- Convert multilingual to monolingual attributes.
+            if obj_attr['multilang'] == 0 and \
                type(value) is dict and \
                len(value.keys()) == 1 and \
                value.keys()[0] == self.getPrimaryLanguage():
               value = value[value.keys()[0]]
-            xmlInitObjProperty(self,sTagName,value)
+            xmlInitObjProperty(self, sTagName, value)
           if self.dValueStack.size() > 0:
-            raise "Items on self.dValueStack=%s"%self.dValueStack
+            raise "Items on self.dValueStack=%s" % self.dValueStack
         
-        #-- Simple Attributes (String, Integer, etc.)
+        # -- Simple Attributes (String, Integer, etc.)
         else:
           if value is not None:
-            standard.writeBlock( self, "[xmlOnUnknownEndTag]: WARNING - Skip %s=%s"%(sTagName,str(value)))
+            standard.writeBlock(self, "[xmlOnUnknownEndTag]: WARNING - Skip %s=%s" % (sTagName, str(value)))
           value = cdata
-          #-- OPTIONS
+          # -- OPTIONS
           if obj_attr.has_key('options'):
             options = obj_attr['options']
             if type(options) is list:
               try:
                 i = options.index(int(value))
-                if i%2==1: value = options[i-1]
+                if i % 2 == 1: value = options[i - 1]
               except:
                 try: 
                   i = options.index(str(value))
-                  if i%2==1: value = options[i-1]
+                  if i % 2 == 1: value = options[i - 1]
                 except:
                   pass
-          xmlInitObjProperty(self,sTagName,value)
+          xmlInitObjProperty(self, sTagName, value)
       
       # Clear value stack.
       self.dValueStack.clear()
       
-  #-- OTHERS --
+  # -- OTHERS --
   #------------
   else:
     value = self.dTagStack.pop()
     if value is None: value = {'cdata':''}
-    cdata = value.get('cdata','')
+    cdata = value.get('cdata', '')
     cdata += '<' + tag['name'] 
     for attr_name in attrs.keys():
-      attr_value = attrs.get( attr_name)
+      attr_value = attrs.get(attr_name)
       cdata += ' ' + attr_name + '="' + attr_value + '"'
     cdata += '>' + tag['cdata'] 
     cdata += '</' + tag['name'] + '>'
     value['cdata'] = cdata
     self.dTagStack.push(value)
   
-  return 1 # accept matching end tag
+  return 1  # accept matching end tag
 
 
 """
@@ -460,7 +462,7 @@ def toCdata(self, s, xhtml=0):
   from _filtermanager import processCommand
   processId = 'tidy'
   if xhtml == 0 \
-     and self.getConfProperty('ZMS.export.xml.tidy',0) \
+     and self.getConfProperty('ZMS.export.xml.tidy', 0) \
      and processId in self.getProcessIds():
 
     # Create temporary folder.
@@ -468,29 +470,29 @@ def toCdata(self, s, xhtml=0):
     os.mkdir(folder)
 
     # Save <HTML> to file.
-    filename = _fileutil.getOSPath('%s/xhtml.html'%folder)
+    filename = _fileutil.getOSPath('%s/xhtml.html' % folder)
     _fileutil.exportObj(s, filename)
 
     # Call <HTML>Tidy
     processOb = self.getProcess(processId)
     command = processOb.get('command')
     if command.find('{trans}') >= 0:
-      trans = _fileutil.getOSPath(package_home(globals())+'/conf/xsl/tidy.html2xhtml.conf')
-      command = command.replace('{trans}',trans)
+      trans = _fileutil.getOSPath(package_home(globals()) + '/conf/xsl/tidy.html2xhtml.conf')
+      command = command.replace('{trans}', trans)
     filename = processCommand(self, filename, command)
 
     # Read <XHTML> from file.
-    f = open(htmfilename,'rb')
+    f = open(htmfilename, 'rb')
     rtn = f.read().strip()
     f.close()
     
     # Read Error-Log from file.
-    f = open(logfilename,'rb')
+    f = open(logfilename, 'rb')
     log = f.read().strip()
     f.close()
 
     # Remove temporary files.
-    _fileutil.remove(folder,deep=1)
+    _fileutil.remove(folder, deep=1)
 
     # Process <XHTML>.
     prefix = '<p>'
@@ -514,10 +516,10 @@ def toCdata(self, s, xhtml=0):
   # Return Text in CDATA.
   elif s is not None:
     # Hack for invalid characters
-    s = s.replace(chr(30),'')
+    s = s.replace(chr(30), '')
     # Hack for nested CDATA
-    s = re.compile( '\<\!\[CDATA\[(.*?)\]\]\>').sub( '<!{CDATA{\\1}}>', s)
-    rtn = '<![CDATA[%s]]>'%s
+    s = re.compile('\<\!\[CDATA\[(.*?)\]\]\>').sub('<!{CDATA{\\1}}>', s)
+    rtn = '<![CDATA[%s]]>' % s
 
   # Return.
   return rtn
@@ -533,86 +535,89 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
     if type(s) is not unicode:
       s = str(s)
     else:
-      s = str(unicodedata.normalize('NFKD', s).encode('ascii','ignore').decode('utf-8'))
+      try:
+        s = str(s.encode('utf-8'))
+      except:
+        s = str(unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode('utf-8'))
     return s
   
   if value is not None:
     
     # Image
-    if isinstance(value,_blobfields.MyImage):
-      xml.append( '\n'+indentlevel*INDENTSTR+value.toXml( self))
+    if isinstance(value, _blobfields.MyImage):
+      xml.append('\n' + indentlevel * INDENTSTR + value.toXml(self))
     
     # File
-    elif isinstance(value,_blobfields.MyFile):
-      xml.append( '\n'+indentlevel*INDENTSTR+value.toXml( self))
+    elif isinstance(value, _blobfields.MyFile):
+      xml.append('\n' + indentlevel * INDENTSTR + value.toXml(self))
     
     # File (Zope-native)
-    elif isinstance(value,File):
+    elif isinstance(value, File):
       tagname = 'data'
-      xml.append( '\n'+indentlevel*INDENTSTR)
-      xml.append( '<%s'%tagname)
-      xml.append( ' content_type="%s"'%value.content_type)
-      xml.append( ' filename="%s"'%value.title)
-      xml.append( ' type="file"')
-      xml.append( '>')
-      if value.content_type.find( 'text/') == 0:
-        xml.append( '<![CDATA[%s]]>'%str(value.data))
+      xml.append('\n' + indentlevel * INDENTSTR)
+      xml.append('<%s' % tagname)
+      xml.append(' content_type="%s"' % value.content_type)
+      xml.append(' filename="%s"' % value.title)
+      xml.append(' type="file"')
+      xml.append('>')
+      if value.content_type.find('text/') == 0:
+        xml.append('<![CDATA[%s]]>' % str(value.data))
       else:
-        xml.append( standard.bin2hex(str(value.data)))
-      xml.append( '</%s>'%tagname)
+        xml.append(standard.bin2hex(str(value.data)))
+      xml.append('</%s>' % tagname)
     
     # Dictionaries
     elif type(value) is dict:
       keys = value.keys()
       keys.sort()
-      xml.append( '\n'+indentlevel*INDENTSTR)
+      xml.append('\n' + indentlevel * INDENTSTR)
       xml.append('<dictionary>')
-      indentstr = '\n'+(indentlevel+1)*INDENTSTR
+      indentstr = '\n' + (indentlevel + 1) * INDENTSTR
       for x in keys:
-        k = ' key="%s"'%x
+        k = ' key="%s"' % x
         xv = value[x]
         tv = getXmlType(xv)
-        sv = toXml(self,xv,indentlevel+2,xhtml,encoding)
+        sv = toXml(self, xv, indentlevel + 2, xhtml, encoding)
         xml.append(indentstr)
-        xml.append('<item%s%s>'%(k,tv))
+        xml.append('<item%s%s>' % (k, tv))
         xml.append(sv)
         if sv.find('\n') >= 0:
           xml.append(indentstr)
         xml.append('</item>')
-      xml.append( '\n'+indentlevel*INDENTSTR)
+      xml.append('\n' + indentlevel * INDENTSTR)
       xml.append('</dictionary>')
     
     # Lists
     elif type(value) is list:
-      xml.append( '\n'+indentlevel*INDENTSTR)
+      xml.append('\n' + indentlevel * INDENTSTR)
       xml.append('<list>')
-      indentstr = '\n'+(indentlevel+1)*INDENTSTR
+      indentstr = '\n' + (indentlevel + 1) * INDENTSTR
       for xv in value:
         k = ''
         tv = getXmlType(xv)
-        sv = toXml(self,xv,indentlevel+2,xhtml,encoding)
+        sv = toXml(self, xv, indentlevel + 2, xhtml, encoding)
         xml.append(indentstr)
-        xml.append('<item%s%s>'%(k,tv))
+        xml.append('<item%s%s>' % (k, tv))
         xml.append(sv)
         if sv.startswith('\n'):
           xml.append(indentstr)
         xml.append('</item>')
-      xml.append( '\n'+indentlevel*INDENTSTR)
+      xml.append('\n' + indentlevel * INDENTSTR)
       xml.append('</list>')
       
     # Tuples (DateTime)
     elif type(value) is tuple or type(value) is time.struct_time:
       try:
-        s_value = self.getLangFmtDate(value,'eng','DATETIME_FMT')
+        s_value = self.getLangFmtDate(value, 'eng', 'DATETIME_FMT')
         if len(s_value) > 0:
-          xml.append( '\n'+indentlevel*INDENTSTR)
-          xml.append(toCdata(self,s_value,-1))
+          xml.append('\n' + indentlevel * INDENTSTR)
+          xml.append(toCdata(self, s_value, -1))
       except:
         pass
     
     # Numbers
     elif type(value) is int or type(value) is float:
-      xml.append(unistr(value))
+      xml.append(str(value))
     
     else:
       # Zope-Objects
@@ -622,10 +627,10 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
         value = zopeutil.readData(value)
       s_value = unistr(value)
       if len(s_value) > 0:
-        xml.append(toCdata(self,s_value,xhtml))
+        xml.append(toCdata(self, s_value, xhtml))
   
   # Return xml.
-  return ''.join(map(lambda x: unistr(x),xml))
+  return ''.join(map(lambda x: unistr(x), xml))
 
 
 # ------------------------------------------------------------------------------
@@ -634,12 +639,12 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
 def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
   xml = ''
   
-  #-- DATATYPE
+  # -- DATATYPE
   datatype = obj_attr['datatype_key']
   
-  #-- VALUE
+  # -- VALUE
   obj_vers = self.getObjVersion(REQUEST)
-  value = self._getObjAttrValue(obj_attr,obj_vers,REQUEST.get('lang',self.getPrimaryLanguage()))
+  value = self._getObjAttrValue(obj_attr, obj_vers, REQUEST.get('lang', self.getPrimaryLanguage()))
   
   if value is not None:
     
@@ -648,27 +653,27 @@ def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
       options = obj_attr['options']
       try:
         i = options.index(int(value))
-        if i%2==0: value = options[i+1]
+        if i % 2 == 0: value = options[i + 1]
       except:
         try:
           i = options.index(str(value))
-          if i%2==0: value = options[i+1]
+          if i % 2 == 0: value = options[i + 1]
         except:
           pass
     
     # Objects.
     if datatype in _globals.DT_BLOBS:
-      xml += value.toXml( self, base_path, data2hex)
+      xml += value.toXml(self, base_path, data2hex)
     
     # XML.
     elif datatype == _globals.DT_XML or \
          datatype == _globals.DT_BOOLEAN or \
          datatype in _globals.DT_NUMBERS:
-      xml += toXml( self, value, -1)
+      xml += toXml(self, value, -1)
 
     # Others.
     else:
-      xml += toXml(self,value)
+      xml += toXml(self, value)
     
   # Return xml.
   return xml
@@ -684,15 +689,15 @@ def getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST):
     lang = REQUEST.get('lang')
     langIds = self.getLangIds()
     for langId in langIds:
-      REQUEST.set('lang',langId)
-      s_attr_xml = getAttrToXml( self, base_path, data2hex, obj_attr, REQUEST)
+      REQUEST.set('lang', langId)
+      s_attr_xml = getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST)
       if len(s_attr_xml) > 0:
-        xml += '\n<lang id="%s"'%langId
-        xml += '>%s</lang>'%s_attr_xml
-    REQUEST.set('lang',lang)
+        xml += '\n<lang id="%s"' % langId
+        xml += '>%s</lang>' % s_attr_xml
+    REQUEST.set('lang', lang)
   # Simple Attributes.
   else:
-    xml += getAttrToXml( self, base_path, data2hex, obj_attr, REQUEST)
+    xml += getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST)
   # Return xml.
   return xml
 
@@ -702,40 +707,40 @@ def getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST):
 # ------------------------------------------------------------------------------
 def getObjToXml(self, REQUEST, incl_embedded=False, deep=True, base_path='', data2hex=False):
   # Check Constraints.
-  root = getattr( self, '__root__', None)
+  root = getattr(self, '__root__', None)
   if root is not None:
     return ''
   ob = self
-  if incl_embedded and ob.meta_type == 'ZMSLinkElement' and ob.isEmbedded( REQUEST) and ob.getRefObj():
+  if incl_embedded and ob.meta_type == 'ZMSLinkElement' and ob.isEmbedded(REQUEST) and ob.getRefObj():
     ob = ob.getRefObj()
   xml = []
   # Start tag.
-  xml.append('<%s'%ob.meta_id)
-  xml.append(' uid="%s"'%ob.get_uid())
+  xml.append('<%s' % ob.meta_id)
+  xml.append(' uid="%s"' % ob.get_uid())
   id = self.id 
   prefix = standard.id_prefix(id)
   if id == prefix:
-    xml.append(' id_fix="%s"'%id)
+    xml.append(' id_fix="%s"' % id)
   else:
-    xml.append(' id="%s"'%id)
+    xml.append(' id="%s"' % id)
   if ob.getParentNode() is not None and ob.getParentNode().meta_type == 'ZMSCustom':
-    xml.append('\n id_prefix="%s"'%standard.id_prefix(ob.id))
+    xml.append('\n id_prefix="%s"' % standard.id_prefix(ob.id))
   xml.append('>')
   # Attributes.
   keys = ob.getObjAttrs().keys()
-  if ob.getType()=='ZMSRecordSet':
-    keys = ['active',ob.getMetaobjAttrIds(ob.meta_id)[0]]
+  if ob.getType() == 'ZMSRecordSet':
+    keys = ['active', ob.getMetaobjAttrIds(ob.meta_id)[0]]
   for key in keys:
     obj_attr = ob.getObjAttr(key)
     if obj_attr['xml']:
-      ob_prop = getObjPropertyToXml( ob, base_path, data2hex, obj_attr, REQUEST)
+      ob_prop = getObjPropertyToXml(ob, base_path, data2hex, obj_attr, REQUEST)
       if len(ob_prop) > 0:
-        xml.append('\n<%s>%s</%s>'%(key,ob_prop,key))
+        xml.append('\n<%s>%s</%s>' % (key, ob_prop, key))
   # Process children.
   if deep:
-    xml.extend(map(lambda x: getObjToXml( x, REQUEST, incl_embedded, deep, base_path+x.id+'/', data2hex), ob.getChildNodes()))
+    xml.extend(map(lambda x: getObjToXml(x, REQUEST, incl_embedded, deep, base_path + x.id + '/', data2hex), ob.getChildNodes()))
   # End tag.
-  xml.append('</%s>\n'%ob.meta_id)
+  xml.append('</%s>\n' % ob.meta_id)
   # Return xml.
   return ''.join(xml)
 
@@ -763,7 +768,7 @@ class XmlAttrBuilder:
     "class XmlAttrBuilder"
 
     ######## class variables ########
-    iBufferSize=1028 * 32   # buffer size for XML file parsing
+    iBufferSize = 1028 * 32  # buffer size for XML file parsing
 
     ############################################################################
     # XmlAttrBuilder.__init__(self):
@@ -788,8 +793,8 @@ class XmlAttrBuilder:
       """ XmlAttrBuilder.parse """
       
       # prepare builder
-      self.dValueStack     = _globals.MyStack()
-      self.dTagStack       = _globals.MyStack()
+      self.dValueStack = _globals.MyStack()
+      self.dTagStack = _globals.MyStack()
       
       # create parser object
       p = pyexpat.ParserCreate()
@@ -813,8 +818,8 @@ class XmlAttrBuilder:
         # input is a file object!
         while True:
           
-          v=input.read(self.iBufferSize)
-          if v=="":
+          v = input.read(self.iBufferSize)
+          if v == "":
             rv = 1
             break
           
@@ -845,12 +850,12 @@ class XmlAttrBuilder:
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlAttrBuilder.OnStartElement """
       
-      #-- TAG-STACK
-      tag = {'name':sTagName,'attrs':dTagAttrs,'cdata':''}
+      # -- TAG-STACK
+      tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
       tag['dValueStack'] = self.dValueStack.size()
       self.dTagStack.push(tag)
       
-      #-- VALUE-STACK
+      # -- VALUE-STACK
       if sTagName == 'data':
         self.dValueStack.push(None)
       elif sTagName == 'dictionary':
@@ -870,44 +875,44 @@ class XmlAttrBuilder:
     def OnEndElement(self, sTagName):
       """ XmlAttrBuilder.OnEndElement """
       
-      #-- TAG-STACK
+      # -- TAG-STACK
       tag = self.dTagStack.pop()
-      name = standard.unencode( tag['name'])
-      attrs = standard.unencode( tag['attrs'])
-      cdata = standard.unencode( tag['cdata'])
+      name = standard.unencode(tag['name'])
+      attrs = standard.unencode(tag['attrs'])
+      cdata = standard.unencode(tag['cdata'])
       # Hack for nested CDATA
-      cdata = re.compile( '\<\!\{CDATA\{(.*?)\}\}\>').sub( '<![CDATA[\\1]]>', cdata)
+      cdata = re.compile('\<\!\{CDATA\{(.*?)\}\}\>').sub('<![CDATA[\\1]]>', cdata)
       
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + str(sTagName) + ")")
       
-      #-- DATA
+      # -- DATA
       if sTagName in ['data']:
-        filename = attrs.get( 'filename')
-        content_type = attrs.get( 'content_type')
+        filename = attrs.get('filename')
+        content_type = attrs.get('content_type')
         if content_type.find('text/') == 0:
           data = cdata
         else:
-          data = standard.hex2bin( cdata)
-        file = {'data':data,'filename':filename,'content_type':content_type}
+          data = standard.hex2bin(cdata)
+        file = {'data':data, 'filename':filename, 'content_type':content_type}
         objtype = attrs.get('type')
-        item = _blobfields.createBlobField( None, objtype, file)
+        item = _blobfields.createBlobField(None, objtype, file)
         for key in attrs.keys():
-          value = attrs.get( key)
-          setattr(item,key,value)
+          value = attrs.get(key)
+          setattr(item, key, value)
         self.dValueStack.pop()
         self.dValueStack.push(item)
       
-      #-- ITEM
+      # -- ITEM
       elif sTagName in ['item']:
         if tag['dValueStack'] < self.dValueStack.size():
           item = self.dValueStack.pop()
         else:
           item = cdata
-        item = getXmlTypeSaveValue(item,attrs)
+        item = getXmlTypeSaveValue(item, attrs)
         value = self.dValueStack.pop()
         if type(value) is dict:
-          key = attrs.get( 'key')
+          key = attrs.get('key')
           value[key] = item
         if type(value) is list:
           value.append(item)
@@ -927,7 +932,7 @@ class XmlAttrBuilder:
     def OnCharacterData(self, sData):
       """ XmlAttrBuilder.OnCharacterData """
       
-      #-- TAG-STACK
+      # -- TAG-STACK
       if self.dTagStack.size() > 0:
         tag = self.dTagStack.pop()
         tag['cdata'] += sData
@@ -1020,14 +1025,14 @@ def xmlNodeSet(mNode, sTagName='', iDeep=0):
   lNode = mNode
   if type(mNode) is list and len(mNode) == 2:
     lNode = mNode[1]
-  lTags = lNode.get('tags',[])
-  for i in range(0,len(lTags)/2):
-    lTagName = lTags[i*2]
-    lNode = lTags[i*2+1]
-    if sTagName in [lTagName,'']:
+  lTags = lNode.get('tags', [])
+  for i in range(0, len(lTags) / 2):
+    lTagName = lTags[i * 2]
+    lNode = lTags[i * 2 + 1]
+    if sTagName in [lTagName, '']:
       lNodeSet.append(lNode)
-    if iDeep==1:
-      lNodeSet.extend(xmlNodeSet(lNode,sTagName,iDeep))
+    if iDeep == 1:
+      lNodeSet.extend(xmlNodeSet(lNode, sTagName, iDeep))
   return lNodeSet
 
 
@@ -1058,7 +1063,7 @@ class XmlBuilder:
     "class XmlBuilder"
 
     ######## class variables ########
-    iBufferSize=1028 * 32   # buffer size for XML file parsing
+    iBufferSize = 1028 * 32  # buffer size for XML file parsing
 
     ############################################################################
     # XmlBuilder.__init__(self):
@@ -1108,8 +1113,8 @@ class XmlBuilder:
           # input is a file object!
           while True:
             
-            v=input.read(self.iBufferSize)
-            if v=="":
+            v = input.read(self.iBufferSize)
+            if v == "":
               rv = 1
               break
             
@@ -1139,7 +1144,7 @@ class XmlBuilder:
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlBuilder.OnStartElement """
-      tag = {'name':sTagName,'attrs':dTagAttrs,'cdata':'','tags':[]}
+      tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':'', 'tags':[]}
       self.dTagStack.push(tag)
 
 
@@ -1154,10 +1159,10 @@ class XmlBuilder:
     def OnEndElement(self, sTagName):
       """ XmlBuilder.OnEndElement """
       lTag = self.dTagStack.pop()
-      name = standard.unencode( lTag['name'])
-      attrs = standard.unencode( lTag['attrs'])
-      lCdata = standard.unencode( lTag['cdata'])
-      lTags = standard.unencode( lTag['tags'])
+      name = standard.unencode(lTag['name'])
+      attrs = standard.unencode(lTag['attrs'])
+      lCdata = standard.unencode(lTag['cdata'])
+      lTags = standard.unencode(lTag['tags'])
 
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + sTagName + ")")
@@ -1202,7 +1207,7 @@ class XmlBuilder:
     ############################################################################
     def OnStartCData(self):
       """ XmlBuilder.OnStartCData """
-      self.bInCData=1
+      self.bInCData = 1
 
 
     ############################################################################
@@ -1213,7 +1218,7 @@ class XmlBuilder:
     ############################################################################
     def OnEndCData(self):
       """ XmlBuilder.OnEndCData """
-      self.bInCData=0
+      self.bInCData = 0
 
 
     ############################################################################

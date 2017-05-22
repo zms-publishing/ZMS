@@ -69,8 +69,9 @@ def recurse_addMediaDb(self, mediadb):
         for r in v:
           for k in r.keys():
             u = r[k]
-            if getattr(u,'__class_name__',None) in [_blobfields.MyImage.__class_name__, _blobfields.MyFile.__class_name__]:
+            if isinstance(u,_blobfields.MyBlob):
               mediadbfile = mediadb.storeFile(u)
+              u.aq_parent = None
               u.mediadbfile = mediadbfile
               u.data = ''
           c += 1
@@ -84,8 +85,9 @@ def recurse_addMediaDb(self, mediadb):
         for lang in self.getLangIds():
           for obj_vers in self.getObjVersions():
             v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
-            if v is not None and getattr(v,'__class_name__',None) in [_blobfields.MyImage.__class_name__, _blobfields.MyFile.__class_name__]:
+            if isinstance(v,_blobfields.MyBlob):
               mediadbfile = mediadb.storeFile(v)
+              v.aq_parent = None
               v.mediadbfile = mediadbfile
               v.data = ''
               _objattrs.setobjattr(self,obj_vers,obj_attr,v,lang)
@@ -108,7 +110,7 @@ def getFilenamesFromValue( v):
   elif type( v) is dict:
     for k in v.keys():
       rtn.extend( getFilenamesFromValue( v[k]))
-  elif isinstance(v,_blobfields.MyImage) or isinstance(v,_blobfields.MyFile):
+  elif isinstance(v,_blobfields.MyBlob):
     filename = v.getMediadbfile()
     if filename is not None:
       rtn.append( v.getMediadbfile())
@@ -157,6 +159,7 @@ def recurse_delMediaDb(self, mediadb):
             u = r[k]
             mediadbfile = getattr(v,'mediadbfile',None)
             if mediadbfile is not None:
+              u.aq_parent = None
               u.mediadbfile = None
               u.data = mediadb.retrieveFile(mediadbfile)
   # Process object. 
@@ -171,6 +174,7 @@ def recurse_delMediaDb(self, mediadb):
             if v is not None:
               mediadbfile = getattr(v,'mediadbfile',None)
               if mediadbfile is not None:
+                v.aq_parent = None
                 v.mediadbfile = None
                 v.data = mediadb.retrieveFile(mediadbfile)
                 _objattrs.setobjattr(self,obj_vers,obj_attr,v,lang)

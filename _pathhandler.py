@@ -238,6 +238,12 @@ class PathHandler:
         if ob is not None:
           return ob
         
+        # UID.
+        if name.startswith('{$') and name.endswith('}'):
+          ob = self.getLinkObj(name)
+          if ob is not None:
+            return ob
+        
         # If the object is record-set and has blob-fields find by filename and 
         # display data.
         if name.find( '@') == 0:

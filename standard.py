@@ -318,7 +318,7 @@ def guess_content_type(filename, data):
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-standard.html_quote:
+html_quote:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def html_quote(v, name='(Unknown name)', md={}):
   if not type(v) in StringTypes:
@@ -1266,7 +1266,7 @@ def localfs_read(filename, mode='b', cache='public, max-age=3600', REQUEST=None)
     fdata, mt, enc, fsize = _fileutil.readFile( filename, mode)
   if REQUEST is not None:
     RESPONSE = REQUEST.RESPONSE
-    standard.set_response_headers(filename,mt,fsize,REQUEST)
+    set_response_headers(filename,mt,fsize,REQUEST)
     RESPONSE.setHeader('Cache-Control', cache)
     RESPONSE.setHeader('Content-Encoding', enc)
   return fdata
@@ -2009,10 +2009,11 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
   
   # Send mail.
   try:
-    #standard.writeBlock( context, "[sendMail]: %s"%mime_msg.as_string())
+    #writeBlock( context, "[sendMail]: %s"%mime_msg.as_string())
     mailhost.send(mime_msg.as_string())
     return 0
   except:
+    writeError(context,'[sendMail]: can\'t send')
     return -1
 
 

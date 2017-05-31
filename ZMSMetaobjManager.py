@@ -902,7 +902,7 @@ class ZMSMetaobjManager:
         if attr['id'] == attr_id:
           if id+'.'+attr['id'] in self.objectIds():
             ob_id = id+'.'+attr['id']
-            zopeutil.removeObject(container, ob_id, removeFile=True)
+            zopeutil.removeObject(self, ob_id, removeFile=True)
           if attr['type'] in self.valid_zopetypes:
             # Get container.
             container = self.getHome()

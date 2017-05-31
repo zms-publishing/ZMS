@@ -789,7 +789,7 @@ class ZMSMetaobjManager:
         elif isinstance( newCustom, _blobfields.MyFile):
           if oldId is not None and id+'.'+oldId in self.objectIds():
             self.manage_delObjects(ids=[id+'.'+oldId])
-          self.manage_addFile( id=id+'.'+newId, file=newCustom.getData(),title=newCustom.getFilename(),content_type=newCustom.getContentType())
+          zopeutil.addFile(self,id+'.'+newId,newCustom.getFilename(),newCustom.getData())
         elif oldId is not None and oldId != newId and id+'.'+oldId in self.objectIds():
           self.manage_renameObject(id=id+'.'+oldId,new_id=id+'.'+newId)
         if not ob['type'] == 'ZMSRecordSet':
@@ -1206,7 +1206,7 @@ class ZMSMetaobjManager:
                 xmlfile = StringIO( xml)
                 immediately = not type( v) is list
               if not immediately:
-                file = temp_folder.manage_addFile(id=temp_id,title=filename,file=xmlfile)
+                file = zopeutil.addFile(temp_folder,temp_id,filename,xmlfile)
                 extra['section'] = 'import'
                 extra['temp_import_file_id'] = temp_id
               else:

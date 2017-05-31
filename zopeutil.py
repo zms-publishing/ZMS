@@ -24,6 +24,7 @@ from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import os
 # Product Imports.
+import standard
 import _fileutil
 
 security = ModuleSecurityInfo('Products.zms.zopeutil')
@@ -207,14 +208,6 @@ def addPythonScript(container, id, title, data):
   ob.write( data)
   initPermissions(container, id)
 
-def addFile(container, id, title, data):
-  """
-  Add File to container.
-  """
-  container.manage_addFile(id,title,file=data)
-  ob = getattr( container, id)
-  return ob
-
 def addFolder(container, id, title, data):
   """
   Add Folder to container.
@@ -253,7 +246,9 @@ def addFile(container, id, title, data, content_type=None):
   """
   Add File to container.
   """
-  container.manage_addFile(id,title,file=data,content_type=content_type)
+  if content_type is None:
+    content_type, enc = standard.guess_content_type(id,data)
+  container.manage_addFile(id=id,title=title,file=data,content_type=content_type)
   ob = getattr( container, id)
   return ob
 
@@ -261,7 +256,9 @@ def addImage(container, id, title, data, content_type=None):
   """
   Add Image to container.
   """
-  container.manage_addImage(id,title,file=data,content_type=content_type)
+  if content_type is None:
+    content_type, enc = standard.guess_content_type(id,data)
+  container.manage_addImage(id=id,title=title,file=data,content_type=content_type)
   ob = getattr( container, id)
   return ob
 

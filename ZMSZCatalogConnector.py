@@ -293,7 +293,7 @@ class ZMSZCatalogConnector(
       if status > 0:
         xmlr = ''
         xmlr += '<lst name="error">'
-        xmlr += '<str name="msg">%s</str>'%msg
+        xmlr += '<str name="msg">%s</str>'%standard.html_quote(msg)
         xmlr += '<int name="code">%i</int>'%status
         xmlr += '</lst>'
       xml += unicode(xmlr)

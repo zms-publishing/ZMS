@@ -77,6 +77,7 @@ def getObject(container, id):
   """
   Get Zope-object from container.
   """
+  id = standard.operator_absattr(id)
   ob = getattr(container,id,None)
   return ob 
 

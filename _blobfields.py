@@ -19,7 +19,7 @@
 # Imports.
 from webdav.common import rfc1123_date
 from DateTime.DateTime import DateTime
-from ZPublisher import HTTPRangeSupport
+from ZPublisher import HTTPRangeSupport,HTTPRequest
 from OFS.CopySupport import absattr
 from OFS.Image import Image, File
 from cStringIO import StringIO
@@ -147,7 +147,13 @@ def uploadBlobField(self, clazz, file='', filename=''):
     clazz = MyImage
   elif clazz in [_globals.DT_FILE,'file']:
     clazz = MyFile
-  blob = clazz( id='',title='',file=file)
+  try:
+    file = file.read()
+  except:
+    pass
+  mt, enc = standard.guess_content_type(filename,file)
+  blob = clazz( id='',title='',file='')
+  blob.update_data(file,content_type=mt,size=len(file))
   blob.aq_parent = self
   blob.mediadbfile = None
   blob.filename = _fileutil.extractFilename( filename, undoable=True).encode('utf-8')

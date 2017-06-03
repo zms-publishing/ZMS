@@ -41,6 +41,7 @@ class MetacmdManagerTest(example_test.SeleniumTestCase):
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
         # close edit-dialog
+        time.sleep(1)
         self._find_element(By.CSS_SELECTOR, '#zmiModaleditObj .btn[value="Schließen"]').click()
         
         # open config

@@ -292,7 +292,10 @@ class EditPageExample(SeleniumTestCase):
             # workaround for https://github.com/mozilla/geckodriver/issues/322
             # where the click sometimes is swallowed. Should be fixed in the comming weeks
             self._find_element(By.LINK_TEXT, "Vorschau").click()
-            self._find_element(By.LINK_TEXT, "Vorschau").click()
+            try:
+              self._find_element(By.LINK_TEXT, "Vorschau").click()
+            except:
+              pass
         
         frame = self._find_element(By.NAME, "partner")
         self.driver.switch_to.frame(frame)

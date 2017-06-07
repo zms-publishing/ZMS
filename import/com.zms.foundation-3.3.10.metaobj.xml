@@ -4527,7 +4527,7 @@ return constraints
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext;
-		text          python:unicode(zmscontext.getText(request),'utf-8');
+		text          python:unicode(zmscontext.getText(request),'utf-8','ignore');
 		format        python:unicode(zmscontext.attr('format'),'utf-8');
 		renderedText  python:zmscontext.renderText(format,'text',text,request,zmscontext.id)"
 		tal:content="structure renderedText">
@@ -4567,7 +4567,7 @@ return constraints
           <item key="id"><![CDATA[ZMSTextarea]]></item>
           <item key="name"><![CDATA[ZMSTextarea]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.1]]></item>
+          <item key="revision"><![CDATA[3.1.2]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>
@@ -4600,7 +4600,7 @@ return constraints
           <item key="id"><![CDATA[com.zms.foundation]]></item>
           <item key="name"><![CDATA[com.zms.foundation]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[3.3.9]]></item>
+          <item key="revision"><![CDATA[3.3.10]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

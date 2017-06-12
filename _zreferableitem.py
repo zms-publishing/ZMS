@@ -355,7 +355,7 @@ class ZReferableItem:
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
-    if not int(self.getConfProperty('ZReferableItem.validateLinkObj',1)): return text
+    if not int(self.getConfProperty('ZReferableItem.validateLinkObj',1)): return url
     self.startMeasurement('%s.validateLinkObj'%self.meta_id)
     if isInternalLink(url):
       if not url.startswith('{$__'):

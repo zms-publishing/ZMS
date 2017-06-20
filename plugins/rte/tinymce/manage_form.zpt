@@ -42,6 +42,7 @@ function zmiRichtextInit(id) {
 	$("textarea#editor_"+id).val($("textarea#"+id).val());
 	tinymce.init({
 		selector: "textarea#editor_"+id,
+		content_css:"<tal:block tal:content="python:here.getConfProperty('plugin.rte.tinymce.config.contentsCss','').split(',')">the content-css</tal:block>",
 		plugins: [
 			"searchreplace visualblocks code fullscreen",
 			"table paste"

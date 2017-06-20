@@ -153,7 +153,7 @@ function zmiRichtextInit(id) {
             config.contentsCss.push($(this).attr("href"));
           });
         config.contentsCss.push('/++resource++zms_/ckeditor/contents.css');
-<tal:block tal:repeat="contentsCss python:request.get('CKEDITOR_config_contentsCss',[])">
+<tal:block tal:repeat="contentsCss python:filter(lambda x:len(x.strip())>0,here.getConfProperty('plugin.rte.ckeditor.config.contentsCss','').split(',')+request.get('CKEDITOR_config_contentsCss',[]))">
         config.contentsCss.push('<tal:block tal:content="contentsCss">the contents-css</tal:block>');
 </tal:block>
 

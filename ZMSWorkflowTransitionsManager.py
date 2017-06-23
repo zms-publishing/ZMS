@@ -66,14 +66,14 @@ class ZMSWorkflowTransitionsManager:
     self.transitions = []
     # Set.
     for attr in r.get('Transitions',[]):
-      self.setTransition(attr['id'], attr['id'], attr['name'], attr.get('type'), attr.get('from',[]), attr.get('to',''), attr.get('performer',''), attr.get('data',''))
+      self.setTransition(attr['id'], attr['id'], attr['name'], attr.get('type'), attr.get('icon_clazz',''), attr.get('from',[]), attr.get('to',''), attr.get('performer',''), attr.get('data',''))
     return id
 
 
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowTransitionsManager.setTransition
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  def setTransition(self, id, newId, newName, newType, newFrom=[], newTo='', newPerformer=[], newDtml=''):
+  def setTransition(self, id, newId, newName, newType, newIconClass='', newFrom=[], newTo='', newPerformer=[], newDtml=''):
     message = ''
     obs = self.transitions
     # Remove exisiting entry.
@@ -90,6 +90,7 @@ class ZMSWorkflowTransitionsManager:
     # Values.
     newValues = {}
     newValues['name'] = newName
+    newValues['icon_clazz'] = newIconClass
     newValues['from'] = newFrom
     newValues['to'] = newTo
     newValues['performer'] = newPerformer
@@ -174,13 +175,14 @@ class ZMSWorkflowTransitionsManager:
     if btn == self.getZMILangStr('BTN_SAVE'):
       item = self.getTransition(id)
       newId = REQUEST.get('inpId').strip()
+      newIconClazz = REQUEST.get('inpIconClazz','')
       newName = REQUEST.get('inpName').strip()
       newType = REQUEST.get('inpType','DTML Method').strip()
       newFrom = REQUEST.get('inpFrom',[])
       newTo = REQUEST.get('inpTo',[])
       newPerformer = REQUEST.get('inpPerformer',[])
       newDtml = REQUEST.get('inpDtml','').strip()
-      message += self.setTransition( item.get('id',None), newId, newName, newType, newFrom, newTo, newPerformer, newDtml)
+      message += self.setTransition( item.get('id',None), newId, newName, newType, newIconClazz, newFrom, newTo, newPerformer, newDtml)
       message += self.getZMILangStr('MSG_CHANGED')
       id = newId
     
@@ -196,8 +198,9 @@ class ZMSWorkflowTransitionsManager:
       item = {}
       newId = REQUEST.get('newId').strip()
       newName = REQUEST.get('newName').strip()
+      newIconClazz = REQUEST.get('inpIconClazz','')
       newType = REQUEST.get('newType','DTML Method').strip()
-      message += self.setTransition( item.get('id',None), newId, newName, newType)
+      message += self.setTransition( item.get('id',None), newId, newName, newType, newIconClazz)
       message += self.getZMILangStr('MSG_INSERTED')%id
       id = newId
     

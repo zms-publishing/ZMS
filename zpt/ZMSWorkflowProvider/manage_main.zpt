@@ -242,26 +242,26 @@ $(function(){
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<input type="hidden" name="id" tal:attributes="value request/id"/>
 			<div class="horizontal-group">
-				<div class="form-group inpId">
-					<label for="inpId" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-					<div class="col-lg-10"><input class="form-control input-sm" type="text" id="inpId" name="inpId" tal:attributes="value transition/id"/></div><!-- .col-lg-10 -->
+				<div class="form-group col-sm-4 inpId">
+					<label for="inpId" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
+					<div><input class="form-control input-sm" type="text" id="inpId" name="inpId" tal:attributes="value transition/id"/></div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
-				<div class="form-group inpName">
-					<label for="inpName" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-					<div class="col-lg-10"><input class="form-control input-sm" type="text" id="inpName" name="inpName" tal:attributes="value transition/name"/></div><!-- .col-lg-10 -->
+				<div class="form-group col-sm-4 inpName">
+					<label for="inpName" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
+					<div><input class="form-control input-sm" type="text" id="inpName" name="inpName" tal:attributes="value transition/name"/></div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
-				<div class="form-group">
-					<div class="controls save col-sm-12">
-						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-						<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
-					</div><!-- .controls.save -->
+				<div class="form-group col-sm-4 inpIcon">
+				<label for="inpIconClazz" class="control-label"><span>Icon</span></label>
+				<div>
+					<input class="form-control input-sm zmi-input-icon-clazz" type="text" id="inpIconClazz" name="inpIconClazz" tal:attributes="value python:transition.get('icon_clazz','')"/>
+				</div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
 			</div><!-- .horizontal-group -->
 			<div style="clear:both;">&nbsp;</div>
 			<div class="horizontal-group">
-				<div class="form-group inpFrom">
-					<label for="inpFrom" class="col-lg-2 control-label"><span>From</span></label>
-					<div class="col-lg-10">
+				<div class="form-group col-sm-4 inpFrom">
+					<label for="inpFrom" class="control-label"><span>From</span></label>
+					<div>
 						<select class="form-control input-sm" name="inpFrom:list" multiple="multiple">
 							<tal:block tal:repeat="activity python:here.getActivities()">
 								<option tal:attributes="value activity/id; selected python:['','selected'][int(activity['id'] in transition.get('from',[]))]" tal:content="activity/name">the activity</option>
@@ -269,19 +269,19 @@ $(function(){
 						</select>
 					</div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
-				<div class="form-group inpPerformer">
-					<label for="inpPerformer" class="col-lg-2 control-label"><span>Performer</span></label>
-					<div class="col-lg-10">
-						<select class="form-control" name="inpPerformer:list" multiple="multiple">
+				<div class="form-group col-sm-4 inpPerformer">
+					<label for="inpPerformer" class="control-label"><span>Performer</span></label>
+					<div>
+						<select class="form-control input-sm" name="inpPerformer:list" multiple="multiple">
 							<tal:block tal:repeat="performer python:here.getUserDefinedRoles()"><tal:block tal:define="global lang_key python:'ROLE_%s'%performer.upper(); lang_str python:here.getZMILangStr(lang_key)">
 								<option tal:attributes="value performer; selected python:['','selected'][int(performer in transition.get('performer',[]))]" tal:content="python:[lang_str,performer][int(lang_key==lang_str)]">the performer</option>
 							</tal:block></tal:block>
 						</select>
 					</div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
-				<div class="form-group inpTo">
-					<label for="inpTo" class="col-lg-2 control-label"><span>To</span></label>
-					<div class="col-lg-10">
+				<div class="form-group col-sm-4 inpTo">
+					<label for="inpTo" class="control-label"><span>To</span></label>
+					<div>
 						<select class="form-control input-sm" name="inpTo">
 							<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ACTION_SELECT')%'To'">--- Select to ---</option>
 							<tal:block tal:repeat="activity python:here.getActivities()">
@@ -303,6 +303,12 @@ $(function(){
 					</tal:block>
 				</tal:block>
 			</tal:block>
+				<div class="form-group">
+					<div class="controls save col-sm-12">
+						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+						<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+					</div><!-- .controls.save -->
+				</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #updateTransition -->
@@ -495,10 +501,13 @@ $(function(){
 						<td style="padding:.5em 0"><img src="/misc_/zms/spacer.gif" alt="" border="0" tal:attributes="style python:'background-color:%s\073width:50px\073height:1px'%['transparent','navy'][int(len(transition['from'])>0)]"/></td>
 						<td>
 							<div tal:attributes="class python:' '.join(['transition']+[[],['state']][int(ob is None)]+[[],['action']][int(len(transition['from'])+len(transition['to'])==0)])">
+								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],transition['id'])">
+									<tal:block tal:content="structure python:here.zmi_icon(name=transition.get('icon_clazz','icon-check-empty'))">the icon</tal:block>
+									<tal:block tal:content="python:transition['name']">the name</tal:block>
+								</a>
 								<tal:block tal:condition="python:ob is not None">
 									<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title python:'%s (%s)'%(ob.meta_type,here.getDataSizeStr(ob.get_size()))" target="_blank"><img tal:attributes="src ob/icon"/></a>
 								</tal:block>
-								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],transition['id'])" tal:content="python:transition['name']">name</a>
 								<ul class="performer smaller" tal:condition="python:transition['performer']">
 									<li tal:repeat="performer python:transition['performer']" tal:content="python:performer">performer</li>
 								</ul>

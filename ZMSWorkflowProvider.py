@@ -162,7 +162,7 @@ class ZMSWorkflowProvider(
         i = l[li*2+1]
         newDtml = i.get('dtml','')
         newType = i.get('type',['','DTML Method'][int(len(dtml)>0)])
-        self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newIconClazz=i.get('icon_clazz',''),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
+        self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newIconClass=i.get('icon_clazz',''),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
 
 
     ############################################################################
@@ -217,7 +217,7 @@ class ZMSWorkflowProvider(
         i = l[li*2+1]
         newDtml = i.get('dtml','')
         newType = i.get('type',['','DTML Method'][int(len(newDtml)>0)])
-        self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newIconClazz=i.get('icon_clazz',''),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
+        self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newIconClass=i.get('icon_clazz',''),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
       # Create non existant roles.
       roles = []
       for transition in self.getTransitions():

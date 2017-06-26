@@ -307,8 +307,8 @@ class ZMSMetaobjManager:
           if attr['type']=='constant':
             mandatory_keys += ['custom']
           for key in attr.keys():
-            if not attr[key] or \
-               not key in mandatory_keys:
+            if (not attr[key] and REQUEST is None) or \
+               (not key in mandatory_keys):
               del attr[key]
           if attr.has_key('ob'):
             attr['custom'] = attr['ob']

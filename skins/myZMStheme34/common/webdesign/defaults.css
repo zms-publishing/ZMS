@@ -18,9 +18,6 @@
 
 /* LATEST */
 
-.ZMSGraphic {
-	X-max-width:640px !important;
-}
 .ZMSGraphic div,
 .ZMSGraphic img {
   max-width: 100% !important;
@@ -54,7 +51,7 @@
   font-weight:bold;
   color:#ffffff;
   text-decoration:none;
-  background:rgba(3, 169, 244, 0.54);
+  background:#999;
   display:block;
   padding:.5em 1em;
   margin: 0 -1em -.5em;

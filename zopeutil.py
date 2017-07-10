@@ -42,7 +42,7 @@ def getExternalMethodModuleName(container, id):
   Add context-folder-id to module-name (to prevent deleting artefacts from other clients).
   """
   m = id
-  if int(container.content.getConfProperty('zopeutil.getExternalMethodModuleName.addContextFolderId',True)):
+  if hasattr(container,'content') and int(getattr(container,'content').getConfProperty('zopeutil.getExternalMethodModuleName.addContextFolderId',True)):
     m = '%s.%s'%(absattr(nextObject(container,'Folder').id),m)
   return m
 
@@ -112,7 +112,17 @@ def readData(ob, default=None):
   elif ob.meta_type in [ 'Page Template', 'Script (Python)']:
     data = ob.read()
   elif ob.meta_type == 'External Method':
-    filepath = INSTANCE_HOME+'/Extensions/'+ob.id+'.py'
+    context = ob
+    id = ob.id
+    while context is not None:
+      m = getExternalMethodModuleName(context, id)
+      filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+      if os.path.exists(filepath):
+        break
+      context = context.getParentNode()
+    if context is None:
+      m = id
+    filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
     if os.path.exists(filepath):
       f = open(filepath, 'r')
       data = f.read()
@@ -186,9 +196,17 @@ def addExternalMethod(container, id, title, data):
   """
   m = getExternalMethodModuleName(container, id)
   f = id
-  if data != '':
+  if data:
     filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
     _fileutil.exportObj( data, filepath)
+  elif m != f:
+    context = container
+    while context is not None:
+      m = getExternalMethodModuleName(context, id)
+      filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+      if os.path.exists(filepath):
+        break
+      context = context.getParentNode()
   ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
 
 def addPageTemplate(container, id, title, data):

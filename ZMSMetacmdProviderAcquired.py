@@ -48,16 +48,26 @@ class ZMSMetacmdProviderAcquired(
       self.id = 'metacmd_manager'
 
     def getMetaCmdDescription(self, id):
-       """ getMetaCmdDescription """
-       return self.getPortalMaster().getMetaCmdDescription(id)
+      """ getMetaCmdDescription """
+      portal_master = self.getPortalMaster()
+      if portal_master is not None:
+        return self.getPortalMaster().getMetaCmdDescription(id)
+      return ''
 
     def getMetaCmdIds(self, sort=True):
-       return self.getPortalMaster().getMetaCmdIds(sort)
+      rtn = []
+      portal_master = self.getPortalMaster()
+      if portal_master is not None:
+        rtn.extend(portal_master.getMetaCmdIds(sort))
+      return rtn
 
     def getMetaCmds(self, context=None, stereotype='', sort=True):
-      metaCmds = self.getPortalMaster().getMetaCmds(context,stereotype,sort)
-      for metaCmd in metaCmds:
-        metaCmd['acquired'] = 1
-      return metaCmds
+      rtn = []
+      portal_master = self.getPortalMaster()
+      if portal_master is not None:
+        rtn.extend(portal_master.getMetaCmds(context,stereotype,sort))
+        for d in rtn:
+            d['acquired'] = 1
+      return rtn
 
 ################################################################################

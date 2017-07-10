@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="data"><![CDATA[## Script (Python) "manage_stereotype"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=
+##title=*** DO NOT DELETE OR MODIFY ***
+##
+from Products.PythonScripts.standard import html_quote
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+
+if request.get('btn') == context.getZMILangStr('BTN_SAVE'):
+	context.operator_setattr(context,'meta_id',request['meta_id'])
+	request.set('manage_tabs_message',context.getZMILangStr('MSG_CHANGED'))
+
+html = ''
+html += '<!DOCTYPE html>'
+html += '<html lang="en">'
+html += context.zmi_html_head(context,request)
+html += '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
+html += context.zmi_body_header(context,request,options=[{'action':'#','label':'Stereotype...'}])
+html += '<div id="zmi-tab">'
+html += context.zmi_breadcrumbs(context,request)
+html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+
+html += '<div class="form-group">'
+html += '<label class="col-sm-2 control-label mandatory"><span>Stereotype</span></label>'
+html += '<div class="col-sm-10">'
+html += '<select class="form-control" name="meta_id">'
+for meta_id in context.getMetaobjIds(sort=True):
+  metaObj = context.getMetaobj(meta_id)
+  if metaObj['type'] in ['ZMSDocument','ZMSObject']:
+    html += '<option value="%s"%s>%s (%s)</option>'%(metaObj['id'],['',' selected="selected"'][int(metaObj['id']==context.meta_id)],unicode(context.display_type(request,metaObj['id']),'utf-8'),metaObj['id'])
+html += '</select><!-- .form-control -->'
+html += '</div><!--.col-sm-10 -->'
+html += '</div>'
+
+html += '<div class="form-group">'
+html += '<div class="controls save">'
+html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(unicode(context.getZMILangStr('BTN_SAVE'),'utf-8'),unicode(context.getZMILangStr('BTN_SAVE'),'utf-8'))
+html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button> '%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
+html += '</div>'
+html += '</div><!-- .form-group -->'
+
+# ---------------------------------
+
+html += '</form><!-- .form-horizontal -->'
+html += '<div style="clear:both;">&nbsp;</div>'
+html += '</div><!-- #zmi-tab -->'
+html += context.zmi_body_footer(context,request)
+html += '</body>'
+html += '</html>'
+
+return html
+]]>
+      </item>
+      <item key="description"></item>
+      <item key="exec" type="int">0</item>
+      <item key="icon_clazz"><![CDATA[icon-random]]></item>
+      <item key="id"><![CDATA[manage_stereotype]]></item>
+      <item key="meta_type"><![CDATA[Script (Python)]]></item>
+      <item key="meta_types" type="list">
+        <list>
+          <item><![CDATA[type(ZMSDocument)]]></item>
+          <item><![CDATA[type(ZMSObject)]]></item>
+          <item><![CDATA[type(ZMSTeaserElement)]]></item>
+          <item><![CDATA[type(ZMSRecordSet)]]></item>
+          <item><![CDATA[type(ZMSResource)]]></item>
+          <item><![CDATA[type(ZMSReference)]]></item>
+          <item><![CDATA[type(ZMSLibrary)]]></item>
+          <item><![CDATA[type(ZMSPackage)]]></item>
+          <item><![CDATA[type(ZMSModule)]]></item>
+        </list>
+      </item>
+      <item key="name"><![CDATA[Change stereotype]]></item>
+      <item key="revision"><![CDATA[0.0.0]]></item>
+      <item key="roles" type="list">
+        <list>
+          <item><![CDATA[ZMSAdministrator]]></item>
+        </list>
+      </item>
+      <item key="title"><![CDATA[Change stereotype]]></item>
+    </dictionary>
+  </item>
+</list>

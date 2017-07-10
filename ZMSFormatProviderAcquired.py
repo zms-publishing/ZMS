@@ -57,21 +57,33 @@ class ZMSFormatProviderAcquired(
       self.id = 'format_manager'
 
     def getTextFormatDefault(self):
-      return self.getPortalMaster().getTextFormatDefault()
+      portal_master = self.getPortalMaster()
+      if portal_master is not None:
+        return portal_master.getTextFormatDefault()
+      return None
   
     def getTextFormat(self, id, REQUEST):
-      return self.getPortalMaster().getTextFormat(id, REQUEST)
+      portal_master = self.getPortalMaster()
+      if portal_master is not None:
+        return portal_master.getTextFormat(id, REQUEST)
+      return None
 
     def getTextFormats(self, REQUEST):
-      textformats = self.getPortalMaster().getTextFormats(REQUEST)
-      return textformats
+      rtn = []
+      portal_master = self.getPortalMaster()
+      if portal_master is not None:
+        rtn.extend(portal_master.getTextFormats(REQUEST))
+      return rtn
 
     def getCharFormats(self):
-      charformats = copy.deepcopy(self.getPortalMaster().getCharFormats())
-      for charformat in charformats:
-        btn = charformat.get('btn')
-        if type(btn) is str and btn.find('/') < 0:
-          charformat['btn'] = '%s/%s'%(self.getPortalMaster().getFormatManager().absolute_url(),btn)
-      return charformats
+      rtn = []
+      portal_master = self.getPortalMaster()
+      if portal_master is not None:
+        rtn.extend(copy.deepcopy(portal_master.getCharFormats()))
+        for d in rtn:
+          btn = d.get('btn')
+          if type(btn) is str and btn.find('/') < 0:
+            d['btn'] = '%s/%s'%(portal_master.getFormatManager().absolute_url(),btn)
+      return rtn
 
 ################################################################################

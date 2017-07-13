@@ -256,23 +256,21 @@ class VersionItem:
     #
     #  Returns true if object has modified children, false otherwise.
     # --------------------------------------------------------------------------
-    def syncObjModifiedChildren(self, REQUEST, depth=0):
+    def syncObjModifiedChildren(self, REQUEST):
       obj_state = 'STATE_MODIFIED_OBJS'
       rtnVal = False
-      for child in self.getVersionItems( REQUEST):
+      children = self.getVersionItems( REQUEST)
+      for child in children:
         if child.isObjModified(REQUEST):
           rtnVal = True
-        else:
-          rtnVal = child.syncObjModifiedChildren( REQUEST, depth+1)
         if rtnVal:
           break
-      if depth==0:
-        if rtnVal:
-          if not self.inObjStates( [ obj_state], REQUEST):
-            self.setObjState( obj_state, REQUEST[ 'lang'])
-        else:
-          if self.inObjStates( [ obj_state], REQUEST):
-            self.delObjStates( [ obj_state], REQUEST)
+      if rtnVal:
+        if not self.inObjStates( [ obj_state], REQUEST):
+          self.setObjState( obj_state, REQUEST[ 'lang'])
+      else:
+        if self.inObjStates( [ obj_state], REQUEST):
+          self.delObjStates( [ obj_state], REQUEST)
       return rtnVal
 
 
@@ -462,7 +460,9 @@ class VersionItem:
       if parent is not None:
         master_version = parent.getObjProperty( 'master_version', REQUEST)
       self.setObjProperty( 'master_version', master_version)
-      self.setObjState(obj_state,REQUEST['lang'])
+      lang = REQUEST['lang']
+      for langId in [lang]+self.getDescendantLanguages(lang):
+        self.setObjState(obj_state,langId)
 
     # --------------------------------------------------------------------------
     #  VersionItem.setObjStateModified
@@ -1207,7 +1207,11 @@ class VersionManagerContainer:
           return versionContainer.autoWfTransition(REQUEST)
       
       # Enter Workflow.
+      t0 = time.time()
+      print 1,"autoWfTransition",time.time()-t0
       self.syncObjModifiedChildren(REQUEST)
+      print 2,"autoWfTransition",time.time()-t0
+      
       wfStates = self.getWfStates(REQUEST)
       standard.writeBlock( self, "[autoWfTransition]: wfStates=%s"%str(wfStates))
       modified = self.isObjModified(REQUEST) or self.hasObjModifiedChildren(REQUEST)

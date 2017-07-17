@@ -1196,8 +1196,6 @@ class ObjAttrs:
             rtn['height'] = y2-y0
             rtn['width'] = x1-x0
           file.manage_upload(blob.getData())
-          file.setProperty('height',rtn['height'])
-          file.setProperty('width',rtn['width'])
           rtn['filename'] = blob.getFilename()
           rtn['src'] = src
       # Return JSON.

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<dictionary>
-  <item key="data"><![CDATA[from Products.PythonScripts.standard import html_quote
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="data"><![CDATA[from Products.PythonScripts.standard import html_quote
 
-def manage_addMultiUpload(self):
+def manage_addZIPMultiUpload(self):
 	request = self.REQUEST
 	html = ''
 	html += '<!DOCTYPE html>'
@@ -15,7 +17,7 @@ def manage_addMultiUpload(self):
 	html += self.zmi_breadcrumbs(self,request)
 
 	html += '<form method="post" enctype="multipart/form-data">'
-	html += '<input type="hidden" name="form_id" value="manage_addMultiUpload" />'
+	html += '<input type="hidden" name="form_id" value="manage_addZIPMultiUpload" />'
 	html += '<input type="hidden" name="lang" value="%s" />'%request['lang']
 	html += '<div class="alert" style="min-height:500px">'
 	html += '<legend>Multi-File-Upload</legend>'
@@ -37,7 +39,7 @@ def manage_addMultiUpload(self):
 		else:
 			temp_folder.manage_addFile(id=temp_id,title=file.filename,file=file)
 		html += '<div class="form-group">'
-		html += '<label><img src="%smime_type.application_zip.gif" /> %s (%s, %i %s)</label>'%( self.MISC_ZMS, file.filename, self.getDataSizeStr(getattr(temp_folder,temp_id).size), len(files), self.getZMILangStr('ATTR_OBJECTS') )
+		html += '<label class="control-label"><img src="%smime_type.application_zip.gif" /> %s (%s, %i %s)</label>'%( self.MISC_ZMS, file.filename, self.getDataSizeStr(getattr(temp_folder,temp_id).size), len(files), self.getZMILangStr('ATTR_OBJECTS') )
 		html += '<div>'
 
 		for file in self.sort_list(files,'local_filename'):
@@ -46,7 +48,7 @@ def manage_addMultiUpload(self):
 				root = file['local_filename'][:max(file['local_filename'].rfind('/'),file['local_filename'].rfind('\\'))]
 			if file['isdir']:
 				containers.append(file['local_filename'])
-				html += '<ol style="list-style-type:none;"><li><input type="checkbox" name="ids:list" value="%s" checked="checked"/>%s %s</li>'%(file['local_filename'][len(root):],self.display_icon(request,'ZMSFolder'),file['filename'])
+				html += '<ol style="list-style-type:none;"><li style="list-style-type:none;"><input type="checkbox" name="ids:list" value="%s" checked="checked"/>%s %s</li>'%(file['local_filename'][len(root):],self.display_icon(request,'ZMSFolder'),file['filename'])
 			else:
 				if containers:
 					if base != containers[-1]:
@@ -57,7 +59,7 @@ def manage_addMultiUpload(self):
 					meta_id = 'ZMSTextarea'
 				elif file['content_type'].startswith('image/'):
 					meta_id = 'ZMSGraphic'
-				html += '<li><input type="checkbox" name="ids:list" value="%s" checked="checked"/>&nbsp;%s %s (%s)</li>'%(file['local_filename'][len(root):],self.display_icon(request,meta_id),file['filename'],self.getDataSizeStr(file['size']))
+				html += '<li style="list-style-type:none;"><input type="checkbox" name="ids:list" value="%s" checked="checked"/>&nbsp;%s %s (%s)</li>'%(file['local_filename'][len(root):],self.display_icon(request,meta_id),file['filename'],self.getDataSizeStr(file['size']))
 		for base in containers:
 			html += '</ol>'
 
@@ -138,8 +140,8 @@ def manage_addMultiUpload(self):
 	else:
 
 		html += '<div class="form-group">'
-		html += '<label for="file"><img src="%smime_type.application_zip.gif" /> %s</label>'%( self.MISC_ZMS, self.getZMILangStr('ATTR_FILE') )
-		html += '<input class="form-element" name="file" type="file" size="25" />'
+		html += '<label class="control-label" for="file"><img src="%smime_type.application_zip.gif" /> %s</label>'%( self.MISC_ZMS, self.getZMILangStr('ATTR_FILE') )
+		html += '<input class="form-control" name="file" type="file" size="25" />'
 		html += '</div><!-- .form-group -->'
 
 		html += '<div class="form-group">'
@@ -160,26 +162,30 @@ def manage_addMultiUpload(self):
 	html += '</html>'
 
 	return html]]>
+      </item>
+      <item key="description"></item>
+      <item key="exec" type="int">0</item>
+      <item key="icon_clazz"><![CDATA[icon-upload-alt text-primary]]></item>
+      <item key="id"><![CDATA[manage_addZIPMultiUpload]]></item>
+      <item key="meta_type"><![CDATA[External Method]]></item>
+      <item key="meta_types" type="list">
+        <list>
+          <item><![CDATA[ZMS]]></item>
+          <item><![CDATA[ZMSDocument]]></item>
+          <item><![CDATA[ZMSFolder]]></item>
+          <item><![CDATA[gallery]]></item>
+        </list>
+      </item>
+      <item key="name"><![CDATA[ZIP-Multi-Upload]]></item>
+      <item key="revision"><![CDATA[1.0.0]]></item>
+      <item key="roles" type="list">
+        <list>
+          <item><![CDATA[ZMSAdministrator]]></item>
+          <item><![CDATA[ZMSAuthor]]></item>
+          <item><![CDATA[ZMSEditor]]></item>
+        </list>
+      </item>
+      <item key="title"><![CDATA[Upload many files as ZIP]]></item>
+    </dictionary>
   </item>
-  <item key="description"></item>
-  <item key="exec" type="int">0</item>
-  <item key="icon_clazz"><![CDATA[icon-upload-alt text-primary]]></item>
-  <item key="id"><![CDATA[manage_addMultiUpload]]></item>
-  <item key="meta_type"><![CDATA[External Method]]></item>
-  <item key="meta_types" type="list">
-    <list>
-      <item><![CDATA[ZMSDocument]]></item>
-      <item><![CDATA[ZMSFolder]]></item>
-      <item><![CDATA[ZMS]]></item>
-    </list>
-  </item>
-  <item key="name"><![CDATA[Multi-Upload]]></item>
-  <item key="roles" type="list">
-    <list>
-      <item><![CDATA[ZMSAdministrator]]></item>
-      <item><![CDATA[ZMSAuthor]]></item>
-      <item><![CDATA[ZMSEditor]]></item>
-    </list>
-  </item>
-  <item key="title"><![CDATA[Viele Dateien als ZIP hochladen]]></item>
-</dictionary>
+</list>

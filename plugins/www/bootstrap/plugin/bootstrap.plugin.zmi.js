@@ -1662,9 +1662,12 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 		var params = $ZMI.parseURLParams(target);
 		var target = target.indexOf("?")>0?target.substr(0,target.indexOf("?")):target;
 		if (this.confirm($fm,target,params)) {
+			var c = 0;
 			for (var k in params) {
-				$fm.append('<input type="hidden" name="'+k+'">');
-				$('input[name='+k+']:hidden').val(params[k]);
+				var id = 'hidden_'+k+'_'+c;
+				$fm.append('<input type="hidden" id="'+id+'" name="'+k+'">');
+				$('input#'+id,$fm).val(params[k]);
+				c++;
 			}
 			$("input[name='id_prefix']",$fm).val(id_prefix);
 			$fm.attr("action",target);

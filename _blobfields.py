@@ -143,15 +143,15 @@ def createBlobField(self, objtype, file=''):
 _blobfields.uploadBlobField
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def uploadBlobField(self, clazz, file='', filename=''):
-  if clazz in [_globals.DT_IMAGE,'image']:
-    clazz = MyImage
-  elif clazz in [_globals.DT_FILE,'file']:
-    clazz = MyFile
   try:
     file = file.read()
   except:
     pass
   mt, enc = standard.guess_content_type(filename,file)
+  if clazz in [_globals.DT_IMAGE,'image'] or mt.startswith('image'):
+    clazz = MyImage
+  elif clazz in [_globals.DT_FILE,'file']:
+    clazz = MyFile
   blob = clazz( id='',title='',file='')
   blob.update_data(file,content_type=mt,size=len(file))
   blob.aq_parent = self

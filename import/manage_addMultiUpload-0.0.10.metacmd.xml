@@ -90,7 +90,7 @@ def manage_addMultiUpload(self):
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>
 					<button type="submit" name="btn" class="btn btn-white" value="%s">%s</button>
-				</div> 
+				</div>
 			</div><!-- .form-group -->
 			"""%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
 
@@ -118,7 +118,7 @@ def manage_addMultiUpload(self):
         </list>
       </item>
       <item key="name"><![CDATA[Multi-Upload]]></item>
-      <item key="revision"><![CDATA[0.0.9]]></item>
+      <item key="revision"><![CDATA[0.0.10]]></item>
       <item key="roles" type="list">
         <list>
           <item><![CDATA[ZMSAdministrator]]></item>

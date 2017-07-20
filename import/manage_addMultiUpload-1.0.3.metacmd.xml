@@ -115,10 +115,12 @@ def manage_addMultiUpload(self):
           <item><![CDATA[ZMSDocument]]></item>
           <item><![CDATA[ZMSFolder]]></item>
           <item><![CDATA[ZMS]]></item>
+          <item><![CDATA[LgGalleria]]></item>
+          <item><![CDATA[gallery]]></item>
         </list>
       </item>
       <item key="name"><![CDATA[Multi-Upload]]></item>
-      <item key="revision"><![CDATA[0.0.10]]></item>
+      <item key="revision"><![CDATA[1.0.3]]></item>
       <item key="roles" type="list">
         <list>
           <item><![CDATA[ZMSAdministrator]]></item>

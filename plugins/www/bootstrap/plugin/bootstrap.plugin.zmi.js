@@ -1663,7 +1663,8 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 		var target = target.indexOf("?")>0?target.substr(0,target.indexOf("?")):target;
 		if (this.confirm($fm,target,params)) {
 			for (var k in params) {
-				$fm.append('<input type="hidden" name="'+k+'" value="'+params[k]+'">');
+				$fm.append('<input type="hidden" name="'+k+'">');
+				$('input[name='+k+']:hidden').val(params[k]);
 			}
 			$("input[name='id_prefix']",$fm).val(id_prefix);
 			$fm.attr("action",target);

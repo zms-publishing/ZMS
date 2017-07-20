@@ -40,13 +40,17 @@ ZMI.prototype.getCoords = function(theElement, thePosition) {
  */
 ZMI.prototype.getDescendantLanguages = function() {
 	var base = self.location.href;
+	if (base.indexOf('?') > 0) {
+		base = base.substr(0,base.indexOf('?'));
+	}
 	base = base.substr(0,base.lastIndexOf('/'));
-	var langs = eval('('+$.ajax({
+	var response = $.ajax({
 		url: base+'/getDescendantLanguages',
 		data:{id:getZMILang()},
 		datatype:'text',
 		async: false
-		}).responseText+')');
+		}).responseText;
+	var langs = eval('('+response+')');
 	if (langs.length > 1) {
 		var labels = '';
 		for ( var i = 0; i < langs.length; i++) {

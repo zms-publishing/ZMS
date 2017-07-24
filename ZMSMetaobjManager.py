@@ -328,7 +328,8 @@ class ZMSMetaobjManager:
       else:
         filename = 'export.metaobj.xml'
       content_type = 'text/xml; charset=utf-8'
-      export = self.getXmlHeader() + _xmllib.toXml(self,value,xhtml=True)
+      processing_instruction = '<?zms version=\'%s\'?>'%(context.zms_version())
+      export = self.getXmlHeader() + processing_instruction + _xmllib.toXml(self,value,xhtml=True)
       
       if RESPONSE:
         RESPONSE.setHeader('Content-Type',content_type)

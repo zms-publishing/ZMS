@@ -22,8 +22,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.toolbar = 'ZMSBasicToolbar';
 	config.toolbar_ZMSBasicToolbar = [
 		{ name: 'styles',      items: [ 'Format' ] },
-		{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike' ] },
-		{ name: 'paragraph',   items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'NumberedList', 'BulletedList', 'Outdent', 'Indent' ] },
+		{ name: 'paragraph',   items: ['Bold','Italic','Underline','JustifyLeft','JustifyCenter','JustifyRight','NumberedList','BulletedList','Outdent','Indent'] },
 		{ name: 'undo',        items: [ 'Undo', 'Redo' ] },
 		{ name: 'editing',     items: [ 'Find' ] }, //'/', <== Line-Break
 		{ name: 'links',       items: [ 'linkbutton', 'Unlink' ] },
@@ -32,8 +31,7 @@ CKEDITOR.editorConfig = function( config ) {
 	];
 	config.toolbar_ZMSBasicInsertToolbar = [
 		{ name: 'styles',      items: [ 'Format' ] },
-		{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike' ] },
-		{ name: 'paragraph',   items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'NumberedList', 'BulletedList', 'Outdent', 'Indent' ] },
+		{ name: 'paragraph',   items: ['Bold','Italic','Underline','JustifyLeft','JustifyCenter','JustifyRight','NumberedList','BulletedList','Outdent','Indent'] },
 		{ name: 'undo',        items: [ 'Undo', 'Redo' ] },
 		{ name: 'tools',       items: [ 'Source', 'ShowBlocks', 'Maximize', 'Scayt', '-', 'About' ] }
 	];

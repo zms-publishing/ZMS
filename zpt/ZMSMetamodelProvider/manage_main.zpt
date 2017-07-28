@@ -210,7 +210,7 @@
 
 					<tal:block tal:condition="python:objAttr['type'] in ['interface','method','py','resource','zpt']+here.valid_zopetypes">
 						<td tal:attributes="colspan python:[5,6][objAttr['type'] in ['interface']]" class="meta-code" tal:condition="python:objAttr['type'] not in ['resource','Folder'] and objAttr.get('ob') is not None">
-							<tal:block tal:define="global readData python:here.operator_getattr(zopeutil,'readData')(objAttr['ob']); global errors python:''"></tal:block>
+							<tal:block tal:define="global readData python:here.operator_getattr(zopeutil,'readData')(objAttr['ob'],default=objAttr.get('custom','ERROR: Not found!')); global errors python:''"></tal:block>
 							<tal:block tal:condition="python:'## Errors:' in readData.split('\n')">
 								<tal:block tal:define="lines python:readData.split('\n'); global errors python:lines[lines.index('## Errors:')+1][2:]"></tal:block>
 							</tal:block>

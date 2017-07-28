@@ -119,7 +119,10 @@ def readData(ob, default=None):
       filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
       if os.path.exists(filepath):
         break
-      context = context.getParentNode()
+      try:
+        context = context.getParentNode()
+      except:
+        context = None
     if context is None:
       m = id
     filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'

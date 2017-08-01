@@ -1,19 +1,21 @@
 /* LAYOUT */
 
 body.grid {
-  margin:0;
+  margin:0 auto;
+  max-width:1200px;
   font-family:Arial,sans-serif;
   line-height:1.33;
   display: grid;
   grid-template-areas: "header header header"
+                       "shadowbox shadowbox shadowbox"
                        "leftnavigation content rightnavigation"
                        "footer footer footer";
   grid-template-columns: 260px 1fr 260px;
-  grid-template-rows: 100px 1fr 100px;
+  grid-template-rows: 100px 0px 1fr 100px;
  /* EDGE SYNTAX: https://docs.microsoft.com/en-us/microsoft-edge/dev-guide/css/grid-layout */
   display: -ms-grid;
   -ms-grid-columns: 260px 1fr 260px;
-  -ms-grid-rows: 100px 1fr 100px;
+  -ms-grid-rows: 100px 0px 1fr 100px;
 }
 body.grid.has_teasers {
   grid-template-columns: 260px 1fr 260px;
@@ -33,7 +35,7 @@ header {
   background-color: white;
   display:flex;
   flex-direction:row;
-  box-shadow:0px 0px 2em rgba(0,0,0,.5);
+  /* box-shadow:0px 0px 2em rgba(0,0,0,.5); */
   z-index:1;
   padding:0;
   min-height:100px;
@@ -56,20 +58,30 @@ header nav {
   width:100%;
   text-align:right
 }
+#shadowbox {
+  width:100%;
+  grid-area: shadowbox;
+  background: linear-gradient( rgba(0,0,0,.24),rgba(128,128,128,0));
+  z-index:1;
+  height: 20px;
+  -ms-grid-column: 1;
+  -ms-grid-row: 2;
+  -ms-grid-column-span:3;
+}
 
 article.content {
   grid-area: content;
   background-color: white;
   min-height:600px;
   -ms-grid-column: 2;
-  -ms-grid-row: 2;
+  -ms-grid-row: 3;
 }
 
 aside.left {
   grid-area: leftnavigation;
   background-color: black;
   -ms-grid-column: 1;
-  -ms-grid-row: 2;
+  -ms-grid-row: 3;
 }
 body#zmsroot aside.left {
   background: #007bb3 url(../img/zms_cover2_opt.svg) top center no-repeat;
@@ -82,7 +94,7 @@ aside.right {
   background-color: rgb(207, 207, 207);
   padding-top: 3em;
   -ms-grid-column: 3;
-  -ms-grid-row: 2;
+  -ms-grid-row: 3;
 }
 
 footer {
@@ -90,7 +102,7 @@ footer {
   background-color: rgb(234, 234, 234);
   padding-top: 1.5em;
   -ms-grid-column: 1;
-  -ms-grid-row: 3;
+  -ms-grid-row: 4;
   -ms-grid-column-span:3;
 }
 
@@ -133,7 +145,7 @@ article a {
   margin: -1em -1em 0 -1em;
   padding: 1em;
   width: 100%;
-  font-size:90%;
+  font-size:100%;
   background:#eee;
 }
 body.has_teasers .breadcrumb {
@@ -143,6 +155,7 @@ body.has_teasers .breadcrumb {
 .breadcrumb li {
   display:inline-block;
   line-height:1em;
+  font-size:90%;
 }
 .breadcrumb li:after,
 .breadcrumb li:first-child::before {
@@ -194,7 +207,7 @@ nav ul li a {
   }
 }
 
-header nav ul li {
+header nav > ul > li {
   line-height:2em;
   background-color:rgba(0,0,0,.1);
 }
@@ -239,6 +252,19 @@ footer p a {
   text-decoration:none;
   color:#000;
   color:#666;
+}
+@media screen and (min-width: 1280px) {
+  header .logo {
+    flex-basis:auto;
+  }
+}
+@media screen and (max-width: 1199px) {
+  header {
+    box-shadow:0px 0px 2em rgba(0,0,0,.5);
+  }
+  #shadowbox {
+    display:none;
+  }
 }
 
 @media screen and (max-width: 1080px) {

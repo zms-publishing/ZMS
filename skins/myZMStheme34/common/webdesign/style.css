@@ -58,6 +58,12 @@ header nav {
   width:100%;
   text-align:right
 }
+.navtoggle {
+  display:none;
+}
+#zmsroot .navtoggle {
+  display:none !important;
+}
 #shadowbox {
   width:100%;
   grid-area: shadowbox;
@@ -147,6 +153,8 @@ article a {
   width: 100%;
   font-size:100%;
   background:#eee;
+  white-space: nowrap;
+  overflow:hidden;
 }
 body.has_teasers .breadcrumb {
   margin: -1em -1.1em 0 -1.1em;
@@ -219,15 +227,17 @@ header nav ul li:hover {
   animation-name: darken;
   animation-duration: 2s;
 }
-
+header nav ul li.active:hover {
+  animation-name: none;
+}
 aside nav ul li {
   display:block;
 }
 aside nav ul li a:hover {
   color:#82d8ff
 }
-aside nav ul li.active a {
-  color:#82d8ff
+aside nav ul > li.active > a {
+  color:#82d8ff !important;
 }
 aside nav ul li.active.current:before {
   content:'>';
@@ -287,14 +297,32 @@ footer p a {
     display:block;
   }
   header .logo {
-    text-align:left;
-    padding:.5em 1em;
+    text-align:center;
+    padding:.75em 1em 0.25em;
   }
-  header nav  {
+  header nav {
     text-align:left;
+  }
+  X-header nav  ul li.active:before {
+    content:"+";
+    display:block;
+    position:absolute;
+    right:0;
+    font-size:32px;
+    padding:0 6px;
+    line-height:1;
+    color:white;
+    opacity:.7;
   }
   header nav ul li {
     display:block;
+  }
+  header nav ul li.active,
+  header nav ul li:hover {
+    background-color: rgb(148, 148, 148);
+  }
+  header nav ul li.active a {
+    color:white
   }
   header nav ul li a {
     padding: .1em 1em;
@@ -305,5 +333,46 @@ footer p a {
   }
   article.content {
     min-height:0;
+  }
+  X-aside.left:focus,
+  X-aside.left:hover,
+  aside.left.show,
+  X-header:hover ~ aside.left,
+  X-header:focus ~ aside.left {
+    visibility:visible;
+  }
+  aside.left {
+    visibility:hidden;
+    position: absolute;
+    top: 69px;
+    right: 0;
+    min-height: 204px;
+    min-width: 160px;
+    background-color: rgb(148, 148, 148);
+    padding: 0.2em .5em;
+    display: inline-block;
+    font-size: 90%;
+  }
+  aside nav ul li.active.current:before {
+    content:none;
+  }
+  aside nav ul li.active.current > a {
+    font-weight:bold;
+  }
+  .navtoggle {
+    display:block;
+    position: absolute;
+    right: 0;
+    padding: 1px 3px 2px 3px;
+    font-size: 18px;
+    line-height: .8;
+    color:black;
+    border: 1px solid black;
+    margin: 7px;
+  }
+  aside .navtoggle {
+    padding: 0px 3px 3px 3px;
+    color:white;
+    border: 1px solid white;
   }
 }

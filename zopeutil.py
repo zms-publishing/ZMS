@@ -91,7 +91,9 @@ def callObject(ob, zmscontext=None, options={}):
     v = ob(zmscontext,zmscontext.REQUEST)
   elif options:
     v = ob(zmscontext=zmscontext,options=options)
-  elif ob.meta_type in [ 'Script (Python)', 'External Method' ] and readData(ob).find('##parameters=zmscontext')<0:
+  elif ob.meta_type in [ 'External Method' ]:
+    v = ob()
+  elif ob.meta_type in [ 'Script (Python)'] and readData(ob).find('##parameters=zmscontext')<0:
     v = ob()
   else:
     v = ob(zmscontext=zmscontext)

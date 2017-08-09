@@ -26,9 +26,16 @@ from OFS.CopySupport import _cb_decode, _cb_encode, absattr, CopyError, eNoData,
 import standard
 
 
-# --------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+#  CopySupport
+# ------------------------------------------------------------------------------
+OP_COPY = 0
+OP_MOVE = 1
+
+
+# ------------------------------------------------------------------------------
 #  CopySupport._normalize_ids_after_copy:
-# --------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 def normalize_ids_after_copy(node, ids=[]):
   request = node.REQUEST
   copy_of_prefix = 'copy_of_'
@@ -60,9 +67,9 @@ def normalize_ids_after_copy(node, ids=[]):
       normalize_ids_after_copy(childNode, ids=['*'])
 
 
-# --------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 #  CopySupport._normalize_ids_after_move:
-# --------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 def normalize_ids_after_move(node, ids=[]):
   request = node.REQUEST
   copy_of_prefix = 'copy_of_'
@@ -180,7 +187,7 @@ class CopySupport:
       sort_id = REQUEST.get('_sort_id',0) + 1
       for ob in self.getChildNodes():
         id = absattr(ob.id)
-        if id in ids or copy_of_prefix+id in ids:
+        if (id in ids) or (op == OP_MOVE and copy_of_prefix+id in ids):
           ob.setSortId(sort_id)
           sort_id += 1
 
@@ -225,8 +232,8 @@ class CopySupport:
       t0 = time.time()
       
       # Analyze request
-      cp=self._get_cb_copy_data(cb_copy_data=None,REQUEST=REQUEST)
-      op=cp[0]
+      cp = self._get_cb_copy_data(cb_copy_data=None,REQUEST=REQUEST)
+      op = cp[0]
       cp = (0,cp[1])
       cp = _cb_encode(cp)
       ids = map(lambda x: self._get_id(absattr(x.id)),self._get_obs(cp))
@@ -239,7 +246,7 @@ class CopySupport:
       self._set_sort_ids(ids=ids,op=op,REQUEST=REQUEST)
       
       # Move objects.
-      if op==1:
+      if op == OP_MOVE:
         normalize_ids_after_move(self,ids=ids)
       # Copy objects.
       else:

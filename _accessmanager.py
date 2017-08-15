@@ -547,14 +547,13 @@ class AccessManager(AccessableContainer):
           value = d[name]
           nodes = value.get('nodes',{})
           nodekeys = filter(lambda x:nodes[x].get('home_id')==home_id, nodes.keys())
-          if len(nodekeys) > 0:
-            roleDef = {'nodes':{}}
-            for key in value.keys():
-              if not roleDef.has_key(key):
-                roleDef[key] = value[key]
-            for nodekey in nodekeys:
-              roleDef['nodes'][nodekey] = nodes[nodekey]
-            roleDefs[name] = roleDef
+          roleDef = {'nodes':{}}
+          for key in value.keys():
+            if not roleDef.has_key(key):
+              roleDef[key] = value[key]
+          for nodekey in nodekeys:
+            roleDef['nodes'][nodekey] = nodes[nodekey]
+          roleDefs[name] = roleDef
       return roleDefs
 
     # --------------------------------------------------------------------------

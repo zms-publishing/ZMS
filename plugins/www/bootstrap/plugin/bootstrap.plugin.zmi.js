@@ -1556,7 +1556,7 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 		$("li.dropdown-header",$ul)
 			.click(function (event) {
 				if (!($(this).hasClass("workflow-action"))) {
-					$(this).siblings("li.dropdown-header").andSelf().each(function() {
+					$(this).siblings("li.dropdown-header").addBack().each(function() {
 							if (!($(this).hasClass("workflow-action"))) {
 								$(this).css("cursor","pointer");
 								$("i",this).toggleClass("icon-caret-down").toggleClass("icon-caret-right");

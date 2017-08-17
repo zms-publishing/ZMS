@@ -33,7 +33,7 @@ function htmlReplace($context, exp, newvalue) {
 	newvalue = newvalue.replace(/class="(.*?)"/i,'class="$1 nohighlight"');
 	var regexp = new RegExp(exp, "gi");
 	$('*',$context)
-		.andSelf()
+		.addBack()
 		.contents()
 		.filter(function(){
 			// nodyType=3 (Text) Represents textual content in an element or attribute

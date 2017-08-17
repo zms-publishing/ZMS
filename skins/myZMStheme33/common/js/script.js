@@ -12,7 +12,7 @@ function GetSearchBaseUrl() {
 function htmlReplace($context, exp, newvalue) {
 	var regexp = new RegExp(exp, "gi");
 	$('*',$context)
-		.andSelf()
+		.addBack()
 		.contents()
 		.filter(function(){
 			return this.nodeType === 3;

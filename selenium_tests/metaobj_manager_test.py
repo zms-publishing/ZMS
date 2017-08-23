@@ -35,7 +35,6 @@ class MetaobjManagerTest(example_test.SeleniumTestCase):
         self._find_element(By.CSS_SELECTOR, '.btn.btn-primary[title="Einfügen..."]').click()
         
         dialog = self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj')
-        # self._wait(lambda driver: dialog.is_displayed())
         dialog.find_element(By.CSS_SELECTOR, 'input[name="_meta_id"]').send_keys('LgTest')
         dialog.find_element(By.CSS_SELECTOR, 'input[name="_meta_name"]').send_keys('Test')
         dialog.find_element(By.CSS_SELECTOR, '.btn.btn-primary[value="Einfügen"]').click()

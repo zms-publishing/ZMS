@@ -2,6 +2,7 @@
 
 import unittest
 import os
+import sys
 import random
 from contextlib import contextmanager
 from urlparse import urlparse, urljoin
@@ -32,13 +33,14 @@ class SeleniumTestCase(unittest.TestCase):
         
         # this ensures all find_element* methods retry up to 10 seconds for the searched 
         # element to appear in the dom. Essential if testing AJAX stuff.
-        # This however requires a firefox newer than 45.8 (which is what we are stuck on the AC server right now)
-        # self.driver.implicitly_wait(self.DEFAULT_TIMEOUT)
-        # So until then, explicit waits have to be used.
+        self.driver.implicitly_wait(self.DEFAULT_TIMEOUT)
+        # This does _not_ make explicit waits unneccessary though!
         # @see http://selenium-python.readthedocs.io/waits.html#explicit-waits
         
-        # self.addCleanup(self.driver.close) # doesn't work on mac?
-        self.addCleanup(self.driver.quit)
+        if sys.platform == 'darwin':
+            self.addCleanup(self.driver.close) # Mac Requires this?
+        else:
+            self.addCleanup(self.driver.quit)
     
     ## Low level test helpers
     
@@ -50,9 +52,10 @@ class SeleniumTestCase(unittest.TestCase):
     
     def _find_element(self, by, value, timeout=DEFAULT_TIMEOUT):
         print "_find_element",by,value
-        self._wait(EC.presence_of_element_located((by, value)), timeout=timeout)
-        return self.driver.find_element(by, value)
+        return self._wait(EC.visibility_of_element_located((by, value)), timeout=timeout)
     
+    # REFACT rename _wait_for_selector
+    # This does not work very well - just use _find_element, it does all this and more
     def _wait_for_element(self, selector, timeout=DEFAULT_TIMEOUT):
       import time
       print "_wait_for_element",selector
@@ -213,6 +216,7 @@ class LoginTest(SeleniumTestCase):
         self._wait_for_text('ZServer.HTTPServer.zhttp_server')
         self.assertIn('ZServer.HTTPServer.zhttp_server', self.driver.page_source)
 
+"""
 class ScreenshotDemonstrationTest(SeleniumTestCase):
     
     def test_the_importance_of_waiting(self):
@@ -226,6 +230,7 @@ class ScreenshotDemonstrationTest(SeleniumTestCase):
         self._save_screenshot_of_current_page('before-wait')
         self._wait_for_text('Contents')
         self._save_screenshot_of_current_page('after-wait')
+"""
 
 """
 class ScreenshotAfterFailingTest(SeleniumTestCase):

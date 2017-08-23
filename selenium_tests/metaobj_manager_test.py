@@ -21,28 +21,32 @@ class MetaobjManagerTest(example_test.SeleniumTestCase):
         self.driver.get(self.driver.current_url)
         
         # open config
-        navbar = self._wait_for_element('.navbar-main')
+        navbar = self._find_element(By.CSS_SELECTOR, '.navbar-main')
         navbar.find_element_by_css_selector('.dropdown-toggle').click()
-        navbar.find_element_by_link_text('Content-Objekte').click()
+        content_objects = navbar.find_element_by_link_text('Content-Objekte')
+        self._wait(lambda driver: content_objects.is_displayed())
+        with self._wait_for_page_load():
+            content_objects.click()
         
         # wait until opened
         self._find_element(By.CSS_SELECTOR, 'body.metas.config')
         
         # open insert dialog
         self._find_element(By.CSS_SELECTOR, '.btn.btn-primary[title="Einfügen..."]').click()
-        dialog = self._wait_for_element('#zmiModalinsertObj')
-        time.sleep(1)
-        self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj input[name="_meta_id"]').send_keys('LgTest')
-        self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj input[name="_meta_name"]').send_keys('Test')
-        self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj .btn.btn-primary[value="Einfügen"]').click()
+        
+        dialog = self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj')
+        # self._wait(lambda driver: dialog.is_displayed())
+        dialog.find_element(By.CSS_SELECTOR, 'input[name="_meta_id"]').send_keys('LgTest')
+        dialog.find_element(By.CSS_SELECTOR, 'input[name="_meta_name"]').send_keys('Test')
+        dialog.find_element(By.CSS_SELECTOR, '.btn.btn-primary[value="Einfügen"]').click()
         
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
-        # open config
-        navtabs = self._wait_for_element('.nav.nav-tabs')
-        navtabs.find_element_by_link_text('Content-Objekte').click()
-        time.sleep(1)
+        # open config (also removes .alert-success)
+        navtabs = self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs')
+        with self._wait_for_page_load(timeout=5):
+            navtabs.find_element_by_link_text('Content-Objekte').click()
         
         # open delete dialog
         self._find_element(By.CSS_SELECTOR, 'input[name="ids:list"][value="LgTest"]').click()
@@ -52,7 +56,6 @@ class MetaobjManagerTest(example_test.SeleniumTestCase):
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
-        time.sleep(1)
         print '</MetaobjManagerTest.test_conf>'
 
 

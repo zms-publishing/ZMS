@@ -298,7 +298,7 @@ $(function(){
 				</tal:block>
 				<tal:block tal:condition="python:ob is not None">
 					<input type="hidden" name="inpType" tal:attributes="value ob/meta_type"/>
-					<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='inpDtml',ob=ob)">
+					<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='inpData',ob=ob)">
 						ACE Editor
 					</tal:block>
 				</tal:block>

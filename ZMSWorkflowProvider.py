@@ -73,10 +73,10 @@ def exportXml(self, REQUEST, RESPONSE):
   value = {}
   value['activities'] = []
   for x in self.getActivityIds():
-      value['activities'].extend([x,self.getActivity(x,for_export=True)])
+    value['activities'].extend([x,self.getActivity(x,for_export=True)])
   value['transitions'] = []
   for x in self.getTransitionIds():
-      value['transitions'].extend([x,self.getTransition(x,for_export=True)])
+    value['transitions'].extend([x,self.getTransition(x,for_export=True)])
   export = self.getXmlHeader() + self.toXmlString(value,1)
   content_type = 'text/xml; charset=utf-8'
   filename = 'workflow.xml'
@@ -160,9 +160,9 @@ class ZMSWorkflowProvider(
       for li in range(len(l)/2):
         id = l[li*2]
         i = l[li*2+1]
-        newDtml = i.get('dtml','')
+        newData = i.get('ob',i.get('dtml',''))
         newType = i.get('type',['','DTML Method'][int(len(dtml)>0)])
-        self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newIconClass=i.get('icon_clazz',''),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
+        self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newIconClass=i.get('icon_clazz',''),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newData=newData)
 
 
     ############################################################################
@@ -215,9 +215,9 @@ class ZMSWorkflowProvider(
       for li in range(len(l)/2):
         id = l[li*2]
         i = l[li*2+1]
-        newDtml = i.get('dtml','')
-        newType = i.get('type',['','DTML Method'][int(len(newDtml)>0)])
-        self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newIconClass=i.get('icon_clazz',''),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newDtml=newDtml)
+        newData = i.get('ob',i.get('dtml',''))
+        newType = i.get('type',['','DTML Method'][int(len(newData)>0)])
+        self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newIconClass=i.get('icon_clazz',''),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newData=newData)
       # Create non existant roles.
       roles = []
       for transition in self.getTransitions():

@@ -27,7 +27,8 @@ import time
 import urllib
 import zExceptions
 # Product Imports.
-import standard 
+import standard
+import zopeutil 
 import _blobfields
 import _confmanager
 import _globals
@@ -1253,15 +1254,8 @@ class VersionManagerContainer:
       wfTransitions = self.getWfTransitions()
       for wfTransition in filter(lambda x: x['name']==custom, wfTransitions):
         transition = self.getWfTransition(wfTransition['id'])
-        tType = transition.get('type','DTML Method')
-        tDtml = transition.get('dtml','')
-        if len(tDtml) > 0:
-          if tType == 'DTML Method':
-            return standard.dt_exec(self, tDtml, REQUEST) 
-          if tType == 'Page Template':
-            return transition['ob'](zmscontext=self) 
-          elif tType == 'Script (Python)':
-            return transition['ob'](zmscontext=self) 
+        if transition.get('ob'):
+          return zopeutil.callObject(transition['ob'],zmscontext=self)
         else:
           return self.manage_wfTransitionFinalize(lang, custom, REQUEST, RESPONSE)
 

@@ -50,6 +50,8 @@ class MetaobjManagerTest(example_test.SeleniumTestCase):
         # open delete dialog
         self._find_element(By.CSS_SELECTOR, 'input[name="ids:list"][value="LgTest"]').click()
         self._find_element(By.CSS_SELECTOR, '.btn.btn-default[title="Löschen..."]').click()
+        wait = WebDriverWait(self.driver, 5)
+        wait.until(EC.alert_is_present())
         self.driver.switch_to_alert().accept()
         
         # wait until saved

@@ -35,22 +35,26 @@ class MetacmdManagerTest(example_test.SeleniumTestCase):
         self._find_element(By.CSS_SELECTOR, '.btn.btn-primary[title="Einfügen..."]').click()
         
         dialog = self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj')
-        self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj input[name="_id"]').send_keys('manage_LgTest')
-        self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj input[name="_name"]').send_keys('Test')
-        self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj input[name="_title"]').send_keys('Test')
-        self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj .btn[value="Einfügen"]').click()
+        dialog.find_element(By.CSS_SELECTOR, 'input[name="_id"]').send_keys('manage_LgTest')
+        dialog.find_element(By.CSS_SELECTOR, 'input[name="_name"]').send_keys('Test')
+        dialog.find_element(By.CSS_SELECTOR, 'input[name="_title"]').send_keys('Test')
+        dialog.find_element(By.CSS_SELECTOR, '.btn.btn-primary[value="Einfügen"]').click()
         
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
+        # close dialog
+        dialog = self._find_element(By.CSS_SELECTOR, '#zmiModaleditObj')
+        dialog.find_element(By.CSS_SELECTOR, '.btn[value="Schließen"]').click()
+        
         # open config (also removes .alert-success)
-        navtabs = self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs')
-        with self._wait_for_page_load(timeout=5):
-            navtabs.find_element_by_link_text('Aktionen').click()
+        self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs .active').click()
         
         # open delete dialog
         self._find_element(By.CSS_SELECTOR, 'input[name="ids:list"][value="manage_LgTest"]').click()
         self._find_element(By.CSS_SELECTOR, '.btn.btn-default[title="Löschen..."]').click()
+        wait = WebDriverWait(self.driver, 5)
+        wait.until(EC.alert_is_present())
         self.driver.switch_to_alert().accept()
         
         # wait until saved

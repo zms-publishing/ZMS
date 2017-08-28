@@ -21,9 +21,12 @@ class MultilangManagerTest(example_test.SeleniumTestCase):
         self.driver.get(self.driver.current_url)
         
         # open config
-        navbar = self._wait_for_element('.navbar-main')
+        navbar = self._find_element(By.CSS_SELECTOR, '.navbar-main')
         navbar.find_element_by_css_selector('.dropdown-toggle').click()
-        navbar.find_element_by_link_text('Sprachen').click()
+        content_objects = navbar.find_element_by_link_text('Sprachen')
+        self._wait(lambda driver: content_objects.is_displayed())
+        with self._wait_for_page_load():
+            content_objects.click()
         
         # wait until opened
         self._find_element(By.CSS_SELECTOR, 'body.languages.config')
@@ -36,9 +39,10 @@ class MultilangManagerTest(example_test.SeleniumTestCase):
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
-        # open config
-        navtabs = self._wait_for_element('.nav.nav-tabs')
-        navtabs.find_element_by_link_text('Sprachen').click()
+        # open config (also removes .alert-success)
+        navtabs = self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs')
+        with self._wait_for_page_load(timeout=5):
+            navtabs.find_element_by_link_text('Sprachen').click()
         
         # open delete dialog
         self._find_element(By.CSS_SELECTOR, '#changeLanguagesForm input[name="ids:list"][value="eng"]').click()
@@ -47,7 +51,6 @@ class MultilangManagerTest(example_test.SeleniumTestCase):
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
-        time.sleep(1)
         print '</MultilangManagerTest.test_conf>'
 
 

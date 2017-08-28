@@ -21,17 +21,20 @@ class MetacmdManagerTest(example_test.SeleniumTestCase):
         self.driver.get(self.driver.current_url)
         
         # open config
-        navbar = self._wait_for_element('.navbar-main')
+        navbar = self._find_element(By.CSS_SELECTOR, '.navbar-main')
         navbar.find_element_by_css_selector('.dropdown-toggle').click()
-        navbar.find_element_by_link_text('Aktionen').click()
+        content_objects = navbar.find_element_by_link_text('Aktionen')
+        self._wait(lambda driver: content_objects.is_displayed())
+        with self._wait_for_page_load():
+            content_objects.click()
         
         # wait until opened
         self._find_element(By.CSS_SELECTOR, 'body.metas.config')
         
         # open insert dialog
         self._find_element(By.CSS_SELECTOR, '.btn.btn-primary[title="Einfügen..."]').click()
-        dialog = self._wait_for_element('#zmiModalinsertObj')
-        time.sleep(1)
+        
+        dialog = self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj')
         self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj input[name="_id"]').send_keys('manage_LgTest')
         self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj input[name="_name"]').send_keys('Test')
         self._find_element(By.CSS_SELECTOR, '#zmiModalinsertObj input[name="_title"]').send_keys('Test')
@@ -40,14 +43,10 @@ class MetacmdManagerTest(example_test.SeleniumTestCase):
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
-        # close edit-dialog
-        time.sleep(1)
-        self._find_element(By.CSS_SELECTOR, '#zmiModaleditObj .btn[value="Schließen"]').click()
-        
-        # open config
-        navtabs = self._wait_for_element('.nav.nav-tabs')
-        navtabs.find_element_by_link_text('Aktionen').click()
-        time.sleep(1)
+        # open config (also removes .alert-success)
+        navtabs = self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs')
+        with self._wait_for_page_load(timeout=5):
+            navtabs.find_element_by_link_text('Aktionen').click()
         
         # open delete dialog
         self._find_element(By.CSS_SELECTOR, 'input[name="ids:list"][value="manage_LgTest"]').click()
@@ -57,7 +56,6 @@ class MetacmdManagerTest(example_test.SeleniumTestCase):
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
-        time.sleep(1)
         print '</MetacmdManagerTest.test_conf>'
 
 

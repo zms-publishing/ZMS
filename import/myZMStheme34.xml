@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<ZopeData>
+  <record id="25927" aka="AAAAAAAAZUc=">
+    <pickle>
+      <global id="25927.1" name="DirectoryView" module="Products.CMFCore.DirectoryView"/>
+    </pickle>
+    <pickle>
+      <dictionary id="25927.2">
+        <item>
+            <key><string id="25927.3" encoding="">_dirpath</string></key>
+            <value><string id="25927.4" encoding="">Products.zms:skins/myZMStheme34</string></value>
+        </item>
+        <item>
+            <key><string id="25927.5" encoding="">__ac_local_roles__</string></key>
+            <value>
+              <dictionary id="25927.6">
+                <item>
+                    <key><string id="25927.7" encoding="">admin</string></key>
+                    <value>
+                      <list id="25927.8">
+                          <string id="25927.9" encoding="">Owner</string>
+                      </list>
+                    </value>
+                </item>
+              </dictionary>
+            </value>
+        </item>
+        <item>
+            <key><string id="25927.10" encoding="">id</string></key>
+            <value><string id="25927.11" encoding="">myZMStheme34</string></value>
+        </item>
+      </dictionary>
+    </pickle>
+  </record>
+</ZopeData>

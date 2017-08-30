@@ -48,13 +48,13 @@ class MetacmdManagerTest(example_test.SeleniumTestCase):
         dialog.find_element(By.CSS_SELECTOR, '.btn[value="Schließen"]').click()
         
         # open config (also removes .alert-success)
-        self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs .active').click()
+        with self._wait_for_page_load():
+            self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs .active').click()
         
         # open delete dialog
         self._find_element(By.CSS_SELECTOR, 'input[name="ids:list"][value="manage_LgTest"]').click()
         self._find_element(By.CSS_SELECTOR, '.btn.btn-default[title="Löschen..."]').click()
-        wait = WebDriverWait(self.driver, 5)
-        wait.until(EC.alert_is_present())
+        self._wait(EC.alert_is_present())
         self.driver.switch_to_alert().accept()
         
         # wait until saved

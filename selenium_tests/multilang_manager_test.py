@@ -23,7 +23,7 @@ class MultilangManagerTest(example_test.SeleniumTestCase):
         # open config
         navbar = self._find_element(By.CSS_SELECTOR, '.navbar-main')
         navbar.find_element_by_css_selector('.dropdown-toggle').click()
-        content_objects = navbar.find_element_by_link_text('Sprachen')
+        content_objects = navbar.find_element_by_link_text('Aktionen')
         self._wait(lambda driver: content_objects.is_displayed())
         with self._wait_for_page_load():
             content_objects.click()
@@ -34,19 +34,49 @@ class MultilangManagerTest(example_test.SeleniumTestCase):
         # open insert dialog
         self._find_element(By.CSS_SELECTOR, '#changeLanguagesForm input[name="language_id"]').send_keys('eng')
         self._find_element(By.CSS_SELECTOR, '#changeLanguagesForm input[name="language_label"]').send_keys('English')
-        self._find_element(By.CSS_SELECTOR, '#changeLanguagesForm .btn.btn-primary[value="Speichern"]').click()
+        with self._wait_for_page_load():
+            self._find_element(By.CSS_SELECTOR, '#changeLanguagesForm .btn.btn-primary[value="Speichern"]').click()
         
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
-        # open config (also removes .alert-success)
-        navtabs = self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs')
-        with self._wait_for_page_load(timeout=5):
+        # open config
+        navtabs = self._wait_for_element('.nav.nav-tabs')
+        with self._wait_for_page_load():
             navtabs.find_element_by_link_text('Sprachen').click()
         
-        # open delete dialog
+        # add key to lang-dict
+        self._find_element(By.CSS_SELECTOR, '#changeLangDictForm input[name="_key"]').send_keys('QUALITY')
+        self._find_element(By.CSS_SELECTOR, '#changeLangDictForm input[name="_value_ger"]').send_keys('Qualität')
+        self._find_element(By.CSS_SELECTOR, '#changeLangDictForm input[name="_value_eng"]').send_keys('Quality')
+        with self._wait_for_page_load():
+            self._find_element(By.CSS_SELECTOR, '#changeLangDictForm .btn.btn-primary[value="Speichern"]').click()
+        
+        # wait until saved
+        self._find_element(By.CSS_SELECTOR, '.alert-success')
+        
+        # open config
+        navtabs = self._wait_for_element('.nav.nav-tabs')
+        with self._wait_for_page_load():
+            navtabs.find_element_by_link_text('Sprachen').click()
+        
+        # delete key from lang-dict
+        self._find_element(By.CSS_SELECTOR, '#changeLangDictForm input[name="ids:list"][value="QUALITY"]').click()
+        with self._wait_for_page_load():
+            self._find_element(By.CSS_SELECTOR, '#changeLangDictForm .btn.btn-default[value="Löschen"]').click()
+        
+        # wait until saved
+        self._find_element(By.CSS_SELECTOR, '.alert-success')
+        
+        # open config
+        navtabs = self._wait_for_element('.nav.nav-tabs')
+        with self._wait_for_page_load():
+            navtabs.find_element_by_link_text('Sprachen').click()
+        
+        # delete language
         self._find_element(By.CSS_SELECTOR, '#changeLanguagesForm input[name="ids:list"][value="eng"]').click()
-        self._find_element(By.CSS_SELECTOR, '#changeLanguagesForm .btn.btn-default[value="Löschen"]').click()
+        with self._wait_for_page_load():
+            self._find_element(By.CSS_SELECTOR, '#changeLanguagesForm .btn.btn-default[value="Löschen"]').click()
         
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')

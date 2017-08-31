@@ -16,7 +16,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
 class SeleniumTestCase(unittest.TestCase):
-    DEFAULT_TIMEOUT = 10 # seconds
+    DEFAULT_TIMEOUT = 24 # seconds
     
     @classmethod
     def setUpClass(cls):
@@ -40,7 +40,8 @@ class SeleniumTestCase(unittest.TestCase):
         if sys.platform == 'darwin':
             self.addCleanup(self.driver.close) # Mac Requires this?
         else:
-            self.addCleanup(self.driver.quit)
+            # self.addCleanup(self.driver.quit)
+            self.addCleanup(self.driver.close)
     
     ## Low level test helpers
     

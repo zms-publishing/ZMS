@@ -17,6 +17,7 @@ import example_test
 class EditDocTest(example_test.SeleniumTestCase):
    
       def test_edit_doc(self):
+        print '<EditDocTest.test_edit_doc>'
        
         self._login()
         self._create_or_navigate_to_zms()
@@ -40,16 +41,15 @@ class EditDocTest(example_test.SeleniumTestCase):
         time.sleep(1)
         create_doc = el.find_element_by_link_text('Dokument')
         self._wait(lambda driver: create_doc.is_displayed())
-        create_doc.click()
+        with self._wait_for_page_load():
+            create_doc.click()
        
-        # insert frame
-        time.sleep(1)
+        # open insert dialog
         MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
         self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog .title').send_keys(MARKER)
         self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog .titlealt').send_keys(MARKER)
-       
-        # click insert
-        self._find_element(By.XPATH, '//button[text()="Einfügen"]').click()
+        with self._wait_for_page_load():
+            self._find_element(By.XPATH, '//button[text()="Einfügen"]').click()
        
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
@@ -61,9 +61,8 @@ class EditDocTest(example_test.SeleniumTestCase):
         MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
         self._find_element(By.CSS_SELECTOR, '#tabProperties .title').send_keys(MARKER)
         self._find_element(By.CSS_SELECTOR, '#tabProperties .titlealt').send_keys(MARKER)
-       
-        # click save
-        self._find_element(By.XPATH, '//button[text()="Speichern"]').click()
+        with self._wait_for_page_load():
+            self._find_element(By.XPATH, '//button[text()="Speichern"]').click()
        
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
@@ -83,24 +82,22 @@ class EditDocTest(example_test.SeleniumTestCase):
         # dropdown-toggle
         dd_toggle = el.find_element_by_css_selector('.dropdown-toggle')
         self._wait(lambda driver: dd_toggle.is_displayed() and dd_toggle.is_enabled())
-        time.sleep(1)
+        wait = WebDriverWait(self.driver, 5)
         dd_toggle.click()
        
         # click delete document
         delete_doc = el.find_element_by_css_selector('.icon-trash')
         self._wait(lambda driver: delete_doc.is_displayed())
-        time.sleep(1)
         delete_doc.click()
-       
-        # accept confirm
-        time.sleep(1)
-        self.driver.switch_to_alert().accept()
+        wait = WebDriverWait(self.driver, 5)
+        wait.until(EC.alert_is_present())
+        with self._wait_for_page_load():
+            self.driver.switch_to_alert().accept()
        
         # wait until deleted
         self._find_element(By.CSS_SELECTOR, '.alert-success')
        
-        time.sleep(1)
-        print "Done"
+        print '</EditDocTest.test_edit_doc>'
 
 
 if __name__ == "__main__":

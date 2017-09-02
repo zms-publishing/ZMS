@@ -46,10 +46,12 @@ class EditDocTest(example_test.SeleniumTestCase):
         # insert frame
         time.sleep(1)
         MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
-        self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog .title').send_keys(MARKER)
-        self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog .titlealt').send_keys(MARKER)
+        dialog = self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog')
+        self._wait(lambda driver: dialog.is_displayed())
+        dialog._find_element(By.CSS_SELECTOR, '.title').send_keys(MARKER)
+        dialog._find_element(By.CSS_SELECTOR, '.titlealt').send_keys(MARKER)
         with self._wait_for_page_load():
-            self._find_element(By.XPATH, '//button[text()="Einfügen"]').click()
+            dialog._find_element(By.XPATH, '//button[text()="Einfügen"]').click()
        
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')

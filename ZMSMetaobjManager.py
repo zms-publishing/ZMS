@@ -776,7 +776,7 @@ class ZMSMetaobjManager:
           newCustom += '# --// /'+ newId + ' //--\n'
         elif newType in [ 'Z SQL Method']:
           newCustom = ''
-          newCustom += '<connection>%s</connection>\n'%self.SQLConnectionIDs()[0][0]
+          newCustom += '<connection>%s</connection>\n'%self.SQLConnectionIDs()[0][1]
           newCustom += '<params></params>\n'
           newCustom += 'SELECT * FROM tablename\n'
       

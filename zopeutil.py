@@ -246,7 +246,7 @@ def addZSqlMethod(container, id, title, data):
   """
   try:
     from Products.ZSQLMethods import SQL
-    connection_id = container.SQLConnectionIDs()[0][0]
+    connection_id = container.SQLConnectionIDs()[0][1]
     arguments = ''
     template = ''
     SQL.manage_addZSQLMethod( container, id, title, connection_id, arguments, template)

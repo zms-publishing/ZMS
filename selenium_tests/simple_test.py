@@ -24,7 +24,7 @@ class EditDocTest(example_test.SeleniumTestCase):
         self.driver.get(self.driver.current_url)
        
         # get id
-        zmi_item = self._find_element('.zmi-item.ZMSTextarea:last')
+        zmi_item = self._find_element(By.CSS_SELECTOR, '.zmi-item.ZMSTextarea:last')
         id = zmi_item.get_attribute("id")
        
         # open actions-dropdown-menu
@@ -75,7 +75,7 @@ class EditDocTest(example_test.SeleniumTestCase):
         id = 'zmi_item_'+url.split('/')[-2]
        
         # click parent breadcrumb
-        li = self._find_element('.breadcrumb li:first')
+        li = self._find_element(By.CSS_SELECTOR, '.breadcrumb li:first')
         with self._wait_for_page_load():
             li.click()
        

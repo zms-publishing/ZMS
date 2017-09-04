@@ -45,7 +45,7 @@ class MetaobjManagerTest(example_test.SeleniumTestCase):
         
         # reload page
         with self._wait_for_page_load():
-            self._find_element('.nav.nav-tabs .active').click()
+            self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs .active').click()
         
         # open delete dialog
         self._find_element(By.CSS_SELECTOR, 'input[name="ids:list"][value="LgTest"]').click()
@@ -80,7 +80,7 @@ class MetadictManagerTest(example_test.SeleniumTestCase):
         
         # open import dialog
         self._find_element(By.CSS_SELECTOR, '.btn.btn-default[title="Importieren..."]').click()
-        dialog = self._find_element('.modal-dialog')
+        dialog = self._find_element(By.CSS_SELECTOR, '.modal-dialog')
         self.driver.execute_script("$('select#init').mouseenter()")
         time.sleep(1)
         #dialog.find_element_by_css_selector('.btn.btn-primary[value="Importieren"]').click()

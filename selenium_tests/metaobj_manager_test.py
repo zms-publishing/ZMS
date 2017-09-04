@@ -71,7 +71,7 @@ class MetadictManagerTest(example_test.SeleniumTestCase):
         self.driver.get(self.driver.current_url)
         
         # open config
-        navbar = self._find_element('.navbar-main')
+        navbar = self._find_element(By.CSS_SELECTOR, '.navbar-main')
         navbar.find_element_by_css_selector('.dropdown-toggle').click()
         navbar.find_element_by_link_text('Meta-Attribute').click()
         

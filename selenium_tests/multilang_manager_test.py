@@ -42,7 +42,7 @@ class MultilangManagerTest(example_test.SeleniumTestCase):
         
         # reload page
         with self._wait_for_page_load():
-            self._wait_for_element('.nav.nav-tabs .active').click()
+            self._find_element('.nav.nav-tabs .active').click()
         
         # add key to lang-dict
         self._find_element(By.CSS_SELECTOR, '#changeLangDictForm input[name="_key"]').send_keys('HELLO_WORLD')
@@ -56,7 +56,7 @@ class MultilangManagerTest(example_test.SeleniumTestCase):
         
         # reload page
         with self._wait_for_page_load():
-            self._wait_for_element('.nav.nav-tabs .active').click()
+            self._find_element('.nav.nav-tabs .active').click()
         
         # delete key from lang-dict
         self._find_element(By.CSS_SELECTOR, '#changeLangDictForm input[name="ids:list"][value="HELLO_WORLD"]').click()
@@ -68,7 +68,7 @@ class MultilangManagerTest(example_test.SeleniumTestCase):
         
         # reload page
         with self._wait_for_page_load():
-            self._wait_for_element('.nav.nav-tabs .active').click()
+            self._find_element('.nav.nav-tabs .active').click()
         
         # delete language
         self._find_element(By.CSS_SELECTOR, '#changeLanguagesForm input[name="ids:list"][value="eng"]').click()

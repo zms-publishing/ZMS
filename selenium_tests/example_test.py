@@ -55,21 +55,6 @@ class SeleniumTestCase(unittest.TestCase):
         print "_find_element",by,value
         return self._wait(EC.visibility_of_element_located((by, value)), timeout=timeout)
     
-    # REFACT rename _wait_for_selector
-    # This does not work very well - just use _find_element, it does all this and more
-    def _wait_for_element(self, selector, timeout=DEFAULT_TIMEOUT):
-      import time
-      print "_wait_for_element",selector
-      element = None
-      start = time.time()
-      while True:
-        script = "return $('"+selector+"').get(0);"
-        element = self.driver.execute_script(script)
-        if time.time()-start > timeout or element is not None:
-          break
-        time.sleep(1)
-      return element
-    
     # Modeled after http://www.obeythetestinggoat.com/how-to-get-selenium-to-wait-for-page-load-after-a-click.html
     @contextmanager
     def _wait_for_page_load(self, timeout=DEFAULT_TIMEOUT):

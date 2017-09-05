@@ -43,12 +43,14 @@ class WorkflowManagerTest(example_test.SeleniumTestCase):
         # select workflow-tab
         navtabs = self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs')
         navitem = navtabs.find_element_by_link_text('Workflow')
+        self._wait(lambda driver: navitem.is_displayed())
         with self._wait_for_page_load():
             navitem.click()
         
         # select system-tab
         navtabs = self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs')
         navitem = navtabs.find_element_by_link_text('System')
+        self._wait(lambda driver: navitem.is_displayed())
         with self._wait_for_page_load():
             navitem.click()
         

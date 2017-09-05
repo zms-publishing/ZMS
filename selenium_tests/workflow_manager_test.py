@@ -40,6 +40,18 @@ class WorkflowManagerTest(example_test.SeleniumTestCase):
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
+        # select workflow-tab
+        navtabs = self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs')
+        navitem = navtabs.find_element_by_link_text('Workflow')
+        with self._wait_for_page_load():
+            navitem.click()
+        
+        # select system-tab
+        navtabs = self._find_element(By.CSS_SELECTOR, '.nav.nav-tabs')
+        navitem = navtabs.find_element_by_link_text('System')
+        with self._wait_for_page_load():
+            navitem.click()
+        
         # delete workflow-manager
         self._find_element(By.CSS_SELECTOR, '#Manager input[name="ids:list"][value="workflow_manager"]').click()
         with self._wait_for_page_load():

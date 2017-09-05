@@ -37,11 +37,9 @@ class SeleniumTestCase(unittest.TestCase):
         # This does _not_ make explicit waits unneccessary though!
         # @see http://selenium-python.readthedocs.io/waits.html#explicit-waits
         
-        if sys.platform == 'darwin':
-            self.addCleanup(self.driver.close) # Mac Requires this?
-        else:
-            # self.addCleanup(self.driver.quit)
-            self.addCleanup(self.driver.close)
+        # if this fails, you probably need to update your geckodriver
+        # @see https://github.com/mozilla/geckodriver/releases
+        self.addCleanup(self.driver.close)
     
     ## Low level test helpers
     

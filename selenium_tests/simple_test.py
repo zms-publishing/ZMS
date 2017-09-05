@@ -73,9 +73,9 @@ class EditDocTest(example_test.SeleniumTestCase):
         # get id from url
         url = self.driver.current_url
         id = 'zmi_item_'+url.split('/')[-2]
-       
+        
         # click parent breadcrumb
-        li = self._find_element(By.CSS_SELECTOR, '.breadcrumb li:first')
+        li = self._find_element(By.CSS_SELECTOR, '.breadcrumb li:first-of-type')
         with self._wait_for_page_load():
             li.click()
        

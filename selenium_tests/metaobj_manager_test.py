@@ -13,8 +13,8 @@ import example_test
 
 # python -m unittest selenium_tests.metaobj_manager_test.MetaobjManagerTest
 class MetaobjManagerTest(example_test.SeleniumTestCase):
-   
-      def test_conf(self):
+    
+    def test_conf(self):
         print '<MetaobjManagerTest.test_conf>'
         self._login()
         self._create_or_navigate_to_zms()
@@ -50,8 +50,8 @@ class MetaobjManagerTest(example_test.SeleniumTestCase):
         # open delete dialog
         self._find_element(By.CSS_SELECTOR, 'input[name="ids:list"][value="LgTest"]').click()
         self._find_element(By.CSS_SELECTOR, '.btn[title="Löschen..."]').click()
-        wait = WebDriverWait(self.driver, 5)
-        wait.until(EC.alert_is_present())
+        
+        self._wait(EC.alert_is_present()) # this fails
         with self._wait_for_page_load():
             self.driver.switch_to_alert().accept()
         

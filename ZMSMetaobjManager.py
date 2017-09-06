@@ -526,8 +526,8 @@ class ZMSMetaobjManager:
           pk_obs = filter( lambda x: x.get('package') == id, obs.values())
           pk_ids = map( lambda x: x['id'], pk_obs)
           for pk_id in pk_ids:
-            self.delMetaobj( pk_id)
-        self.delMetaobj( id)
+            self.delMetaobj( pk_id, acquire=True)
+        self.delMetaobj( id, acquire=True)
       ob = {}
       ob['id'] = id
       ob['acquired'] = 1
@@ -542,7 +542,7 @@ class ZMSMetaobjManager:
     #
     #  Delete meta-object specified by id.
     # --------------------------------------------------------------------------
-    def delMetaobj(self, id):
+    def delMetaobj(self, id, acquire=False):
       self.clearReqBuff('ZMSMetaobjManager')
       # Handle type.
       ids = filter( lambda x: x.startswith(id+'.'), self.objectIds())
@@ -556,7 +556,7 @@ class ZMSMetaobjManager:
           # Delete attributes.
           attr_ids = map( lambda x: x['id'], cp[key]['attrs'] )
           for attr_id in attr_ids:
-            self.delMetaobjAttr( id, attr_id)
+            self.delMetaobjAttr( id, attr_id, acquire)
         else:
           obs[key] = cp[key]
       # Make persistent.
@@ -893,7 +893,7 @@ class ZMSMetaobjManager:
     #
     #  Delete attribute from meta-object specified by id.
     # --------------------------------------------------------------------------
-    def delMetaobjAttr(self, id, attr_id):
+    def delMetaobjAttr(self, id, attr_id, acquire=False):
       ob = self.__get_metaobj__(id)
       attrs = copy.copy(ob.get('attrs',[]))
       
@@ -904,7 +904,7 @@ class ZMSMetaobjManager:
           if id+'.'+attr['id'] in self.objectIds():
             ob_id = id+'.'+attr['id']
             zopeutil.removeObject(self, ob_id, removeFile=True)
-          if attr['type'] in self.valid_zopetypes:
+          if not acquire and attr['type'] in self.valid_zopetypes:
             # Get container.
             container = self.getHome()
             ids = attr['id'].split('/')

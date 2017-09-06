@@ -147,7 +147,7 @@ function handle_zmslightbox_history() {
 function show_zmslightbox(img) {
 	zmslightbox_obj = img;
 	add_zmslightbox(img.attr('data-hiresimg'));
-	$('#zmslightbox-wrapper img').load( function() {
+	$('#zmslightbox-wrapper img').on('load', function() {
 		center_zmslightbox($('#zmslightbox-wrapper img'));
 	});
 };

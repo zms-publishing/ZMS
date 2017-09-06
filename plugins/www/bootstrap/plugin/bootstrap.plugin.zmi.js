@@ -528,6 +528,7 @@ $(function(){
 			zmiSwitchBlobButtons(elName);
 		});
 
+	$("body").addClass("loaded");
 	$ZMI.setCursorAuto("EO bootstrap.plugin.zmi");
 
 });

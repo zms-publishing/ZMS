@@ -43,9 +43,15 @@ class WorkflowManagerTest(example_test.SeleniumTestCase):
         with self._wait_for_page_load():
             self._find_element(By.XPATH, '//ul/li/a[text()="Workflow"]').click()
         
+        # wait until opened
+        self._find_element(By.CSS_SELECTOR, 'body.workflow_manager_main.config')
+        
         # open workflow tab
         with self._wait_for_page_load():
             self._find_element(By.XPATH, '//ul/li/a[text()="System"]').click()
+        
+        # wait until opened
+        self._find_element(By.CSS_SELECTOR, 'body.customize.config')
         
         # delete workflow-manager
         self._find_element(By.CSS_SELECTOR, '#Manager input[name="ids:list"][value="workflow_manager"]').click()

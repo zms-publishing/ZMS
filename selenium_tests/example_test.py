@@ -55,17 +55,17 @@ class SeleniumTestCase(unittest.TestCase):
     
     # Modeled after http://www.obeythetestinggoat.com/how-to-get-selenium-to-wait-for-page-load-after-a-click.html
     @contextmanager
-    def _wait_for_page_load(self, timeout=DEFAULT_TIMEOUT):
+    def _wait_for_page_load(self, timeout=DEFAULT_TIMEOUT, roottag='body'):
         old_page = self.driver.find_element_by_tag_name('html')
         yield
         WebDriverWait(self.driver, timeout).until(
             EC.staleness_of(old_page)
         )
         # wait for javascript to be loaded (@see bootstrap.plugin.zmi.js)
-        body = self._find_element(By.CSS_SELECTOR, 'body')
-        classes = body.get_attribute("class").split(' ')
+        root = self._find_element(By.CSS_SELECTOR, roottag)
+        classes = root.get_attribute("class").split(' ')
         if 'zmi' in classes:
-            self._find_element(By.CSS_SELECTOR, 'body.loaded')
+            self._find_element(By.CSS_SELECTOR, roottag+'.loaded')
     
     def _reload_page(self):
         return self.driver.get(self.driver.current_url)
@@ -282,7 +282,7 @@ class EditPageExample(SeleniumTestCase):
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
         # open preview
-        with self._wait_for_page_load():
+        with self._wait_for_page_load(roottag='frameset'):
             # workaround for https://github.com/mozilla/geckodriver/issues/322
             # where the click sometimes is swallowed. Should be fixed in the comming weeks
             self._find_element(By.LINK_TEXT, "Vorschau").click()

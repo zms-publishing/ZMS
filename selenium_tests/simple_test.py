@@ -35,6 +35,7 @@ class EditDocTest(example_test.SeleniumTestCase):
         item.click()
         
         # click create document
+        self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action .dropdown-menu')
         item = el.find_element_by_link_text('Dokument')
         self._wait(lambda driver: item.is_displayed())
         item.click()
@@ -84,6 +85,7 @@ class EditDocTest(example_test.SeleniumTestCase):
         item.click()
        
         # click delete document
+        self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action .dropdown-menu')
         item = el.find_element_by_css_selector('.icon-trash')
         self._wait(lambda driver: item.is_displayed())
         item.click()

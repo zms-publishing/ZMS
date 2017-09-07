@@ -30,10 +30,11 @@ class EditDocTest(example_test.SeleniumTestCase):
         self.driver.execute_script("$('#"+id+" .zmi-action').mouseenter()")
        
         # dropdown-toggle
-        self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action .dropdown-toggle').click()
+        item = el.find_element_by_css_selector('.dropdown-toggle')
+        self._wait(lambda driver: item.is_displayed())
+        item.click()
         
         # click create document
-        #self._find_element(By.LINK_TEXT, 'Dokument').click()
         item = el.find_element_by_link_text('Dokument')
         self._wait(lambda driver: item.is_displayed())
         item.click()
@@ -78,7 +79,9 @@ class EditDocTest(example_test.SeleniumTestCase):
         self.driver.execute_script("$('#"+id+" .zmi-action').mouseenter()")
        
         # dropdown-toggle
-        self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action .dropdown-toggle').click()
+        item = el.find_element_by_css_selector('.dropdown-toggle')
+        self._wait(lambda driver: item.is_displayed())
+        item.click()
        
         # click delete document
         item = el.find_element_by_css_selector('.icon-trash')

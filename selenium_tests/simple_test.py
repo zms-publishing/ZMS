@@ -37,8 +37,7 @@ class EditDocTest(example_test.SeleniumTestCase):
         # click create document
         create_doc = el.find_element_by_link_text('Dokument')
         self._wait(lambda driver: create_doc.is_displayed() and create_doc.is_enabled())
-        with self._wait_for_page_load():
-            create_doc.click()
+        create_doc.click()
        
         # insert frame
         MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))

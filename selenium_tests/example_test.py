@@ -62,7 +62,10 @@ class SeleniumTestCase(unittest.TestCase):
             EC.staleness_of(old_page)
         )
         # wait for javascript to be loaded (@see bootstrap.plugin.zmi.js)
-        self._find_element(By.CSS_SELECTOR, 'body.loaded')
+        body = self._find_element(By.CSS_SELECTOR, 'body')
+        classes = body.get_attribute("class").split(' ')
+        if 'zmi' in classes:
+            self._find_element(By.CSS_SELECTOR, 'body.loaded')
     
     def _reload_page(self):
         return self.driver.get(self.driver.current_url)

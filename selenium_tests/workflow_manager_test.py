@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 import unittest
-import time
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By

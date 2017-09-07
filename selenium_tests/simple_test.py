@@ -1,9 +1,7 @@
 # encoding: utf-8
 
 import unittest
-import os
 import random
-import time
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -32,19 +30,17 @@ class EditDocTest(example_test.SeleniumTestCase):
         self.driver.execute_script("$('#"+id+" .zmi-action').mouseenter()")
        
         # dropdown-toggle
-        time.sleep(1)
         dd_toggle = el.find_element_by_css_selector('.dropdown-toggle')
         self._wait(lambda driver: dd_toggle.is_displayed() and dd_toggle.is_enabled())
         dd_toggle.click()
       
         # click create document
-        time.sleep(1)
         create_doc = el.find_element_by_link_text('Dokument')
-        self._wait(lambda driver: create_doc.is_displayed())
-        create_doc.click()
+        self._wait(lambda driver: create_doc.is_displayed() and create_doc.is_enabled())
+        with self._wait_for_page_load():
+            create_doc.click()
        
         # insert frame
-        time.sleep(1)
         MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
         dialog = self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog')
         self._wait(lambda driver: dialog.is_displayed())
@@ -86,7 +82,6 @@ class EditDocTest(example_test.SeleniumTestCase):
         # dropdown-toggle
         dd_toggle = el.find_element_by_css_selector('.dropdown-toggle')
         self._wait(lambda driver: dd_toggle.is_displayed() and dd_toggle.is_enabled())
-        time.sleep(1)
         dd_toggle.click()
        
         # click delete document

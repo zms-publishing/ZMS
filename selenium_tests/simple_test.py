@@ -30,14 +30,13 @@ class EditDocTest(example_test.SeleniumTestCase):
         self.driver.execute_script("$('#"+id+" .zmi-action').mouseenter()")
        
         # dropdown-toggle
-        dd_toggle = el.find_element_by_css_selector('.dropdown-toggle')
-        self._wait(lambda driver: dd_toggle.is_displayed() and dd_toggle.is_enabled())
-        dd_toggle.click()
-      
+        self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action .dropdown-toggle').click()
+        
         # click create document
-        create_doc = el.find_element_by_link_text('Dokument')
-        self._wait(lambda driver: create_doc.is_displayed() and create_doc.is_enabled())
-        create_doc.click()
+        #self._find_element(By.LINK_TEXT, 'Dokument').click()
+        item = el.find_element_by_link_text('Dokument')
+        self._wait(lambda driver: item.is_displayed())
+        item.click()
        
         # insert frame
         MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
@@ -79,14 +78,12 @@ class EditDocTest(example_test.SeleniumTestCase):
         self.driver.execute_script("$('#"+id+" .zmi-action').mouseenter()")
        
         # dropdown-toggle
-        dd_toggle = el.find_element_by_css_selector('.dropdown-toggle')
-        self._wait(lambda driver: dd_toggle.is_displayed() and dd_toggle.is_enabled())
-        dd_toggle.click()
+        self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action .dropdown-toggle').click()
        
         # click delete document
-        delete_doc = el.find_element_by_css_selector('.icon-trash')
-        self._wait(lambda driver: delete_doc.is_displayed())
-        delete_doc.click()
+        item = el.find_element_by_css_selector('.icon-trash')
+        self._wait(lambda driver: item.is_displayed())
+        item.click()
         wait = WebDriverWait(self.driver, 5)
         wait.until(EC.alert_is_present())
         with self._wait_for_page_load():

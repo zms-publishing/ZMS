@@ -310,7 +310,7 @@ class EditPageExample(ZMSTestCase):
         
         # click insert
         self.driver.switch_to.default_content()
-        hide_zmi_actions()
+        self._hide_zmi_actions()
         self._find_element(By.XPATH, '//button[text()="Einfügen"]').click()
         
         # wait until saved

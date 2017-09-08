@@ -12,33 +12,22 @@ from selenium.common.exceptions import TimeoutException
 import example_test
 
 # python -m unittest selenium_tests.simple_test.EditDocTest
-class EditDocTest(example_test.SeleniumTestCase):
+class EditDocTest(example_test.ZMSTestCase):
    
-      def test_edit_doc(self):
-        print "<EditDocTest.test_edit_doc>"
-       
-        self._login()
-        self._create_or_navigate_to_zms()
-        self.driver.get(self.driver.current_url)
-       
+      def test_edit(self):
+        print "<EditDocTest.test_edit>"
+        self._set_up()
+        
         # get id
         zmi_item = self._find_element(By.CSS_SELECTOR, '.zmi-item.ZMSTextarea:last-of-type')
         id = zmi_item.get_attribute("id")
-       
-        # open actions-dropdown-menu
-        el = self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action')
-        self._wait_for_ajax("$('#"+id+" .zmi-action').mouseenter()")
-       
-        # dropdown-toggle
-        item = el.find_element_by_css_selector('.dropdown-toggle')
-        self._wait(lambda driver: item.is_displayed() and item.is_enabled())
-        item.click()
-      
-        # click create document
+        
+        # open actions-dropdown-menu and click create document
+        el = self._show_zmi_action(id)
         item = el.find_element_by_link_text('Dokument')
         self._wait(lambda driver: item.is_displayed())
         item.click()
-       
+        
         # insert frame
         MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
         dialog = self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog')
@@ -74,16 +63,8 @@ class EditDocTest(example_test.SeleniumTestCase):
         with self._wait_for_page_load():
             li.click()
        
-        # open actions-dropdown-menu
-        el = self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action')
-        self._wait_for_ajax("$('#"+id+" .zmi-action').mouseenter()")
-       
-        # dropdown-toggle
-        item = el.find_element_by_css_selector('.dropdown-toggle')
-        self._wait(lambda driver: item.is_displayed() and item.is_enabled())
-        item.click()
-       
-        # click delete document
+        # open actions-dropdown-menu and click delete document
+        el = self._show_zmi_action(id)
         item = el.find_element_by_css_selector('.icon-trash')
         self._wait(lambda driver: item.is_displayed())
         item.click()
@@ -95,7 +76,8 @@ class EditDocTest(example_test.SeleniumTestCase):
         # wait until deleted
         self._find_element(By.CSS_SELECTOR, '.alert-success')
        
-        print "</EditDocTest.test_edit_doc>"
+        self._tear_down()
+        print "</EditDocTest.test_edit>"
 
 
 if __name__ == "__main__":

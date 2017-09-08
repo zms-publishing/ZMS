@@ -243,12 +243,40 @@ class ScreenshotAfterFailingTest(SeleniumTestCase):
         self.fail('Intentionally failed test')
 """
 
-# python -m unittest selenium_tests.example_test.EditPageExample
-class EditPageExample(SeleniumTestCase):
+class ZMSTestCase(SeleniumTestCase):
     
-    def test_edit_page(self):
+    def _set_up(self):
         self._login()
         self._create_or_navigate_to_zms()
+        self.driver.get(self.driver.current_url)
+    
+    def _tear_down(self):
+        pass
+
+    def _show_zmi_action(self, id):
+        # open actions-dropdown-menu
+        el = self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action')
+        self._wait_for_ajax("$('#"+id+" .zmi-action').mouseenter()")
+        
+        # dropdown-toggle
+        item = el.find_element_by_css_selector('.dropdown-toggle')
+        self._wait(lambda driver: item.is_displayed() and item.is_enabled())
+        item.click()
+        
+        return el
+
+    def _hide_zmi_actions(self):
+        # remove stray action elements that linger and could catch later clicks 
+        # on buttons because they overlap them
+        self.driver.execute_script("$('.zmi-item .zmi-action').mouseleave()")
+
+# python -m unittest selenium_tests.example_test.EditPageExample
+class EditPageExample(ZMSTestCase):
+    
+    def test_edit(self):
+        print "<EditPageExample.test_edit>"
+       
+        self._set_up()
         
         # this string will be added to the page
         MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
@@ -257,12 +285,6 @@ class EditPageExample(SeleniumTestCase):
         
         # ensure menu is visible
         
-        def hide_zmi_actions():
-            # remove stray 'Textabschnitt' elements that linger and could catch later clicks 
-            # on buttons because they overlap them
-            self.driver.execute_script("$('.zmi-item .zmi-action').mouseleave()")
-        
-        self.driver.get(self.driver.current_url)
         # seems the popup is only initialized once it is shown
         self.driver.execute_script("$('.zmi-item.ZMSTextarea .zmi-action').mouseenter()")
         el = self._find_element(By.CSS_SELECTOR, '.zmi-item.ZMSTextarea .zmi-action')
@@ -272,12 +294,12 @@ class EditPageExample(SeleniumTestCase):
         import time; time.sleep(2)
         dropdown.click()
         
-        hide_zmi_actions()
+        self._hide_zmi_actions()
         
         create_paragraph = el.find_element_by_link_text('Textabschnitt')
         self._wait(lambda driver: create_paragraph.is_displayed())
         
-        hide_zmi_actions()
+        self._hide_zmi_actions()
         
         create_paragraph.click()
         
@@ -309,7 +331,9 @@ class EditPageExample(SeleniumTestCase):
         
         # ensure text is there
         self._find_element(By.XPATH, '//p[text()="%s"]' % MARKER)
-
+        
+        self._tear_down()
+        print "<EditPageExample.test_edit>"
 
 if __name__ == "__main__":
     unittest.main()

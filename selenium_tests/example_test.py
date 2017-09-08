@@ -51,7 +51,9 @@ class SeleniumTestCase(unittest.TestCase):
     
     def _find_element(self, by, value, timeout=DEFAULT_TIMEOUT):
         print "_find_element",by,value
-        return self._wait(EC.visibility_of_element_located((by, value)), timeout=timeout)
+        element = self._wait(EC.visibility_of_element_located((by, value)), timeout=timeout)
+        self._wait(lambda driver: element.is_displayed())
+        return element
     
     # Modeled after http://www.obeythetestinggoat.com/how-to-get-selenium-to-wait-for-page-load-after-a-click.html
     @contextmanager
@@ -62,10 +64,10 @@ class SeleniumTestCase(unittest.TestCase):
             EC.staleness_of(old_page)
         )
         # wait for javascript to be loaded (@see bootstrap.plugin.zmi.js)
-        root = self._find_element(By.CSS_SELECTOR, roottag)
+        root = self._find_element(By.CSS_SELECTOR, roottag, timeout=timeout)
         classes = root.get_attribute("class").split(' ')
-        if 'zmi' in classes:
-            self._find_element(By.CSS_SELECTOR, roottag+'.loaded')
+        if 'zmi' in classes and 'loading' in classes:
+            self._find_element(By.CSS_SELECTOR, roottag+'.loaded', timeout=timeout)
     
     def _reload_page(self):
         return self.driver.get(self.driver.current_url)

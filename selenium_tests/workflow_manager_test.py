@@ -1,6 +1,5 @@
 # encoding: utf-8
 
-import time
 import unittest
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -33,6 +32,7 @@ class WorkflowManagerTest(example_test.SeleniumTestCase):
         
         # insert workflow-manager
         select = Select(self._find_element(By.CSS_SELECTOR, '#Manager select#meta_type'))
+        select.select_by_visible_text('ZMSWorkflowProvider')
         with self._wait_for_page_load():
             self._find_element(By.CSS_SELECTOR, '#Manager .btn[value="Add"]').click()
         
@@ -55,9 +55,8 @@ class WorkflowManagerTest(example_test.SeleniumTestCase):
         
         # delete workflow-manager
         checkbox = self._find_element(By.CSS_SELECTOR, '#Manager input[name="ids:list"][value="workflow_manager"]')
-        while not checkbox.is_selected():
-          checkbox.click()
-          time.sleep(0.5)
+        checkbox.send_keys(Keys.NULL)
+        checkbox.click()
         with self._wait_for_page_load():
             self._find_element(By.CSS_SELECTOR, '#Manager .btn[value="Remove"]').click()
         

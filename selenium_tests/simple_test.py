@@ -1,7 +1,9 @@
 # encoding: utf-8
 
 import unittest
+import os
 import random
+import time
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -30,17 +32,19 @@ class EditDocTest(example_test.SeleniumTestCase):
         self.driver.execute_script("$('#"+id+" .zmi-action').mouseenter()")
        
         # dropdown-toggle
+        time.sleep(1)
         item = el.find_element_by_css_selector('.dropdown-toggle')
-        self._wait(lambda driver: item.is_displayed())
+        self._wait(lambda driver: item.is_displayed() and item.is_enabled())
         item.click()
-        
+      
         # click create document
-        #self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action .dropdown-menu')
+        time.sleep(1)
         item = el.find_element_by_link_text('Dokument')
         self._wait(lambda driver: item.is_displayed())
         item.click()
        
         # insert frame
+        time.sleep(1)
         MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))
         dialog = self._find_element(By.CSS_SELECTOR, '#zmiIframeAddDialog')
         self._wait(lambda driver: dialog.is_displayed())
@@ -81,11 +85,11 @@ class EditDocTest(example_test.SeleniumTestCase):
        
         # dropdown-toggle
         item = el.find_element_by_css_selector('.dropdown-toggle')
-        self._wait(lambda driver: item.is_displayed())
+        self._wait(lambda driver: item.is_displayed() and item.is_enabled())
+        time.sleep(1)
         item.click()
        
         # click delete document
-        #self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action .dropdown-menu')
         item = el.find_element_by_css_selector('.icon-trash')
         self._wait(lambda driver: item.is_displayed())
         item.click()

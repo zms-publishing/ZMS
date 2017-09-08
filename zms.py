@@ -301,7 +301,9 @@ class ZMS(
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-        'manage_customize', 'manage_customizeSystem',
+        'manage_customize',
+        'manage_customizeInstalledProducts',
+        'manage_customizeSystem',
         'manage_changeLanguages', 'manage_customizeLanguagesForm',
         'manage_customizeDesign', 'manage_customizeDesignForm',
         )

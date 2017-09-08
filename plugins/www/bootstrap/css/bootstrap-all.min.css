@@ -406,6 +406,7 @@ a .icon-rotate-90:before,a .icon-rotate-180:before,a .icon-rotate-270:before,a .
 .icon-vk:before{content:"\f189";}
 .icon-weibo:before{content:"\f18a";}
 .icon-renren:before{content:"\f18b";}
+.loading .navbar-inverse{background-color:#333}
 #navbar-sitemap{margin:0;float:left;padding:10px 0px 0px 15px;color:#9D9D9D}
 #navbar-sitemap:hover,#navbar-sitemap.active{color:#FFF;text-decoration:none}
 .navbar-brand{max-width:500px;text-align:left;margin:0 1em 0 10px;float:left;padding:10px 0px 0px 5px}

@@ -1,3 +1,6 @@
+.loading .navbar-inverse {
+	background-color:#333;
+}
 #navbar-sitemap {
 	margin:0;
 	float:left;

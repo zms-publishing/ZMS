@@ -64,22 +64,6 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]])">zmi_breadcrumbs</tal:block>
 
-<script>
-$(function(){
-		// Select tab.
-		var $tabs_left = $("div.tabs-left");
-		var anchor = $("a:first",$tabs_left).attr("href");
-		if (self.location.href.indexOf("#")>0) {
-			anchor = self.location.href.substr(self.location.href.indexOf("#")+1);
-			if (anchor.indexOf('_')==0) {
-				anchor = anchor.substr(1);
-			}
-			anchor = '#'+anchor;
-		}
-		$("a[href='"+anchor+"']",$tabs_left).tab("show");
-	});
-</script>
-
 <div class="tabbable tabs-left">
 	<ul class="nav nav-tabs">
 		<li><a href="#diff" data-toggle="tab"><tal:block tal:content="structure python:here.zmi_icon(name=['icon-check-empty','icon-check'][here.get_auto_update()])"></tal:block> Diff</a></li>

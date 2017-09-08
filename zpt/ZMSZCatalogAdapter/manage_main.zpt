@@ -41,26 +41,6 @@ return [{<br/>
 </div>
 </div>
 
-<script>
-// <!--
-$ZMI.registerReady(function(){
-		// Select tab.
-		var $tabs_left = $("div.tabs-left");
-		var anchor = $("a:first",$tabs_left).attr("href");
-		if (self.location.href.indexOf("#")>0) {
-			var s = self.location.href.substr(self.location.href.indexOf("#")+1);
-			if (s.length > 0) {
-				anchor = '#'+s;
-			}
-		}
-		$("a[href='"+anchor+"']",$tabs_left).tab("show");
-		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-				$("input[name=tab]:hidden").val($(e.target).text().trim());
-			});
-	});
-// -->
-</script>
-
 <form action="manage_changeProperties" method="post" tal:define="zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])">
 <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
 <input type="hidden" name="tab" value="">
@@ -360,6 +340,12 @@ function zmiSelectObject() {
 }
 
 $(function() {
+
+		// select tab
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				$("input[name=tab]:hidden").val($(e.target).text().trim());
+			});
+
 		var ids = $('#getIds').val().split(",");
 		for (var i = 0; i < ids.length; i++) {
 			$('input[name="ids:list"][value="'+ids[i]+'"]').prop("checked",true);
@@ -372,6 +358,7 @@ $(function() {
 			$('input[name="boost_'+k+'"]').val(attrs[k].boost);
 		}
 		toggleMetaobj();
+
 		// Sitemap
 		var href = $ZMI.getPhysicalPath();
 		$ZMI.objectTree.init(".zmi-sitemap",href,{
@@ -393,6 +380,7 @@ $(function() {
 					}
 					fn();
 				}});
+
 	});
 </script>
 

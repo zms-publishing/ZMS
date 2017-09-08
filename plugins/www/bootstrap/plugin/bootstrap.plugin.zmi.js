@@ -516,6 +516,7 @@ $(function(){
 				$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).show();
 			})
 		;
+
 	// Inputs
 	$ZMI.initInputFields($("body"));
 	$(".zmi-image,.zmi-file").each(function() {
@@ -528,7 +529,32 @@ $(function(){
 			zmiSwitchBlobButtons(elName);
 		});
 
-	$("body").addClass("loaded");
+	// Select tab.
+	$(".tabbable.tabs-left").each(function() {
+			var anchor = $("a:first",this).attr("href");
+			if (self.location.href.indexOf("#")>0) {
+				anchor = self.location.href.substr(self.location.href.indexOf("#")+1);
+				if (anchor.indexOf('_')==0) {
+					anchor = anchor.substr(1);
+				}
+				anchor = '#'+anchor;
+			}
+			$("a[href='"+anchor+"']",this).tab("show");
+		});
+
+	// Ajax Lazy Load
+	$(".ajax-lazy-load").each(function() {
+			var $that = $(this);
+			$that.html('<i class="icon-spinner icon-spin"></i>&nbsp;'+getZMILangStr('MSG_LOADING'));
+			var ajax_url = $that.attr("data-ajax-url");
+			var params = {};
+			$.get( ajax_url, params, function( data) {
+					$that.html(data);
+				});
+		});
+
+	// Loaded
+	$("body").removeClass("loading").addClass("loaded");
 	$ZMI.setCursorAuto("EO bootstrap.plugin.zmi");
 
 });

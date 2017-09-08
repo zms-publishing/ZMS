@@ -145,6 +145,7 @@ class ConfManager(
     # Management Interface.
     # ---------------------
     manage_customize = PageTemplateFile('zpt/ZMS/manage_customize',globals())
+    manage_customizeInstalledProducts = PageTemplateFile('zpt/ZMS/manage_customizeinstalledproducts',globals())
     manage_customizeLanguagesForm = PageTemplateFile('zpt/ZMS/manage_customizelanguagesform',globals())
     manage_customizeFilterForm = PageTemplateFile('zpt/ZMS/manage_customizefilterform',globals())
     manage_customizeDesignForm = PageTemplateFile('zpt/ZMS/manage_customizedesignform',globals())

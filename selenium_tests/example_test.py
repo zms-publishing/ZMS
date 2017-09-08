@@ -14,6 +14,7 @@ from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.ie.webdriver import DEFAULT_TIMEOUT
 
 class SeleniumTestCase(unittest.TestCase):
     DEFAULT_TIMEOUT = 24 # seconds
@@ -69,6 +70,16 @@ class SeleniumTestCase(unittest.TestCase):
         if 'zmi' in classes and 'loading' in classes:
             self._find_element(By.CSS_SELECTOR, roottag+'.loaded', timeout=timeout)
     
+    def _wait_for_ajax(self, script, timeout=DEFAULT_TIMEOUT):
+        source = self.driver.page_source
+        self.driver.execute_script(script)
+        def compare_source(driver):
+            try:
+                return source != driver.page_source
+            except WebDriverException:
+                pass
+        WebDriverWait(self.driver, timeout).until(compare_source)
+
     def _reload_page(self):
         return self.driver.get(self.driver.current_url)
     

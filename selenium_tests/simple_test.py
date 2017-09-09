@@ -9,10 +9,10 @@ from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-import example_test
+from ZMSTestCase import ZMSTestCase
 
 # python -m unittest selenium_tests.simple_test.EditDocTest
-class EditDocTest(example_test.ZMSTestCase):
+class EditDocTest(ZMSTestCase):
    
       def test_edit(self):
         print "<EditDocTest.test_edit>"

@@ -9,16 +9,14 @@ from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-import example_test
+from ZMSTestCase import ZMSTestCase
 
 # python -m unittest selenium_tests.metaobj_manager_test.MetaobjManagerTest
-class MetaobjManagerTest(example_test.SeleniumTestCase):
+class MetaobjManagerTest(ZMSTestCase):
     
     def test_conf(self):
         print '<MetaobjManagerTest.test_conf>'
-        self._login()
-        self._create_or_navigate_to_zms()
-        self.driver.get(self.driver.current_url)
+        self._set_up()
         
         # open config
         navbar = self._find_element(By.CSS_SELECTOR, '.navbar-main')
@@ -58,17 +56,16 @@ class MetaobjManagerTest(example_test.SeleniumTestCase):
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
+        self._tear_down()
         print '</MetaobjManagerTest.test_conf>'
 
 
 # python -m unittest selenium_tests.metaobj_manager_test.MetadictManagerTest
-class MetadictManagerTest(example_test.SeleniumTestCase):
+class MetadictManagerTest(ZMSTestCase):
 
       def test_conf(self):
         print '<MetadictManagerTest.test_conf>'
-        self._login()
-        self._create_or_navigate_to_zms()
-        self.driver.get(self.driver.current_url)
+        self._set_up()
         
         # open config
         navbar = self._find_element(By.CSS_SELECTOR, '.navbar-main')
@@ -82,10 +79,9 @@ class MetadictManagerTest(example_test.SeleniumTestCase):
         self._find_element(By.CSS_SELECTOR, '.btn.btn-default[title="Importieren..."]').click()
         dialog = self._find_element(By.CSS_SELECTOR, '.modal-dialog')
         self.driver.execute_script("$('select#init').mouseenter()")
-        time.sleep(1)
         #dialog.find_element_by_css_selector('.btn.btn-primary[value="Importieren"]').click()
         
-        time.sleep(1)
+        self._tear_down()
         print '</MetadictManagerTest.test_conf>'
 
 

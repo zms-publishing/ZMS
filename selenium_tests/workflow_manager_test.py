@@ -8,16 +8,14 @@ from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-import example_test
+from ZMSTestCase import ZMSTestCase
 
 # python -m unittest selenium_tests.workflow_manager_test.WorkflowManagerTest
-class WorkflowManagerTest(example_test.SeleniumTestCase):
+class WorkflowManagerTest(ZMSTestCase):
    
       def test_conf(self):
         print '<WorkflowManagerTest.test_conf>'
-        self._login()
-        self._create_or_navigate_to_zms()
-        self.driver.get(self.driver.current_url)
+        self._set_up()
         
         # open config
         navbar = self._find_element(By.CSS_SELECTOR, '.navbar-main')
@@ -63,6 +61,7 @@ class WorkflowManagerTest(example_test.SeleniumTestCase):
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
+        self._tear_down()
         print '</WorkflowManagerTest.test_conf>'
 
 

@@ -19,7 +19,7 @@ class EditPageExample(ZMSTestCase):
         self._set_up()
         
         # get id
-        zmi_item = self._find_element(By.CSS_SELECTOR, '.zmi-item:first-child')
+        zmi_item = self._find_element(By.CSS_SELECTOR, '.zmi-item.ZMSTextarea:last-of-type')
         id = zmi_item.get_attribute("id")
         
         # open actions-dropdown-menu and click create document

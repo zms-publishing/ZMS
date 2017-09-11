@@ -27,6 +27,7 @@ class EditDocTest(ZMSTestCase):
         item = el.find_element_by_link_text('Dokument')
         self._wait(lambda driver: item.is_displayed())
         item.click()
+        self._hide_zmi_actions()
         
         # insert frame
         MARKER = "%s-%s" % (self.id(), random.randint(0, 100000))

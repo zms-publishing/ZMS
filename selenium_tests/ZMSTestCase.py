@@ -22,6 +22,7 @@ class ZMSTestCase(SeleniumTestCase):
     def _show_zmi_action(self, id):
         # open actions-dropdown-menu
         el = self.driver.find_element_by_css_selector('#'+id+' .zmi-action')
+        self._wait(lambda driver: el.is_displayed())
         self._wait_for_ajax("$('#"+id+" .zmi-action').mouseenter()")
         
         # dropdown-toggle

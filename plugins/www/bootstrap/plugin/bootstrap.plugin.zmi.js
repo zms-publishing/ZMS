@@ -1477,20 +1477,18 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 	var that = this;
 	$("button.split-left",el).css({visibility:"visible"});
 	// Exit.
-	var $ul = $("ul.dropdown-menu",el);
-	if($("button.split-left",el).length==0 || $ul.length>0) {
+	if ($(el).hasClass("loaded") || $(el).hasClass("loading")) {
 		return;
 	}
 	// Set wait-cursor.
+	$(el).addClass("loading");
 	$(document.body).css( "cursor", "wait");
 	// Initialize.
 	var lang = getZMILang();
 	var context_id = this.getContextId(el);
 	// Edit action
 	$("button.split-left",el).click(function() {
-			var el = $(this).parent(".btn-group");
-			var $ul = $("ul.dropdown-menu",el);
-			if ($ul.length>0) {
+			if (!($(el).hasClass("loaded"))) {
 				if ($($ZMI.icon_selector("icon-plus-sign"),this).length==0) {
 					var action = self.location.href;
 					action = action.substr(0,action.lastIndexOf("/")+1);
@@ -1521,11 +1519,6 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 	params['context_id'] = context_id;
 	// JQuery.AJAX.get
 	$.get( action, params, function(data) {
-		// Reset wait-cursor.
-		$(document.body).css( "cursor", "auto");
-		// Exit.
-		$ul = $("ul.dropdown-menu",el);
-		if($ul.length>0) return;
 		// Get object-id.
 		var value = eval('('+data+')');
 		var id = value['id'].replace(/\./,"_");
@@ -1607,6 +1600,9 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 						}
 					}
 				});
+		// Reset wait-cursor.
+		$(el).removeClass("loading").addClass("loaded");
+		$(document.body).css( "cursor", "auto");
 	});
 }
 

@@ -24,6 +24,10 @@ class SeleniumTestCase(unittest.TestCase):
     
     def setUp(self):
         if self.ac_driver == 'Chrome':
+            # This is currently not required for chromedriver, but it or a similar flag may be in the future to allow CredentialedURLs at all
+            # options = webdriver.ChromeOptions()
+            # options.add_argument('--disable-blink-features=BlockCredentialedSubresources')
+            # self.driver = webdriver.Chrome(chrome_options=options)
             self.driver = webdriver.Chrome()
         else:
             profile = webdriver.FirefoxProfile();
@@ -50,18 +54,15 @@ class SeleniumTestCase(unittest.TestCase):
     
     def _find_element(self, by, value, timeout=DEFAULT_TIMEOUT):
         print "_find_element",by,value
-        element = self._wait(EC.visibility_of_element_located((by, value)), timeout=timeout)
-        self._wait(lambda driver: element.is_displayed())
-        return element
+        return self._wait(EC.visibility_of_element_located((by, value)), timeout=timeout)
     
     # Modeled after http://www.obeythetestinggoat.com/how-to-get-selenium-to-wait-for-page-load-after-a-click.html
     @contextmanager
     def _wait_for_page_load(self, timeout=DEFAULT_TIMEOUT, roottag='body'):
         old_page = self.driver.find_element_by_tag_name('html')
         yield
-        WebDriverWait(self.driver, timeout).until(
-            EC.staleness_of(old_page)
-        )
+        self._wait(EC.staleness_of(old_page), timeout=timeout)
+        
         # wait for javascript to be loaded (@see bootstrap.plugin.zmi.js)
         root = self._find_element(By.CSS_SELECTOR, roottag, timeout=timeout)
         classes = root.get_attribute("class").split(' ')
@@ -85,12 +86,19 @@ class SeleniumTestCase(unittest.TestCase):
     
     def _login(self):
         login_url = urljoin(self.base_url, '/manage_main')
-        # would be the propper way to login, but is not supported by geckodriver yet
+        # would be the propper way to login, but is not supported by geckodriver/ chromedriver yet
         # self.driver.switch_to.alert.authenticate(self.login, self.password)
-        # This stopped working with firefox 53
-        self.driver.get(login_url)
-        self.driver.switch_to.alert.send_keys(self.login + Keys.TAB + self.password)
-        self.driver.switch_to.alert.accept()
+        # Disabled because it works only in firefox
+        # if self.driver == 'Firefox':
+        #     self.driver.get(login_url)
+        #     self.driver.switch_to.alert.send_keys(self.login + Keys.TAB + self.password)
+        #     self.driver.switch_to.alert.accept()
+        # else:
+        import urlparse
+        components = urlparse.urlsplit(login_url)
+        credentials = '%s:%s@' % (self.login, self.password)
+        components_with_auth = urlparse.SplitResult(components[0], credentials + components[1], *components[2:])
+        self.driver.get(urlparse.urlunsplit(components_with_auth))
     
     def _create_or_navigate_to_zms(self):
         # expects to be logged in
@@ -188,6 +196,7 @@ class SeleniumTestCase(unittest.TestCase):
                     raise
             setattr(cls, name, wrapper)
     
+    # REFACT rename read_config
     @classmethod
     def _read_credentials(cls):
         here = os.path.dirname(os.path.abspath(__file__))

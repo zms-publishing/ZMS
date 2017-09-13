@@ -22,12 +22,11 @@ class ZMSTestCase(SeleniumTestCase):
     def _show_zmi_action(self, id):
         # open actions-dropdown-menu
         el = self._find_element(By.CSS_SELECTOR, '#'+id+' .zmi-action')
-        self._wait_for_ajax("$('#"+id+" .zmi-action').mouseenter()")
+        self._wait_for_ajax("$ZMI.actionList.over($('#"+id+" .zmi-action'))")
         
         # dropdown-toggle
         item = el.find_element_by_css_selector('.dropdown-toggle')
-        self._wait(lambda driver: item.is_displayed() and item.is_enabled())
-        item.click()
+        self._wait_for_click(item, By.CSS_SELECTOR, '#'+id+' .zmi-action .dropdown-menu')
         
         return el
 

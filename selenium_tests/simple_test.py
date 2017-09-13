@@ -25,8 +25,7 @@ class EditDocTest(ZMSTestCase):
         # open actions-dropdown-menu and click create document
         el = self._show_zmi_action(id)
         item = el.find_element_by_link_text('Dokument')
-        self._wait(lambda driver: item.is_displayed())
-        item.click()
+        self._wait_for_click(item, By.CSS_SELECTOR, '#zmiIframeAddDialog')
         self._hide_zmi_actions()
         
         # insert frame

@@ -501,19 +501,13 @@ $(function(){
 				$($ZMI.icon_selector("icon-chevron-down"),$button).hide();
 			})
 		.focus( function(evt) {
-				$ZMI.actionList.over(this,"focus",evt);
+				$ZMI.actionList.over(this,evt);
 			})
 		.hover( function(evt) {
-				$ZMI.actionList.over(this,"mouseover",evt);
-				var $button = $('button.btn.split-right.dropdown-toggle',this);
-				$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).hide();
-				$($ZMI.icon_selector("icon-chevron-down"),$button).show();
+				$ZMI.actionList.over(this,evt);
 			},
 			function(evt) {
-				$ZMI.actionList.out(this,"mouseout");
-				var $button = $('button.btn.split-right.dropdown-toggle',this);
-				$($ZMI.icon_selector("icon-chevron-down"),$button).hide();
-				$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).show();
+				$ZMI.actionList.out(this);
 			})
 		;
 
@@ -1473,9 +1467,12 @@ ZMIActionList.prototype.getContextId = function(el) {
  *
  * @param el
  */
-ZMIActionList.prototype.over = function(el, evt, e) {
+ZMIActionList.prototype.over = function(el, e) {
 	var that = this;
 	$("button.split-left",el).css({visibility:"visible"});
+	var $button = $('button.btn.split-right.dropdown-toggle',el);
+	$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).hide();
+	$($ZMI.icon_selector("icon-chevron-down"),$button).show();
 	// Exit.
 	if ($(el).hasClass("loaded") || $(el).hasClass("loading")) {
 		return;
@@ -1569,7 +1566,7 @@ ZMIActionList.prototype.over = function(el, evt, e) {
 			}
 		}
 		// Dropup
-		if($ul.innerHeight()<$(document).innerHeight()&&e.pageY>$ul.innerHeight()){
+		if(typeof e!="undefined"&&$ul.innerHeight()<$(document).innerHeight()&&e.pageY>$ul.innerHeight()){
 			$(el).addClass("dropup");
 		}
 		// Expandable headers
@@ -1611,8 +1608,11 @@ ZMIActionList.prototype.over = function(el, evt, e) {
  *
  * @param el
  */
-ZMIActionList.prototype.out = function(el, evt) {
+ZMIActionList.prototype.out = function(el) {
 	$("button.split-left",el).css({visibility:"hidden"});
+	var $button = $('button.btn.split-right.dropdown-toggle',el);
+	$($ZMI.icon_selector("icon-chevron-down"),$button).hide();
+	$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).show();
 }
 
 /**

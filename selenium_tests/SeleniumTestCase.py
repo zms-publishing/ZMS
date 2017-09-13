@@ -78,7 +78,25 @@ class SeleniumTestCase(unittest.TestCase):
             except WebDriverException:
                 pass
         WebDriverWait(self.driver, timeout).until(compare_source)
-
+    
+    # workaround for https://github.com/mozilla/geckodriver/issues/322
+    # where the click sometimes is swallowed. Should be fixed in the comming weeks
+    def _wait_for_click(self, element, by, value, maxtries=2):
+        print "_wait_for_click:",element,by,value,maxtries
+        t = 0
+        while t < maxtries:
+          t += 1
+          print "_wait_for_click:",t
+          try:
+            self._wait(lambda driver: element.is_displayed() and element.is_enabled())
+            element.click()
+            condition = self._find_element(by,value)
+            return
+          except TimeoutException:
+            print "_wait_for_click: timeout - repeat"
+            if t == maxtries:
+              raise TimeoutException
+    
     def _reload_page(self):
         return self.driver.get(self.driver.current_url)
     

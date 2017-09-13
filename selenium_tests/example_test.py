@@ -25,8 +25,7 @@ class EditPageExample(ZMSTestCase):
         # open actions-dropdown-menu and click create document
         el = self._show_zmi_action(id)
         item = el.find_element_by_link_text('Textabschnitt')
-        self._wait(lambda driver: item.is_displayed())
-        item.click()
+        self._wait_for_click(item, By.CSS_SELECTOR, '#zmiIframeAddDialog')
         self._hide_zmi_actions()
         
         # insert frame
@@ -43,13 +42,7 @@ class EditPageExample(ZMSTestCase):
         
         # open preview
         with self._wait_for_page_load(roottag='frameset'):
-            # workaround for https://github.com/mozilla/geckodriver/issues/322
-            # where the click sometimes is swallowed. Should be fixed in the comming weeks
-            self._find_element(By.LINK_TEXT, "Vorschau").click()
-            try:
-              self._find_element(By.LINK_TEXT, "Vorschau").click()
-            except:
-              pass
+            self._wait_for_click(self._find_element(By.LINK_TEXT, "Vorschau"),By.CSS_SELECTOR,'frameset')
         
         frame = self._find_element(By.NAME, "partner")
         self.driver.switch_to.frame(frame)

@@ -18,6 +18,24 @@ class LinkTest(ZMSTestCase):
         print "<LinkTest.test_edit>"
         self._set_up()
         
+        # navigate tree to page
+        for i in range(2):
+            zmi_item_page = self._find_element(By.CSS_SELECTOR, '.zmi-item.page:first-of-type')
+            id_page = zmi_item_page.get_attribute("id")
+            el_page = self._show_zmi_action(id_page)
+            item_page = el_page.find_element_by_link_text('Bearbeiten')
+            with self._wait_for_page_load():
+              item_page.click()
+        
+        # open properties tab
+        with self._wait_for_page_load():
+            self._find_element(By.XPATH, '//ul/li/a[text()="Eigenschaften"]').click()
+        
+        # navigate home
+        li = self._find_element(By.CSS_SELECTOR, '.breadcrumb li:first-of-type')
+        with self._wait_for_page_load():
+            li.click()
+        
         # get id
         zmi_item = self._find_element(By.CSS_SELECTOR, '.zmi-item:last-of-type')
         id = zmi_item.get_attribute("id")
@@ -36,14 +54,14 @@ class LinkTest(ZMSTestCase):
         dialog.find_element(By.CSS_SELECTOR, '.titlealt').send_keys(MARKER)
         with self._wait_for_page_load():
             dialog.find_element(By.XPATH, '//button[text()="Einfügen"]').click()
-       
+        
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
-       
+        
         # open properties tab
         with self._wait_for_page_load():
             self._find_element(By.XPATH, '//ul/li/a[text()="Bearbeiten"]').click()
-       
+        
         # get id
         zmi_item = self._find_element(By.CSS_SELECTOR, '.zmi-item.ZMSLinkElement:first-of-type')
         id = zmi_item.get_attribute("id")

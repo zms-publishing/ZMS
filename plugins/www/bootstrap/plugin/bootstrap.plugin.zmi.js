@@ -1485,7 +1485,7 @@ ZMIActionList.prototype.over = function(el, e) {
 	var context_id = this.getContextId(el);
 	// Edit action
 	$("button.split-left",el).click(function() {
-			if (!($(el).hasClass("loaded"))) {
+			if ($(this).parents(".loading").length==0) {
 				if ($($ZMI.icon_selector("icon-plus-sign"),this).length==0) {
 					var action = self.location.href;
 					action = action.substr(0,action.lastIndexOf("/")+1);

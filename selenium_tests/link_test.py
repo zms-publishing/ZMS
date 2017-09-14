@@ -31,6 +31,10 @@ class LinkTest(ZMSTestCase):
         with self._wait_for_page_load():
             self._find_element(By.XPATH, '//ul/li/a[text()="Eigenschaften"]').click()
         
+        # uid
+        uid = self._find_element(By.CSS_SELECTOR, '.get_uid').text
+        uid = '{%s}'%uid[3:]
+        
         # navigate home
         li = self._find_element(By.CSS_SELECTOR, '.breadcrumb li:first-of-type')
         with self._wait_for_page_load():
@@ -52,6 +56,7 @@ class LinkTest(ZMSTestCase):
         self._wait(lambda driver: dialog.is_displayed())
         dialog.find_element(By.CSS_SELECTOR, '.title').send_keys(MARKER)
         dialog.find_element(By.CSS_SELECTOR, '.titlealt').send_keys(MARKER)
+        dialog.find_element(By.CSS_SELECTOR, '.attr_ref').send_keys(uid)
         with self._wait_for_page_load():
             dialog.find_element(By.XPATH, '//button[text()="Einfügen"]').click()
         

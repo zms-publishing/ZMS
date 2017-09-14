@@ -33,7 +33,7 @@ class LinkTest(ZMSTestCase):
         
         # uid
         uid = self._find_element(By.CSS_SELECTOR, '.get_uid').text
-        uid = '{%s}'%uid[3:]
+        uid = '{$%s}'%uid[3:]
         
         # navigate home
         li = self._find_element(By.CSS_SELECTOR, '.breadcrumb li:first-of-type')

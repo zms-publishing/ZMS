@@ -12,8 +12,8 @@ from ZMSTestCase import ZMSTestCase
 
 # python -m unittest selenium_tests.workflow_manager_test.WorkflowManagerTest
 class WorkflowManagerTest(ZMSTestCase):
-   
-      def test_conf(self):
+    
+    def test_conf(self):
         print '<WorkflowManagerTest.test_conf>'
         self._set_up()
         

@@ -768,9 +768,10 @@ class ZMSMetaobjManager:
           newCustom += 'RESPONSE =  request.RESPONSE\n'
           newCustom += '\n'
           newCustom += '# Return a string identifying this script.\n'
-          newCustom += 'print "This is the Python Script %s" % script.getId(),\n'
-          newCustom += 'print "in", container.absolute_url()\n'
-          newCustom += 'return printed\n'
+          newCustom += 'p = []\n'
+          newCustom += 'p.append("This is the Python Script %s" % script.getId())\n'
+          newCustom += 'p.append("in %s" % container.absolute_url())\n'
+          newCustom += 'return "\\n".join(p)\n'
           newCustom += '\n'
           newCustom += '# --// /'+ newId + ' //--\n'
         elif newType in [ 'Z SQL Method']:

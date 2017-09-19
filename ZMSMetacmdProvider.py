@@ -62,11 +62,10 @@ pyScriptExampleCode = \
   'RESPONSE =  request.RESPONSE\n' + \
   '\n' + \
   '# Return a string identifying this script.\n' + \
-  'print "This is the", script.meta_type, \'"%s"\' % script.getId(),\n' + \
-  'if script.title:\n' + \
-  '    print "(%s)" % html_quote(script.title),\n' + \
-  'print "in", container.absolute_url()\n' + \
-  'return printed\n' + \
+  'p = []\n' + \
+  'p.append("This is the Python Script %s" % script.getId())\n' + \
+  'p.append("in %s" % container.absolute_url())\n' + \
+  'return "\\n".join(p)\n' + \
   ''
 
 

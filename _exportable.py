@@ -145,8 +145,6 @@ def localHtml(self, html):
         h = l
       ln = max( l - 20, 0)
       hn = min( h + 20, len(html))
-      print ">>>>>",html[ln:hn]
-      print ">>>>>"," "*(l-ln)+"^"*(h-l+1)
   return html
 
 

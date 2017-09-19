@@ -37,7 +37,6 @@ def _exportZodb2Zip(zf, root, container):
       _exportZodb2Zip(zf,root,ob)
     elif ob.meta_type in ['Image','File']:
       arcname = ob.absolute_url()[len(root.absolute_url())+1:]
-      print "_exportZodb2Zip",arcname
       try:
         bytes = ob.data
         if len(bytes) == 0:
@@ -66,7 +65,6 @@ def exportZodb2Zip(root):
   os.remove( zipfilename)
   
   # Returns data of zip-file.
-  print len(data)
   return data
 
 

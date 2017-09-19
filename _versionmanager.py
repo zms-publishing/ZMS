@@ -1209,9 +1209,7 @@ class VersionManagerContainer:
       
       # Enter Workflow.
       t0 = time.time()
-      print 1,"autoWfTransition",time.time()-t0
       self.syncObjModifiedChildren(REQUEST)
-      print 2,"autoWfTransition",time.time()-t0
       
       wfStates = self.getWfStates(REQUEST)
       standard.writeBlock( self, "[autoWfTransition]: wfStates=%s"%str(wfStates))

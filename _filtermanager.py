@@ -154,9 +154,10 @@ def setProcess(self, newId, newAcquired=0, newName='', newType='process', newCom
       newCommand += 'RESPONSE =  request.RESPONSE\n'
       newCommand += '\n'
       newCommand += '# Return a string identifying this script.\n'
-      newCommand += 'print "This is the Python Script %s" % script.getId()\n'
-      newCommand += 'print "in", container.absolute_url()\n'
-      newCommand += 'return printed\n'
+      newCommand += 'p = []\n'
+      newCommand += 'p.append("This is the Python Script %s" % script.getId())\n'
+      newCommand += 'p.append("in %s" % container.absolute_url())\n'
+      newCommand += 'return "\\n".join(p)\n'
       newCommand += '\n'
       newCommand += '# --// EO '+ newId + ' //--\n'
     elif newType in [ 'External Method']:

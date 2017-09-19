@@ -122,7 +122,6 @@ def importTheme(folder, theme):
       shutil.copy( packagepath, filepath)
   
   ### Import theme from ZEXP.
-  print folder, folder.absolute_url(), filename
   _fileutil.importZexp( folder, filename)
   
   return id

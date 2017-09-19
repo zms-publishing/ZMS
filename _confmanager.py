@@ -781,7 +781,7 @@ class ConfManager(
           zmsext = REQUEST.get('zmsext','')
           target = 'manage_main'
           ZMSExtension  = standard.extutil()
-          print "###InstallTheme:", zmsext
+          standard.writeBlock(self,"[ConfManager.manage_customizeSystem] InstallTheme:"+str(zmsext))
           if ZMSExtension.installTheme(self, zmsext):
             return True
           else:

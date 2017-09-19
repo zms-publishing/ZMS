@@ -18,12 +18,12 @@
 
 # Imports.
 from cStringIO import StringIO
-from types import StringTypes
 import os
 import tempfile
 import zipfile
 # Product Imports.
 import standard
+import _globals
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -76,7 +76,7 @@ _ziputil.importZip2Zodb:
 Extracts and imports zip-file to zodb.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def importZip2Zodb(root, data):
-  if type( data) in StringTypes:
+  if _globals.is_str_type(data):
     data = StringIO( data)
   zf = zipfile.ZipFile( data, 'r')
   for name in zf.namelist():

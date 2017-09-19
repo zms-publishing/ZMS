@@ -24,7 +24,6 @@ from OFS.CopySupport import absattr
 from OFS.Image import Image, File
 from cStringIO import StringIO
 from mimetools import choose_boundary
-from types import StringTypes
 import copy
 import urllib
 import warnings
@@ -125,7 +124,7 @@ IN:    clazz        [C{MyImage}|C{MyFile}]
 OUT:    blob        [MyImage|MyFile]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def createBlobField(self, objtype, file=''):
-  if type( file) in StringTypes:
+  if _globals.is_str_type( file):
     blob = uploadBlobField( self, objtype, file)
   elif type( file) is dict:
     data = file.get( 'data', '')

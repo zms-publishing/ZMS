@@ -33,7 +33,6 @@ from App.config import getConfiguration
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
 from cStringIO import StringIO
-from types import StringTypes
 from traceback import format_exception
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
@@ -321,7 +320,7 @@ def guess_content_type(filename, data):
 html_quote:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def html_quote(v, name='(Unknown name)', md={}):
-  if not type(v) in StringTypes:
+  if not _globals.is_str_type(v):
     v = str(v)
   return cgi.escape(v, 1)
 
@@ -1162,7 +1161,7 @@ def operator_getitem(a, b, c=None, ignorecase=True):
   @type c: C{any}
   @rtype: C{any}
   """
-  if ignorecase and type(b) in StringTypes:
+  if ignorecase and _globals.is_str_type(b):
     flags = re.IGNORECASE
     pattern = '^%s$'%b
     for key in a.keys():
@@ -1776,7 +1775,7 @@ def dt_executable(context, v):
   @return: 
   @rtype: C{Bool}
   """
-  if type(v) in StringTypes:
+  if _globals.is_str_type(v):
     if v.startswith('##'):
       return 'py'
     elif v.find('<tal:') >= 0:
@@ -1798,7 +1797,7 @@ def dt_exec(context, v, o={}):
   @return:
   @rtype: C{any}
   """
-  if type(v) in StringTypes:
+  if _globals.is_str_type(v):
     if v.startswith('##'):
       v = dt_py(context,v,o)
     elif v.find('<tal:') >= 0:

@@ -22,7 +22,6 @@
 # Imports.
 from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from types import StringTypes
 
 
 # MD5
@@ -187,6 +186,16 @@ def datatype_key(datatype):
     return DT_UNKNOWN
 
 
+def is_str_type(v):
+  """
+  2to3: types.StringTypes removed in Python-3.x
+  """
+  try:
+    return isinstance(v, basestring)
+  except NameError:
+    return isinstance(v, str)
+
+
 def get_size(v):
   """
   Returns size of given object v in bytes.
@@ -195,7 +204,7 @@ def get_size(v):
   """
   size = 0
   if v is not None:
-    if type(v) in StringTypes:
+    if is_str_type(v):
       size = size + len(v)
     elif type(v) is list:
       size = sum( map( lambda x: get_size(x), v))

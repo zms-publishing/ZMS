@@ -18,7 +18,6 @@
 
 # Imports.
 from AccessControl import ClassSecurityInfo
-from types import StringTypes
 import Globals
 import sys
 import urllib

@@ -19,7 +19,6 @@
 # Imports.
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from types import StringTypes
 import Globals
 import sys
 import time

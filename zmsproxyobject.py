@@ -17,11 +17,11 @@
 ################################################################################
 
 # Imports.
-from types import StringTypes
 from zope.interface import implements
 # Product Imports.
 import IZMSMetamodelProvider, IZMSFormatProvider
 from zmscontainerobject import ZMSContainerObject
+import _globals
 
 
 ################################################################################
@@ -84,7 +84,7 @@ class ZMSProxyObject(ZMSContainerObject):
     # --------------------------------------------------------------------------
     def __request__(self, REQUEST):
       proxy = self.proxy
-      if type( REQUEST) in StringTypes:
+      if _globals.is_str_type(REQUEST):
         return proxy.REQUEST
       return REQUEST
 

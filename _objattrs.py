@@ -19,7 +19,6 @@
 # Imports.
 from DateTime.DateTime import DateTime
 from OFS.Image import Image, File
-from types import StringTypes
 import ZPublisher.HTTPRequest
 import datetime
 import fnmatch
@@ -40,7 +39,7 @@ import _globals
 #  utf8
 # ------------------------------------------------------------------------------
 def utf8(v, encoding = 'latin-1'):
-  if type( v) in StringTypes:
+  if _globals.is_str_type(v):
     cp1252_map = {
       "\x80" : "\xe2\x82\xac", # /* EURO SIGN */
       "\x82" : "\xe2\x80\x9a", # /* SINGLE LOW-9 QUOTATION MARK */
@@ -534,7 +533,7 @@ class ObjAttrs:
       
       #-- Blob-Fields
       if datatype in _globals.DT_BLOBS:
-        if type(value) in StringTypes:
+        if _globals.is_str_type(value):
           value = None
         elif value is not None:
           value = value._createCopy( self, obj_attr['id'])
@@ -543,7 +542,7 @@ class ObjAttrs:
       #-- DateTime-Fields.
       elif datatype in _globals.DT_DATETIMES:
         if value is not None:
-          if type(value) in StringTypes: 
+          if _globals.is_str_type(value): 
             fmt_str = 'DATETIME_FMT'
             if datatype == _globals.DT_DATE:
               fmt_str = 'DATE_FMT'
@@ -803,7 +802,7 @@ class ObjAttrs:
       datatype = obj_attr.get('datatype_key',_globals.DT_UNKNOWN)
       
       #-- VALUE
-      if type(v) in StringTypes:
+      if _globals.is_str_type(v):
         chars = ''.join(filter(lambda x: x!='\t',string.whitespace))
         v = v.strip(chars)
       # Retrieve v from options.
@@ -847,7 +846,7 @@ class ObjAttrs:
       
       #-- DateTime-Fields.
       if datatype in _globals.DT_DATETIMES:
-        if type(v) in StringTypes:
+        if _globals.is_str_type(v):
           fmt_str = 'DATETIME_FMT'
           if datatype == _globals.DT_DATE:
             fmt_str = 'DATE_FMT'
@@ -861,7 +860,7 @@ class ObjAttrs:
       if datatype == _globals.DT_DICT:
         if v is None:
           v = {}
-        if type(v) in StringTypes:
+        if _globals.is_str_type(v):
           try:
            v = self.parseXmlString(self.getXmlHeader() + v)
           except:
@@ -886,7 +885,7 @@ class ObjAttrs:
         else:
           if v is None:
             v = []
-          if type(v) in StringTypes:
+          if _globals.is_str_type(v):
             try:
               l = self.parseXmlString(self.getXmlHeader() + v)
             except:
@@ -901,14 +900,14 @@ class ObjAttrs:
       
       #-- Integer-Fields
       if datatype in _globals.DT_INTS:
-        if type(v) in StringTypes and len(v) > 0:
+        if _globals.is_str_type(v) and len(v) > 0:
           if v[-1] == '.':
             v = v[:-1]
           v = int(v)
       
       #-- Float-Fields
       if datatype == _globals.DT_FLOAT:
-        if type(v) in StringTypes and len(v) > 0:
+        if _globals.is_str_type(v) and len(v) > 0:
           v = float(v)
       
       #-- String-Fields.

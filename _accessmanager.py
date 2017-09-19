@@ -19,7 +19,6 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.userfolder import UserFolder
-from types import StringTypes
 import copy
 import pickle
 import re
@@ -30,6 +29,7 @@ import zExceptions
 # Product Imports.
 import standard
 import _confmanager
+import _globals
 import _xmllib
 
 
@@ -135,7 +135,7 @@ role_defs = {
 def getUserId(user):
   if type(user) is dict:
     user = user['name']
-  elif user is not None and type(user) not in StringTypes:
+  elif user is not None and not _globals.is_str_type(user):
     user = user.getId()
   return user
 

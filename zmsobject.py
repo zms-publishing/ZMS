@@ -21,7 +21,6 @@ from AccessControl import ClassSecurityInfo
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog import CatalogPathAwareness
-from types import StringTypes
 import Globals
 import ZPublisher.HTTPRequest
 import urllib
@@ -367,7 +366,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             if metaObjAttr[ 'type'] in [ 'constant', 'method', 'py', 'string', 'select']:
               if c == offs:
                 v = self.getObjProperty( metaObjAttr[ 'id'], REQUEST)
-                if type(v) in StringTypes:
+                if _globals.is_str_type(v):
                   s = v
                   break
               c = c + 1
@@ -397,7 +396,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             if metaObjAttr[ 'type'] in [ 'constant', 'method', 'py', 'string', 'select']:
               if c == offs:
                 v = self.getObjProperty( metaObjAttr[ 'id'], REQUEST)
-                if type(v) in StringTypes:
+                if _globals.is_str_type(v):
                   s = v
                   break
               c = c + 1
@@ -1381,7 +1380,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         if metaCmd.get('exec',0) == 1:
           ob = zopeutil.getObject(self,id)
           value = zopeutil.callObject(ob,zmscontext=self)
-          if type(value) in StringTypes:
+          if _globals.is_str_type(value):
             message = value
           elif type(value) is tuple:
             target = value[0]

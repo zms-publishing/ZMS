@@ -20,7 +20,6 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog import ZCatalog
-from types import StringTypes
 import copy
 import sys
 import time
@@ -32,6 +31,7 @@ import standard
 import IZMSCatalogConnector
 import ZMSZCatalogAdapter
 import ZMSItem
+import _globals
 
 
 extra_column_ids = ['loc','index_html','custom']
@@ -273,7 +273,7 @@ class ZMSZCatalogConnector(
               elif k == 'standard_html':
                 v = ZMSZCatalogAdapter.remove_tags(self,v)
               xmlr += '<arr name="%s">'%k
-              if type(v) in StringTypes:
+              if _globals.is_str_type(v):
                 v = unicode(v,'utf-8')
                 for x in range(16):
                   v = v.replace(unichr(x),'')

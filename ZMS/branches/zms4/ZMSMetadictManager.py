@@ -384,9 +384,9 @@ class ZMSMetadictManager:
         # Handle exception.
         except:
           standard.writeError(self,"[manage_changeMetaProperties]")
-          error = str( sys.exc_type)
-          if sys.exc_value:
-            error += ': ' + str( sys.exc_value)
+          error = str( sys.exc_info()[0])
+          if sys.exc_info()[1]:
+            error += ': ' + str( sys.exc_info()[1])
           target = self.url_append_params( target, { 'manage_tabs_error_message':error})
         
         # Return with message.

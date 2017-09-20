@@ -35,6 +35,7 @@ import os
 import re
 import stat
 # Product Imports.
+import standard
 import zms
 import zmscustom
 import zmssqldb
@@ -139,20 +140,20 @@ def initialize(context):
               registerImage(filepath,file)
         
         # automated assembly of conf-properties
-        print "automated assembly of conf-properties"
+        standard.writeStdout(context,"automated assembly of conf-properties")
         l = assembleConfProperties(package_home(globals()),'*.py,*.zpt')
         d = dict((l[i],l[i+1]) for i in range(0, len(l), 2))
         keys = d.keys()
         keys.sort()
         for key in keys:
-          print key,'=',d[key]
+          standard.writeStdout(context,'%s=%s'%(key,str(d[key])))
         
         # automated minification
         confkeys = confdict.keys()
         for confkey in filter(lambda x:x.startswith('gen.') and x+'.include' in confkeys,confkeys):
           gen = confdict.get(confkey+'.include').split(',')
           if gen[0] != '':
-            print "automated minification:",confkey,confdict.get(confkey)
+            standard.writeStdout(context,"automated minification: %s=%s"%(confkey,str(confdict.get(confkey))))
             fileobj = open(translate_path(confdict.get(confkey)),'w')
             for key in gen:
               fn = translate_path(confdict.get(key))
@@ -161,7 +162,7 @@ def initialize(context):
               fh.close()
               l0 = len(fc)
               if fn.find('.min.') > 0 or fn.find('-min.') > 0:
-                print "add",fn,"(",l0,"Bytes)"
+                standard.writeStdout(context,"add %s (%i Bytes)"%(fn,l0))
               else:
                 # Pack
                 s0 = []
@@ -209,14 +210,14 @@ def initialize(context):
                   if not done:
                     break
                 l1 = len(fc)
-                print "add",fn,"(Packed:",l0,"->",l1,"Bytes)"
+                standard.writeStdout(context,"add %s (Packed: %i -> %i Bytes)"%(fn,l0,l1))
               fileobj.write(fc)
             fileobj.close()
         
         # automated generation of language JavaScript
         from xml.dom import minidom
         filename = os.sep.join([package_home(globals())]+['import','_language.xml'])
-        print "automated generation of language JavaScript:",filename
+        standard.writeStdout(context,"automated generation of language JavaScript: %s"%filename)
         xmldoc = minidom.parse(filename)
         langs = None
         d = {}
@@ -243,7 +244,7 @@ def initialize(context):
                 d[k][langs[i]] = l[i+1]
         for lang in langs:
           filename = os.sep.join([package_home(globals())]+['plugins','www','i18n','%s.js'%lang])
-          print "generate:",filename
+          standard.writeStdout(context,"generate: %s"%filename)
           fileobj = open(filename,'w')
           fileobj.write('var zmiLangStr={\'lang\':\'%s\''%lang)
           for k in d.keys():

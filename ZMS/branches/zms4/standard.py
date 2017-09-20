@@ -25,6 +25,7 @@ This module provides helpful functions and classes for use in Python
 Scripts.  It can be accessed from Python with the statement
 "import Products.zms.standard"
 """
+from __future__ import division
 
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
@@ -334,7 +335,7 @@ def bin2hex(m):
   @return: String
   @rtype: C{str}
   """
-  return ''.join(map(lambda x: hex(ord(x)/16)[-1]+hex(ord(x)%16)[-1],m))
+  return ''.join(map(lambda x: hex(ord(x)//16)[-1]+hex(ord(x)%16)[-1],m))
 
 
 def hex2bin(m):
@@ -345,7 +346,7 @@ def hex2bin(m):
   @return: Integer
   @rtype: C{str}
   """
-  return ''.join(map(lambda x: chr(16*int('0x%s'%m[x*2],0)+int('0x%s'%m[x*2+1],0)),range(len(m)/2)))
+  return ''.join(map(lambda x: chr(16*int('0x%s'%m[x*2],0)+int('0x%s'%m[x*2+1],0)),range(len(m)//2)))
 
 
 security.declarePublic('encrypt_schemes')
@@ -851,7 +852,7 @@ def re_search( pattern, subject, ignorecase=False):
     s = re.compile( pattern, re.IGNORECASE).split( subject)
   else:
     s = re.compile( pattern).split( subject)
-  return map( lambda x: s[x*2+1], range(len(s)/2))
+  return map( lambda x: s[x*2+1], range(len(s)//2))
 
 security.declarePublic('re_findall')
 def re_findall( pattern, text, ignorecase=False):
@@ -913,8 +914,8 @@ def format_datetime_iso(t):
   if tz < 0:
     tch = '+'
   tz = abs(tz)
-  tzh = tz/60/60
-  tzm = (tz-tzh*60*60)/60
+  tzh = tz//60//60
+  tzm = (tz-tzh*60*60)//60
   return time.strftime('%Y-%m-%dT%H:%M:%S',t)+tch+('00%d'%tzh)[-2:]+':'+('00%d'%tzm)[-2:]
 
 def getLangFmtDate(context, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
@@ -1018,7 +1019,7 @@ def daysBetween(t0, t1):
   t0 = time.mktime(stripDateTime(getDateTime(t0)))
   t1 = time.mktime(stripDateTime(getDateTime(t1)))
   d = 24.0*60.0*60.0
-  return int((t1-t0)/d)
+  return int((t1-t0)//d)
 
 security.declarePublic('compareDate')
 def compareDate(t0, t1):
@@ -1378,7 +1379,7 @@ def dict_list(l):
   @rtype: C{dict}
   """
   dict = {}
-  for i in range(0,len(l)/2):
+  for i in range(0,len(l)//2):
     key = l[i*2]
     value = l[i*2+1]
     dict[key] = value
@@ -1667,7 +1668,7 @@ def sync_list(l, nl, i):
       k[j] = x
     else:
       k.extend([x[i],x])
-  return map(lambda x: k[x*2+1], range(0,len(k)/2))
+  return map(lambda x: k[x*2+1], range(0,len(k)//2))
 
 
 security.declarePublic('aggregate_list')

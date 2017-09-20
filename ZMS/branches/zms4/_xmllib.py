@@ -1,3 +1,4 @@
+from __future__ import division
 ################################################################################
 # _xmllib.py
 #
@@ -1026,7 +1027,7 @@ def xmlNodeSet(mNode, sTagName='', iDeep=0):
   if type(mNode) is list and len(mNode) == 2:
     lNode = mNode[1]
   lTags = lNode.get('tags', [])
-  for i in range(0, len(lTags) / 2):
+  for i in range(0, len(lTags) // 2):
     lTagName = lTags[i * 2]
     lNode = lTags[i * 2 + 1]
     if sTagName in [lTagName, '']:

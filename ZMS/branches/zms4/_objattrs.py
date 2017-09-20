@@ -1,3 +1,4 @@
+from __future__ import division
 ################################################################################
 # _objattrs.py
 #
@@ -275,7 +276,7 @@ class ObjAttrs:
         opts = []
         obj_attropts = obj_attr['options']
         if type(obj_attropts) is list:
-          v = '\n'.join(map(lambda x: str(obj_attropts[x*2]),range(len(obj_attropts)/2)))
+          v = '\n'.join(map(lambda x: str(obj_attropts[x*2]),range(len(obj_attropts)//2)))
           if len(obj_attropts)==2 and self.getLinkObj(obj_attropts[0],REQUEST):
             ob = self.getLinkObj(obj_attropts[0],REQUEST)
             metaObj = self.getMetaobj(ob.meta_id)
@@ -289,7 +290,7 @@ class ObjAttrs:
             except:
               opts = standard.writeError(self,'[getObjOptions]: key=%s'%obj_attr['id'])
           else:
-            for i in range(len(obj_attropts)/2):
+            for i in range(len(obj_attropts)//2):
               opts.append([obj_attropts[i*2],obj_attropts[i*2+1]])
         elif type(obj_attropts) is dict:
           for k in obj_attropts.keys():

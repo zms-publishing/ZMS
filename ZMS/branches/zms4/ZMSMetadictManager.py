@@ -1,3 +1,4 @@
+from __future__ import division
 ################################################################################
 # ZMSMetadictManager.py
 #
@@ -50,7 +51,7 @@ class ZMSMetadictManager:
         ids = valid_ids
       for id in filter(lambda x:x in valid_ids, ids):
         metas = copy.deepcopy(self.metas)
-        metas = map(lambda x:metas[x*2+1],range(len(metas)/2))
+        metas = map(lambda x:metas[x*2+1],range(len(metas)//2))
         map(lambda x:self.operator_delitem(x,'acquired'),filter(lambda x:'acquired' in x,metas))
         d = {'id':id,'__filename__':['__metas__.py'],'Metas':metas}
         r[id] = d
@@ -123,7 +124,7 @@ class ZMSMetadictManager:
           if attr['type'] in obs:
             attrs.append(attr['type'])
       else:
-       attrs = map( lambda x: obs[x*2], range(len(obs)/2))
+       attrs = map( lambda x: obs[x*2], range(len(obs)//2))
       # Return attributes.
       return attrs
 
@@ -339,7 +340,7 @@ class ZMSMetadictManager:
             value = []
             ids = REQUEST.get('ids',[])
             metadicts = self.metas
-            for i in range(len(metadicts)/2):
+            for i in range(len(metadicts)//2):
               id = metadicts[i*2]
               dict = metadicts[i*2+1].copy()
               if id in ids or len(ids) == 0:

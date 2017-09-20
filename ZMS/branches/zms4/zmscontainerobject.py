@@ -1,3 +1,4 @@
+from __future__ import division
 ################################################################################
 # zmscontainerobject.py
 #
@@ -192,7 +193,7 @@ class ZMSContainerObject(
       key = 'attr_dc_coverage'
       if not (key in attrs and attrs.index(key)%2 == 0):
         attrs.extend([key,'global.%s'%lang])
-      for i in range(len(attrs)/2):
+      for i in range(len(attrs)//2):
         key = attrs[i*2]
         value = attrs[i*2+1]
         node.setObjProperty(key,value,REQUEST['lang'])

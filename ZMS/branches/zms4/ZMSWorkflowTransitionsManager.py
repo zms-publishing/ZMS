@@ -1,3 +1,4 @@
+from __future__ import division
 ################################################################################
 # ZMSWorkflowTransitionsManager.py
 #
@@ -110,7 +111,7 @@ class ZMSWorkflowTransitionsManager:
   def getTransitions(self):
     obs = self.transitions
     transitions = []
-    for i in range(len(obs)/2):
+    for i in range(len(obs)//2):
       id = obs[i*2]
       transition = obs[i*2+1].copy()
       transition['id'] = id

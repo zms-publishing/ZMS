@@ -18,6 +18,7 @@
 ################################################################################
 
 """ZMS Product"""
+from __future__ import division
 
 # Documentation string.
 __doc__ = """initialization module."""
@@ -200,7 +201,7 @@ def initialize(context):
                         fc=fc.replace(k+sk,k)
                         done = True
                   d = s3
-                  for i in range(len(d)/2):
+                  for i in range(len(d)//2):
                     k = d[i*2]
                     v = d[i*2+1]
                     while fc.find(k) >= 0:

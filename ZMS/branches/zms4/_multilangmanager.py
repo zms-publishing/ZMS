@@ -39,7 +39,7 @@ def _importXml(self, item, createIfNotExists=1):
     lang_dict = self.get_lang_dict()
     lang_dict[key] = {}
     for langId in self.getLangIds():
-      if item.has_key(langId):
+      if langId in item:
         lang_dict[key][langId] = item[langId]
     self.setConfProperty('ZMS.custom.langs.dict',lang_dict.copy())
 
@@ -86,7 +86,7 @@ def getDescLangs(self, id, langs):
   # Primary language is always the first item in the sorted list.
   if id == self.getPrimaryLanguage():
     label = '*'
-  elif langs.has_key(id):
+  elif id in langs:
     label = langs[id]['label']
   else:
     label = id
@@ -224,7 +224,7 @@ class MultiLanguageManager:
         if req.has_key('manage_lang'):
           manage_lang = req.get('manage_lang')
         else:
-          if sess is not None and not req.form.has_key('reset_manage_lang'):
+          if sess is not None and 'reset_manage_lang' not in req.form:
             manage_lang = sess.get('manage_lang')
           if manage_lang is None:
             lang = req.get('lang')
@@ -259,16 +259,16 @@ class MultiLanguageManager:
       
       # Return custom value.
       d = self.get_lang_dict()
-      if d.has_key(key):
-        if d[key].has_key(lang):
+      if key in d:
+        if lang in d[key]:
           return d[key][lang]
       
       # Return system value.
       d = OFS.misc_.misc_.zms['langdict'].get_langdict()
-      if d.has_key(key):
-        if not d[key].has_key(lang):
+      if key in d:
+        if lang not in d[key]:
           lang = 'eng'
-        if d[key].has_key(lang):
+        if lang in d[key]:
           return d[key][lang]
       
       return key
@@ -318,7 +318,7 @@ class MultiLanguageManager:
     def getParentLanguages(self, id):
       obs = []
       langs = self.getLangs()
-      if not langs.has_key(id):
+      if id not in langs:
         id = self.getPrimaryLanguage()
       parent = id
       while 1:
@@ -524,7 +524,7 @@ class MultiLanguageManager:
           d[key]['acquired'] = standard.concat_list(d[key].get('acquired',[]),lang_ids)
       lang_dict = self.getConfProperty('ZMS.custom.langs.dict',{})
       for key in lang_dict.keys():
-        if d.has_key(key):
+        if key in d:
           lang_ids = lang_dict[key].keys()
           for lang_id in lang_ids:
             if lang_id not in d[key].get('acquired',[]):

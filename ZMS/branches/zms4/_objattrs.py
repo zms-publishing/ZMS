@@ -249,7 +249,7 @@ class ObjAttrs:
     def getObjAttrLabel(self, obj_attr):
       lang = self.REQUEST.get('manage_lang',self.REQUEST.get('lang',self.getPrimaryLanguage()))
       for key in [ 'name', 'id']:
-        if obj_attr.has_key( key):
+        if key in obj_attr:
           name = obj_attr.get( key)
           lang_key = name
           lang_str = self.getLangStr( lang_key, lang)
@@ -271,7 +271,7 @@ class ObjAttrs:
     # --------------------------------------------------------------------------
     def getObjOptions(self, obj_attr, REQUEST):
       optpl = []
-      if obj_attr.has_key('options'):
+      if 'options' in obj_attr:
         opts = []
         obj_attropts = obj_attr['options']
         if type(obj_attropts) is list:
@@ -473,7 +473,7 @@ class ObjAttrs:
         else:
           size = None
           extra = ''
-          if obj_attr.has_key('size'):
+          if 'size' in obj_attr:
             size = obj_attr['size']
           elif datatype in _globals.DT_INTS:
             size = 5
@@ -747,7 +747,7 @@ class ObjAttrs:
       obj_vers = self.getObjVersion(REQUEST)
       obj_attrs = self.getObjAttrs()
       for key in ['active','attr_active_start','attr_active_end']:
-        if obj_attrs.has_key(key):
+        if key in obj_attrs:
           obj_attr = obj_attrs[key]
           lang = self.get_request_context(REQUEST,'lang',self.getPrimaryLanguage())
           while True:
@@ -806,7 +806,7 @@ class ObjAttrs:
         chars = ''.join(filter(lambda x: x!='\t',string.whitespace))
         v = v.strip(chars)
       # Retrieve v from options.
-      if obj_attr.has_key('options'):
+      if 'options' in obj_attr:
         options = obj_attr['options']
         try: 
           i = options.index(int(v))
@@ -954,7 +954,7 @@ class ObjAttrs:
       #-- RETURN
       if ( not enabled) or \
          ( not obj_attr['xml']) or \
-         ( obj_attr['id'].find('_') == 0 and not REQUEST.form.has_key(elName)) or \
+         ( obj_attr['id'].find('_') == 0 and elName not in REQUEST.form) or \
          ( datatype == _globals.DT_UNKNOWN): 
         if not forced: 
           return
@@ -1426,7 +1426,7 @@ class ObjAttrsManager:
           dct = self.synchronizeObjAttr( attr)
           if type( dct) is dict:
             obj_attrs[key] = dct
-          elif obj_attrs.has_key(key):
+          elif key in obj_attrs:
             del obj_attrs[key]
         self.dObjAttrs[meta_id] = obj_attrs
       

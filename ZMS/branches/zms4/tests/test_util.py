@@ -28,7 +28,7 @@ class BaseTest(object):
     self.measurements[category] = time.time()
 
   def stopMeasurement(self, category):
-    if self.measurements.has_key(category):
+    if category in self.measurements:
       self.writeInfo('[stopMeasurement] | PERFORMANCE | %s | %.2fsecs.'%(category,time.time()-self.measurements[category]))
       del self.measurements[category]
 
@@ -142,7 +142,7 @@ class TestSuite(object):
           filtered.extend(filter(lambda x:x.startswith('test_'),keys))
           filtered.extend(filter(lambda x:x=='tearDown',keys))
           if filtered:
-            if rtn.has_key('printed'):
+            if 'printed' in rtn:
               rtn['next'] = cls_name
               return rtn
             elif not name or name == cls_name:

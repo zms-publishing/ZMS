@@ -462,9 +462,9 @@ class ZMSSqlDb(ZMSCustom):
             value = r[k]
             try:
               column = context.getEntityColumn(self.tableName,k,r)
-              if '*' in stereotypes or len(filter(lambda x:column.has_key(x),stereotypes)) > 0:
+              if '*' in stereotypes or len(filter(lambda x:x in column,stereotypes)) > 0:
                 value =  column.get('value',value)
-                if column.has_key('options'):
+                if 'options' in column:
                   o = column['options']
                   v = value
                   if v:
@@ -565,19 +565,19 @@ class ZMSSqlDb(ZMSCustom):
           if row is not None:
             value = self.operator_getitem(row,columnName,ignorecase=True)
             # Select.MySQLSet
-            if stereotype.has_key('mysqlset'):
+            if 'mysqlset' in stereotype:
               for r in self.query( 'DESCRIBE %s %s'%(tableName,columnName))['records']:
                 rtype = r['type']
                 for i in rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(','):
                   options.append([i,i])
             # Select.Options
-            elif stereotype.has_key('options'):
+            elif 'options' in stereotype:
               options.extend(stereotype['options'])
             # Select.Fk
-            elif stereotype.has_key('tablename'):
+            elif 'tablename' in stereotype:
               sql = []
               sql.append( 'SELECT ' + stereotype['fieldname'] + ' AS qkey, ' + stereotype['displayfield'] + ' AS qvalue FROM ' + stereotype['tablename'])
-              if stereotype.has_key('lazy'):
+              if 'lazy' in stereotype:
                 where = ['1=0']
                 v = value
                 if v:
@@ -607,9 +607,9 @@ class ZMSSqlDb(ZMSCustom):
           options = []
           src = None
           dst = None
-          if stereotype.has_key('tablename') and stereotype.has_key('fk'):
+          if 'tablename' in stereotype and 'fk' in stereotype:
             intersection = self.getEntity(stereotype['tablename'])
-            intersection_fk = filter(lambda x:type(x.get('fk')) is dict and x['fk'].has_key('tablename'),intersection['columns'])
+            intersection_fk = filter(lambda x:type(x.get('fk')) is dict and 'tablename' in x['fk'],intersection['columns'])
             column['intersection_fk'] = intersection_fk
             src = filter(lambda x:x['id'].upper()==stereotype['fk'].upper() and x['fk']['tablename'].upper()==tableName.upper(),intersection_fk)[0]
             dst = filter(lambda x:x['id'].upper()!=stereotype['fk'].upper() or x['fk']['tablename'].upper()!=tableName.upper(),intersection_fk)[0]
@@ -625,7 +625,7 @@ class ZMSSqlDb(ZMSCustom):
             for r in self.query(sql)['records']:
               value.append(r['dst_id'])
           # Multiselect.MySQLSet
-          if stereotype.has_key('mysqlset'):
+          if 'mysqlset' in stereotype:
             if row is not None:
               value = standard.nvl(self.operator_getitem(row,columnName,ignorecase=True),'').split(',')
               for r in self.query( 'DESCRIBE %s %s'%(tableName,columnName))['records']:
@@ -633,14 +633,14 @@ class ZMSSqlDb(ZMSCustom):
                 for i in rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'','').split(','):
                   options.append([i,i])
           # Multiselect.Options
-          elif dst is not None and dst['fk'].has_key('options'):
+          elif dst is not None and 'options' in dst['fk']:
             options.extend(dst['fk']['options'])
           # Multiselect.Fk
-          elif dst is not None and dst['fk'].has_key('tablename'):
+          elif dst is not None and 'tablename' in dst['fk']:
             sql = []
             sql.append('SELECT ' + dst['fk']['fieldname'] + ' AS qkey, ' + dst['fk']['displayfield'] + ' AS qvalue')
             sql.append('FROM ' + dst['fk']['tablename'])
-            if stereotype.has_key('lazy') and row is not None:
+            if 'lazy' in stereotype and row is not None:
               where = ['1=0']
               v = value
               if v:
@@ -671,7 +671,7 @@ class ZMSSqlDb(ZMSCustom):
           # Details.Intersection
           if details['type']=='intersection':
             if row:
-              ldst = filter(lambda x:x.get('fk') is not None and x['fk'].has_key('tablename') and x['fk']['tablename']!=tableName,details['columns'])
+              ldst = filter(lambda x:x.get('fk') is not None and 'tablename' in x['fk'] and x['fk']['tablename']!=tableName,details['columns'])
               columns = []
               joins = []
               for x in map(lambda x:x['id'],filter(lambda x:x.get('datatype','?')!='?',details['columns'])):
@@ -964,7 +964,7 @@ class ZMSSqlDb(ZMSCustom):
       #-- Custom entities.
       for entity in model:
         tableName = entity['id']
-        if entity.has_key('not_found'):
+        if 'not_found' in entity:
           del entity['not_found']
         if tableName.upper() not in map( lambda x: x['id'].upper(), entities):
           cols = entity.get('columns',[])
@@ -1325,7 +1325,7 @@ class ZMSSqlDb(ZMSCustom):
         id = tablecol['id']
         consumed = id in REQUEST.get('qexcludeids',[])
         if not consumed and tablecol.get('password'):
-          if values.has_key(id):
+          if id in values:
             value = values.get(id)
             if value != '' and value != '******':
               c.append({'id':id,'value':value})
@@ -1352,7 +1352,7 @@ class ZMSSqlDb(ZMSCustom):
             blobs['blob_%s'%id] = values['blob_%s'%id]
           consumed = True
         if not consumed and tablecol.get('fk') and tablecol.get('fk').get('editable'):
-          if values.has_key(id):
+          if id in values:
             fk_tablename = tablecol.get('fk').get('tablename')
             fk_fieldname = tablecol.get('fk').get('fieldname')
             fk_displayfield = tablecol.get('fk').get('displayfield')
@@ -1450,7 +1450,7 @@ class ZMSSqlDb(ZMSCustom):
         id = tablecol['id']
         consumed = id in REQUEST.get('qexcludeids',[])
         if not consumed and tablecol.get('password'):
-          if values.has_key(id):
+          if id in values:
             value = values.get(id)
             if value != '' and value != '******':
               c.append({'id':id,'value':value})
@@ -1480,7 +1480,7 @@ class ZMSSqlDb(ZMSCustom):
             c.append({'id':id,'value':value})
           consumed = True
         if not consumed and tablecol.get('fk') and tablecol.get('fk').get('editable'):
-          if values.has_key(id):
+          if id in values:
             fk_tablename = tablecol.get('fk').get('tablename')
             fk_fieldname = tablecol.get('fk').get('fieldname')
             fk_displayfield = tablecol.get('fk').get('displayfield')
@@ -1496,7 +1496,7 @@ class ZMSSqlDb(ZMSCustom):
            (not tablecol.get('details')) and \
            (not tablecol.get('multiselect') or tablecol.get('multiselect').get('custom') or tablecol.get('multiselect').get('mysqlset')) and \
            (not tablecol.get('multimultiselect')):
-          if values.has_key(id) and values.get(id) != old_values.get(id,old[id]):
+          if id in values and values.get(id) != old_values.get(id,old[id]):
             value = values.get(id)
             if value == '' and tablecol.get('nullable'):
               value = None
@@ -1550,7 +1550,7 @@ class ZMSSqlDb(ZMSCustom):
         if tablecol.get('multiselect'):
           stereotype = tablecol['multiselect']
           # Multiselect.MySQLSet
-          if stereotype.has_key('mysqlset'):
+          if 'mysqlset' in stereotype:
             v = values.get(id)
             if type(v) is list:
               v = '\'%s\''%(','.join(v))
@@ -1564,7 +1564,7 @@ class ZMSSqlDb(ZMSCustom):
             sql.append('WHERE %s=%s'%(pk,self.sql_quote__(tablename,pk,rowid)))
             self.executeQuery('\n'.join(sql))
           # Multiselect.FK
-          elif stereotype.has_key('tablename'):
+          elif 'tablename' in stereotype:
             sql = []
             sql.append('DELETE FROM %s'%stereotype['tablename'])
             sql.append('WHERE %s=%s'%(stereotype['fk'],self.sql_quote__(tablename,pk,rowid)))
@@ -1952,10 +1952,10 @@ class ZMSSqlDb(ZMSCustom):
                         if xv != 0:
                           d[ xk] = xv
                   else:
-                    if not d.has_key( xk[0]):
+                    if xk[0] not in d:
                       d[ xk[0]] = {}
                       c.append( xk[0])
-                    if not d[ xk[0]].has_key( xk[-1]):
+                    if xk[-1] not in d[ xk[0]]:
                       d[ xk[0]][ xk[-1]] = {}
                     if type( xv) is str:
                       xv = xv.strip()

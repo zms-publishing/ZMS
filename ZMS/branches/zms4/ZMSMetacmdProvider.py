@@ -167,7 +167,7 @@ class ZMSMetacmdProvider(
       newTitle = r.get('title','')
       newMethod = impl['type']
       newData = impl['data']
-      newExec = r.has_key('exec') and r['exec']
+      newExec = 'exec' in r and r['exec']
       newDescription = r.get('description','')
       newIconClazz = r.get('icon_clazz','')
       newMetaTypes = r['meta_types']
@@ -203,7 +203,7 @@ class ZMSMetacmdProvider(
         newName = item['name']
         newTitle = item.get('title','')
         newMethod = item['meta_type']
-        newExec = item.has_key('exec') and item['exec']
+        newExec = 'exec' in item and item['exec']
         newDescription = item.get('description','')
         newIconClazz = item.get('icon_clazz','')
         newMetaTypes = item['meta_types']

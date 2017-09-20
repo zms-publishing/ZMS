@@ -252,7 +252,7 @@ class ZMSRepositoryManager(
                 d['version'] = self.getLangFmtDate(ob.bobobase_modification_time().timeTime(),'eng')
                 d['meta_type'] = ob.meta_type
                 l[d['filename']] = d
-              if i.has_key('ob'):
+              if 'ob' in i:
                 del i['ob']
               py.append('\t\t%s = %s'%(self.id_quote(i['id']),self.str_json(i,encoding="utf-8",formatted=True,level=3)))
               py.append('')
@@ -302,7 +302,7 @@ class ZMSRepositoryManager(
                   for kk in filter(lambda x:x in ['__impl__'] or not x.startswith("__"),dd.keys()):
                     vv = dd[kk]
                     # Try to read artefact.
-                    if vv.has_key('id'):
+                    if 'id' in vv:
                       fileprefix = vv['id'].split('/')[-1]
                       for file in filter(lambda x: x==fileprefix or x.startswith('%s.'%fileprefix),names):
                         artefact = os.path.join(path,file)
@@ -354,7 +354,7 @@ class ZMSRepositoryManager(
                   for kk in filter(lambda x:not x.startswith('__'),dd.keys()):
                     vv = dd[kk]
                     # Try to read artefact.
-                    if vv.has_key('id'):
+                    if 'id' in vv:
                       fileprefix = vv['id'].split('/')[-1]
                       for file in filter(lambda x: x==fileprefix or x.startswith('%s.'%fileprefix),names):
                         artefact = os.path.join(path,file)
@@ -429,7 +429,7 @@ class ZMSRepositoryManager(
         id = i[i.find(':')+1:]
         provider = getattr(self,provider_id)
         # Read repositories for provider.
-        if not repositories.has_key(provider_id):
+        if provider_id not in repositories:
           repositories[provider_id] = self.readRepository(provider)
         repository = repositories[provider_id]
         # Update.

@@ -136,7 +136,7 @@ class ZMSWorkflowTransitionsManager:
     if ob is not None:
       transition['ob'] = ob
       transition['type'] = ob.meta_type
-    if transition.has_key('dtml'):
+    if 'dtml' in transition:
       del transition['dtml']
     return transition
 

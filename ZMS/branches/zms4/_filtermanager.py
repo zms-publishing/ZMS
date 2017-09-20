@@ -662,7 +662,7 @@ class FilterManager:
     def getProcess(self, id):
       processes = getRawProcesses(self)
       process = {}
-      if processes.has_key( id):
+      if id in processes:
         process = processes.get( id).copy()
       else:
         # Acquire from parent.
@@ -709,7 +709,7 @@ class FilterManager:
     def getFilter(self, id):
       obs = getRawFilters(self)
       ob = {}
-      if obs.has_key( id):
+      if id in obs:
         ob = obs.get( id).copy()
       # Acquire from parent.
       if ob.get('acquired',0) == 1:

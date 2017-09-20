@@ -574,18 +574,18 @@ class ConfManager(
       if REQUEST is not None:
         import base64
         key = base64.b64decode(key)
-      if OFS.misc_.misc_.zms['confdict'].has_key(key):
+      if key in OFS.misc_.misc_.zms['confdict']:
         default = OFS.misc_.misc_.zms['confdict'].get(key)
       value = default
       confdict = self.getConfProperties()
-      if confdict.has_key(key):
+      if key in confdict:
         value = confdict.get(key)
       elif key is not None and not key.startswith('ASP.') and not key.startswith('Portal.') and not key in ['UniBE.Alias', 'UniBE.Server']:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           value = portalMaster.getConfProperty( key)
         if value is None:
-          if kwargs.has_key('default'):
+          if 'default' in kwargs:
             value = default
           else:
             for default in filter(lambda x:x['key']==key,self.getConfPropertiesDefaults()):
@@ -612,7 +612,7 @@ class ConfManager(
         self.clearReqBuff()
       d = self.getConfProperties()
       if value is None:
-        if d.has_key(key):
+        if key in d:
           del d[key]
       else:
         d[key] = value

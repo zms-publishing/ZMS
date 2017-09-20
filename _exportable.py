@@ -132,7 +132,7 @@ def localHtml(self, html):
     html = html.encode( charset)
   except ( UnicodeDecodeError, UnicodeEncodeError):
     standard.writeError( self, "[localHtml]")
-    v = str(sys.exc_value)
+    v = str(sys.exc_info()[1])
     STR_POSITION = ' position '
     i = v.find(STR_POSITION)
     if i > 0:

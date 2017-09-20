@@ -50,7 +50,7 @@ def updateVersion(root):
           if userDef is None:
             userDef = {'nodes':{}}
             for key in value.keys():
-              if not userDef.has_key(key):
+              if key not in userDef:
                 userDef[key] = value[key]
           nodes = value.get('nodes',{})
           for nodekey in nodes.keys():
@@ -549,7 +549,7 @@ class AccessManager(AccessableContainer):
           nodekeys = filter(lambda x:nodes[x].get('home_id')==home_id, nodes.keys())
           roleDef = {'nodes':{}}
           for key in value.keys():
-            if not roleDef.has_key(key):
+            if key not in roleDef:
               roleDef[key] = value[key]
           for nodekey in nodekeys:
             roleDef['nodes'][nodekey] = nodes[nodekey]
@@ -574,7 +574,7 @@ class AccessManager(AccessableContainer):
           if len(nodekeys) > 0:
             userDef = {'nodes':{}}
             for key in value.keys():
-              if not userDef.has_key(key):
+              if key not in userDef:
                 userDef[key] = value[key]
             for nodekey in nodekeys:
               userDef['nodes'][nodekey] = nodes[nodekey]
@@ -720,7 +720,7 @@ class AccessManager(AccessableContainer):
           user['password'] = True
         # Details
         user['details'] = []
-        if user.has_key('user_id'):
+        if 'user_id' in user:
           name = 'user_id'
           label = 'User Id'
           value = user['user_id']
@@ -958,7 +958,7 @@ class AccessManager(AccessableContainer):
       # Delete node from user-properties.
       root = self.getRootElement()
       nodes = root.getUserAttr(id,'nodes',{})
-      if nodes.has_key(node): 
+      if node in nodes: 
         del nodes[node]
         root.setUserAttr(id,'nodes',nodes)
       
@@ -1034,7 +1034,7 @@ class AccessManager(AccessableContainer):
                   home._delRoles(roles=[id],REQUEST=REQUEST)
               #-- Delete nodes from config-properties.
               security_roles = root.getConfProperty('ZMS.security.roles',{})
-              if security_roles.has_key(id): del security_roles[id]
+              if id in security_roles: del security_roles[id]
               root.setConfProperty('ZMS.security.roles',security_roles)
               id = ''
             elif key=='attr':
@@ -1044,7 +1044,7 @@ class AccessManager(AccessableContainer):
               nodekeys = REQUEST.get('nodekeys',[])
               for nodekey in nodekeys:
                 #-- Delete node from config-properties.
-                if d['nodes'].has_key(nodekey):
+                if nodekey in d['nodes']:
                   del d['nodes'][nodekey]
                   security_roles[id] = d
                   root.setConfProperty('ZMS.security.roles',security_roles)

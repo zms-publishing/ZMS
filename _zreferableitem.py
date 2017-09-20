@@ -99,7 +99,7 @@ def getInlineRefs(text):
   r = re.compile(p)
   for f in r.findall(str(text)):
     d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
-    if d.has_key('data-id'):
+    if 'data-id' in d:
       l.append(d['data-id'])
   return l
 
@@ -336,7 +336,7 @@ class ZReferableItem:
       r = re.compile(p)
       for f in r.findall(str(text)):
         d = dict(re.findall('\\s(.*?)="(.*?)"',f))
-        if d.has_key('data-id'):
+        if 'data-id' in d:
           old = p.replace('(.*?)',f)
           url = d['data-id']
           ild = getInternalLinkDict(self,url)

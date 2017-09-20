@@ -171,7 +171,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       """ ZMSObject.zmi_css_defaults """
       RESPONSE = REQUEST.RESPONSE
       RESPONSE.setHeader('Last-Modified',DateTime(self.getConfProperty('last_modified')-10000).toZone('GMT+1').rfc822())
-      if not RESPONSE.headers.has_key('cache-control'):
+      if 'cache-control' not in RESPONSE.headers:
         RESPONSE.setHeader('Cache-Control','public, max-age=3600')
       REQUEST.RESPONSE.setHeader('Content-Type','text/css')
       l = []
@@ -592,13 +592,13 @@ class ZMSObject(ZMSItem.ZMSItem,
           if type(constraints) is dict:
             if len(constraints.keys()) > 0:
               name += ' constraint'
-            if constraints.has_key('ERRORS'):
+            if 'ERRORS' in constraints:
               name += ' constraint-error'
               icon_title += '; '+';'.join(map(lambda x:'ERROR: '+x[1],constraints['ERRORS']))
-            elif constraints.has_key('WARNINGS'):
+            elif 'WARNINGS' in constraints:
               name += ' constraint-warning'
               icon_title += '; '+'; '.join(map(lambda x:'WARNING: '+x[1],constraints['WARNINGS']))
-            elif constraints.has_key('RESTRICTIONS'):
+            elif 'RESTRICTIONS' in constraints:
               name += ' constraint-restriction'
               icon_title += '; '+'; '.join(map(lambda x:'RESTRICTION: '+x[1],constraints['RESTRICTIONS']))
       else:
@@ -615,7 +615,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     def display_type(self, REQUEST={}, meta_type=None):
       meta_type = standard.nvl( meta_type, self.meta_id)
       metaObj = self.getMetaobj( meta_type)
-      if type( metaObj) is dict and metaObj.has_key( 'name'):
+      if type( metaObj) is dict and 'name' in metaObj:
         meta_type = metaObj[ 'name']
       lang_key = 'TYPE_%s'%meta_type.upper()
       lang_str = self.getZMILangStr( lang_key)
@@ -856,7 +856,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       pageexts = ['.html']
       if 'attr_pageext' in self.getObjAttrs().keys():
         obj_attr = self.getObjAttr('attr_pageext')
-        if obj_attr.has_key('keys') and len(obj_attr.get('keys')) > 0:
+        if 'keys' in obj_attr and len(obj_attr.get('keys')) > 0:
           pageexts = obj_attr.get('keys')
       pageext = self.getObjProperty('attr_pageext',REQUEST)
       if pageext == '' or pageext is None:

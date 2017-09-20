@@ -137,7 +137,7 @@ class ZMSTextformat:
     self.setId(id)
     if REQUEST is not None and \
        REQUEST.has_key('manage_lang') and \
-       ob['display'].has_key(REQUEST['manage_lang']):
+       REQUEST['manage_lang'] in ob['display']:
       self.setDisplay(ob['display'][REQUEST['manage_lang']])
     else:
       self.setDisplay(id)

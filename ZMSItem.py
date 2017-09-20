@@ -156,7 +156,7 @@ class ZMSItem(
       if not request.get('manage_tabs_message'):
         request.set( 'manage_tabs_message',self.getConfProperty('ZMS.manage_tabs_message',''))
       # manage_system
-      if request.form.has_key('zmi-manage-system'):
+      if 'zmi-manage-system' in request.form:
         request.SESSION.set('zmi-manage-system',int(request.get('zmi-manage-system')))
       # avoid declarative urls
       physical_path = self.getPhysicalPath()

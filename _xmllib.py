@@ -409,7 +409,7 @@ def xmlOnUnknownEndTag(self, sTagName):
             standard.writeBlock(self, "[xmlOnUnknownEndTag]: WARNING - Skip %s=%s" % (sTagName, str(value)))
           value = cdata
           # -- OPTIONS
-          if obj_attr.has_key('options'):
+          if 'options' in obj_attr:
             options = obj_attr['options']
             if type(options) is list:
               try:
@@ -649,7 +649,7 @@ def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
   if value is not None:
     
     # Retrieve value from options.
-    if obj_attr.has_key('options'):
+    if 'options' in obj_attr:
       options = obj_attr['options']
       try:
         i = options.index(int(value))

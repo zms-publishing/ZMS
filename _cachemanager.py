@@ -123,7 +123,7 @@ class ReqBuff:
         buff = request.get('__buff__',Buff())
         measurements = getattr(buff,'measurements',{})
         measurement = measurements.get(category,{})
-        if measurement.has_key('start'):
+        if 'start' in measurement:
           hotspot = '/'.join(self.getPhysicalPath()) 
           millis = time.time() - measurement['start']
           measurement['category'] = category

@@ -1461,7 +1461,7 @@ def is_equal(x, y):
     elif type(x) is dict:
       if len(x.keys()) == len(y.keys()):
         for k in x.keys():
-          if not x.has_key(k) or not y.has_key(k) or not is_equal(x.get(k),y.get(k)):
+          if k not in x or k not in y or not is_equal(x.get(k),y.get(k)):
             return False
         return True
     elif isinstance(x,_blobfields.MyBlob):

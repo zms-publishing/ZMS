@@ -235,7 +235,7 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
        pageexts = ['.html']
        if 'attr_pageext' in self.getObjAttrs().keys():
          obj_attr = self.getObjAttr('attr_pageext')
-         if obj_attr.has_key('keys') and len(obj_attr.get('keys')) > 0:
+         if 'keys' in obj_attr and len(obj_attr.get('keys')) > 0:
            pageexts = obj_attr.get('keys')
        for pageext in pageexts:
          s_new = pageext

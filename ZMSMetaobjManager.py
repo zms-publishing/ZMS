@@ -134,7 +134,7 @@ class ZMSMetaobjManager:
           d = copy.deepcopy(o)
           d['__filename__'] = [[],[package]][len(package)>0]+[id,'__init__.py']
           for dk in ['acquired']:
-            if d.has_key(dk):
+            if dk in d:
               del d[dk]
           for attr in d['attrs']:
             syncZopeMetaobjAttr(self,o,attr)
@@ -159,7 +159,7 @@ class ZMSMetaobjManager:
       if not id.startswith('__') and not id.endswith('__'):
         self.writeBlock("[updateRepositoryModel]: id=%s"%id)
         r['attrs'] = r.get('Attrs',[])
-        if r.has_key('Attrs'): del r['Attrs']
+        if 'Attrs' in r: del r['Attrs']
         self.delMetaobj(id)
         self.setMetaobj(r)
         for attr in r['attrs']:
@@ -309,13 +309,13 @@ class ZMSMetaobjManager:
             if (not attr[key] and REQUEST is None) or \
                (not key in mandatory_keys):
               del attr[key]
-          if attr.has_key('ob'):
+          if 'ob' in attr:
             attr['custom'] = attr['ob']
             del attr['ob']
           attrs.append( attr)
         ob['__obj_attrs__'] = attrs
         for key in ['attrs','acquired']:
-          if ob.has_key(key):
+          if key in ob:
             del ob[key]
         # Value.
         value.append({'key':id,'value':ob})
@@ -397,7 +397,7 @@ class ZMSMetaobjManager:
             if portalMaster is not None:
               aq_obs = portalMaster.metaobj_manager.__get_metaobjs__()
           if aq_obs is not None:
-            if aq_obs.has_key(id):
+            if id in aq_obs:
               ob = aq_obs[id].copy()
             else:
               ob = {'id':id,'type':'ZMSUnknown'}
@@ -504,7 +504,7 @@ class ZMSMetaobjManager:
       ob[ 'attrs'] = ob.get( 'attrs', ob.get( '__obj_attrs__', []))
       ob[ 'acquired'] = ob.get( 'acquired' ,0)
       ob[ 'enabled'] = ob.get( 'enabled', 1)
-      if ob.has_key('__obj_attrs__'):
+      if '__obj_attrs__' in ob:
         del ob['__obj_attrs__']
       obs[ob['id']] = ob
       # Make persistent.
@@ -1231,7 +1231,7 @@ class ZMSMetaobjManager:
           types = self.valid_types+map(lambda x:self.metas[x*2],range(len(self.metas)/2))
           for k in self.getMetaobjIds():
             if k not in sync_id:
-              if self.model.has_key(k) and old_model.has_key(k):
+              if k in self.model and k in old_model:
                 d = self.model[k]
                 types_attrs = map(lambda x: (x['id'],x), filter(lambda x: x['type'] in types, d.get('attrs',[])))
                 d = old_model[k]

@@ -51,7 +51,7 @@ class ZMSMetadictManager:
       for id in filter(lambda x:x in valid_ids, ids):
         metas = copy.deepcopy(self.metas)
         metas = map(lambda x:metas[x*2+1],range(len(metas)/2))
-        map(lambda x:self.operator_delitem(x,'acquired'),filter(lambda x:x.has_key('acquired'),metas))
+        map(lambda x:self.operator_delitem(x,'acquired'),filter(lambda x:'acquired' in x,metas))
         d = {'id':id,'__filename__':['__metas__.py'],'Metas':metas}
         r[id] = d
 

@@ -48,6 +48,7 @@ import sys
 import time
 import urllib
 import zExceptions
+import six
 # Product Imports.
 import _blobfields
 import _globals
@@ -1444,6 +1445,9 @@ def string_list(s, sep='\n', trim=True):
       l.append(i)
   return l
 
+if six.PY3:
+  def cmp(x, y):
+      return (x > y) - (x < y)
 
 security.declarePublic('is_equal')
 def is_equal(x, y):

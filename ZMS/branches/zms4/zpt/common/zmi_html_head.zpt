@@ -1,0 +1,16 @@
+<!-- common/zmi_html_head -->
+
+<head tal:define="dummy python:here.zmi_page_request(here,request)">
+	<title tal:content="python:'ZMS | %s | %s'%(here.display_type(),request['lang'])">the title</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+	<meta name="version_container_abs_url" tal:attributes="content python:here.getVersionContainer().absolute_url()" />
+	<meta name="physical_path" tal:attributes="content python:'/'.join(here.getPhysicalPath())" />
+	<link type="text/css" rel="stylesheet" tal:attributes="href python:'%s/zmi_manage_css'%here.getDocumentElement().absolute_url()" />
+	<tal:block tal:repeat="href python:map(lambda x:here.getConfProperty(x),here.getConfProperty('zmi.css').split(','))">
+		<link tal:condition="href" type="text/css" rel="stylesheet" tal:attributes="href python:href.replace('ZMS_ROOT',here.getDocumentElement().absolute_url())"/>
+	</tal:block>
+	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:here.getConfProperty('plugins.zmi.js')"></script>
+</head>
+
+<!-- /common/zmi_html_head -->

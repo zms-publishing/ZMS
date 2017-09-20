@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<dictionary>
+  <item key="data"><![CDATA[request = container.REQUEST
+RESPONSE =  request.RESPONSE
+
+def run(here, old, new):
+  c = 0
+  for key in here.getObjAttrs().keys():
+    objAttr = here.getObjAttr(key)
+    if objAttr['datatype'] in ['string','text']:
+      for objVers in here.getObjVersions():
+        for langId in here.getLangIds():
+          objAttrName = here.getObjAttrName(objAttr,langId)
+          objAttrVal = here.operator_getattr(objVers,objAttrName,None)
+          if objAttrVal:
+            try:
+              if len(objAttrVal.split(old))>1:
+                here.operator_setattr(objVers,objAttrName,objAttrVal.replace(old,new))
+                c += 1
+            except:
+              pass
+  for childNode in here.getChildNodes():
+    c += run(childNode,old,new)
+  return c
+
+print '<!DOCTYPE html>'
+print '<html lang="en">'
+print context.zmi_html_head(context,request)
+print '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',context.meta_id]))
+print context.zmi_body_header(context,request,options=[{'action':'#','label':'Search+Replace...'}])
+print '<div id="zmi-tab">'
+print context.zmi_breadcrumbs(context,request)
+print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+print '<input type="hidden" name="form_id" value="manage_addClient"/>'
+print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
+print '<legend>Search+Replace...</legend>'
+
+# --- Execute.
+# ---------------------------------
+if request.form.get('btn')==context.getZMILangStr('BTN_EXECUTE'):
+	message = []
+	old = request['old']
+	new = request['new']
+	c = run(context,old,new)
+	message.append('%s (%i)'%(context.getZMILangStr('MSG_CHANGED'),c))
+	request.response.redirect(context.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+
+# --- Display initial insert form.
+# ---------------------------------
+else:
+	print '<div class="form-group">'
+	print '<label for="old" class="col-sm-3 control-label mandatory">Search for</label>'
+	print '<div class="col-sm-9"><input class="form-control" name="old" type="text" size="25" value=""></div>'
+	print '</div><!-- .form-group -->'
+	print '<div class="form-group">'
+	print '<label for="new" class="col-sm-3 control-label mandatory">Replace with</label>'
+	print '<div class="col-sm-9"><input class="form-control" name="new" type="text" size="25" value=""></div>'
+	print '</div><!-- .form-group -->'
+	print '<div class="form-group">'
+	print '<div class="controls save">'
+	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_EXECUTE'),'utf-8'),unicode(context.getZMILangStr('BTN_EXECUTE'),'utf-8'))
+	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
+	print '</div>'
+	print '</div><!-- .form-group -->'
+
+# ---------------------------------
+
+print '</form><!-- .form-horizontal -->'
+print '<div style="clear:both;">&nbsp;</div>'
+print '</div><!-- #zmi-tab -->'
+print context.zmi_body_footer(context,request)
+print '</body>'
+print '</html>'
+
+return printed
+]]>
+  </item>
+  <item key="description"></item>
+  <item key="exec" type="int">0</item>
+  <item key="icon_clazz"><![CDATA[icon-random text-primary]]></item>
+  <item key="id"><![CDATA[manage_searchReplace]]></item>
+  <item key="meta_type"><![CDATA[Script (Python)]]></item>
+  <item key="meta_types" type="list">
+    <list>
+      <item><![CDATA[type(ZMSDocument)]]></item>
+      <item><![CDATA[type(ZMSObject)]]></item>
+    </list>
+  </item>
+  <item key="name"><![CDATA[Search+Replace...]]></item>
+  <item key="roles" type="list">
+    <list>
+      <item><![CDATA[ZMSAdministrator]]></item>
+      <item><![CDATA[ZMSAuthor]]></item>
+      <item><![CDATA[ZMSEditor]]></item>
+    </list>
+  </item>
+</dictionary>

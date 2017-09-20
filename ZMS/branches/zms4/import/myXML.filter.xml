@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list>
+<item type="dictionary"><dictionary>
+<item key="type"><![CDATA[filter]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="acquired" type="int">0</item>
+<item key="content_type"><![CDATA[application/zip]]></item>
+<item key="description"/>
+<item key="format"><![CDATA[myXML]]></item>
+<item key="id"><![CDATA[myXML]]></item>
+<item key="meta_types" type="list"><list>
+<item><![CDATA[ZMSFolder]]></item>
+</list>
+</item>
+<item key="name"><![CDATA[myXML]]></item>
+<item key="processes" type="list"><list>
+<item type="dictionary"><dictionary>
+<item key="file" type="file">
+<data content_type="text/x-python" filename="zip.py" type="file"><![CDATA[import fnmatch
+import os
+import stat
+import sys
+import tempfile
+import zipfile
+
+def writeZipFile( zf, basepath, path, filter):
+  print "Process directory "+path
+  for file in os.listdir( path):
+    filepath = path+os.sep+file
+    mode = os.stat( filepath)[stat.ST_MODE]
+    if stat.S_ISDIR( mode): 
+      writeZipFile( zf, basepath, filepath, filter)
+    elif filepath != sys.argv[1]:
+      match = False
+      for pattern in filter.split(';'):
+        match = match or fnmatch.fnmatch( filepath, pattern)
+      if match:
+        arcname = filepath[len( basepath)+1:]
+        print "Add "+filepath+" as "+arcname
+        zf.write( filepath, arcname)
+
+filename = sys.argv[1]
+filter = sys.argv[2]
+print "Create '"+filename+"' with filter '"+filter+"'"
+zf = zipfile.ZipFile( filename, 'w')
+for path in sys.argv[3:]:
+  writeZipFile( zf, path, path, filter)
+zf.close()
+print "Closed!"
+]]></data></item>
+<item key="id"><![CDATA[pyzip]]></item>
+</dictionary>
+</item>
+</list>
+</item>
+<item key="roles" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+<item><![CDATA[ZMSAuthor]]></item>
+<item><![CDATA[ZMSEditor]]></item>
+</list>
+</item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="type"><![CDATA[process]]></item>
+<item key="value" type="dictionary"><dictionary>
+<item key="acquired" type="int">0</item>
+<item key="command"><![CDATA[{software_home}/../Python/python {trans} {out.zip} *.xml;*.jpg;*.gif {cur_dir}]]></item>
+<item key="id"><![CDATA[pyzip]]></item>
+<item key="name"><![CDATA[Zip (Python)]]></item>
+<item key="type"><![CDATA[process]]></item>
+</dictionary>
+</item>
+</dictionary>
+</item>
+</list>

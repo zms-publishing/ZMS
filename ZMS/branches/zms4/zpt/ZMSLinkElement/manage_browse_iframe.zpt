@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" tal:define="standard modules/Products.zms/standard">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<style>
+.zmi.browse_iframe .nav-pills {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	background-color:white;
+	padding-bottom:5px;
+	z-index:9999;
+}
+.zmi.browse_iframe .tab-content {
+	padding-top:50px;
+}
+.zmi.browse_iframe .tabbable .tab-pane form {
+	box-shadow:none;
+	border:none;
+	padding:1em 0em;
+}
+.zmi.browse_iframe #search .line.row.gray {
+	background-color:#f8f8f8;
+}
+.zmi.browse_iframe #search .line.row p {
+	font-size:x-small;
+}
+.zmi.browse_iframe #search .line.row h2 {
+	font-size:14px;
+	color:#333;
+	margin-bottom:0;
+}
+.zmi.browse_iframe #search h2 a {
+	color:#333!important;
+	font-size:medium;
+}
+.zmi.browse_iframe #search .breadcrumb {
+	font-size:small;
+	padding:3px 0 0 0;
+	background:transparent;
+	margin:0;
+}
+.zmi.browse_iframe #search h4 {
+	color:#999;
+}
+.zmi.browse_iframe #search .header.row {
+	display:none;
+}
+.zmi.browse_iframe  .form-inline .form-control {
+	display: inline-block;
+	width: auto;
+	vertical-align: middle;
+}
+.zmi.browse_iframe .form-inline .form-group {
+	display: inline-block;
+	margin-bottom: 0px;
+	vertical-align: middle;
+}
+.zmi.browse_iframe #link .form-inline .form-group {
+	margin-top: 1em;
+	vertical-align:baseline;
+}
+</style>
+<body tal:attributes="class python:here.zmi_body_class(id='browse_iframe')">
+
+<tal:block tal:define="global el python:here.getLinkObj(request.get('elValue'))">
+	<tal:block tal:condition="python:el is not None">
+		<span class="ui-helper-hidden" name="physical_path" tal:content="python:'/'.join(el.getPhysicalPath())" />
+	</tal:block>
+</tal:block>
+
+<div class="tabbable tabs-left">
+
+<ul class="nav nav-pills">
+	<li class="active"><a data-toggle="tab" href="#sitemap" tal:attributes="title python:'%s: %s'%(here.getZMILangStr('ATTR_LINK_INTERNAL'),here.getZMILangStr('TAB_SITEMAP'))" tal:content="structure python:here.zmi_icon(name='icon-sitemap')">Sitemap</a></li>
+	<li><a data-toggle="tab" href="#search" tal:attributes="title python:'%s: %s'%(here.getZMILangStr('ATTR_LINK_INTERNAL'),here.getZMILangStr('TAB_SEARCH'))" tal:content="structure python:here.zmi_icon(name='icon-search')">Search</a></li>
+	<li><a data-toggle="tab" href="#link" tal:attributes="title python:here.getZMILangStr('ATTR_LINK_EXTERNAL')" tal:content="structure python:here.zmi_icon(name='icon-link')">Link</a></li>
+	<li class="dropdown languages" tal:condition="python:len(here.getLangIds())>1">
+		<a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:here.getZMILangStr('TAB_LANGUAGES')">
+			<tal:block tal:content="structure python:here.zmi_icon(name='icon-flag')"></tal:block>&nbsp;
+			<b class="caret"></b>
+		</a>
+		<ul class="dropdown-menu">
+			<li tal:repeat="language python:[request['defaultLang']]">
+				<a tal:attributes="href python:here.url_append_params(here.url_inherit_params(request['URL'],request,['lang','selectedLang'],sep='&'),{'lang':language},sep='&'); data-language language" class="toggle-lang">
+					<tal:block tal:content="structure python:here.zmi_icon(name=['icon-check-empty','icon-check'][int(request.get('selectedLang','')=='')])"></tal:block>
+					Default
+				</a>
+			</li>
+			<li tal:repeat="language python:here.getLangIds()">
+				<a tal:attributes="href python:here.url_append_params(here.url_inherit_params(request['URL'],request,['lang','selectedLang'],sep='&'),{'lang':language,'selectedLang':language},sep='&'); data-language language" class="toggle-lang">
+					<tal:block tal:content="structure python:here.zmi_icon(name=['icon-check-empty','icon-check'][int(request.get('selectedLang','')==language)])"></tal:block>
+					<tal:block tal:content="python:here.getLanguageLabel(language)">the language</tal:block>
+					<tal:block tal:condition="python:language==here.getPrimaryLanguage()">[*]</tal:block>
+				</a>
+			</li>
+		</ul>
+	</li><!-- .dropdown -->
+</ul>
+
+<div class="tab-content">
+
+<div class="tab-pane active" id="sitemap">
+<div class="zmi-sitemap">
+</div><!-- .zmi-sitemap -->
+</div>
+
+<div class="tab-pane" id="search">
+<form name="searchform" method="get" tal:attributes="action python:'%s#search'%request['URL']">
+	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
+	<input type="hidden" name="defaultLang" tal:attributes="value python:request['defaultLang']" />
+	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
+	<input type="hidden" name="fmName" tal:condition="python:request.has_key('fmName')" tal:attributes="value python:request.get('fmName','')" />
+	<input type="hidden" name="elName" tal:condition="python:request.has_key('elName')" tal:attributes="value python:request.get('elName','')" />
+	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
+	<div class="form-group">
+		<div class="col-md-12">
+			<div class="input-group">
+				<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
+				<span class="input-group-btn">
+			<button type="submit" class="btn btn-primary">
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
+			</button>
+				</span>
+			</div>
+		</div>
+	</div><!-- .form-group -->
+<div id="search_results" class="form-group" style="display:none">
+	<div class="col-md-10">
+		<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
+		<div class="header row">
+			<div class="col-md-6">
+				<span class="small-head">
+					<img src="/misc_/zms/loading.gif" alt="Loading..."/>
+					<tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>
+				</span>
+			</div>
+			<div class="meta-info col-sm-12 col-md-6 col-ns-5 col-ns-offset-1">
+			</div>
+		</div><!-- .header.row -->
+		<div class="line row"></div><!-- .row -->
+			<div class="pull-right">
+				<ul class="pagination"></ul>
+			</div>
+	</div>
+</div>
+</form>
+</div>
+
+<div class="tab-pane" id="link">
+	<div class="form-inline">
+		<div class="form-group">
+			<label class="sr-only" for="url"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">the label</span></label>
+			<select class="form-control" id="type" name="type">
+				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_TYPE')">Select tyype</tal:block> ---</option>
+				<option value="http://">http:</option>
+				<option value="https://">https:</option>
+				<option value="file://" tal:content="python:here.getZMILangStr('ATTR_FILE')">file</option>
+				<option value="mailto:" tal:content="python:here.getZMILangStr('ATTR_EMAIL')">mailto</option>
+				<option value="ftp://">ftp:</option>
+			</select>
+		</div><!-- .form-group -->
+		<div class="form-group">
+			<input class="form-control" type="text" name="url" size="25" tal:attributes="value python:request.get('url','')"/>
+		</div><!-- .form-group -->
+		<button class="btn btn-primary" type="submit" name="btn">Ok</button>
+	</div><!-- .form-inline -->
+</div><!-- #link -->
+
+</div><!-- .tab-content -->
+
+<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMSLinkElement/manage_browse_iframe.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionary>
+  <item key="custom"/>
+  <item key="data"><![CDATA[# Import a standard function, and get the HTML request and response objects.
+from Products.PythonScripts.standard import html_quote
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+
+print context.manage_page_header(context,request)
+print context.manage_tabs(context,request)
+print context.f_headline(context,headline='<big>Edit Portal Content-Objects</big>')
+print '<form method="post" enctype="multipart/form-data">'
+print '<input type="hidden" name="form_id" value="manage_editPortalContentObjects"/>'
+print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
+print context.zmi_form_section_begin(context,request)
+
+print """
+<script>
+$(function() {
+		$("div.metaobj")
+			.addClass("ui-helper-clickable")
+			.click(function() {
+				var newClazz = "";
+				if ($(this).hasClass("inactive")) {
+					$(this).removeClass("inactive");
+					newClass = "active";
+				}
+				else if ($(this).hasClass("active")) {
+					$(this).removeClass("active");
+					newClass = "acquired";
+				}
+				else if ($(this).hasClass("acquired")) {
+					$(this).removeClass("acquired");
+					newClass = "inactive";
+				}
+				$("input",this).val("");
+				$(this).removeClass("modified").addClass(newClass);
+				if (!($(this).hasClass("initial"+newClass))) {
+					$("input",this).val(newClass);
+					$(this).addClass("modified");
+				}
+			});
+	});
+</script>
+<style>
+	div.metaobj {
+		margin:2px;
+		width:16px;
+		height:16px;
+		background-color:#AAA;
+		border-right:1px solid #666;
+		border-bottom:1px solid #666;
+	}
+	div.metaobj img {
+		width:16px;
+		height:16px;
+		border:none;
+	}
+	div.metaobj.active {
+		background:url(/misc_/zms/mi.gif) #CCC top left no-repeat;
+	}
+	div.metaobj.inactive {
+		background:url(/misc_/zms/pl.gif) #CCC top left no-repeat;
+	}
+	div.metaobj.acquired {
+		background:url(/misc_/zms/mi.gif) #BEDAFD top left no-repeat;
+	}
+	div.metaobj.acquired img {
+		background:url(/misc_/zms/ico_is_acquired.gif) top right no-repeat;
+	}
+	div.metaobj.warning img {
+		background:url(/misc_/zms/decorator_warning.gif) top right no-repeat;
+	}
+	div.metaobj.modified {
+		background-color:#FDBEDA;
+		border-right:1px solid #F00;
+		border-bottom:1px solid #F00;
+	}
+	td.vert {
+		height:150px!important;
+		vertical-align: bottom;
+		padding-bottom: 10px;
+		overflow: hidden;
+	}
+	div.vert {
+		-moz-transform:rotate(-90deg);
+		writing-mode: tb-rl;
+		white-space: nowrap;
+		width:20px!important;
+	}
+</style>
+"""
+
+if request.get('btn') == context.getZMILangStr('BTN_SAVE'):
+	request.set('__get_metaobjs__',True)
+	print '<div id="system_msg" class="ui-state-highlight ui-corner-all" style="margin:1em">'
+	print '<span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>'
+	for client in context.getPortalClients():
+		homeid = client.getHome().id
+		for reqkey in request.keys():
+			if reqkey.startswith(homeid+"-") and len(request[reqkey]) > 0:
+				metaObjId = reqkey[len(homeid+"-"):]
+				action = request[reqkey]
+				print '<strong>%s</strong>'%homeid, metaObjId, '<em>(%s)</em>'%action
+				if action == 'inactive':
+					client.metaobj_manager.delMetaobj(metaObjId)
+					print '<code>Done</code>'
+				elif action == 'active':
+					xml = context.metaobj_manager.exportMetaobjXml([id])
+					client.metaobj_manager.importMetaobjXml(xml=xml)
+					print '<code>Done</code>'
+				elif action == 'acquired':
+					client.metaobj_manager.acquireMetaobj(metaObjId)
+					print '<code>Done</code>'
+				print '<br/>'
+	print '</div>'
+
+if request.get('btn') == context.getZMILangStr('BTN_CANCEL'):
+	RESPONSE.redirect('%s/manage_main'%context.absolute_url())
+
+print '<table border="1" cellspacing="0" cellpadding="0">'
+print '<tr class="zmiNeutralColorMedium0">'
+print '<td>'+context.getHome().id+'</td>'
+metaObjTuplesTemp = []
+for metaObjId in context.getMetaobjIds():
+	metaObj = context.getMetaobj(metaObjId)
+	metaObjTuplesTemp.append((metaObj['name'],metaObj['id']))
+metaObjTuplesTemp.sort()
+metaObjTuples  = []
+for metaObjTuple in metaObjTuplesTemp:
+	metaObjId = metaObjTuple[1]
+	metaObjName = metaObjTuple[0]
+	metaObj = context.getMetaobj(metaObjId)
+	if metaObj['type'] == 'ZMSPackage':
+		metaObjTuples.append((metaObjName,metaObj))
+		for metaObjTuple2 in metaObjTuplesTemp:
+			metaObjId2 = metaObjTuple2[1]
+			metaObjName2 = metaObjTuple2[0]
+			metaObj2 = context.getMetaobj(metaObjId2)
+			if metaObj2['package'] == metaObjId:
+				metaObjTuples.append((metaObjName2,metaObj2))
+	elif metaObj['package'] == '':
+		metaObjTuples.append((metaObjName,metaObj))
+for metaObjTuple in metaObjTuples:
+	metaObj = metaObjTuple[1]
+	metaObjId = metaObj['id']
+	metaObjName = metaObjTuple[0]
+	print '<td class="vert"><div class="vert">'
+	if metaObj['package'] != '':
+		print '<img src="%s" width="8" height="8" align="absmiddle" border="0"/>'%(context.spacer_gif)
+	print '<img src="%s" align="absmiddle" border="0"/>'%(context.display_icon(request,metaObjId))
+	if metaObj['type'] == 'ZMSPackage':
+		print '<strong>%s</strong> (%s)'%(metaObj['name'],metaObj.get('revision','0.0.0'))
+	else:
+		print '%s (%s)'%(metaObj['name'],metaObj.get('revision','0.0.0'))
+	print '</div></td>'
+print '</tr>'
+for client in context.getPortalClients():
+	clientMetaObjIds = client.getMetaobjIds()
+	print '<tr class="zmiNeutralColorLight0">'
+	print '<td class="form-small"><a href="'+client.absolute_url()+'/metaobj_manager/manage_main" target="_blank" class="zmi">'+client.getHome().id+'</a></td>'
+	for metaObjTuple in metaObjTuples:
+		metaObj = metaObjTuple[1]
+		metaObjId = metaObj['id']
+		metaObjName = metaObjTuple[0]
+		clientMetaObj = client.getMetaobj(metaObjId)
+		clazz = ['metaobj']
+		title = ''
+		if metaObjId in clientMetaObjIds:
+			if client.getMetaobj(metaObjId)['acquired']:
+				title = 'acquired'
+				clazz.append('acquired')
+			else:
+				title = 'active'
+				if metaObj.get('revision','0.0.0') != clientMetaObj.get('revision','0.0.0'):
+					title += ' (%s)'%(clientMetaObj.get('revision','0.0.0'))
+					clazz.append('warning')
+				else:
+					metaObjAttrIds = map(lambda x: x['id'], metaObj['attrs'])
+					clientMetaObjAttrIds = map(lambda x: x['id'], clientMetaObj['attrs'])
+					if metaObjAttrIds != clientMetaObjAttrIds:
+						title += ' (-%s, +%s)'%(str(filter(lambda x: x not in clientMetaObjAttrIds,metaObjAttrIds)),str(filter(lambda x: x not in metaObjAttrIds,clientMetaObjAttrIds)))
+						clazz.append('warning')
+				clazz.append('active')
+		else:
+			title = 'inactive'
+			clazz.append('inactive')
+		clazz.append('initial'+clazz[-1])
+		print '<td align="center"><div class="'+' '.join(clazz)+'" title="'+title+'">'
+		print '<input type="hidden" name="'+client.getHome().id+'-'+metaObjId+'" value=""/>'
+		print '<img src="/misc_/zms/spacer.gif" alt=""/></div></td>'
+	print '</tr>'
+print '</table>'
+
+print context.zmi_form_section_end(context,request)
+
+print '<div class="zmi-form-section ui-widget-content ui-corner-all">'
+print '<input class="ui-button ui-state-active ui-corner-all" name="btn" type="submit" value="'+context.getZMILangStr('BTN_SAVE')+'">'
+print '<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="'+context.getZMILangStr('BTN_RESET')+'">'
+print '<input class="ui-button ui-state-default ui-corner-all" name="btn" type="submit" value="'+context.getZMILangStr('BTN_CANCEL')+'">'
+print '</div>'
+
+print '</form>'
+print context.manage_page_footer(context,request)
+
+return printed
+]]>
+  </item>
+  <item key="description"/>
+  <item key="exec" type="int">0</item>
+  <item key="icon_clazz"><![CDATA[icon-edit text-primary]]></item>
+  <item key="id"><![CDATA[manage_editPortalContentObjects]]></item>
+  <item key="meta_type"><![CDATA[Script (Python)]]></item>
+  <item key="meta_types" type="list">
+    <list>
+      <item><![CDATA[ZMS]]></item>
+    </list>
+  </item>
+  <item key="name"><![CDATA[Edit Portal Content-Objects...]]></item>
+  <item key="roles" type="list">
+    <list>
+      <item><![CDATA[ZMSAdministrator]]></item>
+    </list>
+  </item>
+</dictionary>

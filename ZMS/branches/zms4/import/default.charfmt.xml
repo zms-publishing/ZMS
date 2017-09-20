@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list>
+<item type="dictionary"><dictionary>
+<item key="attrs"><![CDATA[title="" lang="<dtml-var lang>"]]></item>
+<item key="btn" type="image">
+<data width="23" height="22" content_type="image/gif" filename="icon_abr.gif" type="image">47494638396117001600b30000000080f8f8f8c0c0c080808000000000000000000000000000000000000000000000000000000000000000000000000021f90401000002002c000000001700160000043050c849abbd38ebcdbbff60288a042195a6806aa9d9aa67f6ce3186bae599cb310ddbbde0ef325bbd46c8a472c96c6e22003b</data></item>
+<item key="display"><![CDATA[Abbreviation]]></item>
+<item key="tag"><![CDATA[abbr]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="attrs"><![CDATA[title="" lang="<dtml-var lang>"]]></item>
+<item key="btn" type="image">
+<data width="23" height="22" content_type="image/gif" filename="icon_acr.gif" type="image">47494638396117001600b30000000080f8f8f8c0c0c080808000000000000000000000000000000000000000000000000000000000000000000000000021f90401000002002c000000001700160000043250c849abbd38ebcdbbff60288a04319526aa99424ab1ec05b7af145ba87b96ab4d9f3eccec36130655c59172c96c3a9f9a08003b</data></item>
+<item key="display"><![CDATA[Acronym]]></item>
+<item key="tag"><![CDATA[acronym]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="attrs"><![CDATA[lang="<dtml-var lang>"]]></item>
+<item key="btn" type="image">
+<data width="23" height="22" content_type="image/gif" filename="icon_lang.gif" type="image">47494638396117001600b30000000080f8f8f8c0c0c080808000000000000000000000000000000000000000000000000000000000000000000000000021f90401000002002c000000001700160000043750c849abbd38ebcdbbff60287e044594c2794eaac94a259ace968cc6afecc2ad3daf2f98d077dbd17043216b5524b646d0a8744aad6222003b</data></item>
+<item key="display"><![CDATA[Language]]></item>
+<item key="tag"><![CDATA[span]]></item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="attrs"/>
+<item key="btn"/>
+<item key="display"/>
+<item key="tag"/>
+</dictionary>
+</item>
+</list>

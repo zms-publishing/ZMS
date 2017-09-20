@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" tal:define="standard modules/Products.zms/standard">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:here.zmi_body_class(id='browse')">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<form class="form-horizontal" method="get">
+<tal:block tal:define="global path python:here.getPath(request); items python:here.readDir(path)">
+
+<legend>
+	<a href="manage_main">
+		<i tal:attributes="class python:here.icon_clazz"></i>
+		<tal:block tal:content="python:here.meta_type">the meta_type</tal:block>
+	</a>
+</legend>
+
+<div class="form-group">
+	<label class="col-lg-2 control-label" for="path"><span>Path</span></label>
+	<div class="col-lg-10"><code tal:content="path">the path</code></div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
+
+<tal:block tal:condition="python:len(items)>0">
+<table class="table table-striped">
+<thead>
+<tr>
+	<tal:block define="global
+			columns python:['meta_type','id','get_size','bobobase_modification_time'];
+			labels python:{'meta_type':'type','id':'name','get_size':'size','bobobase_modification_time':'last_modified'}">
+		<tal:block tal:repeat="column columns">
+			<th tal:define="global label python:here.getZMILangStr('ATTR_%s'%labels[column].upper())">
+				<tal:block tal:content="label">the label</tal:block>
+			</th>
+		</tal:block>
+	</tal:block>
+</tr>
+</thead>
+<tbody>
+<tr tal:repeat="item items">
+	<td><img src="misc_/OFSP/File_icon.gif" alt="File"/></td>
+	<td><a tal:attributes="href python:'manage_index_html?filename=%s'%item['file']" target="_blank" tal:content="python:item['file']">the file</a></td>
+	<td><tal:block tal:content="python:here.getDataSizeStr(item['size'])">the size</tal:block></td>
+	<td><tal:block tal:content="python:here.getLangFmtDate(item['mtime'])">the timestamp</tal:block></td>
+</tr>
+</tbody>
+</table>
+</tal:block>
+
+</tal:block>
+</form>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

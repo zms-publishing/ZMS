@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" tal:define="standard modules/Products.zms/standard">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:here.zmi_body_class(id='sequence')">
+<form class="form-horizontal" action="manage_changeProperties" method="post">
+
+<legend>
+	<a href="manage_main">
+		<i tal:attributes="class python:here.icon_clazz"></i>
+		<tal:block tal:content="python:here.meta_type">the meta_type</tal:block>
+	</a>
+</legend>
+
+<p class="well">
+A Sequence is used to provide unique ids. You can update the current value using the form below.
+</p>
+
+<div class="form-group">
+	<label class="col-lg-2 control-label" for="currentvalue:int"><span>Current-Value</span></label>
+	<div class="col-lg-10"><input class="form-control" type="text" name="currentvalue:int" size="8" tal:attributes="value python:here.currVal()"/></div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
+
+<div class="form-group">
+	<div class="col-lg-2">&nbsp;</div>
+	<div class="col-lg-10">
+		<button name="submit" type="submit" class="btn btn-primary" value="Change">Change</button>
+		<button name="submit" type="submit" class="btn btn-default" value="Next">Next</button>
+	</div><!-- .col-lg-10 -->
+</div><!-- .form-group -->
+
+</form>
+</body>
+</html>

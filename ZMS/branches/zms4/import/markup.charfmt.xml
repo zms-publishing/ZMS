@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list>
+	<item type="dictionary">
+		<dictionary>
+			<item key="attrs"><![CDATA[class="ins"]]></item>
+			<item key="btn" type="image">
+				<data width="23" height="22" content_type="image/gif" filename="icon_pink.gif" type="image">47494638396117001600b30000040204fc02fc848284fc82fc0646f85309fad18716770000270000070000d30000000000f01c7efac3001612cd00000021f90401000001002c000000001700160003045630c849abbd38eb4d85ff60284ac2609e688a0aa4eaaa6c509e000dd46e3c0f37dae72dd34f8883056bc35bf2a613f28abd28b2f95c3eaf83261427c56a6dc46b54a7ac22b157ea6bad5e0365a2789c43afdbef784b04003b</data>
+			</item>
+			<item key="display"><![CDATA[Hervorheben]]></item>
+			<item key="tag"><![CDATA[span]]></item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="attrs"><![CDATA[class="del"]]></item>
+			<item key="btn" type="image">
+				<data width="23" height="22" content_type="image/gif" filename="icon_strikethrough.gif" type="image">47494638396117001600b30000fc0204fc02fc00000000000006987f5308a1d186d1770077270000070000d30000000000401c7ef3c3001412cd00000021f90401000001002c000000001700160003043930c849abbd38ebcdbbff20064c40f999e4e8a112bb8d6c19bb6d30db309cca7cefabb596ca44045280a822ce762c1297c290744aad5aafd808003b</data>
+			</item>
+			<item key="display"><![CDATA[Durchstreichen]]></item>
+			<item key="tag"><![CDATA[span]]></item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="attrs"/>
+			<item key="btn" type="image">
+				<data width="23" height="22" content_type="image/gif" filename="icon_unmark.gif" type="image">47494638396117001600b30000040204848284fc02fca44e4cfcfe4c4c4e4ca4a6a4fc4e4cfcfefc070000d30000000000001c9a00c30217123f00000021f90401000002002c000000001700160003046450c849abbd386b3186d958f78192c879e46474621014a9b076480dc0e44c2300826f2204ed56f86156861ab2e62b663a05c4e1b09afaa0214394c92d3a2f9fe8747c281008c6cb96eb4383c464b37bb3669ad318affe1eab7c49308102787d8586871211003b</data>
+			</item>
+			<item key="display"><![CDATA[Markierungen entfernen]]></item>
+			<item key="js"><![CDATA[function charFormatUnmark() {
+  var fm = document.forms['<dtml-var fmName>'];
+  var el = fm.elements['<dtml-var elName>'];
+  var v = el.value;
+  v = v.replace( /<span class=\"ins\">((.|\n|\r|\t)*?)<\/span>/g, '$1');
+  v = v.replace( /<span class=\"del\">((.|\n|\r|\t)*?)<\/span>/g, '$1');
+  v = v.replace( /<s>((.|\n|\r|\t)*?)<\/s>/g, '$1');
+  el.value = v;
+}]]></item>
+			<item key="tag"/>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="attrs"/>
+			<item key="btn"/>
+			<item key="display"/>
+			<item key="tag"/>
+		</dictionary>
+	</item>
+</list>

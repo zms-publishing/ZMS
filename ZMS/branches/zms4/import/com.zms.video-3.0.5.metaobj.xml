@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<dictionary>
+  <item key="key"><![CDATA[video]]></item>
+  <item key="value" type="dictionary">
+    <dictionary>
+      <item key="__obj_attrs__" type="list">
+        <list>
+          <item type="dictionary">
+            <dictionary>
+              <item key="custom"><![CDATA[## Script (Python) "video.titlealt"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: DC.Title.Alt
+##
+# --// titlealt //--
+return zmscontext.attr('title')
+# --// /titlealt //--
+]]>
+              </item>
+              <item key="id"><![CDATA[titlealt]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[DC.Title.Alt]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[py]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="id"><![CDATA[title]]></item>
+              <item key="mandatory" type="int">1</item>
+              <item key="multilang" type="int">1</item>
+              <item key="name"><![CDATA[DC.Title]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[title]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="id"><![CDATA[attr_dc_description]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">1</item>
+              <item key="name"><![CDATA[DC.Description]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[attr_dc_description]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="id"><![CDATA[img]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Preview-Screen]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[image]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="id"><![CDATA[videodata]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[MP4 File Upload]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[file]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="id"><![CDATA[provider]]></item>
+              <item key="keys" type="list">
+                <list>
+                  <item><![CDATA[fileupload]]></item>
+                  <item><![CDATA[vimeo]]></item>
+                  <item><![CDATA[youtube]]></item>
+                  <item><![CDATA[switch]]></item>
+                </list>
+              </item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Video Provider]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[select]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="id"><![CDATA[videoId]]></item>
+              <item key="mandatory" type="int">1</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Video-ID]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[string]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="id"><![CDATA[videoHint]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[<div id="tr_videoHint" class="form-group"><label class="col-sm-2 control-label" for="videoHint"><span>Hinweise</span></label><div id="videoHint" class="col-sm-10">Der Kurztitel ist nur für die interne Darstellung/Referenzierung.<br />WICHTIG: Die Option "Einbetten auf Anfrage" des YouTube Videos darf nicht deaktiviert sein!<br />Die YouTube ID kann aus der URL des Browsers beim Betrachten des Videos entnommen werden:<ol><li>http://www.youtube.com/watch?v=<strong style="color:darkred">7nxwgSxLA68</strong></li><li>http://youtu.be/<strong style="color:darkred">7nxwgSxLA68</strong></li></ol></div></div>]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[hint]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="id"><![CDATA[videoWidth]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Breite]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[int]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="id"><![CDATA[videoHeight]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Höhe]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[int]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="custom"><![CDATA[icon-film]]></item>
+              <item key="id"><![CDATA[icon_clazz]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Icon (Class)]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[constant]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="id"><![CDATA[interface]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[<script>
+	function changeGUI() {
+		$('#tr_videodata').hide();
+		if ( $('#tr_provider select option:selected').val()=='switch' ) {
+			$('#tr_videoHint').hide();
+			$('#tr_videoWidth').hide();
+			$('#tr_videoHeight').hide();
+			$('#tr_videodata').hide();
+		} else {
+			if ( $('#tr_provider select option:selected').val()=='youtube' ) {
+				$('#tr_videoHint').show();
+				} else {
+				$('#tr_videoHint').hide();
+				}
+			if ( $('#tr_provider select option:selected').val()=='fileupload' ) {
+				$('#tr_videodata').show();
+				}
+			$('#tr_videoWidth').show();
+			$('#tr_videoHeight').show();
+			// $('#tr_text_'+getZMILang()).show();
+		};
+
+	};
+	$(document).ready( function() {
+		$('#tr_provider select').change(function() { changeGUI() });
+		changeGUI();
+	});
+</script>]]>
+              </item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[interface]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="custom"><![CDATA[<!-- pageelement_videotoc -->
+<!-- DTML-CALL: dtml-var "pageelement_videotoc().encode('utf-8')  -->
+
+<div class="video-overview"
+	tal:define="videos python:context.getParentNode().filteredTreeNodes(request,['video'])">
+	<style type="text/css">
+		.video-overview .video-wrapper {
+			margin: 1em 0;
+			margin-right: 2em;
+			overflow: hidden;
+			width: 250px;
+			height: 260px;
+			display: block;
+			float: left;
+			background: rgb(23, 97, 161);
+			background: black;
+		}
+		.video-overview .video-wrapper img {
+			max-width:100%;
+		}
+		.video-overview .video-wrapper a {
+			text-decoration:none;
+		}
+		.video-overview .video-wrapper a p {
+			padding:4px 8px;
+			color:white;
+			font-style:italic;
+			font-size:12px;
+			font-weight:normal;
+			line-height:150%;
+		}
+		.video-overview .video-wrapper a p:hover {
+			color:orange;
+		}
+	</style>
+	<tal:block tal:repeat="video videos">
+		<div class="video-wrapper"
+			tal:define="title python:video.attr('title');
+				description python:video.attr('attr_dc_description');
+				img python:video.attr('img')">
+			<a href="#"
+				tal:attributes="title title;href python:video.getHref2IndexHtml(request);"
+				><img tal:condition="python:img!=''"
+					tal:attributes="src python:img.getHref(request);"/>
+				<p class="description" tal:condition="description" tal:content="python:description">description</p>
+			</a>
+		</div>
+	</tal:block>
+</div>
+
+<!-- /pageelement_videotoc -->]]>
+              </item>
+              <item key="id"><![CDATA[pageelement_videotoc]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[TOC]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[Page Template]]></item>
+            </dictionary>
+          </item>
+          <item type="dictionary">
+            <dictionary>
+              <item key="custom"><![CDATA[<!-- video.standard_html -->
+<tal:block tal:define="global
+  zmscontext options/zmscontext;
+  id python:zmscontext.getId();
+  title python:zmscontext.attr('title');
+  description python:zmscontext.attr('attr_dc_description');
+  img python:zmscontext.attr('img');
+  videodata python:zmscontext.attr('videodata');
+  provider python:zmscontext.attr('provider');
+  videoId python:zmscontext.attr('videoId');
+  videoWidth python:zmscontext.attr('videoWidth');
+  videoHeight python:zmscontext.attr('videoHeight');
+  videoURL python:{'fileupload':'','vimeo':'//player.vimeo.com/video/%s?badge=0','youtube':'http://www.youtube.com/embed/%s','switch':'https://tube.switch.ch/embed/%s'}[provider]">
+
+<style type="text/css" tal:condition="python:request.get('first_video_on_page',True)">
+	.video-wrapper {margin: 1em 0;}
+	.youtube { position: relative; padding-bottom: 55%; padding-top: 15px; height: 0; overflow: hidden;}
+	.youtube iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+	.video-wrapper p.description {font-size:90%;font-style:italic;}
+</style>
+<tal:block tal:define="first_video_on_page python:request.set('first_video_on_page',False)"></tal:block>
+
+<div class="note" tal:condition="python:request.get('URL').find('/manage') > -1">
+	<strong tal:content="title">Titel</strong> - web size:
+	<strong tal:content="videoWidth">videoWidth</strong> x <strong tal:content="videoHeight">videoHeight</strong> Pixel.
+</div>
+
+<div class="video-wrapper" tal:attributes="class python:'video-wrapper elastic-video %s'%(provider);title title;id id">
+	<tal:block tal:condition="python:img!='' and img!=None"
+		><img tal:attributes="src python:img.getHref(request);
+			width videoWidth;
+			height videoHeight;
+			style python:['cursor:pointer','display:none'][img==''];
+			onclick python:'javascript:$(\047#%s img\047).hide()\073$(\047#%s .video\047).show()'%(id,id)"
+	/></tal:block>
+	<iframe tal:condition="python:provider!='fileupload'"
+		tal:attributes="src python:videoURL%(videoId); width python:[None,videoWidth][videoWidth>0]; height python:[None,videoHeight][videoHeight>0];style python:['display:none',''][img=='' or img==None]"
+		class="video video-iframe"
+		frameborder="0"
+		webkitallowfullscreen=""
+		mozallowfullscreen=""
+		allowfullscreen="">
+	</iframe>
+	<video class="video"
+		tal:condition="python:provider=='fileupload' and videodata!=''"
+		tal:attributes="width python:[None,videoWidth][videoWidth>0]; height python:[None,videoHeight][videoHeight>0]; style python:['display:none',''][img=='' or img==None]"
+		controls="">
+		<source src="movie.mp4" type="video/mp4" tal:attributes="src python:videodata.getHref(request)" />
+		ERROR: Your browser does not support the video tag.
+	</video>
+	<div tal:condition="python:(provider=='fileupload' and videodata=='') or (provider!='fileupload' and videoId=='')"
+		class="alert alert-warning">No video file uploaded or no provider video specified.
+	</div>
+	<p class="description" tal:condition="description" tal:content="description">description</p>
+</div>
+
+</tal:block>
+<!-- /video.standard_html -->]]>
+              </item>
+              <item key="id"><![CDATA[standard_html]]></item>
+              <item key="mandatory" type="int">0</item>
+              <item key="multilang" type="int">0</item>
+              <item key="name"><![CDATA[Template: YouTube Video]]></item>
+              <item key="repetitive" type="int">0</item>
+              <item key="type"><![CDATA[zpt]]></item>
+            </dictionary>
+          </item>
+        </list>
+      </item>
+      <item key="access" type="dictionary">
+        <dictionary>
+          <item key="delete" type="list">
+            <list>
+              <item><![CDATA[ZMSAdministrator]]></item>
+              <item><![CDATA[ZMSAuthor]]></item>
+              <item><![CDATA[ZMSEditor]]></item>
+            </list>
+          </item>
+          <item key="delete_custom"></item>
+          <item key="insert" type="list">
+            <list>
+              <item><![CDATA[ZMSAdministrator]]></item>
+              <item><![CDATA[ZMSAuthor]]></item>
+              <item><![CDATA[ZMSEditor]]></item>
+            </list>
+          </item>
+          <item key="insert_custom"><![CDATA[{$}]]></item>
+        </dictionary>
+      </item>
+      <item key="enabled" type="int">1</item>
+      <item key="id"><![CDATA[video]]></item>
+      <item key="name"><![CDATA[Video]]></item>
+      <item key="package"><![CDATA[com.zms.foundation]]></item>
+      <item key="revision"><![CDATA[3.0.5]]></item>
+      <item key="type"><![CDATA[ZMSObject]]></item>
+    </dictionary>
+  </item>
+</dictionary>

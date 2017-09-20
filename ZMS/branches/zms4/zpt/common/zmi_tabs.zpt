@@ -1,0 +1,21 @@
+<!-- common/zmi_tabs -->
+
+<ul class="main-nav nav nav-tabs" tal:define="global
+			current python:request['URL'].split('/')[-1];
+			options options/options;
+			actions python:map(lambda x: x.get('alias',x['action']), options);
+			active python:map(lambda x: int(
+						(x==current and not here.id+'/'+current in actions) or 
+						(x==here.id+'/'+current) or 
+						(current not in actions and current.startswith(x))), actions);
+			noactive python:len(filter(lambda x: x==1, active))<1">
+	<tal:block tal:repeat="i python:range(len(options))">
+		<tal:block tal:define="global option python:options[i]">
+			<li tal:attributes="class python:' '.join([['','active'][int(active[i] or (i==0 and noactive))]])">
+				<a tal:attributes="href python:here.url_append_params('%s/%s?lang=%s'%(here.getSelf().absolute_url(),option['action'],request['lang']),option.get('params',{}))" tal:content="structure python:here.getZMILangStr(option['label'])">the label</a>
+			</li>
+		</tal:block>
+	</tal:block>
+</ul><!-- .nav.nav-tabs -->
+
+<!-- /common/zmi_tabs -->

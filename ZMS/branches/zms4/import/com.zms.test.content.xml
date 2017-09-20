@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ZMSFolder>
+	<titlealt>
+		<lang><![CDATA[Test]]></lang>
+	</titlealt>
+	<attr_dc_type>
+		<lang><![CDATA[Resource]]></lang>
+	</attr_dc_type>
+	<attr_dc_description>
+		<lang><![CDATA[QUnit is a powerful, easy-to-use JavaScript unit testing framework. It's used by the jQuery, jQuery UI and jQuery Mobile projects and is capable of testing any generic JavaScript code, including itself!]]></lang>
+	</attr_dc_description>
+	<active>
+		<lang>1</lang>
+	</active>
+	<title>
+		<lang><![CDATA[Test]]></lang>
+	</title>
+	<ZMSQunit id_prefix="e">
+		<active>
+			<lang>1</lang>
+		</active>
+	</ZMSQunit>
+</ZMSFolder>

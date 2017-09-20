@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" tal:define="standard modules/Products.zms/standard">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+
+<body tal:attributes="data-root python:here.getRootElement().getHome().id;data-client python:here.getHome().id;id python:'zmsid_%s'%(here.id);class python:here.zmi_body_class(id='manage-menu')">
+
+<header>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<a class="navbar-brand zmi-helper-clickable" target="_blank" 
+					style="max-width: 66%;overflow: hidden;white-space: nowrap;"
+					tal:attributes="href python:'../../%s/manage'%here.breadcrumbs_obj_path()[0].getHome().id">
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block>
+					<span class="zmi-home-id" tal:content="python:here.breadcrumbs_obj_path()[0].getHome().id">Home-Id</span>
+		</a>
+		<ul class="nav navbar-nav navbar-right">
+			<li id="zmi-history" class="dropdown"></li>
+			<li id="zmi-bookmarks" class="dropdown"></li>
+		</ul>
+	</div><!-- .navbar -->
+</header>
+
+<div class="zmi-sitemap">
+</div><!-- .zmi-sitemap -->
+
+<footer>
+	<span class="zmi-helper-clickable refresh" onclick="zmiRefresh()"><i class="icon-refresh"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block></span>
+</footer>
+
+<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/object/manage_menu.js"></script>
+</body>
+</html>

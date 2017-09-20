@@ -1,0 +1,21 @@
+<!-- common/zmi_body_footer -->
+
+<footer>
+	<div class="pull-left" 
+	 tal:attributes="title python:'Rendering Time: %.2fsecs.'%(int((DateTime().timeTime()-request['ZMI_TIME'])*100.0)/100.0)"
+		><a href="http://www.zms-publishing.com" title="&#169; 2000-2017 HOFFMANN+LIEBENBERG" target="_blank">ZMS 3.3</a> 
+		Python-based Content Management System for Science, Technology and Medicine
+	</div><!-- .pull-left -->
+	<div class="pull-right back-to-top">
+		<i tal:attributes="title python:here.getZMILangStr('PAGETOP')" class="glyphicon glyphicon-chevron-up"></i>
+	</div><!-- .pull-right -->
+	<div class="clearfix"></div><!-- .clearfix -->
+</footer>
+
+<div tal:condition="python:request.get('zmi-measurement')" id="zmi-measurement">
+  <code tal:content="python:here.getMeasurement()"></code>
+</div>
+
+<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+
+<!-- /common/zmi_body_footer -->

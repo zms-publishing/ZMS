@@ -1,0 +1,148 @@
+<!-- ZMSRecordSet/main -->
+
+<div class="ZMSRecordSet main"  tal:define="global
+		meta_id options/meta_id;
+		metaObj python:here.getMetaobj(meta_id);
+		metaObjIds python:here.getMetaobjIds();
+		metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
+		SESSION request/SESSION;
+		dummy0 python:request.set('qsize',request.get('qsize',SESSION.get('qsize_%s'%here.id,20)));
+		dummy0 python:request.set('qfilters',request.get('qfilters',SESSION.get('qfilters_%s'%here.id,1)));
+		dummy0 python:request.set('qindex',request.get('qindex',request.SESSION.get('qindex_%s'%here.id,-1)));
+		dummy0 python:SESSION.set('qsize_%s'%here.id,request.get('qsize'));
+		dummy0 python:SESSION.set('qfilters_%s'%here.id,request.get('qfilters'));
+		dummy0 python:SESSION.set('qindex_%s'%here.id,request.get('qindex'));
+		dummy0 python:here.recordSet_Init(request);
+		dummy0 python:here.recordSet_Filter(request);
+		dummy0 python:here.recordSet_Sort(request)">
+
+<tal:block tal:define="global
+		records python:here.attr(metaObjAttrIds[0]);
+		filter_columns python:filter(lambda x:
+				x['id'] not in ['__sort_id']
+				and x['type'] in here.metaobj_manager.valid_types+here.getMetaobjIds()
+				and x['type'] not in ['password','resource']
+				,metaObj['attrs'][1:]);
+		metaObjAttrs python:filter(lambda x:x['custom'],filter_columns)">
+
+<tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
+
+<form method="get" class="form-horizontal">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<input type="hidden" name="preview" tal:attributes="value request/preview">
+	<input tal:condition="python:request.has_key('qorder')" type="hidden" name="qorder" tal:attributes="value request/qorder">
+	<input tal:condition="python:request.has_key('qorderdir')" type="hidden" name="qorderdir" tal:attributes="value request/qorderdir">
+	<div class="accordion-group perc100">
+		<div class="accordion-heading attr_last_modified">
+			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
+				><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right')"></tal:block
+				><tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
+			></a>
+			<div class="pull-left" tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
+			<div class="clearfix"></div>
+		</div><!-- .accordion-heading -->
+		<div id="attrActivity" class="accordion-body collapse">
+			<div class="accordion-inner">
+				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
+					<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
+				</tal:block>
+				<span title="This Node Contains ..." tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
+				<span title="Data Size" class="get_size" tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>,
+				<span title="Unique ID" class="get_uid" tal:content="python:'ID:%s'%(here.get_uid())">unique-id</span>
+			</div><!-- .accordion-inner -->
+		</div><!-- .accordion-body -->
+		<div class="accordion-heading filters">
+			<a class="accordion-toggle pull-left" data-toggle="collapse" href="#attrProperties">
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-down')"></tal:block>
+			</a>
+			<label class="control-label">
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-filter')">the icon</tal:block>
+				<tal:block tal:content="structure python:here.getZMILangStr('ATTR_FILTER')">the label</tal:block>
+			</label>
+		</div><!-- .accordion-heading -->
+
+		<div id="attrProperties" class="accordion-body filters collapse in">
+			<div class="accordion-inner">
+				<tal:block tal:repeat="filterIndex python:range(request.get('qfilters',1)+1)">
+					<div tal:attributes="class python:' '.join(['form-group','col-lg-12']+[[],['hidden']][int(filterIndex==request.get('qfilters',1))])">
+						<select class="form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
+							<option value="" tal:content="python:here.getZMILangStr('CAPTION_SELECT')">the option</option>
+							<tal:block tal:repeat="filter_column filter_columns">
+								<option tal:attributes="value python:filter_column['id']; selected python:['','selected'][int(request.SESSION.get('filterattr%i_%s'%(filterIndex,here.id))==filter_column['id'])]" tal:content="filter_column/name">label</option>
+							</tal:block>
+						</select>
+						<select class="form-control input-sm" tal:attributes="name python:'filterop%i'%filterIndex">
+							<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
+								<option tal:attributes="value python:op; selected python:['','selected'][op.lower()==request.get('filterop%i'%filterIndex, request.SESSION.get('filterop%i_%s'%(filterIndex,here.id),'')).lower()]" tal:content="python:op">op</option>
+							</tal:block>
+						</select>
+						<input class="form-control input-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />
+					</div><!-- .form-group -->
+				</tal:block>
+				<div class="form-group">
+					<div class="col-lg-12">
+						<button type="submit" id="btn-search" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_REFRESH')">
+							<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
+							<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>
+						</button>
+						<button type="submit" id="btn-reset" class="btn btn-default" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
+							<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
+						</button>
+					</div>
+				</div>
+			</div><!-- .accordion-inner -->
+		</div><!-- .accordion-body -->
+	</div><!-- .accordion-group -->
+</form>
+
+	<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
+			metaObjAttrIds=here.getMetaobjAttrIds(meta_id),
+			metaObjAttrs=metaObjAttrs,
+			filtered_records=request['res'],
+			records=records,
+			filtered=True,
+			record_handler=here.getEntityRecordHandler(meta_id))">
+		metaobj_recordset_main_grid
+	</tal:block>
+
+</tal:block>
+
+<tal:block tal:condition="python:request.get('action')=='updateForm'">
+	<tal:block tal:define="global records request/res_abs">
+		<tal:block tal:condition="python:request.form.has_key('qidentifier')">
+			<tal:block tal:define="global
+					rowid python:here.getMetaobjAttrIdentifierId(here.meta_id);
+					row python:filter(lambda x:x[rowid]==request['qidentifier'],records)[0];
+					dummy0 python:request.set('qindex',records.index(row))"></tal:block>
+		</tal:block>
+		<tal:block tal:content="structure python:here.metaobj_recordset_input_fields(meta_id=meta_id,action='update',qindex=request['qindex'],row=records[request['qindex']])">
+			metaobj_recordset_input_fields
+		</tal:block>
+	</tal:block>
+</tal:block>
+<tal:block tal:condition="python:request.get('action')=='insertForm'">
+	<tal:block tal:define="global records request/res_abs; row python:{}">
+		<tal:block tal:repeat="metaObjAttr python:here.getMetaobj(here.meta_id)['attrs'][1:]">
+			<tal:block tal:condition="python:metaObjAttr['id']=='sort_id'">
+				<tal:block tal:define="dummy0 python:here.operator_setitem(row,metaObjAttr['id'],request.get('sort_id',len(records)))"></tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:metaObjAttr['type'] in ['date','datetime'] and metaObjAttr['default']=='{now}'">
+				<tal:block tal:define="dummy0 python:here.operator_setitem(row,metaObjAttr['id'],DateTime())"></tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:metaObjAttr['type'] in ['identifier']">
+				<tal:block tal:define="dummy0 python:here.operator_setitem(row,metaObjAttr['id'],here.getNewId())"></tal:block>
+			</tal:block>
+		</tal:block>
+		<tal:block tal:content="structure python:here.metaobj_recordset_input_fields(meta_id=meta_id,action='insert',qindex=-1,row=row)">
+			metaobj_recordset_input_fields
+		</tal:block>
+	</tal:block>
+</tal:block>
+
+</tal:block>
+
+</div>
+
+
+<!-- /ZMSRecordSet/main -->
+

@@ -1,0 +1,10 @@
+<a tal:condition="python:here.getConfProperty('ZMS.branding','ZMS3') in ['ZMS3','']"
+		class="navbar-brand"
+		href="#" onclick="window.open('http://www.zms-publishing.com');"
+		title="ZMS3 - Python-based Content Management System for Science, Technology and Medicine"
+	><span class="product">ZMS3</span><span class="slogan">Python-based Content Management System for Science, Technology and Medicine</span>
+</a>
+<span tal:condition="python:here.getConfProperty('ZMS.branding','ZMS3')!='ZMS3'"
+		class="navbar-brand"
+	><span tal:replace="structure python:here.getConfProperty('ZMS.branding','Custom Brand')">Custom Brand</span>
+</span>

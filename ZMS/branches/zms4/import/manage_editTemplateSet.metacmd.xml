@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<dictionary>
+  <item key="data"><![CDATA[<tal:block tal:condition="python:not request.has_key('omitHtml')">
+<!DOCTYPE html>
+<html lang="en">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+
+<!--
+################################################################################
+### Frameset
+################################################################################ 
+-->
+<frameset tal:condition="python:not request.get('frametop') and not request.get('frameleft') and not request.get('framebottom')" cols="40%,60%">
+	<frame name="left" tal:attributes="src python:'%s?frameleft=True&lang=%s'%(request.get('URL'),request.get('lang'))"/>
+	<frame name="preview" tal:attributes="src here/absolute_url"/>
+</frameset>
+
+<!--
+################################################################################
+### Frame: Left // Template List
+################################################################################ 
+-->
+<body class="zmi" tal:condition="python:request.get('frameleft')">
+
+<style type="text/css">
+.zmi header .pull-right {
+	padding-top:.7em;
+}
+.zmi header .pull-right * {
+	color:#ccc;
+}
+.tab-pane {
+	padding:.5em;
+}
+#tabs-0 ul, 
+#tabs-0 ol {
+	padding-left: .3em;
+	font-size: 13px;
+	white-space: nowrap;
+}
+#codeheader {
+	font-size: 13px;
+}
+div.container {
+	margin:0;
+	padding:0;
+}
+div.pointer {
+	cursor:pointer;
+}
+div.collapsed {
+	padding-left:16px!important;
+}
+div.Folder.collapsed, div.ZMS.collapsed, div.ZMSMetamodelProvider.collapsed, div.ZMSMetacommandProvider.collapsed {
+	padding-left:16px!important;
+	background:url(/p_/pl) top left no-repeat;
+}
+div.Folder, div.ZMS, div.ZMSMetamodelProvider, div.ZMSMetacommandProvider {
+	padding-left:16px!important;
+	background:url(/p_/mi) top left no-repeat;
+}
+div.strong span {
+	font-weight:bold;
+}
+.white {
+	color:white;
+}
+.zmi-document-margin {
+	overflow-x:hidden;
+}
+footer {
+	display:none;
+}
+</style>
+
+<script type="text/javascript">
+
+////////////////////////////////////////////////////////////////////////////////
+///// Resize iframe
+////////////////////////////////////////////////////////////////////////////////
+
+$ZMI.registerReady(function(){
+	initIframe();
+	$(window).resize(function() {
+		initIframe();
+	});
+});
+
+function initIframe() {
+	var ta = $("iframe");
+	if (ta.length > 0) {
+		var innerHeight = $(document).height();
+		var pos = ta.offset();
+		var newHeight =innerHeight-pos.top-25;
+		ta.css('height',newHeight);
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+function selectTab(i) {
+	$('.nav-tabs li:eq('+i+') a').tab('show'); // Select third tab (0-indexed)
+}
+
+function removeContainerDiv(id) {
+ 	$("div#_"+id).remove();
+}
+
+function initClick($s) {
+	$s.click(function() {
+			var $this = $(this);
+			if ($this.hasClass("Folder") ||
+					$this.hasClass("ZMS") ||
+					$this.hasClass("ZMSMetamodelProvider") ||
+					$this.hasClass("ZMSMetacommandProvider")) {
+				if ($this.hasClass("collapsed")) {
+					$this.removeClass("collapsed");
+					if ($("div.objectValues:first",$this.parent()).length>0) {
+						$("div.objectValues:first",$this.parent()).show("normal");
+					}
+					else {
+						var path = "";
+						$this.parents("div.container").each(function() {
+								path = "/" + $("div:first",this).attr("id") + path;
+							});
+						$.get("",{omitHtml:1,objectValues:path},function(result) {
+								var $context = $this.parent();
+								$context.append('<'+'div class="objectValues">'+handleObjectValues(result)+'<'+'/div>');
+								initClick($("div.objectValues:first div.container div",$context));
+							});
+					}
+				}
+				else {
+					$this.addClass("collapsed");
+					$("div.objectValues:first",$this.parent()).hide("normal");
+				}
+			}
+			else {
+				$(".strong").removeClass("strong");
+				$this.addClass("strong");
+				var path = "";
+				$this.parents("div.container").each(function() {
+						var id = $("div:first",this).attr("id");
+						if (id != "metacmd_manager") {
+							path = "/" + $("div:first",this).attr("id") + path;
+						}
+					});
+				var href = $("iframe").attr("src");
+				if (href.indexOf("&path=") > 0) {
+					href = href.substr(0,href.indexOf("&path="));
+				}
+				href += "&path="+path;
+				selectTab(1);
+				$("iframe").attr("src",href);
+				initIframe();
+			}
+		});
+}
+
+function handleObjectValues(result) {
+	if (result.indexOf('<!DOCTYPE')>=0) {
+		result = result.substr(result.indexOf('>')+1);
+	}
+	result = '<'+'?xml version="1.0"?>' + result;
+	var $resultXML = $.parseXML(result);
+	var objects = $("object",$resultXML);
+	objects = objects.toArray().sort(function(a,b){
+			if ($(a).attr("id") > $(b).attr("id")) {
+				return 1;
+			}
+			else if ($(a).attr("id") < $(b).attr("id")) {
+				return -1;
+			}
+			else {
+				return 0;
+			}
+		});
+	var html = '';
+	html += '<'+'ul>';
+	$(objects).each(function() {
+			var $ob = $(this);
+			html += '<'+'div id="_'+$ob.attr("id")+'" class="container">';
+			html += '<'+'div id="'+$ob.attr("id")+'" class="'+$ob.attr("meta_type")+' collapsed pointer">';
+			html += '<'+'img src="'+$ob.attr("icon")+'" title="'+$ob.attr("meta_type")+'"/> ';
+			html += '<'+'span>'+$ob.attr("id")+($ob.attr("title")==$ob.attr("id")||$ob.attr("title")==''?'':' ('+$ob.attr("title")+')')+'<'+'/span> ';
+			html += '<'+'/div>\n';
+			html += '<'+'/div>\n';
+		});
+	html += '<'+'/ul>';
+	return html;
+}
+
+$(function(){
+	$.get("",{omitHtml:1,objectValues:""},function(result) {
+			$("#tabs-0").html($("#tabs-0").html()+handleObjectValues(result));
+			initClick($("#tabs-0 div.container div"));
+		});
+});
+
+</script>
+
+<header>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
+		<div class="pull-right">
+			&nbsp;|&nbsp;<a tal:attributes="href python:'manage_main?lang=%s'%request['lang']" target="_parent">
+				<tal:block tal:content="python:here.getZMILangStr('BACK')">back</tal:block>
+				<tal:block tal:content="structure python:here.zmi_icon(name='icon-signout')"></tal:block>
+			</a>
+			&nbsp;
+		</div><!-- .pull-right -->
+	</div><!-- .navbar -->
+</header>
+
+<ul class="main-nav nav nav-tabs">
+	<li class="active"><a href="#tabs-0" data-toggle="tab"><i></i>Tree</a></li>
+	<li><a href="#tabs-1" data-toggle="tab"><i></i>Edit</a></li>
+	<li><a href="#tabs-2" data-toggle="tab"><i></i>?</a></li>
+</ul>
+
+<div class="tab-content">
+	<div class="tab-pane active" id="tabs-0">
+		<div id="codeheader" >
+			<div tal:define="global ob python:here.getAbsoluteHome()" class="zmi_col_left">
+				<img tal:attributes="src ob/icon; title ob/meta_type" align="absmiddle"/>
+				<span tal:content="ob/id">the id</span>
+			</div>
+			<div class="zmi_col_right">
+			</div>
+		</div>
+		<div id="objectTree">
+		</div>
+	</div><!-- #tabs-0 -->
+	<div class="tab-pane" id="tabs-1">
+		<iframe style="padding:0;margin:0;overflow:hidden;border:0!important;width:100%" 
+			tal:attributes="src python:'%s?framebottom=True&lang=%s'%(request.get('URL'),request.get('lang'))"></iframe>
+	</div><!-- #tabs-1 -->
+	<div class="tab-pane" id="tabs-2">
+		<h1>ZMS TAL Editor 2.0.0</h1>
+		<p>Der ZMS TAL Editor ist eine ZMS-System-Erweiterung speziell f&uuml;r Web-Designer: 
+		optimale Gestaltungskontrolle durch das Nebeneinander von Code- und Vorschau-Fenster. 
+		Alle Code-&Auml;nderungen in CSS- oder Template-Dateien sind sofort in der Web-Ansicht sichtbar.
+		Das linksseitige Code-Fenster hat zwei Tabs:<br />
+		1. <strong>Templates</strong>: Template-Browser zur Auswahl des zu bearbeitenden Templates<br />
+		2. <strong>Edit</strong>: Code-Editor f&uuml;r die Bearbeitung des per Template-Browser ausgew&auml;hlten Templates
+		<br /><br />
+		Systemvoraussetzungen:<br />ZMS TAL Editor arbeitet nur mit modernen Browsern (Firefox empfohlen).
+		</p>
+		<p class="well">
+			This program is free software; you can redistribute it and/or
+			modify it under the terms of the GNU General Public License
+			as published by the Free Software Foundation; either version 2
+			of the License, or (at your option) any later version.
+			<br/><br/>
+			This program is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+			GNU General Public License for more details.
+			<br/><br/>
+			You should have received a copy of the GNU General Public License
+			along with this program; if not, write to the Free Software
+			Foundation, Inc., 59 Temple Place - Suite 330, Boston, 
+			MA 02111-1307, USA.
+			<br/><br/>
+			&copy; <tal:block tal:content="python:here.ZopeTime().year()">the current year</tal:block> SNTL Publishing, Berlin
+		</p>
+
+	</div><!-- #tabs-2 -->
+</div><!-- .tab-content -->
+
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+
+<!--
+################################################################################
+### Frame: Bottom // Code
+################################################################################ 
+-->
+<body class="zmi" tal:condition="python:request.get('framebottom')">
+	<span tal:omit-tag="" tal:condition="python:request.get('path')">
+
+<span tal:condition="python:request.has_key('path')" tal:define="global ob python:here.getHome()">
+	<tal:block tal:repeat="ob_id python:request['path'].split('/')[1:]">
+		<tal:block tal:define="global ob python:getattr(ob,ob_id)"></tal:block>
+	</tal:block>
+</span>
+
+	<div>
+
+<script type="text/javascript">
+
+////////////////////////////////////////////////////////////////////////////////
+///// Auto-Save
+////////////////////////////////////////////////////////////////////////////////
+
+function getObjectDetails() {
+	$("div#objectDetails").html("");
+	var path = $("span#absolute_path").text();
+	$.get("",{omitHtml:1,objectDetails:path},function(result) {
+			var html = '';
+			if (result.indexOf('<!DOCTYPE')>=0) {
+				result = result.substr(result.indexOf('>')+1);
+			}
+			result = '<'+'?xml version="1.0"?>' + result;
+			var $resultXML = $.parseXML(result);
+			var $errors = $("errors",$resultXML);
+			if ($errors.length > 0) {
+				html += ''
+					+ '<'+'tr valign="top">'
+						+ '<'+'td class="form-label">Errors<'+'/td>'
+						+ '<'+'td class="form-text" style="background-color: #FFDDDD"><'+'pre>'+$errors.text()+'<'+'pre><'+'/td>'
+					+ '<'+'/tr>'
+					;
+			}
+			var $warnings = $("warnings",$resultXML);
+			if ($warnings.length > 0) {
+				html += ''
+					+ '<'+'tr valign="top">'
+						+ '<'+'td class="form-label">Warnings<'+'/td>'
+						+ '<'+'td class="form-text" style="background-color: #FFFFDD"><'+'pre>'+$warnings.text()+'<'+'pre><'+'/td>'
+					+ '<'+'/tr>'
+					;
+			}
+			if (html.length > 0) {
+				html = ''
+					+ '<'+'table>'
+						+ html;
+					+ '<'+'/table>'
+					;
+			}
+			$("div#objectDetails").html(html);
+		});
+}
+
+$(function(){
+	//$ZMI.toggleDebug(true);
+	$ZMI.writeDebug("BO registerReady");
+	getObjectDetails();
+	$ZMI.writeDebug("EO registerReady");
+});
+
+////////////////////////////////////////////////////////////////////////////////
+///// Snippets
+////////////////////////////////////////////////////////////////////////////////
+
+var snippets_arr = {};
+snippets_arr["Page Template"] = {};
+snippets_arr["Page Template"]["snippet_bodyContent"] = {title:'Body-Content', raw: 
+				'&lt;'+'div id="content" tal'+':content="structure here/bodyContentZMSLib_page">\n'+
+				'\tthe body-content\n'+
+				'&lt;'+'/div>&lt;'+'-- #content -->'};
+snippets_arr["Page Template"]["snippet_docTitle"] = {title:'Document-Title', raw: 
+				'&lt;'+'div id="title" tal'+':content="python:here.getTitle(request)">\n'+
+				'\tthe title\n'+
+				'&lt;'+'/div>&lt;!'+'-- #title -->'};
+snippets_arr["Page Template"]["snippet_macroNav"] = {title:'Macro-Navigation', raw: 
+				'&lt;'+'nav tal'+':condition="python:here.getLevel()>0"\n'+
+				'\t\ttal'+':content="structure\n'+
+				' python:here.getParentByLevel(1).getNavItems(here,request,\n'+
+				'  {\'add_self\':False,\'deep\':True,\'complete\':False})">\n'+
+				'\t&lt;'+'ul>\n'+
+				'\t\t&lt;'+'li>&lt;'+'a href="">Lorem ipsum&lt;'+'/a>&lt;'+'/li>\n'+
+				'\t\t&lt;'+'li>&lt;'+'a href="">Lorem ipsum&lt;'+'/a>&lt;'+'/li>\n'+
+				'\t\t&lt;'+'li>&lt;'+'a href="">Lorem ipsum&lt;'+'/a>&lt;'+'/li>\n'+
+				'\t&lt;'+'/ul>\n'+
+				'&lt;'+'/nav>&lt;!'+'-- #macro -->'};
+snippets_arr["Page Template"]["snippet_menuNav"] = {title:'Menu-Navigation', raw: 
+				'&lt;'+'nav id="menu" tal'+':content="structure\n'+
+				' python:here.getDocumentElement().getNavItems(here,request,\n'+
+				'  {\'add_self\':False,\'deep\':False,\'complete\':False})">\n'+
+				'\t&lt;'+'ul>\n'+
+				'\t\t&lt;'+'li>&lt;'+'a href="">Lorem ipsum&lt;'+'/a>&lt;'+'/li>\n'+
+				'\t\t&lt;'+'li>&lt;'+'a href="">Lorem ipsum&lt;'+'/a>&lt;'+'/li>\n'+
+				'\t\t&lt;'+'li>&lt;'+'a href="">Lorem ipsum&lt;'+'/a>&lt;'+'/li>\n'+
+				'\t&lt;'+'/ul>\n'+
+				'&lt;'+'/nav>&lt;!'+'-- #menu -->'};
+snippets_arr["Page Template"]["snippet_microNav"] = {title:'Micro-Navigation', raw: 
+				'&lt;'+'nav id="micro">\n'+
+				'\t&lt;'+'span tal'+':omit-tag="" tal'+':repeat="item context/breadcrumbs_obj_path">\n'+
+				'\t\t&raquo; &lt;'+'a tal'+':attributes="href python:item.getHref2IndexHtml(request)"\n'+
+				'\t\ttal'+':content="python:item.getTitlealt(request)">the item&lt;'+'/a>\n'+
+				'\t&lt;'+'/span>\n'+
+				'&lt;'+'/nav>&lt;'+'-- #micro -->'};
+
+$(function(){
+	var absolute_url = $("span#absolute_url").text();
+	if (absolute_url.indexOf(".less")>0) {
+		$("#compile_lessc_btn").show();
+	}
+	else {
+		$("#compile_lessc_btn").hide();
+	}
+	var meta_type = $("span#meta_type").text();
+	if (typeof snippets_arr[meta_type] != "undefined") {
+		var options = '<'+'option value="">--- Snippets... ---<'+'/option>';
+		for (var i in snippets_arr[meta_type]) {
+			options += '<'+'option value="'+i+'">'+snippets_arr[meta_type][i]['title']+'<'+'/option>';
+		}
+		$("#snippets_select").html(options).change(function() {
+				var meta_type = $("span#meta_type").text();
+				var i = $(this).val();
+				$(this).val("");
+				zmiModal(null,{
+						body: '<'+'pre>'+snippets_arr[meta_type][i]['raw']+'<'+'/pre>',
+						title: snippets_arr[meta_type][i]['title']
+					});
+			})
+			.show("normal");
+	}
+});
+
+function zmiSaveBtnClick(btn) {
+	// Upload file.
+	var $file = $("input.form-control:file");
+	if ($file.length > 0) {
+		if ($file.val().length > 0) {
+			$('#theuploadform').attr( "action", $("span#absolute_url").text()+"/"+$("span#action").text());
+			$('#theuploadform').attr( "target", "postframe" )
+			$('#theuploadform').submit();
+			//need to get contents of the iframe
+			$("#postframe").load(function(){
+					var src = $("img#preview").attr("src");
+					if (src.lastIndexOf("?") > 0) {
+						src = src.substr(0,src.lastIndexOf("?"));
+					}
+					src += "?ts=" + escape(new Date());
+					$("img#preview").attr("src",src);
+					$file.val("");
+					window.parent.parent.preview.location.reload();
+				});
+		}
+	}
+	// Submit form.
+	else {
+		var els = $("textarea#text,input.form-control,select.form-control");
+		var values = {};
+		for (var i = 0; i < els.length; i++) {
+			var $el = $(els[i]);
+			var elid = $el.attr("name");
+			values[elid] = $el.val();
+		}
+		// Post form.
+		$ZMI.writeDebug("post.1"+$("#absolute_url").text()+"/pt_changePrefs");
+		$("#save_btn").addClass("btn-danger");
+		$.post($("span#absolute_url").text()+"/"+$("span#action").text(),values,function(result) {
+				$ZMI.writeDebug("post.2");
+				window.parent.parent.preview.location.reload();
+				getObjectDetails();
+			$("#save_btn").removeClass("btn-danger").addClass("btn-success");
+				window.setTimeout('$("#save_btn").removeClass("btn-success");',500);
+			});
+	}
+}
+
+function zmiCompileLesscBtnClick(btn) {
+		$("#compile_lessc_btn").addClass("btn-danger");
+		$.get("compile_lesscss",function(result) {
+				confirm(result);
+				window.parent.parent.preview.location.reload();
+			$("#compile_lessc_btn").removeClass("btn-danger").addClass("btn-success");
+				window.setTimeout('$("#compile_lessc_btn").removeClass("btn-success");',500);
+			});
+}
+
+</script>
+
+			<div class="pull-left">
+					<span id="save_btn" class="btn btn-default" onclick="zmiSaveBtnClick(this);" tal:attributes="title python:unicode(here.getZMILangStr('BTN_SAVE'),'utf-8')">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-save')"></tal:block>
+						<tal:block tal:content="python:unicode(here.getZMILangStr('BTN_SAVE'),'utf-8')"></tal:block>
+					</span>
+					<span id="compile_lessc_btn" class="btn btn-default" onclick="zmiCompileLesscBtnClick(this);" title="Compile {less}" tal:condition="python:len(here.getConfProperty('InstalledProducts.lesscss',''))>0">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block>
+						Compile {less}
+					</span>
+			</div><!-- .pull-left -->
+			<div class="pull-right">
+				<select id="snippets_select" class="form-control ui-helper-hidden">
+				</select>
+			</div><!-- .pull-right -->
+			<div class="clearfix"></div>
+			<hr/>
+
+		<form class="clearfix" onsubmit="return false;">
+			<div class="ui-helper-hidden">
+				<span id="meta_type" tal:content="ob/meta_type">the meta_type</span>
+				<span id="absolute_url" tal:content="ob/absolute_url">the absolute_url</span>
+				<span id="absolute_path" tal:content="python:ob.absolute_url()[len(here.getHome().absolute_url()):]">the absolute_path</span>
+			</div>
+			<tal:block tal:condition="python:ob.meta_type in ['DTML Document','DTML Method']">
+				<div class="ui-helper-hidden">
+					<span id="action">manage_edit</span>
+					<label for="title">Title</label>
+					<input id="title" name="title" class="form-control" tal:attributes="value ob/title">
+				</div>
+				<!-- ACE Editor -->
+				<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='data:text',ob=ob,height='60em')">ACE Editor</tal:block>
+				<!-- /ACE Editor -->
+			</tal:block>
+			<tal:block tal:condition="python:ob.meta_type=='File' and (ob.content_type.startswith('text/') or ob.content_type in ['application/x-css','application/x-javascript'])">
+				<div class="ui-helper-hidden">
+					<span id="action">manage_edit</span>
+					<label for="title">Title</label>
+					<input id="title" name="title" class="form-control" tal:attributes="value ob/title">
+					<label for="content_type">Content-Type</label>
+					<input id="content_type" name="content_type" class="form-control" tal:attributes="value ob/content_type">
+				</div>
+				<!-- ACE Editor -->
+				<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='filedata:text',ob=ob,height='60em')">ACE Editor</tal:block>
+				<!-- /ACE Editor -->
+			</tal:block>
+			<tal:block tal:condition="python:ob.meta_type=='Page Template'">
+				<div class="ui-helper-hidden">
+					<span id="action">pt_editAction</span>
+					<label for="title">Title</label>
+					<input id="title" name="title" class="form-control" tal:attributes="value ob/title">
+					<label for="content_type">Content-Type</label>
+					<input id="content_type" name="content_type" class="form-control" tal:attributes="value ob/content_type">
+					<label for="expand">Expand</label>
+					<input id="expand" name="expand:int" class="form-control" tal:attributes="value ob/expand">
+				</div>
+				<!-- ACE Editor -->
+				<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='text:text',ob=ob,height='60em')">ACE Editor</tal:block>
+				<!-- /ACE Editor -->
+			</tal:block>
+			<tal:block tal:condition="python:ob.meta_type=='Script (Python)'">
+				<div class="ui-helper-hidden">
+					<span id="action">ZPythonScriptHTML_editAction</span>
+					<label for="title">Title</label>
+					<input id="title" name="title" class="form-control" tal:attributes="value ob/title">
+					<label for="params">Parameter List</label>
+					<input id="params" name="params" class="form-control" tal:attributes="value ob/params">
+					<label for="content_type">Content-Type</label>
+					<input id="content_type" name="content_type" class="form-control" value="python">
+				</div>
+				<!-- ACE Editor -->
+				<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='body:text',ob=ob,height='60em')">ACE Editor</tal:block>
+				<!-- /ACE Editor -->
+			</tal:block>
+			<div id="objectDetails"></div>
+		</form>
+
+		<form class="form-horizontal" id="theuploadform" method="post" enctype="multipart/form-data" tal:condition="python:ob.meta_type in ['Image','File'] and not (ob.content_type.startswith('text/') or ob.content_type in ['application/css','application/x-css','application/javascript','application/x-javascript'])">
+			<div class="ui-helper-hidden">
+				<span id="action">manage_upload</span>
+				<label for="title">Title</label>
+				<input id="title" name="title" class="form-control" tal:attributes="value ob/title">
+				<label for="content_type">Content-Type</label>
+				<input id="content_type" name="content_type" class="form-control" tal:attributes="value ob/content_type">
+			</div>
+			<div id="iframe" class="ui-helper-hidden">
+				<iframe name="postframe" id="postframe"></iframe>
+			</div>
+			<div class="control-group" tal:condition="python:ob.meta_type in ['Image','File'] and ob.content_type.startswith('image/')">
+				<label>Preview</label>
+				<img id="preview" tal:attributes="src ob/absolute_url" alt="" style="border: 1px solid #000;margin:1px;background-image:url(/misc_/zms/bg_imgpreview.gif);"/>
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<label>Content Type</label>
+				<input class="form-control" type="text" tal:attributes="value ob/content_type" disabled="disabled"/>
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<label>Size</label>
+				<input class="form-control" type="text" tal:attributes="value python:here.getDataSizeStr(ob.size)" disabled="disabled"/>
+			</div><!-- .control-group -->
+			<div class="control-group">
+				<label for="file">Upload</label>
+				<input class="form-control" id="file" name="file" type="file"/>
+			</div><!-- .control-group -->
+		</form>
+	</div>
+	</span>
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+
+<!--
+################################################################################
+-->
+
+</html>
+</tal:block>
+
+<!--
+################################################################################
+### Object-Details
+################################################################################ 
+-->
+<objectDetails tal:condition="python:request.has_key('objectDetails')" tal:define="global ob python:here.getAbsoluteHome(); path python:request.get('objectDetails')">
+	<tal:block tal:repeat="ob_id python:path.split('/')[1:]">
+		<tal:block tal:define="global ob python:getattr(ob,ob_id)"></tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:ob.meta_type=='Page Template'">
+		<errors tal:condition="ob/pt_errors" tal:content="python:'\n'.join(ob.pt_errors())">the pt_errors</errors>
+	</tal:block>
+	<tal:block tal:condition="python:ob.meta_type=='Script (Python)'">
+		<errors tal:condition="ob/errors" tal:content="python:'\n'.join(ob.errors)">the errors</errors>
+		<warnings tal:condition="ob/warnings" tal:content="python:'\n'.join(ob.warnings)">the warnings</warnings>
+	</tal:block>
+</objectDetails>
+
+<!--
+################################################################################
+### Object-Values
+################################################################################ 
+-->
+<objectValues tal:condition="python:request.has_key('objectValues')">
+<tal:block tal:define="global context python:here.getAbsoluteHome(); ob_ids python:request['objectValues'].split('/')[1:]">
+	<tal:block tal:repeat="ob_id ob_ids">
+		<tal:block tal:condition="python:hasattr(context,ob_id)">
+			<tal:block tal:define="global context python:getattr(context,ob_id)"></tal:block>
+		</tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:context.meta_type=='ZMS' and ob_ids[-1]=='metacmd_manager'">
+		<tal:block tal:repeat="metaCmdId python:context.getMetaCmdIds()">
+			<tal:block tal:condition="python:metaCmdId in context.objectIds()" tal:define="global metaCmd python:context.getMetaCmd(metaCmdId); ob python:getattr(context,metaCmd['id'],None)">
+				<object tal:attributes="icon ob/icon; title python:metaCmd['name']; id ob/id; meta_type ob/meta_type"/>
+			</tal:block>
+		</tal:block>
+	</tal:block>
+	<tal:block tal:condition="not:python:context.meta_type=='ZMS' and ob_ids[-1]=='metacmd_manager'">
+		<object tal:condition="python:context.meta_type=='ZMS'" tal:attributes="icon python:'misc_/zms/process.gif'; title python:here.getZMILangStr('TAB_METACMD'); id python:'metacmd_manager'; meta_type python:'ZMSMetacommandProvider'"/>
+		<tal:block tal:repeat="ob python:context.objectValues(['DTML Method','DTML Document','Folder','Image','File','Script (Python)','Page Template','ZMS','ZMSMetamodelProvider'])">
+			<object tal:condition="python:ob.title!='*** DO NOT DELETE OR MODIFY ***' and here.operator_absattr(ob.id) not in here.getMetaCmdIds()" tal:attributes="icon ob/icon; title ob/title; id ob/id; meta_type ob/meta_type"/>
+		</tal:block>
+	</tal:block>
+</tal:block>
+</objectValues>]]>
+  </item>
+  <item key="description"></item>
+  <item key="exec" type="int">0</item>
+  <item key="icon_clazz"><![CDATA[icon-edit text-primary]]></item>
+  <item key="id"><![CDATA[manage_editTemplateSet]]></item>
+  <item key="meta_type"><![CDATA[Page Template]]></item>
+  <item key="meta_types" type="list">
+    <list>
+      <item><![CDATA[ZMS]]></item>
+    </list>
+  </item>
+  <item key="name"><![CDATA[Edit Template-Set...]]></item>
+  <item key="roles" type="list">
+    <list>
+      <item><![CDATA[ZMSAdministrator]]></item>
+    </list>
+  </item>
+</dictionary>

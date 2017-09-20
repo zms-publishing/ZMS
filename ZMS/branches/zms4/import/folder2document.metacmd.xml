@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list>
+<item type="dictionary"><dictionary>
+<item key="data"><![CDATA[<dtml-call "operator_setattr(this(),'meta_id','ZMSDocument')">
+<dtml-return "RESPONSE.redirect(url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'manage_tabs_message':'Changed into document.'}))">]]></item>
+<item key="description"/>
+<item key="exec" type="int">0</item>
+<item key="icon_clazz"><![CDATA[icon-file-text-alt text-primary]]></item>
+<item key="id"><![CDATA[manage_ZMSFolder2ZMSDocument]]></item>
+<item key="meta_type"><![CDATA[DTML Method]]></item>
+<item key="meta_types" type="list"><list>
+<item><![CDATA[ZMSFolder]]></item>
+</list>
+</item>
+<item key="name"><![CDATA[Change into document!]]></item>
+<item key="roles" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+</list>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="data"><![CDATA[<dtml-call "operator_setattr(this(),'meta_id','ZMSFolder')">
+<dtml-return "RESPONSE.redirect(url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'manage_tabs_message':'Changed into folder.'}))">]]></item>
+<item key="description"/>
+<item key="exec" type="int">0</item>
+<item key="id"><![CDATA[manage_ZMSDocument2ZMSFolder]]></item>
+<item key="meta_type"><![CDATA[DTML Method]]></item>
+<item key="meta_types" type="list"><list>
+<item><![CDATA[ZMSDocument]]></item>
+</list>
+</item>
+<item key="name"><![CDATA[Change into folder!]]></item>
+<item key="roles" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+</list>
+</item>
+</dictionary>
+</item>
+<item type="dictionary"><dictionary>
+<item key="data"><![CDATA[request = container.REQUEST
+RESPONSE =  request.RESPONSE
+lang = request['lang']
+
+treeNodes = context.getTreeNodes(meta_types=context.PAGES)
+l = len(treeNodes)
+cf = 0
+cd = 0
+for i in range(l):
+  treeNode = treeNodes[i]
+  if treeNode.meta_id == 'ZMSFolder':
+    if i == l-1 or not treeNode == treeNodes[i+1].getParentNode():
+      context.operator_setattr(treeNode,'meta_id','ZMSDocument')
+      context.writeStdout('[syncZMSFoldersNDocuments]: ZMSDocument - %s'%treeNode.absolute_url())
+      cf = cf + 1
+  elif treeNode.meta_id == 'ZMSDocument':
+    if i < l - 1 and treeNode == treeNodes[i+1].getParentNode():
+      context.operator_setattr(treeNode,'meta_id','ZMSFolder')
+      context.writeStdout('[syncZMSFoldersNDocuments]: ZMSFolder - %s'%treeNode.absolute_url())
+      cd = cd + 1
+
+print "Change %i folders into documents and %i documents into folders"%(cf,cd)
+
+return RESPONSE.redirect(context.url_append_params('%s/manage_main'%context.absolute_url(),{'lang':lang,'manage_tabs_message':printed}))
+]]></item>
+<item key="description"/>
+<item key="exec" type="int">0</item>
+<item key="icon_clazz"><![CDATA[icon-folder-close-alt text-primary]]></item>
+<item key="id"><![CDATA[manage_syncZMSFoldersNDocuments]]></item>
+<item key="meta_type"><![CDATA[Script (Python)]]></item>
+<item key="meta_types" type="list"><list>
+<item><![CDATA[ZMSDocument]]></item>
+<item><![CDATA[ZMSFolder]]></item>
+<item><![CDATA[ZMS]]></item>
+</list>
+</item>
+<item key="name"><![CDATA[Sync folders'n'documents!]]></item>
+<item key="roles" type="list"><list>
+<item><![CDATA[ZMSAdministrator]]></item>
+</list>
+</item>
+</dictionary>
+</item>
+</list>

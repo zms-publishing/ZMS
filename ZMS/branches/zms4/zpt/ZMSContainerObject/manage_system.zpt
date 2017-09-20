@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" tal:define="standard modules/Products.zms/standard">
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:here.zmi_body_class(id='system')">
+<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<form class="form-horizontal" method="post" tal:attributes="action python:context.absolute_url()">
+	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+	<input type="hidden" name="preview" tal:attributes="value request/preview"/>
+	<legend tal:content="python:here.getZMILangStr('TAB_SYSTEM')">System</legend>
+
+<tal:block tal:define="global
+		zmscontext here;
+		SecurityManager modules/AccessControl/getSecurityManager;
+		skey python:request.get('skey', 'id');
+		rkey python:request.get('rkey', '')">
+
+<!--
+################################################################################
+##### Action-List
+################################################################################
+-->
+<div class="col-md-4 col-md-offset-8">
+	<select class="form-control" name=":action" tal:attributes="onchange python:'location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
+		<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type(request)">----- Insert -----</option>
+		<tal:block tal:repeat="meta_type python:filter(lambda x:x['name'].find('ZMS')<>0,zmscontext.sort_list(zmscontext.filtered_meta_types(),'name'))">
+			<option tal:attributes="value python:meta_type['action']" tal:content="python:meta_type['name']">the name</option>
+		</tal:block>
+	</select>
+</div>
+
+<!--
+################################################################################
+##### Object-List
+################################################################################
+-->
+
+<tal:block tal:define="global items python:zmscontext.objectItems()">
+<tal:block tal:condition="python:len(items)>0">
+<table class="table table-striped zopeobjects">
+<thead>
+<tr>
+	<th>&nbsp;</th>
+	<tal:block define="global
+			columns python:['meta_type','id','get_size','bobobase_modification_time'];
+			labels python:{'meta_type':'type','id':'name','get_size':'size','bobobase_modification_time':'last_modified'}">
+		<tal:block tal:repeat="column columns">
+			<th tal:define="global label python:zmscontext.getZMILangStr('ATTR_%s'%labels[column].upper())">
+				<tal:block tal:condition="python:skey==column or rkey==column" tal:content="structure python:here.zmi_icon(name=['icon-caret-down','icon-caret-up'][int(rkey==column)])"></tal:block>
+				<a tal:attributes="href python:zmscontext.url_append_params(request['URL'],{['skey','rkey'][int(skey==column)]:column}); title python:'Sort objects by %s'%label"><tal:block tal:content="label">the label</tal:block></a>
+			</th>
+		</tal:block>
+	</tal:block>
+</tr>
+</thead>
+<tbody>
+<tr tal:repeat="item items">
+	<td><input type="checkbox" name="ids:list" tal:attributes="value python:item[0]"/></td>
+	<td tal:define="icon python:zmscontext.operator_absattr(item[1].icon)">
+		<img tal:on-error="structure string:<!-- ERROR: Icon not found -->" tal:condition="python:'class=' not in icon" tal:attributes="src icon" />
+		<img tal:on-error="structure string:<!-- ERROR: Icon not found -->" tal:condition="python:'class=' in icon" tal:replace="structure icon" />
+	</td>
+	<td>
+		<a tal:attributes="href python:'%s/manage_workspace'%item[1].absolute_url()">
+			<tal:block tal:content="python:item[0]">the id</tal:block>
+			<tal:block tal:condition="python:zmscontext.operator_absattr(item[1].title)">
+				(<tal:block tal:content="python:zmscontext.operator_absattr(item[1].title)">the title</tal:block>)
+			</tal:block>
+		</a>
+	</td>
+	<td><tal:block tal:content="python:zmscontext.getDataSizeStr(item[1].get_size())" tal:on-error="string:get_size is not defined!">the size</tal:block></td>
+	<td><tal:block tal:content="python:zmscontext.getLangFmtDate(item[1].bobobase_modification_time())" tal:on-error="string:bobobase_modification_time is not defined!">the timestamp</tal:block></td>
+</tr>
+</tbody>
+</table>
+<tal:block tal:condition="not:python:request.get('dontAllowCopyAndPaste')">
+	<input class="btn btn-default" type="submit" name="manage_renameForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_RENAME')" tal:condition="items"/>
+	<input class="btn btn-default" type="submit" name="manage_cutObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_CUT')" tal:condition="items"/>
+	<input class="btn btn-default" type="submit" name="manage_copyObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_COPY')" tal:condition="items"/>
+	<input class="btn btn-default" type="submit" name="manage_pasteObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_PASTE')" tal:condition="python:here.cb_dataValid()"/>
+	<input class="btn btn-default" type="submit" name="manage_delObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_DELETE')" tal:condition="python:SecurityManager.checkPermission('Delete objects',zmscontext)"/>
+	<input class="btn btn-default" type="submit" name="manage_importExportForm:method" value="Import/Export" tal:condition="python:SecurityManager.checkPermission('Import/Export objects',zmscontext)"/>
+</tal:block>
+</tal:block>
+</tal:block>
+
+</tal:block>
+</form>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list>
+    <item type="dictionary">
+      <dictionary>
+        <item key="type"><![CDATA[filter]]></item>
+        <item key="value" type="dictionary">
+          <dictionary>
+            <item key="acquired" type="int">0</item>
+            <item key="content_type"><![CDATA[application/epub+zip]]></item>
+            <item key="description"/>
+            <item key="format"><![CDATA[export]]></item>
+            <item key="id"><![CDATA[epub]]></item>
+            <item key="meta_types" type="list">
+              <list>
+                <item><![CDATA[ZMS]]></item>
+              </list>
+            </item>
+            <item key="name"><![CDATA[Epub]]></item>
+            <item key="processes" type="list">
+              <list>
+                <item type="dictionary">
+                  <dictionary>
+                    <item key="file" type="file">
+                      
+<data content_type="text/css" filename="style.css" type="file"><![CDATA[body {
+	font-family: Arial, Helvetica, sans-serif;
+}]]></data>
+                    </item>
+                    <item key="id"><![CDATA[epub_process]]></item>
+                  </dictionary>
+                </item>
+              </list>
+            </item>
+            <item key="roles" type="list">
+              <list>
+                <item><![CDATA[ZMSAdministrator]]></item>
+              </list>
+            </item>
+          </dictionary>
+        </item>
+      </dictionary>
+    </item>
+    <item type="dictionary">
+      <dictionary>
+        <item key="type"><![CDATA[process]]></item>
+        <item key="value" type="dictionary">
+          <dictionary>
+            <item key="acquired" type="int">0</item>
+            <item key="command"><![CDATA[## Script (Python) "epub_process"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=self, REQUEST
+##title=Epub-Process
+##
+# --// BO epub_process //--
+from Products.zms import standard
+
+context.f_standard_html_request( context, REQUEST)
+
+tempfolder = REQUEST['ZMS_FILTER_CUR_DIR']
+base_url = context.absolute_url()[len(REQUEST['BASE0']):]+'/'
+c = 0
+items = []
+imgs = []
+for ob in [context]+context.filteredTreeNodes( REQUEST, context.PAGES):
+  id = 'main%i'%len(items)
+  href = id+'.xhtml'
+  filepath = '%s/%s'%(tempfolder,href)
+  xml = []
+  xml.append(ob.getXmlHeader())
+  xml.append('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">')
+  xml.append('<head>')
+  xml.append('<link rel="stylesheet" type="text/css" href="css/style.css" />')
+  xml.append('</head>')
+  xml.append('<body>')
+  bodyContent = ob.getBodyContent( REQUEST).replace(base_url,'')
+  for img in bodyContent.split('<img'):
+    src = img[img.find(' src="'):]
+    src = src[src.find('"')+1:]
+    src = src[:src.find('"')]
+    if src and src not in imgs:
+      imgs.append(src)
+  xml.append(bodyContent)
+  xml.append('</body>')
+  xml.append('</html>')
+  context.writeStdout('[epub_process]: %s'%filepath)
+  standard.localfs_write( filepath, '\n'.join(xml))
+  items.append({'id':id,'href':href,'titlealt':ob.getTitlealt(REQUEST),'level':ob.getLevel(),})
+
+# Generate toc.ncx (Table of Contents)
+xml = []
+xml.append(context.getXmlHeader())
+xml.append('<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">')
+xml.append('<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="de-DE">')
+xml.append('<head>')
+xml.append('<meta name="dc:Title" content="%s"/>'%(context.getTitle(REQUEST)))
+xml.append('<meta name="dtb:uid" content="id_%s"/>'%(context.id_quote(context.getTitle(REQUEST))))
+xml.append('</head>')
+xml.append('<docTitle>')
+xml.append('<text>%s</text>'%(context.getTitle(REQUEST)))
+xml.append('</docTitle>')
+xml.append('<navMap>')
+start_level = context.getLevel()
+last_level = start_level - 1
+for x in range(len(items)):
+  level = items[x]['level']
+# Customize your deepest content Level
+  if level <= 12:
+    xml.extend(map(lambda x: '</navPoint>', range(last_level-level+1)))
+    xml.append('<navPoint playOrder="%i" id="%s">\n'%(x+1,items[x]['id']))
+    xml.append('<navLabel>')
+    xml.append('<text>%s</text>\n'%(items[x]['titlealt']))
+    xml.append('</navLabel>')
+    xml.append('<content src="%s"/>\n'%(items[x]['href']))
+
+    last_level = level
+xml.extend(map(lambda x: '</navPoint>', range(last_level-start_level+1)))
+xml.append('</navMap>')
+xml.append('</ncx>')
+filepath = '%s/toc.ncx'%(tempfolder)
+context.writeStdout( '[epub_process]: %s'%filepath)
+standard.localfs_write( filepath, '\n'.join(xml))
+
+# Generate content.opf
+xml = []
+xml.append(context.getXmlHeader())
+xml.append('<package version="2.0" unique-identifier="PrimaryID" xmlns="http://www.idpf.org/2007/opf">')
+xml.append('<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">')
+xml.append('<dc:title>%s</dc:title>'%(context.getTitle(REQUEST)))
+xml.append('<dc:identifier id="dcidid" opf:scheme="URI">%s</dc:identifier>'%(context.absolute_url()))
+for key in context.getObjAttrs().keys():
+  dc_key = None
+  if key.startswith('attr_dc_'):
+    dc_key = 'dc:'+key[len('attr_dc_'):]
+  if key.startswith('dc_'):
+    dc_key = 'dc:'+key[len('dc_'):]
+  if dc_key:
+    value = context.attr(key)
+    if value:
+      context.writeStdout( '[epub_process]: %s'%dc_key)
+      obj_attr = context.getObjAttr( key)
+      xml.append('<%s>%s</%s>'%(dc_key,str(value),dc_key))
+xml.append('</metadata>')
+xml.append('<manifest>')
+xml.append('<!-- Content Documents -->')
+xml.append('\n'.join(map(lambda x: '<item id="%s" href="%s" media-type="application/xhtml+xml"/>'%(x['id'],x['href']), items)))
+xml.append('<!-- Table of Contents -->')
+xml.append('<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>')
+xml.append('<!-- CSS Style Sheets -->')
+xml.append('<item id="style-css" href="css/style.css" media-type="text/css"/>')
+xml.append('<!-- Images -->')
+for src in imgs:
+  id = src
+  id = id[:id.rfind('/')]
+  id = id[id.rfind('/')+1:]
+  ext = src[src.rfind('.')+1:]
+  media_type = {'gif':'image/gif','jpg':'image/jpeg','png':'image/png',}[ext]
+  xml.append('<item id="%s-%s" href="%s" media-type="%s"/>'%(id,ext,src,media_type))
+xml.append('</manifest>')
+xml.append('<spine toc="ncx">')
+xml.append('\n'.join(map(lambda x: '<itemref idref="%s" linear="yes"/>'%(x['id']), items)))
+xml.append('</spine>')
+xml.append('</package>')
+filepath = '%s/content.opf'%(tempfolder)
+context.writeStdout( '[epub_process]: %s'%filepath)
+standard.localfs_write( filepath, '\n'.join(xml))
+
+# Generate container.xml
+xml = []
+xml.append(context.getXmlHeader())
+xml.append('<container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">')
+xml.append('<rootfiles>')
+xml.append('<rootfile full-path="content.opf" media-type="application/oebps-package+xml"/>')
+xml.append('</rootfiles>')
+xml.append('</container>')
+filepath = '%s/META-INF/container.xml'%(tempfolder)
+context.writeStdout( '[epub_process]: %s'%filepath)
+standard.localfs_write( filepath, '\n'.join(xml))
+
+# Convert transition to css.
+css = REQUEST['ZMS_FILTER_TRANS'].getData()
+filepath = '%s/css/style.css'%(tempfolder)
+context.writeStdout( '[epub_process]: %s'%filepath)
+standard.localfs_write( filepath, css)
+
+# Build zip-archive
+zip = context.buildZipArchive( tempfolder+'/*')
+context.writeStdout( '[epub_process]: %i bytes'%len(zip))
+standard.localfs_write( REQUEST.get('ZMS_FILTER_OUT'), zip)
+return zip
+
+# --// EO epub_process //--
+]]>
+            </item>
+            <item key="id"><![CDATA[epub_process]]></item>
+            <item key="name"><![CDATA[Epub-Process]]></item>
+            <item key="type"><![CDATA[Script (Python)]]></item>
+          </dictionary>
+        </item>
+      </dictionary>
+    </item>
+  </list>

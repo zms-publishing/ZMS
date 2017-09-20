@@ -1,3 +1,4 @@
+from __future__ import division
 ################################################################################
 # ZMSTextformat.py
 #
@@ -215,7 +216,7 @@ class ZMSTextformat:
   def parseAttrs(self):
     d = []
     l = re.split('(.*?)="(.*?)"',self.attrs)
-    for i in range(len(l)/3):
+    for i in range(len(l)//3):
       d.append((l[i*3+1],l[i*3+2]))
     return d
   def setAttrs(self, attrs): self.attrs = attrs

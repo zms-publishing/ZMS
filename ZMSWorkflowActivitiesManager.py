@@ -1,3 +1,4 @@
+from __future__ import division
 ################################################################################
 # ZMSWorkflowActivitiesManager.py
 #
@@ -101,7 +102,7 @@ class ZMSWorkflowActivitiesManager:
   def getActivities(self): 
     obs = self.activities
     activities = []
-    for i in range(len(obs)/2):
+    for i in range(len(obs)//2):
       id = obs[i*2]
       activity = obs[i*2+1].copy()
       activity['id'] = id

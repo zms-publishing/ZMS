@@ -1,3 +1,4 @@
+from __future__ import division
 ################################################################################
 # ZMSMetaobjManager.py
 #
@@ -1228,7 +1229,7 @@ class ZMSMetaobjManager:
             message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<em>%s</em>"%attr_id),(pos+1))
           
           ##### SYNCHRONIZE ####
-          types = self.valid_types+map(lambda x:self.metas[x*2],range(len(self.metas)/2))
+          types = self.valid_types+map(lambda x:self.metas[x*2],range(len(self.metas)//2))
           for k in self.getMetaobjIds():
             if k not in sync_id:
               if k in self.model and k in old_model:

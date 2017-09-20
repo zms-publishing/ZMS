@@ -1,3 +1,4 @@
+from __future__ import division
 from Products.zms import pilutil
 from Products.zms import standard
 import test_util
@@ -15,7 +16,7 @@ class PilUtilTest(test_util.BaseTest):
 
   def test_resize(self):
     img = read_image(self.context)
-    size = (img.getWidth()/2,img.getHeight()/2)
+    size = (img.getWidth()//2,img.getHeight()//2)
     img2 = pilutil.resize(img,size)
 
   def test_optimize(self):

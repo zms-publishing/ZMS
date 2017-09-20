@@ -18,6 +18,7 @@
 ################################################################################
 
 # Imports.
+from __future__ import division
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import Globals

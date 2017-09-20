@@ -1,3 +1,4 @@
+from __future__ import division
 ################################################################################
 # ZMSWorkflowProvider.py
 #
@@ -152,12 +153,12 @@ class ZMSWorkflowProvider(
       self.activities = []
       self.transitions = []
       l = activities
-      for li in range(len(l)/2):
+      for li in range(len(l)//2):
         id = l[li*2]
         i = l[li*2+1]
         self.setActivity(id=None,newId=id,newName=i['name'],newIcon=i.get('icon'))
       l = transitions
-      for li in range(len(l)/2):
+      for li in range(len(l)//2):
         id = l[li*2]
         i = l[li*2+1]
         newData = i.get('ob',i.get('dtml',''))
@@ -199,20 +200,20 @@ class ZMSWorkflowProvider(
     ZMSWorkflowProvider.importXml
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def importXml(self, xml, createIfNotExists=1):
-      ids = map(lambda x: self.activities[x*2], range(len(self.activities)/2))
+      ids = map(lambda x: self.activities[x*2], range(len(self.activities)//2))
       for id in ids:
         self.delItem(id,'activities')
-      ids = map(lambda x: self.transitions[x*2], range(len(self.transitions)/2))
+      ids = map(lambda x: self.transitions[x*2], range(len(self.transitions)//2))
       for id in ids:
         self.delItem(id,'transitions')
       v = self.parseXmlString(xml)
       l = v.get('activities',[])
-      for li in range(len(l)/2):
+      for li in range(len(l)//2):
         id = l[li*2]
         i = l[li*2+1]
         self.setActivity(id=None,newId=id,newName=i['name'],newIconClazz=i.get('icon_clazz',''),newIcon=i.get('icon'))
       l = v.get('transitions',[])
-      for li in range(len(l)/2):
+      for li in range(len(l)//2):
         id = l[li*2]
         i = l[li*2+1]
         newData = i.get('ob',i.get('dtml',''))

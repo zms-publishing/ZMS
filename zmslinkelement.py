@@ -696,7 +696,7 @@ class ZMSLinkElement(ZMSCustom):
     # --------------------------------------------------------------------------
     #  ZMSLinkElement.printHtml:
     #
-    #  Renders print presentation of a ContainerObject.
+    #  Renders printable presentation of a ContainerObject.
     # --------------------------------------------------------------------------
     def printHtmlPROXY(self, proxy, level, sectionizer, REQUEST, deep=True):
       rtn = ''

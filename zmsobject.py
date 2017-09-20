@@ -1470,7 +1470,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.printHtml:
     #
-    #  Renders print presentation.
+    #  Renders printable presentation.
     # --------------------------------------------------------------------------
     def printHtml(self, level, sectionizer, REQUEST, deep=True):
       html = ''

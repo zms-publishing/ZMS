@@ -24,6 +24,7 @@ import os
 import time
 import urllib
 # Product Imports.
+import standard
 import ZMSItem
 import _fileutil
 
@@ -107,7 +108,7 @@ class ZMSLog(ZMSItem.ZMSItem):
         log_severity = logging.INFO
       self.LOGGER.log( severity, info)
       if getattr( self, 'copy_to_stdout', True):
-        print log_time(), '%s(%i)'%(severity_string(severity),int(severity)), info
+        standard.writeStdout(self,'%s %s(%i) %s'%(str(log_time()),severity_string(severity),int(severity),info))
 
     # --------------------------------------------------------------------------
     #  ZMSLog.getLOG:

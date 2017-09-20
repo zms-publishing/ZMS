@@ -63,7 +63,7 @@ class ConfDict:
     @classmethod
     def get(cls):
         if cls.__confdict__ is None:
-            cls.__confdict__ = {'last_modified':long(DateTime().timeTime())}
+            cls.__confdict__ = {'last_modified':int(DateTime().timeTime())}
             PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
             for home in [PRODUCT_HOME,INSTANCE_HOME]:
               fp = os.path.join(home,'etc','zms.conf')

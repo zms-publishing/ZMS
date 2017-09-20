@@ -14,7 +14,7 @@ from ZMSTestCase import ZMSTestCase
 class MultilangManagerTest(ZMSTestCase):
    
       def test_conf(self):
-        print '<MultilangManagerTest.test_conf>'
+        print('<MultilangManagerTest.test_conf>')
         self._set_up()
         
         # open config
@@ -76,7 +76,7 @@ class MultilangManagerTest(ZMSTestCase):
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
         self._tear_down()
-        print '</MultilangManagerTest.test_conf>'
+        print('</MultilangManagerTest.test_conf>')
 
 
 if __name__ == "__main__":

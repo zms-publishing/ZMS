@@ -15,7 +15,7 @@ from ZMSTestCase import ZMSTestCase
 class LinkTest(ZMSTestCase):
    
       def test_edit(self):
-        print "<LinkTest.test_edit>"
+        print("<LinkTest.test_edit>")
         self._set_up()
         
         # navigate tree to page
@@ -85,7 +85,7 @@ class LinkTest(ZMSTestCase):
         self._find_element(By.CSS_SELECTOR, '.alert-success')
        
         self._tear_down()
-        print "</LinkTest.test_edit>"
+        print("</LinkTest.test_edit>")
 
 
 if __name__ == "__main__":

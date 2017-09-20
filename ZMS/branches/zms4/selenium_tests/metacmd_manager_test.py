@@ -15,7 +15,7 @@ from ZMSTestCase import ZMSTestCase
 class MetacmdManagerTest(ZMSTestCase):
    
       def test_conf(self):
-        print '<MetacmdManagerTest.test_conf>'
+        print('<MetacmdManagerTest.test_conf>')
         self._set_up()
         
         # open config
@@ -64,7 +64,7 @@ class MetacmdManagerTest(ZMSTestCase):
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
         self._tear_down()
-        print '</MetacmdManagerTest.test_conf>'
+        print('</MetacmdManagerTest.test_conf>')
 
 
 if __name__ == "__main__":

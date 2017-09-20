@@ -14,7 +14,7 @@ from ZMSTestCase import ZMSTestCase
 class WorkflowManagerTest(ZMSTestCase):
     
     def test_conf(self):
-        print '<WorkflowManagerTest.test_conf>'
+        print('<WorkflowManagerTest.test_conf>')
         self._set_up()
         
         # open config
@@ -62,7 +62,7 @@ class WorkflowManagerTest(ZMSTestCase):
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
         self._tear_down()
-        print '</WorkflowManagerTest.test_conf>'
+        print('</WorkflowManagerTest.test_conf>')
 
 
 if __name__ == "__main__":

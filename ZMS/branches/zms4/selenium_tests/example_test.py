@@ -15,7 +15,7 @@ from ZMSTestCase import ZMSTestCase
 class EditPageExample(ZMSTestCase):
     
     def test_edit(self):
-        print "<EditPageExample.test_edit>"
+        print("<EditPageExample.test_edit>")
         self._set_up()
         
         # get id
@@ -51,7 +51,7 @@ class EditPageExample(ZMSTestCase):
         self._find_element(By.XPATH, '//p[text()="%s"]' % MARKER)
         
         self._tear_down()
-        print "<EditPageExample.test_edit>"
+        print("<EditPageExample.test_edit>")
 
 if __name__ == "__main__":
     unittest.main()

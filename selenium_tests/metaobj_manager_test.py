@@ -15,7 +15,7 @@ from ZMSTestCase import ZMSTestCase
 class MetaobjManagerTest(ZMSTestCase):
     
     def test_conf(self):
-        print '<MetaobjManagerTest.test_conf>'
+        print('<MetaobjManagerTest.test_conf>')
         self._set_up()
         
         # open config
@@ -57,14 +57,14 @@ class MetaobjManagerTest(ZMSTestCase):
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
         self._tear_down()
-        print '</MetaobjManagerTest.test_conf>'
+        print('</MetaobjManagerTest.test_conf>')
 
 
 # python -m unittest selenium_tests.metaobj_manager_test.MetadictManagerTest
 class MetadictManagerTest(ZMSTestCase):
 
       def test_conf(self):
-        print '<MetadictManagerTest.test_conf>'
+        print('<MetadictManagerTest.test_conf>')
         self._set_up()
         
         # open config
@@ -82,7 +82,7 @@ class MetadictManagerTest(ZMSTestCase):
         #dialog.find_element_by_css_selector('.btn.btn-primary[value="Importieren"]').click()
         
         self._tear_down()
-        print '</MetadictManagerTest.test_conf>'
+        print('</MetadictManagerTest.test_conf>')
 
 
 if __name__ == "__main__":

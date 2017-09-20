@@ -746,7 +746,7 @@ def writeStdout(context, info):
   @type info: C{any}
   @rtype: C{str}
   """
-  print info
+  print(info)
   return info
 
 security.declarePublic('writeLog')

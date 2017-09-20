@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+from __future__ import print_function
 import unittest
 import os
 from contextlib import contextmanager
@@ -53,7 +54,7 @@ class SeleniumTestCase(unittest.TestCase):
         return self._wait(EC.text_to_be_present_in_element((By.CSS_SELECTOR, 'body'), text), timeout=timeout)
     
     def _find_element(self, by, value, timeout=DEFAULT_TIMEOUT):
-        print "_find_element",by,value
+        print("_find_element",by,value)
         return self._wait(EC.visibility_of_element_located((by, value)), timeout=timeout)
     
     # Modeled after http://www.obeythetestinggoat.com/how-to-get-selenium-to-wait-for-page-load-after-a-click.html
@@ -82,18 +83,18 @@ class SeleniumTestCase(unittest.TestCase):
     # workaround for https://github.com/mozilla/geckodriver/issues/322
     # where the click sometimes is swallowed. Should be fixed in the comming weeks
     def _wait_for_click(self, element, by, value, maxtries=2):
-        print "_wait_for_click:",element,by,value,maxtries
+        print("_wait_for_click:",element,by,value,maxtries)
         t = 0
         while t < maxtries:
           t += 1
-          print "_wait_for_click:",t
+          print("_wait_for_click:",t)
           try:
             self._wait(lambda driver: element.is_displayed() and element.is_enabled())
             element.click()
             condition = self._find_element(by,value)
             return
           except TimeoutException:
-            print "_wait_for_click: timeout - repeat"
+            print("_wait_for_click: timeout - repeat")
             if t == maxtries:
               raise TimeoutException
     

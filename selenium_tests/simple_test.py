@@ -15,7 +15,7 @@ from ZMSTestCase import ZMSTestCase
 class EditDocTest(ZMSTestCase):
    
       def test_edit(self):
-        print "<EditDocTest.test_edit>"
+        print("<EditDocTest.test_edit>")
         self._set_up()
         
         # get id
@@ -77,7 +77,7 @@ class EditDocTest(ZMSTestCase):
         self._find_element(By.CSS_SELECTOR, '.alert-success')
        
         self._tear_down()
-        print "</EditDocTest.test_edit>"
+        print("</EditDocTest.test_edit>")
 
 
 if __name__ == "__main__":

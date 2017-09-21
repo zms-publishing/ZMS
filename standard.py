@@ -40,6 +40,7 @@ import base64
 import cgi
 import copy
 import fnmatch
+import inspect
 import logging
 import operator
 import os
@@ -49,7 +50,6 @@ import time
 import urllib
 import zExceptions
 # Product Imports.
-import _blobfields
 import _globals
 import _fileutil
 import _filtermanager
@@ -109,11 +109,7 @@ def FileFromData( context, data, filename='', content_type=None):
   @return: New instance of file.
   @rtype: L{MyFile}
   """
-  file = {}
-  file['data'] = data
-  file['filename'] = filename
-  if content_type: file['content_type'] = content_type
-  return _blobfields.createBlobField( context, _blobfields.MyFile, file=file)
+  return context.FileFromData(data, filename, content_type)
 
 
 security.declarePublic('ImageFromData')
@@ -127,11 +123,7 @@ def ImageFromData( context, data, filename='', content_type=None):
   @return: New instance of image.
   @rtype: L{MyImage}
   """
-  file = {}
-  file['data'] = data
-  file['filename'] = filename
-  if content_type: file['content_type'] = content_type
-  return _blobfields.createBlobField( context, _blobfields.MyImage, file=file)
+  return context.ImageFromData(data, filename, content_type)
 
 
 security.declarePublic('set_response_headers')
@@ -1464,7 +1456,7 @@ def is_equal(x, y):
           if not x.has_key(k) or not y.has_key(k) or not is_equal(x.get(k),y.get(k)):
             return False
         return True
-    elif isinstance(x,_blobfields.MyBlob):
+    elif inspect.isclass(x) and inspect.isclass(y) and 'toXml' in list(x.__dict__.keys()) and 'toXml' in list(y.__dict__.keys()):
       return cmp(x.toXml(),y.toXml())==0
   return cmp(x,y)==0
 

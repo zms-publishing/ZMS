@@ -105,7 +105,7 @@ class ZMSItem(
     # --------------------------------------------------------------------------
     def zmi_body_class(self, *args, **kwargs):
       request = self.REQUEST
-      l = ['zmi','loading']
+      l = ['zmi']
       l.append(request['lang'])
       l.extend(map(lambda x:kwargs[x],kwargs.keys()))
       l.append(self.meta_id)

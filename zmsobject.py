@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 ################################################################################
 # zmsobject.py
 #
@@ -312,6 +315,34 @@ class ZMSObject(ZMSItem.ZMSItem,
         else:
           standard.writeError(self,"[get_conf_blob]: path=%s"%str(path))
       return v
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.FileFromData
+    # --------------------------------------------------------------------------
+      def FileFromData( self, data, filename='', content_type=None, mediadbStorable=False):
+        """
+        Creates a new instance of a file from given data.
+        @param data: File-data (binary)
+        @type data: C{string}
+        @param filename: Filename
+        @type filename: C{string}
+        @return: New instance of file.
+        @rtype: L{MyFile}
+        """
+        file = {}
+        file['data'] = data
+        file['filename'] = filename
+        if content_type: file['content_type'] = content_type
+        return _blobfields.createBlobField( self, _blobfields.MyFile, file=file)
+
+
+    # --------------------------------------------------------------------------
+    #  ZMSObject.ImageFromData:
+    # --------------------------------------------------------------------------
+      def ImageFromData( self, data, filename='', content_type=None, mediadbStorable=False):
+        return standard.ImageFromData( self, data, filename, content_type)
+
 
     # --------------------------------------------------------------------------
     #  ZMSObject.isMetaType:

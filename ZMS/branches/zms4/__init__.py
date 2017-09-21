@@ -29,29 +29,33 @@ __version__ = '0.1'
 from App.Common import package_home
 from App.ImageFile import ImageFile
 from DateTime.DateTime import DateTime
-import ConfigParser
+try:
+  import ConfigParser
+except ImportError:
+  # Python3
+  import configparser as ConfigParser
 import OFS.misc_
 import fnmatch
 import os
 import re
 import stat
 # Product Imports.
-import standard
-import zms
-import zmscustom
-import zmssqldb
-import zmslinkcontainer
-import zmslinkelement
-import _confmanager
-import _multilangmanager
-import _mediadb
-import _sequence
-import _zmsattributecontainer
-import ZMSZCatalogAdapter
-import ZMSFormatProvider, ZMSFormatProviderAcquired
-import ZMSMetacmdProvider, ZMSMetacmdProviderAcquired
-import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
-import ZMSRepositoryManager, ZMSRepositoryManagerAcquired
+from . import standard
+from . import zms
+from . import zmscustom
+from . import zmssqldb
+from . import zmslinkcontainer
+from . import zmslinkelement
+from . import _confmanager
+from . import _multilangmanager
+from . import _mediadb
+from . import _sequence
+from . import _zmsattributecontainer
+from . import ZMSZCatalogAdapter
+from . import ZMSFormatProvider, ZMSFormatProviderAcquired
+from . import ZMSMetacmdProvider, ZMSMetacmdProviderAcquired
+from . import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
+from . import ZMSRepositoryManager, ZMSRepositoryManagerAcquired
 
 try:
   from Products.CMFCore.DirectoryView import registerFileExtension

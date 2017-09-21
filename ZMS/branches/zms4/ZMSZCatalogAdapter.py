@@ -1,4 +1,6 @@
 from __future__ import division
+from __future__ import absolute_import
+
 ################################################################################
 # ZMSZCatalogAdapter.py
 #
@@ -25,10 +27,10 @@ import time
 import urllib
 import zope.interface
 # Product Imports.
-import _confmanager
-import standard
-import IZMSCatalogAdapter,IZMSConfigurationProvider
-import ZMSItem
+# import standard
+# from . import _confmanager
+from . import IZMSCatalogAdapter,IZMSConfigurationProvider
+from . import ZMSItem
 
 
 # ------------------------------------------------------------------------------
@@ -49,7 +51,7 @@ def updateVersion(root):
         if hasattr(root,'_attr_ids'):
           delattr(root,'_attr_ids')
       root.setConfProperty('ZMS.catalog.build',2)
-      
+
 
 # ------------------------------------------------------------------------------
 #  remove_tags:
@@ -121,15 +123,15 @@ class ZMSZCatalogAdapter(
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-		'manage_changeProperties', 'manage_main', 'manage_reindex',
-		)
+        'manage_changeProperties', 'manage_main', 'manage_reindex',
+        )
     __ac_permissions__=(
-		('ZMS Administrator', __administratorPermissions__),
-		)
+        ('ZMS Administrator', __administratorPermissions__),
+        )
 
 
     ############################################################################
-    #  ZMSZCatalogAdapter.__init__: 
+    #  ZMSZCatalogAdapter.__init__:
     #
     #  Constructor.
     ############################################################################
@@ -253,7 +255,7 @@ class ZMSZCatalogAdapter(
     def get_sitemap(self, cb, root, recursive):
       result = []
       request = self.REQUEST
-      
+
       # Add node.
       def get_catalog_index(node):
         request.set('ZMS_CONTEXT_URL',True)
@@ -273,7 +275,7 @@ class ZMSZCatalogAdapter(
               'title':obj.getTitlealt(request),
             })
         return d
-      
+
       # Add node.
       def add_catalog_index(node,d):
         for k in d.keys():
@@ -314,7 +316,7 @@ class ZMSZCatalogAdapter(
             value = str(value)
           d[attr_id] = remove_tags(self,value)
         cb(node,d)
-      
+
       # Traverse tree.
       def traverse(node,recursive):
         l = []
@@ -337,7 +339,7 @@ class ZMSZCatalogAdapter(
           for childNode in node.filteredChildNodes(request):
             l.extend(traverse(childNode,recursive))
         return l
-      
+
       self.REQUEST.set('lang',self.REQUEST.get('lang',self.getPrimaryLanguage()))
       result.append('%i objects cataloged'%len(traverse(root,recursive)))
       return ', '.join(filter(lambda x:x,result))
@@ -367,21 +369,21 @@ class ZMSZCatalogAdapter(
         """ ZMSZCatalogAdapter.manage_changeProperties """
         message = ''
         ids = REQUEST.get('objectIds',[])
-        
+
         # Delegate to connectors.
         # -----------------------
         for connector in self.getConnectors():
           if self.getConfProperty('zms.search.adapter.id',self.id)==self.id:
             self.setConfProperty('zms.search.connector.id',connector.id)
           message += connector.manage_changeProperties(connector.id in ids, btn, lang, REQUEST)
-        
+
         # Add.
         # ----
         if btn == 'Add':
           meta_type = REQUEST['meta_type']
           connector = self.addConnector(meta_type)
           message += 'Added '+meta_type
-        
+
         # Save.
         # -----
         elif btn == 'Save':
@@ -392,14 +394,14 @@ class ZMSZCatalogAdapter(
             attrs[attr_id] = {'boost':float(REQUEST.get('boost_%s'%attr_id,'1.0')),'type':REQUEST.get('type_%s'%attr_id,'text')}
           self.setAttrs(attrs)
           message += self.getZMILangStr('MSG_CHANGED')
-        
+
         # Remove.
         # -------
         elif btn == 'Remove':
           if len(ids) > 0:
             self.manage_delObjects(ids)
             message += self.getZMILangStr('MSG_DELETED')%len(ids)
-        
+
         # Return with message.
         message = urllib.quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#%s'%(lang,message,REQUEST.get('tab')))

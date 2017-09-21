@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 ################################################################################
 # _confmanager.py
 #
@@ -17,7 +19,10 @@
 ################################################################################
 
 # Imports.
-from cStringIO import StringIO
+try:
+  from StringIO import StringIO
+except ImportError:
+  from io import StringIO
 from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from DateTime.DateTime import DateTime
@@ -27,8 +32,12 @@ from OFS.Folder import Folder
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
-import ConfigParser
-import Globals
+try:
+  import ConfigParser
+except ImportError:
+  # Python3
+  import configparser as ConfigParser
+# import Globals
 import OFS.misc_
 import operator
 import os
@@ -40,17 +49,17 @@ import xml.dom
 import zExceptions
 import zope.interface
 # Product imports.
-from IZMSConfigurationProvider import IZMSConfigurationProvider
-import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
-import standard
-import _exportable
-import _fileutil
-import _filtermanager
-import _mediadb
-import _multilangmanager
-import _sequence
-import zopeutil
-import zmslog
+# import standard
+from .IZMSConfigurationProvider import IZMSConfigurationProvider
+from . import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
+from . import _exportable
+from . import _fileutil
+from . import _filtermanager
+from . import _mediadb
+from . import _multilangmanager
+from . import _sequence
+from . import zopeutil
+from . import zmslog
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

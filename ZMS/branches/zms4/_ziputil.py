@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 ################################################################################
 # _ziputil.py
 #
@@ -17,14 +19,16 @@
 ################################################################################
 
 # Imports.
-from cStringIO import StringIO
+try:
+  from StringIO import StringIO
+except ImportError:
+  from io import StringIO
 import os
 import tempfile
 import zipfile
 # Product Imports.
-import standard
-import _globals
-
+# import standard
+from . import _globals
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _ziputil.exportZodb2Zip:

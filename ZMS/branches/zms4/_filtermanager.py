@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 ################################################################################
 # _filtermanager.py
 #
@@ -30,9 +32,9 @@ import time
 import urllib
 import zExceptions
 # Product Imports.
-import standard
-import _blobfields
-import _fileutil
+# import standard
+from . import _blobfields
+from . import _fileutil
 
 
 ################################################################################

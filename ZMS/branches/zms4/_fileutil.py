@@ -1,4 +1,6 @@
 from __future__ import division
+from __future__ import absolute_import
+
 ################################################################################
 # _fileutil.py
 #
@@ -27,7 +29,7 @@ import sys
 import tempfile
 import zipfile
 # Product Imports.
-import standard
+# import standard
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -96,7 +98,7 @@ _fileutil.getOSPath:
 
 Return path with OS separators.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def getOSPath(path, chs=range(32)+[34,39,60,62,63,127], undoable=False):
+def getOSPath(path, chs=list(range(32))+[34,39,60,62,63,127], undoable=False):
   path = path.replace('\\',os.sep)
   path = path.replace('/',os.sep)
   if type( path) is str:

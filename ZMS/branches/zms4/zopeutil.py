@@ -1,3 +1,6 @@
+from __future__ import division
+from __future__ import absolute_import
+
 ################################################################################
 # zopeutil.py
 #
@@ -24,8 +27,8 @@ from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import os
 # Product Imports.
-import standard
-import _fileutil
+# import standard
+from . import _fileutil
 
 security = ModuleSecurityInfo('Products.zms.zopeutil')
 
@@ -79,7 +82,7 @@ def getObject(container, id):
   """
   id = standard.operator_absattr(id)
   ob = getattr(container,id,None)
-  return ob 
+  return ob
 
 security.declarePublic('callObject')
 def callObject(ob, zmscontext=None, options={}):
@@ -133,7 +136,7 @@ def readData(ob, default=None):
       data = f.read()
       f.close()
   elif ob.meta_type == 'Z SQL Method':
-    connection = ob.connection_id 
+    connection = ob.connection_id
     params = ob.arguments_src
     data = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
   return data
@@ -251,7 +254,7 @@ def addZSqlMethod(container, id, title, data):
     template = ''
     SQL.manage_addZSQLMethod( container, id, title, connection_id, arguments, template)
   except:
-    pass 
+    pass
   if data:
     ob = getattr( container, id)
     connection = data
@@ -264,7 +267,7 @@ def addZSqlMethod(container, id, title, data):
     template = template[template.find('</params>'):]
     template = template[template.find('>')+1:]
     template = '\n'.join(filter( lambda x: len(x) > 0, template.split('\n')))
-    ob.manage_edit(title=title,connection_id=connection,arguments=arguments,template=template) 
+    ob.manage_edit(title=title,connection_id=connection,arguments=arguments,template=template)
 
 def addFile(container, id, title, data, content_type=None):
   """

@@ -220,7 +220,11 @@ class SeleniumTestCase(unittest.TestCase):
     def _read_credentials(cls):
         here = os.path.dirname(os.path.abspath(__file__))
         credentials_path = os.path.join(here, 'credentials.txt')
-        from ConfigParser import SafeConfigParser
+        try:
+          from ConfigParser import SafeConfigParser
+        except ImportError:
+          # Python3
+          from configparser import SafeConfigParser
         parser = SafeConfigParser()
         parser.read(credentials_path)
         parser.defaults()['driver'] = 'Firefox'

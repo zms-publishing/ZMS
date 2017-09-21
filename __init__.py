@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 ################################################################################
 # Initialisation file for the ZMS Product for Zope
 #

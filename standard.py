@@ -33,7 +33,10 @@ from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
-from cStringIO import StringIO
+try:
+  from StringIO import StringIO
+except ImportError:
+  from io import StringIO
 from traceback import format_exception
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
@@ -41,6 +44,7 @@ import base64
 import cgi
 import copy
 import fnmatch
+import inspect
 import logging
 import operator
 import os
@@ -51,12 +55,12 @@ import urllib
 import zExceptions
 import six
 # Product Imports.
-import _blobfields
-import _globals
-import _fileutil
-import _filtermanager
-import _mimetypes
-import _xmllib
+# import _blobfields
+from . import _globals
+from . import _fileutil
+from . import _filtermanager
+from . import _mimetypes
+from . import _xmllib
 
 security = ModuleSecurityInfo('Products.zms.standard')
 
@@ -111,12 +115,7 @@ def FileFromData( context, data, filename='', content_type=None):
   @return: New instance of file.
   @rtype: L{MyFile}
   """
-  file = {}
-  file['data'] = data
-  file['filename'] = filename
-  if content_type: file['content_type'] = content_type
-  return _blobfields.createBlobField( context, _blobfields.MyFile, file=file)
-
+  return context.FileFromData(data, filename, content_type)
 
 security.declarePublic('ImageFromData')
 def ImageFromData( context, data, filename='', content_type=None):
@@ -255,7 +254,7 @@ def url_inherit_params(url, REQUEST, exclude=[], sep='&amp;'):
 security.declarePublic('string_maxlen')
 def string_maxlen(s, maxlen=20, etc='...', encoding=None):
   """
-  Returns string with specified maximum-length. If original string exceeds 
+  Returns string with specified maximum-length. If original string exceeds
   maximum-length '...' is appended at the end.
   @param s: String
   @type s: C{str}
@@ -488,7 +487,7 @@ def id_quote(s, mapping={
         '/':'_',
 }):
   """
-  Converts given string to identifier (removes special-characters and 
+  Converts given string to identifier (removes special-characters and
   replaces German umlauts).
   @param s: String
   @type s: C{str}
@@ -533,7 +532,7 @@ def qs_append(qs, p, v):
 security.declarePublic('nvl')
 def nvl(a1, a2, n=None):
   """
-  Returns its first argument if it is not equal to third argument (None), 
+  Returns its first argument if it is not equal to third argument (None),
   otherwise it returns its second argument.
   @param a1: 1st argument
   @type a1: C{any}
@@ -561,14 +560,14 @@ def triggerEvent(context, *args, **kwargs):
   """
   l = []
   name = args[0]
-  
+
   # Always call local trigger for global triggers.
   if name.startswith('*.'):
     triggerEvent(context,name[2:]+'Local')
-  
+
   # Pass custom event to zope ObjectModifiedEvent event.
   notify(ObjectModifiedEvent(context, name))
-  
+
   metaObj = context.getMetaobj( context.meta_id)
   if metaObj:
     # Process meta-object-triggers.
@@ -593,7 +592,7 @@ def isManagementInterface(REQUEST):
   return REQUEST is not None and \
          REQUEST.get('URL','').find('/manage') >= 0 and \
          isPreviewRequest(REQUEST)
-     
+
 
 
 security.declarePublic('isPreviewRequest')
@@ -663,7 +662,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   netloc = u[1]
   path = u[2]
   query = u[4]
-  
+
   # Get Proxy.
   useproxy = True
   noproxy = ['localhost','127.0.0.1']+filter(lambda x: len(x)>0,map(lambda x: x.strip(),context.getConfProperty('%s.noproxy'%scheme.upper(),'').split(',')))
@@ -674,7 +673,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   if useproxy:
     proxy = context.getConfProperty('%s.proxy'%scheme.upper(),'')
     if len(proxy) > 0:
-      path = '%s://%s%s'%(scheme,netloc,path) 
+      path = '%s://%s%s'%(scheme,netloc,path)
       netloc = proxy
 
   # Open HTTP connection.
@@ -684,7 +683,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
     conn = httplib.HTTPConnection(netloc,timeout=timeout)
   else:
     conn = httplib.HTTPSConnection(netloc,timeout=timeout)
-  
+
   # Set request-headers.
   if auth is not None:
     userpass = auth['username']+':'+auth['password']
@@ -697,7 +696,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   response = conn.getresponse()
   reply_code = response.status
   message = response.reason
-  
+
   #### get parameter from content
   if reply_code == 404 or reply_code >= 500:
     error = "[%i]: %s at %s [%s]"%(reply_code,message,url,method)
@@ -803,7 +802,7 @@ def writeError(context, info):
       # Strip HTML tags from the error value
       for pattern in [r"<[^<>]*>", r"&[A-Za-z]+;"]:
         v = re_sub(pattern,' ', v)
-      if info: 
+      if info:
         info += '\n'
       info += ''.join(format_exception(t, v, tb))
     info = "[%s@%s] "%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
@@ -828,8 +827,8 @@ def writeError(context, info):
 security.declarePublic('re_sub')
 def re_sub( pattern, replacement, subject, ignorecase=False):
   """
-  Performs a search-and-replace across subject, replacing all matches of 
-  regex in subject with replacement. The result is returned by the sub() 
+  Performs a search-and-replace across subject, replacing all matches of
+  regex in subject with replacement. The result is returned by the sub()
   function. The subject string you pass is not modified.
   @rtype: C{str}
   """
@@ -841,9 +840,9 @@ def re_sub( pattern, replacement, subject, ignorecase=False):
 security.declarePublic('re_search')
 def re_search( pattern, subject, ignorecase=False):
   """
-  Scan through string looking for a location where the regular expression 
-  pattern produces a match, and return a corresponding MatchObject 
-  instance. Return None if no position in the string matches the pattern; 
+  Scan through string looking for a location where the regular expression
+  pattern produces a match, and return a corresponding MatchObject
+  instance. Return None if no position in the string matches the pattern;
   note that this is different from finding a zero-length match at some
   point in the string.
   @rtype: C{str}
@@ -857,10 +856,10 @@ def re_search( pattern, subject, ignorecase=False):
 security.declarePublic('re_findall')
 def re_findall( pattern, text, ignorecase=False):
   """
-  Return all non-overlapping matches of pattern in string, as a list of strings. 
-  The string is scanned left-to-right, and matches are returned in the order found. 
-  If one or more groups are present in the pattern, return a list of groups; 
-  this will be a list of tuples if the pattern has more than one group. 
+  Return all non-overlapping matches of pattern in string, as a list of strings.
+  The string is scanned left-to-right, and matches are returned in the order found.
+  If one or more groups are present in the pattern, return a list of groups;
+  this will be a list of tuples if the pattern has more than one group.
   Empty matches are included in the result unless they touch the beginning of another match
   @rtype: C{str}
   """
@@ -880,24 +879,24 @@ def re_findall( pattern, text, ignorecase=False):
 ############################################################################
 
 # ==========================================================================
-# Index  Field  Values  
-# 0  year (for example, 1993) 
-# 1  month range [1,12] 
-# 2  day range [1,31] 
-# 3  hour range [0,23] 
-# 4  minute range [0,59] 
-# 5  second range [0,61]; see (1) in strftime() description 
-# 6  weekday range [0,6], Monday is 0 
-# 7  Julian day range [1,366] 
-# 8  daylight savings flag 0, 1 or -1; see below 
+# Index  Field  Values
+# 0  year (for example, 1993)
+# 1  month range [1,12]
+# 2  day range [1,31]
+# 3  hour range [0,23]
+# 4  minute range [0,59]
+# 5  second range [0,61]; see (1) in strftime() description
+# 6  weekday range [0,6], Monday is 0
+# 7  Julian day range [1,366]
+# 8  daylight savings flag 0, 1 or -1; see below
 # ==========================================================================
 
 security.declarePublic('format_datetime_iso')
 def format_datetime_iso(t):
-  # DST is Daylight Saving Time, an adjustment of the timezone by 
-  # (usually) one hour during part of the year. DST rules are magic 
+  # DST is Daylight Saving Time, an adjustment of the timezone by
+  # (usually) one hour during part of the year. DST rules are magic
   # (determined by local law) and can change from year to year.
-  # 
+  #
   # DST in t[8] ! -1 (unknown), 0 (off), 1 (on)
   if t[8] == 1:
     tz = time.altzone
@@ -976,7 +975,7 @@ def getDateTime(t):
   mehr "tuple", sondern "time.struct_time". Es verhaelt sich aber weiterhin
   abwaertskompatibel zu einem tuple.
   This is no problem for Zope since Zope uses its own, more flexible, type
-  DateTime. Nevertheless ZMS relies on the datatype "tuple" as DateTime has 
+  DateTime. Nevertheless ZMS relies on the datatype "tuple" as DateTime has
   the limitation that no date prior to 1970-01-01 can be used!
   """
   if t is not None:
@@ -1086,10 +1085,10 @@ def parseLangFmtDate(s):
             dctTime['Y'] = 1980
             dctTime['m'] = 1
             dctTime['d'] = 1
-          if dctTime['Y'] in range( 0, 50): 
-            dctTime['Y'] = dctTime['Y'] + 2000 
-          if dctTime['Y'] in range( 50, 100): 
-            dctTime['Y'] = dctTime['Y'] + 1900 
+          if dctTime['Y'] in range( 0, 50):
+            dctTime['Y'] = dctTime['Y'] + 2000
+          if dctTime['Y'] in range( 50, 100):
+            dctTime['Y'] = dctTime['Y'] + 1900
           if len(v.strip())>0 or \
              (dctTime['Y']+dctTime['m']+dctTime['d']!=0 and dctTime['Y']-1 not in range(1900,2100)) or \
              (dctTime['Y']+dctTime['m']+dctTime['d']!=0 and dctTime['m']-1 not in range(12)) or \
@@ -1408,7 +1407,7 @@ def distinct_list(l, i=None):
 
 
 security.declarePublic('sort_list')
-def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1): 
+def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
   """
   Sorts list by given field.
   @return: Sorted list.
@@ -1777,7 +1776,7 @@ def dt_executable(context, v):
   @type context: C{ZMSObject}
   @param v: the executable code
   @type v: C{str}
-  @return: 
+  @return:
   @rtype: C{Bool}
   """
   if _globals.is_str_type(v):
@@ -1923,18 +1922,18 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
   from email.mime.image import MIMEImage
   from email.mime.audio import MIMEAudio
   from email.mime.application import MIMEApplication
-  
+
   # Check constraints.
   if type(mto) is str:
     mto = {'To':mto}
   if type(mbody) is str:
     mbody = [{'text':mbody}]
-  
+
   # Get sender.
   if REQUEST is not None:
     auth_user = REQUEST['AUTHENTICATED_USER']
     mto['From'] = mto.get('From',context.getUserAttr(auth_user,'email',context.getConfProperty('ZMSAdministrator.email','')))
-  
+
   # Get MailHost.
   mailhost = None
   homeElmnt = context.getHome()
@@ -1942,7 +1941,7 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
     mailhost = homeElmnt.objectValues(['Mail Host'])[0]
   elif getattr(homeElmnt,'MailHost',None) is not None:
     mailhost = getattr(homeElmnt,'MailHost',None)
-  
+
   # Assemble MIME object.
   #mime_msg = MIMEMultipart('related') # => attachments do not show up in iOS Mail (just as paperclip indicator)
   mime_msg = MIMEMultipart()
@@ -1950,9 +1949,9 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
   for k in mto.keys():
     mime_msg[k] = mto[k]
   mime_msg.preamble = 'This is a multi-part message in MIME format.'
-  
-  # Encapsulate the plain and HTML versions of the message body 
-  # in an 'alternative' part, so message agents can decide 
+
+  # Encapsulate the plain and HTML versions of the message body
+  # in an 'alternative' part, so message agents can decide
   # which they want to display.
   msgAlternative = MIMEMultipart('alternative')
   mime_msg.attach(msgAlternative)
@@ -1966,7 +1965,7 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
       mattach = [mattach]
     for filedata in mattach:
       # Send base64-encoded data stream
-      # Give optional prefix naming filename, mimetype and encoding 
+      # Give optional prefix naming filename, mimetype and encoding
       # Example: 'filename:MyImageFile.png;data:image/png;base64,......'
       if isinstance(filedata, str):
         mimetype = 'unknown'
@@ -1977,11 +1976,11 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
         fileextn = 'dat'
         metadata = re_search('(^.*[;,])', filedata)
         # extract filename, mimetype and encoding if available
-        if (type(metadata)==list and len(metadata)==1):          
+        if (type(metadata)==list and len(metadata)==1):
           mimetype = re_search('data:([^;,]+[;,][^;,]*)', metadata[0])
           filename = re_search('filename:([^;,]+)', metadata[0])
-          filedata = filedata.replace(metadata[0], '')           
-        if (type(mimetype)==list and len(mimetype)==1): 
+          filedata = filedata.replace(metadata[0], '')
+        if (type(mimetype)==list and len(mimetype)==1):
           mimetype = mimetype[0].split(';')
           if type(mimetype)==list and len(mimetype)==2:
             maintype = mimetype[0]
@@ -1992,25 +1991,25 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
           subtypes = maintype.split('/')
           if (type(subtypes)==list and len(subtypes)==2):
             filetype = subtypes[0]
-            fileextn = subtypes[1]            
+            fileextn = subtypes[1]
           filename = '%s.%s'%(filetype,fileextn)
         # decode if already encoded because MIME* is encoding by default
         if encoding=='base64':
           filedata = base64.b64decode(filedata)
         # create mime attachment
         if (filetype=='image'):
-          part = MIMEImage(filedata, fileextn)                
+          part = MIMEImage(filedata, fileextn)
         elif (filetype=='audio'):
-          part = MIMEAudio(filedata, fileextn)              
+          part = MIMEAudio(filedata, fileextn)
         else:
           part = MIMEApplication(filedata)
         part.add_header('Content-Disposition', 'attachment; filename="%s"'%filename)
         mime_msg.attach(part)
-        
+
       # TODO: Handle data from filesystem or other sources
       elif isinstance(filedata, file):
         raise NotImplementedError
-  
+
   # Send mail.
   try:
     #writeBlock( context, "[sendMail]: %s"%mime_msg.as_string())

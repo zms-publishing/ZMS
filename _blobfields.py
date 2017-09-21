@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 ################################################################################
 # _blobfields.py
 #
@@ -17,25 +19,32 @@
 ################################################################################
 
 # Imports.
-from webdav.common import rfc1123_date
+# from webdav.common import rfc1123_date
 from DateTime.DateTime import DateTime
 from ZPublisher import HTTPRangeSupport,HTTPRequest
 from OFS.CopySupport import absattr
 from OFS.Image import Image, File
-from cStringIO import StringIO
-from mimetools import choose_boundary
+try:
+  from StringIO import StringIO
+except ImportError:
+  from io import StringIO
+# from mimetools import choose_boundary
+from email.generator import _make_boundary as choose_boundary
 import copy
 import urllib
 import warnings
 import zExceptions 
 # Product Imports.
-import standard
-import pilutil
-import _fileutil
-import _globals
+# from . import standard
+from . import pilutil
+from . import _fileutil
+from . import _globals
 
 __all__= ['MyBlob','MyImage','MyFile']
 
+# PY3 PATCH
+def rfc1123_date():
+ return 'ERROR rfc1123_date()'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _blobfields.StringType:
@@ -269,13 +278,13 @@ class MyBlob:
             # of the way they parse it).
             # This happens to be what RFC2616 tells us to do in the face of an
             # invalid date.
-            try:    mod_since=int(DateTime(header).timeTime())
+            try:    mod_since=long(DateTime(header).timeTime())
             except: mod_since=None
             if mod_since is not None:
                 if self.aq_parent._p_mtime:
-                    last_mod = int(self.aq_parent._p_mtime)
+                    last_mod = long(self.aq_parent._p_mtime)
                 else:
-                    last_mod = int(0)
+                    last_mod = long(0)
                 if last_mod > 0 and last_mod <= mod_since:
                     RESPONSE.setHeader('Last-Modified',
                                        rfc1123_date(self.aq_parent._p_mtime))
@@ -310,13 +319,13 @@ class MyBlob:
                 else:
                     # Date
                     date = if_range.split( ';')[0]
-                    try: mod_since=int(DateTime(date).timeTime())
+                    try: mod_since=long(DateTime(date).timeTime())
                     except: mod_since=None
                     if mod_since is not None:
                         if self.aq_parent._p_mtime:
-                            last_mod = int(self.aq_parent._p_mtime)
+                            last_mod = long(self.aq_parent._p_mtime)
                         else:
-                            last_mod = int(0)
+                            last_mod = long(0)
                         if last_mod > mod_since:
                             # Modified, so send a normal response. We delete
                             # the ranges, which causes us to skip to the 200
@@ -780,7 +789,7 @@ class MyBlob:
       @rtype: C{string}
       @deprecated: Use zmscontext.getMimeTypeIconSrc(mt) instead!
       """
-      import _mimetypes
+      from . import _mimetypes
       warnings.warn('Using MyBlob.getMimeTypeIconSrc() is deprecated.'
                    ' Use zmscontext.getMimeTypeIconSrc(mt) instead.',
                      DeprecationWarning, 

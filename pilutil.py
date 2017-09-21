@@ -1,4 +1,6 @@
 from __future__ import division
+from __future__ import absolute_import
+
 ################################################################################
 # pilutil.py
 #
@@ -21,8 +23,8 @@ from __future__ import division
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 import tempfile
 # Product Imports.
-import _fileutil
-import standard
+from . import _fileutil
+# from . import standard
 
 security = ModuleSecurityInfo('Products.zms.pilutil')
 

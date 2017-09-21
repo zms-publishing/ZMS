@@ -1,4 +1,6 @@
 from __future__ import division
+from __future__ import absolute_import
+
 ################################################################################
 # _objattrs.py
 #
@@ -29,11 +31,11 @@ import time
 import urllib
 import zExceptions
 # Product Imports.
-import ZMSMetaobjManager
-import standard
-import pilutil
-import _blobfields
-import _globals
+from . import ZMSMetaobjManager
+# from . import standard
+from . import pilutil
+from . import _blobfields
+from . import _globals
 
 
 # ------------------------------------------------------------------------------

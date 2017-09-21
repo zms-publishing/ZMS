@@ -1,4 +1,6 @@
 from __future__ import division
+from __future__ import absolute_import
+
 ################################################################################
 # zms.py
 #
@@ -31,27 +33,27 @@ import transaction
 import urllib
 import zExceptions
 # Product imports.
-import standard
-import _accessmanager
-import _builder
-import _confmanager
-import _enummanager
-import _fileutil
-import _globals
-import _importable
-import _mediadb
-import _objattrs
-import _xmllib
-import _zcatalogmanager
-import _zmsattributecontainer
-import  ZMSMetacmdProvider, ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider
-from zmscustom import ZMSCustom
-from zmslinkcontainer import ZMSLinkContainer
-from zmslinkelement import ZMSLinkElement
-from zmslog import ZMSLog
-from zmsobject import ZMSObject
-from zmssqldb import ZMSSqlDb
-from zmstrashcan import ZMSTrashcan
+from . import standard
+from . import _accessmanager
+from . import _builder
+from . import _confmanager
+from . import _enummanager
+from . import _fileutil
+from . import _globals
+from . import _importable
+from . import _mediadb
+from . import _objattrs
+from . import _xmllib
+from . import _zcatalogmanager
+from . import _zmsattributecontainer
+from . import  ZMSMetacmdProvider, ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider
+from .zmscustom import ZMSCustom
+from .zmslinkcontainer import ZMSLinkContainer
+from .zmslinkelement import ZMSLinkElement
+from .zmslog import ZMSLog
+from .zmsobject import ZMSObject
+from .zmssqldb import ZMSSqlDb
+from .zmstrashcan import ZMSTrashcan
 
 __all__= ['ZMS']
 

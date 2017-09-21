@@ -1,4 +1,6 @@
 from __future__ import division
+from __future__ import absolute_import
+
 ################################################################################
 # ZMSMetaobjManager.py
 #
@@ -19,7 +21,10 @@ from __future__ import division
 
 
 # Imports.
-from cStringIO import StringIO
+try:
+  from StringIO import StringIO
+except ImportError:
+  from io import StringIO
 import ZPublisher.HTTPRequest
 import collections
 import copy
@@ -29,14 +34,14 @@ import time
 import zExceptions
 import zope.interface
 # Product Imports.
-import IZMSRepositoryProvider
-import standard
-import zopeutil
-import _blobfields
-import _fileutil
-import _globals
-import _xmllib
-import _ziputil
+from . import IZMSRepositoryProvider
+# from . import standard
+from . import zopeutil
+from . import _blobfields
+from . import _fileutil
+from . import _globals
+# from . import _xmllib
+from . import _ziputil
 
 
 # ------------------------------------------------------------------------------

@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 ################################################################################
 # _accessmanager.py
 #
@@ -27,10 +29,10 @@ import time
 import urllib
 import zExceptions
 # Product Imports.
-import standard
-import _confmanager
-import _globals
-import _xmllib
+from . import standard
+from . import _confmanager
+from . import _globals
+from . import _xmllib
 
 
 # ------------------------------------------------------------------------------

@@ -1,4 +1,6 @@
 from __future__ import division
+from __future__ import absolute_import
+
 ################################################################################
 # _xmllib.py
 #
@@ -18,7 +20,10 @@ from __future__ import division
 ################################################################################
 
 # Imports.
-from cStringIO import StringIO
+try:
+  from StringIO import StringIO
+except ImportError:
+  from io import StringIO
 import copy
 import os
 import pyexpat
@@ -29,15 +34,16 @@ import unicodedata
 import xml.dom
 
 from App.Common import package_home
-import Globals
+# import Globals
 from OFS.Image import File
 
-import _blobfields
-import _fileutil
-import _globals
-from _objattrs import *
-import standard
-import zopeutil
+# Product Imports
+# import standard
+from . import _blobfields
+from . import _fileutil
+from . import _globals
+from . import _objattrs
+from . import zopeutil
 
 
 # Product Imports.
@@ -177,16 +183,16 @@ def xml_header(encoding='utf-8'):
 #  Only for internal use: init specified property with value.
 # ------------------------------------------------------------------------------
 def xmlInitObjProperty(self, key, value, lang=None):
-  
+
   # -- DEFINITION
   obj_attr = self.getObjAttr(key)
-  
+
   # -- ATTR
   attr = self.getObjAttrName(obj_attr, lang)
-  
+
   # -- DATATYPE
   datatype = obj_attr['datatype_key']
-  
+
   if value is not None:
     if type(value) is str:
       value = value.strip()
@@ -205,7 +211,7 @@ def xmlInitObjProperty(self, key, value, lang=None):
     # -- String-Fields
     elif datatype in _globals.DT_STRINGS:
       value = str(value)
-  
+
   # -- INIT
   for ob in self.objectValues(['ZMSAttributeContainer']):
     setattr(ob, attr, value)
@@ -230,14 +236,14 @@ def xmlOnCharacterData(self, sData, bInCData):
 #  _xmllib.xmlOnUnknownStartTag:
 # ------------------------------------------------------------------------------
 def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
-  
+
   # -- TAG-STACK
   tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
   tag['dValueStack'] = self.dValueStack.size()
   self.dTagStack.push(tag)
-  
+
   # -- VALUE-STACK
-  
+
   # -- ITEM (DICTIONARY|LIST) --
   #----------------------------
   if sTagName in ['dict', 'dictionary']:
@@ -246,28 +252,28 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
     self.dValueStack.push([])
   elif sTagName == 'item':
     pass
-  
+
   # -- DATA (IMAGE|FILE) --
   #-----------------------
   elif sTagName == 'data':
     pass
-  
+
   # -- LANGUAGE --
   #--------------
   elif sTagName == 'lang':
     if self.dValueStack.size() == 0:
       self.dValueStack.push({})
-  
+
   # -- OBJECT-ATTRIBUTES --
   #-----------------------
   elif sTagName in self.getObjAttrs().keys():
     pass
-  
+
   # -- OTHERS --
   #------------
   else:
     tag['skip'] = True
-  
+
   # -- Return
   return 1  # accept any unknown tag
 
@@ -276,16 +282,16 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
 #  _xmllib.xmlOnUnknownEndTag:
 # ------------------------------------------------------------------------------
 def xmlOnUnknownEndTag(self, sTagName):
-  
+
   # -- TAG-STACK
   skip = len(filter(lambda x:x.get('skip'), self.dTagStack.get_all())) > 0
   tag = self.dTagStack.pop()
   name = tag['name']
   if name != sTagName: return 0  # don't accept any unknown tag
-  
+
   attrs = standard.unencode(tag['attrs'])
   cdata = standard.unencode(tag['cdata'])
-  
+
   # -- ITEM (DICTIONARY|LIST) --
   #----------------------------
   if sTagName in ['dict', 'dictionary']:
@@ -306,7 +312,7 @@ def xmlOnUnknownEndTag(self, sTagName):
     if type(value) is list:
       value.append(item)
     self.dValueStack.push(value)
-  
+
   # -- DATA (IMAGE|FILE) --
   #-----------------------
   elif sTagName == 'data':
@@ -320,7 +326,7 @@ def xmlOnUnknownEndTag(self, sTagName):
         data = standard.hex2bin(cdata)
       value['data'] = data
     self.dValueStack.push(value)
-  
+
   # -- LANGUAGE --
   #--------------
   elif sTagName == 'lang':
@@ -332,16 +338,16 @@ def xmlOnUnknownEndTag(self, sTagName):
     values = self.dValueStack.pop()
     values[lang] = item
     self.dValueStack.push(values)
-  
+
   # -- OBJECT-ATTRIBUTES --
   #-----------------------
   elif sTagName in self.getObjAttrs().keys():
     if not skip:
       obj_attr = self.getObjAttr(sTagName)
-      
+
       # -- DATATYPE
       datatype = obj_attr['datatype_key']
-      
+
       # -- Multi-Language Attributes.
       if obj_attr['multilang']:
         item = self.dValueStack.pop()
@@ -363,7 +369,7 @@ def xmlOnUnknownEndTag(self, sTagName):
               self.setObjProperty('change_uid', 'xml', s_lang)
               self.setObjProperty('change_dt', time.time(), s_lang)
               xmlInitObjProperty(self, sTagName, value, s_lang)
-      
+
       else:
         # -- Complex Attributes (Blob|Dictionary|List).
         value = None
@@ -403,7 +409,7 @@ def xmlOnUnknownEndTag(self, sTagName):
             xmlInitObjProperty(self, sTagName, value)
           if self.dValueStack.size() > 0:
             raise "Items on self.dValueStack=%s" % self.dValueStack
-        
+
         # -- Simple Attributes (String, Integer, etc.)
         else:
           if value is not None:
@@ -417,31 +423,31 @@ def xmlOnUnknownEndTag(self, sTagName):
                 i = options.index(int(value))
                 if i % 2 == 1: value = options[i - 1]
               except:
-                try: 
+                try:
                   i = options.index(str(value))
                   if i % 2 == 1: value = options[i - 1]
                 except:
                   pass
           xmlInitObjProperty(self, sTagName, value)
-      
+
       # Clear value stack.
       self.dValueStack.clear()
-      
+
   # -- OTHERS --
   #------------
   else:
     value = self.dTagStack.pop()
     if value is None: value = {'cdata':''}
     cdata = value.get('cdata', '')
-    cdata += '<' + tag['name'] 
+    cdata += '<' + tag['name']
     for attr_name in attrs.keys():
       attr_value = attrs.get(attr_name)
       cdata += ' ' + attr_name + '="' + attr_value + '"'
-    cdata += '>' + tag['cdata'] 
+    cdata += '>' + tag['cdata']
     cdata += '</' + tag['name'] + '>'
     value['cdata'] = cdata
     self.dTagStack.push(value)
-  
+
   return 1  # accept matching end tag
 
 
@@ -458,7 +464,7 @@ def xmlOnUnknownEndTag(self, sTagName):
 # ------------------------------------------------------------------------------
 def toCdata(self, s, xhtml=0):
   rtn = ''
-  
+
   # Return Text (HTML) in CDATA as XHTML.
   from _filtermanager import processCommand
   processId = 'tidy'
@@ -486,7 +492,7 @@ def toCdata(self, s, xhtml=0):
     f = open(htmfilename, 'rb')
     rtn = f.read().strip()
     f.close()
-    
+
     # Read Error-Log from file.
     f = open(logfilename, 'rb')
     log = f.read().strip()
@@ -531,7 +537,7 @@ def toCdata(self, s, xhtml=0):
 # ------------------------------------------------------------------------------
 def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
   xml = []
-  
+
   def unistr(s):
     if type(s) is not unicode:
       s = str(s)
@@ -541,17 +547,17 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
       except:
         s = str(unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode('utf-8'))
     return s
-  
+
   if value is not None:
-    
+
     # Image
     if isinstance(value, _blobfields.MyImage):
       xml.append('\n' + indentlevel * INDENTSTR + value.toXml(self))
-    
+
     # File
     elif isinstance(value, _blobfields.MyFile):
       xml.append('\n' + indentlevel * INDENTSTR + value.toXml(self))
-    
+
     # File (Zope-native)
     elif isinstance(value, File):
       tagname = 'data'
@@ -566,7 +572,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
       else:
         xml.append(standard.bin2hex(str(value.data)))
       xml.append('</%s>' % tagname)
-    
+
     # Dictionaries
     elif type(value) is dict:
       keys = value.keys()
@@ -587,7 +593,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
         xml.append('</item>')
       xml.append('\n' + indentlevel * INDENTSTR)
       xml.append('</dictionary>')
-    
+
     # Lists
     elif type(value) is list:
       xml.append('\n' + indentlevel * INDENTSTR)
@@ -605,7 +611,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
         xml.append('</item>')
       xml.append('\n' + indentlevel * INDENTSTR)
       xml.append('</list>')
-      
+
     # Tuples (DateTime)
     elif type(value) is tuple or type(value) is time.struct_time:
       try:
@@ -615,11 +621,11 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
           xml.append(toCdata(self, s_value, -1))
       except:
         pass
-    
+
     # Numbers
     elif type(value) is int or type(value) is float:
       xml.append(str(value))
-    
+
     else:
       # Zope-Objects
       try: meta_type = value.meta_type
@@ -629,7 +635,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
       s_value = unistr(value)
       if len(s_value) > 0:
         xml.append(toCdata(self, s_value, xhtml))
-  
+
   # Return xml.
   return ''.join(map(lambda x: unistr(x), xml))
 
@@ -639,16 +645,16 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
 # ------------------------------------------------------------------------------
 def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
   xml = ''
-  
+
   # -- DATATYPE
   datatype = obj_attr['datatype_key']
-  
+
   # -- VALUE
   obj_vers = self.getObjVersion(REQUEST)
   value = self._getObjAttrValue(obj_attr, obj_vers, REQUEST.get('lang', self.getPrimaryLanguage()))
-  
+
   if value is not None:
-    
+
     # Retrieve value from options.
     if 'options' in obj_attr:
       options = obj_attr['options']
@@ -661,11 +667,11 @@ def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
           if i % 2 == 0: value = options[i + 1]
         except:
           pass
-    
+
     # Objects.
     if datatype in _globals.DT_BLOBS:
       xml += value.toXml(self, base_path, data2hex)
-    
+
     # XML.
     elif datatype == _globals.DT_XML or \
          datatype == _globals.DT_BOOLEAN or \
@@ -675,7 +681,7 @@ def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
     # Others.
     else:
       xml += toXml(self, value)
-    
+
   # Return xml.
   return xml
 
@@ -718,7 +724,7 @@ def getObjToXml(self, REQUEST, incl_embedded=False, deep=True, base_path='', dat
   # Start tag.
   xml.append('<%s' % ob.meta_id)
   xml.append(' uid="%s"' % ob.get_uid())
-  id = self.id 
+  id = self.id
   prefix = standard.id_prefix(id)
   if id == prefix:
     xml.append(' id_fix="%s"' % id)
@@ -761,7 +767,7 @@ class ParseError(Exception): pass
 """
 ################################################################################
 # class XmlAttrBuilder:
-# 
+#
 # Parser for complex Python-Attributes (dictionaries, lists).
 ################################################################################
 """
@@ -792,14 +798,14 @@ class XmlAttrBuilder:
     ############################################################################
     def parse(self, input):
       """ XmlAttrBuilder.parse """
-      
+
       # prepare builder
       self.dValueStack = _globals.MyStack()
       self.dTagStack = _globals.MyStack()
-      
+
       # create parser object
       p = pyexpat.ParserCreate()
-      
+
       # connect parser object with handler methods
       p.StartElementHandler = self.OnStartElement
       p.EndElementHandler = self.OnEndElement
@@ -810,7 +816,7 @@ class XmlAttrBuilder:
       p.CommentHandler = self.OnComment
       p.StartNamespaceDeclHandler = self.OnStartNamespaceDecl
       p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
-      
+
       #### parsing ####
       if type(input) is str:
         # input is a string!
@@ -818,27 +824,27 @@ class XmlAttrBuilder:
       else:
         # input is a file object!
         while True:
-          
+
           v = input.read(self.iBufferSize)
           if v == "":
             rv = 1
             break
-          
+
           rv = p.Parse(v, 0)
           if not rv:
-            break 
-            
+            break
+
       # raise parser exception
       if not rv:
         raise ParseError('%s at line %s' % (pyexpat.ErrorString(p.ErrorCode), p.ErrorLineNumber))
-      
+
       return self.dValueStack.pop()
 
 
     ############################################################################
     # XmlAttrBuilder.OnStartElement(self, name, attrs):
     #
-    # Handler of XML-Parser: 
+    # Handler of XML-Parser:
     # Called at the start of a XML element (resp. on occurence of a XML start tag).
     # Usually, the occurence of a XML tag induces the instanciation of a new node object. Therefore,
     # XmlAttrBuilder contains a mapping table ("dGlobalAttrs"), that maps XML tags to python classes. The
@@ -850,12 +856,12 @@ class XmlAttrBuilder:
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlAttrBuilder.OnStartElement """
-      
+
       # -- TAG-STACK
       tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
       tag['dValueStack'] = self.dValueStack.size()
       self.dTagStack.push(tag)
-      
+
       # -- VALUE-STACK
       if sTagName == 'data':
         self.dValueStack.push(None)
@@ -868,14 +874,14 @@ class XmlAttrBuilder:
     ############################################################################
     # XmlAttrBuilder.OnEndElement(self, name):
     #
-    # Handler of XML-Parser: 
+    # Handler of XML-Parser:
     # Called at the end of a XML element (resp. on occurence of a XML end tag).
     #
     # IN: name  = element name (=tag name)
     ############################################################################
     def OnEndElement(self, sTagName):
       """ XmlAttrBuilder.OnEndElement """
-      
+
       # -- TAG-STACK
       tag = self.dTagStack.pop()
       name = standard.unencode(tag['name'])
@@ -883,10 +889,10 @@ class XmlAttrBuilder:
       cdata = standard.unencode(tag['cdata'])
       # Hack for nested CDATA
       cdata = re.compile('\<\!\{CDATA\{(.*?)\}\}\>').sub('<![CDATA[\\1]]>', cdata)
-      
+
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + str(sTagName) + ")")
-      
+
       # -- DATA
       if sTagName in ['data']:
         filename = attrs.get('filename')
@@ -903,7 +909,7 @@ class XmlAttrBuilder:
           setattr(item, key, value)
         self.dValueStack.pop()
         self.dValueStack.push(item)
-      
+
       # -- ITEM
       elif sTagName in ['item']:
         if tag['dValueStack'] < self.dValueStack.size():
@@ -932,7 +938,7 @@ class XmlAttrBuilder:
     ############################################################################
     def OnCharacterData(self, sData):
       """ XmlAttrBuilder.OnCharacterData """
-      
+
       # -- TAG-STACK
       if self.dTagStack.size() > 0:
         tag = self.dTagStack.pop()
@@ -948,7 +954,7 @@ class XmlAttrBuilder:
     ############################################################################
     def OnStartCData(self):
       """ XmlAttrBuilder.OnStartCData """
-      self.bInCData = 1 
+      self.bInCData = 1
 
 
     ############################################################################
@@ -1040,7 +1046,7 @@ def xmlNodeSet(mNode, sTagName='', iDeep=0):
 """
 ################################################################################
 # class XmlBuilder:
-# 
+#
 # Parser for custom xml.
 ################################################################################
 """
@@ -1087,14 +1093,14 @@ class XmlBuilder:
     ############################################################################
     def parse(self, input):
         """ XmlBuilder.parse """
-        
+
         # prepare builder
         self.dTagStack = _globals.MyStack()
         self.dTagStack.push({'tags':[]})
-        
+
         # create parser object
         p = pyexpat.ParserCreate()
-        
+
         # connect parser object with handler methods
         p.StartElementHandler = self.OnStartElement
         p.EndElementHandler = self.OnEndElement
@@ -1105,7 +1111,7 @@ class XmlBuilder:
         p.CommentHandler = self.OnComment
         p.StartNamespaceDeclHandler = self.OnStartNamespaceDecl
         p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
-        
+
         #### parsing ####
         if type(input) is str:
           # input is a string!
@@ -1113,27 +1119,27 @@ class XmlBuilder:
         else:
           # input is a file object!
           while True:
-            
+
             v = input.read(self.iBufferSize)
             if v == "":
               rv = 1
               break
-            
+
             rv = p.Parse(v, 0)
             if not rv:
-              break 
-        
+              break
+
         # raise parser exception
         if not rv:
           raise ParseError('%s at line %s' % (pyexpat.ErrorString(p.ErrorCode), p.ErrorLineNumber))
-        
+
         return self.dTagStack.pop()['tags']
 
 
     ############################################################################
     # XmlBuilder.OnStartElement(self, name, attrs):
     #
-    # Handler of XML-Parser: 
+    # Handler of XML-Parser:
     # Called at the start of a XML element (resp. on occurence of a XML start tag).
     # Usually, the occurence of a XML tag induces the instanciation of a new node object. Therefore,
     # XmlBuilder contains a mapping table ("dGlobalAttrs"), that maps XML tags to python classes. The
@@ -1152,7 +1158,7 @@ class XmlBuilder:
     ############################################################################
     # XmlBuilder.OnEndElement(self, name):
     #
-    # Handler of XML-Parser: 
+    # Handler of XML-Parser:
     # Called at the end of a XML element (resp. on occurence of a XML end tag).
     #
     # IN: name  = element name (=tag name)
@@ -1167,15 +1173,15 @@ class XmlBuilder:
 
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + sTagName + ")")
-      
+
       lTag = {}
       lTag['level'] = self.dTagStack.size()
       lTag['name'] = name
       lTag['attrs'] = attrs
       lCdata = lCdata.strip()
-      if len(lCdata) > 0: 
+      if len(lCdata) > 0:
         lTag['cdata'] = lCdata
-      if len(lTags) > 0: 
+      if len(lTags) > 0:
         lTag['tags'] = lTags
       parent = self.dTagStack.pop()
       parent['tags'].append(name)
@@ -1187,8 +1193,8 @@ class XmlBuilder:
     # XmlBuilder.OnCharacterData(self, data):
     #
     # Handler of XML-Parser:
-    # Called after plain character data was parsed. Forwards the character data to the current 
-    # node. The class attribute "bInCData" determines, wether the character data is nested in a 
+    # Called after plain character data was parsed. Forwards the character data to the current
+    # node. The class attribute "bInCData" determines, wether the character data is nested in a
     # CDATA block.
     #
     # IN: data = character data string

@@ -1,12 +1,17 @@
 = ZMS3 Changelog =
 
-== 3.4.0dev (in development) ==
- 
-  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=3902&limit=200 latest changes...]
-
-== 3.3.4 (2017-MM-DD) ==
-
+== 3.4.1dev (in development) ==
   * TBA
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=4210&limit=200 latest changes...]
+
+== 3.4.0 (2017-09-23) ==
+  * Optimized internal referencing of External Methods for multisites
+  * Added AC-Tests (with Selenium)
+  * New css-grid based base template, made skins init-able
+  * New action for changing stereotype (meta_id) of object
+  * Updated query 3.2.1, bootstrap 3.3.7, TinyMCE-4.6.4
+  * Lots of minor fixes
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&rev=4209&stop_rev=3902&limit=300 more in 3.4.0...]
 
 == 3.3.3 (2017-01-04) ==
 

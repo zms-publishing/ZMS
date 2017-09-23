@@ -3,7 +3,7 @@
 <footer>
 	<div class="pull-left" 
 	 tal:attributes="title python:'Rendering Time: %.2fsecs.'%(int((DateTime().timeTime()-request['ZMI_TIME'])*100.0)/100.0)"
-		><a href="http://www.zms-publishing.com" title="&#169; 2000-2017 HOFFMANN+LIEBENBERG" target="_blank">ZMS 3.3</a> 
+		><a href="http://www.zms-publishing.com" title="&#169; 2000-2017 HOFFMANN+LIEBENBERG" target="_blank">ZMS 3.4</a> 
 		Python-based Content Management System for Science, Technology and Medicine
 	</div><!-- .pull-left -->
 	<div class="pull-right back-to-top">

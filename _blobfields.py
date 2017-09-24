@@ -19,7 +19,6 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
-# from webdav.common import rfc1123_date
 from builtins import object
 from future import standard_library
 standard_library.install_aliases()
@@ -54,6 +53,15 @@ def rfc1123_date():
 _blobfields.StringType:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 StringType=type('')
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.rfc1123_date:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def rfc1123_date(dt):
+  from wsgiref.handlers import format_date_time
+  stamp = time.mktime(time.gmtime(dt))
+  return format_date_time(stamp)
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

@@ -98,10 +98,10 @@ def remove_tags(self, s):
 ################################################################################
 ################################################################################
 
-#@zope.interface.implements(
-#        IZMSConfigurationProvider.IZMSConfigurationProvider,
-#        IZMSCatalogAdapter.IZMSCatalogAdapter
-#    )
+@zope.interface.implementer(
+    IZMSConfigurationProvider.IZMSConfigurationProvider,
+    IZMSCatalogAdapter.IZMSCatalogAdapter
+)
 
 class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
 

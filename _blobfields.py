@@ -34,6 +34,7 @@ except ImportError:
 # from mimetools import choose_boundary
 from email.generator import _make_boundary as choose_boundary
 import copy
+import time
 import urllib.request, urllib.parse, urllib.error
 import warnings
 import zExceptions 

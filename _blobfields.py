@@ -18,7 +18,6 @@
 ################################################################################
 
 # Imports.
-from webdav.common import rfc1123_date
 from DateTime.DateTime import DateTime
 from ZPublisher import HTTPRangeSupport,HTTPRequest
 from OFS.CopySupport import absattr
@@ -26,6 +25,7 @@ from OFS.Image import Image, File
 from cStringIO import StringIO
 from mimetools import choose_boundary
 import copy
+import time
 import urllib
 import warnings
 import zExceptions 
@@ -42,6 +42,15 @@ __all__= ['MyBlob','MyImage','MyFile']
 _blobfields.StringType:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 StringType=type('')
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.rfc1123_date:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def rfc1123_date(dt):
+  from wsgiref.handlers import format_date_time
+  stamp = time.mktime(time.gmtime(dt))
+  return format_date_time(stamp)
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

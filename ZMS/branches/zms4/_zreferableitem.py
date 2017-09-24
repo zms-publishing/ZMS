@@ -17,12 +17,19 @@
 ################################################################################
 
 # Imports.
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import filter
+from builtins import range
+from builtins import map
+from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import operator
 import re
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 # Product Imports.
 import standard
 import _confmanager
@@ -32,14 +39,14 @@ import _objattrs
 #  isMailLink:
 # ------------------------------------------------------------------------------
 def isMailLink(url):
-  rtn = type(url) is str and url.lower().startswith('mailto:')
+  rtn = isinstance(url, str) and url.lower().startswith('mailto:')
   return rtn
 
 # ------------------------------------------------------------------------------
 #  isInternalLink:
 # ------------------------------------------------------------------------------
 def isInternalLink(url):
-  rtn = type(url) is str and url.startswith('{$') and url.endswith('}')
+  rtn = isinstance(url, str) and url.startswith('{$') and url.endswith('}')
   return rtn
 
 # ------------------------------------------------------------------------------
@@ -60,9 +67,9 @@ def getInternalLinkDict(self, url):
   ref_obj = self.getLinkObj(url)
   if ref_obj is not None:
     request = self.REQUEST
-    url = '{$%s%s}'%(self.getRefObjPath( ref_obj)[2:-1],ref_params)
+    url = '{$%s%s}'%(self.getRefObjPath( ref_obj)[2:-1], ref_params)
     d['data-id'] = url
-    d['data-url'] = getInternalLinkUrl(self,url,ref_obj)
+    d['data-url'] = getInternalLinkUrl(self, url, ref_obj)
     if not ref_obj.isActive(request):
       d['data-target'] = "inactive"
     elif self.getTrashcan().isAncestor(ref_obj):
@@ -80,11 +87,11 @@ def getInternalLinkUrl(self, url, ob):
   self.startMeasurement('%s.getInternalLinkUrl'%self.meta_id)
   request = self.REQUEST
   if ob is None:
-    index_html = './index_%s.html?op=not_found&url=%s'%(request.get('lang',self.getPrimaryLanguage()),str(url))
+    index_html = './index_%s.html?op=not_found&url=%s'%(request.get('lang', self.getPrimaryLanguage()), str(url))
   else:
     # Contextualized index_html.
-    context = request.get('ZMS_THIS',self)
-    index_html = ob.getHref2IndexHtmlInContext(context,REQUEST=request)
+    context = request.get('ZMS_THIS', self)
+    index_html = ob.getHref2IndexHtmlInContext(context, REQUEST=request)
   self.stopMeasurement('%s.getInternalLinkUrl'%self.meta_id)
   return index_html
 
@@ -98,7 +105,7 @@ def getInlineRefs(text):
   p = '<a(.*?)>(.*?)<\\/a>'
   r = re.compile(p)
   for f in r.findall(str(text)):
-    d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
+    d = dict(re.findall('\\s(.*?)="(.*?)"', f[0]))
     if 'data-id' in d:
       l.append(d['data-id'])
   return l
@@ -110,7 +117,7 @@ def getInlineRefs(text):
 ###
 ################################################################################
 ################################################################################
-class ZReferableItem: 
+class ZReferableItem(object): 
 
   # Management Permissions.
   # -----------------------
@@ -123,25 +130,25 @@ class ZReferableItem:
 
   # Management Interface.
   # ---------------------
-  manage_RefForm = PageTemplateFile('zpt/ZMSLinkElement/manage_refform',globals())
-  manage_browse_iframe = PageTemplateFile('zpt/ZMSLinkElement/manage_browse_iframe',globals()) 
+  manage_RefForm = PageTemplateFile('zpt/ZMSLinkElement/manage_refform', globals())
+  manage_browse_iframe = PageTemplateFile('zpt/ZMSLinkElement/manage_browse_iframe', globals()) 
 
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.getRelativeUrl:
   # ----------------------------------------------------------------------------
   def getRelativeUrl(self, path, url):
-    import urlparse
+    import urllib.parse
     import posixpath
-    u_dest = urlparse.urlsplit(url)
-    u_src = urlparse.urlsplit(path)
-    _uc1 = urlparse.urlunsplit(u_dest[:2]+tuple('' for i in range(3)))
-    _uc2 = urlparse.urlunsplit(u_src[:2]+tuple('' for i in range(3)))
+    u_dest = urllib.parse.urlsplit(url)
+    u_src = urllib.parse.urlsplit(path)
+    _uc1 = urllib.parse.urlunsplit(u_dest[:2]+tuple('' for i in range(3)))
+    _uc2 = urllib.parse.urlunsplit(u_src[:2]+tuple('' for i in range(3)))
     if _uc1 != _uc2:
         ## This is a different domain
         return url
     _relpath = posixpath.relpath(u_dest.path, posixpath.dirname(u_src.path))
-    return './%s'%urlparse.urlunsplit(('', '', _relpath, u_dest.query, u_dest.fragment))
+    return './%s'%urllib.parse.urlunsplit(('', '', _relpath, u_dest.query, u_dest.fragment))
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.getRefObjPath:
@@ -155,11 +162,11 @@ class ZReferableItem:
         anchor = args[1]['anchor']
         abs_home = self.getAbsoluteHome().getPhysicalPath()
         ob_home = ob.getPhysicalPath()[len(abs_home)-1:]
-        path = '/'.join(ob_home).replace('/content/','@')
+        path = '/'.join(ob_home).replace('/content/', '@')
         if path.startswith('@'):
           path = path[1:]
         return '{$' + path + anchor + '}'
-      ref = self.evalExtensionPoint('ExtensionPoint.ZReferableItem.getRefObjPath',default,ob=ob,anchor=anchor)
+      ref = self.evalExtensionPoint('ExtensionPoint.ZReferableItem.getRefObjPath', default, ob=ob, anchor=anchor)
     return ref
 
 
@@ -201,8 +208,7 @@ class ZReferableItem:
             ref = self.getRefObjPath(ob)
             ref_by.append(ref)
             break
-    ref_by = list(set(ref_by))
-    ref_by.sort()
+    ref_by = sorted(set(ref_by))
     if ref_by != v:
       self.ref_by = ref_by
     return ref_by
@@ -215,7 +221,7 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def registerRefObj(self, ob):
     ref = self.getRefObjPath(ob)
-    standard.writeLog(self,'[registerRefObj]: ref='+ref)
+    standard.writeLog(self, '[registerRefObj]: ref='+ref)
     ref_by = self.synchronizeRefByObjs()
     if ref not in ref_by:
       ref_by.append(ref)
@@ -229,10 +235,10 @@ class ZReferableItem:
   # ----------------------------------------------------------------------------
   def unregisterRefObj(self, ob):
     ref = self.getRefObjPath(ob)
-    standard.writeLog(self,'[unregisterRefObj]: ref='+ref)
+    standard.writeLog(self, '[unregisterRefObj]: ref='+ref)
     ref_by = self.synchronizeRefByObjs()
     if ref in ref_by:
-      ref_by = filter( lambda x: x!=ref,ref_by)
+      ref_by = filter( lambda x: x!=ref, ref_by)
       self.ref_by = ref_by
 
 
@@ -254,15 +260,15 @@ class ZReferableItem:
     for key in self.getObjAttrs().keys():
       objAttr = self.getObjAttr(key)
       datatype = objAttr['datatype']
-      if datatype in ['richtext','string','text','url']:
+      if datatype in ['richtext', 'string', 'text', 'url']:
         lang_suffixes = ['']
         if objAttr['multilang']:
-          lang_suffixes = map(lambda x:'_%s'%x,self.getLangIds())
+          lang_suffixes = map(lambda x:'_%s'%x, self.getLangIds())
         for lang_suffix in lang_suffixes:
           for obj_vers in self.getObjVersions():
-            v = getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
+            v = getattr(obj_vers, '%s%s'%(key, lang_suffix), None)
             if v is not None:
-              if datatype in ['richtext','string','text']:
+              if datatype in ['richtext', 'string', 'text']:
                 for iv in getInlineRefs(str(v)):
                   ref_ob = self.getLinkObj(iv)
                   if ref_ob is not None:
@@ -299,7 +305,7 @@ class ZReferableItem:
       standard.writeBlock( self, '[refreshRefToObjs]: old=%s'%str(old_ref_to))
       new_ref_to = self.getRefToObjs()
       standard.writeBlock( self, '[refreshRefToObjs] new=%s'%str(old_ref_to))
-      delattr(self,'ref_to')
+      delattr(self, 'ref_to')
       for ref in old_ref_to:
         ref_ob = self.getLinkObj(ref)
         if ref_ob is not None:
@@ -328,23 +334,23 @@ class ZReferableItem:
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
-    if not int(self.getConfProperty('ZReferableItem.validateLinkObj',1)): return text
+    if not int(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return text
     self.startMeasurement('%s.validateInlineLinkObj'%self.meta_id)
-    for pq in [('<a(.*?)>','href'),('<img(.*?)>','src')]:
+    for pq in [('<a(.*?)>', 'href'), ('<img(.*?)>', 'src')]:
       p = pq[0]
       q = pq[1]
       r = re.compile(p)
       for f in r.findall(str(text)):
-        d = dict(re.findall('\\s(.*?)="(.*?)"',f))
+        d = dict(re.findall('\\s(.*?)="(.*?)"', f))
         if 'data-id' in d:
-          old = p.replace('(.*?)',f)
+          old = p.replace('(.*?)', f)
           url = d['data-id']
-          ild = getInternalLinkDict(self,url)
+          ild = getInternalLinkDict(self, url)
           for k in ild.keys():
-            d[{'data-url':q}.get(k,k)] = ild[k]
-          new = p.replace('(.*?)',' '.join(['']+map(lambda x:'%s="%s"'%(x,d[x]),d.keys())))
+            d[{'data-url':q}.get(k, k)] = ild[k]
+          new = p.replace('(.*?)', ' '.join(['']+map(lambda x:'%s="%s"'%(x, d[x]), d.keys())))
           if old != new:
-            text = text.replace(old,new)
+            text = text.replace(old, new)
     self.stopMeasurement('%s.validateInlineLinkObj'%self.meta_id)
     return text
 
@@ -355,11 +361,11 @@ class ZReferableItem:
   #  Validates internal links.
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
-    if not int(self.getConfProperty('ZReferableItem.validateLinkObj',1)): return url
+    if not int(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return url
     self.startMeasurement('%s.validateLinkObj'%self.meta_id)
     if isInternalLink(url):
       if not url.startswith('{$__'):
-        ild = getInternalLinkDict(self,url)
+        ild = getInternalLinkDict(self, url)
         url = ild['data-id']
     self.stopMeasurement('%s.validateLinkObj'%self.meta_id)
     return url
@@ -380,26 +386,26 @@ class ZReferableItem:
         ob = None
         if not url.startswith('{$__'):
           # Find document-element.
-          zmspath = url[2:-1].replace('@','/content/')
+          zmspath = url[2:-1].replace('@', '/content/')
           l = zmspath.split('/') 
           ob = self
           try:
-            for id in filter(lambda x:len(x)>0,l):
-              ob = getattr(ob,id,None)
+            for id in filter(lambda x:len(x)>0, l):
+              ob = getattr(ob, id, None)
           except:
             pass
         return ob
       # Params.
       ref_params = {}
       if url.find(';') > 0:
-        ref_params = dict(re.findall(';(\w*)=(\w*)',url[url.find(';'):-1]))
+        ref_params = dict(re.findall(';(\w*)=(\w*)', url[url.find(';'):-1]))
         url = '{$%s}'%url[2:url.find(';')]
       # Get object.
-      ob = self.evalExtensionPoint('ExtensionPoint.ZReferableItem.getLinkObj',default,url=url)
+      ob = self.evalExtensionPoint('ExtensionPoint.ZReferableItem.getLinkObj', default, url=url)
       # Prepare request
       if ob is not None and ob.id not in self.getPhysicalPath():
         request = self.REQUEST
-        ob.set_request_context(request,ref_params)
+        ob.set_request_context(request, ref_params)
     self.stopMeasurement('%s.getLinkObj'%self.meta_id)
     return ob
 
@@ -416,7 +422,7 @@ class ZReferableItem:
       # Params.
       ref_params = {}
       if url.find(';') > 0:
-        ref_params = dict(re.findall(';(\w*)=(\w*)',url[url.find(';'):-1]))
+        ref_params = dict(re.findall(';(\w*)=(\w*)', url[url.find(';'):-1]))
         url = '{$%s}'%url[2:url.find(';')]
       # Anchor.
       ref_anchor = ''
@@ -425,14 +431,14 @@ class ZReferableItem:
       # Prepare request.
       bak_params = {}
       for key in ref_params.keys():
-        bak_params[key] = request.get(key,None)
-        request.set(key,ref_params[key])
+        bak_params[key] = request.get(key, None)
+        request.set(key, ref_params[key])
       # Get index_html.
       ref_obj = self.getLinkObj(url)
-      index_html = getInternalLinkUrl(self,url,ref_obj)
+      index_html = getInternalLinkUrl(self, url, ref_obj)
       # Unprepare request.
       for key in bak_params.keys():
-        request.set(key,bak_params[key])
+        request.set(key, bak_params[key])
       # Return index_html.
       url = index_html + ref_anchor
     elif isMailLink (url): 
@@ -453,6 +459,6 @@ class ZReferableItem:
   def tal_anchor(self, href, target='', attrs={}, content=''):
     filtered_attrs_keys = filter(lambda x: len(x)>0, attrs.keys())
     str_attrs = ' '.join( map(lambda x:str(x)+'=\042'+str(attrs[x]+'\042'), filtered_attrs_keys) )
-    return '<a href="%s" %s %s>%s</a>'%(href,['',' target="%s"'%target][int(len(target)>0)],str_attrs,content)
+    return '<a href="%s" %s %s>%s</a>'%(href, ['', ' target="%s"'%target][int(len(target)>0)], str_attrs, content)
 
 ################################################################################

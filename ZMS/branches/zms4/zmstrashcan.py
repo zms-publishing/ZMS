@@ -17,11 +17,14 @@
 ################################################################################
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import string
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 # Product Imports.
 from zmscontainerobject import ZMSContainerObject
 import _confmanager
@@ -51,10 +54,10 @@ class ZMSTrashcan(ZMSContainerObject):
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-        'manage','manage_main','manage_container','manage_workspace',
-        'manage_eraseObjs','manage_moveObjUp','manage_moveObjDown','manage_cutObjects',
-        'manage_ajaxDragDrop','manage_ajaxZMIActions',
-        'manage_userForm','manage_user',
+        'manage', 'manage_main', 'manage_container', 'manage_workspace',
+        'manage_eraseObjs', 'manage_moveObjUp', 'manage_moveObjDown', 'manage_cutObjects',
+        'manage_ajaxDragDrop', 'manage_ajaxZMIActions',
+        'manage_userForm', 'manage_user',
         )
     __viewPermissions__ = (
         'manage_ajaxGetChildNodes',
@@ -86,7 +89,7 @@ class ZMSTrashcan(ZMSContainerObject):
       """ ZMSTrashcan.__init__ """
       id = 'trashcan'
       sort_id = 0
-      ZMSContainerObject.__init__(self,id,sort_id)
+      ZMSContainerObject.__init__(self, id, sort_id)
 
 
     # --------------------------------------------------------------------------
@@ -95,9 +98,9 @@ class ZMSTrashcan(ZMSContainerObject):
     #  @param REQUEST
     # --------------------------------------------------------------------------
     def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
-      icon_title = self.display_type(REQUEST,meta_type)
+      icon_title = self.display_type(REQUEST, meta_type)
       icon_clazz = 'icon-trash'
-      return self.zmi_icon(self,name=icon_clazz,extra='title="%s"'%icon_title)
+      return self.zmi_icon(self, name=icon_clazz, extra='title="%s"'%icon_title)
 
 
     """
@@ -116,18 +119,18 @@ class ZMSTrashcan(ZMSContainerObject):
     def manage_changeProperties(self, lang, REQUEST=None): 
       """ ZMSTrashcan.manage_changeProperties """
       
-      if REQUEST.get('btn','') in  [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+      if REQUEST.get('btn', '') in  [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
         return REQUEST.RESPONSE.redirect('manage_main?lang=%s'%lang)
         
       ##### Garbage Collection #####
-      setattr(self,'garbage_collection',REQUEST.get('garbage_collection',''))
+      setattr(self, 'garbage_collection', REQUEST.get('garbage_collection', ''))
       self.run_garbage_collection(forced=1)
       
       # Return with message.
       message = self.getZMILangStr('MSG_CHANGED')
-      if REQUEST and hasattr(REQUEST,'RESPONSE'):
+      if REQUEST and hasattr(REQUEST, 'RESPONSE'):
         if REQUEST.RESPONSE:
-          return REQUEST.RESPONSE.redirect('manage_properties?lang=%s&manage_tabs_message=%s'%(lang,urllib.quote(message)))
+          return REQUEST.RESPONSE.redirect('manage_properties?lang=%s&manage_tabs_message=%s'%(lang, urllib.parse.quote(message)))
 
 
     # --------------------------------------------------------------------------
@@ -137,18 +140,18 @@ class ZMSTrashcan(ZMSContainerObject):
     # --------------------------------------------------------------------------
     def run_garbage_collection(self, forced=0):
       now = time.time()
-      last_run = getattr(self,'last_garbage_collection',None)
+      last_run = getattr(self, 'last_garbage_collection', None)
       if forced or \
          last_run is None or \
-         standard.daysBetween(last_run,now)>1:
+         standard.daysBetween(last_run, now)>1:
         # Get days.
-        days = int(getattr(self,'garbage_collection','2'))
+        days = int(getattr(self, 'garbage_collection', '2'))
         # Get IDs.
         ids = []
         for context in self.objectValues(self.dGlobalAttrs.keys()):
           delete = True
           try:
-            delete = delete and standard.daysBetween(context.del_dt,now)>=days
+            delete = delete and standard.daysBetween(context.del_dt, now)>=days
           except:
             pass
           if delete:
@@ -156,7 +159,7 @@ class ZMSTrashcan(ZMSContainerObject):
         # Delete objects.
         self.manage_delObjects(ids=ids)
         # Update time-stamp.
-        setattr(self,'last_garbage_collection',now)
+        setattr(self, 'last_garbage_collection', now)
 
     # --------------------------------------------------------------------------
     #  ZMSTrashcan._verifyObjectPaste:
@@ -202,6 +205,6 @@ class ZMSTrashcan(ZMSContainerObject):
     #  ZMSTrashcan.getTitle
     # --------------------------------------------------------------------------
     def getTitle(self, REQUEST):
-      return self.display_type(REQUEST) + " (" + str(len(self.getChildNodes(REQUEST))) + " " + self.getLangStr('ATTR_OBJECTS',REQUEST['lang']) + ")"
+      return self.display_type(REQUEST) + " (" + str(len(self.getChildNodes(REQUEST))) + " " + self.getLangStr('ATTR_OBJECTS', REQUEST['lang']) + ")"
 
 ################################################################################

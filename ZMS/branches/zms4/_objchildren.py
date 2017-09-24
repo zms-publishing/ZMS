@@ -22,9 +22,14 @@
 ################################################################################
 
 # Imports.
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import filter
+from builtins import str
 import copy
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 # Product Imports.
 import _blobfields
 import _fileutil
@@ -38,7 +43,7 @@ import standard
 ###
 ################################################################################
 ################################################################################
-class ObjChildren:
+class ObjChildren(object):
 
     # Management Permissions.
     # -----------------------
@@ -63,25 +68,25 @@ class ObjChildren:
       
       ##### ID ####
       metaObjAttr = self.getObjChildrenAttr(id)
-      repetitive = metaObjAttr.get('repetitive',0)==1
+      repetitive = metaObjAttr.get('repetitive', 0)==1
       if repetitive:
         id += str(self.getSequence().nextVal())
       
       ##### Create ####
-      oItem = getattr(self,id,None)
+      oItem = getattr(self, id, None)
       if oItem is None or id not in self.objectIds():
-        globalAttr = self.dGlobalAttrs.get(type,self.dGlobalAttrs['ZMSCustom'])
-        constructor = globalAttr.get('obj_class',self.dGlobalAttrs['ZMSCustom']['obj_class'])
-        newNode = constructor(id,_sort_id+1,type)
+        globalAttr = self.dGlobalAttrs.get(type, self.dGlobalAttrs['ZMSCustom'])
+        constructor = globalAttr.get('obj_class', self.dGlobalAttrs['ZMSCustom']['obj_class'])
+        newNode = constructor(id, _sort_id+1, type)
         self._setObject(newNode.id, newNode)
-        oItem = getattr(self,id)
+        oItem = getattr(self, id)
       
       ##### Object State ####
       oItem.setObjStateNew(REQUEST)
       ##### Init Properties ####
       oItem.setObjStateModified(REQUEST)
       for lang in self.getLangIds():
-        oItem.setObjProperty('active',1,lang)
+        oItem.setObjProperty('active', 1, lang)
       ##### VersionManager ####
       oItem.onChangeObj(REQUEST)
           
@@ -100,36 +105,36 @@ class ObjChildren:
       for ob in self.getChildNodes(REQUEST):
         if ob.id[:len(id)]==id:
           ids.append(ob.id)
-      mandatory = obj_attr.get('mandatory',0)==1
+      mandatory = obj_attr.get('mandatory', 0)==1
       if mandatory:
         if len(ids) == 0:
           default  = obj_attr.get('custom')
           if default:
-            _fileutil.import_zexp(self,default,obj_attr['id'],obj_attr['id'])
+            _fileutil.import_zexp(self, default, obj_attr['id'], obj_attr['id'])
           else:
-            if obj_attr['type'] == '*' and type( obj_attr['keys']) is list and len( obj_attr['keys']) > 0:
+            if obj_attr['type'] == '*' and isinstance(obj_attr['keys'], list) and len( obj_attr['keys']) > 0:
               obj_attr['type'] = obj_attr['keys'][0]
-            self.initObjChild(obj_attr['id'],0,obj_attr['type'],REQUEST)
-      repetitive = obj_attr.get('repetitive',0)==1
+            self.initObjChild(obj_attr['id'], 0, obj_attr['type'], REQUEST)
+      repetitive = obj_attr.get('repetitive', 0)==1
       if repetitive:
         if id in ids:
           new_id = self.getNewId(id)
-          standard.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(id,new_id))
+          standard.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(id, new_id))
           if new_id not in self.objectIds():
             try:
-              self.manage_renameObject(id=id,new_id=new_id)
+              self.manage_renameObject(id=id, new_id=new_id)
             except:
-              ob = getattr(self,id)
+              ob = getattr(self, id)
               ob._setId(new_id) 
       else:
         if not id in ids and len(ids)>0:
           old_id = ids[0]
-          standard.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(old_id,id))
+          standard.writeLog( self, "[_initObjChildren]: Rename %s to %s"%(old_id, id))
           if id not in self.objectIds():
             try:
-              self.manage_renameObject(id=old_id,new_id=id)
+              self.manage_renameObject(id=old_id, new_id=id)
             except:
-              ob = getattr(self,old_id)
+              ob = getattr(self, old_id)
               ob._setId(id) 
 
 
@@ -138,7 +143,7 @@ class ObjChildren:
     # --------------------------------------------------------------------------
     def initObjChildren(self, REQUEST):
       standard.writeLog( self, "[initObjChildren]")
-      self.getObjProperty( 'initObjChildren' ,REQUEST)
+      self.getObjProperty( 'initObjChildren', REQUEST)
       metaObj = self.getMetaobj(self.meta_id)
       metaObjIds = self.getMetaobjIds()+['*']
       for metaObjAttrId in self.getMetaobjAttrIds( self.meta_id):
@@ -151,10 +156,10 @@ class ObjChildren:
     #  ObjChildren.getObjChildrenAttr:
     # --------------------------------------------------------------------------
     def getObjChildrenAttr(self, key, meta_type=None):
-      meta_type = standard.nvl(meta_type,self.meta_id)
+      meta_type = standard.nvl(meta_type, self.meta_id)
       ##### Meta-Objects ####
       if meta_type in self.getMetaobjIds() and key in self.getMetaobjAttrIds(meta_type):
-        obj_attr = self.getMetaobjAttr(meta_type,key)
+        obj_attr = self.getMetaobjAttr(meta_type, key)
       ##### Default ####
       else:
         obj_attr = {'id':key,'repetitive':1,'mandatory':0}
@@ -176,7 +181,7 @@ class ObjChildren:
           reid = id+'$'+'|'+id+'\\d+'
         else:
           reid = id
-      return self.getChildNodes(REQUEST,meta_types,reid)
+      return self.getChildNodes(REQUEST, meta_types, reid)
 
 
     # --------------------------------------------------------------------------
@@ -187,7 +192,7 @@ class ObjChildren:
       Returns a NodeList that contains all visible children of this node in 
       correct order. If none, this is a empty NodeList. 
       """
-      return filter(lambda ob: ob.isVisible(REQUEST),self.getObjChildren(id,REQUEST,meta_types))
+      return filter(lambda ob: ob.isVisible(REQUEST), self.getObjChildren(id, REQUEST, meta_types))
 
 
     ############################################################################
@@ -199,13 +204,13 @@ class ObjChildren:
       """ ObjChildren.manage_initObjChild """
       
       # Create.      
-      obj = self.initObjChild(id,self.getNewSortId(),type,REQUEST)
+      obj = self.initObjChild(id, self.getNewSortId(), type, REQUEST)
       
       # Return with message.
       if RESPONSE is not None:
         message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
-        message = urllib.quote(message)
-        target = REQUEST.get('manage_target','%s/manage_main'%obj.id)
-        RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target,lang,message))
+        message = urllib.parse.quote(message)
+        target = REQUEST.get('manage_target', '%s/manage_main'%obj.id)
+        RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target, lang, message))
 
 ################################################################################

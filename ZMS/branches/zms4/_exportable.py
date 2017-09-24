@@ -17,13 +17,17 @@
 ################################################################################
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import str
 from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from OFS.Image import Image
 import Globals
 import codecs
 import copy
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import tempfile
 import os
 import re
@@ -54,26 +58,26 @@ def writeFile(self, filename, data, mode='w', encoding='utf-8'):
 #  _exportable.exportFiles:
 # ------------------------------------------------------------------------------
 def exportFiles(self, root, id, path):
-  if hasattr(root,id):
-    folder = getattr(root,id)
-    for ob in folder.objectValues(['File','Image']):
+  if hasattr(root, id):
+    folder = getattr(root, id)
+    for ob in folder.objectValues(['File', 'Image']):
       try:
         ob_id = ob.id()
       except:
         ob_id = str(ob.id)
-      _fileutil.exportObj(ob,'%s/%s'%(path,ob_id))
+      _fileutil.exportObj(ob, '%s/%s'%(path, ob_id))
 
 
 # ------------------------------------------------------------------------------
 #  _exportable.exportFolder:
 # ------------------------------------------------------------------------------
 def exportFolder(self, root, path, id, REQUEST, depth=0):
-  if hasattr(root,id):
-    folder = getattr(root,id)
+  if hasattr(root, id):
+    folder = getattr(root, id)
     for ob in folder.objectValues():
       if ob.meta_type == 'Folder':
         ob_id = ob.id
-        exportFolder(self, ob,'%s/%s'%(path,id),ob_id,REQUEST,depth+1)
+        exportFolder(self, ob, '%s/%s'%(path, id), ob_id, REQUEST, depth+1)
       elif ob.meta_type not in _accessmanager.user_folder_meta_types and 'content' not in folder.objectIds(['ZMS']):
         try:
           ob_id = ob.id()
@@ -82,7 +86,7 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
         if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Page Template', 'Script (Python)']:
           try:
             if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Page Template']:
-              v = ob(ob,REQUEST)
+              v = ob(ob, REQUEST)
             elif ob.meta_type in [ 'Script (Python)']:
               v = ob()
             v = localHtml( ob, v)
@@ -90,31 +94,31 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
             ob = v
           except:
             standard.writeError( self, "[exportFolder]")
-        _fileutil.exportObj(ob,'%s/%s/%s'%(path,id,ob_id))
+        _fileutil.exportObj(ob, '%s/%s/%s'%(path, id, ob_id))
 
 
 # ------------------------------------------------------------------------------
 #  _exportable.findDelimiter:
 # ------------------------------------------------------------------------------
-def findDelimiter(s, delimiters=['"',"'"]):
+def findDelimiter(s, delimiters=['"', "'"]):
   rtn = -1
   for delimiter in delimiters:
     i = s.find(delimiter)
     if rtn == -1:
       rtn = i
     elif i >= 0:
-      rtn = min(rtn,i)
+      rtn = min(rtn, i)
   return rtn
 
 
 # ------------------------------------------------------------------------------
 #  _exportable.rfindDelimiter:
 # ------------------------------------------------------------------------------
-def rfindDelimiter(s, delimiters=['"',"'"]):
+def rfindDelimiter(s, delimiters=['"', "'"]):
   rtn = -1
   for delimiter in delimiters:
     i = s.rfind(delimiter)
-    rtn = max(rtn,i)
+    rtn = max(rtn, i)
   return rtn
 
 
@@ -127,8 +131,8 @@ def localHtml(self, html):
   try:
     default_charset = 'utf-8'
     charset = self.REQUEST.get('ZMS_CHARSET', default_charset)
-    if not type(html) is unicode:
-      html = unicode( html, default_charset)
+    if not isinstance(html, str):
+      html = str( html, default_charset)
     html = html.encode( charset)
   except ( UnicodeDecodeError, UnicodeEncodeError):
     standard.writeError( self, "[localHtml]")
@@ -172,7 +176,7 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
    s_old = '%s/'%self.absolute_url()
    if xhtml or level != 0:
      html = html.replace( s_old, s_new)
-   if self.getConfProperty('ZMS.pathhandler',0) != 0:
+   if self.getConfProperty('ZMS.pathhandler', 0) != 0:
      s_old = '%s/'%self.getDeclUrl( REQUEST)
      html = html.replace( s_old, s_new)
    s_old = '%s/'%self.getDocumentElement().absolute_url()
@@ -183,30 +187,30 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
    # Process links to resource-folders: images and assets.
    for container in self.getResourceFolders():
      id = container.id
-     s_new = '"%s%s/'%(sRoot,id)
+     s_new = '"%s%s/'%(sRoot, id)
      s_old = '"./%s/'%(id)
-     html = html.replace(s_old,s_new)
+     html = html.replace(s_old, s_new)
      s_old = '"%s/'%(id)
-     html = html.replace(s_old,s_new)
+     html = html.replace(s_old, s_new)
    
    # Process links to product-folder: images and assets.
    s_new = '"%smisc_/zms/'%sRoot
    s_old = '"/misc_/zms/'
-   html = html.replace(s_old,s_new)
+   html = html.replace(s_old, s_new)
    s_old = '"misc_/zms/'
-   html = html.replace(s_old,s_new)
+   html = html.replace(s_old, s_new)
    # starting with '(' (in styles)
    s_new = '(%smisc_/zms/'%sRoot
    s_old = '(/misc_/zms/'
-   html = html.replace(s_old,s_new)
+   html = html.replace(s_old, s_new)
    s_old = '(misc_/zms/'
-   html = html.replace(s_old,s_new)
+   html = html.replace(s_old, s_new)
    
    # Remove preview parameters.
-   html = re.sub('(\?|&)preview=preview','',html)
+   html = re.sub('(\?|&)preview=preview', '', html)
    
    # Process declarative URLs
-   if self.getConfProperty('ZMS.pathhandler',0):
+   if self.getConfProperty('ZMS.pathhandler', 0):
      for x in html.split('href="./'):
        href = x[:x.find('"')]
        if href.endswith('.html'):
@@ -220,13 +224,13 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
                if ob is not None:
                  new_href.append(ob_id)
              else:
-               ob = getattr(ob,ob_id,None)
+               ob = getattr(ob, ob_id, None)
                if ob is not None:
                  new_href.append(ob.getDeclId(REQUEST))
          if ob is not None:
            new_href.append(href[-1])
-           html = html.replace('"./%s"'%('/'.join(href)),'"./%s"'%('/'.join(new_href)))
-     if self.getConfProperty('ZMS.export.pathhandler',0):
+           html = html.replace('"./%s"'%('/'.join(href)), '"./%s"'%('/'.join(new_href)))
+     if self.getConfProperty('ZMS.export.pathhandler', 0):
        newTmp = '..\\'
        oldTmp = '../'
        # Save links to root.
@@ -239,7 +243,7 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
            pageexts = obj_attr.get('keys')
        for pageext in pageexts:
          s_new = pageext
-         s_old = '/index_%s%s'%(REQUEST['lang'],pageext)
+         s_old = '/index_%s%s'%(REQUEST['lang'], pageext)
          html = html.replace( s_old, s_new)
        # Restore links to root.
        html = html.replace( newTmp, oldTmp)
@@ -321,11 +325,11 @@ class Exportable(_filtermanager.FilterItem):
       
       # return export for download to browser
       if get_data:
-        RESPONSE.setHeader('Content-Type',content_type)
-        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+        RESPONSE.setHeader('Content-Type', content_type)
+        RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
         return export
       else:
-        message = 'Exported to %s (%s)'%(export,content_type)
+        message = 'Exported to %s (%s)'%(export, content_type)
         url = '%s/manage_importexport'%self.absolute_url()
         url = self.url_append_params( url, { 'lang': lang, 'manage_tabs_message': message})
         RESPONSE.redirect( url)
@@ -379,7 +383,7 @@ class Exportable(_filtermanager.FilterItem):
       try:
         html += print_html
       except:
-        html += standard.writeError(self,"[toXhtml]: can't append printHtml")
+        html += standard.writeError(self, "[toXhtml]: can't append printHtml")
       if REQUEST.has_key( 'ZMS_PAGE_HTML_FOOTER'):
         html += getattr( self, REQUEST.get( 'ZMS_PAGE_HTML_FOOTER'))( self, REQUEST)
       else:
@@ -411,7 +415,7 @@ class Exportable(_filtermanager.FilterItem):
       if from_zms:
         folder = 'misc_/zms'
         for obj_id in self.misc_.zms._d.keys():
-          _fileutil.exportObj(self.misc_.zms[obj_id],'%s/%s/%s'%(tempfolder,folder,obj_id))
+          _fileutil.exportObj(self.misc_.zms[obj_id], '%s/%s/%s'%(tempfolder, folder, obj_id))
         exportFiles( self, self.getDocumentElement(), 'metaobj_manager', '%s/metaobj_manager'%tempfolder)
       
       if from_home:
@@ -432,7 +436,7 @@ class Exportable(_filtermanager.FilterItem):
     # --------------------------------------------------------------------------
     def exportExternalResources(self, obj, html, path, REQUEST):
       domains = []
-      for domain in self.getConfProperty('ZMS.export.domains','').split(','):
+      for domain in self.getConfProperty('ZMS.export.domains', '').split(','):
         domain = domain.strip()
         if len( domain) > 0:
           domains.append( domain)
@@ -442,8 +446,8 @@ class Exportable(_filtermanager.FilterItem):
         i = html.find( http_prefix)
         while i > 0:
           d = rfindDelimiter(html[:i]) # search delimiter ' or "
-          k = rfindDelimiter(html[:d],'=') # search equal-sign between attribute name
-          t = rfindDelimiter(html[:k],'<') # search start of tag
+          k = rfindDelimiter(html[:d], '=') # search equal-sign between attribute name
+          t = rfindDelimiter(html[:k], '<') # search start of tag
           # <img src="url">
           # <a href='url'">
           if (html[ t + 1: t + 4].lower() == 'img' and html[ k - 3: k].lower() == 'src') \
@@ -462,7 +466,7 @@ class Exportable(_filtermanager.FilterItem):
                   # http://host:port/uri.gif => http__host_port_uri.gif
                   # http://host:port/draw/ID/png => http__host_port_draw_ID_png.png
                   # http://host:port/draw/ID?fmt=pdf&scale=2 => http__host_port_draw_ID_fmt_pdf_scale_2.pdf
-                  for ext in ['gif','jpg','png','pdf','csv','xls','doc','ppt']:
+                  for ext in ['gif', 'jpg', 'png', 'pdf', 'csv', 'xls', 'doc', 'ppt']:
                     if ext in url:
                       if s_new[-len(ext)-1:] != '.%s' % ext:
                         s_new = "%s.%s" %(s_new, ext)
@@ -500,7 +504,7 @@ class Exportable(_filtermanager.FilterItem):
         
         root = getattr( obj, '__root__', None)
         if root is not None:
-          REQUEST.set('ZMS_PROXY_%s'%root.id,obj)
+          REQUEST.set('ZMS_PROXY_%s'%root.id, obj)
           html = root.f_index_html( root, REQUEST)
         else:
           html = obj.f_index_html( obj, REQUEST)
@@ -522,8 +526,8 @@ class Exportable(_filtermanager.FilterItem):
         
         # Save html to file.
         if level > 0 and \
-           self.getConfProperty('ZMS.pathhandler',0) != 0 and \
-           self.getConfProperty('ZMS.export.pathhandler',0) == 1:
+           self.getConfProperty('ZMS.pathhandler', 0) != 0 and \
+           self.getConfProperty('ZMS.export.pathhandler', 0) == 1:
           html = localIndexHtml( self, obj, level - 1, html)
           filename = '%s/../%s%s'%( path, obj.getDeclId(REQUEST), obj.getPageExt(REQUEST))
         else:
@@ -560,23 +564,23 @@ class Exportable(_filtermanager.FilterItem):
                     html = ob( obj, REQUEST)
                     html = localHtml( obj, html)
                     filename = '%s/%s'%( path, metaObjAttr['id'])
-                    f = open(filename,'w')
+                    f = open(filename, 'w')
                     f.write(html)
                     f.close()
         except:
           standard.writeError( self, "[recurse_downloadHtmlPages]: can't process method '%s' of meta-object"%metadictAttr)
       
       # Process children.
-      for child in obj.filteredChildNodes(REQUEST,self.PAGES):
-        self.recurse_downloadHtmlPages(child,'%s/%s'%(path,child.getDeclId(REQUEST)),lang,REQUEST)
+      for child in obj.filteredChildNodes(REQUEST, self.PAGES):
+        self.recurse_downloadHtmlPages(child, '%s/%s'%(path, child.getDeclId(REQUEST)), lang, REQUEST)
 
 
     # --------------------------------------------------------------------------
     #  Exportable.toZippedHtml:
     # --------------------------------------------------------------------------
     def toZippedHtml(self, REQUEST, get_data=True):
-      REQUEST.set('ZMS_INDEX_HTML',1)
-      REQUEST.set('ZMS_HTML_EXPORT',1)
+      REQUEST.set('ZMS_INDEX_HTML', 1)
+      REQUEST.set('ZMS_HTML_EXPORT', 1)
       
       #-- Create temporary folder.
       tempfolder = tempfile.mktemp()
@@ -584,8 +588,8 @@ class Exportable(_filtermanager.FilterItem):
       
       #-- Download HTML-pages.
       for lang in self.getLangIds():
-        REQUEST.set('lang',lang)
-        REQUEST.set('preview',None)
+        REQUEST.set('lang', lang)
+        REQUEST.set('preview', None)
         self.recurse_downloadHtmlPages( self, tempfolder, lang, REQUEST)
       
       #-- Get zip-file.
@@ -593,7 +597,7 @@ class Exportable(_filtermanager.FilterItem):
       rtn = _fileutil.buildZipArchive( zipfiles, get_data)
       
       #-- Remove temporary folder.
-      if not self.getConfProperty('ZMS.debug',0):
+      if not self.getConfProperty('ZMS.debug', 0):
         _fileutil.remove( tempfolder, deep=1)
       
       return rtn
@@ -609,18 +613,18 @@ class Exportable(_filtermanager.FilterItem):
       ressources = self.exportRessources( tempfolder, REQUEST, incl_embedded=incl_embedded)
       
       #-- Get xml-export.
-      xml = self.toXml(REQUEST,incl_embedded)
+      xml = self.toXml(REQUEST, incl_embedded)
       
       #-- Write xml-export to file.
-      xmlfilename = _fileutil.getOSPath('%s/%s_%s.xml'%(tempfolder,self.getHome().id,self.meta_id))
-      _fileutil.exportObj(xml,xmlfilename)
+      xmlfilename = _fileutil.getOSPath('%s/%s_%s.xml'%(tempfolder, self.getHome().id, self.meta_id))
+      _fileutil.exportObj(xml, xmlfilename)
       
       #-- Get zip-file.
       zipfiles = _fileutil.getOSPath('%s/*'%tempfolder)
       rtn = _fileutil.buildZipArchive( zipfiles, get_data)
       
       #-- Remove temporary folder.
-      if not self.getConfProperty('ZMS.debug',0):
+      if not self.getConfProperty('ZMS.debug', 0):
         _fileutil.remove( tempfolder, deep=1)
       
       return rtn

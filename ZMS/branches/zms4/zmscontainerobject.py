@@ -18,6 +18,12 @@ from __future__ import division
 ################################################################################
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import filter
+from builtins import str
+from builtins import map
 from App.Common import package_home
 from OFS.role import RoleManager
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -25,7 +31,7 @@ import copy
 import re
 import string
 import sys
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import time
 # Product Imports.
 from zmsobject import ZMSObject
@@ -58,7 +64,7 @@ def isPageWithElements(obs):
 def getPrevSibling(self, REQUEST, incResource=False):
   parent = self.getParentNode()
   if parent is not None:
-    siblings = parent.getChildNodes(REQUEST,[self.PAGES,self.NORESOLVEREF]) 
+    siblings = parent.getChildNodes(REQUEST, [self.PAGES, self.NORESOLVEREF]) 
     if self in siblings:
       i = siblings.index(self) - 1
       while i >= 0:
@@ -76,7 +82,7 @@ def getPrevSibling(self, REQUEST, incResource=False):
 def getNextSibling(self, REQUEST, incResource=False):
   parent = self.getParentNode()
   if parent is not None:
-    siblings = parent.getChildNodes(REQUEST,[self.PAGES,self.NORESOLVEREF]) 
+    siblings = parent.getChildNodes(REQUEST, [self.PAGES, self.NORESOLVEREF]) 
     siblingIds = map( lambda x: x.id, siblings)
     if self.id in siblingIds:
       i = siblingIds.index( self.id) + 1
@@ -127,7 +133,7 @@ class ZMSContainerObject(
     # -------------
     def manage_addZMSCustom(self, meta_id, values={}, REQUEST=None):
       values['meta_id'] = meta_id
-      return self.manage_addZMSObject('ZMSCustom',values,REQUEST)
+      return self.manage_addZMSObject('ZMSCustom', values, REQUEST)
     def zmi_manage_addZMSCustom(self, meta_id, values={}, REQUEST=None):
       return self.manage_addZMSCustom(meta_id, values, REQUEST)
 
@@ -137,11 +143,11 @@ class ZMSContainerObject(
     # --------------------------------------------------------------------------
     def manage_addZMSObject(self, meta_id, values, REQUEST):
       prim_lang = self.getPrimaryLanguage()
-      lang = REQUEST.get('lang',prim_lang)
+      lang = REQUEST.get('lang', prim_lang)
       
       attrs = []
       for key in values.keys():
-        attrs.extend([key,values[key]])
+        attrs.extend([key, values[key]])
       
       # Get new id.
       if 'id_prefix' in attrs:
@@ -177,11 +183,11 @@ class ZMSContainerObject(
         del attrs[i] # Value.
       
       # Create new object.
-      globalAttr = self.dGlobalAttrs.get(meta_id,self.dGlobalAttrs['ZMSCustom'])
-      constructor = globalAttr.get('obj_class',self.dGlobalAttrs['ZMSCustom']['obj_class'])
-      obj = constructor(new_id,_sort_id+1,meta_id)
+      globalAttr = self.dGlobalAttrs.get(meta_id, self.dGlobalAttrs['ZMSCustom'])
+      constructor = globalAttr.get('obj_class', self.dGlobalAttrs['ZMSCustom']['obj_class'])
+      obj = constructor(new_id, _sort_id+1, meta_id)
       self._setObject(obj.id, obj)
-      node = getattr(self,obj.id)
+      node = getattr(self, obj.id)
       
       # Object state.
       node.setObjStateNew(REQUEST)
@@ -189,20 +195,20 @@ class ZMSContainerObject(
       # Init properties.
       key = 'active'
       if not (key in attrs and attrs.index(key)%2 == 0):
-        attrs.extend([key,1])
+        attrs.extend([key, 1])
       key = 'attr_dc_coverage'
       if not (key in attrs and attrs.index(key)%2 == 0):
-        attrs.extend([key,'global.%s'%lang])
+        attrs.extend([key, 'global.%s'%lang])
       for i in range(len(attrs)//2):
         key = attrs[i*2]
         value = attrs[i*2+1]
-        node.setObjProperty(key,value,REQUEST['lang'])
+        node.setObjProperty(key, value, REQUEST['lang'])
       
       # Version manager.
       node.onChangeObj(REQUEST)
       
       # Normalize sort-ids.
-      if values.get('normalize_sort_ids',True):
+      if values.get('normalize_sort_ids', True):
         self.normalizeSortIds(standard.id_prefix(node.id))
       
       # Return object.
@@ -230,8 +236,8 @@ class ZMSContainerObject(
       ids_copy = []
       for id in ids:
         try:
-          context = getattr(self,id)
-          context.del_uid = str(REQUEST.get('AUTHENTICATED_USER',None))
+          context = getattr(self, id)
+          context.del_uid = str(REQUEST.get('AUTHENTICATED_USER', None))
           context.del_dt = standard.getDateTime( time.time())
           ids_copy.append(id)
         except:
@@ -239,8 +245,8 @@ class ZMSContainerObject(
       # Use only successfully tried ids
       ids = ids_copy
       # Move (Cut & Paste).
-      cb_copy_data = self.manage_cutObjects(ids,REQUEST)
-      trashcan.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
+      cb_copy_data = self.manage_cutObjects(ids, REQUEST)
+      trashcan.manage_pasteObjects(cb_copy_data=None, REQUEST=REQUEST)
       trashcan.normalizeSortIds()
       # Sort-IDs.
       self.normalizeSortIds()
@@ -274,8 +280,8 @@ class ZMSContainerObject(
       if RESPONSE is not None:
         message += self.getZMILangStr('MSG_DELETED')%count
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-        target = REQUEST.get('manage_target','manage_main')
-        return RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target,lang,urllib.quote(message)))
+        target = REQUEST.get('manage_target', 'manage_main')
+        return RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target, lang, urllib.parse.quote(message)))
 
 
     ############################################################################
@@ -310,8 +316,8 @@ class ZMSContainerObject(
       if RESPONSE is not None:
         message += self.getZMILangStr('MSG_UNDONE')%c
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-        target = REQUEST.get('manage_target','manage_main')
-        return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target,lang,urllib.quote(message)))
+        target = REQUEST.get('manage_target', 'manage_main')
+        return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target, lang, urllib.parse.quote(message)))
 
 
     ############################################################################
@@ -338,7 +344,7 @@ class ZMSContainerObject(
       versionMgrCntnrs = []
       for child in self.getChildNodes():
         if child.id in ids:
-          if child.getAutocommit() or child.inObjStates(['STATE_NEW'],REQUEST):
+          if child.getAutocommit() or child.inObjStates(['STATE_NEW'], REQUEST):
             self.moveObjsToTrashcan([child.id], REQUEST)
           else:
             child.setObjStateDeleted(REQUEST)
@@ -354,8 +360,8 @@ class ZMSContainerObject(
       if RESPONSE is not None:
         message += self.getZMILangStr('MSG_TRASHED')%len(ids)
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-        target = REQUEST.get('manage_target','manage_main')
-        return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target,lang,urllib.quote(message)))
+        target = REQUEST.get('manage_target', 'manage_main')
+        return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target, lang, urllib.parse.quote(message)))
 
 
     # --------------------------------------------------------------------------
@@ -410,18 +416,18 @@ class ZMSContainerObject(
         tp, vl, tb = sys.exc_info()
         rc = -1
         message = str(tp)+': '+str(vl)
-        standard.writeError(self,'[manage_ajaxDragDrop]')
+        standard.writeError(self, '[manage_ajaxDragDrop]')
       #-- Build xml.
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml; charset=utf-8'
       filename = 'manage_ajaxDragDrop.xml'
-      RESPONSE.setHeader('Content-Type',content_type)
-      RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+      RESPONSE.setHeader('Content-Type', content_type)
+      RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
       self.f_standard_html_request( self, REQUEST)
       xml = self.getXmlHeader()
-      xml += '<result code="%i" message="%s">\n'%(rc,message)
+      xml += '<result code="%i" message="%s">\n'%(rc, message)
       xml += "</result>\n"
       return xml
 
@@ -444,7 +450,7 @@ class ZMSContainerObject(
       @return: the first page
       @rtype: C{zmsobject.ZMSObject}
       """
-      root = standard.nvl(root,self.getDocumentElement())
+      root = standard.nvl(root, self.getDocumentElement())
       return root
     
     # --------------------------------------------------------------------------
@@ -452,21 +458,21 @@ class ZMSContainerObject(
     # --------------------------------------------------------------------------
     def getPrevPage(self, REQUEST, incResource=False, root=None):
       ob = None
-      root = standard.nvl(root,self.getDocumentElement())
+      root = standard.nvl(root, self.getDocumentElement())
       while True:
-        ob = getPrevSibling(self,REQUEST,incResource)
+        ob = getPrevSibling(self, REQUEST, incResource)
         if ob is None:
           parent = self.getParentNode()
           if parent is not None:
             if self.getHref2IndexHtml(REQUEST) == parent.getHref2IndexHtml(REQUEST):
-              ob = parent.getPrevPage(REQUEST,incResource,parent)
+              ob = parent.getPrevPage(REQUEST, incResource, parent)
             else:
               ob = parent
         else:
-          ob = ob.getLastPage(REQUEST,incResource,ob)
-        if not ob is None and not ob.isMetaType(self.PAGES,REQUEST):
-          ob = ob.getPrevPage(REQUEST,incResource,root)
-        if ob is None or ob.isMetaType(self.PAGES,REQUEST):
+          ob = ob.getLastPage(REQUEST, incResource, ob)
+        if not ob is None and not ob.isMetaType(self.PAGES, REQUEST):
+          ob = ob.getPrevPage(REQUEST, incResource, root)
+        if ob is None or ob.isMetaType(self.PAGES, REQUEST):
           break
       return ob
 
@@ -475,19 +481,19 @@ class ZMSContainerObject(
     # --------------------------------------------------------------------------
     def getNextPage(self, REQUEST, incResource=False, root=None): 
       ob = None
-      root = standard.nvl(root,self.getDocumentElement())
+      root = standard.nvl(root, self.getDocumentElement())
       while True:
-        children = self.filteredChildNodes(REQUEST,self.PAGES)
+        children = self.filteredChildNodes(REQUEST, self.PAGES)
         if len(children) > 0:
           ob = children[0]
         else:
           current = self
           while ob is None and current is not None:
-            ob = getNextSibling(current,REQUEST,incResource)
+            ob = getNextSibling(current, REQUEST, incResource)
             current = current.getParentNode()
-        if not ob is None and not ob.isMetaType(self.PAGES,REQUEST):
-          ob = ob.getNextPage(REQUEST,incResource,root)
-        if ob is None or ob.isMetaType(self.PAGES,REQUEST):
+        if not ob is None and not ob.isMetaType(self.PAGES, REQUEST):
+          ob = ob.getNextPage(REQUEST, incResource, root)
+        if ob is None or ob.isMetaType(self.PAGES, REQUEST):
           break
       return ob
 
@@ -504,7 +510,7 @@ class ZMSContainerObject(
       @rtype: C{zmsobject.ZMSObject}
       """
       ob = None
-      root = standard.nvl(root,self.getDocumentElement())
+      root = standard.nvl(root, self.getDocumentElement())
       children = [root]
       while len( children) > 0:
         i = len( children)-1
@@ -515,7 +521,7 @@ class ZMSContainerObject(
           i = i - 1
         if ob == self:
           break
-        children = ob.filteredChildNodes(REQUEST,self.PAGES)
+        children = ob.filteredChildNodes(REQUEST, self.PAGES)
       return ob
 
 
@@ -542,12 +548,12 @@ class ZMSContainerObject(
       context = None 
       if context_id == '':
         context = container
-        actions.extend( _zmi_actions_util.zmi_actions(self,self))
+        actions.extend( _zmi_actions_util.zmi_actions(self, self))
       else:
         attr_id = standard.id_prefix(context_id)
         if context_id in container.objectIds():
-            context = getattr(container,context_id,None)
-        actions.extend( _zmi_actions_util.zmi_actions(container,context,attr_id))
+            context = getattr(container, context_id, None)
+        actions.extend( _zmi_actions_util.zmi_actions(container, context, attr_id))
         if context is not None:
           objPath = context.id+'/'
       if context is not None:
@@ -595,19 +601,19 @@ class ZMSContainerObject(
       """
       items = []
       obs = []
-      if opt.get('add_self',False):
+      if opt.get('add_self', False):
         obs.append( self)
         opt['add_self'] = False
-      obs.extend( self.filteredChildNodes(REQUEST,self.PAGES))
+      obs.extend( self.filteredChildNodes(REQUEST, self.PAGES))
       for ob in obs:
         if not ob.isResource(REQUEST):
           if len( items) == 0:
             items.append( '<ul')
-            if opt.get('id',''):
-              items.append( ' id="%s"'%opt.get('id',''))
+            if opt.get('id', ''):
+              items.append( ' id="%s"'%opt.get('id', ''))
               opt['id'] = ''
-            if opt.get('cssclass',''):
-              items.append( ' class="%s"'%opt.get('cssclass',''))
+            if opt.get('cssclass', ''):
+              items.append( ' class="%s"'%opt.get('cssclass', ''))
               opt['cssclass'] = ''
             items.append('>\n')
           css = []
@@ -622,9 +628,9 @@ class ZMSContainerObject(
           else: 
             css.append( 'inactive')
             css.append( ob.meta_id + '0')
-          if opt.get('getrestricted',True) and ob.attr( 'attr_dc_accessrights_restricted'):
+          if opt.get('getrestricted', True) and ob.attr( 'attr_dc_accessrights_restricted'):
             css.append( 'restricted')
-          if opt.get('getchildpages',True) and len(ob.filteredChildNodes(REQUEST,self.PAGES))>0:
+          if opt.get('getchildpages', True) and len(ob.filteredChildNodes(REQUEST, self.PAGES))>0:
             css.append( 'childpages')
           items.append('<li')
           items.append(' class="%s"'%(' '.join(css)))
@@ -637,9 +643,9 @@ class ZMSContainerObject(
           items.append('>')
           items.append('<span>%s</span>'%ob.getTitlealt(REQUEST))
           items.append('</a>')
-          if (max(depth,ob.getLevel()) < opt.get('maxdepth',100)) and \
-             ((opt.get('complete',False)) or \
-              (opt.get('deep',True) and ob.id != self.id and \
+          if (max(depth, ob.getLevel()) < opt.get('maxdepth', 100)) and \
+             ((opt.get('complete', False)) or \
+              (opt.get('deep', True) and ob.id != self.id and \
                 (ob.id in current.getPhysicalPath() or \
                  ob.id in REQUEST['URL'].split('/')))):
             items.append( ob.getNavItems( current, REQUEST, opt, depth+1))
@@ -660,7 +666,7 @@ class ZMSContainerObject(
       obs = self.filteredChildNodes(REQUEST)
       if not expand_tree and \
          current_child is not None and \
-         current_child.meta_id in ['ZMS','ZMSFolder'] and \
+         current_child.meta_id in ['ZMS', 'ZMSFolder'] and \
          isPageWithElements(obs) and \
          self.getLevel() > 0:
         obs = [current_child]
@@ -673,7 +679,7 @@ class ZMSContainerObject(
       # Parent navigation.
       parent = self.getParentNode()
       if parent is not None:
-        elmnts = parent.getNavElements(REQUEST,expand_tree,self,elmnts)
+        elmnts = parent.getNavElements(REQUEST, expand_tree, self, elmnts)
       # Return elements.
       return elmnts
 
@@ -686,8 +692,8 @@ class ZMSContainerObject(
     def getIndexNavElements(self, REQUEST):
       indexNavElmnts = []
       # Retrieve elements.
-      if REQUEST.get('op','')=='':
-        indexNavElmnts = filter(lambda ob: ob.isPage() and ob.isMetaType(['ZMSDocument','ZMSCustom']) and not ob.isResource(REQUEST),self.filteredChildNodes(REQUEST,self.PAGES))
+      if REQUEST.get('op', '')=='':
+        indexNavElmnts = filter(lambda ob: ob.isPage() and ob.isMetaType(['ZMSDocument', 'ZMSCustom']) and not ob.isResource(REQUEST), self.filteredChildNodes(REQUEST, self.PAGES))
       # Return elements.
       return indexNavElmnts
 
@@ -720,27 +726,27 @@ class ZMSContainerObject(
             rtn.append(ob)
           if not append or (append and recursive):
             if ob.isPage():
-              rtn.extend(ob.filteredTreeNodes(REQUEST,meta_types,None,order_dir,None,recursive))
+              rtn.extend(ob.filteredTreeNodes(REQUEST, meta_types, None, order_dir, None, recursive))
       
       #-- Order.
       if order_by is not None:
       
         # order by select-options of special object
         options = []
-        if type(meta_types) is str and meta_types in self.getMetaobjIds():
+        if isinstance(meta_types, str) and meta_types in self.getMetaobjIds():
           metaObj = self.getMetaobj(meta_types)
           attrs = metaObj['attrs']
           for attr in attrs:
             if attr['id'] == order_by:
-              options = attr.get('keys',[])
+              options = attr.get('keys', [])
       
         # collect object-items
         tmp = []
         for ob in rtn:
-          value = ob.getObjProperty(order_by,REQUEST)
+          value = ob.getObjProperty(order_by, REQUEST)
           if value in options:
             value = options.index(value)
-          tmp.append((value,ob))
+          tmp.append((value, ob))
         
         # sort object-items
         tmp.sort()
@@ -765,7 +771,7 @@ class ZMSContainerObject(
       """
       Returns the first visible child of this node.
       """
-      for node in self.getChildNodes(REQUEST,meta_types):
+      for node in self.getChildNodes(REQUEST, meta_types):
         if node.isVisible(REQUEST):
           return node
       return None
@@ -779,7 +785,7 @@ class ZMSContainerObject(
       Returns a NodeList that contains all visible children of this node in 
       correct order. If none, this is a empty NodeList. 
       """
-      return filter(lambda ob: ob.isVisible(REQUEST),self.getChildNodes(REQUEST,meta_types))
+      return filter(lambda ob: ob.isVisible(REQUEST), self.getChildNodes(REQUEST, meta_types))
 
 
     # --------------------------------------------------------------------------
@@ -807,7 +813,7 @@ class ZMSContainerObject(
       # Get selected object-items.
       else:
         prim_lang = self.getPrimaryLanguage()
-        lang = REQUEST.get('lang',None)
+        lang = REQUEST.get('lang', None)
         # Get coverages.
         coverages = [ '', 'obligation', None]
         if lang is not None:
@@ -828,7 +834,7 @@ class ZMSContainerObject(
       # Sort child-nodes.
       childNodes.sort()
       # Return child-nodes in correct sort-order.
-      return map(lambda x: x[1],childNodes)
+      return map(lambda x: x[1], childNodes)
 
 
     ############################################################################
@@ -851,7 +857,7 @@ class ZMSContainerObject(
         if proxy is not None:
           sort_id = getattr( ob, 'sort_id', '')
           if proxy.isPage(): sort_id = 's%s'%sort_id
-          obs.append((sort_id,ob))
+          obs.append((sort_id, ob))
       # Sort child-nodes.
       obs.sort()
       # Normalize sort-order.
@@ -893,11 +899,11 @@ class ZMSContainerObject(
       attr = self.getMetaobjAttr( self.meta_id, id_prefix)
       zexp = attr[ 'custom']
       new_id = self.getNewId(id_prefix)
-      _fileutil.import_zexp(self,zexp,new_id,id_prefix,_sort_id)
+      _fileutil.import_zexp(self, zexp, new_id, id_prefix, _sort_id)
       
       # Return with message.
       message = self.getZMILangStr('MSG_INSERTED')%attr['name']
-      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(),new_id,lang,urllib.quote(message)))
+      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), new_id, lang, urllib.parse.quote(message)))
 
     # --------------------------------------------------------------------------
     #  ZMSContainerObject.manage_addZMSModule:
@@ -911,12 +917,12 @@ class ZMSContainerObject(
       key = self.getMetaobjAttrIds( meta_id)[0]
       attr = self.getMetaobjAttr( meta_id, key)
       zexp = attr[ 'custom']
-      id_prefix = standard.id_prefix(REQUEST.get('id_prefix','e'))
+      id_prefix = standard.id_prefix(REQUEST.get('id_prefix', 'e'))
       new_id = self.getNewId(id_prefix)
-      _fileutil.import_zexp(self,zexp,new_id,id_prefix,_sort_id)
+      _fileutil.import_zexp(self, zexp, new_id, id_prefix, _sort_id)
       
       # Return with message.
       message = self.getZMILangStr('MSG_INSERTED')%custom
-      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(),new_id,lang,urllib.quote(message)))
+      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), new_id, lang, urllib.parse.quote(message)))
 
 ################################################################################

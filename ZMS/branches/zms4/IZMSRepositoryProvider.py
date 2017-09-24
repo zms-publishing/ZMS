@@ -17,13 +17,15 @@
 ################################################################################
 
 # Imports.
+from builtins import map
+from builtins import str
 from zope.interface import Interface
 
 def increaseVersion(v='0.0.0',d=2):
   try:
-    l = map(lambda x:int(x),v.split('.'))
+    l = map(lambda x:int(x), v.split('.'))
     l[d] = l[d]+1
-    return '.'.join(map(lambda x:str(x),l))
+    return '.'.join(map(lambda x:str(x), l))
   except:
     return v
 

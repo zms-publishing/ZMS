@@ -18,9 +18,15 @@ from __future__ import division
 ################################################################################
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
+from builtins import filter
+from builtins import str
+from builtins import range
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zope.interface
 # Product Imports.
 import standard
@@ -40,7 +46,7 @@ def doAutocommit(self, REQUEST):
   ##### Auto-Commit ####
   if len( self.getObjStates()) > 0:
     
-    if self.inObjStates(['STATE_DELETED'],REQUEST):
+    if self.inObjStates(['STATE_DELETED'], REQUEST):
        parent = self.getParentNode()
        parent.moveObjsToTrashcan([self.id], REQUEST)
        return
@@ -74,15 +80,15 @@ def exportXml(self, REQUEST, RESPONSE):
   value = {}
   value['activities'] = []
   for x in self.getActivityIds():
-    value['activities'].extend([x,self.getActivity(x,for_export=True)])
+    value['activities'].extend([x, self.getActivity(x, for_export=True)])
   value['transitions'] = []
   for x in self.getTransitionIds():
-    value['transitions'].extend([x,self.getTransition(x,for_export=True)])
-  export = self.getXmlHeader() + self.toXmlString(value,1)
+    value['transitions'].extend([x, self.getTransition(x, for_export=True)])
+  export = self.getXmlHeader() + self.toXmlString(value, 1)
   content_type = 'text/xml; charset=utf-8'
   filename = 'workflow.xml'
-  RESPONSE.setHeader('Content-Type',content_type)
-  RESPONSE.setHeader('Content-Disposition','attachment;filename="%s"'%filename)
+  RESPONSE.setHeader('Content-Type', content_type)
+  RESPONSE.setHeader('Content-Disposition', 'attachment;filename="%s"'%filename)
   return export
 
 
@@ -124,8 +130,8 @@ class ZMSWorkflowProvider(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Interface
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    manage = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main',globals())
-    manage_main = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main',globals())
+    manage = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main', globals())
+    manage_main = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main', globals())
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Permissions
@@ -156,14 +162,14 @@ class ZMSWorkflowProvider(
       for li in range(len(l)//2):
         id = l[li*2]
         i = l[li*2+1]
-        self.setActivity(id=None,newId=id,newName=i['name'],newIcon=i.get('icon'))
+        self.setActivity(id=None, newId=id, newName=i['name'], newIcon=i.get('icon'))
       l = transitions
       for li in range(len(l)//2):
         id = l[li*2]
         i = l[li*2+1]
-        newData = i.get('ob',i.get('dtml',''))
-        newType = i.get('type',['','DTML Method'][int(len(dtml)>0)])
-        self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newIconClass=i.get('icon_clazz',''),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newData=newData)
+        newData = i.get('ob', i.get('dtml', ''))
+        newType = i.get('type', ['', 'DTML Method'][int(len(dtml)>0)])
+        self.setTransition(id=None, newId=id, newName=i['name'], newType=newType, newIconClass=i.get('icon_clazz', ''), newFrom=i.get('from', []), newTo=i.get('to', []), newPerformer=i.get('performer', []), newData=newData)
 
 
     ############################################################################
@@ -181,8 +187,8 @@ class ZMSWorkflowProvider(
       id = 'workflow'
       d = {'id':id,'revision':self.getRevision(),'__filename__':['__init__.py']}
       r[id] = d
-      self.provideRepositoryActivities(r,ids)
-      self.provideRepositoryTransitions(r,ids)
+      self.provideRepositoryActivities(r, ids)
+      self.provideRepositoryTransitions(r, ids)
       return r
 
     """
@@ -200,38 +206,38 @@ class ZMSWorkflowProvider(
     ZMSWorkflowProvider.importXml
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def importXml(self, xml, createIfNotExists=1):
-      ids = map(lambda x: self.activities[x*2], range(len(self.activities)//2))
+      ids = map(lambda x: self.activities[x*2], list(range(len(self.activities)//2)))
       for id in ids:
-        self.delItem(id,'activities')
-      ids = map(lambda x: self.transitions[x*2], range(len(self.transitions)//2))
+        self.delItem(id, 'activities')
+      ids = map(lambda x: self.transitions[x*2], list(range(len(self.transitions)//2)))
       for id in ids:
-        self.delItem(id,'transitions')
+        self.delItem(id, 'transitions')
       v = self.parseXmlString(xml)
-      l = v.get('activities',[])
+      l = v.get('activities', [])
       for li in range(len(l)//2):
         id = l[li*2]
         i = l[li*2+1]
-        self.setActivity(id=None,newId=id,newName=i['name'],newIconClazz=i.get('icon_clazz',''),newIcon=i.get('icon'))
-      l = v.get('transitions',[])
+        self.setActivity(id=None, newId=id, newName=i['name'], newIconClazz=i.get('icon_clazz', ''), newIcon=i.get('icon'))
+      l = v.get('transitions', [])
       for li in range(len(l)//2):
         id = l[li*2]
         i = l[li*2+1]
-        newData = i.get('ob',i.get('dtml',''))
-        newType = i.get('type',['','DTML Method'][int(len(newData)>0)])
-        self.setTransition(id=None,newId=id,newName=i['name'],newType=newType,newIconClass=i.get('icon_clazz',''),newFrom=i.get('from',[]),newTo=i.get('to',[]),newPerformer=i.get('performer',[]),newData=newData)
+        newData = i.get('ob', i.get('dtml', ''))
+        newType = i.get('type', ['', 'DTML Method'][int(len(newData)>0)])
+        self.setTransition(id=None, newId=id, newName=i['name'], newType=newType, newIconClass=i.get('icon_clazz', ''), newFrom=i.get('from', []), newTo=i.get('to', []), newPerformer=i.get('performer', []), newData=newData)
       # Create non existant roles.
       roles = []
       for transition in self.getTransitions():
-        roles = standard.concat_list(roles,transition.get('performer',[]))
-      for newRole in filter(lambda x: x not in self.userdefined_roles(),roles):
-        _accessmanager.addRole(self,newRole)
+        roles = standard.concat_list(roles, transition.get('performer', []))
+      for newRole in filter(lambda x: x not in self.userdefined_roles(), roles):
+        _accessmanager.addRole(self, newRole)
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProvider.revision
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getRevision(self):
-      return getattr(self,'revision','0.0.0')
+      return getattr(self, 'revision', '0.0.0')
 
     def setRevision(self, revision):
       self.revision = revision
@@ -255,18 +261,18 @@ class ZMSWorkflowProvider(
     ZMSWorkflowProvider.delItem
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def delItem(self, id, key):
-      obs = getattr(self,key,[])
+      obs = getattr(self, key, [])
       # Update attribute.
       if id in obs:
         i = obs.index(id)
         ob = obs[i+1]
-        for obj_id in [id,'%s.icon'%id]:
+        for obj_id in [id, '%s.icon'%id]:
           if obj_id in self.objectIds():
             self.manage_delObjects([obj_id])
         del obs[i] 
         del obs[i] 
       # Update attribute.
-      setattr(self,key,copy.copy(obs))
+      setattr(self, key, copy.copy(obs))
       # Return with empty id.
       return ''
 
@@ -275,17 +281,17 @@ class ZMSWorkflowProvider(
     ZMSWorkflowProvider.moveItem
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def moveItem(self, id, pos, key):
-      obs = getattr(self,key,[])
+      obs = getattr(self, key, [])
       # Move.
       i = obs.index(id)
       id = obs[i] 
       values = obs[i+1]
       del obs[i] 
       del obs[i] 
-      obs.insert(pos*2,values)
-      obs.insert(pos*2,id)
+      obs.insert(pos*2, values)
+      obs.insert(pos*2, id)
       # Update attribute.
-      setattr(self,key,copy.copy(obs))
+      setattr(self, key, copy.copy(obs))
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -294,7 +300,7 @@ class ZMSWorkflowProvider(
     Auto-Commit ZMS-tree.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def doAutocommit(self, lang, REQUEST):
-      doAutocommit(self,REQUEST)
+      doAutocommit(self, REQUEST)
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -302,9 +308,9 @@ class ZMSWorkflowProvider(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def writeProtocol(self, entry):
       if len(filter(lambda x: x.id()=='protocol.txt', self.objectValues(['File'])))==0:
-        self.manage_addFile(id='protocol.txt',file='',title='')
+        self.manage_addFile(id='protocol.txt', file='', title='')
       file = filter(lambda x: x.id()=='protocol.txt', self.objectValues(['File']))[0]
-      file.manage_edit(file.title,file.data+'\n'+entry)
+      file.manage_edit(file.title, file.data+'\n'+entry)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProvider.manage_changeWorkflow:
@@ -320,18 +326,18 @@ class ZMSWorkflowProvider(
       if btn == self.getZMILangStr('BTN_SAVE'):
         # Autocommit & Nodes.
         old_autocommit = self.autocommit
-        new_autocommit = REQUEST.get('workflow',0) == 0
-        self.revision = REQUEST.get('revision','0.0.0')
+        new_autocommit = REQUEST.get('workflow', 0) == 0
+        self.revision = REQUEST.get('revision', '0.0.0')
         self.autocommit = new_autocommit
-        self.nodes = standard.string_list(REQUEST.get('nodes',''))
+        self.nodes = standard.string_list(REQUEST.get('nodes', ''))
         if old_autocommit == 0 and new_autocommit == 1:
-          self.doAutocommit(lang,REQUEST)
+          self.doAutocommit(lang, REQUEST)
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Clear.
       # ------
       elif btn == self.getZMILangStr('BTN_CLEAR'):
-        self.doAutocommit(lang,REQUEST)
+        self.doAutocommit(lang, REQUEST)
         self.autocommit = 1
         self.activities = []
         self.transitions = []
@@ -351,12 +357,12 @@ class ZMSWorkflowProvider(
           xml = f
         else:
           filename = REQUEST.get('init')
-          xml = open(_fileutil.getOSPath(filename),'rb')
+          xml = open(_fileutil.getOSPath(filename), 'rb')
         self.importXml(xml)
         message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       # Return with message.
-      message = urllib.quote(message)
-      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_properties'%(lang,message))
+      message = urllib.parse.quote(message)
+      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_properties'%(lang, message))
 
 ################################################################################

@@ -17,11 +17,13 @@
 ################################################################################
 
 # Product Imports.
+from builtins import object
+from builtins import str
 import standard
 import _zreferableitem
 
 
-class ObjInputs:
+class ObjInputs(object):
 
   # ----------------------------------------------------------------------------
   #  ObjInputs.getUrlInput:
@@ -37,7 +39,7 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getUrlInput(self, fmName, elName, elTextName='', size=None, value='', enabled=True, REQUEST=None, css='form-control'):
-    return self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css+' url-input')
+    return self.getTextInput(fmName, elName, size, value, 'text', enabled, REQUEST, css+' url-input')
 
 
   # ----------------------------------------------------------------------------
@@ -74,8 +76,8 @@ class ObjInputs:
   def getDateTimeInput(self, fmName, elName, size=8, value=None, enabled=True, fmt_str='DATETIME_FMT', REQUEST=None, css='form-control', extra=''):
     manage_lang = self.get_manage_lang()
     html = []
-    if not type(value) is str:
-      value = self.getLangFmtDate(value,manage_lang,fmt_str)
+    if not isinstance(value, str):
+      value = self.getLangFmtDate(value, manage_lang, fmt_str)
     if value is not None and self.parseLangFmtDate(value) is None:
       value = ''
     extra += ' title="%s"'%self.getZMILangStr(fmt_str)
@@ -84,7 +86,7 @@ class ObjInputs:
         css += ' datepicker'
       elif fmt_str == 'DATETIME_FMT':
         css += ' datetimepicker'
-    html.append(self.getTextInput(fmName,elName,size,value,'text',enabled,REQUEST,css,extra))
+    html.append(self.getTextInput(fmName, elName, size, value, 'text', enabled, REQUEST, css, extra))
     return ''.join(html)
 
 
@@ -100,7 +102,7 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getDateInput(self, fmName, elName, value, enabled, REQUEST, css='form-control', extra=''):
-    return self.getDateTimeInput(fmName=fmName,elName=elName,size=8,value=value,enabled=enabled,fmt_str='DATE_FMT',REQUEST=REQUEST,css=css, extra=extra)
+    return self.getDateTimeInput(fmName=fmName, elName=elName, size=8, value=value, enabled=enabled, fmt_str='DATE_FMT', REQUEST=REQUEST, css=css, extra=extra)
 
 
   # ----------------------------------------------------------------------------
@@ -115,7 +117,7 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getPasswordInput(self, fmName, elName, size=15, value='', enabled=True, REQUEST=None, css='form-control', extra=''):
-    return self.getTextInput(fmName,elName,size,value,'password',enabled,REQUEST,css,extra)
+    return self.getTextInput(fmName, elName, size, value, 'password', enabled, REQUEST, css, extra)
 
 
   # ----------------------------------------------------------------------------
@@ -130,15 +132,15 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getTextInput(self, fmName, elName, size=None, value='', type='text', enabled=True, REQUEST=None, css='form-control', extra=''):
-    lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
+    lang = self.REQUEST.get('lang', self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
       elId = elId[:-len('_%s'%lang)]
     html = []
     html.append('<input ')
-    html.append(' class="%s"'%' '.join([css,elId,lang]))
+    html.append(' class="%s"'%' '.join([css, elId, lang]))
     html.append(' type="%s"'%type)
-    html.append(' id="%s"'%elName.replace(':int',''))
+    html.append(' id="%s"'%elName.replace(':int', ''))
     html.append(' name="%s"'%elName)
     if size:
       html.append(' size="%i"'%size)
@@ -166,14 +168,14 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getSelect(self, fmName, elName, value, inputtype, lang_str, required=False, optpl=[], enabled=True, REQUEST=None, css='form-control', maxlen=30):
-    if inputtype in ['select','multiline']:
-      return self.zmi_input_select(self,name=elName,value=value,lang_str=lang_str,mandatory=required,options=optpl,enabled=enabled)
+    if inputtype in ['select', 'multiline']:
+      return self.zmi_input_select(self, name=elName, value=value, lang_str=lang_str, mandatory=required, options=optpl, enabled=enabled)
     elif inputtype in ['multiselect']:
-      return self.zmi_input_multiselect(self,name=elName,value=value,lang_str=lang_str,mandatory=required,options=optpl,enabled=enabled)
+      return self.zmi_input_multiselect(self, name=elName, value=value, lang_str=lang_str, mandatory=required, options=optpl, enabled=enabled)
     elif type in ['text']:
-      return self.getTextArea(fmName,elName,35,4,value=value,enabled=enabled,REQUEST=REQUEST)
+      return self.getTextArea(fmName, elName, 35, 4, value=value, enabled=enabled, REQUEST=REQUEST)
     else:
-      return self.getTextInput(fmName=fmName,elName=elName,size=35,value=value,type='text',enabled=enabled,REQUEST=REQUEST)
+      return self.getTextInput(fmName=fmName, elName=elName, size=35, value=value, type='text', enabled=enabled, REQUEST=REQUEST)
 
 
   # ----------------------------------------------------------------------------
@@ -191,8 +193,8 @@ class ObjInputs:
   #	@param btn		Appear as Bootstrap Button
   #	@return String
   # ----------------------------------------------------------------------------
-  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='', extra='', btn=False, options=[0,1]):
-    lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
+  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, REQUEST=None, css='', extra='', btn=False, options=[0, 1]):
+    lang = self.REQUEST.get('lang', self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
       elId = elId[:-len('_%s'%lang)]
@@ -203,20 +205,20 @@ class ObjInputs:
     html.append('<input ')
     html.append(' type="hidden"')
     html.append(' name="%s"'%elName)
-    html.append(' value="%s"'%str(standard.nvl(value,options[0])))
+    html.append(' value="%s"'%str(standard.nvl(value, options[0])))
     html.append(' />')
     if btn:
       html.append('<span class="btn btn-default">')
     html.append('<input ')
-    if type(elId) is str:
+    if isinstance(elId, str):
       html.append(' id="%s"'%elId)
-    html.append(' class="%s"'%' '.join([css,elId,lang]))
+    html.append(' class="%s"'%' '.join([css, elId, lang]))
     html.append(' type="checkbox"')
     if not enabled:
       html.append(' disabled="disabled"')
     if checked: 
       html.append(' checked="checked"')
-    html.append(' onclick="if(this.checked){$(this)%s.prev().val(\'%s\')}else{$(this)%s.prev().val(\'%s\')}"'%(['','.parent()'][btn],options[1],['','.parent()'][btn],options[0]))
+    html.append(' onclick="if(this.checked){$(this)%s.prev().val(\'%s\')}else{$(this)%s.prev().val(\'%s\')}"'%(['', '.parent()'][btn], options[1], ['', '.parent()'][btn], options[0]))
     html.append(' />')
     if btn:
       html.append('</span>')
@@ -239,13 +241,13 @@ class ObjInputs:
   #	@return String
   # ----------------------------------------------------------------------------
   def getTextArea(self, fmName, elName, cols, rows, value, enabled, REQUEST, css='form-control', wrap='virtual', extra=''):
-    lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
+    lang = self.REQUEST.get('lang', self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
       elId = elId[:-len('_%s'%lang)]
     html = []
     html.append('<textarea ')
-    html.append(' class="%s"'%' '.join([css,elId,lang]))
+    html.append(' class="%s"'%' '.join([css, elId, lang]))
     html.append(' id="%s"'%elName)
     html.append(' name="%s"'%elName)
     if cols:
@@ -257,7 +259,7 @@ class ObjInputs:
       html.append(' disabled="disabled"')
     html.append('%s>'%extra)
     if value is not None:
-      if type(value) is list:
+      if isinstance(value, list):
         for item in value:
           html.append('%s\n'%standard.html_quote(item))
       else:

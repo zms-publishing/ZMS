@@ -20,6 +20,11 @@
 ################################################################################
 
 # Imports.
+from builtins import object
+from builtins import range
+from builtins import map
+from builtins import chr
+from builtins import str
 from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
@@ -28,7 +33,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import AccessControl
 import hashlib
 
-class MD5DigestScheme:
+class MD5DigestScheme(object):
 
   def encrypt(self, pw):
     enc = hashlib.md5(pw)
@@ -46,87 +51,87 @@ AccessControl.AuthEncoding.registerScheme('MD5', MD5DigestScheme())
 # Umlauts
 umlaut_map = {
         # German
-        u'ä' : 'ae',
-        u'ö' : 'oe',
-        u'ü' : 'ue',
-        u'Ä' : 'Ae',
-        u'Ö' : 'Oe',
-        u'Ü' : 'Ue',
-        u'ß' : 'ss',
+        u'ä': 'ae',
+        u'ö': 'oe',
+        u'ü': 'ue',
+        u'Ä': 'Ae',
+        u'Ö': 'Oe',
+        u'Ü': 'Ue',
+        u'ß': 'ss',
         # Cyrillic
-        u'а' : 'a',
-        u'б' : 'b',
-        u'в' : 'v',
-        u'г' : 'g',
-        u'д' : 'd',
-        u'е' : 'e',
-        u'ё' : 'e',
-        u'ж' : 'zh',
-        u'з' : 'z',
-        u'и' : 'i',
-        u'й' : 'j',
-        u'к' : 'k',
-        u'л' : 'l',
-        u'м' : 'm',
-        u'н' : 'n',
-        u'о' : 'o',
-        u'п' : 'p',
-        u'р' : 'r',
-        u'с' : 's',
-        u'т' : 't',
-        u'у' : 'u',
-        u'ф' : 'f',
-        u'х' : 'h',
-        u'ц' : 'c',
-        u'ч' : 'ch',
-        u'ш' : 'sh',
-        u'щ' : 'sch',
-        u'ь' : "'",
-        u'ы' : 'y',
-        u'ь' : "'",
-        u'э' : 'e',
-        u'ю' : 'ju',
-        u'я' : 'ja',
-        u'А' : 'A',
-        u'Б' : 'B',
-        u'В' : 'V',
-        u'Г' : 'G',
-        u'Д' : 'D',
-        u'Е' : 'E',
-        u'Ё' : 'E',
-        u'Ж' : 'ZH',
-        u'З' : 'Z',
-        u'И' : 'I',
-        u'Й' : 'J',
-        u'К' : 'K',
-        u'Л' : 'L',
-        u'М' : 'M',
-        u'Н' : 'N',
-        u'О' : 'O',
-        u'П' : 'P',
-        u'Р' : 'R',
-        u'С' : 'S',
-        u'Т' : 'T',
-        u'У' : 'U',
-        u'Ф' : 'F',
-        u'Х' : 'H',
-        u'Ц' : 'C',
-        u'Ч' : 'CH',
-        u'Ш' : 'SH',
-        u'Щ' : 'SCH',
-        u'Ъ' : "'",
-        u'Ы' : 'Y',
-        u'Ь' : "'",
-        u'Э' : 'E',
-        u'Ю' : 'JU',
-        u'Я' : 'JA',}
+        u'а': 'a',
+        u'б': 'b',
+        u'в': 'v',
+        u'г': 'g',
+        u'д': 'd',
+        u'е': 'e',
+        u'ё': 'e',
+        u'ж': 'zh',
+        u'з': 'z',
+        u'и': 'i',
+        u'й': 'j',
+        u'к': 'k',
+        u'л': 'l',
+        u'м': 'm',
+        u'н': 'n',
+        u'о': 'o',
+        u'п': 'p',
+        u'р': 'r',
+        u'с': 's',
+        u'т': 't',
+        u'у': 'u',
+        u'ф': 'f',
+        u'х': 'h',
+        u'ц': 'c',
+        u'ч': 'ch',
+        u'ш': 'sh',
+        u'щ': 'sch',
+        u'ь': "'",
+        u'ы': 'y',
+        u'ь': "'",
+        u'э': 'e',
+        u'ю': 'ju',
+        u'я': 'ja',
+        u'А': 'A',
+        u'Б': 'B',
+        u'В': 'V',
+        u'Г': 'G',
+        u'Д': 'D',
+        u'Е': 'E',
+        u'Ё': 'E',
+        u'Ж': 'ZH',
+        u'З': 'Z',
+        u'И': 'I',
+        u'Й': 'J',
+        u'К': 'K',
+        u'Л': 'L',
+        u'М': 'M',
+        u'Н': 'N',
+        u'О': 'O',
+        u'П': 'P',
+        u'Р': 'R',
+        u'С': 'S',
+        u'Т': 'T',
+        u'У': 'U',
+        u'Ф': 'F',
+        u'Х': 'H',
+        u'Ц': 'C',
+        u'Ч': 'CH',
+        u'Ш': 'SH',
+        u'Щ': 'SCH',
+        u'Ъ': "'",
+        u'Ы': 'Y',
+        u'Ь': "'",
+        u'Э': 'E',
+        u'Ю': 'JU',
+        u'Я': 'JA',}
 
 def sort_item( i):
-  if type( i) is str:
-    i = unicode(i,'utf-8')
+  if isinstance(i, str):
+    i = str(i, 'utf-8')
     mapping = umlaut_map
     for key in mapping.keys():
-      try: i = i.replace(key,mapping[key])
+      try: i = i.replace(key, mapping[key])
       except: pass
   return i
 
@@ -158,24 +163,24 @@ DT_NUMBERS = [ DT_INT, DT_FLOAT, DT_AMOUNT ]
 DT_DATETIMES = [ DT_DATE, DT_TIME, DT_DATETIME ]
 
 datatype_map = [
-  [ 'unknown',''],
-  [ 'boolean',0],
-  [ 'date',None],
-  [ 'datetime',None],
-  [ 'dictionary',{}],
-  [ 'file',None],
-  [ 'float',0.0],
-  [ 'image',None],
-  [ 'int',0],
-  [ 'list',[]],
-  [ 'password',''],
-  [ 'string',''],
-  [ 'text',''],
-  [ 'time',None],
-  [ 'url',''],
-  [ 'identifier',''],
-  [ 'xml',''],
-  [ 'amount',0.0],
+  [ 'unknown', ''],
+  [ 'boolean', 0],
+  [ 'date', None],
+  [ 'datetime', None],
+  [ 'dictionary', {}],
+  [ 'file', None],
+  [ 'float', 0.0],
+  [ 'image', None],
+  [ 'int', 0],
+  [ 'list', []],
+  [ 'password', ''],
+  [ 'string', ''],
+  [ 'text', ''],
+  [ 'time', None],
+  [ 'url', ''],
+  [ 'identifier', ''],
+  [ 'xml', ''],
+  [ 'amount', 0.0],
 ]
 
 def datatype_key(datatype):
@@ -206,18 +211,18 @@ def get_size(v):
   if v is not None:
     if is_str_type(v):
       size = size + len(v)
-    elif type(v) is list:
+    elif isinstance(v, list):
       size = sum( map( lambda x: get_size(x), v))
-    elif type(v) is dict:
+    elif isinstance(v, dict):
       size = sum( map( lambda x: get_size(x) + get_size(v[x]), v.keys()))
-    elif type(v) is int or type(v) is float:
+    elif isinstance(v, int) or isinstance(v, float):
       size = size + 4
-    elif hasattr(v,'get_real_size') and callable(getattr(v,'get_real_size')):
+    elif hasattr(v, 'get_real_size') and callable(getattr(v, 'get_real_size')):
       try:
         size = size + v.get_real_size()
       except:
         pass
-    elif hasattr(v,'get_size') and callable(getattr(v,'get_size')):
+    elif hasattr(v, 'get_size') and callable(getattr(v, 'get_size')):
       try:
         size = size + v.get_size()
       except:
@@ -229,7 +234,7 @@ def get_size(v):
 # Define StaticPageTemplateFile.
 ################################################################################
 class StaticPageTemplateFile(PageTemplateFile):
-  def setEnv(self,context,options):
+  def setEnv(self, context, options):
     self.context = context
     self.options = options
   def pt_getContext(self):
@@ -250,7 +255,7 @@ class StaticPageTemplateFile(PageTemplateFile):
 ################################################################################
 # Define MyClass.
 ################################################################################
-class MyClass:
+class MyClass(object):
 
   # ----------------------------------------------------------------------------
   #  MyClass.keys:
@@ -262,7 +267,7 @@ class MyClass:
 ################################################################################
 # Define MySectionizer.
 ################################################################################
-class MySectionizer:
+class MySectionizer(object):
 
     # --------------------------------------------------------------------------
     #  MySectionizer.__init__:
@@ -314,10 +319,10 @@ class MySectionizer:
         if level == len(self.sections):
           self.sections[level-1] = self.sections[level-1] + 1
         elif level > len(self.sections):
-          for i in range(len(self.sections),level):
+          for i in range(len(self.sections), level):
             self.sections.append(1)
         elif level < len(self.sections):
-          for i in range(level,len(self.sections)):
+          for i in range(level, len(self.sections)):
             del self.sections[len(self.sections)-1]
           self.sections[level-1] = self.sections[level-1] + 1
 
@@ -325,7 +330,7 @@ class MySectionizer:
 ################################################################################
 # Define MyStack.
 ################################################################################
-class MyStack:
+class MyStack(object):
 
     # --------------------------------------------------------------------------
     #  MyStack.__init__:

@@ -20,6 +20,7 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
+from builtins import str
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 import tempfile
 # Product Imports.
@@ -53,7 +54,7 @@ def thumbnail(img, maxdim, qual=75):
   thumb = resize( img, size, mode='thumbnail', qual=qual)
   
   # Returns resulting image
-  image = standard.ImageFromData(context,thumb.getData(),thumb.getFilename())
+  image = standard.ImageFromData(context, thumb.getData(), thumb.getFilename())
   return image
 
 
@@ -71,8 +72,8 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
   # Save image in temp-folder
   context = img.aq_parent
   tempfolder = tempfile.mktemp()
-  filepath = _fileutil.getOSPath('%s/%s'%(tempfolder,img.filename))
-  _fileutil.exportObj(img,filepath)
+  filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
+  _fileutil.exportObj(img, filepath)
   
   # Resize image
   im = Image.open(filepath)
@@ -80,12 +81,12 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
   maxdim = max(list(size))
   if mode == 'thumbnail':
     try:
-      im.thumbnail((maxdim,maxdim),Image.ANTIALIAS)
+      im.thumbnail((maxdim, maxdim), Image.ANTIALIAS)
     except:
-      im.thumbnail((maxdim,maxdim))
+      im.thumbnail((maxdim, maxdim))
   elif mode == 'resize':
     try:
-      im = im.resize(size,Image.ANTIALIAS)
+      im = im.resize(size, Image.ANTIALIAS)
     except:
       im = im.resize(size)
   elif mode == 'square':
@@ -108,26 +109,26 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
       im = im.resize((dst_width, dst_height), Image.ANTIALIAS)
     except:
       im.resize(size)
-  im.convert('RGB').save(filepath,"JPEG", quality=qual, optimize=True)
+  im.convert('RGB').save(filepath, "JPEG", quality=qual, optimize=True)
   
   # Read resized image from file-system
-  f = open(filepath,'rb')
+  f = open(filepath, 'rb')
   result_data = f.read()
   thumb_sffx = str(sffx)
   getfilename = _fileutil.extractFilename(filepath).split('.')
   filename = getfilename[0:-1]
   filename = ".".join(filename)
-  filename = filename.replace('.','_')
+  filename = filename.replace('.', '_')
   extension = _fileutil.extractFileExt(filepath)
   result_filename = filename + thumb_sffx + '.' + extension
   result = {'data':result_data,'filename':result_filename}
   f.close()
   
   # Remove temp-folder and images
-  _fileutil.remove(tempfolder,deep=1)
+  _fileutil.remove(tempfolder, deep=1)
   
   # Returns resulting image
-  image = standard.ImageFromData(context,result['data'],result['filename'])
+  image = standard.ImageFromData(context, result['data'], result['filename'])
   return image
 
 
@@ -145,26 +146,26 @@ def crop(img, box, qual=75):
   # Save image in temp-folder
   context = img.aq_parent
   tempfolder = tempfile.mktemp()
-  filepath = _fileutil.getOSPath('%s/%s'%(tempfolder,img.filename))
-  _fileutil.exportObj(img,filepath)
+  filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
+  _fileutil.exportObj(img, filepath)
   
   # Crop image
   im = Image.open(filepath)
   im = im.crop(box)
-  im.convert('RGB').save(filepath,"JPEG", quality=qual)
+  im.convert('RGB').save(filepath, "JPEG", quality=qual)
   
   # Read resized image from file-system
-  f = open(filepath,'rb')
+  f = open(filepath, 'rb')
   result_data = f.read()
   result_filename = _fileutil.extractFilename(filepath)
   result = {'data':result_data,'filename':result_filename}
   f.close()
   
   # Remove temp-folder and images
-  _fileutil.remove(tempfolder,deep=1)
+  _fileutil.remove(tempfolder, deep=1)
   
   # Returns resulting image
-  image = standard.ImageFromData(context,result['data'],result['filename'])
+  image = standard.ImageFromData(context, result['data'], result['filename'])
   return image
 
 
@@ -181,26 +182,26 @@ def rotate(img, direction, qual=75):
   # Save image in temp-folder
   context = img.aq_parent
   tempfolder = tempfile.mktemp()
-  filepath = _fileutil.getOSPath('%s/%s'%(tempfolder,img.filename))
-  _fileutil.exportObj(img,filepath)
+  filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
+  _fileutil.exportObj(img, filepath)
   
   # Rotate image
   im = Image.open(filepath)
   im = im.rotate(direction)
-  im.convert('RGB').save(filepath,"JPEG", quality=qual, optimize=True)
+  im.convert('RGB').save(filepath, "JPEG", quality=qual, optimize=True)
   
   # Read rotated image from file-system
-  f = open(filepath,'rb')
+  f = open(filepath, 'rb')
   data = f.read()
   result_filename = _fileutil.extractFilename(filepath)
   result = {'data':data,'filename':img.filename}
   f.close()
   
   # Remove temp-folder and images
-  _fileutil.remove(tempfolder,deep=1)
+  _fileutil.remove(tempfolder, deep=1)
   
   # Returns resulting image
-  image = standard.ImageFromData(context,result['data'],result['filename'])
+  image = standard.ImageFromData(context, result['data'], result['filename'])
   return image
 
 
@@ -218,25 +219,25 @@ def optimize(img, qual=75):
   # Save image in temp-folder
   context = img.aq_parent
   tempfolder = tempfile.mktemp()
-  filepath = _fileutil.getOSPath('%s/%s'%(tempfolder,img.filename))
-  _fileutil.exportObj(img,filepath)
+  filepath = _fileutil.getOSPath('%s/%s'%(tempfolder, img.filename))
+  _fileutil.exportObj(img, filepath)
   
   # Resize image
   im = Image.open(filepath)
   im = im.convert('RGB')
-  im.convert('RGB').save(filepath,"JPEG", quality=qual, optimize=True)
+  im.convert('RGB').save(filepath, "JPEG", quality=qual, optimize=True)
   
   # Read optimized image from file-system
-  f = open(filepath,'rb')
+  f = open(filepath, 'rb')
   data = f.read()
   result = {'data':data,'filename':img.filename}
   f.close()
   
   # Remove temp-folder and images
-  _fileutil.remove(tempfolder,deep=1)
+  _fileutil.remove(tempfolder, deep=1)
   
   # Returns resulting image
-  image = standard.ImageFromData(context,result['data'],result['filename'])
+  image = standard.ImageFromData(context, result['data'], result['filename'])
   return image
 
 

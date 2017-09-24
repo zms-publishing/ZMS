@@ -18,9 +18,15 @@ from __future__ import division
 ################################################################################
 
 # Imports.
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import filter
+from builtins import map
+from builtins import range
 from App.Common import package_home
 import copy
-import urllib
+import urllib.request, urllib.parse, urllib.error
 # Product Imports.
 import ZMSTextformat
 
@@ -32,7 +38,7 @@ import ZMSTextformat
 ###
 ################################################################################
 ################################################################################
-class ZMSTextformatManager:
+class ZMSTextformatManager(object):
 
     ############################################################################
     #
@@ -47,22 +53,22 @@ class ZMSTextformatManager:
     def _importTextformatXml(self, item, createIfNotExists=1):
       id = item['key']
       dict = item['value']
-      dict['default'] = dict.get('default',0)
+      dict['default'] = dict.get('default', 0)
       if id in self.textformats:
         i = self.textformats.index(id)
         self.textformats[i+1] = dict
       else:
-        self.textformats.extend([id,dict])
+        self.textformats.extend([id, dict])
       # Make persistent.
       self.textformats = copy.deepcopy(self.textformats)
 
     def importTextformatXml(self, xml, createIfNotExists=1):
       v = self.parseXmlString(xml)
-      if type(v) is list:
+      if isinstance(v, list):
         for item in v:
-          self._importTextformatXml(item,createIfNotExists)
+          self._importTextformatXml(item, createIfNotExists)
       else:
-        self._importTextformatXml(v,createIfNotExists)
+        self._importTextformatXml(v, createIfNotExists)
 
 
     # --------------------------------------------------------------------------
@@ -84,7 +90,7 @@ class ZMSTextformatManager:
         i = self.textformats.index(id)
       else:
         i = len(self.textformats)
-        self.textformats.extend([newId,{'display':{},'default':0}])
+        self.textformats.extend([newId, {'display':{},'default':0}])
       dict = self.textformats[i+1]
       dict['display'][newZMILang] = newDisplay
       dict['tag'] = newTag
@@ -105,7 +111,7 @@ class ZMSTextformatManager:
       if id in self.textformats:
         i = self.textformats.index(id)
         d = self.textformats[i+1]
-        return ZMSTextformat.ZMSTextformat(id,d,REQUEST)
+        return ZMSTextformat.ZMSTextformat(id, d, REQUEST)
       return None
 
 
@@ -113,10 +119,9 @@ class ZMSTextformatManager:
     #  ZMSTextformatManager.getTextFormats:
     # --------------------------------------------------------------------------
     def getTextFormats(self, REQUEST):
-      l = map( lambda x: self.getTextFormat(self.textformats[x*2],REQUEST), range(len(self.textformats)//2))
-      l = map( lambda x: (x.getDisplay(), x), l)
-      l.sort()
-      return map(lambda x: x[1],l)
+      l = map( lambda x: self.getTextFormat(self.textformats[x*2], REQUEST), list(range(len(self.textformats)//2)))
+      l = sorted(map( lambda x: (x.getDisplay(), x), l))
+      return map(lambda x: x[1], l)
 
 
     # --------------------------------------------------------------------------
@@ -124,7 +129,7 @@ class ZMSTextformatManager:
     # --------------------------------------------------------------------------
     def setDefaultTextformat(self, id):
       if len(id) > 0 and id in self.textformats:
-        map( lambda x: self.operator_setitem(self.textformats[x*2+1],'default',0), range(len(self.textformats)//2))
+        map( lambda x: self.operator_setitem(self.textformats[x*2+1], 'default', 0), list(range(len(self.textformats)//2)))
         i = self.textformats.index(id)
         self.textformats[i+1]['default'] = 1
         # Make persistent.
@@ -138,7 +143,7 @@ class ZMSTextformatManager:
       if len(self.textformats) == 0:
         return ''
       i = 0
-      format_default = filter( lambda x: self.textformats[x*2+1].get('default',0)==1, range(len(self.textformats)//2))
+      format_default = filter( lambda x: self.textformats[x*2+1].get('default', 0)==1, list(range(len(self.textformats)//2)))
       if len(format_default) == 1:
         i = format_default[0]*2
       elif 'body' in self.textformats:
@@ -154,7 +159,7 @@ class ZMSTextformatManager:
     def manage_changeTextformat(self, lang, REQUEST, RESPONSE): 
       """ ZMSTextformatManager.manage_changeTextformat """
       message = ''
-      id = REQUEST.get('id','')
+      id = REQUEST.get('id', '')
       
       # Change.
       # -------
@@ -165,9 +170,9 @@ class ZMSTextformatManager:
         tag = REQUEST['new_tag'].strip()
         subtag = REQUEST['new_subtag'].strip()
         attrs = REQUEST['new_attrs'].strip()
-        richedit = REQUEST.get('new_richedit',0)
-        usage = REQUEST.get('new_usage',[])
-        self.setTextformat(old_id,id,display,self.get_manage_lang(),tag,subtag,attrs,richedit,usage)
+        richedit = REQUEST.get('new_richedit', 0)
+        usage = REQUEST.get('new_usage', [])
+        self.setTextformat(old_id, id, display, self.get_manage_lang(), tag, subtag, attrs, richedit, usage)
         if REQUEST.has_key('new_default'):
           self.setDefaultTextformat(id)
         id = ''
@@ -179,7 +184,7 @@ class ZMSTextformatManager:
         if id:
           ids = [id]
         else:
-          ids = REQUEST.get('ids',[])
+          ids = REQUEST.get('ids', [])
         for id in ids:
           self.delTextformat(id) 
         id = ''
@@ -190,14 +195,14 @@ class ZMSTextformatManager:
       elif REQUEST['btn'] == self.getZMILangStr('BTN_INSERT'):
         id = REQUEST['_id'].strip()
         display = REQUEST['_display'].strip()
-        self.setTextformat(None,id,display,self.get_manage_lang())
+        self.setTextformat(None, id, display, self.get_manage_lang())
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Export.
       # -------
       elif REQUEST['btn'] == self.getZMILangStr('BTN_EXPORT'):
         value = []
-        ids = REQUEST.get('ids',[])
+        ids = REQUEST.get('ids', [])
         fmts = self.textformats
         for i in range(len(fmts)//2):
           id = fmts[i*2]
@@ -208,9 +213,9 @@ class ZMSTextformatManager:
           value = value[0]
         content_type = 'text/xml; charset=utf-8'
         filename = 'export.textfmt.xml'
-        export = self.getXmlHeader() + self.toXmlString(value,1)
-        RESPONSE.setHeader('Content-Type',content_type)
-        RESPONSE.setHeader('Content-Disposition','attachment;filename="%s"'%filename)
+        export = self.getXmlHeader() + self.toXmlString(value, 1)
+        RESPONSE.setHeader('Content-Type', content_type)
+        RESPONSE.setHeader('Content-Disposition', 'attachment;filename="%s"'%filename)
         return export
       
       # Import.
@@ -227,8 +232,8 @@ class ZMSTextformatManager:
       
       # Return with message.
       if RESPONSE:
-        message = urllib.quote(message)
-        return RESPONSE.redirect('manage_textformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang,message,id))
+        message = urllib.parse.quote(message)
+        return RESPONSE.redirect('manage_textformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
       
       return message
 

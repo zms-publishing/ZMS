@@ -21,7 +21,7 @@ from zope.interface import Interface
 # Product Imports.
 import IZMSActionListContributor
 
-class IZMSMetacmdProvider(Interface,IZMSActionListContributor.IZMSActionListContributor):
+class IZMSMetacmdProvider(Interface, IZMSActionListContributor.IZMSActionListContributor):
 
   def getMetaCmdDescription(self, id):
     """

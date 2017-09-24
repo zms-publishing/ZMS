@@ -160,7 +160,7 @@ PACKAGE_DATA.append('*.txt')
 DATA_FILES = []
 if sys.platform[:3].lower() == "win":
   DATA_FILES += [
-    (site_packages, ['dll/pywintypes27.dll','dll/win32file.pyd'])
+    (site_packages, ['dll/pywintypes27.dll', 'dll/win32file.pyd'])
   ]
 
 CLASSIFIERS = [

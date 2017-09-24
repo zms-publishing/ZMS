@@ -17,6 +17,8 @@
 ################################################################################
 
 # Imports.
+from builtins import object
+from builtins import map
 from App.Common import package_home
 # Product Imports.
 import _xmllib
@@ -29,7 +31,7 @@ import _xmllib
 ###
 ################################################################################
 ################################################################################
-class EnumManager:
+class EnumManager(object):
 
   # ----------------------------------------------------------------------------
   #  EnumManager.__init__:
@@ -53,12 +55,11 @@ class EnumManager:
     builder = _xmllib.XmlAttrBuilder()
     v = builder.parse(xml)
     xml.close()
-    if type(v) is dict:
-      l = map(lambda x: (v[x], x), v.keys())
-      l.sort()
+    if isinstance(v, dict):
+      l = sorted(map(lambda x: (v[x], x), v.keys()))
       v = []
       for i in l:
-        v.append([i[1],i[0]])
+        v.append([i[1], i[0]])
     return v
 
 ################################################################################

@@ -20,6 +20,10 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
+from builtins import map
+from builtins import range
+from builtins import chr
+from builtins import str
 from ZPublisher.Iterators import filestream_iterator
 import fnmatch
 import os
@@ -47,7 +51,7 @@ def import_zexp(self, zexp, new_id, id_prefix, _sort_id=0):
   
   # Rename
   if new_id != fileid:
-    self.manage_renameObject(fileid,new_id)
+    self.manage_renameObject(fileid, new_id)
   
   ## Normalize Sort-IDs
   obj = getattr( self, new_id)
@@ -74,7 +78,7 @@ IN:  path
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def extractFilename(path, sep=None, undoable=False):
   if sep is None:
-    path = getOSPath(path,undoable=undoable)
+    path = getOSPath(path, undoable=undoable)
   items = path.split( os.sep)
   lastitem = items[len(items)-1]
   return lastitem
@@ -98,16 +102,16 @@ _fileutil.getOSPath:
 
 Return path with OS separators.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def getOSPath(path, chs=list(range(32))+[34,39,60,62,63,127], undoable=False):
-  path = path.replace('\\',os.sep)
-  path = path.replace('/',os.sep)
-  if type( path) is str:
-    path = unicode(path, 'latin-1')
+def getOSPath(path, chs=list(range(32))+[34, 39, 60, 62, 63, 127], undoable=False):
+  path = path.replace('\\', os.sep)
+  path = path.replace('/', os.sep)
+  if isinstance(path, str):
+    path = str(path, 'latin-1')
   if undoable or os.name != "nt":
     path = path.encode('ascii', 'replace') # replace uncodable characters by ? (63)
   if len( chs) > 0:
     for ch in chs:
-      path = path.replace(chr(ch),'')
+      path = path.replace(chr(ch), '')
   return path
 
 
@@ -166,7 +170,7 @@ def findExtension(extension, path, deep=1):
     elif deep:
       mode = os.stat(filepath)[stat.ST_MODE]
       if stat.S_ISDIR(mode):
-        rtn = findExtension(extension,filepath,deep)
+        rtn = findExtension(extension, filepath, deep)
         if rtn is not None:
           return rtn
   return rtn
@@ -179,8 +183,8 @@ Reads path.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def readPath(path, data=True, recursive=True):
   l = []
-  path = path.replace('\\',os.sep)
-  path = path.replace('/',os.sep)
+  path = path.replace('\\', os.sep)
+  path = path.replace('/', os.sep)
   filter = extractFilename(path, os.sep)
   if filter.find('*') >= 0 and filter.find('.') >= 0:
     path = getFilePath( path)
@@ -193,8 +197,8 @@ def readPath(path, data=True, recursive=True):
       mode = os.stat(local_filename)[stat.ST_MODE]
       if filter is None or fnmatch.fnmatch(filename, filter):
         u_local_filename = local_filename
-        if type(u_local_filename) is not unicode:
-          u_local_filename = unicode(local_filename,'latin-1')
+        if not isinstance(u_local_filename, str):
+          u_local_filename = str(local_filename, 'latin-1')
         d = {}
         d['local_filename']=u_local_filename.encode('utf-8')
         d['filename']=extractFilename(u_local_filename).encode('utf-8')
@@ -287,9 +291,9 @@ def getDataSizeStr(len):
     elif mod == 1:
       s = "%sKB"%s
     elif mod == 2:
-      s = "%s.%s MB"%(s,n)
+      s = "%s.%s MB"%(s, n)
     elif mod == 3:
-      s = "%s.%s GB"%(s,n)
+      s = "%s.%s GB"%(s, n)
   except:
     pass
   return s
@@ -316,7 +320,7 @@ def exportObj(obj, filename, filetype='b'):
   #-- Get object data.
   data = None
   try: # ImageFile
-    f = open(obj.path,'r%s'%filetype)
+    f = open(obj.path, 'r%s'%filetype)
     data = f.read()
     f.close()
   except:
@@ -335,10 +339,10 @@ def exportObj(obj, filename, filetype='b'):
   
   #-- Save to file.
   if data is not None:
-    objfile = open(filename,'w%s'%filetype)
-    if type(data) is unicode:
-      objfile.write(unicode(data).encode('utf-8'))
-    elif type(data) is str:
+    objfile = open(filename, 'w%s'%filetype)
+    if isinstance(data, str):
+      objfile.write(str(data).encode('utf-8'))
+    elif isinstance(data, str):
       objfile.write(data)
     else:
       while data is not None:
@@ -377,9 +381,9 @@ def readDir(path):
       ob['type'] = 'd'
     else:
       ob['type'] = 'f'
-    obs.append((ob['type'],ob))
+    obs.append((ob['type'], ob))
   obs.sort()
-  return map(lambda ob: ob[1],obs)
+  return map(lambda ob: ob[1], obs)
 
 
 ################################################################################
@@ -399,7 +403,7 @@ def getZipArchive(f):
   # Saved zip-file in temp-folder.
   tempfolder = tempfile.mktemp()
   filename = tempfolder + os.sep + extractFilename(tempfolder) + '.zip'
-  exportObj(f,filename)
+  exportObj(f, filename)
   
   # Unzip zip-file.
   extractZipArchive(filename)
@@ -408,10 +412,10 @@ def getZipArchive(f):
   remove(filename)
   
   # Read extracted files.
-  l = readPath(tempfolder,data=True)
+  l = readPath(tempfolder, data=True)
   
   # Remove temp-folder.
-  remove(tempfolder,deep=1)
+  remove(tempfolder, deep=1)
   
   # Return list of files.
   return l
@@ -504,9 +508,9 @@ Does what "tail -10 filename" would have done
 def tail_lines(filename,linesback=10,returnlist=0):
     avgcharsperline=75
     
-    file = open(filename,'r')
-    while 1:
-        try: file.seek(-1 * avgcharsperline * linesback,2)
+    file = open(filename, 'r')
+    while True:
+        try: file.seek(-1 * avgcharsperline * linesback, 2)
         except IOError: file.seek(0)
         if file.tell() == 0: atstart=1
         else: atstart=0

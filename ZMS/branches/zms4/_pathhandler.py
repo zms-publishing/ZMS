@@ -17,6 +17,11 @@
 ################################################################################
 
 # Imports.
+from builtins import object
+from builtins import range
+from builtins import map
+from builtins import filter
+from builtins import str
 from OFS.CopySupport import absattr
 import copy
 import re
@@ -38,7 +43,7 @@ def validateId(self, id, REQUEST):
   lang = REQUEST.get( 'lang')
   if lang is None:
     for lang in self.getLanguages():
-      request = { 'lang': lang, 'preview': REQUEST.get('preview','')}
+      request = { 'lang': lang, 'preview': REQUEST.get('preview', '')}
       decl_id = self.getDeclId(request)
       if id == decl_id:
         langs.append( lang)
@@ -79,8 +84,8 @@ def handleBlobAttrs(self, name, REQUEST):
   langs = self.getLangIds()
   name_without_lang_suffix = name
   if len(langs) == 1 and name.find('_%s.'%langs[0]) > 0:
-    name_without_lang_suffix = name.replace('_%s.'%langs[0],'.')
-  for ob in [self]+self.filteredChildNodes(REQUEST,['ZMSFile']):
+    name_without_lang_suffix = name.replace('_%s.'%langs[0], '.')
+  for ob in [self]+self.filteredChildNodes(REQUEST, ['ZMSFile']):
     for key in ob.getObjAttrs().keys():
       obj_attr = ob.getObjAttr(key)
       datatype = obj_attr['datatype_key']
@@ -112,7 +117,7 @@ def handleBlobAttrs(self, name, REQUEST):
 ###
 ################################################################################
 ################################################################################
-class PathHandler: 
+class PathHandler(object): 
 
     # --------------------------------------------------------------------------
     #  PathHandler.__bobo_traverse__
@@ -121,7 +126,7 @@ class PathHandler:
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
       request = self.REQUEST
-      url = request.get('URL','')
+      url = request.get('URL', '')
       zmi = url.find('/manage') >= 0
       
       if not TraversalRequest.has_key('path_to_handle'):
@@ -151,7 +156,7 @@ class PathHandler:
      
       # If the name is in the list of attributes, call it.
       ob = getattr( self, name, None)
-      if ob is None or getattr(ob,'meta_type',None) == 'Folder':
+      if ob is None or getattr(ob, 'meta_type', None) == 'Folder':
         obContext = filterId( self, name, request)
         if obContext is not None:
           ob = obContext
@@ -171,7 +176,7 @@ class PathHandler:
         
         if request.get('lang') is None:
           lang = self.getPrimaryLanguage()
-          request.set('lang',lang)
+          request.set('lang', lang)
         
         # Package-Home.
         if name == '$ZMS_HOME':
@@ -186,12 +191,12 @@ class PathHandler:
           return f
         
         # Pathhandler-Hook.
-        if 'pathhandler' in self.getMetaobjAttrIds( self.meta_id, types=['method','py']):
+        if 'pathhandler' in self.getMetaobjAttrIds( self.meta_id, types=['method', 'py']):
           if name == TraversalRequest['path_to_handle'][-1]:
-            request.set( 'path_', '/'.join(request.get('path_',[])+[name]))
+            request.set( 'path_', '/'.join(request.get('path_', [])+[name]))
             return self.attr('pathhandler')
           else:
-            request.set( 'path_', request.get('path_',[])+[name])
+            request.set( 'path_', request.get('path_', [])+[name])
             return self
         
         if not zmi or request.get( 'ZMS_PATH_HANDLER', False):
@@ -228,13 +233,13 @@ class PathHandler:
               if c > 0:
                 request.set( 'ZMS_PROXY_%s'%self.id, proxy)
             if request.get( 'ZMS_PROXY_%s'%self.id) and request.get( 'ZMS_PROXY_%s'%self.id).id != TraversalRequest[ 'path_to_handle'][-1]:
-              v = handleBlobAttrs(request.get( 'ZMS_PROXY_%s'%self.id).proxy, TraversalRequest[ 'path_to_handle'][-1],request)
+              v = handleBlobAttrs(request.get( 'ZMS_PROXY_%s'%self.id).proxy, TraversalRequest[ 'path_to_handle'][-1], request)
               if v is not None: 
                 return v
             return thisOb
         
         # Declarative Urls.
-        ob = self.pathob([name],request)
+        ob = self.pathob([name], request)
         if ob is not None:
           return ob
         
@@ -254,7 +259,7 @@ class PathHandler:
               d = r[i]
               for key in d.keys():
                 value = d[key]
-                if isinstance(value,_blobfields.MyImage) or isinstance(value,_blobfields.MyFile):
+                if isinstance(value, _blobfields.MyImage) or isinstance(value, _blobfields.MyFile):
                   value = value._getCopy()
                   value.aq_parent = self
                   value.key = key
@@ -302,11 +307,11 @@ class PathHandler:
         if v is not None: return v
         
         # If the object has executable-fields find by name and display data.
-        pattern = self.getConfProperty('ZMS.metaobj.attr.publicExecutablePattern','public(.*?)')
-        if re.compile(pattern).match(name) and name in self.getMetaobjAttrIds( self.meta_id, types=['method','py']):
+        pattern = self.getConfProperty('ZMS.metaobj.attr.publicExecutablePattern', 'public(.*?)')
+        if re.compile(pattern).match(name) and name in self.getMetaobjAttrIds( self.meta_id, types=['method', 'py']):
           v = self.attr(name)
           if v is not None:
-            if type(v) is str:
+            if isinstance(v, str):
               v = self.FileFromData( v, content_type='text/plain;charset=utf-8')
               v.aq_parent = self
               v.key = name
@@ -323,16 +328,16 @@ class PathHandler:
             if lang in self.getLangIds():
               zms_skin = l[:i]
               zms_ext = l[j+1:]
-              if zms_skin in map(lambda x:x.strip(),self.getConfProperty('ZMS.skins','index').split(',')) and \
+              if zms_skin in map(lambda x:x.strip(), self.getConfProperty('ZMS.skins', 'index').split(',')) and \
                  zms_ext == self.getPageExt(request)[1:]:
-                request.set('ZMS_SKIN',zms_skin)
-                request.set('ZMS_EXT',zms_ext)
-                request.set('lang',lang)
+                request.set('ZMS_SKIN', zms_skin)
+                request.set('ZMS_EXT', zms_ext)
+                request.set('lang', lang)
                 return self
         
         # If there's no more names left to handle, return the path handling 
         # method to the traversal machinery so it gets called next
-        exc_value='<h2>Site-Error</h2><b>Sorry, there is no web page matching your request.</b> It is possible you typed the address incorrectly, or that the page no longer exists.<hr><b>Resource<b> <i>'+name+'</i> '+''.join(map(lambda x: x+'/',TraversalRequest['path_to_handle']))+' GET'
+        exc_value='<h2>Site-Error</h2><b>Sorry, there is no web page matching your request.</b> It is possible you typed the address incorrectly, or that the page no longer exists.<hr><b>Resource<b> <i>'+name+'</i> '+''.join(map(lambda x: x+'/', TraversalRequest['path_to_handle']))+' GET'
         return self.standard_error_message( self, 
           exc_type='Resource not found', 
           exc_value=exc_value, 

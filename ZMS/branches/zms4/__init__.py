@@ -21,6 +21,11 @@
 from __future__ import division
 
 # Documentation string.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import filter
+from builtins import range
+from builtins import str
 __doc__ = """initialization module."""
 # Version string.
 __version__ = '0.1'
@@ -30,7 +35,7 @@ from App.Common import package_home
 from App.ImageFile import ImageFile
 from DateTime.DateTime import DateTime
 try:
-  import ConfigParser
+  import configparser
 except ImportError:
   # Python3
   import configparser as ConfigParser
@@ -142,32 +147,31 @@ def initialize(context):
             filepath = path + os.sep + file 
             mode = os.stat(filepath)[stat.ST_MODE]
             if not stat.S_ISDIR(mode):
-              registerImage(filepath,file)
+              registerImage(filepath, file)
         
         # automated assembly of conf-properties
-        standard.writeStdout(context,"automated assembly of conf-properties")
-        l = assembleConfProperties(package_home(globals()),'*.py,*.zpt')
-        d = dict((l[i],l[i+1]) for i in range(0, len(l), 2))
-        keys = d.keys()
-        keys.sort()
+        standard.writeStdout(context, "automated assembly of conf-properties")
+        l = assembleConfProperties(package_home(globals()), '*.py,*.zpt')
+        d = dict((l[i], l[i+1]) for i in range(0, len(l), 2))
+        keys = sorted(d.keys())
         for key in keys:
-          standard.writeStdout(context,'%s=%s'%(key,str(d[key])))
+          standard.writeStdout(context, '%s=%s'%(key, str(d[key])))
         
         # automated minification
         confkeys = confdict.keys()
-        for confkey in filter(lambda x:x.startswith('gen.') and x+'.include' in confkeys,confkeys):
+        for confkey in filter(lambda x:x.startswith('gen.') and x+'.include' in confkeys, confkeys):
           gen = confdict.get(confkey+'.include').split(',')
           if gen[0] != '':
-            standard.writeStdout(context,"automated minification: %s=%s"%(confkey,str(confdict.get(confkey))))
-            fileobj = open(translate_path(confdict.get(confkey)),'w')
+            standard.writeStdout(context, "automated minification: %s=%s"%(confkey, str(confdict.get(confkey))))
+            fileobj = open(translate_path(confdict.get(confkey)), 'w')
             for key in gen:
               fn = translate_path(confdict.get(key))
-              fh = open(fn,'r')
+              fh = open(fn, 'r')
               fc = fh.read()
               fh.close()
               l0 = len(fc)
               if fn.find('.min.') > 0 or fn.find('-min.') > 0:
-                standard.writeStdout(context,"add %s (%i Bytes)"%(fn,l0))
+                standard.writeStdout(context, "add %s (%i Bytes)"%(fn, l0))
               else:
                 # Pack
                 s0 = []
@@ -180,29 +184,29 @@ def initialize(context):
                       '/\*(\!|\*|\s)((.|\n|\r|\t)*?)\*/', \
                       '//( |-|\$)((.|\r|\t)*?)\n', \
                     ]
-                  s1 = ['=','+','-','(',')',';',',',':','&','|']
+                  s1 = ['=', '+', '-', '(', ')', ';', ',', ':', '&', '|']
                   s2 = []
-                  s3 = ['\t',' ','{ ','{','{\n','{',' }','}',';}','}',',\n',',',';\n',';','\n ','\n','  ',' ','\n\n','\n','}\n}\n','}}\n']
+                  s3 = ['\t', ' ', '{ ', '{', '{\n', '{', ' }', '}', ';}', '}', ',\n', ',', ';\n', ';', '\n ', '\n', '  ', ' ', '\n\n', '\n', '}\n}\n', '}}\n']
                 elif fn.endswith('.css'):
                   s0 = [ \
                       '/\*((.|\n|\r|\t)*?)\*/', \
                     ]
-                  s1 = ['=','+','{','}','(',';',',',':']
-                  s2 = [') ','}\n']
-                  s3 = ['\t',' ','  ',' ','\n\n','\n',';}','}']
+                  s1 = ['=', '+', '{', '}', '(', ';', ',', ':']
+                  s2 = [') ', '}\n']
+                  s3 = ['\t', ' ', '  ', ' ', '\n\n', '\n', ';}', '}']
                 fc = fc.strip()
                 for s in s0:
                   l1 = len(fc)
-                  fc = re.sub(s,'',fc)
+                  fc = re.sub(s, '', fc)
                 while True:
                   done = False
                   for k in s1:
-                    for sk in [' ','\n']:
+                    for sk in [' ', '\n']:
                       while fc.find(sk+k)>=0:
-                        fc=fc.replace(sk+k,k)
+                        fc=fc.replace(sk+k, k)
                         done = True
                       while k+sk not in s2 and fc.find(k+sk)>=0:
-                        fc=fc.replace(k+sk,k)
+                        fc=fc.replace(k+sk, k)
                         done = True
                   d = s3
                   for i in range(len(d)//2):
@@ -210,19 +214,19 @@ def initialize(context):
                     v = d[i*2+1]
                     while fc.find(k) >= 0:
                       l1 = len(fc)
-                      fc = fc.replace(k,v)
+                      fc = fc.replace(k, v)
                       done = True
                   if not done:
                     break
                 l1 = len(fc)
-                standard.writeStdout(context,"add %s (Packed: %i -> %i Bytes)"%(fn,l0,l1))
+                standard.writeStdout(context, "add %s (Packed: %i -> %i Bytes)"%(fn, l0, l1))
               fileobj.write(fc)
             fileobj.close()
         
         # automated generation of language JavaScript
         from xml.dom import minidom
-        filename = os.sep.join([package_home(globals())]+['import','_language.xml'])
-        standard.writeStdout(context,"automated generation of language JavaScript: %s"%filename)
+        filename = os.sep.join([package_home(globals())]+['import', '_language.xml'])
+        standard.writeStdout(context, "automated generation of language JavaScript: %s"%filename)
         xmldoc = minidom.parse(filename)
         langs = None
         d = {}
@@ -248,16 +252,16 @@ def initialize(context):
               for i in range(len(l)-1):
                 d[k][langs[i]] = l[i+1]
         for lang in langs:
-          filename = os.sep.join([package_home(globals())]+['plugins','www','i18n','%s.js'%lang])
-          standard.writeStdout(context,"generate: %s"%filename)
-          fileobj = open(filename,'w')
+          filename = os.sep.join([package_home(globals())]+['plugins', 'www', 'i18n', '%s.js'%lang])
+          standard.writeStdout(context, "generate: %s"%filename)
+          fileobj = open(filename, 'w')
           fileobj.write('var zmiLangStr={\'lang\':\'%s\''%lang)
           for k in d.keys():
             v = d[k].get(lang)
             if v is not None:
-              v = v.replace('\'','\\\'').replace('\n','\\n')
+              v = v.replace('\'', '\\\'').replace('\n', '\\n')
               fileobj.write(',\'%s\':\''%k)
-              fileobj.write(unicode(v).encode('utf-8'))
+              fileobj.write(str(v).encode('utf-8'))
               fileobj.write('\'')
           fileobj.write('};')
           fileobj.close()
@@ -298,16 +302,16 @@ def translate_path(s):
   """
   ZMS_HOME = package_home(globals())
   if s.startswith('/++resource++zms_/'):
-    l = ['plugins','www']+s.split('/')[2:]
+    l = ['plugins', 'www']+s.split('/')[2:]
   elif s.startswith('/misc_/zms/'):
     l = ['www']+s.split('/')[3:]
   return os.sep.join([ZMS_HOME]+l)
 
-def registerImage(filepath,s):
+def registerImage(filepath, s):
   """
   manual icon registration
   """
-  icon=ImageFile(filepath,globals())
+  icon=ImageFile(filepath, globals())
   icon.__roles__ = None
   OFS.misc_.misc_.zms[s]=icon
 
@@ -320,9 +324,9 @@ def assembleConfProperties(path, pattern):
     filepath = path+os.sep+file
     mode = os.stat(filepath)[stat.ST_MODE]
     if stat.S_ISDIR(mode): 
-      l.extend(assembleConfProperties(filepath,pattern))
-    elif len(filter(lambda x:fnmatch.fnmatch(file,x),pattern.split(',')))>0:
-      f = open(filepath,'r')
+      l.extend(assembleConfProperties(filepath, pattern))
+    elif len(filter(lambda x:fnmatch.fnmatch(file, x), pattern.split(',')))>0:
+      f = open(filepath, 'r')
       data = f.read()
       f.close()
       sp = data.split('getConfProperty(')
@@ -334,7 +338,7 @@ def assembleConfProperties(path, pattern):
           k = k[k.find('\'')+1:k.rfind('\'')]
           v = s[i+1:]
           if k:
-            l.extend([k,v])
+            l.extend([k, v])
   return l
 
 ################################################################################
@@ -343,7 +347,7 @@ def assembleConfProperties(path, pattern):
 # Dynamic Modification of the Zope Skin
 ################################################################################
 confdict = _confmanager.ConfDict.get()
-if confdict['zmi.console'] in ['light','dark']:
+if confdict['zmi.console'] in ['light', 'dark']:
   from App.special_dtml import DTMLFile
   from App.Management import Navigation
   from App.Management import Tabs

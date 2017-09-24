@@ -18,6 +18,8 @@
 
 
 # Imports.
+from builtins import map
+from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import zope.interface
@@ -65,13 +67,13 @@ class ZMSMetamodelProvider(
 
     # Management Interface.
     # ---------------------
-    manage = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main',globals())
-    manage_main = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main',globals())
-    manage_main_import = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main_import',globals())
-    manage_main_acquire = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main_acquire',globals())
+    manage = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main', globals())
+    manage_main = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main', globals())
+    manage_main_import = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main_import', globals())
+    manage_main_acquire = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_main_acquire', globals())
     manage_bigpicture = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_bigpicture', globals())
     manage_analyze = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_analyze', globals())
-    manage_metas = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_metas',globals())
+    manage_metas = PageTemplateFile('zpt/ZMSMetamodelProvider/manage_metas', globals())
 
     # Management Permissions.
     # -----------------------
@@ -98,7 +100,7 @@ class ZMSMetamodelProvider(
       v = default
       try:
         if self.content is not None:
-          v = self.content.getConfProperty(key,default)
+          v = self.content.getConfProperty(key, default)
       except:
         pass
       return v
@@ -142,8 +144,8 @@ class ZMSMetamodelProvider(
     def provideRepository(self, ids=None):
       self.writeBlock("[provideRepository]: ids=%s"%str(ids))
       r = {}
-      self.provideRepositoryMetas(r,ids)
-      self.provideRepositoryModel(r,ids)
+      self.provideRepositoryMetas(r, ids)
+      self.provideRepositoryModel(r, ids)
       return r
 
     """

@@ -17,12 +17,14 @@
 ################################################################################
 
 # Product Imports.
+from builtins import object
+from builtins import str
 import standard
 import _globals
 import _objattrs
 
 
-class TextFormatObject:
+class TextFormatObject(object):
 
   # ----------------------------------------------------------------------------
   #  TextFormatObject.getSecNo
@@ -34,13 +36,13 @@ class TextFormatObject:
     #-- [ReqBuff]: Fetch buffered value from Http-Request.
     parentNode = self.getParentNode()
     if parentNode is None or \
-       getattr(parentNode,'meta_type',None) not in self.dGlobalAttrs.keys():
+       getattr(parentNode, 'meta_type', None) not in self.dGlobalAttrs.keys():
       return sec_no
     reqBuffId = 'getSecNo'
     try:
       levelnfc = parentNode.fetchReqBuff( '%s_levelnfc'%reqBuffId, self.REQUEST, forced=True)
       if levelnfc > 0:
-        sec_no = parentNode.fetchReqBuff( '%s_%s'%(reqBuffId,self.id), self.REQUEST, forced=True)
+        sec_no = parentNode.fetchReqBuff( '%s_%s'%(reqBuffId, self.id), self.REQUEST, forced=True)
     except:
       levelnfc = parentNode.attr('levelnfc')
       parentNode.storeReqBuff( '%s_levelnfc'%reqBuffId, levelnfc, self.REQUEST)
@@ -63,7 +65,7 @@ class TextFormatObject:
             if self == sibling:
               sec_no = curr_no
           #-- [ReqBuff]: Store value in buffer of Http-Request.
-          parentNode.storeReqBuff( '%s_%s'%(reqBuffId,sibling.id), curr_no, self.REQUEST)
+          parentNode.storeReqBuff( '%s_%s'%(reqBuffId, sibling.id), curr_no, self.REQUEST)
     #-- [ReqBuff]: Return value.
     return sec_no
 
@@ -74,12 +76,12 @@ class TextFormatObject:
   #  Returns text with section-number.
   # ----------------------------------------------------------------------------
   def getText( self, REQUEST, key='text'):
-    s = self.getObjProperty(key,REQUEST)
+    s = self.getObjProperty(key, REQUEST)
     if self.isPageElement():
       sec_no = self.getSecNo()
       if len(sec_no) > 0:
         s = sec_no + ' ' + s
-    s = standard.form_quote(s,REQUEST)
+    s = standard.form_quote(s, REQUEST)
     return s
 
 
@@ -95,8 +97,8 @@ class TextFormatObject:
     # Custom hook.
     try:
       name = 'renderCustomText'
-      if hasattr(self,name):
-        text = getattr(self,name)(context=self,key=key,text=text,REQUEST=REQUEST)
+      if hasattr(self, name):
+        text = getattr(self, name)(context=self, key=key, text=text, REQUEST=REQUEST)
     except:
       standard.writeError( self, '[renderText]: can\'t %s'%name)
     # Return.

@@ -20,18 +20,22 @@ from __future__ import absolute_import
 
 # Imports.
 # from webdav.common import rfc1123_date
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 from DateTime.DateTime import DateTime
-from ZPublisher import HTTPRangeSupport,HTTPRequest
+from ZPublisher import HTTPRangeSupport, HTTPRequest
 from OFS.CopySupport import absattr
 from OFS.Image import Image, File
 try:
-  from StringIO import StringIO
+  from io import StringIO
 except ImportError:
   from io import StringIO
 # from mimetools import choose_boundary
 from email.generator import _make_boundary as choose_boundary
 import copy
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import warnings
 import zExceptions 
 # Product Imports.
@@ -40,7 +44,7 @@ from . import pilutil
 from . import _fileutil
 from . import _globals
 
-__all__= ['MyBlob','MyImage','MyFile']
+__all__= ['MyBlob', 'MyImage', 'MyFile']
 
 # PY3 PATCH
 def rfc1123_date():
@@ -79,43 +83,43 @@ def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
           if obj_attr['multilang'] or lang==prim_lang or (obj_attr['multilang']==0 and lang!=prim_lang):
             req = {'lang':lang,'preview':'preview'}
             obj_vers = ob.getObjVersion(req)
-            blob = ob._getObjAttrValue(obj_attr,obj_vers,lang)
+            blob = ob._getObjAttrValue(obj_attr, obj_vers, lang)
             if blob is not None: 
               filename = blob.getFilename()
-              filename = getLangFilename(ob,filename,lang)
-              filename = '%s%s'%(base_path,filename)
+              filename = getLangFilename(ob, filename, lang)
+              filename = '%s%s'%(base_path, filename)
               filename = _fileutil.getOSPath(filename)
-              _fileutil.exportObj(blob,filename)
+              _fileutil.exportObj(blob, filename)
               ressources.append( { 'filepath':filename, 'content_type':blob.getContentType()})
         except:
-          standard.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+          standard.writeError(ob, "[recurse_downloadRessources]: Can't export %s"%key)
     elif datatype == _globals.DT_LIST:
       for lang in langs:
         try:
           if obj_attr['multilang'] or lang==prim_lang or (obj_attr['multilang']==0 and lang!=prim_lang):
             req = {'lang':lang,'preview':'preview'}
             obj_vers = ob.getObjVersion(req)
-            v = ob._getObjAttrValue(obj_attr,obj_vers,lang)
+            v = ob._getObjAttrValue(obj_attr, obj_vers, lang)
             i = 0
             for r in v:
               uu = []
-              if type(r) is dict:
+              if isinstance(r, dict):
                 for k in r.keys():
                   u = r[k]
-                  if isinstance(u,MyImage) or isinstance(u,MyFile):
+                  if isinstance(u, MyImage) or isinstance(u, MyFile):
                     uu.append( u)
-              elif isinstance(r,MyImage) or isinstance(r,MyFile):
+              elif isinstance(r, MyImage) or isinstance(r, MyFile):
                 uu.append( r)
               for u in uu:
                 filename = u.getFilename()
-                filename = getLangFilename(ob,filename,lang)
-                filename = '%s@%i/%s'%(base_path,i,filename)
+                filename = getLangFilename(ob, filename, lang)
+                filename = '%s@%i/%s'%(base_path, i, filename)
                 filename = _fileutil.getOSPath(filename)
-                _fileutil.exportObj(u,filename)
+                _fileutil.exportObj(u, filename)
                 ressources.append( { 'filepath':filename, 'content_type':u.getContentType()})
               i = i + 1
         except:
-          standard.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+          standard.writeError(ob, "[recurse_downloadRessources]: Can't export %s"%key)
   # Process children.
   for child in ob.getChildNodes():
     ressources.extend( recurse_downloadRessources( child, base_path+child.id+'/', REQUEST, incl_embedded))
@@ -135,11 +139,11 @@ OUT:    blob        [MyImage|MyFile]
 def createBlobField(self, objtype, file=''):
   if _globals.is_str_type( file):
     blob = uploadBlobField( self, objtype, file)
-  elif type( file) is dict:
+  elif isinstance(file, dict):
     data = file.get( 'data', '')
-    if type( data) is StringType:
+    if isinstance(data, StringType):
       data = StringIO( data)
-    blob = uploadBlobField( self, objtype, data, file.get('filename',''))
+    blob = uploadBlobField( self, objtype, data, file.get('filename', ''))
     if file.get('content_type'):
       blob.content_type = file.get('content_type')
   else:
@@ -155,23 +159,23 @@ def uploadBlobField(self, clazz, file='', filename=''):
     file = file.read()
   except:
     pass
-  mt, enc = standard.guess_content_type(filename,file)
-  if clazz in [_globals.DT_IMAGE,'image'] or mt.startswith('image'):
+  mt, enc = standard.guess_content_type(filename, file)
+  if clazz in [_globals.DT_IMAGE, 'image'] or mt.startswith('image'):
     clazz = MyImage
-  elif clazz in [_globals.DT_FILE,'file']:
+  elif clazz in [_globals.DT_FILE, 'file']:
     clazz = MyFile
-  blob = clazz( id='',title='',file='')
-  blob.update_data(file,content_type=mt,size=len(file))
+  blob = clazz( id='', title='', file='')
+  blob.update_data(file, content_type=mt, size=len(file))
   blob.aq_parent = self
   blob.mediadbfile = None
   blob.filename = _fileutil.extractFilename( filename, undoable=True).encode('utf-8')
   # Check size.
   if self is not None:
-    maxlength = self.getConfProperty('ZMS.input.%s.maxlength'%['file','image'][isinstance(blob,MyImage)],'')
+    maxlength = self.getConfProperty('ZMS.input.%s.maxlength'%['file', 'image'][isinstance(blob, MyImage)], '')
     if len(maxlength) > 0:
       size = blob.get_size()
       if size > int(maxlength):
-        raise zExceptions.Forbidden('size=%i > %s=%i' %(size,maxlength_prop,int(maxlength)))
+        raise zExceptions.Forbidden('size=%i > %s=%i' %(size, maxlength_prop, int(maxlength)))
   return blob
 
 
@@ -183,7 +187,7 @@ Returns filename concatenated with language suffix.
 def getLangFilename(self, filename, lang):
   i = filename.rfind('.')
   name = filename[:i]
-  name = name.replace(' ','_')
+  name = name.replace(' ', '_')
   ext = filename[i+1:]
   if len(self.getLangIds()) > 1 and lang is not None:
     suffix = '_' + lang
@@ -212,8 +216,8 @@ def thumbnailImageFields(self, lang, REQUEST):
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
       if datatype == _globals.DT_IMAGE:
-        message += thumbnailImage(self,'%ssuperres'%key,'%shires'%key,self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max'),lang,REQUEST)
-        message += thumbnailImage(self,'%shires'%key,'%s'%key,self.getConfProperty('InstalledProducts.pil.thumbnail.max'),lang,REQUEST)
+        message += thumbnailImage(self, '%ssuperres'%key, '%shires'%key, self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max'), lang, REQUEST)
+        message += thumbnailImage(self, '%shires'%key, '%s'%key, self.getConfProperty('InstalledProducts.pil.thumbnail.max'), lang, REQUEST)
   return message
 
 
@@ -228,11 +232,11 @@ def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
   try:
     if hiresKey in self.getObjAttrs().keys():
       req = {'lang':lang,'preview':'preview'}
-      hiresImg = self.getObjProperty(hiresKey,req)
-      if hiresImg is not None and REQUEST.get('generate_preview_%s_%s'%(hiresKey,lang),0) == 1:
-        standard.writeLog( self, '[thumbnailImage]: Create >%s< from >%s<...'%(loresKey,hiresKey))
+      hiresImg = self.getObjProperty(hiresKey, req)
+      if hiresImg is not None and REQUEST.get('generate_preview_%s_%s'%(hiresKey, lang), 0) == 1:
+        standard.writeLog( self, '[thumbnailImage]: Create >%s< from >%s<...'%(loresKey, hiresKey))
         thumb = pilutil.thumbnail( hiresImg, int(maxdim))
-        self.setObjProperty(loresKey,thumb,lang)
+        self.setObjProperty(loresKey, thumb, lang)
   except:
     standard.writeError( self, '[thumbnailImage]')
   return message
@@ -245,7 +249,7 @@ def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
 ###
 ################################################################################
 ################################################################################
-class MyBlob:
+class MyBlob(object):
 
     # Documentation string.
     __doc__ = """ZMS product module."""
@@ -368,7 +372,7 @@ class MyBlob:
                     RESPONSE.setStatus(206) # Partial content
 
                     data = self.data
-                    if type(data) is StringType:
+                    if isinstance(data, StringType):
                         RESPONSE.write(data[start:end])
                         return True
 
@@ -439,7 +443,7 @@ class MyBlob:
                             'Content-Range: bytes %d-%d/%d\r\n\r\n' % (
                                 start, end - 1, self.size))
 
-                        if type(data) is StringType:
+                        if isinstance(data, StringType):
                             RESPONSE.write(data[start:end])
 
                         else:
@@ -544,14 +548,14 @@ class MyBlob:
         if access:
           try:
             name = 'hasCustomAccess'
-            if hasattr(parent,name):
-              v = getattr(parent,name)(context=parent,REQUEST=REQUEST)
-              if type( v) is bool:
+            if hasattr(parent, name):
+              v = getattr(parent, name)(context=parent, REQUEST=REQUEST)
+              if isinstance(v, bool):
                 access = access and v
-              elif type( v) is int and v == 404:
+              elif isinstance(v, int) and v == 404:
                 return ''
           except:
-            standard.writeError(parent,'[__call__]: can\'t %s'%name)
+            standard.writeError(parent, '[__call__]: can\'t %s'%name)
         # Raise unauthorized error.
         else:
           raise zExceptions.Unauthorized
@@ -566,11 +570,11 @@ class MyBlob:
             self.ZCacheable_set(None)
             return ''
         
-        if isinstance(self,MyImage) and self._range_request_handler(REQUEST, RESPONSE):
+        if isinstance(self, MyImage) and self._range_request_handler(REQUEST, RESPONSE):
             # we served a chunk of content in response to a range request.
             return ''
         
-        standard.set_response_headers(self.getFilename(),self.getContentType(),self.get_size(),REQUEST)
+        standard.set_response_headers(self.getFilename(), self.getContentType(), self.get_size(), REQUEST)
         RESPONSE.setHeader('Last-Modified', rfc1123_date(parent._p_mtime))
         cacheable = not REQUEST.get('preview') == 'preview'
         if cacheable: 
@@ -579,25 +583,25 @@ class MyBlob:
         if cacheable:
           try:
             name = 'hasCustomPublicAccess'
-            if hasattr(parent,name):
-              v = getattr(parent,name)(context=parent,REQUEST=REQUEST)
-              if type( v) is bool:
+            if hasattr(parent, name):
+              v = getattr(parent, name)(context=parent, REQUEST=REQUEST)
+              if isinstance(v, bool):
                 cacheable = cacheable and v
           except:
-            standard.writeError(parent,'[__call__]: can\'t %s'%name)
+            standard.writeError(parent, '[__call__]: can\'t %s'%name)
         if not cacheable:
           RESPONSE.setHeader('Expires', '-1')
           RESPONSE.setHeader('Cache-Control', 'no-cache')
           # IE6 SSL Download bug:
           # http://support.microsoft.com/kb/812935/en-us
           # http://support.microsoft.com/kb/323308/en-us
-          if not REQUEST.get('URL','').startswith( 'https://'):
+          if not REQUEST.get('URL', '').startswith( 'https://'):
             RESPONSE.setHeader('Pragma', 'no-cache')
 
         # Hook for custom RESPONSE-headers
         name = 'getCustomBlobResponseHeaders' 
-        if hasattr(parent,name):
-          v = getattr(parent,name)(context=parent,REQUEST=REQUEST)
+        if hasattr(parent, name):
+          v = getattr(parent, name)(context=parent, REQUEST=REQUEST)
         
         if self.ZCacheable_isCachingEnabled():
             result = self.ZCacheable_get(default=None)
@@ -652,7 +656,7 @@ class MyBlob:
           except:
             standard.writeError( parent, "[getData]: can't retrieve file from mediadb: %s"%str(mediadbfile))
       else:
-        data = str(getattr(self,'data',''))
+        data = str(getattr(self, 'data', ''))
       return data
 
 
@@ -677,7 +681,7 @@ class MyBlob:
       qs = ''
       zms_version_key = 'ZMS_VERSION_%s'%parent.id
       if REQUEST.get( zms_version_key, None) is not None:
-        qs = standard.qs_append( qs, zms_version_key,REQUEST.get( zms_version_key))
+        qs = standard.qs_append( qs, zms_version_key, REQUEST.get( zms_version_key))
       elif standard.isPreviewRequest( REQUEST):
         qs = standard.qs_append( qs, 'preview', 'preview')
       href = '/'.join(parent.getPhysicalPath())+rownum+'/'+filename+qs
@@ -707,7 +711,7 @@ class MyBlob:
       Returns mediadb-filename.
       @rtype: C{string}
       """
-      return getattr(self,'mediadbfile',None)
+      return getattr(self, 'mediadbfile', None)
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -722,8 +726,8 @@ class MyBlob:
       filename = self.filename
       while filename.startswith( '_'):
         filename = filename[1:]
-      for ch in [ '+', '%', ' ', '!', '?', '#', '"', '(', ')','&' ]:
-        filename = filename.replace(ch,'')
+      for ch in [ '+', '%', ' ', '!', '?', '#', '"', '(', ')', '&' ]:
+        filename = filename.replace(ch, '')
       if filename != self.filename and len( self.data) > 0: 
         self.filename = filename
       return filename
@@ -800,7 +804,7 @@ class MyBlob:
 ################################################################################
 ################################################################################
 
-class MyImage(MyBlob,Image):
+class MyImage(MyBlob, Image):
 
     # Documentation string.
     __doc__ = """ZMS product module."""
@@ -808,8 +812,8 @@ class MyImage(MyBlob,Image):
     __version__ = '0.1' 
     
 
-    __obj_attrs__  = ['content_type','size','data','filename','mediadbfile','width','height','aq_parent']
-    __xml_attrs__  = ['content_type','width','height']
+    __obj_attrs__  = ['content_type', 'size', 'data', 'filename', 'mediadbfile', 'width', 'height', 'aq_parent']
+    __xml_attrs__  = ['content_type', 'width', 'height']
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -818,11 +822,11 @@ class MyImage(MyBlob,Image):
     def _getCopy(self):
       self.getFilename() # Normalize filename
       ob = self
-      clone = MyImage(id='',title='',file='')
+      clone = MyImage(id='', title='', file='')
       attrs = self.__obj_attrs__
       for attr in attrs:
-        if hasattr(ob,attr):
-          setattr(clone,attr,getattr(ob,attr))
+        if hasattr(ob, attr):
+          setattr(clone, attr, getattr(ob, attr))
       return clone
 
 
@@ -832,21 +836,21 @@ class MyImage(MyBlob,Image):
     def toXml(self, sender=None, base_path='', data2hex=True):
       data = ''
       objtype = ''
-      filename = _fileutil.getOSPath(_fileutil.extractFilename(getattr(self,'filename','')))
+      filename = _fileutil.getOSPath(_fileutil.extractFilename(getattr(self, 'filename', '')))
       if data2hex:
-        if getattr(self,'content_type','').find('text/') == 0:
+        if getattr(self, 'content_type', '').find('text/') == 0:
           data = '<![CDATA[%s]]>'%str(self.getData( sender))
         else:
           data = standard.bin2hex(self.getData( sender))
         objtype = ' type="image"'
       else:
         filename = self.getFilename()
-        filename = getLangFilename(sender,filename,self.lang)
-        filename = '%s%s'%(base_path,filename)
+        filename = getLangFilename(sender, filename, self.lang)
+        filename = '%s%s'%(base_path, filename)
       xml = '\n<data'
-      xml += ' width="%s"'%str(getattr(self,'width',''))
-      xml += ' height="%s"'%str(getattr(self,'height',''))
-      xml += ' content_type="%s"'%str(getattr(self,'content_type',''))
+      xml += ' width="%s"'%str(getattr(self, 'width', ''))
+      xml += ' height="%s"'%str(getattr(self, 'height', ''))
+      xml += ' content_type="%s"'%str(getattr(self, 'content_type', ''))
       xml += ' filename="%s"'%filename
       xml += objtype + '>' + data
       xml += '</data>'
@@ -860,7 +864,7 @@ class MyImage(MyBlob,Image):
     def getWidth(self):
       w = self.width
       if not w:
-        w = self.aq_parent.getConfProperty('ZMS.image.default.width',640)
+        w = self.aq_parent.getConfProperty('ZMS.image.default.width', 640)
       return w
 
 
@@ -871,14 +875,14 @@ class MyImage(MyBlob,Image):
     def getHeight(self):
       h = self.height
       if not h:
-        h = self.aq_parent.getConfProperty('ZMS.image.default.height',400)
+        h = self.aq_parent.getConfProperty('ZMS.image.default.height', 400)
       return h
 
 
 ################################################################################
 ################################################################################
 
-class MyFile(MyBlob,File):
+class MyFile(MyBlob, File):
 
     # Documentation string.
     __doc__ = """ZMS product module."""
@@ -886,7 +890,7 @@ class MyFile(MyBlob,File):
     __version__ = '0.1' 
 
 
-    __obj_attrs__  = ['content_type','size','data','filename','mediadbfile','aq_parent']
+    __obj_attrs__  = ['content_type', 'size', 'data', 'filename', 'mediadbfile', 'aq_parent']
     __xml_attrs__  = ['content_type']
     __class_name__ = '{{MyFile}}'
 
@@ -896,11 +900,11 @@ class MyFile(MyBlob,File):
     def _getCopy(self):
       self.getFilename() # Normalize filename
       ob = self
-      clone = MyFile(id='',title='',file='')
+      clone = MyFile(id='', title='', file='')
       attrs = self.__obj_attrs__
       for attr in attrs:
-        if hasattr(ob,attr):
-          setattr(clone,attr,getattr(ob,attr))
+        if hasattr(ob, attr):
+          setattr(clone, attr, getattr(ob, attr))
       return clone
 
 
@@ -910,19 +914,19 @@ class MyFile(MyBlob,File):
     def toXml(self, sender=None, base_path='', data2hex=True):
       data = ''
       objtype = ''
-      filename = _fileutil.getOSPath(_fileutil.extractFilename(getattr(self,'filename','')))
+      filename = _fileutil.getOSPath(_fileutil.extractFilename(getattr(self, 'filename', '')))
       if data2hex:
-        if getattr(self,'content_type','').find('text/') == 0:
+        if getattr(self, 'content_type', '').find('text/') == 0:
           data = '<![CDATA[%s]]>'%str(self.getData( sender))
         else:
           data = standard.bin2hex(self.getData( sender))
         objtype = ' type="file"'
       else:
         filename = self.getFilename()
-        filename = getLangFilename(sender,filename,self.lang)
-        filename = '%s%s'%(base_path,filename)
+        filename = getLangFilename(sender, filename, self.lang)
+        filename = '%s%s'%(base_path, filename)
       xml = '\n<data'
-      xml += ' content_type="%s"'%str(getattr(self,'content_type',''))
+      xml += ' content_type="%s"'%str(getattr(self, 'content_type', ''))
       xml += ' filename="%s"'%filename
       xml += objtype + '>' + data
       xml += '</data>'
@@ -932,7 +936,7 @@ class MyFile(MyBlob,File):
 ################################################################################
 ################################################################################
 
-class MyBlobWrapper:
+class MyBlobWrapper(object):
 
     # Documentation string.
     __doc__ = """ZMS product module."""

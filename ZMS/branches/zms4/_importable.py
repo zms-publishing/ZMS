@@ -17,15 +17,17 @@
 ################################################################################
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
 from App.Common import package_home
-from cStringIO import StringIO
+from io import StringIO
 import ZPublisher.HTTPRequest
 import os
 import sys
 import tempfile
 import time
 import transaction
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
 import standard
@@ -42,8 +44,8 @@ import _globals
 # ------------------------------------------------------------------------------
 def recurse_importContent(self, folder):
   # Cleanup.
-  for key in ['oRoot','oRootNode','oCurrNode','oParent','dTagStack','dValueStack']:
-    try: delattr(self,key)
+  for key in ['oRoot', 'oRootNode', 'oCurrNode', 'oParent', 'dTagStack', 'dValueStack']:
+    try: delattr(self, key)
     except: pass
   
   # Upload ressources.
@@ -59,14 +61,14 @@ def recurse_importContent(self, folder):
           if obj_attr['multilang'] or lang==prim_lang:
             req = {'lang':lang,'preview':'preview'}
             obj_vers = self.getObjVersion(req)
-            blob = self._getObjAttrValue(obj_attr,obj_vers,lang)
+            blob = self._getObjAttrValue(obj_attr, obj_vers, lang)
             if blob is not None:
-              filename = _fileutil.getOSPath('%s/%s'%(folder,blob.filename))
+              filename = _fileutil.getOSPath('%s/%s'%(folder, blob.filename))
               standard.writeBlock( self, '[recurse_importContent]: filename=%s'%filename)
               # Backup properties (otherwise manage_upload sets it).
               bk = {}
               for __xml_attr__ in blob.__xml_attrs__:
-                bk[__xml_attr__] = getattr(blob,__xml_attr__,'')
+                bk[__xml_attr__] = getattr(blob, __xml_attr__, '')
               # Read file to ZODB.
               f = open( filename, 'rb')
               try:
@@ -75,12 +77,12 @@ def recurse_importContent(self, folder):
                 f.close()
               # Restore properties.
               for __xml_attr__ in blob.__xml_attrs__:
-                if bk.get(__xml_attr__,'') not in ['','text/x-unknown-content-type']:
-                  setattr(blob,__xml_attr__,bk[__xml_attr__])
+                if bk.get(__xml_attr__, '') not in ['', 'text/x-unknown-content-type']:
+                  setattr(blob, __xml_attr__, bk[__xml_attr__])
               blob.getFilename() # Normalize filename
-              self.setObjProperty(key,blob,lang)
+              self.setObjProperty(key, blob, lang)
         except:
-          standard.writeError(self,"[recurse_importContent]")
+          standard.writeError(self, "[recurse_importContent]")
   
   # Commit object.
   self.onChangeObj( self.REQUEST, forced=1)
@@ -88,7 +90,7 @@ def recurse_importContent(self, folder):
   
   # Process children.
   for ob in self.getChildNodes():
-    recurse_importContent(ob,folder)
+    recurse_importContent(ob, folder)
 
 
 # ------------------------------------------------------------------------------
@@ -97,20 +99,20 @@ def recurse_importContent(self, folder):
 def importContent(self, file):
   
   # Setup.
-  catalog_awareness = self.getConfProperty('ZMS.CatalogAwareness.active',1)
-  self.setConfProperty('ZMS.CatalogAwareness.active',0)
+  catalog_awareness = self.getConfProperty('ZMS.CatalogAwareness.active', 1)
+  self.setConfProperty('ZMS.CatalogAwareness.active', 0)
   self.dTagStack = _globals.MyStack()
   self.dValueStack = _globals.MyStack()
   self.oParent = self.getParentNode()
   
   # Parse XML-file.
-  ob = self.parse(StringIO(file.read()),self,1)
+  ob = self.parse(StringIO(file.read()), self, 1)
   
   # Process objects after import
-  recurse_importContent(ob,_fileutil.getFilePath(file.name))
+  recurse_importContent(ob, _fileutil.getFilePath(file.name))
   
   # Cleanup.
-  self.setConfProperty('ZMS.CatalogAwareness.active',catalog_awareness)
+  self.setConfProperty('ZMS.CatalogAwareness.active', catalog_awareness)
   
   # Return imported object.
   return ob
@@ -122,7 +124,7 @@ def importContent(self, file):
 def importFile(self, file, REQUEST, handler):
   
   # Get filename.
-  if isinstance(file,ZPublisher.HTTPRequest.FileUpload):
+  if isinstance(file, ZPublisher.HTTPRequest.FileUpload):
     filename = file.filename
   else: 
     filename = file.name
@@ -133,14 +135,14 @@ def importFile(self, file, REQUEST, handler):
   os.mkdir(folder)
   
   # Save to temporary file.
-  filename = _fileutil.getOSPath('%s/%s'%(folder,_fileutil.extractFilename(filename)))
-  _fileutil.exportObj(file,filename)
+  filename = _fileutil.getOSPath('%s/%s'%(folder, _fileutil.extractFilename(filename)))
+  _fileutil.exportObj(file, filename)
   
   # Find XML-file.
   if _fileutil.extractFileExt(filename) == 'zip':
     _fileutil.extractZipArchive(filename)
     filename = None
-    for deep in [0,1]:
+    for deep in [0, 1]:
       for ext in ['xml', 'htm', 'html' ]:
         if filename is None:
           filename = _fileutil.findExtension(ext, folder, deep)
@@ -149,8 +151,8 @@ def importFile(self, file, REQUEST, handler):
       raise zExceptions.InternalError('XML-File not found!')
   
   # Import Filter.
-  if REQUEST.get('filter','') in self.getFilterIds():
-    filename = _filtermanager.importFilter(self, filename, REQUEST.get('filter',''), REQUEST)
+  if REQUEST.get('filter', '') in self.getFilterIds():
+    filename = _filtermanager.importFilter(self, filename, REQUEST.get('filter', ''), REQUEST)
   
   # Import XML-file.
   standard.writeBlock( self, '[importFile]: filename='+filename)

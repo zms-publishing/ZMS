@@ -17,8 +17,10 @@
 ################################################################################
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-import urllib
+import urllib.request, urllib.parse, urllib.error
 # Product Imports.
 import ZMSItem
 
@@ -127,6 +129,6 @@ class Sequence(ZMSItem.ZMSItem):
 
       # Return.
       if RESPONSE is not None:
-        RESPONSE.redirect('%s?manage_tabs_message=%s'%(REQUEST[ 'HTTP_REFERER'],urllib.quote(message)))
+        RESPONSE.redirect('%s?manage_tabs_message=%s'%(REQUEST[ 'HTTP_REFERER'], urllib.parse.quote(message)))
 
 ################################################################################

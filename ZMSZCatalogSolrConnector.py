@@ -18,8 +18,13 @@
 
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
+from builtins import filter
+from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zope.interface
 # Product Imports.
 import standard
@@ -48,7 +53,7 @@ class ZMSZCatalogSolrConnector(
 
     # Management Interface.
     # ---------------------
-    manage_input_form = PageTemplateFile('zpt/ZMSZCatalogAdapter/manage_solr_connector',globals())
+    manage_input_form = PageTemplateFile('zpt/ZMSZCatalogAdapter/manage_solr_connector', globals())
 
     # Management Permissions.
     # -----------------------
@@ -78,10 +83,10 @@ class ZMSZCatalogSolrConnector(
       attrs = zcm.getAttrs()
       page_index = int(page_index)
       page_size = int(page_size)
-      REQUEST.set('lang',REQUEST.get('lang',self.getPrimaryLanguage()))
+      REQUEST.set('lang', REQUEST.get('lang', self.getPrimaryLanguage()))
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml; charset=utf-8'
-      RESPONSE.setHeader('Content-Type',content_type)
+      RESPONSE.setHeader('Content-Type', content_type)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
       # Execute query.
@@ -91,18 +96,18 @@ class ZMSZCatalogSolrConnector(
       p['start'] = page_index
       p['rows'] = page_size
       p['defType'] = 'edismax'
-      p['qf'] = ' '.join(map(lambda x:'%s^%s'%(self._get_field_name(x),str(attrs[x].get('boost',1.0))),attrs.keys()))
+      p['qf'] = ' '.join(map(lambda x:'%s^%s'%(self._get_field_name(x), str(attrs[x].get('boost', 1.0))), attrs.keys()))
       p['hl'] = 'true'
-      p['hl.fragsize']  = self.getConfProperty('solr.select.hl.fragsize',200)
-      p['hl.fl'] = self.getConfProperty('solr.select.hl.fl',','.join(map(lambda x:self._get_field_name(x),attrs.keys())))
-      p['hl.simple.pre'] = self.getConfProperty('solr.select.hl.simple.pre','<span class="highlight">')
-      p['hl.simple.post'] = self.getConfProperty('solr.select.hl.simple.post','</span>')
-      solr_url = self.getConfProperty('solr.url','http://localhost:8983/solr')
-      solr_core = self.getConfProperty('solr.core',self.getAbsoluteHome().id)
-      url = '%s/%s/select'%(solr_url,solr_core)
-      url = self.url_append_params(url,p,sep='&')
-      result = self.http_import(url,method='GET')
-      result = standard.re_sub('name="(.*?)_[ist]"','name="\\1"',result)
+      p['hl.fragsize']  = self.getConfProperty('solr.select.hl.fragsize', 200)
+      p['hl.fl'] = self.getConfProperty('solr.select.hl.fl', ','.join(map(lambda x:self._get_field_name(x), attrs.keys())))
+      p['hl.simple.pre'] = self.getConfProperty('solr.select.hl.simple.pre', '<span class="highlight">')
+      p['hl.simple.post'] = self.getConfProperty('solr.select.hl.simple.post', '</span>')
+      solr_url = self.getConfProperty('solr.url', 'http://localhost:8983/solr')
+      solr_core = self.getConfProperty('solr.core', self.getAbsoluteHome().id)
+      url = '%s/%s/select'%(solr_url, solr_core)
+      url = self.url_append_params(url, p, sep='&')
+      result = self.http_import(url, method='GET')
+      result = standard.re_sub('name="(.*?)_[ist]"', 'name="\\1"', result)
       return result
 
 
@@ -114,25 +119,25 @@ class ZMSZCatalogSolrConnector(
       # Check constraints.
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml; charset=utf-8'
-      RESPONSE.setHeader('Content-Type',content_type)
+      RESPONSE.setHeader('Content-Type', content_type)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
       # Execute query.
       p = {}
-      solr_url = self.getConfProperty('solr.url','http://localhost:8983/solr')
-      solr_core = self.getConfProperty('solr.core',self.getAbsoluteHome().id)
+      solr_url = self.getConfProperty('solr.url', 'http://localhost:8983/solr')
+      solr_core = self.getConfProperty('solr.core', self.getAbsoluteHome().id)
       SOLR_SUGGEST_SELECT = 'select?q=*:*&rows=0&facet=true&facet.field=text&facet.prefix=%s&facet.limit=5'
       SOLR_SUGGEST_SUGGEST = 'suggest?q=%s'
-      solr_suggest = self.getConfProperty('solr.suggest',SOLR_SUGGEST_SELECT)%q
-      url = '%s/%s/%s'%(solr_url,solr_core,solr_suggest)
-      result = self.http_import(url,method='GET')
+      solr_suggest = self.getConfProperty('solr.suggest', SOLR_SUGGEST_SELECT)%q
+      url = '%s/%s/%s'%(solr_url, solr_core, solr_suggest)
+      result = self.http_import(url, method='GET')
       return result
 
 
     def __get_delete_xml(self, query='*:*', attrs={}):
       xml =  []
       xml.append('<?xml version="1.0"?>')
-      xml.append('<delete'+' '.join(['']+map(lambda x:'%s="%s"'%(x,str(attrs[x])),attrs))+'>')
+      xml.append('<delete'+' '.join(['']+map(lambda x:'%s="%s"'%(x, str(attrs[x])), attrs))+'>')
       xml.append('<query>%s</query>'%query)
       xml.append('</delete>')
       return '\n'.join(xml)
@@ -151,10 +156,10 @@ class ZMSZCatalogSolrConnector(
       if k not in ['id']:
         suffix = 's'
         if k in attrs.keys():
-          attr_type = attrs[k].get('type','text')
+          attr_type = attrs[k].get('type', 'text')
           attr_suffix = {'text':'t','string':'t','select':'s','multiselect':'s','int':'i'}
-          suffix = attr_suffix.get(attr_type,suffix)
-        k = '%s_%s'%(k,suffix)
+          suffix = attr_suffix.get(attr_type, suffix)
+        k = '%s_%s'%(k, suffix)
       return k
 
 
@@ -163,8 +168,8 @@ class ZMSZCatalogSolrConnector(
       attrs = zcm.getAttrs()
       xml =  []
       xml.append('<?xml version="1.0"?>')
-      xml.append('<add'+' '.join(['']+map(lambda x:'%s="%s"'%(x,str(xmlattrs[x])),xmlattrs))+'>')
-      def cb(node,d):
+      xml.append('<add'+' '.join(['']+map(lambda x:'%s="%s"'%(x, str(xmlattrs[x])), xmlattrs))+'>')
+      def cb(node, d):
         xml.append('<doc>')
         text = []
         for k in d.keys():
@@ -174,16 +179,16 @@ class ZMSZCatalogSolrConnector(
           if k not in ['id']:
             if k in attrs.keys():
               boost = attrs[k]['boost']
-              if type(v) in (str,unicode):
+              if type(v) in (str, str):
                 name = '%s_t'%k
                 text.append(v)
             else:
-              if type(v) in (str,unicode):
+              if type(v) in (str, str):
                 name = '%s_s'%k
-          xml.append('<field name="%s" boost="%.1f">%s</field>'%(name,boost,v))
-        xml.append('<field name="text_t">%s</field>'%' '.join(filter(lambda x:len(x)>0,text)))
+          xml.append('<field name="%s" boost="%.1f">%s</field>'%(name, boost, v))
+        xml.append('<field name="text_t">%s</field>'%' '.join(filter(lambda x:len(x)>0, text)))
         xml.append('</doc>')
-      zcm.get_sitemap(cb,node,recursive)
+      zcm.get_sitemap(cb, node, recursive)
       xml.append('</add>')
       return '\n'.join(xml)
 
@@ -192,11 +197,11 @@ class ZMSZCatalogSolrConnector(
     #  ZMSZCatalogSolrConnector._update:
     # --------------------------------------------------------------------------
     def _update(self, xml):
-      solr_url = self.getConfProperty('solr.url','http://localhost:8983/solr')
-      solr_core = self.getConfProperty('solr.core',self.getAbsoluteHome().id)
-      url = '%s/%s/update'%(solr_url,solr_core)
-      url = '%s?%s'%(url,xml)
-      result = self.http_import(url,method='POST',headers={'Content-Type':'text/xml;charset=UTF-8'})
+      solr_url = self.getConfProperty('solr.url', 'http://localhost:8983/solr')
+      solr_core = self.getConfProperty('solr.core', self.getAbsoluteHome().id)
+      url = '%s/%s/update'%(solr_url, solr_core)
+      url = '%s?%s'%(url, xml)
+      result = self.http_import(url, method='POST', headers={'Content-Type':'text/xml;charset=UTF-8'})
       self.writeLog("[ZMSZCatalogSolrConnector._update]: %s"%str(result))
       return result
 
@@ -209,10 +214,10 @@ class ZMSZCatalogSolrConnector(
       result.append(self._update(self.__get_delete_xml()))
       container = self.getDocumentElement()
       for root in container+[self.getPortalClients()]:
-        result.append(self._update(self.__get_add_xml(root,recursive=True)))
+        result.append(self._update(self.__get_add_xml(root, recursive=True)))
       result.append(self._update(self.__get_command_xml('commit')))
       result.append(self._update(self.__get_command_xml('optimize')))
-      return ', '.join(filter(lambda x:x,result))
+      return ', '.join(filter(lambda x:x, result))
 
 
     # --------------------------------------------------------------------------
@@ -224,19 +229,19 @@ class ZMSZCatalogSolrConnector(
       home_id = container.getHome().id
       try:
         result.append(self._update(self.__get_delete_xml(query='home_id_s:%s'%home_id)))
-        result.append(self._update(self.__get_add_xml(container,recursive=True)))
+        result.append(self._update(self.__get_add_xml(container, recursive=True)))
         result.append(self._update(self.__get_command_xml('commit')))
         result.append(self._update(self.__get_command_xml('optimize')))
       except:
-        result.append(standard.writeError(self,'can\'t reindex_self'))
-      return ', '.join(filter(lambda x:x,result))
+        result.append(standard.writeError(self, 'can\'t reindex_self'))
+      return ', '.join(filter(lambda x:x, result))
 
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogSolrConnector.reindex_node:
     # --------------------------------------------------------------------------
     def reindex_node(self, node):
-      xml =  self.__get_add_xml(node,recursive=False,xmlattrs={'overwrite':'true'})
+      xml =  self.__get_add_xml(node, recursive=False, xmlattrs={'overwrite':'true'})
       return self._update(xml)
 
 
@@ -247,8 +252,8 @@ class ZMSZCatalogSolrConnector(
       """
       request = self.REQUEST
       RESPONSE = request.RESPONSE
-      RESPONSE.setHeader('Content-Type','text/xml; charset=utf-8')
-      xml =  self.__get_add_xml(self.getDocumentElement(),recursive=True)
+      RESPONSE.setHeader('Content-Type', 'text/xml; charset=utf-8')
+      xml =  self.__get_add_xml(self.getDocumentElement(), recursive=True)
       return xml
 
 
@@ -263,8 +268,8 @@ class ZMSZCatalogSolrConnector(
         # Save.
         # -----
         if btn == 'Save':
-          self.setConfProperty('solr.url',REQUEST['solr_url'])
-          self.setConfProperty('solr.core',REQUEST['solr_core'])
+          self.setConfProperty('solr.url', REQUEST['solr_url'])
+          self.setConfProperty('solr.core', REQUEST['solr_core'])
         
         return message
 

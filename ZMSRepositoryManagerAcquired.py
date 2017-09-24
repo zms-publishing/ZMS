@@ -17,6 +17,9 @@
 ################################################################################
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import zope.interface
 # Product Imports.
@@ -60,8 +63,8 @@ class ZMSRepositoryManagerAcquired(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Interface
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    manage = PageTemplateFile('zpt/ZMSRepositoryManager/manage_acquired',globals())
-    manage_main = PageTemplateFile('zpt/ZMSRepositoryManager/manage_acquired',globals())
+    manage = PageTemplateFile('zpt/ZMSRepositoryManager/manage_acquired', globals())
+    manage_main = PageTemplateFile('zpt/ZMSRepositoryManager/manage_acquired', globals())
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Permissions
@@ -94,7 +97,7 @@ class ZMSRepositoryManagerAcquired(
       message = ''
       
       # Return with message.
-      message = urllib.quote(message)
-      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang,message,key))
+      message = urllib.parse.quote(message)
+      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang, message, key))
 
 ################################################################################

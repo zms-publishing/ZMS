@@ -19,8 +19,15 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import map
+from builtins import str
+from builtins import filter
 try:
-  from StringIO import StringIO
+  from io import StringIO
 except ImportError:
   from io import StringIO
 from AccessControl import ClassSecurityInfo
@@ -33,7 +40,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 try:
-  import ConfigParser
+  import configparser
 except ImportError:
   # Python3
   import configparser as ConfigParser
@@ -44,7 +51,7 @@ import os
 import stat
 import tempfile
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import xml.dom
 import zExceptions
 import zope.interface
@@ -65,7 +72,7 @@ from . import zmslog
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Read system-configuration from $ZMS_HOME/etc/zms.conf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-class ConfDict:
+class ConfDict(object):
 
     __confdict__ = None
 
@@ -74,10 +81,10 @@ class ConfDict:
         if cls.__confdict__ is None:
             cls.__confdict__ = {'last_modified':int(DateTime().timeTime())}
             PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
-            for home in [PRODUCT_HOME,INSTANCE_HOME]:
-              fp = os.path.join(home,'etc','zms.conf')
+            for home in [PRODUCT_HOME, INSTANCE_HOME]:
+              fp = os.path.join(home, 'etc', 'zms.conf')
               if os.path.exists(fp):
-                cfp = ConfigParser.ConfigParser()
+                cfp = configparser.ConfigParser()
                 cfp.readfp(open(fp))
                 for section in cfp.sections():
                     for option in cfp.options(section):
@@ -113,9 +120,9 @@ def initConf(self, profile, remote=True):
     if label.startswith(profile + '.') or label.startswith(profile + '-'):
       standard.writeBlock( self, '[initConf]: filename='+filename)
       if filename.find('.zip') > 0:
-        self.importConfPackage(filename,createIfNotExists)
+        self.importConfPackage(filename, createIfNotExists)
       elif filename.find('.xml') > 0:
-        self.importConf(filename,createIfNotExists=createIfNotExists)
+        self.importConf(filename, createIfNotExists=createIfNotExists)
 
 
 # ------------------------------------------------------------------------------
@@ -153,41 +160,41 @@ class ConfManager(
 
     # Management Interface.
     # ---------------------
-    manage_customize = PageTemplateFile('zpt/ZMS/manage_customize',globals())
-    manage_customizeInstalledProducts = PageTemplateFile('zpt/ZMS/manage_customizeinstalledproducts',globals())
-    manage_customizeLanguagesForm = PageTemplateFile('zpt/ZMS/manage_customizelanguagesform',globals())
-    manage_customizeFilterForm = PageTemplateFile('zpt/ZMS/manage_customizefilterform',globals())
-    manage_customizeDesignForm = PageTemplateFile('zpt/ZMS/manage_customizedesignform',globals())
+    manage_customize = PageTemplateFile('zpt/ZMS/manage_customize', globals())
+    manage_customizeInstalledProducts = PageTemplateFile('zpt/ZMS/manage_customizeinstalledproducts', globals())
+    manage_customizeLanguagesForm = PageTemplateFile('zpt/ZMS/manage_customizelanguagesform', globals())
+    manage_customizeFilterForm = PageTemplateFile('zpt/ZMS/manage_customizefilterform', globals())
+    manage_customizeDesignForm = PageTemplateFile('zpt/ZMS/manage_customizedesignform', globals())
 
 
     # --------------------------------------------------------------------------
     #  ConfManager.importConfPackage:
     # --------------------------------------------------------------------------
     def importConfPackage(self, file, createIfNotExists=0):
-      if type( file) is str:
+      if isinstance(file, str):
         if file.startswith('http://') or file.startswith('https://'):
           file = StringIO( self.http_import(file))
         else:
-          file = open(_fileutil.getOSPath(file),'rb')
+          file = open(_fileutil.getOSPath(file), 'rb')
       files = _fileutil.getZipArchive( file)
       for f in files:
         if not f.get('isdir'):
-          self.importConf(f,createIfNotExists=createIfNotExists)
+          self.importConf(f, createIfNotExists=createIfNotExists)
 
 
     # --------------------------------------------------------------------------
     #  ConfManager.getConfXmlFile:
     # --------------------------------------------------------------------------
     def getConfXmlFile(self, file):
-      if type(file) is dict:
+      if isinstance(file, dict):
         filename = file['filename']
         xmlfile = StringIO( file['data'])
-      elif type(file) is str and (file.startswith('http://') or file.startswith('https://')):
+      elif isinstance(file, str) and (file.startswith('http://') or file.startswith('https://')):
         filename = _fileutil.extractFilename(file)
         xmlfile = StringIO( self.http_import(file))
       else:
         filename = _fileutil.extractFilename(file)
-        xmlfile = open(_fileutil.getOSPath(file),'rb')
+        xmlfile = open(_fileutil.getOSPath(file), 'rb')
       return filename, xmlfile
 
 
@@ -228,9 +235,9 @@ class ConfManager(
     # --------------------------------------------------------------------------
     def getPluginIds(self, path=[]):
       ids = []
-      filepath = os.sep.join([package_home(globals()),'plugins']+path)
+      filepath = os.sep.join([package_home(globals()), 'plugins']+path)
       for filename in os.listdir(filepath):
-        path = os.sep.join([filepath,filename])
+        path = os.sep.join([filepath, filename])
         if os.path.isdir(path) and len(os.listdir(path)) > 0:
           ids.append(filename)
       return ids
@@ -249,7 +256,7 @@ class ConfManager(
         self.Control_Panel.getINSTANCE_HOME()+'/etc/zms/import/',
         package_home(globals())+'/import/',]
       for filepath in filepaths:
-        filename = os.path.join(filepath,'configure.zcml')
+        filename = os.path.join(filepath, 'configure.zcml')
         if os.path.exists(filename):
           standard.writeBlock( self, "[getConfFiles]: Read from "+filename)
           xmldoc = xml.dom.minidom.parse(filename)
@@ -259,14 +266,14 @@ class ConfManager(
               if remote:
                 remote_location = location+'configure.zcml'
                 try:
-                  remote_xml = standard.http_import(self,remote_location)
+                  remote_xml = standard.http_import(self, remote_location)
                   remote_xmldoc = xml.dom.minidom.parseString(remote_xml)
                   for remote_file in remote_xmldoc.getElementsByTagName('file'):
                     filename = remote_file.attributes['id'].value
                     if filename not in filenames.keys():
                       filenames[location+filename] = filename+' ('+remote_file.attributes['title'].value+')'
                 except:
-                  standard.writeError(self,"[getConfFiles]: can't get conf-files from remote URL=%s"%remote_location)
+                  standard.writeError(self, "[getConfFiles]: can't get conf-files from remote URL=%s"%remote_location)
             else:
               for filepath in filepaths:
                 if os.path.exists( filepath):
@@ -295,8 +302,8 @@ class ConfManager(
         RESPONSE = REQUEST.RESPONSE
         content_type = 'text/xml; charset=utf-8'
         filename = 'getConfFiles.xml'
-        RESPONSE.setHeader('Content-Type',content_type)
-        RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+        RESPONSE.setHeader('Content-Type', content_type)
+        RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
         RESPONSE.setHeader('Cache-Control', 'no-cache')
         RESPONSE.setHeader('Pragma', 'no-cache')
         return self.getXmlHeader() + self.toXmlString( filenames)
@@ -324,7 +331,7 @@ class ConfManager(
       if portalMaster is not None:
         startvalue = 0
         if exists:
-          ob = getattr(self,id)
+          ob = getattr(self, id)
           startvalue = ob.value
           self.manage_delObjects(ids=[id])
         ob = portalMaster.getSequence()
@@ -334,7 +341,7 @@ class ConfManager(
         if not exists:
           sequence = _sequence.Sequence()
           self._setObject(sequence.id, sequence)
-        ob = getattr(self,id)
+        ob = getattr(self, id)
       return ob
 
     # --------------------------------------------------------------------------
@@ -356,7 +363,7 @@ class ConfManager(
     def getThemes(self):
       obs = []
       for ob in self.getHome().objectValues():
-        if isinstance(ob,Folder) and 'standard_html' in ob.objectIds():
+        if isinstance(ob, Folder) and 'standard_html' in ob.objectIds():
           obs.append(ob)
       return obs
 
@@ -368,12 +375,12 @@ class ConfManager(
     # --------------------------------------------------------------------------
     def getResourceFolders(self):
       obs = []
-      ids = self.getConfProperty('ZMS.resourceFolders','instance,common').split(',')
+      ids = self.getConfProperty('ZMS.resourceFolders', 'instance,common').split(',')
       home = self.getHome()
-      if len(self.getConfProperty('ZMS.theme','')) > 0:
-        home = getattr(home,self.getConfProperty('ZMS.theme',''))
+      if len(self.getConfProperty('ZMS.theme', '')) > 0:
+        home = getattr(home, self.getConfProperty('ZMS.theme', ''))
       if '*' in ids:
-        ids.extend( map(lambda x: x.id, filter(lambda x: x.id not in ids, home.objectValues(['Folder','Filesystem Directory View']))))
+        ids.extend( map(lambda x: x.id, filter(lambda x: x.id not in ids, home.objectValues(['Folder', 'Filesystem Directory View']))))
       for id in ids:
         if id == '*':
           obs.append(home)
@@ -414,7 +421,7 @@ class ConfManager(
               path = ob.getPhysicalPath()
               if len(filter(lambda x: x.endswith('css'), path)) > 0 and id not in ids:
                 ids.append( id)
-                if id == self.getConfProperty('ZMS.stylesheet','style.css'):
+                if id == self.getConfProperty('ZMS.stylesheet', 'style.css'):
                   obs.insert( 0, ob)
                 else:
                   obs.append( ob)
@@ -442,11 +449,11 @@ class ConfManager(
       for ob in self.objectValues():
         if IZMSConfigurationProvider in list(zope.interface.providedBy(ob)):
           for d in ob.manage_sub_options():
-            l.append(self.operator_setitem(d.copy(),'action',ob.id+'/'+d['action']))
+            l.append(self.operator_setitem(d.copy(), 'action', ob.id+'/'+d['action']))
       l.append({'label':'TAB_FILTER','action':'manage_customizeFilterForm'})
       l.append({'label':'TAB_DESIGN','action':'manage_customizeDesignForm'})
       # return filtered_manage_options (@see /App/Management.py)
-      l = filter(lambda x:self.restrictedTraverse(x['action'], None) is not None,l)
+      l = filter(lambda x:self.restrictedTraverse(x['action'], None) is not None, l)
       return l
 
 
@@ -478,7 +485,7 @@ class ConfManager(
         {'key':'ZMS.conf.path','title':'ZMS conf-path','desc':'ZMS conf-path','datatype':'string','default':'$INSTANCE_HOME/var/$HOME_ID'}, 
         {'key':'ZMS.debug','title':'ZMS debug','desc':'ZMS debug','datatype':'boolean','default':0}, 
         {'key':'ZMSAdministrator.email','title':'Admin e-Mail','desc':'Administrators e-mail address.','datatype':'string'},
-        {'key':'ASP.protocol','title':'ASP Protocol','desc':'ASP Protocol.','datatype':'string','options':['http','https'],'default':'http'},
+        {'key':'ASP.protocol','title':'ASP Protocol','desc':'ASP Protocol.','datatype':'string','options':['http', 'https'],'default':'http'},
         {'key':'ASP.ip_or_domain','title':'ASP IP/Domain','desc':'ASP IP/Domain.','datatype':'string'},
         {'key':'HTTP.proxy','title':'HTTP proxy','desc':'HTTP proxy (host:port).','datatype':'string'},
         {'key':'jquery.version','title':'JQuery version','desc':'JQuery version.','datatype':'string'},
@@ -504,7 +511,7 @@ class ConfManager(
         {'key':'ZMS.localfs_write','title':'LocalFS write','desc':'List of directories with permission for LocalFS write (semicolon separated).','datatype':'string','default':''},
         {'key':'ZMS.logout.href','title':'Logout URL','desc':'URL for logout from ZMS.','datatype':'string','default':''},
         {'key':'ZMS.richtext.plugin','title':'Richtext plugin','desc':'Select your preferred richtext plugin','datatype':'string','options':self.getPluginIds(['rte']),'default':'ckeditor'},
-        {'key':'ZMS.input.file.plugin','title':'File.upload input','desc':'ZMS can use custom input-fields for file-upload.','datatype':'string','options':['input_file','jquery_upload'],'default':'input_file'},
+        {'key':'ZMS.input.file.plugin','title':'File.upload input','desc':'ZMS can use custom input-fields for file-upload.','datatype':'string','options':['input_file', 'jquery_upload'],'default':'input_file'},
         {'key':'ZMS.input.file.maxlength','title':'File.upload maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
         {'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
         {'key':'ZMSGraphic.superres','title':'Image superres-attribute','desc':'Super-resolution attribute for ZMS standard image-objects.','datatype':'boolean','default':0},
@@ -522,14 +529,14 @@ class ConfManager(
         import base64
         prefix = base64.b64decode(prefix)
         r = {}
-        for k in filter(lambda x:x.startswith(prefix+'.'),d.keys()):
+        for k in filter(lambda x:x.startswith(prefix+'.'), d.keys()):
           r[k] = d[k]
         return self.str_json(r)
       if inherited:
         d = d.keys()
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
-          d.extend(filter(lambda x:x not in d,portalMaster.getConfProperties(prefix,inherited,REQUEST)))
+          d.extend(filter(lambda x:x not in d, portalMaster.getConfProperties(prefix, inherited, REQUEST)))
       return d
 
 
@@ -542,7 +549,7 @@ class ConfManager(
     """
     security.declareProtected('ZMS Administrator', 'delConfProperty')
     def delConfProperty(self, key):
-      self.setConfProperty(key,None)
+      self.setConfProperty(key, None)
 
 
     """
@@ -560,7 +567,7 @@ class ConfManager(
       authorized = REQUEST['AUTHENTICATED_USER'].has_role('Authenticated')
       if not authorized:
         raise zExceptions.Unauthorized
-      return REQUEST.get(key,default)
+      return REQUEST.get(key, default)
 
 
     """
@@ -575,8 +582,8 @@ class ConfManager(
     @rtype: C{any}
     """
     def get_conf_property(self, *args, **kwargs):
-      params = ('key','default','REQUEST')
-      map(lambda x:operator.setitem(kwargs,params[x],args[x]),range(len(args)))
+      params = ('key', 'default', 'REQUEST')
+      map(lambda x:operator.setitem(kwargs, params[x], args[x]), list(range(len(args))))
       key = kwargs['key']
       default = kwargs.get('default')
       REQUEST = kwargs.get('REQUEST')
@@ -597,8 +604,8 @@ class ConfManager(
           if 'default' in kwargs:
             value = default
           else:
-            for default in filter(lambda x:x['key']==key,self.getConfPropertiesDefaults()):
-              value = default.get('default',None)
+            for default in filter(lambda x:x['key']==key, self.getConfPropertiesDefaults()):
+              value = default.get('default', None)
       return value 
 
     def getConfProperty(self, key, default=None, REQUEST=None):
@@ -661,51 +668,50 @@ class ConfManager(
       
       ##### History ####
       elif key == 'History':
-        old_active = self.getConfProperty('ZMS.Version.active',0)
-        new_active = REQUEST.get('active',0)
-        old_nodes = self.getConfProperty('ZMS.Version.nodes',['{$}'])
-        new_nodes = standard.string_list(REQUEST.get('nodes',''))
-        self.setConfProperty('ZMS.Version.active',new_active)
-        self.setConfProperty('ZMS.Version.nodes',new_nodes)
+        old_active = self.getConfProperty('ZMS.Version.active', 0)
+        new_active = REQUEST.get('active', 0)
+        old_nodes = self.getConfProperty('ZMS.Version.nodes', ['{$}'])
+        new_nodes = standard.string_list(REQUEST.get('nodes', ''))
+        self.setConfProperty('ZMS.Version.active', new_active)
+        self.setConfProperty('ZMS.Version.nodes', new_nodes)
         nodes = []
         if old_active == 1 and new_active == 0:
           nodes = old_nodes
         if old_active == 1 and new_active == 1:
-          nodes = standard.difference_list( old_nodes, self.getConfProperty('ZMS.Version.nodes',['{$}']))
+          nodes = standard.difference_list( old_nodes, self.getConfProperty('ZMS.Version.nodes', ['{$}']))
         for node in nodes:
           ob = self.getLinkObj( node)
           if ob is not None:
-            message += '[%s: %i]'%(node,ob.packHistory())
+            message += '[%s: %i]'%(node, ob.packHistory())
         message = self.getZMILangStr('MSG_CHANGED')+message
       
       ##### Clients ####
       elif key == 'Clients':
         if btn == 'Change':
           home = self.getHome()
-          s = REQUEST.get('portal_master','').strip()
+          s = REQUEST.get('portal_master', '').strip()
           if s != home.id:
-            self.setConfProperty('Portal.Master',s)
+            self.setConfProperty('Portal.Master', s)
           l = []
-          portal_clients = REQUEST.get('portal_clients',[])
-          if type(portal_clients) is not list:
+          portal_clients = REQUEST.get('portal_clients', [])
+          if not isinstance(portal_clients, list):
             portal_clients  = [portal_clients]
-          portal_clients = map(lambda x:(int(x[:x.find(':')]),x[x.find(':')+1:]),portal_clients)
-          portal_clients.sort()
-          portal_clients = map(lambda x:x[1],portal_clients)
+          portal_clients = sorted(map(lambda x:(int(x[:x.find(':')]), x[x.find(':')+1:]), portal_clients))
+          portal_clients = map(lambda x:x[1], portal_clients)
           for id in portal_clients:
-            folder = getattr(home,id,None)
+            folder = getattr(home, id, None)
             if folder is not None:
               for node in folder.objectValues('ZMS'):
-                node.setConfProperty('Portal.Master',home.id)
+                node.setConfProperty('Portal.Master', home.id)
                 l.append(id)
-          self.setConfProperty('Portal.Clients',l)
+          self.setConfProperty('Portal.Clients', l)
           message = self.getZMILangStr('MSG_CHANGED')
       
       ##### MediaDb ####
       elif key == 'MediaDb':
         if btn == 'Create':
           location = REQUEST['mediadb_location'].strip()
-          _mediadb.manage_addMediaDb(self,location)
+          _mediadb.manage_addMediaDb(self, location)
           message = self.getZMILangStr('MSG_CHANGED')
         elif btn == 'Pack':
           message = _mediadb.manage_packMediaDb(self)
@@ -733,12 +739,12 @@ class ConfManager(
       ##### InstalledProducts ####
       elif key == 'InstalledProducts':
         if btn == 'Change':
-          self.setConfProperty('InstalledProducts.lesscss',REQUEST.get('lesscss',''))
-          self.setConfProperty('InstalledProducts.pil.thumbnail.max',REQUEST.get('pil_thumbnail_max',self.getConfProperty('InstalledProducts.pil.thumbnail.max')))
-          self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max',REQUEST.get('pil_hires_thumbnail_max',self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')))
+          self.setConfProperty('InstalledProducts.lesscss', REQUEST.get('lesscss', ''))
+          self.setConfProperty('InstalledProducts.pil.thumbnail.max', REQUEST.get('pil_thumbnail_max', self.getConfProperty('InstalledProducts.pil.thumbnail.max')))
+          self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max', REQUEST.get('pil_hires_thumbnail_max', self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')))
           message = self.getZMILangStr('MSG_CHANGED')
         elif btn == 'Import':
-          zmsext = REQUEST.get('zmsext','')
+          zmsext = REQUEST.get('zmsext', '')
           # hand over import to Deployment Library if available
           revobj = self.getMetaobjRevision('zms3.deployment')
           revreq = '0.2.0'
@@ -766,19 +772,19 @@ class ConfManager(
             message = self.getZMILangStr('MSG_EXCEPTION') 
             message += ': <code class="alert-danger">%s</code>'%('No conf files found.')
             target = self.url_append_params(target, {'manage_tabs_error_message': message})
-            standard.writeError(self,"[ConfManager.manage_customizeSystem] No conf files found.")
+            standard.writeError(self, "[ConfManager.manage_customizeSystem] No conf files found.")
           return RESPONSE.redirect(target + '#%s'%key)
         elif btn == 'ImportExample':
-          zmsext = REQUEST.get('zmsext','')
+          zmsext = REQUEST.get('zmsext', '')
           target = 'manage_main'
           ZMSExtension  = standard.extutil()
           isProcessed = False
           try:
             if ZMSExtension.getExample(zmsext) is not None:
-              destination = self.getLinkObj(self.getConfProperty('ZMS.Examples',{}))
+              destination = self.getLinkObj(self.getConfProperty('ZMS.Examples', {}))
               if destination is None:
                 destination = self.getDocumentElement()
-              ZMSExtension.importExample(zmsext,destination,REQUEST)
+              ZMSExtension.importExample(zmsext, destination, REQUEST)
               isProcessed = True
           except:
             isProcessed = False
@@ -787,10 +793,10 @@ class ConfManager(
           else:
             return False
         elif btn == 'InstallTheme':
-          zmsext = REQUEST.get('zmsext','')
+          zmsext = REQUEST.get('zmsext', '')
           target = 'manage_main'
           ZMSExtension  = standard.extutil()
-          standard.writeBlock(self,"[ConfManager.manage_customizeSystem] InstallTheme:"+str(zmsext))
+          standard.writeBlock(self, "[ConfManager.manage_customizeSystem] InstallTheme:"+str(zmsext))
           if ZMSExtension.installTheme(self, zmsext):
             return True
           else:
@@ -824,7 +830,7 @@ class ConfManager(
       ##### Manager ####
       elif key == 'Manager':
         if btn == 'Add':
-          meta_type = REQUEST.get('meta_type','')
+          meta_type = REQUEST.get('meta_type', '')
           if meta_type == 'Sequence':
             obj = _sequence.Sequence()
             self._setObject(obj.id, obj)
@@ -838,7 +844,7 @@ class ConfManager(
             self._setObject(obj.id, obj)
             message = 'Added '+meta_type
         elif btn == 'Remove':
-          ids = REQUEST.get('ids',[])
+          ids = REQUEST.get('ids', [])
           if ids:
             message = 'Removed '+', '.join(ids)
             self.manage_delObjects(ids=ids)
@@ -866,14 +872,14 @@ class ConfManager(
       # Save.
       # -----
       if btn == self.getZMILangStr('BTN_SAVE'):
-        id = REQUEST.get('id','')
-        self.setConfProperty('ZMS.theme',id)
+        id = REQUEST.get('id', '')
+        self.setConfProperty('ZMS.theme', id)
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Delete.
       # -------
       elif btn == self.getZMILangStr('BTN_DELETE'):
-        ids = REQUEST.get('ids',[])
+        ids = REQUEST.get('ids', [])
         home.manage_delObjects(ids)
         message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
       
@@ -894,14 +900,14 @@ class ConfManager(
       elif btn == self.getZMILangStr('BTN_INSERT'):
         newId = REQUEST['newId']
         newTitle = REQUEST['newTitle']
-        home.manage_addFolder(id=newId,title=newTitle)
-        folder = getattr(home,newId)
+        home.manage_addFolder(id=newId, title=newTitle)
+        folder = getattr(home, newId)
         zopeutil.addPageTemplate(folder, id='standard_html', title='', data='<!DOCTYPE html>\n<htmltal:define="zmscontext options/zmscontext">\n</html>')
         message = self.getZMILangStr('MSG_INSERTED')%newId
       
       # Return with message.
-      message = urllib.quote(message)
-      return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang,message))
+      message = urllib.parse.quote(message)
+      return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 
     ############################################################################
@@ -911,31 +917,31 @@ class ConfManager(
     ############################################################################
 
     def getWfActivities(self):
-      workflow_manager = getattr(self,'workflow_manager',None)
+      workflow_manager = getattr(self, 'workflow_manager', None)
       if workflow_manager is None:
         return []
       return workflow_manager.getActivities()
 
     def getWfActivitiesIds(self):
-      workflow_manager = getattr(self,'workflow_manager',None)
+      workflow_manager = getattr(self, 'workflow_manager', None)
       if workflow_manager is None:
         return []
       return workflow_manager.getActivityIds()
 
     def getWfActivity(self, id):
-      workflow_manager = getattr(self,'workflow_manager',None)
+      workflow_manager = getattr(self, 'workflow_manager', None)
       if workflow_manager is None:
         return None
       return workflow_manager.getActivity(id)
 
     def getWfTransitions(self):
-      workflow_manager = getattr(self,'workflow_manager',None)
+      workflow_manager = getattr(self, 'workflow_manager', None)
       if workflow_manager is None:
         return []
       return workflow_manager.getTransitions()
 
     def getWfTransition(self, id):
-      workflow_manager = getattr(self,'workflow_manager',None)
+      workflow_manager = getattr(self, 'workflow_manager', None)
       if workflow_manager is None:
         return None
       return workflow_manager.getTransition(id)
@@ -948,9 +954,9 @@ class ConfManager(
     ############################################################################
 
     def getMetaobjManager(self):
-      manager = getattr(self,'metaobj_manager',None)
+      manager = getattr(self, 'metaobj_manager', None)
       if manager is None:
-        class DefaultMetaobjManager:
+        class DefaultMetaobjManager(object):
           def importXml(self, xml): pass
           def getMetaobjId(self, name): return None
           def getMetaobjIds(self, sort=False, excl_ids=[]): return []
@@ -999,16 +1005,16 @@ class ConfManager(
 
     def getMetacmdManager(self):
       ### updateVersion
-      commands = self.getConfProperty('ZMS.custom.commands',[])
+      commands = self.getConfProperty('ZMS.custom.commands', [])
       if len(commands)>0:
         meta_type = 'ZMSMetacmdProvider'
         obj = ConfDict.forName(meta_type+'.'+meta_type)(commands)
         self._setObject( obj.id, obj)
         self.delConfProperty('ZMS.custom.commands')
       ###
-      metacmd_manager = getattr(self,'metacmd_manager',None)
+      metacmd_manager = getattr(self, 'metacmd_manager', None)
       if metacmd_manager is None:
-        class DefaultManager:
+        class DefaultManager(object):
           def importXml(self, xml): pass
           def getMetaCmdDescription(self, id): return None
           def getMetaCmd(self, id): return None
@@ -1028,7 +1034,7 @@ class ConfManager(
        return self.getMetacmdManager().getMetaCmdIds(sort)
 
     def getMetaCmds(self, context=None, stereotype='', sort=True):
-      return self.getMetacmdManager().getMetaCmds(context,stereotype,sort)
+      return self.getMetacmdManager().getMetaCmds(context, stereotype, sort)
 
 
     ############################################################################
@@ -1038,9 +1044,9 @@ class ConfManager(
     ############################################################################
 
     def getRepositoryManager(self):
-      manager = filter(lambda x:IZMSRepositoryManager.IZMSRepositoryManager in list(zope.interface.providedBy(x)),self.getDocumentElement().objectValues())
+      manager = filter(lambda x:IZMSRepositoryManager.IZMSRepositoryManager in list(zope.interface.providedBy(x)), self.getDocumentElement().objectValues())
       if len(manager)==0:
-        class DefaultManager:
+        class DefaultManager(object):
           def exec_auto_commit(self, provider, id): return True
           def exec_auto_update(self): return True
         manager = [DefaultManager()]
@@ -1054,9 +1060,9 @@ class ConfManager(
     ############################################################################
 
     def getWorkflowManager(self):
-      manager = filter(lambda x:absattr(x.id)=='workflow_manager',self.getDocumentElement().objectValues())
+      manager = filter(lambda x:absattr(x.id)=='workflow_manager', self.getDocumentElement().objectValues())
       if len(manager)==0:
-        class DefaultManager:
+        class DefaultManager(object):
           def importXml(self, xml): pass
           def writeProtocol(self, log): pass
           def getAutocommit(self): return True
@@ -1104,9 +1110,9 @@ class ConfManager(
           return ob
       adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
       self._setObject( adapter.id, adapter)
-      adapter = getattr(self,adapter.id)
-      adapter.setIds(['ZMSFolder','ZMSDocument','ZMSFile'])
-      adapter.setAttrIds(['title','titlealt','attr_dc_description','standard_html'])
+      adapter = getattr(self, adapter.id)
+      adapter.setIds(['ZMSFolder', 'ZMSDocument', 'ZMSFile'])
+      adapter.setAttrIds(['title', 'titlealt', 'attr_dc_description', 'standard_html'])
       adapter.addConnector('ZMSZCatalogConnector')
       return adapter
 

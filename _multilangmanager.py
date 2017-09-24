@@ -17,10 +17,17 @@
 ################################################################################
 
 # Imports.
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import filter
+from builtins import map
+from builtins import str
+from builtins import range
 from App.Common import package_home
 import OFS.misc_
 import copy
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zope.interface
 # Product Imports.
 import IZMSLocale
@@ -41,37 +48,37 @@ def _importXml(self, item, createIfNotExists=1):
     for langId in self.getLangIds():
       if langId in item:
         lang_dict[key][langId] = item[langId]
-    self.setConfProperty('ZMS.custom.langs.dict',lang_dict.copy())
+    self.setConfProperty('ZMS.custom.langs.dict', lang_dict.copy())
 
 def importXml(self, xml, createIfNotExists=1):
-  if type(xml) is not str:
+  if not isinstance(xml, str):
     xml = xml.read()
   value = self.parseXmlString(xml)
   if value is None:
     value = []
     builder = _xmllib.XmlBuilder()
     nWorkbook = builder.parse(xml)
-    for nWorksheet in _xmllib.xmlNodeSet(nWorkbook,'Worksheet'):
-      for nTable in _xmllib.xmlNodeSet(nWorksheet,'Table'):
+    for nWorksheet in _xmllib.xmlNodeSet(nWorkbook, 'Worksheet'):
+      for nTable in _xmllib.xmlNodeSet(nWorksheet, 'Table'):
         r = 0
         keys = []
-        for nRow in _xmllib.xmlNodeSet(nTable,'Row'):
+        for nRow in _xmllib.xmlNodeSet(nTable, 'Row'):
           c = 0
-          for nCell in _xmllib.xmlNodeSet(nRow,'Cell'):
-            for nData in _xmllib.xmlNodeSet(nCell,'Data'):
+          for nCell in _xmllib.xmlNodeSet(nRow, 'Cell'):
+            for nData in _xmllib.xmlNodeSet(nCell, 'Data'):
               if r == 0:
                 if c == 0:
                   key = 'key'
                 else:
-                  key = nData.get('cdata','')
+                  key = nData.get('cdata', '')
                 keys.append(key)
               else:
                 if c == 0:
                   value.append({})
-                value[-1][keys[c]] = nData.get('cdata','')
+                value[-1][keys[c]] = nData.get('cdata', '')
               c += 1
           r += 1
-  if type(value) is list:
+  if isinstance(value, list):
     for item in value:
       _importXml( self, item, createIfNotExists)
   else:
@@ -90,11 +97,11 @@ def getDescLangs(self, id, langs):
     label = langs[id]['label']
   else:
     label = id
-  obs.append((label,id))
+  obs.append((label, id))
   # Iterate descending languages.
   for key in langs.keys():
     if langs[key]['parent'] == id:
-      obs.extend(getDescLangs(self,key,langs))
+      obs.extend(getDescLangs(self, key, langs))
   return obs
 
 
@@ -105,7 +112,7 @@ def getDescLangs(self, id, langs):
 ###
 ################################################################################
 ################################################################################
-class langdict:
+class langdict(object):
 
     def __init__(self, filename='_language.xml'):
       """
@@ -114,20 +121,20 @@ class langdict:
       manage_langs = []
       lang_dict = {}
       filepath = package_home(globals())+'/import/'
-      xmlfile = open(_fileutil.getOSPath(filepath+filename),'rb')
+      xmlfile = open(_fileutil.getOSPath(filepath+filename), 'rb')
       builder = _xmllib.XmlBuilder()
       nWorkbook = builder.parse(xmlfile)
-      for nWorksheet in _xmllib.xmlNodeSet(nWorkbook,'Worksheet'):
-        for nTable in _xmllib.xmlNodeSet(nWorksheet,'Table'):
-          for nRow in _xmllib.xmlNodeSet(nTable,'Row'):
+      for nWorksheet in _xmllib.xmlNodeSet(nWorkbook, 'Worksheet'):
+        for nTable in _xmllib.xmlNodeSet(nWorksheet, 'Table'):
+          for nRow in _xmllib.xmlNodeSet(nTable, 'Row'):
             lRow = []
             currIndex = 0
-            for nCell in _xmllib.xmlNodeSet(nRow,'Cell'):
-              ssIndex = int(nCell.get('attrs',{}).get('ss:Index',currIndex+1))
+            for nCell in _xmllib.xmlNodeSet(nRow, 'Cell'):
+              ssIndex = int(nCell.get('attrs', {}).get('ss:Index', currIndex+1))
               currData = None
-              for i in range(currIndex+1,ssIndex):
+              for i in range(currIndex+1, ssIndex):
                 lRow.append(currData)
-              for nData in _xmllib.xmlNodeSet(nCell,'Data'):
+              for nData in _xmllib.xmlNodeSet(nCell, 'Data'):
                 currData = nData['cdata']
               lRow.append(currData)
               currIndex = ssIndex
@@ -167,7 +174,7 @@ class langdict:
 ###
 ################################################################################
 ################################################################################
-class MultiLanguageObject:
+class MultiLanguageObject(object):
 
     def getLanguages(self, REQUEST=None):
       """
@@ -176,7 +183,7 @@ class MultiLanguageObject:
       value = ['*']
       if REQUEST is not None:
         value = self.getUserLangs(str(REQUEST['AUTHENTICATED_USER']))
-      value = filter(lambda x: ('*' in value) or (x in value), map(lambda x:x[0],self.getLangTree()))
+      value = filter(lambda x: ('*' in value) or (x in value), map(lambda x:x[0], self.getLangTree()))
       return value
 
 
@@ -189,11 +196,11 @@ class MultiLanguageObject:
       if REQUEST is not None:
         user_langs = self.getUserLangs(REQUEST['AUTHENTICATED_USER'])
       langs = self.getLangs()
-      obs = getDescLangs(self,id,langs)
+      obs = getDescLangs(self, id, langs)
       if not '*' in user_langs:
-        obs = filter(lambda x: x[1] in user_langs,obs)
+        obs = filter(lambda x: x[1] in user_langs, obs)
       obs.sort()
-      return map(lambda ob: ob[1],obs)
+      return map(lambda ob: ob[1], obs)
 
 
 ################################################################################
@@ -203,7 +210,7 @@ class MultiLanguageObject:
 ###
 ################################################################################
 ################################################################################
-class MultiLanguageManager:
+class MultiLanguageManager(object):
     zope.interface.implements(
         IZMSLocale.IZMSLocale)
 
@@ -231,7 +238,7 @@ class MultiLanguageManager:
             if lang in self.getLangIds():
               manage_lang = self.getLang(lang).get('manage')
         if sess is not None:
-          sess.set('manage_lang',manage_lang)
+          sess.set('manage_lang', manage_lang)
       if manage_lang is None:
         manage_lang = 'eng'
       return manage_lang
@@ -243,10 +250,10 @@ class MultiLanguageManager:
       lang_str = self.getLangStr( key, self.get_manage_lang())
       if RESPONSE is not None:
         if REQUEST.get('nocache'):
-          RESPONSE.setHeader('Cache-Control','no-cache')
+          RESPONSE.setHeader('Cache-Control', 'no-cache')
           RESPONSE.setHeader('Pragma', 'no-cache')
         else:
-          RESPONSE.setHeader('Cache-Control','public, max-age=3600')
+          RESPONSE.setHeader('Cache-Control', 'public, max-age=3600')
         RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
       return lang_str
 
@@ -255,7 +262,7 @@ class MultiLanguageManager:
       Returns language-string for current content-language.
       """
       if lang is None:
-        lang = self.REQUEST.get('lang',self.getPrimaryLanguage())
+        lang = self.REQUEST.get('lang', self.getPrimaryLanguage())
       
       # Return custom value.
       d = self.get_lang_dict()
@@ -290,7 +297,7 @@ class MultiLanguageManager:
     # Get language-dictionary
     # --------------------------------------------------------------------------
     def getLangs(self):
-      return getattr(self,'attr_languages',{})
+      return getattr(self, 'attr_languages', {})
 
     # --------------------------------------------------------------------------
     # Set language-dictionary
@@ -310,7 +317,7 @@ class MultiLanguageManager:
     # --------------------------------------------------------------------------
     def getLanguageLabel(self, id):
       """ getLanguageLabel """
-      return self.getLang(id).get('label',id)
+      return self.getLang(id).get('label', id)
 
     # --------------------------------------------------------------------------
     # Returns IDs of parent languages.
@@ -321,7 +328,7 @@ class MultiLanguageManager:
       if id not in langs:
         id = self.getPrimaryLanguage()
       parent = id
-      while 1:
+      while True:
         parent = langs[parent]['parent']
         if parent:
           obs.append(parent)
@@ -333,7 +340,7 @@ class MultiLanguageManager:
     #  MultiLanguageManager.getLang: 
     # --------------------------------------------------------------------------
     def getLang(self, id):
-      return self.getLangs().get(id,{})
+      return self.getLangs().get(id, {})
 
     # --------------------------------------------------------------------------
     #  Returns list of Ids of languages (primary language 1st).
@@ -341,7 +348,7 @@ class MultiLanguageManager:
     def getLangTree(self, base=None):
       if base is None:
         base = self.getPrimaryLanguage()
-      l = [(base,self.getLang(base))]
+      l = [(base, self.getLang(base))]
       for langId in self.getLangIds():
         lang = self.getLang(langId)
         if lang['parent'] == base:
@@ -360,9 +367,9 @@ class MultiLanguageManager:
             label = '*'
           else: 
             label = langs[key]['label']
-          obs.append((label,key))
+          obs.append((label, key))
         obs.sort()
-        return map(lambda ob: ob[1],obs)
+        return map(lambda ob: ob[1], obs)
       return langs.keys()
 
     # --------------------------------------------------------------------------
@@ -385,7 +392,7 @@ class MultiLanguageManager:
     # Get requested language of specified URL (used by index_html).
     # --------------------------------------------------------------------------
     def getLanguage(self, REQUEST): 
-      lang = REQUEST.get('lang',None)
+      lang = REQUEST.get('lang', None)
       langs = self.getLangIds()
       if lang not in langs:
         url = REQUEST.get('URL')
@@ -410,8 +417,8 @@ class MultiLanguageManager:
     def getHttpAcceptLanguage(self, REQUEST): 
       lang = None
       langs = self.getLangIds()
-      if self.getConfProperty('ZMS.http_accept_language',0)==1:
-        accept = REQUEST.get('HTTP_ACCEPT_LANGUAGE','')
+      if self.getConfProperty('ZMS.http_accept_language', 0)==1:
+        accept = REQUEST.get('HTTP_ACCEPT_LANGUAGE', '')
         if accept.find( ';') >= 0:
           accept = accept[ : accept.find( ';')]
         m = { 'de' : 'ger', 'en' : 'eng', 'fr' : 'fra', 'ru' : 'rus', 'es' : 'esp', 'it' : 'ita', 'nl' : 'nld', 'sv' : 'swe'}
@@ -470,7 +477,7 @@ class MultiLanguageManager:
       # Delete.
       # -------
       if REQUEST['btn'] == self.getZMILangStr('BTN_DELETE'):
-        ids = REQUEST.get('ids',[])
+        ids = REQUEST.get('ids', [])
         for id in ids:
           self.delLanguage(id) 
       
@@ -494,8 +501,8 @@ class MultiLanguageManager:
           self.setLanguage(newId, newLabel, newParent, newManage)
       
       # Return with message.
-      message = urllib.quote(self.getZMILangStr('MSG_CHANGED'))
-      return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s'%(lang,message))
+      message = urllib.parse.quote(self.getZMILangStr('MSG_CHANGED'))
+      return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 
     # --------------------------------------------------------------------------
@@ -521,13 +528,13 @@ class MultiLanguageManager:
         for key in lang_dict.keys():
           d[key] = lang_dict[key].copy()
           lang_ids = lang_dict[key].keys()
-          d[key]['acquired'] = standard.concat_list(d[key].get('acquired',[]),lang_ids)
-      lang_dict = self.getConfProperty('ZMS.custom.langs.dict',{})
+          d[key]['acquired'] = standard.concat_list(d[key].get('acquired', []), lang_ids)
+      lang_dict = self.getConfProperty('ZMS.custom.langs.dict', {})
       for key in lang_dict.keys():
         if key in d:
           lang_ids = lang_dict[key].keys()
           for lang_id in lang_ids:
-            if lang_id not in d[key].get('acquired',[]):
+            if lang_id not in d[key].get('acquired', []):
               d[key][lang_id] = lang_dict[key][lang_id]
         else:
           d[key] = lang_dict[key].copy()
@@ -535,8 +542,8 @@ class MultiLanguageManager:
       #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
       self.storeReqBuff( reqBuffId, d)
       if REQUEST is not None:
-        REQUEST.RESPONSE.setHeader('Cache-Control','public, max-age=3600')
-        REQUEST.RESPONSE.setHeader('Content-Type','text/plain; charset=utf-8')
+        REQUEST.RESPONSE.setHeader('Cache-Control', 'public, max-age=3600')
+        REQUEST.RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
         return self.str_json(d)
       
       return d
@@ -549,7 +556,7 @@ class MultiLanguageManager:
     # --------------------------------------------------------------------------
     def set_lang_dict(self, d):
       self.clearReqBuff('MultiLanguageManager')
-      self.setConfProperty('ZMS.custom.langs.dict',d.copy())
+      self.setConfProperty('ZMS.custom.langs.dict', d.copy())
 
 
     # --------------------------------------------------------------------------
@@ -560,8 +567,7 @@ class MultiLanguageManager:
     def getLangDict(self):
       lang_dict = self.get_lang_dict()
       lang_list = []
-      keys = lang_dict.keys()
-      keys.sort()
+      keys = sorted(lang_dict.keys())
       for key in keys:
         d = lang_dict[key]
         d['key'] = key
@@ -580,7 +586,7 @@ class MultiLanguageManager:
         # Delete.
         # -------
         if REQUEST['btn'] == self.getZMILangStr('BTN_DELETE'):
-          ids = REQUEST.get('ids',[])
+          ids = REQUEST.get('ids', [])
           dict = self.get_lang_dict()
           lang_dict = {}
           for id in dict.keys():
@@ -595,10 +601,10 @@ class MultiLanguageManager:
           lang_dict = {}
           for key in d.keys():
             for lang_id in self.getLangIds():
-              lang_dict[key] = lang_dict.get(key,{})
-              enabled = lang_id not in d[key].get('acquired',[])
+              lang_dict[key] = lang_dict.get(key, {})
+              enabled = lang_id not in d[key].get('acquired', [])
               if enabled:
-                lang_dict[key][lang_id] = REQUEST['%s_value_%s'%(key,lang_id)].strip()
+                lang_dict[key][lang_id] = REQUEST['%s_value_%s'%(key, lang_id)].strip()
           # Insert
           key = REQUEST['_key'].strip()
           if len(key) > 0:
@@ -612,7 +618,7 @@ class MultiLanguageManager:
         # -------
         elif REQUEST['btn'] == self.getZMILangStr('BTN_EXPORT'):
           value = []
-          ids = REQUEST.get('ids',[])
+          ids = REQUEST.get('ids', [])
           dict = self.get_lang_dict()
           for id in dict.keys():
             item = dict[id].copy()
@@ -620,7 +626,7 @@ class MultiLanguageManager:
             if id in ids or len(ids) == 0:
               value.append(item)
           meta = ['key']+self.getLangIds()
-          return _msexcelutil.export(self,value,meta)
+          return _msexcelutil.export(self, value, meta)
         
         # Import.
         # -------
@@ -628,14 +634,14 @@ class MultiLanguageManager:
           f = REQUEST['file']
           if f:
             filename = f.filename
-            importXml(self,xml=f)
+            importXml(self, xml=f)
           else:
             filename = REQUEST['init']
             self.importConf(filename, createIfNotExists=1)
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
         
         # Return with message.
-        message = urllib.quote(self.getZMILangStr('MSG_CHANGED'))
-        return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s#langdict'%(lang,message))
+        message = urllib.parse.quote(self.getZMILangStr('MSG_CHANGED'))
+        return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s#langdict'%(lang, message))
 
 ################################################################################

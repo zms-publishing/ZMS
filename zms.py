@@ -20,6 +20,11 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import filter
+from builtins import str
 from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
@@ -30,7 +35,7 @@ import shutil
 import sys
 import time
 import transaction
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product imports.
 from . import standard
@@ -77,22 +82,22 @@ except:
   from zope.app.container.contained import ObjectRemovedEvent
 
 def subscriber(event):
-  if isinstance(event,ObjectAddedEvent):
-    if isinstance(event.object,ZMSObject):
-      if isinstance(event.newParent,ZMSObject):
+  if isinstance(event, ObjectAddedEvent):
+    if isinstance(event.object, ZMSObject):
+      if isinstance(event.newParent, ZMSObject):
         # trigger object-added event
-        standard.triggerEvent(event.object,"*.ObjectAdded")
-  elif isinstance(event,ObjectMovedEvent):
-    if isinstance(event.object,ZMSObject):
-      if isinstance(event.newParent,ZMSObject):
+        standard.triggerEvent(event.object, "*.ObjectAdded")
+  elif isinstance(event, ObjectMovedEvent):
+    if isinstance(event.object, ZMSObject):
+      if isinstance(event.newParent, ZMSObject):
         # trigger object-moved event
-        standard.triggerEvent(event.object,"*.ObjectMoved")
+        standard.triggerEvent(event.object, "*.ObjectMoved")
       elif event.newParent is None:
-        standard.triggerEvent(event.object,"*.ObjectRemoved")
-  elif isinstance(event,ObjectRemovedEvent):
-    if isinstance(event.object,ZMSObject):
+        standard.triggerEvent(event.object, "*.ObjectRemoved")
+  elif isinstance(event, ObjectRemovedEvent):
+    if isinstance(event.object, ZMSObject):
         # trigger object-removed event
-      standard.triggerEvent(event.object,"*.ObjectRemoved")
+      standard.triggerEvent(event.object, "*.ObjectRemoved")
 zope.event.subscribers.append(subscriber)
 
 
@@ -114,7 +119,7 @@ def importTheme(folder, theme):
   filepath = INSTANCE_HOME + '/import/' + filename
   if theme.startswith('http://'):
     initutil = standard.initutil()
-    initutil.setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))
+    initutil.setConfProperty('HTTP.proxy', REQUEST.get('http_proxy', ''))
     zexp = standard.http_import( initutil, theme)
     _fileutil.exportObj( zexp, filepath)
   else:
@@ -137,7 +142,7 @@ def importTheme(folder, theme):
 # ------------------------------------------------------------------------------
 def initTheme(self, theme, new_id, REQUEST):
   
-  id = importTheme(self,theme)
+  id = importTheme(self, theme)
   
   ### Assign folder-id.
   if id != new_id:
@@ -156,7 +161,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj = ZMS()
   obj.id = id
   self._setObject(obj.id, obj)
-  obj = getattr(self,obj.id)
+  obj = getattr(self, obj.id)
 
   ### Trashcan.
   trashcan = ZMSTrashcan()
@@ -171,7 +176,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj._setObject( manager.id, manager)
 
   ### Init languages.
-  obj.setLanguage(lang,REQUEST['lang_label'],'',manage_lang)
+  obj.setLanguage(lang, REQUEST['lang_label'], '', manage_lang)
 
   ### Log.
   if REQUEST.get('zmslog'):
@@ -179,8 +184,8 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
     obj._setObject(zmslog.id, zmslog)
 
   ### Init Configuration.
-  obj.setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))
-  obj.setConfProperty('ZMS.autocommit',1)
+  obj.setConfProperty('HTTP.proxy', REQUEST.get('http_proxy', ''))
+  obj.setConfProperty('ZMS.autocommit', 1)
 
   ### Init ZMS object-model.
   _confmanager.initConf(obj, 'com.zms.foundation', remote=False)
@@ -194,10 +199,10 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
 
   ### Init Properties: active, titlealt, title.
   obj.setObjStateNew(REQUEST)
-  obj.setObjProperty('active',1,lang)
-  obj.setObjProperty('titlealt',titlealt,lang)
-  obj.setObjProperty('title',title,lang)
-  obj.onChangeObj(REQUEST,forced=1)
+  obj.setObjProperty('active', 1, lang)
+  obj.setObjProperty('titlealt', titlealt, lang)
+  obj.setObjProperty('title', title, lang)
+  obj.onChangeObj(REQUEST, forced=1)
 
   ### Return new ZMS instance.
   return obj
@@ -207,7 +212,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
 #  initContent:
 # ------------------------------------------------------------------------------
 def initContent(self, filename, REQUEST):
-  file = open(_fileutil.getOSPath(package_home(globals())+'/import/'+filename),'rb')
+  file = open(_fileutil.getOSPath(package_home(globals())+'/import/'+filename), 'rb')
   _importable.importFile( self, file, REQUEST, _importable.importContent)
   file.close()
 
@@ -227,21 +232,21 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
 
     ##### Add Home ####
     homeElmnt = Folder(REQUEST['folder_id'])
-    self._setObject(homeElmnt.id,homeElmnt)
-    homeElmnt = filter(lambda x:x.id==homeElmnt.id,self.objectValues())[0]
+    self._setObject(homeElmnt.id, homeElmnt)
+    homeElmnt = filter(lambda x:x.id==homeElmnt.id, self.objectValues())[0]
     
     ##### Add Theme ####
-    themeId = importTheme(homeElmnt,REQUEST['theme'])
+    themeId = importTheme(homeElmnt, REQUEST['theme'])
 
     ##### Add ZMS ####
     titlealt = 'ZMS home'
     title = 'ZMS - Python-based Content Management System for Science, Technology and Medicine'
-    obj = initZMS(homeElmnt,'content',titlealt,title,lang,manage_lang,REQUEST)
-    obj.setConfProperty('ZMS.theme',themeId)
+    obj = initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
+    obj.setConfProperty('ZMS.theme', themeId)
 
     ##### Default content ####
-    if REQUEST.get('initialization',0)==1:
-      initContent(obj,'content.default.zip',REQUEST)
+    if REQUEST.get('initialization', 0)==1:
+      initContent(obj, 'content.default.zip', REQUEST)
 
     ##### Configuration ####
 
@@ -249,14 +254,14 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     _confmanager.initConf(obj, 'com.zms.index', remote=False)
 
     #-- Search
-    initContent(obj,'com.zms.search.content.xml',REQUEST)
+    initContent(obj, 'com.zms.search.content.xml', REQUEST)
 
     #-- QUnit
-    if REQUEST.get('specobj_qunit',0) == 1:
+    if REQUEST.get('specobj_qunit', 0) == 1:
       # Init configuration.
       _confmanager.initConf(obj, 'com.zms.test', remote=False)
       # Init content.
-      initContent(obj,'com.zms.test.content.xml',REQUEST)
+      initContent(obj, 'com.zms.test.content.xml', REQUEST)
 
     # Initialize catalogs.
     obj.getCatalogAdapter().reindex_all()
@@ -265,9 +270,9 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     obj.synchronizePublicAccess()
 
     # Return with message.
-    message = obj.getLangStr('MSG_INSERTED',manage_lang)%obj.meta_type
+    message = obj.getLangStr('MSG_INSERTED', manage_lang)%obj.meta_type
     message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-    RESPONSE.redirect('%s/%s/manage?manage_tabs_message=%s'%(homeElmnt.absolute_url(),obj.id,urllib.quote(message)))
+    RESPONSE.redirect('%s/%s/manage?manage_tabs_message=%s'%(homeElmnt.absolute_url(), obj.id, urllib.parse.quote(message)))
 
   else:
     RESPONSE.redirect('%s/manage_main'%self.absolute_url())
@@ -310,13 +315,13 @@ class ZMS(
         'manage_customizeDesign', 'manage_customizeDesignForm',
         )
     __authorPermissions__ = (
-        'manage','manage_main','manage_main_iframe','manage_workspace',
+        'manage', 'manage_main', 'manage_main_iframe', 'manage_workspace',
         'manage_addZMSModule',
-        'manage_deleteObjs','manage_undoObjs',
-        'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
-        'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
-        'manage_ajaxDragDrop','manage_ajaxZMIActions',
-        'manage_properties','manage_changeProperties','manage_changeTempBlobjProperty',
+        'manage_deleteObjs', 'manage_undoObjs',
+        'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',
+        'manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjs',
+        'manage_ajaxDragDrop', 'manage_ajaxZMIActions',
+        'manage_properties', 'manage_changeProperties', 'manage_changeTempBlobjProperty',
         'manage_wfTransition', 'manage_wfTransitionFinalize',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
@@ -334,15 +339,15 @@ class ZMS(
     # Globals.
     # --------
     dGlobalAttrs = {
-    'ZMS':{
+    'ZMS': {
                 'obj_class':None},
-    'ZMSCustom':{
+    'ZMSCustom': {
                 'obj_class':ZMSCustom},
-    'ZMSLinkContainer':{
+    'ZMSLinkContainer': {
                 },
-    'ZMSLinkElement':{
+    'ZMSLinkElement': {
                 'obj_class':ZMSLinkElement},
-    'ZMSSqlDb':{
+    'ZMSSqlDb': {
                 'obj_class':ZMSSqlDb,
                 'constructor':'manage_addzmssqldbform'},
     }
@@ -431,7 +436,7 @@ class ZMS(
       zms = WorkingSet().find(Requirement.parse('ZMS3'))
       pth = _fileutil.getOSPath(package_home(globals()))
       
-      file = open(_fileutil.getOSPath(pth+'/version.txt'),'r')
+      file = open(_fileutil.getOSPath(pth+'/version.txt'), 'r')
       version_txt = file.read()
       version     = version_txt.strip().split('.')
       file.close()
@@ -450,7 +455,7 @@ class ZMS(
           version_pip = str(zms.version)
           if ('.svn-r' in version_pip):
             # leave -r in revision to recognize as snapshot below
-            revision = version_pip.strip().split('.svn',1)[1]        
+            revision = version_pip.strip().split('.svn', 1)[1]        
         # get revision from svnversion
         elif (revision == 'REV'):
           import subprocess
@@ -466,7 +471,7 @@ class ZMS(
           revision = ' (build #%s)'%revision
         # otherwise it is a development snapshot
         else:
-          revision = ' (snapshot #%s)'%revision.replace('-r','')
+          revision = ' (snapshot #%s)'%revision.replace('-r', '')
       
       return '.'.join(version)+revision
 
@@ -527,7 +532,7 @@ class ZMS(
     Returns new (unique) Object-ID.
     """
     def getNewId(self, id_prefix='e'):
-      return '%s%i'%(id_prefix,self.getSequence().nextVal())
+      return '%s%i'%(id_prefix, self.getSequence().nextVal())
 
     """
     Returns Dublin-Core Meta-Attribute Coverage.
@@ -547,7 +552,7 @@ class ZMS(
     Returns portal-master, none if it does not exist.
     """
     def getPortalMaster(self):
-      v = self.get_conf_properties().get('Portal.Master','')
+      v = self.get_conf_properties().get('Portal.Master', '')
       if len(v) > 0:
         try:
           return getattr( self, v).content
@@ -560,12 +565,12 @@ class ZMS(
     """
     def getPortalClients(self):
       docElmnts = []
-      v = self.get_conf_properties().get('Portal.Clients',[])
+      v = self.get_conf_properties().get('Portal.Clients', [])
       if len(v) > 0:
         thisHome = self.getHome()
         for id in v:
           try:
-            docElmnts.append(getattr(thisHome,id).content)
+            docElmnts.append(getattr(thisHome, id).content)
           except:
             standard.writeError(self, '[getPortalClients]: %s not found!'%str(id))
       return docElmnts

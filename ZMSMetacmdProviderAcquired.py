@@ -65,7 +65,7 @@ class ZMSMetacmdProviderAcquired(
       rtn = []
       portal_master = self.getPortalMaster()
       if portal_master is not None:
-        rtn.extend(portal_master.getMetaCmds(context,stereotype,sort))
+        rtn.extend(portal_master.getMetaCmds(context, stereotype, sort))
         for d in rtn:
             d['acquired'] = 1
       return rtn

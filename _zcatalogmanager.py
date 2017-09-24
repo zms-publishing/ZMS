@@ -17,6 +17,8 @@
 ################################################################################
 
 # Imports.
+from builtins import object
+from builtins import filter
 from Products.ZCatalog import CatalogPathAwareness
 import re
 import sys
@@ -32,7 +34,7 @@ import standard
 ###
 ################################################################################
 ################################################################################
-class ZCatalogManager:
+class ZCatalogManager(object):
 
     # --------------------------------------------------------------------------
     #  ZCatalogManager.getCatalogQueryString:
@@ -48,8 +50,8 @@ class ZCatalogManager:
           if i % 2 == 0:
             for raw_item in si.split(' '):
               raw_item = raw_item.strip()
-              if len(raw_item) > 1 and not raw_item.upper() in ['AND','OR']:
-                raw_item = raw_item.replace('-','* AND *')
+              if len(raw_item) > 1 and not raw_item.upper() in ['AND', 'OR']:
+                raw_item = raw_item.replace('-', '* AND *')
                 if not only_words and not raw_item.endswith('*'):
                   raw_item += '*'
                 if raw_item not in qs:
@@ -79,7 +81,7 @@ class ZCatalogManager:
         l = l[ l.index(ob.id)+1:]
       for id in l:
          if len( id) > 0 and ob is not None:
-          ob = getattr(ob,id,None)
+          ob = getattr(ob, id, None)
       return ob
 
 

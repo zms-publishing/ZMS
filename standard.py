@@ -26,15 +26,25 @@ Scripts.  It can be accessed from Python with the statement
 "import Products.zms.standard"
 """
 from __future__ import division
+from __future__ import print_function
 
 # Imports.
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import chr
+from builtins import hex
+from builtins import map
+from builtins import filter
+from builtins import range
+from builtins import str
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
 try:
-  from StringIO import StringIO
+  from io import StringIO
 except ImportError:
   from io import StringIO
 from traceback import format_exception
@@ -51,7 +61,7 @@ import os
 import re
 import sys
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zExceptions
 import six
 # Product Imports.
@@ -142,11 +152,11 @@ def set_response_headers(fn, mt='application/octet-stream', size=None, request=N
   """
   RESPONSE = request.RESPONSE
   RESPONSE.setHeader('Content-Type', mt)
-  if request.get('HTTP_USER_AGENT','').find('Android') < 0:
-    RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%_fileutil.extractFilename(fn))
+  if request.get('HTTP_USER_AGENT', '').find('Android') < 0:
+    RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%_fileutil.extractFilename(fn))
   if size:
-    RESPONSE.setHeader('Content-Length',size)
-  RESPONSE.setHeader('Accept-Ranges','bytes')
+    RESPONSE.setHeader('Content-Length', size)
+  RESPONSE.setHeader('Accept-Ranges', 'bytes')
 
 
 security.declarePublic('umlaut_quote')
@@ -160,11 +170,11 @@ def umlaut_quote(s, mapping={}):
   @return: Quoted string
   @rtype: C{str}
   """
-  if type(s) is not unicode:
-    s = unicode(s,'utf-8')
+  if not isinstance(s, str):
+    s = str(s, 'utf-8')
   map( lambda x: operator.setitem( mapping, x, _globals.umlaut_map[x]), _globals.umlaut_map.keys())
   for key in mapping.keys():
-    s = s.replace(key,mapping[key])
+    s = s.replace(key, mapping[key])
   s = s.encode('utf-8')
   return s
 
@@ -196,13 +206,13 @@ def url_append_params(url, dict, sep='&amp;'):
     qs = sep
   for key in dict.keys():
     value = dict[key]
-    if type(value) is list:
+    if isinstance(value, list):
       for item in value:
-        qi = key + ':list=' + urllib.quote(str(item))
+        qi = key + ':list=' + urllib.parse.quote(str(item))
         url += qs + qi
         qs = sep
     else:
-      qi = key + '=' + urllib.quote(str(value))
+      qi = key + '=' + urllib.parse.quote(str(value))
       if url.find( '?' + qi) < 0 and url.find( '&' + qi) < 0 and url.find( '&amp;' + qi) < 0:
         url += qs + qi
       qs = sep
@@ -235,19 +245,19 @@ def url_inherit_params(url, REQUEST, exclude=[], sep='&amp;'):
             url += '?'
           else:
             url += sep
-          if type(v) is int:
-            url += urllib.quote(key+':int') + '=' + urllib.quote(str(v))
-          elif type(v) is float:
-            url += urllib.quote(key+':float') + '=' + urllib.quote(str(v))
-          elif type(v) is list:
+          if isinstance(v, int):
+            url += urllib.parse.quote(key+':int') + '=' + urllib.parse.quote(str(v))
+          elif isinstance(v, float):
+            url += urllib.parse.quote(key+':float') + '=' + urllib.parse.quote(str(v))
+          elif isinstance(v, list):
             c = 0
             for i in v:
               if c > 0:
                 url += sep
-              url += urllib.quote(key+':list') + '=' + urllib.quote(str(i))
+              url += urllib.parse.quote(key+':list') + '=' + urllib.parse.quote(str(i))
               c = c + 1
           else:
-            url += key + '=' + urllib.quote(str(v))
+            url += key + '=' + urllib.parse.quote(str(v))
   return url+anchor
 
 
@@ -267,7 +277,7 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
   @rtype: C{str}
   """
   if encoding is not None:
-    s = unicode( s, encoding)
+    s = str( s, encoding)
   # remove all tags.
   s = re.sub( '<!--(.*?)-->', '', s)
   s = re.sub( '<script((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</script>', '', s)
@@ -296,8 +306,8 @@ def url_encode(url):
   @return: Encoded string
   @rtype: C{str}
   """
-  for ch in ['[',']',' ','(',')']:
-    url = url.replace(ch,'%'+bin2hex(ch).upper())
+  for ch in ['[', ']', ' ', '(', ')']:
+    url = url.replace(ch, '%'+bin2hex(ch).upper())
   return url
 
 
@@ -334,7 +344,7 @@ def bin2hex(m):
   @return: String
   @rtype: C{str}
   """
-  return ''.join(map(lambda x: hex(ord(x)//16)[-1]+hex(ord(x)%16)[-1],m))
+  return ''.join(map(lambda x: hex(ord(x)//16)[-1]+hex(ord(x)%16)[-1], m))
 
 
 def hex2bin(m):
@@ -345,7 +355,7 @@ def hex2bin(m):
   @return: Integer
   @rtype: C{str}
   """
-  return ''.join(map(lambda x: chr(16*int('0x%s'%m[x*2],0)+int('0x%s'%m[x*2+1],0)),range(len(m)//2)))
+  return ''.join(map(lambda x: chr(16*int('0x%s'%m[x*2], 0)+int('0x%s'%m[x*2+1], 0)), list(range(len(m)//2))))
 
 
 security.declarePublic('encrypt_schemes')
@@ -421,7 +431,7 @@ def rand_int(n):
   @rtype: C{int}
   """
   from random import randint
-  return randint(0,n)
+  return randint(0, n)
 
 
 security.declarePublic('getDataSizeStr')
@@ -451,19 +461,19 @@ def unencode( p, enc='utf-8'):
   """
   Unencodes given parameter.
   """
-  if type( p) is dict:
+  if isinstance(p, dict):
     for key in p.keys():
-      if type( p[ key]) is unicode:
+      if isinstance(p[ key], str):
         p[ key] = p[ key].encode( enc)
-  elif type( p) is list:
+  elif isinstance(p, list):
     l = []
     for i in p:
-      if type( i) is unicode:
+      if isinstance(i, str):
         l.append( i.encode( enc))
       else:
         l.append( i)
     p = l
-  elif type( p) is unicode:
+  elif isinstance(p, str):
     p = p.encode( enc)
   return p
 
@@ -477,14 +487,14 @@ def id_prefix(s):
   @return: Id-prefix
   @rtype: C{str}
   """
-  return re.findall('^(\\D*)',s)[0]
+  return re.findall('^(\\D*)', s)[0]
 
 
 security.declarePublic('id_quote')
 def id_quote(s, mapping={
-        '\x20':'_',
-        '-':'_',
-        '/':'_',
+        '\x20': '_',
+        '-': '_',
+        '/': '_',
 }):
   """
   Converts given string to identifier (removes special-characters and
@@ -495,7 +505,7 @@ def id_quote(s, mapping={
   @rtype: C{str}
   """
   s = umlaut_quote(s, mapping)
-  valid = map( lambda x: ord(x[0]), mapping.values()) + [ord('_')] + range(ord('0'),ord('9')+1) + range(ord('A'),ord('Z')+1) + range(ord('a'),ord('z')+1)
+  valid = map( lambda x: ord(x[0]), mapping.values()) + [ord('_')] + list(range(ord('0'), ord('9')+1)) + list(range(ord('A'), ord('Z')+1)) + list(range(ord('a'), ord('z')+1))
   s = filter( lambda x: ord(x) in valid, s)
   while len(s) > 0 and s[0] == '_':
       s = s[1:]
@@ -524,7 +534,7 @@ def qs_append(qs, p, v):
     qs += '?'
   else:
     qs += '&amp;'
-  qs += p + '=' + urllib.quote(v)
+  qs += p + '=' + urllib.parse.quote(v)
   return qs
 
 
@@ -540,7 +550,7 @@ def nvl(a1, a2, n=None):
   @type a2: C{any}
   @rtype: C{any}
   """
-  if (n is None and a1 is not None) or (type(n) is str and a1 != n) or (type(n) is list and a1 not in n):
+  if (n is None and a1 is not None) or (isinstance(n, str) and a1 != n) or (isinstance(n, list) and a1 not in n):
     return a1
   else:
     return a2
@@ -563,7 +573,7 @@ def triggerEvent(context, *args, **kwargs):
 
   # Always call local trigger for global triggers.
   if name.startswith('*.'):
-    triggerEvent(context,name[2:]+'Local')
+    triggerEvent(context, name[2:]+'Local')
 
   # Pass custom event to zope ObjectModifiedEvent event.
   notify(ObjectModifiedEvent(context, name))
@@ -572,14 +582,14 @@ def triggerEvent(context, *args, **kwargs):
   if metaObj:
     # Process meta-object-triggers.
     context = context
-    v = context.evalMetaobjAttr(name,kwargs)
-    writeLog( context, "[triggerEvent]: %s=%s"%(name,str(v)))
+    v = context.evalMetaobjAttr(name, kwargs)
+    writeLog( context, "[triggerEvent]: %s=%s"%(name, str(v)))
     if v is not None:
       l.append(v)
     # Process zope-triggers.
-    m = getattr(context,name,None)
+    m = getattr(context, name, None)
     if m is not None:
-      m(context=context,REQUEST=context.REQUEST)
+      m(context=context, REQUEST=context.REQUEST)
   return l
 
 
@@ -590,7 +600,7 @@ def isManagementInterface(REQUEST):
   @rtype: C{Bool}
   """
   return REQUEST is not None and \
-         REQUEST.get('URL','').find('/manage') >= 0 and \
+         REQUEST.get('URL', '').find('/manage') >= 0 and \
          isPreviewRequest(REQUEST)
 
 
@@ -602,7 +612,7 @@ def isPreviewRequest(REQUEST):
   @rtype: C{Bool}
   """
   return REQUEST is not None and \
-         REQUEST.get('preview','') == 'preview'
+         REQUEST.get('preview', '') == 'preview'
 
 
 """
@@ -630,8 +640,8 @@ def unescape(s):
         new = ''
     else:
       old = s[i:i+3]
-      new = chr(int('0x'+s[i+1:i+3],0))
-    s = s.replace(old,new)
+      new = chr(int('0x'+s[i+1:i+3], 0))
+    s = s.replace(old, new)
   return s
 
 
@@ -655,9 +665,9 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   @rtype: C{str}
   """
   # Parse URL.
-  import urlparse
-  u = urlparse.urlparse(url)
-  writeLog( context, "[http_import.%s]: %s"%(method,str(u)))
+  import urllib.parse
+  u = urllib.parse.urlparse(url)
+  writeLog( context, "[http_import.%s]: %s"%(method, str(u)))
   scheme = u[0]
   netloc = u[1]
   path = u[2]
@@ -665,29 +675,29 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
 
   # Get Proxy.
   useproxy = True
-  noproxy = ['localhost','127.0.0.1']+filter(lambda x: len(x)>0,map(lambda x: x.strip(),context.getConfProperty('%s.noproxy'%scheme.upper(),'').split(',')))
+  noproxy = ['localhost', '127.0.0.1']+filter(lambda x: len(x)>0, map(lambda x: x.strip(), context.getConfProperty('%s.noproxy'%scheme.upper(), '').split(',')))
   for noproxyurl in noproxy:
-    if fnmatch.fnmatch(netloc,noproxyurl):
+    if fnmatch.fnmatch(netloc, noproxyurl):
       useproxy = False
       break
   if useproxy:
-    proxy = context.getConfProperty('%s.proxy'%scheme.upper(),'')
+    proxy = context.getConfProperty('%s.proxy'%scheme.upper(), '')
     if len(proxy) > 0:
-      path = '%s://%s%s'%(scheme,netloc,path)
+      path = '%s://%s%s'%(scheme, netloc, path)
       netloc = proxy
 
   # Open HTTP connection.
-  import httplib
-  writeLog( context, "[http_import.%s]: %sConnection(%s) -> %s"%(method,scheme,netloc,path))
+  import http.client
+  writeLog( context, "[http_import.%s]: %sConnection(%s) -> %s"%(method, scheme, netloc, path))
   if scheme == 'http':
-    conn = httplib.HTTPConnection(netloc,timeout=timeout)
+    conn = http.client.HTTPConnection(netloc, timeout=timeout)
   else:
-    conn = httplib.HTTPSConnection(netloc,timeout=timeout)
+    conn = http.client.HTTPSConnection(netloc, timeout=timeout)
 
   # Set request-headers.
   if auth is not None:
     userpass = auth['username']+':'+auth['password']
-    userpass = base64.encodestring(urllib.unquote(userpass)).strip()
+    userpass = base64.encodestring(urllib.parse.unquote(userpass)).strip()
     headers['Authorization'] =  'Basic '+userpass
   if method == 'GET' and query:
     path += '?' + query
@@ -699,7 +709,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
 
   #### get parameter from content
   if reply_code == 404 or reply_code >= 500:
-    error = "[%i]: %s at %s [%s]"%(reply_code,message,url,method)
+    error = "[%i]: %s at %s [%s]"%(reply_code, message, url, method)
     writeLog( context, "[http_import.error]: %s"%error)
     raise zExceptions.InternalError(error)
   elif reply_code==200:
@@ -711,7 +721,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
         # return dictionary of value lists
         data = cgi.parse_qs(data, keep_blank_values=1, strict_parsing=1)
       except:
-        writeError(context,'[http_import]: can\'t parse_qs')
+        writeError(context, '[http_import]: can\'t parse_qs')
     return data
   else:
     result = '['+str(reply_code)+']: '+str(message)
@@ -733,10 +743,10 @@ def getLog(context):
   if request.has_key('ZMSLOG'):
     zms_log = request.get('ZMSLOG')
   else:
-    zms_log = getattr(context,'zms_log',None)
+    zms_log = getattr(context, 'zms_log', None)
     if zms_log is None:
-      zms_log = getattr(context.getPortalMaster(),'zms_log',None)
-    request.set('ZMSLOG',zms_log)
+      zms_log = getattr(context.getPortalMaster(), 'zms_log', None)
+    request.set('ZMSLOG', zms_log)
   return zms_log
 
 security.declarePublic('writeStdout')
@@ -762,7 +772,7 @@ def writeLog(context, info):
     zms_log = getLog(context)
     severity = logging.DEBUG
     if zms_log.hasSeverity(severity):
-      info = "[%s@%s] "%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
+      info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info
       zms_log.LOG( severity, info)
   except:
     pass
@@ -780,7 +790,7 @@ def writeBlock(context, info):
     zms_log = getLog(context)
     severity = logging.INFO
     if zms_log.hasSeverity(severity):
-      info = "[%s@%s] "%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
+      info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info
       zms_log.LOG( severity, info)
   except:
     pass
@@ -794,18 +804,18 @@ def writeError(context, info):
   @type info: C{any}
   @rtype: C{str}
   """
-  t,v='?','?'
+  t, v='?', '?'
   try:
-    t,v,tb = sys.exc_info()
+    t, v, tb = sys.exc_info()
     if t is not None:
       v = str(v)
       # Strip HTML tags from the error value
       for pattern in [r"<[^<>]*>", r"&[A-Za-z]+;"]:
-        v = re_sub(pattern,' ', v)
+        v = re_sub(pattern, ' ', v)
       if info:
         info += '\n'
       info += ''.join(format_exception(t, v, tb))
-    info = "[%s@%s] "%(context.meta_id,'/'.join(context.getPhysicalPath())) + info
+    info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info
     zms_log = getLog(context)
     severity = logging.ERROR
     if zms_log.hasSeverity(severity):
@@ -813,7 +823,7 @@ def writeError(context, info):
     t = t.__name__.upper()
   except:
     pass
-  return '%s: %s <!-- %s -->'%(t,v,info)
+  return '%s: %s <!-- %s -->'%(t, v, info)
 
 #)
 
@@ -851,7 +861,7 @@ def re_search( pattern, subject, ignorecase=False):
     s = re.compile( pattern, re.IGNORECASE).split( subject)
   else:
     s = re.compile( pattern).split( subject)
-  return map( lambda x: s[x*2+1], range(len(s)//2))
+  return map( lambda x: s[x*2+1], list(range(len(s)//2)))
 
 security.declarePublic('re_findall')
 def re_findall( pattern, text, ignorecase=False):
@@ -915,7 +925,7 @@ def format_datetime_iso(t):
   tz = abs(tz)
   tzh = tz//60//60
   tzm = (tz-tzh*60*60)//60
-  return time.strftime('%Y-%m-%dT%H:%M:%S',t)+tch+('00%d'%tzh)[-2:]+':'+('00%d'%tzm)[-2:]
+  return time.strftime('%Y-%m-%dT%H:%M:%S', t)+tch+('00%d'%tzh)[-2:]+':'+('00%d'%tzm)[-2:]
 
 def getLangFmtDate(context, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
   """
@@ -935,34 +945,34 @@ def getLangFmtDate(context, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
     # Return ModificationTime
     if fmt_str == 'BOBOBASE_MODIFICATION_FMT':
       sdtf = context.getLangFmtDate(t, lang, fmt_str='SHORTDATETIME_FMT')
-      if context.daysBetween(t,DateTime()) > context.getConfProperty('ZMS.shortDateFormat.daysBetween',5):
+      if context.daysBetween(t, DateTime()) > context.getConfProperty('ZMS.shortDateFormat.daysBetween', 5):
         sdf = context.getLangFmtDate(t, lang, fmt_str='SHORTDATE_FMT')
-        return '<span title="%s">%s</span>'%(sdtf,sdf)
+        return '<span title="%s">%s</span>'%(sdtf, sdf)
       return sdtf
     # Return DateTime
     if fmt_str == 'DateTime':
-      dt = DateTime('%4d/%2d/%2d'%(t[0],t[1],t[2]))
+      dt = DateTime('%4d/%2d/%2d'%(t[0], t[1], t[2]))
       return dt
     # Return name of weekday
     elif fmt_str == 'Day':
-      dt = DateTime('%4d/%2d/%2d'%(t[0],t[1],t[2]))
-      return context.getLangStr('DAYOFWEEK%i'%(dt.dow()%7),lang)
+      dt = DateTime('%4d/%2d/%2d'%(t[0], t[1], t[2]))
+      return context.getLangStr('DAYOFWEEK%i'%(dt.dow()%7), lang)
     # Return name of month
     elif fmt_str == 'Month':
-      return context.getLangStr('MONTH%i'%t[1],lang)
-    elif fmt_str.replace('-','').replace(' ','') in ['ISO8601','RFC2822']:
+      return context.getLangStr('MONTH%i'%t[1], lang)
+    elif fmt_str.replace('-', '').replace(' ', '') in ['ISO8601', 'RFC2822']:
       return format_datetime_iso(t)
     # Return date/time
-    fmt = context.getLangStr(fmt_str,lang)
-    time_fmt = context.getLangStr('TIME_FMT',lang)
-    date_fmt = context.getLangStr('DATE_FMT',lang)
+    fmt = context.getLangStr(fmt_str, lang)
+    time_fmt = context.getLangStr('TIME_FMT', lang)
+    date_fmt = context.getLangStr('DATE_FMT', lang)
     if fmt.find(time_fmt) >= 0:
       if t[3] == 0 and \
          t[4] == 0 and \
          t[5]== 0:
         fmt = fmt[:-len(time_fmt)]
     fmt = fmt.strip()
-    return time.strftime(fmt,t)
+    return time.strftime(fmt, t)
   except:
     #-- writeError(context,"[getLangFmtDate]: t=%s"%str(t))
     return str(t)
@@ -990,9 +1000,9 @@ def getDateTime(t):
         if st.rfind('.')>0:
           st = st[:st.rfind('.')]
         t = time.strptime( st, f)
-      if type(t) is tuple:
+      if isinstance(t, tuple):
         t = time.mktime( t)
-      if type(t) is not time.struct_time:
+      if not isinstance(t, time.struct_time):
         t = time.localtime( t)
     except:
       pass
@@ -1006,7 +1016,7 @@ def stripDateTime(t):
   d = None
   if t is not None:
     t = getDateTime(t)
-    d = (t[0],t[1],t[2],0,0,0,t[6],t[7],t[8])
+    d = (t[0], t[1], t[2], 0, 0, 0, t[6], t[7], t[8])
   return d
 
 security.declarePublic('daysBetween')
@@ -1051,14 +1061,14 @@ def parseLangFmtDate(s):
   """
   def strip_int(s):
     i = 0
-    while i < len(s) and ord(s[i]) in range(ord('0'),ord('9')+1):
+    while i < len(s) and ord(s[i]) in range(ord('0'), ord('9')+1):
       i = i + 1
     return i
   value = None
-  for fmt in ['%d.%m.%Y %H:%M:%S','%Y/%m/%d %H:%M:%S','%Y-%m-%d %H:%M:%S','%H:%M:%S']:
+  for fmt in ['%d.%m.%Y %H:%M:%S', '%Y/%m/%d %H:%M:%S', '%Y-%m-%d %H:%M:%S', '%H:%M:%S']:
     if value is None:
       try:
-        if isinstance(s,DateTime):
+        if isinstance(s, DateTime):
           s = s.strftime( fmt)
         if s is not None and len(str(s)) > 0:
           dctTime = {'Y':0,'m':0,'d':0,'H':0,'M':0,'S':0}
@@ -1090,14 +1100,14 @@ def parseLangFmtDate(s):
           if dctTime['Y'] in range( 50, 100):
             dctTime['Y'] = dctTime['Y'] + 1900
           if len(v.strip())>0 or \
-             (dctTime['Y']+dctTime['m']+dctTime['d']!=0 and dctTime['Y']-1 not in range(1900,2100)) or \
-             (dctTime['Y']+dctTime['m']+dctTime['d']!=0 and dctTime['m']-1 not in range(12)) or \
-             (dctTime['Y']+dctTime['m']+dctTime['d']!=0 and dctTime['d']-1 not in range(31)) or \
-             (dctTime['H']!=0 and dctTime['H']-1 not in range(24)) or \
-             (dctTime['M']!=0 and dctTime['M']-1 not in range(60)) or \
-             (dctTime['S']!=0 and dctTime['S']-1 not in range(60)):
+             (dctTime['Y']+dctTime['m']+dctTime['d']!=0 and dctTime['Y']-1 not in list(range(1900, 2100))) or \
+             (dctTime['Y']+dctTime['m']+dctTime['d']!=0 and dctTime['m']-1 not in list(range(12))) or \
+             (dctTime['Y']+dctTime['m']+dctTime['d']!=0 and dctTime['d']-1 not in list(range(31))) or \
+             (dctTime['H']!=0 and dctTime['H']-1 not in list(range(24))) or \
+             (dctTime['M']!=0 and dctTime['M']-1 not in list(range(60))) or \
+             (dctTime['S']!=0 and dctTime['S']-1 not in list(range(60))):
             raise zExceptions.InternalError
-          value = getDateTime((dctTime['Y'],dctTime['m'],dctTime['d'],dctTime['H'],dctTime['M'],dctTime['S'],0,1,-1))
+          value = getDateTime((dctTime['Y'], dctTime['m'], dctTime['d'], dctTime['H'], dctTime['M'], dctTime['S'], 0, 1, -1))
       except:
         pass
   return value
@@ -1147,7 +1157,7 @@ def operator_setitem(a, b, c):
   @type c: C{any}
   @rtype: C{dict}
   """
-  operator.setitem(a,b,c)
+  operator.setitem(a, b, c)
   return a
 
 security.declarePublic('operator_getitem')
@@ -1166,10 +1176,10 @@ def operator_getitem(a, b, c=None, ignorecase=True):
     flags = re.IGNORECASE
     pattern = '^%s$'%b
     for key in a.keys():
-      if re.search(pattern,key,flags) is not None:
-        return operator.getitem(a,key)
+      if re.search(pattern, key, flags) is not None:
+        return operator.getitem(a, key)
   if b in a.keys():
-    return operator.getitem(a,b)
+    return operator.getitem(a, b)
   return c
 
 security.declarePublic('operator_delitem')
@@ -1197,7 +1207,7 @@ def operator_setattr(a, b, c):
   @type c: C{any}
   @rtype: C{object}
   """
-  setattr(a,b,c)
+  setattr(a, b, c)
   return a
 
 security.declarePublic('operator_getattr')
@@ -1214,7 +1224,7 @@ def operator_getattr(a, b, c=None):
   @type c: C{any}
   @rtype: C{any}
   """
-  return getattr(a,b,c)
+  return getattr(a, b, c)
 
 security.declarePublic('operator_delattr')
 def operator_delattr(a, b):
@@ -1225,7 +1235,7 @@ def operator_delattr(a, b):
   @param b: Key
   @type b: C{any}
   """
-  return delattr(a,b)
+  return delattr(a, b)
 
 #)
 
@@ -1254,19 +1264,19 @@ def localfs_read(filename, mode='b', cache='public, max-age=3600', REQUEST=None)
   @rtype: C{string} or C{filestream_iterator}
   """
   try:
-    filename = unicode(filename,'utf-8').encode('latin-1')
+    filename = str(filename, 'utf-8').encode('latin-1')
   except:
     pass
   # Get absolute filename.
   filename = _fileutil.absoluteOSPath(filename)
   # Read file.
-  if type( mode) is dict:
-    fdata, mt, enc, fsize = _fileutil.readFile( filename, mode.get('mode','b'), mode.get('threshold',-1))
+  if isinstance(mode, dict):
+    fdata, mt, enc, fsize = _fileutil.readFile( filename, mode.get('mode', 'b'), mode.get('threshold', -1))
   else:
     fdata, mt, enc, fsize = _fileutil.readFile( filename, mode)
   if REQUEST is not None:
     RESPONSE = REQUEST.RESPONSE
-    set_response_headers(filename,mt,fsize,REQUEST)
+    set_response_headers(filename, mt, fsize, REQUEST)
     RESPONSE.setHeader('Cache-Control', cache)
     RESPONSE.setHeader('Content-Encoding', enc)
   return fdata
@@ -1301,7 +1311,7 @@ def localfs_readPath(filename, data=False, recursive=False, REQUEST=None):
   @rtype: C{list}
   """
   try:
-    filename = unicode(filename,'utf-8').encode('latin-1')
+    filename = str(filename, 'utf-8').encode('latin-1')
   except:
     pass
   # Get absolute filename.
@@ -1378,7 +1388,7 @@ def dict_list(l):
   @rtype: C{dict}
   """
   dict = {}
-  for i in range(0,len(l)//2):
+  for i in range(0, len(l)//2):
     key = l[i*2]
     value = l[i*2+1]
     dict[key] = value
@@ -1397,8 +1407,8 @@ def distinct_list(l, i=None):
   for x in l:
     if i is None:
       v = x
-    elif type(i) is str:
-      v = x.get(i,None)
+    elif isinstance(i, str):
+      v = x.get(i, None)
     else:
       v = x[i]
     if not v in k:
@@ -1415,16 +1425,16 @@ def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
   """
   if qorder is None:
     sorted = map(lambda x: (x, x), l)
-  elif type(qorder) is str:
-    sorted = map(lambda x: (_globals.sort_item(x.get(qorder,None)),x),l)
-  elif type(qorder) is list:
-    sorted = map(lambda x: (map(lambda y: _globals.sort_item(x[y]), qorder),x),l)
+  elif isinstance(qorder, str):
+    sorted = map(lambda x: (_globals.sort_item(x.get(qorder, None)), x), l)
+  elif isinstance(qorder, list):
+    sorted = map(lambda x: (map(lambda y: _globals.sort_item(x[y]), qorder), x), l)
   else:
-    sorted = map(lambda x: (_globals.sort_item(x[qorder]),x),l)
-  if ignorecase==1 and len(sorted) > 0 and type(sorted[0][0]) is str:
-    sorted = map(lambda x: (str(x[0]).upper(),x[1]),sorted)
+    sorted = map(lambda x: (_globals.sort_item(x[qorder]), x), l)
+  if ignorecase==1 and len(sorted) > 0 and isinstance(sorted[0][0], str):
+    sorted = map(lambda x: (str(x[0]).upper(), x[1]), sorted)
   sorted.sort()
-  sorted = map(lambda x: x[1],sorted)
+  sorted = map(lambda x: x[1], sorted)
   if qorderdir == 'desc': sorted.reverse()
   return sorted
 
@@ -1455,22 +1465,22 @@ def is_equal(x, y):
   Compare the two objects x and y for equality.
   @rtype: C{Bool}
   """
-  if type(x) == type(y):
-    if type(x) is list or type(x) is tuple:
+  if isinstance(x, type(y)):
+    if isinstance(x, list) or isinstance(x, tuple):
       if len(x) == len(y):
         for i in range(len(x)):
-          if not is_equal(x[i],y[i]):
+          if not is_equal(x[i], y[i]):
             return False
         return True
-    elif type(x) is dict:
+    elif isinstance(x, dict):
       if len(x.keys()) == len(y.keys()):
         for k in x.keys():
-          if k not in x or k not in y or not is_equal(x.get(k),y.get(k)):
+          if k not in x or k not in y or not is_equal(x.get(k), y.get(k)):
             return False
         return True
-    elif isinstance(x,_blobfields.MyBlob):
-      return cmp(x.toXml(),y.toXml())==0
-  return cmp(x,y)==0
+    elif isinstance(x, _blobfields.MyBlob):
+      return cmp(x.toXml(), y.toXml())==0
+  return cmp(x, y)==0
 
 
 security.declarePublic('str_json')
@@ -1479,27 +1489,26 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
   Returns a json-string representation of the object.
   @rtype: C{str}
   """
-  if type(i) is list or type(i) is tuple:
+  if isinstance(i, list) or isinstance(i, tuple):
     return '[' \
-        + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(map(lambda x: str_json(x,encoding,errors,formatted,level+1),i)) \
+        + (['', '\n'][formatted]+(['', '\t'][formatted]*level)+',').join(map(lambda x: str_json(x, encoding, errors, formatted, level+1), i)) \
         + ']'
-  elif type(i) is dict:
-    k = i.keys()
-    k.sort()
+  elif isinstance(i, dict):
+    k = sorted(i.keys())
     return '{' \
-        + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(map(lambda x: '"%s":%s'%(x,str_json(i[x],encoding,errors,formatted,level+1)),k)) \
+        + (['', '\n'][formatted]+(['', '\t'][formatted]*level)+',').join(map(lambda x: '"%s":%s'%(x, str_json(i[x], encoding, errors, formatted, level+1)), k)) \
         + '}'
-  elif type(i) is time.struct_time:
+  elif isinstance(i, time.struct_time):
     try:
       return '"%s"'%format_datetime_iso(i)
     except:
       pass
-  elif type(i) is int or type(i) is float:
+  elif isinstance(i, int) or isinstance(i, float):
     return str(i)
-  elif type(i) is bool:
+  elif isinstance(i, bool):
     return str(i).lower()
   elif i is not None:
-    if type(i) is unicode:
+    if isinstance(i, str):
       if not (i.strip().startswith('<') and i.strip().endswith('>')):
         import cgi
         i = cgi.escape(i).encode(encoding, errors)
@@ -1507,10 +1516,10 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
         i = i.encode(encoding, errors)
     else:
       i = str(i)
-    if i in ['true','false']:
+    if i in ['true', 'false']:
       return i
     else:
-      return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
+      return '"%s"'%(i.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r'))
   return '""'
 
 
@@ -1520,11 +1529,11 @@ def str_item(i):
   Returns a string representation of the item.
   @rtype: C{str}
   """
-  if type(i) is list or type(i) is tuple:
-    return '\n'.join(map(lambda x: str_item(x),i))
-  elif type(i) is dict:
-    return '\n'.join(map(lambda x: str_item(i[x]),i.keys()))
-  elif type(i) is time.struct_time:
+  if isinstance(i, list) or isinstance(i, tuple):
+    return '\n'.join(map(lambda x: str_item(x), i))
+  elif isinstance(i, dict):
+    return '\n'.join(map(lambda x: str_item(i[x]), i.keys()))
+  elif isinstance(i, time.struct_time):
     try:
       return format_datetime_iso(i)
     except:
@@ -1555,33 +1564,33 @@ def filter_list(l, i, v, o='%'):
     k = []
     if len(v.split(' OR '))>1:
       for s in v.split(' OR '):
-        s = s.replace('*','').strip()
+        s = s.replace('*', '').strip()
         if len( s) > 0:
           s = umlaut_quote(s).lower()
           k.extend(filter(lambda x: x not in k and umlaut_quote(str_item(x)).lower().find(s)>=0, l))
     elif len(v.split(' AND '))>1:
       k = l
       for s in v.split(' AND '):
-        s = s.replace('*','').strip()
+        s = s.replace('*', '').strip()
         if len( s) > 0:
           s = umlaut_quote(s).lower()
           k = filter(lambda x: umlaut_quote(str_item(x)).lower().find(s)>=0, k)
     else:
-      v = v.replace('*','').strip().lower()
+      v = v.replace('*', '').strip().lower()
       if len( v) > 0:
         v = umlaut_quote(v).lower()
         k = filter(lambda x: umlaut_quote(str_item(x)).lower().find(v)>=0, l)
     return k
   # Extract Items.
-  if type(i) is str:
-    k=map(lambda x: (x.get(i,None),x), l)
+  if isinstance(i, str):
+    k=map(lambda x: (x.get(i, None), x), l)
   else:
-    k=map(lambda x: (x[i],x), l)
+    k=map(lambda x: (x[i], x), l)
   # Filter Date-Tuples
-  if type(v) is tuple or type(v) is time.struct_time:
-    v = DateTime('%4d/%2d/%2d'%(v[0],v[1],v[2]))
+  if isinstance(v, tuple) or isinstance(v, time.struct_time):
+    v = DateTime('%4d/%2d/%2d'%(v[0], v[1], v[2]))
   # Filter Strings.
-  if type(v) is str or o=='%':
+  if isinstance(v, str) or o=='%':
     if o=='=' or o=='==':
       k=filter(lambda x: str_item(x[0])==v, k)
     elif o=='<>' or o=='!=':
@@ -1589,11 +1598,11 @@ def filter_list(l, i, v, o='%'):
     else:
       v = str_item(v).lower()
       if v.find('*')>=0 or v.find('?')>=0:
-        k=filter(lambda x: fnmatch.fnmatch(str_item(x[0]).lower(),v), k)
+        k=filter(lambda x: fnmatch.fnmatch(str_item(x[0]).lower(), v), k)
       else:
         k=filter(lambda x: str_item(x[0]).lower().find(v)>=0, k)
   # Filter Numbers.
-  elif type(v) is int or type(v) is float:
+  elif isinstance(v, int) or isinstance(v, float):
     if o=='=' or o=='==':
       k=filter(lambda x: x[0]==v, k)
     elif o=='<':
@@ -1607,16 +1616,16 @@ def filter_list(l, i, v, o='%'):
     elif o=='<>' or o=='!=':
       k=filter(lambda x: x[0]!=v, k)
   # Filter Lists.
-  elif type(v) is list:
+  elif isinstance(v, list):
     if o=='=' or o=='==':
       k=filter(lambda x: x[0]==v, k)
     elif o=='in':
       k=filter(lambda x: x[0] in v, k)
   # Filter DateTimes.
-  elif isinstance(v,DateTime):
+  elif isinstance(v, DateTime):
     k=filter(lambda x: x[0] is not None, k)
-    k=map(lambda x: (getDateTime(x[0]),x[1]), k)
-    k=map(lambda x: (DateTime('%4d/%2d/%2d'%(x[0][0],x[0][1],x[0][2])),x[1]), k)
+    k=map(lambda x: (getDateTime(x[0]), x[1]), k)
+    k=map(lambda x: (DateTime('%4d/%2d/%2d'%(x[0][0], x[0][1], x[0][2])), x[1]), k)
     if o=='=' or o=='==':
       k=filter(lambda x: x[0].equalTo(v), k)
     elif o=='<':
@@ -1655,19 +1664,19 @@ def sync_list(l, nl, i):
   """
   k = []
   for x in l:
-    k.extend([x[i],x])
+    k.extend([x[i], x])
   for x in nl:
     if x[i] in k:
       j = k.index(x[i])+1
-      if type(x) is dict:
+      if isinstance(x, dict):
         v = k[j]
         for xk in x.keys():
           v[xk] = x[xk]
         x = v
       k[j] = x
     else:
-      k.extend([x[i],x])
-  return map(lambda x: k[x*2+1], range(0,len(k)//2))
+      k.extend([x[i], x])
+  return map(lambda x: k[x*2+1], list(range(0, len(k)//2)))
 
 
 security.declarePublic('aggregate_list')
@@ -1686,7 +1695,7 @@ def aggregate_list(l, i):
     mi[i] = []
     ks = ki.keys()
     for li in l:
-      if len(ks) == len(filter(lambda x: x==i or ki[x]==li[x],ks)):
+      if len(ks) == len(filter(lambda x: x==i or ki[x]==li[x], ks)):
         mi[i].append(li[i])
     m.append(mi)
   return m
@@ -1738,7 +1747,7 @@ def parseXmlString(xml):
   @rtype: C{any}
   """
   builder = _xmllib.XmlAttrBuilder()
-  if type(xml) is str:
+  if isinstance(xml, str):
     xml = StringIO(xml)
   v = builder.parse(xml)
   return v
@@ -1803,11 +1812,11 @@ def dt_exec(context, v, o={}):
   """
   if _globals.is_str_type(v):
     if v.startswith('##'):
-      v = dt_py(context,v,o)
+      v = dt_py(context, v, o)
     elif v.find('<tal:') >= 0:
-      v = dt_tal(context,v,dict(o))
+      v = dt_tal(context, v, dict(o))
     elif v.find('<dtml-') >= 0:
-      v = dt_html(context,v,context.REQUEST)
+      v = dt_html(context, v, context.REQUEST)
   return v
 
 def dt_html(context, value, REQUEST):
@@ -1834,7 +1843,7 @@ def dt_html(context, value, REQUEST):
     if value[ j-1] == '/':
       value = value[ :j-1] + value[ j:]
     i = j
-  value = re.sub( '<dtml-sendmail(.*?)>(\r\n|\n)','<dtml-sendmail\\1>',value)
+  value = re.sub( '<dtml-sendmail(.*?)>(\r\n|\n)', '<dtml-sendmail\\1>', value)
   value = re.sub( '</dtml-var>', '', value)
   dtml = DocumentTemplate.DT_HTML.HTML(value)
   value = dtml( context, REQUEST)
@@ -1869,13 +1878,13 @@ def dt_py( context, script, kw={}):
   ps = PythonScript("~temp")
   ps.write(data)
   bound_names = {
-      'traverse_subpath':[],
-      'container':context,
-      'context':context,
-      'script':ps,
+      'traverse_subpath': [],
+      'container': context,
+      'context': context,
+      'script': ps,
     }
   args = ()
-  return ps._exec(bound_names,args,kw)
+  return ps._exec(bound_names, args, kw)
 
 def dt_tal(context, text, options={}):
   """
@@ -1888,7 +1897,7 @@ def dt_tal(context, text, options={}):
   @rtype: C{any}
   """
   class StaticPageTemplateFile(_globals.StaticPageTemplateFile):
-    def setText(self,text):
+    def setText(self, text):
       self.text = text
     def _cook_check(self):
       t = 'text/html'
@@ -1896,9 +1905,9 @@ def dt_tal(context, text, options={}):
       self._cook()
   pt = StaticPageTemplateFile(filename='None')
   pt.setText(text)
-  pt.setEnv(context,options)
+  pt.setEnv(context, options)
   request = context.REQUEST
-  return unicode(pt.pt_render(extra_context={'here':context,'request':request})).encode('utf-8')
+  return str(pt.pt_render(extra_context={'here':context,'request':request})).encode('utf-8')
 
 #}
 
@@ -1924,23 +1933,23 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
   from email.mime.application import MIMEApplication
 
   # Check constraints.
-  if type(mto) is str:
+  if isinstance(mto, str):
     mto = {'To':mto}
-  if type(mbody) is str:
+  if isinstance(mbody, str):
     mbody = [{'text':mbody}]
 
   # Get sender.
   if REQUEST is not None:
     auth_user = REQUEST['AUTHENTICATED_USER']
-    mto['From'] = mto.get('From',context.getUserAttr(auth_user,'email',context.getConfProperty('ZMSAdministrator.email','')))
+    mto['From'] = mto.get('From', context.getUserAttr(auth_user, 'email', context.getConfProperty('ZMSAdministrator.email', '')))
 
   # Get MailHost.
   mailhost = None
   homeElmnt = context.getHome()
   if len(homeElmnt.objectValues(['Mail Host'])) == 1:
     mailhost = homeElmnt.objectValues(['Mail Host'])[0]
-  elif getattr(homeElmnt,'MailHost',None) is not None:
-    mailhost = getattr(homeElmnt,'MailHost',None)
+  elif getattr(homeElmnt, 'MailHost', None) is not None:
+    mailhost = getattr(homeElmnt, 'MailHost', None)
 
   # Assemble MIME object.
   #mime_msg = MIMEMultipart('related') # => attachments do not show up in iOS Mail (just as paperclip indicator)
@@ -1956,7 +1965,7 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
   msgAlternative = MIMEMultipart('alternative')
   mime_msg.attach(msgAlternative)
   for ibody in mbody:
-    msg = MIMEText(ibody['text'], _subtype=ibody.get('subtype','plain'), _charset=ibody.get('charset','unicode-1-1-utf-8'))
+    msg = MIMEText(ibody['text'], _subtype=ibody.get('subtype', 'plain'), _charset=ibody.get('charset', 'unicode-1-1-utf-8'))
     msgAlternative.attach(msg)
 
   # Handle attachments
@@ -1976,23 +1985,23 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
         fileextn = 'dat'
         metadata = re_search('(^.*[;,])', filedata)
         # extract filename, mimetype and encoding if available
-        if (type(metadata)==list and len(metadata)==1):
+        if (isinstance(metadata, list) and len(metadata)==1):
           mimetype = re_search('data:([^;,]+[;,][^;,]*)', metadata[0])
           filename = re_search('filename:([^;,]+)', metadata[0])
           filedata = filedata.replace(metadata[0], '')
-        if (type(mimetype)==list and len(mimetype)==1):
+        if (isinstance(mimetype, list) and len(mimetype)==1):
           mimetype = mimetype[0].split(';')
-          if type(mimetype)==list and len(mimetype)==2:
+          if isinstance(mimetype, list) and len(mimetype)==2:
             maintype = mimetype[0]
             encoding = mimetype[1]
-        if (type(filename)==list and len(filename)==1):
+        if (isinstance(filename, list) and len(filename)==1):
           filename = filename[0]
         else:
           subtypes = maintype.split('/')
-          if (type(subtypes)==list and len(subtypes)==2):
+          if (isinstance(subtypes, list) and len(subtypes)==2):
             filetype = subtypes[0]
             fileextn = subtypes[1]
-          filename = '%s.%s'%(filetype,fileextn)
+          filename = '%s.%s'%(filetype, fileextn)
         # decode if already encoded because MIME* is encoding by default
         if encoding=='base64':
           filedata = base64.b64decode(filedata)
@@ -2016,7 +2025,7 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
     mailhost.send(mime_msg.as_string())
     return 0
   except:
-    writeError(context,'[sendMail]: can\'t send')
+    writeError(context, '[sendMail]: can\'t send')
     return -1
 
 
@@ -2047,19 +2056,19 @@ def getPlugin( context, path, options={}):
     raise zExceptions.Unauthorized
   # Execute plugin.
   try:
-    filename = os.path.join(package_home(globals()),'plugins',path)
+    filename = os.path.join(package_home(globals()), 'plugins', path)
     pt = _globals.StaticPageTemplateFile(filename)
-    pt.setEnv(context,options)
+    pt.setEnv(context, options)
     rtn = pt.pt_render(extra_context={'here':context,'request':request})
   except:
-    rtn = writeError(context,'[getPlugin]')
+    rtn = writeError(context, '[getPlugin]')
   return rtn
 
 
 ################################################################################
 # Define the initialize() util.
 ################################################################################
-class initutil:
+class initutil(object):
 
   def __init__(self):
     self.__attr_conf_dict__ = {}
@@ -2068,7 +2077,7 @@ class initutil:
     self.__attr_conf_dict__[key] = value
 
   def getConfProperty(self, key, default=None):
-    return self.__attr_conf_dict__.get(key,default)
+    return self.__attr_conf_dict__.get(key, default)
 
   def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
     return http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers)

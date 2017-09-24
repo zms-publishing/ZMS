@@ -82,8 +82,8 @@ class ZMSFormatProviderAcquired(
         rtn.extend(copy.deepcopy(portal_master.getCharFormats()))
         for d in rtn:
           btn = d.get('btn')
-          if type(btn) is str and btn.find('/') < 0:
-            d['btn'] = '%s/%s'%(portal_master.getFormatManager().absolute_url(),btn)
+          if isinstance(btn, str) and btn.find('/') < 0:
+            d['btn'] = '%s/%s'%(portal_master.getFormatManager().absolute_url(), btn)
       return rtn
 
 ################################################################################

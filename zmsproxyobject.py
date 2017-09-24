@@ -17,6 +17,7 @@
 ################################################################################
 
 # Imports.
+from builtins import map
 from zope.interface import implements
 # Product Imports.
 import IZMSMetamodelProvider, IZMSFormatProvider
@@ -497,7 +498,7 @@ class ZMSProxyObject(ZMSContainerObject):
     #  ZMSProxyObject.getDeclUrl:
     # --------------------------------------------------------------------------
     def getDeclUrl(self, REQUEST={}):
-      if self.getConfProperty('ZMS.pathhandler',0) == 0:
+      if self.getConfProperty('ZMS.pathhandler', 0) == 0:
         rtn = self.absolute_url()
       else:
         base = self.base

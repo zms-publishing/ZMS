@@ -17,9 +17,15 @@
 ################################################################################
 
 # Imports.
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
+from builtins import filter
+from builtins import str
 import ZPublisher.HTTPRequest
 import copy
-import urllib
+import urllib.request, urllib.parse, urllib.error
 # Product Imports.
 import standard
 import _blobfields
@@ -32,7 +38,7 @@ import _blobfields
 ###
 ################################################################################
 ################################################################################
-class ZMSCharformatManager:
+class ZMSCharformatManager(object):
 
     """
     ############################################################################
@@ -48,26 +54,26 @@ class ZMSCharformatManager:
 
     def _importCharformatXml(self, item, createIfNotExists=1):
       if createIfNotExists == 1:
-        newId = self.id_quote(item.get('display',''))
+        newId = self.id_quote(item.get('display', ''))
         if len(newId) == 0:
           newId = self.getNewId('fmt')
-        newId = item.get('id',newId)
-        newBtn = item.get('btn','')
-        newDisplay = item.get('display','')
-        newTag = item.get('tag','')
-        newAttrs = item.get('attrs','')
-        newJS = item.get('js','')
+        newId = item.get('id', newId)
+        newBtn = item.get('btn', '')
+        newDisplay = item.get('display', '')
+        newTag = item.get('tag', '')
+        newAttrs = item.get('attrs', '')
+        newJS = item.get('js', '')
         self.setCharformat( None, newId, newBtn, newDisplay, newTag, newAttrs, newJS)
         # Make persistent.
         self.charformats = copy.deepcopy(self.charformats)
 
     def importCharformatXml(self, xml, createIfNotExists=1):
       v = self.parseXmlString(xml)
-      if type(v) is list:
+      if isinstance(v, list):
         for item in v:
-          self._importCharformatXml(item,createIfNotExists)
+          self._importCharformatXml(item, createIfNotExists)
       else:
-        self._importCharformatXml(v,createIfNotExists)
+        self._importCharformatXml(v, createIfNotExists)
 
 
     # --------------------------------------------------------------------------
@@ -86,7 +92,7 @@ class ZMSCharformatManager:
       if len(charformats) == 1:
         ob = charformats[0]
         self.charformats.remove(ob)
-        self.charformats.insert(pos,ob)
+        self.charformats.insert(pos, ob)
         # Make persistent.
         self.charformats = copy.deepcopy(self.charformats)
 
@@ -147,20 +153,20 @@ class ZMSCharformatManager:
     def manage_changeCharformat(self, lang, REQUEST, RESPONSE):
       """ ZMSCharformatManager.manage_changeCharformat """
       message = ''
-      id = REQUEST.get('id','')
+      id = REQUEST.get('id', '')
       
       # Change.
       # -------
       if REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
         newId = REQUEST['new_id'].strip()
-        newBtn = REQUEST.get('new_btn','')
-        if isinstance(newBtn,ZPublisher.HTTPRequest.FileUpload) and newBtn.filename != '':
-          newBtn = _blobfields.createBlobField(self,_blobfields.MyImage,newBtn)
+        newBtn = REQUEST.get('new_btn', '')
+        if isinstance(newBtn, ZPublisher.HTTPRequest.FileUpload) and newBtn.filename != '':
+          newBtn = _blobfields.createBlobField(self, _blobfields.MyImage, newBtn)
         newDisplay = REQUEST['new_display'].strip()
         newTag = REQUEST['new_tag'].strip()
         newAttrs = REQUEST['new_attrs'].strip()
         newJS = REQUEST['new_js'].strip()
-        id = self.setCharformat(id,newId,newBtn,newDisplay,newTag,newAttrs,newJS)
+        id = self.setCharformat(id, newId, newBtn, newDisplay, newTag, newAttrs, newJS)
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Delete.
@@ -169,7 +175,7 @@ class ZMSCharformatManager:
         if id:
           ids = [id]
         else:
-          ids = REQUEST.get('ids',[])
+          ids = REQUEST.get('ids', [])
         for id in ids:
           self.delCharformat(id) 
         id = ''
@@ -180,17 +186,17 @@ class ZMSCharformatManager:
       elif REQUEST['btn'] == self.getZMILangStr('BTN_INSERT'):
         fmts = self.getCharFormats()
         newId = REQUEST['_id'].strip()
-        newBtn = REQUEST.get('_btn','')
-        if isinstance(newBtn,ZPublisher.HTTPRequest.FileUpload) and newBtn.filename != '':
-          newBtn = _blobfields.createBlobField(self,_blobfields.MyImage,newBtn)
+        newBtn = REQUEST.get('_btn', '')
+        if isinstance(newBtn, ZPublisher.HTTPRequest.FileUpload) and newBtn.filename != '':
+          newBtn = _blobfields.createBlobField(self, _blobfields.MyImage, newBtn)
         newDisplay = REQUEST['_display'].strip()
-        id = self.setCharformat(None,newId,newBtn,newDisplay)
+        id = self.setCharformat(None, newId, newBtn, newDisplay)
         message = self.getZMILangStr('MSG_INSERTED')%id
       
       # Export.
       # -------
       elif REQUEST['btn'] == self.getZMILangStr('BTN_EXPORT'):
-        ids = REQUEST.get('ids',[])
+        ids = REQUEST.get('ids', [])
         value = filter( lambda x: x['id'] in ids or len(ids) == 0, self.getCharFormats())
         value = map( lambda x: x.copy(), value)
         for x in value:
@@ -200,9 +206,9 @@ class ZMSCharformatManager:
           value = value[0]
         content_type = 'text/xml; charset=utf-8'
         filename = 'export.charfmt.xml'
-        export = self.getXmlHeader() + self.toXmlString(value,1)
-        RESPONSE.setHeader('Content-Type',content_type)
-        RESPONSE.setHeader('Content-Disposition','attachment;filename="%s"'%filename)
+        export = self.getXmlHeader() + self.toXmlString(value, 1)
+        RESPONSE.setHeader('Content-Type', content_type)
+        RESPONSE.setHeader('Content-Disposition', 'attachment;filename="%s"'%filename)
         return export
       
       # Import.
@@ -223,11 +229,11 @@ class ZMSCharformatManager:
         pos = REQUEST['pos']
         id = int(id)
         self.moveCharformat( self, id, pos)
-        message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%str(id)),(pos+1))
+        message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%str(id)), (pos+1))
         id = ''
       
       # Return with message.
-      message = urllib.quote(message)
-      return RESPONSE.redirect('manage_charformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang,message,id))
+      message = urllib.parse.quote(message)
+      return RESPONSE.redirect('manage_charformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
 
 ################################################################################

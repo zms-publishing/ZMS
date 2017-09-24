@@ -18,12 +18,19 @@ from __future__ import division
 ################################################################################
 
 # Imports.
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import filter
+from builtins import map
+from builtins import str
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import copy
 import sys
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 # Product Imports.
 import IZMSRepositoryProvider
 import standard
@@ -37,7 +44,7 @@ import zopeutil
 ###
 ################################################################################
 ################################################################################
-class ZMSWorkflowTransitionsManager:
+class ZMSWorkflowTransitionsManager(object):
 
   ############################################################################
   #
@@ -65,8 +72,8 @@ class ZMSWorkflowTransitionsManager:
     # Clear.
     self.transitions = []
     # Set.
-    for attr in r.get('Transitions',[]):
-      self.setTransition(attr['id'], attr['id'], attr['name'], attr.get('type'), attr.get('icon_clazz',''), attr.get('from',[]), attr.get('to',''), attr.get('performer',''), attr.get('data',''))
+    for attr in r.get('Transitions', []):
+      self.setTransition(attr['id'], attr['id'], attr['name'], attr.get('type'), attr.get('icon_clazz', ''), attr.get('from', []), attr.get('to', ''), attr.get('performer', ''), attr.get('data', ''))
     return id
 
 
@@ -85,7 +92,7 @@ class ZMSWorkflowTransitionsManager:
       i = len(obs)
     if len(newTo) == 0:
       newTo = []
-    elif type(newTo) is str:
+    elif isinstance(newTo, str):
       newTo = [newTo]
     # Values.
     newValues = {}
@@ -95,11 +102,11 @@ class ZMSWorkflowTransitionsManager:
     newValues['to'] = newTo
     newValues['performer'] = newPerformer
     # Zope Object.
-    map(lambda x:zopeutil.removeObject(self,x),[id,newId])
-    zopeutil.addObject(self,newType,newId,newName,newData)
+    map(lambda x:zopeutil.removeObject(self, x), [id, newId])
+    zopeutil.addObject(self, newType, newId, newName, newData)
     # Update attribute.
-    obs.insert(i,newValues)
-    obs.insert(i,newId)
+    obs.insert(i, newValues)
+    obs.insert(i, newId)
     self.transitions = copy.copy(obs)
     # Return with message.
     return message
@@ -133,7 +140,7 @@ class ZMSWorkflowTransitionsManager:
   def getTransition(self, id, for_export=False):
     transition = filter(lambda x: x['id']==id, self.getTransitions())[0]
     transition = copy.deepcopy(transition)
-    ob = zopeutil.getObject(self,transition['id'])
+    ob = zopeutil.getObject(self, transition['id'])
     if ob is not None:
       transition['ob'] = ob
       transition['type'] = ob.meta_type
@@ -148,7 +155,7 @@ class ZMSWorkflowTransitionsManager:
   def manage_changeTransitions(self, lang, btn='', REQUEST=None, RESPONSE=None):
     """ ZMSWorkflowTransitionsManager.manage_changeTransitions """
     message = ''
-    id = REQUEST.get('id','')
+    id = REQUEST.get('id', '')
     
     # Cancel.
     # -------
@@ -160,20 +167,20 @@ class ZMSWorkflowTransitionsManager:
     if btn == self.getZMILangStr('BTN_SAVE'):
       item = self.getTransition(id)
       newId = REQUEST.get('inpId').strip()
-      newIconClazz = REQUEST.get('inpIconClazz','')
+      newIconClazz = REQUEST.get('inpIconClazz', '')
       newName = REQUEST.get('inpName').strip()
-      newType = REQUEST.get('inpType','DTML Method').strip()
-      newFrom = REQUEST.get('inpFrom',[])
-      newTo = REQUEST.get('inpTo',[])
-      newPerformer = REQUEST.get('inpPerformer',[])
-      newData = REQUEST.get('inpData','').strip()
-      message += self.setTransition( item.get('id',None), newId, newName, newType, newIconClazz, newFrom, newTo, newPerformer, newData)
+      newType = REQUEST.get('inpType', 'DTML Method').strip()
+      newFrom = REQUEST.get('inpFrom', [])
+      newTo = REQUEST.get('inpTo', [])
+      newPerformer = REQUEST.get('inpPerformer', [])
+      newData = REQUEST.get('inpData', '').strip()
+      message += self.setTransition( item.get('id', None), newId, newName, newType, newIconClazz, newFrom, newTo, newPerformer, newData)
       message += self.getZMILangStr('MSG_CHANGED')
       id = newId
     
     # Delete.
     # -------
-    elif btn in ['delete',self.getZMILangStr('BTN_DELETE')]:
+    elif btn in ['delete', self.getZMILangStr('BTN_DELETE')]:
       id = self.delItem(id, 'transitions')
       message = self.getZMILangStr('MSG_CHANGED')
     
@@ -183,9 +190,9 @@ class ZMSWorkflowTransitionsManager:
       item = {}
       newId = REQUEST.get('newId').strip()
       newName = REQUEST.get('newName').strip()
-      newIconClazz = REQUEST.get('inpIconClazz','')
-      newType = REQUEST.get('newType','DTML Method').strip()
-      message += self.setTransition( item.get('id',None), newId, newName, newType, newIconClazz)
+      newIconClazz = REQUEST.get('inpIconClazz', '')
+      newType = REQUEST.get('newType', 'DTML Method').strip()
+      message += self.setTransition( item.get('id', None), newId, newName, newType, newIconClazz)
       message += self.getZMILangStr('MSG_INSERTED')%id
       id = newId
     
@@ -194,15 +201,15 @@ class ZMSWorkflowTransitionsManager:
     elif btn == 'move_to':
       pos = REQUEST['pos']
       self.moveItem(id, pos, 'transitions')
-      message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%id),(pos+1))
+      message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%id), (pos+1))
       id = ''
     
     # Increase version.
     if id:
-      self.setRevision(IZMSRepositoryProvider.increaseVersion(self.getRevision(),2))
+      self.setRevision(IZMSRepositoryProvider.increaseVersion(self.getRevision(), 2))
     
     # Return with message.
-    message = urllib.quote(message)
-    return RESPONSE.redirect('manage_main?id=%s&lang=%s&manage_tabs_message=%s'%(id,lang,message))
+    message = urllib.parse.quote(message)
+    return RESPONSE.redirect('manage_main?id=%s&lang=%s&manage_tabs_message=%s'%(id, lang, message))
 
 ################################################################################

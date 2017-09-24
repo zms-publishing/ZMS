@@ -17,10 +17,14 @@
 ################################################################################
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
+from builtins import str
 from AccessControl import ClassSecurityInfo
 import Globals
 import sys
-import urllib
+import urllib.request, urllib.parse, urllib.error
 # Product Imports.
 from zmscontainerobject import ZMSContainerObject
 from zmscustom import ZMSCustom
@@ -70,12 +74,12 @@ class ZMSLinkElement(ZMSCustom):
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-        'manage','manage_main','manage_main_iframe','manage_workspace',
-        'manage_changeProperties','manage_changeTempBlobjProperty',
-        'manage_moveObjUp','manage_moveObjDown','manage_moveObjToPos',
-        'manage_cutObjects','manage_copyObjects','manage_pasteObjs',
-        'manage_ajaxDragDrop','manage_ajaxZMIActions',
-        'manage_userForm','manage_user',
+        'manage', 'manage_main', 'manage_main_iframe', 'manage_workspace',
+        'manage_changeProperties', 'manage_changeTempBlobjProperty',
+        'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',
+        'manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjs',
+        'manage_ajaxDragDrop', 'manage_ajaxZMIActions',
+        'manage_userForm', 'manage_user',
         )
     __viewPermissions__ = (
         'manage_ajaxGetChildNodes',
@@ -148,7 +152,7 @@ class ZMSLinkElement(ZMSCustom):
       
       target = REQUEST.get( 'manage_target', '%s/manage_main'%self.getParentNode().absolute_url())
       message = ''
-      if REQUEST.get('btn','') not in  [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+      if REQUEST.get('btn', '') not in  [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
         try:
           
           ##### Object State ####
@@ -158,7 +162,7 @@ class ZMSLinkElement(ZMSCustom):
           for key in self.getObjAttrs().keys():
             obj_attr = self.getObjAttr(key)
             if obj_attr['xml']:
-              self.setReqProperty(key,REQUEST)
+              self.setReqProperty(key, REQUEST)
           
           ##### VersionManager ####
           self.onChangeObj(REQUEST)
@@ -209,7 +213,7 @@ class ZMSLinkElement(ZMSCustom):
         value = self.http_import( ref + '/ajaxGetNode?lang=%s'%lang)
         value = _xmllib.xmlParse( value)
       except:
-        standard.writeError(self,'[getRemoteObj]: can\'t embed from remote: ref=%s'%ref)
+        standard.writeError(self, '[getRemoteObj]: can\'t embed from remote: ref=%s'%ref)
       return value
 
 
@@ -221,12 +225,12 @@ class ZMSLinkElement(ZMSCustom):
         b = proxy.isMetaType( meta_type, REQUEST)
       else:
         b = False
-        if not (self.NOREF == meta_type or (type(meta_type) is list and self.NOREF in meta_type)):
-          b = b or ZMSObject.isMetaType(self,meta_type,REQUEST)
+        if not (self.NOREF == meta_type or (isinstance(meta_type, list) and self.NOREF in meta_type)):
+          b = b or ZMSObject.isMetaType(self, meta_type, REQUEST)
           ref_obj = self.getRefObj()
           if ref_obj is not None and self.isEmbedded(REQUEST):
-            if not (self.NORESOLVEREF == meta_type or (type(meta_type) is list and self.NORESOLVEREF in meta_type)):
-              b = b or ref_obj.isMetaType(meta_type,REQUEST)
+            if not (self.NORESOLVEREF == meta_type or (isinstance(meta_type, list) and self.NORESOLVEREF in meta_type)):
+              b = b or ref_obj.isMetaType(meta_type, REQUEST)
       return b
 
     def isMetaType(self, meta_type, REQUEST={'preview':'preview'}):
@@ -279,11 +283,11 @@ class ZMSLinkElement(ZMSCustom):
       if proxy != self and proxy is not None and self.isEmbeddedRecursive( REQUEST):
         rtn = proxy.getTitlealt( REQUEST)
       else:
-        rtn = self.getObjProperty('titlealt',REQUEST)
+        rtn = self.getObjProperty('titlealt', REQUEST)
         if len(rtn) == 0:
           ref_obj = self.getRefObj()
           if ref_obj is None:
-            rtn = super(ZMSLinkElement,self).getTitlealt(REQUEST)
+            rtn = super(ZMSLinkElement, self).getTitlealt(REQUEST)
           else:
             rtn = ref_obj.getTitlealt(REQUEST)
       return rtn
@@ -292,7 +296,7 @@ class ZMSLinkElement(ZMSCustom):
       rtn = ''
       if self.getEmbedType() == 'remote':
         remote_obj = self.getRemoteObj()
-        if type( remote_obj) is list:
+        if isinstance(remote_obj, list):
           for node in _xmllib.xmlNodeSet( remote_obj, 'titlealt'):
             rtn = node['cdata']
       else:
@@ -310,11 +314,11 @@ class ZMSLinkElement(ZMSCustom):
       if proxy != self and proxy is not None and self.isEmbeddedRecursive( REQUEST):
         rtn = proxy.getTitle( REQUEST)
       else:
-        rtn = self.getObjProperty('title',REQUEST)
+        rtn = self.getObjProperty('title', REQUEST)
         if len(rtn) == 0:
           ref_obj = self.getRefObj()
           if ref_obj is None:
-            rtn = super(ZMSLinkElement,self).getTitle(REQUEST)
+            rtn = super(ZMSLinkElement, self).getTitle(REQUEST)
           else:
             rtn = ref_obj.getTitle(REQUEST)
       return rtn
@@ -323,7 +327,7 @@ class ZMSLinkElement(ZMSCustom):
       rtn = ''
       if self.getEmbedType() == 'remote':
         remote_obj = self.getRemoteObj()
-        if type( remote_obj) is list:
+        if isinstance(remote_obj, list):
           for node in _xmllib.xmlNodeSet( remote_obj, 'title'):
             rtn = node['cdata']
       else:
@@ -343,18 +347,18 @@ class ZMSLinkElement(ZMSCustom):
         ref_obj = self.getRefObj()
         if ref_obj is not None:
           zmsobject = ref_obj
-      return ZMSObject.display_icon(zmsobject,REQUEST=REQUEST,meta_type=meta_type,key=key,zpt=zpt)
+      return ZMSObject.display_icon(zmsobject, REQUEST=REQUEST, meta_type=meta_type, key=key, zpt=zpt)
 
 
     # --------------------------------------------------------------------------
     #  ZMSLinkElement.isActive:
     # --------------------------------------------------------------------------
     def isActive(self, REQUEST):
-      active = super(ZMSLinkElement,self).isActive(REQUEST) 
+      active = super(ZMSLinkElement, self).isActive(REQUEST) 
       if self.getEmbedType() == 'remote':
         remote_obj = self.getRemoteObj()
-        if type( remote_obj) is list:
-          rtnVal = remote_obj[1]['attrs']['active'] in ['1','True']
+        if isinstance(remote_obj, list):
+          rtnVal = remote_obj[1]['attrs']['active'] in ['1', 'True']
       else:
         ref_obj = self.getRefObj()
         if ref_obj is not None:
@@ -376,8 +380,8 @@ class ZMSLinkElement(ZMSCustom):
       rtnVal = False
       if self.getEmbedType() == 'remote':
         remote_obj = self.getRemoteObj()
-        if type( remote_obj) is list:
-          rtnVal = remote_obj[1]['attrs']['is_page'] in ['1','True']
+        if isinstance(remote_obj, list):
+          rtnVal = remote_obj[1]['attrs']['is_page'] in ['1', 'True']
       else:
         if self.isEmbedded( self.REQUEST):
           ref_obj = self.getRefObj()
@@ -393,8 +397,8 @@ class ZMSLinkElement(ZMSCustom):
       rtnVal = False
       if self.getEmbedType() == 'remote':
         remote_obj = self.getRemoteObj()
-        if type( remote_obj) is list:
-          rtnVal = remote_obj[1]['attrs']['is_pageelement'] in ['1','True']
+        if isinstance(remote_obj, list):
+          rtnVal = remote_obj[1]['attrs']['is_pageelement'] in ['1', 'True']
       else:
         if self.isEmbedded( self.REQUEST):
           ref_obj = self.getRefObj()
@@ -402,7 +406,7 @@ class ZMSLinkElement(ZMSCustom):
             rtnVal = rtnVal or ref_obj.isPageElement()
           else:
             rtnVal = rtnVal or True
-        elif self.getObjProperty('align',self.REQUEST) not in ['','NONE']:
+        elif self.getObjProperty('align', self.REQUEST) not in ['', 'NONE']:
           rtnVal = rtnVal or True
       return rtnVal
 
@@ -442,12 +446,12 @@ class ZMSLinkElement(ZMSCustom):
       value = None
       value = self.getObjPropertyPROXY( self, key, REQUEST, default)
       # First exit...
-      if (value is None or value=='' or (value==0 and not type(value) is bool)) and \
+      if (value is None or value=='' or (value==0 and not isinstance(value, bool))) and \
         key in self.getMetaobjAttrIds( self.meta_id):
         value = ZMSObject.getObjProperty( self, key, REQUEST, default)
       # Second exit...
-      if (value is None or value=='' or (value == 0 and not type(value) is bool)) and \
-          key not in ['active','change_uid','change_dt','work_uid','work_dt','internal_dict','attr_ref','attr_dc_coverage']:
+      if (value is None or value=='' or (value == 0 and not isinstance(value, bool))) and \
+          key not in ['active', 'change_uid', 'change_dt', 'work_uid', 'work_dt', 'internal_dict', 'attr_ref', 'attr_dc_coverage']:
         recursive = self.isEmbeddedRecursive( REQUEST)
         if recursive:
           proxy = self.getProxy()
@@ -458,7 +462,7 @@ class ZMSLinkElement(ZMSCustom):
           if ref_obj != self and ref_obj is not None:
             value = self.getObjPropertyPROXY( ref_obj, key, REQUEST, default)
           # Last exit...
-          if (value is None or len(str(value)) == 0 or (value == 0 and not type(value) is bool)):
+          if (value is None or len(str(value)) == 0 or (value == 0 and not isinstance(value, bool))):
             value = ZMSObject.getObjProperty( self, key, REQUEST, default)
       return value
 
@@ -475,8 +479,8 @@ class ZMSLinkElement(ZMSCustom):
         rtn = proxy.getNavItems( current, REQUEST, opt, depth)
       else:
         ref_obj = self.getRefObj()
-        if isinstance(ref_obj,ZMSContainerObject):
-          rtn = super(ZMSLinkElement,self).getNavItems( current, REQUEST, opt, depth)
+        if isinstance(ref_obj, ZMSContainerObject):
+          rtn = super(ZMSLinkElement, self).getNavItems( current, REQUEST, opt, depth)
       return rtn
 
     def getNavItems(self, current, REQUEST, opt={}, depth=0):
@@ -497,8 +501,8 @@ class ZMSLinkElement(ZMSCustom):
         rtn = proxy.getNavElements( REQUEST, expand_tree, current_child, subElements)
       else:
         ref_obj = self.getRefObj()
-        if isinstance(ref_obj,ZMSContainerObject):
-          rtn = super(ZMSLinkElement,self).getNavElements( REQUEST, expand_tree, current_child, subElements)
+        if isinstance(ref_obj, ZMSContainerObject):
+          rtn = super(ZMSLinkElement, self).getNavElements( REQUEST, expand_tree, current_child, subElements)
       return rtn
 
     def getNavElements(self, REQUEST, expand_tree=1, current_child=None, subElements=[]):
@@ -537,28 +541,28 @@ class ZMSLinkElement(ZMSCustom):
     def _getBodyContent(self, REQUEST):
       rtn = ''
       if self.getEmbedType() == 'remote':
-        ref = self.getObjProperty('attr_ref',REQUEST)
+        ref = self.getObjProperty('attr_ref', REQUEST)
         try:
           rtn += self.http_import( ref+'/ajaxGetBodyContent')
         except:
-          rtn += standard.writeError(self,'[_getBodyContent]: can\'t embed from remote: ref=%s'%ref)
+          rtn += standard.writeError(self, '[_getBodyContent]: can\'t embed from remote: ref=%s'%ref)
       else:
         if self.isEmbedded(REQUEST):
-          REQUEST.set('ZMS_RELATIVATE_URL',False)
+          REQUEST.set('ZMS_RELATIVATE_URL', False)
         proxy = self.getProxy()
         if proxy != self and proxy is not None and self.isEmbeddedRecursive( self.REQUEST):
           rtn += proxy._getBodyContent(REQUEST)
         elif proxy == self and proxy is not None and self.isEmbedded( REQUEST):
           ref_obj = self.getRefObj()
           if ref_obj is None:
-            ref = self.getObjProperty('attr_ref',REQUEST)
+            ref = self.getObjProperty('attr_ref', REQUEST)
             ref_obj = self.getLinkObj(ref)
           if ref_obj is not None and ref_obj != self:
             rtn += ref_obj._getBodyContent( REQUEST)
         else:
           rtn = self._getBodyContentContentEditable(self.metaobj_manager.renderTemplate( self))
         if self.isEmbedded(REQUEST):
-          REQUEST.set('ZMS_RELATIVATE_URL',True)
+          REQUEST.set('ZMS_RELATIVATE_URL', True)
       return rtn
 
 
@@ -570,23 +574,23 @@ class ZMSLinkElement(ZMSCustom):
     def renderShort(self, REQUEST):
       rtn = ''
       ref_obj = self.getRefObj()
-      ref = self.getObjProperty('attr_ref',REQUEST) 
+      ref = self.getObjProperty('attr_ref', REQUEST) 
        
       if self.getEmbedType() == 'remote': 
         try: 
           rtn += self.http_import( ref+'/renderShort') 
         except: 
-          rtn += standard.writeError(self,'[renderShort]: can\'t embed from remote: ref=%s'%ref) 
+          rtn += standard.writeError(self, '[renderShort]: can\'t embed from remote: ref=%s'%ref) 
        
       elif self.isEmbedded(REQUEST): 
-        REQUEST.set('ZMS_RELATIVATE_URL',False)
+        REQUEST.set('ZMS_RELATIVATE_URL', False)
         if ref_obj is None: 
           ref_obj = self.getLinkObj(ref) 
         if ref_obj is None or ref_obj.isPage(): 
-          rtn += super(ZMSLinkElement,self).renderShort(REQUEST) 
+          rtn += super(ZMSLinkElement, self).renderShort(REQUEST) 
         elif ref_obj != self: 
           rtn += ref_obj.renderShort(REQUEST) 
-        REQUEST.set('ZMS_RELATIVATE_URL',True)
+        REQUEST.set('ZMS_RELATIVATE_URL', True)
       else: 
           rtn += self._getBodyContent( REQUEST) 
       return rtn

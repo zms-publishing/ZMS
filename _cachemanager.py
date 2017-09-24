@@ -18,11 +18,13 @@ from __future__ import division
 ################################################################################
 
 # Imports.
+from builtins import object
+from builtins import filter
 import time
 # Product Imports.
 import standard
 
-class Buff:
+class Buff(object):
   pass
 
 ################################################################################
@@ -30,7 +32,7 @@ class Buff:
 # ReqBuff
 #
 ################################################################################
-class ReqBuff:
+class ReqBuff(object):
 
     # ------------------------------------------------------------------------------
     #  getReqBuffId:
@@ -38,7 +40,7 @@ class ReqBuff:
     #  Gets buffer-id in Http-Request.
     # ------------------------------------------------------------------------------
     def getReqBuffId(self, key):
-      return '%s#%s'%('_'.join(self.getPhysicalPath()[2:]),key)
+      return '%s#%s'%('_'.join(self.getPhysicalPath()[2:]), key)
 
     # --------------------------------------------------------------------------
     #  clearReqBuff:
@@ -47,13 +49,13 @@ class ReqBuff:
     # --------------------------------------------------------------------------
     def clearReqBuff(self, prefix='', REQUEST=None):
       request = self.REQUEST
-      buff = request.get('__buff__',Buff())
+      buff = request.get('__buff__', Buff())
       reqBuffId = self.getReqBuffId(prefix)
       if len(prefix) > 0:
         reqBuffId += '.'
       for key in buff.__dict__.keys():
         if key.startswith(reqBuffId):
-          delattr(buff,key)
+          delattr(buff, key)
  
     # --------------------------------------------------------------------------
     #  fetchReqBuff:
@@ -66,7 +68,7 @@ class ReqBuff:
       request = self.REQUEST
       buff = request['__buff__']
       reqBuffId = self.getReqBuffId(key)
-      return getattr(buff,reqBuffId)
+      return getattr(buff, reqBuffId)
 
     # --------------------------------------------------------------------------
     #  storeReqBuff:
@@ -75,10 +77,10 @@ class ReqBuff:
     # --------------------------------------------------------------------------
     def storeReqBuff(self, key, value, REQUEST=None):
       request = self.REQUEST
-      buff = request.get('__buff__',Buff())
+      buff = request.get('__buff__', Buff())
       reqBuffId = self.getReqBuffId(key)
-      setattr(buff,reqBuffId,value)
-      request.set('__buff__',buff)
+      setattr(buff, reqBuffId, value)
+      request.set('__buff__', buff)
       return value
 
     # --------------------------------------------------------------------------
@@ -89,13 +91,13 @@ class ReqBuff:
     def clearMeasurement(self, category=''):
       request = self.REQUEST
       if request.get('zmi-measurement'):
-        buff = request.get('__buff__',Buff())
-        measurements = getattr(buff,'measurements',{})
+        buff = request.get('__buff__', Buff())
+        measurements = getattr(buff, 'measurements', {})
         for key in measurements.keys():
           if key.find(category)>=0:
             del measurements[key]
-        setattr(buff,'measurements',measurements)
-        request.set('__buff__',buff)
+        setattr(buff, 'measurements', measurements)
+        request.set('__buff__', buff)
 
     # --------------------------------------------------------------------------
     #  startMeasurement:
@@ -105,13 +107,13 @@ class ReqBuff:
     def startMeasurement(self, category):
       request = self.REQUEST
       if request.get('zmi-measurement'):
-        buff = request.get('__buff__',Buff())
-        measurements = getattr(buff,'measurements',{})
-        measurement = measurements.get(category,{}) 
+        buff = request.get('__buff__', Buff())
+        measurements = getattr(buff, 'measurements', {})
+        measurement = measurements.get(category, {}) 
         measurement['start'] = time.time()
         measurements[category] = measurement
-        setattr(buff,'measurements',measurements)
-        request.set('__buff__',buff)
+        setattr(buff, 'measurements', measurements)
+        request.set('__buff__', buff)
 
     # --------------------------------------------------------------------------
     #  stopMeasurement:
@@ -121,23 +123,23 @@ class ReqBuff:
     def stopMeasurement(self, category):
       request = self.REQUEST
       if request.get('zmi-measurement'):
-        buff = request.get('__buff__',Buff())
-        measurements = getattr(buff,'measurements',{})
-        measurement = measurements.get(category,{})
+        buff = request.get('__buff__', Buff())
+        measurements = getattr(buff, 'measurements', {})
+        measurement = measurements.get(category, {})
         if 'start' in measurement:
           hotspot = '/'.join(self.getPhysicalPath()) 
           millis = time.time() - measurement['start']
           measurement['category'] = category
-          measurement['count'] = measurement.get('count',0)+1
-          measurement['total'] = measurement.get('total',0.0)+millis
-          measurement['hotspot'] = [measurement.get('hotspot',hotspot),hotspot][measurement.get('max',millis)<millis] 
-          measurement['min'] = [measurement.get('min',millis),millis][measurement.get('min',millis)>millis]
-          measurement['max'] = [measurement.get('max',millis),millis][measurement.get('max',millis)<millis]
+          measurement['count'] = measurement.get('count', 0)+1
+          measurement['total'] = measurement.get('total', 0.0)+millis
+          measurement['hotspot'] = [measurement.get('hotspot', hotspot), hotspot][measurement.get('max', millis)<millis] 
+          measurement['min'] = [measurement.get('min', millis), millis][measurement.get('min', millis)>millis]
+          measurement['max'] = [measurement.get('max', millis), millis][measurement.get('max', millis)<millis]
           measurement['avg'] = measurement['total']/measurement['count']
           del measurement['start']
           measurements[category] = measurement
-          setattr(buff,'measurements',measurements)
-          request.set('__buff__',buff)
+          setattr(buff, 'measurements', measurements)
+          request.set('__buff__', buff)
 
     # --------------------------------------------------------------------------
     #  getMeasurement:
@@ -146,8 +148,8 @@ class ReqBuff:
     # --------------------------------------------------------------------------
     def getMeasurement(self, category=''):
       request = self.REQUEST
-      buff = request.get('__buff__',Buff())
-      measurements = getattr(buff,'measurements',{})
-      return standard.sort_list(filter(lambda x:x['category'].find(category)>=0,measurements.values()),'total','desc')
+      buff = request.get('__buff__', Buff())
+      measurements = getattr(buff, 'measurements', {})
+      return standard.sort_list(filter(lambda x:x['category'].find(category)>=0, measurements.values()), 'total', 'desc')
 
 ################################################################################

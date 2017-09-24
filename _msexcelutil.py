@@ -16,14 +16,15 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
+from builtins import str
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _msexcelutil.export:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def export(self, data, meta=None):
   request = self.REQUEST
   RESPONSE = request.RESPONSE
-  RESPONSE.setHeader('Content-Type','application/vnd.ms-excel')
-  RESPONSE.setHeader('Content-Disposition','inline;filename="export.xml"')
+  RESPONSE.setHeader('Content-Type', 'application/vnd.ms-excel')
+  RESPONSE.setHeader('Content-Disposition', 'inline;filename="export.xml"')
   RESPONSE.setHeader('Cache-Control', 'no-cache')
   RESPONSE.setHeader('Pragma', 'no-cache')
   l = []
@@ -45,14 +46,14 @@ def export(self, data, meta=None):
   l.append('</Styles>')
   l.append('<Worksheet ss:Name="%s1">'%self.getZMILangStr('ATTR_TABLE'))
   l.append('<Table>')
-  if type(meta) is list:
+  if isinstance(meta, list):
     l.append('<Row>')
     for col in meta:
       l.append('<Cell ss:StyleID="head"><Data ss:Type="String">%s</Data></Cell>'%str(col))
     l.append('</Row>')
   for row in data:
     l.append('<Row>')
-    if type(row) is dict:
+    if isinstance(row, dict):
       for col in meta:
         try:
           cell = row[col]

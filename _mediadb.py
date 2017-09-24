@@ -17,6 +17,9 @@
 ################################################################################
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
@@ -25,7 +28,7 @@ from zExceptions import NotFound
 import OFS.SimpleItem
 import Acquisition
 import os
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import time
 # Product Imports.
 import standard
@@ -42,7 +45,7 @@ def manage_addMediaDb(self, location, REQUEST=None, RESPONSE=None):
   """ manage_addMediaDb """
   obj = MediaDb(location)
   self._setObject(obj.id, obj)
-  recurse_addMediaDb(self,self.getMediaDb())
+  recurse_addMediaDb(self, self.getMediaDb())
   if RESPONSE is not None:
     RESPONSE.redirect('%s/manage_main'%self.absolute_url())
 
@@ -64,12 +67,12 @@ def recurse_addMediaDb(self, mediadb):
     obj_attr = self.getObjAttr(key)
     for lang in self.getLangIds():
       for obj_vers in self.getObjVersions():
-        v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
+        v = _objattrs.getobjattr(self, obj_vers, obj_attr, lang)
         c = 0
         for r in v:
           for k in r.keys():
             u = r[k]
-            if isinstance(u,_blobfields.MyBlob):
+            if isinstance(u, _blobfields.MyBlob):
               mediadbfile = mediadb.storeFile(u)
               u.aq_parent = None
               u.mediadbfile = mediadbfile
@@ -84,17 +87,17 @@ def recurse_addMediaDb(self, mediadb):
       if datatype in _globals.DT_BLOBS:
         for lang in self.getLangIds():
           for obj_vers in self.getObjVersions():
-            v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
-            if isinstance(v,_blobfields.MyBlob):
+            v = _objattrs.getobjattr(self, obj_vers, obj_attr, lang)
+            if isinstance(v, _blobfields.MyBlob):
               mediadbfile = mediadb.storeFile(v)
               v.aq_parent = None
               v.mediadbfile = mediadbfile
               v.data = ''
-              _objattrs.setobjattr(self,obj_vers,obj_attr,v,lang)
+              _objattrs.setobjattr(self, obj_vers, obj_attr, v, lang)
   
   # Process children.
   for ob in self.objectValues( self.dGlobalAttrs.keys()):
-    recurse_addMediaDb(ob,mediadb)
+    recurse_addMediaDb(ob, mediadb)
 
 
 ################################################################################
@@ -104,13 +107,13 @@ def recurse_addMediaDb(self, mediadb):
 ################################################################################
 def getFilenamesFromValue( v):
   rtn = []
-  if type( v) is list:
+  if isinstance(v, list):
     for i in v:
       rtn.extend( getFilenamesFromValue( i))
-  elif type( v) is dict:
+  elif isinstance(v, dict):
     for k in v.keys():
       rtn.extend( getFilenamesFromValue( v[k]))
-  elif isinstance(v,_blobfields.MyBlob):
+  elif isinstance(v, _blobfields.MyBlob):
     filename = v.getMediadbfile()
     if filename is not None:
       rtn.append( v.getMediadbfile())
@@ -136,7 +139,7 @@ def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
   standard.writeLog( self, "[manage_packMediaDb]: files deleted %s"%str(filenames))
   
   # Return with message.
-  message = 'Packed Media-Folder: %i files (total %i) deleted.'%(c,t)
+  message = 'Packed Media-Folder: %i files (total %i) deleted.'%(c, t)
   return message
 
 
@@ -153,11 +156,11 @@ def recurse_delMediaDb(self, mediadb):
     obj_attr = self.getObjAttr(key)
     for lang in self.getLangIds():
       for obj_vers in self.getObjVersions():
-        v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
+        v = _objattrs.getobjattr(self, obj_vers, obj_attr, lang)
         for r in v:
           for k in r.keys():
             u = r[k]
-            mediadbfile = getattr(v,'mediadbfile',None)
+            mediadbfile = getattr(v, 'mediadbfile', None)
             if mediadbfile is not None:
               u.aq_parent = None
               u.mediadbfile = None
@@ -170,25 +173,25 @@ def recurse_delMediaDb(self, mediadb):
       if datatype in _globals.DT_BLOBS:
         for lang in self.getLangIds():
           for obj_vers in self.getObjVersions():
-            v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
+            v = _objattrs.getobjattr(self, obj_vers, obj_attr, lang)
             if v is not None:
-              mediadbfile = getattr(v,'mediadbfile',None)
+              mediadbfile = getattr(v, 'mediadbfile', None)
               if mediadbfile is not None:
                 v.aq_parent = None
                 v.mediadbfile = None
                 v.data = mediadb.retrieveFile(mediadbfile)
-                _objattrs.setobjattr(self,obj_vers,obj_attr,v,lang)
+                _objattrs.setobjattr(self, obj_vers, obj_attr, v, lang)
   
   # Process children.
   if self.meta_id != 'ZMSLinkElement':
     for ob in self.getChildNodes():
-      recurse_delMediaDb(ob,mediadb)
+      recurse_delMediaDb(ob, mediadb)
 
 
 def manage_delMediaDb(self, REQUEST=None, RESPONSE=None):
   """ manage_delMediaDb """
   message = ''
-  recurse_delMediaDb(self,self.getMediaDb())
+  recurse_delMediaDb(self, self.getMediaDb())
   self.manage_delObjects(ids=['acl_mediadb'])
   return message
 
@@ -238,20 +241,20 @@ class MediaDb(
     # MediaDb.getLocation
     # --------------------------------------------------------------------------
     def getLocation(self):
-      return self.location.replace('$INSTANCE_HOME',INSTANCE_HOME)
+      return self.location.replace('$INSTANCE_HOME', INSTANCE_HOME)
 
 
     # --------------------------------------------------------------------------
     #  MediaDb.urlQuote
     # --------------------------------------------------------------------------
     def urlQuote(self, s): 
-      return urllib.quote(s)
+      return urllib.parse.quote(s)
 
     # --------------------------------------------------------------------------
     #  MediaDb.getPath
     # --------------------------------------------------------------------------
     def getPath(self, REQUEST): 
-      path = REQUEST.get('path','')
+      path = REQUEST.get('path', '')
       if len(path) < len(self.getLocation()):
         path = self.getLocation()
       return path
@@ -271,7 +274,7 @@ class MediaDb(
     # --------------------------------------------------------------------------
     #  MediaDb.getFile
     # --------------------------------------------------------------------------
-    def getFile(self, REQUEST,RESPONSE): 
+    def getFile(self, REQUEST, RESPONSE): 
       filename = _fileutil.extractFilename( self.getPath( REQUEST))
       return self.retrieveFileStreamIterator( filename, REQUEST)
 
@@ -282,9 +285,9 @@ class MediaDb(
       filename = _fileutil.extractFilename(file.filename)
       if len( filename) > 0:
         fileext = _fileutil.extractFileExt(file.filename)
-        filename = filename[:-(len(fileext)+1)] + '_' + str(time.time()).replace('.','') + '.' + fileext
-        filepath = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
-        _fileutil.exportObj(file,filepath)
+        filename = filename[:-(len(fileext)+1)] + '_' + str(time.time()).replace('.', '') + '.' + fileext
+        filepath = _fileutil.getOSPath('%s/%s'%(self.getLocation(), filename))
+        _fileutil.exportObj(file, filepath)
       return filename
 
     # --------------------------------------------------------------------------
@@ -293,15 +296,15 @@ class MediaDb(
     security.declareProtected('ZMS Administrator', 'manage_index_html')
     def manage_index_html(self, filename, REQUEST=None):
       """ MediaDb.manage_index_html """
-      return self.retrieveFileStreamIterator(filename,REQUEST)
+      return self.retrieveFileStreamIterator(filename, REQUEST)
 
     # --------------------------------------------------------------------------
     # MediaDb.retrieveFileStreamIterator
     # --------------------------------------------------------------------------
     def retrieveFileStreamIterator(self, filename, REQUEST=None):
-      filename = filename.replace('..','')
+      filename = filename.replace('..', '')
       threshold = 2 << 16 # 128 kb
-      local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
+      local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(), filename))
       try:
         fsize = os.path.getsize( local_filename)
       except:
@@ -321,7 +324,7 @@ class MediaDb(
         mt, enc = 'content/unknown', ''
       # Remove timestamp from filename.
       filename = filename[:filename.rfind('_')]+filename[filename.rfind('.'):]
-      standard.set_response_headers(filename,mt,fsize,REQUEST)
+      standard.set_response_headers(filename, mt, fsize, REQUEST)
       return data
 
 
@@ -329,9 +332,9 @@ class MediaDb(
     # MediaDb.retrieveFile
     # --------------------------------------------------------------------------
     def retrieveFile(self, filename):
-      filename = filename.replace('..','')
+      filename = filename.replace('..', '')
       try:
-        local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
+        local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(), filename))
         f = open( local_filename, 'rb')
         data = f.read()
         f.close()
@@ -343,7 +346,7 @@ class MediaDb(
     #	MediaDb.getFileSize
     # --------------------------------------------------------------------------
     def getFileSize(self, filename):
-      local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
+      local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(), filename))
       fsize = os.path.getsize( local_filename)
       return fsize
 
@@ -362,11 +365,11 @@ class MediaDb(
           obj_attr = obj.getObjAttr(si)
           for lang in obj.getLangIds():
             for obj_vers in obj.getObjVersions():
-              v = _objattrs.getobjattr(obj,obj_vers,obj_attr,lang)
+              v = _objattrs.getobjattr(obj, obj_vers, obj_attr, lang)
               for r in v:
                 for k in r.keys():
                   u = r[k]
-                  mediadbfile = getattr(u,'mediadbfile',None)
+                  mediadbfile = getattr(u, 'mediadbfile', None)
                   if mediadbfile is not None:
                     filenamesFromValue = getFilenamesFromValue( u)
                     for filename in filenamesFromValue:
@@ -384,11 +387,11 @@ class MediaDb(
                 obj_attr_names = []
                 if multilang:
                   for lang in self.getLangIds():
-                    obj_attr_names.append('%s_%s'%(si,lang))
+                    obj_attr_names.append('%s_%s'%(si, lang))
                 else:
                   obj_attr_names.append(si)
                 for obj_attr_name in obj_attr_names:
-                  v = getattr(obj_vers,obj_attr_name,None)
+                  v = getattr(obj_vers, obj_attr_name, None)
                   filenamesFromValue = getFilenamesFromValue( v)
                   for filename in filenamesFromValue:
                     if filename not in filenames:
@@ -416,10 +419,10 @@ class MediaDb(
 
       # Change.
       if submit == 'Change':
-        self.location = REQUEST.get('location',self.location)
+        self.location = REQUEST.get('location', self.location)
         
       # Return.
       if RESPONSE is not None:
-        RESPONSE.redirect('manage_properties?manage_tabs_message=%s'%urllib.quote(message))
+        RESPONSE.redirect('manage_properties?manage_tabs_message=%s'%urllib.parse.quote(message))
 
 ################################################################################

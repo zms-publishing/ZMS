@@ -17,9 +17,12 @@
 ################################################################################
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zope.interface
 # Product Imports.
 import standard
@@ -56,8 +59,8 @@ class ZMSWorkflowProviderAcquired(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Interface
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    manage = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main_acquired',globals())
-    manage_main = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main_acquired',globals())
+    manage = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main_acquired', globals())
+    manage_main = PageTemplateFile('zpt/ZMSWorkflowProvider/manage_main_acquired', globals())
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -75,14 +78,14 @@ class ZMSWorkflowProviderAcquired(
     ZMSWorkflowProviderAcquired.getAutocommit
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getAutocommit(self):
-      return getattr(self,'autocommit',1)
+      return getattr(self, 'autocommit', 1)
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProviderAcquired.getNodes
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getNodes(self):
-      return getattr(self,'nodes',['{$}'])
+      return getattr(self, 'nodes', ['{$}'])
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -91,7 +94,7 @@ class ZMSWorkflowProviderAcquired(
     Auto-Commit ZMS-tree.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def doAutocommit(self, lang, REQUEST):
-      ZMSWorkflowProvider.doAutocommit(self,REQUEST)
+      ZMSWorkflowProvider.doAutocommit(self, REQUEST)
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -140,7 +143,7 @@ class ZMSWorkflowProviderAcquired(
     @see IZMSWorkflowProvider.getTransition()
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def getTransition(self, id, for_export=False):
-      return self.getPortalMaster().getWorkflowManager().getTransition(id,for_export)
+      return self.getPortalMaster().getWorkflowManager().getTransition(id, for_export)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProviderAcquired.manage_changeWorkflow:
@@ -155,16 +158,16 @@ class ZMSWorkflowProviderAcquired(
       # -------
       if key == 'custom' and btn == self.getZMILangStr('BTN_SAVE'):
         # Autocommit & Nodes.
-        old_autocommit = getattr(self,'autocommit',1)
-        new_autocommit = REQUEST.get('workflow',0) == 0
+        old_autocommit = getattr(self, 'autocommit', 1)
+        new_autocommit = REQUEST.get('workflow', 0) == 0
         self.autocommit = new_autocommit
-        self.nodes = standard.string_list(REQUEST.get('nodes',''))
+        self.nodes = standard.string_list(REQUEST.get('nodes', ''))
         if old_autocommit == 0 and new_autocommit == 1:
-          self.doAutocommit(lang,REQUEST)
+          self.doAutocommit(lang, REQUEST)
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Return with message.
-      message = urllib.quote(message)
-      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang,message,key))
+      message = urllib.parse.quote(message)
+      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang, message, key))
 
 ################################################################################

@@ -20,6 +20,8 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
+from builtins import map
+from builtins import filter
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 from OFS.CopySupport import absattr
 from Products.ExternalMethod import ExternalMethod
@@ -45,8 +47,8 @@ def getExternalMethodModuleName(container, id):
   Add context-folder-id to module-name (to prevent deleting artefacts from other clients).
   """
   m = id
-  if hasattr(container,'content') and int(getattr(container,'content').getConfProperty('zopeutil.getExternalMethodModuleName.addContextFolderId',True)):
-    m = '%s.%s'%(absattr(nextObject(container,'Folder').id),m)
+  if hasattr(container, 'content') and int(getattr(container, 'content').getConfProperty('zopeutil.getExternalMethodModuleName.addContextFolderId', True)):
+    m = '%s.%s'%(absattr(nextObject(container, 'Folder').id), m)
   return m
 
 security.declarePublic('addObject')
@@ -81,7 +83,7 @@ def getObject(container, id):
   Get Zope-object from container.
   """
   id = standard.operator_absattr(id)
-  ob = getattr(container,id,None)
+  ob = getattr(container, id, None)
   return ob
 
 security.declarePublic('callObject')
@@ -91,9 +93,9 @@ def callObject(ob, zmscontext=None, options={}):
   """
   v = None
   if ob.meta_type in [ 'DTML Method', 'DTML Document']:
-    v = ob(zmscontext,zmscontext.REQUEST)
+    v = ob(zmscontext, zmscontext.REQUEST)
   elif options:
-    v = ob(zmscontext=zmscontext,options=options)
+    v = ob(zmscontext=zmscontext, options=options)
   elif ob.meta_type in [ 'External Method' ]:
     v = ob()
   elif ob.meta_type in [ 'Script (Python)'] and readData(ob).find('##parameters=zmscontext')<0:
@@ -138,7 +140,7 @@ def readData(ob, default=None):
   elif ob.meta_type == 'Z SQL Method':
     connection = ob.connection_id
     params = ob.arguments_src
-    data = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
+    data = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection, params, ob.src)
   return data
 
 security.declarePublic('readObject')
@@ -146,8 +148,8 @@ def readObject(container, id, default=None):
   """
   Read Zope-object from container.
   """
-  ob = getObject(container,id)
-  return readData(ob,default)
+  ob = getObject(container, id)
+  return readData(ob, default)
 
 security.declarePublic('removeObject')
 def removeObject(container, id, removeFile=True):
@@ -157,7 +159,7 @@ def removeObject(container, id, removeFile=True):
   #try: container.writeBlock("[zopeutil.removeObject]: %s@%s -%s"%(container.meta_type,container.absolute_url(),id))
   #except: pass
   if id in container.objectIds():
-    ob = getattr(container,id)
+    ob = getattr(container, id)
     if ob.meta_type == 'External Method' and removeFile:
       m = getExternalMethodModuleName(container, id)
       filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
@@ -173,13 +175,13 @@ def initPermissions(container, id):
   - set View-permissions to 'Authenticated' and remove acquired permissions for manage-objects.
   """
   ob = getattr( container, id)
-  ob._proxy_roles=('Authenticated','Manager')
+  ob._proxy_roles=('Authenticated', 'Manager')
   permissions = []
   if id.find( 'manage_') >= 0:
-    ob.manage_role(role_to_manage='Authenticated',permissions=['View'])
+    ob.manage_role(role_to_manage='Authenticated', permissions=['View'])
   else:
     # activate all acquired permissions
-    permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',ob.permissionsOfRole('Manager')))
+    permissions = map(lambda x:x['name'], filter(lambda x:x['selected']=='SELECTED', ob.permissionsOfRole('Manager')))
   ob.manage_acquiredPermissions(permissions)
 
 def addDTMLMethod(container, id, title, data):
@@ -239,7 +241,7 @@ def addFolder(container, id, title, data):
   """
   Add Folder to container.
   """
-  container.manage_addFolder(id,title)
+  container.manage_addFolder(id, title)
   ob = getattr( container, id)
   return ob
 
@@ -267,15 +269,15 @@ def addZSqlMethod(container, id, title, data):
     template = template[template.find('</params>'):]
     template = template[template.find('>')+1:]
     template = '\n'.join(filter( lambda x: len(x) > 0, template.split('\n')))
-    ob.manage_edit(title=title,connection_id=connection,arguments=arguments,template=template)
+    ob.manage_edit(title=title, connection_id=connection, arguments=arguments, template=template)
 
 def addFile(container, id, title, data, content_type=None):
   """
   Add File to container.
   """
   if content_type is None:
-    content_type, enc = standard.guess_content_type(id,data)
-  container.manage_addFile(id=id,title=title,file=data,content_type=content_type)
+    content_type, enc = standard.guess_content_type(id, data)
+  container.manage_addFile(id=id, title=title, file=data, content_type=content_type)
   ob = getattr( container, id)
   return ob
 
@@ -284,8 +286,8 @@ def addImage(container, id, title, data, content_type=None):
   Add Image to container.
   """
   if content_type is None:
-    content_type, enc = standard.guess_content_type(id,data)
-  container.manage_addImage(id=id,title=title,file=data,content_type=content_type)
+    content_type, enc = standard.guess_content_type(id, data)
+  container.manage_addImage(id=id, title=title, file=data, content_type=content_type)
   ob = getattr( container, id)
   return ob
 

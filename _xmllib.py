@@ -20,8 +20,16 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import map
+from builtins import filter
+from builtins import chr
+from builtins import str
 try:
-  from StringIO import StringIO
+  from io import StringIO
 except ImportError:
   from io import StringIO
 import copy
@@ -107,15 +115,15 @@ def parseString(s):
 # ------------------------------------------------------------------------------
 def getXmlType(v):
   t = ''
-  if type(v) is float:
+  if isinstance(v, float):
     t = ' type="float"'
-  elif type(v) is int:
+  elif isinstance(v, int):
     t = ' type="int"'
-  elif type(v) is dict:
+  elif isinstance(v, dict):
     t = ' type="dictionary"'
-  elif type(v) is list:
+  elif isinstance(v, list):
     t = ' type="list"'
-  elif type(v) is tuple or type(v) is time.struct_time:
+  elif isinstance(v, tuple) or isinstance(v, time.struct_time):
     t = ' type="datetime"'
   elif isinstance(v, _blobfields.MyImage):
     t = ' type="image"'
@@ -129,7 +137,7 @@ def getXmlType(v):
 # ------------------------------------------------------------------------------
 def getXmlTypeSaveValue(v, attrs):
   # Strip.
-  if type(v) is str:
+  if isinstance(v, str):
     while len(v) > 0 and v[0] <= ' ':
       v = v[1:]
     while len(v) > 0 and v[-1] <= ' ':
@@ -194,19 +202,19 @@ def xmlInitObjProperty(self, key, value, lang=None):
   datatype = obj_attr['datatype_key']
 
   if value is not None:
-    if type(value) is str:
+    if isinstance(value, str):
       value = value.strip()
     # -- Date-Fields
     if datatype in _globals.DT_DATETIMES:
-      if type(value) is str and len(value) > 0:
+      if isinstance(value, str) and len(value) > 0:
         value = self.parseLangFmtDate(value)
     # -- Integer-Fields
     elif datatype in _globals.DT_INTS:
-      if type(value) is str and len(value) > 0:
+      if isinstance(value, str) and len(value) > 0:
         value = int(value)
     # -- Float-Fields
     elif datatype == _globals.DT_FLOAT:
-      if type(value) is str and len(value) > 0:
+      if isinstance(value, str) and len(value) > 0:
         value = float(value)
     # -- String-Fields
     elif datatype in _globals.DT_STRINGS:
@@ -306,10 +314,10 @@ def xmlOnUnknownEndTag(self, sTagName):
       item = cdata
     item = getXmlTypeSaveValue(item, attrs)
     value = self.dValueStack.pop()
-    if type(value) is dict:
+    if isinstance(value, dict):
       key = attrs.get('key')
       value[key] = item
-    if type(value) is list:
+    if isinstance(value, list):
       value.append(item)
     self.dValueStack.push(value)
 
@@ -352,13 +360,13 @@ def xmlOnUnknownEndTag(self, sTagName):
       if obj_attr['multilang']:
         item = self.dValueStack.pop()
         if item is not None:
-          if not type(item) is dict:
+          if not isinstance(item, dict):
             item = {self.getPrimaryLanguage():item}
           for s_lang in item.keys():
             value = item[s_lang]
             # Data
             if datatype in _globals.DT_BLOBS:
-              if type(value) is dict and len(value.keys()) > 0:
+              if isinstance(value, dict) and len(value.keys()) > 0:
                 ob = _blobfields.createBlobField(self, datatype)
                 for key in value.keys():
                   setattr(ob, key, value[key])
@@ -381,7 +389,7 @@ def xmlOnUnknownEndTag(self, sTagName):
              datatype == _globals.DT_DICT):
           # Data
           if datatype in _globals.DT_BLOBS:
-            if type(value) is dict and len(value.keys()) > 0:
+            if isinstance(value, dict) and len(value.keys()) > 0:
               ob = _blobfields.createBlobField(self, datatype)
               for key in value.keys():
                 setattr(ob, key, value[key])
@@ -389,20 +397,20 @@ def xmlOnUnknownEndTag(self, sTagName):
           # Others
           else:
             if self.getType() == 'ZMSRecordSet':
-              if type(value) is list:
+              if isinstance(value, list):
                 for item in value:
-                  if type(item) is dict:
+                  if isinstance(item, dict):
                     for key in item.keys():
                       item_obj_attr = self.getObjAttr(key)
                       item_datatype = item_obj_attr['datatype_key']
                       if item_datatype in _globals.DT_BLOBS:
                         item_data = item[ key]
-                        if type(item_data) is dict:
+                        if isinstance(item_data, dict):
                           blob = _blobfields.createBlobField(self, item_datatype, item_data)
                           item[ key] = blob
             # -- Convert multilingual to monolingual attributes.
             if obj_attr['multilang'] == 0 and \
-               type(value) is dict and \
+               isinstance(value, dict) and \
                len(value.keys()) == 1 and \
                value.keys()[0] == self.getPrimaryLanguage():
               value = value[value.keys()[0]]
@@ -418,7 +426,7 @@ def xmlOnUnknownEndTag(self, sTagName):
           # -- OPTIONS
           if 'options' in obj_attr:
             options = obj_attr['options']
-            if type(options) is list:
+            if isinstance(options, list):
               try:
                 i = options.index(int(value))
                 if i % 2 == 1: value = options[i - 1]
@@ -516,8 +524,8 @@ def toCdata(self, s, xhtml=0):
 
   # Return Text.
   elif xhtml == -1 \
-     or type(s) is float \
-     or type(s) is int:
+     or isinstance(s, float) \
+     or isinstance(s, int):
     rtn = s
 
   # Return Text in CDATA.
@@ -539,7 +547,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
   xml = []
 
   def unistr(s):
-    if type(s) is not unicode:
+    if not isinstance(s, str):
       s = str(s)
     else:
       try:
@@ -574,9 +582,8 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
       xml.append('</%s>' % tagname)
 
     # Dictionaries
-    elif type(value) is dict:
-      keys = value.keys()
-      keys.sort()
+    elif isinstance(value, dict):
+      keys = sorted(value.keys())
       xml.append('\n' + indentlevel * INDENTSTR)
       xml.append('<dictionary>')
       indentstr = '\n' + (indentlevel + 1) * INDENTSTR
@@ -595,7 +602,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
       xml.append('</dictionary>')
 
     # Lists
-    elif type(value) is list:
+    elif isinstance(value, list):
       xml.append('\n' + indentlevel * INDENTSTR)
       xml.append('<list>')
       indentstr = '\n' + (indentlevel + 1) * INDENTSTR
@@ -613,7 +620,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
       xml.append('</list>')
 
     # Tuples (DateTime)
-    elif type(value) is tuple or type(value) is time.struct_time:
+    elif isinstance(value, tuple) or isinstance(value, time.struct_time):
       try:
         s_value = self.getLangFmtDate(value, 'eng', 'DATETIME_FMT')
         if len(s_value) > 0:
@@ -623,7 +630,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
         pass
 
     # Numbers
-    elif type(value) is int or type(value) is float:
+    elif isinstance(value, int) or isinstance(value, float):
       xml.append(str(value))
 
     else:
@@ -771,7 +778,7 @@ class ParseError(Exception): pass
 # Parser for complex Python-Attributes (dictionaries, lists).
 ################################################################################
 """
-class XmlAttrBuilder:
+class XmlAttrBuilder(object):
     "class XmlAttrBuilder"
 
     ######## class variables ########
@@ -818,7 +825,7 @@ class XmlAttrBuilder:
       p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
 
       #### parsing ####
-      if type(input) is str:
+      if isinstance(input, str):
         # input is a string!
         rv = p.Parse(input, 1)
       else:
@@ -918,10 +925,10 @@ class XmlAttrBuilder:
           item = cdata
         item = getXmlTypeSaveValue(item, attrs)
         value = self.dValueStack.pop()
-        if type(value) is dict:
+        if isinstance(value, dict):
           key = attrs.get('key')
           value[key] = item
-        if type(value) is list:
+        if isinstance(value, list):
           value.append(item)
         self.dValueStack.push(value)
 
@@ -1030,7 +1037,7 @@ def xmlNodeSet(mNode, sTagName='', iDeep=0):
   """
   lNodeSet = []
   lNode = mNode
-  if type(mNode) is list and len(mNode) == 2:
+  if isinstance(mNode, list) and len(mNode) == 2:
     lNode = mNode[1]
   lTags = lNode.get('tags', [])
   for i in range(0, len(lTags) // 2):
@@ -1060,13 +1067,13 @@ def xmlParse(xml):
   @rtype: C{dict}
   """
   builder = XmlBuilder()
-  if type(xml) is str:
+  if isinstance(xml, str):
     xml = StringIO(xml)
   v = builder.parse(xml)
   return v
 
 
-class XmlBuilder:
+class XmlBuilder(object):
     "class XmlBuilder"
 
     ######## class variables ########
@@ -1113,7 +1120,7 @@ class XmlBuilder:
         p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
 
         #### parsing ####
-        if type(input) is str:
+        if isinstance(input, str):
           # input is a string!
           rv = p.Parse(input, 1)
         else:

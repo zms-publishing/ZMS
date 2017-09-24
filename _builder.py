@@ -19,6 +19,9 @@
 ################################################################################
 
 # Imports
+from builtins import object
+from builtins import filter
+from builtins import str
 import pyexpat
 import time
 import Globals
@@ -71,7 +74,7 @@ class ParseError(Exception): pass
 #    - xmlGetParent(self)
 #
 ################################################################################
-class Builder:
+class Builder(object):
     """ Builder """
   
     ######## class variables ########
@@ -131,7 +134,7 @@ class Builder:
         
         #### parsing ####
         standard.writeLog( self, "#### parsing ####")
-        if type(input) is str:
+        if isinstance(input, str):
           # input is a string!
           rv = p.Parse(input, 1)
         else:
@@ -173,11 +176,11 @@ class Builder:
         standard.writeBlock( self, "[Builder.OnStartElement(" + str(name) + ")]")
         name = standard.unencode( name)
         attrs = standard.unencode( attrs)
-        skip = self.oCurrNode is not None and len(filter(lambda x:x.get('skip'),self.oCurrNode.dTagStack.get_all())) > 0
+        skip = self.oCurrNode is not None and len(filter(lambda x:x.get('skip'), self.oCurrNode.dTagStack.get_all())) > 0
         if not skip and name in self.getMetaobjIds():
           meta_id = name
-          globalAttr = self.dGlobalAttrs.get(meta_id,self.dGlobalAttrs['ZMSCustom'])
-          constructor = globalAttr.get('obj_class',self.dGlobalAttrs['ZMSCustom']['obj_class'])
+          globalAttr = self.dGlobalAttrs.get(meta_id, self.dGlobalAttrs['ZMSCustom'])
+          constructor = globalAttr.get('obj_class', self.dGlobalAttrs['ZMSCustom']['obj_class'])
           if constructor is None:
             newNode = self
           else:
@@ -198,9 +201,9 @@ class Builder:
             sort_id = self.oCurrNode.getNewSortId()
             
             ##### Init ####
-            newNode = constructor(id,sort_id,meta_id)
+            newNode = constructor(id, sort_id, meta_id)
             self.oCurrNode._setObject(newNode.id, newNode)
-            newNode = getattr(self.oCurrNode,newNode.id)
+            newNode = getattr(self.oCurrNode, newNode.id)
             standard.writeBlock( self, "[Builder.OnStartElement]: object with id " + str(newNode.id) + " of class " + str(newNode.__class__) + " created in " + str(self.oCurrNode.__class__))
           
           ##### Uid ####
@@ -218,10 +221,10 @@ class Builder:
             newNode.setObjStateNew(req)
             ##### Init Properties ####
             if 'active' in obj_attrs.keys():
-              newNode.setObjProperty('active',1,lang)
+              newNode.setObjProperty('active', 1, lang)
             if len( langs) == 1:
-              newNode.setObjProperty('change_uid','xml',lang)
-              newNode.setObjProperty('change_dt',time.time(),lang)
+              newNode.setObjProperty('change_uid', 'xml', lang)
+              newNode.setObjProperty('change_dt', time.time(), lang)
           
           if self.oRoot is None: # root object set?
             self.oRoot = newNode # -> set root node
@@ -249,7 +252,7 @@ class Builder:
     def OnEndElement(self, name):
         """ Builder.OnEndElement """
         standard.writeBlock( self, "[Builder.OnEndElement(" + str(name) + ")]")
-        skip = self.oCurrNode is not None and len(filter(lambda x:x.get('skip'),self.oCurrNode.dTagStack.get_all())) > 0
+        skip = self.oCurrNode is not None and len(filter(lambda x:x.get('skip'), self.oCurrNode.dTagStack.get_all())) > 0
         if not skip and name in self.getMetaobjIds():
           if name == self.oCurrNode.meta_id:
             standard.writeBlock( self, "[Builder.OnEndElement]: object finished")

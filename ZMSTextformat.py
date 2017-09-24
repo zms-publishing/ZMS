@@ -18,6 +18,9 @@ from __future__ import division
 ################################################################################
 
 # Imports.
+from builtins import object
+from builtins import str
+from builtins import range
 import copy
 import re
 # Product Imports.
@@ -31,7 +34,7 @@ import _globals
 def br_quote(text, subtag, REQUEST):
   if len(subtag) == 0:
     return text
-  if type(text) not in [str,unicode]:
+  if type(text) not in [str, str]:
     text = str(text)
   rtn = ''
   qcr = ''
@@ -45,7 +48,7 @@ def br_quote(text, subtag, REQUEST):
   if subtag == 'br':
     tmp = []
     for s in text.split('<%s>'%subtag):
-      while len(s) > 0 and ord(s[0]) in [10,13]: s = s[1:]
+      while len(s) > 0 and ord(s[0]) in [10, 13]: s = s[1:]
       if len(tmp) > 0:
         tmp.append('\n')
       tmp.append(s)
@@ -127,7 +130,7 @@ def br_quote(text, subtag, REQUEST):
 ###
 ################################################################################
 ################################################################################
-class ZMSTextformat:
+class ZMSTextformat(object):
 
   # ----------------------------------------------------------------------------
   #  ZMSTextformat.__init__:
@@ -145,8 +148,8 @@ class ZMSTextformat:
     self.setTag(ob['tag'])
     self.setSubTag(ob['subtag'])
     self.setAttrs(ob['attrs'])
-    self.setRichedit(ob.get('richedit',0))
-    self.setUsage(ob.get('usage',['standard']))
+    self.setRichedit(ob.get('richedit', 0))
+    self.setUsage(ob.get('usage', ['standard']))
 
   # ----------------------------------------------------------------------------
   #  Get/Set Id.
@@ -215,9 +218,9 @@ class ZMSTextformat:
   parseAttrs__roles__ = None
   def parseAttrs(self):
     d = []
-    l = re.split('(.*?)="(.*?)"',self.attrs)
+    l = re.split('(.*?)="(.*?)"', self.attrs)
     for i in range(len(l)//3):
-      d.append((l[i*3+1],l[i*3+2]))
+      d.append((l[i*3+1], l[i*3+2]))
     return d
   def setAttrs(self, attrs): self.attrs = attrs
 

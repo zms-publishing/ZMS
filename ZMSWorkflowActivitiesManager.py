@@ -18,9 +18,16 @@ from __future__ import division
 ################################################################################
 
 # Imports.
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import filter
+from builtins import map
+from builtins import str
 import ZPublisher.HTTPRequest
 import copy
-import urllib
+import urllib.request, urllib.parse, urllib.error
 # Product Imports.
 import IZMSRepositoryProvider
 import standard
@@ -34,7 +41,7 @@ import _blobfields
 ###
 ################################################################################
 ################################################################################
-class ZMSWorkflowActivitiesManager:
+class ZMSWorkflowActivitiesManager(object):
 
   ############################################################################
   #
@@ -62,8 +69,8 @@ class ZMSWorkflowActivitiesManager:
     # Clear.
     self.activities = []
     # Set.
-    for attr in r.get('Activities',[]):
-      self.setActivity(attr['id'],attr['id'],attr['name'], attr.get('icon_clazz'),attr.get('icon'))
+    for attr in r.get('Activities', []):
+      self.setActivity(attr['id'], attr['id'], attr['name'], attr.get('icon_clazz'), attr.get('icon'))
     return id
 
 
@@ -84,14 +91,14 @@ class ZMSWorkflowActivitiesManager:
     newValues['name'] = newName
     newValues['icon_clazz'] = newIconClazz
     newValues['icon'] = newIcon
-    for obj_id in ['%s.icon'%str(id),'%s.icon'%str(newId)]:
+    for obj_id in ['%s.icon'%str(id), '%s.icon'%str(newId)]:
       if obj_id in self.objectIds():
         self.manage_delObjects([obj_id])
-    if isinstance(newIcon,_blobfields.MyBlob):
-      self.manage_addFile(id='%s.icon'%newId,title=newIcon.getFilename(),file=newIcon.getData())
+    if isinstance(newIcon, _blobfields.MyBlob):
+      self.manage_addFile(id='%s.icon'%newId, title=newIcon.getFilename(), file=newIcon.getData())
     # Update attribute.
-    obs.insert(i,newValues)
-    obs.insert(i,newId)
+    obs.insert(i, newValues)
+    obs.insert(i, newId)
     self.activities = copy.copy(obs)
     # Return with new id.
     return newId
@@ -156,7 +163,7 @@ class ZMSWorkflowActivitiesManager:
               tos.append(idx)
     froms.sort()
     tos.sort()
-    idxs = standard.concat_list(froms,tos)
+    idxs = standard.concat_list(froms, tos)
     idx = ids.index(id)
     return {'froms':froms, 'tos': tos, 'idxs': idxs, 'idx': idx}
 
@@ -167,7 +174,7 @@ class ZMSWorkflowActivitiesManager:
   def manage_changeActivities(self, lang, btn='', REQUEST=None, RESPONSE=None):
     """ ZMSWorkflowActivitiesManager.manage_changeActivities """
     message = ''
-    id = REQUEST.get('id','')
+    id = REQUEST.get('id', '')
     
     # Cancel.
     # -------
@@ -177,24 +184,24 @@ class ZMSWorkflowActivitiesManager:
     # Change.
     # -------
     if btn == self.getZMILangStr('BTN_SAVE'):
-      item = self.getActivity(id,for_export=True)
+      item = self.getActivity(id, for_export=True)
       newId = REQUEST.get('inpId').strip()
       newName = REQUEST.get('inpName').strip()
-      newIconClazz = REQUEST.get('inpIconClazz','').strip()
+      newIconClazz = REQUEST.get('inpIconClazz', '').strip()
       newIcon = None
       if len(newIconClazz) == 0:
-        newIcon = REQUEST.get('inpIcon','')
-        if isinstance(newIcon,ZPublisher.HTTPRequest.FileUpload):
-          if len(getattr(newIcon,'filename',''))==0:
-            newIcon = item.get('icon',None)
+        newIcon = REQUEST.get('inpIcon', '')
+        if isinstance(newIcon, ZPublisher.HTTPRequest.FileUpload):
+          if len(getattr(newIcon, 'filename', ''))==0:
+            newIcon = item.get('icon', None)
           else:
-            newIcon = _blobfields.createBlobField(self,_blobfields.MyImage,newIcon)
-      id = self.setActivity( item.get('id',None), newId, newName, newIconClazz, newIcon)
+            newIcon = _blobfields.createBlobField(self, _blobfields.MyImage, newIcon)
+      id = self.setActivity( item.get('id', None), newId, newName, newIconClazz, newIcon)
       message = self.getZMILangStr('MSG_CHANGED')
     
     # Delete.
     # -------
-    elif btn in ['delete',self.getZMILangStr('BTN_DELETE')]:
+    elif btn in ['delete', self.getZMILangStr('BTN_DELETE')]:
       id = self.delItem(id, 'activities')
       message = self.getZMILangStr('MSG_CHANGED')
     
@@ -204,16 +211,16 @@ class ZMSWorkflowActivitiesManager:
       item = {}
       newId = REQUEST.get('newId').strip()
       newName = REQUEST.get('newName').strip()
-      newIconClazz = REQUEST.get('newIconClazz','').strip()
+      newIconClazz = REQUEST.get('newIconClazz', '').strip()
       newIcon = None
       if len(newIconClazz) == 0:
-        newIcon = REQUEST.get('newIcon','')
-        if isinstance(newIcon,ZPublisher.HTTPRequest.FileUpload):
-          if len(getattr(newIcon,'filename',''))==0:
-            newIcon = item.get('icon',None)
+        newIcon = REQUEST.get('newIcon', '')
+        if isinstance(newIcon, ZPublisher.HTTPRequest.FileUpload):
+          if len(getattr(newIcon, 'filename', ''))==0:
+            newIcon = item.get('icon', None)
           else:
-            newIcon = _blobfields.createBlobField(self,_blobfields.MyImage,newIcon)
-      id = self.setActivity( item.get('id',None), newId, newName, newIconClazz, newIcon)
+            newIcon = _blobfields.createBlobField(self, _blobfields.MyImage, newIcon)
+      id = self.setActivity( item.get('id', None), newId, newName, newIconClazz, newIcon)
       message = self.getZMILangStr('MSG_INSERTED')%id
     
     # Move to.
@@ -221,15 +228,15 @@ class ZMSWorkflowActivitiesManager:
     elif btn == 'move_to':
       pos = REQUEST['pos']
       self.moveItem(id, pos, 'activities')
-      message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%id),(pos+1))
+      message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%id), (pos+1))
       id = ''
     
     # Increase version.
     if id:
-      self.setRevision(IZMSRepositoryProvider.increaseVersion(self.getRevision(),2))
+      self.setRevision(IZMSRepositoryProvider.increaseVersion(self.getRevision(), 2))
     
     # Return with message.
-    message = urllib.quote(message)
-    return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
+    message = urllib.parse.quote(message)
+    return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 ################################################################################

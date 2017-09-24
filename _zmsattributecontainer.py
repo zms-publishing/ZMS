@@ -17,6 +17,9 @@
 ################################################################################
 
 # Documentation string.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 __doc__ = """ZMS product module."""
 # Version string. 
 __version__ = '0.1' 
@@ -24,7 +27,7 @@ __version__ = '0.1'
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import time
 import string
 # Product Imports.
@@ -41,8 +44,8 @@ def manage_addZMSAttributeContainer(self):
   while id in self.objectIds():
     id = str(time.time())
   obj = ZMSAttributeContainer(id)
-  self._setObject(id,obj)
-  obj = getattr(self,id)
+  self._setObject(id, obj)
+  obj = getattr(self, id)
   return obj
 
 
@@ -131,12 +134,12 @@ class ZMSAttributeContainer(
       obj_attr=self.getObjAttr(key)
       if obj_attr['multilang']:
         for lang in self.getLangIds():
-          REQUEST.set('lang',lang)
-          self.setReqProperty(key,REQUEST,1)
+          REQUEST.set('lang', lang)
+          self.setReqProperty(key, REQUEST, 1)
       else:
-        REQUEST.set('lang',self.getPrimaryLanguage())
-        self.setReqProperty(key,REQUEST,1)
+        REQUEST.set('lang', self.getPrimaryLanguage())
+        self.setReqProperty(key, REQUEST, 1)
     # Return with message.
-    return RESPONSE.redirect('manage_propertiesForm?manage_tabs_message=%s'%(urllib.quote(message)))
+    return RESPONSE.redirect('manage_propertiesForm?manage_tabs_message=%s'%(urllib.parse.quote(message)))
 
 ################################################################################

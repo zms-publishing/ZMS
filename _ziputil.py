@@ -19,8 +19,12 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
+from builtins import str
 try:
-  from StringIO import StringIO
+  from io import StringIO
 except ImportError:
   from io import StringIO
 import os
@@ -38,8 +42,8 @@ Extracts and imports zip-file to zodb.
 def _exportZodb2Zip(zf, root, container):
   for ob in container.objectValues():
     if ob.meta_type in ['Folder']:
-      _exportZodb2Zip(zf,root,ob)
-    elif ob.meta_type in ['Image','File']:
+      _exportZodb2Zip(zf, root, ob)
+    elif ob.meta_type in ['Image', 'File']:
       arcname = ob.absolute_url()[len(root.absolute_url())+1:]
       try:
         bytes = ob.data
@@ -49,15 +53,15 @@ def _exportZodb2Zip(zf, root, container):
           bytes = bytes.read()
         except:
           bytes = str(bytes)
-        zf.writestr(arcname,bytes)
+        zf.writestr(arcname, bytes)
       except:
-        standard.writeError(root.content,"_exportZodb2Zip")
+        standard.writeError(root.content, "_exportZodb2Zip")
 
 def exportZodb2Zip(root):
   # Create temporary zip-file.
   zipfilename = tempfile.mktemp() + '.zip'
   zf = zipfile.ZipFile( zipfilename, 'w')
-  _exportZodb2Zip(zf,root,root)
+  _exportZodb2Zip(zf, root, root)
   zf.close()
   
   # Read data from zip-file as return value.
@@ -83,12 +87,12 @@ def importZip2Zodb(root, data):
   zf = zipfile.ZipFile( data, 'r')
   for name in zf.namelist():
     container = root
-    ids = map(lambda x:str(x),name.split('/'))
+    ids = map(lambda x:str(x), name.split('/'))
     if len(ids) > 1:
       for id in ids[:-1]:
         if id not in container.objectIds():
           container.manage_addFolder(id=id)
-        container = getattr(container,id)
+        container = getattr(container, id)
     id = ids[-1]
     if id:
       file = zf.read( name)
@@ -96,8 +100,8 @@ def importZip2Zodb(root, data):
       if id in container.objectIds():
         container.manage_delObjects( [id])
       if mt.startswith('image'):
-        file = container.manage_addImage(id=id,file=file)
+        file = container.manage_addImage(id=id, file=file)
       else:
-        file = container.manage_addFile(id=id,file=file)
+        file = container.manage_addFile(id=id, file=file)
 
 ################################################################################

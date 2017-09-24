@@ -18,17 +18,22 @@
 
 
 # Imports.
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import map
+from builtins import filter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 import copy
 import os
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zope.interface
 # Product Imports.
 import _fileutil
 import standard
 import zopeutil
-import IZMSMetacmdProvider,IZMSConfigurationProvider,IZMSRepositoryProvider
+import IZMSMetacmdProvider, IZMSConfigurationProvider, IZMSRepositoryProvider
 import ZMSItem
 
 
@@ -102,9 +107,9 @@ class ZMSMetacmdProvider(
 
     # Management Interface.
     # ---------------------
-    manage = PageTemplateFile('zpt/ZMSMetacmdProvider/manage_main',globals()) 
-    manage_main = PageTemplateFile('zpt/ZMSMetacmdProvider/manage_main',globals()) 
-    manage_main_acquire = PageTemplateFile('zpt/ZMSMetacmdProvider/manage_main_acquire',globals()) 
+    manage = PageTemplateFile('zpt/ZMSMetacmdProvider/manage_main', globals()) 
+    manage_main = PageTemplateFile('zpt/ZMSMetacmdProvider/manage_main', globals()) 
+    manage_main_acquire = PageTemplateFile('zpt/ZMSMetacmdProvider/manage_main_acquire', globals()) 
 
     # Management Permissions.
     # -----------------------
@@ -140,11 +145,11 @@ class ZMSMetacmdProvider(
         ids = self.getMetaCmdIds()
       for id in ids:
         o = self.getMetaCmd(id)
-        if o and not o.get('acquired',0):
+        if o and not o.get('acquired', 0):
           d = {}
-          for k in filter(lambda x:x not in ['bobobase_modification_time','data','home','meta_type'],o.keys()):
+          for k in filter(lambda x:x not in ['bobobase_modification_time', 'data', 'home', 'meta_type'], o.keys()):
             d[k] = o[k]
-          ob = getattr(self,id)
+          ob = getattr(self, id)
           if ob:
             attr = {}
             attr['id'] = id
@@ -162,17 +167,17 @@ class ZMSMetacmdProvider(
       impl = r['Impl'][0]
       newId = id
       newAcquired = 0
-      newRevision = r.get('revision','0.0.0')
+      newRevision = r.get('revision', '0.0.0')
       newName = r['name']
-      newTitle = r.get('title','')
+      newTitle = r.get('title', '')
       newMethod = impl['type']
       newData = impl['data']
       newExec = 'exec' in r and r['exec']
-      newDescription = r.get('description','')
-      newIconClazz = r.get('icon_clazz','')
+      newDescription = r.get('description', '')
+      newIconClazz = r.get('icon_clazz', '')
       newMetaTypes = r['meta_types']
       newRoles = r['roles']
-      newNodes = r.get('nodes','{$}')
+      newNodes = r.get('nodes', '{$}')
       self.delMetacmd(id)
       return self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, \
         newData, newExec, newDescription, newIconClazz, newMetaTypes, newRoles, \
@@ -199,16 +204,16 @@ class ZMSMetacmdProvider(
         # Initialize attributes of new object.
         newId = id
         newAcquired = 0
-        newRevision = item.get('revision','0.0.0')
+        newRevision = item.get('revision', '0.0.0')
         newName = item['name']
-        newTitle = item.get('title','')
+        newTitle = item.get('title', '')
         newMethod = item['meta_type']
         newExec = 'exec' in item and item['exec']
-        newDescription = item.get('description','')
-        newIconClazz = item.get('icon_clazz','')
+        newDescription = item.get('description', '')
+        newIconClazz = item.get('icon_clazz', '')
         newMetaTypes = item['meta_types']
         newRoles = item['roles']
-        newNodes = item.get('nodes','{$}')
+        newNodes = item.get('nodes', '{$}')
         newData = item['data']
         
         # Return with new id.
@@ -218,18 +223,18 @@ class ZMSMetacmdProvider(
 
     def importXml(self, xml, createIfNotExists=1):
       v = self.parseXmlString(xml)
-      if type(v) is list:
+      if isinstance(v, list):
         for item in v:
-          id = self._importXml(item,createIfNotExists)
+          id = self._importXml(item, createIfNotExists)
       else:
-        id = self._importXml(v,createIfNotExists)
+        id = self._importXml(v, createIfNotExists)
 
 
     # ------------------------------------------------------------------------------
     #  ZMSMetacmdProvider.__get_metacmd__
     # ------------------------------------------------------------------------------
     def __get_metacmd__(self, id):
-      return (filter(lambda x:x['id']==id,self.commands)+[None])[0]
+      return (filter(lambda x:x['id']==id, self.commands)+[None])[0]
 
 
     # ------------------------------------------------------------------------------
@@ -249,7 +254,7 @@ class ZMSMetacmdProvider(
       
       # Remove Template.
       container = self.aq_parent
-      zopeutil.removeObject(container,id)
+      zopeutil.removeObject(container, id)
       
       # Return with empty id.
       return ''
@@ -289,14 +294,14 @@ class ZMSMetacmdProvider(
       container = self.aq_parent
       if newAcquired:
         portalMaster = self.getPortalMaster()
-        newMethod = getattr(portalMaster,newId).meta_type
+        newMethod = getattr(portalMaster, newId).meta_type
         metaCmd = portalMaster.getMetaCmd(newId)
         newData = metaCmd['data']
       if newMethod is None:
-        newMethod = getattr(container,id).meta_type
+        newMethod = getattr(container, id).meta_type
       newTitle = '*** DO NOT DELETE OR MODIFY ***'
       if id is None and newData is None:
-        if newMethod in ['DTML Document','DTML Method']:
+        if newMethod in ['DTML Document', 'DTML Method']:
           newData = dtmlExampleCode
         elif newMethod == 'Page Template':
           newData = pageTemplateExampleCode 
@@ -324,7 +329,7 @@ class ZMSMetacmdProvider(
       Returns description of meta-command specified by ID.
       """
       metaCmd = self.getMetaCmd(id)
-      return metaCmd.get('description','')
+      return metaCmd.get('description', '')
 
 
     # --------------------------------------------------------------------------
@@ -342,19 +347,19 @@ class ZMSMetacmdProvider(
       # Refresh Object.
       metaCmd = obs[0]
       container = self.aq_parent
-      src = zopeutil.getObject(metaCmd['home'],metaCmd['id'])
-      newData = zopeutil.readObject(metaCmd['home'],metaCmd['id'],'')
-      data = zopeutil.readObject(container,metaCmd['id'],'')
-      if src is not None and (newData != data or (metaCmd.get('acquired',0) and src.meta_type=='External Method')):
+      src = zopeutil.getObject(metaCmd['home'], metaCmd['id'])
+      newData = zopeutil.readObject(metaCmd['home'], metaCmd['id'], '')
+      data = zopeutil.readObject(container, metaCmd['id'], '')
+      if src is not None and (newData != data or (metaCmd.get('acquired', 0) and src.meta_type=='External Method')):
         newMethod = src.meta_type
         newId = metaCmd['id']
         newTitle = '*** DO NOT DELETE OR MODIFY ***'
         zopeutil.removeObject(container, newId, removeFile=False)
         zopeutil.addObject(container, newMethod, newId, newTitle, newData)
-      ob = zopeutil.getObject(container,metaCmd['id'])
+      ob = zopeutil.getObject(container, metaCmd['id'])
       if ob is not None:
         metaCmd['meta_type'] = ob.meta_type
-        metaCmd['data'] = zopeutil.readObject(container,metaCmd['id'],'')
+        metaCmd['data'] = zopeutil.readObject(container, metaCmd['id'], '')
         metaCmd['bobobase_modification_time'] = ob.bobobase_modification_time().timeTime()
       return metaCmd
 
@@ -369,8 +374,7 @@ class ZMSMetacmdProvider(
       if sort:
         obs = map(lambda x: self.getMetaCmd(x['id']), obs)
         obs = filter( lambda x: x is not None, obs)
-        obs = map(lambda x: (x['name'],x), obs)
-        obs.sort()
+        obs = sorted(map(lambda x: (x['name'], x), obs))
         obs = map(lambda x: x[1], obs)
       ids = map(lambda x: x['id'], obs)
       return ids
@@ -385,9 +389,9 @@ class ZMSMetacmdProvider(
       stereotypes = {'insert':'manage_add','tab':'manage_tab'}
       metaCmds = []
       portalMasterMetaCmds = None
-      for metaCmd in filter(lambda x:x['id'].startswith(stereotypes.get(stereotype,'')),self.commands):
+      for metaCmd in filter(lambda x:x['id'].startswith(stereotypes.get(stereotype, '')), self.commands):
         # Acquire from parent.
-        if metaCmd.get('acquired',0)==1:
+        if metaCmd.get('acquired', 0)==1:
           if portalMasterMetaCmds is None:
             portalMaster = self.getPortalMaster()
             portalMasterMetaCmds = portalMaster.getMetaCmds(stereotype=stereotype)
@@ -398,7 +402,7 @@ class ZMSMetacmdProvider(
         else:
           metaCmd = metaCmd.copy()
           metaCmd['home'] = self.aq_parent
-          metaCmd['stereotype'] = ' '.join(filter(lambda x:metaCmd['id'].startswith(stereotypes[x]),stereotypes.keys()))
+          metaCmd['stereotype'] = ' '.join(filter(lambda x:metaCmd['id'].startswith(stereotypes[x]), stereotypes.keys()))
         metaCmds.append(metaCmd)
       if context is not None:
         request = context.REQUEST
@@ -414,14 +418,14 @@ class ZMSMetacmdProvider(
           if canExecute:
             hasRole = False
             hasRole = hasRole or '*' in metaCmd['roles']
-            hasRole = hasRole or len(standard.intersection_list(user_roles,metaCmd['roles'])) > 0
+            hasRole = hasRole or len(standard.intersection_list(user_roles, metaCmd['roles'])) > 0
             hasRole = hasRole or auth_user.has_role('Manager')
             canExecute = canExecute and hasRole
           if canExecute:
-            nodes = standard.string_list(metaCmd.get('nodes','{$}'))
+            nodes = standard.string_list(metaCmd.get('nodes', '{$}'))
             sl = []
-            sl.extend(map( lambda x: (context.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,nodes)))
-            sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,nodes)))
+            sl.extend(map( lambda x: (context.getHome().id+'/content/'+x[2:-1]+'/').replace('//', '/'), filter(lambda x: x.find('@')<0, nodes)))
+            sl.extend(map( lambda x: (x[2:-1].replace('@', '/content/')+'/').replace('//', '/'), filter(lambda x: x.find('@')>0, nodes)))
             hasNode = len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
             canExecute = canExecute and hasNode
           if canExecute:
@@ -438,12 +442,12 @@ class ZMSMetacmdProvider(
     def manage_changeMetacmds(self, btn, lang, REQUEST, RESPONSE):
         """ ZMSMetacmdProvider.manage_changeMetacmds """
         message = ''
-        id = REQUEST.get('id','')
+        id = REQUEST.get('id', '')
         
         # Acquire.
         # --------
         if btn == self.getZMILangStr('BTN_ACQUIRE'):
-          aq_ids = REQUEST.get('aq_ids',[])
+          aq_ids = REQUEST.get('aq_ids', [])
           for newId in aq_ids:
             newAcquired = 1
             self.setMetacmd(None, newId, newAcquired)
@@ -455,17 +459,17 @@ class ZMSMetacmdProvider(
           id = REQUEST['id']
           newId = REQUEST['el_id'].strip()
           newAcquired = 0
-          newRevision = IZMSRepositoryProvider.increaseVersion(REQUEST.get('el_revision','').strip(),2)
-          newName = REQUEST.get('el_name','').strip()
-          newTitle = REQUEST.get('el_title','').strip()
+          newRevision = IZMSRepositoryProvider.increaseVersion(REQUEST.get('el_revision', '').strip(), 2)
+          newName = REQUEST.get('el_name', '').strip()
+          newTitle = REQUEST.get('el_title', '').strip()
           newMethod = None
-          newData = REQUEST.get('el_data','').strip()
-          newExec = REQUEST.get('el_exec',0)
-          newDescription = REQUEST.get('el_description','').strip()
-          newIconClazz = REQUEST.get('el_icon_clazz','')
-          newMetaTypes = REQUEST.get('el_meta_types',[])
-          newRoles = REQUEST.get('el_roles',[])
-          newNodes = REQUEST.get('el_nodes','')
+          newData = REQUEST.get('el_data', '').strip()
+          newExec = REQUEST.get('el_exec', 0)
+          newDescription = REQUEST.get('el_description', '').strip()
+          newIconClazz = REQUEST.get('el_icon_clazz', '')
+          newMetaTypes = REQUEST.get('el_meta_types', [])
+          newRoles = REQUEST.get('el_roles', [])
+          newNodes = REQUEST.get('el_nodes', '')
           id = self.setMetacmd(id, newId, newAcquired, newRevision, newName, newTitle, \
             newMethod, newData, newExec, newDescription, newIconClazz, \
             newMetaTypes, newRoles, newNodes)
@@ -475,10 +479,10 @@ class ZMSMetacmdProvider(
         # -----
         elif btn == self.getZMILangStr('BTN_COPY'):
           metaOb = self.getMetaCmd(id)
-          if metaOb.get('acquired',0) == 1:
+          if metaOb.get('acquired', 0) == 1:
             portalMaster = self.getPortalMaster()
             if portalMaster is not None:
-              REQUEST.set('ids',[id])
+              REQUEST.set('ids', [id])
               xml =  portalMaster.manage_changeMetacmds(self.getZMILangStr('BTN_EXPORT'), lang, REQUEST, RESPONSE)
               self.importXml(xml=xml)
               message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%id)
@@ -489,7 +493,7 @@ class ZMSMetacmdProvider(
           if id:
             ids = [id]
           else:
-            ids = REQUEST.get('ids',[])
+            ids = REQUEST.get('ids', [])
           for id in ids:
             self.delMetacmd(id)
           id = ''
@@ -500,32 +504,32 @@ class ZMSMetacmdProvider(
         elif btn == self.getZMILangStr('BTN_EXPORT'):
           revision = '0.0.0'
           value = []
-          ids = REQUEST.get('ids',[])
+          ids = REQUEST.get('ids', [])
           for id in self.getMetaCmdIds():
             if id in ids or len(ids) == 0:
               metaCmd = self.getMetaCmd(id)
-              revision = metaCmd.get('revision','0.0.0')
+              revision = metaCmd.get('revision', '0.0.0')
               el_id = metaCmd['id']
               el_name = metaCmd['name']
-              el_title = metaCmd.get('title','')
+              el_title = metaCmd.get('title', '')
               el_meta_type = metaCmd['meta_type']
               el_description = metaCmd['description']
-              el_icon_clazz = metaCmd.get('icon_clazz','')
+              el_icon_clazz = metaCmd.get('icon_clazz', '')
               el_meta_types = metaCmd['meta_types']
               el_roles = metaCmd['roles']
               el_exec = metaCmd['exec']
-              el_data = zopeutil.readObject(metaCmd['home'],metaCmd['id'])
+              el_data = zopeutil.readObject(metaCmd['home'], metaCmd['id'])
               # Value.
               value.append({'id':el_id,'revision':revision,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'exec':el_exec,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
           # XML.
           if len(ids)==1:
-            filename = '%s-%s.metacmd.xml'%(ids[0],revision)
+            filename = '%s-%s.metacmd.xml'%(ids[0], revision)
           else:
             filename = 'export.metacmd.xml'
           content_type = 'text/xml; charset=utf-8'
-          export = self.getXmlHeader() + self.toXmlString(value,1)
-          RESPONSE.setHeader('Content-Type',content_type)
-          RESPONSE.setHeader('Content-Disposition','attachment;filename="%s"'%filename)
+          export = self.getXmlHeader() + self.toXmlString(value, 1)
+          RESPONSE.setHeader('Content-Type', content_type)
+          RESPONSE.setHeader('Content-Disposition', 'attachment;filename="%s"'%filename)
           return export
         
         # Import.
@@ -545,21 +549,21 @@ class ZMSMetacmdProvider(
         elif btn == self.getZMILangStr('BTN_INSERT'):
           newId = REQUEST.get('_id').strip()
           newAcquired = 0
-          newRevision = REQUEST.get('_revision','0.0.0').strip()
+          newRevision = REQUEST.get('_revision', '0.0.0').strip()
           newName = REQUEST.get('_name').strip()
           newTitle = REQUEST.get('_title').strip()
-          newMethod = REQUEST.get('_type','DTML Method')
+          newMethod = REQUEST.get('_type', 'DTML Method')
           newData = None
-          newExec = REQUEST.get('_exec',0)
-          newIconClazz = REQUEST.get('_icon_clazz','')
+          newExec = REQUEST.get('_exec', 0)
+          newIconClazz = REQUEST.get('_icon_clazz', '')
           id = self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, newData, newExec, newIconClazz=newIconClazz)
           message = self.getZMILangStr('MSG_INSERTED')%id
         
         # Sync with repository.
-        self.getRepositoryManager().exec_auto_commit(self,id)
+        self.getRepositoryManager().exec_auto_commit(self, id)
         
         # Return with message.
-        message = urllib.quote(message)
-        return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s&id=%s'%(lang,message,id))
+        message = urllib.parse.quote(message)
+        return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
 
 ################################################################################

@@ -19,6 +19,12 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
+from builtins import object
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
+from builtins import filter
+from builtins import str
 from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ExternalMethod import ExternalMethod
@@ -29,7 +35,7 @@ import copy
 import os
 import tempfile
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
 # import standard
@@ -56,14 +62,14 @@ def _importXml(self, item, createIfNotExists=1):
     newName = itemOb.get('name')
     newFormat = itemOb.get('format')
     newContentType = itemOb.get('content_type')
-    newDescription = itemOb.get('description','')
-    newRoles = itemOb.get('roles',[])
-    newMetaTypes = itemOb.get('meta_types',[])
+    newDescription = itemOb.get('description', '')
+    newRoles = itemOb.get('roles', [])
+    newMetaTypes = itemOb.get('meta_types', [])
     filters = getRawFilters(self)
     if createIfNotExists == 1:
       delFilter(self, newId)
       setFilter(self, newId, newAcquired, newName, newFormat, newContentType, newDescription, newRoles, newMetaTypes)
-      for process in itemOb.get('processes',[]):
+      for process in itemOb.get('processes', []):
         newProcessId = process.get('id')
         newProcessFile = process.get('file')
         setFilterProcess(self, newId, newProcessId, newProcessFile)
@@ -71,29 +77,29 @@ def _importXml(self, item, createIfNotExists=1):
     newId = itemOb.get('id')
     newAcquired = 0
     newName = itemOb.get('name')
-    newType = itemOb.get('type','process')
+    newType = itemOb.get('type', 'process')
     newCommand = itemOb.get('command')
     processes = getRawProcesses(self)
     if createIfNotExists == 1:
       delProcess(self, newId)
       setProcess(self, newId, newAcquired, newName, newType, newCommand)
   else:
-    standard.writeError(self,"[_importXml]: Unknown type >%s<"%itemType)
+    standard.writeError(self, "[_importXml]: Unknown type >%s<"%itemType)
 
 def importXml(self, xml, createIfNotExists=1):
   v = self.parseXmlString(xml)
-  if type(v) is list:
+  if isinstance(v, list):
     for item in v:
-      id = _importXml(self,item,createIfNotExists)
+      id = _importXml(self, item, createIfNotExists)
   else:
-    id = _importXml(self,v,createIfNotExists)
+    id = _importXml(self, v, createIfNotExists)
 
 # ------------------------------------------------------------------------------
 #  exportXml
 # ------------------------------------------------------------------------------
 def exportXml(self, REQUEST, RESPONSE):
   value = []
-  ids = REQUEST.get('ids',[])
+  ids = REQUEST.get('ids', [])
   filterIds = []
   for id in self.getFilterIds():
     if id in ids or len(ids) == 0:
@@ -115,9 +121,9 @@ def exportXml(self, REQUEST, RESPONSE):
     value = value[0]
   content_type = 'text/xml; charset=utf-8'
   filename = '%s.filter.xml'%filename
-  export = self.getXmlHeader() + self.toXmlString(value,1)
-  RESPONSE.setHeader('Content-Type',content_type)
-  RESPONSE.setHeader('Content-Disposition','attachment;filename="%s"'%filename)
+  export = self.getXmlHeader() + self.toXmlString(value, 1)
+  RESPONSE.setHeader('Content-Type', content_type)
+  RESPONSE.setHeader('Content-Disposition', 'attachment;filename="%s"'%filename)
   return export
 
 """
@@ -135,7 +141,7 @@ def exportXml(self, REQUEST, RESPONSE):
 # ------------------------------------------------------------------------------
 def getRawProcesses(self):
   # Return attribute.
-  return self.getConfProperty('ZMS.filter.processes',{})
+  return self.getConfProperty('ZMS.filter.processes', {})
 
 
 # ------------------------------------------------------------------------------
@@ -200,7 +206,7 @@ def setProcess(self, newId, newAcquired=0, newName='', newType='process', newCom
   ob['command'] = newCommand
   obs[newId] = ob
   # Set attribute.
-  self.setConfProperty('ZMS.filter.processes',obs.copy())
+  self.setConfProperty('ZMS.filter.processes', obs.copy())
   # Return with new id.
   return newId
 
@@ -217,12 +223,12 @@ def delProcess(self, id):
   for key in cp.keys():
     if key == id:
       # Delete method.
-      if cp[key].get('type','') in [ 'DTML Method', 'External Method', 'Script (Python)']:
+      if cp[key].get('type', '') in [ 'DTML Method', 'External Method', 'Script (Python)']:
         container = self.getHome()
         dtml_method = getattr( container, id, None)
         if dtml_method is not None:
           container.manage_delObjects( ids=[id])
-        if cp[key].get('type','') == 'External Method':
+        if cp[key].get('type', '') == 'External Method':
           try:
             _fileutil.remove( INSTANCE_HOME+'/Extensions/'+id+'.py')
           except:
@@ -230,7 +236,7 @@ def delProcess(self, id):
     else:
       obs[key] = cp[key]
   # Set attribute.
-  self.setConfProperty('ZMS.filter.processes',obs.copy())
+  self.setConfProperty('ZMS.filter.processes', obs.copy())
   # Return with empty id.
   return ''
 
@@ -250,7 +256,7 @@ def delProcess(self, id):
 # ------------------------------------------------------------------------------
 def getRawFilters(self):
   # Return attribute.
-  raw = self.getConfProperty('ZMS.filter.filters',{})
+  raw = self.getConfProperty('ZMS.filter.filters', {})
   for key in raw.keys():
     f = raw[ key]
     processes = f.get( 'processes', [])
@@ -276,7 +282,7 @@ def setFilter(self, newId, newAcquired=0, newName='', newFormat='', newContentTy
   ob['meta_types'] = newMetaTypes
   obs[newId] = ob
   # Set attribute.
-  self.setConfProperty('ZMS.filter.filters',obs.copy())
+  self.setConfProperty('ZMS.filter.filters', obs.copy())
   # Return with new id.
   return newId
 
@@ -293,7 +299,7 @@ def delFilter(self, id):
     if key != id:
       obs[key] = cp[key]
   # Set attribute.
-  self.setConfProperty('ZMS.filter.filters',obs.copy())
+  self.setConfProperty('ZMS.filter.filters', obs.copy())
   # Return with empty id.
   return ''
 
@@ -317,11 +323,11 @@ def setFilterProcess(self, id, newProcessId, newProcessFile=None):
   ob = {}
   ob['id'] = newProcessId
   ob['file'] = newProcessFile
-  pobs = obs[id].get('processes',[])
+  pobs = obs[id].get('processes', [])
   pobs.append(ob)
   obs[id]['processes'] = pobs
   # Set attribute.
-  self.setConfProperty('ZMS.filter.filters',obs.copy())
+  self.setConfProperty('ZMS.filter.filters', obs.copy())
   # Return with new id.
   return len(pobs)-1
 
@@ -334,12 +340,12 @@ def setFilterProcess(self, id, newProcessId, newProcessFile=None):
 def delFilterProcess(self, id, pid):
   # Delete.
   obs = getRawFilters(self)
-  pobs = obs[ id].get('processes',[])
+  pobs = obs[ id].get('processes', [])
   ob = pobs[ pid]
   pobs.remove( pobs[pid])
   obs[id]['processes'] = pobs
   # Set attribute.
-  self.setConfProperty('ZMS.filter.filters',obs.copy())
+  self.setConfProperty('ZMS.filter.filters', obs.copy())
   # Return with empty id.
   return -1
 
@@ -350,16 +356,16 @@ def delFilterProcess(self, id, pid):
 #  Move filter-process specified by given Ids to specified position.
 # ------------------------------------------------------------------------------
 def moveFilterProcess(self, id, pid, pos):
-  standard.writeLog( self, '[moveFilterProcess]:id=%s; pid=%s; dir=%s'%(id,str(pid),str(dir)))
+  standard.writeLog( self, '[moveFilterProcess]:id=%s; pid=%s; dir=%s'%(id, str(pid), str(dir)))
   # Set.
   obs = getRawFilters(self)
-  pobs = obs[id].get('processes',[])
+  pobs = obs[id].get('processes', [])
   ob = pobs[pid]
   pobs.remove(ob)
-  pobs.insert(pos,ob)
+  pobs.insert(pos, ob)
   obs[id]['processes'] = pobs
   # Set attribute.
-  self.setConfProperty('ZMS.filter.filters',obs.copy())
+  self.setConfProperty('ZMS.filter.filters', obs.copy())
   # Return with new id.
   return pos
 
@@ -385,7 +391,7 @@ def processData(self, processId, data, trans=None):
   _fileutil.exportObj(data, filename)
   # Save transformation to file.
   if trans is not None and trans != '':
-    transfilename = _fileutil.getOSPath('%s/%s'%(folder,trans.getFilename()))
+    transfilename = _fileutil.getOSPath('%s/%s'%(folder, trans.getFilename()))
     _fileutil.exportObj(trans, transfilename)
   # Process file.
   filename = processFile(self, processId, filename, trans)
@@ -394,7 +400,7 @@ def processData(self, processId, data, trans=None):
   data = f.read()
   f.close()
   # Remove temporary folder.
-  if not self.getConfProperty('ZMS.debug',0):
+  if not self.getConfProperty('ZMS.debug', 0):
     _fileutil.remove(folder, deep=1)
   # Return data.
   return data
@@ -437,7 +443,7 @@ def processCommand(self, filename, command):
   mOut = '{out}'
   i = command.find(mOut[:-1])
   if i >= 0:
-    j = command.find('}',i)
+    j = command.find('}', i)
     mExt = command[i+len(mOut[:-1]):j]
     mOut = command[i:j+1]
     if len(mExt) > 0:
@@ -450,12 +456,12 @@ def processCommand(self, filename, command):
   software_home = os.path.normpath(software_home)  
   command = command.replace( '{software_home}', software_home)
   command = command.replace( '{instance_home}', instance_home)
-  command = command.replace( mZmsHome,_fileutil.getOSPath(package_home(globals())))
-  command = command.replace( mCurDir,_fileutil.getFilePath(infilename))
-  command = command.replace( mIn,infilename)
-  command = command.replace( mOut,tmpoutfilename)
+  command = command.replace( mZmsHome, _fileutil.getOSPath(package_home(globals())))
+  command = command.replace( mCurDir, _fileutil.getFilePath(infilename))
+  command = command.replace( mIn, infilename)
+  command = command.replace( mOut, tmpoutfilename)
   # Change directory (deprecated!).
-  if self.getConfProperty('ZMS.filtermanager.processCommand.chdir',0):
+  if self.getConfProperty('ZMS.filtermanager.processCommand.chdir', 0):
     path = _fileutil.getFilePath(filename)
     standard.writeLog( self, '[processCommand]: path=%s'%path)
     os.chdir(path)
@@ -507,7 +513,7 @@ def processFile(self, processId, filename, trans=None):
 #  Process filter.
 # ------------------------------------------------------------------------------
 def processFilter(self, ob_filter, folder, filename, REQUEST):
-  for ob_process in ob_filter.get('processes',[]):
+  for ob_process in ob_filter.get('processes', []):
     filename = self.execProcessFilter( ob_process, folder, filename, REQUEST)
   # Return filename.
   return filename
@@ -535,7 +541,7 @@ def exportFilter(self, id, REQUEST):
   # Process filter.
   outfilename = processFilter(self, ob_filter, tempfolder, outfilename, REQUEST)
   # Return values.
-  content_type = ob_filter.get('content_type','content/unknown')
+  content_type = ob_filter.get('content_type', 'content/unknown')
   filename = 'exportFilter.%s'%content_type[content_type.find('/')+1:]
   # Zip File.
   if content_type == 'application/zip':
@@ -547,7 +553,7 @@ def exportFilter(self, id, REQUEST):
     data = f.read()
     f.close()
   # Remove temporary folder.
-  if not self.getConfProperty('ZMS.debug',0):
+  if not self.getConfProperty('ZMS.debug', 0):
     _fileutil.remove( tempfolder, deep=1)
   # Return.
   return filename, data, content_type
@@ -560,7 +566,7 @@ def exportFilter(self, id, REQUEST):
 ###
 ################################################################################
 ################################################################################
-class FilterItem:
+class FilterItem(object):
 
     # --------------------------------------------------------------------------
     #  FilterManager.initExportFilter:
@@ -576,7 +582,7 @@ class FilterItem:
       REQUEST.set( 'ZMS_FILTER_PACKAGE_HOME', _fileutil.getOSPath(package_home(globals())))
       # Set local variables.
       ob_filter = self.getFilter(id)
-      ob_filter_format = ob_filter.get('format','')
+      ob_filter_format = ob_filter.get('format', '')
       incl_embedded = ob_filter_format == 'XML_incl_embedded'
       # Create temporary folder.
       tempfolder = tempfile.mktemp()
@@ -584,7 +590,7 @@ class FilterItem:
       # Export data to file.
       if ob_filter_format == 'export':
         outfilename = _fileutil.getOSPath('%s/INDEX0'%tempfolder)
-      elif ob_filter_format in ['XML','XML_incl_embedded']:
+      elif ob_filter_format in ['XML', 'XML_incl_embedded']:
         # Set XML.
         data = self.toXml( REQUEST, incl_embedded)
         outfilename = _fileutil.getOSPath('%s/export.xml'%tempfolder)
@@ -600,7 +606,7 @@ class FilterItem:
         outfilename = _fileutil.getOSPath('%s/export.xml'%tempfolder)
         _fileutil.exportObj( data, outfilename)
       else:
-        raise zExceptions.InternalError("Unknown format '%s'"%ob_filter.get('format',''))
+        raise zExceptions.InternalError("Unknown format '%s'"%ob_filter.get('format', ''))
       return tempfolder, outfilename
 
 
@@ -632,7 +638,7 @@ class FilterItem:
 ###
 ################################################################################
 ################################################################################
-class FilterManager:
+class FilterManager(object):
 
     # Management Interface.
     # ---------------------
@@ -651,9 +657,8 @@ class FilterManager:
       if portalMaster is not None:
         ids.extend( filter( lambda x: x not in ids, portalMaster.getProcessIds()))
       if sort:
-        mapping = map(lambda x: (self.getProcess(x)['name'],x),ids)
-        mapping.sort()
-        ids = map(lambda x: x[1],mapping)
+        mapping = sorted(map(lambda x: (self.getProcess(x)['name'], x), ids))
+        ids = map(lambda x: x[1], mapping)
       return ids
 
     # --------------------------------------------------------------------------
@@ -697,9 +702,8 @@ class FilterManager:
       obs = getRawFilters(self)
       ids = obs.keys()
       if sort:
-        mapping = map(lambda x: (self.getFilter(x)['name'],x),ids)
-        mapping.sort()
-        ids = map(lambda x: x[1],mapping)
+        mapping = sorted(map(lambda x: (self.getFilter(x)['name'], x), ids))
+        ids = map(lambda x: x[1], mapping)
       return ids
 
 
@@ -714,7 +718,7 @@ class FilterManager:
       if id in obs:
         ob = obs.get( id).copy()
       # Acquire from parent.
-      if ob.get('acquired',0) == 1:
+      if ob.get('acquired', 0) == 1:
         portalMaster = self.getPortalMaster()
       if portalMaster is not None:
           ob = portalMaster.getFilter(id)
@@ -734,9 +738,9 @@ class FilterManager:
       for process in self.getFilter( id).get( 'processes', []):
         ob = process.copy()
         ob[ 'type'] = ob.get( 'type', 'process')
-        if ob.get('file') not in ['',None]:
+        if ob.get('file') not in ['', None]:
           f = ob['file']
-          ob['file_href'] = 'get_conf_blob?path=ZMS.filter.filters/%s/processes/%i:int/file'%(id,c)
+          ob['file_href'] = 'get_conf_blob?path=ZMS.filter.filters/%s/processes/%i:int/file'%(id, c)
           ob['file_filename'] = f.getFilename()
           ob['file_content_type'] = f.getContentType()
           ob['file_size'] = f.get_size()
@@ -755,8 +759,8 @@ class FilterManager:
     def manage_changeFilter(self, lang, btn='', key='', REQUEST=None, RESPONSE=None):
       """ FilterManager.manage_changeFilter """
       message = ''
-      id = REQUEST.get('id','')
-      pid = REQUEST.get('pid',-1)
+      id = REQUEST.get('id', '')
+      pid = REQUEST.get('pid', -1)
       
       # Acquire.
       # --------
@@ -777,23 +781,23 @@ class FilterManager:
         newFormat = REQUEST.get('inpFormat').strip()
         newContentType = REQUEST.get('inpContentType').strip()
         newDescription = REQUEST.get('inpDescription').strip()
-        newRoles = REQUEST.get('inpRoles',[])
-        newMetaTypes = REQUEST.get('inpMetaTypes',[])
+        newRoles = REQUEST.get('inpRoles', [])
+        newMetaTypes = REQUEST.get('inpMetaTypes', [])
         id = delFilter(self, id)
         id = setFilter(self, newId, newAcquired, newName, newFormat, newContentType, newDescription, newRoles, newMetaTypes)
         # Filter Processes.
         c = 0
-        for filterProcess in cp.get('processes',[]):
-          newProcessId = REQUEST.get('newFilterProcessId_%i'%c,'').strip()
+        for filterProcess in cp.get('processes', []):
+          newProcessId = REQUEST.get('newFilterProcessId_%i'%c, '').strip()
           newProcessFile = REQUEST.get('newFilterProcessFile_%i'%c)
-          if isinstance(newProcessFile,ZPublisher.HTTPRequest.FileUpload):
-            if len(getattr(newProcessFile, 'filename',''))==0:
+          if isinstance(newProcessFile, ZPublisher.HTTPRequest.FileUpload):
+            if len(getattr(newProcessFile, 'filename', ''))==0:
               newProcessFile = filterProcess.get('file', None)
             else:
               newProcessFile = _blobfields.createBlobField(self, _blobfields.MyFile, newProcessFile)
           setFilterProcess(self, id, newProcessId, newProcessFile)
           c += 1
-        newProcessId = REQUEST.get('newFilterProcessId_%i'%c,'').strip()
+        newProcessId = REQUEST.get('newFilterProcessId_%i'%c, '').strip()
         newProcessFile = REQUEST.get('newFilterProcessFile_%i'%c)
         if newProcessId:
           setFilterProcess(self, id, newProcessId, newProcessFile)
@@ -802,7 +806,7 @@ class FilterManager:
       # Delete.
       # -------
       elif btn == self.getZMILangStr('BTN_DELETE') and key == 'obj':
-        ids = REQUEST.get('ids',[])
+        ids = REQUEST.get('ids', [])
         for id in ids:
           delFilter(self, id)
         message = self.getZMILangStr('MSG_DELETED')%len(ids)
@@ -844,8 +848,8 @@ class FilterManager:
         elif key == 'attr':
           newProcessId = REQUEST.get('newFilterProcessId')
           newProcessFile = REQUEST.get('newFilterProcessFile')
-          if isinstance(newProcessFile,ZPublisher.HTTPRequest.FileUpload):
-            if len(getattr(newProcessFile, 'filename',''))==0:
+          if isinstance(newProcessFile, ZPublisher.HTTPRequest.FileUpload):
+            if len(getattr(newProcessFile, 'filename', ''))==0:
               newProcessFile = None
             else:
               newProcessFile = _blobfields.createBlobField(self, _blobfields.MyFile, newProcessFile)
@@ -857,11 +861,11 @@ class FilterManager:
       elif btn == 'move_to':
         pos = REQUEST['pos']
         pid = moveFilterProcess(self, id, pid, pos)
-        message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%pid),(pos+1))
+        message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%pid), (pos+1))
       
       # Return with message.
-      message = urllib.quote(message)
-      return RESPONSE.redirect('manage_customizeFilterForm?id=%s&pid:int=%i&lang=%s&manage_tabs_message=%s'%(id,pid,lang,message))
+      message = urllib.parse.quote(message)
+      return RESPONSE.redirect('manage_customizeFilterForm?id=%s&pid:int=%i&lang=%s&manage_tabs_message=%s'%(id, pid, lang, message))
 
 
     ############################################################################
@@ -872,7 +876,7 @@ class FilterManager:
     def manage_changeProcess(self, lang, btn='', key='', REQUEST=None, RESPONSE=None):
       """ FilterManager.manage_changeProcess """
       message = ''
-      id = REQUEST.get('id','')
+      id = REQUEST.get('id', '')
 
       # Change.
       # -------
@@ -889,7 +893,7 @@ class FilterManager:
       # Delete.
       # -------
       elif btn == self.getZMILangStr('BTN_DELETE'):
-        ids = REQUEST.get('ids',[])
+        ids = REQUEST.get('ids', [])
         for id in ids:
           delProcess(self, id)
         message = self.getZMILangStr('MSG_DELETED')%len(ids)
@@ -922,7 +926,7 @@ class FilterManager:
         message = self.getZMILangStr('MSG_INSERTED')%id
 
       # Return with message.
-      message = urllib.quote(message)
-      return RESPONSE.redirect('manage_customizeFilterForm?id=%s&lang=%s&manage_tabs_message=%s'%(id,lang,message))
+      message = urllib.parse.quote(message)
+      return RESPONSE.redirect('manage_customizeFilterForm?id=%s&lang=%s&manage_tabs_message=%s'%(id, lang, message))
 
 ################################################################################

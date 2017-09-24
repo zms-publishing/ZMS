@@ -17,10 +17,11 @@
 ################################################################################
 
 # Product Imports.
+from builtins import object
 import standard
 
 
-class ZMSWorkflowItem: 
+class ZMSWorkflowItem(object): 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowItem.getAutocommit
@@ -64,19 +65,19 @@ class ZMSWorkflowItem:
         transitions = self.getWorkflowManager().getTransitions()
         roles = self.getUserRoles(auth_user)
         for transition in transitions:
-          wfFrom = transition.get('from',[])
-          wfPerformer = transition.get('performer',[])
-          wfTo = transition.get('to',[])
+          wfFrom = transition.get('from', [])
+          wfPerformer = transition.get('performer', [])
+          wfTo = transition.get('to', [])
           append = False
           append = append or ((wfFrom is None or len(wfFrom) == 0) and len(wfTo) == 0)
-          append = append or (len(standard.intersection_list(wfStates,wfFrom)) > 0 and len(wfTo) > 0)
-          append = append and (len(standard.intersection_list(roles,wfPerformer)) > 0 or auth_user.has_permission('Manager',self))
+          append = append or (len(standard.intersection_list(wfStates, wfFrom)) > 0 and len(wfTo) > 0)
+          append = append and (len(standard.intersection_list(roles, wfPerformer)) > 0 or auth_user.has_permission('Manager', self))
           if append:
-            actions.append((transition['name'],path+'manage_wfTransition',transition.get('icon_clazz','icon-check-empty')))
+            actions.append((transition['name'], path+'manage_wfTransition', transition.get('icon_clazz', 'icon-check-empty')))
       
       #-- Headline,
       if len( actions) > 0:
-        actions.insert(0,('----- %s -----'%self.getZMILangStr('TAB_WORKFLOW'),'workflow-action'))
+        actions.insert(0, ('----- %s -----'%self.getZMILangStr('TAB_WORKFLOW'), 'workflow-action'))
       
       # Return action list.
       return actions

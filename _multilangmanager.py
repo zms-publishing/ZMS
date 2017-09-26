@@ -22,7 +22,7 @@ from App.Common import package_home
 import OFS.misc_
 import copy
 import urllib
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
 import IZMSLocale
 import _fileutil
@@ -204,9 +204,8 @@ class MultiLanguageObject:
 ###
 ################################################################################
 ################################################################################
+@implementer(IZMSLocale.IZMSLocale)
 class MultiLanguageManager:
-    zope.interface.implements(
-        IZMSLocale.IZMSLocale)
 
     def get_manage_langs(self):
       """

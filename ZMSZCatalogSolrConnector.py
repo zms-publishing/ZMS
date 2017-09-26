@@ -21,7 +21,7 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import urllib
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
 import standard
 import _xmllib
@@ -37,10 +37,10 @@ import ZMSItem
 ###
 ################################################################################
 ################################################################################
+@implementer(
+        IZMSCatalogConnector.IZMSCatalogConnector)
 class ZMSZCatalogSolrConnector(
         ZMSItem.ZMSItem):
-    zope.interface.implements(
-        IZMSCatalogConnector.IZMSCatalogConnector)
 
     # Properties.
     # -----------

@@ -23,7 +23,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import time
 import urllib
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
 import _confmanager
 import standard
@@ -90,11 +90,11 @@ def remove_tags(self, s):
 ###
 ################################################################################
 ################################################################################
-class ZMSZCatalogAdapter(
-        ZMSItem.ZMSItem):
-    zope.interface.implements(
+@implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSCatalogAdapter.IZMSCatalogAdapter)
+class ZMSZCatalogAdapter(
+        ZMSItem.ZMSItem):
 
     # Properties.
     # -----------

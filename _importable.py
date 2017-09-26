@@ -145,7 +145,7 @@ def importFile(self, file, REQUEST, handler):
       for ext in ['xml', 'htm', 'html' ]:
         if filename is None:
           filename = _fileutil.findExtension(ext, folder, deep)
-	  break
+      break
     if filename is None:
       raise zExceptions.InternalError('XML-File not found!')
   

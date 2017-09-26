@@ -21,7 +21,7 @@
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import urllib
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
 import standard
 import IZMSConfigurationProvider
@@ -29,11 +29,11 @@ import IZMSWorkflowProvider, ZMSWorkflowProvider
 import ZMSItem
 
 
-class ZMSWorkflowProviderAcquired(
-        ZMSItem.ZMSItem):
-    zope.interface.implements(
+@implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSWorkflowProvider.IZMSWorkflowProvider)
+class ZMSWorkflowProviderAcquired(
+        ZMSItem.ZMSItem):
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Properties

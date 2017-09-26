@@ -21,7 +21,7 @@
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import urllib
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
 import standard
 import IZMSConfigurationProvider, IZMSRepositoryProvider
@@ -93,14 +93,14 @@ def exportXml(self, REQUEST, RESPONSE):
 ###
 ################################################################################
 ################################################################################
+@implementer(
+        IZMSConfigurationProvider.IZMSConfigurationProvider,
+        IZMSWorkflowProvider.IZMSWorkflowProvider,
+        IZMSRepositoryProvider.IZMSRepositoryProvider,)
 class ZMSWorkflowProvider(
         ZMSItem.ZMSItem,
         ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager,
         ZMSWorkflowTransitionsManager.ZMSWorkflowTransitionsManager):
-    zope.interface.implements(
-        IZMSConfigurationProvider.IZMSConfigurationProvider,
-        IZMSWorkflowProvider.IZMSWorkflowProvider,
-        IZMSRepositoryProvider.IZMSRepositoryProvider,)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Properties

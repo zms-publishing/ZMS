@@ -18,10 +18,8 @@
 ################################################################################
 
 # Imports.
-from Products.ZCatalog import CatalogPathAwareness
 import re
 import sys
-import zope.interface
 # Product Imports.
 import standard
 

@@ -21,7 +21,7 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
 import _confmanager
 import IZMSConfigurationProvider
@@ -36,13 +36,13 @@ import ZMSItem
 ###
 ################################################################################
 ################################################################################
+@implementer(
+        IZMSConfigurationProvider.IZMSConfigurationProvider,
+        IZMSFormatProvider.IZMSFormatProvider)
 class ZMSFormatProvider(
         ZMSItem.ZMSItem,
         ZMSTextformatManager.ZMSTextformatManager,
         ZMSCharformatManager.ZMSCharformatManager):
-    zope.interface.implements(
-        IZMSConfigurationProvider.IZMSConfigurationProvider,
-        IZMSFormatProvider.IZMSFormatProvider)
 
     # Properties.
     # -----------

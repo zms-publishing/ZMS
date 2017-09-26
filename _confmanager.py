@@ -39,7 +39,7 @@ import time
 import urllib
 import xml.dom
 import zExceptions
-import zope.interface
+from zope.interface import implementer
 # Product imports.
 from IZMSConfigurationProvider import IZMSConfigurationProvider
 import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
@@ -130,13 +130,13 @@ def updateConf(self):
 ###
 ################################################################################
 ################################################################################
+@implementer(
+      IZMSMetamodelProvider.IZMSMetamodelProvider,
+      IZMSFormatProvider.IZMSFormatProvider)
 class ConfManager(
     _multilangmanager.MultiLanguageManager,
     _filtermanager.FilterManager,
     ):
-    zope.interface.implements(
-      IZMSMetamodelProvider.IZMSMetamodelProvider,
-      IZMSFormatProvider.IZMSFormatProvider)
 
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security

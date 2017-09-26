@@ -31,7 +31,6 @@ import re
 import sys
 # Product Imports.
 import standard
-import _accessmanager
 import _blobfields
 import _fileutil
 import _filtermanager
@@ -75,7 +74,7 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
       if ob.meta_type == 'Folder':
         ob_id = ob.id
         exportFolder(self, ob,'%s/%s'%(path,id),ob_id,REQUEST,depth+1)
-      elif ob.meta_type not in _accessmanager.user_folder_meta_types and 'content' not in folder.objectIds(['ZMS']):
+      elif 'content' not in folder.objectIds(['ZMS']):
         try:
           ob_id = ob.id()
         except:

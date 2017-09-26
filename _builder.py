@@ -22,7 +22,6 @@
 # Imports
 import pyexpat
 import time
-import Globals
 # Product Imports.
 import standard
 

@@ -25,8 +25,8 @@ import copy
 import sys
 import time
 import urllib
-import zope.interface
 import zExceptions
+from zope.interface import implementer
 # Product Imports.
 import standard
 import IZMSCatalogConnector
@@ -187,10 +187,10 @@ def recreateCatalog(self, zcm, lang):
 ###
 ################################################################################
 ################################################################################
+@implementer(
+        IZMSCatalogConnector.IZMSCatalogConnector)
 class ZMSZCatalogConnector(
         ZMSItem.ZMSItem):
-    zope.interface.implements(
-        IZMSCatalogConnector.IZMSCatalogConnector)
 
     # Properties.
     # -----------

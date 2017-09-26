@@ -21,7 +21,7 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
 import _confmanager
 import standard
@@ -37,14 +37,14 @@ import ZMSItem
 ###
 ################################################################################
 ################################################################################
+@implementer(
+        IZMSConfigurationProvider.IZMSConfigurationProvider,
+        IZMSMetamodelProvider.IZMSMetamodelProvider,
+        IZMSRepositoryProvider.IZMSRepositoryProvider,)
 class ZMSMetamodelProvider(
         ZMSItem.ZMSItem,
         ZMSMetaobjManager.ZMSMetaobjManager,
         ZMSMetadictManager.ZMSMetadictManager):
-    zope.interface.implements(
-        IZMSConfigurationProvider.IZMSConfigurationProvider,
-        IZMSMetamodelProvider.IZMSMetamodelProvider,
-        IZMSRepositoryProvider.IZMSRepositoryProvider,)
 
     # Properties.
     # -----------

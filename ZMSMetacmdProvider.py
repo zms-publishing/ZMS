@@ -24,7 +24,7 @@ from Products.PageTemplates import ZopePageTemplate
 import copy
 import os
 import urllib
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
 import _fileutil
 import standard
@@ -77,12 +77,12 @@ pyScriptExampleCode = \
 ###
 ################################################################################
 ################################################################################
-class ZMSMetacmdProvider(
-        ZMSItem.ZMSItem):
-    zope.interface.implements(
+@implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSMetacmdProvider.IZMSMetacmdProvider,
         IZMSRepositoryProvider.IZMSRepositoryProvider)
+class ZMSMetacmdProvider(
+        ZMSItem.ZMSItem):
 
     # Properties.
     # -----------

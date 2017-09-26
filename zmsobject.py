@@ -364,7 +364,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.isPageContainer:
     # --------------------------------------------------------------------------
     def isPageContainer(self):
-	  return self.getType() in [ 'ZMSDocument']
+      return self.getType() in [ 'ZMSDocument']
 
 
     # --------------------------------------------------------------------------

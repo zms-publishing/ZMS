@@ -25,7 +25,7 @@ import re
 import stat
 import time
 import urllib
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
 import IZMSConfigurationProvider
 import IZMSDaemon
@@ -50,12 +50,12 @@ def get_class(py):
 ###
 ################################################################################
 ################################################################################
-class ZMSRepositoryManager(
-        ZMSItem.ZMSItem):
-    zope.interface.implements(
+@implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSDaemon.IZMSDaemon,
         IZMSRepositoryManager.IZMSRepositoryManager)
+class ZMSRepositoryManager(
+        ZMSItem.ZMSItem):
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Properties

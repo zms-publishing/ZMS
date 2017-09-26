@@ -320,7 +320,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.FileFromData
     # --------------------------------------------------------------------------
-      def FileFromData( self, data, filename='', content_type=None, mediadbStorable=False):
+    def FileFromData( self, data, filename='', content_type=None, mediadbStorable=False):
         """
         Creates a new instance of a file from given data.
         @param data: File-data (binary)
@@ -340,7 +340,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.ImageFromData:
     # --------------------------------------------------------------------------
-      def ImageFromData( self, data, filename='', content_type=None, mediadbStorable=False):
+    def ImageFromData( self, data, filename='', content_type=None, mediadbStorable=False):
         return standard.ImageFromData( self, data, filename, content_type)
 
 

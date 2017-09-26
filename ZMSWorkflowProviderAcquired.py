@@ -17,25 +17,23 @@
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import map
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import urllib.request, urllib.parse, urllib.error
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
-import standard
-import IZMSConfigurationProvider
-import IZMSWorkflowProvider, ZMSWorkflowProvider
-import ZMSItem
+from . import standard
+from . import IZMSConfigurationProvider
+from . import IZMSWorkflowProvider, ZMSWorkflowProvider
+from . import ZMSItem
 
 
-class ZMSWorkflowProviderAcquired(
-        ZMSItem.ZMSItem):
-    zope.interface.implements(
+@implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSWorkflowProvider.IZMSWorkflowProvider)
+class ZMSWorkflowProviderAcquired(
+        ZMSItem.ZMSItem):
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Properties

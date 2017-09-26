@@ -19,8 +19,8 @@
 # Product Imports.
 from builtins import object
 from builtins import str
-import standard
-import _zreferableitem
+from . import standard
+from . import _zreferableitem
 
 
 class ObjInputs(object):

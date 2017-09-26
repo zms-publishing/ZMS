@@ -23,17 +23,15 @@
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import filter
 from builtins import str
 import copy
 import time
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-import _blobfields
-import _fileutil
-import standard
+from . import _blobfields
+from . import _fileutil
+from . import standard
 
 
 ################################################################################

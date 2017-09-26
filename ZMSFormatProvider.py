@@ -21,12 +21,12 @@
 from builtins import map
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
-import _confmanager
-import IZMSConfigurationProvider
-import IZMSFormatProvider, ZMSTextformatManager, ZMSCharformatManager
-import ZMSItem
+from . import _confmanager
+from . import IZMSConfigurationProvider
+from . import IZMSFormatProvider, ZMSTextformatManager, ZMSCharformatManager
+from . import ZMSItem
 
 
 ################################################################################
@@ -36,13 +36,13 @@ import ZMSItem
 ###
 ################################################################################
 ################################################################################
+@implementer(
+        IZMSConfigurationProvider.IZMSConfigurationProvider,
+        IZMSFormatProvider.IZMSFormatProvider)
 class ZMSFormatProvider(
         ZMSItem.ZMSItem,
         ZMSTextformatManager.ZMSTextformatManager,
         ZMSCharformatManager.ZMSCharformatManager):
-    zope.interface.implements(
-        IZMSConfigurationProvider.IZMSConfigurationProvider,
-        IZMSFormatProvider.IZMSFormatProvider)
 
     # Properties.
     # -----------

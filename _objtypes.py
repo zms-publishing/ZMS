@@ -20,11 +20,11 @@
 from builtins import object
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 # Product Imports.
-import _blobfields
-import _confmanager
-import _fileutil
-import standard
-import _zreferableitem
+from . import _blobfields
+from . import _confmanager
+from . import _fileutil
+from . import standard
+from . import _zreferableitem
 
 
 # ------------------------------------------------------------------------------

@@ -20,8 +20,6 @@ from __future__ import absolute_import
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import str
 from DateTime.DateTime import DateTime
 from ZPublisher import HTTPRangeSupport, HTTPRequest

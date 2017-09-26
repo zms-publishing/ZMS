@@ -18,8 +18,6 @@ from __future__ import division
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import chr
 from builtins import range
 from builtins import filter
@@ -28,37 +26,37 @@ from builtins import map
 from AccessControl import ClassSecurityInfo
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.ZCatalog import CatalogPathAwareness
-import Globals
+# TODO from Products.ZCatalog import CatalogPathAwareness
+# TODO import Globals
 import ZPublisher.HTTPRequest
 import urllib.request, urllib.parse, urllib.error
 import re
 import string
 import time
 # Product Imports.
-import standard
-import zopeutil
-import ZMSItem
-import ZMSWorkflowItem
-import _accessmanager
-import _blobfields
-import _cachemanager
-import _confmanager
-import _copysupport
-import _deprecatedapi
-import _exportable
-import _globals
-import _multilangmanager
-import _objattrs
-import _objchildren
-import _objinputs
-import _objtypes
-import _pathhandler
-import _versionmanager
-import _xmllib
-import _textformatmanager
-import _zmsattributecontainer
-import _zreferableitem
+from . import standard
+from . import zopeutil
+from . import ZMSItem
+from . import ZMSWorkflowItem
+from . import _accessmanager
+from . import _blobfields
+from . import _cachemanager
+from . import _confmanager
+from . import _copysupport
+from . import _deprecatedapi
+from . import _exportable
+from . import _globals
+from . import _multilangmanager
+from . import _objattrs
+from . import _objchildren
+from . import _objinputs
+from . import _objtypes
+from . import _pathhandler
+from . import _versionmanager
+from . import _xmllib
+from . import _textformatmanager
+from . import _zmsattributecontainer
+from . import _zreferableitem
 
 __all__= ['ZMSObject']
 
@@ -71,7 +69,7 @@ __all__= ['ZMSObject']
 ################################################################################
 ################################################################################
 class ZMSObject(ZMSItem.ZMSItem,
-	CatalogPathAwareness.CatalogAware,  # Catalog awareness.
+	#CatalogPathAwareness.CatalogAware,  # Catalog awareness.
 	_accessmanager.AccessableObject,	# Access manager.
 	_versionmanager.VersionItem,		# Version Item.
 	ZMSWorkflowItem.ZMSWorkflowItem,
@@ -341,7 +339,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.isPageContainer:
     # --------------------------------------------------------------------------
     def isPageContainer(self):
-	  return self.getType() in [ 'ZMSDocument']
+      return self.getType() in [ 'ZMSDocument']
 
 
     # --------------------------------------------------------------------------
@@ -1552,6 +1550,6 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-Globals.InitializeClass(ZMSObject)
+#Globals.InitializeClass(ZMSObject)
 
 ################################################################################

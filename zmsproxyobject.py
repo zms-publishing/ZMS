@@ -18,11 +18,11 @@
 
 # Imports.
 from builtins import map
-from zope.interface import implements
+from zope.interface import implementer
 # Product Imports.
-import IZMSMetamodelProvider, IZMSFormatProvider
-from zmscontainerobject import ZMSContainerObject
-import _globals
+from . import IZMSMetamodelProvider, IZMSFormatProvider
+from . import zmscontainerobject
+from . import  _globals
 
 
 ################################################################################
@@ -32,10 +32,10 @@ import _globals
 ###
 ################################################################################
 ################################################################################
-class ZMSProxyObject(ZMSContainerObject):
-    implements(
+@implementer(
       IZMSMetamodelProvider.IZMSMetamodelProvider,
       IZMSFormatProvider.IZMSFormatProvider)
+class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
 
 
     # --------------------------------------------------------------------------
@@ -513,7 +513,7 @@ class ZMSProxyObject(ZMSContainerObject):
     # --------------------------------------------------------------------------
     def getHref2IndexHtml(self, REQUEST, deep=1): 
       proxy = self.proxy
-      rtn = ZMSContainerObject.getHref2IndexHtml( self, REQUEST, deep)
+      rtn = zmscontainerobject.ZMSContainerObject.getHref2IndexHtml( self, REQUEST, deep)
       return rtn
 
 

@@ -19,25 +19,23 @@ from __future__ import division
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import range
 from builtins import filter
 from builtins import map
 from builtins import str
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-import Globals
+#import Globals
 import sys
 import time
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from zmscontainerobject import ZMSContainerObject
-import _confmanager
-import _fileutil
-import standard
-import _importable
-import _ziputil
+from . import zmscontainerobject
+from . import _confmanager
+from . import _fileutil
+from . import standard
+from . import _importable
+from . import _ziputil
 
 
 # ------------------------------------------------------------------------------
@@ -135,7 +133,7 @@ def containerFilter(container):
 ###
 ################################################################################
 ################################################################################
-class ZMSCustom(ZMSContainerObject):
+class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security
@@ -541,6 +539,6 @@ class ZMSCustom(ZMSContainerObject):
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-Globals.InitializeClass(ZMSCustom)
+#Globals.InitializeClass(ZMSCustom)
 
 ################################################################################

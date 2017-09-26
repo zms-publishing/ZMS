@@ -19,17 +19,15 @@ from __future__ import division
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import map
 from builtins import str
 import copy
 import time
 import urllib.request, urllib.parse, urllib.error
 from OFS import Moniker
-from OFS.CopySupport import _cb_decode, _cb_encode, absattr, CopyError, eNoData, eNotFound, eInvalid
+from OFS.CopySupport import _cb_decode, _cb_encode, absattr, CopyError # TODO , eNoData, eNotFound, eInvalid
 # Product Imports.
-import standard
+from . import standard
 
 
 # ------------------------------------------------------------------------------

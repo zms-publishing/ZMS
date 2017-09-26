@@ -21,8 +21,6 @@
 from __future__ import division
 
 # Documentation string.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import filter
 from builtins import range
 from builtins import str
@@ -278,7 +276,7 @@ def initialize(context):
         
         import sys, traceback, string
         type, val, tb = sys.exc_info()
-        sys.stderr.write(string.join(traceback.format_exception(type, val, tb), ''))
+        sys.stderr.write(''.join(traceback.format_exception(type, val, tb)))
         del type, val, tb
 
 def getData(cell):
@@ -351,7 +349,7 @@ if confdict['zmi.console'] in ['light', 'dark']:
   from App.special_dtml import DTMLFile
   from App.Management import Navigation
   from App.Management import Tabs
-  from App.ApplicationManager import DebugManager
+  # TODO from App.ApplicationManager import DebugManager
   from OFS.ObjectManager import ObjectManager
   Navigation.manage = DTMLFile('skins/zope/manage', globals())
   setattr(Navigation, 'manage_page_style.css', DTMLFile('skins/zope/manage_page_style_%s.css'%(confdict['zmi.console']), globals()))
@@ -360,4 +358,4 @@ if confdict['zmi.console'] in ['light', 'dark']:
   Navigation.manage_menu = DTMLFile('skins/zope/menu', globals())
   Tabs.manage_tabs = DTMLFile('skins/zope/manage_tabs', globals())
   ObjectManager.manage_main = DTMLFile('skins/zope/main', globals())
-  DebugManager.manage_main = DTMLFile('skins/zope/debug', globals())
+  # TODO DebugManager.manage_main = DTMLFile('skins/zope/debug', globals())

@@ -24,9 +24,8 @@ from builtins import filter
 from builtins import str
 import pyexpat
 import time
-import Globals
 # Product Imports.
-import standard
+from . import standard
 
 ################################################################################
 # class ParseError(Exception):

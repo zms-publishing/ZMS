@@ -18,8 +18,6 @@ from __future__ import division
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import range
 from builtins import filter
 from builtins import str
@@ -34,14 +32,14 @@ import sys
 import urllib.request, urllib.parse, urllib.error
 import time
 # Product Imports.
-from zmsobject import ZMSObject
-import standard
-import _accessmanager
-import _confmanager
-import _fileutil
-import _objattrs
-import _versionmanager
-import _zmi_actions_util
+from . import zmsobject
+from . import standard
+from . import _accessmanager
+from . import _confmanager
+from . import _fileutil
+from . import _objattrs
+from . import _versionmanager
+from . import _zmi_actions_util
 
 __all__= ['ZMSContainerObject']
 
@@ -103,7 +101,7 @@ def getNextSibling(self, REQUEST, incResource=False):
 ################################################################################
 ################################################################################
 class ZMSContainerObject(
-    ZMSObject,
+    zmsobject.ZMSObject,
     RoleManager,
     _accessmanager.AccessableContainer,
     _versionmanager.VersionManagerContainer

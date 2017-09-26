@@ -18,8 +18,6 @@
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import map
 from builtins import filter
 from builtins import str
@@ -27,8 +25,8 @@ import ZPublisher.HTTPRequest
 import copy
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-import standard
-import _blobfields
+from . import standard
+from . import _blobfields
 
 
 ################################################################################

@@ -19,8 +19,6 @@ from __future__ import division
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import range
 from builtins import filter
 from builtins import map
@@ -32,9 +30,9 @@ import sys
 import time
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-import IZMSRepositoryProvider
-import standard
-import zopeutil
+from . import IZMSRepositoryProvider
+from . import standard
+from . import zopeutil
 
 
 ################################################################################

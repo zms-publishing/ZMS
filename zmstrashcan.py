@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
@@ -26,9 +24,9 @@ import string
 import time
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from zmscontainerobject import ZMSContainerObject
-import _confmanager
-import standard
+from . import zmscontainerobject
+from . import _confmanager
+from . import standard
 
 
 ################################################################################
@@ -38,7 +36,7 @@ import standard
 ###
 ################################################################################
 ################################################################################
-class ZMSTrashcan(ZMSContainerObject):
+class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
 
     # Properties.
     # -----------

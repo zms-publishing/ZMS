@@ -18,9 +18,9 @@
 
 
 # Imports.
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
-import IZMSMetacmdProvider, ZMSMetacmdProvider
+from . import IZMSMetacmdProvider, ZMSMetacmdProvider
 
 
 ################################################################################
@@ -30,10 +30,10 @@ import IZMSMetacmdProvider, ZMSMetacmdProvider
 ###
 ################################################################################
 ################################################################################
+@implementer(
+        IZMSMetacmdProvider.IZMSMetacmdProvider)
 class ZMSMetacmdProviderAcquired(
         ZMSMetacmdProvider.ZMSMetacmdProvider):
-    zope.interface.implements(
-        IZMSMetacmdProvider.IZMSMetacmdProvider)
 
     # Properties.
     # -----------

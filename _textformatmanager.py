@@ -19,9 +19,9 @@
 # Product Imports.
 from builtins import object
 from builtins import str
-import standard
-import _globals
-import _objattrs
+from . import standard
+from . import _globals
+from . import _objattrs
 
 
 class TextFormatObject(object):

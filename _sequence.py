@@ -17,12 +17,10 @@
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-import ZMSItem
+from . import ZMSItem
 
 
 ################################################################################

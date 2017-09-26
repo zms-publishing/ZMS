@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import str
 from builtins import map
 from builtins import filter
@@ -29,16 +27,16 @@ import re
 import stat
 import time
 import urllib.request, urllib.parse, urllib.error
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
-import IZMSConfigurationProvider
-import IZMSDaemon
-import IZMSRepositoryManager
-import IZMSRepositoryProvider
-import ZMSItem
-import _fileutil
-import standard
-import zopeutil
+from . import IZMSConfigurationProvider
+from . import IZMSDaemon
+from . import IZMSRepositoryManager
+from . import IZMSRepositoryProvider
+from . import ZMSItem
+from . import _fileutil
+from . import standard
+from . import zopeutil
 
 
 def get_class(py):
@@ -54,12 +52,12 @@ def get_class(py):
 ###
 ################################################################################
 ################################################################################
-class ZMSRepositoryManager(
-        ZMSItem.ZMSItem):
-    zope.interface.implements(
+@implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSDaemon.IZMSDaemon,
         IZMSRepositoryManager.IZMSRepositoryManager)
+class ZMSRepositoryManager(
+        ZMSItem.ZMSItem):
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Properties

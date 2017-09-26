@@ -18,7 +18,7 @@
 
 # Product Imports.
 from builtins import object
-import standard
+from . import standard
 
 
 class ZMSWorkflowItem(object): 

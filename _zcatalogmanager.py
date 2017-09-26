@@ -19,12 +19,11 @@
 # Imports.
 from builtins import object
 from builtins import filter
-from Products.ZCatalog import CatalogPathAwareness
 import re
 import sys
 import zope.interface
 # Product Imports.
-import standard
+from . import standard
 
 
 ################################################################################

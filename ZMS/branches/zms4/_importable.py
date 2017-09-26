@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from App.Common import package_home
 from io import StringIO
 import ZPublisher.HTTPRequest
@@ -30,11 +28,11 @@ import transaction
 import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
-import standard
-import _blobfields
-import _fileutil
-import _filtermanager
-import _globals
+from . import standard
+from . import _blobfields
+from . import _fileutil
+from . import _filtermanager
+from . import _globals
 
 
 # ------------------------------------------------------------------------------
@@ -146,7 +144,7 @@ def importFile(self, file, REQUEST, handler):
       for ext in ['xml', 'htm', 'html' ]:
         if filename is None:
           filename = _fileutil.findExtension(ext, folder, deep)
-	  break
+      break
     if filename is None:
       raise zExceptions.InternalError('XML-File not found!')
   

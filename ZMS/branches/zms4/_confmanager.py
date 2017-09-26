@@ -20,8 +20,6 @@ from __future__ import absolute_import
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import range
 from builtins import map
 from builtins import str
@@ -54,7 +52,7 @@ import time
 import urllib.request, urllib.parse, urllib.error
 import xml.dom
 import zExceptions
-import zope.interface
+from zope.interface import implementer
 # Product imports.
 # import standard
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
@@ -81,7 +79,7 @@ class ConfDict(object):
         if cls.__confdict__ is None:
             cls.__confdict__ = {'last_modified':int(DateTime().timeTime())}
             PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
-            for home in [PRODUCT_HOME, INSTANCE_HOME]:
+            for home in [PRODUCT_HOME]: # TODO , INSTANCE_HOME]:
               fp = os.path.join(home, 'etc', 'zms.conf')
               if os.path.exists(fp):
                 cfp = configparser.ConfigParser()
@@ -145,13 +143,13 @@ def updateConf(self):
 ###
 ################################################################################
 ################################################################################
+@implementer(
+    IZMSMetamodelProvider.IZMSMetamodelProvider,
+    IZMSFormatProvider.IZMSFormatProvider)
 class ConfManager(
     _multilangmanager.MultiLanguageManager,
     _filtermanager.FilterManager,
     ):
-    zope.interface.implements(
-      IZMSMetamodelProvider.IZMSMetamodelProvider,
-      IZMSFormatProvider.IZMSFormatProvider)
 
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security
@@ -1146,6 +1144,6 @@ class ConfManager(
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-Globals.InitializeClass(ConfManager)
+#Globals.InitializeClass(ConfManager)
 
 ################################################################################

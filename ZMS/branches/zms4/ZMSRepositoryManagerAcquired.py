@@ -17,15 +17,13 @@
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import map
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
-import IZMSConfigurationProvider
-import IZMSRepositoryManager
-import ZMSItem
+from . import IZMSConfigurationProvider
+from . import IZMSRepositoryManager
+from . import ZMSItem
 
 
 ################################################################################
@@ -35,11 +33,11 @@ import ZMSItem
 ###
 ################################################################################
 ################################################################################
-class ZMSRepositoryManagerAcquired(
-        ZMSItem.ZMSItem):
-    zope.interface.implements(
+@implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSRepositoryManager.IZMSRepositoryManager)
+class ZMSRepositoryManagerAcquired(
+        ZMSItem.ZMSItem):
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Properties

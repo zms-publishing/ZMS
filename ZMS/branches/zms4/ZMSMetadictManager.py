@@ -27,7 +27,7 @@ import copy
 import sys
 import time
 # Product Imports.
-import standard
+from . import standard
 
 
 ################################################################################

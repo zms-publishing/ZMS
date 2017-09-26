@@ -19,7 +19,7 @@
 # Product imports.
 from builtins import map
 from builtins import filter
-import standard
+from . import standard
 
 def zmi_actions(container, context, attr_id='e'):
   """

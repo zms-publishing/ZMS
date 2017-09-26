@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import str
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -31,11 +29,11 @@ import os
 import urllib.request, urllib.parse, urllib.error
 import time
 # Product Imports.
-import standard
-import _blobfields
-import _fileutil
-import _globals
-import _objattrs
+from . import standard
+from . import _blobfields
+from . import _fileutil
+from . import _globals
+from . import _objattrs
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

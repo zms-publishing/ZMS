@@ -18,8 +18,6 @@ from __future__ import division
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import map
 from builtins import filter
 from builtins import str
@@ -27,14 +25,14 @@ from builtins import range
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import urllib.request, urllib.parse, urllib.error
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
-import standard
-import IZMSConfigurationProvider, IZMSRepositoryProvider
-import IZMSWorkflowProvider, ZMSWorkflowActivitiesManager, ZMSWorkflowTransitionsManager
-import ZMSItem
-import _accessmanager
-import _fileutil
+from . import standard
+from . import IZMSConfigurationProvider, IZMSRepositoryProvider
+from . import IZMSWorkflowProvider, ZMSWorkflowActivitiesManager, ZMSWorkflowTransitionsManager
+from . import ZMSItem
+from . import _accessmanager
+from . import _fileutil
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -99,14 +97,14 @@ def exportXml(self, REQUEST, RESPONSE):
 ###
 ################################################################################
 ################################################################################
+@implementer(
+        IZMSConfigurationProvider.IZMSConfigurationProvider,
+        IZMSWorkflowProvider.IZMSWorkflowProvider,
+        IZMSRepositoryProvider.IZMSRepositoryProvider,)
 class ZMSWorkflowProvider(
         ZMSItem.ZMSItem,
         ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager,
         ZMSWorkflowTransitionsManager.ZMSWorkflowTransitionsManager):
-    zope.interface.implements(
-        IZMSConfigurationProvider.IZMSConfigurationProvider,
-        IZMSWorkflowProvider.IZMSWorkflowProvider,
-        IZMSRepositoryProvider.IZMSRepositoryProvider,)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Properties

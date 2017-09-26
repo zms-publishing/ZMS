@@ -24,8 +24,8 @@ from builtins import range
 import copy
 import re
 # Product Imports.
-import standard
-import _globals
+from . import standard
+from . import _globals
 
 
 # ------------------------------------------------------------------------------

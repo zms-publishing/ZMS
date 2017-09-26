@@ -21,8 +21,6 @@ from __future__ import absolute_import
 
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import map
 from builtins import filter
 from builtins import str

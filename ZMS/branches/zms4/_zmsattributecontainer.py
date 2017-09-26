@@ -17,8 +17,6 @@
 ################################################################################
 
 # Documentation string.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import str
 __doc__ = """ZMS product module."""
 # Version string. 
@@ -31,8 +29,8 @@ import urllib.request, urllib.parse, urllib.error
 import time
 import string
 # Product Imports.
-import _objattrs
-import _pathhandler
+from . import _objattrs
+from . import _pathhandler
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

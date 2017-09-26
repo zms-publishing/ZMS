@@ -19,9 +19,9 @@
 
 # Imports.
 import copy
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
-import IZMSFormatProvider, ZMSFormatProvider
+from . import IZMSFormatProvider, ZMSFormatProvider
 
 
 ################################################################################
@@ -31,10 +31,10 @@ import IZMSFormatProvider, ZMSFormatProvider
 ###
 ################################################################################
 ################################################################################
+@implementer(
+        IZMSFormatProvider.IZMSFormatProvider)
 class ZMSFormatProviderAcquired(
         ZMSFormatProvider.ZMSFormatProvider):
-    zope.interface.implements(
-        IZMSFormatProvider.IZMSFormatProvider)
 
     # Properties.
     # -----------

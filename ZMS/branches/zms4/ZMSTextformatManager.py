@@ -19,8 +19,6 @@ from __future__ import division
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import filter
 from builtins import map
 from builtins import range
@@ -28,7 +26,7 @@ from App.Common import package_home
 import copy
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-import ZMSTextformat
+from . import ZMSTextformat
 
 
 ################################################################################

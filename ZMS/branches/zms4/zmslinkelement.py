@@ -17,23 +17,21 @@
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import map
 from builtins import str
 from AccessControl import ClassSecurityInfo
-import Globals
+# TODO import Globals
 import sys
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from zmscontainerobject import ZMSContainerObject
-from zmscustom import ZMSCustom
-from zmsobject import ZMSObject
-from zmsproxyobject import ZMSProxyObject
-import standard
-import _confmanager
-import _xmllib
-import _zreferableitem
+from . import zmscontainerobject
+from . import zmscustom
+from . import zmsobject
+from . import zmsproxyobject
+from . import standard
+from . import _confmanager
+from . import _xmllib
+from . import _zreferableitem
 
 
 """
@@ -53,7 +51,7 @@ class ConstraintViolation(Exception): pass
 ###
 ################################################################################
 ################################################################################
-class ZMSLinkElement(ZMSCustom):
+class ZMSLinkElement(zmscustom.ZMSCustom):
 
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security
@@ -100,7 +98,7 @@ class ZMSLinkElement(ZMSCustom):
     #  ZMSLinkElement.getSelf:
     # --------------------------------------------------------------------------
     def getSelfPROXY(self, proxy, meta_type=None):
-      return ZMSObject.getSelf( proxy, meta_type)
+      return zmsobject.ZMSObject.getSelf( proxy, meta_type)
 
     def getSelf(self, meta_type=None):
       proxy = self.getProxy()
@@ -226,7 +224,7 @@ class ZMSLinkElement(ZMSCustom):
       else:
         b = False
         if not (self.NOREF == meta_type or (isinstance(meta_type, list) and self.NOREF in meta_type)):
-          b = b or ZMSObject.isMetaType(self, meta_type, REQUEST)
+          b = b or zmsobject.ZMSObject.isMetaType(self, meta_type, REQUEST)
           ref_obj = self.getRefObj()
           if ref_obj is not None and self.isEmbedded(REQUEST):
             if not (self.NORESOLVEREF == meta_type or (isinstance(meta_type, list) and self.NORESOLVEREF in meta_type)):
@@ -342,12 +340,12 @@ class ZMSLinkElement(ZMSCustom):
     #  ZMSLinkElement.display_icon:
     # --------------------------------------------------------------------------
     def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True): 
-      zmsobject = self
+      context = self
       if self.isEmbedded(REQUEST):
         ref_obj = self.getRefObj()
         if ref_obj is not None:
-          zmsobject = ref_obj
-      return ZMSObject.display_icon(zmsobject, REQUEST=REQUEST, meta_type=meta_type, key=key, zpt=zpt)
+          context = ref_obj
+      return zmsobject.ZMSObject.display_icon(context, REQUEST=REQUEST, meta_type=meta_type, key=key, zpt=zpt)
 
 
     # --------------------------------------------------------------------------
@@ -448,7 +446,7 @@ class ZMSLinkElement(ZMSCustom):
       # First exit...
       if (value is None or value=='' or (value==0 and not isinstance(value, bool))) and \
         key in self.getMetaobjAttrIds( self.meta_id):
-        value = ZMSObject.getObjProperty( self, key, REQUEST, default)
+        value = zmsobject.ZMSObject.getObjProperty( self, key, REQUEST, default)
       # Second exit...
       if (value is None or value=='' or (value == 0 and not isinstance(value, bool))) and \
           key not in ['active', 'change_uid', 'change_dt', 'work_uid', 'work_dt', 'internal_dict', 'attr_ref', 'attr_dc_coverage']:
@@ -463,7 +461,7 @@ class ZMSLinkElement(ZMSCustom):
             value = self.getObjPropertyPROXY( ref_obj, key, REQUEST, default)
           # Last exit...
           if (value is None or len(str(value)) == 0 or (value == 0 and not isinstance(value, bool))):
-            value = ZMSObject.getObjProperty( self, key, REQUEST, default)
+            value = zmsobject.ZMSObject.getObjProperty( self, key, REQUEST, default)
       return value
 
 
@@ -479,8 +477,8 @@ class ZMSLinkElement(ZMSCustom):
         rtn = proxy.getNavItems( current, REQUEST, opt, depth)
       else:
         ref_obj = self.getRefObj()
-        if isinstance(ref_obj, ZMSContainerObject):
-          rtn = super(ZMSLinkElement, self).getNavItems( current, REQUEST, opt, depth)
+        if isinstance(ref_obj, zmscontainerobject.ZMSContainerObject):
+          rtn = super(zmslinkelement.ZMSLinkElement, self).getNavItems( current, REQUEST, opt, depth)
       return rtn
 
     def getNavItems(self, current, REQUEST, opt={}, depth=0):
@@ -501,8 +499,8 @@ class ZMSLinkElement(ZMSCustom):
         rtn = proxy.getNavElements( REQUEST, expand_tree, current_child, subElements)
       else:
         ref_obj = self.getRefObj()
-        if isinstance(ref_obj, ZMSContainerObject):
-          rtn = super(ZMSLinkElement, self).getNavElements( REQUEST, expand_tree, current_child, subElements)
+        if isinstance(ref_obj, zmscontainerobject.ZMSContainerObject):
+          rtn = super(zmslinkelement.ZMSLinkElement, zself).getNavElements( REQUEST, expand_tree, current_child, subElements)
       return rtn
 
     def getNavElements(self, REQUEST, expand_tree=1, current_child=None, subElements=[]):
@@ -524,7 +522,7 @@ class ZMSLinkElement(ZMSCustom):
       if proxy != self and proxy is not None and self.isEmbeddedRecursive( self.REQUEST):
         rtn = proxy.getHref2IndexHtml( REQUEST, deep)
       else:
-        rtn = ZMSObject.getHref2IndexHtml( proxy, REQUEST, deep)
+        rtn = zmsobject.ZMSObject.getHref2IndexHtml( proxy, REQUEST, deep)
       return rtn
     
     def getHref2IndexHtml(self, REQUEST, deep=1): 
@@ -609,7 +607,7 @@ class ZMSLinkElement(ZMSCustom):
       if proxy != self and proxy is not None and self.isEmbeddedRecursive( self.REQUEST):
         rtn = proxy.breadcrumbs_obj_path()
       else:
-        rtn = ZMSObject.breadcrumbs_obj_path( proxy, portalMaster)
+        rtn = zmsobject.ZMSObject.breadcrumbs_obj_path( proxy, portalMaster)
       return rtn
     
     def breadcrumbs_obj_path(self, portalMaster=True):
@@ -632,7 +630,7 @@ class ZMSLinkElement(ZMSCustom):
     #  ZMSLinkElement.initProxy: 
     # --------------------------------------------------------------------------
     def initProxy(self, base, url_base, proxy, recursive=False):
-      return ZMSProxyObject( self, base, url_base, proxy.id, proxy, recursive)
+      return zmsproxyobject.ZMSProxyObject( self, base, url_base, proxy.id, proxy, recursive)
 
 
     # --------------------------------------------------------------------------
@@ -649,7 +647,7 @@ class ZMSLinkElement(ZMSCustom):
             ref_obj = self.getRefObj()
             if ref_obj is not None:
               recursive = True
-              rtn = ZMSProxyObject( self, self.aq_parent, self.absolute_url(), self.id, ref_obj, recursive)
+              rtn = zmsproxyobject.ZMSProxyObject( self, self.aq_parent, self.absolute_url(), self.id, ref_obj, recursive)
       return rtn
 
 
@@ -721,6 +719,6 @@ class ZMSLinkElement(ZMSCustom):
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-Globals.InitializeClass(ZMSLinkElement)
+# TODO Globals.InitializeClass(ZMSLinkElement)
 
 ################################################################################

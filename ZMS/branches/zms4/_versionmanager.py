@@ -18,14 +18,12 @@
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import map
 from builtins import filter
 from builtins import str
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-import Globals
+# TODO import Globals
 import copy
 import operator
 import sys
@@ -33,12 +31,12 @@ import time
 import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
-import standard
-import zopeutil 
-import _blobfields
-import _confmanager
-import _globals
-import _zmsattributecontainer
+from . import standard
+from . import zopeutil 
+from . import _blobfields
+from . import _confmanager
+from . import _globals
+from . import _zmsattributecontainer
 
 
 # ------------------------------------------------------------------------------
@@ -1392,6 +1390,6 @@ class VersionManagerContainer(object):
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-Globals.InitializeClass(VersionItem)
+# TODO Globals.InitializeClass(VersionItem)
 
 ################################################################################

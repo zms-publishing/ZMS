@@ -18,8 +18,6 @@
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import filter
 from builtins import map
 from builtins import str
@@ -28,13 +26,13 @@ from App.Common import package_home
 import OFS.misc_
 import copy
 import urllib.request, urllib.parse, urllib.error
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
-import IZMSLocale
-import _fileutil
-import standard
-import _msexcelutil
-import _xmllib
+from . import IZMSLocale
+from . import _fileutil
+from . import standard
+from . import _msexcelutil
+from . import _xmllib
 
 
 # ------------------------------------------------------------------------------
@@ -210,9 +208,8 @@ class MultiLanguageObject(object):
 ###
 ################################################################################
 ################################################################################
+@implementer(IZMSLocale.IZMSLocale)
 class MultiLanguageManager(object):
-    zope.interface.implements(
-        IZMSLocale.IZMSLocale)
 
     def get_manage_langs(self):
       """

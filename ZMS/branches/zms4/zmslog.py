@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
@@ -27,9 +25,9 @@ import os
 import time
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-import standard
-import ZMSItem
-import _fileutil
+from . import standard
+from . import ZMSItem
+from . import _fileutil
 
 
 def severity_string(severity, mapping={

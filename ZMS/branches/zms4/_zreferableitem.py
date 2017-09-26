@@ -18,8 +18,6 @@
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import filter
 from builtins import range
 from builtins import map
@@ -31,9 +29,9 @@ import re
 import time
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-import standard
-import _confmanager
-import _objattrs
+from . import standard
+from . import _confmanager
+from . import _objattrs
 
 # ------------------------------------------------------------------------------
 #  isMailLink:

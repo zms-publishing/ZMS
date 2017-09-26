@@ -22,8 +22,6 @@ from __future__ import absolute_import
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import range
 from builtins import map
 from builtins import str

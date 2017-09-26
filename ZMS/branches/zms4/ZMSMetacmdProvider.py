@@ -18,8 +18,6 @@
 
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import str
 from builtins import map
 from builtins import filter
@@ -28,13 +26,13 @@ from Products.PageTemplates import ZopePageTemplate
 import copy
 import os
 import urllib.request, urllib.parse, urllib.error
-import zope.interface
+from zope.interface import implementer
 # Product Imports.
-import _fileutil
-import standard
-import zopeutil
-import IZMSMetacmdProvider, IZMSConfigurationProvider, IZMSRepositoryProvider
-import ZMSItem
+from . import _fileutil
+from . import standard
+from . import zopeutil
+from . import IZMSMetacmdProvider, IZMSConfigurationProvider, IZMSRepositoryProvider
+from . import ZMSItem
 
 
 # Example code.
@@ -81,12 +79,12 @@ pyScriptExampleCode = \
 ###
 ################################################################################
 ################################################################################
-class ZMSMetacmdProvider(
-        ZMSItem.ZMSItem):
-    zope.interface.implements(
+@implementer(
         IZMSConfigurationProvider.IZMSConfigurationProvider,
         IZMSMetacmdProvider.IZMSMetacmdProvider,
         IZMSRepositoryProvider.IZMSRepositoryProvider)
+class ZMSMetacmdProvider(
+        ZMSItem.ZMSItem):
 
     # Properties.
     # -----------

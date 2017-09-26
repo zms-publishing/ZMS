@@ -17,14 +17,12 @@
 ################################################################################
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
 from builtins import range
 from builtins import str
 from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from OFS.Image import Image
-import Globals
+#import Globals
 import codecs
 import copy
 import urllib.request, urllib.parse, urllib.error
@@ -33,13 +31,12 @@ import os
 import re
 import sys
 # Product Imports.
-import standard
-import _accessmanager
-import _blobfields
-import _fileutil
-import _filtermanager
-import _globals
-import _xmllib
+from . import standard
+from . import _blobfields
+from . import _fileutil
+from . import _filtermanager
+from . import _globals
+from . import _xmllib
 
 
 def writeFile(self, filename, data, mode='w', encoding='utf-8'):
@@ -78,7 +75,7 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
       if ob.meta_type == 'Folder':
         ob_id = ob.id
         exportFolder(self, ob, '%s/%s'%(path, id), ob_id, REQUEST, depth+1)
-      elif ob.meta_type not in _accessmanager.user_folder_meta_types and 'content' not in folder.objectIds(['ZMS']):
+      elif 'content' not in folder.objectIds(['ZMS']):
         try:
           ob_id = ob.id()
         except:
@@ -632,6 +629,6 @@ class Exportable(_filtermanager.FilterItem):
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-Globals.InitializeClass(Exportable)
+#Globals.InitializeClass(Exportable)
 
 ################################################################################

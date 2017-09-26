@@ -22,7 +22,7 @@ from builtins import object
 from builtins import filter
 import time
 # Product Imports.
-import standard
+from . import standard
 
 class Buff(object):
   pass

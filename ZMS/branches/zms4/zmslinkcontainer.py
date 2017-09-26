@@ -17,7 +17,7 @@
 ################################################################################
 
 # Product Imports.
-from zmscustom import ZMSCustom
+from . import zmscustom
 
 
 ################################################################################
@@ -27,7 +27,7 @@ from zmscustom import ZMSCustom
 ###
 ################################################################################
 ################################################################################
-class ZMSLinkContainer(ZMSCustom): 
+class ZMSLinkContainer(zmscustom.ZMSCustom): 
 
     # Properties.
     # -----------

@@ -26,11 +26,11 @@ from OFS.CopySupport import absattr
 import copy
 import re
 # Product Imports.
-import standard
-import _blobfields
-import _confmanager
-import _fileutil
-import _globals
+from . import standard
+from . import _blobfields
+from . import _confmanager
+from . import _fileutil
+from . import _globals
 
 
 # ------------------------------------------------------------------------------

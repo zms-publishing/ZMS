@@ -19,8 +19,6 @@ from __future__ import division
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import range
 from builtins import filter
 from builtins import map
@@ -29,9 +27,9 @@ import ZPublisher.HTTPRequest
 import copy
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-import IZMSRepositoryProvider
-import standard
-import _blobfields
+from . import IZMSRepositoryProvider
+from . import standard
+from . import _blobfields
 
 
 ################################################################################

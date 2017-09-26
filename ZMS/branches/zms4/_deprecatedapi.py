@@ -22,9 +22,9 @@ from builtins import map
 import tempfile
 from App.Common import package_home
 # Product Imports.
-import standard
-import _fileutil
-import _xmllib
+from . import standard
+from . import _fileutil
+from . import _xmllib
 
 def warn(self,old,new=None):
   import warnings

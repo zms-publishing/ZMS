@@ -20,25 +20,23 @@
 # Imports.
 from __future__ import division
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
 from builtins import range
 from builtins import map
 from builtins import filter
 from builtins import str
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-import Globals
+# TODO import Globals
 import copy
 import urllib.request, urllib.parse, urllib.error
 import time
 import zExceptions
 # Product Imports.
-from zmscustom import ZMSCustom
-import standard
-import _confmanager
-import _fileutil
-import _globals
+from . import zmscustom
+from . import standard
+from . import _confmanager
+from . import _fileutil
+from . import _globals
 
 
 ################################################################################
@@ -83,7 +81,7 @@ def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
 ################################################################################
 ################################################################################
 
-class ZMSSqlDb(ZMSCustom):
+class ZMSSqlDb(zmscustom.ZMSCustom):
 
     # Create a SecurityInfo for this class. We will use this
     # in the rest of our class definition to make security
@@ -2089,6 +2087,6 @@ class ZMSSqlDb(ZMSCustom):
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-Globals.InitializeClass(ZMSSqlDb)
+# TODO Globals.InitializeClass(ZMSSqlDb)
 
 ################################################################################

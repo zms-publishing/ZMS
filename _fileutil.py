@@ -65,6 +65,8 @@ _fileutil.importZexp:
 Import file from specified path.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def importZexp(self, filename):
+  ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
+  INSTANCE_HOME = '/home/zope4/instance/beta'
   filepath = INSTANCE_HOME + '/import/' + filename
   self.manage_importObject(str(filename))
   remove(filepath)

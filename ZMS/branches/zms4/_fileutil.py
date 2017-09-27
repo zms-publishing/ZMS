@@ -105,14 +105,12 @@ Return path with OS separators.
 def getOSPath(path, chs=list(range(32))+[34, 39, 60, 62, 63, 127], undoable=False):
   path = path.replace('\\', os.sep)
   path = path.replace('/', os.sep)
-  if isinstance(path, str):
-    path = str(path, 'latin-1')
   if undoable or os.name != "nt":
     path = path.encode('ascii', 'replace') # replace uncodable characters by ? (63)
   if len( chs) > 0:
     for ch in chs:
-      path = path.replace(chr(ch), '')
-  return path
+      path = str(path).replace(chr(ch), '')
+  return bytes(path)
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

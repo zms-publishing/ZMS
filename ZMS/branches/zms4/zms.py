@@ -114,6 +114,7 @@ def importTheme(folder, theme):
   id = filename[:filename.rfind('.')]
   
   ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
+  INSTANCE_HOME = '/home/zope4/instance/beta'
   filepath = INSTANCE_HOME + '/import/' + filename
   if theme.startswith('http://'):
     initutil = standard.initutil()

@@ -25,7 +25,7 @@ import re
 import stat
 import time
 import urllib
-from zope.interface import implementer
+from zope.interface import implementer, providedBy
 # Product Imports.
 import IZMSConfigurationProvider
 import IZMSDaemon
@@ -209,7 +209,7 @@ class ZMSRepositoryManager(
 
     def getRepositoryProviders(self):
       obs = self.getDocumentElement().objectValues()
-      return filter(lambda x:IZMSRepositoryProvider.IZMSRepositoryProvider in list(zope.interface.providedBy(x)),obs)
+      return filter(lambda x:IZMSRepositoryProvider.IZMSRepositoryProvider in list(providedBy(x)),obs)
 
 
     def localFiles(self, provider, ids=None):

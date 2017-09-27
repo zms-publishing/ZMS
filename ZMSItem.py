@@ -22,7 +22,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from Acquisition import Implicit
 import OFS.SimpleItem, OFS.ObjectManager
-import zope.interface
+from zope.interface import implementer, providedBy
 # Product Imports.
 import IZMSDaemon
 
@@ -120,7 +120,7 @@ class ZMSItem(
     #  ZMSItem.zmi_page_request:
     # --------------------------------------------------------------------------
     def _zmi_page_request(self, *args, **kwargs):
-      for daemon in filter(lambda x:IZMSDaemon.IZMSDaemon in list(zope.interface.providedBy(x)),self.getDocumentElement().objectValues()):
+      for daemon in filter(lambda x:IZMSDaemon.IZMSDaemon in list(providedBy(x)),self.getDocumentElement().objectValues()):
         daemon.startDaemon()
       request = self.REQUEST
       request.set( 'ZMS_THIS',self.getSelf())

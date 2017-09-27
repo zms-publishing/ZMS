@@ -50,11 +50,11 @@ import stat
 import tempfile
 import time
 import urllib.request, urllib.parse, urllib.error
-import xml.dom
+import xml.dom.minidom
 import zExceptions
 from zope.interface import implementer
 # Product imports.
-# import standard
+from . import standard
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
 from . import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
 from . import _exportable

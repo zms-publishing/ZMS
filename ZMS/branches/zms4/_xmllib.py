@@ -44,7 +44,7 @@ from App.Common import package_home
 from OFS.Image import File
 
 # Product Imports
-# import standard
+from . import standard
 from . import _blobfields
 from . import _fileutil
 from . import _globals
@@ -893,7 +893,7 @@ class XmlAttrBuilder(object):
       attrs = standard.unencode(tag['attrs'])
       cdata = standard.unencode(tag['cdata'])
       # Hack for nested CDATA
-      cdata = re.compile('\<\!\{CDATA\{(.*?)\}\}\>').sub('<![CDATA[\\1]]>', cdata)
+      cdata = re.compile('\<\!\{CDATA\{(.*?)\}\}\>').sub('<![CDATA[\\1]]>', str(cdata))
 
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + str(sTagName) + ")")

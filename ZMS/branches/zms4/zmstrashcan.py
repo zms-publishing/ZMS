@@ -87,7 +87,7 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
       """ ZMSTrashcan.__init__ """
       id = 'trashcan'
       sort_id = 0
-      ZMSContainerObject.__init__(self, id, sort_id)
+      zmscontainerobject.ZMSContainerObject.__init__(self, id, sort_id)
 
 
     # --------------------------------------------------------------------------

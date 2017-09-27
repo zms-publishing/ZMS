@@ -68,7 +68,6 @@ from . import _globals
 from . import _fileutil
 from . import _filtermanager
 from . import _mimetypes
-from . import _xmllib
 
 security = ModuleSecurityInfo('Products.zms.standard')
 
@@ -82,6 +81,12 @@ security = ModuleSecurityInfo('Products.zms.standard')
 @group Regular Expressions: re_*
 @group: XML: getXmlHeader, toXmlString, parseXmlString, xslProcess, processData, xmlParse, xmlNodeSet
 """
+
+security.declarePublic('initZMS')
+def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
+  from . import zms
+  zms.initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST)
+  return "initZMS"
 
 security.declarePublic('getPRODUCT_HOME')
 def getPRODUCT_HOME():
@@ -1715,6 +1720,7 @@ def getXmlHeader(encoding='utf-8'):
   @type encoding: C{str}
   @rtype: C{str}
   """
+  from . import _xmllib
   return _xmllib.xml_header(encoding)
 
 
@@ -1732,6 +1738,7 @@ def toXmlString(context, v, xhtml=False, encoding='utf-8'):
   @type encoding
   @rtype: C{string}
   """
+  from . import _xmllib
   return _xmllib.toXml(context, v, xhtml=xhtml, encoding=encoding)
 
 
@@ -1744,6 +1751,7 @@ def parseXmlString(xml):
   @return: C{list} or C{dict}
   @rtype: C{any}
   """
+  from . import _xmllib
   builder = _xmllib.XmlAttrBuilder()
   if isinstance(xml, str):
     xml = StringIO(xml)

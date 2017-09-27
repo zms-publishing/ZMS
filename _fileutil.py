@@ -25,6 +25,7 @@ from builtins import range
 from builtins import chr
 from builtins import str
 from ZPublisher.Iterators import filestream_iterator
+from App.Common import package_home
 import fnmatch
 import os
 import shutil
@@ -42,6 +43,7 @@ _fileutil.import_zexp:
 Import zexp.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def import_zexp(self, zexp, new_id, id_prefix, _sort_id=0):
+  INSTANCE_HOME = package_home(globals())
   # Import
   filename = zexp.title_or_id()
   fileid = filename[:filename.find('.')]
@@ -66,7 +68,7 @@ Import file from specified path.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def importZexp(self, filename):
   ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
-  INSTANCE_HOME = '/home/zope4/instance/beta'
+  INSTANCE_HOME = package_home(globals())
   filepath = INSTANCE_HOME + '/import/' + filename
   self.manage_importObject(str(filename))
   remove(filepath)

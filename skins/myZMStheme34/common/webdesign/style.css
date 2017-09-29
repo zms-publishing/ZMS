@@ -32,12 +32,14 @@ header .logo {
   -ms-grid-column: 1;
   -ms-grid-row: 1;
   -ms-grid-row-align: center;
-}
-header .logo > a {
   font-size: 170%;
   text-transform: uppercase;
-  text-decoration: none;
-  display:block;
+  width: 223px;
+  height: 64px;
+  background-image: url(../img/zmslabs.svg);
+  background-repeat: no-repeat;
+  background-size: inherit;
+  background-position: 30px,10px;
 }
 header nav {
   grid-area: nav;
@@ -292,8 +294,7 @@ footer p a {
     display:block !important;
   }
   header .logo {
-    text-align:center;
-    padding:.75em 1em 0.25em;
+    background-position: 12px,12px;
   }
   header nav {
     text-align:left;

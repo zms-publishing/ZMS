@@ -861,6 +861,7 @@ class XmlAttrBuilder(object):
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlAttrBuilder.OnStartElement """
+      print("OnStartElement",sTagName,type(sTagName),dTagAttrs)
 
       # -- TAG-STACK
       tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
@@ -886,17 +887,18 @@ class XmlAttrBuilder(object):
     ############################################################################
     def OnEndElement(self, sTagName):
       """ XmlAttrBuilder.OnEndElement """
+      print("OnEndElement",sTagName,type(sTagName))
 
       # -- TAG-STACK
       tag = self.dTagStack.pop()
-      name = standard.unencode(tag['name'])
-      attrs = standard.unencode(tag['attrs'])
-      cdata = standard.unencode(tag['cdata'])
+      name = tag['name']
+      attrs = tag['attrs']
+      cdata = tag['cdata']
       # Hack for nested CDATA
       cdata = re.compile('\<\!\{CDATA\{(.*?)\}\}\>').sub('<![CDATA[\\1]]>', str(cdata))
 
       if name != sTagName:
-        raise ParseError("Unmatching end tag (" + str(sTagName) + ")")
+        raise ParseError("Unmatching end tag (" + str(sTagName) + ") expected (" + str(name) + ")")
 
       # -- DATA
       if sTagName in ['data']:

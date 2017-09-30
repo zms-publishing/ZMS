@@ -63,10 +63,8 @@ import urllib.request, urllib.parse, urllib.error
 import zExceptions
 import six
 # Product Imports.
-# import _blobfields
 from . import _globals
 from . import _fileutil
-from . import _filtermanager
 from . import _mimetypes
 
 security = ModuleSecurityInfo('Products.zms.standard')
@@ -141,11 +139,7 @@ def ImageFromData( context, data, filename='', content_type=None):
   @return: New instance of image.
   @rtype: L{MyImage}
   """
-  file = {}
-  file['data'] = data
-  file['filename'] = filename
-  if content_type: file['content_type'] = content_type
-  return _blobfields.createBlobField( context, _blobfields.MyImage, file=file)
+  return context.ImageFromData(data, filename, content_type)
 
 
 security.declarePublic('set_response_headers')
@@ -1475,14 +1469,14 @@ def is_equal(x, y):
           if not is_equal(x[i], y[i]):
             return False
         return True
-    elif isinstance(x, dict):
+    elif type(x) is dict:
       if len(x.keys()) == len(y.keys()):
         for k in x.keys():
-          if k not in x or k not in y or not is_equal(x.get(k), y.get(k)):
+          if not x.has_key(k) or not y.has_key(k) or not is_equal(x.get(k),y.get(k)):
             return False
         return True
-    elif isinstance(x, _blobfields.MyBlob):
-      return cmp(x.toXml(), y.toXml())==0
+    elif inspect.isclass(x) and inspect.isclass(y) and 'toXml' in list(x.__dict__.keys()) and 'toXml' in list(y.__dict__.keys()):
+      return cmp(x.toXml(),y.toXml())==0
   return cmp(x, y)==0
 
 
@@ -1774,6 +1768,7 @@ def processData(context, processId, data, trans=None):
   @return: the transformed data
   @rtype: C{str}
   """
+  from . import _filtermanager
   return _filtermanager.processData(context, processId, data, trans)
 
 

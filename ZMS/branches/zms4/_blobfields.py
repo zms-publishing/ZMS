@@ -37,7 +37,7 @@ import urllib.request, urllib.parse, urllib.error
 import warnings
 import zExceptions 
 # Product Imports.
-# from . import standard
+from . import standard
 from . import pilutil
 from . import _fileutil
 from . import _globals

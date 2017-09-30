@@ -548,11 +548,3 @@ class DeprecatedAPI(object):
   def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
     warn(self, 'getLangFmtDate', 'Products.zms.standard.getLangFmtDate')
     return standard.getLangFmtDate(self, t, lang, fmt_str)
-
-  def FileFromData( self, data, filename='', content_type=None, mediadbStorable=False):
-    warn(self, 'FileFromData', 'Products.zms.standard.FileFromData')
-    return standard.FileFromData( self, data, filename, content_type)
-
-  def ImageFromData( self, data, filename='', content_type=None, mediadbStorable=False):
-    warn(self, 'ImageFromData', 'Products.zms.standard.ImageFromData')
-    return standard.ImageFromData( self, data, filename, content_type)

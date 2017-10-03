@@ -171,7 +171,7 @@ def uploadBlobField(self, clazz, file='', filename=''):
     clazz = MyImage
   elif clazz in [_globals.DT_FILE, 'file']:
     clazz = MyFile
-  blob = clazz( id='', title='', file='')
+  blob = clazz( id='', title='', file=bytes('','utf-8'))
   blob.update_data(file, content_type=mt, size=len(file))
   blob.aq_parent = self
   blob.mediadbfile = None

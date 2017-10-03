@@ -295,8 +295,8 @@ def xmlOnUnknownEndTag(self, sTagName):
   name = tag['name']
   if name != sTagName: return 0  # don't accept any unknown tag
 
-  attrs = standard.unencode(tag['attrs'])
-  cdata = standard.unencode(tag['cdata'])
+  attrs = tag['attrs']
+  cdata = tag['cdata']
 
   # -- ITEM (DICTIONARY|LIST) --
   #----------------------------
@@ -861,7 +861,7 @@ class XmlAttrBuilder(object):
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlAttrBuilder.OnStartElement """
-      print("OnStartElement",sTagName,type(sTagName),dTagAttrs)
+      print("XmlAttrBuilder.OnStartElement",sTagName,type(sTagName),dTagAttrs)
 
       # -- TAG-STACK
       tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
@@ -887,7 +887,7 @@ class XmlAttrBuilder(object):
     ############################################################################
     def OnEndElement(self, sTagName):
       """ XmlAttrBuilder.OnEndElement """
-      print("OnEndElement",sTagName,type(sTagName))
+      print("XmlAttrBuilder.OnEndElement",sTagName,type(sTagName))
 
       # -- TAG-STACK
       tag = self.dTagStack.pop()
@@ -1100,6 +1100,7 @@ class XmlBuilder(object):
     ############################################################################
     def parse(self, input):
         """ XmlBuilder.parse """
+        print("XmlBuilder.parse")
 
         # prepare builder
         self.dTagStack = _globals.MyStack()
@@ -1128,11 +1129,13 @@ class XmlBuilder(object):
           while True:
 
             v = input.read(self.iBufferSize)
-            if v == "":
+            print("XmlBuilder.parse","v=",v,type(v),len(v))
+            if len(v) == 0:
               rv = 1
               break
 
             rv = p.Parse(v, 0)
+            print("XmlBuilder.parse","rv=",rv)
             if not rv:
               break
 
@@ -1158,6 +1161,7 @@ class XmlBuilder(object):
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlBuilder.OnStartElement """
+      print("XmlBuilder.OnStartElement",sTagName,type(sTagName),dTagAttrs)
       tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':'', 'tags':[]}
       self.dTagStack.push(tag)
 
@@ -1172,11 +1176,12 @@ class XmlBuilder(object):
     ############################################################################
     def OnEndElement(self, sTagName):
       """ XmlBuilder.OnEndElement """
+      print("XmlBuilder.OnEndElement",sTagName,type(sTagName))
       lTag = self.dTagStack.pop()
-      name = standard.unencode(lTag['name'])
-      attrs = standard.unencode(lTag['attrs'])
-      lCdata = standard.unencode(lTag['cdata'])
-      lTags = standard.unencode(lTag['tags'])
+      name = lTag['name']
+      attrs = lTag['attrs']
+      lCdata = lTag['cdata']
+      lTags = lTag['tags']
 
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + sTagName + ")")

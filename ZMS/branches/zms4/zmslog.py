@@ -104,6 +104,7 @@ class ZMSLog(ZMSItem.ZMSItem):
     #  ZMSLog.LOG:
     # --------------------------------------------------------------------------
     def LOG(self, severity, info):
+      print ("LOG",severity,info)
       log_severity = severity
       if log_severity == logging.DEBUG:
         log_severity = logging.INFO

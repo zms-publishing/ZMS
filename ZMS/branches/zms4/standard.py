@@ -339,20 +339,24 @@ def bin2hex(m):
   @param m: Binary
   @type m: C{int}
   @return: String
-  @rtype: C{str}
+  @rtype: C{bytes}
   """
-  return ''.join(map(lambda x: hex(ord(x)//16)[-1]+hex(ord(x)%16)[-1], m))
+  #return ''.join(map(lambda x: hex(ord(x)//16)[-1]+hex(ord(x)%16)[-1], m))
+  import binascii
+  return binascii.hexlify(m)
 
 
 def hex2bin(m):
   """
   Converts a hexadecimal-string m to an integer.
   @param m: Hexadecimal.
-  @type m: C{str}
+  @type m: C{bytes}
   @return: Integer
-  @rtype: C{str}
+  @rtype: C{bytes}
   """
-  return ''.join(map(lambda x: chr(16*int('0x%s'%m[x*2], 0)+int('0x%s'%m[x*2+1], 0)), list(range(len(m)//2))))
+  #return ''.join(map(lambda x: chr(16*int('0x%s'%m[x*2], 0)+int('0x%s'%m[x*2+1], 0)), list(range(len(m)//2))))
+  import binascii
+  return binascii.unhexlify(m)
 
 
 security.declarePublic('encrypt_schemes')
@@ -765,6 +769,7 @@ def writeLog(context, info):
   @type info: C{any}
   @rtype: C{str}
   """
+  print ("DEBUG",info)
   try:
     zms_log = getLog(context)
     severity = logging.DEBUG
@@ -783,6 +788,7 @@ def writeBlock(context, info):
   @type info: C{any}
   @rtype: C{str}
   """
+  print ("INFO",info)
   try:
     zms_log = getLog(context)
     severity = logging.INFO
@@ -801,6 +807,7 @@ def writeError(context, info):
   @type info: C{any}
   @rtype: C{str}
   """
+  print ("ERROR",info)
   t, v='?', '?'
   try:
     t, v, tb = sys.exc_info()

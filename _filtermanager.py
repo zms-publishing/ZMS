@@ -715,7 +715,7 @@ class FilterManager:
       # Acquire from parent.
       if ob.get('acquired',0) == 1:
         portalMaster = self.getPortalMaster()
-      if portalMaster is not None:
+        if portalMaster is not None:
           ob = portalMaster.getFilter(id)
           ob['acquired'] = 1
       ob['id'] = id

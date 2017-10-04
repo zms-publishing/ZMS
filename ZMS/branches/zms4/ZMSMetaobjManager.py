@@ -200,6 +200,7 @@ class ZMSMetaobjManager(object):
     #  ZMSMetaobjManager.importMetaobjXml
     # --------------------------------------------------------------------------
     def _importMetaobjXml(self, item, createIfNotExists=1, createIdsFilter=None):
+      print("[ZMSMetaobjManager._importMetaobjXml]")
       ids = []
       id = item['key']
       meta_types = self.model.keys()
@@ -281,6 +282,7 @@ class ZMSMetaobjManager(object):
       return id
 
     def importMetaobjXml(self, xml, createIfNotExists=1, createIdsFilter=None):
+      print("[ZMSMetaobjManager.importMetaobjXml]")
       self.REQUEST.set( '__get_metaobjs__', True)
       ids = []
       v = self.parseXmlString(xml)

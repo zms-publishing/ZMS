@@ -327,7 +327,7 @@ def xmlOnUnknownEndTag(self, sTagName):
       filename = attrs.get('filename')
       content_type = attrs.get('content_type')
       if content_type.find('text/') == 0:
-        data = cdata
+        data = bytes(cdata,'utf-8')
       else:
         data = standard.hex2bin(cdata)
       value['data'] = data
@@ -831,7 +831,7 @@ class XmlAttrBuilder(object):
         while True:
 
           v = input.read(self.iBufferSize)
-          if v == "":
+          if len(v) == 0:
             rv = 1
             break
 
@@ -861,7 +861,7 @@ class XmlAttrBuilder(object):
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlAttrBuilder.OnStartElement """
-      print("XmlAttrBuilder.OnStartElement",sTagName,type(sTagName),dTagAttrs)
+      print("[XmlAttrBuilder.OnStartElement]",sTagName,type(sTagName),dTagAttrs)
 
       # -- TAG-STACK
       tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
@@ -887,7 +887,7 @@ class XmlAttrBuilder(object):
     ############################################################################
     def OnEndElement(self, sTagName):
       """ XmlAttrBuilder.OnEndElement """
-      print("XmlAttrBuilder.OnEndElement",sTagName,type(sTagName))
+      print("[XmlAttrBuilder.OnEndElement]",sTagName,type(sTagName),self.dTagStack.size())
 
       # -- TAG-STACK
       tag = self.dTagStack.pop()
@@ -905,7 +905,7 @@ class XmlAttrBuilder(object):
         filename = attrs.get('filename')
         content_type = attrs.get('content_type')
         if content_type.find('text/') == 0:
-          data = cdata
+          data = bytes(cdata,'utf-8')
         else:
           data = standard.hex2bin(cdata)
         file = {'data':data, 'filename':filename, 'content_type':content_type}
@@ -1129,13 +1129,11 @@ class XmlBuilder(object):
           while True:
 
             v = input.read(self.iBufferSize)
-            print("XmlBuilder.parse","v=",v,type(v),len(v))
             if len(v) == 0:
               rv = 1
               break
 
             rv = p.Parse(v, 0)
-            print("XmlBuilder.parse","rv=",rv)
             if not rv:
               break
 
@@ -1161,7 +1159,7 @@ class XmlBuilder(object):
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlBuilder.OnStartElement """
-      print("XmlBuilder.OnStartElement",sTagName,type(sTagName),dTagAttrs)
+      print("[XmlBuilder.OnStartElement]",sTagName,type(sTagName),dTagAttrs)
       tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':'', 'tags':[]}
       self.dTagStack.push(tag)
 
@@ -1176,7 +1174,8 @@ class XmlBuilder(object):
     ############################################################################
     def OnEndElement(self, sTagName):
       """ XmlBuilder.OnEndElement """
-      print("XmlBuilder.OnEndElement",sTagName,type(sTagName))
+      print("[XmlBuilder.OnEndElement]",sTagName,type(sTagName),self.dTagStack.size())
+      
       lTag = self.dTagStack.pop()
       name = lTag['name']
       attrs = lTag['attrs']

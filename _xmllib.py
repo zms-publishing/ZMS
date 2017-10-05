@@ -820,7 +820,7 @@ class XmlAttrBuilder:
         while True:
           
           v = input.read(self.iBufferSize)
-          if v == "":
+          if len(v) == 0:
             rv = 1
             break
           
@@ -1115,7 +1115,7 @@ class XmlBuilder:
           while True:
             
             v = input.read(self.iBufferSize)
-            if v == "":
+            if len(v) == 0:
               rv = 1
               break
             

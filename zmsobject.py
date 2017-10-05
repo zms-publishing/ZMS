@@ -341,7 +341,11 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.ImageFromData:
     # --------------------------------------------------------------------------
     def ImageFromData( self, data, filename='', content_type=None, mediadbStorable=False):
-        return standard.ImageFromData( self, data, filename, content_type)
+		file = {}
+		file['data'] = data
+		file['filename'] = filename
+		if content_type: file['content_type'] = content_type
+		return _blobfields.createBlobField( self, _blobfields.MyImage, file=file)
 
 
     # --------------------------------------------------------------------------

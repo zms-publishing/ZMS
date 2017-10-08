@@ -663,7 +663,7 @@ class MyBlob(object):
           except:
             standard.writeError( parent, "[getData]: can't retrieve file from mediadb: %s"%str(mediadbfile))
       else:
-        data = str(getattr(self, 'data', ''))
+        data = getattr(self, 'data', '')
       return data
 
 

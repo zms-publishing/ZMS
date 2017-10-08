@@ -52,7 +52,7 @@ import time
 import urllib.request, urllib.parse, urllib.error
 import xml.dom.minidom
 import zExceptions
-from zope.interface import implementer
+from zope.interface import implementer, providedBy
 # Product imports.
 from . import standard
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
@@ -453,7 +453,7 @@ class ConfManager(
       l.append({'label':'TAB_SYSTEM','action':'manage_customize'})
       l.append({'label':'TAB_LANGUAGES','action':'manage_customizeLanguagesForm'})
       for ob in self.objectValues():
-        if IZMSConfigurationProvider in list(zope.interface.providedBy(ob)):
+        if IZMSConfigurationProvider in list(providedBy(ob)):
           for d in ob.manage_sub_options():
             l.append(self.operator_setitem(d.copy(), 'action', ob.id+'/'+d['action']))
       l.append({'label':'TAB_FILTER','action':'manage_customizeFilterForm'})
@@ -1053,7 +1053,7 @@ class ConfManager(
     ############################################################################
 
     def getRepositoryManager(self):
-      manager = filter(lambda x:IZMSRepositoryManager.IZMSRepositoryManager in list(zope.interface.providedBy(x)), self.getDocumentElement().objectValues())
+      manager = list(filter(lambda x:IZMSRepositoryManager.IZMSRepositoryManager in list(providedBy(x)), self.getDocumentElement().objectValues()))
       if len(manager)==0:
         class DefaultManager(object):
           def exec_auto_commit(self, provider, id): return True
@@ -1069,7 +1069,7 @@ class ConfManager(
     ############################################################################
 
     def getWorkflowManager(self):
-      manager = filter(lambda x:absattr(x.id)=='workflow_manager', self.getDocumentElement().objectValues())
+      manager = list(filter(lambda x:absattr(x.id)=='workflow_manager', self.getDocumentElement().objectValues()))
       if len(manager)==0:
         class DefaultManager(object):
           def importXml(self, xml): pass
@@ -1115,14 +1115,15 @@ class ConfManager(
 
     def getCatalogAdapter(self):
       for ob in self.objectValues():
-        if IZMSCatalogAdapter.IZMSCatalogAdapter in list(zope.interface.providedBy(ob)):
+        if IZMSCatalogAdapter.IZMSCatalogAdapter in list(providedBy(ob)):
           return ob
       adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
       self._setObject( adapter.id, adapter)
       adapter = getattr(self, adapter.id)
       adapter.setIds(['ZMSFolder', 'ZMSDocument', 'ZMSFile'])
       adapter.setAttrIds(['title', 'titlealt', 'attr_dc_description', 'standard_html'])
-      adapter.addConnector('ZMSZCatalogConnector')
+      # FIXME ImportError: No module named 'ZMSZCatalogConnector'
+      #adapter.addConnector('ZMSZCatalogConnector')
       return adapter
 
 

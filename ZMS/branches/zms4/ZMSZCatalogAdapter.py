@@ -30,8 +30,7 @@ import time
 import urllib.request, urllib.parse, urllib.error
 import zope.interface
 # Product Imports.
-# import standard
-# from . import _confmanager
+from . import standard
 from . import IZMSCatalogAdapter, IZMSConfigurationProvider
 from . import ZMSItem
 
@@ -245,6 +244,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.addConnector
     # --------------------------------------------------------------------------
     def addConnector(self, meta_type):
+      from . import _confmanager
       connector = _confmanager.ConfDict.forName(meta_type+'.'+meta_type)()
       self._setObject(connector.id, connector)
       return getattr(self, connector.id)

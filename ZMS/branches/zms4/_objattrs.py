@@ -632,9 +632,12 @@ class ObjAttrs(object):
     #  @deprecated: use attr(key) instead! 
     # --------------------------------------------------------------------------
     def getObjProperty(self, key, REQUEST={}, par=None):
+      print ("[getObjProperty]: key=",key)
       self.startMeasurement("%s.%s"%(self.meta_id, key))
       
+      print ("[getObjProperty]: key=",key,2)
       obj_attrs = self.getObjAttrs()
+      print ("[getObjProperty]: key=",key,"obj_attrs=",obj_attrs.keys())
       
       # Special attributes.
       if key not in obj_attrs.keys():

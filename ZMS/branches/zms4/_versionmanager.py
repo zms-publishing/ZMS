@@ -188,8 +188,8 @@ class VersionItem(object):
       states = getattr(self.__work_state__, 'states', [])
       # Make object-states unique.
       d = {}
-      map(lambda x: operator.setitem(d, x, None), states)
-      states = d.keys()
+      list(map(lambda x: operator.setitem(d, x, None), states))
+      states = list(d.keys())
       # Return object-states.
       return states
 
@@ -555,7 +555,6 @@ class VersionItem(object):
       ##### Commit modifications. ####
       modified = self.getObjStateNames(REQUEST) or forced
       if modified:
-        
         if (lang == prim_lang or self.getDCCoverage(REQUEST).find('.%s'%lang) > 0) and (self.getHistory() and do_history):
           version_hist_id = None
           if self.getObjStateNames(REQUEST) and \
@@ -613,7 +612,7 @@ class VersionItem(object):
       self.resetObjStates(REQUEST)
       # Remove work-version.
       attrCntnrIds = self.objectIds(['ZMSAttributeContainer'])
-      if (self.getAutocommit() or len( filter( lambda x: x.startswith( 'STATE_'), self.getObjStates())) == 0) and getattr( self, 'version_live_id', None) is not None:
+      if (self.getAutocommit() or len(list(filter( lambda x: x.startswith( 'STATE_'), self.getObjStates()))) == 0) and getattr( self, 'version_live_id', None) is not None:
         if self.version_live_id in attrCntnrIds:
           ids = []
           if self.version_live_id != self.version_work_id and self.version_work_id in attrCntnrIds:
@@ -625,7 +624,7 @@ class VersionItem(object):
           self.version_work_id = None
           if len( ids) > 0:
             standard.writeLog( self, "[_commitObjChanges]: Remove work-version: ids=%s"%str(ids))
-          self.manage_delObjects( ids=ids)
+            self.manage_delObjects( ids=ids)
         elif self.version_work_id in attrCntnrIds:
           self.version_live_id = self.version_work_id
           self.version_work_id = None

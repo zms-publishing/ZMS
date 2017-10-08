@@ -232,7 +232,7 @@ class ZMSMetacmdProvider(
     #  ZMSMetacmdProvider.__get_metacmd__
     # ------------------------------------------------------------------------------
     def __get_metacmd__(self, id):
-      return (filter(lambda x:x['id']==id, self.commands)+[None])[0]
+      return (list(filter(lambda x:x['id']==id, self.commands))+[None])[0]
 
 
     # ------------------------------------------------------------------------------
@@ -244,7 +244,7 @@ class ZMSMetacmdProvider(
       
       # Catalog.
       obs = self.commands
-      old = filter(lambda x: x['id']==id, obs)
+      old = list(filter(lambda x: x['id']==id, obs))
       if len(old) > 0:
         obs.remove(old[0])
       self.commands = obs
@@ -268,7 +268,7 @@ class ZMSMetacmdProvider(
       
       # Catalog.
       obs = self.commands
-      old = filter(lambda x: x['id'] in [id, newId], obs)
+      old = list(filter(lambda x: x['id'] in [id, newId], obs))
       if len(old) > 0:
         obs.remove(old[0])
       
@@ -338,7 +338,7 @@ class ZMSMetacmdProvider(
     def getMetaCmd(self, id):
       obs = self.getMetaCmds(sort=False)
       # Filter by id.
-      obs = filter(lambda x: x['id']==id, obs)
+      obs = list(filter(lambda x: x['id']==id, obs))
       # Not found!
       if len(obs) == 0:
         return None
@@ -370,11 +370,11 @@ class ZMSMetacmdProvider(
     def getMetaCmdIds(self, sort=True):
       obs = self.commands
       if sort:
-        obs = map(lambda x: self.getMetaCmd(x['id']), obs)
-        obs = filter( lambda x: x is not None, obs)
-        obs = sorted(map(lambda x: (x['name'], x), obs))
-        obs = map(lambda x: x[1], obs)
-      ids = map(lambda x: x['id'], obs)
+        obs = list(map(lambda x: self.getMetaCmd(x['id']), obs))
+        obs = list(filter( lambda x: x is not None, obs))
+        obs = list(sorted(map(lambda x: (x['name'], x), obs)))
+        obs = list(map(lambda x: x[1], obs))
+      ids = list(map(lambda x: x['id'], obs))
       return ids
 
 

@@ -569,7 +569,11 @@ def triggerEvent(context, *args, **kwargs):
   """
   Hook for trigger of custom event (if there is one)
   """
+  print("[triggerEvent]: context=",context,"args=",args,"kwargs=",kwargs)
   l = []
+  # FIXME
+  if True: return l
+  
   name = args[0]
 
   # Always call local trigger for global triggers.

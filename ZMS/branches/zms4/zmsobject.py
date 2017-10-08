@@ -409,7 +409,8 @@ class ZMSObject(ZMSItem.ZMSItem,
         sec_no = self.getSecNo()
         if len(sec_no) > 0:
           s = sec_no + ' ' + s
-      s = s.replace(' & ', ' &amp; ')
+      # FIXME TypeError: 'str' does not support the buffer interface
+      #s = s.replace(' & ', ' &amp; ')
       return s
 
 

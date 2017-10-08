@@ -47,7 +47,7 @@ def _importXml(self, item, createIfNotExists=1):
 def importXml(self, xml, createIfNotExists=1):
   if type(xml) is not str:
     xml = xml.read()
-  value = self.parseXmlString(xml)
+  value = standard.parseXmlString(xml)
   if value is None:
     value = []
     builder = _xmllib.XmlBuilder()

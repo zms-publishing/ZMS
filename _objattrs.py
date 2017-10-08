@@ -1405,7 +1405,7 @@ class ObjAttrsManager:
       # Process meta-model.
       if sync_id is None or sync_id == [ None]:
         self.dObjAttrs = {}
-        meta_ids = self.dGlobalAttrs.keys()
+        meta_ids = list(self.dGlobalAttrs.keys())
         for meta_id in self.getMetaobjIds():
           if meta_id not in meta_ids:
             meta_ids.append( meta_id)

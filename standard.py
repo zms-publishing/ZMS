@@ -52,7 +52,6 @@ import zExceptions
 # Product Imports.
 import _globals
 import _fileutil
-import _filtermanager
 import _mimetypes
 import _xmllib
 
@@ -1747,6 +1746,7 @@ def processData(context, processId, data, trans=None):
   @return: the transformed data
   @rtype: C{str}
   """
+  import _filtermanager
   return _filtermanager.processData(context, processId, data, trans)
 
 

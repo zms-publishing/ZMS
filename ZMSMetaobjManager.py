@@ -35,7 +35,6 @@ import zopeutil
 import _blobfields
 import _fileutil
 import _globals
-import _xmllib
 import _ziputil
 
 
@@ -329,7 +328,7 @@ class ZMSMetaobjManager:
         filename = 'export.metaobj.xml'
       content_type = 'text/xml; charset=utf-8'
       processing_instruction = '<?zms version=\'%s\'?>'%(context.zms_version())
-      export = self.getXmlHeader() + processing_instruction + _xmllib.toXml(self,value,xhtml=True)
+      export = self.getXmlHeader() + processing_instruction + standard.toXmlString(self,value,xhtml=True)
       
       if RESPONSE:
         RESPONSE.setHeader('Content-Type',content_type)
@@ -444,7 +443,7 @@ class ZMSMetaobjManager:
         mapping = map(lambda x: (self.display_type(self.REQUEST,x),x),ids)
         mapping.sort()
         ids = map(lambda x: x[1],mapping)
-      return ids
+      return list(ids)
 
 
     # --------------------------------------------------------------------------

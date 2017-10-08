@@ -100,7 +100,7 @@ class ZMSCharformatManager(object):
     # ------------------------------------------------------------------------------
     def delCharformat(self, id):
       obs = self.charformats
-      charformats = filter( lambda x: x['id'] == id, obs)
+      charformats = list(filter( lambda x: x['id'] == id, obs))
       if len(charformats) > 0:
         ob = charformats[0]
         if ob.get('btn') in self.objectIds():
@@ -118,7 +118,7 @@ class ZMSCharformatManager(object):
       obs = self.charformats
       if oldId is None:
         oldId = newId
-      oldCharformats = filter( lambda x: x['id'] == oldId, obs)
+      oldCharformats = list(filter( lambda x: x['id'] == oldId, obs))
       if len(oldCharformats) > 0:
         i = obs.index( oldCharformats[0])
       else:

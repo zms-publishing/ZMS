@@ -823,7 +823,7 @@ class XmlAttrBuilder(object):
       p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
 
       #### parsing ####
-      if isinstance(input, str):
+      if isinstance(input, bytes):
         # input is a string!
         rv = p.Parse(input, 1)
       else:
@@ -1121,7 +1121,7 @@ class XmlBuilder(object):
         p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
 
         #### parsing ####
-        if isinstance(input, str):
+        if isinstance(input, bytes):
           # input is a string!
           rv = p.Parse(input, 1)
         else:

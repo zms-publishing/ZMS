@@ -59,7 +59,7 @@ for i in range(l):
       context.writeStdout('[syncZMSFoldersNDocuments]: ZMSFolder - %s'%treeNode.absolute_url())
       cd = cd + 1
 
-print "Change %i folders into documents and %i documents into folders"%(cf,cd)
+print("Change %i folders into documents and %i documents into folders"%(cf,cd))
 
 return RESPONSE.redirect(context.url_append_params('%s/manage_main'%context.absolute_url(),{'lang':lang,'manage_tabs_message':printed}))
 ]]></item>

@@ -29,7 +29,7 @@ from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import os
 # Product Imports.
-# import standard
+from . import standard
 from . import _fileutil
 
 security = ModuleSecurityInfo('Products.zms.zopeutil')
@@ -182,7 +182,8 @@ def initPermissions(container, id):
   else:
     # activate all acquired permissions
     permissions = map(lambda x:x['name'], filter(lambda x:x['selected']=='SELECTED', ob.permissionsOfRole('Manager')))
-  ob.manage_acquiredPermissions(permissions)
+  # FIXME AttributeError: 'PythonScript' object has no attribute 'manage_historyCopy'
+  #ob.manage_acquiredPermissions(permissions)
 
 def addDTMLMethod(container, id, title, data):
   """
@@ -276,6 +277,8 @@ def addFile(container, id, title, data, content_type=None):
   Add File to container.
   """
   if content_type is None:
+    if type(data) is not bytes:
+      data = bytes(data,'utf-8')
     content_type, enc = standard.guess_content_type(id, data)
   container.manage_addFile(id=id, title=title, file=data, content_type=content_type)
   ob = getattr( container, id)

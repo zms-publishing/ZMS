@@ -242,8 +242,8 @@ elif cselected!=None and mode==None:
 elif cselected!=None and aselected!=None and mode!=None:
   html += ececuteAttrChange(cselected=cselected, aselected=aselected, searchstr=searchstr, replacestr=replacestr)
 
-print html
-# print request
+print(html)
+# print(request)
 RESPONSE.setHeader('Content-Type','text/html;charset=utf-8')
 return printed
 ]]>

@@ -4090,7 +4090,7 @@ last_borderstyle = None
 last_bgcolor_border = None
 teaserElmnts = context.getTeaserElements()
 if teaserElmnts:
-  print '<div class="ZMSTeaserContainer">'
+  print('<div class="ZMSTeaserContainer">')
   for teaserElmnt in teaserElmnts:
     if teaserElmnt.meta_id in ['ZMSLinkElement','ZMSFile','ZMSTeaserElement']:
       name = 'pageelement_TeaserElement'
@@ -4105,8 +4105,8 @@ if teaserElmnts:
       method_result = unicode(method_result,'utf-8')
     except:
       pass
-    print method_result
-  print '</div><!-- .ZMSTeaserContainer -->'
+    print(method_result)
+  print('</div><!-- .ZMSTeaserContainer -->')
 
 return unicode(printed).encode('utf-8')
 

@@ -589,15 +589,18 @@ class ConfManager(
     """
     def get_conf_property(self, *args, **kwargs):
       params = ('key', 'default', 'REQUEST')
-      map(lambda x:operator.setitem(kwargs, params[x], args[x]), list(range(len(args))))
+      kwargs['x'] = 'U'
+      operator.setitem(kwargs,'y','A')
+      list(map(lambda x:operator.setitem(kwargs, params[x], args[x]), list(range(len(args)))))
       key = kwargs['key']
       default = kwargs.get('default')
       REQUEST = kwargs.get('REQUEST')
       if REQUEST is not None:
         import base64
         key = base64.b64decode(key)
-      if key in OFS.misc_.misc_.zms['confdict']:
-        default = OFS.misc_.misc_.zms['confdict'].get(key)
+      # FIXME AttributeError: type object 'misc_' has no attribute 'zms'
+      #if key in OFS.misc_.misc_.zms['confdict']:
+      #  default = OFS.misc_.misc_.zms['confdict'].get(key)
       value = default
       confdict = self.getConfProperties()
       if key in confdict:

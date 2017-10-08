@@ -82,8 +82,16 @@ security = ModuleSecurityInfo('Products.zms.standard')
 
 security.declarePublic('initZMS')
 def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
+  ##### Add Home ####
+  from OFS.Folder import Folder
+  homeElmnt = Folder(id)
+  self._setObject(homeElmnt.id, homeElmnt)
+  homeElmnt = list(filter(lambda x:x.id==homeElmnt.id, self.objectValues()))[0]
+  
+  ##### Add ZMS ####
   from . import zms
-  zms.initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST)
+  zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
+
   return "initZMS"
 
 security.declarePublic('getPRODUCT_HOME')

@@ -146,8 +146,9 @@ class ZMSItem(
     
     def zmi_page_request(self, *args, **kwargs):
       request = self.REQUEST
+      # FIXME
+      request.SESSION = {}
       RESPONSE = request.RESPONSE
-      SESSION = request.SESSION
       self._zmi_page_request()
       RESPONSE.setHeader('Expires', DateTime(request['ZMI_TIME']-10000).toZone('GMT+1').rfc822())
       RESPONSE.setHeader('Cache-Control', 'no-cache')
@@ -169,7 +170,7 @@ class ZMSItem(
       physical_path = self.getPhysicalPath()
       path_to_handle = request['URL0'][len(request['BASE0']):].split('/')
       path = path_to_handle[:-1]
-      if self.getDocumentElement().id in path and not path[-1] in self.objectIds() and len(filter(lambda x:x.find('.')>0 or x.startswith('manage_'), path))==0:
+      if self.getDocumentElement().id in path and not path[-1] in self.objectIds() and len(list(filter(lambda x:x.find('.')>0 or x.startswith('manage_'), path)))==0:
         for i in range(len(path)):
           if path[:-(i+1)] != physical_path[:-(i+1)]:
             path[:-(i+1)] = physical_path[:-(i+1)]

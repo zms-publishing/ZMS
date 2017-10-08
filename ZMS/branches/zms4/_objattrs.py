@@ -37,7 +37,7 @@ import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
 from . import ZMSMetaobjManager
-# from . import standard
+from . import standard
 from . import pilutil
 from . import _blobfields
 from . import _globals
@@ -1412,7 +1412,7 @@ class ObjAttrsManager(object):
       # Process meta-model.
       if sync_id is None or sync_id == [ None]:
         self.dObjAttrs = {}
-        meta_ids = self.dGlobalAttrs.keys()
+        meta_ids = list(self.dGlobalAttrs.keys())
         for meta_id in self.getMetaobjIds():
           if meta_id not in meta_ids:
             meta_ids.append( meta_id)

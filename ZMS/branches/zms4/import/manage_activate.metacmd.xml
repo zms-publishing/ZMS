@@ -16,7 +16,7 @@ for ob in target.getChildNodes(request):
     ob.setObjStateModified(request)
     ob.setObjProperty('active',new_active,lang,forced=True)
     ob.onChangeObj(request)
-print '%i Objects activated'%len(ids)
+print('%i Objects activated'%len(ids))
 
 return target,printed
 ]]>
@@ -59,7 +59,7 @@ for ob in target.getChildNodes(request):
     ob.setObjStateModified(request)
     ob.setObjProperty('active',new_active,lang,forced=True)
     ob.onChangeObj(request)
-print '%i Objects deactivated'%len(ids)
+print('%i Objects deactivated'%len(ids))
 
 return target,printed
 ]]>

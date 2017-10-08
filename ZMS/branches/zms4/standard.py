@@ -506,8 +506,8 @@ def id_quote(s, mapping={
   @rtype: C{str}
   """
   s = umlaut_quote(s, mapping)
-  valid = map( lambda x: ord(x[0]), mapping.values()) + [ord('_')] + list(range(ord('0'), ord('9')+1)) + list(range(ord('A'), ord('Z')+1)) + list(range(ord('a'), ord('z')+1))
-  s = filter( lambda x: ord(x) in valid, s)
+  valid = list(map( lambda x: ord(x[0]), mapping.values())) + [ord('_')] + list(range(ord('0'), ord('9')+1)) + list(range(ord('A'), ord('Z')+1)) + list(range(ord('a'), ord('z')+1))
+  s = list(filter( lambda x: ord(x) in valid, s))
   while len(s) > 0 and s[0] == '_':
       s = s[1:]
   s = s.lower()

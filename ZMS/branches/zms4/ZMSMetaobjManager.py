@@ -40,12 +40,11 @@ import zExceptions
 import zope.interface
 # Product Imports.
 from . import IZMSRepositoryProvider
-# from . import standard
+from . import standard
 from . import zopeutil
 from . import _blobfields
 from . import _fileutil
 from . import _globals
-# from . import _xmllib
 from . import _ziputil
 
 
@@ -340,7 +339,7 @@ class ZMSMetaobjManager(object):
         filename = 'export.metaobj.xml'
       content_type = 'text/xml; charset=utf-8'
       processing_instruction = '<?zms version=\'%s\'?>'%(context.zms_version())
-      export = self.getXmlHeader() + processing_instruction + _xmllib.toXml(self, value, xhtml=True)
+      export = self.getXmlHeader() + processing_instruction + standard.toXmlString(self, value, xhtml=True)
       
       if RESPONSE:
         RESPONSE.setHeader('Content-Type', content_type)
@@ -454,7 +453,7 @@ class ZMSMetaobjManager(object):
       if sort:
         mapping = sorted(map(lambda x: (self.display_type(self.REQUEST, x), x), ids))
         ids = map(lambda x: x[1], mapping)
-      return ids
+      return list(ids)
 
 
     # --------------------------------------------------------------------------

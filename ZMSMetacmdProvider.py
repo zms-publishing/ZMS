@@ -421,9 +421,9 @@ class ZMSMetacmdProvider(
           if canExecute:
             nodes = standard.string_list(metaCmd.get('nodes','{$}'))
             sl = []
-            sl.extend(map( lambda x: (context.getHome().id+'/content/'+x[2:-1]+'/').replace('//','/'),filter(lambda x: x.find('@')<0,nodes)))
-            sl.extend(map( lambda x: (x[2:-1].replace('@','/content/')+'/').replace('//','/'),filter(lambda x: x.find('@')>0,nodes)))
-            hasNode = len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
+            sl.extend([(context.getHome().id+'/content/'+x[2:-1]+'/').replace('//', '/') for x in [x for x in nodes if x.find('@')<0]])
+            sl.extend([(x[2:-1].replace('@', '/content/')+'/').replace('//', '/') for x in [x for x in nodes if x.find('@')>0]])
+            hasNode = len([x for x in sl if absolute_url.find(x)>=0]) > 0
             canExecute = canExecute and hasNode
           if canExecute:
             l.append(metaCmd)

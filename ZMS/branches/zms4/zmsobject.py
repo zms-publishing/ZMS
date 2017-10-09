@@ -438,7 +438,8 @@ class ZMSObject(ZMSItem.ZMSItem,
         sec_no = self.getSecNo()
         if len(sec_no) > 0:
           s = sec_no + ' ' + s
-      s = s.replace(' & ', ' &amp; ')
+      # FIXME TypeError: 'str' does not support the buffer interface
+      #s = s.replace(' & ', ' &amp; ')
       return s
 
 
@@ -638,7 +639,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       else:
         name = 'icon-warning-sign constraint-error'
         icon_title = '%s not found!'%str(id)
-      return self.zmi_icon(self, name=name, extra='title="%s"'%(str(icon_title, 'utf-8').replace('"', '\'')))
+      return self.zmi_icon(self, name=name, extra='title="%s"'%(icon_title.replace('"', '\'')))
 
 
     # --------------------------------------------------------------------------

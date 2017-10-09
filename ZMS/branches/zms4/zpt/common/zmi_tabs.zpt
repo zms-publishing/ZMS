@@ -8,7 +8,7 @@
 						(x==current and not here.id+'/'+current in actions) or 
 						(x==here.id+'/'+current) or 
 						(current not in actions and current.startswith(x))), actions);
-			noactive python:len(filter(lambda x: x==1, active))<1">
+			noactive python:len([x for x in active if x==1])<1">
 	<tal:block tal:repeat="i python:range(len(options))">
 		<tal:block tal:define="global option python:options[i]">
 			<li tal:attributes="class python:' '.join([['','active'][int(active[i] or (i==0 and noactive))]])">

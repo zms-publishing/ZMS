@@ -132,6 +132,8 @@ def initialize(context):
         zms.NoETagAdapter.register()
         
         # automated registration of language-dictionary
+        if not hasattr(OFS.misc_.misc_,'zms'):
+          OFS.misc_.misc_.zms = {}
         OFS.misc_.misc_.zms['langdict']=_multilangmanager.langdict()
         
         # automated registration of configuration
@@ -259,7 +261,7 @@ def initialize(context):
             if v is not None:
               v = v.replace('\'', '\\\'').replace('\n', '\\n')
               fileobj.write(',\'%s\':\''%k)
-              fileobj.write(str(v).encode('utf-8'))
+              fileobj.write(v)
               fileobj.write('\'')
           fileobj.write('};')
           fileobj.close()
@@ -323,7 +325,7 @@ def assembleConfProperties(path, pattern):
     mode = os.stat(filepath)[stat.ST_MODE]
     if stat.S_ISDIR(mode): 
       l.extend(assembleConfProperties(filepath, pattern))
-    elif len(filter(lambda x:fnmatch.fnmatch(file, x), pattern.split(',')))>0:
+    elif len(list(filter(lambda x:fnmatch.fnmatch(file, x), pattern.split(','))))>0:
       f = open(filepath, 'r')
       data = f.read()
       f.close()

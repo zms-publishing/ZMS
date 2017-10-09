@@ -861,7 +861,7 @@ class XmlAttrBuilder(object):
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlAttrBuilder.OnStartElement """
-      print("[XmlAttrBuilder.OnStartElement]",sTagName,type(sTagName),dTagAttrs)
+      #print("[XmlAttrBuilder.OnStartElement]",sTagName,type(sTagName),dTagAttrs)
 
       # -- TAG-STACK
       tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
@@ -887,7 +887,7 @@ class XmlAttrBuilder(object):
     ############################################################################
     def OnEndElement(self, sTagName):
       """ XmlAttrBuilder.OnEndElement """
-      print("[XmlAttrBuilder.OnEndElement]",sTagName,type(sTagName),self.dTagStack.size())
+      #print("[XmlAttrBuilder.OnEndElement]",sTagName,type(sTagName),self.dTagStack.size())
 
       # -- TAG-STACK
       tag = self.dTagStack.pop()
@@ -1159,7 +1159,7 @@ class XmlBuilder(object):
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlBuilder.OnStartElement """
-      print("[XmlBuilder.OnStartElement]",sTagName,type(sTagName),dTagAttrs)
+      #print("[XmlBuilder.OnStartElement]",sTagName,type(sTagName),dTagAttrs)
       tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':'', 'tags':[]}
       self.dTagStack.push(tag)
 
@@ -1174,7 +1174,7 @@ class XmlBuilder(object):
     ############################################################################
     def OnEndElement(self, sTagName):
       """ XmlBuilder.OnEndElement """
-      print("[XmlBuilder.OnEndElement]",sTagName,type(sTagName),self.dTagStack.size())
+      #print("[XmlBuilder.OnEndElement]",sTagName,type(sTagName),self.dTagStack.size())
       
       lTag = self.dTagStack.pop()
       name = lTag['name']

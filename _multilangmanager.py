@@ -215,9 +215,7 @@ class MultiLanguageManager(object):
       """
       Returns list of manage-languages.
       """
-      # FIXME AttributeError: type object 'misc_' has no attribute 'zms'
-      #return OFS.misc_.misc_.zms['langdict'].get_manage_langs()
-      return ['ger','eng']
+      return OFS.misc_.misc_.zms['langdict'].get_manage_langs()
 
     def get_manage_lang(self):
       """
@@ -270,8 +268,7 @@ class MultiLanguageManager(object):
           return d[key][lang]
       
       # Return system value.
-      # FIXME
-      #d = OFS.misc_.misc_.zms['langdict'].get_langdict()
+      d = OFS.misc_.misc_.zms['langdict'].get_langdict()
       d = {}
       if key in d:
         if lang not in d[key]:

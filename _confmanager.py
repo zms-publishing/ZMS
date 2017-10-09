@@ -459,7 +459,7 @@ class ConfManager(
       l.append({'label':'TAB_FILTER','action':'manage_customizeFilterForm'})
       l.append({'label':'TAB_DESIGN','action':'manage_customizeDesignForm'})
       # return filtered_manage_options (@see /App/Management.py)
-      l = filter(lambda x:self.restrictedTraverse(x['action'], None) is not None, l)
+      l = [x for x in l if self.restrictedTraverse(x['action'], None) is not None]
       return l
 
 
@@ -598,9 +598,8 @@ class ConfManager(
       if REQUEST is not None:
         import base64
         key = base64.b64decode(key)
-      # FIXME AttributeError: type object 'misc_' has no attribute 'zms'
-      #if key in OFS.misc_.misc_.zms['confdict']:
-      #  default = OFS.misc_.misc_.zms['confdict'].get(key)
+      if key in OFS.misc_.misc_.zms['confdict']:
+        default = OFS.misc_.misc_.zms['confdict'].get(key)
       value = default
       confdict = self.getConfProperties()
       if key in confdict:

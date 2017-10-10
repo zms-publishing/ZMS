@@ -269,7 +269,6 @@ class MultiLanguageManager(object):
       
       # Return system value.
       d = OFS.misc_.misc_.zms['langdict'].get_langdict()
-      d = {}
       if key in d:
         if lang not in d[key]:
           lang = 'eng'

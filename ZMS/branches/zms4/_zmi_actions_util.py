@@ -17,8 +17,6 @@
 ################################################################################
 
 # Product imports.
-from builtins import map
-from builtins import filter
 from . import standard
 
 def zmi_actions(container, context, attr_id='e'):
@@ -60,7 +58,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
   #-- Action: Edit.
   if context is not None:
     userdef_roles = list(container.getRootElement().aq_parent.userdefined_roles())+list(container.getRootElement().userdefined_roles())
-    user_roles = filter(lambda x: x in userdef_roles, context.getUserRoles(auth_user, resolve=False))
+    user_roles = [x for x in context.getUserRoles(auth_user, resolve=False) if x in userdef_roles]
     can_edit = True
     constraints = context.attr('check_constraints')
     if isinstance(constraints, dict) and 'RESTRICTIONS' in constraints.keys():
@@ -89,7 +87,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
             metaObj = container.getMetaobj( context.meta_id)
             mo_access = metaObj.get('access', {})
             mo_access_deny = mo_access.get('delete_deny', [])
-            can_delete = can_delete and len(filter(lambda x: x not in mo_access_deny, user_roles)) > 0
+            can_delete = can_delete and len([x for x in user_roles if x not in mo_access_deny]) > 0
             can_delete = can_delete or auth_user.has_role('Manager')
           if can_delete:
             actions.append((container.getZMILangStr('BTN_DELETE'), 'manage_deleteObjs', 'icon-trash'))
@@ -141,7 +139,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   auth_user = REQUEST['AUTHENTICATED_USER']
   absolute_url = '/'.join(list(container.getPhysicalPath())+[''])
   userdef_roles = list(container.getRootElement().aq_parent.userdefined_roles())+list(container.getRootElement().userdefined_roles())
-  user_roles = filter(lambda x: x in userdef_roles, container.getUserRoles(auth_user, resolve=False))
+  user_roles = [x for x in container.getUserRoles(auth_user, resolve=False) if x in userdef_roles]
   
   repetitive = objAttr.get('repetitive', 0)==1
   mandatory = objAttr.get('mandatory', 0)==1
@@ -184,13 +182,17 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
         can_insert = can_insert and ((not isinstance(ob_access, dict)) or (ob_access.get( 'insert') is None) or (len( standard.intersection_list( ob_access.get( 'insert'), user_roles)) > 0))
         mo_access = metaObj.get('access', {})
         mo_access_deny = mo_access.get('insert_deny', [])
-        can_insert = can_insert and len(filter(lambda x: x not in mo_access_deny, user_roles)) > 0
+        can_insert = can_insert and len([x for x in user_roles if x not in mo_access_deny]) > 0
         can_insert = can_insert or auth_user.has_role('Manager')
         mo_access_insert_nodes = standard.string_list(mo_access.get('insert_custom', '{$}'))
         sl = []
-        sl.extend(map( lambda x: (container.getHome().id+'/content/'+x[2:-1]+'/').replace('//', '/'), filter(lambda x: x.find('@')<0, mo_access_insert_nodes)))
-        sl.extend(map( lambda x: (x[2:-1].replace('@', '/content/')+'/').replace('//', '/'), filter(lambda x: x.find('@')>0, mo_access_insert_nodes)))
-        can_insert = can_insert and len( filter( lambda x: absolute_url.find(x)>=0, sl)) > 0
+        for x in mo_access_insert_nodes:
+          if x.find('@')<0:
+            si = (container.getHome().id+'/content/'+x[2:-1]+'/').replace('//', '/')
+          else:
+            si = (x[2:-1].replace('@', '/content/')+'/').replace('//', '/')
+          sl.append(si)
+        can_insert = can_insert and len([x for x in sl if absolute_url.find(x)>=0]) > 0
       if can_insert:
         if meta_id in container.dGlobalAttrs.keys() and 'constructor' in container.dGlobalAttrs[meta_id]:
           value = 'manage_addProduct/zms/%s'%container.dGlobalAttrs[meta_id]['constructor']
@@ -226,7 +228,7 @@ def zmi_command_actions(context, stereotype='', objPath=''):
   
   #-- Context Commands.
   if context is not None:
-    for metaCmd in filter(lambda x:x['stereotype']==stereotype, context.getMetaCmds(context, stereotype)):
+    for metaCmd in [x for x in context.getMetaCmds(context, stereotype) if x['stereotype']==stereotype]:
       l = [metaCmd['name'], objPath+'manage_executeMetacmd?id='+metaCmd['id']]
       if metaCmd.get('icon_clazz'):
         l.append(metaCmd.get('icon_clazz'))

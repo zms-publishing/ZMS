@@ -121,6 +121,8 @@ class ZMSContainerObject(
     manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
     zmi_manage_main_change = PageTemplateFile('zpt/ZMSContainerObject/zmi_manage_main_change', globals())
     zmi_manage_main_grid = PageTemplateFile('zpt/ZMSContainerObject/main_grid', globals())
+    # FIXME remove zmi_manage_container
+    zmi_manage_container = PageTemplateFile('zpt/ZMSContainerObject/zmi_manage_main', globals())
     manage_container = PageTemplateFile('zpt/ZMSContainerObject/manage_main', globals())
     manage_properties = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
     manage_system = PageTemplateFile('zpt/ZMSContainerObject/manage_system', globals())

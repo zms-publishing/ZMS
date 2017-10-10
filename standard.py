@@ -1537,7 +1537,7 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
     if i in ['true', 'false']:
       return i
     else:
-      return '"%s"'%(i.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r'))
+      return '"%s"'%(str(i).replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r'))
   return '""'
 
 

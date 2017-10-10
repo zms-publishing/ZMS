@@ -18,7 +18,7 @@
 			tal:attributes="onclick python:'javascript:window.open(\'%s/%s\',\'MetaObjectManagerWindow\')'%(zmscontext.getDocumentElement().absolute_url(),middot)"
 			><tal:block tal:condition="python:childNode==childNodes[-1]" 
 				tal:content="structure python:childNode.display_icon(request,zpt=True)">the icon</tal:block
-		></span>&nbsp;<a tal:define="titlealt python:childNode.getTitlealt(request).replace(' & ',' &amp; ');title python:childNode.getTitle(request).replace(' & ',' &amp; ');" 
+		></span>&nbsp;<a tal:define="titlealt python:childNode.getTitlealt(request);title python:childNode.getTitle(request)" 
 			tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang']);title title" 
 			tal:content="structure titlealt">the titlealt
 	</a></li>

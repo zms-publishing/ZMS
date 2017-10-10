@@ -190,7 +190,7 @@ class ObjChildren(object):
       Returns a NodeList that contains all visible children of this node in 
       correct order. If none, this is a empty NodeList. 
       """
-      return filter(lambda ob: ob.isVisible(REQUEST), self.getObjChildren(id, REQUEST, meta_types))
+      return [x for x in self.getObjChildren(id, REQUEST, meta_types) if x.isVisible(REQUEST)]
 
 
     ############################################################################

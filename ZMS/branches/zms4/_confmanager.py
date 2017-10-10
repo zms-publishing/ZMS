@@ -604,7 +604,9 @@ class ConfManager(
       confdict = self.getConfProperties()
       if key in confdict:
         value = confdict.get(key)
-      elif key is not None and not key.startswith('ASP.') and not key.startswith('Portal.') and not key in ['UniBE.Alias', 'UniBE.Server']:
+      # FIXME 
+      #elif key is not None and not key.split('.')[0] in ['ASP', 'Portal'] and not key in ['UniBE.Alias', 'UniBE.Server']:
+      elif key is not None and not key in ['UniBE.Alias', 'UniBE.Server']:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           value = portalMaster.getConfProperty( key)

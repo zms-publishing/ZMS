@@ -283,6 +283,8 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
   """
   if encoding is not None:
     s = str( s, encoding)
+  else:
+    s = str(s)
   # remove all tags.
   s = re.sub( '<!--(.*?)-->', '', s)
   s = re.sub( '<script((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</script>', '', s)

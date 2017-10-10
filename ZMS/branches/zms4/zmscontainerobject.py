@@ -834,7 +834,7 @@ class ZMSContainerObject(
       # Sort child-nodes.
       childNodes.sort()
       # Return child-nodes in correct sort-order.
-      return map(lambda x: x[1], childNodes)
+      return [x[1] for x in childNodes]
 
 
     ############################################################################

@@ -91,6 +91,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   ##### Add ZMS ####
   from . import zms
   zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
+  zms.initContent(homeElmnt.content, 'content.default.zip', REQUEST)
 
   return "initZMS"
 

@@ -27,6 +27,7 @@ from builtins import str
 from ZPublisher.Iterators import filestream_iterator
 from App.Common import package_home
 import fnmatch
+import io
 import os
 import shutil
 import stat
@@ -348,6 +349,8 @@ def exportObj(obj, filename, filetype='b'):
       objfile.write(str(data).encode('utf-8'))
     elif isinstance(data, str):
       objfile.write(data)
+    elif isinstance(data,io.RawIOBase):
+      objfile.write(data.read())
     else:
       while data is not None:
         objfile.write(data.data)

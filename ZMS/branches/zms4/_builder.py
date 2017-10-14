@@ -173,9 +173,7 @@ class Builder(object):
     def OnStartElement(self, name, attrs):
         """ Builder.OnStartElement """
         standard.writeBlock( self, "[Builder.OnStartElement(" + str(name) + ")]")
-        name = standard.unencode( name)
-        attrs = standard.unencode( attrs)
-        skip = self.oCurrNode is not None and len(filter(lambda x:x.get('skip'), self.oCurrNode.dTagStack.get_all())) > 0
+        skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
         if not skip and name in self.getMetaobjIds():
           meta_id = name
           globalAttr = self.dGlobalAttrs.get(meta_id, self.dGlobalAttrs['ZMSCustom'])
@@ -251,7 +249,7 @@ class Builder(object):
     def OnEndElement(self, name):
         """ Builder.OnEndElement """
         standard.writeBlock( self, "[Builder.OnEndElement(" + str(name) + ")]")
-        skip = self.oCurrNode is not None and len(filter(lambda x:x.get('skip'), self.oCurrNode.dTagStack.get_all())) > 0
+        skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
         if not skip and name in self.getMetaobjIds():
           if name == self.oCurrNode.meta_id:
             standard.writeBlock( self, "[Builder.OnEndElement]: object finished")

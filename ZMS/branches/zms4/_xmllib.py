@@ -290,7 +290,7 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
 def xmlOnUnknownEndTag(self, sTagName):
 
   # -- TAG-STACK
-  skip = len(filter(lambda x:x.get('skip'), self.dTagStack.get_all())) > 0
+  skip = len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
   tag = self.dTagStack.pop()
   name = tag['name']
   if name != sTagName: return 0  # don't accept any unknown tag

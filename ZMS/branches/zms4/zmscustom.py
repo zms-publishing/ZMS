@@ -215,7 +215,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     ############################################################################
     def __init__(self, id='', sort_id=0, meta_id=None):
       """ ZMSCustom.__init__ """
-      ZMSContainerObject.__init__(self, id, sort_id)
+      zmscontainerobject.ZMSContainerObject.__init__(self, id, sort_id)
       self.meta_id = standard.nvl(meta_id, self.meta_type)
 
 

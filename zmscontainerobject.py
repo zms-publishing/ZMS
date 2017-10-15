@@ -806,10 +806,10 @@ class ZMSContainerObject(
       # Filter ids.
       if reid:
         pattern = re.compile( reid)
-        obs = filter( lambda x: pattern.match( x.id), obs)
+        obs = [x for x in obs if pattern.match( x.id)]
       # Get all object-items.
       if REQUEST is None:
-        childNodes = map( lambda x: ( getattr( x, 'sort_id', ''), x), obs)
+        childNodes = [( getattr( x, 'sort_id', ''), x) for x in obs]
       # Get selected object-items.
       else:
         prim_lang = self.getPrimaryLanguage()
@@ -818,8 +818,8 @@ class ZMSContainerObject(
         coverages = [ '', 'obligation', None]
         if lang is not None:
           coverages.extend( [ 'global.'+lang, 'local.'+lang])
-          coverages.extend( map( lambda x: 'global.'+x, self.getParentLanguages( lang)))
-        for ob in filter( lambda x: x.isMetaType( meta_types, REQUEST), obs):
+          coverages.extend( ['global.'+x for x in self.getParentLanguages( lang)])
+        for ob in [x for x in obs if x.isMetaType( meta_types, REQUEST)]:
           coverage = None
           if lang is not None:
             obj_vers = ob.getObjVersion( REQUEST)

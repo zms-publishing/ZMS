@@ -173,9 +173,11 @@ class Builder(object):
     def OnStartElement(self, name, attrs):
         """ Builder.OnStartElement """
         standard.writeBlock( self, "[Builder.OnStartElement(" + str(name) + ")]")
+        #name = standard.unencode( name)
+        #attrs = standard.unencode( attrs)
         skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
         if not skip and name in self.getMetaobjIds():
-          meta_id = name
+          meta_id = standard.unencode(name)
           globalAttr = self.dGlobalAttrs.get(meta_id, self.dGlobalAttrs['ZMSCustom'])
           constructor = globalAttr.get('obj_class', self.dGlobalAttrs['ZMSCustom']['obj_class'])
           if constructor is None:

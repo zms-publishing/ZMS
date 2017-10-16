@@ -1546,20 +1546,36 @@ RESPONSE.redirect(context.objectValues(['ZMS'])[0].getHref2IndexHtml(request,dee
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[icon-link]]></item>
+                  <item key="default"></item>
                   <item key="id"><![CDATA[icon_clazz]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[constant]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="text/css" filename="default.css" type="file"><![CDATA[div.ZMSLinkContainer {
+                    <data content_type="text/plain" filename="default.css" type="file"><![CDATA[div.ZMSLinkContainer {
 	background-color: #eee;
 }]]></data>
                   </item>
+                  <item key="default"></item>
                   <item key="id"><![CDATA[f_css_defaults]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Defaults]]></item>
+                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[resource]]></item>
                 </dictionary>
               </item>
@@ -1597,12 +1613,16 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
 <tr>
 	<colgroup>
 		<col style="width:5%">
-		<col style="width:30%">
-		<col style="width:30%">
-		<col style="width:30%">
+		<col style="width:5%">
+		<col style="width:29%">
+		<col style="width:29%">
+		<col style="width:29%">
 		<col style="width:5%">
 	</colgroup> 
 	<th>&nbsp;</th>
+	<th align="center">
+		<label for="_active" tal:content="structure python:here.getZMILangStr('ATTR_ACTIVE')">Active*</label>
+	</th>
 	<th>
 		<label for="_url" tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url*</label>
 	</th>
@@ -1634,6 +1654,7 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
 			</span>
 		</div><!-- .input-append -->
 	</td>
+	<td align="center" tal:content="structure python:childNode.getCheckbox(fmName='form0',elName='active%s'%(childNode.getId()),value=childNode.isActive(request),REQUEST=request)"></td>
 	<td tal:content="structure python:childNode.getUrlInput(fmName='form0',elName='url%s'%(childNode.getId()),elTextName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_ref'),request),enabled=1,REQUEST=request)"><input/></td>
 	<td tal:content="structure python:childNode.getTextInput(fmName='form0',elName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('title'),request),enabled=1,REQUEST=request)"><input/></td>
 	<td tal:content="structure python:childNode.getTextArea(fmName='form0',elName='description%s'%(childNode.getId()),cols=20,rows=2,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_dc_description'),request),enabled=1,REQUEST=request)"><textarea/></td>
@@ -1653,6 +1674,7 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
 <tal:block tal:define="global dummy0 python:request.set( 'ZMS_INSERT', 'ZMSLinkElement')"></tal:block>
 <tr class="row_insert">
 	<td class="meta-sort"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
+	<td align="center" tal:content="structure python:here.getCheckbox(fmName='form0',elName='active_',value=True,REQUEST=request)"></td>
 	<td tal:content="structure python:here.getUrlInput(fmName='form0',elName='url_',elTextName='_title',size=15,value='',enabled=1,REQUEST=request)"><input/></td>
 	<td tal:content="structure python:here.getTextInput(fmName='form0',elName='title_',size=15,value='',enabled=1,REQUEST=request)"><input/></td>
 	<td colspan="2"
@@ -1667,13 +1689,22 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
 </tal:block>
 <tal:block tal:define="dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['align','e'])"></tal:block>]]>
                   </item>
+                  <item key="default"></item>
                   <item key="id"><![CDATA[interface0]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[interface0]]></item>
+                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[interface]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="default"></item>
                   <item key="id"><![CDATA[align]]></item>
                   <item key="keys" type="list">
                     <list>
@@ -1685,13 +1716,22 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Align]]></item>
+                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[select]]></item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="default"></item>
                   <item key="id"><![CDATA[e]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Link-Elements]]></item>
                   <item key="repetitive" type="int">1</item>
                   <item key="type"><![CDATA[ZMSLinkElement]]></item>
@@ -1723,11 +1763,12 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
   # Save.
   for childNode in zmscontext.getChildNodes(request,['ZMSLinkElement']):
     id = childNode.id
+    active = int(request.get('active%s'%id,1))
     url = request['url%s'%id].strip()
     title = request['title%s'%id].strip()
     description = request['description%s'%id].strip()
     attr_type = ['new','replace'][int(url.startswith('{$') and url.endswith('}'))]
-    d = {'title':title,'titlealt':title,'attr_ref':url,'attr_dc_description':description,'attr_type':attr_type,'align':align}
+    d = {'active':active,'title':title,'titlealt':title,'attr_ref':url,'attr_dc_description':description,'attr_type':attr_type,'align':align}
     if not equals(childNode,d):
       childNode.setObjStateModified(request)
       for k in d.keys():
@@ -1737,17 +1778,26 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
   id = '_'
   url = request['url%s'%id].strip()
   if len(url) > 0:
+    active = int(request.get('active%s'%id,1))
     title = request['title%s'%id].strip()
     description = request['description%s'%id].strip()
     attr_type = ['new','replace'][int(url.startswith('{$') and url.endswith('}'))]
-    d = {'title':title,'titlealt':title,'attr_ref':url,'attr_dc_description':description,'attr_type':attr_type,'align':align}
+    d = {'active':active,'title':title,'titlealt':title,'attr_ref':url,'attr_dc_description':description,'attr_type':attr_type,'align':align}
     childNode = zmscontext.manage_addZMSCustom('ZMSLinkElement',d,request)
 
 # --// EO onChangeObjEvt //--
 ]]>
                   </item>
+                  <item key="default"></item>
                   <item key="id"><![CDATA[onChangeObjEvt]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: onChangeObj]]></item>
+                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[py]]></item>
                 </dictionary>
               </item>
@@ -1777,8 +1827,16 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
 
 <!-- /ZMSLinkContainer.standard_html -->]]>
                   </item>
+                  <item key="default"></item>
                   <item key="id"><![CDATA[standard_html]]></item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSLinkContainer]]></item>
+                  <item key="repetitive" type="int">0</item>
                   <item key="type"><![CDATA[zpt]]></item>
                 </dictionary>
               </item>
@@ -1808,7 +1866,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
           <item key="id"><![CDATA[ZMSLinkContainer]]></item>
           <item key="name"><![CDATA[ZMSLinkContainer]]></item>
           <item key="package"><![CDATA[com.zms.foundation]]></item>
-          <item key="revision"><![CDATA[3.1.7]]></item>
+          <item key="revision"><![CDATA[3.1.10]]></item>
           <item key="type"><![CDATA[ZMSObject]]></item>
         </dictionary>
       </item>

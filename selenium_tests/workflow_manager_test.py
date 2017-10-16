@@ -39,14 +39,14 @@ class WorkflowManagerTest(ZMSTestCase):
         
         # open workflow tab
         with self._wait_for_page_load():
-            self._find_element(By.XPATH, '//ul/li/a[text()="Workflow"]').click()
+            self._find_element(By.XPATH, '//ul.nav-tabs/li/a[text()="Workflow"]').click()
         
         # wait until opened
         self._find_element(By.CSS_SELECTOR, 'body.workflow_manager_main.config')
         
         # open workflow tab
         with self._wait_for_page_load():
-            self._find_element(By.XPATH, '//ul/li/a[text()="System"]').click()
+            self._find_element(By.XPATH, '//ul.nav-tabs/li/a[text()="System"]').click()
         
         # wait until opened
         self._find_element(By.CSS_SELECTOR, 'body.customize.config')

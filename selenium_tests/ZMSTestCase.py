@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from SeleniumTestCase import SeleniumTestCase
+import time
 
 class ZMSTestCase(SeleniumTestCase):
     
@@ -15,7 +16,7 @@ class ZMSTestCase(SeleniumTestCase):
         self._login()
         self._create_or_navigate_to_zms()
         self.driver.get(self.driver.current_url)
-    
+
     def _tear_down(self):
         pass
 
@@ -34,3 +35,7 @@ class ZMSTestCase(SeleniumTestCase):
         # remove stray action elements that linger and could catch later clicks 
         # on buttons because they overlap them
         self.driver.execute_script("$('.zmi-item .zmi-action').mouseleave()")
+
+    def _show_zmi_nav_tab(self, text):
+        with self._wait_for_page_load():
+            self._find_element(By.XPATH, '//ul.nav-tabs/li/a[text()="%s"]'%text).click()

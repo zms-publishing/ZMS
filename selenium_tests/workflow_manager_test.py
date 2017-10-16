@@ -38,15 +38,13 @@ class WorkflowManagerTest(ZMSTestCase):
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
         # open workflow tab
-        with self._wait_for_page_load():
-            self._find_element(By.XPATH, '//ul.nav-tabs/li/a[text()="Workflow"]').click()
+        self._show_zmi_nav_tab('Workflow')
         
         # wait until opened
         self._find_element(By.CSS_SELECTOR, 'body.workflow_manager_main.config')
         
-        # open workflow tab
-        with self._wait_for_page_load():
-            self._find_element(By.XPATH, '//ul.nav-tabs/li/a[text()="System"]').click()
+        # open system tab
+        self._show_zmi_nav_tab('System')
         
         # wait until opened
         self._find_element(By.CSS_SELECTOR, 'body.customize.config')

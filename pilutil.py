@@ -183,7 +183,7 @@ def rotate(img, direction, qual=75):
   
   # Rotate image
   im = Image.open(filepath)
-  im = im.rotate(direction)
+  im = im.rotate(direction,expand=1)
   im.convert('RGB').save(filepath,"JPEG", quality=qual, optimize=True)
   
   # Read rotated image from file-system

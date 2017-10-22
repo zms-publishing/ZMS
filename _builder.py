@@ -177,7 +177,7 @@ class Builder(object):
         #attrs = standard.unencode( attrs)
         skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
         if not skip and name in self.getMetaobjIds():
-          meta_id = standard.unencode(name)
+          meta_id = name
           globalAttr = self.dGlobalAttrs.get(meta_id, self.dGlobalAttrs['ZMSCustom'])
           constructor = globalAttr.get('obj_class', self.dGlobalAttrs['ZMSCustom']['obj_class'])
           if constructor is None:
@@ -229,9 +229,11 @@ class Builder(object):
             self.oRoot = newNode # -> set root node
           
           # notify new node
+          print("notify new node")
           newNode.xmlOnStartElement(name, attrs, self.oCurrNode, self.oRoot)
           
           # set new node as current node
+          print("set new node as current node")
           self.oCurrNode = newNode
           
         else:

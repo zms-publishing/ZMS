@@ -38,4 +38,5 @@ class ZMSTestCase(SeleniumTestCase):
 
     def _show_zmi_nav_tab(self, text):
         with self._wait_for_page_load():
-            self._find_element(By.XPATH, '//ul.nav-tabs/li/a[text()="%s"]'%text).click()
+            element = self._find_element(By.CSS_SELECTOR, 'li#main-nav-tab_%s > a'%text.lower())
+            element.click()

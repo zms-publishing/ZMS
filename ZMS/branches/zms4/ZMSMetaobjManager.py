@@ -202,7 +202,7 @@ class ZMSMetaobjManager(object):
       print("[ZMSMetaobjManager._importMetaobjXml]")
       ids = []
       id = item['key']
-      meta_types = self.model.keys()
+      meta_types = list(self.model.keys())
       if (createIfNotExists == 1) and \
          (createIdsFilter is None or (id in createIdsFilter)):
         # Register Meta Attributes.

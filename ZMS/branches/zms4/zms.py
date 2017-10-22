@@ -601,8 +601,12 @@ class ZMS(
       standard.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
 
       # remove all ZMS-objects.
-      self.manage_delObjects(self.objectIds(self.dGlobalAttrs.keys()))
+      meta_types = list(self.dGlobalAttrs.keys())
+      ids = self.objectIds(meta_types)
+      if ids:
+        self.manage_delObjects(ids=ids)
 
+      # initialize stacks.
       self.dTagStack = _globals.MyStack()
       self.dValueStack  = _globals.MyStack()
 

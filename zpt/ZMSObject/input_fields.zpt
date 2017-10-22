@@ -236,7 +236,7 @@
 									+'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['accordion-body','container','zmi-children']+[[''],['collapse in']][hasChildren]))
 									+'<div class=\042accordion-inner\042>'"></tal:block>
 								<ul class="zmi-container zmi-sortable">
-									<tal:block tal:repeat="childNode objChildren" tal:attributes="id python:childNode.id">
+									<tal:block tal:repeat="childNode objChildren">
 										<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable']+[['pageelement'],[]][int(childNode.isPage())]
 												+[[],['is-new']][int(childNode.inObjStates(['STATE_NEW'],request))]
 												+[[],['is-modified']][int(childNode.inObjStates(['STATE_MODIFIED'],request))]

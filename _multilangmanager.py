@@ -366,8 +366,8 @@ class MultiLanguageManager(object):
             label = langs[key]['label']
           obs.append((label, key))
         obs.sort()
-        return map(lambda ob: ob[1], obs)
-      return langs.keys()
+        return [x[1] for x in obs]
+      return list(langs.keys())
 
     # --------------------------------------------------------------------------
     # MultiLanguageManager.getLanguageFromName: 

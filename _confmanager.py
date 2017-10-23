@@ -535,14 +535,14 @@ class ConfManager(
         import base64
         prefix = base64.b64decode(prefix)
         r = {}
-        for k in filter(lambda x:x.startswith(prefix+'.'), d.keys()):
+        for k in [x for x in d.keys() if x.startswith(prefix+'.')]:
           r[k] = d[k]
         return self.str_json(r)
       if inherited:
-        d = d.keys()
+        d = list(d.keys())
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
-          d.extend(filter(lambda x:x not in d, portalMaster.getConfProperties(prefix, inherited, REQUEST)))
+          d.extend([x for x in portalMaster.getConfProperties(prefix, inherited, REQUEST) if not x in d])
       return d
 
 

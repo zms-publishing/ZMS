@@ -10,7 +10,7 @@
 <tal:block tal:define="
 		metaObjIds python:here.getMetaobjIds(sort=True);
 		metaObjs python:map(lambda x: here.getMetaobj(x,aq_attrs=['enabled']), metaObjIds);
-		metaObjPackages python:here.sort_list(['']+map(lambda x: x['id'],filter(lambda x: x['type']=='ZMSPackage', metaObjs)));
+		metaObjPackages python:here.sort_list(['']+[x['id'] for x in metaObjs if x['type'] =='ZMSPackage']);
 		metaObjPackages2 python:filter(lambda x: x not in metaObjPackages, map(lambda x: x.get('package'), metaObjs))">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[1]]+map(lambda x:{'action':'?id=%s'%x['id'],'label':x['name']},filter(lambda x:x['id']==request.get('id'),metaObjs)))">zmi_breadcrumbs</tal:block>
 

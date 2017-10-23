@@ -109,7 +109,7 @@
 
 <tal:block tal:condition="python:request.get('action')=='updateForm'">
 	<tal:block tal:define="global records request/res_abs">
-		<tal:block tal:condition="python:request.form.has_key('qidentifier')">
+		<tal:block tal:condition="python:'qidentifier' in request.form">
 			<tal:block tal:define="global
 					rowid python:here.getMetaobjAttrIdentifierId(here.meta_id);
 					row python:filter(lambda x:x[rowid]==request['qidentifier'],records)[0];

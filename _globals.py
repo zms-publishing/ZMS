@@ -127,8 +127,9 @@ umlaut_map = {
         u'Я': 'JA',}
 
 def sort_item( i):
+  if isinstance(i, bytes):
+    i = i.decode('utf-8')
   if isinstance(i, str):
-    i = str(i, 'utf-8')
     mapping = umlaut_map
     for key in mapping.keys():
       try: i = i.replace(key, mapping[key])

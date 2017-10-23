@@ -140,12 +140,12 @@
 </form>
 
 <div style="min-height:480px;">
-<tal:block tal:condition="python:request.form.has_key('task_type')" tal:define="obs python:[]">
+<tal:block tal:condition="python:'task_type' in request.form" tal:define="obs python:[]">
 	<tal:block tal:condition="python:request['task_type']=='TASK_ZMSNOTE'">
 		<tal:block tal:define="dummy0 python:obs.extend(here.getTreeNodes(request,'ZMSNote'))"></tal:block>
 	</tal:block>
 	<tal:block tal:condition="python:request['task_type']=='TASK_UNTRANSLATED'">
-		<tal:block tal:repeat="lang python:[request['lang']]+[[],here.getDescendantLanguages(request['lang'],request)][int(request.form.has_key('descendant_langs'))]">
+		<tal:block tal:repeat="lang python:[request['lang']]+[[],here.getDescendantLanguages(request['lang'],request)][int('descendant_langs' in request.form)]">
 			<tal:block tal:repeat="ob python:[here]+here.getTreeNodes(request,here.PAGES)">
 				<tal:block tal:condition="python:not ob.isTranslated(lang,request) or ob.isModifiedInParentLanguage(lang,request)">
 					<tal:block tal:define="global dummy0 python:obs.append(ob)"></tal:block>
@@ -167,7 +167,7 @@
 				dummy0 python:obs.extend(map(lambda x:x[1],unsorted))"></tal:block>
 	</tal:block>
 	<tal:block tal:condition="python:request['task_type'] not in ids">
-		<tal:block tal:repeat="lang python:[request['lang']]+[[],here.getDescendantLanguages(request['lang'],request)][int(request.form.has_key('descendant_langs'))]">
+		<tal:block tal:repeat="lang python:[request['lang']]+[[],here.getDescendantLanguages(request['lang'],request)][int('descendant_langs' in request.form)]">
 			<tal:block tal:repeat="ob python:[here]+here.getTreeNodes(request,here.PAGES)">
 				<tal:block tal:condition="python:ob.inObjStates([request['task_type']],request) and
 						(ob.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request) or

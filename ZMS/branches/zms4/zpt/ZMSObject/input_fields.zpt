@@ -26,10 +26,11 @@
 					</div>
 			</div>
 			<div class="btn-group zmi-action pull-right" tal:condition="not:python: request.get('ZMS_INSERT',False)">
-				<tal:block tal:define="actions python:
-						[[],[(here.getZMILangStr('BTN_UNDO'),'../manage_undoObjs?ids:list=%s'%here.id,'icon-undo')]][here.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request)]
-						+map(lambda x:[x['name'],'manage_executeMetacmd?id=%s'%x['id'],x.get('icon_clazz'),x.get('title')],filter(lambda x:x['stereotype']=='',here.getMetaCmds(here,'')))
-						+here.filtered_workflow_actions()"
+				<tal:block tal:define="
+						metaCmds python:[x for x in here.getMetaCmds(here,'') if x['stereotype'] == ''];
+						actions python:[[],[(here.getZMILangStr('BTN_UNDO'),'../manage_undoObjs?ids:list=%s'%here.id,'icon-undo')]][here.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request)] \
+							+[[x['name'],'manage_executeMetacmd?id=%s'%x['id'],x.get('icon_clazz'),x.get('title')] for x in metaCmds] \
+							+here.filtered_workflow_actions()"
 					><tal:block tal:condition="python:len(actions)>0">
 						<button class="btn btn-default dropdown-toggle" 
 							data-toggle="dropdown"
@@ -169,7 +170,7 @@
 			tal:condition="constraints">
 			<tal:block tal:on-error="nothing" tal:repeat="category python:constraints.keys()">
 				<div tal:attributes="class python:'constraint constraint-%s'%category[:-1].lower()">
-					<tal:block tal:content="structure python:'<strong>'+here.zmi_icon(name='icon-warning-sign',extra='title=\042%s\042'%category[:-1])+' '+category[:-1]+'</strong>: '+'; '.join(map(lambda x:x[1],constraints[category]))"></tal:block>
+					<tal:block tal:content="structure python:'<strong>'+here.zmi_icon(name='icon-warning-sign',extra='title=\042%s\042'%category[:-1])+' '+category[:-1]+'</strong>: '+'; '.join([x[1] for x in constraints[category]])"></tal:block>
 				</div>
 			</tal:block>
 		</tal:block>
@@ -198,9 +199,8 @@
 					metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId);
 					elName python:here.getObjAttrName(metaObjAttr,request['lang']);
 					elLabel python:here.getObjAttrLabel(metaObjAttr)"
-				><tal:block tal:condition="python:
-							not metaObjAttr['id'].startswith('_')
-							and not (metaObjAttr['id']=='e' and metaObjAttr['type']=='*')
+				><tal:block tal:condition="python:not metaObjAttr['id'].startswith('_') \
+							and not (metaObjAttr['id']=='e' and metaObjAttr['type']=='*') \
 							and not (metaObjAttr['id'] in request.get('ZMS_HIDE_ELEMENTS',[]))"
 					><tal:block tal:condition="python:(metaObjAttr['type']=='*' or (metaObjAttr['type'] in metaObjIds and not here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource')) and not request.get('ZMS_INSERT') and not (here.isPageContainer() and metaObjAttr['id']=='e')"
 						><tal:block tal:define="global
@@ -232,14 +232,14 @@
 									</a>
 									<span tal:content="structure python:'&nbsp;&nbsp;(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>
 								</div><!-- .accordion-heading -->
-								<tal:block tal:content="structure python:''
-									+'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['accordion-body','container','zmi-children']+[[''],['collapse in']][hasChildren]))
+								<tal:block tal:content="structure python:'' \
+									+'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['accordion-body','container','zmi-children']+[[''],['collapse in']][hasChildren])) \
 									+'<div class=\042accordion-inner\042>'"></tal:block>
 								<ul class="zmi-container zmi-sortable">
 									<tal:block tal:repeat="childNode objChildren">
-										<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable']+[['pageelement'],[]][int(childNode.isPage())]
-												+[[],['is-new']][int(childNode.inObjStates(['STATE_NEW'],request))]
-												+[[],['is-modified']][int(childNode.inObjStates(['STATE_MODIFIED'],request))]
+										<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable']+[['pageelement'],[]][int(childNode.isPage())] \
+												+[[],['is-new']][int(childNode.inObjStates(['STATE_NEW'],request))] \
+												+[[],['is-modified']][int(childNode.inObjStates(['STATE_MODIFIED'],request))] \
 												+[[],['is-deleted']][int(childNode.inObjStates(['STATE_DELETED'],request))])">
 											<div class="grippy icon-reorder" title="Move"></div>
 											<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"

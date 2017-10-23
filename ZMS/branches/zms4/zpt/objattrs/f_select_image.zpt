@@ -89,7 +89,7 @@
 			</div><!-- .pull-left -->
 		</tal:block>
 
-		<tal:block tal:condition="python:request.get('f_zmiSelectDisplaytype',True) and options.has_key('metaObj') and len(filter(lambda x:x['id']=='displaytype',options['metaObj']['attrs']))==1"
+		<tal:block tal:condition="python:request.get('f_zmiSelectDisplaytype',True) and 'metaObj' in options and len([x for x in options['metaObj']['attrs'] if x['id'] == 'displaytype']) == 1"
 			><div class="pull-left" tal:define="global displaytypes python:[['top',2],['bottom',3],['left',5],['right',6]]"
 				><div class="btn-group btn-radiogroup" data-value="displaytype"
 					><input type="hidden" id="displaytype" name="displaytype:int" tal:attributes="value python:here.attr('displaytype')"

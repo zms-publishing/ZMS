@@ -96,7 +96,7 @@ class ZMSMetacmdProvider(
     # -------------------
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
-      return map( lambda x: self.operator_setitem( x, 'action', '../'+x['action']), copy.deepcopy(self.aq_parent.manage_options()))
+      return [self.operator_setitem( x, 'action', '../'+x['action']) for x in  copy.deepcopy(self.aq_parent.manage_options())]
 
     def manage_sub_options(self):
       return (
@@ -145,7 +145,7 @@ class ZMSMetacmdProvider(
         o = self.getMetaCmd(id)
         if o and not o.get('acquired', 0):
           d = {}
-          for k in filter(lambda x:x not in ['bobobase_modification_time', 'data', 'home', 'meta_type'], o.keys()):
+          for k in [x for x in o.keys() if x not in ['bobobase_modification_time', 'data', 'home', 'meta_type']]:
             d[k] = o[k]
           ob = getattr(self, id)
           if ob:
@@ -232,7 +232,7 @@ class ZMSMetacmdProvider(
     #  ZMSMetacmdProvider.__get_metacmd__
     # ------------------------------------------------------------------------------
     def __get_metacmd__(self, id):
-      return (list(filter(lambda x:x['id']==id, self.commands))+[None])[0]
+      return ([x for x in self.commands if x['id']==id]+[None])[0]
 
 
     # ------------------------------------------------------------------------------
@@ -244,7 +244,7 @@ class ZMSMetacmdProvider(
       
       # Catalog.
       obs = self.commands
-      old = list(filter(lambda x: x['id']==id, obs))
+      old = [x for x in obs if x['id'] == id]
       if len(old) > 0:
         obs.remove(old[0])
       self.commands = obs
@@ -268,7 +268,7 @@ class ZMSMetacmdProvider(
       
       # Catalog.
       obs = self.commands
-      old = list(filter(lambda x: x['id'] in [id, newId], obs))
+      old = [x for x in obs if x['id'] in [id, newId]]
       if len(old) > 0:
         obs.remove(old[0])
       
@@ -338,7 +338,7 @@ class ZMSMetacmdProvider(
     def getMetaCmd(self, id):
       obs = self.getMetaCmds(sort=False)
       # Filter by id.
-      obs = list(filter(lambda x: x['id']==id, obs))
+      obs = [x for x in obs if x['id'] == id]
       # Not found!
       if len(obs) == 0:
         return None
@@ -358,7 +358,7 @@ class ZMSMetacmdProvider(
       if ob is not None:
         metaCmd['meta_type'] = ob.meta_type
         metaCmd['data'] = zopeutil.readObject(container, metaCmd['id'], '')
-        metaCmd['bobobase_modification_time'] = ob.bobobase_modification_time().timeTime()
+        metaCmd['bobobase_modification_time'] = None # FIXME ob.bobobase_modification_time().timeTime() - AttributeError: 'RequestContainer' object has no attribute 'bobobase_modification_time'
       return metaCmd
 
 
@@ -370,11 +370,11 @@ class ZMSMetacmdProvider(
     def getMetaCmdIds(self, sort=True):
       obs = self.commands
       if sort:
-        obs = list(map(lambda x: self.getMetaCmd(x['id']), obs))
-        obs = list(filter( lambda x: x is not None, obs))
-        obs = list(sorted(map(lambda x: (x['name'], x), obs)))
-        obs = list(map(lambda x: x[1], obs))
-      ids = list(map(lambda x: x['id'], obs))
+        obs = [self.getMetaCmd(x['id']) for x in obs]
+        obs = [(x['name'], x) for x in obs if x is not None]
+        obs = sorted(obs)
+        obs = [x[1] for x in obs]
+      ids = [x['id'] for x in obs]
       return ids
 
 
@@ -387,20 +387,20 @@ class ZMSMetacmdProvider(
       stereotypes = {'insert':'manage_add','tab':'manage_tab'}
       metaCmds = []
       portalMasterMetaCmds = None
-      for metaCmd in filter(lambda x:x['id'].startswith(stereotypes.get(stereotype, '')), self.commands):
+      for metaCmd in [x for x in self.commands if x['id'].startswith(stereotypes.get(stereotype, ''))]:
         # Acquire from parent.
         if metaCmd.get('acquired', 0)==1:
           if portalMasterMetaCmds is None:
             portalMaster = self.getPortalMaster()
             portalMasterMetaCmds = portalMaster.getMetaCmds(stereotype=stereotype)
-          l = filter(lambda x: x['id']==metaCmd['id'], portalMasterMetaCmds)
+          l = [x for x in portalMasterMetaCmds if x['id']==metaCmd['id']]
           if len(l) > 0:
             metaCmd = l[0]
             metaCmd['acquired'] = 1
         else:
           metaCmd = metaCmd.copy()
           metaCmd['home'] = self.aq_parent
-          metaCmd['stereotype'] = ' '.join(filter(lambda x:metaCmd['id'].startswith(stereotypes[x]), stereotypes.keys()))
+          metaCmd['stereotype'] = ' '.join([x for x in stereotypes.keys() if metaCmd['id'].startswith(stereotypes[x])])
         metaCmds.append(metaCmd)
       if context is not None:
         request = context.REQUEST
@@ -423,9 +423,7 @@ class ZMSMetacmdProvider(
             nodes = standard.string_list(metaCmd.get('nodes', '{$}'))
             sl = []
             sl.extend([(context.getHome().id+'/content/'+x[2:-1]+'/').replace('//', '/') for x in [x for x in nodes if x.find('@')<0]])
-            #sl.extend(map( lambda x: (context.getHome().id+'/content/'+x[2:-1]+'/').replace('//', '/'), filter(lambda x: x.find('@')<0, nodes)))
             sl.extend([(x[2:-1].replace('@', '/content/')+'/').replace('//', '/') for x in [x for x in nodes if x.find('@')>0]])
-            #sl.extend(map( lambda x: (x[2:-1].replace('@', '/content/')+'/').replace('//', '/'), filter(lambda x: x.find('@')>0, nodes)))
             hasNode = len([x for x in sl if absolute_url.find(x)>=0]) > 0
             canExecute = canExecute and hasNode
           if canExecute:

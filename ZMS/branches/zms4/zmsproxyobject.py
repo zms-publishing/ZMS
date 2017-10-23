@@ -416,7 +416,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     # --------------------------------------------------------------------------
     #  ZMSProxyObject.getLangIds:
     # --------------------------------------------------------------------------
-    def getLangIds(self, sort=1):
+    def getLangIds(self, sort=False):
       proxy = self.proxy
       rtn = proxy.getLangIds( sort)
       return rtn

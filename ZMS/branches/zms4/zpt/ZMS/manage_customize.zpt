@@ -27,12 +27,12 @@
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
       <input type="hidden" name="key" value="Manager" />
       <legend>Manager</legend>
-      <tal:block tal:define="global meta_types python:filter(lambda x: not x['product']=='zms' and x['name'].startswith('ZMS'), here.filtered_meta_types())
-          +map(lambda x: {'name':x,'action':x,},['Sequence','ZMSLog','ZMSZCatalogAdapter'
-              ,'ZMSFormatProvider','ZMSFormatProviderAcquired'
-              ,'ZMSMetacmdProvider','ZMSMetacmdProviderAcquired'
-              ,'ZMSWorkflowProvider','ZMSWorkflowProviderAcquired'
-              ,'ZMSRepositoryManager','ZMSRepositoryManagerAcquired'])">
+      <tal:block tal:define="global meta_types python:[x for x in here.filtered_meta_types() if not x['product']=='zms' and x['name'].startswith('ZMS')] \
+          +[{'name':x,'action':x,} for x in ['Sequence','ZMSLog','ZMSZCatalogAdapter' \
+              ,'ZMSFormatProvider','ZMSFormatProviderAcquired' \
+              ,'ZMSMetacmdProvider','ZMSMetacmdProviderAcquired' \
+              ,'ZMSWorkflowProvider','ZMSWorkflowProviderAcquired' \
+              ,'ZMSRepositoryManager','ZMSRepositoryManagerAcquired']]">
       <div class="col-sm-12">
         <label for="meta_type">ZMS base-components</label>
         <div class="form-group">
@@ -46,7 +46,7 @@
           <button style="display:inline-block;" name="btn" type="submit" class="btn btn-default" value="Add">Add</button>
         </div>
       </div><!-- .form-group -->
-      <tal:block tal:repeat="si python:here.objectValues(['MediaDb']+map(lambda x: x['name'],meta_types))">
+      <tal:block tal:repeat="si python:here.objectValues(['MediaDb']+[x['name'] for x in meta_types])">
       <div class="form-group col-sm-12">
         <label>
           <span class="btn btn-default">
@@ -139,19 +139,28 @@
   <input type="hidden" name="key" value="Custom">
   <legend>System-Properties</legend>
   <tal:block tal:define="global 
-      conf python:here.getConfProperties();
-      conf_inherited python:here.getConfProperties(inherited=True);
-      conf_keys python:filter(lambda x: not x.startswith('ZMS.workflow') and not x.startswith('ZMS.version') and not x=='ZMS.log' and not x.startswith('ZMS.security') and not x.startswith('zms.misc') and not x.startswith('ZMS.filter') and not x.startswith('ZMS.custom') and not x.startswith('Portal.'),conf_inherited);
+		conf python:here.getConfProperties();
+		conf_inherited python:here.getConfProperties(inherited=True);
+		conf_keys python:[x for x in conf_inherited if \
+			not x.startswith('ZMS.workflow') and \
+			not x.startswith('ZMS.version') and \
+			not x=='ZMS.log' and \
+			not x.startswith('ZMS.security') and \
+			not x.startswith('zms.misc') and \
+			not x.startswith('ZMS.filter') and \
+			not x.startswith('ZMS.custom') and \
+			not x.startswith('Portal.') \
+			];
       dummy0 python:conf_keys.sort();
       res python:here.getConfPropertiesDefaults();
-      res_keys python:map(lambda x: x['key'],here.sort_list(res,'title','asc'))">
+      res_keys python:[x['key'] for x in here.sort_list(res,'title','asc')]">
       <div class="form-group">
         <label class="col-sm-2 control-label" for="conf_opt" tal:content="python:here.getZMILangStr('ATTR_OPTION')">Option</label>
         <div class="col-sm-10">
           <select class="form-control" id="conf_opt" name="conf_opt" tal:attributes="onchange python:'self.location.href=\'%s?lang=%s&amp;conf_key=\'+$(this).val()+\'#Custom\''%(request['URL'],request['lang'])">
             <option></option>
             <tal:block tal:repeat="res_key res_keys">
-              <tal:block tal:define="global res_item python:filter(lambda x: x['key']==res_key,res)[0]">
+              <tal:block tal:define="global res_item python:[x for x in res if x['key']==res_key][0]">
                 <option tal:attributes="value python:res_item['key']; title python:res_item['desc']; selected python:['','selected'][int(request.get('conf_key')==res_item['key'])]" tal:content="python:res_item['title']">the title</option>
               </tal:block>
             </tal:block>

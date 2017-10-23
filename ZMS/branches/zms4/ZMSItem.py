@@ -114,7 +114,7 @@ class ZMSItem(
       request = self.REQUEST
       l = ['zmi', 'loading']
       l.append(request['lang'])
-      l.extend(map(lambda x:kwargs[x], kwargs.keys()))
+      l.extend(kwargs.values())
       l.append(self.meta_id)
       # FOR EVALUATION: adding node specific css classes [list]
       internal_dict = self.attr('internal_dict')

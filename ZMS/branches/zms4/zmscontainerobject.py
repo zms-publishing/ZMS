@@ -801,8 +801,8 @@ class ZMSContainerObject(
       order. If none, this is a empty NodeList. 
       """
       childNodes = []
-      types = self.dGlobalAttrs.keys()
-      obs = self.objectValues( types)
+      meta_types = list(self.dGlobalAttrs.keys())
+      obs = self.objectValues(meta_types)
       # Filter ids.
       if reid:
         pattern = re.compile( reid)
@@ -851,7 +851,8 @@ class ZMSContainerObject(
     def normalizeSortIds(self, id_prefix='e'):
       # Get all object-items.
       obs = []
-      for ob in self.objectValues( self.dGlobalAttrs.keys()):
+      meta_types = list(self.dGlobalAttrs.keys())
+      for ob in self.objectValues(meta_types):
         sort_id = getattr( ob, 'sort_id', '')
         proxy = ob.__proxy__()
         if proxy is not None:

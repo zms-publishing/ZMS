@@ -223,7 +223,7 @@ class ObjAttrs(object):
       l = map( lambda x: x[1], self.getObjOptions( obj_attr, REQUEST))
       q = REQUEST.get( 'q', '').upper()
       if q:
-        l = filter( lambda x: x.upper().find( q) >= 0, l)
+        l = [x for x in l if x.upper().find(q) >= 0]
       limit = int(REQUEST.get('limit', self.getConfProperty('ZMS.input.autocomplete.limit', 15)))
       if len(l) > limit:
         l = l[:limit]
@@ -385,7 +385,7 @@ class ObjAttrs(object):
         form_fixed = False
         css = 'form-control'
         wrap = 'virtual'
-        filteredMetaObjAttrs = filter( lambda x: x['id']=='format', metaObj['attrs'])
+        filteredMetaObjAttrs = [x for x in metaObj['attrs'] if x['id'] == 'format']
         if len(filteredMetaObjAttrs) == 1:
           if REQUEST.get('ZMS_INSERT'):
             default = standard.dt_exec(self, str( filteredMetaObjAttrs[0].get('default', '')))
@@ -811,7 +811,7 @@ class ObjAttrs(object):
       
       #-- VALUE
       if _globals.is_str_type(v):
-        chars = ''.join(filter(lambda x: x!='\t', string.whitespace))
+        chars = ''.join([ x for x in string.whitespace if x != '\t'])
         v = v.strip(chars)
       # Retrieve v from options.
       if 'options' in obj_attr:
@@ -832,7 +832,7 @@ class ObjAttrs(object):
           metaObj = self.getMetaobj(self.meta_id)
           metaObjAttrId = metaObj['attrs'][0]['id']
           l = self.attr(metaObjAttrId)
-          r = filter(lambda x: v.equals(x.get(obj_attr['id'], None)), l)
+          r = [x for x in l if v.equals(x.get(obj_attr['id'], None))]
           if len( r) == 0:
             v = None
           else:
@@ -882,7 +882,7 @@ class ObjAttrs(object):
         if obj_attr['repetitive'] and not isinstance(v, list):
           if obj_attr['type'] in ['file', 'image']:
             l = self.getObjProperty(obj_attr['id'], self.REQUEST)
-            r = filter(lambda x: v is not None and v.equals(x), l)
+            r = [x for x in l if v is not None and v.equals(x)]
             if len( r) == 0:
               v = None
             else:

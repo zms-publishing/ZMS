@@ -178,7 +178,8 @@ def umlaut_quote(s, mapping={}):
   """
   if not isinstance(s, str):
     s = str(s, 'utf-8')
-  map( lambda x: operator.setitem( mapping, x, _globals.umlaut_map[x]), _globals.umlaut_map.keys())
+  for x in _globals.umlaut_map.keys():
+    mapping[x] = _globals.umlaut_map[x]
   for key in mapping.keys():
     s = s.replace(key, mapping[key])
   s = s.encode('utf-8')
@@ -1538,6 +1539,8 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
     if i in ['true', 'false']:
       return i
     else:
+      if type(i) is bytes:
+        i = i.decode('utf-8')
       return '"%s"'%(str(i).replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r'))
   return '""'
 

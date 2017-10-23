@@ -61,7 +61,7 @@ class PerformanceTest(test_util.BaseTest):
     
     def testMetaobjAttrIds(zmscontext):
       self.startMeasurement('%s.getMetaobjAttr'%zmscontext.getHome().id)
-      metaObjIds = filter(lambda x: x.startswith('com.zms.test.package') or x.startswith('LgTest_'),zmscontext.metaobj_manager.model.keys())
+      metaObjIds = [x for x in zmscontext.metaobj_manager.model.keys() if x.startswith('com.zms.test.package') or x.startswith('LgTest_')]
       for metaObjId in metaObjIds:
         metaObj = zmscontext.getMetaobj(metaObjId)
         for metaObjAttrId in zmscontext.getMetaobjAttrIds(metaObjId):

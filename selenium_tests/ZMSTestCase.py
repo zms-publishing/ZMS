@@ -36,7 +36,8 @@ class ZMSTestCase(SeleniumTestCase):
         # on buttons because they overlap them
         self.driver.execute_script("$('.zmi-item .zmi-action').mouseleave()")
 
-    def _show_zmi_nav_tab(self, text):
-        with self._wait_for_page_load():
-            element = self._find_element(By.CSS_SELECTOR, 'li#main-nav-tab_%s > a'%text.lower())
+    def _show_zmi_nav_tab(self, text, timeout=SeleniumTestCase.DEFAULT_TIMEOUT):
+        with self._wait_for_page_load(timeout=timeout):
+            # element = self._find_element(By.CSS_SELECTOR, '.main-nav a'%text.lower(), timeout=timeout)
+            element = self._find_element(By.XPATH, '//*[contains(@class,"nav-tabs")]//a[text()="%s"]' % text, timeout=timeout)
             element.click()

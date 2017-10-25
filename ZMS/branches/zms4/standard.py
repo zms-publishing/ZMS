@@ -519,7 +519,7 @@ def id_quote(s, mapping={
   """
   s = umlaut_quote(s, mapping)
   valid = list(map( lambda x: ord(x[0]), mapping.values())) + [ord('_')] + list(range(ord('0'), ord('9')+1)) + list(range(ord('A'), ord('Z')+1)) + list(range(ord('a'), ord('z')+1))
-  s = list(filter( lambda x: type(x) is str and len(x) == 1 and ord(x) in valid, s))
+  s = [x for x in s if type(x) is str and len(x) == 1 and ord(x) in valid]
   while len(s) > 0 and s[0] == '_':
       s = s[1:]
   s = ''.join(s).lower()
@@ -881,7 +881,7 @@ def re_search( pattern, subject, ignorecase=False):
     s = re.compile( pattern, re.IGNORECASE).split( subject)
   else:
     s = re.compile( pattern).split( subject)
-  return map( lambda x: s[x*2+1], list(range(len(s)//2)))
+  return [s[x*2+1] for x in range(len(s)//2)]
 
 security.declarePublic('re_findall')
 def re_findall( pattern, text, ignorecase=False):
@@ -1361,7 +1361,7 @@ def intersection_list(l1, l2):
   """
   l1 = list(l1)
   l2 = list(l2)
-  return filter(lambda x: x in l2, l1)
+  return [x for x in l1 if x in l2]
 
 
 security.declarePublic('difference_list')
@@ -1377,7 +1377,7 @@ def difference_list(l1, l2):
   """
   l1 = list(l1)
   l2 = list(l2)
-  return filter(lambda x: x not in l2, l1)
+  return [x for x in l1 if x not in l2]
 
 
 security.declarePublic('concat_list')
@@ -1394,7 +1394,7 @@ def concat_list(l1, l2):
   l1 = list(l1)
   l2 = list(l2)
   l = copy_list(l1)
-  l.extend(filter(lambda x: x not in l1, l2))
+  l.extend([x for x in l2 if x not in l1])
   return l
 
 

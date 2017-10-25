@@ -158,7 +158,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         confprop = self.breadcrumbs_obj_path(True)[0].getConfProperty('ZMS.Features.enabled', '')
         features = confprop.replace(',', ';').split(';')
     
-      if len(filter(lambda ob: ob.strip()==feature.strip(), features))>0:
+      if len([x for x in features if x.strip()==feature.strip()])>0:
         return True
       else:
         return False
@@ -183,7 +183,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       l = []
       for metaObjId in self.getMetaobjIds():
         metaObj = self.getMetaobj(metaObjId)
-        for metaObjAttr in filter(lambda x: x['type']=='css' or x['id']=='f_css_defaults', metaObj.get('attrs', [])):
+        for metaObjAttr in [x for x in metaObj.get('attrs', []) if x['type'] == 'css' or x['id'] == 'f_css_defaults']:
             id = metaObjAttr['id']
             s = '%s.%s'%(metaObjId, id)
             l.append('/* %s */'%('#'*len(s)))
@@ -248,7 +248,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     def set_request_context(self, REQUEST, d):
       prefix = '%s_'%(self.id_quote(self.get_oid()))
       # Remove old context-values.
-      for key in filter(lambda x:x.startswith(prefix), REQUEST.keys()):
+      for key in [x for x in REQUEST.keys() if x.startswith(prefix)]:
         standard.writeLog(self, "[set_request_context]: DEL "+key)
         REQUEST.set(key, None)
       # Set new context-values.
@@ -302,9 +302,9 @@ class ZMSObject(ZMSItem.ZMSItem,
             elif id in v:
               v = v[ v.index(id)+1]
             else:
-              l = filter(lambda x: x.get('id', None)==id, v)
-              if len( l) > 0:
-                v = l[ 0]
+              l = [x for x in v if x.get('id', None) == id]
+              if len(l) > 0:
+                v = l[0]
         RESPONSE.setHeader( 'Cache-Control', 'public, max-age=3600')
         RESPONSE.setHeader( 'Content-Type', v.getContentType())
         RESPONSE.setHeader( 'Content-Disposition', 'inline;filename="%s"'%v.getFilename())
@@ -629,13 +629,13 @@ class ZMSObject(ZMSItem.ZMSItem,
               name += ' constraint'
             if 'ERRORS' in constraints:
               name += ' constraint-error'
-              icon_title += '; '+';'.join(map(lambda x:'ERROR: '+x[1], constraints['ERRORS']))
+              icon_title += '; '+';'.join(['ERROR: '+x[1] for x in constraints['ERRORS']])
             elif 'WARNINGS' in constraints:
               name += ' constraint-warning'
-              icon_title += '; '+'; '.join(map(lambda x:'WARNING: '+x[1], constraints['WARNINGS']))
+              icon_title += '; '+'; '.join(['WARNING: '+x[1] for x in constraints['WARNINGS']])
             elif 'RESTRICTIONS' in constraints:
               name += ' constraint-restriction'
-              icon_title += '; '+'; '.join(map(lambda x:'RESTRICTION: '+x[1], constraints['RESTRICTIONS']))
+              icon_title += '; '+'; '.join(['RESTRICTION: '+x[1] for x in constraints['RESTRICTIONS']])
       else:
         name = 'icon-warning-sign constraint-error'
         icon_title = '%s not found!'%str(id)
@@ -699,9 +699,9 @@ class ZMSObject(ZMSItem.ZMSItem,
       ##### Resources #####
       if 'resources' in self.getMetaobjAttrIds( self.meta_id):
         resources = self.getObjProperty( 'resources', request)
-        l = map( lambda x: 0, list(range( len( resources))))
-        for key in self.getObjAttrs().keys():
-          obj_attr = self.getObjAttr( key)
+        l = [0 for x in range(len(resources))]
+        for key in self.getObjAttrs():
+          obj_attr = self.getObjAttr(key)
           el_name = self.getObjAttrName( obj_attr, lang)
           if request.has_key( el_name) and request.has_key( 'resource_%s'%el_name):
             el_value = request.get( el_name)
@@ -718,8 +718,8 @@ class ZMSObject(ZMSItem.ZMSItem,
           else:
             src_old = '%s/@%i/%s'%(self.id, i, v.getFilename())
             src_new = '%s/@%i/%s'%(self.id, c, v.getFilename())
-            for key in self.getObjAttrs().keys():
-              obj_attr = self.getObjAttr( key)
+            for key in self.getObjAttrs():
+              obj_attr = self.getObjAttr(key)
               el_name = self.getObjAttrName( obj_attr, lang)
               if request.has_key( el_name) and request.has_key( 'resource_%s'%el_name):
                 el_value = request.get( el_name)
@@ -727,8 +727,8 @@ class ZMSObject(ZMSItem.ZMSItem,
                   el_value = el_value.replace( src_old, src_new)
                   request.set( el_name, el_value)
             c = c + 1
-        for key in self.getObjAttrs().keys():
-          obj_attr = self.getObjAttr( key)
+        for key in self.getObjAttrs():
+          obj_attr = self.getObjAttr(key)
           el_name = self.getObjAttrName( obj_attr, lang)
           if request.has_key( el_name) and request.has_key( 'resource_%s'%el_name):
             v = request.get( 'resource_%s'%el_name)
@@ -1087,7 +1087,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           if key.startswith('ref') and key[3:].isdigit():
             refs.append((int(key[3:]), REQUEST[key]))
         refs.sort()
-        refs = map(lambda x:x[1], refs)
+        refs = [x[1] for x in refs]
       
       #-- Build xml.
       xml = ''
@@ -1155,7 +1155,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += ">"
       if REQUEST.form.get('get_attrs', 1):
         obj_attrs = self.getObjAttrs()
-        for key in filter(lambda x: x not in ['title', 'titlealt', 'change_dt', 'change_uid', 'change_history', 'created_dt', 'created_uid', 'attr_dc_coverage', 'attr_cacheable', 'work_dt', 'work_uid'], obj_attrs.keys()):
+        for key in [x for x in obj_attrs if x not in ['title', 'titlealt', 'change_dt', 'change_uid', 'change_history', 'created_dt', 'created_uid', 'attr_dc_coverage', 'attr_cacheable', 'work_dt', 'work_uid']]:
           obj_attr = obj_attrs[ key]
           if obj_attr['datatype_key'] in _globals.DT_TEXTS or \
              obj_attr['datatype_key'] in _globals.DT_NUMBERS or \
@@ -1367,7 +1367,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       """ ZMSObject.manage_moveObjToPos """
       parent = self.getParentNode()
       if parent is not None:
-        sibling_sort_ids = map(lambda x: x.sort_id, parent.getChildNodes(REQUEST))
+        sibling_sort_ids = [x.sort_id for x in parent.getChildNodes(REQUEST)]
         sibling_sort_ids.remove(self.sort_id)
         pos = pos - 1
         if pos < len(sibling_sort_ids):

@@ -2,8 +2,8 @@
 
 <tal:block tal:define="global
 				elName options/elName;
-				rteTextFormats python:filter(lambda x:x.getRichedit(),here.getTextFormats(request));
-				htmlTextFormats python:filter(lambda x:x.getTag()=='' and x.getSubTag()=='' and x.getAttrs()=='',here.getTextFormats(request));
+				rteTextFormats python:[x for x in here.getTextFormats(request) if x.getRichedit()];
+				htmlTextFormats python:[x for x in here.getTextFormats(request) if x.getTag()=='' and x.getSubTag()=='' and x.getAttrs()==''];
 				dummy0 python:request.set('richedit_fmt',(rteTextFormats+[None])[0]);
 				dummy0 python:request.set('htmledit_fmt',(htmlTextFormats+[None])[0]);
 				dummy0 python:request.set('fmName',options['fmName']);

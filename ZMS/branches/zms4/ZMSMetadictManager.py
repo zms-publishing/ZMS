@@ -54,10 +54,10 @@ class ZMSMetadictManager(object):
       valid_ids = ['__metas__']
       if ids is None:
         ids = valid_ids
-      for id in filter(lambda x:x in valid_ids, ids):
+      for id in [x for x in ids if x in valid_ids]:
         metas = copy.deepcopy(self.metas)
-        metas = map(lambda x:metas[x*2+1], list(range(len(metas)//2)))
-        map(lambda x:self.operator_delitem(x, 'acquired'), filter(lambda x:'acquired' in x, metas))
+        metas = [metas[x*2+1] for x in range(len(metas)//2)]
+        map(lambda x:self.operator_delitem(x, 'acquired'), [x for x in metas if 'acquired' in x])
         d = {'id':id,'__filename__':['__metas__.py'],'Metas':metas}
         r[id] = d
 
@@ -129,7 +129,7 @@ class ZMSMetadictManager(object):
           if attr['type'] in obs:
             attrs.append(attr['type'])
       else:
-       attrs = map( lambda x: obs[x*2], list(range(len(obs)//2)))
+       attrs = [obs[x*2] for x in range(len(obs)//2)]
       # Return attributes.
       return attrs
 

@@ -147,7 +147,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     # Management Options.
     # -------------------
     def manage_options(self):
-      pc = 'e' in map(lambda x:x['id'], self.getMetaobjAttrs(self.meta_id, types=['*']))
+      pc = 'e' in [x['id'] for x in self.getMetaobjAttrs(self.meta_id, types=['*'])]
       opts = []
       opts.append({'label': 'TAB_EDIT',         'action': 'manage_main'})
       if pc:
@@ -156,7 +156,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       opts.append({'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'})
       if not self.getAutocommit() or self.getHistory():
         opts.append({'label': 'TAB_HISTORY',    'action': 'manage_UndoVersionForm'})
-      for metaObjAttr in filter(lambda x:x['id'].startswith('manage_tab'), self.getMetaobjAttrs(self.meta_id)):
+      for metaObjAttr in [x for x in self.getMetaobjAttrs(self.meta_id) if x['id'].startswith('manage_tab')]:
         opt = {'label': metaObjAttr['name'],    'action': 'manage_executeMetacmd', 'alias':metaObjAttr['id'], 'params':{'id':metaObjAttr['id']}}
         opts.append(opt)
       for metaCmd in self.getMetaCmds(self, 'tab'):

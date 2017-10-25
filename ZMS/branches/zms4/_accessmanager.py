@@ -181,7 +181,7 @@ def addRole(self, id):
 #  _accessmanager.setLocalRoles:
 # ------------------------------------------------------------------------------
 def setLocalRoles(self, id, roles=[]):
-  filtered_roles = filter(lambda x: x in self.valid_roles(), roles)
+  filtered_roles = [x for x in roles if x in self.valid_roles()]
   if len(filtered_roles) > 0:
     self.manage_setLocalRoles(id, filtered_roles)
   if self.meta_type == 'ZMS':
@@ -222,7 +222,7 @@ class UserFolderIAddUserPluginWrapper(object):
     self.userFldr = userFldr
     self.id = userFldr.id
     self.meta_type = userFldr.meta_type
-    self.icon = userFldr.icon
+    self.icon = getattr(userFldr,'icon',None) # FIXME AttributeError: 'RequestContainer' object has no attribute 'icon'
 
   absolute_url__roles__ = None
   def absolute_url( self):
@@ -299,10 +299,10 @@ class AccessableObject(object):
       # Resolve security_roles.
       if resolve:
         security_roles = self.getSecurityRoles()
-        for id in filter(lambda x: x in security_roles.keys(), roles):
+        for id in [x for x in roles if x in security_roles]:
           d = security_roles.get(id, {}).get('nodes', {})
           for v in d.values():
-            for role in map(lambda x: x.replace(' ', ''), v.get('roles', [])):
+            for role in [x.replace(' ', '') for x in v.get('roles', [])]:
               if role not in roles:
                 roles.append( role)
       return roles
@@ -445,7 +445,7 @@ class AccessableContainer(AccessableObject):
     def synchronizeRolesAccess(self):
       standard.writeLog(self, '[synchronizeRolesAccess]')
       root = self.getRootElement()
-      l = map(lambda x:(x, [x]), role_defs.keys())
+      l = [(x, [x]) for x in role_defs.keys()]
       security_roles = self.getSecurityRoles()
       for id in security_roles.keys():
         self.manage_role(role_to_manage=id, permissions=[])
@@ -456,7 +456,7 @@ class AccessableContainer(AccessableObject):
           if self.is_child_of(node):
             standard.writeLog(self, '[synchronizeRolesAccess]: security_role=%s, nodekey=%s'%(id, nodekey))
             l.append((id, d[nodekey]['roles']))
-      manager_permissions = map(lambda x:x['name'], filter(lambda x:x['selected']=='SELECTED', self.permissionsOfRole('Manager')))
+      manager_permissions = [x['name'] for x in self.permissionsOfRole('Manager') if x['selected'] == 'SELECTED']
       for i in l:
         standard.writeLog(self, '[synchronizeRolesAccess]: role=%s, role_permissions=%s'%(i[0], str(i[1])))
         permissions = []
@@ -474,7 +474,7 @@ class AccessableContainer(AccessableObject):
     def grantPublicAccess(self):
       standard.writeLog(self, '[grantPublicAccess]')
       self.synchronizeRolesAccess()
-      manager_permissions = map(lambda x:x['name'], filter(lambda x:x['selected']=='SELECTED', self.permissionsOfRole('Manager')))
+      manager_permissions = [x['name'] for x in self.permissionsOfRole('Manager') if x['selected'] == 'SELECTED']
       # activate all acquired permissions
       self.manage_acquiredPermissions(manager_permissions)
       # unset access contents information
@@ -487,9 +487,9 @@ class AccessableContainer(AccessableObject):
     def revokePublicAccess(self):
       standard.writeLog(self, '[revokePublicAccess]')
       self.synchronizeRolesAccess()
-      manager_permissions = map(lambda x:x['name'], filter(lambda x:x['selected']=='SELECTED', self.permissionsOfRole('Manager')))
+      manager_permissions = [x['name'] for x in self.permissionsOfRole('Manager') if x['selected'] == 'SELECTED']
       # deactivate all acquired permissions
-      permissions = map(lambda x: x not in ['View'], manager_permissions)
+      permissions = [x not in ['View'] for x in manager_permissions]
       self.manage_acquiredPermissions(permissions)
       # set access contents information
       for role_to_manage in ['Anonymous', 'Authenticated']:
@@ -513,7 +513,7 @@ class AccessManager(AccessableContainer):
     def initRoleDefs(self): 
       
       # Init Roles. 
-      manager_permissions = map(lambda x:x['name'], filter(lambda x:x['selected']=='SELECTED', self.permissionsOfRole('Manager')))
+      manager_permissions = [x['name'] for x in self.permissionsOfRole('Manager') if x['selected'] == 'SELECTED']
       for role in role_defs.keys(): 
         role_def = role_defs[role] 
         # Add Local Role. 
@@ -552,7 +552,7 @@ class AccessManager(AccessableContainer):
         for name in d.keys():
           value = d[name]
           nodes = value.get('nodes', {})
-          nodekeys = filter(lambda x:nodes[x].get('home_id')==home_id, nodes.keys())
+          nodekeys = [x for x in nodes if nodes[x].get('home_id') == home_id]
           roleDef = {'nodes':{}}
           for key in value.keys():
             if key not in roleDef:
@@ -576,7 +576,7 @@ class AccessManager(AccessableContainer):
         for name in d.keys():
           value = d[name]
           nodes = value.get('nodes', {})
-          nodekeys = filter(lambda x:nodes[x].get('home_id')==home_id, nodes.keys())
+          nodekeys = [x for x in nodes if nodes[x].get('home_id') == home_id]
           if len(nodekeys) > 0:
             userDef = {'nodes':{}}
             for key in value.keys():
@@ -598,12 +598,12 @@ class AccessManager(AccessableContainer):
         if doc_elmnts:
           if userFldr.meta_type == 'LDAPUserFolder':
             login_attr = self.getConfProperty('LDAPUserFolder.login_attr', userFldr.getProperty('_login_attr'))
-            users.extend(map(lambda x:x[login_attr], userFldr.findUser(search_param=login_attr, search_term=search_term)))
+            users.extend([x[login_attr] for x in userFldr.findUser(search_param=login_attr, search_term=search_term)])
           elif userFldr.meta_type == 'Pluggable Auth Service':
-            users.extend(map(lambda x:x['login'], userFldr.searchUsers(login=search_term, id=None, exact_match=True)))
+            users.extend([x['login'] for x in userFldr.searchUsers(login=search_term, id=None, exact_match=True)])
           else:
             login_attr = 'login'
-            users.extend(filter(lambda x: x==search_term, userFldr.getUserNames()))
+            users.extend([x for x in userFldr.getUserNames() if x == search_term])
       return users
   
   
@@ -683,11 +683,11 @@ class AccessManager(AccessableContainer):
           except:
             standard.writeError(self, '[getValidUserids]: _uid_attr=%s'%_uid_attr)
           d['user_id'] = uid
-          if len(filter(lambda x:x['id']=='user_id', c))==0:
+          if len([x for x in c if x['id'] == 'user_id'])==0:
             c.append({'id':'user_id','name':_uid_attr.capitalize(),'type':'string'})
-          c = filter(lambda x:x['id']!=_uid_attr, c)
-          extras = filter(lambda x:x!=_uid_attr, extras)
-        for extra in user.keys():
+          c = [x for x in c if x['id'] != _uid_attr]
+          extras = [x for x in extras if x != _uid_attr]
+        for extra in user:
           if extra == 'pluginid':
             pluginid = user[extra]
             plugin = getattr(userFldr, pluginid)
@@ -700,7 +700,7 @@ class AccessManager(AccessableContainer):
             v = str(user[extra], encoding).encode('utf-8')
             t = 'string'
           d[extra] = v
-          if extra in extras and len(filter(lambda x:x['id']==extra, c))==0:
+          if extra in extras and len([x for x in c if x['id'] == extra])==0:
             c.append({'id':extra,'name':extra.capitalize(),'type':t})
         if exact_match and user[login_attr].lower() == search_term.lower():
           return d
@@ -748,7 +748,7 @@ class AccessManager(AccessableContainer):
           _login_attr = self.getConfProperty('LDAPUserFolder.login_attr', ldapUserFldr.getProperty('_login_attr'))
           _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr', ldapUserFldr.getProperty('_uid_attr'))
           if _uid_attr != _login_attr:
-            user['details'] = filter(lambda x:x['name'] not in [_uid_attr], user['details'])
+            user['details'] = [x for x in user['details'] if x['name'] != _uid_attr]
       return user
 
 
@@ -798,7 +798,7 @@ class AccessManager(AccessableContainer):
           userObj = self.findUser(user)
           if userObj is not None:
             details = userObj.get('details', [])
-            for detail in filter(lambda x:x['name']==name, details):
+            for detail in [x for x in details if x['name'] == name]:
               v = details.get('value', None)
         if v is None and name == 'email':
           v = self.getUserAttr(user, 'mail')
@@ -889,7 +889,7 @@ class AccessManager(AccessableContainer):
               valid_userids.append(userid)
           if userid in valid_userids:
             nodes = self.getUserAttr(userid, 'nodes', {})
-            if len(filter(lambda x: (x=="{$}" and ob.id=="content") or x=="{$%s}"%ob.id or x.endswith("/%s}"%ob.id), nodes.keys()))==0:
+            if len([x for x in nodes if (x=="{$}" and ob.id=="content") or x=="{$%s}"%ob.id or x.endswith("/%s}"%ob.id)])==0:
               b = True
           elif userid in invalid_userids:
             b = True
@@ -1189,12 +1189,12 @@ class AccessManager(AccessableContainer):
               if nodekey in nodekeys:
                 node = nodes[nodekey]
                 roles = node.get('roles', [])
-                zms_roles = filter(lambda x:x not in security_roles.keys(), roles)
+                zms_roles = [x for x in roles if x not in security_roles]
                 if len(zms_roles) > 0:
                   target = self.getLinkObj(nodekey)
                   if target is not None:
-                    mbody.append('\n * '+target.getTitlealt(REQUEST)+' ['+self.getZMILangStr('ATTR_ROLES')+': '+', '.join(map(lambda x:self.getRoleName(x), zms_roles))+']: '+target.absolute_url()+'/manage')
-                for security_role in filter(lambda x:x in security_roles.keys(), roles):
+                    mbody.append('\n * '+target.getTitlealt(REQUEST)+' ['+self.getZMILangStr('ATTR_ROLES')+': '+', '.join([self.getRoleName(x) for x in zms_roles])+']: '+target.absolute_url()+'/manage')
+                for security_role in [x for x in roles if x in security_roles]:
                   for role_nodekey in security_roles[security_role].get('nodes', {}).keys():
                     target = self.getLinkObj(role_nodekey)
                     if target is not None:

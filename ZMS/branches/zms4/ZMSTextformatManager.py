@@ -117,9 +117,9 @@ class ZMSTextformatManager(object):
     #  ZMSTextformatManager.getTextFormats:
     # --------------------------------------------------------------------------
     def getTextFormats(self, REQUEST):
-      l = map( lambda x: self.getTextFormat(self.textformats[x*2], REQUEST), list(range(len(self.textformats)//2)))
-      l = sorted(map( lambda x: (x.getDisplay(), x), l))
-      return map(lambda x: x[1], l)
+      l = [self.getTextFormat(self.textformats[x*2], REQUEST) for x in range(len(self.textformats)//2)]
+      l = sorted([(x.getDisplay(), x) for x in l])
+      return [x[1] for x in l]
 
 
     # --------------------------------------------------------------------------
@@ -127,7 +127,7 @@ class ZMSTextformatManager(object):
     # --------------------------------------------------------------------------
     def setDefaultTextformat(self, id):
       if len(id) > 0 and id in self.textformats:
-        map( lambda x: self.operator_setitem(self.textformats[x*2+1], 'default', 0), list(range(len(self.textformats)//2)))
+        [self.operator_setitem(self.textformats[x*2+1], 'default', 0) for x in range(len(self.textformats)//2)]
         i = self.textformats.index(id)
         self.textformats[i+1]['default'] = 1
         # Make persistent.
@@ -141,7 +141,7 @@ class ZMSTextformatManager(object):
       if len(self.textformats) == 0:
         return ''
       i = 0
-      format_default = filter( lambda x: self.textformats[x*2+1].get('default', 0)==1, list(range(len(self.textformats)//2)))
+      format_default = [x for x in range(len(self.textformats)//2) if self.textformats[x*2+1].get('default', 0) == 1]
       if len(format_default) == 1:
         i = format_default[0]*2
       elif 'body' in self.textformats:

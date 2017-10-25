@@ -660,10 +660,6 @@ class ObjAttrs(object):
       else:
         value = ''
       
-      # Return type.
-      if isinstance(value, str) and self.getConfProperty('ZMS.compatibility', '3.3.3')=='3.3.3':
-        value = value.encode('utf-8', errors='ignore')
-      
       # Stop measurment.
       self.stopMeasurement("%s.%s"%(self.meta_id, key))
       

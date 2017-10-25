@@ -291,7 +291,8 @@ class ConfManager(
           break
       # Filter.
       if pattern is not None:
-        for k in filenames.keys():
+        lk = list(filenames.keys())
+        for k in lk:
           if k.find(pattern) < 0:
             del filenames[k]
           else:

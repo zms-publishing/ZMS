@@ -473,7 +473,7 @@ def toCdata(self, s, xhtml=0):
   rtn = ''
 
   # Return Text (HTML) in CDATA as XHTML.
-  from _filtermanager import processCommand
+  from . import _filtermanager
   processId = 'tidy'
   if xhtml == 0 \
      and self.getConfProperty('ZMS.export.xml.tidy', 0) \
@@ -493,7 +493,7 @@ def toCdata(self, s, xhtml=0):
     if command.find('{trans}') >= 0:
       trans = _fileutil.getOSPath(package_home(globals()) + '/conf/xsl/tidy.html2xhtml.conf')
       command = command.replace('{trans}', trans)
-    filename = processCommand(self, filename, command)
+    filename = _filtermanager.processCommand(self, filename, command)
 
     # Read <XHTML> from file.
     f = open(htmfilename, 'rb')

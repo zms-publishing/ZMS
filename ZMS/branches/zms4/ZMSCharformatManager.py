@@ -86,7 +86,7 @@ class ZMSCharformatManager(object):
     # ------------------------------------------------------------------------------
     def moveCharformat(self, id, pos):
       obs = self.charformats
-      charformats = filter( lambda x: x['id'] == id, obs)
+      charformats = [x for x in obs if x['id'] == id]
       if len(charformats) == 1:
         ob = charformats[0]
         self.charformats.remove(ob)
@@ -100,7 +100,7 @@ class ZMSCharformatManager(object):
     # ------------------------------------------------------------------------------
     def delCharformat(self, id):
       obs = self.charformats
-      charformats = list(filter( lambda x: x['id'] == id, obs))
+      charformats = [x for x in obs if x['id'] == id]
       if len(charformats) > 0:
         ob = charformats[0]
         if ob.get('btn') in self.objectIds():
@@ -118,7 +118,7 @@ class ZMSCharformatManager(object):
       obs = self.charformats
       if oldId is None:
         oldId = newId
-      oldCharformats = list(filter( lambda x: x['id'] == oldId, obs))
+      oldCharformats = [x for x in obs if x['id'] == oldId]
       if len(oldCharformats) > 0:
         i = obs.index( oldCharformats[0])
       else:
@@ -195,8 +195,7 @@ class ZMSCharformatManager(object):
       # -------
       elif REQUEST['btn'] == self.getZMILangStr('BTN_EXPORT'):
         ids = REQUEST.get('ids', [])
-        value = filter( lambda x: x['id'] in ids or len(ids) == 0, self.getCharFormats())
-        value = map( lambda x: x.copy(), value)
+        value = [x.copy() for x in self.getCharFormats() if x['id'] in ids or len(ids) == 0]
         for x in value:
           if x.get('btn'):
             x['btn'] = _blobfields.createBlobField( self, _blobfields.MyImage, file={'data':getattr( self, x.get('btn')).data,'filename':x.get('btn')})

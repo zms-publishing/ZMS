@@ -24,7 +24,7 @@ class ZMSLinkElementTest(test_util.BaseTest):
     for attr_type in ['replace','embed','recursive']:
       self.writeInfo('>>>>>>>>>> test attr_type=%s'%attr_type)
       link1.setObjProperty('attr_type',attr_type,lang)
-      link2 = filter(lambda x:x.id==link1.id,folder.getChildNodes(request))[0]
+      link2 = [x for x in folder.getChildNodes(request) if x.id == link1.id][0]
       for link in [link1,link2]:
         self.writeInfo('>>>>>>>>>> test link=%s'%str(link))
         

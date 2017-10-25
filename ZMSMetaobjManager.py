@@ -88,7 +88,7 @@ def effective_ids(self, ids):
   l = []
   keys = self.model.keys()
   if ids:
-    for id in filter(lambda x:x in keys, ids):
+    for id in [x for x in ids if x in keys]:
       metaObj = self.getMetaobj( id)
       l.append(id)
       if metaObj['type'] == 'ZMSPackage':
@@ -136,7 +136,7 @@ class ZMSMetaobjManager(object):
       valid_ids = self.getMetaobjIds()
       if ids is None:
         ids = valid_ids
-      for id in filter(lambda x:x in valid_ids, ids):
+      for id in [x for x in ids if x in valid_ids]:
         o = self.getMetaobj(id)
         if o and not o.get('acquired', 0):
           package = o.get('package', '')
@@ -309,7 +309,7 @@ class ZMSMetaobjManager(object):
         ob = copy.deepcopy(ob)
         revision = self.getMetaobjRevision(id)
         attrs = []
-        for attr_id in map(lambda x:x['id'], ob['attrs']):
+        for attr_id in [x['id'] for x in ob['attrs']]:
           attr = self.getMetaobjAttr(id, attr_id)
           mandatory_keys = ['id', 'name', 'type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
           if attr['type']=='interface':
@@ -445,15 +445,15 @@ class ZMSMetaobjManager(object):
     # --------------------------------------------------------------------------
     def getMetaobjIds(self, sort=False, excl_ids=[]):
       obs = self.__get_metaobjs__()
-      ids = map(lambda x:obs[x]['id'], obs.keys())
+      ids = [obs[x]['id'] for x in obs.keys()]
       # exclude ids
       if excl_ids:
-        ids = filter(lambda x: x not in excl_ids, ids)
+        ids = [x for x in ids if x not in excl_ids]
       # sort
       if sort:
-        mapping = sorted(map(lambda x: (self.display_type(self.REQUEST, x), x), ids))
-        ids = map(lambda x: x[1], mapping)
-      return list(ids)
+        mapping = sorted([(self.display_type(self.REQUEST, x), x) for x in ids])
+        ids = [x[1] for x in mapping]
+      return ids
 
 
     # --------------------------------------------------------------------------
@@ -479,8 +479,8 @@ class ZMSMetaobjManager(object):
     def getMetaobjRevision(self, id):
       ob = self.getMetaobj(id)
       if ob is not None and ob.get('type') == 'ZMSPackage':
-        metaobjs = filter(lambda x:x.get('package')==ob['id'], self.__get_metaobjs__().values())
-        revision = max(['0.0.0']+map(lambda x:standard.nvl(x.get('revision'), '0.0.0'), metaobjs))
+        metaobjs = [x for x in self.__get_metaobjs__().values() if x.get('package') == ob['id']]
+        revision = max(['0.0.0']+[standard.nvl(x.get('revision'), '0.0.0') for x in metaobjs])
         if revision > ob.get('revision', '0.0.0'):
           ob['revision'] = revision
       return ob.get('revision', '0.0.0')
@@ -530,10 +530,10 @@ class ZMSMetaobjManager(object):
       self.clearReqBuff('ZMSMetaobjManager')
       obs = self.model
       ob = self.getMetaobj( id)
-      if ob is not None and len( ob.keys()) > 0 and subobjects == 1:
+      if ob is not None and len(ob.keys()) > 0 and subobjects == 1:
         if ob.get('type', '') == 'ZMSPackage':
-          pk_obs = filter( lambda x: x.get('package') == id, obs.values())
-          pk_ids = map( lambda x: x['id'], pk_obs)
+          pk_obs = [x for x in obs.values() if x.get('package') == id]
+          pk_ids = [x['id'] for x in pk_obs]
           for pk_id in pk_ids:
             self.delMetaobj( pk_id, acquire=True)
         self.delMetaobj( id, acquire=True)
@@ -554,7 +554,7 @@ class ZMSMetaobjManager(object):
     def delMetaobj(self, id, acquire=False):
       self.clearReqBuff('ZMSMetaobjManager')
       # Handle type.
-      ids = filter( lambda x: x.startswith(id+'.'), self.objectIds())
+      ids = [x for x in self.objectIds() if x.startswith(id+'.')]
       if ids:
         self.manage_delObjects( ids)
       # Delete object.
@@ -563,7 +563,7 @@ class ZMSMetaobjManager(object):
       for key in cp.keys():
         if key == id:
           # Delete attributes.
-          attr_ids = map( lambda x: x['id'], cp[key]['attrs'] )
+          attr_ids = [x['id'] for x in cp[key]['attrs']]
           for attr_id in attr_ids:
             self.delMetaobjAttr( id, attr_id, acquire)
         else:
@@ -623,7 +623,7 @@ class ZMSMetaobjManager(object):
     #  Returns list of attribute-ids for meta-object specified by meta-id.
     # --------------------------------------------------------------------------
     def getMetaobjAttrIds(self, id, types=[]):
-      return map(lambda x: x['id'], self.getMetaobjAttrs( id, types))
+      return [x['id'] for x in self.getMetaobjAttrs( id, types)]
 
 
     # --------------------------------------------------------------------------
@@ -637,7 +637,7 @@ class ZMSMetaobjManager(object):
       if ob is not None:
         attrs = ob.get('attrs', ob.get('__obj_attrs__', []))
         if len( types) > 0:
-          attrs = filter( lambda x: x['type'] in types, attrs)
+          attrs = [x for x in attrs if x['type'] in types]
       return attrs
 
 
@@ -653,12 +653,12 @@ class ZMSMetaobjManager(object):
         metaObjs = self.__get_metaobjs__()
         for metaObjId in metaObjs.keys():
           metaObj = metaObjs[metaObjId]
-          for metaObjAttr in filter(lambda x:x['id']==attr_id, metaObj.get('attrs', [])):
+          for metaObjAttr in [x for x in metaObj.get('attrs', []) if x['id'] == attr_id]:
             metaObjAttrs.append(self.getMetaobjAttr( metaObjId, attr_id))
       # single meta-object:
       else:
         metaObjAttrs.append(self.getMetaobjAttr( id, attr_id))
-      metaObjAttrs = filter(lambda x: x is not None, metaObjAttrs)
+      metaObjAttrs = [x for x in metaObjAttrs if x is not None]
       # Process meta-object attributes.
       for metaObjAttr in metaObjAttrs:
         if metaObjAttr['type'] == 'constant':
@@ -837,7 +837,7 @@ class ZMSMetaobjManager(object):
         del attr['custom']
       
       # Replace
-      ids = map( lambda x: x['id'], attrs)
+      ids = [x['id'] for x in attrs]
       if oldId in ids:
         i = ids.index(oldId)
         attrs[i] = attr
@@ -1007,9 +1007,13 @@ class ZMSMetaobjManager(object):
         id = REQUEST.get('id', '').strip()
         target = REQUEST.get('target', 'manage_main')
         REQUEST.set( '__get_metaobjs__', True)
+        print(1,"########## ZMSMetaobjManager.manage_changeProperties")
         
-        try:
+        #try:
+        if True:
           sync_id = []
+
+          print(1,"########## ZMSMetaobjManager.manage_changeProperties",id,key,btn)
           
           # Delete.
           # -------
@@ -1076,7 +1080,7 @@ class ZMSMetaobjManager(object):
               # Restore resource.
               if REQUEST.get('attr_custom_%s_modified'%old_id, '1') == '0' and \
                  REQUEST.get('attr_custom_%s_active'%old_id, '0') == '1':
-                  savedAttr = filter(lambda x: x['id']==old_id, savedAttrs)[0]
+                  savedAttr = [x for x in savedAttrs if x['id'] == old_id][0]
                   syncZopeMetaobjAttr( self, newValue, savedAttr)
                   if savedAttr['ob']:
                     filename = savedAttr['ob'].title
@@ -1195,13 +1199,16 @@ class ZMSMetaobjManager(object):
           elif btn == self.getZMILangStr('BTN_IMPORT'):
             immediately = False
             xmlfile = None
-            temp_folder = self.temp_folder
-            temp_id = self.id + '_' + REQUEST['AUTHENTICATED_USER'].getId() + '.xml'
-            if temp_id in temp_folder.objectIds():
-              filename = str(getattr( temp_folder, temp_id).title)
-              xmlfile = str(getattr( temp_folder, temp_id).data)
-              temp_folder.manage_delObjects([temp_id])
+            temp_folder = getattr(self,'temp_folder',None)
+            if temp_folder is None:
               immediately = True
+            else:
+              temp_id = self.id + '_' + REQUEST['AUTHENTICATED_USER'].getId() + '.xml'
+              if temp_id in temp_folder.objectIds():
+                filename = str(getattr( temp_folder, temp_id).title)
+                xmlfile = str(getattr( temp_folder, temp_id).data)
+                temp_folder.manage_delObjects([temp_id])
+                immediately = True
             if REQUEST.get('file'):
               f = REQUEST['file']
               filename = f.filename
@@ -1238,14 +1245,14 @@ class ZMSMetaobjManager(object):
             message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<em>%s</em>"%attr_id), (pos+1))
           
           ##### SYNCHRONIZE ####
-          types = self.valid_types+map(lambda x:self.metas[x*2], list(range(len(self.metas)//2)))
+          types = self.valid_types+[self.metas[x*2] for x in range(len(self.metas)//2)]
           for k in self.getMetaobjIds():
             if k not in sync_id:
               if k in self.model and k in old_model:
                 d = self.model[k]
-                types_attrs = map(lambda x: (x['id'], x), filter(lambda x: x['type'] in types, d.get('attrs', [])))
+                types_attrs = [(x['id'], x) for x in d.get('attrs', []) if x['type'] in types]
                 d = old_model[k]
-                old_types_attrs = map(lambda x: (x['id'], x), filter(lambda x: x['type'] in types, d.get('attrs', [])))
+                old_types_attrs = [(x['id'], x) for x in d.get('attrs', []) if x['type'] in types]
                 if types_attrs != old_types_attrs:
                   sync_id.append(k)
               else:
@@ -1257,6 +1264,8 @@ class ZMSMetaobjManager(object):
           self.getRepositoryManager().exec_auto_commit(self, id)
         
         # Handle exception.
+        try:
+          pass
         except:
           message = standard.writeError(self, "[manage_changeProperties]")
           messagekey = 'manage_tabs_error_message'

@@ -9,10 +9,10 @@
 <div id="zmi-tab">
 <tal:block tal:define="
 		metaObjIds python:here.getMetaobjIds(sort=True);
-		metaObjs python:map(lambda x: here.getMetaobj(x,aq_attrs=['enabled']), metaObjIds);
-		metaObjPackages python:here.sort_list(['']+[x['id'] for x in metaObjs if x['type'] =='ZMSPackage']);
-		metaObjPackages2 python:filter(lambda x: x not in metaObjPackages, map(lambda x: x.get('package'), metaObjs))">
-<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[1]]+map(lambda x:{'action':'?id=%s'%x['id'],'label':x['name']},filter(lambda x:x['id']==request.get('id'),metaObjs)))">zmi_breadcrumbs</tal:block>
+		metaObjs python:[here.getMetaobj(x,aq_attrs=['enabled']) for x in metaObjIds];
+		metaObjPackages python:here.sort_list(['']+[x['id'] for x in metaObjs if x['type'] == 'ZMSPackage']);
+		metaObjPackages2 python:[x for x in [x.get('package') for x in metaObjs] if x not in metaObjPackages]">
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]]+[{'action':'?id=%s'%x['id'],'label':x['name']} for x in metaObjs if x['id']==request.get('id')])">zmi_breadcrumbs</tal:block>
 
 <div class="ui-helper-hidden">
 	<div id="insertObj" class="inner">
@@ -50,7 +50,7 @@
 <tal:block tal:define="
 				id request/id;
 				objAttrIds python:here.getMetaobjAttrIds(id);
-				metaObjAttrs python:map(lambda x:here.getMetaobjAttr(id,x),objAttrIds);
+				metaObjAttrs python:[here.getMetaobjAttr(id,x) for x in objAttrIds];
 				metaObj python:here.getMetaobj(id,aq_attrs=['enabled']);
 				metaObjRecordSet python:metaObj['type']=='ZMSRecordSet'">
 	<input type="hidden" name="key" value="all"/>
@@ -63,7 +63,7 @@
 		</tal:block>
 		<tal:block tal:condition="metaObjRecordSet">
 			<option id="type_objects" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_FK')"></option>
-			<tal:block tal:repeat="metaObj python:filter(lambda x: x['type']=='ZMSRecordSet' and x.get('package')==metaObj.get('package'),metaObjs)">
+			<tal:block tal:repeat="metaObj python:[x for x in metaObjs if x['type']=='ZMSRecordSet' and x.get('package')==metaObj.get('package')]">
 				<option tal:attributes="value metaObj/id" tal:content="python:here.display_type(request,metaObj['id'])">type</option>
 			</tal:block>
 		</tal:block>
@@ -73,7 +73,7 @@
 				<option tal:attributes="value metaAttrId" tal:content="python:here.getMetadictAttr(metaAttrId)['name']">type</option>
 			</tal:block>
 			<option id="type_objects" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_OBJECTS')"></option>
-			<tal:block tal:repeat="metaObj python:filter(lambda x: x['type']!='ZMSPackage',metaObjs)">
+			<tal:block tal:repeat="metaObj python:[x for x in metaObjs if x['type'] != 'ZMSPackage']">
 				<option tal:attributes="value python:metaObj['id']" tal:content="python:here.display_type(request,metaObj['id'])">type</option>
 			</tal:block>
 			<option id="type_objects_sequence" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_SEQUENCE')"></option>
@@ -318,8 +318,7 @@
 			<tal:block tal:define="global objAttrIds python:here.getMetaobjAttrIds(metaObj2['id'])">
 				<tal:block tal:repeat="objAttrId objAttrIds">
 					<tal:block tal:define="global objAttr python:here.getMetaobjAttr(metaObj2['id'],objAttrId); isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None])">
-						<tal:block tal:condition="python:
-								(objAttr['type']==metaObj['id']) or 
+						<tal:block tal:condition="python:(objAttr['type']==metaObj['id']) or \
 								(objAttr['type']=='*' and metaObj['id'] in objAttr['keys'])">
 							<strong tal:condition="python:len(l)==0">Usage:</strong>
 							<tal:block tal:condition="not:python:len(l)==0">,</tal:block>

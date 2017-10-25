@@ -81,7 +81,7 @@ def getNextSibling(self, REQUEST, incResource=False):
   parent = self.getParentNode()
   if parent is not None:
     siblings = parent.getChildNodes(REQUEST, [self.PAGES, self.NORESOLVEREF]) 
-    siblingIds = map( lambda x: x.id, siblings)
+    siblingIds = [x.id for x in siblings]
     if self.id in siblingIds:
       i = siblingIds.index( self.id) + 1
       while i < len(siblings):
@@ -693,7 +693,7 @@ class ZMSContainerObject(
       indexNavElmnts = []
       # Retrieve elements.
       if REQUEST.get('op', '')=='':
-        indexNavElmnts = filter(lambda ob: ob.isPage() and ob.isMetaType(['ZMSDocument', 'ZMSCustom']) and not ob.isResource(REQUEST), self.filteredChildNodes(REQUEST, self.PAGES))
+        indexNavElmnts = [x for x in self.filteredChildNodes(REQUEST, self.PAGES) if ob.isPage() and ob.isMetaType(['ZMSDocument', 'ZMSCustom']) and not ob.isResource(REQUEST)]
       # Return elements.
       return indexNavElmnts
 
@@ -752,7 +752,7 @@ class ZMSContainerObject(
         tmp.sort()
         
         # truncate sort-id from sorted object-items
-        rtn = map( lambda ob: ob[1], tmp)
+        rtn = [x[1] for x in tmp]
         if order_dir == 'desc': 
           rtn.reverse()
       
@@ -785,7 +785,7 @@ class ZMSContainerObject(
       Returns a NodeList that contains all visible children of this node in 
       correct order. If none, this is a empty NodeList. 
       """
-      return filter(lambda ob: ob.isVisible(REQUEST), self.getChildNodes(REQUEST, meta_types))
+      return [x for x in self.getChildNodes(REQUEST, meta_types) if x.isVisible(REQUEST)]
 
 
     # --------------------------------------------------------------------------

@@ -23,9 +23,9 @@ from zope.interface import Interface
 
 def increaseVersion(v='0.0.0',d=2):
   try:
-    l = map(lambda x:int(x), v.split('.'))
+    l = [int(x) for x in v.split('.')]
     l[d] = l[d]+1
-    return '.'.join(map(lambda x:str(x), l))
+    return '.'.join([str(x) for x in l])
   except:
     return v
 

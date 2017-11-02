@@ -118,7 +118,7 @@ class ZMSWorkflowProvider(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
-      return map( lambda x: self.operator_setitem( x, 'action', '../'+x['action']), copy.deepcopy(self.aq_parent.manage_options()))
+      return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
 
     def manage_sub_options(self):
       return (
@@ -204,10 +204,10 @@ class ZMSWorkflowProvider(
     ZMSWorkflowProvider.importXml
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def importXml(self, xml, createIfNotExists=1):
-      ids = map(lambda x: self.activities[x*2], list(range(len(self.activities)//2)))
+      ids = [self.activities[x*2] for x in range(len(self.activities)//2)]
       for id in ids:
         self.delItem(id, 'activities')
-      ids = map(lambda x: self.transitions[x*2], list(range(len(self.transitions)//2)))
+      ids = [self.transitions[x*2] for x in range(len(self.transitions)//2)]
       for id in ids:
         self.delItem(id, 'transitions')
       v = self.parseXmlString(xml)
@@ -227,8 +227,9 @@ class ZMSWorkflowProvider(
       roles = []
       for transition in self.getTransitions():
         roles = standard.concat_list(roles, transition.get('performer', []))
-      for newRole in filter(lambda x: x not in self.userdefined_roles(), roles):
-        _accessmanager.addRole(self, newRole)
+      for newRole in roles:
+        if newRole not in self.userdefined_roles():
+          _accessmanager.addRole(self, newRole)
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -305,9 +306,10 @@ class ZMSWorkflowProvider(
     ZMSWorkflowProvider.writeProtocol
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def writeProtocol(self, entry):
-      if len(filter(lambda x: x.id()=='protocol.txt', self.objectValues(['File'])))==0:
-        self.manage_addFile(id='protocol.txt', file='', title='')
-      file = filter(lambda x: x.id()=='protocol.txt', self.objectValues(['File']))[0]
+      id = 'protocol.txt'
+      if len([x for x in self.objectValues(['File']) if x.id() == id]) == 0:
+        self.manage_addFile(id=id, file='', title='')
+      file = [x for x in self.objectValues(['File']) if x.id() == id][0]
       file.manage_edit(file.title, file.data+'\n'+entry)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

@@ -12,8 +12,8 @@
 <form class="form-container" tal:define="global 
 			id_prefix    python:['e',''][int(here.meta_id=='ZMSTrashcan')];
 			childNodes   python:here.getObjChildren(id_prefix,request);
-			pageelements python:filter(lambda x: not x.isPage(), childNodes);
-			pages        python:filter(lambda x: x.isPage(), childNodes);
+			pageelements python:[x for x in childNodes if not x.isPage()];
+			pages        python:[x for x in childNodes if x.isPage()];
 			nodelists    python:[['pageelements',pageelements],['pages',pages]]">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']" />

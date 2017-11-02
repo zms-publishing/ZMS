@@ -86,7 +86,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   from OFS.Folder import Folder
   homeElmnt = Folder(id)
   self._setObject(homeElmnt.id, homeElmnt)
-  homeElmnt = list(filter(lambda x:x.id==homeElmnt.id, self.objectValues()))[0]
+  homeElmnt = [x for x in self.objectValues() if x.id == homeElmnt.id][0]
   
   ##### Add ZMS ####
   from . import zms
@@ -353,7 +353,6 @@ def bin2hex(m):
   @return: String
   @rtype: C{bytes}
   """
-  #return ''.join(map(lambda x: hex(ord(x)//16)[-1]+hex(ord(x)%16)[-1], m))
   import binascii
   return binascii.hexlify(m)
 
@@ -366,7 +365,6 @@ def hex2bin(m):
   @return: Integer
   @rtype: C{bytes}
   """
-  #return ''.join(map(lambda x: chr(16*int('0x%s'%m[x*2], 0)+int('0x%s'%m[x*2+1], 0)), list(range(len(m)//2))))
   import binascii
   return binascii.unhexlify(m)
 
@@ -518,7 +516,7 @@ def id_quote(s, mapping={
   @rtype: C{str}
   """
   s = umlaut_quote(s, mapping)
-  valid = list(map( lambda x: ord(x[0]), mapping.values())) + [ord('_')] + list(range(ord('0'), ord('9')+1)) + list(range(ord('A'), ord('Z')+1)) + list(range(ord('a'), ord('z')+1))
+  valid = [ord(x[0]) for x in mapping.values()] + [ord('_')] + list(range(ord('0'), ord('9')+1)) + list(range(ord('A'), ord('Z')+1)) + list(range(ord('a'), ord('z')+1))
   s = [x for x in s if type(x) is str and len(x) == 1 and ord(x) in valid]
   while len(s) > 0 and s[0] == '_':
       s = s[1:]
@@ -692,7 +690,8 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
 
   # Get Proxy.
   useproxy = True
-  noproxy = ['localhost', '127.0.0.1']+filter(lambda x: len(x)>0, map(lambda x: x.strip(), context.getConfProperty('%s.noproxy'%scheme.upper(), '').split(',')))
+  noproxy = [x.strip() for x in context.getConfProperty('%s.noproxy'%scheme.upper(), '').split(',')]
+  noproxy = ['localhost', '127.0.0.1'] + [x for x in noproxy if len(x) > 0]
   for noproxyurl in noproxy:
     if fnmatch.fnmatch(netloc, noproxyurl):
       useproxy = False
@@ -1448,7 +1447,7 @@ def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
   elif isinstance(qorder, str):
     sorted = [(_globals.sort_item(x.get(qorder, None)), x) for x in l]
   elif isinstance(qorder, list):
-    sorted = [(map(lambda y: _globals.sort_item(x[y]), qorder), x) for x in l]
+    sorted = [([_globals.sort_item(x[y]) for y in qorder], x) for x in l]
   else:
     sorted = [(_globals.sort_item(x[qorder]), x) for x in l]
   if ignorecase==1 and len(sorted) > 0 and isinstance(sorted[0][0], str):
@@ -1512,12 +1511,12 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
   """
   if isinstance(i, list) or isinstance(i, tuple):
     return '[' \
-        + (['', '\n'][formatted]+(['', '\t'][formatted]*level)+',').join(map(lambda x: str_json(x, encoding, errors, formatted, level+1), i)) \
+        + (['', '\n'][formatted]+(['', '\t'][formatted]*level)+',').join([str_json(x, encoding, errors, formatted, level+1) for x in i]) \
         + ']'
   elif isinstance(i, dict):
     k = sorted(i.keys())
     return '{' \
-        + (['', '\n'][formatted]+(['', '\t'][formatted]*level)+',').join(map(lambda x: '"%s":%s'%(x, str_json(i[x], encoding, errors, formatted, level+1)), k)) \
+        + (['', '\n'][formatted]+(['', '\t'][formatted]*level)+',').join(['"%s":%s'%(x, str_json(i[x], encoding, errors, formatted, level+1)) for x in k]) \
         + '}'
   elif isinstance(i, time.struct_time):
     try:
@@ -1553,9 +1552,9 @@ def str_item(i):
   @rtype: C{str}
   """
   if isinstance(i, list) or isinstance(i, tuple):
-    return '\n'.join(map(lambda x: str_item(x), i))
+    return '\n'.join([str_item(x) for x in i])
   elif isinstance(i, dict):
-    return '\n'.join(map(lambda x: str_item(i[x]), i.keys()))
+    return '\n'.join([str_item(i[x]) for x in i])
   elif isinstance(i, time.struct_time):
     try:
       return format_datetime_iso(i)
@@ -1590,78 +1589,78 @@ def filter_list(l, i, v, o='%'):
         s = s.replace('*', '').strip()
         if len( s) > 0:
           s = umlaut_quote(s).lower()
-          k.extend(filter(lambda x: x not in k and umlaut_quote(str_item(x)).lower().find(s)>=0, l))
+          k.extend([x for x in l if x not in k and umlaut_quote(str_item(x)).lower().find(s) >= 0])
     elif len(v.split(' AND '))>1:
       k = l
       for s in v.split(' AND '):
         s = s.replace('*', '').strip()
         if len( s) > 0:
           s = umlaut_quote(s).lower()
-          k = filter(lambda x: umlaut_quote(str_item(x)).lower().find(s)>=0, k)
+          k = [x for x in k if umlaut_quote(str_item(x)).lower().find(s) >= 0]
     else:
       v = v.replace('*', '').strip().lower()
       if len( v) > 0:
         v = umlaut_quote(v).lower()
-        k = filter(lambda x: umlaut_quote(str_item(x)).lower().find(v)>=0, l)
+        k = [x for x in l if umlaut_quote(str_item(x)).lower().find(v) >= 0]
     return k
   # Extract Items.
   if isinstance(i, str):
-    k=map(lambda x: (x.get(i, None), x), l)
+    k = [(x.get(i, None), x) for x in l]
   else:
-    k=map(lambda x: (x[i], x), l)
+    k = [(x[i], x) for x in l]
   # Filter Date-Tuples
   if isinstance(v, tuple) or isinstance(v, time.struct_time):
     v = DateTime('%4d/%2d/%2d'%(v[0], v[1], v[2]))
   # Filter Strings.
   if isinstance(v, str) or o=='%':
     if o=='=' or o=='==':
-      k=filter(lambda x: str_item(x[0])==v, k)
+      k = [x for x in k if str_item(x[0]) == v]
     elif o=='<>' or o=='!=':
-      k=filter(lambda x: str_item(x[0])!=v, k)
+      k = [x for x in k if str_item(x[0]) != v]
     else:
       v = str_item(v).lower()
       if v.find('*')>=0 or v.find('?')>=0:
-        k=filter(lambda x: fnmatch.fnmatch(str_item(x[0]).lower(), v), k)
+        k = [x for x in k if fnmatch.fnmatch(str_item(x[0]).lower(), v)]
       else:
-        k=filter(lambda x: str_item(x[0]).lower().find(v)>=0, k)
+        k = [x for x in k if str_item(x[0]).lower().find(v) >= 0]
   # Filter Numbers.
   elif isinstance(v, int) or isinstance(v, float):
     if o=='=' or o=='==':
-      k=filter(lambda x: x[0]==v, k)
+      k = [x for x in k if x[0] == v]
     elif o=='<':
-      k=filter(lambda x: x[0]<v, k)
+      k = [x for x in k if x[0] < v]
     elif o=='>':
-      k=filter(lambda x: x[0]>v, k)
+      k = [x for x in k if x[0] > v]
     elif o=='<=':
-      k=filter(lambda x: x[0]<=v, k)
+      k = [x for x in k if x[0] <= v]
     elif o=='>=':
-      k=filter(lambda x: x[0]>=v, k)
+      k = [x for x in k if x[0] >= v]
     elif o=='<>' or o=='!=':
-      k=filter(lambda x: x[0]!=v, k)
+      k = [x for x in k if x[0] != v]
   # Filter Lists.
   elif isinstance(v, list):
     if o=='=' or o=='==':
-      k=filter(lambda x: x[0]==v, k)
+      k = [x for x in k if x[0] == v]
     elif o=='in':
-      k=filter(lambda x: x[0] in v, k)
+      k = [x for x in k if x[0] in v]
   # Filter DateTimes.
   elif isinstance(v, DateTime):
-    k=filter(lambda x: x[0] is not None, k)
-    k=map(lambda x: (getDateTime(x[0]), x[1]), k)
-    k=map(lambda x: (DateTime('%4d/%2d/%2d'%(x[0][0], x[0][1], x[0][2])), x[1]), k)
+    k = [x for x in k if x[0] is not None]
+    k = [(getDateTime(x[0]), x[1]) for x in k]
+    k = [(DateTime('%4d/%2d/%2d'%(x[0][0], x[0][1], x[0][2])), x[1]) for x in k]
     if o=='=' or o=='==':
-      k=filter(lambda x: x[0].equalTo(v), k)
+      k =[x for x in k if x[0].equalTo(v)]
     elif o=='<':
-      k=filter(lambda x: x[0].lessThan(v), k)
+      k = [x for x in k if x[0].lessThan(v)]
     elif o=='>':
-      k=filter(lambda x: x[0].greaterThan(v), k)
+      k = [x for x in k if x[0].greaterThan(v)]
     elif o=='<=':
-      k=filter(lambda x: x[0].lessThanEqualTo(v), k)
+      k = [x for x in k if x[0].lessThanEqualTo(v)]
     elif o=='>=':
-      k=filter(lambda x: x[0].greaterThanEqualTo(v), k)
+      k = [x for x in k if x[0].greaterThanEqualTo(v)]
     elif o=='<>':
-      k=filter(lambda x: not x[0].equalTo(v), k)
-  return map(lambda x: x[1], k)
+      k = [x for x in k if not x[0].equalTo(v)]
+  return [x[1] for x in k]
 
 
 security.declarePublic('copy_list')
@@ -1699,7 +1698,7 @@ def sync_list(l, nl, i):
       k[j] = x
     else:
       k.extend([x[i], x])
-  return map(lambda x: k[x*2+1], list(range(0, len(k)//2)))
+  return [k[x*2+1] for x in range(len(k)//2)]
 
 
 security.declarePublic('aggregate_list')
@@ -1718,7 +1717,7 @@ def aggregate_list(l, i):
     mi[i] = []
     ks = ki.keys()
     for li in l:
-      if len(ks) == len(filter(lambda x: x==i or ki[x]==li[x], ks)):
+      if len(ks) == len([x for x in ks if x == i or ki[x] == li[x]]):
         mi[i].append(li[i])
     m.append(mi)
   return m

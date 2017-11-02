@@ -47,8 +47,8 @@
 			><tal:block tal:define="
 					wfActivity python:here.getWfActivity(wfState);
 					clazz python:wfActivity.get('icon_clazz').split(' ');
-					text_clazz python:filter(lambda x:x.find('icon')<0,clazz);
-					icon_clazz python:filter(lambda x:x.find('icon')>=0,clazz);
+					text_clazz python:[x for x in clazz if x.find('icon') < 0];
+					icon_clazz python:[x for x in clazz if x.find('icon') >= 0];
 					title python:'%s %s %s (%s)'%(wfActivity['name'],here.getZMILangStr('BY'),work_uid,here.getLangFmtDate(work_dt))"
 				><span class="zmi-state" tal:condition="python:wfActivity.get('icon_clazz')" tal:attributes="class python:' '.join(['zmi-state']+text_clazz); title title" tal:content="structure python:here.zmi_icon(name=' '.join(icon_clazz))">the icon</span
 			></tal:block

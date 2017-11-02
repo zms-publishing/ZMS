@@ -150,6 +150,6 @@ class ReqBuff(object):
       request = self.REQUEST
       buff = request.get('__buff__', Buff())
       measurements = getattr(buff, 'measurements', {})
-      return standard.sort_list(filter(lambda x:x['category'].find(category)>=0, measurements.values()), 'total', 'desc')
+      return standard.sort_list([x for x in measurements.values() if x['category'].find(category) >= 0], 'total', 'desc')
 
 ################################################################################

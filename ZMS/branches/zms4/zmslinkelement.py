@@ -674,7 +674,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       rtn = []
       if proxy != self and proxy is not None and self.isEmbeddedRecursive( REQUEST):
         recursive = True
-        rtn = map( lambda x: self.initProxy( proxy, proxy.absolute_url()+'/'+x.id, x, recursive), proxy.getChildNodes( REQUEST, meta_types, reid))
+        rtn = [self.initProxy( proxy, proxy.absolute_url()+'/'+x.id, x, recursive) for x in proxy.getChildNodes( REQUEST, meta_types, reid)]
       elif proxy == self and proxy is not None and self.isEmbedded( REQUEST):
         ref_obj = self.getRefObj()
         if ref_obj is not None:

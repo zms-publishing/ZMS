@@ -57,7 +57,7 @@ class ZMSMetadictManager(object):
       for id in [x for x in ids if x in valid_ids]:
         metas = copy.deepcopy(self.metas)
         metas = [metas[x*2+1] for x in range(len(metas)//2)]
-        map(lambda x:self.operator_delitem(x, 'acquired'), [x for x in metas if 'acquired' in x])
+        [self.operator_delitem(x, 'acquired') for x in metas if 'acquired' in x]
         d = {'id':id,'__filename__':['__metas__.py'],'Metas':metas}
         r[id] = d
 

@@ -21,8 +21,6 @@ from __future__ import absolute_import
 
 # Imports.
 from builtins import range
-from builtins import map
-from builtins import filter
 from builtins import str
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -127,8 +125,9 @@ class ZMSItem(
     #  ZMSItem.zmi_page_request:
     # --------------------------------------------------------------------------
     def _zmi_page_request(self, *args, **kwargs):
-      for daemon in filter(lambda x:IZMSDaemon.IZMSDaemon in list(zope.interface.providedBy(x)), self.getDocumentElement().objectValues()):
-        daemon.startDaemon()
+      for daemon in self.getDocumentElement().objectValues():
+        if IZMSDaemon.IZMSDaemon in list(zope.interface.providedBy(daemon)):
+          daemon.startDaemon()
       request = self.REQUEST
       request.set( 'ZMS_THIS', self.getSelf())
       request.set( 'ZMS_DOCELMNT', self.breadcrumbs_obj_path()[0])
@@ -170,7 +169,9 @@ class ZMSItem(
       physical_path = self.getPhysicalPath()
       path_to_handle = request['URL0'][len(request['BASE0']):].split('/')
       path = path_to_handle[:-1]
-      if self.getDocumentElement().id in path and not path[-1] in self.objectIds() and len(list(filter(lambda x:x.find('.')>0 or x.startswith('manage_'), path)))==0:
+      if self.getDocumentElement().id in path \
+          and not path[-1] in self.objectIds() \
+          and len([x for x in path if x.find('.') > 0 or x.startswith('manage_')]) == 0:
         for i in range(len(path)):
           if path[:-(i+1)] != physical_path[:-(i+1)]:
             path[:-(i+1)] = physical_path[:-(i+1)]

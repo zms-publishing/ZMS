@@ -181,7 +181,7 @@ def initPermissions(container, id):
     ob.manage_role(role_to_manage='Authenticated', permissions=['View'])
   else:
     # activate all acquired permissions
-    permissions = map(lambda x:x['name'], filter(lambda x:x['selected']=='SELECTED', ob.permissionsOfRole('Manager')))
+    permissions = [x['name'] for x in ob.permissionsOfRole('Manager') if x['selected'] == 'SELECTED']
   # FIXME AttributeError: 'PythonScript' object has no attribute 'manage_historyCopy'
   #ob.manage_acquiredPermissions(permissions)
 
@@ -269,7 +269,7 @@ def addZSqlMethod(container, id, title, data):
     template = data
     template = template[template.find('</params>'):]
     template = template[template.find('>')+1:]
-    template = '\n'.join(filter( lambda x: len(x) > 0, template.split('\n')))
+    template = '\n'.join([x for x in template.split('\n') if len(x) > 0])
     ob.manage_edit(title=title, connection_id=connection, arguments=arguments, template=template)
 
 def addFile(container, id, title, data, content_type=None):

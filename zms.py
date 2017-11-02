@@ -232,7 +232,7 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     ##### Add Home ####
     homeElmnt = Folder(REQUEST['folder_id'])
     self._setObject(homeElmnt.id, homeElmnt)
-    homeElmnt = list(filter(lambda x:x.id==homeElmnt.id, self.objectValues()))[0]
+    homeElmnt = [x for x in self.objectValues() if x.id == homeElmnt.id][0]
     
     ##### Add Theme ####
     themeId = importTheme(homeElmnt, REQUEST['theme'])

@@ -83,19 +83,19 @@
         <div class="col-sm-10" tal:define="
             elName python:'portal_clients';
             value python:here.getConfProperty('Portal.Clients',[]);
-            client_homes python:map(lambda x:x.id,filter(lambda x:len(x.objectValues('ZMS'))>0, here.getHome().objectValues('Folder')));
-            optpl python:map(lambda x:(x,x),client_homes)">
+            client_homes python:[x.id for x in here.getHome().objectValues('Folder') if len(x.objectValues('ZMS')) > 0];
+            optpl python:[(x,x) for x in client_homes]">
 
           <select class="zmi-select zmi-sortable" tal:attributes="name elName" multiple="multiple">
             <tal:block tal:repeat="i python:range(len(value))">
-              <tal:block tal:define="opt python:(filter(lambda x:str(x[0])==str(value[i]),optpl)+[None])[0]">
+              <tal:block tal:define="opt python:([x for x in optpl if str(x[0]) == str(value[i])]+[None])[0]">
                 <tal:block tal:condition="python:opt is not None">
                   <option tal:attributes="value python:opt[0]" selected="selected" tal:content="python:opt[1]">the label</option>
                 </tal:block>
               </tal:block>
             </tal:block>
             <tal:block tal:repeat="opt optpl">
-              <tal:block tal:condition="python:str(opt[0]) not in map(lambda x:str(x),value)">
+              <tal:block tal:condition="python:str(opt[0]) not in [str(x) for x in value]">
                 <option tal:attributes="value python:opt[0]" tal:content="python:opt[1]">the label</option>
               </tal:block>
             </tal:block>
@@ -181,7 +181,7 @@
             <input class="form-control" type="text" id="conf_value" name="conf_value" tal:attributes="type python:['text','password'][int(request.get('conf_key','').endswith('.password'))]; value python:here.getConfProperty(request.get('conf_key'),'')">
           </tal:block>
           <tal:block tal:condition="python:request.get('conf_key') in res_keys">
-            <tal:block tal:define="global res_item python:filter(lambda x: x['key']==request.get('conf_key'),res)[0]">
+            <tal:block tal:define="global res_item python:[x for x in res if x['key']==request.get('conf_key')][0]">
               <tal:block tal:condition="python:not (res_item['datatype']=='boolean' or res_item.has_key('options'))">
                 <input class="form-control" type="text" id="conf_value" name="conf_value" tal:attributes="type python:['text','password'][int(request.get('conf_key','').endswith('.password'))]; value python:here.getConfProperty(request.get('conf_key'),res_item.get('default',''))">
               </tal:block>

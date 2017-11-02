@@ -120,17 +120,17 @@ class ZMSWorkflowActivitiesManager(object):
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getActivityIds(self):
     obs = self.getActivities()
-    return map(lambda x: x['id'], obs) 
+    return [x['id'] for x in obs] 
 
 
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowActivitiesManager.getActivity
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getActivity(self, id, for_export=False):
-    activity = filter(lambda x: x['id']==id, self.getActivities())[0]
+    activity = [x for x in self.getActivities() if x['id']==id][0]
     if not for_export:
       d = {}
-      for key in activity.keys():
+      for key in activity:
         if key == 'icon' and activity.get('icon'):
           d[key] = self.absolute_url()+'/'+id+'.icon'
         else:

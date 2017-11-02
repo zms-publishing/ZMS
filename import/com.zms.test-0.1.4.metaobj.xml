@@ -28,7 +28,7 @@ def ZMSQunit_func_( self, *args, **kwargs):
   container = self.getSelf(self.PAGES)
   test_suite = Products.zms.tests.test_util.TestSuite(container)
   if request.get('find'):
-    return self.str_json(map(lambda x:x[0],test_suite.find_tests()))
+    return self.str_json([x[0] for x in test_suite.find_tests()])
   elif request.get('run'):
     return self.str_json(test_suite.run_single(name=request.get('name')))
 ]]>

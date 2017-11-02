@@ -260,9 +260,9 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
         proxy = self.proxy
         req = self.__request__( REQUEST)
         if hasattr( proxy, 'getChildNodesPROXY'):
-          rtn = map( lambda x: ZMSProxyObject( self.__root__, self, self.absolute_url()+'/'+x.id, x.id, x, recursive), proxy.getChildNodesPROXY( proxy, req, meta_types, reid))
+          rtn = [ZMSProxyObject( self.__root__, self, self.absolute_url()+'/'+x.id, x.id, x, recursive) for x in proxy.getChildNodesPROXY( proxy, req, meta_types, reid)]
         else:
-          rtn = map( lambda x: ZMSProxyObject( self.__root__, self, self.absolute_url()+'/'+x.id, x.id, x, recursive), proxy.getChildNodes( req, meta_types, reid))
+          rtn = [ZMSProxyObject( self.__root__, self, self.absolute_url()+'/'+x.id, x.id, x, recursive) for x in proxy.getChildNodes( req, meta_types, reid)]
       return rtn
 
 

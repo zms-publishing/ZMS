@@ -12,7 +12,7 @@
 	<tal:block tal:on-error="nothing" tal:repeat="category python:constraints.keys()">
 		<div tal:attributes="class python:'constraint constraint-%s'%category[:-1].lower()">
 			<strong style="display:block;white-space:nowrap" tal:content="structure python:here.zmi_icon(name='icon-warning-sign',extra='title=\042%s\042'%category[:-1])+' '+category[:-1]">the category</strong>
-			<tal:block tal:content="python:'; '.join(map(lambda x:x[1],constraints[category]))">the messages</tal:block>
+			<tal:block tal:content="python:'; '.join([x[1] for x in constraints[category]])">the messages</tal:block>
 		</div>
 	</tal:block>
 </tal:block

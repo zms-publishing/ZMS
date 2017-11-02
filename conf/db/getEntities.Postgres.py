@@ -25,7 +25,7 @@ def getEntities(here, request):
                 entity = {}
                 columns = []
                 entity['id'] = tablename
-                entity['label'] = ' '.join(map(lambda x: x.capitalize(), tablename.split('_'))).strip()
+                entity['label'] = ' '.join([x.capitalize() for x in tablename.split('_')]).strip()
                 entity['type'] = 'table'
                 entity['columns'] = columns
             column = {}
@@ -41,7 +41,7 @@ def getEntities(here, request):
                 colType = 'int'
             column['key'] = colName
             column['id'] = colName
-            column['label'] = ' '.join(map(lambda x: x.capitalize(), colName.split('_'))).strip()
+            column['label'] = ' '.join([x.capitalize() for x in colName.split('_')]).strip()
             column['name'] = column['label']
             column['mandatory'] = attnotnull=='True'
             column['type'] = colType

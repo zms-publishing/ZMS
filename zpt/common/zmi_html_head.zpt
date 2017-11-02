@@ -7,7 +7,7 @@
 	<meta name="version_container_abs_url" tal:attributes="content python:here.getVersionContainer().absolute_url()" />
 	<meta name="physical_path" tal:attributes="content python:'/'.join(here.getPhysicalPath())" />
 	<link type="text/css" rel="stylesheet" tal:attributes="href python:'%s/zmi_manage_css'%here.getDocumentElement().absolute_url()" />
-	<tal:block tal:repeat="href python:map(lambda x:here.getConfProperty(x),here.getConfProperty('zmi.css').split(','))">
+	<tal:block tal:repeat="href python:[here.getConfProperty(x) for x in here.getConfProperty('zmi.css').split(',')]">
 		<link tal:condition="href" type="text/css" rel="stylesheet" tal:attributes="href python:href.replace('ZMS_ROOT',here.getDocumentElement().absolute_url())"/>
 	</tal:block>
 	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:here.getConfProperty('plugins.zmi.js')"></script>

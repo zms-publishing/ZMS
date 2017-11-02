@@ -21,8 +21,6 @@ from __future__ import absolute_import
 
 # Imports.
 from builtins import object
-from builtins import filter
-from builtins import map
 from builtins import range
 from builtins import str
 from DateTime.DateTime import DateTime
@@ -41,82 +39,6 @@ from . import standard
 from . import pilutil
 from . import _blobfields
 from . import _globals
-
-
-# ------------------------------------------------------------------------------
-#  utf8
-# ------------------------------------------------------------------------------
-def utf8(v, encoding = 'latin-1'):
-  if _globals.is_str_type(v):
-    cp1252_map = {
-      "\x80" : "\xe2\x82\xac", # /* EURO SIGN */
-      "\x82" : "\xe2\x80\x9a", # /* SINGLE LOW-9 QUOTATION MARK */
-      "\x83" : "\xc6\x92",    # /* LATIN SMALL LETTER F WITH HOOK */
-      "\x84" : "\xe2\x80\x9e", # /* DOUBLE LOW-9 QUOTATION MARK */
-      "\x85" : "\xe2\x80\xa6", # /* HORIZONTAL ELLIPSIS */
-      "\x86" : "\xe2\x80\xa0", # /* DAGGER */
-      "\x87" : "\xe2\x80\xa1", # /* DOUBLE DAGGER */
-      "\x88" : "\xcb\x86",    # /* MODIFIER LETTER CIRCUMFLEX ACCENT */
-      "\x89" : "\xe2\x80\xb0", # /* PER MILLE SIGN */
-      "\x8a" : "\xc5\xa0",    # /* LATIN CAPITAL LETTER S WITH CARON */
-      "\x8b" : "\xe2\x80\xb9", # /* SINGLE LEFT-POINTING ANGLE QUOTATION */
-      "\x8c" : "\xc5\x92",    # /* LATIN CAPITAL LIGATURE OE */
-      "\x8e" : "\xc5\xbd",    # /* LATIN CAPITAL LETTER Z WITH CARON */
-      "\x91" : "\xe2\x80\x98", # /* LEFT SINGLE QUOTATION MARK */
-      "\x92" : "\xe2\x80\x99", # /* RIGHT SINGLE QUOTATION MARK */
-      "\x93" : "\xe2\x80\x9c", # /* LEFT DOUBLE QUOTATION MARK */
-      "\x94" : "\xe2\x80\x9d", # /* RIGHT DOUBLE QUOTATION MARK */
-      "\x95" : "\xe2\x80\xa2", # /* BULLET */
-      "\x96" : "\xe2\x80\x93", # /* EN DASH */
-      "\x97" : "\xe2\x80\x94", # /* EM DASH */
-      "\x98" : "\xcb\x9c",    # /* SMALL TILDE */
-      "\x99" : "\xe2\x84\xa2", # /* TRADE MARK SIGN */
-      "\x9a" : "\xc5\xa1",    # /* LATIN SMALL LETTER S WITH CARON */
-      "\x9b" : "\xe2\x80\xba", # /* SINGLE RIGHT-POINTING ANGLE QUOTATION*/
-      "\x9c" : "\xc5\x93",    # /* LATIN SMALL LIGATURE OE */
-      "\x9e" : "\xc5\xbe",    # /* LATIN SMALL LETTER Z WITH CARON */
-      "\x9f" : "\xc5\xb8"      # /* LATIN CAPITAL LETTER Y WITH DIAERESIS*/
-    }
-    if encoding == 'latin-1':
-      n = ''
-      for i in v:
-        if i in cp1252_map.keys():
-          c = '&#%i;'%ord( i)
-          n += c
-        else:
-          n += i
-      v = n
-    v = str( v, encoding).encode( 'utf-8')
-    if encoding == 'latin-1':
-      for i in cp1252_map.keys():
-        c = '&#%i;'%ord( i)
-        j = 0
-        while j >= 0:
-          j = v.find( c)
-          if j >= 0:
-            v = v[:j] + cp1252_map[ i] + v[j+len(c):]
-    return v
-  elif isinstance(v, list):
-    return map(lambda x: utf8( x, encoding), v)
-  elif isinstance(v, tuple):
-    return tuple(map(lambda x: utf8( x, encoding), list(v)))
-  elif isinstance(v, dict):
-    return dict((key, value) for (key, value) in map(lambda x: (x, utf8(v[x], encoding)), keys))
-  else:
-    return v
-
-
-# ------------------------------------------------------------------------------
-#  setutf8attr
-# ------------------------------------------------------------------------------
-def setutf8attr(self, obj_vers, obj_attr, langId):
-  charset = self.getLang(langId).get('charset', '')
-  if len(charset) == 0:
-    charset = 'latin-1'
-  key = self._getObjAttrName(obj_attr, langId)
-  v = getattr(obj_vers, key, None)
-  v = utf8(v, charset)
-  setattr(obj_vers, key, v)
 
 
 # ------------------------------------------------------------------------------
@@ -220,7 +142,7 @@ class ObjAttrs(object):
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
       obj_attr = self.getObjAttr( key, meta_id)
-      l = map( lambda x: x[1], self.getObjOptions( obj_attr, REQUEST))
+      l = [x[1] for x in self.getObjOptions( obj_attr, REQUEST)]
       q = REQUEST.get( 'q', '').upper()
       if q:
         l = [x for x in l if x.upper().find(q) >= 0]
@@ -283,14 +205,14 @@ class ObjAttrs(object):
         opts = []
         obj_attropts = obj_attr['options']
         if isinstance(obj_attropts, list):
-          v = '\n'.join(map(lambda x: str(obj_attropts[x*2]), list(range(len(obj_attropts)//2))))
+          v = '\n'.join([str(obj_attropts[x*2]) for x in range(len(obj_attropts)//2)])
           if len(obj_attropts)==2 and self.getLinkObj(obj_attropts[0], REQUEST):
             ob = self.getLinkObj(obj_attropts[0], REQUEST)
             metaObj = self.getMetaobj(ob.meta_id)
             res = ob.getObjProperty(metaObj['attrs'][0]['id'], REQUEST)
-            res = map(lambda x: {'key':x['key'],'value':x.get('value', x.get('value_%s'%REQUEST['lang']))}, res)
+            res = [{'key':x['key'],'value':x.get('value', x.get('value_%s'%REQUEST['lang']))} for x in res]
             res = standard.sort_list(res, 'value', 'asc')
-            opts = map(lambda x: [x['key'], x['value']], res)
+            opts = [[x['key'], x['value']] for x in res]
           elif v.find('<dtml-') >= 0 or v.startswith('##') or v.find('<tal:') >= 0:
             try:
               opts = standard.dt_exec(self, v)
@@ -1267,13 +1189,6 @@ class ObjAttrs(object):
       if format == 'json':
         rtn = self.str_json(rtn)
       return rtn
-
-
-    # --------------------------------------------------------------------------
-    #  ObjAttrs.utf8
-    # --------------------------------------------------------------------------
-    def utf8(self, s, encoding='latin-1'):
-      return utf8(s, encoding)
 
 
     """

@@ -16,7 +16,7 @@ def getEntities(here, request):
                 columns = []
                 entity['id'] = tablename
                 entity['type'] = 'table'
-                entity['label'] = ' '.join(map( lambda x: x.capitalize(), tablename.split('_'))).strip()
+                entity['label'] = ' '.join([x.capitalize() for x in tablename.split('_')]).strip()
                 entity['sort_id'] = entity['label'].upper()
                 entity['columns'] = columns
             column = {}
@@ -33,7 +33,7 @@ def getEntities(here, request):
             column['key'] = colName
             column['id'] = colName
             column['index'] = int(column.get('index',len(columns)))
-            column['label'] = ' '.join(map( lambda x: x.capitalize(), colName.split('_'))).strip()
+            column['label'] = ' '.join([x.capitalize() for x in colName.split('_')]).strip()
             column['name'] = column['label']
             column['mandatory'] = record['NULLABLE'] == 'N'
             column['type'] = colType

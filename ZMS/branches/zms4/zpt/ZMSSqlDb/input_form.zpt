@@ -33,7 +33,7 @@
 			<a class="accordion-toggle" href="#" tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</a>
 		</div><!-- accordion-heading -->
 		<tal:block tal:repeat="column entity/columns">
-			<tal:block tal:condition="python:not column.has_key('details')" tal:define="global
+			<tal:block tal:condition="python:'details' not in column" tal:define="global
 					metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);">
 			<tal:block tal:on-error="python:'ERROR: %s'%str(metaObjAttr)" tal:define="global
 					elName python:metaObjAttr['id'];
@@ -226,7 +226,7 @@
 
 	<div style="margin-top:1em" class="col-sm-12" tal:condition="python:action!='insert'"
 		><tal:block tal:repeat="column entity/columns"
-			><tal:block tal:condition="python:column.has_key('details')">
+			><tal:block tal:condition="python:'details' in column">
 				<div tal:attributes="id python:'div_%s'%(column['id'])"></div>
 				<tal:block tal:content="structure python:'<script>'">script</tal:block>
 					function <tal:block tal:content="column/id">column/id</tal:block>GetAjax() {

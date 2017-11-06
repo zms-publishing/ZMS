@@ -40,7 +40,7 @@
             onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
             <option value="">Select type to add...</option>
             <tal:block tal:repeat="meta_type meta_types">
-              <option tal:condition="python:len(here.objectValues(meta_type['name']))==0"  tal:attributes="value python:meta_type['action']" tal:content="python:here.getZMILangStr(meta_type['name'])">name</option>
+              <option tal:condition="python:len(here.objectValues(meta_type['name']))==0"  tal:attributes="value meta_type/action" tal:content="python:here.getZMILangStr(meta_type['name'])">name</option>
             </tal:block>
           </select>
           <button style="display:inline-block;" name="btn" type="submit" class="btn btn-default" value="Add">Add</button>
@@ -182,13 +182,13 @@
           </tal:block>
           <tal:block tal:condition="python:request.get('conf_key') in res_keys">
             <tal:block tal:define="global res_item python:[x for x in res if x['key']==request.get('conf_key')][0]">
-              <tal:block tal:condition="python:not (res_item['datatype']=='boolean' or res_item.has_key('options'))">
+              <tal:block tal:condition="python:not (res_item['datatype']=='boolean' or 'options' in res_item)">
                 <input class="form-control" type="text" id="conf_value" name="conf_value" tal:attributes="type python:['text','password'][int(request.get('conf_key','').endswith('.password'))]; value python:here.getConfProperty(request.get('conf_key'),res_item.get('default',''))">
               </tal:block>
-              <tal:block tal:condition="python:res_item['datatype']=='boolean' and not res_item.has_key('options')">
+              <tal:block tal:condition="python:res_item['datatype']=='boolean' and 'options' not in res_item">
                 <input type="checkbox" id="conf_value" name="conf_value:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty(request.get('conf_key'),res_item.get('default',0)) in [1,True])]">
               </tal:block>
-              <tal:block tal:condition="python:res_item.has_key('options')">
+              <tal:block tal:condition="python:'options' in res_item">
                 <select class="form-control" id="conf_value" name="conf_value">
                   <option></option>
                   <tal:block tal:repeat="option res_item/options">

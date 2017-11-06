@@ -1493,12 +1493,12 @@ def is_equal(x, y):
             return False
         return True
     elif type(x) is dict:
-      if len(x.keys()) == len(y.keys()):
+      if len(x) == len(y):
         for k in x.keys():
-          if not x.has_key(k) or not y.has_key(k) or not is_equal(x.get(k),y.get(k)):
+          if not k in x or not k in y or not is_equal(x.get(k),y.get(k)):
             return False
         return True
-    elif inspect.isclass(x) and inspect.isclass(y) and 'toXml' in list(x.__dict__.keys()) and 'toXml' in list(y.__dict__.keys()):
+    elif inspect.isclass(x) and inspect.isclass(y) and 'toXml' in x.__dict__ and 'toXml' in y.__dict__:
       return cmp(x.toXml(),y.toXml())==0
   return cmp(x, y)==0
 

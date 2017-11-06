@@ -44,10 +44,11 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
 
     # Management Options.
     # -------------------
-    manage_options = ( 
-    {'label': 'TYPE_ZMSTRASHCAN', 'action': 'manage_main'},
-    {'label': 'TAB_PROPERTIES',   'action': 'manage_properties'},
-    ) 
+    def manage_options(self):
+      return ( 
+        {'label': 'TYPE_ZMSTRASHCAN', 'action': 'manage_main'},
+        {'label': 'TAB_PROPERTIES',   'action': 'manage_properties'},
+        ) 
 
     # Management Permissions.
     # -----------------------
@@ -146,7 +147,7 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
         days = int(getattr(self, 'garbage_collection', '2'))
         # Get IDs.
         ids = []
-        for context in self.objectValues(self.dGlobalAttrs.keys()):
+        for context in self.objectValues(self.dGlobalAttrs):
           delete = True
           try:
             delete = delete and standard.daysBetween(context.del_dt, now)>=days

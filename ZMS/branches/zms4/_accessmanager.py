@@ -898,7 +898,7 @@ class AccessManager(AccessableContainer):
           delLocalRoles(ob, userid)
       
       # Process subtree.
-      for subob in ob.objectValues(ob.dGlobalAttrs.keys()):
+      for subob in ob.objectValues(list(ob.dGlobalAttrs.keys())):
         rtn += self.purgeLocalUsers(subob, valid_userids, invalid_userids)
       
       return rtn

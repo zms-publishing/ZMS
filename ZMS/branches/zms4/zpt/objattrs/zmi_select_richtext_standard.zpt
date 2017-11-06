@@ -73,7 +73,7 @@ function zmiRicheditInsertTab( fmName, elName) {
 		<tal:block tal:replace="nothing">
 		### Paragraph-Format
 		</tal:block>
-		<div class="pull-left" tal:condition="python:'format' in options or (options.has_key('metaObj') and len([x for x in options['metaObj']['attrs'] if x['id'] == 'format'])>0)">
+		<div class="pull-left" tal:condition="python:'format' in options or ('metaObj' in options and len([x for x in options['metaObj']['attrs'] if x['id'] == 'format'])>0)">
 			<select class="form-control" id="format" name="format" tal:attributes="title python:here.getZMILangStr('ATTR_FORMAT'); disabled python:['','disabled'][int('format' in here.getObjAttrs().keys() and here.isDisabledAttr(here.getObjAttr('format'),request))]">
 				<option value="" disabled="disabled">--- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_PARAGRAPH')">Select paragraph</tal:block>... ---</option>
 				<tal:block tal:repeat="textFormat python:here.getTextFormats(request)">

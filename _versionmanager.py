@@ -788,7 +788,7 @@ class VersionItem(object):
                 except:
                   pass
         #-- Recursion.
-        for ob in self.objectValues( self.dGlobalAttrs.keys()):
+        for ob in self.objectValues(list(self.dGlobalAttrs.keys())):
           count += ob.packHistory()
       return count
 

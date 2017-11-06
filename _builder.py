@@ -20,7 +20,6 @@
 
 # Imports
 from builtins import object
-from builtins import filter
 from builtins import str
 import pyexpat
 import time

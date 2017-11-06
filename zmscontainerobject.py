@@ -19,9 +19,7 @@ from __future__ import division
 
 # Imports.
 from builtins import range
-from builtins import filter
 from builtins import str
-from builtins import map
 from App.Common import package_home
 from OFS.role import RoleManager
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -336,7 +334,6 @@ class ZMSContainerObject(
       @param RESPONSE: the triggering request
       @type RESPONSE: ZPublisher.HTTPResponse
       """
-      
       message = ''
       t0 = time.time()
       
@@ -876,11 +873,12 @@ class ZMSContainerObject(
     # --------------------------------------------------------------------------
     def getNewSortId(self):
       new_sort_id = 0
-      for ob in self.getChildNodes():
+      childNodes = self.getChildNodes()
+      for ob in childNodes:
         sort_id = ob.getSortId()
         if sort_id > new_sort_id:
           new_sort_id = sort_id
-      new_sort_id = new_sort_id + 10
+        new_sort_id = new_sort_id + 10
       return new_sort_id
 
 

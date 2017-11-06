@@ -21,13 +21,8 @@ from __future__ import absolute_import
 # Imports.
 from builtins import object
 from builtins import range
-from builtins import map
 from builtins import str
-from builtins import filter
-try:
-  from io import StringIO
-except ImportError:
-  from io import StringIO
+from io import StringIO
 from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from DateTime.DateTime import DateTime
@@ -92,7 +87,21 @@ class ConfDict(object):
     @classmethod
     def forName(cls, name):
       d = name.rfind(".")
+      modulname = name[:d]
       clazzname = name[d+1:len(name)]
+      print ("name=",name)
+      print ("modulname=",modulname)
+      print ("clazzname=",clazzname)
+      try: __import__(".", globals(), locals(), [name])
+      except: print("failed",1)
+      try: __import__(".", globals(), locals(), [modulname])
+      except: print("failed",2)
+      try: __import__(modulname, globals(), locals(), [name])
+      except: print("failed",3)
+      try: __import__(modulname, globals(), locals(), [clazzname])
+      except: print("failed",4)
+      # FIXME.2: import ZMSModule
+      # FIXME.3: from . import ZMSModule
       mod = __import__(name[0:d], globals(), locals(), [clazzname])
       clazz = getattr(mod, clazzname)
       return clazz
@@ -387,7 +396,7 @@ class ConfManager(
       if len(self.getConfProperty('ZMS.theme', '')) > 0:
         home = getattr(home, self.getConfProperty('ZMS.theme', ''))
       if '*' in ids:
-        ids.extend( map(lambda x: x.id, filter(lambda x: x.id not in ids, home.objectValues(['Folder', 'Filesystem Directory View']))))
+        ids.extend([x.id for x in home.objectValues(['Folder', 'Filesystem Directory View']) if x.id not in ids])
       for id in ids:
         if id == '*':
           obs.append(home)
@@ -426,7 +435,7 @@ class ConfManager(
             for ob in folder.objectValues(['DTML Method', 'DTML Document', 'File', 'Filesystem File']):
               id = absattr( ob.id)
               path = ob.getPhysicalPath()
-              if len(filter(lambda x: x.endswith('css'), path)) > 0 and id not in ids:
+              if len([x for x in path if x.endswith('css')]) > 0 and id not in ids:
                 ids.append( id)
                 if id == self.getConfProperty('ZMS.stylesheet', 'style.css'):
                   obs.insert( 0, ob)
@@ -536,7 +545,9 @@ class ConfManager(
         import base64
         prefix = base64.b64decode(prefix)
         r = {}
-        for k in [x for x in d.keys() if x.startswith(prefix+'.')]:
+        for x in d:
+          print(x,type(x),'.',type('.'))
+        for k in [x for x in d if x.startswith(prefix+'.')]:
           r[k] = d[k]
         return self.str_json(r)
       if inherited:
@@ -592,7 +603,7 @@ class ConfManager(
       params = ('key', 'default', 'REQUEST')
       kwargs['x'] = 'U'
       operator.setitem(kwargs,'y','A')
-      list(map(lambda x:operator.setitem(kwargs, params[x], args[x]), list(range(len(args)))))
+      [operator.setitem(kwargs, params[x], args[x]) for x in range(len(args))]
       key = kwargs['key']
       default = kwargs.get('default')
       REQUEST = kwargs.get('REQUEST')
@@ -615,7 +626,7 @@ class ConfManager(
           if 'default' in kwargs:
             value = default
           else:
-            for default in filter(lambda x:x['key']==key, self.getConfPropertiesDefaults()):
+            for default in [x for x in self.getConfPropertiesDefaults() if x['key'] == key]:
               value = default.get('default', None)
       return value 
 
@@ -707,8 +718,8 @@ class ConfManager(
           portal_clients = REQUEST.get('portal_clients', [])
           if not isinstance(portal_clients, list):
             portal_clients  = [portal_clients]
-          portal_clients = sorted(map(lambda x:(int(x[:x.find(':')]), x[x.find(':')+1:]), portal_clients))
-          portal_clients = map(lambda x:x[1], portal_clients)
+          portal_clients = sorted([(int(x[:x.find(':')]), x[x.find(':')+1:]) for x in portal_clients])
+          portal_clients = [x[1] for x in portal_clients]
           for id in portal_clients:
             folder = getattr(home, id, None)
             if folder is not None:
@@ -1055,7 +1066,7 @@ class ConfManager(
     ############################################################################
 
     def getRepositoryManager(self):
-      manager = list(filter(lambda x:IZMSRepositoryManager.IZMSRepositoryManager in list(providedBy(x)), self.getDocumentElement().objectValues()))
+      manager = [x for x in self.getDocumentElement().objectValues() if IZMSRepositoryManager.IZMSRepositoryManager in list(providedBy(x))]
       if len(manager)==0:
         class DefaultManager(object):
           def exec_auto_commit(self, provider, id): return True
@@ -1071,8 +1082,8 @@ class ConfManager(
     ############################################################################
 
     def getWorkflowManager(self):
-      manager = list(filter(lambda x:absattr(x.id)=='workflow_manager', self.getDocumentElement().objectValues()))
-      if len(manager)==0:
+      manager = [x for x in self.getDocumentElement().objectValues() if absattr(x.id) == 'workflow_manager']
+      if len(manager) == 0:
         class DefaultManager(object):
           def importXml(self, xml): pass
           def writeProtocol(self, log): pass

@@ -19,8 +19,6 @@
 # Imports.
 from builtins import object
 from builtins import range
-from builtins import map
-from builtins import filter
 from builtins import str
 from OFS.CopySupport import absattr
 import copy
@@ -64,12 +62,12 @@ def validateId(self, id, REQUEST):
 #  Filters object by id.
 # ------------------------------------------------------------------------------
 def filterId(self, id, REQUEST):
-  obs = self.objectValues( self.dGlobalAttrs.keys())
-  filtered_obs = filter( lambda x: x.id == id, obs)
+  obs = self.objectValues(list(self.dGlobalAttrs))
+  filtered_obs = [x for x in obs if x.id == id]
   if len( filtered_obs) > 0:
     return filtered_obs[0]
   elif self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-    filtered_obs = filter( lambda x: x.isVisible(REQUEST) and x.isPage() and validateId( x, id, REQUEST), obs)
+    filtered_obs = [x for x in obs if x.isVisible(REQUEST) and x.isPage() and validateId( x, id, REQUEST)]
     if len( filtered_obs) > 0:
       return filtered_obs[0]
   return None
@@ -129,7 +127,7 @@ class PathHandler(object):
       url = request.get('URL', '')
       zmi = url.find('/manage') >= 0
       
-      if not TraversalRequest.has_key('path_to_handle'):
+      if 'path_to_handle' not in TraversalRequest:
         
         # Make a reversed copy of the TraversalRequestNameStack
         TraversalRequestNameStackReversed=copy.copy(TraversalRequest['TraversalRequestNameStack'])
@@ -217,11 +215,11 @@ class PathHandler(object):
               for k in range( i, len(l)):
                 newOb = None
                 obs = ob.getChildNodes(request)
-                filtered_obs = filter( lambda x: ( x.id == l[k] or x.getDeclId(request) == l[k]), obs)
+                filtered_obs = [x for x in obs if x.id == l[k] or x.getDeclId(request) == l[k]]
                 if len( filtered_obs) == 1:
                   newOb = filtered_obs[0]
                 try:
-                  if newOb.meta_type not in self.dGlobalAttrs.keys():
+                  if newOb.meta_type not in self.dGlobalAttrs:
                     newOb = None
                 except:
                   pass
@@ -328,7 +326,7 @@ class PathHandler(object):
             if lang in self.getLangIds():
               zms_skin = l[:i]
               zms_ext = l[j+1:]
-              if zms_skin in map(lambda x:x.strip(), self.getConfProperty('ZMS.skins', 'index').split(',')) and \
+              if zms_skin in [x.strip() for x in self.getConfProperty('ZMS.skins', 'index').split(',')] and \
                  zms_ext == self.getPageExt(request)[1:]:
                 request.set('ZMS_SKIN', zms_skin)
                 request.set('ZMS_EXT', zms_ext)
@@ -337,7 +335,7 @@ class PathHandler(object):
         
         # If there's no more names left to handle, return the path handling 
         # method to the traversal machinery so it gets called next
-        exc_value='<h2>Site-Error</h2><b>Sorry, there is no web page matching your request.</b> It is possible you typed the address incorrectly, or that the page no longer exists.<hr><b>Resource<b> <i>'+name+'</i> '+''.join(map(lambda x: x+'/', TraversalRequest['path_to_handle']))+' GET'
+        exc_value='<h2>Site-Error</h2><b>Sorry, there is no web page matching your request.</b> It is possible you typed the address incorrectly, or that the page no longer exists.<hr><b>Resource<b> <i>'+name+'</i> '+''.join([x+'/' for x in TraversalRequest['path_to_handle']])+' GET'
         return self.standard_error_message( self, 
           exc_type='Resource not found', 
           exc_value=exc_value, 
@@ -354,7 +352,7 @@ class PathHandler(object):
         if path_index == len(path_to_handle):
           return path_ob
         path_item = path_to_handle[path_index]
-        obs = path_ob.objectValues( self.dGlobalAttrs.keys())
+        obs = path_ob.objectValues(list(self.dGlobalAttrs))
         path_ob = filterId( path_ob, path_item, REQUEST)
         if path_ob is None: 
           return path_ob

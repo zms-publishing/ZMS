@@ -5,7 +5,7 @@
 <tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
-<tal:block tal:condition="python:here.meta_id=='ZMSTrashcan'"
+<tal:block tal:condition="python:here.meta_id=='FIXME:ZMSTrashcan'"
 	><tal:block tal:define="garbage_collection python:here.run_garbage_collection()" 
 /></tal:block>
 

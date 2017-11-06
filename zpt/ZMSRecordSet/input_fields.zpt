@@ -36,7 +36,7 @@
 		<div class="accordion-body collapse in" tal:attributes="id python:'input_fields'">
 			<div class="accordion-inner"> 
 
-		<div class="form-group" tal:condition="python:row.has_key('_change_uid')">
+		<div class="form-group" tal:condition="python:'_change_uid' in row">
 			<label class="col-sm-3 col-md-2 control-label">
 				<span tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">last modified</span>
 			</label>

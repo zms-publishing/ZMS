@@ -185,7 +185,7 @@ class MultiLanguageObject(object):
       return value
 
 
-    def getDescendantLanguages(self, id, REQUEST=None):
+    def getDescendantLanguages(self, id, REQUEST=None, RESPONSE=None):
       """
       Returns IDs of descendant languages
       """
@@ -198,7 +198,11 @@ class MultiLanguageObject(object):
       if not '*' in user_langs:
         obs = [x for x in obs if x[1] in user_langs]
       obs.sort()
-      return [x[1] for x in obs]
+      rtn = [x[1] for x in obs]
+      # Return JSON-Response.
+      if RESPONSE is not None:
+        rtn = self.str_json(rtn)
+      return rtn
 
 
 ################################################################################

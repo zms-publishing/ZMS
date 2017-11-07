@@ -94,7 +94,7 @@ def recurse_addMediaDb(self, mediadb):
               _objattrs.setobjattr(self, obj_vers, obj_attr, v, lang)
   
   # Process children.
-  for ob in self.objectValues(list(self.dGlobalAttrs.keys())):
+  for ob in self.objectValues(list(self.dGlobalAttrs)):
     recurse_addMediaDb(ob, mediadb)
 
 

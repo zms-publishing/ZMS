@@ -601,8 +601,7 @@ class ZMS(
       standard.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
 
       # remove all ZMS-objects.
-      meta_types = list(self.dGlobalAttrs.keys())
-      ids = self.objectIds(meta_types)
+      ids = self.objectIds(list(self.dGlobalAttrs))
       if ids:
         self.manage_delObjects(ids=ids)
 

@@ -261,7 +261,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         if node.meta_id == 'ZMS':
           node.setConfProperty('ExtensionPoint.ZMSObject.get_uid','%s.get_uid'%self.meta_id)
         catalog_object(catalog,node)
-        for childNode in node.objectValues(list(self.dGlobalAttrs.keys())):
+        for childNode in node.objectValues(list(self.dGlobalAttrs)):
           l.extend(visit(childNode))
         if node.meta_id == 'ZMS':
           for childNode in node.getPortalClients():
@@ -324,7 +324,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               childNode = getattr(ref,id,None)
               try:
                 if (childNode is None and ref is not None) and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-                  for o in filter(lambda x:x.meta_type not in ['External Method'],ref.objectValues(list(self.dGlobalAttrs.keys()))):
+                  for o in filter(lambda x:x.meta_type not in ['External Method'],ref.objectValues(list(self.dGlobalAttrs))):
                     for l in o.getLanguages():
                       r = {'lang':l}
                       try:
@@ -449,7 +449,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                         v = handleUrl(node,v)
                       if o != v:
                         self.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
-          for childNode in node.objectValues(list(self.dGlobalAttrs.keys())):
+          for childNode in node.objectValues(list(self.dGlobalAttrs)):
             l.extend(visit(childNode))
           if node.meta_id == 'ZMS' and request.get('clients',0)==1:
             for childNode in node.getPortalClients():

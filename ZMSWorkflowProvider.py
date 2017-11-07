@@ -51,7 +51,7 @@ def doAutocommit(self, REQUEST):
     
     if self.version_work_id is not None:
       if self.version_live_id is not None and \
-         self.version_live_id in self.objectIds(list(self.dGlobalAttrs.keys())):
+         self.version_live_id in self.objectIds(list(self.dGlobalAttrs)):
         ids = [ self.version_live_id]
         self.manage_delObjects( ids=ids)
       self.version_live_id = self.version_work_id

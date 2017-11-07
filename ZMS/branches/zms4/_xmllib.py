@@ -544,17 +544,6 @@ def toCdata(self, s, xhtml=0):
 # ------------------------------------------------------------------------------
 def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
   xml = []
-
-  def unistr(s):
-    if not isinstance(s, str):
-      s = str(s)
-    else:
-      try:
-        s = str(s.encode('utf-8'))
-      except:
-        s = str(unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode('utf-8'))
-    return s
-
   if value is not None:
 
     # Image
@@ -638,12 +627,11 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
       except: meta_type = None
       if meta_type is not None:
         value = zopeutil.readData(value)
-      s_value = unistr(value)
-      if len(s_value) > 0:
-        xml.append(toCdata(self, s_value, xhtml))
+      if value:
+        xml.append(toCdata(self, value, xhtml))
 
   # Return xml.
-  return ''.join(map(lambda x: unistr(x), xml))
+  return ''.join(xml)
 
 
 # ------------------------------------------------------------------------------

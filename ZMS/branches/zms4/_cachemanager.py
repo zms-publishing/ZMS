@@ -77,7 +77,9 @@ class ReqBuff(object):
     # --------------------------------------------------------------------------
     def storeReqBuff(self, key, value, REQUEST=None):
       request = self.REQUEST
-      buff = request.get('__buff__', Buff())
+      buff = request.get('__buff__', None)
+      if buff is None:
+        buff = Buff()
       reqBuffId = self.getReqBuffId(key)
       setattr(buff, reqBuffId, value)
       request.set('__buff__', buff)

@@ -543,12 +543,11 @@ class ConfManager(
       d = self.get_conf_properties()
       if REQUEST is not None:
         import base64
-        prefix = base64.b64decode(prefix)
+        prefix = str(base64.b64decode(prefix),'utf-8')
         r = {}
         for x in d:
-          print(x,type(x),'.',type('.'))
-        for k in [x for x in d if x.startswith(prefix+'.')]:
-          r[k] = d[k]
+          if x.startswith(prefix+'.'):
+            r[k] = d[k]
         return self.str_json(r)
       if inherited:
         d = list(d.keys())
@@ -609,16 +608,14 @@ class ConfManager(
       REQUEST = kwargs.get('REQUEST')
       if REQUEST is not None:
         import base64
-        key = base64.b64decode(key)
+        key = str(base64.b64decode(key),'utf-8')
       if key in OFS.misc_.misc_.zms['confdict']:
         default = OFS.misc_.misc_.zms['confdict'].get(key)
       value = default
       confdict = self.getConfProperties()
       if key in confdict:
         value = confdict.get(key)
-      # FIXME 
-      #elif key is not None and not key.split('.')[0] in ['ASP', 'Portal'] and not key in ['UniBE.Alias', 'UniBE.Server']:
-      elif key is not None and not key in ['UniBE.Alias', 'UniBE.Server']:
+      elif key is not None and not key.split('.')[0] in ['ASP', 'Portal'] and not key in ['UniBE.Alias', 'UniBE.Server']:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           value = portalMaster.getConfProperty( key)

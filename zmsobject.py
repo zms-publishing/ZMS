@@ -1275,7 +1275,6 @@ class ZMSObject(ZMSItem.ZMSItem,
         REQUEST.set('URL', REQUEST.form.get('http_referer'))
       obs = []
       # Add child-nodes.
-      print(meta_types)
       obs.extend( self.getChildNodes(REQUEST, meta_types))
       # Add trashcan.
       if ( self.meta_type == 'ZMS') and \

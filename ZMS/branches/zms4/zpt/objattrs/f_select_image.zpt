@@ -47,7 +47,7 @@
 					</td>
 					<td style="background-color:#F5F5F5">
 						<div id="ZMSGraphic_extEdit_image">
-							<img src="/misc_/zms/spacer.gif" alt="" border="0" />
+							<img src="/++resource++zms_/img/spacer.gif" alt="" border="0" />
 						</div>
 					</td>
 				</tr>
@@ -96,7 +96,7 @@
 					/><tal:block tal:repeat="i python:range(len(displaytypes))"
 						><tal:block tal:define="global displaytype python:displaytypes[i]"
 							><span tal:attributes="data-value python:displaytype[1]"
-								><img tal:attributes="src python:'/misc_/zms/btn_displaytype_%s.gif'%displaytype[0]"
+								><img tal:attributes="src python:'/++resource++zms_/img/btn_displaytype_%s.gif'%displaytype[0]"
 							/></span
 						></tal:block
 					></tal:block

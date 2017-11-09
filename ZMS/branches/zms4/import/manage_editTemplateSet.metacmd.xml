@@ -554,7 +554,7 @@ function zmiCompileLesscBtnClick(btn) {
 			</div>
 			<div class="control-group" tal:condition="python:ob.meta_type in ['Image','File'] and ob.content_type.startswith('image/')">
 				<label>Preview</label>
-				<img id="preview" tal:attributes="src ob/absolute_url" alt="" style="border: 1px solid #000;margin:1px;background-image:url(/misc_/zms/bg_imgpreview.gif);"/>
+				<img id="preview" tal:attributes="src ob/absolute_url" alt="" style="border: 1px solid #000;margin:1px;background-image:url(/++resource++zms_/img/bg_imgpreview.gif);"/>
 			</div><!-- .control-group -->
 			<div class="control-group">
 				<label>Content Type</label>

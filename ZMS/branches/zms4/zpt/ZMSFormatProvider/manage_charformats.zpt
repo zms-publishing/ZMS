@@ -33,7 +33,7 @@
 						<a class="button"><img tal:attributes="src python:format['btn']; title python:format['display']"/></a>
 					</tal:block>
 					<tal:block tal:condition="python:not format.get('btn')">
-						&nbsp;<img src="/misc_/zms/spacer.gif" class="zmiVSep" align="absmiddle" />&nbsp;
+						&nbsp;<img src="/++resource++zms_/img/spacer.gif" class="zmiVSep" align="absmiddle" />&nbsp;
 					</tal:block>
 				</div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
@@ -153,7 +153,7 @@
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format['id'])" target="" tal:content="python:format['id']">Id</a>
 				</tal:block>
 				<tal:block tal:condition="not:python:format.get('btn')">
-					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format['id'])" target=""><img src="/misc_/zms/spacer.gif" title="vertical separator" class="zmiVSep"/></a>
+					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format['id'])" target=""><img src="/++resource++zms_/img/spacer.gif" title="vertical separator" class="zmiVSep"/></a>
 				</tal:block>
 				<tal:block tal:condition="python:format.get('tag')" tal:content="structure python:'<%s %s>%s</%s>'%(format['tag'],format['attrs'],format['display'],format['tag'])">preview</tal:block>
 			</td>

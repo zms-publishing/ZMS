@@ -57,19 +57,19 @@ $(function() {
 		border:none;
 	}
 	div.metaobj.active {
-		background:url(/misc_/zms/mi.gif) #CCC top left no-repeat;
+		background:url(/++resource++zms_/img/mi.gif) #CCC top left no-repeat;
 	}
 	div.metaobj.inactive {
-		background:url(/misc_/zms/pl.gif) #CCC top left no-repeat;
+		background:url(/++resource++zms_/img/pl.gif) #CCC top left no-repeat;
 	}
 	div.metaobj.acquired {
-		background:url(/misc_/zms/mi.gif) #BEDAFD top left no-repeat;
+		background:url(/++resource++zms_/img/mi.gif) #BEDAFD top left no-repeat;
 	}
 	div.metaobj.acquired img {
-		background:url(/misc_/zms/ico_is_acquired.gif) top right no-repeat;
+		background:url(/++resource++zms_/img/ico_is_acquired.gif) top right no-repeat;
 	}
 	div.metaobj.warning img {
-		background:url(/misc_/zms/decorator_warning.gif) top right no-repeat;
+		background:url(/++resource++zms_/img/decorator_warning.gif) top right no-repeat;
 	}
 	div.metaobj.modified {
 		background-color:#FDBEDA;
@@ -188,7 +188,7 @@ for client in context.getPortalClients():
 		clazz.append('initial'+clazz[-1])
 		print '<td align="center"><div class="'+' '.join(clazz)+'" title="'+title+'">'
 		print '<input type="hidden" name="'+client.getHome().id+'-'+metaObjId+'" value=""/>'
-		print '<img src="/misc_/zms/spacer.gif" alt=""/></div></td>'
+		print '<img src="/++resource++zms_/img/spacer.gif" alt=""/></div></td>'
 	print '</tr>'
 print '</table>'
 

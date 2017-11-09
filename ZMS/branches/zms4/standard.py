@@ -464,7 +464,7 @@ def getMimeTypeIconSrc(mt):
   @type mt: C{str}
   @rtype: C{str}
   """
-  return'/misc_/zms/%s'%_mimetypes.dctMimeType.get( mt, _mimetypes.content_unknown)
+  return'/++resource++zms_/img/%s'%_mimetypes.dctMimeType.get( mt, _mimetypes.content_unknown)
 
 
 security.declarePublic('unencode')

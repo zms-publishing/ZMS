@@ -131,7 +131,7 @@
 		<div class="header row">
 			<div class="col-md-6">
 				<span class="small-head">
-					<img src="/misc_/zms/loading.gif" alt="Loading..."/>
+					<img src="/++resource++zms_/img/loading.gif" alt="Loading..."/>
 					<tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>
 				</span>
 			</div>

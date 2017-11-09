@@ -231,7 +231,7 @@
 				<tal:block tal:content="structure python:'<script>'">script</tal:block>
 					function <tal:block tal:content="column/id">column/id</tal:block>GetAjax() {
 						var $div = $("#div_<tal:block tal:content="column/id">column/id</tal:block>");
-						$div.html('<img src="/misc_/zms/loading.gif" alt="Loading..."/> <tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>');
+						$div.html('<img src="/++resource++zms_/img/loading.gif" alt="Loading..."/> <tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>');
 						$.ajax({
 							url:"<tal:block tal:content="here/absolute_url">here/absolute_url</tal:block>/manage_zmi_details_grid",
 							data:{

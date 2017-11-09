@@ -21,7 +21,6 @@
 from __future__ import division
 
 # Documentation string.
-from builtins import filter
 from builtins import range
 from builtins import str
 __doc__ = """initialization module."""
@@ -30,8 +29,6 @@ __version__ = '0.1'
 
 # Imports.
 from App.Common import package_home
-from App.ImageFile import ImageFile
-from DateTime.DateTime import DateTime
 try:
   import configparser
 except ImportError:
@@ -116,7 +113,7 @@ def initialize(context):
             _mediadb.MediaDb,
             permission = 'Add ZMSs',
             constructors = (_mediadb.manage_addMediaDb, _mediadb.manage_addMediaDb),
-            icon = 'www/acl_mediadb.png',
+            icon = 'plugins/www/img/acl_mediadb.png',
             container_filter = _mediadb.containerFilter,
             )
         context.registerClass(
@@ -140,15 +137,6 @@ def initialize(context):
         confdict = _confmanager.ConfDict.get()
         OFS.misc_.misc_.zms['confdict']=confdict
         
-        # automated registration for other resources
-        for img_path in ['www/']:
-          path = package_home(globals()) + os.sep + img_path
-          for file in os.listdir(path):
-            filepath = path + os.sep + file 
-            mode = os.stat(filepath)[stat.ST_MODE]
-            if not stat.S_ISDIR(mode):
-              registerImage(filepath, file)
-        
         # automated assembly of conf-properties
         standard.writeStdout(context, "automated assembly of conf-properties")
         l = assembleConfProperties(package_home(globals()), '*.py,*.zpt')
@@ -159,7 +147,7 @@ def initialize(context):
         
         # automated minification
         confkeys = confdict.keys()
-        for confkey in filter(lambda x:x.startswith('gen.') and x+'.include' in confkeys, confkeys):
+        for confkey in [x for x in confkeys if x.startswith('gen.') and x+'.include' in confkeys]:
           gen = confdict.get(confkey+'.include').split(',')
           if gen[0] != '':
             standard.writeStdout(context, "automated minification: %s=%s"%(confkey, str(confdict.get(confkey))))
@@ -303,17 +291,7 @@ def translate_path(s):
   ZMS_HOME = package_home(globals())
   if s.startswith('/++resource++zms_/'):
     l = ['plugins', 'www']+s.split('/')[2:]
-  elif s.startswith('/misc_/zms/'):
-    l = ['www']+s.split('/')[3:]
   return os.sep.join([ZMS_HOME]+l)
-
-def registerImage(filepath, s):
-  """
-  manual icon registration
-  """
-  icon=ImageFile(filepath, globals())
-  icon.__roles__ = None
-  OFS.misc_.misc_.zms[s]=icon
 
 def assembleConfProperties(path, pattern):
   """
@@ -325,7 +303,7 @@ def assembleConfProperties(path, pattern):
     mode = os.stat(filepath)[stat.ST_MODE]
     if stat.S_ISDIR(mode): 
       l.extend(assembleConfProperties(filepath, pattern))
-    elif len(list(filter(lambda x:fnmatch.fnmatch(file, x), pattern.split(','))))>0:
+    elif len([x for x in pattern.split(',') if fnmatch.fnmatch(file,x)]) > 0:
       f = open(filepath, 'r')
       data = f.read()
       f.close()

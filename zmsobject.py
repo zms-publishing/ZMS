@@ -1279,7 +1279,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       # Add trashcan.
       if ( self.meta_type == 'ZMS') and \
          ( ( isinstance(meta_types, list) and 'ZMSTrashcan' in meta_types) or \
-           ( isinstance(meta_types, string) and 'ZMSTrashcan' == meta_types)):
+           ( isinstance(meta_types, str) and 'ZMSTrashcan' == meta_types)):
         obs.append( self.getTrashcan())
       if self.meta_type == 'ZMS':
         obs.extend( self.getPortalClients())

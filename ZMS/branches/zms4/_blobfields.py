@@ -730,7 +730,7 @@ class MyBlob(object):
       Returns filename.
       @rtype: C{string}
       """
-      filename = self.filename
+      filename = str(self.filename,'utf-8')
       while filename.startswith( '_'):
         filename = filename[1:]
       for ch in [ '+', '%', ' ', '!', '?', '#', '"', '(', ')', '&' ]:
@@ -829,7 +829,7 @@ class MyImage(MyBlob, Image):
     def _getCopy(self):
       self.getFilename() # Normalize filename
       ob = self
-      clone = MyImage(id='', title='', file='')
+      clone = MyImage(id='', title='', file=b'')
       attrs = self.__obj_attrs__
       for attr in attrs:
         if hasattr(ob, attr):

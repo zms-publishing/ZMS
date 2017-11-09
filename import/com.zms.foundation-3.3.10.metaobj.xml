@@ -199,7 +199,7 @@ if request.has_key('permalink_key__') and request.has_key('permalink_val__'):
   prefix = '%s.permalink.'%zmscontext.meta_id
   # delete all conf-properties
   for key in zmscontext.getConfProperties():
-    if x.startswith(prefix):
+    if key.startswith(prefix):
       zmscontext.delConfProperty(key)
   # set new conf-properties
   reqprefix = 'permalink_key_'

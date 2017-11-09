@@ -20,6 +20,7 @@
 from builtins import str
 from builtins import map
 from builtins import filter
+from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import inspect
 import os
@@ -250,7 +251,7 @@ class ZMSRepositoryManager(
                 d['id'] = id
                 d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix, fileexts.get(ob.meta_type, ''))])
                 d['data'] = zopeutil.readData(ob)
-                d['version'] = self.getLangFmtDate(ob.bobobase_modification_time().timeTime(), 'eng')
+                d['version'] = self.getLangFmtDate(DateTime(ob._p_mtime).timeTime(), 'eng')
                 d['meta_type'] = ob.meta_type
                 l[d['filename']] = d
               if 'ob' in i:

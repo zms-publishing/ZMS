@@ -19,8 +19,7 @@
 
 # Imports.
 from builtins import str
-from builtins import map
-from builtins import filter
+from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 import copy
@@ -358,7 +357,7 @@ class ZMSMetacmdProvider(
       if ob is not None:
         metaCmd['meta_type'] = ob.meta_type
         metaCmd['data'] = zopeutil.readObject(container, metaCmd['id'], '')
-        metaCmd['bobobase_modification_time'] = None # FIXME ob.bobobase_modification_time().timeTime() - AttributeError: 'RequestContainer' object has no attribute 'bobobase_modification_time'
+        metaCmd['bobobase_modification_time'] = DateTime(ob._p_mtime)
       return metaCmd
 
 

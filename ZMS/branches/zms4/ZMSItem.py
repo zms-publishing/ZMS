@@ -145,7 +145,7 @@ class ZMSItem(
     
     def zmi_page_request(self, *args, **kwargs):
       request = self.REQUEST
-      # FIXME
+      # FIXME: where has REQUEST.SESSION gone?
       request.SESSION = {}
       RESPONSE = request.RESPONSE
       self._zmi_page_request()

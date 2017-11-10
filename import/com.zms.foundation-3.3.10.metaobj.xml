@@ -953,7 +953,7 @@ return ''
 /*--------- .ZMSGraphic --------------*/
 a.fancybox img {
 	padding:1px 1px 21px 1px;
-	background:transparent url(/misc_/zms/zoom.gif) bottom right no-repeat;
+	background:transparent url(/++resource++zms_/img/zoom.gif) bottom right no-repeat;
 	background-color:transparent;
 }
 div.ZMSGraphic {
@@ -1039,10 +1039,10 @@ a.superzoom img.superzoom {
 	padding:0px;
 }
 a.zoom img.zoom {
-	background-image: url(/misc_/zms/zoom.gif);
+	background-image: url(/++resource++zms_/img/zoom.gif);
 }
 a.superzoom img.superzoom {
-	background-image: url(/misc_/zms/superzoom.gif);
+	background-image: url(/++resource++zms_/img/superzoom.gif);
 }
 /*--------- /.ZMSGraphic --------------*/
 ]]></data>

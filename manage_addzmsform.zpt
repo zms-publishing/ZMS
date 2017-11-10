@@ -69,7 +69,7 @@
         <div class="col-xs-9">
             <table>
                 <tr>
-                    <td><div id="preview"><img style="border-radius: 4px;margin-bottom:.5em;" name="img_theme" src="/misc_/zms/spacer.gif" border="0" width="250" height="160" /></div></td>
+                    <td><div id="preview"><img style="border-radius: 4px;margin-bottom:.5em;" name="img_theme" src="/++resource++zms_/img/spacer.gif" border="0" width="250" height="160" /></div></td>
                 </tr>
             </table>
         </div>
@@ -112,7 +112,7 @@ function themeChange(el) {
     var i = el.selectedIndex;
     var v = el.options[i].value;
     if (v.length == 0)
-        img_src = "/misc_/zms/spacer.gif";
+        img_src = "/++resource++zms_/img/spacer.gif";
     else if (v.indexOf('http://')==0) 
         img_src = v.replace('.zexp','.jpg');
     else

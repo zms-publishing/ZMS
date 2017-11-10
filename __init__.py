@@ -109,7 +109,7 @@ def initialize(context):
             _mediadb.MediaDb,
             permission = 'Add ZMSs',
             constructors = (_mediadb.manage_addMediaDb, _mediadb.manage_addMediaDb),
-            icon = 'www/acl_mediadb.png',
+            icon = 'plugins/www/img/acl_mediadb.png',
             container_filter = _mediadb.containerFilter,
             )
         context.registerClass(
@@ -132,13 +132,12 @@ def initialize(context):
         OFS.misc_.misc_.zms['confdict']=confdict
         
         # automated registration for other resources
-        for img_path in ['www/']:
-          path = package_home(globals()) + os.sep + img_path
-          for file in os.listdir(path):
-            filepath = path + os.sep + file 
-            mode = os.stat(filepath)[stat.ST_MODE]
-            if not stat.S_ISDIR(mode):
-              registerImage(filepath,file)
+        path = os.sep.join((package_home(globals()),'plugins','www','img'))
+        for file in os.listdir(path):
+          filepath = os.sep.join((path,file))
+          mode = os.stat(filepath)[stat.ST_MODE]
+          if not stat.S_ISDIR(mode):
+            registerImage(filepath,file)
         
         # automated assembly of conf-properties
         standard.writeStdout(context,"automated assembly of conf-properties")
@@ -217,7 +216,7 @@ def initialize(context):
         
         # automated generation of language JavaScript
         from xml.dom import minidom
-        filename = os.sep.join([package_home(globals())]+['import','_language.xml'])
+        filename = os.sep.join((package_home(globals()),'import','_language.xml'))
         standard.writeStdout(context,"automated generation of language JavaScript: %s"%filename)
         xmldoc = minidom.parse(filename)
         langs = None
@@ -244,7 +243,7 @@ def initialize(context):
               for i in range(len(l)-1):
                 d[k][langs[i]] = l[i+1]
         for lang in langs:
-          filename = os.sep.join([package_home(globals())]+['plugins','www','i18n','%s.js'%lang])
+          filename = os.sep.join((package_home(globals()),'plugins','www','i18n','%s.js'%lang))
           standard.writeStdout(context,"generate: %s"%filename)
           fileobj = open(filename,'w')
           fileobj.write('var zmiLangStr={\'lang\':\'%s\''%lang)
@@ -295,7 +294,7 @@ def translate_path(s):
   ZMS_HOME = package_home(globals())
   if s.startswith('/++resource++zms_/'):
     l = ['plugins','www']+s.split('/')[2:]
-  elif s.startswith('/misc_/zms/'):
+  elif s.startswith('/++resource++zms_/img/'):
     l = ['www']+s.split('/')[3:]
   return os.sep.join([ZMS_HOME]+l)
 

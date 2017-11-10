@@ -97,9 +97,9 @@ class ZMSObject(ZMSItem.ZMSItem,
     # Properties.
     # -----------
     QUOT = chr(34)
-    MISC_ZMS = '/misc_/zms/'
+    MISC_ZMS = '/++resource++zms_/img/'
     FORM_LABEL_MANDATORY = '<sup style="color:red">*</sup>'
-    spacer_gif = '/misc_/zms/spacer.gif'
+    spacer_gif = '/++resource++zms_/img/spacer.gif'
 
     # ZPT Templates.
     # --------------

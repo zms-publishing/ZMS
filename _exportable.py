@@ -191,13 +191,13 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
    
    # Process links to product-folder: images and assets.
    s_new = '"%smisc_/zms/'%sRoot
-   s_old = '"/misc_/zms/'
+   s_old = '"/++resource++zms_/img/'
    html = html.replace(s_old,s_new)
    s_old = '"misc_/zms/'
    html = html.replace(s_old,s_new)
    # starting with '(' (in styles)
    s_new = '(%smisc_/zms/'%sRoot
-   s_old = '(/misc_/zms/'
+   s_old = '(/++resource++zms_/img/'
    html = html.replace(s_old,s_new)
    s_old = '(misc_/zms/'
    html = html.replace(s_old,s_new)

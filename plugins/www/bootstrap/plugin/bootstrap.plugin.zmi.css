@@ -284,7 +284,7 @@ ul.portalClients .zmi-item .center small {
 	margin-bottom:4px;
 }
 .ui-autocomplete-input {
-	background:white url(/misc_/zms/ico_autocomplete.gif) right bottom no-repeat;
+	background:white url(/++resource++zms_/img/ico_autocomplete.gif) right bottom no-repeat;
 }
 .ui-autocomplete {
 	list-style: none;
@@ -337,7 +337,7 @@ div.alert {
 img.grippy {
 	width:6px!important;
 	height:14px!important;
-	background:url(/misc_/zms/grippy.png);
+	background:url(/++resource++zms_/img/grippy.png);
 	vertical-align:middle;
 	cursor:move;
 }

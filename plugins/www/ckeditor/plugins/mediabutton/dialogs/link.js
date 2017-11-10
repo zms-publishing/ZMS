@@ -55,7 +55,7 @@ CKEDITOR.dialog.add( 'mediabuttonDlg', function( editor )
 										+ '<col width="80%"/>'
 									+ '</colgroup>'
 									+ '<tr id="tr_fileContainer"  valign="top">'
-										+ '<td nowrap="nowrap" class="form-label"><img src="/misc_/zms/upload.gif" border="0" style="vertical-align:middle" /></td>'
+										+ '<td nowrap="nowrap" class="form-label"><img src="/++resource++zms_/img/upload.gif" border="0" style="vertical-align:middle" /></td>'
 										+ '<td id="fileContainer" class="form-element"></td>'
 									+ '</tr>'
 									+ '</table>'

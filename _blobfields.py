@@ -795,7 +795,7 @@ class MyBlob:
                    ' Use zmscontext.getMimeTypeIconSrc(mt) instead.',
                      DeprecationWarning, 
                      stacklevel=2)
-      return '/misc_/zms/' + _mimetypes.dctMimeType.get( self.getContentType(), _mimetypes.content_unknown)
+      return '/++resource++zms_/img/' + _mimetypes.dctMimeType.get( self.getContentType(), _mimetypes.content_unknown)
 
 
 ################################################################################

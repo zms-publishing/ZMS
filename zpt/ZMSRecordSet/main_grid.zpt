@@ -115,7 +115,7 @@
   <td tal:define="global title python:'';
     record_params python:record.get('params',{});
     params python:dict(url_params,**record_params)">
-    <img class="grippy" src="/misc_/zms/spacer.gif" tal:condition="sorted" />
+    <img class="grippy" src="/++resource++zms_/img/spacer.gif" tal:condition="sorted" />
     <tal:block tal:condition="python:'_change_uid' in record.keys()">
       <tal:block tal:define="global title python:here.getLangFmtDate(record.get('_change_dt'))+' '+here.getZMILangStr('BY')+' '+str(record.get('_change_uid'))"></tal:block>
     </tal:block>

@@ -730,7 +730,9 @@ class MyBlob(object):
       Returns filename.
       @rtype: C{string}
       """
-      filename = str(self.filename,'utf-8')
+      filename = self.filename
+      if type(filename) is not str:
+        filename = str(filename,'utf-8')
       while filename.startswith( '_'):
         filename = filename[1:]
       for ch in [ '+', '%', ' ', '!', '?', '#', '"', '(', ')', '&' ]:

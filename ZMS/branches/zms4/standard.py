@@ -315,9 +315,7 @@ def url_encode(url):
   @return: Encoded string
   @rtype: C{str}
   """
-  for ch in ['[', ']', ' ', '(', ')']:
-    url = url.replace(ch, '%'+bin2hex(ch).upper())
-  return url
+  return ''.join([urllib.parse.quote_plus(x) for x in url])
 
 
 security.declarePublic('guess_content_type')

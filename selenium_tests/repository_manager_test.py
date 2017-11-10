@@ -10,11 +10,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from ZMSTestCase import ZMSTestCase
 
-# python -m unittest selenium_tests.workflow_manager_test.WorkflowManagerTest
-class WorkflowManagerTest(ZMSTestCase):
+# python -m unittest selenium_tests.repository_manager_test.RepositoryManagerTest
+class RepositoryManagerTest(ZMSTestCase):
     
     def test_conf(self):
-        print '<WorkflowManagerTest.test_conf>'
+        print '<RepositoryManagerTest.test_conf>'
         self._set_up()
         
         # open config
@@ -28,19 +28,19 @@ class WorkflowManagerTest(ZMSTestCase):
         # wait until opened
         self._find_element(By.CSS_SELECTOR, 'body.customize.config')
         
-        # insert workflow-manager
+        # insert repository-manager
         select = Select(self._find_element(By.CSS_SELECTOR, '#Manager select#meta_type'))
         with self._wait_for_page_load():
-            select.select_by_visible_text('ZMSWorkflowProvider')
+            select.select_by_visible_text('ZMSRepositoryManager')
         
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
-        # open workflow tab
-        self._show_zmi_nav_tab('Workflow')
+        # open repository tab
+        self._show_zmi_nav_tab('Repository')
         
         # wait until opened
-        self._find_element(By.CSS_SELECTOR, 'body.workflow_manager_main.config')
+        self._find_element(By.CSS_SELECTOR, 'body.config_manager_main.config')
         
         # open system tab
         self._show_zmi_nav_tab('System')
@@ -48,8 +48,8 @@ class WorkflowManagerTest(ZMSTestCase):
         # wait until opened
         self._find_element(By.CSS_SELECTOR, 'body.customize.config')
         
-        # delete workflow-manager
-        checkbox = self._find_element(By.CSS_SELECTOR, '#Manager input[name="ids:list"][value="workflow_manager"]')
+        # delete repository-manager
+        checkbox = self._find_element(By.CSS_SELECTOR, '#Manager input[name="ids:list"][value="repository_manager"]')
         checkbox.send_keys(Keys.NULL)
         checkbox.click()
         with self._wait_for_page_load():
@@ -59,7 +59,7 @@ class WorkflowManagerTest(ZMSTestCase):
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
         self._tear_down()
-        print '</WorkflowManagerTest.test_conf>'
+        print '</RepositoryManagerTest.test_conf>'
 
 
 if __name__ == "__main__":

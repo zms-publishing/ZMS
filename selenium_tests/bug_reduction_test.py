@@ -29,9 +29,8 @@ class BugReductionTest(ZMSTestCase):
     def _insert_workflow(self):
         # insert workflow-manager
         select = Select(self._find_element(By.CSS_SELECTOR, '#Manager select#meta_type'))
-        select.select_by_visible_text('ZMSWorkflowProvider')
         with self._wait_for_page_load():
-            self._find_element(By.CSS_SELECTOR, '#Manager .btn[value="Add"]').click()
+            select.select_by_visible_text('ZMSWorkflowProvider')
         
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')

@@ -1352,9 +1352,7 @@ def intersection_list(l1, l2):
   @returns: Intersection list
   @rtype: C{list}
   """
-  l1 = list(l1)
-  l2 = list(l2)
-  return [x for x in l1 if x in l2]
+  return list(set(l1).intersection(l2))
 
 
 security.declarePublic('difference_list')

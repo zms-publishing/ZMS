@@ -71,7 +71,7 @@ def importZexp(self, filename):
   ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
   INSTANCE_HOME = package_home(globals())
   filepath = INSTANCE_HOME + '/import/' + filename
-  self.manage_importObject(str(filename))
+  self.manage_importObject(filename)
   remove(filepath)
 
 

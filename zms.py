@@ -114,7 +114,7 @@ def importTheme(folder, theme):
   id = filename[:filename.rfind('.')]
   
   ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
-  INSTANCE_HOME = package_home(globals())
+  INSTANCE_HOME = standard.getINSTANCE_HOME()
   filepath = INSTANCE_HOME + '/import/' + filename
   if theme.startswith('http://'):
     initutil = standard.initutil()

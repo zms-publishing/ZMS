@@ -226,7 +226,7 @@
 										tal:content="readData">ob.data</textarea>
 							</div>
 						</td>
-						<td colspan="5" class="meta-resource" tal:condition="python:objAttr['type'] in ['resource']">
+						<td colspan="5" class="meta-resource" tal:condition="python:objAttr['type'] in ['resource','File','Image']">
 							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
 							<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']" />
 							<tal:block tal:condition="python:objAttr.get('ob')">

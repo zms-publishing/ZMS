@@ -209,7 +209,7 @@
 					<td class="meta-name" tal:condition="not:python:objAttr['type'] in ['interface']"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
 
 					<tal:block tal:condition="python:objAttr['type'] in ['interface','method','py','resource','zpt']+here.valid_zopetypes">
-						<td tal:attributes="colspan python:[5,6][objAttr['type'] in ['interface']]" class="meta-code" tal:condition="python:objAttr['type'] not in ['resource','Folder'] and objAttr.get('ob') is not None">
+						<td tal:attributes="colspan python:[5,6][objAttr['type'] in ['interface']]" class="meta-code" tal:condition="python:objAttr['type'] not in ['resource','File','Folder','Image'] and objAttr.get('ob') is not None">
 							<tal:block tal:define="global readData python:here.operator_getattr(zopeutil,'readData')(objAttr['ob'],default=objAttr.get('custom','ERROR: Not found!')); global errors python:''"></tal:block>
 							<tal:block tal:condition="python:'## Errors:' in readData.split('\n')">
 								<tal:block tal:define="lines python:readData.split('\n'); global errors python:lines[lines.index('## Errors:')+1][2:]"></tal:block>
@@ -226,7 +226,7 @@
 										tal:content="readData">ob.data</textarea>
 							</div>
 						</td>
-						<td colspan="5" class="meta-resource" tal:condition="python:objAttr['type'] in ['resource']">
+						<td colspan="5" class="meta-resource" tal:condition="python:objAttr['type'] in ['resource','File','Image']">
 							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
 							<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']" />
 							<tal:block tal:condition="python:objAttr.get('ob')">

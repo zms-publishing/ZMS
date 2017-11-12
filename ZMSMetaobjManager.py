@@ -109,7 +109,7 @@ class ZMSMetaobjManager:
     valid_datatypes = valid_types+valid_xtypes
     valid_datatypes.sort()
     valid_objtypes =  [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
-    valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'Folder', 'Page Template', 'Script (Python)', 'Z SQL Method']
+    valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'File', 'Folder', 'Image', 'Page Template', 'Script (Python)', 'Z SQL Method']
     deprecated_types = [ 'DTML Method', 'DTML Document', 'method']
 
 
@@ -869,6 +869,7 @@ class ZMSMetaobjManager:
             zopeutil.removeObject(oldContainer, oldObId)
         # Insert Zope-Object.
         if _globals.is_str_type(newCustom): newCustom = newCustom.replace('\r','')
+        if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
         zopeutil.addObject(container, newType, newObId, newName, newCustom)
         artefact = zopeutil.getObject(container, newObId)
         del attr['custom']

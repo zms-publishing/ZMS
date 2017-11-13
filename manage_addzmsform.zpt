@@ -111,12 +111,21 @@
 function themeChange(el) {
     var i = el.selectedIndex;
     var v = el.options[i].value;
-    if (v.length == 0)
+    if (v.length == 0) {
         img_src = "/++resource++zms_/img/spacer.gif";
-    else if (v.indexOf('http://')==0) 
-        img_src = v.replace('.zexp','.jpg');
-    else
-        img_src = "/++resource++zms_/themes/"+v.replace('.zexp','.jpg');
+    }
+    else {
+        if (v.indexOf('-')>0) {
+            v = v.substr(0,v.indexOf('-'));
+        }
+        if (v.indexOf('.')>0) {
+            v = v.substr(0,v.indexOf('.'));
+        }
+        img_src = v+'.jpg';
+        if (v.indexOf('http://')<0) {
+            img_src = "/++resource++zms_/themes/"+img_src;
+        }
+    }
     document.img_theme.src = img_src;
 }
 

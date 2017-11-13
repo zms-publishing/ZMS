@@ -854,11 +854,11 @@ class ConfManager(
       """ ConfManager.manage_customizeDesign """
       message = ''
       home = self.getHome()
+      id = REQUEST.get('id','')
       
       # Save.
       # -----
       if btn == self.getZMILangStr('BTN_SAVE'):
-        id = REQUEST.get('id','')
         self.setConfProperty('ZMS.theme',id)
         message = self.getZMILangStr('MSG_CHANGED')
       
@@ -868,6 +868,12 @@ class ConfManager(
         ids = REQUEST.get('ids',[])
         home.manage_delObjects(ids)
         message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
+      
+      # Copy.
+      # -----
+      elif btn == self.getZMILangStr('BTN_COPY'):
+        self.metaobj_manager.importTheme(id)
+        message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+id+'</code>')
       
       # Import.
       # -------

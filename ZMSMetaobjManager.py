@@ -336,6 +336,26 @@ class ZMSMetaobjManager:
       return export
 
 
+    # --------------------------------------------------------------------------
+    #  ZMSMetaobjManager.importTheme
+    #
+    #  Import theme.
+    # --------------------------------------------------------------------------
+    def importTheme(self, id):
+      home = self.getHome()
+      def traverse(context):
+        for childNode in context.objectValues():
+          if childNode.meta_type == 'Folder':
+            traverse(childNode)
+          elif childNode.meta_type in ['DTML Document', 'DTML Method', 'External Method', 'Image', 'File', 'Page Template', 'Script (Python)']:
+            self.setMetaobjAttr(id,None,newId=childNode.absolute_url()[len(home.absolute_url())+1:],newName=childNode.title_or_id(),newType=childNode.meta_type,newCustom=zopeutil.readData(childNode))
+      if id in self.model.keys():
+        del self.model[id]
+      container = getattr(home,id)
+      self.setMetaobj({'id':id,'name':container.title_or_id(),'type':'ZMSLibrary'})
+      traverse(container)
+
+
     ############################################################################
     #
     #   OBJECTS
@@ -787,7 +807,7 @@ class ZMSMetaobjManager:
         if not newCustom:
           if oldId is not None and id+'.'+oldId in self.objectIds():
             self.manage_delObjects(ids=[id+'.'+oldId])
-        elif isinstance( newCustom, _blobfields.MyFile):
+        elif isinstance( newCustom, _blobfields.MyBlob):
           if oldId is not None and id+'.'+oldId in self.objectIds():
             self.manage_delObjects(ids=[id+'.'+oldId])
           zopeutil.addFile(self,id+'.'+newId,newCustom.getFilename(),newCustom.getData())
@@ -1071,7 +1091,7 @@ class ZMSMetaobjManager:
                   syncZopeMetaobjAttr( self, newValue, savedAttr)
                   if savedAttr['ob']:
                     filename = savedAttr['ob'].title
-                    data = zopeutil.readData(savedAttr['ob'])
+                    data = str(zopeutil.readData(savedAttr['ob']))
                     newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
               # Change attribute.
               message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)

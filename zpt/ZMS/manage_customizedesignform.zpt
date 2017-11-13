@@ -67,6 +67,7 @@
 				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
 				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
+				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_COPY')" onclick="zmiArchiveBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-archive')"></tal:block></span>
 			</div>
 		</th>
 	</tr>
@@ -93,7 +94,7 @@
 <script>
 
 /**
- * Export xml.
+ * Save active theme.
  */
 function zmiSaveBtnClick(sender) {
 	var $fm = $(sender).closest("form");
@@ -122,6 +123,15 @@ function zmiDeleteBtnClick(sender) {
 	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
 		$fm.append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_DELETE')+'">').submit();
 	}
+	return false;
+}
+
+/**
+ * Copy theme to content-objects.
+ */
+function zmiArchiveBtnClick(sender) {
+	var $fm = $(sender).closest("form");
+	$fm.append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_COPY')+'">').submit();
 	return false;
 }
 

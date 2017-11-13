@@ -113,42 +113,29 @@ def importTheme(folder, theme):
   filename = _fileutil.extractFilename(theme)
   id = filename[:filename.rfind('.')]
   
-  ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
-  INSTANCE_HOME = standard.getINSTANCE_HOME()
-  filepath = INSTANCE_HOME + '/import/' + filename
-  if theme.startswith('http://'):
-    initutil = standard.initutil()
-    initutil.setConfProperty('HTTP.proxy', REQUEST.get('http_proxy', ''))
-    zexp = standard.http_import( initutil, theme)
-    _fileutil.exportObj( zexp, filepath)
-  else:
-    packagepath = package_home(globals()) + '/import/' + filename
-    try:
-      os.stat(_fileutil.getOSPath(filepath))
-    except OSError:
-      shutil.copy( packagepath, filepath)
+  if filename.endswith('.zexp'):
+    ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
+    filepath = INSTANCE_HOME + '/import/' + filename
+    if theme.startswith('http://'):
+      initutil = standard.initutil()
+      initutil.setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))
+      zexp = standard.http_import( initutil, theme)
+      _fileutil.exportObj( zexp, filepath)
+    else:
+      packagepath = package_home(globals()) + '/import/' + filename
+      try:
+        os.stat(_fileutil.getOSPath(filepath))
+      except OSError:
+        shutil.copy( packagepath, filepath)
+    
+    ### Import theme from ZEXP.
+    _fileutil.importZexp( folder, filename)
   
-  ### Import theme from ZEXP.
-  _fileutil.importZexp( folder, filename)
+  else:
+    id = filename[:filename.find('-')]
+    _confmanager.initConf(folder.content, id, remote=False)
   
   return id
-
-
-# ------------------------------------------------------------------------------
-#  initTheme:
-#
-#  @deprecated
-# ------------------------------------------------------------------------------
-def initTheme(self, theme, new_id, REQUEST):
-  
-  id = importTheme(self, theme)
-  
-  ### Assign folder-id.
-  if id != new_id:
-    self.manage_renameObject( id=id, new_id=new_id)
-
-  ### Return new ZMS home instance.
-  return getattr( self, new_id)
 
 
 # ------------------------------------------------------------------------------
@@ -234,14 +221,14 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     self._setObject(homeElmnt.id, homeElmnt)
     homeElmnt = [x for x in self.objectValues() if x.id == homeElmnt.id][0]
     
-    ##### Add Theme ####
-    themeId = importTheme(homeElmnt, REQUEST['theme'])
-
     ##### Add ZMS ####
     titlealt = 'ZMS home'
     title = 'ZMS - Python-based Content Management System for Science, Technology and Medicine'
     obj = initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
-    obj.setConfProperty('ZMS.theme', themeId)
+    
+    ##### Add Theme ####
+    themeId = importTheme(homeElmnt,REQUEST['theme'])
+    obj.setConfProperty('ZMS.theme',themeId)
 
     ##### Default content ####
     if REQUEST.get('initialization', 0)==1:

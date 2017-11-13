@@ -1,5 +1,5 @@
 <configure xmlns="http://namespaces.zope.org/zope" xmlns:zms="http://namespaces.zope.org/zms">
-  <source location="myZMStheme32.zexp"/>
+  <source location="myZMStheme32-0.0.34.metaobj.xml"/>
   <source location="myZMStheme33.zexp"/>
   <source location="myZMStheme34.zexp"/>
   <source location="https://www.zms-publishing.com/import/themes"/>

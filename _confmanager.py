@@ -902,6 +902,12 @@ class ConfManager(
         home.manage_delObjects(ids)
         message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
       
+      # Copy.
+      # -----
+      elif btn == self.getZMILangStr('BTN_COPY'):
+        self.metaobj_manager.importTheme(id)
+        message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+id+'</code>')
+      
       # Import.
       # -------
       elif btn == self.getZMILangStr('BTN_IMPORT'):

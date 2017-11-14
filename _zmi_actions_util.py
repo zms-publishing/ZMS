@@ -111,6 +111,9 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
         meta_ids = objAttr['keys']
       else:
         meta_ids = [objAttr['type']]
+      # dynamic list of types
+      if standard.dt_executable(container,'\n'.join(meta_ids)):
+        meta_ids = standard.dt_exec(container,'\n'.join(meta_ids))
       append = True
       try:
         for ob in container.cp_get_obs( REQUEST):

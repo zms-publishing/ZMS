@@ -231,7 +231,8 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     ##### Configuration ####
 
     #-- Index
-    _confmanager.initConf(obj, 'com.zms.index', remote=False)
+    if REQUEST.get('specobj_index',0) == 1:
+      _confmanager.initConf(obj, 'com.zms.index', remote=False)
 
     #-- Search
     initContent(obj,'com.zms.search.content.xml',REQUEST)

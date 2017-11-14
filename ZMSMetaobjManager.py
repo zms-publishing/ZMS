@@ -842,6 +842,7 @@ class ZMSMetaobjManager:
         zopeutil.removeObject(self, oldObId)
         zopeutil.removeObject(self, newObId)
         # Insert Zope-Object.
+        if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
         if _globals.is_str_type(newCustom): newCustom = newCustom.replace('\r','')
         zopeutil.addObject(self, mapTypes[newType], newObId, newName, newCustom)
         del attr['custom']
@@ -888,8 +889,8 @@ class ZMSMetaobjManager:
             oldObId = oldId.split('/')[-1]
             zopeutil.removeObject(oldContainer, oldObId)
         # Insert Zope-Object.
-        if _globals.is_str_type(newCustom): newCustom = newCustom.replace('\r','')
         if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
+        if _globals.is_str_type(newCustom): newCustom = newCustom.replace('\r','')
         zopeutil.addObject(container, newType, newObId, newName, newCustom)
         artefact = zopeutil.getObject(container, newObId)
         del attr['custom']

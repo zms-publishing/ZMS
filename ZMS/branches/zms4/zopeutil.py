@@ -123,7 +123,7 @@ def readData(ob, default=None):
     id = ob.id
     while context is not None:
       m = getExternalMethodModuleName(context, id)
-      filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+      filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
       if os.path.exists(filepath):
         break
       try:
@@ -132,7 +132,7 @@ def readData(ob, default=None):
         context = None
     if context is None:
       m = id
-    filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+    filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
     if os.path.exists(filepath):
       f = open(filepath, 'r')
       data = f.read()
@@ -162,7 +162,7 @@ def removeObject(container, id, removeFile=True):
     ob = getattr(container, id)
     if ob.meta_type == 'External Method' and removeFile:
       m = getExternalMethodModuleName(container, id)
-      filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+      filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
       if os.path.exists(filepath):
         os.remove(filepath)
     container.manage_delObjects(ids=[id])
@@ -208,13 +208,13 @@ def addExternalMethod(container, id, title, data):
   m = getExternalMethodModuleName(container, id)
   f = id
   if data:
-    filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+    filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
     _fileutil.exportObj( data, filepath)
   elif m != f:
     context = container
     while context is not None:
       m = getExternalMethodModuleName(context, id)
-      filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+      filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
       if os.path.exists(filepath):
         break
       context = context.getParentNode()

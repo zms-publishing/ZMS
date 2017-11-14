@@ -234,6 +234,7 @@ class ZMSZCatalogConnector(
       RESPONSE.setHeader('Content-Type',content_type)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
+      RESPONSE.setHeader('Access-Control-Allow-Origin', '*')
       # Execute query.
       status = 0
       msg = ''

@@ -142,8 +142,8 @@ $(function() {
 	<tal:block tal:define="dummy0 python:request.set('ZMI_LIBS_JS',request.get('ZMI_LIBS_JS',[])+here.getConfProperty('qunit.libs').split(','))"></tal:block>
 </div>
 
-<div tal:condition="python:request.get('btn')=='test_backend'" tal:define="Std modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br">
-	<code style="color:#666" tal:content="structure python:newline_to_br(here.ZMSQunit_func_(here))"></code>
+<div tal:condition="python:request.get('btn')=='test_backend'">
+	<code style="color:#666" tal:content="structure python:here.ZMSQunit_func_(here).replace('\n','%3Cbr/>')"></code>
 </div>
 
 <!-- /ZMSQunit.renderShort -->]]>

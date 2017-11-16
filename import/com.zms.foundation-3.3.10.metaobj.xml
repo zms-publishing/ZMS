@@ -686,7 +686,7 @@ return ''
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- ZMSFile.standard_html -->
 
-<tal:block tal:define="Std modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br; global 
+<tal:block tal:define="
 		zmscontext options/zmscontext;
 		subclass      python:[zmscontext.meta_id];
 		title         python:zmscontext.attr('title');
@@ -716,7 +716,7 @@ return ''
 					(<span tal:content="python:file.getDataSizeStr()">The data-size string</span>)
 				</div>
 				<div tal:condition="python:title and title!=titlealt" tal:content="structure title" class="text">The title</div>
-				<div tal:condition="python:abstract" tal:content="structure python:newline_to_br(abstract)" class="description">The abstract</div>
+				<div tal:condition="python:abstract" tal:content="structure python:abstract.replace('\n','%3Cbr/>')" class="description">The abstract</div>
 			</tal:block>
 			<tal:block tal:condition="python:not (file)" tal:content="python:zmscontext.getZMILangStr('ATTR_NONE')">
 				None
@@ -3848,7 +3848,6 @@ if key.startswith('table_'):
 <div class="table-responsive" tal:define="global
 		zmscontext options/zmscontext;
 		standard      modules/Products.zms/standard;
-		Std           modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br;
 		rteformats    python:[x for x in here.getTextFormats(request) if str(x.getRichedit())=='1']; 
 		table         python:zmscontext.attr('table');
 		sortable      python:int(zmscontext.attr('sortable') in [1,True]);
@@ -3897,7 +3896,7 @@ if key.startswith('table_'):
 				</tal:block>
 			</tal:block>
 		</tal:block>
-		<tal:block tal:condition="python:len(d.keys())>0">
+		<tal:block tal:condition="d">
 			<tal:block tal:content="structure python:'<style type=\042text/css\042>'"></tal:block>
 				<tal:block tal:repeat="k python:d.keys()">
 							table#<tal:block tal:content="python:zmscontext.id"></tal:block> tr th:nth-child(<tal:block tal:content="k"></tal:block>), 
@@ -3925,7 +3924,7 @@ if key.startswith('table_'):
 							pattern       python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
 							replacement   python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
 							content       python:standard.re_sub(pattern,replacement,column.get('content',''));
-							content       python:[content,newline_to_br(content)][format==''];
+							content       python:[content,content.replace('\n','%3Cbr/>')][format==''];
 							col_text      python:[standard.dt_exec(zmscontext,zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in [x.getId() for x in rteformats]];
 							col_text      python:zmscontext.validateInlineLinkObj(col_text);
 							col_text      python:standard.re_sub('^(&nbsp\073)','',col_text);

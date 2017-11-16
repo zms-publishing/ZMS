@@ -49,7 +49,7 @@ function zmiFormSubmit(sender,d) {
 
 <div class="ui-helper-hidden" tal:condition="python:here.getPortalMaster()!=None">
 	<div id="acquireConf" class="inner">
-		<form class="form-horizontal" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data">
+		<form class="form-horizontal" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data;charset=utf-8">
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group">
 				<div class="col-lg-12">
@@ -73,7 +73,7 @@ function zmiFormSubmit(sender,d) {
 
 <div class="ui-helper-hidden">
 	<div id="importConf" class="inner">
-		<form class="form-horizontal" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data">
+		<form class="form-horizontal" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data;charset=utf-8">
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group">
 				<label for="file" class="col-lg-2 control-label">
@@ -99,7 +99,7 @@ function zmiFormSubmit(sender,d) {
 	</div><!-- .inner -->
 </div><!-- #importConf -->
 
-<form class="form-horizontal" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data;charset=utf-8">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('TAB_METADATA')">Metadata</legend>
 	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_METADICT')">well</p>

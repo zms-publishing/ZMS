@@ -9,7 +9,7 @@
 <script>
 </script>
 
-<form class="form-horizontal" name="form0" action="manage_changeProperties" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data">
+<form class="form-horizontal" name="form0" action="manage_changeProperties" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data;charset=utf-8">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<div class="accordion-group">
 		<div class="accordion-body">

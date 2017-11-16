@@ -43,7 +43,7 @@ def manage_css_classes(self):
 	html += self.zmi_body_header(self,request,options=[{'action':'#','label':'CSS Classes'}])
 	html += '<div id="zmi-tab">'
 	html += self.zmi_breadcrumbs(self,request)
-	html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+	html += '<form class="form-horizontal" method="post" enctype="multipart/form-data;charset=utf-8">'
 	html += '<input type="hidden" name="form_id" value="manage_css_classes"/>'
 	html += '<input type="hidden" name="lang" value="%s"/>'%request['lang']
 	html += '<legend>Add Special CSS Classes:</legend>'

@@ -1021,6 +1021,7 @@ class ZMSMetaobjManager(object):
     ############################################################################
     def manage_changeProperties(self, lang, btn='', key='all', REQUEST=None, RESPONSE=None):
         """ ZMSMetaobjManager.manage_changeProperties """
+        print(0,"########## ZMSMetaobjManager.manage_changeProperties")
         old_model = copy.deepcopy(self.model)
         message = ''
         messagekey = 'manage_tabs_message'

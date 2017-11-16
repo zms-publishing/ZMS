@@ -68,7 +68,7 @@ def manage_exportZodbNative2LocalFS( self):
   html += self.zmi_body_header(self,request,options=[{'action':'#','label':'Export ZODB to LocalFS...'}])
   html += '<div id="zmi-tab">'
   html += self.zmi_breadcrumbs(self,request)
-  html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+  html += '<form class="form-horizontal" method="post" enctype="multipart/form-data;charset=utf-8">'
   html += '<legend>Export ZODB to LocalFS</legend>'
   
   html += '' \

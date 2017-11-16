@@ -541,7 +541,7 @@ function zmiCompileLesscBtnClick(btn) {
 			<div id="objectDetails"></div>
 		</form>
 
-		<form class="form-horizontal" id="theuploadform" method="post" enctype="multipart/form-data" tal:condition="python:ob.meta_type in ['Image','File'] and not (ob.content_type.startswith('text/') or ob.content_type in ['application/css','application/x-css','application/javascript','application/x-javascript'])">
+		<form class="form-horizontal" id="theuploadform" method="post" enctype="multipart/form-data;charset=utf-8" tal:condition="python:ob.meta_type in ['Image','File'] and not (ob.content_type.startswith('text/') or ob.content_type in ['application/css','application/x-css','application/javascript','application/x-javascript'])">
 			<div class="ui-helper-hidden">
 				<span id="action">manage_upload</span>
 				<label for="title">Title</label>

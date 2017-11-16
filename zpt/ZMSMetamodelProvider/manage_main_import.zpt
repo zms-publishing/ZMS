@@ -46,7 +46,7 @@
 		metaObjPackages python:here.sort_list(standard.distinct_list(map(lambda x: x.get('package'), metaObjs)))">
 
 <tal:block tal:condition="python:request.get('section')=='import'">
-	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data" target="_parent">
+	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data;charset=utf-8" target="_parent">
 	<input type="hidden" name="lang" tal:attributes="value request/lang" />
 	<tal:block tal:condition="python:request.get('temp_import_file_id')">
 		<tal:block tal:define="global
@@ -103,7 +103,7 @@
 </tal:block>
 
 <tal:block tal:condition="python:request.get('section')!='import'">
-	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
+	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data;charset=utf-8">
 		<input type="hidden" name="lang" tal:attributes="value request/lang" />
 		<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]" />
 		<div class="form-group">

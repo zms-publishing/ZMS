@@ -13,7 +13,7 @@ def manage_addClient(self):
 	html += self.zmi_body_header(self,request,options=[{'action':'#','label':'Insert client...'}])
 	html += '<div id="zmi-tab">'
 	html += self.zmi_breadcrumbs(self,request)
-	html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+	html += '<form class="form-horizontal" method="post" enctype="multipart/form-data;charset=utf-8">'
 	html += '<input type="hidden" name="form_id" value="manage_addClient"/>'
 	html += '<input type="hidden" name="lang" value="%s"/>'%request['lang']
 	html += '<legend>Insert client...</legend>'

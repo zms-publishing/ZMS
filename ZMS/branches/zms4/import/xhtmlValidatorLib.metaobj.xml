@@ -75,7 +75,7 @@ function xhtmValidatorlButtonClick( lang) {
   </head>
 <body>
   <fieldset id="validate-by-input"  class="tabset_content front"><legend class="tabset_label">Validate by direct input</legend>
-   <form method="post" enctype="multipart/form-data" action="http://validator.w3.org/check">
+   <form method="post" enctype="multipart/form-data;charset=utf-8" action="http://validator.w3.org/check">
     <input type="hidden" name="doctype" value="Inline"/><!-- Encoding: detect automatically -->
     <input type="hidden" name="prefill" type="radio" value="0"/><!-- Validate Full Document -->
     <input type="hidden" name="prefill_doctype" value="xhtml10" /><!-- Use Doctype: XHTML 1.0 -->

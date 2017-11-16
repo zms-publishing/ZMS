@@ -28,7 +28,7 @@ html += '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
 html += context.zmi_body_header(context,request,options=[{'action':'#','label':'Stereotype...'}])
 html += '<div id="zmi-tab">'
 html += context.zmi_breadcrumbs(context,request)
-html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+html += '<form class="form-horizontal" method="post" enctype="multipart/form-data;charset=utf-8">'
 
 html += '<div class="form-group">'
 html += '<label class="col-sm-2 control-label mandatory"><span>Stereotype</span></label>'

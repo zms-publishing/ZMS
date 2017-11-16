@@ -168,7 +168,7 @@ $(function(){
 
 <div class="ui-helper-hidden">
 	<div id="importConf" class="inner">
-		<form class="form-horizontal" name="importConfForm" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
+		<form class="form-horizontal" name="importConfForm" action="manage_changeWorkflow" method="post" enctype="multipart/form-data;charset=utf-8">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group">
 				<label for="file" class="col-lg-2 control-label">
@@ -196,7 +196,7 @@ $(function(){
 
 <div class="ui-helper-hidden" tal:condition="python:request.get('id') in here.getActivityIds()">
 	<div id="updateActivity" class="inner" tal:define="global activity python:here.getActivity(request['id'])">
-		<form class="form-horizontal" action="manage_changeActivities" method="post" enctype="multipart/form-data">
+		<form class="form-horizontal" action="manage_changeActivities" method="post" enctype="multipart/form-data;charset=utf-8">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<input type="hidden" name="id" tal:attributes="value request/id"/>
 			<div class="form-group inpId">
@@ -238,7 +238,7 @@ $(function(){
 
 <div class="ui-helper-hidden" tal:condition="python:request.get('id') in here.getTransitionIds()">
 	<div id="updateTransition" class="inner" tal:define="global transition python:here.getTransition(request['id'])">
-		<form class="form-horizontal" action="manage_changeTransitions" method="post" enctype="multipart/form-data">
+		<form class="form-horizontal" action="manage_changeTransitions" method="post" enctype="multipart/form-data;charset=utf-8">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<input type="hidden" name="id" tal:attributes="value request/id"/>
 			<div class="horizontal-group">
@@ -315,7 +315,7 @@ $(function(){
 
 <div class="ui-helper-hidden">
 	<div id="insertActivity" class="inner">
-		<form class="form-horizontal" name="insertObjForm" action="manage_changeActivities" method="post" enctype="multipart/form-data">
+		<form class="form-horizontal" name="insertObjForm" action="manage_changeActivities" method="post" enctype="multipart/form-data;charset=utf-8">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group newId">
 				<label for="newId" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
@@ -352,7 +352,7 @@ $(function(){
 
 <div class="ui-helper-hidden">
 	<div id="insertTransition" class="inner">
-		<form class="form-horizontal" name="insertObjForm" action="manage_changeTransitions" method="post" enctype="multipart/form-data">
+		<form class="form-horizontal" name="insertObjForm" action="manage_changeTransitions" method="post" enctype="multipart/form-data;charset=utf-8">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group newId">
 				<label for="newId" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
@@ -391,7 +391,7 @@ $(function(){
 	<div class="tab-content">
 
 		<div class="tab-pane active" id="edit">
-<form class="form-horizontal activities" action="manage_changeActivities" method="post" enctype="multipart/form-data" tal:define="global
+<form class="form-horizontal activities" action="manage_changeActivities" method="post" enctype="multipart/form-data;charset=utf-8" tal:define="global
 		activityIds python:here.getActivityIds()">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<table class="table zmi-sortable">
@@ -443,7 +443,7 @@ $(function(){
 	</table>
 </form>
 
-<form class="form-horizontal transitions" action="manage_changeTransitions" method="post" enctype="multipart/form-data" tal:define="global
+<form class="form-horizontal transitions" action="manage_changeTransitions" method="post" enctype="multipart/form-data;charset=utf-8" tal:define="global
 		transitionIds python:here.getTransitionIds()">
 	<input type="hidden" name="lang" tal:attributes="value request/lang" />
 	<table class="table zmi-sortable">
@@ -520,7 +520,7 @@ $(function(){
 		</div><! --#edit -->
 
 		<div class="tab-pane" id="properties">
-			<form class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
+			<form class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data;charset=utf-8">
 				<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 				<div class="form-group" id="tr_revision">
 					<label for="revision" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_VERSION')">Version</span></label>

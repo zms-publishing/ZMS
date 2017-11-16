@@ -3096,9 +3096,9 @@ function onZMSTableFormSubmit() {
 		">
 
 <!--
---------------------------------------------------------------------------------
---- Table-Cell Editor
---------------------------------------------------------------------------------
+================================================================================
+=== Table-Cell Editor
+================================================================================
 -->
 <tal:block tal:define="celltypes python:[['td','td'],['th','th']];custom python:'<div class=\042pull-left celltypes\042>%s</div>'%(here.zmi_input_select(name='tag',value='',lang_str=here.getZMILangStr('ATTR_FORMAT'),options=celltypes))">
 	<div class="ui-helper-hidden ui-helper-overlay modal-backdrop in">&nbsp;</div>
@@ -3120,9 +3120,9 @@ function onZMSTableFormSubmit() {
 </tal:block>
 
 <!--
---------------------------------------------------------------------------------
---- Table-Cell Grid
---------------------------------------------------------------------------------
+================================================================================
+=== Table-Cell Grid
+================================================================================
 -->
 
 <span class="ui-helper-hidden" id="fmName" tal:content="request/fmName"></span>

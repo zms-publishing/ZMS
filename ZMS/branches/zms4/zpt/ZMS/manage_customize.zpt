@@ -23,7 +23,7 @@
   <div class="tab-content">
 
     <div class="tab-pane active" id="Manager">
-    <form class="form-horizontal row" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal row" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data;charset=utf-8">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
       <input type="hidden" name="key" value="Manager" />
       <legend>Manager</legend>
@@ -67,7 +67,7 @@
     </div>
 
     <div class="tab-pane" id="Clients">
-    <form class="form-horizontal" name="ClientsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" name="ClientsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data;charset=utf-8">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
       <input type="hidden" name="key" value="Clients">
       <legend>Portal</legend>
@@ -113,7 +113,7 @@
     </div>
 
     <div class="tab-pane" id="Configuration">
-    <form class="form-horizontal" name="ImportForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" name="ImportForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data;charset=utf-8">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
       <input type="hidden" name="key" value="Import">
       <legend>Configuration</legend>
@@ -134,7 +134,7 @@
     </div>
 
     <div class="tab-pane" id="Custom">
-<form class="form-horizontal" name="CustomForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" name="CustomForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data;charset=utf-8">
   <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
   <input type="hidden" name="key" value="Custom">
   <legend>System-Properties</legend>
@@ -239,7 +239,7 @@
     </div><!-- #System-Properties -->
 
     <div class="tab-pane" id="MediaFolder">
-    <form class="form-horizontal" name="CatalogForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" name="CatalogForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data;charset=utf-8">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
       <input type="hidden" name="key" value="MediaDb">
       <legend>Media-Folder</legend>
@@ -288,7 +288,7 @@
     </div>
 
     <div class="tab-pane" id="History">
-    <form class="form-horizontal" name="HistoryForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" name="HistoryForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data;charset=utf-8">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
       <input type="hidden" name="key" value="History" />
       <legend>History</legend>
@@ -314,7 +314,7 @@
     </div>
 
     <div class="tab-pane" id="InstalledProducts">
-    <form class="form-horizontal" name="InstalledProductsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" name="InstalledProductsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data;charset=utf-8">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
       <input type="hidden" name="key" value="InstalledProducts" />
       <legend>Installed Libraries</legend>
@@ -353,7 +353,7 @@
     </div>
 
     <div class="tab-pane" id="Instance">
-    <form class="form-horizontal" name="InstanceForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+    <form class="form-horizontal" name="InstanceForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data;charset=utf-8">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
       <input type="hidden" name="key" value="Instance" />
       <input type="hidden" name="btn" value="Restart" />

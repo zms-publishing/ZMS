@@ -6,7 +6,7 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data;charset=utf-8">
 	<legend tal:condition="python:here.id==here.version_live_id">Live-Version</legend>
 	<legend tal:condition="python:here.id==here.version_work_id">Work-Version</legend>
 	<input type="hidden" name="preview" value="preview"/>

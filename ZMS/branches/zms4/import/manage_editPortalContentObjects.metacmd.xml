@@ -9,7 +9,7 @@ RESPONSE =  request.RESPONSE
 print context.manage_page_header(context,request)
 print context.manage_tabs(context,request)
 print context.f_headline(context,headline='<big>Edit Portal Content-Objects</big>')
-print '<form method="post" enctype="multipart/form-data;charset=utf-8">'
+print '<form method="post" enctype="multipart/form-data">'
 print '<input type="hidden" name="form_id" value="manage_editPortalContentObjects"/>'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
 print context.zmi_form_section_begin(context,request)

@@ -51,7 +51,7 @@ function zmiModalInsertUserOpen(context) {
 
 <div class="ui-helper-hidden">
 	<div id="importUsers" class="inner">
-		<form class="form-horizontal" action="manage_userProperties" method="post" enctype="multipart/form-data;charset=utf-8">
+		<form class="form-horizontal" action="manage_userProperties" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<input type="hidden" name="key" value="" />
 			<div class="form-group">
@@ -78,7 +78,7 @@ function zmiModalInsertUserOpen(context) {
 
 <div class="ui-helper-hidden">
 	<div id="insertNode" class="inner">
-		<form class="form-horizontal" name="insertNodeForm" tal:attributes="action action" method="post" enctype="multipart/form-data;charset=utf-8">
+		<form class="form-horizontal" name="insertNodeForm" tal:attributes="action action" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="key" value="attr">
 			<input type="hidden" name="id" tal:attributes="value request/id">
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
@@ -106,7 +106,7 @@ function zmiModalInsertUserOpen(context) {
 	</div><!-- .inner -->
 </div><!-- #insertNode -->
 
-<form class="form-horizontal" name="editUserForm" tal:attributes="action action" method="post" enctype="multipart/form-data;charset=utf-8">
+<form class="form-horizontal" name="editUserForm" tal:attributes="action action" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="key" value="obj">
 	<input type="hidden" name="id" tal:attributes="value request/id">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
@@ -213,7 +213,7 @@ function zmiModalInsertUserOpen(context) {
 
 </form>
 
-<form class="form-horizontal" name="editNodesForm" tal:attributes="action action" method="post" enctype="multipart/form-data;charset=utf-8" tal:define="
+<form class="form-horizontal" name="editNodesForm" tal:attributes="action action" method="post" enctype="multipart/form-data" tal:define="
 		nodelist python:[{'key':x,'value':nodes[x],'target':here.getLinkObj(x)} for x in nodes]">
 	<input type="hidden" name="btn" value="">
 	<input type="hidden" name="key" value="attr">
@@ -318,7 +318,7 @@ function zmiModalInsertUserOpen(context) {
 
 <div class="ui-helper-hidden">
 	<div id="addUser" class="inner">
-		<form id="addUserForm" class="form-horizontal" action="manage_userProperties" method="get" enctype="multipart/form-data;charset=utf-8">
+		<form id="addUserForm" class="form-horizontal" action="manage_userProperties" method="get" enctype="multipart/form-data">
 		<input type="hidden" name="key" value="obj">
 		<input type="hidden" name="lang" tal:attributes="value request/lang">
 		<div class="form-group">
@@ -348,7 +348,7 @@ function zmiModalInsertUserOpen(context) {
 
 <div class="ui-helper-hidden">
 	<div id="insertUser" class="inner">
-		<form id="insertUserForm" class="form-horizontal" method="get" enctype="multipart/form-data;charset=utf-8">
+		<form id="insertUserForm" class="form-horizontal" method="get" enctype="multipart/form-data">
 		<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group">
 					<div class="input-group">
@@ -441,7 +441,7 @@ function zmiModalInsertUserOpen(context) {
 
 <div class="ui-helper-hidden">
 	<div id="insertRole" class="inner">
-		<form class="form-horizontal" action="manage_roleProperties" method="post" enctype="multipart/form-data;charset=utf-8">
+		<form class="form-horizontal" action="manage_roleProperties" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="key" value="obj">
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group">

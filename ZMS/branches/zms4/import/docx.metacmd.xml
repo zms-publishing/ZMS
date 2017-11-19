@@ -501,7 +501,7 @@ def manage_importDocx( self):
   html += self.zmi_body_header(self,request,options=[{'action':'#','label':'Import DOCX...'}])
   html += '<div id="zmi-tab">'
   html += self.zmi_breadcrumbs(self,request)
-  html += '<form class="form-horizontal" method="post" enctype="multipart/form-data;charset=utf-8">'
+  html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
   html += '<legend>Import DOCX</legend>'
   html += '<div class="form-group">'
   html += '<label class="control-label col-sm-2" for="file"><span>%s</span></label>'%self.getZMILangStr('ATTR_FILE')

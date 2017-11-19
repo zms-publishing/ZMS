@@ -10,7 +10,7 @@
 			input_form python:options.get('input_form',True);
 			request_form_inherit python:['lang','preview','qentity']+options.get('request_form_inherit',[]);">
 
-<form class="form-horizontal" id="form0" name="form0" method="post" enctype="multipart/form-data;charset=utf-8" 
+<form class="form-horizontal" id="form0" name="form0" method="post" enctype="multipart/form-data" 
 	tal:omit-tag="not:input_form"
 	tal:attributes="action request/URL"
 	tal:define="global

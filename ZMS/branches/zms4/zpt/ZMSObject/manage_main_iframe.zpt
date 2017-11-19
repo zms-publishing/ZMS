@@ -35,7 +35,7 @@
 </tal:block>
 
 <tal:block tal:condition="python:not here.getType()=='ZMSRecordSet'" tal:define="global dummy0 python:request.set('fmName',request.get('fmName','form0'))">
-<form class="form-horizontal" id="form0" tal:attributes="name request/fmName" action="manage_changeProperties" method="post" enctype="multipart/form-data;charset=utf-8">
+<form class="form-horizontal" id="form0" tal:attributes="name request/fmName" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']" />
 	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']" />

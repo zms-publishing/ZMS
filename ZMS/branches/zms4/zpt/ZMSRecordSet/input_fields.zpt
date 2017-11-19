@@ -17,7 +17,7 @@
 				and x['type'] in here.metaobj_manager.valid_types+metaObjIds+['delimiter','hint','interface']
 				,metaObj['attrs'][1:])">
 
-<form class="form-horizontal" id="form0" name="form0" action="manage_changeRecordSet" method="post" enctype="multipart/form-data;charset=utf-8">
+<form class="form-horizontal" id="form0" name="form0" action="manage_changeRecordSet" method="post" enctype="multipart/form-data">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
 	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']">
 	<input type="hidden" id="action" name="action" tal:attributes="value action">

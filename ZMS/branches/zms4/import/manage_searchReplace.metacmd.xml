@@ -31,7 +31,7 @@ print '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',context.
 print context.zmi_body_header(context,request,options=[{'action':'#','label':'Search+Replace...'}])
 print '<div id="zmi-tab">'
 print context.zmi_breadcrumbs(context,request)
-print '<form class="form-horizontal" method="post" enctype="multipart/form-data;charset=utf-8">'
+print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
 print '<input type="hidden" name="form_id" value="manage_addClient"/>'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
 print '<legend>Search+Replace...</legend>'

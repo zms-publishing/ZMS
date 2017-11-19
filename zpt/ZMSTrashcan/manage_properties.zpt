@@ -6,7 +6,7 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="form-horizontal" name="form0" action="manage_changeProperties" method="post" enctype="multipart/form-data;charset=utf-8">
+<form class="form-horizontal" name="form0" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('TAB_PROPERTIES')">Properties</legend>
 	<div class="form-group">

@@ -44,7 +44,7 @@ CKEDITOR.dialog.add( 'mediabuttonDlg', function( editor )
 						html : ''
 							+ '<div id="mediaDialog">'
 								+ '<iframe id="CKEditor_uploadMedia" name="CKEditor_uploadMedia" stc="" style="display:none" onload="CKEditor_uploadMediaDone()"></iframe>'
-								+ '<form action="metaobj_manager/ZMSLib.uploadMedia" method="post" target="CKEditor_uploadMedia" enctype="multipart/form-data;charset=utf-8">'
+								+ '<form action="metaobj_manager/ZMSLib.uploadMedia" method="post" target="CKEditor_uploadMedia" enctype="multipart/form-data">'
 								  + '<input type="hidden" name="session_id" value="'+$("form#form0 input[name=session_id]").val()+'"/>'
 								  + '<input type="hidden" name="form_id" value="'+$("form#form0 input[name=form_id]").val()+'"/>'
 								  + '<input type="hidden" name="lang" value="'+$("form#form0 input[name=lang]").val()+'"/>'

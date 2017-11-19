@@ -19,7 +19,7 @@ print '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',context.
 print context.zmi_body_header(context,request,options=[{'action':'#','label':'Import template-set...'}])
 print '<div id="zmi-tab">'
 print context.zmi_breadcrumbs(context,request)
-print '<form class="form-horizontal" method="post" enctype="multipart/form-data;charset=utf-8">'
+print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
 print '<input type="hidden" name="form_id" value="manage_importTemplateSet"/>'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
 print '<legend>Import template-set...</legend>'

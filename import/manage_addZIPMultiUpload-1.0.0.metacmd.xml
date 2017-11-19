@@ -16,7 +16,7 @@ def manage_addZIPMultiUpload(self):
 	html += '<div id="zmi-tab">'
 	html += self.zmi_breadcrumbs(self,request)
 
-	html += '<form method="post" enctype="multipart/form-data;charset=utf-8">'
+	html += '<form method="post" enctype="multipart/form-data">'
 	html += '<input type="hidden" name="form_id" value="manage_addZIPMultiUpload" />'
 	html += '<input type="hidden" name="lang" value="%s" />'%request['lang']
 	html += '<div class="alert" style="min-height:500px">'

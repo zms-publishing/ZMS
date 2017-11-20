@@ -48,9 +48,9 @@
 
 		<title>
 			<tal:block tal:condition="python:zmscontext.getLevel()>1">
-				<tal:block tal:content="python:unicode(zmscontext.getParentByLevel(1).getTitlealt(request),'utf-8')">the title-alt</tal:block> &gt; 
+				<tal:block tal:content="python:zmscontext.getParentByLevel(1).getTitlealt(request)">the title-alt</tal:block> &gt; 
 			</tal:block>
-			<tal:block tal:content="python:unicode(zmscontext.getTitlealt(request),'utf-8')">the title-alt</tal:block>
+			<tal:block tal:content="python:zmscontext.getTitlealt(request)">the title-alt</tal:block>
 		</title>
 
 		<!-- Bootstrap core CSS -->
@@ -126,8 +126,8 @@
 		<!-- Docs page layout -->
 		<div id="content" class="bs-docs-header">
 			<div class="container">
-				<h1 tal:content="python:unicode(zmscontext.getTitle(request),'utf-8')">The title</h1>
-				<p tal:content="python:unicode(zmscontext.attr('attr_dc_description'),'utf-8')">The description</p>
+				<h1 tal:content="python:zmscontext.getTitle(request)">The title</h1>
+				<p tal:content="python:zmscontext.attr('attr_dc_description')">The description</p>
 			</div>
 		</div><!-- #content -->
 
@@ -161,15 +161,15 @@
 					<ul class="nav bs-docs-sidenav">
 						<li tal:repeat="childNode childDocuments">
 							<a tal:attributes="href python:'#%s'%childNode.id">
-								<tal:block tal:content="python:unicode(childNode.getTitle(request),'utf-8')">The title</tal:block>
+								<tal:block tal:content="python:childNode.getTitle(request)">The title</tal:block>
 								<span class="glyphicon glyphicon-arrow-right"></span>
 							</a>
 						</li>
 					</ul>
 				</div> 
 				<div class="bs-docs-section" tal:repeat="childNode childDocuments">
-					<h1 class="page-header" tal:attributes="id python:childNode.id" tal:content="python:unicode(childNode.getTitle(request),'utf-8')">The title</h1>
-					<p><em tal:content="python:unicode(zmscontext.attr('attr_dc_description'),'utf-8')">The description</em></p>
+					<h1 class="page-header" tal:attributes="id python:childNode.id" tal:content="python:childNode.getTitle(request)">The title</h1>
+					<p><em tal:content="python:zmscontext.attr('attr_dc_description')">The description</em></p>
 					<tal:block tal:content="structure childNode/f_bodyContent">The content</tal:block>
 					<a class="back-to-top" href="#top" tal:content="python:zmscontext.getLangStr('PAGETOP',lang)">
 							pagetop
@@ -183,7 +183,7 @@
 				<div class="bs-docs-sidebar" role="complementary">
 					<ul class="nav bs-docs-sidenav" tal:condition="python:zmscontext.getLevel()>0">
 						<li tal:repeat="childNode childDocuments">
-							<a tal:attributes="href python:[childNode.getHref2IndexHtml(request,deep=False),'#%s'%childNode.id][article]" tal:content="python:unicode(childNode.getTitle(request),'utf-8')">The title</a>
+							<a tal:attributes="href python:[childNode.getHref2IndexHtml(request,deep=False),'#%s'%childNode.id][article]" tal:content="python:childNode.getTitle(request)">The title</a>
 						</li>
 					</ul>
 					<a class="back-to-top" href="#top" tal:condition="python:zmscontext.getLevel()>0" tal:content="python:zmscontext.getLangStr('PAGETOP',lang)">

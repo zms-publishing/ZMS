@@ -146,7 +146,7 @@ class langdict(object):
                 for i in range(len(manage_langs)):
                   if i+1 < len(lRow):
                     if lRow[i+1] is not None:
-                      value[manage_langs[i]] = lRow[i+1] # unicode(lRow[i+1],'utf-8').encode('utf-8')
+                      value[manage_langs[i]] = lRow[i+1]
                 lang_dict[key] = value
       xmlfile.close()
       self.manage_langs = manage_langs

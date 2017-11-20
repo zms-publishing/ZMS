@@ -314,8 +314,8 @@ $(function(){
 			}
 			if ($("span.input-group-addon",this).length==0) {
 				$(this).addClass("input-group");
-				if ($textarea.attr('data-style')) {
-					$(this).append('<span class="input-group-addon btn btn-default" title="Click for Code Popup or Dbl-Click for Native Editor!" style="' + $textarea.attr('data-style') + '">   </span>');
+				if ($textarea.attr('data-class')) {
+					$(this).append('<span class="input-group-addon btn btn-default" title="Click for Code Popup or Dbl-Click for Native Editor!"><i class="' + $textarea.attr('data-class') + '"/></span>');
 				} else {
 					$(this).append('<span class="input-group-addon btn btn-default">...</span>');
 				};

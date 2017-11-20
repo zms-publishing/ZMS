@@ -80,8 +80,8 @@ def manage_exportZodbNative2LocalFS( self):
     + '</div><!-- .form-group -->' \
     + '<div class="form-group">' \
     + '<div class="controls save">' \
-    + '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button> '%(unicode(self.getZMILangStr('BTN_REFRESH'),'utf-8'),unicode(self.getZMILangStr('BTN_REFRESH'),'utf-8')) \
-    + '<button type="button" name="btn" class="btn btn-danger" value="return %s" onclick="btn_execute_click()">%s</button> '%(unicode(self.getZMILangStr('BTN_EXECUTE'),'utf-8'),unicode(self.getZMILangStr('BTN_EXECUTE'),'utf-8')) \
+    + '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button> '%(self.getZMILangStr('BTN_REFRESH'),self.getZMILangStr('BTN_REFRESH')) \
+    + '<button type="button" name="btn" class="btn btn-danger" value="return %s" onclick="btn_execute_click()">%s</button> '%(self.getZMILangStr('BTN_EXECUTE'),self.getZMILangStr('BTN_EXECUTE')) \
     + '</div>' \
     + '</div><!-- .form-group -->'
   
@@ -92,7 +92,7 @@ def manage_exportZodbNative2LocalFS( self):
             <div class="btn-group">
               <span class="btn btn-default" title="%s/%s" onclick="zmiToggleSelectionButtonClick(this)">%s</span>
             </div>
-          </th>'''%(unicode(self.getZMILangStr('BTN_SLCTALL'),'utf-8'),unicode(self.getZMILangStr('BTN_SLCTNONE'),'utf-8'),self.zmi_icon(name='icon-check'))
+          </th>'''%(self.getZMILangStr('BTN_SLCTALL'),self.getZMILangStr('BTN_SLCTNONE'),self.zmi_icon(name='icon-check'))
   html += '<th>Objekt</th>'
   html += '<th>Status</th>'
   html += '</tr>'
@@ -101,7 +101,7 @@ def manage_exportZodbNative2LocalFS( self):
       '/'.join(x['node'].getPhysicalPath()),
       '/'.join(x['node'].getPhysicalPath()),
       zope_objects[x['node'].meta_type],
-      unicode(x['node'].meta_type,'utf-8'),
+      x['node'].meta_type,
       '<br>'.join(x['status']),
       ),t))
   html += '</table><!-- .table -->'

@@ -191,7 +191,7 @@
       ><tal:block tal:condition="python:elType in ['file'] and elValue is not None"
         ><i class="icon-download-alt"></i> <tal:block 
           tal:on-error="string:<!-- FILENAME-ERROR -->" 
-          tal:content="structure python:(here.operator_gettype(elValue) is not str) and elValue.getFilename() or unicode(str(elValue),'utf-8')">filename</tal:block
+          tal:content="structure python:(here.operator_gettype(elValue) is not str) and elValue.getFilename() or elValue">filename</tal:block
       ></tal:block
       ><tal:block tal:condition="python:elType in ['date','datetime']"
         ><tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%elType).upper())">elValue</tal:block
@@ -202,7 +202,7 @@
       ><tal:block tal:condition="not:python:elType in ['boolean','date','datetime','float','html','image','file','int','object','url','None']"
         ><tal:block tal:condition="python:elValue is not None"
           tal:on-error="elValue" 
-          tal:content="structure python:unicode(elValue)">elValue</tal:block
+          tal:content="structure elValue">elValue</tal:block
       ></tal:block
     ></div></td>
     </tal:block>

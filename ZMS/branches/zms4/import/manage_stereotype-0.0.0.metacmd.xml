@@ -37,15 +37,15 @@ html += '<select class="form-control" name="meta_id">'
 for meta_id in context.getMetaobjIds(sort=True):
   metaObj = context.getMetaobj(meta_id)
   if metaObj['type'] in ['ZMSDocument','ZMSObject']:
-    html += '<option value="%s"%s>%s (%s)</option>'%(metaObj['id'],['',' selected="selected"'][int(metaObj['id']==context.meta_id)],unicode(context.display_type(request,metaObj['id']),'utf-8'),metaObj['id'])
+    html += '<option value="%s"%s>%s (%s)</option>'%(metaObj['id'],['',' selected="selected"'][int(metaObj['id']==context.meta_id)],context.display_type(request,metaObj['id']),metaObj['id'])
 html += '</select><!-- .form-control -->'
 html += '</div><!--.col-sm-10 -->'
 html += '</div>'
 
 html += '<div class="form-group">'
 html += '<div class="controls save">'
-html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(unicode(context.getZMILangStr('BTN_SAVE'),'utf-8'),unicode(context.getZMILangStr('BTN_SAVE'),'utf-8'))
-html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button> '%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
+html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(context.getZMILangStr('BTN_SAVE'),context.getZMILangStr('BTN_SAVE'))
+html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button> '%(context.getZMILangStr('BTN_CANCEL'),context.getZMILangStr('BTN_CANCEL'))
 html += '</div>'
 html += '</div><!-- .form-group -->'
 

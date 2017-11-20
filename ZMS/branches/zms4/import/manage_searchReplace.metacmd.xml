@@ -59,8 +59,8 @@ else:
 	print '</div><!-- .form-group -->'
 	print '<div class="form-group">'
 	print '<div class="controls save">'
-	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_EXECUTE'),'utf-8'),unicode(context.getZMILangStr('BTN_EXECUTE'),'utf-8'))
-	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
+	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(context.getZMILangStr('BTN_EXECUTE'),context.getZMILangStr('BTN_EXECUTE'))
+	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(context.getZMILangStr('BTN_CANCEL'),context.getZMILangStr('BTN_CANCEL'))
 	print '</div>'
 	print '</div><!-- .form-group -->'
 

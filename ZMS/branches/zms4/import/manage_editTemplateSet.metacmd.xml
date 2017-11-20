@@ -466,13 +466,9 @@ function zmiCompileLesscBtnClick(btn) {
 </script>
 
 			<div class="pull-left">
-					<span id="save_btn" class="btn btn-default" onclick="zmiSaveBtnClick(this);" tal:attributes="title python:unicode(here.getZMILangStr('BTN_SAVE'),'utf-8')">
+					<span id="save_btn" class="btn btn-default" onclick="zmiSaveBtnClick(this);" tal:attributes="title python:here.getZMILangStr('BTN_SAVE')">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-save')"></tal:block>
-						<tal:block tal:content="python:unicode(here.getZMILangStr('BTN_SAVE'),'utf-8')"></tal:block>
-					</span>
-					<span id="compile_lessc_btn" class="btn btn-default" onclick="zmiCompileLesscBtnClick(this);" title="Compile {less}" tal:condition="python:len(here.getConfProperty('InstalledProducts.lesscss',''))>0">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block>
-						Compile {less}
+						<tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')"></tal:block>
 					</span>
 			</div><!-- .pull-left -->
 			<div class="pull-right">

@@ -44,7 +44,7 @@ def manage_addMultiUpload(self):
 			##################
 			if content_type == 'text/html':
 				newobj = self.manage_addZMSCustom('ZMSTextarea',{ 'id_prefix':id_prefix, 'text':file, 'format':'plain_html', },request)
-				text = unicode(str(data),'latin-1').encode('utf-8')
+				text = data
 				# Post-Process HTML
 				i = text.lower().find('<body')
 				if i >= 0:

@@ -43,7 +43,7 @@ def manage_addClient(self):
 		html += '<div class="col-sm-9"><input class="form-control" name="id" type="text" size="25" value="client0"></div>'
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group">'
-		html += '<label for="titlealt" class="col-sm-3 control-label mandatory">%s</label>'%(unicode(self.getZMILangStr('ATTR_TITLEALT'),'utf-8'))
+		html += '<label for="titlealt" class="col-sm-3 control-label mandatory">%s</label>'%(self.getZMILangStr('ATTR_TITLEALT'))
 		html += '<div class="col-sm-9"><input class="form-control" name="titlealt" type="text" size="80" value="Client0 home"></div>'
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group">'
@@ -51,13 +51,13 @@ def manage_addClient(self):
 		html += '<div class="col-sm-9"><input class="form-control" name="title" type="text" size="50" value="Client0 - Python-based contentmanagement system for science, technology and medicine"></div>'
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group">'
-		html += '<label for="titlealt" class="col-sm-3 control-label">%s</label>'%(unicode(self.getZMILangStr('TAB_CONFIGURATION'),'utf-8'))
-		html += '<div class="col-sm-9"><input name="acquire:int" type="checkbox" value="1" checked="checked"> %s</div>'%(unicode(self.getZMILangStr('BTN_ACQUIRE'),'utf-8'))
+		html += '<label for="titlealt" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_CONFIGURATION'))
+		html += '<div class="col-sm-9"><input name="acquire:int" type="checkbox" value="1" checked="checked"> %s</div>'%(self.getZMILangStr('BTN_ACQUIRE'))
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group">'
 		html += '<div class="controls save">'
-		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_INSERT'),'utf-8'),unicode(self.getZMILangStr('BTN_INSERT'),'utf-8'))
-		html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'))
+		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(self.getZMILangStr('BTN_INSERT'),self.getZMILangStr('BTN_INSERT'))
+		html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
 		html += '</div>'
 		html += '</div><!-- .form-group -->'
 

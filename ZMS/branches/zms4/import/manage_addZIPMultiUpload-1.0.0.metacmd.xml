@@ -68,8 +68,8 @@ def manage_addZIPMultiUpload(self):
 
 		html += '<div class="form-group">'
 		html += '<div class="controls save">'
-		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'),unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
-		html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'))
+		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'))
+		html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
 		html += '</div>'
 		html += '</div><!-- .form-group -->'
 
@@ -110,7 +110,6 @@ def manage_addZIPMultiUpload(self):
 						i = text.lower().find('</body')
 						if i >= 0:
 							text = text[:i]
-					text = unicode(text,'latin-1').encode('utf-8')
 					container.manage_addZMSCustom('ZMSTextarea',{ \
 															'id_prefix':id_prefix, \
 															'text':text, \

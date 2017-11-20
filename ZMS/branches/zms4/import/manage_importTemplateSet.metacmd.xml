@@ -79,8 +79,8 @@ if request.form.get('btn')==context.getZMILangStr('BTN_IMPORT') and request.form
 	print '</table>'
 	print '<div class="form-group">'
 	print '<div class="controls save">'
-	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_IMPORT'),'utf-8'),unicode(context.getZMILangStr('BTN_IMPORT'),'utf-8'))
-	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
+	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(context.getZMILangStr('BTN_IMPORT'),context.getZMILangStr('BTN_IMPORT'))
+	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(context.getZMILangStr('BTN_CANCEL'),context.getZMILangStr('BTN_CANCEL'))
 	print '</div>'
 	print '</div><!-- .form-group -->'
 
@@ -152,7 +152,7 @@ else:
 		print '<tr valign="middle">'
 		print '<td>&nbsp;</td>'
 		print '<td>'
-		print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_DELETE'),'utf-8'),unicode(context.getZMILangStr('BTN_DELETE'),'utf-8'))
+		print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(context.getZMILangStr('BTN_DELETE'),context.getZMILangStr('BTN_DELETE'))
 		print '</td>'
 		print '</tr>'
 		print '<tr valign="middle">'
@@ -170,8 +170,8 @@ else:
 	print '</table>'
 	print '<div class="form-group">'
 	print '<div class="controls save">'
-	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_IMPORT'),'utf-8'),unicode(context.getZMILangStr('BTN_IMPORT'),'utf-8'))
-	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
+	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(context.getZMILangStr('BTN_IMPORT'),context.getZMILangStr('BTN_IMPORT'))
+	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(context.getZMILangStr('BTN_CANCEL'),context.getZMILangStr('BTN_CANCEL'))
 	print '</div>'
 	print '</div><!-- .form-group -->'
 

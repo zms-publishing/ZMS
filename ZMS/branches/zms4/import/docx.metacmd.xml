@@ -319,7 +319,7 @@ def html2docbook(html):
     html = html.replace('  ',' ')
   docbookxml = process_paragraphs(html)
   docbookxml = process_images(docbookxml)
-  return unicode(docbookxml).encode('utf-8')
+  return docbookxml
 
 def manage_exportDocx( self):
   request = self.REQUEST
@@ -509,8 +509,8 @@ def manage_importDocx( self):
   html += '</div><!-- .form-group -->'
   html += '<div class="form-group">'
   html += '<div class="controls save">'
-  html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'),unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
-  html += '<button type="button" name="btn" class="btn btn-default" value="return %s" onclick="btn_execute_click()">%s</button> '%(unicode(self.getZMILangStr('BTN_EXECUTE'),'utf-8'),unicode(self.getZMILangStr('BTN_EXECUTE'),'utf-8'))
+  html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'))
+  html += '<button type="button" name="btn" class="btn btn-default" value="return %s" onclick="btn_execute_click()">%s</button> '%(self.getZMILangStr('BTN_EXECUTE'),self.getZMILangStr('BTN_EXECUTE'))
   html += '</div>'
   html += '</div><!-- .form-group -->'
   

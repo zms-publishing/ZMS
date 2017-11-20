@@ -221,7 +221,7 @@
 										tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:['%s (%s)'%(objAttr['id'],objAttr['type']),errors][len(errors)>0];
 											class python:' '.join(['form-control','input-sm']+objAttr['type'].lower().split(' ')+[[],['bg-danger']][len(errors)>0]);
 											style python:'\073'.join([[],['color:#a94442','background:#fee']][len(errors)>0]);
-											data-style python:'background: #eee url(%s) 6px 6px no-repeat no-repeat'%(ob.icon);
+											data-class python:'icon-cogs';
 											data-dblclickhandler python:'window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),'%s (%s)'%(objAttr['id'],objAttr['type']))"
 										tal:content="readData">ob.data</textarea>
 							</div>

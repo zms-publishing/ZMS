@@ -13,7 +13,7 @@
 <header>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <a class="navbar-brand" href="#" onclick="window.open('http://www.zms-publishing.com');" title="ZMS3 - Python-based Content Management System for Science, Technology and Medicine">
-            <span class="product">ZMS3</span>
+            <span class="product">ZMS4</span>
             <span class="slogan">Python-based Content Management System for Science, Technology and Medicine</span>
         </a>
     </div><!-- .navbar -->
@@ -180,7 +180,8 @@ $ZMI.registerReady(function() {
 
 <footer>
 	<div class="pull-left" title="&#169; 2000-2017 HOFFMANN+LIEBENBERG">
-		<a href="http://www.zms-publishing.com" target="_blank">ZMS 3.3</a> Python-based Content Management System for Science, Technology and Medicine
+		<a href="http://www.zms-publishing.com" title="&#169; 2000-2017 HOFFMANN+LIEBENBERG" target="_blank">ZMS 4beta</a>
+		Python-based Content Management System for Science, Technology and Medicine
 	</div><!-- .pull-left -->
 	<div class="clearfix"></div><!-- .clearfix -->
 </footer>

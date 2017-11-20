@@ -144,11 +144,11 @@
 		</div><!-- .container -->
 
 	<tal:block tal:define="
-			childNodes python:filter(lambda x:not x.isResource(request),zmscontext.filteredChildNodes(request));
-			childElements python:filter(lambda x:x.isPageElement(),childNodes);
-			childDocuments python:filter(lambda x:x.meta_id in ['ZMSDocument'],childNodes);
+			childNodes python:[x for x in zmscontext.filteredChildNodes(request) if not x.isResource(request)];
+			childElements python:[x for x in childNodes if x.isPageElement()];
+			childDocuments python:[x for x in childNodes if x.meta_id in ['ZMSDocument']];
 			article python:int(len(childNodes)==len(childDocuments));
-			childFolders python:filter(lambda x:not x.isResource(request),zmscontext.filteredChildNodes(request,['ZMSFolder']+[['ZMSDocument'],[]][article]))">
+			childFolders python:[x for x in zmscontext.filteredChildNodes(request,['ZMSFolder']+[['ZMSDocument'],[]][article]) if not x.isResource(request)]">
 	<div class="container bs-docs-container">
 		<div class="row">
 			<div class="col-md-9" role="main">
@@ -196,7 +196,6 @@
 		</div><!-- /.row -->
 	</div><!-- /.container -->
 	</tal:block>
-
 
 		<footer class="bs-docs-footer" role="contentinfo">
 			<div class="container">

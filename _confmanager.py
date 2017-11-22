@@ -39,6 +39,7 @@ except ImportError:
   import configparser as ConfigParser
 # import Globals
 import OFS.misc_
+import importlib
 import operator
 import os
 import stat
@@ -89,20 +90,7 @@ class ConfDict(object):
       d = name.rfind(".")
       modulname = name[:d]
       clazzname = name[d+1:len(name)]
-      print ("name=",name)
-      print ("modulname=",modulname)
-      print ("clazzname=",clazzname)
-      try: __import__(".", globals(), locals(), [name])
-      except: print("failed",1)
-      try: __import__(".", globals(), locals(), [modulname])
-      except: print("failed",2)
-      try: __import__(modulname, globals(), locals(), [name])
-      except: print("failed",3)
-      try: __import__(modulname, globals(), locals(), [clazzname])
-      except: print("failed",4)
-      # FIXME.2: import ZMSModule
-      # FIXME.3: from . import ZMSModule
-      mod = __import__(name[0:d], globals(), locals(), [clazzname])
+      mod = importlib.import_module('Products.zms.'+modulname)
       clazz = getattr(mod, clazzname)
       return clazz
 

@@ -112,7 +112,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # -------------------
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
-      return map( lambda x: self.operator_setitem( x, 'action', '../'+x['action']), copy.deepcopy(self.aq_parent.manage_options()))
+      return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
 
     def manage_sub_options(self):
       return (
@@ -234,10 +234,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def getConnectors(self):
       updateVersion(self)
-      l = self.objectValues(self.getConnectorMetaTypes())
-      l = sorted(map(lambda x:(x.id, x), l))
-      l = map(lambda x:x[1], l)
-      return l
+      return sorted(self.objectValues(self.getConnectorMetaTypes()),key=lambda x:x.id)
 
 
     # --------------------------------------------------------------------------
@@ -271,7 +268,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         d['meta_id'] = node.meta_id
         d['custom'] = d.get('custom', {})
         d['custom']['breadcrumbs'] = []
-        for obj in filter(lambda x:x.isPage(), node.breadcrumbs_obj_path()[1:-1]):
+        for obj in [x for x in node.breadcrumbs_obj_path()[1:-1] if x.isPage()]:
           d['custom']['breadcrumbs'].append({
               '__nodeName__': 'breadcrumb',
               'loc': '/'.join(obj.getPhysicalPath()),
@@ -293,7 +290,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
                   xml += to_xml(i)
                   xml += '</%s>'%i['__nodeName__']
               elif isinstance(o, dict):
-                for k in filter(lambda x:x!='__nodeName__', o.keys()):
+                for k in [x for x in o if x != '__nodeName__']:
                   xml += '<%s>'%k
                   xml += to_xml(o[k])
                   xml += '</%s>'%k
@@ -346,7 +343,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
 
       self.REQUEST.set('lang', self.REQUEST.get('lang', self.getPrimaryLanguage()))
       result.append('%i objects cataloged'%len(traverse(root, recursive)))
-      return ', '.join(filter(lambda x:x, result))
+      return ', '.join([x for x in result if x])
 
 
     ############################################################################
@@ -361,7 +358,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
         for connector in self.getConnectors():
           result.append(connector.reindex_self(uid))
         result.append('done!')
-        return ', '.join(filter(lambda x:x, result))+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+        return ', '.join([x for x in result if x])+' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
 
 
     ############################################################################

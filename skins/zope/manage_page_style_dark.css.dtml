@@ -162,6 +162,22 @@ table td {
 .table.main-table tr.ZMS:hover {
 	background-color:rgba(0, 136, 204, 0.33) !important;
 }
+
+
+/* FORMS */
+
+form {
+	margin:0;
+}
+fieldset legend {
+	color: white;
+	font-size: 100%;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+	padding-top: 2em;
+	display: block;
+	width: 100%;
+}
 .form-control {
 	background-color: transparent;
 	font-size:15px;
@@ -177,9 +193,6 @@ input.form-element {
 	margin-right: .5em;
 }
 
-form {
-	margin:0;
-}
 form.row {
 	margin:0 -30px 0 -30px;
 }

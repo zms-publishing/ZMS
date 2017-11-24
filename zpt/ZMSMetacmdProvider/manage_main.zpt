@@ -9,7 +9,7 @@
 		metaCmdIds python:here.getMetaCmdIds();
 		metaCmds python:[here.getMetaCmd(x) for x in metaCmdIds]">
 
-<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]]+[{'action':'?id=%s'%x['id'],'label':x['name']} for x in metaCmds if x['id']==request.get('id')])">zmi_breadcrumbs</tal:block>
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[1]]+[{'action':'?id=%s'%x['id'],'label':x['name']} for x in metaCmds if x['id']==request.get('id')])">zmi_breadcrumbs</tal:block>
 
 <div class="ui-helper-hidden" tal:condition="python:request.get('id') in metaCmdIds">
 	<div id="editObj" class="inner" tal:define="global metaCmd python:here.getMetaCmd(request['id'])">

@@ -73,7 +73,7 @@ return [{<br/>
 									onchange="if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
 								<option value="">Select type to add...</option>
 								<tal:block tal:repeat="meta_type meta_types">
-									<option tal:condition="python:len(filter(lambda x:x.meta_type==meta_type,connectors))==0" tal:attributes="value meta_type" tal:content="meta_type">the meta_type</option>
+									<option tal:condition="python:len([x for x in connectors if x.meta_type==meta_type])==0" tal:attributes="value meta_type" tal:content="meta_type">the meta_type</option>
 								</tal:block>
 							</select>
 							<span class="input-group-btn">
@@ -97,9 +97,9 @@ return [{<br/>
 
 <tal:block tal:define="global
 		metaObjIds python:here.getMetaobjIds();
-		metaObjs python:filter(lambda x:x['id'] not in ['ZMS'] and x['type'] in ['ZMSPackage','ZMSDocument','ZMSObject'],map(lambda x: here.getMetaobj(x), metaObjIds));
-		metaObjPackages python:here.sort_list(['']+map(lambda x: x['id'],filter(lambda x: x['type']=='ZMSPackage', metaObjs)));
-		metaObjPackages2 python:filter(lambda x: x not in metaObjPackages, map(lambda x: x.get('package'), metaObjs))">
+		metaObjs python:[x for x in [here.getMetaobj(y) for y in metaObjIds] if x['id'] not in ['ZMS'] and x['type'] in ['ZMSPackage','ZMSDocument','ZMSObject']];
+		metaObjPackages python:here.sort_list(['']+[x['id'] for x in metaObjs if x['type']=='ZMSPackage']);
+		metaObjPackages2 python:[x.get('package') for x in metaObjs if x.get('package') not in metaObjPackages]">
 
 	<table class="table" style="width:80%;border:1px solid #CCC;">
 	<colgroup>
@@ -123,7 +123,7 @@ return [{<br/>
 	<tbody>
 	<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
 		<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
-			<tr tal:condition="python:len(filter(lambda x:x.get('package')==metaObjPackage,metaObjs))>0" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
+			<tr tal:condition="python:len([x for x in metaObjs if x.get('package')==metaObjPackage])>0" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
 				<td colspan="2">
 					<tal:block tal:condition="python:metaObjPackage">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
@@ -152,8 +152,8 @@ return [{<br/>
 								map(lambda x:'%s(%s)'%(x['id'],x['type']),
 									map(lambda x:here.getMetaobjAttr(metaObj['id'],x['id']),
 										filter(lambda x:x['id'] not in ['icon','icon_clazz','levelnfc'] and x['type'] not in ['*','image','file','delimiter','hint','interface'],metaObj['attrs']))));
-							checked python:['','checked'][int('catalog_index' in map(lambda x:x['id'],metaObj['attrs']))];
-							disabled python:['','disabled'][int('catalog_index' in map(lambda x:x['id'],metaObj['attrs']))]" onclick="toggleMetaobj()"/>
+							checked python:['','checked'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])];
+							disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()"/>
 				</td>
 				<td>
 					<span tal:on-error="string:ERROR" tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</span>

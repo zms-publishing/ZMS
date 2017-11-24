@@ -19,26 +19,22 @@
 
 # Imports.
 from builtins import object
-from future import standard_library
-standard_library.install_aliases()
-from builtins import map
-from builtins import filter
 from builtins import range
 from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog import ZCatalog
+from zope.interface import implementer
 import copy
 import sys
 import time
 import urllib.request, urllib.parse, urllib.error
-import zope.interface
 import zExceptions
 # Product Imports.
-import standard
-import IZMSCatalogConnector
-import ZMSZCatalogAdapter
-import ZMSItem
-import _globals
+from . import standard
+from . import IZMSCatalogConnector
+from . import ZMSZCatalogAdapter
+from . import ZMSItem
+from . import _globals
 
 
 extra_column_ids = ['loc', 'index_html', 'custom']
@@ -145,7 +141,7 @@ def recreateCatalog(self, zcm, lang):
   addLexicon( self, zcatalog)
   
   #-- Add columns
-  for index_name in ['id', 'meta_id']+map(lambda x:'zcat_column_%s'%x, extra_column_ids):
+  for index_name in ['id', 'meta_id']+['zcat_column_%s'%x for x in extra_column_ids]:
     zcatalog.manage_addColumn(index_name)
   
   #-- Add Indexes (incl. Columns)
@@ -193,10 +189,10 @@ def recreateCatalog(self, zcm, lang):
 ###
 ################################################################################
 ################################################################################
+@implementer(
+        IZMSCatalogConnector.IZMSCatalogConnector)
 class ZMSZCatalogConnector(
         ZMSItem.ZMSItem):
-    zope.interface.implements(
-        IZMSCatalogConnector.IZMSCatalogConnector)
 
     # Properties.
     # -----------
@@ -396,7 +392,7 @@ class ZMSZCatalogConnector(
         data_record_id = item.data_record_id_
         path = zcatalog.getpath(data_record_id)
         # Append to valid results.
-        if len(filter(lambda x: x[1]['path']==path, results)) == 0:
+        if len([x for x in results if x[1]['path']==path]) == 0:
           result = {}
           result['path'] = path
           result['score'] = intValue(item.data_record_score_)
@@ -413,7 +409,7 @@ class ZMSZCatalogConnector(
       results.reverse()
       
       # Append search-results.
-      rtn.extend(map(lambda ob: ob[1], results))
+      rtn.extend([x[1] for x in results])
       
       # Return list of search-results in correct sort-order.
       return rtn
@@ -498,7 +494,7 @@ class ZMSZCatalogConnector(
           self._update(node, d)
         for root in [container]+self.getPortalClients():
           result.append(zcm.get_sitemap(cb, root, recursive=True))
-      return ', '.join(filter(lambda x:x, result))
+      return ', '.join([x for x in result])
 
 
     # --------------------------------------------------------------------------
@@ -534,10 +530,10 @@ class ZMSZCatalogConnector(
           result.extend(lresult)
           # Log changes.
           zcatalog = getZCatalog(self, lang)
-          writeChangesLog(zcatalog, '[reindex_self]: '+'\n'.join(filter(lambda x:x, lresult)))
+          writeChangesLog(zcatalog, '[reindex_self]: '+'\n'.join([x for x in lresult]))
       except:
         result.append(standard.writeError(self, 'can\'t reindex_self'))
-      return ', '.join(filter(lambda x:x, result))
+      return ', '.join([x for x in result])
 
 
     # --------------------------------------------------------------------------

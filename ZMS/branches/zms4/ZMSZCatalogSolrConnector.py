@@ -18,20 +18,16 @@
 
 
 # Imports.
-from future import standard_library
-standard_library.install_aliases()
-from builtins import map
-from builtins import filter
 from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from zope.interface import implementer
 import urllib.request, urllib.parse, urllib.error
-import zope.interface
 # Product Imports.
-import standard
-import _xmllib
-import IZMSCatalogConnector
-import ZMSZCatalogAdapter
-import ZMSItem
+from . import standard
+from . import _xmllib
+from . import IZMSCatalogConnector
+from . import ZMSZCatalogAdapter
+from . import ZMSItem
 
 
 ################################################################################
@@ -41,10 +37,10 @@ import ZMSItem
 ###
 ################################################################################
 ################################################################################
+@implementer(
+        IZMSCatalogConnector.IZMSCatalogConnector)
 class ZMSZCatalogSolrConnector(
         ZMSItem.ZMSItem):
-    zope.interface.implements(
-        IZMSCatalogConnector.IZMSCatalogConnector)
 
     # Properties.
     # -----------
@@ -97,10 +93,10 @@ class ZMSZCatalogSolrConnector(
       p['start'] = page_index
       p['rows'] = page_size
       p['defType'] = 'edismax'
-      p['qf'] = ' '.join(map(lambda x:'%s^%s'%(self._get_field_name(x), str(attrs[x].get('boost', 1.0))), attrs.keys()))
+      p['qf'] = ' '.join(['%s^%s'%(self._get_field_name(x), str(attrs[x].get('boost', 1.0))) for x in attrs])
       p['hl'] = 'true'
       p['hl.fragsize']  = self.getConfProperty('solr.select.hl.fragsize', 200)
-      p['hl.fl'] = self.getConfProperty('solr.select.hl.fl', ','.join(map(lambda x:self._get_field_name(x), attrs.keys())))
+      p['hl.fl'] = self.getConfProperty('solr.select.hl.fl', ','.join([self._get_field_name(x) for x in attrs]))
       p['hl.simple.pre'] = self.getConfProperty('solr.select.hl.simple.pre', '<span class="highlight">')
       p['hl.simple.post'] = self.getConfProperty('solr.select.hl.simple.post', '</span>')
       solr_url = self.getConfProperty('solr.url', 'http://localhost:8983/solr')
@@ -138,7 +134,7 @@ class ZMSZCatalogSolrConnector(
     def __get_delete_xml(self, query='*:*', attrs={}):
       xml =  []
       xml.append('<?xml version="1.0"?>')
-      xml.append('<delete'+' '.join(['']+map(lambda x:'%s="%s"'%(x, str(attrs[x])), attrs))+'>')
+      xml.append('<delete'+' '.join(['']+['%s="%s"'%(x, str(attrs[x])) for x in attrs])+'>')
       xml.append('<query>%s</query>'%query)
       xml.append('</delete>')
       return '\n'.join(xml)
@@ -169,7 +165,7 @@ class ZMSZCatalogSolrConnector(
       attrs = zcm.getAttrs()
       xml =  []
       xml.append('<?xml version="1.0"?>')
-      xml.append('<add'+' '.join(['']+map(lambda x:'%s="%s"'%(x, str(xmlattrs[x])), xmlattrs))+'>')
+      xml.append('<add'+' '.join(['']+map(['%s="%s"'%(x, str(xmlattrs[x])) for x in xmlattrs])+'>')
       def cb(node, d):
         xml.append('<doc>')
         text = []
@@ -187,7 +183,7 @@ class ZMSZCatalogSolrConnector(
               if type(v) in (str, str):
                 name = '%s_s'%k
           xml.append('<field name="%s" boost="%.1f">%s</field>'%(name, boost, v))
-        xml.append('<field name="text_t">%s</field>'%' '.join(filter(lambda x:len(x)>0, text)))
+        xml.append('<field name="text_t">%s</field>'%' '.join([x for x in text if x]))
         xml.append('</doc>')
       zcm.get_sitemap(cb, node, recursive)
       xml.append('</add>')
@@ -218,7 +214,7 @@ class ZMSZCatalogSolrConnector(
         result.append(self._update(self.__get_add_xml(root, recursive=True)))
       result.append(self._update(self.__get_command_xml('commit')))
       result.append(self._update(self.__get_command_xml('optimize')))
-      return ', '.join(filter(lambda x:x, result))
+      return ', '.join([x for x in result if x])
 
 
     # --------------------------------------------------------------------------
@@ -235,7 +231,7 @@ class ZMSZCatalogSolrConnector(
         result.append(self._update(self.__get_command_xml('optimize')))
       except:
         result.append(standard.writeError(self, 'can\'t reindex_self'))
-      return ', '.join(filter(lambda x:x, result))
+      return ', '.join([x for x in result if x])
 
 
     # --------------------------------------------------------------------------

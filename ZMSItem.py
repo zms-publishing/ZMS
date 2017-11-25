@@ -159,16 +159,16 @@ class ZMSItem(
       if request.form.has_key('zmi-manage-system'):
         request.SESSION.set('zmi-manage-system',int(request.get('zmi-manage-system')))
       # avoid declarative urls
-      physical_path = self.getPhysicalPath()
-      path_to_handle = request['URL0'][len(request['BASE0']):].split('/')
-      path = path_to_handle[:-1]
-      if self.getDocumentElement().id in path and not path[-1] in self.objectIds() and len(filter(lambda x:x.find('.')>0 or x.startswith('manage_'),path))==0:
-        for i in range(len(path)):
-          if path[:-(i+1)] != physical_path[:-(i+1)]:
-            path[:-(i+1)] = physical_path[:-(i+1)]
-        new_path = path+[path_to_handle[-1]]
-        if path_to_handle != new_path:
-          request.RESPONSE.redirect('/'.join(new_path))
+      path_to_handle = request['URL0'][len(request['BASE0']):]
+      path = path_to_handle.split('/')
+      if not path[-2] in self.objectIds() \
+          and len([x for x in path[:-1] if x.find('.')>0 or x.startswith('manage')])==0:
+        new_path = self.absolute_url()+'/'+path[-1]
+        if not new_path.endswith(path_to_handle):
+          qs = request['QUERY_STRING']
+          if qs:
+            new_path += '?' + qs
+          request.RESPONSE.redirect(new_path)
 
     def f_standard_html_request(self, *args, **kwargs):
       request = self.REQUEST

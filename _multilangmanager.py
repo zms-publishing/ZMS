@@ -568,7 +568,7 @@ class MultiLanguageManager(object):
     def getLangDict(self):
       lang_dict = self.get_lang_dict()
       lang_list = []
-      keys = sorted(lang_dict.keys())
+      keys = sorted(lang_dict)
       for key in keys:
         d = lang_dict[key]
         d['key'] = key

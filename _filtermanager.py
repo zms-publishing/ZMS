@@ -655,8 +655,7 @@ class FilterManager(object):
       if portalMaster is not None:
         ids.extend( filter( lambda x: x not in ids, portalMaster.getProcessIds()))
       if sort:
-        mapping = sorted(map(lambda x: (self.getProcess(x)['name'], x), ids))
-        ids = map(lambda x: x[1], mapping)
+        ids = sorted(ids,key=lambda x:self.getProcess(x)['name'])
       return ids
 
     # --------------------------------------------------------------------------
@@ -698,10 +697,9 @@ class FilterManager(object):
     # --------------------------------------------------------------------------
     def getFilterIds(self, sort=1):
       obs = getRawFilters(self)
-      ids = obs.keys()
+      ids = list(obs.keys())
       if sort:
-        mapping = sorted(map(lambda x: (self.getFilter(x)['name'], x), ids))
-        ids = map(lambda x: x[1], mapping)
+        ids = sorted(ids,key=lambda x:self.getProcess(x)['name'])
       return ids
 
 

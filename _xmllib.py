@@ -571,7 +571,7 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
 
     # Dictionaries
     elif isinstance(value, dict):
-      keys = sorted(value.keys())
+      keys = sorted(value)
       xml.append('\n' + indentlevel * INDENTSTR)
       xml.append('<dictionary>')
       indentstr = '\n' + (indentlevel + 1) * INDENTSTR

@@ -118,8 +118,7 @@ class ZMSTextformatManager(object):
     # --------------------------------------------------------------------------
     def getTextFormats(self, REQUEST):
       l = [self.getTextFormat(self.textformats[x*2], REQUEST) for x in range(len(self.textformats)//2)]
-      l = sorted([(x.getDisplay(), x) for x in l])
-      return [x[1] for x in l]
+      return sorted(l,key=lambda x:x.getDisplay())
 
 
     # --------------------------------------------------------------------------

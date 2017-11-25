@@ -56,7 +56,7 @@ class EnumManager(object):
     v = builder.parse(xml)
     xml.close()
     if isinstance(v, dict):
-      l = sorted(map(lambda x: (v[x], x), v.keys()))
+      l = sorted([(v[x], x) for x in v])
       v = []
       for i in l:
         v.append([i[1], i[0]])

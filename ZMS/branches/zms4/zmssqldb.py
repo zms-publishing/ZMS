@@ -1972,8 +1972,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                         d[ xk[0]][ xk[-1]][ xk[1]] = xv
               for i in c:
                 l = d[i].values()
-                l = sorted(map( lambda x: (x.get('index', l.index(x)), x), l))
-                l = map( lambda x: x[1], l)
+                l = sorted(x,key=lambda x:x.get('index', l.index(x)))
                 for x in l:
                   if not x.get('display'):
                     x['hide'] = 1
@@ -1981,7 +1980,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                   except: pass
                   try: del x['index']
                   except: pass
-                l = filter( lambda x: len(x.keys()) > 0, l)
+                l = [x for x in l if len(x) > 0]
                 d[i] = l
               col[ t] = d
           cols.append( ( col['index'], col))

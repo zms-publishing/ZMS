@@ -465,14 +465,13 @@ class ZMSMetaobjManager(object):
     # --------------------------------------------------------------------------
     def getMetaobjIds(self, sort=False, excl_ids=[]):
       obs = self.__get_metaobjs__()
-      ids = [obs[x]['id'] for x in obs.keys()]
+      ids = [obs[x]['id'] for x in obs]
       # exclude ids
       if excl_ids:
         ids = [x for x in ids if x not in excl_ids]
       # sort
       if sort:
-        mapping = sorted([(self.display_type(self.REQUEST, x), x) for x in ids])
-        ids = [x[1] for x in mapping]
+        ids = sorted(ids,key=lambda x:self.display_type(self.REQUEST, x))
       return ids
 
 

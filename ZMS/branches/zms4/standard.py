@@ -1506,7 +1506,7 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
         + (['', '\n'][formatted]+(['', '\t'][formatted]*level)+',').join([str_json(x, encoding, errors, formatted, level+1) for x in i]) \
         + ']'
   elif isinstance(i, dict):
-    k = sorted(i.keys())
+    k = sorted(i)
     return '{' \
         + (['', '\n'][formatted]+(['', '\t'][formatted]*level)+',').join(['"%s":%s'%(x, str_json(i[x], encoding, errors, formatted, level+1)) for x in k]) \
         + '}'

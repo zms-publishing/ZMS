@@ -228,9 +228,8 @@ class ZMSRepositoryManager(
         py.append('\tpython-representation of %s'%o['id'])
         py.append('\t"""')
         py.append('')
-        e = sorted(filter(lambda x:not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list), o.keys()))
-        keys = filter(lambda x:not x.startswith('__') and x not in e, o.keys())
-        keys.sort()
+        e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and isinstance(o[x], list)])
+        keys = sorted([x for x in o if not x.startswith('__') and x not in e])
         for k in keys:
           v = o.get(k)
           if v:

@@ -39,6 +39,7 @@ import zExceptions
 # Product Imports.
 from . import standard
 from . import pilutil
+from . import zopeutil
 from . import _fileutil
 from . import _globals
 
@@ -581,8 +582,13 @@ class MyBlob(object):
             # we served a chunk of content in response to a range request.
             return ''
         
-        standard.set_response_headers(self.getFilename(), self.getContentType(), self.get_size(), REQUEST)
-        RESPONSE.setHeader('Last-Modified', rfc1123_date(parent._p_mtime))
+        # if blob-object came from call of py-attribute by path-handler check content-disposition and content-type.
+        if not (REPONSE.getHeader('Content-Disposition') and RESPONSE.getHeader('Content-Type')):
+          standard.set_response_headers(self.getFilename(),self.getContentType(),self.get_size(),REQUEST)
+        else:
+          RESPONSE.setHeader('Content-Size',self.get_size())
+        if REQUEST.get('setLastModifiedHeader',True):
+          RESPONSE.setHeader('Last-Modified', rfc1123_date(parent._p_mtime))
         cacheable = not REQUEST.get('preview') == 'preview'
         if cacheable: 
           cacheable = parent.hasPublicAccess()
@@ -591,7 +597,7 @@ class MyBlob(object):
           try:
             name = 'hasCustomPublicAccess'
             if hasattr(parent, name):
-              v = getattr(parent, name)(context=parent, REQUEST=REQUEST)
+              v = zopeutil.callObject(getattr(parent,name),parent)
               if isinstance(v, bool):
                 cacheable = cacheable and v
           except:

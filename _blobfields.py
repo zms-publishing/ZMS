@@ -32,6 +32,7 @@ import zExceptions
 # Product Imports.
 import standard
 import pilutil
+import zopeutil
 import _fileutil
 import _globals
 
@@ -546,7 +547,7 @@ class MyBlob:
           try:
             name = 'hasCustomAccess'
             if hasattr(parent,name):
-              v = getattr(parent,name)(context=parent,REQUEST=REQUEST)
+              v = zopeutil.callObject(getattr(parent,name),parent)
               if type( v) is bool:
                 access = access and v
               elif type( v) is int and v == 404:
@@ -571,8 +572,13 @@ class MyBlob:
             # we served a chunk of content in response to a range request.
             return ''
         
-        standard.set_response_headers(self.getFilename(),self.getContentType(),self.get_size(),REQUEST)
-        RESPONSE.setHeader('Last-Modified', rfc1123_date(parent._p_mtime))
+        # if blob-object came from call of py-attribute by path-handler check content-disposition and content-type.
+        if not (REPONSE.getHeader('Content-Disposition') and RESPONSE.getHeader('Content-Type')):
+          standard.set_response_headers(self.getFilename(),self.getContentType(),self.get_size(),REQUEST)
+        else:
+          RESPONSE.setHeader('Content-Size',self.get_size())
+        if REQUEST.get('setLastModifiedHeader',True):
+          RESPONSE.setHeader('Last-Modified', rfc1123_date(parent._p_mtime))
         cacheable = not REQUEST.get('preview') == 'preview'
         if cacheable: 
           cacheable = parent.hasPublicAccess()
@@ -581,7 +587,7 @@ class MyBlob:
           try:
             name = 'hasCustomPublicAccess'
             if hasattr(parent,name):
-              v = getattr(parent,name)(context=parent,REQUEST=REQUEST)
+              v = zopeutil.callObject(getattr(parent,name),parent)
               if type( v) is bool:
                 cacheable = cacheable and v
           except:

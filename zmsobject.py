@@ -1337,6 +1337,8 @@ class ZMSObject(ZMSItem.ZMSItem,
       sort_id = self.getSortId()
       self.setSortId(sort_id - 15)
       parent.normalizeSortIds(standard.id_prefix(self.id))
+      standard.triggerEvent(self,'onMoveObjUpEvt')
+      standard.triggerEvent(self,'onChangeObjEvt')
       # Return with message.
       message = self.getZMILangStr('MSG_MOVEDOBJUP')%("<i>%s</i>"%self.display_type(REQUEST))
       RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
@@ -1353,6 +1355,8 @@ class ZMSObject(ZMSItem.ZMSItem,
       sort_id = self.getSortId()
       self.setSortId(sort_id + 15)
       parent.normalizeSortIds(standard.id_prefix(self.id))
+      standard.triggerEvent(self,'onMoveObjDownEvt')
+      standard.triggerEvent(self,'onChangeObjEvt')
       # Return with message.
       message = self.getZMILangStr('MSG_MOVEDOBJDOWN')%("<i>%s</i>"%self.display_type(REQUEST))
       RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))

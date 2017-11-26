@@ -241,7 +241,9 @@ class CopySupport:
       oblist = self._get_obs(cp)
       
       # Paste objects.
+      standard.triggerEvent(self,'beforePasteObjsEvt')
       self.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
+      standard.triggerEvent(self,'afterPasteObjsEvt')
       
       # Sort order (I).
       self._set_sort_ids(ids=ids,op=op,REQUEST=REQUEST)

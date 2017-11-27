@@ -21,8 +21,6 @@ from __future__ import absolute_import
 # Imports.
 from builtins import object
 from builtins import str
-from builtins import filter
-from builtins import map
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.userfolder import UserFolder
 import copy
@@ -605,13 +603,40 @@ class AccessManager(AccessableContainer):
             login_attr = 'login'
             users.extend([x for x in userFldr.getUserNames() if x == search_term])
       return users
-  
-  
+    # --------------------------------------------------------------------------
+    #  AccessManager.getSearchableAttrs:
+    #
+    #  Return searchable attributes for current user-folder.
+    # --------------------------------------------------------------------------
+    def getSearchableAttrs(self):
+      attrs = []
+      def traverseUserFolders(context):
+        if context.meta_type == 'LDAPUserFolder':
+          for schema in context.getLDAPSchema():
+            name = schema[0]
+            label = schema[1]
+            attr = (name,'%s (%s)'%(label,name))
+            if attr not in attrs:
+              attrs.append(attr)
+        elif context.meta_type == 'Pluggable Auth Service':
+          name = 'login'
+          label = 'Login'
+          attr = (name,'%s (%s)'%(label,name))
+          if attr not in attrs:
+            attrs.append(attr)
+        # Traverse tree.
+        for childNode in context.objectValues():
+          traverseUserFolders(childNode)
+      traverseUserFolders(self.getUserFolder())
+      attrs = sorted(attrs,key=lambda x:x[1])
+      return attrs
+
+
     # --------------------------------------------------------------------------
     #  AccessManager.getValidUserids:
     # --------------------------------------------------------------------------
-    def getValidUserids(self, search_term='', without_node_check=True, exact_match=False):
-      encoding = self.getConfProperty('LDAPUserFolder.encoding', 'latin-1')
+    def getValidUserids(self, search_term='', search_term_param=None, without_node_check=True, exact_match=False):
+      encoding = self.getConfProperty('LDAPUserFolder.encoding','latin-1')
       local_userFldr = self.getUserFolder()
       columns = None
       records = []
@@ -620,21 +645,37 @@ class AccessManager(AccessableContainer):
       users = []
       if userFldr.meta_type == 'LDAPUserFolder':
         if search_term != '':
-          login_attr = self.getConfProperty('LDAPUserFolder.login_attr', userFldr.getProperty('_login_attr'))
-          users.extend(userFldr.findUser(search_param=login_attr, search_term=search_term))
+          login_attr = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
+          if exact_match:
+            search_param = login_attr
+          elif search_term_param:
+            search_param = search_term_param
+          else:
+            search_param = self.getConfProperty('LDAPUserFolder.uid_attr',login_attr)
+          users.extend(userFldr.findUser(search_param=search_param,search_term=search_term))
       elif userFldr.meta_type == 'Pluggable Auth Service':
         if search_term and search_term != '':
           login_attr = 'login'
-          for user in userFldr.searchUsers(login=search_term, id=None):
-            plugin = getattr(userFldr, user['pluginid'])
-            append = True
-            if plugin.meta_type == 'ZODB User Manager':
-              login_name = user[login_attr]
-              append = search_term == '' or \
-                (login_name.find(search_term) >= 0 and not exact_match) or \
-                (login_name == search_term and exact_match)
-            if append:
-              users.append(user)
+          if exact_match:
+            search_param = login_attr
+          elif search_term_param:
+            search_param = search_term_param
+          else:
+            search_param = self.getConfProperty('LDAPUserFolder.uid_attr',login_attr)
+          kw = {search_param:search_term}
+          usersDefs = userFldr.searchUsers(**kw)
+          
+          if exact_match:
+            users.extend([x for x in userDefs if x['login'] == search_term])
+          elif search_param != login_attr:
+            users.extend(usersDefs)
+            # get local users
+            for user in userFldr.searchUsers(login=search_term):
+              plugin = getattr(userFldr,user['pluginid'])
+              if plugin.meta_type == 'ZODB User Manager':
+                users.append(user)
+          else:
+            users.extend(usersDefs)
       else:
         login_attr = 'name'
         for userName in userFldr.getUserNames():
@@ -652,7 +693,7 @@ class AccessManager(AccessableContainer):
         d['user_id'] = login_name
         d['roles'] = []
         d['domains'] = []
-        extras = ['pluginid', 'givenName', 'sn', 'ou']
+        extras = self.getConfProperty('LDAPUserFolder.extras','pluginid,givenName,sn,ou').split(',')
         luf = None
         plugin = None
         _uid_attr = None
@@ -661,14 +702,17 @@ class AccessManager(AccessableContainer):
           luf = userFldr
         elif userFldr.meta_type == 'Pluggable Auth Service':
           pluginid = user['pluginid']
-          plugin = getattr(userFldr, pluginid)
+          plugin = getattr(userFldr,pluginid)
           if plugin.meta_type == 'LDAP Multi Plugin':
             for o in plugin.objectValues('LDAPUserFolder'):
               luf = o
               break
         if luf is not None:
-          _login_attr = self.getConfProperty('LDAPUserFolder.login_attr', luf.getProperty('_login_attr'))
-          _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr', luf.getProperty('_uid_attr'))
+          _login_attr = self.getConfProperty('LDAPUserFolder.login_attr',luf.getProperty('_login_attr'))
+          if exact_match:
+            _uid_attr = luf.getProperty('_uid_attr')
+          else:
+            _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',luf.getProperty('_uid_attr'))
           if _uid_attr != _login_attr:
             uid = user[_uid_attr]
         elif plugin is not None:
@@ -681,7 +725,7 @@ class AccessManager(AccessableContainer):
               import binascii
               uid = binascii.b2a_hex(buffer(uid))
           except:
-            standard.writeError(self, '[getValidUserids]: _uid_attr=%s'%_uid_attr)
+            standard.writeError(self,'[getValidUserids]: _uid_attr=%s'%_uid_attr)
           d['user_id'] = uid
           if len([x for x in c if x['id'] == 'user_id'])==0:
             c.append({'id':'user_id','name':_uid_attr.capitalize(),'type':'string'})
@@ -690,14 +734,14 @@ class AccessManager(AccessableContainer):
         for extra in user:
           if extra == 'pluginid':
             pluginid = user[extra]
-            plugin = getattr(userFldr, pluginid)
+            plugin = getattr(userFldr,pluginid)
             d['plugin'] = plugin
-            editurl = userFldr.absolute_url()+'/'+user.get('editurl', '%s/manage_main'%pluginid)
+            editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
             container = userFldr.aq_parent
-            v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl, '%s.%s (%s)'%(container.id, plugin.title_or_id(), plugin.meta_type), plugin.icon)
+            v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),plugin.icon)
             t = 'html'
           else:
-            v = str(user[extra], encoding).encode('utf-8')
+            v = unicode(user[extra],encoding).encode('utf-8')
             t = 'string'
           d[extra] = v
           if extra in extras and len([x for x in c if x['id'] == extra])==0:
@@ -716,7 +760,7 @@ class AccessManager(AccessableContainer):
     #  AccessManager.findUser:
     # --------------------------------------------------------------------------
     def findUser(self, name):
-      user = self.getValidUserids(search_term=name, exact_match=True)
+      user = self.getValidUserids(search_term=name,exact_match=True)
       if user is not None:
         userFldr = user['localUserFldr']
         # Change password?
@@ -726,7 +770,7 @@ class AccessManager(AccessableContainer):
           user['password'] = True
         # Details
         user['details'] = []
-        if 'user_id' in user:
+        if user.has_key('user_id'):
           name = 'user_id'
           label = 'User Id'
           value = user['user_id']
@@ -736,17 +780,17 @@ class AccessManager(AccessableContainer):
         if userFldr.meta_type == 'LDAPUserFolder':
           ldapUserFldr = userFldr
         elif userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'LDAP Multi Plugin':
-          ldapUserFldr = getattr(user['plugin'], 'acl_users')
+          ldapUserFldr = getattr(user['plugin'],'acl_users')
         if ldapUserFldr is not None:
-          details = ldapUserFldr.getUserDetails(encoded_dn=user['dn'], format='dictionary')
+          details = ldapUserFldr.getUserDetails(encoded_dn=user['dn'],format='dictionary')
           for schema in ldapUserFldr.getLDAPSchema():
             name = schema[0]
             label = schema[1]
-            value = user.get(name, '')
+            value = user.get(name,'')
             user['details'].append({'name':name,'label':label,'value':value})
           # User ID
-          _login_attr = self.getConfProperty('LDAPUserFolder.login_attr', ldapUserFldr.getProperty('_login_attr'))
-          _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr', ldapUserFldr.getProperty('_uid_attr'))
+          _login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
+          _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
           if _uid_attr != _login_attr:
             user['details'] = [x for x in user['details'] if x['name'] != _uid_attr]
       return user

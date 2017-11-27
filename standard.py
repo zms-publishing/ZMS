@@ -1471,8 +1471,7 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
         + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(map(lambda x: str_json(x,encoding,errors,formatted,level+1),i)) \
         + ']'
   elif type(i) is dict:
-    k = i.keys()
-    k.sort()
+    k = sorted(i)
     return '{' \
         + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(map(lambda x: '"%s":%s'%(x,str_json(i[x],encoding,errors,formatted,level+1)),k)) \
         + '}'

@@ -603,9 +603,38 @@ class AccessManager(AccessableContainer):
   
   
     # --------------------------------------------------------------------------
+    #  AccessManager.getSearchableAttrs:
+    #
+    #  Return searchable attributes for current user-folder.
+    # --------------------------------------------------------------------------
+    def getSearchableAttrs(self):
+      attrs = []
+      def traverseUserFolders(context):
+        if context.meta_type == 'LDAPUserFolder':
+          for schema in context.getLDAPSchema():
+            name = schema[0]
+            label = schema[1]
+            attr = (name,'%s (%s)'%(label,name))
+            if attr not in attrs:
+              attrs.append(attr)
+        elif context.meta_type == 'Pluggable Auth Service':
+          name = 'login'
+          label = 'Login'
+          attr = (name,'%s (%s)'%(label,name))
+          if attr not in attrs:
+            attrs.append(attr)
+        # Traverse tree.
+        for childNode in context.objectValues():
+          traverseUserFolders(childNode)
+      traverseUserFolders(self.getUserFolder())
+      attrs = sorted(attrs,key=lambda x:x[1])
+      return attrs
+
+
+    # --------------------------------------------------------------------------
     #  AccessManager.getValidUserids:
     # --------------------------------------------------------------------------
-    def getValidUserids(self, search_term='', without_node_check=True, exact_match=False):
+    def getValidUserids(self, search_term='', search_term_param=None, without_node_check=True, exact_match=False):
       encoding = self.getConfProperty('LDAPUserFolder.encoding','latin-1')
       local_userFldr = self.getUserFolder()
       columns = None
@@ -616,20 +645,36 @@ class AccessManager(AccessableContainer):
       if userFldr.meta_type == 'LDAPUserFolder':
         if search_term != '':
           login_attr = self.getConfProperty('LDAPUserFolder.login_attr',userFldr.getProperty('_login_attr'))
-          users.extend(userFldr.findUser(search_param=login_attr,search_term=search_term))
+          if exact_match:
+            search_param = login_attr
+          elif search_term_param:
+            search_param = search_term_param
+          else:
+            search_param = self.getConfProperty('LDAPUserFolder.uid_attr',login_attr)
+          users.extend(userFldr.findUser(search_param=search_param,search_term=search_term))
       elif userFldr.meta_type == 'Pluggable Auth Service':
         if search_term and search_term != '':
           login_attr = 'login'
-          for user in userFldr.searchUsers(login=search_term,id=None):
-            plugin = getattr(userFldr,user['pluginid'])
-            append = True
-            if plugin.meta_type == 'ZODB User Manager':
-              login_name = user[login_attr]
-              append = search_term == '' or \
-                (login_name.find(search_term) >= 0 and not exact_match) or \
-                (login_name == search_term and exact_match)
-            if append:
-              users.append(user)
+          if exact_match:
+            search_param = login_attr
+          elif search_term_param:
+            search_param = search_term_param
+          else:
+            search_param = self.getConfProperty('LDAPUserFolder.uid_attr',login_attr)
+          kw = {search_param:search_term}
+          usersDefs = userFldr.searchUsers(**kw)
+          
+          if exact_match:
+            users.extend(filter(lambda x:x['login']==search_term, usersDefs))
+          elif search_param != login_attr:
+            users.extend(usersDefs)
+            # get local users
+            for user in userFldr.searchUsers(login=search_term):
+              plugin = getattr(userFldr,user['pluginid'])
+              if plugin.meta_type == 'ZODB User Manager':
+                users.append(user)
+          else:
+            users.extend(usersDefs)
       else:
         login_attr = 'name'
         for userName in userFldr.getUserNames():
@@ -647,7 +692,7 @@ class AccessManager(AccessableContainer):
         d['user_id'] = login_name
         d['roles'] = []
         d['domains'] = []
-        extras = ['pluginid','givenName','sn','ou']
+        extras = self.getConfProperty('LDAPUserFolder.extras','pluginid,givenName,sn,ou').split(',')
         luf = None
         plugin = None
         _uid_attr = None
@@ -663,7 +708,10 @@ class AccessManager(AccessableContainer):
               break
         if luf is not None:
           _login_attr = self.getConfProperty('LDAPUserFolder.login_attr',luf.getProperty('_login_attr'))
-          _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',luf.getProperty('_uid_attr'))
+          if exact_match:
+            _uid_attr = luf.getProperty('_uid_attr')
+          else:
+            _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',luf.getProperty('_uid_attr'))
           if _uid_attr != _login_attr:
             uid = user[_uid_attr]
         elif plugin is not None:
@@ -1088,14 +1136,15 @@ class AccessManager(AccessableContainer):
         # ----
         if btn == self.getZMILangStr('BTN_ADD'):
           id = REQUEST.get('newId','')
-          newPassword = REQUEST.get('newPassword','')
-          newConfirm = REQUEST.get('newConfirm','')
-          newEmail = REQUEST.get('newEmail','')
-          userAdderPlugin = self.getUserAdderPlugin()
-          userAdderPlugin.doAddUser( id, newPassword)
-          self.setUserAttr( id, 'email', newEmail)
-          #-- Assemble message.
-          message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_USER')
+          if len([x for x in self.searchUsers(id) if x == id]) == 0:
+            newPassword = REQUEST.get('newPassword','')
+            newConfirm = REQUEST.get('newConfirm','')
+            newEmail = REQUEST.get('newEmail','')
+            userAdderPlugin = self.getUserAdderPlugin()
+            userAdderPlugin.doAddUser( id, newPassword)
+            self.setUserAttr( id, 'email', newEmail)
+            #-- Assemble message.
+            message = self.getZMILangStr('MSG_INSERTED')%self.getZMILangStr('ATTR_USER')
         
         # Insert.
         # -------

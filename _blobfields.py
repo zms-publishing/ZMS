@@ -573,7 +573,7 @@ class MyBlob:
             return ''
         
         # if blob-object came from call of py-attribute by path-handler check content-disposition and content-type.
-        if not (REPONSE.getHeader('Content-Disposition') and RESPONSE.getHeader('Content-Type')):
+        if not (RESPONSE.getHeader('Content-Disposition') and RESPONSE.getHeader('Content-Type')):
           standard.set_response_headers(self.getFilename(),self.getContentType(),self.get_size(),REQUEST)
         else:
           RESPONSE.setHeader('Content-Size',self.get_size())

@@ -117,6 +117,19 @@ def getFilenamesFromValue( v):
       rtn.append( v.getMediadbfile())
   return rtn
 
+
+def manage_structureMediaDb(self, structure, REQUEST=None, RESPONSE=None):
+  """ manage_structureMediaDb """
+  message = ''
+  t = 0
+  mediadb = self.getMediaDb()
+  mediadb.structure = structure
+  
+  # Return with message.
+  message = 'Restructured Media-Folder %s: %i files proecessed.'%(structure,t)
+  return message
+
+
 def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
   """ manage_packMediaDb """
   message = ''

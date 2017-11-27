@@ -15,7 +15,7 @@
     <li><a href="#Clients" data-toggle="tab">Portal</a></li>
     <li><a href="#Configuration" data-toggle="tab">Configuration</a></li>
     <li><a href="#Custom" data-toggle="tab">System-Properties</a></li>
-    <li><a href="#MediaFolder" data-toggle="tab">Media-Folder</a></li>
+    <li><a href="#MediaDb" data-toggle="tab">Media-Folder</a></li>
     <li><a href="#History" data-toggle="tab">History</a></li>
     <li><a href="#InstalledProducts" data-toggle="tab">Installed Libraries</a></li>
     <li><a href="#Instance" data-toggle="tab">Instance</a></li>
@@ -229,7 +229,7 @@
     </form>
     </div><!-- #System-Properties -->
 
-    <div class="tab-pane" id="MediaFolder">
+    <div class="tab-pane" id="MediaDb">
     <form class="form-horizontal" name="CatalogForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
       <input type="hidden" name="key" value="MediaDb">
@@ -239,7 +239,7 @@
       <div class="form-group">
         <label class="col-sm-2 control-label" for="mediadb_location">Location</label>
         <div class="col-sm-10">
-          <input class="form-control" type="text" name="mediadb_location" tal:attributes="placeholder python:'%s/var/%s'%(here.getINSTANCE_HOME(),here.getHome().id)">
+          <input class="form-control" type="text" name="mediadb_location" tal:attributes="value python:'%s/var/%s'%(here.getINSTANCE_HOME(),here.getHome().id)">
         </div>
       </div><!-- .form-group -->
       <div class="form-group">
@@ -258,8 +258,19 @@
         </div>
       </div><!-- .form-group -->
       <div class="form-group">
+        <label class="col-sm-2 control-label" for="mediadb_structure">Structure</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="mediadb_structure">
+          <tal:block tal:repeat="v python:['flat','hierarchical']">
+          	<option tal:attributes="value v; selected python:['','selected'][here.operator_getattr(here.getMediaDb(),'structure',None)==v]" tal:content="v">the value</option>
+          </tal:block>
+          </select>
+        </div>
+      </div><!-- .form-group -->
+      <div class="form-group">
         <div class="col-sm-2">&nbsp;</div>
         <div class="col-sm-10">
+          <button name="btn" type="submit" class="btn btn-default" value="Change">Change</button> 
           <button name="btn" type="submit" class="btn btn-default" value="Remove" 
             title="Reimport outsourced mediafolder files back into ZODB of this ZMS-client">Remove</button>
           <button name="btn" type="submit" class="btn btn-warning" value="Pack" 

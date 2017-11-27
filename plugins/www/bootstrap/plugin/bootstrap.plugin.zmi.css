@@ -1486,6 +1486,11 @@ td .btn-group .checkbox.split-left.btn input {
 	margin-left: -15px;
 	padding-left: 1px;
 }
+#insertUserForm .ZMSRecordSet table th,
+#insertUserForm .ZMSRecordSet table td{
+	overflow: hidden;
+	max-width: 8em;
+}
 #insertUserForm .ZMSRecordSet .pagination {
 	margin-left: 0;
 }

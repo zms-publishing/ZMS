@@ -226,10 +226,8 @@ class ZMSRepositoryManager(
         py.append('\tpython-representation of %s'%o['id'])
         py.append('\t"""')
         py.append('')
-        e = filter(lambda x:not x.startswith('__') and x==x.capitalize() and type(o[x]) is list,o.keys())
-        e.sort()
-        keys = filter(lambda x:not x.startswith('__') and x not in e,o.keys())
-        keys.sort()
+        e = sorted([x for x in o if not x.startswith('__') and x==x.capitalize() and type(o[x]) is list])
+        keys = sorted([x for x in o if not x.startswith('__') and x not in e])
         for k in keys:
           v = o.get(k)
           if v:
@@ -246,10 +244,13 @@ class ZMSRepositoryManager(
               if ob is not None:
                 fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
                 fileprefix = i['id'].split('/')[-1]
+                data = zopeutil.readData(ob)
+                if type(data) is unicode:
+                  data = unicode(ob.read()).encode('utf-8')
                 d = {}
                 d['id'] = id
                 d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix,fileexts.get(ob.meta_type,''))])
-                d['data'] = zopeutil.readData(ob)
+                d['data'] = data
                 d['version'] = self.getLangFmtDate(ob.bobobase_modification_time().timeTime(),'eng')
                 d['meta_type'] = ob.meta_type
                 l[d['filename']] = d
@@ -282,7 +283,7 @@ class ZMSRepositoryManager(
             elif not name in ['__impl__.py'] and name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
               self.writeLog("[remoteFiles]: read %s"%filepath)
-              f = open(filepath,"r")
+              f = open(filepath,"rb")
               py = f.read()
               f.close()
               # Analyze python-representation of repository-object
@@ -308,11 +309,9 @@ class ZMSRepositoryManager(
                       for file in filter(lambda x: x==fileprefix or x.startswith('%s.'%fileprefix),names):
                         artefact = os.path.join(path,file)
                         self.writeLog("[remoteFiles]: read artefact %s"%artefact)
-                        f = open(artefact,"r")
+                        f = open(artefact,"rb")
                         data = f.read()
                         f.close()
-                        if artefact.endswith('.zpt'):
-                          data = data.decode('utf-8')
                         rd = {}
                         rd['id'] = id
                         rd['filename'] = artefact[len(base)+1:]
@@ -339,7 +338,7 @@ class ZMSRepositoryManager(
             elif not name in ['__impl__.py'] and name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
               self.writeBlock("[readRepository]: read %s"%filepath)
-              f = open(filepath,"r")
+              f = open(filepath,"rb")
               py = f.read()
               f.close()
               # Analyze python-representation of repository-object
@@ -360,7 +359,7 @@ class ZMSRepositoryManager(
                       for file in filter(lambda x: x==fileprefix or x.startswith('%s.'%fileprefix),names):
                         artefact = os.path.join(path,file)
                         self.writeBlock("[readRepository]: read artefact %s"%artefact)
-                        f = open(artefact,"r")
+                        f = open(artefact,"rb")
                         data = f.read()
                         f.close()
                         if artefact.endswith('.zpt'):
@@ -404,14 +403,12 @@ class ZMSRepositoryManager(
           for file in files.keys():
             filepath = os.path.join(basepath,file)
             folder = filepath[:filepath.rfind(os.path.sep)]
-            self.writeBlock("[commitChanges]: create folder %s if not exists"%folder)
             if not os.path.exists(folder):
+              self.writeBlock("[commitChanges]: create folder %s"%folder)
               _fileutil.mkDir(folder)
             self.writeBlock("[commitChanges]: write %s"%filepath)
             data = files[file]['data']
-            if files[file]['meta_type'] == 'Page Template':
-              data = unicode(data).encode('utf-8')
-            f = open(filepath,"w")
+            f = open(filepath,"wb")
             f.write(data)
             f.close()
           success.append(id)

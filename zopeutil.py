@@ -111,7 +111,7 @@ def readData(ob, default=None):
   if ob.meta_type in [ 'DTML Method', 'DTML Document']:
     data = ob.raw
   elif ob.meta_type in [ 'Image', 'File']:
-    data = ob.data
+    data = str(ob)
   elif ob.meta_type in [ 'Page Template', 'Script (Python)']:
     data = ob.read()
   elif ob.meta_type == 'External Method':

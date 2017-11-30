@@ -239,7 +239,7 @@
       <div class="form-group">
         <label class="col-sm-2 control-label" for="mediadb_location">Location</label>
         <div class="col-sm-10">
-          <input class="form-control" type="text" name="mediadb_location" tal:attributes="value python:'%s/var/%s'%(here.getINSTANCE_HOME(),here.getHome().id)">
+          <input class="form-control" type="text" name="mediadb_location" tal:attributes="value python:'$INSTANCE_HOME/var/%s/mediadb'%here.getHome().id">
         </div>
       </div><!-- .form-group -->
       <div class="form-group">
@@ -260,9 +260,9 @@
       <div class="form-group">
         <label class="col-sm-2 control-label" for="mediadb_structure">Structure</label>
         <div class="col-sm-10">
-          <select class="form-control" name="mediadb_structure">
-          <tal:block tal:repeat="v python:['flat','hierarchical']">
-          	<option tal:attributes="value v; selected python:['','selected'][here.operator_getattr(here.getMediaDb(),'structure',None)==v]" tal:content="v">the value</option>
+          <select class="form-control" name="mediadb_structure:int">
+          <tal:block tal:repeat="v python:range(3)">
+          	<option tal:attributes="value v; selected python:['','selected'][here.getMediaDb().getStructure()==v]" tal:content="v">the value</option>
           </tal:block>
           </select>
         </div>

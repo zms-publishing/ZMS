@@ -113,7 +113,7 @@ class ZMSItem(
       internal_dict = self.attr('internal_dict')
       if isinstance(internal_dict,dict) and internal_dict.get('css_classes',None):
         l.extend( internal_dict['css_classes'] )
-      l.extend(request['AUTHENTICATED_USER'].getRolesInContext(self))
+      l.extend(self.getUserRoles(request['AUTHENTICATED_USER']))
       return ' '.join(l)
 
     # --------------------------------------------------------------------------

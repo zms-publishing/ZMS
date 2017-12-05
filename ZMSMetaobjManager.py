@@ -23,13 +23,8 @@ from __future__ import absolute_import
 # Imports.
 from builtins import object
 from builtins import range
-from builtins import map
 from builtins import str
-from builtins import filter
-try:
-  from io import StringIO
-except ImportError:
-  from io import StringIO
+from io import StringIO
 import ZPublisher.HTTPRequest
 import collections
 import copy
@@ -199,7 +194,6 @@ class ZMSMetaobjManager(object):
     #  ZMSMetaobjManager.importMetaobjXml
     # --------------------------------------------------------------------------
     def _importMetaobjXml(self, item, createIfNotExists=1, createIdsFilter=None):
-      print("[ZMSMetaobjManager._importMetaobjXml]")
       ids = []
       id = item['key']
       meta_types = list(self.model.keys())
@@ -281,7 +275,6 @@ class ZMSMetaobjManager(object):
       return id
 
     def importMetaobjXml(self, xml, createIfNotExists=1, createIdsFilter=None):
-      print("[ZMSMetaobjManager.importMetaobjXml]")
       self.REQUEST.set( '__get_metaobjs__', True)
       ids = []
       v = self.parseXmlString(xml)
@@ -1020,7 +1013,6 @@ class ZMSMetaobjManager(object):
     ############################################################################
     def manage_changeProperties(self, lang, btn='', key='all', REQUEST=None, RESPONSE=None):
         """ ZMSMetaobjManager.manage_changeProperties """
-        print(0,"########## ZMSMetaobjManager.manage_changeProperties")
         old_model = copy.deepcopy(self.model)
         message = ''
         messagekey = 'manage_tabs_message'
@@ -1029,13 +1021,10 @@ class ZMSMetaobjManager(object):
         id = REQUEST.get('id', '').strip()
         target = REQUEST.get('target', 'manage_main')
         REQUEST.set( '__get_metaobjs__', True)
-        print(1,"########## ZMSMetaobjManager.manage_changeProperties")
         
         #try:
         if True:
           sync_id = []
-
-          print(1,"########## ZMSMetaobjManager.manage_changeProperties",id,key,btn)
           
           # Delete.
           # -------

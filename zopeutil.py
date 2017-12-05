@@ -20,8 +20,6 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
-from builtins import map
-from builtins import filter
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 from OFS.CopySupport import absattr
 from Products.ExternalMethod import ExternalMethod
@@ -116,6 +114,14 @@ def readData(ob, default=None):
     data = ob.raw
   elif ob.meta_type in [ 'Image', 'File']:
     data = ob.data
+    try:
+      b = b''
+      while data is not None:
+        b += bytes(data.data)
+        data = data.next
+      data = b
+    except:
+      pass
   elif ob.meta_type in [ 'Page Template', 'Script (Python)']:
     data = ob.read()
   elif ob.meta_type == 'External Method':
@@ -123,7 +129,7 @@ def readData(ob, default=None):
     id = ob.id
     while context is not None:
       m = getExternalMethodModuleName(context, id)
-      filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
+      filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
       if os.path.exists(filepath):
         break
       try:
@@ -132,15 +138,15 @@ def readData(ob, default=None):
         context = None
     if context is None:
       m = id
-    filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
+    filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
     if os.path.exists(filepath):
       f = open(filepath, 'r')
       data = f.read()
       f.close()
   elif ob.meta_type == 'Z SQL Method':
-    connection = ob.connection_id
+    connection = ob.connection_id 
     params = ob.arguments_src
-    data = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection, params, ob.src)
+    data = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
   return data
 
 security.declarePublic('readObject')

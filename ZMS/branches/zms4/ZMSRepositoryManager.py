@@ -18,8 +18,6 @@
 
 # Imports.
 from builtins import str
-from builtins import map
-from builtins import filter
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import inspect
@@ -28,7 +26,7 @@ import re
 import stat
 import time
 import urllib.request, urllib.parse, urllib.error
-from zope.interface import implementer
+from zope.interface import implementer, providedBy
 # Product Imports.
 from . import IZMSConfigurationProvider
 from . import IZMSDaemon
@@ -72,7 +70,7 @@ class ZMSRepositoryManager(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     manage_options_default_action = '../manage_customize'
     def manage_options(self):
-      return map( lambda x: self.operator_setitem( x, 'action', '../'+x['action']), copy.deepcopy(self.aq_parent.manage_options()))
+      return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
 
     def manage_sub_options(self):
       return (
@@ -178,15 +176,15 @@ class ZMSRepositoryManager(
               return l
             basepath = self.get_conf_basepath()
             files = traverse(basepath)
-            mtime = max(map(lambda x:x[0], files)+[None])
+            mtime = max([x[0] for x in files]+[None])
             self.writeBlock("[exec_auto_update]: %s<%s"%(str(last_update), str(mtime)))
             if last_update is None or standard.getDateTime(last_update)<standard.getDateTime(mtime):
-              update_files = map(lambda x:x[1][len(basepath):], filter(lambda x:last_update is None or standard.getDateTime(x[0])<standard.getDateTime(last_update), files))
-              temp_files = map(lambda x:x.split(os.path.sep), update_files)
+              update_files = [x[1][len(basepath):] for x in files if last_update is None or standard.getDateTime(x[0])<standard.getDateTime(last_update)]
+              temp_files = [x.split(os.path.sep) for x in update_files]
               temp_files = \
-                map(lambda x:[x[0], x[-1].replace('.py', '')], filter(lambda x:len(x)==2, temp_files)) + \
-                map(lambda x:[x[0], x[-2]], filter(lambda x:len(x)>2, temp_files))
-              ids = list(set(map(lambda x:':'.join(x), temp_files)))
+                [[x[0], x[-1].replace('.py', '')] for x in temp_files if len(x)==2] + \
+                [[x[0], x[-2]] for x in temp_files if len(x)>2]
+              ids = list(set([':'.join(x) for x in temp_files]))
               self.writeBlock("[exec_auto_update]: %s"%str(ids))
               self.updateChanges(ids, override=True)
             self.last_update = standard.getDateTime(current_time)
@@ -198,12 +196,14 @@ class ZMSRepositoryManager(
       diff = []
       local = self.localFiles(provider)
       remote = self.remoteFiles(provider)
-      filenames = sorted(set(local.keys()+remote.keys()))
+      filenames = sorted(set(list(local.keys())+list(remote.keys())))
       for filename in filenames:
         l = local.get(filename, {})
         r = remote.get(filename, {})
         if l.get('data', '') != r.get('data', ''):
           data = l.get('data', r.get('data', ''))
+          if type(data) is str:
+            data = bytes(data,"utf-8")
           mt, enc = standard.guess_content_type(filename, data)
           diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
       return diff
@@ -211,14 +211,14 @@ class ZMSRepositoryManager(
 
     def getRepositoryProviders(self):
       obs = self.getDocumentElement().objectValues()
-      return filter(lambda x:IZMSRepositoryProvider.IZMSRepositoryProvider in list(zope.interface.providedBy(x)), obs)
+      return [x for x in obs if IZMSRepositoryProvider.IZMSRepositoryProvider in list(providedBy(x))]
 
 
     def localFiles(self, provider, ids=None):
       self.writeBlock("[localFiles]: provider=%s"%str(provider))
       l = {}
       local = provider.provideRepository(ids)
-      for id in local.keys():
+      for id in local:
         o = local[id]
         filename = o.get('__filename__', [id, '__init__.py'])
         # Write python-representation.
@@ -246,10 +246,11 @@ class ZMSRepositoryManager(
               if ob is not None:
                 fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
                 fileprefix = i['id'].split('/')[-1]
+                data = zopeutil.readData(ob) 
                 d = {}
                 d['id'] = id
                 d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix, fileexts.get(ob.meta_type, ''))])
-                d['data'] = zopeutil.readData(ob)
+                d['data'] = data
                 d['version'] = self.getLangFmtDate(DateTime(ob._p_mtime).timeTime(), 'eng')
                 d['meta_type'] = ob.meta_type
                 l[d['filename']] = d
@@ -261,7 +262,7 @@ class ZMSRepositoryManager(
         d['id'] = id
         d['filename'] = os.path.sep.join(filename)
         d['data'] = '\n'.join(py)
-        d['version'] = map(lambda x:int(x), o.get('revision', '0.0.0').split('.'))
+        d['version'] = [int(x) for x in o.get('revision', '0.0.0').split('.')]
         d['meta_type'] = 'Script (Python)'
         l[d['filename']] = d
       return l
@@ -282,7 +283,7 @@ class ZMSRepositoryManager(
             elif not name in ['__impl__.py'] and name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
               self.writeLog("[remoteFiles]: read %s"%filepath)
-              f = open(filepath, "r")
+              f = open(filepath, "rb")
               py = f.read()
               f.close()
               # Analyze python-representation of repository-object
@@ -295,24 +296,22 @@ class ZMSRepositoryManager(
               rd['data'] = py
               rd['version'] = d.get("revision", self.getLangFmtDate(os.path.getmtime(filepath), 'eng'))
               r[rd['filename']] = rd
-              for k in filter(lambda x:not x.startswith('__'), d.keys()):
+              for k in [x for x in d if not x.startswith('__')]:
                 v = d[k]
                 if inspect.isclass(v):
                   dd = v.__dict__
                   v = []
-                  for kk in filter(lambda x:x in ['__impl__'] or not x.startswith("__"), dd.keys()):
+                  for kk in [x for x in dd if x in ['__impl__'] or not x.startswith("__")]:
                     vv = dd[kk]
                     # Try to read artefact.
                     if 'id' in vv:
                       fileprefix = vv['id'].split('/')[-1]
-                      for file in filter(lambda x: x==fileprefix or x.startswith('%s.'%fileprefix), names):
+                      for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
                         artefact = os.path.join(path, file)
                         self.writeLog("[remoteFiles]: read artefact %s"%artefact)
                         f = open(artefact, "r")
                         data = f.read()
                         f.close()
-                        if artefact.endswith('.zpt'):
-                          data = data.decode('utf-8')
                         rd = {}
                         rd['id'] = id
                         rd['filename'] = artefact[len(base)+1:]
@@ -339,7 +338,7 @@ class ZMSRepositoryManager(
             elif not name in ['__impl__.py'] and name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
               self.writeBlock("[readRepository]: read %s"%filepath)
-              f = open(filepath, "r")
+              f = open(filepath, "rb")
               py = f.read()
               f.close()
               # Analyze python-representation of repository-object
@@ -347,17 +346,17 @@ class ZMSRepositoryManager(
               d = c.__dict__
               id = d["id"]
               r[id] = {}
-              for k in filter(lambda x:not x.startswith('__'), d.keys()):
+              for k in [x for x in d if not x.startswith('__')]:
                 v = d[k]
                 if inspect.isclass(v):
                   dd = v.__dict__
                   v = []
-                  for kk in filter(lambda x:not x.startswith('__'), dd.keys()):
+                  for kk in [x for x in dd if not x.startswith('__')]:
                     vv = dd[kk]
                     # Try to read artefact.
                     if 'id' in vv:
                       fileprefix = vv['id'].split('/')[-1]
-                      for file in filter(lambda x: x==fileprefix or x.startswith('%s.'%fileprefix), names):
+                      for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
                         artefact = os.path.join(path, file)
                         self.writeBlock("[readRepository]: read artefact %s"%artefact)
                         f = open(artefact, "r")
@@ -369,7 +368,7 @@ class ZMSRepositoryManager(
                         break
                     v.append((py.find('\t\t%s ='%kk), vv))
                   v.sort()
-                  v = map(lambda x:x[1], v)
+                  v = [x[1] for x in v]
                 r[id][k] = v
         traverse(basepath, basepath)
       return r
@@ -381,9 +380,9 @@ class ZMSRepositoryManager(
     def commitChanges(self, ids):
       self.writeBlock("[commitChanges]: ids=%s"%str(ids))
       success = []
-      for provider_id in list(set(map(lambda x:x.split(':')[0], ids))):
+      for provider_id in list(set([x.split(':')[0] for x in ids])):
         provider = getattr(self, provider_id)
-        for id in list(set(map(lambda x:x.split(':')[1], filter(lambda x:x.split(':')[0]==provider_id, ids)))):
+        for id in list(set([x.split(':')[1] for x in ids if x.split(':')[0]==provider_id])):
           # Read local-files from provider.
           files = self.localFiles(provider, [id])
           # Recreate folder.
@@ -394,24 +393,23 @@ class ZMSRepositoryManager(
               mode = os.stat(filepath)[stat.ST_MODE]
               if stat.S_ISDIR(mode) and name == id:
                 self.writeBlock("[commitChanges]: clear dir %s"%filepath)
-                dir = map(lambda x:os.path.join(filepath, x), os.listdir(filepath))
-                dir = filter(lambda x:not stat.S_ISDIR(os.stat(x)[stat.ST_MODE]), dir)
-                map(lambda x:_fileutil.remove(x), dir)
+                dir = [os.path.join(filepath, x) for x in os.listdir(filepath)]
+                dir = [x for x in dir if not stat.S_ISDIR(os.stat(x)[stat.ST_MODE])]
+                [_fileutil.remove(x) for x in dir]
               elif not stat.S_ISDIR(mode) and name == '%s.py'%id:
                 self.writeBlock("[commitChanges]: remove file %s"%filepath)
                 _fileutil.remove(filepath)
           # Write files.
-          for file in files.keys():
+          for file in files:
             filepath = os.path.join(basepath, file)
             folder = filepath[:filepath.rfind(os.path.sep)]
             self.writeBlock("[commitChanges]: create folder %s if not exists"%folder)
             if not os.path.exists(folder):
+              self.writeBlock("[commitChanges]: create folder %s"%folder)
               _fileutil.mkDir(folder)
             self.writeBlock("[commitChanges]: write %s"%filepath)
             data = files[file]['data']
-            if files[file]['meta_type'] == 'Page Template':
-              data = str(data).encode('utf-8')
-            f = open(filepath, "w")
+            f = open(filepath, "wb")
             f.write(data)
             f.close()
           success.append(id)

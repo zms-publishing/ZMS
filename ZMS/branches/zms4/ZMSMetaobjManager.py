@@ -1,6 +1,3 @@
-from __future__ import division
-from __future__ import absolute_import
-
 ################################################################################
 # ZMSMetaobjManager.py
 #
@@ -147,7 +144,7 @@ class ZMSMetaobjManager(object):
               attr['name'] = attr['id']
             if attr['type']=='constant':
               mandatory_keys += ['custom']
-            for key in attr.keys():
+            for key in list(attr):
               if not attr[key] or \
                  not key in mandatory_keys:
                 del attr[key]
@@ -309,7 +306,7 @@ class ZMSMetaobjManager(object):
             attr['name'] = attr['id']
           if attr['type']=='constant':
             mandatory_keys += ['custom']
-          for key in attr.keys():
+          for key in list(attr):
             if (not attr[key] and REQUEST is None) or \
                (not key in mandatory_keys):
               del attr[key]
@@ -353,7 +350,7 @@ class ZMSMetaobjManager(object):
             traverse(childNode)
           elif childNode.meta_type in ['DTML Document', 'DTML Method', 'External Method', 'Image', 'File', 'Page Template', 'Script (Python)']:
             self.setMetaobjAttr(id,None,newId=childNode.absolute_url()[len(home.absolute_url())+1:],newName=childNode.title_or_id(),newType=childNode.meta_type,newCustom=zopeutil.readData(childNode))
-      if id in self.model.keys():
+      if id in self.model:
         del self.model[id]
       container = getattr(home,id)
       self.setMetaobj({'id':id,'name':container.title_or_id(),'type':'ZMSLibrary'})
@@ -410,7 +407,7 @@ class ZMSMetaobjManager(object):
       obs = {}
       m = self.model
       aq_obs = None
-      for id in m.keys():
+      for id in m:
         ob = m[id]
         # handle acquisition
         if ob.get('acquired', 0) == 1:
@@ -429,7 +426,7 @@ class ZMSMetaobjManager(object):
             ob['subobjects'] = subobjects
             obs[id] =  ob
             if ob['type'] == 'ZMSPackage' and ob['subobjects'] == 1:
-              for aq_id in aq_obs.keys():
+              for aq_id in aq_obs:
                 ob = aq_obs[aq_id].copy()
                 if ob.get( 'package') == id:
                   ob['acquired'] = 1
@@ -542,7 +539,7 @@ class ZMSMetaobjManager(object):
       self.clearReqBuff('ZMSMetaobjManager')
       obs = self.model
       ob = self.getMetaobj( id)
-      if ob is not None and len(ob.keys()) > 0 and subobjects == 1:
+      if ob is not None and len(ob) > 0 and subobjects == 1:
         if ob.get('type', '') == 'ZMSPackage':
           pk_obs = [x for x in obs.values() if x.get('package') == id]
           pk_ids = [x['id'] for x in pk_obs]
@@ -572,7 +569,7 @@ class ZMSMetaobjManager(object):
       # Delete object.
       cp = self.model
       obs = {}
-      for key in cp.keys():
+      for key in cp:
         if key == id:
           # Delete attributes.
           attr_ids = [x['id'] for x in cp[key]['attrs']]
@@ -663,7 +660,7 @@ class ZMSMetaobjManager(object):
       # all meta-objects:
       if id == '*':
         metaObjs = self.__get_metaobjs__()
-        for metaObjId in metaObjs.keys():
+        for metaObjId in metaObjs:
           metaObj = metaObjs[metaObjId]
           for metaObjAttr in [x for x in metaObj.get('attrs', []) if x['id'] == attr_id]:
             metaObjAttrs.append(self.getMetaobjAttr( metaObjId, attr_id))
@@ -837,7 +834,7 @@ class ZMSMetaobjManager(object):
         if not newType:
           newType = 'method'
         newName = '%s: %s'%(newId, newType)
-      if newType in mapTypes.keys():
+      if newType in mapTypes:
         oldObId = '%s.%s'%(id, oldId)
         newObId = '%s.%s'%(id, newId)
         # Remove Zope-Object (if exists)
@@ -980,11 +977,11 @@ class ZMSMetaobjManager(object):
       xml += ' id="%s"'%id
       ob = self.__get_metaobj__(id)
       prefix = 'set'
-      for key in REQUEST.form.keys():
+      for key in REQUEST.form:
         if key.startswith(prefix):
           k = key[len(prefix):].lower()
           v = REQUEST.form.get(key)
-          if k in ob.keys():
+          if k in ob:
             if ob.get('acquired'):
               self.setConfProperty('%s.%s'%(id, k), v)
             else:

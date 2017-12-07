@@ -1210,7 +1210,7 @@ class ZMSMetaobjManager(object):
             temp_folder = getattr(self,'temp_folder',None)
             if temp_folder is None:
               immediately = True
-            else:
+            elif REQUEST.get('temp_import_file_id')==temp_id and temp_id in temp_folder.objectIds():
               temp_id = self.id + '_' + REQUEST['AUTHENTICATED_USER'].getId() + '.xml'
               if temp_id in temp_folder.objectIds():
                 filename = str(getattr( temp_folder, temp_id).title)
@@ -1232,6 +1232,8 @@ class ZMSMetaobjManager(object):
                 xmlfile = StringIO( xml)
                 immediately = not isinstance(v, list)
               if not immediately:
+                if temp_id in temp_folder.objectIds():
+                  temp_folder.manage_delObjects([temp_id])
                 file = zopeutil.addFile(temp_folder, temp_id, filename, xmlfile)
                 extra['section'] = 'import'
                 extra['temp_import_file_id'] = temp_id

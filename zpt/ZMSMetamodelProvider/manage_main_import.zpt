@@ -49,6 +49,7 @@
 	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data" target="_parent">
 	<input type="hidden" name="lang" tal:attributes="value request/lang" />
 	<tal:block tal:condition="python:request.get('temp_import_file_id')">
+		<input type="hidden" name="temp_import_file_id" tal:attributes="value request/temp_import_file_id" />
 		<tal:block tal:define="global
 				f python:getattr(here.temp_folder,request.get('temp_import_file_id'));
 				xml python:here.parseXmlString(str(f.data));

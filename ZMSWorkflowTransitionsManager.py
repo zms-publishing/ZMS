@@ -1,4 +1,3 @@
-from __future__ import division
 ################################################################################
 # ZMSWorkflowTransitionsManager.py
 #
@@ -20,8 +19,6 @@ from __future__ import division
 # Imports.
 from builtins import object
 from builtins import range
-from builtins import filter
-from builtins import map
 from builtins import str
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
@@ -100,7 +97,7 @@ class ZMSWorkflowTransitionsManager(object):
     newValues['to'] = newTo
     newValues['performer'] = newPerformer
     # Zope Object.
-    map(lambda x:zopeutil.removeObject(self, x), [id, newId])
+    [zopeutil.removeObject(self, x) for x in [id, newId]]
     zopeutil.addObject(self, newType, newId, newName, newData)
     # Update attribute.
     obs.insert(i, newValues)
@@ -128,15 +125,14 @@ class ZMSWorkflowTransitionsManager(object):
   ZMSWorkflowTransitionsManager.getTransitionIds
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getTransitionIds(self):
-    obs = self.getTransitions()
-    return map(lambda x: x['id'], obs) 
+    return [x['id'] for x in self.getTransitions()] 
 
 
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowTransitionsManager.getTransition
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getTransition(self, id, for_export=False):
-    transition = filter(lambda x: x['id']==id, self.getTransitions())[0]
+    transition = [x for x in self.getTransitions() if x['id'] == id][0]
     transition = copy.deepcopy(transition)
     ob = zopeutil.getObject(self, transition['id'])
     if ob is not None:

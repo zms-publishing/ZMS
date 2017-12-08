@@ -55,7 +55,7 @@
       <item><![CDATA[TR_ENTER]]></item>
       <item type="dictionary">
         <dictionary>
-          <item key="dtml"></item>
+          <item key="ob"></item>
           <item key="from" type="list">
             <list>
             </list>
@@ -76,7 +76,7 @@
       <item><![CDATA[TR_EXPRESSCOMMIT]]></item>
       <item type="dictionary">
         <dictionary>
-          <item key="dtml"><![CDATA[<!DOCTYPE html>
+          <item key="ob"><![CDATA[<!DOCTYPE html>
 <html lang="en">
 <tal:block tal:define="global zmscontext options/zmscontext" tal:content="structure python:zmscontext.zmi_html_head(zmscontext,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'transition',zmscontext.meta_id])">
@@ -180,7 +180,7 @@
       <item><![CDATA[TR_REQUEST]]></item>
       <item type="dictionary">
         <dictionary>
-          <item key="dtml"><![CDATA[<!DOCTYPE html>
+          <item key="ob"><![CDATA[<!DOCTYPE html>
 <html lang="en">
 <tal:block tal:define="global zmscontext options/zmscontext" tal:content="structure python:zmscontext.zmi_html_head(zmscontext,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'transition',zmscontext.meta_id])">
@@ -320,7 +320,7 @@
       <item><![CDATA[TR_REJECT]]></item>
       <item type="dictionary">
         <dictionary>
-          <item key="dtml"><![CDATA[<!DOCTYPE html>
+          <item key="ob"><![CDATA[<!DOCTYPE html>
 <html lang="en">
 <tal:block tal:define="global zmscontext options/zmscontext" tal:content="structure python:zmscontext.zmi_html_head(zmscontext,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zmi',request['lang'],'transition',zmscontext.meta_id])">
@@ -434,7 +434,7 @@
       <item><![CDATA[TR_COMMIT]]></item>
       <item type="dictionary">
         <dictionary>
-          <item key="dtml"><![CDATA[## Script (Python) "TR_COMMIT"
+          <item key="ob"><![CDATA[## Script (Python) "TR_COMMIT"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -494,7 +494,6 @@ return request.RESPONSE.redirect(zmscontext.url_append_params('%s/manage_wfTrans
           </item>
           <item key="id"><![CDATA[TR_COMMIT]]></item>
           <item key="name"><![CDATA[Publizieren]]></item>
-          <item key="ob"><![CDATA[<PythonScript at TR_COMMIT>]]></item>
           <item key="performer" type="list">
             <list>
               <item><![CDATA[ZMSAdministrator]]></item>
@@ -512,7 +511,7 @@ return request.RESPONSE.redirect(zmscontext.url_append_params('%s/manage_wfTrans
       <item><![CDATA[TR_ROLLBACK]]></item>
       <item type="dictionary">
         <dictionary>
-          <item key="dtml"><![CDATA[## Script (Python) "TR_ROLLBACK"
+          <item key="ob"><![CDATA[## Script (Python) "TR_ROLLBACK"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -560,7 +559,6 @@ return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransiti
           </item>
           <item key="id"><![CDATA[TR_ROLLBACK]]></item>
           <item key="name"><![CDATA[Zurückziehen]]></item>
-          <item key="ob"><![CDATA[<PythonScript at TR_ROLLBACK>]]></item>
           <item key="performer" type="list">
             <list>
               <item><![CDATA[ZMSAdministrator]]></item>
@@ -579,7 +577,7 @@ return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransiti
       <item><![CDATA[TR_LEAVE]]></item>
       <item type="dictionary">
         <dictionary>
-          <item key="dtml"></item>
+          <item key="ob"></item>
           <item key="from" type="list">
             <list>
               <item><![CDATA[AC_COMMITTED]]></item>

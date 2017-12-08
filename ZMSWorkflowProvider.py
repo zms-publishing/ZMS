@@ -1,4 +1,3 @@
-from __future__ import division
 ################################################################################
 # ZMSWorkflowProvider.py
 #
@@ -18,8 +17,6 @@ from __future__ import division
 ################################################################################
 
 # Imports.
-from builtins import map
-from builtins import filter
 from builtins import str
 from builtins import range
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -220,7 +217,7 @@ class ZMSWorkflowProvider(
       for li in range(len(l)//2):
         id = l[li*2]
         i = l[li*2+1]
-        newData = i.get('ob', i.get('dtml', ''))
+        newData = i['ob']
         newType = i.get('type', ['', 'DTML Method'][int(len(newData)>0)])
         self.setTransition(id=None, newId=id, newName=i['name'], newType=newType, newIconClass=i.get('icon_clazz', ''), newFrom=i.get('from', []), newTo=i.get('to', []), newPerformer=i.get('performer', []), newData=newData)
       # Create non existant roles.

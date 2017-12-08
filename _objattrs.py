@@ -136,7 +136,9 @@ def getobjattr(self, obj, obj_attr, lang):
   # Default value.
   if v is None:
     datatype = obj_attr['datatype_key']
-    default = obj_attr.get('default',_globals.datatype_map[datatype][1])
+    default = None
+    if datatype in range(len(_globals.datatype_map)):
+      default = obj_attr.get('default',_globals.datatype_map[datatype][1])
     # Default inactive in untranslated languages.
     if obj_attr['id'] == 'active' and len(self.getLangIds()) > 1 and not ( self.isTranslated(lang,self.REQUEST) or lang == self.getPrimaryLanguage() ):
         default = 0

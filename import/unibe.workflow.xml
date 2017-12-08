@@ -164,7 +164,6 @@
           </item>
           <item key="id"><![CDATA[TR_EXPRESSCOMMIT]]></item>
           <item key="name"><![CDATA[Sofort publizieren]]></item>
-          <item key="ob"><![CDATA[<ZopePageTemplate at TR_EXPRESSCOMMIT>]]></item>
           <item key="performer" type="list">
             <list>
             </list>
@@ -301,7 +300,6 @@
           </item>
           <item key="id"><![CDATA[TR_REQUEST]]></item>
           <item key="name"><![CDATA[Einreichen]]></item>
-          <item key="ob"><![CDATA[<ZopePageTemplate at TR_REQUEST>]]></item>
           <item key="performer" type="list">
             <list>
               <item><![CDATA[ZMSAdministrator]]></item>
@@ -416,7 +414,6 @@
           </item>
           <item key="id"><![CDATA[TR_REJECT]]></item>
           <item key="name"><![CDATA[Ablehnen]]></item>
-          <item key="ob"><![CDATA[<ZopePageTemplate at TR_REJECT>]]></item>
           <item key="performer" type="list">
             <list>
               <item><![CDATA[ZMSAdministrator]]></item>

@@ -1,4 +1,3 @@
-from __future__ import division
 ################################################################################
 # ZMSWorkflowActivitiesManager.py
 #
@@ -20,8 +19,6 @@ from __future__ import division
 # Imports.
 from builtins import object
 from builtins import range
-from builtins import filter
-from builtins import map
 from builtins import str
 import ZPublisher.HTTPRequest
 import copy

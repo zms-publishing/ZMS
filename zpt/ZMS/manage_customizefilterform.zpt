@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" tal:define="standard modules/Products.zms/standard; Std modules/Products/PythonScripts/standard">
+<html lang="en" tal:define="standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='filter config')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
@@ -151,7 +151,7 @@ $ZMI.registerReady(function(){
 				['XML', 'XML-Export' ], \
 				['XML_incl_embedded', 'XML-Export (incl. embedded)' ], \
 				['XHTML', 'XHTML-Export' ]]+ \
-				[[],['myXML',getattr(here,'getObjToXml_DocElmnt',here).title_or_id()]][int(getattr(here,'getObjToXml_DocElmnt',None) is not None)]">
+				[[],['myXML',standard.operator_getattr(here,'getObjToXml_DocElmnt',here).title_or_id()]][int(standard.operator_getattr(here,'getObjToXml_DocElmnt',None) is not None)]">
 
 <div class="ui-helper-hidden">
 	<div id="importConf" class="inner">
@@ -518,13 +518,13 @@ $ZMI.registerReady(function(){
 				</td>
 				<td>
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
-						<tal:block tal:condition="python:getattr(here,process['id'],None) is not None"><img tal:attributes="src python:getattr(here,process['id']).icon"/></tal:block>
-						<tal:block tal:condition="python:getattr(here,process['id'],None) is None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-cog')"></tal:block></tal:block>
+						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is not None"><img tal:attributes="src python:getattr(here,process['id']).icon"/></tal:block>
+						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-cog')"></tal:block></tal:block>
 						<tal:block tal:content="process/id">the id</tal:block>
 					</a>
 					(<tal:block tal:content="process/name">the name</tal:block>)
 				</td>
-				<td><code tal:content="python:standard.string_maxlen(Std.html_quote(process['command']),50)">the command</code></td>
+				<td><code tal:content="python:standard.string_maxlen(process['command'],50)">the command</code></td>
 			</tal:block>
 			</tr>
 		</tbody>

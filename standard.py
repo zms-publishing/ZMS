@@ -25,9 +25,6 @@ This module provides helpful functions and classes for use in Python
 Scripts.  It can be accessed from Python with the statement
 "import Products.zms.standard"
 """
-from __future__ import division
-from __future__ import print_function
-
 # Imports.
 from builtins import object
 from builtins import chr

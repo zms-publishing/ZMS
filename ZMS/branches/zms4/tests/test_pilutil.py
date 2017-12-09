@@ -1,4 +1,3 @@
-from __future__ import division
 from Products.zms import pilutil
 from Products.zms import standard
 import test_util

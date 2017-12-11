@@ -19,9 +19,7 @@
 # Imports.
 from builtins import chr
 from builtins import range
-from builtins import filter
 from builtins import str
-from builtins import map
 from AccessControl import ClassSecurityInfo
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -251,7 +249,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         standard.writeLog(self, "[set_request_context]: DEL "+key)
         REQUEST.set(key, None)
       # Set new context-values.
-      for key in d.keys():
+      for key in d:
         context = prefix+key
         value = d[key]
         standard.writeLog(self, "[set_request_context]: SET "+context+"="+str(value))
@@ -624,7 +622,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         if meta_type is None:
           constraints = self.attr('check_constraints')
           if isinstance(constraints, dict):
-            if len(constraints.keys()) > 0:
+            if len(constraints) > 0:
               name += ' constraint'
             if 'ERRORS' in constraints:
               name += ' constraint-error'
@@ -747,7 +745,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         self.setObjProperty( 'resources', resources, lang)
       
       ##### Primitives #####
-      for key in self.getObjAttrs().keys():
+      for key in self.getObjAttrs():
         if key not in ['resources']:
           self.setReqProperty(key, request)
       
@@ -888,7 +886,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def getPageExt(self, REQUEST):
       pageexts = ['.html']
-      if 'attr_pageext' in self.getObjAttrs().keys():
+      if 'attr_pageext' in self.getObjAttrs():
         obj_attr = self.getObjAttr('attr_pageext')
         if 'keys' in obj_attr and len(obj_attr.get('keys')) > 0:
           pageexts = obj_attr.get('keys')

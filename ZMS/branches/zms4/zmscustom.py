@@ -19,8 +19,6 @@
 # Imports.
 from builtins import object
 from builtins import range
-from builtins import filter
-from builtins import map
 from builtins import str
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -261,8 +259,8 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       if SESSION.get(sessionattr, '') != '' and \
          SESSION.get(sessionvalue, ''):
         res = standard.filter_list(res, SESSION.get(sessionattr), SESSION.get(sessionvalue), '==')
-        masterType = filter(lambda x: x['id']==SESSION.get(sessionattr), metaObj['attrs'][1:])[0]['type']
-        master = filter(lambda x: x.meta_id==masterType, self.getParentNode().objectValues(['ZMSCustom']))[0]
+        masterType = [x for x in  metaObj['attrs'][1:] if x['id'] == SESSION.get(sessionattr)][0]['type']
+        master = [x for x in self.getParentNode().objectValues(['ZMSCustom']) if x.meta_id == masterType][0]
         masterMetaObj = self.getMetaobj(masterType)
         masterAttrs = masterMetaObj['attrs']
         masterRows = master.getObjProperty(masterAttrs[0]['id'], REQUEST)
@@ -304,27 +302,26 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       metaObj = self.getMetaobj(self.meta_id)
       res = request['res']
       
-      if 'sort_id' in map(lambda x:x['id'], metaObj['attrs']):
-        l = map(lambda x:(x.get('sort_id', 1), x), res)
+      if 'sort_id' in [x['id'] for x in metaObj['attrs']]:
+        l = [(x.get('sort_id', 1), x) for x in res]
         # Sort (FK).
         for metaObjAttr in metaObj['attrs'][1:]:
           if metaObjAttr.get('type', '') in self.getMetaobjIds():
             d = {}
             # FK-id for primary-sort.
-            map(lambda x:self.operator_setitem(d, x.get(metaObjAttr['id']), x.get(metaObjAttr['id'])), res)
+            [self.operator_setitem(d, x.get(metaObjAttr['id']), x.get(metaObjAttr['id'])) for x in res]
             for fkContainer in self.getParentNode().getChildNodes(request, metaObjAttr['type']):
               fkMetaObj = self.getMetaobj(fkContainer.meta_id)
               fkMetaObjAttrIdRecordSet = fkMetaObj['attrs'][0]['id']
-              if 'sort_id' in map(lambda x:x['id'], metaObj['attrs']):
-                fkMetaObjRecordSet = fkContainer.attr(fkMetaObjAttrIdRecordSet)
-                fkMetaObjIdId = self.getMetaobjAttrIdentifierId(fkContainer.meta_id)
-                # FK-sort_id for primary-sort.
-                map(lambda x:self.operator_setitem(d, x.get(fkMetaObjIdId), x.get('sort_id')), fkMetaObjRecordSet)
+              fkMetaObjRecordSet = fkContainer.attr(fkMetaObjAttrIdRecordSet)
+              fkMetaObjIdId = self.getMetaobjAttrIdentifierId(fkContainer.meta_id)
+              # FK-sort_id for primary-sort.
+              [self.operator_setitem(d, x.get(fkMetaObjIdId), x.get('sort_id')) for x in fkMetaObjRecordSet]
             # Add primary-sort.
-            l = map(lambda x:((d.get(x[1].get(metaObjAttr['id'])), x[0]), x[1]), l)
+            l = [((d.get(x[1].get(metaObjAttr['id'])), x[0]), x[1]) for x in l]
             break
         l.sort()
-        res = map(lambda x:x[1], l)
+        res = [x[1] for x in l]
       else:
         qorder = request.get('qorder', '')
         qorderdir = 'asc'
@@ -394,16 +391,16 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         __call____roles__ = None
         def __call__(self, r):
           d = {}
-          for k in r.keys():
+          for k in r:
             v = r[k]
-            if k in self.fk.keys():
+            if k in self.fk:
               fk = self.fk[k]
               fkMetaObj = fk['fkMetaObj']
               fkMetaObjRecordSet = fk['fkMetaObjRecordSet']
               fkMetaObjIdId = fk['fkMetaObjIdId']
-              for fkMetaObjRecord in filter(lambda x:x.get(fkMetaObjIdId)==v, fkMetaObjRecordSet):
-                fkMetaObjAttrs = filter(lambda x:x['type']=='string' and fkMetaObjRecord.get(x['id'], '')!='', fkMetaObj['attrs'])
-                v = ', '.join(map(lambda x:str(fkMetaObjRecord.get(x['id'])), fkMetaObjAttrs))
+              for fkMetaObjRecord in [x for x in fkMetaObjRecordSet if x.get(fkMetaObjIdId) == v]:
+                fkMetaObjAttrs = [x for x in fkMetaObj['attrs'] if x['type'] == 'string' and fkMetaObjRecord.get(x['id'], '') != '']
+                v = ', '.join([str(fkMetaObjRecord.get(x['id'])) for x in fkMetaObjAttrs])
             d[k] =  v
           return d
       return EntityRecordHandler(self, id)
@@ -472,7 +469,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
             params['qindex'] = REQUEST['qindex']
             message = self.getZMILangStr('MSG_CHANGED')
           elif action == 'delete':
-            rows = map(lambda x: res_abs[int(x)], REQUEST.get('qindices', []))
+            rows = [res_abs[int(x)] for x in REQUEST.get('qindices', [])]
             for row in rows:
               del res_abs[res_abs.index(row)]
             message = self.getZMILangStr('MSG_DELETED')%len(rows)

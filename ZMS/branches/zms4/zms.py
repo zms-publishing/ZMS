@@ -18,7 +18,6 @@
 
 # Imports.
 from builtins import object
-from builtins import filter
 from builtins import str
 from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile

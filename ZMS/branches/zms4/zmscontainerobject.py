@@ -24,7 +24,6 @@ from OFS.role import RoleManager
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import re
-import string
 import sys
 import urllib.request, urllib.parse, urllib.error
 import time
@@ -257,7 +256,7 @@ class ZMSContainerObject(
       Delete a subordinate object physically:
       The objects specified in 'ids' get deleted.
       @param lang: Language-id.
-      @type ids: C{string}
+      @type ids: C{:str}
       @param ids: List of object-ids.
       @type ids: C{list}
       @param REQUEST: the triggering request
@@ -289,7 +288,7 @@ class ZMSContainerObject(
       Undo a subordinate object:
       The objects specified in 'ids' get undone (changes are rolled-back).
       @param lang: Language-id.
-      @type ids: C{string}
+      @type ids: C{:str}
       @param ids: List of object-ids.
       @type ids: C{list}
       @param REQUEST: the triggering request
@@ -325,7 +324,7 @@ class ZMSContainerObject(
       Delete a subordinate object logically:
       The objects specified in 'ids' get deleted (moved to trashcan).
       @param lang: Language-id.
-      @type ids: C{string}
+      @type ids: C{:str}
       @param ids: List of object-ids.
       @type ids: C{list}
       @param REQUEST: the triggering request
@@ -366,7 +365,7 @@ class ZMSContainerObject(
     def getContentType( self, REQUEST):
       """
       Returns MIME-type (text/html).
-      @rtype: C{string}
+      @rtype: C{:str}
       """
       return 'text/html'
 
@@ -584,8 +583,8 @@ class ZMSContainerObject(
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
       @param opt: the dictionary of options
-          - I{id} (C{string=''}) id of base ul-element
-          - I{cssclass} (C{string=''}) css class of base ul-element
+          - I{id} (C{:str=''}) id of base ul-element
+          - I{cssclass} (C{:str=''}) css class of base ul-element
           - I{add_self} (C{boolean=False}) add self to list
           - I{deep} (C{boolean=True}) process child nodes
           - I{complete} (C{boolean=False}) process complete subtree
@@ -593,7 +592,7 @@ class ZMSContainerObject(
           - I{getrestricted} (C{boolean=True}) get is restricted
           - I{getchildpages} (C{boolean=True}) get has child-pages
       @return: the Html
-      @rtype: C{string}
+      @rtype: C{:str}
       """
       items = []
       obs = []

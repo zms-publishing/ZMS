@@ -82,7 +82,7 @@ class DeprecatedAPI:
     return self.getObjProperty('file',REQUEST)
 
   def getFormat(self,REQUEST):
-    warnings.warn("[getFormat]: @deprecated: returns \"getObjProperty('format',REQUEST)\" for compatibility reasons!")
+    warn(self, 'getFormat', 'attr(\'format\')')
     return self.getObjProperty('format',REQUEST)
 
   def meta_id_or_type(self):

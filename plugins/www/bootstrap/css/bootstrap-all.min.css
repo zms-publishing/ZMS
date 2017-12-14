@@ -736,6 +736,7 @@ table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable
 .ZMSRecordSet #attrProperties .accordion-inner,.ZMSSqlDb #attrProperties .accordion-inner{padding-top:0.5em}
 .ZMSRecordSet #attrProperties .accordion-inner label,.ZMSSqlDb #attrProperties .accordion-inner label{color:#999}
 #insertUserForm .ZMSRecordSet{overflow:hidden;margin-left:-15px;padding-left:1px}
+#insertUserForm .ZMSRecordSet table th,#insertUserForm .ZMSRecordSet table td{overflow:hidden;max-width:8em}
 #insertUserForm .ZMSRecordSet .pagination{margin-left:0}
 #insertUserForm .ZMSRecordSet table div.btn-group span.split-left{overflow:visible}
 #insertUserForm .ZMSRecordSet.main_grid table tbody .btn-group span.split-left input{margin:-2px 0 0 4px;float:left}

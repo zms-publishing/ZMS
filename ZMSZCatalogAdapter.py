@@ -30,6 +30,18 @@ import standard
 import IZMSCatalogAdapter,IZMSConfigurationProvider
 import ZMSItem
 
+# ------------------------------------------------------------------------------
+#  unistr:
+# ------------------------------------------------------------------------------
+def unistr(s):
+    if type(s) is not unicode:
+      s = str(s)
+    else:
+      try:
+        s = str(s.encode('utf-8'))
+      except:
+        s = str(unicodedata.normalize('NFKD', s).encode('ascii', 'ignore').decode('utf-8'))
+    return s
 
 # ------------------------------------------------------------------------------
 #  updateVersion:
@@ -311,7 +323,7 @@ class ZMSZCatalogAdapter(
           if attr_type in ['date','datetime']:
             value = self.getLangFmtDate(value,'eng','ISO8601')
           if type(value) in [str,unicode]:
-            value = str(value)
+            value = unistr(value)
           d[attr_id] = remove_tags(self,value)
         cb(node,d)
       

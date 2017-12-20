@@ -170,7 +170,7 @@ def setobjattr(self, obj, obj_attr, value, lang):
 #  cloneobjattr:
 # ------------------------------------------------------------------------------
 def cloneobjattr(self, src, dst, obj_attr, lang):
-  standard.writeLog( self, "[cloneobjattr]: Clone object-attributes from '%s' to '%s'"%(str(src),str(dst)))
+  standard.writeLog( self, "[cloneobjattr]: Clone object-attribute '%s' from '%s' to '%s'"%(obj_attr['id'],str(src),str(dst)))
   # Fetch value.
   v = getobjattr(self,src,obj_attr,lang)
   # Clone value.

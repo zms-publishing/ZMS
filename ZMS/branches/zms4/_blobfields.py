@@ -707,7 +707,7 @@ class MyBlob(object):
       parent = self.aq_parent
       if parent is not None:
         mediadb = parent.getMediaDb()
-        if mediadb is not None:
+        if mediadb is not None and getattr(self,'mediadbfile') is None:
           self.mediadbfile = mediadb.storeFile( self)
           self.data = ''
       # unset parent to avoid TypeError: Can't pickle objects in acquisition wrappers.

@@ -19,6 +19,7 @@
 # Imports.
 from builtins import str
 from builtins import range
+from OFS.CopySupport import absattr
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import urllib.request, urllib.parse, urllib.error
@@ -28,6 +29,7 @@ from . import standard
 from . import IZMSConfigurationProvider, IZMSRepositoryProvider
 from . import IZMSWorkflowProvider, ZMSWorkflowActivitiesManager, ZMSWorkflowTransitionsManager
 from . import ZMSItem
+from . import zopeutil
 from . import _accessmanager
 from . import _fileutil
 
@@ -304,10 +306,10 @@ class ZMSWorkflowProvider(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def writeProtocol(self, entry):
       id = 'protocol.txt'
-      if len([x for x in self.objectValues(['File']) if x.id() == id]) == 0:
-        self.manage_addFile(id=id, file='', title='')
-      file = [x for x in self.objectValues(['File']) if x.id() == id][0]
-      file.manage_edit(file.title, file.data+'\n'+entry)
+      if zopeutil.getObject(self,id) is None:
+        zopeutil.addObject(self,'File',id,title='',data='')
+      file = zopeutil.getObject(self,id)
+      file.manage_edit(file.title, str(file.data)+'\n'+entry)
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProvider.manage_changeWorkflow:

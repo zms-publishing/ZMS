@@ -18,8 +18,6 @@
 
 # Imports.
 from builtins import object
-from builtins import map
-from builtins import filter
 from builtins import str
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -188,7 +186,7 @@ class VersionItem(object):
       states = getattr(self.__work_state__, 'states', [])
       # Make object-states unique.
       d = {}
-      list(map(lambda x: operator.setitem(d, x, None), states))
+      [operator.setitem(d, x, None) for x in states]
       states = list(d.keys())
       # Return object-states.
       return states
@@ -612,7 +610,7 @@ class VersionItem(object):
       self.resetObjStates(REQUEST)
       # Remove work-version.
       attrCntnrIds = self.objectIds(['ZMSAttributeContainer'])
-      if (self.getAutocommit() or len(list(filter( lambda x: x.startswith( 'STATE_'), self.getObjStates()))) == 0) and getattr( self, 'version_live_id', None) is not None:
+      if (self.getAutocommit() or len([x for x in self.getObjStates() if x.startswith( 'STATE_')]) == 0) and getattr( self, 'version_live_id', None) is not None:
         if self.version_live_id in attrCntnrIds:
           ids = []
           if self.version_live_id != self.version_work_id and self.version_work_id in attrCntnrIds:
@@ -720,7 +718,7 @@ class VersionItem(object):
       self.resetObjStates(REQUEST)
       # Remove work-version.
       attrCntnrIds = self.objectIds(['ZMSAttributeContainer'])
-      if (self.getAutocommit() or len( filter( lambda x: x.startswith( 'STATE_'), self.getObjStates())) == 0) and getattr( self, 'version_live_id', None) is not None:
+      if (self.getAutocommit() or len([x for x in self.getObjStates() if x.startswith( 'STATE_')]) == 0) and getattr( self, 'version_live_id', None) is not None:
         if self.version_live_id in attrCntnrIds:
           ids = []
           if self.version_live_id != self.version_work_id and self.version_work_id in attrCntnrIds:
@@ -1019,7 +1017,7 @@ class VersionItem(object):
         obs.sort()
         obs.reverse()
         # truncate version-nr from sorted object-items
-        obs = map( lambda ob: ob[1], obs)
+        obs = [x[1] for x in obs]
         # return object-items
         return obs
       except:
@@ -1273,8 +1271,8 @@ class VersionManagerContainer(object):
       message = ''
       wfTransitions = self.getWfTransitions()
       standard.writeBlock( self, "[manage_wfTransition]: wfTransitions.0=%s"%str(map(lambda x: x['id'], wfTransitions)))
-      wfTransitions = filter(lambda x: x['name']==custom, wfTransitions)
-      standard.writeBlock( self, "[manage_wfTransition]: wfTransitions.1=%s"%str(map(lambda x: x['id'], wfTransitions)))
+      wfTransitions = [x for x in wfTransitions if x['name']==custom]
+      standard.writeBlock( self, "[manage_wfTransition]: wfTransitions.1=%s"%str([x['id'] for x in wfTransitions]))
       for wfTransition in wfTransitions:
         # Delete old state.
         wfStates = self.getWfStates(REQUEST)
@@ -1284,7 +1282,7 @@ class VersionManagerContainer(object):
         for wfState in wfTransition.get('to', []):
           standard.writeBlock( self, "[manage_wfTransition]: Add %s"%wfState)
           self.setObjState(wfState, lang)
-          message += REQUEST.get('manage_tabs_message', filter(lambda x: x['id']==wfState, self.getWfActivities())[0]['name'])
+          message += REQUEST.get('manage_tabs_message', [x for x in self.getWfActivities() if x['id']==wfState][0]['name'])
         # Set Properties.
         work_dt = standard.getDateTime( time.time())
         work_uid = str(REQUEST.get('AUTHENTICATED_USER'))

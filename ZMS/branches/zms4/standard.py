@@ -1980,7 +1980,7 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
   msgAlternative = MIMEMultipart('alternative')
   mime_msg.attach(msgAlternative)
   for ibody in mbody:
-    msg = MIMEText(ibody['text'], _subtype=ibody.get('subtype', 'plain'), _charset=ibody.get('charset', 'unicode-1-1-utf-8'))
+    msg = MIMEText(ibody['text'], _subtype=ibody.get('subtype', 'plain'), _charset=ibody.get('charset', 'utf-8'))
     msgAlternative.attach(msg)
 
   # Handle attachments

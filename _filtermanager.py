@@ -18,8 +18,6 @@
 
 # Imports.
 from builtins import object
-from builtins import map
-from builtins import filter
 from builtins import str
 from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -256,7 +254,7 @@ def getRawFilters(self):
   for key in raw.keys():
     f = raw[ key]
     processes = f.get( 'processes', [])
-    processes = filter( lambda x: x['id'] is not None, processes)
+    processes = [x for x in processes if x['id'] is not None]
     f[ 'processes'] = processes
   return raw
 
@@ -648,10 +646,10 @@ class FilterManager(object):
     # --------------------------------------------------------------------------
     def getProcessIds(self, sort=1):
       obs = getRawProcesses(self)
-      ids = obs.keys()
+      ids = list(obs.keys())
       portalMaster = self.getPortalMaster()
       if portalMaster is not None:
-        ids.extend( filter( lambda x: x not in ids, portalMaster.getProcessIds()))
+        ids = list(set(ids+portalMaster.getProcessIds()))
       if sort:
         ids = sorted(ids,key=lambda x:self.getProcess(x)['name'])
       return ids

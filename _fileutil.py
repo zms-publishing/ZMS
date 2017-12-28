@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import map
 from builtins import range
 from builtins import chr
 from builtins import str
@@ -385,9 +384,8 @@ def readDir(path):
       ob['type'] = 'd'
     else:
       ob['type'] = 'f'
-    obs.append((ob['type'], ob))
-  obs.sort()
-  return map(lambda ob: ob[1], obs)
+    obs.append(ob)
+  return sorted(obs, key=lambda x:x['type'])
 
 
 ################################################################################

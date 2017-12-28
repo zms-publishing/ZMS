@@ -19,8 +19,6 @@
 # Imports.
 from builtins import object
 from builtins import range
-from builtins import map
-from builtins import filter
 from builtins import chr
 from builtins import str
 try:
@@ -736,7 +734,7 @@ def getObjToXml(self, REQUEST, incl_embedded=False, deep=True, base_path='', dat
         xml.append('\n<%s>%s</%s>' % (key, ob_prop, key))
   # Process children.
   if deep:
-    xml.extend(map(lambda x: getObjToXml(x, REQUEST, incl_embedded, deep, base_path + x.id + '/', data2hex), ob.getChildNodes()))
+    xml.extend([getObjToXml(x, REQUEST, incl_embedded, deep, base_path + x.id + '/', data2hex) for x in ob.getChildNodes()])
   # End tag.
   xml.append('</%s>\n' % ob.meta_id)
   # Return xml.

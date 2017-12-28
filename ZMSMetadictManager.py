@@ -18,8 +18,6 @@
 
 # Imports.
 from builtins import object
-from builtins import map
-from builtins import filter
 from builtins import str
 from builtins import range
 import copy

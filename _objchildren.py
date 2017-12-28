@@ -23,7 +23,6 @@
 
 # Imports.
 from builtins import object
-from builtins import filter
 from builtins import str
 import copy
 import time

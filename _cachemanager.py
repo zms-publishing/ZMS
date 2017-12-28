@@ -18,7 +18,6 @@
 
 # Imports.
 from builtins import object
-from builtins import filter
 import time
 # Product Imports.
 from . import standard

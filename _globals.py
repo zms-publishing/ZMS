@@ -22,7 +22,6 @@
 # Imports.
 from builtins import object
 from builtins import range
-from builtins import map
 from builtins import chr
 from builtins import str
 from Products.PageTemplates.Expressions import SecureModuleImporter
@@ -213,9 +212,9 @@ def get_size(v):
     if is_str_type(v):
       size = size + len(v)
     elif isinstance(v, list):
-      size = sum( map( lambda x: get_size(x), v))
+      size = sum([get_size(x) for x in v])
     elif isinstance(v, dict):
-      size = sum( map( lambda x: get_size(x) + get_size(v[x]), v.keys()))
+      size = sum([get_size(x)+get_size(v[x]) for x in v])
     elif isinstance(v, int) or isinstance(v, float):
       size = size + 4
     elif hasattr(v, 'get_real_size') and callable(getattr(v, 'get_real_size')):

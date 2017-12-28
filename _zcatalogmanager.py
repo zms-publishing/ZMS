@@ -18,7 +18,6 @@
 
 # Imports.
 from builtins import object
-from builtins import filter
 import re
 import sys
 import zope.interface
@@ -60,7 +59,7 @@ class ZCatalogManager(object):
             if raw_item not in qs:
               qs.append( raw_item)
         i += 1
-      return (' %s '%option).join(filter( lambda x: len(x.strip())>0, qs))
+      return (' %s '%option).join([x for x in qs if x.strip()])
 
 
     # --------------------------------------------------------------------------

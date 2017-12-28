@@ -18,7 +18,6 @@
 
 # Imports.
 from builtins import object
-from builtins import map
 from builtins import str
 import copy
 import time
@@ -239,7 +238,7 @@ class CopySupport(object):
       op = cp[0]
       cp = (0, cp[1])
       cp = _cb_encode(cp)
-      ids = map(lambda x: self._get_id(absattr(x.id)), self._get_obs(cp))
+      ids = [self._get_id(absattr(x.id)) for x in self._get_obs(cp)]
       oblist = self._get_obs(cp)
       
       # Paste objects.

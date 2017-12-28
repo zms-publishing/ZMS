@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import map
 from builtins import str
 from zope.interface import Interface
 

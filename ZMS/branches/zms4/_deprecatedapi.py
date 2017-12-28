@@ -18,7 +18,6 @@
 
 # Imports.
 from builtins import object
-from builtins import map
 import tempfile
 from App.Common import package_home
 # Product Imports.
@@ -409,8 +408,8 @@ class DeprecatedAPI(object):
     mediadb = self.getMediaDb()
     if mediadb:
         perms.append(mediadb.getLocation())
-    for perm in map(lambda x: x.strip(), perms):
-        authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
+    for perm in [x.strip() for x in perms]:
+        authorized = authorized or (len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
     if not authorized:
         raise zExceptions.Unauthorized
     # Delegate to standard.
@@ -428,7 +427,7 @@ class DeprecatedAPI(object):
     mediadb = self.getMediaDb()
     if mediadb:
         perms.append(mediadb.getLocation())
-    for perm in map(lambda x: x.strip(), perms):
+    for perm in [x.strip() for x in perms]:
         authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
     if not authorized:
         raise zExceptions.Unauthorized
@@ -445,7 +444,7 @@ class DeprecatedAPI(object):
     mediadb = self.getMediaDb()
     if mediadb:
         perms.append(mediadb.getLocation())
-    for perm in map(lambda x: x.strip(), perms):
+    for perm in [x.strip() for x in perms]:
         authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
     if not authorized:
         raise zExceptions.Unauthorized
@@ -462,7 +461,7 @@ class DeprecatedAPI(object):
     mediadb = self.getMediaDb()
     if mediadb:
         perms.append(mediadb.getLocation())
-    for perm in map(lambda x: x.strip(), perms):
+    for perm in [x.strip() for x in perms]:
         authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
     if not authorized:
         raise zExceptions.Unauthorized

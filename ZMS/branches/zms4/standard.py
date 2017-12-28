@@ -29,8 +29,6 @@ Scripts.  It can be accessed from Python with the statement
 from builtins import object
 from builtins import chr
 from builtins import hex
-from builtins import map
-from builtins import filter
 from builtins import range
 from builtins import str
 from AccessControl.SecurityInfo import ModuleSecurityInfo

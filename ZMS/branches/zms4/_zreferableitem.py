@@ -18,9 +18,7 @@
 
 # Imports.
 from builtins import object
-from builtins import filter
 from builtins import range
-from builtins import map
 from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
@@ -236,7 +234,7 @@ class ZReferableItem(object):
     standard.writeLog(self, '[unregisterRefObj]: ref='+ref)
     ref_by = self.synchronizeRefByObjs()
     if ref in ref_by:
-      ref_by = filter( lambda x: x!=ref, ref_by)
+      ref_by = [x for x in ref_by if x!=ref]
       self.ref_by = ref_by
 
 
@@ -261,7 +259,7 @@ class ZReferableItem(object):
       if datatype in ['richtext', 'string', 'text', 'url']:
         lang_suffixes = ['']
         if objAttr['multilang']:
-          lang_suffixes = map(lambda x:'_%s'%x, self.getLangIds())
+          lang_suffixes = ['_%s'%x for x in self.getLangIds()]
         for lang_suffix in lang_suffixes:
           for obj_vers in self.getObjVersions():
             v = getattr(obj_vers, '%s%s'%(key, lang_suffix), None)
@@ -346,7 +344,7 @@ class ZReferableItem(object):
           ild = getInternalLinkDict(self, url)
           for k in ild.keys():
             d[{'data-url':q}.get(k, k)] = ild[k]
-          new = p.replace('(.*?)', ' '.join(['']+map(lambda x:'%s="%s"'%(x, d[x]), d.keys())))
+          new = p.replace('(.*?)', ' '.join(['']+['%s="%s"'%(x,d[x]) for x in d]))
           if old != new:
             text = text.replace(old, new)
     self.stopMeasurement('%s.validateInlineLinkObj'%self.meta_id)
@@ -388,7 +386,7 @@ class ZReferableItem(object):
           l = zmspath.split('/') 
           ob = self
           try:
-            for id in filter(lambda x:len(x)>0, l):
+            for id in [x for x in l if x]:
               ob = getattr(ob, id, None)
           except:
             pass
@@ -455,8 +453,8 @@ class ZReferableItem(object):
   #  @return
   # ----------------------------------------------------------------------------
   def tal_anchor(self, href, target='', attrs={}, content=''):
-    filtered_attrs_keys = filter(lambda x: len(x)>0, attrs.keys())
-    str_attrs = ' '.join( map(lambda x:str(x)+'=\042'+str(attrs[x]+'\042'), filtered_attrs_keys) )
+    filtered_attrs_keys = [x for x in attrs if x]
+    str_attrs = ' '.join(['%s=\042%s\042'%(str(x),str(attrs[x])) for x in filtered_attrs_keys])
     return '<a href="%s" %s %s>%s</a>'%(href, ['', ' target="%s"'%target][int(len(target)>0)], str_attrs, content)
 
 ################################################################################

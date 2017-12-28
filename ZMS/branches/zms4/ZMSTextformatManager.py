@@ -18,8 +18,6 @@
 
 # Imports.
 from builtins import object
-from builtins import filter
-from builtins import map
 from builtins import range
 from App.Common import package_home
 import copy

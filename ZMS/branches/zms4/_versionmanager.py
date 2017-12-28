@@ -1251,7 +1251,7 @@ class VersionManagerContainer(object):
       """ WorkflowContainer.manage_wfTransition """
       standard.writeBlock( self, "[manage_wfTransition]")
       wfTransitions = self.getWfTransitions()
-      for wfTransition in filter(lambda x: x['name']==custom, wfTransitions):
+      for wfTransition in [x for x in wfTransitions if x['name'] == custom]:
         transition = self.getWfTransition(wfTransition['id'])
         if transition.get('ob'):
           return zopeutil.callObject(transition['ob'], zmscontext=self)
@@ -1270,9 +1270,7 @@ class VersionManagerContainer(object):
       url = ''
       message = ''
       wfTransitions = self.getWfTransitions()
-      standard.writeBlock( self, "[manage_wfTransition]: wfTransitions.0=%s"%str(map(lambda x: x['id'], wfTransitions)))
       wfTransitions = [x for x in wfTransitions if x['name']==custom]
-      standard.writeBlock( self, "[manage_wfTransition]: wfTransitions.1=%s"%str([x['id'] for x in wfTransitions]))
       for wfTransition in wfTransitions:
         # Delete old state.
         wfStates = self.getWfStates(REQUEST)

@@ -83,7 +83,7 @@ def importZip2Zodb(root, data):
   zf = zipfile.ZipFile( data, 'r')
   for name in zf.namelist():
     container = root
-    ids = map(lambda x:str(x), name.split('/'))
+    ids = name.split('/')
     if len(ids) > 1:
       for id in ids[:-1]:
         if id not in container.objectIds():

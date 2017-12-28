@@ -647,13 +647,18 @@ return uid
 ##
 # --// ObjectAdded //--
 
+from Products.zms import standard
 zmscontext.writeBlock("[ZMSIndexZCatalog.ObjectAdded]: "+zmscontext.absolute_url())
 def traverse(node):
+  standard.writeError(node,"[ZMSIndexZCatalog.ObjectAdded]: traverse")
   # Create new uid.
   node.get_uid(True)
   # Catalog object.
-  node.writeBlock("ZMSIndexZCatalog.ObjectAdded: url=%s"%node.getPath())
-  node.ZMSIndexZCatalog_func_(node,'catalog_object')
+  try:
+    node.writeBlock("ZMSIndexZCatalog.ObjectAdded: url=%s"%node.getPath())
+    node.ZMSIndexZCatalog_func_(node,'catalog_object')
+  except:
+    standard.writeError(node,"can't ZMSIndexZCatalog.ObjectAdded")
   # Traverse.
   for childNode in node.getChildNodes():
     traverse(childNode)

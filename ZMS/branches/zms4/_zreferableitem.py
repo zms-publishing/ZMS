@@ -181,7 +181,7 @@ class ZReferableItem(object):
   # ----------------------------------------------------------------------------
   def getRefByObjs(self, REQUEST=None):
     ref_by = []
-    if 'ref_by' in self.__dict__.keys():
+    if 'ref_by' in self.__dict__:
       ref_by = self.ref_by
       ref_by = list(set(ref_by))
     return ref_by
@@ -253,7 +253,7 @@ class ZReferableItem(object):
   # ----------------------------------------------------------------------------
   def getRefToObjs(self):
     d = {}
-    for key in self.getObjAttrs().keys():
+    for key in self.getObjAttrs():
       objAttr = self.getObjAttr(key)
       datatype = objAttr['datatype']
       if datatype in ['richtext', 'string', 'text', 'url']:
@@ -275,7 +275,7 @@ class ZReferableItem(object):
                 if ref_ob is not None:
                   ref = self.getRefObjPath(ref_ob)
                   d[ref] = 1
-    return d.keys()
+    return list(set(d.keys()))
 
 
   # ----------------------------------------------------------------------------
@@ -285,7 +285,7 @@ class ZReferableItem(object):
   # ----------------------------------------------------------------------------
   def prepareRefreshRefToObjs(self):
     standard.writeBlock( self, '[prepareRefreshRefToObjs]')
-    if 'ref_to' not in self.__dict__.keys():
+    if 'ref_to' not in self.__dict__:
       self.ref_to = self.getRefToObjs()
 
 
@@ -296,7 +296,7 @@ class ZReferableItem(object):
   # ----------------------------------------------------------------------------
   def refreshRefToObjs(self):
     standard.writeBlock( self, '[refreshRefToObjs]')
-    if 'ref_to' in self.__dict__.keys():
+    if 'ref_to' in self.__dict__:
       old_ref_to = self.ref_to
       standard.writeBlock( self, '[refreshRefToObjs]: old=%s'%str(old_ref_to))
       new_ref_to = self.getRefToObjs()
@@ -342,7 +342,7 @@ class ZReferableItem(object):
           old = p.replace('(.*?)', f)
           url = d['data-id']
           ild = getInternalLinkDict(self, url)
-          for k in ild.keys():
+          for k in ild:
             d[{'data-url':q}.get(k, k)] = ild[k]
           new = p.replace('(.*?)', ' '.join(['']+['%s="%s"'%(x,d[x]) for x in d]))
           if old != new:
@@ -426,14 +426,14 @@ class ZReferableItem(object):
         ref_anchor = url[url.find('#'):-1]
       # Prepare request.
       bak_params = {}
-      for key in ref_params.keys():
+      for key in ref_params:
         bak_params[key] = request.get(key, None)
         request.set(key, ref_params[key])
       # Get index_html.
       ref_obj = self.getLinkObj(url)
       index_html = getInternalLinkUrl(self, url, ref_obj)
       # Unprepare request.
-      for key in bak_params.keys():
+      for key in bak_params:
         request.set(key, bak_params[key])
       # Return index_html.
       url = index_html + ref_anchor

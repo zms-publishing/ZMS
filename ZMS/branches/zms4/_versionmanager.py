@@ -347,10 +347,13 @@ class VersionItem(object):
     #  Sets object-state.
     # --------------------------------------------------------------------------
     def setObjState(self, obj_state, lang):
+      self.writeBlock("[setObjState]: obj_state="+str(obj_state))
       state = getObjStateName(obj_state, lang)
       states = self.getObjStates()
+      self.writeBlock("[setObjState]: states="+str(states))
       if not state in states:
         states.append(state)
+      self.writeBlock("[setObjState]: states="+str(states))
       self.__work_state__.states = copy.deepcopy(states)
       self.__work_state__ = copy.deepcopy(self.__work_state__)
 
@@ -361,14 +364,17 @@ class VersionItem(object):
     #  Deletes object-state of this object.
     # --------------------------------------------------------------------------
     def delObjStates(self, obj_states=[], REQUEST={}):
+      self.writeBlock("[delObjStates]: obj_states="+str(obj_states))
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang', prim_lang)
       states = self.getObjStates()
+      self.writeBlock("[delObjStates]: states="+str(states))
       for obj_state in obj_states:
         while obj_state in states:
           del states[states.index(obj_state)]
         while getObjStateName(obj_state, lang) in states:
           del states[states.index(getObjStateName(obj_state, lang))]
+      self.writeBlock("[delObjStates]: states="+str(states))
       self.__work_state__.states = copy.deepcopy(states)
       self.__work_state__ = copy.deepcopy(self.__work_state__)
 
@@ -514,7 +520,7 @@ class VersionItem(object):
           self.commitObj(REQUEST, forced, do_history)
         else:
           self.autoWfTransition(REQUEST)
-        standard.writeLog( self, "[onChangeObj]: Finished!")
+        standard.writeBlock( self, "[onChangeObj]: Finished!")
       except Exception as e:
         standard.writeError( self, "[onChangeObj]: abort transaction")
         import transaction
@@ -1217,6 +1223,7 @@ class VersionManagerContainer(object):
       modified = self.isObjModified(REQUEST) or self.hasObjModifiedChildren(REQUEST)
       # Check if current workflow-state is empty.
       enter = len(wfStates) == 0
+      standard.writeBlock( self, "[autoWfTransition]: enter=%s"%str(enter))
       if not enter:
         # Check if current workflow-state is from-state of a workflow-exit (empty to-state).
         for wfTransition in self.getWfTransitions():
@@ -1225,6 +1232,8 @@ class VersionManagerContainer(object):
             standard.writeBlock( self, "[autoWfTransition]: enter name=%s, id=%s, to=%s"%(wfTransition['name'], wfTransition['id'], str(wfTransition['to'])))
             enter = True
             break
+      standard.writeBlock( self, "[autoWfTransition]: modified=%s"%str(modified))
+      standard.writeBlock( self, "[autoWfTransition]: enter=%s"%str(enter))
       if modified and enter:
         # Initialize with workflow-entry (empty from-state).
         for wfTransition in self.getWfTransitions():

@@ -773,7 +773,6 @@ def writeLog(context, info):
   @type info: C{any}
   @rtype: C{str}
   """
-  print ("DEBUG",info)
   try:
     zms_log = getLog(context)
     severity = logging.DEBUG
@@ -792,7 +791,6 @@ def writeBlock(context, info):
   @type info: C{any}
   @rtype: C{str}
   """
-  print ("INFO",info)
   try:
     zms_log = getLog(context)
     severity = logging.INFO
@@ -811,7 +809,6 @@ def writeError(context, info):
   @type info: C{any}
   @rtype: C{str}
   """
-  print ("ERROR",info)
   t, v='?', '?'
   try:
     t, v, tb = sys.exc_info()

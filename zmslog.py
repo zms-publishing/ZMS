@@ -18,6 +18,7 @@
 
 # Imports.
 from builtins import str
+from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import logging
@@ -104,7 +105,6 @@ class ZMSLog(ZMSItem.ZMSItem):
     #  ZMSLog.LOG:
     # --------------------------------------------------------------------------
     def LOG(self, severity, info):
-      print ("LOG",severity,info)
       log_severity = severity
       if log_severity == logging.DEBUG:
         log_severity = logging.INFO
@@ -117,6 +117,7 @@ class ZMSLog(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def getLOG(self, REQUEST, RESPONSE=None):
       """ ZMSLog.getLOG """
+      INSTANCE_HOME = package_home(globals())
       filename = os.path.join(INSTANCE_HOME, 'log', 'event.log')
       RESPONSE.setHeader( 'Content-Type', 'text/plain')
       RESPONSE.setHeader( 'Content-Disposition', 'inline;filename="%s"'%_fileutil.extractFilename( filename))
@@ -129,8 +130,11 @@ class ZMSLog(ZMSItem.ZMSItem):
     #  ZMSLog.tail_event_log:
     # --------------------------------------------------------------------------
     def tail_event_log(self, linesback=100, returnlist=True):
+      INSTANCE_HOME = package_home(globals())
       filename = os.path.join(INSTANCE_HOME, 'log', 'event.log')
-      return _fileutil.tail_lines(filename, linesback, returnlist)
+      if os.path.exists(filename):
+        return _fileutil.tail_lines(filename, linesback, returnlist)
+      return ''
 
 
     ############################################################################

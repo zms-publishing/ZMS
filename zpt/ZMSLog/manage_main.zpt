@@ -2,6 +2,8 @@
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='main zmslog')">
+<div id="zmi-tab">
+
 <form class="form-horizontal" action="setProperties" method="post">
 
 <legend>
@@ -49,19 +51,11 @@ file(s).
 	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
 
-<div class="accordion-group perc100">
-	<div class="accordion-heading">
-		<a class="pull-left accordion-toggle" href="#"><tal:block tal:content="python:getattr(here,'tail_event_log_linesback',100)">###</tal:block> lines back in event log&nbsp;</a>
-		<a class="pull-left" href="getLOG" target="_blank" title="Download Log"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></a>
-		<div class="clearfix"></div>
-	</div><!-- .accordion-heading -->
-	<div class="accordion-body">
-		<div class="accordion-inner">
-			<pre tal:content="python:'\n'.join(here.tail_event_log(linesback=int(getattr(here,'tail_event_log_linesback',100))))">the tail event-log</pre>
-		</div><!-- accordion-inner -->
-	</div><!-- accordion-body -->
-</div><!-- accordion-group -->
-
 </form>
+
+<div style="clear:both;">&nbsp;</div>
+</div><!-- #zmi-tab -->
+
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 </body>
 </html>  

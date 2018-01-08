@@ -18,7 +18,6 @@
 
 # Imports.
 from builtins import str
-from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import logging
@@ -111,30 +110,6 @@ class ZMSLog(ZMSItem.ZMSItem):
       self.LOGGER.log( severity, info)
       if getattr( self, 'copy_to_stdout', True):
         standard.writeStdout(self, '%s %s(%i) %s'%(str(log_time()), severity_string(severity), int(severity), info))
-
-    # --------------------------------------------------------------------------
-    #  ZMSLog.getLOG:
-    # --------------------------------------------------------------------------
-    def getLOG(self, REQUEST, RESPONSE=None):
-      """ ZMSLog.getLOG """
-      INSTANCE_HOME = package_home(globals())
-      filename = os.path.join(INSTANCE_HOME, 'log', 'event.log')
-      RESPONSE.setHeader( 'Content-Type', 'text/plain')
-      RESPONSE.setHeader( 'Content-Disposition', 'inline;filename="%s"'%_fileutil.extractFilename( filename))
-      file = open( filename, 'r')
-      rtn = file.read() 
-      file.close()
-      return rtn
-
-    # --------------------------------------------------------------------------
-    #  ZMSLog.tail_event_log:
-    # --------------------------------------------------------------------------
-    def tail_event_log(self, linesback=100, returnlist=True):
-      INSTANCE_HOME = package_home(globals())
-      filename = os.path.join(INSTANCE_HOME, 'log', 'event.log')
-      if os.path.exists(filename):
-        return _fileutil.tail_lines(filename, linesback, returnlist)
-      return ''
 
 
     ############################################################################

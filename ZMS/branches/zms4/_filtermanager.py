@@ -19,7 +19,6 @@
 # Imports.
 from builtins import object
 from builtins import str
-from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates import ZopePageTemplate
@@ -32,9 +31,10 @@ import time
 import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
-# import standard
 from . import _blobfields
 from . import _fileutil
+from . import standard
+from . import zopeutil
 
 
 ################################################################################
@@ -186,7 +186,7 @@ def setProcess(self, newId, newAcquired=0, newName='', newType='process', newCom
     roles=[ 'Manager']
     newOb._proxy_roles=tuple(roles)
   elif newType in [ 'External Method']:
-    newExternalMethod = INSTANCE_HOME+'/Extensions/'+newId+'.py'
+    newExternalMethod = standard.getINSTANCE_HOME()+'/Extensions/'+newId+'.py'
     _fileutil.exportObj( newCommand, newExternalMethod)
     if newId not in container.objectIds([newType]):
       ExternalMethod.manage_addExternalMethod( container, newId, newName, newId, newId)
@@ -224,7 +224,7 @@ def delProcess(self, id):
           container.manage_delObjects( ids=[id])
         if cp[key].get('type', '') == 'External Method':
           try:
-            _fileutil.remove( INSTANCE_HOME+'/Extensions/'+id+'.py')
+            _fileutil.remove(standard.getINSTANCE_HOME()+'/Extensions/'+id+'.py')
           except:
             pass
     else:
@@ -431,7 +431,6 @@ def processCommand(self, filename, command):
   standard.writeLog( self, '[processCommand]: infilename=%s'%filename)
   infilename = _fileutil.getOSPath( filename)
   outfilename = _fileutil.getOSPath( filename)
-  mZmsHome = '{zms_home}'
   mCurDir = '{cur_dir}'
   mIn = '{in}'
   mOut = '{out}'
@@ -445,12 +444,11 @@ def processCommand(self, filename, command):
     else:
       outfilename += '.tmp'
   tmpoutfilename = outfilename + '~'
-  instance_home = INSTANCE_HOME
+  instance_home = standard.getINSTANCE_HOME()
   software_home = os.path.join(SOFTWARE_HOME, '..%s..' % os.sep)
   software_home = os.path.normpath(software_home)  
   command = command.replace( '{software_home}', software_home)
   command = command.replace( '{instance_home}', instance_home)
-  command = command.replace( mZmsHome, _fileutil.getOSPath(package_home(globals())))
   command = command.replace( mCurDir, _fileutil.getFilePath(infilename))
   command = command.replace( mIn, infilename)
   command = command.replace( mOut, tmpoutfilename)
@@ -567,7 +565,7 @@ class FilterItem(object):
     # --------------------------------------------------------------------------
     def initExportFilter(self, id, REQUEST):
       # Set environment variables.
-      instance_home = INSTANCE_HOME
+      instance_home = standard.getINSTANCE_HOME()
       software_home = os.path.join(SOFTWARE_HOME, '..%s..' % os.sep)
       software_home = os.path.normpath(software_home)  
       REQUEST.set( 'ZMS_FILTER', True)
@@ -672,15 +670,12 @@ class FilterManager(object):
             process = portalMaster.getProcess(id)
             process['acquired'] = 1
       process['id'] = id
+      process['name'] = process.get('name',process['id'])
       # Synchronize type.
       try:
         container = self.getHome()
-        if process.get('type') in [ 'DTML Method']:
-          ob = getattr( container, process['id'])
-          process['command'] = ob.raw
-        elif process.get('type') in [ 'Script (Python)']:
-          ob = getattr( container, process['id'])
-          process['command'] = ob.read()
+        ob = zopeutil.getObject( container, process['id'])
+        process['command'] = zopeutil.readData( ob)
       except:
         pass
       return process
@@ -712,7 +707,7 @@ class FilterManager(object):
       # Acquire from parent.
       if ob.get('acquired', 0) == 1:
         portalMaster = self.getPortalMaster()
-      if portalMaster is not None:
+        if portalMaster is not None:
           ob = portalMaster.getFilter(id)
           ob['acquired'] = 1
       ob['id'] = id

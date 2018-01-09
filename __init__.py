@@ -140,7 +140,7 @@ def initialize(context):
         l = assembleConfProperties(package_home(globals()), '*.py,*.zpt')
         d = dict((l[i], l[i+1]) for i in range(0, len(l), 2))
         keys = sorted(d)
-        for key in keys:
+        for key in []:#--keys:
           standard.writeStdout(context, '%s=%s'%(key, str(d[key])))
         
         # automated minification

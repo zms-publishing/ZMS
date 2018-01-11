@@ -1343,7 +1343,7 @@ class AccessManager(AccessableContainer):
         # Fast-Export
         # -----------
         elif btn == 'fastexport':
-          path = '%s/var/fastexport.pkl'%self.Control_Panel.getINSTANCE_HOME()
+          path = '%s/var/fastexport.pkl'%standard.getINSTANCE_HOME()
           data = self.getRootElement().getConfProperty('ZMS.security.users', {})
           output = open(path, 'wb')
           pickle.dump(data, output)
@@ -1353,7 +1353,7 @@ class AccessManager(AccessableContainer):
         # Fast-Import
         # -----------
         elif btn == 'fastimport':
-          path = '%s/var/fastexport.pkl'%self.Control_Panel.getINSTANCE_HOME()
+          path = '%s/var/fastexport.pkl'%standard.getINSTANCE_HOME()
           input = open(path, 'rb')
           data = pickle.load(input)
           input.close()

@@ -239,7 +239,7 @@ class MediaDb(
     # MediaDb.getLocation
     # --------------------------------------------------------------------------
     def getLocation(self):
-      return self.location.replace('$INSTANCE_HOME', INSTANCE_HOME)
+      return self.location.replace('$INSTANCE_HOME', standard.getINSTANCE_HOME())
 
 
     # --------------------------------------------------------------------------

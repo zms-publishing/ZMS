@@ -302,7 +302,7 @@ class Exportable(_filtermanager.FilterItem):
       
       # myXML.
       elif export_format == 3: 
-        instance_home = INSTANCE_HOME
+        instance_home = standard.getINSTANCE_HOME()
         software_home = os.path.join(SOFTWARE_HOME, '..%s..' % os.sep)
         software_home = os.path.normpath(software_home)  
         REQUEST.set( 'ZMS_FILTER_SOFTWARE_HOME', software_home)

@@ -111,7 +111,7 @@ def importTheme(folder, theme):
   
   if filename.endswith('.zexp'):
     ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
-    filepath = INSTANCE_HOME + '/import/' + filename
+    filepath = standard.getINSTANCE_HOME() + '/import/' + filename
     if theme.startswith('http://'):
       initutil = standard.initutil()
       initutil.setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))

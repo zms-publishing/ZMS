@@ -73,7 +73,7 @@ class ConfDict(object):
         if cls.__confdict__ is None:
             cls.__confdict__ = {'last_modified':int(DateTime().timeTime())}
             PRODUCT_HOME = os.path.dirname(os.path.abspath(__file__))
-            for home in [PRODUCT_HOME]: # TODO , INSTANCE_HOME]:
+            for home in [PRODUCT_HOME, standard.getINSTANCE_HOME()]:
               fp = os.path.join(home, 'etc', 'zms.conf')
               if os.path.exists(fp):
                 cfp = configparser.ConfigParser()
@@ -252,7 +252,7 @@ class ConfManager(
       print("getConfFiles")
       filenames = {}
       filepaths = [
-        self.Control_Panel.getINSTANCE_HOME()+'/etc/zms/import/',
+        standard.getINSTANCE_HOME()+'/etc/zms/import/',
         package_home(globals())+'/import/',]
       for filepath in filepaths:
         print("getConfFiles","filepath=",filepath)
@@ -900,7 +900,7 @@ class ConfManager(
         file = REQUEST['file']
         filename = _fileutil.extractFilename(file.filename)
         id = filename[:filename.rfind('.')]
-        filepath = INSTANCE_HOME+'/import/'+filename
+        filepath = standard.getINSTANCE_HOME()+'/import/'+filename
         _fileutil.exportObj( file, filepath)
         home.manage_importObject(filename)
         _fileutil.remove( filepath)

@@ -235,12 +235,10 @@ class VersionItem:
     def getVersionItems(self, REQUEST):
       children = []
       if not self.getAutocommit():
-        types = self.getMetaobjIds()+['*']
-        for metaobjAttrId in self.getMetaobjAttrIds( self.meta_id, types=types):
-          for child in self.getObjChildren( metaobjAttrId , REQUEST):
-            if not child.isVersionContainer():
-              children.append( child)
-              children.extend( child.getVersionItems( REQUEST))
+        for child in self.getChildNodes(REQUEST):
+          if not child.isVersionContainer():
+            children.append(child)
+            children.extend(child.getVersionItems(REQUEST))
       return children
 
 
@@ -521,17 +519,6 @@ class VersionItem:
         raise e
 
     # --------------------------------------------------------------------------
-    #  VersionItem.onSynchronizeObj:
-    # --------------------------------------------------------------------------
-    def onSynchronizeObj(self, REQUEST):
-      standard.writeBlock( self, "[onSynchronizeObj]")
-      # Access
-      self.synchronizePublicAccess()
-      # References
-      self.refreshRefToObjs()
-
-
-    # --------------------------------------------------------------------------
     #  VersionItem.commitObjChanges
     # --------------------------------------------------------------------------
     def _commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
@@ -599,10 +586,11 @@ class VersionItem:
       ##### Commit version-items. ####
       if not delete:
         ids = []
-        for child in self.getVersionItems( REQUEST):
-          delete_child = child._commitObjChanges( self, REQUEST, False, do_history, False)
-          if delete_child:
-            ids.append( child.id)
+        for child in self.getChildNodes(REQUEST):
+          if not child.isVersionContainer():
+            delete_child = child._commitObjChanges( self, REQUEST, forced=False, do_history=do_history, do_delete=False)
+            if delete_child:
+              ids.append( child.id)
         if len( ids) > 0:
           self.moveObjsToTrashcan( ids, REQUEST)
       
@@ -627,9 +615,9 @@ class VersionItem:
           self.version_live_id = self.version_work_id
           self.version_work_id = None
       
-      ##### Synchronize listeners. ####
+      # Synchronize references to other objects.
       if modified:
-        self.onSynchronizeObj(REQUEST)
+        self.refreshRefToObjs()
       
       ##### Trigger custom afterCommitObjChanges-Event (if there is one) ####
       standard.triggerEvent( self, 'afterCommitObjChangesEvt')
@@ -638,11 +626,15 @@ class VersionItem:
       return delete
 
     def commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
-      standard.writeBlock( self, "[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced),str(do_history),str(do_delete)))
+      t0 = time.time()
+      standard.writeBlock( self, '[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s'%(str(forced),str(do_history),str(do_delete)))
       delete = self._commitObjChanges( parent, REQUEST, forced, do_history, do_delete)
+      # Synchronize access
+      self.synchronizePublicAccess()
       # Synchronize search.
       self.getCatalogAdapter().reindex_node(self)
       # Return flag for deleted objects.
+      standard.writeBlock( self, '[commitObjChanges]: done (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)')
       return delete
 
 
@@ -657,7 +649,7 @@ class VersionItem:
     # --------------------------------------------------------------------------
     #  VersionItem.rollbackObjChanges
     # --------------------------------------------------------------------------
-    def _rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
+    def _rollbackObjChanges(self, parent, REQUEST, forced=False, do_delete=True):
       standard.writeBlock( self, "[_rollbackObjChanges]")
       delete = False
       prim_lang = self.getPrimaryLanguage()
@@ -707,10 +699,11 @@ class VersionItem:
       ##### Rollback version-items. ####
       if not delete:
         ids = []
-        for child in self.getVersionItems( REQUEST):
-          delete_child = child._rollbackObjChanges( self, REQUEST, 0, False)
-          if delete_child:
-            ids.append( child.id)
+        for child in self.getChildNodes(REQUEST):
+          if not child.isVersionContainer():
+            delete_child = child._rollbackObjChanges( self, REQUEST, forced=False, do_delete=False)
+            if delete_child:
+              ids.append( child.id)
         if len( ids) > 0:
           self.moveObjsToTrashcan( ids, REQUEST)
       
@@ -735,10 +728,6 @@ class VersionItem:
           self.version_live_id = self.version_work_id
           self.version_work_id = None
       
-      ##### Synchronize listeners. ####
-      if modified and not delete:
-        self.onSynchronizeObj(REQUEST)
-      
       ##### Trigger custom afterRollbackObjChanges-Event (if there is one) ####
       standard.triggerEvent( self, 'afterRollbackObjChangesEvt')
       
@@ -746,9 +735,11 @@ class VersionItem:
       return delete
 
     def rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
+      t0 = time.time()
       standard.writeBlock( self, "[rollbackObjChanges]: forced=%s, do_delete=%s"%(str(forced),str(do_delete)))
       delete = self._rollbackObjChanges( parent, REQUEST, forced, do_delete)
       # Return flag for deleted objects.
+      standard.writeBlock( self, '[rollbackObjChanges]: done (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)')
       return delete
 
 

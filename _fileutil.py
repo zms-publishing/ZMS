@@ -21,7 +21,7 @@ from builtins import range
 from builtins import chr
 from builtins import str
 from ZPublisher.Iterators import filestream_iterator
-from App.Common import package_home
+from App.config import getConfiguration
 import fnmatch
 import io
 import os
@@ -30,8 +30,7 @@ import stat
 import sys
 import tempfile
 import zipfile
-# Product Imports.
-# import standard
+import zope.contenttype
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -40,7 +39,7 @@ _fileutil.import_zexp:
 Import zexp.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def import_zexp(self, zexp, new_id, id_prefix, _sort_id=0):
-  INSTANCE_HOME = package_home(globals())
+  INSTANCE_HOME = getConfiguration().instancehome
   # Import
   filename = zexp.title_or_id()
   fileid = filename[:filename.find('.')]
@@ -65,7 +64,7 @@ Import file from specified path.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def importZexp(self, filename):
   ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
-  INSTANCE_HOME = package_home(globals())
+  INSTANCE_HOME = getConfiguration().instancehome
   filepath = INSTANCE_HOME + '/import/' + filename
   self.manage_importObject(filename)
   remove(filepath)
@@ -217,7 +216,7 @@ def readPath(path, data=True, recursive=True):
             d['encoding']=enc
           else:
             try:
-              mt, enc = standard.guess_content_type( local_filename)
+              mt, enc = zope.contenttype.guess_content_type( local_filename)
             except:
               mt, enc = 'content/unknown', ''
             d['content_type']=mt
@@ -253,7 +252,7 @@ def readFile(filename, mode='b', threshold=2 << 16):
   else:
     data = filestream_iterator( filename, 'r'+mode)
   try:
-    mt, enc  = standard.guess_content_type( filename, data)
+    mt, enc  = zope.contenttype.guess_content_type( filename, data)
   except:
     mt, enc = 'content/unknown', ''
   return data, mt, enc, size

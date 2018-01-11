@@ -126,7 +126,7 @@ def readData(ob, default=None):
     id = ob.id
     while context is not None:
       m = getExternalMethodModuleName(context, id)
-      filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+      filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
       if os.path.exists(filepath):
         break
       try:
@@ -135,7 +135,7 @@ def readData(ob, default=None):
         context = None
     if context is None:
       m = id
-    filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+    filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
     if os.path.exists(filepath):
       f = open(filepath, 'r')
       data = f.read()

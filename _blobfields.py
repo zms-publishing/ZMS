@@ -507,7 +507,7 @@ class MyBlob:
         if b:
           attrs = self.__obj_attrs__
           for attr in attrs:
-            if b and attr != 'data':
+            if b and attr not in ['data', 'aq_parent']:
               b = getattr( self, attr) == getattr( ob, attr)
       except:
         b = False

@@ -114,11 +114,16 @@
 				the input-file
 			</div>
 
-			<div class="zmi-image-generate-preview"
-					tal:condition="can_generate_preview">
-				<input type="checkbox" id="generate_preview" tal:attributes="name python:'generate_preview_%s:int'%elName; checked python:['','checked'][int(here.attr('img') is None)]" value="1">
-				<label for="generate_preview" tal:content="python:here.getZMILangStr('ACTION_GENERATE_PREVIEW')">Generate preview</label>
-				<tal:block tal:content="python:'(max. %sx%spx)'%(str(here.getConfProperty(max_generate_preview)),str(here.getConfProperty(max_generate_preview)))">(max. %ix%ipx)</tal:block>
+			<div class="zmi-image-generate-preview" tal:condition="can_generate_preview">
+				<label>
+					<span class="btn btn-default">
+						<input type="checkbox" tal:attributes="name python:'generate_preview_%s:int'%elName; checked python:['','checked'][int(here.attr('img') is None)]" value="1">
+					</span>
+					<span class="btn">
+						<tal:block tal:content="python:here.getZMILangStr('ACTION_GENERATE_PREVIEW')">Generate preview</tal:block>
+						<tal:block tal:content="python:'(max. %sx%spx)'%(str(here.getConfProperty(max_generate_preview)),str(here.getConfProperty(max_generate_preview)))">(max. %ix%ipx)</tal:block>
+					</span>
+				</label>
 			</div>
 
 	</div><!-- .pull-left -->

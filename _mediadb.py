@@ -127,10 +127,10 @@ def manage_structureMediaDb(self, structure, REQUEST=None, RESPONSE=None):
   mediadb.structure = structure
   
   # Temp location.
-  path = _fileutil.getOSPath(mediadb.getLocation())
+  path = mediadb.getLocation()
   location = mediadb.location
   mediadb.location = location + "_tmp"
-  temp = _fileutil.getOSPath(mediadb.getLocation())
+  temp = mediadb.getLocation()
   
   # Traverse existing structure.
   def traverse(path, p):
@@ -418,11 +418,14 @@ class MediaDb(
     def retrieveFile(self, filename):
       filename = filename.replace('..','')
       try:
-        local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
-        f = open( local_filename, 'rb')
+        location = self.getLocation()
+        if not filename.startswith(location):
+          filename = os.path.join(location,filename)
+        f = open( filename, 'rb')
         data = f.read()
         f.close()
       except:
+        standard.writeError( self, "can't retrieveFile")
         data = ''
       return data
 
@@ -430,8 +433,10 @@ class MediaDb(
     #	MediaDb.getFileSize
     # --------------------------------------------------------------------------
     def getFileSize(self, filename):
-      local_filename = _fileutil.getOSPath('%s/%s'%(self.getLocation(),filename))
-      fsize = os.path.getsize( local_filename)
+      location = self.getLocation()
+      if not filename.startswith(location):
+        filename = os.path.join(location,filename)
+      fsize = os.path.getsize( filename)
       return fsize
 
     # --------------------------------------------------------------------------

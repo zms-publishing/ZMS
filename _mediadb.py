@@ -370,11 +370,11 @@ class MediaDb(
       filepath = ''
       filename = _fileutil.extractFilename(file.filename)
       if len(filename) > 0:
-        fileext = filename[filename.rfind('.'):]
-        filename = filename[:filename.rfind('.')-1]+'_'+str(time.time()).replace('.','')+fileext
+        filename, fileext = os.path.splitext(filename)
+        filename = filename + '_'+str(time.time()).replace('.','') + fileext
         filepath = self.targetFile(filename)
         _fileutil.exportObj(file,filepath)
-      return filepath
+      return filename
 
     # --------------------------------------------------------------------------
     #  MediaDb.manage_index_html

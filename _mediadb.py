@@ -281,11 +281,11 @@ class MediaDb(
     # --------------------------------------------------------------------------
     def storeFile(self, file):
       filename = _fileutil.extractFilename(file.filename)
-      if len( filename) > 0:
-        fileext = _fileutil.extractFileExt(file.filename)
-        filename = filename[:-(len(fileext)+1)] + '_' + str(time.time()).replace('.', '') + '.' + fileext
-        filepath = _fileutil.getOSPath('%s/%s'%(self.getLocation(), filename))
-        _fileutil.exportObj(file, filepath)
+      if len(filename) > 0:
+        filename, fileext = os.path.splitext(filename)
+        filename = filename + '_'+str(time.time()).replace('.','') + fileext
+        filepath = self.targetFile(filename)
+        _fileutil.exportObj(file,filepath)
       return filename
 
     # --------------------------------------------------------------------------

@@ -203,6 +203,9 @@ nav .scroller-left {
 	overflow: hidden;
 	vertical-align: bottom;
 }
+.zmi .breadcrumb li a * {
+	display:inline!important
+}
 .zmi ul.breadcrumb.small {
 	padding:0.4em 0 0 0 !important;
 	margin:0 !important;
@@ -1242,6 +1245,15 @@ input.btn.btn-file {
 .zmi.customize #Custom table td.nowrap {
 	min-width:92px;
 }
+.zmi.customize #Custom .table-bordered tbody > tr > td:nth-child(2) {
+	max-width:1rem !important;
+	overflow:hidden;
+}
+.zmi.customize #Custom .table-bordered>tbody>tr>td:nth-child(3) {
+	max-width:1rem !important;
+	overflow:hidden;
+}
+
 .customize.config #extwizard ul.nav-pills li,
 .customize.config #InstalledProducts .tab-content .col-sm-8 button.btn {
 	min-width:160px;

@@ -1,19 +1,75 @@
-<tal:block tal:condition="python:request.get('existsUser')"
+<tal:block tal:condition="python:request.get('mode')=='existsUser'"
 	><tal:block tal:define="global
-		name python:request.get('existsUser');
+		name request/id;
 		users python:here.searchUsers(name);
 		found python:int(len(filter(lambda x:x==name,users))==1)"
 		><tal:block tal:content="found">found</tal:block
 	></tal:block
 ></tal:block
-><tal:block tal:condition="python:request.get('findUser')"
+
+><tal:block tal:condition="python:request.get('mode')=='findUser'"
 	><tal:block tal:define="global
-		name python:request.get('findUser');
+		name request/id;
 		user python:here.findUser(name);"
 		><tal:block tal:condition="user"><tal:block tal:content="python:context.str_json(user['details'])">user-details</tal:block></tal:block
 	></tal:block
 ></tal:block
-><tal:block tal:condition="not:python:request.has_key('existsUser') or request.has_key('findUser')"
+
+><tal:block tal:condition="python:request.get('mode')=='insertUser'">
+<tal:block tal:define="global
+		dummy0 python:here.zmi_page_request();
+		userFolder python:here.getUserFolder();
+		userAdderPlugin python:here.getUserAdderPlugin();
+		userDefs python:here.getSecurityUsers();
+		roleDefs python:here.getSecurityRoles();
+		userNames python:here.sort_list(userDefs.keys());">
+		<form id="insertUserForm" class="form-horizontal">
+		<input type="hidden" name="lang" tal:attributes="value request/lang">
+			<div class="form-group">
+					<tal:block tal:define="searchable_attributes python:[x for x in here.getSearchableAttrs() if not x[1].startswith('_')]">
+					<div tal:attributes="class python:' '.join(['input-group','pull-left']+[[],['col-sm-4']][len(searchable_attributes)>0])">
+						<span class="input-group-addon"><a tal:attributes="href python:'%s/manage_main'%userFolder.absolute_url(); title python:'%s (%s)'%(userFolder.title_or_id(),userFolder.meta_type)" tal:content="structure python:here.zmi_icon(name='icon-folder-close')" target="_blank">the user-folder</a></span>
+						<tal:block tal:condition="searchable_attributes">
+						<select class="form-control" name="search_param">
+							<tal:block tal:repeat="search_param searchable_attributes">
+								<tal:block tal:define="name python:search_param[0]; label python:search_param[1]">
+									<option tal:attributes="value name; selected python:['','selected'][request.get('search_param')==name]" tal:content="python:label">the search-param</option>
+								</tal:block>
+							</tal:block>
+						</select>
+						<tal:block tal:content="structure python:'</div><!-- .input-group -->'"></tal:block>
+						<tal:block tal:content="structure python:'<div class=\042input-group col-sm-8 pull-left\042>'"></tal:block>
+						</tal:block>
+						<input class="form-control" name="search_term" tal:attributes="value python:request.get('search_term',''); placeholder python:here.getZMILangStr('ATTR_SEARCHTERM')"/>
+						<span class="input-group-btn">
+							<button class="btn btn-primary btn-search" tal:attributes="title python:here.getZMILangStr('BTN_SEARCH')">
+								<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
+							</button>
+						</span>
+					</div><!-- .input-group -->
+					</tal:block>
+				</div><!-- .form-group -->
+				<tal:block tal:define="global
+						valid_userids python:here.getValidUserids(search_term=request.get('search_term',''),search_term_param=request.get('search_param'));
+						metaObjAttrs valid_userids/columns;
+						metaObjAttrIds python:map(lambda x:x['id'],metaObjAttrs);
+						res valid_userids/records;
+						filtered_res python:filter(lambda x:x['name'] not in userNames,res);
+						dummy0 python:map(lambda x:here.operator_setitem(x,'__id__',x['name']),res)">
+					<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
+							metaObjAttrIds=metaObjAttrIds,
+							metaObjAttrs=metaObjAttrs,
+							records=res,
+							actions=['select']+[[],['insert']][int(userAdderPlugin is not None)],
+							insert='zmiModalAddUserOpen();')">
+						metaobj_recordset_main_grid
+					</tal:block>
+				</tal:block>
+		</form>
+</tal:block>
+</tal:block
+
+><tal:block tal:condition="not:python:request.has_key('mode')"
 ><!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
@@ -26,18 +82,50 @@ function zmiModalAddUserOpen(context) {
 	zmiModal('#addUser',{title:getZMILangStr('BTN_ADD')});
 	$("#zmiModaladdUser #newId").val($("#zmiModalinsertUser #search_term").val());
 }
-function zmiModalInsertUserOpen(context) {
-	$(".btn-group")
-		.mouseover( function(evt) {
-				$(this).parents(".ZMSRecordSet.main_grid").css({overflow:"visible"});
+function zmiModalInsertUserLoad(url) {
+	var $context = $("#zmiModalinsertUser");
+	var data = {mode:'insertUser'}
+	if (typeof url=="string") {
+		var query = url.substr(url.indexOf("?")+1);
+		var vars = query.split('&');
+		for (var i = 0; i < vars.length; i++) {
+			var kv = vars[i].split('=');
+			data[kv[0]] = decodeURIComponent(kv[1]);
+		}
+	}
+	$("input:text").each(function() {
+			data[$(this).attr("name")] = $(this).val();
 		});
-	$("#insertUserForm input:radio",context)
-		.change(function() {
-				self.location.href = zmiParams['base_url']
-					+'?lang='+getZMILang()
-					+'&id='+$(this).prop("value");
+	$("select option:selected").each(function() {
+			data[$(this).parent().attr("name")] = $(this).val();
 		});
+	$('#zmiModalinsertUser .modal-body').html($ZMI.icon("icon-spinner icon-spin")+'&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING'));
+	$.get(self.location.href,data,function(result) {
+			$('#zmiModalinsertUser .modal-body').html(result);
+			$("#insertUserForm").submit(function() {return zmiModalInsertUserLoad()});
+			$("#insertUserForm .btn-group")
+				.mouseover( function(evt) {
+						$(this).parents(".ZMSRecordSet.main_grid").css({overflow:"visible"});
+				});
+			$("#insertUserForm input:radio").change(function() {
+					self.location.href = zmiParams['base_url']
+						+'?lang='+getZMILang()
+						+'&id='+$(this).prop("value");
+				});
+			$("#insertUserForm a").each(function() {
+					var href = $(this).attr("href");
+					$(this)
+						.click(function() {return zmiModalInsertUserLoad(href);})
+						.attr("href","javascript:;");
+				});
+		});
+	return false;
 }
+
+function zmiModalInsertUserOpen(context) {
+	return zmiModal('#insertUser',{title:$(context).attr('title'),open:zmiModalInsertUserLoad});
+}
+
 </script>
 
 <tal:block tal:define="global
@@ -348,49 +436,6 @@ function zmiModalInsertUserOpen(context) {
 
 <div class="ui-helper-hidden">
 	<div id="insertUser" class="inner">
-		<form id="insertUserForm" class="form-horizontal" method="get" enctype="multipart/form-data">
-		<input type="hidden" name="lang" tal:attributes="value request/lang">
-			<div class="form-group">
-					<tal:block tal:define="searchable_attributes python:[x for x in here.getSearchableAttrs() if not x[1].startswith('_')]">
-					<div tal:attributes="class python:' '.join(['input-group','pull-left']+[[],['col-sm-4']][len(searchable_attributes)>0])">
-						<span class="input-group-addon"><a tal:attributes="href python:'%s/manage_main'%userFolder.absolute_url(); title python:'%s (%s)'%(userFolder.title_or_id(),userFolder.meta_type)" tal:content="structure python:here.zmi_icon(name='icon-folder-close')" target="_blank">the user-folder</a></span>
-						<tal:block tal:condition="searchable_attributes">
-						<select class="form-control" name="search_param">
-							<tal:block tal:repeat="search_param searchable_attributes">
-								<tal:block tal:define="name python:search_param[0]; label python:search_param[1]">
-									<option tal:attributes="value name; selected python:['','selected'][request.get('search_param')==name]" tal:content="python:label">the search-param</option>
-								</tal:block>
-							</tal:block>
-						</select>
-						<tal:block tal:content="structure python:'</div><!-- .input-group -->'"></tal:block>
-						<tal:block tal:content="structure python:'<div class=\042input-group col-sm-8 pull-left\042>'"></tal:block>
-						</tal:block>
-						<input class="form-control" name="search_term" tal:attributes="value python:request.get('search_term',''); placeholder python:here.getZMILangStr('ATTR_SEARCHTERM')"/>
-						<span class="input-group-btn">
-							<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SEARCH'); title python:here.getZMILangStr('BTN_SEARCH')">
-								<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
-							</button>
-						</span>
-					</div><!-- .input-group -->
-					</tal:block>
-				</div><!-- .form-group -->
-				<tal:block tal:define="global
-						valid_userids python:here.getValidUserids(search_term=request.get('search_term',''),search_term_param=request.get('search_param'));
-						metaObjAttrs valid_userids/columns;
-						metaObjAttrIds python:map(lambda x:x['id'],metaObjAttrs);
-						res valid_userids/records;
-						filtered_res python:filter(lambda x:x['name'] not in userNames,res);
-						dummy0 python:map(lambda x:here.operator_setitem(x,'__id__',x['name']),res)">
-					<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
-							metaObjAttrIds=metaObjAttrIds,
-							metaObjAttrs=metaObjAttrs,
-							records=res,
-							actions=['select']+[[],['insert']][int(userAdderPlugin is not None)],
-							insert='zmiModalAddUserOpen();')">
-						metaobj_recordset_main_grid
-					</tal:block>
-				</tal:block>
-		</form>
 	</div><!-- .inner -->
 </div><!-- #insertUser -->
 
@@ -411,9 +456,9 @@ function zmiModalInsertUserOpen(context) {
 	</div><!-- .pull-left -->
 	<div class="pull-right">
 		<div class="btn-group">
-			<a class="btn btn-primary" tal:attributes="href python:'?lang=%s&search_term='%request['lang']; title python:here.getZMILangStr('BTN_SEARCH')+' / '+here.getZMILangStr('BTN_INSERT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block></a>
+			<span class="btn btn-primary" onclick="zmiModalInsertUserOpen(this)" tal:attributes="title python:here.getZMILangStr('BTN_SEARCH')+' / '+here.getZMILangStr('BTN_INSERT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block></span>
 			<a class="btn btn-default" tal:attributes="href python:'?lang=%s&btn=Purge'%request['lang']; title python:'Purge'" tal:condition="python:request['AUTHENTICATED_USER'].has_role('Manager')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-ambulance text-danger')"></tal:block></a>
-      <a class="btn btn-default" tal:attributes="href python:'manage_users_sitemap?lang=%s'%request['lang']; title python:here.getZMILangStr('TAB_SITEMAP')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-sitemap')"></tal:block></a>
+			<a class="btn btn-default" tal:attributes="href python:'manage_users_sitemap?lang=%s'%request['lang']; title python:here.getZMILangStr('TAB_SITEMAP')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-sitemap')"></tal:block></a>
 			<span class="btn btn-default" onclick="zmiModal('#importUsers',{title:$(this).attr('title')})" tal:attributes="title python:'%s...'%here.getZMILangStr('BTN_IMPORT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
 			<span class="btn btn-default" onclick="var $fm=$(this).closest('form');$('input[name=btn]',$fm).val('export');$fm.attr('target','_blank').submit();" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
 		</div><!-- .btn-group -->
@@ -525,14 +570,11 @@ function zmiModalInsertUserOpen(context) {
 
 <script>
 	$(function(){
-		if (typeof zmiParams['search_term'] != "undefined") {
-			zmiModal('#insertUser',{title:getZMILangStr('BTN_SEARCH')+' / '+getZMILangStr('BTN_INSERT'),open:zmiModalInsertUserOpen});
-		}
 		$(".userName").each(function() {
 				var $this = $(this);
 				var id = $this.attr("id");
-				$.get(self.location.href,{existsUser:id},function(result) {
-						if (result!=1) {
+				$.get(self.location.href,{mode:'existsUser',id:id},function(result) {
+						if (result!="1") {
 							$("a>span",$this).addClass("text-danger bg-danger");
 							$("a>span>i",$this).attr("class","icon-remove");
 						}
@@ -542,7 +584,7 @@ function zmiModalInsertUserOpen(context) {
 									var $a = $(this);
 									if (typeof $a.attr("title")=="undefined") {
 										$a.attr("title","");
-										$.get(self.location.href,{findUser:id},function(result) {
+										$.get(self.location.href,{mode:'findUser',id:id},function(result) {
 												var details = eval("("+result+")");
 												var text = $a.text().trim();
 												var extra = [];

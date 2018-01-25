@@ -574,7 +574,7 @@ function zmiModalInsertUserOpen(context) {
 				var $this = $(this);
 				var id = $this.attr("id");
 				$.get(self.location.href,{mode:'existsUser',id:id},function(result) {
-						if (result!="1") {
+						if (result!=1 && result!="1") {
 							$("a>span",$this).addClass("text-danger bg-danger");
 							$("a>span>i",$this).attr("class","icon-remove");
 						}

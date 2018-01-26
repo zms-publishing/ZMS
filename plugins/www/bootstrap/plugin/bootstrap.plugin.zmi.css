@@ -1247,11 +1247,11 @@ input.btn.btn-file {
 }
 .zmi.customize #Custom .table-bordered tbody > tr > td:nth-child(2) {
 	max-width:1rem !important;
-	overflow:hidden;
+	overflow-y:hidden;
 }
 .zmi.customize #Custom .table-bordered>tbody>tr>td:nth-child(3) {
 	max-width:1rem !important;
-	overflow:hidden;
+	overflow-y:hidden;
 }
 
 .customize.config #extwizard ul.nav-pills li,
@@ -1494,13 +1494,13 @@ td .btn-group .checkbox.split-left.btn input {
 	color:#999;
 }
 #insertUserForm .ZMSRecordSet {
-	overflow: hidden;
+	overflow-y: hidden;
 	margin-left: -15px;
 	padding-left: 1px;
 }
 #insertUserForm .ZMSRecordSet table th,
 #insertUserForm .ZMSRecordSet table td{
-	overflow: hidden;
+	overflow-y: hidden;
 	max-width: 8em;
 }
 #insertUserForm .ZMSRecordSet .pagination {

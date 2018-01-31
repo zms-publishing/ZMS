@@ -502,6 +502,7 @@ class ZMSZCatalogConnector(
       result = []
       zcm = self.getCatalogAdapter()
       request = self.REQUEST
+      request.set('btn', 'Reindex') # backwards-compatibility (UzK)
       container = self.getLinkObj(uid)
       home_id = container.getHome().id
       try:

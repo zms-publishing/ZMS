@@ -108,11 +108,11 @@ def readData(ob, default=None):
   data = default
   if ob is None and default is not None:
     return default
-  if ob.meta_type in [ 'DTML Method', 'DTML Document']:
+  if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Filesystem DTML Document', 'Filesystem DTML Method']:
     data = ob.raw
-  elif ob.meta_type in [ 'Image', 'File']:
+  elif ob.meta_type in [ 'File', 'Filesystem File', 'Filesystem Image', 'Image']:
     data = str(ob)
-  elif ob.meta_type in [ 'Page Template', 'Script (Python)']:
+  elif ob.meta_type in [ 'Filesystem Page Template', 'Filesystem Script (Python)', 'Page Template', 'Script (Python)']:
     data = ob.read()
   elif ob.meta_type == 'External Method':
     context = ob

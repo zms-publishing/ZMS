@@ -343,17 +343,24 @@ class ZMSMetaobjManager:
     # --------------------------------------------------------------------------
     def importTheme(self, id):
       home = self.getHome()
-      def traverse(context):
+      def traverse(context, container_id):
         for childNode in context.objectValues():
-          if childNode.meta_type == 'Folder':
-            traverse(childNode)
-          elif childNode.meta_type in ['DTML Document', 'DTML Method', 'External Method', 'Image', 'File', 'Page Template', 'Script (Python)']:
-            self.setMetaobjAttr(id,None,newId=childNode.absolute_url()[len(home.absolute_url())+1:],newName=childNode.title_or_id(),newType=childNode.meta_type,newCustom=zopeutil.readData(childNode))
+          if childNode.meta_type in ['Folder', 'Filesystem Directory View']:
+            traverse(childNode, container_id)
+          elif childNode.meta_type in ['DTML Document', 'DTML Method', 'External Method', 'Image', 'File', 'Filesystem File', 'Filesystem Image', 'Filesystem Page Template', 'Filesystem Script (Python)', 'Page Template', 'Script (Python)']:
+            newIds = childNode.getPhysicalPath()
+            newIds = [container_id+'~'] + list(newIds[newIds.index(container_id)+1:])
+            newId = '/'.join(newIds)
+            newName = childNode.title_or_id()
+            newType = childNode.meta_type
+            newType = {'Filesystem File':'File', 'Filesystem Image':'Image', 'Filesystem Page Template':'Page Template'}.get(newType,newType)
+            newCustom = zopeutil.readData(childNode)
+            self.setMetaobjAttr(id,None,newId=newId,newName=newName,newType=newType,newCustom=newCustom)
       if id in self.model.keys():
         del self.model[id]
       container = getattr(home,id)
       self.setMetaobj({'id':id,'name':container.title_or_id(),'type':'ZMSLibrary'})
-      traverse(container)
+      traverse(container,id)
 
 
     ############################################################################

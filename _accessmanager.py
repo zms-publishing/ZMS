@@ -716,7 +716,10 @@ class AccessManager(AccessableContainer):
             uid = user[_uid_attr]
         elif plugin is not None:
           _uid_attr = login_name
-          uid = plugin.getUserIdForLogin(_uid_attr)
+          try:
+            uid = plugin.getUserIdForLogin(_uid_attr)
+          except:
+             standard.writeError(self,'[getValidUserids]: _uid_attr=%s'%_uid_attr)
         if uid is not None:
           d['user_id_'] = uid
           try:

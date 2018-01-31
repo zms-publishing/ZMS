@@ -1504,7 +1504,7 @@ td .btn-group .checkbox.split-left.btn input {
 }
 #insertUserForm .ZMSRecordSet table th:not(:first-child),
 #insertUserForm .ZMSRecordSet table td {
-	overflow-y: hidden;
+	overflow: hidden;
 }
 #insertUserForm .ZMSRecordSet .pagination {
 	margin-left: 0;

@@ -239,13 +239,14 @@ class ZMSContainerObject(
       # Use only successfully tried ids
       ids = ids_copy
       # Move (Cut & Paste).
-      standard.triggerEvent(self,'beforeDeleteObjsEvt')
+      children = [getattr(self,x) for x in ids]
+      [standard.triggerEvent(child,'beforeDeleteObjsEvt') for child in children]
       cb_copy_data = self.manage_cutObjects(ids,REQUEST)
       trashcan.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
       trashcan.normalizeSortIds()
       # Sort-IDs.
       self.normalizeSortIds()
-      standard.triggerEvent(self,'afterDeleteObjsEvt')
+      [standard.triggerEvent(child,'afterDeleteObjsEvt') for child in children]
 
 
     ############################################################################

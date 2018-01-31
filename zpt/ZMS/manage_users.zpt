@@ -33,7 +33,7 @@
 						<select class="form-control" name="search_param">
 							<tal:block tal:repeat="search_param searchable_attributes">
 								<tal:block tal:define="name python:search_param[0]; label python:search_param[1]">
-									<option tal:attributes="value name; selected python:['','selected'][request.get('search_param')==name]" tal:content="python:label">the search-param</option>
+									<option tal:attributes="value name; selected python:['','selected'][request.get('search_param',here.getConfProperty('LDAPUserFolder.uid_attr',''))==name]" tal:content="python:label">the search-param</option>
 								</tal:block>
 							</tal:block>
 						</select>

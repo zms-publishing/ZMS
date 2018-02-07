@@ -5,6 +5,7 @@
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:define="
+		exec_options python:[(0,'None'),(1,'Exec'),(2,'Iframe')];
 		action python:'manage_changeMetacmds';
 		metaCmdIds python:here.getMetaCmdIds();
 		metaCmds python:[here.getMetaCmd(x) for x in metaCmdIds]">
@@ -40,7 +41,13 @@
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<label for="el_exec:int" class="col-sm-3 control-label"><span>Exec.</span></label>
-				<div class="col-sm-9"><span class="btn btn-default"><input type="checkbox" name="el_exec:int" tal:attributes="checked python:['','checked'][int(metaCmd['exec'])]" value="1"/></span></div>
+				<div class="col-sm-9">
+					<select class="form-control" name="el_exec:int">
+						<tal:block tal:repeat="exec_option exec_options">
+							<option tal:attributes="value python:exec_option[0]; selected python:['','selected'][int(metaCmd['exec']==exec_option[0])]" tal:content="python:exec_option[1]">the label</option>
+						</tal:block>
+					</select>
+				</div><!-- .col-sm-9 -->
 			</div><!-- .form-group -->
 			<!-- ACE Editor -->
 			<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='el_data:text',ob=getattr(here,request['id'],None),text=metaCmd['data'])">ACE Editor</tal:block>
@@ -71,7 +78,10 @@
 					</td>
 					<td>
 						<select name="el_meta_types:list" multiple="multiple" class="form-control" style="font-size:inherit;"
-							tal:attributes="size python:min(10,len(here.getMetaobjIds()+here.metaobj_manager.valid_objtypes))">
+							tal:attributes="size python:min(10,len(['*']+here.getMetaobjIds()+here.metaobj_manager.valid_objtypes))">
+							<tal:block tal:repeat="meta_type python:['*']">
+								<option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="meta_type">meta_type</option>
+							</tal:block>
 							<tal:block tal:repeat="meta_type python:here.getMetaobjIds(sort=True)">
 								<option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
 							</tal:block>
@@ -93,8 +103,8 @@
 				</div>
 			</div><!-- .form-group -->
 		</form>
-	</div><!-- .inner -->
-</div><!-- #editObj -->
+	</div><!-- #editObj.inner -->
+</div><!-- .ui-helper-hidden -->
 
 <div class="ui-helper-hidden">
 	<div id="insertObj" class="inner">
@@ -127,8 +137,14 @@
 				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
-				<label class="col-sm-3 control-label" for="_exec"><span>Exec.</span></label>
-				<div class="col-sm-9"><span class="btn btn-default"><input type="checkbox" name="_exec:int" value="1" checked="checked"></span></div>
+				<label class="col-sm-3 control-label" for="_exec:int"><span>Exec.</span></label>
+				<div class="col-sm-9">
+					<select class="form-control" name="_exec:int">
+						<tal:block tal:repeat="exec_option exec_options">
+							<option tal:attributes="value python:exec_option[0]" tal:content="python:exec_option[1]">the label</option>
+						</tal:block>
+					</select>
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group">
 				<div class="col-sm-9">
@@ -136,8 +152,8 @@
 				</div>
 			</div><!-- .form-group -->
 		</form>
-	</div><!-- .inner -->
-</div><!-- #insertObj -->
+	</div><!-- #insertObj.inner -->
+</div><!-- .ui-helper-hidden -->
 
 <div class="ui-helper-hidden">
 	<div id="importConf" class="inner">
@@ -163,8 +179,8 @@
 				</div>
 			</div>
 		</form>
-	</div><!-- .inner -->
-</div><!-- #importConf -->
+	</div><!-- #importConf.inner -->
+</div><!-- .ui-helper-hidden -->
 
 <form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">

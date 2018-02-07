@@ -1559,7 +1559,7 @@ ZMIActionList.prototype.over = function(el, e) {
 				}
 				var html = '';
 				html += '<li title="'+opttitle+'">'
-				html += '<a href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
+				html += '<a href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',' + (optvalue.indexOf('\'')<0?'\''+optvalue+'\'':optvalue) + ')">';
 				html += opticon+' '+optlabel;
 				html += '</a></li>';
 				$ul.append(html);
@@ -1676,6 +1676,11 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 						{id:'addCancelBtn', text:getZMILangStr('BTN_CANCEL'), name:'btn', 'class':'btn'}
 				]
 			});
+	}
+	else if (target.indexOf('\'')>0) {
+		if (this.confirm($fm,target,params)) {
+			eval(target);
+		}
 	}
 	else {
 		var $div = $el.parents("div.right");

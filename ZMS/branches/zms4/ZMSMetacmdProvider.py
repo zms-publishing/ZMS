@@ -400,6 +400,10 @@ class ZMSMetacmdProvider(
           metaCmd = metaCmd.copy()
           metaCmd['home'] = self.aq_parent
           metaCmd['stereotype'] = ' '.join([x for x in stereotypes.keys() if metaCmd['id'].startswith(stereotypes[x])])
+          metaCmd['action'] = '%%smanage_executeMetacmd?id='+metaCmd['id']
+          if metaCmd.get('exec') == 2:
+            metaCmd['action'] = '$ZMI.iframe(\'%%s%s\',{},{iframe:true,title:\'%s\'})'%(metaCmd['id'],metaCmd['name'])
+            
         metaCmds.append(metaCmd)
       if context is not None:
         request = context.REQUEST
@@ -410,12 +414,17 @@ class ZMSMetacmdProvider(
         for metaCmd in metaCmds:
           canExecute = True
           if canExecute:
-            hasMetaType = context.meta_id in metaCmd['meta_types'] or 'type(%s)'%context.getType() in metaCmd['meta_types']
+            meta_types = metaCmd['meta_types']
+            hasMetaType = False
+            hasMetaType = hasMetaType or '*' in meta_types
+            hasMetaType = hasMetaType or context.meta_id in meta_types
+            hasMetaType = hasMetaType or 'type(%s)'%context.getType() in meta_types
             canExecute = canExecute and hasMetaType
           if canExecute:
+            roles = metaCmd['roles']
             hasRole = False
-            hasRole = hasRole or '*' in metaCmd['roles']
-            hasRole = hasRole or len(standard.intersection_list(user_roles, metaCmd['roles'])) > 0
+            hasRole = hasRole or '*' in roles
+            hasRole = hasRole or len(standard.intersection_list(user_roles,roles)) > 0
             hasRole = hasRole or auth_user.has_role('Manager')
             canExecute = canExecute and hasRole
           if canExecute:

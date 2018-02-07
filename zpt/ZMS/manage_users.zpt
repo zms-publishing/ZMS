@@ -573,7 +573,8 @@ function zmiModalInsertUserOpen(context) {
 		$(".userName").each(function() {
 				var $this = $(this);
 				var id = $this.attr("id");
-				$.get(self.location.href,{mode:'existsUser',id:id},function(result) {
+				var url = [location.protocol, '//', location.host, location.pathname].join('');
+				$.get(url,{mode:'existsUser',id:id},function(result) {
 						if (result!=1 && result!="1") {
 							$("a>span",$this).addClass("text-danger bg-danger");
 							$("a>span>i",$this).attr("class","icon-remove");
@@ -584,7 +585,7 @@ function zmiModalInsertUserOpen(context) {
 									var $a = $(this);
 									if (typeof $a.attr("title")=="undefined") {
 										$a.attr("title","");
-										$.get(self.location.href,{mode:'findUser',id:id},function(result) {
+										$.get(url,{mode:'findUser',id:id},function(result) {
 												var details = eval("("+result+")");
 												var text = $a.text().trim();
 												var extra = [];

@@ -402,7 +402,7 @@ class ZMSMetacmdProvider(
           metaCmd['stereotype'] = ' '.join([x for x in stereotypes.keys() if metaCmd['id'].startswith(stereotypes[x])])
           metaCmd['action'] = '%%smanage_executeMetacmd?id='+metaCmd['id']
           if metaCmd.get('exec') == 2:
-            metaCmd['action'] = '$ZMI.iframe(\'%%s%s\',{},{iframe:true,title:\'%s\'})'%(metaCmd['id'],metaCmd['name'])
+            metaCmd['action'] = 'javascript:%%s%s'%metaCmd['id']
             
         metaCmds.append(metaCmd)
       if context is not None:

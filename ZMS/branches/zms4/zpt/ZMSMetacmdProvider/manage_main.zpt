@@ -5,7 +5,7 @@
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:define="
-		exec_options python:[(0,'None'),(1,'Exec'),(2,'Iframe')];
+		exec_options python:[(0,'None'),(1,'Exec'),(2,'Script')];
 		action python:'manage_changeMetacmds';
 		metaCmdIds python:here.getMetaCmdIds();
 		metaCmds python:[here.getMetaCmd(x) for x in metaCmdIds]">

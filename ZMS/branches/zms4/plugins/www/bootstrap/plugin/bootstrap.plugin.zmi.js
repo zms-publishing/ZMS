@@ -1677,9 +1677,12 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 				]
 			});
 	}
-	else if (target.indexOf('\'')>0) {
+	else if (target.indexOf('javascript:')==0) {
+		target = target.substr('javascript:'.length);
 		if (this.confirm($fm,target,params)) {
-			eval(target);
+			$.get(target,{lang:getZMILang()},function(html) {
+					$("body").append(html);
+				});
 		}
 	}
 	else {

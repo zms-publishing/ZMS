@@ -169,7 +169,8 @@ def uploadBlobField(self, clazz, file='', filename=''):
   blob.filename = _fileutil.extractFilename( filename, undoable=True).encode('utf-8')
   # Check size.
   if self is not None:
-    maxlength = self.getConfProperty('ZMS.input.%s.maxlength'%['file','image'][isinstance(blob,MyImage)],'')
+    maxlength_prop = 'ZMS.input.%s.maxlength'%['file','image'][isinstance(blob,MyImage)]
+    maxlength = self.getConfProperty(maxlength_prop,'')
     if len(maxlength) > 0:
       size = blob.get_size()
       if size > int(maxlength):

@@ -618,8 +618,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             column['intersection_fk'] = intersection_fk
             src = filter(lambda x:x['id'].upper()==stereotype['fk'].upper() and x['fk']['tablename'].upper()==tableName.upper(), intersection_fk)[0]
             dst = filter(lambda x:x['id'].upper()!=stereotype['fk'].upper() or x['fk']['tablename'].upper()!=tableName.upper(), intersection_fk)[0]
-            #if dst is None: dst = (filter(lambda x:x['fk'].has_key('options'),intersection_fk)+[None])[0]
-            #if dst is None: dst = (filter(lambda x:x['fk'].has_key('tablename') and (x['fk']['tablename'].upper()!=tableName.upper() or x['fk'].get('fieldname','').upper()!=primary_key.upper()),intersection_fk)+[None])[0]
           # Multiselect.Selected
           if src is not None and dst is not None and row is not None:
             sql = '' \

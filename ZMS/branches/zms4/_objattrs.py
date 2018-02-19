@@ -1331,7 +1331,7 @@ class ObjAttrsManager(object):
           sync_id = [sync_id]
         meta_ids = sync_id
       for meta_id in meta_ids:
-        if meta_id in self.dGlobalAttrs.keys():
+        if meta_id in self.dGlobalAttrs:
           obj_attrs = {}
           for key in defaults_obj_attrs.keys():
             obj_attr = defaults_obj_attrs[key]

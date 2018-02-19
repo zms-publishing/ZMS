@@ -140,6 +140,8 @@ class ZMSObject(ZMSItem.ZMSItem,
       self.ref_by = []
       self.setSortId(sort_id)
 
+    def getPath(self, *args, **kwargs):
+      return '/'.join(self.getPhysicalPath())
 
     """
     Check if feature toggle is set.
@@ -1133,10 +1135,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " physical_path=\"%s\""%('/'.join(self.getPhysicalPath()))
       xml += " access=\"%s\""%str(int(self.hasAccess(REQUEST)))
       xml += " active=\"%s\""%str(int(self.isActive(REQUEST)))
-      try:
-        xml += " display_icon=\"%s\""%str(self.display_icon(REQUEST)).encode('utf8').replace('"', '&quot;').replace('<', '&lt;')
-      except:
-        xml += " display_icon=\"&lt;i class=&quot;icon-file-alt&quot; title=&quot;ICON ERROR&quot;>&lt;/i>\""
+      xml += " display_icon=\"%s\""%self.display_icon(REQUEST).replace('"', '&quot;').replace('<', '&lt;')
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
       xml += " uid=\"{$%s}\""%(self.get_uid(implementation=self.getConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation', 'undefined')))
       xml += " id=\"%s_%s\""%(self.getHome().id, self.id)

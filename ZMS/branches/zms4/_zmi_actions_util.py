@@ -197,7 +197,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
           sl.append(si)
         can_insert = can_insert and len([x for x in sl if absolute_url.find(x)>=0]) > 0
       if can_insert:
-        if meta_id in container.dGlobalAttrs.keys() and 'constructor' in container.dGlobalAttrs[meta_id]:
+        if meta_id in container.dGlobalAttrs and 'constructor' in container.dGlobalAttrs[meta_id]:
           value = 'manage_addProduct/zms/%s'%container.dGlobalAttrs[meta_id]['constructor']
         elif metaObj['type']=='ZMSModule':
           value = 'manage_addZMSModule'

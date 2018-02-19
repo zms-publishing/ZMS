@@ -768,7 +768,7 @@ class AccessManager(AccessableContainer):
           user['password'] = True
         # Details
         user['details'] = []
-        if user.has_key('user_id'):
+        if 'user_id' in user:
           name = 'user_id'
           label = 'User Id'
           value = user['user_id']

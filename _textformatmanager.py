@@ -36,7 +36,7 @@ class TextFormatObject(object):
     #-- [ReqBuff]: Fetch buffered value from Http-Request.
     parentNode = self.getParentNode()
     if parentNode is None or \
-       getattr(parentNode, 'meta_type', None) not in self.dGlobalAttrs.keys():
+       getattr(parentNode, 'meta_type', None) not in self.dGlobalAttrs:
       return sec_no
     reqBuffId = 'getSecNo'
     try:

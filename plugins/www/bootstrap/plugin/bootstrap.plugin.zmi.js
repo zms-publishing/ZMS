@@ -3,6 +3,9 @@ function onFormSubmit() {
 	return true;
 }
 
+// Ensure all pages that load this js know that they are waiting for it to finish loading
+$("body").addClass("loading");
+
 $(function(){
 
 	$("#zmi-measurement").each(function(){
@@ -314,8 +317,8 @@ $(function(){
 			}
 			if ($("span.input-group-addon",this).length==0) {
 				$(this).addClass("input-group");
-				if ($textarea.attr('data-class')) {
-					$(this).append('<span class="input-group-addon btn btn-default" title="Click for Code Popup or Dbl-Click for Native Editor!"><i class="' + $textarea.attr('data-class') + '"/></span>');
+				if ($textarea.attr('data-style')) {
+					$(this).append('<span class="input-group-addon btn btn-default" title="Click for Code Popup or Dbl-Click for Native Editor!" style="' + $textarea.attr('data-style') + '">   </span>');
 				} else {
 					$(this).append('<span class="input-group-addon btn btn-default">...</span>');
 				};
@@ -547,8 +550,18 @@ $(function(){
 				});
 		});
 
-	// Loaded
-	$("body").removeClass("loading").addClass("loaded");
+	// Setup signaling, so js and / or AC tests know when the page has finished loading
+	// not perfect, as this guesses, but at least it waits for all ajax requests to finish
+	$(document).ready(function() { /* we want to run after all known document.ready handlers */
+		if ($.active !== 0) { /* if there are ajax requests currently running. Will change to $.ajax.active sometime in the future */
+			$(document).ajaxStop(function() { /* when all ajax requests are done */
+				$("body").removeClass("loading").addClass("loaded");
+			})
+		} else { /* if there are no known ajax requests */
+			$("body").removeClass("loading").addClass("loaded");
+		}
+	});
+	
 	$ZMI.setCursorAuto("EO bootstrap.plugin.zmi");
 
 });
@@ -1559,7 +1572,7 @@ ZMIActionList.prototype.over = function(el, e) {
 				}
 				var html = '';
 				html += '<li title="'+opttitle+'">'
-				html += '<a href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',' + (optvalue.indexOf('\'')<0?'\''+optvalue+'\'':optvalue) + ')">';
+				html += '<a href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
 				html += opticon+' '+optlabel;
 				html += '</a></li>';
 				$ul.append(html);
@@ -1676,14 +1689,6 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 						{id:'addCancelBtn', text:getZMILangStr('BTN_CANCEL'), name:'btn', 'class':'btn'}
 				]
 			});
-	}
-	else if (target.indexOf('javascript:')==0) {
-		target = target.substr('javascript:'.length);
-		if (this.confirm($fm,target,params)) {
-			$.get(target,{lang:getZMILang()},function(html) {
-					$("body").append(html);
-				});
-		}
 	}
 	else {
 		var $div = $el.parents("div.right");

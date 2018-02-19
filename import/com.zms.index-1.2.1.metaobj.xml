@@ -339,7 +339,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               except:
                 ref= None
               ref = childNode
-            if ref is not None and not type(ref) is str and ref.meta_type not in ['Folder']+self.dGlobalAttrs.keys():
+            if ref is not None and not type(ref) is str and ref.meta_type not in ['Folder']+list(self.dGlobalAttrs.keys()):
               ref = None
             if ref is None:
               break
@@ -351,11 +351,11 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           for f in r.findall(v):
             ref = None
             d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
-            if d.has_key('data-id'):
+            if 'data-id' in d:
               data_id = d['data-id']
               writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline data_id=%s'%data_id)
               ref = node.getLinkObj(data_id)
-            if ref is None and d.has_key('href'):
+            if ref is None and 'href' in d:
               href = d['href']
               href = re.sub('http://localhost:(\\d)*','',href)
               for domain in domains.keys():

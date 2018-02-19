@@ -203,6 +203,9 @@ nav .scroller-left {
 	overflow: hidden;
 	vertical-align: bottom;
 }
+.zmi .breadcrumb li a * {
+	display:inline!important
+}
 .zmi ul.breadcrumb.small {
 	padding:0.4em 0 0 0 !important;
 	margin:0 !important;
@@ -284,7 +287,7 @@ ul.portalClients .zmi-item .center small {
 	margin-bottom:4px;
 }
 .ui-autocomplete-input {
-	background:white url(/misc_/zms/ico_autocomplete.gif) right bottom no-repeat;
+	background:white url(/++resource++zms_/img/ico_autocomplete.gif) right bottom no-repeat;
 }
 .ui-autocomplete {
 	list-style: none;
@@ -337,7 +340,7 @@ div.alert {
 img.grippy {
 	width:6px!important;
 	height:14px!important;
-	background:url(/misc_/zms/grippy.png);
+	background:url(/++resource++zms_/img/grippy.png);
 	vertical-align:middle;
 	cursor:move;
 }
@@ -1242,6 +1245,15 @@ input.btn.btn-file {
 .zmi.customize #Custom table td.nowrap {
 	min-width:92px;
 }
+.zmi.customize #Custom .table-bordered tbody > tr > td:nth-child(2) {
+	max-width:1rem !important;
+	overflow-y:hidden;
+}
+.zmi.customize #Custom .table-bordered>tbody>tr>td:nth-child(3) {
+	max-width:1rem !important;
+	overflow-y:hidden;
+}
+
 .customize.config #extwizard ul.nav-pills li,
 .customize.config #InstalledProducts .tab-content .col-sm-8 button.btn {
 	min-width:160px;
@@ -1482,9 +1494,17 @@ td .btn-group .checkbox.split-left.btn input {
 	color:#999;
 }
 #insertUserForm .ZMSRecordSet {
-	overflow: hidden;
+	overflow-y: hidden;
 	margin-left: -15px;
 	padding-left: 1px;
+}
+#insertUserForm .ZMSRecordSet table th,
+#insertUserForm .ZMSRecordSet table td {
+	max-width: 8em;
+}
+#insertUserForm .ZMSRecordSet table th:not(:first-child),
+#insertUserForm .ZMSRecordSet table td {
+	overflow: hidden;
 }
 #insertUserForm .ZMSRecordSet .pagination {
 	margin-left: 0;

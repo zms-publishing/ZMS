@@ -1051,7 +1051,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     @rtype: C{None}
     """
     def recordSet_Init(self, REQUEST):
-      SESSION = REQUEST.SESSION
       tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
       tablename = SESSION.get('qentity_%s'%self.id)
       #-- Sanity check.
@@ -1115,7 +1114,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     """
     def recordSet_Filter(self, REQUEST):
       sqlStatement = REQUEST.get('sqlStatement', [])
-      SESSION = REQUEST.SESSION
       # init filter from request.
       for filterIndex in range(100):
         for filterStereotype in ['attr', 'op', 'value']:
@@ -1192,7 +1190,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     @rtype: C{None}
     """
     def recordSet_Sort(self, REQUEST):
-      SESSION = REQUEST.SESSION
       tablename = SESSION['qentity_%s'%self.id]
       tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
       #-- Sanity check.

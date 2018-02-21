@@ -1111,7 +1111,6 @@ class ZMSSqlDb(ZMSCustom):
     """
     def recordSet_Filter(self, REQUEST):
       sqlStatement = REQUEST.get('sqlStatement',[])
-      SESSION = REQUEST.SESSION
       # init filter from request.
       for filterIndex in range(100):
         for filterStereotype in ['attr','op','value']:
@@ -1124,7 +1123,7 @@ class ZMSSqlDb(ZMSCustom):
           standard.set_session_value(self,sessionkey,requestvalue)
       standard.set_session_value(self,'qfilters_%s'%self.id,REQUEST.form.get('qfilters',standard.get_session_value(self,'qfilters_%s'%self.id,1)))
       # apply filter
-      tablename = SESSION['qentity_%s'%self.id]
+      tablename = standard.get_session_value(self,'qentity_%s'%self.id)
       tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
       if len(tabledefs) > 0:
         tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
@@ -1188,8 +1187,7 @@ class ZMSSqlDb(ZMSCustom):
     @rtype: C{None}
     """
     def recordSet_Sort(self, REQUEST):
-      SESSION = REQUEST.SESSION
-      tablename = SESSION['qentity_%s'%self.id]
+      tablename = standard.get_session_value(self,'qentity_%s'%self.id)
       tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
       #-- Sanity check.
       qorder = REQUEST.get('qorder',standard.get_session_value(self,'qorder_%s'%self.id,''))

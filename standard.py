@@ -544,6 +544,20 @@ def get_session(context):
     context.session_data_manager.getSessionData(create=0)
 
 
+def get_session_value(context, key, defaultValue=None):
+  """
+  Get http-session-value.
+  """
+  return get_session(context).get(key,defaultValue)
+
+
+def set_session_value(context, key, value):
+  """
+  Set http-session-value.
+  """
+  return get_session(context).set(key, value)
+
+
 def triggerEvent(context, *args, **kwargs):
   """
   Hook for trigger of custom event (if there is one)

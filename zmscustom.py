@@ -241,7 +241,6 @@ class ZMSCustom(ZMSContainerObject):
     @rtype: C{list}
     """
     def recordSet_Filter(self, REQUEST):
-      SESSION = REQUEST.SESSION
       metaObj = self.getMetaobj(self.meta_id)
       res = REQUEST['res']
       # foreign key
@@ -249,20 +248,20 @@ class ZMSCustom(ZMSContainerObject):
       filtervalue='fk_val'
       sessionattr='%s_%s'%(filterattr,self.id)
       sessionvalue='%s_%s'%(filtervalue,self.id)
-      SESSION.set(sessionattr,REQUEST.form.get(filterattr,SESSION.get(sessionattr,'')))
-      SESSION.set(sessionvalue,REQUEST.form.get(filtervalue,SESSION.get(sessionvalue,'')))
+      standard.set_session_value(self,sessionattr,REQUEST.form.get(filterattr,standard.get_session_value(self,sessionattr,'')))
+      standard.set_session_value(self,sessionvalue,REQUEST.form.get(filtervalue,standard.get_session_value(self,sessionvalue,'')))
       if REQUEST.get('btn','')==self.getZMILangStr('BTN_RESET'):
-        SESSION.set(sessionattr,'')
-        SESSION.set(sessionvalue,'')
-      if SESSION.get(sessionattr,'') != '' and \
-         SESSION.get(sessionvalue,''):
-        res = standard.filter_list(res,SESSION.get(sessionattr),SESSION.get(sessionvalue),'==')
-        masterType = filter(lambda x: x['id']==SESSION.get(sessionattr),metaObj['attrs'][1:])[0]['type']
+        standard.set_session_value(self,sessionattr,'')
+        standard.set_session_value(self,sessionvalue,'')
+      if standard.get_session_value(self,sessionattr,'') != '' and \
+         standard.get_session_value(self,sessionvalue,''):
+        res = standard.filter_list(res,standard.get_session_value(self,sessionattr),standard.get_session_value(self,sessionvalue),'==')
+        masterType = filter(lambda x: x['id']==standard.get_session_value(self,sessionattr),metaObj['attrs'][1:])[0]['type']
         master = filter(lambda x: x.meta_id==masterType,self.getParentNode().objectValues(['ZMSCustom']))[0]
         masterMetaObj = self.getMetaobj(masterType)
         masterAttrs = masterMetaObj['attrs']
         masterRows = master.getObjProperty(masterAttrs[0]['id'],REQUEST)
-        masterRows = standard.filter_list(masterRows,masterAttrs[1]['id'],SESSION.get(sessionvalue),'==')
+        masterRows = standard.filter_list(masterRows,masterAttrs[1]['id'],standard.get_session_value(self,sessionvalue),'==')
         REQUEST.set('masterMetaObj',masterMetaObj)
         REQUEST.set('masterRow',masterRows[0])
       # init filter from request.
@@ -270,18 +269,18 @@ class ZMSCustom(ZMSContainerObject):
         for filterStereotype in ['attr','op','value']:
           requestkey = 'filter%s%i'%(filterStereotype,filterIndex)
           sessionkey = '%s_%s'%(requestkey,self.id)
-          requestvalue = REQUEST.form.get(requestkey,SESSION.get(sessionkey,''))
+          requestvalue = REQUEST.form.get(requestkey,standard.get_session_value(self,sessionkey,''))
           if REQUEST.get('btn','')==self.getZMILangStr('BTN_RESET'):
             requestvalue = ''
           REQUEST.set(requestkey,requestvalue)
-          SESSION.set(sessionkey,requestvalue)
-      SESSION.set('qfilters_%s'%self.id,REQUEST.form.get('qfilters',SESSION.get('qfilters_%s'%self.id,1)))
+          standard.set_session_value(self,sessionkey,requestvalue)
+      standard.set_session_value(self,'qfilters_%s'%self.id,REQUEST.form.get('qfilters',standard.get_session_value(self,'qfilters_%s'%self.id,1)))
       # apply filter
       for filterIndex in range(100):
         suffix = '%i_%s'%(filterIndex,self.id)
-        sessionattr = SESSION.get('filterattr%s'%suffix,'')
-        sessionop = SESSION.get('filterop%s'%suffix,'%')
-        sessionvalue = SESSION.get('filtervalue%s'%suffix,'')
+        sessionattr = standard.get_session_value(self,'filterattr%s'%suffix,'')
+        sessionop = standard.get_session_value(self,'filterop%s'%suffix,'%')
+        sessionvalue = standard.get_session_value(self,'filtervalue%s'%suffix,'')
         if sessionattr and sessionvalue:
           metaObjAttr = self.getMetaobjAttr(self.meta_id,sessionattr)
           sessionvalue = self.formatObjAttrValue(metaObjAttr,sessionvalue,REQUEST['lang'])

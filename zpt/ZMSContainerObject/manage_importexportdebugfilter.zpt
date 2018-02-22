@@ -95,7 +95,7 @@
 <input type="hidden" name="step:int" tal:attributes="value python:step+1"/>
 <input type="hidden" name="tempfolder" tal:attributes="value request/tempfolder"/>
 <input type="hidden" name="outfilename" tal:attributes="value request/outfilename"/>
-<div class="pull-left perc50">
+<div class="pull-left perc50 container">
 	<legend tal:content="python:here.getZMILangStr('ATTR_EXPORT')+' [%i/%i]'%(step,len(filterProcesses))">Export</legend>
 	<div class="form-group">
 		<label class="col-lg-2 control-label">Outfilename</label>

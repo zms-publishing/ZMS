@@ -560,26 +560,36 @@ def nvl(a1, a2, n=None):
     return a2
 
 
+security.declarePublic('get_session')
 def get_session(context):
   """
   Get http-session.
   """
-  return getattr(context, 'session_data_manager', None) and \
+  session = getattr(context, 'session_data_manager', None) and \
     context.session_data_manager.getSessionData(create=0)
+  return session
 
 
+security.declarePublic('get_session_value')
 def get_session_value(context, key, defaultValue=None):
   """
   Get http-session-value.
   """
-  return get_session(context).get(key,defaultValue)
+  session = get_session(context)
+  if session is not None:
+    return session.get(key,defaultValue)
+  return None
 
 
+security.declarePublic('set_session_value')
 def set_session_value(context, key, value):
   """
   Set http-session-value.
   """
-  return get_session(context).set(key, value)
+  sessionn = get_session(context)
+  if session is not None:
+    return session.set(key, value)
+  return None
 
 
 def triggerEvent(context, *args, **kwargs):

@@ -228,12 +228,19 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     @rtype: C{list}
     """
     def recordSet_Init(self, REQUEST):
+      print(1)
       request = self.REQUEST
+      print(2)
       metaObj = self.getMetaobj(self.meta_id)
+      print(3)
       res_id = metaObj['attrs'][0]['id']
+      print(4)
       res = self.getObjProperty(res_id, REQUEST)
+      print(5)
       REQUEST.set('res_abs', res)
+      print(6)
       REQUEST.set('res', res)
+      print(7)
       return res
 
 

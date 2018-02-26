@@ -30,13 +30,9 @@ from OFS.Folder import Folder
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
-try:
-  import configparser
-except ImportError:
-  # Python3
-  import configparser as ConfigParser
 # import Globals
 import OFS.misc_
+import configparser
 import importlib
 import operator
 import os
@@ -110,7 +106,6 @@ def initConf(self, profile, remote=True):
   files = self.getConfFiles(remote)
   for filename in files.keys():
     label = files[filename]
-    print("initConf",filename,label)
     if label.startswith(profile + '.') or label.startswith(profile + '-'):
       standard.writeBlock( self, '[initConf]: filename='+filename)
       if filename.find('.zip') > 0:
@@ -181,7 +176,6 @@ class ConfManager(
     #  ConfManager.getConfXmlFile:
     # --------------------------------------------------------------------------
     def getConfXmlFile(self, file):
-      print("getConfXmlFile",file)
       if isinstance(file, dict):
         filename = file['filename']
         xmlfile = StringIO( file['data'])
@@ -198,11 +192,9 @@ class ConfManager(
     #  ConfManager.importConf:
     # --------------------------------------------------------------------------
     def importConf(self, file, createIfNotExists=0, syncIfNecessary=True):
-      print("importConf",file)
       message = ''
       syncNecessary = False
       filename, xmlfile = self.getConfXmlFile( file)
-      print("importConf",filename,xmlfile)
       if not filename.startswith('._'): # ignore hidden files in ZIP created by MacOSX
         if filename.find('.charfmt.') > 0:
           self.format_manager.importCharformatXml(xmlfile, createIfNotExists)
@@ -249,13 +241,11 @@ class ConfManager(
       """
       ConfManager.getConfFiles
       """
-      print("getConfFiles")
       filenames = {}
       filepaths = [
         standard.getINSTANCE_HOME()+'/etc/zms/import/',
         package_home(globals())+'/import/',]
       for filepath in filepaths:
-        print("getConfFiles","filepath=",filepath)
         filename = os.path.join(filepath, 'configure.zcml')
         if os.path.exists(filename):
           standard.writeBlock( self, "[getConfFiles]: Read from "+filename)
@@ -298,7 +288,6 @@ class ConfManager(
             v = v[:v.find(pattern)]+v[i:]
             filenames[k] = v
       # Return.
-      print("getConfFiles","filenames=",filenames)
       if REQUEST is not None and \
          RESPONSE is not None:
         RESPONSE = REQUEST.RESPONSE

@@ -1052,9 +1052,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     """
     def recordSet_Init(self, REQUEST):
       tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
-      tablename = SESSION.get('qentity_%s'%self.id)
+      tablename = standard.get_session_value(self,'qentity_%s'%self.id)
       #-- Sanity check.
-      SESSION.set('qentity_%s'%self.id, '')
+      standard.set_session_value(self,'qentity_%s'%self.id, '')
       REQUEST.set('primary_key', '')
       REQUEST.set('grid_cols', [])
       sqlStatement = REQUEST.get('sqlStatement', [])
@@ -1071,7 +1071,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         primary_key = map(lambda x: x['id'], filter(lambda x: x.get('pk', 0)==1, tablecols))
         primary_key.append(None)
         #-- Set environment.
-        SESSION.set('qentity_%s'%self.id, tablename)
+        standard.set_session_value(self,'qentity_%s'%self.id, tablename)
         REQUEST.set('qentity', tablename)
         REQUEST.set('tabledef', tabledef)
         REQUEST.set('grid_cols', tablecols)
@@ -1119,14 +1119,14 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         for filterStereotype in ['attr', 'op', 'value']:
           requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
           sessionkey = '%s_%s'%(requestkey, self.id)
-          requestvalue = REQUEST.form.get(requestkey, SESSION.get(sessionkey, ''))
+          requestvalue = REQUEST.form.get(requestkey, standard.get_session_value(self,sessionkey, ''))
           if REQUEST.get('btn', '')==self.getZMILangStr('BTN_RESET'):
             requestvalue = ''
           REQUEST.set(requestkey, requestvalue)
-          SESSION.set(sessionkey, requestvalue)
-      SESSION.set('qfilters_%s'%self.id, REQUEST.form.get('qfilters', SESSION.get('qfilters_%s'%self.id, 1)))
+          standard.set_session_value(self,sessionkey, requestvalue)
+      standard.set_session_value(self,'qfilters_%s'%self.id, REQUEST.form.get('qfilters', standard.get_session_value(self,'qfilters_%s'%self.id, 1)))
       # apply filter
-      tablename = SESSION['qentity_%s'%self.id]
+      tablename = standard.get_session_value(self,'qentity_%s'%self.id)
       tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
       if len(tabledefs) > 0:
         tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
@@ -1134,9 +1134,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         l = []
         for filterIndex in range(100):
           suffix = '%i_%s'%(filterIndex, self.id)
-          sessionattr = SESSION.get('filterattr%s'%suffix, '')
-          sessionop = SESSION.get('filterop%s'%suffix, '')
-          sessionvalue = SESSION.get('filtervalue%s'%suffix, '')
+          sessionattr = standard.get_session_value(self,'filterattr%s'%suffix, '')
+          sessionop = standard.get_session_value(self,'filterop%s'%suffix, '')
+          sessionvalue = standard.get_session_value(self,'filtervalue%s'%suffix, '')
           if sessionattr and sessionvalue:
             fk_tablename_counter = {}
             for tablecol in tablecols:
@@ -1190,11 +1190,11 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     @rtype: C{None}
     """
     def recordSet_Sort(self, REQUEST):
-      tablename = SESSION['qentity_%s'%self.id]
+      tablename = standard.get_session_value(self,'qentity_%s'%self.id)
       tabledefs = filter( lambda x: not x.get('not_found'), self.getEntities())
       #-- Sanity check.
-      qorder = REQUEST.get('qorder', SESSION.get('qorder_%s'%self.id, ''))
-      qorderdir = REQUEST.get('qorderdir', SESSION.get('qorderdir_%s'%self.id, 'asc'))
+      qorder = REQUEST.get('qorder', standard.get_session_value(self,'qorder_%s'%self.id, ''))
+      qorderdir = REQUEST.get('qorderdir', standard.get_session_value(self,'qorderdir_%s'%self.id, 'asc'))
       sqlStatement = REQUEST.get('sqlStatement', [])
       if len(tabledefs) > 0:
         tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
@@ -1212,8 +1212,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       REQUEST.set('sqlStatement', sqlStatement)
       REQUEST.set('qorder', qorder)
       REQUEST.set('qorderdir', qorderdir)
-      SESSION.set('qorder_%s'%self.id, qorder)
-      SESSION.set('qorderdir_%s'%self.id, qorderdir)
+      standard.set_session_value(self,'qorder_%s'%self.id, qorder)
+      standard.set_session_value(self,'qorderdir_%s'%self.id, qorderdir)
 
 
     ############################################################################

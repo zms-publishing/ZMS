@@ -576,16 +576,15 @@ class FilterItem:
       # Set local variables.
       ob_filter = self.getFilter(id)
       ob_filter_format = ob_filter.get('format','')
-      incl_embedded = ob_filter_format == 'XML_incl_embedded'
       # Create temporary folder.
       tempfolder = tempfile.mktemp()
-      ressources = self.exportRessources( tempfolder, REQUEST, from_zms=ob_filter_format=='XHTML', from_home=ob_filter_format=='XHTML', incl_embedded=incl_embedded)
+      ressources = self.exportRessources( tempfolder, REQUEST, from_zms=ob_filter_format=='XHTML', from_home=ob_filter_format=='XHTML')
       # Export data to file.
       if ob_filter_format == 'export':
         outfilename = _fileutil.getOSPath('%s/INDEX0'%tempfolder)
-      elif ob_filter_format in ['XML','XML_incl_embedded']:
+      elif ob_filter_format == 'XML':
         # Set XML.
-        data = self.toXml( REQUEST, incl_embedded)
+        data = self.toXml( REQUEST)
         outfilename = _fileutil.getOSPath('%s/export.xml'%tempfolder)
         _fileutil.exportObj( data, outfilename)
       elif ob_filter_format == 'XHTML':

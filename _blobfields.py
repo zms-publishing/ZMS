@@ -59,45 +59,42 @@ _blobfields.recurse_downloadRessources:
 
 Download from ZODB to file-system during Export.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
+def recurse_downloadRessources(self, base_path, REQUEST):
   ressources = []
   # Check Constraints.
   root = getattr( self, '__root__', None)
   if root is not None:
     return ressources
-  ob = self
-  if incl_embedded and ob.meta_id == 'ZMSLinkElement' and ob.isEmbedded( REQUEST)  and ob.getRefObj():
-    ob = ob.getRefObj()
   # Attributes.
-  langs = ob.getLangIds()
-  prim_lang = ob.getPrimaryLanguage()
-  obj_attrs = ob.getObjAttrs()
+  langs = self.getLangIds()
+  prim_lang = self.getPrimaryLanguage()
+  obj_attrs = self.getObjAttrs()
   for key in obj_attrs.keys():
-    obj_attr = ob.getObjAttr(key)
+    obj_attr = self.getObjAttr(key)
     datatype = obj_attr['datatype_key']
     if datatype in _globals.DT_BLOBS:
       for lang in langs:
         try:
           if obj_attr['multilang'] or lang==prim_lang or (obj_attr['multilang']==0 and lang!=prim_lang):
             req = {'lang':lang,'preview':'preview'}
-            obj_vers = ob.getObjVersion(req)
-            blob = ob._getObjAttrValue(obj_attr,obj_vers,lang)
+            obj_vers = self.getObjVersion(req)
+            blob = self._getObjAttrValue(obj_attr,obj_vers,lang)
             if blob is not None: 
               filename = blob.getFilename()
-              filename = getLangFilename(ob,filename,lang)
+              filename = getLangFilename(self,filename,lang)
               filename = '%s%s'%(base_path,filename)
               filename = _fileutil.getOSPath(filename)
               _fileutil.exportObj(blob,filename)
               ressources.append( { 'filepath':filename, 'content_type':blob.getContentType()})
         except:
-          standard.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+          standard.writeError(self,"[recurse_downloadRessources]: Can't export %s"%key)
     elif datatype == _globals.DT_LIST:
       for lang in langs:
         try:
           if obj_attr['multilang'] or lang==prim_lang or (obj_attr['multilang']==0 and lang!=prim_lang):
             req = {'lang':lang,'preview':'preview'}
-            obj_vers = ob.getObjVersion(req)
-            v = ob._getObjAttrValue(obj_attr,obj_vers,lang)
+            obj_vers = self.getObjVersion(req)
+            v = self._getObjAttrValue(obj_attr,obj_vers,lang)
             i = 0
             for r in v:
               uu = []
@@ -110,17 +107,17 @@ def recurse_downloadRessources(self, base_path, REQUEST, incl_embedded):
                 uu.append( r)
               for u in uu:
                 filename = u.getFilename()
-                filename = getLangFilename(ob,filename,lang)
+                filename = getLangFilename(self,filename,lang)
                 filename = '%s@%i/%s'%(base_path,i,filename)
                 filename = _fileutil.getOSPath(filename)
                 _fileutil.exportObj(u,filename)
                 ressources.append( { 'filepath':filename, 'content_type':u.getContentType()})
               i = i + 1
         except:
-          standard.writeError(ob,"[recurse_downloadRessources]: Can't export %s"%key)
+          standard.writeError(self,"[recurse_downloadRessources]: Can't export %s"%key)
   # Process children.
-  for child in ob.getChildNodes():
-    ressources.extend( recurse_downloadRessources( child, base_path+child.id+'/', REQUEST, incl_embedded))
+  for child in self.getChildNodes():
+    ressources.extend( recurse_downloadRessources( child, base_path+child.id+'/', REQUEST))
   # Return list of ressources.
   return ressources
 

@@ -34,7 +34,7 @@ function onExportFormatChange(el) {
 				and (request['AUTHENTICATED_USER'].has_role('Manager') or len(here.intersection_list(here.getUserRoles(request['AUTHENTICATED_USER']),x.get('roles',[])))>0)
 				,map(lambda x: here.getFilter(x), filterIds));
 		importFilters python:filter(lambda x: len(here.intersection_list([x['format']],['import']))>0, filters);
-		exportFilters python:filter(lambda x: len(here.intersection_list([x['format']],['export','XML','XML_incl_embedded','XHTML','myXML']))>0, filters)">
+		exportFilters python:filter(lambda x: len(here.intersection_list([x['format']],['export','XML','XHTML','myXML']))>0, filters)">
 
 <form class="form-horizontal" name="importForm" action="manage_import" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">

@@ -149,7 +149,6 @@ $ZMI.registerReady(function(){
 				['import', 'Import' ],
 				['export', 'Export' ],
 				['XML', 'XML-Export' ],
-				['XML_incl_embedded', 'XML-Export (incl. embedded)' ],
 				['XHTML', 'XHTML-Export' ]]+
 				[[],['myXML',getattr(here,'getObjToXml_DocElmnt',here).title_or_id()]][int(getattr(here,'getObjToXml_DocElmnt',None) is not None)]">
 

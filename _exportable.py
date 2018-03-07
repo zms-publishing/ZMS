@@ -293,10 +293,9 @@ class Exportable(_filtermanager.FilterItem):
         content_type = 'application/zip'
       
       # XML.
-      elif export_format in [ 2, 4]: 
-        incl_embedded = export_format == 4
+      elif export_format == 2: 
         filename = '%s_xml.zip'%title
-        export = self.toZippedXml( REQUEST, get_data, incl_embedded)
+        export = self.toZippedXml( REQUEST, get_data)
         content_type = 'application/zip'
       
       # myXML.
@@ -393,10 +392,10 @@ class Exportable(_filtermanager.FilterItem):
     # --------------------------------------------------------------------------
     #  Exportable.toXml:
     # --------------------------------------------------------------------------
-    def toXml(self, REQUEST, incl_embedded=False, deep=True, data2hex=False):
+    def toXml(self, REQUEST, deep=True, data2hex=False):
       xml = ''
       xml += _xmllib.xml_header()
-      xml += _xmllib.getObjToXml( self, REQUEST, incl_embedded, deep, base_path='', data2hex=data2hex)
+      xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex)
       return xml 
 
 
@@ -405,7 +404,7 @@ class Exportable(_filtermanager.FilterItem):
     #
     #  Returns list of exported resources (Images, StyleSheets, etc.)
     # --------------------------------------------------------------------------
-    def exportRessources(self, tempfolder, REQUEST, from_content=True, from_zms=False, from_home=False, incl_embedded=False):
+    def exportRessources(self, tempfolder, REQUEST, from_content=True, from_zms=False, from_home=False):
       ressources = []
       
       if from_zms:
@@ -422,7 +421,7 @@ class Exportable(_filtermanager.FilterItem):
       
       if from_content:
         base_path = tempfolder+'/'
-        ressources.extend( _blobfields.recurse_downloadRessources( self, base_path, REQUEST, incl_embedded))
+        ressources.extend( _blobfields.recurse_downloadRessources( self, base_path, REQUEST))
       
       return ressources
 
@@ -602,14 +601,14 @@ class Exportable(_filtermanager.FilterItem):
     # --------------------------------------------------------------------------
     #  Exportable.toZippedXml:
     # --------------------------------------------------------------------------
-    def toZippedXml(self, REQUEST, get_data=True, incl_embedded=False):
+    def toZippedXml(self, REQUEST, get_data=True):
 
       #-- Create temporary folder.
       tempfolder = tempfile.mktemp()
-      ressources = self.exportRessources( tempfolder, REQUEST, incl_embedded=incl_embedded)
+      ressources = self.exportRessources( tempfolder, REQUEST)
       
       #-- Get xml-export.
-      xml = self.toXml(REQUEST,incl_embedded)
+      xml = self.toXml(REQUEST)
       
       #-- Write xml-export to file.
       xmlfilename = _fileutil.getOSPath('%s/%s_%s.xml'%(tempfolder,self.getHome().id,self.meta_id))

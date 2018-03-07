@@ -28,8 +28,8 @@ import time
 import unicodedata
 import xml.dom
 
-from App.Common import package_home
 import Globals
+from App.Common import package_home
 from OFS.Image import File
 
 import _blobfields
@@ -38,6 +38,7 @@ import _globals
 from _objattrs import *
 import standard
 import zopeutil
+from pip.utils.logging import indent_log
 
 
 # Product Imports.
@@ -456,13 +457,13 @@ def xmlOnUnknownEndTag(self, sTagName):
 # ------------------------------------------------------------------------------
 #  _xmllib.toCdata
 # ------------------------------------------------------------------------------
-def toCdata(self, s, xhtml=0):
+def toCdata(self, s, xhtml=False):
   rtn = ''
   
   # Return Text (HTML) in CDATA as XHTML.
   from _filtermanager import processCommand
   processId = 'tidy'
-  if xhtml == 0 \
+  if not xhtml \
      and self.getConfProperty('ZMS.export.xml.tidy', 0) \
      and processId in self.getProcessIds():
 
@@ -509,9 +510,7 @@ def toCdata(self, s, xhtml=0):
       rtn += '<!-- ' + log + '-->'
 
   # Return Text.
-  elif xhtml == -1 \
-     or type(s) is float \
-     or type(s) is int:
+  elif s is not None and str(s).find(' ') < 0:
     rtn = s
 
   # Return Text in CDATA.
@@ -520,6 +519,7 @@ def toCdata(self, s, xhtml=0):
     s = s.replace(chr(30), '')
     # Hack for nested CDATA
     s = re.compile('\<\!\[CDATA\[(.*?)\]\]\>').sub('<!{CDATA{\\1}}>', s)
+    # Wrap with CDATA
     rtn = '<![CDATA[%s]]>' % s
 
   # Return.
@@ -529,7 +529,7 @@ def toCdata(self, s, xhtml=0):
 # ------------------------------------------------------------------------------
 #  _xmllib.toXml:
 # ------------------------------------------------------------------------------
-def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
+def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
   xml = []
   
   def unistr(s):
@@ -611,14 +611,10 @@ def toXml(self, value, indentlevel=0, xhtml=0, encoding='utf-8'):
       try:
         s_value = self.getLangFmtDate(value, 'eng', 'DATETIME_FMT')
         if len(s_value) > 0:
-          xml.append('\n' + indentlevel * INDENTSTR)
+          xml.append(indentlevel * INDENTSTR)
           xml.append(toCdata(self, s_value, -1))
       except:
         pass
-    
-    # Numbers
-    elif type(value) is int or type(value) is float:
-      xml.append(str(value))
     
     else:
       # Zope-Objects
@@ -686,6 +682,7 @@ def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
 def getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST):
   xml = ''
   # Multi-Language Attributes.
+  indentlevel = len(base_path.split('/'))
   if obj_attr['multilang']:
     lang = REQUEST.get('lang')
     langIds = self.getLangIds()
@@ -693,8 +690,7 @@ def getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST):
       REQUEST.set('lang', langId)
       s_attr_xml = getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST)
       if len(s_attr_xml) > 0:
-        xml += '\n<lang id="%s"' % langId
-        xml += '>%s</lang>' % s_attr_xml
+        xml += '<lang%s>%s</lang>' % ( ['',' id="%s"'%langId][int(len(langIds)>1)] , s_attr_xml )
     REQUEST.set('lang', lang)
   # Simple Attributes.
   else:
@@ -706,42 +702,39 @@ def getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST):
 # ------------------------------------------------------------------------------
 #  _xmllib.getObjToXml:
 # ------------------------------------------------------------------------------
-def getObjToXml(self, REQUEST, incl_embedded=False, deep=True, base_path='', data2hex=False):
+def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False):
   # Check Constraints.
   root = getattr(self, '__root__', None)
   if root is not None:
     return ''
-  ob = self
-  if incl_embedded and ob.meta_type == 'ZMSLinkElement' and ob.isEmbedded(REQUEST) and ob.getRefObj():
-    ob = ob.getRefObj()
   xml = []
   # Start tag.
-  xml.append('<%s' % ob.meta_id)
-  xml.append(' uid="%s"' % ob.get_uid())
+  indentlevel = len(base_path.split('/'))
+  xml.append('%s<%s' % ( indentlevel * INDENTSTR, self.meta_id ) )
+  xml.append(' uid="%s"' % self.get_uid() )
   id = self.id 
   prefix = standard.id_prefix(id)
   if id == prefix:
     xml.append(' id_fix="%s"' % id)
   else:
     xml.append(' id="%s"' % id)
-  if ob.getParentNode() is not None and ob.getParentNode().meta_type == 'ZMSCustom':
-    xml.append('\n id_prefix="%s"' % standard.id_prefix(ob.id))
-  xml.append('>')
+    xml.append(' id_prefix="%s"' % standard.id_prefix(id))
+  xml.append('>\n')
   # Attributes.
-  keys = ob.getObjAttrs().keys()
-  if ob.getType() == 'ZMSRecordSet':
-    keys = ['active', ob.getMetaobjAttrIds(ob.meta_id)[0]]
+  keys = self.getObjAttrs().keys()
+  if self.getType() == 'ZMSRecordSet':
+    keys = ['active', self.getMetaobjAttrIds(self.meta_id)[0]]
   for key in keys:
-    obj_attr = ob.getObjAttr(key)
+    obj_attr = self.getObjAttr(key)
     if obj_attr['xml']:
-      ob_prop = getObjPropertyToXml(ob, base_path, data2hex, obj_attr, REQUEST)
+      ob_prop = getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST)
       if len(ob_prop) > 0:
-        xml.append('\n<%s>%s</%s>' % (key, ob_prop, key))
+        xml.append('%s<%s>%s</%s>\n' % ( (indentlevel+1) * INDENTSTR, key, ob_prop, key ) )
   # Process children.
   if deep:
-    xml.extend(map(lambda x: getObjToXml(x, REQUEST, incl_embedded, deep, base_path + x.id + '/', data2hex), ob.getChildNodes()))
+    xml.extend(map(lambda x: getObjToXml(x, REQUEST, deep, base_path + x.id + '/', data2hex), self.getChildNodes()))
   # End tag.
-  xml.append('</%s>\n' % ob.meta_id)
+  xml.append('%s</%s>\n' % ( indentlevel * INDENTSTR, self.meta_id ) )
   # Return xml.
   return ''.join(xml)
 

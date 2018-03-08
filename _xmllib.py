@@ -361,8 +361,6 @@ def xmlOnUnknownEndTag(self, sTagName):
             # Others
             else:
               # -- Init Properties.
-              self.setObjProperty('change_uid', 'xml', s_lang)
-              self.setObjProperty('change_dt', time.time(), s_lang)
               xmlInitObjProperty(self, sTagName, value, s_lang)
       
       else:

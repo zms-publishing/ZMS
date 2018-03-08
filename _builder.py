@@ -220,8 +220,12 @@ class Builder:
             if 'active' in obj_attrs.keys():
               newNode.setObjProperty('active',1,lang)
             if len( langs) == 1:
-              newNode.setObjProperty('change_uid','xml',lang)
-              newNode.setObjProperty('change_dt',time.time(),lang)
+              dt = time.time()
+              uid = self.REQUEST['AUTHENTICATED_USER'].getId()
+              newNode.setObjProperty('created_uid',uid,lang)
+              newNode.setObjProperty('created_dt',dt,lang)
+              newNode.setObjProperty('change_uid',uid,lang)
+              newNode.setObjProperty('change_dt',dt,lang)
           
           if self.oRoot is None: # root object set?
             self.oRoot = newNode # -> set root node

@@ -63,8 +63,11 @@
 						<span tal:content="structure python:here.zmi_icon(name='icon-info-sign')">the icon-info-sign</span>
 					</label>
 					<div class="col-sm-8">
-						<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')"
-							><span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
+						<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
+							<tal:block tal:content="python:here.getZMILangStr('ATTR_CREATED')+':'">created:</tal:block>
+							<span class="zmi-created-dt" tal:content="python:here.getLangFmtDate(here.attr('created_dt'),request['manage_lang'],'DATETIME_FMT')">the created_dt</span>
+							<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
+							<span class="zmi-created-uid" tal:content="python:here.attr('created_uid')">the created_uid</span>,
 						</tal:block>
 						<span title="This Node Contains ..." tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
 						<span title="Data Size" class="get_size" tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>,

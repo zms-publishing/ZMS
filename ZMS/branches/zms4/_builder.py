@@ -183,13 +183,13 @@ class Builder(object):
             newNode = self
           else:
             # Get new id.
-            if 'id_fix' in attrs.keys():
-              id = attrs.get( 'id_fix')
-            elif 'id_prefix' in attrs.keys():
-              prefix = attrs.get( 'id_prefix')
+            if 'id_fix' in attrs:
+              id = attrs['id_fix']
+            elif 'id_prefix' in attrs:
+              prefix = attrs['id_prefix']
               id = self.getNewId(prefix)
-            elif 'id' in attrs.keys():
-              id = attrs.get( 'id')
+            elif 'id' in attrs:
+              id = attrs['id']
               prefix = standard.id_prefix(id)
               id = self.getNewId(prefix)
             else:
@@ -205,8 +205,8 @@ class Builder(object):
             standard.writeBlock( self, "[Builder.OnStartElement]: object with id " + str(newNode.id) + " of class " + str(newNode.__class__) + " created in " + str(self.oCurrNode.__class__))
           
           ##### Uid ####
-          if 'uid' in attrs.keys():
-            uid = attrs.get( 'uid')
+          if 'uid' in attrs:
+            uid = attrs['uid']
             newNode.set_uid(uid)
           
           ##### Object State ####
@@ -218,11 +218,15 @@ class Builder(object):
             ##### Object State ####
             newNode.setObjStateNew(req)
             ##### Init Properties ####
-            if 'active' in obj_attrs.keys():
+            if 'active' in obj_attrs:
               newNode.setObjProperty('active', 1, lang)
             if len( langs) == 1:
-              newNode.setObjProperty('change_uid', 'xml', lang)
-              newNode.setObjProperty('change_dt', time.time(), lang)
+              dt = time.time()
+              uid = self.REQUEST['AUTHENTICATED_USER'].getId()
+              newNode.setObjProperty('created_uid',uid,lang)
+              newNode.setObjProperty('created_dt',dt,lang)
+              newNode.setObjProperty('change_uid',uid,lang)
+              newNode.setObjProperty('change_dt',dt,lang)
           
           if self.oRoot is None: # root object set?
             self.oRoot = newNode # -> set root node

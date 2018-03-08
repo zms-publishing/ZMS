@@ -120,7 +120,7 @@ $(function(){
 			}
 		});
 
-  var $change_dt = $(".zmi-change-dt");
+  var $change_dt = $(".zmi-change-dt,.zmi-created-dt");
   if ($change_dt.length > 0) {
     var fn = function() {
         $ZMI.writeDebug("change_dt");

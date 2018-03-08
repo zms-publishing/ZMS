@@ -73,7 +73,6 @@ function onExportFormatChange(el) {
 			<select class="form-control" name="export_format" onchange="onExportFormatChange(this);">
 				<option value="">----- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FORMAT')">select format</tal:block> -----</option>
 				<option value="2">XML</option>
-				<option value="4">XML (incl. embedded objects)</option>
 				<option value="0">ZEXP</option>
 				<option value="1">HTML (<tal:block tal:content="python:here.getZMILangStr('ATTR_STATIC')">static</tal:block>)</option>
 				<option value="" tal:condition="python:len(exportFilters)>0">----- <tal:block tal:content="python:here.getZMILangStr('TAB_FILTER')">filter</tal:block> -----</option>

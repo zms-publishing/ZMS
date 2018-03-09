@@ -67,7 +67,7 @@ _blobfields.recurse_downloadRessources:
 
 Download from ZODB to file-system during Export.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def recurse_downloadRessources(self, base_path, REQUEST:
+def recurse_downloadRessources(self, base_path, REQUEST):
   ressources = []
   # Check Constraints.
   root = getattr( self, '__root__', None)

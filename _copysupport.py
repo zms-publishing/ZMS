@@ -37,13 +37,16 @@ OP_MOVE = 1
 # ------------------------------------------------------------------------------
 #  CopySupport._normalize_ids_after_copy:
 # ------------------------------------------------------------------------------
-def normalize_ids_after_copy(node, ids=[]):
+def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
   request = node.REQUEST
   copy_of_prefix = 'copy_of_'
   for childNode in node.getChildNodes():
     # validate id
     id = absattr(childNode.id)
+    new_id = None
     if '*' in ids or id in ids or id.startswith(copy_of_prefix):
+      # reset ref_by
+      childNode.ref_by = []
       # init object-state
       if not '*' in ids:
         lang = request.get('lang')
@@ -52,31 +55,29 @@ def normalize_ids_after_copy(node, ids=[]):
           childNode.setObjStateNew(request,reset=0)
           childNode.onChangeObj(request)
         request.set('lang',lang)
-      # reset ref_by
-      childNode.ref_by = []
+        # new id
+        new_id = node.getNewId(id_prefix)
+      else:
+        # new id
+        new_id = node.getNewId(standard.id_prefix(id))
       # reset id
-      new_id = id
-      if new_id.startswith(copy_of_prefix):
-        new_id = new_id[len(copy_of_prefix):]
-      id_prefix = standard.id_prefix(new_id)
-      new_id = node.getNewId(id_prefix)
-      standard.writeBlock(node,'[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
-      if id != new_id:
+      if new_id is not None and new_id != id:
+        standard.writeBlock(node,'[CopySupport._normalize_ids_after_copy]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
         node.manage_renameObject(id=id,new_id=new_id)
-      node.initObjChildren(request)
       # traverse tree
-      normalize_ids_after_copy(childNode, ids=['*'])
+      normalize_ids_after_copy(childNode, id_prefix, ids=['*'])
 
 
 # ------------------------------------------------------------------------------
 #  CopySupport._normalize_ids_after_move:
 # ------------------------------------------------------------------------------
-def normalize_ids_after_move(node, ids=[]):
+def normalize_ids_after_move(node, id_prefix='e', ids=[]):
   request = node.REQUEST
   copy_of_prefix = 'copy_of_'
   for childNode in node.getChildNodes():
     # validate id
     id = absattr(childNode.id)
+    new_id = None
     if '*' in ids or id in ids or id.startswith(copy_of_prefix):
       # init object-state
       if not '*' in ids:
@@ -86,16 +87,15 @@ def normalize_ids_after_move(node, ids=[]):
           childNode.setObjStateModified(request)
           childNode.onChangeObj(request)
         request.set('lang',lang)
+        # new id
+        if id.startswith(copy_of_prefix):
+          new_id = id[len(id.startswith(copy_of_prefix)):]
+        elif standard.id_prefix(id) != id_prefix:
+          new_id = node.getNewId(id_prefix)
       # reset id
-      new_id = id
-      if new_id.startswith(copy_of_prefix):
-        new_id = new_id[len(copy_of_prefix):]
-      id_prefix = standard.id_prefix(new_id)
-      new_id = node.getNewId(id_prefix)
-      standard.writeBlock(node,'[CopySupport._normalize_ids_after_move]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
-      if id != new_id:
+      if new_id is not None and new_id != id:
+        standard.writeBlock(node,'[CopySupport._normalize_ids_after_move]: rename %s(%s) to %s'%(childNode.absolute_url(),childNode.meta_id,new_id))
         node.manage_renameObject(id=id,new_id=new_id)
-      node.initObjChildren(request)
 
 
 ################################################################################
@@ -229,6 +229,7 @@ class CopySupport:
     ############################################################################
     def manage_pasteObjs(self, REQUEST, RESPONSE=None):
       """ CopySupport.manage_pasteObjs """
+      id_prefix = REQUEST.get('id_prefix','e')
       standard.writeBlock( self, "[CopySupport.manage_pasteObjs]")
       t0 = time.time()
       
@@ -250,10 +251,10 @@ class CopySupport:
       
       # Move objects.
       if op == OP_MOVE:
-        normalize_ids_after_move(self,ids=ids)
+        normalize_ids_after_move(self,id_prefix=id_prefix,ids=ids)
       # Copy objects.
       else:
-        normalize_ids_after_copy(self,ids=ids)
+        normalize_ids_after_copy(self,id_prefix=id_prefix,ids=ids)
       
       # Sort order (II).
       self.normalizeSortIds()

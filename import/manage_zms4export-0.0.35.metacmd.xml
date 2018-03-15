@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="data"><![CDATA[import os
+import shutil
+import tempfile
+from Products.zms import _blobfields
+from Products.zms import _fileutil
+from Products.zms import zopeutil
+
+def exportSystem(self):
+            value = self.get_conf_properties()
+            export = self.getXmlHeader() + self.toXmlString(value,1)
+            return export
+
+def exportLangDict(self):
+            value = self.get_lang_dict()
+            export = self.getXmlHeader() + self.toXmlString(value,1)
+            return export
+
+# @see ZMSMetadictManager
+def exportMetadictXml(self, ids=[]):
+            value = []
+            metadicts = self.metas
+            for i in range(len(metadicts)/2):
+              id = metadicts[i*2]
+              dict = metadicts[i*2+1].copy()
+              if id in ids or len(ids) == 0:
+                dst_meta_types = []
+                for meta_id in self.getMetaobjIds():
+                  if id in self.getMetadictAttrs( meta_id):
+                    dst_meta_types.append( meta_id)
+                dict['dst_meta_types'] = dst_meta_types
+                value.append(dict)
+            if len(value) == 1:
+              value = value[0]
+            content_type = 'text/xml; charset=utf-8'
+            filename = 'export.metadict.xml'
+            export = self.getXmlHeader() + self.toXmlString(value,1)
+            return export
+
+# @see ZMSMetaCmdProvider
+def exportMetacmdXml(self, ids=[]):
+          value = []
+          for id in self.getMetaCmdIds():
+            if id in ids or len(ids) == 0:
+              metaCmd = self.getMetaCmd(id)
+              revision = metaCmd.get('revision','0.0.0')
+              el_id = metaCmd['id']
+              el_name = metaCmd['name']
+              el_title = metaCmd.get('title','')
+              el_meta_type = metaCmd['meta_type']
+              el_description = metaCmd['description']
+              el_icon_clazz = metaCmd.get('icon_clazz','')
+              el_meta_types = metaCmd['meta_types']
+              el_roles = metaCmd['roles']
+              el_exec = metaCmd['exec']
+              el_data = zopeutil.readObject(metaCmd['home'],metaCmd['id'])
+              # Value.
+              value.append({'id':el_id,'revision':revision,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'exec':el_exec,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
+          # XML.
+          if len(ids)==1:
+            filename = '%s-%s.metacmd.xml'%(ids[0],revision)
+          else:
+            filename = 'export.metacmd.xml'
+          content_type = 'text/xml; charset=utf-8'
+          export = self.getXmlHeader() + self.toXmlString(value,1)
+          return export
+
+# @see ZMSTextformatManager
+def exportTextformatXml(self, ids=[]):
+        value = []
+        fmts = self.textformats
+        for i in range(len(fmts)/2):
+          id = fmts[i*2]
+          ob = fmts[i*2+1]
+          if id in ids or len(ids) == 0:
+            value.append({'key':id,'value':ob})
+        if len(value)==1:
+          value = value[0]
+        content_type = 'text/xml; charset=utf-8'
+        filename = 'export.textfmt.xml'
+        export = self.getXmlHeader() + self.toXmlString(value,1)
+        return export
+
+# @see ZMSCharformatManager
+def exportCharformatXml(self, ids=[]):
+        value = filter( lambda x: x['id'] in ids or len(ids) == 0, self.getCharFormats())
+        value = map( lambda x: x.copy(), value)
+        for x in value:
+          if x.get('btn'):
+            x['btn'] = _blobfields.createBlobField( self, _blobfields.MyImage, file={'data':getattr( self, x.get('btn')).data,'filename':x.get('btn')})
+        if len(value)==1:
+          value = value[0]
+        content_type = 'text/xml; charset=utf-8'
+        filename = 'export.charfmt.xml'
+        export = self.getXmlHeader() + self.toXmlString(value,1)
+        return export
+
+def manage_zms4export( self):
+	request = self.REQUEST
+	html = ''
+	html += '<!DOCTYPE html>'
+	html += '<html lang="en">'
+	html += self.zmi_html_head(self,request)
+	html += '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',self.meta_id]))
+	html += self.zmi_body_header(self,request,options=[{'action':'#','label':'ZMS4 Export...'}])
+	html += '<div id="zmi-tab">'
+	html += self.zmi_breadcrumbs(self,request)
+	html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+	html += '<input type="hidden" name="form_id" value="manage_zms4export"/>'
+	html += '<input type="hidden" name="lang" value="%s"/>'%request['lang']
+	html += '<legend>ZMS4 Export...</legend>'
+
+	# --- Export client.
+	# ---------------------------------
+	if request.form.get('btn')==self.getZMILangStr('BTN_EXPORT'):
+		tempfolder = tempfile.mktemp()
+		os.mkdir(tempfolder)
+		if request.get('content')==1:
+			data = self.toZippedXml(request)
+			f = open(os.path.join(tempfolder,'content.zip'),'wb')
+			f.write(data)
+			f.close()
+		if request.get('system')==1:
+			data = exportSystem(self)
+			f = open(os.path.join(tempfolder,'export.system.xml'),'wb')
+			f.write(data)
+			f.close()
+		if request.get('languages')==1:
+			data = exportLangDict(self)
+			f = open(os.path.join(tempfolder,'export.langdict.xml'),'wb')
+			f.write(data)
+			f.close()
+		if request.get('metadata')==1:
+			data = exportMetadictXml(self.getMetaobjManager())
+			f = open(os.path.join(tempfolder,'export.metadict.xml'),'wb')
+			f.write(data)
+			f.close()
+		if request.get('metaobj')==1:
+			if request.get('design'):
+				self.getMetaobjManager().importTheme(request.get('design'))
+			data = self.getMetaobjManager().exportMetaobjXml(ids=[])
+			f = open(os.path.join(tempfolder,'export.metaobj.xml'),'wb')
+			f.write(data)
+			f.close()
+		if request.get('metacmd')==1:
+			data = exportMetacmdXml(self.getMetacmdManager())
+			f = open(os.path.join(tempfolder,'export.metacmd.xml'),'wb')
+			f.write(data)
+			f.close()
+		if request.get('textformats')==1:
+			data = exportTextformatXml(self.getFormatManager())
+			f = open(os.path.join(tempfolder,'export.textfmt.xml'),'wb')
+			f.write(data)
+			f.close()
+		if request.get('charformats')==1:
+			data = exportCharformatXml(self.getFormatManager())
+			f = open(os.path.join(tempfolder,'export.charfmt.xml'),'wb')
+			f.write(data)
+			f.close()
+		RESPONSE = request.RESPONSE
+		RESPONSE.setHeader('Content-Type','application/zip')
+		RESPONSE.setHeader('Content-Disposition','attachment;filename="export.%s.zip"'%self.getHome().id)
+		zipfiles = _fileutil.getOSPath('%s/*'%tempfolder)
+		data = _fileutil.buildZipArchive( zipfiles)
+		shutil.rmtree(tempfolder)
+		return data
+
+	# --- Display form.
+	# ---------------------------------
+	else:
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('Content'))
+		html += '<div class="col-sm-9"><input name="content:int" type="checkbox" value="1" checked="checked"> <strong>%s</strong> (%s)</div>'%(self.getHome().id,unicode(self.getDocumentElement().getTitlealt(request),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_SYSTEM'))
+		html += '<div class="col-sm-9"><input name="system:int" type="checkbox" value="1" checked="checked"> %i %s</div>'%(len(self.get_conf_properties().keys()),unicode(self.getZMILangStr('ATTR_KEYS'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_LANGUAGES'))
+		html += '<div class="col-sm-9"><input name="languages:int" type="checkbox" value="1" checked="checked"> %i %s</div>'%(len(self.get_lang_dict().keys()),unicode(self.getZMILangStr('ATTR_KEYS'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_METADATA'))
+		html += '<div class="col-sm-9"><input name="metadata:int" type="checkbox" value="1" checked="checked"> %i %s</div>'%(len(self.getMetaobjManager().getMetadictAttrs()),unicode(self.getZMILangStr('ATTR_KEYS'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_METAOBJ'))
+		html += '<div class="col-sm-9"><input name="metaobj:int" type="checkbox" value="1" checked="checked"> %i %s</div>'%(len(self.getMetaobjManager().getMetaobjIds()),unicode(self.getZMILangStr('ATTR_OBJECTS'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_METACMD'))
+		html += '<div class="col-sm-9"><input name="metacmd:int" type="checkbox" value="1" checked="checked"> %i %s</div>'%(len(self.getMetacmdManager().getMetaCmdIds()),unicode(self.getZMILangStr('ATTR_OBJECTS'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_TEXTFORMATS'))
+		html += '<div class="col-sm-9"><input name="textformats:int" type="checkbox" value="1" checked="checked"> %i %s</div>'%(len(self.getFormatManager().getTextFormats(request)),unicode(self.getZMILangStr('ATTR_KEYS'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_CHARFORMATS'))
+		html += '<div class="col-sm-9"><input name="charformats:int" type="checkbox" value="1" checked="checked"> %i %s</div>'%(len(self.getFormatManager().getCharFormats()),unicode(self.getZMILangStr('ATTR_KEYS'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		for si in self.getThemes():
+			if self.getConfProperty('ZMS.theme','')==si.id:
+				html += '<div class="form-group">'
+				html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_DESIGN'))
+				html += '<div class="col-sm-9"><input name="design" type="checkbox" value="%s" checked="checked"> <strong>%s</strong>) (%s)</div>'%(si.id,si.id,(si.meta_type=='Filesystem Directory View' and si.getDirPath() or si.title))
+				html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<div class="controls save">'
+		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_EXPORT'),'utf-8'),unicode(self.getZMILangStr('BTN_EXPORT'),'utf-8'))
+		html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'))
+		html += '</div>'
+		html += '</div><!-- .form-group -->'
+
+	# ---------------------------------
+
+	html += '</form><!-- .form-horizontal -->'
+	html += '<div style="clear:both;">&nbsp;</div>'
+	html += '</div><!-- #zmi-tab -->'
+	html += self.zmi_body_footer(self,request)
+	html += '</body>'
+	html += '</html>'
+
+	return html]]>
+      </item>
+      <item key="description"></item>
+      <item key="exec" type="int">0</item>
+      <item key="icon_clazz"><![CDATA[icon-cogs]]></item>
+      <item key="id"><![CDATA[manage_zms4export]]></item>
+      <item key="meta_type"><![CDATA[External Method]]></item>
+      <item key="meta_types" type="list">
+        <list>
+          <item><![CDATA[ZMS]]></item>
+        </list>
+      </item>
+      <item key="name"><![CDATA[ZMS4 Export...]]></item>
+      <item key="revision"><![CDATA[0.0.35]]></item>
+      <item key="roles" type="list">
+        <list>
+          <item><![CDATA[ZMSAdministrator]]></item>
+        </list>
+      </item>
+      <item key="title"><![CDATA[ZMS4 Export...]]></item>
+    </dictionary>
+  </item>
+</list>

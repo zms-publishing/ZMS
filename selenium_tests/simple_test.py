@@ -23,6 +23,7 @@ class EditDocTest(ZMSTestCase):
         id = zmi_item.get_attribute("id")
         
         # open actions-dropdown-menu and click create document
+        # import sys; sys.stdout = sys.__stdout__; from pdb import set_trace; set_trace()
         el = self._show_zmi_action(id)
         item = el.find_element_by_link_text('Dokument')
         self._wait_for_click(item, By.CSS_SELECTOR, '#zmiIframeAddDialog')
@@ -67,10 +68,9 @@ class EditDocTest(ZMSTestCase):
         el = self._show_zmi_action(id)
         item = el.find_element_by_css_selector('.icon-trash')
         self._wait(lambda driver: item.is_displayed())
-        item.click()
-        wait = WebDriverWait(self.driver, 5)
-        wait.until(EC.alert_is_present())
         with self._wait_for_page_load():
+            item.click()
+            self._wait(EC.alert_is_present())
             self.driver.switch_to_alert().accept()
        
         # wait until deleted

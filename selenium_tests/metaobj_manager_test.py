@@ -47,10 +47,10 @@ class MetaobjManagerTest(ZMSTestCase):
         
         # open delete dialog
         self._find_element(By.CSS_SELECTOR, 'input[name="ids:list"][value="LgTest"]').click()
-        self._find_element(By.CSS_SELECTOR, '.btn[title="Löschen..."]').click()
-        
-        self._wait(EC.alert_is_present()) # this fails
         with self._wait_for_page_load():
+            self._find_element(By.CSS_SELECTOR, '.btn[title="Löschen..."]').click()
+        
+            self._wait(EC.alert_is_present())
             self.driver.switch_to_alert().accept()
         
         # wait until saved

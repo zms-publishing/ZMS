@@ -47,7 +47,10 @@ class MetacmdManagerTest(ZMSTestCase):
         dialog = self._find_element(By.CSS_SELECTOR, '#zmiModaleditObj')
         self._wait(lambda driver: dialog.is_displayed())
         dialog.find_element(By.CSS_SELECTOR, '.btn[value="Schließen"]').click()
+        # Stays around for longer, and browsers are now so fast that it matters
+        dialog_backdrop = self._find_element(By.CSS_SELECTOR, 'div.modal-backdrop')
         self._wait(lambda driver: not dialog.is_displayed())
+        self._wait(EC.staleness_of(dialog_backdrop))
         
         # reload page (also removes .alert-success)
         with self._wait_for_page_load():
@@ -55,9 +58,9 @@ class MetacmdManagerTest(ZMSTestCase):
         
         # open delete dialog
         self._find_element(By.CSS_SELECTOR, 'input[name="ids:list"][value="manage_LgTest"]').click()
-        self._find_element(By.CSS_SELECTOR, '.btn.btn-default[title="Löschen..."]').click()
-        self._wait(EC.alert_is_present())
         with self._wait_for_page_load():
+            self._find_element(By.CSS_SELECTOR, '.btn.btn-default[title="Löschen..."]').click()
+            self._wait(EC.alert_is_present())
             self.driver.switch_to_alert().accept()
         
         # wait until saved

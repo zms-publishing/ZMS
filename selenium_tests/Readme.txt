@@ -16,7 +16,10 @@ The tests expect a running zope instance on http://localhost:8080 with login adm
     login=admin
     password=admin
     firefox_path=/absolute/path/to/your/extended/support/version/of/firefox
-    # last key is optional. If it is missing, the system firefox has to be an ESR build
+    chrome_path=/absolute/path/to/your/google/chrome/version
+    # *_path keys are optional. If it is missing, the system version of the respective browser is used
+    driver=Chrome
+    # This key defaults to 'Firefox' but this allows switching to chrome as the test browser
 
 If you want to test against a different server, you will have to modify / swap this file accoringly.
 

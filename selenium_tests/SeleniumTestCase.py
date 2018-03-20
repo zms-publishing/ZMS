@@ -24,10 +24,12 @@ class SeleniumTestCase(unittest.TestCase):
     def setUp(self):
         if self.ac_driver == 'Chrome':
             # This is currently not required for chromedriver, but it or a similar flag may be in the future to allow CredentialedURLs at all
-            # options = webdriver.ChromeOptions()
+            options = webdriver.ChromeOptions()
+            # options.add_argument('--headless')
             # options.add_argument('--disable-blink-features=BlockCredentialedSubresources')
             # self.driver = webdriver.Chrome(chrome_options=options)
-            self.driver = webdriver.Chrome()
+            options.binary_location = self.chrome_path
+            self.driver = webdriver.Chrome(chrome_options=options)
         else:
             profile = webdriver.FirefoxProfile();
             profile.set_preference("network.http.phishy-userpass-length", 255)
@@ -229,6 +231,9 @@ class SeleniumTestCase(unittest.TestCase):
         cls.firefox_path = None
         if parser.has_option('ac_server', 'firefox_path'):
             cls.firefox_path = parser.get('ac_server', 'firefox_path')
+        cls.chrome_path = None
+        if parser.has_option('ac_server', 'chrome_path'):
+            cls.chrome_path = parser.get('ac_server', 'chrome_path')
     
 
 class LoginTest(SeleniumTestCase):

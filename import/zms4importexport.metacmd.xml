@@ -3,15 +3,53 @@
 <list>
   <item type="dictionary">
     <dictionary>
-      <item key="data"><![CDATA[import os
+      <item key="data"><![CDATA[import base64
+import os
 import shutil
 import tempfile
 from Products.zms import _blobfields
 from Products.zms import _fileutil
 from Products.zms import zopeutil
 
+def exportZope(self):
+      l = []
+      def traverse(context, container_id):
+        for childNode in context.objectValues():
+          if childNode.meta_type in ['Folder', 'Filesystem Directory View']:
+            newIds = childNode.getPhysicalPath()
+            newIds = [container_id+'~'] + list(newIds[newIds.index(container_id)+1:])
+            newId = '/'.join(newIds)
+            newName = childNode.title_or_id()
+            newType = childNode.meta_type
+            newCustom = ''
+            l.append({'id':newId,'name':newName,'type':newType,'data':newCustom})
+            traverse(childNode, container_id)
+          elif childNode.meta_type in ['DTML Document', 'DTML Method', 'External Method', 'Image', 'File', 'Filesystem File', 'Filesystem Image', 'Filesystem Page Template', 'Page Template', 'Script (Python)']:
+            newIds = childNode.getPhysicalPath()
+            newIds = [container_id+'~'] + list(newIds[newIds.index(container_id)+1:])
+            newId = '/'.join(newIds)
+            newName = childNode.title_or_id()
+            newType = childNode.meta_type
+            newType = {'Filesystem File':'File', 'Filesystem Image':'Image', 'Filesystem Page Template':'Page Template'}.get(newType,newType)
+            newCustom = zopeutil.readData(childNode)
+            if newCustom is None:
+              newCustom = ''
+            else:
+              newCustom = base64.encodestring(newCustom)
+            #newCustom = _blobfields.createBlobField(self, _blobfields.MyFile, file={'data':str(newCustom),'filename':str(childNode.id)})
+            l.append({'id':newId,'name':newName,'type':newType,'data':newCustom})
+      traverse(self.getHome(),'')
+      for x in l:
+        x['id'] = x['id'][len('~/%s/'%(self.getHome().id)):]
+      return l
+
 def exportSystem(self):
             value = self.get_conf_properties()
+            export = self.getXmlHeader() + self.toXmlString(value,1)
+            return export
+
+def exportLangs(self):
+            value = self.getLangs()
             export = self.getXmlHeader() + self.toXmlString(value,1)
             return export
 
@@ -130,6 +168,10 @@ def manage_zms4export( self):
 			f.write(data)
 			f.close()
 		if request.get('languages')==1:
+			data = exportLangs(self)
+			f = open(os.path.join(tempfolder,'export.langs.xml'),'wb')
+			f.write(data)
+			f.close()
 			data = exportLangDict(self)
 			f = open(os.path.join(tempfolder,'export.langdict.xml'),'wb')
 			f.write(data)
@@ -159,6 +201,12 @@ def manage_zms4export( self):
 		if request.get('charformats')==1:
 			data = exportCharformatXml(self.getFormatManager())
 			f = open(os.path.join(tempfolder,'export.charfmt.xml'),'wb')
+			f.write(data)
+			f.close()
+		if request.get('zope')==1:
+			l = exportZope(self)
+			data = self.getXmlHeader() + self.toXmlString(l,1)
+			f = open(os.path.join(tempfolder,'zope.xml'),'wb')
 			f.write(data)
 			f.close()
 		RESPONSE = request.RESPONSE
@@ -204,12 +252,19 @@ def manage_zms4export( self):
 		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_CHARFORMATS'))
 		html += '<div class="col-sm-9"><input name="charformats:int" type="checkbox" value="1" checked="checked"> %i %s</div>'%(len(self.getFormatManager().getCharFormats()),unicode(self.getZMILangStr('ATTR_KEYS'),'utf-8'))
 		html += '</div><!-- .form-group -->'
+		theme = False
 		for si in self.getThemes():
 			if self.getConfProperty('ZMS.theme','')==si.id:
 				html += '<div class="form-group">'
 				html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_DESIGN'))
-				html += '<div class="col-sm-9"><input name="design" type="checkbox" value="%s" checked="checked"> <strong>%s</strong>) (%s)</div>'%(si.id,si.id,(si.meta_type=='Filesystem Directory View' and si.getDirPath() or si.title))
+				html += '<div class="col-sm-9"><input name="design" type="checkbox" value="%s" checked="checked"> <strong>%s</strong> (%s)</div>'%(si.id,si.id,(si.meta_type=='Filesystem Directory View' and si.getDirPath() or si.title))
 				html += '</div><!-- .form-group -->'
+				theme = True
+		if not theme:
+			html += '<div class="form-group">'
+			html += '<label for="id" class="col-sm-3 control-label">Zope</label>'
+			html += '<div class="col-sm-9"><input name="zope:int" type="checkbox" value="1" checked="checked"> <strong>%s</strong> %s</div>'%(self.getHome().id,str([x['id'] for x in exportZope(self)]))
+			html += '</div><!-- .form-group -->'
 		html += '<div class="form-group">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_EXPORT'),'utf-8'),unicode(self.getZMILangStr('BTN_EXPORT'),'utf-8'))
@@ -230,22 +285,205 @@ def manage_zms4export( self):
       </item>
       <item key="description"></item>
       <item key="exec" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-cogs]]></item>
-      <item key="id"><![CDATA[manage_zms4export]]></item>
+      <item key="icon_clazz">icon-download-alt</item>
+      <item key="id">manage_zms4export</item>
       <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">
         <list>
-          <item><![CDATA[ZMS]]></item>
+          <item>ZMS</item>
         </list>
       </item>
       <item key="name"><![CDATA[ZMS4 Export...]]></item>
-      <item key="revision"><![CDATA[0.0.35]]></item>
+      <item key="revision">0.0.62</item>
       <item key="roles" type="list">
         <list>
-          <item><![CDATA[ZMSAdministrator]]></item>
+          <item>ZMSAdministrator</item>
         </list>
       </item>
       <item key="title"><![CDATA[ZMS4 Export...]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="data"><![CDATA[import base64
+import os
+import shutil
+import tempfile
+import time
+from Products.zms import _blobfields
+from Products.zms import _fileutil
+from Products.zms import zopeutil
+
+def read_file(filepath):
+		data = None
+		if os.path.exists(filepath):
+			f = open(filepath,'rb')
+			data = f.read()
+			f.close()
+		return data
+
+def manage_zms4import( self):
+	request = self.REQUEST
+	html = ''
+	html += '<!DOCTYPE html>'
+	html += '<html lang="en">'
+	html += self.zmi_html_head(self,request)
+	html += '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',self.meta_id]))
+	html += self.zmi_body_header(self,request,options=[{'action':'#','label':'ZMS4 Export...'}])
+	html += '<div id="zmi-tab">'
+	html += self.zmi_breadcrumbs(self,request)
+	html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+	html += '<input type="hidden" name="form_id" value="manage_zms4import"/>'
+	html += '<input type="hidden" name="lang" value="%s"/>'%request['lang']
+	html += '<legend>ZMS4 Import...</legend>'
+
+	# --- Export client.
+	# ---------------------------------
+	if request.form.get('btn')==self.getZMILangStr('BTN_IMPORT'):
+		tempfolder = tempfile.mktemp()
+		os.mkdir(tempfolder)
+		filepath = os.path.join(tempfolder,'upload.zip')
+		f = open(filepath,'wb')
+		f.write(request['file'].read())
+		f.close()
+		_fileutil.extractZipArchive(filepath)
+		os.remove(filepath)
+		l = []
+
+		filenames = os.listdir(tempfolder)
+		for filename in filenames:
+			msg = ''
+			try:
+				t0 = time.time()
+				data = read_file(os.path.join(tempfolder,filename))
+				if request.get('system')==1 and filename.endswith('system.xml'):
+					d = self.parseXmlString(data)
+					for k in d.keys():
+						self.setConfProperty(k,d[k])
+					msg = 'OK'
+				if request.get('languages')==1 and filename.endswith('langs.xml'):
+					d = self.parseXmlString(data)
+					self.setLangs(d)
+					msg = 'OK'
+				if request.get('languages')==1 and filename.endswith('langdict.xml'):
+					d = self.parseXmlString(data)
+					self.set_lang_dict(d)
+					msg = 'OK'
+				if request.get('metadata')==1 and filename.endswith('metadict.xml'):
+					self.getMetaobjManager().importMetadictXml(data)
+					msg = 'OK'
+				if request.get('metaobj')==1 and filename.endswith('metaobj.xml'):
+					self.getMetaobjManager().importMetaobjXml(data)
+					msg = 'OK'
+				if request.get('metacmd')==1 and filename.endswith('metacmd.xml'):
+					self.getMetacmdManager().importXml(data)
+					msg = 'OK'
+				if request.get('textformats')==1 and filename.endswith('textfmt.xml'):
+					self.getFormatManager().importTextformatXml(data)
+					msg = 'OK'
+				if request.get('charformats')==1 and filename.endswith('charfmt.xml'):
+					self.getFormatManager().importCharformatXml(data)
+					msg = 'OK'
+			except:
+				msg = self.writeError('can\'t import')
+			l.append('%s (%s)'%(filename,msg))
+
+		filename = 'content.zip'
+		if filename in filenames:
+			msg = ''
+			try:
+				if request.get('content')==1:
+					data = read_file(os.path.join(tempfolder,filename))
+					class File:
+						def __init__(self, filename, data):
+							self.name = filename
+							self.data = data
+						def __str__(self):
+							return self.data
+					self.manage_import(File(filename,data),self.getPrimaryLanguage(),request)
+					msg = 'OK'
+			except:
+				msg = self.writeError('can\'t import')
+			l.append('%s (%s)'%(filename,msg))
+
+		shutil.rmtree(tempfolder)
+		html += '<div class="alert alert-success">%s</div>'%unicode(self.getZMILangStr('MSG_IMPORTED'),'utf-8')%'<em>%s (%s)</em>'%(request['file'].filename,str(l))
+
+	# --- Display form.
+	# ---------------------------------
+	else:
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('ATTR_FILE'))
+		html += '<div class="col-sm-9"><input class="btn btn-file" name="file" type="file" /></div>'
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('Content'))
+		html += '<div class="col-sm-9"><input name="content:int" type="checkbox" value="1" checked="checked"> %s</div>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_SYSTEM'))
+		html += '<div class="col-sm-9"><input name="system:int" type="checkbox" value="1" checked="checked"> %s</div>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_LANGUAGES'))
+		html += '<div class="col-sm-9"><input name="languages:int" type="checkbox" value="1" checked="checked"> %s</div>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_METADATA'))
+		html += '<div class="col-sm-9"><input name="metadata:int" type="checkbox" value="1" checked="checked"> %s</div>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_METAOBJ'))
+		html += '<div class="col-sm-9"><input name="metaobj:int" type="checkbox" value="1" checked="checked"> %s</div>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_METACMD'))
+		html += '<div class="col-sm-9"><input name="metacmd:int" type="checkbox" value="1" checked="checked"> %s</div>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_TEXTFORMATS'))
+		html += '<div class="col-sm-9"><input name="textformats:int" type="checkbox" value="1" checked="checked"> %s</div>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_CHARFORMATS'))
+		html += '<div class="col-sm-9"><input name="charformats:int" type="checkbox" value="1" checked="checked"> %s</div>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<div class="controls save">'
+		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'),unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
+		html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'))
+		html += '</div>'
+		html += '</div><!-- .form-group -->'
+
+	# ---------------------------------
+
+	html += '</form><!-- .form-horizontal -->'
+	html += '<div style="clear:both;">&nbsp;</div>'
+	html += '</div><!-- #zmi-tab -->'
+	html += self.zmi_body_footer(self,request)
+	html += '</body>'
+	html += '</html>'
+
+	return html]]>
+      </item>
+      <item key="description"></item>
+      <item key="exec" type="int">0</item>
+      <item key="icon_clazz">icon-upload-alt</item>
+      <item key="id">manage_zms4import</item>
+      <item key="meta_type"><![CDATA[External Method]]></item>
+      <item key="meta_types" type="list">
+        <list>
+          <item>ZMS</item>
+        </list>
+      </item>
+      <item key="name"><![CDATA[ZMS4 Import...]]></item>
+      <item key="revision">0.0.24</item>
+      <item key="roles" type="list">
+        <list>
+          <item>ZMSAdministrator</item>
+        </list>
+      </item>
+      <item key="title"><![CDATA[ZMS4 Import...]]></item>
     </dictionary>
   </item>
 </list>

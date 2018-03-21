@@ -703,7 +703,7 @@ def getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST):
 def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False):
   # Check Constraints.
   root = getattr(self, '__root__', None)
-  if root is not None:
+  if root is not None or not self.meta_id:
     return ''
   xml = []
   # Start tag.

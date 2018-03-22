@@ -240,7 +240,7 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
   # -- VALUE-STACK
   
   # -- ITEM (DICTIONARY|LIST) --
-  #----------------------------
+  # ----------------------------
   if sTagName in ['dict', 'dictionary']:
     self.dValueStack.push({})
   elif sTagName == 'list':
@@ -249,23 +249,23 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
     pass
   
   # -- DATA (IMAGE|FILE) --
-  #-----------------------
+  # -----------------------
   elif sTagName == 'data':
     pass
   
   # -- LANGUAGE --
-  #--------------
+  # --------------
   elif sTagName == 'lang':
     if self.dValueStack.size() == 0:
       self.dValueStack.push({})
   
   # -- OBJECT-ATTRIBUTES --
-  #-----------------------
-  elif sTagName in self.getObjAttrs().keys():
+  # -----------------------
+  elif sTagName in self.getMetaobjAttrIds(self.meta_id):
     pass
   
   # -- OTHERS --
-  #------------
+  # ------------
   else:
     tag['skip'] = True
   
@@ -336,15 +336,20 @@ def xmlOnUnknownEndTag(self, sTagName):
   
   # -- OBJECT-ATTRIBUTES --
   #-----------------------
-  elif sTagName in self.getObjAttrs().keys():
+  elif sTagName in self.getMetaobjAttrIds(self.meta_id):
     if not skip:
       obj_attr = self.getObjAttr(sTagName)
       
       # -- DATATYPE
       datatype = obj_attr['datatype_key']
       
+      # -- Unknown Attributes.
+      if datatype == _globals.DT_UNKNOWN:
+        value = self.dValueStack.pop()
+        xmlInitObjProperty(self, sTagName, value)
+      
       # -- Multi-Language Attributes.
-      if obj_attr['multilang']:
+      elif obj_attr['multilang']:
         item = self.dValueStack.pop()
         if item is not None:
           if not type(item) is dict:

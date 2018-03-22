@@ -337,7 +337,7 @@ def manage_zms4import( self):
 	html += '<input type="hidden" name="lang" value="%s"/>'%request['lang']
 	html += '<legend>ZMS4 Import...</legend>'
 
-	# --- Export client.
+	# --- Import client.
 	# ---------------------------------
 	if request.form.get('btn')==self.getZMILangStr('BTN_IMPORT'):
 		tempfolder = tempfile.mktemp()
@@ -349,8 +349,32 @@ def manage_zms4import( self):
 		_fileutil.extractZipArchive(filepath)
 		os.remove(filepath)
 		l = []
-
 		filenames = os.listdir(tempfolder)
+
+		filename = 'zope.xml'
+		if filename in filenames:
+			msg = ''
+			try:
+				if request.get('zope')==1:
+					data = read_file(os.path.join(tempfolder,filename))
+					o = self.parseXmlString(data)
+					home = self.getHome()
+					meta_types = ['DTML Document', 'DTML Method', 'External Method', 'Image', 'File', 'Folder', 'Page Template', 'Script (Python)']
+					ids = home.objectIds(meta_types)
+					home.manage_delObjects(ids=ids)
+					for i in o:
+						container = home
+						ids = i['id'].split('/')
+						for id in ids[:-1]:
+							container = getattr(container,id)
+						if i['type'] in meta_types:
+							data = base64.b64decode(i.get('data',''))
+							zopeutil.addObject(container,i['type'],ids[-1],i['name'],data)
+					msg = 'OK'
+			except:
+				msg = self.writeError('can\'t import')
+			l.append('%s (%s)'%(filename,msg))
+
 		for filename in filenames:
 			msg = ''
 			try:
@@ -449,6 +473,10 @@ def manage_zms4import( self):
 		html += '<div class="col-sm-9"><input name="charformats:int" type="checkbox" value="1" checked="checked"> %s</div>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
 		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">Zope</label>'
+		html += '<div class="col-sm-9"><input name="zope:int" type="checkbox" value="1" checked="checked"> %s</div>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
+		html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'),unicode(self.getZMILangStr('BTN_IMPORT'),'utf-8'))
 		html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'))
@@ -477,7 +505,7 @@ def manage_zms4import( self):
         </list>
       </item>
       <item key="name"><![CDATA[ZMS4 Import...]]></item>
-      <item key="revision">0.0.24</item>
+      <item key="revision">0.0.28</item>
       <item key="roles" type="list">
         <list>
           <item>ZMSAdministrator</item>

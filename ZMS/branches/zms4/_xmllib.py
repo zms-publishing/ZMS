@@ -66,7 +66,7 @@ def serialize(node):
   xml = ''
   if node.nodeType == node.ELEMENT_NODE:
     xml += '<' + node.nodeName
-    for attribute in node.attributes.keys():
+    for attribute in node.attributes:
       xml += ' ' + attribute + '="' + node.attributes[attribute].value + '"'
     xml += '>'
     for childNode in node.childNodes:
@@ -246,7 +246,7 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
   # -- VALUE-STACK
 
   # -- ITEM (DICTIONARY|LIST) --
-  #----------------------------
+  # ----------------------------
   if sTagName in ['dict', 'dictionary']:
     self.dValueStack.push({})
   elif sTagName == 'list':
@@ -255,23 +255,23 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
     pass
 
   # -- DATA (IMAGE|FILE) --
-  #-----------------------
+  # -----------------------
   elif sTagName == 'data':
     pass
 
   # -- LANGUAGE --
-  #--------------
+  # --------------
   elif sTagName == 'lang':
     if self.dValueStack.size() == 0:
       self.dValueStack.push({})
 
   # -- OBJECT-ATTRIBUTES --
-  #-----------------------
-  elif sTagName in self.getObjAttrs().keys():
+  # -----------------------
+  elif sTagName in self.getMetaobjAttrIds(self.meta_id):
     pass
 
   # -- OTHERS --
-  #------------
+  # ------------
   else:
     tag['skip'] = True
 
@@ -343,26 +343,31 @@ def xmlOnUnknownEndTag(self, sTagName):
 
   # -- OBJECT-ATTRIBUTES --
   #-----------------------
-  elif sTagName in self.getObjAttrs().keys():
+  elif sTagName in self.getObjAttrs():
     if not skip:
       obj_attr = self.getObjAttr(sTagName)
 
       # -- DATATYPE
       datatype = obj_attr['datatype_key']
 
+      # -- Unknown Attributes.
+      if datatype == _globals.DT_UNKNOWN:
+        value = self.dValueStack.pop()
+        xmlInitObjProperty(self, sTagName, value)
+      
       # -- Multi-Language Attributes.
-      if obj_attr['multilang']:
+      elif obj_attr['multilang']:
         item = self.dValueStack.pop()
         if item is not None:
           if not isinstance(item, dict):
             item = {self.getPrimaryLanguage():item}
-          for s_lang in item.keys():
+          for s_lang in item:
             value = item[s_lang]
             # Data
             if datatype in _globals.DT_BLOBS:
               if isinstance(value, dict) and len(value.keys()) > 0:
                 ob = _blobfields.createBlobField(self, datatype)
-                for key in value.keys():
+                for key in value:
                   setattr(ob, key, value[key])
                 xmlInitObjProperty(self, sTagName, ob, s_lang)
             # Others
@@ -383,7 +388,7 @@ def xmlOnUnknownEndTag(self, sTagName):
           if datatype in _globals.DT_BLOBS:
             if isinstance(value, dict) and len(value.keys()) > 0:
               ob = _blobfields.createBlobField(self, datatype)
-              for key in value.keys():
+              for key in value:
                 setattr(ob, key, value[key])
               xmlInitObjProperty(self, sTagName, ob)
           # Others
@@ -392,7 +397,7 @@ def xmlOnUnknownEndTag(self, sTagName):
               if isinstance(value, list):
                 for item in value:
                   if isinstance(item, dict):
-                    for key in item.keys():
+                    for key in item:
                       item_obj_attr = self.getObjAttr(key)
                       item_datatype = item_obj_attr['datatype_key']
                       if item_datatype in _globals.DT_BLOBS:
@@ -440,7 +445,7 @@ def xmlOnUnknownEndTag(self, sTagName):
     if value is None: value = {'cdata':''}
     cdata = value.get('cdata', '')
     cdata += '<' + tag['name']
-    for attr_name in attrs.keys():
+    for attr_name in attrs:
       attr_value = attrs.get(attr_name)
       cdata += ' ' + attr_name + '="' + attr_value + '"'
     cdata += '>' + tag['cdata']
@@ -888,7 +893,7 @@ class XmlAttrBuilder(object):
         file = {'data':data, 'filename':filename, 'content_type':content_type}
         objtype = attrs.get('type')
         item = _blobfields.createBlobField(None, objtype, file)
-        for key in attrs.keys():
+        for key in attrs:
           value = attrs.get(key)
           setattr(item, key, value)
         self.dValueStack.pop()

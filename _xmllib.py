@@ -267,7 +267,7 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
 
   # -- OBJECT-ATTRIBUTES --
   # -----------------------
-  elif sTagName in self.getMetaobjAttrIds(self.meta_id):
+  elif sTagName in self.getObjAttrs().keys():
     pass
 
   # -- OTHERS --
@@ -350,13 +350,8 @@ def xmlOnUnknownEndTag(self, sTagName):
       # -- DATATYPE
       datatype = obj_attr['datatype_key']
 
-      # -- Unknown Attributes.
-      if datatype == _globals.DT_UNKNOWN:
-        value = self.dValueStack.pop()
-        xmlInitObjProperty(self, sTagName, value)
-      
       # -- Multi-Language Attributes.
-      elif obj_attr['multilang']:
+      if obj_attr['multilang']:
         item = self.dValueStack.pop()
         if item is not None:
           if not isinstance(item, dict):

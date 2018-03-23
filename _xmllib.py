@@ -27,11 +27,12 @@ import tempfile
 import time
 import unicodedata
 import xml.dom
-
+import zExceptions
 import Globals
 from App.Common import package_home
 from OFS.Image import File
 
+# Product Imports.
 import _blobfields
 import _fileutil
 import _globals
@@ -40,8 +41,6 @@ import standard
 import zopeutil
 from pip.utils.logging import indent_log
 
-
-# Product Imports.
 INDENTSTR = '  '
 
 
@@ -261,7 +260,7 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
   
   # -- OBJECT-ATTRIBUTES --
   # -----------------------
-  elif sTagName in self.getMetaobjAttrIds(self.meta_id):
+  elif sTagName in self.getObjAttrs().keys():
     pass
   
   # -- OTHERS --
@@ -336,20 +335,15 @@ def xmlOnUnknownEndTag(self, sTagName):
   
   # -- OBJECT-ATTRIBUTES --
   #-----------------------
-  elif sTagName in self.getMetaobjAttrIds(self.meta_id):
+  elif sTagName in self.getObjAttrs().keys():
     if not skip:
       obj_attr = self.getObjAttr(sTagName)
       
       # -- DATATYPE
       datatype = obj_attr['datatype_key']
       
-      # -- Unknown Attributes.
-      if datatype == _globals.DT_UNKNOWN:
-        value = self.dValueStack.pop()
-        xmlInitObjProperty(self, sTagName, value)
-      
       # -- Multi-Language Attributes.
-      elif obj_attr['multilang']:
+      if obj_attr['multilang']:
         item = self.dValueStack.pop()
         if item is not None:
           if not type(item) is dict:
@@ -406,7 +400,7 @@ def xmlOnUnknownEndTag(self, sTagName):
               value = value[value.keys()[0]]
             xmlInitObjProperty(self, sTagName, value)
           if self.dValueStack.size() > 0:
-            raise "Items on self.dValueStack=%s" % self.dValueStack
+            raise zExceptions.InternalError("Items on self.dValueStack=%s"%str(self.dValueStack))
         
         # -- Simple Attributes (String, Integer, etc.)
         else:
@@ -432,7 +426,7 @@ def xmlOnUnknownEndTag(self, sTagName):
       self.dValueStack.clear()
       
   # -- OTHERS --
-  #------------
+  # ------------
   else:
     value = self.dTagStack.pop()
     if value is None: value = {'cdata':''}

@@ -135,17 +135,22 @@ class ObjChildren:
 
 
     # --------------------------------------------------------------------------
-    #	ObjChildren.initObjChildren
+    #  ObjChildren.initObjChildren
     # --------------------------------------------------------------------------
     def initObjChildren(self, REQUEST):
-      standard.writeLog( self, "[initObjChildren]")
-      self.getObjProperty( 'initObjChildren' ,REQUEST)
-      metaObj = self.getMetaobj(self.meta_id)
-      metaObjIds = self.getMetaobjIds()+['*']
-      for metaObjAttrId in self.getMetaobjAttrIds( self.meta_id):
-        metaObjAttr = self.getMetaobjAttr( self.meta_id, metaObjAttrId)
-        if metaObjAttr['type'] in metaObjIds:
-           self._initObjChildren( metaObjAttr, REQUEST)
+      rtn = ''
+      try:
+        standard.writeLog( self, "[initObjChildren]")
+        self.getObjProperty( 'initObjChildren' ,REQUEST)
+        metaObj = self.getMetaobj(self.meta_id)
+        metaObjIds = self.getMetaobjIds()+['*']
+        for metaObjAttrId in self.getMetaobjAttrIds( self.meta_id):
+          metaObjAttr = self.getMetaobjAttr( self.meta_id, metaObjAttrId)
+          if metaObjAttr['type'] in metaObjIds:
+             self._initObjChildren( metaObjAttr, REQUEST)
+      except:
+        rtn = standard.writeError(self,'can\'t initObjChildren')
+      return rtn
 
 
     # --------------------------------------------------------------------------

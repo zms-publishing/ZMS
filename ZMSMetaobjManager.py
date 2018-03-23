@@ -898,9 +898,12 @@ class ZMSMetaobjManager:
         # Insert Zope-Object.
         if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
         if _globals.is_str_type(newCustom): newCustom = newCustom.replace('\r','')
-        zopeutil.addObject(container, newType, newObId, newName, newCustom)
-        artefact = zopeutil.getObject(container, newObId)
-        del attr['custom']
+        try:
+          zopeutil.addObject(container, newType, newObId, newName, newCustom)
+          artefact = zopeutil.getObject(container, newObId)
+          del attr['custom']
+        except:
+          standard.writeError(self,'can\'t insert zope-object: %s (%s)'%(newObId,newType))
         # Change Zope-Object (special).
         newOb = zopeutil.getObject(container, newObId)
         if newType == 'Folder':

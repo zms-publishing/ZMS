@@ -412,6 +412,8 @@ def manage_zms4import( self):
 				msg = self.writeError('can\'t import')
 			l.append('%s (%s)'%(filename,msg))
 
+		self.synchronizeObjAttrs()
+
 		filename = 'content.zip'
 		if filename in filenames:
 			msg = ''
@@ -505,7 +507,7 @@ def manage_zms4import( self):
         </list>
       </item>
       <item key="name"><![CDATA[ZMS4 Import...]]></item>
-      <item key="revision">0.0.28</item>
+      <item key="revision">0.0.29</item>
       <item key="roles" type="list">
         <list>
           <item>ZMSAdministrator</item>

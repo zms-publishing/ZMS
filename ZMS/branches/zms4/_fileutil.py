@@ -320,7 +320,7 @@ def exportObj(obj, filename, filetype='b'):
   #-- Get object data.
   data = None
   try: # ImageFile
-    f = open(obj.path, 'r%s'%filetype)
+    f = open(obj.path,'r%s'%filetype)
     data = f.read()
     f.close()
   except:
@@ -336,14 +336,14 @@ def exportObj(obj, filename, filetype='b'):
           data = obj.read() # REQUEST.enctype multipart/form-data
         except:
           data = str(obj)
-  
+    
   #-- Save to file.
   if data is not None:
     objfile = open(filename, 'w%s'%filetype)
-    if isinstance(data, str):
-      objfile.write(str(data).encode('utf-8'))
-    elif isinstance(data, str):
+    if isinstance(data, bytes):
       objfile.write(data)
+    elif isinstance(data, str):
+      objfile.write(bytes(data,"utf-8"))
     elif isinstance(data,io.RawIOBase):
       objfile.write(data.read())
     else:

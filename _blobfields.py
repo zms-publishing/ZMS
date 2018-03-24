@@ -139,8 +139,8 @@ IN:    clazz        [C{MyImage}|C{MyFile}]
         file        [ZPublisher.HTTPRequest.FileUpload|dictionary]
 OUT:    blob        [MyImage|MyFile]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def createBlobField(self, objtype, file=''):
-  if _globals.is_str_type( file):
+def createBlobField(self, objtype, file=b''):
+  if type(file) is bytes:
     blob = uploadBlobField( self, objtype, file)
   elif isinstance(file, dict):
     data = file.get( 'data', '')

@@ -87,6 +87,7 @@ class Builder(object):
     def __init__(self):
         """ Builder.__init__ """
         self.oRoot      = None   # root node of object tree
+        self.oRootTag   = None   # root tag 
         self.oCurrNode  = None   # current node
         self.bInCData   = False  # inside CDATA section?
 
@@ -110,7 +111,7 @@ class Builder(object):
         
         # prepare builder
         self.oRoot            = root
-        self.oRootNode        = None
+        self.oRootTag         = None
         self.oCurrNode        = None
         self.bInCData         = False
         if bInRootTag:
@@ -177,13 +178,17 @@ class Builder(object):
         skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
         if not skip and name in self.getMetaobjIds():
           meta_id = name
+          if self.oRootTag is None: 
+            self.oRootTag = meta_id 
           globalAttr = self.dGlobalAttrs.get(meta_id, self.dGlobalAttrs['ZMSCustom'])
           constructor = globalAttr.get('obj_class', self.dGlobalAttrs['ZMSCustom']['obj_class'])
           if constructor is None:
             newNode = self
           else:
             # Get new id.
-            if 'id_fix' in attrs:
+            if self.oRootTag == 'ZMS' and 'id' in attrs: 
+              id = attrs['id'] 
+            elif 'id_fix' in attrs.keys(): 
               id = attrs['id_fix']
             elif 'id_prefix' in attrs:
               prefix = attrs['id_prefix']

@@ -1348,7 +1348,9 @@ return ''
 from Products.zms import pilutil
 
 result = {}
-temp_folder = context.temp_folder
+temp_folder = context.operator_getattr(context,'temp_folder',None)
+if temp_folder is None:
+  return context.str_json(result)
 request = context.REQUEST
 base_url = request.get('SERVER_URL')
 session_id = request.get('session_id')
@@ -2553,8 +2555,10 @@ $(function(){
 ##
 # --// BO onChangeObjEvt //--
 
-temp_folder = context.temp_folder
 request = context.REQUEST
+temp_folder = context.operator_getattr(context,'temp_folder',None)
+if temp_folder is None:
+  return
 
 # Find images/files.
 text = zmscontext.attr('text')

@@ -5,6 +5,7 @@
     <dictionary>
       <item key="data"><![CDATA[import base64
 import os
+import re
 import shutil
 import tempfile
 import time
@@ -102,9 +103,11 @@ def manage_zms4import( self):
 					self.getMetaobjManager().importMetadictXml(data)
 					msg = 'OK'
 				if request.get('metaobj')==1 and filename.endswith('metaobj.xml'):
+					data = re.sub('print\\s(.*)','print(\\1)',data.decode('utf-8'))
 					self.getMetaobjManager().importMetaobjXml(data)
 					msg = 'OK'
 				if request.get('metacmd')==1 and filename.endswith('metacmd.xml'):
+					data = re.sub('print\\s(.*)','print(\\1)',data.decode('utf-8'))
 					self.getMetacmdManager().importXml(data)
 					msg = 'OK'
 				if request.get('textformats')==1 and filename.endswith('textfmt.xml'):

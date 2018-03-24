@@ -8,7 +8,6 @@
 	<div tal:condition="python:ob is not None" class="form-group" tal:attributes="style python:'height:%s'%(height)">
 		<div class="control-label-ace-editor">
 			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank">
-				<img tal:attributes="src ob/icon; alt ob/meta_type"/>
 				<tal:block tal:content="ob/id">the id</tal:block>
 			</a>
 			<tal:block tal:condition="python:text is not None">(<tal:block tal:content="python:here.getDataSizeStr(len(text))">the size</tal:block>)</tal:block>

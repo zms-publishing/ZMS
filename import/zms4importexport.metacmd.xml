@@ -7,9 +7,68 @@
 import os
 import shutil
 import tempfile
+from OFS.CopySupport import absattr
 from Products.zms import _blobfields
 from Products.zms import _fileutil
 from Products.zms import zopeutil
+
+# @see zopeutil
+def nextObject(container, meta_type):
+  """
+  Get next parent Zope-object with given meta_type.
+  """
+  while not container.meta_type == meta_type:
+    container = container.aq_parent
+  return container
+
+# @see zopeutil
+def getExternalMethodModuleName(container, id):
+  """
+  Add context-folder-id to module-name (to prevent deleting artefacts from other clients).
+  """
+  m = id
+  if hasattr(container,'content') and int(getattr(container,'content').getConfProperty('zopeutil.getExternalMethodModuleName.addContextFolderId',True)):
+    m = '%s.%s'%(absattr(nextObject(container,'Folder').id),m)
+  return m
+
+# @see zopeutil
+def readData(ob, default=None):
+  """
+  Read data of Zope-object.
+  """
+  data = default
+  if ob is None and default is not None:
+    return default
+  if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Filesystem DTML Document', 'Filesystem DTML Method']:
+    data = ob.raw
+  elif ob.meta_type in [ 'File', 'Filesystem File', 'Filesystem Image', 'Image']:
+    data = str(ob)
+  elif ob.meta_type in [ 'Filesystem Page Template', 'Filesystem Script (Python)', 'Page Template', 'Script (Python)']:
+    data = ob.read()
+  elif ob.meta_type == 'External Method':
+    context = ob
+    id = ob.id
+    while context is not None:
+      m = getExternalMethodModuleName(context, id)
+      filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+      if os.path.exists(filepath):
+        break
+      try:
+        context = context.getParentNode()
+      except:
+        context = None
+    if context is None:
+      m = ob._module
+    filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+    if os.path.exists(filepath):
+      f = open(filepath, 'r')
+      data = f.read()
+      f.close()
+  elif ob.meta_type == 'Z SQL Method':
+    connection = ob.connection_id 
+    params = ob.arguments_src
+    data = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
+  return data
 
 def exportZope(self):
       l = []
@@ -21,6 +80,7 @@ def exportZope(self):
             newId = '/'.join(newIds)
             newName = childNode.title_or_id()
             newType = childNode.meta_type
+            newType = {'Filesystem Directory View':'Folder'}.get(newType,newType)
             newCustom = ''
             l.append({'id':newId,'name':newName,'type':newType,'data':newCustom})
             traverse(childNode, container_id)
@@ -31,16 +91,22 @@ def exportZope(self):
             newName = childNode.title_or_id()
             newType = childNode.meta_type
             newType = {'Filesystem File':'File', 'Filesystem Image':'Image', 'Filesystem Page Template':'Page Template'}.get(newType,newType)
-            newCustom = zopeutil.readData(childNode)
+            newCustom = readData(childNode)
             if newCustom is None:
               newCustom = ''
             else:
+              try:
+                newCustom = unicode(newCustom).encode('utf-8')
+              except:
+                pass
               newCustom = base64.encodestring(newCustom)
             #newCustom = _blobfields.createBlobField(self, _blobfields.MyFile, file={'data':str(newCustom),'filename':str(childNode.id)})
             l.append({'id':newId,'name':newName,'type':newType,'data':newCustom})
-      traverse(self.getHome(),'')
+      container = self.getHome()
+      container_id = container.id
+      traverse(container,'')
       for x in l:
-        x['id'] = x['id'][len('~/%s/'%(self.getHome().id)):]
+        x['id'] = x['id'][x['id'].find(container_id)+len(container_id)+1:]
       return l
 
 def exportSystem(self):
@@ -182,8 +248,6 @@ def manage_zms4export( self):
 			f.write(data)
 			f.close()
 		if request.get('metaobj')==1:
-			if request.get('design'):
-				self.getMetaobjManager().importTheme(request.get('design'))
 			data = self.getMetaobjManager().exportMetaobjXml(ids=[])
 			f = open(os.path.join(tempfolder,'export.metaobj.xml'),'wb')
 			f.write(data)
@@ -252,19 +316,10 @@ def manage_zms4export( self):
 		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_CHARFORMATS'))
 		html += '<div class="col-sm-9"><input name="charformats:int" type="checkbox" value="1" checked="checked"> %i %s</div>'%(len(self.getFormatManager().getCharFormats()),unicode(self.getZMILangStr('ATTR_KEYS'),'utf-8'))
 		html += '</div><!-- .form-group -->'
-		theme = False
-		for si in self.getThemes():
-			if self.getConfProperty('ZMS.theme','')==si.id:
-				html += '<div class="form-group">'
-				html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_DESIGN'))
-				html += '<div class="col-sm-9"><input name="design" type="checkbox" value="%s" checked="checked"> <strong>%s</strong> (%s)</div>'%(si.id,si.id,(si.meta_type=='Filesystem Directory View' and si.getDirPath() or si.title))
-				html += '</div><!-- .form-group -->'
-				theme = True
-		if not theme:
-			html += '<div class="form-group">'
-			html += '<label for="id" class="col-sm-3 control-label">Zope</label>'
-			html += '<div class="col-sm-9"><input name="zope:int" type="checkbox" value="1" checked="checked"> <strong>%s</strong> %s</div>'%(self.getHome().id,str([x['id'] for x in exportZope(self)]))
-			html += '</div><!-- .form-group -->'
+		html += '<div class="form-group">'
+		html += '<label for="id" class="col-sm-3 control-label">Zope</label>'
+		html += '<div class="col-sm-9"><input name="zope:int" type="checkbox" value="1" checked="checked"> <strong>%s</strong> %i %s</div>'%(self.getHome().id,len(exportZope(self)),unicode(self.getZMILangStr('ATTR_OBJECTS'),'utf-8'))
+		html += '</div><!-- .form-group -->'
 		html += '<div class="form-group">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_EXPORT'),'utf-8'),unicode(self.getZMILangStr('BTN_EXPORT'),'utf-8'))
@@ -312,6 +367,7 @@ import tempfile
 import time
 from Products.zms import _blobfields
 from Products.zms import _fileutil
+from Products.zms import standard
 from Products.zms import zopeutil
 
 def read_file(filepath):
@@ -363,13 +419,17 @@ def manage_zms4import( self):
 					ids = home.objectIds(meta_types)
 					home.manage_delObjects(ids=ids)
 					for i in o:
-						container = home
-						ids = i['id'].split('/')
-						for id in ids[:-1]:
-							container = getattr(container,id)
-						if i['type'] in meta_types:
-							data = base64.b64decode(i.get('data',''))
-							zopeutil.addObject(container,i['type'],ids[-1],i['name'],data)
+						standard.writeBlock(self,'[manage_zms4import]: add %s (%s)'%(str(i['id']),str(i['type'])))
+						try:
+							container = home
+							ids = i['id'].split('/')
+							for id in ids[:-1]:
+								container = getattr(container,id)
+							if i['type'] in meta_types:
+								data = base64.b64decode(i.get('data',''))
+								zopeutil.addObject(container,i['type'],ids[-1],i['name'],data)
+						except:
+							standard.writeError(self,'[manage_zms4import]: can\'t add %s (%s)'%(str(i['id']),str(i['type'])))
 					msg = 'OK'
 			except:
 				msg = self.writeError('can\'t import')
@@ -387,6 +447,8 @@ def manage_zms4import( self):
 					msg = 'OK'
 				if request.get('languages')==1 and filename.endswith('langs.xml'):
 					d = self.parseXmlString(data)
+					prim_lang = [x for x in d if d[x]['parent']==''][0]
+					self.setPrimaryLanguage(prim_lang)
 					self.setLangs(d)
 					msg = 'OK'
 				if request.get('languages')==1 and filename.endswith('langdict.xml'):

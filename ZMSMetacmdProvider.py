@@ -400,9 +400,9 @@ class ZMSMetacmdProvider(
           metaCmd = metaCmd.copy()
           metaCmd['home'] = self.aq_parent
           metaCmd['stereotype'] = ' '.join([x for x in stereotypes.keys() if metaCmd['id'].startswith(stereotypes[x])])
-          metaCmd['action'] = '%%smanage_executeMetacmd?id='+metaCmd['id']
+          metaCmd['action'] = '%smanage_executeMetacmd?id='+metaCmd['id']
           if metaCmd.get('exec') == 2:
-            metaCmd['action'] = 'javascript:%%s%s'%metaCmd['id']
+            metaCmd['action'] = 'javascript:%%s'+metaCmd['id']
             
         metaCmds.append(metaCmd)
       if context is not None:

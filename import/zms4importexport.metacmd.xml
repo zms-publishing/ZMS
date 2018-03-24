@@ -7,9 +7,68 @@
 import os
 import shutil
 import tempfile
+from OFS.CopySupport import absattr
 from Products.zms import _blobfields
 from Products.zms import _fileutil
 from Products.zms import zopeutil
+
+# @see zopeutil
+def nextObject(container, meta_type):
+  """
+  Get next parent Zope-object with given meta_type.
+  """
+  while not container.meta_type == meta_type:
+    container = container.aq_parent
+  return container
+
+# @see zopeutil
+def getExternalMethodModuleName(container, id):
+  """
+  Add context-folder-id to module-name (to prevent deleting artefacts from other clients).
+  """
+  m = id
+  if hasattr(container,'content') and int(getattr(container,'content').getConfProperty('zopeutil.getExternalMethodModuleName.addContextFolderId',True)):
+    m = '%s.%s'%(absattr(nextObject(container,'Folder').id),m)
+  return m
+
+# @see zopeutil
+def readData(ob, default=None):
+  """
+  Read data of Zope-object.
+  """
+  data = default
+  if ob is None and default is not None:
+    return default
+  if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Filesystem DTML Document', 'Filesystem DTML Method']:
+    data = ob.raw
+  elif ob.meta_type in [ 'File', 'Filesystem File', 'Filesystem Image', 'Image']:
+    data = str(ob)
+  elif ob.meta_type in [ 'Filesystem Page Template', 'Filesystem Script (Python)', 'Page Template', 'Script (Python)']:
+    data = ob.read()
+  elif ob.meta_type == 'External Method':
+    context = ob
+    id = ob.id
+    while context is not None:
+      m = getExternalMethodModuleName(context, id)
+      filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+      if os.path.exists(filepath):
+        break
+      try:
+        context = context.getParentNode()
+      except:
+        context = None
+    if context is None:
+      m = ob._module
+    filepath = INSTANCE_HOME+'/Extensions/'+m+'.py'
+    if os.path.exists(filepath):
+      f = open(filepath, 'r')
+      data = f.read()
+      f.close()
+  elif ob.meta_type == 'Z SQL Method':
+    connection = ob.connection_id 
+    params = ob.arguments_src
+    data = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
+  return data
 
 def exportZope(self):
       l = []
@@ -32,10 +91,14 @@ def exportZope(self):
             newName = childNode.title_or_id()
             newType = childNode.meta_type
             newType = {'Filesystem File':'File', 'Filesystem Image':'Image', 'Filesystem Page Template':'Page Template'}.get(newType,newType)
-            newCustom = zopeutil.readData(childNode)
+            newCustom = readData(childNode)
             if newCustom is None:
               newCustom = ''
             else:
+              try:
+                newCustom = unicode(newCustom).encode('utf-8')
+              except:
+                pass
               newCustom = base64.encodestring(newCustom)
             #newCustom = _blobfields.createBlobField(self, _blobfields.MyFile, file={'data':str(newCustom),'filename':str(childNode.id)})
             l.append({'id':newId,'name':newName,'type':newType,'data':newCustom})

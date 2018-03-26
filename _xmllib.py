@@ -507,7 +507,7 @@ def toCdata(self, s, xhtml=False):
       rtn += '<!-- ' + log + '-->'
 
   # Return Text.
-  elif s is not None and str(s).find(' ') < 0:
+  elif s is not None and str(s).find(' ') < 0 and str(s).find('<') < 0 and str(s).find('&') < 0:
     rtn = s
 
   # Return Text in CDATA.

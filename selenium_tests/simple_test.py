@@ -23,7 +23,6 @@ class EditDocTest(ZMSTestCase):
         id = zmi_item.get_attribute("id")
         
         # open actions-dropdown-menu and click create document
-        # import sys; sys.stdout = sys.__stdout__; from pdb import set_trace; set_trace()
         el = self._show_zmi_action(id)
         item = el.find_element_by_link_text('Dokument')
         self._wait_for_click(item, By.CSS_SELECTOR, '#zmiIframeAddDialog')

@@ -47,8 +47,18 @@ class SeleniumTestCase(unittest.TestCase):
     
     ## Low level test helpers
     
+    @contextmanager
+    def _with_timeout(self, timeout=DEFAULT_TIMEOUT):
+        self.driver.implicitly_wait(0)
+        try:
+            yield
+        except Exception:
+            self.driver.implicitly_wait(self.DEFAULT_TIMEOUT)
+            raise
+    
     def _wait(self, condition, timeout=DEFAULT_TIMEOUT):
-        return WebDriverWait(self.driver, timeout).until(condition)
+        with self._with_timeout(timeout=timeout):
+            return WebDriverWait(self.driver, timeout).until(condition)
     
     def _wait_for_text(self, text, timeout=DEFAULT_TIMEOUT):
         return self._wait(EC.text_to_be_present_in_element((By.CSS_SELECTOR, 'body'), text), timeout=timeout)

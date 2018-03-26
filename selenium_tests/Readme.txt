@@ -35,6 +35,18 @@ When starting from scratch, the full sequence of commands to get a working check
 
 ## Run them
 
+Create a fresh DB (Tests need to be robust against _not_ being run in a fresh DB):
+
+    export PATH_TO_ZOPE_ENV=...
+    rm $PATH_TO_ZOPE_ENV/var/Data.fs*
+    export ZOPE_CONF=$PATH_TO_ZOPE_ENV/etc/zope.conf
+    addzope2user admin admin
+
+Start local development Zope instance:
+
+    export PATH_TO_ZOPE_ENV=...
+    runzope --configure $PATH_TO_ZOPE_ENV/etc/zope.conf -X "debug-mode=on"
+
 To run all tests:
 
     python -m unittest discover -s selenium_tests -p '*test.py'

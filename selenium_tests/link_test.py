@@ -19,13 +19,8 @@ class LinkTest(ZMSTestCase):
         self._set_up()
         
         # navigate tree to page
-        for i in range(2):
-            zmi_item_page = self._find_element(By.CSS_SELECTOR, '.zmi-item.page:first-of-type')
-            id_page = zmi_item_page.get_attribute("id")
-            el_page = self._show_zmi_action(id_page)
-            item_page = el_page.find_element_by_link_text('Bearbeiten')
-            with self._wait_for_page_load():
-              item_page.click()
+        self._find_element(By.XPATH, '//div[contains(text(), "News")]').click()
+        self._find_element(By.XPATH, '//div[contains(text(), "News-1.2")]').click()
         
         # open properties tab
         with self._wait_for_page_load():
@@ -65,6 +60,7 @@ class LinkTest(ZMSTestCase):
         
         # open properties tab
         with self._wait_for_page_load():
+            self.driver.execute_script('window.scrollTo(0,0)')
             self._find_element(By.XPATH, '//ul/li/a[text()="Bearbeiten"]').click()
         
         # get id
@@ -75,10 +71,11 @@ class LinkTest(ZMSTestCase):
         el = self._show_zmi_action(id)
         item = el.find_element_by_css_selector('.icon-trash')
         self._wait(lambda driver: item.is_displayed())
-        item.click()
-        wait = WebDriverWait(self.driver, 5)
-        wait.until(EC.alert_is_present())
         with self._wait_for_page_load():
+            item.click()
+            self._wait(EC.alert_is_present())
+            # wait = WebDriverWait(self.driver, 5)
+            # wait.until(EC.alert_is_present())
             self.driver.switch_to_alert().accept()
        
         # wait until deleted

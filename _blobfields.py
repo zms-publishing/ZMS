@@ -916,7 +916,7 @@ class MyFile(MyBlob, File):
     def _getCopy(self):
       self.getFilename() # Normalize filename
       ob = self
-      clone = MyFile(id='', title='', file='')
+      clone = MyFile(id='', title='', file=b'')
       attrs = self.__obj_attrs__
       for attr in attrs:
         if hasattr(ob, attr):

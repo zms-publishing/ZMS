@@ -186,6 +186,7 @@ class Builder(object):
             newNode = self
           else:
             # Get new id.
+            id = None
             if self.oRootTag == 'ZMS' and 'id' in attrs: 
               id = attrs['id'] 
             elif 'id_fix' in attrs.keys(): 
@@ -197,9 +198,9 @@ class Builder(object):
               id = attrs['id']
               prefix = standard.id_prefix(id)
               id = self.getNewId(prefix)
-            else:
+            while id is None or id in self.oCurrNode.objectIds():
               id = self.oCurrNode.getNewId()
-            
+           
             # Get new sort-id.
             sort_id = self.oCurrNode.getNewSortId()
             

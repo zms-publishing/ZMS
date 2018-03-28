@@ -21,10 +21,7 @@ from builtins import object
 from builtins import range
 from builtins import chr
 from builtins import str
-try:
-  from io import StringIO
-except ImportError:
-  from io import StringIO
+from io import StringIO
 import copy
 import os
 import pyexpat
@@ -33,6 +30,7 @@ import tempfile
 import time
 import unicodedata
 import xml.dom
+import zExceptions
 
 from App.Common import package_home
 # import Globals
@@ -283,173 +281,174 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
 #  _xmllib.xmlOnUnknownEndTag:
 # ------------------------------------------------------------------------------
 def xmlOnUnknownEndTag(self, sTagName):
+  try:
+    # -- TAG-STACK
+    skip = len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
+    tag = self.dTagStack.pop()
+    print("xmlOnUnknownEndTag",sTagName,tag,skip)
+    name = tag['name']
+    if name != sTagName: return 0  # don't accept any unknown tag
 
-  # -- TAG-STACK
-  skip = len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
-  tag = self.dTagStack.pop()
-  print("xmlOnUnknownEndTag",sTagName,tag,skip)
-  name = tag['name']
-  if name != sTagName: return 0  # don't accept any unknown tag
+    attrs = tag['attrs']
+    cdata = tag['cdata']
 
-  attrs = tag['attrs']
-  cdata = tag['cdata']
-
-  # -- ITEM (DICTIONARY|LIST) --
-  #----------------------------
-  if sTagName in ['dict', 'dictionary']:
-    pass
-  elif sTagName == 'list':
-    pass
-  elif sTagName == 'item':
-    item = cdata
-    if tag['dValueStack'] < self.dValueStack.size():
-      item = self.dValueStack.pop()
-    else:
+    # -- ITEM (DICTIONARY|LIST) --
+    #----------------------------
+    if sTagName in ['dict', 'dictionary']:
+      pass
+    elif sTagName == 'list':
+      pass
+    elif sTagName == 'item':
       item = cdata
-    item = getXmlTypeSaveValue(item, attrs)
-    value = self.dValueStack.pop()
-    if isinstance(value, dict):
-      key = attrs.get('key')
-      value[key] = item
-    if isinstance(value, list):
-      value.append(item)
-    self.dValueStack.push(value)
-
-  # -- DATA (IMAGE|FILE) --
-  #-----------------------
-  elif sTagName == 'data':
-    value = attrs
-    if cdata is not None and len(cdata) > 0:
-      filename = attrs.get('filename')
-      content_type = attrs.get('content_type')
-      if content_type.find('text/') == 0:
-        data = bytes(cdata,'utf-8')
-      else:
-        data = standard.hex2bin(cdata)
-      value['data'] = data
-    self.dValueStack.push(value)
-
-  # -- LANGUAGE --
-  #--------------
-  elif sTagName == 'lang':
-    lang = attrs.get('id', self.getPrimaryLanguage())
-    if self.dValueStack.size() == 1:
-      item = cdata
-    else:
-      item = self.dValueStack.pop()
-    values = self.dValueStack.pop()
-    values[lang] = item
-    self.dValueStack.push(values)
-
-  # -- OBJECT-ATTRIBUTES --
-  #-----------------------
-  elif sTagName in self.getObjAttrs():
-    if not skip:
-      obj_attr = self.getObjAttr(sTagName)
-
-      # -- DATATYPE
-      datatype = obj_attr['datatype_key']
-
-      # -- Multi-Language Attributes.
-      if obj_attr['multilang']:
+      if tag['dValueStack'] < self.dValueStack.size():
         item = self.dValueStack.pop()
-        if item is not None:
-          if not isinstance(item, dict):
-            item = {self.getPrimaryLanguage():item}
-          for s_lang in item:
-            value = item[s_lang]
+      else:
+        item = cdata
+      item = getXmlTypeSaveValue(item, attrs)
+      value = self.dValueStack.pop()
+      if isinstance(value, dict):
+        key = attrs.get('key')
+        value[key] = item
+      if isinstance(value, list):
+        value.append(item)
+      self.dValueStack.push(value)
+
+    # -- DATA (IMAGE|FILE) --
+    #-----------------------
+    elif sTagName == 'data':
+      value = attrs
+      if cdata is not None and len(cdata) > 0:
+        filename = attrs.get('filename')
+        content_type = attrs.get('content_type')
+        if content_type.find('text/') == 0:
+          data = bytes(cdata,'utf-8')
+        else:
+          data = standard.hex2bin(cdata)
+        value['data'] = data
+      self.dValueStack.push(value)
+
+    # -- LANGUAGE --
+    #--------------
+    elif sTagName == 'lang':
+      lang = attrs.get('id', self.getPrimaryLanguage())
+      if self.dValueStack.size() == 1:
+        item = cdata
+      else:
+        item = self.dValueStack.pop()
+      values = self.dValueStack.pop()
+      values[lang] = item
+      self.dValueStack.push(values)
+
+    # -- OBJECT-ATTRIBUTES --
+    #-----------------------
+    elif sTagName in self.getObjAttrs():
+      if not skip:
+        obj_attr = self.getObjAttr(sTagName)
+
+        # -- DATATYPE
+        datatype = obj_attr['datatype_key']
+
+        # -- Multi-Language Attributes.
+        if obj_attr['multilang']:
+          item = self.dValueStack.pop()
+          if item is not None:
+            if not isinstance(item, dict):
+              item = {self.getPrimaryLanguage():item}
+            for s_lang in item:
+              value = item[s_lang]
+              # Data
+              if datatype in _globals.DT_BLOBS:
+                if isinstance(value, dict) and len(value.keys()) > 0:
+                  ob = _blobfields.createBlobField(self, datatype)
+                  for key in value:
+                    setattr(ob, key, value[key])
+                  xmlInitObjProperty(self, sTagName, ob, s_lang)
+              # Others
+              else:
+                # -- Init Properties.
+                xmlInitObjProperty(self, sTagName, value, s_lang)
+
+        else:
+          # -- Complex Attributes (Blob|Dictionary|List).
+          value = None
+          if self.dValueStack.size() > 0:
+            value = self.dValueStack.pop()
+          if value is not None and \
+             (datatype in _globals.DT_BLOBS or \
+               datatype == _globals.DT_LIST or \
+               datatype == _globals.DT_DICT):
             # Data
             if datatype in _globals.DT_BLOBS:
               if isinstance(value, dict) and len(value.keys()) > 0:
                 ob = _blobfields.createBlobField(self, datatype)
                 for key in value:
                   setattr(ob, key, value[key])
-                xmlInitObjProperty(self, sTagName, ob, s_lang)
+                xmlInitObjProperty(self, sTagName, ob)
             # Others
-            else:
-              # -- Init Properties.
-              xmlInitObjProperty(self, sTagName, value, s_lang)
+            else: 
+              if self.getType() == 'ZMSRecordSet':
+                if isinstance(value, list):
+                  for item in value:
+                    if isinstance(item, dict):
+                      for key in item:
+                        item_obj_attr = self.getObjAttr(key)
+                        item_datatype = item_obj_attr['datatype_key']
+                        if item_datatype in _globals.DT_BLOBS:
+                          item_data = item[ key]
+                          if isinstance(item_data, dict):
+                            blob = _blobfields.createBlobField(self, item_datatype, item_data)
+                            item[ key] = blob
+              # -- Convert multilingual to monolingual attributes.
+              if obj_attr['multilang'] == 0 and \
+                 isinstance(value, dict) and \
+                 len(value.keys()) == 1 and \
+                 value.keys()[0] == self.getPrimaryLanguage():
+                value = value[value.keys()[0]]
+              xmlInitObjProperty(self, sTagName, value)
+            if self.dValueStack.size() > 0:
+              raise "Items on self.dValueStack=%s" % self.dValueStack
 
-      else:
-        # -- Complex Attributes (Blob|Dictionary|List).
-        value = None
-        if self.dValueStack.size() > 0:
-          value = self.dValueStack.pop()
-        if value is not None and \
-           (datatype in _globals.DT_BLOBS or \
-             datatype == _globals.DT_LIST or \
-             datatype == _globals.DT_DICT):
-          # Data
-          if datatype in _globals.DT_BLOBS:
-            if isinstance(value, dict) and len(value.keys()) > 0:
-              ob = _blobfields.createBlobField(self, datatype)
-              for key in value:
-                setattr(ob, key, value[key])
-              xmlInitObjProperty(self, sTagName, ob)
-          # Others
+          # -- Simple Attributes (String, Integer, etc.)
           else:
-            if self.getType() == 'ZMSRecordSet':
-              if isinstance(value, list):
-                for item in value:
-                  if isinstance(item, dict):
-                    for key in item:
-                      item_obj_attr = self.getObjAttr(key)
-                      item_datatype = item_obj_attr['datatype_key']
-                      if item_datatype in _globals.DT_BLOBS:
-                        item_data = item[ key]
-                        if isinstance(item_data, dict):
-                          blob = _blobfields.createBlobField(self, item_datatype, item_data)
-                          item[ key] = blob
-            # -- Convert multilingual to monolingual attributes.
-            if obj_attr['multilang'] == 0 and \
-               isinstance(value, dict) and \
-               len(value.keys()) == 1 and \
-               value.keys()[0] == self.getPrimaryLanguage():
-              value = value[value.keys()[0]]
-            xmlInitObjProperty(self, sTagName, value)
-          if self.dValueStack.size() > 0:
-            raise "Items on self.dValueStack=%s" % self.dValueStack
-
-        # -- Simple Attributes (String, Integer, etc.)
-        else:
-          if value is not None:
-            standard.writeBlock(self, "[xmlOnUnknownEndTag]: WARNING - Skip %s=%s" % (sTagName, str(value)))
-          value = cdata
-          # -- OPTIONS
-          if 'options' in obj_attr:
-            options = obj_attr['options']
-            if isinstance(options, list):
-              try:
-                i = options.index(int(value))
-                if i % 2 == 1: value = options[i - 1]
-              except:
+            if value is not None:
+              standard.writeBlock(self, "[xmlOnUnknownEndTag]: WARNING - Skip %s=%s" % (sTagName, str(value)))
+            value = cdata
+            # -- OPTIONS
+            if 'options' in obj_attr:
+              options = obj_attr['options']
+              if isinstance(options, list):
                 try:
-                  i = options.index(str(value))
+                  i = options.index(int(value))
                   if i % 2 == 1: value = options[i - 1]
                 except:
-                  pass
-          xmlInitObjProperty(self, sTagName, value)
+                  try:
+                    i = options.index(str(value))
+                    if i % 2 == 1: value = options[i - 1]
+                  except:
+                    pass
+            xmlInitObjProperty(self, sTagName, value)
 
-      # Clear value stack.
-      self.dValueStack.clear()
+        # Clear value stack.
+        self.dValueStack.clear()
 
-  # -- OTHERS --
-  #------------
-  else:
-    value = self.dTagStack.pop()
-    if value is None: value = {'cdata':''}
-    cdata = value.get('cdata', '')
-    cdata += '<' + tag['name']
-    for attr_name in attrs:
-      attr_value = attrs.get(attr_name)
-      cdata += ' ' + attr_name + '="' + attr_value + '"'
-    cdata += '>' + tag['cdata']
-    cdata += '</' + tag['name'] + '>'
-    value['cdata'] = cdata
-    self.dTagStack.push(value)
+    # -- OTHERS --
+    #------------
+    else:
+      value = self.dTagStack.pop()
+      if value is None: value = {'cdata':''}
+      cdata = value.get('cdata', '')
+      cdata += '<' + tag['name']
+      for attr_name in attrs:
+        attr_value = attrs.get(attr_name)
+        cdata += ' ' + attr_name + '="' + attr_value + '"'
+      cdata += '>' + tag['cdata']
+      cdata += '</' + tag['name'] + '>'
+      value['cdata'] = cdata
+      self.dTagStack.push(value)
 
-  return 1  # accept matching end tag
-
+    return 1  # accept matching end tag
+  except:
+    raise zExceptions.InternalError(standard.writeError(self,'can\'t _xmllib.xmlOnUnknownEndTag'))
 
 """
 ################################################################################

@@ -220,61 +220,65 @@ def xmlInitObjProperty(self, key, value, lang=None):
 #  _xmllib.xmlOnCharacterData:
 # ------------------------------------------------------------------------------
 def xmlOnCharacterData(self, sData, bInCData):
+  try:
+    # -- TAG-STACK
+    if self.dTagStack.size() > 0:
+      tag = self.dTagStack.pop()
+      tag['cdata'] += sData
+      self.dTagStack.push(tag)
 
-  # -- TAG-STACK
-  if self.dTagStack.size() > 0:
-    tag = self.dTagStack.pop()
-    tag['cdata'] += sData
-    self.dTagStack.push(tag)
-
-  # -- Return
-  return 1  # accept any character data
+    # -- Return
+    return 1  # accept any character data
+  except:
+    raise zExceptions.InternalError(standard.writeError(self,'can\'t _xmllib.xmlOnCharacterData'))
 
 
 # ------------------------------------------------------------------------------
 #  _xmllib.xmlOnUnknownStartTag:
 # ------------------------------------------------------------------------------
 def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
+  try:
+    # -- TAG-STACK
+    tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
+    tag['dValueStack'] = self.dValueStack.size()
+    self.dTagStack.push(tag)
 
-  # -- TAG-STACK
-  tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
-  tag['dValueStack'] = self.dValueStack.size()
-  self.dTagStack.push(tag)
+    # -- VALUE-STACK
 
-  # -- VALUE-STACK
-
-  # -- ITEM (DICTIONARY|LIST) --
-  # ----------------------------
-  if sTagName in ['dict', 'dictionary']:
-    self.dValueStack.push({})
-  elif sTagName == 'list':
-    self.dValueStack.push([])
-  elif sTagName == 'item':
-    pass
-
-  # -- DATA (IMAGE|FILE) --
-  # -----------------------
-  elif sTagName == 'data':
-    pass
-
-  # -- LANGUAGE --
-  # --------------
-  elif sTagName == 'lang':
-    if self.dValueStack.size() == 0:
+    # -- ITEM (DICTIONARY|LIST) --
+    # ----------------------------
+    if sTagName in ['dict', 'dictionary']:
       self.dValueStack.push({})
+    elif sTagName == 'list':
+      self.dValueStack.push([])
+    elif sTagName == 'item':
+      pass
 
-  # -- OBJECT-ATTRIBUTES --
-  # -----------------------
-  elif sTagName in self.getObjAttrs().keys():
-    pass
+    # -- DATA (IMAGE|FILE) --
+    # -----------------------
+    elif sTagName == 'data':
+      pass
 
-  # -- OTHERS --
-  # ------------
-  else:
-    tag['skip'] = True
+    # -- LANGUAGE --
+    # --------------
+    elif sTagName == 'lang':
+      if self.dValueStack.size() == 0:
+        self.dValueStack.push({})
 
-  # -- Return
-  return 1  # accept any unknown tag
+    # -- OBJECT-ATTRIBUTES --
+    # -----------------------
+    elif sTagName in self.getObjAttrs().keys():
+      pass
+
+    # -- OTHERS --
+    # ------------
+    else:
+      tag['skip'] = True
+
+    # -- Return
+    return 1  # accept any unknown tag
+  except:
+    raise zExceptions.InternalError(standard.writeError(self,'can\'t _xmllib.xmlOnUnknownStartTag'))
 
 
 # ------------------------------------------------------------------------------

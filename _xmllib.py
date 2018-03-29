@@ -723,7 +723,7 @@ def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False):
     keys = ['active', self.getMetaobjAttrIds(self.meta_id)[0]]
   for key in keys:
     obj_attr = self.getObjAttr(key)
-    if obj_attr['xml']:
+    if obj_attr['xml'] or key in ['change_dt','change_uid','created_dt','created_uid']:
       ob_prop = getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST)
       if len(ob_prop) > 0:
         xml.append('%s<%s>%s</%s>\n' % ( (indentlevel+1) * INDENTSTR, key, ob_prop, key ) )

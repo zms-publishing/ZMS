@@ -589,7 +589,7 @@ class ObjAttrs:
         value = self._getObjAttrValue(obj_attr,obj_vers,lang)
         empty = False
         if obj_attr['multilang'] and \
-           obj_attr['id'] not in ['active','created_uid','created_dt','change_uid','change_dt','work_uid','work_dt','internal_dict','change_history','master_version','major_version','minor_version']:
+           obj_attr['id'] not in ['active','created_uid','created_dt','change_uid','change_dt','work_uid','work_dt','internal_dict']:
           lang = self.getParentLanguage(lang)
           if lang is not None:
             empty = empty or (value is None)
@@ -963,7 +963,7 @@ class ObjAttrs:
           return
       
       #-- VALUE
-      set, value =False, REQUEST.get(elName,None)
+      set, value = False, REQUEST.get(elName,None)
       
       #-- Blob-Fields
       if datatype in _globals.DT_BLOBS:
@@ -1335,7 +1335,7 @@ class ObjAttrsManager:
           dct['name'] = attr.get('name','?')
           dct['type'] = attr['type']
           dct['key'] = attr['id']
-          dct['xml'] = attr['id'] not in ['work_uid','work_dt','internal_dict','change_history','master_version','major_version','minor_version']
+          dct['xml'] = attr['id'] not in ['created_uid','created_dt','change_uid','change_dt','work_uid','work_dt','internal_dict','change_history','master_version','major_version','minor_version']
           dct['datatype'] = attr['type']
           if attr['type'] in ['autocomplete','password','select']:
             dct['type'] = attr['type']

@@ -1250,7 +1250,7 @@ class ObjAttrsManager(object):
           dct['name'] = attr.get('name', '?')
           dct['type'] = attr['type']
           dct['key'] = attr['id']
-          dct['xml'] = attr['id'] not in ['work_uid','work_dt','internal_dict','change_history','master_version','major_version','minor_version']
+          dct['xml'] = attr['id'] not in ['created_uid','created_dt','change_uid','change_dt','work_uid','work_dt','internal_dict','change_history','master_version','major_version','minor_version']
           dct['datatype'] = attr['type']
           if attr['type'] in ['autocomplete', 'password', 'select']:
             dct['type'] = attr['type']

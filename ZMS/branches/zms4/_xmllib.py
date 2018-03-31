@@ -209,7 +209,10 @@ def xmlInitObjProperty(self, key, value, lang=None):
         value = float(value)
     # -- String-Fields
     elif datatype in _globals.DT_STRINGS:
-      value = str(value)
+      try:
+        value = str(value)
+      except:
+        value = standard.writeError(self,'can\'t xmlInitObjProperty')
 
   # -- INIT
   for ob in self.objectValues(['ZMSAttributeContainer']):

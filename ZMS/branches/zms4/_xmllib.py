@@ -418,7 +418,7 @@ def xmlOnUnknownEndTag(self, sTagName):
           # -- Simple Attributes (String, Integer, etc.)
           else:
             if value is not None:
-              standard.writeBlock(self, "[xmlOnUnknownEndTag]: WARNING - Skip %s=%s" % (sTagName, str(value)))
+              standard.writeBlock(self, "[xmlOnUnknownEndTag]: WARNING - Skip %s" % sTagName)
             value = cdata
             # -- OPTIONS
             if 'options' in obj_attr:
@@ -429,7 +429,7 @@ def xmlOnUnknownEndTag(self, sTagName):
                   if i % 2 == 1: value = options[i - 1]
                 except:
                   try:
-                    i = options.index(str(value))
+                    i = options.index(value)
                     if i % 2 == 1: value = options[i - 1]
                   except:
                     pass
@@ -878,7 +878,7 @@ class XmlAttrBuilder(object):
       attrs = tag['attrs']
       cdata = tag['cdata']
       # Hack for nested CDATA
-      cdata = re.compile('\<\!\{CDATA\{(.*?)\}\}\>').sub('<![CDATA[\\1]]>', str(cdata))
+      cdata = re.compile('\<\!\{CDATA\{(.*?)\}\}\>').sub('<![CDATA[\\1]]>',cdata)
 
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + str(sTagName) + ") expected (" + str(name) + ")")

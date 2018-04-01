@@ -209,10 +209,7 @@ def xmlInitObjProperty(self, key, value, lang=None):
         value = float(value)
     # -- String-Fields
     elif datatype in _globals.DT_STRINGS:
-      try:
-        value = str(value)
-      except:
-        value = standard.writeError(self,'can\'t xmlInitObjProperty')
+      value = value
 
   # -- INIT
   for ob in self.objectValues(['ZMSAttributeContainer']):
@@ -242,14 +239,16 @@ def xmlOnCharacterData(self, sData, bInCData):
 def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
   try:
     # -- TAG-STACK
-    tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
+    tag = {}
+    tag['name'] = sTagName
+    tag['attrs'] = dTagAttrs
+    tag['cdata'] = ''
     tag['dValueStack'] = self.dValueStack.size()
     self.dTagStack.push(tag)
 
     # -- VALUE-STACK
 
-    # -- ITEM (DICTIONARY|LIST) --
-    # ----------------------------
+    # ITEM (DICTIONARY|LIST)
     if sTagName in ['dict', 'dictionary']:
       self.dValueStack.push({})
     elif sTagName == 'list':
@@ -257,28 +256,24 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
     elif sTagName == 'item':
       pass
 
-    # -- DATA (IMAGE|FILE) --
-    # -----------------------
+    # DATA (IMAGE|FILE)
     elif sTagName == 'data':
       pass
 
-    # -- LANGUAGE --
-    # --------------
+    # LANGUAGE
     elif sTagName == 'lang':
       if self.dValueStack.size() == 0:
         self.dValueStack.push({})
 
-    # -- OBJECT-ATTRIBUTES --
-    # -----------------------
+    # PASS OBJECT-ATTRIBUTES
     elif sTagName in self.getObjAttrs().keys():
       pass
 
-    # -- OTHERS --
-    # ------------
+    # SKIP OTHERS
     else:
       tag['skip'] = True
 
-    # -- Return
+    # Return
     return 1  # accept any unknown tag
   except:
     raise zExceptions.InternalError(standard.writeError(self,'can\'t _xmllib.xmlOnUnknownStartTag'))
@@ -292,12 +287,10 @@ def xmlOnUnknownEndTag(self, sTagName):
     # -- TAG-STACK
     skip = len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
     tag = self.dTagStack.pop()
-    print("xmlOnUnknownEndTag",sTagName,tag,skip)
     name = tag['name']
-    if name != sTagName: return 0  # don't accept any unknown tag
-
     attrs = tag['attrs']
     cdata = tag['cdata']
+    if name != sTagName: return 0  # don't accept any unknown tag
 
     # -- ITEM (DICTIONARY|LIST) --
     #----------------------------
@@ -844,7 +837,6 @@ class XmlAttrBuilder(object):
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlAttrBuilder.OnStartElement """
-      #print("[XmlAttrBuilder.OnStartElement]",sTagName,type(sTagName),dTagAttrs)
 
       # -- TAG-STACK
       tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':''}
@@ -870,7 +862,6 @@ class XmlAttrBuilder(object):
     ############################################################################
     def OnEndElement(self, sTagName):
       """ XmlAttrBuilder.OnEndElement """
-      #print("[XmlAttrBuilder.OnEndElement]",sTagName,type(sTagName),self.dTagStack.size())
 
       # -- TAG-STACK
       tag = self.dTagStack.pop()
@@ -1083,7 +1074,6 @@ class XmlBuilder(object):
     ############################################################################
     def parse(self, input):
         """ XmlBuilder.parse """
-        print("XmlBuilder.parse")
 
         # prepare builder
         self.dTagStack = _globals.MyStack()
@@ -1142,7 +1132,6 @@ class XmlBuilder(object):
     ############################################################################
     def OnStartElement(self, sTagName, dTagAttrs):
       """ XmlBuilder.OnStartElement """
-      #print("[XmlBuilder.OnStartElement]",sTagName,type(sTagName),dTagAttrs)
       tag = {'name':sTagName, 'attrs':dTagAttrs, 'cdata':'', 'tags':[]}
       self.dTagStack.push(tag)
 
@@ -1157,7 +1146,6 @@ class XmlBuilder(object):
     ############################################################################
     def OnEndElement(self, sTagName):
       """ XmlBuilder.OnEndElement """
-      #print("[XmlBuilder.OnEndElement]",sTagName,type(sTagName),self.dTagStack.size())
       
       lTag = self.dTagStack.pop()
       name = lTag['name']

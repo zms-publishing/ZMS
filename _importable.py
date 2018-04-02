@@ -42,7 +42,7 @@ from . import _globals
 # ------------------------------------------------------------------------------
 def recurse_importContent(self, folder):
   # Cleanup.
-  for key in ['oRoot', 'oRootTag', 'oCurrNode', 'oParent', 'dTagStack', 'dValueStack']:
+  for key in ['oRootTag', 'oCurrNode', 'oParent', 'dTagStack', 'dValueStack']:
     try: delattr(self, key)
     except: pass
   

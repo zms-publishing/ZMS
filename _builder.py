@@ -23,7 +23,6 @@ from builtins import object
 from builtins import str
 import pyexpat
 import time
-import zExceptions
 # Product Imports.
 from . import standard
 
@@ -171,7 +170,7 @@ class Builder(object):
     ############################################################################
     def OnStartElement(self, name, attrs):
       """ Builder.OnStartElement """
-      try:
+      if True:
         standard.writeBlock( self, "[Builder.OnStartElement(" + str(name) + ")]")
         skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
         if not skip and name in self.getMetaobjIds():
@@ -242,8 +241,6 @@ class Builder(object):
           # tag name is unknown -> offer it to current object
           if not self.oCurrNode.xmlOnUnknownStartTag(name, attrs):
             standard.writeLog( self, "[Builder.OnStartElement]: Unknown start-tag (" + name + "): current object did not accept tag!")  # current object did not accept tag!
-      except:
-        raise zExceptions.InternalError(standard.writeError(self,'can\'t Builder.OnStartElement'))
 
 
     ############################################################################
@@ -256,7 +253,7 @@ class Builder(object):
     ############################################################################
     def OnEndElement(self, name):
       """ Builder.OnEndElement """
-      try:
+      if True:
         standard.writeBlock( self, "[Builder.OnEndElement(" + str(name) + ")]")
         skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
         if not skip and name == self.oCurrNode.meta_id:
@@ -278,8 +275,6 @@ class Builder(object):
           if not self.oCurrNode.xmlOnUnknownEndTag(name):
             standard.writeLog( self, "[Builder.OnEndElement]: Unknown end-tag (/" + name + ")")  # current object did not accept tag!
             raise ParseError("Unknown end-tag (" + name + ")")  # current object did not accept tag!
-      except:
-        raise zExceptions.InternalError(standard.writeError(self,'can\'t Builder.OnEndElement'))
 
 
     ############################################################################
@@ -294,17 +289,8 @@ class Builder(object):
     ############################################################################
     def OnCharacterData(self, data):
       """ Builder.OnCharacterData """
-      try:
-        standard.writeLog( self, "[Builder.OnCharacterData]")
-        
-        # do we have a current node?
-        if self.oCurrNode==None:
-           raise ParseError("Unexpected character data found")
-           
-        # notify current node
-        self.oCurrNode.xmlOnCharacterData(data, self.bInCData)
-      except:
-        raise zExceptions.InternalError(standard.writeError(self,'can\'t Builder.OnCharacterData'))
+      # notify current node
+      self.oCurrNode.xmlOnCharacterData(data, self.bInCData)
 
 
     ############################################################################

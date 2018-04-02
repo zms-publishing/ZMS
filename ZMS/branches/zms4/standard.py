@@ -36,11 +36,7 @@ from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
-try:
-  from io import StringIO
-except ImportError:
-  from io import StringIO
-from traceback import format_exception
+from io import StringIO
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 import base64
@@ -54,6 +50,7 @@ import os
 import re
 import sys
 import time
+import traceback
 import urllib.request, urllib.parse, urllib.error
 import zExceptions
 import six
@@ -833,17 +830,9 @@ def writeError(context, info):
   @type info: C{any}
   @rtype: C{str}
   """
-  t, v='?', '?'
+  t, v, tb = sys.exc_info()
+  info += '\n'.join(traceback.format_tb(tb))
   try:
-    t, v, tb = sys.exc_info()
-    if t is not None:
-      v = str(v)
-      # Strip HTML tags from the error value
-      for pattern in [r"<[^<>]*>", r"&[A-Za-z]+;"]:
-        v = re_sub(pattern, ' ', v)
-      if info:
-        info += '\n'
-      info += ''.join(format_exception(t, v, tb))
     info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info
     zms_log = getLog(context)
     severity = logging.ERROR

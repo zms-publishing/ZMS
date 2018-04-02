@@ -30,7 +30,6 @@ import tempfile
 import time
 import unicodedata
 import xml.dom
-import zExceptions
 
 from App.Common import package_home
 # import Globals

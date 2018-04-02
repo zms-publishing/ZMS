@@ -220,7 +220,6 @@ def xmlInitObjProperty(self, key, value, lang=None):
 #  _xmllib.xmlOnCharacterData:
 # ------------------------------------------------------------------------------
 def xmlOnCharacterData(self, sData, bInCData):
-  try:
     # -- TAG-STACK
     if self.dTagStack.size() > 0:
       tag = self.dTagStack.pop()
@@ -229,15 +228,12 @@ def xmlOnCharacterData(self, sData, bInCData):
 
     # -- Return
     return 1  # accept any character data
-  except:
-    raise zExceptions.InternalError(standard.writeError(self,'can\'t _xmllib.xmlOnCharacterData'))
 
 
 # ------------------------------------------------------------------------------
 #  _xmllib.xmlOnUnknownStartTag:
 # ------------------------------------------------------------------------------
 def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
-  try:
     # -- TAG-STACK
     tag = {}
     tag['name'] = sTagName
@@ -273,24 +269,20 @@ def xmlOnUnknownStartTag(self, sTagName, dTagAttrs):
     else:
       tag['skip'] = True
 
-    # Return
+    # -- Return
     return 1  # accept any unknown tag
-  except:
-    raise zExceptions.InternalError(standard.writeError(self,'can\'t _xmllib.xmlOnUnknownStartTag'))
 
 
 # ------------------------------------------------------------------------------
 #  _xmllib.xmlOnUnknownEndTag:
 # ------------------------------------------------------------------------------
 def xmlOnUnknownEndTag(self, sTagName):
-  try:
     # -- TAG-STACK
-    skip = len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
     tag = self.dTagStack.pop()
+    skip = len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
     name = tag['name']
     attrs = tag['attrs']
     cdata = tag['cdata']
-    if name != sTagName: return 0  # don't accept any unknown tag
 
     # -- ITEM (DICTIONARY|LIST) --
     #----------------------------
@@ -447,8 +439,7 @@ def xmlOnUnknownEndTag(self, sTagName):
       self.dTagStack.push(value)
 
     return 1  # accept matching end tag
-  except:
-    raise zExceptions.InternalError(standard.writeError(self,'can\'t _xmllib.xmlOnUnknownEndTag'))
+
 
 """
 ################################################################################

@@ -65,7 +65,7 @@ class ParseError(Exception): pass
 # 2. Call "Builder.parse()" to initiate the parsing and building process.
 # 3. Equip all python classes with the following interface methods:
 #
-#    - xmlOnStartElement(self, dTagName, dTagAttrs, oParentNode, oRoot)
+#    - xmlOnStartElement(self, dTagName, dTagAttrs, oParentNode)
 #    - xmlOnCharacterData(self, sData, bInCData)
 #    - xmlOnEndElement(self)
 #    - xmlOnUnknownStartTag(self, sTagName, dTagAttrs)
@@ -87,7 +87,6 @@ class Builder(object):
     ############################################################################
     def __init__(self):
         """ Builder.__init__ """
-        self.oRoot      = None   # root node of object tree
         self.oRootTag   = None   # root tag 
         self.oCurrNode  = None   # current node
         self.bInCData   = False  # inside CDATA section?
@@ -111,7 +110,6 @@ class Builder(object):
         """ Builder.parse """
         
         # prepare builder
-        self.oRoot            = root
         self.oRootTag         = None
         self.oCurrNode        = None
         self.bInCData         = False
@@ -175,8 +173,6 @@ class Builder(object):
       """ Builder.OnStartElement """
       try:
         standard.writeBlock( self, "[Builder.OnStartElement(" + str(name) + ")]")
-        #name = standard.unencode( name)
-        #attrs = standard.unencode( attrs)
         skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
         if not skip and name in self.getMetaobjIds():
           meta_id = name
@@ -236,15 +232,10 @@ class Builder(object):
               newNode.setObjProperty('change_uid',uid,lang)
               newNode.setObjProperty('change_dt',dt,lang)
           
-          if self.oRoot is None: # root object set?
-            self.oRoot = newNode # -> set root node
-          
           # notify new node
-          print("notify new node")
-          newNode.xmlOnStartElement(name, attrs, self.oCurrNode, self.oRoot)
+          newNode.xmlOnStartElement(name, attrs, self.oCurrNode)
           
           # set new node as current node
-          print("set new node as current node")
           self.oCurrNode = newNode
           
         else:
@@ -268,8 +259,7 @@ class Builder(object):
       try:
         standard.writeBlock( self, "[Builder.OnEndElement(" + str(name) + ")]")
         skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
-        if not skip and name in self.getMetaobjIds():
-          if name == self.oCurrNode.meta_id:
+        if not skip and name == self.oCurrNode.meta_id:
             standard.writeBlock( self, "[Builder.OnEndElement]: object finished")
             
             ##### VersionManager ####
@@ -282,11 +272,6 @@ class Builder(object):
             
             # set parent node as current node
             self.oCurrNode = parent
-          else:
-            # tag name is unknown -> offer it to current object
-            if not self.oCurrNode.xmlOnUnknownEndTag(name):
-              standard.writeLog( self, "[Builder.OnEndElement]: Unknown end-tag (/" + name + ")")  # current object did not accept tag!
-              raise ParseError("Unknown end-tag (" + name + ")")  # current object did not accept tag!
         
         else:
           # tag name is unknown -> offer it to current object

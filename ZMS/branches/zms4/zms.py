@@ -581,7 +581,7 @@ class ZMS(
     # --------------------------------------------------------------------------
     # Handler for XML-Builder (_builder.py)
     # --------------------------------------------------------------------------
-    def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode, oRoot):
+    def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode):
       standard.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
 
       # remove all ZMS-objects.

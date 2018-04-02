@@ -1531,7 +1531,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     ############################################################################
 
     ############################################################################
-    # ZMSObject.xmlOnStartElement(self, dTagName, dAttrs, oCurrNodes, oRoot):
+    # ZMSObject.xmlOnStartElement(self, dTagName, dAttrs, oCurrNodes):
     # ZMSObject.xmlOnCharacterData(self, data, bInCData):
     # ZMSObject.xmlOnEndElement(self):
     # ZMSObject.xmlOnUnknownStartTag(self, sTagName, dTagAttrs)
@@ -1540,7 +1540,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     # handler for XML-Builder (_builder.py)
     ############################################################################
-    def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode, oRoot):
+    def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode):
         standard.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
         
         self.dTagStack    = _globals.MyStack()

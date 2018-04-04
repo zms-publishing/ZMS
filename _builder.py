@@ -188,8 +188,12 @@ class Builder:
             id = None
             if self.oRootTag == 'ZMS' and 'id' in attrs.keys():
               id = attrs.get( 'id')
+              prefix = standard.id_prefix(id)
+              self.getNewId(prefix) # force sequence to generate new-id
             elif 'id_fix' in attrs.keys():
               id = attrs.get( 'id_fix')
+              prefix = standard.id_prefix(id)
+              self.getNewId(prefix) # force sequence to generate new-id
             elif 'id_prefix' in attrs.keys():
               prefix = attrs.get( 'id_prefix')
               id = self.getNewId(prefix)
@@ -197,8 +201,11 @@ class Builder:
               id = attrs.get( 'id')
               prefix = standard.id_prefix(id)
               id = self.getNewId(prefix)
+            
+            # Assure new id does not already exists.
             while id is None or id in self.oCurrNode.objectIds():
-              id = self.oCurrNode.getNewId()
+              prefix = standard.id_prefix([id,'e'][int(id is None)])
+              id = self.oCurrNode.getNewId(prefix)
             
             # Get new sort-id.
             sort_id = self.oCurrNode.getNewSortId()

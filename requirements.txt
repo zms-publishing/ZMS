@@ -28,7 +28,7 @@ nt-svcutils==2.13.0
 Persistence==2.13.2
 persistent==4.2.0
 Products.BTreeFolder2==2.14.0
-Products.CMFCore==2.2.10
+Products.CMFCore==2.3.0
 Products.ExternalMethod==2.13.1
 Products.GenericSetup==1.8.3
 Products.MailHost==2.13.2

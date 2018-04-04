@@ -186,6 +186,8 @@ class ZMSRepositoryManager(
               # avoid processing of hidden files, e.g. .DS_Store on macOS
               temp_files = filter(lambda x: x.startswith('.'), temp_files)
               ids = list(set(map(lambda x:':'.join(x),temp_files)))
+              # avoid processing of hidden files, e.g. .DS_Store on macOS
+              ids = filter(lambda x: ':.' not in x, ids)
               self.writeBlock("[exec_auto_update]: %s"%str(ids))
               self.updateChanges(ids, override=True)
             self.last_update = standard.getDateTime(current_time)

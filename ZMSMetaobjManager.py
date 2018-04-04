@@ -20,6 +20,7 @@
 
 # Imports.
 from cStringIO import StringIO
+from distutils.version import LooseVersion
 import ZPublisher.HTTPRequest
 import collections
 import copy
@@ -496,11 +497,13 @@ class ZMSMetaobjManager:
     def getMetaobjRevision(self, id):
       ob = self.getMetaobj(id)
       if ob is not None and ob.get('type') == 'ZMSPackage':
-        metaobjs = filter(lambda x:x.get('package')==ob['id'],self.__get_metaobjs__().values())
-        revision = max(['0.0.0']+map(lambda x:standard.nvl(x.get('revision'),'0.0.0'),metaobjs))
-        if revision > ob.get('revision','0.0.0'):
-          ob['revision'] = revision
-      return ob.get('revision','0.0.0')
+        metaobjs = [x for x in self.__get_metaobjs__().values() if x.get('package') == ob['id']]
+        # https://stackoverflow.com/questions/11887762/how-do-i-compare-version-numbers-in-python
+        revisions = sorted(['0.0.0'] + map(lambda x: standard.nvl(x.get('revision'), '0.0.0'), metaobjs),
+                           key=lambda v: LooseVersion(v))
+        if LooseVersion(revisions[-1]) > LooseVersion(ob.get('revision','0.0.0')):
+          ob['revision'] = revisions[-1]
+      return ob.get('revision', '0.0.0')
 
 
     # --------------------------------------------------------------------------

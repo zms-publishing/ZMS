@@ -498,7 +498,7 @@ class ZMSMetaobjManager(object):
       if ob is not None and ob.get('type') == 'ZMSPackage':
         metaobjs = [x for x in self.__get_metaobjs__().values() if x.get('package') == ob['id']]
         # https://stackoverflow.com/questions/11887762/how-do-i-compare-version-numbers-in-python
-        revisions = sorted(['0.0.0'] + map(lambda x: standard.nvl(x.get('revision'), '0.0.0'), metaobjs),
+        revisions = sorted(['0.0.0'] + [standard.nvl(x.get('revision'), '0.0.0') for x in metaobjs],
                            key=lambda v: LooseVersion(v))
         if LooseVersion(revisions[-1]) > LooseVersion(ob.get('revision','0.0.0')):
           ob['revision'] = revisions[-1]

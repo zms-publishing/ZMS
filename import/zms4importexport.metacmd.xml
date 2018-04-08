@@ -11,6 +11,7 @@ import tempfile
 import time
 from Products.zms import _blobfields
 from Products.zms import _fileutil
+from Products.zms import _importable
 from Products.zms import standard
 from Products.zms import zopeutil
 
@@ -29,7 +30,7 @@ def manage_zms4import( self):
 	html += '<html lang="en">'
 	html += self.zmi_html_head(self,request)
 	html += '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',self.meta_id]))
-	html += self.zmi_body_header(self,request,options=[{'action':'#','label':'ZMS4 Export...'}])
+	html += self.zmi_body_header(self,request,options=[{'action':'#','label':'ZMS4 Import...'}])
 	html += '<div id="zmi-tab">'
 	html += self.zmi_breadcrumbs(self,request)
 	html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
@@ -104,7 +105,9 @@ def manage_zms4import( self):
 					msg = 'OK'
 				if request.get('metaobj')==1 and filename.endswith('metaobj.xml'):
 					data = re.sub('print\\s(.*)','print(\\1)',data.decode('utf-8'))
-					self.getMetaobjManager().importMetaobjXml(data)
+					metaobj_manager = self.getMetaobjManager()
+					metaobj_manager.model = {}
+					metaobj_manager.importMetaobjXml(data)
 					msg = 'OK'
 				if request.get('metacmd')==1 and filename.endswith('metacmd.xml'):
 					data = re.sub('print\\s(.*)','print(\\1)',data.decode('utf-8'))
@@ -134,13 +137,15 @@ def manage_zms4import( self):
 							self.data = data
 						def __str__(self):
 							return self.data
-					self.manage_import(File(filename,data),self.getPrimaryLanguage(),request)
+					file = File(filename,data)
+					_importable.importFile( self, file, request, _importable.importContent)
 					msg = 'OK'
 			except:
-				msg = self.writeError('can\'t import')
+				msg = standard.writeError(self,'can\'t import')
 			l.append('%s (%s)'%(filename,msg))
 
 		shutil.rmtree(tempfolder)
+		
 		html += '<div class="alert alert-success">%s</div>'%self.getZMILangStr('MSG_IMPORTED')%'<em>%s (%s)</em>'%(request['file'].filename,str(l))
 
 	# --- Display form.

@@ -2882,9 +2882,16 @@
     <Cell><Data ss:Type="String">מחק</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">BTN_DUPLICATE</Data></Cell>
+    <Cell><Data ss:Type="String">Duplizieren</Data></Cell>
+    <Cell><Data ss:Type="String">Duplicate</Data></Cell>
+    <Cell><Data ss:Type="String">Duplicaat</Data></Cell>
+    <Cell><Data ss:Type="String">Double</Data></Cell>
+    <Cell><Data ss:Type="String">Duplicare</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">BTN_DISPLAY</Data></Cell>
     <Cell><Data ss:Type="String">Anzeigen</Data></Cell>
-
     <Cell><Data ss:Type="String">Display</Data></Cell>
     <Cell><Data ss:Type="String">Weergeven</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Mostrare</Data></Cell>
@@ -4014,6 +4021,11 @@
     <Cell><Data ss:Type="String">هل حقا تريد حذف %i البيانات المختارة؟</Data></Cell>
     <Cell><Data ss:Type="String">Quý vị thực sự muốn xóa %i  (các) đối tượng được lựa chọn?</Data></Cell>
     <Cell><Data ss:Type="String">האם אתה באמת רוצה למחוק %i פריט(ים) שנבחר(ו)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">MSG_CONFIRM_DUPLICATEOBJS</Data></Cell>
+    <Cell><Data ss:Type="String">Soll(en) %i ausgewählte(s) Objekt(e) wirklich dupliziert werden?</Data></Cell>
+    <Cell><Data ss:Type="String">Do you really want to duplicate %i selected object(s)?</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_CONFIRM_DESCENDANT_LANGS</Data></Cell>

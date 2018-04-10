@@ -445,6 +445,7 @@ nav .scroller-left{float:left}
 .zmi footer .back-to-top:hover{color:#fff;background:rgb(81,142,212)}
 .zmi ul.breadcrumb{clear:left;padding:1em 0 1em 1.8em;margin-bottom:0px !important}
 .zmi #zmi-tab > ul.breadcrumb li a,.zmi #zmi-tab > ul.breadcrumb li span{display:inline-block;white-space:nowrap;text-overflow:ellipsis;max-width:128px;overflow:hidden;vertical-align:bottom}
+.zmi .breadcrumb li a *{display:inline!important}
 .zmi ul.breadcrumb.small{padding:0.4em 0 0 0 !important;margin:0 !important;background-color:transparent !important;font-size:80%}
 .zmi ul.breadcrumb.small li{white-space:nowrap;text-overflow:ellipsis;max-width:98px;overflow:hidden}
 #attr_ref_preview .contentEditable{background-color:#FFF;box-shadow:0 2px 10px #ccc;border-radius:4px;padding:1em;margin:0 0 1em}
@@ -685,6 +686,8 @@ tr.row_insert td.meta-sort{padding:0.9em 1.35em !important}
 div.zmi-nodes span{cursor:pointer}
 input.btn.btn-file{background-color:#eee;margin-bottom:0.5em}
 .zmi.customize #Custom table td.nowrap{min-width:92px}
+.zmi.customize #Custom .table-bordered tbody > tr > td:nth-child(2){max-width:1rem !important;overflow-y:hidden}
+.zmi.customize #Custom .table-bordered>tbody>tr>td:nth-child(3){max-width:1rem !important;overflow-y:hidden}
 .customize.config #extwizard ul.nav-pills li,.customize.config #InstalledProducts .tab-content .col-sm-8 button.btn{min-width:160px}
 .customize.config #Clients .zmi-multiselect .btn,.customize.config #Clients .zmi-select.zmi-sortable .btn,.customize.config #Clients .ui-state-highlight{display:block !important;text-align:left}
 .zmi.users #zmi-tab > .pull-left,.zmi.users #zmi-tab > .pull-right{width:50%}
@@ -735,8 +738,9 @@ table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable
 .ZMSRecordSet #attrProperties,.ZMSSqlDb #attrProperties{border:0}
 .ZMSRecordSet #attrProperties .accordion-inner,.ZMSSqlDb #attrProperties .accordion-inner{padding-top:0.5em}
 .ZMSRecordSet #attrProperties .accordion-inner label,.ZMSSqlDb #attrProperties .accordion-inner label{color:#999}
-#insertUserForm .ZMSRecordSet{overflow:hidden;margin-left:-15px;padding-left:1px}
-#insertUserForm .ZMSRecordSet table th,#insertUserForm .ZMSRecordSet table td{overflow:hidden;max-width:8em}
+#insertUserForm .ZMSRecordSet{overflow-y:hidden;margin-left:-15px;padding-left:1px}
+#insertUserForm .ZMSRecordSet table th,#insertUserForm .ZMSRecordSet table td{max-width:8em}
+#insertUserForm .ZMSRecordSet table th:not(:first-child),#insertUserForm .ZMSRecordSet table td{overflow:hidden}
 #insertUserForm .ZMSRecordSet .pagination{margin-left:0}
 #insertUserForm .ZMSRecordSet table div.btn-group span.split-left{overflow:visible}
 #insertUserForm .ZMSRecordSet.main_grid table tbody .btn-group span.split-left input{margin:-2px 0 0 4px;float:left}

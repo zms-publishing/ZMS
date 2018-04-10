@@ -21,6 +21,7 @@
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import Globals
+import copy
 import sys
 import time
 import urllib
@@ -471,6 +472,18 @@ class ZMSCustom(ZMSContainerObject):
             for row in rows:
               del res_abs[res_abs.index(row)]
             message = self.getZMILangStr('MSG_DELETED')%len(rows)
+          elif action == 'duplicate':
+            rows = [copy.deepcopy(res_abs[int(x)]) for x in REQUEST.get('qindices',[])]
+            _change_uid = REQUEST['AUTHENTICATED_USER'].getUserName()
+            _change_dt = standard.getDateTime( time.time())
+            identifiers = [x for x in metaObj['attrs'][1:] if x['type'] == 'identifier']
+            for row in rows:
+              row['_change_uid'] = _change_uid
+              row['_change_dt'] = _change_dt
+              for identifier in identifiers:
+                row[identifier['id']] = self.getNewId()
+            res_abs += rows
+            message = self.getZMILangStr('MSG_INSERTED')%('%i %s'%(len(rows),self.getZMILangStr('ATTR_RECORDS')))
           elif action == 'move':
             for row in res_abs:
               row['sort_id'] = row.get('sort_id',1)*10

@@ -2046,7 +2046,7 @@ function zmiRecordSetDeleteRow(context, qIndex) {
 		var $input = $("input:checkbox:first",$btnGroup);
 		$input.prop('checked',true).change();
 	}
-	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJS').replace('%i',$("input[name='qindices:list']:checked").length))) {
 		$('input[name="action"]',$form).val('delete');
 		$form.submit();
 	}
@@ -2057,6 +2057,23 @@ function zmiRecordSetDeleteRow(context, qIndex) {
 	return false;
 }
 
+function zmiRecordSetDuplicateRow(context, qIndex) {
+	var $form = $(context).closest('form');
+	if (typeof qIndex != "undefined") {
+		var $btnGroup = $(context).closest('.btn-group');
+		var $input = $("input:checkbox:first",$btnGroup);
+		$input.prop('checked',true).change();
+	}
+	if (confirm(getZMILangStr('MSG_CONFIRM_DUPLICATEOBJS').replace('%i',$("input[name='qindices:list']:checked").length))) {
+		$('input[name="action"]',$form).val('duplicate');
+		$form.submit();
+	}
+	else if (typeof qIndex != "undefined") {
+		var $input = $('input[value="'+qIndex+'"]',$form);
+		$input.prop('checked',false).change();
+	}
+	return false;
+}
 $(function() {
 	// Sortable
 	$("table.zmi-sortable tbody img.grippy").mouseover(function() {

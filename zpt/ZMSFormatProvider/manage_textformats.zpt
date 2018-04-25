@@ -12,8 +12,8 @@
 <tal:block tal:define="global
 		formats python:here.getTextFormats(request)">
 
-<div class="ui-helper-hidden" tal:condition="python:request.get('id') in map(lambda x: x.getId(),formats)">
-	<div id="editObj" class="inner" tal:define="global format python:filter(lambda x: x.getId()==request['id'],formats)[0]">
+<div class="ui-helper-hidden" tal:condition="python:request.get('id') in list([x.getId() for x in formats])">
+	<div id="editObj" class="inner" tal:define="global format python:list([x for x in formats if x.getId()==request['id']])[0]">
 		<form class="form-horizontal" action="manage_changeTextformat" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="id" tal:attributes="value request/id"/>
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>

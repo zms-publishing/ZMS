@@ -113,6 +113,32 @@ def setutf8attr(self, obj_vers, obj_attr, langId):
 
 
 # ------------------------------------------------------------------------------
+#  getobjattrdefault
+# ------------------------------------------------------------------------------
+def getobjattrdefault(obj, obj_attr, lang):
+    v = None
+    datatype = obj_attr['datatype_key']
+    default = None
+    if datatype in range(len(_globals.datatype_map)):
+      default = obj_attr.get('default',_globals.datatype_map[datatype][1])
+    # Default inactive in untranslated languages.
+    if obj_attr['id'] == 'active' and len(obj.getLangIds()) > 1 and not ( obj.isTranslated(lang,obj.REQUEST) or lang == obj.getPrimaryLanguage() ):
+        default = 0
+    if default is not None:
+      if datatype in _globals.DT_DATETIMES and default == '{now}':
+        default = time.time()
+      elif type(default) is list or type(default) is tuple:
+        v = standard.copy_list(default)
+      elif type(default) is dict:
+        v = default.copy()
+      else:
+        if type( default) is str and len( default) > 0:
+          default = standard.dt_exec(obj,default)
+        v = default
+    return v
+
+
+# ------------------------------------------------------------------------------
 #  getobjattr
 # ------------------------------------------------------------------------------
 def getobjattr(self, obj, obj_attr, lang):
@@ -135,24 +161,7 @@ def getobjattr(self, obj, obj_attr, lang):
       v = getattr(obj,key)
   # Default value.
   if v is None:
-    datatype = obj_attr['datatype_key']
-    default = None
-    if datatype in range(len(_globals.datatype_map)):
-      default = obj_attr.get('default',_globals.datatype_map[datatype][1])
-    # Default inactive in untranslated languages.
-    if obj_attr['id'] == 'active' and len(self.getLangIds()) > 1 and not ( self.isTranslated(lang,self.REQUEST) or lang == self.getPrimaryLanguage() ):
-        default = 0
-    if default is not None:
-      if datatype in _globals.DT_DATETIMES and default == '{now}':
-        default = time.time()
-      elif type(default) is list or type(default) is tuple:
-        v = standard.copy_list(default)
-      elif type(default) is dict:
-        v = default.copy()
-      else:
-        if type( default) is str and len( default) > 0:
-          default = standard.dt_exec(self,default)
-        v = default
+    v = getobjattrdefault(obj, obj_attr, lang)
   return v
 
 # ------------------------------------------------------------------------------
@@ -507,11 +516,9 @@ class ObjAttrs:
         if meta_id is None:
           value = self.getObjAttrValue( obj_attr, REQUEST)
         else:
-          default = ''
-          datatype = obj_attr['datatype_key']
-          if datatype == _globals.DT_BOOLEAN:
-            default = 0
-          value = REQUEST.get( '%s_value'%key, obj_attr.get( 'default', default))
+          value = REQUEST.get( '%s_value'%key)
+          if value is None:
+            value = getobjattrdefault(self, obj_attr, REQUEST['lang'])
         return self.getObjAttrInput( fmName, obj_attr, value, REQUEST)
       except:
         return standard.writeError(self,'can\'t getObjInput')

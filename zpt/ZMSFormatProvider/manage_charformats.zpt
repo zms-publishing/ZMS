@@ -1,4 +1,4 @@
-<tal:block tal:define="global dummy0 python:here.zmi_page_request(here,request)"></tal:block
+<tal:block tal:define="dummy0 python:here.zmi_page_request(here,request)"></tal:block
 ><tal:block tal:condition="python:request.SESSION.get('zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
 ><tal:block tal:condition="not:python:request.SESSION.get('zmi-manage-system',0)==1"
 ><!DOCTYPE html>
@@ -13,8 +13,8 @@
 		action python:'manage_changeCharformat';
 		formats python:here.getCharFormats()">
 
-<div class="ui-helper-hidden" tal:condition="python:request.get('id') in list([x['id'] for x in formats])">
-	<div id="editObj" class="inner" tal:define="global format python:list([x for x in formats if x['id']==request['id']])[0]">
+<div class="ui-helper-hidden" tal:condition="python:request.get('id') in [x.get('id','') for x in formats]">
+	<div id="editObj" class="inner" tal:define="format python:[x for x in formats if x.get('id','')==request.get('id')][0]">
 		<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group">
@@ -145,15 +145,15 @@
 	<tal:block tal:repeat="format formats">
 		<tr>
 			<td style="text-align:center;">
-				<input type="checkbox" name="ids:list" tal:attributes="value format/id" />
+				<input type="checkbox" name="ids:list" tal:attributes="value python:format.get('id','')" />
 			</td>
 			<td>
 				<tal:block tal:condition="python:format.get('btn')">
 					<a class="button"><img tal:attributes="src python:format['btn']; title python:format['display']"/></a>
-					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format['id'])" target="" tal:content="python:format['id']">Id</a>
+					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.get('id',''))" target="" tal:content="python:format['id']">Id</a>
 				</tal:block>
 				<tal:block tal:condition="not:python:format.get('btn')">
-					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format['id'])" target=""><img src="/++resource++zms_/img/spacer.gif" title="vertical separator" class="zmiVSep"/></a>
+					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.get('id',''))" target=""><img src="/++resource++zms_/img/spacer.gif" title="vertical separator" class="zmiVSep"/></a>
 				</tal:block>
 				<tal:block tal:condition="python:format.get('tag')" tal:content="structure python:'<%s %s>%s</%s>'%(format['tag'],format['attrs'],format['display'],format['tag'])">preview</tal:block>
 			</td>

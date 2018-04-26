@@ -1181,7 +1181,7 @@ class ZMSMetaobjManager(object):
                 tmpltCustom = []
                 tmpltCustom.append('<!-- %s.%s -->\n'%(id, tmpltId))
                 tmpltCustom.append('\n')
-                tmpltCustom.append('<tal:block tal:define="global\n')
+                tmpltCustom.append('<tal:block tal:define="\n')
                 tmpltCustom.append('\t\tzmscontext options/zmscontext">\n')
                 if newValue['type'] == 'ZMSRecordSet':
                   tmpltCustom.append('\t<h2 tal:content="python:zmscontext.getTitlealt(request)">The title.alt</h2>\n')

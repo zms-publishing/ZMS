@@ -183,15 +183,16 @@ class ZMSObject(ZMSItem.ZMSItem,
       for metaObjId in self.getMetaobjIds():
         metaObj = self.getMetaobj(metaObjId)
         for metaObjAttr in [x for x in metaObj.get('attrs', []) if x['type'] == 'css' or x['id'] == 'f_css_defaults']:
-            id = metaObjAttr['id']
-            s = '%s.%s'%(metaObjId, id)
-            l.append('/* %s */'%('#'*len(s)))
-            l.append('/* %s */'%(s))
-            l.append('/* %s */'%('#'*len(s)))
-            try:
-              l.append(str(self.attr(s)))
-            except:
-              l.append('/* >>>>>>>>>> ERROR in %s <<<<<<<<<< */'%standard.writeError(self, "[zmi_css_defaults]: %s"%s))
+          id = metaObjAttr['id']
+          s = '%s.%s'%(metaObjId, id)
+          l.append('/* %s */'%('#'*len(s)))
+          l.append('/* %s */'%(s))
+          l.append('/* %s */'%('#'*len(s)))
+          try:
+            # l.append(str(self.attr(s)))
+            l.append(self.attr(s))
+          except:
+            l.append('/* >>>>>>>>>> ERROR in %s <<<<<<<<<< */'%standard.writeError(self, "[zmi_css_defaults]: %s"%s))
       return '\n'.join(l)
 
     ############################################################################

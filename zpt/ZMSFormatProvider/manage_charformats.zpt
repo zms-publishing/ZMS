@@ -14,7 +14,7 @@
 		formats python:here.getCharFormats()">
 
 <div class="ui-helper-hidden" tal:condition="python:request.get('id') in [x.get('id','') for x in formats]">
-	<div id="editObj" class="inner" tal:define="format python:[x for x in formats if x.get('id','')==request.get('id')][0]">
+	<div id="editObj" class="inner" tal:define="global format python:[x for x in formats if x['id']==request['id']][0]"> 
 		<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group">

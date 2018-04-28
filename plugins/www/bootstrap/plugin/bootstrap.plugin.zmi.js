@@ -861,7 +861,7 @@ ZMI.prototype.initInputFields = function(container) {
 				});
 			// Activity-Toggle
 			if ($("#zmi-toggle-activity").length==0) {
-				$("#attrActivity").each(function() {
+				$("#attrActivity",context).each(function() {
 						var $input = $(".activity input:checkbox",this);
 						if ($input.length>0) {
 							$(this).prev(".attr_last_modified").each(function() {

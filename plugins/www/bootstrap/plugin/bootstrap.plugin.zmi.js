@@ -860,7 +860,7 @@ ZMI.prototype.initInputFields = function(container) {
 					$ZMI.multiselect(context);
 				});
 			// Activity-Toggle
-			$("#attrActivity").each(function() {
+			$("#attrActivity",context).each(function() {
 					var $input = $(".activity input:checkbox",this);
 					if ($input.length>0) {
 						$(this).prev(".attr_last_modified").each(function() {

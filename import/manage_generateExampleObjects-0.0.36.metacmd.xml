@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="data"><![CDATA[## Script (Python) "manage_generateExampleObjects"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=*** DO NOT DELETE OR MODIFY ***
+##
+from Products.zms import standard
+
+self = context
+metaCmd = self.getMetacmdManager().getMetaCmd('manage_generateExampleObjects')
+request = context.REQUEST
+
+html = ''
+html += '<!DOCTYPE html>'
+html += '<html lang="en">'
+html += self.zmi_html_head(self,request)
+html += '<body class="%s">'%(' '.join(['zmi',request['lang'],self.meta_id]))
+html += self.zmi_body_header(self,request,options=[{'action':'#','label':metaCmd['name']}])
+html += '<div id="zmi-tab">'
+html += self.zmi_breadcrumbs(self,request)
+
+if request.get('btn') == self.getZMILangStr('BTN_EXECUTE'):
+  if request.get('meta_id'):
+    def traverse(node, l):
+      childNodes = node.getChildNodes(request,node.PAGES)
+      if (request['penetrance'] == 'sub_all' and node.isPage()) or \
+         (request['penetrance'] == 'sub_nav' and node.meta_id == 'ZMSFolder') or \
+         (request['penetrance'] == 'this'):
+        for metaObjAttrId in node.getMetaobjAttrIds(node.meta_id):
+          metaObjAttr = node.getMetaobjAttr(node.meta_id,metaObjAttrId)
+          if metaObjAttr['type'] == '*':
+            for i in range(int(request['objects'])):
+              meta_id = request['meta_id']
+              values = {'id_prefix':metaObjAttr['id']}
+              for id in request.get('ids'):
+                value = request[id]
+                if not value:
+                  objAttr = node.getMetaobjAttr(meta_id,id)
+                  if objAttr and objAttr['type'] in ['string','text']:
+                    value = '%s-%i'%(objAttr['name'],len(l))
+                if value:
+                  values[id] = value
+              node.manage_addZMSCustom(meta_id,values,request)
+              l.append(1)
+      if request['penetrance'] in ['sub_all','sub_nav']:
+        for childNode in childNodes:
+          traverse(childNode,l)
+    l = []
+    traverse(self,l)
+    html += '<div class="alert alert-success">%s [%i] (%s)</div>'%(unicode(self.getZMILangStr('BTN_EXECUTE'),'utf-8'),len(l),self.getLangFmtDate(DateTime()))
+
+html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+html += '<legend>%s</legend>'%(metaCmd['name'])
+
+html += '<div class="form-group">'
+html += '<label for="objects" class="col-sm-2 control-label mandatory"><span>%s</span></label>'%self.getZMILangStr('ATTR_OBJECTS')
+html += '<div class="col-sm-4"><input class="form-control" type="text" name="objects" value="%s"/></div>'%(request.get('objects','3'))
+html += '<div class="col-sm-6">'
+html += '<select class="form-control" type="text" name="penetrance">'
+for i in ['this','sub_nav','sub_all']:
+  html += '<option value="%s" %s>%s</option>'%(i,['','selected="selected"'][int(request.get('penetrance')==i)],self.getZMILangStr('OPT_AP_%s'%i.upper()))
+html += '</select>'
+html += '</div>'
+html += '</div><!-- .form-group -->'
+
+metaObjIds = self.getMetaobjIds()
+metaObjs = [x for x in [self.getMetaobj(x) for x in metaObjIds] if x['id'] not in ['ZMS'] and x['type'] in ['ZMSPackage','ZMSDocument','ZMSObject']]
+metaObjPackages = self.sort_list(['']+map(lambda x: x['id'],filter(lambda x: x['type']=='ZMSPackage', metaObjs)))
+metaObjPackages2 = [x for x in [x.get('package') for x in metaObjs] if x not in metaObjPackages]
+html += '<div class="form-group">'
+html += '<label for="meta_id" class="col-sm-2 control-label mandatory"><span>%s</span></label>'%self.getZMILangStr('ATTR_TYPE')
+html += '<div class="col-sm-10">'
+html += '<select class="form-control" name="meta_id">'
+html += '<option></option>'
+for metaObjPackage in self.sort_list(metaObjPackages+metaObjPackages2):
+  if metaObjPackage:
+    html += '<option value="">--- %s ---</option>'%metaObjPackage
+  else:
+    html += '<option value="">--- [default package] ---</option>'
+  for metaObj in metaObjs:
+    if metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage:
+      html += '<option value="%s"%s>%s (%s)</option>'%(metaObj['id'],['',' selected="selected"'][int(request.get('meta_id')==metaObj['id'])],metaObj['id'],metaObj['name'])
+html += '</select>'
+html += '</div><!-- .col-sm-9 -->'
+html += '</div><!-- .form-group -->'
+
+html += '<div class="form-group">'
+html += '<div class="controls save">'
+html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(unicode(self.getZMILangStr('BTN_EXECUTE'),'utf-8'),unicode(self.getZMILangStr('BTN_EXECUTE'),'utf-8'))
+html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button> '%(unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'))
+html += '</div>'
+html += '</div><!-- .form-group -->'
+
+# ---------------------------------
+
+html += '</form><!-- .form-horizontal -->'
+html += '<div style="clear:both;">&nbsp;</div>'
+html += '</div><!-- #zmi-tab -->'
+html += self.zmi_body_footer(self,request)
+html += """<script>
+$(function() {
+  $('select[name=meta_id]').change(function() {
+      $("#__obj_attrs__").remove();
+      var $that = $(this);
+      var v = $('option:selected',this).val();
+      if (v.length > 0) {
+        $.get('metaobj_manager/manage_changeProperties',{lang:getZMILang(),btn:getZMILangStr('BTN_EXPORT'),'ids:list':v},function(response) {
+            var html = '<div id="__obj_attrs__" class="form-group col-sm-12">';
+            html += '<table class="table">';
+            var l = [
+              {id:'attr_active_start','type':'datetime','name':getZMILangStr('ATTR_START_DAT')},
+              {id:'attr_active_end','type':'datetime','name':getZMILangStr('ATTR_END_DAT')},
+            ];
+            $("dictionary > item > dictionary > item[key='__obj_attrs__'] > list > item > dictionary",response).each(function() {
+                var itype = $("item[key='type']",this).text();
+                if (['date','datetime','float','int','string','text','url'].includes(itype)) {
+                  l[l.length] = {
+                    id:$("item[key='id']",this).text(),
+                    type:itype,
+                    name:$("item[key='name']",this).text(),
+                  };
+                }
+              });
+            for (var i=0; i < l.length; i++) {
+              var d = l[i];
+              html += '<tr>';
+              html += '<td align="center"><input type="checkbox" name="ids:list" value="'+d['id']+'" checked="checked"/></td>';
+              html += '<td>'+d['id']+'</td>';
+              html += '<td>'+d['type']+'</td>';
+              html += '<td>'+d['name']+'</td>';
+              html += '<td>';
+              if (d['type'] == 'date' || d['type'] == 'datetime') {
+                html += '<input class="form-control input-sm" type="text" name="'+d['id']+'" value=""/>';
+              } else if (d['type'] == 'string') {
+                html += '<input class="form-control input-sm" type="text" name="'+d['id']+'" value=""/>';
+              } else if (d['type'] == 'text') {
+                html += '<textarea class="form-control input-sm" rows="1" type="text" name="'+d['id']+'">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</textarea>';
+              }
+              html += '</td>';
+              html += '</tr>';
+            }
+            html += '</table><!-- .table -->';
+            html += '</div><!-- .form-group -->';
+            $that.parents('.form-group').after(html);
+          });
+      }
+    }).change();
+});
+</script>"""
+html += '</body>'
+html += '</html>'
+
+return html
+]]>
+      </item>
+      <item key="description"></item>
+      <item key="exec" type="int">0</item>
+      <item key="icon_clazz">icon-magic</item>
+      <item key="id">manage_generateExampleObjects</item>
+      <item key="meta_type"><![CDATA[Script (Python)]]></item>
+      <item key="meta_types" type="list">
+        <list>
+          <item>type(ZMSDocument)</item>
+          <item>type(ZMSObject)</item>
+        </list>
+      </item>
+      <item key="name"><![CDATA[Generate example objects...]]></item>
+      <item key="revision">0.0.36</item>
+      <item key="roles" type="list">
+        <list>
+          <item>*</item>
+        </list>
+      </item>
+      <item key="title"><![CDATA[Generate example objects...]]></item>
+    </dictionary>
+  </item>
+</list>

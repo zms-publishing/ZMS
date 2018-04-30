@@ -299,7 +299,7 @@ class ObjAttrs:
             try:
               opts = standard.dt_exec(self,v)
             except:
-              opts = standard.writeError(self,'[getObjOptions]: key=%s'%obj_attr['id'])
+              opts = standard.writeError(self,'[getObjOptions]: key=%s,v=%s'%(obj_attr['id'],str(v)))
           else:
             for i in range(len(obj_attropts)/2):
               opts.append([obj_attropts[i*2],obj_attropts[i*2+1]])

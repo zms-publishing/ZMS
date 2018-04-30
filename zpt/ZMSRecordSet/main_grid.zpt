@@ -113,7 +113,7 @@
     qindex python:records.index(record);
     name python:['qindices:list','qindex'][int('select' in actions)]">
 <tal:block tal:condition="python:options.has_key('record_handler')">
-  <tal:block tal:define="global record python:options['record_handler'](record)"></tal:block>
+  <tal:block tal:define="global record python:options['record_handler'].handle_record(record)"></tal:block>
 </tal:block>
 <tr tal:define="value python:record.get('__id__',qindex)" 
     tal:attributes="id python:'tr_%i'%qindex; 

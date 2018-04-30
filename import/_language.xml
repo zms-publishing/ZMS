@@ -6510,6 +6510,13 @@
     <Cell><Data ss:Type="String">פריט</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">TYPE_ZMSOBJECTSET</Data></Cell>
+    <Cell><Data ss:Type="String">Objekttabelle</Data></Cell>
+    <Cell><Data ss:Type="String">Objecttable</Data></Cell>
+    <Cell ss:Index="5"><Data ss:Type="String">Table de objets</Data></Cell>
+    <Cell><Data ss:Type="String">Tabella di oggetti</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">TYPE_ZMSSQLDB</Data></Cell>
     <Cell><Data ss:Type="String">SQL-Datenquelle</Data></Cell>
     <Cell><Data ss:Type="String">SQL-Datasource</Data></Cell>

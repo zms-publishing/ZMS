@@ -387,6 +387,7 @@ class ZMSCustom(ZMSContainerObject):
                 fkMetaObjRecordSet = fkContainer.attr(fkMetaObjAttrIdRecordSet);
                 fkMetaObjIdId = parent.getMetaobjAttrIdentifierId(fkContainer.meta_id)
                 self.fk[k] = {'fkMetaObj':fkMetaObj,'fkMetaObjRecordSet':fkMetaObjRecordSet,'fkMetaObjIdId':fkMetaObjIdId}
+        handle_record__roles__ = None
         def handle_record(self, r):
           d = {}
           for k in r.keys():

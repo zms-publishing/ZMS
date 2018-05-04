@@ -454,6 +454,7 @@ class ZMSSqlDb(ZMSCustom):
         def __init__(self, parent, tableName):
           self.parent = parent 
           self.tableName = tableName
+        handle_record__roles__ = None
         def handle_record(self, r):
           context = self.parent
           d = {}

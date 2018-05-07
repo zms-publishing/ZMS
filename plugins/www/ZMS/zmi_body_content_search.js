@@ -127,18 +127,21 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 			fq.push('home_id_s:'+home_id);
 		}
 		p['fq'] = fq;
-    try {
-        var baseurl = zmiParams['base_url'];
-    } catch(e) {
-        console.log(e);
-        var baseurl = window.location['pathname'].split('content')[0];
-    }
-    if (baseurl.indexOf("/content")>0) {
-      baseurl = baseurl.substr(0,baseurl.indexOf("/content")+"/content".length);
-    }
-    var adapter = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_adapter');
-    var connector = $ZMI.getConfProperty('zms.search.connector.id','zcatalog_connector');
-    var url = baseurl+'/'+adapter+'/'+connector+'/search_xml';
+		var baseurl = $('meta[name=physical_path]').attr('content');
+		if (typeof baseurl == "undefined") {
+			try {
+				baseurl = zmiParams['base_url'];
+			} catch(e) {
+				console.log(e);
+				baseurl = window.location['pathname'];
+			}
+		}
+		if (baseurl.indexOf("/content")>0) {
+			baseurl = baseurl.substr(0,baseurl.indexOf("/content")+"/content".length);
+		}
+		var adapter = $ZMI.getConfProperty('zms.search.adapter.id','zcatalog_adapter');
+		var connector = $ZMI.getConfProperty('zms.search.connector.id','zcatalog_connector');
+		var url = baseurl+'/'+adapter+'/'+connector+'/search_xml';
     $.ajax({
       url:url,
       data:p,

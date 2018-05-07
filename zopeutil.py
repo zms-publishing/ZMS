@@ -176,13 +176,13 @@ def initPermissions(container, id, permissions={}):
   ob._proxy_roles=('Authenticated','Manager')
   # manage-artefacts need at least view permission
   if id.find( 'manage_') >= 0:
-    permission['Authenticated'] = list(set(permissions.get('Authenticated',[]) + ['View']))
+    permissions['Authenticated'] = list(set(permissions.get('Authenticated',[]) + ['View']))
   # apply permissions for roles
   for role in permissions:
     permission = permissions[role]
     ob.manage_role(role_to_manage=role,permissions=permission)
   # activate all acquired permissions
-  manager_permissions = [x['name'] for x in self.permissionsOfRole('Manager') if x['selected']=='SELECTED']
+  manager_permissions = [x['name'] for x in ob.permissionsOfRole('Manager') if x['selected']=='SELECTED']
   acquired_permissions = [x for x in manager_permissions if x not in permissions]
   ob.manage_acquiredPermissions(acquired_permissions)
 

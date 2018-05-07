@@ -48,7 +48,7 @@ def getExternalMethodModuleName(container, id):
   return m
 
 security.declarePublic('addObject')
-def addObject(container, meta_type, id, title, data):
+def addObject(container, meta_type, id, title, data, permissions={}):
   """
   Add Zope-object to container.
   """
@@ -72,6 +72,7 @@ def addObject(container, meta_type, id, title, data):
     addFolder( container, id, title, data)
   elif meta_type == 'Z SQL Method':
     addZSqlMethod( container, id, title, data)
+  initPermissions(container, id, permissions)
 
 security.declarePublic('getObject')
 def getObject(container, id):
@@ -164,21 +165,26 @@ def removeObject(container, id, removeFile=True):
     container.manage_delObjects(ids=[id])
 
 security.declarePublic('initPermissions')
-def initPermissions(container, id):
+def initPermissions(container, id, permissions={}):
   """
   Init permissions for Zope-object:
   - set Proxy-role 'Manager'
   - set View-permissions to 'Authenticated' and remove acquired permissions for manage-objects.
   """
+  # apply proxy-roles
   ob = getattr( container, id)
   ob._proxy_roles=('Authenticated','Manager')
-  permissions = []
+  # manage-artefacts need at least view permission
   if id.find( 'manage_') >= 0:
-    ob.manage_role(role_to_manage='Authenticated',permissions=['View'])
-  else:
-    # activate all acquired permissions
-    permissions = map(lambda x:x['name'],filter(lambda x:x['selected']=='SELECTED',ob.permissionsOfRole('Manager')))
-  ob.manage_acquiredPermissions(permissions)
+    permission['Authenticated'] = list(set(permissions.get('Authenticated',[]) + ['View']))
+  # apply permissions for roles
+  for role in permissions:
+    permission = permissions[role]
+    ob.manage_role(role_to_manage=role,permissions=permission)
+  # activate all acquired permissions
+  manager_permissions = [x['name'] for x in self.permissionsOfRole('Manager') if x['selected']=='SELECTED']
+  acquired_permissions = [x for x in manager_permissions if x not in permissions]
+  ob.manage_acquiredPermissions(acquired_permissions)
 
 def addDTMLMethod(container, id, title, data):
   """
@@ -186,7 +192,6 @@ def addDTMLMethod(container, id, title, data):
   @deprecated
   """
   container.manage_addDTMLMethod( id, title, data)
-  initPermissions(container, id)
 
 def addDTMLDocument(container, id, title, data):
   """
@@ -194,7 +199,6 @@ def addDTMLDocument(container, id, title, data):
   @deprecated
   """
   container.manage_addDTMLDocument( id, title, data)
-  initPermissions(container, id)
 
 def addExternalMethod(container, id, title, data):
   """

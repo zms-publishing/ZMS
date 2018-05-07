@@ -311,7 +311,7 @@ class ZMSMetacmdProvider(
           newData += '  return "This is the external method ' + newId + '"\n'
       zopeutil.removeObject(container, id)
       zopeutil.removeObject(container, newId)
-      zopeutil.addObject(container, newMethod, newId, newTitle, newData)
+      zopeutil.addObject(container, newMethod, newId, newTitle, newData, permissions={'Authenticated':['View']})
       
       # Return with new id.
       return newId

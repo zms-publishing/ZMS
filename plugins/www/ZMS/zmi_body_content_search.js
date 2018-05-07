@@ -127,11 +127,14 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 			fq.push('home_id_s:'+home_id);
 		}
 		p['fq'] = fq;
-    try {
-        var baseurl = zmiParams['base_url'];
-    } catch(e) {
+    var baseurl = $('meta[name=physical_path]').attr('content');
+    if (typeof baseurl == "undefined") {
+      try {
+        baseurl = zmiParams['base_url'];
+      } catch(e) {
         console.log(e);
-        var baseurl = window.location['pathname'].split('content')[0];
+        baseurl = window.location['pathname'];
+      }
     }
     if (baseurl.indexOf("/content")>0) {
       baseurl = baseurl.substr(0,baseurl.indexOf("/content")+"/content".length);

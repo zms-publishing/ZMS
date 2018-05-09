@@ -1,27 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <dictionary>
-<item key="data"><![CDATA[<dtml-call "REQUEST.set('count',0)">
-<dtml-in "getTreeNodes(REQUEST)">
- <dtml-call "setObjStateModified(REQUEST)">
- <dtml-call "setObjProperty('active',1,REQUEST['lang'])">
- <dtml-call "onChangeObj(REQUEST,forced=1)">
- <dtml-call "REQUEST.set('count',REQUEST['count']+1)">
-</dtml-in>
-<dtml-return "'%i Objects activated!'%REQUEST['count']">]]></item>
-<item key="description"></item>
-<item key="exec" type="int">1</item>
-<item key="icon_clazz"><![CDATA[icon-globe text-primary]]></item>
-<item key="id"><![CDATA[manage_activateLanguage]]></item>
-<item key="meta_type"><![CDATA[DTML Method]]></item>
-<item key="meta_types" type="list"><list>
-<item><![CDATA[ZMSDocument]]></item>
-<item><![CDATA[ZMSFolder]]></item>
-<item><![CDATA[ZMS]]></item>
-</list>
-</item>
-<item key="name"><![CDATA[Activate language!]]></item>
-<item key="roles" type="list"><list>
-<item><![CDATA[ZMSAdministrator]]></item>
-</list>
-</item>
+  <item key="data"><![CDATA[## Script (Python) "manage_activateLanguage"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=
+##title=*** DO NOT DELETE OR MODIFY ***
+##
+request = container.REQUEST
+response =  request.response
+
+node_start = context
+
+# TEST
+# request.set('lang','eng')
+# node_start = context.content.e12502
+
+node_tree = []
+node_tree = node_start.getTreeNodes(request)
+node_tree.append(node_start)
+count = 0
+count_error = 0
+info = 'ERROR'
+
+for ob in node_tree:
+    try:
+        ob.setObjStateModified(request)
+        ob.setObjProperty('active',1,request['lang'])
+        ob.onChangeObj(request,forced=1)
+        info = 'SUCCESS'
+    except:
+        info = 'ERROR'
+        count_error += 1
+    count += 1
+    print '%s %s. %s/manage'%(info, count, ob.absolute_url())
+
+# REPORT
+if len(printed) > 1000:
+    return '%s Objects are processed (%s Errors)'%(count,count_error)
+else:
+    return '<pre style="border:none;background:none;">%s</pre>'%printed
+]]>
+  </item>
+  <item key="description"><![CDATA[You really want start a recursive changing of all content objects in this language? This can last some minutes and needs maximum performance!]]></item>
+  <item key="exec" type="int">1</item>
+  <item key="icon_clazz"><![CDATA[icon-globe text-danger]]></item>
+  <item key="id"><![CDATA[manage_activateLanguage]]></item>
+  <item key="meta_type"><![CDATA[Script (Python)]]></item>
+  <item key="meta_types" type="list">
+    <list>
+      <item><![CDATA[type(ZMSDocument)]]></item>
+    </list>
+  </item>
+  <item key="name"><![CDATA[Activate Language]]></item>
+  <item key="roles" type="list">
+    <list>
+      <item><![CDATA[ZMSAdministrator]]></item>
+    </list>
+  </item>
+  <item key="title"><![CDATA[Activate all content objects of the contextual untranslated language]]></item>
 </dictionary>

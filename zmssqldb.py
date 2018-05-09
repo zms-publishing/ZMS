@@ -474,10 +474,10 @@ class ZMSSqlDb(ZMSCustom):
                     for i in v:
                       l = filter(lambda x:str(x[0])==str(i), o)
                       if len(l) > 0:
-                        value .append(l[0][1])
+                        value.append(str(l[0][1]))
                     value = ', '.join(value)
             except:
-              standard.writeError( self, '[getEntityRecordHandler]: can\'t %s'%k)
+              standard.writeError( context, '[getEntityRecordHandler]: can\'t %s'%k)
             d[k] = value
           primary_key = context.getEntityPK(tableName)
           rowid = context.operator_getitem(d,primary_key,ignorecase=True)

@@ -171,8 +171,10 @@ def initPermissions(container, id, permissions={}):
   - set Proxy-role 'Manager'
   - set View-permissions to 'Authenticated' and remove acquired permissions for manage-objects.
   """
+  ob = getattr( container, id, None)
+  if ob is None: return
+  
   # apply proxy-roles
-  ob = getattr( container, id)
   ob._proxy_roles=('Authenticated','Manager')
   # manage-artefacts need at least view permission
   if id.find( 'manage_') >= 0:

@@ -842,7 +842,7 @@ class AccessManager(AccessableContainer):
           if userObj is not None:
             details = userObj.get('details',[])
             for detail in filter(lambda x:x['name']==name,details):
-              v = details.get('value',None)
+              v = detail.get('value',None)
         if v is None and name == 'email':
           v = self.getUserAttr(user,'mail')
       return v

@@ -841,7 +841,7 @@ class AccessManager(AccessableContainer):
           if userObj is not None:
             details = userObj.get('details', [])
             for detail in [x for x in details if x['name'] == name]:
-              v = details.get('value', None)
+              v = detail.get('value', None)
         if v is None and name == 'email':
           v = self.getUserAttr(user, 'mail')
       return v

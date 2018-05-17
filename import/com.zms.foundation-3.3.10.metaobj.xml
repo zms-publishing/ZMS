@@ -2859,7 +2859,8 @@ return constraints
 		target        python:zmscontext.attr('attr_type');
 		align         python:zmscontext.attr('align');
 		abstract      python:zmscontext.attr('attr_abstract').replace('\n','<br/>');
-		subclass      python:[zmscontext.meta_id]+[['external','internal'][int(ref.startswith('{$') and ref.endswith('}'))]];"
+		domain        python:zmscontext.getConfProperty('ASP.ip_or_domain','');
+		subclass      python:[zmscontext.meta_id]+[['external','internal'][int((domain != '' and domain in ref) or (ref.startswith('{$') and ref.endswith('}')))]];"
 	><tal:block tal:condition="python:target!='iframe'"
 		><tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']"
 			><tal:block tal:define="global subclass python:subclass+[align.lower()]"></tal:block

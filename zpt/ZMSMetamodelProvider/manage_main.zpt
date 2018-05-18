@@ -87,6 +87,7 @@
 
 	<legend class="pull-left col-sm-6">
 		<span tal:attributes="id metaObj/id">
+			<input tal:condition="python:metaObj.get('acquired')" type="hidden" name="id" tal:attributes="value metaObj/id">
 			<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
 			<a target="_blank" style="text-decoration:none;" 
 				tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" 

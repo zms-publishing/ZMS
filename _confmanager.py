@@ -238,9 +238,10 @@ class ConfManager(
       """
       filenames = {}
       filepaths = [
-        self.Control_Panel.getINSTANCE_HOME()+'/etc/zms/import/',
-        package_home(globals())+'/import/',]
+        os.path.join(standard.getINSTANCE_HOME(),'etc','zms'),
+        package_home(globals()),]
       for filepath in filepaths:
+        filepath = os.path.join(filepath[:filepath.find('zms')],'zms','import')
         filename = os.path.join(filepath,'configure.zcml')
         if os.path.exists(filename):
           standard.writeBlock( self, "[getConfFiles]: Read from "+filename)
@@ -260,14 +261,12 @@ class ConfManager(
                 except:
                   standard.writeError(self,"[getConfFiles]: can't get conf-files from remote URL=%s"%remote_location)
             else:
-              for filepath in filepaths:
-                if os.path.exists( filepath):
-                  for filename in os.listdir(filepath+location):
-                    path = filepath + filename
-                    mode = os.stat(path)[stat.ST_MODE]
-                    if not stat.S_ISDIR(mode):
-                      if filename not in filenames:
-                        filenames[path] = filename
+              for filename in os.listdir(os.path.join(filepath,location)):
+                path = os.path.join(filepath,filename)
+                mode = os.stat(path)[stat.ST_MODE]
+                if not stat.S_ISDIR(mode):
+                  if filename not in filenames:
+                    filenames[path] = filename
           break
       # Filter.
       if pattern is not None:
@@ -575,7 +574,7 @@ class ConfManager(
       if REQUEST is not None:
         import base64
         key = base64.b64decode(key)
-      if OFS.misc_.misc_.zms['confdict'].has_key(key):
+      if hasattr(OFS.misc_.misc_,'zms') and OFS.misc_.misc_.zms.has_key('confdict') and OFS.misc_.misc_.zms['confdict'].has_key(key):
         default = OFS.misc_.misc_.zms['confdict'].get(key)
       value = default
       confdict = self.getConfProperties()
@@ -955,12 +954,13 @@ class ConfManager(
           def importXml(self, xml): pass
           def getMetaobjId(self, name): return None
           def getMetaobjIds(self, sort=False, excl_ids=[]): return []
-          def getMetaobj(self, id): return None
+          def getMetaobj(self, id): return {'id':id,'type':'string'}
           def getMetaobjAttrIds(self, meta_id, types=[]): return []
           def getMetaobjAttrs(self, meta_id,  types=[]): return []
           def getMetaobjAttr(self, id, attr_id): return None
           def getMetaobjAttrIdentifierId(self, meta_id): return None
           def notifyMetaobjAttrAboutValue(self, meta_id, key, value): return None
+          def evalMetaobjAttr(self, id, attr_id, zmscontext=None, options={}): return None
         manager = DefaultMetaobjManager()
       return manager
 

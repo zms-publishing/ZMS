@@ -156,7 +156,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj._setObject( manager.id, manager)
 
   ### Init languages.
-  obj.setLanguage(lang,REQUEST['lang_label'],'',manage_lang)
+  obj.setLanguage(lang,REQUEST.get('lang_label',''),'',manage_lang)
 
   ### Log.
   if REQUEST.get('zmslog'):
@@ -536,7 +536,12 @@ class ZMS(
       v = self.get_conf_properties().get('Portal.Master','')
       if len(v) > 0:
         try:
-          return getattr( self, v).content
+          home = getattr(self,v,None)
+          if home is None:
+            home = self
+            while home is not None and home.id != v:
+              home = home.aq_parent
+          return home.content
         except:
           standard.writeError(self, '[getPortalMaster]: %s not found!'%str(v))
       return None

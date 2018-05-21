@@ -10,7 +10,8 @@ import unittest
 import sys
 sys.path.append("..")
 
-# /Products/zms> python -m unittest unit_tests._mediadb_test.MediaDbTest
+# /Products/zms> python -m unittest discover -s unit_tests
+# /Products/zms> python -m unittest unit_tests.test_mediadb.MediaDbTest
 class MediaDbTest(unittest.TestCase):
 
     def setUp(self):

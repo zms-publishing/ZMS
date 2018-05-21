@@ -21,6 +21,7 @@
 from App.Common import package_home
 import OFS.misc_
 import copy
+import os
 import urllib
 from zope.interface import implementer
 # Product Imports.
@@ -114,8 +115,9 @@ class langdict:
       """
       manage_langs = []
       lang_dict = {}
-      filepath = package_home(globals())+'/import/'
-      xmlfile = open(_fileutil.getOSPath(filepath+filename),'rb')
+      filepath = package_home(globals())
+      filepath = os.path.join(filepath[:filepath.find('zms')],'zms','import')
+      xmlfile = open(os.path.join(filepath,filename),'rb')
       builder = _xmllib.XmlBuilder()
       nWorkbook = builder.parse(xmlfile)
       for nWorksheet in _xmllib.xmlNodeSet(nWorkbook,'Worksheet'):
@@ -264,12 +266,13 @@ class MultiLanguageManager:
           return d[key][lang]
       
       # Return system value.
-      d = OFS.misc_.misc_.zms['langdict'].get_langdict()
-      if d.has_key(key):
-        if not d[key].has_key(lang):
-          lang = 'eng'
-        if d[key].has_key(lang):
-          return d[key][lang]
+      if hasattr(OFS.misc_.misc_,'zms') and OFS.misc_.misc_.zms.has_key('langdict'):
+        d = OFS.misc_.misc_.zms['langdict'].get_langdict()
+        if d.has_key(key):
+          if not d[key].has_key(lang):
+            lang = 'eng'
+          if d[key].has_key(lang):
+            return d[key][lang]
       
       return key
 
@@ -321,8 +324,8 @@ class MultiLanguageManager:
       if not langs.has_key(id):
         id = self.getPrimaryLanguage()
       parent = id
-      while 1:
-        parent = langs[parent]['parent']
+      while True:
+        parent = langs.get(parent,{}).get('parent')
         if parent:
           obs.append(parent)
         else:

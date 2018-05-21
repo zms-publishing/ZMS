@@ -385,7 +385,12 @@ class ZReferableItem:
           ob = self
           try:
             for id in filter(lambda x:len(x)>0,l):
-              ob = getattr(ob,id,None)
+              new_ob = getattr(ob,id,None)
+              if new_ob is None:
+                new_ob = ob
+                while new_ob is not None and new_ob.id != id:
+                  new_ob = new_ob.aq_parent
+              ob = new_ob
           except:
             pass
         return ob

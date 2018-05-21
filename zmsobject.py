@@ -664,7 +664,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.breadcrumbs_obj_path:
     # --------------------------------------------------------------------------
     def breadcrumbs_obj_path(self, portalMaster=True):
-      REQUEST = self.REQUEST
       # Handle This.
       rtn = []
       obj = self

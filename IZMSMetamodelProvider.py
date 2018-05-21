@@ -69,3 +69,9 @@ class IZMSMetamodelProvider(Interface):
     Notify attribute for meta-object specified by attribute-id about value.
     @rtype: C{dict}
     """
+
+  def evalMetaobjAttr(self, id, attr_id, zmscontext=None, options={}):
+    """
+    Eval attribute for meta-object specified by attribute-id.
+    @rtype: C{any}
+    """

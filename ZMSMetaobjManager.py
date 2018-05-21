@@ -820,7 +820,7 @@ class ZMSMetaobjManager:
         elif isinstance( newCustom, _blobfields.MyBlob):
           if oldId is not None and id+'.'+oldId in self.objectIds():
             self.manage_delObjects(ids=[id+'.'+oldId])
-          zopeutil.addFile(self,id+'.'+newId,newCustom.getFilename(),newCustom.getData())
+          zopeutil.addObject(self,'File',id+'.'+newId,newCustom.getFilename(),newCustom.getData())
         elif oldId is not None and oldId != newId and id+'.'+oldId in self.objectIds():
           self.manage_renameObject(id=id+'.'+oldId,new_id=id+'.'+newId)
         if not ob['type'] == 'ZMSRecordSet':

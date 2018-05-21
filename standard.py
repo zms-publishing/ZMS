@@ -818,7 +818,9 @@ def writeError(context, info):
   except:
     pass
   rtn = '%s: %s <!-- %s -->'%(t,v,info)
-  context.REQUEST.set('ZMS_MESSAGES',context.REQUEST.get('ZMS_MESSAGES',[])+[('ERROR',rtn)])
+  request = getattr(context,'REQUEST',None)
+  if request:
+    request.set('ZMS_MESSAGES',request.get('ZMS_MESSAGES',[])+[('ERROR',rtn)])
   return rtn
 
 #)

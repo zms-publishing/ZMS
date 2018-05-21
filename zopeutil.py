@@ -52,27 +52,29 @@ def addObject(container, meta_type, id, title, data, permissions={}):
   """
   Add Zope-object to container.
   """
-  #try: container.writeBlock("[zopeutil.addObject]: %s@%s +%s(%s)"%(container.meta_type,container.absolute_url(),id,meta_type))
-  #except: pass
-  if meta_type == 'DTML Document':
-    addDTMLDocument( container, id, title, data)
-  elif meta_type == 'DTML Method':
-    addDTMLMethod( container, id, title, data)
-  elif meta_type == 'External Method':
-    addExternalMethod( container, id, title, data)
-  elif meta_type == 'File':
-    addFile( container, id, title, data)
-  elif meta_type == 'Image':
-    addImage( container, id, title, data)
-  elif meta_type == 'Page Template':
-    addPageTemplate( container, id, title, data)
-  elif meta_type == 'Script (Python)':
-    addPythonScript( container, id, title, data)
-  elif meta_type == 'Folder':
-    addFolder( container, id, title, data)
-  elif meta_type == 'Z SQL Method':
-    addZSqlMethod( container, id, title, data)
-  initPermissions(container, id, permissions)
+  try:
+    if meta_type == 'DTML Document':
+      addDTMLDocument( container, id, title, data)
+    elif meta_type == 'DTML Method':
+      addDTMLMethod( container, id, title, data)
+    elif meta_type == 'External Method':
+      addExternalMethod( container, id, title, data)
+    elif meta_type == 'File':
+      addFile( container, id, title, data)
+    elif meta_type == 'Image':
+      addImage( container, id, title, data)
+    elif meta_type == 'Page Template':
+      addPageTemplate( container, id, title, data)
+    elif meta_type == 'Script (Python)':
+      addPythonScript( container, id, title, data)
+    elif meta_type == 'Folder':
+      addFolder( container, id, title, data)
+    elif meta_type == 'Z SQL Method':
+      addZSqlMethod( container, id, title, data)
+    initPermissions(container, id, permissions)
+  except:
+    standard.writeError(container, "can't addObject")
+    return None
 
 security.declarePublic('getObject')
 def getObject(container, id):

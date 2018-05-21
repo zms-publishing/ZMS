@@ -23,6 +23,7 @@ import copy
 import urllib
 # Product Imports.
 import standard
+import zopeutil
 import _blobfields
 
 
@@ -125,7 +126,7 @@ class ZMSCharformatManager:
       if isinstance( newBtn, _blobfields.MyImage):
         if ob.get('btn') in self.objectIds():
           self.manage_delObjects(ids=[ob['btn']])
-        self.manage_addImage( id=newBtn.getFilename(), file=newBtn.getData(), title='', content_type=newBtn.getContentType())
+        zopeutil.addObject(self, 'Image', id=newBtn.getFilename(), title='', data=newBtn.getData())
         newBtn = newBtn.getFilename()
       else:
         newBtn = ob.get('btn')

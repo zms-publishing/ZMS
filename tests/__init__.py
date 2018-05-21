@@ -6,4 +6,3 @@ import test_multilang
 import test_performance
 import test_pilutil
 import test_standard
-import test_xmllib

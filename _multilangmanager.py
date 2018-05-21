@@ -266,7 +266,7 @@ class MultiLanguageManager:
           return d[key][lang]
       
       # Return system value.
-      if hasattr(OFS.misc_.misc_,'zms') and OFS.misc_.misc_.zms.has_key('langdict'):
+      if hasattr(OFS.misc_.misc_,'zms') and OFS.misc_.misc_.zms['langdict']:
         d = OFS.misc_.misc_.zms['langdict'].get_langdict()
         if d.has_key(key):
           if not d[key].has_key(lang):

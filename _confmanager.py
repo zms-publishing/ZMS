@@ -574,7 +574,7 @@ class ConfManager(
       if REQUEST is not None:
         import base64
         key = base64.b64decode(key)
-      if hasattr(OFS.misc_.misc_,'zms') and OFS.misc_.misc_.zms.has_key('confdict') and OFS.misc_.misc_.zms['confdict'].has_key(key):
+      if hasattr(OFS.misc_.misc_,'zms') and OFS.misc_.misc_.zms['confdict'] and OFS.misc_.misc_.zms['confdict'].get(key):
         default = OFS.misc_.misc_.zms['confdict'].get(key)
       value = default
       confdict = self.getConfProperties()

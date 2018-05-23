@@ -24,7 +24,9 @@ from OFS.CopySupport import absattr
 from OFS.Image import Image, File
 from cStringIO import StringIO
 from mimetools import choose_boundary
+import base64
 import copy
+import re
 import time
 import urllib
 import warnings
@@ -150,15 +152,24 @@ def createBlobField(self, objtype, file=''):
 _blobfields.uploadBlobField
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def uploadBlobField(self, clazz, file='', filename=''):
+  # bytes
   try:
     file = file.read()
   except:
     pass
-  mt, enc = standard.guess_content_type(filename,file)
+  # dataURI
+  f = re.findall('^data:(.*?);base64,([\s\S]*)$',file)
+  if f:
+    mt = f[0][0]
+    file = base64.b64decode(f[0][1])
+  else:
+    mt, enc = standard.guess_content_type(filename,file)
+  # class
   if clazz in [_globals.DT_IMAGE,'image'] or mt.startswith('image'):
     clazz = MyImage
   elif clazz in [_globals.DT_FILE,'file']:
     clazz = MyFile
+  # init
   blob = clazz( id='',title='',file='')
   blob.update_data(file,content_type=mt,size=len(file))
   blob.aq_parent = self
@@ -643,6 +654,15 @@ class MyBlob:
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.getDataURI
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    getDataURI__roles__ = None
+    def getDataURI(self):
+      dataURI = 'data:%s;base64,%s'%(self.getContentType(),base64.encodestring(str(self.getData())))
+      return dataURI
+
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlob.getData:
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getData__roles__ = None
@@ -970,6 +990,14 @@ class MyBlobWrapper:
     getFilename__roles__ = None
     def getFilename(self):
       return absattr( self.f.id)
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlobWrapper.getDataURI:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    getDataURI__roles__ = None
+    def getDataURI(self):
+      dataURI = 'data:%s;base64,%s'%(self.getContentType(),base64.encodestring(str(self.getData())))
+      return dataURI
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlobWrapper.getData:

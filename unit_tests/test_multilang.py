@@ -8,6 +8,7 @@ from OFS.Folder import Folder
 # Product imports.
 from zms_test_util import *
 import zms
+import _confmanager
 import _multilangmanager
 sys.path.append("..")
 
@@ -19,7 +20,15 @@ class MultiLanguageTest(unittest.TestCase):
   temp_title = 'temp-test'
 
   def setUp(self):
-    setattr(OFS.misc_.misc_,'zms',{'langdict':_multilangmanager.langdict()})
+    class ZMS(object):
+      def __getitem__(self, k, v=None):
+        return getattr(self,k,v)
+      def __setitem__(self, k, v):
+        setattr(self,k,v)
+    _zms = ZMS()
+    _zms['confdict'] = _confmanager.ConfDict.get()
+    _zms['langdict'] = _multilangmanager.langdict()
+    OFS.misc_.misc_.zms = _zms
     folder = Folder('myzmsx')
     folder.REQUEST = HTTPRequest({'lang':'eng'})
     zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)

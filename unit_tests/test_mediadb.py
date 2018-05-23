@@ -42,8 +42,8 @@ class MediaDbTest(unittest.TestCase):
     def test_storeFile(self):
         print(self,"test_storeFile")
         filepath = "../plugins/www/img/acl_mediadb.png"
-        modulepath = list(os.path.split(inspect.getfile(self.__class__))[:-1])
-        file = open(os.path.join(modulepath)+os.sep+filepath,"rb")
+        modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
+        file = open(os.path.join(modulepath,filepath),"rb")
         filedata = file.read()
         file.close()
         image = ImageFile(filepath,globals())

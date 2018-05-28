@@ -228,25 +228,14 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     if REQUEST.get('initialization',0)==1:
       initContent(obj,'content.default.zip',REQUEST)
 
-    ##### Configuration ####
-
+    ##### Configurations ####
     #-- Index
     if REQUEST.get('specobj_index',0) == 1:
       _confmanager.initConf(obj, 'com.zms.index', remote=False)
-
     #-- Search
     initContent(obj,'com.zms.search.content.xml',REQUEST)
-
-    #-- QUnit
-    if REQUEST.get('specobj_qunit',0) == 1:
-      # Init configuration.
-      _confmanager.initConf(obj, 'com.zms.test', remote=False)
-      # Init content.
-      initContent(obj,'com.zms.test.content.xml',REQUEST)
-
     # Initialize catalogs.
     obj.getCatalogAdapter().reindex_all()
-
     # Initialize access.
     obj.synchronizePublicAccess()
 

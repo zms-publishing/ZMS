@@ -1,8 +1,8 @@
+# install zope dependencies first via 
+# $ pip install -r requirements-zope4-bootstrap-zmi.txt
+
 # Backports from python3, can be removed once we have migrated to py3
 configparser
-
-# Require the current development status of zope with bootstrap zmi
--r requirements-zope4-bootstrap-zmi.txt
 
 # Additional ZMS dependencies
 docutils==0.14
@@ -50,5 +50,5 @@ ZopeUndo==4.3
 -e git+https://github.com/zopefoundation/Products.GenericSetup@master#egg=Products.GenericSetup
 
 # Install ZMS - for local install, exchange comments on the two following lines
--e svn+https://zmslabs.org/svn/zmslabs/ZMS/branches/zms4#egg=Products.zms
+# -e svn+https://zmslabs.org/svn/zmslabs/ZMS/branches/zms4#egg=Products.zms
 # -e .

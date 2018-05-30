@@ -61,7 +61,7 @@ INSTALL_REQUIRES = [
 README = open(os.path.join(setup_path, 'README')).read()
 
 # Remove text from version for PyPI
-VERSION = open(os.path.join(setup_path, 'version.txt')).read().replace('ZMS3-', '').replace('.REV', '')
+VERSION = open(os.path.join(setup_path, 'Products', 'zms', 'version.txt')).read().replace('ZMS3-', '').replace('.REV', '')
 VERSION = VERSION.strip().split('.')
 # Remove revision too
 if len(VERSION)==4: VERSION.pop()
@@ -125,7 +125,6 @@ setup(
   install_requires      = INSTALL_REQUIRES,
   namespace_packages    = ['Products'],
   packages              = ['Products.zms'],
-  package_dir           = {'Products.zms': '.'},
   package_data          = {'Products.zms': PACKAGE_DATA},
   data_files            = DATA_FILES,
   classifiers           = CLASSIFIERS,

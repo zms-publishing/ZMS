@@ -2,17 +2,9 @@
 The ZMS3 environment consists of an application server based on pegged versions 
 of depending packages (see requirements.txt).
 
-  Use '$ pip install -r requirements.txt'
-  to install the environment fetching packages from PyPI at https://pypi.python.org/pypi/
-  (official releases)
-
-  Use '$ pip install https://zmslabs.org/download/ZMS3-latest.tar.gz'
-  to install the environment fetching the latest nightly build from ZMSLabs
-  (maybe unstable)
-
-  Use '$ pip install -r https://zmslabs.org/svn/zmslabs/ZMS/trunk/requirements.txt'
+  Use '$ cd path/to/checkout && pip install -r requirements.txt'
   to install the environment fetching the latest development snapshots from SVN/GIT-Repositories
-  (maybe unstable)
+  (currently unstable)
 
 @see http://gpiot.com/blog/creating-a-python-package-and-publish-it-to-pypi/
 @see https://caremad.io/2013/07/setup-vs-requirement/
@@ -36,7 +28,7 @@ INSTALL_REQUIRES = [
   'Products.ExternalMethod',
   'Products.GenericSetup',
   'Products.MailHost',
-  'Products.MIMETools',
+#  'Products.MIMETools', # completely outdated, needs to be ported to python3
   'Products.OFSP',
   'Products.StandardCacheManagers',
   'tempstorage',

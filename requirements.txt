@@ -49,8 +49,6 @@ ZopeUndo==4.3
 # 2.0 / 2.1, which is as of yet unreleased
 -e git+https://github.com/zopefoundation/Products.GenericSetup@master#egg=Products.GenericSetup
 
-# Install ZMS
+# Install ZMS - for local install, exchange comments on the two following lines
+-e svn+https://zmslabs.org/svn/zmslabs/ZMS/branches/zms4#egg=Products.zms
 # -e .
-# Unfortunately this doesn't work due to https://github.com/pypa/setuptools/issues/230
-# So ZMS has to be installed by hand via a symlink with something like this:
-# ln -s $(pwd) $(virtualenvwrapper_get_site_packages_dir)/Products/zms

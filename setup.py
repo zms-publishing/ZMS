@@ -1,8 +1,13 @@
 """
-The ZMS3 environment consists of an application server based on pegged versions 
+The ZMS environment consists of an application server based on pegged versions 
 of depending packages (see requirements.txt).
 
-  Use '$ cd path/to/checkout && pip install -r requirements.txt'
+  Use
+    $ cd path/to/zms/checkout
+    $ pip install -r https://raw.githubusercontent.com/zopefoundation/Zope/zmi-bootstrap/requirements-full.txt
+    $ pip install -r requirements-zope4-bootstrap-zmi.txt
+    $ pip install -r requirements.txt
+    $ pip install -e .
   to install the environment fetching the latest development snapshots from SVN/GIT-Repositories
   (currently unstable)
 
@@ -88,8 +93,8 @@ if sys.platform[:3].lower() == "win":
 
 CLASSIFIERS = [
   'Development Status :: 4 - Beta',
-  'Framework :: Zope2',
-  'Programming Language :: Python :: 2.7',
+  'Framework :: Zope :: 4',
+  'Programming Language :: Python :: 3',
   'Operating System :: OS Independent',
   'Environment :: Web Environment',
   'Topic :: Internet :: WWW/HTTP :: Site Management',

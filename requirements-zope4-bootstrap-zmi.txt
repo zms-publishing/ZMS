@@ -1,5 +1,8 @@
 # Get the normal set of zope dependencies first with
 # $ pip install -r https://raw.githubusercontent.com/zopefoundation/Zope/zmi-bootstrap/requirements-full.txt
+# Sadly this cannot be linked directly here via
+# -r https://raw.githubusercontent.com/zopefoundation/Zope/zmi-bootstrap/requirements-full.txt
+# as we disagree about some versions we want to install
 
 # Need some pretty specific branches of zope and its dependencies
 -e git+https://github.com/zopefoundation/Zope.git@zmi-bootstrap#egg=Zope

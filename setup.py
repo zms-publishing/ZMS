@@ -5,7 +5,6 @@ of depending packages (see requirements.txt).
   Use
     $ cd path/to/zms/checkout
     $ pip install -r https://raw.githubusercontent.com/zopefoundation/Zope/zmi-bootstrap/requirements-full.txt
-    $ pip install -r requirements-zope4-bootstrap-zmi.txt
     $ pip install -r requirements.txt
     $ pip install -e .
   to install the environment fetching the latest development snapshots from SVN/GIT-Repositories

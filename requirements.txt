@@ -7,7 +7,7 @@ configparser
 # Additional ZMS dependencies
 docutils==0.14
 initgroups==4.0
-mechanize==0.2.5 ## very old version
+# mechanize==0.2.5 ## very old version, not ported to python3 at all - why do we need this?
 nt-svcutils==2.13.0
 Products.ExternalMethod==4.0
 Products.MailHost==4.1

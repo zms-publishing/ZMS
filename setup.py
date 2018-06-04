@@ -27,7 +27,7 @@ INSTALL_REQUIRES = [
   'docutils',
   'initgroups',
   'nt-svcutils',
-  'mechanize',
+  # 'mechanize', # completely outdated, not ported to python3
   'Products.CMFCore',
   'Products.ExternalMethod',
   'Products.GenericSetup',

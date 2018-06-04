@@ -57,7 +57,7 @@ INSTALL_REQUIRES = [
 README = open(os.path.join(setup_path, 'README')).read()
 
 # Remove text from version for PyPI
-VERSION = open(os.path.join(setup_path, 'Products', 'zms', 'version.txt')).read().replace('ZMS3-', '').replace('.REV', '')
+VERSION = open(os.path.join(setup_path, 'Products', 'zms', 'version.txt')).read().replace('ZMS4-', '').replace('.REV', '')
 VERSION = VERSION.strip().split('.')
 # Remove revision too
 if len(VERSION)==4: VERSION.pop()

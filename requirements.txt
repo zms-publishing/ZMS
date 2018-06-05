@@ -37,10 +37,11 @@ ZopeUndo==4.3
 
 # Optional ZMS dependencies
 # git+https://bitbucket.org/zms3/behave.git#egg=zms3.behave
-# git+https://bitbucket.org/zms3/formulator.git#egg=zms3.formulator
-# git+https://bitbucket.org/zms3/mindmap.git#egg=zms3.mindmap
-# git+https://bitbucket.org/zms3/photodb.git#egg=zms3.photodb
-# git+https://bitbucket.org/zms3/qrcode.git#egg=zms3.qrcode
+# git+https://github.com/zms-publishing/zms3.behave.git#egg=zms3.behave
+# git+https://github.com/zms-publishing/zms3.formulator.git#egg=zms3.formulator
+# git+https://github.com/zms-publishing/zms3.mindmap.git#egg=zms3.mindmap
+# git+https://github.com/zms-publishing/zms3.photodb.git#egg=zms3.photodb
+# git+https://github.com/zms-publishing/zms3.qrcode.git#egg=zms3.qrcode
 # git+https://bitbucket.org/zms3/themes.git#egg=zms3.themes
 
 # Unreleased branches of Zope Products

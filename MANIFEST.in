@@ -1,2 +1,5 @@
-graft dll
-include CHANGES
+global-include *
+global-exclude __pycache__ *.pyc
+prune dist 
+prune .git
+prune .svn

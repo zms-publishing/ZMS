@@ -63,33 +63,6 @@ VERSION = VERSION.strip().split('.')
 if len(VERSION)==4: VERSION.pop()
 VERSION = '.'.join(VERSION)
 
-PACKAGE_DATA = []
-# Exclude special folders and files
-for dirpath, dirnames, filenames in os.walk('.'):
-  if (
-    '.'                           != dirpath and
-    '.settings'                   not in dirpath and
-    '.svn'                        not in dirpath and
-    'ZMS3.egg-info'               not in dirpath and
-    'dist'                        not in dirpath and
-    'dll'                         not in dirpath and
-    'hotfixes'                    not in dirpath
-    ): 
-    if filenames: 
-      for filename in filenames:
-        if filename != '.DS_Store':
-          PACKAGE_DATA.append(dirpath[2:]+'/%s' % filename)
-# Include files from root path (because '.' is exclude above)
-PACKAGE_DATA.append('configure.zcml')
-PACKAGE_DATA.append('*.zpt')
-PACKAGE_DATA.append('*.txt')
-
-DATA_FILES = []
-if sys.platform[:3].lower() == "win":
-  DATA_FILES += [
-    (site_packages, ['dll/pywintypes27.dll', 'dll/win32file.pyd'])
-  ]
-
 CLASSIFIERS = [
   'Development Status :: 4 - Beta',
   'Framework :: Zope :: 4',
@@ -121,8 +94,6 @@ setup(
   install_requires      = INSTALL_REQUIRES,
   namespace_packages    = ['Products'],
   packages              = ['Products.zms'],
-  package_data          = {'Products.zms': PACKAGE_DATA},
-  data_files            = DATA_FILES,
   classifiers           = CLASSIFIERS,
   include_package_data  = True,
   zip_safe              = False,

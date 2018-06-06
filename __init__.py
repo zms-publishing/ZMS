@@ -29,7 +29,6 @@ __version__ = '0.1'
 from App.Common import package_home
 from App.ImageFile import ImageFile
 from DateTime.DateTime import DateTime
-import ConfigParser
 import OFS.misc_
 import fnmatch
 import os
@@ -68,6 +67,9 @@ except:
 ################################################################################
 # Define the initialize() function.
 ################################################################################
+
+__CONFDICT__ = None
+__LANGDICT__ = None
 
 def initialize(context): 
     """Initialize the product."""
@@ -124,12 +126,17 @@ def initialize(context):
         dummy_permission = 'Add ZMSs'
         zms.NoETagAdapter.register()
         
-        # automated registration of language-dictionary
-        OFS.misc_.misc_.zms['langdict']=_multilangmanager.langdict()
+        # automated registration of static variables
+        global __CONFDICT__
+        if __CONFDICT__ is None:
+          print("__CONFDICT__")
+          __CONFDICT__ = _confmanager.ConfDict.get()
         
-        # automated registration of configuration
-        confdict = _confmanager.ConfDict.get()
-        OFS.misc_.misc_.zms['confdict']=confdict
+        # automated registration of language-dictionary
+        global __LANGDICT__
+        if __LANGDICT__ is None:
+          print("__LANGDICT__")
+          __LANGDICT__ = _multilangmanager.langdict()
         
         # automated registration for other resources
         path = os.sep.join((package_home(globals()),'plugins','www','img'))

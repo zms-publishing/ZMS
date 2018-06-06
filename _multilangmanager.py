@@ -19,12 +19,12 @@
 
 # Imports.
 from App.Common import package_home
-import OFS.misc_
 import copy
 import os
 import urllib
 from zope.interface import implementer
 # Product Imports.
+import Products.zms
 import IZMSLocale
 import _fileutil
 import standard
@@ -213,7 +213,7 @@ class MultiLanguageManager:
       """
       Returns list of manage-languages.
       """
-      return OFS.misc_.misc_.zms['langdict'].get_manage_langs()
+      return Products.zms.__LANGDICT__.get_manage_langs()
 
     def get_manage_lang(self):
       """
@@ -266,13 +266,12 @@ class MultiLanguageManager:
           return d[key][lang]
       
       # Return system value.
-      if getattr(OFS.misc_.misc_,'zms',None) is not None and type(OFS.misc_.misc_.zms) is not dict:
-        d = OFS.misc_.misc_.zms['langdict'].get_langdict()
-        if d.has_key(key):
-          if not d[key].has_key(lang):
-            lang = 'eng'
-          if d[key].has_key(lang):
-            return d[key][lang]
+      d = Products.zms.__LANGDICT__.get_langdict()
+      if d.has_key(key):
+        if not d[key].has_key(lang):
+          lang = 'eng'
+        if d[key].has_key(lang):
+          return d[key][lang]
       
       return key
 

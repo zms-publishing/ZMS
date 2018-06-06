@@ -41,6 +41,7 @@ import xml.dom
 import zExceptions
 from zope.interface import implementer, providedBy
 # Product imports.
+import Products.zms
 from IZMSConfigurationProvider import IZMSConfigurationProvider
 import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
 import standard
@@ -52,7 +53,6 @@ import _multilangmanager
 import _sequence
 import zopeutil
 import zmslog
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Read system-configuration from $ZMS_HOME/etc/zms.conf
@@ -574,9 +574,8 @@ class ConfManager(
       if REQUEST is not None:
         import base64
         key = base64.b64decode(key)
-      if getattr(OFS.misc_.misc_,'zms',None) is not None and type(OFS.misc_.misc_.zms) is not dict:
-        if OFS.misc_.misc_.zms['confdict'].get(key):
-          default = OFS.misc_.misc_.zms['confdict'].get(key)
+      if Products.zms.__CONFDICT__.has_key(key):
+        default = Products.zms.__CONFDICT__.get(key)
       value = default
       confdict = self.getConfProperties()
       if confdict.has_key(key):

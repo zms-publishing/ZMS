@@ -116,7 +116,7 @@ class langdict:
       manage_langs = []
       lang_dict = {}
       modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
-      filepath = os.path.join(modulepath[:modulepath.find('zms')],'zms','import')
+      filepath = os.path.join(modulepath[:modulepath.rfind('zms')],'zms','import')
       xmlfile = open(os.path.join(filepath,filename),'rb')
       builder = _xmllib.XmlBuilder()
       nWorkbook = builder.parse(xmlfile)
@@ -651,7 +651,12 @@ def getRegistry():
     if __REGISTRY__ is None:
         print("__REGISTRY__['langdict']",__REGISTRY__)
         __REGISTRY__ = {}
-        __REGISTRY__['langdict'] = langdict()
+        try:
+          __REGISTRY__['langdict'] = langdict()
+        except:
+          import sys, traceback, string
+          type, val, tb = sys.exc_info()
+          sys.stderr.write(string.join(traceback.format_exception(type, val, tb), ''))
     return __REGISTRY__
 getRegistry()
 

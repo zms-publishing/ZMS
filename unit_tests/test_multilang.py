@@ -3,7 +3,6 @@
 import unittest
 import sys
 import time
-import OFS.misc_
 from OFS.Folder import Folder
 # Product imports.
 from zms_test_util import *
@@ -20,15 +19,6 @@ class MultiLanguageTest(unittest.TestCase):
   temp_title = 'temp-test'
 
   def setUp(self):
-    class ZMS(object):
-      def __getitem__(self, k, v=None):
-        return getattr(self,k,v)
-      def __setitem__(self, k, v):
-        setattr(self,k,v)
-    _zms = ZMS()
-    _zms['confdict'] = _confmanager.ConfDict.get()
-    _zms['langdict'] = _multilangmanager.langdict()
-    OFS.misc_.misc_.zms = _zms
     folder = Folder('myzmsx')
     folder.REQUEST = HTTPRequest({'lang':'eng'})
     zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
@@ -142,7 +132,6 @@ class MultiLanguageTest(unittest.TestCase):
     self.assertEqual(zmscontext.getLinkUrl(newref,request),folder.getHref2IndexHtml(request))
 
   def tearDown(self):
-    delattr(OFS.misc_.misc_,'zms')
     zmscontext = self.context
     # create lang-string
     lang_dict = zmscontext.get_lang_dict()

@@ -218,7 +218,7 @@ class ConfManager(
     def getPluginIds(self, path=[]):
       ids = []
       modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
-      filepath = os.path.join(modulepath[:modulepath.find('zms')],'zms','plugins',path)
+      filepath = os.path.join(modulepath[:modulepath.rfind('zms')],'zms','plugins',path)
       for filename in os.listdir(filepath):
         path = os.sep.join([filepath,filename])
         if os.path.isdir(path) and len(os.listdir(path)) > 0:
@@ -240,7 +240,7 @@ class ConfManager(
         os.path.join(standard.getINSTANCE_HOME(),'etc','zms'),
         modulepath,]
       for filepath in filepaths:
-        filepath = os.path.join(filepath[:filepath.find('zms')],'zms','import')
+        filepath = os.path.join(filepath[:filepath.rfind('zms')],'zms','import')
         filename = os.path.join(filepath,'configure.zcml')
         if os.path.exists(filename):
           standard.writeBlock( self, "[getConfFiles]: Read from "+filename)
@@ -1148,7 +1148,12 @@ def getRegistry():
     if __REGISTRY__ is None:
         print("__REGISTRY__['confdict']",__REGISTRY__)
         __REGISTRY__ = {}
-        __REGISTRY__['confdict'] = ConfDict.get()
+        try:
+          __REGISTRY__['confdict'] = ConfDict.get()
+        except:
+          import sys, traceback, string
+          type, val, tb = sys.exc_info()
+          sys.stderr.write(string.join(traceback.format_exception(type, val, tb), ''))
     return __REGISTRY__
 getRegistry()
 

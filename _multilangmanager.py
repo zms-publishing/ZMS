@@ -18,16 +18,16 @@
 ################################################################################
 
 # Imports.
-from App.Common import package_home
+import Globals
 import copy
+import inspect
 import os
 import urllib
 from zope.interface import implementer
 # Product Imports.
-import Products.zms
 import IZMSLocale
-import _fileutil
 import standard
+import _fileutil
 import _msexcelutil
 import _xmllib
 
@@ -115,8 +115,8 @@ class langdict:
       """
       manage_langs = []
       lang_dict = {}
-      filepath = package_home(globals())
-      filepath = os.path.join(filepath[:filepath.find('zms')],'zms','import')
+      modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
+      filepath = os.path.join(modulepath[:modulepath.find('zms')],'zms','import')
       xmlfile = open(os.path.join(filepath,filename),'rb')
       builder = _xmllib.XmlBuilder()
       nWorkbook = builder.parse(xmlfile)
@@ -213,7 +213,7 @@ class MultiLanguageManager:
       """
       Returns list of manage-languages.
       """
-      return Products.zms.__LANGDICT__.get_manage_langs()
+      return getRegistry()['langdict'].get_manage_langs()
 
     def get_manage_lang(self):
       """
@@ -266,7 +266,7 @@ class MultiLanguageManager:
           return d[key][lang]
       
       # Return system value.
-      d = Products.zms.__LANGDICT__.get_langdict()
+      d = getRegistry()['langdict'].get_langdict()
       if d.has_key(key):
         if not d[key].has_key(lang):
           lang = 'eng'
@@ -639,5 +639,20 @@ class MultiLanguageManager:
         # Return with message.
         message = urllib.quote(self.getZMILangStr('MSG_CHANGED'))
         return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s#langdict'%(lang,message))
+
+# call this to initialize framework classes, which
+# does the right thing with the security assertions.
+Globals.InitializeClass(MultiLanguageObject)
+Globals.InitializeClass(MultiLanguageManager)
+
+__REGISTRY__ = None
+def getRegistry():
+    global __REGISTRY__
+    if __REGISTRY__ is None:
+        print("__REGISTRY__['langdict']",__REGISTRY__)
+        __REGISTRY__ = {}
+        __REGISTRY__['langdict'] = langdict()
+    return __REGISTRY__
+getRegistry()
 
 ################################################################################

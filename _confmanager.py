@@ -20,17 +20,15 @@
 # Imports.
 from cStringIO import StringIO
 from AccessControl import ClassSecurityInfo
-from App.Common import package_home
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
-from OFS.Image import Image
 from OFS.Folder import Folder
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import ConfigParser
 import Globals
-import OFS.misc_
+import inspect
 import operator
 import os
 import stat
@@ -41,7 +39,6 @@ import xml.dom
 import zExceptions
 from zope.interface import implementer, providedBy
 # Product imports.
-import Products.zms
 from IZMSConfigurationProvider import IZMSConfigurationProvider
 import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
 import standard
@@ -220,7 +217,8 @@ class ConfManager(
     # --------------------------------------------------------------------------
     def getPluginIds(self, path=[]):
       ids = []
-      filepath = os.sep.join([package_home(globals()),'plugins']+path)
+      modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
+      filepath = os.path.join(modulepath[:modulepath.find('zms')],'zms','plugins',path)
       for filename in os.listdir(filepath):
         path = os.sep.join([filepath,filename])
         if os.path.isdir(path) and len(os.listdir(path)) > 0:
@@ -237,9 +235,10 @@ class ConfManager(
       ConfManager.getConfFiles
       """
       filenames = {}
+      modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
       filepaths = [
         os.path.join(standard.getINSTANCE_HOME(),'etc','zms'),
-        package_home(globals()),]
+        modulepath,]
       for filepath in filepaths:
         filepath = os.path.join(filepath[:filepath.find('zms')],'zms','import')
         filename = os.path.join(filepath,'configure.zcml')
@@ -574,8 +573,8 @@ class ConfManager(
       if REQUEST is not None:
         import base64
         key = base64.b64decode(key)
-      if Products.zms.__CONFDICT__.has_key(key):
-        default = Products.zms.__CONFDICT__.get(key)
+      if getRegistry()['confdict'].has_key(key):
+        default = getRegistry()['confdict'].get(key)
       value = default
       confdict = self.getConfProperties()
       if confdict.has_key(key):
@@ -1142,5 +1141,15 @@ class ConfManager(
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
 Globals.InitializeClass(ConfManager)
+
+__REGISTRY__ = None
+def getRegistry():
+    global __REGISTRY__
+    if __REGISTRY__ is None:
+        print("__REGISTRY__['confdict']",__REGISTRY__)
+        __REGISTRY__ = {}
+        __REGISTRY__['confdict'] = ConfDict.get()
+    return __REGISTRY__
+getRegistry()
 
 ################################################################################

@@ -42,7 +42,6 @@ import zmssqldb
 import zmslinkcontainer
 import zmslinkelement
 import _confmanager
-import _multilangmanager
 import _mediadb
 import _sequence
 import _zmsattributecontainer
@@ -67,9 +66,6 @@ except:
 ################################################################################
 # Define the initialize() function.
 ################################################################################
-
-__CONFDICT__ = None
-__LANGDICT__ = None
 
 def initialize(context): 
     """Initialize the product."""
@@ -125,18 +121,6 @@ def initialize(context):
         dummy_constructors = (zmscustom.manage_addZMSCustomForm, zmscustom.manage_addZMSCustom,)
         dummy_permission = 'Add ZMSs'
         zms.NoETagAdapter.register()
-        
-        # automated registration of static variables
-        global __CONFDICT__
-        if __CONFDICT__ is None:
-          print("__CONFDICT__")
-          __CONFDICT__ = _confmanager.ConfDict.get()
-        
-        # automated registration of language-dictionary
-        global __LANGDICT__
-        if __LANGDICT__ is None:
-          print("__LANGDICT__")
-          __LANGDICT__ = _multilangmanager.langdict()
         
         # automated registration for other resources
         path = os.sep.join((package_home(globals()),'plugins','www','img'))

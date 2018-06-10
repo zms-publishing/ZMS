@@ -483,8 +483,6 @@ body[class="Folder (Ordered)"] > form.form_main > .form-element > select {
 display:inline;
 }
 body[class="Folder (Ordered)"] > form.form_main > .form-element > * {
-	background:rgba(0, 136, 204, 0.5);
-	border:none;
 	zoom:0.8;
 	margin:0 8px 0 0
 }

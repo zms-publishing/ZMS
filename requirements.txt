@@ -8,6 +8,7 @@
 # git+https://github.com/zms-publishing/zms3.mindmap.git#egg=zms3.mindmap
 # git+https://github.com/zms-publishing/zms3.photodb.git#egg=zms3.photodb
 # git+https://github.com/zms-publishing/zms3.qrcode.git#egg=zms3.qrcode
+# git+https://bitbucket.org/zms3/themes.git#egg=zms3.themes
 
 # fetch official releases from PyPI
 AccessControl==3.0.12

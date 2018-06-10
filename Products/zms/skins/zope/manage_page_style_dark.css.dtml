@@ -474,3 +474,17 @@ td.main-time div.list-item {
 div.tooltip .tooltip-inner {
 	color: #9DDDFF !important;
 }
+
+/* Ordered Folder Action Buttons */
+body[class="Folder (Ordered)"] > form.form_main > .form-element {
+	margin-left: 2em;
+}
+body[class="Folder (Ordered)"] > form.form_main > .form-element > select {
+display:inline;
+}
+body[class="Folder (Ordered)"] > form.form_main > .form-element > * {
+	background:rgba(0, 136, 204, 0.5);
+	border:none;
+	zoom:0.8;
+	margin:0 8px 0 0
+}

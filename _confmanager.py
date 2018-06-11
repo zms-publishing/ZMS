@@ -213,9 +213,9 @@ class ConfManager(
 
 
     # --------------------------------------------------------------------------
-    #  ZMSTextformatManager.getPluginIds:
+    #  ConfManager.getPluginIds:
     # --------------------------------------------------------------------------
-    def getPluginIds(self, path=[]):
+    def getPluginIds(self, path):
       ids = []
       modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
       filepath = os.path.join(modulepath[:modulepath.rfind('zms')],'zms','plugins',path)
@@ -493,7 +493,7 @@ class ConfManager(
         {'key':'ZMS.localfs_read','title':'LocalFS read','desc':'List of directories with permission for LocalFS read (semicolon separated).','datatype':'string','default':''},
         {'key':'ZMS.localfs_write','title':'LocalFS write','desc':'List of directories with permission for LocalFS write (semicolon separated).','datatype':'string','default':''},
         {'key':'ZMS.logout.href','title':'Logout URL','desc':'URL for logout from ZMS.','datatype':'string','default':''},
-        {'key':'ZMS.richtext.plugin','title':'Richtext plugin','desc':'Select your preferred richtext plugin','datatype':'string','options':self.getPluginIds(['rte']),'default':'ckeditor'},
+        {'key':'ZMS.richtext.plugin','title':'Richtext plugin','desc':'Select your preferred richtext plugin','datatype':'string','options':self.getPluginIds('rte'),'default':'ckeditor'},
         {'key':'ZMS.input.file.plugin','title':'File.upload input','desc':'ZMS can use custom input-fields for file-upload.','datatype':'string','options':['input_file','jquery_upload'],'default':'input_file'},
         {'key':'ZMS.input.file.maxlength','title':'File.upload maxlength','desc':'ZMS can limit the maximum upload-file size to the given value (in Bytes).','datatype':'string'},
         {'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},

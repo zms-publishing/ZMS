@@ -1,2 +1,0 @@
-Products.Sessions>=4.1
-Products.TemporaryFolder>=5.1

@@ -20,6 +20,9 @@ zope.authentication==4.3
 zope.error==4.4.0
 zope.untrustedpython==4.0.0
 ZopeUndo==4.3
+Products.Sessions==4.1
+Products.TemporaryFolder==5.1
+
 
 # Pinned versions because of bugs:
 # due to zdaemon>=4.0.1 causes AttributeError: ZopeCtlOptions instance has no attribute 'transcript'

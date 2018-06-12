@@ -34,6 +34,7 @@ INSTALL_REQUIRES = [
   'Products.MailHost',
 #  'Products.MIMETools', # completely outdated, needs to be ported to python3
   'Products.OFSP',
+  'Products.Sessions>=4.1',
   'Products.StandardCacheManagers',
   'tempstorage',
   'zLOG',

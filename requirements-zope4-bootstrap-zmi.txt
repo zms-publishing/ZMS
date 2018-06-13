@@ -14,3 +14,6 @@
 -e git+https://github.com/zopefoundation/Products.PythonScripts@zmi-bootstrap#egg=Products.PythonScripts
 
 # Add further packages we're working on here as needed
+-e git+https://github.com/zopefoundation/Products.Sessions@zmi-bootstrap#egg=Products.Sessions
+-e git+https://github.com/zopefoundation/Products.TemporaryFolder@zmi-bootstrap#egg=Products.TemporaryFolder
+-e git+https://github.com/zopefoundation/Products.SiteErrorLog@zmi-bootstrap#egg=Products.SiteErrorLog

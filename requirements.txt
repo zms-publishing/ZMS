@@ -6,22 +6,24 @@ configparser
 
 # Additional ZMS dependencies
 docutils==0.14
-initgroups==4.0
+# initgroups==4.0 ## not used anywhere in the code
 # mechanize==0.2.5 ## very old version, not ported to python3 at all - why do we need this?
-nt-svcutils==2.13.0
+# nt-svcutils==2.13.0 ## very old version, not ported to python3 and unused as far as I can tell. Where is this used?
 Products.ExternalMethod==4.0
 Products.MailHost==4.1
 Products.OFSP==4.0.1
 Products.StandardCacheManagers==4.0.1
 tempstorage==4.0.1
-zLOG==3.0
+# zLOG==3.0 ## Ported to python3, but not used anywhere in the code. It's also deprecated and usage should be replaced by the python integrated logging facility.
 zope.app.publication==4.2.1
 zope.authentication==4.3
 zope.error==4.4.0
 zope.untrustedpython==4.0.0
 ZopeUndo==4.3
-Products.Sessions==4.1
-Products.TemporaryFolder==5.1
+# Products.Sessions==4.1
+-e git+https://github.com/zopefoundation/Products.Sessions@zmi-bootstrap#egg=Products.Sessions
+# Products.TemporaryFolder==5.1
+-e git+https://github.com/zopefoundation/Products.TemporaryFolder@zmi-bootstrap#egg=Products.TemporaryFolder
 
 
 # Pinned versions because of bugs:
@@ -52,6 +54,8 @@ Products.TemporaryFolder==5.1
 -e git+https://github.com/zopefoundation/Products.CMFCore@zmi-bootstrap#egg=Products.CMFCore
 # 2.0 / 2.1, which is as of yet unreleased
 -e git+https://github.com/zopefoundation/Products.GenericSetup@master#egg=Products.GenericSetup
+
+-e git+https://github.com/zopefoundation/Products.SiteErrorLog@zmi-bootstrap#egg=Products.SiteErrorLog
 
 # Install ZMS, you probably want to override this with a local development install
 # -e svn+https://zmslabs.org/svn/zmslabs/ZMS/branches/zms4#egg=ZMS

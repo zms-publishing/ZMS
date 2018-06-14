@@ -25,24 +25,24 @@ for path in sys.path:
 INSTALL_REQUIRES = [
   'Zope>=4.0b4',
   'docutils',
-  'initgroups',
-  'nt-svcutils',
+  # 'initgroups', # not used anywhere
+  # 'nt-svcutils', # seems unused? Do we actually deploy on windows even for development?
   # 'mechanize', # completely outdated, not ported to python3
-  'Products.CMFCore',
-  'Products.ExternalMethod',
-  'Products.GenericSetup',
-  'Products.MailHost',
-#  'Products.MIMETools', # completely outdated, needs to be ported to python3
-  'Products.OFSP',
-  'Products.Sessions>=4.1',
-  'Products.StandardCacheManagers',
-  'tempstorage',
-  'zLOG',
-  'zope.app.publication',
-  'zope.authentication',
-  'zope.untrustedpython',
-  'zope.error',
-  'ZopeUndo',
+  'Products.CMFCore>=4',
+  'Products.ExternalMethod>=4',
+  'Products.GenericSetup>=4',
+  'Products.MailHost>=4',
+  # 'Products.MIMETools', # completely outdated, needs to be ported to python3
+  'Products.OFSP>=4',
+  'Products.Sessions>=4',
+  'Products.StandardCacheManagers>=4',
+  'tempstorage>=4',
+  # 'zLOG', # unused and almost deprecated
+  'zope.app.publication>=4',
+  'zope.authentication>=4',
+  'zope.untrustedpython>=4',
+  'zope.error>=4',
+  'ZopeUndo>=4',
   
   # Pinned versions because of bugs:
   # due to zdaemon>=4.0.1 causes AttributeError: ZopeCtlOptions instance has no attribute 'transcript'

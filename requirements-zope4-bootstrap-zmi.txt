@@ -4,6 +4,10 @@
 # -r https://raw.githubusercontent.com/zopefoundation/Zope/zmi-bootstrap/requirements-full.txt
 # as we disagree about some versions we want to install
 
+####################################################################################################
+# This file is to override zope dependency versions, add ZMS specific versions to requirements.txt #
+####################################################################################################
+
 # Need some pretty specific branches of zope and its dependencies
 -e git+https://github.com/zopefoundation/Zope.git@zmi-bootstrap#egg=Zope
 
@@ -13,7 +17,3 @@
 -e git+https://github.com/zopefoundation/Products.ZCatalog@zmi-bootstrap#egg=Products.ZCatalog
 -e git+https://github.com/zopefoundation/Products.PythonScripts@zmi-bootstrap#egg=Products.PythonScripts
 
-# Add further packages we're working on here as needed
--e git+https://github.com/zopefoundation/Products.Sessions@zmi-bootstrap#egg=Products.Sessions
--e git+https://github.com/zopefoundation/Products.TemporaryFolder@zmi-bootstrap#egg=Products.TemporaryFolder
--e git+https://github.com/zopefoundation/Products.SiteErrorLog@zmi-bootstrap#egg=Products.SiteErrorLog

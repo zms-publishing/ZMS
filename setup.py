@@ -28,9 +28,9 @@ INSTALL_REQUIRES = [
   # 'initgroups', # not used anywhere
   # 'nt-svcutils', # seems unused? Do we actually deploy on windows even for development?
   # 'mechanize', # completely outdated, not ported to python3
-  'Products.CMFCore>=2.4.0',
+  'Products.CMFCore>=2.4.0b',
   'Products.ExternalMethod>=4',
-  'Products.GenericSetup>=4',
+  'Products.GenericSetup>=2.0b',
   'Products.MailHost>=4',
   # 'Products.MIMETools', # completely outdated, needs to be ported to python3
   'Products.OFSP>=4',

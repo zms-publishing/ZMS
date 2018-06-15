@@ -44,9 +44,10 @@
 ><tal:block tal:condition="python:not here.getAutocommit() and not request.get('ZMS_VERSION')"
 	><tal:block tal:define="global wfStates python:here.getWfStates(request); work_uid python:here.attr('work_uid'); work_dt python:here.attr('work_dt'); objStates python:here.filteredObjStates(request)"
 		><tal:block tal:condition="python:work_uid and work_dt" tal:repeat="wfState wfStates"
-			><tal:block tal:define="
+			><tal:block
+				tal:define="
 					wfActivity python:here.getWfActivity(wfState);
-					clazz python:wfActivity.get('icon_clazz').split(' ');
+					clazz python:wfActivity.get('icon_clazz','').split(' ');
 					text_clazz python:filter(lambda x:x.find('icon')<0,clazz);
 					icon_clazz python:filter(lambda x:x.find('icon')>=0,clazz);
 					title python:'%s %s %s (%s)'%(wfActivity['name'],here.getZMILangStr('BY'),work_uid,here.getLangFmtDate(work_dt))"

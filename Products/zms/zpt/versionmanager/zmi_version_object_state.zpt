@@ -46,7 +46,7 @@
 		><tal:block tal:condition="python:work_uid and work_dt" tal:repeat="wfState wfStates"
 			><tal:block tal:define="
 					wfActivity python:here.getWfActivity(wfState);
-					clazz python:wfActivity.get('icon_clazz').split(' ');
+					clazz python:wfActivity.get('icon_clazz','').split(' ');
 					text_clazz python:[x for x in clazz if x.find('icon') < 0];
 					icon_clazz python:[x for x in clazz if x.find('icon') >= 0];
 					title python:'%s %s %s (%s)'%(wfActivity['name'],here.getZMILangStr('BY'),work_uid,here.getLangFmtDate(work_dt))"

@@ -45,10 +45,16 @@ CKEDITOR.editorConfig = function( config ) {
 			var name = k.substr("toolbar.".length);
 			for (var ck in config) {
 				if (ck.indexOf("toolbar_")==0) {
+					var found = false;
 					for (var i=0; i<config[ck].length; i++) {
 						if (config[ck][i]["name"]==name) {
-							config[ck][i] = v.split(",");
+							config[ck][i]["items"] = v.split(",");
+							found = true;
+							break;
 						}
+					}
+					if (!found) {
+						config[ck].push({name:name,items:v.split(",")});
 					}
 				}
 			}

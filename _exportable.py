@@ -611,7 +611,7 @@ class Exportable(_filtermanager.FilterItem):
       xml = self.toXml(REQUEST)
       
       #-- Write xml-export to file.
-      xmlfilename = _fileutil.getOSPath('%s/%s_%s.xml'%(tempfolder,self.getHome().id,self.meta_id))
+      xmlfilename = os.path.join(tempfolder,'content.xml')
       _fileutil.exportObj(xml,xmlfilename)
       
       #-- Get zip-file.

@@ -19,8 +19,8 @@ class LinkTest(ZMSTestCase):
         self._set_up()
         
         # navigate tree to page
-        self._find_element(By.XPATH, '//div[contains(text(), "News")]').click()
-        self._find_element(By.XPATH, '//div[contains(text(), "News-1.2")]').click()
+        self._find_element(By.XPATH, '//div[contains(text(), "Concept")]').click()
+        self._find_element(By.XPATH, '//div[contains(text(), "Second Document")]').click()
         
         # open properties tab
         with self._wait_for_page_load():

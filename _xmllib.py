@@ -39,7 +39,6 @@ import _globals
 from _objattrs import *
 import standard
 import zopeutil
-from pip.utils.logging import indent_log
 
 INDENTSTR = '  '
 

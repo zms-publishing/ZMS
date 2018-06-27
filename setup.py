@@ -74,6 +74,7 @@ INSTALL_REQUIRES_CONCRETE = [
   'Products.StandardCacheManagers==2.13.1',
   'Products.ZCatalog==3.1',
   'Products.ZCTextIndex==2.13.5',
+  'Products.ZSQLMethods<3',
   'pytz==2016.4',
   'Record==3.1',
   'RestrictedPython==3.6.0',

@@ -1,2 +1,53 @@
-graft dll
+include *.txt
+include *.zcml
+include *.zpt
+include AUTHORS
 include CHANGES
+recursive-include conf *.conf
+recursive-include conf *.py
+recursive-include dll *.dll
+recursive-include dll *.pyd
+recursive-include doc *.cmd
+recursive-include doc *.conf
+recursive-include doc *.css
+recursive-include doc *.html
+recursive-include doc *.js
+recursive-include doc *.png
+recursive-include doc *.txt
+recursive-include etc *.conf
+recursive-include import *.xml
+recursive-include import *.zcml
+recursive-include import *.zexp
+recursive-include import *.zip
+recursive-include plugins *.css
+recursive-include plugins *.eot
+recursive-include plugins *.gif
+recursive-include plugins *.html
+recursive-include plugins *.ico
+recursive-include plugins *.jpg
+recursive-include plugins *.js
+recursive-include plugins *.json
+recursive-include plugins *.map
+recursive-include plugins *.md
+recursive-include plugins *.otf
+recursive-include plugins *.png
+recursive-include plugins *.svg
+recursive-include plugins *.swf
+recursive-include plugins *.ttf
+recursive-include plugins *.txt
+recursive-include plugins *.woff
+recursive-include plugins *.woff2
+recursive-include plugins *.zcml
+recursive-include plugins *.zpt
+recursive-include selenium_tests *.py
+recursive-include selenium_tests *.txt
+recursive-include skins *.css
+recursive-include skins *.dtml
+recursive-include skins *.html
+recursive-include skins *.ico
+recursive-include skins *.js
+recursive-include skins *.png
+recursive-include skins *.svg
+recursive-include tests *.py
+recursive-include unit_tests *.py
+recursive-include zpt *.zpt

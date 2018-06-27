@@ -21,6 +21,18 @@ import os
 import sys
 from setuptools import setup
 
+"""
+# Release checklist
+* update version.txt to the desired version. Remember that only the three first elements of the version are used.
+* create a release build with `python setup.py sdist`
+* test upload to testpypi via `twine upload --repository-url https://test.pypi.org/legacy/ dist/$name_of_release_file`
+* check release on https://test.pypi.org/project/ZMS3/
+* If content, upload release to real pypi via `twine upload dist/$name_of_release_file`
+
+@see https://twine.readthedocs.io/en/latest/
+@see https://packaging.python.org/guides/using-testpypi/
+"""
+
 setup_path = os.path.dirname(__file__)
 for path in sys.path:
   if path.endswith('site-packages'):

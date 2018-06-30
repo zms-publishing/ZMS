@@ -196,27 +196,27 @@ class CopySupport:
     ############################################################################
     # CopySupport.manage_copyObjects:
     ############################################################################
-    def manage_copyObjects(self, ids=None, REQUEST=None):
+    def manage_copyObjects(self, ids=None, REQUEST=None, RESPONSE=None):
       """Put a reference to the objects named in ids in the clip board"""
       standard.writeLog( self, "[CopySupport.manage_copyObjects]")
-      super( self.__class__, self).manage_copyObjects( ids, REQUEST)
+      super( self.__class__, self).manage_copyObjects( ids, REQUEST, RESPONSE)
       # Return with message.
-      if REQUEST is not None:
+      if RESPONSE is not None:
         message = ''
-        REQUEST.RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'],urllib.quote(message)))
+        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'],urllib.quote(message)))
 
 
     ############################################################################
     # CopySupport.manage_cutObjects:
     ############################################################################
-    def manage_cutObjects(self, ids=None, REQUEST=None):
+    def manage_cutObjects(self, ids=None, REQUEST=None, RESPONSE=None):
       """Put a reference to the objects named in ids in the clip board"""
       standard.writeLog( self, "[CopySupport.manage_cutObjects]")
-      super( self.__class__, self).manage_cutObjects( ids, REQUEST)
+      super( self.__class__, self).manage_cutObjects( ids, REQUEST, RESPONSE)
       # Return with message.
-      if REQUEST is not None:
+      if RESPONSE is not None:
         message = ''
-        REQUEST.RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'],urllib.quote(message)))
+        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'],urllib.quote(message)))
 
 
     ############################################################################

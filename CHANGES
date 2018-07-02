@@ -1,8 +1,27 @@
+= ZMS4 Changelog =
+== 4.0.0dev (in development) ==
+  * TBA, still alpha-Version
+  * runs on Zope 4.0b2 https://pypi.python.org/pypi/Zope
+  * Source: https://zmslabs.org/trac/browser/ZMS/branches/zms4
+  * Download: https://zmslabs.org/download/ZMS4-latest.tar.gz
+
+----
+
 = ZMS3 Changelog =
 
-== 3.4.1dev (in development) ==
+
+== 3.4.3dev (in development) ==
   * TBA
-  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=4210&limit=200 latest changes...]
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=4621&limit=200 latest changes...]
+
+== 3.4.2 (2018-06-30) ==
+  * Prepared Py3-Compatibillty ("2to3")
+  * Added ZMSObjectSet-Type for table like handling of complex ZMS object classes
+  * Updated CKEditor 4.8.0
+  * ZMS-mediadb can save it's files in a folder hierarchie
+  * Added ZMS4-XML-Import-Export
+  * Added a lot of minor fixes
+  * [https://zmslabs.org/trac/log/ZMS/trunk?action=stop_on_copy&mode=stop_on_copy&stop_rev=4620&stop_rev=3210&limit=410 more in 3.4.2...]
 
 == 3.4.0 (2017-09-23) ==
   * Optimized internal referencing of External Methods for multisites

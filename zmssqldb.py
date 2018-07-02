@@ -1712,9 +1712,10 @@ class ZMSSqlDb(ZMSCustom):
         except:
           raise zExceptions.InternalError(standard.writeError( self, '[set_blob]: can\'t set blob - sqlStatement=' + sqlStatement))
       # Remove old file from server-fs
-      try:
-        _fileutil.remove(path+oldfilename)
-      except: pass
+      standard.writeBlock( self, '[set_blob]: remove %s'%(path+oldfilename))
+      if oldfilename:
+        try: _fileutil.remove(path+oldfilename)
+        except: standard.writeError( self, '[set_blob]: can\'t remove %s'%(path+oldfilename))
       # Write new file to server-fs
       _fileutil.exportObj(file.getData(),path+filename)
       return filename

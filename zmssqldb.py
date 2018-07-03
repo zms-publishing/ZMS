@@ -1613,6 +1613,15 @@ class ZMSSqlDb(ZMSCustom):
       tabledef = filter(lambda x: x['id'].upper() == tablename.upper(), tabledefs)[0]
       tablecols = tabledef['columns']
       primary_key = (map(lambda x: x['id'], filter(lambda x: x.get('pk',0)==1, tablecols))+[tablecols[0]['id']])[0]
+      for tablecol in tablecols:
+        id = tablecol['id']
+        if tablecol.get('blob'):
+          blob = tablecol.get('blob')
+          remote = blob.get('remote')
+          if remote is None:
+            value = self._delete_blob(tablename=tablename,id=id,rowid=rowid)
+          else:
+            value = self.http_import(self.url_append_params(remote+'/delete_blob',{'auth_user':blob.get('auth_user',auth_user.getId()),'tablename':tablename,'id':id,'rowid':rowid}),method='POST')
       # Assemble sql-statement
       sqlStatement = []
       sqlStatement.append( 'DELETE FROM %s '%tablename)
@@ -1737,17 +1746,19 @@ class ZMSSqlDb(ZMSCustom):
         for r in self.query( sqlStatement)['records']:
           filename = r['v']
           if path is not None and filename is not None:
-            fdata, mt, enc, fsize = _fileutil.readFile(path+filename)
-            if RESPONSE is not None:
-              if REQUEST is not None and REQUEST.get('preview')=='preview':
-                cache = 'no-cache'
-              standard.set_response_headers(filename,mt,fsize,REQUEST)
-              RESPONSE.setHeader('Cache-Control', cache)
-              RESPONSE.setHeader('Content-Encoding', enc)
-            if blob['type'] == 'image':
-              return self.ImageFromData(fdata,filename)
-            else:
-              return self.FileFromData(fdata,filename)
+            file_path = os.path.join(path,filename)
+            if os.path.isfile(file_path):
+              fdata, mt, enc, fsize = _fileutil.readFile(path+filename)
+              if RESPONSE is not None:
+                if REQUEST is not None and REQUEST.get('preview')=='preview':
+                  cache = 'no-cache'
+                standard.set_response_headers(filename,mt,fsize,REQUEST)
+                RESPONSE.setHeader('Cache-Control', cache)
+                RESPONSE.setHeader('Content-Encoding', enc)
+              if blob['type'] == 'image':
+                return self.ImageFromData(fdata,filename)
+              else:
+                return self.FileFromData(fdata,filename)
       except:
         standard.writeError( self, '[get_blob]: can\'t get_blob - sqlStatement=' + sqlStatement)
       return None

@@ -22,6 +22,7 @@ from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import Globals
 import copy
+import os
 import urllib
 import time
 import zExceptions
@@ -1459,7 +1460,7 @@ class ZMSSqlDb(ZMSCustom):
           consumed = True
         if not consumed and tablecol.get('blob'):
           blob = tablecol.get('blob')
-          remote = blob.get('remote',None)
+          remote = blob.get('remote')
           if values.get('delete_blob_%s'%id,None):
             if remote is None:
               value = self._delete_blob(tablename=tablename,id=id,rowid=rowid)
@@ -1651,20 +1652,22 @@ class ZMSSqlDb(ZMSCustom):
       sqlStatement.append( 'SELECT '+id+' AS v FROM %s '%tablename)
       sqlStatement.append( 'WHERE %s=%s '%(primary_key,self.sql_quote__(tablename,primary_key,rowid)))
       sqlStatement = ' '.join(sqlStatement)
+      # Remove old file from server-fs
       try:
         for r in self.query( sqlStatement)['records']:
-          filename = r['v']
-          try:
-            standard.localfs_remove(path+filename)
-          except: pass
-          value = ''
-          if column.get('nullable'):
-            value = None
-          else:
-            value = self.sql_quote__(tablename,id,value)
-          return value
+          oldfilename = r['v']
+          standard.writeBlock( self, '[_delete_blob]: remove %s'%str(oldfilename))
+          if oldfilename:
+            file_path = os.path.join(path, oldfilename)
+            if os.path.isfile(file_path):
+              standard.writeBlock( self, '[_delete_blob]: remove %s'%file_path)
+              os.remove(file_path) # never remove a folder, this once removed the containing folder thus removing all other blobs with them
       except:
-        raise zExceptions.InternalError(standard.writeError( self, '[get_blob]: can\'t delete blob - sqlStatement=' + sqlStatement))
+        raise zExceptions.InternalError(standard.writeError( self, '[_delete_blob]: can\'t delete blob - sqlStatement=' + sqlStatement))
+      value = None
+      if not column.get('nullable'):
+        value = self.sql_quote__(tablename,id,'')
+      return value
 
     def delete_blob( self, auth_user, tablename, id, rowid, REQUEST=None, RESPONSE=None):
       """ ZMSSqlDb.delete_blob """
@@ -1685,6 +1688,8 @@ class ZMSSqlDb(ZMSCustom):
       column = self.getEntityColumn( tablename, id)
       blob = column['blob']
       path = blob['path']
+      # Delete old file from server-fs
+      self._delete_blob( tablename=tablename, id=id, rowid=rowid)
       if file is None and xml is not None:
         file = self.parseXmlString( xml)
       # Normalize filename (crop path in local-fs)
@@ -1698,24 +1703,6 @@ class ZMSSqlDb(ZMSCustom):
         fileext = filename[ i:]
         filename = filename[ :i]
       filename = filename + '_' + str( rowid) + fileext
-      # Update
-      oldfilename = 'None'
-      if rowid is not None:
-        # Assemble sql-statement
-        sqlStatement = []
-        sqlStatement.append( 'SELECT '+id+' AS v FROM %s '%tablename)
-        sqlStatement.append( 'WHERE %s=%s '%(primary_key,self.sql_quote__(tablename,primary_key,rowid)))
-        sqlStatement = ' '.join(sqlStatement)
-        try:
-          for r in self.query( sqlStatement)['records']:
-            oldfilename = r['v']
-        except:
-          raise zExceptions.InternalError(standard.writeError( self, '[set_blob]: can\'t set blob - sqlStatement=' + sqlStatement))
-      # Remove old file from server-fs
-      standard.writeBlock( self, '[set_blob]: remove %s'%(path+oldfilename))
-      if oldfilename:
-        try: _fileutil.remove(path+oldfilename)
-        except: standard.writeError( self, '[set_blob]: can\'t remove %s'%(path+oldfilename))
       # Write new file to server-fs
       _fileutil.exportObj(file.getData(),path+filename)
       return filename

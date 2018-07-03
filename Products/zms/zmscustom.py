@@ -491,7 +491,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
               for identifier in identifiers: 
                 row[identifier['id']] = self.getNewId() 
             res_abs += rows 
-            message = self.getZMILangStr('MSG_INSERTED')%('%i %s'%(len(rows),self.getZMILangStr('ATTR_RECORDS')))           elif action == 'move':
+            message = self.getZMILangStr('MSG_INSERTED')%('%i %s'%(len(rows),self.getZMILangStr('ATTR_RECORDS')))
           elif action == 'move':
             for row in res_abs:
               row['sort_id'] = row.get('sort_id', 1)*10

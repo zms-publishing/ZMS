@@ -31,6 +31,16 @@ body.zmslightbox.masked #zmslightbox-bg {
 	min-width:100%;
 	min-height:100%;
 }
+#zmslightbox-wrapper:after {
+	content: attr(title);
+	display:block;
+	max-width: 800px;
+	position: relative;
+	margin:0 auto;
+	padding: 1rem;
+	color: white;
+	text-shadow: 0 0 .35rem black;
+}
 #zmslightbox-wrapper img,
 #zmslightbox-wrapper img.fullscreen {
 	/* fullscreen */

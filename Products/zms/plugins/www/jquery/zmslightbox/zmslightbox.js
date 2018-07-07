@@ -150,4 +150,5 @@ function show_zmslightbox(img) {
 	$('#zmslightbox-wrapper img').on('load', function() {
 		center_zmslightbox($('#zmslightbox-wrapper img'));
 	});
+	$('#zmslightbox-wrapper').attr('title',img.closest('.ZMSGraphic').find('.text').text());
 };

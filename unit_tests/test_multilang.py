@@ -1,30 +1,28 @@
 # encoding: utf-8
 
-import unittest
+from OFS.Folder import Folder
 import sys
 import time
-from OFS.Folder import Folder
+import unittest
+sys.path.append("..")
 # Product imports.
 from zms_test_util import *
 import zms
 import _confmanager
 import _multilangmanager
-sys.path.append("..")
 
 # /Products/zms> python -m unittest discover -s unit_tests
 # /Products/zms> python -m unittest unit_tests.test_multilang.MultiLanguageTest
-class MultiLanguageTest(unittest.TestCase):
+class MultiLanguageTest(ZMSTestCase):
 
   temp_lang = 'xxx'
   temp_title = 'temp-test'
 
   def setUp(self):
-    folder = Folder('myzmsx')
-    folder.REQUEST = HTTPRequest({'lang':'eng'})
-    zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
-    self.context = zmscontext
-    print('[setUp] create %s'%self.temp_title)
-    
+    print(self,"MultiLanguageTest.setUp")
+    # super
+    ZMSTestCase.setUp(self)
+    zmscontext = self.context
     # create language
     prim_lang = zmscontext.getPrimaryLanguage()
     request = zmscontext.REQUEST
@@ -35,7 +33,7 @@ class MultiLanguageTest(unittest.TestCase):
     newManage = 'eng'
     zmscontext.setLanguage(self.temp_lang, newLabel, newParent, newManage)
     print('[setUp] create %s'%self.temp_title)
-    self.folder = zmscontext.manage_addZMSCustom('ZMSFolder',{'title':self.temp_title,'titlealt':self.temp_title},request)
+    self.folder = zmscontext.manage_addZMSCustom('ZMSFolder',{'active':1,'title':self.temp_title,'titlealt':self.temp_title},request)
     # create lang-string
     lang_dict = zmscontext.get_lang_dict()
     key = 'ATTR_XXX'
@@ -120,6 +118,7 @@ class MultiLanguageTest(unittest.TestCase):
   def test_getLinkUrl(self):
     zmscontext = self.context
     request = zmscontext.REQUEST
+    request.set('preview','')
     folder = self.folder
     request = {'lang':zmscontext.getPrimaryLanguage()}
     ref = zmscontext.getRefObjPath(folder)
@@ -146,3 +145,5 @@ class MultiLanguageTest(unittest.TestCase):
     zmscontext.manage_delObjects([self.folder.id])
     print('[tearDown] delete language %s'%self.temp_lang)
     zmscontext.delLanguage(self.temp_lang)
+    # super
+    ZMSTestCase.tearDown(self)

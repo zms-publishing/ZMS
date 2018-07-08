@@ -1,26 +1,27 @@
 # encoding: utf-8
 
-import unittest
+from OFS.Folder import Folder
 import sys
 import time
-from OFS.Folder import Folder
+import unittest
+sys.path.append("..")
 # Product imports.
 from zms_test_util import *
 import zms
-sys.path.append("..")
 
 # /Products/zms> python -m unittest discover -s unit_tests
 # /Products/zms> python -m unittest unit_tests.test_zmslinkelement.ZMSLinkElementTest
-class ZMSLinkElementTest(unittest.TestCase):
+class ZMSLinkElementTest(ZMSTestCase):
 
   temp_title = 'temp-test'
 
   def setUp(self):
-    folder = Folder('myzmsx')
-    folder.REQUEST = HTTPRequest({'lang':'eng','preview':'preview'})
-    zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
-    self.context = zmscontext
-    print('[setUp] create %s'%self.temp_title)
+    print(self,"[ZMSLinkElementTest.setUp]")
+    # super
+    ZMSTestCase.setUp(self)
+    zmscontext = self.context
+    # create folder
+    print('[ZMSLinkElementTest.setUp] create %s'%self.temp_title)
     self.folder = zmscontext.manage_addZMSCustom('ZMSFolder',{'title':self.temp_title,'titlealt':self.temp_title},zmscontext.REQUEST)
 
 
@@ -66,3 +67,5 @@ class ZMSLinkElementTest(unittest.TestCase):
     request = self.context.REQUEST
     print('[tearDown] remove %s'%self.temp_title)
     zmscontext.manage_delObjects([self.folder.id])
+    # super
+    ZMSTestCase.tearDown(self)

@@ -1,18 +1,20 @@
 # encoding: utf-8
 
 from App.ImageFile import ImageFile
-import _mediadb
 import inspect
 import os
 import tempfile
 import shutil
-import unittest
 import sys
+import unittest
 sys.path.append("..")
+# Product imports.
+from zms_test_util import *
+import _mediadb
 
 # /Products/zms> python -m unittest discover -s unit_tests
 # /Products/zms> python -m unittest unit_tests.test_mediadb.MediaDbTest
-class MediaDbTest(unittest.TestCase):
+class MediaDbTest(ZMSTestCase):
 
     def setUp(self):
         print(self,"setUp")

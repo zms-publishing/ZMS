@@ -1,4 +1,56 @@
+# encoding: utf-8
+
 from OFS.Folder import Folder
+import inspect
+import os
+import sys
+import time
+import unittest
+sys.path.append("..")
+# Product imports.
+from zms_test_util import *
+import standard
+import zms
+
+
+class ZMSTestCase(unittest.TestCase):
+
+    measurements = {}
+
+    def setUp(self):
+        print(self,"ZMSTestCase.setUp")
+        folder = Folder('myzmsx')
+        folder.REQUEST = HTTPRequest({'lang':'eng','preview':'preview'})
+        zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
+        self.context = zmscontext
+
+    def tearDown(self):
+        print(self,"ZMSTestCase.tearDown")
+
+    def writeDebug(self, s):
+        self.context.write(logging.DEBUG,s)
+
+    def writeInfo(self, s):
+        self.context.write(logging.INFO,s)
+
+    def writeError(self, s):
+        self.context.write(logging.ERROR,s)
+
+    def read_image(self, filename):
+        filepath = "../plugins/www/img/%s"%filename
+        modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
+        file = open(os.path.join(modulepath,filepath),"rb")
+        filedata = file.read()
+        file.close()
+        return standard.ImageFromData(self.context,filedata,filename)
+
+    def startMeasurement(self, category):
+        self.measurements[category] = time.time()
+
+    def stopMeasurement(self, category):
+        if self.measurements.has_key(category):
+            print('[stopMeasurement] | PERFORMANCE | %s | %.2fsecs.'%(category,time.time()-self.measurements[category]))
+            del self.measurements[category]
 
 
 class HTTPRequest:

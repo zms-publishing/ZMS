@@ -1,11 +1,12 @@
 # encoding: utf-8
 
-import unittest
 import sys
+import unittest
+sys.path.append("..")
 # Product imports.
+from zms_test_util import *
 import standard
 import zms
-sys.path.append("..")
 
 # /Products/zms> python -m unittest discover -s unit_tests
 # /Products/zms> python -m unittest unit_tests.test_xmllib.XmlUtilTest
@@ -14,7 +15,7 @@ def remove_whitespace_between_tags(xml):
   xml = re.sub('>(\\s+?)<','><',xml).strip()
   return xml
 
-class XmlUtilTest(unittest.TestCase):
+class XmlUtilTest(ZMSTestCase):
 
     def setUp(self):
         print(self,"setUp")
@@ -72,4 +73,5 @@ class XmlUtilTest(unittest.TestCase):
 
     def tearDown(self):
         print(self,"tearDown")
-        self.context = None
+        # super
+        ZMSTestCase.tearDown(self)

@@ -113,11 +113,18 @@ class langdict:
       """
       Constructor 
       """
+      import sys
       manage_langs = []
       lang_dict = {}
       modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
       filepath = os.path.join(modulepath[:modulepath.rfind('zms')],'zms','import')
-      xmlfile = open(os.path.join(filepath,filename),'rb')
+      xmlfile = None
+      for path in ['.']+sys.path:
+        xmlfilename = os.path.join(path,filepath,filename)
+        if os.path.exists(xmlfilename):
+          print("langdict found",xmlfilename)
+          xmlfile = open(xmlfilename,'rb')
+          break
       builder = _xmllib.XmlBuilder()
       nWorkbook = builder.parse(xmlfile)
       for nWorksheet in _xmllib.xmlNodeSet(nWorkbook,'Worksheet'):

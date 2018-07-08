@@ -1,29 +1,16 @@
 # encoding: utf-8
 
 from App.ImageFile import ImageFile
-import inspect
-import os
-import unittest
 import sys
+import unittest
+sys.path.append("..")
 # Product imports.
 from zms_test_util import *
 import _blobfields
-import zms
-sys.path.append("..")
 
 # /Products/zms> python -m unittest discover -s unit_tests
 # /Products/zms> python -m unittest unit_tests.test_blobfields.BlobfieldsTest
-class BlobfieldsTest(unittest.TestCase):
-
-    def setUp(self):
-        folder = Folder('myzmsx')
-        folder.REQUEST = HTTPRequest({'lang':'eng','preview':'preview'})
-        zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
-        self.context = zmscontext
-        print(self,"setUp")
-
-    def tearDown(self):
-        print(self,"tearDown")
+class BlobfieldsTest(ZMSTestCase):
 
     def test_getDataURI(self):
         print(self,"test_getDataURI")

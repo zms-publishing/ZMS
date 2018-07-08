@@ -516,6 +516,10 @@ class VersionItem:
         standard.writeError( self, "[onChangeObj]: abort transaction")
         import transaction
         transaction.abort()
+        import sys, traceback, string
+        type, val, tb = sys.exc_info()
+        sys.stderr.write(string.join(traceback.format_exception(type, val, tb), ''))
+        del type, val, tb
         raise e
 
     # --------------------------------------------------------------------------

@@ -480,7 +480,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
             for row in rows:
               del res_abs[res_abs.index(row)]
             message = self.getZMILangStr('MSG_DELETED')%len(rows)
-          elif action == 'duplicate': 
+          elif action == 'duplicate':
             rows = [copy.deepcopy(res_abs[int(x)]) for x in REQUEST.get('qindices',[])] 
             _change_uid = REQUEST['AUTHENTICATED_USER'].getUserName() 
             _change_dt = standard.getDateTime( time.time()) 

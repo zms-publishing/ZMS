@@ -2,7 +2,7 @@
 ><tal:block tal:condition="python:request.SESSION.get('zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
 ><tal:block tal:condition="not:python:request.SESSION.get('zmi-manage-system',0)==1"
 ><!DOCTYPE html>
-<html lang="en" tal:define="standard modules/Products.zms/standard">
+<html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='charformats config')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
@@ -95,7 +95,7 @@
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group">
 				<label for="file" class="col-lg-2 control-label">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open-alt')"></tal:block>
+					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-folder-open-alt')"></tal:block>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
 				<div class="col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
@@ -128,15 +128,15 @@
 		<tr>
 			<th>
 				<div class="btn-group">
-					<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
+					<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-check')"></tal:block></span>
 				</div>
 			</th>
 			<th>
 				<div class="btn-group">
-					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal($('#importConf'),{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
+					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></tal:block></span>
+					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-remove')"></tal:block></span>
+					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal($('#importConf'),{title:$(this).attr('title')})"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-download-alt')"></tal:block></span>
 				</div>
 			</th>
 		</tr>

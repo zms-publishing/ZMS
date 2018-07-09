@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" tal:define="standard modules/Products.zms/standard">
+<html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <style>
 #indexes td {
@@ -56,7 +56,7 @@ return [{<br/>
 				<img tal:attributes="src python:si.icon"/>
 				<tal:block tal:content="python:si.meta_type">the connector</tal:block>
 				<span class="zmi-helper-clickable text-danger" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'; data-id si/id" onclick="$(this).closest('form').append('<input type=\042hidden\042 name=\042objectIds:list\042 value=\042'+$(this).attr('data-id')+'\042><input type=\042hidden\042 name=\042btn\042 value=\042Remove\042>').submit();">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-remove')"></tal:block>
 				</span>
 			</a>
 		</li>
@@ -78,7 +78,7 @@ return [{<br/>
 							</select>
 							<span class="input-group-btn">
 								<button id="addMetaTypeBtn" name="btn" type="submit" class="btn btn-default" value="Add">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
+									<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></tal:block>
 								</button>
 							</span>
 						</div>
@@ -126,11 +126,11 @@ return [{<br/>
 			<tr tal:condition="python:len([x for x in metaObjs if x.get('package')==metaObjPackage])>0" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
 				<td colspan="2">
 					<tal:block tal:condition="python:metaObjPackage">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
+						<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block>
 						<strong tal:content="metaObjPackage">the id</strong>
 					</tal:block>
 					<tal:block tal:condition="python:not metaObjPackage">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
+						<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block>
 						<strong>[default package]</strong>
 					</tal:block>
 				</td>
@@ -139,7 +139,7 @@ return [{<br/>
 		<tal:block tal:condition="not:python:metaObjPackage in metaObjPackages">
 			<tr>
 				<td colspan="2" style="text-decoration:line-through">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
+					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block>
 					<strong tal:content="metaObjPackage">the id</strong>
 				</td>
 			</tr>
@@ -219,10 +219,10 @@ return [{<br/>
 						</button>
 						<div class="btn-group">
 							<a class="btn btn-default" tal:attributes="href python:'%s/get_sitemap'%si.absolute_url(); title python:'%s (%s)'%(here.getZMILangStr('BTN_EXPORT'),here.getZMILangStr('TAB_SITEMAP'))" target="_blank">
-								<tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block>
+								<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-download-alt')"></tal:block>
 							</a>
 							<span class="btn btn-warning" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id si/id" onclick="return zmiReindexCatalog()">
-								<tal:block tal:content="structure python:here.zmi_icon(name='icon-refresh')"></tal:block>
+								<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-refresh')"></tal:block>
 							</span>
 						</div>
 					</div><!-- .col-sm-10 -->

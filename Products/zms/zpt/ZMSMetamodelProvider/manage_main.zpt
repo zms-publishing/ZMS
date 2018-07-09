@@ -2,7 +2,7 @@
 ><tal:block tal:condition="python:request.SESSION.get('zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
 ><tal:block tal:condition="not:python:request.SESSION.get('zmi-manage-system',0)==1"
 ><!DOCTYPE html>
-<html lang="en" tal:define="standard modules/Products.zms/standard">
+<html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='metas config')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
@@ -97,7 +97,7 @@
 		</span>
 
 		<div class="btn-group zmi-action" tal:attributes="title python:here.getZMILangStr('CAPTION_CHOOSEOBJ')">
-			<button class="btn btn-default" style="border:0" data-toggle="dropdown" tal:content="structure python:here.zmi_icon(name='icon-caret-down')"></button>
+			<button class="btn btn-default" style="border:0" data-toggle="dropdown" tal:content="structure python:zmscontext.zmi_icon(name='icon-caret-down')"></button>
 			<ul class="dropdown-menu">
 				<li class="dropdown-header" tal:content="structure python:here.getZMILangStr('CAPTION_CHOOSEOBJ')">choose object</li>
 				<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
@@ -105,7 +105,7 @@
 						<tal:block tal:condition="python:metaObjPackage">
 							<li tal:define="metaObj python:here.getMetaobj(metaObjPackage)">
 								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
+									<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block>
 									<strong tal:on-error="string:ERROR" tal:content="metaObjPackage">the id</strong>
 								</a>
 							</li>
@@ -129,7 +129,7 @@
 			<button tal:condition="python:not metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			<button tal:condition="python:metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COPY')" tal:content="python:here.getZMILangStr('BTN_COPY')">Copy</button>
 			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
-			<button type="button" name="btn" class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')" onclick="return zmiExportBtnClick(this)" tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></button>
+			<button type="button" name="btn" class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')" onclick="return zmiExportBtnClick(this)" tal:content="structure python:zmscontext.zmi_icon(name='icon-download-alt')"></button>
 		</div>
 	</div><!-- .form-group -->
 
@@ -185,10 +185,10 @@
 			<th class="meta-id" tal:attributes="title python:here.getZMILangStr('ATTR_ID')" tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
 			<th class="meta-name" tal:attributes="title python:here.getZMILangStr('ATTR_DISPLAY')" tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
 			<th class="meta-type"  tal:attributes="title python:here.getZMILangStr('ATTR_TYPE')" tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
-			<th class="meta-mandatory" tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-exclamation-sign')"></tal:block></th>
-			<th class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><tal:block tal:content="structure python:here.zmi_icon(name='icon-columns')"></tal:block></th>
-			<th class="meta-multilang" tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-globe')"></tal:block></th>
-			<th class="meta-repetitive" tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-list-ol')"></tal:block></th>
+			<th class="meta-mandatory" tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-exclamation-sign')"></tal:block></th>
+			<th class="meta-displaycol" tal:condition="metaObjRecordSet" colspan="2" tal:attributes="title python:'%s (%s)'%(here.getZMILangStr('ATTR_DISPLAY'),here.getZMILangStr('ATTR_COL'))"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-columns')"></tal:block></th>
+			<th class="meta-multilang" tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-globe')"></tal:block></th>
+			<th class="meta-repetitive" tal:condition="not:metaObjRecordSet" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-list-ol')"></tal:block></th>
 			<th class="meta-default" tal:attributes="title python:here.getZMILangStr('ATTR_DEFAULT')" tal:content="python:'%s/%s'%(here.getZMILangStr('ATTR_DEFAULT'),here.getZMILangStr('OPT_S_CODE'))"></th>
 		</tr>
 
@@ -203,7 +203,7 @@
 							<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',key:\'attr\',attr_id:\'%s\',\'pos:int\':this.selectedIndex})'%objAttrId">
 								<option tal:repeat="i python:range(0,len(objAttrIds))" tal:attributes="selected python:['','selected'][i==objAttrIds.index(objAttrId)]" tal:content="python:i+1">i+1</option>
 							</select>
-							<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',key:\'attr\',attr_id:\'%s\'})'%objAttrId; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
+							<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',key:\'attr\',attr_id:\'%s\'})'%objAttrId; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-remove')"></tal:block></span>
 						</div>
 					</td>
 					<td class="meta-id"><input type="text" tal:attributes="name python:'attr_id_%s'%objAttrId; value python:objAttr['id']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
@@ -233,7 +233,7 @@
 							<tal:block tal:condition="python:objAttr.get('ob')">
 								<input type="checkbox" tal:attributes="name python:'attr_custom_%s_active'%objAttr['id']" value="1" checked="checked"/>
 								<a tal:define="fname python:objAttr['ob'].title" tal:attributes="href python:objAttr['ob'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['ob'].get_size()))" target="_blank" style="text-decoration:none;">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-file-alt')">FILE ICON</tal:block>
+									<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-file-alt')">FILE ICON</tal:block>
 									<tal:block tal:content="fname">FILE NAME</tal:block>
 								</a>
 							</tal:block>
@@ -267,7 +267,7 @@
 							<td class="meta-repetitive" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][objAttr.get('repetitive',0) in [1,True]]" value="1"/></td>
 							<td class="meta-default">
 								<div class="single-line" tal:condition="python:objAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','*']">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-key')">icon</tal:block>
+									<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-key')">icon</tal:block>
 									<textarea tal:attributes="name python:'attr_keys_%s'%objAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); class python:' '.join([['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:'\n'.join(objAttr['keys'])">keys</textarea>
 								</div>
 								<div tal:condition="python:objAttr['type'] in ['boolean']">
@@ -289,7 +289,7 @@
 				</tal:block>
 			</tr>
 			<tr class="row_insert">
-				<td class="meta-sort"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
+				<td class="meta-sort"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></tal:block></td>
 				<td class="meta-id"><input class="form-control input-sm" type="text" name="attr_id"/></td>
 				<td class="meta-name"><input class="form-control input-sm" type="text" name="attr_name"/></td>
 				<td class="meta-type">
@@ -363,7 +363,7 @@
 			</tr>
 			<tr tal:repeat="action python:['insert','delete']">
 				<td nowrap="nowrap">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-%s'%{'insert':'plus','delete':'trash'}[action])">ICON</tal:block>&nbsp;&nbsp;<tal:block tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())">ACTION</tal:block>
+					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-%s'%{'insert':'plus','delete':'trash'}[action])">ICON</tal:block>&nbsp;&nbsp;<tal:block tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())">ACTION</tal:block>
 				</td>
 				<td style="text-align:center">
 					<tal:block tal:condition="python:action=='insert'"
@@ -408,19 +408,19 @@
 		<tr>
 			<th>
 				<div class="btn-group">
-					<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
+					<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-check')"></tal:block></span>
 				</div>
 			</th>
 			<th colspan="2">
 				<div class="btn-toolbar" role="toolbar">
 					<div class="btn-group">
-						<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
-						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
+						<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-remove')"></tal:block></span>
 					</div><!-- .btn-group -->
 					<div class="btn-group">
-						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-share')"></tal:block></span>
-						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
-						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-share')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-download-alt')"></tal:block></span>
 					</div><!-- .btn-group -->
 				</div><!-- .btn-toolbar -->
 			</th>
@@ -435,14 +435,14 @@
 				</td>
 				<td colspan="2">
 					<tal:block tal:condition="python:metaObjPackage">
-						<tal:block tal:condition="python:metaObj.get('acquired',0)" tal:content="structure python:here.zmi_icon(name='icon-share',extra='title=\042acquired\042')"></tal:block>
+						<tal:block tal:condition="python:metaObj.get('acquired',0)" tal:content="structure python:zmscontext.zmi_icon(name='icon-share',extra='title=\042acquired\042')"></tal:block>
 						<a tal:condition="python:metaObjPackage" tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank">
-							<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
+							<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block>
 						</a>
 						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])"><strong tal:on-error="string:ERROR" tal:content="metaObjPackage">the id</strong></a>
 					</tal:block>
 					<tal:block tal:condition="python:not metaObjPackage">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
+						<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block>
 						<strong>[default package]</strong>
 					</tal:block>
 					<tal:block tal:content="python:metaObj.get('revision',['',here.getMetaobjRevision(metaObjPackage)][int(len(metaObjPackage)>0)])">the revision</tal:block>
@@ -453,7 +453,7 @@
 			<tr class="zmi-selectable">
 				<td>&nbsp;</td>
 				<td colspan="2" style="text-decoration:line-through">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-briefcase')"></tal:block>
+					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block>
 					<strong tal:content="metaObjPackage">the id</strong>
 				</td>
 			</tr>

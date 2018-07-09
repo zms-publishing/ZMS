@@ -2,7 +2,7 @@
 ><tal:block tal:condition="python:request.SESSION.get('zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
 ><tal:block tal:condition="not:python:request.SESSION.get('zmi-manage-system',0)==1"
 ><!DOCTYPE html>
-<html lang="en" tal:define="standard modules/Products.zms/standard">
+<html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 
 <style>
@@ -66,7 +66,7 @@
 
 <div class="tabbable tabs-left">
 	<ul class="nav nav-tabs">
-		<li><a href="#diff" data-toggle="tab"><tal:block tal:content="structure python:here.zmi_icon(name=['icon-check-empty','icon-check'][here.get_auto_update()])"></tal:block> Diff</a></li>
+		<li><a href="#diff" data-toggle="tab"><tal:block tal:content="structure python:zmscontext.zmi_icon(name=['icon-check-empty','icon-check'][here.get_auto_update()])"></tal:block> Diff</a></li>
 		<li><a href="#properties" data-toggle="tab">Properties</a></li>
 	</ul>
 	<div class="tab-content">
@@ -82,7 +82,7 @@
 		<div class="form-group">
 			<label class="col-sm-2"></label>
 			<div class="col-sm-10">
-				<button type="submit" class="btn btn-default" name="btn" value="refresh"><tal:block tal:content="structure python:here.zmi_icon(name='icon-refresh')"></tal:block> Refresh</button>
+				<button type="submit" class="btn btn-default" name="btn" value="refresh"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-refresh')"></tal:block> Refresh</button>
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group" tal:repeat="provider python:here.getRepositoryProviders()">
@@ -94,7 +94,7 @@
 					ids python:sorted(here.distinct_list([x['id'] for x in local_files]));
 					">
 				<div tal:repeat="id ids">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-ok text-success')"></tal:block>
+					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-ok text-success')"></tal:block>
 					<tal:block tal:content="id"></tal:block>
 				</div>
 			</div>
@@ -106,9 +106,9 @@
 	<div class="form-group">
 		<label class="col-sm-2"></label>
 		<div class="col-sm-10">
-			<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
-			<button type="submit" class="btn btn-default" name="btn" value="update"><tal:block tal:content="structure python:here.zmi_icon(name='icon-reply')"></tal:block> Update</button>
-			<button type="submit" class="btn btn-default" name="btn" value="commit">Commit <tal:block tal:content="structure python:here.zmi_icon(name='icon-share-alt text-success')"></tal:block></button>
+			<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-check')"></tal:block></span>
+			<button type="submit" class="btn btn-default" name="btn" value="update"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-reply')"></tal:block> Update</button>
+			<button type="submit" class="btn btn-default" name="btn" value="commit">Commit <tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-share-alt text-success')"></tal:block></button>
 		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
 
@@ -204,7 +204,7 @@
 						<tal:block tal:content="python:'%s;; %i Bytes'%(str(l['version']),len(ld))"></tal:block>
 					</tal:block>
 				</small>
-				<a href="#zmi-tab"><tal:block tal:content="structure python:here.zmi_icon(name='icon-collapse-top')"></tal:block></a>
+				<a href="#zmi-tab"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-collapse-top')"></tal:block></a>
 			</td>
 		</tr>
 		<tr>
@@ -243,7 +243,7 @@
 					</div><!-- .col-sm-10 -->
 				</div><!-- .form-group -->
 				<div class="form-group">
-					<label class="col-sm-2 control-label mandatory"><span>Repository <tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block></span></label>
+					<label class="col-sm-2 control-label mandatory"><span>Repository <tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-folder-open')"></tal:block></span></label>
 					<div class="col-sm-10">
 						 <input class="form-control" type="text" name="basepath" tal:attributes="value python:here.get_conf_basepath('')">
 					</div><!-- .col-sm-10 -->

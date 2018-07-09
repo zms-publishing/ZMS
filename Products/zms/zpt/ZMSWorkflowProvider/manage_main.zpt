@@ -2,7 +2,7 @@
 ><tal:block tal:condition="python:request.SESSION.get('zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
 ><tal:block tal:condition="not:python:request.SESSION.get('zmi-manage-system',0)==1"
 ><!DOCTYPE html>
-<html lang="en" tal:define="standard modules/Products.zms/standard">
+<html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 
 <body tal:attributes="class python:here.zmi_body_class(id='workflow_manager_main config')">
@@ -172,7 +172,7 @@ $(function(){
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group">
 				<label for="file" class="col-lg-2 control-label">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block>
+					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-folder-open')"></tal:block>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
 				<div class="col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
@@ -332,7 +332,7 @@ $(function(){
 						<input class="form-control input-sm zmi-input-icon-clazz" type="text" id="newIconClazz" name="newIconClazz"/>
 					</div>
 					<div class="pull-right">
-						<tal:block tal:content="structure python:here.zmi_icon(name='')">the icon</tal:block>
+						<tal:block tal:content="structure python:zmscontext.zmi_icon(name='')">the icon</tal:block>
 					</div>
 				</div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
@@ -385,7 +385,7 @@ $(function(){
 
 <div class="tabbable tabs-left">
 	<ul class="nav nav-tabs">
-		<li><a href="#edit" data-toggle="tab"><tal:block tal:content="structure python:here.zmi_icon(name=['icon-check','icon-check-empty'][here.getAutocommit()])"></tal:block> <tal:block tal:content="python:here.getZMILangStr('TAB_WORKFLOW')"></tal:block> <tal:block tal:content="python:here.getRevision()"></tal:block></a></li>
+		<li><a href="#edit" data-toggle="tab"><tal:block tal:content="structure python:zmscontext.zmi_icon(name=['icon-check','icon-check-empty'][here.getAutocommit()])"></tal:block> <tal:block tal:content="python:here.getZMILangStr('TAB_WORKFLOW')"></tal:block> <tal:block tal:content="python:here.getRevision()"></tal:block></a></li>
 		<li><a href="#properties" data-toggle="tab" tal:content="python:here.getZMILangStr('TAB_PROPERTIES')">Properties</a></li>
 	</ul>
 	<div class="tab-content">
@@ -399,9 +399,9 @@ $(function(){
 	<tr>
 		<th tal:attributes="colspan python:2+len(activityIds)">
 			<div class="btn-group">
-				<span class="btn btn-default" tal:attributes="title python:'%s: Activity'%here.getZMILangStr('BTN_INSERT')" onclick="zmiModal('#insertActivity',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
+				<span class="btn btn-default" tal:attributes="title python:'%s: Activity'%here.getZMILangStr('BTN_INSERT')" onclick="zmiModal('#insertActivity',{title:$(this).attr('title')})"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></tal:block></span>
 			</div>
-			&nbsp;<tal:block tal:content="structure python:here.zmi_icon(name='icon-tag')"></tal:block> Activities
+			&nbsp;<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-tag')"></tal:block> Activities
 		</th>
 	</tr>
 	</thead>
@@ -413,7 +413,7 @@ $(function(){
 						<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%activityId">
 							<option tal:repeat="i python:range(0,len(activityIds))" tal:attributes="selected python:['','selected'][int(i==activityIds.index(activityId))]" tal:content="python:i+1">i+1</option>
 						</select>
-						<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%activityId; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
+						<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%activityId; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-remove')"></tal:block></span>
 					</div>
 				</td>
 				<tal:block tal:repeat="activityId2 activityIds">
@@ -422,7 +422,7 @@ $(function(){
 							><div tal:condition="python:activityId==activityId2" class="activity" tal:attributes="title python:activity['id']">
 								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],activity['id'])">
 									<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')">
-									<tal:block tal:condition="python:activity.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=activity.get('icon_clazz'))">the icon</tal:block>
+									<tal:block tal:condition="python:activity.get('icon_clazz')" tal:content="structure python:zmscontext.zmi_icon(name=activity.get('icon_clazz'))">the icon</tal:block>
 									<tal:block tal:content="python:activity['name']">name</tal:block>
 								</a>
 							</div><tal:block tal:condition="not:python:activityId==activityId2"
@@ -451,9 +451,9 @@ $(function(){
 	<tr>
 		<th colspan="3">
 			<div class="btn-group">
-				<span class="btn btn-default" tal:attributes="title python:'%s: Transition'%here.getZMILangStr('BTN_INSERT')" onclick="zmiModal('#insertTransition',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
+				<span class="btn btn-default" tal:attributes="title python:'%s: Transition'%here.getZMILangStr('BTN_INSERT')" onclick="zmiModal('#insertTransition',{title:$(this).attr('title')})"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></tal:block></span>
 			</div>
-			&nbsp;<tal:block tal:content="structure python:here.zmi_icon(name='icon-random')"></tal:block> Transitions
+			&nbsp;<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-random')"></tal:block> Transitions
 		</th>
 	</tr>
 	</thead>
@@ -465,7 +465,7 @@ $(function(){
 						<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pos:int\':this.selectedIndex})'%transition['id']">
 							<option tal:repeat="i python:range(0,len(transitionIds))" tal:attributes="selected python:['','selected'][int(i==transitionIds.index(transitionId))]" tal:content="python:i+1">i+1</option>
 						</select>
-						<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%transition['id']; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
+						<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%transition['id']; title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-remove')"></tal:block></span>
 					</div>
 				</td>
 				<td>
@@ -476,7 +476,7 @@ $(function(){
 								<tal:block tal:define="global activity python:here.getActivity(activityId)">
 									<div class="activity" tal:attributes="title python:activity['id']">
 										<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')" />
-										<tal:block tal:condition="python:activity.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=activity.get('icon_clazz'))">the icon</tal:block>
+										<tal:block tal:condition="python:activity.get('icon_clazz')" tal:content="structure python:zmscontext.zmi_icon(name=activity.get('icon_clazz'))">the icon</tal:block>
 										<tal:block tal:content="python:activity['name']">name</tal:block>
 									</div>
 								</tal:block>
@@ -486,7 +486,7 @@ $(function(){
 						<td>
 							<div tal:attributes="class python:' '.join(['transition']+[[],['state']][int(ob is None)]+[[],['action']][int(len(transition['from'])+len(transition['to'])==0)])">
 								<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],transition['id'])">
-									<tal:block tal:content="structure python:here.zmi_icon(name=transition.get('icon_clazz','icon-check-empty'))">the icon</tal:block>
+									<tal:block tal:content="structure python:zmscontext.zmi_icon(name=transition.get('icon_clazz','icon-check-empty'))">the icon</tal:block>
 									<tal:block tal:content="python:transition['name']">the name</tal:block>
 								</a>
 								<tal:block tal:condition="python:ob is not None">
@@ -503,7 +503,7 @@ $(function(){
 								<tal:block tal:define="global activity python:here.getActivity(activityId)">
 									<div class="activity" tal:attributes="title python:activity['id']">
 										<img tal:condition="python:activity.get('icon')" tal:attributes="src python:activity.get('icon')" />
-										<tal:block tal:condition="python:activity.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=activity.get('icon_clazz'))">the icon</tal:block>
+										<tal:block tal:condition="python:activity.get('icon_clazz')" tal:content="structure python:zmscontext.zmi_icon(name=activity.get('icon_clazz'))">the icon</tal:block>
 										<tal:block tal:content="python:activity['name']">name</tal:block>
 									</div>
 								</tal:block>
@@ -545,8 +545,8 @@ $(function(){
 						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 						<a class="btn btn-default" tal:attributes="href python:'javascript:if(confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_changeWorkflow?lang=%s&btn=%s\'}'%(request['lang'],here.getZMILangStr('BTN_CLEAR')); title python:here.getZMILangStr('BTN_CLEAR')+'...'"><tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')"></tal:block></a>
 							<div class="btn-group packaging">
-								<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).text(),closeText:getZMILangStr('BTN_CLOSE')});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
-								<a class="btn btn-default" tal:attributes="href python:'manage_changeWorkflow?lang=%s&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></a>
+								<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).text(),closeText:getZMILangStr('BTN_CLOSE')});return false;"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+								<a class="btn btn-default" tal:attributes="href python:'manage_changeWorkflow?lang=%s&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-download-alt')"></tal:block></a>
 							</div><!-- .btn-group -->
 					</div>
 				</div><!-- .form-group -->

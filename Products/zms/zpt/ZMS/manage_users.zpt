@@ -2,7 +2,7 @@
 	><tal:block tal:define="global
 		name request/id;
 		users python:here.searchUsers(name);
-		found python:int(len(filter(lambda x:x==name,users))==1)"
+		found python:int(len([x for x in users if x==name])==1);"
 		><tal:block tal:content="found">found</tal:block
 	></tal:block
 ></tal:block
@@ -210,7 +210,7 @@ function zmiModalInsertUserOpen(context) {
 		</a>
 	</legend>
 	<tal:block tal:condition="python:userObj is not None">
-	<div class="form-group" tal:condition="python:userObj.has_key('pluginid')">
+	<div class="form-group" tal:condition="python:'pluginid' in userObj">
 		<label for="source" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_SOURCE')">Source</span></label>
 		<div class="col-sm-10" tal:content="structure userObj/pluginid">the user-pluginid</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
@@ -286,7 +286,11 @@ function zmiModalInsertUserOpen(context) {
 	</legend>
 	<div class="form-group">
 		<div class="controls save"
-				 tal:define="is_deletable python:len(here.getRootElement().getSecurityRoles().get(request['id'],{}).get('nodes',{}).keys())==0 and not len(filter(lambda x:len(filter(lambda y:request['id'] in y['roles'],x.get('nodes',{}).values()))>0,here.getConfProperty('ZMS.security.users',{}).values()))>0">
+				 tal:define="
+					security_roles python:here.getRootElement().getSecurityRoles().get(request['id'],{});
+					nodes python:security_roles.get('nodes',{}).keys();
+					security_users python:here.getConfProperty('ZMS.security.users',{}).values();
+					is_deletable python:len(nodes)==0 and not len([x for x in security_users if len([y for y in x.get('nodes',{}).values() if request['id'] in y['roles']])>0])>0">
 				<button type="submit" name="btn" class="btn btn-default"
 					tal:attributes="value python:here.getZMILangStr('BTN_DELETE');
 					 disabled python:'' if is_deletable else 'disabled';
@@ -585,13 +589,16 @@ function zmiModalInsertUserOpen(context) {
 		<table class="table table-striped table-bordered table-hover">
 		<tbody>
 			<tr tal:repeat="validRole python:here.sort_list(roleDefs.keys())">
-				<td>
+				<td tal:define="
+					security_users python:here.getConfProperty('ZMS.security.users',{}).values();
+					security_roles python:here.getConfProperty('ZMS.security.roles',{}).values();
+					">
 					<input type="checkbox" name="ids:list" tal:attributes="value validRole"/>
 					<a target="" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],validRole)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-group')"></tal:block> <tal:block tal:content="validRole">validRole</tal:block></a>
 					(
 						<tal:block tal:content="python:'%i %s'%(len(roleDefs[validRole]['nodes']),here.getZMILangStr('ATTR_NODE'))"># nodes</tal:block>
-						, <tal:block tal:content="python:'%i %s'%(len(filter(lambda x:len(filter(lambda y:validRole in y['roles'],x.get('nodes',{}).values()))>0,here.getConfProperty('ZMS.security.users',{}).values())),here.getZMILangStr('ATTR_USERS'))"># users</tal:block>
-						, <tal:block tal:content="python:'%i %s'%(len(filter(lambda x:len(filter(lambda y:validRole in y['roles'],x.get('nodes',{}).values()))>0,here.getConfProperty('ZMS.security.roles',{}).values())),here.getZMILangStr('ATTR_ROLES'))"># roles</tal:block>
+						, <tal:block tal:content="python:'%i %s'%(len([x for x in security_users if len([y for y in x.get('nodes',{}).values() if validRole in y['roles']])>0]),here.getZMILangStr('ATTR_USERS'))"># users</tal:block>
+						, <tal:block tal:content="python:'%i %s'%(len([x for x in security_roles if len([y for y in x.get('nodes',{}).values() if validRole in y['roles']])>0]),here.getZMILangStr('ATTR_ROLES'))"># roles</tal:block>
 					)
 				</td>
 			</tr>

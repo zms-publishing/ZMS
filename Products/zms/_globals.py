@@ -193,12 +193,12 @@ def datatype_key(datatype):
 
 def is_str_type(v):
   """
-  2to3: types.StringTypes removed in Python-3.x
+  Is str type.
+  @param
+  @return
+  @rtype: C(Boolean)
   """
-  try:
-    return isinstance(v, basestring)
-  except NameError:
-    return isinstance(v, str)
+  return isinstance(v, bytes) or isinstance(v, str)
 
 
 def get_size(v):

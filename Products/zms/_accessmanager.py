@@ -739,7 +739,7 @@ class AccessManager(AccessableContainer):
             v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),plugin.icon)
             t = 'html'
           else:
-            v = unicode(user[extra],encoding).encode('utf-8')
+            v = str(user[extra]).encode(encoding)
             t = 'string'
           d[extra] = v
           if extra in extras and len([x for x in c if x['id'] == extra])==0:

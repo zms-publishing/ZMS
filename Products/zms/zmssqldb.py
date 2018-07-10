@@ -467,7 +467,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             value = r[k]
             try:
               column = context.getEntityColumn(self.tableName, k, r)
-              if '*' in stereotypes or len(filter(lambda x:x in column, stereotypes)) > 0:
+              if '*' in stereotypes or len([x for x in stereotypes if x in column]) > 0:
                 value =  column.get('value', value)
                 if 'options' in column:
                   o = column['options']

@@ -53,7 +53,7 @@
 								</tal:block>
 							</tal:block>
 						</tal:block>
-						<tr class="diff" tal:condition="python:len(filter(lambda x:x==values[0],values[1:]))!=len(values)-1">
+						<tr class="diff" tal:condition="python:len([x for x in values[1:] if x==values[0]])!=len(values)-1">
 							<th tal:attributes="title metaObjAttr/id" tal:content="python:here.getObjAttrLabel(metaObjAttr)">the key</th>
 							<tal:block tal:define="
 									dummy0 python:values.append(values[-1])"></tal:block>

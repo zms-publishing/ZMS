@@ -26,7 +26,7 @@ node('python27') {
     }
 */
     parallel(
-        UnitTests: stage('Unit Tests') {
+        UnitTests: {
             try {
                 withEnv(['PATH+ZMS=./virtualenv/bin']) {
                     sh "./virtualenv/bin/nosetests --processes 10 --with-xunit unit_tests || true"
@@ -35,7 +35,7 @@ node('python27') {
                junit '**/nosetests.xml'
             }
         },
-        ACTests: stage('AC Tests') {
+        ACTests: {
             try {
                 wrap([$class: 'Xvfb',
                         displayNameOffset: 200, installationName: 'main',

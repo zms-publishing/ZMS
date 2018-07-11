@@ -60,7 +60,6 @@ node('python27') {
                         ], 
                         replyTo: '$DEFAULT_REPLYTO',
                         to: '$DEFAULT_RECIPIENTS'
-                    }
                 }
             }
         }

@@ -4,7 +4,6 @@
 //  checkstyle
 node('python27') {
     stage('Build27') {
-        checkout scm
 /*        sh "git clean -d -x -f"*/
 /*        env.NODEJS_HOME = "${tool 'default-npm'}"*/
 /*        env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"*/

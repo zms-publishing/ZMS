@@ -9,15 +9,15 @@ node('python27') {
 /*        env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"*/
 /*        sh 'npm install'*/
         
-        sh "virtualenv ./venv"
-        sh "./venv/bin/pip install --upgrade setuptools"
-        sh "./venv/bin/pip install --upgrade pip wheel"
-        sh "./venv/bin/pip install --requirement requirements.txt"
-        sh "./venv/bin/pip install --requirement selenium_tests/requirements.txt"
-        sh "./venv/bin/pip install --requirement unit_tests/requirements.txt"
-        sh "./venv/bin/pip install --editable ."
+        sh "virtualenv ./virtualenv"
+        sh "./virtualenv/bin/pip install --upgrade setuptools"
+        sh "./virtualenv/bin/pip install --upgrade pip wheel"
+        sh "./virtualenv/bin/pip install --requirement requirements.txt"
+        sh "./virtualenv/bin/pip install --requirement selenium_tests/requirements.txt"
+        sh "./virtualenv/bin/pip install --requirement unit_tests/requirements.txt"
+        sh "./virtualenv/bin/pip install --editable ."
 /* not required yet */
-/*        sh "./venv/bin/python setup.py sdist"*/
+/*        sh "./virtualenv/bin/python setup.py sdist"*/
 /*        archiveArtifacts artifacts: 'dist/ZMS3-*.tar.gz', fingerprint: true*/
     }
 /*    stage('jshint') {
@@ -27,8 +27,8 @@ node('python27') {
 */
     stage('Unit Tests') {
         try {
-            withEnv(['PATH+ZMS=./venv/bin']) {
-                sh "./venv/bin/nosetests --processes 10 --with-xunit unit_tests || true"
+            withEnv(['PATH+ZMS=./virtualenv/bin']) {
+                sh "./virtualenv/bin/nosetests --processes 10 --with-xunit unit_tests || true"
             }
         } finally {
            junit '**/nosetests.xml'

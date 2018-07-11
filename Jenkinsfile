@@ -37,7 +37,7 @@ node('python27') {
     }
     stage('AC Tests') {
         try {
-            sh "~/bin/run_ac_tests"
+            sh "~/bin/run_ac_test"
         } finally {
             junit '**/junit.xml'
         }

@@ -25,26 +25,24 @@ node('python27') {
         checkstyle pattern: 'data/testing/output/jshint_checkstyle.xml'
     }
 */
-    parallel(
-        UnitTests: {
-            try {
-                withEnv(['PATH+ZMS=./virtualenv/bin']) {
-                    sh "./virtualenv/bin/nosetests --processes 10 --with-xunit unit_tests || true"
-                }
-            } finally {
-               junit '**/nosetests.xml'
+    stage('Unit Tests') {
+        try {
+            withEnv(['PATH+ZMS=./virtualenv/bin']) {
+                sh "./virtualenv/bin/nosetests --processes 10 --with-xunit unit_tests || true"
             }
-        },
-        ACTests: {
-            try {
-                wrap([$class: 'Xvfb',
-                        displayNameOffset: 200, installationName: 'main',
-                        screen: '1280x1024x16']) {
-                    sh "~/bin/run_ac_test"
-                }
-            } finally {
-                junit '**/junit.xml'
-            }
+        } finally {
+           junit '**/nosetests.xml'
         }
-    )
+    }
+    stage('AC Tests') {
+        try {
+            wrap([$class: 'Xvfb',
+                    displayNameOffset: 200, installationName: 'main',
+                    screen: '1280x1024x16']) {
+                sh "~/bin/run_ac_test"
+            }
+        } finally {
+            junit '**/junit.xml'
+        }
+    }
 }

@@ -32,7 +32,7 @@ node('python27') {
 /*                sh "./venv/bin/nosetests --processes 10 --with-xunit unit_tests || true"*/
             }
         } finally {
-            junit '**/nosetests.xml'
+//            junit '**/nosetests.xml'
         }
     }
     stage('AC Tests') {

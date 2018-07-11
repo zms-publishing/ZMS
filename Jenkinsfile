@@ -4,7 +4,7 @@
 //  checkstyle
 node('python27') {
     stage('Build') {
-        checkout([$class: 'SubversionSCM', locations: [[remote: 'https://zmslabs.org/svn/zmslabs/ZMS/trunk']], workspaceUpdater: [$class: 'UpdateWithCleanUpdater']])
+        checkout([$class: 'SubversionSCM', locations: [[local: '.', remote: 'https://zmslabs.org/svn/zmslabs/ZMS/trunk']], workspaceUpdater: [$class: 'UpdateWithCleanUpdater']])
 /*        env.NODEJS_HOME = "${tool 'default-npm'}"*/
 /*        env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"*/
 /*        sh 'npm install'*/

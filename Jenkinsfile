@@ -3,13 +3,12 @@
 //  NodeJS
 //  checkstyle
 node('python27') {
-    stage('Build27') {
-/*        sh "git clean -d -x -f"*/
+    stage('Build') {
+        checkout([$class: 'SubversionSCM', locations: [[remote: 'https://zmslabs.org/svn/zmslabs/ZMS/trunk']], workspaceUpdater: [$class: 'UpdateWithCleanUpdater']])
 /*        env.NODEJS_HOME = "${tool 'default-npm'}"*/
 /*        env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"*/
 /*        sh 'npm install'*/
         
-/* TODO remove previous virtualenv if not done by repo cleanup */
         sh "virtualenv ./venv"
         sh "./venv/bin/pip install --upgrade setuptools"
         sh "./venv/bin/pip install --upgrade pip wheel"

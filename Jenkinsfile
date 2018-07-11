@@ -26,7 +26,7 @@ node('python27') {
         checkstyle pattern: 'data/testing/output/jshint_checkstyle.xml'
     }
 */
-    stage('Test27') {
+    stage('Unit Tests') {
         try {
             withEnv(['PATH+ZMS=./venv/bin']) {
 /*                sh "./venv/bin/nosetests --processes 10 --with-xunit unit_tests || true"*/
@@ -37,7 +37,11 @@ node('python27') {
     }
     stage('AC Tests') {
         try {
-            sh "~/bin/run_ac_test"
+            wrap([$class: 'Xvfb',
+                    displayNameOffset: 200, installationName: 'main',
+                    screen: '1280x1024x16']) {
+                sh "~/bin/run_ac_test"
+            }
         } finally {
             junit '**/junit.xml'
         }

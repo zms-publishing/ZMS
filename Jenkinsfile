@@ -29,7 +29,7 @@ node('python27') {
     stage('Test27') {
         try {
             withEnv(['PATH+ZMS=./venv/bin']) {
-                sh "./venv/bin/nosetests --processes 10 --with-xunit unit_tests || true"
+/*                sh "./venv/bin/nosetests --processes 10 --with-xunit unit_tests || true"*/
             }
         } finally {
             junit '**/nosetests.xml'

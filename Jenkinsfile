@@ -14,9 +14,9 @@ node('python27') {
         sh "virtualenv ./venv"
         sh "./venv/bin/pip install --upgrade setuptools"
         sh "./venv/bin/pip install --upgrade pip wheel"
-        sh "./venv/bin/pip install --requirements requirements.txt"
-        sh "./venv/bin/pip install --requirements selenium_tests/requirements.txt"
-        sh "./venv/bin/pip install --requirements unit_tests/requirements.txt"
+        sh "./venv/bin/pip install --requirement requirements.txt"
+        sh "./venv/bin/pip install --requirement selenium_tests/requirements.txt"
+        sh "./venv/bin/pip install --requirement unit_tests/requirements.txt"
         sh "./venv/bin/pip install --editable ."
 /* not required yet */
 /*        sh "./venv/bin/python setup.py sdist"*/

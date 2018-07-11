@@ -31,7 +31,7 @@ node('python27') {
                 sh "./virtualenv/bin/nosetests --processes 10 --with-xunit unit_tests || true"
             }
         } finally {
-           junit '**/nosetests.xml'
+           junit 'nosetests.xml'
         }
     }
     stage('AC Tests') {

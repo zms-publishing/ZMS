@@ -116,14 +116,13 @@ class langdict:
       import sys
       manage_langs = []
       lang_dict = {}
-      modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
-      filepath = os.path.join(modulepath[:modulepath.rfind('zms')],'zms','import')
       xmlfile = None
+      #modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
+      #filepath = os.path.join(modulepath[:modulepath.rfind('zms')],'zms','import')
       #for path in ['.',standard.getINSTANCE_HOME(),standard.getPRODUCT_HOME(),standard.getPACKAGE_HOME()]+sys.path:
       #for path in [os.path.join(os.path.dirname(__file__), 'zms', 'import', filename)]:
-      from App.Common import package_home
-      for filepath in [package_home(globals()),os.path.dirname(__file__)]:
-        xmlfilename = os.path.join(path,'zms','import',filename)
+      for filepath in [os.path.dirname(__file__)]:
+        xmlfilename = os.path.join(filepath,'zms','import',filename)
         print("langdict",xmlfilename)
         if os.path.exists(xmlfilename):
           print("langdict found",xmlfilename)

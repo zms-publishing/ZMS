@@ -247,11 +247,11 @@ class ConfManager(
         filepath = os.path.join(filepath[:filepath.rfind('zms')],'zms','import')
         filename = os.path.join(filepath,'configure.zcml')
       """
-      from App.Common import package_home
-      for filepath in [package_home(globals()),os.path.dirname(__file__)]:
+      for filepath in [os.path.dirname(__file__)]:
         filename = os.path.join(filepath,'zms','import','configure.zcml')
         print("confdict: filename",filename)
         if os.path.exists(filename):
+          print( self, "[getConfFiles]: Read from "+filename)
           standard.writeBlock( self, "[getConfFiles]: Read from "+filename)
           xmldoc = xml.dom.minidom.parse(filename)
           for source in xmldoc.getElementsByTagName('source'):

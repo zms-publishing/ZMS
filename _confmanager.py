@@ -235,8 +235,8 @@ class ConfManager(
       ConfManager.getConfFiles
       """
       filenames = {}
-      for filepath in [os.path.dirname(__file__)]:
-        filename = os.path.join(filepath,'import','configure.zcml')
+      for filepath in [os.path.join(os.path.dirname(__file__),'import')]:
+        filename = os.path.join(filepath,'configure.zcml')
         print("confdict",filename)
         if os.path.exists(filename):
           print("confdict found",filename)

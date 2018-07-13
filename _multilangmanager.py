@@ -122,7 +122,7 @@ class langdict:
       #for path in ['.',standard.getINSTANCE_HOME(),standard.getPRODUCT_HOME(),standard.getPACKAGE_HOME()]+sys.path:
       #for path in [os.path.join(os.path.dirname(__file__), 'zms', 'import', filename)]:
       for filepath in [os.path.dirname(__file__)]:
-        xmlfilename = os.path.join(filepath,'zms','import',filename)
+        xmlfilename = os.path.join(filepath,'import',filename)
         print("langdict",xmlfilename)
         if os.path.exists(xmlfilename):
           print("langdict found",xmlfilename)

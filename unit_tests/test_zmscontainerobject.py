@@ -25,7 +25,7 @@ class ZMSContainerObjectTest(ZMSTestCase):
 
   def test_tree(self):
     context = self.context
-    request = self.REQUEST
+    request = context.REQUEST
     
     folder = self.folder
     print('>>>>>>>>>> test tree')

@@ -13,6 +13,8 @@ import zms
 # /Products/zms> python -m unittest unit_tests.test_performance.PerformanceTest
 class PerformanceTest(ZMSTestCase):
 
+  temp_title = 'temp-test'
+
   lp = 5
   lc = 10
 

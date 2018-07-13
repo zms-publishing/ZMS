@@ -117,10 +117,6 @@ class langdict:
       manage_langs = []
       lang_dict = {}
       xmlfile = None
-      #modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
-      #filepath = os.path.join(modulepath[:modulepath.rfind('zms')],'zms','import')
-      #for path in ['.',standard.getINSTANCE_HOME(),standard.getPRODUCT_HOME(),standard.getPACKAGE_HOME()]+sys.path:
-      #for path in [os.path.join(os.path.dirname(__file__), 'zms', 'import', filename)]:
       for filepath in [os.path.dirname(__file__)]:
         xmlfilename = os.path.join(filepath,'import',filename)
         print("langdict",xmlfilename)

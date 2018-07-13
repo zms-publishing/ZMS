@@ -239,10 +239,11 @@ class ConfManager(
       modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
       filepaths = [os.path.join(standard.getINSTANCE_HOME(),'etc','zms')] + \
         [os.path.join(x,modulepath) for x in ['.',standard.getINSTANCE_HOME(),standard.getPRODUCT_HOME(),standard.getPACKAGE_HOME()]+sys.path]
+      print("confdict: filepaths=",filepaths)
       for filepath in filepaths:
         filepath = os.path.join(filepath[:filepath.rfind('zms')],'zms','import')
         filename = os.path.join(filepath,'configure.zcml')
-        print("confdict",filename)
+        print("confdict: filename",filename)
         if os.path.exists(filename):
           standard.writeBlock( self, "[getConfFiles]: Read from "+filename)
           xmldoc = xml.dom.minidom.parse(filename)

@@ -242,6 +242,7 @@ class ConfManager(
       for filepath in filepaths:
         filepath = os.path.join(filepath[:filepath.rfind('zms')],'zms','import')
         filename = os.path.join(filepath,'configure.zcml')
+        print("confdict",filename)
         if os.path.exists(filename):
           standard.writeBlock( self, "[getConfFiles]: Read from "+filename)
           xmldoc = xml.dom.minidom.parse(filename)

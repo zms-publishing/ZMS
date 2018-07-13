@@ -121,6 +121,7 @@ class langdict:
       xmlfile = None
       for path in ['.']+sys.path:
         xmlfilename = os.path.join(path,filepath,filename)
+        print("langdict",xmlfilename)
         if os.path.exists(xmlfilename):
           print("langdict found",xmlfilename)
           xmlfile = open(xmlfilename,'rb')

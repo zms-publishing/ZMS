@@ -120,8 +120,9 @@ class langdict:
       filepath = os.path.join(modulepath[:modulepath.rfind('zms')],'zms','import')
       xmlfile = None
       #for path in ['.',standard.getINSTANCE_HOME(),standard.getPRODUCT_HOME(),standard.getPACKAGE_HOME()]+sys.path:
-      for path in [os.path.join(os.path.dirname(__file__), 'zms', 'import', filename)]:
-        xmlfilename = os.path.join(path,filepath,filename)
+      #for path in [os.path.join(os.path.dirname(__file__), 'zms', 'import', filename)]:
+      for filepath in [package_home(globals()),os.path.dirname(__file__)]:
+        xmlfilename = os.path.join(path,'zms','import',filename)
         print("langdict",xmlfilename)
         if os.path.exists(xmlfilename):
           print("langdict found",xmlfilename)

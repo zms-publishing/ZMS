@@ -72,6 +72,8 @@ class MultiLanguageTest(ZMSTestCase):
     print('[test_multilang] remove portal-client %s'%zmsclient0.id)
     removeClient(zmscontext,zmsclient0.getHome().id)
 
+  """
+  @skip
   def test_multiLanguageManager(self):
     zmscontext = self.context
     prim_lang = zmscontext.getPrimaryLanguage()
@@ -114,6 +116,7 @@ class MultiLanguageTest(ZMSTestCase):
     self.assertFalse(zmslinkelement.isActive(request),'!zmslinkelement.isActive(lang=%s)'%request['lang'])
     print('[test_multiLanguageManager] remove test-link')
     zmscontainer.manage_delObjects([zmslinkelement.id])
+  """
 
   def test_getLinkUrl(self):
     zmscontext = self.context

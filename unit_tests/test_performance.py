@@ -40,6 +40,8 @@ class PerformanceTest(ZMSTestCase):
     """
     pass
 
+  """
+  @skip
   def test_metaobj_manager(self):
     zmscontext = self.context
     request = zmscontext.REQUEST
@@ -159,7 +161,7 @@ class PerformanceTest(ZMSTestCase):
     # remove test-folder
     print('[test_content] remove test-folder')
     zmscontext.manage_delObjects([folder.id,folder2.id])
-
+  """
 
   def tearDown(self):
     zmscontext = self.context

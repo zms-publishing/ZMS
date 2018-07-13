@@ -25,8 +25,6 @@ class ZMSLinkElementTest(ZMSTestCase):
     self.folder = zmscontext.manage_addZMSCustom('ZMSFolder',{'title':self.temp_title,'titlealt':self.temp_title},zmscontext.REQUEST)
 
 
-  """
-  @skip
   def test_link(self):
     context = self.context
     request = self.context.REQUEST
@@ -62,7 +60,6 @@ class ZMSLinkElementTest(ZMSTestCase):
         self.assertFalse(link.isActive(request))
         doc1.setObjProperty('active',False,lang)
         self.assertFalse(link.isActive(request))
-  """
 
 
   def tearDown(self):

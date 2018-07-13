@@ -54,6 +54,5 @@ class ZMSContainerObjectTest(ZMSTestCase):
 
   def tearDown(self):
     zmscontext = self.context
-    request = self.context.REQUEST
     print('[tearDown] remove %s'%self.temp_title)
     zmscontext.manage_delObjects([self.folder.id])

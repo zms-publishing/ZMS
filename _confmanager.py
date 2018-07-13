@@ -247,6 +247,7 @@ class ConfManager(
         filepath = os.path.join(filepath[:filepath.rfind('zms')],'zms','import')
         filename = os.path.join(filepath,'configure.zcml')
       """
+      from App.Common import package_home
       for filepath in [package_home(globals()),os.path.dirname(__file__)]:
         filename = os.path.join(filepath,'zms','import','configure.zcml')
         print("confdict: filename",filename)

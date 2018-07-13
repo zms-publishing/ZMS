@@ -121,6 +121,7 @@ class langdict:
       xmlfile = None
       #for path in ['.',standard.getINSTANCE_HOME(),standard.getPRODUCT_HOME(),standard.getPACKAGE_HOME()]+sys.path:
       #for path in [os.path.join(os.path.dirname(__file__), 'zms', 'import', filename)]:
+      from App.Common import package_home
       for filepath in [package_home(globals()),os.path.dirname(__file__)]:
         xmlfilename = os.path.join(path,'zms','import',filename)
         print("langdict",xmlfilename)

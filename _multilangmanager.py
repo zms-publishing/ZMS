@@ -119,7 +119,7 @@ class langdict:
       modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
       filepath = os.path.join(modulepath[:modulepath.rfind('zms')],'zms','import')
       xmlfile = None
-      for path in ['.']+sys.path:
+      for path in ['.',standard.getINSTANCE_HOME(),standard.getPRODUCT_HOME(),standard.getPACKAGE_HOME()]+sys.path:
         xmlfilename = os.path.join(path,filepath,filename)
         print("langdict",xmlfilename)
         if os.path.exists(xmlfilename):

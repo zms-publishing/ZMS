@@ -238,7 +238,7 @@ class ConfManager(
       filenames = {}
       modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
       filepaths = [os.path.join(standard.getINSTANCE_HOME(),'etc','zms')] + \
-        [os.path.join(x,modulepath) for x in ['.']+sys.path]
+        [os.path.join(x,modulepath) for x in ['.',standard.getINSTANCE_HOME(),standard.getPRODUCT_HOME(),standard.getPACKAGE_HOME()]+sys.path]
       for filepath in filepaths:
         filepath = os.path.join(filepath[:filepath.rfind('zms')],'zms','import')
         filename = os.path.join(filepath,'configure.zcml')

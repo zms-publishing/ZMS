@@ -59,11 +59,9 @@ body.zmslightbox.masked #zmslightbox-bg {
 #zmslightbox-wrapper img.fullimage:focus {
 	cursor: move;
 }
-#zmslightbox-wrapper .hs-icon.hs-icon-arrow-left,
-#zmslightbox-wrapper .fa-chevron-left,
-#zmslightbox-wrapper .icon-chevron-left  {
+#zmslightbox-wrapper #zlb_nav_left  {
 	left:10px;
-	position:absolute;
+	position:fixed;
 	top:calc(50vh - 40px);
 	font-size:50px;
 	line-height:1;
@@ -72,11 +70,9 @@ body.zmslightbox.masked #zmslightbox-bg {
 	text-shadow:0 0 10px black;
 	cursor:pointer;
 }
-#zmslightbox-wrapper .hs-icon.hs-icon-arrow-right,
-#zmslightbox-wrapper .fa-chevron-right,
-#zmslightbox-wrapper .icon-chevron-right {
+#zmslightbox-wrapper #zlb_nav_right {
 	right:10px;
-	position:absolute;
+	position:fixed;
 	top:calc(50vh - 40px);
 	font-size:50px;
 	line-height:1;

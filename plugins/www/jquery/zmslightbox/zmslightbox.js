@@ -14,6 +14,9 @@ var zlb_iw_f = 0;                    // full imgobj.width
 var zlb_ih_f = 0;                    // full imgobj.height
 var zlb_img_scale = 1                // imgobj scaling
 
+var zlb_nav_class_right = 'hs-icon hs-icon-arrow-right icon-chevron-right';
+var zlb_nav_class_left = 'hs-icon hs-icon-arrow-left icon-chevron-left';
+
 
 // CONSTRUCTION
 function add_zmslightbox(hiurl) {
@@ -23,8 +26,13 @@ function add_zmslightbox(hiurl) {
 			<div id="zmslightbox-controls" onclick="remove_zmslightbox()"><span id="close-zmslightbox">Close Lightbox</span></div>\
 			<div id="zmslightbox-wrapper"><img src="'+hiurl+'" /></div>\
 		</figure>');
-	$('#zmslightbox-wrapper img').on('click', function(evt) {
+	// Add Navigation
+	$('#zmslightbox-wrapper').append('<i id="zlb_nav_right" class="' + zlb_nav_class_right + '"></i>');
+	$('#zmslightbox-wrapper').prepend('<i id="zlb_nav_left" class="' + zlb_nav_class_left + '"></i>');
+	$('#zlb_nav_right').on('click', function(evt) { get_next_zlb(this_img=hiurl, dir='next'); });
+	$('#zlb_nav_left').on('click', function(evt) { get_next_zlb(this_img=hiurl, dir='previous'); });
 
+	$('#zmslightbox-wrapper img').on('click', function(evt) {
 			zlb_cur_xpos = evt.pageX - $(this).offset().left;
 			zlb_cur_ypos = evt.pageY - $(this).offset().top;
 			$(this).toggleClass('fullimage');
@@ -105,6 +113,32 @@ function release_zmslightbox(){
 	$('#zmslightbox-wrapper').css('top',0);
 	$('#zmslightbox-bg').css('height','100%');
 	zlb_wt = 0;
+};
+
+// NAVIGATE NEXT/PREVIOUS IMAGE
+function get_next_zlb(this_img='', dir='next') {
+	// remove_zmslightbox();
+	$('#zmslightbox').remove();
+	$('body > #zmslightbox-mask').contents().unwrap();
+	$('body').removeClass('zmslightbox');
+	$('body').removeClass('masked');
+	var hireslist = $('.ZMSGraphic img').map(function(){
+		return $(this).attr('data-hiresimg');
+	}).get();
+	var i = hireslist.indexOf(this_img);
+	if ( dir=='next' ) {
+		if ( i < (hireslist.length - 1) ) {
+			$('.ZMSGraphic img[data-hiresimg="' + hireslist[i+1] + '"]').click();
+		} else {
+			console.log('Reached end of image list');
+		};
+	} else {
+		if ( i > 0 ) {
+			$('.ZMSGraphic img[data-hiresimg="' + hireslist[i-1] + '"]').click();
+		} else {
+			console.log('Reached end of image list');
+		};
+	};
 };
 
 // HANDLE WINDOW EVENTS:

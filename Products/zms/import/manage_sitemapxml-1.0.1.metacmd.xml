@@ -35,6 +35,7 @@ URL1 = '/content/' #or '/' depending on Webserver-config
 domain = zms.getConfProperty('ASP.ip_or_domain')
 node_count = 0
 sitemapxml = ''
+href = ''
 urlitems = []
 
 def get_all_date_attrs(node):
@@ -80,10 +81,17 @@ for lang in zms.getLanguages(request):
 	for node in nodes:
 		path = node.breadcrumbs_obj_path()
 		forbidden_nodes = [ ob for ob in path if not ( ob.hasPublicAccess() and ob.isActive(request) ) ]
-		if not forbidden_nodes:
+		# AVOID forbidden nodes and deep linking induced url repeating
+		if not forbidden_nodes and ( href != node.getHref2IndexHtml(request) ) :
 			node_count+=1
 			title = node.attr('titlealt')
-			loc = 'https://' + domain + URL1 + node.getHref2IndexHtml(request).split('/content/')[1]
+			href = node.getHref2IndexHtml(request)
+			try:
+				# Using long absolute url
+				loc = 'https://' + domain + URL1 + href.split('/content/')[1]
+			except:
+				# Using shorted url
+				loc = href
 			lastmod = get_lastmod(node)
 			changefreq = 'monthly'
 			priority = node.attr('attr_bot_priority')!='' and node.attr('attr_bot_priority') or '0.5'
@@ -119,7 +127,7 @@ return request.get('message','ERROR: No Message')
         </list>
       </item>
       <item key="name"><![CDATA[Generate sitemap.xml]]></item>
-      <item key="revision"><![CDATA[1.0.0]]></item>
+      <item key="revision"><![CDATA[1.0.1]]></item>
       <item key="roles" type="list">
         <list>
           <item><![CDATA[ZMSAdministrator]]></item>

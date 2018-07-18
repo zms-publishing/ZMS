@@ -14,9 +14,6 @@ var zlb_iw_f = 0;                    // full imgobj.width
 var zlb_ih_f = 0;                    // full imgobj.height
 var zlb_img_scale = 1                // imgobj scaling
 
-var zlb_nav_class_right = 'hs-icon hs-icon-arrow-right icon-chevron-right';
-var zlb_nav_class_left = 'hs-icon hs-icon-arrow-left icon-chevron-left';
-
 
 // CONSTRUCTION
 function add_zmslightbox(hiurl) {
@@ -27,8 +24,8 @@ function add_zmslightbox(hiurl) {
 			<div id="zmslightbox-wrapper"><img src="'+hiurl+'" /></div>\
 		</figure>');
 	// Add Navigation
-	$('#zmslightbox-wrapper').append('<i id="zlb_nav_right" class="' + zlb_nav_class_right + '"></i>');
-	$('#zmslightbox-wrapper').prepend('<i id="zlb_nav_left" class="' + zlb_nav_class_left + '"></i>');
+	$('#zmslightbox-wrapper').append('<i id="zlb_nav_right"></i>');
+	$('#zmslightbox-wrapper').prepend('<i id="zlb_nav_left"></i>');
 	$('#zlb_nav_right').on('click', function(evt) { get_next_zlb(this_img=hiurl, dir='next'); });
 	$('#zlb_nav_left').on('click', function(evt) { get_next_zlb(this_img=hiurl, dir='previous'); });
 

@@ -59,27 +59,22 @@ body.zmslightbox.masked #zmslightbox-bg {
 #zmslightbox-wrapper img.fullimage:focus {
 	cursor: move;
 }
-#zmslightbox-wrapper #zlb_nav_left  {
-	left:10px;
+#zmslightbox-wrapper #zlb_nav_left,
+#zmslightbox-wrapper #zlb_nav_right {
+	width: 50px;
+	height: 50px;
 	position:fixed;
 	top:calc(50vh - 40px);
-	font-size:50px;
-	line-height:1;
-	opacity:.3;
-	color:white;
-	text-shadow:0 0 10px black;
 	cursor:pointer;
+	filter: drop-shadow( 0 0 8px rgba(0,0,0,.5) );
+}
+#zmslightbox-wrapper #zlb_nav_left {
+	left:0;
+	background:url('data:image/svg+xml;utf8,<svg viewBox="0 0 50 50" width="50" height="50" xmlns="http://www.w3.org/2000/svg"><path d="m 40,39 -20,-20 20,-20" style="fill:none;stroke:white;stroke-width:3;" /></svg>')
 }
 #zmslightbox-wrapper #zlb_nav_right {
-	right:10px;
-	position:fixed;
-	top:calc(50vh - 40px);
-	font-size:50px;
-	line-height:1;
-	opacity:.3;
-	color:white;
-	text-shadow:0 0 10px black;
-	cursor:pointer;
+	right:0;
+	background:url('data:image/svg+xml;utf8,<svg viewBox="0 0 50 50" width="50" height="50" xmlns="http://www.w3.org/2000/svg"><path d="m 10,39 20,-20 -20,-20" style="fill:none;stroke:white;stroke-width:3;" /></svg>')
 }
 #zmslightbox-controls {
 	position:fixed;

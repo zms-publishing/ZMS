@@ -830,6 +830,7 @@ class ObjAttrs:
       
       #-- Blob-Fields
       if datatype in _globals.DT_BLOBS:
+        stored = False
         if self.getType()=='ZMSRecordSet' and isinstance(v,_blobfields.MyBlob):
           metaObj = self.getMetaobj(self.meta_id)
           metaObjAttrId = metaObj['attrs'][0]['id']
@@ -848,11 +849,15 @@ class ObjAttrs:
           else:
             v = _blobfields.createBlobField(self,datatype,v)
             v.filename = standard.umlaut_quote(v.filename,{':':'_','<':'_','>':'_','*':'_','?':'_','"':'_','|':'_',',':'_'})
+            stored = True
         if type(v) is dict:
           if len(v.get('filename',''))==0:
             v = None
           else:
             v = _blobfields.createBlobField(self,datatype,v)
+            stored = True
+        if stored and self.getType()=='ZMSRecordSet':
+          v.on_setobjattr()
       
       #-- DateTime-Fields.
       if datatype in _globals.DT_DATETIMES:

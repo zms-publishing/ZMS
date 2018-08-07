@@ -65,19 +65,18 @@ def recurse_addMediaDb(self, mediadb):
   if self.getType()=='ZMSRecordSet':
     key = self.getMetaobjAttrIds(self.meta_id)[0]
     obj_attr = self.getObjAttr(key)
-    for lang in self.getLangIds():
-      for obj_vers in self.getObjVersions():
-        v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
-        c = 0
-        for r in v:
-          for k in r.keys():
-            u = r[k]
-            if isinstance(u,_blobfields.MyBlob):
-              mediadbfile = mediadb.storeFile(u)
-              u.aq_parent = None
-              u.mediadbfile = mediadbfile
-              u.data = ''
-          c += 1
+    lang = self.getPrimaryLanguage()
+    for obj_vers in self.getObjVersions():
+      v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
+      c = 0
+      for r in v:
+        for k in r.keys():
+          u = r[k]
+          if isinstance(u,_blobfields.MyBlob):
+            mediadbfile = mediadb.storeFile(u)
+            u.mediadbfile = mediadbfile
+            u.data = ''
+        c += 1
   
   # Process object. 
   else:
@@ -215,17 +214,16 @@ def recurse_delMediaDb(self, mediadb):
   if self.getType()=='ZMSRecordSet':
     key = self.getMetaobjAttrIds(self.meta_id)[0]
     obj_attr = self.getObjAttr(key)
-    for lang in self.getLangIds():
-      for obj_vers in self.getObjVersions():
-        v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
-        for r in v:
-          for k in r.keys():
-            u = r[k]
-            mediadbfile = getattr(v,'mediadbfile',None)
-            if mediadbfile is not None:
-              u.aq_parent = None
-              u.mediadbfile = None
-              u.data = mediadb.retrieveFile(mediadbfile)
+    lang = self.getPrimaryLanguage()
+    for obj_vers in self.getObjVersions():
+      v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
+      for r in v:
+        for k in r.keys():
+          u = r[k]
+          mediadbfile = getattr(u,'mediadbfile',None)
+          if mediadbfile is not None:
+            u.mediadbfile = None
+            u.data = mediadb.retrieveFile(mediadbfile)
   # Process object. 
   else:
     for key in self.getObjAttrs().keys():

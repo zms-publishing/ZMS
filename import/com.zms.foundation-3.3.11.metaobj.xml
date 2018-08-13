@@ -3426,10 +3426,9 @@ tr.inactive * {
 				metaObjAttrIds python:['__id__']+[x['id'] for x in metaObjAttrs];
 				dummy0 python:zmscontext.attr('recordSet_Prepare')">
 
-<div class="alert alert-success" tal:condition="record_duplicate">
-	<tal:block tal:content="record_duplicate"></tal:block>
-	(<tal:block tal:content="python:DateTime()"></tal:block>)
-</div>
+<tal:block tal:condition="record_duplicate">
+	<tal:block tal:define="dummy0 python:request.RESPONSE.redirect('%s/manage_main?manage_tabs_message=%s'%(record_duplicate[0].absolute_url(),record_duplicate[1]))"></tal:block>
+</tal:block>
 
 <tal:block tal:repeat="record_meta_id python:zmscontext.attr('record_meta_ids')">
 	<tal:block tal:condition="python:'objectset_interface' in zmscontext.getMetaobjAttrIds(record_meta_id)">
@@ -3748,8 +3747,13 @@ if request.get('action') == 'record_duplicate':
   new_ob.setObjStateNew(request)
   new_ob.setObjProperty('attr_active_start',None,request['lang'])
   new_ob.setObjProperty('attr_active_end',None,request['lang'])
-  print zmscontext.getZMILangStr('MSG_PASTED')
-return printed
+  for attr_id in new_ob.getObjAttrs().keys():
+    if attr_id.find('title')>=0:
+      new_ob.setObjProperty(attr_id,'Copy of %s'%new_ob.attr(attr_id),request['lang'])
+      break
+  new_ob.onChangeObj(request)
+  return (new_ob,zmscontext.getZMILangStr('MSG_PASTED'))
+return None
 
 # --// /record_duplicate //--
 ]]>

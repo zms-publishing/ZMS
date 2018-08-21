@@ -1,5 +1,5 @@
-# Special Zope dependencies we require
- -r requirements-zope4-bootstrap-zmi.txt
+# Override Zope dependencies where we need other versions/branches
+-r requirements-zope4-bootstrap-zmi.txt
 
 # Backports from python3, can be removed once we have migrated to py3
 configparser
@@ -20,10 +20,16 @@ zope.authentication==4.3
 zope.error==4.4.0
 zope.untrustedpython==4.0.0
 ZopeUndo==4.3
+
+# Unreleased branches of Zope Products
 # Products.Sessions==4.1
--e git+https://github.com/zopefoundation/Products.Sessions@zmi-bootstrap#egg=Products.Sessions
+-e git+https://github.com/zopefoundation/Products.Sessions@master#egg=Products.Sessions
 # Products.TemporaryFolder==5.1
--e git+https://github.com/zopefoundation/Products.TemporaryFolder@zmi-bootstrap#egg=Products.TemporaryFolder
+-e git+https://github.com/zopefoundation/Products.TemporaryFolder@master#egg=Products.TemporaryFolder
+-e git+https://github.com/zopefoundation/Products.CMFCore@master#egg=Products.CMFCore
+# 2.0 / 2.1, which is as of yet unreleased
+-e git+https://github.com/zopefoundation/Products.GenericSetup@master#egg=Products.GenericSetup
+-e git+https://github.com/zopefoundation/Products.SiteErrorLog@master#egg=Products.SiteErrorLog
 
 
 # Pinned versions because of bugs:
@@ -49,13 +55,6 @@ ZopeUndo==4.3
 # git+https://github.com/zms-publishing/zms3.qrcode.git#egg=zms3.qrcode
 # git+https://bitbucket.org/zms3/themes.git#egg=zms3.themes
 
-# Unreleased branches of Zope Products
-# add all zmi-bootstrap branches of dependent objects here
--e git+https://github.com/zopefoundation/Products.CMFCore@zmi-bootstrap#egg=Products.CMFCore
-# 2.0 / 2.1, which is as of yet unreleased
--e git+https://github.com/zopefoundation/Products.GenericSetup@master#egg=Products.GenericSetup
-
--e git+https://github.com/zopefoundation/Products.SiteErrorLog@zmi-bootstrap#egg=Products.SiteErrorLog
 
 # Install ZMS, you probably want to override this with a local development install
 # -e svn+https://zmslabs.org/svn/zmslabs/ZMS/branches/zms4#egg=ZMS

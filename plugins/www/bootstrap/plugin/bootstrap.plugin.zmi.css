@@ -456,7 +456,7 @@ tr.zmi-selected td, tr.zmi-selected td,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center .contentEditable,
 ul.zmi-container > li.zmi-item.zmi-selected > div.center a {
-	background-color:#ffc!important;
+	background-color:rgba(0, 136, 204, 0.10) !important;
 }
 tr.zmi-highlighted td, tr.zmi-highlighted td,
 ul.zmi-container > li.zmi-item.zmi-highlighted > div.center,
@@ -2129,4 +2129,34 @@ table.ZMSTable {
 }
 #zmi-measurement .table.table-striped > tbody > tr:nth-of-type(2n+1) {
 	background-color:#222;
+}
+
+/* Prevent the text contents of draggable elements from being selectable. */
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+.zmi-data-transfer-drag .center {
+	border-top: 4px dashed #08c !important;
+	margin-top:-4px
+}
+.alert.zmi-dragged-info {
+	margin:0;
+	padding: .3em .6em;
+	border-radius: 0;
+	background: #08c;
+	color: white;
+	border: none;
+}
+.alert.zmi-dragged-info:before {
+	content:"\F0D8";
+	font-family:FontAwesome;
+	margin-right:.5em;
+	display:inline-block;
 }

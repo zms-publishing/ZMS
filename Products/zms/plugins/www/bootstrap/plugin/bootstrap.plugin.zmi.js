@@ -389,6 +389,7 @@ $(function(){
 		})
 		.attr( "title", "Double-click to edit!");
 
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	// Selectable
 	$("table.zmi-selectable input:checkbox,table.zmi-selectable input:radio").change(function() {
 			var $table = $(this).parents("table");
@@ -402,58 +403,89 @@ $(function(){
 				});
 		});
 
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	// Sortable
-	$("ul.zmi-container.zmi-sortable div.grippy").mouseover(function() {
-		if (typeof self.zmiUlSortableInitialized == "undefined") {
-			self.zmiUlSortableInitialized = true;
-			pluginUI("ul.zmi-container.zmi-sortable",function() {
-				$("ul.zmi-container.zmi-sortable").sortable({
-					delay:500,
-					forcePlaceholderSize:true,
-					handle:'div.grippy',
-					placeholder: "ui-state-highlight",
-					revert: true,
-					start: function(event, ui) {
-							$ZMI.writeDebug('ul.zmi-container.zmi-sortable: start');
-							var el = $(".zmi-container .zmi-item");
-							$(el).removeClass("highlight");
-							self.zmiSortableRownum = false;
-							var c = 1;
-							$(".zmi-sortable > li").each(function() {
-									if ($(this).attr("id") == ui.item.attr("id")) {
-										self.zmiSortableRownum = c;
-									}
-									c++;
-								});
-							$ZMI.writeDebug('ul.zmi-container.zmi-sortable: start - self.zmiSortableRownum='+self.zmiSortableRownum);
-						},
-					stop: function(event, ui) {
-							$ZMI.writeDebug('ul.zmi-container.zmi-sortable: stop');
-							var pos = $(this).position();
-							if (self.zmiSortableRownum) {
-								$ZMI.writeDebug('ul.zmi-container.zmi-sortable: stop - self.zmiSortableRownum='+self.zmiSortableRownum);
-								var c = 1;
-								$(".zmi-sortable > li").each(function() {
-										if ($(this).attr("id") == ui.item.attr("id")) {
-											if(self.zmiSortableRownum != c) {
-												var id = $ZMI.actionList.getContextId(ui.item);
-												var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
-												$ZMI.writeDebug('ul.zmi-container.zmi-sortable: stop - href='+href);
-												$.get(href,function(result){
-														var message = eval('('+result+')');
-														$ZMI.showMessage(pos,message,"alert-success");
-													});
-											}
-										}
-										c++;
-									});
-							}
-							self.zmiSortableRownum = false;
-						}
-					});
-				});
-			}
-		});
+	var dragSrcEl = null;
+
+	function handleDragStart(e) {
+		// Target (this) element is the source node.
+		dragSrcEl = this;
+		e.dataTransfer.effectAllowed = 'move';
+		e.dataTransfer.setData('text/html', this.outerHTML);
+		this.classList.add('zmi-selected');
+	}
+
+	function handleDragOver(e) {
+		if (e.preventDefault) {
+			e.preventDefault(); // Necessary. Allows us to drop.
+		}
+		if ((this.classList.contains("page") && dragSrcEl.classList.contains("page"))
+				|| (this.classList.contains("pageelement") && dragSrcEl.classList.contains("pageelement"))) {
+			this.classList.add('zmi-data-transfer-drag');
+			e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+		}
+		return false;
+	}
+
+	function handleDragEnter(e) {
+		// this / e.target is the current hover target.
+	}
+
+	function handleDragLeave(e) {
+		this.classList.remove('zmi-data-transfer-drag');  // this / e.target is previous target element.
+	}
+
+	function handleDrop(e) {
+		// this/e.target is current target element.
+		if (e.stopPropagation) {
+			e.stopPropagation(); // Stops some browsers from redirecting.
+		}
+		// Don't do anything if dropping the same column we're dragging.
+		if (dragSrcEl != this) {
+			// Set the source column's HTML to the HTML of the column we dropped on.
+			this.parentNode.removeChild(dragSrcEl);
+			var dropHTML = e.dataTransfer.getData('text/html');
+			this.insertAdjacentHTML('beforebegin',dropHTML);
+			var dropElem = this.previousSibling;
+			addDnDHandlers(dropElem);
+			var that = this;
+			var c = 0;
+			$(".zmi-sortable > li").each(function() {
+				if ($(this).attr("id") == that.id) {
+					var pos = $(this).position();
+					var id = $ZMI.actionList.getContextId(dragSrcEl);
+					var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
+					$.get(href,function(result){
+							var message = eval('('+result+')');
+							$ZMI.showMessage(pos,message,"alert-success zmi-dragged-info");
+							$('.alert-success button').remove();
+						});
+				}
+				c++;
+			});
+		}
+		this.classList.remove('zmi-data-transfer-drag');
+		return false;
+	}
+
+	function handleDragEnd(e) {
+		this.classList.remove('zmi-selected');
+	}
+
+	function addDnDHandlers(elem) {
+		elem.draggable = true;
+		elem.addEventListener('dragstart', handleDragStart, false);
+		elem.addEventListener('dragenter', handleDragEnter, false)
+		elem.addEventListener('dragover', handleDragOver, false);
+		elem.addEventListener('dragleave', handleDragLeave, false);
+		elem.addEventListener('drop', handleDrop, false);
+		elem.addEventListener('dragend', handleDragEnd, false);
+	}
+
+	var sortables = document.querySelectorAll('ul.zmi-container.zmi-sortable .zmi-selectable');
+	[].forEach.call(sortables, addDnDHandlers);
+
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	// Checkboxes
 	$(".zmi-container .zmi-item:first .right input[name='active']:checkbox")
 		.change(function() {
@@ -860,19 +892,21 @@ ZMI.prototype.initInputFields = function(container) {
 					$ZMI.multiselect(context);
 				});
 			// Activity-Toggle
-			$("#attrActivity",context).each(function() {
-					var $input = $(".activity input:checkbox",this);
-					if ($input.length>0) {
-						$(this).prev(".attr_last_modified").each(function() {
-								$("#zmi-toggle-activity-btn",this).append('<span id="zmi-toggle-activity" style="vertical-align:inherit" title="'+getZMILangStr('ATTR_ACTIVE')+'">'+$ZMI.icon(($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable')+'</span>&nbsp;');
-								$("#zmi-toggle-activity").click(function(event) {
-										$input.click();
-										$($ZMI.icon_selector(),this).attr("class",$ZMI.icon_clazz($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable');
-										event.stopPropagation();
-									});
-							});
-					}
-				});
+			if ($("#zmi-toggle-activity").length==0) {
+				$("#attrActivity",context).each(function() {
+						var $input = $(".activity input:checkbox",this);
+						if ($input.length>0) {
+							$(this).prev(".attr_last_modified").each(function() {
+									$("#zmi-toggle-activity-btn",this).append('<span id="zmi-toggle-activity" style="vertical-align:inherit" title="'+getZMILangStr('ATTR_ACTIVE')+'">'+$ZMI.icon(($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable')+'</span>&nbsp;');
+									$("#zmi-toggle-activity").click(function(event) {
+											$input.click();
+											$($ZMI.icon_selector(),this).attr("class",$ZMI.icon_clazz($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable');
+											event.stopPropagation();
+										});
+								});
+						}
+					});
+				}
 			// Button-Clicked
 			$ZMI.writeDebug("zmiInitInputFields: submit["+$('input[type="submit"],button[type="submit"]',context).length+"]");
 			$('input[type="submit"],button[type="submit"]',context)
@@ -2047,7 +2081,7 @@ function zmiRecordSetDeleteRow(context, qIndex) {
 		var $input = $("input:checkbox:first",$btnGroup);
 		$input.prop('checked',true).change();
 	}
-	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJS').replace('%i',$("input[name='qindices:list']:checked").length))) {
 		$('input[name="action"]',$form).val('delete');
 		$form.submit();
 	}
@@ -2075,60 +2109,6 @@ function zmiRecordSetDuplicateRow(context, qIndex) {
 	}
 	return false;
 }
-
-$(function() {
-	// Sortable
-	$("table.zmi-sortable tbody img.grippy").mouseover(function() {
-		if (typeof self.zmiTableSortableInitialized == "undefined") {
-			self.zmiTableSortableInitialized = true;
-			pluginUI("ul.zmi-container.zmi-sortable",function() {
-				var fixHelper = function(e, ui) { // Return a helper with preserved width of cells
-					ui.children().each(function() {
-						$(this).width($(this).width());
-					});
-					return ui;
-				};
-				$("table.zmi-sortable tbody").sortable({
-					delay:500,
-					forcePlaceholderSize:true,
-					handle:'img.grippy',
-					helper:fixHelper,
-					placeholder: "ui-state-highlight",
-					revert: true,
-					start: function(event, ui) {
-							self.zmiSortableRownum = false;
-							var c = 1;
-							$("table.zmi-sortable > tbody > tr").each(function() {
-									if ($(this).attr("id") == ui.item.attr("id")) {
-										self.zmiSortableRownum = c;
-									}
-									c++;
-								});
-						},
-					stop: function(event, ui) {
-							var pos = $(this).position();
-							if (self.zmiSortableRownum) {
-								var c = 1;
-								$("table.zmi-sortable > tbody > tr").each(function() {
-										if ($(this).attr("id") == ui.item.attr("id")) {
-											if(self.zmiSortableRownum != c) {
-												var id = ui.item.attr("id");
-												var pos = parseInt(id.substr(id.indexOf("_")+1))+1;
-												var href = 'manage_changeRecordSet?lang='+getZMILang()+'&amp;action=move&amp;btn=&amp;pos:int='+pos+'&amp;newpos:int='+c;
-												self.location.href = href;
-											}
-										}
-										c++;
-									});
-							}
-							self.zmiSortableRownum = false;
-						}
-					});
-				});
-			}
-	});
-});
-
 // ############################################################################
 // ### HORIZONTAL SCROLLING MAIN NAVIGATION FOR SMALL SCREENS
 // ############################################################################

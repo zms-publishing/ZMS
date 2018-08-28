@@ -1363,7 +1363,9 @@ class ZMSObject(ZMSItem.ZMSItem,
       """ ZMSObject.manage_moveObjToPos """
       parent = self.getParentNode()
       if parent is not None:
-        sibling_sort_ids = [x.sort_id for x in parent.getChildNodes(REQUEST)]
+      	childNodes = parent.getChildNodes(REQUEST)
+      	old = childNodes.index(self)
+        sibling_sort_ids = map(lambda x: x.sort_id,childNodes)
         sibling_sort_ids.remove(self.sort_id)
         pos = pos - 1
         if pos < len(sibling_sort_ids):
@@ -1374,18 +1376,19 @@ class ZMSObject(ZMSItem.ZMSItem,
         parent.normalizeSortIds(standard.id_prefix(self.id))
       else:
         id = REQUEST['URL'].split('/')[-2]
-        ids = self.getConfProperty('Portal.Clients', [])
+        ids = self.getConfProperty('Portal.Clients',[])
         if id in ids:
           offset = len(self.getChildNodes(REQUEST))
+          old = ids.index(id)
           pos = pos - offset - 1
-          ids.insert(pos, ids.pop(ids.index(id)))
-          self.setConfProperty('Portal.Clients', ids)
+          ids.insert(pos, ids.pop(old))
+          self.setConfProperty('Portal.Clients',ids)
       # Return with message.
-      message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%self.display_type(REQUEST)), (pos+1))
+      message = self.getZMILangStr('MSG_MOVEDOBJ%s'%['UP','DOWN'][int(old<pos)])%("<i>%s</i>"%self.display_type(REQUEST))
       if fmt == 'json':
         return self.str_json(message)
       else:
-        RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(), lang, urllib.parse.quote(message), self.id))
+        RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
 
 
     ############################################################################

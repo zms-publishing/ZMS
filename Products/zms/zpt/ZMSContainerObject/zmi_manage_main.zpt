@@ -56,7 +56,6 @@
 						+[[],['is-new']][int(childNode.inObjStates(['STATE_NEW'],request))]
 						+[[],['is-modified']][int(childNode.inObjStates(['STATE_MODIFIED'],request))]
 						+[[],['is-deleted']][int(childNode.inObjStates(['STATE_DELETED'],request))])">
-					<div class="grippy icon-reorder" title="Move"></div>
 					<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
 						tal:content="structure python:childNode.renderShort(request)">
 						the rendered child-node

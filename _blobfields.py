@@ -725,9 +725,9 @@ class MyBlob:
         if mediadb is not None and getattr(self,'mediadbfile') is None:
           self.mediadbfile = mediadb.storeFile( self)
           self.data = ''
-      # unset parent to avoid TypeError: Can't pickle objects in acquisition wrappers.
-      if parent.getType() != 'ZMSRecordSet':
-        self.aq_parent = None 
+        # unset parent to avoid TypeError: Can't pickle objects in acquisition wrappers.
+        if parent.getType() != 'ZMSRecordSet':
+          self.aq_parent = None 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlob.getMediadbfile: 

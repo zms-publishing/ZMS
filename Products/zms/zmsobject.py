@@ -66,23 +66,23 @@ __all__= ['ZMSObject']
 ################################################################################
 ################################################################################
 class ZMSObject(ZMSItem.ZMSItem,
-	#CatalogPathAwareness.CatalogAware,  # Catalog awareness.
-	_accessmanager.AccessableObject,	# Access manager.
-	_versionmanager.VersionItem,		# Version Item.
-	ZMSWorkflowItem.ZMSWorkflowItem,
-	_copysupport.CopySupport,		# Copy Support (Paste Objects).
-	_cachemanager.ReqBuff,		# Request Buffer (Cache).
-	_deprecatedapi.DeprecatedAPI,		# Deprecated API.
-	_multilangmanager.MultiLanguageObject,	# Multi-Language.
-	_exportable.Exportable,			# XML Export.
-	_objattrs.ObjAttrs,			# Object-Attributes.
-	_objchildren.ObjChildren,		# Object-Children.
-	_objinputs.ObjInputs,			# Object-Inputs.
-	_objtypes.ObjTypes,			# Object-Types.
-	_pathhandler.PathHandler,		# Path-Handler.
-	_textformatmanager.TextFormatObject,	# Text-Formats.
-	_zreferableitem.ZReferableItem		# ZReferable Item.
-	): 
+  #CatalogPathAwareness.CatalogAware,  # Catalog awareness.
+  _accessmanager.AccessableObject,	# Access manager.
+  _versionmanager.VersionItem,		# Version Item.
+  ZMSWorkflowItem.ZMSWorkflowItem,
+  _copysupport.CopySupport,		# Copy Support (Paste Objects).
+  _cachemanager.ReqBuff,		# Request Buffer (Cache).
+  _deprecatedapi.DeprecatedAPI,		# Deprecated API.
+  _multilangmanager.MultiLanguageObject,	# Multi-Language.
+  _exportable.Exportable,			# XML Export.
+  _objattrs.ObjAttrs,			# Object-Attributes.
+  _objchildren.ObjChildren,		# Object-Children.
+  _objinputs.ObjInputs,			# Object-Inputs.
+  _objtypes.ObjTypes,			# Object-Types.
+  _pathhandler.PathHandler,		# Path-Handler.
+  _textformatmanager.TextFormatObject,	# Text-Formats.
+  _zreferableitem.ZReferableItem		# ZReferable Item.
+  ): 
 
     # Documentation string.
     __doc__ = """ZMS product module."""
@@ -1363,8 +1363,8 @@ class ZMSObject(ZMSItem.ZMSItem,
       """ ZMSObject.manage_moveObjToPos """
       parent = self.getParentNode()
       if parent is not None:
-      	childNodes = parent.getChildNodes(REQUEST)
-      	old = childNodes.index(self)
+        childNodes = parent.getChildNodes(REQUEST)
+        old = childNodes.index(self)
         sibling_sort_ids = map(lambda x: x.sort_id,childNodes)
         sibling_sort_ids.remove(self.sort_id)
         pos = pos - 1

@@ -71,12 +71,12 @@ class ZMSFormatProvider(
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-		'manage_changeTextformat', 'manage_textformats',
-		'manage_changeCharformat', 'manage_charformats',
-		)
+      'manage_changeTextformat', 'manage_textformats',
+      'manage_changeCharformat', 'manage_charformats',
+    )
     __ac_permissions__=(
-		('ZMS Administrator', __administratorPermissions__),
-		)
+      ('ZMS Administrator', __administratorPermissions__),
+    )
 
     """
     ############################################################################

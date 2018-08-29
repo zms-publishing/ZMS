@@ -54,11 +54,11 @@ class ZMSZCatalogSolrConnector(
     # Management Permissions.
     # -----------------------
     __administratorPermissions__ = (
-		'manage_changeProperties', 'manage_main',
-		)
+      'manage_changeProperties', 'manage_main',
+    )
     __ac_permissions__=(
-		('ZMS Administrator', __administratorPermissions__),
-		)
+      ('ZMS Administrator', __administratorPermissions__),
+    )
 
     ############################################################################
     #  ZMSZCatalogSolrConnector.__init__: 

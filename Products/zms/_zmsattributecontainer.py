@@ -65,10 +65,10 @@ class ZMSAttributeContainer(
 
   # Management Options.
   # -------------------
-  manage_options = (  
-	{'label': 'Contents', 'action': 'manage_main'},
-	{'label': 'Properties', 'action': 'manage_propertiesForm'},
-	) 
+  manage_options = (
+    {'label': 'Contents', 'action': 'manage_main'},
+    {'label': 'Properties', 'action': 'manage_propertiesForm'},
+  ) 
 
   # Management Interface.
   # ---------------------

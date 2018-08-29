@@ -78,14 +78,14 @@ class ObjTypes(object):
     #  Dictionary of display-types. 
     ############################################################################
     dctDisplaytype = {
-	'1': 'left',
-	'2': 'top',
-	'3': 'bottom',
-	'4': 'right',
-	'5': 'left',		# 'floatbefore'
-	'6': 'right',		# 'floatafter'
-	'7': 'left',		# 'behindtext'
-	}
+      '1': 'left',
+      '2': 'top',
+      '3': 'bottom',
+      '4': 'right',
+      '5': 'left',		# 'floatbefore'
+      '6': 'right',		# 'floatafter'
+      '7': 'left',		# 'behindtext'
+    }
 
 
     ############################################################################

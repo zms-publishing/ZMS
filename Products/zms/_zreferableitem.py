@@ -118,11 +118,11 @@ class ZReferableItem(object):
   # Management Permissions.
   # -----------------------
   __authorPermissions__ = (
-		'manage_RefForm', 'manage_browse_iframe',
-		)
+    'manage_RefForm', 'manage_browse_iframe',
+  )
   __ac_permissions__=(
-		('ZMS Author', __authorPermissions__),
-		)
+    ('ZMS Author', __authorPermissions__),
+  )
 
   # Management Interface.
   # ---------------------

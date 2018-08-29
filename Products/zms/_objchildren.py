@@ -45,11 +45,11 @@ class ObjChildren(object):
     # Management Permissions.
     # -----------------------
     __authorPermissions__ = (
-		'manage_initObjChild',
-		)
+      'manage_initObjChild',
+    )
     __ac_permissions__=(
-		('ZMS Author', __authorPermissions__),
-		)
+      ('ZMS Author', __authorPermissions__),
+    )
 
     """
     ############################################################################

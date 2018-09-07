@@ -502,7 +502,7 @@ table.table.zmi-sortable .input-group input{margin-bottom:0px}
 .row_insert .language_id input{width:4em}
 .zmi-item img.grippy{position:absolute;display:block}
 table.table.zmi-sortable img.grippy{margin-bottom:8px}
-tr.zmi-selected td,tr.zmi-selected td,ul.zmi-container > li.zmi-item.zmi-selected > div.center,ul.zmi-container > li.zmi-item.zmi-selected > div.center .contentEditable,ul.zmi-container > li.zmi-item.zmi-selected > div.center a{background-color:#ffc!important}
+tr.zmi-selected td,tr.zmi-selected td,ul.zmi-container > li.zmi-item.zmi-selected > div.center,ul.zmi-container > li.zmi-item.zmi-selected > div.center .contentEditable,ul.zmi-container > li.zmi-item.zmi-selected > div.center a{background-color:rgba(0,136,204,0.10) !important}
 tr.zmi-highlighted td,tr.zmi-highlighted td,ul.zmi-container > li.zmi-item.zmi-highlighted > div.center,ul.zmi-container > li.zmi-item.zmi-highlighted > div.center .contentEditable,ul.zmi-container > li.zmi-item.zmi-highlighted > div.center a{background-color:#08c!important;color:#fff!important}
 #manage_addProduct .center{padding:.5em;font-size:large}
 form.form-insert a.accordion-toggle{color:#08c}
@@ -880,7 +880,11 @@ table.ZMSTable{margin:1em 0}
 .input-group-addon.input-group-dropdown .btn{border:0;border-top-left-radius:0;border-bottom-left-radius:0}
 #zmi-measurement .table{background-color:#333}
 #zmi-measurement .table th,#zmi-measurement .table td{color:#40FF40!important;font-size:smaller;font-family:"Courier New",Courier,monospace}
-#zmi-measurement .table.table-striped > tbody > tr:nth-of-type(2n+1){background-color:#222}/*! =======================================================
+#zmi-measurement .table.table-striped > tbody > tr:nth-of-type(2n+1){background-color:#222}
+[draggable]{-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;user-select:none;-khtml-user-drag:element;-webkit-user-drag:element}
+.zmi-data-transfer-drag .center{border-top:4px dashed #08c !important;margin-top:-4px}
+.alert.zmi-dragged-info{margin:0;padding:.3em .6em;border-radius:0;background:#08c;color:white;border:none}
+.alert.zmi-dragged-info:before{content:"\F0D8";font-family:FontAwesome;margin-right:.5em;display:inline-block}/*! =======================================================
                       VERSION  5.2.6              
 ========================================================= */
 /*! =========================================================

@@ -475,7 +475,7 @@ $(function(){
 	function addDnDHandlers(elem) {
 		elem.draggable = true;
 		elem.addEventListener('dragstart', handleDragStart, false);
-		elem.addEventListener('dragenter', handleDragEnter, false)
+		elem.addEventListener('dragenter', handleDragEnter, false);
 		elem.addEventListener('dragover', handleDragOver, false);
 		elem.addEventListener('dragleave', handleDragLeave, false);
 		elem.addEventListener('drop', handleDrop, false);

@@ -28,8 +28,8 @@ class SeleniumTestCase(unittest.TestCase):
             # This is currently not required for chromedriver, but it or a similar flag may be in the future to allow CredentialedURLs at all
             # options = webdriver.ChromeOptions()
             # options.add_argument('--disable-blink-features=BlockCredentialedSubresources')
-            # self.driver = webdriver.Chrome(chrome_options=options)
-            self.driver = webdriver.Chrome()
+            options.binary_location = self.chrome_path
+            self.driver = webdriver.Chrome(options=options)
         else:
             profile = webdriver.FirefoxProfile();
             profile.set_preference("network.http.phishy-userpass-length", 255)

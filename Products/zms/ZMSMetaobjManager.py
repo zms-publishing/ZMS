@@ -899,7 +899,9 @@ class ZMSMetaobjManager(object):
             zopeutil.removeObject(oldContainer, oldObId)
         # Insert Zope-Object.
         if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
-        if _globals.is_str_type(newCustom): newCustom = newCustom.replace('\r', '')
+        if type(newCustom) is str: 
+           newCustom = newCustom.encode('utf-8').replace(b'\r', b'')
+           newCustom = newCustom.decode('utf-8')
         zopeutil.addObject(container, newType, newObId, newName, newCustom)
         artefact = zopeutil.getObject(container, newObId)
         del attr['custom']

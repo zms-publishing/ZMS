@@ -61,7 +61,7 @@ class MetacmdManagerTest(ZMSTestCase):
         with self._wait_for_page_load():
             self._find_element(By.CSS_SELECTOR, '.btn.btn-default[title="Löschen..."]').click()
             self._wait(EC.alert_is_present())
-            self.driver.switch_to.alert().accept()
+            self.driver.switch_to.alert.accept()
         
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')

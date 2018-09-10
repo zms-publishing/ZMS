@@ -27,9 +27,9 @@ class SeleniumTestCase(unittest.TestCase):
             options = webdriver.ChromeOptions()
             # options.add_argument('--headless')
             # options.add_argument('--disable-blink-features=BlockCredentialedSubresources')
-            # self.driver = webdriver.Chrome(chrome_options=options)
+            # self.driver = webdriver.Chrome(options=options)
             options.binary_location = self.chrome_path
-            self.driver = webdriver.Chrome(chrome_options=options)
+            self.driver = webdriver.Chrome(options=options)
         else:
             profile = webdriver.FirefoxProfile();
             profile.set_preference("network.http.phishy-userpass-length", 255)

@@ -79,7 +79,7 @@ class LinkTest(ZMSTestCase):
         wait = WebDriverWait(self.driver, 5)
         wait.until(EC.alert_is_present())
         with self._wait_for_page_load():
-            self.driver.switch_to.alert().accept()
+            self.driver.switch_to.alert.accept()
        
         # wait until deleted
         self._find_element(By.CSS_SELECTOR, '.alert-success')

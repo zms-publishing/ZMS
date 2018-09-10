@@ -51,7 +51,7 @@ class MetaobjManagerTest(ZMSTestCase):
         
         self._wait(EC.alert_is_present()) # this fails
         with self._wait_for_page_load():
-            self.driver.switch_to.alert().accept()
+            self.driver.switch_to.alert.accept()
         
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')

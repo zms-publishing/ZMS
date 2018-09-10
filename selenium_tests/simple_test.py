@@ -70,7 +70,7 @@ class EditDocTest(ZMSTestCase):
         with self._wait_for_page_load():
             item.click()
             self._wait(EC.alert_is_present())
-            self.driver.switch_to_alert().accept()
+            self.driver.switch_to.alert().accept()
        
         # wait until deleted
         self._find_element(By.CSS_SELECTOR, '.alert-success')

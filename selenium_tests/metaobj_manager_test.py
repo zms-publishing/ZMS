@@ -51,7 +51,7 @@ class MetaobjManagerTest(ZMSTestCase):
             self._find_element(By.CSS_SELECTOR, '.btn[title="Löschen..."]').click()
         
             self._wait(EC.alert_is_present())
-            self.driver.switch_to_alert().accept()
+            self.driver.switch_to.alert().accept()
         
         # wait until saved
         self._find_element(By.CSS_SELECTOR, '.alert-success')

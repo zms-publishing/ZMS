@@ -63,10 +63,11 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
 
     # Management Options.
     # -------------------
-    manage_options = ( 
-    {'label': 'TAB_EDIT',    'action': 'manage_main'},
-    {'label': 'TAB_HISTORY', 'action': 'manage_UndoVersionForm'},
-    )
+    def manage_options(self):
+      return ( 
+        {'label': 'TAB_EDIT',    'action': 'manage_main'},
+        {'label': 'TAB_HISTORY', 'action': 'manage_UndoVersionForm'},
+        )
 
     # Management Permissions.
     # -----------------------

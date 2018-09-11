@@ -61,9 +61,10 @@ class ZMSLog(ZMSItem.ZMSItem):
 
     # Management Options.
     # -------------------
-    manage_options = (
-      { 'label': 'TAB_CONFIGURATION','action': '../manage_customize'},
-    )
+    def manage_options(self):
+      return (
+        { 'label': 'TAB_CONFIGURATION','action': '../manage_customize'},
+        )
 
     # Management Interface.
     # ---------------------

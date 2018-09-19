@@ -142,7 +142,14 @@
 <div style="min-height:480px;">
 <tal:block tal:condition="python:request.form.has_key('task_type')" tal:define="obs python:[]">
 	<tal:block tal:condition="python:request['task_type']=='TASK_ZMSNOTE'">
-		<tal:block tal:define="dummy0 python:obs.extend(here.getTreeNodes(request,'ZMSNote'))"></tal:block>
+		<tal:block tal:define="
+				catalog python:here.zcatalog_index;
+				query python:{'meta_id':'ZMSNote'};
+				rows python:catalog(query);
+				dummy0 python:obs.extend([here.getLinkObj('{$%s}'%x['get_uid']) for x in rows]);
+				dummy0 python:request.set('raw','*');
+				">
+		</tal:block>
 	</tal:block>
 	<tal:block tal:condition="python:request['task_type']=='TASK_UNTRANSLATED'">
 		<tal:block tal:repeat="lang python:[request['lang']]+[[],here.getDescendantLanguages(request['lang'],request)][int(request.form.has_key('descendant_langs'))]">

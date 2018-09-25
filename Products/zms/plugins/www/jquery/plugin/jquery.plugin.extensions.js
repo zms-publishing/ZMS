@@ -132,13 +132,3 @@ function runPluginJcrop(c) {
 		});
 	$.plugin('jcrop').get('body',c);
 }
-
-/**
- * jQuery JSON
- */
-function runPluginJSON(c) {
-	$.plugin('json',{
-		files: ['/++resource++zms_/jquery/jquery.json-2.2.min.js']
-		});
-	$.plugin('json').get('body',c);
-}

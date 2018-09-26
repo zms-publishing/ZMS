@@ -202,7 +202,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       return ['home_id']+self.getAttrIds()
 
     def getAttrIds(self):
-      return self.getAttrs().keys()
+      return list(self.getAttrs().keys())
 
     def setAttrIds(self, attr_ids):
       attrs = self.getAttrs()

@@ -71,7 +71,7 @@
 		</a>
 	</td>
 	<td><tal:block tal:content="python:zmscontext.getDataSizeStr(item[1].get_size())" tal:on-error="string:get_size is not defined!">the size</tal:block></td>
-	<td><tal:block tal:content="python:zmscontext.getLangFmtDate(item[1].bobobase_modification_time())" tal:on-error="string:bobobase_modification_time is not defined!">the timestamp</tal:block></td>
+	<td><tal:block tal:content="python:zmscontext.last_modified(zmscontext)" tal:on-error="string:last_modified is not defined!">the timestamp</tal:block></td>
 </tr>
 </tbody>
 </table>

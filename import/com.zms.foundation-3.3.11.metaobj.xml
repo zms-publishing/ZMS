@@ -3419,6 +3419,7 @@ tr.inactive * {
 </style>
 
 		<tal:block tal:define="global
+				record_duplicate python:zmscontext.attr('record_duplicate');
 				metaObjAttrs python:[{'id':'objectset','name':'','type':'html'}]
 						+attr_ids
 						+[{'id':'change_uid','name':zmscontext.getZMILangStr('BY'),'type':'string'}]

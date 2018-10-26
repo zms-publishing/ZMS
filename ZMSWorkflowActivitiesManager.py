@@ -164,7 +164,7 @@ class ZMSWorkflowActivitiesManager:
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowActivitiesManager.manage_changeActivities
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  def manage_changeActivities(self, lang, btn='', REQUEST=None, RESPONSE=None):
+  def manage_changeActivities(self, lang, btn='', key='edit', REQUEST=None, RESPONSE=None):
     """ ZMSWorkflowActivitiesManager.manage_changeActivities """
     message = ''
     id = REQUEST.get('id','')
@@ -227,9 +227,10 @@ class ZMSWorkflowActivitiesManager:
     # Increase version.
     if id:
       self.setRevision(IZMSRepositoryProvider.increaseVersion(self.getRevision(),2))
+      message += ' Version %s'%(self.getRevision())
     
     # Return with message.
     message = urllib.quote(message)
-    return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang,message))
+    return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang,message,key))
 
 ################################################################################

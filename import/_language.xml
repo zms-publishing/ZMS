@@ -6293,14 +6293,83 @@
     <Cell><Data ss:Type="String">TAB_WORKFLOW</Data></Cell>
     <Cell><Data ss:Type="String">Workflow</Data></Cell>
     <Cell><Data ss:Type="String">Workflow</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Workflow</Data></Cell>
-    <Cell ss:Index="9"/>
+    <Cell><Data ss:Type="String">Workflow</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow</Data></Cell>
     <Cell><Data ss:Type="String">поток работы</Data></Cell>
     <Cell><Data ss:Type="String">वर्कफ्लो</Data></Cell>
     <Cell><Data ss:Type="String">تسلسل العمل</Data></Cell>
     <Cell><Data ss:Type="String">Lịch trình công việc</Data></Cell>
     <Cell><Data ss:Type="String">מהלך עבודה</Data></Cell>
    </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TAB_WORKFLOW_ASSIGNMENT</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow-Aktivierung</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TAB_WORKFLOW_MODEL</Data></Cell>
+    <Cell><Data ss:Type="String">Ablauf-Modell</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TAB_WORKFLOW_VERSION</Data></Cell>
+    <Cell><Data ss:Type="String">Versionierung</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TAB_USERSITEMAP</Data></Cell>
+    <Cell><Data ss:Type="String">Benutzer-Sitemap</Data></Cell>
+    <Cell><Data ss:Type="String">User Sitemap</Data></Cell>
+    <Cell><Data ss:Type="String">Gebruiker Sitemap</Data></Cell>
+    <Cell><Data ss:Type="String">Plan du site utilisateur</Data></Cell>
+    <Cell><Data ss:Type="String">Mappa del sito l'utente</Data></Cell>
+    <Cell><Data ss:Type="String">Mapa del sitio del usuario</Data></Cell>
+    <Cell><Data ss:Type="String">网站地图</Data></Cell>
+    <Cell><Data ss:Type="String">نقشه سایت کاربر</Data></Cell>
+    <Cell><Data ss:Type="String">Карта сайта Пользователь</Data></Cell>
+    <Cell><Data ss:Type="String">उपयोगकर्ता साइटमैप</Data></Cell>
+    <Cell><Data ss:Type="String">خريطة الموقع المستخدم</Data></Cell>
+    <Cell><Data ss:Type="String">người sử dụng Sơ đồ trang web</Data></Cell>
+    <Cell><Data ss:Type="String">מפת האתר משתמש</Data></Cell>
+   </Row>
+
    <Row>
     <Cell><Data ss:Type="String">TASK_CHANGED_BY_DATE</Data></Cell>
     <Cell><Data ss:Type="String">Zuletzt geänderte Objekte</Data></Cell>

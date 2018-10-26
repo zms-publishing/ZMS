@@ -145,7 +145,7 @@ class ZMSWorkflowTransitionsManager:
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowTransitionsManager.manage_changeTransitions:
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  def manage_changeTransitions(self, lang, btn='', REQUEST=None, RESPONSE=None):
+  def manage_changeTransitions(self, lang, btn='', key='edit', REQUEST=None, RESPONSE=None):
     """ ZMSWorkflowTransitionsManager.manage_changeTransitions """
     message = ''
     id = REQUEST.get('id','')
@@ -200,9 +200,9 @@ class ZMSWorkflowTransitionsManager:
     # Increase version.
     if id:
       self.setRevision(IZMSRepositoryProvider.increaseVersion(self.getRevision(),2))
-    
+      message += ' Version %s'%(self.getRevision())
     # Return with message.
     message = urllib.quote(message)
-    return RESPONSE.redirect('manage_main?id=%s&lang=%s&manage_tabs_message=%s'%(id,lang,message))
+    return RESPONSE.redirect('manage_main?id=%s&lang=%s&manage_tabs_message=%s#_%s'%(id,lang,message,key))
 
 ################################################################################

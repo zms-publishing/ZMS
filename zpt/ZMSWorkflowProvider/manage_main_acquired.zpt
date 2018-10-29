@@ -21,22 +21,44 @@ function selectObject(ignoredUrl, ignoredTitle, nodeName) {
 
 </script>
 
-<form class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
-	<input type="hidden" name="key" value="custom"/>
-	<legend>Acquired Workflow</legend>
-	<div class="row container">
-		<label for="workflow" class="control-label pull-left"><span style="padding-right:1em;">aktiv</span></label>
-		<span class="btn btn-default pull-left"><input type="checkbox" id="workflow" name="workflow:int" value="1" tal:attributes="checked python:['','checked'][int(not here.getAutocommit())]" /></span>
-		<div class="col-xs-3 col-sm-4 col-md-5">
-			<textarea class="form-control url-input" name="nodes" title="Nodes" tal:content="python:'\n'.join(here.operator_getattr(here,'nodes',['{$}']))">{$}</textarea>
-		</div>
-		<div class="container">
-			<button type="submit" name="btn" class="btn btn-primary" value="Speichern">Speichern</button>
+<div class="tabbable tabs-left">
+
+	<ul class="nav nav-tabs">
+		<li title="Acquired Workflow"><a href="#properties" data-toggle="tab" tal:content="python:here.getZMILangStr('TAB_WORKFLOW_ASSIGNMENT')">Workflow-Assignment</a></li>
+		<li title="Acquired Workflow: Feature not editable here, please go to master!"><a class="disabled" style="cursor:not-allowed;color:#ccc;" href="#edit" data-toggle="disabled-tab" tal:content="python:here.getZMILangStr('TAB_WORKFLOW_MODEL')">Workflow-Model</a></li>
+		<li title="Acquired Workflow: Feature not editable here, please go to master!"><a class="disabled" style="cursor:not-allowed;color:#ccc;" href="#history" data-toggle="disabled-tab" tal:content="python:here.getZMILangStr('TAB_WORKFLOW_VERSION')">Version Control</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane active" id="properties">
+			<form class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+				<input type="hidden" name="key" value="properties"/>
+				<legend>Acquired Workflow</legend>
+				<p class="alert alert-info" tal:content="python:here.getZMILangStr('HINT_WORKFLOW_ACQUIRED')">Hint: The workflow configuration is acquired from the master of this ZMS client</p>
+				<div class="form-group" id="tr_workflow">
+					<label for="workflow" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">Active</span></label>
+					<div class="col-sm-10">
+						<table class="table">
+						<tr>
+							<td style="width:20px;border:none;"><span class="btn btn-default"><input type="checkbox" id="workflow" name="workflow:int" value="1" tal:attributes="checked python:['','checked'][int(not here.getAutocommit())]"/></span></td>
+							<td style="width:auto;border:none;"><textarea class="form-control url-input" name="nodes" tal:content="python:'\n'.join(here.operator_getattr(here,'nodes',['{$}']))"></textarea></td>
+						</tr>
+						</table>
+					</div>
+				</div><!-- .form-group -->
+				<div class="form-group">
+					<label class="col-sm-2"></label>
+					<div class="col-sm-10">
+						<button type="submit" name="btn" class="btn btn-primary"
+							tal:attributes="value python:here.getZMILangStr('BTN_SAVE')"
+							tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+					</div>
+				</div><!-- .form-group -->
+			</form>
 		</div>
 	</div>
-</form>
-
+</div>
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>

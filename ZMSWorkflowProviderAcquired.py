@@ -148,13 +148,13 @@ class ZMSWorkflowProviderAcquired(
     
     Chang workflow.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def manage_changeWorkflow(self, lang, key='', btn='', REQUEST=None, RESPONSE=None):
+    def manage_changeWorkflow(self, lang, key='properties', btn='', REQUEST=None, RESPONSE=None):
       """ ZMSWorkflowProvider.manage_changeWorkflow """
       message = ''
       
       # Active.
       # -------
-      if key == 'custom' and btn == self.getZMILangStr('BTN_SAVE'):
+      if key == 'properties' and btn == self.getZMILangStr('BTN_SAVE'):
         # Autocommit & Nodes.
         old_autocommit = getattr(self,'autocommit',1)
         new_autocommit = REQUEST.get('workflow',0) == 0

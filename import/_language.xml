@@ -6354,6 +6354,22 @@
     <Cell><Data ss:Type="String">Version Control</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">HINT_WORKFLOW_ACQUIRED</Data></Cell>
+    <Cell><Data ss:Type="String">Hinweis: Die Workflow-Konfiguration wird akquiriert vom Master dieses ZMS-Clients.</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">TAB_USERSITEMAP</Data></Cell>
     <Cell><Data ss:Type="String">Benutzer-Sitemap</Data></Cell>
     <Cell><Data ss:Type="String">User Sitemap</Data></Cell>

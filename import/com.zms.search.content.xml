@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ZMSDocument>
 	<titlealt>
-		<lang id="ger"><![CDATA[Suche]]></lang>
-		<lang id="eng"><![CDATA[Search]]></lang>
+		<lang><![CDATA[Search]]></lang>
 	</titlealt>
 	<active>
-		<lang id="ger">1</lang>
-			<lang id="eng">1</lang>
+		<lang>1</lang>
 	</active>
 	<title>
-		<lang id="ger"><![CDATA[Suche]]></lang>
-		<lang id="eng"><![CDATA[Search]]></lang>
+		<lang><![CDATA[Search]]></lang>
 	</title>
 	<attr_dc_type>
 		<lang>Resource</lang>
@@ -18,13 +15,13 @@
 	<ZMSTextarea id_prefix="e">
 		<format><![CDATA[plain_html]]></format>
 		<text>
-			<lang id="ger"><![CDATA[<form class="search" method="get">
+			<lang><![CDATA[<form class="search" method="get" tal:define="lang request/lang">
 
 	<tal:block tal:condition="python:request.get('searchform')">
 	<input tal:condition="python:request.get('searchform')" type="hidden" name="searchform" tal:attributes="value python:request.get('searchform')" />
 	<input tal:condition="python:request.get('lang')" type="hidden" name="lang" tal:attributes="value python:request.get('lang')" />
 	<input tal:condition="python:request.get('preview')" type="hidden" name="preview" tal:attributes="value python:request.get('preview')" />
-	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
+	<legend tal:content="python:here.getLangStr('SEARCH_HEADER',lang)">Search header</legend>
 	<div class="form-group">
 		<div class="col-md-12">
 			<div class="input-group">
@@ -41,12 +38,12 @@
 
 <div id="search_results" class="form-group" style="display:none">
 	<div class="col-md-12">
-		<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
+		<h4 tal:content="python:here.getLangStr('SEARCH_HEADERRESULT',lang)">Result</h4>
 		<div class="header row">
 			<div class="col-md-12">
 				<span class="small-head">
 					<span class="glyphicon glyphicon-refresh" alt="Loading..."></span>
-					<tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>
+					<tal:block tal:content="python:here.getLangStr('MSG_LOADING',lang)">loading</tal:block>
 				</span>
 			</div>
 		</div><!-- .header.row -->
@@ -62,8 +59,7 @@
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>]]></lang>
 		</text>
 		<active>
-			<lang id="ger">1</lang>
-			<lang id="eng">1</lang>
+			<lang>1</lang>
 		</active>
 	</ZMSTextarea>
 </ZMSDocument>

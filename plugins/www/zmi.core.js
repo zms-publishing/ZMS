@@ -211,6 +211,9 @@ ZMI.prototype.setCursorAuto = function() {
  */
 function getZMILang() {
 	if (typeof zmiParams['lang'] == 'undefined') {
+    zmiParams['lang'] = $('html').attr('lang');
+  }
+	if (typeof zmiParams['lang'] == 'undefined') {
     if (typeof zmiLangStr != "undefined") {
       zmiParams['lang'] = zmiLangStr['lang'];
     }
@@ -247,10 +250,11 @@ ZMI.prototype.getLangStr = function(key, lang) {
 		var url = this.getBaseUrl();
 		v = $.ajax({
 			url: url+'/get_lang_dict',
-			datatype: 'json',
-			contentType:'text/plain; charset=UTF-8',
+			datatype: 'string',
+			contentType:'text/string;charset=UTF-8',
 			async: false
 			}).responseText;
+		v = eval("("+v+")");
 		this.setCachedValue(k,v);
 	};
 	if (typeof lang=="undefined") {

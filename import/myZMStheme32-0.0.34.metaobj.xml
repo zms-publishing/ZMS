@@ -35,8 +35,8 @@
 		theme_common python:here.common.absolute_url();
 		channels python:{};
 		dummy0 python:map(lambda x:x.operator_setitem(channels,x.id_quote(x.getTitlealt(request)),x),zmscontext.getDocumentElement().filteredChildNodes(request,zmscontext.PAGES));"
+	tal:attributes="xml:lang lang; lang lang"
 	xmlns="http://www.w3.org/1999/xhtml"
-	xml:lang="de" lang="de"
 	xmlns:tal="http://xml.zope.org/namespaces/tal">
 	<head>
 		<meta charset="utf-8">

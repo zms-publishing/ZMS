@@ -79,7 +79,7 @@
 							<tal:block tal:define="dummy0 python:languages.append(coverage[len('local.'):])"></tal:block>
 						</tal:block>
 						<li tal:repeat="language languages">
-							<a tal:attributes="href python:here.url_append_params(request['URL'],{'lang':language}); data-language language" class="toggle-lang">
+							<a tal:attributes="href python:here.url_append_params(request['URL'],{'lang':language,'manage_lang':here.getLang(language)['manage']}); data-language language" class="toggle-lang">
 								<tal:block tal:content="structure python:here.zmi_icon(name=['icon-check-empty','icon-check'][int(language==request['lang'])])"></tal:block>
 								<tal:block tal:content="python:here.getLanguageLabel(language)">the language</tal:block>
 								<tal:block tal:condition="python:language==here.getPrimaryLanguage()">[*]</tal:block>

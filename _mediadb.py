@@ -188,7 +188,6 @@ def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
       if os.path.isdir(filepath):
         traverse(filepath,p)
       elif os.path.isfile(filepath):
-        print filename
         if filename not in p['filenames']:
           standard.writeBlock( self, "[manage_packMediaDb]: filename %s"%str(filename))
           shutil.move(filepath,p['tempfolder']+os.sep+filename)

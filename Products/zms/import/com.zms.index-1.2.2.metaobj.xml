@@ -55,7 +55,7 @@ function openWindow(url) {
 			</button>
 		</div>
 	</div><!-- .form-group -->
-	<div class="form-group" tal:condition="python:initialized and active">
+	<div class="form-group" style="padding:.5em 0;" tal:condition="python:initialized and active">
 		<label class="col-sm-2 control-label">References</label>
 		<div class="col-sm-10">
 			<div class="row col-sm-4">

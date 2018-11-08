@@ -43,9 +43,15 @@ function openWindow(url) {
 				class="btn btn-danger col-sm-2" name="btn" style="margin-left:1em"
 				onclick="return openWindow('zmsindex/ZMSIndexZCatalog_func_?func_=reindex'+'&loglevel='+$('#reindex-loglevel').val());">Reindex
 			</button>
-			<button title="ACTIVATE: Activate ZCatalog index for links."
+			<button tal:condition="python: context.getDocumentElement().getConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation')==None"
+				title="ACTIVATE: Activate ZCatalog index for links."
 				class="btn btn-danger col-sm-2" name="btn" style="margin-left:1em"
 				onclick="return openWindow('zmsindex/ZMSIndexZCatalog_func_?func_=activate'+'&loglevel='+$('#reindex-loglevel').val());">Activate
+			</button>
+			<button tal:condition="python: context.getDocumentElement().getConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation')!=None"
+				title="DEACTIVATE: Deactivate ZCatalog index for links."
+				class="btn btn-basic col-sm-2" name="btn" style="margin-left:1em"
+				onclick="return openWindow('zmsindex/ZMSIndexZCatalog_func_?func_=deactivate'+'&loglevel='+$('#reindex-loglevel').val());">Deactivate
 			</button>
 		</div>
 	</div><!-- .form-group -->
@@ -289,6 +295,25 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       t0 = time.time()
       index = visit(self.getDocumentElement())
       writeInfo(self,'[ZMSIndexZCatalog_func_] activate done: %i in %.2fsecs.'%(len(index),time.time()-t0))
+    
+    ##############################################################################
+    # Deactivate
+    ##############################################################################
+    elif func_ == 'deactivate':
+      rootelmnt = self.getRootElement()
+      home = rootelmnt.getHome()
+      # Visit tree
+      def visit(node):
+        l = []
+        l.append(1)
+        writeInfo(self,'[ZMSIndexZCatalog_func_] deactivate_object %s'%node.getPath())
+        node.delConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation')
+        node.delConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath')
+        node.delConfProperty('ExtensionPoint.ZReferableItem.getLinkObj')
+        return l
+      t0 = time.time()
+      index = visit(self.getDocumentElement())
+      writeInfo(self,'[ZMSIndexZCatalog_func_] deactivate done: %i in %.2fsecs.'%(len(index),time.time()-t0))
     
     ##############################################################################
     # Resync
@@ -777,7 +802,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[1.2.2]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -796,7 +821,7 @@ traverse(zmscontext)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[1.2.0]]></item>
+          <item key="revision"><![CDATA[1.2.2]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

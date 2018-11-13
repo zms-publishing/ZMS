@@ -226,10 +226,6 @@ class ZMSWorkflowActivitiesManager(object):
       message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%id), (pos+1))
       id = ''
     
-    # Increase version.
-    if id:
-      self.setRevision(IZMSRepositoryProvider.increaseVersion(self.getRevision(), 2))
-    
     # Return with message.
     message = urllib.parse.quote(message)
     return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang, message))

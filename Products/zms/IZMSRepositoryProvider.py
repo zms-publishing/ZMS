@@ -17,16 +17,7 @@
 ################################################################################
 
 # Imports.
-from builtins import str
 from zope.interface import Interface
-
-def increaseVersion(v='0.0.0',d=2):
-  try:
-    l = [int(x) for x in v.split('.')]
-    l[d] = l[d]+1
-    return '.'.join([str(x) for x in l])
-  except:
-    return v
 
 class IZMSRepositoryProvider(Interface):
 

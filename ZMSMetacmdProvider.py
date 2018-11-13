@@ -456,7 +456,7 @@ class ZMSMetacmdProvider(
           id = REQUEST['id']
           newId = REQUEST['el_id'].strip()
           newAcquired = 0
-          newRevision = IZMSRepositoryProvider.increaseVersion(REQUEST.get('el_revision','').strip(),2)
+          newRevision = REQUEST.get('el_revision','').strip()
           newName = REQUEST.get('el_name','').strip()
           newTitle = REQUEST.get('el_title','').strip()
           newMethod = None

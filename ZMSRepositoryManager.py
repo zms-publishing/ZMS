@@ -19,6 +19,7 @@
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from distutils.version import LooseVersion
 import inspect
 import os
 import re
@@ -266,7 +267,7 @@ class ZMSRepositoryManager(
         d['id'] = id
         d['filename'] = os.path.sep.join(filename)
         d['data'] = '\n'.join(py)
-        d['version'] = map(lambda x:int(x),o.get('revision','0.0.0').split('.'))
+        d['version'] = LooseVersion(o.get('revision','0.0.0'))
         d['meta_type'] = 'Script (Python)'
         l[d['filename']] = d
       return l

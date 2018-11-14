@@ -42,8 +42,8 @@
 <body tal:attributes="class python:here.zmi_body_class(id='metas import')">
 <tal:block tal:define="global
 		metaObjIds python:here.getMetaobjIds();
-		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
-		metaObjPackages python:here.sort_list(standard.distinct_list(map(lambda x: x.get('package'), metaObjs)))">
+		metaObjs python:[here.getMetaobj(x) for x in metaObjIds];
+		metaObjPackages python:here.sort_list(standard.distinct_list( [x.get('package') for x in metaObjs] ))">
 
 <tal:block tal:condition="python:request.get('section')=='import'">
 	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data" target="_parent">
@@ -52,7 +52,7 @@
 		<input type="hidden" name="temp_import_file_id" tal:attributes="value request/temp_import_file_id" />
 		<tal:block tal:define="global
 				f python:getattr(here.temp_folder,request.get('temp_import_file_id'));
-				xml python:here.parseXmlString(str(f.data));
+				xml python:here.parseXmlString(f.data);
 				packages python:[];
 				importObjs python:[]">
 			<tal:block tal:repeat="item xml">
@@ -109,7 +109,7 @@
 		<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]" />
 		<div class="form-group">
 			<label for="file" class="col-sm-2 control-label">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open-alt')"></tal:block>
+				<tal:block tal:on-error="nothing" tal:content="structure python:here.zmi_icon(name='icon-folder-open-alt')"></tal:block>
 				<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 			</label>
 			<div class="col-sm-10"><input class="btn btn-file" type="file" name="file" /></div>

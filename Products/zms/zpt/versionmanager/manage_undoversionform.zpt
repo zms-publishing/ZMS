@@ -13,7 +13,7 @@
 	<legend tal:content="python:here.getZMILangStr('TAB_HISTORY')">History</legend>
 	<p class="well" tal:content="structure python:here.getZMILangStr('MSG_UNDOVERSION')">well</p>
 
-<tal:block tal:condition="python:request.get('btn')==here.getZMILangStr('BTN_COMPARE')" tal:define="ids python:request.get('ids',[]); ids python:map(lambda x:x.id,filter(lambda x:x.id in ids,here.getObjVersions()));">
+<tal:block tal:condition="python:request.get('btn')==here.getZMILangStr('BTN_COMPARE')" tal:define="ids python:request.get('ids',[]); ids python:^[x.id for x in here.getObjVersions() if x.id in ids];">
 	<tal:block tal:condition="python:len(ids)>1">
 	<div class="accordion-group">
 		<div class="accordion-heading">
@@ -35,7 +35,7 @@
 						</tal:block>
 					</tal:block>
 				</tr>
-				<tal:block tal:repeat="metaObjAttr python:filter(lambda x:x['type'] in here.metaobj_manager.valid_types,map(lambda x:here.getMetaobjAttr(here.meta_id,x),here.getMetaobjAttrIds(here.meta_id)))">
+				<tal:block tal:repeat="metaObjAttr python:[xx for xx in [here.getMetaobjAttr(here.meta_id,x) for x in here.getMetaobjAttrIds(here.meta_id)] if xx['type'] in here.metaobj_manager.valid_types]">
 					<tal:block tal:define="values python:[]">
 						<tal:block tal:repeat="id ids">
 							<tal:block tal:define="dummy0 python:request.set('ZMS_VERSION_%s'%here.id,id);

@@ -185,10 +185,10 @@ class ZMSRepositoryManager(
                 [[x[0], x[-1].replace('.py', '')] for x in temp_files if len(x)==2] + \
                 [[x[0], x[-2]] for x in temp_files if len(x)>2]
               # avoid processing of hidden files, e.g. .DS_Store on macOS
-              temp_files = filter(lambda x: x.startswith('.'), temp_files)
-              ids = list(set(map(lambda x:':'.join(x),temp_files)))
+              temp_files = [x for x in temp_files if x.startswith('.')]
+              ids = list(set([':'.join(x) for x in temp_files]))
               # avoid processing of hidden files, e.g. .DS_Store on macOS
-              ids = filter(lambda x: ':.' not in x, ids)
+              ids = [x for x in ids if ':.' not in x]
               self.writeBlock("[exec_auto_update]: %s"%str(ids))
               self.updateChanges(ids, override=True)
             self.last_update = standard.getDateTime(current_time)

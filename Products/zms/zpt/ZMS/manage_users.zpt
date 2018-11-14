@@ -52,10 +52,10 @@
 				<tal:block tal:define="global
 						valid_userids python:here.getValidUserids(search_term=request.get('search_term',''),search_term_param=request.get('search_param'));
 						metaObjAttrs valid_userids/columns;
-						metaObjAttrIds python:map(lambda x:x['id'],metaObjAttrs);
+						metaObjAttrIds python:[x['id'] for x in metaObjAttrs];
 						res valid_userids/records;
-						filtered_res python:filter(lambda x:x['name'] not in userNames,res);
-						dummy0 python:map(lambda x:here.operator_setitem(x,'__id__',x['name']),res)">
+						filtered_res python:[x for x in res if x['name'] not in userNames];
+						dummy0 python:[here.operator_setitem(x,'__id__',x['name']) for x in res]">
 					<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
 							metaObjAttrIds=metaObjAttrIds,
 							metaObjAttrs=metaObjAttrs,

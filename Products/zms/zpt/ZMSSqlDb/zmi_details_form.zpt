@@ -48,7 +48,7 @@
 			action='update',
 			qindex=request['qindex'],
 			rowid=request['rowid'],
-			row=filter(lambda x:str(here.operator_getitem(x,primary_key,ignorecase=True))==str(request['rowid']),res)[0],
+			row=[x for x in res if str(here.operator_getitem(x,primary_key,ignorecase=True))==str(request['rowid'])][0],
 			request_form_inherit=request_form_inherit)">
 		metaobj_recordset_input_fields
 	</tal:block>

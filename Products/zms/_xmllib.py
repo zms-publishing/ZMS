@@ -717,7 +717,7 @@ def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False):
         xml.append('%s<%s>%s</%s>\n' % ( (indentlevel+1) * INDENTSTR, key, ob_prop, key ) )
   # Process children.
   if deep:
-    xml.extend(map(lambda x: getObjToXml(x, REQUEST, deep, base_path + x.id + '/', data2hex), self.getChildNodes()))
+    xml.extend([getObjToXml(x, REQUEST, deep, base_path + x.id + '/', data2hex) for x in self.getChildNodes()])
   # End tag.
   xml.append('%s</%s>\n' % ( indentlevel * INDENTSTR, self.meta_id ) )
   # Return xml.

@@ -148,7 +148,7 @@ function zmiFormSubmit(sender,d) {
 		</td>
 		<td class="meta-id">
 			<tal:block tal:on-error="python: request.set('meta_id_usage','ERROR Missing Referenced Meta-Objects')"
-				tal:define="meta_ids python:request.set('meta_id_usage',', '.join(filter(lambda x:metadictAttrId in map(lambda x:x['type'],here.getMetaobjAttrs(x)),here.getMetaobjIds())));">
+				tal:define="meta_ids python:request.set('meta_id_usage',', '.join([xx for xx in here.getMetaobjIds() if metadictAttrId in [x['type'] for x in here.getMetaobjAttrs(xx)]]));">
 			</tal:block>
 			<input class="form-control input-sm" type="text"
 				tal:attributes="name python:'attr_id_%s'%metadictAttr['id']; 

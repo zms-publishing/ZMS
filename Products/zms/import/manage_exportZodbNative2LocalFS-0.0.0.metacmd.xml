@@ -32,7 +32,7 @@ def manage_exportZodbNative2LocalFS( self):
   execute = request.get('btn')=='execute'
   t = traverse(self.getHome(),execute)
   if execute:
-    return self.str_json(filter(lambda x:len(x)>0,map(lambda x:x['status'],t)))
+    return self.str_json([x['status'] for x in t if x['status']])
     
   html = ''
   html += '<!DOCTYPE html>'
@@ -96,14 +96,14 @@ def manage_exportZodbNative2LocalFS( self):
   html += '<th>Objekt</th>'
   html += '<th>Status</th>'
   html += '</tr>'
-  html += '\n'.join(map(lambda x:'<tr><td align="center"><input type="checkbox" name="ids:list" value="%s" checked="checked"/></td><td><a href="%s/manage_main" target="_blank">%s%s</a> (%s)</td><td>%s</td></tr>'%(
+  html += '\n'.join(['<tr><td align="center"><input type="checkbox" name="ids:list" value="%s" checked="checked"/></td><td><a href="%s/manage_main" target="_blank">%s%s</a> (%s)</td><td>%s</td></tr>'%(
       '/'.join(x['node'].getPhysicalPath()),
       '/'.join(x['node'].getPhysicalPath()),
       '/'.join(x['node'].getPhysicalPath()),
       zope_objects[x['node'].meta_type],
       x['node'].meta_type,
       '<br>'.join(x['status']),
-      ),t))
+      ) for x in t])
   html += '</table><!-- .table -->'
   
   # ---------------------------------

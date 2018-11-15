@@ -220,7 +220,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     ##############################################################################
     if func_ == 'get_uid':
       forced = args[1]
-      if forced or '_uid' not in self.__dict__.keys() or getattr(self,'_uid',None) is None: 
+      if forced or '_uid' not in self.__dict__ or getattr(self,'_uid',None) is None: 
         self._uid = str(uuid.uuid4())
       return 'uid:%s'%self._uid
     
@@ -349,7 +349,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               childNode = getattr(ref,id,None)
               try:
                 if (childNode is None and ref is not None) and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-                  for o in filter(lambda x:x.meta_type not in ['External Method'],ref.objectValues(list(self.dGlobalAttrs))):
+                  for o in [x for x in ref.objectValues(list(self.dGlobalAttrs)) if x.meta_type not in ['External Method']]:
                     for l in o.getLanguages():
                       r = {'lang':l}
                       try:
@@ -364,7 +364,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               except:
                 ref= None
               ref = childNode
-            if ref is not None and not type(ref) is str and ref.meta_type not in ['Folder']+list(self.dGlobalAttrs.keys()):
+            if ref is not None and not type(ref) is str and ref.meta_type not in ['Folder']+list(self.dGlobalAttrs):
               ref = None
             if ref is None:
               break
@@ -383,7 +383,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             if ref is None and 'href' in d:
               href = d['href']
               href = re.sub('http://localhost:(\\d)*','',href)
-              for domain in domains.keys():
+              for domain in domains:
                 path = domains[domain]
                 href = re.sub(domain,path,href)
               writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline href=%s'%href)
@@ -407,7 +407,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               ref.registerRefObj(node) 
               old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
               title = f[1]
-              new = '<a %s>%s</a>'%(' '.join(map(lambda x:'%s="%s"'%(x,d[x]),d.keys())),title)
+              new = '<a %s>%s</a>'%(' '.join(['%s="%s"'%(x,d[x]) for x in list(d)]),title)
               if old != new:
                 writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline old=%s'%old)
                 writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline new=%s'%new)
@@ -438,7 +438,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           l.append(1)
           if node.meta_id!='ZMSLinkElement' and node.getType()=='ZMSRecordSet':
             objAttrs = node.getMetaobjAttrs(node.meta_id)
-            key = filter(lambda x:x['type']=='list',objAttrs)[0]['id']
+            key = [x for x in objAttrs if x['type']=='list'][0]['id']
             for obj_vers in node.getObjVersions():
               l = self.operator_getattr(obj_vers,key,[])
               for r in l:
@@ -457,13 +457,13 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                         r[objAttr['id']] = v
               self.operator_setattr(obj_vers,key,l)
           else:
-            for key in filter(lambda x:not x.startswith('manage'),node.getObjAttrs().keys()):
+            for key in [x for x in list(node.getObjAttrs()) if not x.startswith('manage')]:
               objAttr = node.getObjAttr(key)
               datatype = objAttr['datatype']
               if datatype in ['richtext','string','text','url']:
                 lang_suffixes = ['']
                 if objAttr['multilang']:
-                  lang_suffixes = map(lambda x:'_%s'%x,self.getLangIds())
+                  lang_suffixes = ['_%s'%x for x in self.getLangIds()]
                 for lang_suffix in lang_suffixes:
                   for obj_vers in node.getObjVersions():
                     v = self.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
@@ -570,7 +570,7 @@ elif url.startswith('{$') and url.endswith('}') and not (url.startswith('{$__') 
     query = {'home_id':docelmnt.getHome().id,'id':zmsid}
 q = zmscontext.zcatalog_index(query)
 try:
-  q = filter(lambda x:x['getPath'].find('/%s/content'%query['home_id'])>= 0,q)
+  q = [x for x in q if x['getPath'].find('/%s/content'%query['home_id'])>= 0]
 except:
   pass
 ob = None
@@ -579,7 +579,7 @@ for r in q:
   l = zmspath[1:-1].split('/')
   ob = zmscontext
   try:
-    for id in filter(lambda x:len(x)>0,l):
+    for id in [x for x in l if len(x)>0]:
       ob = getattr(ob,id,None)
     break
   except:

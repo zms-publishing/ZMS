@@ -26,10 +26,10 @@
 				</code>
 				<tal:block tal:define="global
 								r metaObjAttr/value;
-								metaObjAttrs python:filter(lambda x:not x.get('pk') and not x.get('fk',{}).get('tablename')==entity['id'],details['columns']);
-								metaObjAttrs python:map(lambda x:here.getEntityColumn(details['id'],x['id']),metaObjAttrs);
-								dummy0 python:map(lambda x:here.operator_setitem(x,'name',x['label']),metaObjAttrs);
-								metaObjAttrIds python:map(lambda x:x['id'],metaObjAttrs);">
+								metaObjAttrs python:[x for x in details['columns'] if not x.get('pk') and not x.get('fk',{}).get('tablename')==entity['id']];
+								metaObjAttrs python:[here.getEntityColumn(details['id'],x['id']) for x in metaObjAttrs];
+								dummy0 python:[here.operator_setitem(x,'name',x['label']) for x in metaObjAttrs];
+								metaObjAttrIds python:[x['id'] for x in metaObjAttrs];">
 					<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
 								metaObjAttrIds=metaObjAttrIds,
 								metaObjAttrs=metaObjAttrs,

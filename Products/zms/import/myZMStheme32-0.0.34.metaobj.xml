@@ -34,7 +34,7 @@
 		lang request/lang; 
 		theme_common python:here.common.absolute_url();
 		channels python:{};
-		dummy0 python:map(lambda x:x.operator_setitem(channels,x.id_quote(x.getTitlealt(request)),x),zmscontext.getDocumentElement().filteredChildNodes(request,zmscontext.PAGES));"
+		dummy0 python:[x.operator_setitem(channels,x.id_quote(x.getTitlealt(request)),x) for x in zmscontext.getDocumentElement().filteredChildNodes(request,zmscontext.PAGES)];"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xml:lang="de" lang="de"
 	xmlns:tal="http://xml.zope.org/namespaces/tal">
@@ -75,7 +75,7 @@
 							<li class="first">
 								<a tal:attributes="href python:zmsroot.getHref2IndexHtml(request,deep=False);" tal:content="python:zmsroot.getTitlealt(request)">the titlealt</a>
 							</li>
-							<tal:block tal:repeat="childNode python:filter(lambda x:not x.isResource(request),zmsroot.filteredChildNodes(request,'ZMSFolder'))">
+							<tal:block tal:repeat="childNode python:[x for x in zmsroot.filteredChildNodes(request,'ZMSFolder') if not x.isResource(request)]">
 								<li tal:attributes="class python:' '.join([[],['active']][int(childNode.id in zmscontext.getPhysicalPath())]);">
 									<a tal:attributes="href python:childNode.getHref2IndexHtml(request,deep=False);" tal:content="structure python:childNode.getTitlealt(request)">the titlealt</a>
 								</li>
@@ -209,7 +209,7 @@
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
 		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%request['lang']"></script>
-		<tal:block tal:repeat="src python:map(lambda x:zmscontext.getConfProperty(x),zmscontext.getConfProperty('bootstrap.libs').split(','))"
+		<tal:block tal:repeat="src python:[zmscontext.getConfProperty(x) for x in zmscontext.getConfProperty('bootstrap.libs').split(',') if x]"
 			><script type="text/javascript" charset="UTF-8" tal:attributes="src src"></script>
 		</tal:block>
 		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/js/jquery-ui.min.js'%theme_common"></script>

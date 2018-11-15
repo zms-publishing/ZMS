@@ -140,7 +140,7 @@ def ececuteAttrChange(cselected, aselected, searchstr,replacestr):
       # type multiselect
       elif searchstr!='' and searchstr in v:
         try:
-          s+=' <strong style="color:green"><i class="icon-exchange"></i> <samp>%s</samp></strong>'%(filter(lambda x: x != searchstr,v)+[replacestr])
+          s+=' <strong style="color:green"><i class="icon-exchange"></i> <samp>%s</samp></strong>'%([x for x in v if x!=searchstr]+[replacestr])
           attrFindCount+=1
         except:
           sError += '<li style="list-style-type:square;">No Specified Object Classes <em>%s</em> found. <a href="%s/manage_system" target="_blank">Iteration Error</a></li>'%(str(cselected), str(e.absolute_url()))
@@ -149,7 +149,7 @@ def ececuteAttrChange(cselected, aselected, searchstr,replacestr):
         if mode=='Replace':
           try:
             e.setObjStateModified(request)
-            e.setObjProperty(aselected, filter(lambda x: x != searchstr,v)+[replacestr],lang=lang)
+            e.setObjProperty(aselected, [x for x in v if x!=searchstr]+[replacestr],lang=lang)
             e.onChangeObj(request,forced=1)
             e.commitObj(request)
             s+=' <span style="color:green">Changed.</span> '

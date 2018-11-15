@@ -176,10 +176,10 @@ for client in context.getPortalClients():
 					title += ' (%s)'%(clientMetaObj.get('revision','0.0.0'))
 					clazz.append('warning')
 				else:
-					metaObjAttrIds = map(lambda x: x['id'], metaObj['attrs'])
-					clientMetaObjAttrIds = map(lambda x: x['id'], clientMetaObj['attrs'])
+					metaObjAttrIds = [x['id'] for x in metaObj['attrs']]
+					clientMetaObjAttrIds = [x['id'] for x in clientMetaObj['attrs']]
 					if metaObjAttrIds != clientMetaObjAttrIds:
-						title += ' (-%s, +%s)'%(str(filter(lambda x: x not in clientMetaObjAttrIds,metaObjAttrIds)),str(filter(lambda x: x not in metaObjAttrIds,clientMetaObjAttrIds)))
+						title += ' (-%s, +%s)'%(str([x for x in metaObjAttrIds if x not in clientMetaObjAttrIds]),str([x for x in clientMetaObjAttrIds if x not in metaObjAttrIds]))
 						clazz.append('warning')
 				clazz.append('active')
 		else:

@@ -97,8 +97,8 @@
 
 	<div class="form-group"
 		tal:define="
-			myusers python:map(lambda u: [context.content.getUserAttr(u, 'email', ''),u],context.content.getUsers(request).keys());
-			myeditors python:filter(lambda u:'ZMSEditor' in context.content.getUserRoles(u[1]),myusers)">
+			myusers python:[[context.content.getUserAttr(u, 'email', ''),u] for u in context.content.getUsers(request)];
+			myeditors python:[u for u in myusers if 'ZMSEditor' in context.content.getUserRoles(u[1]))">
 		<label style="text-align:left !important" for="recipients" class="col-sm-12 control-label"><span tal:content="python:here.getZMILangStr('ROLE_ZMSEDITOR')">ROLE_ZMSEDITOR</span></label>
 		<div class="col-sm-12" tal:content="structure python:here.zmi_input_multiselect(here,name='recipients',value=[],lang_str='ROLE_ZMSEDITOR',options=myeditors)">the control</div>
 	</div><!-- .form-group -->
@@ -125,7 +125,7 @@
 			dummy0 python:mbody.append(''
 				+ 'INFO: Folgendes Objekt wude publiziert:\n'
 				+ '%s: \t'%zmscontext.display_type(request)
-				+ '>> '.join(map(lambda x:x.getTitlealt(request),zmscontext.breadcrumbs_obj_path())) + '\n'
+				+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 				+ 'MANAGE: \t%s/manage\n'%zmscontext.absolute_url()
 				+ 'PREVIEW: \t%s/preview_html\n\n'%zmscontext.absolute_url()
 				+ '\n\n'
@@ -244,16 +244,16 @@
 			dummy0 python:mbody.append(''
 				+ 'INFO: Bitte publizieren Sie folgende Ãnderungen\n'
 				+ '%s: \t'%zmscontext.display_type(request)
-				+ '>> '.join(map(lambda x:x.getTitlealt(request),zmscontext.breadcrumbs_obj_path())) + '\n'
+				+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 				+ 'MANAGE: \t%s/manage\n'%zmscontext.absolute_url()
 				+ 'PREVIEW: \t%s/preview_html\n\n'%zmscontext.absolute_url()
 			)">
 	</tal:block>
-	<tal:block tal:repeat="childNode python:filter(lambda x:x.isObjModified(request),[zmscontext]+zmscontext.getChildNodes(request))">
+	<tal:block tal:repeat="childNode python:[x for x in [zmscontext]+zmscontext.getChildNodes(request) if x.isObjModified(request)]">
 		<tal:block tal:define="global
 			dummy0 python:mbody.append(''
 				+ '- %s '%(zmscontext.display_type(request))
-				+ '[' + ','.join(map(lambda x:here.getZMILangStr(x),filter(lambda x: childNode.inObjStates(x,request),['STATE_NEW','STATE_MODIFIED','STATE_DELETED']))) + '] '
+					+ '[' + ','.join([here.getZMILangStr(x) for x in ['STATE_NEW','STATE_MODIFIED','STATE_DELETED'] if childNode.inObjStates(x,request)]) + '] '
 				+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt')))
 				+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid'))
 				+ '\n'
@@ -359,16 +359,16 @@
 			dummy0 python:mbody.append(''
 				+ 'INFO: Publikation der Ãnderungen wurde leider abgelehnt.\n'
 				+ '%s: \t'%zmscontext.display_type(request)
-				+ '>> '.join(map(lambda x:x.getTitlealt(request),zmscontext.breadcrumbs_obj_path())) + '\n'
+				+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 				+ 'MANAGE: \t%s/manage\n'%zmscontext.absolute_url()
 				+ 'PREVIEW: \t%s/preview_html\n\n'%zmscontext.absolute_url()
 			)">
 	</tal:block>
-	<tal:block tal:repeat="childNode python:filter(lambda x:x.isObjModified(request),[zmscontext]+zmscontext.getChildNodes(request))">
+	<tal:block tal:repeat="childNode python:[x for x in [zmscontext]+zmscontext.getChildNodes(request) if x.isObjModified(request)]">
 		<tal:block tal:define="global
 				dummy0 python:mbody.append(''
 					+ '- %s '%(zmscontext.display_type(request))
-					+ '[' + ','.join(map(lambda x:here.getZMILangStr(x),filter(lambda x: childNode.inObjStates(x,request),['STATE_NEW','STATE_MODIFIED','STATE_DELETED']))) + '] '
+					+ '[' + ','.join([here.getZMILangStr(x) for x in ['STATE_NEW','STATE_MODIFIED','STATE_DELETED'] if childNode.inObjStates(x,request)]) + '] '
 					+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt')))
 					+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid'))
 					+ '\n'

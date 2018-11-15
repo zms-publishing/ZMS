@@ -8,7 +8,7 @@
 
 <tal:block tal:define="global
 		entities python:here.getEntities();
-		tables python:filter(lambda x:x['type'].upper()=='TABLE',entities);
+		tables python:[x for x in entities if x['type'].upper()=='TABLE'];
 		SESSION request/SESSION;
 		dummy0 python:request.set('qsize',request.get('qsize',SESSION.get('qsize_%s'%here.id,20)));
 		dummy0 python:request.set('qfilters',request.get('qfilters',SESSION.get('qfilters_%s'%here.id,1)));
@@ -29,7 +29,7 @@
 <tal:block tal:define="global
 		sessqentitykey python:'qentity_%s'%here.id;
 		sessqfilterskey python:'qfilters_%s'%id;
-		entity python:filter(lambda x:x['id']==request['qentity'],tables)[0];
+		entity python:[x for x in tables if x['id']==request['qentity']][0];
 		primary_key python:here.getEntityPK(entity['id']);
 		encoding python:getattr(here,'charset','utf-8');
 		metaObjAttrIds python:[];
@@ -41,8 +41,8 @@
 
 	<tal:block tal:define="global
 			query python:here.query(resSlctStmnt,encoding=encoding);
-			dummy0 python:metaObjAttrIds.extend(map(lambda x:x['id'],entity['columns']));
-			dummy0 python:metaObjAttrs.extend(map(lambda x:here.getEntityColumn(entity['id'],x),metaObjAttrIds));
+			dummy0 python:metaObjAttrIds.extend([x['id'] for x in entity['columns']]);
+			dummy0 python:metaObjAttrs.extend([here.getEntityColumn(entity['id'],x) for x in metaObjAttrIds]);
 			dummy0 python:res.extend(query['records'])">
 	</tal:block>
 
@@ -80,7 +80,7 @@
 
 <tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
 
-<form method="get" class="form-horizontal" tal:define="filter_columns python:filter(lambda x:len(here.intersection_list(['blob','details','multiselect','multimultiselect'],x.keys()))==0,entity['columns'])">
+<form method="get" class="form-horizontal" tal:define="filter_columns python:[x for x in entity['columns'] if len(here.intersection_list(['blob','details','multiselect','multimultiselect'],list(x)))==0]">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
 	<input tal:condition="python:request.has_key('qorder')" type="hidden" name="qorder" tal:attributes="value request/qorder">
@@ -127,7 +127,7 @@
 					<div tal:attributes="class python:' '.join(['form-group','col-lg-12']+[[],['hidden']][int(filterIndex==request.get('qfilters',1))])">
 						<select class="form-control input-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
 							<option value="" tal:content="python:here.getZMILangStr('CAPTION_SELECT')">the option</option>
-							<tal:block tal:repeat="column python:map(lambda x:here.getEntityColumn(entity['id'],x['id']),filter_columns)">
+							<tal:block tal:repeat="column python:[here.getEntityColumn(entity['id'],x['id']) for x in filter_columns]">
 								<option tal:attributes="value column/id; title column/type; selected python:['','selected'][int(column['id'].lower()==request.get('filterattr%i'%filterIndex,SESSION.get('filterattr%i_%s'%(filterIndex,here.id),'')).lower())]" tal:content="column/label">column</option>
 							</tal:block>
 						</select>
@@ -157,7 +157,7 @@
 	</div><!-- .accordion-group -->
 </form>
 
-<tal:block tal:define="dummy0 python:map(lambda x:here.operator_setitem(x,'name',x['label']),metaObjAttrs)">
+<tal:block tal:define="dummy0 python:[here.operator_setitem(x,'name',x['label']) for x in metaObjAttrs]">
 	<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
 			metaObjAttrIds=metaObjAttrIds,
 			metaObjAttrs=metaObjAttrs,

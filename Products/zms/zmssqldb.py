@@ -253,8 +253,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     def sql_quote__(self, tablename, columnname, v):
       entities = self.getEntities()
-      entity = filter(lambda x: x['id'].upper() == tablename.upper(), entities)[0]
-      col = (filter(lambda x: x['id'].upper() == columnname.upper(), entity['columns'])+[{'type':'string'}])[0]
+      entity = [x for x in entities if x['id'].upper()==tablename.upper()][0]
+      col = ([x for x in entity['columns'] if x['id'].upper()==columnname.upper()]+[{'type':'string'}])[0]
       if col.get('nullable') and v in ['', None]:
         return "NULL"
       elif col['type'] in ['int']:
@@ -390,7 +390,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         column['sort'] = 1
         columns.append(column)
       if encoding:
-        result = map(lambda x: self.record_encode__(columns, x, encoding), result)
+        result = [self.record_encode__(columns, x, encoding) for x in result]
       return {'columns':columns,'records':result}
 
 
@@ -477,7 +477,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                     if not isinstance(v, list):
                       v = [v]
                     for i in v:
-                      l = filter(lambda x:str(x[0])==str(i), o)
+                      l = [x for x in o if str(x[0])==str(i)]
                       if len(l) > 0:
                         value .append(l[0][1])
                     value = ', '.join(value)
@@ -505,7 +505,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         entity = self.getEntity(tableName)
         primary_key = self.getEntityPK(tableName)
         columns = entity['columns']
-        column = copy.deepcopy(filter(lambda x: x['id'].upper() == columnName.upper(), columns)[0])
+        column = copy.deepcopy([x for x in columns if x['id'].upper()==columnName.upper()][0])
         column['id'] = column['id'].lower()
         column['label'] = self.getLangStr(column['label'], lang)
         # Checkbox
@@ -614,10 +614,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           dst = None
           if 'tablename' in stereotype and 'fk' in stereotype:
             intersection = self.getEntity(stereotype['tablename'])
-            intersection_fk = filter(lambda x:isinstance(x.get('fk'), dict) and 'tablename' in x['fk'], intersection['columns'])
+            intersection_fk = [x for x in intersection['columns'] if isinstance(x.get('fk'), dict) and 'tablename' in x['fk']]
             column['intersection_fk'] = intersection_fk
-            src = filter(lambda x:x['id'].upper()==stereotype['fk'].upper() and x['fk']['tablename'].upper()==tableName.upper(), intersection_fk)[0]
-            dst = filter(lambda x:x['id'].upper()!=stereotype['fk'].upper() or x['fk']['tablename'].upper()!=tableName.upper(), intersection_fk)[0]
+            src = [x for x in intersection_fk if x['id'].upper()==stereotype['fk'].upper() and x['fk']['tablename'].upper()==tableName.upper()][0]
+            dst = [x for x in intersection_fk if x['id'].upper()!=stereotype['fk'].upper() or x['fk']['tablename'].upper()!=tableName.upper()][0]
           # Multiselect.Selected
           if src is not None and dst is not None and row is not None:
             sql = '' \
@@ -674,12 +674,12 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           # Details.Intersection
           if details['type']=='intersection':
             if row:
-              ldst = filter(lambda x:x.get('fk') is not None and 'tablename' in x['fk'] and x['fk']['tablename']!=tableName, details['columns'])
+              ldst = [x for x in details['columns'] if x.get('fk') is not None and 'tablename' in x['fk'] and x['fk']['tablename']!=tableName]
               columns = []
               joins = []
-              for x in map(lambda x:x['id'], filter(lambda x:x.get('datatype', '?')!='?', details['columns'])):
+              for x in [x['id'] for x in details['columns'] if x.get('datatype', '?')!='?']:
                 columns.append(x)
-                fdst = filter(lambda dst:x==dst['id'], ldst)
+                fdst = [x for x in ldst if x==dst['id']]
                 if fdst:
                   dst = fdst[0]
                   fktablename = dst['fk']['tablename']
@@ -797,7 +797,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     def getEntity(self, tableName):
       entities = self.getEntities()
-      return filter(lambda x: x['id'].upper() == tableName.upper(), entities)[0]
+      return [x for x in entities if x['id'].upper()==tableName.upper()][0]
 
 
     # --------------------------------------------------------------------------
@@ -851,7 +851,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                       l = l.strip()
                       if len(l) > 0:
                         c += l + ' '
-                    cl = filter(lambda x: len(x.strip()) > 0, c.split(' '))
+                    cl = [x for x in c.split(' ') if x.strip()]
                     if len(cl) >= 2:
                       cid = cl[0]
                       if cid.startswith('"') and cid.endswith('"'):
@@ -899,7 +899,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                 col['description'] = colDescr.strip()
                 col['id'] = col['key']
                 col['index'] = int(col.get('index', len(cols)))
-                col['label'] = ' '.join( map( lambda x: x.capitalize(), colId.split('_'))).strip()
+                col['label'] = ' '.join([x.capitalize() for x in colId.split('_')]).strip()
                 col['name'] = col['label']
                 col['mandatory'] = colDescr.find('NOT NULL') > 0
                 col['type'] = colType

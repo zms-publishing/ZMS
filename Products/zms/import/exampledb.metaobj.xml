@@ -94,12 +94,12 @@
 
 <tal:block tal:define="global
 			records python:zmscontext.attr(metaObjAttrIds[0]);
-			metaObjAttrs python:filter(lambda x:
+			metaObjAttrs python:[x for x in metaObj['attrs'][1:] if 
 					x['id'] not in ['sort_id']
 					and x['custom']
 					and x['type'] in zmscontext.metaobj_manager.valid_types
 					and not x['type'] in ['password']
-					,metaObj['attrs'][1:])">
+					]">
 
 <form method="get" tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
 	<input type="hidden" name="lang" tal:condition="python:request.has_key('lang')" tal:attributes="value request/lang"/>
@@ -303,12 +303,12 @@
 
 <tal:block tal:define="global
 			records python:zmscontext.attr(metaObjAttrIds[0]);
-			metaObjAttrs python:filter(lambda x:
+			metaObjAttrs python:[x for x in metaObj['attrs'][1:] if 
 					x['id'] not in ['sort_id']
 					and x['custom']
 					and x['type'] in zmscontext.metaobj_manager.valid_types
 					and not x['type'] in ['password']
-					,metaObj['attrs'][1:])">
+					]">
 
 <form method="get" tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
 	<input type="hidden" name="lang" tal:condition="python:request.has_key('lang')" tal:attributes="value request/lang"/>
@@ -437,7 +437,7 @@
 	</tal:block>
 	<tal:block tal:define="global
 			entityId python:request.get('qentity',request.SESSION.get('qentity_%s'%zmscontext.meta_id.upper(),entities[0].id));
-			entity python:filter(lambda x:x.id==entityId,entities)[0];
+			entity python:[x for x in entities if x.id==entityId][0];
 			dummy0 python:request.SESSION.set('qentity_%s'%zmscontext.meta_id.upper(),entityId)">
 
 		<ul class="nav nav-tabs">

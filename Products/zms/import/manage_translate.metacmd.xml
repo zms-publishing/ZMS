@@ -166,7 +166,7 @@ function save(sender) {
 		</tal:block>
 	</tal:block>
 </tr>
-<tr valign="top" tal:repeat="childNode python:filter(lambda x: x.isPageElement(),here.getObjChildren('e',request))">
+<tr valign="top" tal:repeat="childNode python:[x for x in here.getObjChildren('e',request) if x.isPageElement()]">
 	<tal:block tal:repeat="si python:['left','right']">
 		<tal:block tal:define="global lang_req_key python:{'left':'lang1','right':'lang2'}[si]">
 			<td tal:attributes="class python:'zmi-translate-%s'%si; translate python:['','translate'][int(si!='left')]; notranslate python:['','notranslate'][int(si=='left')]" width="50%">

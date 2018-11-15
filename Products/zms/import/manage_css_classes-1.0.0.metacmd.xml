@@ -68,7 +68,7 @@ def manage_css_classes(self):
 		# GENERATE CSS LIST (Example Code)
 		css_classes = self.getRootElement().getSecurityRoles().keys()
 		css_classes.extend(['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator'])
-		css_classes = map(lambda r: [str(r)+'_special',str(r)+'_special'],css_classes)
+		css_classes = [[str(r)+'_special',str(r)+'_special'] for x in css_classes]
 		# /GENERATE CSS LIST
 
 		html += '<div class="form-group">'

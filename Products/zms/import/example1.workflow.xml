@@ -213,15 +213,15 @@
 			dummy0 python:mbody.append(''
 				+ 'Request for committing my changes:\n'
 				+ '%s: \t'%zmscontext.display_type(request)
-				+ '>> '.join(map(lambda x:x.getTitlealt(request),zmscontext.breadcrumbs_obj_path())) + '\n'
+				+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 				+ 'URL: \t%s/manage\n\n'%zmscontext.absolute_url()
 			)">
 	</tal:block>
-	<tal:block tal:repeat="childNode python:filter(lambda x:x.isObjModified(request),[zmscontext]+zmscontext.getChildNodes(request))">
+	<tal:block tal:repeat="childNode python:[x for x in [zmscontext]+zmscontext.getChildNodes(request) if x.isObjModified(request)]">
 		<tal:block tal:define="global
 				dummy0 python:mbody.append(''
 					+ '- %s '%(zmscontext.display_type(request))
-					+ '[' + ','.join(map(lambda x:here.getZMILangStr(x),filter(lambda x: childNode.inObjStates(x,request),['STATE_NEW','STATE_MODIFIED','STATE_DELETED']))) + '] '
+					+ '[' + ','.join([here.getZMILangStr(x) for x in ['STATE_NEW','STATE_MODIFIED','STATE_DELETED'] if childNode.inObjStates(x,request)]) + '] '
 					+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt')))
 					+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid'))
 					+ '\n'
@@ -328,15 +328,15 @@
 			dummy0 python:mbody.append(''
 				+ 'Committing your changes was rejected.\n'
 				+ '%s: \t'%zmscontext.display_type(request)
-				+ '>> '.join(map(lambda x:x.getTitlealt(request),zmscontext.breadcrumbs_obj_path())) + '\n'
+				+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 				+ 'URL: \t%s/manage\n\n'%zmscontext.absolute_url()
 			)">
 	</tal:block>
-	<tal:block tal:repeat="childNode python:filter(lambda x:x.isObjModified(request),[zmscontext]+zmscontext.getChildNodes(request))">
+	<tal:block tal:repeat="childNode python:[x for x in [zmscontext]+zmscontext.getChildNodes(request) if x.isObjModified(request)]">
 		<tal:block tal:define="global
 				dummy0 python:mbody.append(''
 					+ '- %s '%(zmscontext.display_type(request))
-					+ '[' + ','.join(map(lambda x:here.getZMILangStr(x),filter(lambda x: childNode.inObjStates(x,request),['STATE_NEW','STATE_MODIFIED','STATE_DELETED']))) + '] '
+					+ '[' + ','.join([here.getZMILangStr(x) for x in ['STATE_NEW','STATE_MODIFIED','STATE_DELETED'] if childNode.inObjStates(x,request)]) + '] '
 					+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt')))
 					+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid'))
 					+ '\n'

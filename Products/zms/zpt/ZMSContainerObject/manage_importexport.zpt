@@ -30,9 +30,10 @@ function onExportFormatChange(el) {
 	tal:on-error="structure python:'<div class=\042alert alert-danger\042>ERROR Missing ZMS User Roles or Filter Misconfiguration</div>'"
 	tal:define="global
 		filterIds python:here.getFilterIds();
-		filters python:filter(lambda x: here.meta_id in x['meta_types']
+		filters python:[x for x in [here.getFilter(x) for x in filterIds] 
+				if here.meta_id in x['meta_types']
 				and (request['AUTHENTICATED_USER'].has_role('Manager') or len(here.intersection_list(here.getUserRoles(request['AUTHENTICATED_USER']),x.get('roles',[])))>0)
-				,map(lambda x: here.getFilter(x), filterIds));
+				];
 		importFilters python:[x for x in filters if len(here.intersection_list([x['format']],['import'])) > 0];
 		exportFilters python:[x for x in filters if len(here.intersection_list([x['format']],['export','XML','XHTML','myXML'])) > 0]">
 

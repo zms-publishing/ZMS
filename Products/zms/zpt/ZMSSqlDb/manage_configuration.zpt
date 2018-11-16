@@ -434,7 +434,7 @@ function mms_normalize_rows(el_tbody) {
 									</tr>
 									<tal:block tal:define="global
 											ts0 python:[x for x in mmsentity['columns'] if x['id'].upper()!=mmsfk.upper()];
-											ts1 python:map(lambda x:{'fk':x['id']},ts0);
+											ts1 python:[{'fk':x['id']} for x in ts0];
 											ts python:column.get('multimultiselect',{}).get('tables',ts1);">
 										<tal:block tal:repeat="ti python:range(len(ts))">
 											<tr tal:define="global t python:ts[ti]">

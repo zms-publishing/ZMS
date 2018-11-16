@@ -12,7 +12,7 @@
 		roleDefs python:here.getSecurityRoles();
 		userNames python:here.sort_list(userDefs.keys());
 		valid_roles python:here.difference_list(here.getUserDefinedRoles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']);
-		langs_optpl python:map(lambda x: [x,here.getLanguageLabel(x)],here.getLanguages(request));
+		langs_optpl python:[[x,here.getLanguageLabel(x)] for x in here.getLanguages(request)];
 		roles_optpl python:[['ZMSAdministrator',here.getZMILangStr('ROLE_ZMSADMINISTRATOR')],
 												['ZMSEditor',here.getZMILangStr('ROLE_ZMSEDITOR')],
 												['ZMSAuthor',here.getZMILangStr('ROLE_ZMSAUTHOR')],
@@ -20,13 +20,13 @@
 												['ZMSUserAdministrator',here.getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')],
 												];
 		l python:[];
-		dummy0 python:map(lambda x:l.extend(x.get('nodes',{}).keys()),userDefs.values());
-		dummy0 python:map(lambda x:l.extend(roleDefs[x].keys()),roleDefs.keys());
+		dummy0 python:[l.extend(list(x.get('nodes',{}).keys())) for x in userDefs.values()];
+		dummy0 python:[l.extend(list(roleDefs[x].keys())) for x in roleDefs];
 		d python:{};
-		dummy0 python:map(lambda x:here.operator_setitem(d,x,1),l);
-		nodes python:d.keys();">
+		dummy0 python:[here.operator_setitem(d,x,1) for x in l];
+		nodes python:list(d.keys());">
 <tal:block tal:repeat="role valid_roles">
-	<tal:block tal:condition="python:role not in map(lambda x:x[0],roles_optpl)">
+	<tal:block tal:condition="python:role not in [x[0] for x in roles_optpl]">
 		<tal:block tal:define="dummy0 python:roles_optpl.append([role,role])"></tal:block>
 	</tal:block>
 </tal:block>
@@ -54,16 +54,16 @@
 		</td>
 		<td>
 			<ul style="list-style-type: none;padding-left:none;">
-				<tal:block tal:repeat="roleName python:filter(lambda x:node in roleDefs[x].keys(),roleDefs.keys())">
+				<tal:block tal:repeat="roleName python:[x for x in roleDefs if node in roleDefs[x]]">
 					<li tal:define="nodevalue python:roleDefs[roleName][node]">
 						<a tal:attributes="href python:'manage_users?id=%s'%roleName">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-group',title=here.getZMILangStr('ATTR_ROLES'))"></tal:block>
 							<tal:block tal:content="roleName">the role-name</tal:block>
 						</a>
-						(<tal:block tal:content="python:', '.join(map(lambda x:here.getRoleName(x),nodevalue['roles']))">the roles</tal:block>)
+						(<tal:block tal:content="python:', '.join([here.getRoleName(x) for x in nodevalue['roles']])">the roles</tal:block>)
 					</li>
 				</tal:block>
-				<tal:block tal:repeat="userName python:filter(lambda x:node in userDefs[x].get('nodes',{}).keys(),userDefs.keys())">
+				<tal:block tal:repeat="userName python:[x for x in userDefs if node in userDefs[x].get('nodes',{})])">
 					<li tal:define="nodevalue python:userDefs[userName]['nodes'][node]">
 						<a tal:attributes="href python:'manage_users?id=%s'%userName">
 							<tal:block tal:content="structure python:here.zmi_icon(name='icon-user',title=here.getZMILangStr('ATTR_USER'))"></tal:block>
@@ -71,9 +71,9 @@
 						</a>
 						(
 						<tal:block tal:condition="multilang">
-							<tal:block tal:content="python:','.join(map(lambda x:here.getLanguageLabel(x),nodevalue.get('langs',[])))">the languages</tal:block> |
+							<tal:block tal:content="python:','.join([here.getLanguageLabel(x) for x in nodevalue.get('langs',[])])">the languages</tal:block> |
 						</tal:block>
-						<tal:block tal:content="python:', '.join(map(lambda x:here.getRoleName(x),here.difference_list(nodevalue.get('roles',[]),['Authenticated'])))">the roles</tal:block>
+						<tal:block tal:content="python:', '.join([here.getRoleName(x) for x in here.difference_list(nodevalue.get('roles',[]),['Authenticated'])])">the roles</tal:block>
 						)
 					</li>
 				</tal:block>

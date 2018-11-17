@@ -201,7 +201,7 @@ class ZMSExtensions(object):
         except:
           confres = None
         if confres:
-          confxml = filter(lambda ob: ob.endswith('.xml') or ob.endswith('.zip'), confres)
+          confxml = [ob for ob in confres if ob.endswith('.xml') or ob.endswith('.zip')]
           if len(confxml) > 0:
             self.pkg_confs.append(confxml)
           else:
@@ -224,9 +224,9 @@ class ZMSExtensions(object):
     """
       Return all zms3.* extensions
     """
-    pkg = filter(lambda x: x.startswith('zms3.'), self.pkg_names)
+    pkg = [x for x in self.pkg_names if x.startswith('zms3.')]
     if prj is not None:
-      pkg = filter(lambda x: x not in self.getAllProjspecs(prj), pkg)
+      pkg = [x for x in pkg if x not in self.getAllProjspecs(prj)]
     return pkg
 
   def getAllThemes(self, prj=None):
@@ -252,7 +252,7 @@ class ZMSExtensions(object):
       Return TRUE if given theme is available as Filesystem Directory View in root folder of ZMS
       otherwise FALSE
     """
-    if ext in map(lambda x: x.getId(), context.getHome().objectValues('Filesystem Directory View')):
+    if ext in [x.getId() for x in context.getHome().objectValues('Filesystem Directory View')]:
       return True
     else:
       return False
@@ -278,14 +278,14 @@ class ZMSExtensions(object):
     """
       Return all Products.* extensions
     """
-    pkg = filter(lambda x: x.startswith('Products.'), self.pkg_names)
+    pkg = [x for x in self.pkg_names if x.startswith('Products.')]
     return pkg
   
   def getAllOthers(self):
     """
       Return all other extensions
     """
-    pkg = filter(lambda x: not x.startswith('zms3.') and not x.startswith('Products.') and x not in self.getAllFramework(), self.pkg_names)
+    pkg = [x for x in self.pkg_names if not x.startswith('zms3.') and not x.startswith('Products.') and x not in self.getAllFramework()]
     return pkg
 
   def getAllProjspecs(self, prj=None):
@@ -293,7 +293,7 @@ class ZMSExtensions(object):
       Return all project specific extensions (define parameter ZMS.Project at ZMS > System > Miscelleanous)
     """
     if prj is not None:
-      pkg = filter(lambda x: x.startswith('zms3.%s' % prj.lower()), self.pkg_names)
+      pkg = [x for x in self.pkg_names if x.startswith('zms3.%s' % prj.lower())]
       return pkg
     return []
 
@@ -301,7 +301,7 @@ class ZMSExtensions(object):
     """
       Return all framework specific packages
     """
-    pkg = filter(lambda x: x.startswith('Zope') or x.startswith('ZODB') or x.find('zope') >= 0, self.pkg_names)
+    pkg = [x for x in self.pkg_names if x.startswith('Zope') or x.startswith('ZODB') or x.find('zope') >= 0]
     return pkg
 
   def isEnabled(self, ext=None):
@@ -356,7 +356,7 @@ class ZMSExtensions(object):
     """
     if ext in self.pkg_names:
       files = self.pkg_confs[self.pkg_names.index(ext)]
-      files = filter(lambda filename: not filename.endswith('.example.xml') and not filename.endswith('.example.zip'), files)
+      files = [filename for filename in files if not filename.endswith('.example.xml') and not filename.endswith('.example.zip')]
       return files
     else:
       return None
@@ -375,8 +375,8 @@ class ZMSExtensions(object):
           # if ZMSActions are included but no Provider available - create it
           if context is not None:
             if ('.metacmd.' in f) \
-              and ('ZMSMetacmdProvider' not in map(lambda x: x.meta_type, context.objectValues())) \
-              and ('ZMSMetacmdProviderAcquired' not in map(lambda x: x.meta_type, context.objectValues())):
+              and ('ZMSMetacmdProvider' not in [x.meta_type fox x in context.objectValues()]) \
+              and ('ZMSMetacmdProviderAcquired' not in [x.meta_type fox x in context.objectValues()]):
               context.REQUEST.set('meta_type', 'ZMSMetacmdProvider')
               context.manage_customizeSystem('Add', 'Manager', context.REQUEST['lang'], context.REQUEST)
         return filenames

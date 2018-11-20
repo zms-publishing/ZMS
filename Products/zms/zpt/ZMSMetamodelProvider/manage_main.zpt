@@ -316,18 +316,16 @@
 	<!-- BO Usage -->
 	<div class="meta-usage" tal:define="l python:[]">
 		<tal:block tal:repeat="metaObj2 metaObjs">
-			<tal:block tal:define="global objAttrIds python:here.getMetaobjAttrIds(metaObj2['id'])">
-				<tal:block tal:repeat="objAttrId objAttrIds">
-					<tal:block tal:define="global objAttr python:here.getMetaobjAttr(metaObj2['id'],objAttrId); isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None])">
-						<tal:block tal:condition="python:(objAttr['type']==metaObj['id']) or \
-								(objAttr['type']=='*' and metaObj['id'] in objAttr['keys'])">
-							<strong tal:condition="python:len(l)==0">Usage:</strong>
-							<tal:block tal:condition="not:python:len(l)==0">,</tal:block>
-							<a tal:attributes="href python:'%s?lang=%s&id=%s'%(request['URL'],request['lang'],metaObj2['id']); title python:'%s (%s)'%(metaObj2['name'],objAttr['name'])" target="_blank" tal:define="dummy0 python:l.append(1)">
-								<tal:block tal:content="structure python:here.display_icon(request,metaObj2['id'],zpt=True)">object-icon</tal:block>
-								<tal:block tal:content="python:'%s.%s'%(metaObj2['id'],objAttr['id'])">object-name.attribute-name</tal:block>
-							</a>
-						</tal:block>
+			<tal:block tal:define="objAttrs python:here.getMetaobjAttrs(metaObj2['id'])">
+				<tal:block tal:repeat="objAttr objAttrs">
+					<tal:block tal:condition="python:(objAttr['type']==metaObj['id']) or \
+														(objAttr['type']=='*' and metaObj['id'] in objAttr['keys'])">
+						<strong tal:condition="python:len(l)==0">Usage:</strong>
+						<tal:block tal:condition="not:python:len(l)==0">,</tal:block>
+						<a tal:attributes="href python:'%s?lang=%s&id=%s'%(request['URL'],request['lang'],metaObj2['id']); title python:'%s (%s)'%(metaObj2['name'],objAttr['name'])" target="_blank" tal:define="dummy0 python:l.append(1)">
+							<tal:block tal:content="structure python:here.display_icon(request,metaObj2['id'],zpt=True)">object-icon</tal:block>
+							<tal:block tal:content="python:'%s.%s'%(metaObj2['id'],objAttr['id'])">object-name.attribute-name</tal:block>
+						</a>
 					</tal:block>
 				</tal:block>
 			</tal:block>

@@ -7,14 +7,14 @@
 		meta_id request/id;
 		res python:here.getDocumentElement().getTreeNodes(request,meta_id); 
 		metaObjIds python:here.getMetaobjIds(); 
-		meta_types python:filter( lambda x: x not in ['ZMS'], metaObjIds);
+		meta_types python:[x for x in metaObjIds if x not in ['ZMS']];
 		metaObjAttrIds python:here.getMetaobjAttrIds(request['id']);
-		attrIds python:filter(lambda x: x in metaObjAttrIds,here.getObjAttrs(request['id']).keys());
-		subObjectIds python:map(lambda x: x['id'],filter(lambda x: x['type'] in meta_types+['*'],here.getMetaobjAttrs(meta_id)));
+		attrIds python:[x for x in here.getObjAttrs(request['id']) if x in metaObjAttrIds];
+		subObjectIds python:[x['id'] for x in here.getMetaobjAttrs(meta_id) if x['type'] in meta_types+['*']];
 		stat1 python:{};
-		dummy0 python:map(lambda x:here.operator_setitem(stat1,x,[]),attrIds+subObjectIds);
+		dummy0 python:[here.operator_setitem(stat1,x,[]) for x in attrIds+subObjectIds];
 		stat0 python:{};
-		dummy0 python:map(lambda x:here.operator_setitem(stat0,x,[]),attrIds+subObjectIds)">
+		dummy0 python:[here.operator_setitem(stat0,x,[]) for x in attrIds+subObjectIds]">
 
 	<tal:block tal:repeat="ob res"
 		><tal:block tal:define="global statrec python:[{'abs_url':ob.absolute_url(),'titlealt':ob.getTitlealt(request)}]"

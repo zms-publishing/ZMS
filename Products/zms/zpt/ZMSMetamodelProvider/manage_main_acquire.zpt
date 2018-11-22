@@ -5,15 +5,15 @@
 
 <tal:block tal:define="global
 		metaObjIds python:here.getMetaobjIds();
-		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds);
-		metaObjPackages python:here.sort_list(standard.distinct_list(map(lambda x: x.get('package'), metaObjs)));
+		metaObjs python:[here.getMetaobj(x) for x in metaObjIds];
+		metaObjPackages python:here.sort_list(standard.distinct_list([x.get('package') for x in metaObjs]));
 		master python:here.getPortalMaster();
 		masterMetaObjIds python:master.getMetaobjIds();
-		masterMetaObjs python:map(lambda x: master.getMetaobj(x), masterMetaObjIds);
-		masterMetaObjPackages python:here.sort_list(standard.distinct_list(map(lambda x: x.get('package'), masterMetaObjs)));
+		masterMetaObjs python:[master.getMetaobj(x) for x in masterMetaObjIds)];
+		masterMetaObjPackages python:here.sort_list(standard.distinct_list([x.get('package') for x in masterMetaObjs]));
 		acquireObjs python:[]">
 
-<tal:block tal:repeat="metaObjId python:filter(lambda x: x not in metaObjIds or not here.getMetaobj(x).get('acquired'),masterMetaObjIds)">
+<tal:block tal:repeat="metaObjId python:[x for x in masterMetaObjIds if x not in metaObjIds or not here.getMetaobj(x).get('acquired')]">
 	<tal:block tal:define="global metaObj python:master.getMetaobj(metaObjId)">
 		<tal:block tal:define="global dummy0 python:acquireObjs.append(
 				(['',metaObj['package']+'.'][int(len(metaObj['package'])>0)]+metaObj['id']

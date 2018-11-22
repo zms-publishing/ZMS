@@ -12,10 +12,10 @@
 
 <tal:block tal:define="global
 			records python:here.attr(metaObjAttrIds[0]);
-			metaObjAttrs python:filter(lambda x:
+			metaObjAttrs python:[x for x in metaObj['attrs'][1:] if 
 				not x['id'].startswith('_')
 				and x['type'] in here.metaobj_manager.valid_types+metaObjIds+['delimiter','hint','interface']
-				,metaObj['attrs'][1:])">
+				]">
 
 <form class="form-horizontal" id="form0" name="form0" action="manage_changeRecordSet" method="post" enctype="multipart/form-data">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value python:request['lang']">
@@ -85,8 +85,8 @@
 								fkMetaObjIdId python:here.getMetaobjAttrIdentifierId(fkContainer.meta_id)">
 							<tal:block tal:repeat="fkMetaObjRecord fkMetaObjRecordSet">
 								<tal:block tal:define="global
-										fkMetaObjAttrs python:filter(lambda x:x['type']=='string' and fkMetaObjRecord.get(x['id'],'')!='',fkMetaObj['attrs']);
-										fkSummary python:', '.join(map(lambda x:str(fkMetaObjRecord.get(x['id'])),fkMetaObjAttrs))">
+										fkMetaObjAttrs python:[x for x in fkMetaObj['attrs'] if x['type']=='string' and fkMetaObjRecord.get(x['id'],'')!=''];
+										fkSummary python:', '.join([str(fkMetaObjRecord.get(x['id'])) for x in fkMetaObjAttrs])">
 									<tal:block tal:define="global dummy0 python:options.append((standard.string_maxlen(fkSummary,50),fkMetaObjRecord[fkMetaObjIdId]))"></tal:block>
 								</tal:block>
 							</tal:block>
@@ -121,10 +121,10 @@
 </form>
 
 	<tal:block tal:condition="not:python:action=='insert'">
-		<tal:block tal:repeat="identifier python:map(lambda x: x['id'],filter(lambda x:x['type']=='identifier',metaObjAttrs))">
-			<tal:block tal:repeat="metaObj python:filter(lambda x:x['type']=='ZMSRecordSet',map(lambda x:here.getMetaobj(x),here.getMetaobjIds()))">
-				<tal:block tal:repeat="metaObjAttr python:filter(lambda x:x['type']==meta_id,metaObj['attrs'])">
-					<tal:block tal:repeat="node python:filter(lambda x:x.meta_id==metaObj['id'],here.getParentNode().objectValues(['ZMSCustom']))" tal:define="global
+		<tal:block tal:repeat="identifier python:[x['id'] for x in metaObjAttrs if x['type']=='identifier']">
+			<tal:block tal:repeat="metaObj python:[x for x in [here.getMetaobj(x) for x in here.getMetaobjIds()] if x['type']=='ZMSRecordSet']">
+				<tal:block tal:repeat="metaObjAttr python:[x for x in metaObj['attrs'] if x['type']==meta_id]">
+					<tal:block tal:repeat="node python:[x for x in here.getParentNode().objectValues(['ZMSCustom']) if x.meta_id==metaObj['id']]" tal:define="global
 								elName python:metaObjAttr['id'];
 								elLabel python:metaObj['name']">
 						<div class="form-horizontal">
@@ -140,13 +140,13 @@
 						<div class="accordion-body collapse in" tal:attributes="id python:'%s_grid'%metaObjAttr['id']">
 							<div class="accordion-inner" tal:define="global 
 									records python:node.attr(metaObj['attrs'][0]['id']);
-									filtered_records python:filter(lambda x:x[metaObjAttr['id']]==row[identifier],records);
-									metaObjAttrs python:filter(lambda x:
+									filtered_records python:[x for x in records if x[metaObjAttr['id']]==row[identifier]];
+									metaObjAttrs python:[x for x in metaObj['attrs'][1:] if 
 											x['id'] not in ['__sort_id']
 											and x['custom']
 											and x['type'] in here.metaobj_manager.valid_types
 											and not x['type'] in ['password']
-											,metaObj['attrs'][1:])">
+											]">
 								<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
 										metaObjAttrIds=here.getMetaobjAttrIds(metaObj['id']),
 										metaObjAttrs=metaObjAttrs,

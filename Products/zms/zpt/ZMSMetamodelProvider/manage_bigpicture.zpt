@@ -8,15 +8,15 @@
 <tal:block tal:define="global
 		packageId request/id;
 		metaObjIds python:here.getMetaobjIds();
-		metaObjs python:map(lambda x: here.getMetaobj(x), metaObjIds)">
+		metaObjs python:[here.getMetaobj(x) for x in metaObjIds]">
 	<legend tal:content="python:'BigPicture::LogicalView::%s'%packageId">the legend</legend>
 	<ol class="objlist">
-		<li tal:repeat="metaObj python:filter(lambda x:x['package']==packageId,metaObjs)">
+		<li tal:repeat="metaObj python:[x for x in metaObjs if x['package']==packageId]">
 			<a tal:attributes="href python:'#%s'%(metaObj.get('id',''))" tal:content="metaObj/name">the name</a>
 		</li>
 	</ol>
 
-	<tal:block tal:repeat="metaObj python:filter(lambda x:x['package']==packageId,metaObjs)">
+	<tal:block tal:repeat="metaObj python:[x for x in metaObjs if x['package']==packageId]">
 		<p tal:content="repeat/metaObj/number">1</p>
 		<div class="box" tal:attributes="id metaObj/id">
 			<div class="objtype" tal:content="metaObj/type">the type</div>
@@ -51,7 +51,7 @@
 							&nbsp;
 						</td>
 						<td>
-							<div class="attr" tal:condition="python:metaObjAttr['type'] in ['*']" tal:content="structure python:'<br/>'.join(map(lambda x:here.display_type(request,x),metaObjAttr['keys']))"></div>
+							<div class="attr" tal:condition="python:metaObjAttr['type'] in ['*']" tal:content="structure python:'<br/>'.join([here.display_type(request,x) for x in metaObjAttr['keys']])"></div>
 							<div class="attr" tal:condition="python:metaObjAttr['type'] in metaObjIds" tal:content="python:metaObjAttr['type']"></div>
 						</td>
 						</tr>

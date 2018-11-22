@@ -1220,10 +1220,10 @@ class ZMSMetaobjManager(object):
             immediately = False
             xmlfile = None
             temp_folder = getattr(self,'temp_folder',None)
+            temp_id = self.id + '_' + REQUEST['AUTHENTICATED_USER'].getId() + '.xml'
             if temp_folder is None:
               immediately = True
             elif REQUEST.get('temp_import_file_id')==temp_id and temp_id in temp_folder.objectIds():
-              temp_id = self.id + '_' + REQUEST['AUTHENTICATED_USER'].getId() + '.xml'
               if temp_id in temp_folder.objectIds():
                 filename = str(getattr( temp_folder, temp_id).title)
                 xmlfile = str(getattr( temp_folder, temp_id).data)

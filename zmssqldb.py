@@ -333,12 +333,18 @@ class ZMSSqlDb(ZMSCustom):
     @type params: C{tuple}
     """
     def substitute_params(self, sql, params=()):
+      nsl = [int,float]
+      try:
+        from psycopg2.extensions import Binary
+        nsl.append(Binary)
+      except:
+        pass
       sql = sql.replace('?','%s')
       l = []
       for i in list(params):
         if i is None:
           i = "NULL"
-        elif type(i) in [int,float]:
+        elif type(i) in nsl:
           i = str(i)
         else:
           i = str(i)

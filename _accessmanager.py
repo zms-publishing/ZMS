@@ -790,8 +790,7 @@ class AccessManager(AccessableContainer):
           # User ID
           _login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
           _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
-          if _uid_attr != _login_attr:
-            user['details'] = filter(lambda x:x['name'] not in [_uid_attr],user['details'])
+          user['details'] = [x for x in user['details'] if not x['label'].startswith('_')]
       return user
 
 

@@ -132,8 +132,9 @@ def set_response_headers(fn, mt='application/octet-stream', size=None, request=N
   """
   RESPONSE = request.RESPONSE
   RESPONSE.setHeader('Content-Type', mt)
-  if request.get('HTTP_USER_AGENT','').find('Android') < 0:
-    RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%_fileutil.extractFilename(fn))
+  content_disposition = 'filename="%s";'%_fileutil.extractFilename(fn)
+  content_disposition = content_disposition + REQUEST.get('ZMS_ADDITIONAL_CONTENT_DISPOSITION','inline;')
+  RESPONSE.setHeader('Content-Disposition',content_disposition)
   if size:
     RESPONSE.setHeader('Content-Length',size)
   RESPONSE.setHeader('Accept-Ranges','bytes')

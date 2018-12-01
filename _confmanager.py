@@ -51,6 +51,8 @@ import _sequence
 import zopeutil
 import zmslog
 
+UNINHERITED_PROPERTIES = ['ASP','Portal']
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Read system-configuration from $ZMS_HOME/etc/zms.conf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -516,7 +518,9 @@ class ConfManager(
         d = d.keys()
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
-          d.extend(filter(lambda x:x not in d,portalMaster.getConfProperties(prefix,inherited,REQUEST)))
+          l = portalMaster.getConfProperties(prefix,inherited,REQUEST)
+          l = [x for x in l if x not in d and x[:x.find('.')] not in UNINHERITED_PROPERTIES]
+          d.extend(l)
       return d
 
 
@@ -576,7 +580,7 @@ class ConfManager(
       confdict = self.getConfProperties()
       if confdict.has_key(key):
         value = confdict.get(key)
-      elif key is not None and not key.startswith('ASP.') and not key.startswith('Portal.') and not key in ['UniBE.Alias', 'UniBE.Server']:
+      elif key is not None and not key[:key.find('.')] in UNINHERITED_PROPERTIES and not key in ['UniBE.Alias', 'UniBE.Server']:
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           value = portalMaster.getConfProperty( key)

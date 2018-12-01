@@ -714,8 +714,8 @@ class AccessManager(AccessableContainer):
           if _uid_attr != _login_attr:
             uid = user[_uid_attr]
         elif plugin is not None and plugin.meta_type == 'ZODB User Manager':
-          _uid_attr = login_name
-          uid = plugin.getUserIdForLogin(_uid_attr)
+          _uid_attr = login_attr
+          uid = plugin.getUserIdForLogin(login_name)
         if uid is not None:
           d['user_id_'] = uid
           try:
@@ -789,8 +789,7 @@ class AccessManager(AccessableContainer):
           # User ID
           _login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
           _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
-          if _uid_attr != _login_attr:
-            user['details'] = [x for x in user['details'] if x['name'] != _uid_attr]
+          user['details'] = [x for x in user['details'] if not x['label'].startswith('_')]
       return user
 
 

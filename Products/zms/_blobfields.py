@@ -555,21 +555,34 @@ class MyBlob(object):
         access = parent.hasAccess( REQUEST) or parent.getConfProperty( 'ZMS.blobfields.grant_public_access', 0) == 1
         # Hook for custom access rules: return True/False, return 404 (Forbidden) if you want to perform redirect
         if access:
+          # @deprecated
+          # @TODO log deprecation warning
           try:
             name = 'hasCustomAccess'
-            if hasattr(parent, name):
-              v = getattr(parent, name)(context=parent, REQUEST=REQUEST)
-              if isinstance(v, bool):
+            if hasattr(parent,name):
+              v = zopeutil.callObject(getattr(parent,name),parent)
+              if type( v) is bool:
                 access = access and v
-              elif isinstance(v, int) and v == 404:
+              elif type( v) is int and v == 404:
                 return ''
           except:
-            standard.writeError(parent, '[__call__]: can\'t %s'%name)
+            standard.writeError(parent,'[__call__]: can\'t %s'%name)
         # Raise unauthorized error.
         else:
           raise zExceptions.Unauthorized
         
-        if self._if_modified_since_request_handler(REQUEST, RESPONSE):
+        # Set custom response-headers:
+        # - explicit Last-Modified
+        # - explicit Content-Disposition and Content-Type
+        # - addtional Content-Disposition via ZMS_ADDITIONAL_CONTENT_DISPOSITION
+        try:
+          name = 'setCustomResponseHeaders'
+          if hasattr(parent,name):
+            zopeutil.callObject(getattr(parent,name),parent)
+        except:
+          standard.writeError(parent,'[__call__]: can\'t %s'%name)
+        
+        if not RESPONSE.getHeader('Last-Modified') and self._if_modified_since_request_handler(REQUEST, RESPONSE):
             # we were able to handle this by returning a 304 (not modified) 
             # unfortunately, because the HTTP cache manager uses the cache
             # API, and because 304 (not modified) responses are required to carry the Expires
@@ -579,30 +592,20 @@ class MyBlob(object):
             self.ZCacheable_set(None)
             return ''
         
-        if isinstance(self, MyImage) and self._range_request_handler(REQUEST, RESPONSE):
+        if isinstance(self,MyImage) and self._range_request_handler(REQUEST, RESPONSE):
             # we served a chunk of content in response to a range request.
             return ''
         
-        # if blob-object came from call of py-attribute by path-handler check content-disposition and content-type.
+        # If blob-object came from call of py-attribute by path-handler check content-disposition and content-type.
         if not (RESPONSE.getHeader('Content-Disposition') and RESPONSE.getHeader('Content-Type')):
           standard.set_response_headers(self.getFilename(),self.getContentType(),self.get_size(),REQUEST)
-        else:
-          RESPONSE.setHeader('Content-Size',self.get_size())
-        if REQUEST.get('setLastModifiedHeader',True):
+        if not (RESPONSE.getHeader('Last-Modified')):
           RESPONSE.setHeader('Last-Modified', rfc1123_date(parent._p_mtime))
+        
+        # Cacheable.
         cacheable = not REQUEST.get('preview') == 'preview'
         if cacheable: 
           cacheable = parent.hasPublicAccess()
-        # Hook for custom cacheable rules: return True/False
-        if cacheable:
-          try:
-            name = 'hasCustomPublicAccess'
-            if hasattr(parent, name):
-              v = zopeutil.callObject(getattr(parent,name),parent)
-              if isinstance(v, bool):
-                cacheable = cacheable and v
-          except:
-            standard.writeError(parent, '[__call__]: can\'t %s'%name)
         if not cacheable:
           RESPONSE.setHeader('Expires', '-1')
           RESPONSE.setHeader('Cache-Control', 'no-cache')
@@ -698,7 +701,7 @@ class MyBlob(object):
         qs = standard.qs_append( qs, zms_version_key, REQUEST.get( zms_version_key))
       elif standard.isPreviewRequest( REQUEST):
         qs = standard.qs_append( qs, 'preview', 'preview')
-      href = '/'.join(parent.getPhysicalPath())+rownum+'/'+filename+qs
+      href = parent.absolute_url()+rownum+'/'+filename+qs
       return href
 
 

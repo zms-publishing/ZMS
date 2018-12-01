@@ -144,6 +144,8 @@ def recreateCatalog(self, zcm, lang):
   
   #-- Add Indexes (incl. Columns)
   index_type = zcm.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
+  if attr_id == 'home_id':
+    index_type = 'KeywordIndex'
   for attr_id in zcm._getAttrIds():
     index_name = 'zcat_index_%s'%attr_id
     extra = None
@@ -152,7 +154,7 @@ def recreateCatalog(self, zcm, lang):
       extra.doc_attr = index_name
       extra.index_type = 'Okapi BM25 Rank'
       extra.lexicon_id = 'Lexicon'
-    else:
+    elif index_type != 'KeywordIndex':
       extra = {}
       extra['default_encoding'] = 'utf-8'
       extra['indexed_fields'] = index_name

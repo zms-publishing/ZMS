@@ -579,7 +579,7 @@ class MyBlob:
         # - explicit Content-Disposition and Content-Type
         # - addtional Content-Disposition via ZMS_ADDITIONAL_CONTENT_DISPOSITION
         try:
-          name = 'setCustomResponseHeaders'
+          name = 'getCustomBlobResponseHeaders'
           if hasattr(parent,name):
             zopeutil.callObject(getattr(parent,name),parent)
         except:
@@ -618,11 +618,6 @@ class MyBlob:
           if not REQUEST.get('URL','').startswith( 'https://'):
             RESPONSE.setHeader('Pragma', 'no-cache')
 
-        # Hook for custom RESPONSE-headers
-        name = 'getCustomBlobResponseHeaders' 
-        if hasattr(parent,name):
-          v = getattr(parent,name)(context=parent,REQUEST=REQUEST)
-        
         if self.ZCacheable_isCachingEnabled():
             result = self.ZCacheable_get(default=None)
             if result is not None:

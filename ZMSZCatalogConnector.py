@@ -143,11 +143,11 @@ def recreateCatalog(self, zcm, lang):
     zcatalog.manage_addColumn(index_name)
   
   #-- Add Indexes (incl. Columns)
-  index_type = zcm.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
-  if attr_id == 'home_id':
-    index_type = 'KeywordIndex'
   for attr_id in zcm._getAttrIds():
     index_name = 'zcat_index_%s'%attr_id
+    index_type = zcm.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
+    if attr_id == 'home_id':
+      index_type = 'KeywordIndex'
     extra = None
     if index_type == 'ZCTextIndex':
       extra = Empty()

@@ -787,8 +787,6 @@ class AccessManager(AccessableContainer):
             value = user.get(name,'')
             user['details'].append({'name':name,'label':label,'value':value})
           # User ID
-          _login_attr = self.getConfProperty('LDAPUserFolder.login_attr',ldapUserFldr.getProperty('_login_attr'))
-          _uid_attr = self.getConfProperty('LDAPUserFolder.uid_attr',ldapUserFldr.getProperty('_uid_attr'))
           user['details'] = [x for x in user['details'] if not x['label'].startswith('_')]
       return user
 

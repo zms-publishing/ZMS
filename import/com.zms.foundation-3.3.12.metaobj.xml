@@ -1885,7 +1885,7 @@ return context.str_json(result)
 				var v = $(el).val();
 				var version_nr = v.substr(0,v.indexOf(" "));
 				var version_dt = v.substr(v.indexOf(" ")+1);
-				$(el).prop('selectedIndex',0);
+				// $(el).prop('selectedIndex',0);
 				$.get("ajaxBodyContentObjHistory",{lang:$("input#lang").val(),version_nr:version_nr,revision:1,ts:new Date()},function(data) {
 					var $xml = $( data );
 					var body = $xml.find( "ObjHistory" );

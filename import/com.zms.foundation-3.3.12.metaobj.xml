@@ -1927,6 +1927,8 @@ return context.str_json(result)
 					$('#Content .ZMSLinkElement[id]').each(function (i) {
 						$('[id="' + this.id + '"]').slice(1).remove();
 					});
+					$('#Content .ZMSTeaserContainer,#Content .ZMSTeaserElement').hide();
+					
 				});
 			}
 			// Quickfix2: Load last version initially

@@ -1910,19 +1910,33 @@ return context.str_json(result)
 						+ '<'+'/article>';
 						+ '<'+'/div>';
 					$("div#revision").html(html);
-					showFancybox({
-						'href':'#revision',
-						'title':'r'+v,
-						'autoDimensions':true,
-						'transitionIn':'fade',
-						'transitionOut':'fade',
-						onCleanup:function() {
-							$("div#revision").remove();
-						}
-					});
+					if ($("div#revision .ZMSGraphic").length> 0){
+						showFancybox({
+							'href':'#revision',
+							'title':'r'+v,
+							'autoDimensions':true,
+							'transitionIn':'fade',
+							'transitionOut':'fade',
+							onCleanup:function() {
+								$("div#revision").remove();
+							}
+						});
+					}
 					$("div#revision>div").show();
+					// Quickfix1: Remove ZMSLinkElement doublicates
+					$('#Content .ZMSLinkElement[id]').each(function (i) {
+						$('[id="' + this.id + '"]').slice(1).remove();
+					});
 				});
 			}
+			// Quickfix2: Load last version initially
+			$ZMI.registerReady(function(){
+			var historyselect = $("div#ZMSLib-show_version select");
+			if ( historyselect.children().length > 1 ) {
+				showHistory(historyselect.prop("selectedIndex", 1));
+				historyselect.prop("selectedIndex", 1);
+			}
+			});
 		-->
 		</script>
 		<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang"/>
@@ -2008,7 +2022,7 @@ RESPONSE.redirect(context.objectValues(['ZMS'])[0].getHref2IndexHtml(request,dee
           <item key="id">ZMSLib</item>
           <item key="name">ZMSLib</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">3.1.1</item>
+          <item key="revision">3.1.2</item>
           <item key="type">ZMSLibrary</item>
         </dictionary>
       </item>
@@ -6388,7 +6402,7 @@ return constraints
           <item key="id">com.zms.foundation</item>
           <item key="name">com.zms.foundation</item>
           <item key="package"></item>
-          <item key="revision">3.3.11</item>
+          <item key="revision">3.3.12</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

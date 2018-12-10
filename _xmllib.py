@@ -313,7 +313,7 @@ def xmlOnUnknownEndTag(self, sTagName):
     if cdata is not None and len(cdata) > 0:
       filename = attrs.get('filename')
       content_type = attrs.get('content_type')
-      if content_type.find('text/') == 0:
+      if content_type.startswith('text/') or content_type in ['application/css','application/javascript']:
         data = cdata
       else:
         data = standard.hex2bin(cdata)

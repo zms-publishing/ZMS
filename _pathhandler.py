@@ -305,7 +305,10 @@ class PathHandler:
         # If the object has executable-fields find by name and display data.
         pattern = self.getConfProperty('ZMS.metaobj.attr.publicExecutablePattern','public(.*?)')
         if re.compile(pattern).match(name) and name in self.getMetaobjAttrIds( self.meta_id, types=['method','py']):
-          v = self.attr(name)
+          try:
+            v = self.attr(name)
+          except:
+            v = standard.writeError( self, '[__bobo_traverse__]: name=%s'%name)
           if v is not None:
             if type(v) is str:
               v = self.FileFromData( v, content_type='text/plain;charset=utf-8')

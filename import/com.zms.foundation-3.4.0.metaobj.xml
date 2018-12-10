@@ -3470,16 +3470,11 @@ $(function() {
 			prefix = prefix[prefix.length-1]+".ZMSRecordSet.";
 			console.log(prefix);
 			var $fm = $(this);
-			if (zmiParams['btn']==getZMILangStr('BTN_RESET')) {
-				for (var i in localStorage) {
-					if (i.indexOf(prefix)==0) {
-						localStorage[i] = null;
-					}
+			localStorage[prefix+"btn"] = getZMILangStr('BTN_REFRESH');
+			if (zmiParams['btn']==getZMILangStr('BTN_REFRESH')) {
+				for (var i in zmiParams) {
+					localStorage[prefix+i] = zmiParams[i];
 				}
-			}
-			else if (typeof zmiParams['btn']!='undefined') {
-				var d = {};
-				localStorage[prefix+"btn"] = zmiParams['btn'];
 				$("input:text,input:checkbox,input:radio,select,textarea",$fm).each(function() {
 						var $input = $(this);
 						var n = $input.attr("name");
@@ -3496,10 +3491,18 @@ $(function() {
 						localStorage[prefix+n] = v;
 					});
 			}
+			else if (typeof zmiParams['btn']!='undefined') {
+				for (var i in localStorage) {
+					if (i.indexOf(prefix)==0) {
+						localStorage.removeItem(i);
+					}
+				}
+			}
 
 			var params = {lang:zmiParams['lang'],AUTHENTICATED_USER:$(".authenticated_user").text()};
 			for (var i in localStorage) {
 				if (i.indexOf(prefix)==0) {
+					console.log("i="+i);
 					params[i.substr(prefix.length)] = localStorage[i];
 				}
 			}
@@ -3657,7 +3660,7 @@ tr.inactive * {
 </form>
 </div><!-- .ZMSRecordSet -->
 
-<div id="metaobj_recordset_main_grid"></div>
+<div id="metaobj_recordset_main_grid" tal:content="structure python:here.zmi_icon(name='icon-spinner')"></div>
 
 		</tal:block>
 
@@ -3716,6 +3719,9 @@ tr.inactive * {
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
 zmscontext.zmi_page_request(zmscontext,request)
+url = request['HTTP_REFERER']+'?'
+url = url[:url.find('?')]
+request.set('URL',url)
 
 attr_ids = zmscontext.attr('record_attrs')
 metaObjAttrs =[{'id':'objectset','name':'','type':'html'}] \
@@ -3724,7 +3730,10 @@ metaObjAttrs =[{'id':'objectset','name':'','type':'html'}] \
 		+[{'id':'change_dt','name':zmscontext.getZMILangStr('ON'),'type':'datetime'}]
 metaObjAttrIds = ['__id__']+[x['id'] for x in metaObjAttrs]
 zmscontext.attr('recordSet_Prepare')
-#return str(request['res'])
+# hook: objectset-filter
+for record_meta_id in zmscontext.attr('record_meta_ids'):
+	if 'objectset_interface' in zmscontext.getMetaobjAttrIds(record_meta_id):
+		zmscontext.evalMetaobjAttr('%s.objectset_filter'%record_meta_id)
 
 return zmscontext.metaobj_recordset_main_grid( \
 		metaObjAttrIds=metaObjAttrIds, \

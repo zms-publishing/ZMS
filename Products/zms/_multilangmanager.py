@@ -178,7 +178,7 @@ class MultiLanguageObject(object):
       """
       value = ['*']
       if REQUEST is not None:
-        value = self.getUserLangs(str(REQUEST['AUTHENTICATED_USER']))
+        value = self.getUserLangs(str(REQUEST.get('AUTHENTICATED_USER',None)))
       value = [x for x in [x[0] for x in self.getLangTree()] if ('*' in value) or (x in value)]
       return value
 
@@ -190,7 +190,7 @@ class MultiLanguageObject(object):
       obs = []
       user_langs = ['*']
       if REQUEST is not None:
-        user_langs = self.getUserLangs(REQUEST['AUTHENTICATED_USER'])
+        user_langs = self.getUserLangs(str(REQUEST.get('AUTHENTICATED_USER',None)))
       langs = self.getLangs()
       obs = getDescLangs(self, id, langs)
       if not '*' in user_langs:

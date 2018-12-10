@@ -311,10 +311,10 @@ def xmlOnUnknownEndTag(self, sTagName):
       if cdata is not None and len(cdata) > 0:
         filename = attrs.get('filename')
         content_type = attrs.get('content_type')
-        if content_type.startswith('text/') or content_type in ['application/css','application/javascript']:
-          data = bytes(cdata,'utf-8')
-        else:
+        try:
           data = standard.hex2bin(cdata)
+        except:
+          data = bytes(cdata,'utf-8')
         value['data'] = data
       self.dValueStack.push(value)
 
@@ -538,16 +538,17 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
     # File (Zope-native)
     elif isinstance(value, File):
       tagname = 'data'
+      content_type = value.content_type
       xml.append('\n' + indentlevel * INDENTSTR)
       xml.append('<%s' % tagname)
-      xml.append(' content_type="%s"' % value.content_type)
+      xml.append(' content_type="%s"' % content_type)
       xml.append(' filename="%s"' % value.title)
       xml.append(' type="file"')
       xml.append('>')
-      if value.content_type.find('text/') == 0:
+      if content_type.startswith('text/') or content_type in ['application/css','application/javascript']:
         xml.append('<![CDATA[%s]]>' % str(value.data))
       else:
-        xml.append(standard.bin2hex(str(value.data)))
+        xml.append(standard.bin2hex(value.data))
       xml.append('</%s>' % tagname)
 
     # Dictionaries
@@ -612,7 +613,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
         xml.append(toCdata(self, value, xhtml))
 
   # Return xml.
-  return ''.join(xml)
+  return ''.join([str(x) for x in xml])
 
 
 # ------------------------------------------------------------------------------
@@ -868,10 +869,10 @@ class XmlAttrBuilder(object):
       if sTagName in ['data']:
         filename = attrs.get('filename')
         content_type = attrs.get('content_type')
-        if content_type.find('text/') == 0:
-          data = bytes(cdata,'utf-8')
-        else:
+        try:
           data = standard.hex2bin(cdata)
+        except:
+          data = bytes(cdata,'utf-8')
         file = {'data':data, 'filename':filename, 'content_type':content_type}
         objtype = attrs.get('type')
         item = _blobfields.createBlobField(None, objtype, file)

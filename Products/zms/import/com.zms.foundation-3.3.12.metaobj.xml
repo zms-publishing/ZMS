@@ -1747,7 +1747,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
   # Save.
   for childNode in zmscontext.getChildNodes(request,['ZMSLinkElement']):
     id = childNode.id
-	active = int(request.get('active%s'%id,1))
+    active = int(request.get('active%s'%id,1))
     url = request['url%s'%id].strip()
     title = request['title%s'%id].strip()
     description = request['description%s'%id].strip()

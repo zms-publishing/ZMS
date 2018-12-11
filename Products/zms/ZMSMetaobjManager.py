@@ -79,7 +79,7 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
 # ------------------------------------------------------------------------------
 def effective_ids(self, ids):
   l = []
-  keys = self.model.keys()
+  keys = list(self.model.keys())
   if ids:
     for id in [x for x in ids if x in keys]:
       metaObj = self.getMetaobj( id)
@@ -358,7 +358,7 @@ class ZMSMetaobjManager(object):
             newType = {'Filesystem File':'File', 'Filesystem Image':'Image', 'Filesystem Page Template':'Page Template'}.get(newType,newType)
             newCustom = zopeutil.readData(childNode)
             self.setMetaobjAttr(id,None,newId=newId,newName=newName,newType=newType,newCustom=newCustom)
-      if id in self.model.keys():
+      if id in self.model:
         del self.model[id]
       container = getattr(home,id)
       self.setMetaobj({'id':id,'name':container.title_or_id(),'type':'ZMSLibrary'})

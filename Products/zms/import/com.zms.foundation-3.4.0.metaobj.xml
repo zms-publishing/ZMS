@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<?zms version='ZMS4-4.0.0.dev.REV
-'?>
+<?xml version="1.0" encoding="utf-8"?>
+<?zms version='ZMS3-3.4.2dev (snapshot #)'?>
 <list>
   <item type="dictionary">
     <dictionary>
@@ -195,7 +194,7 @@
 			<col width="2em"/>
 		</colgroup>
 		<tbody tal:define="prefix python:'%s.permalink.'%zmscontext.meta_id;
-			keys python:[x for x in zmscontext.getConfProperties() if x.startswith(prefix)];
+			keys python:filter(lambda x:x.startswith(prefix),zmscontext.getConfProperties().keys());
 			dummy0 python:keys.sort();">
 		<tal:block tal:repeat="key keys">
 		<tr tal:define="id python:key[len(prefix):]">
@@ -288,12 +287,11 @@ request = zmscontext.REQUEST
 if request.has_key('permalink_key__') and request.has_key('permalink_val__'):
   prefix = '%s.permalink.'%zmscontext.meta_id
   # delete all conf-properties
-  for key in zmscontext.getConfProperties():
-    if key.startswith(prefix):
-      zmscontext.delConfProperty(key)
+  for key in filter(lambda x:x.startswith(prefix),zmscontext.getConfProperties()):
+    zmscontext.delConfProperty(key)
   # set new conf-properties
   reqprefix = 'permalink_key_'
-  for reqkey in request.form:
+  for reqkey in request.form.keys():
     if reqkey.find(reqprefix) >= 0:
       id = reqkey[len(reqprefix):]
       k = request.get('permalink_key_%s'%id)
@@ -641,7 +639,32 @@ if request.has_key('permalink_key__') and request.has_key('permalink_val__'):
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="text/plain" filename="default.css" type="file"><![CDATA[b"b'\\ndiv.ZMSFile.none, div.ZMSLinkElement.none \\n\\t{\\n\\tbackground-color: transparent;\\n\\tborder: 2px dashed #eee;\\n\\t}\\n\\ndiv.ZMSFile.floatleft, div.ZMSLinkElement.floatleft \\n\\t{ \\n\\tfloat:left;\\n\\twidth:50%\\n\\t}\\n\\ndiv.ZMSFile.floatright, div.ZMSLinkElement.floatright \\n\\t{ \\n\\tfloat:right;\\n\\twidth:50%\\n\\t}\\n\\ndiv.ZMSFile div.title a:link, div.ZMSFile div.title a:visited, \\ndiv.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited \\n\\t{\\n\\tfont-weight:bold;\\n\\ttext-decoration:none;\\n\\t}\\n'"]]></data>
+                    <data content_type="text/plain" filename="default.css" type="file"><![CDATA[
+div.ZMSFile.none, div.ZMSLinkElement.none 
+	{
+	background-color: transparent;
+	border: 2px dashed #eee;
+	}
+
+div.ZMSFile.floatleft, div.ZMSLinkElement.floatleft 
+	{ 
+	float:left;
+	width:50%
+	}
+
+div.ZMSFile.floatright, div.ZMSLinkElement.floatright 
+	{ 
+	float:right;
+	width:50%
+	}
+
+div.ZMSFile div.title a:link, div.ZMSFile div.title a:visited, 
+div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited 
+	{
+	font-weight:bold;
+	text-decoration:none;
+	}
+]]></data>
                   </item>
                   <item key="default"></item>
                   <item key="id">f_css_defaults</item>
@@ -919,7 +942,7 @@ return ''
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- ZMSFile.standard_html -->
 
-<tal:block tal:define="
+<tal:block tal:define="Std modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br; global 
 		zmscontext options/zmscontext;
 		subclass      python:[zmscontext.meta_id];
 		title         python:zmscontext.attr('title');
@@ -949,7 +972,7 @@ return ''
 					(<span tal:content="python:file.getDataSizeStr()">The data-size string</span>)
 				</div>
 				<div tal:condition="python:title and title!=titlealt" tal:content="structure title" class="text">The title</div>
-				<div tal:condition="python:abstract" tal:content="structure python:abstract.replace('\n','%3Cbr/>')" class="description">The abstract</div>
+				<div tal:condition="python:abstract" tal:content="structure python:newline_to_br(abstract)" class="description">The abstract</div>
 			</tal:block>
 			<tal:block tal:condition="python:not (file)" tal:content="python:zmscontext.getZMILangStr('ATTR_NONE')">
 				None
@@ -1273,7 +1296,103 @@ return ''
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="text/plain" filename="default.css" type="file"><![CDATA[b"b'\\n/*--------- .ZMSGraphic --------------*/\\na.fancybox img {\\n\\tpadding:1px 1px 21px 1px;\\n\\tbackground:transparent url(/++resource++zms_/img/zoom.gif) bottom right no-repeat;\\n\\tbackground-color:transparent;\\n}\\ndiv.ZMSGraphic {\\n\\tbackground-color: transparent;\\n\\tmargin: 1em 0;\\n}\\n.zmi div.ZMSGraphic {\\n\\tmargin:0;\\n}\\ndiv.ZMSGraphic.left {\\n\\ttext-align:left;\\n}\\ndiv.ZMSGraphic.right {\\n\\ttext-align:right;\\n}\\ndiv.ZMSGraphic.center {\\n\\ttext-align:center;\\n}\\ndiv.ZMSGraphic.floatleft {\\n\\tfloat:left;\\n\\tmargin-right:2em;\\n}\\ndiv.ZMSGraphic.floatright {\\n\\tfloat:right;\\n\\tmargin-left:2em;\\n}\\ndiv.ZMSGraphic .alignleft {\\n\\tmargin-right:10px;\\n}\\ndiv.ZMSGraphic.center div.graphic {\\n\\ttext-align:center;\\n\\tmargin:0px auto;\\n}\\ndiv.graphic {\\n\\tmax-width:100% !important;\\n}\\ndiv.graphic.alignleft {\\n\\tfloat:left;\\n\\ttext-align:right;\\n}\\ndiv.graphic.alignright {\\n\\tfloat:right;\\n\\ttext-align:right;\\n}\\ndiv.ZMSGraphic div.text {\\n\\tpadding: 4px;\\n}\\n.ZMSGraphic .text {\\n\\tbackground-color:transparent;\\n\\tpadding:.5em 1em 0em 1em;\\n\\tfont-size:smaller;\\n\\tfont-style:italic;\\n}\\n.ZMSGraphic .graphic {\\n\\tmargin-bottom: 7px;\\n}\\n.ZMSGraphic.center div.graphic  {\\n\\tmargin:0 auto\\n}\\n.ZMSGraphic.left .graphic.alignleft {\\n\\tfloat:left;\\n\\tmargin-right:15px;\\n}\\n.ZMSGraphic.left .text,\\n.ZMSGraphic.right .graphic,\\n.ZMSGraphic.right .text {\\n\\twidth: auto !important;\\n}\\n/*-- ## FF Patch ## --*/\\ndiv.ZMSGraphic.right div.graphic {\\n\\twidth:100% !important;\\n}\\ndiv.ZMSGraphic.right div.graphic img {\\n\\tdisplay:inline !important;\\n}\\na.zoom img.zoom,\\na.superzoom img.superzoom {\\n\\twidth: 26px;\\n\\theight: 21px;\\n\\tbackground-position:top right;\\n\\tbackground-repeat:no-repeat;\\n\\tmargin:0px;\\n\\tpadding:0px;\\n}\\na.zoom img.zoom {\\n\\tbackground-image: url(/++resource++zms_/img/zoom.gif);\\n}\\na.superzoom img.superzoom {\\n\\tbackground-image: url(/++resource++zms_/img/superzoom.gif);\\n}\\n/*--------- /.ZMSGraphic --------------*/\\n'"]]></data>
+                    <data content_type="text/plain" filename="default.css" type="file"><![CDATA[
+/*--------- .ZMSGraphic --------------*/
+a.fancybox img {
+	padding:1px 1px 21px 1px;
+	background:transparent url(/++resource++zms_/img/zoom.gif) bottom right no-repeat;
+	background-color:transparent;
+}
+div.ZMSGraphic {
+	background-color: transparent;
+	margin: 1em 0;
+}
+.zmi div.ZMSGraphic {
+	margin:0;
+}
+div.ZMSGraphic.left {
+	text-align:left;
+}
+div.ZMSGraphic.right {
+	text-align:right;
+}
+div.ZMSGraphic.center {
+	text-align:center;
+}
+div.ZMSGraphic.floatleft {
+	float:left;
+	margin-right:2em;
+}
+div.ZMSGraphic.floatright {
+	float:right;
+	margin-left:2em;
+}
+div.ZMSGraphic .alignleft {
+	margin-right:10px;
+}
+div.ZMSGraphic.center div.graphic {
+	text-align:center;
+	margin:0px auto;
+}
+div.graphic {
+	max-width:100% !important;
+}
+div.graphic.alignleft {
+	float:left;
+	text-align:right;
+}
+div.graphic.alignright {
+	float:right;
+	text-align:right;
+}
+div.ZMSGraphic div.text {
+	padding: 4px;
+}
+.ZMSGraphic .text {
+	background-color:transparent;
+	padding:.5em 1em 0em 1em;
+	font-size:smaller;
+	font-style:italic;
+}
+.ZMSGraphic .graphic {
+	margin-bottom: 7px;
+}
+.ZMSGraphic.center div.graphic  {
+	margin:0 auto
+}
+.ZMSGraphic.left .graphic.alignleft {
+	float:left;
+	margin-right:15px;
+}
+.ZMSGraphic.left .text,
+.ZMSGraphic.right .graphic,
+.ZMSGraphic.right .text {
+	width: auto !important;
+}
+/*-- ## FF Patch ## --*/
+div.ZMSGraphic.right div.graphic {
+	width:100% !important;
+}
+div.ZMSGraphic.right div.graphic img {
+	display:inline !important;
+}
+a.zoom img.zoom,
+a.superzoom img.superzoom {
+	width: 26px;
+	height: 21px;
+	background-position:top right;
+	background-repeat:no-repeat;
+	margin:0px;
+	padding:0px;
+}
+a.zoom img.zoom {
+	background-image: url(/++resource++zms_/img/zoom.gif);
+}
+a.superzoom img.superzoom {
+	background-image: url(/++resource++zms_/img/superzoom.gif);
+}
+/*--------- /.ZMSGraphic --------------*/
+]]></data>
                   </item>
                   <item key="default"></item>
                   <item key="id">f_css_defaults</item>
@@ -1532,8 +1651,8 @@ return ''
 <tal:block tal:define="global
 		zmscontext options/zmscontext;
 		subclass      python:[zmscontext.meta_id];
-		text          python:zmscontext.getText(request);
-		format        python:zmscontext.attr('format');
+		text          python:unicode(zmscontext.getText(request),'utf-8');
+		format        python:unicode(zmscontext.attr('format'),'utf-8');
 		textclass     python:'text';
 		displaytype   python:zmscontext.dctDisplaytype.get(str(zmscontext.attr('displaytype')),'left');
 		align         python:zmscontext.attr('align');
@@ -1682,9 +1801,7 @@ return ''
 from Products.zms import pilutil
 
 result = {}
-temp_folder = context.operator_getattr(context,'temp_folder',None)
-if temp_folder is None:
-  return context.str_json(result)
+temp_folder = context.temp_folder
 request = context.REQUEST
 base_url = request.get('SERVER_URL')
 session_id = request.get('session_id')
@@ -1811,6 +1928,7 @@ return context.str_json(result)
 						$('[id="' + this.id + '"]').slice(1).remove();
 					});
 					$('#Content .ZMSTeaserContainer,#Content .ZMSTeaserElement').hide();
+					
 				});
 			}
 			// Quickfix2: Load last version initially
@@ -1828,7 +1946,7 @@ return context.str_json(result)
 			<option value="" tal:content="python:'--- %s ---'%zmscontext.getLangStr('TAB_HISTORY',request['lang'])">the history</option>
 			<tal:block tal:define="global 
 					change_history python:zmscontext.attr('change_history');
-					rchange_history python:[change_history[len(change_history)-(x+1)] for x in range(len(change_history))]"
+					rchange_history python:map(lambda x: change_history[len(change_history)-(x+1)], range(len(change_history)))"
 					tal:repeat="history rchange_history">
 				<option
 						tal:attributes="value python:'%i.%i.%i %s'%(history['master_version'],history['major_version'],0,zmscontext.getLangFmtDate(history['version_dt'],request['lang'],'SHORTDATETIME_FMT'))" 
@@ -1906,7 +2024,7 @@ RESPONSE.redirect(context.objectValues(['ZMS'])[0].getHref2IndexHtml(request,dee
           <item key="id">ZMSLib</item>
           <item key="name">ZMSLib</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">3.1.1</item>
+          <item key="revision">3.1.2</item>
           <item key="type">ZMSLibrary</item>
         </dictionary>
       </item>
@@ -1938,7 +2056,9 @@ RESPONSE.redirect(context.objectValues(['ZMS'])[0].getHref2IndexHtml(request,dee
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="text/plain" filename="default.css" type="file"><![CDATA[b"b'div.ZMSLinkContainer {\\n\\tbackground-color: #eee;\\n}'"]]></data>
+                    <data content_type="text/plain" filename="default.css" type="file"><![CDATA[div.ZMSLinkContainer {
+	background-color: #eee;
+}]]></data>
                   </item>
                   <item key="default"></item>
                   <item key="id">f_css_defaults</item>
@@ -2194,7 +2314,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
   </tal:block>
   <div tal:condition="python:len(subclass)>0"
        tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)"
-       tal:content="structure python:''.join([x.renderShort(request) for x in zmscontext.filteredChildNodes(request,'ZMSLinkElement')])">
+       tal:content="structure python:unicode(''.join(map(lambda x:x.renderShort(request),zmscontext.filteredChildNodes(request,'ZMSLinkElement'))),'utf-8')">
     The content
   </div>
 </tal:block>
@@ -2240,7 +2360,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
           <item key="id">ZMSLinkContainer</item>
           <item key="name">ZMSLinkContainer</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">3.1.7</item>
+          <item key="revision">3.1.10</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -2272,7 +2392,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="text/plain" filename="default.css" type="file"><![CDATA[b"b'/* @see ZMSFile.f_css_defaults */'"]]></data>
+                    <data content_type="text/plain" filename="default.css" type="file"><![CDATA[/* @see ZMSFile.f_css_defaults */]]></data>
                   </item>
                   <item key="default"></item>
                   <item key="id">f_css_defaults</item>
@@ -2319,20 +2439,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- Page Template Diagnostics
- Compilation failed
- chameleon.exc.ParseError: The string '--' is not allowed in a comment.
-
- - String:     "--"
- - Filename:   ZMSLinkElement.inferface0
- - Location:   (line 97: col 18)
- - Source:     + '</div><!-- .btn-group -->';
-                          ^^
--->
-';
-                          ^^
--->
-<div id="inferface0" tal:define="global
+                  <item key="custom"><![CDATA[<div id="inferface0" tal:define="global
 		zmscontext options/zmscontext;
 		dummy0 python:request.set('beforeSubmitBtnClick','if ( zmiOnSubmitEventHandler(this)) { ');
 		dummy0 python:request.set('afterSubmitBtnClick',' } ')">
@@ -2869,7 +2976,7 @@ return constraints
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="image/gif" filename="zmsnote_bg.gif" type="file">b'6227343734393436333833393631306430303064303062333030303066636365363466636636626366636461386366636432373466666666666666636365366366636665636330303030373737383832363865643030323131323030653830303030303039303032666530303030666630303030666630303030666632316639303430303030303030303030326330303030303030303064303030643030303330343263623039303439656230346332366131303836616538303131363431663131386164653737386161346235613239623231636261333362636631643738653365643762643761366464326635333030313838663438363330343030336227'</data>
+                    <data content_type="image/gif" filename="zmsnote_bg.gif" type="file">4749463839610d000d00b30000fcce64fcf6bcfcda8cfcd274fffffffcce6cfcfecc000077788268ed00211200e80000009002fe0000ff0000ff0000ff21f90400000000002c000000000d000d0003042cb09049eb04c26a1086ae8011641f118ade778aa4b5a29b21cba33bcf1d78e3ed7bd7a6dd2f5300188f486304003b</data>
                   </item>
                   <item key="default"></item>
                   <item key="id">zmsnote_bg.gif</item>
@@ -3254,7 +3361,7 @@ $(function() {
 			<div class="panel" tal:attributes="class python:' '.join(['panel'])">
 				<h3 class="panel-title">
 					<a tal:attributes="href python:childNode.getHref2IndexHtml(request,deep=False); class python:childNode.meta_id;">
-						<span class="title" tal:content="python:childNode.getTitle(request)">the title</span>
+						<span class="title" tal:content="python:unicode(childNode.getTitle(request),'utf-8')">the title</span>
 					</a>
 				</h3><!-- /.panel-title -->
 			</div><!-- /.panel -->
@@ -3279,7 +3386,163 @@ $(function() {
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="application/javascript" filename="script.zmi.js" type="file"><![CDATA[b'function addZMSCustom(sort_id,custom) {\n\tvar title = $ZMI.icon(\'icon-plus-sign\')+\' \'+getZMILangStr(\'BTN_INSERT\');\n\tvar target = \'manage_addProduct/zms/manage_addzmscustomform\';\n\tvar data = {lang:getZMILang(),preview:\'preview\',id_prefix:\'records\',\'_sort_id:int\':sort_id,custom:custom};\n\t// Show add-dialog.\n\t$ZMI.iframe(target,data,{\n\t\t\tid:\'zmiIframeAddDialog\',\n\t\t\ttitle:title,\n\t\t\twidth:800,\n\t\t\topen:function(event,ui) {\n\t\t\t\t$ZMI.runReady();\n\t\t\t\t$(\'#addInsertBtn\').click(function() {\n\t\t\t\t\t\t\tself.btnClicked = $(this).text();\n\t\t\t\t\t\t\tvar $fm = $(".modal form.form-horizontal");\n\t\t\t\t\t\t\t$("input[name=btn]:hidden",$fm).remove();\n\t\t\t\t\t\t\t$fm.append(\'<input type="hidden" name="btn" value="\'+getZMILangStr(\'BTN_INSERT\')+\'">\');\n\t\t\t\t\t\t\t$fm.submit();\n\t\t\t\t\t\t});\n\t\t\t\t$(\'#addCancelBtn\').click(function() {\n\t\t\t\t\t\t\tzmiModal("hide");\n\t\t\t\t\t\t});\n\t\t\t\tif($(\'#zmiIframeAddDialog .form-control\').length==0) {\n\t\t\t\t\t$(\'#addInsertBtn\').click();\n\t\t\t\t}\n\t\t\t},\n\t\t\tclose:function(event,ui) {\n\t\t\t\t$(\'#manage_addProduct\').remove();\n\t\t\t},\n\t\t\tbuttons:[\n\t\t\t\t\t{id:\'addInsertBtn\', text:getZMILangStr(\'BTN_INSERT\'), name:\'btn\', \'class\':\'btn btn-primary\'},\n\t\t\t\t\t{id:\'addCancelBtn\', text:getZMILangStr(\'BTN_CANCEL\'), name:\'btn\', \'class\':\'btn\'}\n\t\t\t]\n\t\t});\n\treturn false;\n}\n\nfunction delZMSCustom(sender) {\n\tvar $btnGroup = $(sender).parents(".btn-group");\n\t$("input[name=\'qindices:list\']",$btnGroup).prop("checked","checked");\n\tvar i = $("input[name=\'qindices:list\']:checkbox:checked").length;\n\tvar msg = getZMILangStr(\'MSG_CONFIRM_TRASHOBJS\');\n\tmsg = msg.replace("%i",""+i);\n\tmsg += $ZMI.getDescendantLanguages();\n\tb = i > 0 && confirm(msg);\n\tif (b) {\n\t\tvar html = \'\';\n\t\thtml += \'<form class="ui-helper-hidden" id="delZMSCustomForm" method="post" action="manage_deleteObjs">\';\n\t\thtml += \'<input type="hidden" name="lang" value="\'+getZMILang()+\'"/>\';\n\t\t$("input[name=\'qindices:list\']:checkbox:checked").each(function() {\n\t\t\t\thtml += \'<input type="hidden" name="ids:list" value="\'+$(this).val()+\'"/>\';\n\t\t\t});\n\t\thtml += \'</form>\';\n\t\t$("body").append(html);\n\t\t$("#delZMSCustomForm").submit();\n\t}\n\telse {\n\t\t$("input[name=\'qindices:list\']",$btnGroup).prop("checked","");\n\t}\n\treturn false;\n}\n\n$(function() {\n\n\t// always collapse last-modified-accordion\n\t$(".attr_last_modified a.accordion-toggle").each(function(){\n\t\t\tvar data_root = $("body").attr(\'data-root\');\n\t\t\tvar id = $(this).attr(\'href\').substr(1);\n\t\t\tvar key = "ZMS."+data_root+".accordion-body-"+id;\n\t\t\tconsole.log("$ZMILocalStorageAPI.set("+key+",0)");\n\t\t\t$ZMILocalStorageAPI.set(key,\'0\');\n\t\t});\n\n\t$("#tabProperties").hide();\n\t$(".zmi-change-uid").after(\' <a href="javascript:;" onclick="$(\\\'#tabProperties\\\').toggle();">\'+$ZMI.icon(\'icon-cogs\')+\'</a>\');\n\n\t// Relocate buttons.\n\tvar e = $(".controls.save:gt(0)").detach();\n\te.insertAfter(".form-group.coverage");\n\n\t$(".ZMSRecordSet form.form-horizontal").each(function() {\n\t\t\tvar prefix = $("meta[name=physical_path]").attr("content").split("/");\n\t\t\tprefix = prefix[prefix.length-1]+".ZMSRecordSet.";\n\t\t\tconsole.log(prefix);\n\t\t\tvar $fm = $(this);\n\t\t\tlocalStorage[prefix+"btn"] = getZMILangStr(\'BTN_REFRESH\');\n\t\t\tif (zmiParams[\'btn\']==getZMILangStr(\'BTN_REFRESH\')) {\n\t\t\t\tfor (var i in zmiParams) {\n\t\t\t\t\tlocalStorage[prefix+i] = zmiParams[i];\n\t\t\t\t}\n\t\t\t\t$("input:text,input:checkbox,input:radio,select,textarea",$fm).each(function() {\n\t\t\t\t\t\tvar $input = $(this);\n\t\t\t\t\t\tvar n = $input.attr("name");\n\t\t\t\t\t\tvar v = $input.val();\n\t\t\t\t\t\tif ($input.attr("type")=="radio") {\n\t\t\t\t\t\t\tv = $("input[name=\'"+n+"\']:radio:checked").val();\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif ($input.attr("type")=="checkbox") {\n\t\t\t\t\t\t\tv = $input.prop("checked")?v:null;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif ($input[0].nodeName.toUpperCase()=="SELECT") {\n\t\t\t\t\t\t\tv = $("option:selected",$input).val();\n\t\t\t\t\t\t}\n\t\t\t\t\t\tlocalStorage[prefix+n] = v;\n\t\t\t\t\t});\n\t\t\t}\n\t\t\telse if (typeof zmiParams[\'btn\']!=\'undefined\') {\n\t\t\t\tfor (var i in localStorage) {\n\t\t\t\t\tif (i.indexOf(prefix)==0) {\n\t\t\t\t\t\tlocalStorage.removeItem(i);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tvar params = {lang:zmiParams[\'lang\'],AUTHENTICATED_USER:$(".authenticated_user").text()};\n\t\t\tfor (var i in localStorage) {\n\t\t\t\tif (i.indexOf(prefix)==0) {\n\t\t\t\t\tconsole.log("i="+i);\n\t\t\t\t\tparams[i.substr(prefix.length)] = localStorage[i];\n\t\t\t\t}\n\t\t\t}\n\n\t\t\t$.get("publicRecordSetGrid",params,function(data) {\n\t\t\t\t\tvar $grid = $("#metaobj_recordset_main_grid");\n\n\t\t\t\t\t// Assemble grid.\n\t\t\t\t\t$grid.html(data);\n\n\t\t\t\t\t// Assemble info.\n\t\t\t\t\t$(".zmi-info",$grid).each(function() {\n\t\t\t\t\t\t\tif (!$(this).hasClass("active")) {\n\t\t\t\t\t\t\t\t$(this).parents("tr").addClass("inactive");\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t});\n\n\t\t\t\t\t// Assemble update.\n\t\t\t\t\t$(".dropdown-menu a[onclick=\'[[UPDATE]]\']",$grid).each(function() {\n\t\t\t\t\t\t\tvar $btnGroup = $(this).parents(".btn-group");\n\t\t\t\t\t\t\tvar id = $("input[name=\'qindices:list\']",$btnGroup).val();\n\t\t\t\t\t\t\tvar href = id + \'/manage_main?lang=\' + getZMILang();\n\t\t\t\t\t\t\t$(this).attr({href:href,onclick:\'\'});\n\t\t\t\t\t\t});\n\n\t\t\t\t\t// Assemble insert.\n\t\t\t\t\t$(".dropdown-menu .icon-plus",$grid).each(function() {\n\t\t\t\t\t\t\tvar $li = $(this).parents("li");\n\t\t\t\t\t\t\tvar html = \'\'\n\t\t\t\t\t\t\thtml += \'<li class="dropdown-header insert-action"><i class="icon-caret-down"></i> \'+getZMILangStr(\'BTN_INSERT\')+\'</li>\';\n\t\t\t\t\t\t\t$("select[name=\'record_meta_ids:list\'] option:selected").each(function() {\n\t\t\t\t\t\t\t\t\tvar $option = $(this);\n\t\t\t\t\t\t\t\t\thtml += \'<li><a href="javascript:;" onclick="addZMSCustom(0,\\\'\'+$option.text().trim()+\'\\\')">\'+$option.html().replace(/<!--/gi,\'<\').replace(/-->/gi,\'>\')+\'</a></li>\';\n\t\t\t\t\t\t\t\t});\n\t\t\t\t\t\t\thtml += \'<li class="dropdown-header insert-action"><i class="icon-caret-down"></i> \'+getZMILangStr(\'ATTR_ACTION\')+\'</li>\';\n\t\t\t\t\t\t\t$li.replaceWith(html);\n\t\t\t\t\t\t});\n\t\t\t\t});\n\t\t});\n});']]></data>
+                    <data content_type="application/javascript" filename="script.zmi.js" type="file"><![CDATA[function addZMSCustom(sort_id,custom) {
+	var title = $ZMI.icon('icon-plus-sign')+' '+getZMILangStr('BTN_INSERT');
+	var target = 'manage_addProduct/zms/manage_addzmscustomform';
+	var data = {lang:getZMILang(),preview:'preview',id_prefix:'records','_sort_id:int':sort_id,custom:custom};
+	// Show add-dialog.
+	$ZMI.iframe(target,data,{
+			id:'zmiIframeAddDialog',
+			title:title,
+			width:800,
+			open:function(event,ui) {
+				$ZMI.runReady();
+				$('#addInsertBtn').click(function() {
+							self.btnClicked = $(this).text();
+							var $fm = $(".modal form.form-horizontal");
+							$("input[name=btn]:hidden",$fm).remove();
+							$fm.append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_INSERT')+'">');
+							$fm.submit();
+						});
+				$('#addCancelBtn').click(function() {
+							zmiModal("hide");
+						});
+				if($('#zmiIframeAddDialog .form-control').length==0) {
+					$('#addInsertBtn').click();
+				}
+			},
+			close:function(event,ui) {
+				$('#manage_addProduct').remove();
+			},
+			buttons:[
+					{id:'addInsertBtn', text:getZMILangStr('BTN_INSERT'), name:'btn', 'class':'btn btn-primary'},
+					{id:'addCancelBtn', text:getZMILangStr('BTN_CANCEL'), name:'btn', 'class':'btn'}
+			]
+		});
+	return false;
+}
+
+function delZMSCustom(sender) {
+	var $btnGroup = $(sender).parents(".btn-group");
+	$("input[name='qindices:list']",$btnGroup).prop("checked","checked");
+	var i = $("input[name='qindices:list']:checkbox:checked").length;
+	var msg = getZMILangStr('MSG_CONFIRM_TRASHOBJS');
+	msg = msg.replace("%i",""+i);
+	msg += $ZMI.getDescendantLanguages();
+	b = i > 0 && confirm(msg);
+	if (b) {
+		var html = '';
+		html += '<form class="ui-helper-hidden" id="delZMSCustomForm" method="post" action="manage_deleteObjs">';
+		html += '<input type="hidden" name="lang" value="'+getZMILang()+'"/>';
+		$("input[name='qindices:list']:checkbox:checked").each(function() {
+				html += '<input type="hidden" name="ids:list" value="'+$(this).val()+'"/>';
+			});
+		html += '</form>';
+		$("body").append(html);
+		$("#delZMSCustomForm").submit();
+	}
+	else {
+		$("input[name='qindices:list']",$btnGroup).prop("checked","");
+	}
+	return false;
+}
+
+$(function() {
+
+	// always collapse last-modified-accordion
+	$(".attr_last_modified a.accordion-toggle").each(function(){
+			var data_root = $("body").attr('data-root');
+			var id = $(this).attr('href').substr(1);
+			var key = "ZMS."+data_root+".accordion-body-"+id;
+			console.log("$ZMILocalStorageAPI.set("+key+",0)");
+			$ZMILocalStorageAPI.set(key,'0');
+		});
+
+	$("#tabProperties").hide();
+	$(".zmi-change-uid").after(' <a href="javascript:;" onclick="$(\'#tabProperties\').toggle();">'+$ZMI.icon('icon-cogs')+'</a>');
+
+	// Relocate buttons.
+	var e = $(".controls.save:gt(0)").detach();
+	e.insertAfter(".form-group.coverage");
+
+	$(".ZMSRecordSet form.form-horizontal").each(function() {
+			var prefix = $("meta[name=physical_path]").attr("content").split("/");
+			prefix = prefix[prefix.length-1]+".ZMSRecordSet.";
+			console.log(prefix);
+			var $fm = $(this);
+			localStorage[prefix+"btn"] = getZMILangStr('BTN_REFRESH');
+			if (zmiParams['btn']==getZMILangStr('BTN_REFRESH')) {
+				for (var i in zmiParams) {
+					localStorage[prefix+i] = zmiParams[i];
+				}
+				$("input:text,input:checkbox,input:radio,select,textarea",$fm).each(function() {
+						var $input = $(this);
+						var n = $input.attr("name");
+						var v = $input.val();
+						if ($input.attr("type")=="radio") {
+							v = $("input[name='"+n+"']:radio:checked").val();
+						}
+						if ($input.attr("type")=="checkbox") {
+							v = $input.prop("checked")?v:null;
+						}
+						if ($input[0].nodeName.toUpperCase()=="SELECT") {
+							v = $("option:selected",$input).val();
+						}
+						localStorage[prefix+n] = v;
+					});
+			}
+			else if (typeof zmiParams['btn']!='undefined') {
+				for (var i in localStorage) {
+					if (i.indexOf(prefix)==0) {
+						localStorage.removeItem(i);
+					}
+				}
+			}
+
+			var params = {lang:zmiParams['lang'],AUTHENTICATED_USER:$(".authenticated_user").text()};
+			for (var i in localStorage) {
+				if (i.indexOf(prefix)==0) {
+					console.log("i="+i);
+					params[i.substr(prefix.length)] = localStorage[i];
+				}
+			}
+
+			$.get("publicRecordSetGrid",params,function(data) {
+					var $grid = $("#metaobj_recordset_main_grid");
+
+					// Assemble grid.
+					$grid.html(data);
+
+					// Assemble info.
+					$(".zmi-info",$grid).each(function() {
+							if (!$(this).hasClass("active")) {
+								$(this).parents("tr").addClass("inactive");
+							}
+						});
+
+					// Assemble update.
+					$(".dropdown-menu a[onclick='[[UPDATE]]']",$grid).each(function() {
+							var $btnGroup = $(this).parents(".btn-group");
+							var id = $("input[name='qindices:list']",$btnGroup).val();
+							var href = id + '/manage_main?lang=' + getZMILang();
+							$(this).attr({href:href,onclick:''});
+						});
+
+					// Assemble insert.
+					$(".dropdown-menu .icon-plus",$grid).each(function() {
+							var $li = $(this).parents("li");
+							var html = ''
+							html += '<li class="dropdown-header insert-action"><i class="icon-caret-down"></i> '+getZMILangStr('BTN_INSERT')+'</li>';
+							$("select[name='record_meta_ids:list'] option:selected").each(function() {
+									var $option = $(this);
+									html += '<li><a href="javascript:;" onclick="addZMSCustom(0,\''+$option.text().trim()+'\')">'+$option.html().replace(/<!--/gi,'<').replace(/-->/gi,'>')+'</a></li>';
+								});
+							html += '<li class="dropdown-header insert-action"><i class="icon-caret-down"></i> '+getZMILangStr('ATTR_ACTION')+'</li>';
+							$li.replaceWith(html);
+						});
+				});
+		});
+});]]></data>
                   </item>
                   <item key="default"></item>
                   <item key="id">script.zmi.js</item>
@@ -3397,7 +3660,7 @@ tr.inactive * {
 </form>
 </div><!-- .ZMSRecordSet -->
 
-<div id="metaobj_recordset_main_grid" tal:content="structure python:here.zmi_icon(name='icon-spinner')"></div>
+<div id="metaobj_recordset_main_grid" tal:content="structure python:zmscontext.zmi_icon(name='icon-spinner')"></div>
 
 		</tal:block>
 
@@ -3524,7 +3787,7 @@ attr_ids = [x['id'] for x in zmscontext.attr('record_attrs')]+['change_uid','cha
 buff = {}
 for childNode in zmscontext.getChildNodes(request):
   meta_id = childNode.meta_id
-  if not buff.has_key(meta_id):
+  if not meta_id in buff:
     buff[meta_id] = {}
     for attr_id in attr_ids:
       objAttr = childNode.getObjAttr(attr_id)
@@ -3893,10 +4156,8 @@ $(function(){
 ##
 # --// BO onChangeObjEvt //--
 
+temp_folder = context.temp_folder
 request = context.REQUEST
-temp_folder = context.operator_getattr(context,'temp_folder',None)
-if temp_folder is None:
-  return
 
 # Find images/files.
 text = zmscontext.attr('text')
@@ -3958,8 +4219,8 @@ zmscontext.attr('text',text)
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext;
-		text          python:zmscontext.getText(request);
-		format        python:zmscontext.attr('format');
+		text          python:unicode(zmscontext.getText(request),'utf-8');
+		format        python:unicode(zmscontext.attr('format'),'utf-8');
 		renderedText  python:zmscontext.renderText(format,'text',text,request,zmscontext.id)"
 		tal:content="structure renderedText">
 	The text
@@ -4046,7 +4307,7 @@ zmscontext.attr('text',text)
 		<tal:block tal:content="python:zmscontext.connection_id">the connection-id</tal:block>
 	</h4>
 	<ul>
-		<li tal:repeat="table python:[x for x in zmscontext.getEntities() if x['type'] == 'table']">
+		<li tal:repeat="table python:filter(lambda x:x['type']=='table',zmscontext.getEntities())">
 			<a tal:attributes="href python:'%s/manage_main?qentity=%s'%(zmscontext.id,table['id'])" tal:content="table/id">the table</a>
 		</li>
 	</ul>
@@ -4218,7 +4479,7 @@ zmscontext.attr('text',text)
 	<select class="form-control" style="background-color: aliceblue;"
 			name=":action" tal:attributes="onchange python:'this.name=\':action\';;location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
 		<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type(request)">----- Insert -----</option>
-		<tal:block tal:repeat="meta_type python:[x for x in standard.sort_list(zmscontext.filtered_meta_types(),'name') if x['name'].find('ZMS')!=0]">
+		<tal:block tal:repeat="meta_type python:filter(lambda x:x['name'].find('ZMS')<>0,standard.sort_list(zmscontext.filtered_meta_types(),'name'))">
 			<option tal:attributes="value python:meta_type['action']" tal:content="python:meta_type['name']">the name</option>
 		</tal:block>
 	</select>
@@ -4230,7 +4491,7 @@ zmscontext.attr('text',text)
 ################################################################################
 -->
 
-<tal:block tal:define="global items python:[for x in zmscontext.objectItems() if not x[1].meta_type.startswith('ZMS')]">
+<tal:block tal:define="global items python:filter(lambda x:x[1].meta_type.find('ZMS')<>0,zmscontext.objectItems())">
 <tal:block tal:condition="python:len(items)>0">
 <table class="table table-striped">
 <thead>
@@ -4381,15 +4642,7 @@ zmscontext.attr('text',text)
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- Page Template Diagnostics
- Compilation failed
- chameleon.exc.ParseError: The string '--' is not allowed in a comment.
-
- - String:     "--"
- - Filename:   ZMSTable.interface0
- - Location:   (line 163: col 0)
--->
-<tal:block tal:define="textFormatDefault python:here.getConfProperty('ZMSTable.getTextFormatDefault',here.getTextFormatDefault())">
+                  <item key="custom"><![CDATA[<tal:block tal:define="textFormatDefault python:here.getConfProperty('ZMSTable.getTextFormatDefault',here.getTextFormatDefault())">
 
 <!--
 ################################################################################
@@ -5178,7 +5431,10 @@ function onKeyUpZMSTableDivContenteditable() {
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="application/javascript" filename="jquery.tablesorter.min.js" type="file"><![CDATA[b'b\'\\n(function($){$.extend({tablesorter:new\\nfunction(){var parsers=[],widgets=[];this.defaults={cssHeader:"header",cssAsc:"headerSortUp",cssDesc:"headerSortDown",cssChildRow:"expand-child",sortInitialOrder:"asc",sortMultiSortKey:"shiftKey",sortForce:null,sortAppend:null,sortLocaleCompare:true,textExtraction:"simple",parsers:{},widgets:[],widgetZebra:{css:["even","odd"]},headers:{},widthFixed:false,cancelSelection:true,sortList:[],headerList:[],dateFormat:"us",decimal:\\\'/\\\\.|\\\\,/g\\\',onRenderHeader:null,selectorHeaders:\\\'thead th\\\',debug:false};function benchmark(s,d){log(s+","+(new Date().getTime()-d.getTime())+"ms");}this.benchmark=benchmark;function log(s){if(typeof console!="undefined"&&typeof console.debug!="undefined"){console.log(s);}else{alert(s);}}function buildParserCache(table,$headers){if(table.config.debug){var parsersDebug="";}if(table.tBodies.length==0)return;var rows=table.tBodies[0].rows;if(rows[0]){var list=[],cells=rows[0].cells,l=cells.length;for(var i=0;i<l;i++){var p=false;if($.metadata&&($($headers[i]).metadata()&&$($headers[i]).metadata().sorter)){p=getParserById($($headers[i]).metadata().sorter);}else if((table.config.headers[i]&&table.config.headers[i].sorter)){p=getParserById(table.config.headers[i].sorter);}if(!p){p=detectParserForColumn(table,rows,-1,i);}if(table.config.debug){parsersDebug+="column:"+i+" parser:"+p.id+"\\\\n";}list.push(p);}}if(table.config.debug){log(parsersDebug);}return list;};function detectParserForColumn(table,rows,rowIndex,cellIndex){var l=parsers.length,node=false,nodeValue=false,keepLooking=true;while(nodeValue==\\\'\\\'&&keepLooking){rowIndex++;if(rows[rowIndex]){node=getNodeFromRowAndCellIndex(rows,rowIndex,cellIndex);nodeValue=trimAndGetNodeText(table.config,node);if(table.config.debug){log(\\\'Checking if value was empty on row:\\\'+rowIndex);}}else{keepLooking=false;}}for(var i=1;i<l;i++){if(parsers[i].is(nodeValue,table,node)){return parsers[i];}}return parsers[0];}function getNodeFromRowAndCellIndex(rows,rowIndex,cellIndex){return rows[rowIndex].cells[cellIndex];}function trimAndGetNodeText(config,node){return $.trim(getElementText(config,node));}function getParserById(name){var l=parsers.length;for(var i=0;i<l;i++){if(parsers[i].id.toLowerCase()==name.toLowerCase()){return parsers[i];}}return false;}function buildCache(table){if(table.config.debug){var cacheTime=new Date();}var totalRows=(table.tBodies[0]&&table.tBodies[0].rows.length)||0,totalCells=(table.tBodies[0].rows[0]&&table.tBodies[0].rows[0].cells.length)||0,parsers=table.config.parsers,cache={row:[],normalized:[]};for(var i=0;i<totalRows;++i){var c=$(table.tBodies[0].rows[i]),cols=[];if(c.hasClass(table.config.cssChildRow)){cache.row[cache.row.length-1]=cache.row[cache.row.length-1].add(c);continue;}cache.row.push(c);for(var j=0;j<totalCells;++j){cols.push(parsers[j].format(getElementText(table.config,c[0].cells[j]),table,c[0].cells[j]));}cols.push(cache.normalized.length);cache.normalized.push(cols);cols=null;};if(table.config.debug){benchmark("Building cache for "+totalRows+" rows:",cacheTime);}return cache;};function getElementText(config,node){var text="";if(!node)return"";if(!config.supportsTextContent)config.supportsTextContent=node.textContent||false;if(config.textExtraction=="simple"){if(config.supportsTextContent){text=node.textContent;}else{if(node.childNodes[0]&&node.childNodes[0].hasChildNodes()){text=node.childNodes[0].innerHTML;}else{text=node.innerHTML;}}}else{if(typeof(config.textExtraction)=="function"){text=config.textExtraction(node);}else{text=$(node).text();}}return text;}function appendToTable(table,cache){if(table.config.debug){var appendTime=new Date()}var c=cache,r=c.row,n=c.normalized,totalRows=n.length,checkCell=(n[0].length-1),tableBody=$(table.tBodies[0]),rows=[];for(var i=0;i<totalRows;i++){var pos=n[i][checkCell];rows.push(r[pos]);if(!table.config.appender){var l=r[pos].length;for(var j=0;j<l;j++){tableBody[0].appendChild(r[pos][j]);}}}if(table.config.appender){table.config.appender(table,rows);}rows=null;if(table.config.debug){benchmark("Rebuilt table:",appendTime);}applyWidget(table);setTimeout(function(){$(table).trigger("sortEnd");},0);};function buildHeaders(table){if(table.config.debug){var time=new Date();}var meta=($.metadata)?true:false;var header_index=computeTableHeaderCellIndexes(table);$tableHeaders=$(table.config.selectorHeaders,table).each(function(index){this.column=header_index[this.parentNode.rowIndex+"-"+this.cellIndex];this.order=formatSortingOrder(table.config.sortInitialOrder);this.count=this.order;if(checkHeaderMetadata(this)||checkHeaderOptions(table,index))this.sortDisabled=true;if(checkHeaderOptionsSortingLocked(table,index))this.order=this.lockedOrder=checkHeaderOptionsSortingLocked(table,index);if(!this.sortDisabled){var $th=$(this).addClass(table.config.cssHeader);if(table.config.onRenderHeader)table.config.onRenderHeader.apply($th);}table.config.headerList[index]=this;});if(table.config.debug){benchmark("Built headers:",time);log($tableHeaders);}return $tableHeaders;};function computeTableHeaderCellIndexes(t){var matrix=[];var lookup={};var thead=t.getElementsByTagName(\\\'THEAD\\\')[0];var trs=thead.getElementsByTagName(\\\'TR\\\');for(var i=0;i<trs.length;i++){var cells=trs[i].cells;for(var j=0;j<cells.length;j++){var c=cells[j];var rowIndex=c.parentNode.rowIndex;var cellId=rowIndex+"-"+c.cellIndex;var rowSpan=c.rowSpan||1;var colSpan=c.colSpan||1\\nvar firstAvailCol;if(typeof(matrix[rowIndex])=="undefined"){matrix[rowIndex]=[];}for(var k=0;k<matrix[rowIndex].length+1;k++){if(typeof(matrix[rowIndex][k])=="undefined"){firstAvailCol=k;break;}}lookup[cellId]=firstAvailCol;for(var k=rowIndex;k<rowIndex+rowSpan;k++){if(typeof(matrix[k])=="undefined"){matrix[k]=[];}var matrixrow=matrix[k];for(var l=firstAvailCol;l<firstAvailCol+colSpan;l++){matrixrow[l]="x";}}}}return lookup;}function checkCellColSpan(table,rows,row){var arr=[],r=table.tHead.rows,c=r[row].cells;for(var i=0;i<c.length;i++){var cell=c[i];if(cell.colSpan>1){arr=arr.concat(checkCellColSpan(table,headerArr,row++));}else{if(table.tHead.length==1||(cell.rowSpan>1||!r[row+1])){arr.push(cell);}}}return arr;};function checkHeaderMetadata(cell){if(($.metadata)&&($(cell).metadata().sorter===false)){return true;};return false;}function checkHeaderOptions(table,i){if((table.config.headers[i])&&(table.config.headers[i].sorter===false)){return true;};return false;}function checkHeaderOptionsSortingLocked(table,i){if((table.config.headers[i])&&(table.config.headers[i].lockedOrder))return table.config.headers[i].lockedOrder;return false;}function applyWidget(table){var c=table.config.widgets;var l=c.length;for(var i=0;i<l;i++){getWidgetById(c[i]).format(table);}}function getWidgetById(name){var l=widgets.length;for(var i=0;i<l;i++){if(widgets[i].id.toLowerCase()==name.toLowerCase()){return widgets[i];}}};function formatSortingOrder(v){if(typeof(v)!="Number"){return(v.toLowerCase()=="desc")?1:0;}else{return(v==1)?1:0;}}function isValueInArray(v,a){var l=a.length;for(var i=0;i<l;i++){if(a[i][0]==v){return true;}}return false;}function setHeadersCss(table,$headers,list,css){$headers.removeClass(css[0]).removeClass(css[1]);var h=[];$headers.each(function(offset){if(!this.sortDisabled){h[this.column]=$(this);}});var l=list.length;for(var i=0;i<l;i++){h[list[i][0]].addClass(css[list[i][1]]);}}function fixColumnWidth(table,$headers){var c=table.config;if(c.widthFixed){var colgroup=$(\\\'<colgroup>\\\');$("tr:first td",table.tBodies[0]).each(function(){colgroup.append($(\\\'<col>\\\').css(\\\'width\\\',$(this).width()));});$(table).prepend(colgroup);};}function updateHeaderSortCount(table,sortList){var c=table.config,l=sortList.length;for(var i=0;i<l;i++){var s=sortList[i],o=c.headerList[s[0]];o.count=s[1];o.count++;}}function multisort(table,sortList,cache){if(table.config.debug){var sortTime=new Date();}var dynamicExp="var sortWrapper = function(a,b) {",l=sortList.length;for(var i=0;i<l;i++){var c=sortList[i][0];var order=sortList[i][1];var s=(table.config.parsers[c].type=="text")?((order==0)?makeSortFunction("text","asc",c):makeSortFunction("text","desc",c)):((order==0)?makeSortFunction("numeric","asc",c):makeSortFunction("numeric","desc",c));var e="e"+i;dynamicExp+="var "+e+" = "+s;dynamicExp+="if("+e+") { return "+e+"; } ";dynamicExp+="else { ";}var orgOrderCol=cache.normalized[0].length-1;dynamicExp+="return a["+orgOrderCol+"]-b["+orgOrderCol+"];";for(var i=0;i<l;i++){dynamicExp+="}; ";}dynamicExp+="return 0; ";dynamicExp+="}; ";if(table.config.debug){benchmark("Evaling expression:"+dynamicExp,new Date());}eval(dynamicExp);cache.normalized.sort(sortWrapper);if(table.config.debug){benchmark("Sorting on "+sortList.toString()+" and dir "+order+" time:",sortTime);}return cache;};function makeSortFunction(type,direction,index){var a="a["+index+"]",b="b["+index+"]";if(type==\\\'text\\\'&&direction==\\\'asc\\\'){return"("+a+" == "+b+" ? 0 : ("+a+" === null ? Number.POSITIVE_INFINITY : ("+b+" === null ? Number.NEGATIVE_INFINITY : ("+a+" < "+b+") ? -1 : 1 )));";}else if(type==\\\'text\\\'&&direction==\\\'desc\\\'){return"("+a+" == "+b+" ? 0 : ("+a+" === null ? Number.POSITIVE_INFINITY : ("+b+" === null ? Number.NEGATIVE_INFINITY : ("+b+" < "+a+") ? -1 : 1 )));";}else if(type==\\\'numeric\\\'&&direction==\\\'asc\\\'){return"("+a+" === null && "+b+" === null) ? 0 :("+a+" === null ? Number.POSITIVE_INFINITY : ("+b+" === null ? Number.NEGATIVE_INFINITY : "+a+" - "+b+"));";}else if(type==\\\'numeric\\\'&&direction==\\\'desc\\\'){return"("+a+" === null && "+b+" === null) ? 0 :("+a+" === null ? Number.POSITIVE_INFINITY : ("+b+" === null ? Number.NEGATIVE_INFINITY : "+b+" - "+a+"));";}};function makeSortText(i){return"((a["+i+"] < b["+i+"]) ? -1 : ((a["+i+"] > b["+i+"]) ? 1 : 0));";};function makeSortTextDesc(i){return"((b["+i+"] < a["+i+"]) ? -1 : ((b["+i+"] > a["+i+"]) ? 1 : 0));";};function makeSortNumeric(i){return"a["+i+"]-b["+i+"];";};function makeSortNumericDesc(i){return"b["+i+"]-a["+i+"];";};function sortText(a,b){if(table.config.sortLocaleCompare)return a.localeCompare(b);return((a<b)?-1:((a>b)?1:0));};function sortTextDesc(a,b){if(table.config.sortLocaleCompare)return b.localeCompare(a);return((b<a)?-1:((b>a)?1:0));};function sortNumeric(a,b){return a-b;};function sortNumericDesc(a,b){return b-a;};function getCachedSortType(parsers,i){return parsers[i].type;};this.construct=function(settings){return this.each(function(){if(!this.tHead||!this.tBodies)return;var $this,$document,$headers,cache,config,shiftDown=0,sortOrder;this.config={};config=$.extend(this.config,$.tablesorter.defaults,settings);$this=$(this);$.data(this,"tablesorter",config);$headers=buildHeaders(this);this.config.parsers=buildParserCache(this,$headers);cache=buildCache(this);var sortCSS=[config.cssDesc,config.cssAsc];fixColumnWidth(this);$headers.click(function(e){var totalRows=($this[0].tBodies[0]&&$this[0].tBodies[0].rows.length)||0;if(!this.sortDisabled&&totalRows>0){$this.trigger("sortStart");var $cell=$(this);var i=this.column;this.order=this.count++%2;if(this.lockedOrder)this.order=this.lockedOrder;if(!e[config.sortMultiSortKey]){config.sortList=[];if(config.sortForce!=null){var a=config.sortForce;for(var j=0;j<a.length;j++){if(a[j][0]!=i){config.sortList.push(a[j]);}}}config.sortList.push([i,this.order]);}else{if(isValueInArray(i,config.sortList)){for(var j=0;j<config.sortList.length;j++){var s=config.sortList[j],o=config.headerList[s[0]];if(s[0]==i){o.count=s[1];o.count++;s[1]=o.count%2;}}}else{config.sortList.push([i,this.order]);}};setTimeout(function(){setHeadersCss($this[0],$headers,config.sortList,sortCSS);appendToTable($this[0],multisort($this[0],config.sortList,cache));},1);return false;}}).mousedown(function(){if(config.cancelSelection){this.onselectstart=function(){return false};return false;}});$this.bind("update",function(){var me=this;setTimeout(function(){me.config.parsers=buildParserCache(me,$headers);cache=buildCache(me);},1);}).bind("updateCell",function(e,cell){var config=this.config;var pos=[(cell.parentNode.rowIndex-1),cell.cellIndex];cache.normalized[pos[0]][pos[1]]=config.parsers[pos[1]].format(getElementText(config,cell),cell);}).bind("sorton",function(e,list){$(this).trigger("sortStart");config.sortList=list;var sortList=config.sortList;updateHeaderSortCount(this,sortList);setHeadersCss(this,$headers,sortList,sortCSS);appendToTable(this,multisort(this,sortList,cache));}).bind("appendCache",function(){appendToTable(this,cache);}).bind("applyWidgetId",function(e,id){getWidgetById(id).format(this);}).bind("applyWidgets",function(){applyWidget(this);});if($.metadata&&($(this).metadata()&&$(this).metadata().sortlist)){config.sortList=$(this).metadata().sortlist;}if(config.sortList.length>0){$this.trigger("sorton",[config.sortList]);}applyWidget(this);});};this.addParser=function(parser){var l=parsers.length,a=true;for(var i=0;i<l;i++){if(parsers[i].id.toLowerCase()==parser.id.toLowerCase()){a=false;}}if(a){parsers.push(parser);};};this.addWidget=function(widget){widgets.push(widget);};this.formatFloat=function(s){var i=parseFloat(s);return(isNaN(i))?0:i;};this.formatInt=function(s){var i=parseInt(s);return(isNaN(i))?0:i;};this.isDigit=function(s,config){return/^[-+]?\\\\d*$/.test($.trim(s.replace(/[,.\\\']/g,\\\'\\\')));};this.clearTableBody=function(table){if($.browser.msie){function empty(){while(this.firstChild)this.removeChild(this.firstChild);}empty.apply(table.tBodies[0]);}else{table.tBodies[0].innerHTML="";}};}});$.fn.extend({tablesorter:$.tablesorter.construct});var ts=$.tablesorter;ts.addParser({id:"text",is:function(s){return true;},format:function(s){return $.trim(s.toLocaleLowerCase());},type:"text"});ts.addParser({id:"digit",is:function(s,table){var c=table.config;return $.tablesorter.isDigit(s,c);},format:function(s){return $.tablesorter.formatFloat(s);},type:"numeric"});ts.addParser({id:"currency",is:function(s){return/^[\\xc2\\xa3$\\xe2\\x82\\xac?.]/.test(s);},format:function(s){return $.tablesorter.formatFloat(s.replace(new RegExp(/[\\xc2\\xa3$\\xe2\\x82\\xac]/g),""));},type:"numeric"});ts.addParser({id:"ipAddress",is:function(s){return/^\\\\d{2,3}[\\\\.]\\\\d{2,3}[\\\\.]\\\\d{2,3}[\\\\.]\\\\d{2,3}$/.test(s);},format:function(s){var a=s.split("."),r="",l=a.length;for(var i=0;i<l;i++){var item=a[i];if(item.length==2){r+="0"+item;}else{r+=item;}}return $.tablesorter.formatFloat(r);},type:"numeric"});ts.addParser({id:"url",is:function(s){return/^(https?|ftp|file):\\\\/\\\\/$/.test(s);},format:function(s){return jQuery.trim(s.replace(new RegExp(/(https?|ftp|file):\\\\/\\\\//),\\\'\\\'));},type:"text"});ts.addParser({id:"isoDate",is:function(s){return/^\\\\d{4}[\\\\/-]\\\\d{1,2}[\\\\/-]\\\\d{1,2}$/.test(s);},format:function(s){return $.tablesorter.formatFloat((s!="")?new Date(s.replace(new RegExp(/-/g),"/")).getTime():"0");},type:"numeric"});ts.addParser({id:"percent",is:function(s){return/\\\\%$/.test($.trim(s));},format:function(s){return $.tablesorter.formatFloat(s.replace(new RegExp(/%/g),""));},type:"numeric"});ts.addParser({id:"usLongDate",is:function(s){return s.match(new RegExp(/^[A-Za-z]{3,10}\\\\.? [0-9]{1,2}, ([0-9]{4}|\\\'?[0-9]{2}) (([0-2]?[0-9]:[0-5][0-9])|([0-1]?[0-9]:[0-5][0-9]\\\\s(AM|PM)))$/));},format:function(s){return $.tablesorter.formatFloat(new Date(s).getTime());},type:"numeric"});ts.addParser({id:"shortDate",is:function(s){return/\\\\d{1,2}[\\\\/\\\\-]\\\\d{1,2}[\\\\/\\\\-]\\\\d{2,4}/.test(s);},format:function(s,table){var c=table.config;s=s.replace(/\\\\-/g,"/");if(c.dateFormat=="us"){s=s.replace(/(\\\\d{1,2})[\\\\/\\\\-](\\\\d{1,2})[\\\\/\\\\-](\\\\d{4})/,"$3/$1/$2");}else if(c.dateFormat=="uk"){s=s.replace(/(\\\\d{1,2})[\\\\/\\\\-](\\\\d{1,2})[\\\\/\\\\-](\\\\d{4})/,"$3/$2/$1");}else if(c.dateFormat=="dd/mm/yy"||c.dateFormat=="dd-mm-yy"){s=s.replace(/(\\\\d{1,2})[\\\\/\\\\-](\\\\d{1,2})[\\\\/\\\\-](\\\\d{2})/,"$1/$2/$3");}return $.tablesorter.formatFloat(new Date(s).getTime());},type:"numeric"});ts.addParser({id:"time",is:function(s){return/^(([0-2]?[0-9]:[0-5][0-9])|([0-1]?[0-9]:[0-5][0-9]\\\\s(am|pm)))$/.test(s);},format:function(s){return $.tablesorter.formatFloat(new Date("2000/01/01 "+s).getTime());},type:"numeric"});ts.addParser({id:"metadata",is:function(s){return false;},format:function(s,table,cell){var c=table.config,p=(!c.parserMetadataName)?\\\'sortValue\\\':c.parserMetadataName;return $(cell).metadata()[p];},type:"numeric"});ts.addWidget({id:"zebra",format:function(table){if(table.config.debug){var time=new Date();}var $tr,row=-1,odd;$("tr:visible",table.tBodies[0]).each(function(i){$tr=$(this);if(!$tr.hasClass(table.config.cssChildRow))row++;odd=(row%2==0);$tr.removeClass(table.config.widgetZebra.css[odd?0:1]).addClass(table.config.widgetZebra.css[odd?1:0])});if(table.config.debug){$.tablesorter.benchmark("Applying Zebra widget",time);}}});})(jQuery);\'']]></data>
+                    <data content_type="application/javascript" filename="jquery.tablesorter.min.js" type="file"><![CDATA[
+(function($){$.extend({tablesorter:new
+function(){var parsers=[],widgets=[];this.defaults={cssHeader:"header",cssAsc:"headerSortUp",cssDesc:"headerSortDown",cssChildRow:"expand-child",sortInitialOrder:"asc",sortMultiSortKey:"shiftKey",sortForce:null,sortAppend:null,sortLocaleCompare:true,textExtraction:"simple",parsers:{},widgets:[],widgetZebra:{css:["even","odd"]},headers:{},widthFixed:false,cancelSelection:true,sortList:[],headerList:[],dateFormat:"us",decimal:'/\.|\,/g',onRenderHeader:null,selectorHeaders:'thead th',debug:false};function benchmark(s,d){log(s+","+(new Date().getTime()-d.getTime())+"ms");}this.benchmark=benchmark;function log(s){if(typeof console!="undefined"&&typeof console.debug!="undefined"){console.log(s);}else{alert(s);}}function buildParserCache(table,$headers){if(table.config.debug){var parsersDebug="";}if(table.tBodies.length==0)return;var rows=table.tBodies[0].rows;if(rows[0]){var list=[],cells=rows[0].cells,l=cells.length;for(var i=0;i<l;i++){var p=false;if($.metadata&&($($headers[i]).metadata()&&$($headers[i]).metadata().sorter)){p=getParserById($($headers[i]).metadata().sorter);}else if((table.config.headers[i]&&table.config.headers[i].sorter)){p=getParserById(table.config.headers[i].sorter);}if(!p){p=detectParserForColumn(table,rows,-1,i);}if(table.config.debug){parsersDebug+="column:"+i+" parser:"+p.id+"\n";}list.push(p);}}if(table.config.debug){log(parsersDebug);}return list;};function detectParserForColumn(table,rows,rowIndex,cellIndex){var l=parsers.length,node=false,nodeValue=false,keepLooking=true;while(nodeValue==''&&keepLooking){rowIndex++;if(rows[rowIndex]){node=getNodeFromRowAndCellIndex(rows,rowIndex,cellIndex);nodeValue=trimAndGetNodeText(table.config,node);if(table.config.debug){log('Checking if value was empty on row:'+rowIndex);}}else{keepLooking=false;}}for(var i=1;i<l;i++){if(parsers[i].is(nodeValue,table,node)){return parsers[i];}}return parsers[0];}function getNodeFromRowAndCellIndex(rows,rowIndex,cellIndex){return rows[rowIndex].cells[cellIndex];}function trimAndGetNodeText(config,node){return $.trim(getElementText(config,node));}function getParserById(name){var l=parsers.length;for(var i=0;i<l;i++){if(parsers[i].id.toLowerCase()==name.toLowerCase()){return parsers[i];}}return false;}function buildCache(table){if(table.config.debug){var cacheTime=new Date();}var totalRows=(table.tBodies[0]&&table.tBodies[0].rows.length)||0,totalCells=(table.tBodies[0].rows[0]&&table.tBodies[0].rows[0].cells.length)||0,parsers=table.config.parsers,cache={row:[],normalized:[]};for(var i=0;i<totalRows;++i){var c=$(table.tBodies[0].rows[i]),cols=[];if(c.hasClass(table.config.cssChildRow)){cache.row[cache.row.length-1]=cache.row[cache.row.length-1].add(c);continue;}cache.row.push(c);for(var j=0;j<totalCells;++j){cols.push(parsers[j].format(getElementText(table.config,c[0].cells[j]),table,c[0].cells[j]));}cols.push(cache.normalized.length);cache.normalized.push(cols);cols=null;};if(table.config.debug){benchmark("Building cache for "+totalRows+" rows:",cacheTime);}return cache;};function getElementText(config,node){var text="";if(!node)return"";if(!config.supportsTextContent)config.supportsTextContent=node.textContent||false;if(config.textExtraction=="simple"){if(config.supportsTextContent){text=node.textContent;}else{if(node.childNodes[0]&&node.childNodes[0].hasChildNodes()){text=node.childNodes[0].innerHTML;}else{text=node.innerHTML;}}}else{if(typeof(config.textExtraction)=="function"){text=config.textExtraction(node);}else{text=$(node).text();}}return text;}function appendToTable(table,cache){if(table.config.debug){var appendTime=new Date()}var c=cache,r=c.row,n=c.normalized,totalRows=n.length,checkCell=(n[0].length-1),tableBody=$(table.tBodies[0]),rows=[];for(var i=0;i<totalRows;i++){var pos=n[i][checkCell];rows.push(r[pos]);if(!table.config.appender){var l=r[pos].length;for(var j=0;j<l;j++){tableBody[0].appendChild(r[pos][j]);}}}if(table.config.appender){table.config.appender(table,rows);}rows=null;if(table.config.debug){benchmark("Rebuilt table:",appendTime);}applyWidget(table);setTimeout(function(){$(table).trigger("sortEnd");},0);};function buildHeaders(table){if(table.config.debug){var time=new Date();}var meta=($.metadata)?true:false;var header_index=computeTableHeaderCellIndexes(table);$tableHeaders=$(table.config.selectorHeaders,table).each(function(index){this.column=header_index[this.parentNode.rowIndex+"-"+this.cellIndex];this.order=formatSortingOrder(table.config.sortInitialOrder);this.count=this.order;if(checkHeaderMetadata(this)||checkHeaderOptions(table,index))this.sortDisabled=true;if(checkHeaderOptionsSortingLocked(table,index))this.order=this.lockedOrder=checkHeaderOptionsSortingLocked(table,index);if(!this.sortDisabled){var $th=$(this).addClass(table.config.cssHeader);if(table.config.onRenderHeader)table.config.onRenderHeader.apply($th);}table.config.headerList[index]=this;});if(table.config.debug){benchmark("Built headers:",time);log($tableHeaders);}return $tableHeaders;};function computeTableHeaderCellIndexes(t){var matrix=[];var lookup={};var thead=t.getElementsByTagName('THEAD')[0];var trs=thead.getElementsByTagName('TR');for(var i=0;i<trs.length;i++){var cells=trs[i].cells;for(var j=0;j<cells.length;j++){var c=cells[j];var rowIndex=c.parentNode.rowIndex;var cellId=rowIndex+"-"+c.cellIndex;var rowSpan=c.rowSpan||1;var colSpan=c.colSpan||1
+var firstAvailCol;if(typeof(matrix[rowIndex])=="undefined"){matrix[rowIndex]=[];}for(var k=0;k<matrix[rowIndex].length+1;k++){if(typeof(matrix[rowIndex][k])=="undefined"){firstAvailCol=k;break;}}lookup[cellId]=firstAvailCol;for(var k=rowIndex;k<rowIndex+rowSpan;k++){if(typeof(matrix[k])=="undefined"){matrix[k]=[];}var matrixrow=matrix[k];for(var l=firstAvailCol;l<firstAvailCol+colSpan;l++){matrixrow[l]="x";}}}}return lookup;}function checkCellColSpan(table,rows,row){var arr=[],r=table.tHead.rows,c=r[row].cells;for(var i=0;i<c.length;i++){var cell=c[i];if(cell.colSpan>1){arr=arr.concat(checkCellColSpan(table,headerArr,row++));}else{if(table.tHead.length==1||(cell.rowSpan>1||!r[row+1])){arr.push(cell);}}}return arr;};function checkHeaderMetadata(cell){if(($.metadata)&&($(cell).metadata().sorter===false)){return true;};return false;}function checkHeaderOptions(table,i){if((table.config.headers[i])&&(table.config.headers[i].sorter===false)){return true;};return false;}function checkHeaderOptionsSortingLocked(table,i){if((table.config.headers[i])&&(table.config.headers[i].lockedOrder))return table.config.headers[i].lockedOrder;return false;}function applyWidget(table){var c=table.config.widgets;var l=c.length;for(var i=0;i<l;i++){getWidgetById(c[i]).format(table);}}function getWidgetById(name){var l=widgets.length;for(var i=0;i<l;i++){if(widgets[i].id.toLowerCase()==name.toLowerCase()){return widgets[i];}}};function formatSortingOrder(v){if(typeof(v)!="Number"){return(v.toLowerCase()=="desc")?1:0;}else{return(v==1)?1:0;}}function isValueInArray(v,a){var l=a.length;for(var i=0;i<l;i++){if(a[i][0]==v){return true;}}return false;}function setHeadersCss(table,$headers,list,css){$headers.removeClass(css[0]).removeClass(css[1]);var h=[];$headers.each(function(offset){if(!this.sortDisabled){h[this.column]=$(this);}});var l=list.length;for(var i=0;i<l;i++){h[list[i][0]].addClass(css[list[i][1]]);}}function fixColumnWidth(table,$headers){var c=table.config;if(c.widthFixed){var colgroup=$('<colgroup>');$("tr:first td",table.tBodies[0]).each(function(){colgroup.append($('<col>').css('width',$(this).width()));});$(table).prepend(colgroup);};}function updateHeaderSortCount(table,sortList){var c=table.config,l=sortList.length;for(var i=0;i<l;i++){var s=sortList[i],o=c.headerList[s[0]];o.count=s[1];o.count++;}}function multisort(table,sortList,cache){if(table.config.debug){var sortTime=new Date();}var dynamicExp="var sortWrapper = function(a,b) {",l=sortList.length;for(var i=0;i<l;i++){var c=sortList[i][0];var order=sortList[i][1];var s=(table.config.parsers[c].type=="text")?((order==0)?makeSortFunction("text","asc",c):makeSortFunction("text","desc",c)):((order==0)?makeSortFunction("numeric","asc",c):makeSortFunction("numeric","desc",c));var e="e"+i;dynamicExp+="var "+e+" = "+s;dynamicExp+="if("+e+") { return "+e+"; } ";dynamicExp+="else { ";}var orgOrderCol=cache.normalized[0].length-1;dynamicExp+="return a["+orgOrderCol+"]-b["+orgOrderCol+"];";for(var i=0;i<l;i++){dynamicExp+="}; ";}dynamicExp+="return 0; ";dynamicExp+="}; ";if(table.config.debug){benchmark("Evaling expression:"+dynamicExp,new Date());}eval(dynamicExp);cache.normalized.sort(sortWrapper);if(table.config.debug){benchmark("Sorting on "+sortList.toString()+" and dir "+order+" time:",sortTime);}return cache;};function makeSortFunction(type,direction,index){var a="a["+index+"]",b="b["+index+"]";if(type=='text'&&direction=='asc'){return"("+a+" == "+b+" ? 0 : ("+a+" === null ? Number.POSITIVE_INFINITY : ("+b+" === null ? Number.NEGATIVE_INFINITY : ("+a+" < "+b+") ? -1 : 1 )));";}else if(type=='text'&&direction=='desc'){return"("+a+" == "+b+" ? 0 : ("+a+" === null ? Number.POSITIVE_INFINITY : ("+b+" === null ? Number.NEGATIVE_INFINITY : ("+b+" < "+a+") ? -1 : 1 )));";}else if(type=='numeric'&&direction=='asc'){return"("+a+" === null && "+b+" === null) ? 0 :("+a+" === null ? Number.POSITIVE_INFINITY : ("+b+" === null ? Number.NEGATIVE_INFINITY : "+a+" - "+b+"));";}else if(type=='numeric'&&direction=='desc'){return"("+a+" === null && "+b+" === null) ? 0 :("+a+" === null ? Number.POSITIVE_INFINITY : ("+b+" === null ? Number.NEGATIVE_INFINITY : "+b+" - "+a+"));";}};function makeSortText(i){return"((a["+i+"] < b["+i+"]) ? -1 : ((a["+i+"] > b["+i+"]) ? 1 : 0));";};function makeSortTextDesc(i){return"((b["+i+"] < a["+i+"]) ? -1 : ((b["+i+"] > a["+i+"]) ? 1 : 0));";};function makeSortNumeric(i){return"a["+i+"]-b["+i+"];";};function makeSortNumericDesc(i){return"b["+i+"]-a["+i+"];";};function sortText(a,b){if(table.config.sortLocaleCompare)return a.localeCompare(b);return((a<b)?-1:((a>b)?1:0));};function sortTextDesc(a,b){if(table.config.sortLocaleCompare)return b.localeCompare(a);return((b<a)?-1:((b>a)?1:0));};function sortNumeric(a,b){return a-b;};function sortNumericDesc(a,b){return b-a;};function getCachedSortType(parsers,i){return parsers[i].type;};this.construct=function(settings){return this.each(function(){if(!this.tHead||!this.tBodies)return;var $this,$document,$headers,cache,config,shiftDown=0,sortOrder;this.config={};config=$.extend(this.config,$.tablesorter.defaults,settings);$this=$(this);$.data(this,"tablesorter",config);$headers=buildHeaders(this);this.config.parsers=buildParserCache(this,$headers);cache=buildCache(this);var sortCSS=[config.cssDesc,config.cssAsc];fixColumnWidth(this);$headers.click(function(e){var totalRows=($this[0].tBodies[0]&&$this[0].tBodies[0].rows.length)||0;if(!this.sortDisabled&&totalRows>0){$this.trigger("sortStart");var $cell=$(this);var i=this.column;this.order=this.count++%2;if(this.lockedOrder)this.order=this.lockedOrder;if(!e[config.sortMultiSortKey]){config.sortList=[];if(config.sortForce!=null){var a=config.sortForce;for(var j=0;j<a.length;j++){if(a[j][0]!=i){config.sortList.push(a[j]);}}}config.sortList.push([i,this.order]);}else{if(isValueInArray(i,config.sortList)){for(var j=0;j<config.sortList.length;j++){var s=config.sortList[j],o=config.headerList[s[0]];if(s[0]==i){o.count=s[1];o.count++;s[1]=o.count%2;}}}else{config.sortList.push([i,this.order]);}};setTimeout(function(){setHeadersCss($this[0],$headers,config.sortList,sortCSS);appendToTable($this[0],multisort($this[0],config.sortList,cache));},1);return false;}}).mousedown(function(){if(config.cancelSelection){this.onselectstart=function(){return false};return false;}});$this.bind("update",function(){var me=this;setTimeout(function(){me.config.parsers=buildParserCache(me,$headers);cache=buildCache(me);},1);}).bind("updateCell",function(e,cell){var config=this.config;var pos=[(cell.parentNode.rowIndex-1),cell.cellIndex];cache.normalized[pos[0]][pos[1]]=config.parsers[pos[1]].format(getElementText(config,cell),cell);}).bind("sorton",function(e,list){$(this).trigger("sortStart");config.sortList=list;var sortList=config.sortList;updateHeaderSortCount(this,sortList);setHeadersCss(this,$headers,sortList,sortCSS);appendToTable(this,multisort(this,sortList,cache));}).bind("appendCache",function(){appendToTable(this,cache);}).bind("applyWidgetId",function(e,id){getWidgetById(id).format(this);}).bind("applyWidgets",function(){applyWidget(this);});if($.metadata&&($(this).metadata()&&$(this).metadata().sortlist)){config.sortList=$(this).metadata().sortlist;}if(config.sortList.length>0){$this.trigger("sorton",[config.sortList]);}applyWidget(this);});};this.addParser=function(parser){var l=parsers.length,a=true;for(var i=0;i<l;i++){if(parsers[i].id.toLowerCase()==parser.id.toLowerCase()){a=false;}}if(a){parsers.push(parser);};};this.addWidget=function(widget){widgets.push(widget);};this.formatFloat=function(s){var i=parseFloat(s);return(isNaN(i))?0:i;};this.formatInt=function(s){var i=parseInt(s);return(isNaN(i))?0:i;};this.isDigit=function(s,config){return/^[-+]?\d*$/.test($.trim(s.replace(/[,.']/g,'')));};this.clearTableBody=function(table){if($.browser.msie){function empty(){while(this.firstChild)this.removeChild(this.firstChild);}empty.apply(table.tBodies[0]);}else{table.tBodies[0].innerHTML="";}};}});$.fn.extend({tablesorter:$.tablesorter.construct});var ts=$.tablesorter;ts.addParser({id:"text",is:function(s){return true;},format:function(s){return $.trim(s.toLocaleLowerCase());},type:"text"});ts.addParser({id:"digit",is:function(s,table){var c=table.config;return $.tablesorter.isDigit(s,c);},format:function(s){return $.tablesorter.formatFloat(s);},type:"numeric"});ts.addParser({id:"currency",is:function(s){return/^[£$€?.]/.test(s);},format:function(s){return $.tablesorter.formatFloat(s.replace(new RegExp(/[£$€]/g),""));},type:"numeric"});ts.addParser({id:"ipAddress",is:function(s){return/^\d{2,3}[\.]\d{2,3}[\.]\d{2,3}[\.]\d{2,3}$/.test(s);},format:function(s){var a=s.split("."),r="",l=a.length;for(var i=0;i<l;i++){var item=a[i];if(item.length==2){r+="0"+item;}else{r+=item;}}return $.tablesorter.formatFloat(r);},type:"numeric"});ts.addParser({id:"url",is:function(s){return/^(https?|ftp|file):\/\/$/.test(s);},format:function(s){return jQuery.trim(s.replace(new RegExp(/(https?|ftp|file):\/\//),''));},type:"text"});ts.addParser({id:"isoDate",is:function(s){return/^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}$/.test(s);},format:function(s){return $.tablesorter.formatFloat((s!="")?new Date(s.replace(new RegExp(/-/g),"/")).getTime():"0");},type:"numeric"});ts.addParser({id:"percent",is:function(s){return/\%$/.test($.trim(s));},format:function(s){return $.tablesorter.formatFloat(s.replace(new RegExp(/%/g),""));},type:"numeric"});ts.addParser({id:"usLongDate",is:function(s){return s.match(new RegExp(/^[A-Za-z]{3,10}\.? [0-9]{1,2}, ([0-9]{4}|'?[0-9]{2}) (([0-2]?[0-9]:[0-5][0-9])|([0-1]?[0-9]:[0-5][0-9]\s(AM|PM)))$/));},format:function(s){return $.tablesorter.formatFloat(new Date(s).getTime());},type:"numeric"});ts.addParser({id:"shortDate",is:function(s){return/\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/.test(s);},format:function(s,table){var c=table.config;s=s.replace(/\-/g,"/");if(c.dateFormat=="us"){s=s.replace(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/,"$3/$1/$2");}else if(c.dateFormat=="uk"){s=s.replace(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/,"$3/$2/$1");}else if(c.dateFormat=="dd/mm/yy"||c.dateFormat=="dd-mm-yy"){s=s.replace(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2})/,"$1/$2/$3");}return $.tablesorter.formatFloat(new Date(s).getTime());},type:"numeric"});ts.addParser({id:"time",is:function(s){return/^(([0-2]?[0-9]:[0-5][0-9])|([0-1]?[0-9]:[0-5][0-9]\s(am|pm)))$/.test(s);},format:function(s){return $.tablesorter.formatFloat(new Date("2000/01/01 "+s).getTime());},type:"numeric"});ts.addParser({id:"metadata",is:function(s){return false;},format:function(s,table,cell){var c=table.config,p=(!c.parserMetadataName)?'sortValue':c.parserMetadataName;return $(cell).metadata()[p];},type:"numeric"});ts.addWidget({id:"zebra",format:function(table){if(table.config.debug){var time=new Date();}var $tr,row=-1,odd;$("tr:visible",table.tBodies[0]).each(function(i){$tr=$(this);if(!$tr.hasClass(table.config.cssChildRow))row++;odd=(row%2==0);$tr.removeClass(table.config.widgetZebra.css[odd?0:1]).addClass(table.config.widgetZebra.css[odd?1:0])});if(table.config.debug){$.tablesorter.benchmark("Applying Zebra widget",time);}}});})(jQuery);]]></data>
                   </item>
                   <item key="default"></item>
                   <item key="id">jquery.tablesorter.min.js</item>
@@ -5196,7 +5452,7 @@ function onKeyUpZMSTableDivContenteditable() {
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="image/gif" filename="asc.gif" type="file">b'622734373439343633383339363131353030303430303830303030303233326433306666666666663231663930343031303030303031303032633030303030303030313530303034303030303032306438633166613030626538636664613962363764313662323432643030336227'</data>
+                    <data content_type="image/gif" filename="asc.gif" type="file">47494638396115000400800000232d30ffffff21f90401000001002c000000001500040000020d8c1fa00be8cfda9b67d16b242d003b</data>
                   </item>
                   <item key="default"></item>
                   <item key="id">small_asc.gif</item>
@@ -5214,7 +5470,7 @@ function onKeyUpZMSTableDivContenteditable() {
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="image/gif" filename="desc.gif" type="file">b'622734373439343633383339363131353030303430303830303030303233326433306666666666663231663930343031303030303031303032633030303030303030313530303034303030303032306438633866303163396164623039633833353433323861353930313030336227'</data>
+                    <data content_type="image/gif" filename="desc.gif" type="file">47494638396115000400800000232d30ffffff21f90401000001002c000000001500040000020d8c8f01c9adb09c8354328a5901003b</data>
                   </item>
                   <item key="default"></item>
                   <item key="id">small_desc.gif</item>
@@ -5232,7 +5488,7 @@ function onKeyUpZMSTableDivContenteditable() {
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="image/gif" filename="bg.gif" type="file">b'6227343734393436333833393631313530303039303038303030303032333264333066666666666632316639303430313030303030313030326330303030303030303135303030393030303030323137386338663830636230396461363237383534333238616164646530363537336536353630663738633839353530303030336227'</data>
+                    <data content_type="image/gif" filename="bg.gif" type="file">47494638396115000900800000232d30ffffff21f90401000001002c00000000150009000002178c8f80cb09da627854328aadde06573e6560f78c895500003b</data>
                   </item>
                   <item key="default"></item>
                   <item key="id">small.gif</item>
@@ -5297,15 +5553,15 @@ from Products.zms import standard
 
 REQUEST = zmscontext.REQUEST
 table = zmscontext.attr('table')
-ncols = max([len(x) for x in table])
-weights = [1 for x in range(ncols)]
+ncols = max(map(lambda x: len(x), table))
+weights = map(lambda x: 1, range( ncols))
 for row in table:
     i = 0
     for cell in row:
         weight = len(standard.re_sub('<(.*?)>', '',standard.dt_exec(zmscontext,cell.get('content',''))))
         weights[i] = weights[i] + weight
         i += 1
-return [int((x*100.0)/sum(weights)) for x in weights]
+return map(lambda x: int((x*100.0)/sum(weights)), weights)
 
 # --// EO widths //--
 ]]>
@@ -5408,12 +5664,13 @@ if key.startswith('table_'):
 <div class="table-responsive" tal:define="global
 		zmscontext options/zmscontext;
 		standard      modules/Products.zms/standard;
-		rteformats    python:[x for x in here.getTextFormats(request) if str(x.getRichedit())=='1']; 
+		Std           modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br;
+		rteformats    python:filter(lambda x: str(x.getRichedit())=='1',here.getTextFormats(request)); 
 		table         python:zmscontext.attr('table');
 		sortable      python:int(zmscontext.attr('sortable') in [1,True]);
 		cols          python:zmscontext.attr('cols');
-		summary       python:zmscontext.attr('attr_dc_description');
-		caption       python:zmscontext.attr('caption');
+		summary       python:unicode(zmscontext.attr('attr_dc_description'),'utf-8');
+		caption       python:unicode(zmscontext.attr('caption'),'utf-8');
 		table_type    python:zmscontext.attr('type');
 		resourceurl    python:'%s/%s.'%(zmscontext.metaobj_manager.absolute_url(),zmscontext.meta_id)">
 	<tal:block tal:condition="python:sortable and request.get('ZMSTable.standard_html',True)">
@@ -5476,7 +5733,7 @@ if key.startswith('table_'):
 				</tal:block>
 			</tal:block>
 		</tal:block>
-		<tal:block tal:condition="d">
+		<tal:block tal:condition="python:len(d.keys())>0">
 			<tal:block tal:content="structure python:'<style type=\042text/css\042>'"></tal:block>
 				<tal:block tal:repeat="k python:d.keys()">
 							table#<tal:block tal:content="python:zmscontext.id"></tal:block> tr th:nth-child(<tal:block tal:content="k"></tal:block>), 
@@ -5504,8 +5761,8 @@ if key.startswith('table_'):
 							pattern       python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
 							replacement   python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
 							content       python:standard.re_sub(pattern,replacement,column.get('content',''));
-							content       python:[content,content.replace('\n','%3Cbr/>')][format==''];
-							col_text      python:[standard.dt_exec(zmscontext,zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in [x.getId() for x in rteformats]];
+							content       python:[content,newline_to_br(content)][format==''];
+							col_text      python:[standard.dt_exec(zmscontext,zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in map(lambda x: x.getId(),rteformats)];
 							col_text      python:zmscontext.validateInlineLinkObj(col_text);
 							col_text      python:standard.re_sub('^(&nbsp\073)','',col_text);
 							col_text      python:standard.re_sub('^<p>((\\w|\\W)*?)</p>$','\\1',col_text)">
@@ -5566,7 +5823,7 @@ if key.startswith('table_'):
           <item key="id">ZMSTable</item>
           <item key="name">ZMSTable</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">3.2.10</item>
+          <item key="revision">3.2.11</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -5716,6 +5973,10 @@ if teaserElmnts:
       method_result = method(teaserElmnt,request)
     else:
       method_result = teaserElmnt.getBodyContent(request)
+    try:
+      method_result = unicode(method_result,'utf-8')
+    except:
+      pass
     print(method_result)
   print('</div><!-- .ZMSTeaserContainer -->')
 
@@ -6269,8 +6530,8 @@ return constraints
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext;
-		text          python:zmscontext.getText(request);
-		format        python:zmscontext.attr('format');
+		text          python:unicode(zmscontext.getText(request),'utf-8','ignore');
+		format        python:unicode(zmscontext.attr('format'),'utf-8');
 		renderedText  python:zmscontext.renderText(format,'text',text,request,zmscontext.id)"
 		tal:content="structure renderedText">
 	The text

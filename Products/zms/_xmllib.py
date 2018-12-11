@@ -546,7 +546,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
       xml.append(' type="file"')
       xml.append('>')
       if content_type.startswith('text/') or content_type in ['application/css','application/javascript']:
-        xml.append('<![CDATA[%s]]>' % str(value.data))
+        xml.append('<![CDATA[%s]]>' % str(value.data,'utf-8'))
       else:
         xml.append(standard.bin2hex(value.data))
       xml.append('</%s>' % tagname)

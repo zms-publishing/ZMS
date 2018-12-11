@@ -1651,8 +1651,8 @@ return ''
 <tal:block tal:define="global
 		zmscontext options/zmscontext;
 		subclass      python:[zmscontext.meta_id];
-		text          python:unicode(zmscontext.getText(request),'utf-8');
-		format        python:unicode(zmscontext.attr('format'),'utf-8');
+		text          python:zmscontext.getText(request);
+		format        python:zmscontext.attr('format');
 		textclass     python:'text';
 		displaytype   python:zmscontext.dctDisplaytype.get(str(zmscontext.attr('displaytype')),'left');
 		align         python:zmscontext.attr('align');
@@ -2314,7 +2314,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
   </tal:block>
   <div tal:condition="python:len(subclass)>0"
        tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)"
-       tal:content="structure python:unicode(''.join(map(lambda x:x.renderShort(request),zmscontext.filteredChildNodes(request,'ZMSLinkElement'))),'utf-8')">
+       tal:content="structure python:''.join(map(lambda x:x.renderShort(request),zmscontext.filteredChildNodes(request,'ZMSLinkElement')))">
     The content
   </div>
 </tal:block>
@@ -3361,7 +3361,7 @@ $(function() {
 			<div class="panel" tal:attributes="class python:' '.join(['panel'])">
 				<h3 class="panel-title">
 					<a tal:attributes="href python:childNode.getHref2IndexHtml(request,deep=False); class python:childNode.meta_id;">
-						<span class="title" tal:content="python:unicode(childNode.getTitle(request),'utf-8')">the title</span>
+						<span class="title" tal:content="python:childNode.getTitle(request)">the title</span>
 					</a>
 				</h3><!-- /.panel-title -->
 			</div><!-- /.panel -->
@@ -4219,8 +4219,8 @@ zmscontext.attr('text',text)
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext;
-		text          python:unicode(zmscontext.getText(request),'utf-8');
-		format        python:unicode(zmscontext.attr('format'),'utf-8');
+		text          python:zmscontext.getText(request);
+		format        python:zmscontext.attr('format');
 		renderedText  python:zmscontext.renderText(format,'text',text,request,zmscontext.id)"
 		tal:content="structure renderedText">
 	The text
@@ -5669,8 +5669,8 @@ if key.startswith('table_'):
 		table         python:zmscontext.attr('table');
 		sortable      python:int(zmscontext.attr('sortable') in [1,True]);
 		cols          python:zmscontext.attr('cols');
-		summary       python:unicode(zmscontext.attr('attr_dc_description'),'utf-8');
-		caption       python:unicode(zmscontext.attr('caption'),'utf-8');
+		summary       python:zmscontext.attr('attr_dc_description');
+		caption       python:zmscontext.attr('caption');
 		table_type    python:zmscontext.attr('type');
 		resourceurl    python:'%s/%s.'%(zmscontext.metaobj_manager.absolute_url(),zmscontext.meta_id)">
 	<tal:block tal:condition="python:sortable and request.get('ZMSTable.standard_html',True)">
@@ -5973,10 +5973,6 @@ if teaserElmnts:
       method_result = method(teaserElmnt,request)
     else:
       method_result = teaserElmnt.getBodyContent(request)
-    try:
-      method_result = unicode(method_result,'utf-8')
-    except:
-      pass
     print(method_result)
   print('</div><!-- .ZMSTeaserContainer -->')
 
@@ -6528,10 +6524,10 @@ return constraints
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- ZMSTextarea.standard_html -->
 
-<tal:block tal:define="global 
+<tal:block tal:define="
 		zmscontext options/zmscontext;
-		text          python:unicode(zmscontext.getText(request),'utf-8','ignore');
-		format        python:unicode(zmscontext.attr('format'),'utf-8');
+		text          python:zmscontext.getText(request);
+		format        python:zmscontext.attr('format');
 		renderedText  python:zmscontext.renderText(format,'text',text,request,zmscontext.id)"
 		tal:content="structure renderedText">
 	The text

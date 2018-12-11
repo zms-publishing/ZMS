@@ -3660,7 +3660,7 @@ tr.inactive * {
 </form>
 </div><!-- .ZMSRecordSet -->
 
-<div id="metaobj_recordset_main_grid" tal:content="structure python:here.zmi_icon(name='icon-spinner')"></div>
+<div id="metaobj_recordset_main_grid" tal:content="structure python:zmscontext.zmi_icon(name='icon-spinner')"></div>
 
 		</tal:block>
 
@@ -3787,7 +3787,7 @@ attr_ids = [x['id'] for x in zmscontext.attr('record_attrs')]+['change_uid','cha
 buff = {}
 for childNode in zmscontext.getChildNodes(request):
   meta_id = childNode.meta_id
-  if not buff.has_key(meta_id):
+  if not meta_id in buff:
     buff[meta_id] = {}
     for attr_id in attr_ids:
       objAttr = childNode.getObjAttr(attr_id)

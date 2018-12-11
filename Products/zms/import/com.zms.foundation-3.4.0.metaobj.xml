@@ -194,7 +194,7 @@
 			<col width="2em"/>
 		</colgroup>
 		<tbody tal:define="prefix python:'%s.permalink.'%zmscontext.meta_id;
-			keys python:filter(lambda x:x.startswith(prefix),zmscontext.getConfProperties().keys());
+			keys python:[x for x in zmscontext.getConfProperties() if x.startswith(prefix)];
 			dummy0 python:keys.sort();">
 		<tal:block tal:repeat="key keys">
 		<tr tal:define="id python:key[len(prefix):]">
@@ -287,7 +287,7 @@ request = zmscontext.REQUEST
 if request.has_key('permalink_key__') and request.has_key('permalink_val__'):
   prefix = '%s.permalink.'%zmscontext.meta_id
   # delete all conf-properties
-  for key in filter(lambda x:x.startswith(prefix),zmscontext.getConfProperties()):
+  for key in [x for x in zmscontext.getConfProperties() if x.startswith(prefix)]:
     zmscontext.delConfProperty(key)
   # set new conf-properties
   reqprefix = 'permalink_key_'
@@ -1946,7 +1946,7 @@ return context.str_json(result)
 			<option value="" tal:content="python:'--- %s ---'%zmscontext.getLangStr('TAB_HISTORY',request['lang'])">the history</option>
 			<tal:block tal:define="global 
 					change_history python:zmscontext.attr('change_history');
-					rchange_history python:map(lambda x: change_history[len(change_history)-(x+1)], range(len(change_history)))"
+					rchange_history python:[change_history[len(change_history)-(x+1)] for x in range(len(change_history))]"
 					tal:repeat="history rchange_history">
 				<option
 						tal:attributes="value python:'%i.%i.%i %s'%(history['master_version'],history['major_version'],0,zmscontext.getLangFmtDate(history['version_dt'],request['lang'],'SHORTDATETIME_FMT'))" 
@@ -2314,7 +2314,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
   </tal:block>
   <div tal:condition="python:len(subclass)>0"
        tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)"
-       tal:content="structure python:''.join(map(lambda x:x.renderShort(request),zmscontext.filteredChildNodes(request,'ZMSLinkElement')))">
+       tal:content="structure python:''.join([x.renderShort(request) for x in zmscontext.filteredChildNodes(request,'ZMSLinkElement')])">
     The content
   </div>
 </tal:block>
@@ -4307,7 +4307,7 @@ zmscontext.attr('text',text)
 		<tal:block tal:content="python:zmscontext.connection_id">the connection-id</tal:block>
 	</h4>
 	<ul>
-		<li tal:repeat="table python:filter(lambda x:x['type']=='table',zmscontext.getEntities())">
+		<li tal:repeat="table python:[x for x in zmscontext.getEntities() if x['type']=='table']">
 			<a tal:attributes="href python:'%s/manage_main?qentity=%s'%(zmscontext.id,table['id'])" tal:content="table/id">the table</a>
 		</li>
 	</ul>
@@ -4479,7 +4479,7 @@ zmscontext.attr('text',text)
 	<select class="form-control" style="background-color: aliceblue;"
 			name=":action" tal:attributes="onchange python:'this.name=\':action\';;location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
 		<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type(request)">----- Insert -----</option>
-		<tal:block tal:repeat="meta_type python:filter(lambda x:x['name'].find('ZMS')<>0,standard.sort_list(zmscontext.filtered_meta_types(),'name'))">
+		<tal:block tal:repeat="meta_type python:[x for x in standard.sort_list(zmscontext.filtered_meta_types(),'name') if x['name'].find('ZMS')<>0]">
 			<option tal:attributes="value python:meta_type['action']" tal:content="python:meta_type['name']">the name</option>
 		</tal:block>
 	</select>
@@ -4491,7 +4491,7 @@ zmscontext.attr('text',text)
 ################################################################################
 -->
 
-<tal:block tal:define="global items python:filter(lambda x:x[1].meta_type.find('ZMS')<>0,zmscontext.objectItems())">
+<tal:block tal:define="global items python:[x for x in zmscontext.objectItems() if x[1].meta_type.find('ZMS')<>0]">
 <tal:block tal:condition="python:len(items)>0">
 <table class="table table-striped">
 <thead>
@@ -5553,15 +5553,15 @@ from Products.zms import standard
 
 REQUEST = zmscontext.REQUEST
 table = zmscontext.attr('table')
-ncols = max(map(lambda x: len(x), table))
-weights = map(lambda x: 1, range( ncols))
+ncols = max([len(x) for x in table])
+weights = [1 for x in range( ncols)]
 for row in table:
     i = 0
     for cell in row:
         weight = len(standard.re_sub('<(.*?)>', '',standard.dt_exec(zmscontext,cell.get('content',''))))
         weights[i] = weights[i] + weight
         i += 1
-return map(lambda x: int((x*100.0)/sum(weights)), weights)
+return [int((x*100.0)/sum(weights)) for x in weights]
 
 # --// EO widths //--
 ]]>
@@ -5665,7 +5665,7 @@ if key.startswith('table_'):
 		zmscontext options/zmscontext;
 		standard      modules/Products.zms/standard;
 		Std           modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br;
-		rteformats    python:filter(lambda x: str(x.getRichedit())=='1',here.getTextFormats(request)); 
+		rteformats    python:[x for x in here.getTextFormats(request) if str(x.getRichedit())=='1']; 
 		table         python:zmscontext.attr('table');
 		sortable      python:int(zmscontext.attr('sortable') in [1,True]);
 		cols          python:zmscontext.attr('cols');
@@ -5762,7 +5762,7 @@ if key.startswith('table_'):
 							replacement   python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
 							content       python:standard.re_sub(pattern,replacement,column.get('content',''));
 							content       python:[content,newline_to_br(content)][format==''];
-							col_text      python:[standard.dt_exec(zmscontext,zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in map(lambda x: x.getId(),rteformats)];
+							col_text      python:[standard.dt_exec(zmscontext,zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in [x.getId() for x in rteformats]];
 							col_text      python:zmscontext.validateInlineLinkObj(col_text);
 							col_text      python:standard.re_sub('^(&nbsp\073)','',col_text);
 							col_text      python:standard.re_sub('^<p>((\\w|\\W)*?)</p>$','\\1',col_text)">

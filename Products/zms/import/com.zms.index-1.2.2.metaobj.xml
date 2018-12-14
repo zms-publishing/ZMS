@@ -388,7 +388,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                 href = re.sub(domain,path,href)
               writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline href=%s'%href)
               if href.startswith('.') or href.startswith('/'):
-                nf = re.compile('(.*?)\\?op=not_found&url={\\$(.*?)}').findall(href)
+                nf = re.compile('(.*?)\\?error_type=NotFound&op=not_found&url={\\$(.*?)}').findall(href)
                 if nf:
                   writeDebug(node,'[ZMSIndexZCatalog_func_] nf=%s'%str(nf))
                   url = nf[0][1]

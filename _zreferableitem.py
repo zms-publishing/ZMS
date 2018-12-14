@@ -80,7 +80,7 @@ def getInternalLinkUrl(self, url, ob):
   self.startMeasurement('%s.getInternalLinkUrl'%self.meta_id)
   request = self.REQUEST
   if ob is None:
-    index_html = './index_%s.html?op=not_found&url=%s'%(request.get('lang',self.getPrimaryLanguage()),str(url))
+    index_html = './index_%s.html?error_type=NotFound&op=not_found&url=%s'%(request.get('lang',self.getPrimaryLanguage()),str(url))
   else:
     # Contextualized index_html.
     context = request.get('ZMS_THIS',self)

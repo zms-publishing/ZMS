@@ -172,6 +172,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   ### Init ZMS object-model.
   _confmanager.initConf(obj, 'com.zms.foundation', remote=False)
   _confmanager.initConf(obj, 'com.zms.foundation.theme', remote=False)
+  _confmanager.initConf(obj, 'com.zms.index', remote=False)
 
   ### Init default-configuration.
   _confmanager.initConf(obj, 'default', remote=False)
@@ -232,19 +233,8 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
 
     ##### Configuration ####
 
-    #-- Index
-    if REQUEST.get('specobj_index', 0) == 1:
-      _confmanager.initConf(obj, 'com.zms.index', remote=False)
-
     #-- Search
     initContent(obj, 'com.zms.search.content.xml', REQUEST)
-
-    #-- QUnit
-    if REQUEST.get('specobj_qunit', 0) == 1:
-      # Init configuration.
-      _confmanager.initConf(obj, 'com.zms.test', remote=False)
-      # Init content.
-      initContent(obj, 'com.zms.test.content.xml', REQUEST)
 
     # Initialize catalogs.
     obj.getCatalogAdapter().reindex_all()

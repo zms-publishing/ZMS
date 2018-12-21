@@ -196,8 +196,10 @@ import uuid
 
 def ZMSIndexZCatalog_func_( self, *args, **kwargs):
 
-  zmsindex = self.zmsindex
-  zmsindex_index_names = [x for x in zmsindex.operator_getattr(zmsindex,'index_names','').split(',') if x]
+  zmsindex = getattr(self,'zmsindex',None)
+  zmsindex_index_names = []
+  if zmsindex:
+    zmsindex_index_names.extend([x for x in getattr(zmsindex,'index_names','').split(',') if x])
   index_names = ['id','meta_id','get_uid'] + ['zcat_%s'%x for x in zmsindex_index_names]
   request = self.REQUEST
   logger = logging.getLogger('event.ZMS')
@@ -252,7 +254,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     ##############################################################################
     if func_ == 'get_uid':
       forced = args[1]
-      if forced or '_uid' not in self.__dict__.keys() or getattr(self,'_uid',None) is None: 
+      if forced or '_uid' not in self.__dict__ or getattr(self,'_uid',None) is None: 
         self._uid = str(uuid.uuid4())
       return 'uid:%s'%self._uid
     
@@ -299,7 +301,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         if node.meta_id == 'ZMS':
           node.setConfProperty('ExtensionPoint.ZMSObject.get_uid','%s.get_uid'%self.meta_id)
         catalog_object(catalog,node)
-        for childNode in node.objectValues(self.dGlobalAttrs.keys()):
+        for childNode in node.objectValues(list(self.dGlobalAttrs)):
           l.extend(visit(childNode))
         if node.meta_id == 'ZMS':
           for childNode in node.getPortalClients():
@@ -362,7 +364,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               childNode = getattr(ref,id,None)
               try:
                 if (childNode is None and ref is not None) and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-                  for o in filter(lambda x:x.meta_type not in ['External Method'],ref.objectValues(self.dGlobalAttrs.keys())):
+                  for o in [x for x in ref.objectValues(list(self.dGlobalAttrs)) if x.meta_type not in ['External Method']]:
                     for l in o.getLanguages():
                       r = {'lang':l}
                       try:
@@ -377,7 +379,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               except:
                 ref= None
               ref = childNode
-            if ref is not None and not type(ref) is str and ref.meta_type not in ['Folder']+self.dGlobalAttrs.keys():
+            if ref is not None and not type(ref) is str and ref.meta_type not in ['Folder']+list(self.dGlobalAttrs):
               ref = None
             if ref is None:
               break
@@ -396,7 +398,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             if ref is None and d.has_key('href'):
               href = d['href']
               href = re.sub('http://localhost:(\\d)*','',href)
-              for domain in domains.keys():
+              for domain in domains:
                 path = domains[domain]
                 href = re.sub(domain,path,href)
               writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline href=%s'%href)
@@ -418,7 +420,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               ref.registerRefObj(node) 
               old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
               title = f[1]
-              new = '<a %s>%s</a>'%(' '.join(map(lambda x:'%s="%s"'%(x,d[x]),d.keys())),title)
+              new = '<a %s>%s</a>'%(' '.join(['%s="%s"'%(x,d[x]) for x in d]),title)
               if old != new:
                 writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline old=%s'%old)
                 writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline new=%s'%new)
@@ -449,7 +451,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           l.append(1)
           if node.meta_id!='ZMSLinkElement' and node.getType()=='ZMSRecordSet':
             objAttrs = node.getMetaobjAttrs(node.meta_id)
-            key = filter(lambda x:x['type']=='list',objAttrs)[0]['id']
+            key = [x for x in objAttrs if x['type']=='list'][0]['id']
             for obj_vers in node.getObjVersions():
               l = self.operator_getattr(obj_vers,key,[])
               for r in l:
@@ -468,13 +470,13 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                         r[objAttr['id']] = v
               self.operator_setattr(obj_vers,key,l)
           else:
-            for key in filter(lambda x:not x.startswith('manage'),node.getObjAttrs().keys()):
+            for key in [x for x in node.getObjAttrs() if not x.startswith('manage')]:
               objAttr = node.getObjAttr(key)
               datatype = objAttr['datatype']
               if datatype in ['richtext','string','text','url']:
                 lang_suffixes = ['']
                 if objAttr['multilang']:
-                  lang_suffixes = map(lambda x:'_%s'%x,self.getLangIds())
+                  lang_suffixes = ['_%s'%x for x in self.getLangIds()]
                 for lang_suffix in lang_suffixes:
                   for obj_vers in node.getObjVersions():
                     v = self.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
@@ -487,7 +489,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                         v = handleUrl(node,v)
                       if o != v:
                         self.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
-          for childNode in node.objectValues(self.dGlobalAttrs.keys()):
+          for childNode in node.objectValues(list(self.dGlobalAttrs)):
             l.extend(visit(childNode))
           if node.meta_id == 'ZMS' and request.get('clients',0)==1:
             for childNode in node.getPortalClients():
@@ -587,7 +589,7 @@ elif url.startswith('{$') and url.endswith('}') and not (url.startswith('{$__') 
     query = {'home_id':docelmnt.getHome().id,'id':zmsid}
 q = zmscontext.zcatalog_index(query)
 try:
-  q = filter(lambda x:x['getPath'].find('/%s/content'%query['home_id'])>= 0,q)
+  q = [x for x in q if x['getPath'].find('/%s/content'%query['home_id'])>=0]
 except:
   pass
 ob = None
@@ -596,7 +598,7 @@ for r in q:
   l = zmspath[1:-1].split('/')
   ob = zmscontext
   try:
-    for id in filter(lambda x:len(x)>0,l):
+    for id in [x for x in l if x]:
       ob = getattr(ob,id,None)
     break
   except:
@@ -701,12 +703,13 @@ return uid
 ##
 # --// ObjectAdded //--
 
-zmscontext.writeBlock("[ZMSIndexZCatalog.ObjectAdded]: "+zmscontext.absolute_url())
+from Products.zms import standard
+standard.writeBlock(zmscontext,"[ZMSIndexZCatalog.ObjectAdded]: "+zmscontext.absolute_url())
 def traverse(node):
   # Create new uid.
   node.get_uid(True)
   # Catalog object.
-  node.writeBlock("ZMSIndexZCatalog.ObjectAdded: url=%s"%node.getPath())
+  standard.writeBlock(node,"ZMSIndexZCatalog.ObjectAdded: url=%s"%node.getPath())
   node.ZMSIndexZCatalog_func_(node,'catalog_object')
   # Traverse.
   for childNode in node.getChildNodes():
@@ -743,18 +746,19 @@ return True
 ##
 # --// ZMSIndexZCatalog.ObjectMoved //--
 
-zmscontext.writeBlock("[ZMSIndexZCatalog.ObjectMoved]: "+zmscontext.absolute_url())
+from Products.zms import standard
+standard.writeBlock(zmscontext,"[ZMSIndexZCatalog.ObjectMoved]: "+zmscontext.absolute_url())
 zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
 if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
   catalog = getattr(zmscontext,'zcatalog_index',None)
   if catalog is not None:
     def traverse(node):
       # Refresh index: add and remove.
-      node.writeBlock("[ZMSIndexZCatalog.ObjectMoved]: path=%s"%node.getPath())
+      standard.writeBlock(node,"[ZMSIndexZCatalog.ObjectMoved]: path=%s"%node.getPath())
       query = {'get_uid':node.get_uid()}
       row = catalog(query)
       for r in row:
-        node.writeBlock("[ZMSIndexZCatalog.ObjectMoved]: uncatalog_object url=%s"%r['getPath'])
+        standard.writeBlock(node,"[ZMSIndexZCatalog.ObjectMoved]: uncatalog_object url=%s"%r['getPath'])
         node.ZMSIndexZCatalog_func_(node,'uncatalog_object',r['getPath'])
       node.ZMSIndexZCatalog_func_(node,'catalog_object')
       # Traverse.
@@ -791,10 +795,11 @@ if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
 ##
 # --// ZMSIndexZCatalog.ObjectRemoved //--
 
-zmscontext.writeBlock("[ZMSIndexZCatalog.ObjectRemoved]: "+zmscontext.absolute_url())
+from Products.zms import standard
+standard.writeBlock(zmscontext,"[ZMSIndexZCatalog.ObjectRemoved]: "+zmscontext.absolute_url())
 def traverse(node):
   # Uncatalog object.
-  node.writeBlock("ZMSIndexZCatalog.ObjectRemoved: url=%s"%node.getPath())
+  standard.writeBlock(node,"ZMSIndexZCatalog.ObjectRemoved: url=%s"%node.getPath())
   node.ZMSIndexZCatalog_func_(node,'uncatalog_object',node.getPath())
   # Traverse.
   for childNode in node.getChildNodes():

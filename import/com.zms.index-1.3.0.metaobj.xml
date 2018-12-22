@@ -703,13 +703,10 @@ return uid
 ##
 # --// ObjectAdded //--
 
-from Products.zms import standard
-standard.writeBlock(zmscontext,"[ZMSIndexZCatalog.ObjectAdded]: "+zmscontext.absolute_url())
 def traverse(node):
   # Create new uid.
   node.get_uid(True)
   # Catalog object.
-  standard.writeBlock(node,"ZMSIndexZCatalog.ObjectAdded: url=%s"%node.getPath())
   node.ZMSIndexZCatalog_func_(node,'catalog_object')
   # Traverse.
   for childNode in node.getChildNodes():
@@ -746,19 +743,15 @@ return True
 ##
 # --// ZMSIndexZCatalog.ObjectMoved //--
 
-from Products.zms import standard
-standard.writeBlock(zmscontext,"[ZMSIndexZCatalog.ObjectMoved]: "+zmscontext.absolute_url())
 zmsindex = getattr(zmscontext.getRootElement(),'zmsindex',None)
 if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
   catalog = getattr(zmscontext,'zcatalog_index',None)
   if catalog is not None:
     def traverse(node):
       # Refresh index: add and remove.
-      standard.writeBlock(node,"[ZMSIndexZCatalog.ObjectMoved]: path=%s"%node.getPath())
       query = {'get_uid':node.get_uid()}
       row = catalog(query)
       for r in row:
-        standard.writeBlock(node,"[ZMSIndexZCatalog.ObjectMoved]: uncatalog_object url=%s"%r['getPath'])
         node.ZMSIndexZCatalog_func_(node,'uncatalog_object',r['getPath'])
       node.ZMSIndexZCatalog_func_(node,'catalog_object')
       # Traverse.
@@ -795,11 +788,8 @@ if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
 ##
 # --// ZMSIndexZCatalog.ObjectRemoved //--
 
-from Products.zms import standard
-standard.writeBlock(zmscontext,"[ZMSIndexZCatalog.ObjectRemoved]: "+zmscontext.absolute_url())
 def traverse(node):
   # Uncatalog object.
-  standard.writeBlock(node,"ZMSIndexZCatalog.ObjectRemoved: url=%s"%node.getPath())
   node.ZMSIndexZCatalog_func_(node,'uncatalog_object',node.getPath())
   # Traverse.
   for childNode in node.getChildNodes():

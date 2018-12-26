@@ -402,7 +402,7 @@ class ZMS(
       """
       from pkg_resources import WorkingSet, Requirement
       zms = WorkingSet().find(Requirement.parse('ZMS3'))
-      pth = _fileutil.getOSPath(package_home(globals()))
+      pth = standard.getPRODUCT_HOME()
       
       file = open(_fileutil.getOSPath(pth+'/version.txt'),'r')
       version_txt = file.read()

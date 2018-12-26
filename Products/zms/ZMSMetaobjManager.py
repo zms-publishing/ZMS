@@ -140,7 +140,7 @@ class ZMSMetaobjManager(object):
               del d[dk]
           for attr in d['attrs']:
             syncZopeMetaobjAttr(self, o, attr)
-            mandatory_keys = ['id', 'name', 'type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
+            mandatory_keys = ['id', 'name', 'type', 'meta_type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
             if attr['type']=='interface':
               attr['name'] = attr['id']
             if attr['type']=='constant':
@@ -225,7 +225,9 @@ class ZMSMetaobjManager(object):
           newMandatory = attr.get('mandatory', 0)
           newMultilang = attr.get('multilang', 0)
           newRepetitive = attr.get('repetitive', 0)
-          newType = attr['type']
+          newType = attr.get('meta_type','')
+          if not newType:
+            newType = attr['type']
           # Optional.
           newKeys = attr.get('keys', [])
           newCustom = attr.get('custom', '')
@@ -302,7 +304,7 @@ class ZMSMetaobjManager(object):
         attrs = []
         for attr_id in [x['id'] for x in ob['attrs']]:
           attr = self.getMetaobjAttr(id, attr_id)
-          mandatory_keys = ['id', 'name', 'type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
+          mandatory_keys = ['id', 'name', 'type', 'meta_type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
           if attr['type']=='interface':
             attr['name'] = attr['id']
           if attr['type']=='constant':

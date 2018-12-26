@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?zms version='ZMS3-3.4.2dev (snapshot #)'?>
+<?zms version='ZMS4'?>
 <list>
   <item type="dictionary">
     <dictionary>
@@ -33,6 +33,7 @@
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">titlealt</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title.Alt</item>
                   <item key="repetitive" type="int">0</item>
@@ -48,6 +49,7 @@
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">title</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title</item>
                   <item key="repetitive" type="int">0</item>
@@ -111,6 +113,7 @@
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type">attr_dc_description</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Description</item>
                   <item key="repetitive" type="int">0</item>
@@ -126,6 +129,7 @@
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type">attr_dc_subject</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Subject</item>
                   <item key="repetitive" type="int">0</item>
@@ -404,6 +408,7 @@ if request.has_key('permalink_key__') and request.has_key('permalink_val__'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">titlealt</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title.Alt</item>
                   <item key="repetitive" type="int">0</item>
@@ -419,6 +424,7 @@ if request.has_key('permalink_key__') and request.has_key('permalink_val__'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">title</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title</item>
                   <item key="repetitive" type="int">0</item>
@@ -482,6 +488,7 @@ if request.has_key('permalink_key__') and request.has_key('permalink_val__'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type">attr_dc_description</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Description</item>
                   <item key="repetitive" type="int">0</item>
@@ -497,6 +504,7 @@ if request.has_key('permalink_key__') and request.has_key('permalink_val__'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type">attr_dc_subject</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Subject</item>
                   <item key="repetitive" type="int">0</item>
@@ -688,6 +696,7 @@ div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">title</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title</item>
                   <item key="repetitive" type="int">0</item>
@@ -738,6 +747,7 @@ div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">titlealt</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title.Alt</item>
                   <item key="repetitive" type="int">0</item>
@@ -802,6 +812,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type">attr_dc_description</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Description</item>
                   <item key="repetitive" type="int">0</item>
@@ -1060,6 +1071,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">titlealt</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title.Alt</item>
                   <item key="repetitive" type="int">0</item>
@@ -1075,6 +1087,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">title</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title</item>
                   <item key="repetitive" type="int">0</item>
@@ -1138,6 +1151,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type">attr_dc_description</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Description</item>
                   <item key="repetitive" type="int">0</item>
@@ -1153,6 +1167,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type">attr_dc_subject</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Subject</item>
                   <item key="repetitive" type="int">0</item>
@@ -2416,6 +2431,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">titlealt</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title.Alt</item>
                   <item key="repetitive" type="int">0</item>
@@ -2431,6 +2447,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">title</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title</item>
                   <item key="repetitive" type="int">0</item>
@@ -2710,6 +2727,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type">attr_dc_description</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Description</item>
                   <item key="repetitive" type="int">0</item>
@@ -4393,6 +4411,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">titlealt</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title.Alt</item>
                   <item key="repetitive" type="int">0</item>
@@ -4408,6 +4427,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">title</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title</item>
                   <item key="repetitive" type="int">0</item>
@@ -4454,6 +4474,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type">attr_dc_description</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Description</item>
                   <item key="repetitive" type="int">0</item>
@@ -4634,6 +4655,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type">attr_dc_description</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Description</item>
                   <item key="repetitive" type="int">0</item>
@@ -6168,6 +6190,7 @@ return printed
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">title</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Title</item>
                   <item key="repetitive" type="int">0</item>

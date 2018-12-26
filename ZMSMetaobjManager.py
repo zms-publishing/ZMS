@@ -224,7 +224,9 @@ class ZMSMetaobjManager:
           newMandatory = attr.get('mandatory',0)
           newMultilang = attr.get('multilang',0)
           newRepetitive = attr.get('repetitive',0)
-          newType = attr['type']
+          newType = attr.get('meta_type','')
+          if not newType:
+            newType = attr['type']
           # Optional.
           newKeys = attr.get('keys',[])
           newCustom = attr.get('custom','')

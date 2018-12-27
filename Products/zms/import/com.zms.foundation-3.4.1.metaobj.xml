@@ -6315,7 +6315,7 @@ return zmscontext.attr('text')
 				
 				<div tal:condition="python:len(abstract)+len(url)>0" class="text">
 					<tal:block tal:content="structure abstract">The abstract</tal:block>
-					<tal:block tal:condition="python:len(abstract)>0 and len(url)>0" tal:content="structure python:here.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042 title=\042%s\042'%(url,title_url))">the url</tal:block>
+					<span class="HREF_MORE" tal:condition="python:len(abstract)>0 and len(url)>0" tal:content="structure python:here.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042 title=\042%s\042'%(url,title_url))">the url</span>
 				</div>
 				
 			</tal:block>
@@ -6394,7 +6394,7 @@ return zmscontext.attr('text')
           <item key="id">ZMSTeaserElement</item>
           <item key="name">ZMSTeaserElement</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">3.1.0</item>
+          <item key="revision">3.1.1</item>
           <item key="type">ZMSTeaserElement</item>
         </dictionary>
       </item>
@@ -6636,7 +6636,7 @@ return constraints
           <item key="id">com.zms.foundation</item>
           <item key="name">com.zms.foundation</item>
           <item key="package"></item>
-          <item key="revision">3.4.0</item>
+          <item key="revision">3.4.1</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

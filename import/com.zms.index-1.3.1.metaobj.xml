@@ -12,7 +12,7 @@
                 <dictionary>
                   <item key="custom"><![CDATA[<tal:block tal:define="
 		zmscontext options/zmscontext;
-		active python:zmscontext.getConfProperty('ExtensionPoint.ZMSObject.get_uid','')==zmscontext.meta_id;
+		active python:zmscontext.getConfProperty('ExtensionPoint.ZMSObject.get_uid','')=='%s.get_uid'%zmscontext.meta_id;
 		initialized python:'zcatalog_index' in zmscontext.getRootElement().getHome().objectIds();
 		uid python:request.form.get('uid','');
 		loglevels python:['DEBUG','INFO','ERROR'];">
@@ -23,21 +23,6 @@ function openWindow(url) {
 	return false;
 }
 </script>
-	<div class="form-group">
-		<label class="col-sm-2 control-label">Attributes</label>
-		<div class="col-sm-10">
-			<div class="input-group">
-				<tal:block tal:condition="python:request.has_key('zmsindex_index_names')">
-					<tal:block tal:define="value python:zmscontext.operator_setattr(zmscontext,'index_names',request.get('zmsindex_index_names'))"></tal:block>
-				</tal:block>
-				<input class="form-control" type="text" name="zmsindex_index_names" tal:attributes="value python:zmscontext.operator_getattr(zmscontext,'index_names','')"/>
-				<span class="input-group-btn">
-					<button class="btn btn-primary" name="btn" value="search"
-						onclick="$(this).parents('form').attr({action:self.location.href})" tal:content="structure python:zmscontext.zmi_icon(name='icon-save')">save</button>
-				</span>
-			</div><!-- .input-group -->
-		</div><!-- .col-sm-10 -->
-	</div><!-- .form-group -->
 	<div class="form-group">
 		<label class="col-sm-2 control-label">Index</label>
 		<div class="col-sm-10">
@@ -85,6 +70,25 @@ function openWindow(url) {
 		</div>
 	</div><!-- .form-group -->
 
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Attributes</label>
+		<div class="col-sm-5">
+			<div class="input-group">
+				<tal:block tal:condition="python:request.has_key('zmsindex_index_names')">
+					<tal:block tal:define="value python:zmscontext.operator_setattr(zmscontext,'index_names',request.get('zmsindex_index_names'))"></tal:block>
+				</tal:block>
+				<input class="form-control" type="text" name="zmsindex_index_names" 
+					placeholder="attr_dc_identifier_doi"
+					title="Enter comma separated names of meta-attributes"
+					tal:attributes="value python:zmscontext.operator_getattr(zmscontext,'index_names','')"/>
+				<span class="input-group-btn">
+					<button class="btn btn-primary" name="btn" value="save"
+						onclick="$(this).parents('form').attr({action:self.location.href})" tal:content="structure python:zmscontext.zmi_icon(name='icon-save')">save</button>
+				</span>
+			</div><!-- .input-group -->
+		</div><!-- .col-sm-5-->
+	</div><!-- .form-group -->
+
 	<div class="form-group" tal:condition="initialized">
 		<label class="col-sm-2 control-label">Uid</label>
 		<div class="col-sm-5">
@@ -119,17 +123,18 @@ function zmiResyncIndex() {
 				var uid = $input.val();
 				var data = {func_:'resync',url:uid,loglevel:$('#resync-loglevel').val()};
 				var $a = $input.next("a");
-				$a.after('<'+'span class="response"> '+$ZMI.icon('icon-spinner')+' <'+'/span>');
+				var btn_close = '<' + 'a class="close" data-dismiss="alert" href="#"' + '>' + '×' + '<' + '/a' + '>';
+				$a.after('<'+'span class="response">&nbsp;&nbsp;'+$ZMI.icon('icon-spinner icon-spin text-primary')+' <'+'/span>');
 				$.ajax({
 					url:"zmsindex/ZMSIndexZCatalog_func_",
 					data:data,
 					error: function (xhr, ajaxOptions, thrownError) {
-							$a.next('.response').addClass('text-danger').html('( '+thrownError+' )');
+							$a.next('.response').addClass('alert modal-content alert-danger text-danger').html( btn_close + '( '+thrownError+' )' );
 							i++;
 							fn();
 						},
 					success:function(response) {
-							$a.next('.response').addClass('text-success').html('( '+response+' )');
+							$a.next('.response').addClass('alert modal-content alert-success text-success').html( btn_close + '( '+response+' )' );
 							i++;
 							fn();
 						}
@@ -168,6 +173,36 @@ $(function() {
 				}});
 	});
 </script>
+<style>
+	#zmsindex .response.text-success,
+	#zmsindex .response.text-danger {
+		display: block;
+		position: fixed; 
+		z-index: 1000;
+		left: 125px;
+		top: 125px;
+		width: calc(100% - 250px);
+		height: calc(100vw - 250px);
+		overflow: scroll; 
+		font-size:80%;
+		white-space:pre;
+		background: #dff0d8;
+	}
+	#zmsindex .response.text-success .close,
+	#zmsindex .response.text-danger .close {
+		display:block;
+		padding: .5em;
+		position: absolute;
+		opacity: .5;
+		right: 0;
+		top: 0;
+		background: #dff0d8;
+	}
+	#zmsindex .response.text-danger,
+	#zmsindex .response.text-danger .close {
+		background-color: #f2dede;
+	}
+</style>
 
 </tal:block>]]>
                   </item>
@@ -318,7 +353,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         l = []
         l.append(1)
         writeInfo(self,'[ZMSIndexZCatalog_func_] activate_object %s'%node.getPath())
-        node.setConfProperty('ExtensionPoint.ZMSObject.get_uid',self.meta_id)
+        node.setConfProperty('ExtensionPoint.ZMSObject.get_uid','%s.get_uid'%self.meta_id)
         node.setConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath','%s.getRefObjPath'%self.meta_id)
         node.setConfProperty('ExtensionPoint.ZReferableItem.getLinkObj','%s.getLinkObj'%self.meta_id)
         return l

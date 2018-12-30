@@ -12,7 +12,7 @@
                 <dictionary>
                   <item key="custom"><![CDATA[<tal:block tal:define="
 		zmscontext options/zmscontext;
-		active python:zmscontext.getConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation','')==zmscontext.meta_id;
+		active python:zmscontext.getConfProperty('ExtensionPoint.ZMSObject.get_uid','')==zmscontext.meta_id;
 		initialized python:'zcatalog_index' in zmscontext.getRootElement().getHome().objectIds();
 		uid python:request.form.get('uid','');
 		loglevels python:['DEBUG','INFO','ERROR'];">
@@ -55,12 +55,12 @@ function openWindow(url) {
 				class="btn btn-danger col-sm-2" name="btn" style="margin-left:1em"
 				onclick="return openWindow('zmsindex/ZMSIndexZCatalog_func_?func_=reindex'+'&loglevel='+$('#reindex-loglevel').val());">Reindex
 			</button>
-			<button tal:condition="python: context.getDocumentElement().getConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation')==None"
+			<button tal:condition="python: context.getDocumentElement().getConfProperty('ExtensionPoint.ZMSObject.get_uid')==None"
 				title="ACTIVATE: Activate ZCatalog index for links."
 				class="btn btn-danger col-sm-2" name="btn" style="margin-left:1em"
 				onclick="return openWindow('zmsindex/ZMSIndexZCatalog_func_?func_=activate'+'&loglevel='+$('#reindex-loglevel').val());">Activate
 			</button>
-			<button tal:condition="python: context.getDocumentElement().getConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation')!=None"
+			<button tal:condition="python: context.getDocumentElement().getConfProperty('ExtensionPoint.ZMSObject.get_uid')!=None"
 				title="DEACTIVATE: Deactivate ZCatalog index for links."
 				class="btn btn-basic col-sm-2" name="btn" style="margin-left:1em"
 				onclick="return openWindow('zmsindex/ZMSIndexZCatalog_func_?func_=deactivate'+'&loglevel='+$('#reindex-loglevel').val());">Deactivate
@@ -173,10 +173,6 @@ $(function() {
                   </item>
                   <item key="default"></item>
                   <item key="id">interface0</item>
-                  <item key="keys" type="list">
-                    <list>
-                    </list>
-                  </item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">interface0</item>
@@ -322,7 +318,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         l = []
         l.append(1)
         writeInfo(self,'[ZMSIndexZCatalog_func_] activate_object %s'%node.getPath())
-        node.setConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation',self.meta_id)
+        node.setConfProperty('ExtensionPoint.ZMSObject.get_uid',self.meta_id)
         node.setConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath','%s.getRefObjPath'%self.meta_id)
         node.setConfProperty('ExtensionPoint.ZReferableItem.getLinkObj','%s.getLinkObj'%self.meta_id)
         return l
@@ -610,10 +606,6 @@ return zmsroot.storeReqBuff(url,ob)
                   </item>
                   <item key="default"></item>
                   <item key="id">getLinkObj</item>
-                  <item key="keys" type="list">
-                    <list>
-                    </list>
-                  </item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Extension-Point: Get link object]]></item>
@@ -646,10 +638,6 @@ return '{$%s}'%ref
                   </item>
                   <item key="default"></item>
                   <item key="id">getRefObjPath</item>
-                  <item key="keys" type="list">
-                    <list>
-                    </list>
-                  </item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Extension-Point: Get ref object path]]></item>
@@ -679,10 +667,6 @@ return uid
                   </item>
                   <item key="default"></item>
                   <item key="id">get_uid</item>
-                  <item key="keys" type="list">
-                    <list>
-                    </list>
-                  </item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Extension-Point: Get uid]]></item>
@@ -719,10 +703,6 @@ return True
                   </item>
                   <item key="default"></item>
                   <item key="id">ObjectAdded</item>
-                  <item key="keys" type="list">
-                    <list>
-                    </list>
-                  </item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: object added]]></item>
@@ -764,10 +744,6 @@ if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
                   </item>
                   <item key="default"></item>
                   <item key="id">ObjectMoved</item>
-                  <item key="keys" type="list">
-                    <list>
-                    </list>
-                  </item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: object moved]]></item>
@@ -801,15 +777,82 @@ traverse(zmscontext)
                   </item>
                   <item key="default"></item>
                   <item key="id">ObjectRemoved</item>
-                  <item key="keys" type="list">
-                    <list>
-                    </list>
-                  </item>
                   <item key="mandatory" type="int">0</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: object removed]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type">py</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "doi"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=
+##title=DOI-Redirect
+##
+# --// doi //--
+
+# README: To use redirecting short urls like /doi/10.1109/5.771073 or /doi/faq 
+# based on ZMSIndex, please add a meta-attribute 'attr_dc_identifier_doi' to the 
+# document nodes definition (ZMSFolder, ZMSDocument) and add this meta-attribute-
+# name to the ZMSIndex 'Attributes' list. You can fill the new attribute implicitly
+# with any other (existing) attribute value by declaring it's type as Py-Script 
+# and using following code snippet:
+# ---------------------
+#  from Products.zms import standard
+#  return standard.id_quote(zmscontext.attr('titlealt'))
+# ---------------------
+# After REINDEXING the ZMSIndex contains a new field index 'zcat_attr_dc_identifier_doi'. 
+# Based on this additional index any indexed string can be resolved as redirect to 
+# the path oft its containing document.
+
+from Products.zms import standard
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+zmscontext = context.content
+path_ = 'index_html'
+
+if request['traverse_subpath']:
+  path_ = standard.id_quote('_'.join(request['traverse_subpath']))
+
+catalog = context.zcatalog_index
+query = {'zcat_attr_dc_identifier_doi':path_}
+rows = catalog(query)
+
+for x in rows:
+  # ### test ####
+  # print x['get_uid']
+  # print context.content.getLinkObj('{$%s}'%x['get_uid'])
+  # print context.content.getLinkObj('{$%s}'%x['get_uid']).absolute_url()
+  # return printed
+  # #############
+  ob = zmscontext.getLinkObj('{$%s}'%x['get_uid'])
+  RESPONSE.redirect(ob.absolute_url())
+  return standard.FileFromData(zmscontext,ob.absolute_url())
+
+# Return a string identifying this script.
+return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
+
+# --// /doi //--
+]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">doi</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">DOI-Redirect</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type"><![CDATA[Script (Python)]]></item>
                 </dictionary>
               </item>
             </list>
@@ -838,7 +881,7 @@ traverse(zmscontext)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.3.0</item>
+          <item key="revision">1.3.1</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -857,7 +900,7 @@ traverse(zmscontext)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.3.0</item>
+          <item key="revision">1.3.1</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

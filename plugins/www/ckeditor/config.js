@@ -21,7 +21,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// @see http://ckeditor.com/apps/ckeditor/4.4.0/samples/plugins/toolbar/toolbar.html
 	config.toolbar = 'ZMSBasicToolbar';
 	config.toolbar_ZMSBasicToolbar = [
-		{ name: 'styles' },
+		{ name: 'styles',      items: [ 'Format' ] },
 		{ name: 'paragraph',   items: ['Bold','Italic','Underline','JustifyLeft','JustifyCenter','JustifyRight','NumberedList','BulletedList','Outdent','Indent'] },
 		{ name: 'undo',        items: [ 'Undo', 'Redo' ] },
 		{ name: 'editing',     items: [ 'Find' ] }, //'/', <== Line-Break
@@ -30,7 +30,7 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'tools',       items: [ 'Source', 'ShowBlocks', 'Maximize', 'Scayt', '-', 'About' ] }
 	];
 	config.toolbar_ZMSBasicInsertToolbar = [
-		{ name: 'styles' },
+		{ name: 'styles',      items: [ 'Format' ] },
 		{ name: 'paragraph',   items: ['Bold','Italic','Underline','JustifyLeft','JustifyCenter','JustifyRight','NumberedList','BulletedList','Outdent','Indent'] },
 		{ name: 'undo',        items: [ 'Undo', 'Redo' ] },
 		{ name: 'tools',       items: [ 'Source', 'ShowBlocks', 'Maximize', 'Scayt', '-', 'About' ] }

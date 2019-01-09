@@ -306,7 +306,7 @@ class PathHandler(object):
         
         # If the object has executable-fields find by name and display data.
         pattern = self.getConfProperty('ZMS.metaobj.attr.publicExecutablePattern', 'public(.*?)')
-        if re.compile(pattern).match(name) and name in self.getMetaobjAttrIds( self.meta_id, types=['method', 'py']):
+        if re.compile(pattern).match(name) and name in self.getMetaobjAttrIds( self.meta_id, types=['method', 'py', 'zpt']):
           try:
              v = self.attr(name)
           except:

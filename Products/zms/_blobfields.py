@@ -144,6 +144,8 @@ def createBlobField(self, objtype, file=b''):
     blob = uploadBlobField( self, objtype, file)
   elif isinstance(file, dict):
     data = file.get( 'data', '')
+    if type(data) is str:
+      data = bytes(data,'utf-8')
     if isinstance(data, StringType):
       data = StringIO( data)
     blob = uploadBlobField( self, objtype, data, file.get('filename', ''))
@@ -157,7 +159,7 @@ def createBlobField(self, objtype, file=b''):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _blobfields.uploadBlobField
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def uploadBlobField(self, clazz, file='', filename=''):
+def uploadBlobField(self, clazz, file=b'', filename=''):
   try:
     file = file.read()
   except:

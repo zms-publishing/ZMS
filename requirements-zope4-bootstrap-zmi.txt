@@ -15,3 +15,6 @@
 -e git+https://github.com/zopefoundation/Products.BTreeFolder2@master#egg=Products.BTreeFolder2
 -e git+https://github.com/zopefoundation/Products.ZCatalog@master#egg=Products.ZCatalog
 -e git+https://github.com/zopefoundation/Products.PythonScripts@master#egg=Products.PythonScripts
+
+# Workaround for https://github.com/zopefoundation/Zope/issues/452
+Paste

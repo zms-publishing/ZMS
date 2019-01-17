@@ -1241,10 +1241,12 @@ class ZMSMetaobjManager(object):
             if xmlfile is not None:
               if not immediately:
                 xml = xmlfile.read()
-                xmlfile = StringIO( xml)
+                # open string-io.
+                xmlfile = StringIO(str(xml,'utf-8'))
                 v = self.parseXmlString(xmlfile)
-                xmlfile = StringIO( xml)
                 immediately = not isinstance(v, list)
+                # open string-io again (for later import).
+                xmlfile = StringIO(str(xml,'utf-8'))
               if not immediately:
                 if temp_id in temp_folder.objectIds():
                   temp_folder.manage_delObjects([temp_id])

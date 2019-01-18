@@ -1306,6 +1306,9 @@ table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable
 	overflow:hidden;
 	padding-right:4px;
 }
+ table.table-hover.zmi-sortable.zmi-selectable th {
+ 	cursor:default
+ }
 table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap a {
 	margin:0 2px 0 2px;
 }

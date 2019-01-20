@@ -3376,8 +3376,8 @@ zmscontext.commitObj(request)
 <tal:block tal:define="zmscontext context">
 
 <style>
-.form-filter {
-	margin-bottom:1em;
+.form-filter .row {
+	margin-bottom:1.25em;
 }
 .highlight {
 	color:#333;
@@ -3580,8 +3580,9 @@ $(function() {
 			console.log(prefix);
 			var $fm = $(this);
 			localStorage[prefix+"btn"] = getZMILangStr('BTN_REFRESH');
-			if (zmiParams['btn']==getZMILangStr('BTN_REFRESH')) {
+			if (zmiParams['btn']==getZMILangStr('BTN_REFRESH') || (typeof zmiParams['btn']=='undefined' && typeof zmiParams['qorder']!='undefined')) {
 				for (var i in zmiParams) {
+					console.log("SET:"+prefix+i+"="+zmiParams[i]);
 					localStorage[prefix+i] = zmiParams[i];
 				}
 				$("input:text,input:checkbox,input:radio,select,textarea",$fm).each(function() {
@@ -3649,6 +3650,10 @@ $(function() {
 							html += '<li class="dropdown-header insert-action"><i class="icon-caret-down"></i> '+getZMILangStr('ATTR_ACTION')+'</li>';
 							$li.replaceWith(html);
 						});
+					$(".ZMSRecordSet.main_grid table.zmi-sortable th a").on("click",function() {
+							$(".ZMSRecordSet.main_grid form").css({'transition':'opacity 1.5s','opacity':'0.25'});
+							$(".ZMSRecordSet.main_grid").prepend( "<div id='loading' class='zmi-page text-center' style='width:100%;position:absolute;margin-bottom:0.75em'><i class='text-primary icon-spinner icon-3x icon-spin'></i></div>");
+					})
 				});
 		});
 });]]></data>
@@ -3692,10 +3697,10 @@ $(function() {
 .accordion-group.zmi-container {
 	display:none;
 }
-tr.inactive * {
+tr.inactive > * {
 	color:#AAA;
 }
-.label.zmi-info * {
+.label.zmi-info > * {
 	color:white;
 }
 </style>
@@ -3900,16 +3905,20 @@ attr_ids = [x['id'] for x in zmscontext.attr('record_attrs')]+['change_uid','cha
 buff = {}
 for childNode in zmscontext.getChildNodes(request):
   meta_id = childNode.meta_id
-  if not meta_id in buff:
+  if not buff.has_key(meta_id):
     buff[meta_id] = {}
     for attr_id in attr_ids:
       objAttr = childNode.getObjAttr(attr_id)
       buff[meta_id][objAttr['id']] = {'id':objAttr['id'],'attr_name':childNode.getObjAttrName(objAttr,lang)}
   obj_version = childNode.getObjVersion(request)
-  record = {'__id__':childNode.id}
+  record = {'__id__':childNode.id,'__ob__':childNode}
   objAttrs = buff[meta_id]
   for objAttr in objAttrs.values():
-    record[objAttr['id']] = getattr(obj_version,objAttr['attr_name'],None)  
+    metaObjAttr = childNode.getMetaobjAttr(childNode.meta_id,objAttr['id'])
+    if metaObjAttr is not None and metaObjAttr['type'] in ['method','py','zpt']:
+      record[objAttr['id']] = childNode.attr(objAttr['id'])
+    else:
+      record[objAttr['id']] = getattr(obj_version,objAttr['attr_name'],None)
   records.append(record)
 res = records
 request.set('res',res)
@@ -4034,7 +4043,7 @@ class EntityRecordHandler:
     childNode = getattr(zmscontext,id)
     objectset = childNode.attr('objectset')
     if not objectset:
-      objectset = '<span class=\042label label-default zmi-info %s\042><a href=\042%s/manage_main?lang=%s\042>%s %s</a></span>'%(['','active'][int(childNode.isActive(request))],childNode.absolute_url(),request['lang'],childNode.display_icon(request),childNode.display_type(request))
+      objectset = '<span class=\042label label-default zmi-info %s\042 data-meta-id=\042%s\042><a href=\042%s/manage_main?lang=%s\042>%s %s</a></span>'%(['', 'active'][int(childNode.isActive(request))], childNode.meta_id, childNode.absolute_url(), request['lang'], childNode.display_icon(request), childNode.display_type(request))
     r['objectset'] = objectset
     return r
 record_handler = EntityRecordHandler()

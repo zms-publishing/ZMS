@@ -143,9 +143,9 @@
 									filtered_records python:[x for x in records if x[metaObjAttr['id']]==row[identifier]];
 									metaObjAttrs python:[x for x in metaObj['attrs'][1:] if 
 											x['id'] not in ['__sort_id']
-											and x['custom']
 											and x['type'] in here.metaobj_manager.valid_types
-											and not x['type'] in ['password']
+											and x['type'] not in ['password']
+											and x.get('custom')
 											]">
 								<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
 										metaObjAttrIds=here.getMetaobjAttrIds(metaObj['id']),

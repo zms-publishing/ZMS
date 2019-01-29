@@ -1,8 +1,3 @@
-function onFormSubmit() {
-	// do nothing
-	return true;
-}
-
 // Ensure all pages that load this js know that they are waiting for it to finish loading
 $("body").addClass("loading");
 

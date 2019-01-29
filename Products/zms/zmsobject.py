@@ -1313,12 +1313,11 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  Returns Sort-ID (integer).
     # --------------------------------------------------------------------------
-    def getSortId(self, REQUEST=None): 
-      try:
-        sort_id = getattr( self, 'sort_id')
-        rtnVal = string.atoi(sort_id[len(standard.id_prefix(sort_id)):])
-      except:
-        rtnVal = 0
+    def getSortId(self): 
+      rtnVal = 0
+      sort_id = getattr( self, 'sort_id','')
+      if sort_id:
+        rtnVal = int(sort_id[len(standard.id_prefix(sort_id)):])
       return rtnVal
 
 
@@ -1347,6 +1346,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       """ ZMSObject.manage_moveObjDown """
       parent = self.getParentNode()
       sort_id = self.getSortId()
+      print(self.id,self.meta_id,sort_id)
       self.setSortId(sort_id + 15)
       parent.normalizeSortIds(standard.id_prefix(self.id))
       # Return with message.

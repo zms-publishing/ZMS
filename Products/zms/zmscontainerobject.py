@@ -846,23 +846,10 @@ class ZMSContainerObject(
     #  Normalizes sort-ids for all children of this node 
     # --------------------------------------------------------------------------
     def normalizeSortIds(self, id_prefix='e'):
-      # Get all object-items.
-      obs = []
-      for ob in self.objectValues(list(self.dGlobalAttrs)):
-        sort_id = getattr( ob, 'sort_id', '')
-        proxy = ob.__proxy__()
-        if proxy is not None:
-          sort_id = getattr( ob, 'sort_id', '')
-          if proxy.isPage(): sort_id = 's%s'%sort_id
-          obs.append((sort_id, ob))
-      # Sort child-nodes.
-      obs.sort()
-      # Normalize sort-order.
-      new_sort_id = 10
-      for ( sort_id, ob) in obs:
-       if ob.id[:len(id_prefix)] == id_prefix:
-         ob.setSortId( new_sort_id)
-         new_sort_id  += 10
+      print("normalizeSortIds")
+      obs = [x for x in self.objectValues(list(self.dGlobalAttrs)) if standard.id_prefix(x.id)==id_prefix and x.__proxy__() is not None]
+      obs = sorted(obs,key=lambda x:[1,1000][x.isPage()]*x.getSortId())
+      [obs[x].setSortId((x+1)*10) for x in range(len(obs))]
 
 
     # --------------------------------------------------------------------------

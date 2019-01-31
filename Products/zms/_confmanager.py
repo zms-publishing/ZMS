@@ -445,8 +445,9 @@ class ConfManager(
             l.append(self.operator_setitem(d.copy(), 'action', ob.id+'/'+d['action']))
       l.append({'label':'TAB_FILTER','action':'manage_customizeFilterForm'})
       l.append({'label':'TAB_DESIGN','action':'manage_customizeDesignForm'})
-      # return filtered_manage_options (@see /App/Management.py)
-      # FIXME l = [x for x in l if self.restrictedTraverse(x['action'], None) is not None]
+      p = self.REQUEST['URL'].split('/')[-1].startswith('manage')
+      if p:
+        l = [x for x in l if self.restrictedTraverse(x['action'], None) is not None]
       return l
 
 

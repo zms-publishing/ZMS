@@ -55,6 +55,7 @@ class ZMSFormatProvider(
     def manage_options(self):
       return [self.operator_setitem( x, 'action', '../'+x['action']) for x in copy.deepcopy(self.aq_parent.manage_options())]
 
+    manage_sub_options__roles__ = None
     def manage_sub_options(self):
       return (
         {'label': 'TAB_TEXTFORMATS','action': 'manage_textformats'},

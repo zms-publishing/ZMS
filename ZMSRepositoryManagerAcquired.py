@@ -53,6 +53,7 @@ class ZMSRepositoryManagerAcquired(
     def manage_options(self):
       return map( lambda x: self.operator_setitem( x, 'action', '../'+x['action']), copy.deepcopy(self.aq_parent.manage_options()))
 
+    manage_sub_options__roles__ = None
     def manage_sub_options(self):
       return (
         {'label': 'Repository','action': 'manage_main'},

@@ -161,6 +161,7 @@ class ZMSItem(
       # avoid declarative urls
       path_to_handle = request['URL0'][len(request['BASE0']):]
       path = path_to_handle.split('/')
+      print path,[x for x in path[:-1] if x.find('.')>0 or x.startswith('manage')]
       if not path[-2] in self.objectIds() \
           and len([x for x in path[:-1] if x.find('.')>0 or x.startswith('manage')])==0:
         new_path = self.absolute_url()+'/'+path[-1]

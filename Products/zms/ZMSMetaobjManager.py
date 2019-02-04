@@ -1239,13 +1239,23 @@ class ZMSMetaobjManager(object):
               file = REQUEST['init']
               filename, xmlfile = self.getConfXmlFile( file)
             if xmlfile is not None:
+              # extract xml from zip
+              if filename.endswith('.zip'):
+                 import zipfile
+                 zip_buffer = zipfile.ZipFile(xmlfile,"r")
+                 for name in zip_buffer.namelist():
+                   if name.endswith(".xml"):
+                     filename = name
+                     xmlfile = BytesIO(zip_buffer.read(filename))
+                     break
+              # parse xml
               if not immediately:
                 xml = xmlfile.read()
                 # open string-io.
                 xmlfile = BytesIO(xml)
                 v = standard.parseXmlString(xmlfile)
                 immediately = not isinstance(v, list)
-                # open string-io again (for later import).
+                # open BytesIO again (for later import).
                 xmlfile = BytesIO(xml)
               if not immediately:
                 if temp_id in temp_folder.objectIds():

@@ -17,14 +17,7 @@
 ################################################################################
 
 # Imports.
-from builtins import map
-from builtins import str
-try:
-  from io import StringIO
-except ImportError:
-  from io import StringIO
-import os
-import tempfile
+from io import BytesIO
 import zipfile
 # Product Imports.
 # import standard
@@ -54,22 +47,9 @@ def _exportZodb2Zip(zf, root, container):
         standard.writeError(root.content, "_exportZodb2Zip")
 
 def exportZodb2Zip(root):
-  # Create temporary zip-file.
-  zipfilename = tempfile.mktemp() + '.zip'
-  zf = zipfile.ZipFile( zipfilename, 'w')
-  _exportZodb2Zip(zf, root, root)
-  zf.close()
-  
-  # Read data from zip-file as return value.
-  f = open( zipfilename, 'rb')
-  data = f.read()
-  f.close()
-  
-  # Remove temporary zip-file.
-  os.remove( zipfilename)
-  
-  # Returns data of zip-file.
-  return data
+  zip_buffer = zipfile.ZipFile( zipfilename, 'w')
+  _exportZodb2Zip(zip_buffer, root, root)
+  return zip_buffer.getvalue()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -79,7 +59,7 @@ Extracts and imports zip-file to zodb.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def importZip2Zodb(root, data):
   if _globals.is_str_type(data):
-    data = StringIO( data)
+    data = BytesIO( data)
   zf = zipfile.ZipFile( data, 'r')
   for name in zf.namelist():
     container = root

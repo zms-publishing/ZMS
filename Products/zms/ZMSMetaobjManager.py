@@ -21,7 +21,7 @@
 from builtins import object
 from builtins import range
 from builtins import str
-from io import StringIO
+from io import BytesIO
 from distutils.version import LooseVersion
 import ZPublisher.HTTPRequest
 import collections
@@ -277,7 +277,7 @@ class ZMSMetaobjManager(object):
     def importMetaobjXml(self, xml, createIfNotExists=1, createIdsFilter=None):
       self.REQUEST.set( '__get_metaobjs__', True)
       ids = []
-      v = self.parseXmlString(xml)
+      v = standard.parseXmlString(xml)
       if not isinstance(v, list):
         v = [v]
       for item in v:
@@ -1228,7 +1228,7 @@ class ZMSMetaobjManager(object):
             elif REQUEST.get('temp_import_file_id')==temp_id and temp_id in temp_folder.objectIds():
               if temp_id in temp_folder.objectIds():
                 filename = str(getattr( temp_folder, temp_id).title)
-                xmlfile = str(getattr( temp_folder, temp_id).data)
+                xmlfile = standard.getTempFile(self,temp_id)
                 temp_folder.manage_delObjects([temp_id])
                 immediately = True
             if REQUEST.get('file'):
@@ -1242,11 +1242,11 @@ class ZMSMetaobjManager(object):
               if not immediately:
                 xml = xmlfile.read()
                 # open string-io.
-                xmlfile = StringIO(str(xml,'utf-8'))
-                v = self.parseXmlString(xmlfile)
+                xmlfile = BytesIO(xml)
+                v = standard.parseXmlString(xmlfile)
                 immediately = not isinstance(v, list)
                 # open string-io again (for later import).
-                xmlfile = StringIO(str(xml,'utf-8'))
+                xmlfile = BytesIO(xml)
               if not immediately:
                 if temp_id in temp_folder.objectIds():
                   temp_folder.manage_delObjects([temp_id])

@@ -209,7 +209,7 @@ class ZMSWorkflowProvider(
       ids = [self.transitions[x*2] for x in range(len(self.transitions)//2)]
       for id in ids:
         self.delItem(id, 'transitions')
-      v = self.parseXmlString(xml)
+      v = standard.parseXmlString(xml)
       l = v.get('activities', [])
       for li in range(len(l)//2):
         id = l[li*2]

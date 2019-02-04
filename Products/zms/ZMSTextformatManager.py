@@ -58,7 +58,7 @@ class ZMSTextformatManager(object):
       self.textformats = copy.deepcopy(self.textformats)
 
     def importTextformatXml(self, xml, createIfNotExists=1):
-      v = self.parseXmlString(xml)
+      v = standard.parseXmlString(xml)
       if isinstance(v, list):
         for item in v:
           self._importTextformatXml(item, createIfNotExists)

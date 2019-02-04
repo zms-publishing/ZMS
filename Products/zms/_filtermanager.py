@@ -81,7 +81,7 @@ def _importXml(self, item, createIfNotExists=1):
     standard.writeError(self, "[_importXml]: Unknown type >%s<"%itemType)
 
 def importXml(self, xml, createIfNotExists=1):
-  v = self.parseXmlString(xml)
+  v = standard.parseXmlString(xml)
   if isinstance(v, list):
     for item in v:
       id = _importXml(self, item, createIfNotExists)

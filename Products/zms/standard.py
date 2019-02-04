@@ -36,7 +36,7 @@ from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
 from OFS.CopySupport import absattr
-from io import StringIO
+from io import BytesIO
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 import base64
@@ -1764,14 +1764,18 @@ def parseXmlString(xml):
   """
   Parse value from ZMS XML-Structure.
   @param xml
-  @type xml: C{str} or C{StringIO}
+  @type xml: C{str} or C{BytesIO}
   @return: C{list} or C{dict}
   @rtype: C{any}
   """
   from . import _xmllib
+  print('A',type(xml))
   builder = _xmllib.XmlAttrBuilder()
   if isinstance(xml, str):
-    xml = StringIO(xml)
+    xml = xml.encode()
+  if isinstance(xml, bytes):
+    xml = BytesIO(xml)
+  print('C',type(xml))
   v = builder.parse(xml)
   return v
 
@@ -1785,7 +1789,7 @@ def processData(context, processId, data, trans=None):
   @param processId: the process-id
   @type processId: C{str}
   @param data: the xml-data
-  @type data: C{str} or C{StringIO}
+  @type data: C{str} or C{BytesIO}
   @param trans: the transformation
   @type trans: C{str}
   @return: the transformed data
@@ -2087,6 +2091,26 @@ def getPlugin( context, path, options={}):
   except:
     rtn = writeError(context, '[getPlugin]')
   return rtn
+
+
+security.declarePublic('getTempFile')
+def getTempFile( context, id):
+  """
+  Get file fromn temp_folder.
+  """
+  temp_folder = context.temp_folder
+  temp_file = getattr(temp_folder,id)
+  data = temp_file.data
+  b = data
+  if isinstance(data, str):
+    b = data.encode()
+  elif not isinstance(data, bytes):
+    b = b''
+    while data is not None:
+       b += data.data
+       data=data.next  
+  return b
+  
 
 
 ################################################################################

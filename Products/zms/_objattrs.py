@@ -794,7 +794,7 @@ class ObjAttrs(object):
           v = {}
         if _globals.is_str_type(v):
           try:
-           v = self.parseXmlString(self.getXmlHeader() + v)
+           v = standard.parseXmlString(self.getXmlHeader() + v)
           except:
             standard.writeError( self, "[formatObjAttrValue]: can't parse dict from xml - exception ignored!")
             pass
@@ -819,7 +819,7 @@ class ObjAttrs(object):
             v = []
           if _globals.is_str_type(v):
             try:
-              l = self.parseXmlString(self.getXmlHeader() + v)
+              l = standard.parseXmlString(self.getXmlHeader() + v)
             except:
               standard.writeError( self, "[formatObjAttrValue]: can't parse list from xml - exception ignored!")
               l = None

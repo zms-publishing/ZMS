@@ -280,7 +280,7 @@ def addFile(container, id, title, data, content_type=None):
   Add File to container.
   """
   if content_type is None:
-    if type(data) is not bytes:
+    if type(data) is str:
       data = bytes(data,'utf-8')
     content_type, enc = standard.guess_content_type(id, data)
   container.manage_addFile(id=id, title=title, file=data, content_type=content_type)

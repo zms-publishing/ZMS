@@ -1441,20 +1441,20 @@ def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
   @rtype: C{list}
   """
   if qorder is None:
-    sorted = [(x, x) for x in l]
+    tl = [(x, x) for x in l]
   elif isinstance(qorder, str):
-    sorted = [(_globals.sort_item(x.get(qorder, None)), x) for x in l]
+    tl = [(_globals.sort_item(x.get(qorder, None)), x) for x in l]
   elif isinstance(qorder, list):
-    sorted = [([_globals.sort_item(x[y]) for y in qorder], x) for x in l]
+    tl = [([_globals.sort_item(x[y]) for y in qorder], x) for x in l]
   else:
-    sorted = [(_globals.sort_item(x[qorder]), x) for x in l]
-  if ignorecase==1 and len(sorted) > 0 and isinstance(sorted[0][0], str):
-    sorted = [(str(x[0]).upper(), x[1]) for x in sorted]
-  sorted.sort()
-  sorted = [x[1] for x in sorted]
+    tl = [(_globals.sort_item(x[qorder]), x) for x in l]
+  if ignorecase==1 and len(tl) > 0 and isinstance(tl[0][0], str):
+    tl = [(str(x[0]).upper(), x[1]) for x in tl]
+  tl = sorted(tl,key=lambda x:x[0])
+  tl = [x[1] for x in tl]
   if qorderdir == 'desc':
-    sorted.reverse()
-  return sorted
+    tl.reverse()
+  return tl
 
 
 security.declarePublic('string_list')

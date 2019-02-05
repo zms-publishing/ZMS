@@ -545,10 +545,18 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
       xml.append(' filename="%s"' % value.title)
       xml.append(' type="file"')
       xml.append('>')
+      data = value.data
       if content_type.startswith('text/') or content_type in ['application/css','application/javascript']:
-        xml.append('<![CDATA[%s]]>' % str(value.data,'utf-8'))
+        b = ''
+        if isinstance(data, bytes):
+          b = data.decode()
+        elif not isinstance(data, str):
+          while data is not None:
+             b += data.data.decode()
+             data=data.next  
+        xml.append('<![CDATA[%s]]>' % b)
       else:
-        xml.append(standard.bin2hex(value.data))
+        xml.append(standard.bin2hex(data))
       xml.append('</%s>' % tagname)
 
     # Dictionaries

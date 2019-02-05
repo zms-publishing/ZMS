@@ -28,10 +28,10 @@ import sys
 import time
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
+from . import standard
 from . import zmscontainerobject
 from . import _confmanager
 from . import _fileutil
-from . import standard
 from . import _importable
 from . import _ziputil
 

@@ -584,7 +584,7 @@ def set_session_value(context, key, value):
   """
   Set http-session-value.
   """
-  sessionn = get_session(context)
+  session = get_session(context)
   if session is not None:
     return session.set(key, value)
   return None

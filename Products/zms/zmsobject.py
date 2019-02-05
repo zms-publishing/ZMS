@@ -1346,7 +1346,6 @@ class ZMSObject(ZMSItem.ZMSItem,
       """ ZMSObject.manage_moveObjDown """
       parent = self.getParentNode()
       sort_id = self.getSortId()
-      print(self.id,self.meta_id,sort_id)
       self.setSortId(sort_id + 15)
       parent.normalizeSortIds(standard.id_prefix(self.id))
       # Return with message.

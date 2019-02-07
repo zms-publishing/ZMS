@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<?zms version='ZMS3-3.4.2dev (build #4796)'?>
+<?xml version="1.0" encoding="utf-8" ?>
+<?zms version='ZMS4-4.0.0.dev.REV
+'?>
 <list>
   <item type="dictionary">
     <dictionary>
@@ -208,7 +209,12 @@ $(function() {
                   </item>
                   <item key="default"></item>
                   <item key="id">interface0</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">interface0</item>
                   <item key="repetitive" type="int">0</item>
@@ -417,16 +423,25 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           return ref
         
         def handleInline(node,v):
+          p = '<dtml-var "getLinkUrl\(\'(.*?)\'\)">'
+          r = re.compile(p)
+          for f in r.findall(v):
+            old = '<dtml-var "getLinkUrl(\'%s\')">'%f
+            ref = node.getLinkObj(f)
+            if ref:
+              new = ref.absolute_url()
+              writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline %s->%s'%(old,new))
+              v = v.replace(old,new)
           p = '<a(.*?)>(.*?)<\\/a>'
           r = re.compile(p)
           for f in r.findall(v):
             ref = None
             d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
-            if d.has_key('data-id'):
+            if 'data-id' in d:
               data_id = d['data-id']
               writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline data_id=%s'%data_id)
               ref = node.getLinkObj(data_id)
-            if ref is None and d.has_key('href'):
+            if ref is None and 'href' in d:
               href = d['href']
               href = re.sub('http://localhost:(\\d)*','',href)
               for domain in domains:
@@ -559,6 +574,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Trusted functions]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -641,7 +657,12 @@ return zmsroot.storeReqBuff(url,ob)
                   </item>
                   <item key="default"></item>
                   <item key="id">getLinkObj</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Extension-Point: Get link object]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -673,7 +694,12 @@ return '{$%s}'%ref
                   </item>
                   <item key="default"></item>
                   <item key="id">getRefObjPath</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Extension-Point: Get ref object path]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -702,7 +728,12 @@ return uid
                   </item>
                   <item key="default"></item>
                   <item key="id">get_uid</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Extension-Point: Get uid]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -738,7 +769,12 @@ return True
                   </item>
                   <item key="default"></item>
                   <item key="id">ObjectAdded</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: object added]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -779,7 +815,12 @@ if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
                   </item>
                   <item key="default"></item>
                   <item key="id">ObjectMoved</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: object moved]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -812,7 +853,12 @@ traverse(zmscontext)
                   </item>
                   <item key="default"></item>
                   <item key="id">ObjectRemoved</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: object removed]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -916,7 +962,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.3.1</item>
+          <item key="revision">1.3.2</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -935,7 +981,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.3.1</item>
+          <item key="revision">1.3.2</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

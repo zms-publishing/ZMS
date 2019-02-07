@@ -423,7 +423,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           return ref
         
         def handleInline(node,v):
-          p = '<dtml-var "getLinkUrl\(\'(.*?)\'(,REQZEST)?\)">'
+          p = '<dtml-var "getLinkUrl\(\'(.*?)\'(,REQUEST)?\)">'
           r = re.compile(p)
           for f in r.findall(v):
             data_id = f[0]

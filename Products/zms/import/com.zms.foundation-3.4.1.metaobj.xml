@@ -207,7 +207,7 @@
 			<td class="meta-sort">
 				<div class="btn-group">
 					<span class="btn btn-default" tal:attributes="onclick python:'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){$(this).parents(\'tr\').remove()}'; title python:here.getZMILangStr('BTN_DELETE')">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+						<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-remove')"></tal:block>
 					</span>
 				</div><!-- .btn-group -->
 			</td>
@@ -2165,7 +2165,7 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
 				</tal:block>
 			</select>
 			<span class="add-on btn" tal:attributes="onclick python:'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_deleteObjs?ids:list=%s&lang=%s&preview=%s\'}'%(childNode.id,request['lang'],request['preview']); title python:here.getZMILangStr('BTN_DELETE')">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+				<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-remove')"></tal:block>
 			</span>
 		</div><!-- .input-append -->
 	</td>
@@ -2188,7 +2188,7 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
 -->
 <tal:block tal:define="global dummy0 python:request.set( 'ZMS_INSERT', 'ZMSLinkElement')"></tal:block>
 <tr class="row_insert">
-	<td class="meta-sort"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
+	<td class="meta-sort"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></tal:block></td>
 	<td align="center" tal:content="structure python:here.getCheckbox(fmName='form0',elName='active_',value=True,REQUEST=request)"></td>
 	<td tal:content="structure python:here.getUrlInput(fmName='form0',elName='url_',elTextName='_title',size=15,value='',enabled=1,REQUEST=request)"><input/></td>
 	<td tal:content="structure python:here.getTextInput(fmName='form0',elName='title_',size=15,value='',enabled=1,REQUEST=request)"><input/></td>
@@ -4672,11 +4672,11 @@ zmscontext.attr('text',text)
                 <dictionary>
                   <item key="custom"><![CDATA[<tal:block tal:define="textFormatDefault python:here.getConfProperty('ZMSTable.getTextFormatDefault',here.getTextFormatDefault())">
 
-<!--
+<tal:block tal:replace="nothing">
 ################################################################################
-##### Table(Type,Cols,Rows): INSERT
+### Table(Type,Cols,Rows): INSERT
 ################################################################################
--->
+</tal:block>
 <tal:block tal:condition="python:request.get('ZMS_INSERT')">
 <input type="hidden" name="redirect_self:int" value="1"/>
 
@@ -4747,7 +4747,7 @@ function onZMSTableFormSubmit() {
 	}
 	xml += '<'+'/list>\n';
 	$("#table_table").val( xml);
-	return onFormSubmit(fmName);
+	return true;
 }
 
 </script>
@@ -4815,11 +4815,11 @@ function onZMSTableFormSubmit() {
 
 </tal:block>
 
-<!--
+<tal:block tal:replace="nothing">
 ################################################################################
-##### Table(Type,Cols,Rows): EDIT
+### Table(Type,Cols,Rows): EDIT
 ################################################################################
--->
+</tal:block>
 <tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 <tal:block tal:define="global
 		zmscontext options/zmscontext;
@@ -4831,11 +4831,11 @@ function onZMSTableFormSubmit() {
 		table_widths python:zmscontext.attr('widths');
 		">
 
-<!--
---------------------------------------------------------------------------------
---- Table-Cell Editor
---------------------------------------------------------------------------------
--->
+<tal:block tal:replace="nothing">
+################################################################################
+### Table-Cell Editor
+################################################################################
+</tal:block>
 <tal:block tal:define="celltypes python:[['td','td'],['th','th']];custom python:'<div class=\042pull-left celltypes\042>%s</div>'%(here.zmi_input_select(name='tag',value='',lang_str=here.getZMILangStr('ATTR_FORMAT'),options=celltypes))">
 	<div class="ui-helper-hidden ui-helper-overlay modal-backdrop in">&nbsp;</div>
 	<div class="ui-helper-hidden">
@@ -4855,11 +4855,11 @@ function onZMSTableFormSubmit() {
 	</div>
 </tal:block>
 
-<!--
---------------------------------------------------------------------------------
---- Table-Cell Grid
---------------------------------------------------------------------------------
--->
+<tal:block tal:replace="nothing">
+################################################################################
+### Table-Cell Grid
+################################################################################
+</tal:block>
 
 <span class="ui-helper-hidden" id="fmName" tal:content="request/fmName"></span>
 <span class="ui-helper-hidden" id="elName" tal:content="request/elName"></span>
@@ -5024,7 +5024,7 @@ function onZMSTableFormSubmit() {
 	}
 	xml += '<'+'/list>\n';
 	$("#table_colgroup_cols").val( xml);
-	return onFormSubmit(fmName);
+	return true;
 }
 function table_cell_edit(el_td) {
 	var el = $('textarea',el_td);
@@ -5291,24 +5291,24 @@ function onKeyUpZMSTableDivContenteditable() {
 	</td>
 	<td align="center" tal:repeat="col_index python:range(table_cols)">
 		<div class="btn-group">
-			<span class="btn btn-default" onclick="actionBtnClick(this,'move_col_left')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-left',extra='title=\042%s\042'%here.getZMILangStr('ACTION_MOVELEFT'))">icon-caret-left</tal:block></span>
-			<span class="btn btn-default" onclick="actionBtnClick(this,'move_col_right')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right',extra='title=\042%s\042'%here.getZMILangStr('ACTION_MOVERIGHT'))">icon-caret-right</tal:block></span>
-			<span class="btn btn-default" onclick="actionBtnClick(this,'delete_col')" tal:condition="python:col_index>0 or table_type==1"><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash',extra='title=\042%s\042'%here.getZMILangStr('ACTION_DELETE_COL'))">icon-trash</tal:block></span>
-			<span class="btn btn-default" onclick="actionBtnClick(this,'insert_col')" tal:condition="python:col_index>0 or table_type==1"><tal:block tal:content="structure python:here.zmi_icon(name='icon-expand-alt',extra='title=\042%s\042'%here.getZMILangStr('ACTION_INSERT_COL'))">icon-expand-alt</tal:block></span>
+			<span class="btn btn-default" onclick="actionBtnClick(this,'move_col_left')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-caret-left',extra='title=\042%s\042'%here.getZMILangStr('ACTION_MOVELEFT'))">icon-caret-left</tal:block></span>
+			<span class="btn btn-default" onclick="actionBtnClick(this,'move_col_right')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-caret-right',extra='title=\042%s\042'%here.getZMILangStr('ACTION_MOVERIGHT'))">icon-caret-right</tal:block></span>
+			<span class="btn btn-default" onclick="actionBtnClick(this,'delete_col')" tal:condition="python:col_index>0 or table_type==1"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-trash',extra='title=\042%s\042'%here.getZMILangStr('ACTION_DELETE_COL'))">icon-trash</tal:block></span>
+			<span class="btn btn-default" onclick="actionBtnClick(this,'insert_col')" tal:condition="python:col_index>0 or table_type==1"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-expand-alt',extra='title=\042%s\042'%here.getZMILangStr('ACTION_INSERT_COL'))">icon-expand-alt</tal:block></span>
 		</div><!-- .btn-group -->
 	</td>
 	<td>
-		<span class="btn btn-default" onclick="actionBtnClick(this,'insert_col')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-expand-alt',extra='title=\042%s\042'%here.getZMILangStr('ACTION_INSERT_COL'))">icon-expand-alt</tal:block></span>
+		<span class="btn btn-default" onclick="actionBtnClick(this,'insert_col')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-expand-alt',extra='title=\042%s\042'%here.getZMILangStr('ACTION_INSERT_COL'))">icon-expand-alt</tal:block></span>
 	</td>
 </tr>
 
 <tr tal:repeat="row_index python:range(table_rows)" tal:attributes="id python:'table_row_%i'%row_index">
 	<td>
 		<div class="btn-group">
-			<span class="btn btn-default" onclick="actionBtnClick(this,'move_row_up')" tal:condition="python:row_index>0 or table_type==3"><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-up',extra='title=\042%s\042'%here.getZMILangStr('ACTION_MOVEUP'))">icon-caret-up</tal:block></span>
-			<span class="btn btn-default" onclick="actionBtnClick(this,'move_row_down')" tal:condition="python:row_index>0 or table_type==3"><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-down',extra='title=\042%s\042'%here.getZMILangStr('ACTION_MOVEDOWN'))">icon-caret-down</tal:block></span>
-			<span class="btn btn-default" onclick="actionBtnClick(this,'delete_row')" tal:condition="python:row_index>0 or table_type==3"><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash',extra='title=\042%s\042'%here.getZMILangStr('ACTION_DELETE_ROW'))">icon-trash</tal:block></span>
-			<span class="btn btn-default" onclick="actionBtnClick(this,'insert_row')" tal:condition="python:row_index>0 or table_type==3"><tal:block tal:content="structure python:here.zmi_icon(name='icon-expand-alt',extra='title=\042%s\042'%here.getZMILangStr('ACTION_INSERT_ROW'))">icon-expand-alt</tal:block></span>
+			<span class="btn btn-default" onclick="actionBtnClick(this,'move_row_up')" tal:condition="python:row_index>0 or table_type==3"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-caret-up',extra='title=\042%s\042'%here.getZMILangStr('ACTION_MOVEUP'))">icon-caret-up</tal:block></span>
+			<span class="btn btn-default" onclick="actionBtnClick(this,'move_row_down')" tal:condition="python:row_index>0 or table_type==3"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-caret-down',extra='title=\042%s\042'%here.getZMILangStr('ACTION_MOVEDOWN'))">icon-caret-down</tal:block></span>
+			<span class="btn btn-default" onclick="actionBtnClick(this,'delete_row')" tal:condition="python:row_index>0 or table_type==3"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-trash',extra='title=\042%s\042'%here.getZMILangStr('ACTION_DELETE_ROW'))">icon-trash</tal:block></span>
+			<span class="btn btn-default" onclick="actionBtnClick(this,'insert_row')" tal:condition="python:row_index>0 or table_type==3"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-expand-alt',extra='title=\042%s\042'%here.getZMILangStr('ACTION_INSERT_ROW'))">icon-expand-alt</tal:block></span>
 		</div><!-- .btn-group -->
 	</td>
 	<tal:block tal:repeat="col_index python:range(len(table_table[row_index]))">
@@ -5350,7 +5350,7 @@ function onKeyUpZMSTableDivContenteditable() {
 
 <tr>
 	<td>
-		<span class="btn btn-default" onclick="actionBtnClick(this,'insert_row')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-expand-alt',extra='title=\042%s\042'%here.getZMILangStr('ACTION_INSERT_ROW'))">icon-expand-alt</tal:block></span>
+		<span class="btn btn-default" onclick="actionBtnClick(this,'insert_row')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-expand-alt',extra='title=\042%s\042'%here.getZMILangStr('ACTION_INSERT_ROW'))">icon-expand-alt</tal:block></span>
 	</td>
 </tr>
 

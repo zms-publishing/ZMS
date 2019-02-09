@@ -427,11 +427,12 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           r = re.compile(p)
           for f in r.findall(v):
             data_id = f[0]
+            writeInfo(node,'[ZMSIndexZCatalog_func_] handleInline %s'%(data_id))
             old = '<dtml-var "getLinkUrl(\'%s\'%s)">'%(data_id,f[1])
             ref = node.getLinkObj(data_id)
             if ref:
               new = ref.absolute_url()
-              writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline %s->%s'%(old,new))
+              writeInfo(node,'[ZMSIndexZCatalog_func_] handleInline %s->%s'%(old,new))
               v = v.replace(old,new)
           p = '<a(.*?)>(.*?)<\\/a>'
           r = re.compile(p)
@@ -492,6 +493,27 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             v = new
           return v
         
+        def handleItem(node,v):
+          if type(v) is list:
+            v = handleList(node,v)
+          elif type(v) is dict:
+            v = handleDict(node,v)
+          elif type(v) is str or type(v) is bytes:
+            v = handleInline(node,v)
+          return v
+        
+        def handleDict(node,v):
+          nd = {}
+          for i in v:
+            nd[i] = handleItem(node,v[i])
+          return nd
+        
+        def handleList(node,v):
+          nl = []
+          for i in v:
+            nl.append(handleItem(node,i))
+          return nl
+        
         def visit(node):
           writeInfo(node,'[ZMSIndexZCatalog_func_] resync')
           l = []
@@ -520,7 +542,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             for key in [x for x in node.getObjAttrs() if not x.startswith('manage')]:
               objAttr = node.getObjAttr(key)
               datatype = objAttr['datatype']
-              if datatype in ['richtext','string','text','url']:
+              if datatype in ['richtext','string','text','list','dict','url']:
                 lang_suffixes = ['']
                 if objAttr['multilang']:
                   lang_suffixes = ['_%s'%x for x in self.getLangIds()]
@@ -528,10 +550,10 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                   for obj_vers in node.getObjVersions():
                     v = self.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
                     if v is not None:
-                      v = str(v)
+                      #v = str(v)
                       o = v
-                      if datatype in ['richtext','string','text']:
-                        v = handleInline(node,v)
+                      if datatype in ['richtext','string','text','list','dict']:
+                        v = handleItem(node,v)
                       elif datatype in ['url']:
                         v = handleUrl(node,v)
                       if o != v:
@@ -963,7 +985,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.3.3</item>
+          <item key="revision">1.3.4</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -982,7 +1004,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.3.3</item>
+          <item key="revision">1.3.4</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

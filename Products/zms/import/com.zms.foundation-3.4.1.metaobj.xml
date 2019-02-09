@@ -2266,7 +2266,7 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
 # --// BO onChangeObjEvt //--
 
 def equals(o, d):
-  for k in d.keys():
+  for k in d:
     if o.attr(k) != d[k]:
       return False
   return True
@@ -2286,7 +2286,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
     d = {'active':active,'title':title,'titlealt':title,'attr_ref':url,'attr_dc_description':description,'attr_type':attr_type,'align':align}
     if not equals(childNode,d):
       childNode.setObjStateModified(request)
-      for k in d.keys():
+      for k in d:
         childNode.setObjProperty(k,d[k],lang)
       childNode.onChangeObj(request)
   # Insert.
@@ -3992,7 +3992,7 @@ if request.get('action') == 'record_duplicate':
   new_ob.setObjStateNew(request)
   new_ob.setObjProperty('attr_active_start',None,request['lang'])
   new_ob.setObjProperty('attr_active_end',None,request['lang'])
-  for attr_id in new_ob.getObjAttrs().keys():
+  for attr_id in new_ob.getObjAttrs():
     if attr_id.find('title')>=0:
       new_ob.setObjProperty(attr_id,'Copy of %s'%new_ob.attr(attr_id),request['lang'])
       break
@@ -5761,9 +5761,9 @@ if key.startswith('table_'):
 				</tal:block>
 			</tal:block>
 		</tal:block>
-		<tal:block tal:condition="python:len(d.keys())>0">
+		<tal:block tal:condition="d">
 			<tal:block tal:content="structure python:'<style type=\042text/css\042>'"></tal:block>
-				<tal:block tal:repeat="k python:d.keys()">
+				<tal:block tal:repeat="k d">
 							table#<tal:block tal:content="python:zmscontext.id"></tal:block> tr th:nth-child(<tal:block tal:content="k"></tal:block>), 
 							table#<tal:block tal:content="python:zmscontext.id"></tal:block> tr td:nth-child(<tal:block tal:content="k"></tal:block>) 
 								{ width:<tal:block tal:content="python:d[k]"></tal:block> }

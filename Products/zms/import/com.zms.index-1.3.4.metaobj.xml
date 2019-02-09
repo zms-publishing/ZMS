@@ -427,12 +427,11 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           r = re.compile(p)
           for f in r.findall(v):
             data_id = f[0]
-            writeInfo(node,'[ZMSIndexZCatalog_func_] handleInline %s'%(data_id))
             old = '<dtml-var "getLinkUrl(\'%s\'%s)">'%(data_id,f[1])
             ref = node.getLinkObj(data_id)
             if ref:
               new = ref.absolute_url()
-              writeInfo(node,'[ZMSIndexZCatalog_func_] handleInline %s->%s'%(old,new))
+              writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline %s->%s'%(old,new))
               v = v.replace(old,new)
           p = '<a(.*?)>(.*?)<\\/a>'
           r = re.compile(p)

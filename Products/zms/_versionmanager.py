@@ -463,15 +463,20 @@ class VersionItem(object):
       if reset: self.initializeWorkVersion()
       setChangedBy( self, REQUEST)
       setCreatedBy( self, REQUEST)
+      
       #-- Set Master-Version.
       parent = self.getParentNode()
       master_version = 0
       if parent is not None:
         master_version = parent.getObjProperty( 'master_version', REQUEST)
       self.setObjProperty( 'master_version', master_version)
+      
       lang = REQUEST['lang']
       for langId in [lang]+self.getDescendantLanguages(lang):
         self.setObjState(obj_state, langId)
+      
+      ##### Trigger custom onCreateObj-Event (if there is one) ####
+      standard.triggerEvent( self, 'onCreateObjEvt')
 
     # --------------------------------------------------------------------------
     #  VersionItem.setObjStateModified

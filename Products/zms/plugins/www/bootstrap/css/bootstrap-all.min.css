@@ -424,7 +424,7 @@ textarea.zmi-helper-hidden,textarea.ui-helper-hidden{display:none!important}
 @media(max-width:767px){.zmi header .navbar-nav.pull-right{display:block;position:absolute;right:0}
  .zmi header .navbar .authenticated_user,.zmi header .navbar .language_label{display:none}}
 @media(max-width:992px){.zmi header .navbar-brand .slogan{display:none}}
-.zmi header .navbar{margin:0;height:42px;min-height:42px}
+.zmi header .navbar{margin:0;height:42px;min-height:42px;background:#354f67}
 .zmi header .navbar-fixed-top .navbar-inner,.zmi header .navbar-fixed-bottom .navbar-inner{padding:0!important}
 .zmi.preview_top .navbar .pull-right{padding-top:.8em;padding-right:.25em}
 .zmi.preview_top .navbar .pull-right .btn.btn-primary{margin-top:-.45em}
@@ -698,6 +698,7 @@ input.btn.btn-file{background-color:#eee;margin-bottom:0.5em}
 .table.zmi-sortable td{white-space:nowrap}
 .table.zmi-sortable td img.grippy,.table.zmi-sortable input{margin-bottom:0px}
 table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap{background-color:#DCE3F0;overflow:hidden;padding-right:4px}
+ table.table-hover.zmi-sortable.zmi-selectable th{cursor:default}
 table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap a{margin:0 2px 0 2px}
 table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap input.form-control{background-color:#E5EAF4;border:0;color:#000;display:inline!important;font-weight:bold;margin-bottom:0;padding-left:4px!important}
 table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable th.nowrap input.form-control::-webkit-input-placeholder{color:#08c}

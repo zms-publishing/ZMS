@@ -87,6 +87,7 @@ textarea.zmi-helper-hidden, textarea.ui-helper-hidden {
 	margin:0;
 	height:42px;
 	min-height:42px;
+	background: #354f67;
 }
 .zmi header .navbar-fixed-top .navbar-inner,
 .zmi header .navbar-fixed-bottom .navbar-inner {

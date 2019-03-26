@@ -447,7 +447,7 @@ class DeprecatedAPI:
     if mediadb:
         perms.append(mediadb.getLocation())
     for perm in map(lambda x: x.strip(), perms):
-        authorized = authorized or ( len( perm) > 0 and filename.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
+        authorized = authorized or ( len( perm) > 0 and path.lower().startswith( _fileutil.absoluteOSPath(perm).lower()))
     if not authorized:
         raise zExceptions.Unauthorized
     # Delegate to standard.

@@ -200,7 +200,7 @@ $(function(){
 	// Context-Sensitive Help On Labels
 	$("div.help").each(function() {
 			var data_for = $(this).attr("data-for");
-			$("label[for="+data_for+"]").each(function() {
+			$("label[for="+data_for+"], label[for="+data_for+"_"+getZMILang()+"]").each(function() {
 					$(this).removeClass("col-sm-2").wrap('<div class="col-sm-2" style="text-align:right"></div>');
 					$(this).parent().append("&nbsp;"+$ZMI.icon('icon-info-sign text-info zmi-helper-clickable','title="'+getZMILangStr('TAB_HELP')+'..." onclick="var evt=arguments[0]||window.event;evt.stopPropagation();zmiModal(\'div.help[data-for='+data_for+']\',{title:\''+getZMILangStr('TAB_HELP')+': '+$(this).text().trim()+'\'})"'));
 				});

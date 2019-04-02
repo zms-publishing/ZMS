@@ -634,7 +634,7 @@ if request.has_key('permalink_key__') and request.has_key('permalink_val__'):
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">icon-download</item>
+                  <item key="custom"><![CDATA[icon-download-alt fas fa-download]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -1300,7 +1300,7 @@ return ''
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[icon-picture fa fa-picture-o fas fa-image]]></item>
+                  <item key="custom"><![CDATA[icon-picture fa fa-picture-o far fa-image]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -2985,7 +2985,7 @@ return constraints
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">icon-comment-alt</item>
+                  <item key="custom"><![CDATA[icon-comment-alt far fa-comment-alt]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">

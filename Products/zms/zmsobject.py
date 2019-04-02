@@ -606,7 +606,10 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.zmi_icon:
     # --------------------------------------------------------------------------
     def zmi_icon(self, context=None, name='', title='', extra=''):
-      return '<i class="%s" title="%s"%s></i>'%(name.replace('icon-','fas fa-'),title,extra)
+      if ( name.find('far ') > -1 or name.find('fas ') > -1 ):
+        return '<i class="%s" title="%s"%s></i>'%(name,title,extra)
+      else:
+        return '<i class="%s" title="%s"%s></i>'%(name.replace('icon-','fas fa-'),title,extra)
 
 
     # --------------------------------------------------------------------------

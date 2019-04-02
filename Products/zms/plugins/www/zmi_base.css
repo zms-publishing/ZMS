@@ -44,13 +44,7 @@ a:hover {
 	color:rgba(108, 117, 125, .5) !important;
 }
 
-.zmi a.btn.btn-primary,
-.zmi input.btn.btn-primary {
-	background-color:white !important;
-	color:#6c757d;
-	border-color:#6c757d;
-	min-width: 7em;
-}
+
 .h2, h2 {
 	font-size: 1.5rem;
 	margin: 2rem 0 1rem;

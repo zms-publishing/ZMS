@@ -23,20 +23,20 @@
 	<input type="hidden" id="action" name="action" tal:attributes="value action">
 	<input type="hidden" id="qindex" name="qindex:int" tal:attributes="value qindex">
 	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
-	<div class="accordion-group perc100">
+	<div class="card perc100">
 
-		<div class="accordion-heading">
-			<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#input_fields'">
+		<div class="card-header">
+			<a class="card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#input_fields'">
 				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 				<tal:block tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the label</tal:block>
 			</a>
 			<div class="clearfix"></div>
-		</div><!-- accordion-heading -->
+		</div><!-- card-header -->
 
-		<div class="accordion-body collapse in" tal:attributes="id python:'input_fields'">
-			<div class="accordion-inner"> 
+		<div class="collapse show" tal:attributes="id python:'input_fields'">
+			<div class="card-body"> 
 
-		<div class="form-group" tal:condition="python:'_change_uid' in row">
+		<div class="form-group row" tal:condition="python:'_change_uid' in row">
 			<label class="col-sm-3 col-md-2 control-label">
 				<span tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">last modified</span>
 			</label>
@@ -59,7 +59,7 @@
 				><div class="zmi-interface" tal:content="structure python:here.attr(metaObjAttrId)">the interface</div
 			></tal:block
 
-			><div class="form-group"
+			><div class="form-group row"
 					tal:attributes="id python:'tr_%s'%(elName)"
 					tal:condition="not:python:metaObjAttr['type'] in ['delimiter','hint','interface']">
 				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
@@ -98,8 +98,12 @@
 										<option tal:attributes="value python:option[1]; selected python:['','selected'][int(str(option[1])==str(row.get(metaObjAttr['id'])))]" tal:content="python:option[0]"></option>
 									</tal:block>
 								</select>
-								<span class="input-group-addon ui-helper-clickable" tal:attributes="onclick python:'self.location.href=\'%s/manage_main?lang=%s\'+($(\'select[name=%s]\').val().length==0?\'\':\'&action=updateForm&qidentifier=\'+$(\'select[name=%s]\').val())'%(fkContainer.absolute_url(),request['lang'],metaObjAttr['id'],metaObjAttr['id'])"><tal:block tal:content="structure python:here.zmi_icon(name='icon-eject')"></tal:block></span>
-							</div><!-- .input-append -->
+								<div class="input-group-append">
+									<a class="btn btn-secondary" href="javascript:;" 
+										tal:attributes="onclick python:'self.location.href=\'%s/manage_main?lang=%s\'+($(\'select[name=%s]\').val().length==0?\'\':\'&action=updateForm&qidentifier=\'+$(\'select[name=%s]\').val())'%(fkContainer.absolute_url(),request['lang'],metaObjAttr['id'],metaObjAttr['id'])">
+										tal:content="structure python:here.zmi_icon(name='icon-eject')"></a>
+								</div><!-- .input-group-append -->
+							</div><!-- .input-group -->
 						</tal:block>
 					</tal:block>
 
@@ -108,16 +112,16 @@
 			</tal:block>
 		</tal:block>
 
-	<div class="form-group">
+	<div class="form-group row">
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+			<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 		</div>
 	</div><!-- .form-group -->
 
-			</div><!-- .accordion-inner -->
-		</div><!-- .accordion-body -->
-	</div><!-- .accordion-group.perc100 -->
+			</div><!-- .card-body -->
+		</div><!-- .collapse -->
+	</div><!-- .card.perc100 -->
 </form>
 
 	<tal:block tal:condition="not:python:action=='insert'">
@@ -128,17 +132,17 @@
 								elName python:metaObjAttr['id'];
 								elLabel python:metaObj['name']">
 						<div class="form-horizontal">
-						<div class="accordion-group perc100">
-						<div class="accordion-heading">
-							<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s_grid'%metaObjAttr['id']">
+						<div class="card perc100">
+						<div class="card-header">
+							<a class="card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s_grid'%metaObjAttr['id']">
 								<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-table')"></tal:block>
 								<tal:block tal:content="elLabel">the label</tal:block>
 							</a>
 							<div class="clearfix"></div>
-						</div><!-- accordion-heading -->
-						<div class="accordion-body collapse in" tal:attributes="id python:'%s_grid'%metaObjAttr['id']">
-							<div class="accordion-inner" tal:define="global 
+						</div><!-- card-header -->
+						<div class="collapse show" tal:attributes="id python:'%s_grid'%metaObjAttr['id']">
+							<div class="card-body" tal:define="global 
 									records python:node.attr(metaObj['attrs'][0]['id']);
 									filtered_records python:[x for x in records if x[metaObjAttr['id']]==row[identifier]];
 									metaObjAttrs python:[x for x in metaObj['attrs'][1:] if 
@@ -157,9 +161,9 @@
 										url='%s/manage_main'%node.absolute_url())">
 									metaobj_recordset_main
 								</tal:block>
-							</div><!-- .accordion-inner -->
-						</div><!-- .accordion-body -->
-						</div><!-- .accordion-group -->
+							</div><!-- .card-body -->
+						</div><!-- .collapse -->
+						</div><!-- .card -->
 						</div><!-- .form-horizontal -->
 					</tal:block>
 				</tal:block>

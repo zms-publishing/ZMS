@@ -6,7 +6,7 @@
 
 <header>
 	<div class="navbar navbar-inverse navbar-fixed-top">
-		<a class="navbar-brand zmi-helper-clickable" target="_blank" 
+		<a class="navbar-brand" target="_blank" 
 					style="max-width: 66%;overflow: hidden;white-space: nowrap;"
 					tal:attributes="href python:'../../%s/manage'%here.breadcrumbs_obj_path()[0].getHome().id">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-cogs')"></tal:block>
@@ -23,7 +23,9 @@
 </div><!-- .zmi-sitemap -->
 
 <footer>
-	<span class="zmi-helper-clickable refresh" onclick="zmiRefresh()"><i class="icon-refresh"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block></span>
+	<a class="refresh" href="javascript:;" onclick="zmiRefresh()">
+		<i class="icon-refresh"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block>
+	</a>
 </footer>
 
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>

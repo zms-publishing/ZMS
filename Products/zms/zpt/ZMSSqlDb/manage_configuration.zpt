@@ -44,13 +44,13 @@ select.zmi-sort {
 .column-datatype {
 	color:#999;
 }
-.form-horizontal .accordion-inner {
+.form-horizontal .card-body {
 	margin-left:2.3em;
 }
-.accordion-group a {
+.card a {
 	font-weight:bold;
 }
-.accordion-group.inactive a, .accordion-group.inactive label span {
+.card.inactive a, .card.inactive label span {
 	color:#AAA;
 }
 
@@ -110,8 +110,8 @@ function zmiChangeTablename(sender, names) {
 function onAttrTypeChange( el) {
 	var column_id = $(el).attr('name').substr( "attr_type_".length);
 	var column_type = $(el).val();
-	$("tr[id^=tr_][id$=_"+column_id+"]").addClass('ui-helper-hidden');
-	$("tr[id=tr_"+column_type+"_"+column_id+"]").removeClass('ui-helper-hidden');
+	$("tr[id^=tr_][id$=_"+column_id+"]").addClass('d-none');
+	$("tr[id=tr_"+column_type+"_"+column_id+"]").removeClass('d-none');
 }
 
 $ZMI.registerReady(function(){
@@ -203,7 +203,7 @@ function mms_normalize_rows(el_tbody) {
 <tal:block tal:condition="tables">
 
 <tal:block tal:repeat="table python:[x for x in tables if request.get('id')==x['id']]">
-<div class="ui-helper-hidden">
+<div class="d-none">
 	<div id="updateEntity" class="inner">
 		<form class="form-horizontal" action="manage_changeConfiguration" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
@@ -224,24 +224,24 @@ function mms_normalize_rows(el_tbody) {
 				</select>
 				<div class="controls save pull-right">
 					<button type="submit" name="btn" class="btn btn-primary btn-sm" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-					<button type="submit" name="btn" class="btn btn-default btn-sm" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+					<button type="submit" name="btn" class="btn btn-secondary btn-sm" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div><!-- .controls -->
 			</div>
 			<div style="clear:both;">&nbsp;</div>
-	<div class="form-group">
+	<div class="form-group row">
 		<label class="col-xs-2 control-label"><span>Interface</span></label>
 		<div class="col-xs-10">
 			<div class="single-line"><textarea title="Interface" class="form-control input-sm" name="interface" tal:content="python:table.get('interface','')"></textarea></div><!-- .single-line -->
 		</div><!-- .col-xs-2 -->
 	</div><!-- .form-group -->
-	<div class="form-group">
+	<div class="form-group row">
 		<label class="col-xs-2 control-label"><span>Filter</span></label>
 		<div class="col-xs-10">
 			<div class="single-line"><textarea title="Filter" class="form-control input-sm" name="filter" tal:content="python:table.get('filter','')"></textarea></div><!-- .single-line -->
 		</div><!-- .col-xs-2 -->
 	</div><!-- .form-group -->
 	<div style="clear:both;">&nbsp;</div>
-	<div class="form-group">
+	<div class="form-group row">
 		<label class="col-xs-2 control-label"><span tal:content="python:here.getZMILangStr('TAB_ACCESS')">Access</span></label>
 		<div class="col-xs-10">
 			<table class="table table-striped table-bordered meta-access" tal:define="global access python:table.get('access',{})">
@@ -298,7 +298,7 @@ function mms_normalize_rows(el_tbody) {
 						<tal:block tal:replace="nothing">
 						##### Blob #########################################################
 						</tal:block>
-						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('blob'))]">
+						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['d-none',''][int(column.has_key('blob'))]">
 							<td>Type</td>
 							<td>
 								<select class="form-control input-xs" tal:attributes="name python:'attr_blob_type_%s'%column['id']">
@@ -308,18 +308,18 @@ function mms_normalize_rows(el_tbody) {
 								</select>
 							</td>
 						</tr>
-						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('blob'))]">
+						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['d-none',''][int(column.has_key('blob'))]">
 							<td>Path</td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_blob_path_%s'%column['id']; value python:column.get('blob',{}).get('path','')"/></td>
 						</tr>
-						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('blob'))]">
+						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['d-none',''][int(column.has_key('blob'))]">
 							<td>Remote [URL]</td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_blob_remote_%s'%column['id']; value python:column.get('blob',{}).get('remote','')"/></td>
 						</tr>
 						<tal:block tal:replace="nothing">
 						##### Details ######################################################
 						</tal:block>
-						<tr tal:attributes="id python:'tr_details_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('details'))]">
+						<tr tal:attributes="id python:'tr_details_%s'%column['id']; class python:['d-none',''][int(column.has_key('details'))]">
 							<td>Tablename</td>
 							<td>
 								<select class="form-control input-xs" tal:attributes="name python:'attr_details_tablename_%s'%column['id']">
@@ -330,14 +330,14 @@ function mms_normalize_rows(el_tbody) {
 								</select>
 							</td>
 						</tr>
-						<tr tal:attributes="id python:'tr_details_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('details'))]">
+						<tr tal:attributes="id python:'tr_details_%s'%column['id']; class python:['d-none',''][int(column.has_key('details'))]">
 							<td>Foreign Key</td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_details_fk_%s'%column['id']; value python:column.get('details',{}).get('fk','')"/></td>
 						</tr>
 						<tal:block tal:replace="nothing">
 						##### Fk ###########################################################
 						</tal:block>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
 							<td>A.Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
 							<td>
 								<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_fk_tablename_%s'%column['id']; onchange python:'zmiChangeTablename(this,[\'%s\',\'%s\'])'%('attr_fk_fieldname_%s'%column['id'],'attr_fk_displayfield_%s'%column['id'])">
@@ -348,34 +348,34 @@ function mms_normalize_rows(el_tbody) {
 								</select>
 							</td>
 						</tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
 							<td>A.Fieldname</td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_fk_fieldname_%s'%column['id']; value python:column.get('fk',{}).get('fieldname','')"/></td>
 						</tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
 							<td>A.Displayfield</td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_fk_displayfield_%s'%column['id']; value python:column.get('fk',{}).get('displayfield','')"/></td>
 						</tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
 							<td>A.Lazy</td>
 							<td><input type="checkbox" tal:attributes="name python:'attr_fk_lazy_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('lazy') in [1,True])]" value="1"/></td>
 						</tr>
-            <tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+            <tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
               <td>A.Editable</td>
               <td><input type="checkbox" tal:attributes="name python:'attr_fk_editable_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('editable') in [1,True])]" value="1"/></td>
             </tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
 							<td>B.MySQL-Set</td>
 							<td><input type="checkbox" tal:attributes="name python:'attr_fk_mysqlset_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('mysqlset') in [1,True])]" value="1"/></td>
 						</tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('fk'))]">
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
 							<td>C.Options</td>
 							<td><div class="zmi-single-line-edit"><textarea class="form-control input-xs" tal:attributes="name python:'attr_fk_options_%s'%column['id']" tal:content="python:'\n'.join([x[0] for x in column.get('fk',{}).get('options',[])])"></textarea></div></td>
 						</tr>
 						<tal:block tal:replace="nothing">
 						##### Multiselect ###########################################################
 						</tal:block>
-						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
+						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multiselect'))]">
 							<td>A.Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
 							<td>
 								<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_multiselect_tablename_%s'%column['id']; onchange python:'zmiChangeTablename(this,[\'%s\'])'%('attr_multiselect_fk_%s'%column['id'])">
@@ -386,22 +386,22 @@ function mms_normalize_rows(el_tbody) {
 								</select>
 							</td>
 						</tr>
-						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
+						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multiselect'))]">
 							<td>A.Foreign Key <tal:block tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block></td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multiselect_fk_%s'%column['id']; value python:column.get('multiselect',{}).get('fk','')"/></td>
 						</tr>
-						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
+						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multiselect'))]">
 							<td>A.Lazy</td>
 							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_lazy_%s:int'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('lazy') in [1,True])]" value="1"/></td>
 						</tr>
-						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multiselect'))]">
+						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multiselect'))]">
 							<td>B.MySQL-Set</td>
 							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_mysqlset_%s:int'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('mysqlset') in [1,True])]" value="1"/></td>
 						</tr>
 						<tal:block tal:replace="nothing">
 						##### Multimultiselect ###########################################################
 						</tal:block>
-						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multimultiselect'))]">
+						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multimultiselect'))]">
 							<td>Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
 							<td>
 								<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_multimultiselect_tablename_%s'%column['id']; onchange python:'zmiChangeTablename(this,[\'%s\'])'%('attr_multimultiselect_fk_%s'%column['id'])">
@@ -412,7 +412,7 @@ function mms_normalize_rows(el_tbody) {
 								</select>
 							</td>
 						</tr>
-						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multimultiselect'))]">
+						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multimultiselect'))]">
 							<td>Foreign Key</td>
 							<td><input type="text" tal:attributes="name python:'attr_multimultiselect_fk_%s'%column['id']; value python:column.get('multimultiselect',{}).get('fk','')"/></td>
 						</tr>
@@ -420,7 +420,7 @@ function mms_normalize_rows(el_tbody) {
 								mmstablename python:column.get('multimultiselect',{}).get('tablename','');
 								mmsfk python:column.get('multimultiselect',{}).get('fk','');
 								mmsentity python:([x for x in here.getEntities() if x['id'].upper()==mmstablename.upper()]+[None])[0]">
-							<tr tal:condition="python:mmsfk!='' and mmsentity is not None" tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['ui-helper-hidden',''][int(column.has_key('multimultiselect'))]">
+							<tr tal:condition="python:mmsfk!='' and mmsentity is not None" tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multimultiselect'))]">
 								<td colspan="2">Tables
 									<table>
 									<tr>
@@ -462,7 +462,7 @@ function mms_normalize_rows(el_tbody) {
 						<tal:block tal:replace="nothing">
 						##### Auto ###########################################################
 						</tal:block>
-						<tr tal:attributes="id python:'tr_pk_%s'%column['id']; class python:['ui-helper-hidden',''][int('pk' in column or column.get('datatype') in ['date','datetime'])]">
+						<tr tal:attributes="id python:'tr_pk_%s'%column['id']; class python:['d-none',''][int('pk' in column or column.get('datatype') in ['date','datetime'])]">
 							<td>Auto</td>
 							<td>
 								<select tal:attributes="name python:'attr_auto_%s'%column['id']">
@@ -477,7 +477,7 @@ function mms_normalize_rows(el_tbody) {
 				</tr>
 				</tal:block>
 				<tr class="row_insert">
-					<td><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
+					<td><span class="btn btn-light" tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></span></td>
 					<td><input class="form-control input-xs" name="attr_id" type="text"/></td>
 					<td><input class="form-control input-xs" name="attr_label" type="text"/></td>
 					<td><input name="attr_display:int" value="1" checked="checked" type="checkbox"/></td>
@@ -502,16 +502,16 @@ function mms_normalize_rows(el_tbody) {
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
 
-<div class="ui-helper-hidden">
+<div class="d-none">
 	<div id="importConf" class="inner">
-		<div class="form-group">
+		<div class="form-group row">
 			<label for="file" class="col-xs-3 col-lg-2 control-label">
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block>
 				<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 			</label>
 			<div class="col-xs-9 col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
 		</div><!-- .form-group -->
-		<div class="form-group">
+		<div class="form-group row">
 			<div class="col-lg-12">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 			</div><!-- .col-lg-12-->
@@ -520,13 +520,13 @@ function mms_normalize_rows(el_tbody) {
 </div><!-- #importConf -->
 
 	<div class="btn-group" style="padding:1em;">
-		<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
+		<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload')"></tal:block></span>
 	</div>
 	<br/>
 	<tal:block tal:repeat="table tables">
-	<div tal:attributes="class python:' '.join(['accordion-group']+[[''],['inactive']][int(table['type']!='table')])">
-		<div class="accordion-heading">
-			<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s-columns'%table['id']">
+	<div tal:attributes="class python:' '.join(['card']+[[''],['inactive']][int(table['type']!='table')])">
+		<div class="card-header">
+			<a class="card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s-columns'%table['id']">
 				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 			</a>
 			<div class="pull-left">
@@ -538,11 +538,11 @@ function mms_normalize_rows(el_tbody) {
 				</a>
 			</div>
 			<div class="clearfix"></div>
-		</div><!-- .accordion-heading -->
-		<div tal:attributes="id python:'%s-columns'%table['id']; class python:' '.join(['accordion-body','collapse']+[[],['in']][int(table==tables[0])])">
-			<div class="accordion-inner">
+		</div><!-- .card-header -->
+		<div tal:attributes="id python:'%s-columns'%table['id']; class python:' '.join(['collapse']+[[],['show']][int(table==tables[0])])">
+			<div class="card-body">
 				<tal:block tal:repeat="column table/columns">
-					<div class="form-group">
+					<div class="form-group row">
 						<label tal:attributes="class python:' '.join(['col-xs-3 col-lg-2 control-label']+[[],['mandatory']][int(column.get('mandatory',0))]);title python:['','mandatory'][int(column.get('mandatory',0))]">
 							<span>
 								<tal:block tal:content="repeat/column/number">number</tal:block>. 
@@ -600,9 +600,9 @@ function mms_normalize_rows(el_tbody) {
 						</div><!-- .col-lg-10 -->
 					</div><!-- .form-group -->
 				</tal:block>
-			</div><!-- .accordion-inner -->
-		</div><!-- .accordion-body -->
-	</div><!-- .accordion-group -->
+			</div><!-- .card-body -->
+		</div><!-- .collapse -->
+	</div><!-- .card -->
 	</tal:block>
 
 </form>

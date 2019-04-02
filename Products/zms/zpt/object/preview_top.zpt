@@ -40,15 +40,15 @@
 			&nbsp;&nbsp;<a tal:attributes="href python:'manage_main?lang=%s'%request.get('lang','ger')" target="_parent">
 				<tal:block tal:content="python:'%s %s %s'%(here.getZMILangStr('BACK'),here.getZMILangStr('TO'),here.display_type(request))">back to display_type</tal:block>
 			</a>
-			&nbsp;&nbsp;<span class="ui-helper-clickable zmi-top-active">
-				<a tal:attributes="href python:'preview_html?lang=%s'%request.get('lang','ger')" target="_parent"
-					tal:content="python:here.getZMILangStr('TAB_PREVIEW')">preview
-				</a>
-			</span>
+			&nbsp;&nbsp;
+			<a class="zmi-top-active" tal:attributes="href python:'preview_html?lang=%s'%request.get('lang','ger')" target="_parent"
+				tal:content="python:here.getZMILangStr('TAB_PREVIEW')">preview
+			</a>
 			<tal:block tal:condition="python:len(here.getConfProperty('ASP.ip_or_domain',''))>0 or not here.getAutocommit()">
-				&nbsp;&nbsp;<span class="ui-helper-clickable" onclick="open_partner(this,false);">
-				<tal:block tal:content="python:here.getZMILangStr('TAB_LIVE')">live</tal:block>
-			</span>
+				&nbsp;&nbsp;
+				<a href="javascript:;" onclick="open_partner(this,false);">
+					<tal:block tal:content="python:here.getZMILangStr('TAB_LIVE')">live</tal:block>
+				</a>
 			</tal:block>
 		</div><!-- .pull-right -->
 	</div><!-- .navbar -->

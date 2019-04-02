@@ -116,6 +116,16 @@ def getINSTANCE_HOME():
   return getConfiguration().instancehome
 
 
+security.declarePublic('zmi_paths')
+def zmi_paths(context):
+	from zmi.styles.subscriber import css_paths, js_paths
+	kw = {}
+	# remove zmi base css/js
+	kw["css_paths"] = css_paths(context)[:-1]
+	kw["js_paths"] = js_paths(context)[:-1]
+	return kw
+
+
 security.declarePublic('FileFromData')
 def FileFromData( context, data, filename='', content_type=None):
   """

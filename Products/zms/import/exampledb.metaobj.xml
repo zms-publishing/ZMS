@@ -105,18 +105,18 @@
 	<input type="hidden" name="lang" tal:condition="python:request.has_key('lang')" tal:attributes="value request/lang"/>
 	<input type="hidden" name="preview" tal:condition="python:request.has_key('preview')" tal:attributes="value request/preview"/>
 	<div style="margin:1em 0 1em 0;padding:.2em;background:#DCE3F0;border-radius:4px;" tal:define="global filterIndex python:0">
-		<div class="form-group" style="margin:.5em">
+		<div class="form-group row" style="margin:.5em">
 			<div class="input-group">
 				<input type="hidden" tal:attributes="name python:'filterattr%i'%filterIndex" value="%">
 				<input class="form-control input-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),'')" />
-				<span class="input-group-btn">
-					<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_SEARCH'); title python:here.getZMILangStr('BTN_SEARCH')">
+				<div class="input-group-append">
+					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_SEARCH'); title python:here.getZMILangStr('BTN_SEARCH')">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
 					</button>
-					<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_RESET'); title python:here.getZMILangStr('BTN_RESET')">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
+					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_RESET'); title python:here.getZMILangStr('BTN_RESET')">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-times')"></tal:block>
 					</button>
-				</span>
+				</div>
 			</div><!-- .input-group -->
 		</div><!-- .form-group -->
 	</div>
@@ -314,18 +314,18 @@
 	<input type="hidden" name="lang" tal:condition="python:request.has_key('lang')" tal:attributes="value request/lang"/>
 	<input type="hidden" name="preview" tal:condition="python:request.has_key('preview')" tal:attributes="value request/preview"/>
 	<div style="margin:1em 0 1em 0;padding:.2em;background:#DCE3F0;border-radius:4px;" tal:define="global filterIndex python:0">
-		<div class="form-group" style="margin:.5em">
+		<div class="form-group row" style="margin:.5em">
 			<div class="input-group">
 				<input type="hidden" tal:attributes="name python:'filterattr%i'%filterIndex" value="%">
 				<input class="form-control input-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),'')" />
-				<span class="input-group-btn">
-					<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_SEARCH'); title python:here.getZMILangStr('BTN_SEARCH')">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
-					</button>
-					<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_RESET'); title python:here.getZMILangStr('BTN_RESET')">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block>
-					</button>
-				</span>
+				<div class="input-group-append">
+					<button type="submit" name="btn" class="btn btn-secondary" 
+						tal:attributes="value python:here.getZMILangStr('BTN_SEARCH'); title python:here.getZMILangStr('BTN_SEARCH')"
+						tal:content="structure python:here.zmi_icon(name='icon-search')"></button>
+					<button type="submit" name="btn" class="btn btn-secondary" 
+						tal:attributes="value python:here.getZMILangStr('BTN_RESET'); title python:here.getZMILangStr('BTN_RESET')"
+						tal:content="structure python:here.zmi_icon(name='icon-times')"></button>
+				</div>
 			</div><!-- .input-group -->
 		</div><!-- .form-group -->
 	</div>

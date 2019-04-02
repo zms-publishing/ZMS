@@ -15,15 +15,15 @@
 						elName python:here.getObjAttrName(metaObjAttr,request['lang']);
 						elLabel python:here.getObjAttrLabel(metaObjAttr);"
 					><tal:block tal:condition="python:metaObjAttr['type']=='delimiter'"
-						><tal:block tal:content="structure python:'</div><!-- .accordion-inner --></div><!-- .accordion-body -->'"></tal:block>
-						<div class="accordion-heading">
-							<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
+						><tal:block tal:content="structure python:'</div><!-- .card-body --></div><!-- .collapse -->'"></tal:block>
+						<div class="card-header">
+							<a class="card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
 								<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 								<tal:block tal:content="elLabel">the label</tal:block>
 							</a>
 							<div class="clearfix"></div>
-						</div><!-- .accordion-heading -->
-						<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042accordion-body collapse in\042><div class=\042accordion-inner\042>'%metaObjAttr['id']"></tal:block>
+						</div><!-- .card-header -->
+						<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042collapse show\042><div class=\042card-body\042>'%metaObjAttr['id']"></tal:block>
 					</tal:block
 					><tal:block tal:condition="python:metaObjAttr['type']=='hint'"
 						><div class="zmi-hint" tal:content="structure elLabel">the hint</div>
@@ -35,34 +35,34 @@
 						><div tal:attributes="class python:' '.join(['zmi-richtext']+[[],['is-modified']][int(here.attr_is_modified(metaObjAttrId))])" tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the richtext</div>
 					</tal:block
 					><tal:block tal:condition="python:metaObjAttr['type'] in metaObjIds and here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource' and action.lower()!='insert'"
-						><tal:block tal:content="structure python:'</div><!-- .accordion-inner --></div><!-- .accordion-body -->'"></tal:block
-						><div class="accordion-heading">
-							<a class="accordion-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
+						><tal:block tal:content="structure python:'</div><!-- .card-body --></div><!-- .collapse -->'"></tal:block
+						><div class="card-header">
+							<a class="card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
 								<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 								<tal:block tal:content="elLabel">the label</tal:block>
 							</a>
-							<div class="btn-group zmi-action pull-right" tal:condition="python:not standard.nvl(metaObjAttr.get('mandatory'),False)">
-								<button class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+							<div class="zmi-action btn-group dropleft" tal:condition="python:not standard.nvl(metaObjAttr.get('mandatory'),False)">
+								<button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
 									tal:content="structure python:here.zmi_icon(name='icon-chevron-down')">
 								></button>
-								<ul class="dropdown-menu">
-									<li tal:condition="python:len(here.getObjChildren(metaObjAttr['id'],request))==0">
-										<a tal:attributes="href python:'manage_initObjChild?id=%s&type=%s&lang=%s&manage_target=%s'%(metaObjAttr['id'],metaObjAttr['type'],request['lang'],request['URL'])">
+								<div class="dropdown-menu">
+									<tal:block tal:condition="python:len(here.getObjChildren(metaObjAttr['id'],request))==0">
+										<a class="dropdown-item" tal:attributes="href python:'manage_initObjChild?id=%s&type=%s&lang=%s&manage_target=%s'%(metaObjAttr['id'],metaObjAttr['type'],request['lang'],request['URL'])">
 											<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus-sign')"></tal:block>
 											<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
 										</a>
-									</li>
-									<li tal:condition="python:len(here.getObjChildren(metaObjAttr['id'],request))>0">
-										<a tal:attributes="href python:'manage_deleteObjs?ids:list=%s&lang=%s&manage_target=%s'%(metaObjAttr['id'],request['lang'],request['URL'])">
+									</tal:block>
+									<tal:block tal:condition="python:len(here.getObjChildren(metaObjAttr['id'],request))>0">
+										<a class="dropdown-item" tal:attributes="href python:'manage_deleteObjs?ids:list=%s&lang=%s&manage_target=%s'%(metaObjAttr['id'],request['lang'],request['URL'])">
 											<tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block>
 											<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
 										</a>
-									</li>
-								</ul><!-- .dropdown-menu -->
+									</tal:block>
+								</div><!-- .dropdown-menu -->
 							</div>
 							<div class="clearfix"></div>
-						</div><!-- .accordion-heading -->
-						<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042accordion-body collapse in\042><div class=\042accordion-inner\042>'%metaObjAttr['id']"></tal:block>
+						</div><!-- .card-header -->
+						<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042collapse show\042><div class=\042card-body\042>'%metaObjAttr['id']"></tal:block>
 						<tal:block tal:repeat="childNode python:here.getObjChildren(metaObjAttr['id'],request)"
 							><tal:block tal:define="dummy0 python:request.set('objAttrNamePrefix','%s_'%childNode.id)"></tal:block
 							><tal:block tal:content="structure python:childNode.obj_input_elements(action=action,meta_id=childNode.meta_id)">obj_input_elements</tal:block
@@ -75,7 +75,7 @@
 							and not (metaObjAttr['id'] in ['displaytype','format']) \
 							and not (metaObjAttr['id'].find('align') > 0 and len(here.filter_list(metaObj['attrs'],'id',metaObjAttr['id'][:metaObjAttr['id'].find('align')],'=='))>0) \
 							and (metaObjAttr['id']!='imgsuperres' or (pilutil.enabled() and here.getConfProperty('ZMSGraphic.superres',0)==1))">
-						<div class="form-group" tal:attributes="id python:'tr_%s'%(elName); class python:' '.join(['form-group']+[[],['is-modified']][int(here.attr_is_modified(metaObjAttrId))])">
+						<div class="form-group row" tal:attributes="id python:'tr_%s'%(elName); class python:' '.join(['form-group','row']+[[],['is-modified']][int(here.attr_is_modified(metaObjAttrId))])">
 							<label tal:attributes="for elName; class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(standard.nvl(metaObjAttr.get('mandatory'),False))])">
 								<span tal:content="elLabel">the label</span>
 							</label>

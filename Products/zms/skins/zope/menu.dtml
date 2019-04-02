@@ -2,16 +2,16 @@
 
 
 <div class="dropdown" id="menu_buttons">
-	<button title="Logged in as" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+	<button title="Logged in as" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 		<span class="caret"></span>Login: &dtml-AUTHENTICATED_USER; 
 	</button>
-	<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-		<li><a id="menu_refresh" href="manage_menu">Refresh</a></li>
-		<li><a id="menu_save" href="manage_menu?save_layout=1">Save layout</a></li>
-		<li><a id="menu_logout" href="manage_zmi_logout">Logout</a></li>
-		<li role="separator" class="divider"></li>
-		<li><a id="menu_copyright" href="manage_copyright">&copy; Zope Foundation</a></li>
-	</ul>
+	<div class="dropdown-menu" aria-labelledby="dropdownMenu1">
+		<a id="menu_refresh" href="manage_menu">Refresh</a>
+		<a id="menu_save" href="manage_menu?save_layout=1">Save layout</a>
+		<a id="menu_logout" href="manage_zmi_logout">Logout</a>
+		<div class="dropdown-divider"></div>
+		<li><a id="menu_copyright" href="manage_copyright">&copy; Zope Foundation</a>
+	</div>
 </div>
 
 

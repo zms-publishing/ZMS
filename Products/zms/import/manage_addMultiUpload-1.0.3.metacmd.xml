@@ -78,7 +78,7 @@ def manage_addMultiUpload(self):
 	# ---------------------------------
 	else:
 
-		html += '<div class="form-group" style="margin:15px 0;">'
+		html += '<div class="form-group row" style="margin:15px 0;">'
 		html += '<label for="file" class="mandatory"><span>%s %s</span></label>'%( self.zmi_icon(name='icon-folder-open-alt'), self.getZMILangStr('ATTR_FILE') )
 		html += '<div class="form-control" style="padding:0;height:auto;min-height:34px">'
 		html += '<input style="margin:6px 12px" name="file" type="file" class="file" multiple="true" data-show-upload="false" data-show-caption="true" />'
@@ -86,7 +86,7 @@ def manage_addMultiUpload(self):
 		html += '</div><!-- .form-group -->'
 
 		html += """
-			<div class="form-group">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>
 					<button type="submit" name="btn" class="btn btn-white" value="%s">%s</button>
@@ -97,7 +97,7 @@ def manage_addMultiUpload(self):
 	# ---------------------------------
 
 	html += '</form><!-- .form-horizontal -->'
-	html += '</div><!-- .accordion-group -->'
+	html += '</div><!-- .card -->'
 	html += '<div style="clear:both;">&nbsp;</div>'
 	html += '</div><!-- #zmi-tab -->'
 	html += self.zmi_body_footer(self,request)
@@ -107,7 +107,7 @@ def manage_addMultiUpload(self):
       </item>
       <item key="description"></item>
       <item key="exec" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-upload-alt text-primary]]></item>
+      <item key="icon_clazz"><![CDATA[icon-upload text-primary]]></item>
       <item key="id"><![CDATA[manage_addMultiUpload]]></item>
       <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">

@@ -38,26 +38,26 @@ def manage_addClient(self):
 	# --- Display initial insert form.
 	# ---------------------------------
 	else:
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label mandatory">%s</label>'%(self.getZMILangStr('ATTR_ID'))
 		html += '<div class="col-sm-9"><input class="form-control" name="id" type="text" size="25" value="client0"></div>'
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="titlealt" class="col-sm-3 control-label mandatory">%s</label>'%(self.getZMILangStr('ATTR_TITLEALT'))
 		html += '<div class="col-sm-9"><input class="form-control" name="titlealt" type="text" size="80" value="Client0 home"></div>'
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="title" class="col-sm-3 control-label mandatory">%s</label>'%(self.getZMILangStr('ATTR_TITLE'))
 		html += '<div class="col-sm-9"><input class="form-control" name="title" type="text" size="50" value="Client0 - Python-based contentmanagement system for science, technology and medicine"></div>'
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="titlealt" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_CONFIGURATION'))
 		html += '<div class="col-sm-9"><input name="acquire:int" type="checkbox" value="1" checked="checked"> %s</div>'%(self.getZMILangStr('BTN_ACQUIRE'))
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(self.getZMILangStr('BTN_INSERT'),self.getZMILangStr('BTN_INSERT'))
-		html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
+		html += '<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
 		html += '</div>'
 		html += '</div><!-- .form-group -->'
 

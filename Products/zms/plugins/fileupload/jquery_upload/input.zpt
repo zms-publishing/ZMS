@@ -48,7 +48,7 @@ $(function () {
 					var oldsrc = $("img#img_<tal:block tal:content="options/elName"></tal:block>").attr('src');
 					$("img#img_<tal:block tal:content="options/elName"></tal:block>").attr('src',newsrc);
 					$("#upload").addClass("text-success bg-success").html(''
-						+ '<a href="javascript:;">'+$ZMI.icon('icon-remove','title="X" onclick="$(\'img#img_<tal:block tal:content="options/elName"></tal:block>\').attr(\'src\',\''+oldsrc+'\');$(\'#upload\').hide(\'normal\')"')+'</a> '
+						+ '<a href="javascript:;">'+$ZMI.icon('icon-times','title="X" onclick="$(\'img#img_<tal:block tal:content="options/elName"></tal:block>\').attr(\'src\',\''+oldsrc+'\');$(\'#upload\').hide(\'normal\')"')+'</a> '
 						+ '<a href="'+newsrc+'" target="_blank" title="'+data.result.content_type+'">'+data.result.filename+'</a> ('+data.result.size_str+') '
 						);
 				},

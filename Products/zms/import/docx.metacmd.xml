@@ -437,7 +437,7 @@ def manage_exportDocx( self):
       </item>
       <item key="description"></item>
       <item key="exec" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-download-alt]]></item>
+      <item key="icon_clazz"><![CDATA[icon-download]]></item>
       <item key="id"><![CDATA[manage_exportDocx]]></item>
       <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">
@@ -503,14 +503,14 @@ def manage_importDocx( self):
   html += self.zmi_breadcrumbs(self,request)
   html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
   html += '<legend>Import DOCX</legend>'
-  html += '<div class="form-group">'
+  html += '<div class="form-group row">'
   html += '<label class="control-label col-sm-2" for="file"><span>%s</span></label>'%self.getZMILangStr('ATTR_FILE')
   html += '<div class="col-sm-10"><input class="btn btn-file" size="25" name="file" type="file"/></div>'
   html += '</div><!-- .form-group -->'
-  html += '<div class="form-group">'
+  html += '<div class="form-group row">'
   html += '<div class="controls save">'
   html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'))
-  html += '<button type="button" name="btn" class="btn btn-default" value="return %s" onclick="btn_execute_click()">%s</button> '%(self.getZMILangStr('BTN_EXECUTE'),self.getZMILangStr('BTN_EXECUTE'))
+  html += '<button type="button" name="btn" class="btn btn-secondary" value="return %s" onclick="btn_execute_click()">%s</button> '%(self.getZMILangStr('BTN_EXECUTE'),self.getZMILangStr('BTN_EXECUTE'))
   html += '</div>'
   html += '</div><!-- .form-group -->'
   
@@ -527,7 +527,7 @@ def manage_importDocx( self):
       </item>
       <item key="description"></item>
       <item key="exec" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-upload-alt]]></item>
+      <item key="icon_clazz"><![CDATA[icon-upload]]></item>
       <item key="id"><![CDATA[manage_importDocx]]></item>
       <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">

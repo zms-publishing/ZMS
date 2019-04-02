@@ -1380,7 +1380,7 @@ h1[id] {
   border-radius: 50%;
 }
 .bs-brand-item .glyphicon-ok { background-color: #5cb85c; }
-.bs-brand-item .glyphicon-remove { background-color: #d9534f; }
+.bs-brand-item .glyphicon-times { background-color: #d9534f; }
 
 @media (min-width: 768px) {
   .bs-brand-item {

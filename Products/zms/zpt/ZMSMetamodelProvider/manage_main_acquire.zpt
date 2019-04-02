@@ -32,7 +32,7 @@
 		<tal:block tal:condition="python:request.get('section')=='acquire'">
 			<input type="hidden" name="immediately:int" value="1" />
 			<h1 style="margin-left: -0.5em;">Content Object Aquisition</h1>
-			<div class="form-group">
+			<div class="form-group row">
 				<tal:block tal:define="global temp_ids python:request.get('temp_ids').split(',')">
 				<tal:block tal:repeat="acquireObj acquireObjs">
 					<label class="checkbox" 
@@ -57,7 +57,7 @@
 </tal:block>
 
 <tal:block tal:condition="python:request.get('section')!='acquire'">
-		<div class="form-group">
+		<div class="form-group row">
 			<select class="form-control alert alert-info" size="15" id="aq_ids" name="aq_ids:list" multiple="multiple">
 				<tal:block tal:repeat="acquireObj acquireObjs">
 					<option tal:attributes="value python:acquireObj[1]" tal:content="python:acquireObj[2]">acquireObj</option>

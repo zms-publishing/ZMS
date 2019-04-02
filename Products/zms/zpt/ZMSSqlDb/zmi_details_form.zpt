@@ -13,7 +13,9 @@
 	request_form_inherit python:['qcolumn','qentitypk','qentitypkval',metaObjAttr['details']['fk']];
 	res metaObjAttr/value">
 
-	<span class="ui-helper-clickable" onclick="$('.zmi_details_form').toggle()" title="Show SQL Code">&middot;</span>
+	<a href="javascript:;" onclick="$('.zmi_details_form').toggle()" title="Show SQL Code">
+		&middot;
+	</a>
 	<code tal:attributes="style python:['','display:none'][len(metaObjAttr.get('error',''))==0]" class="zmi_details_form">
 		<tal:block tal:content="python:metaObjAttr['valuesql'].replace('\n','<br>')"></tal:block>
 		<tal:block tal:content="python:metaObjAttr.get('error','').replace('\n','<br>')"></tal:block>

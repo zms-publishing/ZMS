@@ -15,25 +15,23 @@
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
 	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
-	<div class="form-group">
+	<div class="form-group row">
 		<div class="col-md-12">
 			<div class="input-group">
 				<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
-				<span class="input-group-btn">
-			<button type="submit" class="btn btn-primary">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
-			</button>
-				</span>
+				<div class="input-group-append">
+					<button type="submit" class="btn btn-primary" tal:content="structure python:here.zmi_icon(name='icon-search')"></button>
+				</div>
 			</div>
 		</div>
 	</div><!-- .form-group -->
 <tal:comment replace="nothing">
-	<div class="form-group" tal:define="global optpl python:[[x,here.display_type(request,x)] for x in here.getMetaobjIds(excl_ids=['ZMS']])">
+	<div class="form-group row" tal:define="global optpl python:[[x,here.display_type(request,x)] for x in here.getMetaobjIds(excl_ids=['ZMS']])">
 		<div class="col-sm-9 col-md-10" tal:content="structure python:here.zmi_input_multiselect(here,name='search_meta_types',value=request.get('search_meta_types',[]),type='multiselect',lang_str='ATTR_TYPE',options=optpl)">the control</div>
 	</div><!-- .form-group -->
 </tal:comment>
 
-<div id="search_results" class="form-group" style="display:none">
+<div id="search_results" class="form-group row" style="display:none">
 	<div class="col-md-10">
 		<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
 		<div class="header row">

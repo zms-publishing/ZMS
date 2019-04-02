@@ -27,7 +27,7 @@ ZMI.prototype.initInputFields = function(container) { return false }
 <!--  EXPERIMENTAL: TOGGLE FRAMED TREE MENU -->
 	<div id="toggle_menu" class="desktop">
 		<a href="#" onclick="javascript:toggle_menu()" target="_parent"
-			><i class="icon icon-reorder"
+			><i class="icon icon-sitemap"
 				title="Show/Hide Tree Menu of the Contextual Folder">&nbsp;</i></a>
 	</div>
 	<script>

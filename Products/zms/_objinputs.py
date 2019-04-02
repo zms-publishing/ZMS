@@ -208,7 +208,7 @@ class ObjInputs(object):
     html.append(' value="%s"'%str(standard.nvl(value, options[0])))
     html.append(' />')
     if btn:
-      html.append('<span class="btn btn-default">')
+      html.append('<span class="btn btn-secondary">')
     html.append('<input ')
     if isinstance(elId, str):
       html.append(' id="%s"'%elId)

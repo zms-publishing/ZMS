@@ -30,13 +30,13 @@
 				</h1>
 			</div><!-- .center -->
 			<div class="right">
-				<div class="btn-group zmi-action">
-					<span class="zmi-helper-hidden zmi-sort-id">0</span>
-					<button class="btn btn-default split-left">
+				<div class="zmi-action btn-group dropleft">
+					<span class="d-none zmi-sort-id">0</span>
+					<button class="btn btn-secondary split-left">
 						<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 						<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
 					</button>
-					<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
+					<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown">
 						<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 					</button>
 				</div><!-- .btn-group -->
@@ -59,13 +59,13 @@
 						the rendered child-node
 					</div><!-- .center -->
 					<div class="right">
-						<div class="btn-group zmi-action">
-							<span class="zmi-helper-hidden zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
-							<button class="btn btn-default split-left">
+						<div class="zmi-action btn-group dropleft">
+							<span class="d-none zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
+							<button class="btn btn-secondary split-left">
 								<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 								<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
 							</button>
-							<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
+							<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown">
 								<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
 							</button>
 						</div><!-- .btn-group -->

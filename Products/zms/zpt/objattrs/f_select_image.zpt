@@ -11,7 +11,7 @@
 			'imgsuperres':'InstalledProducts.pil.hires.thumbnail.max'}.get(key,None)">
 
 	<tal:block tal:condition="python:request.get('f_zmiGraphicExtEdit',True)">
-		<div class="ui-helper-hidden">
+		<div class="d-none">
 			<div id="ZMSGraphic_extEdit_actions">
 				<table class="table">
 				<colgroup>
@@ -20,13 +20,13 @@
 				<tr>
 					<td colspan="2">
 						<div class="form-inline">
-							<div class="form-group">
+							<div class="form-group row">
 								<label class="control-label" for="ZMSGraphic_extEdit_width" tal:content="structure python:'%s px '%(here.getZMILangStr('ATTR_WIDTH'))"> Width px </label>&nbsp;
 								<input class="form-control" type="text" id="ZMSGraphic_extEdit_width" name="ZMSGraphic_extEdit_width:int" size="4" value="0" />&nbsp;
 								<label class="control-label" for="ZMSGraphic_extEdit_width" tal:content="structure python:' %s px '%(here.getZMILangStr('ATTR_HEIGHT'))"> Height px </label>&nbsp;
 								<input class="form-control" type="text" id="ZMSGraphic_extEdit_height" name="ZMSGraphic_extEdit_height:int" size="4" value="0" />&nbsp;
 								<div class="checkbox" style="display:inline-block;"><label><input type="checkbox" id="ZMSGraphic_extEdit_proportional" checked="checked" /> Proportional </label>&nbsp;</div>
-								<input class="btn btn-default" type="submit" name="btn" onclick="return ZMSGraphic_extEdit_apply();" tal:attributes="value python:here.getZMILangStr('BTN_APPLY')" />
+								<input class="btn btn-secondary" type="submit" name="btn" onclick="return ZMSGraphic_extEdit_apply();" tal:attributes="value python:here.getZMILangStr('BTN_APPLY')" />
 							</div>
 						</div>
 					</td>
@@ -34,12 +34,12 @@
 				<tr>
 					<td>
 						<div class="ZMSGraphic_extEdit_action">
-							<span class="btn btn-default" id="ZMSGraphic_extEdit_preview" tal:attributes="title python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview)),str(here.getConfProperty(max_generate_preview)))">
+							<span class="btn btn-secondary" id="ZMSGraphic_extEdit_preview" tal:attributes="title python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview)),str(here.getConfProperty(max_generate_preview)))">
 								<i class="icon-resize-small"></i>
 							</span>
 						</div>
 						<div class="ZMSGraphic_extEdit_action">
-							<span class="btn btn-default" id="ZMSGraphic_extEdit_crop" title="Crop image">
+							<span class="btn btn-secondary" id="ZMSGraphic_extEdit_crop" title="Crop image">
 								<i class="icon-crop"></i>
 							</span>
 						</div>
@@ -72,19 +72,19 @@
 		<tal:block tal:condition="python:value is not None and here.operator_gettype(value) is not str">
 			<div class="pull-left">
 				<div class="btn-group">
-					<a class="btn btn-default" tal:attributes="id python:'filename_%s'%elName; href python:value.getHref(request)" target="_blank">
+					<a class="btn btn-secondary" tal:attributes="id python:'filename_%s'%elName; href python:value.getHref(request)" target="_blank">
 						<img tal:attributes="src python:here.getMimeTypeIconSrc(value.getContentType()); title python:value.getContentType()"/>
 						<span class="filename" tal:content="python:value.getFilename()">the filename</span>
 						<span class="dimensions" tal:attributes="id python:'dimensions_%s'%elName" tal:content="python:'%sx%spx'%(str(value.getWidth()),str(value.getHeight()))">the dimensions</span>
 						<span class="size" tal:attributes="id python:'size_%s'%elName" tal:content="python:'(%s)'%here.getDataSizeStr(value.get_size())">the size</span>
 					</a>
-					<button class="btn btn-default split-right dropdown-toggle" data-toggle="dropdown">
+					<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown">
 						<span class="caret"></span>
 					</button>
-					<ul class="dropdown-menu">
-						<li class="zmi-helper-hidden" tal:attributes="id python:'delete_btn_%s'%elName"><a><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">delete</tal:block></a></li>
-						<li class="zmi-helper-hidden" tal:attributes="id python:'undo_btn_%s'%elName"><a><tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">delete</tal:block></a></li>
-					</ul><!-- .dropdown-menu -->
+					<div class="dropdown-menu">
+						<a class="d-none dropdown-item" tal:attributes="id python:'delete_btn_%s'%elName"><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">delete</tal:block></a>
+						<a class="d-none dropdown-item" tal:attributes="id python:'undo_btn_%s'%elName"><tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">delete</tal:block></a>
+					</div><!-- .dropdown-menu -->
 				</div><!-- .btn-group -->
 			</div><!-- .pull-left -->
 		</tal:block>
@@ -131,7 +131,7 @@
 				<input type="hidden" tal:attributes="id python:'height_%s'%elName; name python:'height_%s:int'%elName; value python:value.getHeight()"/>
 				<a tal:attributes="href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&lang=%s&key=%s&form_id=%s'%(request.get('ZMS_INSERT',here.meta_id),request['lang'],key,str(request['ZMI_TIME'])),int(pilutil.enabled()))" class="thumbnail ZMSGraphic_extEdit_action">
 					<img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
-					<div class="zmi-zoom-in" tal:content="structure python:here.zmi_icon(name='icon-zoom-in')"></div><!-- .zmi-zoom-in -->
+					<div class="zmi-zoom-in" tal:content="structure python:here.zmi_icon(name='icon-search-plus')"></div><!-- .zmi-zoom-in -->
 				</a>
 			</div>
 		</tal:block>

@@ -24,7 +24,7 @@ function uploadBtnClick() {
 
 	<div class="input-group">
 		<input class="form-control" type="text" name="path" size="50" tal:attributes="value path"/>
-		<span class="input-group-btn"><button class="btn btn-default" name="btn" value="Chdir" tal:content="structure python:here.zmi_icon(name='icon-refresh')">Chdir</button></span>
+		<span class="input-group-btn"><button class="btn btn-secondary" name="btn" value="Chdir" tal:content="structure python:here.zmi_icon(name='icon-refresh')">Chdir</button></span>
 	</div><!-- .input-group -->
 
 <table class="table table-striped">
@@ -59,21 +59,21 @@ function uploadBtnClick() {
 </tr>
 </table>
 
-<div class="form-group">
+<div class="form-group row">
 	<label class="col-sm-2 control-label" for="command"><span>Command</span></label>
 	<div class="col-sm-10">
 		<div class="input-group">
 			<input class="form-control" type="text" name="command" size="50" tal:attributes="value python:request.get('command','')"/>
-			<span class="input-group-btn"><button class="btn btn-default" name="btn" value="Execute" onclick="uploadBtnClick()" tal:content="structure python:here.zmi_icon(name='icon-cog')">Execute</button></span>
+			<span class="input-group-btn"><button class="btn btn-secondary" name="btn" value="Execute" onclick="uploadBtnClick()" tal:content="structure python:here.zmi_icon(name='icon-cog')">Execute</button></span>
 		</div><!-- .input-group -->
 	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
 
-<div class="form-group">
+<div class="form-group row">
 	<label class="col-sm-2 control-label" for="file"><span>Upload file</span></label>
 	<div class="col-sm-10">
 		<input class="btn btn-file" type="file" name="file" size="50" />
-		<button class="btn btn-default" name="btn" value="Upload" onclick="uploadBtnClick()">Upload</button>
+		<button class="btn btn-secondary" name="btn" value="Upload" onclick="uploadBtnClick()">Upload</button>
 	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
 

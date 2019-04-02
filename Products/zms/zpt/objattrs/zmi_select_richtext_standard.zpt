@@ -102,14 +102,14 @@ function zmiRicheditInsertTab( fmName, elName) {
 				><tal:block tal:condition="python:len(charFormat)==0">&nbsp;</tal:block
 				><span tal:condition="not:python:len(charFormat)==0"
 					tal:define="fmKey python:charFormat[0].replace('\042','\'+unescape(\'\%'+'22\')+\'')"
-					class="btn btn-default"
-					tal:attributes="class python:'btn btn-default charFormat-%s'%(fmKey);
+					class="btn btn-secondary"
+					tal:attributes="class python:'btn btn-secondary charFormat-%s'%(fmKey);
 						onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%(fmKey,options['fmName'],options['elName'])"
 					><i tal:attributes="class python:charFormat[1]; title python:here.getZMILangStr('OPT_S_%s'%charFormat[0].upper())"></i></span
 			></tal:block
 		></div><!-- .btn-group -->
 		<div class="btn-group pull-left">
-			<span class="btn btn-default" tal:attributes="onclick python:'zmiRicheditInsertTab(\'%s\',\'%s\')'%(options['fmName'],options['elName'])"><i class="icon-long-arrow-right" title="Tab">|</i></span>
+			<span class="btn btn-secondary" tal:attributes="onclick python:'zmiRicheditInsertTab(\'%s\',\'%s\')'%(options['fmName'],options['elName'])"><i class="icon-long-arrow-right" title="Tab">|</i></span>
 		</div><!-- .btn-group -->
 		<div class="btn-group pull-left" tal:condition="python:len(here.getCharFormats())>0"
 		><tal:block tal:repeat="charFormat python:here.getCharFormats()"
@@ -123,7 +123,7 @@ function zmiRicheditInsertTab( fmName, elName) {
 						><tal:block tal:condition="python:request.get('f_zmiRichtextEditor',True)" tal:content="structure python:'<script>%s</script>'%js"></tal:block
 						><tal:block tal:define="global onclick python:js[js.lower().find('function')+len('function'):js.lower().find('{')].strip()"></tal:block
 					></tal:block
-					><span class="btn btn-default" tal:attributes="onclick onclick"
+					><span class="btn btn-secondary" tal:attributes="onclick onclick"
 						><img tal:attributes="src python:['%s/format_manager/%s'%(here.getDocumentElement().absolute_url(),btn),btn][int(btn.startswith(here.getDocumentElement().absolute_url()))]; title python:charFormat['display']"/>
 					</span
 				></tal:block
@@ -152,8 +152,9 @@ function zmiRicheditInsertTab( fmName, elName) {
 		### Richedit
 		</tal:block
 		><div class="btn-group pull-right" tal:condition="python:request.get('richedit_fmt') is not None"
-			><span class="btn btn-default" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorToggle(\'%s\',\'%s\')\073'%(options['elName'],request['richedit_fmt'].getId())"
-				><i class="icon-eye-open" tal:attributes="title python:'%s (%s)'%(request['richedit_fmt'].getDisplay(),here.getConfProperty('ZMS.richtext.plugin','ckeditor').upper())"></i></span>
+			><span class="btn btn-secondary" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorToggle(\'%s\',\'%s\')\073'%(options['elName'],request['richedit_fmt'].getId())"
+				><tal:block tal:content="structure python:here.zmi_icon(name='icon-eye',title='%s (%s)'%(request['richedit_fmt'].getDisplay(),here.getConfProperty('ZMS.richtext.plugin','ckeditor').upper()))"></tal:block
+			></span>
 		</div><!-- .pull-left -->
 
 		<div class="clearfix"></div>

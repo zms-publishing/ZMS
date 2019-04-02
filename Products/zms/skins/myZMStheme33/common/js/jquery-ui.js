@@ -2286,7 +2286,7 @@ $.widget( "ui.autocomplete", {
 				"aria-live": "assertive",
 				"aria-relevant": "additions"
 			})
-			.addClass( "ui-helper-hidden-accessible" )
+			.addClass( "d-none-accessible" )
 			.appendTo( this.document[ 0 ].body );
 
 		// turning off autocomplete prevents the browser from remembering the

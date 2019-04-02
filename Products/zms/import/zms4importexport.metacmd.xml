@@ -151,50 +151,50 @@ def manage_zms4import( self):
 	# --- Display form.
 	# ---------------------------------
 	else:
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('ATTR_FILE'))
 		html += '<div class="col-sm-9"><input class="btn btn-file" name="file" type="file" /></div>'
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('Content'))
 		html += '<div class="col-sm-9"><input name="content:int" type="checkbox" value="1" checked="checked"> %s</div>'%self.getZMILangStr('BTN_IMPORT')
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_SYSTEM'))
 		html += '<div class="col-sm-9"><input name="system:int" type="checkbox" value="1" checked="checked"> %s</div>'%self.getZMILangStr('BTN_IMPORT')
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_LANGUAGES'))
 		html += '<div class="col-sm-9"><input name="languages:int" type="checkbox" value="1" checked="checked"> %s</div>'%self.getZMILangStr('BTN_IMPORT')
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_METADATA'))
 		html += '<div class="col-sm-9"><input name="metadata:int" type="checkbox" value="1" checked="checked"> %s</div>'%self.getZMILangStr('BTN_IMPORT')
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_METAOBJ'))
 		html += '<div class="col-sm-9"><input name="metaobj:int" type="checkbox" value="1" checked="checked"> %s</div>'%self.getZMILangStr('BTN_IMPORT')
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_METACMD'))
 		html += '<div class="col-sm-9"><input name="metacmd:int" type="checkbox" value="1" checked="checked"> %s</div>'%self.getZMILangStr('BTN_IMPORT')
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_TEXTFORMATS'))
 		html += '<div class="col-sm-9"><input name="textformats:int" type="checkbox" value="1" checked="checked"> %s</div>'%self.getZMILangStr('BTN_IMPORT')
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label">%s</label>'%(self.getZMILangStr('TAB_CHARFORMATS'))
 		html += '<div class="col-sm-9"><input name="charformats:int" type="checkbox" value="1" checked="checked"> %s</div>'%self.getZMILangStr('BTN_IMPORT')
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label for="id" class="col-sm-3 control-label">Zope</label>'
 		html += '<div class="col-sm-9"><input name="zope:int" type="checkbox" value="1" checked="checked"> %s</div>'%self.getZMILangStr('BTN_IMPORT')
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'))
-		html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
+		html += '<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
 		html += '</div>'
 		html += '</div><!-- .form-group -->'
 
@@ -211,7 +211,7 @@ def manage_zms4import( self):
       </item>
       <item key="description"></item>
       <item key="exec" type="int">0</item>
-      <item key="icon_clazz">icon-upload-alt</item>
+      <item key="icon_clazz">icon-upload</item>
       <item key="id">manage_zms4import</item>
       <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">

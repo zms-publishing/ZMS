@@ -167,7 +167,7 @@ $(function(){
 		+ ' target="'+(manage_menu?'_parent':'_self')+'"'
 		+ ' class="'+(manage_menu?'active':'')+'"'
 		+ ' title="Sitemap">'
-		+ $ZMI.icon('icon-reorder')
+		+ $ZMI.icon('icon-sitemap')
 		+ '</a>');
 	if (manage_menu) {
 		$('.zmi header a.toggle-sitemap').each(function() {
@@ -202,7 +202,7 @@ $(function(){
 			var data_for = $(this).attr("data-for");
 			$("label[for="+data_for+"], label[for="+data_for+"_"+getZMILang()+"]").each(function() {
 					$(this).removeClass("col-sm-2").wrap('<div class="col-sm-2" style="text-align:right"></div>');
-					$(this).parent().append("&nbsp;"+$ZMI.icon('icon-info-sign text-info zmi-helper-clickable','title="'+getZMILangStr('TAB_HELP')+'..." onclick="var evt=arguments[0]||window.event;evt.stopPropagation();zmiModal(\'div.help[data-for='+data_for+']\',{title:\''+getZMILangStr('TAB_HELP')+': '+$(this).text().trim()+'\'})"'));
+					$(this).parent().append("&nbsp;"+$ZMI.icon('icon-info-circle text-info','title="'+getZMILangStr('TAB_HELP')+'..." onclick="var evt=arguments[0]||window.event;evt.stopPropagation();zmiModal(\'div.help[data-for='+data_for+']\',{title:\''+getZMILangStr('TAB_HELP')+': '+$(this).text().trim()+'\'})"'));
 				});
 		});
 
@@ -230,7 +230,7 @@ $(function(){
 	});
 
   // Filters
-  $(".accordion-body.filters").each(function() {
+  $(".collapse.filters").each(function() {
       var $body = $(this);
       var f = function() {
           // Ensure at least one empty filter (cloned from hidden prototype).
@@ -310,16 +310,19 @@ $(function(){
 			if ($single_line.hasClass("zmi-nodes")) {
 				$textarea.prop({title:getZMILangStr('ATTR_NODE')});
 			}
-			if ($("span.input-group-addon",this).length==0) {
+			if ($("span.input-group-append",this).length==0) {
 				$(this).addClass("input-group");
+				if ($textarea.prev('i').length==1) {
+					$textarea.prev('i').wrap('<div class="input-group-prepend"><spn class="btn btn-secondary"></span></div>')
+				}
 				if ($textarea.attr('data-style')) {
-					$(this).append('<span class="input-group-addon btn btn-default" title="Click for Code Popup or Dbl-Click for Native Editor!" style="' + $textarea.attr('data-style') + '">   </span>');
+					$(this).append('<div class="input-group-append"><a href="javascript:;" class="btn btn-secondary" title="Click for Code Popup or Dbl-Click for Native Editor!" style="' + $textarea.attr('data-style') + '"></a></div>');
 				} else {
-					$(this).append('<span class="input-group-addon btn btn-default">...</span>');
+					$(this).append('<div class="input-group-append"><a href="javascript:;" class="btn btn-secondary">...</a></div>');
 				};
 				var clicks, timer, delay;
 				clicks=0;delay=500;timer=null;
-				$('span.input-group-addon',this).on('click', function(){
+				$('.input-group-append',this).on('click', function(){
 					clicks++;
 					timer = setTimeout(function() {
 						switch(clicks){
@@ -336,8 +339,12 @@ $(function(){
 											+ '<div class="col-lg-10">'
 												+ '<div class="input-group">'
 													+ '<input class="form-control url-input" type="text" name="zmi-nodespicker-url-input">'
-													+ '<span class="input-group-addon btn btn-default" onclick="zmiBrowseObjs(\'zmi-single-line-form\',\'zmi-nodespicker-url-input\',getZMILang())">...</span>'
-												+ '</div><!-- .input-append -->'
+													+ '<div class="input-group-append">'
+														+ '<a class="btn btn-secondary" href="javascript:;" onclick="zmiBrowseObjs(\'zmi-single-line-form\',\'zmi-nodespicker-url-input\',getZMILang())">'
+															+ '...'
+														+ '</a>'
+													+ '</div>'
+												+ '</div><!-- .input-group -->'
 											+ '</div><!-- .col-lg-10 -->';
 								}
 								html = html
@@ -502,11 +509,11 @@ $(function(){
 	$(".zmi-container .zmi-item .zmi-manage-main-change").each( function() {
 			$(this).html($(this).html().replace(/<span([^<]*?)>(\r|\n|\t|\s)*?<\/span>/gi,''));
 			if (c==0) {
-				$('<span class="zmi-manage-main-toggle">'+$ZMI.icon("icon-info-sign")+'</span>').insertBefore($(this));
+				$('<a class="zmi-manage-main-toggle" href="javascript:;">'+$ZMI.icon("icon-info-circle")+'</a>').insertBefore($(this));
 			}
 			c++;
 		});
-	$('.zmi-manage-main-toggle '+$ZMI.icon_selector("icon-info-sign")).on('click',function(event,programmatically,speed) {
+	$('.zmi-manage-main-toggle '+$ZMI.icon_selector("icon-info-circle")).on('click',function(event,programmatically,speed) {
 			if (!programmatically) {
 				$ZMILocalStorageAPI.toggle(key);
 			}
@@ -514,22 +521,17 @@ $(function(){
 			$('.zmi-manage-main-change').toggle(typeof speed=='undefined'?'normal':speed);
 		});
 	if (value!=null) {
-		$('.zmi-manage-main-toggle '+$ZMI.icon_selector("icon-info-sign")).trigger('click',[true,'fast']);
+		$('.zmi-manage-main-toggle '+$ZMI.icon_selector("icon-info-circle")).trigger('click',[true,'fast']);
 	}
 	// Action-Lists
 	$(".btn-group")
 		.mouseover( function(evt) {
-				$(this).parents(".accordion-body.collapse").css({overflow:"visible"});
+				$(this).parents(".collapse").css({overflow:"visible"});
 			})
 		.mouseout( function(evt) {
-				$(this).parents(".accordion-body.collapse").css({overflow:"hidden"});
+				$(this).parents(".collapse").css({overflow:"hidden"});
 			});
 	$(".zmi-container .zmi-item .zmi-action")
-		.each( function(evt) {
-				var $button = $('button.btn.split-right.dropdown-toggle',this);
-				$button.append($ZMI.icon("icon-chevron-down"));
-				$($ZMI.icon_selector("icon-chevron-down"),$button).hide();
-			})
 		.focus( function(evt) {
 				$ZMI.actionList.over(this,evt);
 			})
@@ -620,34 +622,34 @@ ZMI.prototype.initInputFields = function(container) {
 			// Accordion:
 			// highlight default collapse item
 			var data_root = $("body").attr('data-root');
-			$(".accordion-body").each(function() {
+			$(".collapse",context).each(function() {
 					var id = $(this).attr('id');
 					if (typeof id != "undefined") {
-						var $toggle = $('a.accordion-toggle[href=\'#'+id+'\']');
+						var $toggle = $('a.card-toggle[href=\'#'+id+'\']');
 						if ($toggle.length > 0) {
-							var key = "ZMS."+data_root+".accordion-body-"+id;
+							var key = "ZMS."+data_root+".collapse-"+id;
 							var value = $ZMILocalStorageAPI.get(key,'1');
 							if (value != null) {
-								if ($(this).hasClass('in')) {
+								if ($(this).hasClass('show')) {
 									if (value == '0') {
-										$(this).removeClass('in');
+										$(this).removeClass('show');
 									}
 								}
 								else {
 									if (value == '1') {
-										$(this).addClass('in');
+										$(this).addClass('show');
 									}
 								}
 							}
 						}
 					}
 				});
-			$($ZMI.icon_selector()+":first",$(".accordion-body.collapse",context).prev('.accordion-heading')).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right"));
-			$($ZMI.icon_selector()+":first",$(".accordion-body.collapse.in",context).prev('.accordion-heading')).removeClass($ZMI.icon_clazz("icon-caret-right")).addClass($ZMI.icon_clazz("icon-caret-down"));
-			$("a.accordion-toggle",this).click(function(){
+			$($ZMI.icon_selector()+":first",$(".collapse",context).prev('.card-header')).removeClass($ZMI.icon_clazz("icon-caret-down")).addClass($ZMI.icon_clazz("icon-caret-right"));
+			$($ZMI.icon_selector()+":first",$(".collapse.show",context).prev('.card-header')).removeClass($ZMI.icon_clazz("icon-caret-right")).addClass($ZMI.icon_clazz("icon-caret-down"));
+			$("a.card-toggle",this).click(function(){
 					$(this).blur();
 					var id = $(this).attr('href').substr(1);
-					var key = "ZMS."+data_root+".accordion-body-"+id;
+					var key = "ZMS."+data_root+".collapse-"+id;
 					var $icon = $($ZMI.icon_selector()+":first",this);
 					var showing = $icon.hasClass($ZMI.icon_clazz("icon-caret-down"))?1:0;
 					if (showing) {
@@ -785,9 +787,9 @@ ZMI.prototype.initInputFields = function(container) {
 										+ '<h4>'+$ZMI.icon("icon-warning-sign")+' '+getZMILangStr('ACTION_MANAGE_CHANGEPROPERTIES')+'</h4>'
 										+ '<div>'+change_dt+' '+getZMILangStr('BY')+' '+change_uid+'</div>'
 									+ '</div>'
-									+ '<div class="form-group">'
+									+ '<div class="form-group row">'
 										+ '<button class="btn btn-primary" value="'+getZMILangStr('BTN_OVERWRITE')+'" onclick="zmiUnlockForm(\''+form_id+'\')">'+getZMILangStr('BTN_OVERWRITE')+'</button> '
-										+ '<button class="btn btn-default" value="'+getZMILangStr('BTN_DISPLAY')+'" onclick="window.open(self.location.href);">'+getZMILangStr('BTN_DISPLAY')+'</button> '
+										+ '<button class="btn btn-secondary" value="'+getZMILangStr('BTN_DISPLAY')+'" onclick="window.open(self.location.href);">'+getZMILangStr('BTN_DISPLAY')+'</button> '
 									+ '</div>',
 								title: getZMILangStr('CAPTION_WARNING')
 							});
@@ -797,7 +799,7 @@ ZMI.prototype.initInputFields = function(container) {
 			})
 		.each(function() {
 			var context = this;
-			if ($(this).parents(".ui-helper-hidden").length>0) {
+			if ($(this).parents(".d-none").length>0) {
 				return;
 			}
 			$(this).addClass('form-initialized');
@@ -809,22 +811,25 @@ ZMI.prototype.initInputFields = function(container) {
 					var obj_id = $select.attr('data-obj-id');
 					var attr_id = $select.attr('data-attr-id');
 					$select.removeClass("form-control").addClass("zmi-select").attr({"data-autocomplete-add":false});
-					$select.before('<div class="input-group form-multiautocomplete">'
-						+ '<input type="text" id="_'+id+'" class="form-control form-autocomplete" data-ajax-url="'+ajax_url+'" data-obj-id="'+obj_id+'" data-attr-id="'+attr_id+'"/>'
-						+ '<span class="input-group-addon ui-helper-clickable">'
-						+ $ZMI.icon('icon-plus text-primary')
-						+ '</span>'
+					$select.before(''
+						+ '<div class="input-group form-multiautocomplete">'
+							+ '<input type="text" id="_'+id+'" class="form-control form-autocomplete" data-ajax-url="'+ajax_url+'" data-obj-id="'+obj_id+'" data-attr-id="'+attr_id+'"/>'
+							+ '<div class="input-group-append">'
+								+ '<a href="javascript:;">'
+									+ $ZMI.icon('icon-plus text-primary')
+								+ '</a>'
+							+ '</div>'
 						+ '</div><!-- .input-group -->');
 					var $inputgroup = $select.prev();
 					$("input",$inputgroup).keydown(function(e) {
 							if (e.which==13) {
 								e.preventDefault();
 								e.stopPropagation();
-								$(".input-group-addon",$inputgroup).trigger("click");
+								$(".input-group-append",$inputgroup).trigger("click");
 								return false;
 							}
 						});
-					$(".input-group-addon",$inputgroup).click(function() {
+					$(".input-group-append",$inputgroup).click(function() {
 							// get value
 							var $input = $(this).prev();
 							var v = $input.val();
@@ -892,10 +897,10 @@ ZMI.prototype.initInputFields = function(container) {
 						var $input = $(".activity input:checkbox",this);
 						if ($input.length>0) {
 							$(this).prev(".attr_last_modified").each(function() {
-									$("#zmi-toggle-activity-btn",this).append('<span id="zmi-toggle-activity" style="vertical-align:inherit" title="'+getZMILangStr('ATTR_ACTIVE')+'">'+$ZMI.icon(($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable')+'</span>&nbsp;');
+									$("#zmi-toggle-activity-btn",this).append('<span id="zmi-toggle-activity" style="vertical-align:inherit" title="'+getZMILangStr('ATTR_ACTIVE')+'">'+$ZMI.icon(($input.prop('checked')?'icon-check-square':'icon-square')+' ui-helper-clickable')+'</span>&nbsp;');
 									$("#zmi-toggle-activity").click(function(event) {
 											$input.click();
-											$($ZMI.icon_selector(),this).attr("class",$ZMI.icon_clazz($input.prop('checked')?'icon-check':'icon-check-empty')+' ui-helper-clickable');
+											$($ZMI.icon_selector(),this).attr("class",$ZMI.icon_clazz($input.prop('checked')?'icon-check-square':'icon-square')+' ui-helper-clickable');
 											event.stopPropagation();
 										});
 								});
@@ -918,8 +923,8 @@ ZMI.prototype.initInputFields = function(container) {
 						.click(function() {
 								var item = $(this).attr('data-value');
 								$input.val(item);
-								$(this).siblings('.btn-info').removeClass('btn-info').addClass('btn-default');
-								$(this).removeClass('btn-default').addClass('btn-info');
+								$(this).siblings('.btn-info').removeClass('btn-info').addClass('btn-secondary');
+								$(this).removeClass('btn-secondary').addClass('btn-info');
 							})
 						.each(function() {
 								var item = $(this).attr('data-value');
@@ -931,7 +936,7 @@ ZMI.prototype.initInputFields = function(container) {
 									$(this).addClass("btn-info");
 								}
 								else {
-									$(this).addClass("btn-default");
+									$(this).addClass("btn-secondary");
 								}
 							});
 				});
@@ -963,16 +968,20 @@ ZMI.prototype.initInputFields = function(container) {
 					var $inputgroup = $input.parent();
 					if ($input.prop("disabled")) {
 						$inputgroup.append(''
-								+ '<span class="input-group-addon">'
-								+ $ZMI.icon("icon-ban-circle")
-								+ '</span>'
+								+ '<div class="input-group-append">'
+									+ '<span class="input-group-text">'
+										+ $ZMI.icon("icon-ban-circle")
+									+ '</span>'
+								+ '</div>'
 							);
 					}
 					else {
 						$inputgroup.append(''
-									+ '<span class="input-group-addon ui-helper-clickable" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
-										+ $ZMI.icon("icon-link")
-									+ '</span>'
+									+ '<div class="input-group-append">'
+										+ '<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+											+ $ZMI.icon("icon-link")
+										+ '</a>'
+									+ '</div>'
 							);
 					}
 					var fn = function() {
@@ -997,7 +1006,12 @@ ZMI.prototype.initInputFields = function(container) {
 					var elName = $input.attr("name");
 					var $container = $input.parent();
 					$input.hide();
-					$container.append('<div class="url-input-container"></div><input type="hidden" name="new_'+elName+'"/><a href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'new_' + elName + '\',getZMILang())" class="btn btn-default">'+$ZMI.icon('icon-plus')+'</a>');
+					$container.append(''
+						+ '<div class="url-input-container"></div>'
+						+'<input type="hidden" name="new_'+elName+'"/>'
+						+'<a href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'new_' + elName + '\',getZMILang())" class="btn btn-secondary">'
+						+$ZMI.icon('icon-plus')
+						+'</a>');
 					$("input[name='new_"+elName+"']",$container).change(function() {
 							var v = $(this).val();
 							var l = $input.val().length==0?[]:$input.val().split("\n");
@@ -1016,8 +1030,8 @@ ZMI.prototype.initInputFields = function(container) {
 								$inputContainer.append('<input class="form-control url-input" type="text" value="'+l[i]+'" disabled="disabled"> ');
 							}
 							$("input.url-input",$inputContainer).each(fn_url_input_each);
-							$(".input-group-addon "+$ZMI.icon_selector(),$inputContainer).replaceWith($ZMI.icon('icon-remove text-danger'));
-							$(".input-group-addon",$inputContainer).addClass("ui-helper-clickable").click(function() {
+							$(".input-group-append",$inputContainer).replaceWith('<a class="btn btn-secondary" href="javascript:;">'+$ZMI.icon('icon-times')+'</a>');
+							$(".input-group-append",$inputContainer).click(function() {
 									$(this).parents(".input-group").next(".breadcrumb").remove();
 									$(this).parents(".input-group").remove();
 									var l = [];
@@ -1065,7 +1079,7 @@ ZMI.prototype.initInputFields = function(container) {
 				$(this).closest("div").addClass("input-group");
 				$(this).closest("div").removeClass("col-sm-10");
 				$(this).closest("div").wrap('<div class="col-sm-4 col-md-3 col-lg-3"></div>');
-				$(this).before('<span class="input-group-addon">'+$ZMI.icon("icon-calendar")+'</span>');
+				$(this).before('<div class="input-group-prepend"><span class="input-group-text">'+$ZMI.icon("icon-calendar")+'</span></div>');
 			})
 			.mouseover(function(){
 				if (typeof self.zmiUlDatePickerInitialized == "undefined") {
@@ -1146,15 +1160,19 @@ function zmiModal(s, opt) {
 			zmiModalStack.push(id);
 			$ZMI.writeDebug("zmiModal:init(id="+id+")");
 			var html = ''
-				+'<div class="modal fade" id="'+id+'" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">'
-					+'<div class="modal-dialog">'
+				+'<div class="modal" id="'+id+'" tabindex="-1" role="dialog">'
+					+'<div class="modal-dialog" role="document">'
 						+'<div class="modal-content">'
 							+'<div class="modal-header">'
-								+'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
-								+'<h4 class="modal-title">'+opt['title']+'</h4>'
-							+'</div>'
+								+'<h5 class="modal-title">'+opt['title']+'</h5>'
+								+'<button type="button" class="close" data-dismiss="modal" aria-label="'+getZMILangStr('BTN_CLOSE')+'">'
+									+'<span aria-hidden="true">&times;</span>'
+								+'</button>'
+								+'</div>'
 							+'<div class="modal-body">'+body+'</div>'
-							+'<div class="modal-footer"></div>'
+							+'<div class="modal-footer">'
+							//+'<button type="button" class="btn btn-secondary" data-dismiss="modal">'+getZMILangStr('BTN_CLOSE')+'</button>'
+							+'</div>'
 						+'</div><!-- /.modal-content -->'
 					+'</div><!-- /.modal-dialog -->'
 				+'</div><!-- /.modal -->';
@@ -1169,7 +1187,6 @@ function zmiModal(s, opt) {
 					for (var k in button) {
 						var v = button[k];
 						if (typeof v == "function") {
-							v = (''+v).replace(/\$\(this\)\.dialog\("close"\)/gi,'$("#'+id+'").modal("hide")');
 							$button.on(k,eval("("+v+")"));
 						}
 						else {
@@ -1482,7 +1499,7 @@ ZMIObjectTree.prototype.previewClick = function(sender) {
 				$('body').append(''
 						+'<div id="zmi_preview_'+data_id+'">'
 							+'<div class="zmi-browse-iframe-preview">'
-								+'<div class="bg-primary" style="margin:-1em -1em 0 -1em;padding:0 4px 2px 4px;cursor:pointer;text-align:right;font-size:smaller;" onclick="$(\'#zmi_preview_'+data_id+'\').remove()">'+$ZMI.icon("icon-remove")+' '+getZMILangStr('BTN_CLOSE')+'</div>'
+								+'<div class="bg-primary" style="margin:-1em -1em 0 -1em;padding:0 4px 2px 4px;cursor:pointer;text-align:right;font-size:smaller;" onclick="$(\'#zmi_preview_'+data_id+'\').remove()">'+$ZMI.icon("icon-times")+' '+getZMILangStr('BTN_CLOSE')+'</div>'
 								+data
 							+'</div><!-- .zmi-browse-iframe-preview -->'
 						+'</div><!-- #zmi-preview -->'
@@ -1514,8 +1531,7 @@ ZMIActionList.prototype.over = function(el, e) {
 	var that = this;
 	$("button.split-left",el).css({visibility:"visible"});
 	var $button = $('button.btn.split-right.dropdown-toggle',el);
-	$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).hide();
-	$($ZMI.icon_selector("icon-chevron-down"),$button).show();
+	$('*',$button).hide();
 	// Exit.
 	if ($(el).hasClass("loaded") || $(el).hasClass("loading")) {
 		return;
@@ -1563,8 +1579,8 @@ ZMIActionList.prototype.over = function(el, e) {
 		var value = eval('('+data+')');
 		var id = value['id'].replace(/\./,"_");
 		var actions = value['actions'];
-		$(el).append('<ul class="dropdown-menu"></ul>');
-		$ul = $("ul.dropdown-menu",el);
+		$(el).append('<div class="dropdown-menu"></div>');
+		$ul = $(".dropdown-menu",el);
 		$ZMI.writeDebug("[ZMIActionList.over]: "+actions[1][0]);
 		var startsWithSubmenu = actions.length > 1 && actions[1][0].indexOf("-----") == 0 && actions[1][0].lastIndexOf("-----") > 0;
 		$ZMI.writeDebug("[ZMIActionList.over]: startsWithSubmenu="+startsWithSubmenu);
@@ -1582,7 +1598,7 @@ ZMIActionList.prototype.over = function(el, e) {
 		}
 		for (var i = o; i < actions.length; i++) {
 			if (o==0 && i==1) {
-				$ul.append('<li><a href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'))">'+$ZMI.icon("icon-check")+' '+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a></li>');
+				$ul.append('<a class="dropdown-item" href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'))">'+$ZMI.icon("icon-check-square")+' '+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a>');
 			}
 			var action = actions[i];
 			var optlabel = action[0];
@@ -1594,17 +1610,16 @@ ZMIActionList.prototype.over = function(el, e) {
 				optlabel = optlabel.substr("-----".length);
 				optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
 				optlabel = optlabel.basicTrim();
-				$ul.append('<li class="dropdown-header '+optvalue+'">'+opticon+' '+optlabel+'</li>');
+				$ul.append('<div class="dropdown-header '+optvalue+'">'+opticon+' '+optlabel+'</div>');
 			}
 			else {
 				if (opticon.indexOf('<')!=0) {
 					opticon = $ZMI.icon(opticon);
 				}
 				var html = '';
-				html += '<li title="'+opttitle+'">'
-				html += '<a href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
+				html += '<a class="dropdown-item" title="'+opttitle+'" href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
 				html += opticon+' '+optlabel;
-				html += '</a></li>';
+				html += '</a>';
 				$ul.append(html);
 			}
 		}
@@ -1616,10 +1631,10 @@ ZMIActionList.prototype.over = function(el, e) {
 		$("li.dropdown-header",$ul)
 			.click(function (event) {
 				if (!($(this).hasClass("workflow-action"))) {
-					$(this).siblings("li.dropdown-header").addBack().each(function() {
+					$(this).siblings(".dropdown-header").addBack().each(function() {
 							if (!($(this).hasClass("workflow-action"))) {
 								$(this).css("cursor","pointer");
-								$("i",this).toggleClass("icon-caret-down").toggleClass("icon-caret-right");
+								$("i",this).toggleClass($ZMI.icon_clazz("icon-caret-down")).toggleClass($ZMI.icon_clazz("icon-caret-right"));
 								$(this).nextUntil(".dropdown-header").slideToggle();
 							}
 						});
@@ -1635,7 +1650,7 @@ ZMIActionList.prototype.over = function(el, e) {
 						var threshold = $ZMI.getConfProperty('plugin.bootstrap.action.dropdown.threshold',20);
 						if (c >= threshold) {
 							$(this).css("cursor","pointer");
-							$("i",this).toggleClass("icon-caret-down").toggleClass("icon-caret-right");
+							$("i",this).toggleClass($ZMI.icon_clazz("icon-caret-down")).toggleClass($ZMI.icon_clazz("icon-caret-right"));
 							$(this).nextUntil(".dropdown-header").slideToggle();
 						}
 					}
@@ -1654,8 +1669,7 @@ ZMIActionList.prototype.over = function(el, e) {
 ZMIActionList.prototype.out = function(el) {
 	$("button.split-left",el).css({visibility:"hidden"});
 	var $button = $('button.btn.split-right.dropdown-toggle',el);
-	$($ZMI.icon_selector("icon-chevron-down"),$button).hide();
-	$(':not('+$ZMI.icon_selector("icon-chevron-down")+')',$button).show();
+	$('*',$button).show();
 }
 
 /**
@@ -2112,7 +2126,7 @@ $(function() {
 	var scrollBarWidths = 40;
 	var widthOfList = function(){
 		var itemsWidth = 0;
-		$('.main-nav.nav-tabs li').each(function(){
+		$('.wrapper .nav.nav-tabs li').each(function(){
 			var itemWidth = $(this).outerWidth();
 			itemsWidth+=itemWidth;
 		});
@@ -2123,19 +2137,21 @@ $(function() {
 	};
 	var getLeftPosi = function(){
 		try {
-			return $('.main-nav.nav-tabs').position().left;
+			return $('.wrapper .nav.nav-tabs').position().left;
 		} catch(err) {
 			return 0
 		}
 	};
 	var reAdjust = function(){
+		console.log("wrapper.outerWidth()="+$('.wrapper').outerWidth()+"<"+ widthOfList());
 		if (($('.wrapper').outerWidth()) < widthOfList()) {
 			$('.scroller-right').show();
 		}
 		else {
 			$('.scroller-right').hide();
 		}
-	
+		
+		console.log("getLeftPosi()="+getLeftPosi());
 		if (getLeftPosi()<0) {
 			$('.scroller-left').show();
 		}
@@ -2145,14 +2161,15 @@ $(function() {
 		}
 	}
 	$('.scroller-right').click(function() {
+		console.log("widthOfHidden()="+widthOfHidden());
 		$('.scroller-left').fadeIn('slow');
 		$('.scroller-right').fadeOut('slow');
-		$('.main-nav.nav-tabs').animate({left:"+="+widthOfHidden()+"px"},'slow',function(){ });
+		$('.wrapper .nav.nav-tabs').animate({left:"+="+widthOfHidden()+"px"},'slow',function(){ });
 	});
 	$('.scroller-left').click(function() {
 		$('.scroller-right').fadeIn('slow');
 		$('.scroller-left').fadeOut('slow');
-		$('.main-nav.nav-tabs').animate({left:"-="+getLeftPosi()+"px"},'slow',function(){ });
+		$('.wrapper .nav.nav-tabs').animate({left:"-="+getLeftPosi()+"px"},'slow',function(){ });
 	});
 	reAdjust();
 	$(window).on('resize',function(e){

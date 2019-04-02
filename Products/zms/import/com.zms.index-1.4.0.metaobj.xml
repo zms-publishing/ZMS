@@ -24,11 +24,11 @@ function openWindow(url) {
 	return false;
 }
 </script>
-	<div class="form-group">
+	<div class="form-group row">
 		<label class="col-sm-2 control-label">Index</label>
 		<div class="col-sm-10">
 			<div class="row col-sm-4" tal:condition="initialized">
-				<a class="btn btn-default col-sm-12" 
+				<a class="btn btn-secondary col-sm-12" 
 					tal:attributes="href python:'%s/manage_catalogView'%zmscontext.zcatalog_index.absolute_url()" target="_blank"
 					><img src="++resource++zms_/img/ZCatalog.png"/> zcatalog_index</a>
 			</div>
@@ -53,7 +53,7 @@ function openWindow(url) {
 			</button>
 		</div>
 	</div><!-- .form-group -->
-	<div class="form-group" style="padding:.5em 0;" tal:condition="python:initialized and active">
+	<div class="form-group row" style="padding:.5em 0;" tal:condition="python:initialized and active">
 		<label class="col-sm-2 control-label">References</label>
 		<div class="col-sm-10">
 			<div class="row col-sm-4">
@@ -71,7 +71,7 @@ function openWindow(url) {
 		</div>
 	</div><!-- .form-group -->
 
-	<div class="form-group">
+	<div class="form-group row">
 		<label class="col-sm-2 control-label">Attributes</label>
 		<div class="col-sm-5">
 			<div class="input-group">
@@ -82,23 +82,23 @@ function openWindow(url) {
 					placeholder="attr_dc_identifier_doi"
 					title="Enter comma separated names of meta-attributes"
 					tal:attributes="value python:zmscontext.operator_getattr(zmscontext,'index_names','')"/>
-				<span class="input-group-btn">
+				<div class="input-group-append">
 					<button class="btn btn-primary" name="btn" value="save"
 						onclick="$(this).parents('form').attr({action:self.location.href})" tal:content="structure python:zmscontext.zmi_icon(name='icon-save')">save</button>
-				</span>
+				</div>
 			</div><!-- .input-group -->
 		</div><!-- .col-sm-5-->
 	</div><!-- .form-group -->
 
-	<div class="form-group" tal:condition="initialized">
+	<div class="form-group row" tal:condition="initialized">
 		<label class="col-sm-2 control-label">Uid</label>
 		<div class="col-sm-5">
 			<div class="input-group" title="SEARCH for a given uid and show the index details.">
 				<input class="form-control" type="text" name="uid" tal:attributes="value uid" placeholder="Enter uid"/>
-				<span class="input-group-btn">
+				<div class="input-group-append">
 					<button class="btn btn-primary" name="btn" value="search"
 						onclick="$(this).parents('form').attr({action:self.location.href})" tal:content="structure python:zmscontext.zmi_icon(name='icon-search')">search</button>
-				</span>
+				</div>
 			</div><!-- .input-group -->
 		</div>
 	</div><!-- .form-group -->

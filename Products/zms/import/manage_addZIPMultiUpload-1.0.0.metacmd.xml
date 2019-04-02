@@ -38,7 +38,7 @@ def manage_addZIPMultiUpload(self):
 			getattr(temp_folder,temp_id).manage_upload(file)
 		else:
 			temp_folder.manage_addFile(id=temp_id,title=file.filename,file=file)
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label class="control-label"><img src="%smime_type.application_zip.gif" /> %s (%s, %i %s)</label>'%( self.MISC_ZMS, file.filename, self.getDataSizeStr(getattr(temp_folder,temp_id).size), len(files), self.getZMILangStr('ATTR_OBJECTS') )
 		html += '<div>'
 
@@ -66,10 +66,10 @@ def manage_addZIPMultiUpload(self):
 		html += '</div><!-- .form-group -->'
 
 
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'))
-		html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
+		html += '<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
 		html += '</div>'
 		html += '</div><!-- .form-group -->'
 
@@ -138,22 +138,22 @@ def manage_addZIPMultiUpload(self):
 	# ---------------------------------
 	else:
 
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<label class="control-label" for="file"><img src="%smime_type.application_zip.gif" /> %s</label>'%( self.MISC_ZMS, self.getZMILangStr('ATTR_FILE') )
 		html += '<input class="form-control" name="file" type="file" size="25" />'
 		html += '</div><!-- .form-group -->'
 
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'))
-		html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
+		html += '<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
 		html += '</div>'
 		html += '</div><!-- .form-group -->'
 
 	# ---------------------------------
 
 	html += '</form><!-- .form-horizontal -->'
-	html += '</div><!-- .accordion-group -->'
+	html += '</div><!-- .card -->'
 	html += '<div style="clear:both;">&nbsp;</div>'
 	html += '</div><!-- #zmi-tab -->'
 	html += self.zmi_body_footer(self,request)
@@ -164,7 +164,7 @@ def manage_addZIPMultiUpload(self):
       </item>
       <item key="description"></item>
       <item key="exec" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-upload-alt text-primary]]></item>
+      <item key="icon_clazz"><![CDATA[icon-upload text-primary]]></item>
       <item key="id"><![CDATA[manage_addZIPMultiUpload]]></item>
       <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">

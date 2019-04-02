@@ -28,24 +28,22 @@ ZMI.prototype.multiselect = function(context) {
 						+ '<div class="'+$select.attr('class')+'">'
 						+ '</div>'
 						+ '<div class="btn-group btn-group-sortable">\n'
-						+ '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
+						+ '<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
 						+ $ZMI.icon('icon-plus')
 						+ '</button>'
-						+ '<ul class="dropdown-menu scrollable-menu">';
+						+ '<div class="dropdown-menu scrollable-menu">';
 					var c = 0;
 					$("option",$select).each(function() {
 						var v = $(this).attr('value');
 						$(this).attr('data-value',v);
 						html += ''
-							+ '<li>\n'
-							+ '<a href="javascript:;" data-value="'+v+'">\n'
+							+ '<a class="dropdown-item" href="javascript:;" data-value="'+v+'">\n'
 							+ $(this).text()
-							+ '</a>\n'
-							+ '</li>\n';
+							+ '</a>\n';
 						c++;
 					});
 					html += ''
-						+ '</ul>'
+						+ '</div>'
 						+ '</div>'
 						+ '</div>';
 					$select.addClass("hidden").after(html);
@@ -57,7 +55,7 @@ ZMI.prototype.multiselect = function(context) {
 						var data_value = $(this).attr('data-value');
 						$container.append(''
 							+'<div class="btn" data-value="'+data_value+'">'
-							+'<a href="javascript:;">'+$ZMI.icon('icon-remove')+'</a> '
+							+'<a href="javascript:;">'+$ZMI.icon('icon-times')+'</a> '
 							+$(this).text()
 							+'</div>'
 						);

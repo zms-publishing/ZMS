@@ -15,7 +15,7 @@
 	<form class="form-horizontal col-xs-10" action="manage_changeMetacmds" method="post" enctype="multipart/form-data" target="_parent">
 		<input type="hidden" name="lang" tal:attributes="value request/lang">
 		<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]">
-		<div class="form-group">
+		<div class="form-group row">
 			<select class="form-control" size="15" id="aq_ids" name="aq_ids:list" multiple="multiple">
 				<tal:block tal:repeat="acquireObj acquireObjs">
 					<option tal:attributes="value python:acquireObj[1]" tal:content="python:'%s (%s)'%(acquireObj[1],acquireObj[2])">acquireObj</option>

@@ -18,7 +18,7 @@
 						dummy0 python:request.set('lang',lang);
 						elName python:here.getObjAttrName(metaObjAttr,lang);
 						elLabel python:'%s [%s_%s]'%(here.getObjAttrLabel(metaObjAttr),metaObjAttr['id'],lang)">
-					<div class="form-group"  tal:attributes="id python:'tr_%s'%(elName)">
+					<div class="form-group row"  tal:attributes="id python:'tr_%s'%(elName)">
 						<label tal:attributes="for elName; class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(metaObjAttr.get('mandatory'))])">
 							<span tal:content="elLabel">the label</span>
 						</label>
@@ -28,10 +28,10 @@
 			</tal:block>
 		</tal:block>
 	</tal:block>
-	<div class="form-group">
+	<div class="form-group row">
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" value="Change">Change</button>
-			<button type="submit" name="btn" class="btn btn-default" value="Cancel">Cancel</button>
+			<button type="submit" name="btn" class="btn btn-secondary" value="Cancel">Cancel</button>
 		</div>
 	</div><!-- .form-group -->
 </form>

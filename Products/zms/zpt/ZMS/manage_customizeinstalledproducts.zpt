@@ -2,7 +2,7 @@
 		standard modules/Products.zms/standard;
 		Std modules/Products/PythonScripts/standard">
   <tal:block tal:define="ZMSExtension python:standard.extutil(); zmsprj python:here.getConfProperty('ZMS.Project',None)">
-    <div class="form-group">
+    <div class="form-group row">
         <div class="col-sm-4"></div>
         <div class="col-sm-8">
           <div id="extwizard">
@@ -21,7 +21,7 @@
       <div class="tab-content">
         <div class="tab-pane" id="tab1">
         <tal:block tal:repeat="zmsext python:ZMSExtension.getAllExtensions(zmsprj)">
-          <div class="form-group">
+          <div class="form-group row">
             <label class="col-sm-4 control-label">
               <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext).replace('/downloads',''); title python:'%s'%ZMSExtension.getInfo(zmsext);" tal:content="python:zmsext" target="_blank">zms3.extension</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
             </label>
@@ -46,7 +46,7 @@
         </div>
         <div class="tab-pane" id="tab2">
         <tal:block tal:repeat="zmsext python:ZMSExtension.getAllThemes(zmsprj)">
-          <div class="form-group">
+          <div class="form-group row">
             <label class="col-sm-4 control-label">
               <strong><a tal:attributes="href python:'#'; title python:'Filesystem-based Theme';" tal:content="python:zmsext" target="_blank">zms3.extension</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:ZMSExtension.isThemeInstalled(context, zmsext) and 'checked' or '';" /><br /><tal:block tal:replace="python:'Filesystem-based Theme'"></tal:block></strong>
             </label>
@@ -62,13 +62,13 @@
         </div>
         <div class="tab-pane" id="tab3">
         <tal:block tal:repeat="zmsext python:ZMSExtension.getAllProducts()">
-          <div class="form-group">
+          <div class="form-group row">
             <label class="col-sm-4 control-label">
               <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext); title python:'%s'%ZMSExtension.getInfo(zmsext);" tal:content="python:zmsext" target="_blank">python package</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
             </label>
             <div class="col-sm-8">
               <div class="pull-left">
-                  <div style="margin-top:0.5em;"><button class="btn" disabled="disabled" tal:attributes="class python:ZMSExtension.isEnabled(zmsext) and (ZMSExtension.getVersionAvailable(zmsext)==ZMSExtension.getVersionInstalled(zmsext) and 'btn btn-primary' or 'btn') or 'btn'" tal:content="python:ZMSExtension.isEnabled(zmsext) and 'Installed v%s'%ZMSExtension.getVersionInstalled(zmsext) or 'Not installed.'">Not installed.</button><a href="#InstalledProducts" style="margin-left:0.7em;text-decoration:none;" title="Info" data-toggle="popover" tal:attributes="data-content python:'Install the python package at command line by<br /><code>$ %s/bin/pip install %s==%s</code><br /><small>or check <a class=\'icon-archive\' href=\'%s/%s\' target=\'_blank\'> Package Home at PyPI</a> for more information</small>'%(here.getPACKAGE_HOME().split('/lib')[0], zmsext, ZMSExtension.getVersionAvailable(zmsext), ZMSExtension.getUrl(zmsext), ZMSExtension.getVersionAvailable(zmsext)); title python:'<strong>Recommended package version is v%s</strong>'%ZMSExtension.getVersionAvailable(zmsext)"><i class="icon-info-sign icon-large" title="Info" style="color:#ccc;" tal:attributes="title python:'Recommended package version is v%s'%ZMSExtension.getVersionAvailable(zmsext); class python:ZMSExtension.isEnabled(zmsext) and 'icon-warning-sign icon-large' or 'icon-info-sign icon-large'; style python:ZMSExtension.isEnabled(zmsext) and 'color:#428bca' or 'color:#ccc';" tal:condition="python:ZMSExtension.getVersionAvailable(zmsext)!=ZMSExtension.getVersionInstalled(zmsext)"></i></a></div>
+                  <div style="margin-top:0.5em;"><button class="btn" disabled="disabled" tal:attributes="class python:ZMSExtension.isEnabled(zmsext) and (ZMSExtension.getVersionAvailable(zmsext)==ZMSExtension.getVersionInstalled(zmsext) and 'btn btn-primary' or 'btn') or 'btn'" tal:content="python:ZMSExtension.isEnabled(zmsext) and 'Installed v%s'%ZMSExtension.getVersionInstalled(zmsext) or 'Not installed.'">Not installed.</button><a href="#InstalledProducts" style="margin-left:0.7em;text-decoration:none;" title="Info" data-toggle="popover" tal:attributes="data-content python:'Install the python package at command line by<br /><code>$ %s/bin/pip install %s==%s</code><br /><small>or check <a class=\'icon-archive\' href=\'%s/%s\' target=\'_blank\'> Package Home at PyPI</a> for more information</small>'%(here.getPACKAGE_HOME().split('/lib')[0], zmsext, ZMSExtension.getVersionAvailable(zmsext), ZMSExtension.getUrl(zmsext), ZMSExtension.getVersionAvailable(zmsext)); title python:'<strong>Recommended package version is v%s</strong>'%ZMSExtension.getVersionAvailable(zmsext)"><i class="icon-info-circle icon-large" title="Info" style="color:#ccc;" tal:attributes="title python:'Recommended package version is v%s'%ZMSExtension.getVersionAvailable(zmsext); class python:ZMSExtension.isEnabled(zmsext) and 'icon-warning-sign icon-large' or 'icon-info-circle icon-large'; style python:ZMSExtension.isEnabled(zmsext) and 'color:#428bca' or 'color:#ccc';" tal:condition="python:ZMSExtension.getVersionAvailable(zmsext)!=ZMSExtension.getVersionInstalled(zmsext)"></i></a></div>
               </div>
             </div>
           </div><!-- .form-group -->  
@@ -76,13 +76,13 @@
         </div>
         <div class="tab-pane" id="tab4">
         <tal:block tal:repeat="zmsext python:ZMSExtension.getAllOthers()">
-          <div class="form-group">
+          <div class="form-group row">
             <label class="col-sm-4 control-label">
               <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext); title python:'%s'%ZMSExtension.getInfo(zmsext);" tal:content="python:zmsext" target="_blank">python package</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
             </label>
             <div class="col-sm-8">
               <div class="pull-left">
-                  <div style="margin-top:0.5em;"><button class="btn" disabled="disabled" tal:attributes="class python:ZMSExtension.isEnabled(zmsext) and (ZMSExtension.getVersionAvailable(zmsext)==ZMSExtension.getVersionInstalled(zmsext) and 'btn btn-primary' or 'btn') or 'btn'" tal:content="python:ZMSExtension.isEnabled(zmsext) and 'Installed v%s'%ZMSExtension.getVersionInstalled(zmsext) or 'Not installed.'">Not installed.</button><a href="#InstalledProducts" style="margin-left:0.7em;text-decoration:none;" title="Info" data-toggle="popover" tal:attributes="data-content python:'Install the python package at command line by<br /><code>$ %s/bin/pip install %s==%s</code><br /><small>or check <a class=\'icon-archive\' href=\'%s/%s\' target=\'_blank\'> Package Home at PyPI</a> for more information</small>'%(here.getPACKAGE_HOME().split('/lib')[0], zmsext, ZMSExtension.getVersionAvailable(zmsext), ZMSExtension.getUrl(zmsext), ZMSExtension.getVersionAvailable(zmsext)); title python:'<strong>Recommended package version is v%s</strong>'%ZMSExtension.getVersionAvailable(zmsext)"><i class="icon-info-sign icon-large" title="Info" style="color:#ccc;" tal:attributes="title python:'Recommended package version is v%s'%ZMSExtension.getVersionAvailable(zmsext); class python:ZMSExtension.isEnabled(zmsext) and 'icon-warning-sign icon-large' or 'icon-info-sign icon-large'; style python:ZMSExtension.isEnabled(zmsext) and 'color:#428bca' or 'color:#ccc';" tal:condition="python:ZMSExtension.getVersionAvailable(zmsext)!=ZMSExtension.getVersionInstalled(zmsext)"></i></a></div>
+                  <div style="margin-top:0.5em;"><button class="btn" disabled="disabled" tal:attributes="class python:ZMSExtension.isEnabled(zmsext) and (ZMSExtension.getVersionAvailable(zmsext)==ZMSExtension.getVersionInstalled(zmsext) and 'btn btn-primary' or 'btn') or 'btn'" tal:content="python:ZMSExtension.isEnabled(zmsext) and 'Installed v%s'%ZMSExtension.getVersionInstalled(zmsext) or 'Not installed.'">Not installed.</button><a href="#InstalledProducts" style="margin-left:0.7em;text-decoration:none;" title="Info" data-toggle="popover" tal:attributes="data-content python:'Install the python package at command line by<br /><code>$ %s/bin/pip install %s==%s</code><br /><small>or check <a class=\'icon-archive\' href=\'%s/%s\' target=\'_blank\'> Package Home at PyPI</a> for more information</small>'%(here.getPACKAGE_HOME().split('/lib')[0], zmsext, ZMSExtension.getVersionAvailable(zmsext), ZMSExtension.getUrl(zmsext), ZMSExtension.getVersionAvailable(zmsext)); title python:'<strong>Recommended package version is v%s</strong>'%ZMSExtension.getVersionAvailable(zmsext)"><i class="icon-info-circle icon-large" title="Info" style="color:#ccc;" tal:attributes="title python:'Recommended package version is v%s'%ZMSExtension.getVersionAvailable(zmsext); class python:ZMSExtension.isEnabled(zmsext) and 'icon-warning-sign icon-large' or 'icon-info-circle icon-large'; style python:ZMSExtension.isEnabled(zmsext) and 'color:#428bca' or 'color:#ccc';" tal:condition="python:ZMSExtension.getVersionAvailable(zmsext)!=ZMSExtension.getVersionInstalled(zmsext)"></i></a></div>
               </div>
             </div>
           </div><!-- .form-group -->  
@@ -90,7 +90,7 @@
         </div>
         <div class="tab-pane" id="tab5">
         <tal:block tal:repeat="zmsext python:ZMSExtension.getAllProjspecs(zmsprj)">
-          <div class="form-group">
+          <div class="form-group row">
             <label class="col-sm-4 control-label">
               <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext).replace('/downloads',''); title python:'%s'%ZMSExtension.getInfo(zmsext);" tal:content="python:zmsext" target="_blank">zms3.extension</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
             </label>
@@ -115,7 +115,7 @@
         </div>
         <div class="tab-pane" id="tab6">
         <tal:block tal:repeat="zmsext python:ZMSExtension.getAllFramework()">
-          <div class="form-group">
+          <div class="form-group row">
             <label class="col-sm-4 control-label">
               <strong><a tal:attributes="href python:'%s'%ZMSExtension.getUrl(zmsext); title python:'%s'%ZMSExtension.getInfo(zmsext);" tal:content="python:zmsext" target="_blank">python package</a> <input type="checkbox" disabled="disabled" value="1" tal:attributes="id zmsext; checked python:['','checked'][int(ZMSExtension.isEnabled(zmsext))]" /><br /><tal:block tal:replace="python:ZMSExtension.getHint(zmsext)"></tal:block></strong>
             </label>

@@ -6,7 +6,7 @@
 	$('img[src*="/p_/User_icon"]').replaceWith('<i data-title="User" class="icon icon-user"></i>');
 	$('img[src*="TemporaryFolder"]').replaceWith('<i data-title="Folder" class="icon icon-folder-open-alt">&nbsp;</i>');
 	$('img[alt="Filesystem Directory View"]').replaceWith('<i data-title="Filesystem Directory View" class="icon icon-folder-close">&nbsp;</i>');
-	$('img[src*="Folder"]').replaceWith('<i data-title="Folder" class="icon icon-folder-close-alt">&nbsp;</i>');
+	$('img[src*="Folder"]').replaceWith('<i data-title="Folder" class="icon icon-folder">&nbsp;</i>');
 	$('img[src*="zpt.gif"]').replaceWith('<i data-title="Page Template" class="icon icon-file-text-alt">&nbsp;</i>');
 	$('img[src*="fspt.gif"]').replaceWith('<i data-title="Filesystem Page Template" class="icon icon-file-text-alt">&nbsp;</i>');
 	$('img[src*="exclamation.gif"]').replaceWith('<i data-title="Error" class="icon icon-exclamation">&nbsp;</i>');
@@ -48,7 +48,7 @@
 	}
 // HELP ICON
 	$('a[href*="HelpSys"]').empty() 
-		.append('<i class="icon icon-question-sign"></i>') 
+		.append('<i class="icon icon-question-circle"></i>') 
 		.css('border-color','transparent');
 
 // HILIGHT ZMS IN ADD-LIST

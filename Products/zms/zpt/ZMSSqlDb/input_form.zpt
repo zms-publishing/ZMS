@@ -28,10 +28,10 @@
 		<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
 		<span tal:attributes="title entity/id" tal:content="entity/label">the label</span>
 	</legend>
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<a class="accordion-toggle" href="#" tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</a>
-		</div><!-- accordion-heading -->
+	<div class="card">
+		<div class="card-header">
+			<a class="card-toggle" href="#" tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</a>
+		</div><!-- card-header -->
 		<tal:block tal:repeat="column entity/columns">
 			<tal:block tal:condition="python:'details' not in column" tal:define="global
 					metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);">
@@ -41,7 +41,7 @@
 					elValue python:here.operator_getitem(row,elName,ignorecase=True)">
 
 			<input tal:condition="python:column['id'].lower() in request_form_inherit" type="hidden" tal:attributes="name elName; value elValue"/>
-			<div tal:condition="python:column['id'].lower() not in request_form_inherit" class="form-group" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
+			<div tal:condition="python:column['id'].lower() not in request_form_inherit" class="form-group row" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
 
 				<tal:block tal:on-error="structure string: <!-- INTERFACE ERROR -->" tal:replace="python:metaObjAttr.get('interface','')">table interface element</tal:block>
 
@@ -89,9 +89,11 @@
 							<div class="input-group">
 								<input class="lazy" type="hidden" tal:attributes="id metaObjAttr/id; name elName; value python:option[0]"/>
 								<input class="form-control" type="text" tal:attributes="id python:'label_%s'%(elName); value python:option[1]" disabled="disabled"/>
-							<tal:block tal:define="actions python:['select']+[[],['insert']][int(metaObjAttr['fk'].get('editable',0))]">
-								<span class="input-group-addon btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions\':\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],tablename,fieldname,displayfield,','.join(actions),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
-							</tal:block>
+								<div class="input-group-append" tal:define="actions python:['select']+[[],['insert']][int(metaObjAttr['fk'].get('editable',0))]">
+									<a class="btn btn-secondary btn-sm" href="javascript:;" 
+										tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions\':\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],tablename,fieldname,displayfield,','.join(actions),elLabel)" 
+										tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</a>
+								</div>
 						</tal:block>
 					</tal:block>
 					<tal:block tal:condition="python:metaObjAttr['fk'].get('editable') and not metaObjAttr['fk'].get('lazy')">
@@ -125,9 +127,9 @@
 						</div><!-- .pull-left -->
 						<div class="pull-left">
 							<div class="btn-group-vertical" tal:on-error="python:'ERROR: %s'%str(metaObjAttr)">
-								<span class="btn btn-primary btn-sm" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'multiselect\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['dst']['fk']['tablename'],str(metaObjAttr['dst']['fk']['fieldname']).replace('\'','\\\''),str(metaObjAttr['dst']['fk']['displayfield']).replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</span>
-								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%elName" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</span>
-								<span class="btn btn-default btn-sm" tal:attributes="onclick python:'$(\'select#%s option\').prop(\'selected\',true)'%elName" tal:content="structure python:here.zmi_icon(name='icon-check-sign')">icon-check-sign</span>
+								<a class="btn btn-primary btn-sm" href="javascript:;" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'multiselect\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['dst']['fk']['tablename'],str(metaObjAttr['dst']['fk']['fieldname']).replace('\'','\\\''),str(metaObjAttr['dst']['fk']['displayfield']).replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</a>
+								<a class="btn btn-secondary btn-sm" href="javascript:;" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%elName" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</a>
+								<a class="btn btn-secondary btn-sm" href="javascript:;" tal:attributes="onclick python:'$(\'select#%s option\').prop(\'selected\',true)'%elName" tal:content="structure python:here.zmi_icon(name='icon-check-square-sign')">icon-check-square-sign</a>
 							</div><!-- .btn-group -->
 						</div><!-- .pull-left -->
 						<div class="clearfix"></div><!-- .clearfix -->
@@ -155,7 +157,7 @@
 										<input class="form-control" type="text" tal:attributes="id python:'label_%s%i'%(elName,i); name python:'label_%s%i'%(elName,i)" disabled="disabled"/>
 									</div>
 									<div class="pull-left">
-										<span class="btn btn-default" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),'%s%i'%(elName,i),item['tablename'].lower(),item['fieldname'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\''),item['displayfield'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
+										<span class="btn btn-secondary" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),'%s%i'%(elName,i),item['tablename'].lower(),item['fieldname'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\''),item['displayfield'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
 									</div>
 								</div>
 								<div tal:condition="not:python:item.get('lazy')">
@@ -173,8 +175,8 @@
 						<div class="control-group" style="margin-top:4px;">
 							<div class="pull-right">
 								<div class="btn-group-vertical">
-									<span class="btn btn-default" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%metaObjAttr['id']" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</span>
-									<span class="btn btn-default" tal:attributes="onclick python:'$(\'select#%s option\').attr(\'selected\',\'selected\')'%elName" tal:content="structure python:here.zmi_icon(name='icon-check-sign')">icon-check-sign</span>
+									<span class="btn btn-secondary" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%metaObjAttr['id']" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</span>
+									<span class="btn btn-secondary" tal:attributes="onclick python:'$(\'select#%s option\').attr(\'selected\',\'selected\')'%elName" tal:content="structure python:here.zmi_icon(name='icon-check-square-sign')">icon-check-square-sign</span>
 								</div><!-- .btn-group -->
 							</div><!-- .pull-right -->
 							<select class="form-control form-on-submit-selected" tal:attributes="id python:metaObjAttr['id']; name python:'%s:list'%metaObjAttr['id']" multiple="multiple">
@@ -201,7 +203,7 @@
 			<tal:block tal:replace="nothing">
 			##### Password (Confirm) #################################################
 				</tal:block>
-			<div tal:condition="python:column['id'].lower() not in request_form_inherit and metaObjAttr.get('password') in ['1',1,'True',True]" class="form-group" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
+			<div tal:condition="python:column['id'].lower() not in request_form_inherit and metaObjAttr.get('password') in ['1',1,'True',True]" class="form-group row" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
 				<label for="confirm" class="col-sm-3 col-md-2 control-label">
 					<span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">the label</span>
 				</label>
@@ -213,12 +215,12 @@
 			</tal:block>
 			</tal:block>
 		</tal:block>
-	</div><!-- .accordion-group -->
+	</div><!-- .card -->
 
-	<div class="form-group">
+	<div class="form-group row">
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+			<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 		</div>
 	</div><!-- .form-group -->
 

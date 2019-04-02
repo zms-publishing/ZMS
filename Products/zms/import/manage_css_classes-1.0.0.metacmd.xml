@@ -71,15 +71,15 @@ def manage_css_classes(self):
 		css_classes = [[str(r)+'_special',str(r)+'_special'] for x in css_classes]
 		# /GENERATE CSS LIST
 
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<div class="col-sm-12">'
 		html += self.zmi_input_multiselect(self,name='css_classes',value=get_css_classes(self),lang_str='CSS Classes',options=css_classes)
 		html += '</div>'
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group">'
+		html += '<div class="form-group row">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(self.getZMILangStr('BTN_INSERT'),self.getZMILangStr('BTN_INSERT'))
-		html += '&nbsp;<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
+		html += '&nbsp;<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
 		html += '&nbsp;</div>'
 		html += '</div><!-- .form-group -->'
 

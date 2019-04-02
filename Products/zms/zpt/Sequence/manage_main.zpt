@@ -15,16 +15,16 @@
 A Sequence is used to provide unique ids. You can update the current value using the form below.
 </p>
 
-<div class="form-group">
+<div class="form-group row">
 	<label class="col-lg-2 control-label" for="currentvalue:int"><span>Current-Value</span></label>
 	<div class="col-lg-10"><input class="form-control" type="text" name="currentvalue:int" size="8" tal:attributes="value python:here.currVal()"/></div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
 
-<div class="form-group">
+<div class="form-group row">
 	<div class="col-lg-2">&nbsp;</div>
 	<div class="col-lg-10">
 		<button name="submit" type="submit" class="btn btn-primary" value="Change">Change</button>
-		<button name="submit" type="submit" class="btn btn-default" value="Next">Next</button>
+		<button name="submit" type="submit" class="btn btn-secondary" value="Next">Next</button>
 	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
 

@@ -35,7 +35,7 @@ function zmiToggleBlobButton(elName, b) {
 	if (b) {
 		var nodeName = typeof $el.prop("nodeName")=="undefined"?"":$el.prop("nodeName").toLowerCase();
 		if (nodeName=="li") {
-			$el.removeClass("zmi-helper-hidden");
+			$el.removeClass("d-none");
 		}
 		else {
 			$el.show("normal");
@@ -43,7 +43,7 @@ function zmiToggleBlobButton(elName, b) {
 	}
 	else {
 		if (nodeName=="li") {
-			$el.addClass("zmi-helper-hidden");
+			$el.addClass("d-none");
 		}
 		else {
 			$el.hide("normal");

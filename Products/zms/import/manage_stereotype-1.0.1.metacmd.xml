@@ -73,7 +73,7 @@ html += '<form class="form-horizontal" method="post" enctype="multipart/form-dat
 
 html += '<legend>Select Attribute Mappings</legend>'
 html += '<p class="well well-small">For migration one content-object into an aother please choose the target stereotype and select its target attributes</p>'
-html += '<div class="form-group">'
+html += '<div class="form-group row">'
 html += '<label class="col-sm-2 control-label mandatory"><span>Stereotype</span></label>'
 html += '<div class="col-sm-10">'
 html += '<div class="col-xs-6">'
@@ -101,23 +101,23 @@ html += '</div>'
 html += '</div><!--.col-sm-10 -->'
 html += '</div>'
 
-html += '<div class="form-group">'
+html += '<div class="form-group row">'
 html += '<label class="col-sm-2 control-label mandatory"><span>Attributes</span></label>'
 html += '<div class="col-sm-10 attrs">'
 html += '</div><!--.col-sm-10 -->'
 html += '</div>'
 
-html += '<div class="form-group">'
+html += '<div class="form-group row">'
 html += '<label class="col-sm-2 control-label mandatory"><span>Recursive</span></label>'
 html += '<div class="col-sm-10">'
-html += '<span class="btn btn-default"><input name="recursive" type="checkbox" value="1" checked="checked"/></span>'
+html += '<span class="btn btn-secondary"><input name="recursive" type="checkbox" value="1" checked="checked"/></span>'
 html += '</div><!--.col-sm-10 -->'
 html += '</div>'
 
-html += '<div class="form-group">'
+html += '<div class="form-group row">'
 html += '<div class="controls save">'
 html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(unicode(context.getZMILangStr('BTN_SAVE'),'utf-8'),unicode(context.getZMILangStr('BTN_SAVE'),'utf-8'))
-html += '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button> '%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
+html += '<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button> '%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
 html += '</div>'
 html += '</div><!-- .form-group -->'
 
@@ -141,7 +141,7 @@ function onSelectMetaIdChange() {
 			var name = src.substr(0,src.indexOf('('));
 			var type = src.substr(src.indexOf('(')+1);
 			type = type.substr(0,type.indexOf(')'));
-			html += '<div class="form-group">'
+			html += '<div class="form-group row">'
 			html += '<label class="col-xs-6 control-label text-right">' + src+'</label>';
 			html += '<div class="col-xs-4">';
 			html += '<select class="form-control" style="background:#d9edf7" name="meta_attr_'+name+"_"+type+'">';

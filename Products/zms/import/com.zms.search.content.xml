@@ -25,21 +25,19 @@
 	<input tal:condition="python:request.get('lang')" type="hidden" name="lang" tal:attributes="value python:request.get('lang')" />
 	<input tal:condition="python:request.get('preview')" type="hidden" name="preview" tal:attributes="value python:request.get('preview')" />
 	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
-	<div class="form-group">
+	<div class="form-group row">
 		<div class="col-md-12">
 			<div class="input-group">
 				<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
-				<span class="input-group-btn">
-			<button type="submit" class="btn btn-primary">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
-			</button>
-				</span>
+				<div class="input-group-append">
+					<button type="submit" class="btn btn-primary" tal:content="structure python:here.zmi_icon(name='icon-search')"></button>
+				</div>
 			</div>
 		</div>
 	</div><!-- .form-group -->
 	</tal:block>
 
-<div id="search_results" class="form-group" style="display:none">
+<div id="search_results" class="form-group row" style="display:none">
 	<div class="col-md-12">
 		<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
 		<div class="header row">

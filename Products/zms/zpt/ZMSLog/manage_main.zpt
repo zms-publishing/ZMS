@@ -20,21 +20,21 @@ and whether the entries should be copied to Zope's event log
 file(s).
 </p>
 
-<div class="form-group">
+<div class="form-group row">
 	<label class="col-sm-2 control-label" for="copy_to_stdout"><span>Lines back in event log</span></label>
 	<div class="col-sm-10">
 		<input class="form-control" type="number" name="tail_event_log_linesback" tal:attributes="value python:getattr(here,'tail_event_log_linesback',100)"/>
 	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
 
-<div class="form-group">
+<div class="form-group row">
 	<label class="col-sm-2 control-label" for="copy_to_stdout"><span>Copy entries to standard-out</span></label>
 	<div class="col-sm-10">
-		<div class="btn btn-default"><input type="checkbox" name="copy_to_stdout" value="copy_to_stdout" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_stdout') in [1,True])]"/></div>
+		<div class="btn btn-secondary"><input type="checkbox" name="copy_to_stdout" value="copy_to_stdout" tal:attributes="checked python:['','checked'][int(getattr(here,'copy_to_stdout') in [1,True])]"/></div>
 	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
 
-<div class="form-group">
+<div class="form-group row">
 	<label class="col-sm-2 control-label" for="logged_entries:list"><span>Logged entry types</span></label>
 	<div class="col-sm-10">
 		<select class="form-control" name="logged_entries:list" multiple="multiple" size="3">
@@ -45,7 +45,7 @@ file(s).
 	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
 
-<div class="form-group">
+<div class="form-group row">
 	<div class="col-sm-10">
 		<button name="submit" type="submit" class="btn btn-primary" value=" Save Changes "> Save Changes </button>
 	</div><!-- .col-lg-10 -->

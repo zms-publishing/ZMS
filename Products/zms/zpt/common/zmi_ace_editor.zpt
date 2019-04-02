@@ -5,7 +5,7 @@
 		text python:options.get('text');
 		height python:options.get('height','20em')">
 	<tal:block tal:condition="python:text is None"><tal:block tal:define="global text python:zopeutil.readObject(here,ob.id)"></tal:block></tal:block>
-	<div tal:condition="python:ob is not None" class="form-group" tal:attributes="style python:'height:%s'%(height)">
+	<div tal:condition="python:ob is not None" class="form-group row" tal:attributes="style python:'height:%s'%(height)">
 		<div class="control-label-ace-editor">
 			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank">
 				<tal:block tal:content="ob/id">the id</tal:block>
@@ -17,7 +17,7 @@
 			</tal:block>
 		</div>
 		<div>
-			<textarea id="text" tal:attributes="name name" class="X_ui-helper-hidden" tal:content="text" style="width:100%;height:200px;font-size:smaller;font-family:monospace;">the text</textarea>
+			<textarea id="text" tal:attributes="name name" class="X_d-none" tal:content="text" style="width:100%;height:200px;font-size:smaller;font-family:monospace;">the text</textarea>
 		</div>
 
 <!--

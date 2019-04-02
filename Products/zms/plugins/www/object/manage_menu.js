@@ -49,27 +49,25 @@ function zmiBookmarksChanged() {
 								html += $ZMI.icon('icon-bookmark')+' ';
 								html += '<b class="caret"></b>';
 								html += '</a>';
-								html += '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
-								html += '<li class="dropdown-header">'+$ZMI.icon('icon-bookmark')+' Favoriten</li>';
+								html += '<div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
+								html += '<div class="dropdown-header">'+$ZMI.icon('icon-bookmark')+' Favoriten</div>';
 							}
 							html += ''
-								+ '<li role="presentation">'
-									+ '<a href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main"'
-											+ ' onmouseover="$(\'.icon-remove.text-muted\').removeClass(\'text-muted\').addClass(\'text-danger\')"'
-											+ ' onmouseout="$(\'.icon-remove.text-danger\').removeClass(\'text-danger\').addClass(\'text-muted\')"'
+									+ '<a class="dropdown-item" href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main"'
+											+ ' onmouseover="$(\'.icon-times.text-muted\').removeClass(\'text-muted\').addClass(\'text-danger\')"'
+											+ ' onmouseout="$(\'.icon-times.text-danger\').removeClass(\'text-danger\').addClass(\'text-muted\')"'
 										+ '>'+icon+' '+titlealt+'</span> '
 										+ '<span title="Favorit entfernen" data-path="'+bookmarks[i]+'"'
-											+ '>'+$ZMI.icon('icon-remove text-muted')+'</span>'
-									+ '</a>'
-								+ '</li>';
+											+ '>'+$ZMI.icon('icon-times text-muted')+'</span>'
+									+ '</a>';
 							i++;
 						}
 					});
 				if (i>0) {
-					html += '</ul><!-- .dropdown-menu --> ';
+					html += '</div><!-- .dropdown-menu --> ';
 				}
 				$("#zmi-bookmarks").html(html);
-				$("#zmi-bookmarks .icon-remove.text-muted").click(function(event) {
+				$("#zmi-bookmarks .icon-times.text-muted").click(function(event) {
 						event.preventDefault();
 						event.stopPropagation();
 						var data_path = $(this).parent().attr('data-path');
@@ -113,15 +111,15 @@ function zmiHistoryChanged() {
 								html += $ZMI.icon('icon-time')+' ';
 								html += '<b class="caret"></b>';
 								html += '</a>';
-								html += '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
-								html += '<li class="dropdown-header">'+$ZMI.icon('icon-time')+' Verlauf</li>';
+								html += '<div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
+								html += '<div class="dropdown-header">'+$ZMI.icon('icon-time')+' Verlauf</div>';
 							}
-							html += '<li role="presentation"><a href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main">'+(i+1)+'. '+icon+' '+titlealt+'</a></li>';
+							html += '<a class="dropdown-item" href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main">'+(i+1)+'. '+icon+' '+titlealt+'</a>';
 							i++;
 						}
 					});
 				if (i>0) {
-					html += '</ul><!-- .dropdown-menu --> ';
+					html += '</div><!-- .dropdown-menu --> ';
 				}
         $("#zmi-history").html(html);
 			});

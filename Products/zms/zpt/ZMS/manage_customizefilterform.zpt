@@ -152,18 +152,18 @@ $ZMI.registerReady(function(){
 				['XHTML', 'XHTML-Export' ]]+ \
 				[[],['myXML',standard.operator_getattr(here,'getObjToXml_DocElmnt',here).title_or_id()]][int(standard.operator_getattr(here,'getObjToXml_DocElmnt',None) is not None)]">
 
-<div class="ui-helper-hidden">
+<div class="d-none">
 	<div id="importConf" class="inner">
 		<form class="form-horizontal" name="importConfForm" tal:attributes="action action" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
-			<div class="form-group">
+			<div class="form-group row">
 				<label for="file" class="col-sm-3 control-label">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open-alt')"></tal:block>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
 				<div class="col-sm-9"><input class="btn btn-file" name="file" type="file" /></div>
 			</div><!-- .form-group -->
-			<div class="form-group">
+			<div class="form-group row">
 				<label for="or" class="col-sm-3 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
 				<div class="col-sm-9">
 					<select class="form-control" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.filter.')" onmouseover="zmiExpandConfFiles(this,'.filter.')">
@@ -178,7 +178,7 @@ $ZMI.registerReady(function(){
 	</div><!-- .inner -->
 </div><!-- #importConf -->
 
-<div class="ui-helper-hidden" tal:condition="python:request.get('id') in filterIds">
+<div class="d-none" tal:condition="python:request.get('id') in filterIds">
 	<div id="updateFilter" class="inner" tal:define="global filter python:here.getFilter(request['id'])">
 		<form class="form-horizontal" action="manage_changeFilter" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
@@ -191,10 +191,10 @@ $ZMI.registerReady(function(){
 					<label for="inpName" class="col-sm-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 					<div class="col-sm-9"><input class="form-control" type="text" id="inpName" name="inpName" tal:attributes="value filter/name"/></div>
 				</div><!-- .form-group -->
-				<div class="form-group">
+				<div class="form-group row">
 					<div class="controls save">
 						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-						<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+						<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 					</div><!-- .controls.save -->
 				</div><!-- .form-group -->
 				<div class="form-group inpFormat">
@@ -247,11 +247,16 @@ $ZMI.registerReady(function(){
 			<tr tal:repeat="pid python:range(len(filterProcesses))">
 			<tal:block tal:define="global filterProcess python:filterProcesses[pid]; process python:here.getProcess(filterProcess['id'])">
 				<td class="meta-sort">
-					<div class="input-append">
+					<div class="input-group">
 						<select class="zmi-sort" tal:attributes="onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'pid:int\':%i,key:\'attr\',\'pos:int\':this.selectedIndex})'%(filter['id'],pid)">
 							<option tal:repeat="i python:range(0,len(filterProcesses))" tal:attributes="selected python:['','selected'][int(i==pid)]" tal:content="python:i+1">i+1</option>
 						</select>
-						<span class="add-on btn" tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\',\'pid:int\':%i,key:\'attr\'})'%(filter['id'],pid); title python:here.getZMILangStr('BTN_DELETE')"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
+						<div class="input-group-append">
+							<a class="btn btn-secondary" href="javascript:;" 
+								tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\',\'pid:int\':%i,key:\'attr\'})'%(filter['id'],pid); title python:here.getZMILangStr('BTN_DELETE')"
+								tal:content="structure python:here.zmi_icon(name='icon-times')"></a>
+							</div>
+							
 					</div>
 				</td>
 				<td>
@@ -279,7 +284,7 @@ $ZMI.registerReady(function(){
 			</tal:block>
 			</tr>
 			<tr class="row_insert">
-				<td class="meta-sort"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></td>
+				<td class="meta-sort"><span class="btn btn-light" tal:content="structure python:here.zmi_icon(name='icon-plus')"></span></td>
 				<td>
 					<select class="form-control input-sm" tal:attributes="name python:'newFilterProcessId_%i'%len(filterProcesses)">
 						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_TYPE')">--- Select type ---</option>
@@ -296,7 +301,7 @@ $ZMI.registerReady(function(){
 	</div><!-- .inner -->
 </div><!-- #updateFilter -->
 
-<div class="ui-helper-hidden" tal:condition="python:request.get('id') in processIds">
+<div class="d-none" tal:condition="python:request.get('id') in processIds">
 	<div id="updateProcess" class="inner" tal:define="global process python:here.getProcess(request['id'])">
 		<form class="form-horizontal" action="manage_changeProcess" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
@@ -316,10 +321,10 @@ $ZMI.registerReady(function(){
 					<input class="form-control" type="text" tal:attributes="value process/type" disabled="disabled"/>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-group">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-					<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div><!-- .controls.save -->
 			</div><!-- .form-group -->
 			<div class="form-group inpCommand">
@@ -329,7 +334,7 @@ $ZMI.registerReady(function(){
 	</div><!-- .inner -->
 </div><!-- #updateProcess -->
 
-<div class="ui-helper-hidden">
+<div class="d-none">
 	<div id="insertFilter" class="inner">
 		<form class="form-horizontal" name="insertObjForm" action="manage_changeFilter" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
@@ -362,17 +367,17 @@ $ZMI.registerReady(function(){
 					</select>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-group">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-					<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
 			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #insertFilter -->
 
-<div class="ui-helper-hidden">
+<div class="d-none">
 	<div id="insertProcess" class="inner">
 		<form class="form-horizontal" name="insertObjForm" action="manage_changeProcess" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
@@ -395,10 +400,10 @@ $ZMI.registerReady(function(){
 					</select>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-group">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-					<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
 			</div><!-- .form-group -->
 		</form>
@@ -417,15 +422,15 @@ $ZMI.registerReady(function(){
 			<tr>
 				<th>
 					<div class="btn-group">
-						<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
+						<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check-square')"></tal:block></span>
 					</div>
 				</th>
 				<th>
 					<div class="btn-group">
 						<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertFilter',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
-						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
-						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
-						<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
+						<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-times')"></tal:block></span>
+						<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload')"></tal:block></span>
+						<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download')"></tal:block></span>
 					</div>
 				</th>
 			</tr>
@@ -495,15 +500,15 @@ $ZMI.registerReady(function(){
 		<tr>
 			<th>
 				<div class="btn-group">
-					<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
+					<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check-square')"></tal:block></span>
 				</div>
 			</th>
 			<th>
 				<div class="btn-group">
 					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertProcess',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
-					<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
+					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-times')"></tal:block></span>
+					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload')"></tal:block></span>
+					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download')"></tal:block></span>
 				</div>
 			</th>
 			<th tal:content="python:here.getZMILangStr('ATTR_COMMANDLINE')">Commandline</th>

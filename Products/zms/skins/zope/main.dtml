@@ -34,7 +34,7 @@ function toggleSelect() {
 	<div class="zope_actions pull-right">
 		<form class="form-inline" action="<dtml-var "REQUEST.URL1" html_quote>/" method="get">
 			<dtml-if "_.len(filtered_meta_types) > 1">
-				<div class="form-group">
+				<div class="form-group row">
 					<select class="form-control" name=":action"
 						onChange="location.href='<dtml-var "REQUEST.URL1" html_quote>/'+this.options[this.selectedIndex].value">
 						<option value="manage_workspace" disabled="disabled">Select type to add...</option>

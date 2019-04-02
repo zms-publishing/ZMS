@@ -72,14 +72,14 @@
 			</tal:block>
 			<tal:block tal:define="global dummy0 python:packages.sort()"></tal:block>
 			<div class="btn-group">
-				<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)">
-					<i class="icon-check"></i>
+				<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)">
+					<i class="icon-check-square"></i>
 				</span>
 				<legend tal:content="f/title_or_id">title_or_id</legend>
 			</div>
 			<tal:block tal:repeat="package packages">
 				<tal:block tal:define="global package_id python:here.id_quote(package)">
-					<div class="form-group">
+					<div class="form-group row">
 						<input type="checkbox" name="createIdsFilter:list" tal:attributes="value package; title package" checked="checked">
 						<i tal:condition="python:package not in metaObjPackages" class="icon-plus"></i>
 						<i class="icon-briefcase"></i>
@@ -87,7 +87,7 @@
 					</div><!-- .form-group -->
 					<tal:block tal:repeat="importObj importObjs">
 						<tal:block tal:condition="python:importObj['package']==package">
-							<div class="form-group">
+							<div class="form-group row">
 								<input type="checkbox" name="createIdsFilter:list" tal:attributes="value importObj/id; title importObj/id" checked="checked">
 								<i tal:condition="python:importObj['id'] not in metaObjIds" class="icon-plus"></i>
 								<tal:block tal:condition="python:importObj['id'] in metaObjIds" tal:content="structure python:here.display_icon(request,importObj['id'],zpt=True)">the icon</tal:block>
@@ -110,14 +110,14 @@
 	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="lang" tal:attributes="value request/lang" />
 		<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]" />
-		<div class="form-group">
+		<div class="form-group row">
 			<label for="file" class="col-sm-2 control-label">
 				<i class="icon-folder-open-alt"></i>
 				<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 			</label>
 			<div class="col-sm-10"><input class="btn btn-file" type="file" name="file" /></div>
 		</div><!-- .form-group -->
-		<div class="form-group">
+		<div class="form-group row">
 			<label for="or" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
 			<div class="col-sm-10">
 				<select id="init" name="init" class="form-control" onfocus="zmiExpandConfFiles(this,'.metaobj.')" onmouseover="zmiExpandConfFiles(this,'.metaobj.')">
@@ -125,7 +125,7 @@
 				</select>
 			</div>
 		</div><!-- .form-group -->
-		<div class="form-group">
+		<div class="form-group row">
 			<div class="col-sm-10">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 			</div>

@@ -6,7 +6,7 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'TAB_DESIGN','action':'manage_customizeDesignForm'}])">zmi_breadcrumbs</tal:block>
 
-<div class="ui-helper-hidden">
+<div class="d-none">
 	<div id="insertObj" class="inner">
 		<form class="form-horizontal" name="insertObjForm" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
@@ -18,7 +18,7 @@
 				<label for="_meta_name" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TITLE')">Title</span></label>
 				<div class="col-lg-10"><input type="text" id="newTitle" name="newTitle" class="form-control input-sm" /></div>
 			</div><!-- .form-group -->
-			<div class="form-group">
+			<div class="form-group row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 				</div><!-- .controls.save -->
@@ -27,18 +27,18 @@
 	</div><!-- .inner -->
 </div><!-- #insertObj -->
 
-<div class="ui-helper-hidden">
+<div class="d-none">
 	<div id="importObj" class="inner">
 		<form class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
-			<div class="form-group">
+			<div class="form-group row">
 				<label for="file" class="col-lg-2 control-label">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open-alt')"></tal:block>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
 				<div class="col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
-			<div class="form-group">
+			<div class="form-group row">
 				<div class="col-lg-12">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 				</div><!-- .col-lg-12 -->
@@ -58,16 +58,16 @@
 	<tr>
 		<th>
 			<div class="btn-group">
-				<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
+				<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check-square')"></tal:block></span>
 			</div>
 		</th>
 		<th>
 			<div class="btn-group">
 				<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block></span>
-				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove')"></tal:block></span>
-				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload-alt')"></tal:block></span>
-				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download-alt')"></tal:block></span>
-				<span class="btn btn-default" tal:attributes="title python:here.getZMILangStr('BTN_COPY')" onclick="zmiArchiveBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-archive')"></tal:block></span>
+				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-times')"></tal:block></span>
+				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importObj',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload')"></tal:block></span>
+				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download')"></tal:block></span>
+				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_COPY')" onclick="zmiArchiveBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-archive')"></tal:block></span>
 			</div>
 		</th>
 	</tr>

@@ -15,15 +15,15 @@
 
 <tal:block tal:condition="python:request.get('btn')==here.getZMILangStr('BTN_COMPARE')" tal:define="ids python:request.get('ids',[]); ids python:^[x.id for x in here.getObjVersions() if x.id in ids];">
 	<tal:block tal:condition="python:len(ids)>1">
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" href="#compare">
+	<div class="card">
+		<div class="card-header">
+			<a class="card-toggle" data-toggle="collapse" href="#compare">
 				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 				<tal:block tal:content="python:here.getZMILangStr('BTN_COMPARE')">the heading</tal:block>
 			</a>
-		</div><!-- .accordion-heading -->
-		<div class="accordion-body collapse in" id="compare"">
-			<div class="accordion-inner">
+		</div><!-- .card-header -->
+		<div class="collapse show" id="compare">
+			<div class="card-body">
 				<table class="table-bordered table-striped diff">
 				<tr>
 					<th>&nbsp;</th>
@@ -73,9 +73,9 @@
 					</tal:block>
 				</tal:block>
 				</table>
-			</div><!-- .accordion-inner -->
-		</div><!-- .accordion-body -->
-	</div><!-- .accordion-group -->
+			</div><!-- .card-body -->
+		</div><!-- .collapse -->
+	</div><!-- .card -->
 	</tal:block>
 
 	<script>
@@ -106,8 +106,8 @@
 
 		<tal:block tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</tal:block>
 
-		<div class="accordion-body collapse container in" style="background-color:inherit;">
-			<div class="accordion-inner">
+		<div class="collapse show">
+			<div class="card-body">
 				<ul class="zmi-container">
 					<tal:block tal:repeat="obj_version python:obj_versions[pageStart:pageEnd]">
 							<tal:block tal:define="global childNode python:obj_version.aq_parent; dummy0 python:request.set('ZMS_VERSION_%s'%childNode.id,obj_version.id); selected python:obj_version.id in request.get('ids',[])">
@@ -129,16 +129,16 @@
 							</tal:block>
 					</tal:block>
 				</ul><!-- .zmi-container -->
-			</div><!-- .accordion-inner -->
-		</div><!-- .accordion-body.collapse.container.in -->
+			</div><!-- .card-body -->
+		</div><!-- .collapse -->
 		<hr />
-		<div class="form-group">
+		<div class="form-group row">
 			<div class="controls save">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COMPARE')">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-random')"></tal:block>
 					<tal:block tal:content="python:here.getZMILangStr('BTN_COMPARE')">Compare</tal:block>
 				</button>
-				<button type="submit" name="btn" class="btn btn-default" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
+				<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block>
 					<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
 				</button>

@@ -65,7 +65,7 @@ return RESPONSE.redirect(context.url_append_params('%s/manage_main'%context.abso
 ]]></item>
 <item key="description"/>
 <item key="exec" type="int">0</item>
-<item key="icon_clazz"><![CDATA[icon-folder-close-alt text-primary]]></item>
+<item key="icon_clazz"><![CDATA[icon-folder text-primary]]></item>
 <item key="id"><![CDATA[manage_syncZMSFoldersNDocuments]]></item>
 <item key="meta_type"><![CDATA[Script (Python)]]></item>
 <item key="meta_types" type="list"><list>

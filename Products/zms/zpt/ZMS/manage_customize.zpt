@@ -8,16 +8,16 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'action':'manage_customize','label':'TAB_SYSTEM'}])">zmi_breadcrumbs</tal:block>
 
-<div class="tabbable tabs-left">
+<div class="nav nav-tabs tabbable tabs-left">
   <ul class="nav nav-tabs">
-    <li><a href="#Manager" data-toggle="tab">Manager</a></li>
-    <li><a href="#Clients" data-toggle="tab">Portal</a></li>
-    <li><a href="#Configuration" data-toggle="tab">Configuration</a></li>
-    <li><a href="#Custom" data-toggle="tab">System-Properties</a></li>
-    <li><a href="#MediaDb" data-toggle="tab">Media-Folder</a></li>
-    <li><a href="#History" data-toggle="tab">History</a></li>
-    <li><a href="#InstalledProducts" data-toggle="tab">Installed Libraries</a></li>
-    <li><a href="#Instance" data-toggle="tab">Instance</a></li>
+    <li class="nav-item"><a class="nav-link" href="#Manager" data-toggle="tab">Manager</a></li>
+    <li class="nav-item"><a class="nav-link" href="#Clients" data-toggle="tab">Portal</a></li>
+    <li class="nav-item"><a class="nav-link" href="#Configuration" data-toggle="tab">Configuration</a></li>
+    <li class="nav-item"><a class="nav-link" href="#Custom" data-toggle="tab">System-Properties</a></li>
+    <li class="nav-item"><a class="nav-link" href="#MediaDb" data-toggle="tab">Media-Folder</a></li>
+    <li class="nav-item"><a class="nav-link" href="#History" data-toggle="tab">History</a></li>
+    <li class="nav-item"><a class="nav-link" href="#InstalledProducts" data-toggle="tab">Installed Libraries</a></li>
+    <li class="nav-item"><a class="nav-link" href="#Instance" data-toggle="tab">Instance</a></li>
   </ul>
   <div class="tab-content">
 
@@ -34,7 +34,7 @@
               ,'ZMSRepositoryManager','ZMSRepositoryManagerAcquired']]">
       <div class="col-sm-12">
         <label for="meta_type">ZMS base-components</label>
-        <div class="form-group">
+        <div class="form-group row">
           <select class="form-control" style="display:inline-block;width:auto;" id="meta_type" name="meta_type" 
             onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
             <option value="">Select type to add...</option>
@@ -42,13 +42,13 @@
               <option tal:condition="python:len(here.objectValues(meta_type['name']))==0"  tal:attributes="value meta_type/action" tal:content="python:here.getZMILangStr(meta_type['name'])">name</option>
             </tal:block>
           </select>
-          <button style="display:inline-block;" name="btn" type="submit" class="btn btn-default" value="Add">Add</button>
+          <button style="display:inline-block;" name="btn" type="submit" class="btn btn-secondary" value="Add">Add</button>
         </div>
       </div><!-- .form-group -->
       <tal:block tal:repeat="si python:here.objectValues(['MediaDb']+[x['name'] for x in meta_types])">
       <div class="form-group col-sm-12">
         <label>
-          <span class="btn btn-default">
+          <span class="btn btn-secondary">
             <img tal:attributes="src python:si.icon"/>&nbsp;<input type="checkbox" name="ids:list" tal:attributes="value python:si.id" />
           </span>
           &nbsp;<a tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</a>
@@ -56,8 +56,8 @@
       </div><!-- .form-group -->
       </tal:block>
       <div class="form-group col-sm-12">
-        <button name="btn" type="submit" class="btn btn-default" value="Remove">
-          <span class="icon icon-remove text-danger"></span>
+        <button name="btn" type="submit" class="btn btn-secondary" value="Remove">
+          <span class="icon icon-times text-danger"></span>
           Remove
         </button>
       </div>
@@ -71,13 +71,13 @@
       <input type="hidden" name="key" value="Clients">
       <legend>Portal</legend>
       <p class="well well-small">Register the folder-ids of this site's master- and client-sites.</p>
-      <div class="form-group">
+      <div class="form-group row">
         <label class="col-sm-2 control-label" for="portal_master">Master</label>
         <div class="col-sm-10">
           <input class="form-control" type="text" name="portal_master" tal:attributes="value python:here.getConfProperty('Portal.Master','')">
         </div>
       </div><!-- .form-group -->
-      <div class="form-group">
+      <div class="form-group row">
       <label class="col-sm-2 control-label" for="portal_master">Clients</label>
         <div class="col-sm-10" tal:define="
             elName python:'portal_clients';
@@ -102,7 +102,7 @@
 
         </div>
       </div><!-- .form-group -->
-      <div class="form-group">
+      <div class="form-group row">
         <div class="col-sm-2">&nbsp;</div>
         <div class="col-sm-10">
           <button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
@@ -117,13 +117,13 @@
       <input type="hidden" name="key" value="Import">
       <legend>Configuration</legend>
       <p class="well well-small">Import complete configuration packages with language-dictionaries, metadata-, special-object-, action- and filter-definitions contained in one single zip-archive.</p>
-      <div class="form-group">
+      <div class="form-group row">
         <label class="col-sm-2 control-label" for="file" tal:content="python:here.getZMILangStr('ATTR_FILE')">File</label>
         <div class="col-sm-10">
           <input class="btn btn-file" name="file" type="file" />
         </div>
       </div><!-- .form-group -->
-      <div class="form-group">
+      <div class="form-group row">
         <div class="col-sm-2">&nbsp;</div>
         <div class="col-sm-10">
           <button name="btn" type="submit" class="btn btn-primary" value="Import">Import</button>
@@ -153,7 +153,7 @@
       dummy0 python:conf_keys.sort();
       res python:here.getConfPropertiesDefaults();
       res_keys python:[x['key'] for x in here.sort_list(res,'title','asc')]">
-      <div class="form-group">
+      <div class="form-group row">
         <label class="col-sm-2 control-label" for="conf_opt" tal:content="python:here.getZMILangStr('ATTR_OPTION')">Option</label>
         <div class="col-sm-10">
           <select class="form-control" id="conf_opt" name="conf_opt" tal:attributes="onchange python:'self.location.href=\'%s?lang=%s&amp;conf_key=\'+$(this).val()+\'#Custom\''%(request['URL'],request['lang'])">
@@ -166,14 +166,14 @@
           </select>
         </div>
       </div><!-- .form-group -->
-      <div class="form-group">
+      <div class="form-group row">
         <label class="col-sm-2 control-label" for="conf_key">Key</label>
         <div class="col-sm-10">
           <input type="hidden" id="conf_old" name="conf_old" tal:attributes="value python:request.get('conf_key')">
           <input class="form-control" type="text" id="conf_key" name="conf_key" tal:attributes="value python:request.get('conf_key')">
         </div>
       </div><!-- .form-group -->
-      <div class="form-group">
+      <div class="form-group row">
         <label class="col-sm-2 control-label" for="conf_value">Value</label>
         <div class="col-sm-10">
           <tal:block tal:condition="python:request.get('conf_key') not in res_keys">
@@ -199,11 +199,11 @@
           </tal:block>
         </div>
       </div><!-- .form-group -->
-      <div class="form-group">
+      <div class="form-group row">
         <div class="col-sm-2">&nbsp;</div>
         <div class="col-sm-10">
           <button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
-          <button name="btn" type="submit" class="btn btn-default" value="Delete">Delete</button>
+          <button name="btn" type="submit" class="btn btn-secondary" value="Delete">Delete</button>
         </div>
       </div><!-- .form-group -->
       <table class="table table-striped table-hover table-bordered">
@@ -220,8 +220,8 @@
       <tbody>
         <tr tal:repeat="conf_key conf_keys" tal:attributes="class python:['','zmi-selected'][int(conf_key==request.get('conf_key'))]">
           <td>
-            <a tal:condition="python:conf_key not in conf.keys()" class="btn btn-default" tal:attributes="href python:'%s/manage_customize?lang=%s#Custom'%(here.getPortalMaster().absolute_url(),request['lang']); title python:'Edit'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-pencil')"></tal:block></a>
-            <a tal:condition="python:conf_key in conf.keys()" class="btn btn-default" tal:attributes="href python:'manage_customizeSystem?lang=%s&amp;conf_key=%s&btn=Delete&key=Custom'%(request['lang'],conf_key); title python:'Delete'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-remove text-danger')"></tal:block></a>
+            <a tal:condition="python:conf_key not in conf.keys()" class="btn btn-secondary" tal:attributes="href python:'%s/manage_customize?lang=%s#Custom'%(here.getPortalMaster().absolute_url(),request['lang']); title python:'Edit'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-pencil')"></tal:block></a>
+            <a tal:condition="python:conf_key in conf.keys()" class="btn btn-secondary" tal:attributes="href python:'manage_customizeSystem?lang=%s&amp;conf_key=%s&btn=Delete&key=Custom'%(request['lang'],conf_key); title python:'Delete'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-times text-danger')"></tal:block></a>
           </td>
           <td>
             <a tal:attributes="href python:'%s?lang=%s&amp;conf_key=%s#Custom'%(request['URL'],request['lang'],conf_key); title python:'Change'" tal:content="conf_key">the conf_key</a>
@@ -244,13 +244,13 @@
       <legend>Media-Folder</legend>
       <p class="well well-small">Use the Media-Folder to store binary data of media (e.g. images, files) in the file-system of your server instead of ZODB.</p>
       <tal:block tal:condition="python:here.getMediaDb() is None">
-      <div class="form-group">
+      <div class="form-group row">
         <label class="col-sm-2 control-label" for="mediadb_location">Location</label>
         <div class="col-sm-10">
           <input class="form-control" type="text" name="mediadb_location" tal:attributes="value python:'$INSTANCE_HOME/var/%s/mediadb'%here.getHome().id">
         </div>
       </div><!-- .form-group -->
-      <div class="form-group">
+      <div class="form-group row">
         <div class="col-sm-2">&nbsp;</div>
         <div class="col-sm-10">
           <button name="btn" type="submit" class="btn btn-primary" value="Create"
@@ -259,13 +259,13 @@
       </div><!-- .form-group -->
       </tal:block>
       <tal:block tal:condition="python:here.getMediaDb() is not None">
-      <div class="form-group">
+      <div class="form-group row">
         <label class="col-sm-2 control-label" for="mediadb_location">Location</label>
         <div class="col-sm-10">
           <input class="form-control" type="text" name="mediadb_location" tal:attributes="value python:here.getMediaDb().location" disabled="disabled">
         </div>
       </div><!-- .form-group -->
-      <div class="form-group">
+      <div class="form-group row">
         <label class="col-sm-2 control-label" for="mediadb_structure">Structure</label>
         <div class="col-sm-10">
           <select class="form-control" name="mediadb_structure:int">
@@ -275,11 +275,11 @@
           </select>
         </div>
       </div><!-- .form-group -->
-      <div class="form-group">
+      <div class="form-group row">
         <div class="col-sm-2">&nbsp;</div>
         <div class="col-sm-10">
-          <button name="btn" type="submit" class="btn btn-default" value="Change">Change</button> 
-          <button name="btn" type="submit" class="btn btn-default" value="Remove" 
+          <button name="btn" type="submit" class="btn btn-secondary" value="Change">Change</button> 
+          <button name="btn" type="submit" class="btn btn-secondary" value="Remove" 
             title="Reimport outsourced mediafolder files back into ZODB of this ZMS-client">Remove</button>
           <button name="btn" type="submit" class="btn btn-warning" value="Pack" 
             title="Delete all mediafolder garbage files having no container object in this ZMS client"
@@ -303,18 +303,18 @@
       <input type="hidden" name="key" value="History" />
       <legend>History</legend>
       <p class="well well-small">Activate or deactivate the integrated history-mechanism.</p>
-      <div class="form-group">
+      <div class="form-group row">
       <label class="col-sm-2 control-label" for="history_active">Active</label>
         <div class="col-sm-10">
           <div class="pull-left">
-            <span class="btn btn-default"><input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]" /></span>
+            <span class="btn btn-secondary"><input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]" /></span>
           </div>
           <div class="col-md-6 col-sm-8 col-xs-10">
             <textarea class="form-control url-input" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
           </div>
         </div>
       </div><!-- .form-group -->
-      <div class="form-group">
+      <div class="form-group row">
         <div class="col-sm-2">&nbsp;</div>
         <div class="col-sm-10">
           <button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
@@ -329,14 +329,14 @@
       <input type="hidden" name="key" value="InstalledProducts" />
       <legend>Installed Libraries</legend>
       <p class="well well-small">Further python libraries and products extending ZMS.</p>
-      <div class="form-group">
+      <div class="form-group row">
       <label class="col-sm-4 control-label">
         <strong><a href="http://www.pythonware.com/products/pil/" target="_blank">PIL</a> - Python Imaging Library</strong>
         <input type="checkbox" id="pil" disabled="disabled" value="1" tal:attributes="checked python:['','checked'][int(pilutil.enabled())]" />
       </label>
         <div class="col-sm-8">
           <div class="pull-left" tal:condition="python: pilutil.enabled()">
-            <table class="input-append">
+            <table class="table">
               <tr>
                 <td>HighRes with Auto-Thumbnail max.&nbsp;</td>
                 <td><input class="form-control input-sm" type="text" name="pil_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.thumbnail.max')" size="4" style="text-align:right" /></td>
@@ -352,7 +352,7 @@
           </div>
         </div>
       </div><!-- .form-group -->
-      <div class="form-group" style="margin-bottom:3em">
+      <div class="form-group row" style="margin-bottom:3em">
         <div class="col-sm-4">&nbsp;</div>
         <div class="col-sm-8">
           <button name="btn" type="submit" class="btn btn-primary" value="Change" onclick="$('input[name=btn]:hidden').remove()">Change</button>
@@ -368,31 +368,31 @@
       <input type="hidden" name="key" value="Instance" />
       <input type="hidden" name="btn" value="Restart" />
       <legend>Instance</legend>
-      <div class="form-group">
+      <div class="form-group row">
         <label class="col-sm-4 control-label">ZMS Version</label>
         <div class="col-sm-8">
           <p class="form-control-static" tal:content="python:here.zms_version()">zms_version</p>
         </div>
       </div><!-- .form-group -->
-      <div class="form-group" style="margin-bottom:0;">
+      <div class="form-group row" style="margin-bottom:0;">
         <label class="col-sm-4 control-label">Instance Home</label>
         <div class="col-sm-8">
           <p class="form-control-static" style="font-family:monospace;font-size:0.9em;" tal:content="python:here.getINSTANCE_HOME()">INSTANCE_HOME</p>
         </div>
       </div><!-- .form-group -->      
-      <div class="form-group" style="margin-bottom:0;">
+      <div class="form-group row" style="margin-bottom:0;">
         <label class="col-sm-4 control-label">Product Home</label>
         <div class="col-sm-8">
           <p class="form-control-static" style="font-family:monospace;font-size:0.9em;" tal:content="python:standard.getPRODUCT_HOME()">PROCUCT_HOME</p>
         </div>
       </div><!-- .form-group -->
-      <div class="form-group">
+      <div class="form-group row">
         <label class="col-sm-4 control-label">Package Home</label>
         <div class="col-sm-8">
           <p class="form-control-static" style="font-family:monospace;font-size:0.9em;" tal:content="python:here.getPACKAGE_HOME()">PACKAGE_HOME</p>
         </div>
       </div><!-- .form-group -->
-      <div class="form-group">
+      <div class="form-group row">
         <label class="col-sm-4 control-label"></label>
         <div class="col-sm-8">
           <button type="button" class="btn btn-primary" id="BTN_Restart">Restart</button>
@@ -429,7 +429,7 @@ $(function() {
   $("i[class*='icon-cloud-download']").parent().popover({
     html: true
   });   
-  $("i[class*='icon-info-sign']").parent().popover({
+  $("i[class*='icon-info-circle']").parent().popover({
     html: true
   }); 
   $("i[class*='icon-warning-sign']").parent().popover({
@@ -463,7 +463,7 @@ $(function() {
               btn.parent().attr("title", "Go to Example...");
             }
             else {
-              btn.toggleClass("icon-exclamation-sign icon-spin icon-spinner");
+              btn.toggleClass("icon-exclamation-circle icon-spin icon-spinner");
               btn.css("color", "#d9534f");
               btn.parent().attr("title", "An Error occured!");
             }
@@ -490,7 +490,7 @@ $(function() {
               btn.parent().attr("title", "Go to Theme...");
             }
             else {
-              btn.toggleClass("icon-exclamation-sign icon-spin icon-spinner");
+              btn.toggleClass("icon-exclamation-circle icon-spin icon-spinner");
               btn.css("color", "#d9534f");
               btn.parent().attr("title", "An Error occured!");
             }
@@ -503,7 +503,7 @@ $(function() {
   $("#InstalledProducts i[class*='icon']").mouseleave(function() {
     $(this).css("color", "#428bca");
   });  
-  $("#InstalledProducts i[class*='icon-info-sign']").mouseleave(function() {
+  $("#InstalledProducts i[class*='icon-info-circle']").mouseleave(function() {
     $(this).css("color", "#ccc");
   });
   $('#BTN_Restart').click(function() {

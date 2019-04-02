@@ -72,15 +72,15 @@ def manage_exportZodbNative2LocalFS( self):
   html += '<legend>Export ZODB to LocalFS</legend>'
   
   html += '' \
-    + '<div class="form-group">' \
+    + '<div class="form-group row">' \
     + '<label class="col-sm-2 control-label mandatory"><span>Path</span></label>' \
     + '<div class="col-sm-10">' \
     + '<input class="form-control" id="path" name="path" value="'+request.get('path',self.getINSTANCE_HOME())+'">' \
     + '</div><!-- .col-sm-10 -->' \
     + '</div><!-- .form-group -->' \
-    + '<div class="form-group">' \
+    + '<div class="form-group row">' \
     + '<div class="controls save">' \
-    + '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button> '%(self.getZMILangStr('BTN_REFRESH'),self.getZMILangStr('BTN_REFRESH')) \
+    + '<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button> '%(self.getZMILangStr('BTN_REFRESH'),self.getZMILangStr('BTN_REFRESH')) \
     + '<button type="button" name="btn" class="btn btn-danger" value="return %s" onclick="btn_execute_click()">%s</button> '%(self.getZMILangStr('BTN_EXECUTE'),self.getZMILangStr('BTN_EXECUTE')) \
     + '</div>' \
     + '</div><!-- .form-group -->'
@@ -90,9 +90,9 @@ def manage_exportZodbNative2LocalFS( self):
   html += '<tr>'
   html += '''<th>
             <div class="btn-group">
-              <span class="btn btn-default" title="%s/%s" onclick="zmiToggleSelectionButtonClick(this)">%s</span>
+              <span class="btn btn-secondary" title="%s/%s" onclick="zmiToggleSelectionButtonClick(this)">%s</span>
             </div>
-          </th>'''%(self.getZMILangStr('BTN_SLCTALL'),self.getZMILangStr('BTN_SLCTNONE'),self.zmi_icon(name='icon-check'))
+          </th>'''%(self.getZMILangStr('BTN_SLCTALL'),self.getZMILangStr('BTN_SLCTNONE'),self.zmi_icon(name='icon-check-square'))
   html += '<th>Objekt</th>'
   html += '<th>Status</th>'
   html += '</tr>'
@@ -119,7 +119,7 @@ def manage_exportZodbNative2LocalFS( self):
       </item>
       <item key="description"></item>
       <item key="exec" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-download-alt text-danger]]></item>
+      <item key="icon_clazz"><![CDATA[icon-download text-danger]]></item>
       <item key="id"><![CDATA[manage_exportZodbNative2LocalFS]]></item>
       <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">

@@ -43,10 +43,13 @@
 			   onclick python:'javascript:window.open(\'manage_main?lang=ger&action=insertForm&qentity=%s\',\'%s\')'%(entity['id'],here.getZMILangStr('BTN_ADD'))">
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
 			</button>
-			&nbsp;<span class="ui-helper-clickable" onclick="$('#manage_main_div_sql').toggle()" title="Show SQL Code">&middot;</span>
+			&nbsp;
+			<a href="javascript:;" onclick="$('#manage_main_div_sql').toggle()" title="Show SQL Code">
+				&middot;
+			</a>
 		</div>
 	</div><!-- .form-group -->
-	<div id="manage_main_div_sql" class="ui-helper-hidden well" style="padding:1em;margin: 1em 0 0 0;"><code tal:content="structure python:resSlctStmnt.replace('\n','<br>')">resSlctStmnt</code></div>
+	<div id="manage_main_div_sql" class="d-none well" style="padding:1em;margin: 1em 0 0 0;"><code tal:content="structure python:resSlctStmnt.replace('\n','<br>')">resSlctStmnt</code></div>
 
 </form>
 
@@ -75,10 +78,10 @@
 			)">
 		metaobj_recordset_main_grid
 	</tal:block>
-	<div class="form-group">
+	<div class="form-group row">
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" onclick="zmiSelectBtnClick()" tal:attributes="value python:here.getZMILangStr('BTN_SELECT')" tal:content="python:here.getZMILangStr('BTN_SELECT')">Select</button>
-			<button type="submit" name="btn" class="btn btn-default" onclick="zmiCloseBtnClick()" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+			<button type="submit" name="btn" class="btn btn-secondary" onclick="zmiCloseBtnClick()" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 		</div>
 	</div><!-- .form-group -->
 </tal:block>

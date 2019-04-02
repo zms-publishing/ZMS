@@ -98,25 +98,21 @@
 							</form>
 						</div><!-- #navbar-search -->
 						<div id="navbar-menu" class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<span class="glyphicon glyphicon-align-justify"></span>
 							</button>
-							<ul class="dropdown-menu dropdown-menu-right" role="menu">
-								<li>
-									<a href="http://www.zms-publishing.com" target="_blank">
-										<span class="glyphicon glyphicon-globe text-primary"></span>
-										www.zms-publishing.com
-									</a>
-								</li>
-								<li>
-									<a href="http://zmslabs.org" target="_blank">
-										<span class="glyphicon glyphicon-globe text-primary"></span>
-										zmslabs.org
-									</a>
-								</li>
-								<li class="divider"></li>
-								<li id="add-bookmark"><a href="javascript:addBookmark();"><span class="glyphicon glyphicon-plus-sign"></span> Add bookmark</a></li>
-							</ul>
+							<div class="dropdown-menu dropdown-menu-right" role="menu">
+								<a class="dropdown-item" href="http://www.zms-publishing.com" target="_blank">
+									<span class="glyphicon glyphicon-globe text-primary"></span>
+									www.zms-publishing.com
+								</a>
+								<a class="dropdown-item" href="http://zmslabs.org" target="_blank">
+									<span class="glyphicon glyphicon-globe text-primary"></span>
+									zmslabs.org
+								</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" id="add-bookmark" href="javascript:addBookmark();"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-plus-circle')"></tal:block> Add bookmark</a>
+							</div>
 						</div><!-- .navbar-menu -->
 					</div><!-- .navbar-header -->
 				</div><!-- .col-md-2 -->
@@ -1977,7 +1973,7 @@ h1[id] {
   border-radius: 50%;
 }
 .bs-brand-item .glyphicon-ok { background-color: #5cb85c; }
-.bs-brand-item .glyphicon-remove { background-color: #d9534f; }
+.bs-brand-item .glyphicon-times { background-color: #d9534f; }
 
 @media (min-width: 768px) {
   .bs-brand-item {

@@ -97,13 +97,13 @@
 <input type="hidden" name="outfilename" tal:attributes="value request/outfilename"/>
 <div class="pull-left perc50">
 	<legend tal:content="python:here.getZMILangStr('ATTR_EXPORT')+' [%i/%i]'%(step,len(filterProcesses))">Export</legend>
-	<div class="form-group">
+	<div class="form-group row">
 		<label class="col-lg-2 control-label">Outfilename</label>
 		<div class="col-lg-10">
 			<p class="form-control-static" tal:content="request/outfilename">Outfilename</p>
 		</div>
 	</div>
-	<div class="form-group">
+	<div class="form-group row">
 		<label class="col-lg-2 control-label">
 			<tal:block tal:content="structure python:here.zmi_icon(name='icon-filter')"></tal:block>
 			<tal:block tal:content="filter/name">the filter-name</tal:block>
@@ -147,7 +147,7 @@
 						</table><!-- .layoutTable -->
 		</div>
 	</div>
-	<div class="form-group">
+	<div class="form-group row">
 		<label class="col-lg-2 control-label"></label>
 		<div class="col-lg-10">
 			<button class="btn btn-primary"><tal:block tal:content="structure python:here.zmi_icon(name='icon-cog')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_NEXT')">Next</tal:block></button>

@@ -79,7 +79,7 @@
           <item key="ob"><![CDATA[<!DOCTYPE html>
 <html lang="en">
 <tal:block tal:define="global zmscontext options/zmscontext" tal:content="structure python:zmscontext.zmi_html_head(zmscontext,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'transition',zmscontext.meta_id])">
+<body tal:attributes="class python:' '.join(['zms',request['lang'],'transition',zmscontext.meta_id])">
 <tal:block tal:content="structure python:zmscontext.zmi_body_header(zmscontext,request)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:zmscontext.zmi_breadcrumbs(zmscontext,request)">zmi_breadcrumbs</tal:block>
@@ -95,7 +95,7 @@
 	<legend tal:content="request/custom">the headline</legend>
 	<div class="control-group">
 
-	<div class="form-group"
+	<div class="form-group row"
 		tal:define="
 			myusers python:[[context.content.getUserAttr(u, 'email', ''),u] for u in context.content.getUsers(request)];
 			myeditors python:[u for u in myusers if 'ZMSEditor' in context.content.getUserRoles(u[1]))">
@@ -182,7 +182,7 @@
           <item key="ob"><![CDATA[<!DOCTYPE html>
 <html lang="en">
 <tal:block tal:define="global zmscontext options/zmscontext" tal:content="structure python:zmscontext.zmi_html_head(zmscontext,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'transition',zmscontext.meta_id])">
+<body tal:attributes="class python:' '.join(['zms',request['lang'],'transition',zmscontext.meta_id])">
 <tal:block tal:content="structure python:zmscontext.zmi_body_header(zmscontext,request)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:zmscontext.zmi_breadcrumbs(zmscontext,request)">zmi_breadcrumbs</tal:block>
@@ -198,7 +198,7 @@
 	<legend tal:content="request/custom">the headline</legend>
 	<div class="control-group">
 
-	<div class="form-group" tal:define="myeditors python:[]">
+	<div class="form-group row" tal:define="myeditors python:[]">
 		<tal:block tal:define="sec_users python:zmscontext.getSecurityUsers()">
 			<tal:block tal:repeat="user_id python:sec_users.keys()">
 				<tal:block tal:define="sec_user python:sec_users[user_id]">
@@ -321,7 +321,7 @@
           <item key="ob"><![CDATA[<!DOCTYPE html>
 <html lang="en">
 <tal:block tal:define="global zmscontext options/zmscontext" tal:content="structure python:zmscontext.zmi_html_head(zmscontext,request)">zmi_html_head</tal:block>
-<body tal:attributes="class python:' '.join(['zmi',request['lang'],'transition',zmscontext.meta_id])">
+<body tal:attributes="class python:' '.join(['zms',request['lang'],'transition',zmscontext.meta_id])">
 <tal:block tal:content="structure python:zmscontext.zmi_body_header(zmscontext,request)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:zmscontext.zmi_breadcrumbs(zmscontext,request)">zmi_breadcrumbs</tal:block>

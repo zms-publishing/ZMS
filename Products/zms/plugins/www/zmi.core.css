@@ -422,7 +422,10 @@ li.zmi-item span.zmi-ids {
 .zmi table#meta_properties .meta-sort .input-group {
 	flex-wrap: nowrap;
 }
-table.table tr.zmi-selectable :first-child {
+.zmi table#meta_overview.table tr.zmi-selectable :first-child  {
+	width:2em;
+}
+.zmi table.table tr.zmi-selectable :first-child {
 	text-align:center;
 	width:3em;
 }
@@ -616,6 +619,10 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi table#meta_overview.table-sm th {
 	padding: 0.5rem 0.25rem;
 	min-width:1rem;
+}
+.zmi table#meta_overview.table-sm td i, 
+.zmi table#meta_overview.table-sm th i {
+	font-size:1rem;
 }
 .zmi form.card {
 	display:block;

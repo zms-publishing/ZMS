@@ -56,6 +56,7 @@ footer {
 
 .navbar-brand .product {
 	font-weight:bold;
+	font-size: 1.125rem;
 }
 .navbar-brand .slogan {
 	font-weight:normal;
@@ -115,7 +116,7 @@ footer {
 	vertical-align:middle;
 	position:absolute;
 	z-index:1000;
-	margin:-.33rem 0;
+	margin:-.35rem 0;
 	height:2.85rem;
 }
 .zmi nav .scroller,
@@ -160,8 +161,8 @@ footer {
 
 #zmi-tab .form-horizontal {
 	background-color: white;
-	margin-left: 1.5rem;
-	margin-right: 1.5rem;
+	margin-left: 1.25rem;
+	margin-right: 1.25rem;
 	padding: 0.5rem;
 }
 
@@ -410,9 +411,16 @@ li.zmi-item span.zmi-ids {
 	float: right !important;
 }
 
-table.table.zmi-sortable select.zmi-sort {
+.zmi table.table.zmi-sortable select.zmi-sort {
 	direction:rtl;
-	width:2em;
+	width: 3em;
+	padding-right: .25em;
+	border-color: silver;
+	border-bottom-left-radius: .25rem;
+	border-top-left-radius: .25rem;
+}
+.zmi table#meta_properties .meta-sort .input-group {
+	flex-wrap: nowrap;
 }
 table.table tr.zmi-selectable :first-child {
 	text-align:center;
@@ -463,6 +471,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	padding: 0 .2rem 0 .15rem;
 	height:1.5rem;
 	border:1px solid transparent;
+}
+.zmi .breadcrumb li.breadcrumb-item.active {
+	color:#999fa5;
 }
 .zmi .breadcrumb li.breadcrumb-item:hover {
 	border:1px solid #e0e0e0;
@@ -604,8 +615,30 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi table#meta_overview.table-sm td, 
 .zmi table#meta_overview.table-sm th {
 	padding: 0.5rem 0.25rem;
+	min-width:1rem;
+}
+.zmi form.card {
+	display:block;
+}
+.zmi form.card legend {
+	color: #888;
 }
 .zmi form.card legend,
 .zmi form.card p.well {
 	padding-left:0.5rem;
 }
+
+.zmi.config nav#tabs li.nav-item[data-action="manage_main"] {
+	min-width:0;
+	width:auto;
+	padding-left:0;
+	padding-right:0;
+	margin-left:.75rem
+}
+.zmi.config nav#tabs li.nav-item[data-action="manage_main"] a {
+	min-width:0;
+	width:auto;
+	padding-left:0.5rem;
+	padding-right:0.5rem;
+}
+

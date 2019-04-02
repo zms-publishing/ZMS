@@ -841,7 +841,11 @@ ul.zmi-container li.zmi-item .center > div.contentEditable{min-height:60px}
 .tabbable .nav-tabs li.active a{background-color:#fff !important;font-weight:normal}
 .tabbable legend{display:none}
 .tabbable .tab-pane form{padding:2em;border-radius:4px;box-shadow:0px 0px 1px #888;min-height:320px}
-.tabbable #Manager.tab-pane .btn img{margin:-4px 4px 0 0}
+body.zmi.customize.config #zmi-tab #Manager.tab-pane .form-group{white-space:nowrap}
+body.zmi.customize.config #zmi-tab #Manager.tab-pane .btn img{margin:-.5em .25em 0 0}
+body.zmi.customize.config #zmi-tab #Manager.tab-pane .form-group a{white-space:nowrap;overflow-x:hidden;text-overflow:ellipsis;display:inline-block;max-width:50vw;margin-bottom:-.25em}
+body.zmi.customize.config #zmi-tab #Custom.tab-pane table td a{max-width:30vw;overflow-x:hidden;display:inline-block;text-overflow:ellipsis}
+body.zmi.customize.config #zmi-tab #Custom.tab-pane table td{max-width:30vw;overflow-x:hidden;text-overflow:ellipsis}
 @media(max-width:768px){body.zmi.customize.config #zmi-tab .tabbable .nav-tabs{display:none}
  body.zmi.customize.config #zmi-tab #Manager label[for="meta_type"]{margin-left:-15px;color:#888;font-weight:normal}
  body.zmi.customize.config #zmi-tab > .tabbable > .tab-content > .tab-pane{display:block}

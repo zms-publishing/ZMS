@@ -1779,13 +1779,11 @@ def parseXmlString(xml):
   @rtype: C{any}
   """
   from . import _xmllib
-  print('A',type(xml))
   builder = _xmllib.XmlAttrBuilder()
   if isinstance(xml, str):
     xml = xml.encode()
   if isinstance(xml, bytes):
     xml = BytesIO(xml)
-  print('C',type(xml))
   v = builder.parse(xml)
   return v
 

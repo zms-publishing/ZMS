@@ -795,6 +795,7 @@ class ZMSMetaobjManager(object):
           newCustom += '\n'
           newCustom += '# Import a standard function, and get the HTML request and response objects.\n'
           newCustom += 'from Products.PythonScripts.standard import html_quote\n'
+          newCustom += 'from Products.zms import standard\n'
           newCustom += 'request = container.REQUEST\n'
           newCustom += 'RESPONSE =  request.RESPONSE\n'
           newCustom += '\n'
@@ -835,7 +836,7 @@ class ZMSMetaobjManager(object):
       attr['repetitive'] = newRepetitive
       attr['type'] = newType
       attr['keys'] = newKeys
-      attr['custom'] = newCustom if type(newCustom) in (int, str, str) else None
+      attr['custom'] = newCustom if type(newCustom) in (int, str) else None
       attr['default'] = newDefault
       
       # Handle special methods and interfaces.
@@ -901,7 +902,7 @@ class ZMSMetaobjManager(object):
             zopeutil.removeObject(oldContainer, oldObId)
         # Insert Zope-Object.
         if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
-        if type(newCustom) is str: 
+        if isinstance(newCustom,str): 
            newCustom = newCustom.encode('utf-8').replace(b'\r', b'')
            newCustom = newCustom.decode('utf-8')
         zopeutil.addObject(container, newType, newObId, newName, newCustom)
@@ -1237,7 +1238,7 @@ class ZMSMetaobjManager(object):
               xmlfile = f
             if REQUEST.get('init'):
               file = REQUEST['init']
-              filename, xmlfile = self.getConfXmlFile( file)
+              filename,xmlfile = self.getConfXmlFile( file)
             if xmlfile is not None:
               # extract xml from zip
               if filename.endswith('.zip'):
@@ -1254,10 +1255,8 @@ class ZMSMetaobjManager(object):
                 # open string-io.
                 xmlfile = BytesIO(xml)
                 v = standard.parseXmlString(xmlfile)
-                immediately = not isinstance(v, list)
-                # open BytesIO again (for later import).
-                xmlfile = BytesIO(xml)
-              if not immediately:
+                if not isinstance(v,list):
+                  v = []
                 if temp_id in temp_folder.objectIds():
                   temp_folder.manage_delObjects([temp_id])
                 file = zopeutil.addFile(temp_folder, temp_id, filename, xmlfile)

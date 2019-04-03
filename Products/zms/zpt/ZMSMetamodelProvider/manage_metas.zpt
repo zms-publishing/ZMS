@@ -75,7 +75,7 @@ function zmiFormSubmit(sender,d) {
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group row">
 				<label for="file" class="col-lg-2 control-label">
-					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-folder-open-alt')"></tal:block>
+					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-folder')"></tal:block>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
 				<div class="col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->

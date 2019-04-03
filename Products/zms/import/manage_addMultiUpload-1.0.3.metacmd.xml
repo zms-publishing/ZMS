@@ -79,7 +79,7 @@ def manage_addMultiUpload(self):
 	else:
 
 		html += '<div class="form-group row" style="margin:15px 0;">'
-		html += '<label for="file" class="mandatory"><span>%s %s</span></label>'%( self.zmi_icon(name='icon-folder-open-alt'), self.getZMILangStr('ATTR_FILE') )
+		html += '<label for="file" class="mandatory"><span>%s %s</span></label>'%( self.zmi_icon(name='icon-folder'), self.getZMILangStr('ATTR_FILE') )
 		html += '<div class="form-control" style="padding:0;height:auto;min-height:34px">'
 		html += '<input style="margin:6px 12px" name="file" type="file" class="file" multiple="true" data-show-upload="false" data-show-caption="true" />'
 		html += '</div>'

@@ -1458,7 +1458,7 @@ def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
     tl = [([_globals.sort_item(x[y]) for y in qorder], x) for x in l]
   else:
     tl = [(_globals.sort_item(x[qorder]), x) for x in l]
-  if ignorecase==1 and len(tl) > 0 and isinstance(tl[0][0], str):
+  if ignorecase and len(tl) > 0 and isinstance(tl[0][0], str):
     tl = [(str(x[0]).upper(), x[1]) for x in tl]
   tl = sorted(tl,key=lambda x:x[0])
   tl = [x[1] for x in tl]

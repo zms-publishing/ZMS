@@ -24,7 +24,7 @@ header .navbar-brand {
 	font-size: 1rem;
 	margin-left: 1rem;
 }
-header.navbar-nav ul > li > a {
+header.navbar-nav a {
 	color: silver;
 }
 header.navbar-nav #toggle_tabs {

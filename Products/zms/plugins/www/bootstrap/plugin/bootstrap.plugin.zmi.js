@@ -161,7 +161,7 @@ $(function(){
   }
 
 	// New Sitemap Icon
-	$(".navbar-main .navbar-brand").before(""
+	$("header.navbar-nav .navbar-brand").before(""
 		+ '<a id="navbar-sitemap"'
 		+ ' href="manage?lang='+getZMILang()+(manage_menu?'':'&dtpref_sitemap=1')+'"'
 		+ ' target="'+(manage_menu?'_parent':'_self')+'"'

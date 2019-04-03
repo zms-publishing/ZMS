@@ -376,8 +376,6 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 .zmi-action .dropdown-menu i {
 	width:1.5rem;
 }
-
-
 li.zmi-item span.zmi-ids {
 	/* position: absolute; */
 	display:inline-block;
@@ -410,8 +408,18 @@ li.zmi-item span.zmi-ids {
 .pull-right {
 	float: right !important;
 }
-
-.zmi table.table.zmi-sortable select.zmi-sort {
+.zmi table.table td.meta-sort {
+	width:5rem;
+}
+.zmi table.table td.meta-sort .btn.btn-secondary i.fas.fa-times,
+.zmi table.table td.meta-default .btn.btn-secondary i.fas.fa-key {
+	color: #999;
+}
+.zmi table.table td.meta-sort .btn.btn-secondary:hover i.fas.fa-times,
+.zmi table.table td.meta-default .btn.btn-secondary:hover i.fas.fa-key {
+	color: #fff;
+}
+.zmi form table.table td.meta-sort select.zmi-sort {
 	direction:rtl;
 	width: 3em;
 	padding-right: .25em;
@@ -419,7 +427,10 @@ li.zmi-item span.zmi-ids {
 	border-bottom-left-radius: .25rem;
 	border-top-left-radius: .25rem;
 }
-.zmi table#meta_properties .meta-sort .input-group {
+.zmi form.manage_metas table.table td.meta-sort select.zmi-sort {
+	width: 3.9em;
+}
+.zmi table.table .input-group {
 	flex-wrap: nowrap;
 }
 .zmi table#meta_overview.table tr.zmi-selectable :first-child  {
@@ -429,24 +440,14 @@ li.zmi-item span.zmi-ids {
 	text-align:center;
 	width:3em;
 }
-
 input.btn.btn-file {
 	background-color:#eee;
 	margin-bottom: 0.5em;
 	width:auto;
 }
-
 .controls.save {
 	text-align:right;
 }
-
-.meta-sort {
-	width:8em;
-}
-.meta-id .form-control {
-	max-width:8em;
-}
-
 div.single-line {
 	width:100%;
 }
@@ -559,7 +560,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi #ZMSGraphic_extEdit_actions .form-group .form-control {
 	width:4em;
 }
-
 .zmi .zmi-action .dropdown-menu {
 	padding: 0 0 .5rem 0;
 	margin:1.93rem -2.75rem 0 0 !important;
@@ -567,8 +567,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	z-index:10000;
 	min-width:260px;
 }
-
-
 .zmi .dropdown-menu .dropdown-header {
 	padding: 5px 13px;
 	font-size: inherit;
@@ -615,13 +613,13 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	border-color: #204d74;
 } 
 
-.zmi table#meta_overview.table-sm td, 
-.zmi table#meta_overview.table-sm th {
-	padding: 0.5rem 0.25rem;
+.zmi table.table-sm td, 
+.zmi table.table-sm th {
+	padding: 0.5rem 0.5rem;
 	min-width:1rem;
 }
-.zmi table#meta_overview.table-sm td i, 
-.zmi table#meta_overview.table-sm th i {
+.zmi table.table-sm td i, 
+.zmi table.table-sm th i {
 	font-size:1rem;
 }
 .zmi form.card {
@@ -648,4 +646,43 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	padding-left:0.5rem;
 	padding-right:0.5rem;
 }
-
+table.table-sm td .meta-sort {
+	width:4em;
+}
+table.table-sm td.meta-id,
+table.table-sm td.meta-id .form-control,
+table.table-sm td.meta-name,
+table.table-sm td.meta-name .form-control,
+table.table-sm td.meta-type,
+table.table-sm td.meta-type .form-control {
+	width: 10rem !important;
+}
+table.table-sm td.meta-mandatory,
+table.table-sm td.meta-multilang,
+table.table-sm td.meta-repetitive {
+	width: 2rem !important;
+	vertical-align: middle;
+	padding-top: 0.75rem;
+}
+table.table-sm .form-control {
+	font-size: .8rem !important;
+	font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+}
+table.table-sm tr.row_metadata td, 
+table.table-sm tr.row_insert td {
+	background-color: #e9ecef !important
+}
+table.table-sm tr.row_metadata td .btn-add, 
+table.table-sm tr.row_insert td .btn-add {
+	padding-right: 0.4rem;
+	color: #888;
+}
+.zmi table.table-sm td.meta-id input {
+	background:rgba(53, 79, 103, 0.10);
+}
+.zmi table.table-sm td.meta-name input {
+	background:rgba(51, 122, 182, 0.15);
+}
+.zmi table.table-sm tr.row_metadata td span {
+	color:#999;
+}

@@ -16,32 +16,30 @@
 
 <div class="d-none">
 	<div id="insertObj" class="inner">
-		<form class="form-horizontal" name="insertObjForm" action="manage_changeProperties" method="post" enctype="multipart/form-data">
+		<form class="form-horizontal card" name="insertObjForm" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<input type="hidden" name="key" value="obj"/>
 			<div class="form-group meta_id">
 				<label for="_meta_id" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-lg-10"><input type="text" id="_meta_id" name="_meta_id" class="form-control input-sm" /></div>
+				<div class="col-lg-10"><input type="text" id="_meta_id" name="_meta_id" class="form-control form-control-sm" /></div>
 			</div><!-- .form-group -->
 			<div class="form-group meta_name">
 				<label for="_meta_name" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-				<div class="col-lg-10"><input type="text" id="_meta_name" name="_meta_name" class="form-control input-sm" /></div>
+				<div class="col-lg-10"><input type="text" id="_meta_name" name="_meta_name" class="form-control form-control-sm" /></div>
 			</div><!-- .form-group -->
 			<div class="form-group meta_type">
 				<label for="_meta_type" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
 				<div class="col-lg-10">
-					<select class="form-control" id="_meta_type" name="_meta_type" class="form-control input-sm" >
+					<select class="form-control" id="_meta_type" name="_meta_type" class="form-control form-control-sm" >
 						<tal:block tal:repeat="objtype python:here.valid_objtypes">
 							<option tal:attributes="value objtype" tal:content="python:here.getZMILangStr('SOTYPE_%s'%objtype.upper())">objtype</option>
 						</tal:block>
 					</select>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-group row">
-				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-				</div><!-- .controls.save -->
-			</div><!-- .form-group -->
+			<div class="controls save">
+				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+			</div><!-- .controls.save -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #insertObj -->
@@ -137,29 +135,29 @@
 
 	<table id="meta_properties" class="table table-striped table-bordered table-sm zmi-sortable">
 		<tr class="row_metadata">
-			<td class="meta-sort input-group-sm">
+			<td class="meta-sort">
 				<span tal:content="python:here.getZMILangStr('ATTR_VERSION')">Version</span>
-				<input class="form-control" type="text" id="obj_revision" name="obj_revision" size="6" tal:attributes="value python:here.getMetaobjRevision(metaObj['id'])"/>
+				<input class="form-control form-control-sm" type="text" id="obj_revision" name="obj_revision" size="6" tal:attributes="value python:here.getMetaobjRevision(metaObj['id'])"/>
 			</td>
-			<td class="meta-id input-group-sm">
+			<td class="meta-id">
 				<span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span>
-				<input class="form-control input-sm" type="text" id="id" name="id" tal:attributes="value metaObj/id"/>
+				<input class="form-control form-control-sm" type="text" id="id" name="id" tal:attributes="value metaObj/id"/>
 			</td>
-			<td class="meta-name input-group-sm">
+			<td class="meta-name">
 				<span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span>
-				<input class="form-control input-sm" type="text" id="obj_name" name="obj_name" tal:attributes="value python:metaObj.get('name','')"/>
+				<input class="form-control form-control-sm" type="text" id="obj_name" name="obj_name" tal:attributes="value python:metaObj.get('name','')"/>
 			</td>
-			<td class="meta-type input-group-sm">
+			<td class="meta-type">
 				<span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span>
-				<select class="form-control" id="obj_type" name="obj_type">
+				<select class="form-control form-control-sm" id="obj_type" name="obj_type">
 					<tal:block tal:repeat="objtype python:here.valid_objtypes">
 						<option tal:attributes="value objtype; selected python:['','selected'][int(metaObj['type']==objtype)]" tal:content="python:here.getZMILangStr('SOTYPE_%s'%objtype.upper())">objtype</option>
 					</tal:block>
 				</select>
 			</td>
-			<td class="meta-package input-group-sm" colspan="4">
+			<td class="meta-package" colspan="4">
 				<span tal:content="python:here.getZMILangStr('SOTYPE_ZMSPACKAGE')">Package</span>
-				<select class="form-control input-sm" id="obj_package" name="obj_package">
+				<select class="form-control form-control-sm" id="obj_package" name="obj_package">
 					<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
 						<option tal:attributes="value metaObjPackage; selected python:['','selected'][int(metaObj.get('package')==metaObjPackage)]" tal:content="metaObjPackage">metaObjPackage</option>
 					</tal:block>
@@ -197,11 +195,11 @@
 							</div>
 						</div>
 					</td>
-					<td class="meta-id input-group-sm"><input type="text" tal:attributes="name python:'attr_id_%s'%objAttrId; value python:objAttr['id']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
-					<td class="meta-name input-group-sm" tal:condition="not:python:objAttr['type'] in ['interface']"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
+					<td class="meta-id"><input type="text" tal:attributes="name python:'attr_id_%s'%objAttrId; value python:objAttr['id']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
+					<td class="meta-name" tal:condition="not:python:objAttr['type'] in ['interface']"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
 
 					<tal:block tal:condition="python:objAttr['type'] in ['interface','method','py','resource','zpt']+here.valid_zopetypes">
-						<td tal:attributes="colspan python:[5,6][objAttr['type'] in ['interface']]" class="meta-code input-group-sm" tal:condition="python:objAttr['type'] not in ['resource','File','Folder','Image'] and objAttr.get('ob') is not None">
+						<td tal:attributes="colspan python:[5,6][objAttr['type'] in ['interface']]" class="meta-code" tal:condition="python:objAttr['type'] not in ['resource','File','Folder','Image'] and objAttr.get('ob') is not None">
 							<tal:block tal:define="global readData python:zopeutil.readData(objAttr['ob'],default=objAttr.get('custom','ERROR: Not found!')); global errors python:''"></tal:block>
 							<tal:block tal:condition="python:'## Errors:' in readData.split('\n')">
 								<tal:block tal:define="lines python:readData.split('\n'); global errors python:lines[lines.index('## Errors:')+1][2:]"></tal:block>
@@ -209,9 +207,9 @@
 							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:[objAttr.get('type'),objAttr.get('meta_type')][objAttr.get('meta_type') in here.getMetadictAttrs()]"/>
 							<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is not None"
 								tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
-									<textarea class="form-control input-sm"
+									<textarea class="form-control form-control-sm"
 										tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:['%s (%s)'%(objAttr['id'],objAttr['type']),errors][len(errors)>0];
-											class python:' '.join(['form-control','input-sm']+objAttr['type'].lower().split(' ')+[[],['bg-danger']][len(errors)>0]);
+											class python:' '.join(['form-control','form-control-sm']+objAttr['type'].lower().split(' ')+[[],['bg-danger']][len(errors)>0]);
 											style python:'\073'.join([[],['color:#a94442','background:#fee']][len(errors)>0]);
 											data-class python:'icon-cogs';
 											data-dblclickhandler python:'window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),'%s (%s)'%(objAttr['id'],objAttr['type']))"
@@ -237,7 +235,7 @@
 
 						<tal:block tal:condition="not:python:objAttr['type'] in ['interface','method','py','resource','zpt']+here.valid_zopetypes">
 							<td class="meta-type input-group-sm">
-								<select tal:attributes="name python:'attr_type_%s'%objAttrId; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]">
+								<select tal:attributes="name python:'attr_type_%s'%objAttrId; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]">
 									<option
 											tal:condition="python:objAttr.get('meta_type') in here.getMetadictAttrs()"
 											tal:attributes="value python:objAttr.get('meta_type')" selected="selected">
@@ -259,20 +257,20 @@
 							<td class="meta-default input-group-sm">
 								<div class="single-line" tal:condition="python:objAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','*']">
 									<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-key')">icon</tal:block>
-									<textarea tal:attributes="name python:'attr_keys_%s'%objAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); class python:' '.join([['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:'\n'.join(objAttr['keys'])">keys</textarea>
+									<textarea tal:attributes="name python:'attr_keys_%s'%objAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); class python:' '.join([['form-control form-control-sm'],['form-control form-control-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:'\n'.join(objAttr['keys'])">keys</textarea>
 								</div>
 								<div tal:condition="python:objAttr['type'] in ['boolean']">
-									<select tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default','input-small']+[['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])">
+									<select tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default','form-control-sm']+[['form-control form-control-sm'],['form-control form-control-sm zmi-element-disabled']][isMetaDictAttr])">
 										<tal:block tal:repeat="option python:[True,False]">
 											<option tal:attributes="value python:int(option); selected python:['','selected'][int(str(objAttr.get('default',''))==str(int(option)))]" tal:content="option">option</option>
 										</tal:block>
 									</select>
 								</div>
 								<div class="single-line" tal:condition="python:objAttr['type'] in ['constant']">
-									<textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; class python:['form-control input-sm','form-control input-sm zmi-element-disabled'][isMetaDictAttr]" tal:content="python:objAttr.get('custom','')">custom</textarea>
+									<textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]" tal:content="python:objAttr.get('custom','')">custom</textarea>
 								</div>
 								<div class="single-line" tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','*'] and objAttr['type'] in here.valid_types">
-									<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[['form-control input-sm'],['form-control input-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:objAttr.get('default','')">default</textarea>
+									<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[['form-control form-control-sm'],['form-control form-control-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:objAttr.get('default','')">default</textarea>
 								</div>
 							</td>
 						</tal:block>
@@ -280,11 +278,11 @@
 				</tal:block>
 			</tr>
 			<tr class="row_insert">
-				<td class="meta-name"><input class="form-control input-sm" type="text" name="attr_name"/></td>
-				<td class="meta-sort"><span class="btn btn-light" tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></span></td>
-				<td class="meta-id"><input class="form-control input-sm" type="text" name="attr_id"/></td>
+				<td class="meta-sort text-right"><span class="btn btn-add" tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></span></td>
+				<td class="meta-id"><input class="form-control form-control-sm" type="text" name="attr_id"/></td>
+				<td class="meta-name"><input class="form-control form-control-sm" type="text" name="attr_name"/></td>
 				<td class="meta-type">
-					<select class="form-control input-sm" name="_type">
+					<select class="form-control form-control-sm" name="_type">
 						<option tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_PRIMITIVE')">type</option>
 					</select>
 				</td>
@@ -296,13 +294,10 @@
 			</tr>
 		</tbody>
 	</table>
-
-	<div class="form-group row">
-		<div class="controls save">
-			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
-		</div><!-- .col-lg-10 -->
-	</div><!-- .form-group -->
+	<div class="controls save">
+		<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
+	</div><!-- .col-lg-10 -->
 
 	<!-- BO Usage -->
 	<div class="meta-usage" tal:define="l python:[]">
@@ -363,7 +358,7 @@
 					</tal:block>
 				</td>
 				<td>
-					<textarea class="form-control url-input input-sm" cols="80" rows="1" wrap="virtual"
+					<textarea class="form-control url-input form-control-sm" cols="80" rows="1" wrap="virtual"
 						tal:condition="python:action=='insert'"
 						tal:attributes="name python:'access_%s_custom'%(action)"
 						tal:content="structure python:metaObj.get('access',{}).get('%s_custom'%action,'{$}')">
@@ -396,7 +391,7 @@
 		<tr>
 			<th>
 				<div class="btn-group">
-					<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)" tal:content="structure python:zmscontext.zmi_icon(name='icon-check-square')"></a>
+					<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)" tal:content="structure python:zmscontext.zmi_icon(name='far fa-check-square')"></a>
 				</div>
 			</th>
 			<th colspan="2">
@@ -563,11 +558,11 @@ function zmiEnabledBtnClick(sender) {
 			var b = $("result",data).attr("enabled");
 			if (b=="1") {
 				$container.addClass("enabled");
-				$('.enabled-toggle',$container).removeClass("icon-square").addClass("icon-check-square");
+				$('.enabled-toggle',$container).removeClass("fa-square").addClass("fa-check-square");
 			}
 			else {
 				$container.removeClass("enabled");
-				$('.enabled-toggle',$container).removeClass("icon-check-square").addClass("icon-square");
+				$('.enabled-toggle',$container).removeClass("fa-check-square").addClass("fa-square");
 			}
 		});
 }

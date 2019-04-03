@@ -629,7 +629,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             return '<img src="%s" title="%s"/>'%(value.absolute_url(), icon_title)
           else:
             metaObj = self.getMetaobj(id)
-            names = {'ZMSResource':'icon-asterisk','ZMSLibrary':'icon-beaker','ZMSPackage':'icon-suitcase','ZMSRecordSet':'icon-list','ZMSReference':'icon-link'}
+            names = {'ZMSResource':'fas fa-asterisk icon-asterisk','ZMSLibrary':'fas fa-flask icon-beaker','ZMSPackage':'fas fa-suitcase icon-suitcase','ZMSRecordSet':'far fa-list-alt icon-list','ZMSReference':'fas fa-link icon-link'}
             name = names.get(metaObj.get('type'), 'icon-file-alt')
         if meta_type is None:
           constraints = self.attr('check_constraints')

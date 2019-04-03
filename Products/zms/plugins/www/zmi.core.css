@@ -44,6 +44,10 @@ header.navbar ul.navbar-nav li {
 .zmi-manage_menu #menu_buttons ul.dropdown-menu  {
 	background-color:#646d75;
 }
+.zmi li.dropdown i.fas.fa-sitemap {
+	margin-left: -2px;
+	margin-right: 2px;
+}
 
 footer {
 	left: 0;

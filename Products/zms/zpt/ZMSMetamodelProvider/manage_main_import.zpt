@@ -84,15 +84,15 @@
 				<tal:block tal:define="global package_id python:here.id_quote(package)">
 					<div class="form-group row">
 						<input type="checkbox" name="createIdsFilter:list" tal:attributes="value package; title package" checked="checked">
-						<i tal:condition="python:package not in metaObjPackages" class="icon-plus"></i>
-						<i class="icon-briefcase"></i>
+						<tal:block tal:condition="python:package not in metaObjPackages" tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></tal:block>
+						<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block>
 						<strong tal:content="package">the id</strong>
 					</div><!-- .form-group -->
 					<tal:block tal:repeat="importObj importObjs">
 						<tal:block tal:condition="python:importObj['package']==package">
 							<div class="form-group row">
 								<input type="checkbox" name="createIdsFilter:list" tal:attributes="value importObj/id; title importObj/id" checked="checked">
-								<i tal:condition="python:importObj['id'] not in metaObjIds" class="icon-plus"></i>
+								<tal:block tal:condition="python:importObj['id'] not in metaObjIds" tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></tal:block>
 								<tal:block tal:condition="python:importObj['id'] in metaObjIds" tal:content="structure python:here.display_icon(request,importObj['id'],zpt=True)">the icon</tal:block>
 								<tal:block tal:content="importObj/name">the name</tal:block>
 								<tal:block tal:content="importObj/revision">the revision</tal:block>
@@ -115,7 +115,7 @@
 		<input type="hidden" name="target" tal:attributes="value python:request['URL'].split('/')[-1]" />
 		<div class="form-group row">
 			<label for="file" class="col-sm-2 control-label">
-				<i class="icon-folder-open-alt"></i>
+				<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-folder')"></tal:block>
 				<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 			</label>
 			<div class="col-sm-10"><input class="btn btn-file" type="file" name="file" /></div>

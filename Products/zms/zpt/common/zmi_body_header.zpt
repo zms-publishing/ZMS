@@ -57,7 +57,7 @@
 						<div class="dropdown-divider"></div> 
 						<a class="dropdown-item" href="manage_zmi_logout" 
 							tal:attributes="href python:here.getConfProperty('ZMS.logout.href','')!='' and here.getConfProperty('ZMS.logout.href','') or 'manage_zmi_logout'"
-							><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-off')"></tal:block>
+							><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-sign-out-alt')"></tal:block>
 							Logout
 						</a>
 					</div>

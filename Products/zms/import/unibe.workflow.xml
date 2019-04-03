@@ -104,7 +104,7 @@
 	</div><!-- .form-group -->
 
 	<label class="control-label mandatory" for="comment"><span>Comment</span></label>
-		<div class="controls"><input type="text" name="comment" class="form-control input-sm" /><br /></div><!-- .controls -->
+		<div class="controls"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
 		<div class="controls">
@@ -222,7 +222,7 @@
 	</div><!-- .form-group -->
 
 	<label class="control-label mandatory" for="comment"><span>Comment</span></label>
-		<div class="controls"><input type="text" name="comment" class="form-control input-sm" /><br /></div><!-- .controls -->
+		<div class="controls"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
 		<div class="controls">
@@ -337,7 +337,7 @@
 	<legend tal:content="request/custom">the headline</legend>
 	<div class="control-group">
 	<label class="control-label mandatory" for="comment"><span>Comment</span></label>
-		<div class="controls"><input type="text" name="comment" class="form-control input-sm" /><br /></div><!-- .controls -->
+		<div class="controls"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .controls -->
 	</div><!-- .control-group -->
 	<div class="control-group">
 		<div class="controls">

@@ -17,7 +17,7 @@
 		<div class="form-group row">
 			<label for="lang" class="form-label col-sm-3 col-md-2">Language</label>
 			<div class="col-sm-3 col-md-2">
-				<input class="form-control input-small" name="lang:required" value="ger" />
+				<input class="form-control form-control-sm" name="lang:required" value="ger" />
 			</div>
 			<div class="col-sm-6 col-md-8">
 				<input class="form-control input-medium" name="lang_label:required" value="Deutsch" />

@@ -108,7 +108,7 @@
 		<div class="form-group row" style="margin:.5em">
 			<div class="input-group">
 				<input type="hidden" tal:attributes="name python:'filterattr%i'%filterIndex" value="%">
-				<input class="form-control input-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),'')" />
+				<input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),'')" />
 				<div class="input-group-append">
 					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_SEARCH'); title python:here.getZMILangStr('BTN_SEARCH')">
 						<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
@@ -317,7 +317,7 @@
 		<div class="form-group row" style="margin:.5em">
 			<div class="input-group">
 				<input type="hidden" tal:attributes="name python:'filterattr%i'%filterIndex" value="%">
-				<input class="form-control input-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),'')" />
+				<input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),'')" />
 				<div class="input-group-append">
 					<button type="submit" name="btn" class="btn btn-secondary" 
 						tal:attributes="value python:here.getZMILangStr('BTN_SEARCH'); title python:here.getZMILangStr('BTN_SEARCH')"

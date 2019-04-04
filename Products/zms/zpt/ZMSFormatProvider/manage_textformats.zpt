@@ -97,7 +97,7 @@
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group row">
 				<label for="file" class="col-sm-3 control-label">
-					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-folder')"></tal:block>
+					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-folder far fa-folder')"></tal:block>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
 				<div class="col-sm-9"><input class="btn btn-file" name="file" type="file" /></div>

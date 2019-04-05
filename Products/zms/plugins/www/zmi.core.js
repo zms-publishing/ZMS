@@ -83,7 +83,7 @@ $(function(){
 				if (evt.target != "undefined" && $.inArray(evt.target.nodeName.toLowerCase(),['a','button','input','select','textarea']) > -1) {
 					return;
 				}
-				var href = $(this).attr("data-absolute-url");
+				var href = $(this).find(':first-child').attr("data-absolute-url");
 				var lang = getZMILang();
 				if (self.location.href.indexOf(href+'/manage_main')>=0) {
 					href += '/manage_properties';

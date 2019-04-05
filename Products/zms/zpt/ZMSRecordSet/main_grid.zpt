@@ -25,7 +25,7 @@
 	<div class="pull-left" tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</div>
 	<div class="pull-right">
 		<label class="control-label" for="qsize" tal:content="python:here.getZMILangStr('ATTR_ROWS')" tal:define="global dummy0 python:request.set('qsize',request.get('qsize',10))">Rows</label>
-		<input class="form-control input-sm" size="2" id="qsize" type="text" name="qsize:int" tal:attributes="value request/qsize" onchange="this.form.submit()"/>
+		<input class="form-control form-control-sm" size="2" id="qsize" type="text" name="qsize:int" tal:attributes="value request/qsize" onchange="this.form.submit()"/>
 	</div>
 </div>
 <input type="hidden" name="lang" tal:condition="python:request.has_key('lang')" tal:attributes="value request/lang"/>
@@ -99,7 +99,7 @@
       <tal:block tal:condition="filtered">
         <input type="hidden" tal:attributes="name python:'filterattr%i'%filterIndex; value metaObjAttr/id" />
         <input type="hidden" tal:attributes="name python:'filterop%i'%filterIndex; value python:''" />
-        <input class="form-control input-sm" type="text" tal:attributes="title elLabel; placeholder elLabel; name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />
+        <input class="form-control form-control-sm" type="text" tal:attributes="title elLabel; placeholder elLabel; name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />
       </tal:block>
     </th>
   </tal:block>

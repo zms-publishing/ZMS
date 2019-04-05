@@ -46,19 +46,19 @@ function zmiBookmarksChanged() {
 							}
 							if (i==0) {
 								html += '<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="Favoriten">';
-								html += $ZMI.icon('icon-bookmark')+' ';
+								html += $ZMI.icon('far fa-bookmark')+' ';
 								html += '<b class="caret"></b>';
 								html += '</a>';
 								html += '<div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
-								html += '<div class="dropdown-header">'+$ZMI.icon('icon-bookmark')+' Favoriten</div>';
+								html += '<div class="dropdown-header">'+$ZMI.icon('far fa-bookmark')+' Favoriten</div>';
 							}
 							html += ''
 									+ '<a class="dropdown-item" href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main"'
-											+ ' onmouseover="$(\'.icon-times.text-muted\').removeClass(\'text-muted\').addClass(\'text-danger\')"'
-											+ ' onmouseout="$(\'.icon-times.text-danger\').removeClass(\'text-danger\').addClass(\'text-muted\')"'
+											+ ' onmouseover="$(\'.fa-clock.text-muted\').removeClass(\'text-muted\').addClass(\'text-danger\')"'
+											+ ' onmouseout="$(\'.fa-clock.text-danger\').removeClass(\'text-danger\').addClass(\'text-muted\')"'
 										+ '>'+icon+' '+titlealt+'</span> '
 										+ '<span title="Favorit entfernen" data-path="'+bookmarks[i]+'"'
-											+ '>'+$ZMI.icon('icon-times text-muted')+'</span>'
+											+ '>'+$ZMI.icon('far fa-clock text-muted')+'</span>'
 									+ '</a>';
 							i++;
 						}
@@ -67,7 +67,7 @@ function zmiBookmarksChanged() {
 					html += '</div><!-- .dropdown-menu --> ';
 				}
 				$("#zmi-bookmarks").html(html);
-				$("#zmi-bookmarks .icon-times.text-muted").click(function(event) {
+				$("#zmi-bookmarks .fa-clock.text-muted").click(function(event) {
 						event.preventDefault();
 						event.stopPropagation();
 						var data_path = $(this).parent().attr('data-path');
@@ -108,11 +108,11 @@ function zmiHistoryChanged() {
 							}
 							if (i==0) {
 								html += '<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="Verlauf">';
-								html += $ZMI.icon('icon-time')+' ';
+								html += $ZMI.icon('far fa-clock')+' ';
 								html += '<b class="caret"></b>';
 								html += '</a>';
 								html += '<div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
-								html += '<div class="dropdown-header">'+$ZMI.icon('icon-time')+' Verlauf</div>';
+								html += '<div class="dropdown-header">'+$ZMI.icon('far-fa-clock')+' Verlauf</div>';
 							}
 							html += '<a class="dropdown-item" href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main">'+(i+1)+'. '+icon+' '+titlealt+'</a>';
 							i++;
@@ -121,7 +121,7 @@ function zmiHistoryChanged() {
 				if (i>0) {
 					html += '</div><!-- .dropdown-menu --> ';
 				}
-        $("#zmi-history").html(html);
+				$("#zmi-history").html(html);
 			});
 }
 

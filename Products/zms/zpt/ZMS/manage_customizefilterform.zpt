@@ -260,7 +260,7 @@ $ZMI.registerReady(function(){
 					</div>
 				</td>
 				<td>
-					<select class="form-control input-sm" tal:attributes="name python:'newFilterProcessId_%i'%pid">
+					<select class="form-control form-control-sm" tal:attributes="name python:'newFilterProcessId_%i'%pid">
 						<tal:block tal:repeat="process python:[here.getProcess(x) for x in processIds]">
 							<option tal:attributes="value process/id; selected python:['','selected'][int(filterProcess['id']==process['id'])]" tal:content="process/name">the process</option>
 						</tal:block>
@@ -286,7 +286,7 @@ $ZMI.registerReady(function(){
 			<tr class="row_insert">
 				<td class="meta-sort"><span class="btn btn-light" tal:content="structure python:here.zmi_icon(name='icon-plus')"></span></td>
 				<td>
-					<select class="form-control input-sm" tal:attributes="name python:'newFilterProcessId_%i'%len(filterProcesses)">
+					<select class="form-control form-control-sm" tal:attributes="name python:'newFilterProcessId_%i'%len(filterProcesses)">
 						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_TYPE')">--- Select type ---</option>
 						<tal:block tal:repeat="process python:[here.getProcess(x) for x in processIds]">
 							<option tal:attributes="value process/id" tal:content="process/name">the process</option>

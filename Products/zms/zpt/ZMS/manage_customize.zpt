@@ -35,14 +35,14 @@
       <div class="col-sm-12">
         <label for="meta_type">ZMS base-components</label>
         <div class="form-group row">
-          <select class="form-control" style="display:inline-block;width:auto;" id="meta_type" name="meta_type" 
+          <select class="form-control form-control-sm" style="display:inline-block;width:auto;" id="meta_type" name="meta_type" 
             onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
             <option value="">Select type to add...</option>
             <tal:block tal:repeat="meta_type meta_types">
               <option tal:condition="python:len(here.objectValues(meta_type['name']))==0"  tal:attributes="value meta_type/action" tal:content="python:here.getZMILangStr(meta_type['name'])">name</option>
             </tal:block>
           </select>
-          <button style="display:inline-block;" name="btn" type="submit" class="btn btn-secondary" value="Add">Add</button>
+          <button style="display:inline-block;" name="btn" type="submit" class="btn btn-secondary btn-sm" value="Add">Add</button>
         </div>
       </div><!-- .form-group -->
       <tal:block tal:repeat="si python:here.objectValues(['MediaDb']+[x['name'] for x in meta_types])">
@@ -339,13 +339,13 @@
             <table class="table">
               <tr>
                 <td>HighRes with Auto-Thumbnail max.&nbsp;</td>
-                <td><input class="form-control input-sm" type="text" name="pil_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.thumbnail.max')" size="4" style="text-align:right" /></td>
+                <td><input class="form-control form-control-sm" type="text" name="pil_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.thumbnail.max')" size="4" style="text-align:right" /></td>
                 <td>&nbsp;px</td>
               </tr>
               <tr><td colspan="3">&nbsp;</td></tr>
               <tr>
                 <td>SuperRes with Auto-HighRes max.&nbsp;</td>
-                <td><input class="form-control input-sm" type="text" name="pil_hires_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')" size="4" style="text-align:right" /></td>
+                <td><input class="form-control form-control-sm" type="text" name="pil_hires_thumbnail_max:int" tal:attributes="value python:here.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')" size="4" style="text-align:right" /></td>
                 <td>&nbsp;px</td>
               </tr>
             </table>

@@ -12,11 +12,11 @@
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group meta_id">
 				<label for="_meta_id" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-lg-10"><input type="text" id="newId" name="newId" class="form-control input-sm" /></div>
+				<div class="col-lg-10"><input type="text" id="newId" name="newId" class="form-control form-control-sm" /></div>
 			</div><!-- .form-group -->
 			<div class="form-group meta_name">
 				<label for="_meta_name" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TITLE')">Title</span></label>
-				<div class="col-lg-10"><input type="text" id="newTitle" name="newTitle" class="form-control input-sm" /></div>
+				<div class="col-lg-10"><input type="text" id="newTitle" name="newTitle" class="form-control form-control-sm" /></div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<div class="controls save">

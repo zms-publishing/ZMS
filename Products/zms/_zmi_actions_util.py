@@ -100,8 +100,8 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
       #-- Actions: Move.
       can_move = objChildren > 1
       if can_move:
-        actions.append((container.getZMILangStr('ACTION_MOVEUP'), objPath+'manage_moveObjUp', 'icon-double-angle-up'))
-        actions.append((container.getZMILangStr('ACTION_MOVEDOWN'), objPath+'manage_moveObjDown', 'icon-double-angle-down'))
+        actions.append((container.getZMILangStr('ACTION_MOVEUP'), objPath+'manage_moveObjUp', 'fas fa-angle-up'))
+        actions.append((container.getZMILangStr('ACTION_MOVEDOWN'), objPath+'manage_moveObjDown', 'fas fa-angle-down'))
   
   #-- Action: Paste.
   if repetitive or objChildren==0:

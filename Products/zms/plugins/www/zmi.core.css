@@ -27,13 +27,16 @@ header .navbar-brand {
 header.navbar-nav a {
 	color: silver;
 }
-header.navbar-nav #toggle_tabs {
+.zmi:not(.manage-menu) header.navbar-nav .dropdown-menu a.dropdown-item {
+	color:#212529;	
+}
+.zmi:not(.manage-menu) header.navbar-nav #toggle_tabs {
 	border-right: 1px solid silver;
 	padding: .60rem 1rem 0 0;
 	height: 2.65rem;
 	display:none;
 }
-header.navbar ul.navbar-nav li {
+.zmi:not(.manage-menu) header.navbar ul.navbar-nav li {
 	font-size:14px;
 	border-right: 1px solid silver;
 	border-radius: 0;
@@ -449,19 +452,22 @@ input.btn.btn-file {
 	margin-bottom: 0.5em;
 	width:auto;
 }
-.controls.save {
+.zmi .controls.save {
 	text-align:right;
 }
-div.single-line {
+.zmi .single-line {
 	width:100%;
 }
-div.single-line.input-append {
+.zmi .single-line.input-append {
 	width:100%;
 }
-div.single-line textarea {
+.zmi .single-line textarea {
 	overflow:hidden;
 	font-family:"Courier New", Courier, monospace;
 	width:100%;
+}
+.zmi .single-line.zmi-code.input-group {
+	height: 1.8rem;
 }
 div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	margin-left:1em;
@@ -622,6 +628,11 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	padding: 0.5rem 0.5rem;
 	min-width:1rem;
 }
+.zmi.metas table.table-sm td, 
+.zmi.metas table.table-sm th {
+	white-space: nowrap;
+	overflow: hidden;
+}
 .zmi table.table-sm td i, 
 .zmi table.table-sm th i {
 	font-size:1rem;
@@ -689,4 +700,176 @@ table.table-sm tr.row_insert td .btn-add {
 }
 .zmi table.table-sm tr.row_metadata td span {
 	color:#999;
+}
+
+
+/* CSS Document */
+.zmi.metas table.meta-access textarea  {
+	min-width: 7em;
+	width:160px;
+}
+.zmi.metas div.meta-access {
+	overflow-x: scroll;
+}
+.zmi.metas table.meta-access {
+	margin:2em 0 0;
+}
+.zmi.metas table.meta-access th {
+	height: 88px;
+	vertical-align:bottom !important;
+	border:none !important;
+	border-right:1px solid white;
+	border-left:1px solid white;
+	white-space: nowrap;
+	/* font-weight: normal; */
+}
+.zmi.metas table.meta-access th.rolename > div {
+	transform:
+	/* Magic Numbers */
+	translate(10px, 0px)
+	/* 45 is really 360 - 45 */
+	rotate(315deg);
+	width: 20px;
+	font-weight:normal;
+}
+
+.zmi.metas table.meta-access .breadcrumb {
+	font-size:10px;
+	padding-left: 0;
+}
+
+/*  Sitemap Menu
+    ------------------------------------------------------- */
+.zmi.manage-menu .zmi-page {
+	white-space:nowrap;
+	overflow:hidden;
+}
+.zmi.manage-menu .zmi-sitemap {
+	margin-top:1em
+}
+.zmi.manage-menu .dropdown-header {
+	color: #999 !important;
+	background-color: transparent !important;
+	border-bottom: 1px solid #666 !important;
+}
+.zmi .breadcrumb a[title=Bookmark] {
+	margin-left: .15em;
+	margin-bottom: -1px;
+}
+.zmi-browse-iframe-preview {
+	z-index:99999;
+	padding:1em;
+	position:absolute;
+	/* Fallback for web browsers that doesn't support RGBa */
+	background: white;
+	/* RGBa with 0.6 opacity */
+	background: rgba(255, 255, 255, 0.6);
+	/* For IE 5.5 - 7*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
+	/* For IE 8*/
+	ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
+	max-width:40em;
+	border:1px dotted black;
+}
+.zmi-browse-iframe-preview .contentEditable {
+	zoom: 0.6;
+	-moz-transform:scale(0.6);
+}
+.zmi-sitemap > div,
+.zmi-sitemap ul,
+.zmi-sitemap ol {
+	margin-top:0.3em;
+	margin-left:0;
+	padding-left:1em;
+	list-style:outside none none;
+}
+.zmi-sitemap li.active > a  {
+	font-weight:bold;
+}
+.zmi.manage-menu .navbar-brand {
+	font-size:100%!important;
+}
+body.browse_iframe .toggle {
+	font-size:120%;
+	vertical-align:bottom;
+	width:12px;
+	margin-right:2px;
+	text-align:center;
+	display:inline-block;
+	cursor:pointer;
+}
+.zmi.manage-menu .toggle,
+.zmi-sitemap .toggle {
+	color:#CCC;
+	font-size:120%;
+	vertical-align:bottom;
+	width:12px;
+	margin-right:2px;
+	text-align:center;
+	display:inline-block;
+	cursor:pointer;
+}
+.zmi.manage-menu {
+	background-color:#19232c;
+}
+.zmi.manage-menu .ZMSDocument .toggle {
+	color:#19232c;
+}
+.zmi.manage-menu .zmi header {
+	background-color: transparent !important;
+}
+.zmi.manage-menu .zmi-sitemap a,
+.zmi.manage-menu .zmi-sitemap li > span i {
+	color:#ccc;
+}
+.zmi.manage-menu li.active > a,
+.zmi.manage-menu li > a:hover {
+	color:white !important;
+	text-decoration:none;
+}
+.zmi.manage-menu .zmi-sitemap li.inactive > a {
+	color:#888;
+}
+.zmi.manage-menu .zmi-helper-clickable {
+	color:#999;
+}
+.zmi.manage-menu li.restricted > a > i {
+	color:orange;
+}
+.zmi.manage-menu .zmi-helper-clickable:hover {
+	color:#FFF;
+}
+.zmi.manage-menu .dropdown-menu {
+	filter:Alpha(opacity=90);-moz-opacity:0.90;opacity:0.90;
+}
+.zmi.manage-menu .navbar-inverse .navbar-nav .dropdown-menu > li > a {
+	color: #FFFFFF !important;
+}
+.zmi.manage-menu .navbar-nav .open .dropdown-menu {
+	background-color: #000;
+}
+.zmi.manage-menu .navbar-nav .dropdown-menu > li > a:hover,
+.zmi.manage-menu .navbar-nav .dropdown-menu > li > a:focus {
+	background-color: #3B5B77 !important;
+}
+.zmi.manage-menu .dropdown-lang .dropdown-menu {
+	background-color: #222;
+	border: 1px solid #888;
+	color: #000;
+	left: -100px;
+	position: absolute;
+	min-width: 110px;
+}
+.zmi.manage-menu .dropdown-lang .dropdown-menu > li > a:focus,
+.zmi.manage-menu .dropdown-lang .dropdown-menu > li > a:hover {
+	background-color:transparent !important;
+	color:#fff !important;
+}
+.zmi.manage-menu #loading,
+.zmi.manage-menu #loading .icon {
+	color: #CCCCCC !important;
+}
+.zmi.manage-menu .zmi-helper-clickable.refresh {
+	font-size: 14px;
+	margin-left: .7em;
 }

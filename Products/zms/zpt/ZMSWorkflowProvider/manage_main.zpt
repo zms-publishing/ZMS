@@ -180,7 +180,7 @@ $(function(){
 			<div class="form-group row">
 				<label for="or" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('OR')">Or</span></label>
 				<div class="col-lg-10">
-					<select class="form-control input-sm" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.metadict.')" onmouseover="zmiExpandConfFiles(this,'.workflow.')">
+					<select class="form-control form-control-sm" id="init" name="init" onfocus="zmiExpandConfFiles(this,'.metadict.')" onmouseover="zmiExpandConfFiles(this,'.workflow.')">
 						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('BTN_INIT')">--- Init... ---</option>
 					</select>
 				</div><!-- .col-lg-10 -->
@@ -201,16 +201,16 @@ $(function(){
 			<input type="hidden" name="id" tal:attributes="value request/id"/>
 			<div class="form-group inpId">
 				<label for="inpId" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="inpId" name="inpId" tal:attributes="value activity/id"/></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control form-control-sm" type="text" id="inpId" name="inpId" tal:attributes="value activity/id"/></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group inpName">
 				<label for="inpName" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="inpName" name="inpName" tal:attributes="value activity/name"/></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control form-control-sm" type="text" id="inpName" name="inpName" tal:attributes="value activity/name"/></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group inpIconClazz">
 				<label for="inpIconClazz" class="col-lg-2 control-label"><span>Icon</span></label>
 				<div class="col-lg-10">
-					<input class="form-control input-sm zmi-input-icon-clazz" type="text" id="inpIconClazz" name="inpIconClazz" tal:attributes="value python:activity.get('icon_clazz','')"/>
+					<input class="form-control form-control-sm zmi-input-icon-clazz" type="text" id="inpIconClazz" name="inpIconClazz" tal:attributes="value python:activity.get('icon_clazz','')"/>
 				</div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group inpIcon" tal:condition="python:activity.get('icon')">
@@ -244,16 +244,16 @@ $(function(){
 			<div class="horizontal-group">
 				<div class="form-group col-sm-4 inpId">
 					<label for="inpId" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-					<div><input class="form-control input-sm" type="text" id="inpId" name="inpId" tal:attributes="value transition/id"/></div><!-- .col-lg-10 -->
+					<div><input class="form-control form-control-sm" type="text" id="inpId" name="inpId" tal:attributes="value transition/id"/></div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
 				<div class="form-group col-sm-4 inpName">
 					<label for="inpName" class="control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-					<div><input class="form-control input-sm" type="text" id="inpName" name="inpName" tal:attributes="value transition/name"/></div><!-- .col-lg-10 -->
+					<div><input class="form-control form-control-sm" type="text" id="inpName" name="inpName" tal:attributes="value transition/name"/></div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
 				<div class="form-group col-sm-4 inpIcon">
 				<label for="inpIconClazz" class="control-label"><span>Icon</span></label>
 				<div>
-					<input class="form-control input-sm zmi-input-icon-clazz" type="text" id="inpIconClazz" name="inpIconClazz" tal:attributes="value python:transition.get('icon_clazz','')"/>
+					<input class="form-control form-control-sm zmi-input-icon-clazz" type="text" id="inpIconClazz" name="inpIconClazz" tal:attributes="value python:transition.get('icon_clazz','')"/>
 				</div><!-- .col-lg-10 -->
 				</div><!-- .form-group -->
 			</div><!-- .horizontal-group -->
@@ -262,7 +262,7 @@ $(function(){
 				<div class="form-group col-sm-4 inpFrom">
 					<label for="inpFrom" class="control-label"><span>From</span></label>
 					<div>
-						<select class="form-control input-sm" name="inpFrom:list" multiple="multiple">
+						<select class="form-control form-control-sm" name="inpFrom:list" multiple="multiple">
 							<tal:block tal:repeat="activity python:here.getActivities()">
 								<option tal:attributes="value activity/id; selected python:['','selected'][int(activity['id'] in transition.get('from',[]))]" tal:content="activity/name">the activity</option>
 							</tal:block>
@@ -272,7 +272,7 @@ $(function(){
 				<div class="form-group col-sm-4 inpPerformer">
 					<label for="inpPerformer" class="control-label"><span>Performer</span></label>
 					<div>
-						<select class="form-control input-sm" name="inpPerformer:list" multiple="multiple">
+						<select class="form-control form-control-sm" name="inpPerformer:list" multiple="multiple">
 							<tal:block tal:repeat="performer python:here.getUserDefinedRoles()"><tal:block tal:define="global lang_key python:'ROLE_%s'%performer.upper(); lang_str python:here.getZMILangStr(lang_key)">
 								<option tal:attributes="value performer; selected python:['','selected'][int(performer in transition.get('performer',[]))]" tal:content="python:[lang_str,performer][int(lang_key==lang_str)]">the performer</option>
 							</tal:block></tal:block>
@@ -282,7 +282,7 @@ $(function(){
 				<div class="form-group col-sm-4 inpTo">
 					<label for="inpTo" class="control-label"><span>To</span></label>
 					<div>
-						<select class="form-control input-sm" name="inpTo">
+						<select class="form-control form-control-sm" name="inpTo">
 							<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ACTION_SELECT')%'To'">--- Select to ---</option>
 							<tal:block tal:repeat="activity python:here.getActivities()">
 								<option tal:attributes="value activity/id; selected python:['','selected'][int(activity['id'] in transition.get('to',[]))]" tal:content="activity/name">the activity</option>
@@ -319,17 +319,17 @@ $(function(){
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group newId">
 				<label for="newId" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="newId" name="newId" value="AC_"/></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control form-control-sm" type="text" id="newId" name="newId" value="AC_"/></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group newName">
 				<label for="newName" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="newName" name="newName"/></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control form-control-sm" type="text" id="newName" name="newName"/></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group newIconClazz">
 				<label for="newIconClazz" class="col-lg-2 control-label"><span>Icon</span></label>
 				<div class="col-lg-10">
 					<div class="pull-left">
-						<input class="form-control input-sm zmi-input-icon-clazz" type="text" id="newIconClazz" name="newIconClazz"/>
+						<input class="form-control form-control-sm zmi-input-icon-clazz" type="text" id="newIconClazz" name="newIconClazz"/>
 					</div>
 					<div class="pull-right">
 						<tal:block tal:content="structure python:zmscontext.zmi_icon(name='')">the icon</tal:block>
@@ -356,16 +356,16 @@ $(function(){
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group newId">
 				<label for="newId" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="newId" name="newId" value="TR_"/></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control form-control-sm" type="text" id="newId" name="newId" value="TR_"/></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group newName">
 				<label for="newName" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
-				<div class="col-lg-10"><input class="form-control input-sm" type="text" id="newName" name="newName"/></div><!-- .col-lg-10 -->
+				<div class="col-lg-10"><input class="form-control form-control-sm" type="text" id="newName" name="newName"/></div><!-- .col-lg-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group newType">
 				<label for="newType" class="col-lg-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
 				<div class="col-lg-10">
-					<select class="form-control input-sm" name="newType">
+					<select class="form-control form-control-sm" name="newType">
 						<tal:block tal:repeat="meta_type python:['Page Template','Script (Python)']">
 							<option tal:attributes="value meta_type" tal:content="meta_type">the meta_type</option>
 						</tal:block>

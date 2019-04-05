@@ -216,8 +216,8 @@ function mms_normalize_rows(el_tbody) {
 						<tal:block tal:content="table/id">table-id</tal:block>
 					</a>
 				</label>
-				<input class="form-control input-sm" type="text" name="label" tal:attributes="value python:table.get('label','');title python:here.getZMILangStr('ATTR_DISPLAY')" style="margin-left:5px;display:inline;width:12em" />
-				<select class="form-control input-sm" name="type" tal:attributes="title python:here.getZMILangStr('ATTR_TYPE')" style="width:12em;display:inline" >
+				<input class="form-control form-control-sm" type="text" name="label" tal:attributes="value python:table.get('label','');title python:here.getZMILangStr('ATTR_DISPLAY')" style="margin-left:5px;display:inline;width:12em" />
+				<select class="form-control form-control-sm" name="type" tal:attributes="title python:here.getZMILangStr('ATTR_TYPE')" style="width:12em;display:inline" >
 					<tal:block tal:repeat="type python:['','table','intersection','hidden']"
 						><option tal:attributes="value type; selected python:['','selected'][int(type==table['type'])]" tal:content="type">the type</option>
 					</tal:block>
@@ -231,13 +231,13 @@ function mms_normalize_rows(el_tbody) {
 	<div class="form-group row">
 		<label class="col-xs-2 control-label"><span>Interface</span></label>
 		<div class="col-xs-10">
-			<div class="single-line"><textarea title="Interface" class="form-control input-sm" name="interface" tal:content="python:table.get('interface','')"></textarea></div><!-- .single-line -->
+			<div class="single-line"><textarea title="Interface" class="form-control form-control-sm" name="interface" tal:content="python:table.get('interface','')"></textarea></div><!-- .single-line -->
 		</div><!-- .col-xs-2 -->
 	</div><!-- .form-group -->
 	<div class="form-group row">
 		<label class="col-xs-2 control-label"><span>Filter</span></label>
 		<div class="col-xs-10">
-			<div class="single-line"><textarea title="Filter" class="form-control input-sm" name="filter" tal:content="python:table.get('filter','')"></textarea></div><!-- .single-line -->
+			<div class="single-line"><textarea title="Filter" class="form-control form-control-sm" name="filter" tal:content="python:table.get('filter','')"></textarea></div><!-- .single-line -->
 		</div><!-- .col-xs-2 -->
 	</div><!-- .form-group -->
 	<div style="clear:both;">&nbsp;</div>

@@ -51,7 +51,16 @@ header.navbar-nav a {
 	margin-left: -2px;
 	margin-right: 2px;
 }
-
+.zmi header.navbar ul.navbar-nav li.zmi-authenticated_user {
+	cursor:default;
+}
+.zmi header.navbar ul.navbar-nav li.zmi-authenticated_user:before {
+	content: "\f007";
+	font-family:Font Awesome\ 5 Free;
+	font-weight:bold;
+	margin-right:.5em;
+	color:silver
+}
 footer {
 	left: 0;
 	bottom: 0;
@@ -102,7 +111,7 @@ footer {
 	left:0;
 	top:0;
 	min-width:max-content;
-	overflow:
+	overflow:unset;
 }
 .zmi nav .nav.nav-tabs li {
 	display:table-cell;
@@ -119,7 +128,7 @@ footer {
 	cursor:pointer;
 	display:none;
 	padding:.8rem 0.5rem;
-	white-space:no-wrap;
+	white-space:nowrap;
 	vertical-align:middle;
 	position:absolute;
 	z-index:1000;
@@ -147,7 +156,7 @@ footer {
 .zmi nav[role="navigation"] ul.nav.nav-tabs {
 	min-width:1600px;
 	width:100vw;
-	white-space:npwrap;
+	white-space:nowrap;
 }
 .zmi nav .nav-tabs .nav-item .nav-link {
 	min-width: 5rem;
@@ -345,13 +354,13 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 	font-size: inherit !important;
 	box-shadow: 0 6px 12px rgba(0,0,0,.175)
 }
-.zmi .dropleft .dropdown-toggle::before {
-	display:none;
-}
 .zmi .dropdown-menu a.dropdown-item {
 	max-width: 260px;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+.zmi .dropleft .dropdown-toggle::before { 
+	display:none; 
 }
 .zmi-action .btn.split-right,
 .zmi-action .btn.split-left {
@@ -365,6 +374,20 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 }
 .zmi-action:hover .btn.split-right:before {
 	opacity:1;
+}
+.zmi-action .btn.split-right:before {
+	vertical-align: 0;
+}
+.zmi-action .btn.split-right:before {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	margin-right: .255rem;
+	vertical-align: .07rem;
+	content: "";
+	border-top: .3rem solid transparent;
+	border-right: .3rem solid;
+	border-bottom: .3rem solid transparent;
 }
 .zmi-action .btn.split-left {
 	font-size:inherit !important;
@@ -770,7 +793,7 @@ table.table-sm tr.row_insert td .btn-add {
 	/* For IE 5.5 - 7*/
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
 	/* For IE 8*/
-	ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
 	max-width:40em;
 	border:1px dotted black;
 }
@@ -876,3 +899,7 @@ body.browse_iframe .toggle {
 	font-size: 14px;
 	margin-left: .7em;
 }
+
+.zmi alert {
+	margin: 0 1rem 1rem;
+} 

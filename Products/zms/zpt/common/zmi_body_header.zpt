@@ -4,16 +4,23 @@
 		zmscontext python:here.getSelf(); 
 		admin python:request['AUTHENTICATED_USER'].has_permission('ZMS Administrator',here)">
 
-	<header class="navbar navbar-nav navbar-expand navbar-dark flex-row bd-navbar">
-		<div id="toggle_tabs" class="collapsed" data-toggle="collapse" data-target="#tabs_items" aria-controls="tabs_items" aria-expanded="false" aria-label="Toggle Tab-Navigation" tal:content="structure python:zmscontext.zmi_icon(name='icon-bars')">
+	<header class="navbar navbar-nav navbar-expand navbar-dark flex-row justify-content-between bd-navbar">
+		<div id="toggle_tabs" class="collapsed" data-toggle="collapse" data-target="#tabs_items" 
+			aria-controls="tabs_items" aria-expanded="false" aria-label="Toggle Tab-Navigation" 
+			tal:content="structure python:zmscontext.zmi_icon(name='far fa-bars')">
 			icon-bars
 		</div>
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 		<ul class="navbar-nav flex-row ml-sm-auto d-flex">
-				<li>
+
+				<li id="zmi-authenticated_user" class="form-inline zmi-authenticated_user">
 					<a href="javascript:;" id="manage_userForm" onclick="$ZMI.iframe('manage_userForm',{lang:getZMILang()},{iframe:true,height:400,width:640,title:$(this).text(),modal:{backdrop:'static',keyboard:false}})">
 						<span class="authenticated_user" tal:content="request/AUTHENTICATED_USER">the authenticated-user</span>&nbsp;
 					</a>
+				</li>
+				<li id="toggle_menu" class="form-inline desktop hidden-xs" title="Show/Hide Tree Menu of the Navigation Context">
+					<a id="navbar-sitemap" href="manage?lang=ger&amp;dtpref_sitemap=1" target="_self" class="" title="Sitemap"
+						><i class="fas fa-sitemap"></i></a>
 				</li>
 				<li class="dropdown">
 					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:here.getZMILangStr('TAB_CONFIGURATION')">

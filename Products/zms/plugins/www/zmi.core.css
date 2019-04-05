@@ -345,6 +345,9 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 	font-size: inherit !important;
 	box-shadow: 0 6px 12px rgba(0,0,0,.175)
 }
+.zmi .dropleft .dropdown-toggle::before {
+	display:none;
+}
 .zmi .dropdown-menu a.dropdown-item {
 	max-width: 260px;
 	overflow: hidden;

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 ################################################################################
 # ZMSWorkflowProvider.py
 #
@@ -314,54 +315,77 @@ class ZMSWorkflowProvider(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProvider.manage_changeWorkflow:
     
-    Chang workflow.
+    Change workflow.
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def manage_changeWorkflow(self, lang, btn='', REQUEST=None, RESPONSE=None):
+    def manage_changeWorkflow(self, lang, btn='', key='properties', REQUEST=None, RESPONSE=None):
       """ ZMSWorkflowProvider.manage_changeWorkflow """
       message = ''
+
+      # Version Control.
+      # -----------
+      if key == 'history':
+        old_active = self.getConfProperty('ZMS.Version.active',0)
+        new_active = REQUEST.get('active',0)
+        old_nodes = self.getConfProperty('ZMS.Version.nodes',['{$}'])
+        new_nodes = standard.string_list(REQUEST.get('nodes',''))
+        self.setConfProperty('ZMS.Version.active',new_active)
+        self.setConfProperty('ZMS.Version.nodes',new_nodes)
+        nodes = []
+        if old_active == 1 and new_active == 0:
+          nodes = old_nodes
+        if old_active == 1 and new_active == 1:
+          nodes = standard.difference_list( old_nodes, self.getConfProperty('ZMS.Version.nodes',['{$}']))
+        for node in nodes:
+          ob = self.getLinkObj( node)
+          if ob is not None:
+            message += '[%s: %i]'%(node,ob.packHistory())
+        message = self.getZMILangStr('MSG_CHANGED')+message
       
       # Properties.
       # -----------
-      if btn == self.getZMILangStr('BTN_SAVE'):
-        # Autocommit & Nodes.
-        old_autocommit = self.autocommit
-        new_autocommit = REQUEST.get('workflow', 0) == 0
-        self.revision = REQUEST.get('revision', '0.0.0')
-        self.autocommit = new_autocommit
-        self.nodes = standard.string_list(REQUEST.get('nodes', ''))
-        if old_autocommit == 0 and new_autocommit == 1:
+      elif key == 'properties':
+        # Save.
+        # ------
+        if btn == self.getZMILangStr('BTN_SAVE'):
+          # Autocommit & Nodes.
+          old_autocommit = self.autocommit
+          new_autocommit = REQUEST.get('workflow', 0) == 0
+          self.revision = REQUEST.get('revision', '0.0.0')
+          self.autocommit = new_autocommit
+          self.nodes = standard.string_list(REQUEST.get('nodes', ''))
+          if old_autocommit == 0 and new_autocommit == 1:
+            self.doAutocommit(lang, REQUEST)
+          message = self.getZMILangStr('MSG_CHANGED')
+      
+        # Clear.
+        # ------
+        elif btn == self.getZMILangStr('BTN_CLEAR'):
           self.doAutocommit(lang, REQUEST)
-        message = self.getZMILangStr('MSG_CHANGED')
-      
-      # Clear.
-      # ------
-      elif btn == self.getZMILangStr('BTN_CLEAR'):
-        self.doAutocommit(lang, REQUEST)
-        self.autocommit = 1
-        self.activities = []
-        self.transitions = []
-        message = self.getZMILangStr('MSG_CHANGED')
+          self.autocommit = 1
+          self.activities = []
+          self.transitions = []
+          message = self.getZMILangStr('MSG_CHANGED')
      
-      # Export.
-      # -------
-      elif btn == self.getZMILangStr('BTN_EXPORT'):
-        return exportXml(self, REQUEST, RESPONSE)
+        # Export.
+        # -------
+        elif btn == self.getZMILangStr('BTN_EXPORT'):
+          return exportXml(self, REQUEST, RESPONSE)
       
-      # Import.
-      # -------
-      elif btn == self.getZMILangStr('BTN_IMPORT'):
-        f = REQUEST['file']
-        if f:
-          filename = f.filename
-          xml = f
-        else:
-          filename = REQUEST.get('init')
-          xml = open(_fileutil.getOSPath(filename), 'rb')
-        self.importXml(xml)
-        message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
+        # Import.
+        # -------
+        elif btn == self.getZMILangStr('BTN_IMPORT'):
+          f = REQUEST['file']
+          if f:
+            filename = f.filename
+            xml = f
+          else:
+            filename = REQUEST.get('init')
+            xml = open(_fileutil.getOSPath(filename), 'rb')
+          self.importXml(xml)
+          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       # Return with message.
       message = urllib.parse.quote(message)
-      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_properties'%(lang, message))
+      return RESPONSE.redirect('manage_main?lang=%s&key=%s&manage_tabs_message=%s#_properties'%(lang, key, message))
 
 ################################################################################

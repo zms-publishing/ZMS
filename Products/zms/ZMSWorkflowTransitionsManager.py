@@ -146,7 +146,7 @@ class ZMSWorkflowTransitionsManager(object):
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   ZMSWorkflowTransitionsManager.manage_changeTransitions:
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  def manage_changeTransitions(self, lang, btn='', REQUEST=None, RESPONSE=None):
+  def manage_changeTransitions(self, lang, btn='', key='', REQUEST=None, RESPONSE=None):
     """ ZMSWorkflowTransitionsManager.manage_changeTransitions """
     message = ''
     id = REQUEST.get('id', '')
@@ -200,6 +200,6 @@ class ZMSWorkflowTransitionsManager(object):
     
     # Return with message.
     message = urllib.parse.quote(message)
-    return RESPONSE.redirect('manage_main?id=%s&lang=%s&manage_tabs_message=%s'%(id, lang, message))
+    return RESPONSE.redirect('manage_main?id=%s&lang=%s&key=%s&manage_tabs_message=%s'%(id, lang, key, message))
 
 ################################################################################

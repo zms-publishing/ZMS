@@ -900,6 +900,25 @@ body.browse_iframe .toggle {
 	margin-left: .7em;
 }
 
-.zmi alert {
+.zmi .alert {
 	margin: 0 1rem 1rem;
 } 
+
+@media (min-width: 768px) {
+	.zmi .form-horizontal .control-label {
+		padding-top: 0.4rem;
+		margin-bottom: 0;
+		text-align: right;
+	}
+}
+.zmi .form-horizontal label.control-label {
+	font-weight: normal;
+	color: #75A7C0;
+}
+
+.zmi .url-input-container .breadcrumb {
+	padding: 0.4em 0 0 0 !important;
+	margin: 0 !important;
+	background-color: transparent !important;
+	font-size: 80%;
+}

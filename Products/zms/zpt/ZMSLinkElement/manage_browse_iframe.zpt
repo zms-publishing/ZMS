@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" tal:define="standard modules/Products.zms/standard">
-<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
+<tal:block tal:content="structure python:zmscontext.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <style>
 .zmi.browse_iframe .nav-pills {
 	position:fixed;
@@ -61,9 +61,9 @@
 	vertical-align:baseline;
 }
 </style>
-<body tal:attributes="class python:here.zmi_body_class(id='browse_iframe')">
+<body tal:attributes="class python:zmscontext.zmi_body_class(id='browse_iframe')">
 
-<tal:block tal:define="global el python:here.getLinkObj(request.get('elValue'))">
+<tal:block tal:define="global el python:zmscontext.getLinkObj(request.get('elValue'))">
 	<tal:block tal:condition="python:el is not None">
 		<span class="d-none" name="physical_path" tal:content="python:'/'.join(el.getPhysicalPath())" />
 	</tal:block>
@@ -72,26 +72,26 @@
 <div class="tabbable tabs-left">
 
 <ul class="nav nav-pills">
-	<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#sitemap" tal:attributes="title python:'%s: %s'%(here.getZMILangStr('ATTR_LINK_INTERNAL'),here.getZMILangStr('TAB_SITEMAP'))" tal:content="structure python:here.zmi_icon(name='icon-sitemap')">Sitemap</a></li>
-	<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#search" tal:attributes="title python:'%s: %s'%(here.getZMILangStr('ATTR_LINK_INTERNAL'),here.getZMILangStr('TAB_SEARCH'))" tal:content="structure python:here.zmi_icon(name='icon-search')">Search</a></li>
-	<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#link" tal:attributes="title python:here.getZMILangStr('ATTR_LINK_EXTERNAL')" tal:content="structure python:here.zmi_icon(name='icon-link')">Link</a></li>
-	<li class="nav-item dropdown languages" tal:condition="python:len(here.getLangIds())>1">
-		<a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:here.getZMILangStr('TAB_LANGUAGES')">
-			<tal:block tal:content="structure python:here.zmi_icon(name='icon-flag')"></tal:block>&nbsp;
+	<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#sitemap" tal:attributes="title python:'%s: %s'%(zmscontext.getZMILangStr('ATTR_LINK_INTERNAL'),zmscontext.getZMILangStr('TAB_SITEMAP'))" tal:content="structure python:zmscontext.zmi_icon(name='icon-sitemap')">Sitemap</a></li>
+	<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#search" tal:attributes="title python:'%s: %s'%(zmscontext.getZMILangStr('ATTR_LINK_INTERNAL'),zmscontext.getZMILangStr('TAB_SEARCH'))" tal:content="structure python:zmscontext.zmi_icon(name='icon-search')">Search</a></li>
+	<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#link" tal:attributes="title python:zmscontext.getZMILangStr('ATTR_LINK_EXTERNAL')" tal:content="structure python:zmscontext.zmi_icon(name='icon-link')">Link</a></li>
+	<li class="nav-item dropdown languages" tal:condition="python:len(zmscontext.getLangIds())>1">
+		<a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:zmscontext.getZMILangStr('TAB_LANGUAGES')">
+			<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-flag')"></tal:block>&nbsp;
 			<b class="caret"></b>
 		</a>
 		<div class="dropdown-menu">
 			<tal:block tal:repeat="language python:[request['defaultLang']]">
-				<a class="dropdown-item" tal:attributes="href python:here.url_append_params(here.url_inherit_params(request['URL'],request,['lang','selectedLang'],sep='&'),{'lang':language},sep='&'); data-language language" class="toggle-lang">
-					<tal:block tal:content="structure python:here.zmi_icon(name=['icon-square','icon-check-square'][int(request.get('selectedLang','')=='')])"></tal:block>
+				<a class="dropdown-item" tal:attributes="href python:zmscontext.url_append_params(zmscontext.url_inherit_params(request['URL'],request,['lang','selectedLang'],sep='&'),{'lang':language},sep='&'); data-language language" class="toggle-lang">
+					<tal:block tal:content="structure python:zmscontext.zmi_icon(name=['icon-square','icon-check-square'][int(request.get('selectedLang','')=='')])"></tal:block>
 					Default
 				</a>
 			</tal:block>
-			<tal:block tal:repeat="language python:here.getLangIds()">
-				<a class="dropdown-item" tal:attributes="href python:here.url_append_params(here.url_inherit_params(request['URL'],request,['lang','selectedLang'],sep='&'),{'lang':language,'selectedLang':language},sep='&'); data-language language" class="toggle-lang">
-					<tal:block tal:content="structure python:here.zmi_icon(name=['icon-square','icon-check-square'][int(request.get('selectedLang','')==language)])"></tal:block>
-					<tal:block tal:content="python:here.getLanguageLabel(language)">the language</tal:block>
-					<tal:block tal:condition="python:language==here.getPrimaryLanguage()">[*]</tal:block>
+			<tal:block tal:repeat="language python:zmscontext.getLangIds()">
+				<a class="dropdown-item" tal:attributes="href python:zmscontext.url_append_params(zmscontext.url_inherit_params(request['URL'],request,['lang','selectedLang'],sep='&'),{'lang':language,'selectedLang':language},sep='&'); data-language language" class="toggle-lang">
+					<tal:block tal:content="structure python:zmscontext.zmi_icon(name=['icon-square','icon-check-square'][int(request.get('selectedLang','')==language)])"></tal:block>
+					<tal:block tal:content="python:zmscontext.getLanguageLabel(language)">the language</tal:block>
+					<tal:block tal:condition="python:language==zmscontext.getPrimaryLanguage()">[*]</tal:block>
 				</a>
 			</tal:block>
 		</div>
@@ -112,25 +112,25 @@
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
 	<input type="hidden" name="fmName" tal:condition="python:request.has_key('fmName')" tal:attributes="value python:request.get('fmName','')" />
 	<input type="hidden" name="elName" tal:condition="python:request.has_key('elName')" tal:attributes="value python:request.get('elName','')" />
-	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
+	<legend tal:content="python:zmscontext.getZMILangStr('SEARCH_HEADER')">Search header</legend>
 	<div class="form-group row">
 		<div class="col-md-12">
 			<div class="input-group">
-				<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
+				<tal:block tal:content="structure python:zmscontext.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
 				<div class="input-group-append">
-					<button type="submit" class="btn btn-primary" tal:content="structure python:here.zmi_icon(name='icon-search')"></button>
+					<button type="submit" class="btn btn-primary" tal:content="structure python:zmscontext.zmi_icon(name='icon-search')"></button>
 				</div>
 			</div>
 		</div>
 	</div><!-- .form-group -->
 <div id="search_results" class="form-group row" style="display:none">
 	<div class="col-md-10">
-		<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
+		<h4 tal:content="python:zmscontext.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
 		<div class="header row">
 			<div class="col-md-6">
 				<span class="small-head">
 					<img src="/++resource++zms_/img/loading.gif" alt="Loading..."/>
-					<tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>
+					<tal:block tal:content="python:zmscontext.getZMILangStr('MSG_LOADING')">loading</tal:block>
 				</span>
 			</div>
 			<div class="meta-info col-sm-12 col-md-6 col-ns-5 col-ns-offset-1">
@@ -148,13 +148,13 @@
 <div class="tab-pane" id="link">
 	<div class="form-inline">
 		<div class="form-group row">
-			<label class="sr-only" for="url"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">the label</span></label>
+			<label class="sr-only" for="url"><span tal:content="structure python:zmscontext.getZMILangStr('ATTR_URL')">the label</span></label>
 			<select class="form-control" id="type" name="type">
-				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_TYPE')">Select tyype</tal:block> ---</option>
+				<option value="">--- <tal:block tal:content="python:zmscontext.getZMILangStr('ACTION_SELECT')%zmscontext.getZMILangStr('ATTR_TYPE')">Select tyype</tal:block> ---</option>
 				<option value="http://">http:</option>
 				<option value="https://">https:</option>
-				<option value="file://" tal:content="python:here.getZMILangStr('ATTR_FILE')">file</option>
-				<option value="mailto:" tal:content="python:here.getZMILangStr('ATTR_EMAIL')">mailto</option>
+				<option value="file://" tal:content="python:zmscontext.getZMILangStr('ATTR_FILE')">file</option>
+				<option value="mailto:" tal:content="python:zmscontext.getZMILangStr('ATTR_EMAIL')">mailto</option>
 				<option value="ftp://">ftp:</option>
 			</select>
 		</div><!-- .form-group -->
@@ -167,7 +167,7 @@
 
 </div><!-- .tab-content -->
 
-<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+<tal:block tal:content="structure python:zmscontext.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMSLinkElement/manage_browse_iframe.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
 </body>

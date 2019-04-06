@@ -1,5 +1,6 @@
 // Ensure all pages that load this js know that they are waiting for it to finish loading
-$("body").addClass("loading");
+var zmi_body = document.body;
+zmi_body.classList.add("loading")
 
 $(function(){
 

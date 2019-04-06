@@ -6293,13 +6293,81 @@
     <Cell><Data ss:Type="String">TAB_WORKFLOW</Data></Cell>
     <Cell><Data ss:Type="String">Workflow</Data></Cell>
     <Cell><Data ss:Type="String">Workflow</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Workflow</Data></Cell>
-    <Cell ss:Index="9"/>
+    <Cell><Data ss:Type="String">Workflow</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow</Data></Cell>
     <Cell><Data ss:Type="String">поток работы</Data></Cell>
     <Cell><Data ss:Type="String">वर्कफ्लो</Data></Cell>
     <Cell><Data ss:Type="String">تسلسل العمل</Data></Cell>
     <Cell><Data ss:Type="String">Lịch trình công việc</Data></Cell>
     <Cell><Data ss:Type="String">מהלך עבודה</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TAB_WORKFLOW_ASSIGNMENT</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow-Aktivierung</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Assignment</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TAB_WORKFLOW_MODEL</Data></Cell>
+    <Cell><Data ss:Type="String">Ablauf-Modell</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+    <Cell><Data ss:Type="String">Workflow Model</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">TAB_WORKFLOW_VERSION</Data></Cell>
+    <Cell><Data ss:Type="String">Versionierung</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+    <Cell><Data ss:Type="String">Version Control</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">HINT_WORKFLOW_ACQUIRED</Data></Cell>
+    <Cell><Data ss:Type="String">Hinweis: Die Workflow-Konfiguration wird akquiriert vom Master dieses ZMS-Clients.</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
+    <Cell><Data ss:Type="String">Hint: The workflow configuration is acquired from the master of this ZMS client</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TASK_CHANGED_BY_DATE</Data></Cell>

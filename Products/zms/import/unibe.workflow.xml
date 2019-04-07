@@ -7,7 +7,7 @@
       <item type="dictionary">
         <dictionary>
           <item key="icon"></item>
-          <item key="icon_clazz"></item>
+          <item key="icon_clazz"><![CDATA[fas fa-pencil-alt text-primary wf-icon]]></item>
           <item key="id"><![CDATA[AC_CHANGED]]></item>
           <item key="name"><![CDATA[Bearbeitet]]></item>
         </dictionary>
@@ -25,7 +25,7 @@
       <item type="dictionary">
         <dictionary>
           <item key="icon"></item>
-          <item key="icon_clazz"><![CDATA[icon-thumbs-down-alt text-danger wf-icon]]></item>
+          <item key="icon_clazz"><![CDATA[far fa-thumbs-down text-danger wf-icon]]></item>
           <item key="id"><![CDATA[AC_REJECTED]]></item>
           <item key="name"><![CDATA[Abgelehnt]]></item>
         </dictionary>
@@ -34,7 +34,7 @@
       <item type="dictionary">
         <dictionary>
           <item key="icon"></item>
-          <item key="icon_clazz"><![CDATA[icon-thumbs-up-alt text-success wf-icon]]></item>
+          <item key="icon_clazz"><![CDATA[far fa-thumbs-up text-success wf-icon]]></item>
           <item key="id"><![CDATA[AC_COMMITTED]]></item>
           <item key="name"><![CDATA[Publiziert]]></item>
         </dictionary>
@@ -44,7 +44,6 @@
         <dictionary>
           <item key="icon"></item>
           <item key="icon_clazz"><![CDATA[icon-reply text-danger wf-icon]]</item>
-          <item key="id"><![CDATA[AC_ROLLEDBACK]]></item>
           <item key="id"><![CDATA[AC_ROLLEDBACK]]></item>
           <item key="name"><![CDATA[Frühere Version]]></item>
         </dictionary>

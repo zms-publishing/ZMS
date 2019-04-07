@@ -922,3 +922,10 @@ body.browse_iframe .toggle {
 	background-color: transparent !important;
 	font-size: 80%;
 }
+
+/* MODAL DIALOG */
+@media (min-width: 576px) {
+	.zmi .modal-dialog {
+		max-width: unset;
+	}
+}

@@ -21,7 +21,7 @@ function selectObject(ignoredUrl, ignoredTitle, nodeName) {
 
 </script>
 
-<form class="form-horizontal" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
+<form class="form-horizontal card" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<input type="hidden" name="key" value="custom"/>
 	<legend>Acquired Workflow</legend>
@@ -31,9 +31,9 @@ function selectObject(ignoredUrl, ignoredTitle, nodeName) {
 		<div class="col-xs-3 col-sm-4 col-md-5">
 			<textarea class="form-control url-input" name="nodes" title="Nodes" tal:content="python:'\n'.join(here.operator_getattr(here,'nodes',['{$}']))">{$}</textarea>
 		</div>
-		<div class="container">
-			<button type="submit" name="btn" class="btn btn-primary" value="Speichern">Speichern</button>
-		</div>
+	</div>
+	<div class="controls save">
+		<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 	</div>
 </form>
 

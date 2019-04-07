@@ -950,8 +950,9 @@ ZMI.prototype.initInputFields = function(container) {
 			}
 				// Icon-Class
 			$('input.zmi-input-icon-clazz',this).each(function() {
-				$(this).parents("div:first").append('<div class="pull-right">'+$ZMI.icon('')+'</div>');
-				$(this).wrap('<div class="pull-left"></div>');
+				$(this).parents("div:first").prepend('<span class="input-group-text">'+$ZMI.icon('')+'</span>');
+				$(this).parents("div:first").wrapInner( "<div class='input-group'></div>");
+				$(this).wrap('<div class="input-group-prepend"></div>');
 				var fn = function() {
 					var $input = $(this);
 					var $formGroup = $input.parents(".form-group");

@@ -124,15 +124,18 @@ class ZMSWorkflowActivitiesManager(object):
   ZMSWorkflowActivitiesManager.getActivity
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   def getActivity(self, id, for_export=False):
-    activity = [x for x in self.getActivities() if x['id']==id][0]
-    if not for_export:
-      d = {}
-      for key in activity:
-        if key == 'icon' and activity.get('icon'):
-          d[key] = self.absolute_url()+'/'+id+'.icon'
-        else:
-          d[key] = activity[key]
-      activity = d
+    activity = None
+    activities = [x for x in self.getActivities() if x['id']==id]
+    if activities:
+      activity = activities[0]
+      if not for_export:
+        d = {}
+        for key in activity:
+          if key == 'icon' and activity.get('icon'):
+            d[key] = self.absolute_url()+'/'+id+'.icon'
+          else:
+            d[key] = activity[key]
+        activity = d
     return activity
 
 

@@ -1033,7 +1033,7 @@ ZMI.prototype.initInputFields = function(container) {
 							}
 							$("input.url-input",$inputContainer).each(fn_url_input_each);
 							$(".input-group-append",$inputContainer).replaceWith('<a class="btn btn-secondary" href="javascript:;">'+$ZMI.icon('icon-times')+'</a>');
-							$(".input-group-append",$inputContainer).click(function() {
+							$("input.url-input",$inputContainer).next().click(function() {
 									$(this).parents(".input-group").next(".breadcrumb").remove();
 									$(this).parents(".input-group").remove();
 									var l = [];

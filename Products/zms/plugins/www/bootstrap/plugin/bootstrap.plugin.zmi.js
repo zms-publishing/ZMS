@@ -314,7 +314,7 @@ $(function(){
 			if ($("span.input-group-append",this).length==0) {
 				$(this).addClass("input-group");
 				if ($textarea.prev('i').length==1) {
-					$textarea.prev('i').wrap('<div class="input-group-prepend"><spn class="btn btn-secondary"></span></div>')
+					$textarea.prev('i').wrap('<div class="input-group-prepend"><span class="btn btn-secondary"></span></div>')
 				}
 				if ($textarea.attr('data-style')) {
 					$(this).append('<div class="input-group-append"><a href="javascript:;" class="btn btn-secondary" title="Click for Code Popup or Dbl-Click for Native Editor!" style="' + $textarea.attr('data-style') + '"></a></div>');
@@ -950,9 +950,9 @@ ZMI.prototype.initInputFields = function(container) {
 			}
 				// Icon-Class
 			$('input.zmi-input-icon-clazz',this).each(function() {
-				$(this).parents("div:first").prepend('<span class="input-group-text">'+$ZMI.icon('')+'</span>');
-				$(this).parents("div:first").wrapInner( "<div class='input-group'></div>");
-				$(this).wrap('<div class="input-group-prepend"></div>');
+				$(this).wrap( "<div class='input-group'></div>" );
+				$(this).before('<span class="input-group-text">'+$ZMI.icon('')+'</span>');
+				$(this).parent().children("span.input-group-text").wrap( "<div class='input-group-prepend'></div>");
 				var fn = function() {
 					var $input = $(this);
 					var $formGroup = $input.parents(".form-group");

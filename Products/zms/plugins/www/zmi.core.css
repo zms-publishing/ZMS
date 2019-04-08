@@ -926,6 +926,11 @@ body.browse_iframe .toggle {
 /* MODAL DIALOG */
 @media (min-width: 576px) {
 	.zmi .modal-dialog {
-		max-width: unset;
+		max-width: 80vw;
 	}
+}
+
+/* Icon Form Element */
+.row.inpIconClazz .input-group-prepend .input-group-text i {
+	min-width:1rem;
 }

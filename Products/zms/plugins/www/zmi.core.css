@@ -26,6 +26,7 @@ header .navbar-brand {
 }
 header.navbar-nav a {
 	color: silver;
+	text-decoration:none !important;
 }
 .zmi:not(.manage-menu) header.navbar-nav .dropdown-menu a.dropdown-item {
 	color:#212529;	

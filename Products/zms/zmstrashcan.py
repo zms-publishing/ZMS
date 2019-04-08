@@ -98,7 +98,7 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
     # --------------------------------------------------------------------------
     def display_icon(self, REQUEST, meta_type=None, key='icon', zpt=True):
       icon_title = self.display_type(REQUEST, meta_type)
-      icon_clazz = 'icon-trash'
+      icon_clazz = 'fas fa-trash'
       return self.zmi_icon(self, name=icon_clazz, extra='title="%s"'%icon_title)
 
 

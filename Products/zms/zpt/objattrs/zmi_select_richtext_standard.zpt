@@ -105,7 +105,7 @@ function zmiRicheditInsertTab( fmName, elName) {
 					class="btn btn-secondary"
 					tal:attributes="class python:'btn btn-secondary charFormat-%s'%(fmKey);
 						onclick python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%(fmKey,options['fmName'],options['elName'])"
-					><i tal:attributes="class python:charFormat[1]; title python:here.getZMILangStr('OPT_S_%s'%charFormat[0].upper())"></i></span
+					><tal:block tal:content="structure python:here.zmi_icon(name=charFormat[1],extra=' title=\042%s\042'%here.getZMILangStr('OPT_S_%s'%charFormat[0].upper()))"></tal:block></span
 			></tal:block
 		></div><!-- .btn-group -->
 		<div class="btn-group pull-left">

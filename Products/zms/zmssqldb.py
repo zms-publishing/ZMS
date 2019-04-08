@@ -466,7 +466,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           self.parent = parent 
           self.tableName = tableName
         __call____roles__ = None
-        def __call__(self, r):
+        def handle_record(self, r):
           context = self.parent
           d = {}
           for k in r:

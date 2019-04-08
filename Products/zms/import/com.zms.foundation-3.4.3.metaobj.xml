@@ -3588,7 +3588,8 @@ $(function() {
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
-<tal:block tal:define="zmscontext options/zmscontext;
+<tal:block tal:define="standard modules/Products.zms/standard;
+	zmscontext options/zmscontext;
 	attr_ids python:zmscontext.attr('record_attrs');">
 
 <tal:block tal:content="structure python:'<'+'/div><!-- .card-body -->'"></tal:block>
@@ -3660,15 +3661,15 @@ tr.inactive * {
 						<select class="form-control form-control-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
 							<option value="" tal:content="python:zmscontext.getZMILangStr('CAPTION_SELECT')">the option</option>
 							<tal:block tal:repeat="filter_column filter_columns">
-								<option tal:attributes="value python:filter_column['id']; selected python:['','selected'][int(request.SESSION.get('filterattr%i_%s'%(filterIndex,zmscontext.id))==filter_column['id'])]" tal:content="filter_column/name">label</option>
+								<option tal:attributes="value python:filter_column['id']; selected python:['','selected'][int(standard.get_session_value(zmscontext,'filterattr%i_%s'%(filterIndex,zmscontext.id))==filter_column['id'])]" tal:content="filter_column/name">label</option>
 							</tal:block>
 						</select>
 						<select class="form-control form-control-sm" tal:attributes="name python:'filterop%i'%filterIndex">
 							<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
-								<option tal:attributes="value python:op; selected python:['','selected'][op.lower()==request.get('filterop%i'%filterIndex, request.SESSION.get('filterop%i_%s'%(filterIndex,zmscontext.id),'')).lower()]" tal:content="python:op">op</option>
+								<option tal:attributes="value python:op; selected python:['','selected'][str(op).lower()==str(request.get('filterop%i'%filterIndex, standard.get_session_value(zmscontext,'filterop%i_%s'%(filterIndex,zmscontext.id),''))).lower()]" tal:content="python:op">op</option>
 							</tal:block>
 						</select>
-						<input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),''))" />
+						<input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, standard.get_session_value(zmscontext,'filtervalue%i_%s'%(filterIndex,zmscontext.id),''))" />
 					</div><!-- .form-group -->
 				</tal:block>
 				<div class="form-group row">
@@ -3834,17 +3835,17 @@ for filterIndex in range(10):
   for filterStereotype in ['attr','op','value']:
     requestkey = 'filter%s%i'%(filterStereotype,filterIndex)
     sessionkey = '%s_%s'%(requestkey,zmscontext.id)
-    requestvalue = request.form.get(requestkey,session.get(sessionkey,''))
+    requestvalue = request.form.get(requestkey,standard.get_session_value(zmscontext,sessionkey,''))
     if request.get('btn','')==zmscontext.getZMILangStr('BTN_RESET'):
       requestvalue = ''
     request.set(requestkey,requestvalue)
-    session.set(sessionkey,requestvalue)
-session.set('qfilters_%s'%zmscontext.id,request.form.get('qfilters',session.get('qfilters_%s'%zmscontext.id,1)))
+    standard.set_session_value(zmscontext,sessionkey,requestvalue)
+standard.set_session_value(zmscontext,'qfilters_%s'%zmscontext.id,request.form.get('qfilters',standard.get_session_value(zmscontext,'qfilters_%s'%zmscontext.id,1)))
 for filterIndex in range(10):
   suffix = '%i_%s'%(filterIndex,zmscontext.id)
-  sessionattr = session.get('filterattr%s'%suffix,'')
-  sessionop = session.get('filterop%s'%suffix,'%')
-  sessionvalue = session.get('filtervalue%s'%suffix,'')
+  sessionattr = standard.get_session_value(zmscontext,'filterattr%s'%suffix,'')
+  sessionop = standard.get_session_value(zmscontext,'filterop%s'%suffix,'%')
+  sessionvalue = standard.get_session_value(zmscontext,'filtervalue%s'%suffix,'')
   if sessionattr and sessionvalue:
     res = standard.filter_list(res,sessionattr,sessionvalue,sessionop)
 
@@ -3858,8 +3859,8 @@ qorderdefault = zmscontext.attr('record_order_default')
 if qorderdefault.find(':')>=0:
   qorder = qorderdefault[:qorderdefault.find(':')]
   qorderdir = qorderdefault[qorderdefault.find(':')+1:]
-qorder = session.get('qorder%s'%zmscontext.id,qorder)
-qorderdir = session.get('qorderdir%s'%zmscontext.id,qorderdir)
+qorder = standard.get_session_value(zmscontext,'qorder%s'%zmscontext.id,qorder)
+qorderdir = standard.get_session_value(zmscontext,'qorderdir%s'%zmscontext.id,qorderdir)
 if qorder and qorderdir:
   res = zmscontext.sort_list(res,qorder,qorderdir)
   request.set('qorder',qorder)
@@ -3941,7 +3942,7 @@ return attrs
 # --// record_handler //--
 
 request = zmscontext.REQUEST
-class EntityRecordHandler:
+class EntityRecordHandler():
   def handle_record(self, r):
     id = r['__id__']
     childNode = getattr(zmscontext,id)
@@ -4069,7 +4070,7 @@ return None
           <item key="id">ZMSObjectSet</item>
           <item key="name">ZMSObjectSet</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">3.4.0</item>
+          <item key="revision">3.4.3</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -6640,7 +6641,7 @@ return constraints
           <item key="id">com.zms.foundation</item>
           <item key="name">com.zms.foundation</item>
           <item key="package"></item>
-          <item key="revision">3.4.2</item>
+          <item key="revision">3.4.3</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

@@ -389,7 +389,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
                 fkMetaObjIdId = parent.getMetaobjAttrIdentifierId(fkContainer.meta_id)
                 self.fk[k] = {'fkMetaObj':fkMetaObj,'fkMetaObjRecordSet':fkMetaObjRecordSet,'fkMetaObjIdId':fkMetaObjIdId}
         __call____roles__ = None
-        def __call__(self, r):
+        def handle_record(self, r):
           d = {}
           for k in r:
             v = r[k]

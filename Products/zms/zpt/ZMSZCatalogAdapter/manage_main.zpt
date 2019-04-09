@@ -52,13 +52,7 @@ return [{<br/>
 			<a class="nav-link active" tal:attributes="href python:'#%s'%here.meta_type" data-toggle="tab">Adapter</a>
 		</li>
 		<li class="nav-item" tal:repeat="si connectors">
-			<a class="nav-link" tal:attributes="href python:'#%s'%si.meta_type" data-toggle="tab">
-				<img tal:attributes="src python:si.icon"/>
-				<tal:block tal:content="python:si.meta_type">the connector</tal:block>
-				<a class="text-danger" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'; data-id si/id" onclick="$(this).closest('form').append('<input type=\042hidden\042 name=\042objectIds:list\042 value=\042'+$(this).attr('data-id')+'\042><input type=\042hidden\042 name=\042btn\042 value=\042Remove\042>').submit();">
-					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-times')"></tal:block>
-				</a>
-			</a>
+			<a class="nav-link" tal:attributes="href python:'#%s'%si.meta_type" data-toggle="tab" tal:content="python:si.meta_type">Connector</a>
 		</li>
 	</ul>
 	<div class="tab-content">
@@ -211,6 +205,9 @@ return [{<br/>
 					<div class="col-sm-10">
 						<button name="btn" type="submit" class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_SAVE')" value="Save">
 							<tal:block tal:content="structure python:here.getZMILangStr('BTN_SAVE')"></tal:block>
+						</button>
+						<button name="btn" type="submit" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')" value="Delete">
+							<tal:block tal:content="structure python:here.getZMILangStr('BTN_DELETE')"></tal:block>
 						</button>
 						<div class="btn-group">
 							<a class="btn btn-secondary" tal:attributes="href python:'%s/get_sitemap'%si.absolute_url(); title python:'%s (%s)'%(here.getZMILangStr('BTN_EXPORT'),here.getZMILangStr('TAB_SITEMAP'))" target="_blank">

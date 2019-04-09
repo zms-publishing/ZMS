@@ -40,8 +40,8 @@
 				<input type="text" class="form-control" id="qsearch" name="q" tal:attributes="value python:request.get('q','*')">
 				<div class="input-group-append">
 					<a class="btn btn-primary" href="javascript:;" 
-						tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_xml\',{q:$(\'#ZCatalogSolrConnector #qsearch\').val()},{iframe:true,title:\'Solr: Select\'})'%here.absolute_url()">
-						tal:content="structure python:here.zmi_icon(name='icon-external-link')"></a>
+						tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_xml\',{q:$(\'#ZCatalogSolrConnector #qsearch\').val()},{iframe:true,title:\'Solr: Select\'})'%here.absolute_url()"
+						tal:content="structure python:here.zmi_icon(name='icon-external-link-alt')"></a>
 				</div>
 			</div>
 		</div>
@@ -53,8 +53,8 @@
 				<input type="text" class="form-control" id="qsuggest" name="q" tal:attributes="value python:request.get('q','*')">
 				<div class="input-group-append">
 					<a class="btn btn-primary" href="javascript:;"
-						tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/suggest_xml\',{q:$(\'#ZCatalogSolrConnector #qsuggest\').val()},{iframe:true,title:\'Solr: Suggest\'})'%here.absolute_url()">
-						tal:content="structure python:here.zmi_icon(name='icon-external-link')"></a>
+						tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/suggest_xml\',{q:$(\'#ZCatalogSolrConnector #qsuggest\').val()},{iframe:true,title:\'Solr: Suggest\'})'%here.absolute_url()"
+						tal:content="structure python:here.zmi_icon(name='icon-external-link-alt')"></a>
 				</div>
 			</div>
 		</div>

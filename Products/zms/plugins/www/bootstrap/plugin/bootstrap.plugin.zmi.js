@@ -199,7 +199,8 @@ $(function(){
 	}
 
 	// Context-Sensitive Help On Labels
-	$("div.help").each(function() {
+	$(".help").each(function() {
+			$(this).hide();
 			var data_for = $(this).attr("data-for");
 			$("label[for="+data_for+"], label[for="+data_for+"_"+getZMILang()+"]").each(function() {
 					$(this).removeClass("col-sm-2").wrap('<div class="col-sm-2" style="text-align:right"></div>');
@@ -557,7 +558,7 @@ $(function(){
 		});
 
 	// Select tab.
-	$(".tabbable.tabs-left").each(function() {
+	$("ul.nav.nav-tabs#subTab").each(function() {
 			var anchor = $("a:first",this).attr("href");
 			if (self.location.href.indexOf("#")>0) {
 				anchor = self.location.href.substr(self.location.href.indexOf("#")+1);

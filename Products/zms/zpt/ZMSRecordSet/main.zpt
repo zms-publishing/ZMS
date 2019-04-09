@@ -63,32 +63,36 @@
 		<div id="attrProperties" class="filters collapse show">
 			<div class="card-body">
 				<tal:block tal:repeat="filterIndex python:range(request.get('qfilters',1)+1)">
-					<div tal:attributes="class python:' '.join(['form-group','col-lg-12']+[[],['hidden']][int(filterIndex==request.get('qfilters',1))])">
-						<select class="form-control form-control-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
-							<option value="" tal:content="python:here.getZMILangStr('CAPTION_SELECT')">the option</option>
-							<tal:block tal:repeat="filter_column filter_columns">
-								<option tal:attributes="value python:filter_column['id']; selected python:['','selected'][int(request.SESSION.get('filterattr%i_%s'%(filterIndex,here.id))==filter_column['id'])]" tal:content="filter_column/name">label</option>
-							</tal:block>
-						</select>
-						<select class="form-control form-control-sm" tal:attributes="name python:'filterop%i'%filterIndex">
-							<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
-								<option tal:attributes="value python:op; selected python:['','selected'][op.lower()==request.get('filterop%i'%filterIndex, request.SESSION.get('filterop%i_%s'%(filterIndex,here.id),'')).lower()]" tal:content="python:op">op</option>
-							</tal:block>
-						</select>
-						<input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />
-					</div><!-- .form-group -->
+					<div tal:attributes="class python:' '.join(['form-row']+[[],['hidden']][int(filterIndex==request.get('qfilters',1))])">
+						<div class="form-group col-md-4">
+							<select class="form-control form-control-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
+								<option value="" tal:content="python:here.getZMILangStr('CAPTION_SELECT')">the option</option>
+								<tal:block tal:repeat="filter_column filter_columns">
+									<option tal:attributes="value python:filter_column['id']; selected python:['','selected'][int(request.SESSION.get('filterattr%i_%s'%(filterIndex,here.id))==filter_column['id'])]" tal:content="filter_column/name">label</option>
+								</tal:block>
+							</select>
+						</div>
+						<div class="form-group col-md-2">
+							<select class="form-control form-control-sm" tal:attributes="name python:'filterop%i'%filterIndex">
+								<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
+									<option tal:attributes="value python:op; selected python:['','selected'][op.lower()==request.get('filterop%i'%filterIndex, request.SESSION.get('filterop%i_%s'%(filterIndex,here.id),'')).lower()]" tal:content="python:op">op</option>
+								</tal:block>
+							</select>
+						</div>
+						<div class="form-group col-md-6">
+							<input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, request.SESSION.get('filtervalue%i_%s'%(filterIndex,here.id),''))" />
+						</div>
+					</div><!-- .form-row -->
 				</tal:block>
-				<div class="form-group row">
-					<div class="col-lg-12">
-						<button type="submit" id="btn-search" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_REFRESH')">
-							<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
-							<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>
-						</button>
-						<button type="submit" id="btn-reset" class="btn btn-secondary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
-							<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
-						</button>
-					</div>
-				</div>
+				<div class="form-row">
+					<button type="submit" id="btn-search" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_REFRESH')">
+						<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
+						<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>
+					</button>
+					<button type="submit" id="btn-reset" class="btn btn-secondary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
+						<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
+					</button>
+				</div><!-- .form-row -->
 			</div><!-- .card-body -->
 		</div><!-- .collapse -->
 	</div><!-- .card -->

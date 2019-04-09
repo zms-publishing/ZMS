@@ -78,12 +78,12 @@ def manage_exportZodbNative2LocalFS( self):
     + '<input class="form-control" id="path" name="path" value="'+request.get('path',self.getINSTANCE_HOME())+'">' \
     + '</div><!-- .col-sm-10 -->' \
     + '</div><!-- .form-group -->' \
-    + '<div class="form-group row">' \
+    + '<div class="form-row">' \
     + '<div class="controls save">' \
     + '<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button> '%(self.getZMILangStr('BTN_REFRESH'),self.getZMILangStr('BTN_REFRESH')) \
     + '<button type="button" name="btn" class="btn btn-danger" value="return %s" onclick="btn_execute_click()">%s</button> '%(self.getZMILangStr('BTN_EXECUTE'),self.getZMILangStr('BTN_EXECUTE')) \
-    + '</div>' \
-    + '</div><!-- .form-group -->'
+    + '</div><!-- .controls.save -->' \
+    + '</div><!-- .form-row -->'
   
 
   html += '<table class="table">'

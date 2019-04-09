@@ -57,11 +57,11 @@ else:
 	print('<label for="new" class="col-sm-3 control-label mandatory">Replace with</label>')
 	print('<div class="col-sm-9"><input class="form-control" name="new" type="text" size="25" value=""></div>')
 	print('</div><!-- .form-group -->')
-	print('<div class="form-group row">')
+	print('<div class="form-row">')
 	print('<div class="controls save">')
-	print('<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(context.getZMILangStr('BTN_EXECUTE'),context.getZMILangStr('BTN_EXECUTE')))
-	print('<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button>'%(context.getZMILangStr('BTN_CANCEL'),context.getZMILangStr('BTN_CANCEL')))
-	print('</div>')
+	print('<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(context.getZMILangStr('BTN_EXECUTE'),context.getZMILangStr('BTN_EXECUTE')))
+	print('<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button> '%(context.getZMILangStr('BTN_CANCEL'),context.getZMILangStr('BTN_CANCEL')))
+	print('</div><!-- .controls.save -->')
 	print('</div><!-- .form-group -->')
 
 # ---------------------------------

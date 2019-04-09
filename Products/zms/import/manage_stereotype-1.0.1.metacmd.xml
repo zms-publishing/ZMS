@@ -114,12 +114,12 @@ html += '<span class="btn btn-secondary"><input name="recursive" type="checkbox"
 html += '</div><!--.col-sm-10 -->'
 html += '</div>'
 
-html += '<div class="form-group row">'
+html += '<div class="form-row">'
 html += '<div class="controls save">'
 html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(unicode(context.getZMILangStr('BTN_SAVE'),'utf-8'),unicode(context.getZMILangStr('BTN_SAVE'),'utf-8'))
 html += '<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button> '%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
-html += '</div>'
-html += '</div><!-- .form-group -->'
+html += '</div><!-- .controls.save -->'
+html += '</div><!-- .form-row -->'
 
 # ---------------------------------
 

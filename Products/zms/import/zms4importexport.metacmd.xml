@@ -191,12 +191,12 @@ def manage_zms4import( self):
 		html += '<label for="id" class="col-sm-3 control-label">Zope</label>'
 		html += '<div class="col-sm-9"><input name="zope:int" type="checkbox" value="1" checked="checked"> %s</div>'%self.getZMILangStr('BTN_IMPORT')
 		html += '</div><!-- .form-group -->'
-		html += '<div class="form-group row">'
+		html += '<div class="form-row">'
 		html += '<div class="controls save">'
 		html += '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'))
 		html += '<button type="submit" name="btn" class="btn btn-secondary" value="%s">%s</button>'%(self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
-		html += '</div>'
-		html += '</div><!-- .form-group -->'
+		html += '</div><!-- .controls.save -->'
+		html += '</div><!-- .form-row -->'
 
 	# ---------------------------------
 

@@ -207,9 +207,6 @@
       </div><!-- .form-group -->
       <table class="table table-striped table-hover table-bordered">
       <thead>
-        <colgroup>
-          <col width="1em;"/>
-        </colgroup>
         <tr>
           <th>&nbsp;</th>
           <th>Key</th>

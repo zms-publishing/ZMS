@@ -132,7 +132,7 @@
 			</div><!-- .card-body -->
 		</div><!-- .collapse -->
 		<hr />
-		<div class="form-group row">
+		<div class="form-row">
 			<div class="controls save">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COMPARE')">
 					<tal:block tal:content="structure python:here.zmi_icon(name='icon-random')"></tal:block>

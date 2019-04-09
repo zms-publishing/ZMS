@@ -18,11 +18,11 @@
 				<label for="_meta_name" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TITLE')">Title</span></label>
 				<div class="col-lg-10"><input type="text" id="newTitle" name="newTitle" class="form-control form-control-sm" /></div>
 			</div><!-- .form-group -->
-			<div class="form-group row">
+			<div class="form-row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 				</div><!-- .controls.save -->
-			</div><!-- .form-group -->
+			</div><!-- .form-row -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #insertObj -->

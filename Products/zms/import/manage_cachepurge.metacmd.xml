@@ -108,7 +108,7 @@ return '<br />'.join(msg)
 						></textarea>
 				</div>
 			</div>
-			<div class="form-group row" tal:define="reset_preview python:request.set('preview','preview')">
+			<div class="form-row" tal:define="reset_preview python:request.set('preview','preview')">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-secondary" value="this_url" title="Write this URL into List">Get this URL</button>
 					<button type="submit" name="btn" class="btn btn-warning" value="all_urls" title="Recursively write all dependent URLs into List">Get URLs recursivly</button>

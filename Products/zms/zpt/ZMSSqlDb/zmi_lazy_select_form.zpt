@@ -78,12 +78,12 @@
 			)">
 		metaobj_recordset_main_grid
 	</tal:block>
-	<div class="form-group row">
+	<div class="form-row">
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" onclick="zmiSelectBtnClick()" tal:attributes="value python:here.getZMILangStr('BTN_SELECT')" tal:content="python:here.getZMILangStr('BTN_SELECT')">Select</button>
 			<button type="submit" name="btn" class="btn btn-secondary" onclick="zmiCloseBtnClick()" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 		</div>
-	</div><!-- .form-group -->
+	</div><!-- .form-row -->
 </tal:block>
 
 <tal:block tal:content="structure python:'<script>'"></tal:block>

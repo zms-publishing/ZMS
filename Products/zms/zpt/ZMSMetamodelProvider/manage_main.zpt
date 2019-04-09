@@ -37,8 +37,10 @@
 					</select>
 				</div>
 			</div><!-- .form-group -->
-			<div class="controls save">
-				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+			<div class="form-row">
+				<div class="controls save">
+					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+				</div>
 			</div><!-- .controls.save -->
 		</form>
 	</div><!-- .inner -->
@@ -121,11 +123,13 @@
 					tal:content="python:metaObj.get('name')">Name</a>
 			</div>
 		</div>
-		<div class="form-group controls save">
-			<button tal:condition="python:not metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button tal:condition="python:metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COPY')" tal:content="python:here.getZMILangStr('BTN_COPY')">Copy</button>
-			<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
-			<button type="button" name="btn" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')" onclick="return zmiExportBtnClick(this)" tal:content="structure python:zmscontext.zmi_icon(name='icon-download')"></button>
+		<div class="form-row">
+			<div class="controls save">
+				<button tal:condition="python:not metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+				<button tal:condition="python:metaObj['acquired']" type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COPY')" tal:content="python:here.getZMILangStr('BTN_COPY')">Copy</button>
+				<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
+				<button type="button" name="btn" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')" onclick="return zmiExportBtnClick(this)" tal:content="structure python:zmscontext.zmi_icon(name='icon-download')"></button>
+			</div>
 		</div>
 	</div>
 
@@ -294,10 +298,12 @@
 			</tr>
 		</tbody>
 	</table>
-	<div class="controls save">
-		<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-		<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
-	</div><!-- .col-lg-10 -->
+	<div class="form-row">
+		<div class="controls save">
+			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
+		</div><!-- .controls.save -->
+	</div><!-- .form-row -->
 
 	<!-- BO Usage -->
 	<div class="meta-usage" tal:define="l python:[]">

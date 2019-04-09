@@ -191,11 +191,11 @@ function zmiModalInsertUserOpen(context) {
 					tal:define="roles_optpl python:len([x for x in request['AUTHENTICATED_USER'].getRolesInContext(here) if x in ['Manager','ZMSAdminstrator']]) > 0 and roles_optpl or roles_optpl[1:]"
 					tal:content="structure python:here.zmi_input_multiselect(here,name='roles',value=[],lang_str='ATTR_ROLES',options=roles_optpl)">the control</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
-			<div class="form-group row">
+			<div class="form-row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Save</button>
 				</div><!-- .controls.save -->
-			</div><!-- .form-group -->
+			</div><!-- .form-row -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #insertNode -->
@@ -272,14 +272,14 @@ function zmiModalInsertUserOpen(context) {
 		<div class="col-sm-10" tal:content="structure python:here.getUrlInput(fmName='userform',elName='profile',value=here.getUserAttr(userObj['name'],'profile',''),REQUEST=request)">the control</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
 	</tal:block>
-	<div class="form-group row">
+	<div class="form-row">
 		<div class="controls save">
 			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:condition="python:userObj is not None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-ok')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</tal:block></button>
 			<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:condition="python:userName in userNames"><tal:block tal:content="structure python:here.zmi_icon(name='icon-times')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>
 			&nbsp;&nbsp;
 			<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
 		</div><!-- .controls.save -->
-	</div><!-- .form-group -->
+	</div><!-- .form-row -->
 </tal:block>
 </tal:block>
 
@@ -290,7 +290,7 @@ function zmiModalInsertUserOpen(context) {
 			<tal:block tal:content="structure python:here.zmi_icon(name='icon-group')"></tal:block> <tal:block tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_ROLE'),request['id'])">Role: Id</tal:block>
 		</a>
 	</legend>
-	<div class="form-group row">
+	<div class="form-row">
 		<div class="controls save"
 				 tal:define="
 					security_roles python:here.getRootElement().getSecurityRoles().get(request['id'],{});
@@ -305,7 +305,7 @@ function zmiModalInsertUserOpen(context) {
 				&nbsp;&nbsp;
 			<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_BACK')" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</button>
 		</div><!-- .controls.save -->
-	</div><!-- .form-group -->
+	</div><!-- .form-row -->
 </tal:block>
 </tal:block>
 
@@ -425,11 +425,11 @@ function zmiModalInsertUserOpen(context) {
 			<label for="newEmail" tal:attributes="class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
 			<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='addUserForm',elName='newEmail',size=15,value='')">the control</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
-		<div class="form-group row">
+		<div class="form-row">
 			<div class="controls save">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ADD')" tal:content="python:here.getZMILangStr('BTN_ADD')">Add</button>
 			</div><!-- .controls.save -->
-		</div><!-- .form-group -->
+		</div><!-- .form-row -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #addUser -->
@@ -575,11 +575,11 @@ function zmiModalInsertUserOpen(context) {
 					</div><!-- .col-sm-10 -->
 				</div><!-- .form-group -->
 			</tal:block>
-			<div class="form-group row">
+			<div class="form-row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')" onclick="btnClick(this,'obj');">Insert</button>
 				</div><!-- .controls.save -->
-			</div><!-- .form-group -->
+			</div><!-- .form-row -->
 		</form>
 	</div><!-- #insertRole.inner -->
 </div>

@@ -60,12 +60,12 @@
 					</p>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-group row">
+			<div class="form-row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
-			</div><!-- .form-group -->
+			</div><!-- .form-row -->
 		</form>
 	</div><!-- .inner -->
 </div><!-- #editObj -->

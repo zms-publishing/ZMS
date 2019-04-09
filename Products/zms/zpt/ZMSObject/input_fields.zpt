@@ -185,12 +185,12 @@
 
 		<div class="collapse show" tal:condition="not:python:request.get('ZMS_INSERT')">
 			<div class="card-body">
-				<div class="form-group row">
+				<div class="form-row">
 					<div class="controls save">
 						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_%s'%action.upper())" tal:content="python:here.getZMILangStr('BTN_%s'%action.upper())">Action</button>
 						<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 					</div>
-				</div><!-- .form-group -->
+				</div><!-- .form-row -->
 			</div><!-- .card-body -->
 		</div><!-- .collapse -->
 

@@ -14,7 +14,6 @@
     <li class="nav-item"><a class="nav-link" id="Configuration-tab" href="#Configuration" data-toggle="tab" role="tab">Configuration</a></li>
     <li class="nav-item"><a class="nav-link" id="Custom-tab" href="#Custom" data-toggle="tab" role="tab">System-Properties</a></li>
     <li class="nav-item"><a class="nav-link" id="MediaDb-tab" href="#MediaDb" data-toggle="tab" role="tab">Media-Folder</a></li>
-    <li class="nav-item"><a class="nav-link" id="History-tab" href="#History" data-toggle="tab" role="tab">History</a></li>
     <li class="nav-item"><a class="nav-link" id="InstalledProducts-tab" href="#InstalledProducts" data-toggle="tab" role="tab">Installed Libraries</a></li>
     <li class="nav-item"><a class="nav-link" id="Instance-tab" href="#Instance" data-toggle="tab" role="tab">Instance</a></li>
   </ul>
@@ -290,32 +289,6 @@
         </div>
       </div><!-- .form-group -->
       </tal:block>
-    </form>
-    </div>
-
-    <div class="tab-pane fade" id="History" role="tabpanel">
-    <form class="form-horizontal" name="HistoryForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
-      <input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
-      <input type="hidden" name="key" value="History" />
-      <legend>History</legend>
-      <p class="well well-small">Activate or deactivate the integrated history-mechanism.</p>
-      <div class="form-group row">
-      <label class="col-sm-2 control-label" for="history_active">Active</label>
-        <div class="col-sm-10">
-          <div class="pull-left">
-            <span class="btn btn-secondary"><input type="checkbox" id="history_active" name="active:int" value="1" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.Version.active',0)==1)]" /></span>
-          </div>
-          <div class="col-md-6 col-sm-8 col-xs-10">
-            <textarea class="form-control url-input" name="nodes" tal:content="python:'\n'.join(here.getConfProperty('ZMS.Version.nodes',['{$}']))"></textarea>
-          </div>
-        </div>
-      </div><!-- .form-group -->
-      <div class="form-group row">
-        <div class="col-sm-2">&nbsp;</div>
-        <div class="col-sm-10">
-          <button name="btn" type="submit" class="btn btn-primary" value="Change">Change</button>
-        </div>
-      </div><!-- .form-group -->
     </form>
     </div>
 

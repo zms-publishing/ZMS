@@ -8,20 +8,19 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'action':'manage_customize','label':'TAB_SYSTEM'}])">zmi_breadcrumbs</tal:block>
 
-<div class="nav nav-tabs tabbable tabs-left">
-  <ul class="nav nav-tabs">
-    <li class="nav-item"><a class="nav-link" href="#Manager" data-toggle="tab">Manager</a></li>
-    <li class="nav-item"><a class="nav-link" href="#Clients" data-toggle="tab">Portal</a></li>
-    <li class="nav-item"><a class="nav-link" href="#Configuration" data-toggle="tab">Configuration</a></li>
-    <li class="nav-item"><a class="nav-link" href="#Custom" data-toggle="tab">System-Properties</a></li>
-    <li class="nav-item"><a class="nav-link" href="#MediaDb" data-toggle="tab">Media-Folder</a></li>
-    <li class="nav-item"><a class="nav-link" href="#History" data-toggle="tab">History</a></li>
-    <li class="nav-item"><a class="nav-link" href="#InstalledProducts" data-toggle="tab">Installed Libraries</a></li>
-    <li class="nav-item"><a class="nav-link" href="#Instance" data-toggle="tab">Instance</a></li>
+  <ul class="nav nav-tabs" id="subTab" role="tablist">
+    <li class="nav-item"><a class="nav-link active" id="Manager-tab" href="#Manager" data-toggle="tab" role="tab">Manager</a></li>
+    <li class="nav-item"><a class="nav-link" id="Clients-tab" href="#Clients" data-toggle="tab" role="tab">Portal</a></li>
+    <li class="nav-item"><a class="nav-link" id="Configuration-tab" href="#Configuration" data-toggle="tab" role="tab">Configuration</a></li>
+    <li class="nav-item"><a class="nav-link" id="Custom-tab" href="#Custom" data-toggle="tab" role="tab">System-Properties</a></li>
+    <li class="nav-item"><a class="nav-link" id="MediaDb-tab" href="#MediaDb" data-toggle="tab" role="tab">Media-Folder</a></li>
+    <li class="nav-item"><a class="nav-link" id="History-tab" href="#History" data-toggle="tab" role="tab">History</a></li>
+    <li class="nav-item"><a class="nav-link" id="InstalledProducts-tab" href="#InstalledProducts" data-toggle="tab" role="tab">Installed Libraries</a></li>
+    <li class="nav-item"><a class="nav-link" id="Instance-tab" href="#Instance" data-toggle="tab" role="tab">Instance</a></li>
   </ul>
   <div class="tab-content">
 
-    <div class="tab-pane active" id="Manager">
+    <div class="tab-pane fade show active" id="Manager" role="tabpanel">
     <form class="form-horizontal row" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
       <input type="hidden" name="key" value="Manager" />
@@ -65,7 +64,7 @@
     </form>
     </div>
 
-    <div class="tab-pane" id="Clients">
+    <div class="tab-pane fade" id="Clients" role="tabpanel">
     <form class="form-horizontal" name="ClientsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
       <input type="hidden" name="key" value="Clients">
@@ -111,7 +110,7 @@
     </form>
     </div>
 
-    <div class="tab-pane" id="Configuration">
+    <div class="tab-pane fade" id="Configuration" role="tabpanel">
     <form class="form-horizontal" name="ImportForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
       <input type="hidden" name="key" value="Import">
@@ -132,7 +131,7 @@
     </form>
     </div>
 
-    <div class="tab-pane" id="Custom">
+    <div class="tab-pane fade" id="Custom" role="tabpanel">
 <form class="form-horizontal" name="CustomForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
   <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
   <input type="hidden" name="key" value="Custom">
@@ -237,7 +236,7 @@
     </form>
     </div><!-- #System-Properties -->
 
-    <div class="tab-pane" id="MediaDb">
+    <div class="tab-pane fade" id="MediaDb" role="tabpanel">
     <form class="form-horizontal" name="CatalogForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']">
       <input type="hidden" name="key" value="MediaDb">
@@ -297,7 +296,7 @@
     </form>
     </div>
 
-    <div class="tab-pane" id="History">
+    <div class="tab-pane fade" id="History" role="tabpanel">
     <form class="form-horizontal" name="HistoryForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
       <input type="hidden" name="key" value="History" />
@@ -323,7 +322,7 @@
     </form>
     </div>
 
-    <div class="tab-pane" id="InstalledProducts">
+    <div class="tab-pane fade" id="InstalledProducts" role="tabpanel">
     <form class="form-horizontal" name="InstalledProductsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
       <input type="hidden" name="key" value="InstalledProducts" />
@@ -362,7 +361,7 @@
     </form>
     </div>
 
-    <div class="tab-pane" id="Instance">
+    <div class="tab-pane fade" id="Instance" role="tabpanel">
     <form class="form-horizontal" name="InstanceForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
       <input type="hidden" name="key" value="Instance" />
@@ -400,9 +399,7 @@
       </div><!-- .form-group -->
     </form>
     </div>
-
   </div>
-</div>
 
 <tal:block tal:on-error="structure string:<!-- ERROR: ZMSExtensionUtility -->">
 <style>

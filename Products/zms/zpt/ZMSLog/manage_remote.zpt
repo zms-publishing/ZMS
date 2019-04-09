@@ -24,7 +24,7 @@ function uploadBtnClick() {
 
 	<div class="input-group">
 		<input class="form-control" type="text" name="path" size="50" tal:attributes="value path"/>
-		<span class="input-group-btn"><button class="btn btn-secondary" name="btn" value="Chdir" tal:content="structure python:here.zmi_icon(name='icon-refresh')">Chdir</button></span>
+		<span class="input-group-btn"><button class="btn btn-secondary" name="btn" value="Chdir" tal:content="structure python:here.zmi_icon(name='icon-sync')">Chdir</button></span>
 	</div><!-- .input-group -->
 
 <table class="table table-striped">

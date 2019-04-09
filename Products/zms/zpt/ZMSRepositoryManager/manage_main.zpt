@@ -82,7 +82,7 @@
 		<div class="form-group row">
 			<label class="col-sm-2"></label>
 			<div class="col-sm-10">
-				<button type="submit" class="btn btn-secondary" name="btn" value="refresh"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-refresh')"></tal:block> Refresh</button>
+				<button type="submit" class="btn btn-secondary" name="btn" value="refresh"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-sync')"></tal:block> Refresh</button>
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
 		<div class="form-group row" tal:repeat="provider python:here.getRepositoryProviders()">
@@ -293,7 +293,7 @@
 							changed |= line.indexOf("<"+"del>")>=0 || line.indexOf("<"+"ins>")>=0;
 							line = '<'+'span class="line-number'+(changed?' line-changed':'')+'">'+(i+1)+'</span> '+lines[i];
 							if (!(show.contains(i-1) || show.contains(i) || show.contains(i+1))) {
-								line = '<'+'span class="diff-unchanged hidden">'+line+'<'+'/span>';
+								line = '<'+'span class="diff-unchanged d-none">'+line+'<'+'/span>';
 							}
 							else {
 								line = line+'<'+'br/>';
@@ -303,11 +303,11 @@
 						}
 						$diffContainer.html(html.join(""));
 						$("strong",$(this).closest("tr").prev("tr")).addClass("zmi-helper-clickable").click(function() {
-								if ($(".diff-unchanged.hidden",$diffContainer).length > 0) {
-									$(".diff-unchanged",$diffContainer).removeClass("hidden").after("<br>");
+								if ($(".diff-unchanged.d-none",$diffContainer).length > 0) {
+									$(".diff-unchanged",$diffContainer).removeClass("d-none").after("<br>");
 								}
 								else if ($(".diff-unchanged",$diffContainer).length > 0) {
-									$(".diff-unchanged",$diffContainer).addClass("hidden").next("br").remove();
+									$(".diff-unchanged",$diffContainer).addClass("d-none").next("br").remove();
 								}
 							});
 			});

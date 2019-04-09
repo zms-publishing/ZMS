@@ -235,7 +235,7 @@ $(function(){
       var $body = $(this);
       var f = function() {
           // Ensure at least one empty filter (cloned from hidden prototype).
-          var $hidden = $(".form-group.hidden",$body);
+          var $hidden = $(".form-group.d-none",$body);
           var $other = $hidden.prevAll(".form-group");
           var $selects = $("select[name^='filterattr']",$other);
           var i = 0;
@@ -251,7 +251,7 @@ $(function(){
             });
           if (c==0) {
             var $cloned = $hidden.clone(true);
-            $cloned.insertBefore($hidden).removeClass("hidden");
+            $cloned.insertBefore($hidden).removeClass("d-none");
           }
           // Rename filters (ordered by DOM).
           var qfilters = 0;
@@ -805,7 +805,7 @@ ZMI.prototype.initInputFields = function(container) {
 			}
 			$(this).addClass('form-initialized');
 			// Multi-Autocomplete
-			$('select.form-multiautocomplete[multiple]:not(.hidden)',context).each(function() {
+			$('select.form-multiautocomplete[multiple]:not(.d-none)',context).each(function() {
 					var $select = $(this);
 					var id = $select.attr('id');
 					var ajax_url = $select.attr('data-ajax-url');
@@ -837,7 +837,7 @@ ZMI.prototype.initInputFields = function(container) {
 							if (v.length>0) {
 								$input.val("");
 								if ($select.children("option[value='"+v+"']").length==0) {
-								  $select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+v+'</option>').removeClass("hidden");
+								  $select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+v+'</option>').removeClass("d-none");
 								  // rebuild multiselect
 								  $ZMI.multiselect(context);
 								}
@@ -845,7 +845,7 @@ ZMI.prototype.initInputFields = function(container) {
 						});
 				});
 			// Autocomplete
-			$('.form-autocomplete:not(.hidden)',context).each(function() {
+			$('.form-autocomplete:not(.d-none)',context).each(function() {
 					$(this).addClass("ui-autocomplete-input");
 					var id = $(this).attr('id');
 					$ZMI.writeDebug('autocomplete:'+id);
@@ -874,7 +874,7 @@ ZMI.prototype.initInputFields = function(container) {
 										if (v.length>0) { 
 										  ui.item.value = '';
 										  if ($select.children("option[value='"+v+"']").length==0) {
-										    $select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+ui.item.label+'</option>').removeClass("hidden");
+										    $select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+ui.item.label+'</option>').removeClass("d-none");
 										    // rebuild multiselect
 										    $ZMI.multiselect(context);
 										  }
@@ -889,7 +889,7 @@ ZMI.prototype.initInputFields = function(container) {
 					$ZMI.getConfProperty('plugin.bootstrap.multiselect.js','/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.multiselect.js')
 				]});
 			$.plugin('multiselect').set({context:context});
-			$.plugin('multiselect').get("select.zmi-select[multiple]:not(.hidden)",function(){
+			$.plugin('multiselect').get("select.zmi-select[multiple]:not(.d-none)",function(){
 					$ZMI.multiselect(context);
 				});
 			// Activity-Toggle

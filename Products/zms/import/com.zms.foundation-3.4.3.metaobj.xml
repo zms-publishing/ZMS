@@ -3614,9 +3614,6 @@ $(function() {
 tr.inactive * {
 	color:#AAA;
 }
-.label.zmi-info * {
-	color:white;
-}
 </style>
 
 		<tal:block tal:define="global

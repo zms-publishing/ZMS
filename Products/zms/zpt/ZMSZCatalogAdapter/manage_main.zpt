@@ -49,14 +49,14 @@ return [{<br/>
 
 	<ul class="nav nav-tabs" id="subTab" role="tablist">
 		<li class="nav-item">
-			<a class="nav-link active" tal:attributes="href python:'#%s'%here.meta_type" data-toggle="tab">Adapter</a>
+			<a class="nav-link" tal:attributes="href python:'#%s'%here.meta_type" data-toggle="tab">Adapter</a>
 		</li>
 		<li class="nav-item" tal:repeat="si connectors">
 			<a class="nav-link" tal:attributes="href python:'#%s'%si.meta_type" data-toggle="tab" tal:content="python:si.meta_type">Connector</a>
 		</li>
 	</ul>
 	<div class="tab-content">
-		<div class="tab-pane fade show active" tal:attributes="id here/meta_type">
+		<div class="tab-pane fade" tal:attributes="id here/meta_type">
 			<div class="form-horizontal">
 			<div class="form-group row">
 				<label class="col-sm-2 control-label" for="connectors"><span>Connectors</span></label>

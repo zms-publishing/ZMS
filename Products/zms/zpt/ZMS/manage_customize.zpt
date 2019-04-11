@@ -9,7 +9,7 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'action':'manage_customize','label':'TAB_SYSTEM'}])">zmi_breadcrumbs</tal:block>
 
   <ul class="nav nav-tabs" id="subTab" role="tablist">
-    <li class="nav-item"><a class="nav-link active" id="Manager-tab" href="#Manager" data-toggle="tab" role="tab">Manager</a></li>
+    <li class="nav-item"><a class="nav-link" id="Manager-tab" href="#Manager" data-toggle="tab" role="tab">Manager</a></li>
     <li class="nav-item"><a class="nav-link" id="Clients-tab" href="#Clients" data-toggle="tab" role="tab">Portal</a></li>
     <li class="nav-item"><a class="nav-link" id="Configuration-tab" href="#Configuration" data-toggle="tab" role="tab">Configuration</a></li>
     <li class="nav-item"><a class="nav-link" id="Custom-tab" href="#Custom" data-toggle="tab" role="tab">System-Properties</a></li>
@@ -19,7 +19,7 @@
   </ul>
   <div class="tab-content">
 
-    <div class="tab-pane fade show active" id="Manager" role="tabpanel">
+    <div class="tab-pane fade" id="Manager" role="tabpanel">
     <form class="form-horizontal row" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
       <input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
       <input type="hidden" name="key" value="Manager" />

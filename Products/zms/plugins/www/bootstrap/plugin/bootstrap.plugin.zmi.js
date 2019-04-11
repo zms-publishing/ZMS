@@ -567,7 +567,7 @@ $(function(){
 				}
 				anchor = '#'+anchor;
 			}
-			$("a[href='"+anchor+"']",this).tab("show");
+			$("a[href='"+anchor+"']",this).click();
 		});
 
 	// Ajax Lazy Load

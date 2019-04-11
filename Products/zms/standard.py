@@ -1511,48 +1511,6 @@ def is_equal(x, y):
   return cmp(x, y)==0
 
 
-security.declarePublic('str_json')
-def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, level=0):
-  """
-  Returns a json-string representation of the object.
-  @rtype: C{str}
-  """
-  if isinstance(i, list) or isinstance(i, tuple):
-    return '[' \
-        + (['', '\n'][formatted]+(['', '\t'][formatted]*level)+',').join([str_json(x, encoding, errors, formatted, level+1) for x in i]) \
-        + ']'
-  elif isinstance(i, dict):
-    k = sorted(i)
-    return '{' \
-        + (['', '\n'][formatted]+(['', '\t'][formatted]*level)+',').join(['"%s":%s'%(x, str_json(i[x], encoding, errors, formatted, level+1)) for x in k]) \
-        + '}'
-  elif isinstance(i, time.struct_time):
-    try:
-      return '"%s"'%format_datetime_iso(i)
-    except:
-      pass
-  elif isinstance(i, int) or isinstance(i, float):
-    return str(i)
-  elif isinstance(i, bool):
-    return str(i).lower()
-  elif i is not None:
-    if isinstance(i, str):
-      if not (i.strip().startswith('<') and i.strip().endswith('>')):
-        import cgi
-        i = cgi.escape(i).encode(encoding, errors)
-      else:
-        i = i.encode(encoding, errors)
-    else:
-      i = str(i)
-    if i in ['true', 'false']:
-      return i
-    else:
-      if type(i) is bytes:
-        i = i.decode('utf-8')
-      return '"%s"'%(str(i).replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n').replace('\r', '\\r'))
-  return '""'
-
-
 security.declarePublic('str_item')
 def str_item(i):
   """

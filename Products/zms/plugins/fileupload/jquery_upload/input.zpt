@@ -33,7 +33,6 @@ $(function () {
 					,form_id:'<tal:block tal:content="request/ZMI_TIME"></tal:block>'
 					<tal:block tal:condition="python:request.has_key('ZMS_INSERT')">,meta_id:'<tal:block tal:content="request/ZMS_INSERT"></tal:block>'</tal:block>
 				},
-				dataType: 'json',
 				add: function (e, data) {
 					$("#upload").remove();
 					data.context = $('<div id="upload"><div class="pull-left">Uploading</div><div class="pull-right bar" style="width: 0%;"></div></div>').insertAfter(this);
@@ -43,13 +42,15 @@ $(function () {
 					$("#upload").addClass("text-danger bg-danger").html(data.errorThrown+": "+data.textStatus);
 				},
 				done: function (e, data) {
+					var result = eval("("+data.result+")");
 					$('input[name="exists_'+elName+'"]:hidden').val('True');
-					var newsrc = data.result.temp_url;
+					var newsrc = result.temp_url;
 					var oldsrc = $("img#img_<tal:block tal:content="options/elName"></tal:block>").attr('src');
 					$("img#img_<tal:block tal:content="options/elName"></tal:block>").attr('src',newsrc);
-					$("#upload").addClass("text-success bg-success").html(''
-						+ '<a href="javascript:;">'+$ZMI.icon('icon-times','title="X" onclick="$(\'img#img_<tal:block tal:content="options/elName"></tal:block>\').attr(\'src\',\''+oldsrc+'\');$(\'#upload\').hide(\'normal\')"')+'</a> '
-						+ '<a href="'+newsrc+'" target="_blank" title="'+data.result.content_type+'">'+data.result.filename+'</a> ('+data.result.size_str+') '
+					$("#upload").addClass("bg-success").html(''
+						+ '<a href="'+newsrc+'" target="_blank" title="'+result.content_type+'"><span class="text-white">'+result.filename+'</a> '
+						+ '<span class="text-white">('+result.size_str+')</span> '
+						+ '<span class="btn btn-outline-light btn-sm">'+$ZMI.icon('icon-times','title="X" onclick="$(\'img#img_<tal:block tal:content="options/elName"></tal:block>\').attr(\'src\',\''+oldsrc+'\');$(\'#upload\').hide(\'normal\')"')+'</span> '
 						);
 				},
 				progressall: function (e, data) {

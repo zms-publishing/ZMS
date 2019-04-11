@@ -1082,7 +1082,7 @@ ZMI.prototype.initInputFields = function(container) {
 				$(this).closest("div").addClass("input-group");
 				$(this).closest("div").removeClass("col-sm-10");
 				$(this).closest("div").wrap('<div class="col-sm-4 col-md-3 col-lg-3"></div>');
-				$(this).before('<div class="input-group-prepend"><span class="input-group-text">'+$ZMI.icon("icon-calendar")+'</span></div>');
+				$(this).before('<div class="input-group-prepend"><span class="input-group-text">'+$ZMI.icon("far fa-calendar")+'</span></div>');
 			})
 			.mouseover(function(){
 				if (typeof self.zmiUlDatePickerInitialized == "undefined") {

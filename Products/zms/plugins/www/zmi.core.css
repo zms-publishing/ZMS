@@ -178,13 +178,15 @@ footer {
 
 #zmi-tab .form-horizontal {
 	background-color: white;
-	margin-left: 1.25rem;
-	margin-right: 1.25rem;
-	padding: 0.5rem;
+	margin:0 1.25rem;
+	X-padding: 0.5rem;
 }
-
-.modal-backdrop {
-	opacity:0.5;
+#zmi-tab .card .card-header {
+	border:none;
+	border-bottom: 1px solid rgba(0,0,0,.05);
+}
+#zmi-tab .card .card-header:not(:first-child) {
+	border-top: 1px solid rgba(0,0,0,.125);
 }
 
 .btn-group.managing, .btn-group.packaging {

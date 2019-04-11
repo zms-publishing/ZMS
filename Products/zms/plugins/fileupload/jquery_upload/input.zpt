@@ -2,7 +2,7 @@
 
 <input class="btn btn-file fileupload" type="file" tal:attributes="id options/elName; name options/elName;">
 
-<tal:block tal:condition="python:request.get('f_zmiFileUpload',True)">
+<tal:block tal:condition="python:request.get('f_zmiFileUpload',True)" tal:define="standard modules/Products.zms/standard;">
 <style>
 #upload {
 	padding:4px;
@@ -29,7 +29,7 @@ $(function () {
 					lang:'<tal:block tal:content="request/lang"></tal:block>'
 					,key:'<tal:block tal:content="options/key"></tal:block>'
 					,dataRequestKey:elName
-					,session_id:'<tal:block tal:content="python:request.SESSION.getId()"></tal:block>'
+					,session_id:'<tal:block tal:content="python:standard.get_session(here).getId()"></tal:block>'
 					,form_id:'<tal:block tal:content="request/ZMI_TIME"></tal:block>'
 					<tal:block tal:condition="python:request.has_key('ZMS_INSERT')">,meta_id:'<tal:block tal:content="request/ZMS_INSERT"></tal:block>'</tal:block>
 				},

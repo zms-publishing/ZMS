@@ -4102,9 +4102,10 @@ return None
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<tal:block tal:define="global
+                  <item key="custom"><![CDATA[<tal:block tal:define="
+		standard modules/Products.zms/standard;
 		zmscontext options/zmscontext;
-		session_id python:request.SESSION.getId();
+		session_id python:standard.get_session(here).getId();
 		dummy0 python:request.set('CKEDITOR_config_toolbar',[
 				['Format'],
 				['Bold','Italic','Underline','NumberedList','BulletedList'],

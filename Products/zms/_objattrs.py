@@ -32,8 +32,9 @@ import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
 from . import ZMSMetaobjManager
-from . import standard
 from . import pilutil
+from . import standard
+from . import zopeutil
 from . import _blobfields
 from . import _globals
 
@@ -914,11 +915,11 @@ class ObjAttrs(object):
             temp_folder = self.temp_folder
             id = session_id + '_' + form_id + '_' + key
             if id in temp_folder.objectIds():
-              o = getattr( temp_folder, id)
-              f = o.data
-              filename = getattr( temp_folder, id).title
+              o = zopeutil.getObject(temp_folder,id)
+              f = zopeutil.readData(o)
+              filename = o.title
               mt, enc = standard.guess_content_type( filename, f)
-              set, value = True, {'data':str(f),'filename':filename,'content_type':mt}
+              set, value = True, {'data':f,'filename':filename,'content_type':mt}
               if not pilutil.enabled() and datatype == _globals.DT_IMAGE and REQUEST.get('width_%s'%elName) and REQUEST.get('height_%s'%elName):
                 w = REQUEST['width_%s'%elName]
                 h = REQUEST['height_%s'%elName]

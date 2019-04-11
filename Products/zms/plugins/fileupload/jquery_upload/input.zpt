@@ -33,6 +33,7 @@ $(function () {
 					,form_id:'<tal:block tal:content="request/ZMI_TIME"></tal:block>'
 					<tal:block tal:condition="python:request.has_key('ZMS_INSERT')">,meta_id:'<tal:block tal:content="request/ZMS_INSERT"></tal:block>'</tal:block>
 				},
+				dataType: 'json',
 				add: function (e, data) {
 					$("#upload").remove();
 					data.context = $('<div id="upload"><div class="pull-left">Uploading</div><div class="pull-right bar" style="width: 0%;"></div></div>').insertAfter(this);
@@ -42,7 +43,7 @@ $(function () {
 					$("#upload").addClass("text-danger bg-danger").html(data.errorThrown+": "+data.textStatus);
 				},
 				done: function (e, data) {
-					var result = eval("("+data.result+")");
+					var result = data.result;
 					$('input[name="exists_'+elName+'"]:hidden').val('True');
 					var newsrc = result.temp_url;
 					var oldsrc = $("img#img_<tal:block tal:content="options/elName"></tal:block>").attr('src');

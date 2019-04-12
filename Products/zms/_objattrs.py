@@ -908,12 +908,10 @@ class ObjAttrs(object):
         
         # Preload
         else:
-          SESSION = REQUEST.get('SESSION', None)
           form_id = REQUEST.get('form_id', None)
-          if SESSION is not None and form_id is not None:
-            session_id = REQUEST.get('session_id', SESSION.getId())
+          if form_id is not None:
             temp_folder = self.temp_folder
-            id = session_id + '_' + form_id + '_' + key
+            id = form_id + '_' + key
             if id in temp_folder.objectIds():
               o = zopeutil.getObject(temp_folder,id)
               f = zopeutil.readData(o)
@@ -1035,10 +1033,9 @@ class ObjAttrs(object):
       filename = blob.getFilename()
       
       # Preload to temp-folder.
-      session_id = REQUEST['session_id']
       form_id = REQUEST['form_id']
       temp_folder = self.temp_folder
-      id = session_id + '_' + form_id + '_' + key
+      id = form_id + '_' + key
       if id in temp_folder.objectIds():
         temp_folder.manage_delObjects([id])
       meta_id = REQUEST.get('meta_id', self.meta_id)
@@ -1068,68 +1065,64 @@ class ObjAttrs(object):
     def manage_changeTempBlobjProperty(self, lang, key, form_id, action, REQUEST, RESPONSE=None):
       """ ObjAttrs.manage_changeTempBlobjProperty """
       rtn = {}
-      # Mandatory parameters.
-      SESSION = REQUEST.get('SESSION', None)
-      if SESSION is not None:
-        session_id = SESSION.getId()
-        temp_folder = self.temp_folder
-        id = session_id + '_' + form_id + '_' + key
-        src = self.getTempBlobjPropertyUrl( format=None, REQUEST=REQUEST, RESPONSE=RESPONSE)['src']
-        file = getattr( temp_folder, id)
-        orig = self.ImageFromData(file.data, file.title)
-        orig.lang = lang
-        if action == 'preview':
-          maxdim = self.getConfProperty('InstalledProducts.pil.thumbnail.max')
-          blob = pilutil.thumbnail( orig, maxdim)
-          thumbkey = key
-          for suffix in ['hires', 'superres']:
-            if thumbkey.endswith(suffix):
-              thumbkey = thumbkey[:-len(suffix)]
-              break
-          thumbid = session_id + '_' + form_id + '_' + thumbkey
-          if thumbid in temp_folder.objectIds():
-            temp_folder.manage_delObjects([thumbid])
-          temp_folder.manage_addImage( id=thumbid, title=blob.getFilename(), file=blob.getData())
-          file = getattr( temp_folder, thumbid)
-          meta_id = REQUEST.get('meta_id', self.meta_id)
-          obj_attr = self.getObjAttr(thumbkey, meta_id)
-          elName = self.getObjAttrName(obj_attr, lang)
-          rtn['elName'] = elName
-          w = file.getProperty('width')
-          if not w:
-            w = self.getConfProperty('ZMS.image.default.width', 640)
-          rtn['width'] = int(w)
-          h = file.getProperty('height')
-          if not h:
-            h = self.getConfProperty('ZMS.image.default.height', 400)
-          rtn['height'] = int(h)
-          rtn['filename'] = blob.getFilename()
-          rtn['src'] = self.url_append_params(file.absolute_url(), {'ts':time.time()})
-          # extra
-          rtn['lang'] = thumbkey
-          rtn['key'] = thumbkey
-          rtn['form_id'] = form_id
-        else:
-          blob = orig
-          if 'resize' in action.split(','):
-            width = REQUEST['width']
-            height = REQUEST['height']
-            size = (width, height)
-            blob = pilutil.resize( blob, size)
-            rtn['height'] = height
-            rtn['width'] = width
-          if 'crop' in action.split(','):
-            x0 = REQUEST['x0']
-            y0 = REQUEST['y0']
-            x1 = REQUEST['x1']
-            y2 = REQUEST['y2']
-            box = (x0, y0, x1, y2)
-            blob = pilutil.crop( blob, box)
-            rtn['height'] = y2-y0
-            rtn['width'] = x1-x0
-          file.manage_upload(blob.getData())
-          rtn['filename'] = blob.getFilename()
-          rtn['src'] = src
+      temp_folder = self.temp_folder
+      id = form_id + '_' + key
+      src = self.getTempBlobjPropertyUrl( format=None, REQUEST=REQUEST, RESPONSE=RESPONSE)['src']
+      file = getattr( temp_folder, id)
+      orig = self.ImageFromData(file.data, file.title)
+      orig.lang = lang
+      if action == 'preview':
+        maxdim = self.getConfProperty('InstalledProducts.pil.thumbnail.max')
+        blob = pilutil.thumbnail( orig, maxdim)
+        thumbkey = key
+        for suffix in ['hires', 'superres']:
+          if thumbkey.endswith(suffix):
+            thumbkey = thumbkey[:-len(suffix)]
+            break
+        thumbid = form_id + '_' + thumbkey
+        if thumbid in temp_folder.objectIds():
+          temp_folder.manage_delObjects([thumbid])
+        temp_folder.manage_addImage( id=thumbid, title=blob.getFilename(), file=blob.getData())
+        file = getattr( temp_folder, thumbid)
+        meta_id = REQUEST.get('meta_id', self.meta_id)
+        obj_attr = self.getObjAttr(thumbkey, meta_id)
+        elName = self.getObjAttrName(obj_attr, lang)
+        rtn['elName'] = elName
+        w = file.getProperty('width')
+        if not w:
+          w = self.getConfProperty('ZMS.image.default.width', 640)
+        rtn['width'] = int(w)
+        h = file.getProperty('height')
+        if not h:
+          h = self.getConfProperty('ZMS.image.default.height', 400)
+        rtn['height'] = int(h)
+        rtn['filename'] = blob.getFilename()
+        rtn['src'] = self.url_append_params(file.absolute_url(), {'ts':time.time()})
+        # extra
+        rtn['lang'] = thumbkey
+        rtn['key'] = thumbkey
+        rtn['form_id'] = form_id
+      else:
+        blob = orig
+        if 'resize' in action.split(','):
+          width = REQUEST['width']
+          height = REQUEST['height']
+          size = (width, height)
+          blob = pilutil.resize( blob, size)
+          rtn['height'] = height
+          rtn['width'] = width
+        if 'crop' in action.split(','):
+          x0 = REQUEST['x0']
+          y0 = REQUEST['y0']
+          x1 = REQUEST['x1']
+          y2 = REQUEST['y2']
+          box = (x0, y0, x1, y2)
+          blob = pilutil.crop( blob, box)
+          rtn['height'] = y2-y0
+          rtn['width'] = x1-x0
+        file.manage_upload(blob.getData())
+        rtn['filename'] = blob.getFilename()
+        rtn['src'] = src
       # Return JSON.
       return self.str_json(rtn)
 
@@ -1140,12 +1133,10 @@ class ObjAttrs(object):
       # Mandatory parameters.
       lang = REQUEST['lang']
       key = REQUEST['key']
-      SESSION = REQUEST.get('SESSION', None)
       form_id = REQUEST.get('form_id', None)
-      if SESSION is not None and form_id is not None:
-        session_id = SESSION.getId()
+      if form_id is not None:
         temp_folder = self.temp_folder
-        id = session_id + '_' + form_id + '_' + key
+        id = form_id + '_' + key
         if id not in temp_folder.objectIds():
           obj_attr = self.getObjAttr(key)
           datatype = obj_attr['datatype_key']
@@ -1184,12 +1175,10 @@ class ObjAttrs(object):
       # Mandatory parameters.
       lang = REQUEST['lang']
       key = REQUEST['key']
-      SESSION = REQUEST.get('SESSION', None)
       form_id = REQUEST.get('form_id', None)
-      if SESSION is not None and form_id is not None:
-        session_id = SESSION.getId()
+      if form_id is not None:
         temp_folder = self.temp_folder
-        id = session_id + '_' + form_id + '_' + key
+        id = form_id + '_' + key
         if id in temp_folder.objectIds():
           temp_folder.manage_delObjects([id])
       # Return JSON.

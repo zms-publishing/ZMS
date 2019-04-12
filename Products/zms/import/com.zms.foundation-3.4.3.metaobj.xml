@@ -1825,7 +1825,6 @@ result = {}
 temp_folder = context.temp_folder
 request = context.REQUEST
 base_url = request.get('SERVER_URL')
-session_id = request.get('session_id')
 form_id = request.get('form_id')
 file = request.get('file')
 
@@ -1846,7 +1845,7 @@ def resize_image(context, orig, maxdims):
 def create_blob(container, blob):
   filename = blob.getFilename()
   data = blob.getData()
-  id = session_id + '_' + form_id + '_' + filename
+  id = form_id + '_' + filename
   if id in container.objectIds():
     container.manage_delObjects(ids=[id])
   if blob.getContentType().startswith('image'):
@@ -4105,7 +4104,6 @@ return None
                   <item key="custom"><![CDATA[<tal:block tal:define="
 		standard modules/Products.zms/standard;
 		zmscontext options/zmscontext;
-		session_id python:standard.get_session(here).getId();
 		dummy0 python:request.set('CKEDITOR_config_toolbar',[
 				['Format'],
 				['Bold','Italic','Underline','NumberedList','BulletedList'],
@@ -4136,9 +4134,6 @@ span.mouseover {
 <tal:block tal:content="structure python:'<script>'">script</tal:block>
 
 $(function(){
-	if($("form#form0 input[name=session_id]").length==0) {
-		$("form#form0").append('<input type="hidden" name="session_id" tal:attributes="value session_id"/>');
-	}
 	$(".zmiRichtextEditorHeadline").hide();
 });
 

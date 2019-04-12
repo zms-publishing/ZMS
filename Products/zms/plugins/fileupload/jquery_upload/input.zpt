@@ -1,6 +1,9 @@
 <!-- BO plugins/fileupload/jquery_upload/input.zpt -->
 
-<input class="btn btn-file fileupload" type="file" tal:attributes="id options/elName; name options/elName;">
+<div class="custom-file new">
+	<input class="custom-file-input fileupload" type="file" tal:attributes="id options/elName; name options/elName; maxlength python:options.get('elMaxLength','')" size="25" value=""/>
+	<label class="custom-file-label" tal:attributes="for options/elName" tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_FILE')">Choose file</label>
+</div>
 
 <tal:block tal:condition="python:request.get('f_zmiFileUpload',True)" tal:define="standard modules/Products.zms/standard;">
 <style>
@@ -29,7 +32,6 @@ $(function () {
 					lang:'<tal:block tal:content="request/lang"></tal:block>'
 					,key:'<tal:block tal:content="options/key"></tal:block>'
 					,dataRequestKey:elName
-					,session_id:'<tal:block tal:content="python:standard.get_session(here).getId()"></tal:block>'
 					,form_id:'<tal:block tal:content="request/ZMI_TIME"></tal:block>'
 					<tal:block tal:condition="python:request.has_key('ZMS_INSERT')">,meta_id:'<tal:block tal:content="request/ZMS_INSERT"></tal:block>'</tal:block>
 				},
@@ -49,9 +51,8 @@ $(function () {
 					var oldsrc = $("img#img_<tal:block tal:content="options/elName"></tal:block>").attr('src');
 					$("img#img_<tal:block tal:content="options/elName"></tal:block>").attr('src',newsrc);
 					$("#upload").addClass("bg-success").html(''
-						+ '<a href="'+newsrc+'" target="_blank" title="'+result.content_type+'"><span class="text-white">'+result.filename+'</a> '
-						+ '<span class="text-white">('+result.size_str+')</span> '
 						+ '<span class="btn btn-outline-light btn-sm">'+$ZMI.icon('icon-times','title="X" onclick="$(\'img#img_<tal:block tal:content="options/elName"></tal:block>\').attr(\'src\',\''+oldsrc+'\');$(\'#upload\').hide(\'normal\')"')+'</span> '
+						+ '<span class="text-white" title="'+result.content_type+'">'+result.filename+' ('+result.size_str+')</span> '
 						);
 				},
 				progressall: function (e, data) {

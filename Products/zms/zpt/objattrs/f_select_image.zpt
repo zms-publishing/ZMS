@@ -110,7 +110,7 @@
 			<div class="zmi-input-file"
 					tal:condition="python:request['lang'] in here.getLanguages(request)"
 					tal:define="dummy0 python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif'])"
-					tal:content="structure python:standard.getPlugin(here,'fileupload/'+here.getConfProperty('ZMS.input.file.plugin','jquery_upload')+'/input.zpt',{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
+					tal:content="structure python:standard.getPlugin(here,'fileupload/'+here.getConfProperty('ZMS.input.file.plugin','input_file')+'/input.zpt',{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
 				the input-file
 			</div>
 

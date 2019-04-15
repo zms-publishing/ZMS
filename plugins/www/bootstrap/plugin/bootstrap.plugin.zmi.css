@@ -643,6 +643,7 @@ ul.zmi-container .zmi-item.page .center .contentEditable {
 
 /*  Sitemap Menu
     ------------------------------------------------------- */
+.zmi.properties .zmi-page,
 .zmi.manage-menu .zmi-page {
 	white-space:nowrap;
 	overflow:hidden;

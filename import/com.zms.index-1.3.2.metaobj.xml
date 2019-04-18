@@ -27,7 +27,7 @@ function openWindow(url) {
 		<label class="col-sm-2 control-label">Index</label>
 		<div class="col-sm-10">
 			<div class="row col-sm-4" tal:condition="initialized">
-				<a class="btn btn-default col-sm-12" 
+				<a class="btn btn-default col-sm-12"
 					tal:attributes="href python:'%s/manage_catalogView'%zmscontext.zcatalog_index.absolute_url()" target="_blank"
 					><img src="++resource++zms_/img/ZCatalog.png"/> zcatalog_index</a>
 			</div>
@@ -56,8 +56,11 @@ function openWindow(url) {
 		<label class="col-sm-2 control-label">References</label>
 		<div class="col-sm-10">
 			<div class="row col-sm-4">
-						<div class="zmi-sitemap">
-						</div><!-- .zmi-sitemap -->
+				<div class="btn btn-default">
+					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
+					onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" />
+				</div>
+				<label class="control-label">&nbsp;All Clients</label>
 			</div>
 			<div class="row col-sm-2">
 				<select class="form-control" id="resync-loglevel" name="resync-loglevel">
@@ -69,7 +72,15 @@ function openWindow(url) {
 			</button>
 		</div>
 	</div><!-- .form-group -->
-
+	<div class="form-group">
+		<label class="col-sm-2 control-label">&nbsp;</label>
+		<div class="col-sm-10">
+			<div class="zmi-sitemap-expand" onclick="$('#zmsindex .zmi-sitemap').toggleClass('full');$('#zmsindex .zmi-sitemap-expand i').toggleClass('icon-resize-small')">
+				<i class="icon icon-resize-full" title="Seitenanfang"></i>
+			</div>
+			<div class="zmi-sitemap">
+			</div><!-- .zmi-sitemap -->
+	</div><!-- .form-group -->
 	<div class="form-group">
 		<label class="col-sm-2 control-label">Attributes</label>
 		<div class="col-sm-5">
@@ -77,7 +88,7 @@ function openWindow(url) {
 				<tal:block tal:condition="python:request.has_key('zmsindex_index_names')">
 					<tal:block tal:define="value python:zmscontext.operator_setattr(zmscontext,'index_names',request.get('zmsindex_index_names'))"></tal:block>
 				</tal:block>
-				<input class="form-control" type="text" name="zmsindex_index_names" 
+				<input class="form-control" type="text" name="zmsindex_index_names"
 					placeholder="attr_dc_identifier_doi"
 					title="Enter comma separated names of meta-attributes"
 					tal:attributes="value python:zmscontext.operator_getattr(zmscontext,'index_names','')"/>
@@ -174,16 +185,60 @@ $(function() {
 	});
 </script>
 <style>
+	#zmsindex .zmi-sitemap {
+		max-height: 30rem;
+		height: fit-content;
+		min-height: 4rem;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		background: #e8f3fb;
+		margin: 0 0 3rem 0;
+		direction: rtl;
+		display: block;
+		padding: 6px 12px;
+		line-height: 1.42857143;
+		background-image: none;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+		box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+		-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+		-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+		transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+		clear:both !important;
+	}
+	#zmsindex .zmi-sitemap > ul {
+		direction: ltr;
+	}
+	#zmsindex .zmi-sitemap-expand {
+		display: block;
+		position: absolute;
+		color: #333;
+		right: 16px;
+		background: #ccc;
+		padding: .35em .65em;
+		border-radius: 4px;
+		border-top-left-radius: 0;
+		border-bottom-right-radius: 0;
+		cursor: pointer;
+	}
+	#zmsindex .zmi-sitemap.full {
+		max-height: unset;
+	}
+	#zmsindex .zmi-sitemap .icon-spinner.icon-spin {
+		zoom: 1.8;
+		margin: -.8rem .25rem;
+	}
 	#zmsindex .response.text-success,
 	#zmsindex .response.text-danger {
 		display: block;
-		position: fixed; 
+		position: fixed;
 		z-index: 1000;
 		left: 125px;
 		top: 125px;
 		width: calc(100% - 250px);
 		height: calc(100vw - 250px);
-		overflow: scroll; 
+		overflow: scroll;
 		font-size:80%;
 		white-space:pre;
 		background: #dff0d8;

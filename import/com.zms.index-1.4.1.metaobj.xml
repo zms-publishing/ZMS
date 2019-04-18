@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<?zms version='ZMS3-3.4.2dev (build #4796)'?>
+<?xml version="1.0" encoding="utf-8" ?>
+<?zms version='ZMS4-4.0.0.dev.REV
+'?>
 <list>
   <item type="dictionary">
     <dictionary>
@@ -23,15 +24,15 @@ function openWindow(url) {
 	return false;
 }
 </script>
-	<div class="form-group">
+	<div class="form-group zms4-row">
 		<label class="col-sm-2 control-label">Index</label>
-		<div class="col-sm-10">
-			<div class="row col-sm-4" tal:condition="initialized">
-				<a class="btn btn-default col-sm-12"
+		<div class="col-sm-10 row">
+			<div class="zms4-row col-sm-4" tal:condition="initialized">
+				<a class="btn btn-default btn-secondary col-sm-12" 
 					tal:attributes="href python:'%s/manage_catalogView'%zmscontext.zcatalog_index.absolute_url()" target="_blank"
 					><img src="++resource++zms_/img/ZCatalog.png"/> zcatalog_index</a>
 			</div>
-			<div class="row col-sm-2">
+			<div class="zms4-row col-sm-2">
 				<select class="form-control" id="reindex-loglevel" name="reindex-loglevel">
 					<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
 				</select>
@@ -52,17 +53,17 @@ function openWindow(url) {
 			</button>
 		</div>
 	</div><!-- .form-group -->
-	<div class="form-group" style="padding:.5em 0;" tal:condition="python:initialized and active">
+	<div class="form-group zms4-row" style="padding:.5em 0;" tal:condition="python:initialized and active">
 		<label class="col-sm-2 control-label">References</label>
-		<div class="col-sm-10">
-			<div class="row col-sm-4">
+		<div class="col-sm-10 row">
+			<div class="zms4-row col-sm-4">
 				<div class="btn btn-default">
 					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
 					onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" />
 				</div>
 				<label class="control-label">&nbsp;All Clients</label>
 			</div>
-			<div class="row col-sm-2">
+			<div class="zms4-row col-sm-2">
 				<select class="form-control" id="resync-loglevel" name="resync-loglevel">
 					<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
 				</select>
@@ -72,43 +73,46 @@ function openWindow(url) {
 			</button>
 		</div>
 	</div><!-- .form-group -->
-	<div class="form-group">
+
+	<div class="form-group zms4-row">
 		<label class="col-sm-2 control-label">&nbsp;</label>
-		<div class="col-sm-10">
+		<div class="col-sm-10 zms4-row">
 			<div class="zmi-sitemap-expand" onclick="$('#zmsindex .zmi-sitemap').toggleClass('full');$('#zmsindex .zmi-sitemap-expand i').toggleClass('icon-resize-small')">
 				<i class="icon icon-resize-full" title="Seitenanfang"></i>
 			</div>
 			<div class="zmi-sitemap">
 			</div><!-- .zmi-sitemap -->
 	</div><!-- .form-group -->
-	<div class="form-group">
+
+
+	<div class="form-group zms4-row">
 		<label class="col-sm-2 control-label">Attributes</label>
 		<div class="col-sm-5">
 			<div class="input-group">
 				<tal:block tal:condition="python:request.has_key('zmsindex_index_names')">
 					<tal:block tal:define="value python:zmscontext.operator_setattr(zmscontext,'index_names',request.get('zmsindex_index_names'))"></tal:block>
 				</tal:block>
-				<input class="form-control" type="text" name="zmsindex_index_names"
+				<input class="form-control" type="text" name="zmsindex_index_names" 
 					placeholder="attr_dc_identifier_doi"
 					title="Enter comma separated names of meta-attributes"
 					tal:attributes="value python:zmscontext.operator_getattr(zmscontext,'index_names','')"/>
-				<span class="input-group-btn">
+				<div class="input-group-append input-group-btn">
 					<button class="btn btn-primary" name="btn" value="save"
 						onclick="$(this).parents('form').attr({action:self.location.href})" tal:content="structure python:zmscontext.zmi_icon(name='icon-save')">save</button>
-				</span>
+				</div>
 			</div><!-- .input-group -->
 		</div><!-- .col-sm-5-->
 	</div><!-- .form-group -->
 
-	<div class="form-group" tal:condition="initialized">
+	<div class="form-group zms4-row" tal:condition="initialized">
 		<label class="col-sm-2 control-label">Uid</label>
 		<div class="col-sm-5">
 			<div class="input-group" title="SEARCH for a given uid and show the index details.">
 				<input class="form-control" type="text" name="uid" tal:attributes="value uid" placeholder="Enter uid"/>
-				<span class="input-group-btn">
+				<div class="input-group-append input-group-btn">
 					<button class="btn btn-primary" name="btn" value="search"
 						onclick="$(this).parents('form').attr({action:self.location.href})" tal:content="structure python:zmscontext.zmi_icon(name='icon-search')">search</button>
-				</span>
+				</div>
 			</div><!-- .input-group -->
 		</div>
 	</div><!-- .form-group -->
@@ -185,6 +189,17 @@ $(function() {
 	});
 </script>
 <style>
+/* Make BS4-row work with ZMS4 */
+/*
+	#zmsindex .zms4-row {
+		display: -ms-flexbox;
+		display: flex;
+		-ms-flex-wrap: wrap;
+		flex-wrap: wrap;
+		margin-right: -15px;
+		margin-left: -15px;
+	}
+*/
 	#zmsindex .zmi-sitemap {
 		max-height: 30rem;
 		height: fit-content;
@@ -232,13 +247,13 @@ $(function() {
 	#zmsindex .response.text-success,
 	#zmsindex .response.text-danger {
 		display: block;
-		position: fixed;
+		position: fixed; 
 		z-index: 1000;
 		left: 125px;
 		top: 125px;
 		width: calc(100% - 250px);
 		height: calc(100vw - 250px);
-		overflow: scroll;
+		overflow: scroll; 
 		font-size:80%;
 		white-space:pre;
 		background: #dff0d8;
@@ -263,7 +278,12 @@ $(function() {
                   </item>
                   <item key="default"></item>
                   <item key="id">interface0</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">interface0</item>
                   <item key="repetitive" type="int">0</item>
@@ -472,16 +492,26 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           return ref
         
         def handleInline(node,v):
+          p = '<dtml-var "getLinkUrl\(\'(.*?)\'(,REQUEST)?\)">'
+          r = re.compile(p)
+          for f in r.findall(v):
+            data_id = f[0]
+            old = '<dtml-var "getLinkUrl(\'%s\'%s)">'%(data_id,f[1])
+            ref = node.getLinkObj(data_id)
+            if ref:
+              new = ref.absolute_url()
+              writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline %s->%s'%(old,new))
+              v = v.replace(old,new)
           p = '<a(.*?)>(.*?)<\\/a>'
           r = re.compile(p)
           for f in r.findall(v):
             ref = None
             d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
-            if d.has_key('data-id'):
+            if 'data-id' in d:
               data_id = d['data-id']
               writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline data_id=%s'%data_id)
               ref = node.getLinkObj(data_id)
-            if ref is None and d.has_key('href'):
+            if ref is None and 'href' in d:
               href = d['href']
               href = re.sub('http://localhost:(\\d)*','',href)
               for domain in domains:
@@ -531,6 +561,27 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             v = new
           return v
         
+        def handleItem(node,v):
+          if type(v) is list:
+            v = handleList(node,v)
+          elif type(v) is dict:
+            v = handleDict(node,v)
+          elif type(v) is str or type(v) is bytes:
+            v = handleInline(node,v)
+          return v
+        
+        def handleDict(node,v):
+          nd = {}
+          for i in v:
+            nd[i] = handleItem(node,v[i])
+          return nd
+        
+        def handleList(node,v):
+          nl = []
+          for i in v:
+            nl.append(handleItem(node,i))
+          return nl
+        
         def visit(node):
           writeInfo(node,'[ZMSIndexZCatalog_func_] resync')
           l = []
@@ -559,7 +610,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             for key in [x for x in node.getObjAttrs() if not x.startswith('manage')]:
               objAttr = node.getObjAttr(key)
               datatype = objAttr['datatype']
-              if datatype in ['richtext','string','text','url']:
+              if datatype in ['richtext','string','text','list','dict','url']:
                 lang_suffixes = ['']
                 if objAttr['multilang']:
                   lang_suffixes = ['_%s'%x for x in self.getLangIds()]
@@ -567,10 +618,10 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                   for obj_vers in node.getObjVersions():
                     v = self.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
                     if v is not None:
-                      v = str(v)
+                      #v = str(v)
                       o = v
-                      if datatype in ['richtext','string','text']:
-                        v = handleInline(node,v)
+                      if datatype in ['richtext','string','text','list','dict']:
+                        v = handleItem(node,v)
                       elif datatype in ['url']:
                         v = handleUrl(node,v)
                       if o != v:
@@ -614,6 +665,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Trusted functions]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -696,7 +748,12 @@ return zmsroot.storeReqBuff(url,ob)
                   </item>
                   <item key="default"></item>
                   <item key="id">getLinkObj</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Extension-Point: Get link object]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -728,7 +785,12 @@ return '{$%s}'%ref
                   </item>
                   <item key="default"></item>
                   <item key="id">getRefObjPath</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Extension-Point: Get ref object path]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -757,9 +819,48 @@ return uid
                   </item>
                   <item key="default"></item>
                   <item key="id">get_uid</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Extension-Point: Get uid]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">py</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSIndexZCatalog.onCreateObjEvt"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None,options=None
+##title=py: Event: onCreateObj
+##
+# --// onCreateObjEvt //--
+
+zmscontext.ZMSIndexZCatalog_func_(zmscontext,'reindex')
+zmscontext.ZMSIndexZCatalog_func_(zmscontext,'activate')
+zmscontext.ZMSIndexZCatalog_func_(zmscontext,'resync')
+
+# --// /onCreateObjEvt //--
+]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">onCreateObjEvt</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Event: onCreateObj]]></item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type">py</item>
                 </dictionary>
@@ -793,7 +894,12 @@ return True
                   </item>
                   <item key="default"></item>
                   <item key="id">ObjectAdded</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: object added]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -834,7 +940,12 @@ if zmsindex is not None and zmsindex.meta_id=='ZMSIndexZCatalog':
                   </item>
                   <item key="default"></item>
                   <item key="id">ObjectMoved</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: object moved]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -867,7 +978,12 @@ traverse(zmscontext)
                   </item>
                   <item key="default"></item>
                   <item key="id">ObjectRemoved</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: object removed]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -971,7 +1087,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.3.1</item>
+          <item key="revision">1.4.1</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -990,7 +1106,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.3.1</item>
+          <item key="revision">1.4.1</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

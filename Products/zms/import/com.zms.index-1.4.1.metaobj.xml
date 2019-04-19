@@ -76,12 +76,13 @@ function openWindow(url) {
 
 	<div class="form-group row">
 		<label class="col-sm-2 control-label">&nbsp;</label>
-		<div class="col-sm-10 row">
+		<div class="col-sm-10">
 			<div class="zmi-sitemap-expand" onclick="$('#zmsindex .zmi-sitemap').toggleClass('full');$('#zmsindex .zmi-sitemap-expand i').toggleClass('icon-resize-small')">
 				<i class="icon icon-resize-full" title="Seitenanfang"></i>
 			</div>
 			<div class="zmi-sitemap">
 			</div><!-- .zmi-sitemap -->
+		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
 
 
@@ -177,7 +178,7 @@ $(function() {
 							$ZMI.objectTree.toggleClick($($toggle[0]),fn);
 						}
 						else {
-							$(".zmi-sitemap ."+$ZMI.icon_clazz("icon-home")).each(function() {
+							$(".zmi-sitemap ."+$ZMI.icon_clazz("icon-home").replace(/\s/gi,'.')).each(function() {
 									var $a = $(this).parent("a");
 									var uid = $a.attr('data-uid');
 									$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked"> ');

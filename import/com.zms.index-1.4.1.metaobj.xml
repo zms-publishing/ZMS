@@ -82,6 +82,7 @@ function openWindow(url) {
 			</div>
 			<div class="zmi-sitemap">
 			</div><!-- .zmi-sitemap -->
+		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
 
 
@@ -181,7 +182,7 @@ $(function() {
 							$ZMI.objectTree.toggleClick($($toggle[0]),fn);
 						}
 						else {
-							$(".zmi-sitemap .icon-home").each(function() {
+							$(".zmi-sitemap ."+$ZMI.icon_clazz("icon-home").replace(/\s/gi,'.')).each(function() {
 									var $a = $(this).parent("a");
 									var uid = $a.attr('data-uid');
 									$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked"> ');

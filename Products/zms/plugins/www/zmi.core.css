@@ -482,7 +482,9 @@ input.btn.btn-file {
 	width:auto;
 }
 .zmi .controls.save {
+	padding-right:15px;
 	text-align:right;
+	width:100%;
 }
 .zmi .single-line {
 	width:100%;
@@ -931,6 +933,9 @@ body.browse_iframe .toggle {
 	.zmi .modal-dialog {
 		max-width: 80vw;
 	}
+}
+.modal backdrop {
+	opacity: .8;
 }
 
 /* Icon Form Element */

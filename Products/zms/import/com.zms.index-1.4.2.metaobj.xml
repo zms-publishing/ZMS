@@ -410,7 +410,10 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         l.append(1)
         writeInfo(self,'[ZMSIndexZCatalog_func_] catalog_object %s'%node.getPath())
         if node.meta_id == 'ZMS':
+          # Activate implicitly
           node.setConfProperty('ExtensionPoint.ZMSObject.get_uid','%s.get_uid'%self.meta_id)
+          node.setConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath','%s.getRefObjPath'%self.meta_id)
+          node.setConfProperty('ExtensionPoint.ZReferableItem.getLinkObj','%s.getLinkObj'%self.meta_id)
         catalog_object(catalog,node)
         for childNode in node.objectValues(list(self.dGlobalAttrs)):
           l.extend(visit(childNode))
@@ -440,6 +443,26 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       t0 = time.time()
       index = visit(self.getDocumentElement())
       writeInfo(self,'[ZMSIndexZCatalog_func_] activate done: %i in %.2fsecs.'%(len(index),time.time()-t0))
+
+    ##############################################################################
+    # Deactivate
+    ##############################################################################
+    elif func_ == 'deactivate':
+      rootelmnt = self.getRootElement()
+      home = rootelmnt.getHome()
+      # Visit tree
+      def visit(node):
+        l = []
+        l.append(1)
+        writeInfo(self,'[ZMSIndexZCatalog_func_] deactivate_object %s'%node.getPath())
+        node.delConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation')
+        node.delConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath')
+        node.delConfProperty('ExtensionPoint.ZReferableItem.getLinkObj')
+        return l
+      t0 = time.time()
+      index = visit(self.getDocumentElement())
+      writeInfo(self,'[ZMSIndexZCatalog_func_] deactivate done: %i in %.2fsecs.'%(len(index),time.time()-t0))
+
     
     ##############################################################################
     # Resync
@@ -1092,7 +1115,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.4.1</item>
+          <item key="revision">1.4.2</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -1111,7 +1134,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.4.1</item>
+          <item key="revision">1.4.2</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

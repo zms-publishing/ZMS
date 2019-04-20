@@ -33,7 +33,7 @@ def nextObject(container, meta_type):
   """
   Get next parent Zope-object with given meta_type.
   """
-  while not container.meta_type == meta_type:
+  while hasattr(container,'meta_type') and not getattr(container,'meta_type') == meta_type:
     container = container.aq_parent
   return container
 
@@ -42,8 +42,9 @@ def getExternalMethodModuleName(container, id):
   Add context-folder-id to module-name (to prevent deleting artefacts from other clients).
   """
   m = id
-  if hasattr(container, 'content') and int(getattr(container, 'content').getConfProperty('zopeutil.getExternalMethodModuleName.addContextFolderId', True)):
-    m = '%s.%s'%(absattr(nextObject(container, 'Folder').id), m)
+  next = nextObject(container,'Folder')
+  if hasattr(next,"id"):
+    m = '%s.%s'%(absattr(getattr(next,"id")),id)
   return m
 
 security.declarePublic('addObject')

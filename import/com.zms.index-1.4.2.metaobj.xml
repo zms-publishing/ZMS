@@ -228,6 +228,7 @@ $(function() {
 		clear:both !important;
 	}
 	#zmsindex .zmi-sitemap > ul {
+		margin-top:10px;
 		direction: ltr;
 	}
 	#zmsindex .zmi-sitemap-expand {
@@ -455,7 +456,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         l = []
         l.append(1)
         writeInfo(self,'[ZMSIndexZCatalog_func_] deactivate_object %s'%node.getPath())
-        node.delConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation')
+        node.delConfProperty('ExtensionPoint.ZMSObject.get_uid')
         node.delConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath')
         node.delConfProperty('ExtensionPoint.ZReferableItem.getLinkObj')
         return l

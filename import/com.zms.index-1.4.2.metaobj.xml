@@ -613,53 +613,61 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         
         def visit(node):
           writeInfo(node,'[ZMSIndexZCatalog_func_] resync')
-          l = []
-          l.append(1)
-          if node.meta_id!='ZMSLinkElement' and node.getType()=='ZMSRecordSet':
-            objAttrs = node.getMetaobjAttrs(node.meta_id)
-            key = [x for x in objAttrs if x['type']=='list'][0]['id']
-            for obj_vers in node.getObjVersions():
-              l = self.operator_getattr(obj_vers,key,[])
-              for r in l:
-                for objAttr in objAttrs:
-                  datatype = objAttr['type']
-                  if datatype in ['richtext','string','text','url']:
-                    v = r.get(objAttr['id'],None)
-                    if v is not None:
-                      v = str(v)
-                      o = v
-                      if datatype in ['richtext','string','text']:
-                        v = handleInline(node,v)
-                      elif datatype in ['url']:
-                        v = handleUrl(node,v)
-                      if o != v:
-                        r[objAttr['id']] = v
-              self.operator_setattr(obj_vers,key,l)
-          else:
-            for key in [x for x in node.getObjAttrs() if not x.startswith('manage')]:
-              objAttr = node.getObjAttr(key)
-              datatype = objAttr['datatype']
-              if datatype in ['richtext','string','text','list','dict','url']:
-                lang_suffixes = ['']
-                if objAttr['multilang']:
-                  lang_suffixes = ['_%s'%x for x in self.getLangIds()]
-                for lang_suffix in lang_suffixes:
-                  for obj_vers in node.getObjVersions():
-                    v = self.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
-                    if v is not None:
-                      #v = str(v)
-                      o = v
-                      if datatype in ['richtext','string','text','list','dict']:
-                        v = handleItem(node,v)
-                      elif datatype in ['url']:
-                        v = handleUrl(node,v)
-                      if o != v:
-                        self.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
+          try:
+            l = []
+            l.append(1)
+            if node.meta_id!='ZMSLinkElement' and node.getType()=='ZMSRecordSet':
+              objAttrs = node.getMetaobjAttrs(node.meta_id)
+              key = [x for x in objAttrs if x['type']=='list'][0]['id']
+              for obj_vers in node.getObjVersions():
+                l = self.operator_getattr(obj_vers,key,[])
+                for r in l:
+                  for objAttr in objAttrs:
+                    datatype = objAttr['type']
+                    if datatype in ['richtext','string','text','url']:
+                      v = r.get(objAttr['id'],None)
+                      if v is not None:
+                        v = str(v)
+                        o = v
+                        if datatype in ['richtext','string','text']:
+                          v = handleInline(node,v)
+                        elif datatype in ['url']:
+                          v = handleUrl(node,v)
+                        if o != v:
+                          r[objAttr['id']] = v
+                self.operator_setattr(obj_vers,key,l)
+            else:
+              for key in [x for x in node.getObjAttrs() if not x.startswith('manage')]:
+                objAttr = node.getObjAttr(key)
+                datatype = objAttr['datatype']
+                if datatype in ['richtext','string','text','list','dict','url']:
+                  lang_suffixes = ['']
+                  if objAttr['multilang']:
+                    lang_suffixes = ['_%s'%x for x in self.getLangIds()]
+                  for lang_suffix in lang_suffixes:
+                    for obj_vers in node.getObjVersions():
+                      v = self.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
+                      if v is not None:
+                        #v = str(v)
+                        o = v
+                        if datatype in ['richtext','string','text','list','dict']:
+                          v = handleItem(node,v)
+                        elif datatype in ['url']:
+                          v = handleUrl(node,v)
+                        if o != v:
+                          self.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
+          except:
+            t,v,tb = sys.exc_info()
+            msg = ''.join(format_exception(t, v, tb))
+            writeError(node,'[ZMSIndexZCatalog_func_] can\'t visit %s'%msg)
+
           for childNode in node.objectValues(list(self.dGlobalAttrs)):
             l.extend(visit(childNode))
+          
           if node.meta_id == 'ZMS' and request.get('clients',0)==1:
             for childNode in node.getPortalClients():
               l.extend(visit(childNode))
+          
           return l
         
         def init_domains(doc,domains):
@@ -678,6 +686,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           base = self.getLinkObj(url)
           index = visit(base)
           writeInfo(self,'[ZMSIndexZCatalog_func_] resync for %s done: %i in %.2fsecs.'%(url,len(index),time.time()-t0))
+
   except:
     t,v,tb = sys.exc_info()
     msg = "[%s@%s]"%(self.meta_id,self.absolute_url())+''.join(format_exception(t, v, tb))

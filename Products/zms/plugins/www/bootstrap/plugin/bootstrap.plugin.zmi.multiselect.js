@@ -5,15 +5,14 @@ ZMI.prototype.multiselect = function(context) {
 					$("option",$select).prop("selected","");
 					$container.children().each(function() {
 						var data_value = $(this).attr("data-value");
-						$ZMI.writeDebug("refreshContainer: data-value="+data_value);
 						var val = ($container.hasClass("zmi-sortable")?c+":":"")+data_value;
-						$ZMI.writeDebug("refreshContainer: val="+val);
 						$("option[data-value='"+data_value+"']",$select).prop({selected:"selected",value:val});
 						c++;
 					});
 				}
 				var refreshDropdown = function($select,$dropdown) {
-					if ($select.attr('data-autocomplete-add')=="false" || $("li.d-none",$dropdown).length==$("li",$dropdown).length) {
+					if ($select.attr('data-autocomplete-add')=="false" 
+							|| $(".dropdown-item.d-none",$dropdown).length==$(".dropdown-item",$dropdown).length) {
 						$dropdown.hide("normal");
 					}
 					else {
@@ -50,18 +49,18 @@ ZMI.prototype.multiselect = function(context) {
 					var $container = $select.next().children(":first");
 					var $dropdown = $container.next();
 					refreshDropdown($select,$dropdown);
-					$("li a",$dropdown).click(function() {
-						$(this).parent().addClass("d-none");
+					$("a.dropdown-item",$dropdown).click(function() {
+						$(this).addClass("d-none");
 						var data_value = $(this).attr('data-value');
 						$container.append(''
-							+'<div class="btn" data-value="'+data_value+'">'
+							+'<div class="btn btn-light" data-value="'+data_value+'">'
 							+'<a href="javascript:;">'+$ZMI.icon('icon-times')+'</a> '
 							+$(this).text()
-							+'</div>'
+							+'</div> '
 						);
 						$(".btn a:last",$container).click(function() {
 							var $parent = $(this).parent();
-							$("li a[data-value='"+data_value+"']",$dropdown).parent().removeClass("d-none");
+							$("a.dropdown-item[data-value='"+data_value+"']",$dropdown).removeClass("d-none");
 							$parent.remove();
 							refreshDropdown($select,$dropdown);
 							refreshContainer($container);
@@ -71,11 +70,11 @@ ZMI.prototype.multiselect = function(context) {
 					});
 					$("option:selected",this).each(function() {
 						var v = $(this).attr('data-value');
-						$("li a[data-value='"+v+"']",$dropdown).click();
+						$("a.dropdown-item[data-value='"+v+"']",$dropdown).click();
 					});
 				});
-				pluginUI("div.zmi-select.zmi-sortable",function() {
-					$("div.zmi-select.zmi-sortable").sortable({
+				pluginUI(".zmi-select.zmi-sortable",function() {
+					$(".zmi-select.zmi-sortable").sortable({
 						tolerance:'pointer',
 						forcePlaceholderSize:true,
 						forceHelperSize:true,

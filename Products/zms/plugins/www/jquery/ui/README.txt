@@ -4,6 +4,7 @@ Widgets:
 ---------------------------------------------
 - Autocomplete
 - Datepicker
+- Sortable
 
 ./css/ui-lightness/jquery-ui-*.*.*.custom.css
 ---------------------------------------------

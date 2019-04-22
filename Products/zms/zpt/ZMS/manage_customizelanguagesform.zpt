@@ -49,11 +49,13 @@ function zmiFormSubmit(sender,d) {
 
 <tal:block tal:define="global langIds python:here.getLangIds(sort=True)">
 
-<form class="form-horizontal" id="changeLanguagesForm" action="manage_changeLanguages" method="post" enctype="multipart/form-data">
+<form class="form-horizontal card" id="changeLanguagesForm" action="manage_changeLanguages" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<legend tal:content="python:here.getZMILangStr('TAB_LANGUAGES')">Languages</legend>
-	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_MULTILANG')">well</p>
-	<table class="table table-striped table-bordered">
+	<legend tal:content="python:here.getZMILangStr('TAB_LANGUAGES')"
+		data-toggle="tooltip" data-placement="bottom" title="Tooltip"
+		tal:attributes="title python:here.getZMILangStr('MSG_MULTILANG')"
+	>Languages</legend>
+	<table class="table table-sm table-striped table-bordered">
 	<thead>
 	<tr>
 		<th></th>
@@ -76,7 +78,7 @@ function zmiFormSubmit(sender,d) {
 					<tal:block tal:define="dummy python:langStack.append(si['parent'])"></tal:block>
 				</tal:block>
 				<tr tal:attributes="id python:'lang%s'%'_'.join(langStack+[langId])">
-					<td><input type="checkbox" name="ids:list" tal:attributes="value python:langId" tal:condition="python:langId!=here.getPrimaryLanguage()"></td>
+					<td class="text-center"><input type="checkbox" name="ids:list" tal:attributes="value python:langId" tal:condition="python:langId!=here.getPrimaryLanguage()"></td>
 					<td><tal:block tal:content="langId">langId</tal:block></td>
 					<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'%s_label'%langId; value python:langObj['label']"></td>
 					<td>
@@ -95,7 +97,7 @@ function zmiFormSubmit(sender,d) {
 		</tal:block>
 	</tal:block>
 	<tr class="row_insert">
-		<td style="text-align:center;padding-top:1em;"><span class="btn btn-light" tal:content="structure python:here.zmi_icon(name='icon-plus')"></span></td>
+		<td class="text-center"><span class="btn btn-light" tal:content="structure python:here.zmi_icon(name='icon-plus')"></span></td>
 		<td class="language_id"><input class="form-control form-control-sm" type="text" name="language_id" /></td>
 		<td class="language_label"><input class="form-control form-control-sm" type="text" name="language_label" /></td>
 		<td class="language_parent">
@@ -111,22 +113,22 @@ function zmiFormSubmit(sender,d) {
 	</tr>
 	</tbody>
 	</table>
-	<div class="form-row">
-		<div class="controls save">
-			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button name="btn" type="submit" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
-		</div>
+	<div class="controls save">
+		<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		<button name="btn" type="submit" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
 	</div>
 </form>
 
-<form class="form-horizontal" id="changeLangDictForm" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
+<form class="form-horizontal card mt-3" id="changeLangDictForm" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<legend tal:content="python:here.getZMILangStr('ATTR_DICTIONARY')">Dictionary</legend>
-	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_MULTILANGDICT')">well</p>
-	<table class="table table-striped table-bordered table-hover">
+	<legend tal:content="python:here.getZMILangStr('ATTR_DICTIONARY')"
+		data-toggle="tooltip" data-placement="bottom" title="Tooltip"
+		tal:attributes="title python:here.getZMILangStr('MSG_MULTILANGDICT')"
+	>Dictionary</legend>
+	<table class="table table-sm table-striped table-bordered table-hover">
 	<thead>
 	<tr>
-		<th>
+		<th class="text-center">
 			<div class="btn-group">
 				<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check-square')"></tal:block></span>
 			</div>
@@ -146,22 +148,20 @@ function zmiFormSubmit(sender,d) {
 	</thead>
 	<tbody>
 	<tr tal:repeat="langDict python:here.getLangDict()">
-		<td style="text-align:center;"><input type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/></td>
+		<td class="text-center"><input type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/></td>
 		<td tal:attributes="title python:'getLangStr(\'%s\',lang)'%langDict['key']" tal:content="python:langDict['key']">Key</td>
 		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]" tal:content="python:langDict.get(langId,'')"></textarea></div></td>
 	</tr>
 	<tr class="row_insert">
-		<td style="text-align:center;"><span class="btn btn-light" tal:content="structure python:here.zmi_icon(name='icon-plus')"></span></td>
+		<td class="text-center"><span class="btn btn-light" tal:content="structure python:here.zmi_icon(name='icon-plus')"></span></td>
 		<td><input class="form-control form-control-sm" type="text" name="_key" /></td>
 		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_value_%s'%(langId)"></textarea></div></td>
 	</tr>
 	</tbody>
 	</table>
-	<div class="form-row">
-		<div class="controls save">
-			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button name="btn" type="submit" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
-		</div>
+	<div class="controls save">
+		<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		<button name="btn" type="submit" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
 	</div>
 </form>
 
@@ -182,10 +182,8 @@ function zmiFormSubmit(sender,d) {
 			</select>
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->
-	<div class="form-row">
-		<div class="col-lg-12">
-				<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-		</div>
+	<div class="controls save">
+		<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 	</div>
 </form>
 </div><!-- #importLangDict -->

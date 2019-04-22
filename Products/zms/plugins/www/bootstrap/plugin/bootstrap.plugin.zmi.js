@@ -208,19 +208,8 @@ $(function(){
 				});
 		});
 
-	// Well
-	$("p.well").each(function() {
-			var $prev = $(this).prev();
-			if (typeof $prev != 'undefined' && $prev.length > 0) {
-				if($prev[0].nodeName.toLowerCase()=='legend') {
-					$prev.html('<span>'+$prev.html()+'</span>');
-					$('span',$prev).attr('title',$(this).html()).tooltip({html:true,placement:'bottom'});
-				}
-				else {
-					$(this).show();
-				}
-			}
-		});
+	// Tooltip
+	$('[data-toggle="tooltip"]').tooltip();
 
 	// Main Menu Toggle
 	$('.zmi .main-nav li.active a').click(function(event) {

@@ -1,4 +1,5 @@
 /* ######################## */
+/* COPY FROM ZOPE           */
 /* ZMS-ZMI: TO BE MINIMIZED */
 /* ######################## */
 
@@ -570,10 +571,4 @@ i.fa-folder.zmi-icon-folder-ordered:after {
 	.zmi table#zmi-db_info tbody tr:nth-of-type(even) td:nth-child(2) {
 		border-top:1px solid white;
 	}
-}
-
-.zmi legend {
-	margin: .35em 0;
-	border-bottom: none;
-	color: #888;
 }

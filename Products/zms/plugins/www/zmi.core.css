@@ -675,10 +675,15 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	color: #888;
 	padding:0.25rem 0.5rem;
 	margin:0;
-}
-.zmi form.card legend,
-.zmi form.card p.well {
-	padding-left:0.5rem;
+	font-size: inherit;
+	/* margin: 1rem 0 -1rem 20px; */
+	background: #50769626;
+	/* display: inline-block; */
+	/* max-width: max-content; */
+	color: #888;
+	/* text-transform: uppercase; */
+	font-weight: bold;
+	/* letter-spacing: 1px; */
 }
 .zmi.config nav#tabs li.nav-item[data-action="manage_main"] {
 	min-width:0;

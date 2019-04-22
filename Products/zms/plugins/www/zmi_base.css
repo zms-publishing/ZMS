@@ -261,7 +261,7 @@ form.zmi-upload {
 	width: 110px;
 	overflow: hidden;
 	display: inline-block;
-    text-align: center;
+	text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -559,7 +559,7 @@ i.fa-folder.zmi-icon-folder-ordered:after {
 	}
 	.zmi table#zmi-db_info tbody tr td {
 		display:block;
-		padding:.2rem .75rem .5rem
+		padding:.2rem .75rem .5rem;
 	}
 	.zmi table#zmi-db_cache tbody tr td:nth-child(1) {
 		color: black;
@@ -570,4 +570,10 @@ i.fa-folder.zmi-icon-folder-ordered:after {
 	.zmi table#zmi-db_info tbody tr:nth-of-type(even) td:nth-child(2) {
 		border-top:1px solid white;
 	}
+}
+
+.zmi legend {
+	margin: .35em 0;
+	border-bottom: none;
+	color: #888;
 }

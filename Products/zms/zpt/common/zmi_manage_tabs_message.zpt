@@ -1,10 +1,13 @@
 <!-- common/zmi_manage_tabs_message -->
 
-<div class="alert alert-success" tal:condition="python:request.get('manage_tabs_message')">
+<div class="alert alert-success"
+	tal:define="msg python:request.SESSION.get('manage_tabs_message_long','')!='' and request.SESSION.get('manage_tabs_message_long','') or request.get('manage_tabs_message','')"
+	tal:condition="python:msg!=''">
 	<a class="close" data-dismiss="alert" href="#">&times;</a>
-	<tal:block tal:content="structure python:request.get('manage_tabs_message')">manage_tabs_message</tal:block>
+	<tal:block tal:content="structure msg">manage_tabs_message</tal:block>
 	(<tal:block tal:content="structure python:here.getLangFmtDate(here.ZopeTime())">ZopeTime</tal:block>)
-	<tal:block tal:define="dummy0 python:request.set('manage_tabs_message','')"></tal:block>
+	<tal:block tal:define="dummy0 python:request.set('manage_tabs_message','');
+		dummy1 python:request.SESSION.set('manage_tabs_message_long','')"></tal:block>
 </div>
 
 <div class="alert alert-danger" tal:condition="python:request.get('manage_tabs_error_message')">

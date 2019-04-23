@@ -4,7 +4,6 @@ include CHANGES
 recursive-include Products *.cmd
 recursive-include Products *.conf
 recursive-include Products *.css
-recursive-include Products *.dtml
 recursive-include Products *.eot
 recursive-include Products *.gif
 recursive-include Products *.html

@@ -246,6 +246,25 @@ $(function() {
 	#zmsindex .zmi-sitemap.full {
 		max-height: unset;
 	}
+	#zmsindex .zmi-sitemap div#loading,
+	#zmsindex .zmi-sitemap div#loading .icon-spinner {
+		color: #08c;
+	}
+	#zmsindex .zmi-sitemap:not(.full) div#loading {
+		top: 2rem;
+		position: absolute;
+		right: 5rem;
+		zoom: 1;
+	}
+	body.loading #zmsindex .zmi-sitemap {
+		background:#b1bbc1;
+	}
+	body.loading #zmsindex .zmi-sitemap a,
+	body.loading #zmsindex .zmi-sitemap .toggle,	
+	body.loading #zmsindex .zmi-sitemap div#loading,
+	body.loading #zmsindex .zmi-sitemap div#loading .icon-spinner {
+		color: #fff !important;
+	}
 	#zmsindex .zmi-sitemap .icon-spinner.icon-spin {
 		zoom: 1.8;
 		margin: -.8rem .25rem;
@@ -322,7 +341,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
   def write(l,c,s):
     from DateTime import DateTime
     dt = DateTime()
-    line = '%s %s@%s %s'%(dt.strftime("%Y-%m-%d %H:%M:%S,%f"),c.meta_id,c.getPath(),str(s))
+    line = '%s %s@%s %s'%(dt.strftime("%Y-%m-%d %H:%M:%S,%f"),c.getPath(),c.meta_id,str(s))
     logger.log(l,line)
     if l in loglevel:
       printed.append(line)
@@ -472,6 +491,9 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       if catalog is not None:
         domains = {request['SERVER_URL']:''}
         
+        def getLinkObjFast(node,data_id):
+          return node.getLinkObj(data_id)
+        
         def find_node(base,path):
           ref = base
           if path.find('?')>0:
@@ -490,16 +512,14 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               ids.append(id)
           for id in ids:
             if id == '..':
-              parent = ref.getParentNode()
-              if parent is not None:
-                ref = ref.getParentNode()
+              ref = ref.getParentNode()
             elif id.startswith('manage'):
               ref = None
             elif id not in ['','.'] and id.find('.')<0:
               childNode = getattr(ref,id,None)
               try:
-                if (childNode is None and ref is not None) and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-                  for o in [x for x in ref.objectValues(list(self.dGlobalAttrs)) if x.meta_type not in ['External Method']]:
+                if childNode is None and self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
+                  for o in ref.objectValues(list(self.dGlobalAttrs)):
                     for l in o.getLanguages():
                       r = {'lang':l}
                       try:
@@ -512,7 +532,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                     if childNode is not None:
                       break
               except:
-                ref= None
+                pass
               ref = childNode
             if ref is not None and not type(ref) is str and ref.meta_type not in ['Folder']+list(self.dGlobalAttrs):
               ref = None
@@ -526,7 +546,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           for f in r.findall(v):
             data_id = f[0]
             old = '<dtml-var "getLinkUrl(\'%s\'%s)">'%(data_id,f[1])
-            ref = node.getLinkObj(data_id)
+            ref = getLinkObjFast(node,data_id)
             if ref:
               new = ref.absolute_url()
               writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline %s->%s'%(old,new))
@@ -539,7 +559,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             if 'data-id' in d:
               data_id = d['data-id']
               writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline data_id=%s'%data_id)
-              ref = node.getLinkObj(data_id)
+              ref = getLinkObjFast(node,data_id)
             if ref is None and 'href' in d:
               href = d['href']
               href = re.sub('http://localhost:(\\d)*','',href)
@@ -561,7 +581,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                   writeDebug(node,'[ZMSIndexZCatalog_func_] href=%s'%href)
                 ref = find_node(node,href)
             if ref is not None:
-              d['data-id'] = node.getRefObjPath(ref)
+              d['data-id'] = ref.get_uid()
               ref.registerRefObj(node) 
               old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
               title = f[1]
@@ -574,20 +594,16 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         
         def handleUrl(node,v):
           writeDebug(node,'[ZMSIndexZCatalog_func_] handleUrl %s'%v)
-          ref = None
-          if v.startswith('{$') and v.endswith('}'):
-            if not (v.startswith('{$__') and v.endswith('__}')) \
-               and not (v.startswith('{$') and v.find('id:')>0 and v.endswith('}')):
-              ref = find_node(node,v[2:-1].replace('@','/content/'))
-            elif v.startswith('{$') and v.find('id:')>0 and v.endswith('}'):
-              data_id = v
-              ref = node.getLinkObj(data_id)
-          if ref is not None:
-            ref.registerRefObj(node) 
-            old = v
-            new = node.getRefObjPath(ref)
-            writeDebug(node,'[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
-            v = new
+          if (v.startswith('{$') and v.endswith('}')) \
+             and not (v.startswith('{$__') and v.endswith('__}')) \
+             and not (v.startswith('{$') and v.find('id:')>0 and v.endswith('}')):
+            ref = getLinkObjFast(node,v)
+            if ref is not None:
+              ref.registerRefObj(node) 
+              old = v
+              new = ref.get_uid()
+              writeDebug(node,'[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
+              v = new
           return v
         
         def handleItem(node,v):
@@ -613,53 +629,69 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         
         def visit(node):
           writeInfo(node,'[ZMSIndexZCatalog_func_] resync')
-          l = []
-          l.append(1)
-          if node.meta_id!='ZMSLinkElement' and node.getType()=='ZMSRecordSet':
-            objAttrs = node.getMetaobjAttrs(node.meta_id)
-            key = [x for x in objAttrs if x['type']=='list'][0]['id']
-            for obj_vers in node.getObjVersions():
-              l = self.operator_getattr(obj_vers,key,[])
-              for r in l:
-                for objAttr in objAttrs:
-                  datatype = objAttr['type']
-                  if datatype in ['richtext','string','text','url']:
-                    v = r.get(objAttr['id'],None)
-                    if v is not None:
-                      v = str(v)
-                      o = v
-                      if datatype in ['richtext','string','text']:
-                        v = handleInline(node,v)
-                      elif datatype in ['url']:
-                        v = handleUrl(node,v)
-                      if o != v:
-                        r[objAttr['id']] = v
-              self.operator_setattr(obj_vers,key,l)
-          else:
-            for key in [x for x in node.getObjAttrs() if not x.startswith('manage')]:
-              objAttr = node.getObjAttr(key)
-              datatype = objAttr['datatype']
-              if datatype in ['richtext','string','text','list','dict','url']:
-                lang_suffixes = ['']
-                if objAttr['multilang']:
-                  lang_suffixes = ['_%s'%x for x in self.getLangIds()]
-                for lang_suffix in lang_suffixes:
-                  for obj_vers in node.getObjVersions():
-                    v = self.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
-                    if v is not None:
-                      #v = str(v)
-                      o = v
-                      if datatype in ['richtext','string','text','list','dict']:
-                        v = handleItem(node,v)
-                      elif datatype in ['url']:
-                        v = handleUrl(node,v)
-                      if o != v:
-                        self.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
+          try:
+            l = []
+            l.append(1)
+            if node.meta_id!='ZMSLinkElement' and node.getType()=='ZMSRecordSet':
+              objAttrs = node.getMetaobjAttrs(node.meta_id)
+              key = [x for x in objAttrs if x['type']=='list'][0]['id']
+              for obj_vers in node.getObjVersions():
+                l = self.operator_getattr(obj_vers,key,[])
+                for r in l:
+                  for objAttr in objAttrs:
+                    datatype = objAttr['type']
+                    if datatype in ['richtext','string','text','url']:
+                      v = r.get(objAttr['id'],None)
+                      if v is not None and type(v) is str:
+                        o = v
+                        if datatype in ['richtext','string','text'] in [bytes,str]:
+                          v = handleInline(node,v)
+                        elif datatype in ['url'] and type(v) in [bytes,str]:
+                          v = handleUrl(node,v)
+                        if o != v:
+                          r[objAttr['id']] = v
+                self.operator_setattr(obj_vers,key,l)
+            elif node.meta_id!='ZMSLinkElement':
+              for key in [x for x in node.getObjAttrs() if not x.startswith('manage')]:
+                objAttr = node.getObjAttr(key)
+                datatype = objAttr['datatype']
+                if datatype in ['richtext','string','text','list','dict','url']:
+                  lang_suffixes = ['']
+                  if objAttr['multilang']:
+                    lang_suffixes = ['_%s'%x for x in node.getLangIds()]
+                  for lang_suffix in lang_suffixes:
+                    for obj_vers in node.getObjVersions():
+                      v = self.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
+                      if v is not None:
+                        o = v
+                        if datatype in ['richtext','string','text','list','dict'] and type(v) in [bytes,dict,list,str]:
+                          v = handleItem(node,v)
+                        elif datatype in ['url'] and type(v) in [bytes,str]:
+                          v = handleUrl(node,v)
+                        if o != v:
+                          self.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
+          except:
+            t,v,tb = sys.exc_info()
+            msg = ''.join(format_exception(t, v, tb))
+            writeError(node,'[ZMSIndexZCatalog_func_] can\'t visit %s'%msg)
+
+          # premature commit
+          req_key = 'ZMSIndexZCatalog.resync.transaction_count'
+          cfg_key = 'ZMSIndexZCatalog.resync.transaction_size'
+          if request.get(req_key,0)>=int(self.getConfProperty(cfg_key,500)):
+            writeInfo(node,'[ZMSIndexZCatalog_func_] +++ COMMIT +++')
+            import transaction
+            transaction.commit()
+            request.set(req_key,0)
+          request.set(req_key,request.get(req_key,0)+1)
+
           for childNode in node.objectValues(list(self.dGlobalAttrs)):
             l.extend(visit(childNode))
+          
           if node.meta_id == 'ZMS' and request.get('clients',0)==1:
             for childNode in node.getPortalClients():
               l.extend(visit(childNode))
+          
           return l
         
         def init_domains(doc,domains):
@@ -675,9 +707,10 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         
         for url in request['url'].split(','):
           t0 = time.time()
-          base = self.getLinkObj(url)
+          base = getLinkObjFast(self,url)
           index = visit(base)
           writeInfo(self,'[ZMSIndexZCatalog_func_] resync for %s done: %i in %.2fsecs.'%(url,len(index),time.time()-t0))
+
   except:
     t,v,tb = sys.exc_info()
     msg = "[%s@%s]"%(self.meta_id,self.absolute_url())+''.join(format_exception(t, v, tb))
@@ -1116,7 +1149,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.4.2</item>
+          <item key="revision">1.4.4</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -1135,7 +1168,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.4.2</item>
+          <item key="revision">1.4.4</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

@@ -28,6 +28,7 @@ Scripts.  It can be accessed from Python with the statement
 
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
+from AccessControl import AuthEncoding
 from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime

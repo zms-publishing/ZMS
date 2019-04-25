@@ -32,6 +32,7 @@ from builtins import hex
 from builtins import range
 from builtins import str
 from AccessControl.SecurityInfo import ModuleSecurityInfo
+from AccessControl import AuthEncoding
 from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime

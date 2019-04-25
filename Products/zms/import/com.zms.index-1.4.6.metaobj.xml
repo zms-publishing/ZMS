@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<?zms version='ZMS4-4.0.0.dev.REV
-'?>
+<?xml version="1.0" encoding="utf-8"?>
+<?zms version='ZMS3-3.4.2dev (snapshot #)'?>
 <list>
   <item type="dictionary">
     <dictionary>
@@ -336,7 +335,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
   logger = logging.getLogger('event.ZMS')
   loglevels = [logging.DEBUG,logging.INFO,logging.ERROR]
   loglevel = loglevels[loglevels.index({'DEBUG':logging.DEBUG,'INFO':logging.INFO,'ERROR':logging.ERROR}[request.get('loglevel','INFO')]):]
-  
+
   printed = []
   def write(l,c,s):
     from DateTime import DateTime
@@ -351,7 +350,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     write(logging.INFO,c,s)
   def writeError(c,s):
     write(logging.ERROR,c,s)
-  
+
   def catalog_object(catalog,node):
     # Prepare object.
     for attr_id in zmsindex_index_names:
@@ -369,7 +368,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     for attr_id in zmsindex_index_names:
       attr_name = 'zcat_%s'%attr_id
       delattr(node,attr_name)
-  
+
   try:
     id = 'zcatalog_index'
     catalog = getattr(self,id,None)
@@ -379,16 +378,16 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     else:
       func_ = request.get('func_')
     writeDebug(self,'ZMSIndexZCatalog.%s:'%(func_))
-    
+
     ##############################################################################
     # Get uid
     ##############################################################################
     if func_ == 'get_uid':
       forced = args[1]
-      if forced or '_uid' not in self.__dict__ or getattr(self,'_uid',None) is None: 
+      if forced or '_uid' not in self.__dict__ or getattr(self,'_uid',None) is None:
         self._uid = str(uuid.uuid4())
       return 'uid:%s'%self._uid
-    
+
     ##############################################################################
     # Catalog Object
     ##############################################################################
@@ -396,7 +395,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       if catalog is not None:
         catalog_object(catalog,self)
       return None
-    
+
     ##############################################################################
     # Uncatalog Object
     ##############################################################################
@@ -405,7 +404,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         path = args[1]
         catalog.uncatalog_object(path)
       return None
-    
+
     ##############################################################################
     # Reindex
     ##############################################################################
@@ -444,7 +443,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       t0 = time.time()
       index = visit(self.getDocumentElement())
       writeInfo(self,'[ZMSIndexZCatalog_func_] reindex done: %i in %.2fsecs.'%(len(index),time.time()-t0))
-    
+
     ##############################################################################
     # Activate
     ##############################################################################
@@ -483,17 +482,17 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       index = visit(self.getDocumentElement())
       writeInfo(self,'[ZMSIndexZCatalog_func_] deactivate done: %i in %.2fsecs.'%(len(index),time.time()-t0))
 
-    
+
     ##############################################################################
     # Resync
     ##############################################################################
     elif func_ == 'resync':
       if catalog is not None:
         domains = {request['SERVER_URL']:''}
-        
+
         def getLinkObjFast(node,data_id):
           return node.getLinkObj(data_id)
-        
+
         def find_node(base,path):
           ref = base
           if path.find('?')>0:
@@ -538,8 +537,10 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
               ref = None
             if ref is None:
               break
+          if ref is None:
+            writeError(base,'[ZMSIndexZCatalog_func_] find_node ### MISSING LINKTARGET %s'%(path))
           return ref
-        
+
         def handleInline(node,v):
           p = '<dtml-var "getLinkUrl\(\'(.*?)\'(,REQUEST)?\)">'
           r = re.compile(p)
@@ -582,7 +583,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                 ref = find_node(node,href)
             if ref is not None:
               d['data-id'] = ref.get_uid()
-              ref.registerRefObj(node) 
+              ref.registerRefObj(node)
               old = (p.replace('\\','').replace('(.*?)','%s'))%tuple(f)
               title = f[1]
               new = '<a %s>%s</a>'%(' '.join(['%s="%s"'%(x,d[x]) for x in d]),title)
@@ -591,7 +592,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                 writeDebug(node,'[ZMSIndexZCatalog_func_] handleInline new=%s'%new)
                 v = v.replace(old,new)
           return v
-        
+
         def handleUrl(node,v):
           writeDebug(node,'[ZMSIndexZCatalog_func_] handleUrl %s'%v)
           if (v.startswith('{$') and v.endswith('}')) \
@@ -599,13 +600,15 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
              and not (v.startswith('{$') and v.find('id:')>0 and v.endswith('}')):
             ref = getLinkObjFast(node,v)
             if ref is not None:
-              ref.registerRefObj(node) 
+              ref.registerRefObj(node)
               old = v
               new = ref.get_uid()
               writeDebug(node,'[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
               v = new
+            else:
+              writeError(node,'[ZMSIndexZCatalog_func_] handleUrl ### MISSING LINKTARGET %s'%(v))
           return v
-        
+
         def handleItem(node,v):
           if type(v) is list:
             v = handleList(node,v)
@@ -614,19 +617,31 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           elif type(v) is str or type(v) is bytes:
             v = handleInline(node,v)
           return v
-        
+
         def handleDict(node,v):
           nd = {}
           for i in v:
             nd[i] = handleItem(node,v[i])
           return nd
-        
+
         def handleList(node,v):
           nl = []
           for i in v:
             nl.append(handleItem(node,i))
           return nl
-        
+
+        objAttrCache = {}
+        def getObjAttrsFast(node):
+          if node.meta_id not in objAttrCache:
+            objAttrs = []
+            for key in [x for x in node.getObjAttrs() if not x.startswith('manage')]:
+              objAttr = node.getObjAttr(key)
+              datatype = objAttr['datatype']
+              if datatype in ['richtext','string','text','list','dict','url']:
+                objAttrs.append(objAttr)
+            objAttrCache[node.meta_id] = objAttrs
+          return objAttrCache[node.meta_id]
+
         def visit(node):
           writeInfo(node,'[ZMSIndexZCatalog_func_] resync')
           try:
@@ -651,25 +666,26 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                         if o != v:
                           r[objAttr['id']] = v
                 self.operator_setattr(obj_vers,key,l)
-            elif node.meta_id!='ZMSLinkElement':
-              for key in [x for x in node.getObjAttrs() if not x.startswith('manage')]:
-                objAttr = node.getObjAttr(key)
+            else:
+              for objAttr in getObjAttrsFast(node):
+                key = objAttr['id']
                 datatype = objAttr['datatype']
-                if datatype in ['richtext','string','text','list','dict','url']:
-                  lang_suffixes = ['']
-                  if objAttr['multilang']:
-                    lang_suffixes = ['_%s'%x for x in node.getLangIds()]
-                  for lang_suffix in lang_suffixes:
-                    for obj_vers in node.getObjVersions():
-                      v = self.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
-                      if v is not None:
-                        o = v
-                        if datatype in ['richtext','string','text','list','dict'] and type(v) in [bytes,dict,list,str]:
-                          v = handleItem(node,v)
-                        elif datatype in ['url'] and type(v) in [bytes,str]:
+                lang_suffixes = ['']
+                if objAttr['multilang']:
+                  lang_suffixes = ['_%s'%x for x in node.getLangIds()]
+                for lang_suffix in lang_suffixes:
+                  for obj_vers in node.getObjVersions():
+                    v = self.operator_getattr(obj_vers,'%s%s'%(key,lang_suffix),None)
+                    if v is not None:
+                      o = v
+                      if datatype=='url':
+                        if type(v) in [bytes,str]:
                           v = handleUrl(node,v)
-                        if o != v:
-                          self.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
+                      else:
+                        if type(v) in [bytes,dict,list,str]:
+                          v = handleItem(node,v)
+                      if o != v:
+                        self.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
           except:
             t,v,tb = sys.exc_info()
             msg = ''.join(format_exception(t, v, tb))
@@ -687,13 +703,13 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
 
           for childNode in node.objectValues(list(self.dGlobalAttrs)):
             l.extend(visit(childNode))
-          
+
           if node.meta_id == 'ZMS' and request.get('clients',0)==1:
             for childNode in node.getPortalClients():
               l.extend(visit(childNode))
-          
+
           return l
-        
+
         def init_domains(doc,domains):
           domain = doc.getConfProperty('ASP.ip_or_domain','?')
           if domain != '?':
@@ -702,9 +718,9 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             domains[domain] = path
             writeInfo(doc,'[ZMSIndexZCatalog_func_] init_domains %s=%s'%(domain,path))
           for portalClient in doc.getPortalClients():
-            init_domains(portalClient,domains) 
+            init_domains(portalClient,domains)
         init_domains(self.getRootElement(),domains)
-        
+
         for url in request['url'].split(','):
           t0 = time.time()
           base = getLinkObjFast(self,url)
@@ -715,7 +731,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     t,v,tb = sys.exc_info()
     msg = "[%s@%s]"%(self.meta_id,self.absolute_url())+''.join(format_exception(t, v, tb))
     writeError(self,'[ZMSIndexZCatalog_func_] except %s'%msg)
-  
+
   response = request.RESPONSE
   response.setHeader('Content-Type','text/plain')
   return '\n'.join(printed)]]>
@@ -1149,7 +1165,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.4.4</item>
+          <item key="revision">1.4.6</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -1168,7 +1184,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.4.4</item>
+          <item key="revision">1.4.6</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

@@ -170,7 +170,7 @@ class ZMSMetacmdProvider(
       newTitle = r.get('title', '')
       newMethod = impl['type']
       newData = impl['data']
-      newExec = 'exec' in r and r['exec']
+      newExecution = 'execution' in r and r['execution']
       newDescription = r.get('description', '')
       newIconClazz = r.get('icon_clazz', '')
       newMetaTypes = r['meta_types']
@@ -178,7 +178,7 @@ class ZMSMetacmdProvider(
       newNodes = r.get('nodes', '{$}')
       self.delMetacmd(id)
       return self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, \
-        newData, newExec, newDescription, newIconClazz, newMetaTypes, newRoles, \
+        newData, newExecution, newDescription, newIconClazz, newMetaTypes, newRoles, \
         newNodes)
 
 
@@ -206,7 +206,7 @@ class ZMSMetacmdProvider(
         newName = item['name']
         newTitle = item.get('title', '')
         newMethod = item['meta_type']
-        newExec = 'exec' in item and item['exec']
+        newExecution = (item.has_key('execution') and item['execution']) or (item.has_key('exec') and item['exec'])
         newDescription = item.get('description', '')
         newIconClazz = item.get('icon_clazz', '')
         newMetaTypes = item['meta_types']
@@ -216,7 +216,7 @@ class ZMSMetacmdProvider(
         
         # Return with new id.
         return self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, \
-          newData, newExec, newDescription, newIconClazz, newMetaTypes, newRoles, \
+          newData, newExecution, newDescription, newIconClazz, newMetaTypes, newRoles, \
           newNodes)
 
     def importXml(self, xml, createIfNotExists=1):
@@ -263,7 +263,7 @@ class ZMSMetacmdProvider(
     #  Set/add Action specified by given Id.
     # ------------------------------------------------------------------------------
     def setMetacmd(self, id, newId, newAcquired, newRevision='0.0.0', newName='', newTitle='', newMethod=None, \
-          newData=None, newExec=0, newDescription='', newIconClazz='', newMetaTypes=[], \
+          newData=None, newExecution=0, newDescription='', newIconClazz='', newMetaTypes=[], \
           newRoles=['ZMSAdministrator'], newNodes='{$}'):
       
       # Catalog.
@@ -284,7 +284,7 @@ class ZMSMetacmdProvider(
       new['meta_types'] = newMetaTypes
       new['roles'] = newRoles
       new['nodes'] = newNodes
-      new['exec'] = newExec
+      new['execution'] = newExecution
       obs.append(new)
       self.commands = copy.deepcopy(self.commands) # Make persistent.
       
@@ -344,6 +344,9 @@ class ZMSMetacmdProvider(
         return None
       # Refresh Object.
       metaCmd = obs[0]
+      if 'exec' in metaCmd:
+        metaCmd['execution'] = metaCmd['exec']
+        del metaCmd['exec']
       container = self.aq_parent
       src = zopeutil.getObject(metaCmd['home'], metaCmd['id'])
       newData = zopeutil.readObject(metaCmd['home'], metaCmd['id'], '')
@@ -402,7 +405,7 @@ class ZMSMetacmdProvider(
           metaCmd['home'] = self.aq_parent
           metaCmd['stereotype'] = ' '.join([x for x in stereotypes.keys() if metaCmd['id'].startswith(stereotypes[x])])
           metaCmd['action'] = '%smanage_executeMetacmd?id='+metaCmd['id']
-          if metaCmd.get('exec') == 2:
+          if metaCmd.get('execution') == 2:
             metaCmd['action'] = 'javascript:%%s'+metaCmd['id']
             
         metaCmds.append(metaCmd)
@@ -471,14 +474,14 @@ class ZMSMetacmdProvider(
           newTitle = REQUEST.get('el_title', '').strip()
           newMethod = None
           newData = REQUEST.get('el_data', '').strip()
-          newExec = REQUEST.get('el_exec', 0)
+          newExecution = REQUEST.get('el_execution', 0)
           newDescription = REQUEST.get('el_description', '').strip()
           newIconClazz = REQUEST.get('el_icon_clazz', '')
           newMetaTypes = REQUEST.get('el_meta_types', [])
           newRoles = REQUEST.get('el_roles', [])
           newNodes = REQUEST.get('el_nodes', '')
           id = self.setMetacmd(id, newId, newAcquired, newRevision, newName, newTitle, \
-            newMethod, newData, newExec, newDescription, newIconClazz, \
+            newMethod, newData, newExecution, newDescription, newIconClazz, \
             newMetaTypes, newRoles, newNodes)
           message = self.getZMILangStr('MSG_CHANGED')
         
@@ -524,10 +527,10 @@ class ZMSMetacmdProvider(
               el_icon_clazz = metaCmd.get('icon_clazz', '')
               el_meta_types = metaCmd['meta_types']
               el_roles = metaCmd['roles']
-              el_exec = metaCmd['exec']
+              el_execution = metaCmd['execution']
               el_data = zopeutil.readObject(metaCmd['home'], metaCmd['id'])
               # Value.
-              value.append({'id':el_id,'revision':revision,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'exec':el_exec,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
+              value.append({'id':el_id,'revision':revision,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'execution':el_execution,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
           # XML.
           if len(ids)==1:
             filename = '%s-%s.metacmd.xml'%(ids[0], revision)
@@ -561,9 +564,9 @@ class ZMSMetacmdProvider(
           newTitle = REQUEST.get('_title').strip()
           newMethod = REQUEST.get('_type', 'DTML Method')
           newData = None
-          newExec = REQUEST.get('_exec', 0)
+          newExecution = REQUEST.get('_execution', 0)
           newIconClazz = REQUEST.get('_icon_clazz', '')
-          id = self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, newData, newExec, newIconClazz=newIconClazz)
+          id = self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, newData, newExecution, newIconClazz=newIconClazz)
           message = self.getZMILangStr('MSG_INSERTED')%id
         
         # Sync with repository.

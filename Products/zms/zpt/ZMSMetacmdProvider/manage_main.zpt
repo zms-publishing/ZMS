@@ -5,7 +5,7 @@
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:define="
-		exec_options python:[(0,'None'),(1,'Exec'),(2,'Script')];
+		execution_options python:[(0,'None'),(1,'Omit UI'),(2,'Script')];
 		action python:'manage_changeMetacmds';
 		metaCmdIds python:here.getMetaCmdIds();
 		metaCmds python:[here.getMetaCmd(x) for x in metaCmdIds]">
@@ -40,11 +40,11 @@
 				<div class="col-sm-9"><input type="text" name="el_description" class="form-control form-control-sm" tal:attributes="value python:metaCmd.get('description')"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
-				<label for="el_exec:int" class="col-sm-3 control-label"><span>Exec.</span></label>
+				<label for="el_execution:int" class="col-sm-3 control-label"><span>Execution</span></label>
 				<div class="col-sm-9">
-					<select class="form-control" name="el_exec:int">
-						<tal:block tal:repeat="exec_option exec_options">
-							<option tal:attributes="value python:exec_option[0]; selected python:['','selected'][int(metaCmd['exec']==exec_option[0])]" tal:content="python:exec_option[1]">the label</option>
+					<select class="form-control" name="el_execution:int">
+						<tal:block tal:repeat="execution_option execution_options">
+							<option tal:attributes="value python:execution_option[0]; selected python:['','selected'][int(metaCmd['execution']==execution_option[0])]" tal:content="python:execution_option[1]">the label</option>
 						</tal:block>
 					</select>
 				</div><!-- .col-sm-9 -->
@@ -137,11 +137,11 @@
 				</div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
-				<label class="col-sm-3 control-label" for="_exec:int"><span>Exec.</span></label>
+				<label class="col-sm-3 control-label" for="_execution:int"><span>Execution</span></label>
 				<div class="col-sm-9">
-					<select class="form-control" name="_exec:int">
-						<tal:block tal:repeat="exec_option exec_options">
-							<option tal:attributes="value python:exec_option[0]" tal:content="python:exec_option[1]">the label</option>
+					<select class="form-control" name="_execution:int">
+						<tal:block tal:repeat="execution_option execution_options">
+							<option tal:attributes="value python:execution_option[0]" tal:content="python:execution_option[1]">the label</option>
 						</tal:block>
 					</select>
 				</div>

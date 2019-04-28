@@ -238,13 +238,13 @@ class ZMSRepositoryManager(
           v = o.get(k)
           if v:
             py.append('\t# %s'%k.capitalize())
-            py.append('\t%s = %s'%(k,self.str_json(v,encoding="utf-8",formatted=True,level=2)))
+            py.append('\t%s = %s'%(standard.id_quote(k),self.str_json(v,encoding="utf-8",formatted=True,level=2)))
             py.append('')
         for k in e:
           v = o.get(k)
           if v and type(v) is list:
             py.append('\t# %s'%k.capitalize())
-            py.append('\tclass %s:'%k)
+            py.append('\tclass %s:'%standard.id_quote(k))
             for i in v:
               ob = i.get('ob')
               if ob is not None:

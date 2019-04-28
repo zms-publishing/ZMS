@@ -95,7 +95,7 @@ def manage_css_classes(self):
 	return html]]>
       </item>
       <item key="description"></item>
-      <item key="exec" type="int">0</item>
+      <item key="execution" type="int">0</item>
       <item key="icon_clazz"><![CDATA[icon-css3 text-primary]]></item>
       <item key="id"><![CDATA[manage_css_classes]]></item>
       <item key="meta_type"><![CDATA[External Method]]></item>

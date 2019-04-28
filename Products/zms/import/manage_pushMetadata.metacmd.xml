@@ -117,7 +117,7 @@
 </dtml-if>]]>
   </item>
   <item key="description"/>
-  <item key="exec" type="int">0</item>
+  <item key="execution" type="int">0</item>
   <item key="id"><![CDATA[manage_pushMetadata]]></item>
   <item key="meta_type"><![CDATA[DTML Method]]></item>
   <item key="meta_types" type="list">

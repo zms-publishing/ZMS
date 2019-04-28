@@ -90,7 +90,7 @@
 </html>]]>
       </item>
       <item key="description"></item>
-      <item key="exec" type="int">0</item>
+      <item key="execution" type="int">0</item>
       <item key="icon_clazz"><![CDATA[icon-cogs]]></item>
       <item key="id"><![CDATA[manage_tab_search]]></item>
       <item key="meta_type"><![CDATA[Page Template]]></item>
@@ -189,7 +189,7 @@
 </html>]]>
       </item>
       <item key="description"></item>
-      <item key="exec" type="int">0</item>
+      <item key="execution" type="int">0</item>
       <item key="icon_clazz"><![CDATA[icon-cogs]]></item>
       <item key="id"><![CDATA[manage_tab_tasks]]></item>
       <item key="meta_type"><![CDATA[Page Template]]></item>

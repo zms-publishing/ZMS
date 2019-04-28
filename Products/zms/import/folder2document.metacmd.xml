@@ -4,7 +4,7 @@
 <item key="data"><![CDATA[<dtml-call "operator_setattr(this(),'meta_id','ZMSDocument')">
 <dtml-return "RESPONSE.redirect(url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'manage_tabs_message':'Changed into document.'}))">]]></item>
 <item key="description"/>
-<item key="exec" type="int">0</item>
+<item key="execution" type="int">0</item>
 <item key="icon_clazz"><![CDATA[icon-file-text-alt text-primary]]></item>
 <item key="id"><![CDATA[manage_ZMSFolder2ZMSDocument]]></item>
 <item key="meta_type"><![CDATA[DTML Method]]></item>
@@ -23,7 +23,7 @@
 <item key="data"><![CDATA[<dtml-call "operator_setattr(this(),'meta_id','ZMSFolder')">
 <dtml-return "RESPONSE.redirect(url_append_params('%s/manage_main'%absolute_url(),{'lang':lang,'manage_tabs_message':'Changed into folder.'}))">]]></item>
 <item key="description"/>
-<item key="exec" type="int">0</item>
+<item key="execution" type="int">0</item>
 <item key="id"><![CDATA[manage_ZMSDocument2ZMSFolder]]></item>
 <item key="meta_type"><![CDATA[DTML Method]]></item>
 <item key="meta_types" type="list"><list>
@@ -64,7 +64,7 @@ print("Change %i folders into documents and %i documents into folders"%(cf,cd))
 return RESPONSE.redirect(context.url_append_params('%s/manage_main'%context.absolute_url(),{'lang':lang,'manage_tabs_message':printed}))
 ]]></item>
 <item key="description"/>
-<item key="exec" type="int">0</item>
+<item key="execution" type="int">0</item>
 <item key="icon_clazz"><![CDATA[icon-folder text-primary]]></item>
 <item key="id"><![CDATA[manage_syncZMSFoldersNDocuments]]></item>
 <item key="meta_type"><![CDATA[Script (Python)]]></item>

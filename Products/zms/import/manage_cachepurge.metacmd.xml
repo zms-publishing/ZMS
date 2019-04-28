@@ -46,7 +46,7 @@ return '<br />'.join(msg)
 ]]>
       </item>
       <item key="description"></item>
-      <item key="exec" type="int">1</item>
+      <item key="execution" type="int">1</item>
       <item key="icon_clazz"><![CDATA[icon-refresh]]></item>
       <item key="id"><![CDATA[manage_cachepurge]]></item>
       <item key="meta_type"><![CDATA[Script (Python)]]></item>
@@ -127,7 +127,7 @@ return '<br />'.join(msg)
 </html>]]>
       </item>
       <item key="description"></item>
-      <item key="exec" type="int">0</item>
+      <item key="execution" type="int">0</item>
       <item key="icon_clazz"><![CDATA[icon-refresh]]></item>
       <item key="id"><![CDATA[manage_cachepurge_list]]></item>
       <item key="meta_type"><![CDATA[Page Template]]></item>

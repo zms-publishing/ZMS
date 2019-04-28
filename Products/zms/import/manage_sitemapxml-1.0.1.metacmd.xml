@@ -117,7 +117,7 @@ return request.get('message','ERROR: No Message')
 ]]>
       </item>
       <item key="description"></item>
-      <item key="exec" type="int">1</item>
+      <item key="execution" type="int">1</item>
       <item key="icon_clazz"><![CDATA[icon-sitemap]]></item>
       <item key="id"><![CDATA[manage_sitemapxml]]></item>
       <item key="meta_type"><![CDATA[Script (Python)]]></item>

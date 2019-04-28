@@ -106,7 +106,7 @@ def manage_addMultiUpload(self):
 	return html]]>
       </item>
       <item key="description"></item>
-      <item key="exec" type="int">0</item>
+      <item key="execution" type="int">0</item>
       <item key="icon_clazz"><![CDATA[icon-upload text-primary]]></item>
       <item key="id"><![CDATA[manage_addMultiUpload]]></item>
       <item key="meta_type"><![CDATA[External Method]]></item>

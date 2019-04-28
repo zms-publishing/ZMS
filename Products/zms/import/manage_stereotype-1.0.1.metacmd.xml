@@ -168,7 +168,7 @@ return html
 ]]>
       </item>
       <item key="description"></item>
-      <item key="exec" type="int">0</item>
+      <item key="execution" type="int">0</item>
       <item key="icon_clazz"><![CDATA[icon-random]]></item>
       <item key="id"><![CDATA[manage_stereotype]]></item>
       <item key="meta_type"><![CDATA[Script (Python)]]></item>

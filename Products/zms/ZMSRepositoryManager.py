@@ -228,7 +228,7 @@ class ZMSRepositoryManager(
         filename = o.get('__filename__', [id, '__init__.py'])
         # Write python-representation.
         py = []
-        py.append('class %s:'%id.replace('.', '_'))
+        py.append('class %s:'%standard.id_quote(id).capitalize())
         py.append('\t"""')
         py.append('\tpython-representation of %s'%o['id'])
         py.append('\t"""')
@@ -245,7 +245,7 @@ class ZMSRepositoryManager(
           v = o.get(k)
           if v and isinstance(v, list):
             py.append('\t# %s'%k.capitalize())
-            py.append('\tclass %s:'%standard.id_quote(k))
+            py.append('\tclass %s:'%standard.id_quote(k).capitalize())
             for i in v:
               ob = i.get('ob')
               if ob is not None:

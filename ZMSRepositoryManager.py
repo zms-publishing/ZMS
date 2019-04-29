@@ -227,7 +227,7 @@ class ZMSRepositoryManager(
         filename = o.get('__filename__',[id,'__init__.py'])
         # Write python-representation.
         py = []
-        py.append('class %s:'%id.replace('.','_'))
+        py.append('class %s:'%standard.id_quote(id).capitalize())
         py.append('\t"""')
         py.append('\tpython-representation of %s'%o['id'])
         py.append('\t"""')
@@ -244,7 +244,7 @@ class ZMSRepositoryManager(
           v = o.get(k)
           if v and type(v) is list:
             py.append('\t# %s'%k.capitalize())
-            py.append('\tclass %s:'%standard.id_quote(k))
+            py.append('\tclass %s:'%standard.id_quote(k).capitalize())
             for i in v:
               ob = i.get('ob')
               if ob is not None:
@@ -334,17 +334,17 @@ class ZMSRepositoryManager(
       r = {}
       basepath = self.get_conf_basepath(provider.id)
       if os.path.exists(basepath):
-        def traverse(base,path):
+        def traverse(base, path):
           names = os.listdir(path)
           for name in names:
-            filepath = os.path.join(path,name)
+            filepath = os.path.join(path, name)
             mode = os.stat(filepath)[stat.ST_MODE]
             if stat.S_ISDIR(mode):
-              traverse(base,filepath)
+              traverse(base, filepath)
             elif not name in ['__impl__.py'] and name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
               self.writeBlock("[readRepository]: read %s"%filepath)
-              f = open(filepath,"rb")
+              f = open(filepath, "rb")
               py = f.read()
               f.close()
               # Analyze python-representation of repository-object
@@ -352,31 +352,31 @@ class ZMSRepositoryManager(
               d = c.__dict__
               id = d["id"]
               r[id] = {}
-              for k in filter(lambda x:not x.startswith('__'),d.keys()):
+              for k in [x for x in d if not x.startswith('__')]:
                 v = d[k]
                 if inspect.isclass(v):
                   dd = v.__dict__
                   v = []
-                  for kk in filter(lambda x:not x.startswith('__'),dd.keys()):
+                  for kk in [x for x in dd if not x.startswith('__')]:
                     vv = dd[kk]
                     # Try to read artefact.
-                    if vv.has_key('id'):
+                    if 'id' in vv:
                       fileprefix = vv['id'].split('/')[-1]
-                      for file in filter(lambda x: x==fileprefix or x.startswith('%s.'%fileprefix),names):
-                        artefact = os.path.join(path,file)
+                      for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
+                        artefact = os.path.join(path, file)
                         self.writeBlock("[readRepository]: read artefact %s"%artefact)
-                        f = open(artefact,"rb")
+                        f = open(artefact, "r")
                         data = f.read()
                         f.close()
                         if artefact.endswith('.zpt'):
                           data = data.decode('utf-8')
                         vv['data'] = data
                         break
-                    v.append((py.find('\t\t%s ='%kk),vv))
+                    v.append((py.find('\t\t%s ='%kk), vv))
                   v.sort()
-                  v = map(lambda x:x[1],v)
+                  v = [x[1] for x in v]
                 r[id][k] = v
-        traverse(basepath,basepath)
+        traverse(basepath, basepath)
       return r
 
 

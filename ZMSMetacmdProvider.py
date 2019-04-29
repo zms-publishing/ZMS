@@ -387,23 +387,27 @@ class ZMSMetacmdProvider(
     #  Returns list of actions.
     # --------------------------------------------------------------------------
     def getMetaCmds(self, context=None, stereotype='', sort=True):
-      stereotypes = {'insert':'manage_add','tab':'manage_tab'}
+      stereotypes = {'insert':'manage_add','tab':'manage_tab','repository':'manage_repository'}
       metaCmds = []
       portalMasterMetaCmds = None
-      for metaCmd in filter(lambda x:x['id'].startswith(stereotypes.get(stereotype,'')),self.commands):
+      for metaCmd in [x for x in self.commands if x['id'].startswith(stereotypes.get(stereotype, ''))]:
         # Acquire from parent.
-        if metaCmd.get('acquired',0)==1:
+        if metaCmd.get('acquired', 0)==1:
           if portalMasterMetaCmds is None:
             portalMaster = self.getPortalMaster()
             portalMasterMetaCmds = portalMaster.getMetaCmds(stereotype=stereotype)
-          l = filter(lambda x: x['id']==metaCmd['id'], portalMasterMetaCmds)
+          l = [x for x in portalMasterMetaCmds if x['id']==metaCmd['id']]
           if len(l) > 0:
             metaCmd = l[0]
             metaCmd['acquired'] = 1
         else:
           metaCmd = metaCmd.copy()
           metaCmd['home'] = self.aq_parent
-          metaCmd['stereotype'] = ' '.join(filter(lambda x:metaCmd['id'].startswith(stereotypes[x]),stereotypes.keys()))
+          metaCmd['stereotype'] = ' '.join([x for x in stereotypes.keys() if metaCmd['id'].startswith(stereotypes[x])])
+          metaCmd['action'] = '%smanage_executeMetacmd?id='+metaCmd['id']
+          if metaCmd.get('execution') == 2:
+            metaCmd['action'] = 'javascript:%%s'+metaCmd['id']
+            
         metaCmds.append(metaCmd)
       if context is not None:
         request = context.REQUEST
@@ -414,16 +418,21 @@ class ZMSMetacmdProvider(
         for metaCmd in metaCmds:
           canExecute = True
           if canExecute:
-            hasMetaType = context.meta_id in metaCmd['meta_types'] or 'type(%s)'%context.getType() in metaCmd['meta_types']
+            meta_types = metaCmd['meta_types']
+            hasMetaType = False
+            hasMetaType = hasMetaType or '*' in meta_types
+            hasMetaType = hasMetaType or context.meta_id in meta_types
+            hasMetaType = hasMetaType or 'type(%s)'%context.getType() in meta_types
             canExecute = canExecute and hasMetaType
           if canExecute:
+            roles = metaCmd['roles']
             hasRole = False
-            hasRole = hasRole or '*' in metaCmd['roles']
-            hasRole = hasRole or len(standard.intersection_list(user_roles,metaCmd['roles'])) > 0
+            hasRole = hasRole or '*' in roles
+            hasRole = hasRole or len(standard.intersection_list(user_roles,roles)) > 0
             hasRole = hasRole or auth_user.has_role('Manager')
             canExecute = canExecute and hasRole
           if canExecute:
-            nodes = standard.string_list(metaCmd.get('nodes','{$}'))
+            nodes = standard.string_list(metaCmd.get('nodes', '{$}'))
             sl = []
             sl.extend([(context.getHome().id+'/content/'+x[2:-1]+'/').replace('//', '/') for x in [x for x in nodes if x.find('@')<0]])
             sl.extend([(x[2:-1].replace('@', '/content/')+'/').replace('//', '/') for x in [x for x in nodes if x.find('@')>0]])

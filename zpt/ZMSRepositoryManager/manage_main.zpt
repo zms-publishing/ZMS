@@ -110,6 +110,18 @@
 			<span class="btn btn-default" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check')"></tal:block></span>
 			<button type="submit" class="btn btn-default" name="btn" value="update"><tal:block tal:content="structure python:here.zmi_icon(name='icon-reply')"></tal:block> Update</button>
 			<button type="submit" class="btn btn-default" name="btn" value="commit">Commit <tal:block tal:content="structure python:here.zmi_icon(name='icon-share-alt text-success')"></tal:block></button>
+			<tal:block tal:define="meta_cmds python:here.getMetaCmds(here,'repository')">
+				<div class="btn-group" tal:condition="meta_cmds">
+					<button class="btn btn-default dropdown-toggle" type="button" id="teamDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Team  <span class="caret"></span>
+					</button>
+					<div class="dropdown-menu" aria-labelledby="teamDropdownMenuButton">
+					<tal:block tal:repeat="meta_cmd meta_cmds">
+						<li><a tal:attributes="href python:meta_cmd['id']" tal:content="python:meta_cmd['name']">Action</a></li>
+					</tal:block>
+					</div>
+				</div>
+			</tal:block>
 		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
 

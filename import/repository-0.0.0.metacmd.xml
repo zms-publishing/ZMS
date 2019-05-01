@@ -14,6 +14,10 @@
 ##
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
+btn = request.form.get('btn')
+came_from = request.get('came_from',request['HTTP_REFERER'])
+if came_from.find('?') > 0:
+	came_from = came_from[:came_from.find('?')]
 
 print '<!DOCTYPE html>'
 print '<html lang="en">'
@@ -24,24 +28,27 @@ print '<div id="zmi-tab">'
 print context.zmi_breadcrumbs(context,request)
 print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
+print '<input type="hidden" name="came_from" value="%s"/>'%came_from
 print '<legend>SVN-%s...</legend>'%unicode(context.getZMILangStr('BTN_COMMIT'),'utf-8')
 
 # --- Execute.
 # ---------------------------------
-if request.form.get('btn')==context.getZMILangStr('BTN_COMMIT'):
-	message = []
-	old = request['old']
-	new = request['new']
-	c = run(context,old,new)
-	message.append('%s (%i)'%(context.getZMILangStr('MSG_CHANGED'),c))
+if btn==context.getZMILangStr('BTN_COMMIT'):
+	success = context.commitChanges(request.get('ids',[]))
+	message = [context.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%' '.join(success))]
 	request.response.redirect(context.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+
+# --- Cancel.
+# ---------------------------------
+elif btn==context.getZMILangStr('BTN_CANCEL'):
+	request.response.redirect(context.url_append_params(came_from,{'lang':request['lang']}))
 
 # --- Display initial form.
 # -------------------------
 else:
 	print '<div class="form-group">'
-	print '<label for="message" class="col-sm-3 control-label mandatory">Message</label>'
-	print '<div class="col-sm-9"><input class="form-control" name="message" type="text" size="25" value=""></div>'
+	print '<label for="message" class="col-sm-2 control-label mandatory">Message</label>'
+	print '<div class="col-sm-10"><input class="form-control" name="message" type="text" size="25" value=""></div>'
 	print '</div><!-- .form-group -->'
 	print '<div class="form-group">'
 	print '<div class="controls save">'
@@ -49,6 +56,7 @@ else:
 	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
 	print '</div>'
 	print '</div><!-- .form-group -->'
+	print context.manage_main_diff(context,request)
 
 # ---------------------------------
 
@@ -95,6 +103,10 @@ return printed
 ##
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
+btn = request.form.get('btn')
+came_from = request.get('came_from',request['HTTP_REFERER'])
+if came_from.find('?') > 0:
+	came_from = came_from[:came_from.find('?')]
 
 print '<!DOCTYPE html>'
 print '<html lang="en">'
@@ -105,17 +117,20 @@ print '<div id="zmi-tab">'
 print context.zmi_breadcrumbs(context,request)
 print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
+print '<input type="hidden" name="came_from" value="%s"/>'%came_from
 print '<legend>SVN-%s...</legend>'%unicode(context.getZMILangStr('BTN_ROLLBACK'),'utf-8')
 
 # --- Execute.
 # ---------------------------------
-if request.form.get('btn')==context.getZMILangStr('BTN_ROLLBACK'):
-	message = []
-	old = request['old']
-	new = request['new']
-	c = run(context,old,new)
-	message.append('%s (%i)'%(context.getZMILangStr('MSG_CHANGED'),c))
+if btn==context.getZMILangStr('BTN_ROLLBACK'):
+	success = context.updateChanges(request.get('ids',[]),btn=='override')
+	message = [context.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success))]
 	request.response.redirect(context.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+
+# --- Cancel.
+# ---------------------------------
+elif btn==context.getZMILangStr('BTN_CANCEL'):
+	request.response.redirect(context.url_append_params(came_from,{'lang':request['lang']}))
 
 # --- Display initial form.
 # -------------------------
@@ -172,6 +187,10 @@ return printed
 ##
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
+btn = request.form.get('btn')
+came_from = request.get('came_from',request['HTTP_REFERER'])
+if came_from.find('?') > 0:
+	came_from = came_from[:came_from.find('?')]
 
 print '<!DOCTYPE html>'
 print '<html lang="en">'
@@ -182,17 +201,23 @@ print '<div id="zmi-tab">'
 print context.zmi_breadcrumbs(context,request)
 print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
+print '<input type="hidden" name="came_from" value="%s"/>'%came_from
 print '<legend>SVN-%s...</legend>'%unicode(context.getZMILangStr('TAB_CONFIGURATION'),'utf-8')
 
 # --- Execute.
 # ---------------------------------
-if request.form.get('btn')==context.getZMILangStr('BTN_CHANGE'):
+if btn==context.getZMILangStr('BTN_CHANGE'):
 	message = []
 	context.setConfProperty('ZMSRepository.svn.server.url',request['url'])
 	context.setConfProperty('ZMSRepository.svn.server.userid',request['userid'])
 	context.setConfProperty('ZMSRepository.svn.server.password',request['password'])
 	message.append(context.getZMILangStr('MSG_CHANGED'))
 	request.response.redirect(context.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+
+# --- Cancel.
+# ---------------------------------
+elif btn==context.getZMILangStr('BTN_CANCEL'):
+	request.response.redirect(context.url_append_params(came_from,{'lang':request['lang']}))
 
 # --- Display initial form.
 # -------------------------

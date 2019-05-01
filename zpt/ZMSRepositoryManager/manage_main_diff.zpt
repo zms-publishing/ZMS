@@ -1,0 +1,243 @@
+<style>
+.line-number {
+	width:4em;
+	background:#FEFEFE;
+	color:#101010;
+	border:1px solid #CCC;
+	display:inline-block;
+	text-align:right;
+	padding:0 4px 0 4px;
+}
+.line-number.line-changed {
+	background:#101010;
+	color:#FEFEFE;
+}
+.arrow-right {
+	display:inline-block;
+	margin-left:.5em;
+	width: 0; 
+	height: 0; 
+	border-top: 4px solid transparent;
+	border-bottom: 4px solid transparent;
+	border-left: 4px solid #101010;
+}
+.arrow-left {
+	display:inline-block;
+	margin-left:.5em;
+	width: 0; 
+	height: 0; 
+	border-top: 4px solid transparent;
+	border-bottom: 4px solid transparent; 
+	border-right:4px solid #418CF1; 
+	}
+	.state {
+		display:inline-block;
+		width:16px;
+		height:16px;
+		border:solid 1px #ccc;
+	}
+	del {
+		color:#777!important;
+		background-color:#F2DEDE!important;
+		text-decoration:line-through;
+	}
+	ins {
+		color: #3C763D!important;
+		background-color: #DFF0D8!important;
+		text-decoration:none;
+	}
+	.prettyTextDiff .original, 
+	.prettyTextDiff .changed {
+		display:none;
+	}
+</style>
+
+	<tal:block tal:define="
+			dummy0 python:request.set('ZMI_LIBS_SCRIPT',request.get('ZMI_LIBS_SCRIPT',[])+
+				['/++resource++zms_/jquery/diff/diff_match_patch.js'
+				,'/++resource++zms_/jquery/diff/jquery.pretty-text-diff.min.js'
+				]);
+			standard modules/Products.zms/standard;
+			provider_diffs python:map(lambda x:(x,here.getDiffs(x)),here.getRepositoryProviders());
+			provider_diffs_count python:sum(map(lambda x:len(x[1]),provider_diffs)+[0])">
+
+	<tal:block tal:condition="not:provider_diffs_count">
+		<div class="form-group" tal:repeat="provider python:here.getRepositoryProviders()">
+			<label class="col-sm-2" style="text-align:right">
+				<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
+			</label>
+			<div class="col-sm-10" tal:define="
+					local_files python:here.localFiles(provider).values();
+					ids python:standard.distinct_list(map(lambda x:x['id'],local_files));
+					dummy0 python:ids.sort();
+					">
+				<div tal:repeat="id ids">
+					<tal:block tal:content="structure python:here.zmi_icon(name='icon-ok text-success')"></tal:block>
+					<tal:block tal:content="id"></tal:block>
+				</div>
+			</div>
+		</div>
+	</tal:block>
+
+	<tal:block tal:condition="provider_diffs_count">
+	<tal:block tal:repeat="provider_diff provider_diffs">
+	<tal:block tal:define="
+			provider python:provider_diff[0]; 
+			diffs python:provider_diff[1]; 
+			ids python:standard.distinct_list(map(lambda x:x[2],diffs)); 
+			dummy0 python:ids.sort();">
+	<div class="form-group" tal:condition="ids">
+		<label class="col-sm-2" style="text-align:right">
+			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
+		</label>
+		<div class="col-sm-10">
+			<table class="table">
+			<colgroup>
+				<col width="1em"/>
+				<col width="20%"/>
+				<col width="80%"/>
+			</colgroup>
+			<tal:block tal:repeat="id ids">
+				<tr>
+					<td><input type="checkbox" name="ids:list" tal:attributes="value python:'%s:%s'%(provider.id,id)" checked="checked"></td>
+					<td><strong tal:content="id">the id</strong></td>
+					<td>
+					<div tal:repeat="diff python:filter(lambda x:x[2]==id,diffs)">
+						<tal:block tal:define="
+								filename python:diff[0];
+								mt python:diff[1];
+								l python:diff[3];
+								r python:diff[4];
+								ld python:l.get('data','');
+								rd python:r.get('data','');
+								is_new python:len(ld)==0 and len(rd)>0;
+								is_modified python:len(ld)>0 and len(rd)>0;
+								is_incoming python:is_modified and l.get('version')<r.get('version');
+								is_outgoing python:is_modified and l.get('version')>r.get('version');
+								is_removed python:len(ld)>0 and len(rd)==0;">
+									<span tal:attributes="class python:' '.join(['state']
+											+[[],['bg-success']][is_new]
+											+[[],['bg-warning']][is_modified]
+											+[[],['bg-danger']][is_removed]
+											)">&nbsp;</span>
+									<a tal:attributes="href python:'#%s'%here.id_quote(filename)" tal:content="python:filename">the filename</a>
+									<tal:block tal:condition="is_incoming"><div class="arrow-left" tal:attributes="title python:'Incoming - ZODB: %s;; Repository: %s'%(str(l.get('version','')),str(r.get('version','')))"></div></tal:block>
+									<tal:block tal:condition="is_outgoing"><div class="arrow-right" tal:attributes="title python:'Outgoing - ZODB: %s;; Repository: %s'%(str(l.get('version','')),str(r.get('version','')))"></div></tal:block>
+						</tal:block>
+					</div>
+					</td>
+				</tr>
+			</tal:block>
+			</table>
+		</div><!-- .col-sm-10 -->
+	</div><!-- .form-group -->
+	</tal:block>
+	</tal:block>
+
+	<div class="form-group">
+		<label class="col-sm-2"></label>
+		<div class="col-sm-10">
+			<small>
+				<span class="state bg-success">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_NEW')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span class="state bg-warning">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span class="state bg-danger">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_DELETED')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</small>
+		</div><!-- .col-sm-10 -->
+	</div><!-- .form-group -->
+
+	<tal:block tal:repeat="provider_diff provider_diffs">
+	<tal:block tal:define="provider python:provider_diff[0]; diffs python:provider_diff[1];">
+		<tal:block tal:repeat="diff diffs">
+		<tal:block tal:define="
+				filename python:diff[0];
+				mt python:diff[1];
+				l python:diff[3];
+				r python:diff[4];
+				ld python:diff[3].get('data','');
+				rd python:diff[4].get('data','');
+				is_modified python:len(ld)>0 and len(rd)>0;
+				is_text python:mt.startswith('text/') or mt in ['application/javascript']">
+		<table class="table" tal:condition="is_modified" tal:attributes="id python:here.id_quote(filename)">
+		<tr>
+			<td>
+				<strong tal:content="python:here.get_conf_basepath(provider.id+'/'+filename)"></strong>
+				(<em tal:content="mt"></em>)
+				<small>
+					<tal:block tal:condition="r">
+						Repository: 
+						<tal:block tal:content="python:'%s;; %i Bytes'%(str(r['version']),len(rd))"></tal:block>
+					</tal:block>
+					->
+					<tal:block tal:condition="l">
+						ZODB: 
+						<tal:block tal:content="python:'%s;; %i Bytes'%(str(l['version']),len(ld))"></tal:block>
+					</tal:block>
+				</small>
+				<a href="#zmi-tab"><tal:block tal:content="structure python:here.zmi_icon(name='icon-collapse-top')"></tal:block></a>
+			</td>
+		</tr>
+		<tr>
+			<td class="prettyTextDiff">
+				<pre class="diff"></pre>
+				<pre class="changed repository" tal:condition="is_text" tal:content="rd"></pre>
+				<pre class="original local" tal:condition="is_text" tal:content="ld"></pre>
+			</td>
+		</tr>
+		</table>
+		</tal:block>
+		</tal:block>
+	</tal:block>
+	</tal:block>
+
+	</tal:block>
+	</tal:block>
+
+<script>
+	$(function() {
+		$(".prettyTextDiff").each(function() {
+						var diffContainer = ".diff";
+						$(this).prettyTextDiff({
+								cleanup:true,
+								originalContainer:".original",
+								changedContainer:".changed",
+								diffContainer:diffContainer
+							});
+						var $diffContainer = $(diffContainer,this);
+						var lines = $diffContainer.html().replace(/<span>/gi,'').replace(/<\/span>/gi,'').split("<br>");
+						var show = [];
+						var changed = false;
+						for (var i = 0; i < lines.length; i++) {
+							var line = lines[i];
+							changed |= line.indexOf("<"+"del>")>=0 || line.indexOf("<ins>")>=0;
+							if (changed) {
+								show.push(i);
+							}
+							changed &= !(line.indexOf("<"+"/del>")>=0 || line.indexOf("</ins>")>=0);
+						}
+						var html = [];
+						changed = false;
+						for (var i = 0; i < lines.length; i++) {
+							var line = lines[i];
+							changed |= line.indexOf("<"+"del>")>=0 || line.indexOf("<"+"ins>")>=0;
+							line = '<'+'span class="line-number'+(changed?' line-changed':'')+'">'+(i+1)+'</span> '+lines[i];
+							if (!(show.contains(i-1) || show.contains(i) || show.contains(i+1))) {
+								line = '<'+'span class="diff-unchanged hidden">'+line+'<'+'/span>';
+							}
+							else {
+								line = line+'<'+'br/>';
+							}
+							html.push(line);
+							changed &= !(line.indexOf("<"+"/del>")>=0 || line.indexOf("<"+"/ins>")>=0);
+						}
+						$diffContainer.html(html.join(""));
+						$("strong",$(this).closest("tr").prev("tr")).addClass("zmi-helper-clickable").click(function() {
+								if ($(".diff-unchanged.hidden",$diffContainer).length > 0) {
+									$(".diff-unchanged",$diffContainer).removeClass("hidden").after("<br>");
+								}
+								else if ($(".diff-unchanged",$diffContainer).length > 0) {
+									$(".diff-unchanged",$diffContainer).addClass("hidden").next("br").remove();
+								}
+							});
+			});
+		});
+</script>

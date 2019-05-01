@@ -385,6 +385,7 @@ class ZMSRepositoryManager(
     """
     def commitChanges(self, ids):
       self.writeBlock("[commitChanges]: ids=%s"%str(ids))
+      standard.triggerEvent(self,'beforeCommitRepositoryEvt')
       success = []
       for provider_id in list(set(map(lambda x:x.split(':')[0],ids))):
         provider = getattr(self,provider_id)
@@ -418,6 +419,7 @@ class ZMSRepositoryManager(
             f.write(data)
             f.close()
           success.append(id)
+      standard.triggerEvent(self,'afterCommitRepositoryEvt')
       return success
 
     """
@@ -425,6 +427,7 @@ class ZMSRepositoryManager(
     """
     def updateChanges(self, ids, override=False):
       self.writeBlock("[updateChanges]: ids=%s"%str(ids))
+      standard.triggerEvent(self,'beforeUpdateRepositoryEvt')
       success = []
       repositories = {}
       for i in ids:
@@ -440,6 +443,7 @@ class ZMSRepositoryManager(
         r = repository[id]
         provider.updateRepository(r)
         success.append(id)
+      standard.triggerEvent(self,'afterUpdateRepositoryEvt')
       return success
 
 

@@ -387,7 +387,7 @@ class ZMSMetacmdProvider(
     #  Returns list of actions.
     # --------------------------------------------------------------------------
     def getMetaCmds(self, context=None, stereotype='', sort=True):
-      stereotypes = {'insert':'manage_add','tab':'manage_tab'}
+      stereotypes = {'insert':'manage_add','tab':'manage_tab','repository':'manage_repository'}
       metaCmds = []
       portalMasterMetaCmds = None
       for metaCmd in [x for x in self.commands if x['id'].startswith(stereotypes.get(stereotype, ''))]:

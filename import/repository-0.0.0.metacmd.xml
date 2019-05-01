@@ -18,14 +18,14 @@ RESPONSE =  request.RESPONSE
 print '<!DOCTYPE html>'
 print '<html lang="en">'
 print context.zmi_html_head(context,request)
-print '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',context.meta_id]))
-print context.zmi_body_header(context,request,options=[{'action':'#','label':'Search+Replace...'}])
+print '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
+print context.zmi_body_header(context,request,options=[{'action':'#','label':'SVN-%s...'%context.getZMILangStr('BTN_COMMIT')}])
 print '<div id="zmi-tab">'
 print context.zmi_breadcrumbs(context,request)
 print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
 print '<input type="hidden" name="form_id" value="manage_addClient"/>'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
-print '<legend>%s...</legend>'%context.getZMILangStr('BTN_COMMIT')
+print '<legend>SVN-%s...</legend>'%context.getZMILangStr('BTN_COMMIT')
 
 # --- Execute.
 # ---------------------------------
@@ -46,8 +46,8 @@ else:
 	print '</div><!-- .form-group -->'
 	print '<div class="form-group">'
 	print '<div class="controls save">'
-	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(context.getZMILangStr('BTN_COMMIT'),context.getZMILangStr('BTN_COMMIT'))
-	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(context.getZMILangStr('BTN_CANCEL'),context.getZMILangStr('BTN_CANCEL'))
+	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_COMMIT'),'utf-8'),unicode(context.getZMILangStr('BTN_COMMIT'),'utf-8'))
+	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
 	print '</div>'
 	print '</div><!-- .form-group -->'
 
@@ -65,21 +65,22 @@ return printed
       </item>
       <item key="description"></item>
       <item key="execution" type="int">0</item>
-      <item key="icon_clazz">icon-cogs</item>
+      <item key="icon_clazz"><![CDATA[icon-share-alt text-success]]></item>
       <item key="id">manage_repository_commit</item>
       <item key="meta_type"><![CDATA[Script (Python)]]></item>
       <item key="meta_types" type="list">
         <list>
+          <item>ZMS</item>
         </list>
       </item>
-      <item key="name">REPOSITORY_COMMIT</item>
+      <item key="name">BTN_COMMIT</item>
       <item key="revision">0.0.0</item>
       <item key="roles" type="list">
         <list>
           <item>ZMSAdministrator</item>
         </list>
       </item>
-      <item key="title">REPOSITORY_COMMIT</item>
+      <item key="title">BTN_COMMIT</item>
     </dictionary>
   </item>
   <item type="dictionary">
@@ -93,20 +94,23 @@ return printed
 ##parameters=
 ##title=*** DO NOT DELETE OR MODIFY ***
 ##
+## Errors:
+##  invalid syntax (Script (Python), line 8)
+##
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
 
 print '<!DOCTYPE html>'
 print '<html lang="en">'
 print context.zmi_html_head(context,request)
-print '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',context.meta_id]))
-print context.zmi_body_header(context,request,options=[{'action':'#','label':'Search+Replace...'}])
+print '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
+print context.zmi_body_header(context,request,options=[{'action':'#','label':'SVN-%s...'%%context.getZMILangStr('BTN_ROLLBACK')}])
 print '<div id="zmi-tab">'
 print context.zmi_breadcrumbs(context,request)
 print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
 print '<input type="hidden" name="form_id" value="manage_addClient"/>'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
-print '<legend>%s...</legend>'%context.getZMILangStr('BTN_ROLLBACK')
+print '<legend>SVN-%s...</legend>'%context.getZMILangStr('BTN_ROLLBACK')
 
 # --- Execute.
 # ---------------------------------
@@ -123,8 +127,98 @@ if request.form.get('btn')==context.getZMILangStr('BTN_ROLLBACK'):
 else:
 	print '<div class="form-group">'
 	print '<div class="controls save">'
-	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(context.getZMILangStr('BTN_ROLLBACK'),context.getZMILangStr('BTN_ROLLBACK'))
-	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(context.getZMILangStr('BTN_CANCEL'),context.getZMILangStr('BTN_CANCEL'))
+	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_ROLLBACK'),'utf-8'),unicode(context.getZMILangStr('BTN_ROLLBACK'),'utf-8'))
+	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
+	print '</div>'
+	print '</div><!-- .form-group -->'
+
+# ---------------------------------
+
+print '</form><!-- .form-horizontal -->'
+print '<div style="clear:both;">&nbsp;</div>'
+print '</div><!-- #zmi-tab -->'
+print context.zmi_body_footer(context,request)
+print '</body>'
+print '</html>'
+
+return printed
+]]>
+      </item>
+      <item key="description"></item>
+      <item key="execution" type="int">0</item>
+      <item key="icon_clazz"><![CDATA[icon-reply text-danger]]></item>
+      <item key="id">manage_repository_rollback</item>
+      <item key="meta_type"><![CDATA[Script (Python)]]></item>
+      <item key="meta_types" type="list">
+        <list>
+          <item>ZMS</item>
+        </list>
+      </item>
+      <item key="name">BTN_ROLLBACK</item>
+      <item key="revision">0.0.0</item>
+      <item key="roles" type="list">
+        <list>
+          <item>ZMSAdministrator</item>
+        </list>
+      </item>
+      <item key="title">BTN_ROLLBACK</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="data"><![CDATA[## Script (Python) "manage_repository_config"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=
+##title=*** DO NOT DELETE OR MODIFY ***
+##
+request = container.REQUEST
+RESPONSE =  request.RESPONSE
+
+print '<!DOCTYPE html>'
+print '<html lang="en">'
+print context.zmi_html_head(context,request)
+print '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
+print context.zmi_body_header(context,request,options=[{'action':'#','label':'SVN-%s...'%context.getZMILangStr('TAB_CONFIGURATION')}])
+print '<div id="zmi-tab">'
+print context.zmi_breadcrumbs(context,request)
+print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+print '<input type="hidden" name="form_id" value="manage_addClient"/>'
+print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
+print '<legend>SVN-%s...</legend>'%context.getZMILangStr('TAB_CONFIGURATION')
+
+# --- Execute.
+# ---------------------------------
+if request.form.get('btn')==context.getZMILangStr('BTN_CHANGE'):
+	message = []
+	context.setConfProperty('ZMSRepository.svn.server.url',request['url'])
+	context.setConfProperty('ZMSRepository.svn.server.userid',request['userid'])
+	context.setConfProperty('ZMSRepository.svn.server.password',request['password'])
+	message.append(context.getZMILangStr('MSG_CHANGED'))
+	request.response.redirect(context.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+
+# --- Display initial form.
+# -------------------------
+else:
+	print '<div class="form-group">'
+	print '<label for="url" class="col-sm-3 control-label mandatory">Server</label>'
+	print '<div class="col-sm-9"><input class="form-control" name="url" type="text" size="25" value="%s"></div>'%context.getConfProperty('ZMSRepository.svn.server.url','https://zmslabs.org/svn/demo/myzmsx')
+	print '</div><!-- .form-group -->'
+	print '<div class="form-group">'
+	print '<label for="userid" class="col-sm-3 control-label mandatory">User-ID</label>'
+	print '<div class="col-sm-9"><input class="form-control" name="userid" type="text" size="25" value="%s"></div>'%context.getConfProperty('ZMSRepository.svn.server.userid','zmsdev')
+	print '</div><!-- .form-group -->'
+	print '<div class="form-group">'
+	print '<label for="password" class="col-sm-3 control-label mandatory">Password</label>'
+	print '<div class="col-sm-9"><input class="form-control" name="password" type="password" size="25" value="%s"></div>'%context.getConfProperty('ZMSRepository.svn.server.password','********')
+	print '</div><!-- .form-group -->'
+	print '<div class="form-group">'
+	print '<div class="controls save">'
+	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CHANGE'),'utf-8'),unicode(context.getZMILangStr('BTN_CHANGE'),'utf-8'))
+	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
 	print '</div>'
 	print '</div><!-- .form-group -->'
 
@@ -143,20 +237,21 @@ return printed
       <item key="description"></item>
       <item key="execution" type="int">0</item>
       <item key="icon_clazz">icon-cogs</item>
-      <item key="id">manage_repository_rollback</item>
+      <item key="id">manage_repository_config</item>
       <item key="meta_type"><![CDATA[Script (Python)]]></item>
       <item key="meta_types" type="list">
         <list>
+          <item>ZMS</item>
         </list>
       </item>
-      <item key="name">REPOSITORY_ROLLBACK</item>
+      <item key="name">TAB_CONFIGURATION</item>
       <item key="revision">0.0.0</item>
       <item key="roles" type="list">
         <list>
           <item>ZMSAdministrator</item>
         </list>
       </item>
-      <item key="title">REPOSITORY_ROLLBACK</item>
+      <item key="title">TAB_CONFIGURATION</item>
     </dictionary>
   </item>
 </list>

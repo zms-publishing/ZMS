@@ -227,7 +227,7 @@ class ZMSRepositoryManager(
         filename = o.get('__filename__',[id,'__init__.py'])
         # Write python-representation.
         py = []
-        py.append('class %s:'%standard.id_quote(id).capitalize())
+        py.append('class %s:'%id.replace('.','_').replace('-','_'))
         py.append('\t"""')
         py.append('\tpython-representation of %s'%o['id'])
         py.append('\t"""')

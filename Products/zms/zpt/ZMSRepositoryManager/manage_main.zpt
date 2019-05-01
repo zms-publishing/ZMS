@@ -116,7 +116,12 @@
 					</button>
 					<div class="dropdown-menu" aria-labelledby="teamDropdownMenuButton">
 					<tal:block tal:repeat="meta_cmd meta_cmds">
-						<a class="dropdown-item" tal:attributes="href python:meta_cmd['id']" tal:content="python:meta_cmd['name']">Action</a>
+						<li>
+							<a tal:attributes="href python:meta_cmd['id']">
+								<tal:block tal:condition="python:meta_cmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=meta_cmd.get('icon_clazz'))">the action-icon</tal:block>
+								<tal:block tal:content="python:here.getZMILangStr(meta_cmd['name'])">the action-name</tal:block>
+							</a>
+						</li>
 					</tal:block>
 					</div>
 				</div>

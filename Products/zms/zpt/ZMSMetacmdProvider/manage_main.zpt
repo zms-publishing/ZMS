@@ -216,7 +216,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	<tal:block tal:repeat="metaCmdId metaCmdIds">
+	<tal:block tal:repeat="metaCmdId python:here.sort_list(metaCmdIds)">
 		<tr class="zmi-selectable" tal:define="
 				metaCmd python:here.getMetaCmd(metaCmdId);
 				ob python:getattr(here,metaCmdId,None);
@@ -228,15 +228,17 @@
 				<tal:block tal:condition="python:ob is not None">
 					<tal:block tal:condition="python:metaCmd.get('acquired')">
 						<a tal:attributes="href python:'/'.join([here.getPortalMaster().absolute_url()]+request['URL'].split('/')[-2:]); title python:'%s (%s)'%(ob.id,ob.meta_type)" target="_blank">
-							<tal:block tal:condition="python:metaCmd.get('acquired')" tal:content="structure python:zmscontext.zmi_icon(name='icon-share',extra='title=\042acquired\042')">acquired</tal:block>
+							<tal:block tal:condition="python:metaCmd.get('acquired')" tal:content="structure python:here.zmi_icon(name='icon-share',extra='title=\042acquired\042')">acquired</tal:block>
 						</a>
-						<tal:block tal:condition="python:metaCmd.get('icon_clazz')" tal:content="structure python:zmscontext.zmi_icon(name=metaCmd.get('icon_clazz'))">Icon</tal:block>
-						<tal:block tal:content="python:metaCmd['name']">Name</tal:block>
+						<tal:block tal:condition="python:metaCmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=metaCmd.get('icon_clazz'))">Icon</tal:block>
+						<strong tal:content="python:metaCmd['id']">the id</strong>
+						( <tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">Name</tal:block> )
 					</tal:block>
 					<tal:block tal:condition="not:python:metaCmd.get('acquired')">
 						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id']); title python:'%s (%s)'%(ob.id,ob.meta_type)">
-							<tal:block tal:condition="python:metaCmd.get('icon_clazz')" tal:content="structure python:zmscontext.zmi_icon(name=metaCmd.get('icon_clazz'))">Icon</tal:block>
-							<tal:block tal:content="python:metaCmd['name']">the name</tal:block>
+							<tal:block tal:condition="python:metaCmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=metaCmd.get('icon_clazz'))">Icon</tal:block>
+							<strong tal:content="python:metaCmd['id']">the id</strong>
+							( <tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">the name</tal:block> )
 						</a>
 					</tal:block>
 					<tal:block tal:content="revision">the version</tal:block>

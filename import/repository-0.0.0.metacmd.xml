@@ -19,13 +19,12 @@ print '<!DOCTYPE html>'
 print '<html lang="en">'
 print context.zmi_html_head(context,request)
 print '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
-print context.zmi_body_header(context,request,options=[{'action':'#','label':'SVN-%s...'%context.getZMILangStr('BTN_COMMIT')}])
+print context.zmi_body_header(context,request,options=[{'action':'#','label':'SVN-%s...'%unicode(context.getZMILangStr('BTN_COMMIT'),'utf-8')}])
 print '<div id="zmi-tab">'
 print context.zmi_breadcrumbs(context,request)
 print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
-print '<input type="hidden" name="form_id" value="manage_addClient"/>'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
-print '<legend>SVN-%s...</legend>'%context.getZMILangStr('BTN_COMMIT')
+print '<legend>SVN-%s...</legend>'%unicode(context.getZMILangStr('BTN_COMMIT'),'utf-8')
 
 # --- Execute.
 # ---------------------------------
@@ -94,9 +93,6 @@ return printed
 ##parameters=
 ##title=*** DO NOT DELETE OR MODIFY ***
 ##
-## Errors:
-##  invalid syntax (Script (Python), line 8)
-##
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
 
@@ -104,13 +100,12 @@ print '<!DOCTYPE html>'
 print '<html lang="en">'
 print context.zmi_html_head(context,request)
 print '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
-print context.zmi_body_header(context,request,options=[{'action':'#','label':'SVN-%s...'%%context.getZMILangStr('BTN_ROLLBACK')}])
+print context.zmi_body_header(context,request,options=[{'action':'#','label':'SVN-%s...'%unicode(context.getZMILangStr('BTN_ROLLBACK'),'utf-8')}])
 print '<div id="zmi-tab">'
 print context.zmi_breadcrumbs(context,request)
 print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
-print '<input type="hidden" name="form_id" value="manage_addClient"/>'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
-print '<legend>SVN-%s...</legend>'%context.getZMILangStr('BTN_ROLLBACK')
+print '<legend>SVN-%s...</legend>'%unicode(context.getZMILangStr('BTN_ROLLBACK'),'utf-8')
 
 # --- Execute.
 # ---------------------------------
@@ -182,13 +177,12 @@ print '<!DOCTYPE html>'
 print '<html lang="en">'
 print context.zmi_html_head(context,request)
 print '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
-print context.zmi_body_header(context,request,options=[{'action':'#','label':'SVN-%s...'%context.getZMILangStr('TAB_CONFIGURATION')}])
+print context.zmi_body_header(context,request,options=[{'action':'#','label':'SVN-%s...'%unicode(context.getZMILangStr('TAB_CONFIGURATION'),'utf-8')}])
 print '<div id="zmi-tab">'
 print context.zmi_breadcrumbs(context,request)
 print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
-print '<input type="hidden" name="form_id" value="manage_addClient"/>'
 print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
-print '<legend>SVN-%s...</legend>'%context.getZMILangStr('TAB_CONFIGURATION')
+print '<legend>SVN-%s...</legend>'%unicode(context.getZMILangStr('TAB_CONFIGURATION'),'utf-8')
 
 # --- Execute.
 # ---------------------------------

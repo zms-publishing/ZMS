@@ -3,78 +3,84 @@
 <list>
   <item type="dictionary">
     <dictionary>
-      <item key="data"><![CDATA[## Script (Python) "manage_repository_commit"
-##bind container=container
-##bind context=context
-##bind namespace=
-##bind script=script
-##bind subpath=traverse_subpath
-##parameters=
-##title=*** DO NOT DELETE OR MODIFY ***
-##
-request = container.REQUEST
-RESPONSE =  request.RESPONSE
-btn = request.form.get('btn')
-came_from = request.get('came_from',request['HTTP_REFERER'])
-if came_from.find('?') > 0:
-	came_from = came_from[:came_from.find('?')]
+      <item key="data"><![CDATA[from Products.zms import standard
+import os
 
-print '<!DOCTYPE html>'
-print '<html lang="en">'
-print context.zmi_html_head(context,request)
-print '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
-print context.zmi_body_header(context,request,options=[{'action':'#','label':'SVN-%s...'%unicode(context.getZMILangStr('BTN_COMMIT'),'utf-8')}])
-print '<div id="zmi-tab">'
-print context.zmi_breadcrumbs(context,request)
-print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
-print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
-print '<input type="hidden" name="came_from" value="%s"/>'%came_from
-print '<legend>SVN-%s...</legend>'%unicode(context.getZMILangStr('BTN_COMMIT'),'utf-8')
+def manage_repository_commit(self, request=None):
+	printed = []
+	request = self.REQUEST
+	RESPONSE =  request.RESPONSE
+	btn = request.form.get('btn')
+	came_from = request.get('came_from',request['HTTP_REFERER'])
+	if came_from.find('?') > 0:
+		came_from = came_from[:came_from.find('?')]
+	base_path = self.get_conf_basepath()
 
-# --- Execute.
-# ---------------------------------
-if btn==context.getZMILangStr('BTN_COMMIT'):
-	success = context.commitChanges(request.get('ids',[]))
-	message = [context.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%' '.join(success))]
-	request.response.redirect(context.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+	printed.append('<!DOCTYPE html>')
+	printed.append('<html lang="en">')
+	printed.append(self.zmi_html_head(self,request))
+	printed.append('<body class="%s">'%(' '.join(['zmi',request['lang'],self.meta_id])))
+	printed.append(self.zmi_body_header(self,request,options=[{'action':'#','label':'SVN-%s...'%unicode(self.getZMILangStr('BTN_COMMIT'),'utf-8')}]))
+	printed.append('<div id="zmi-tab">')
+	printed.append(self.zmi_breadcrumbs(self,request))
+	printed.append('<form class="form-horizontal" method="post" enctype="multipart/form-data">')
+	printed.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
+	printed.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
+	printed.append('<legend>SVN-%s...</legend>'%unicode(self.getZMILangStr('BTN_COMMIT'),'utf-8'))
 
-# --- Cancel.
-# ---------------------------------
-elif btn==context.getZMILangStr('BTN_CANCEL'):
-	request.response.redirect(context.url_append_params(came_from,{'lang':request['lang']}))
+	# --- COMMIT.
+	# ---------------------------------
+	if btn==self.getZMILangStr('BTN_COMMIT'):
+		message = []
+		# export to working-copy
+		success = self.commitChanges(request.get('ids',[]))
+		message.append(self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%' '.join(success)))
+		# commit to repository
+		command = 'svn --non-interactive --no-auth-cache {$CREDENTIALS} commit --message \'%s\' --depth immediates %s'%(request['message'],' '.join([base_path+x.replace(':','/') for x in request['ids']]))
+		userid = self.getConfProperty('ZMSRepository.svn.server.userid')
+		password = self.getConfProperty('ZMSRepository.svn.server.password') # TODO: decrypt
+		result = os.system(command.replace('{$CREDENTIALS}',' --username %s --password %s'%(userid,password)))
+		message.append('<code>%s [%s]</code>'%(command,str(result)))
+		# return with message
+		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
-# --- Display initial form.
-# -------------------------
-else:
-	print '<div class="form-group">'
-	print '<label for="message" class="col-sm-2 control-label mandatory">Message</label>'
-	print '<div class="col-sm-10"><input class="form-control" name="message" type="text" size="25" value=""></div>'
-	print '</div><!-- .form-group -->'
-	print '<div class="form-group">'
-	print '<div class="controls save">'
-	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_COMMIT'),'utf-8'),unicode(context.getZMILangStr('BTN_COMMIT'),'utf-8'))
-	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
-	print '</div>'
-	print '</div><!-- .form-group -->'
-	print context.manage_main_diff(context,request)
+	# --- Cancel.
+	# ---------------------------------
+	elif btn==self.getZMILangStr('BTN_CANCEL'):
+		request.response.redirect(self.url_append_params(came_from,{'lang':request['lang']}))
 
-# ---------------------------------
+	# --- Display initial form.
+	# -------------------------
+	else:
+		printed.append('<div class="form-group">')
+		printed.append('<label for="message" class="col-sm-2 control-label mandatory">Message</label>')
+		printed.append('<div class="col-sm-10"><input class="form-control" name="message" type="text" size="25" value="" placeholder="Enter commit message here"></div>')
+		printed.append('</div><!-- .form-group -->')
+		printed.append('<div class="form-group">')
+		printed.append('<div class="controls save">')
+		printed.append('<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_COMMIT'),'utf-8'),unicode(self.getZMILangStr('BTN_COMMIT'),'utf-8')))
+		printed.append('<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8')))
+		printed.append('</div>')
+		printed.append('</div><!-- .form-group -->')
+		printed.append(self.manage_main_diff(self,request))
 
-print '</form><!-- .form-horizontal -->'
-print '<div style="clear:both;">&nbsp;</div>'
-print '</div><!-- #zmi-tab -->'
-print context.zmi_body_footer(context,request)
-print '</body>'
-print '</html>'
+	# ---------------------------------
 
-return printed
+	printed.append('</form><!-- .form-horizontal -->')
+	printed.append('<div style="clear:both;">&nbsp;</div>')
+	printed.append('</div><!-- #zmi-tab -->')
+	printed.append(self.zmi_body_footer(self,request))
+	printed.append('</body>')
+	printed.append('</html>')
+
+	return '\n'.join(printed)
 ]]>
       </item>
       <item key="description"></item>
-      <item key="execution" type="int">0</item>
+      <item key="execution">0</item>
       <item key="icon_clazz"><![CDATA[icon-share-alt text-success]]></item>
       <item key="id">manage_repository_commit</item>
-      <item key="meta_type"><![CDATA[Script (Python)]]></item>
+      <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">
         <list>
           <item>ZMS</item>
@@ -92,172 +98,105 @@ return printed
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="data"><![CDATA[## Script (Python) "manage_repository_rollback"
-##bind container=container
-##bind context=context
-##bind namespace=
-##bind script=script
-##bind subpath=traverse_subpath
-##parameters=
-##title=*** DO NOT DELETE OR MODIFY ***
-##
-request = container.REQUEST
-RESPONSE =  request.RESPONSE
-btn = request.form.get('btn')
-came_from = request.get('came_from',request['HTTP_REFERER'])
-if came_from.find('?') > 0:
-	came_from = came_from[:came_from.find('?')]
+      <item key="data"><![CDATA[from Products.zms import standard
+import os
 
-print '<!DOCTYPE html>'
-print '<html lang="en">'
-print context.zmi_html_head(context,request)
-print '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
-print context.zmi_body_header(context,request,options=[{'action':'#','label':'SVN-%s...'%unicode(context.getZMILangStr('BTN_ROLLBACK'),'utf-8')}])
-print '<div id="zmi-tab">'
-print context.zmi_breadcrumbs(context,request)
-print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
-print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
-print '<input type="hidden" name="came_from" value="%s"/>'%came_from
-print '<legend>SVN-%s...</legend>'%unicode(context.getZMILangStr('BTN_ROLLBACK'),'utf-8')
+def manage_repository_config(self, request=None):
+	printed = []
+	request = self.REQUEST
+	RESPONSE =  request.RESPONSE
+	btn = request.form.get('btn')
+	came_from = request.get('came_from',request['HTTP_REFERER'])
+	if came_from.find('?') > 0:
+		came_from = came_from[:came_from.find('?')]
+	base_path = self.get_conf_basepath()
+	base_status = ''
+	try:
+		standard.localfs_readPath(base_path)
+	except:
+		base_status = standard.writeError(self,'can\'t read base_path') 
 
-# --- Execute.
-# ---------------------------------
-if btn==context.getZMILangStr('BTN_ROLLBACK'):
-	success = context.updateChanges(request.get('ids',[]),btn=='override')
-	message = [context.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success))]
-	request.response.redirect(context.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+	printed.append('<!DOCTYPE html>')
+	printed.append('<html lang="en">')
+	printed.append(self.zmi_html_head(self,request))
+	printed.append('<body class="%s">'%(' '.join(['zmi',request['lang'],self.meta_id])))
+	printed.append(self.zmi_body_header(self,request,options=[{'action':'#','label':'SVN-%s...'%unicode(self.getZMILangStr('TAB_CONFIGURATION'),'utf-8')}]))
+	printed.append('<div id="zmi-tab">')
+	printed.append(self.zmi_breadcrumbs(self,request))
+	printed.append('<form class="form-horizontal" method="post" enctype="multipart/form-data">')
+	printed.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
+	printed.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
+	printed.append('<legend>SVN-%s...</legend>'%unicode(self.getZMILangStr('TAB_CONFIGURATION'),'utf-8'))
 
-# --- Cancel.
-# ---------------------------------
-elif btn==context.getZMILangStr('BTN_CANCEL'):
-	request.response.redirect(context.url_append_params(came_from,{'lang':request['lang']}))
+	# --- Change.
+	# ---------------------------------
+	if btn==self.getZMILangStr('BTN_CHANGE'):
+		message = []
+		self.setConfProperty('ZMSRepository.svn.server.url',request['url'])
+		self.setConfProperty('ZMSRepository.svn.server.userid',request['userid'])
+		if request['password'] != '******':
+			self.setConfProperty('ZMSRepository.svn.server.password',request['password']) # TODO: encrypt
+		message.append(self.getZMILangStr('MSG_CHANGED'))
+		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
-# --- Display initial form.
-# -------------------------
-else:
-	print '<div class="form-group">'
-	print '<div class="controls save">'
-	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_ROLLBACK'),'utf-8'),unicode(context.getZMILangStr('BTN_ROLLBACK'),'utf-8'))
-	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
-	print '</div>'
-	print '</div><!-- .form-group -->'
+	# --- Checkout.
+	# ---------------------------------
+	elif btn==self.getZMILangStr('BTN_CHECKOUT'):
+		command = "svn --non-interactive --no-auth-cache {$CREDENTIALS} checkout %s %s"%(self.getConfProperty('ZMSRepository.svn.server.url'),base_path)
+		userid = self.getConfProperty('ZMSRepository.svn.server.userid')
+		password = self.getConfProperty('ZMSRepository.svn.server.password') # TODO: decrypt
+		result = os.system(command.replace('{$CREDENTIALS}',' --username %s --password %s'%(userid,password)))
+		printed.append('<div><code>%s [%s]</code></div>'%(command,str(result)))
 
-# ---------------------------------
+	# --- Cancel.
+	# ---------------------------------
+	elif btn==self.getZMILangStr('BTN_CANCEL'):
+		request.response.redirect(self.url_append_params(came_from,{'lang':request['lang']}))
 
-print '</form><!-- .form-horizontal -->'
-print '<div style="clear:both;">&nbsp;</div>'
-print '</div><!-- #zmi-tab -->'
-print context.zmi_body_footer(context,request)
-print '</body>'
-print '</html>'
+	# --- Display initial form.
+	# -------------------------
+	else:
+		printed.append('<div class="form-group">')
+		printed.append('<label for="url" class="col-sm-2 control-label mandatory">Working-copy</label>')
+		printed.append('<div class="col-sm-10"><input class="form-control" name="path" type="text" size="25" value="%s" readonly></div>'%base_path)
+		printed.append('</div><!-- .form-group -->')
+		printed.append('<div class="form-group">')
+		printed.append('<label for="url" class="col-sm-2 control-label mandatory">Server</label>')
+		printed.append('<div class="col-sm-10"><input class="form-control" name="url" type="text" size="25" value="%s"></div>'%self.getConfProperty('ZMSRepository.svn.server.url','https://zmslabs.org/svn/demo/myzmsx'))
+		printed.append('</div><!-- .form-group -->')
+		printed.append('<div class="form-group">')
+		printed.append('<label for="userid" class="col-sm-2 control-label mandatory">User-ID</label>')
+		printed.append('<div class="col-sm-10"><input class="form-control" name="userid" type="text" size="25" value="%s"></div>'%self.getConfProperty('ZMSRepository.svn.server.userid','zmsdev'))
+		printed.append('</div><!-- .form-group -->')
+		printed.append('<div class="form-group">')
+		printed.append('<label for="password" class="col-sm-2 control-label mandatory">Password</label>')
+		printed.append('<div class="col-sm-10"><input class="form-control" name="password" type="password" size="25" value="******"></div>')
+		printed.append('</div><!-- .form-group -->')
+		printed.append('<div class="form-group">')
+		printed.append('<div class="controls save">')
+		printed.append('<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button> '%(unicode(self.getZMILangStr('BTN_CHANGE'),'utf-8'),unicode(self.getZMILangStr('BTN_CHANGE'),'utf-8')))
+		printed.append('<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button> '%(unicode(self.getZMILangStr('BTN_CHECKOUT'),'utf-8'),unicode(self.getZMILangStr('BTN_CHECKOUT'),'utf-8')))
+		printed.append('<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button> '%(unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8')))
+		printed.append('</div>')
+		printed.append('</div><!-- .form-group -->')
 
-return printed
+	# ---------------------------------
+
+	printed.append('</form><!-- .form-horizontal -->')
+	printed.append('<div style="clear:both;">&nbsp;</div>')
+	printed.append('</div><!-- #zmi-tab -->')
+	printed.append(self.zmi_body_footer(self,request))
+	printed.append('</body>')
+	printed.append('</html>')
+
+	return '\n'.join(printed)
 ]]>
       </item>
       <item key="description"></item>
-      <item key="execution" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-reply text-danger]]></item>
-      <item key="id">manage_repository_rollback</item>
-      <item key="meta_type"><![CDATA[Script (Python)]]></item>
-      <item key="meta_types" type="list">
-        <list>
-          <item>ZMS</item>
-        </list>
-      </item>
-      <item key="name">BTN_ROLLBACK</item>
-      <item key="revision">0.0.0</item>
-      <item key="roles" type="list">
-        <list>
-          <item>ZMSAdministrator</item>
-        </list>
-      </item>
-      <item key="title">BTN_ROLLBACK</item>
-    </dictionary>
-  </item>
-  <item type="dictionary">
-    <dictionary>
-      <item key="data"><![CDATA[## Script (Python) "manage_repository_config"
-##bind container=container
-##bind context=context
-##bind namespace=
-##bind script=script
-##bind subpath=traverse_subpath
-##parameters=
-##title=*** DO NOT DELETE OR MODIFY ***
-##
-request = container.REQUEST
-RESPONSE =  request.RESPONSE
-btn = request.form.get('btn')
-came_from = request.get('came_from',request['HTTP_REFERER'])
-if came_from.find('?') > 0:
-	came_from = came_from[:came_from.find('?')]
-
-print '<!DOCTYPE html>'
-print '<html lang="en">'
-print context.zmi_html_head(context,request)
-print '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
-print context.zmi_body_header(context,request,options=[{'action':'#','label':'SVN-%s...'%unicode(context.getZMILangStr('TAB_CONFIGURATION'),'utf-8')}])
-print '<div id="zmi-tab">'
-print context.zmi_breadcrumbs(context,request)
-print '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
-print '<input type="hidden" name="lang" value="%s"/>'%request['lang']
-print '<input type="hidden" name="came_from" value="%s"/>'%came_from
-print '<legend>SVN-%s...</legend>'%unicode(context.getZMILangStr('TAB_CONFIGURATION'),'utf-8')
-
-# --- Execute.
-# ---------------------------------
-if btn==context.getZMILangStr('BTN_CHANGE'):
-	message = []
-	context.setConfProperty('ZMSRepository.svn.server.url',request['url'])
-	context.setConfProperty('ZMSRepository.svn.server.userid',request['userid'])
-	context.setConfProperty('ZMSRepository.svn.server.password',request['password'])
-	message.append(context.getZMILangStr('MSG_CHANGED'))
-	request.response.redirect(context.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
-
-# --- Cancel.
-# ---------------------------------
-elif btn==context.getZMILangStr('BTN_CANCEL'):
-	request.response.redirect(context.url_append_params(came_from,{'lang':request['lang']}))
-
-# --- Display initial form.
-# -------------------------
-else:
-	print '<div class="form-group">'
-	print '<label for="url" class="col-sm-3 control-label mandatory">Server</label>'
-	print '<div class="col-sm-9"><input class="form-control" name="url" type="text" size="25" value="%s"></div>'%context.getConfProperty('ZMSRepository.svn.server.url','https://zmslabs.org/svn/demo/myzmsx')
-	print '</div><!-- .form-group -->'
-	print '<div class="form-group">'
-	print '<label for="userid" class="col-sm-3 control-label mandatory">User-ID</label>'
-	print '<div class="col-sm-9"><input class="form-control" name="userid" type="text" size="25" value="%s"></div>'%context.getConfProperty('ZMSRepository.svn.server.userid','zmsdev')
-	print '</div><!-- .form-group -->'
-	print '<div class="form-group">'
-	print '<label for="password" class="col-sm-3 control-label mandatory">Password</label>'
-	print '<div class="col-sm-9"><input class="form-control" name="password" type="password" size="25" value="%s"></div>'%context.getConfProperty('ZMSRepository.svn.server.password','********')
-	print '</div><!-- .form-group -->'
-	print '<div class="form-group">'
-	print '<div class="controls save">'
-	print '<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CHANGE'),'utf-8'),unicode(context.getZMILangStr('BTN_CHANGE'),'utf-8'))
-	print '<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(context.getZMILangStr('BTN_CANCEL'),'utf-8'))
-	print '</div>'
-	print '</div><!-- .form-group -->'
-
-# ---------------------------------
-
-print '</form><!-- .form-horizontal -->'
-print '<div style="clear:both;">&nbsp;</div>'
-print '</div><!-- #zmi-tab -->'
-print context.zmi_body_footer(context,request)
-print '</body>'
-print '</html>'
-
-return printed
-]]>
-      </item>
-      <item key="description"></item>
-      <item key="execution" type="int">0</item>
+      <item key="execution">0</item>
       <item key="icon_clazz">icon-cogs</item>
       <item key="id">manage_repository_config</item>
-      <item key="meta_type"><![CDATA[Script (Python)]]></item>
+      <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">
         <list>
           <item>ZMS</item>
@@ -271,6 +210,101 @@ return printed
         </list>
       </item>
       <item key="title">TAB_CONFIGURATION</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="data"><![CDATA[from Products.zms import standard
+import os
+
+def manage_repository_update(self, request=None):
+	printed = []
+	request = self.REQUEST
+	RESPONSE =  request.RESPONSE
+	btn = request.form.get('btn')
+	came_from = request.get('came_from',request['HTTP_REFERER'])
+	if came_from.find('?') > 0:
+		came_from = came_from[:came_from.find('?')]
+	base_path = self.get_conf_basepath()
+
+	printed.append('<!DOCTYPE html>')
+	printed.append('<html lang="en">')
+	printed.append(self.zmi_html_head(self,request))
+	printed.append('<body class="%s">'%(' '.join(['zmi',request['lang'],self.meta_id])))
+	printed.append(self.zmi_body_header(self,request,options=[{'action':'#','label':'SVN-%s...'%unicode(self.getZMILangStr('BTN_UPDATE'),'utf-8')}]))
+	printed.append('<div id="zmi-tab">')
+	printed.append(self.zmi_breadcrumbs(self,request))
+	printed.append('<form class="form-horizontal" method="post" enctype="multipart/form-data">')
+	printed.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
+	printed.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
+	printed.append('<legend>SVN-%s...</legend>'%unicode(self.getZMILangStr('BTN_UPDATE'),'utf-8'))
+
+	# --- COMMIT.
+	# ---------------------------------
+	if btn==self.getZMILangStr('BTN_UPDATE'):
+		message = []
+		# update from repository
+		command = 'svn --non-interactive --no-auth-cache {$CREDENTIALS} update --revision %s --depth immediates %s'%(request['revision'],' '.join([base_path+x.replace(':','/') for x in request['ids']]))
+		userid = self.getConfProperty('ZMSRepository.svn.server.userid')
+		password = self.getConfProperty('ZMSRepository.svn.server.password') # TODO: decrypt
+		result = os.system(command.replace('{$CREDENTIALS}',' --username %s --password %s'%(userid,password)))
+		message.append('<code>%s [%s]</code>'%(command,str(result)))
+		# import from working-copy
+		success = self.updateChanges(REQUEST.get('ids',[]),btn=='override')
+		message.append(self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success)))
+		# return with message
+		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+
+	# --- Cancel.
+	# ---------------------------------
+	elif btn==self.getZMILangStr('BTN_CANCEL'):
+		request.response.redirect(self.url_append_params(came_from,{'lang':request['lang']}))
+
+	# --- Display initial form.
+	# -------------------------
+	else:
+		printed.append('<div class="form-group">')
+		printed.append('<label for="revision" class="col-sm-2 control-label mandatory">Revision</label>')
+		printed.append('<div class="col-sm-10"><input class="form-control" name="revision" type="text" size="25" value="HEAD" placeholder="Enter commit message here"></div>')
+		printed.append('</div><!-- .form-group -->')
+		printed.append('<div class="form-group">')
+		printed.append('<div class="controls save">')
+		printed.append('<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_COMMIT'),'utf-8'),unicode(self.getZMILangStr('BTN_COMMIT'),'utf-8')))
+		printed.append('<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8')))
+		printed.append('</div>')
+		printed.append('</div><!-- .form-group -->')
+		printed.append(self.manage_main_diff(self,request))
+
+	# ---------------------------------
+
+	printed.append('</form><!-- .form-horizontal -->')
+	printed.append('<div style="clear:both;">&nbsp;</div>')
+	printed.append('</div><!-- #zmi-tab -->')
+	printed.append(self.zmi_body_footer(self,request))
+	printed.append('</body>')
+	printed.append('</html>')
+
+	return '\n'.join(printed)
+]]>
+      </item>
+      <item key="description"></item>
+      <item key="execution">0</item>
+      <item key="icon_clazz"><![CDATA[icon-reply text-danger]]></item>
+      <item key="id">manage_repository_update</item>
+      <item key="meta_type"><![CDATA[External Method]]></item>
+      <item key="meta_types" type="list">
+        <list>
+          <item>ZMS</item>
+        </list>
+      </item>
+      <item key="name">BTN_UPDATE</item>
+      <item key="revision">0.0.0</item>
+      <item key="roles" type="list">
+        <list>
+          <item>ZMSAdministrator</item>
+        </list>
+      </item>
+      <item key="title">BTN_UPDATE</item>
     </dictionary>
   </item>
 </list>

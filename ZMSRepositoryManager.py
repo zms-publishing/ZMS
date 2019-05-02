@@ -20,6 +20,7 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from distutils.version import LooseVersion
+import copy
 import inspect
 import os
 import re

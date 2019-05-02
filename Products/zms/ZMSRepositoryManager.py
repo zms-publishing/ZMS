@@ -20,6 +20,7 @@
 from builtins import str
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+import copy
 import inspect
 import os
 import re

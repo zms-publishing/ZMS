@@ -472,7 +472,7 @@ class ZMSMetacmdProvider(
           newRevision = REQUEST.get('el_revision', '').strip()
           newName = REQUEST.get('el_name', '').strip()
           newTitle = REQUEST.get('el_title', '').strip()
-          newMethod = None
+          newMethod = REQUEST.get('el_method')
           newData = REQUEST.get('el_data', '').strip()
           newExecution = REQUEST.get('el_execution', 0)
           newDescription = REQUEST.get('el_description', '').strip()

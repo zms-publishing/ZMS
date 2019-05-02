@@ -269,7 +269,7 @@ def manage_repository_update(self, request=None):
 		printed.append('</div><!-- .form-group -->')
 		printed.append('<div class="form-group">')
 		printed.append('<div class="controls save">')
-		printed.append('<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_COMMIT'),'utf-8'),unicode(self.getZMILangStr('BTN_COMMIT'),'utf-8')))
+		printed.append('<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_UPDATE'),'utf-8'),unicode(self.getZMILangStr('BTN_UPDATE'),'utf-8')))
 		printed.append('<button type="submit" name="btn" class="btn btn-default" value="%s">%s</button>'%(unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8'),unicode(self.getZMILangStr('BTN_CANCEL'),'utf-8')))
 		printed.append('</div>')
 		printed.append('</div><!-- .form-group -->')

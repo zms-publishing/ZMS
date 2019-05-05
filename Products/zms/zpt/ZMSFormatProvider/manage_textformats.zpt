@@ -119,10 +119,10 @@
 	</div><!-- .inner -->
 </div><!-- #importConf -->
 
-<form class="form-horizontal" action="manage_changeTextformat" method="post" enctype="multipart/form-data">
+<form class="form-horizontal card" action="manage_changeTextformat" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('TAB_TEXTFORMATS')">Text-Formats</legend>
-	<table class="table table-striped table-bordered">
+	<table class="table table-striped table-bordered mb-0">
 	<colgroup>
 		<col width="40"/>
 		<col width="10%"/>
@@ -150,7 +150,7 @@
 			<td style="text-align:center;">
 				<input type="checkbox" name="ids:list" tal:attributes="value python:format.getId()" />
 			</td>
-			<td style="white-space: nowrap;" tal:attributes="class python:['','text-info bg-info'][int(format.getId()==here.getTextFormatDefault())]">
+			<td style="white-space: nowrap;">
 				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.getId())">
 					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-eye',title=here.getZMILangStr('ATTR_RICHEDIT'))" tal:condition="python:format.getRichedit()"></tal:block>
 					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-align-left')" tal:condition="not:python:format.getRichedit()"></tal:block>

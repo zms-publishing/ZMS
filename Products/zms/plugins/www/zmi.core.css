@@ -169,6 +169,28 @@ footer {
 	font-weight:bold;
 	color: #6c757d !important;
 }
+.zmi.config.customize #zmi-tab ul#subTab.nav.nav-tabs {
+	margin:1rem 1.25rem 0 1.25rem;
+}
+.zmi.config.customize #zmi-tab .tab-content .card {
+	padding: 2rem 1rem 1rem 1rem !important;
+	border-top:0;
+	border-top-left-radius:0;
+	border-top-right-radius:0;
+}
+.zmi.customize.config #zmi-tab #Custom.tab-pane table > tbody > tr > td,
+.zmi.customize.config #zmi-tab #Custom.tab-pane table > tbody > tr > td > a {
+	max-width: 100%;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+}
+.zmi.customize.config #zmi-tab #Custom.tab-pane table > tbody > tr > td > a {
+	display: inline-block;
+	white-space:nowrap
+}
+.zmi.customize.config #zmi-tab #Custom.tab-pane table > tbody > tr > td.systemprop-delete {
+	width: 4rem;;
+}
 
 /* EO HORIZONTAL SCROLLING MAIN NAVIGATION */
 #zmi-tab {
@@ -913,7 +935,10 @@ body.browse_iframe .toggle {
 
 .zmi .alert {
 	margin: 0 1rem 1rem;
-} 
+}
+.zmi.config .bg-info {
+	background-color: #17a4ba26 !important;
+}
 
 @media (min-width: 768px) {
 	.zmi .form-horizontal .control-label {
@@ -994,4 +1019,9 @@ body.browse_iframe .toggle {
 }
 .zmi .control-label-ace-editor:hover::before {
 	color:#e83e8c
+}
+
+
+.zmi.customize.config #zmi-tab #Manager.tab-pane .btn img {
+	margin: -.45rem .25rem 0 0;
 }

@@ -410,11 +410,11 @@ $ZMI.registerReady(function(){
 	</div><!-- .inner -->
 </div><!-- #insertProcess -->
 
-<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
-	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_FILTER')">well</p>
+<form class="form-horizontal card" tal:attributes="action action" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</legend>
-	<table class="table table-striped table-bordered zmi-sortable">
+	<p class="well well-small d-none" tal:content="structure python:here.getZMILangStr('MSG_FILTER')">well</p>
+	<table class="table table-striped table-bordered zmi-sortable mb-0">
 		<colgroup>
 			<col width="1em"/>
 		</colgroup>
@@ -489,10 +489,10 @@ $ZMI.registerReady(function(){
 	</table>
 </form>
 
-<form class="form-horizontal" action="manage_changeProcess" method="post" enctype="multipart/form-data">
+<form class="form-horizontal card mt-3" action="manage_changeProcess" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('ATTR_PROCESSES')">Processes</legend>
-	<table class="table table-striped table-bordered zmi-sortable">
+	<table class="table table-striped table-bordered zmi-sortable mb-0">
 		<colgroup>
 			<col width="1em"/>
 		</colgroup>

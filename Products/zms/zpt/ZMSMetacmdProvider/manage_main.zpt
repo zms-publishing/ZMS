@@ -185,11 +185,11 @@
 	</div><!-- #importConf.inner -->
 </div><!-- .d-none -->
 
-<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
+<form class="form-horizontal card" tal:attributes="action action" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('TAB_METACMD')">Metacmd</legend>
-	<p class="well well-small" tal:content="structure python:here.getZMILangStr('MSG_METACMD')">well</p>
-	<table class="table table-striped table-bordered table-hover">
+	<p class="well well-small d-none" tal:content="structure python:here.getZMILangStr('MSG_METACMD')">well</p>
+	<table class="table table-striped table-bordered table-hover mb-0">
 	<thead>
 		<tr tal:condition="python:here.meta_type=='ZMSMetacmdProvider'">
 			<th>

@@ -169,26 +169,33 @@ footer {
 	font-weight:bold;
 	color: #6c757d !important;
 }
-.zmi.config.customize #zmi-tab ul#subTab.nav.nav-tabs {
+.zmi #zmi-tab nav#subTab {
 	margin:1rem 1.25rem 0 1.25rem;
 }
-.zmi.config.customize #zmi-tab .tab-content .card {
-	padding: 2rem 1rem 1rem 1rem !important;
-	border-top:0;
-	border-top-left-radius:0;
-	border-top-right-radius:0;
+.zmi #zmi-tab nav#subTab .nav-tabs .nav-link.active {
+	background-color: #ffffff;
 }
-.zmi.customize.config #zmi-tab #Custom.tab-pane table > tbody > tr > td,
-.zmi.customize.config #zmi-tab #Custom.tab-pane table > tbody > tr > td > a {
+.zmi #zmi-tab nav#subTab ul {
+	margin: 0 0 -1px -1px;
+	overflow: hidden;
+	white-space: nowrap;
+	border: none;
+	z-index: 1;
+}
+.zmi #zmi-tab .tab-content .card {
+	padding: 2rem 1rem 1rem 1rem !important;
+}
+.zmi #zmi-tab #Custom.tab-pane table > tbody > tr > td,
+.zmi #zmi-tab #Custom.tab-pane table > tbody > tr > td > a {
 	max-width: 100%;
 	overflow-x: hidden;
 	text-overflow: ellipsis;
 }
-.zmi.customize.config #zmi-tab #Custom.tab-pane table > tbody > tr > td > a {
+.zmi #zmi-tab #Custom.tab-pane table > tbody > tr > td > a {
 	display: inline-block;
 	white-space:nowrap
 }
-.zmi.customize.config #zmi-tab #Custom.tab-pane table > tbody > tr > td.systemprop-delete {
+.zmi #zmi-tab #Custom.tab-pane table > tbody > tr > td.systemprop-delete {
 	width: 4rem;;
 }
 

@@ -607,10 +607,10 @@ $(function(){
 
 <div class="tab-pane fade" id="history"
 	tal:attributes="class python:request.get('key',None)=='history' and 'tab-pane fade show active' or 'tab-pane fade'"
-	><form class="card form-horizontal" name="history_form" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
+	><form class="card form-horizontal" title="History: Activate or deactivate the integrated history-mechanism." 
+		name="history_form" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 		<input type="hidden" name="key" value="history" />
-		<p class="well well-small mb-4">Activate or deactivate the integrated history-mechanism.</p>
 		<div class="form-group row">
 			<label class="col-sm-2 control-label" for="history_active" tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">Active</label>
 			<div class="col-sm-9">

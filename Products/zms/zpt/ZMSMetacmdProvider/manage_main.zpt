@@ -57,8 +57,8 @@
 				</tal:block>
 			</tal:block>
 			<!-- /ACE Editor -->
-			<div class="form-group row">
-				<table cellpadding="8" style="background: #efefef;font-size: smaller;width: 100%;">
+			<div class="form-group">
+				<table class="table-access-control">
 				<thead>
 				<tr>
 					<th tal:content="python:here.getZMILangStr('TAB_ACCESS')">Access</th>
@@ -74,27 +74,25 @@
 						<textarea class="form-control url-input" name="el_nodes" tal:content="python:metaCmd.get('nodes','{$}')"></textarea>
 					</td>
 					<td tal:define="roles python:['*']+here.getUserDefinedRoles()">
-						<select name="el_roles:list" multiple="multiple" class="form-control" style="font-size:inherit;"
-							tal:attributes="size python:min(10,len(roles))">
-							<tal:block tal:repeat="role roles">
-								<option tal:attributes="value role; selected python:['','selected'][int(role in metaCmd.get('roles',[]))]" tal:content="python:here.getRoleName(role)">role</option>
+						<select name="el_roles:list" size="10" multiple="multiple" class="form-control-sm container">
+							<tal:block tal:repeat="role roles"
+								><option tal:attributes="value role; selected python:['','selected'][int(role in metaCmd.get('roles',[]))]" tal:content="python:here.getRoleName(role)">role</option>
 							</tal:block>
 						</select>
 					</td>
 					<td>
-						<select name="el_meta_types:list" multiple="multiple" class="form-control" style="font-size:inherit;"
-							tal:attributes="size python:min(10,len(['*']+here.getMetaobjIds()+here.metaobj_manager.valid_objtypes))">
-							<tal:block tal:repeat="meta_type python:['*']">
-								<option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="meta_type">meta_type</option>
-							</tal:block>
-							<tal:block tal:repeat="meta_type python:here.getMetaobjIds(sort=True)">
-								<option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
-							</tal:block>
-							<tal:block tal:repeat="objtype python:here.metaobj_manager.valid_objtypes">
-								<tal:block tal:define="global meta_type python:'type(%s)'%objtype">
-									<option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="meta_type">meta_type</option>
-								</tal:block>
-							</tal:block>
+						<select name="el_meta_types:list" size="10" multiple="multiple" class="form-control-sm container">
+							<tal:block tal:repeat="meta_type python:['*']"
+								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="meta_type">meta_type</option>
+							</tal:block
+							><tal:block tal:repeat="meta_type python:here.getMetaobjIds(sort=True)"
+								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
+							</tal:block
+							><tal:block tal:repeat="objtype python:here.metaobj_manager.valid_objtypes"
+								><tal:block tal:define="global meta_type python:'type(%s)'%objtype"
+									><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="meta_type">meta_type</option>
+								</tal:block
+							></tal:block>
 						</select>
 					</td>
 				</tr>

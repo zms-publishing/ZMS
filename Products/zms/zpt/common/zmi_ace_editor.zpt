@@ -5,11 +5,9 @@
 		text python:options.get('text');
 		height python:options.get('height','20em')">
 	<tal:block tal:condition="python:text is None"><tal:block tal:define="global text python:zopeutil.readObject(here,ob.id)"></tal:block></tal:block>
-	<div tal:condition="python:ob is not None" class="form-group row" tal:attributes="style python:'height:%s'%(height)">
+	<div tal:condition="python:ob is not None" class="form-group" tal:attributes="style python:'height:%s'%(height)">
 		<div class="control-label-ace-editor">
-			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank">
-				<tal:block tal:content="ob/id">the id</tal:block>
-			</a>
+			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank" tal:content="ob/id">id</a>
 			<tal:block tal:condition="python:text is not None">(<tal:block tal:content="python:here.getDataSizeStr(len(text))">the size</tal:block>)</tal:block>
 			<tal:block tal:condition="python:ob.meta_type in ['Script (Python)']" tal:define="errors python:[x.replace(' ','&nbsp\073') for x in text.split('##') if x.startswith(' ')][1:]">
 				<div class="bg-danger text-danger" tal:condition="python:len(errors)>0 and errors[0].find('Errors:')>=0" tal:content="structure python:'<br/>'.join(errors)">the errors</div>
@@ -28,19 +26,19 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 -->
 <style>
-  .ace_editor.fullScreen {
-      height: 768px !important;
-      width: 1280px !important;
-      border: 0;
-      margin: 0;
-      position: fixed !important;
-      top: 0;
-      bottom: 0;
-      left: -350px;
-      right: 0;
-      z-index: 10;
-      overflow: hidden;
-  }
+	.ace_editor.fullScreen {
+		height: 768px !important;
+		width: 1280px !important;
+		border: 0;
+		margin: 0;
+		position: fixed !important;
+		top: 0;
+		bottom: 0;
+		left: -350px;
+		right: 0;
+		z-index: 10;
+		overflow: hidden;
+	}
 </style>
 <div id="editor" style="height:92%;width:100%;border:1px solid #ccc;border-radius:4px">ace editor text</div>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/ace.js"></script>
@@ -50,19 +48,19 @@ $(function(){
 		$("#editor").hide();
 	}
 	else {
-    var dom = require("ace/lib/dom");
-    // add command to all new editor instances
-    require("ace/commands/default_commands").commands.push({
-      name: "Toggle Fullscreen",
-      bindKey: "F10",
-      exec: function(editor) {
-        var fullScreen = dom.toggleCssClass(document.body, "fullScreen")
-        dom.setCssClass(editor.container, "fullScreen", fullScreen)
-        editor.setAutoScrollEditorIntoView(!fullScreen)
-        editor.resize()
-      }
-    });
-    // @see https://github.com/ajaxorg/ace/wiki/Embedding---API
+		var dom = require("ace/lib/dom");
+		// add command to all new editor instances
+		require("ace/commands/default_commands").commands.push({
+			name: "Toggle Fullscreen",
+			bindKey: "F10",
+			exec: function(editor) {
+				var fullScreen = dom.toggleCssClass(document.body, "fullScreen")
+				dom.setCssClass(editor.container, "fullScreen", fullScreen)
+				editor.setAutoScrollEditorIntoView(!fullScreen)
+				editor.resize()
+			}
+		});
+		// @see https://github.com/ajaxorg/ace/wiki/Embedding---API
 		$("textarea#text").hide();
 		editor = ace.edit("editor");
 		var value = $("textarea#text").val();
@@ -115,8 +113,8 @@ $(function(){
 		editor.getSession().setMode('ace/mode/'+mode);
 		editor.getSession().setValue(value);
 		editor.getSession().on("change",function() {
-				$("textarea#text").val(editor.getSession().getValue()).change();
-			});
+			$("textarea#text").val(editor.getSession().getValue()).change();
+		});
 	}
 });
 </script>

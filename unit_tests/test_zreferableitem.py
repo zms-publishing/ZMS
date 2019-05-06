@@ -24,11 +24,17 @@ class ZReferableItemTest(ZMSTestCase):
 
 
   def test_getRelativeUrl(self):
+    print('[ZReferableItemTest.test_getRelativeUrl]')
     context = self.context
     def assertEqual(path,url,expected):
       self.assertEqual(expected,context.getRelativeUrl(path,url))
     assertEqual('/e1/e2/e3','/e1/e4/e5/e6','./../e4/e5/e6')
     assertEqual('http://host:port/e1/e2/e3#e4','http://host:port/e5?preview=preview#e6','./../../e5?preview=preview#e6')
+    assertEqual('/e1/e2/e3/index_ger.html','/e1/e4/e5/e6/index_eng.html','./../../e4/e5/e6/index_eng.html')
+    assertEqual('http://host/e1/e2/e3/index_ger.html','http://host/e1/e4/e5/e6/index_eng.html','./../../e4/e5/e6/index_eng.html')
+    assertEqual('https://demo.zms-demo.zms.hosting/sites/zmsdemo/content/e5','https://demo.zms-demo.zms.hosting/sites/zmsdemo/content/e25/e28','./e25/e28')
+    assertEqual('https://demo.zms-demo.zms.hosting/sites/zmsdemo/content/e5/index_html','https://demo.zms-demo.zms.hosting/sites/zmsdemo/content/e25/e28','./../e25/e28')
+    assertEqual('https://demo.zms-demo.zms.hosting/sites/zmsdemo/content/e5/index_ger.html','https://demo.zms-demo.zms.hosting/sites/zmsdemo/content/e25/e28','./../e25/e28')
 
 
   def test_getRefObjPath(self):
@@ -42,24 +48,24 @@ class ZReferableItemTest(ZMSTestCase):
     self.assertEqual(folder,zmscontext.getLinkObj(ref))
     
     # create portal-client
-    print('[test_metaobj_manager] create portal-client')
+    print('[ZReferableItemTest.test_getRefObjPath] create portal-client')
     zmsclient0 = addClient(zmscontext,'client0')
     # create portal-client
-    print('[test_metaobj_manager] create client-client')
+    print('[ZReferableItemTest.test_getRefObjPath] create client-client')
     zmsclient00 = addClient(zmsclient0,'client00')
     # Test refs.
     for docelmnt in [zmscontext.getDocumentElement(),zmsclient0,zmsclient00]:
       self.assertEqual(zmscontext,docelmnt.getLinkObj(docelmnt.getRefObjPath(zmscontext)))
       self.assertEqual(docelmnt,zmscontext.getLinkObj(zmscontext.getRefObjPath(docelmnt)))
     # remove portal-client (and client-client)
-    print('[test_metaobj_manager] remove portal-client %s'%zmsclient0.id)
+    print('[ZReferableItemTest.test_getRefObjPath] remove portal-client %s'%zmsclient0.id)
     removeClient(zmscontext,zmsclient0.getHome().id)
 
 
   def tearDown(self):
     zmscontext = self.context
     request = self.context.REQUEST
-    print('[tearDown] remove %s'%self.temp_title)
+    print('[ZReferableItemTest.tearDown] remove %s'%self.temp_title)
     zmscontext.manage_delObjects([self.folder.id])
     # super
     ZMSTestCase.tearDown(self)

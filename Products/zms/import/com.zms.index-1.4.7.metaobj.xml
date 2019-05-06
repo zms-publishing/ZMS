@@ -602,7 +602,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             if ref is not None:
               ref.registerRefObj(node)
               old = v
-              new = ref.get_uid()
+              new = '{$%s}'%ref.get_uid()
               writeDebug(node,'[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
               v = new
             else:
@@ -1165,7 +1165,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.4.6</item>
+          <item key="revision">1.4.7</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -1184,7 +1184,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.4.6</item>
+          <item key="revision">1.4.7</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

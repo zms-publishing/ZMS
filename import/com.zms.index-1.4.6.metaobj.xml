@@ -602,7 +602,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             if ref is not None:
               ref.registerRefObj(node)
               old = v
-              new = ref.get_uid()
+              new = '{$%s}'%ref.get_uid()
               writeDebug(node,'[ZMSIndexZCatalog_func_] handleUrl %s=>%s'%(old,new))
               v = new
             else:

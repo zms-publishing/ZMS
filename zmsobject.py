@@ -946,7 +946,6 @@ class ZMSObject(ZMSItem.ZMSItem,
         path = REQUEST['URL']
         path = re.sub('\\/index_html$','',path)+'/'
         index_html = self.getRelativeUrl(path,index_html)
-        print(REQUEST['URL'], path, index_html)
       return index_html
     
     #++

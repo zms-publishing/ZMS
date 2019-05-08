@@ -52,7 +52,7 @@
 </div>
 
 </form>
-<tal:block tal:condition="python:request.has_key('raw') or request.get('search_meta_types')" tal:define="global
+<tal:block tal:condition="python:'raw' in request or request.get('search_meta_types')" tal:define="global
 			qs python:here.getCatalogQueryString(request.get('raw',''),request.get('option',''));
 			qres python:[]">
 

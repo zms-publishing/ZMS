@@ -206,7 +206,7 @@ class ZMSMetacmdProvider(
         newName = item['name']
         newTitle = item.get('title', '')
         newMethod = item['meta_type']
-        newExecution = (item.has_key('execution') and item['execution']) or (item.has_key('exec') and item['exec'])
+        newExecution = ('execution' in item and item['execution']) or ('exec' in item and item['exec'])
         newDescription = item.get('description', '')
         newIconClazz = item.get('icon_clazz', '')
         newMetaTypes = item['meta_types']

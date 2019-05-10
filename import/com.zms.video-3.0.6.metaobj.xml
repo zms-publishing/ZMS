@@ -253,7 +253,7 @@ return zmscontext.attr('title')
   videoId python:zmscontext.attr('videoId');
   videoWidth python:zmscontext.attr('videoWidth');
   videoHeight python:zmscontext.attr('videoHeight');
-  videoURL python:{'fileupload':'','vimeo':'//player.vimeo.com/video/%s?badge=0','youtube':'http://www.youtube.com/embed/%s','switch':'https://tube.switch.ch/embed/%s'}[provider]">
+  videoURL python:{'fileupload':'','vimeo':'//player.vimeo.com/video/%s?badge=0','youtube':'//www.youtube.com/embed/%s','switch':'https://tube.switch.ch/embed/%s'}[provider]">
 
 <style type="text/css" tal:condition="python:request.get('first_video_on_page',True)">
 	.video-wrapper {margin: 1em 0;}
@@ -334,7 +334,7 @@ return zmscontext.attr('title')
       <item key="id"><![CDATA[video]]></item>
       <item key="name"><![CDATA[Video]]></item>
       <item key="package"><![CDATA[com.zms.foundation]]></item>
-      <item key="revision"><![CDATA[3.0.5]]></item>
+      <item key="revision"><![CDATA[3.0.6]]></item>
       <item key="type"><![CDATA[ZMSObject]]></item>
     </dictionary>
   </item>

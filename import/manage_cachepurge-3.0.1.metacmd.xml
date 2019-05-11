@@ -28,7 +28,7 @@ ip_or_domain = context.getConfProperty('ASP.ip_or_domain','')
 url = context.getHref2IndexHtml({'lang':request['lang'],'preview':''})
 
 if len(ip_or_domain)>0 and url.find('/content')>-1:
-    # url = ip_or_domain + url
+	# url = ip_or_domain + url
 	url = ip_or_domain + url.split('/content')[1]
 else:
 	# strip protocol
@@ -99,13 +99,17 @@ return '<br />'.join(msg)
 					<textarea class="form-control url_list ger" id="url_list" name="url_list" rows="15" wrap="virtual"
 						tal:attributes="placeholder python:'%s://%s'%(protocol,ip_or_domain)"
 						><tal:block tal:condition="python:request.get('btn','')=='all_urls' or request.get('btn','')=='this_url'"
-							tal:replace="python:'%s\n'%(here.getHref2IndexHtml({'lang':request.get('lang',here.getPrimaryLanguage()),'preview':''}))">node url</tal:block
+							tal:define="url python:here.getHref2IndexHtml({'lang':request.get('lang',here.getPrimaryLanguage()),'preview':''});
+								url python:( ip_or_domain in url ) and url or ( protocol + '://' + ip_or_domain + url.split('/content')[1] )"
+								tal:replace="python:'%s\n%s\n'%(url,url.split('index_')[0])">node url</tal:block
 						><tal:block
 							tal:condition="python:request.get('btn','')=='all_urls'"
 							tal:repeat="ob python:here.filteredTreeNodes(request,here.PAGES,max_len=None)"
-							><tal:block tal:replace="python:'%s\n'%(ob.getHref2IndexHtml({'lang':request.get('lang',here.getPrimaryLanguage()),'preview':''}))">node url</tal:block
+							><tal:block tal:define="url python:ob.getHref2IndexHtml({'lang':request.get('lang',here.getPrimaryLanguage()),'preview':''});
+								url python:( ip_or_domain in url ) and url or ( protocol + '://' + ip_or_domain + url.split('/content')[1] )"
+								tal:replace="python:'%s\n%s\n'%(url,url.split('index_')[0])">node url</tal:block
 						></tal:block
-						></textarea>
+					></textarea>
 				</div>
 			</div>
 			<div class="form-group" tal:define="reset_preview python:request.set('preview','preview')">
@@ -137,7 +141,7 @@ return '<br />'.join(msg)
         </list>
       </item>
       <item key="name"><![CDATA[Cache-Purge (List)]]></item>
-      <item key="revision"><![CDATA[3.0.0]]></item>
+      <item key="revision"><![CDATA[3.0.1]]></item>
       <item key="roles" type="list">
         <list>
           <item><![CDATA[ZMSAdministrator]]></item>

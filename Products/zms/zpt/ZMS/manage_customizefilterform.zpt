@@ -522,7 +522,7 @@ $ZMI.registerReady(function(){
 				</td>
 				<td>
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
-						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is not None"><img tal:attributes="src python:getattr(here,process['id']).icon"/></tal:block>
+						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is not None"><img tal:on-error="nothing" tal:attributes="src python:getattr(here,process['id']).icon"/></tal:block>
 						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is None"><tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-cog')"></tal:block></tal:block>
 						<tal:block tal:content="process/id">the id</tal:block>
 					</a>

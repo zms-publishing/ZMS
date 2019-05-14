@@ -142,8 +142,6 @@ class ZMSItem(
     
     def zmi_page_request(self, *args, **kwargs):
       request = self.REQUEST
-      # FIXME: where has REQUEST.SESSION gone?
-      request.SESSION = {}
       RESPONSE = request.RESPONSE
       self._zmi_page_request()
       RESPONSE.setHeader('Expires', DateTime(request['ZMI_TIME']-10000).toZone('GMT+1').rfc822())

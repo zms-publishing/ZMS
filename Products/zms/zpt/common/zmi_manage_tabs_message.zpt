@@ -1,7 +1,7 @@
 <!-- common/zmi_manage_tabs_message -->
 
-<tal:block tal:define="standard modules/Products.zms/standard; session python:standard.get_session(here)">
-<div class="alert alert-success" tal:on-error="string:Message Processing Error"
+<tal:block tal:define="standard modules/Products.zms/standard; session request/SESSION">
+<div class="alert alert-success"
 	tal:define="msg python:session and session.get('manage_tabs_message','') or request.get('manage_tabs_message','')"
 	tal:condition="python:msg!=''">
 	<a class="close" data-dismiss="alert" href="#">&times;</a>

@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 ################################################################################
 # _confmanager.py
 #
@@ -809,7 +810,7 @@ class ConfManager(
           if 'ZMANAGED' in os.environ:
             from Lifetime import shutdown
             from cgi import escape
-            from standard import writeBlock
+            from .standard import writeBlock
             try:
               user = '"%s"' % REQUEST['AUTHENTICATED_USER']
             except:

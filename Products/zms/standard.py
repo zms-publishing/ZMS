@@ -2029,7 +2029,7 @@ def extutil():
   """
   Returns util to handle zms3.extensions
   """
-  import _extutil
+  from . import _extutil
   return _extutil.ZMSExtensions()
 
 

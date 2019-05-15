@@ -9,7 +9,7 @@ from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from ZMSTestCase import ZMSTestCase
+from .ZMSTestCase import ZMSTestCase
 
 # python -m unittest selenium_tests.metacmd_manager_test.MetacmdManagerTest
 class MetacmdManagerTest(ZMSTestCase):

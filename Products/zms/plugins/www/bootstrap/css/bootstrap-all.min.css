@@ -545,6 +545,7 @@ ul.zmi-container .zmi-item.page .center .contentEditable{padding-top:.4em;margin
 .zmi-item.is-deleted .center div *{text-decoration:line-through!important}
 .zmi-item.is-deleted .center div > *{opacity:0.5}
 .zmi.manage-menu .zmi-page{white-space:nowrap;overflow:hidden}
+.zmi.properties .zmi-page{white-space:nowrap;overflow:visible}
 .zmi.manage-menu .zmi-sitemap{margin-top:1em}
 .zmi.manage-menu .dropdown-header{color:#999 !important;background-color:transparent !important;border-bottom:1px solid #666 !important}
 .zmi .breadcrumb a[title=Bookmark]{margin-left:.15em;margin-bottom:-1px}

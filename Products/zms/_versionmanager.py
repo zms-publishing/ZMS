@@ -1353,7 +1353,7 @@ class VersionManagerContainer(object):
             self.setObjProperty( 'change_history', change_history)
       
       ##### Self ####
-      if REQUEST.has_key('lang'): 
+      if 'lang' in REQUEST: 
         self.resetWfStates(REQUEST)
       parent = self.getParentNode()
       delete = self.commitObjChanges(parent, REQUEST, forced, do_history)
@@ -1379,7 +1379,7 @@ class VersionManagerContainer(object):
       zmscontext = self
       
       ##### Self ####
-      if REQUEST.has_key('lang'): self.resetWfStates(REQUEST)
+      if 'lang' in REQUEST: self.resetWfStates(REQUEST)
       parent = self.getParentNode()
       delete = self.rollbackObjChanges(parent, REQUEST)
       if delete: 

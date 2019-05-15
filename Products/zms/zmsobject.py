@@ -718,7 +718,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         for key in self.getObjAttrs():
           obj_attr = self.getObjAttr(key)
           el_name = self.getObjAttrName( obj_attr, lang)
-          if request.has_key( el_name) and request.has_key( 'resource_%s'%el_name):
+          if el_name in request and 'resource_%s'%el_name in request:
             el_value = request.get( el_name)
             if el_value is not None:
               for i in range( len( resources)):
@@ -736,7 +736,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             for key in self.getObjAttrs():
               obj_attr = self.getObjAttr(key)
               el_name = self.getObjAttrName( obj_attr, lang)
-              if request.has_key( el_name) and request.has_key( 'resource_%s'%el_name):
+              if el_name in request and 'resource_%s'%el_name in request:
                 el_value = request.get( el_name)
                 if el_value is not None:
                   el_value = el_value.replace( src_old, src_new)
@@ -745,7 +745,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         for key in self.getObjAttrs():
           obj_attr = self.getObjAttr(key)
           el_name = self.getObjAttrName( obj_attr, lang)
-          if request.has_key( el_name) and request.has_key( 'resource_%s'%el_name):
+          if el_name in request and 'resource_%s'%el_name in request:
             v = request.get( 'resource_%s'%el_name)
             if isinstance(v, ZPublisher.HTTPRequest.FileUpload):
               if len(getattr(v, 'filename', ''))>0:

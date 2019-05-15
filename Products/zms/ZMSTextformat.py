@@ -40,7 +40,7 @@ def br_quote(text, subtag, REQUEST):
   qtab = '&nbsp;'*6
   
   if standard.isManagementInterface(REQUEST):
-    if not REQUEST.has_key('format'):
+    if 'format' not in REQUEST:
       qcr = '<span class="unicode">&crarr;</span>'
       qtab = '<span class="unicode">&rarr;</span>' + '&nbsp;' * 5
   
@@ -139,7 +139,7 @@ class ZMSTextformat(object):
   def __init__(self, id, ob, REQUEST):
     self.setId(id)
     if REQUEST is not None and \
-       REQUEST.has_key('manage_lang') and \
+       'manage_lang' in REQUEST and \
        REQUEST['manage_lang'] in ob['display']:
       self.setDisplay(ob['display'][REQUEST['manage_lang']])
     else:

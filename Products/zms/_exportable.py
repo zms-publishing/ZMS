@@ -366,7 +366,7 @@ class Exportable(_filtermanager.FilterItem):
       standard.writeLog( self, '[toXhtml]')
       level = 0
       html = ''
-      if REQUEST.has_key( 'ZMS_PAGE_HTML_HEADER'):
+      if 'ZMS_PAGE_HTML_HEADER' in REQUEST:
         html += getattr( self, REQUEST.get( 'ZMS_PAGE_HTML_HEADER'))( self, REQUEST)
       else:
         html += '<html>\n'
@@ -380,7 +380,7 @@ class Exportable(_filtermanager.FilterItem):
         html += print_html
       except:
         html += standard.writeError(self, "[toXhtml]: can't append printHtml")
-      if REQUEST.has_key( 'ZMS_PAGE_HTML_FOOTER'):
+      if 'ZMS_PAGE_HTML_FOOTER' in REQUEST:
         html += getattr( self, REQUEST.get( 'ZMS_PAGE_HTML_FOOTER'))( self, REQUEST)
       else:
         html += '</body>\n'

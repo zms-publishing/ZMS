@@ -115,7 +115,7 @@ class ObjTypes(object):
       align = self.getObjProperty('align', REQUEST)
       
       # Export-Format.
-      if REQUEST.has_key('export_format'):
+      if 'export_format' in REQUEST:
         try:
           export_format = int( REQUEST.get('export_format'))
         except:

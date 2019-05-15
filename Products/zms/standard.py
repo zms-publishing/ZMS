@@ -778,7 +778,7 @@ def getLog(context):
   Get zms_log.
   """
   request = context.REQUEST
-  if request.has_key('ZMSLOG'):
+  if 'ZMSLOG' in request:
     zms_log = request.get('ZMSLOG')
   else:
     zms_log = getattr(context, 'zms_log', None)

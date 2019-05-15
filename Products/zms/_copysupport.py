@@ -116,7 +116,7 @@ class CopySupport(object):
       if cb_copy_data is not None:
         cp=cb_copy_data
       else:
-        if REQUEST and REQUEST.has_key('__cp'):
+        if REQUEST and '__cp' in REQUEST:
           cp=REQUEST['__cp']
       if cp is None:
         raise CopyError(eNoData)

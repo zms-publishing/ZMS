@@ -541,7 +541,7 @@ class ObjAttrs(object):
       try:
         modified = False
         request = self.REQUEST
-        if not request.has_key('ZMS_INSERT') and not self.getAutocommit():
+        if 'ZMS_INSERT' not in request and not self.getAutocommit():
           obj_attr = self.getObjAttr(key, self.meta_id)
           datatype = obj_attr['datatype_key']
           lang = request['lang']

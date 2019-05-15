@@ -1920,9 +1920,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             col['hide'] = int(not REQUEST.get('attr_display_%s'%attr_id, 0)==1)
           except:
             col['hide'] = int(not REQUEST.get('attr_display_%s'%attr_id, 0)[0]==1)
-          if REQUEST.has_key( 'attr_auto_%s'%attr_id):
+          if 'attr_auto_%s'%attr_id in REQUEST:
             col['auto'] = REQUEST.get( 'attr_auto_%s'%attr_id)
-          if REQUEST.has_key( 'attr_type_%s'%attr_id):
+          if 'attr_type_%s'%attr_id in REQUEST:
             t = REQUEST.get( 'attr_type_%s'%attr_id)
             if t in self.valid_types:
               d = copy.deepcopy( self.valid_types[ t])

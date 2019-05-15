@@ -91,7 +91,7 @@ class ZMSLog(ZMSItem.ZMSItem):
     def setProperties(self, REQUEST, RESPONSE): 
       """ ZMSLog.setProperties """
       self.tail_event_log_linesback = REQUEST.get('tail_event_log_linesback', 100)
-      self.copy_to_stdout = REQUEST.has_key( 'copy_to_stdout')
+      self.copy_to_stdout = 'copy_to_stdout' in REQUEST
       self.logged_entries = REQUEST.get( 'logged_entries', [])
       return RESPONSE.redirect( REQUEST[ 'HTTP_REFERER'])
 
@@ -124,7 +124,7 @@ class ZMSLog(ZMSItem.ZMSItem):
     # --------------------------------------------------------------------------
     def getPath(self, REQUEST): 
       path = SOFTWARE_HOME
-      if REQUEST.has_key('path'):
+      if 'path' in REQUEST:
         path = REQUEST['path']
       path = path.strip()
       return path

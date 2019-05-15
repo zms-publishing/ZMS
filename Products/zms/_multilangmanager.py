@@ -227,7 +227,7 @@ class MultiLanguageManager(object):
       req = getattr( self, 'REQUEST', None)
       if req is not None:
         sess = standard.get_session(self)
-        if req.has_key('manage_lang'):
+        if 'manage_lang' in req:
           manage_lang = req.get('manage_lang')
         else:
           if sess is not None and 'reset_manage_lang' not in req.form:

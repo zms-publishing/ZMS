@@ -549,7 +549,7 @@ class MyBlob(object):
     __call____roles__ = None
     def __call__(self, REQUEST=None, **kw):
       """"""
-      if REQUEST is not None and REQUEST.has_key('path_to_handle'):
+      if REQUEST is not None and 'path_to_handle' in REQUEST:
         REQUEST['path_to_handle']=[]
         RESPONSE = REQUEST.RESPONSE
         parent = self.aq_parent

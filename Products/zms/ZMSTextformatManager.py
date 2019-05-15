@@ -168,7 +168,7 @@ class ZMSTextformatManager(object):
         richedit = REQUEST.get('new_richedit', 0)
         usage = REQUEST.get('new_usage', [])
         self.setTextformat(old_id, id, display, self.get_manage_lang(), tag, subtag, attrs, richedit, usage)
-        if REQUEST.has_key('new_default'):
+        if 'new_default' in REQUEST:
           self.setDefaultTextformat(id)
         id = ''
         message = self.getZMILangStr('MSG_CHANGED')

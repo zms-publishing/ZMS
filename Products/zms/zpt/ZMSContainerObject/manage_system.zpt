@@ -6,30 +6,28 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="form-horizontal" method="post" tal:attributes="action python:context.absolute_url()">
+<form class="form-horizontal card" method="post" tal:attributes="action python:context.absolute_url()">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<input type="hidden" name="preview" tal:attributes="value request/preview"/>
-	<legend tal:content="python:here.getZMILangStr('TAB_SYSTEM')">System</legend>
-
+<!--
+################################################################################
+##### Action-List
+################################################################################
+-->
 <tal:block tal:define="global
 		zmscontext here;
 		SecurityManager modules/AccessControl/getSecurityManager;
 		skey python:request.get('skey', 'id');
 		rkey python:request.get('rkey', '')">
 
-<!--
-################################################################################
-##### Action-List
-################################################################################
--->
-<div class="col-md-4 col-md-offset-8">
-	<select class="form-control" name=":action" tal:attributes="onchange python:'location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
+	<select class="form-control" id="addItemSelect" name=":action" tal:attributes="onchange python:'location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
 		<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type(request)">----- Insert -----</option>
 		<tal:block tal:repeat="meta_type python:[x for x in zmscontext.sort_list(zmscontext.filtered_meta_types(),'name') if x['name'].find('ZMS')!=0]">
 			<option tal:attributes="value python:meta_type['action']" tal:content="python:meta_type['name']">the name</option>
 		</tal:block>
 	</select>
-</div>
+	<legend tal:content="python:here.getZMILangStr('TAB_SYSTEM')">System</legend>
+
 
 <!--
 ################################################################################
@@ -58,9 +56,14 @@
 <tbody>
 <tr tal:repeat="item items">
 	<td><input type="checkbox" name="ids:list" tal:attributes="value python:item[0]"/></td>
-	<td tal:define="icon python:zmscontext.operator_absattr(item[1].icon)">
-		<img tal:on-error="structure string:<!-- ERROR: Icon not found -->" tal:condition="python:'class=' not in icon" tal:attributes="src icon" />
-		<img tal:on-error="structure string:<!-- ERROR: Icon not found -->" tal:condition="python:'class=' in icon" tal:replace="structure icon" />
+	<td>
+		<tal:block tal:define="icon python:zmscontext.operator_absattr(item[1].icon)"
+			tal:on-error="structure string:<i title='Error: No Icon Found' class='far fa-file-alt'></i>">
+			<img tal:on-error="structure string:<!-- ERROR: Icon not found -->"
+				tal:condition="python:'class=' not in icon" tal:attributes="src icon" />
+			<img tal:on-error="structure string:<!-- ERROR: Icon not found -->"
+				tal:condition="python:'class=' in icon" tal:replace="structure icon" />
+		</tal:block>
 	</td>
 	<td>
 		<a tal:attributes="href python:'%s/manage_workspace'%item[1].absolute_url()">

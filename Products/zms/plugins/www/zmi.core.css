@@ -24,6 +24,22 @@ header .navbar-brand {
 	font-size: 1rem;
 	margin-left: 1rem;
 }
+.zmi header .navbar-brand .preview-message {
+	display:none;
+}
+.zmi.preview_top header .navbar-brand .preview-message {
+	display:inline;
+	position: absolute;
+	padding:.5rem 1rem;
+	left:0;
+	top:0;
+	background: #354f67;
+	height: 2.65rem;
+	font-size: .867rem !important;
+	line-height: 2;
+	color: #96ebff;
+	margin:0;
+}
 header.navbar-nav a {
 	color: silver;
 	text-decoration:none !important;
@@ -52,6 +68,13 @@ header.navbar-nav a {
 	margin-left: -2px;
 	margin-right: 2px;
 }
+.zmi header.navbar ul.navbar-nav li.form-inline {
+	-ms-flex-flow: row nowrap;
+	flex-flow: row nowrap;
+}
+.zmi header.navbar ul.navbar-nav li a {
+	white-space:nowrap;
+}
 .zmi header.navbar ul.navbar-nav li.zmi-authenticated_user {
 	cursor:default;
 }
@@ -76,9 +99,10 @@ footer {
 	font-size: 1.125rem;
 }
 .navbar-brand .slogan {
+	position: absolute;
 	font-weight:normal;
 	font-size: .62rem;
-	margin-left: 1rem;
+	margin: 0.60rem 1rem;
 	opacity:.5;
 	letter-spacing: .5px;
 }
@@ -1027,8 +1051,20 @@ body.browse_iframe .toggle {
 .zmi .control-label-ace-editor:hover::before {
 	color:#e83e8c
 }
-
-
 .zmi.customize.config #zmi-tab #Manager.tab-pane .btn img {
 	margin: -.45rem .25rem 0 0;
 }
+.zmi.system select#addItemSelect {
+	position: absolute;
+	float: right;
+	width: fit-content;
+	right: 0;
+	height: 1.8rem;
+	font-size: .8rem !important;
+	background: #428bca;
+	color: aliceblue;
+	border-radius: 0;
+	border-top-right-radius: 4px;
+	border: 0;
+	}
+

@@ -291,14 +291,14 @@ function mms_normalize_rows(el_tbody) {
 						<select class="form-control input-xs" tal:attributes="name python:'attr_type_%s'%column['id']" onchange="onAttrTypeChange(this)">
 							<option value=""></option>
 							<tal:block tal:repeat="type python:here.sort_list(here.valid_types.keys())">
-								<option tal:attributes="value type; selected python:['','selected'][int(column.has_key(type))]" tal:content="type">the type</option>)
+								<option tal:attributes="value type; selected python:['','selected'][int(type in column)]" tal:content="type">the type</option>)
 							</tal:block>
 						</select>
 						<table>
 						<tal:block tal:replace="nothing">
 						##### Blob #########################################################
 						</tal:block>
-						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['d-none',''][int(column.has_key('blob'))]">
+						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['d-none',''][int('blob' in column)]">
 							<td>Type</td>
 							<td>
 								<select class="form-control input-xs" tal:attributes="name python:'attr_blob_type_%s'%column['id']">
@@ -308,18 +308,18 @@ function mms_normalize_rows(el_tbody) {
 								</select>
 							</td>
 						</tr>
-						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['d-none',''][int(column.has_key('blob'))]">
+						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['d-none',''][int('blob' in column)]">
 							<td>Path</td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_blob_path_%s'%column['id']; value python:column.get('blob',{}).get('path','')"/></td>
 						</tr>
-						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['d-none',''][int(column.has_key('blob'))]">
+						<tr tal:attributes="id python:'tr_blob_%s'%column['id']; class python:['d-none',''][int('blob' in column)]">
 							<td>Remote [URL]</td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_blob_remote_%s'%column['id']; value python:column.get('blob',{}).get('remote','')"/></td>
 						</tr>
 						<tal:block tal:replace="nothing">
 						##### Details ######################################################
 						</tal:block>
-						<tr tal:attributes="id python:'tr_details_%s'%column['id']; class python:['d-none',''][int(column.has_key('details'))]">
+						<tr tal:attributes="id python:'tr_details_%s'%column['id']; class python:['d-none',''][int('details' in column)]">
 							<td>Tablename</td>
 							<td>
 								<select class="form-control input-xs" tal:attributes="name python:'attr_details_tablename_%s'%column['id']">
@@ -330,14 +330,14 @@ function mms_normalize_rows(el_tbody) {
 								</select>
 							</td>
 						</tr>
-						<tr tal:attributes="id python:'tr_details_%s'%column['id']; class python:['d-none',''][int(column.has_key('details'))]">
+						<tr tal:attributes="id python:'tr_details_%s'%column['id']; class python:['d-none',''][int('details' in column)]">
 							<td>Foreign Key</td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_details_fk_%s'%column['id']; value python:column.get('details',{}).get('fk','')"/></td>
 						</tr>
 						<tal:block tal:replace="nothing">
 						##### Fk ###########################################################
 						</tal:block>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int('fk' in column)]">
 							<td>A.Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
 							<td>
 								<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_fk_tablename_%s'%column['id']; onchange python:'zmiChangeTablename(this,[\'%s\',\'%s\'])'%('attr_fk_fieldname_%s'%column['id'],'attr_fk_displayfield_%s'%column['id'])">
@@ -348,34 +348,34 @@ function mms_normalize_rows(el_tbody) {
 								</select>
 							</td>
 						</tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int('fk' in column)]">
 							<td>A.Fieldname</td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_fk_fieldname_%s'%column['id']; value python:column.get('fk',{}).get('fieldname','')"/></td>
 						</tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int('fk' in column)]">
 							<td>A.Displayfield</td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_fk_displayfield_%s'%column['id']; value python:column.get('fk',{}).get('displayfield','')"/></td>
 						</tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int('fk' in column)]">
 							<td>A.Lazy</td>
 							<td><input type="checkbox" tal:attributes="name python:'attr_fk_lazy_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('lazy') in [1,True])]" value="1"/></td>
 						</tr>
-            <tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
+            <tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int('fk' in column)]">
               <td>A.Editable</td>
               <td><input type="checkbox" tal:attributes="name python:'attr_fk_editable_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('editable') in [1,True])]" value="1"/></td>
             </tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int('fk' in column)]">
 							<td>B.MySQL-Set</td>
 							<td><input type="checkbox" tal:attributes="name python:'attr_fk_mysqlset_%s:int'%column['id']; checked python:['','checked'][int(column.get('fk',{}).get('mysqlset') in [1,True])]" value="1"/></td>
 						</tr>
-						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int(column.has_key('fk'))]">
+						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int('fk' in column)]">
 							<td>C.Options</td>
 							<td><div class="zmi-single-line-edit"><textarea class="form-control input-xs" tal:attributes="name python:'attr_fk_options_%s'%column['id']" tal:content="python:'\n'.join([x[0] for x in column.get('fk',{}).get('options',[])])"></textarea></div></td>
 						</tr>
 						<tal:block tal:replace="nothing">
 						##### Multiselect ###########################################################
 						</tal:block>
-						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multiselect'))]">
+						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int('multiselect' in column)]">
 							<td>A.Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
 							<td>
 								<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_multiselect_tablename_%s'%column['id']; onchange python:'zmiChangeTablename(this,[\'%s\'])'%('attr_multiselect_fk_%s'%column['id'])">
@@ -386,22 +386,22 @@ function mms_normalize_rows(el_tbody) {
 								</select>
 							</td>
 						</tr>
-						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multiselect'))]">
+						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int('multiselect' in column)]">
 							<td>A.Foreign Key <tal:block tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block></td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multiselect_fk_%s'%column['id']; value python:column.get('multiselect',{}).get('fk','')"/></td>
 						</tr>
-						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multiselect'))]">
+						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int('multiselect' in column)]">
 							<td>A.Lazy</td>
 							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_lazy_%s:int'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('lazy') in [1,True])]" value="1"/></td>
 						</tr>
-						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multiselect'))]">
+						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int('multiselect' in column)]">
 							<td>B.MySQL-Set</td>
 							<td><input type="checkbox" tal:attributes="name python:'attr_multiselect_mysqlset_%s:int'%column['id']; checked python:['','checked'][int(column.get('multiselect',{}).get('mysqlset') in [1,True])]" value="1"/></td>
 						</tr>
 						<tal:block tal:replace="nothing">
 						##### Multimultiselect ###########################################################
 						</tal:block>
-						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multimultiselect'))]">
+						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['d-none',''][int('multimultiselect' in column)]">
 							<td>Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
 							<td>
 								<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_multimultiselect_tablename_%s'%column['id']; onchange python:'zmiChangeTablename(this,[\'%s\'])'%('attr_multimultiselect_fk_%s'%column['id'])">
@@ -412,7 +412,7 @@ function mms_normalize_rows(el_tbody) {
 								</select>
 							</td>
 						</tr>
-						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multimultiselect'))]">
+						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['d-none',''][int('multimultiselect' in column)]">
 							<td>Foreign Key</td>
 							<td><input type="text" tal:attributes="name python:'attr_multimultiselect_fk_%s'%column['id']; value python:column.get('multimultiselect',{}).get('fk','')"/></td>
 						</tr>
@@ -420,7 +420,7 @@ function mms_normalize_rows(el_tbody) {
 								mmstablename python:column.get('multimultiselect',{}).get('tablename','');
 								mmsfk python:column.get('multimultiselect',{}).get('fk','');
 								mmsentity python:([x for x in here.getEntities() if x['id'].upper()==mmstablename.upper()]+[None])[0]">
-							<tr tal:condition="python:mmsfk!='' and mmsentity is not None" tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['d-none',''][int(column.has_key('multimultiselect'))]">
+							<tr tal:condition="python:mmsfk!='' and mmsentity is not None" tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['d-none',''][int('multimultiselect' in column)]">
 								<td colspan="2">Tables
 									<table>
 									<tr>

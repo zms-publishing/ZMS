@@ -159,12 +159,12 @@ function zmiRichtextInit(id) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-<tal:block tal:condition="python:request.has_key('CKEDITOR_config_toolbar')">
+<tal:block tal:condition="python:'CKEDITOR_config_toolbar' in request">
 // Toolbar
         config.toolbar_ZMSConfigToolbar = <tal:block tal:content="python:here.str_json(request['CKEDITOR_config_toolbar'])"></tal:block>;
 </tal:block>
 
-<tal:block tal:condition="python:request.has_key('CKEDITOR_config_removeButtons')">
+<tal:block tal:condition="python:'CKEDITOR_config_removeButtons' in request">
 // RemoveButtons
         config.removeButtons = '<tal:block tal:content="python:request['CKEDITOR_config_removeButtons']"></tal:block>';
 </tal:block>
@@ -177,7 +177,7 @@ function zmiRichtextInit(id) {
         customConfig:'<tal:block tal:content="python:'%s/%s'%(here.getHome().absolute_url(),here.getConfProperty('plugin.rte.ckeditor.Config',''))"></tal:block>',
     <tal:block tal:define="dummy0 python:toolbar.insert(0,'ZMSCustomToolbar')"></tal:block>
   </tal:block>
-  <tal:block tal:condition="python:request.has_key('CKEDITOR_config_toolbar')">
+  <tal:block tal:condition="python:'CKEDITOR_config_toolbar' in request">
     <tal:block tal:define="dummy0 python:toolbar.insert(0,'ZMSConfigToolbar')"></tal:block>
   </tal:block>
         toolbar:'<tal:block tal:content="python:toolbar[0]"></tal:block>',

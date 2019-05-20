@@ -28,12 +28,12 @@
 		<input class="form-control form-control-sm" size="2" id="qsize" type="text" name="qsize:int" tal:attributes="value request/qsize" onchange="this.form.submit()"/>
 	</div>
 </div>
-<input type="hidden" name="lang" tal:condition="python:request.has_key('lang')" tal:attributes="value request/lang"/>
-<input type="hidden" name="preview" tal:condition="python:request.has_key('preview')" tal:attributes="value request/preview"/>
+<input type="hidden" name="lang" tal:condition="python:'lang' in request" tal:attributes="value request/lang"/>
+<input type="hidden" name="preview" tal:condition="python:'preview' in request" tal:attributes="value request/preview"/>
 <input type="hidden" name="action" value=""/>
 <input type="hidden" name="btn" value=""/>
 <input type="hidden" name="target" tal:condition="python:len(input_target)>0" tal:attributes="value input_target"/>
-<input type="hidden" name="form_id" tal:condition="python:request.has_key('ZMI_TIME')" tal:attributes="value request/ZMI_TIME"/>
+<input type="hidden" name="form_id" tal:condition="python:'ZMI_TIME' in request" tal:attributes="value request/ZMI_TIME"/>
 <tal:block tal:repeat="name python:url_params.keys()">
 <input type="hidden" tal:attributes="name name; value python:url_params[name]"/>
 </tal:block>

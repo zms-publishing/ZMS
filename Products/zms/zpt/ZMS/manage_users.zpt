@@ -73,7 +73,7 @@
 </tal:block>
 </tal:block
 
-><tal:block tal:condition="not:python:request.has_key('mode')"
+><tal:block tal:condition="not:python:'mode' in request"
 ><!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>

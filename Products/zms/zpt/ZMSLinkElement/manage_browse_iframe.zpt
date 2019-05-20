@@ -110,8 +110,8 @@
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" name="defaultLang" tal:attributes="value python:request['defaultLang']" />
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
-	<input type="hidden" name="fmName" tal:condition="python:request.has_key('fmName')" tal:attributes="value python:request.get('fmName','')" />
-	<input type="hidden" name="elName" tal:condition="python:request.has_key('elName')" tal:attributes="value python:request.get('elName','')" />
+	<input type="hidden" name="fmName" tal:condition="python:'fmName' in request" tal:attributes="value python:request.get('fmName','')" />
+	<input type="hidden" name="elName" tal:condition="python:'elName' in request" tal:attributes="value python:request.get('elName','')" />
 	<legend tal:content="python:zmscontext.getZMILangStr('SEARCH_HEADER')">Search header</legend>
 	<div class="form-group row">
 		<div class="col-md-12">

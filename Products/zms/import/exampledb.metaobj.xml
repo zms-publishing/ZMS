@@ -102,8 +102,8 @@
 					]">
 
 <form method="get" tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
-	<input type="hidden" name="lang" tal:condition="python:request.has_key('lang')" tal:attributes="value request/lang"/>
-	<input type="hidden" name="preview" tal:condition="python:request.has_key('preview')" tal:attributes="value request/preview"/>
+	<input type="hidden" name="lang" tal:condition="python:'lang' in request" tal:attributes="value request/lang"/>
+	<input type="hidden" name="preview" tal:condition="python:'preview' in request" tal:attributes="value request/preview"/>
 	<div style="margin:1em 0 1em 0;padding:.2em;background:#DCE3F0;border-radius:4px;" tal:define="global filterIndex python:0">
 		<div class="form-group row" style="margin:.5em">
 			<div class="input-group">
@@ -311,8 +311,8 @@
 					]">
 
 <form method="get" tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
-	<input type="hidden" name="lang" tal:condition="python:request.has_key('lang')" tal:attributes="value request/lang"/>
-	<input type="hidden" name="preview" tal:condition="python:request.has_key('preview')" tal:attributes="value request/preview"/>
+	<input type="hidden" name="lang" tal:condition="python:'lang' in request" tal:attributes="value request/lang"/>
+	<input type="hidden" name="preview" tal:condition="python:'preview' in request" tal:attributes="value request/preview"/>
 	<div style="margin:1em 0 1em 0;padding:.2em;background:#DCE3F0;border-radius:4px;" tal:define="global filterIndex python:0">
 		<div class="form-group row" style="margin:.5em">
 			<div class="input-group">

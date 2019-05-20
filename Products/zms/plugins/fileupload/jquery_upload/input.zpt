@@ -33,7 +33,7 @@ $(function () {
 					,key:'<tal:block tal:content="options/key"></tal:block>'
 					,dataRequestKey:elName
 					,form_id:'<tal:block tal:content="request/ZMI_TIME"></tal:block>'
-					<tal:block tal:condition="python:request.has_key('ZMS_INSERT')">,meta_id:'<tal:block tal:content="request/ZMS_INSERT"></tal:block>'</tal:block>
+					<tal:block tal:condition="python:'ZMS_INSERT' in request">,meta_id:'<tal:block tal:content="request/ZMS_INSERT"></tal:block>'</tal:block>
 				},
 				dataType: 'json',
 				add: function (e, data) {

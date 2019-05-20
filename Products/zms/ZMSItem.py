@@ -157,9 +157,11 @@ class ZMSItem(
         request.set('manage_lang', self.get_manage_lang())
       if not request.get('manage_tabs_message'):
         request.set( 'manage_tabs_message', self.getConfProperty('ZMS.manage_tabs_message', ''))
-      # manage_system
-      if 'zmi-manage-system' in request.form:
-        request.SESSION['zmi-manage-system'] = int(request.get('zmi-manage-system'))
+      try: # manage_system
+        if 'zmi-manage-system' in request.form:
+          request.SESSION['zmi-manage-system'] = int(request.get('zmi-manage-system'))
+      except:
+        standard.writeError( self, 'request.SESSION[zmi-manage-system]')
       # avoid declarative urls
       path_to_handle = request['URL0'][len(request['BASE0']):]
       path = path_to_handle.split('/')

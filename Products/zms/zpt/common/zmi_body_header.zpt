@@ -13,7 +13,7 @@
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 		<ul class="navbar-nav flex-row ml-sm-auto d-flex">
 
-				<li id="zmi-authenticated_user" class="form-inline zmi-authenticated_user">
+				<li id="zmi-authenticated_user" class="form-inline zmi-authenticated_user" tal:attributes="title python:'Authenticated User: %s'%(request.get('AUTHENTICATED_USER'))">
 					<a href="javascript:;" id="manage_userForm" onclick="$ZMI.iframe('manage_userForm',{lang:getZMILang()},{iframe:true,height:400,width:640,title:$(this).text(),modal:{backdrop:'static',keyboard:false}})">
 						<span class="authenticated_user" tal:content="request/AUTHENTICATED_USER">the authenticated-user</span>&nbsp;
 					</a>

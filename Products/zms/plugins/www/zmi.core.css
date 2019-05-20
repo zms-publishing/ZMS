@@ -75,6 +75,9 @@ header.navbar-nav a {
 .zmi header.navbar ul.navbar-nav li a {
 	white-space:nowrap;
 }
+.zmi header.navbar ul.navbar-nav li a i {
+	font-size:1rem;
+}
 .zmi header.navbar ul.navbar-nav li.zmi-authenticated_user {
 	cursor:default;
 }
@@ -83,7 +86,14 @@ header.navbar-nav a {
 	font-family:Font Awesome\ 5 Free;
 	font-weight:bold;
 	margin-right:.5em;
-	color:silver
+	color:silver;
+	font-size:1rem;
+}
+
+@media (max-width: 768px) {
+	.zmi header.navbar ul.navbar-nav li.zmi-authenticated_user span.authenticated_user {
+		display:none;
+	}
 }
 footer {
 	left: 0;
@@ -99,12 +109,18 @@ footer {
 	font-size: 1.125rem;
 }
 .navbar-brand .slogan {
+	display:none;
 	position: absolute;
 	font-weight:normal;
 	font-size: .62rem;
 	margin: 0.60rem 1rem;
 	opacity:.5;
 	letter-spacing: .5px;
+}
+@media (min-width: 1200px) {
+	.navbar-brand .slogan {
+		display:inline-block;
+	}
 }
 
 /* BO HORIZONTAL SCROLLING MAIN NAVIGATION */
@@ -117,8 +133,6 @@ footer {
 	padding-left:1em;
 	padding-right:1em;
 }
-
-
 .zmi nav .wrapper {
 	position:relative;
 	margin:0;
@@ -375,13 +389,17 @@ ul.zmi-container .zmi-item .zmi-action {
 	margin-left:-179px;
 }
 ul.zmi-container .zmi-item .zmi-action .split-left {
-	width: 258px;
 	width:180px;
 	overflow:hidden;
 	visibility:hidden;
 	text-align:left;
 	z-index:9999;
+	text-overflow: ellipsis;
 }
+ul.zmi-container .zmi-item .zmi-action.show button.split-left {
+	visibility: visible !important;
+}
+
 .checkbox.split-left {
 	height:1em;
 }
@@ -395,16 +413,16 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 }
 .zmi-action .btn.split-left,
 .zmi-action .btn.split-right {
-	text-align:left;
+	padding: 0 0 0 .35rem;
+	text-align:center;
 	background-color: #eee;
 	color:#333;
 	border-color: #eee;
 	font-weight:bold;
-	height:2.7em;
-	margin-left:0;
+	height: 2rem;
 }
 .zmi-action .btn.split-right {
-	width:2.75rem;
+	width:3rem;
 }
 .zmi .dropdown-menu {
 	font-size: inherit !important;
@@ -420,34 +438,36 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 }
 .zmi-action .btn.split-right,
 .zmi-action .btn.split-left {
-	padding: 0 .5rem 0 0;
-	text-align:left;
+	padding: 0 0 0 .35rem;
+	text-align:center;
 	height: 2rem;
 }
 .zmi-action .btn.split-right:before {
-	margin-left: .25rem !important;
+	content: "";
+	position: absolute;
+	top: .55rem;
+	left: .25rem;
+	margin:0;
+	display: inline-block;
+	border-top: .3rem solid transparent;
+	border-right: .3rem solid;
+	border-bottom: .3rem solid transparent;
 	opacity:.4;
+}
+.zmi-action.show .btn.split-right:before {
+	border-left: .3rem solid transparent;
+	border-right: .3rem solid transparent;
+	border-top: .3rem solid black !important;
+	left: 0;
+	top: .8rem;
+	opacity:1
 }
 .zmi-action:hover .btn.split-right:before {
 	opacity:1;
 }
-.zmi-action .btn.split-right:before {
-	vertical-align: 0;
-}
-.zmi-action .btn.split-right:before {
-	display: inline-block;
-	width: 0;
-	height: 0;
-	margin-right: .255rem;
-	vertical-align: .07rem;
-	content: "";
-	border-top: .3rem solid transparent;
-	border-right: .3rem solid;
-	border-bottom: .3rem solid transparent;
-}
 .zmi-action .btn.split-left {
 	font-size:inherit !important;
-	padding:0 .75rem;
+	padding:0 .6rem;
 	background: #eeeeee !important;
 	border: 1px solid rgba(0,0,0,0.1);
 	border-right:none
@@ -465,6 +485,15 @@ ul.zmi-container .zmi-item .zmi-action .split-left {
 .zmi-action .dropdown-menu i {
 	width:1.5rem;
 }
+.zmi-action i {
+	color: #818ea2;
+	font-size: 16px;
+}
+.zmi-action .split-left i {
+	color:black;
+	margin-right:.4rem
+}
+
 li.zmi-item span.zmi-ids {
 	/* position: absolute; */
 	display:inline-block;
@@ -660,6 +689,8 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	transform: none !important;
 	z-index:10000;
 	min-width:260px;
+	max-height: 80vh;
+	overflow-y: scroll;
 }
 .zmi .dropdown-menu .dropdown-header {
 	padding: 5px 13px;
@@ -674,15 +705,25 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 }
 
 .zmi .dropdown-menu a.dropdown-item {
-	padding: .25rem .75rem;
+	padding: .3rem .75rem;
 }
 .zmi .dropdown-menu .dropdown-header i,
 .zmi .dropdown-menu a.dropdown-item i {
-	width:1.25rem;
+	width:1.5rem;
 }
 .zmi .zms-action:hover .btn i {
 	color: #08c !important;
 }
+
+.right .zmi-action i {
+	color: #818ea2;
+	font-size: 16px;
+}
+.right .zmi-action .split-left i {
+	color:black;
+	margin-right:.4rem
+}
+
 
 /* ZMS-Buttons */
 

@@ -425,7 +425,7 @@ class ZMSMetacmdProvider(
             hasMetaType = hasMetaType or 'type(%s)'%context.getType() in meta_types
             canExecute = canExecute and hasMetaType
           if canExecute:
-            roles = metaCm.get('roles',[])
+            roles = metaCmd.get('roles',[])
             hasRole = False
             hasRole = hasRole or '*' in roles
             hasRole = hasRole or len(standard.intersection_list(user_roles,roles)) > 0

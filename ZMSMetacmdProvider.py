@@ -162,6 +162,7 @@ class ZMSMetacmdProvider(
     def updateRepository(self, r):
       id = r['id']
       impl = r['Impl'][0]
+      print (id,impl)
       newId = id
       newAcquired = 0
       newRevision = r.get('revision','0.0.0')
@@ -172,8 +173,8 @@ class ZMSMetacmdProvider(
       newExecution = r.has_key('execution') and r['execution']
       newDescription = r.get('description','')
       newIconClazz = r.get('icon_clazz','')
-      newMetaTypes = r['meta_types']
-      newRoles = r['roles']
+      newMetaTypes = r.get('meta_types',[])
+      newRoles = r.get('roles',[])
       newNodes = r.get('nodes','{$}')
       self.delMetacmd(id)
       return self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, \
@@ -208,8 +209,8 @@ class ZMSMetacmdProvider(
         newExecution = (item.has_key('execution') and item['execution']) or (item.has_key('exec') and item['exec'])
         newDescription = item.get('description','')
         newIconClazz = item.get('icon_clazz','')
-        newMetaTypes = item['meta_types']
-        newRoles = item['roles']
+        newMetaTypes = item.get('meta_types',[])
+        newRoles = item.get('roles',[])
         newNodes = item.get('nodes','{$}')
         newData = item['data']
         
@@ -288,7 +289,7 @@ class ZMSMetacmdProvider(
       self.commands = copy.deepcopy(self.commands) # Make persistent.
       
       # Insert Object.
-      container = self.aq_parent
+      container = self.getDocumentElement()
       if newAcquired:
         portalMaster = self.getPortalMaster()
         newMethod = getattr(portalMaster,newId).meta_type
@@ -312,10 +313,10 @@ class ZMSMetacmdProvider(
           newData += '  return "This is the external method ' + newId + '"\n'
       zopeutil.removeObject(container, id)
       zopeutil.removeObject(container, newId)
-      zopeutil.addObject(container, newMethod, newId, newTitle, newData, permissions={'Authenticated':['View']})
+      object = zopeutil.addObject(container, newMethod, newId, newTitle, newData, permissions={'Authenticated':['View']})
       
       # Return with new id.
-      return newId
+      return object.id
 
 
     # --------------------------------------------------------------------------
@@ -418,14 +419,14 @@ class ZMSMetacmdProvider(
         for metaCmd in metaCmds:
           canExecute = True
           if canExecute:
-            meta_types = metaCmd['meta_types']
+            meta_types = metaCmd.get('meta_types',[])
             hasMetaType = False
             hasMetaType = hasMetaType or '*' in meta_types
             hasMetaType = hasMetaType or context.meta_id in meta_types
             hasMetaType = hasMetaType or 'type(%s)'%context.getType() in meta_types
             canExecute = canExecute and hasMetaType
           if canExecute:
-            roles = metaCmd['roles']
+            roles = metaCmd.get('roles',[])
             hasRole = False
             hasRole = hasRole or '*' in roles
             hasRole = hasRole or len(standard.intersection_list(user_roles,roles)) > 0
@@ -525,8 +526,8 @@ class ZMSMetacmdProvider(
               el_meta_type = metaCmd['meta_type']
               el_description = metaCmd['description']
               el_icon_clazz = metaCmd.get('icon_clazz','')
-              el_meta_types = metaCmd['meta_types']
-              el_roles = metaCmd['roles']
+              el_meta_types = metaCmd.get('meta_types',[])
+              el_roles = metaCmd.get('roles',[])
               el_execution = metaCmd['execution']
               el_data = zopeutil.readObject(metaCmd['home'],metaCmd['id'])
               # Value.

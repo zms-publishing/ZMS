@@ -52,8 +52,6 @@ def addObject(container, meta_type, id, title, data):
   """
   Add Zope-object to container.
   """
-  #try: container.writeBlock("[zopeutil.addObject]: %s@%s +%s(%s)"%(container.meta_type,container.absolute_url(),id,meta_type))
-  #except: pass
   if meta_type == 'DTML Document':
     addDTMLDocument( container, id, title, data)
   elif meta_type == 'DTML Method':
@@ -72,6 +70,7 @@ def addObject(container, meta_type, id, title, data):
     addFolder( container, id, title, data)
   elif meta_type == 'Z SQL Method':
     addZSqlMethod( container, id, title, data)
+  return getObject( container, id)
 
 security.declarePublic('getObject')
 def getObject(container, id):

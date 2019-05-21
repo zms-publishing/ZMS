@@ -1,4 +1,4 @@
-################################################################################
+
 # ZMSMetacmdProvider.py
 #
 # This program is free software; you can redistribute it and/or
@@ -173,8 +173,8 @@ class ZMSMetacmdProvider(
       newExecution = 'execution' in r and r['execution']
       newDescription = r.get('description', '')
       newIconClazz = r.get('icon_clazz', '')
-      newMetaTypes = r['meta_types']
-      newRoles = r['roles']
+      newMetaTypes = r.get('meta_types',[])
+      newRoles = r.get('roles',[])
       newNodes = r.get('nodes', '{$}')
       self.delMetacmd(id)
       return self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, \
@@ -209,8 +209,8 @@ class ZMSMetacmdProvider(
         newExecution = ('execution' in item and item['execution']) or ('exec' in item and item['exec'])
         newDescription = item.get('description', '')
         newIconClazz = item.get('icon_clazz', '')
-        newMetaTypes = item['meta_types']
-        newRoles = item['roles']
+        newMetaTypes = item.get('meta_types',[])
+        newRoles = item.get('roles',[])
         newNodes = item.get('nodes', '{$}')
         newData = item['data']
         
@@ -289,7 +289,7 @@ class ZMSMetacmdProvider(
       self.commands = copy.deepcopy(self.commands) # Make persistent.
       
       # Insert Object.
-      container = self.aq_parent
+      container = self.getDocumentElement()
       if newAcquired:
         portalMaster = self.getPortalMaster()
         newMethod = getattr(portalMaster, newId).meta_type
@@ -316,7 +316,7 @@ class ZMSMetacmdProvider(
       zopeutil.addObject(container, newMethod, newId, newTitle, newData)
       
       # Return with new id.
-      return newId
+      return object.id
 
 
     # --------------------------------------------------------------------------
@@ -418,14 +418,14 @@ class ZMSMetacmdProvider(
         for metaCmd in metaCmds:
           canExecute = True
           if canExecute:
-            meta_types = metaCmd['meta_types']
+            meta_types = metaCmd.get('meta_types',[])
             hasMetaType = False
             hasMetaType = hasMetaType or '*' in meta_types
             hasMetaType = hasMetaType or context.meta_id in meta_types
             hasMetaType = hasMetaType or 'type(%s)'%context.getType() in meta_types
             canExecute = canExecute and hasMetaType
           if canExecute:
-            roles = metaCmd['roles']
+            roles = metaCm.get(['roles',[])
             hasRole = False
             hasRole = hasRole or '*' in roles
             hasRole = hasRole or len(standard.intersection_list(user_roles,roles)) > 0

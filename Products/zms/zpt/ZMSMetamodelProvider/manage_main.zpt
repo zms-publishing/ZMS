@@ -527,7 +527,6 @@ function zmiCodeSnippet(sender) {
 function zmiCode(sender) {
 	var html = '';
 	html = html
-		+ '<'+'div class="col-lg-10">'
 			+ '<'+'div class="input-group input-group-sm">'
 				+ '<'+'select class="form-control" onchange="zmiCodeSnippet(this)">'
 					+ '<'+'option value="">--- Snippets... ---<'+'/option>';
@@ -542,7 +541,6 @@ function zmiCode(sender) {
 	html = html
 				+ '<'+'/select>'
 			+ '<'+'/div><'+'!-- .input-group -->'
-		+ '<'+'/div><'+'!-- .col-lg-10 -->';
 	return html;
 }
 

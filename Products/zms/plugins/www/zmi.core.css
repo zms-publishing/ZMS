@@ -579,7 +579,8 @@ input.btn.btn-file {
 	font-family:"Courier New", Courier, monospace;
 	width:100%;
 }
-.zmi .single-line.zmi-code.input-group {
+.zmi .single-line.zmi-code.input-group textarea,
+.zmi .single-line.zmi-code.input-group .input-group-append {
 	height: 1.8rem;
 }
 div.pull-left div.single-line.input-append.zmi-nodes textarea {
@@ -807,8 +808,8 @@ table.table-sm td.meta-mandatory,
 table.table-sm td.meta-multilang,
 table.table-sm td.meta-repetitive {
 	width: 2rem !important;
-	vertical-align: middle;
-	padding-top: 0.75rem;
+	vertical-align: top;
+	padding-top: 1rem;
 }
 table.table-sm .form-control {
 	font-size: .8rem !important;

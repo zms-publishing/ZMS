@@ -196,7 +196,7 @@
 
 	</div><!-- .card -->
 
-	<div class="card zmi-container" tal:condition="python:action.lower()!='insert'">
+	<div class="XX card zmi-container" tal:condition="python:action.lower()!='insert'">
 		<tal:block tal:repeat="metaObjAttrId metaObjAttrIds"
 			><tal:block tal:define="global 
 					metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId);

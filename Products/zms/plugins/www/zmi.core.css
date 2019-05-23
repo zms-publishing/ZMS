@@ -267,7 +267,7 @@ footer {
 #zmi-tab .card .card-header.btn-collapse .zmi-changes {
 	opacity:0.5;
 }
-#zmi-tab .card .card-header.btn-collapse i {
+#zmi-tab .card .card-header.btn-collapse > div > a > i {
 	width:.867rem;
 }
 #zmi-tab .card .card-header.btn-collapse #zmi-toggle-activity {

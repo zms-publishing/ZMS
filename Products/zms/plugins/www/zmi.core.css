@@ -40,9 +40,33 @@ header .navbar-brand {
 	color: #96ebff;
 	margin:0;
 }
+
 header.navbar-nav a {
 	color: silver;
 	text-decoration:none !important;
+}
+header.navbar-nav .navbar-brand .product {
+	font-weight:bold;
+	font-size: 1.125rem;
+}
+header.navbar-nav .navbar-brand .slogan {
+	display:none;
+	position: absolute;
+	font-weight:normal;
+	font-size: .62rem;
+	margin: 0.60rem 1rem;
+	opacity:.5;
+	letter-spacing: .5px;
+}
+@media (min-width: 1200px) {
+	header.navbar-nav .navbar-brand .slogan {
+		display:inline-block;
+	}
+}
+
+header.navbar-nav ul.navbar-nav {
+	background: #354f67;
+	z-index: 1;
 }
 .zmi:not(.manage-menu) header.navbar-nav .dropdown-menu a.dropdown-item {
 	color:#212529;	
@@ -102,25 +126,6 @@ footer {
 	width: 100%;
 	padding: 0.5em;
 	font-size: .7rem !important;
-}
-
-.navbar-brand .product {
-	font-weight:bold;
-	font-size: 1.125rem;
-}
-.navbar-brand .slogan {
-	display:none;
-	position: absolute;
-	font-weight:normal;
-	font-size: .62rem;
-	margin: 0.60rem 1rem;
-	opacity:.5;
-	letter-spacing: .5px;
-}
-@media (min-width: 1200px) {
-	.navbar-brand .slogan {
-		display:inline-block;
-	}
 }
 
 /* BO HORIZONTAL SCROLLING MAIN NAVIGATION */

@@ -525,8 +525,8 @@ function mms_normalize_rows(el_tbody) {
 	<br/>
 	<tal:block tal:repeat="table tables">
 	<div tal:attributes="class python:' '.join(['card']+[[''],['inactive']][int(table['type']!='table')])">
-		<div class="card-header">
-			<a class="card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s-columns'%table['id']">
+		<div class="card-header clearfix btn-collapse">
+			<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s-columns'%table['id']">
 				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 			</a>
 			<div class="pull-left">
@@ -537,7 +537,6 @@ function mms_normalize_rows(el_tbody) {
 					(<tal:block tal:content="table/id">table-id</tal:block>)
 				</a>
 			</div>
-			<div class="clearfix"></div>
 		</div><!-- .card-header -->
 		<div tal:attributes="id python:'%s-columns'%table['id']; class python:' '.join(['collapse']+[[],['show']][int(table==tables[0])])">
 			<div class="card-body">

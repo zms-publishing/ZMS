@@ -16,8 +16,8 @@
 <tal:block tal:condition="python:request.get('btn')==here.getZMILangStr('BTN_COMPARE')" tal:define="ids python:request.get('ids',[]); ids python:^[x.id for x in here.getObjVersions() if x.id in ids];">
 	<tal:block tal:condition="python:len(ids)>1">
 	<div class="card">
-		<div class="card-header">
-			<a class="card-toggle" data-toggle="collapse" href="#compare">
+		<div class="card-header btn-collapse">
+			<a class="btn card-toggle" data-toggle="collapse" href="#compare">
 				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 				<tal:block tal:content="python:here.getZMILangStr('BTN_COMPARE')">the heading</tal:block>
 			</a>

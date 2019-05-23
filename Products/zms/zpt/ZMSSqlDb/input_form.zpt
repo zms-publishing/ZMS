@@ -30,7 +30,7 @@
 	</legend>
 	<div class="card">
 		<div class="card-header">
-			<a class="card-toggle" href="#" tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</a>
+			<a class="btn card-toggle" href="#" tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</a>
 		</div><!-- card-header -->
 		<tal:block tal:repeat="column entity/columns">
 			<tal:block tal:condition="python:'details' not in column" tal:define="global

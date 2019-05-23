@@ -25,12 +25,11 @@
 	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']">
 	<div class="card perc100">
 
-		<div class="card-header">
-			<a class="card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#input_fields'">
+		<div class="card-header btn-collapse">
+			<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#input_fields'">
 				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 				<tal:block tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the label</tal:block>
 			</a>
-			<div class="clearfix"></div>
 		</div><!-- card-header -->
 
 		<div class="collapse show" tal:attributes="id python:'input_fields'">
@@ -133,8 +132,8 @@
 								elLabel python:metaObj['name']">
 						<div class="form-horizontal">
 						<div class="card perc100">
-						<div class="card-header">
-							<a class="card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s_grid'%metaObjAttr['id']">
+						<div class="card-header btn-collapse">
+							<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s_grid'%metaObjAttr['id']">
 								<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 								<tal:block tal:content="structure python:here.zmi_icon(name='icon-table')"></tal:block>
 								<tal:block tal:content="elLabel">the label</tal:block>

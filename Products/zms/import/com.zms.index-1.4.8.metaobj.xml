@@ -77,7 +77,7 @@ function openWindow(url) {
 		<label class="col-sm-2 control-label">&nbsp;</label>
 		<div class="col-sm-10 zms4-row">
 			<div class="zmi-sitemap-expand" onclick="$('#zmsindex .zmi-sitemap').toggleClass('full');$('#zmsindex .zmi-sitemap-expand i').toggleClass('icon-resize-small')">
-				<i class="icon icon-resize-full" title="Seitenanfang"></i>
+				<i class="icon icon-resize-full fas fa-expand-arrows-alt" title="Seitenanfang"></i>
 			</div>
 			<div class="zmi-sitemap">
 			</div><!-- .zmi-sitemap -->
@@ -205,6 +205,7 @@ $(function() {
 	}
 */
 	#zmsindex .zmi-sitemap {
+		width:100%;
 		max-height: 30rem;
 		height: fit-content;
 		min-height: 4rem;
@@ -296,6 +297,21 @@ $(function() {
 	#zmsindex .response.text-danger .close {
 		background-color: #f2dede;
 	}
+
+	/* ZMS4 specifics */
+	#zmsindex .icon.icon-resize-full:before {
+		font-family: 'Font Awesome 5 Free';
+		font-weight: 900;
+		font-style:normal;
+		content: "\f31e";
+	}
+	#zmsindex .icon.icon-resize-small:before {
+		font-family: 'Font Awesome 5 Free';
+		font-weight: 900;
+		font-style:normal;
+		content: "\f78c";
+	}
+
 </style>
 
 </tal:block>]]>
@@ -1165,7 +1181,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.4.7</item>
+          <item key="revision">1.4.8</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -1184,7 +1200,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.4.7</item>
+          <item key="revision">1.4.8</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

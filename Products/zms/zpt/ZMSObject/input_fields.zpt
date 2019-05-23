@@ -1,5 +1,4 @@
 <!-- ZMSObject/input_fields -->
-
 	<tal:block tal:define="global
 			action options/action;
 			meta_id options/meta_id;
@@ -9,7 +8,7 @@
 			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
 			objAttrs python:here.getObjAttrs(metaObj['id'])">
 	<div class="card">
-		<div class="card-header attr_last_modified">
+		<div class="card-header attr_last_modified clearfix btn-collapse">
 				<div class="btn-group">
 					<a id="zmi-toggle-activity-btn" 
 							class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
@@ -25,7 +24,7 @@
 						<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 					</div>
 			</div>
-			<div class="zmi-action btn-group dropleft" tal:condition="not:python: request.get('ZMS_INSERT',False)">
+			<div class="zmi-action btn-group pull-right dropleft" tal:condition="not:python: request.get('ZMS_INSERT',False)">
 				<tal:block tal:define="
 						metaCmds python:[x for x in here.getMetaCmds(here,'') if x['stereotype'] == ''];
 						actions python:[[],[(here.getZMILangStr('BTN_UNDO'),'../manage_undoObjs?ids:list=%s'%here.id,'icon-undo')]][here.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request)] \
@@ -35,9 +34,9 @@
 						<button class="btn btn-secondary dropdown-toggle" 
 							data-toggle="dropdown"
 							tal:attributes="title python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')" 
-							tal:content="structure python:here.zmi_icon(name='icon-chevron-down')"
+							tal:content="structure python:here.zmi_icon(name='fas fa-caret-square-down')"
 						></button>
-						<div class="dropdown-menu">
+						<div class="dropdown-menu dropdown-menu-right">
 							<tal:block tal:repeat="action actions">
 								<div tal:condition="python:action[0].startswith('-----') and action[0].endswith('-----')" class="dropdown-header">
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-down')">the icon</tal:block>
@@ -54,16 +53,16 @@
 					</tal:block>
 				</tal:block>
 			</div>
-			<div class="clearfix"></div>
 		</div><!-- .card-header -->
 		<div id="attrActivity" class="collapse">
 			<div class="card-body">
 				<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 				<div class="form-group row">
 					<label class="control-label col-sm-2">
-						<span tal:content="structure python:here.zmi_icon(name='icon-info-circle')">the icon-info-circle</span>
+						<span>Info</span>
 					</label>
-					<div class="col-sm-8">
+					<div class="col-sm-10">
+					<span class="btn pl-0" style="white-space: normal;text-align: left;">
 						<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
 							<tal:block tal:content="python:here.getZMILangStr('ATTR_CREATED')+':'">created:</tal:block>
 							<span class="zmi-created-dt" tal:content="python:here.getLangFmtDate(here.attr('created_dt'),request['manage_lang'],'DATETIME_FMT')">the created_dt</span>
@@ -74,7 +73,8 @@
 						<span title="Data Size" class="get_size" tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>,
 						<span title="Unique ID: Click to Clipboard Copy" class="get_uid"
 							tal:attributes="onclick python:'$ZMI.CopyToClipboard(\'{$%s}\')'%(here.get_uid())" 
-							tal:content="python:'ID:%s'%(here.get_uid())">unique-id</span> 
+							tal:content="python:'ID:%s'%(here.get_uid())">unique-id</span>
+					</span>
 					</div><!-- .col-sm-8 -->
 				</div><!-- .form-group -->
 				<div class="form-group row activity" tal:condition="python:'active' in objAttrs.keys()">
@@ -228,8 +228,8 @@
 								</li><!-- .zmi-item -->
 							</ul>
 							<tal:block tal:condition="hasChildren">
-								<div class="card-header">
-									<a class="card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id'];data-toggle python:['','collapse'][hasChildren]">
+								<div class="card-header btn-collapse">
+									<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id'];data-toggle python:['','collapse'][hasChildren]">
 										<tal:block tal:content="structure python:[here.zmi_icon(name='icon-caret-down'),here.zmi_icon(name='')][hasChildren]"></tal:block>
 										<tal:block tal:content="elLabel">the label</tal:block>
 									</a>

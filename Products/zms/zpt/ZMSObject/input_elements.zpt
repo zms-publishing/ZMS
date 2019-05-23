@@ -16,12 +16,11 @@
 						elLabel python:here.getObjAttrLabel(metaObjAttr);"
 					><tal:block tal:condition="python:metaObjAttr['type']=='delimiter'"
 						><tal:block tal:content="structure python:'</div><!-- .card-body --></div><!-- .collapse -->'"></tal:block>
-						<div class="card-header">
-							<a class="card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
+						<div class="card-header btn-collapse">
+							<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
 								<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 								<tal:block tal:content="elLabel">the label</tal:block>
 							</a>
-							<div class="clearfix"></div>
 						</div><!-- .card-header -->
 						<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042collapse show\042><div class=\042card-body\042>'%metaObjAttr['id']"></tal:block>
 					</tal:block
@@ -36,16 +35,16 @@
 					</tal:block
 					><tal:block tal:condition="python:metaObjAttr['type'] in metaObjIds and here.getMetaobj(metaObjAttr['type'])['type']=='ZMSResource' and action.lower()!='insert'"
 						><tal:block tal:content="structure python:'</div><!-- .card-body --></div><!-- .collapse -->'"></tal:block
-						><div class="card-header">
-							<a class="card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
+						><div class="card-header btn-collapse">
+							<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
 								<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
 								<tal:block tal:content="elLabel">the label</tal:block>
 							</a>
-							<div class="zmi-action btn-group dropleft" tal:condition="python:not standard.nvl(metaObjAttr.get('mandatory'),False)">
-								<button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-									tal:content="structure python:here.zmi_icon(name='icon-chevron-down')">
+							<div class="zmi-action btn-group pull-right dropleft" tal:condition="python:not standard.nvl(metaObjAttr.get('mandatory'),False)">
+								<button class="btn dropdown-toggle" data-toggle="dropdown"
+									tal:content="structure python:here.zmi_icon(name='fas fa-caret-square-down')">
 								></button>
-								<div class="dropdown-menu">
+								<div class="dropdown-menu dropdown-menu-right">
 									<tal:block tal:condition="python:len(here.getObjChildren(metaObjAttr['id'],request))==0">
 										<a class="dropdown-item" tal:attributes="href python:'manage_initObjChild?id=%s&type=%s&lang=%s&manage_target=%s'%(metaObjAttr['id'],metaObjAttr['type'],request['lang'],request['URL'])">
 											<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus-sign')"></tal:block>
@@ -60,7 +59,6 @@
 									</tal:block>
 								</div><!-- .dropdown-menu -->
 							</div>
-							<div class="clearfix"></div>
 						</div><!-- .card-header -->
 						<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042collapse show\042><div class=\042card-body\042>'%metaObjAttr['id']"></tal:block>
 						<tal:block tal:repeat="childNode python:here.getObjChildren(metaObjAttr['id'],request)"

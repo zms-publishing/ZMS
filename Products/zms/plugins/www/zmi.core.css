@@ -260,11 +260,22 @@ footer {
 #zmi-tab .card .card-header:not(:first-child) {
 	border-top: 1px solid rgba(0,0,0,.125);
 }
-
+#zmi-tab .card .card-header.btn-collapse {
+	padding:0;
+	background: #354f671a;
+}
+#zmi-tab .card .card-header.btn-collapse .zmi-changes {
+	opacity:0.5;
+}
+#zmi-tab .card .card-header.btn-collapse i {
+	width:.867rem;
+}
+#zmi-tab .card .card-header.btn-collapse #zmi-toggle-activity {
+	margin-left:0.25rem;
+}
 .btn-group.managing, .btn-group.packaging {
 	margin-right:0.2rem;
 }
-
 .center h1 {
 	line-height:1.4em;
 	font-size:x-large;
@@ -498,7 +509,10 @@ ul.zmi-container .zmi-item .zmi-action.show button.split-left {
 	color:black;
 	margin-right:.4rem
 }
-
+.zmi-action.btn-group.pull-right .btn.dropdown-toggle {
+	background:transparent;
+	border:0;
+}
 li.zmi-item span.zmi-ids {
 	/* position: absolute; */
 	display:inline-block;
@@ -619,6 +633,16 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	content: "/";
 	opacity:.7;
 }
+.zmi .form-group .breadcrumb {
+	font-size:11px;
+	padding: .25rem 0 0;
+}
+.zmi .form-group .breadcrumb li.breadcrumb-item,
+.zmi .form-group .breadcrumb li.breadcrumb-item:hover {
+	border:0;
+	padding:0 .35rem 0 0;
+}
+
 /*----- image ----------------------------------------------------------------*/
 @media (max-width: 767px) {
 	.zmi-image,.zmi-file {
@@ -689,7 +713,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi #ZMSGraphic_extEdit_actions .form-group .form-control {
 	width:4em;
 }
-.zmi .zmi-action .dropdown-menu {
+.zmi .zmi-action .dropdown-menu:not(.dropdown-menu-right) {
 	padding: 0 0 .5rem 0;
 	margin:1.93rem -2.75rem 0 0 !important;
 	transform: none !important;
@@ -1113,5 +1137,17 @@ body.browse_iframe .toggle {
 	border-radius: 0;
 	border-top-right-radius: 4px;
 	border: 0;
-	}
+}
+.zmi-input-file label.custom-file-label,
+.zmi-input-file label.custom-file-label:after {
+	line-height:1.65
+}
 
+.zms4-row {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	margin-right: -15px;
+	margin-left: -15px;
+}

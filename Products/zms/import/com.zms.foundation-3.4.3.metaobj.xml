@@ -193,9 +193,7 @@
                   <item key="custom"><![CDATA[<!-- ZMS.interface_permalinks -->
 
 <div class="control-group" tal:define="zmscontext options/zmscontext">
-	<label class="control-label col-sm-2"><span>Permalinks</span></label>
-	<div class="col-sm-10" style="padding:0 0 1em 5px">
-		<table class="table table-bordered" style="margin:0">
+	<table class="table table-bordered m-0" title="Permalinks">
 		<colgroup>
 			<col width="2em"/>
 		</colgroup>
@@ -221,8 +219,7 @@
 			<td class="meta-url"><input class="form-control form-control-sm url-input" name="permalink_val__" placeholder="Select Url..."/>
 		</tr>
 		</tbody>
-		</table>
-	</div>
+	</table>
 </div>
 
 <!-- /ZMS.interface_permalinks -->]]>
@@ -3641,8 +3638,8 @@ tr.inactive * {
 	<input tal:condition="python:'qorder' in request" type="hidden" name="qorder" tal:attributes="value request/qorder">
 	<input tal:condition="python:'qorderdir' in request" type="hidden" name="qorderdir" tal:attributes="value request/qorderdir">
 	<div class="card" tal:define="filter_columns attr_ids">
-		<div class="card-header filters">
-			<a class="card-toggle pull-left" data-toggle="collapse" href="#attrProperties">
+		<div class="card-header filters btn-collapse">
+			<a class="btn card-toggle pull-left" data-toggle="collapse" href="#attrProperties">
 				<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-caret-down')"></tal:block>
 			</a>
 			<label class="control-label">

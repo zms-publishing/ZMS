@@ -11,7 +11,7 @@
 		elLabel python:metaObjAttr['label'];">
 	<div class="card" tal:attributes="id python:'tr_%s'%(elName)"
 		><div class="card-header"
-			>&nbsp;&nbsp;<a class="card-toggle" tal:attributes="href python:'#detailstable_%s'%(elLabel)"
+			>&nbsp;&nbsp;<a class="btn card-toggle" tal:attributes="href python:'#detailstable_%s'%(elLabel)"
 				><tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block
 				><tal:block tal:content="elLabel">the heading</tal:block
 			></a>

@@ -762,6 +762,11 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	background-color: #fff;
 	border-color: #ccc;
 }
+.btn-secondary:hover a {
+	color: white;
+	text-decoration:none;
+}
+
 .btn-default:hover {
 	color: #333;
 	background-color: #e6e6e6;
@@ -791,6 +796,32 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi table.table-sm td i, 
 .zmi table.table-sm th i {
 	font-size:1rem;
+}
+.zmi.metas table.table-sm td.meta-resource.input-group-sm a {
+	text-decoration: none;
+	overflow: hidden;
+	max-width: 12rem;
+	text-overflow: ellipsis;
+	display: inline-block;
+	line-height: 1;
+}
+.zmi.metas table.table-sm td.meta-resource.input-group-sm .meta-resource-container {
+	display: inline-flex;
+	flex-flow: row;
+	align-items: center;
+	margin: -.5rem;
+}
+.zmi.metas table.table-sm td.meta-resource.input-group-sm .meta-resource-container .btn {
+	margin: 0 0;
+	background: #f5f5f5;
+	padding:0.5rem;
+	border-radius: 0;
+}
+.zmi.metas table.table-sm td.meta-resource.input-group-sm a i {
+	margin: 0 .35rem;
+}
+.zmi.metas table.table-sm td.meta-resource.input-group-sm input[type="checkbox"] {
+	margin: 0 0 0 .35rem;
 }
 .zmi form.card {
 	display:block;
@@ -892,6 +923,15 @@ table.table-sm tr.row_insert td .btn-add {
 	rotate(315deg);
 	width: 20px;
 	font-weight:normal;
+}
+.zmi.metas table.meta-access th.rolename > div > span {
+	display: block;
+	padding: 0;
+	width: 100px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	font-weight: normal;
+	cursor: default;
 }
 
 .zmi.metas table.meta-access .breadcrumb {

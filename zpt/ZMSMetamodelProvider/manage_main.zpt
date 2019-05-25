@@ -662,20 +662,28 @@ function selectObject(ignoredUrl, ignoredTitle, nodeName) {
 }
 
 $(function(){
-		$("table input[name='ids:list']")
-			.change(zmiActionButtonsRefresh)
-			;
-		$("select[name=_type],select[name^=attr_type_]")
-			.focus(function(){zmiPopulateTypeSelect(this)})
-			.hover(function(){zmiPopulateTypeSelect(this)})
-			;
-		if ( $(window).width() < 767 ) {
-			var $th = $("#meta_properties th");
-			$('#meta_properties tr[class!="row_metadata"] td').prepend( function () {
-				return '<span class="title">' + $th.eq($(this).index()).attr('title') + '<' + '/span>';
-			})
-		};
+	$("table input[name='ids:list']")
+		.change(zmiActionButtonsRefresh)
+		;
+	$("select[name=_type],select[name^=attr_type_]")
+		.focus(function(){zmiPopulateTypeSelect(this)})
+		.hover(function(){zmiPopulateTypeSelect(this)})
+		;
+	if ( $(window).width() < 767 ) {
+		var $th = $("#meta_properties th");
+		$('#meta_properties tr[class!="row_metadata"] td').prepend( function () {
+			return '<span class="title">' + $th.eq($(this).index()).attr('title') + '<' + '/span>';
+		})
+	};
+	$('.single-line.zmi-code.input-group textarea').on('blur', function() {
+		$(this).animate({height: '30px'},600);
+		$(this).css('height','auto');
 	});
+	$('.single-line.zmi-code.input-group textarea').on('focus', function() {
+		$(this).css('height','auto');
+		$(this).animate({height: $(this).prop('scrollHeight') + 'px'},600);
+	});
+});
 
 </script>
 

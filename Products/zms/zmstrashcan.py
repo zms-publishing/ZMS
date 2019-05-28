@@ -156,7 +156,8 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
           if delete:
             ids.append(context.id)
         # Delete objects.
-        self.manage_delObjects(ids=ids)
+        if 0 != len(ids):
+            self.manage_delObjects(ids=ids)
         # Update time-stamp.
         setattr(self, 'last_garbage_collection', now)
 

@@ -1,4 +1,4 @@
-
+################################################################################
 # ZMSMetacmdProvider.py
 #
 # This program is free software; you can redistribute it and/or
@@ -313,7 +313,7 @@ class ZMSMetacmdProvider(
           newData += '  return "This is the external method ' + newId + '"\n'
       zopeutil.removeObject(container, id)
       zopeutil.removeObject(container, newId)
-      zopeutil.addObject(container, newMethod, newId, newTitle, newData)
+      object = zopeutil.addObject(container, newMethod, newId, newTitle, newData)
       
       # Return with new id.
       return object.id

@@ -106,8 +106,8 @@
 								mt python:diff[1];
 								l python:diff[3];
 								r python:diff[4];
-								ld python:l.get('data','');
-								rd python:r.get('data','');
+								ld python:[l.get('data'),''][l.get('data') is None];
+								rd python:[r.get('data'),''][r.get('data') is None];
 								is_new python:len(ld)==0 and len(rd)>0;
 								is_modified python:len(ld)>0 and len(rd)>0;
 								is_incoming python:is_modified and l.get('version')<r.get('version');
@@ -151,8 +151,8 @@
 				mt python:diff[1];
 				l python:diff[3];
 				r python:diff[4];
-				ld python:diff[3].get('data','');
-				rd python:diff[4].get('data','');
+				ld python:[l.get('data'),''][l.get('data') is None];
+				rd python:[r.get('data'),''][r.get('data') is None];
 				is_modified python:len(ld)>0 and len(rd)>0;
 				is_text python:mt.startswith('text/') or mt in ['application/javascript']">
 		<table class="table" tal:condition="is_modified" tal:attributes="id python:here.id_quote(filename)">

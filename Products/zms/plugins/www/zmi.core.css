@@ -683,6 +683,14 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi .slider-handle {
 	background-image:none;
 }
+
+.zmi div.ZMSGraphic div.graphic img.img-responsive {
+	max-width: 100%;
+	max-width:-webkit-fill-available
+	width: inherit;
+	height:auto;
+}
+
 .zmi a.ZMSGraphic_extEdit_action {
 	text-decoration:none;
 }

@@ -248,7 +248,7 @@ class ZMSRepositoryManager(
             py.append('\t# %s'%k.capitalize())
             py.append('\tclass %s:'%standard.id_quote(k).capitalize())
             for i in v:
-              if 'id' in i:
+              if 'id' in i.keys():
                 ob = i.get('ob')
                 if ob is not None:
                   fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}

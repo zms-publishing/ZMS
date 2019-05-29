@@ -248,24 +248,25 @@ class ZMSRepositoryManager(
             py.append('\t# %s'%k.capitalize())
             py.append('\tclass %s:'%standard.id_quote(k).capitalize())
             for i in v:
-              ob = i.get('ob')
-              if ob is not None:
-                fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
-                fileprefix = i['id'].split('/')[-1]
-                data = zopeutil.readData(ob)
-                if type(data) is unicode:
-                  data = unicode(ob.read()).encode('utf-8')
-                d = {}
-                d['id'] = id
-                d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix,fileexts.get(ob.meta_type,''))])
-                d['data'] = data
-                d['version'] = self.getLangFmtDate(ob.bobobase_modification_time().timeTime(),'eng')
-                d['meta_type'] = ob.meta_type
-                l[d['filename']] = d
-              if i.has_key('ob'):
-                del i['ob']
-              py.append('\t\t%s = %s'%(self.id_quote(i['id']),self.str_json(i,encoding="utf-8",formatted=True,level=3)))
-              py.append('')
+              if 'id' in i:
+                ob = i.get('ob')
+                if ob is not None:
+                  fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
+                  fileprefix = i['id'].split('/')[-1]
+                  data = zopeutil.readData(ob)
+                  if type(data) is unicode:
+                    data = unicode(ob.read()).encode('utf-8')
+                  d = {}
+                  d['id'] = id
+                  d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix,fileexts.get(ob.meta_type,''))])
+                  d['data'] = data
+                  d['version'] = self.getLangFmtDate(ob.bobobase_modification_time().timeTime(),'eng')
+                  d['meta_type'] = ob.meta_type
+                  l[d['filename']] = d
+                if i.has_key('ob'):
+                  del i['ob']
+                py.append('\t\t%s = %s'%(self.id_quote(i['id']),self.str_json(i,encoding="utf-8",formatted=True,level=3)))
+                py.append('')
         d = {}
         d['id'] = id
         d['filename'] = os.path.sep.join(filename)

@@ -117,7 +117,7 @@
 								r python:diff[4];
 								ld python:[l.get('data'),''][l.get('data') is None];
 								rd python:[r.get('data'),''][r.get('data') is None];
--								is_new python:len(ld)==0 and len(rd)>0;
+								is_new python:len(ld)==0 and len(rd)>0;
 								is_modified python:len(ld)>0 and len(rd)>0;
 								is_incoming python:is_modified and l.get('version')<r.get('version');
 								is_outgoing python:is_modified and l.get('version')>r.get('version');

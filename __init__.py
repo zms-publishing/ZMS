@@ -41,6 +41,7 @@ import zmscustom
 import zmssqldb
 import zmslinkcontainer
 import zmslinkelement
+import zmsteaserelement
 import _confmanager
 import _mediadb
 import _sequence

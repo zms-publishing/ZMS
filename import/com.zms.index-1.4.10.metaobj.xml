@@ -63,7 +63,7 @@ function openWindow(url) {
 			</div>
 			<div class="zms4-row col-sm-2">
 				<div class="btn btn-default">
-					<input id="zmi-sitemap-select" type="checkbox" checked="checked" id="resync-dryrun" name="resync-dryrun"/>
+					<input type="checkbox" checked="checked" id="resync-dryrun" name="resync-dryrun"/>
 				</div>
 				<label class="control-label">&nbsp;Dry Run</label>
 			</div>
@@ -141,7 +141,7 @@ function zmiResyncIndex() {
 			if (i < $inputs.length) {
 				var $input = $($inputs[i]);
 				var uid = $input.val();
-				var data = {func_:'resync',url:uid,loglevel:$('#resync-loglevel').val(),dryrun:$('#resync-dryrun').prop('checked'),i:i};
+				var data = {func_:'resync',url:uid,loglevel:$('#resync-loglevel').val(),dryrun:''+$('#resync-dryrun').prop('checked'),i:i};
 				var $a = $input.next("a");
 				var viewport_pos = $(window).scrollTop();
 				var btn_close = '<' + 'a class="close" data-dismiss="alert" href="#"' + '>' + '×' + '<' + '/a' + '>';
@@ -512,7 +512,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       if catalog is not None:
         zmsroot = self.getRootElement()
         domains = {request['SERVER_URL']:''}
-        dryrun = request.get('dryrun','true')=='true'
+        dryrun = request.get('dryrun')=='true'
 
         def query(k,v):
           return catalog({k:v})
@@ -1222,7 +1222,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.4.9</item>
+          <item key="revision">1.4.10</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -1241,7 +1241,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.4.9</item>
+          <item key="revision">1.4.10</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

@@ -29,7 +29,10 @@ url = context.getHref2IndexHtml({'lang':request['lang'],'preview':''})
 
 if len(ip_or_domain)>0 and url.find('/content')>-1:
 	# url = ip_or_domain + url
-	url = ip_or_domain + url.split('/content')[1]
+	if ip_or_domain.find('/content') > 0:
+		url = ip_or_domain + url.split('/content')[1]
+	else:
+		url = ip_or_domain + '/content' + url.split('/content')[1]
 else:
 	# strip protocol
 	url = url.replace('https://','').replace('http://','')
@@ -59,7 +62,7 @@ return '<br />'.join(msg)
         </list>
       </item>
       <item key="name"><![CDATA[Cache-Purge]]></item>
-      <item key="revision"><![CDATA[3.0.0]]></item>
+      <item key="revision"><![CDATA[3.0.2]]></item>
       <item key="roles" type="list">
         <list>
           <item><![CDATA[ZMSAdministrator]]></item>
@@ -141,7 +144,7 @@ return '<br />'.join(msg)
         </list>
       </item>
       <item key="name"><![CDATA[Cache-Purge (List)]]></item>
-      <item key="revision"><![CDATA[3.0.1]]></item>
+      <item key="revision"><![CDATA[3.0.0]]></item>
       <item key="roles" type="list">
         <list>
           <item><![CDATA[ZMSAdministrator]]></item>

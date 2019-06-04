@@ -28,8 +28,11 @@ ip_or_domain = context.getConfProperty('ASP.ip_or_domain','')
 url = context.getHref2IndexHtml({'lang':request['lang'],'preview':''})
 
 if len(ip_or_domain)>0 and url.find('/content')>-1:
-    # url = ip_or_domain + url
-	url = ip_or_domain + url.split('/content')[1]
+	# url = ip_or_domain + url
+	if ip_or_domain.find('/content') > 0:
+		url = ip_or_domain + url.split('/content')[1]
+	else:
+		url = ip_or_domain + '/content' + url.split('/content')[1]
 else:
 	# strip protocol
 	url = url.replace('https://','').replace('http://','')
@@ -47,7 +50,7 @@ return '<br />'.join(msg)
       </item>
       <item key="description"></item>
       <item key="execution" type="int">1</item>
-      <item key="icon_clazz"><![CDATA[icon-refresh]]></item>
+      <item key="icon_clazz"><![CDATA[icon-refresh fa fa-refresh]]></item>
       <item key="id"><![CDATA[manage_cachepurge]]></item>
       <item key="meta_type"><![CDATA[Script (Python)]]></item>
       <item key="meta_types" type="list">
@@ -59,7 +62,7 @@ return '<br />'.join(msg)
         </list>
       </item>
       <item key="name"><![CDATA[Cache-Purge]]></item>
-      <item key="revision"><![CDATA[3.0.0]]></item>
+      <item key="revision"><![CDATA[3.0.2]]></item>
       <item key="roles" type="list">
         <list>
           <item><![CDATA[ZMSAdministrator]]></item>
@@ -132,7 +135,7 @@ return '<br />'.join(msg)
       </item>
       <item key="description"></item>
       <item key="execution" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-refresh]]></item>
+      <item key="icon_clazz"><![CDATA[icon-refresh fa fa-refresh]]></item>
       <item key="id"><![CDATA[manage_cachepurge_list]]></item>
       <item key="meta_type"><![CDATA[Page Template]]></item>
       <item key="meta_types" type="list">
@@ -141,7 +144,7 @@ return '<br />'.join(msg)
         </list>
       </item>
       <item key="name"><![CDATA[Cache-Purge (List)]]></item>
-      <item key="revision"><![CDATA[3.0.1]]></item>
+      <item key="revision"><![CDATA[3.0.0]]></item>
       <item key="roles" type="list">
         <list>
           <item><![CDATA[ZMSAdministrator]]></item>

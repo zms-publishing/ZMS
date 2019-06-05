@@ -537,7 +537,7 @@ $(function(){
 	// Inputs
 	$ZMI.initInputFields($("body"));
 	$(".zmi-image,.zmi-file").each(function() {
-			$(this).addClass("span5");
+			$(this).addClass("d-flex align-items-center");
 			var elName = $(this).attr("id");
 			elName = elName.substr(elName.lastIndexOf("-")+1);
 			zmiRegisterBlob(elName);
@@ -1059,9 +1059,9 @@ ZMI.prototype.initInputFields = function(container) {
 							if (l.length > 0) {
 								var labels = [];
 								for (var i = 0; i < l.length; i++) {
-									labels.push('<span class="label">'+l[i][0]+'</span>');
+									labels.push(' <span class="label">'+l[i][0]+'</span>');
 								}
-								$(this).siblings(":last").after('<div>Inline-Links: '+labels.join(', ')+'</div>')
+								$(this).siblings(":last").after('<div class="inlinelinks">Inline-Links: '+labels.join(', ')+'</div>')
 							}
 						});
 				}

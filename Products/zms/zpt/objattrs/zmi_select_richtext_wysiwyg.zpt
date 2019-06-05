@@ -1,4 +1,4 @@
-<div class="form-group form-richtext form-richtext-wysiwyg" tal:define="
+<div class="row form-group form-richtext form-richtext-wysiwyg" tal:define="
 		standard 	modules/Products.zms/standard;
 		options 	python:options['args'][2]">
 
@@ -12,8 +12,8 @@
 		### Richedit
 		</tal:block>
 		<div class="btn-group pull-right" tal:condition="python:request.get('htmledit_fmt') is not None"
-			><span class="btn btn-secondary" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorToggle(\'%s\',\'%s\')\073'%(options['elName'],request['htmledit_fmt'].getId())"
-				><tal:block tal:content="structure python:here.zmi_icon(name='icon-eye',title=request['htmledit_fmt'].getDisplay())"></tal:block
+			><span class="btn btn-secondary border-0" tal:attributes="onclick python:'zmiStandardOnSubmitEventHandler()\073zmiRichtextEditorToggle(\'%s\',\'%s\')\073'%(options['elName'],request['htmledit_fmt'].getId())"
+				><tal:block tal:content="structure python:here.zmi_icon(name='icon-eye-slash',title=request['htmledit_fmt'].getDisplay())"></tal:block
 			></span>
 		</div><!-- .pull-left -->
 

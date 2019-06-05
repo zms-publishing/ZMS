@@ -52,7 +52,7 @@ function zmiRicheditInsertTab( fmName, elName) {
 
 </tal:block>
 
-<div class="form-group form-richtext form-richtext-standard" tal:define="standard modules/Products.zms/standard; global options python:options['args'][2]">
+<div class="row form-group form-richtext form-richtext-standard" tal:define="standard modules/Products.zms/standard; global options python:options['args'][2]">
 
 		<tal:block tal:replace="nothing">
 		### Label

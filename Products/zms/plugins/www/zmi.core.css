@@ -658,8 +658,18 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	color:#333;
 	background-color:#f5f5f5;
 	border-color:#ccc;
-	max-width:30em!important;
+	max-width: 40%!important;
 	overflow:hidden;
+	text-overflow: ellipsis;
+}
+.zmi-file .zmi-input-file .custom-file,
+.zmi-image .zmi-input-file .custom-file {
+	width:inherit;
+}
+.zmi-image .btn-group,
+.zmi-file .btn-group {
+	max-width: -webkit-fill-available;
+	max-width: inherit;
 }
 .zmi-image .filename,
 .zmi-file .filename {
@@ -728,7 +738,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	z-index:10000;
 	min-width:260px;
 	max-height: 80vh;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 .zmi .dropdown-menu .dropdown-header {
 	padding: 5px 13px;
@@ -1089,10 +1099,11 @@ body.browse_iframe .toggle {
 .zmi.config .bg-info {
 	background-color: #17a4ba26 !important;
 }
-
+.zmi .form-horizontal .form-group.row {
+	align-items: center;
+}
 @media (min-width: 768px) {
 	.zmi .form-horizontal .control-label {
-		padding-top: 0.4rem;
 		margin-bottom: 0;
 		text-align: right;
 	}
@@ -1198,4 +1209,29 @@ body.browse_iframe .toggle {
 	flex-wrap: wrap;
 	margin-right: -15px;
 	margin-left: -15px;
+}
+
+.zmi-richtext .inlinelinks {
+	flex: 0 0 100%;
+	max-width: 100%;
+	margin-bottom: 1rem;
+	font-size: 80%;
+	font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	margin-right: -15px;
+	margin-left: -15px;
+	position: relative;
+	width: 100%;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+.zmi-richtext .inlinelinks:before {
+	content:"\f0c1";
+	font-family:'Font Awesome 5 Free';
+	font-weight:900;
+	margin-right:.3rem;
+	color:#999;
 }

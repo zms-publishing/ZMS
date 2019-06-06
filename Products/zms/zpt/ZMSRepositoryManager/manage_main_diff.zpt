@@ -30,26 +30,26 @@
 	border-bottom: 4px solid transparent; 
 	border-right:4px solid #418CF1; 
 	}
-	.state {
-		display:inline-block;
-		width:16px;
-		height:16px;
-		border:solid 1px #ccc;
-	}
-	del {
-		color:#777!important;
-		background-color:#F2DEDE!important;
-		text-decoration:line-through;
-	}
-	ins {
-		color: #3C763D!important;
-		background-color: #DFF0D8!important;
-		text-decoration:none;
-	}
-	.prettyTextDiff .original, 
-	.prettyTextDiff .changed {
-		display:none;
-	}
+.state {
+	display:inline-block;
+	width:16px;
+	height:16px;
+	border:solid 1px #ccc;
+}
+del {
+	color:#777!important;
+	background-color:#F2DEDE!important;
+	text-decoration:line-through;
+}
+ins {
+	color: #3C763D!important;
+	background-color: #DFF0D8!important;
+	text-decoration:none;
+}
+.prettyTextDiff .original, 
+.prettyTextDiff .changed {
+	display:none;
+}
 </style>
 
 	<tal:block tal:define="
@@ -81,6 +81,7 @@
 	<tal:block tal:condition="provider_diffs_count">
 	<tal:block tal:repeat="provider_diff provider_diffs">
 	<tal:block tal:define="
+			zmscontext python:here.getSelf();
 			provider python:provider_diff[0]; 
 			diffs python:provider_diff[1]; 
 			ids python:sorted(here.distinct_list([x[2] for x in diffs])); ">
@@ -113,11 +114,14 @@
 								is_incoming python:is_modified and l.get('version')<r.get('version');
 								is_outgoing python:is_modified and l.get('version')>r.get('version');
 								is_removed python:len(ld)>0 and len(rd)==0;">
-									<span tal:attributes="class python:' '.join(['state']
+									<tal:block tal:condition="python:l and l.get('data') is None" tal:content="structure python:zmscontext.zmi_icon(name='icon-warning-sign text-danger',extra=' title=\042not found!\042')">icon-alert</tal:block>
+									<tal:block tal:condition="not:python:l and l.get('data') is None">
+										<span tal:attributes="class python:' '.join(['state']
 											+[[],['bg-success']][is_new]
 											+[[],['bg-warning']][is_modified]
 											+[[],['bg-danger']][is_removed]
 											)">&nbsp;</span>
+									</tal:block>
 									<a tal:attributes="href python:'#%s'%here.id_quote(filename)" tal:content="python:filename">the filename</a>
 									<tal:block tal:condition="is_incoming"><div class="arrow-left" tal:attributes="title python:'Incoming - ZODB: %s;; Repository: %s'%(str(l.get('version','')),str(r.get('version','')))"></div></tal:block>
 									<tal:block tal:condition="is_outgoing"><div class="arrow-right" tal:attributes="title python:'Outgoing - ZODB: %s;; Repository: %s'%(str(l.get('version','')),str(r.get('version','')))"></div></tal:block>

@@ -46,6 +46,12 @@
 					</tal:block>
 				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
+			<div class="form-group row">
+				<label class="col-sm-2 control-label" tal:content="python:here.getZMILangStr('ATTR_PATH')">the label</label>
+				<div class="col-sm-10">
+					<input class="form-control" type="text" tal:attributes="value python:here.get_conf_basepath()" readonly/>
+				</div>
+			</div>
 			<tal:block tal:content="structure python:here.manage_main_diff(here,request)">
 				the diff
 			</tal:block>

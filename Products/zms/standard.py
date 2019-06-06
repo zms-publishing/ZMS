@@ -1512,6 +1512,50 @@ def is_equal(x, y):
   return cmp(x, y)==0
 
 
+security.declarePublic('str_json')
+def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, level=0, allow_booleans=True, sort_keys=True):
+  """
+  Returns a json-string representation of the object.
+  @rtype: C{str}
+  """
+  if type(i) is list or type(i) is tuple:
+    return '[' \
+        + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join([str_json(x,encoding,errors,formatted,level+1,allow_booleans,sort_keys) for x in i]) \
+        + ']'
+  elif type(i) is dict:
+    k = list(i)
+    if sort_keys:
+      k = sorted(i)
+    return '{' \
+        + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(['"%s":%s'%(x,str_json(i[x],encoding,errors,formatted,level+1,allow_booleans,sort_keys)) for x in k]) \
+        + '}'
+  elif type(i) is time.struct_time:
+    try:
+      return '"%s"'%format_datetime_iso(i)
+    except:
+      pass
+  elif type(i) is int or type(i) is float:
+    return str(i)
+  elif type(i) is bool:
+    return str(i).lower()
+  elif i is not None:
+    if type(i) is str:
+      if not (i.strip().startswith('<') and i.strip().endswith('>')):
+        import cgi
+        i = cgi.escape(i).encode(encoding, errors)
+      else:
+        i = i.encode(encoding, errors)
+    else:
+      i = str(i)
+    if allow_booleans and i in ['true','false']:
+      return i
+    else:
+      if type(i) is not str:
+        i = str(i)
+      return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
+  return '""'
+
+
 security.declarePublic('str_item')
 def str_item(i):
   """

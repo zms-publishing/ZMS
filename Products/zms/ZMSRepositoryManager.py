@@ -241,7 +241,7 @@ class ZMSRepositoryManager(
           v = o.get(k)
           if v:
             py.append('\t# %s'%k.capitalize())
-            py.append('\t%s = %s'%(standard.id_quote(k), self.str_json(v, encoding="utf-8", formatted=True, level=2)))
+            py.append('\t%s = %s'%(standard.id_quote(k), standard.str_json(v, encoding="utf-8", formatted=True, level=2, allow_booleans=False)))
             py.append('')
         for k in e:
           v = o.get(k)
@@ -264,7 +264,7 @@ class ZMSRepositoryManager(
                   l[d['filename']] = d
                 if 'ob' in i:
                   del i['ob']
-                py.append('\t\t%s = %s'%(self.id_quote(i['id']), self.str_json(i, encoding="utf-8", formatted=True, level=3)))
+                py.append('\t\t%s = %s'%(self.id_quote(i['id']), standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
                 py.append('')
         d = {}
         d['id'] = id
@@ -288,46 +288,44 @@ class ZMSRepositoryManager(
             mode = os.stat(filepath)[stat.ST_MODE]
             if stat.S_ISDIR(mode):
               traverse(base, filepath)
-            elif not name in ['__impl__.py'] and name.startswith('__') and name.endswith('__.py'):
+            if stat.S_ISDIR(mode):
+              traverse(base,filepath)
+            elif name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
               self.writeLog("[remoteFiles]: read %s"%filepath)
-              f = open(filepath, "rb")
+              f = open(filepath,"rb")
               py = f.read()
               f.close()
               # Analyze python-representation of repository-object
-              c = get_class(py)
-              d = c.__dict__
-              id = d["id"]
+              d = {}
+              try:
+                c = get_class(py)
+                d = c.__dict__
+              except:
+                d['revision'] = self.writeError("[traverse]: can't analyze filepath=%s"%filepath)
+              id = d.get('id',name)
               rd = {}
               rd['id'] = id
               rd['filename'] = filepath[len(base)+1:]
               rd['data'] = py
-              rd['version'] = d.get("revision", self.getLangFmtDate(os.path.getmtime(filepath), 'eng'))
+              rd['version'] = d.get("revision",self.getLangFmtDate(os.path.getmtime(filepath),'eng'))
               r[rd['filename']] = rd
-              for k in [x for x in d if not x.startswith('__')]:
-                v = d[k]
-                if inspect.isclass(v):
-                  dd = v.__dict__
-                  v = []
-                  for kk in [x for x in dd if x in ['__impl__'] or not x.startswith("__")]:
-                    vv = dd[kk]
-                    # Try to read artefact.
-                    if 'id' in vv:
-                      fileprefix = vv['id'].split('/')[-1]
-                      for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
-                        artefact = os.path.join(path, file)
-                        self.writeLog("[remoteFiles]: read artefact %s"%artefact)
-                        f = open(artefact, "r")
-                        data = f.read()
-                        f.close()
-                        rd = {}
-                        rd['id'] = id
-                        rd['filename'] = artefact[len(base)+1:]
-                        rd['data'] = data
-                        rd['version'] = self.getLangFmtDate(os.path.getmtime(artefact), 'eng')
-                        r[rd['filename']] = rd
-                        break
-        traverse(basepath, basepath)
+              # Read artefacts
+              for file in [x for x in names if x != name]:
+                artefact = os.path.join(path,file)
+                mode = os.stat(artefact)[stat.ST_MODE]
+                if not stat.S_ISDIR(mode):
+                  self.writeLog("[remoteFiles]: read artefact %s"%artefact)
+                  f = open(artefact,"rb")
+                  data = f.read()
+                  f.close()
+                  rd = {}
+                  rd['id'] = id
+                  rd['filename'] = artefact[len(base)+1:]
+                  rd['data'] = data
+                  rd['version'] = self.getLangFmtDate(os.path.getmtime(artefact),'eng')
+                  r[rd['filename']] = rd
+        traverse(basepath,basepath)
       return r
 
 
@@ -343,16 +341,20 @@ class ZMSRepositoryManager(
             mode = os.stat(filepath)[stat.ST_MODE]
             if stat.S_ISDIR(mode):
               traverse(base, filepath)
-            elif not name in ['__impl__.py'] and name.startswith('__') and name.endswith('__.py'):
+            elif name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
               self.writeBlock("[readRepository]: read %s"%filepath)
               f = open(filepath, "rb")
               py = f.read()
               f.close()
               # Analyze python-representation of repository-object
-              c = get_class(py)
-              d = c.__dict__
-              id = d["id"]
+              d = {}
+              try:
+                c = get_class(py)
+                d = c.__dict__
+              except:
+                d['revision'] = self.writeError("[readRepository]: ")
+              id = d.get('id',name)
               r[id] = {}
               for k in [x for x in d if not x.startswith('__')]:
                 v = d[k]
@@ -367,11 +369,11 @@ class ZMSRepositoryManager(
                       for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
                         artefact = os.path.join(path, file)
                         self.writeBlock("[readRepository]: read artefact %s"%artefact)
-                        f = open(artefact, "r")
+                        f = open(artefact, "rb")
                         data = f.read()
                         f.close()
-                        if artefact.endswith('.zpt'):
-                          data = data.decode('utf-8')
+                        if artefact.endswith('.zpt') and type(data) is str:
+                          data = unicode(data,'utf-8')
                         vv['data'] = data
                         break
                     v.append((py.find('\t\t%s ='%kk), vv))
@@ -389,41 +391,48 @@ class ZMSRepositoryManager(
       self.writeBlock("[commitChanges]: ids=%s"%str(ids))
       standard.triggerEvent(self,'beforeCommitRepositoryEvt')
       success = []
+      failure = []
       for provider_id in list(set([x.split(':')[0] for x in ids])):
         provider = getattr(self, provider_id)
         for id in list(set([x.split(':')[1] for x in ids if x.split(':')[0]==provider_id])):
-          # Read local-files from provider.
-          files = self.localFiles(provider, [id])
-          # Recreate folder.
-          basepath = self.get_conf_basepath(provider.id)
-          if os.path.exists(basepath):
-            for name in os.listdir(basepath):
-              filepath = os.path.join(basepath, name)
-              mode = os.stat(filepath)[stat.ST_MODE]
-              if stat.S_ISDIR(mode) and name == id:
-                self.writeBlock("[commitChanges]: clear dir %s"%filepath)
-                dir = [os.path.join(filepath, x) for x in os.listdir(filepath)]
-                dir = [x for x in dir if not stat.S_ISDIR(os.stat(x)[stat.ST_MODE])]
-                [_fileutil.remove(x) for x in dir]
-              elif not stat.S_ISDIR(mode) and name == '%s.py'%id:
-                self.writeBlock("[commitChanges]: remove file %s"%filepath)
-                _fileutil.remove(filepath)
-          # Write files.
-          for file in files:
-            filepath = os.path.join(basepath, file)
-            folder = filepath[:filepath.rfind(os.path.sep)]
-            self.writeBlock("[commitChanges]: create folder %s if not exists"%folder)
-            if not os.path.exists(folder):
-              self.writeBlock("[commitChanges]: create folder %s"%folder)
-              _fileutil.mkDir(folder)
-            self.writeBlock("[commitChanges]: write %s"%filepath)
-            data = files[file]['data']
-            f = open(filepath, "wb")
-            f.write(data)
-            f.close()
-          success.append(id)
+          try:
+            # Read local-files from provider.
+            files = self.localFiles(provider, [id])
+            # Recreate folder.
+            basepath = self.get_conf_basepath(provider.id)
+            if os.path.exists(basepath):
+              for name in os.listdir(basepath):
+                filepath = os.path.join(basepath, name)
+                mode = os.stat(filepath)[stat.ST_MODE]
+                if stat.S_ISDIR(mode) and name == id:
+                  self.writeBlock("[commitChanges]: clear dir %s"%filepath)
+                  dir = [os.path.join(filepath, x) for x in os.listdir(filepath)]
+                  dir = [x for x in dir if not stat.S_ISDIR(os.stat(x)[stat.ST_MODE])]
+                  [_fileutil.remove(x) for x in dir]
+                elif not stat.S_ISDIR(mode) and name == '%s.py'%id:
+                  self.writeBlock("[commitChanges]: remove file %s"%filepath)
+                  _fileutil.remove(filepath)
+            # Write files.
+            for file in files:
+              filepath = os.path.join(basepath,file)
+              folder = filepath[:filepath.rfind(os.path.sep)]
+              if not os.path.exists(folder):
+                self.writeBlock("[commitChanges]: create folder %s"%folder)
+                _fileutil.mkDir(folder)
+              self.writeBlock("[commitChanges]: write %s"%filepath)
+              data = files[file]['data']
+              if data is not None:
+                f = open(filepath,"wb")
+                f.write(data)
+                f.close()
+              else:
+                failure.append('%s is None'%file)
+            success.append(id)
+          except:
+            standard.writeError(self,"[commitChanges]: can't %s"%id)
+            failure.append(id)
       standard.triggerEvent(self,'afterCommitRepositoryEvt')
-      return success
+      return success,failure
 
     """
     Update ZODB from repository.
@@ -432,6 +441,7 @@ class ZMSRepositoryManager(
       self.writeBlock("[updateChanges]: ids=%s"%str(ids))
       standard.triggerEvent(self,'beforeUpdateRepositoryEvt')
       success = []
+      failure = []
       repositories = {}
       for i in ids:
         # Initialize.
@@ -443,11 +453,15 @@ class ZMSRepositoryManager(
           repositories[provider_id] = self.readRepository(provider)
         repository = repositories[provider_id]
         # Update.
-        r = repository[id]
-        provider.updateRepository(r)
-        success.append(id)
+        try:
+          r = repository[id]
+          provider.updateRepository(r)
+          success.append(id)
+        except:
+          standard.writeError(self,"[updateChanges]: can't %s"%id)
+          failure.append(id)
       standard.triggerEvent(self,'afterUpdateRepositoryEvt')
-      return success
+      return success,failure
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -458,22 +472,32 @@ class ZMSRepositoryManager(
     def manage_change(self, btn, lang, REQUEST=None, RESPONSE=None):
       """ ZMSRepositoryManager.manage_change """
       message = ''
+      error_message = ''
       
       if btn == 'save':
-        self.auto_update = REQUEST.get('auto_update', '')!=''
-        self.last_update = self.parseLangFmtDate(REQUEST.get('last_update', ''))
-        self.setConfProperty('ZMS.conf.path', REQUEST.get('basepath', ''))
+        self.auto_update = REQUEST.get('auto_update','')!=''
+        self.last_update = self.parseLangFmtDate(REQUEST.get('last_update',''))
+        self.setConfProperty('ZMS.conf.path',REQUEST.get('basepath',''))
+        message = self.getZMILangStr('MSG_CHANGED')
       
-      if btn == 'commit':
-        success = self.commitChanges(REQUEST.get('ids', []))
-        message = self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%' '.join(success))
+      elif btn == 'commit':
+        success,failure = self.commitChanges(REQUEST.get('ids',[]))
+        message = self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%', '.join(success))
+        if failure:
+          error_message = '<em>%s</em>'%', '.join(failure)
       
-      if btn in ['override', 'update']:
-        success = self.updateChanges(REQUEST.get('ids', []), btn=='override')
-        message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success))
+      elif btn in ['override','update']:
+        success,failure = self.updateChanges(REQUEST.get('ids',[]),btn=='override')
+        message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%', '.join(success))
+        if failure:
+          error_message = '<em>%s</em>'%', '.join(failure)
       
       # Return with message.
-      message = urllib.parse.quote(message)
-      return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang, message))
+      target = standard.url_append_params('manage_main',{'lang':lang})
+      if message:
+        target = standard.url_append_params(target,{'manage_tabs_message':message})
+      if error_message:
+        target = standard.url_append_params(target,{'manage_tabs_error_message':error_message})
+      return RESPONSE.redirect(target)
 
 ################################################################################

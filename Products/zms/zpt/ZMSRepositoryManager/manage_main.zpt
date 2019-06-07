@@ -9,87 +9,87 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]])">zmi_breadcrumbs</tal:block>
 
-<div class="tabbable tabs-left">
+<nav id="subTab">
 	<ul class="nav nav-tabs">
-		<li><a href="#diff" data-toggle="tab"><tal:block tal:content="structure python:zmscontext.zmi_icon(name=['icon-square','icon-check-square'][here.get_auto_update()])"></tal:block> Diff</a></li>
-		<li><a href="#properties" data-toggle="tab">Properties</a></li>
+		<li class="nav-item"><a href="#diff" class="nav-link active show" data-toggle="tab" role="tab"><tal:block tal:content="structure python:zmscontext.zmi_icon(name=['icon-square','icon-check-square'][here.get_auto_update()])"></tal:block> Diff</a></li>
+		<li class="nav-item"><a href="#properties" class="nav-link" data-toggle="tab" role="tab">Properties</a></li>
 	</ul>
-	<div class="tab-content">
-		<div class="tab-pane active" id="diff">
-			<form class="form-horizontal" action="manage_change" method="post">
+</nav><!-- #subTab -->
+<div class="tab-content">
+	<div class="tab-pane fade active show" id="diff">
+		<form class="form-horizontal card" action="manage_change" method="post">
+		<input type="hidden" name="lang" tal:attributes="value request/lang" />
+		<div class="form-group row">
+			<label class="col-sm-2"></label>
+			<div class="col-sm-10">
+				<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-check-square')"></tal:block></span>
+				<button type="submit" class="btn btn-secondary" name="btn" value="refresh"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-sync')"></tal:block> Refresh</button>
+				<tal:block tal:define="meta_cmds python:here.getMetaCmds(here,'repository')">
+					<div class="btn-group" tal:condition="not:meta_cmds">
+						<button type="submit" class="btn btn-secondary" name="btn" value="update" title="Update from Working-Copy"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-reply text-success')"></tal:block> Update</button>
+						<button type="submit" class="btn btn-secondary" name="btn" value="commit" title="Commit to Working-Copy"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-share text-success')"></tal:block> Commit</button>
+					</div>
+					<div class="dropdown" tal:condition="meta_cmds">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="teamDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Team
+						</button>
+						<div class="dropdown-menu" aria-labelledby="teamDropdownMenuButton">
+						<tal:block tal:repeat="meta_cmd meta_cmds">
+							<li>
+								<a tal:attributes="href python:meta_cmd['id']">
+									<tal:block tal:condition="python:meta_cmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=meta_cmd.get('icon_clazz'))">the action-icon</tal:block>
+									<tal:block tal:content="python:here.getZMILangStr(meta_cmd['name'])">the action-name</tal:block>
+								</a>
+							</li>
+						</tal:block>
+						</div>
+					</div>
+				</tal:block>
+			</div><!-- .col-sm-10 -->
+		</div><!-- .form-group -->
+		<div class="form-group row">
+			<label class="col-sm-2 control-label">Working-Copy</label>
+			<div class="col-sm-10">
+				<input class="form-control" type="text" tal:attributes="value python:here.get_conf_basepath()" readonly/>
+			</div>
+		</div>
+		<tal:block tal:content="structure python:here.manage_main_diff(here,request)">
+			the diff
+		</tal:block>
+		</form>
+	</div><!-- .tab-pane -->
+	<div class="tab-pane fade" id="properties">
+		<form class="form-horizontal card" action="manage_change" method="post">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group row">
-				<label class="col-sm-2"></label>
+				<label class="col-sm-2 control-label"><span>Auto-Update</span></label>
 				<div class="col-sm-10">
-					<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-check-square')"></tal:block></span>
-					<button type="submit" class="btn btn-secondary" name="btn" value="refresh"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-sync')"></tal:block> Refresh</button>
-					<tal:block tal:define="meta_cmds python:here.getMetaCmds(here,'repository')">
-						<tal:block tal:condition="not:meta_cmds">
-							<button type="submit" class="btn btn-secondary" name="btn" value="update"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-reply')"></tal:block> Update</button>
-							<button type="submit" class="btn btn-secondary" name="btn" value="commit">Commit <tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-share-alt text-success')"></tal:block></button>
-						</tal:block>
-						<div class="dropdown" tal:condition="meta_cmds">
-							<button class="btn btn-secondary dropdown-toggle" type="button" id="teamDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Team
-							</button>
-							<div class="dropdown-menu" aria-labelledby="teamDropdownMenuButton">
-							<tal:block tal:repeat="meta_cmd meta_cmds">
-								<li>
-									<a tal:attributes="href python:meta_cmd['id']">
-										<tal:block tal:condition="python:meta_cmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=meta_cmd.get('icon_clazz'))">the action-icon</tal:block>
-										<tal:block tal:content="python:here.getZMILangStr(meta_cmd['name'])">the action-name</tal:block>
-									</a>
-								</li>
-							</tal:block>
-							</div>
-						</div>
-					</tal:block>
+						<input type="checkbox" name="auto_update" value="1" tal:attributes="checked python:['','checked'][here.get_auto_update()]">
+						<span tal:condition="python:here.get_auto_update() and here.getConfProperty('ZMS.debug',0)" class="label label-success">Active (Debug)</span>
+						<span tal:condition="python:here.get_auto_update() and not here.getConfProperty('ZMS.debug',0)" class="label label-danger">Inactive (No Debug!)</span>
 				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group row">
-				<label class="col-sm-2 control-label" tal:content="python:here.getZMILangStr('ATTR_PATH')">the label</label>
+				<label class="col-sm-2 control-label"><span>Last Update</span></label>
 				<div class="col-sm-10">
-					<input class="form-control" type="text" tal:attributes="value python:here.get_conf_basepath()" readonly/>
-				</div>
-			</div>
-			<tal:block tal:content="structure python:here.manage_main_diff(here,request)">
-				the diff
-			</tal:block>
-			</form>
-		</div><!-- .tab-pane -->
-		<div class="tab-pane" id="properties">
-			<form class="form-horizontal" action="manage_change" method="post">
-				<input type="hidden" name="lang" tal:attributes="value request/lang" />
-				<div class="form-group row">
-					<label class="col-sm-2 control-label"><span>Auto-Update</span></label>
-					<div class="col-sm-10">
-							<input type="checkbox" name="auto_update" value="1" tal:attributes="checked python:['','checked'][here.get_auto_update()]">
-							<span tal:condition="python:here.get_auto_update() and here.getConfProperty('ZMS.debug',0)" class="label label-success">Active (Debug)</span>
-							<span tal:condition="python:here.get_auto_update() and not here.getConfProperty('ZMS.debug',0)" class="label label-danger">Inactive (No Debug!)</span>
-					</div><!-- .col-sm-10 -->
-				</div><!-- .form-group -->
-				<div class="form-group row">
-					<label class="col-sm-2 control-label"><span>Last Update</span></label>
-					<div class="col-sm-10">
-						 <input class="form-control" type="text" name="last_update" tal:attributes="value python:here.getLangFmtDate(here.get_last_update())">
-					</div><!-- .col-sm-10 -->
-				</div><!-- .form-group -->
-				<div class="form-group row">
-					<label class="col-sm-2 control-label mandatory"><span>Repository <tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-folder-open')"></tal:block></span></label>
-					<div class="col-sm-10">
-						 <input class="form-control" type="text" name="basepath" tal:attributes="value python:here.get_conf_basepath('')">
-					</div><!-- .col-sm-10 -->
-				</div><!-- .form-group -->
-				<div class="form-group row">
-					<label class="col-sm-2"></label>
-					<div class="col-sm-10">
-						<button type="submit" name="btn" class="btn btn-secondary" value="save">Save</button>
-					</div><!-- .col-sm-10 -->
-				</div><!-- .form-group -->
-			</form>
-		</div><!-- .tab-pane -->
-	</div><!-- .tab-content -->
-</div><!-- .tabbable- -->
+					 <input class="form-control" type="text" name="last_update" tal:attributes="value python:here.getLangFmtDate(here.get_last_update())">
+				</div><!-- .col-sm-10 -->
+			</div><!-- .form-group -->
+			<div class="form-group row">
+				<label class="col-sm-2 control-label mandatory"><span>Repository <tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-folder-open')"></tal:block></span></label>
+				<div class="col-sm-10">
+					 <input class="form-control" type="text" name="basepath" tal:attributes="value python:here.get_conf_basepath('')">
+				</div><!-- .col-sm-10 -->
+			</div><!-- .form-group -->
+			<div class="form-group row">
+				<label class="col-sm-2"></label>
+				<div class="col-sm-10">
+					<button type="submit" name="btn" class="btn btn-primary" value="save">Save</button>
+				</div><!-- .col-sm-10 -->
+			</div><!-- .form-group -->
+		</form>
+	</div><!-- .tab-pane -->
+</div><!-- .tab-content -->
 
 <div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->

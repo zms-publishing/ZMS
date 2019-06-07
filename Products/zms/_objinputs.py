@@ -76,6 +76,7 @@ class ObjInputs(object):
   def getDateTimeInput(self, fmName, elName, size=8, value=None, enabled=True, fmt_str='DATETIME_FMT', REQUEST=None, css='form-control', extra=''):
     manage_lang = self.get_manage_lang()
     html = []
+    input_type = 'date'
     if not isinstance(value, str):
       value = self.getLangFmtDate(value, manage_lang, fmt_str)
     if value is not None and self.parseLangFmtDate(value) is None:
@@ -86,7 +87,8 @@ class ObjInputs(object):
         css += ' datepicker'
       elif fmt_str == 'DATETIME_FMT':
         css += ' datetimepicker'
-    html.append(self.getTextInput(fmName, elName, size, value, 'text', enabled, REQUEST, css, extra))
+        input_type = 'datetime-local'
+    html.append(self.getTextInput(fmName, elName, size, value, input_type, enabled, REQUEST, css, extra))
     return ''.join(html)
 
 

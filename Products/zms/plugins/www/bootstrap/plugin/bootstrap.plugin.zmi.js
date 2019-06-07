@@ -1066,48 +1066,12 @@ ZMI.prototype.initInputFields = function(container) {
 						});
 				}
 			// Date-Picker
-			$("input.datepicker,input.datetimepicker",this)
-			.each(function() {
+			$("input.datepicker,input.datetimepicker",this).each(function() {
 				$(this).closest("div").addClass("input-group");
 				$(this).closest("div").removeClass("col-sm-10");
 				$(this).closest("div").wrap('<div class="col-sm-4 col-md-3 col-lg-3"></div>');
 				$(this).before('<div class="input-group-prepend"><span class="input-group-text">'+$ZMI.icon("far fa-calendar")+'</span></div>');
 			})
-			.mouseover(function(){
-				if (typeof self.zmiUlDatePickerInitialized == "undefined") {
-					self.zmiUlDatePickerInitialized = true;
-					pluginUIDatepicker('input.datepicker,input.datetimepicker',function(){
-						$.datepicker.setDefaults( $.datepicker.regional[ pluginLanguage()]);
-						$('input.datepicker',context).datepicker({
-								showWeek: true
-							});
-						$('input.datetimepicker',context).datepicker({
-								constrainInput: false,
-								showWeek: true,
-								beforeShow: function(input, inst) {
-										var v = $(input).val();
-										var e = '';
-										var i = v.indexOf(' ');
-										if ( i > 0) {
-											e = v.substr(i+1);
-											v = v.substr(0,i);
-										}
-										$(inst).data("inputfield",input);
-										$(inst).data("extra",e);
-									},
-								onClose: function(dateText, inst) {
-										if (dateText) {
-											var input = $(inst).data("inputfield");
-											var e = $(inst).data("extra");
-											if (e && dateText.indexOf(" ")<0) {
-												$(input).val(dateText+" "+e);
-											}
-										}
-									}
-							});
-					});
-				}
-			});
 		});
 	if (typeof this.afterInitInputFieldsHandler != "undefined") {
 		for (var i in this.afterInitInputFieldsHandler) {

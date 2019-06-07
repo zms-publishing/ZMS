@@ -22,21 +22,6 @@ function pluginUI(s, c) {
 		});
 }
 
-/**
- * jQuery UI Datepicker
- */
-function pluginUIDatepicker(s, c) {
-	//$ZMI.setCursorWait("pluginUIDatepicker");
-	var lang = pluginLanguage();
-	$.plugin('ui_datepicker',{
-		files: [
-				'/++resource++zms_/jquery/ui/i18n/jquery.ui.datepicker-'+lang+'.js'
-		]});
-	pluginUI(s,function() {
-			//$ZMI.setCursorAuto("pluginUIDatepicker");
-			$.plugin('ui_datepicker').get(s,c);
-		});
-}
 
 /**
  * jQuery UI Autocomplete

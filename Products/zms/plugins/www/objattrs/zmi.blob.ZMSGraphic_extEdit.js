@@ -190,7 +190,10 @@ function ZMSGraphic_extEdit_set(elName, src, filename, width, height, elParams, 
 	$('input#height_'+elName).val(height);
 	$('span#filename_'+elName).html(filename);
 	$('span#size_'+elName).html("");
-	$('span#dimensions_'+elName).html(width+'x'+height+'px');
+	// $('span#dimensions_'+elName).html(width+'x'+height+'px');
+	var label_text = $('#zmi-image-' + elName + ' label').text();
+	label_text = label_text.replace(/\(([^)]+)\)/g,'('+width+'x'+height+'px)');
+	$('#zmi-image-' + elName + ' label').text(label_text);
 	zmiSwitchBlobButtons(elName);
 }
 
@@ -264,7 +267,10 @@ function ZMSGraphic_extEdit_apply() {
 				$('input#width_'+ZMSGraphic_elName).val(w);
 				$('input#height_'+ZMSGraphic_elName).val(h)
 			}
-			$('span#dimensions_'+ZMSGraphic_elName).html(w+'x'+h+'px ['+v+'%]');
+			// $('span#dimensions_'+ZMSGraphic_elName).html(w+'x'+h+'px ['+v+'%]');
+			var label_text = $('#zmi-image-' + ZMSGraphic_elName + ' label').text();
+			label_text = label_text.replace(/\(([^)]+)\)/g,'('+w+'x'+h+'px ['+v+'%])');
+			$('#zmi-image-' + ZMSGraphic_elName + ' label').text(label_text);
 		}
 	}
 	// Close dialog.

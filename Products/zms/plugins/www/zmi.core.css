@@ -662,26 +662,29 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	overflow:hidden;
 	white-space:nowrap;
 }
-.zmi .zmi-input-file .fa-file-image {
+.zmi .zmi-input-file label.custom-file-label.has_file:before {
+	content: "\f1c5";
+	font-family: "Font Awesome 5 Free";
+	font-size: 1.3rem;
+	color:#007bff;
 	float: left;
-	margin: 0 .5rem 0 0;
-	opacity: .65;
-	display:block;
-	line-height:1.5rem
+	display: block;
+	opacity:.65;
+	line-height:1.6rem;
+	margin-right:.5rem
 }
-.zmi .zmi-input-file .fa-file-image:before {
-	font-size:1.3rem;
-	float:left;
-	display:block;
-
+.zmi .zmi-input-file label.custom-file-label.new_file:before {
+	color:#28a745 !important;
 }
+.zmi .zmi-input-file .dropdown-menu a.dropdown-item {
+	cursor:pointer;
+} 
 .zmi .zmi-input-file .dropdown-menu.show a.dropdown-item.d-none {
 	display:block !important;
 }
 .zmi .zmi-input-file .dropdown-menu a.dropdown-item img {
-	margin-right:.7em
+	margin-right:.85rem
 }
-
 .zmi .zmi-image-preview, .zmi-image-preview * {
 	max-width:100px;
 }
@@ -1204,11 +1207,6 @@ body.browse_iframe .toggle {
 	border-top-right-radius: 4px;
 	border: 0;
 }
-.zmi-input-file label.custom-file-label,
-.zmi-input-file label.custom-file-label:after {
-	line-height:1.65
-}
-
 .zms4-row {
 	display: -ms-flexbox;
 	display: flex;

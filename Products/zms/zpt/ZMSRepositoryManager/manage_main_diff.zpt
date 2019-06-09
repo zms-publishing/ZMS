@@ -86,7 +86,7 @@ ins {
 			diffs python:provider_diff[1]; 
 			ids python:sorted(here.distinct_list([x[2] for x in diffs])); ">
 	<div class="form-group row" tal:condition="ids">
-		<label class="col-sm-2" style="text-align:right">
+		<label class="col-sm-2 text-right" style="margin:0.75em 0 auto 0;">
 			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
 		</label>
 		<div class="col-sm-10">
@@ -111,8 +111,8 @@ ins {
 								rd python:[r.get('data'),''][r.get('data') is None];
 								is_new python:len(ld)==0 and len(rd)>0;
 								is_modified python:len(ld)>0 and len(rd)>0;
-								is_incoming python:is_modified and l.get('version')<r.get('version');
-								is_outgoing python:is_modified and l.get('version')>r.get('version');
+								is_incoming python:is_modified and sum((str(i).isdigit() and int(i)) for i in l.get('version',[0])) < sum((str(i).isdigit() and int(i)) for i in r.get('version',[0]));
+								is_outgoing python:is_modified and sum((str(i).isdigit() and int(i)) for i in l.get('version',[0])) > sum((str(i).isdigit() and int(i)) for i in r.get('version',[0]));
 								is_removed python:len(ld)>0 and len(rd)==0;">
 									<tal:block tal:condition="python:l and l.get('data') is None" tal:content="structure python:zmscontext.zmi_icon(name='icon-warning-sign text-danger',extra=' title=\042not found!\042')">icon-alert</tal:block>
 									<tal:block tal:condition="not:python:l and l.get('data') is None">
@@ -175,7 +175,7 @@ ins {
 						<tal:block tal:content="python:'%s;; %i Bytes'%(str(l['version']),len(ld))"></tal:block>
 					</tal:block>
 				</small>
-				<a href="#zmi-tab"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-collapse-top')"></tal:block></a>
+				<a href="#zmi-tab"><i class="icon-collapse-top fas fa-chevron-up"></i></a>
 			</td>
 		</tr>
 		<tr>

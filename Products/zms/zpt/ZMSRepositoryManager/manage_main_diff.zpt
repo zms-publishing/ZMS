@@ -175,7 +175,7 @@ ins {
 						<tal:block tal:content="python:'%s;; %i Bytes'%(str(l['version']),len(ld))"></tal:block>
 					</tal:block>
 				</small>
-				<a href="#zmi-tab"><i class="icon-collapse-top fas fa-chevron-up"></i></a>
+				<a href="#zmi-tab"><i class="icon-collapse-top far fa-caret-square-up"></i></a>
 			</td>
 		</tr>
 		<tr>

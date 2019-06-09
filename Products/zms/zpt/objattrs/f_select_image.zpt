@@ -67,7 +67,7 @@
 		<input type="hidden" tal:attributes="name python:'exists_%s'%elName; value python:request.get('ZMS_INSERT',None) is None and value not in [None,'']" />
 		<input type="hidden" tal:attributes="name python:'del_%s'%elName" value="0" />
 
-	<div class="pull-left row col-10">
+	<div class="col-10 row">
 
 		<div class="zmi-input-file btn-group"
 			tal:define="has_file python:value is not None and here.operator_gettype(value) is not str;
@@ -136,7 +136,7 @@
 
 	</div>
 
-	<div class="pull-right col-2">
+	<div class="col-2">
 
 		<tal:block tal:condition="python:value is not None and here.operator_gettype(value) is not str">
 			<div class="zmi-image-preview" tal:attributes="id python:'ZMSGraphic_extEdit_preview_%s'%elName" tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">

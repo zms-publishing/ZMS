@@ -69,56 +69,72 @@
 
 	<div class="pull-left row col-10">
 
-		<div class="zmi-input-file btn-group">
-			<tal:block
+		<div class="zmi-input-file btn-group"
+			tal:define="has_file python:value is not None and here.operator_gettype(value) is not str;
+				allowed_ext python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif']);
+				filename python:has_file and value.getFilename() or 'None';
+				href python:has_file and value.getHref(request) or 'None';
+				dimensions python:has_file and '%sx%spx'%(str(value.getWidth()),str(value.getHeight())) or 'None';
+				size python:has_file and here.getDataSizeStr(value.get_size()) or 'None';
+				title python:has_file and '%s (%s, %s)'%(filename,dimensions,size) or 'No File Uploaded'">
+
+			<div class="custom-file"
 					tal:condition="python:request['lang'] in here.getLanguages(request)"
-					tal:define="dummy0 python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif'])"
-					tal:content="structure python:standard.getPlugin(here,'fileupload/'+here.getConfProperty('ZMS.input.file.plugin','input_file')+'/input.zpt',{'elName':elName,'elMaxlength':here.getConfProperty('ZMS.input.image.maxlength',''),'key':key})">
-				the input-file
-			</tal:block>
-			<tal:block tal:condition="python:value is not None and here.operator_gettype(value) is not str">
-				<a class="btn btn-secondary" target="_blank"
-					tal:attributes="id python:'filename_%s'%elName; href python:value.getHref(request);
-						title python:'%s %sx%spx %s'%(value.getFilename(),str(value.getWidth()),str(value.getHeight()),here.getDataSizeStr(value.get_size()))">
-					<i class="fas fa-file-image text-primary"></i>
-					<span class="filename" tal:content="python:value.getFilename()">the filename</span>
-					<span class="dimensions" tal:attributes="id python:'dimensions_%s'%elName" tal:content="python:'%sx%spx'%(str(value.getWidth()),str(value.getHeight()))">the dimensions</span>
-					<span class="size" tal:attributes="id python:'size_%s'%elName" tal:content="python:'(%s)'%here.getDataSizeStr(value.get_size())">the size</span>
-				</a>
+					tal:attributes="class python:'custom-file%s'%(has_file and '' or ' new');
+						title title;
+						id python:'filename_%s'%elName;
+						data-filename filename;
+						data-href href;
+						data-dimensions dimensions;
+						data-size size;">
+				<input class="custom-file-input" type="file" size="25" value=""
+					onchange="$(this).next().html($(this).val().replace(/^.*(\\|\/|\:)/, ''));"
+					tal:attributes="id options/elName; name options/elName; maxlength python:options.get('elMaxLength','')" />
+				<label class="custom-file-label"
+					tal:attributes="for options/elName;">
+						<i tal:condition="has_file" class="fas fa-file-image text-primary"></i>
+						<tal:block tal:content="python:has_file and title or here.getZMILangStr('ACTION_SELECT')%(here.getZMILangStr('ATTR_FILE'))"></tal:block>
+				</label>
+			</div>
+
+			<tal:block tal:condition="has_file">
 				<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown">
 					<span class="caret"></span>
 				</button>
 				<div class="dropdown-menu">
-					<a class="d-none dropdown-item" tal:attributes="id python:'delete_btn_%s'%elName"><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">delete</tal:block></a>
-					<a class="d-none dropdown-item" tal:attributes="id python:'undo_btn_%s'%elName"><tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">delete</tal:block></a>
+					<a class="dropdown-item" target="_blank"
+						tal:condition="has_file"
+						tal:attributes="id python:'download_btn_%s'%elName;href href"
+						tal:content="structure python:'%s %s'%(here.zmi_icon(name='icon-eye'),here.getZMILangStr('TAB_PREVIEW'))">Preview</a>
+					<a class="dropdown-item" tal:attributes="id python:'delete_btn_%s'%elName" tal:content="structure python:'%s %s'%(here.zmi_icon(name='icon-trash'),here.getZMILangStr('BTN_DELETE'))">Delete</a>
+					<a class="dropdown-item" tal:attributes="id python:'undo_btn_%s'%elName" tal:content="structure python:'%s %s'%(here.zmi_icon(name='icon-undo'),here.getZMILangStr('BTN_UNDO'))">Undo</a>
+					<tal:block tal:condition="python:request.get('f_zmiSelectDisplaytype',True) and 'metaObj' in options and len([x for x in options['metaObj']['attrs'] if x['id'] == 'displaytype']) == 1"
+						><tal:block tal:define="global displaytypes python:[['top',2],['bottom',3],['left',5],['right',6]]"
+							><input type="hidden" id="displaytype" name="displaytype:int" tal:attributes="value python:here.attr('displaytype')"
+								><tal:block tal:repeat="i python:range(len(displaytypes))"
+									><tal:block tal:define="global displaytype python:displaytypes[i]"
+										><a tal:attributes="data-value python:displaytype[1]"
+											><img tal:attributes="src python:'/++resource++zms_/img/btn_displaytype_%s.gif'%displaytype[0]"
+										/></a
+									></tal:block
+								></tal:block
+						></tal:block>
+						<tal:block tal:define="dummy0 python:request.set('f_zmiSelectDisplaytype',False)"></tal:block>
+					</tal:block>
+
 				</div><!-- .dropdown-menu -->
 			</tal:block>
-		</div><!-- .btn-group -->
 
-		<tal:block tal:condition="python:request.get('f_zmiSelectDisplaytype',True) and 'metaObj' in options and len([x for x in options['metaObj']['attrs'] if x['id'] == 'displaytype']) == 1"
-			><tal:block tal:define="global displaytypes python:[['top',2],['bottom',3],['left',5],['right',6]]"
-				><input type="hidden" id="displaytype" name="displaytype:int" tal:attributes="value python:here.attr('displaytype')"
-				/><div class="btn-group btn-radiogroup mt-2 mt-lg-0" data-value="displaytype"
-					><tal:block tal:repeat="i python:range(len(displaytypes))"
-						><tal:block tal:define="global displaytype python:displaytypes[i]"
-							><span tal:attributes="data-value python:displaytype[1]"
-								><img tal:attributes="src python:'/++resource++zms_/img/btn_displaytype_%s.gif'%displaytype[0]"
-							/></span
-						></tal:block
-					></tal:block
-				></div><!-- .btn-group -->
-			</tal:block>
-			<tal:block tal:define="dummy0 python:request.set('f_zmiSelectDisplaytype',False)"></tal:block>
-		</tal:block>
+			<div class="zmi-image-generate-preview"
+					tal:condition="can_generate_preview">
+				<input type="checkbox" id="generate_preview" tal:attributes="name python:'generate_preview_%s:int'%elName; checked python:['','checked'][int(here.attr('img') is None)]" value="1">
+				<label for="generate_preview" tal:content="python:here.getZMILangStr('ACTION_GENERATE_PREVIEW')">Generate preview</label>
+				<tal:block tal:content="python:'(max. %sx%spx)'%(str(here.getConfProperty(max_generate_preview)),str(here.getConfProperty(max_generate_preview)))">(max. %ix%ipx)</tal:block>
+			</div>
 
-		<div class="zmi-image-generate-preview"
-				tal:condition="can_generate_preview">
-			<input type="checkbox" id="generate_preview" tal:attributes="name python:'generate_preview_%s:int'%elName; checked python:['','checked'][int(here.attr('img') is None)]" value="1">
-			<label for="generate_preview" tal:content="python:here.getZMILangStr('ACTION_GENERATE_PREVIEW')">Generate preview</label>
-			<tal:block tal:content="python:'(max. %sx%spx)'%(str(here.getConfProperty(max_generate_preview)),str(here.getConfProperty(max_generate_preview)))">(max. %ix%ipx)</tal:block>
-		</div>
+		</div><!-- .pull-left -->
 
-	</div><!-- .pull-left -->
+	</div>
 
 	<div class="pull-right col-2">
 

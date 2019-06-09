@@ -644,37 +644,44 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 }
 
 /*----- image ----------------------------------------------------------------*/
-@media (max-width: 767px) {
-	.zmi-image,.zmi-file {
-		min-width:95%;
-	}
+
+.zmi .zmi-image .btn-group, 
+.zmi .zmi-file .btn-group {
+    width: -webkit-fill-available;
+    width: 100%;
 }
-.zmi-image del, .zmi-image del *,
-.zmi-file del, .zmi-file del * {
-	color:#888!important;
+.zmi .zmi-input-file .custom-file-label,
+.zmi .zmi-input-file .custom-file-label:after {
+	line-height: 1.65;
+	border-top-right-radius: 0;
+	border-bottom-right-radius:0;
 }
-.zmi-image .btn-group a.btn.btn-secondary,
-.zmi-file .btn-group a.btn.btn-secondary {
-	color:#333;
-	background-color:#f5f5f5;
-	border-color:#ccc;
-	max-width: 40%!important;
+.zmi .zmi-input-file .custom-file-label {
+	padding-right:4.5rem;
+	text-overflow:ellipsis;
 	overflow:hidden;
-	text-overflow: ellipsis;
+	white-space:nowrap;
 }
-.zmi-file .zmi-input-file .custom-file,
-.zmi-image .zmi-input-file .custom-file {
-	width:inherit;
+.zmi .zmi-input-file .fa-file-image {
+	float: left;
+	margin: 0 .5rem 0 0;
+	opacity: .65;
+	display:block;
+	line-height:1.5rem
 }
-.zmi-image .btn-group,
-.zmi-file .btn-group {
-	max-width: -webkit-fill-available;
-	max-width: inherit;
+.zmi .zmi-input-file .fa-file-image:before {
+	font-size:1.3rem;
+	float:left;
+	display:block;
+
 }
-.zmi-image .filename,
-.zmi-file .filename {
-	color:#08c;
+.zmi .zmi-input-file .dropdown-menu.show a.dropdown-item.d-none {
+	display:block !important;
 }
+.zmi .zmi-input-file .dropdown-menu a.dropdown-item img {
+	margin-right:.7em
+}
+
 .zmi .zmi-image-preview, .zmi-image-preview * {
 	max-width:100px;
 }

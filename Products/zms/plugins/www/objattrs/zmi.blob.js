@@ -11,9 +11,9 @@ var zmiBlobParamsDict = {}
 function zmiRegisterBlob(elName) {
 	// Backup contents for undo
 	var d = {}
-	d['filename'] = $('#filename_'+elName).html();
-	d['dimensions'] = $('#dimensions_'+elName).html();
-	d['size'] = $('#size_'+elName).html();
+	d['filename'] = $('#filename_'+elName).attr('data-filename');
+	d['dimensions'] = $('#filename_'+elName).attr('data-dimensions');
+	d['size'] = $('#filename_'+elName).attr('data-size');
 	d['ZMSGraphic_extEdit_preview'] = $('#ZMSGraphic_extEdit_preview_'+elName).html();
 	zmiBlobDict[elName] = d;
 	// Initialize

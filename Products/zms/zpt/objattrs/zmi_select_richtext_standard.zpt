@@ -141,7 +141,7 @@ function zmiRicheditInsertTab( fmName, elName) {
 					><tal:block tal:repeat="align aligns"
 						><tal:block tal:define="global selected python:int(str(textalign).lower()==str(align).lower())"
 							><span tal:attributes="data-value python:align.upper()"
-								><i tal:attributes="class python:'icon-align-%s'%align; title python:here.getZMILangStr('ALIGN%i'%(aligns.index(align)+1))"></i></span
+								><i tal:attributes="class python:'fas fa-align-%s'%align; title python:here.getZMILangStr('ALIGN%i'%(aligns.index(align)+1))"></i></span
 						></tal:block
 					></tal:block
 				></tal:block

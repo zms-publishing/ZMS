@@ -346,7 +346,8 @@ class DeprecatedAPI(object):
 
   def str_json(self, i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, level=0):
     warn(self,'str_json','Products.zms.standard.str_json')
-    return standard.str_json(i, encoding, errors, formatted, level)
+    import json
+    return json.dumps(i)
 
   def str_item(self, i):
     warn(self, 'str_item', 'Products.zms.standard.str_item')

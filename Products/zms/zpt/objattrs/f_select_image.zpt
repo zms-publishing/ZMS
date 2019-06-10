@@ -40,6 +40,7 @@
 			 	</tr>
 				<tr>
 					<td>
+						<!--
 						<div class="ZMSGraphic_extEdit_action">
 							<span class="btn btn-secondary" id="ZMSGraphic_extEdit_preview" tal:attributes="title python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview)),str(here.getConfProperty(max_generate_preview)))">
 								<i class="icon-resize-small"></i>
@@ -50,7 +51,14 @@
 								<i class="icon-crop"></i>
 							</span>
 						</div>
-						<div id="ZMSGraphic_extEdit_vslider" class="vslider"></div>
+						-->
+						<div class="verticalize" style="transform: rotate(90deg);width: 50px;position: absolute;">
+							<input type="range" id="ZMSGraphic_extEdit_slider" name="ZMSGraphic_extEdit_slider" 
+								class="custom-range mb-0 mt-4" style="width: 30rem;"
+								min="0" max="200" step="1" value="100" title="100"
+								oninput="$(this).attr('value',this.value);$(this).attr('title',this.value);$('div#ZMSGraphic_extEdit_image').width(this.value+'%');console.log(this.value);"
+							/>
+						</div>
 					</td>
 					<td style="background-color:#F5F5F5">
 						<div id="ZMSGraphic_extEdit_image">

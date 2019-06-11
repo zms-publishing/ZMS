@@ -112,7 +112,7 @@ class ZMSMetaobjManager(object):
     valid_datatypes = sorted(valid_types+valid_xtypes)
     valid_objtypes =  [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
     valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'File', 'Folder', 'Image', 'Page Template', 'Script (Python)', 'Z SQL Method']
-    deprecated_types = [ 'DTML Method', 'DTML Document', 'method']
+    deprecated_types = [] # [ 'DTML Method', 'DTML Document', 'method']
 
 
     ############################################################################

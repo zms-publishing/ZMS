@@ -146,8 +146,7 @@ class ZMSMetaobjManager(object):
             if attr['type']=='constant':
               mandatory_keys += ['custom']
             for key in list(attr):
-              if not attr[key] or \
-                 not key in mandatory_keys:
+              if not key in mandatory_keys:
                 del attr[key]
           d['Attrs'] = d['attrs']
           del d['attrs']

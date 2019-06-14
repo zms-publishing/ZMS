@@ -1240,3 +1240,15 @@ body.browse_iframe .toggle {
 	margin-right:.3rem;
 	color:#999;
 }
+
+.zmi.users.config .table tbody tr td.alert-danger {
+	background-color: #f8d7da59;
+	background-color: rgba(248, 215, 218, 0.35);
+}
+.zmi.users.config .table tbody tr td i {
+	margin:0 .3rem;
+}
+.zmi.users.config .table tbody tr.userName td input,
+.zmi.users.config .table tbody tr.userRole td input {
+	margin-left:.3rem;
+}

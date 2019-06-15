@@ -23,12 +23,12 @@ ZMI.prototype.multiselect = function(context) {
 					var $select = $(this);
 					$select.next(".zmi-select-container").remove();
 					var html = ''
-						+ '<div class="zmi-select-container">'
+						+ '<div class="zmi-select-container form-inline">'
 						+ '<div class="'+$select.attr('class')+'">'
 						+ '</div>'
 						+ '<div class="btn-group btn-group-sortable">\n'
 						+ '<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
-						+ $ZMI.icon('icon-plus')
+						+ '<i class="fas fa-plus mr-1"></i>'
 						+ '</button>'
 						+ '<div class="dropdown-menu scrollable-menu">';
 					var c = 0;

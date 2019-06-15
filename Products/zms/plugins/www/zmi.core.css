@@ -1252,3 +1252,6 @@ body.browse_iframe .toggle {
 .zmi.users.config .table tbody tr.userRole td input {
 	margin-left:.3rem;
 }
+.btn.btn-secondary.alert-danger:hover {
+	background: #dc3545 !important;
+}

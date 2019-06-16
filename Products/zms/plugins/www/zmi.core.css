@@ -1255,3 +1255,10 @@ body.browse_iframe .toggle {
 .btn.btn-secondary.alert-danger:hover {
 	background: #dc3545 !important;
 }
+.zmi.users.config .table th,
+.zmi.users.config .table td {
+	vertical-align:middle;
+}
+.zmi.users.config .table td ol.breadcrumb {
+	padding:0;
+}

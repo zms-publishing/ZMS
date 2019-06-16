@@ -310,8 +310,8 @@ function zmiModalInsertUserOpen(context) {
 
 </form>
 
-<form class="form-horizontal" name="editNodesForm" tal:attributes="action action" method="post" enctype="multipart/form-data" tal:define="
-		nodelist python:[{'key':x,'value':nodes[x],'target':here.getLinkObj(x)} for x in nodes]">
+<form class="form-horizontal" name="editNodesForm" tal:attributes="action action" method="post" enctype="multipart/form-data"
+	tal:define="nodelist python:[{'key':x,'value':nodes[x],'target':here.getLinkObj(x)} for x in nodes]">
 	<input type="hidden" name="btn" value="" />
 	<input type="hidden" name="key" value="attr" />
 	<input type="hidden" name="id" tal:attributes="value request/id" />
@@ -356,7 +356,7 @@ function zmiModalInsertUserOpen(context) {
 						<span class="btn btn-secondary">
 							<input name="nodekeys:list" type="checkbox" tal:attributes="value nodekey" />
 						</span>
-						<button class="btn btn-seccondary dropdown-toggle" data-toggle="dropdown" style="height:36px;"></button>
+						<button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"></button>
 						<div class="dropdown-menu">
 								<a class="dropdown-item" href="javascript:;" onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','delete');$('input:checkbox',$(this).closest('tr')).prop('checked','checked');$f.submit();">
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-times')"></tal:block>

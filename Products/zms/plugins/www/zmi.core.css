@@ -1262,3 +1262,9 @@ body.browse_iframe .toggle {
 .zmi.users.config .table td ol.breadcrumb {
 	padding:0;
 }
+.zmi.config .preview_textformat {
+	background-color:#b7e1e87d;
+	margin:0;
+	border:1px dotted #607D8B;
+}
+

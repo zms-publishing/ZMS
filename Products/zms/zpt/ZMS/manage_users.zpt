@@ -363,8 +363,8 @@ function zmiModalInsertUserOpen(context) {
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-times')"></tal:block>
 									<tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block>
 								</a>
-								<a class="dropdown-item" href="javascript:;" onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','invite');$('input:checkbox',$(this).closest('tr')).prop('checked','checked');$f.submit();">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-mail-forward')"></tal:block>
+								<a class="dropdown-item" href="javascript:;" onclick="var $f=$(this).closest('form');$('input[name=btn]',$f).attr('value','invite');$('input:checkbox',$(this).closest('tr')).prop('checked','checked');$f.submit();"
+									><i class="fas fa-share"></i>
 									<tal:block tal:content="python:here.getZMILangStr('BTN_INVITE')">Invite</tal:block>
 								</a>
 						</div><!-- .dropdown-menu -->

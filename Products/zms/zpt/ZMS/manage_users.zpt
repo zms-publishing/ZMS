@@ -161,7 +161,7 @@ function zmiModalInsertUserOpen(context) {
 <tal:block tal:condition="python:request.get('id',False)!=False"
 		tal:define="editUser python:request.get('id') not in here.getRootElement().getSecurityRoles();
 		editRole python:not editUser;
-		action python: editRole and 'manage_userProperties' or 'manage_roleProperties';
+		action python: editUser and 'manage_userProperties' or 'manage_roleProperties';
 		multilang python:editUser and len(here.getLangIds())>1">
 
 <div class="d-none">

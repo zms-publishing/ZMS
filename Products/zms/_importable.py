@@ -99,6 +99,7 @@ def importContent(self, file):
   # Setup.
   catalog_awareness = self.getConfProperty('ZMS.CatalogAwareness.active', 1)
   self.setConfProperty('ZMS.CatalogAwareness.active', 0)
+
   self.dTagStack = _globals.MyStack()
   self.dValueStack = _globals.MyStack()
   self.oParent = self.getParentNode()
@@ -111,6 +112,7 @@ def importContent(self, file):
   
   # Cleanup.
   self.setConfProperty('ZMS.CatalogAwareness.active', catalog_awareness)
+  standard.triggerEvent( self, '*.onImportObjEvt')
   
   # Return imported object.
   return ob

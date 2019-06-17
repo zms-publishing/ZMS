@@ -81,7 +81,6 @@ class TextFormatObject(object):
       sec_no = self.getSecNo()
       if len(sec_no) > 0:
         s = sec_no + ' ' + s
-    s = standard.form_quote(s, REQUEST)
     return s
 
 

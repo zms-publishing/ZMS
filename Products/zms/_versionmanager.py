@@ -347,13 +347,10 @@ class VersionItem(object):
     #  Sets object-state.
     # --------------------------------------------------------------------------
     def setObjState(self, obj_state, lang):
-      self.writeBlock("[setObjState]: obj_state="+str(obj_state))
       state = getObjStateName(obj_state, lang)
       states = self.getObjStates()
-      self.writeBlock("[setObjState]: states="+str(states))
       if not state in states:
         states.append(state)
-      self.writeBlock("[setObjState]: states="+str(states))
       self.__work_state__.states = copy.deepcopy(states)
       self.__work_state__ = copy.deepcopy(self.__work_state__)
 
@@ -364,17 +361,14 @@ class VersionItem(object):
     #  Deletes object-state of this object.
     # --------------------------------------------------------------------------
     def delObjStates(self, obj_states=[], REQUEST={}):
-      self.writeBlock("[delObjStates]: obj_states="+str(obj_states))
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang', prim_lang)
       states = self.getObjStates()
-      self.writeBlock("[delObjStates]: states="+str(states))
       for obj_state in obj_states:
         while obj_state in states:
           del states[states.index(obj_state)]
         while getObjStateName(obj_state, lang) in states:
           del states[states.index(getObjStateName(obj_state, lang))]
-      self.writeBlock("[delObjStates]: states="+str(states))
       self.__work_state__.states = copy.deepcopy(states)
       self.__work_state__ = copy.deepcopy(self.__work_state__)
 
@@ -525,7 +519,7 @@ class VersionItem(object):
           self.commitObj(REQUEST, forced, do_history)
         else:
           self.autoWfTransition(REQUEST)
-        standard.writeBlock( self, "[onChangeObj]: Finished!")
+        standard.writeLog( self, "[onChangeObj]: finished")
       except Exception as e:
         standard.writeError( self, "[onChangeObj]: abort transaction")
         import transaction
@@ -536,7 +530,7 @@ class VersionItem(object):
     #  VersionItem.commitObjChanges
     # --------------------------------------------------------------------------
     def _commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
-      standard.writeBlock( self, "[_commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced), str(do_history), str(do_delete)))
+      standard.writeLog( self, "[_commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced), str(do_history), str(do_delete)))
       delete = False
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang', prim_lang)
@@ -641,14 +635,14 @@ class VersionItem(object):
 
     def commitObjChanges(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
       t0 = time.time()
-      standard.writeBlock( self, "[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced), str(do_history), str(do_delete)))
+      standard.writeLog( self, "[commitObjChanges]: forced=%s, do_history=%s, do_delete=%s"%(str(forced), str(do_history), str(do_delete)))
       delete = self._commitObjChanges( parent, REQUEST, forced, do_history, do_delete)
       # Synchronize access.
       self.synchronizePublicAccess()
       # Synchronize search.
       self.getCatalogAdapter().reindex_node(self)
       # Return flag for deleted objects.
-      standard.writeBlock( self, '[commitObjChanges]: done (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)')
+      standard.writeLog( self, '[commitObjChanges]: done (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)')
       return delete
 
 
@@ -664,7 +658,7 @@ class VersionItem(object):
     #  VersionItem.rollbackObjChanges
     # --------------------------------------------------------------------------
     def _rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
-      standard.writeBlock( self, "[_rollbackObjChanges]")
+      standard.writeLog( self, "[_rollbackObjChanges]")
       delete = False
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang', prim_lang)
@@ -750,7 +744,7 @@ class VersionItem(object):
 
     def rollbackObjChanges(self, parent, REQUEST, forced=0, do_delete=True):
       t0 = time.time()
-      standard.writeBlock( self, "[rollbackObjChanges]: forced=%s, do_delete=%s"%(str(forced), str(do_delete)))
+      standard.writeLog( self, "[rollbackObjChanges]: forced=%s, do_delete=%s"%(str(forced), str(do_delete)))
       delete = self._rollbackObjChanges( parent, REQUEST, forced, do_delete)
       # Return flag for deleted objects.
       return delete
@@ -1204,7 +1198,7 @@ class VersionManagerContainer(object):
     #  VersionManagerContainer.autoWfTransition
     # --------------------------------------------------------------------------
     def autoWfTransition(self, REQUEST):
-      standard.writeBlock( self, "[autoWfTransition]")
+      standard.writeLog( self, "[autoWfTransition]")
       lang = REQUEST['lang']
       # Enter Container.
       if not self.isVersionContainer():
@@ -1217,29 +1211,29 @@ class VersionManagerContainer(object):
       self.syncObjModifiedChildren(REQUEST)
       
       wfStates = self.getWfStates(REQUEST)
-      standard.writeBlock( self, "[autoWfTransition]: wfStates=%s"%str(wfStates))
+      standard.writeLog( self, "[autoWfTransition]: wfStates=%s"%str(wfStates))
       modified = self.isObjModified(REQUEST) or self.hasObjModifiedChildren(REQUEST)
       # Check if current workflow-state is empty.
       enter = len(wfStates) == 0
-      standard.writeBlock( self, "[autoWfTransition]: enter=%s"%str(enter))
+      standard.writeLog( self, "[autoWfTransition]: enter=%s"%str(enter))
       if not enter:
         # Check if current workflow-state is from-state of a workflow-exit (empty to-state).
         for wfTransition in self.getWfTransitions():
           if len(standard.intersection_list(wfStates, wfTransition.get('from', []))) > 0 and \
              len(wfTransition.get('to', [])) == 0:
-            standard.writeBlock( self, "[autoWfTransition]: enter name=%s, id=%s, to=%s"%(wfTransition['name'], wfTransition['id'], str(wfTransition['to'])))
+            standard.writeLog( self, "[autoWfTransition]: enter name=%s, id=%s, to=%s"%(wfTransition['name'], wfTransition['id'], str(wfTransition['to'])))
             enter = True
             break
-      standard.writeBlock( self, "[autoWfTransition]: modified=%s"%str(modified))
-      standard.writeBlock( self, "[autoWfTransition]: enter=%s"%str(enter))
+      standard.writeLog( self, "[autoWfTransition]: modified=%s"%str(modified))
+      standard.writeLog( self, "[autoWfTransition]: enter=%s"%str(enter))
       if modified and enter:
         # Initialize with workflow-entry (empty from-state).
         for wfTransition in self.getWfTransitions():
           if len(wfTransition.get('from', [])) == 0 and \
              len(wfTransition.get('to', [])) == 1:
-            standard.writeBlock( self, "[autoWfTransition]: name=%s, id=%s, to=%s"%(wfTransition['name'], wfTransition['id'], str(wfTransition['to'])))
+            standard.writeLog( self, "[autoWfTransition]: name=%s, id=%s, to=%s"%(wfTransition['name'], wfTransition['id'], str(wfTransition['to'])))
             # Delete old state.
-            standard.writeBlock( self, "[autoWfTransition]: delObjStates(%s)"%str(wfStates))
+            standard.writeLog( self, "[autoWfTransition]: delObjStates(%s)"%str(wfStates))
             self.delObjStates(wfStates, REQUEST)
             # Add new state.
             self.setObjState(wfTransition.get('to', [])[0], lang)
@@ -1256,7 +1250,7 @@ class VersionManagerContainer(object):
     ############################################################################
     def manage_wfTransition(self, lang, custom, REQUEST, RESPONSE):
       """ WorkflowContainer.manage_wfTransition """
-      standard.writeBlock( self, "[manage_wfTransition]")
+      standard.writeLog( self, "[manage_wfTransition]")
       wfTransitions = self.getWfTransitions()
       for wfTransition in [x for x in wfTransitions if x['name'] == custom]:
         transition = self.getWfTransition(wfTransition['id'])
@@ -1273,7 +1267,7 @@ class VersionManagerContainer(object):
     ############################################################################
     def manage_wfTransitionFinalize(self, lang, custom, REQUEST, RESPONSE=None):
       """ WorkflowContainer.manage_wfTransitionFinalize """
-      standard.writeBlock( self, "[manage_wfTransitionFinalize]")
+      standard.writeLog( self, "[manage_wfTransitionFinalize]")
       url = ''
       message = ''
       wfTransitions = self.getWfTransitions()
@@ -1281,11 +1275,11 @@ class VersionManagerContainer(object):
       for wfTransition in wfTransitions:
         # Delete old state.
         wfStates = self.getWfStates(REQUEST)
-        standard.writeBlock( self, "[manage_wfTransition]: delObjStates(%s)"%str(wfStates))
+        standard.writeLog( self, "[manage_wfTransition]: delObjStates(%s)"%str(wfStates))
         self.delObjStates(wfStates, REQUEST)
         # Add new state.
         for wfState in wfTransition.get('to', []):
-          standard.writeBlock( self, "[manage_wfTransition]: Add %s"%wfState)
+          standard.writeLog( self, "[manage_wfTransition]: Add %s"%wfState)
           self.setObjState(wfState, lang)
           message += REQUEST.get('manage_tabs_message', [x for x in self.getWfActivities() if x['id']==wfState][0]['name'])
         # Set Properties.
@@ -1375,7 +1369,7 @@ class VersionManagerContainer(object):
     #  VersionManagerContainer.rollbackObj
     # --------------------------------------------------------------------------
     def rollbackObj(self, REQUEST):
-      standard.writeBlock( self, "[rollbackObj]")
+      standard.writeLog( self, "[rollbackObj]")
       zmscontext = self
       
       ##### Self ####

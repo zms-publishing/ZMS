@@ -284,7 +284,7 @@ class ZReferableItem(object):
   #  Prepare refresh of references TO other objects.
   # ----------------------------------------------------------------------------
   def prepareRefreshRefToObjs(self):
-    standard.writeBlock( self, '[prepareRefreshRefToObjs]')
+    standard.writeLog( self, '[prepareRefreshRefToObjs]')
     if 'ref_to' not in self.__dict__:
       self.ref_to = self.getRefToObjs()
 
@@ -295,12 +295,12 @@ class ZReferableItem(object):
   #  Synchronizes references TO other objects.
   # ----------------------------------------------------------------------------
   def refreshRefToObjs(self):
-    standard.writeBlock( self, '[refreshRefToObjs]')
+    standard.writeLog( self, '[refreshRefToObjs]')
     if 'ref_to' in self.__dict__:
       old_ref_to = self.ref_to
-      standard.writeBlock( self, '[refreshRefToObjs]: old=%s'%str(old_ref_to))
+      standard.writeLog( self, '[refreshRefToObjs]: old=%s'%str(old_ref_to))
       new_ref_to = self.getRefToObjs()
-      standard.writeBlock( self, '[refreshRefToObjs] new=%s'%str(old_ref_to))
+      standard.writeLog( self, '[refreshRefToObjs] new=%s'%str(old_ref_to))
       delattr(self, 'ref_to')
       for ref in old_ref_to:
         ref_ob = self.getLinkObj(ref)

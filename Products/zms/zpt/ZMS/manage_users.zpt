@@ -1,5 +1,5 @@
 <tal:block tal:condition="python:request.get('mode','')=='existsUser'"
-	><tal:block tal:define="global
+	><tal:block tal:define="
 		name request/id;
 		users python:here.searchUsers(name);
 		found python:int(len([x for x in users if x==name])==1);"
@@ -8,7 +8,7 @@
 ></tal:block
 
 ><tal:block tal:condition="python:request.get('mode')=='findUser'"
-	><tal:block tal:define="global
+	><tal:block tal:define="
 		name request/id;
 		user python:here.findUser(name);"
 		><tal:block tal:condition="user"
@@ -18,14 +18,14 @@
 ></tal:block
 
 ><tal:block tal:condition="python:request.get('mode','')=='insertUser'"
-	><tal:block tal:define="global
+	><tal:block tal:define="
 			dummy0 python:here.zmi_page_request();
 			userFolder python:here.getUserFolder();
 			userAdderPlugin python:here.getUserAdderPlugin();
 			userDefs python:here.getSecurityUsers();
 			roleDefs python:here.getSecurityRoles();
-			userNames python:here.sort_list(userDefs.keys());"
-		><form id="insertUserForm" class="form-horizontal" title="mode=insertUser">
+			userNames python:here.sort_list(list(userDefs.keys()));"
+		><form id="insertUserForm" class="form-horizontal" onsubmit="return zmiModalInsertUserLoad();">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group input-group btn-group mb-4"
 				tal:define="searchable_attributes python:[x for x in here.getSearchableAttrs() if not x[1].startswith('_')]"
@@ -43,13 +43,13 @@
 						</option>
 					</tal:block>
 				</select>
-				<input class="form-control" name="search_term"
+				<input class="form-control" id="search_term" name="search_term"
 					tal:attributes="value python:request.get('search_term',''); placeholder python:here.getZMILangStr('ATTR_SEARCHTERM')" />
 				<button class="btn btn-primary btn-search" tal:attributes="title python:here.getZMILangStr('BTN_SEARCH')">
 					<i class="fas fa-search"></i>
 				</button>
 			</div><!-- .form-row -->
-			<tal:block tal:define="global
+			<tal:block tal:define="
 					valid_userids python:here.getValidUserids(search_term=request.get('search_term',''),search_term_param=request.get('search_param',''));
 					metaObjAttrs valid_userids/columns;
 					metaObjAttrIds python:[x['id'] for x in metaObjAttrs];
@@ -81,7 +81,7 @@
 <script>
 function zmiModalAddUserOpen(context) {
 	zmiModal('#addUser',{title:getZMILangStr('BTN_ADD')});
-	$("#zmiModaladdUser #newId").val($("#zmiModalinsertUser #search_term").val());
+	$("#zmiModaladdUser .modal-body #newId").val($("#zmiModalinsertUser .modal-body #search_term").val());
 }
 function zmiModalInsertUserLoad(url) {
 	var $context = $("#zmiModalinsertUser");
@@ -103,7 +103,6 @@ function zmiModalInsertUserLoad(url) {
 	$('#zmiModalinsertUser .modal-body').html($ZMI.icon("icon-spinner icon-spin")+'&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING'));
 	$.get(self.location.href,data,function(result) {
 			$('#zmiModalinsertUser .modal-body').html(result);
-			$("#insertUserForm").submit(function() {return zmiModalInsertUserLoad()});
 			$("#insertUserForm .btn-group")
 				.mouseover( function(evt) {
 						$(this).parents(".ZMSRecordSet.main_grid").css({overflow:"visible"});
@@ -129,12 +128,12 @@ function zmiModalInsertUserOpen(context) {
 
 </script>
 
-<tal:block tal:define="global
+<tal:block tal:define="
 		userFolder python:here.getUserFolder();
 		userAdderPlugin python:here.getUserAdderPlugin();
 		userDefs python:here.getSecurityUsers();
 		roleDefs python:here.getSecurityRoles();
-		userNames python:here.sort_list(userDefs.keys());
+		userNames python:here.sort_list(list(userDefs.keys()));
 		langs_optpl python:[[x,here.getLanguageLabel(x)] for x in here.getLanguages(request)];
 		roles_optpl python:[(x,here.getRoleName(x)) for x in ['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']+list(roleDefs)]">
 
@@ -160,8 +159,8 @@ function zmiModalInsertUserOpen(context) {
 </div><!-- .d-none -->
 
 <tal:block tal:condition="python:request.get('id',False)!=False"
-		tal:define="global editUser python:request.get('id') not in here.getRootElement().getSecurityRoles().keys();
-		global editRole python:not editUser;
+		tal:define="editUser python:request.get('id') not in here.getRootElement().getSecurityRoles();
+		editRole python:not editUser;
 		action python: editRole and 'manage_userProperties' or 'manage_roleProperties';
 		multilang python:editUser and len(here.getLangIds())>1">
 
@@ -201,7 +200,7 @@ function zmiModalInsertUserOpen(context) {
 	<input type="hidden" name="lang" tal:attributes="value request/lang" />
 
 	<tal:block tal:condition="editUser">
-		<tal:block tal:define="userName request/id; userObj python:here.findUser(userName); global nodes python:here.getUserAttr(userName,'nodes',{})">
+		<tal:block tal:define="userName request/id; userObj python:here.findUser(userName); nodes python:here.getUserAttr(userName,'nodes',{})">
 			<legend>
 				<a onclick="self.location.reload()">
 					<span tal:attributes="class python:userObj is None and 'text-danger' or ''; title python:here.getZMILangStr('ATTR_USER')">
@@ -245,11 +244,11 @@ function zmiModalInsertUserOpen(context) {
 					<tal:block tal:condition="python:userObj.get('password')==True">
 						<div id="tr_password" class="form-group row">
 							<label for="password" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">Password</span></label>
-							<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='password',value='******')">the control</div><!-- .col-sm-10 -->
+							<div class="col-sm-10"><input class="form-control" type="password" id="password" name="password" size="30" value="******" placeholder=""></div><!-- .col-sm-10 -->
 						</div>
 						<div id="tr_confirm" class="form-group row">
 							<label for="confirm" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">Confirm</span></label>
-							<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='userform',elName='confirm',value='******')">the control</div><!-- .col-sm-10 -->
+							<div class="col-sm-10"><input class="form-control" type="password" id="confirm" name="confirm" size="30" value="******" placeholder=""></div><!-- .col-sm-10 -->
 						</div>
 						<div id="tr_forceChangePassword" class="form-group row">
 							<label for="forceChangePassword" class="col-sm-2 control-label"></label>
@@ -261,7 +260,7 @@ function zmiModalInsertUserOpen(context) {
 					</tal:block>
 					<div id="tr_email" class="form-group row" tal:condition="python:len([x for x in userObj['details'] if x['name'] in ['mail','email']])==0">
 						<label for="email" tal:attributes="class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
-						<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='email',size=30,value=here.getUserAttr(userObj['name'],'email',''))">the control</div><!-- .col-sm-10 -->
+						<div class="col-sm-10"><input class="form-control" type="email" id="email" name="email" size="30" placeholder="" tal:attributes="value python:here.getUserAttr(userObj['name'],'email','')"></div><!-- .col-sm-10 -->
 					</div>
 					<div id="tr_profile" class="form-group row">
 						<label for="profile" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_PROFILE')">Profile</span></label>
@@ -281,7 +280,7 @@ function zmiModalInsertUserOpen(context) {
 	</tal:block>
 
 	<tal:block tal:condition="editRole">
-		<tal:block tal:define="global nodes python:here.getSecurityRoles().get(request['id'],{'nodes':{}})['nodes']">
+		<tal:block tal:define="nodes python:here.getSecurityRoles().get(request['id'],{'nodes':{}})['nodes']">
 			<legend>
 				<a onclick="self.location.reload()">
 					<i class="fas fa-users"></i> <tal:block tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_ROLE'),request['id'])">Role: Id</tal:block>
@@ -292,7 +291,7 @@ function zmiModalInsertUserOpen(context) {
 					<div class="controls save"
 							tal:define="
 								security_roles python:here.getRootElement().getSecurityRoles().get(request['id'],{});
-								nodes python:security_roles.get('nodes',{}).keys();
+								nodes python:list(security_roles.get('nodes',{}).keys());
 								security_users python:here.getConfProperty('ZMS.security.users',{}).values();
 								is_deletable python:len(list(nodes))==0 and not len([x for x in security_users if len([y for y in x.get('nodes',{}).values() if request['id'] in y['roles']])>0])>0">
 							<button type="submit" name="btn" class="btn btn-danger"
@@ -311,7 +310,10 @@ function zmiModalInsertUserOpen(context) {
 </form>
 
 <form class="form-horizontal" name="editNodesForm" tal:attributes="action action" method="post" enctype="multipart/form-data"
-	tal:define="nodelist python:[{'key':x,'value':nodes[x],'target':here.getLinkObj(x)} for x in nodes]">
+	tal:define="
+		security_roles python:here.getRootElement().getSecurityRoles().get(request['id'],{});
+		nodes python:list(security_roles.get('nodes',{}).keys());
+		nodelist python:[{'key':x,'value':nodes[x],'target':here.getLinkObj(x)} for x in nodes]">
 	<input type="hidden" name="btn" value="" />
 	<input type="hidden" name="key" value="attr" />
 	<input type="hidden" name="id" tal:attributes="value request/id" />
@@ -386,7 +388,7 @@ function zmiModalInsertUserOpen(context) {
 				<td>
 					<tal:block tal:repeat="role python:here.sort_list([(here.getRoleName(x),x) for x in node.get('value',{}).get('roles',[])])">
 						<tal:block tal:condition="not:python:role[1] in roleDefs" tal:content="python:role[0]">the role</tal:block>
-						<a tal:condition="python:role[1] in roleDefs.keys()" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],role[1])" tal:content="python:role[0]">the role</a>
+						<a tal:condition="python:role[1] in roleDefs" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],role[1])" tal:content="python:role[0]">the role</a>
 						<tal:block tal:condition="not:repeat/role/end">,</tal:block>
 					</tal:block>
 				</td>
@@ -410,19 +412,19 @@ function zmiModalInsertUserOpen(context) {
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group row">
 				<label for="newId" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
-				<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='addUserForm',elName='newId',size=15,value='')">the control</div>
+				<div class="col-sm-10"><input class="form-control" type="text" id="newId" name="newId" size="15" placeholder=""></div>
 			</div>
 			<div class="form-group row">
 				<label for="newPassword" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_PASSWORD')">Password</span></label>
-				<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='addUserForm',elName='newPassword')">the control</div>
+				<div class="col-sm-10"><input class="form-control" type="password" id="newPassword" name="newPassword" size="15" placeholder=""></div>
 			</div>
 			<div class="form-group row">
 				<label for="newConfirm" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">Confirm</span></label>
-				<div class="col-sm-10" tal:content="structure python:here.getPasswordInput(fmName='addUserForm',elName='newConfirm')">the control</div>
+				<div class="col-sm-10"><input class="form-control" type="password" id="newConfirm" name="newConfirm" size="15" placeholder=""></div>
 			</div>
 			<div class="form-group row">
 				<label for="newEmail" tal:attributes="class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(here.getConfProperty('EmailMandatory','')!='')])"><span tal:content="python:here.getZMILangStr('ATTR_EMAIL')">Email</span></label>
-				<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='addUserForm',elName='newEmail',size=15,value='')">the control</div>
+				<div class="col-sm-10"><input class="form-control" type="email" id="newEmail" name="newEmail" size="15" placeholder=""></div>
 			</div>
 			<div class="row">
 				<div class="controls save">
@@ -458,7 +460,7 @@ function zmiModalInsertUserOpen(context) {
 					<i class="fas fa-search"></i>
 				</button>
 			</div><!-- .form-row -->
-			<tal:block tal:define="global
+			<tal:block tal:define="
 				valid_userids python:here.getValidUserids(search_term=request.get('search_term',''),search_term_param=request.get('search_param',''));
 				metaObjAttrs valid_userids/columns;
 				metaObjAttrIds python:[x['id'] for x in metaObjAttrs];
@@ -516,7 +518,7 @@ function zmiModalInsertUserOpen(context) {
 					<i class="fas fa-spinner fa-spin"></i>
 					<tal:block tal:content="userName">userName</tal:block>
 			</a>
-			<tal:block tal:define="global nodes python:securityUsers.get(userName,{}).get('nodes',{})">
+			<tal:block tal:define="nodes python:securityUsers.get(userName,{}).get('nodes',{})">
 				<tal:block tal:condition="python:len(nodes)>0">(
 					<tal:block tal:define="
 							all_roles python:sum([nodes[x].get('roles',[]) for x in nodes],[]);
@@ -592,10 +594,10 @@ function zmiModalInsertUserOpen(context) {
 				</tr>
 			</thead>
 			<tbody>
-				<tr tal:repeat="validRole python:here.sort_list(roleDefs.keys())" class="userRole">
+				<tr tal:repeat="validRole python:here.sort_list(list(roleDefs.keys()))" class="userRole">
 					<td tal:define="
-						security_users python:here.getConfProperty('ZMS.security.users',{}).values();
-						security_roles python:here.getConfProperty('ZMS.security.roles',{}).values();
+						security_users python:list(here.getConfProperty('ZMS.security.users',{}).values());
+						security_roles python:list(here.getConfProperty('ZMS.security.roles',{}).values());
 						">
 						<input type="checkbox" name="ids:list" tal:attributes="value validRole" />
 						<a target="" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],validRole)"><i class="fas fa-users"></i><tal:block tal:content="validRole">validRole</tal:block></a>

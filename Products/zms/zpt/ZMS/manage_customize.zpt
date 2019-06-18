@@ -28,7 +28,7 @@
 						,'ZMSFormatProvider','ZMSFormatProviderAcquired' \
 						,'ZMSMetacmdProvider','ZMSMetacmdProviderAcquired' \
 						,'ZMSWorkflowProvider','ZMSWorkflowProviderAcquired' \
-						,'ZMSRepositoryManager','ZMSRepositoryManagerAcquired']]">
+						,'ZMSRepositoryManager']]">
 				<div class="col-sm-12">
 					<label class="d-none" for="meta_type">ZMS base-components</label>
 					<div class="form-group">

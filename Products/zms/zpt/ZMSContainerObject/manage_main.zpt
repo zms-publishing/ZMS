@@ -44,7 +44,6 @@
 					the info child-node
 				</div>
 			</div><!-- .right -->
-			<div class="clearboth"></div>
 		</li>
 	</ul><!-- .zmi-container -->
 	<tal:block tal:repeat="nodelist nodelists">
@@ -76,7 +75,6 @@
 							the info child-node
 						</div>
 					</div><!-- .right -->
-					<div class="clearboth"></div><!-- .clearboth -->
 				</li><!-- .zmi-item -->
 			</tal:block>
 		</ul><!-- .zmi-container.zmi-sortable -->
@@ -95,10 +93,9 @@
 						</tal:block>
 					</div><!-- .contentEditable -->
 				</div><!-- .center -->
-					<div class="right">
-						<!-- context menu useful? -->
-					</div><!-- .right -->
-				<div class="clearboth"></div>
+				<div class="right">
+					<!-- context menu useful? -->
+				</div><!-- .right -->
 			</li>
 		</tal:block>
 	</ul><!-- .zmi-container -->

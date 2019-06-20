@@ -161,25 +161,8 @@ $(function(){
     fn();
   }
 
-//	// New Sitemap Icon
-//	$("body:not(.manage-menu) header.navbar-nav .navbar-brand").before(""
-//		+ '<a id="navbar-sitemap"'
-//		+ ' href="manage?lang='+getZMILang()+(manage_menu?'':'&dtpref_sitemap=1')+'"'
-//		+ ' target="'+(manage_menu?'_parent':'_self')+'"'
-//		+ ' class="'+(manage_menu?'active':'')+'"'
-//		+ ' title="Sitemap">'
-//		+ $ZMI.icon('icon-sitemap')
-//		+ '</a>');
-//	if (manage_menu) {
-//		$('.zmi header a.toggle-sitemap').each(function() {
-//				var $a = $(this);
-//				$a.attr('target','_parent');
-//				$a.attr('href','manage?lang='+getZMILang());
-//			});
-//	}
-
 	// Toggle: Classical Sitemap Icon
-	$('.zmi header a.toggle-sitemap').each(function() {
+	$('a#navbar-sitemap').each(function() {
 		var $a = $(this);
 		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && (self.window.parent.location+"").indexOf('dtpref_sitemap=1') > 0) {
 			$a.attr('target','_parent');

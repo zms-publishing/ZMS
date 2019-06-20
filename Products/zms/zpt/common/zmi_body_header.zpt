@@ -19,7 +19,7 @@
 					</a>
 				</li>
 				<li id="toggle_menu" class="form-inline desktop hidden-xs" title="Show/Hide Tree Menu of the Navigation Context">
-					<a id="navbar-sitemap" href="manage?lang=ger&amp;dtpref_sitemap=1" target="_parent" class="" title="Sitemap"
+					<a id="navbar-sitemap" tal:attributes="href python:'manage?lang=%s'%request['lang']"
 						><i class="fas fa-sitemap"></i></a>
 				</li>
 				<li class="dropdown">

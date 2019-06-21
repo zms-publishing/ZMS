@@ -8,81 +8,79 @@
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='search')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
-<div id="zmi-tab">
+<div id="zmi-tab" class="pb-4">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form name="searchform" class="form-horizontal" method="get">
+<form class="card form-horizontal" name="searchform" method="get">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
 	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
-	<div class="form-group row">
-		<div class="col-md-12">
-			<div class="input-group">
-				<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
-				<div class="input-group-append">
-					<button type="submit" class="btn btn-primary" tal:content="structure python:here.zmi_icon(name='icon-search')"></button>
+	<div class="card-body">
+		<div class="form-group row">
+			<div class="col-md-12">
+				<div class="input-group">
+					<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
+					<div class="input-group-append">
+						<button type="submit" class="btn btn-primary" tal:content="structure python:here.zmi_icon(name='icon-search')"></button>
+					</div>
+				</div>
+			</div>
+		</div><!-- .form-group -->
+
+		<tal:comment replace="nothing">
+			<div class="form-group row" tal:define="global optpl python:[[x,here.display_type(request,x)] for x in here.getMetaobjIds(excl_ids=['ZMS']])">
+				<div class="col-sm-9 col-md-10" tal:content="structure python:here.zmi_input_multiselect(here,name='search_meta_types',value=request.get('search_meta_types',[]),type='multiselect',lang_str='ATTR_TYPE',options=optpl)">the control</div>
+			</div><!-- .form-group -->
+		</tal:comment>
+
+		<div id="search_results" class="form-group row" style="display:none">
+			<div class="col-sm-10">
+				<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
+				<div class="header">
+					<span class="small-head">
+						<i class="fas fa-spinner fa-spin"></i>
+						<tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>
+					</span>
+					<div class="meta-info col-sm-12"> </div>
+				</div><!-- .header.row -->
+				<div class="line row"></div><!-- .row -->
+				<div class="pull-right">
+					<ul class="pagination"></ul>
 				</div>
 			</div>
 		</div>
-	</div><!-- .form-group -->
-<tal:comment replace="nothing">
-	<div class="form-group row" tal:define="global optpl python:[[x,here.display_type(request,x)] for x in here.getMetaobjIds(excl_ids=['ZMS']])">
-		<div class="col-sm-9 col-md-10" tal:content="structure python:here.zmi_input_multiselect(here,name='search_meta_types',value=request.get('search_meta_types',[]),type='multiselect',lang_str='ATTR_TYPE',options=optpl)">the control</div>
-	</div><!-- .form-group -->
-</tal:comment>
-
-<div id="search_results" class="form-group row" style="display:none">
-	<div class="col-md-10">
-		<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
-		<div class="header row">
-			<div class="col-md-6">
-				<span class="small-head">
-					<img src="/++resource++zms_/img/loading.gif" alt="Loading..."/>
-					<tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>
-				</span>
-			</div>
-			<div class="meta-info col-sm-12 col-md-6 col-ns-5 col-ns-offset-1">
-			</div>
-		</div><!-- .header.row -->
-		<div class="line row"></div><!-- .row -->
-			<div class="pull-right">
-				<ul class="pagination"></ul>
-			</div>
 	</div>
-</div>
-
 </form>
+
 <tal:block tal:condition="python:'raw' in request or request.get('search_meta_types')" tal:define="global
 			qs python:here.getCatalogQueryString(request.get('raw',''),request.get('option',''));
 			qres python:[]">
 
-	<form class="form-horizontal" method="get">
-		<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
-		<p tal:content="structure python:here.getZMILangStr('SEARCH_YOURQUERY')%('<b>%s</b>'%qs)+' '+here.getZMILangStr('SEARCH_RETURNEDRESULTS')+':'"></p>
+	<form class="card form-horizontal" method="get">
+		<legend tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</legend>
+		<div class="card-body"
+			tal:content="structure python:here.getZMILangStr('SEARCH_YOURQUERY')%('<b>%s</b>'%qs)+' '+here.getZMILangStr('SEARCH_RETURNEDRESULTS')+':'"
+		></div>
 
-	<!-- @TODO: ZMSIndex-based -->
-	<tal:block tal:condition="python:not request.get('raw') and request.get('search_meta_types')">
-		<tal:block tal:define="global dummy0 python:qres.extend([{ \
-				'ob':x, \
-				'title':x.getTitle(request), \
-				'raw':x.renderShort(request), \
-				'score':1, \
-				'time':x.attr('change_dt'), \
-				'url':'%s/manage_main'%x.absolute_url(), \
-				} for x in here.getTreeNodes(request,request.get('search_meta_types'))])">
-		</tal:block>
-		<tal:block tal:define="global obs python:[x['ob'] for x in qres]">
-			<tal:block tal:content="structure python:here.zmi_manage_main_grid(obs=obs)">
-				zmi_manage_main_grid
+		<!-- @TODO: ZMSIndex-based -->
+		<tal:block tal:condition="python:not request.get('raw') and request.get('search_meta_types')">
+			<tal:block tal:define="global dummy0 python:qres.extend([{ \
+					'ob':x, \
+					'title':x.getTitle(request), \
+					'raw':x.renderShort(request), \
+					'score':1, \
+					'time':x.attr('change_dt'), \
+					'url':'%s/manage_main'%x.absolute_url(), \
+					} for x in here.getTreeNodes(request,request.get('search_meta_types'))])">
+			</tal:block>
+			<tal:block tal:define="global obs python:[x['ob'] for x in qres]">
+				<tal:block tal:content="structure python:here.zmi_manage_main_grid(obs=obs)">
+					zmi_manage_main_grid
+				</tal:block>
 			</tal:block>
 		</tal:block>
-	</tal:block>
-
 	</form>
-
 </tal:block>
-
-<div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
@@ -200,7 +198,7 @@
         </list>
       </item>
       <item key="name"><![CDATA[TAB_TASKS]]></item>
-      <item key="revision"><![CDATA[0.0.0]]></item>
+      <item key="revision"><![CDATA[4.0.0]]></item>
       <item key="roles" type="list">
         <list>
           <item><![CDATA[*]]></item>

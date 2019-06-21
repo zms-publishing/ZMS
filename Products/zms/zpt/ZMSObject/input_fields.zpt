@@ -224,7 +224,6 @@
 											</button>
 										</div><!-- .btn-group -->
 									</div><!-- .right -->
-									<div class="clearboth"></div>
 								</li><!-- .zmi-item -->
 							</ul>
 							<tal:block tal:condition="hasChildren">
@@ -266,7 +265,6 @@
 													the info child-node
 												</div>
 											</div><!-- .right -->
-											<div class="clearboth"></div>
 										</li><!-- .zmi-item -->
 									</tal:block>
 								</ul><!-- .zmi-container.zmi-sortable -->

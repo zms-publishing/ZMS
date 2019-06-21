@@ -394,7 +394,8 @@ body.zmi ul.zmi-container > .zmi-item > .right {
 		display:none;
 	}
 	body.zmi ul.zmi-container > .zmi-item .right > a,
-	body.zmi ul.zmi-container > .zmi-item .right > span {
+	body.zmi ul.zmi-container > .zmi-item .right > span,
+	body.zmi ul.zmi-container > .zmi-item .right > .zmi-manage-main-change {
 		display: none !important;
 	}
 	body.zmi ul.zmi-container .zmi-item.pageelement .center,

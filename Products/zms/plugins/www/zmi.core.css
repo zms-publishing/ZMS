@@ -674,6 +674,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	border:0;
 	padding:0 .35rem 0 0;
 }
+.zmi table td > nav > ol.breadcrumb {
+	padding: 0;
+}
 
 /*----- image ----------------------------------------------------------------*/
 
@@ -899,6 +902,12 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	/* text-transform: uppercase; */
 	font-weight: bold;
 	/* letter-spacing: 1px; */
+}
+.zmi .card-body form.form-horizontal {
+	margin:0 !important;
+}
+.zmi .card-body form.form-horizontal table {
+	margin-bottom:0;
 }
 .zmi.config nav#tabs li.nav-item[data-action="manage_main"] {
 	min-width:0;
@@ -1153,6 +1162,11 @@ body.browse_iframe .toggle {
 .zmi .form-horizontal label.control-label {
 	font-weight: normal;
 	color: #75A7C0;
+	overflow:hidden;
+	text-overflow:ellipsis;	
+}
+.zmi .form-horizontal label.control-label span {
+	white-space:nowrap;
 }
 
 .zmi .url-input-container .breadcrumb {
@@ -1298,4 +1312,17 @@ body.browse_iframe .toggle {
 	background-color:#b7e1e87d;
 	margin:0;
 	border:1px dotted #607D8B;
+}
+
+/* ZMSLinkElement */
+.zmi #tr_attr_ref #tr_attr_ref_type select#attr_type {
+	height: 2.125rem !important;
+}
+.zmi #tr_attr_preview.row {
+	clear:both;	
+}
+.zmi #tr_attr_preview.row .contentEditable.ZMSLinkElement {
+	padding: .5rem;
+	border: 1px dotted #ced4da;
+	background: aliceblue;
 }

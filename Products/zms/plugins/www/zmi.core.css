@@ -621,14 +621,18 @@ input.btn.btn-file {
 }
 .zmi .single-line {
 	width:100%;
+	flex-wrap:nowrap;
 }
 .zmi .single-line.input-append {
 	width:100%;
 }
 .zmi .single-line textarea {
 	overflow:hidden;
-	font-family:"Courier New", Courier, monospace;
+	font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",Courier,monospace  !important;
 	width:100%;
+}
+.zmi-code {
+	font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",Courier,monospace !important;
 }
 .zmi .single-line.zmi-code.input-group textarea,
 .zmi .single-line.zmi-code.input-group .input-group-append {

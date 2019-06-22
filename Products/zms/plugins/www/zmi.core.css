@@ -1330,3 +1330,141 @@ body.browse_iframe .toggle {
 	border: 1px dotted #ced4da;
 	background: aliceblue;
 }
+
+
+/* --------------------------------------- */
+/* ZMS-Sitemap of ZMSIndex and ZMSZCatalog */
+/* --------------------------------------- */
+
+#ZMSZCatalogAdapter #indexes td {
+	padding:.3rem;
+}
+#ZMSZCatalogConnector .zmi-sitemap,
+#zmsindex .zmi-sitemap {
+	width:100%;
+	max-height: 30rem;
+	height: fit-content;
+	min-height: 4rem;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	background: #e8f3fb;
+	margin: 0 0 3rem 0;
+	direction: rtl;
+	display: block;
+	padding: 6px 12px;
+	line-height: 1.42857143;
+	background-image: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	clear:both !important;
+}
+#ZMSZCatalogConnector .zmi-sitemap > ul,
+#zmsindex .zmi-sitemap > ul {
+	margin-top:10px;
+	direction: ltr;
+}
+#ZMSZCatalogConnector .zmi-sitemap-expand,
+#zmsindex .zmi-sitemap-expand {
+	display: block;
+	position: absolute;
+	color: #333;
+	right: 16px;
+	background: #ccc;
+	padding: .35em .65em;
+	border-radius: 4px;
+	border-top-left-radius: 0;
+	border-bottom-right-radius: 0;
+	cursor: pointer;
+}
+#ZMSZCatalogConnector .zmi-sitemap.full,
+#zmsindex .zmi-sitemap.full {
+	max-height: unset;
+}
+#ZMSZCatalogConnector .zmi-sitemap  div#loading,
+#ZMSZCatalogConnector .zmi-sitemap  div#loading .icon-spinner ,
+#zmsindex .zmi-sitemap div#loading,
+#zmsindex .zmi-sitemap div#loading .icon-spinner {
+	color: #08c;
+}
+#ZMSZCatalogConnector .zmi-sitemap:not(.full) div#loading,
+#zmsindex .zmi-sitemap:not(.full) div#loading {
+	top: 2rem;
+	position: absolute;
+	right: 5rem;
+	zoom: 1;
+}
+body.loading #ZMSZCatalogConnector .zmi-sitemap,
+body.loading #zmsindex .zmi-sitemap {
+	background:#b1bbc1;
+}
+
+body.loading #ZMSZCatalogConnector .zmi-sitemap a,
+body.loading #ZMSZCatalogConnector .zmi-sitemap .toggle,
+body.loading #ZMSZCatalogConnector .zmi-sitemap div#loading,
+body.loading #ZMSZCatalogConnector .zmi-sitemap div#loading .icon-spinner,
+body.loading #zmsindex .zmi-sitemap a,
+body.loading #zmsindex .zmi-sitemap .toggle,
+body.loading #zmsindex .zmi-sitemap div#loading,
+body.loading #zmsindex .zmi-sitemap div#loading .icon-spinner {
+	color: #fff !important;
+}
+#ZMSZCatalogConnector .zmi-sitemap .icon-spinner.icon-spin,
+#zmsindex .zmi-sitemap .icon-spinner.icon-spin {
+	zoom: 1.8;
+	margin: -.8rem .25rem;
+}
+#ZMSZCatalogConnector .response.alert-success,
+#ZMSZCatalogConnector .response.alert-danger {
+	display: block;
+}
+#zmsindex .response.text-success,
+#zmsindex .response.text-danger {
+	display: block;
+	position: fixed;
+	z-index: 1000;
+	left: 125px;
+	top: 125px;
+	width: calc(100% - 250px);
+	height: calc(100vw - 250px);
+	overflow: scroll;
+	font-size:80%;
+	white-space:pre;
+	background: #dff0d8;
+}
+#zmsindex .response.text-success .close,
+#zmsindex .response.text-danger .close {
+	display:block;
+	padding: .5em;
+	position: absolute;
+	opacity: .5;
+	right: 0;
+	top: 0;
+	background: #dff0d8;
+}
+#zmsindex .response.text-danger,
+#zmsindex .response.text-danger .close {
+	background-color: #f2dede;
+}
+
+/* ZMS4 specifics */
+#ZMSZCatalogConnector .icon.icon-resize-full:before,
+#ZMSZCatalogConnector .icon.icon-resize-full:before,
+#zmsindex .icon.icon-resize-full:before,
+#zmsindex .icon.icon-resize-full:before {
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+	font-style:normal;
+	content: "\f31e";
+}
+#ZMSZCatalogConnector .icon.icon-resize-small:before,
+#zmsindex .icon.icon-resize-small:before {
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+	font-style:normal;
+	content: "\f78c";
+}

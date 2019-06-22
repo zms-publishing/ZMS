@@ -121,7 +121,7 @@
 <form class="form-horizontal card" tal:attributes="action action" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('TAB_CHARFORMATS')">Char-Formats</legend>
-	<table class="table table-striped table-bordered table-hover mb-0">
+	<table class="table table-sm table-striped table-bordered table-hover mb-0">
 	<colgroup>
 		<col width="40"/>
 	</colgroup>

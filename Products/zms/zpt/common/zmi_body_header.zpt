@@ -1,6 +1,7 @@
 <!-- common/zmi_body_header -->
 
 <tal:block tal:define="
+		standard modules/Products/zms/standard;
 		zmscontext python:here.getSelf(); 
 		admin python:request['AUTHENTICATED_USER'].has_permission('ZMS Administrator',here)">
 
@@ -33,7 +34,7 @@
 								<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-question-circle')"></tal:block>
 								<tal:block tal:content="python:'API'">API</tal:block>
 							</a>
-							<a class="dropdown-item" tal:attributes="href python:'manage_main?lang=%s&zmi-manage-system=%i'%(request['lang'],int(not int(request.SESSION.get('zmi-manage-system',0))))">
+							<a class="dropdown-item" tal:attributes="href python:'manage_main?lang=%s&zmi-manage-system=%i'%(request['lang'],int(not int(standard.get_session(here).get('zmi-manage-system',0))))">
 								<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-bolt')"></tal:block>
 								<tal:block tal:content="python:'Zope'">Zope</tal:block>
 							</a>

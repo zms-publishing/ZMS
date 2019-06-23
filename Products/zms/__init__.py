@@ -111,7 +111,7 @@ def initialize(context):
             _mediadb.MediaDb,
             permission = 'Add ZMSs',
             constructors = (_mediadb.manage_addMediaDb, _mediadb.manage_addMediaDb),
-            icon = 'plugins/www/img/acl_mediadb.png',
+            icon = 'fas fa-images',
             container_filter = _mediadb.containerFilter,
             )
         context.registerClass(

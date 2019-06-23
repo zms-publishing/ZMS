@@ -268,7 +268,8 @@ class MediaDb(
     # Properties.
     # -----------
     meta_type = 'MediaDb'
-    icon_clazz = "icon-folder-close"
+    icon = "fas fa-images"
+    icon_clazz = icon
 
     # Management Options.
     # -------------------

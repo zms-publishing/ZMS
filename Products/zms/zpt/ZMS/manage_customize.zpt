@@ -29,9 +29,9 @@
 						,'ZMSMetacmdProvider','ZMSMetacmdProviderAcquired' \
 						,'ZMSWorkflowProvider','ZMSWorkflowProviderAcquired' \
 						,'ZMSRepositoryManager']]">
-				<div class="col-sm-12">
+				<div class="col-12 form-group">
 					<label class="d-none" for="meta_type">ZMS base-components</label>
-					<div class="form-group">
+					<div class="btn-group">
 						<select class="form-control form-control-sm" style="display:inline-block;width:auto;" id="meta_type" name="meta_type"
 							title="Add New ZMS base-components"
 							onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
@@ -47,7 +47,9 @@
 				<div class="form-group col-sm-12">
 					<label>
 						<span class="btn btn-secondary">
-							<img tal:attributes="src python:si.icon"/>&nbsp;<input type="checkbox" name="ids:list" tal:attributes="value python:si.id" />
+							<i tal:on-error="structure string:<i class='fas fa-ban' title='Icon Error'></i>"
+								tal:attributes="class python:si.icon"
+								></i>&nbsp;&nbsp;<input type="checkbox" name="ids:list" tal:attributes="value python:si.id" />
 						</span>
 						&nbsp;<a tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</a>
 					</label>

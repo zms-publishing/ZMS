@@ -231,6 +231,10 @@ footer {
 .zmi #zmi-tab .tab-content .card {
 	padding: 2rem 1rem 1rem 1rem !important;
 }
+
+.zmi #zmi-tab #Manager.tab-pane i {
+	font-size:1rem;
+}
 .zmi #zmi-tab #Custom.tab-pane table > tbody > tr > td,
 .zmi #zmi-tab #Custom.tab-pane table > tbody > tr > td > a {
 	max-width: 100%;

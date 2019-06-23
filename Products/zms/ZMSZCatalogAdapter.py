@@ -100,8 +100,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     # Properties.
     # -----------
     meta_type = 'ZMSZCatalogAdapter'
-    icon = "++resource++zms_/img/ZMSZCatalogAdapter.png"
-    icon_clazz = "icon-search"
+    icon = "fas fa-search"
+    icon_clazz = icon
 
     # Management Options.
     # -------------------

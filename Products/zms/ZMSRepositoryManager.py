@@ -63,8 +63,8 @@ class ZMSRepositoryManager(
     Properties
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     meta_type = 'ZMSRepositoryManager'
-    icon = "++resource++zms_/img/ZMSRepositoryManager.png"
-    icon_clazz = "icon-random"
+    icon = "fas fa-database"
+    icon_clazz = icon
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Options

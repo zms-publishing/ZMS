@@ -110,8 +110,8 @@ class ZMSWorkflowProvider(
     Properties
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     meta_type = 'ZMSWorkflowProvider'
-    icon = "++resource++zms_/img/ZMSWorkflowProvider.png"
-    icon_clazz = "icon-random"
+    icon = "fas fa-random"
+    icon_clazz = icon
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Options

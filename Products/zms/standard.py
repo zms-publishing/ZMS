@@ -430,7 +430,7 @@ def encrypt_ordtype(s):
     elif whichCode==1:
       new += '&#%d;'%ord(ch)
     else:
-      new += '&#x%s;'%str(hexlify(ch))
+      new += '&#x%s;'%hexlify(ch)
   return new
 
 
@@ -574,9 +574,11 @@ def get_session(context):
   """
   Get http-session.
   """
-  session = getattr(context, 'session_data_manager', None) and \
-    context.session_data_manager.getSessionData(create=0)
-  return session
+  #session = getattr(context, 'session_data_manager', None) and \
+  #  context.session_data_manager.getSessionData(create=0)
+  #return session
+  req = getattr( context, 'REQUEST', None)
+  return req.SESSION
 
 
 security.declarePublic('get_session_value')

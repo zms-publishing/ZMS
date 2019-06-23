@@ -129,8 +129,8 @@
 	<div class="scroller scroller-left" tal:content="structure python:zmscontext.zmi_icon(name='icon-chevron-left')">chevron-left</div>
 	<div class="scroller scroller-right" tal:content="structure python:zmscontext.zmi_icon(name='icon-chevron-right')">chevron-right</div>
 	<div class="wrapper">
-		<tal:block tal:condition="python:'options' in options" tal:content="structure python:here.zmi_tabs(here,request,options=options['options'])">zmi_tabs</tal:block>
-		<tal:block tal:condition="not:python:'options' in options" tal:content="structure python:here.zmi_tabs(here,request,options=here.manage_options())"># FIXME: filtered_manage_options - zmi_tabs</tal:block>
+		<tal:block tal:on-error="structure string: <div class='alert alert-danger zmi-code mb-2'>ZMS-ERROR: zmi_body_header LINE 132</div>" tal:condition="python:'options' in options" tal:content="structure python:here.zmi_tabs(here,request,options=options['options'])">zmi_tabs</tal:block>
+		<tal:block tal:on-error="structure string: <div class='alert alert-danger zmi-code mb-2'>ZMS-ERROR: zmi_body_header LINE 133 ('tuple' object is not callable)</div>" tal:condition="not:python:'options' in options" tal:content="structure python:here.zmi_tabs(here,request,options=here.manage_options())"># FIXME: filtered_manage_options - zmi_tabs</tal:block>
 	</div>
 </nav>
 

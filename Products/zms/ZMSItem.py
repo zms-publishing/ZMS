@@ -160,7 +160,7 @@ class ZMSItem(
         request.set( 'manage_tabs_message', self.getConfProperty('ZMS.manage_tabs_message', ''))
       if 'zmi-manage-system' in request.form:
         session = standard.get_session(self)
-        session['zmi-manage-system'] = int(request.get('zmi-manage-system'))
+        session['zmi-manage-system'] = int(request.get('zmi-manage-system',0))
       # avoid declarative urls
       path_to_handle = request['URL0'][len(request['BASE0']):]
       path = path_to_handle.split('/')

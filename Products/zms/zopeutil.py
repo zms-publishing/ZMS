@@ -33,7 +33,7 @@ def nextObject(container, meta_type):
   """
   Get next parent Zope-object with given meta_type.
   """
-  while hasattr(container,'meta_type') and not getattr(container,'meta_type') == meta_type:
+  while hasattr(container,'meta_type') and not getattr(container,'meta_type') == meta_type and hasattr(container,'aq_parent'):
     container = container.aq_parent
   return container
 

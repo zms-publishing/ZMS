@@ -14,8 +14,8 @@
 <tal:block tal:define="
 		metaObjIds python:here.getMetaobjIds(sort=True);
 		metaObjs python:[here.getMetaobj(x,aq_attrs=['enabled']) for x in metaObjIds];
-		metaObjPackages python:here.sort_list(['']+[x['id'] for x in metaObjs if x['type'] == 'ZMSPackage']);
-		metaObjPackages2 python:[x for x in [x.get('package') for x in metaObjs] if x not in metaObjPackages]">
+		metaObjPackages python:standard.sort_list(['']+[x['id'] for x in metaObjs if x['type'] == 'ZMSPackage']);
+		metaObjPackages2 python:standard.distinct_list([x for x in [x.get('package') for x in metaObjs] if x not in metaObjPackages])">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[1]]+[{'action':'?id=%s'%x['id'],'label':x['name']} for x in metaObjs if x['id']==request.get('id')])">zmi_breadcrumbs</tal:block>
 
 <div class="d-none">

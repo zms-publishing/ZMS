@@ -217,9 +217,13 @@ class ZMSObject(ZMSItem.ZMSItem,
         ep = self.getConfProperty('ExtensionPoint.ZMSObject.get_uid', '')
         can_ep = ep.startswith(implementation)
       if can_ep:
-        uid = self.evalExtensionPoint('ExtensionPoint.ZMSObject.get_uid', default, forced=forced)
-      else:
-        uid = default(self, {'forced':forced})
+        try:
+          uid = self.evalExtensionPoint('ExtensionPoint.ZMSObject.get_uid',default,forced=forced)
+        except:
+          standard.writeError(self,'can\'t ExtensionPoint.ZMSObject.get_uid')
+          can_ep = False
+      if not can_ep:
+        uid = default(self,{'forced':forced})
       return uid
 
     # --------------------------------------------------------------------------

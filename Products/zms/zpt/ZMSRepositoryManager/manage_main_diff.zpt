@@ -68,11 +68,13 @@ ins {
 			</label>
 			<div class="col-sm-10" tal:define="
 					local_files python:here.localFiles(provider).values();
-					ids python:sorted(here.distinct_list([x['id'] for x in local_files]));
+					ids python:sorted(standard.distinct_list([x['id'] for x in local_files]));
 					">
 				<div tal:repeat="id ids">
 					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-ok text-success')"></tal:block>
-					<tal:block tal:content="id"></tal:block>
+					<a tal:attributes="href python:'%s/manage_main?lang=%s&id=%s'%(provider.absolute_url(),request['lang'],id)" target="_blank"> 
+						<tal:block tal:content="id"></tal:block>
+					</a>
 				</div>
 			</div>
 		</div>
@@ -84,7 +86,7 @@ ins {
 			zmscontext python:here.getSelf();
 			provider python:provider_diff[0]; 
 			diffs python:provider_diff[1]; 
-			ids python:sorted(here.distinct_list([x[2] for x in diffs])); ">
+			ids python:sorted(standard.distinct_list([x[2] for x in diffs])); ">
 	<div class="form-group row" tal:condition="ids">
 		<label class="col-sm-2 text-right" style="margin:0.75em 0 auto 0;">
 			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
@@ -99,7 +101,11 @@ ins {
 			<tal:block tal:repeat="id ids">
 				<tr>
 					<td><input type="checkbox" name="ids:list" tal:attributes="value python:'%s:%s'%(provider.id,id)" checked="checked"></td>
-					<td><strong tal:content="id">the id</strong></td>
+					<td>
+						<a tal:attributes="href python:'%s/manage_main?lang=%s&id=%s'%(provider.absolute_url(),request['lang'],id)" target="_blank"> 
+							<strong tal:content="id">the id</strong>
+						</a>
+					</td>
 					<td>
 					<div tal:repeat="diff python:[x for x in diffs if x[2]==id]">
 						<tal:block tal:define="

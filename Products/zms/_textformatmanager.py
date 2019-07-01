@@ -40,9 +40,9 @@ class TextFormatObject(object):
       return sec_no
     reqBuffId = 'getSecNo'
     try:
-      levelnfc = parentNode.fetchReqBuff( '%s_levelnfc'%reqBuffId, self.REQUEST, forced=True)
+      levelnfc = parentNode.fetchReqBuff( '%s_levelnfc'%reqBuffId)
       if levelnfc > 0:
-        sec_no = parentNode.fetchReqBuff( '%s_%s'%(reqBuffId, self.id), self.REQUEST, forced=True)
+        sec_no = parentNode.fetchReqBuff( '%s_%s'%(reqBuffId, self.id))
     except:
       levelnfc = parentNode.attr('levelnfc')
       parentNode.storeReqBuff( '%s_levelnfc'%reqBuffId, levelnfc, self.REQUEST)

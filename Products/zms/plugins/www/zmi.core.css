@@ -1472,3 +1472,12 @@ body.loading #zmsindex .zmi-sitemap div#loading .icon-spinner {
 	font-style:normal;
 	content: "\f78c";
 }
+
+/* MediaDB */
+body.zmi.browse .table-responsive table td {
+	max-width: calc(100vw - 300px) !important;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+

@@ -512,7 +512,8 @@ function zmiModalInsertUserOpen(context) {
 	<tr tal:repeat="userName userNames" tal:attributes="id userName" class="userName">
 		<td>
 			<input type="checkbox" name="ids:list" tal:attributes="value userName"/>
-			<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName)"
+			<a data-placement="top"
+				tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName)"
 				><span><i class="icon-spinner icon-spin fas fa-spinner fa-spin"></i> <tal:block tal:content="userName">userName</tal:block></span>
 			</a><tal:block 
 					tal:define="global nodes python:securityUsers.get(userName,{}).get('nodes',{})"
@@ -656,7 +657,7 @@ function zmiModalInsertUserOpen(context) {
 												// if (extra.length>0) { 
 												// 	$a.append(' ( ' + extra.join(', ') + ' ) ');
 												// }
-												$a.attr("title",title.join('; ')).tooltip();
+												$a.attr("title",title.join("; ")).tooltip("show");
 											});
 									}
 								});

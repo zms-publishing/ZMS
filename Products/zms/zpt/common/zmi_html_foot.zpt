@@ -5,7 +5,7 @@
 		zmi_paths python:standard.zmi_paths(here)">
 	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%request['manage_lang']"></script>
 	<tal:block tal:repeat="src python:list(zmi_paths['js_paths'])+[here.getConfProperty(x) for x in here.getConfProperty('bootstrap.libs').split(',')+request.get('ZMI_LIBS_JS',[])]+request.get('ZMI_LIBS_SCRIPT',[])">
-		<script type="text/javascript" charset="UTF-8" tal:attributes="src src"></script>
+		<script type="text/javascript" charset="UTF-8" tal:condition="src" tal:attributes="src src"></script>
 	</tal:block>
 	<tal:block tal:condition="python:here.getUserAttr(request['AUTHENTICATED_USER'],'forceChangePassword',0)==1">
 		<script type="text/javascript">$(function(){$ZMI.forceChangePassword()});</script>

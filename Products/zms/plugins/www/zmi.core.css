@@ -1198,6 +1198,17 @@ body.browse_iframe .toggle {
 		max-width: 960px;
 	}
 }
+/* Fix Scroll Issue on Mutiple Modal Windows */
+.zmi .modal {
+	overflow-y:auto;
+	-ms-overflow-style: none;
+	scrollbar-width: none; 
+}
+.zmi .modal::-webkit-scrollbar { 
+	display: none;
+}
+
+
 .zmi table.table-access-control {
 	background: #efefef;
 	font-size: smaller;

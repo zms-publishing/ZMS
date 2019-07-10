@@ -3,7 +3,7 @@
 	global standard modules/Products.zms/standard; 
 	global zopeutil modules/Products/zms/zopeutil;
 	global session python:standard.get_session(here);"></tal:block
-><tal:block tal:condition="python:session.get('zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
+><tal:block tal:condition="python:standard.get_session_value(here,'zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
 ><tal:block tal:condition="not:python:session.get('zmi-manage-system',0)==1"
 ><!DOCTYPE html>
 <html lang="en" tal:define="zmscontext python:here.getSelf();">

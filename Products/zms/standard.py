@@ -569,16 +569,33 @@ def nvl(a1, a2, n=None):
     return a2
 
 
+class SessionBTreeWrapper:
+  
+  def __init__(self, t):
+    self.t = t
+  
+  security.declarePublic('set')
+  def set(self, k, v):
+    self.t.update({k:v})
+    return v
+
+  security.declarePublic('get')
+  def get(self, k, v=None):
+    return self.t.get(k,v)
+
+
 security.declarePublic('get_session')
 def get_session(context):
   """
   Get http-session.
   """
-  #session = getattr(context, 'session_data_manager', None) and \
-  #  context.session_data_manager.getSessionData(create=0)
-  #return session
   req = getattr( context, 'REQUEST', None)
-  return req.SESSION
+  req_session = req.SESSION
+  if req_session.get('__zms_session__') is None:
+    from BTrees.OOBTree import OOBTree
+    req_session.set('__zms_session__',OOBTree())
+  session = SessionBTreeWrapper(req_session.get('__zms_session__'))
+  return session
 
 
 security.declarePublic('get_session_value')
@@ -599,7 +616,8 @@ def set_session_value(context, key, value):
   """
   session = get_session(context)
   if session is not None:
-    return session.set(key, value)
+    session.set(key,value)
+    return value
   return None
 
 

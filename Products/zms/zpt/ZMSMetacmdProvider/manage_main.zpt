@@ -42,7 +42,7 @@
 
 			<div class="form-group row">
 				<label for="el_description" class="col-sm-3 control-label"><span tal:content="python:here.getZMILangStr('ATTR_CONFIRM')">Confirm</span></label>
-				<div class="col-sm-9"><input type="text" name="el_description" class="form-control form-control-sm" tal:attributes="value python:metaCmd.get('description')"/></div>
+				<div class="col-sm-9"><input type="text" name="el_description" class="form-control form-control-sm" tal:attributes="value python:metaCmd.get('description','')"/></div>
 			</div>
 
 			<div class="form-group row">

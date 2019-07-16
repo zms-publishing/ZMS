@@ -6294,7 +6294,9 @@ return zmscontext.attr('text')
 		img_filename  python:img_src[img_src.rfind('/')+1:img_src.find('?')];
 		title_url     python:here.attr('title');
 		title_txt     python:title_url;
-		abstract      python:here.attr('attr_abstract')">
+		abstract      python:here.attr('attr_abstract');
+		id            python:here.getId()"
+		tal:attributes="id id">
 		
 			<tal:block tal:condition="python:len(title_url) > 4 and title_url.startswith('__') and title_url.endswith('__')">
 				<tal:block tal:define="global title_url python:title_url[2:-2]; title_txt python:''"></tal:block>
@@ -6393,7 +6395,7 @@ return zmscontext.attr('text')
           <item key="id">ZMSTeaserElement</item>
           <item key="name">ZMSTeaserElement</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">3.1.1</item>
+          <item key="revision">3.1.2</item>
           <item key="type">ZMSTeaserElement</item>
         </dictionary>
       </item>

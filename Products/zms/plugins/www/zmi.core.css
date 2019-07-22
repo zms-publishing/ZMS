@@ -91,6 +91,20 @@ header.navbar-nav ul.navbar-nav {
 .zmi-manage_menu #menu_buttons ul.dropdown-menu  {
 	background-color:#646d75;
 }
+.zmi li.dropdown i.fas.fa-bolt:before {
+	content: "Z";
+	font-family: Arial, sans-serif;
+	border-radius: 50%;
+	text-align: center;
+	width: 15px;
+	height: 15px;
+	background: #333;
+	color: white;
+	font-size: 14px;
+	line-height: 1;
+	display: inline-block;
+	font-weight: 600;
+}
 .zmi li.dropdown i.fas.fa-sitemap {
 	margin-left: -2px;
 	margin-right: 2px;

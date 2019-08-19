@@ -656,7 +656,7 @@ class ZMSObject(ZMSItem.ZMSItem,
               name += ' constraint-restriction'
               icon_title += '; '+'; '.join(['RESTRICTION: '+x[1] for x in constraints['RESTRICTIONS']])
       else:
-        name = 'icon-warning-sign constraint-error'
+        name = 'icon-warning-sign fas fa-exclamation-triangle constraint-error'
         icon_title = '%s not found!'%str(id)
       return self.zmi_icon(self, name=name, extra='title="%s"'%(icon_title.replace('"', '\'')))
 

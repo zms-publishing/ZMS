@@ -395,6 +395,7 @@ body.zmi ul.zmi-container .zmi-item.pageelement .center > * {
 }
 body.zmi ul.zmi-container > .zmi-item > .right {
 	flex-basis: 20%;
+	overflow:hidden;
 }
 
 @media (max-width: 767px) {
@@ -587,6 +588,13 @@ li.zmi-item span.zmi-ids {
 	margin:4px 0 0 11px;
 	overflow: hidden;
 	white-space: nowrap;
+	text-overflow:ellipsis;
+}
+.zmi-manage-main-change .constraint {
+	display: inline;
+}
+.zmi-manage-main-change .constraint span {
+	display:none;
 }
 
 .pull-left {

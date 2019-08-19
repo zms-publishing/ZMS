@@ -2104,7 +2104,7 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
     width: 3em !important;
 }
 .zmi-manage-main-change div.constraint {
-	display:block;
+	display:inline-block;
 	max-width:200px;
 	overflow:hidden;
 }

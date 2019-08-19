@@ -388,7 +388,7 @@ body.zmi ul.zmi-container .zmi-item.pageelement .center,
 body.zmi ul.zmi-container > .zmi-item > .center {
 	flex-basis: 80%;
 	border-top:1px dotted #ccc !important;
-	min-height:4rem;
+	min-height:4.2rem;
 }
 body.zmi ul.zmi-container .zmi-item.pageelement .center > * {
 	padding-left:.8em;
@@ -587,7 +587,6 @@ li.zmi-item span.zmi-ids {
 	font-size:11px;
 	margin:4px 0 0 11px;
 	overflow: hidden;
-	white-space: nowrap;
 	text-overflow:ellipsis;
 }
 /* Contraints */

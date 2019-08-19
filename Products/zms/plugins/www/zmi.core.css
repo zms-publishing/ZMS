@@ -590,11 +590,25 @@ li.zmi-item span.zmi-ids {
 	white-space: nowrap;
 	text-overflow:ellipsis;
 }
+/* Contraints */
 .zmi-manage-main-change .constraint {
 	display: inline;
 }
 .zmi-manage-main-change .constraint span {
 	display:none;
+}
+.zmi.properties form .constraint-error {
+	color:#721c24;
+	background-color:#f8d7da;
+	padding:.5em .75em
+}
+.zmi.properties form .constraint-warning {
+	color:#856404; 
+	background-color:#fff3cd;
+}
+.zmi.properties form .constraint-restriction {
+	color:#0c5460;
+	background-color:#d1ecf1;
 }
 
 .pull-left {

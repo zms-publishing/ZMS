@@ -116,13 +116,16 @@ function zmiDelBlobBtnClick(elName) {
 			$('body').append('<div id="div_opaque_'+elName+'" class="zmiDivOpaque">&nbsp;</div>');
 			var div = $('div#div_opaque_'+elName);
 			var pos = img.offset();
-			div.css({
+			var css = {
 				position:'absolute',
 				left:pos.left,
 				top:pos.top,
 				width:img.outerWidth(),
-				height:img.outerHeight()
-			});
+				height:img.outerHeight(),
+				backgroundColor:"white",
+				opacity:0.8
+			};
+			div.css(css);
 		}
 	}
 	// Refresh buttons.

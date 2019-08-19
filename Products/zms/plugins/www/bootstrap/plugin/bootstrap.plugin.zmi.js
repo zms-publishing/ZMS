@@ -523,8 +523,8 @@ $(function(){
 			var elName = $(this).attr("id");
 			elName = elName.substr(elName.lastIndexOf("-")+1);
 			zmiRegisterBlob(elName);
-			$("li#delete_btn_"+elName+" a",this).attr("href","javascript:zmiDelBlobBtnClick('"+elName+"')");
-			$("li#undo_btn_"+elName+" a",this).attr("href","javascript:zmiUndoBlobBtnClick('"+elName+"')");
+			$("#delete_btn_"+elName,this).attr("href","javascript:zmiDelBlobBtnClick('"+elName+"')");
+			$("#undo_btn_"+elName,this).attr("href","javascript:zmiUndoBlobBtnClick('"+elName+"')");
 			zmiSwitchBlobButtons(elName);
 		});
 

@@ -719,6 +719,10 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	overflow:hidden;
 	white-space:nowrap;
 }
+.zmi .zmi-input-file del .custom-file-label {
+  color:#888!important;
+  text-decoration: line-through;
+}
 .zmi .zmi-input-file label.custom-file-label.has_file:before {
 	content: "\f1c5";
 	font-family: "Font Awesome 5 Free";

@@ -152,7 +152,7 @@ class ZMSZCatalogSolrConnector(
       attrs = zcm.getAttrs()
       if k not in ['id']:
         suffix = 's'
-        if k in attrs.keys():
+        if k in attrs:
           attr_type = attrs[k].get('type', 'text')
           attr_suffix = {'text':'t','string':'t','select':'s','multiselect':'s','int':'i'}
           suffix = attr_suffix.get(attr_type, suffix)
@@ -165,16 +165,16 @@ class ZMSZCatalogSolrConnector(
       attrs = zcm.getAttrs()
       xml =  []
       xml.append('<?xml version="1.0"?>')
-      xml.append('<add'+' '.join(['']+map(['%s="%s"'%(x, str(xmlattrs[x])) for x in xmlattrs])+'>')
+      xml.append('<add'+' '.join(['']+['%s="%s"'%(x, str(xmlattrs[x])) for x in xmlattrs])+'>')
       def cb(node, d):
         xml.append('<doc>')
         text = []
-        for k in d.keys():
+        for k in d:
           name = k
           boost = 1.0
           v = d[k]
           if k not in ['id']:
-            if k in attrs.keys():
+            if k in attrs:
               boost = attrs[k]['boost']
               if type(v) in (str, str):
                 name = '%s_t'%k

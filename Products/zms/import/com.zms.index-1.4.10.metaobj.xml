@@ -449,13 +449,13 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       def visit(node):
         l = []
         l.append(1)
-        writeInfo(self,'[ZMSIndexZCatalog_func_] catalog_object %s %s'%(node.getPath(),str(getattr(node,'_uid'))))
         if node.meta_id == 'ZMS':
           # Activate implicitly
           meta_id = 'ZMSIndexZCatalog'
           node.setConfProperty('ExtensionPoint.ZMSObject.get_uid','%s.get_uid'%meta_id)
           node.setConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath','%s.getRefObjPath'%meta_id)
           node.setConfProperty('ExtensionPoint.ZReferableItem.getLinkObj','%s.getLinkObj'%meta_id)
+        writeInfo(self,'[ZMSIndexZCatalog_func_] catalog_object %s %s'%(node.getPath(),str(node.get_uid())))
         catalog_object(catalog,node)
         for childNode in node.objectValues(meta_types):
           l.extend(visit(childNode))

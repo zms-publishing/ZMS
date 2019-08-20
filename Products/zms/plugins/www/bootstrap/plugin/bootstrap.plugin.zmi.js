@@ -959,15 +959,14 @@ ZMI.prototype.initInputFields = function(container) {
 							);
 					}
 					var fn = function() {
-							$inputgroup.next(".breadcrumb").remove();
+							$inputgroup.next("nav").remove();
 							$.ajax({
 									url: 'zmi_breadcrumbs_obj_path',
 									data:{lang:getZMILang(),zmi_breadcrumbs_ref_obj_path:$input.val()},
 									datatype:'text',
 									success:function(response) {
-											$inputgroup.next(".breadcrumb").remove();
+											$inputgroup.next("nav").remove();
 											$inputgroup.after(response.replace(/<!--(.*?)-->/gi,'').trim());
-											$inputgroup.next(".breadcrumb").addClass("small");
 										}
 								});
 						};

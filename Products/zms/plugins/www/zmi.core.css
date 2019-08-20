@@ -395,7 +395,6 @@ body.zmi ul.zmi-container .zmi-item.pageelement .center > * {
 }
 body.zmi ul.zmi-container > .zmi-item > .right {
 	flex-basis: 20%;
-	overflow:hidden;
 }
 
 @media (max-width: 767px) {
@@ -727,8 +726,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 
 .zmi .zmi-image .btn-group, 
 .zmi .zmi-file .btn-group {
-    width: -webkit-fill-available;
-    width: 100%;
+	width:100%;
+	width: -webkit-fill-available;
+	height: calc(2.25rem + 2px);
 }
 .zmi .zmi-input-file .custom-file-label,
 .zmi .zmi-input-file .custom-file-label:after {

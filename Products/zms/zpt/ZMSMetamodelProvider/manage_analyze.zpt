@@ -8,7 +8,8 @@
 <form class="form-horizontal"
 	tal:define="global
 		meta_id request/id;
-		res python:here.getDocumentElement().getTreeNodes(request,meta_id); 
+		res python:here.getDocumentElement().getTreeNodes(request,meta_id);
+		res python:'zcatalog_index' in here.getAbsoluteHome() and here.getAbsoluteHome().zcatalog_index({'meta_id':meta_id}) or here.getDocumentElement().getTreeNodes(request,meta_id); 
 		metaObjIds python:here.getMetaobjIds(); 
 		meta_types python:[x for x in metaObjIds if x not in ['ZMS']];
 		metaObjAttrIds python:here.getMetaobjAttrIds(request['id']);
@@ -20,15 +21,15 @@
 		dummy0 python:[here.operator_setitem(stat0,x,[]) for x in attrIds+subObjectIds]">
 
 	<tal:block tal:repeat="ob res"
-		><tal:block tal:define="global statrec python:[{'abs_url':ob.absolute_url(),'titlealt':ob.getTitlealt(request)}]"
+		><tal:block tal:define="global statrec python:[{'abs_url':'zcatalog_index' in here.getAbsoluteHome() and ob.getObject().absolute_url() or ob.absolute_url(),'titlealt':'zcatalog_index' in here.getAbsoluteHome() and ob.getObject().getTitlealt(request) or ob.getTitlealt(request)}]"
 			><tal:block tal:repeat="key attrIds"
-				><tal:block tal:define="global value python:ob.attr(key)"
+				><tal:block tal:define="global value python:'zcatalog_index' in here.getAbsoluteHome() and ob.getObject().attr(key) or ob.attr(key)"
 					><tal:block tal:condition="python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat1,key,stat1[key]+statrec)"></tal:block></tal:block
 					><tal:block tal:condition="not:python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat0,key,stat0[key]+statrec)"></tal:block></tal:block
 				></tal:block
 			></tal:block
 			><tal:block tal:repeat="key subObjectIds"
-				><tal:block tal:define="global value python:ob.getObjChildren(key,request)"
+				><tal:block tal:define="global value python:'zcatalog_index' in here.getAbsoluteHome() and ob.getObject().getObjChildren(key,request) or ob.getObjChildren(key,request)"
 					><tal:block tal:condition="python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat1,key,stat1[key]+statrec)"></tal:block></tal:block
 					><tal:block tal:condition="not:python:value"><tal:block tal:define="global dummy0 python:here.operator_setitem(stat0,key,stat0[key]+statrec)"></tal:block></tal:block
 				></tal:block

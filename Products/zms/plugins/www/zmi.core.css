@@ -375,6 +375,31 @@ body.zmi ul.zmi-container .zmi-item .portalClient .portalClientId {
 	color:#aaa;
 	font-size:12px;
 }
+/* Item Drag or Select */
+body.zmi ul.zmi-container .zmi-item.zmi-selected .center {
+	background-color:rgba(0, 136, 204, 0.10);
+	
+}
+body.zmi ul.zmi-container.zmi-sortable .zmi-item.zmi-data-transfer-drag .center { 
+	border-top: 4px dashed #08c !important;
+	transition: border-top 0.5s ease;
+}
+body.zmi.properties .alert.zmi-dragged-info {
+	width:100%;
+	height:2rem;
+	padding: .35rem 1rem;
+	margin:0;
+	border-radius: 0;
+	border: none;
+	border: 1px solid rgba(0,0,0,0.1);
+	text-align:right;
+}
+@media (min-width: 768px) {
+	body.zmi.properties .alert.zmi-dragged-info {
+		width:80%;
+	}
+}
+
 /* Showing clientids only to Managers */
 body.zmi ul.portalClients.zmi-container .zmi-item .portalClient .portalClientId.zmi-manage-main-change {
 	visibility:hidden;

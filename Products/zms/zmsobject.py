@@ -1385,7 +1385,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       if parent is not None:
         childNodes = parent.getChildNodes(REQUEST)
         old = childNodes.index(self)
-        sibling_sort_ids = map(lambda x: x.sort_id,childNodes)
+        sibling_sort_ids = list(map(lambda x: x.sort_id,childNodes))
         sibling_sort_ids.remove(self.sort_id)
         pos = pos - 1
         if pos < len(sibling_sort_ids):

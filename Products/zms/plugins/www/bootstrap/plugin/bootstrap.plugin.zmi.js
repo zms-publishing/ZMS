@@ -427,7 +427,8 @@ $(function(){
 			var c = 0;
 			$(".zmi-sortable > li").each(function() {
 				if ($(this).attr("id") == that.id) {
-					var pos = $(this).position();
+					// var pos = $(this).position();
+					var pos = $(this.previousSibling).position();
 					var id = $ZMI.actionList.getContextId(dragSrcEl);
 					var href = id+'/manage_moveObjToPos?lang='+getZMILang()+'&pos:int='+c+'&fmt=json';
 					$.get(href,function(result){

@@ -652,6 +652,14 @@ li.zmi-item span.zmi-ids {
 .zmi table.table td.meta-sort {
 	width:5rem;
 }
+.zmi table.table-sm td.meta-sort div select,
+.zmi table.table-sm td.meta-sort div div a  {
+	background-color:rgba(255, 255, 255, 0);
+}
+.zmi table.table-sm td.meta-sort div div a:hover {
+	background-color: #5a6268;
+	border-color: #545b62;
+} 
 .zmi table.table td.meta-sort .btn.btn-secondary i.fas.fa-times,
 .zmi table.table td.meta-default .btn.btn-secondary i.fas.fa-key {
 	color: #999;
@@ -1401,7 +1409,7 @@ body.browse_iframe .toggle {
 	padding:0;
 }
 .zmi.config .preview_textformat {
-	background-color:#b7e1e87d;
+	background-color:#fff;
 	margin:0;
 	border:1px dotted #607D8B;
 }

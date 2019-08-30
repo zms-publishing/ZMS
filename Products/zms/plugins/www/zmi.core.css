@@ -1589,3 +1589,26 @@ body.zmi.browse .table-responsive table td {
 	white-space: nowrap;
 }
 
+/* DESGN DUMMY: Additional Add-Button */
+#zmi-tab ul.zmi-container.pageelements li.zmi-item:last-child .center:after {
+	content: "\f055";
+	font-family: Fontawesome;
+	font-size: 24px;
+	display: block;
+	text-align: center;
+	background-color: #ffffff;
+	line-height: 1;
+	padding: 0;
+	cursor: pointer;
+	position:absolute;
+	border-radius: 50%;
+	width: 22px;
+	height: 22px;
+	margin: -11px 20% 0 40%;
+	color:#818ea2;
+}
+@media (max-width: 767px) {
+	#zmi-tab ul.zmi-container.pageelements li.zmi-item:last-child .center:after {
+		margin: -11px 0 0 50%;
+	}
+}

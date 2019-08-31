@@ -1592,7 +1592,7 @@ body.zmi.browse .table-responsive table td {
 /* DESGN DUMMY: Additional Add-Button */
 #zmi-tab ul.zmi-container.pageelements li.zmi-item:last-child .center:after {
 	content: "\f055";
-	font-family: Fontawesome;
+	font-family: "Font Awesome 5 Free", FontAwesome;
 	font-size: 24px;
 	display: block;
 	text-align: center;

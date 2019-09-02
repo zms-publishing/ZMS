@@ -281,24 +281,31 @@ footer a {
 	margin:0 1.25rem;
 	X-padding: 0.5rem;
 }
-#zmi-tab .card .card-header {
+
+#zmi-tab .card .card-header,
+#zmiIframeAddDialog .card .card-header {
 	border:none;
 	border-bottom: 1px solid rgba(0,0,0,.05);
 }
-#zmi-tab .card .card-header:not(:first-child) {
+#zmi-tab .card .card-header:not(:first-child),
+#zmiIframeAddDialog .card .card-header:not(:first-child) {
 	border-top: 1px solid rgba(0,0,0,.125);
 }
-#zmi-tab .card .card-header.btn-collapse {
+#zmi-tab .card .card-header.btn-collapse,
+#zmiIframeAddDialog .card .card-header {
 	padding:0;
 	background: #354f671a;
 }
-#zmi-tab .card .card-header.btn-collapse .zmi-changes {
+#zmi-tab .card .card-header.btn-collapse .zmi-changes,
+#zmiIframeAddDialog .card .card-header.btn-collapse .zmi-changes {
 	opacity:0.5;
 }
-#zmi-tab .card .card-header.btn-collapse > div > a > i {
+#zmi-tab .card .card-header.btn-collapse > div > a > i,
+#zmiIframeAddDialog .card .card-header.btn-collapse > div > a > i, {
 	width:.867rem;
 }
-#zmi-tab .card .card-header.btn-collapse #zmi-toggle-activity {
+#zmi-tab .card .card-header.btn-collapse #zmi-toggle-activity,
+#zmiIframeAddDialog .card .card-header.btn-collapse #zmi-toggle-activity {
 	margin-left:0.25rem;
 }
 .btn-group.managing, .btn-group.packaging {
@@ -897,6 +904,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	color: #08c !important;
 }
 
+#zmi-action-default-dropdown i,
 .right .zmi-action i {
 	color: #818ea2;
 	font-size: 16px;
@@ -1267,8 +1275,12 @@ body.browse_iframe .toggle {
 
 /* MODAL DIALOG */
 .zmi .modal-backdrop.in {
+	opacity: .1;
+}
+.zmi .modal-backdrop.show {
 	opacity: .3;
 }
+
 @media (min-width: 576px) {
 	.zmi .modal-dialog {
 		max-width: 80vw;
@@ -1590,9 +1602,7 @@ body.zmi.browse .table-responsive table td {
 }
 
 /* DESGN DUMMY: Additional Add-Button */
-#zmi-tab ul.zmi-container.pageelements li.zmi-item:last-child .center:after {
-	content: "\f055";
-	font-family: "Font Awesome 5 Free", FontAwesome;
+#zmi-action-default {
 	font-size: 24px;
 	display: block;
 	text-align: center;
@@ -1607,8 +1617,27 @@ body.zmi.browse .table-responsive table td {
 	margin: -11px 20% 0 40%;
 	color:#818ea2;
 }
+#zmi-action-default > i.fas:before {
+	content: "\f055";
+}
 @media (max-width: 767px) {
-	#zmi-tab ul.zmi-container.pageelements li.zmi-item:last-child .center:after {
+	#zmi-action-default {
 		margin: -11px 0 0 50%;
 	}
+}
+
+li#manage_addProduct .center { 
+	background-color:#0088cc;
+	padding: 1.25rem 1.0rem !important;
+	color:rgba(255, 255, 255, 0.9)
+}
+li#manage_addProduct .center i {
+	font-size: 24px;
+	vertical-align:bottom;
+	margin-right:.3rem
+}
+li#manage_addProduct .center i.fa-plus-circle:before,
+li#manage_addProduct .center i.fa-plus-sign:before {
+	content: "\f055";
+	font-family: "Font Awesome 5 Free", FontAwesome;	
 }

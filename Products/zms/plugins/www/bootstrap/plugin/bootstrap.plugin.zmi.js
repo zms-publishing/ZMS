@@ -516,6 +516,38 @@ $(function(){
 				$ZMI.actionList.out(this);
 			})
 		;
+	// Additional Add Button
+	$(".zmi-container .zmi-item .zmi-action:first").each(function() {
+			var $that = $(this);
+			$that.parents(".zmi-container").append('<div id="zmi-action-default"><i class="fas"></i></div>');
+			$("#zmi-action-default")
+				.hover( function(evt) {
+						var $zmiActionDefault = $(this);
+						var cb = function() {
+							if ($("#zmi-action-default-dropdown").length==0) {
+								var html = '<div id="zmi-action-default-dropdown" class="dropdown-menu">';
+								html += $(".insert-action",$that).nextAll().clone().wrapAll("<div/>").parent().html();
+								html += '</div>'
+								$("body").append(html);
+								$("#zmi-action-default-dropdown")
+									.css({
+										position:"absolute",
+										top:($zmiActionDefault.offset().top+$zmiActionDefault.outerHeight()/2)+"px",
+										left:($zmiActionDefault.offset().left+$zmiActionDefault.outerWidth()/2)+"px"
+									})
+									.hover( function(evt) {
+										},function(evt) {
+											$(this).hide();
+									});
+							}
+							$("#zmi-action-default-dropdown").show();
+						}
+						$ZMI.actionList.over($that,evt,cb);
+					},
+					function(evt) {
+					})
+				;
+		});
 
 	// Inputs
 	$ZMI.initInputFields($("body"));
@@ -1465,13 +1497,19 @@ ZMIActionList.prototype.getContextId = function(el) {
  *
  * @param el
  */
-ZMIActionList.prototype.over = function(el, e) {
+ZMIActionList.prototype.over = function(el, e, cb) {
 	var that = this;
-	$("button.split-left",el).css({visibility:"visible"});
+	if (typeof cb == "undefined") {
+		$("button.split-left",el).css({visibility:"visible"});
+	}
 	var $button = $('button.btn.split-right.dropdown-toggle',el);
 	$('*',$button).hide();
 	// Exit.
 	if ($(el).hasClass("loaded") || $(el).hasClass("loading")) {
+		// Callback.
+		if (typeof cb == "function") {
+			cb();
+		}
 		return;
 	}
 	// Set wait-cursor.
@@ -1596,6 +1634,10 @@ ZMIActionList.prototype.over = function(el, e) {
 		// Reset wait-cursor.
 		$(el).removeClass("loading").addClass("loaded");
 		$(document.body).css( "cursor", "auto");
+		// Callback.
+		if (typeof cb == "function") {
+			cb();
+		}
 	});
 }
 

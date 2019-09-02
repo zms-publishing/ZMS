@@ -1641,3 +1641,13 @@ li#manage_addProduct .center i.fa-plus-sign:before {
 	content: "\f055";
 	font-family: "Font Awesome 5 Free", FontAwesome;	
 }
+
+/* Enforce Collapse Animation */
+@media screen and (prefers-reduced-motion:reduce) {
+	.collapsing {
+		position:relative;
+		height:0;
+		overflow:hidden;
+		transition:height .35s ease;
+	}
+}

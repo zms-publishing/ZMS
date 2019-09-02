@@ -166,6 +166,20 @@ ol.objlist li a.active {
 	font-size:smaller;
 	margin-top:0.8em
 }
+@media print {
+	ol.objlist {
+		position: relative;
+		left: 0;
+		right:auto;
+		border: none;
+		padding: 2.5em;
+		background:none;
+		box-shadow: none;
+	}
+	.box {
+		page-break-inside: avoid;
+	}
+}
 </style>
 
 </body>

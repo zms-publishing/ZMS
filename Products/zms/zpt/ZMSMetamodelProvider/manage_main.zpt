@@ -661,10 +661,12 @@ function selectObject(ignoredUrl, ignoredTitle, nodeName) {
  * Collapse expanded single line code field
  */
 function close_zmi_code(sender) {
-	sender.closest('td').find('.zmi-code textarea').animate({height: '30px'},600);
-	sender.closest('td').find('.zmi-code textarea').css('height','auto');
+	sender.closest('td').find('.zmi-code textarea')
+		.animate({height: '30px'},600)
+		.css('height','auto');
+	sender.closest('td').find('.zmi-code textarea').removeClass('open-zmi-code');
 	sender.closest('td').find('.zmi-code-close').remove();
-}
+}}
 
 $(function(){
 	$("table input[name='ids:list']")
@@ -681,11 +683,14 @@ $(function(){
 		})
 	};
 	$('.single-line.zmi-code.input-group textarea').on('focus', function() {
-		$(this).css('height','auto');
-		$(this).animate({height: $(this).prop('scrollHeight') + 'px'},600);
-		// Add closing button
-		var close_btn = '<i title="Close Editing" onclick="close_zmi_code($(this))" class="zmi-code-close icon-chevron-up text-primary text-center" style="margin: 0 0 0 calc(50% - 40px);">';
-		$(this).closest('td').append(close_btn);
+		if ( !$(this).hasClass('open-zmi-code') ) {
+			$(this).addClass('open-zmi-code');
+			$(this).css('height','auto');
+			$(this).animate({height: $(this).prop('scrollHeight') + 'px'},600);
+			// Add closing button
+			var close_btn = '<i title="Close Editing" onclick="close_zmi_code($(this))" class="zmi-code-close icon-chevron-up text-primary text-center" style="margin: 0 0 0 calc(50% - 40px);">';
+			$(this).closest('td').append(close_btn);
+		}
 	});
 });
 

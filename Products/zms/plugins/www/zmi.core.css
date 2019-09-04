@@ -494,6 +494,9 @@ body.zmi ul.zmi-container .zmi-item.page .center .contentEditable {
 	padding-top: .4em;
 	margin:0;
 }
+body.zmi ul.zmi-container .zmi-item.pageelement .center .contentEditable * {
+	max-width:100%;
+}
 body.zmi  ul.zmi-container .right div input {
 	margin:8px;
 }

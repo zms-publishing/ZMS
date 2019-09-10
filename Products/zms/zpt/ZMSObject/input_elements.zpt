@@ -17,10 +17,11 @@
 					><tal:block tal:condition="python:metaObjAttr['type']=='delimiter'"
 						><tal:block tal:content="structure python:'</div><!-- .card-body --></div><!-- .collapse -->'"></tal:block>
 						<div class="card-header btn-collapse">
-							<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
-								<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
-								<tal:block tal:content="elLabel">the label</tal:block>
-							</a>
+							<a class="btn card-toggle pull-left" data-toggle="collapse" 
+								tal:attributes="href python:'#%s'%metaObjAttr['id']"
+								><tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block
+								><tal:block tal:content="elLabel">the label</tal:block
+							></a>
 						</div><!-- .card-header -->
 						<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042collapse show\042><div class=\042card-body\042>'%metaObjAttr['id']"></tal:block>
 					</tal:block
@@ -75,7 +76,7 @@
 							and (metaObjAttr['id']!='imgsuperres' or (pilutil.enabled() and here.getConfProperty('ZMSGraphic.superres',0)==1))">
 						<div class="form-group row" tal:attributes="id python:'tr_%s'%(elName); class python:' '.join(['form-group','row']+[[],['is-modified']][int(here.attr_is_modified(metaObjAttrId))])">
 							<label tal:attributes="for elName; class python:' '.join(['col-sm-2 control-label']+[[],['mandatory']][int(standard.nvl(metaObjAttr.get('mandatory'),False))])">
-								<span tal:content="elLabel">the label</span>
+								<span tal:content="structure elLabel">the label</span>
 							</label>
 							<div class="col-sm-10"
 								tal:content="structure python:here.getObjInput(metaObjAttr['id'],request)">the control</div><!-- .col-lg-10 -->

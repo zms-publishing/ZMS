@@ -662,7 +662,7 @@ class AccessManager(AccessableContainer):
           usersDefs = userFldr.searchUsers(**kw)
           
           if exact_match:
-            users.extend([x for x in userDefs if x['login'] == search_term])
+            users.extend([x for x in usersDefs if x['login'] == search_term])
           elif search_param != login_attr:
             users.extend(usersDefs)
             # get local users

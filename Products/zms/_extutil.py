@@ -241,7 +241,7 @@ class ZMSExtensions(object):
     except:
       pass
     if prj is not None:
-      pkg = [x in pkg if x not in self.getAllProjspecs(prj)]    
+      pkg = [x for x in pkg if x not in self.getAllProjspecs(prj)]    
     return pkg
 
   def isThemeInstalled(self, context, ext=None):

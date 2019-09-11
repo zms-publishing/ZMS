@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import map
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import urllib.request, urllib.parse, urllib.error

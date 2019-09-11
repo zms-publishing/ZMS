@@ -17,9 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import chr
-from builtins import range
-from builtins import str
 from AccessControl import ClassSecurityInfo
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile

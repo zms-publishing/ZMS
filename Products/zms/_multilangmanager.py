@@ -17,9 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import str
-from builtins import range
 from App.Common import package_home
 import OFS.misc_
 import copy

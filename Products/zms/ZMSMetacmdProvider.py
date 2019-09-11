@@ -18,7 +18,6 @@
 
 
 # Imports.
-from builtins import str
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate

@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import range
 from App.Common import package_home
 import copy
 import urllib.request, urllib.parse, urllib.error

@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import str
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 import tempfile
 # Product Imports.

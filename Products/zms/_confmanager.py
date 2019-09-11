@@ -18,14 +18,10 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import range
-from builtins import str
 from io import StringIO
 from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from DateTime.DateTime import DateTime
-from OFS.CopySupport import absattr
 from OFS.Image import Image
 from OFS.Folder import Folder
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -396,7 +392,7 @@ class ConfManager(
         return stylesheets[0]
       else:
         for css in stylesheets:
-          if absattr( css.id) == id:
+          if css.getId() == id:
             return css
 
     # --------------------------------------------------------------------------
@@ -411,7 +407,7 @@ class ConfManager(
         for folder in [ getattr( container, 'css', None), container]:
           if folder is not None:
             for ob in folder.objectValues(['DTML Method', 'DTML Document', 'File', 'Filesystem File']):
-              id = absattr( ob.id)
+              id = ob.getId()
               path = ob.getPhysicalPath()
               if len([x for x in path if x.endswith('css')]) > 0 and id not in ids:
                 ids.append( id)
@@ -1066,7 +1062,7 @@ class ConfManager(
     ############################################################################
 
     def getWorkflowManager(self):
-      manager = [x for x in self.getDocumentElement().objectValues() if absattr(x.id) == 'workflow_manager']
+      manager = [x for x in self.getDocumentElement().objectValues() if x.getId() == 'workflow_manager']
       if len(manager) == 0:
         class DefaultManager(object):
           def importXml(self, xml): pass

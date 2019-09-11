@@ -18,8 +18,6 @@
 
 
 # Imports.
-from builtins import map
-from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 from zope.interface import implementer

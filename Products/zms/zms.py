@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import str
 from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder

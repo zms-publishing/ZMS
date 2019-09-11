@@ -17,10 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import range
-from builtins import str
-from OFS.CopySupport import absattr
 import copy
 import re
 # Product Imports.

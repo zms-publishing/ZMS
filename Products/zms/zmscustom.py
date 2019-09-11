@@ -17,9 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import range
-from builtins import str
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 #import Globals

@@ -17,9 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import range
-from builtins import str
 import ZPublisher.HTTPRequest
 import copy
 import urllib.request, urllib.parse, urllib.error

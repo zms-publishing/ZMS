@@ -17,9 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import str
-from builtins import range
 import copy
 import sys
 import time

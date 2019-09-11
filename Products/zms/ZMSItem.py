@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import range
-from builtins import str
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent

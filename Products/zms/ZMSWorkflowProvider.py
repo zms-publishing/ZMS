@@ -18,9 +18,6 @@
 ################################################################################
 
 # Imports.
-from builtins import str
-from builtins import range
-from OFS.CopySupport import absattr
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import urllib.request, urllib.parse, urllib.error

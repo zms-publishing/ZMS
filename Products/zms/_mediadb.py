@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import str
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent

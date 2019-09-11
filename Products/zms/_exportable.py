@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import range
-from builtins import str
 from AccessControl import ClassSecurityInfo
 from App.Common import package_home
 from OFS.Image import Image

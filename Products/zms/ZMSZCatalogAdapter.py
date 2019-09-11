@@ -18,7 +18,6 @@
 
 
 # Imports.
-from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import time

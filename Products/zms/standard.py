@@ -26,17 +26,11 @@ Scripts.  It can be accessed from Python with the statement
 "import Products.zms.standard"
 """
 # Imports.
-from builtins import object
-from builtins import chr
-from builtins import hex
-from builtins import range
-from builtins import str
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 from AccessControl import AuthEncoding
 from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
-from OFS.CopySupport import absattr
 from io import BytesIO
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
@@ -1170,17 +1164,6 @@ def parseLangFmtDate(s):
 #( Operators
 #
 ############################################################################
-
-security.declarePublic('operator_absattr')
-def operator_absattr(v):
-  """
-  Returns absolute-attribute of given value.
-  @param v: Value
-  @type v: C{any}
-  @return: the absolute-attribute of the value
-  @rtype: C{type}
-  """
-  return absattr(v)
 
 security.declarePublic('operator_gettype')
 def operator_gettype(v):

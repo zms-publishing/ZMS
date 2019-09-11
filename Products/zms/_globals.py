@@ -20,10 +20,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import range
-from builtins import chr
-from builtins import str
 from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 

@@ -17,9 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import range
-from builtins import chr
-from builtins import str
 from ZPublisher.Iterators import filestream_iterator
 from App.config import getConfiguration
 import fnmatch

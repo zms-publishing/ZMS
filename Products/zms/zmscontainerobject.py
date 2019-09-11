@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import range
-from builtins import str
 from App.Common import package_home
 from OFS.role import RoleManager
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile

@@ -18,11 +18,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import range
-from builtins import map
-from builtins import filter
-from builtins import str
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 # TODO import Globals

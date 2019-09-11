@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates import ZopePageTemplate

@@ -19,8 +19,6 @@
 ################################################################################
 
 # Imports
-from builtins import object
-from builtins import str
 import pyexpat
 import time
 # Product Imports.

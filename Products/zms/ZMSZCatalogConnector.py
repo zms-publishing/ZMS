@@ -18,9 +18,6 @@
 
 
 # Imports.
-from builtins import object
-from builtins import range
-from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog import ZCatalog
 from zope.interface import implementer

@@ -17,9 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import range
-from builtins import str
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import copy

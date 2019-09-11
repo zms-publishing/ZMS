@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import map
 from App.Common import package_home
 # Product Imports.
 from . import _xmllib

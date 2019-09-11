@@ -17,8 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import str
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.userfolder import UserFolder
 import copy

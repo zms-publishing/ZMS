@@ -18,9 +18,6 @@
 
 
 # Imports.
-from builtins import object
-from builtins import range
-from builtins import str
 from io import BytesIO
 from distutils.version import LooseVersion
 import ZPublisher.HTTPRequest

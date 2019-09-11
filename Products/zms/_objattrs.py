@@ -17,9 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import range
-from builtins import str
 from DateTime.DateTime import DateTime
 from OFS.Image import Image, File
 import ZPublisher.HTTPRequest
@@ -735,7 +732,7 @@ class ObjAttrs(object):
       datatype = obj_attr.get('datatype_key', _globals.DT_UNKNOWN)
       
       #-- VALUE
-      if _globals.is_str_type(v):
+      if isinstance(v, str):
         chars = ''.join([ x for x in string.whitespace if x != '\t'])
         v = v.strip(chars)
       # Retrieve v from options.

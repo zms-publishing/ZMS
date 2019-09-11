@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import map
 from zope.interface import implementer
 # Product Imports.
 from . import IZMSMetamodelProvider, IZMSFormatProvider

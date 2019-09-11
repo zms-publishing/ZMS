@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 # Product Imports.
 from . import _blobfields

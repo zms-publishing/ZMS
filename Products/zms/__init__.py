@@ -19,19 +19,13 @@
 
 """ZMS Product"""
 # Documentation string.
-from builtins import range
-from builtins import str
 __doc__ = """initialization module."""
 # Version string.
 __version__ = '0.1'
 
 # Imports.
 from App.Common import package_home
-try:
-  import configparser
-except ImportError:
-  # Python3
-  import configparser as ConfigParser
+import configparser as ConfigParser
 import OFS.misc_
 import fnmatch
 import os

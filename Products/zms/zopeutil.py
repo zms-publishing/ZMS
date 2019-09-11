@@ -18,7 +18,6 @@
 
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
-from OFS.CopySupport import absattr
 from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
@@ -44,7 +43,7 @@ def getExternalMethodModuleName(container, id):
   m = id
   next = nextObject(container,'Folder')
   if hasattr(next,"id"):
-    m = '%s.%s'%(absattr(getattr(next,"id")),id)
+    m = '%s.%s'%(next.getId(),id)
   return m
 
 security.declarePublic('addObject')
@@ -77,7 +76,6 @@ def getObject(container, id):
   """
   Get Zope-object from container.
   """
-  id = standard.operator_absattr(id)
   ob = getattr(container, id, None)
   return ob
 

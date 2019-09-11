@@ -17,10 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import range
-from builtins import chr
-from builtins import str
 from io import StringIO
 import copy
 import os

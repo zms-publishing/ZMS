@@ -17,13 +17,11 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import str
 import copy
 import time
 import urllib.request, urllib.parse, urllib.error
 from OFS import Moniker
-from OFS.CopySupport import _cb_decode, _cb_encode, absattr, CopyError # TODO , eNoData, eNotFound, eInvalid
+from OFS.CopySupport import _cb_decode, _cb_encode, CopyError # TODO , eNoData, eNotFound, eInvalid
 # Product Imports.
 from . import standard
 
@@ -43,7 +41,7 @@ def normalize_ids_after_copy(node, id_prefix='e', ids=[]):
   copy_of_prefix = 'copy_of_'
   for childNode in node.getChildNodes():
     # validate id
-    id = absattr(childNode.id)
+    id = childNode.getId()
     new_id = None
     if '*' in ids or id in ids or id.startswith(copy_of_prefix):
       # reset ref_by
@@ -77,7 +75,7 @@ def normalize_ids_after_move(node, id_prefix='e', ids=[]):
   copy_of_prefix = 'copy_of_'
   for childNode in node.getChildNodes():
     # validate id
-    id = absattr(childNode.id)
+    id = childNode.getId()
     new_id = None
     if '*' in ids or id in ids or id.startswith(copy_of_prefix):
       # init object-state
@@ -188,7 +186,7 @@ class CopySupport(object):
       copy_of_prefix = 'copy_of_'
       sort_id = REQUEST.get('_sort_id', 0) + 1
       for ob in self.getChildNodes():
-        id = absattr(ob.id)
+        id = ob.getId()
         if (id in ids) or (op == OP_MOVE and copy_of_prefix+id in ids):
           ob.setSortId(sort_id)
           sort_id += 1
@@ -239,7 +237,7 @@ class CopySupport(object):
       op = cp[0]
       cp = (0, cp[1])
       cp = _cb_encode(cp)
-      ids = [self._get_id(absattr(x.id)) for x in self._get_obs(cp)]
+      ids = [self._get_id(x.getId()) for x in self._get_obs(cp)]
       oblist = self._get_obs(cp)
       
       # Paste objects.

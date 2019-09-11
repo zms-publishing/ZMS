@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
 import tempfile
 from App.Common import package_home
 # Product Imports.
@@ -284,10 +283,6 @@ class DeprecatedAPI(object):
     warn(self, 're_sub', 'Products.zms.standard.re_sub')
     return standard.re_sub(pattern, replacement, subject, ignorecase)
 
-  def operator_absattr(self, v):
-    warn(self, 'operator_absattr', 'Products.zms.standard.operator_absattr')
-    return standard.operator_absattr(v)
-  
   def operator_gettype(self, v):
     warn(self, 'operator_gettype', 'Products.zms.standard.operator_gettype')
     return standard.operator_gettype(v)

@@ -22,8 +22,6 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import str
 import copy
 import time
 import urllib.request, urllib.parse, urllib.error

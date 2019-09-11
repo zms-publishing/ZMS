@@ -17,16 +17,10 @@
 ################################################################################
 
 # Imports.
-from builtins import object
-from builtins import str
 from DateTime.DateTime import DateTime
 from ZPublisher import HTTPRangeSupport, HTTPRequest
-from OFS.CopySupport import absattr
 from OFS.Image import Image, File
-try:
-  from io import StringIO
-except ImportError:
-  from io import StringIO
+from io import StringIO
 # from mimetools import choose_boundary
 from email.generator import _make_boundary as choose_boundary
 import copy
@@ -979,7 +973,7 @@ class MyBlobWrapper(object):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getFilename__roles__ = None
     def getFilename(self):
-      return absattr( self.f.id)
+      return self.f.getId()
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlobWrapper.getData:

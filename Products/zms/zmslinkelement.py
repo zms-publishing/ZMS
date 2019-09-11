@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from builtins import str
 from AccessControl import ClassSecurityInfo
 # TODO import Globals
 import sys

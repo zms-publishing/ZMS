@@ -17,8 +17,6 @@
 ################################################################################
 
 # Product Imports.
-from builtins import object
-from builtins import str
 from . import standard
 from . import _zreferableitem
 

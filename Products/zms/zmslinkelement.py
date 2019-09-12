@@ -156,7 +156,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
           self.setObjStateModified(REQUEST)
           
           ##### Properties ####
-          for key in self.getObjAttrs().keys():
+          for key in self.getObjAttrs():
             obj_attr = self.getObjAttr(key)
             if obj_attr['xml']:
               self.setReqProperty(key, REQUEST)

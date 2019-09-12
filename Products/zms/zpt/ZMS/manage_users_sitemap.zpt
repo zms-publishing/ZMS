@@ -10,7 +10,7 @@
 		multilang python:len(here.getLangIds())>1;
 		userDefs python:here.getSecurityUsers();
 		roleDefs python:here.getSecurityRoles();
-		userNames python:here.sort_list(userDefs.keys());
+		userNames python:here.sort_list(list(userDefs));
 		valid_roles python:here.difference_list(here.getUserDefinedRoles(),['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']);
 		langs_optpl python:[[x,here.getLanguageLabel(x)] for x in here.getLanguages(request)];
 		roles_optpl python:[['ZMSAdministrator',here.getZMILangStr('ROLE_ZMSADMINISTRATOR')],
@@ -20,11 +20,11 @@
 												['ZMSUserAdministrator',here.getZMILangStr('ROLE_ZMSUSERADMINISTRATOR')],
 												];
 		l python:[];
-		dummy0 python:[l.extend(list(x.get('nodes',{}).keys())) for x in userDefs.values()];
-		dummy0 python:[l.extend(list(roleDefs[x].keys())) for x in roleDefs];
+		dummy0 python:[l.extend(list(x.get('nodes',{}))) for x in userDefs.values()];
+		dummy0 python:[l.extend(list(roleDefs[x])) for x in roleDefs];
 		d python:{};
 		dummy0 python:[here.operator_setitem(d,x,1) for x in l];
-		nodes python:list(d.keys());">
+		nodes python:list(d);">
 <tal:block tal:repeat="role valid_roles">
 	<tal:block tal:condition="python:role not in [x[0] for x in roles_optpl]">
 		<tal:block tal:define="dummy0 python:roles_optpl.append([role,role])"></tal:block>

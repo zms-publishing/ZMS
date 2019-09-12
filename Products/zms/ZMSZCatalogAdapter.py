@@ -201,7 +201,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       return ['home_id']+self.getAttrIds()
 
     def getAttrIds(self):
-      return list(self.getAttrs().keys())
+      return list(self.getAttrs())
 
     def setAttrIds(self, attr_ids):
       attrs = self.getAttrs()
@@ -273,7 +273,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
 
       # Add node.
       def add_catalog_index(node, d):
-        for k in d.keys():
+        for k in d:
           v = d[k]
           if isinstance(v, dict):
             def to_xml(o):

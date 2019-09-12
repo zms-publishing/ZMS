@@ -294,7 +294,7 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
     zmscontext.delConfProperty(key)
   # set new conf-properties
   reqprefix = 'permalink_key_'
-  for reqkey in request.form.keys():
+  for reqkey in request.form:
     if reqkey.find(reqprefix) >= 0:
       id = reqkey[len(reqprefix):]
       k = request.get('permalink_key_%s'%id)

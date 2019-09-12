@@ -77,15 +77,15 @@
 					</span>
 					</div><!-- .col-sm-8 -->
 				</div><!-- .form-group -->
-				<div class="form-group row activity" tal:condition="python:'active' in objAttrs.keys()">
+				<div class="form-group row activity" tal:condition="python:'active' in objAttrs">
 					<label class="col-sm-2 control-label" tal:attributes="for python:here.getObjAttrName(here.getObjAttr('active'),request['lang'])"><span tal:content="python:here.getZMILangStr('ATTR_ACTIVE')">the label</span></label>
 					<div class="col-sm-10"><tal:block tal:content="structure python:here.getObjInput('active',request)">the control</tal:block></div>
 				</div>
-				<div class="form-group row activity_start" tal:condition="python:'attr_active_start' in objAttrs.keys()">
+				<div class="form-group row activity_start" tal:condition="python:'attr_active_start' in objAttrs">
 					<label class="col-sm-2 control-label" tal:attributes="for python:here.getObjAttrName(here.getObjAttr('attr_active_start'),request['lang'])"><span tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</span></label>
 					<div class="input-group" tal:content="structure python:here.getObjInput('attr_active_start',request)">the control</div>
 				</div>
-				<div class="form-group row activity_end" tal:condition="python:'attr_active_end' in objAttrs.keys()">
+				<div class="form-group row activity_end" tal:condition="python:'attr_active_end' in objAttrs">
 					<label class="col-sm-2 control-label" tal:attributes="for python:here.getObjAttrName(here.getObjAttr('attr_active_end'),request['lang'])"><span tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span></label>
 					<div class="input-group" tal:content="structure python:here.getObjInput('attr_active_end',request)">the control</div>
 				</div>
@@ -129,7 +129,7 @@
 							seq_lang python:coverage[coverage.find('.')+1:];
 							seq_desc_langs python:here.getDescendantLanguages(seq_lang)">
 						<tal:block tal:condition="python:len(seq_desc_langs)>=1">
-							<div class="form-group row coverage" tal:condition="python:'attr_dc_coverage' in objAttrs.keys()">
+							<div class="form-group row coverage" tal:condition="python:'attr_dc_coverage' in objAttrs">
 								<label class="col-sm-2 control-label" for="attr_dc_coverage"><span tal:content="structure python:here.getZMILangStr('ATTR_DC_COVERAGE')">the label</span></label>
 								<div class="col-sm-10">
 									<tal:block tal:condition="python:request['lang']==seq_lang">
@@ -171,7 +171,7 @@
 		<tal:block 
 			tal:define="constraints python:here.attr('check_constraints')"
 			tal:condition="constraints">
-			<tal:block tal:on-error="nothing" tal:repeat="category python:constraints.keys()">
+			<tal:block tal:on-error="nothing" tal:repeat="category python:list(constraints)">
 				<div tal:attributes="class python:'constraint constraint-%s'%category[:-1].lower()">
 					<tal:block tal:content="structure python:'<strong>'+here.zmi_icon(name='icon-warning-sign',extra='title=\042%s\042'%category[:-1])+' '+category[:-1]+'</strong>: '+'; '.join([x[1] for x in constraints[category]])"></tal:block>
 				</div>

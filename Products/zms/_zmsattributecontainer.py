@@ -128,7 +128,7 @@ class ZMSAttributeContainer(
   def manage_changeProperties(self, REQUEST, RESPONSE): 
     """ ZMSAttributeContainer.manage_changeProperties """
     message = ''
-    for key in self.getObjAttrs().keys():
+    for key in self.getObjAttrs():
       obj_attr=self.getObjAttr(key)
       if obj_attr['multilang']:
         for lang in self.getLangIds():

@@ -71,7 +71,7 @@ def recurse_downloadRessources(self, base_path, REQUEST):
   langs = self.getLangIds()
   prim_lang = self.getPrimaryLanguage()
   obj_attrs = self.getObjAttrs()
-  for key in obj_attrs.keys():
+  for key in obj_attrs:
     obj_attr = self.getObjAttr(key)
     datatype = obj_attr['datatype_key']
     if datatype in _globals.DT_BLOBS:
@@ -101,7 +101,7 @@ def recurse_downloadRessources(self, base_path, REQUEST):
             for r in v:
               uu = []
               if isinstance(r, dict):
-                for k in r.keys():
+                for k in r:
                   u = r[k]
                   if isinstance(u, MyImage) or isinstance(u, MyFile):
                     uu.append( u)
@@ -212,7 +212,7 @@ def thumbnailImageFields(self, lang, REQUEST):
   message = ''
   if pilutil.enabled():
     obj_attrs = self.getObjAttrs()
-    for key in obj_attrs.keys():
+    for key in obj_attrs:
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
       if datatype == _globals.DT_IMAGE:
@@ -230,7 +230,7 @@ by loresKey.
 def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
   message = ''
   try:
-    if hiresKey in self.getObjAttrs().keys() and REQUEST.get('generate_preview_%s_%s'%(hiresKey,lang),0) == 1:
+    if hiresKey in self.getObjAttrs() and REQUEST.get('generate_preview_%s_%s'%(hiresKey,lang),0) == 1:
       req = {'lang':lang,'preview':'preview'}
       hiresImg = self.getObjProperty(hiresKey,req)
       loresImg = self.getObjProperty(loresKey,req)
@@ -463,7 +463,7 @@ class MyBlob(object):
                                 closest_pos = (
                                     ((start - first_size) >> 16 << 16) +
                                     first_size)
-                            pos = min(closest_pos, max(pdata_map.keys()))
+                            pos = min(closest_pos, max(pdata_map))
                             data = pdata_map[pos]
 
                             while data is not None:

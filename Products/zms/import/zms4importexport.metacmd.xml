@@ -87,7 +87,7 @@ def manage_zms4import( self):
 				data = read_file(os.path.join(tempfolder,filename))
 				if request.get('system')==1 and filename.endswith('system.xml'):
 					d = self.parseXmlString(data)
-					for k in d.keys():
+					for k in d:
 						self.setConfProperty(k,d[k])
 					msg = 'OK'
 				if request.get('languages')==1 and filename.endswith('langs.xml'):

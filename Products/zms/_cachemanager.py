@@ -50,7 +50,7 @@ class ReqBuff(object):
       reqBuffId = self.getReqBuffId(prefix)
       if len(prefix) > 0:
         reqBuffId += '.'
-      for key in list(buff.__dict__.keys()):
+      for key in buff.__dict__:
         if key.startswith(reqBuffId):
           delattr(buff, key)
  
@@ -92,7 +92,7 @@ class ReqBuff(object):
       if request.get('zmi-measurement'):
         buff = request.get('__buff__', Buff())
         measurements = getattr(buff, 'measurements', {})
-        for key in measurements.keys():
+        for key in measurements:
           if key.find(category)>=0:
             del measurements[key]
         setattr(buff, 'measurements', measurements)

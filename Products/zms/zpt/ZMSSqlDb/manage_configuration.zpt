@@ -293,7 +293,7 @@ function mms_normalize_rows(el_tbody) {
 					<td>
 						<select class="form-control input-xs" tal:attributes="name python:'attr_type_%s'%column['id']" onchange="onAttrTypeChange(this)">
 							<option value=""></option>
-							<tal:block tal:repeat="type python:here.sort_list(here.valid_types.keys())">
+							<tal:block tal:repeat="type python:here.sort_list(list(here.valid_types))">
 								<option tal:attributes="value type; selected python:['','selected'][int(type in column)]" tal:content="type">the type</option>)
 							</tal:block>
 						</select>
@@ -487,7 +487,7 @@ function mms_normalize_rows(el_tbody) {
 					<td>
 						<select class="form-control input-xs" name="attr_type">
 							<option value=""></option>
-							<tal:block tal:repeat="type python:here.sort_list(here.valid_types.keys())">
+							<tal:block tal:repeat="type python:here.sort_list(list(here.valid_types))">
 								<option tal:attributes="value type" tal:content="type">the type</option>)
 							</tal:block>
 						</select>

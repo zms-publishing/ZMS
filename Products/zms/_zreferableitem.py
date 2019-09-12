@@ -272,7 +272,7 @@ class ZReferableItem(object):
                 if ref_ob is not None:
                   ref = self.getRefObjPath(ref_ob)
                   d[ref] = 1
-    return list(set(d.keys()))
+    return list(set(d))
 
 
   # ----------------------------------------------------------------------------

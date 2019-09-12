@@ -24,7 +24,7 @@
 			userAdderPlugin python:here.getUserAdderPlugin();
 			userDefs python:here.getSecurityUsers();
 			roleDefs python:here.getSecurityRoles();
-			userNames python:here.sort_list(list(userDefs.keys()));"
+			userNames python:here.sort_list(list(userDefs));"
 		><form id="insertUserForm" class="form-horizontal" onsubmit="return zmiModalInsertUserLoad();">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group input-group btn-group mb-4"
@@ -133,7 +133,7 @@ function zmiModalInsertUserOpen(context) {
 		userAdderPlugin python:here.getUserAdderPlugin();
 		userDefs python:here.getSecurityUsers();
 		roleDefs python:here.getSecurityRoles();
-		userNames python:here.sort_list(list(userDefs.keys()));
+		userNames python:here.sort_list(list(userDefs));
 		langs_optpl python:[[x,here.getLanguageLabel(x)] for x in here.getLanguages(request)];
 		roles_optpl python:[(x,here.getRoleName(x)) for x in ['ZMSAdministrator','ZMSEditor','ZMSAuthor','ZMSSubscriber','ZMSUserAdministrator']+list(roleDefs)]">
 
@@ -291,7 +291,7 @@ function zmiModalInsertUserOpen(context) {
 					<div class="controls save"
 							tal:define="
 								security_roles python:here.getRootElement().getSecurityRoles().get(request['id'],{});
-								nodes python:list(security_roles.get('nodes',{}).keys());
+								nodes python:list(security_roles.get('nodes',{}));
 								security_users python:here.getConfProperty('ZMS.security.users',{}).values();
 								is_deletable python:len(list(nodes))==0 and not len([x for x in security_users if len([y for y in x.get('nodes',{}).values() if request['id'] in y['roles']])>0])>0">
 							<button type="submit" name="btn" class="btn btn-danger"
@@ -592,7 +592,7 @@ function zmiModalInsertUserOpen(context) {
 				</tr>
 			</thead>
 			<tbody>
-				<tr tal:repeat="validRole python:here.sort_list(list(roleDefs.keys()))" class="userRole">
+				<tr tal:repeat="validRole python:here.sort_list(list(roleDefs))" class="userRole">
 					<td tal:define="
 						security_users python:list(here.getConfProperty('ZMS.security.users',{}).values());
 						security_roles python:list(here.getConfProperty('ZMS.security.roles',{}).values());

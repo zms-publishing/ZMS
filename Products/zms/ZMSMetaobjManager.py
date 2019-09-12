@@ -76,7 +76,7 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
 # ------------------------------------------------------------------------------
 def effective_ids(self, ids):
   l = []
-  keys = list(self.model.keys())
+  keys = list(self.model)
   if ids:
     for id in [x for x in ids if x in keys]:
       metaObj = self.getMetaobj( id)
@@ -190,7 +190,7 @@ class ZMSMetaobjManager(object):
     def _importMetaobjXml(self, item, createIfNotExists=1, createIdsFilter=None):
       ids = []
       id = item['key']
-      meta_types = list(self.model.keys())
+      meta_types = list(self.model)
       if (createIfNotExists == 1) and \
          (createIdsFilter is None or (id in createIdsFilter)):
         # Register Meta Attributes.

@@ -67,7 +67,7 @@ def recurse_addMediaDb(self, mediadb):
       v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
       c = 0
       for r in v:
-        for k in r.keys():
+        for k in r:
           u = r[k]
           if isinstance(u,_blobfields.MyBlob):
             mediadbfile = mediadb.storeFile(u)
@@ -77,7 +77,7 @@ def recurse_addMediaDb(self, mediadb):
   
   # Process object. 
   else:
-    for key in self.getObjAttrs().keys():
+    for key in self.getObjAttrs():
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
       if datatype in _globals.DT_BLOBS:
@@ -92,7 +92,7 @@ def recurse_addMediaDb(self, mediadb):
               _objattrs.setobjattr(self,obj_vers,obj_attr,v,lang)
   
   # Process children.
-  for ob in self.objectValues( self.dGlobalAttrs.keys()):
+  for ob in self.objectValues( self.dGlobalAttrs):
     recurse_addMediaDb(ob,mediadb)
 
 
@@ -107,7 +107,7 @@ def getFilenamesFromValue( v):
     for i in v:
       rtn.extend( getFilenamesFromValue( i))
   elif type( v) is dict:
-    for k in v.keys():
+    for k in v:
       rtn.extend( getFilenamesFromValue( v[k]))
   elif isinstance(v,_blobfields.MyBlob):
     filename = v.getMediadbfile()
@@ -214,7 +214,7 @@ def recurse_delMediaDb(self, mediadb):
     for obj_vers in self.getObjVersions():
       v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
       for r in v:
-        for k in r.keys():
+        for k in r:
           u = r[k]
           mediadbfile = getattr(u,'mediadbfile',None)
           if mediadbfile is not None:
@@ -222,7 +222,7 @@ def recurse_delMediaDb(self, mediadb):
             u.data = mediadb.retrieveFile(mediadbfile)
   # Process object. 
   else:
-    for key in self.getObjAttrs().keys():
+    for key in self.getObjAttrs():
       obj_attr = self.getObjAttr(key)
       datatype = obj_attr['datatype_key']
       if datatype in _globals.DT_BLOBS:
@@ -451,7 +451,7 @@ class MediaDb(
             for obj_vers in obj.getObjVersions():
               v = _objattrs.getobjattr(obj,obj_vers,obj_attr,lang)
               for r in v:
-                for k in r.keys():
+                for k in r:
                   u = r[k]
                   mediadbfile = getattr(u,'mediadbfile',None)
                   if mediadbfile is not None:
@@ -462,7 +462,7 @@ class MediaDb(
         # Process object. 
         else:
           obj_attrs = obj.getObjAttrs()
-          for si in obj_attrs.keys():
+          for si in obj_attrs:
             obj_attr = obj_attrs[si]
             datatype = obj_attr['datatype'] 
             multilang = obj_attr['multilang']

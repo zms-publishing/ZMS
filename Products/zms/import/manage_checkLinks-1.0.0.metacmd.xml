@@ -129,7 +129,7 @@ def manage_checkLinks( self):
         key = filter(lambda x:x['type']=='list',objAttrs)[0]['id']
       else:
         th = False
-        for key in filter(lambda x:not x.startswith('manage'),node.getObjAttrs().keys()):
+        for key in [x for x in node.getObjAttrs() if not x.startswith('manage')]:
           objAttr = node.getObjAttr(key)
           datatype = objAttr['datatype']
           if datatype in ['richtext','string','text','url']:

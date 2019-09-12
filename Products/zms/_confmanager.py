@@ -102,8 +102,7 @@ class ConfDict(object):
 def initConf(self, profile, remote=True):
   standard.writeBlock( self, '[initConf]: profile='+profile)
   createIfNotExists = True
-  files = self.getConfFiles(remote)
-  for filename in files.keys():
+  for filename in self.getConfFiles(remote):
     label = files[filename]
     if label.startswith(profile + '.') or label.startswith(profile + '-'):
       standard.writeBlock( self, '[initConf]: filename='+filename)
@@ -118,8 +117,7 @@ def initConf(self, profile, remote=True):
 # ------------------------------------------------------------------------------
 def updateConf(self):
   createIfNotExists = False
-  filenames = self.getConfFiles().keys()
-  for filename in filenames:
+  for filename in self.getConfFiles():
     try:
       self.importConf(filename)
     except:
@@ -259,7 +257,7 @@ class ConfManager(
                   remote_xmldoc = xml.dom.minidom.parseString(remote_xml)
                   for remote_file in remote_xmldoc.getElementsByTagName('file'):
                     filename = remote_file.attributes['id'].value
-                    if filename not in filenames.keys():
+                    if filename not in filenames:
                       filenames[location+filename] = filename+' ('+remote_file.attributes['title'].value+')'
                 except:
                   standard.writeError(self, "[getConfFiles]: can't get conf-files from remote URL=%s"%remote_location)
@@ -275,7 +273,7 @@ class ConfManager(
           break
       # Filter.
       if pattern is not None:
-        lk = list(filenames.keys())
+        lk = list(filenames)
         for k in lk:
           if k.find(pattern) < 0:
             del filenames[k]
@@ -525,7 +523,7 @@ class ConfManager(
             r[k] = d[k]
         return self.str_json(r)
       if inherited:
-        d = list(d.keys())
+        d = list(d)
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           l = portalMaster.getConfProperties(prefix,inherited,REQUEST)

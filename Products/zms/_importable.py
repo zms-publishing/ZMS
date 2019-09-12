@@ -50,7 +50,7 @@ def recurse_importContent(self, folder):
   langs = self.getLangIds()
   prim_lang = self.getPrimaryLanguage()
   obj_attrs = self.getObjAttrs()
-  for key in obj_attrs.keys():
+  for key in obj_attrs:
     obj_attr = self.getObjAttr(key)
     datatype = obj_attr['datatype_key']
     if datatype in _globals.DT_BLOBS:

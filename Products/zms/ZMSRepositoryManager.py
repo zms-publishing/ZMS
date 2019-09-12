@@ -202,7 +202,7 @@ class ZMSRepositoryManager(
       diff = []
       local = self.localFiles(provider)
       remote = self.remoteFiles(provider)
-      filenames = sorted(set(list(local.keys())+list(remote.keys())))
+      filenames = sorted(set(list(local)+list(remote)))
       for filename in filenames:
         l = local.get(filename, {})
         r = remote.get(filename, {})

@@ -616,7 +616,7 @@ class MultiLanguageManager(object):
           value = []
           ids = REQUEST.get('ids', [])
           dict = self.get_lang_dict()
-          for id in dict.keys():
+          for id in dict:
             item = dict[id].copy()
             item['key'] = id
             if id in ids or len(ids) == 0:

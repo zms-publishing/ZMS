@@ -138,7 +138,7 @@ class ZMSContainerObject(
       lang = REQUEST.get('lang', prim_lang)
       
       attrs = []
-      for key in values.keys():
+      for key in values:
         attrs.extend([key, values[key]])
       
       # Get new id.

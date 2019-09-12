@@ -170,7 +170,7 @@ class DeprecatedAPI(object):
         if len(key) > 0:
           value[key] = value.get(key, '') + v
     colormap = {}
-    for key in value.keys():
+    for key in value:
       if key.startswith('.') and \
          key.find('Color') > 0 and \
          key.find('.cms') < 0 and \

@@ -144,7 +144,7 @@ class ZMSMetacmdProvider(
         o = self.getMetaCmd(id)
         if o and not o.get('acquired', 0):
           d = {}
-          for k in [x for x in o.keys() if x not in ['bobobase_modification_time', 'data', 'home', 'meta_type']]:
+          for k in [x for x in o if x not in ['bobobase_modification_time', 'data', 'home', 'meta_type']]:
             d[k] = o[k]
           ob = getattr(self, id)
           if ob:
@@ -402,7 +402,7 @@ class ZMSMetacmdProvider(
         else:
           metaCmd = metaCmd.copy()
           metaCmd['home'] = self.aq_parent
-          metaCmd['stereotype'] = ' '.join([x for x in stereotypes.keys() if metaCmd['id'].startswith(stereotypes[x])])
+          metaCmd['stereotype'] = ' '.join([x for x in stereotypes if metaCmd['id'].startswith(stereotypes[x])])
           metaCmd['action'] = '%smanage_executeMetacmd?id='+metaCmd['id']
           if metaCmd.get('execution') == 2:
             metaCmd['action'] = 'javascript:%%s'+metaCmd['id']

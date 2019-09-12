@@ -182,18 +182,18 @@ class Builder(object):
           else:
             # Get new id.
             id = None
-            if self.oRootTag == 'ZMS' and 'id' in attrs.keys():
+            if self.oRootTag == 'ZMS' and 'id' in attrs:
               id = attrs.get( 'id')
               prefix = standard.id_prefix(id)
               self.getNewId(prefix) # force sequence to generate new-id
-            elif 'id_fix' in attrs.keys():
+            elif 'id_fix' in attrs:
               id = attrs.get( 'id_fix')
               prefix = standard.id_prefix(id)
               self.getNewId(prefix) # force sequence to generate new-id
-            elif 'id_prefix' in attrs.keys():
+            elif 'id_prefix' in attrs:
               prefix = attrs.get( 'id_prefix')
               id = self.getNewId(prefix)
-            elif 'id' in attrs.keys():
+            elif 'id' in attrs:
               id = attrs.get( 'id')
               prefix = standard.id_prefix(id)
               id = self.getNewId(prefix)

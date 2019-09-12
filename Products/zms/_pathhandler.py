@@ -80,7 +80,7 @@ def handleBlobAttrs(self, name, REQUEST):
   if len(langs) == 1 and name.find('_%s.'%langs[0]) > 0:
     name_without_lang_suffix = name.replace('_%s.'%langs[0], '.')
   for ob in [self]+self.filteredChildNodes(REQUEST, ['ZMSFile']):
-    for key in ob.getObjAttrs().keys():
+    for key in ob.getObjAttrs():
       obj_attr = ob.getObjAttr(key)
       datatype = obj_attr['datatype_key']
       if datatype in _globals.DT_BLOBS:
@@ -251,7 +251,7 @@ class PathHandler(object):
               i = int( name[1:])
               r = self.getObjProperty( self.getMetaobj( self.meta_id)['attrs'][0]['id'], request)
               d = r[i]
-              for key in d.keys():
+              for key in d:
                 value = d[key]
                 if isinstance(value, _blobfields.MyImage) or isinstance(value, _blobfields.MyFile):
                   value = value._getCopy()
@@ -269,7 +269,7 @@ class PathHandler(object):
             try:
               i = int( name[1:])
               obj_attrs = self.getObjAttrs()
-              for key in self.getObjAttrs().keys():
+              for key in self.getObjAttrs():
                 obj_attr = obj_attrs[ key]
                 if obj_attr['datatype_key'] == _globals.DT_LIST and \
                    obj_attr['repetitive']:

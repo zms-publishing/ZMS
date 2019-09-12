@@ -141,7 +141,7 @@ class VersionItem(object):
             obj_version = getattr( self, self.version_live_id)
           if obj_version is None and self.version_work_id is not None and hasattr( self, self.version_work_id):
             obj_version = getattr( self, self.version_work_id)
-          if 'change_history' in self.getObjAttrs().keys():
+          if 'change_history' in self.getObjAttrs():
             change_history = []
             record = {}
             record[ 'version_dt'] = standard.getDateTime( time.time())
@@ -185,7 +185,7 @@ class VersionItem(object):
       # Make object-states unique.
       d = {}
       [operator.setitem(d, x, None) for x in states]
-      states = list(d.keys())
+      states = list(d)
       # Return object-states.
       return states
 
@@ -782,7 +782,7 @@ class VersionItem(object):
                 except:
                   pass
         #-- Recursion.
-        for ob in self.objectValues(list(self.dGlobalAttrs.keys())):
+        for ob in self.objectValues(list(self.dGlobalAttrs)):
           count += ob.packHistory()
       return count
 
@@ -827,7 +827,7 @@ class VersionItem(object):
       minor_version = int( version_nr[ version_nr.rfind( '.')+1:])
       REQUEST.set( 'ZMS_VERSION_%s'%self.id, None)
       version_dt = None
-      if 'change_history' in self.getObjAttrs().keys():
+      if 'change_history' in self.getObjAttrs():
         change_history = copy.copy( self.getObjProperty( 'change_history', REQUEST))
         change_history.reverse()
         for item in change_history:
@@ -901,7 +901,7 @@ class VersionItem(object):
       REQUEST.set( 'ZMS_VERSION_%s'%self.id, None)
       version_dt = None
       change_history = []
-      if 'change_history' in self.getObjAttrs().keys():
+      if 'change_history' in self.getObjAttrs():
         change_history = copy.copy( self.getObjProperty( 'change_history', REQUEST))
         change_history.reverse()
         for item in change_history:
@@ -1029,7 +1029,7 @@ class VersionItem(object):
       if ob_version is not None and \
          ob_version.id != self.version_work_id:
         REQUEST.set( 'ZMS_VERSION_%s'%self.id, None)
-        if 'change_history' in self.getObjAttrs().keys():
+        if 'change_history' in self.getObjAttrs():
           change_history = self.getObjProperty('change_history', REQUEST)
         master_version = self.getObjProperty('master_version', REQUEST)
         major_version = self.getObjProperty('major_version', REQUEST)
@@ -1038,7 +1038,7 @@ class VersionItem(object):
         self.setObjStateModified( REQUEST)
         self.cloneObjAttrs(ob_version, getattr(self, self.version_work_id), REQUEST['lang'])
         setChangedBy(self, REQUEST, createWorkAttrCntnr=False)
-        if 'change_history' in self.getObjAttrs().keys():
+        if 'change_history' in self.getObjAttrs():
           self.setObjProperty('change_history', change_history)
         self.setObjProperty('master_version', master_version)
         self.setObjProperty('major_version', major_version)

@@ -212,7 +212,7 @@ def delProcess(self, id):
   # Delete.
   cp = getRawProcesses(self)
   obs = {}
-  for key in cp.keys():
+  for key in cp:
     if key == id:
       # Delete method.
       if cp[key].get('type', '') in [ 'DTML Method', 'External Method', 'Script (Python)']:
@@ -249,7 +249,7 @@ def delProcess(self, id):
 def getRawFilters(self):
   # Return attribute.
   raw = self.getConfProperty('ZMS.filter.filters', {})
-  for key in raw.keys():
+  for key in raw:
     f = raw[ key]
     processes = f.get( 'processes', [])
     processes = [x for x in processes if x['id'] is not None]
@@ -287,7 +287,7 @@ def delFilter(self, id):
   # Delete.
   cp = getRawFilters(self)
   obs = {}
-  for key in cp.keys():
+  for key in cp:
     if key != id:
       obs[key] = cp[key]
   # Set attribute.
@@ -641,7 +641,7 @@ class FilterManager(object):
     # --------------------------------------------------------------------------
     def getProcessIds(self, sort=1):
       obs = getRawProcesses(self)
-      ids = list(obs.keys())
+      ids = list(obs)
       portalMaster = self.getPortalMaster()
       if portalMaster is not None:
         ids = list(set(ids+portalMaster.getProcessIds()))
@@ -685,7 +685,7 @@ class FilterManager(object):
     # --------------------------------------------------------------------------
     def getFilterIds(self, sort=1):
       obs = getRawFilters(self)
-      ids = list(obs.keys())
+      ids = list(obs)
       if sort:
         ids = sorted(ids,key=lambda x:self.getProcess(x)['name'])
       return ids

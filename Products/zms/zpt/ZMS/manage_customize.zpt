@@ -211,8 +211,8 @@
 			<tbody>
 				<tr tal:repeat="conf_key conf_keys" tal:attributes="class python:['','zmi-selected'][int(conf_key==request.get('conf_key'))]">
 					<td class="systemprop-delete">
-						<a tal:condition="python:conf_key not in conf.keys()" class="btn btn-secondary" tal:attributes="href python:'%s/manage_customize?lang=%s#Custom'%(here.getPortalMaster().absolute_url(),request['lang']); title python:'Edit'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-pencil')"></tal:block></a>
-						<a tal:condition="python:conf_key in conf.keys()" class="btn btn-secondary" tal:attributes="href python:'manage_customizeSystem?lang=%s&amp;conf_key=%s&btn=Delete&key=Custom'%(request['lang'],conf_key); title python:'Delete'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-times text-danger')"></tal:block></a>
+						<a tal:condition="python:conf_key not in conf" class="btn btn-secondary" tal:attributes="href python:'%s/manage_customize?lang=%s#Custom'%(here.getPortalMaster().absolute_url(),request['lang']); title python:'Edit'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-pencil')"></tal:block></a>
+						<a tal:condition="python:conf_key in conf" class="btn btn-secondary" tal:attributes="href python:'manage_customizeSystem?lang=%s&amp;conf_key=%s&btn=Delete&key=Custom'%(request['lang'],conf_key); title python:'Delete'"><tal:block tal:content="structure python:here.zmi_icon(name='icon-times text-danger')"></tal:block></a>
 					</td>
 					<td class="systemprop-key">
 						<a tal:attributes="href python:'%s?lang=%s&amp;conf_key=%s#Custom'%(request['URL'],request['lang'],conf_key); title python:'Change'" tal:content="conf_key">the conf_key</a>

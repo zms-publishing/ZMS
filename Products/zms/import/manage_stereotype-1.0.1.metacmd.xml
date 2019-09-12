@@ -46,7 +46,7 @@ if request.get('btn') == context.getZMILangStr('BTN_SAVE'):
 						if new_name != name:
 							value = attrs[request.form[x]]
 							if new_type in ['*']+context.getMetaobjIds():
-								for id in node.objectIds(list(context.dGlobalAttrs.keys())):
+								for id in node.objectIds(list(context.dGlobalAttrs)):
 									id_prefix = context.get_id_prefix(id)
 									if id_prefix==name:
 										new_id = new_name + id[len(id_prefix):]

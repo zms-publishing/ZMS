@@ -44,16 +44,16 @@ def updateVersion(root):
       userDefs = {} 
       def visit(docelmnt):
         d = docelmnt.getConfProperty('ZMS.security.users', {})
-        for name in d.keys():
+        for name in d:
           value = d[name]
           userDef = userDefs.get(name)
           if userDef is None:
             userDef = {'nodes':{}}
-            for key in value.keys():
+            for key in value:
               if key not in userDef:
                 userDef[key] = value[key]
           nodes = value.get('nodes', {})
-          for nodekey in nodes.keys():
+          for nodekey in nodes:
             node = docelmnt.getLinkObj(nodekey)
             if node is not None:
               newkey = root.getRefObjPath(node)
@@ -70,10 +70,10 @@ def updateVersion(root):
       roleDefs = {}
       def visit(docelmnt):
         d = docelmnt.getConfProperty('ZMS.security.roles', {})
-        for name in d.keys():
+        for name in d:
           value = d[name]
           roleDef = roleDefs.get(name, {})
-          for nodekey in value.keys():
+          for nodekey in value:
             node = docelmnt.getLinkObj(nodekey)
             if node is not None:
               newkey = root.getRefObjPath(node)
@@ -88,20 +88,20 @@ def updateVersion(root):
     if root.getConfProperty('ZMS.security.build', 0) == 2:
       root.setConfProperty('ZMS.security.build', 3)
       d = root.getConfProperty('ZMS.security.roles', {})
-      for name in d.keys():
+      for name in d:
         value = d[name]
         newvalue = {'nodes':{}}
-        for nodekey in value.keys():
+        for nodekey in value:
           node = root.getLinkObj(nodekey)
           if node is not None:
             newvalue['nodes'][nodekey] = {'home_id':node.getHome().id,'roles':value[nodekey].get('roles', [])}
         d[name] = newvalue
       root.setConfProperty('ZMS.security.roles', d)
       d = root.getConfProperty('ZMS.security.users', {})
-      for name in d.keys():
+      for name in d:
         value = d[name]
         nodes = value.get('nodes', {})
-        for nodekey in nodes.keys():
+        for nodekey in nodes:
           node = root.getLinkObj(nodekey)
           if node is not None:
             nodes[nodekey]['home_id'] = node.getHome().id
@@ -198,7 +198,7 @@ def deleteUser(self, id):
   
   # Delete local roles in node.
   nodes = self.getUserAttr(id, 'nodes', {})
-  for node in nodes.keys():
+  for node in nodes:
     ob = self.getLinkObj(node)
     if ob is not None:
       user_id = self.getUserAttr(id, 'user_id_', id)
@@ -246,7 +246,7 @@ class AccessableObject(object):
     def getUsers(self, REQUEST=None):
       users = {}
       d = self.getSecurityUsers()
-      for user in d.keys():
+      for user in d:
         roles = self.getUserRoles( user, aq_parent=0)
         langs = self.getUserLangs( user, aq_parent=0)
         if len(roles) > 0 and len( langs) > 0:
@@ -283,7 +283,7 @@ class AccessableObject(object):
           raise zExceptions.InternalError("Maximum recursion depth exceeded")
         depth = depth + 1
         nodekey = root.getRefObjPath(ob)
-        if nodekey in nodes.keys():
+        if nodekey in nodes:
           roles = standard.concat_list(roles, nodes[nodekey]['roles'])
           break
         if aq_parent:
@@ -319,7 +319,7 @@ class AccessableObject(object):
           raise zExceptions.InternalError("Maximum recursion depth exceeded")
         depth = depth + 1
         nodekey = root.getRefObjPath(ob)
-        if nodekey in nodes.keys():
+        if nodekey in nodes:
           langs = nodes[nodekey]['langs']
           break
         if aq_parent:
@@ -439,13 +439,13 @@ class AccessableContainer(AccessableObject):
     def synchronizeRolesAccess(self):
       standard.writeLog(self, '[synchronizeRolesAccess]')
       root = self.getRootElement()
-      l = [(x, [x]) for x in role_defs.keys()]
+      l = [(x, [x]) for x in role_defs]
       security_roles = self.getSecurityRoles()
-      for id in security_roles.keys():
+      for id in security_roles:
         self.manage_role(role_to_manage=id, permissions=[])
         d_id = security_roles.get(id, {})
         d = d_id.get('nodes', {})
-        for nodekey in d.keys():
+        for nodekey in d:
           node = root.getLinkObj(nodekey)
           if self.is_child_of(node):
             standard.writeLog(self, '[synchronizeRolesAccess]: security_role=%s, nodekey=%s'%(id, nodekey))
@@ -508,7 +508,7 @@ class AccessManager(AccessableContainer):
       
       # Init Roles. 
       manager_permissions = [x['name'] for x in self.permissionsOfRole('Manager') if x['selected'] == 'SELECTED']
-      for role in role_defs.keys(): 
+      for role in role_defs: 
         role_def = role_defs[role] 
         # Add Local Role. 
         if not role in self.valid_roles(): 
@@ -543,12 +543,12 @@ class AccessManager(AccessableContainer):
         roleDefs = copy.deepcopy(d)
       else:
         home_id = self.getHome().id
-        for name in d.keys():
+        for name in d:
           value = d[name]
           nodes = value.get('nodes', {})
           nodekeys = [x for x in nodes if nodes[x].get('home_id') == home_id]
           roleDef = {'nodes':{}}
-          for key in value.keys():
+          for key in value:
             if key not in roleDef:
               roleDef[key] = value[key]
           for nodekey in nodekeys:
@@ -567,13 +567,13 @@ class AccessManager(AccessableContainer):
         userDefs = copy.deepcopy(d)
       else:
         home_id = self.getHome().id
-        for name in d.keys():
+        for name in d:
           value = d[name]
           nodes = value.get('nodes', {})
           nodekeys = [x for x in nodes if nodes[x].get('home_id') == home_id]
           if len(nodekeys) > 0:
             userDef = {'nodes':{}}
-            for key in value.keys():
+            for key in value:
               if key not in userDef:
                 userDef[key] = value[key]
             for nodekey in nodekeys:
@@ -794,7 +794,7 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def getUserName(self, uid):
       d = self.getSecurityUsers()
-      for k in d.keys():
+      for k in d:
         if d.get('user_id_', k) == uid:
           return k
       return None
@@ -809,7 +809,7 @@ class AccessManager(AccessableContainer):
       i = d.get(user, {})
       if name == 'nodes' and isinstance(value, dict):
         t = {}
-        for nodekey in value.keys():
+        for nodekey in value:
           node = self.getLinkObj(nodekey)
           if node is not None:
             newkey = root.getRefObjPath(node)
@@ -904,9 +904,9 @@ class AccessManager(AccessableContainer):
       if ob is None:
         ob = self
         d = self.getSecurityUsers()
-        for userid in d.keys():
+        for userid in d:
           nodes = self.getUserAttr(userid, 'nodes', {}) 
-          for node in nodes.keys():
+          for node in nodes:
               target = self.getLinkObj(node)
               if target is None:
                 self.delLocalUser(userid, node)
@@ -935,7 +935,7 @@ class AccessManager(AccessableContainer):
           delLocalRoles(ob, userid)
       
       # Process subtree.
-      for subob in ob.objectValues(list(ob.dGlobalAttrs.keys())):
+      for subob in ob.objectValues(list(ob.dGlobalAttrs)):
         rtn += self.purgeLocalUsers(subob, valid_userids, invalid_userids)
       
       return rtn
@@ -955,7 +955,7 @@ class AccessManager(AccessableContainer):
         dt = DateTime(time.mktime(attrActiveEnd))
         active = active and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))
       nodes = self.getUserAttr(id, 'nodes', {})
-      for node in nodes.keys():
+      for node in nodes:
         ob = self.getLinkObj(node)
         if ob is not None:
           user_id = self.getUserAttr(id, 'user_id_', id)
@@ -1222,7 +1222,7 @@ class AccessManager(AccessableContainer):
             mbody.append('\n')
             nodes = self.getUserAttr(id, 'nodes', {})
             security_roles = self.getSecurityRoles()
-            for nodekey in nodes.keys():
+            for nodekey in nodes:
               if nodekey in nodekeys:
                 node = nodes[nodekey]
                 roles = node.get('roles', [])
@@ -1232,7 +1232,7 @@ class AccessManager(AccessableContainer):
                   if target is not None:
                     mbody.append('\n * '+target.getTitlealt(REQUEST)+' ['+self.getZMILangStr('ATTR_ROLES')+': '+', '.join([self.getRoleName(x) for x in zms_roles])+']: '+target.absolute_url()+'/manage')
                 for security_role in [x for x in roles if x in security_roles]:
-                  for role_nodekey in security_roles[security_role].get('nodes', {}).keys():
+                  for role_nodekey in security_roles[security_role].get('nodes', {}):
                     target = self.getLinkObj(role_nodekey)
                     if target is not None:
                       mbody.append('\n * '+target.getTitlealt(REQUEST)+' ['+self.getZMILangStr('ATTR_ROLES')+': '+self.getRoleName(security_role)+']: '+target.absolute_url()+'/manage')
@@ -1266,7 +1266,7 @@ class AccessManager(AccessableContainer):
           xml = self.getXmlHeader()
           xml += '<userlist>'
           userDefs = self.getSecurityUsers()
-          userNames = userDefs.keys()
+          userNames = list(userDefs)
           max_users = int(self.getConfProperty('ZMS.max_users_export', '0'))
           z = 0
           for userName in userNames:
@@ -1281,7 +1281,7 @@ class AccessManager(AccessableContainer):
               xml += '<email>%s</email>'%standard.html_quote(email)
             nodes = self.getUserAttr(userName, 'nodes', {})
             xml += '<nodelist>'
-            for nodekey in nodes.keys():
+            for nodekey in nodes:
               xml += '<node>'
               xml += '<nodeid>%s</nodeid>'%nodekey
               try:

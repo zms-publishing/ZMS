@@ -6,7 +6,7 @@ RESPONSE =  request.RESPONSE
 
 def run(here, old, new):
   c = 0
-  for key in here.getObjAttrs().keys():
+  for key in here.getObjAttrs():
     objAttr = here.getObjAttr(key)
     if objAttr['datatype'] in ['string','text']:
       for objVers in here.getObjVersions():

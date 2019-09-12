@@ -89,7 +89,7 @@ def manage_addZIPMultiUpload(self):
 			if root is None:
 				root = file['local_filename'][:max(file['local_filename'].rfind('/'),file['local_filename'].rfind('\\'))]
 			id_prefix = 'e'
-			if len(containers.keys()) == 0:
+			if len(containers) == 0:
 				id_prefix = request['id_prefix']
 
 			if file['local_filename'][len(root):] in request.form.get('ids',[]):

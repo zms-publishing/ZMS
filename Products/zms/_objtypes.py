@@ -198,7 +198,7 @@ class ObjTypes(object):
           # Zoom (SuperRes).
           # ----------------
           key = 'imgsuperres'
-          if key in self.getObjAttrs().keys() and self.getConfProperty('ZMSGraphic.superres', 0)==1:
+          if key in self.getObjAttrs() and self.getConfProperty('ZMSGraphic.superres', 0)==1:
             imgsuperzoomobj = self.getObjProperty(key, REQUEST)
             if imgsuperzoomobj is not None:
               s_url = getHref2Zoom(self, imgzoomobj, REQUEST)

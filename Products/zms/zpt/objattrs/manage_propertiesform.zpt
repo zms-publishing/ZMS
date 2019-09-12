@@ -10,7 +10,7 @@
 	<legend tal:condition="python:here.id==here.version_live_id">Live-Version</legend>
 	<legend tal:condition="python:here.id==here.version_work_id">Work-Version</legend>
 	<input type="hidden" name="preview" value="preview"/>
-	<tal:block tal:repeat="objAttrId python:here.getObjAttrs().keys()">
+	<tal:block tal:repeat="objAttrId python:here.getObjAttrs()">
 		<tal:block tal:define="global
 				metaObjAttr python:here.getObjAttr(objAttrId)">
 			<tal:block tal:repeat="lang python:[[here.getPrimaryLanguage()],here.getLangIds(sort=True)][int(metaObjAttr.get('multilang') in [1,True])]">

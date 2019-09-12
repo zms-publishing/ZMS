@@ -50,7 +50,7 @@ class ReqBuff(object):
       reqBuffId = self.getReqBuffId(prefix)
       if len(prefix) > 0:
         reqBuffId += '.'
-      for key in buff.__dict__:
+      for key in list(buff.__dict__):
         if key.startswith(reqBuffId):
           delattr(buff, key)
  

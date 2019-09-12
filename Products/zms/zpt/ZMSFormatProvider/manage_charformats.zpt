@@ -14,8 +14,9 @@
 		formats python:here.getCharFormats()">
 
 <div class="d-none" tal:condition="python:request.get('id') in [x.get('id','') for x in formats]">
-	<div id="editObj" class="inner" tal:define="global format python:[x for x in formats if x['id']==request['id']][0]"> 
+	<div id="editObj" class="inner" tal:define="format python:[x for x in formats if x['id']==request['id']][0]"> 
 		<form class="form-horizontal" tal:attributes="action action" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="id" tal:attributes="value request/id"/>
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group row">
 				<label for="new_id" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
@@ -47,7 +48,7 @@
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<label for="new_js" class="col-sm-2 control-label"><span>JavaScript</span></label>
-				<div class="col-sm-10"><div class="single-line input-group"><textarea class="form-control form-control-sm" id="new_js" name="new_js" tal:content="python:format.get('js','')">js</textarea></div></div><!-- .col-sm-10 -->
+				<div class="col-sm-10"><div class="single-line zmi-code"><textarea class="form-control form-control-sm" id="new_js" name="new_js" tal:content="python:format.get('js','')">js</textarea></div></div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<label for="preview_charcode" class="col-sm-2 control-label"><span>Rendered Code</span></label>

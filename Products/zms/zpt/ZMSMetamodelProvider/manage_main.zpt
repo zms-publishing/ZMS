@@ -276,10 +276,10 @@
 										</tal:block>
 									</select>
 								</div>
-								<div class="single-line" tal:condition="python:objAttr['type'] in ['constant']">
+								<div class="single-line zmi-code" tal:condition="python:objAttr['type'] in ['constant']">
 									<textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]" tal:content="python:objAttr.get('custom','')">custom</textarea>
 								</div>
-								<div class="single-line" tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','*'] and objAttr['type'] in here.valid_types">
+								<div class="single-line zmi-code" tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','*'] and objAttr['type'] in here.valid_types">
 									<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[['form-control form-control-sm'],['form-control form-control-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:objAttr.get('default','')">default</textarea>
 								</div>
 							</td>
@@ -500,61 +500,6 @@
 /**
  *
  */
-function zmiCodeSnippet(sender) {
-	var i = $(sender).val();
-	var name = i.substr(0,i.indexOf("|"));
-	var value = i.substr(i.indexOf("|")+1);
-	var tal = '';
-	if (value=='image') {
-		tal
-			= '&lt;tal:block tal:define="global '+name+' python:zmscontext.attr(\''+name+'\')">\n'
-			+ '\t&lt;img tal:attributes="src python:'+name+'.getHref(request)"/>\n'
-			+ '&lt;/tal:block>';
-	}
-	else if (value=='file') {
-		tal
-			= '&lt;tal:block tal:define="global '+name+' python:zmscontext.attr(\''+name+'\')">\n'
-			+ '\t&lt;a tal:attributes="href python:'+name+'.getHref(request)" target="_blank tal:content="python:'+name+'.getFilename(request)">\n'
-				+ '\t\tthe filename\n'
-			+ '\t&lt;/a>\n'
-			+ '&lt;/tal:block>';
-	}
-	else {
-		tal = '&lt;tal:block tal:content="python:zmscontext.attr(\''+name+'\')">the '+name+'&lt;/tal:block>';
-	}
-	$(sender).val("");
-	zmiModal(null,{
-			body: '<'+'pre>'+tal+'<'+'/pre>',
-			title: 'Snippet: '+i
-		});
-}
-
-/**
- *
- */
-function zmiCode(sender) {
-	var html = '';
-	html = html
-			+ '<'+'div class="input-group input-group-sm">'
-				+ '<'+'select class="form-control" onchange="zmiCodeSnippet(this)">'
-					+ '<'+'option value="">--- Snippets... ---<'+'/option>';
-	var prefix = "attr_type_";
-	$("select[name^="+prefix+"]").each(function() {
-			var $this = $(this);
-			var name = $this.attr("name").substr(prefix.length);
-			var value = $this.val();
-			html = html
-				+ '<'+'option value="'+name+'|'+value+'">'+name+' ('+value+')'+'<'+'/option>';
-		});
-	html = html
-				+ '<'+'/select>'
-			+ '<'+'/div><'+'!-- .input-group -->'
-	return html;
-}
-
-/**
- *
- */
 function zmiEnabledBtnClick(sender) {
 	var $sender = $(sender);
 	var $container = $sender.closest("span");
@@ -657,17 +602,6 @@ function selectObject(ignoredUrl, ignoredTitle, nodeName) {
 	textArea.val(newVal).trigger('change');
 }
 
-/**
- * Collapse expanded single line code field
- */
-function close_zmi_code(sender) {
-	sender.closest('td').find('.zmi-code textarea')
-		.animate({height: '30px'},600)
-		.css('height','auto');
-	sender.closest('td').find('.zmi-code textarea').removeClass('open-zmi-code');
-	sender.closest('td').find('.zmi-code-close').remove();
-}
-
 $(function(){
 	$("table input[name='ids:list']")
 		.change(zmiActionButtonsRefresh)
@@ -682,16 +616,6 @@ $(function(){
 			return '<span class="title">' + $th.eq($(this).index()).attr('title') + '<' + '/span>';
 		})
 	};
-	$('.single-line.zmi-code.input-group textarea').on('focus', function() {
-		if ( !$(this).hasClass('open-zmi-code') ) {
-			$(this).addClass('open-zmi-code');
-			$(this).css('height','auto');
-			$(this).animate({height: $(this).prop('scrollHeight') + 'px'},600);
-			// Add closing button
-			var close_btn = '<i title="Close Editing" onclick="close_zmi_code($(this))" class="zmi-code-close icon-chevron-up text-primary text-center" style="margin: 0 0 0 calc(50% - 40px);">';
-			$(this).closest('td').append(close_btn);
-		}
-	});
 });
 
 </script>

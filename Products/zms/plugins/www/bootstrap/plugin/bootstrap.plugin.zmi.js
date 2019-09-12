@@ -280,6 +280,34 @@ $(function(){
 			var $single_line = $(this);
 			var $textarea = $('textarea',this);
 			$textarea.prop({rows:1,wrap:'off'});
+			
+			if ($single_line.hasClass("zmi-code")) {
+				$('textarea',$single_line).on('focus', function() {
+					if ( !$(this).hasClass('open-zmi-code') ) {
+						$(this)
+							.addClass('open-zmi-code')
+							.css('height','auto')
+							.animate({height: $(this).prop('scrollHeight') + 'px'},600)
+							.dblclick(function(e) {
+									eval($(this).attr('data-dblclickhandler'));
+								});
+						// Add closing button
+						var close_btn = '<i title="Close Editing" class="zmi-code-close fas fa-chevron-up text-primary text-center" style="cursor:pointer;margin: 0 0 0 calc(50% - 40px);"></i>';
+						$single_line.append(close_btn);
+						$('.zmi-code-close',$single_line).click(
+							function() {
+								$('textarea',$single_line)
+									.animate({height: '30px'},600)
+									.css('height','auto')
+									.removeClass('open-zmi-code');
+								$(this).remove();
+							}
+						);
+					}
+				});
+				return;
+			}
+			
 			if ($single_line.hasClass("zmi-nodes")) {
 				$textarea.prop({title:getZMILangStr('ATTR_NODE')});
 			}
@@ -304,9 +332,6 @@ $(function(){
 								html = html
 									+ '<div id="zmi-single-line-edit" class="inner">'
 										+ '<form class="form-horizontal" name="zmi-single-line-form">';
-								if ($single_line.hasClass("zmi-code")) {
-									html += zmiCode(this);
-								}
 								if ($single_line.hasClass("zmi-nodes")) {
 									html = html
 											+ '<div class="col-lg-10">'

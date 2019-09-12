@@ -666,7 +666,7 @@ function close_zmi_code(sender) {
 		.css('height','auto');
 	sender.closest('td').find('.zmi-code textarea').removeClass('open-zmi-code');
 	sender.closest('td').find('.zmi-code-close').remove();
-}}
+}
 
 $(function(){
 	$("table input[name='ids:list']")

@@ -101,7 +101,7 @@
 								<tal:block tal:define="metaObj python:here.getMetaobj(metaObjPackage)">
 									<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
 										<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block>
-										<strong tal:on-error="string:ERROR" tal:content="metaObjPackage">id</strong>
+										<strong tal:on-error="string:ERROR metaObjPackage" tal:content="metaObjPackage">id</strong>
 									</a>
 								</tal:block>
 							</tal:block>
@@ -109,8 +109,8 @@
 						<tal:block tal:repeat="metaObj metaObjs">
 							<tal:block tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 								<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
-									<span tal:on-error="string:ERROR" tal:replace="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</span>
-									<span tal:on-error="string:ERROR" tal:replace="metaObj/name">name</span>
+									<span tal:on-error="string:ERROR icon" tal:replace="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</span>
+									<span tal:on-error="string:ERROR Name" tal:replace="metaObj/name">name</span>
 								</a>
 							</tal:block>
 						</tal:block>
@@ -436,7 +436,9 @@
 						><a tal:condition="python:metaObjPackage" tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank"
 							><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block
 						></a>&nbsp;
-						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])"><strong tal:on-error="string:ERROR" tal:content="metaObjPackage">the id</strong></a>
+						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])"
+							><strong tal:on-error="string:ERROR metaObjPackage"
+							tal:content="metaObjPackage">the id</strong></a>
 					</tal:block>
 					<tal:block tal:condition="python:not metaObjPackage"
 						><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block
@@ -474,10 +476,10 @@
 							<span tal:on-error="string:ERROR" tal:replace="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</span>
 						</a>
 						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
-							<span tal:on-error="string:ERROR" tal:replace="metaObj/name">the name</span>
+							<span tal:on-error="string:ERROR name" tal:replace="metaObj/name">the name</span>
 						</a>
 						<tal:block tal:content="revision">the revision</tal:block>
-						(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">the type</tal:block>)
+						(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj.get('type','unknown').upper())">the type</tal:block>)
 					</span>
 				</td>
 			</tr>

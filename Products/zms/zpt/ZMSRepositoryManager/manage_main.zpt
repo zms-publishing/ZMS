@@ -60,7 +60,9 @@
 				<input class="form-control" type="text" tal:attributes="value python:here.get_conf_basepath()" readonly/>
 			</div>
 		</div>
-		<tal:block tal:content="structure python:here.manage_main_diff(here,request)">
+		<tal:block
+			tal:on-error="string:${error/type}: ${error/value}"
+			tal:content="structure python:here.manage_main_diff(here,request)">
 			the diff
 		</tal:block>
 		</form>

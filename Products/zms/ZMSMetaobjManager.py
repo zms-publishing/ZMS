@@ -1044,7 +1044,7 @@ class ZMSMetaobjManager(object):
               meta_ids = REQUEST.get('ids', [])
             for meta_id in meta_ids:
               metaObj = self.getMetaobj( meta_id)
-              if metaObj['type'] == 'ZMSPackage':
+              if metaObj.get('type','') == 'ZMSPackage':
                 for pkgMetaObjId in self.getMetaobjIds():
                   pkgMetaObj = self.getMetaobj( pkgMetaObjId)
                   if pkgMetaObj.get('package') == metaObj.get('id'):

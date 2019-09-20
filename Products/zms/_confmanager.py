@@ -102,7 +102,8 @@ class ConfDict(object):
 def initConf(self, profile, remote=True):
   standard.writeBlock( self, '[initConf]: profile='+profile)
   createIfNotExists = True
-  for filename in self.getConfFiles(remote):
+  files = self.getConfFiles(remote)
+  for filename in files.keys():
     label = files[filename]
     if label.startswith(profile + '.') or label.startswith(profile + '-'):
       standard.writeBlock( self, '[initConf]: filename='+filename)

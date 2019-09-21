@@ -103,7 +103,7 @@ def initConf(self, profile, remote=True):
   standard.writeBlock( self, '[initConf]: profile='+profile)
   createIfNotExists = True
   files = self.getConfFiles(remote)
-  for filename in files.keys():
+  for filename in files:
     label = files[filename]
     if label.startswith(profile + '.') or label.startswith(profile + '-'):
       standard.writeBlock( self, '[initConf]: filename='+filename)

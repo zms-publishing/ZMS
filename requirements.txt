@@ -1,5 +1,5 @@
 # ZMS dependencies
-# -e git+https://github.com/zms-publishing/zms4.git@master#egg=zms
+# -e git+https://github.com/zms-publishing/zms4.git@master#egg=Products.zms
 wheel
 paste
 docutils
@@ -14,9 +14,7 @@ Products.StandardCacheManagers
 Products.BTreeFolder2
 Products.TemporaryFolder
 Products.GenericSetup
-Products.Sessions
 Products.CMFCore
 Products.SiteErrorLog
+-e git+https://github.com/zopefoundation/Products.Sessions.git@master#egg=Products.Sessions
 -e git+https://github.com/zopefoundation/Zope.git@master#egg=Zope
-
-

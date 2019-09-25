@@ -1,61 +1,22 @@
-# Override Zope dependencies where we need other versions/branches
--r requirements-zope4-bootstrap-zmi.txt
-
-# Backports from python3, can be removed once we have migrated to py3
-configparser
-
-# Additional ZMS dependencies
-docutils==0.14
-# initgroups==4.0 ## not used anywhere in the code
-# mechanize==0.2.5 ## very old version, not ported to python3 at all - why do we need this?
-# nt-svcutils==2.13.0 ## very old version, not ported to python3 and unused as far as I can tell. Where is this used?
-Products.ExternalMethod==4.0
-Products.MailHost==4.1
-Products.OFSP==4.0.1
-Products.StandardCacheManagers==4.0.1
-tempstorage==4.0.1
-# zLOG==3.0 ## Ported to python3, but not used anywhere in the code. It's also deprecated and usage should be replaced by the python integrated logging facility.
-zope.app.publication==4.2.1
-zope.authentication==4.3
-zope.error==4.4.0
-zope.untrustedpython==4.0.0
-ZopeUndo==4.3
-
-# Unreleased branches of Zope Products
-# Products.Sessions==4.1
--e git+https://github.com/zopefoundation/Products.Sessions@master#egg=Products.Sessions
-# Products.TemporaryFolder==5.1
--e git+https://github.com/zopefoundation/Products.TemporaryFolder@master#egg=Products.TemporaryFolder
--e git+https://github.com/zopefoundation/Products.CMFCore@master#egg=Products.CMFCore
-# 2.0 / 2.1, which is as of yet unreleased
--e git+https://github.com/zopefoundation/Products.GenericSetup@master#egg=Products.GenericSetup
--e git+https://github.com/zopefoundation/Products.SiteErrorLog@master#egg=Products.SiteErrorLog
+# ZMS dependencies
+# -e git+https://github.com/zms-publishing/zms4.git@master#egg=zms
+wheel
+paste
+docutils
+AccessControl
+Missing
+Record
+Products.MailHost
+Products.ExternalMethod
+Products.ZCatalog
+Products.PythonScripts
+Products.StandardCacheManagers
+Products.BTreeFolder2
+Products.TemporaryFolder
+Products.GenericSetup
+Products.Sessions
+Products.CMFCore
+Products.SiteErrorLog
+-e git+https://github.com/zopefoundation/Zope.git@master#egg=Zope
 
 
-# Pinned versions because of bugs:
-# due to zdaemon>=4.0.1 causes AttributeError: ZopeCtlOptions instance has no attribute 'transcript'
-# zdaemon==4.0.0
-# zope.browserresource>4.1.0 requires zope.publisher>=4.2.1
-# zope.browsermenu==4.1.0
-# due to zope.publisher>=4.0.0 causes errors on rendering legacy DTML-Methods
-# zope.publisher==3.13.4
-# due to ZopeUndo==4.0 causes ZEO DisconnectedError on manageUndo
-# ZopeUndo==2.12.0
-
-# Unfortunately, not yet compatible with python 3
-# Products.MIMETools==2.13.0
-
-
-# Optional ZMS dependencies
-# git+https://bitbucket.org/zms3/behave.git#egg=zms3.behave
-# git+https://github.com/zms-publishing/zms3.behave.git#egg=zms3.behave
-# git+https://github.com/zms-publishing/zms3.formulator.git#egg=zms3.formulator
-# git+https://github.com/zms-publishing/zms3.mindmap.git#egg=zms3.mindmap
-# git+https://github.com/zms-publishing/zms3.photodb.git#egg=zms3.photodb
-# git+https://github.com/zms-publishing/zms3.qrcode.git#egg=zms3.qrcode
-# git+https://bitbucket.org/zms3/themes.git#egg=zms3.themes
-
-
-# Install ZMS, you probably want to override this with a local development install
-# -e svn+https://zmslabs.org/svn/zmslabs/ZMS/branches/zms4#egg=ZMS
-# We can enable this line when it's time for releases so people can install zms by just installing the official zope requirments.txt and this one.

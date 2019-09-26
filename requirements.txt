@@ -1,6 +1,5 @@
 # ZMS dependencies
 # -e git+https://github.com/zms-publishing/zms4.git@master#egg=Products.zms
-wheel
 Paste
 docutils
 AccessControl

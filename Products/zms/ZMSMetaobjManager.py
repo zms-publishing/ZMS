@@ -60,8 +60,12 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
           self.id=id
           self.meta_type=meta_type
         icon__roles__=None
-        def icon(self):
-          return {'External Method':'/misc_/ExternalMethod/extmethod.gif'}.get(self.meta_type, '/misc_/OFSP/File_icon.gif')
+        def icon_clazz(self):
+          return {'External Method':'fa fa-external-link-square-alt'}.get(self.meta_type, 'far fa-file-archive')
+        def zmi_icon(self):
+          return icon_clazz(self)
+        def icon(self): # obsolete?
+          return '<i title="%s" class="%s"></i>'%(self.meta_type, zmi_icon(self))
         absolute_url__roles__=None
         def absolute_url(self):
           return '#'

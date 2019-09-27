@@ -23,8 +23,9 @@ for path in sys.path:
     site_packages = path
 
 INSTALL_REQUIRES = [
-  'Zope>=4.0',
+  'Zope>=4.1.2',
   'docutils',
+  'Paste',
   'Products.CMFCore>=2.4.0',
   'Products.ExternalMethod>=4.3',
   'Products.GenericSetup>=2.0',

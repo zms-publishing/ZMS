@@ -1,4 +1,6 @@
 # ZMS Dependencies
+wheel
+Paste
 docutils
 configparser
 Zope

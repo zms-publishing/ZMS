@@ -25,7 +25,7 @@ for path in sys.path:
 INSTALL_REQUIRES = [
   'Zope>=4.0',
   'docutils',
-  'Products.CMFCore>=2.4.1.dev0',
+  'Products.CMFCore>=2.4.0',
   'Products.ExternalMethod>=4.3',
   'Products.GenericSetup>=2.0',
   'Products.MailHost>=4.7',

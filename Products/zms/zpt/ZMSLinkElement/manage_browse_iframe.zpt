@@ -63,18 +63,18 @@
 </style>
 <body tal:attributes="class python:zmscontext.zmi_body_class(id='browse_iframe')">
 
-<tal:block tal:define="global el python:zmscontext.getLinkObj(request.get('elValue'))">
-	<tal:block tal:condition="python:el is not None">
-		<span class="d-none" name="physical_path" tal:content="python:'/'.join(el.getPhysicalPath())" />
-	</tal:block>
-</tal:block>
+<span class="d-none" name="physical_path"
+	tal:define="global el python:zmscontext.getLinkObj(request.get('elValue'))"
+	tal:condition="python:el is not None"
+	tal:content="python:'/'.join(el.getPhysicalPath())"
+/>
 
 <div class="tabbable tabs-left">
 
 <ul class="nav nav-pills">
 	<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#sitemap" tal:attributes="title python:'%s: %s'%(zmscontext.getZMILangStr('ATTR_LINK_INTERNAL'),zmscontext.getZMILangStr('TAB_SITEMAP'))"><i class="fas fa-sitemap"></i></a></li>
 	<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#search" tal:attributes="title python:'%s: %s'%(zmscontext.getZMILangStr('ATTR_LINK_INTERNAL'),zmscontext.getZMILangStr('TAB_SEARCH'))"><i class="fas fa-search"></i></a></li>
-	<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#link" tal:attributes="title python:zmscontext.getZMILangStr('ATTR_LINK_EXTERNAL')"><i class="fas fa-link"></i></a></a></li>
+	<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#link" tal:attributes="title python:zmscontext.getZMILangStr('ATTR_LINK_EXTERNAL')"><i class="fas fa-link"></i></a></li>
 	<li class="nav-item dropdown languages" tal:condition="python:len(zmscontext.getLangIds())>1">
 		<a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:zmscontext.getZMILangStr('TAB_LANGUAGES')">
 			<i class="fas fa-flag"></i>&nbsp;

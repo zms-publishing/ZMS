@@ -125,7 +125,7 @@ header.navbar-nav ul.navbar-nav {
 	font-size:1rem;
 }
 
-footer {
+.zmi:not(.manage-menu) footer {
 	margin: -32px 0 0 0;
 	height: 32px;
 	width: 100%;
@@ -749,14 +749,20 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	height:1.5rem;
 	border:1px solid transparent;
 }
-.zmi .breadcrumb li.breadcrumb-item.active {
+.zmi .breadcrumb li.breadcrumb-item.active a {
 	color:#999fa5;
 }
-.zmi .breadcrumb li.breadcrumb-item:hover {
-	border:1px solid #e0e0e0;
+.zmi .breadcrumb li.breadcrumb-item:hover a {
+	color: #999fa5;
+	text-decoration:none;
 }
-.zmi .breadcrumb .breadcrumb-item a:hover {
-	color: #007bff !important;
+.zmi .breadcrumb li.breadcrumb-item:last-child a {
+	color: #212529;
+	text-decoration:none;
+}
+.zmi .breadcrumb li.breadcrumb-item:hover:last-child a {
+	color: #999fa5;
+	text-decoration:none;
 }
 .zmi .breadcrumb-item+.breadcrumb-item::before {
 	padding-right: .25rem;
@@ -783,6 +789,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	width:100%;
 	width: -webkit-fill-available;
 	height: calc(2.25rem + 2px);
+	z-index: 0;
 }
 .zmi .zmi-input-file .custom-file-label,
 .zmi .zmi-input-file .custom-file-label:after {
@@ -795,6 +802,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	text-overflow:ellipsis;
 	overflow:hidden;
 	white-space:nowrap;
+}
+.zmi .zmi-input-file .custom-file-label.new_file {
+	background:aliceblue;
 }
 .zmi .zmi-input-file del .custom-file-label {
   color:#888!important;
@@ -1254,6 +1264,9 @@ body.browse_iframe .toggle {
 .zmi .alert {
 	margin: 0 1rem 1rem;
 }
+.zmi form .center .contentEditable.ZMSNote .note.alert {
+	margin:.75em 1em .75em 0;
+}
 .zmi.config .bg-info {
 	background-color: #17a4ba26 !important;
 }
@@ -1643,9 +1656,6 @@ body.zmi.browse .table-responsive table td {
 	border-top-color: #fff;
 	border-radius: 0 0 4px 4px;
 	z-index:1000;
-}
-#zmi-action-default > i.fas:before {
-	content: "\f067";
 }
 @media (max-width: 767px) {
 	#zmi-action-default {

@@ -217,7 +217,7 @@
 								tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
 									<textarea class="form-control form-control-sm"
 										tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:['%s (%s)'%(objAttr['id'],objAttr['type']),errors][len(errors)>0];
-											class python:' '.join(['form-control','form-control-sm']+objAttr['type'].lower().split(' ')+[[],['bg-danger']][len(errors)>0]);
+											class python:' '.join(['form-control','form-control-sm']+objAttr['type'].lower().split(' ')+[[],['alert-danger']][len(errors)>0]);
 											style python:'\073'.join([[],['color:#a94442','background:#fee']][len(errors)>0]);
 											data-class python:'fas fa-cogs';
 											data-dblclickhandler python:'window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),'%s (%s)'%(objAttr['id'],objAttr['type']))"

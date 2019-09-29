@@ -92,12 +92,12 @@ function zmiRicheditInsertTab( fmName, elName) {
 		### Character-Format (Bold, Italic, Underline, etc.)
 		</tal:block
 		><div class="btn-group pull-left" tal:repeat="charFormats python:[
-								[['strong','icon-bold'],
-								['em','icon-italic']],
-								[['sub','icon-subscript'],
-								['sup','icon-superscript']],
-								[['code','icon-code']],
-								[['a','icon-link']],]"
+								[['strong','fas fa-bold'],
+								['em','fas fa-italic']],
+								[['sub','fas fa-subscript'],
+								['sup','fas fa-superscript']],
+								[['code','fas fa-code']],
+								[['a','fas fa-link']],]"
 			><tal:block tal:repeat="charFormat charFormats"
 				><tal:block tal:condition="python:len(charFormat)==0">&nbsp;</tal:block
 				><span tal:condition="not:python:len(charFormat)==0"

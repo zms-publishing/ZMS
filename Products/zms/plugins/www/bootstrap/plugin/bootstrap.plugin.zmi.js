@@ -549,7 +549,7 @@ $(function(){
 			}
 			c++;
 			var $that = $(this);
-			$that.parents(".zmi-container").append('<div id="zmi-action-default"><i class="fas"></i></div>');
+			$that.parents(".zmi-container").append('<div id="zmi-action-default"><i class="fas fa-plus"></i></div>');
 			$("#zmi-action-default")
 				.hover( function(evt) {
 						var $zmiActionDefault = $(this);

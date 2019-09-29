@@ -123,9 +123,9 @@ ins {
 									<i tal:condition="python:l and l.get('data') is None" class="icon-warning-sign text-danger" title="not found!"></i>
 									<tal:block tal:condition="not:python:l and l.get('data') is None">
 										<span tal:attributes="class python:' '.join(['state']
-											+[[],['bg-success']][is_new]
-											+[[],['bg-warning']][is_modified]
-											+[[],['bg-danger']][is_removed]
+											+[[],['alert-success']][is_new]
+											+[[],['alert-warning']][is_modified]
+											+[[],['alert-danger']][is_removed]
 											)">&nbsp;</span>
 									</tal:block>
 									<a tal:attributes="href python:'#%s'%here.id_quote(filename)" tal:content="python:filename">the filename</a>
@@ -146,9 +146,9 @@ ins {
 		<label class="col-sm-2"></label>
 		<div class="col-sm-10">
 			<small>
-				<span class="state bg-success">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_NEW')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<span class="state bg-warning">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<span class="state bg-danger">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_DELETED')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span class="state alert-success">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_NEW')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span class="state alert-warning">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span class="state balert-danger">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_DELETED')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			</small>
 		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->

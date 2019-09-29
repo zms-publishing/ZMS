@@ -46,7 +46,7 @@
 <tal:block tal:repeat="node nodes">
 	<tr tal:define="target python:here.getLinkObj(node)" tal:on-error="structure string: <!-- ERROR: missing nodekey -->">
 		<td>
-			<div class="text-danger bg-danger" tal:condition="python:target is None">
+			<div class="text-danger alert-danger" tal:condition="python:target is None">
 				<i class="fas fa-warning-sign" tal:attributes="title python:'%s not found'%(nodekey)"></i>
 				<tal:block tal:content="nodekey">the node-key</tal:block>
 			</div>

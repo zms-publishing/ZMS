@@ -42,7 +42,7 @@ $(function () {
 					data.submit();
 				},
 				fail: function (e, data) {
-					$("#upload").addClass("text-danger bg-danger").html(data.errorThrown+": "+data.textStatus);
+					$("#upload").addClass("text-danger alert-danger").html(data.errorThrown+": "+data.textStatus);
 				},
 				done: function (e, data) {
 					var result = data.result;

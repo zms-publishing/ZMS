@@ -114,7 +114,7 @@
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='tasks')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
-<div id="zmi-tab" style="min-height:480px">
+<div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <tal:block tal:define="global ids python:['TASK_ZMSNOTE', 'TASK_UNTRANSLATED', 'TASK_CHANGED_BY_DATE']">

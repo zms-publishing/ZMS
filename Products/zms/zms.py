@@ -275,7 +275,6 @@ class ZMS(
     # Properties.
     # -----------
     meta_type = meta_id = 'ZMS'
-    zmi_icon = 'fas fa-home'
 
     # Management Permissions.
     # -----------------------

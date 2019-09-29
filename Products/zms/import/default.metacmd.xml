@@ -21,7 +21,7 @@
 				<div class="input-group">
 					<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
 					<div class="input-group-append">
-						<button type="submit" class="btn btn-primary"><i class="fas fa -search"></i></button>
+						<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
 					</div>
 				</div>
 			</div>
@@ -89,7 +89,7 @@
       </item>
       <item key="description"></item>
       <item key="execution" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-cogs]]></item>
+      <item key="icon_clazz"><![CDATA[fas fa-cogs]]></item>
       <item key="id"><![CDATA[manage_tab_search]]></item>
       <item key="meta_type"><![CDATA[Page Template]]></item>
       <item key="meta_types" type="list">
@@ -189,7 +189,7 @@
       </item>
       <item key="description"></item>
       <item key="execution" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-cogs]]></item>
+      <item key="icon_clazz"><![CDATA[fas fa-cogs]]></item>
       <item key="id"><![CDATA[manage_tab_tasks]]></item>
       <item key="meta_type"><![CDATA[Page Template]]></item>
       <item key="meta_types" type="list">

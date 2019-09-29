@@ -127,7 +127,7 @@
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<label class="col-sm-3 control-label" for="_icon_clazz"><span>Icon</span></label>
-				<div class="col-sm-9"><input type="text" name="_icon_clazz" class="form-control form-control-sm zmi-input-icon-clazz" value="icon-cogs"/></div>
+				<div class="col-sm-9"><input type="text" name="_icon_clazz" class="form-control form-control-sm zmi-input-icon-clazz" value="fas fa-cogs"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<label class="col-sm-3 control-label mandatory" for="_name"><span tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</span></label>

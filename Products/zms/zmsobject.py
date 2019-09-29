@@ -608,14 +608,15 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.zmi_icon:
     # --------------------------------------------------------------------------
-    def zmi_icon(self, context=None, name=None, title='', extra=''):
-      if name is None:
-        try:
-          # return '<i class="%s" title="%s"%s></i>'%(name,title,extra)
-          return self.display_icon(REQUEST={}, meta_type=self.meta_id, key='icon', zpt=False)
-        except:
-          return self.display_icon(REQUEST={}, meta_type=self.meta_id, key='icon', zpt=False)
-         # return 'fas fa-home'
+    def zmi_icon(self,*args, **kwargs):
+      """ ZMSObject.zmi_icon """
+      id = self.meta_id
+      if 'name' in kwargs:
+        return kwargs['name'].replace('icon-','fas fa-')
+      elif args:
+        id = args[0]
+      return self.evalMetaobjAttr( '%s.%s'%(id, 'icon_clazz'))
+
 
     # --------------------------------------------------------------------------
     #  ZMSObject.display_icon:
@@ -625,17 +626,15 @@ class ZMSObject(ZMSItem.ZMSItem,
     def display_icon(self, REQUEST={}, meta_type=None, key='icon', zpt=True):
       """ ZMSObject.display_icon """
       id = standard.nvl(meta_type, self.meta_id)
-      icon_title = self.display_type(meta_type=id)
+      name = 'fas fa-exclamation-triangle'
+      title = self.display_type(meta_type=id)
+      extra = ''
       if id in self.getMetaobjIds( sort=0):
         name = self.evalMetaobjAttr( '%s.%s'%(id, 'icon_clazz'))
         if name is None:
-          value = self.evalMetaobjAttr( '%s.%s'%(id, key)) 
-          if value is not None and not isinstance(value, str):
-            return '<img src="%s" title="%s"/>'%(value.absolute_url(), icon_title)
-          else:
-            metaObj = self.getMetaobj(id)
-            names = {'ZMSResource':'fas fa-asterisk icon-asterisk','ZMSLibrary':'fas fa-flask icon-beaker','ZMSPackage':'fas fa-suitcase icon-suitcase','ZMSRecordSet':'far fa-list-alt icon-list','ZMSReference':'fas fa-link icon-link'}
-            name = names.get(metaObj.get('type'), 'icon-file-alt')
+          metaObj = self.getMetaobj(id)
+          names = {'ZMSResource':'fas fa-asterisk icon-asterisk','ZMSLibrary':'fas fa-flask icon-beaker','ZMSPackage':'fas fa-suitcase icon-suitcase','ZMSRecordSet':'far fa-list-alt icon-list','ZMSReference':'fas fa-link icon-link'}
+          name = names.get(metaObj.get('type'), 'icon-file-alt')
         if meta_type is None:
           constraints = self.attr('check_constraints')
           if isinstance(constraints, dict):
@@ -643,21 +642,17 @@ class ZMSObject(ZMSItem.ZMSItem,
               name += ' constraint'
             if 'ERRORS' in constraints:
               name += ' constraint-error'
-              icon_title += '; '+';'.join(['ERROR: '+x[1] for x in constraints['ERRORS']])
+              title += '; '+';'.join(['ERROR: '+x[1] for x in constraints['ERRORS']])
             elif 'WARNINGS' in constraints:
               name += ' constraint-warning'
-              icon_title += '; '+'; '.join(['WARNING: '+x[1] for x in constraints['WARNINGS']])
+              title += '; '+'; '.join(['WARNING: '+x[1] for x in constraints['WARNINGS']])
             elif 'RESTRICTIONS' in constraints:
               name += ' constraint-restriction'
-              icon_title += '; '+'; '.join(['RESTRICTION: '+x[1] for x in constraints['RESTRICTIONS']])
+              title += '; '+'; '.join(['RESTRICTION: '+x[1] for x in constraints['RESTRICTIONS']])
       else:
         name = 'icon-warning-sign fas fa-exclamation-triangle constraint-error'
-        icon_title = '%s not found!'%str(id)
-      if zpt==False:
-        return name
-      else:
-        # return self.zmi_icon(self, name=name, extra='title="%s"'%(icon_title.replace('"', '\'')))
-        return self.zmi_icon
+        title = '%s not found!'%str(id)
+      return '<i class="%s" title="%s"%s></i>'%(name,title,extra)
 
 
     # --------------------------------------------------------------------------

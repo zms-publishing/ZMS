@@ -109,7 +109,7 @@
 						<tal:block tal:repeat="metaObj metaObjs">
 							<tal:block tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 								<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
-									<i tal:on-error="string:ERROR icon" tal:attributes="class python:here.display_icon(request,metaObj['id'],zpt=True)"></i>
+									<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
 									<span tal:on-error="string:ERROR Name" tal:replace="metaObj/name">name</span>
 								</a>
 							</tal:block>
@@ -122,7 +122,7 @@
 				<i tal:condition="python:metaObj.get('acquired')" class="icon-share" title="acquired"></i>
 				<a target="_blank" style="text-decoration:none;"
 					tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']"
-					tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">icon</a>
+					><i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i></a>
 				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])"
 					tal:content="python:metaObj.get('name')">Name</a>
 			</div>
@@ -219,7 +219,7 @@
 										tal:attributes="name python:'attr_custom_%s'%objAttr['id']; title python:['%s (%s)'%(objAttr['id'],objAttr['type']),errors][len(errors)>0];
 											class python:' '.join(['form-control','form-control-sm']+objAttr['type'].lower().split(' ')+[[],['bg-danger']][len(errors)>0]);
 											style python:'\073'.join([[],['color:#a94442','background:#fee']][len(errors)>0]);
-											data-class python:'icon-cogs';
+											data-class python:'fas fa-cogs';
 											data-dblclickhandler python:'window.open(\'%s/manage\',\'%s\')'%(ob.absolute_url(),'%s (%s)'%(objAttr['id'],objAttr['type']))"
 										tal:content="readData">ob.data</textarea>
 							</div>
@@ -321,7 +321,7 @@
 						<strong tal:condition="python:len(l)==0">Usage:</strong>
 						<tal:block tal:condition="not:python:len(l)==0">,</tal:block>
 						<a tal:attributes="href python:'%s?lang=%s&id=%s'%(request['URL'],request['lang'],metaObj2['id']); title python:'%s (%s)'%(metaObj2['name'],objAttr['name'])" target="_blank" tal:define="dummy0 python:l.append(1)">
-							<tal:block tal:content="structure python:here.display_icon(request,metaObj2['id'],zpt=True)">object-icon</tal:block>
+							<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
 							<tal:block tal:content="python:'%s.%s'%(metaObj2['id'],objAttr['id'])">object-name.attribute-name</tal:block>
 						</a>
 					</tal:block>
@@ -471,7 +471,7 @@
 							<i tal:attributes="class python:' '.join(['enabled-toggle']+[['far fa-square icon-square'],['far fa-check-square icon-check-square']][metaObj.get('enabled',0) in [1,True]])"></i>
 						</a>
 						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank">
-							<i tal:on-error="string:ERROR" tal:attributes="class python:here.display_icon(request,metaObj['id'],zpt=True)"></i>
+							<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
 						</a>
 						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
 							<span tal:on-error="string:ERROR name" tal:replace="metaObj/name">the name</span>

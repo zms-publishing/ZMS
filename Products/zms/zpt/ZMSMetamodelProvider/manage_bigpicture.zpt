@@ -22,7 +22,7 @@
 		<div class="box" tal:attributes="id metaObj/id">
 			<div class="objtype" tal:content="metaObj/type">the type</div>
 			<div class="objid">
-				<tal:block tal:content="structure python:here.display_icon(request,metaObj['id'],zpt=True)">the icon</tal:block>
+				<i tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
 				<a title="Edit Model..." target="_blank" tal:attributes="href python:'manage_main?id=%s'%(metaObj['id'])" tal:content="metaObj/id">the id</a>
 				<span class="objname">
 					= <tal:block 

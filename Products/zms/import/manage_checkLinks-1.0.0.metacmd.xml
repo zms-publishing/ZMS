@@ -250,7 +250,7 @@ def manage_checkLinks( self):
       </item>
       <item key="description"></item>
       <item key="execution" type="int">0</item>
-      <item key="icon_clazz">icon-cogs</item>
+      <item key="icon_clazz">fas fa-cogs</item>
       <item key="id">manage_checkLinks</item>
       <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">

@@ -214,8 +214,8 @@ function mms_normalize_rows(el_tbody) {
 			<div>
 				<label class="control-label col-xs-2">
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],table['id']); title python:here.getZMILangStr('ATTR_TABLE')">
-						<tal:block tal:condition="python:table['type']!='intersection'" tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
-						<tal:block tal:condition="python:table['type']=='intersection'" tal:content="structure python:here.zmi_icon(name='icon-link')"></tal:block>
+						<i tal:condition="python:table['type']!='intersection'" class="fas fa-th-list"></i>
+						<i tal:condition="python:table['type']=='intersection'" class="fas fa-link"></i>
 						<tal:block tal:content="table/id">table-id</tal:block>
 					</a>
 				</label>
@@ -530,12 +530,12 @@ function mms_normalize_rows(el_tbody) {
 	<div tal:attributes="class python:' '.join(['card']+[[''],['inactive']][int(table['type']!='table')])">
 		<div class="card-header clearfix btn-collapse">
 			<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s-columns'%table['id']">
-				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
+				<i class="fas"></i>
 			</a>
 			<div class="pull-left">
 				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],table['id']); title python:here.getZMILangStr('ATTR_TABLE')">
-					<tal:block tal:condition="python:table['type']!='intersection'" tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
-					<tal:block tal:condition="python:table['type']=='intersection'" tal:content="structure python:here.zmi_icon(name='icon-link')"></tal:block>
+					<i tal:condition="python:table['type']!='intersection'" class="fas fa-th-list"></i>
+					<i tal:condition="python:table['type']=='intersection'" class="fas fa-link"></i>
 					<tal:block tal:content="table/label">table-label</tal:block>
 					(<tal:block tal:content="table/id">table-id</tal:block>)
 				</a>
@@ -553,12 +553,12 @@ function mms_normalize_rows(el_tbody) {
 						</label>
 						<div class="col-xs-9 col-lg-10">
 							<i class="fas fa-th-list"></i>
-							<tal:block tal:condition="python:column.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
+							<i tal:condition="python:column.get('pk')" class="fas fa-key"></i>
 							<span class="column-id" tal:content="column/id">column-id</span>
 							<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python:standard.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
 							<tal:block tal:condition="python:column.get('fk') and column.get('fk').get('tablename')">
 								<span class="column-datatype">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['fk'].get('fieldname','?'))"></tal:block>
+									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['fk'].get('fieldname','?')"></i>
 									<i class="fas fa-th"></i>
 									<tal:block tal:content="column/fk/tablename">the fk-tablename</tal:block>
 									(<tal:block tal:content="python:column['fk'].get('displayfield','?')">the fk-displayfield</tal:block>)
@@ -566,7 +566,7 @@ function mms_normalize_rows(el_tbody) {
 							</tal:block>
 							<tal:block tal:condition="python:column.get('multiselect') and column.get('multiselect').get('tablename')">
 								<span class="column-datatype">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['multiselect'].get('fk','?'))"></tal:block>
+									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['multiselect'].get('fk','?')"></i>
 									<i class="fas fa-link"></i>
 									<tal:block tal:content="column/multiselect/tablename">the multiselect-tablename</tal:block>
 									<tal:block tal:on-error="python:'ERROR'" tal:define="global
@@ -574,7 +574,7 @@ function mms_normalize_rows(el_tbody) {
 											dst python:[x for x in intersection['columns'] if x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id']][0];
 											dstentity python:here.getEntity(dst['fk']['tablename']);
 											">
-										<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%dst['id'])"></tal:block>
+										<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dst['id']"></i>
 										<i class="fas fa-th"></i>
 										<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
 									</tal:block>
@@ -582,7 +582,7 @@ function mms_normalize_rows(el_tbody) {
 							</tal:block>
 							<tal:block tal:condition="python:column.get('details')">
 								<span class="column-datatype">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['details']['fk'])"></tal:block>
+									<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:column['details'].get('fk','?')"></i>
 									<i class="fas fa-link"></i>
 									<tal:block tal:content="column/details/tablename">the intersection-tablename</tal:block>
 									<tal:block tal:on-error="python:'ERROR'" tal:define="global
@@ -590,7 +590,7 @@ function mms_normalize_rows(el_tbody) {
 											dst python:[x for x in intersection['columns'] if x.get('fk') is not None and x.get('fk',{}).get('tablename')!=table['id']][0];
 											dstentity python:here.getEntity(dst['fk']['tablename']);
 											">
-										<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%dst['id'])"></tal:block>
+										<i class="fas fa-long-arrow-alt-right" tal:attributes="title python:dst['id']"></i>
 										<i class="fas fa-th"></i>
 										<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
 									</tal:block>

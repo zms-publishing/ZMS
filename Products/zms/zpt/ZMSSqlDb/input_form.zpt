@@ -49,7 +49,7 @@
 				##### Label ############################################################
 				</tal:block>
 				<label tal:attributes="for elName; class python:' '.join(['col-sm-3 col-md-2 control-label']+[[],['mandatory']][int((metaObjAttr.get('mandatory') in ['1',1,'True',True]) and metaObjAttr.get('auto') in ['',None])])">
-					<tal:block tal:condition="python:metaObjAttr.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
+					<i tal:condition="python:metaObjAttr.get('pk')" class="fas fa-key"></i>
 					<span tal:content="elLabel">the label</span>
 				</label>
 
@@ -92,7 +92,7 @@
 								<div class="input-group-append" tal:define="actions python:['select']+[[],['insert']][int(metaObjAttr['fk'].get('editable',0))]">
 									<a class="btn btn-secondary btn-sm" href="javascript:;" 
 										tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions\':\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],tablename,fieldname,displayfield,','.join(actions),elLabel)" 
-										tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</a>
+										><i class="fas fa-pencil-alt"></i></a>
 								</div>
 						</tal:block>
 					</tal:block>
@@ -160,7 +160,14 @@
 										<input class="form-control" type="text" tal:attributes="id python:'label_%s%i'%(elName,i); name python:'label_%s%i'%(elName,i)" disabled="disabled"/>
 									</div>
 									<div class="pull-left">
-										<span class="btn btn-secondary" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),'%s%i'%(elName,i),item['tablename'].lower(),item['fieldname'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\''),item['displayfield'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-pencil')">icon-pencil</span>
+										<span class="btn btn-secondary" 
+												tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url()
+																	,'%s%i'%(elName,i)
+																	,item['tablename'].lower()
+																	,item['fieldname'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\'')
+																	,item['displayfield'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\'')
+																	,elLabel)"
+											><i class="fas fa-pencil-alt"></i></span>
 									</div>
 								</div>
 								<div tal:condition="not:python:item.get('lazy')">

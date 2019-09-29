@@ -34,7 +34,7 @@
 	<div class="card perc100">
 		<div class="card-header attr_last_modified btn-collapse">
 			<a class="btn card-toggle pull-left" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
-				><tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-right')"></tal:block
+				><i class="fas fa-caret-right"></i
 				><tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
 			></a>
 			<div class="pull-left" tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
@@ -54,7 +54,7 @@
 				<i class="fas fa-caret-down"></i>
 			</a>
 			<label class="control-label">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-filter')">the icon</tal:block>
+				<i class="fas fa-filter"></i>
 				<tal:block tal:content="structure python:here.getZMILangStr('ATTR_FILTER')">the label</tal:block>
 			</label>
 		</div><!-- .card-header -->

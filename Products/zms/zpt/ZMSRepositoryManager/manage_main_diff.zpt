@@ -71,7 +71,7 @@ ins {
 					ids python:sorted(standard.distinct_list([x['id'] for x in local_files]));
 					">
 				<div tal:repeat="id ids">
-					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-ok text-success')"></tal:block>
+					<i class="fas fa-ok text-success"></i>
 					<a tal:attributes="href python:'%s/manage_main?lang=%s&id=%s'%(provider.absolute_url(),request['lang'],id)" target="_blank"> 
 						<tal:block tal:content="id"></tal:block>
 					</a>
@@ -120,7 +120,7 @@ ins {
 								is_incoming python:is_modified and sum((str(i).isdigit() and int(i)) for i in l.get('version',[0])) < sum((str(i).isdigit() and int(i)) for i in r.get('version',[0]));
 								is_outgoing python:is_modified and sum((str(i).isdigit() and int(i)) for i in l.get('version',[0])) > sum((str(i).isdigit() and int(i)) for i in r.get('version',[0]));
 								is_removed python:len(ld)>0 and len(rd)==0;">
-									<tal:block tal:condition="python:l and l.get('data') is None" tal:content="structure python:zmscontext.zmi_icon(name='icon-warning-sign text-danger',extra=' title=\042not found!\042')">icon-alert</tal:block>
+									<i tal:condition="python:l and l.get('data') is None" class="icon-warning-sign text-danger" title="not found!"></i>
 									<tal:block tal:condition="not:python:l and l.get('data') is None">
 										<span tal:attributes="class python:' '.join(['state']
 											+[[],['bg-success']][is_new]

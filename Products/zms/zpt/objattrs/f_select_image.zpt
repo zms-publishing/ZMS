@@ -120,9 +120,9 @@
 					<a class="dropdown-item" target="_blank"
 						tal:condition="has_file"
 						tal:attributes="id python:'download_btn_%s'%elName;href href"
-						tal:content="structure python:'%s %s'%(here.zmi_icon(name='icon-eye'),here.getZMILangStr('TAB_PREVIEW'))">Preview</a>
-					<a class="dropdown-item" tal:attributes="id python:'delete_btn_%s'%elName" tal:content="structure python:'%s %s'%(here.zmi_icon(name='icon-trash'),here.getZMILangStr('BTN_DELETE'))">Delete</a>
-					<a class="dropdown-item" tal:attributes="id python:'undo_btn_%s'%elName" tal:content="structure python:'%s %s'%(here.zmi_icon(name='icon-undo'),here.getZMILangStr('BTN_UNDO'))">Undo</a>
+						tal:content="structure python:'%s %s'%('<i class=\042fas fa-eye\042></i>',here.getZMILangStr('TAB_PREVIEW'))">Preview</a>
+					<a class="dropdown-item" tal:attributes="id python:'delete_btn_%s'%elName"><i class="fas fa-trash"></i><tal:block tal:content="python:here.getZMILangStr('BTN_DELETE'))">Delete</tal:block></a>
+					<a class="dropdown-item" tal:attributes="id python:'undo_btn_%s'%elName"><i class="fas fa-undo"></i><tal:block tal:content="python:here.getZMILangStr('BTN_UNDO'))">Undo</tal:block></a>
 					<tal:block tal:condition="python:request.get('f_zmiSelectDisplaytype',True) and 'metaObj' in options and len([x for x in options['metaObj']['attrs'] if x['id'] == 'displaytype']) == 1"
 						><tal:block tal:define="global displaytypes python:[['top',2,'OPT_A_TOP'],['bottom',3,'OPT_A_BOTTOM'],['left',5,'OPT_A_LEFT_FLOAT'],['right',6,'OPT_A_RIGHT_FLOAT']]"
 							><div class="dropdown-header"><i class="fas fa-caret-down" title=""></i> <span tal:replace="python:here.getZMILangStr('ALIGN')"></div>
@@ -161,7 +161,7 @@
 				<input type="hidden" tal:attributes="id python:'height_%s'%elName; name python:'height_%s:int'%elName; value python:value.getHeight()"/>
 				<a tal:attributes="href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&lang=%s&key=%s&form_id=%s'%(request.get('ZMS_INSERT',here.meta_id),request['lang'],key,str(request['ZMI_TIME'])),int(pilutil.enabled()))" class="thumbnail ZMSGraphic_extEdit_action">
 					<img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
-					<div class="zmi-zoom-in" tal:content="structure python:here.zmi_icon(name='icon-search-plus')"></div><!-- .zmi-zoom-in -->
+					<div class="zmi-zoom-in"><i class="fas fa-search-plus"></i></div><!-- .zmi-zoom-in -->
 				</a>
 			</div>
 		</tal:block>

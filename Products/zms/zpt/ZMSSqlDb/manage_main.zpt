@@ -108,7 +108,7 @@
 		</div><!-- .collapse -->
 		<div class="card-header filters">
 			<a class="btn card-toggle pull-left" data-toggle="collapse" href="#attrProperties">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-down')"></tal:block>
+				<i class="fas fa-caret-down"></i>
 			</a>
 			<label class="control-label">
 				<tal:block tal:content="structure python:here.zmi_icon(name='icon-filter')">the icon</tal:block>
@@ -148,7 +148,7 @@
 				</tal:block>
 				<div class="form-row">
 					<button type="submit" id="btn-search" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_REFRESH')">
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
+						<i class="fas fa-search"></i>
 						<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>
 					</button>
 					<button type="submit" id="btn-reset" class="btn btn-secondary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">

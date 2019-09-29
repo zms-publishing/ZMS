@@ -105,7 +105,7 @@
 	</div>
 	<div class="form-group row">
 		<label class="col-lg-2 control-label">
-			<tal:block tal:content="structure python:here.zmi_icon(name='icon-filter')"></tal:block>
+			<i class="fas fa-filter"></i>
 			<tal:block tal:content="filter/name">the filter-name</tal:block>
 		</label>
 		<div class="col-lg-10">
@@ -113,7 +113,7 @@
 						<tr><td><div tal:attributes="class python:' '.join(['filterDelimiter']+[[],['active']][int(step==0)])">
 							<tal:block tal:condition="python:filter['format']=='import'">
 								<img tal:attributes="src python:here.getMimeTypeIconSrc(filter['content_type']); title filter/content_type"/> 
-								<tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-up',extra='title=\042Import\042')"></tal:block>
+								<i class="fas fa-arrow-up',extra='title=\042Import\042"></i>
 							</tal:block>
 							<tal:block tal:condition="python:filter['format']!='import'">
 								<tal:block tal:content="filter/format">the format</tal:block>
@@ -141,7 +141,7 @@
 							</tal:block>
 							<tal:block tal:condition="python:filter['format']!='import'">
 								<img tal:attributes="src python:here.getMimeTypeIconSrc(filter['content_type']); title filter/content_type"/> 
-								<tal:block tal:content="structure python:here.zmi_icon(name='icon-arrow-down',extra='title=\042Export\042')"></tal:block>
+								<i class="fas fa-arrow-down',extra='title=\042Export\042"></i>
 							</tal:block>
 						</div></td></tr>
 						</table><!-- .layoutTable -->
@@ -150,7 +150,7 @@
 	<div class="form-group row">
 		<label class="col-lg-2 control-label"></label>
 		<div class="col-lg-10">
-			<button class="btn btn-primary"><tal:block tal:content="structure python:here.zmi_icon(name='icon-cog')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_NEXT')">Next</tal:block></button>
+			<button class="btn btn-primary"><i class="fas fa-cog"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_NEXT')">Next</tal:block></button>
 		</div>
 	</div>
 </div>

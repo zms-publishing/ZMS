@@ -46,7 +46,7 @@
 			labels python:{'meta_type':'type','id':'name','get_size':'size','bobobase_modification_time':'last_modified'}">
 		<tal:block tal:repeat="column columns">
 			<th tal:define="global label python:zmscontext.getZMILangStr('ATTR_%s'%labels[column].upper())">
-				<tal:block tal:condition="python:skey==column or rkey==column" tal:content="structure python:here.zmi_icon(name=['icon-caret-down','icon-caret-up'][int(rkey==column)])"></tal:block>
+				<i tal:condition="python:skey==column or rkey==column" tal:attributes="class python:'fas fa-caret-%s'%(['down','up'][int(rkey==column)])"></i>
 				<a tal:attributes="href python:zmscontext.url_append_params(request['URL'],{['skey','rkey'][int(skey==column)]:column}); title python:'Sort objects by %s'%label"><tal:block tal:content="label">the label</tal:block></a>
 			</th>
 		</tal:block>

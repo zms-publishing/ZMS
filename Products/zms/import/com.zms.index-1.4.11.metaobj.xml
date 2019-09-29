@@ -102,8 +102,7 @@ function openWindow(url) {
 					title="Enter comma separated names of meta-attributes"
 					tal:attributes="value python:zmscontext.operator_getattr(zmscontext,'index_names','')"/>
 				<div class="input-group-append input-group-btn">
-					<button class="btn btn-primary" name="btn" value="save"
-						onclick="$(this).parents('form').attr({action:self.location.href})" tal:content="structure python:zmscontext.zmi_icon(name='icon-save')">save</button>
+					<button class="btn btn-primary" name="btn" value="save" onclick="$(this).parents('form').attr({action:self.location.href})"><i class="fas fa-save"></i></button>
 				</div>
 			</div><!-- .input-group -->
 		</div><!-- .col-sm-5-->
@@ -116,7 +115,7 @@ function openWindow(url) {
 				<input class="form-control" type="text" name="uid" tal:attributes="value uid" placeholder="Enter uid"/>
 				<div class="input-group-append input-group-btn">
 					<button class="btn btn-primary" name="btn" value="search"
-						onclick="$(this).parents('form').attr({action:self.location.href})" tal:content="structure python:zmscontext.zmi_icon(name='icon-search')">search</button>
+						onclick="$(this).parents('form').attr({action:self.location.href})"><i class="fas fa-search"></i></button>
 				</div>
 			</div><!-- .input-group -->
 		</div>

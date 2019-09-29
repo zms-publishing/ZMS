@@ -24,7 +24,7 @@ function uploadBtnClick() {
 
 	<div class="input-group">
 		<input class="form-control" type="text" name="path" size="50" tal:attributes="value path"/>
-		<span class="input-group-btn"><button class="btn btn-secondary" name="btn" value="Chdir" tal:content="structure python:here.zmi_icon(name='icon-sync')">Chdir</button></span>
+		<span class="input-group-btn"><button class="btn btn-secondary" name="btn" value="Chdir"><i class="fas fa-sync"></i></button></span>
 	</div><!-- .input-group -->
 
 <table class="table table-striped">
@@ -38,7 +38,7 @@ function uploadBtnClick() {
 		<td>
 			<input type="checkbox" name="ids:list" tal:attributes="value python:file['path']+file['file']"/>
 			<a tal:attributes="href python:standard.url_append_params('',{'path':file['path']+file['file']})">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-close')">the icon</tal:block>
+				<i class="fas fa-folder-close"></i>
 				<tal:block tal:content="file/file">the file</tal:block>
 			</a>
 		</td>
@@ -49,7 +49,7 @@ function uploadBtnClick() {
 		<td>
 			<input type="checkbox" name="ids:list" tal:attributes="value python:file['path']+file['file']"/>
 			<a tal:attributes="href python:standard.url_append_params('manage_index_html',{'path':file['path']+file['file']})" target="_blank">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-file-alt')">the icon</tal:block>
+				<i class="fas fa-file-alt"></i>
 				<tal:block tal:content="file/file">the file</tal:block>
 			</a>
 		</td>
@@ -64,7 +64,7 @@ function uploadBtnClick() {
 	<div class="col-sm-10">
 		<div class="input-group">
 			<input class="form-control" type="text" name="command" size="50" tal:attributes="value python:request.get('command','')"/>
-			<span class="input-group-btn"><button class="btn btn-secondary" name="btn" value="Execute" onclick="uploadBtnClick()" tal:content="structure python:here.zmi_icon(name='icon-cog')">Execute</button></span>
+			<span class="input-group-btn"><button class="btn btn-secondary" name="btn" value="Execute" onclick="uploadBtnClick()"><i class="fas fa-cog"></i>Execute</button></span>
 		</div><!-- .input-group -->
 	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->

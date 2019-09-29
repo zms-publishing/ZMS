@@ -31,12 +31,12 @@
 		<div class="form-group row">
 			<label class="col-sm-2"></label>
 			<div class="col-sm-10">
-				<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-check-square')"></tal:block></span>
+				<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
 				<button type="submit" class="btn btn-secondary" name="btn" value="refresh"><i class="icon-repeat fas fa-redo-alt"></i> Refresh</button>
 				<tal:block tal:define="meta_cmds python:here.getMetaCmds(here,'repository')">
 					<div class="btn-group" tal:condition="not:meta_cmds">
-						<button type="submit" class="btn btn-secondary" name="btn" value="update" title="Update from Working-Copy"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-reply text-success')"></tal:block> Update</button>
-						<button type="submit" class="btn btn-secondary" name="btn" value="commit" title="Commit to Working-Copy"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-share text-success')"></tal:block> Commit</button>
+						<button type="submit" class="btn btn-secondary" name="btn" value="update" title="Update from Working-Copy"><i class="fas fa-reply text-success"></i> Update</button>
+						<button type="submit" class="btn btn-secondary" name="btn" value="commit" title="Commit to Working-Copy"><i class="fas fa-share text-success"></i> Commit</button>
 					</div>
 					<div class="dropdown" tal:condition="meta_cmds">
 						<button class="btn btn-secondary dropdown-toggle" type="button" id="teamDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -45,7 +45,7 @@
 						<div class="dropdown-menu" aria-labelledby="teamDropdownMenuButton">
 								<li tal:repeat="meta_cmd meta_cmds">
 									<a tal:attributes="href python:meta_cmd['id'];title python:meta_cmd.get('title','id')">
-										<tal:block tal:condition="python:meta_cmd.get('icon_clazz')" tal:content="structure python:here.zmi_icon(name=meta_cmd.get('icon_clazz'))">the action-icon</tal:block>
+										<i tal:condition="python:meta_cmd.get('icon_clazz')" tal:attributes="class python:meta_cmd.get('icon_clazz','fas fa-square')"></i>
 										<tal:block tal:content="python:here.getZMILangStr(meta_cmd['name'])">the action-name</tal:block>
 									</a>
 								</li>

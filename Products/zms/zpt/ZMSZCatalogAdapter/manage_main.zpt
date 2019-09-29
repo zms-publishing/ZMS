@@ -72,7 +72,7 @@
 									</tal:block>
 								</select>
 								<div class="input-group-append">
-									<button id="addMetaTypeBtn" name="btn" type="submit" class="btn btn-secondary" value="Add" tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></button>
+									<button id="addMetaTypeBtn" name="btn" type="submit" class="btn btn-secondary" value="Add"><i class="fas fa-plus"></i></button>
 								</div>
 							</div>
 					</div><!-- .col-sm-10 -->
@@ -118,11 +118,11 @@
 															<tr tal:condition="python:len([x for x in metaObjs if x.get('package')==metaObjPackage])>0" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
 																<td colspan="2">
 																	<tal:block tal:condition="python:metaObjPackage">
-																		<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block>
+																		<i class="fas fa-briefcase"></i>
 																		<strong tal:content="metaObjPackage">the id</strong>
 																	</tal:block>
 																	<tal:block tal:condition="python:not metaObjPackage">
-																		<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block>
+																		<i class="fas fa-briefcase"></i>
 																		<strong>[default package]</strong>
 																	</tal:block>
 																</td>
@@ -131,7 +131,7 @@
 														<tal:block tal:condition="not:python:metaObjPackage in metaObjPackages">
 															<tr>
 																<td colspan="2" style="text-decoration:line-through">
-																	<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-briefcase')"></tal:block>
+																	<i class="fas fa-briefcase"></i>
 																	<strong tal:content="metaObjPackage">the id</strong>
 																</td>
 															</tr>
@@ -220,10 +220,10 @@
 						</button>
 						<div class="btn-group">
 							<a class="btn btn-secondary" tal:attributes="href python:'%s/get_sitemap'%si.absolute_url(); title python:'%s (%s)'%(here.getZMILangStr('BTN_EXPORT'),here.getZMILangStr('TAB_SITEMAP'))" target="_blank">
-								<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-download')"></tal:block>
+								<i class="fas fa-download"></i>
 							</a>
 							<span class="btn btn-warning" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id si/id" onclick="return zmiReindexCatalog()">
-								<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-sync')"></tal:block>
+								<i class="fas fa-sync"></i>
 							</span>
 						</div>
 					</div><!-- .col-sm-10 -->

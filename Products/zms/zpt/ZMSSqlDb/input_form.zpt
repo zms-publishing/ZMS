@@ -25,7 +25,7 @@
 	<input type="hidden" id="qindex" name="qindex:int" tal:attributes="value qindex">
 	<input type="hidden" id="rowid" name="rowid" tal:attributes="value rowid">
 	<legend>
-		<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+		<i class="fas fa-th"></i>
 		<span tal:attributes="title entity/id" tal:content="entity/label">the label</span>
 	</legend>
 	<div class="card">
@@ -127,9 +127,12 @@
 						</div><!-- .pull-left -->
 						<div class="pull-left">
 							<div class="btn-group-vertical" tal:on-error="python:'ERROR: %s'%str(metaObjAttr)">
-								<a class="btn btn-primary btn-sm" href="javascript:;" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'multiselect\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['dst']['fk']['tablename'],str(metaObjAttr['dst']['fk']['fieldname']).replace('\'','\\\''),str(metaObjAttr['dst']['fk']['displayfield']).replace('\'','\\\''),elLabel)" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</a>
-								<a class="btn btn-secondary btn-sm" href="javascript:;" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%elName" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</a>
-								<a class="btn btn-secondary btn-sm" href="javascript:;" tal:attributes="onclick python:'$(\'select#%s option\').prop(\'selected\',true)'%elName" tal:content="structure python:here.zmi_icon(name='icon-check-square-sign')">icon-check-square-sign</a>
+								<a class="btn btn-primary btn-sm" href="javascript:;" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'multiselect\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['dst']['fk']['tablename'],str(metaObjAttr['dst']['fk']['fieldname']).replace('\'','\\\''),str(metaObjAttr['dst']['fk']['displayfield']).replace('\'','\\\''),elLabel)"
+									><i class="fas fa-plus-sign"></i></a>
+								<a class="btn btn-secondary btn-sm" href="javascript:;" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%elName" 
+									><i class="fas fa-minus-sign"></i></a>
+								<a class="btn btn-secondary btn-sm" href="javascript:;" tal:attributes="onclick python:'$(\'select#%s option\').prop(\'selected\',true)'%elName" 
+									><i class="fas fa-check-square-sign"></i></a>
 							</div><!-- .btn-group -->
 						</div><!-- .pull-left -->
 						<div class="clearfix"></div><!-- .clearfix -->
@@ -168,15 +171,15 @@
 						<div class="pull-left">
 							<label class="control-label">&nbsp;</label>
 							<div>
-								<span class="btn btn-primary" tal:attributes="onclick python:'zmiMultimultiselect(\'%s\')'%metaObjAttr['id']" tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</span>
+								<span class="btn btn-primary" tal:attributes="onclick python:'zmiMultimultiselect(\'%s\')'%metaObjAttr['id']"><i class="fas fa-plus-sign"></i></span>
 							</div>
 						</div><!-- .pull-left -->
 						<div class="clearfix"></div><!-- .clearfix -->
 						<div class="control-group" style="margin-top:4px;">
 							<div class="pull-right">
 								<div class="btn-group-vertical">
-									<span class="btn btn-secondary" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%metaObjAttr['id']" tal:content="structure python:here.zmi_icon(name='icon-minus-sign')">icon-minus-sign</span>
-									<span class="btn btn-secondary" tal:attributes="onclick python:'$(\'select#%s option\').attr(\'selected\',\'selected\')'%elName" tal:content="structure python:here.zmi_icon(name='icon-check-square-sign')">icon-check-square-sign</span>
+									<span class="btn btn-secondary" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%metaObjAttr['id']"><i class="fas fa-minus-sign"></i></span>
+									<span class="btn btn-secondary" tal:attributes="onclick python:'$(\'select#%s option\').attr(\'selected\',\'selected\')'%elName"><i class="fas fa-check-square-sign"></i></span>
 								</div><!-- .btn-group -->
 							</div><!-- .pull-right -->
 							<select class="form-control form-on-submit-selected" tal:attributes="id python:metaObjAttr['id']; name python:'%s:list'%metaObjAttr['id']" multiple="multiple">

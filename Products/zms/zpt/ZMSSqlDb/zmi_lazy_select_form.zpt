@@ -37,11 +37,11 @@
 		<div class="pull-left"><input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex,'')" /></div>
 		<div class="pull-left">
 			<button type="submit" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_REFRESH')">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-search')"></tal:block>
+				<i class="fas fa-search"></i>
 			</button>
 			<button class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_ADD');
 			   onclick python:'javascript:window.open(\'manage_main?lang=ger&action=insertForm&qentity=%s\',\'%s\')'%(entity['id'],here.getZMILangStr('BTN_ADD'))">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus')"></tal:block>
+				<i class="fas fa-plus"></i>
 			</button>
 			&nbsp;
 			<a href="javascript:;" onclick="$('#manage_main_div_sql').toggle()" title="Show SQL Code">

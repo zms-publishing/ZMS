@@ -74,12 +74,6 @@ header.navbar-nav ul.navbar-nav {
 .zmi:not(.manage-menu) header.navbar-nav .dropdown-menu a.dropdown-item {
 	color:#212529;	
 }
-.zmi:not(.manage-menu) header.navbar-nav #toggle_tabs {
-	border-right: 1px solid silver;
-	padding: .60rem 1rem 0 0;
-	height: 2.65rem;
-	display:none;
-}
 .zmi:not(.manage-menu) header.navbar ul.navbar-nav li {
 	font-size:14px;
 	/* border-right: 1px solid silver; */

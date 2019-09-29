@@ -49,7 +49,7 @@
 				<div class="col-sm-9"><span class="btn btn-secondary"><input type="checkbox" id="new_default" name="new_default" value="1" tal:attributes="checked python:['','checked'][int(format.getId()==here.getTextFormatDefault())]" /></span></div>
 			</div><!-- .form-group -->
 			<div class="form-group row" title="Format forces the text block using the Ricktext Editor">
-				<label for="new_richedit" class="col-sm-3 control-label"><span><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-eye',title=here.getZMILangStr('ATTR_RICHEDIT'))"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ATTR_RICHEDIT')">Richedit</tal:block></span></label>
+				<label for="new_richedit" class="col-sm-3 control-label"><span><i class="fas fa-eye" tal_attributes="title python:here.getZMILangStr('ATTR_RICHEDIT')"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_RICHEDIT')">Richedit</tal:block></span></label>
 				<div class="col-sm-9"><span class="btn btn-secondary"><input type="checkbox" id="new_richedit" name="new_richedit:int" value="1" tal:attributes="checked python:['','checked'][str(format.getRichedit())=='1']"/></span></div>
 			</div><!-- .form-group -->
 			<div class="form-group row" title="Rendered HTML Code nesting the text block">
@@ -96,7 +96,7 @@
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group row">
 				<label for="file" class="col-sm-3 control-label">
-					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-folder far fa-folder')"></tal:block>
+					<i class="far fa-folder"></i>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
 				<div class="col-sm-9"><input class="btn btn-file" name="file" type="file" /></div>
@@ -130,15 +130,15 @@
 		<tr>
 			<th>
 				<div class="btn-group">
-					<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)" tal:content="structure python:zmscontext.zmi_icon(name='icon-check-square')"></a>
+					<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></a>
 				</div>
 			</th>
 			<th colspan="2">
 				<div class="btn-group">
-					<a class="btn btn-primary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})" tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></a>
-					<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})" tal:content="structure python:zmscontext.zmi_icon(name='icon-times')"></a>
-					<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})" tal:content="structure python:zmscontext.zmi_icon(name='icon-upload')"></a>
-					<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)" tal:content="structure python:zmscontext.zmi_icon(name='icon-download')"></a>
+					<a class="btn btn-primary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')})"><i class="fas fa-plus"></i></a>
+					<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><i class="fas fa-times"></i></a>
+					<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><i class="fas fa-upload"></i></a>
+					<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i></a>
 				</div>
 			</th>
 		</tr>
@@ -151,8 +151,8 @@
 			</td>
 			<td class="text-nowrap align-middle">
 				<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.getId())">
-					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-eye',title=here.getZMILangStr('ATTR_RICHEDIT'))" tal:condition="python:format.getRichedit()"></tal:block>
-					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-align-left')" tal:condition="not:python:format.getRichedit()"></tal:block>
+					<i tal:condition="python:format.getRichedit()" class="fas fa-eye" tal:attributes="title python:here.getZMILangStr('ATTR_RICHEDIT')"></i>
+					<i tal:condition="not:python:format.getRichedit()" class="fas fa-align-left"></i>
 					<tal:block tal:content="python:format.getId()">Id</tal:block>
 				</a>
 			</td>

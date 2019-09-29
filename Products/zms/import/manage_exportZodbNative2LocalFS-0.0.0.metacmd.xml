@@ -90,9 +90,9 @@ def manage_exportZodbNative2LocalFS( self):
   html += '<tr>'
   html += '''<th>
             <div class="btn-group">
-              <span class="btn btn-secondary" title="%s/%s" onclick="zmiToggleSelectionButtonClick(this)">%s</span>
+              <span class="btn btn-secondary" title="%s/%s" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
             </div>
-          </th>'''%(self.getZMILangStr('BTN_SLCTALL'),self.getZMILangStr('BTN_SLCTNONE'),self.zmi_icon(name='icon-check-square'))
+          </th>'''%( self.getZMILangStr('BTN_SLCTALL'), self.getZMILangStr('BTN_SLCTNONE') )
   html += '<th>Objekt</th>'
   html += '<th>Status</th>'
   html += '</tr>'

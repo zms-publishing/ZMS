@@ -30,7 +30,7 @@
 			<div class="input-group">
 				<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
 				<div class="input-group-append">
-					<button type="submit" class="btn btn-primary" tal:content="structure python:here.zmi_icon(name='icon-search')"></button>
+					<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
 				</div>
 			</div>
 		</div>

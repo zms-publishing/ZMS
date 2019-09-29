@@ -50,13 +50,13 @@
 					text_clazz python:[x for x in clazz if x.find('icon') < 0];
 					icon_clazz python:[x for x in clazz if x.find('icon') >= 0];
 					title python:'%s %s %s (%s)'%(wfActivity['name'],here.getZMILangStr('BY'),work_uid,here.getLangFmtDate(work_dt))"
-				><span class="zmi-state" tal:condition="python:wfActivity.get('icon_clazz')" tal:attributes="class python:' '.join(['zmi-state']+text_clazz); title title" tal:content="structure python:here.zmi_icon(name=' '.join(icon_clazz))">the icon</span
+				><span class="zmi-state" tal:condition="python:wfActivity.get('icon_clazz')" tal:attributes="class python:' '.join(['zmi-state']+text_clazz); title title"><i tal:attributes="class python:' '.join(icon_clazz)"></i></span
 			></tal:block
 		></tal:block
-		><span class="zmi-state zmi-state-success" tal:condition="python:'STATE_NEW' in objStates"><tal:block tal:content="structure python:here.zmi_icon(name='icon-plus-sign')"></tal:block>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_NEW')"></tal:block></span
-		><span class="zmi-state zmi-state-info" tal:condition="python:'STATE_MODIFIED' in objStates"><tal:block tal:content="structure python:here.zmi_icon(name='icon-pencil')"></tal:block>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block></span
-		><span class="zmi-state zmi-state-default" tal:condition="python:len(wfStates)>0 and here.isVersionContainer() and here.hasObjModifiedChildren(request)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-edit')"></tal:block>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block></span
-		><span class="zmi-state zmi-state-danger" tal:condition="python:'STATE_DELETED' in objStates"><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_DELETED')"></tal:block></span
+		><span class="zmi-state zmi-state-success" tal:condition="python:'STATE_NEW' in objStates"><i class="fas fa-plus-sign"></i>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_NEW')"></tal:block></span
+		><span class="zmi-state zmi-state-info" tal:condition="python:'STATE_MODIFIED' in objStates"><i class="fas fa-pencil"></i>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block></span
+		><span class="zmi-state zmi-state-default" tal:condition="python:len(wfStates)>0 and here.isVersionContainer() and here.hasObjModifiedChildren(request)"><i class="fas fa-edit"></i>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block></span
+		><span class="zmi-state zmi-state-danger" tal:condition="python:'STATE_DELETED' in objStates"><i class="fas fa-trash"></i>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_DELETED')"></tal:block></span
 	></tal:block
 ></tal:block
 ><tal:block tal:replace="nothing">

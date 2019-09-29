@@ -10,10 +10,9 @@
 	<div class="card">
 		<div class="card-header attr_last_modified clearfix btn-collapse">
 				<div class="btn-group">
-					<a id="zmi-toggle-activity-btn" 
-							class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
-						><tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block
-						>&nbsp;<tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block>&nbsp;</a>
+					<a id="zmi-toggle-activity-btn" class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
+						><i class="fas fa-invisible"></i>
+						&nbsp;<tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block>&nbsp;</a>
 					<div class="btn zmi-changes"
 							tal:condition="not:python:request.get('ZMS_INSERT',False)" 
 							tal:define="change_uid python:here.attr('change_uid');change_dt python:here.attr('change_dt')">
@@ -31,20 +30,18 @@
 							+[[x['name'],'manage_executeMetacmd?id=%s'%x['id'],x.get('icon_clazz'),x.get('title')] for x in metaCmds] \
 							+here.filtered_workflow_actions()"
 					><tal:block tal:condition="python:len(actions)>0">
-						<button class="btn dropdown-toggle" 
-							data-toggle="dropdown"
+						<button class="btn dropdown-toggle" data-toggle="dropdown"
 							tal:attributes="title python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')" 
-							tal:content="structure python:here.zmi_icon(name='fas fa-caret-square-down')"
-						></button>
+						><i class="fas fa-caret-square-down"></i></button>
 						<div class="dropdown-menu dropdown-menu-right">
 							<tal:block tal:repeat="action actions">
 								<div tal:condition="python:action[0].startswith('-----') and action[0].endswith('-----')" class="dropdown-header">
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-caret-down')">the icon</tal:block>
+									<i class="fas fa-caret-down"></i>
 									<tal:block tal:content="structure python:action[0][5:-5].strip()">the title</tal:block>
 								</div>
 								<tal:block tal:condition="not:python:action[0].startswith('-----') and action[0].endswith('-----')">
 									<a class="dropdown-item" tal:attributes="href python:'javascript:$ZMI.actionList.exec($(\'.attr_last_modified\'),\'%s\',\'%s\')'%(action[0],action[1])">
-										<tal:block tal:condition="python:len(action)>=3 and action[2] is not None" tal:content="structure python:here.zmi_icon(name=action[2])">the icon</tal:block>
+										<tal:block tal:condition="python:len(action)>=3 and action[2] is not None"><i tal:attributes="class python:action[2])"></i>
 										<tal:block tal:content="structure python:action[0]">the title</tal:block>
 									</a>
 								</tal:block>
@@ -173,7 +170,7 @@
 			tal:condition="constraints">
 			<tal:block tal:on-error="nothing" tal:repeat="category python:list(constraints)">
 				<div tal:attributes="class python:'constraint constraint-%s'%category[:-1].lower()">
-					<tal:block tal:content="structure python:'<strong>'+here.zmi_icon(name='icon-warning-sign',extra='title=\042%s\042'%category[:-1])+' '+category[:-1]+'</strong>: '+'; '.join([x[1] for x in constraints[category]])"></tal:block>
+					<i class="fas fa-warning-sign" tal:attributes="title python:category[:-1] + ' ' + category[:-1] + '; '.join([x[1] for x in constraints[category]])"></i>
 				</div>
 			</tal:block>
 		</tal:block>
@@ -217,11 +214,8 @@
 									<div class="right">
 										<div class="zmi-action btn-group dropleft">
 											<span class="d-none zmi-sort-id" tal:content="python:9990">the sort-id</span>
-											<button class="btn btn-secondary split-left">
-											</button>
-											<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown">
-												<tal:block tal:content="structure python:here.zmi_icon(name='icon-plus-sign')">icon-plus-sign</tal:block>
-											</button>
+											<button class="btn btn-secondary split-left"></button>
+											<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown"><i class="fas fa-plus-sign"></i></button>
 										</div><!-- .btn-group -->
 									</div><!-- .right -->
 								</li><!-- .zmi-item -->
@@ -229,7 +223,7 @@
 							<tal:block tal:condition="hasChildren">
 								<div class="card-header btn-collapse">
 									<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id'];data-toggle python:['','collapse'][hasChildren]">
-										<tal:block tal:content="structure python:[here.zmi_icon(name='icon-caret-down'),here.zmi_icon(name='')][hasChildren]"></tal:block>
+										<i tal:attributes="class python:'fas fa-%s'%(['caret-down',''][hasChildren])"></i>
 										<tal:block tal:content="elLabel">the label</tal:block>
 									</a>
 									<span tal:content="structure python:'&nbsp;&nbsp;(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>

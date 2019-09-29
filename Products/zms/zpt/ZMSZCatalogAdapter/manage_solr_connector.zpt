@@ -41,7 +41,7 @@
 				<div class="input-group-append">
 					<a class="btn btn-primary" href="javascript:;" 
 						tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_xml\',{q:$(\'#ZCatalogSolrConnector #qsearch\').val()},{iframe:true,title:\'Solr: Select\'})'%here.absolute_url()"
-						tal:content="structure python:zmscontext.zmi_icon(name='icon-external-link-alt')"></a>
+						><i class="fas fa-external-link-alt"></i></a>
 				</div>
 			</div>
 		</div>
@@ -54,7 +54,7 @@
 				<div class="input-group-append">
 					<a class="btn btn-primary" href="javascript:;"
 						tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/suggest_xml\',{q:$(\'#ZCatalogSolrConnector #qsuggest\').val()},{iframe:true,title:\'Solr: Suggest\'})'%here.absolute_url()"
-						tal:content="structure python:zmscontext.zmi_icon(name='icon-external-link-alt')"></a>
+						><i class="fas fa-external-link-alt"></i></a>
 				</div>
 			</div>
 		</div>

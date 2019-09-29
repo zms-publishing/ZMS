@@ -78,7 +78,7 @@ function zmiFormSubmit(sender,d) {
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group row">
 				<label for="file" class="col-lg-2 control-label">
-					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-folder far fa-folder')"></tal:block>
+					<i class="far fa-folder"></i>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
 				<div class="col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
@@ -110,17 +110,17 @@ function zmiFormSubmit(sender,d) {
 	<tr>
 		<th class="meta-sort">
 			<div class="btn-group">
-				<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="zmiModal('#acquireConf',{title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None" tal:content="structure python:zmscontext.zmi_icon(name='icon-share')"></a>
-				<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})" tal:content="structure python:zmscontext.zmi_icon(name='icon-upload')"></a>
-				<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)" tal:content="structure python:zmscontext.zmi_icon(name='icon-download')"></a>
+				<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="zmiModal('#acquireConf',{title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share"></i></a>
+				<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><i class="fas fa-upload"></i></a>
+				<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i></a>
 			</div>
 		</th>
 		<th class="meta-id" tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
 		<th class="meta-name" tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
 		<th class="meta-type" tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
-		<th class="meta-mandatory" tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-exclamation-circle')"></tal:block></th>
-		<th class="meta-multilang" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-globe')"></tal:block></th>
-		<th class="meta-repetitive" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-list-ol')"></tal:block></th>
+		<th class="meta-mandatory" tal:attributes="title python:here.getZMILangStr('ATTR_MANDATORY')"><i class="fas fa-exclamation-circle"></i></th>
+		<th class="meta-multilang" tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"><i class="fas fa-globe"></i></th>
+		<th class="meta-repetitive" tal:attributes="title python:here.getZMILangStr('ATTR_REPETITIVE')"><i class="fas fa-list-ol"></i></th>
 		<th></th>
 	</tr>
 	</thead>
@@ -137,7 +137,7 @@ function zmiFormSubmit(sender,d) {
 				<div class="input-group-append">
 					<a class="btn btn-secondary" href="javascript:;" 
 						tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"
-						tal:content="structure python:zmscontext.zmi_icon(name='icon-times')"></a>
+						><i class="fas fa-times"></i></a>
 				</div>
 			</div>
 		</td>
@@ -171,7 +171,7 @@ function zmiFormSubmit(sender,d) {
 			<td class="meta-repetitive"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%metadictAttr['id']; checked python:['','checked'][int(metadictAttr.get('repetitive',0)==1)]; disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" value="1" /></td>
 			<td class="meta-default">
 				<div class="single-line" tal:condition="python:metadictAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select']">
-					<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-key')">icon</tal:block>
+					<tal:block><i class="fas fa-key"></i></tal:block>
 					<textarea class="form-control form-control-sm" tal:attributes="name python:'attr_keys_%s'%metadictAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); disabled python:['','disabled'][int(metadictAttr.get('acquired',0))]" tal:content="python:'\n'.join(metadictAttr['keys'])">keys</textarea>
 				</div>
 				<div tal:condition="python:metadictAttr['type'] in ['boolean']">
@@ -187,7 +187,7 @@ function zmiFormSubmit(sender,d) {
 	</tr>
 	</tal:block>
 	<tr class="row_insert">
-		<td class="meta-sort text-right"><span class="btn btn-add" tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></span></td>
+		<td class="meta-sort text-right"><span class="btn btn-add"><i class="fas fa-plus"></i></span></td>
 		<td class="meta-id"><input class="form-control form-control-sm" type="text" name="_id" /></td>
 		<td class="meta-name"><input class="form-control form-control-sm" type="text" name="_name" /></td>
 		<td class="meta-type">

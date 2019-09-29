@@ -270,7 +270,7 @@ function mms_normalize_rows(el_tbody) {
 				<th>&nbsp;</th>
 				<th tal:content="python:'%s / %s'%(here.getZMILangStr('ATTR_ID'),here.getZMILangStr('ATTR_DESCRIPTION'))">Id / Description</th>
 				<th tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</th>
-				<th><tal:block tal:content="structure python:here.zmi_icon(name='icon-th-list')"></tal:block></th>
+				<th><i class="fas fa-th-list"></i></th>
 				<th tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
 			</thead>
 			<tbody>
@@ -283,7 +283,7 @@ function mms_normalize_rows(el_tbody) {
 					</td>
 					<td>
 						<input type="hidden" name="attr_ids:list" tal:attributes="value column/id"/>
-						<tal:block tal:content="structure python:here.zmi_icon(name='icon-th-list')"></tal:block>
+						<i class="fas fa-th-list"></i>
 						<span class="column-id" tal:content="column/id">column-id</span>
 						<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python:standard.string_maxlen(s=column.get('description',''),maxlen=50)">column-description</span>
 						(<span class="column-datatype" tal:content="column/datatype">column-datatype</span>)
@@ -341,7 +341,7 @@ function mms_normalize_rows(el_tbody) {
 						##### Fk ###########################################################
 						</tal:block>
 						<tr tal:attributes="id python:'tr_fk_%s'%column['id']; class python:['d-none',''][int('fk' in column)]">
-							<td>A.Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
+							<td>A.Tablename <i class="fas fa-th"></i></td>
 							<td>
 								<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_fk_tablename_%s'%column['id']; onchange python:'zmiChangeTablename(this,[\'%s\',\'%s\'])'%('attr_fk_fieldname_%s'%column['id'],'attr_fk_displayfield_%s'%column['id'])">
 									<option value=""></option>
@@ -379,7 +379,7 @@ function mms_normalize_rows(el_tbody) {
 						##### Multiselect ###########################################################
 						</tal:block>
 						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int('multiselect' in column)]">
-							<td>A.Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
+							<td>A.Tablename <i class="fas fa-th"></i></td>
 							<td>
 								<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_multiselect_tablename_%s'%column['id']; onchange python:'zmiChangeTablename(this,[\'%s\'])'%('attr_multiselect_fk_%s'%column['id'])">
 									<option value=""></option>
@@ -390,7 +390,7 @@ function mms_normalize_rows(el_tbody) {
 							</td>
 						</tr>
 						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int('multiselect' in column)]">
-							<td>A.Foreign Key <tal:block tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block></td>
+							<td>A.Foreign Key <i class="fas fa-key"></i></td>
 							<td><input class="form-control input-xs" type="text" tal:attributes="name python:'attr_multiselect_fk_%s'%column['id']; value python:column.get('multiselect',{}).get('fk','')"/></td>
 						</tr>
 						<tr tal:attributes="id python:'tr_multiselect_%s'%column['id']; class python:['d-none',''][int('multiselect' in column)]">
@@ -405,7 +405,7 @@ function mms_normalize_rows(el_tbody) {
 						##### Multimultiselect ###########################################################
 						</tal:block>
 						<tr tal:attributes="id python:'tr_multimultiselect_%s'%column['id']; class python:['d-none',''][int('multimultiselect' in column)]">
-							<td>Tablename <tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block></td>
+							<td>Tablename <i class="fas fa-th"></i></td>
 							<td>
 								<select class="form-control input-xs zmi-tablename" tal:attributes="name python:'attr_multimultiselect_tablename_%s'%column['id']; onchange python:'zmiChangeTablename(this,[\'%s\'])'%('attr_multimultiselect_fk_%s'%column['id'])">
 									<option value=""></option>
@@ -480,7 +480,7 @@ function mms_normalize_rows(el_tbody) {
 				</tr>
 				</tal:block>
 				<tr class="row_insert">
-					<td><span class="btn btn-light" tal:content="structure python:zmscontext.zmi_icon(name='icon-plus')"></span></td>
+					<td><span class="btn btn-light"><i class="fas fa-plus"></i></span></td>
 					<td><input class="form-control input-xs" name="attr_id" type="text"/></td>
 					<td><input class="form-control input-xs" name="attr_label" type="text"/></td>
 					<td><input name="attr_display:int" value="1" checked="checked" type="checkbox"/></td>
@@ -509,7 +509,7 @@ function mms_normalize_rows(el_tbody) {
 	<div id="importConf" class="inner">
 		<div class="form-group row">
 			<label for="file" class="col-xs-3 col-lg-2 control-label">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block>
+				<i class="fas fa-folder-open"></i>
 				<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 			</label>
 			<div class="col-xs-9 col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
@@ -523,7 +523,7 @@ function mms_normalize_rows(el_tbody) {
 </div><!-- #importConf -->
 
 	<div class="btn-group" style="padding:1em;">
-		<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false;"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload')"></tal:block></span>
+		<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false;"><i class="fas fa-upload"></i></span>
 	</div>
 	<br/>
 	<tal:block tal:repeat="table tables">
@@ -552,14 +552,14 @@ function mms_normalize_rows(el_tbody) {
 							</span>
 						</label>
 						<div class="col-xs-9 col-lg-10">
-							<tal:block tal:content="structure python:here.zmi_icon(name='icon-th-list')"></tal:block>
+							<i class="fas fa-th-list"></i>
 							<tal:block tal:condition="python:column.get('pk')" tal:content="structure python:here.zmi_icon(name='icon-key')"></tal:block>
 							<span class="column-id" tal:content="column/id">column-id</span>
 							<span class="column-description" tal:attributes="title python:column.get('description','')" tal:content="python:standard.string_maxlen(s=column.get('description',''),maxlen=48)">column-description</span>
 							<tal:block tal:condition="python:column.get('fk') and column.get('fk').get('tablename')">
 								<span class="column-datatype">
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['fk'].get('fieldname','?'))"></tal:block>
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+									<i class="fas fa-th"></i>
 									<tal:block tal:content="column/fk/tablename">the fk-tablename</tal:block>
 									(<tal:block tal:content="python:column['fk'].get('displayfield','?')">the fk-displayfield</tal:block>)
 								</span>
@@ -567,7 +567,7 @@ function mms_normalize_rows(el_tbody) {
 							<tal:block tal:condition="python:column.get('multiselect') and column.get('multiselect').get('tablename')">
 								<span class="column-datatype">
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['multiselect'].get('fk','?'))"></tal:block>
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-link')"></tal:block>
+									<i class="fas fa-link"></i>
 									<tal:block tal:content="column/multiselect/tablename">the multiselect-tablename</tal:block>
 									<tal:block tal:on-error="python:'ERROR'" tal:define="global
 											intersection python:here.getEntity(column['multiselect']['tablename']);
@@ -575,7 +575,7 @@ function mms_normalize_rows(el_tbody) {
 											dstentity python:here.getEntity(dst['fk']['tablename']);
 											">
 										<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%dst['id'])"></tal:block>
-										<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+										<i class="fas fa-th"></i>
 										<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
 									</tal:block>
 								</span>
@@ -583,7 +583,7 @@ function mms_normalize_rows(el_tbody) {
 							<tal:block tal:condition="python:column.get('details')">
 								<span class="column-datatype">
 									<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%column['details']['fk'])"></tal:block>
-									<tal:block tal:content="structure python:here.zmi_icon(name='icon-link')"></tal:block>
+									<i class="fas fa-link"></i>
 									<tal:block tal:content="column/details/tablename">the intersection-tablename</tal:block>
 									<tal:block tal:on-error="python:'ERROR'" tal:define="global
 											intersection python:here.getEntity(column['details']['tablename']);
@@ -591,7 +591,7 @@ function mms_normalize_rows(el_tbody) {
 											dstentity python:here.getEntity(dst['fk']['tablename']);
 											">
 										<tal:block tal:content="structure python:here.zmi_icon(name='icon-long-arrow-right',extra='title=\042%s\042'%dst['id'])"></tal:block>
-										<tal:block tal:content="structure python:here.zmi_icon(name='icon-th')"></tal:block>
+										<i class="fas fa-th"></i>
 										<tal:block tal:content="dstentity/id">the details-tablename</tal:block>
 									</tal:block>
 								</span>

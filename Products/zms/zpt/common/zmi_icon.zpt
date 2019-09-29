@@ -1,1 +1,0 @@
-<tal:block tal:on-error="string:fas fa-home" tal:content="structure python:'<i class=\042%s\042 %s></i>'%(options.get('name','fas fa-home'),options.get('extra',''))"></tal:block>

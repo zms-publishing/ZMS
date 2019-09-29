@@ -14,7 +14,7 @@
 
 <tal:block tal:define="global userObj python:here.findUser(request['AUTHENTICATED_USER'].getId())">
 <tal:block tal:condition="python:userObj is not None">
-	<legend><tal:block tal:content="structure python:here.zmi_icon(name='icon-user')"></tal:block> <tal:block tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_USER'),userObj['name'])">User: Id</tal:block></legend>
+	<legend><i class="fas fa-user"></i> <tal:block tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_USER'),userObj['name'])">User: Id</tal:block></legend>
 	<div class="form-group row" tal:repeat="userObjDetail userObj/details">
 				<label tal:attributes="for userObjDetail/name" class="col-sm-2 control-label"><span tal:content="userObjDetail/label">the label</span></label>
 				<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='newId',size=30,value=userObjDetail['value'],enabled=False)">the value</div><!-- .col-sm-10 -->

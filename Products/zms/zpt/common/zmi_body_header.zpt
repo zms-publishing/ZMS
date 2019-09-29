@@ -4,16 +4,9 @@
 		standard modules/Products/zms/standard;
 		zmscontext python:here.getSelf(); 
 		admin python:request['AUTHENTICATED_USER'].has_permission('ZMS Administrator',here)">
-
 	<header class="navbar navbar-nav navbar-expand navbar-dark flex-row justify-content-between bd-navbar">
-		<div id="toggle_tabs" class="collapsed" data-toggle="collapse" data-target="#tabs_items" 
-			aria-controls="tabs_items" aria-expanded="false" aria-label="Toggle Tab-Navigation" 
-			tal:content="structure python:zmscontext.zmi_icon(name='far fa-bars')">
-			icon-bars
-		</div>
 		<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
 		<ul class="navbar-nav flex-row ml-sm-auto d-flex">
-
 				<li id="zmi-authenticated_user" class="form-inline zmi-authenticated_user" tal:attributes="title python:'Authenticated User: %s'%(request.get('AUTHENTICATED_USER'))">
 					<a href="javascript:;" id="manage_userForm" onclick="$ZMI.iframe('manage_userForm',{lang:getZMILang()},{iframe:true,height:400,width:640,title:$(this).text(),modal:{backdrop:'static',keyboard:false}})">
 						<span class="authenticated_user" tal:content="request/AUTHENTICATED_USER">the authenticated-user</span>&nbsp;
@@ -25,34 +18,33 @@
 				</li>
 				<li class="dropdown">
 					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:here.getZMILangStr('TAB_CONFIGURATION')">
-						<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-cog')"></tal:block>
-						<b class="caret"></b>
+						<i class="fas fa-cog"></i><b class="caret"></b>
 					</a>
 					<div class="dropdown-menu">
 						<tal:block tal:condition="admin">
 							<a class="dropdown-item" tal:attributes="href python:'f_api_html?lang=%s'%(request['lang'])">
-								<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-question-circle')"></tal:block>
-								<tal:block tal:content="python:'API'">API</tal:block>
+								<i class="fas fa-question-circle"></i> 
+								API
 							</a>
 							<a class="dropdown-item" tal:attributes="href python:'manage_main?lang=%s&zmi-manage-system=%i'%(request['lang'],int(not int(standard.get_session_value(here,'zmi-manage-system',0))))">
-								<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-bolt')"></tal:block>
-								<tal:block tal:content="python:'Zope'">Zope</tal:block>
+								<i class="fas fa-bolt"></i> 
+								Zope
 							</a>
 						</tal:block>
-						<a class="dropdown-item" tal:attributes="href python:'manage?lang=%s'%request['lang']" class="toggle-sitemap"> 
-							<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-sitemap')"></tal:block> 
+						<a class="dropdown-item" tal:attributes="href python:'manage?lang=%s'%request['lang']" class="toggle-sitemap">
+							<i class="fas fa-sitemap"></i>  
 							<tal:block tal:content="python:here.getZMILangStr('TAB_SITEMAP')">Sitemap</tal:block> 
 						</a> 
 						<tal:block tal:define="trashcan python:here.getTrashcan()">
 							<a class="dropdown-item" tal:attributes="href python:'%s/manage_main?lang=%s'%(trashcan.absolute_url(),request['lang'])">
-								<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-trash')"></tal:block>
+								<i class="fas fa-trash"></i>
 								<tal:block tal:content="python:trashcan.display_type(request)">Trashcan</tal:block>
 							</a>
 						</tal:block>
 						<tal:block tal:define="options python:here.getDocumentElement().customize_manage_options()">
 						<tal:block tal:condition="python:len(options)>1">
 							<div class="dropdown-header">
-								<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-caret-down')"></tal:block>
+								<i class="fas fa-caret-down"></i>
 								<tal:block tal:content="python:here.getZMILangStr('TAB_CONFIGURATION')">configuration</tal:block>
 							</div>
 							<tal:block tal:repeat="option python:options[1:]">
@@ -64,15 +56,15 @@
 						</tal:block>
 						<div class="dropdown-divider"></div> 
 						<a class="dropdown-item" href="manage_zmi_logout" 
-							tal:attributes="href python:here.getConfProperty('ZMS.logout.href','')!='' and here.getConfProperty('ZMS.logout.href','') or 'manage_zmi_logout'"
-							><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-sign-out-alt')"></tal:block>
+							tal:attributes="href python:here.getConfProperty('ZMS.logout.href','')!='' and here.getConfProperty('ZMS.logout.href','') or 'manage_zmi_logout'">
+							<i class="fas fa-sign-out-alt"></i>
 							Logout
 						</a>
 					</div>
 				</li><!-- .dropdown -->
 				<li class="dropdown languages" tal:condition="python:len(here.getLangIds())>1">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:here.getZMILangStr('TAB_LANGUAGES')">
-						<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-flag')"></tal:block>&nbsp;
+						<i class="fas fa-flag"></i>&nbsp;
 						<span class="language_label" tal:content="python:here.getLanguageLabel(request['lang'])">the language</span>
 						<b class="caret"></b>
 					</a>
@@ -94,7 +86,7 @@
 				</li><!-- .dropdown -->
 				<li class="dropdown localisation">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:'ZMS-%s: %s'%(here.getZMILangStr('ATTR_LANG'),here.getLocale().getLangStr('LANG',request['manage_lang']))">
-						<tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-globe')"></tal:block>
+						<i class="fas fa-globe"></i>
 						<b class="caret"></b>
 					</a>
 					<div class="dropdown-menu">
@@ -126,8 +118,8 @@
 	</header>
 
 <nav id="tabs" class="navbar navbar-light navbar-expand mt-0 mb-0 pb-0" role="navigation">
-	<div class="scroller scroller-left" tal:content="structure python:zmscontext.zmi_icon(name='icon-chevron-left')">chevron-left</div>
-	<div class="scroller scroller-right" tal:content="structure python:zmscontext.zmi_icon(name='icon-chevron-right')">chevron-right</div>
+	<div class="scroller scroller-left"><i class="fas fa-chevron-left"></i></div>
+	<div class="scroller scroller-right"><i class="fas fa-chevron-right"></i></div>
 	<div class="wrapper">
 		<tal:block tal:on-error="structure string: <div class='alert alert-danger zmi-code mb-2'>ZMS-ERROR: zmi_body_header LINE 132</div>" tal:condition="python:'options' in options" tal:content="structure python:here.zmi_tabs(here,request,options=options['options'])">zmi_tabs</tal:block>
 		<tal:block tal:on-error="structure string: <div class='alert alert-danger zmi-code mb-2'>ZMS-ERROR: zmi_body_header LINE 133</div>" tal:condition="not:python:'options' in options" tal:content="structure python:here.zmi_tabs(here,request,options=here.manage_options)"># FIXME: filtered_manage_options - zmi_tabs</tal:block>

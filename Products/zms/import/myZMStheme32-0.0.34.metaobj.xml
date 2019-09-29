@@ -111,7 +111,7 @@
 									zmslabs.org
 								</a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" id="add-bookmark" href="javascript:addBookmark();"><tal:block tal:content="structure python:zmscontext.zmi_icon(name='icon-plus-circle')"></tal:block> Add bookmark</a>
+								<a class="dropdown-item" id="add-bookmark" href="javascript:addBookmark();"><i class="fas fa-plus-circle"></i> Add bookmark</a>
 							</div>
 						</div><!-- .navbar-menu -->
 					</div><!-- .navbar-header -->

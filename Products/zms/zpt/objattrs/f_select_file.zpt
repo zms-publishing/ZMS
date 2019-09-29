@@ -24,8 +24,8 @@
 					<span class="caret"></span>
 				</button>
 				<div class="dropdown-menu">
-					<a class="d-none dropdown-item" tal:attributes="id python:'delete_btn_%s'%elName"><tal:block tal:content="structure python:here.zmi_icon(name='icon-trash')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">delete</tal:block></a>
-					<a class="d-none dropdown-item" tal:attributes="id python:'undo_btn_%s'%elName"><tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">delete</tal:block></a>
+					<a class="d-none dropdown-item" tal:attributes="id python:'delete_btn_%s'%elName"><i class="fas fa-trash"></i><tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">delete</tal:block></a>
+					<a class="d-none dropdown-item" tal:attributes="id python:'undo_btn_%s'%elName"><i class="fas fa-undo"></i><tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">delete</tal:block></a>
 				</div><!-- .dropdown-menu -->
 			</div><!-- .btn-group -->
 		</tal:block>

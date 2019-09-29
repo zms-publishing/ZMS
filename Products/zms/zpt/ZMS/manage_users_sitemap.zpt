@@ -33,7 +33,7 @@
 
 <form class="form-horizontal">
 	<legend class="pull-left">
-		<tal:block tal:content="structure python:here.zmi_icon(name='icon-sitemap',title=here.getZMILangStr('TAB_USERSITEMAP'))"></tal:block>
+		<i class="fas fa-sitemap" tal:attributes="title python:here.getZMILangStr('TAB_USERSITEMAP')"></i>
 		<tal:block tal:content="python:here.getZMILangStr('TAB_USERSITEMAP')">User Sitemap</tal:block>
 	</legend>
 <div class="pull-right">
@@ -47,7 +47,7 @@
 	<tr tal:define="target python:here.getLinkObj(node)" tal:on-error="structure string: <!-- ERROR: missing nodekey -->">
 		<td>
 			<div class="text-danger bg-danger" tal:condition="python:target is None">
-				<tal:block tal:content="structure python:here.zmi_icon(name='icon-warning-sign',extra='title=\042%s not found\042'%nodekey)">the warning sign</tal:block>
+				<i class="fas fa-warning-sign" tal:attributes="title python:'%s not found'%(nodekey)"></i>
 				<tal:block tal:content="nodekey">the node-key</tal:block>
 			</div>
 			<tal:block tal:condition="python:target is not None" tal:content="structure python:target.zmi_breadcrumbs_obj_path(middot='manage_access')">zmi_breadcrumbs_obj_path</tal:block>
@@ -57,7 +57,7 @@
 				<tal:block tal:repeat="roleName python:[x for x in roleDefs if node in roleDefs[x]]">
 					<li tal:define="nodevalue python:roleDefs[roleName][node]">
 						<a tal:attributes="href python:'manage_users?id=%s'%roleName">
-							<tal:block tal:content="structure python:here.zmi_icon(name='icon-group',title=here.getZMILangStr('ATTR_ROLES'))"></tal:block>
+							<i class="fas fa-group" tal:attributes="title python:here.getZMILangStr('ATTR_ROLES')"></i>
 							<tal:block tal:content="roleName">the role-name</tal:block>
 						</a>
 						(<tal:block tal:content="python:', '.join([here.getRoleName(x) for x in nodevalue['roles']])">the roles</tal:block>)
@@ -66,7 +66,7 @@
 				<tal:block tal:repeat="userName python:[x for x in userDefs if node in userDefs[x].get('nodes',{})])">
 					<li tal:define="nodevalue python:userDefs[userName]['nodes'][node]">
 						<a tal:attributes="href python:'manage_users?id=%s'%userName">
-							<tal:block tal:content="structure python:here.zmi_icon(name='icon-user',title=here.getZMILangStr('ATTR_USER'))"></tal:block>
+							<i class="fas fa-user" tal:attributes="title python:here.getZMILangStr('ATTR_USER')"></i>
 							<tal:block tal:content="userName">the user-name</tal:block>
 						</a>
 						(

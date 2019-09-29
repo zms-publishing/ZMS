@@ -101,7 +101,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     # ZPT Templates.
     # --------------
     zmi_navbar_brand = PageTemplateFile('zpt/common/zmi_navbar_brand', globals())
-    zmi_icon = PageTemplateFile('zpt/common/zmi_icon', globals())
     zmi_breadcrumbs = PageTemplateFile('zpt/common/zmi_breadcrumbs', globals())
     zmi_breadcrumbs_obj_path = PageTemplateFile('zpt/common/zmi_breadcrumbs_obj_path', globals())
     zmi_manage_tabs_message = PageTemplateFile('zpt/common/zmi_manage_tabs_message', globals())
@@ -116,7 +115,6 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # Templates.
     # ----------
-    f_display_icon = PageTemplateFile('zpt/object/f_display_icon', globals()) # ZMI Display-Icon
     f_recordset_grid = PageTemplateFile('zpt/object/f_recordset_grid', globals()) # ZMI RecordSet::Grid
     preview_html = PageTemplateFile('zpt/object/preview', globals())
     preview_top_html = PageTemplateFile('zpt/object/preview_top', globals())
@@ -612,12 +610,12 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def zmi_icon(self, context=None, name=None, title='', extra=''):
       if name is None:
-        return 'fas fa-home'
-      elif name.find('far ') > -1 or name.find('fas ') > -1:
-        return '<i class="%s" title="%s"%s></i>'%(name,title,extra)
-      else:
-        return '<i class="%s" title="%s"%s></i>'%(name.replace('icon-','fas fa-'),title,extra)
-
+        try:
+          # return '<i class="%s" title="%s"%s></i>'%(name,title,extra)
+          return self.display_icon(REQUEST={}, meta_type=self.meta_id, key='icon', zpt=False)
+        except:
+          return self.display_icon(REQUEST={}, meta_type=self.meta_id, key='icon', zpt=False)
+         # return 'fas fa-home'
 
     # --------------------------------------------------------------------------
     #  ZMSObject.display_icon:
@@ -655,7 +653,11 @@ class ZMSObject(ZMSItem.ZMSItem,
       else:
         name = 'icon-warning-sign fas fa-exclamation-triangle constraint-error'
         icon_title = '%s not found!'%str(id)
-      return self.zmi_icon(self, name=name, extra='title="%s"'%(icon_title.replace('"', '\'')))
+      if zpt==False:
+        return name
+      else:
+        # return self.zmi_icon(self, name=name, extra='title="%s"'%(icon_title.replace('"', '\'')))
+        return self.zmi_icon
 
 
     # --------------------------------------------------------------------------

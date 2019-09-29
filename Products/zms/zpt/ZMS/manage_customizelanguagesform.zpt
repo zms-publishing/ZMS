@@ -100,7 +100,7 @@ function zmiFormSubmit(sender,d) {
 		</tal:block>
 	</tal:block>
 	<tr class="row_insert">
-		<td class="text-center"><span class="btn btn-light" tal:content="structure python:here.zmi_icon(name='icon-plus')"></span></td>
+		<td class="text-center"><span class="btn btn-light"><i class="fas fa-plus"></i></span></td>
 		<td class="language_id"><input class="form-control form-control-sm" type="text" name="language_id" /></td>
 		<td class="language_label"><input class="form-control form-control-sm" type="text" name="language_label" /></td>
 		<td class="language_parent">
@@ -133,13 +133,13 @@ function zmiFormSubmit(sender,d) {
 	<tr>
 		<th class="text-center">
 			<div class="btn-group">
-				<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-check-square')"></tal:block></span>
+				<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
 			</div>
 		</th>
 		<th colspan="2" tal:attributes="colspan python:1+len(langIds)">
 			<div class="btn-group">
-				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importLangDict',{title:$(this).attr('title')})"><tal:block tal:content="structure python:here.zmi_icon(name='icon-upload')"></tal:block></span>
-				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><tal:block tal:content="structure python:here.zmi_icon(name='icon-download')"></tal:block></span>
+				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importLangDict',{title:$(this).attr('title')})"><i class="fas fa-upload"></i></span>
+				<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i></span>
 			</div>
 		</th>
 	</tr>
@@ -156,7 +156,7 @@ function zmiFormSubmit(sender,d) {
 		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]" tal:content="python:langDict.get(langId,'')"></textarea></div></td>
 	</tr>
 	<tr class="row_insert">
-		<td class="text-center"><span class="btn btn-light" tal:content="structure python:here.zmi_icon(name='icon-plus')"></span></td>
+		<td class="text-center"><span class="btn btn-light"><i class="fas fa-plus"></i></span></td>
 		<td><input class="form-control form-control-sm" type="text" name="_key" /></td>
 		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_value_%s'%(langId)"></textarea></div></td>
 	</tr>
@@ -172,7 +172,7 @@ function zmiFormSubmit(sender,d) {
 <form class="form-horizontal" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<div class="form-row">
-		<label class="col-lg-2 control-label" for="file"><tal:block tal:content="structure python:here.zmi_icon(name='icon-folder-open')"></tal:block> <tal:block tal:content="python:here.getZMILangStr('ATTR_FILE')">File</tal:block></label>
+		<label class="col-lg-2 control-label" for="file"><i class="fas fa-folder-open"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_FILE')">File</tal:block></label>
 		<div class="col-lg-10">
 			<input class="btn btn-file" name="file" type="file" />
 		</div><!-- .col-lg-10 -->

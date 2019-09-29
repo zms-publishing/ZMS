@@ -431,7 +431,7 @@ class ConfManager(
     customize_manage_options__roles__ = None
     def customize_manage_options(self):
       l = []
-      l.append({'label':self.zmi_icon(name='fas fa-home'),'action':'manage_main'})
+      l.append({'label':self.zmi_icon,'action':'manage_main'})
       l.append({'label':'TAB_USERS','action':'manage_users'})
       l.append({'label':'TAB_SYSTEM','action':'manage_customize'})
       l.append({'label':'TAB_LANGUAGES','action':'manage_customizeLanguagesForm'})

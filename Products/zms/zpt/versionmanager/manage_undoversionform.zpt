@@ -18,7 +18,7 @@
 	<div class="card">
 		<div class="card-header btn-collapse">
 			<a class="btn card-toggle" data-toggle="collapse" href="#compare">
-				<tal:block tal:content="structure python:here.zmi_icon(name='')"></tal:block>
+				<i class="fas fa-cplumns"></i>
 				<tal:block tal:content="python:here.getZMILangStr('BTN_COMPARE')">the heading</tal:block>
 			</a>
 		</div><!-- .card-header -->
@@ -135,11 +135,11 @@
 		<div class="form-row">
 			<div class="controls save">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COMPARE')">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-random')"></tal:block>
+					<i class="fas fa-random"></i>
 					<tal:block tal:content="python:here.getZMILangStr('BTN_COMPARE')">Compare</tal:block>
 				</button>
 				<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
-					<tal:block tal:content="structure python:here.zmi_icon(name='icon-undo')"></tal:block>
+					<i class="fas fa-undo"></i>
 					<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
 				</button>
 			</div>

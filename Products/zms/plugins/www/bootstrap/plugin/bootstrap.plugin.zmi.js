@@ -165,7 +165,7 @@ $(function(){
 	$('a#navbar-sitemap').each(function() {
 		var $a = $(this);
 		if (self.window.parent.frames.length > 1 && typeof self.window.parent != "undefined" && (self.window.parent.location+"").indexOf('dtpref_sitemap=1') > 0) {
-			$a.attr('target','_parent');
+			$a.attr('target','_top');
 		}
 		else {
 			$a.attr('href',$a.attr('href')+'&dtpref_sitemap=1');
@@ -176,7 +176,7 @@ $(function(){
 	if (manage_menu) {
 		$('.zmi header a.toggle-lang').each(function() {
 				var $a = $(this);
-				$a.attr('target','_parent');
+				$a.attr('target','_top');
 				$a.attr('href','manage?lang='+$a.attr('data-language') + '&dtpref_sitemap=1' + '&came_from='+$a.attr('href'));
 			});
 	}

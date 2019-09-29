@@ -13,7 +13,7 @@
 					</a>
 				</li>
 				<li id="toggle_menu" class="form-inline desktop hidden-xs" title="Show/Hide Tree Menu of the Navigation Context">
-					<a id="navbar-sitemap" target="_top" tal:attributes="href python:'manage?lang=%s'%request['lang']"
+					<a id="navbar-sitemap" tal:attributes="href python:'manage?lang=%s'%request['lang']" target="_top" 
 						><i class="fas fa-sitemap"></i></a>
 				</li>
 				<li class="dropdown">
@@ -31,7 +31,7 @@
 								Zope
 							</a>
 						</tal:block>
-						<a class="dropdown-item" tal:attributes="href python:'manage?lang=%s'%request['lang']" class="toggle-sitemap">
+						<a class="dropdown-item" tal:attributes="href python:'manage?lang=%s'%request['lang']" class="toggle-sitemap" target="_top">
 							<i class="fas fa-sitemap"></i>  
 							<tal:block tal:content="python:here.getZMILangStr('TAB_SITEMAP')">Sitemap</tal:block> 
 						</a> 

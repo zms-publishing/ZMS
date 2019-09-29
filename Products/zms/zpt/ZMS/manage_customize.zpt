@@ -48,7 +48,7 @@
 					<label>
 						<span class="btn btn-secondary">
 							<i tal:on-error="structure string:<i class='fas fa-ban' title='Icon Error'></i>"
-								tal:attributes="class python:si.icon"
+								tal:attributes="class python:si.zmi_icon"
 								></i>&nbsp;&nbsp;<input type="checkbox" name="ids:list" tal:attributes="value python:si.id" />
 						</span>
 						&nbsp;<a tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</a>
@@ -333,25 +333,25 @@
 				<div class="form-group row">
 					<label class="col-sm-4 control-label">ZMS Version</label>
 					<div class="col-sm-8">
-						<p class="form-control-static" tal:content="python:here.zms_version()">zms_version</p>
+						<samp tal:content="python:here.zms_version()">zms_version</samp>
 					</div>
 				</div><!-- .form-group -->
-				<div class="form-group row" style="margin-bottom:0;">
+				<div class="form-group row">
 					<label class="col-sm-4 control-label">Instance Home</label>
 					<div class="col-sm-8">
-						<p class="form-control-static" style="font-family:monospace;font-size:0.9em;" tal:content="python:here.getINSTANCE_HOME()">INSTANCE_HOME</p>
+						<samp tal:content="python:here.getINSTANCE_HOME()">INSTANCE_HOME</samp>
 					</div>
 				</div><!-- .form-group -->
-				<div class="form-group row" style="margin-bottom:0;">
+				<div class="form-group row">
 					<label class="col-sm-4 control-label">Product Home</label>
 					<div class="col-sm-8">
-						<p class="form-control-static" style="font-family:monospace;font-size:0.9em;" tal:content="python:standard.getPRODUCT_HOME()">PROCUCT_HOME</p>
+						<samp tal:content="python:standard.getPRODUCT_HOME()">PROCUCT_HOME</samp>
 					</div>
 				</div><!-- .form-group -->
 				<div class="form-group row">
 					<label class="col-sm-4 control-label">Package Home</label>
 					<div class="col-sm-8">
-						<p class="form-control-static" style="font-family:monospace;font-size:0.9em;" tal:content="python:here.getPACKAGE_HOME()">PACKAGE_HOME</p>
+						<samp tal:content="python:here.getPACKAGE_HOME()">PACKAGE_HOME</samp>
 					</div>
 				</div><!-- .form-group -->
 				<div class="form-group row">

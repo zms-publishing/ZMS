@@ -125,24 +125,31 @@ header.navbar-nav ul.navbar-nav {
 	font-size:1rem;
 }
 
+footer {
+	margin: -32px 0 0 0;
+	height: 32px;
+	width: 100%;
+	color: white;
+}
+footer .back-to-top {
+	width: 32px;
+	height: 32px;
+	line-height: 32px;
+	background: rgb(53, 79, 103);
+	text-align: center;
+	border-radius: 4px;
+	margin: -6px 4px;
+}
 @media (max-width: 768px) {
 	.zmi header.navbar ul.navbar-nav li.zmi-authenticated_user span.authenticated_user {
 		display:none;
 	}
+	footer .back-to-top {
+		position: absolute;
+		right: 4px;
+	}
 }
-footer {
-	left: 0;
-	bottom: 0;
-	height: 2rem;
-	width: 100%;
-	padding: 0.5rem;
-	font-size: .7rem !important;
-	background: #19232ca8;
-	color: white;
-}
-footer a {
-	color: white;
-}
+
 /* BO HORIZONTAL SCROLLING MAIN NAVIGATION */
 
 /* TAB NAVIGATION */
@@ -228,7 +235,8 @@ footer a {
 	color: #6c757d !important;
 }
 .zmi #zmi-tab {
-	min-height: calc(100vh - 122px);
+	min-height: calc(100vh - 90px);
+	padding-bottom: 4rem;
 }
 .zmi #zmi-tab nav#subTab {
 	margin:1rem 1.25rem 0 1.25rem;
@@ -247,7 +255,8 @@ footer a {
 	padding: 2rem 1rem 1rem 1rem !important;
 }
 
-.zmi #zmi-tab #Manager.tab-pane i {
+.zmi #zmi-tab #Manager.tab-pane i,
+.zmi.system i {
 	font-size:1rem;
 }
 .zmi #zmi-tab #Custom.tab-pane table > tbody > tr > td,
@@ -527,6 +536,7 @@ body.zmi .zmi-action .btn.split-right {
 	color:#333;
 	font-weight:bold;
 	height: 2rem;
+	overflow:hidden;
 }
 body.zmi .zmi-action .btn.split-right {
 	width:3rem;
@@ -1613,28 +1623,33 @@ body.zmi.browse .table-responsive table td {
 	white-space: nowrap;
 }
 
-/* DESGN DUMMY: Additional Add-Button */
+/* Additional Add-Button */
 #zmi-action-default {
-	font-size: 24px;
+	font-size: 14px;
 	display: block;
 	text-align: center;
-	background-color: #ffffff;
-	line-height: 1;
+	background-color:transparent;
+	line-height: 30px;
+	vertical-align:bottom;
 	padding: 0;
 	cursor: pointer;
 	position:absolute;
-	border-radius: 50%;
-	width: 22px;
-	height: 22px;
-	margin: -11px 20% 0 40%;
-	color:#818ea2;
+	width: 32px;
+	height: 32px;
+	margin: 0 20% 0 40%;
+	color: #818ea2;
+	background: white;
+	border: 1px solid #d6d6d6;
+	border-top-color: #fff;
+	border-radius: 0 0 4px 4px;
+	z-index:1000;
 }
 #zmi-action-default > i.fas:before {
-	content: "\f055";
+	content: "\f067";
 }
 @media (max-width: 767px) {
 	#zmi-action-default {
-		margin: -11px 0 0 50%;
+		margin: 0 0 0 50%;
 	}
 }
 

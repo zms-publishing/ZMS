@@ -54,8 +54,8 @@ class ZMSLog(ZMSItem.ZMSItem):
     # Properties.
     # -----------
     meta_type = 'ZMSLog'
-    icon = "fas fa-bug"
-    icon_clazz = icon
+    zmi_icon = "fas fa-bug"
+    icon_clazz = zmi_icon
 
 
     # Management Options.

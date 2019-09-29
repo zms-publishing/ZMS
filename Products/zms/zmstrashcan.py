@@ -40,6 +40,8 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
     # Properties.
     # -----------
     meta_type = meta_id = "ZMSTrashcan"
+    zmi_icon = "fas fa-trash"
+    icon_clazz = zmi_icon
 
     # Management Options.
     # -------------------

@@ -46,8 +46,8 @@ class ZMSFormatProvider(
     # Properties.
     # -----------
     meta_type = 'ZMSFormatProvider'
-    icon = "fas fa-font"
-    icon_clazz = icon
+    zmi_icon = "fas fa-font"
+    icon_clazz = zmi_icon
 
     # Management Options.
     # -------------------

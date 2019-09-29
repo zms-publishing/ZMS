@@ -87,8 +87,8 @@ class ZMSMetacmdProvider(
     # Properties.
     # -----------
     meta_type = 'ZMSMetacmdProvider'
-    icon = "fas fa-wrench"
-    icon_clazz = icon
+    zmi_icon = "fas fa-wrench"
+    icon_clazz = zmi_icon
 
     # Management Options.
     # -------------------

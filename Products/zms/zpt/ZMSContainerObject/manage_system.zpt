@@ -57,12 +57,9 @@
 <tr tal:repeat="item items">
 	<td><input type="checkbox" name="ids:list" tal:attributes="value python:item[0]"/></td>
 	<td>
-		<tal:block tal:define="icon python:item[1].icon"
+		<tal:block tal:define="icon python:item[1].zmi_icon"
 			tal:on-error="structure string:<i title='Error: No Icon Found' class='far fa-file-alt'></i>">
-			<img tal:on-error="structure string:<!-- ERROR: Icon not found -->"
-				tal:condition="python:'class=' not in icon" tal:attributes="src icon" />
-			<img tal:on-error="structure string:<!-- ERROR: Icon not found -->"
-				tal:condition="python:'class=' in icon" tal:replace="structure icon" />
+			<i tal:attributes="class icon" />
 		</tal:block>
 	</td>
 	<td>

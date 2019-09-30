@@ -18,6 +18,6 @@ Products.StandardCacheManagers
 Products.TemporaryFolder
 tempstorage
 -e git+https://github.com/zopefoundation/Zope.git@master#egg=Zope
--e git+https://github.com/zms-publishing/zms4.git@master#egg=Products.zms
+-e git+https://github.com/zms-publishing/zms4.git@master#egg=ZMS
 -e git+https://github.com/zopefoundation/Products.CMFCore.git@master#egg=Products.CMFCore
 -e git+https://github.com/zopefoundation/Products.Sessions.git@master#egg=Products.Sessions

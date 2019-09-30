@@ -550,9 +550,14 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             ids = [x for x in data_id.split('/') if x]
             brains = []
             for brain in query('id',ids[-1]):
-              score = len([1 for id in ids if id in brain['getPath'].split('/')])
-              writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %i->%s'%(score,brain['getPath']))
-              brains.append((score,brain))
+              if ids[-1] == 'content':
+                if brain['getPath'].endswith(data_id):
+                  writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %s->%s'%(data_id,brain['getPath']))
+                  brains.append((1,brain))
+              else:
+                score = len([1 for id in ids if id in brain['getPath'].split('/')])
+                writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %i->%s'%(score,brain['getPath']))
+                brains.append((score,brain))
             if brains:
               sorted(brains,key=lambda x:x[0])
               rtn = brains[-1][1]
@@ -1285,7 +1290,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.4.11</item>
+          <item key="revision">1.4.12</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

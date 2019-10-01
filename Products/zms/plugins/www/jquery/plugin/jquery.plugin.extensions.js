@@ -10,14 +10,12 @@ function pluginLanguage() {
  * jQuery UI
  */
 function pluginUI(s, c) {
-	//$ZMI.setCursorWait("pluginUI");
 	$.plugin('ui',{
 		files: [
-				$ZMI.getConfProperty('jquery.ui'),
-				$ZMI.getConfProperty('zmi.ui')
+				$ZMI.getConfProperty('jquery.ui.js'),
+				$ZMI.getConfProperty('jquery.ui.css')
 		]});
 	$.plugin('ui').get(s,function(){
-			//$ZMI.setCursorAuto("pluginUI");
 			c();
 		});
 }
@@ -47,9 +45,7 @@ function zmiAutocompleteDefaultFormatter(l, q) {
 }
 
 function zmiAutocomplete(s, o) {
-	//$ZMI.setCursorWait("zmiAutocomplete");
 	pluginUI(s,function() {
-		//$ZMI.setCursorAuto("zmiAutocomplete");
 		$(s).autocomplete(o)
 		.data("ui-autocomplete")._renderItem = function( ul, item ) {
 				return $( "<li></li>" )

@@ -610,7 +610,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def zmi_icon(self,*args, **kwargs):
       """ ZMSObject.zmi_icon """
-      clazz = ''
+      clazz = 'fas fa-exclamation-triangle text-danger'
       id = self.meta_id
       if 'name' in kwargs:
         clazz = kwargs['name'].replace('icon-','fas fa-')
@@ -624,7 +624,7 @@ class ZMSObject(ZMSItem.ZMSItem,
               'ZMSPackage':'fas fa-suitcase text-muted',
               'ZMSRecordSet':'far fa-list-alt text-muted',
               'ZMSReference':'fas fa-link text-muted'}
-          clazz = clazzes.get(meta_obj.get('type'), 'fas fa-remove text-danger')
+          clazz = clazzes.get(meta_obj.get('type'), 'fas fa-exclamation-triangle text-danger')
       return clazz
 
 
@@ -632,6 +632,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.display_icon:
     #
     #  @param REQUEST
+    #  @deprecated
     # --------------------------------------------------------------------------
     def display_icon(self, REQUEST={}, meta_type=None, key='icon', zpt=True):
       """ ZMSObject.display_icon """
@@ -641,7 +642,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       extra = ''
       if id in self.getMetaobjIds( sort=0):
         name = self.evalMetaobjAttr( '%s.%s'%(id, 'icon_clazz'))
-        if name is None:
+        if not name:
           metaObj = self.getMetaobj(id)
           names = {'ZMSResource':'fas fa-asterisk icon-asterisk','ZMSLibrary':'fas fa-flask icon-beaker','ZMSPackage':'fas fa-suitcase icon-suitcase','ZMSRecordSet':'far fa-list-alt icon-list','ZMSReference':'fas fa-link icon-link'}
           name = names.get(metaObj.get('type'), 'icon-file-alt')

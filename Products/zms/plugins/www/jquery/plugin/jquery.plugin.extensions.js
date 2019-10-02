@@ -49,7 +49,6 @@ function showFancybox($sender) {
 /**
  * Autocomplete
  * @see http://bassistance.de/jquery-plugins/jquery-plugin-autocomplete/
- * @deprecated
  */
 function pluginAutocomplete(s, c) {
 	$.plugin('autocomplete',{
@@ -57,6 +56,19 @@ function pluginAutocomplete(s, c) {
 				'/++resource++zms_/jquery/autocomplete/jquery.autocomplete.css']
 	});
 	$.plugin('autocomplete').get(s,c);
+}
+
+
+/**
+ * Sortable
+ * @see https://github.com/lukasoppermann/html5sortable
+ */
+function pluginSortable(s, c) {
+	$.plugin('sortable',{
+		files: ['/++resource++zms_/jquery/sortable/html5sortable.min.js',
+				'/++resource++zms_/jquery/sortable/html5sortable.css']
+	});
+	$.plugin('sortable').get(s,c);
 }
 
 

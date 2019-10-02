@@ -611,11 +611,12 @@ class ZMSObject(ZMSItem.ZMSItem,
     def zmi_icon(self,*args, **kwargs):
       """ ZMSObject.zmi_icon """
       clazz = 'fas fa-exclamation-triangle text-danger'
-      id = self.meta_id
       if 'name' in kwargs:
         clazz = kwargs['name'].replace('icon-','fas fa-')
-      elif args:
-        id = args[0]
+      else:
+        id = self.meta_id
+        if args:
+          id = args[0]
         clazz = self.evalMetaobjAttr( '%s.%s'%(id, 'icon_clazz'))
         if not clazz:
           meta_obj = self.getMetaobj(id)

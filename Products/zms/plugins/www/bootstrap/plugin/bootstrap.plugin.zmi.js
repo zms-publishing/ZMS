@@ -888,35 +888,19 @@ ZMI.prototype.initInputFields = function(container) {
 					var obj_id = $(this).attr('data-obj-id');
 					var attr_id = $(this).attr('data-attr-id');
 					zmiAutocomplete('#'+id,{
-							source: function( request, response) {
-									var term = request.term;
-									var params = {};
-									params.q = term;
-									params.attr_id = attr_id;
-									params.obj_id = obj_id;
-									params.fmt = 'json';
-									$.get( ajax_url, params, function( data) {
-											if (data.length>0) {
-												response(zmiAutocompleteDefaultFormatter(eval('('+data+')'),term));
-											}
-										});
-								},
-							select: function( event, ui ) {
-									var $select = $("select.form-multiautocomplete[multiple]#"+id.substr(1));
-									if ($select.length==1 && ui.item) {
-										// get value
-										var v = ui.item.value;
-										if (v.length>0) { 
-										  ui.item.value = '';
-										  if ($select.children("option[value='"+v+"']").length==0) {
-										    $select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+ui.item.label+'</option>').removeClass("d-none");
-										    // rebuild multiselect
-										    $ZMI.multiselect(context);
-										  }
-										}
-									}
+							serviceUrl:ajax_url,
+							paramName:'q',
+							params:{obj_id:obj_id,attr_id:attr_id},
+							transformResult: function(response, originalQuery) {
+									var m = {
+										query: originalQuery,
+										suggestions: $.map(response.split("\n"), function(x) {
+											return { value: x, data: x };
+										})
+									};
+									return m;
 								}
-						});
+					});
 				});
 			// Multiselect
 			$.plugin('multiselect',{

@@ -91,12 +91,12 @@ function zmiChangeTablename(sender, names) {
 	var table_id = $(sender).val();
 	var columns = $("#"+table_id+"-columns span.column-id");
 	if (columns.length>0) {
-		var source = [];
+		var lookup = [];
 		for (var j = 0; j < columns.length; j++) {
 			var column = $(columns[j]).text().trim();
-			source.push(column);
+			lookup.push(column);
 		}
-		$ZMI.writeDebug('[zmiChangeTablename]: source='+source.join(','));
+		$ZMI.writeDebug('[zmiChangeTablename]: lookup='+lookup.join(','));
 		for (var i = 0; i < names.length; i++) {
 			var name = names[i];
 			var $input = $('*[name='+name+']');
@@ -104,7 +104,7 @@ function zmiChangeTablename(sender, names) {
 			var html = '<'+'input class="form-control ui-autocomplete-input input-xs" name="'+name+'" value="'+value+'"/>';
 			$input.replaceWith(html);
 			zmiAutocomplete('input[name='+name+']',{
-				source:source
+				lookup:lookup
 			});
 		}
 	}

@@ -1030,7 +1030,7 @@ ZMI.prototype.initInputFields = function(container) {
 						+ '<div class="url-input-container"></div>'
 						+'<input type="hidden" name="new_'+elName+'"/>'
 						+'<a href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'new_' + elName + '\',getZMILang())" class="btn btn-secondary">'
-						+'<i class"fas fa-plus"></i>'
+						+'<i class="fas fa-plus"></i>'
 						+'</a>');
 					$("input[name='new_"+elName+"']",$container).change(function() {
 							var v = $(this).val();

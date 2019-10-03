@@ -117,7 +117,7 @@ def zmi_paths(context):
 	kw = {}
 	# remove zmi base css/js
 	kw["css_paths"] = css_paths(context)[:-1]
-	kw["js_paths"] = js_paths(context)[:-1]
+	kw["js_paths"] = js_paths(context)[:-2]
 	return kw
 
 

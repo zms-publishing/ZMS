@@ -44,9 +44,12 @@ header .navbar-brand {
 	margin:0;
 }
 
-header.navbar-nav a {
-	color: silver;
+.navbar-dark a {
+	color: silver!important;
 	text-decoration:none !important;
+}
+.navbar-dark a:active, .navbar-dark a:hover {
+	color: white!important;
 }
 header.navbar-nav .navbar-brand .product {
 	font-weight:bold;

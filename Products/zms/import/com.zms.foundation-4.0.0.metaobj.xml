@@ -6110,7 +6110,7 @@ return printed
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">icon-bullhorn</item>
+                  <item key="custom">fas fa-bullhorn</item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">

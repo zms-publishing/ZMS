@@ -6,33 +6,37 @@
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <script tal:condition="python:not bnobody">
 	$ZMI.registerReady(function(){
-			if (self.location.href.indexOf('manage_tabs_message=') > 0) {
-				var href = parent.location.href;
-				if (href.indexOf("?") > 0) {
-					href = href.substr(0,href.indexOf("?"));
-				}
-				href += "?" + self.location.href.substr(self.location.href.indexOf("?"));
-				parent.location.href = href;
+		if (self.location.href.indexOf('manage_tabs_message=') > 0) {
+			var href = parent.location.href;
+			if (href.indexOf("?") > 0) {
+				href = href.substr(0,href.indexOf("?"));
 			}
-		});
+			href += "?" + self.location.href.substr(self.location.href.indexOf("?"));
+			parent.location.href = href;
+		}
+	});
 </script>
 <style>
 	body.import .form-group {
-		margin-bottom: 0.3em;
+		margin-bottom: 0.3rem;
 		margin-left: 0;
 	}
+	body.import .form-group.row i {
+		min-width: 1.5rem;
+		font-size:1rem
+	}
 	body.import input[type="checkbox"] {
-		margin: 0 0.8em;
+		margin: 0 0.8rem;
 	}
 	body.import .btn {
-		margin-bottom:1em;
+		margin-bottom:1rem;
 	}
 	body.import .btn-group legend {
 		display: inline-block !important;
 		width: auto;
-		padding-left: .3em;
+		padding-left: .3rem;
 		margin: 0;
-		font-size: 21px;
+		font-size: 1.25rem;
 		line-height: inherit;
 		color: #333;
 		border: 0;
@@ -47,7 +51,7 @@
 		metaObjPackages python:here.sort_list(standard.distinct_list( [x.get('package') for x in metaObjs] ))">
 
 <tal:block tal:condition="python:request.get('section')=='import'">
-	<form class="form-horizontal" action="manage_changeProperties" method="post" enctype="multipart/form-data" target="_parent">
+	<form class="form-horizontal container" action="manage_changeProperties" method="post" enctype="multipart/form-data" target="_parent">
 	<input type="hidden" name="lang" tal:attributes="value request/lang" />
 	<tal:block tal:condition="python:request.get('temp_import_file_id')">
 		<input type="hidden" name="temp_import_file_id" tal:attributes="value request/temp_import_file_id" />

@@ -416,15 +416,17 @@ $(function(){
 	}
 
 	function handleDragOver(e) {
-		if (e.preventDefault) {
-			e.preventDefault(); // Necessary. Allows us to drop.
+		if ( dragSrcEl ) {
+			if (e.preventDefault) {
+				e.preventDefault(); // Necessary. Allows us to drop.
+			}
+			if ((this.classList.contains("page") && dragSrcEl.classList.contains("page"))
+					|| (this.classList.contains("pageelement") && dragSrcEl.classList.contains("pageelement"))) {
+				this.classList.add('zmi-data-transfer-drag');
+				e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+			}
+			return false;
 		}
-		if ((this.classList.contains("page") && dragSrcEl.classList.contains("page"))
-				|| (this.classList.contains("pageelement") && dragSrcEl.classList.contains("pageelement"))) {
-			this.classList.add('zmi-data-transfer-drag');
-			e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
-		}
-		return false;
 	}
 
 	function handleDragEnter(e) {

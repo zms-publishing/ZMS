@@ -692,7 +692,8 @@ class MyBlob(object):
         qs = standard.qs_append( qs, zms_version_key, REQUEST.get( zms_version_key))
       elif standard.isPreviewRequest( REQUEST):
         qs = standard.qs_append( qs, 'preview', 'preview')
-      href = parent.absolute_url()+rownum+'/'+filename+qs
+      base = '/'.join(parent.getPhysicalPath())
+      href = base+rownum+'/'+filename+qs
       return href
 
 

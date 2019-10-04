@@ -790,11 +790,14 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 
 /*----- image ----------------------------------------------------------------*/
 
-.zmi .zmi-image .btn-group, 
+.zmi .zmi-image .btn-group,
 .zmi .zmi-file .btn-group {
 	width:100%;
 	width: -webkit-fill-available;
 	height: calc(2.25rem + 2px);
+}
+.zmi .zmi-image .btn-group > div:not(.dropdown-menu),
+.zmi .zmi-file .btn-group > div:not(.dropdown-menu) {
 	z-index: 0;
 }
 .zmi .zmi-input-file .custom-file-label,

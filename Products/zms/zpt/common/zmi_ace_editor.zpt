@@ -37,7 +37,7 @@
 		overflow: hidden;
 	}
 </style>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ace.ajax.org/ace.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zmi/ace.ajax.org/ace.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
 
 </tal:block>

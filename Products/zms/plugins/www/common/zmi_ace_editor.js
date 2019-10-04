@@ -8,9 +8,9 @@ $(function(){
 		$("#editor").hide();
 	}
 	else {
-		var dom = require("ace/lib/dom");
+		var dom = ace.require("ace/lib/dom");
 		// add command to all new editor instances
-		require("ace/commands/default_commands").commands.push({
+		ace.require("ace/commands/default_commands").commands.push({
 			name: "Toggle Fullscreen",
 			bindKey: "F10",
 			exec: function(editor) {

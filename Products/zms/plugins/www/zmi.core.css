@@ -44,14 +44,17 @@ header .navbar-brand {
 	margin:0;
 }
 
-.navbar-dark a {
+.navbar-nav > ul > li > a {
 	color: silver!important;
 	text-decoration:none !important;
 }
-.navbar-dark a:active, .navbar-dark a:hover {
+.navbar-nav > ul > li > a:active, 
+.navbar-nav > ul > li > a:hover,
+.navbar-nav a.navbar-brand:hover {
 	color: white!important;
 }
-header.navbar-nav .navbar-brand .product {
+header.navbar-nav .navbar-brand {
+	color: silver;
 	font-weight:bold;
 	font-size: 1.125rem;
 }
@@ -62,7 +65,7 @@ header.navbar-nav .navbar-brand .slogan {
 	font-size: .62rem;
 	margin: 0.60rem 1rem;
 	opacity:.5;
-	letter-spacing: .5px;
+	letter-spacing:.5px;
 }
 @media (min-width: 1200px) {
 	header.navbar-nav .navbar-brand .slogan {

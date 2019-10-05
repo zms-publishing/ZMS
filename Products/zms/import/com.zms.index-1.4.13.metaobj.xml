@@ -842,58 +842,38 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
 request = zmscontext.REQUEST
 zmsroot = zmscontext.getRootElement()
 url = options['url']
-try: return zmsroot.fetchReqBuff(url,request)
+try: return zmsroot.fetchReqBuff(options['url'],request)
 except: pass
 
-query = None
-obj = None
-# zmscontext.writeLog('ZMSIndexZCatalog.getLinkObj: url='+url)
-if url.startswith('{$') and url.find('id:')>0 and url.endswith('}'):
-  uid = url[2:-1]
-  query = {'get_uid':uid}
-elif url.startswith('{$') and url.endswith('}') and not (url.startswith('{$__') and url.endswith('__}')):
-  docelmnt = None
+ob = None
+if url.startswith('{$') and url.endswith('}'):
   url = url[2:-1]
-  i = url.find('#')
+  # Strip suffixes
+  i = max(url.find('#'),url.find(','))
   if i > 0:
     url = url[:i]
-  i = url.find('@')
-  if i > 0:
-    clientIds = url[:i].split('/')
-    clientHome = zmscontext.getHome()
-    for clientId in clientIds:
-      clientHome = getattr(clientHome,clientId,None)
-      if clientHome is None:
+  if url.find('id:') >= 0:
+    q = zmscontext.zcatalog_index({'get_uid':url})
+    for r in q:
+      zmspath  = '%s/'%r['getPath']
+      l = zmspath[1:-1].split('/')
+      ob = zmscontext
+      try:
+        for id in [x for x in l if x]:
+          ob = getattr(ob,id,None)
         break
-    if clientHome is not None:
-      obs = clientHome.objectValues(['ZMS'])
-      if obs:
-        docelmnt = obs[0]
-    url = url[i+1:]
-  else:
-    docelmnt = zmscontext.getDocumentElement()
-  if len(url) == 0:
-    return docelmnt 
-  elif docelmnt is not None:
-    zmsid = url.split('/')[-1]
-    query = {'home_id':docelmnt.getHome().id,'id':zmsid}
-q = zmscontext.zcatalog_index(query)
-try:
-  q = [x for x in q if x['getPath'].find('/%s/content'%query['home_id'])>=0]
-except:
-  pass
-ob = None
-for r in q:
-  zmspath  = '%s/'%r['getPath']
-  l = zmspath[1:-1].split('/')
-  ob = zmscontext
-  try:
-    for id in [x for x in l if x]:
-      ob = getattr(ob,id,None)
-    break
-  except:
-    pass
-return zmsroot.storeReqBuff(url,ob)
+      except:
+        pass
+  elif not url.startswith('__'):
+    url = url.replace('@','/content/')
+    l = url.split('/') 
+    ob = zmscontext
+    try:
+      for id in [x for x in l if x]:
+        ob = getattr(ob,id,None)
+    except:
+      pass
+return zmsroot.storeReqBuff(options['url'],ob)
 
 # --// /ZMSIndexZCatalog.getLinkObj //--
 ]]>
@@ -1271,7 +1251,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.4.11</item>
+          <item key="revision">1.4.13</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -1290,7 +1270,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.4.12</item>
+          <item key="revision">1.4.13</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

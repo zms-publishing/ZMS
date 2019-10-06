@@ -5,7 +5,6 @@ function zmiSelectObject(sender) {
 	$(".zmi-sitemap .active").removeClass("active");
 	$(sender).parents("li").addClass("active");
 	window.parent.manage_main.location.href=$(sender).attr("href")+"/manage_main?lang="+getZMILang();
-	// window.parent.location.href=$(sender).attr("href")+"/manage?lang="+getZMILang()+"&dtpref_sitemap=1";
 	return false;
 }
 function zmiRefresh() {
@@ -16,7 +15,7 @@ function zmiRefresh() {
 	catch(e) {
 		$ZMI.writeDebug('zmiRefresh: cannot get physical-path from parent - ' + e);
 	}
-	$ZMI.objectTree.init(".zmi-sitemap",href,{params:{meta_types:$ZMI.getConfProperty('zms.plugins.www.object.manage_menu.meta_types','0,ZMSTrashcan')}});
+	$ZMI.objectTree.init(".zmi-sitemap",href,{params:{meta_types:$ZMI.getConfProperty('zms.plugins.www.object.manage_menu.meta_types','0,1,ZMSTrashcan')}});
 }
 
 function zmiBookmarksChanged() {

@@ -45,13 +45,13 @@ header .navbar-brand {
 }
 
 .navbar-nav > ul > li > a {
-	color: silver!important;
-	text-decoration:none !important;
+	color: silver;
+	text-decoration:none;
 }
 .navbar-nav > ul > li > a:active, 
 .navbar-nav > ul > li > a:hover,
 .navbar-nav a.navbar-brand:hover {
-	color: white!important;
+	color: white;
 }
 header.navbar-nav .navbar-brand {
 	color: silver;

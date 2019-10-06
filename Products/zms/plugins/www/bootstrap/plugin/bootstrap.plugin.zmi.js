@@ -1333,7 +1333,7 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 		var page_meta_type = $page.attr("meta_id");
 		var page_type = $page.attr("attr_dc_type");
 		var page_titlealt = $page.attr("titlealt");
-		var page_display_icon = $page.attr("display_icon");
+		var page_icon = $page.attr("zmi_icon");
 		var anchor = "";
 		if ( page_is_pageelement) {
 			var file_filename = $("file>filename",$page);
@@ -1374,7 +1374,7 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 		html += '<li class="'+css.join(' ')+'">';
 		html += $ZMI.icon("fas fa-caret-right toggle",'title="+" onclick="$ZMI.objectTree.toggleClick(this'+(typeof callback=="undefined"?'':','+callback)+')"')+' ';
 		if (page_is_pageelement) {
-			html += '<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="'+$ZMI.getLangStr('TAB_PREVIEW')+'">'+page_display_icon+'</span> ';
+			html += '<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="'+$ZMI.getLangStr('TAB_PREVIEW')+'"><i class="'+page_icon+'"></i></span> ';
 		}
 		html += '<a href="'+page_absolute_url+'"'
 				+ ' data-link-url="'+link_url+'"'
@@ -1385,7 +1385,7 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 				+ ' data-page-titlealt="'+page_titlealt.replace(/"/g,'&quot;').replace(/'/g,'&apos;')+'"'
 				+ ' onclick="return zmiSelectObject(this)">';
 		if (!page_is_pageelement) {
-			html += page_display_icon+' ';
+			html += '<i class="'+page_icon+'"></i> ';
 		}
 		html += page_titlealt;
 		html += '</a>';

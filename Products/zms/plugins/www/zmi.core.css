@@ -784,6 +784,24 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	border:0;
 	padding:0 .35rem 0 0;
 }
+.zmi .form-group .breadcrumb li.breadcrumb-item {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 98px;
+	overflow: hidden;
+}
+.zmi .form-group li.breadcrumb-item + li.breadcrumb-item::before,
+.zmi .form-group li.breadcrumb li.breadcrumb-item i {
+	display: contents;
+}
+.zmi .form-group li.breadcrumb-item + li.breadcrumb-item i:before {
+	margin-left:.35em;
+}
+.zmi .form-group.row .col-sm-10 .pull-left nav {
+	padding-top:.1rem;
+	width: max-content;
+}
+
 .zmi table td > nav > ol.breadcrumb {
 	padding: 0;
 }

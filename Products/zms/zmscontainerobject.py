@@ -124,16 +124,42 @@ class ZMSContainerObject(
     # Role Manager.
     # -------------
     def manage_addZMSCustom(self, meta_id, values={}, REQUEST=None):
+      """
+      Add a custom node of the type designated by meta_id in current context.
+      @param meta_id: the meta-id / type of the new ZMSObject
+      @type meta_id: C{str}
+      @param values: the dictionary of initial attribut-values assigned to the new ZMSObject 
+      @type values: C{dict}
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: the new node
+      @rtype: C{zmsobject.ZMSObject}
+      """
       values['meta_id'] = meta_id
       return self.manage_addZMSObject('ZMSCustom', values, REQUEST)
-    def zmi_manage_addZMSCustom(self, meta_id, values={}, REQUEST=None):
-      return self.manage_addZMSCustom(meta_id, values, REQUEST)
 
 
     # --------------------------------------------------------------------------
     #  ZMSContainerObject.manage_addZMSObject:
     # --------------------------------------------------------------------------
     def manage_addZMSObject(self, meta_id, values, REQUEST):
+      """
+      Add a node of type designated by meta_id in current context.
+      @param meta_id: the meta-id / type of the new ZMSObject
+      @type meta_id: C{str}
+      @param values: the dictionary of initial attribut-values assigned to the new ZMSObject 
+          - I{id_prefix} (C{str=''}) the id-prefix used to generate the new id
+          - I{id} (C{str=''}) the new id (fixed)
+          - I{sort_id} (C{str=''}) the sort-id
+          - I{meta_id} (C{str=''}) the meta-id
+          - I{active} (C{str=''}) is active
+          - I{attr_dc_coverage} (C{str=''}) the coverage
+      @type values: C{dict}
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: the new node
+      @rtype: C{zmsobject.ZMSObject}
+      """
       prim_lang = self.getPrimaryLanguage()
       lang = REQUEST.get('lang', prim_lang)
       
@@ -254,14 +280,14 @@ class ZMSContainerObject(
       """ 
       Delete a subordinate object physically:
       The objects specified in 'ids' get deleted.
-      @param lang: Language-id.
-      @type ids: C{:str}
-      @param ids: List of object-ids.
+      @param lang: the language-id.
+      @type lang: C{str}
+      @param ids: the list of object-ids.
       @type ids: C{list}
       @param REQUEST: the triggering request
-      @type REQUEST: ZPublisher.HTTPRequest
+      @type REQUEST: C{ZPublisher.HTTPRequest}
       @param RESPONSE: the triggering request
-      @type RESPONSE: ZPublisher.HTTPResponse
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
       """ 
       
       message = ''
@@ -286,14 +312,14 @@ class ZMSContainerObject(
       """
       Undo a subordinate object:
       The objects specified in 'ids' get undone (changes are rolled-back).
-      @param lang: Language-id.
-      @type ids: C{:str}
-      @param ids: List of object-ids.
+      @param lang: the language-id.
+      @type lang: C{str}
+      @param ids: the list of object-ids.
       @type ids: C{list}
       @param REQUEST: the triggering request
-      @type REQUEST: ZPublisher.HTTPRequest
+      @type REQUEST: C{ZPublisher.HTTPRequest}
       @param RESPONSE: the triggering request
-      @type RESPONSE: ZPublisher.HTTPResponse
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
       """ 
       
       message = ''
@@ -322,14 +348,14 @@ class ZMSContainerObject(
       """
       Delete a subordinate object logically:
       The objects specified in 'ids' get deleted (moved to trashcan).
-      @param lang: Language-id.
-      @type ids: C{:str}
-      @param ids: List of object-ids.
+      @param lang: the language-id.
+      @type lang: C{str}
+      @param ids: the list of object-ids.
       @type ids: C{list}
       @param REQUEST: the triggering request
-      @type REQUEST: ZPublisher.HTTPRequest
+      @type REQUEST: C{ZPublisher.HTTPRequest}
       @param RESPONSE: the triggering request
-      @type RESPONSE: ZPublisher.HTTPResponse
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
       """
       message = ''
       t0 = time.time()
@@ -364,7 +390,10 @@ class ZMSContainerObject(
     def getContentType( self, REQUEST):
       """
       Returns MIME-type (text/html).
-      @rtype: C{:str}
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: always returns 'text/html'
+      @rtype: C{str}
       """
       return 'text/html'
 
@@ -379,7 +408,10 @@ class ZMSContainerObject(
     #  ZMSContainerObject.manage_ajaxDragDrop:
     # --------------------------------------------------------------------------
     def manage_ajaxDragDrop( self, lang, target, REQUEST, RESPONSE):
-      """ ZMSContainerObject.manage_ajaxDragDrop """
+      """ 
+      ZMSContainerObject.manage_ajaxDragDrop
+      internal use only
+      """
       rc = 0
       message = self.getZMILangStr('MSG_PASTED')
       try:
@@ -451,6 +483,14 @@ class ZMSContainerObject(
     #  ZMSContainerObject.getPrevPage:
     # --------------------------------------------------------------------------
     def getPrevPage(self, REQUEST, incResource=False, root=None):
+      """
+      Returns the previous page of this node from root (or document-element if root
+      is not given).
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: the previous page
+      @rtype: C{zmsobject.ZMSObject}
+      """
       ob = None
       root = standard.nvl(root, self.getDocumentElement())
       while True:
@@ -474,6 +514,14 @@ class ZMSContainerObject(
     #  ZMSContainerObject.getNextPage:
     # --------------------------------------------------------------------------
     def getNextPage(self, REQUEST, incResource=False, root=None): 
+      """
+      Returns the next page of this node from root (or document-element if root
+      is not given).
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: the next page
+      @rtype: C{zmsobject.ZMSObject}
+      """
       ob = None
       root = standard.nvl(root, self.getDocumentElement())
       while True:
@@ -528,7 +576,7 @@ class ZMSContainerObject(
     def manage_ajaxZMIActions(self, context_id, REQUEST, RESPONSE):
       """
       Returns ZMI actions.
-      
+      internal use only
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
       @param RESPONSE: the response
@@ -582,8 +630,8 @@ class ZMSContainerObject(
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
       @param opt: the dictionary of options
-          - I{id} (C{:str=''}) id of base ul-element
-          - I{cssclass} (C{:str=''}) css class of base ul-element
+          - I{id} (C{str=''}) id of base ul-element
+          - I{cssclass} (C{str=''}) css class of base ul-element
           - I{add_self} (C{boolean=False}) add self to list
           - I{deep} (C{boolean=True}) process child nodes
           - I{complete} (C{boolean=False}) process complete subtree
@@ -591,7 +639,7 @@ class ZMSContainerObject(
           - I{getrestricted} (C{boolean=True}) get is restricted
           - I{getchildpages} (C{boolean=True}) get has child-pages
       @return: the Html
-      @rtype: C{:str}
+      @rtype: C{str}
       """
       items = []
       obs = []
@@ -704,8 +752,14 @@ class ZMSContainerObject(
     # --------------------------------------------------------------------------
     def filteredTreeNodes(self, REQUEST, meta_types, order_by=None, order_dir=None, max_len=None, recursive=True):
       """
-      Returns a NodeList that contains all visible children of this subtree 
-      in correct order. If none, this is a empty NodeList. 
+      Returns a node-list that contains all visible children of this subtree 
+      in correct order. If none, this is a empty node-list. 
+      @param meta_types: the meta_type(s) (single or list), may also be C{ZMSContainerObject.PAGES} or C{ZMSContainerObject.PAGEELEMENTS}
+      @type meta_types: C{str|list}
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest=None}
+      @return: the list of ZMSObjects
+      @rtype: C{list<ZMSObject>}
       """
       rtn = []
       
@@ -761,9 +815,15 @@ class ZMSContainerObject(
     # --------------------------------------------------------------------------
     #  ZMSContainerObject.firstFilteredChildNode:
     # --------------------------------------------------------------------------
-    def firstFilteredChildNode(self, REQUEST={}, meta_types=None):
+    def firstFilteredChildNode(self, REQUEST=None, meta_types=None):
       """
       Returns the first visible child of this node.
+      @param meta_types: the meta_type(s) (single or list), may also be C{ZMSContainerObject.PAGES} or C{ZMSContainerObject.PAGEELEMENTS}
+      @type meta_types: C{str|list}
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest=None}
+      @return: the first ZMSObject
+      @rtype: C{ZMSObject}
       """
       for node in self.getChildNodes(REQUEST, meta_types):
         if node.isVisible(REQUEST):
@@ -774,10 +834,16 @@ class ZMSContainerObject(
     # --------------------------------------------------------------------------
     #  ZMSContainerObject.filteredChildNodes:
     # --------------------------------------------------------------------------
-    def filteredChildNodes(self, REQUEST={}, meta_types=None):
+    def filteredChildNodes(self, REQUEST=None, meta_types=None):
       """
-      Returns a NodeList that contains all visible children of this node in 
-      correct order. If none, this is a empty NodeList. 
+      Returns a node-list that contains all visible children of this node in 
+      correct order. If none, this is a empty node-list. 
+      @param meta_types: the meta_type(s) (single or list), may also be C{ZMSContainerObject.PAGES} or C{ZMSContainerObject.PAGEELEMENTS}
+      @type meta_types: C{str|list}
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest=None}
+      @return: the list of ZMSObjects
+      @rtype: C{list<ZMSObject>}
       """
       return [x for x in self.getChildNodes(REQUEST, meta_types) if x.isVisible(REQUEST)]
 
@@ -791,8 +857,8 @@ class ZMSContainerObject(
     NORESOLVEREF = 5 # virtual meta_type for not resolving meta-type of ZMSLinkElement-target-object.
     def getChildNodes(self, REQUEST=None, meta_types=None, reid=None):
       """
-      Returns a NodeList that contains all children of this node in correct 
-      order. If none, this is a empty NodeList. 
+      Returns a node-list that contains all children of this node in correct 
+      order. If none, this is a empty node-list. 
       """
       childNodes = []
       obs = self.objectValues(list(self.dGlobalAttrs))
@@ -836,24 +902,25 @@ class ZMSContainerObject(
     ### 
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.normalizeSortIds:
-    #
-    #  Normalizes sort-ids for all children of this node 
-    # --------------------------------------------------------------------------
     def normalizeSortIds(self, id_prefix='e'):
-      print("normalizeSortIds")
+      """
+      Normalizes sort-ids for all children with given prefix of this node.
+      Always called on container after new node was added.
+      E.g.: sort_ids:before=[10,15,20,30,40] => sort_ids:after=[10,20,30,40,50]
+      @param id_prefix: the id-prefix.
+      @type id_prefix: C{str='e'}
+      """
       obs = [x for x in self.objectValues(list(self.dGlobalAttrs)) if standard.id_prefix(x.id)==id_prefix and x.__proxy__() is not None]
       obs = sorted(obs,key=lambda x:[1,1000][x.isPage()]*x.getSortId())
       [obs[x].setSortId((x+1)*10) for x in range(len(obs))]
 
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.getNewSortId:
-    #
-    #  Get new Sort-ID.
-    # --------------------------------------------------------------------------
     def getNewSortId(self):
+      """
+      Get new sort-id.
+      @return: the new sort-id.
+      @rtype: C{int}
+      """
       new_sort_id = 0
       childNodes = self.getChildNodes()
       for ob in childNodes:
@@ -870,12 +937,18 @@ class ZMSContainerObject(
     #
     ############################################################################
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.manage_addZMSCustomDefault:
-    # --------------------------------------------------------------------------
     def manage_addZMSCustomDefault(self, lang, id_prefix, _sort_id, REQUEST, RESPONSE):
       """
-      Add default.
+      Add default node.
+      internal use only
+      @param lang: the language-id.
+      @type lang: C{str}
+      @param id_prefix: the id-prefix.
+      @type id_prefix: C{str}
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: the triggering request
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
       """
       attr = self.getMetaobjAttr( self.meta_id, id_prefix)
       zexp = attr[ 'custom']
@@ -886,12 +959,18 @@ class ZMSContainerObject(
       message = self.getZMILangStr('MSG_INSERTED')%attr['name']
       RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), new_id, lang, urllib.parse.quote(message)))
 
-    # --------------------------------------------------------------------------
-    #  ZMSContainerObject.manage_addZMSModule:
-    # --------------------------------------------------------------------------
     def manage_addZMSModule(self, lang, _sort_id, custom, REQUEST, RESPONSE):
       """
-      Add module.
+      Add module-node.
+      internal use only
+      @param lang: the language-id.
+      @type lang: C{str}
+      @param id_prefix: the id-prefix.
+      @type id_prefix: C{str}
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @param RESPONSE: the triggering request
+      @type RESPONSE: C{ZPublisher.HTTPResponse}
       """
       meta_id = self.getMetaobjId( custom)
       metaObj = self.getMetaobj( meta_id)

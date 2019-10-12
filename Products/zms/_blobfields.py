@@ -827,10 +827,12 @@ class MyImage(MyBlob, Image):
     __xml_attrs__  = ['content_type', 'width', 'height']
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyImage._getCopy:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def _getCopy(self):
+      """
+      Get copy of this blob.
+      @return: the copy of this blob.
+      @rtype: C{_blobfields.MyFile}
+      """
       self.getFilename() # Normalize filename
       ob = self
       clone = MyImage(id='', title='', file=b'')
@@ -841,10 +843,18 @@ class MyImage(MyBlob, Image):
       return clone
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyImage.toXml:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def toXml(self, sender=None, base_path='', data2hex=True):
+      """
+      Serialize this file to xml-string.
+      @param sender: the sender-node
+      @type sender: C{zmsobject.ZMSObject=None}
+      @param base_path: the base-path
+      @type base_path: C{str=''}
+      @param data2hex: convert data inline to hex, otherwise saved to file in base-path
+      @type data2hex: C{Bool=True}
+      @return: the xml-string
+      @rtype: C{str}
+      """
       data = ''
       objtype = ''
       filename = _fileutil.getOSPath(_fileutil.extractFilename(getattr(self, 'filename', '')))
@@ -868,22 +878,26 @@ class MyImage(MyBlob, Image):
       return xml
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyImage.getWidth:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getWidth__roles__ = None
     def getWidth(self):
+      """
+      Get width of this image.
+      @return: the width of this image.
+      @rtype: C{int}
+      """
       w = self.width
       if not w:
         w = self.aq_parent.getConfProperty('ZMS.image.default.width', 640)
       return w
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyImage.getHeight:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getHeight__roles__ = None
     def getHeight(self):
+      """
+      Get height of this image.
+      @return: the height of this image.
+      @rtype: C{int}
+      """
       h = self.height
       if not h:
         h = self.aq_parent.getConfProperty('ZMS.image.default.height', 400)
@@ -905,10 +919,12 @@ class MyFile(MyBlob, File):
     __xml_attrs__  = ['content_type']
     __class_name__ = '{{MyFile}}'
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyFile._getCopy:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def _getCopy(self):
+      """
+      Get copy of this blob.
+      @return: the copy of this blob.
+      @rtype: C{_blobfields.MyFile}
+      """
       self.getFilename() # Normalize filename
       ob = self
       clone = MyFile(id='', title='', file=b'')
@@ -919,10 +935,18 @@ class MyFile(MyBlob, File):
       return clone
 
 
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    MyFile.toXml:
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def toXml(self, sender=None, base_path='', data2hex=True):
+      """
+      Serialize this file to xml-string.
+      @param sender: the sender-node
+      @type sender: C{zmsobject.ZMSObject=None}
+      @param base_path: the base-path
+      @type base_path: C{str=''}
+      @param data2hex: convert data inline to hex, otherwise saved to file in base-path
+      @type data2hex: C{Bool=True}
+      @return: the xml-string
+      @rtype: C{str}
+      """
       data = ''
       objtype = ''
       filename = _fileutil.getOSPath(_fileutil.extractFilename(getattr(self, 'filename', '')))

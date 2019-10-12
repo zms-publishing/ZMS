@@ -146,14 +146,15 @@ ExtensionClass("Base", (object,), {'__slots__':(), '__getattribute__': Base_geta
 </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>str</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="toXml"></a><span class="summary-sig-name">toXml</span>(<span class="summary-sig-arg">self</span>,
+          <td><span class="summary-sig"><a href="zms._blobfields.MyImage-class.html#toXml" class="summary-sig-name">toXml</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">sender</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">base_path</span>=<span class="summary-sig-default">''</span>,
-        <span class="summary-sig-arg">data2hex</span>=<span class="summary-sig-default">True</span>)</span></td>
+        <span class="summary-sig-arg">data2hex</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Serialize this file to xml-string.</td>
           <td align="right" valign="top">
             
             
@@ -165,11 +166,12 @@ ExtensionClass("Base", (object,), {'__slots__':(), '__getattribute__': Base_geta
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>int</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="getWidth"></a><span class="summary-sig-name">getWidth</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="zms._blobfields.MyImage-class.html#getWidth" class="summary-sig-name">getWidth</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Get width of this image.</td>
           <td align="right" valign="top">
             
             
@@ -181,11 +183,12 @@ ExtensionClass("Base", (object,), {'__slots__':(), '__getattribute__': Base_geta
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>int</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="getHeight"></a><span class="summary-sig-name">getHeight</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="zms._blobfields.MyImage-class.html#getHeight" class="summary-sig-name">getHeight</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Get height of this image.</td>
           <td align="right" valign="top">
             
             
@@ -579,6 +582,88 @@ height', 'aq_parent']">['content_type', 'size', 'data', 'filename', '<code class
     </td>
   </tr>
 </table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Method Details</span></td>
+</tr>
+</table>
+<a name="toXml"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">toXml</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">sender</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">base_path</span>=<span class="sig-default">''</span>,
+        <span class="sig-arg">data2hex</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Serialize this file to xml-string.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>sender</code></strong> (<code>zmsobject.ZMSObject=None</code>) - the sender-node</li>
+        <li><strong class="pname"><code>base_path</code></strong> (<code>str=''</code>) - the base-path</li>
+        <li><strong class="pname"><code>data2hex</code></strong> (<code>Bool=True</code>) - convert data inline to hex, otherwise saved to file in base-path</li>
+    </ul></dd>
+    <dt>Returns: <code>str</code></dt>
+        <dd>the xml-string</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="getWidth"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getWidth</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get width of this image.</p>
+  <dl class="fields">
+    <dt>Returns: <code>int</code></dt>
+        <dd>the width of this image.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="getHeight"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getHeight</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Get height of this image.</p>
+  <dl class="fields">
+    <dt>Returns: <code>int</code></dt>
+        <dd>the height of this image.</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
 <!-- ==================== CLASS VARIABLE DETAILS ==================== -->
 <a name="section-ClassVariableDetails"></a>
 <table class="details" border="1" cellpadding="3"
@@ -636,7 +721,7 @@ height', 'aq_parent']
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Thu Oct 10 18:43:59 2019
+    Generated by Epydoc 3.0.1 on Sat Oct 12 21:09:59 2019
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

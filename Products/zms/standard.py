@@ -884,6 +884,14 @@ def re_sub( pattern, replacement, subject, ignorecase=False):
   Performs a search-and-replace across subject, replacing all matches of
   regex in subject with replacement. The result is returned by the sub()
   function. The subject string you pass is not modified.
+  convenience-function since re cannot be imported in restricted python
+  @param pattern: the regular expression to which this string is to be matched
+  @type pattern: C{str}
+  @param replacement: the string to be substituted for each match
+  @type replacement: C{str}
+  @param replacement: ignore case considerations
+  @type replacement: C{Bool=False}
+  @return: the resulting string.
   @rtype: C{str}
   """
   if ignorecase:
@@ -899,6 +907,9 @@ def re_search( pattern, subject, ignorecase=False):
   instance. Return None if no position in the string matches the pattern;
   note that this is different from finding a zero-length match at some
   point in the string.
+  convenience-function since re cannot be imported in restricted python
+  @param pattern: the regular expression to which this string is to be matched
+  @type pattern: C{str}
   @rtype: C{str}
   """
   if ignorecase:
@@ -915,6 +926,9 @@ def re_findall( pattern, text, ignorecase=False):
   If one or more groups are present in the pattern, return a list of groups;
   this will be a list of tuples if the pattern has more than one group.
   Empty matches are included in the result unless they touch the beginning of another match
+  convenience-function since re cannot be imported in restricted python
+  @param pattern: the regular expression to which this string is to be matched
+  @type pattern: C{str}
   @rtype: C{str}
   """
   if ignorecase:
@@ -1025,12 +1039,15 @@ def getLangFmtDate(context, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
 security.declarePublic('getDateTime')
 def getDateTime(t):
   """
-  Bei Python 2.2 ist der Typ der Objekte des Moduls "time" nicht
-  mehr "tuple", sondern "time.struct_time". Es verhaelt sich aber weiterhin
-  abwaertskompatibel zu einem tuple.
+  Since Python 2.2 the type of objects from the time-module are time.struct_time instead of tuples.
+  struct_time is compatible with tuple.
   This is no problem for Zope since Zope uses its own, more flexible, type
   DateTime. Nevertheless ZMS relies on the datatype "tuple" as DateTime has
   the limitation that no date prior to 1970-01-01 can be used!
+  @param t: the date-time
+  @type t: C{DateTime.DateTime}|C{tuple}|C{time.struct_time}
+  @return: the pythonic-time
+  @rtype: C{time.struct_time}
   """
   if t is not None:
     try:
@@ -1056,6 +1073,10 @@ security.declarePublic('stripDateTime')
 def stripDateTime(t):
   """
   Strips time portion from date-time and returns date.
+  @param t: the date-time
+  @type t: C{DateTime.DateTime}|C{tuple}|C{time.struct_time}
+  @return: the pythonic-time
+  @rtype: C{time.struct_time}
   """
   d = None
   if t is not None:
@@ -1067,6 +1088,11 @@ security.declarePublic('daysBetween')
 def daysBetween(t0, t1):
   """
   Returns number of days between date t0 and t1.
+  @param t0: the start date-time
+  @type t0: C{DateTime.DateTime}|C{tuple}|C{time.struct_time}
+  @param t1: the end date-time
+  @type t1: C{DateTime.DateTime}|C{tuple}|C{time.struct_time}
+  @return: the number of days between date t0 and t1.
   @rtype: C{int}
   """
   t0 = time.mktime(stripDateTime(getDateTime(t0)))
@@ -1078,9 +1104,9 @@ security.declarePublic('compareDate')
 def compareDate(t0, t1):
   """
   Compares two dates t0 and t1 and returns result.
-   +1: t0 < t1
+   +1: t0 &lt; t1
     0: t0 == t1
-   -1: t0 > t1
+   -1: t0 &gt; t1
   @returns: A negative number if date t0 is before t1, zero if they are equal, or positive if t0 is after t1.
   @rtype: C{int}
   """
@@ -1316,9 +1342,13 @@ def localfs_read(filename, mode='b', cache='public, max-age=3600', REQUEST=None)
 
 
 security.declarePublic('localfs_write')
-def localfs_write(filename, v, mode='b', REQUEST=None):
+def localfs_write(filename, v, mode='b'):
   """
-  Writes file to local file-system.
+  Writes value to file to local file-system.
+  @param filename: the filename.
+  @type filename: C{str}
+  @param mode: the mode (b=binary).
+  @type mode: C{str}
   """
   # Get absolute filename.
   filename = _fileutil.absoluteOSPath(filename)

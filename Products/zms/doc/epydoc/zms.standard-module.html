@@ -1055,13 +1055,13 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>time.struct_time</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td><span class="summary-sig"><a href="zms.standard-module.html#getDateTime" class="summary-sig-name">getDateTime</a>(<span class="summary-sig-arg">t</span>)</span><br />
-      Bei Python 2.2 ist der Typ der Objekte des Moduls &quot;time&quot; 
-      nicht mehr &quot;tuple&quot;, sondern &quot;time.struct_time&quot;.</td>
+      Since Python 2.2 the type of objects from the time-module are 
+      time.struct_time instead of tuples.</td>
           <td align="right" valign="top">
             
             
@@ -1073,11 +1073,11 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
+      <span class="summary-type"><code>time.struct_time</code></span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="stripDateTime"></a><span class="summary-sig-name">stripDateTime</span>(<span class="summary-sig-arg">t</span>)</span><br />
+          <td><span class="summary-sig"><a href="zms.standard-module.html#stripDateTime" class="summary-sig-name">stripDateTime</a>(<span class="summary-sig-arg">t</span>)</span><br />
       Strips time portion from date-time and returns date.</td>
           <td align="right" valign="top">
             
@@ -1094,7 +1094,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="daysBetween"></a><span class="summary-sig-name">daysBetween</span>(<span class="summary-sig-arg">t0</span>,
+          <td><span class="summary-sig"><a href="zms.standard-module.html#daysBetween" class="summary-sig-name">daysBetween</a>(<span class="summary-sig-arg">t0</span>,
         <span class="summary-sig-arg">t1</span>)</span><br />
       Returns number of days between date t0 and t1.</td>
           <td align="right" valign="top">
@@ -1298,11 +1298,10 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="localfs_write"></a><span class="summary-sig-name">localfs_write</span>(<span class="summary-sig-arg">filename</span>,
+          <td><span class="summary-sig"><a href="zms.standard-module.html#localfs_write" class="summary-sig-name">localfs_write</a>(<span class="summary-sig-arg">filename</span>,
         <span class="summary-sig-arg">v</span>,
-        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">'b'</span>,
-        <span class="summary-sig-arg">REQUEST</span>=<span class="summary-sig-default">None</span>)</span><br />
-      Writes file to local file-system.</td>
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default">'b'</span>)</span><br />
+      Writes value to file to local file-system.</td>
           <td align="right" valign="top">
             
             
@@ -2475,9 +2474,17 @@
   
   <p>Performs a search-and-replace across subject, replacing all matches of
   regex in subject with replacement. The result is returned by the sub() 
-  function. The subject string you pass is not modified.</p>
+  function. The subject string you pass is not modified. 
+  convenience-function since re cannot be imported in restricted python</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pattern</code></strong> (<code>str</code>) - the regular expression to which this string is to be matched</li>
+        <li><strong class="pname"><code>replacement</code></strong> (<code>str</code>) - the string to be substituted for each match</li>
+        <li><strong class="pname"><code>replacement</code></strong> (<code>str</code>) - ignore case considerations</li>
+    </ul></dd>
     <dt>Returns: <code>str</code></dt>
+        <dd>the resulting string.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -2501,8 +2508,13 @@
   expression pattern produces a match, and return a corresponding 
   MatchObject instance. Return None if no position in the string matches 
   the pattern; note that this is different from finding a zero-length match
-  at some point in the string.</p>
+  at some point in the string. convenience-function since re cannot be 
+  imported in restricted python</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pattern</code></strong> (<code>str</code>) - the regular expression to which this string is to be matched</li>
+    </ul></dd>
     <dt>Returns: <code>str</code></dt>
   </dl>
 </td></tr></table>
@@ -2528,8 +2540,13 @@
   the order found. If one or more groups are present in the pattern, return
   a list of groups; this will be a list of tuples if the pattern has more 
   than one group. Empty matches are included in the result unless they 
-  touch the beginning of another match</p>
+  touch the beginning of another match convenience-function since re cannot
+  be imported in restricted python</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pattern</code></strong> (<code>str</code>) - the regular expression to which this string is to be matched</li>
+    </ul></dd>
     <dt>Returns: <code>str</code></dt>
   </dl>
 </td></tr></table>
@@ -2578,14 +2595,71 @@
     </td>
   </tr></table>
   
-  <p>Bei Python 2.2 ist der Typ der Objekte des Moduls &quot;time&quot; 
-  nicht mehr &quot;tuple&quot;, sondern &quot;time.struct_time&quot;. Es 
-  verhaelt sich aber weiterhin abwaertskompatibel zu einem tuple. This is 
-  no problem for Zope since Zope uses its own, more flexible, type 
+  <p>Since Python 2.2 the type of objects from the time-module are 
+  time.struct_time instead of tuples. struct_time is compatible with tuple.
+  This is no problem for Zope since Zope uses its own, more flexible, type 
   DateTime. Nevertheless ZMS relies on the datatype &quot;tuple&quot; as 
   DateTime has the limitation that no date prior to 1970-01-01 can be 
   used!</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>t</code></strong> (<code>DateTime.DateTime</code>|<code>tuple</code>|<code>time.struct_time</code>) - the date-time</li>
+    </ul></dd>
+    <dt>Returns: <code>time.struct_time</code></dt>
+        <dd>the pythonic-time</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="stripDateTime"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">stripDateTime</span>(<span class="sig-arg">t</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Strips time portion from date-time and returns date.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>t</code></strong> (<code>DateTime.DateTime</code>|<code>tuple</code>|<code>time.struct_time</code>) - the date-time</li>
+    </ul></dd>
+    <dt>Returns: <code>time.struct_time</code></dt>
+        <dd>the pythonic-time</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="daysBetween"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">daysBetween</span>(<span class="sig-arg">t0</span>,
+        <span class="sig-arg">t1</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Returns number of days between date t0 and t1.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>t0</code></strong> (<code>DateTime.DateTime</code>|<code>tuple</code>|<code>time.struct_time</code>) - the start date-time</li>
+        <li><strong class="pname"><code>t1</code></strong> (<code>DateTime.DateTime</code>|<code>tuple</code>|<code>time.struct_time</code>) - the end date-time</li>
+    </ul></dd>
+    <dt>Returns: <code>int</code></dt>
+        <dd>the number of days between date t0 and t1.</dd>
   </dl>
 </td></tr></table>
 </div>
@@ -2607,9 +2681,9 @@
   <pre class="literalblock">
 
 Compares two dates t0 and t1 and returns result.
- +1: t0 &lt; t1
+ +1: t0 &amp;lt; t1
   0: t0 == t1
- -1: t0 &gt; t1
+ -1: t0 &amp;gt; t1
 @returns: A negative number if date t0 is before t1, zero if they are equal, or positive if t0 is after t1.
 @rtype: C{int}
 
@@ -2868,6 +2942,32 @@ Compares two dates t0 and t1 and returns result.
     </ul></dd>
     <dt>Returns: <code>string</code> or <code>filestream_iterator</code></dt>
         <dd>Contents of file</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="localfs_write"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">localfs_write</span>(<span class="sig-arg">filename</span>,
+        <span class="sig-arg">v</span>,
+        <span class="sig-arg">mode</span>=<span class="sig-default">'b'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    >&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Writes value to file to local file-system.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>filename</code></strong> (<code>str</code>) - the filename.</li>
+        <li><strong class="pname"><code>mode</code></strong> (<code>str</code>) - the mode (b=binary).</li>
+    </ul></dd>
   </dl>
 </td></tr></table>
 </div>
@@ -3415,7 +3515,7 @@ Compares two dates t0 and t1 and returns result.
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Oct 12 21:09:59 2019
+    Generated by Epydoc 3.0.1 on Sat Oct 12 21:36:30 2019
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

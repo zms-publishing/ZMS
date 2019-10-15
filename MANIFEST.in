@@ -26,6 +26,7 @@ recursive-include Products *.xml
 recursive-include Products *.zcml
 recursive-include Products *.zip
 recursive-include Products *.zpt
+recursive-include Products *.scss
 recursive-include selenium_tests *.py
 recursive-include selenium_tests *.txt
 recursive-include test_output *.keep

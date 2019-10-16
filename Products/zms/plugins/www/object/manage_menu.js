@@ -132,7 +132,11 @@ function zmiResize(init) {
 	var frmwidth = $ZMILocalStorageAPI.get(key,224);
 	var frmset = parent.document.getElementsByTagName('frameset');
 	var colval = frmwidth + ",*";
-	frmset[0].cols=colval;
+	try {
+		frmset[0].cols=colval;
+	} catch(err) {
+		console.log(err)
+	}
 }
 
 $(function(){

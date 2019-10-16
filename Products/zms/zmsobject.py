@@ -1162,7 +1162,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " physical_path=\"%s\""%('/'.join(self.getPhysicalPath()))
       xml += " access=\"%s\""%str(int(self.hasAccess(REQUEST)))
       xml += " active=\"%s\""%str(int(self.isActive(REQUEST)))
-      xml += " zmi_icon=\"%s\""%self.zmi_icon()
+      xml += " zmi_icon=\"%s\""%self.zmi_icon
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
       xml += " uid=\"{$%s}\""%(self.get_uid(implementation=self.getConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation', 'undefined')))
       xml += " id=\"%s_%s\""%(self.getHome().id, self.id)

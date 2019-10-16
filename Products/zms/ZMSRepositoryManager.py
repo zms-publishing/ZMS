@@ -63,7 +63,7 @@ class ZMSRepositoryManager(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     meta_type = 'ZMSRepositoryManager'
     zmi_icon = "fas fa-database"
-    icon_clazz = icon
+    icon_clazz = zmi_icon
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Options

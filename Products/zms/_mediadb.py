@@ -267,8 +267,8 @@ class MediaDb(
     # Properties.
     # -----------
     meta_type = 'MediaDb'
-    icon = "fas fa-images"
-    icon_clazz = icon
+    zmi_icon = "fas fa-images"
+    icon_clazz = zmi_icon
 
     # Management Options.
     # -------------------

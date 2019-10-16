@@ -338,7 +338,7 @@ class ZMSWorkflowProvider(
             try:
               message += '[%s: %i]'%(node,ob.packHistory())
             except:
-              message += '[%s: %s]'%(node,'No History Packed')
+              message += '[%s: %s]'%(node,'No history to pack')
         message = self.getZMILangStr('MSG_CHANGED')+message
       
       # Properties.

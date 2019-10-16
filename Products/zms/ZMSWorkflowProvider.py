@@ -333,9 +333,12 @@ class ZMSWorkflowProvider(
         if old_active == 1 and new_active == 1:
           nodes = standard.difference_list( old_nodes, self.getConfProperty('ZMS.Version.nodes',['{$}']))
         for node in nodes:
-          ob = self.getLinkObj( node)
+          ob = self.getLinkObj(node)
           if ob is not None:
-            message += '[%s: %i]'%(node,ob.packHistory())
+            try:
+              message += '[%s: %i]'%(node,ob.packHistory())
+            except:
+              message += '[%s: %s]'%(node,'No History Packed')
         message = self.getZMILangStr('MSG_CHANGED')+message
       
       # Properties.

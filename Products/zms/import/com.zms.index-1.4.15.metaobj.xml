@@ -405,7 +405,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     ##############################################################################
     if func_ == 'get_uid':
       forced = args[1]
-      if forced or '_uid' not in self.__dict__ or getattr(self,'_uid',None) is None:
+      if forced or '_uid' not in self.__dict__ or len(getattr(self,'_uid',''))==0 or len(getattr(self,'_uid','').split('-'))<5:
         self._uid = str(uuid.uuid4())
       return 'uid:%s'%self._uid
 
@@ -549,15 +549,16 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                 data_id = data_id[:data_id.find(';')]
             ids = [x for x in data_id.split('/') if x]
             brains = []
-            for brain in query('id',ids[-1]):
-              if ids[-1] == 'content':
-                if brain['getPath'].endswith(data_id):
-                  writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %s->%s'%(data_id,brain['getPath']))
-                  brains.append((1,brain))
-              else:
-                score = len([1 for id in ids if id in brain['getPath'].split('/')])
-                writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %i->%s'%(score,brain['getPath']))
-                brains.append((score,brain))
+            if ids:
+              for brain in query('id',ids[-1]):
+                if ids[-1] == 'content':
+                  if brain['getPath'].endswith(data_id):
+                    writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %s->%s'%(data_id,brain['getPath']))
+                    brains.append((1,brain))
+                else:
+                  score = len([1 for id in ids if id in brain['getPath'].split('/')])
+                  writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %i->%s'%(score,brain['getPath']))
+                  brains.append((score,brain))
             if brains:
               sorted(brains,key=lambda x:x[0])
               rtn = brains[-1][1]
@@ -1251,7 +1252,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.4.13</item>
+          <item key="revision">1.4.15</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -1270,7 +1271,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.4.13</item>
+          <item key="revision">1.4.15</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

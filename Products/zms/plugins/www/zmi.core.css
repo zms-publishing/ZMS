@@ -1346,6 +1346,7 @@ body.browse_iframe .toggle {
 @media (min-width: 767px) {
 	.zmi .modal-dialog {
 		width: 80vw !important;
+		max-width: 80vw;
 	}
 }
 @media (min-width: 1200px) {

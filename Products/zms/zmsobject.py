@@ -160,6 +160,8 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # --------------------------------------------------------------------------
     #  ZMSObject.f_css_defaults:
+    #  
+    #  @deprecated
     # --------------------------------------------------------------------------
     def f_css_defaults(self, REQUEST=None):
       """ ZMSObject.f_css_defaults """

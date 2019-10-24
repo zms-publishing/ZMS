@@ -175,13 +175,15 @@ class ZMSObject(ZMSItem.ZMSItem,
         RESPONSE.setHeader('Cache-Control', 'public, max-age=3600')
       REQUEST.RESPONSE.setHeader('Content-Type', 'text/css')
       l = []
+      available_objs = self.metaobj_manager.objectIds()
       for metaObjId in self.getMetaobjIds():
         metaObj = self.getMetaobj(metaObjId)
-        for metaObjAttr in [x for x in metaObj.get('attrs', []) if x['id'] == 'f_css_defaults']:
+        for metaObjAttr in [x for x in metaObj.get('attrs', []) if ( x['id'] == 'f_css_defaults' ) ]:
           id = metaObjAttr['id']
           s = '%s.%s'%(metaObjId, id)
           try:
-            l.append('@import url("%s/metaobj_manager/%s")'%(self.getDocumentElement().absolute_url(), s) )
+            if s in available_objs:
+              l.append('@import url("%s/metaobj_manager/%s");'%(self.getDocumentElement().absolute_url(), s) )
           except:
             l.append('/* >>>>>>>>>> ERROR in %s <<<<<<<<<< */'%standard.writeError(self, "[zmi_css_defaults]: %s"%s))
       return '\n'.join([x for x in l])

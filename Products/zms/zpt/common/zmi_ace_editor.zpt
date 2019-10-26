@@ -9,15 +9,15 @@
 		<div class="alert alert-danger mx-0 alert-dismissible fade show" role="alert" tal:condition="python:len(errors)>0 and errors[0].find('Errors:')>=0" tal:content="structure python:'<br/>'.join(errors)">the errors</div>
 		<div class="alert alert-warning mx-0 alert-dismissible fade show" role="alert" tal:condition="python:len(errors)>0 and errors[0].find('Warnings:')>=0" tal:content="structure python:'<br/>'.join(errors)">the warnings</div>
 	</tal:block>
-	<div tal:condition="python:ob is not None" class="form-group" tal:attributes="style python:'height:%s'%(height)">
+	<div tal:condition="python:ob is not None" class="form-group zmi-ace-editor" tal:attributes="style python:'height:%s'%height">
 		<div class="control-label-ace-editor">
 			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank" tal:content="ob/id">id</a>
 			<tal:block tal:condition="python:text is not None">(<tal:block tal:content="python:here.getDataSizeStr(len(text))">the size</tal:block>)</tal:block>
 		</div>
 		<div>
-			<textarea id="text" tal:attributes="name name" class="X_d-none" tal:content="text" style="width:100%;height:200px;font-size:smaller;font-family:monospace;">the text</textarea>
+			<textarea tal:attributes="id name; name name;" class="d-none" tal:content="text">the text</textarea>
 		</div>
-		<div id="editor" style="height:92%;width:100%;border:1px solid #ccc;border-radius:4px">
+		<div tal:attributes="id python:'editor_%s'%name" style="height:92%;width:100%;border:1px solid #ccc;border-radius:4px">
 			ace editor text
 		</div>
 	</div><!-- .form-group -->

@@ -4,10 +4,7 @@
 //+++ @see $ZMS_HOME/plugins/www/ace.ajax.org
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 $(function(){
-	if ($("textarea#text").length == 0) {
-		$("#editor").hide();
-	}
-	else {
+	$(".zmi-ace-editor").each(function() {
 		var dom = ace.require("ace/lib/dom");
 		// add command to all new editor instances
 		ace.require("ace/commands/default_commands").commands.push({
@@ -21,9 +18,10 @@ $(function(){
 			}
 		});
 		// @see https://github.com/ajaxorg/ace/wiki/Embedding---API
-		$("textarea#text").hide();
-		editor = ace.edit("editor");
-		var value = $("textarea#text").val();
+		var $textarea = $("textarea",this).hide();
+		var name = $textarea.attr("name");
+		var value = $textarea.val();
+		var editor = ace.edit("editor_"+name);
 		var content_type = $("input#content_type").val();
 		if (typeof content_type == "undefined" || content_type == null || content_type == '' || content_type == 'text/x-unknown-content-type') {
 			var absolute_url = $("span#absolute_url").text();
@@ -73,7 +71,7 @@ $(function(){
 		editor.getSession().setMode('ace/mode/'+mode);
 		editor.getSession().setValue(value);
 		editor.getSession().on("change",function() {
-			$("textarea#text").val(editor.getSession().getValue()).change();
+			$textarea.val(editor.getSession().getValue()).change();
 		});
-	}
+	});
 });

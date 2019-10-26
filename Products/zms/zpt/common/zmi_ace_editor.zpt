@@ -15,7 +15,7 @@
 			<tal:block tal:condition="python:text is not None">(<tal:block tal:content="python:here.getDataSizeStr(len(text))">the size</tal:block>)</tal:block>
 		</div>
 		<div>
-			<textarea tal:attributes="id name; name name;" class="d-none" tal:content="text">the text</textarea>
+			<textarea class="form-control-ace-editor" tal:attributes="name name" tal:content="text">the text</textarea>
 		</div>
 		<div tal:attributes="id python:'editor_%s'%name" style="height:92%;width:100%;border:1px solid #ccc;border-radius:4px">
 			ace editor text

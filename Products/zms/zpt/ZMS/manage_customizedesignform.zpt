@@ -103,7 +103,9 @@
 ></tal:block>
 <form class="added_css form-horizontal card">
 <legend>CSS: <a tal:content="href" target="_blank" 
-	tal:attributes="href python:css is None and '#' or '%s/manage'%(href);class python:css is None and 'text-danger' or 'text-success'">href</a>
+	tal:attributes="href python:css is None and '#' or '../../%s/manage'%(href);
+		title python:css is None and '#' or '%s/manage'%(href);
+		class python:css is None and 'text-danger' or 'text-success'">href</a>
 </legend>
 <tal:block tal:condition="python:css is not None">
 	<!-- ACE Editor -->

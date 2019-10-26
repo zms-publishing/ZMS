@@ -1725,6 +1725,7 @@ li#manage_addProduct .center i.fa-plus-sign:before {
 .zmi.config.design form.added_css .zmi-ace-editor.form-group .ace_editor {
 	height:100% !important;
 	border-radius: 0 0px 4px 4px !important;
+	border: 1px solid #dfdfdf !important;
 }
 .zmi.config.design form.added_css .control-label-ace-editor {
 	position: absolute;

@@ -1716,3 +1716,24 @@ li#manage_addProduct .center i.fa-plus-sign:before {
 		transition:height .35s ease;
 	}
 }
+.zmi.config.design form.added_css {
+	margin-top: 2rem !important;
+}
+.zmi.config.design form.added_css .zmi-ace-editor.form-group {
+	margin-bottom:0 !important;
+}
+.zmi.config.design form.added_css .zmi-ace-editor.form-group .ace_editor {
+	height:100% !important;
+	border-radius: 0 0px 4px 4px !important;
+}
+.zmi.config.design form.added_css .control-label-ace-editor {
+	position: absolute;
+	right: 0;
+	z-index: 1;
+	margin-top:-1.75em
+}
+@media (max-width: 767px) {
+	.zmi.config.design form.added_css  .control-label-ace-editor {
+		display:none;
+	}
+}

@@ -1273,7 +1273,7 @@ class AccessManager(AccessableContainer):
             z += 1
             if max_users != 0:
               if z > max_users:
-                break;
+                break
             xml += '<user>'
             xml += '<uid>%s</uid>'%standard.html_quote(userName)
             email = self.getUserAttr(userName, 'email')

@@ -863,10 +863,18 @@ class ConfManager(
       """ ConfManager.manage_customizeDesign """
       message = ''
       home = self.getHome()
+      section = request.get('section')
       
       # Save.
       # -----
-      if btn == self.getZMILangStr('BTN_SAVE'):
+      if btn == self.getZMILangStr('BTN_SAVE') and section == 'css':
+        id = REQUEST.get('id', '')
+        # TODO implement here
+        message = self.getZMILangStr('MSG_CHANGED')
+      
+      # Save.
+      # -----
+      elif btn == self.getZMILangStr('BTN_SAVE'):
         id = REQUEST.get('id', '')
         self.setConfProperty('ZMS.theme', id)
         message = self.getZMILangStr('MSG_CHANGED')

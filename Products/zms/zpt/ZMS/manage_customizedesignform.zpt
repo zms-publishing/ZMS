@@ -94,7 +94,7 @@
 	</table>
 </form>
 
-<div class="card">
+<div class="added_css card">
 <legend>CSS</legend>
 <table class="table table-striped table-bordered table-hover mb-0">
 <thead>
@@ -153,10 +153,10 @@
 </tal:block>
 </tal:block>
 </tal:block>
+</table>
 </div><!-- .card -->
 
 </div><!-- #zmi-tab -->
-<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 <script>
 
 /**
@@ -210,5 +210,8 @@ $(function(){
 });
 
 </script>
+
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+
 </body>
 </html>

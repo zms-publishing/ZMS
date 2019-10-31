@@ -137,22 +137,34 @@ header.navbar-nav ul.navbar-nav {
 	width: 100%;
 	color: white;
 }
+
 footer .back-to-top {
+	transition: all .25s ease-in-out;
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	display: block;
+	cursor: pointer;
 	width: 32px;
 	height: 32px;
 	line-height: 32px;
 	background: rgb(53, 79, 103);
 	text-align: center;
 	border-radius: 4px;
-	margin: -6px 4px;
+	margin: 1rem;
 }
+ footer .back-to-top.show {
+	visibility: visible;
+	opacity: 1;
+}
+footer .back-to-top.hide {
+	visibility: hidden;
+	opacity: 0;
+}
+
 @media (max-width: 768px) {
 	.zmi header.navbar ul.navbar-nav li.zmi-authenticated_user span.authenticated_user {
 		display:none;
-	}
-	footer .back-to-top {
-		position: absolute;
-		right: 4px;
 	}
 }
 

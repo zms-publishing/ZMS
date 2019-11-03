@@ -558,8 +558,6 @@ class ObjAttrs(object):
     #  @deprecated: use attr(key) instead! 
     # --------------------------------------------------------------------------
     def getObjProperty(self, key, REQUEST={}, par=None):
-      self.startMeasurement("%s.%s"%(self.meta_id, key))
-      
       obj_attrs = self.getObjAttrs()
       
       # Special attributes.
@@ -586,9 +584,6 @@ class ObjAttrs(object):
       else:
         value = ''
       
-      # Stop measurment.
-      self.stopMeasurement("%s.%s"%(self.meta_id, key))
-      
       # Return value.
       return value
 
@@ -603,7 +598,7 @@ class ObjAttrs(object):
     #  attr({key0:value0,...,keyN:valueN}) -> setObjProperty(key0,value0),...
     # --------------------------------------------------------------------------
     def attr(self, *args, **kwargs):
-      request = self.REQUEST
+      request = kwargs.get('request',kwargs.get('REQUEST',self.REQUEST))
       if len(args) == 1 and isinstance(args[0], str):
         return self.getObjProperty( args[0], request, kwargs)
       elif len(args) == 2:

@@ -300,16 +300,6 @@ class ZMSWorkflowProvider(
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    ZMSWorkflowProvider.writeProtocol
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def writeProtocol(self, entry):
-      id = 'protocol.txt'
-      if zopeutil.getObject(self,id) is None:
-        zopeutil.addObject(self,'File',id,title='',data='')
-      file = zopeutil.getObject(self,id)
-      file.manage_edit(title=file.title, content_type=file.content_type, filedata=str(file.data)+'\n'+entry)
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProvider.manage_changeWorkflow:
     
     Change workflow.

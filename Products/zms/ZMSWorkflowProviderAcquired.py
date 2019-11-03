@@ -94,13 +94,6 @@ class ZMSWorkflowProviderAcquired(
     def doAutocommit(self, lang, REQUEST):
       ZMSWorkflowProvider.doAutocommit(self, REQUEST)
 
-
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    ZMSWorkflowProviderAcquired.writeProtocol
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def writeProtocol(self, entry):
-      self.getPortalMaster().getWorkflowManager().writeProtocol(entry)
-
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     @see IZMSWorkflowProvider.getActivities()
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

@@ -1174,25 +1174,6 @@ class VersionManagerContainer(object):
       self.autoWfTransition(REQUEST)
 
     # --------------------------------------------------------------------------
-    #  VersionManagerContainer.logWfTransition
-    # --------------------------------------------------------------------------
-    def logWfTransition(self, id, desc, REQUEST=None):
-      REQUEST = standard.nvl( REQUEST, self.REQUEST)
-      lang = REQUEST.get('lang')
-      # Set Properties.
-      dt = standard.getDateTime( time.time())
-      uid = str(REQUEST.get('AUTHENTICATED_USER'))
-      # Log Protocol.
-      log = ''
-      log = log + self.getLangFmtDate(dt, lang, '%Y-%m-%d %H:%M:%S') + '\t'
-      log = log + id + '\t'
-      log = log + self.absolute_url()[len(self.getHome().absolute_url()):] + '\t'
-      log = log + self.display_type(REQUEST) + '\t'
-      log = log + uid + '\t'
-      log = log + desc
-      self.getWorkflowManager().writeProtocol(log)
-
-    # --------------------------------------------------------------------------
     #  VersionManagerContainer.autoWfTransition
     # --------------------------------------------------------------------------
     def autoWfTransition(self, REQUEST):
@@ -1286,8 +1267,6 @@ class VersionManagerContainer(object):
         work_desc = REQUEST.get('work_desc', '')
         self.setObjProperty('work_uid', work_uid, lang)
         self.setObjProperty('work_dt', work_dt, lang)
-        # Log Protocol.
-        self.logWfTransition(wfTransition['id'], work_desc, REQUEST)
       self.autoWfTransition(REQUEST)
       # Return with message.
       if RESPONSE is not None:

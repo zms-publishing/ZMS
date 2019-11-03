@@ -21,11 +21,6 @@ from zope.interface import Interface
 
 class IZMSWorkflowProvider(Interface):
 
-  def writeProtocol(self, log):
-    """
-    @rtype: None
-    """
-
   def getAutocommit(self):
     """
     @rtype: C{Boolean}

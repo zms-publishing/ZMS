@@ -576,8 +576,6 @@ class ConfManager(
     """
     def get_conf_property(self, *args, **kwargs):
       params = ('key', 'default', 'REQUEST')
-      kwargs['x'] = 'U'
-      operator.setitem(kwargs,'y','A')
       [operator.setitem(kwargs, params[x], args[x]) for x in range(len(args))]
       key = kwargs['key']
       default = kwargs.get('default')
@@ -1083,7 +1081,6 @@ class ConfManager(
       if len(manager) == 0:
         class DefaultManager(object):
           def importXml(self, xml): pass
-          def writeProtocol(self, log): pass
           def getAutocommit(self): return True
           def getActivities(self): return []
           def getActivityIds(self): return []

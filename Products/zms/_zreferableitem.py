@@ -77,7 +77,6 @@ def getInternalLinkDict(self, url):
 #  getInternalLinkUrl:
 # ------------------------------------------------------------------------------
 def getInternalLinkUrl(self, url, ob):
-  self.startMeasurement('%s.getInternalLinkUrl'%self.meta_id)
   request = self.REQUEST
   if ob is None:
     index_html = './index_%s.html?error_type=NotFound&op=not_found&url=%s'%(request.get('lang', self.getPrimaryLanguage()), str(url))
@@ -85,7 +84,6 @@ def getInternalLinkUrl(self, url, ob):
     # Contextualized index_html.
     context = request.get('ZMS_THIS', self)
     index_html = ob.getHref2IndexHtmlInContext(context, REQUEST=request)
-  self.stopMeasurement('%s.getInternalLinkUrl'%self.meta_id)
   return index_html
 
 # ----------------------------------------------------------------------------
@@ -328,7 +326,6 @@ class ZReferableItem(object):
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
     if not int(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return text
-    self.startMeasurement('%s.validateInlineLinkObj'%self.meta_id)
     for pq in [('<a(.*?)>', 'href'), ('<img(.*?)>', 'src')]:
       p = pq[0]
       q = pq[1]
@@ -344,7 +341,6 @@ class ZReferableItem(object):
           new = p.replace('(.*?)', ' '.join(['']+['%s="%s"'%(x,d[x]) for x in d]))
           if old != new:
             text = text.replace(old, new)
-    self.stopMeasurement('%s.validateInlineLinkObj'%self.meta_id)
     return text
 
 
@@ -355,12 +351,10 @@ class ZReferableItem(object):
   # ----------------------------------------------------------------------------
   def validateLinkObj(self, url):
     if not int(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return url
-    self.startMeasurement('%s.validateLinkObj'%self.meta_id)
     if isInternalLink(url):
       if not url.startswith('{$__'):
         ild = getInternalLinkDict(self, url)
         url = ild['data-id']
-    self.stopMeasurement('%s.validateLinkObj'%self.meta_id)
     return url
 
 
@@ -370,7 +364,6 @@ class ZReferableItem(object):
   #  Resolves internal/external links and returns Object.
   # ----------------------------------------------------------------------------
   def getLinkObj(self, url, REQUEST=None):
-    self.startMeasurement('%s.getLinkObj'%self.meta_id)
     ob = None
     if isInternalLink(url):
       def default(*args, **kwargs):
@@ -399,7 +392,6 @@ class ZReferableItem(object):
       if ob is not None and ob.id not in self.getPhysicalPath():
         request = self.REQUEST
         ob.set_request_context(request, ref_params)
-    self.stopMeasurement('%s.getLinkObj'%self.meta_id)
     return ob
 
 
@@ -409,7 +401,6 @@ class ZReferableItem(object):
   #  Resolves internal/external links and returns URL.
   # ----------------------------------------------------------------------------
   def getLinkUrl( self, url, REQUEST=None):
-    self.startMeasurement('%s.getLinkUrl'%self.meta_id)
     request = self.REQUEST
     if isInternalLink(url):
       # Params.
@@ -437,7 +428,6 @@ class ZReferableItem(object):
     elif isMailLink (url): 
       prefix = 'mailto:'
       url = prefix + standard.encrypt_ordtype(url[len(prefix):])
-    self.stopMeasurement('%s.getLinkUrl'%self.meta_id)
     return url
 
   # ----------------------------------------------------------------------------

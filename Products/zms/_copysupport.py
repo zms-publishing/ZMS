@@ -211,7 +211,7 @@ class CopySupport(object):
     def manage_cutObjects(self, ids=None, REQUEST=None, RESPONSE=None):
       """Put a reference to the objects named in ids in the clip board"""
       standard.writeLog( self, "[CopySupport.manage_cutObjects]")
-      super( self.__class__, self).manage_cutObjects( ids, REQUEST, RESPONSE)
+      cb_copy_data = super( self.__class__, self).manage_cutObjects( ids, REQUEST, RESPONSE)
       # Return with message.
       if RESPONSE is not None:
         message = ''
@@ -233,9 +233,9 @@ class CopySupport(object):
       t0 = time.time()
       
       # Analyze request
-      cp = self._get_cb_copy_data(cb_copy_data=None, REQUEST=REQUEST)
-      op = cp[0]
-      cp = (0, cp[1])
+      cb_copy_data = self._get_cb_copy_data(cb_copy_data=None, REQUEST=REQUEST)
+      op = cb_copy_data[0]
+      cp = (op, cb_copy_data[1])
       cp = _cb_encode(cp)
       ids = [self._get_id(x.getId()) for x in self._get_obs(cp)]
       oblist = self._get_obs(cp)
@@ -243,7 +243,7 @@ class CopySupport(object):
       # Paste objects.
       action = ['Copy','Move'][op==OP_MOVE]
       standard.triggerEvent(self,'before%sObjsEvt'%action)
-      self.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
+      self.manage_pasteObjects(cb_copy_data=_cb_encode(cb_copy_data))
       standard.triggerEvent(self,'after%sObjsEvt'%action)
       
       # Sort order (I).

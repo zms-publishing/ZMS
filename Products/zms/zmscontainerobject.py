@@ -20,6 +20,7 @@
 from App.Common import package_home
 from OFS.role import RoleManager
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from OFS.CopySupport import _cb_decode, _cb_encode, CopyError # TODO , eNoData, eNotFound, eInvalid
 import copy
 import re
 import sys
@@ -265,8 +266,8 @@ class ZMSContainerObject(
       # Move (Cut & Paste).
       children = [getattr(self,x) for x in ids]
       [standard.triggerEvent(child,'beforeDeleteObjsEvt') for child in children]
-      cb_copy_data = self.manage_cutObjects(ids, REQUEST)
-      trashcan.manage_pasteObjects(cb_copy_data=None, REQUEST=REQUEST)
+      cb_copy_data = _cb_decode(self.manage_cutObjects(ids))
+      trashcan.manage_pasteObjects(cb_copy_data=_cb_encode(cb_copy_data))
       trashcan.normalizeSortIds()
       trashcan.run_garbage_collection(forced=1)
       # Sort-IDs.

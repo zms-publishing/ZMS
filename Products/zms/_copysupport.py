@@ -243,7 +243,7 @@ class CopySupport(object):
       # Paste objects.
       action = ['Copy','Move'][op==OP_MOVE]
       standard.triggerEvent(self,'before%sObjsEvt'%action)
-      self.manage_pasteObjects(cb_copy_data=_cb_encode(cb_copy_data))
+      self.manage_pasteObjects(cb_copy_data=None,REQUEST=REQUEST)
       standard.triggerEvent(self,'after%sObjsEvt'%action)
       
       # Sort order (I).

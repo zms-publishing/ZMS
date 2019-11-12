@@ -76,10 +76,12 @@
 							<tal:block tal:define="dummy0 python:languages.append(coverage[len('local.'):])"></tal:block>
 						</tal:block>
 						<tal:block tal:repeat="language languages">
-							<a class="dropdown-item" tal:attributes="href python:here.url_append_params(request['URL'],{'lang':language}); data-language language" class="toggle-lang"
-								 tal:attributes="class python:'toggle-lang%s'%(language==here.getPrimaryLanguage()==True and ' primary_language' or 'secundary_language')">
-								<i class="far fa-check-square" tal:attributes="class python:language==request['lang'] and 'far fa-check-square' or 'far fa-square'"></i>
-								<tal:block tal:content="python:here.getLanguageLabel(language)">language</tal:block>
+							<a class="dropdown-item" 
+								tal:attributes="href python:here.url_append_params(request['URL'],{'lang':language}); 
+									data-language language; 
+									class python:'dropdown-item toggle-lang %s'%(language==here.getPrimaryLanguage() and 'primary_language' or 'secondary_language')"
+								><i class="far fa-check-square" tal:attributes="class python:language==request['lang'] and 'far fa-check-square' or 'far fa-square'"></i
+								><tal:block tal:content="python:here.getLanguageLabel(language)">language</tal:block>
 							</a>
 						</tal:block>
 					</div>
@@ -123,7 +125,6 @@
 	<div class="wrapper">
 		<tal:block tal:on-error="structure string: <div class='alert alert-danger zmi-code mb-2'>ZMS-ERROR: zmi_body_header LINE 132</div>" tal:condition="python:'options' in options" tal:content="structure python:here.zmi_tabs(here,request,options=options['options'])">zmi_tabs</tal:block>
 		<tal:block tal:on-error="structure string: <div class='alert alert-danger zmi-code mb-2'>ZMS-ERROR: zmi_body_header LINE 133</div>" tal:condition="not:python:'options' in options" tal:content="structure python:here.zmi_tabs(here,request,options=here.manage_options)"># FIXME: filtered_manage_options - zmi_tabs</tal:block>
-		
 	</div>
 </nav>
 

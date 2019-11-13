@@ -80,6 +80,9 @@ header.navbar-nav ul.navbar-nav {
 .zmi:not(.manage-menu) header.navbar-nav .dropdown-menu a.dropdown-item {
 	color:#212529;	
 }
+.zmi:not(.manage-menu) header.navbar-nav .dropdown-menu a.dropdown-item[href*="zmi-manage-system=0"] {
+	background:rgba(53, 79, 103, 0.15);
+}
 .zmi:not(.manage-menu) header.navbar ul.navbar-nav li {
 	font-size:14px;
 	/* border-right: 1px solid silver; */

@@ -1441,7 +1441,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       metaCmd = self.getMetaCmd(id)
       if metaCmd is not None:
         # Execute directly.
-        if metaCmd.get('exec', 0) == 1:
+        if metaCmd.get('execution', 0) == 1:
           ob = zopeutil.getObject(self, id)
           value = zopeutil.callObject(ob, zmscontext=self)
           if _globals.is_str_type(value):

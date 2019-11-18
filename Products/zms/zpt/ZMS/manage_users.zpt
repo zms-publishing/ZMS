@@ -103,16 +103,16 @@ function zmiModalInsertUserLoad(url) {
 	$('#zmiModalinsertUser .modal-body').html($ZMI.icon("icon-spinner icon-spin")+'&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING'));
 	$.get(self.location.href,data,function(result) {
 			$('#zmiModalinsertUser .modal-body').html(result);
-			$("#insertUserForm .btn-group")
+			$("#zmiModalinsertUser #insertUserForm .btn-group")
 				.mouseover( function(evt) {
 						$(this).parents(".ZMSRecordSet.main_grid").css({overflow:"visible"});
 				});
-			$("#insertUserForm input:radio").change(function() {
+			$("#zmiModalinsertUser #insertUserForm input:radio").change(function() {
 					self.location.href = zmiParams['base_url']
 						+'?lang='+getZMILang()
 						+'&id='+$(this).prop("value");
 				});
-			$("#insertUserForm a").each(function() {
+			$("#zmiModalinsertUser #insertUserForm a").each(function() {
 					var href = $(this).attr("href");
 					$(this)
 						.click(function() {return zmiModalInsertUserLoad(href);})

@@ -262,9 +262,8 @@ class MultiLanguageManager(object):
       
       # Return custom value.
       d = self.get_lang_dict()
-      if key in d:
-        if lang in d[key]:
-          return d[key][lang]
+      if key in d and lang in d[key]:
+        return d[key][lang]
       
       # Return system value.
       d = OFS.misc_.misc_.zms['langdict'].get_langdict()
@@ -273,6 +272,19 @@ class MultiLanguageManager(object):
           lang = 'eng'
         if lang in d[key]:
           return d[key][lang]
+      
+      # Return content-object value.
+      metaobjAttrId = 'langdict'
+      for metaobjId in self.getMetaobjIds():
+        if metaobjAttrId in self.getMetaobjAttrIds(metaobjId):
+          metaobjAttr = self.getMetaobjAttr(metaobjId, metaobjAttrId)
+          custom = metaobjAttr['custom']
+          try:
+            d = eval(custom)
+            if key in d and lang in d[key]:
+              return d[key][lang]
+          except:
+            standard.writeError(self,'[getLangStr]: can\'t get from %s.%s'%(metaobjAttr,metaobjAttrId))
       
       return key
 

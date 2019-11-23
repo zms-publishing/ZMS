@@ -18,9 +18,9 @@
 
 # Imports.
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
 from App.Common import package_home
 from OFS.Image import Image
-#import Globals
 import codecs
 import copy
 import urllib.request, urllib.parse, urllib.error
@@ -626,6 +626,6 @@ class Exportable(_filtermanager.FilterItem):
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-#Globals.InitializeClass(Exportable)
+InitializeClass(Exportable)
 
 ################################################################################

@@ -554,7 +554,7 @@ $(function(){
 		});
 
 	// Select tab.
-	$("ul.nav.nav-tabs#subTab").each(function() {
+	$("#subTab ul.nav.nav-tabs").each(function() {
 			var anchor = $("a:first",this).attr("href");
 			if (self.location.href.indexOf("#")>0) {
 				anchor = self.location.href.substr(self.location.href.indexOf("#")+1);

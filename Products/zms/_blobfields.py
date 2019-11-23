@@ -167,7 +167,7 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
   blob.update_data(file, content_type=mt, size=len(file))
   blob.aq_parent = self
   blob.mediadbfile = None
-  blob.filename = _fileutil.extractFilename( filename, undoable=True).encode('utf-8')
+  blob.filename = _fileutil.extractFilename( filename, undoable=True)
   # Check size.
   if self is not None:
     maxlength_prop = 'ZMS.input.%s.maxlength'%['file','image'][isinstance(blob,MyImage)]
@@ -514,8 +514,8 @@ class MyBlob(object):
         if b:
           attrs = self.__obj_attrs__
           for attr in attrs:
-            if b and attr != 'data':
-              b = getattr( self, attr) == getattr( ob, attr)
+            if b and attr not in ['data', 'aq_parent']:
+              b = b and getattr( self, attr) == getattr( ob, attr)
       except:
         b = False
       return b
@@ -733,8 +733,8 @@ class MyBlob(object):
       @rtype: C{string}
       """
       filename = self.filename
-      if type(filename) is not str:
-        filename = str(filename,'utf-8')
+      if isinstance(filename,bytes):
+        filename = filename.decode()
       while filename.startswith( '_'):
         filename = filename[1:]
       for ch in [ '+', '%', ' ', '!', '?', '#', '"', '(', ')', '&' ]:
@@ -1012,6 +1012,6 @@ class MyBlobWrapper(object):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     __str____roles__ = None
     def __str__(self):
-      return self.getData()
+      return self.getData().decode()
 
 ################################################################################

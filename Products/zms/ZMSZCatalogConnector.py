@@ -276,8 +276,7 @@ class ZMSZCatalogConnector(
               elif k == 'standard_html':
                 v = ZMSZCatalogAdapter.remove_tags(self, v)
               xmlr += '<arr name="%s">'%k
-              if _globals.is_str_type(v):
-                v = str(v, 'utf-8')
+              if isinstance(v,str):
                 for x in range(16):
                   v = v.replace(chr(x), '')
               if k == 'custom':
@@ -457,8 +456,10 @@ class ZMSZCatalogConnector(
       lang = request.get('lang', self.getPrimaryLanguage())
       zcatalog = getZCatalog(self, lang)
       if zcatalog is not None:
-        zcatalog.uncatalog_object(node.getPath())
-        zcatalog.catalog_object(node, node.getPath())
+        path = node.getPath()
+        if zcatalog.getrid(path):
+          zcatalog.uncatalog_object(path)
+        zcatalog.catalog_object(node, path)
       # Unprepare object.
       for attr_id in extra_column_ids:
         attr_name = 'zcat_column_%s'%attr_id
@@ -508,10 +509,10 @@ class ZMSZCatalogConnector(
       container = self.getLinkObj(uid)
       home_id = container.getHome().id
       try:
-        lresult = []
         langs = request.get('langs', ';'.join(container.getLangIds())).split(';')
         for lang in langs:
           request.set('lang', lang)
+          lresult = []
           lresult.append('language: %s'%lang)
           # Clear catalog.
           zcatalog = getZCatalog(self, lang)
@@ -535,8 +536,7 @@ class ZMSZCatalogConnector(
           writeChangesLog(zcatalog, '[reindex_self]: '+'\n'.join([x for x in lresult]))
       except:
         result.append(standard.writeError(self, 'can\'t reindex_self'))
-      result = [x for x in result if x]
-      return ', '.join([x for x in result])
+      return ', '.join([x for x in result if x])
 
 
     # --------------------------------------------------------------------------

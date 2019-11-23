@@ -52,9 +52,9 @@
 							</span>
 						</div>
 						-->
-						<div class="verticalize" style="transform: rotate(90deg);width: 50px;position: absolute;">
+						<div class="verticalize" style="transform: rotate(90deg);width: 50px">
 							<input type="range" id="ZMSGraphic_extEdit_slider" name="ZMSGraphic_extEdit_slider" 
-								class="custom-range mb-0 mt-4" style="width: 30rem;"
+								class="custom-range mb-0 mt-4" style="width: auto;"
 								min="0" max="200" step="1" value="100" title="100"
 								oninput="$(this).attr('value',this.value);$(this).attr('title',this.value);$('div#ZMSGraphic_extEdit_image').width(this.value+'%');console.log(this.value);"
 							/>

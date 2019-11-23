@@ -8,8 +8,8 @@
 			encoding python:getattr(here,'charset','utf-8');
 			actions python:request.get('actions','select');
 			actions python:[actions,','.join(actions)][int(here.operator_gettype(actions) is list)];
-			dummy0 python:request.set('qsize',request.get('qsize',request.SESSION.get('qsize_%s'%id,20)));
-			dummy0 python:request.set('qindex',request.get('qindex',request.SESSION.get('qindex_%s'%id,-1)));
+			dummy0 python:request.set('qsize',request.get('qsize',standard.get_session_value(here,'qsize_%s'%id,20)));
+			dummy0 python:request.set('qindex',request.get('qindex',standard.get_session_value(here,'qindex_%s'%id,-1)));
 			columns python:','.join(request['qcolumns']);
 			whereClause python:here.assembleFilter([{'tablename':entity['id'],'columnname':columns,'op':request.get('filterop0','LIKE'),'value':request.get('filtervalue0','%')}]);
 			pk request/primary_key;

@@ -20,6 +20,7 @@ from __future__ import absolute_import
 # Imports.
 from io import StringIO
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
 from App.Common import package_home
 from DateTime.DateTime import DateTime
 from OFS.Image import Image
@@ -27,7 +28,6 @@ from OFS.Folder import Folder
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
-# import Globals
 import OFS.misc_
 import configparser
 import importlib
@@ -1163,6 +1163,6 @@ class ConfManager(
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-#Globals.InitializeClass(ConfManager)
+InitializeClass(ConfManager)
 
 ################################################################################

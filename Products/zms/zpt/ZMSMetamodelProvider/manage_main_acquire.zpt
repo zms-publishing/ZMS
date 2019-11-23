@@ -9,7 +9,7 @@
 		metaObjPackages python:here.sort_list(standard.distinct_list([x.get('package') for x in metaObjs]));
 		master python:here.getPortalMaster();
 		masterMetaObjIds python:master.getMetaobjIds();
-		masterMetaObjs python:[master.getMetaobj(x) for x in masterMetaObjIds)];
+		masterMetaObjs python:[master.getMetaobj(x) for x in masterMetaObjIds];
 		masterMetaObjPackages python:here.sort_list(standard.distinct_list([x.get('package') for x in masterMetaObjs]));
 		acquireObjs python:[]">
 

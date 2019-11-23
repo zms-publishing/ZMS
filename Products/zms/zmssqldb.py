@@ -19,8 +19,8 @@
 
 # Imports.
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-# TODO import Globals
 import copy
 import urllib.request, urllib.parse, urllib.error
 import time
@@ -460,7 +460,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         def __init__(self, parent, tableName):
           self.parent = parent 
           self.tableName = tableName
-        __call____roles__ = None
+        handle_record__roles__ = None
         def handle_record(self, r):
           context = self.parent
           d = {}
@@ -2081,6 +2081,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-# TODO Globals.InitializeClass(ZMSSqlDb)
+InitializeClass(ZMSSqlDb)
 
 ################################################################################

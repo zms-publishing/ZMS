@@ -18,7 +18,7 @@
 
 # Imports.
 from AccessControl import ClassSecurityInfo
-# TODO import Globals
+from AccessControl.class_init import InitializeClass
 import sys
 import urllib.request, urllib.parse, urllib.error
 # Product Imports.
@@ -718,6 +718,6 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-# TODO Globals.InitializeClass(ZMSLinkElement)
+InitializeClass(ZMSLinkElement)
 
 ################################################################################

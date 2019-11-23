@@ -18,8 +18,8 @@
 
 # Imports.
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-#import Globals
 import copy
 import sys
 import time
@@ -141,7 +141,6 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 
     # Management Options.
     # -------------------
-    manage_options__roles__ = None
     def manage_options(self):
       pc = 'e' in [x['id'] for x in self.getMetaobjAttrs(self.meta_id, types=['*'])]
       opts = []
@@ -386,7 +385,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
                 fkMetaObjRecordSet = fkContainer.attr(fkMetaObjAttrIdRecordSet);
                 fkMetaObjIdId = parent.getMetaobjAttrIdentifierId(fkContainer.meta_id)
                 self.fk[k] = {'fkMetaObj':fkMetaObj,'fkMetaObjRecordSet':fkMetaObjRecordSet,'fkMetaObjIdId':fkMetaObjIdId}
-        __call____roles__ = None
+        handle_record__roles__ = None
         def handle_record(self, r):
           d = {}
           for k in r:
@@ -545,6 +544,6 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-#Globals.InitializeClass(ZMSCustom)
+InitializeClass(ZMSCustom)
 
 ################################################################################

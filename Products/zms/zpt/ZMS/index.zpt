@@ -9,8 +9,7 @@
 
 ><tal:block tal:condition="not: site_active"
 	><tal:block tal:define="global 
-		dummy0 python:request.RESPONSE.redirect('/standard_error_message?error_type=NotFound&error_value=Site%20is%20not%20active');
-		dummy0 python:done.append(True)"
+		dummy0 python:standard.raiseError('NotFound','Site is not active')"
 	></tal:block
 ></tal:block
 ><tal:block tal:replace="nothing">
@@ -22,7 +21,7 @@
 			and not request['URL']=='%sindex_html'%target \
 			and (request['URL'].endswith('/%s/index_html'%here.getDeclId({'lang':request['lang']})) \
 				or request['URL'].endswith('/%s/index_html'%here.id))"
-	><tal:block tal:define="global
+	><tal:block tal:define="
 			dummy0 python:request.set('ZMS_INDEX_HTML',1);
 			dummy0 python:request.RESPONSE.redirect(target,301);
 			dummy0 python:done.append(True)"></tal:block
@@ -33,32 +32,22 @@
 	### Restrict access
 	</tal:block
 	><tal:block tal:condition="python:not done and not here.hasAccess(request)"
-		><tal:block tal:replace="nothing">--- CookieCrumbler Login Form ---</tal:block
-		><tal:block tal:condition="python:not done and getattr(here.getHome(),'login_form',None) is not None"
-			><tal:block tal:define="global
-					dummy0 python:request.RESPONSE.redirect('login_form%s'%(request.get('QUERY_STRING','') and '?'+request.get('QUERY_STRING','')));
-					dummy0 python:done.append(True)"></tal:block
-		></tal:block
-		><tal:block tal:replace="nothing">--- Redirect to parent ---</tal:block
-		><tal:block tal:condition="python:not done and request['URL'].find('/index_')>request['URL'].find('.html')"
-			><tal:block tal:define="global
-					dummy0 python:request.RESPONSE.redirect('%s/index_%s.html'%(request['URL1'],request['lang']));
-					dummy0 python:done.append(True)"></tal:block
-		></tal:block
 		><tal:block tal:replace="nothing">--- Raise unauthorized ---</tal:block
-		><tal:block tal:condition="python:not done"
-			><tal:block tal:define="global
+			><tal:block tal:define="
 					dummy0 python:request.RESPONSE.unauthorized();
 					dummy0 python:done.append(True)"></tal:block
-		></tal:block
 	></tal:block
 
-><tal:block tal:condition="python:not done and request.get('ZMS_SKIN_HTML') is not None and getattr(here.getHome(),'%s_%s'%(str(request.get('ZMS_SKIN')),str(request.get('ZMS_EXT'))),None) is not None"
-	><tal:block tal:define="dummy0 python:request.set('ZMS_SKIN_HTML',1)"></tal:block
-	><tal:block tal:content="structure python:here.f_standard_html_request(here,request)">f_standard_html_request</tal:block
-	><tal:block tal:content="structure python:getattr(here,'%s_%s'%(str(request.get('ZMS_SKIN')),str(request.get('ZMS_EXT'))),None)(here,request)">skin_ext</tal:block
-	><tal:block tal:define="dummy0 python:done.append(True)"></tal:block
-></tal:block
+	><tal:block tal:replace="nothing">
+	### Response status
+	</tal:block
+    ><tal:block tal:define="httpResponseStatus python:here.getHttpResponseStatus()" tal:on-error="nothing"
+        ><tal:block tal:condition="python:httpResponseStatus>0"
+            ><tal:block tal:define="
+                    dummy0 python:request.RESPONSE.setStatus(httpResponseStatus);
+					dummy0 python:done.append(True)"></tal:block
+        ></tal:block
+    ></tal:block
 
 ><tal:block tal:condition="python:not done and getattr(here.getHome(),'standard_html',None)"
 	><tal:block tal:content="structure python:here.f_standard_html_request(here,request)">f_standard_html_request</tal:block

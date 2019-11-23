@@ -135,7 +135,7 @@ role_defs = {
 def getUserId(user):
   if isinstance(user, dict):
     user = user['name']
-  elif user is not None and not _globals.is_str_type(user):
+  elif user is not None and not isinstance(user,str):
     user = user.getId()
   return user
 
@@ -216,7 +216,7 @@ class UserFolderIAddUserPluginWrapper(object):
     self.userFldr = userFldr
     self.id = userFldr.id
     self.meta_type = userFldr.meta_type
-    self.icon = getattr(userFldr,'icon',None) # FIXME AttributeError: 'RequestContainer' object has no attribute 'icon'
+    self.zmi_icon = userFldr.zmi_icon
 
   absolute_url__roles__ = None
   def absolute_url( self):
@@ -734,10 +734,10 @@ class AccessManager(AccessableContainer):
             d['plugin'] = plugin
             editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
             container = userFldr.aq_parent
-            v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),plugin.icon)
+            v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),plugin.zmi_icon)
             t = 'html'
           else:
-            v = str(user[extra]).encode(encoding)
+            v = user[extra]
             t = 'string'
           d[extra] = v
           if extra in extras and len([x for x in c if x['id'] == extra])==0:

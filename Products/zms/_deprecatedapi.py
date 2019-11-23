@@ -146,6 +146,24 @@ class DeprecatedAPI(object):
     text = text.replace('"', '\\"').replace("'", "\\'")
     return text
 
+  def zmi_manage_css(self, *args, **kwargs):
+    """ ZMSItem.zmi_manage_css """
+    warn(self, 'zmi_manage_css', 'None')
+    request = self.REQUEST
+    response = request.RESPONSE
+    response.setHeader('Content-Type', 'text/css')
+    css = []
+    for stylesheet in self.getStylesheets():
+      try:
+        s = stylesheet(self)
+      except:
+        s = bytes(stylesheet).decode()
+      css.append("/* ######################################################################")
+      css.append("   ### %s"%stylesheet.absolute_url())
+      css.append("   ###################################################################### */")
+      css.append(s)
+    return '\n'.join(css)
+
   """
   Parses default-stylesheet and returns elements.
   @deprecated

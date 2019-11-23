@@ -76,26 +76,6 @@ class ZMSItem(
       return self.getBodyContent(request)
 
     # --------------------------------------------------------------------------
-    #  ZMSItem.zmi_manage_css:
-    # --------------------------------------------------------------------------
-    def zmi_manage_css(self, *args, **kwargs):
-      """ ZMSItem.zmi_manage_css """
-      request = self.REQUEST
-      response = request.RESPONSE
-      response.setHeader('Content-Type', 'text/css')
-      css = []
-      for stylesheet in self.getStylesheets():
-        try:
-          s = stylesheet(self)
-        except:
-          s = str(stylesheet)
-        css.append("/* ######################################################################")
-        css.append("   ### %s"%stylesheet.absolute_url())
-        css.append("   ###################################################################### */")
-        css.append(s)
-      return '\n'.join(css)
-
-    # --------------------------------------------------------------------------
     #  ZMSItem.zmi_manage_menu:
     # --------------------------------------------------------------------------
     def zmi_manage_menu(self, *args, **kwargs):

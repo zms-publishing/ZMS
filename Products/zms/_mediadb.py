@@ -26,7 +26,9 @@ import OFS.SimpleItem
 import Acquisition
 import os
 import urllib.request, urllib.parse, urllib.error
+import shutil
 import time
+import tempfile
 # Product Imports.
 from . import standard
 from . import _blobfields

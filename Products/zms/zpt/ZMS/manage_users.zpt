@@ -54,7 +54,6 @@
 					metaObjAttrs valid_userids/columns;
 					metaObjAttrIds python:[x['id'] for x in metaObjAttrs];
 					res valid_userids/records;
-					filtered_res python:[x for x in res if x['name'] not in userNames];
 					dummy0 python:[here.operator_setitem(x,'__id__',x['name']) for x in res]"
 				><tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
 						metaObjAttrIds=metaObjAttrIds,
@@ -436,46 +435,6 @@ function zmiModalInsertUserOpen(context) {
 
 <div class="d-none">
 	<div id="insertUser" class="inner">
-		<form id="insertUserForm" class="form-horizontal" method="get" enctype="multipart/form-data">
-			<input type="hidden" name="lang" tal:attributes="value request/lang" />
-			<div class="form-group input-group btn-group mb-4"
-				tal:define="searchable_attributes python:[x for x in here.getSearchableAttrs() if not x[1].startswith('_')]"
-				><a class="btn btn-secondary" target="_blank" title="Acquired User Folder"
-					tal:attributes="href python:'%s/manage_main'%userFolder.absolute_url(); title python:'%s (%s)'%(userFolder.title_or_id(),userFolder.meta_type)">
-					<i class="far fa-folder"></i>
-				</a>
-				<select tal:condition="searchable_attributes" class="form-control" name="search_param">
-					<tal:block tal:repeat="search_param searchable_attributes">
-						<option
-							tal:define="name python:search_param[0]; label python:search_param[1]"
-							tal:attributes="value name; selected python:['','selected'][request.get('search_param')==name]"
-							tal:content="python:label">the search-param</option>
-					</tal:block>
-				</select>
-				<input class="form-control" name="search_term"
-					tal:attributes="value python:request.get('search_term',''); placeholder python:here.getZMILangStr('ATTR_SEARCHTERM')" />
-				<button type="submit" name="btn" class="btn btn-primary"
-					tal:attributes="value python:here.getZMILangStr('BTN_SEARCH'); title python:here.getZMILangStr('BTN_SEARCH')">
-					<i class="fas fa-search"></i>
-				</button>
-			</div><!-- .form-row -->
-			<tal:block tal:define="
-				valid_userids python:here.getValidUserids(search_term=request.get('search_term',''),search_term_param=request.get('search_param',''));
-				metaObjAttrs valid_userids/columns;
-				metaObjAttrIds python:[x['id'] for x in metaObjAttrs];
-				res valid_userids/records;
-				filtered_res python:[x for x in res if x['name'] not in userNames];
-				dummy0 python:[here.operator_setitem(x,'__id__',x['name']) for x in res]">
-				<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
-					metaObjAttrIds=metaObjAttrIds,
-					metaObjAttrs=metaObjAttrs,
-					records=res,
-					actions=['select']+[[],['insert']][int(userAdderPlugin is not None)],
-					insert='zmiModalAddUserOpen();')">
-					metaobj_recordset_main_grid
-				</tal:block>
-			</tal:block>
-		</form>
 	</div><!-- #insertUser -->
 </div><!-- .d-none -->
 

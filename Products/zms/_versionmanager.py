@@ -18,8 +18,8 @@
 
 # Imports.
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-# TODO import Globals
 import copy
 import operator
 import sys
@@ -1363,6 +1363,6 @@ class VersionManagerContainer(object):
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-# TODO Globals.InitializeClass(VersionItem)
+InitializeClass(VersionItem)
 
 ################################################################################

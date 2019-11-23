@@ -18,10 +18,10 @@
 
 # Imports.
 from AccessControl import ClassSecurityInfo
+from AccessControl.class_init import InitializeClass
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 # TODO from Products.ZCatalog import CatalogPathAwareness
-# TODO import Globals
 import ZPublisher.HTTPRequest
 import urllib.request, urllib.parse, urllib.error
 import re
@@ -1300,9 +1300,22 @@ class ZMSObject(ZMSItem.ZMSItem,
         meta_types = new_meta_types
       if REQUEST.form.get('http_referer'):
         REQUEST.set('URL', REQUEST.form.get('http_referer'))
-      obs = []
+
       # Add child-nodes.
-      obs.extend( self.getChildNodes(REQUEST, meta_types))
+      obs = []
+      childNodes = self.getChildNodes(REQUEST, meta_types)
+      
+      # Exclude meta-ids.
+      excludeMetaIds = self.getConfProperty('ZMS.ajaxGetChildNodes.excludeMetaIds','').split(',')
+      childNodes = [x for x in childNodes if x.meta_id not in excludeMetaIds]
+
+      # Sort.
+      sortedChildNodes = self.evalMetaobjAttr('sortChildNodes',childNodes=childNodes)
+      if isinstance(sortedChildNodes,list):
+        childNodes = sortedChildNodes
+      
+      obs.extend(childNodes)
+      
       # Add trashcan.
       if ( self.meta_type == 'ZMS') and \
          ( ( isinstance(meta_types, list) and 'ZMSTrashcan' in meta_types) or \
@@ -1444,7 +1457,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         if metaCmd.get('execution', 0) == 1:
           ob = zopeutil.getObject(self, id)
           value = zopeutil.callObject(ob, zmscontext=self)
-          if _globals.is_str_type(value):
+          if isinstance(value, str):
             message = value
           elif isinstance(value, tuple):
             target = value[0]
@@ -1520,7 +1533,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         html = standard.form_quote(html, REQUEST)
       except:
         html = standard.writeError(self, "[renderShort]")
-        html = '<br/>'.join(html.split('\n'))
+        html = '<br/>'.join(standard.html_quote(html).split('\n'))
       # Return <html>.
       return html
 
@@ -1608,6 +1621,6 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
-#Globals.InitializeClass(ZMSObject)
+InitializeClass(ZMSObject)
 
 ################################################################################

@@ -334,11 +334,7 @@ class PathHandler(object):
         
         # If there's no more names left to handle, return the path handling 
         # method to the traversal machinery so it gets called next
-        exc_value='<h2>Site-Error</h2><b>Sorry, there is no web page matching your request.</b> It is possible you typed the address incorrectly, or that the page no longer exists.<hr><b>Resource<b> <i>'+name+'</i> '+''.join([x+'/' for x in TraversalRequest['path_to_handle']])+' GET'
-        return self.standard_error_message( self, 
-          exc_type='Resource not found', 
-          exc_value=exc_value, 
-          REQUEST=request)
+        standard.raiseError('NotFound',''.join([x+'/' for x in TraversalRequest['path_to_handle']]))
 
 
     # --------------------------------------------------------------------------

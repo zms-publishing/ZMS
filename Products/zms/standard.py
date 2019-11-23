@@ -174,13 +174,12 @@ def umlaut_quote(s, mapping={}):
   @return: Quoted string
   @rtype: C{str}
   """
-  if not isinstance(s, str):
-    s = str(s, 'utf-8')
-  for x in _globals.umlaut_map.keys():
+  if isinstance(s, bytes):
+    s = s.decode()
+  for x in _globals.umlaut_map:
     mapping[x] = _globals.umlaut_map[x]
-  for key in mapping.keys():
+  for key in mapping:
     s = s.replace(key, mapping[key])
-  s = s.encode('utf-8')
   return s
 
 
@@ -336,7 +335,7 @@ def guess_content_type(filename, data):
 html_quote:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def html_quote(v, name='(Unknown name)', md={}):
-  if not _globals.is_str_type(v):
+  if not isinstance(v,str):
     v = str(v)
   return cgi.escape(v, 1)
 
@@ -424,7 +423,7 @@ def encrypt_ordtype(s):
     elif whichCode==1:
       new += '&#%d;'%ord(ch)
     else:
-      new += '&#x%s;'%hexlify(ch)
+      new += '&#x%s;'%hexlify(ch.encode()).decode()
   return new
 
 
@@ -584,11 +583,16 @@ def get_session(context):
   Get http-session.
   """
   req = getattr( context, 'REQUEST', None)
-  req_session = req.SESSION
-  if req_session.get('__zms_session__') is None:
-    from BTrees.OOBTree import OOBTree
-    req_session.set('__zms_session__',OOBTree())
-  session = SessionBTreeWrapper(req_session.get('__zms_session__'))
+  req_session = req.get('SESSION',req.environ.get('beaker.session',None))
+  session = None
+  if req_session:
+    if req_session.get('__zms_session__') is None:
+      from BTrees.OOBTree import OOBTree
+      try:
+        req_session.set('__zms_session__',OOBTree()) # FIXME: why does set work?
+      except:
+        req_session['__zms_session__'] = OOBTree()
+    session = SessionBTreeWrapper(req_session.get('__zms_session__'))
   return session
 
 
@@ -867,7 +871,7 @@ def writeError(context, info):
     t = t.__name__.upper()
   except:
     pass
-  return '%s: %s <!-- %s -->'%(t, v, info)
+  return '%s: %s'%(t, v)
 
 #)
 
@@ -1574,7 +1578,6 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
   elif i is not None:
     if type(i) is str:
       if not (i.strip().startswith('<') and i.strip().endswith('>')):
-        import cgi
         i = cgi.escape(i).encode(encoding, errors)
       else:
         i = i.encode(encoding, errors)
@@ -1979,7 +1982,10 @@ def dt_tal(context, text, options={}):
   pt.setText(text)
   pt.setEnv(context, options)
   request = context.REQUEST
-  return str(pt.pt_render(extra_context={'here':context,'request':request})).encode('utf-8')
+  rendered = pt.pt_render(extra_context={'here':context,'request':request})
+  if isinstance(rendered,bytes):
+    rendered = rendered.decode()
+  return rendered
 
 #}
 
@@ -2155,6 +2161,19 @@ def getTempFile( context, id):
        data=data.next  
   return b
   
+
+security.declarePublic('raiseError')
+def raiseError(error_type, error_value):
+  """
+  Raise error
+  @param error_type: the zExcpetions error-type
+  @type error_type: C{str}
+  @param error_value: the error-value as string
+  @type error_value: C{str}
+  @return: the error
+  @rtype: C{zExceptions.Error}
+  """
+  raise getattr(zExceptions,error_type)(error_value)
 
 
 ################################################################################

@@ -71,7 +71,7 @@ ins {
 					ids python:sorted(standard.distinct_list([x['id'] for x in local_files]));
 					">
 				<div tal:repeat="id ids">
-					<i class="fas fa-ok text-success"></i>
+					<i class="fas fa-check text-success"></i>
 					<a tal:attributes="href python:'%s/manage_main?lang=%s&id=%s'%(provider.absolute_url(),request['lang'],id)" target="_blank"> 
 						<tal:block tal:content="id"></tal:block>
 					</a>

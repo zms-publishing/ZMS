@@ -206,10 +206,18 @@ class ZMSRepositoryManager(
       for filename in filenames:
         l = local.get(filename, {})
         r = remote.get(filename, {})
+        if isinstance(l.get('data', ''),bytes):
+          try:
+            l['data'] = l['data'].decode()
+          except:
+            pass
+        if isinstance(r.get('data', ''),bytes):
+          try:
+            r['data'] = r['data'].decode()
+          except:
+            pass
         if l.get('data', '') != r.get('data', ''):
           data = l.get('data', r.get('data', ''))
-          if type(data) is str:
-            data = bytes(data,"utf-8")
           mt, enc = standard.guess_content_type(filename, data)
           diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
       return diff
@@ -422,6 +430,8 @@ class ZMSRepositoryManager(
               data = files[file]['data']
               if data is not None:
                 f = open(filepath,"wb")
+                if isinstance(data,str):
+                  data = data.encode("utf-8")
                 f.write(data)
                 f.close()
               else:

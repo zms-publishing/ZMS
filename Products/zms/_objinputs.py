@@ -76,7 +76,8 @@ class ObjInputs(object):
     html = []
     input_type = 'date'
     if not isinstance(value, str):
-      value = self.getLangFmtDate(value, manage_lang, fmt_str)
+      fmt = {'DATE_FMT':'%Y-%m-%d','DATETIME_FMT':'%Y-%m-%d %H:%M'}
+      value = self.getLangFmtDate(value, manage_lang, fmt.get(fmt_str))
     if value is not None and self.parseLangFmtDate(value) is None:
       value = ''
     extra += ' title="%s"'%self.getZMILangStr(fmt_str)

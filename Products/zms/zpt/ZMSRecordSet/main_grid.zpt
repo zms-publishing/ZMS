@@ -25,8 +25,8 @@
 	<div class="pull-left" tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">
 		zmi_pagination
 	</div>
-	<div class="pull-right btn-group">
-		<label class="control-label btn form-control-sm" for="qsize" tal:content="python:here.getZMILangStr('ATTR_ROWS')" tal:define="global dummy0 python:request.set('qsize',request.get('qsize',10))">Rows</label>
+	<div class="pull-right btn-group form-group mb-0">
+		<label class="control-label pt-2" for="qsize" style="min-width:4em" tal:content="python:here.getZMILangStr('ATTR_ROWS')" tal:define="global dummy0 python:request.set('qsize',request.get('qsize',10))">Rows</label>
 		<input class="form-control form-control-sm" size="2" id="qsize" type="text" name="qsize:int" tal:attributes="value request/qsize" onchange="this.form.submit()"/>
 	</div>
 </div>

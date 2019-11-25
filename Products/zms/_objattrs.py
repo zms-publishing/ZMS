@@ -423,7 +423,7 @@ class ObjAttrs(object):
               except:
                 pass
           inp = []
-          inp.append(self.getTextInput( fmName, elName, size, value, 'text', enabled, REQUEST, css, extra ))
+          inp.append(self.getTextInput( fmName, elName, size, value, 'text', enabled, css, extra ))
           if datatype in [_globals.DT_AMOUNT]:
             inp.append('&nbsp;'+self.getConfProperty('ZMS.locale.amount.unit', 'EUR'))
           return ''.join(inp)
@@ -467,7 +467,7 @@ class ObjAttrs(object):
       
       #-- Blob-Fields
       if datatype in _globals.DT_BLOBS:
-        if _globals.is_str_type(value):
+        if isinstance(value,str):
           value = None
         elif value is not None:
           value = value._createCopy( self, obj_attr['id'])
@@ -476,7 +476,7 @@ class ObjAttrs(object):
       #-- DateTime-Fields.
       elif datatype in _globals.DT_DATETIMES:
         if value is not None:
-          if _globals.is_str_type(value): 
+          if isinstance(value,str):
             fmt_str = 'DATETIME_FMT'
             if datatype == _globals.DT_DATE:
               fmt_str = 'DATE_FMT'
@@ -771,13 +771,8 @@ class ObjAttrs(object):
       
       #-- DateTime-Fields.
       if datatype in _globals.DT_DATETIMES:
-        if _globals.is_str_type(v):
-          fmt_str = 'DATETIME_FMT'
-          if datatype == _globals.DT_DATE:
-            fmt_str = 'DATE_FMT'
-          elif datatype == _globals.DT_TIME:
-            fmt_str = 'TIME_FMT'
-          v = self.parseLangFmtDate(v)
+        if isinstance(v,str):
+          v = standard.parseLangFmtDate(v)
         elif not isinstance(v, time.struct_time):
           v = standard.getDateTime(v)
       
@@ -785,7 +780,7 @@ class ObjAttrs(object):
       if datatype == _globals.DT_DICT:
         if v is None:
           v = {}
-        if _globals.is_str_type(v):
+        if isinstance(v,str):
           try:
            v = standard.parseXmlString(self.getXmlHeader() + v)
           except:
@@ -810,7 +805,7 @@ class ObjAttrs(object):
         else:
           if v is None:
             v = []
-          if _globals.is_str_type(v):
+          if isinstance(v,str):
             try:
               l = standard.parseXmlString(self.getXmlHeader() + v)
             except:
@@ -825,14 +820,14 @@ class ObjAttrs(object):
       
       #-- Integer-Fields
       if datatype in _globals.DT_INTS:
-        if _globals.is_str_type(v) and len(v) > 0:
+        if isinstance(v,str) and len(v) > 0:
           if v[-1] == '.':
             v = v[:-1]
           v = int(v)
       
       #-- Float-Fields
       if datatype == _globals.DT_FLOAT:
-        if _globals.is_str_type(v) and len(v) > 0:
+        if isinstance(v,str) and len(v) > 0:
           v = float(v)
       
       #-- String-Fields.

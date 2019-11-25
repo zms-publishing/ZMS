@@ -1139,7 +1139,7 @@ def parseLangFmtDate(s):
       i = i + 1
     return i
   value = None
-  for fmt in ['%d.%m.%Y %H:%M:%S', '%Y/%m/%d %H:%M:%S', '%Y-%m-%d %H:%M:%S', '%H:%M:%S']:
+  for fmt in ['%d.%m.%Y %H:%M:%S', '%Y/%m/%d %H:%M:%S', '%Y-%m-%d %H:%M:%S', '%Y-%m-%dT%H:%M:%S', '%H:%M:%S']:
     if value is None:
       try:
         if isinstance(s, DateTime):

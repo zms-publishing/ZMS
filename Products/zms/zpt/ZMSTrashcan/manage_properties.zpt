@@ -13,7 +13,7 @@
 		<label class="col-lg-2 control-label mandatory" for="file"><span tal:content="python:here.getZMILangStr('ATTR_GARBAGE_COLLECTION')">garbage collection</span></label>
 		<div class="col-lg-10">
 			<div class="pull-left" tal:content="structure python:here.getZMILangStr('OBJECTS_OLDER_THAN')">objects older than</div>
-			<div class="pull-left" tal:content="structure python:here.getTextInput(fmName='form0',elName='garbage_collection',value=getattr(here,'garbage_collection','2'),size=5)"><input/></div>
+			<div class="pull-left"><input class="form-control" type="number" name="garbage_collection" tal:attributes="value python:getattr(here,'garbage_collection','2')" size="5"/></div>
 			<div class="pull-left" tal:content="structure python:here.getZMILangStr('ATTR_DAYS')">days</div>
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->

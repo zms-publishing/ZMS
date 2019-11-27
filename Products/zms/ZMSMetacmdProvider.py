@@ -352,10 +352,9 @@ class ZMSMetacmdProvider(
       data = zopeutil.readObject(container, metaCmd['id'], '')
       if src is not None and (newData != data or (metaCmd.get('acquired', 0) and src.meta_type=='External Method')):
         newMethod = src.meta_type
-        newId = metaCmd['id']
         newTitle = '*** DO NOT DELETE OR MODIFY ***'
-        zopeutil.removeObject(container, newId, removeFile=False)
-        zopeutil.addObject(container, newMethod, newId, newTitle, newData)
+        zopeutil.removeObject(container, metaCmd['id'], removeFile=False)
+        zopeutil.addObject(container, newMethod, metaCmd['home'].getHome().getId()+'.'+metaCmd['id'], newTitle, newData)
       ob = zopeutil.getObject(container, metaCmd['id'])
       if ob is not None:
         metaCmd['meta_type'] = ob.meta_type

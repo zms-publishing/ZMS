@@ -206,19 +206,28 @@ def addExternalMethod(container, id, title, data):
   """
   Add External Method to container.
   """
-  m = getExternalMethodModuleName(container, id)
-  f = id
-  if data:
-    filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
-    _fileutil.exportObj( data, filepath)
-  elif m != f:
-    context = container
-    while context is not None:
-      m = getExternalMethodModuleName(context, id)
+  m = id
+  filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
+  # Acquired external methods.
+  if m.find('.') > 0 and os.path.exists(filepath):
+    id = m[m.find('.')+1:]
+    f = id
+  # Other.
+  else:
+    m = getExternalMethodModuleName(container, id)
+    f = id
+    # If data is given then save to file in Extensions-folder.
+    if data:
       filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
-      if os.path.exists(filepath):
-        break
-      context = context.getParentNode()
+      _fileutil.exportObj( data, filepath)
+    elif m != f:
+      context = container
+      while context is not None:
+        m = getExternalMethodModuleName(context, id)
+        filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
+        if os.path.exists(filepath):
+          break
+        context = context.getParentNode()
   ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
 
 def addPageTemplate(container, id, title, data):

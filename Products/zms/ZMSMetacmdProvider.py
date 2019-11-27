@@ -288,31 +288,26 @@ class ZMSMetacmdProvider(
       self.commands = copy.deepcopy(self.commands) # Make persistent.
       
       # Insert Object.
-      container = self.getDocumentElement()
-      if newAcquired:
-        portalMaster = self.getPortalMaster()
-        newMethod = getattr(portalMaster, newId).meta_type
-        metaCmd = portalMaster.getMetaCmd(newId)
-        newData = metaCmd['data']
-      if newMethod is None:
-        newMethod = getattr(container, id).meta_type
-      newTitle = '*** DO NOT DELETE OR MODIFY ***'
-      if id is None and newData is None:
-        if newMethod in ['DTML Document', 'DTML Method']:
-          newData = dtmlExampleCode
-        elif newMethod == 'Page Template':
-          newData = pageTemplateExampleCode 
-        elif newMethod == 'Script (Python)':
-          newData = pyScriptExampleCode
-        elif newMethod == 'External Method':
-          newData = ''
-          newData += '# Example code:\n'
-          newData += '\n'
-          newData += 'def ' + newId + '( self):\n'
-          newData += '  return "This is the external method ' + newId + '"\n'
-      zopeutil.removeObject(container, id)
-      zopeutil.removeObject(container, newId)
-      object = zopeutil.addObject(container, newMethod, newId, newTitle, newData)
+      if not newAcquired:
+        container = self.getDocumentElement()
+        if newMethod is None:
+          newMethod = getattr(container, id).meta_type
+        if id is None and newData is None:
+          if newMethod in ['DTML Document', 'DTML Method']:
+            newData = dtmlExampleCode
+          elif newMethod == 'Page Template':
+            newData = pageTemplateExampleCode 
+          elif newMethod == 'Script (Python)':
+            newData = pyScriptExampleCode
+          elif newMethod == 'External Method':
+            newData = ''
+            newData += '# Example code:\n'
+            newData += '\n'
+            newData += 'def ' + newId + '( self):\n'
+            newData += '  return "This is the external method ' + newId + '"\n'
+        zopeutil.removeObject(container, id)
+        zopeutil.removeObject(container, newId)
+        object = zopeutil.addObject(container, newMethod, newId, newTitle, newData)
       
       # Return with new id.
       return newId

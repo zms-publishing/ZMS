@@ -919,7 +919,7 @@ class ConfManager(
         newTitle = REQUEST['newTitle']
         home.manage_addFolder(id=newId, title=newTitle)
         folder = getattr(home, newId)
-        zopeutil.addPageTemplate(folder, id='standard_html', title='', data='<!DOCTYPE html>\n<htmltal:define="zmscontext options/zmscontext">\n</html>')
+        zopeutil.addPageTemplate(folder, id='standard_html', title='', data='<!DOCTYPE html>\n<html tal:define="zmscontext options/zmscontext">\n</html>')
         message = self.getZMILangStr('MSG_INSERTED')%newId
       
       # Return with message.

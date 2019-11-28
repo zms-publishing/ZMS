@@ -50,7 +50,7 @@ class ObjInputs(object):
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getDateTimeInput(self, fmName, elName, size=8, value=None, enabled=True, fmt_str='DATETIME_FMT', css='form-control', extra=''):
+  def getDateTimeInput(self, fmName, elName, size=8, value=None, enabled=True, fmt_str='DATETIME_FMT', css='form-control'):
     manage_lang = self.get_manage_lang()
     html = []
     input_type = 'date'
@@ -59,14 +59,14 @@ class ObjInputs(object):
       value = self.getLangFmtDate(value, manage_lang, fmt.get(fmt_str))
     if value is not None and self.parseLangFmtDate(value) is None:
       value = ''
-    extra += ' title="%s"'%self.getZMILangStr(fmt_str)
+    placeholder = self.getZMILangStr(fmt_str)
     if enabled:
       if fmt_str == 'DATE_FMT':
         css += ' datepicker'
       elif fmt_str == 'DATETIME_FMT':
         css += ' datetimepicker'
         input_type = 'datetime-local'
-    html.append(self.getTextInput(fmName, elName, size, value, input_type, enabled, css=css, extra=extra))
+    html.append(self.getTextInput(fmName, elName, size, value, input_type, enabled, css=css, placeholder=placeholder))
     return ''.join(html)
 
 
@@ -81,8 +81,8 @@ class ObjInputs(object):
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getPasswordInput(self, fmName, elName, size=15, value='', enabled=True, css='form-control', extra=''):
-    return self.getTextInput(fmName, elName, size, value, 'password', enabled, css, extra)
+  def getPasswordInput(self, fmName, elName, size=15, value='', enabled=True, css='form-control'):
+    return self.getTextInput(fmName, elName, size, value, 'password', enabled, css)
 
 
   # ----------------------------------------------------------------------------
@@ -96,7 +96,7 @@ class ObjInputs(object):
   #	@param css	CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
-  def getTextInput(self, fmName, elName, size=None, value='', type='text', enabled=True, css='form-control', extra=''):
+  def getTextInput(self, fmName, elName, size=None, value='', type='text', enabled=True, css='form-control', placeholder=''):
     lang = self.REQUEST.get('lang', self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
@@ -113,7 +113,9 @@ class ObjInputs(object):
       html.append(' value="%s"'%standard.html_quote(value))
     if not enabled:
       html.append(' disabled="disabled"')
-    html.append(' %s/>'%extra)
+    if placeholder:
+      html.append(' title="%s"'%placeholder)
+    html.append('/>')
     return ''.join(html)
 
 
@@ -152,11 +154,10 @@ class ObjInputs(object):
   #	@param enabled
   #	@param hidden	Add hidden Input-Field if not enabled
   #	@param css		CSS-Class
-  #	@param extra	Extra-Parameters
   #	@param btn		Appear as Bootstrap Button
   #	@return String
   # ----------------------------------------------------------------------------
-  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, css='', extra='', btn=False, options=[0, 1]):
+  def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, css='', btn=False, options=[0, 1]):
     lang = self.REQUEST.get('lang', self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
@@ -199,10 +200,9 @@ class ObjInputs(object):
   #	@param enabled
   #	@param css		CSS-Class
   #	@param wrap		Word-Wrap (on|off)
-  #	@param extra		Extra-Parameters
   #	@return String
   # ----------------------------------------------------------------------------
-  def getTextArea(self, fmName, elName, cols, rows, value, enabled=True, css='form-control', wrap='virtual', extra=''):
+  def getTextArea(self, fmName, elName, cols, rows, value, enabled=True, css='form-control', wrap='virtual'):
     lang = self.REQUEST.get('lang', self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):
@@ -219,7 +219,7 @@ class ObjInputs(object):
     html.append(' wrap="%s"'%wrap)
     if not enabled:
       html.append(' disabled="disabled"')
-    html.append('%s>'%extra)
+    html.append('>')
     if value is not None:
       if isinstance(value, list):
         for item in value:

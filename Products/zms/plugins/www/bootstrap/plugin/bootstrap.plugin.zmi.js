@@ -1053,9 +1053,11 @@ ZMI.prototype.initInputFields = function(container) {
 				}
 			// Date-Picker
 			$("input.datepicker,input.datetimepicker",this).each(function() {
-				$(this).closest("div").addClass("input-group");
-				$(this).closest("div").removeClass("col-sm-10");
-				$(this).closest("div").wrap('<div class="col-sm-4 col-md-3 col-lg-3"></div>');
+				$(this).closest("div")
+					.addClass("input-group")
+					.removeClass("col-sm-9")
+					.removeClass("col-md-10")
+					.wrap('<div class="col-sm-4 col-md-3 col-lg-3"></div>');
 				$(this).before('<div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar"></i></span></div>');
 			})
 		});

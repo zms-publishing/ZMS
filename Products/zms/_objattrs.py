@@ -360,7 +360,7 @@ class ObjAttrs(object):
         cols = 35
         rows = 1
         inp = []
-        inp.append(self.getTextArea(fmName, elName, cols, rows, self.toXmlString(value), enabled, REQUEST, css, wrap))
+        inp.append(self.getTextArea(fmName, elName, cols, rows, self.toXmlString(value), enabled, css, wrap))
         return ''.join(inp)
       
       #-- Text-Fields.
@@ -374,11 +374,11 @@ class ObjAttrs(object):
           css += '-disabled'
         cols = None
         rows = 5
-        return self.getTextArea(fmName, elName, cols, rows, value, enabled, REQUEST, css, wrap)
+        return self.getTextArea(fmName, elName, cols, rows, value, enabled, css, wrap)
       
       #-- Boolean-Fields.
       elif inputtype == 'boolean':
-        return self.getCheckbox(fmName=fmName, elName=elName, elId=obj_attr['id'], value=value, enabled=enabled, hidden=False, btn=True, REQUEST=REQUEST)
+        return self.getCheckbox(fmName=fmName, elName=elName, elId=obj_attr['id'], value=value, enabled=enabled, hidden=False, btn=True)
       
       #-- Autocomplete-Fields.
       elif inputtype in ['autocomplete', 'multiautocomplete']:
@@ -387,7 +387,7 @@ class ObjAttrs(object):
       #-- Select-Fields.
       elif inputtype in ['multiselect', 'select']:
         optpl = self.getObjOptions(obj_attr, REQUEST)
-        return self.getSelect(fmName, elName, value, inputtype, lang_str, mandatory, optpl, enabled, REQUEST)
+        return self.getSelect(fmName, elName, value, inputtype, lang_str, mandatory, optpl, enabled)
       
       #-- Input-Fields.
       else: 
@@ -403,9 +403,9 @@ class ObjAttrs(object):
           elif datatype == _globals.DT_TIME:
             size = 8
             fmt_str = 'TIME_FMT'
-          return self.getDateTimeInput(fmName, elName, size, value, enabled, fmt_str, REQUEST, css)
+          return self.getDateTimeInput(fmName, elName, size, value, enabled, fmt_str, css)
         elif datatype == _globals.DT_URL:
-          return self.getUrlInput(fmName, elName, value=value, enabled=enabled, REQUEST=REQUEST, css=css)
+          return self.getUrlInput(fmName, elName, value=value, enabled=enabled, css=css)
         else:
           size = None
           extra = ''

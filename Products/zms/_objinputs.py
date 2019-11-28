@@ -69,19 +69,6 @@ class ObjInputs(object):
     html.append(self.getTextInput(fmName, elName, size, value, input_type, enabled, css=css, extra=extra))
     return ''.join(html)
 
-  # ----------------------------------------------------------------------------
-  #  getDateInput:
-  #
-  #	@param fmName
-  #	@param elName
-  #	@param value
-  #	@param enabled
-  #	@param css	CSS-Class
-  #	@return String
-  # ----------------------------------------------------------------------------
-  def getDateInput(self, fmName, elName, value, enabled, REQUEST, css='form-control', extra=''):
-    return self.getDateTimeInput(fmName=fmName, elName=elName, size=8, value=value, enabled=enabled, fmt_str='DATE_FMT', css=css, extra=extra)
-
 
   # ----------------------------------------------------------------------------
   #  getPasswordInput:
@@ -215,7 +202,7 @@ class ObjInputs(object):
   #	@param extra		Extra-Parameters
   #	@return String
   # ----------------------------------------------------------------------------
-  def getTextArea(self, fmName, elName, cols, rows, value, enabled, css='form-control', wrap='virtual', extra=''):
+  def getTextArea(self, fmName, elName, cols, rows, value, enabled=True, css='form-control', wrap='virtual', extra=''):
     lang = self.REQUEST.get('lang', self.getPrimaryLanguage())
     elId = elName
     if elId.endswith('_%s'%lang):

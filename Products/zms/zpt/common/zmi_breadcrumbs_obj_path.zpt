@@ -31,5 +31,11 @@
 </ol>
 </nav>
 </tal:block>
+<tal:block tal:define="ref python:request.form.get('zmi_breadcrumbs_ref_obj_path', '')"
+			tal:condition="python:zmscontext is None and ref.startswith('{') and ref.endswith('}')">
+	<div class="breadcrumb" style="color:red;font-size:inherit;display:block;padding:0;">
+		<i class="fas fa-exclamation-triangle"></i> <tal:block tal:content="ref"></tal:block>
+	</div>
+</tal:block>
 
 <!-- /common/zmi_breadcrumbs_obj_path -->

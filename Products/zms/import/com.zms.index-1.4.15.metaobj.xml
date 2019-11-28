@@ -730,7 +730,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                       v = r.get(objAttr['id'],None)
                       if v is not None and type(v) is str:
                         o = v
-                        if datatype in ['richtext','string','text'] in [bytes,str]:
+                        if datatype in ['richtext','string','text'] and type(v) in [bytes,str]:
                           v = handleInline(node,v)
                         elif datatype in ['url'] and type(v) in [bytes,str]:
                           v = handleUrl(node,v)

@@ -62,16 +62,9 @@ __all__= ['ZMS']
 ################################################################################
 
 import zope.event
-try:
-# module path of a pip based installation
-  from zope.container.contained import ObjectAddedEvent
-  from zope.container.contained import ObjectMovedEvent
-  from zope.container.contained import ObjectRemovedEvent
-except:
-# module path of an egg based installation
-  from zope.app.container.contained import ObjectAddedEvent
-  from zope.app.container.contained import ObjectMovedEvent
-  from zope.app.container.contained import ObjectRemovedEvent
+from zope.container.contained import ObjectAddedEvent
+from zope.container.contained import ObjectMovedEvent
+from zope.container.contained import ObjectRemovedEvent
 
 def subscriber(event):
   if isinstance(event, ObjectAddedEvent):

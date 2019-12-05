@@ -441,6 +441,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       # Add indices.
       for index_name in index_names:
         catalog.manage_addIndex(index_name,'FieldIndex')
+      catalog.manage_addIndex('path','PathIndex')
       # Add columns
       for index_name in index_names + ['getPath']:
         catalog.manage_addColumn(index_name)

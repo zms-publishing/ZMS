@@ -496,7 +496,7 @@
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 
 <script>
-
+// <!--
 /**
  *
  */
@@ -618,6 +618,51 @@ $(function(){
 	};
 });
 
+/**
+ * Prototype Generator for Default-ZPT-Code.
+ * Cave: ZPT Processing requires $$ for JS String Templates 
+ */
+ function generate_zmi_code_default() {
+	var meta_attrs = {};
+	$('#meta_properties tbody:nth-child(2) tr').each( function() {
+		var meta_id = $(' .meta-id input', this).val();
+		var meta_type = $(' .meta-type > :first-child', this).val();
+		if (!meta_type ) {
+			meta_type = $(' .meta-code > :first-child', this).val();
+		}
+		if (meta_id && 
+			meta_type && 
+			meta_id!='icon_clazz' &&
+			meta_id!='standard_html' &&
+			meta_id!='check_constraints' &&
+			meta_type!='delimiter') {
+			meta_attrs[meta_id] = meta_type;
+		}
+	});
+	var tal_defs='';
+	var tal_content='';
+	function tal_def_render(item) {
+		var item_short = item.split('attr_').reverse()[0];
+		tal_defs += `\n\t\t$${item_short} python:zmscontext.attr('$${item}');`
+	}
+	function tal_content_render(item) {
+		var item_short = item.split('attr_').reverse()[0];
+		tal_content += `\n\t<div class="$${item_short}" tal:content="$${item_short}">$${item_short}</div>`
+	}
+	Object.keys(meta_attrs).forEach(tal_def_render);
+	Object.keys(meta_attrs).forEach(tal_content_render);
+	
+	var default_template = `<div tal:define="zmscontext options/zmscontext;
+		id python:zmscontext.getId();
+		css_class zmscontext.meta_type;$${tal_defs}"
+	tal:attributes="id id;class css_class">$${tal_content}\n</div>`;
+	$('#meta_properties input[name="attr_type_standard_html"] ~ .zmi-code textarea').val(default_template);
+}
+var zmi_code_default_btn = '<i onclick="generate_zmi_code_default()" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default fas fa-sync  text-primary text-center\" style=\"cursor:pointer;display: block;position: absolute;text-align: right !important;right: .75em;padding: .5em;\"></i>';
+$(function(){
+	$('#meta_properties input[name="attr_type_standard_html"] ~ .zmi-code').prepend( zmi_code_default_btn);
+});
+// -->
 </script>
 
 </body>

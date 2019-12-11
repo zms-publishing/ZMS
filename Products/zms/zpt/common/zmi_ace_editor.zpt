@@ -11,7 +11,7 @@
 	</tal:block>
 	<div tal:condition="python:ob is not None" class="form-group zmi-ace-editor" tal:attributes="style python:'height:%s'%height">
 		<div class="control-label-ace-editor">
-			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank" tal:content="ob/id">id</a>
+			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank" tal:content="python:ob.getId()">id</a>
 			<tal:block tal:condition="python:text is not None">(<tal:block tal:content="python:here.getDataSizeStr(len(text))">the size</tal:block>)</tal:block>
 		</div>
 		<div>
@@ -35,6 +35,23 @@
 		right: 0;
 		z-index: 10;
 		overflow: hidden;
+	}
+	.zmi.modal-open.fullScreen .modal.show {
+		padding:0 !important;
+	}
+	.zmi.modal-open.fullScreen .modal.show .modal-dialog {
+		margin: 0 !important;
+		max-width: unset !important;
+		width: unset !important;
+	}
+	.zmi.modal-open.fullScreen .modal.show .modal-dialog .ace_editor.fullScreen {
+		height: 100vh !important;
+		width: 100vw !important;
+		border: 0;
+		margin: 0;
+		top: 0;
+		left: 0;
+		border-radius:0;		
 	}
 </style>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zmi/ace.ajax.org/ace.js"></script>

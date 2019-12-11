@@ -619,17 +619,23 @@ $(function(){
 });
 
 /**
- * Prototype Generator for Default-ZPT-Code.
+ * EXPERIMENTAL; Pre-Alpha Generator for Default-ZPT-Code.
  * Cave: ZPT Processing requires $$ for JS String Templates 
  */
- function generate_zmi_code_default() {
+ function generate_zmi_code_default(event) {
+	var $target = $('textarea.zpt',event.srcElement.parentNode);
+	// Dict of All Elements
 	var meta_attrs = {};
+	// List of Complex Elements
+	var meta_attrs_complex = [];
 	$('#meta_properties tbody:nth-child(2) tr').each( function() {
-		var meta_id = $(' .meta-id input', this).val();
-		var meta_type = $(' .meta-type > :first-child', this).val();
+		var meta_id = $('.meta-id input', this).val();
+		var meta_type = $('.meta-type > :first-child', this).val();
 		if (!meta_type ) {
-			meta_type = $(' .meta-code > :first-child', this).val();
+			meta_type = $('.meta-code > :first-child', this).val();
 		}
+		var meta_repetitive = $('.meta-repetitive > :first-child', this).val();
+
 		if (meta_id && 
 			meta_type && 
 			meta_id!='icon_clazz' &&
@@ -637,8 +643,13 @@ $(function(){
 			meta_id!='check_constraints' &&
 			meta_type!='delimiter') {
 			meta_attrs[meta_id] = meta_type;
+
+			if (meta_repetitive) {
+				meta_attrs_complex.push(meta_id);
+			}
 		}
 	});
+	// console.log('meta_attrs_complex = ' + meta_attrs_complex);
 	var tal_defs='';
 	var tal_content='';
 	function tal_def_render(item) {
@@ -658,13 +669,16 @@ $(function(){
 	Object.keys(meta_attrs).forEach(tal_def_render);
 	Object.keys(meta_attrs).forEach(tal_content_render);
 	
-	var default_template = `<div tal:define="zmscontext options/zmscontext;
+	var default_template = `<div title="Template-Helper: pre-alpha" 
+		tal:define="zmscontext options/zmscontext;
 		id python:zmscontext.getId();
 		css_class python:zmscontext.meta_id;$${tal_defs}"
 	tal:attributes="id id;class css_class">$${tal_content}\n</div>`;
-	$('#meta_properties input[name="attr_type_standard_html"] ~ .zmi-code textarea').val(default_template);
+	$target.val(default_template);
+	$target.animate({height: $target.prop('scrollHeight') + 'px'},600);
+
 }
-var zmi_code_default_btn = '<i onclick="generate_zmi_code_default()" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default fas fa-sync  text-primary text-center\" style=\"cursor:pointer;display: block;position: absolute;text-align: right !important;right: .75em;padding: .5em;\"></i>';
+var zmi_code_default_btn = '<i onclick="generate_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default fas fa-sync  text-primary text-center\" style=\"cursor:pointer;display: block;position: absolute;text-align: right !important;right: .75em;padding: .5em;\"></i>';
 $(function(){
 	$('#meta_properties input[name="attr_type_standard_html"] ~ .zmi-code').prepend( zmi_code_default_btn);
 });

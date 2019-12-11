@@ -1402,6 +1402,15 @@ body.browse_iframe .toggle {
 	min-width:1rem;
 }
 
+.zmi .zmi-ace-editor:after {
+	content:"Please press F10 for full screen view";
+	display:block;
+	margin-top:0;
+	font-size:10px;
+	color:#999;
+	letter-spacing: .02rem;
+	line-height: 1.25rem;
+}
 .zmi .control-label-ace-editor {
 	text-align: right;
 	display: inline-block;

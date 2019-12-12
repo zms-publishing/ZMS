@@ -2136,25 +2136,27 @@ $(function() {
 $(function() {
 	// Reference: https://getflywheel.com/layout/sticky-back-to-top-button-tutorial/
 	const scrollToTopButton = document.getElementById('js-top');
-	const scrollFunc = () => {
-		let y = window.scrollY;
-		if (y > 0) {
-			scrollToTopButton.className = "back-to-top show";
-		} else {
-			scrollToTopButton.className = "back-to-top hide";
+	if ( scrollToTopButton ) {
+		const scrollFunc = () => {
+			let y = window.scrollY;
+			if (y > 0) {
+				scrollToTopButton.className = "back-to-top show";
+			} else {
+				scrollToTopButton.className = "back-to-top hide";
+			}
+		};
+		window.addEventListener("scroll", scrollFunc);
+		const scrollToTop = () => {
+			const c = document.documentElement.scrollTop || document.body.scrollTop;
+			if (c > 0) {
+				window.requestAnimationFrame(scrollToTop);
+				window.scrollTo(0, c - c / 10);
+			}
 		}
-	};
-	window.addEventListener("scroll", scrollFunc);
-	const scrollToTop = () => {
-		const c = document.documentElement.scrollTop || document.body.scrollTop;
-		if (c > 0) {
-			window.requestAnimationFrame(scrollToTop);
-			window.scrollTo(0, c - c / 10);
+		scrollToTopButton.onclick = function(e) {
+			e.preventDefault();
+			scrollToTop();
 		}
-	}
-	scrollToTopButton.onclick = function(e) {
-		e.preventDefault();
-		scrollToTop();
 	}
 });
 

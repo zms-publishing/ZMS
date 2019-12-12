@@ -5,12 +5,13 @@
 	standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='bigpicture')">
-<form class="form-horizontal">
-<tal:block tal:define="global
+<form class="form-horizontal card" 
+	tal:define="global
 		packageId request/id;
 		metaObjIds python:here.getMetaobjIds();
 		metaObjs python:[here.getMetaobj(x) for x in metaObjIds]">
-	<legend tal:content="python:'BigPicture::LogicalView::%s'%packageId">the legend</legend>
+	<legend class="navbar navbar-nav navbar-expand navbar-dark" 
+		tal:content="python:'BigPicture::LogicalView::%s'%packageId">the legend</legend>
 	<ol class="objlist">
 		<li tal:repeat="metaObj python:[x for x in metaObjs if x['package']==packageId]">
 			<a tal:attributes="href python:'#%s'%(metaObj.get('id',''))" tal:content="metaObj/name">the name</a>
@@ -18,7 +19,7 @@
 	</ol>
 
 	<tal:block tal:repeat="metaObj python:[x for x in metaObjs if x['package']==packageId]">
-		<p tal:content="repeat/metaObj/number">1</p>
+		<p class="box_number" tal:content="repeat/metaObj/number">1</p>
 		<div class="box" tal:attributes="id metaObj/id">
 			<div class="objtype" tal:content="metaObj/type">the type</div>
 			<div class="objid">
@@ -62,8 +63,6 @@
 			</tal:block>
 		</div>
 	</tal:block>
-
-</tal:block>
 </form>
 
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
@@ -80,10 +79,16 @@
 </script>
 
 <style>
-
+.zmi.bigpicture form.card legend {
+	color:white;
+	background: #354f67;
+	padding-left:1rem;
+	height:42px;
+	margin-bottom: 1rem;
+}
 .box {
 	background-color:#CFC;
-	border:1px solid #00C;
+	border:1px solid #354f67;
 	border-radius:4px;
 	padding:0;
 	margin:1em 1em 2em 1em;
@@ -95,28 +100,35 @@
 .box.focused {
 	background-color:#AEE;
 }
-p {
-	float:left;
-	margin-left:-.5em;
+p.box_number {
+	width: 2rem;
+	display: block;
+	background: #354f67;
+	position: absolute;
+	z-index: 100;
+	margin: 0 0 0 .9rem;
+	border-top-left-radius: 4px;
+	color: white;
+	padding: 0 .5rem 0 0;
+	text-align: right;
 }
 ol.objlist {
 	position: fixed;
-	right: 20px;
-	border: 1px solid silver;
+	top: 3.5rem;
+	right: 0;
+	border: 1px solid #354f6778;
+	border-right: none;
 	border-radius: 4px;
 	padding: .5em 3em;
 	background: #fff;
-	box-shadow: 0px 0px 20px silver;
-}
-ol.objlist li a:hover,
-ol.objlist li a.active {
-	font-weight:bold;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 }
 .box div {
 	padding:.15em .5em
 }
 .box .objid {
-	border-bottom:1px solid #00C;
+	border-bottom:1px solid #354f67;
 	text-align:center;
 }
 .box .objid a {

@@ -365,7 +365,7 @@
 				</td>
 				<td style="text-align:center">
 					<tal:block tal:condition="python:action=='insert'"
-						tal:content="structure python:here.getCheckbox(fmName='form0',elName='obj_enabled:int',value=int(metaObj.get('enabled',0) in [1,True]))">
+						tal:content="structure python:here.getCheckbox(fmName='form0',elName='obj_enabled:int',elId='',value=int(metaObj.get('enabled',0) in [1,True]))">
 						CHECKBOX
 					</tal:block>
 				</td>
@@ -379,7 +379,7 @@
 				</td>
 				<td style="text-align:center" tal:repeat="role roleOptpl">
 					<tal:block
-						tal:content="structure python:here.getCheckbox(fmName='form0',elName='access_%s_deny:list'%action,value=role[0] not in metaObj.get('access',{}).get('%s_deny'%action,[]),options=[role[0],''])">
+						tal:content="structure python:here.getCheckbox(fmName='form0',elName='access_%s_deny:list'%action,elId='',value=role[0] not in metaObj.get('access',{}).get('%s_deny'%action,[]),options=[role[0],''])">
 						CHECKBOX
 					</tal:block>
 				</td>
@@ -619,66 +619,119 @@ $(function(){
 });
 
 /**
- * EXPERIMENTAL; Pre-Alpha Generator for Default-ZPT-Code.
+ * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * EXPERIMENTAL: Generator for Default-ZPT-Code.
  * Cave: ZPT Processing requires $$ for JS String Templates 
+ * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
- function generate_zmi_code_default(event) {
+ function set_zmi_code_default(event) {
+	var confirmed = confirm("The Experimental Generator for Default-ZPT-Code asks:\nReally Reset to Default-Code?");
+	if (!confirmed == true) {
+		console.log('INFO: Function get_zmi_code_default() not executed.');
+		return false;
+	}
 	var $target = $('textarea.zpt',event.srcElement.parentNode);
-	// Dict of All Elements
-	var meta_attrs = {};
-	// List of Complex Elements
-	var meta_attrs_complex = [];
+	var meta_model = {}; // meta_model = {meta_id:{'meta_type':meta_type,'meta_repetitive':meta_repetitive}, ...}
+	const meta_id_ignored = ['standard_html','check_constraints'];
+	const meta_type_ignored = ['delimiter','interface','constant'];
+
+	// Generate Model based on GUI-Form
 	$('#meta_properties tbody:nth-child(2) tr').each( function() {
 		var meta_id = $('.meta-id input', this).val();
 		var meta_type = $('.meta-type > :first-child', this).val();
 		if (!meta_type ) {
 			meta_type = $('.meta-code > :first-child', this).val();
 		}
-		var meta_repetitive = $('.meta-repetitive > :first-child', this).val();
-
-		if (meta_id && 
+		var meta_repetitive = $('.meta-repetitive > :first-child', this).prop('checked');
+		if ( 
+			meta_id && 
 			meta_type && 
-			meta_id!='icon_clazz' &&
-			meta_id!='standard_html' &&
-			meta_id!='check_constraints' &&
-			meta_type!='delimiter') {
-			meta_attrs[meta_id] = meta_type;
-
-			if (meta_repetitive) {
-				meta_attrs_complex.push(meta_id);
-			}
+			meta_id_ignored.indexOf(meta_id)==-1 &&
+			meta_type_ignored.indexOf(meta_type)==-1 
+			) {
+			meta_model[meta_id] = { 'meta_type':meta_type,'meta_repetitive':meta_repetitive };
 		}
 	});
-	// console.log('meta_attrs_complex = ' + meta_attrs_complex);
+
+	console.log( 'meta_model = ' + JSON.stringify(meta_model) );
+
+	function shorten_id(str) {
+		// Remove namespace ornaments from meta_id name
+		str = str.split('attr_').reverse()[0];
+		str = str.split('dc_').reverse()[0];
+		return str
+	}
+
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// Construct TAL-Code-Template Parts: [1] Variable Definitions, [2] Content
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	var tal_defs='';
 	var tal_content='';
+
+	// [1] Variable Definitions
 	function tal_def_render(item) {
-		var item_short = item.split('attr_').reverse()[0];
-		item_short = item.split('dc_').reverse()[0];
-		tal_defs += `\n\t\t$${item_short} python:zmscontext.attr('$${item}');`
-	}
-	function tal_content_render(item) {
-		var item_short = item.split('attr_').reverse()[0];
-		item_short = item.split('dc_').reverse()[0];
-		if (meta_attrs[item]=='image') {
-			tal_content += `\n\t<img class="$${item_short}" tal:attributes="src python:$${item_short}.getHref(request)" alt="Image" />`
+		var id = String(item);
+		var sid = shorten_id(id);
+		if ( meta_model[id]['meta_type'] =='url' ) {
+			// ATTRTYPE URL 
+			tal_defs += `\n\t\t$${sid} python:zmscontext.attr('$${id}');`
+			tal_defs += `\n\t\t$${sid}_obj python:'{' in url and zmscontext.getLinkObj($${sid},request) or None;`
+			tal_defs += `\n\t\t$${sid}_target python:$${sid}_obj and $${sid}_obj.getHref2IndexHtml(request) or $${sid};`
+		} else if ( meta_model[id]['meta_repetitive'] ) {
+			// ATTRTYPE COMPLEX/REPETITIVE 
+			tal_defs +=`\n\t\t$${sid}_list python:zmscontext.filteredChildNodes(request,'$${meta_model[id]['meta_type']}');`
 		} else {
-			tal_content += `\n\t<div class="$${item_short}" tal:content="$${item_short}">$${item_short}</div>`
+			// ATTRTYPE STRING (STANDARD)
+			tal_defs += `\n\t\t$${sid} python:zmscontext.attr('$${id}');`
 		}
 	}
-	Object.keys(meta_attrs).forEach(tal_def_render);
-	Object.keys(meta_attrs).forEach(tal_content_render);
+
+	// [2] Content
+	function tal_content_render(item) {
+		var id = String(item);
+		var sid = shorten_id(id);
+		if ( meta_model[id]['meta_type']=='image' ) {
+			// ATTRTYPE IMAGE
+			tal_content += `\n\t<img class="$${sid}" tal:attributes="src python:$${sid}.getHref(request)" alt="Image" />`;
+		} else if ( meta_model[id]['meta_type']=='url' ) {
+			// ATTRTYPE URL 
+			tal_content += `\n\t<a class="$${sid}" tal:condition="$${sid}" tal:attributes="href python:$${sid}_obj and $${sid}_target or $${sid}; target python:$${sid}_obj and '_self' or '_blank';">Link...</a>`;
+		} else if ( meta_model[id]['meta_type'] == 'file' ) {
+			// ATTRTYPE FILE
+			tal_content += `\n\t<a class="$${sid}" tal:condition="$${sid}" tal:attributes="href python:$${sid}.getHref(request);title python:'Download-File Size: %s, Type: %s'%($${sid}.getDataSizeStr(),$${sid}.getContentType())" tal:content="python:$${sid}.getFilename()">Filename</a>`;
+		} else if ( meta_model[id]['meta_type'] == 'richtext' ) {
+			// ATTRTYPE RICHTEXT
+			tal_content += `\n\t<div class="$${sid}" tal:content="structure $${sid}">$${sid}</div>`;
+		} else if ( meta_model[id]['meta_type'] == 'datetime' ) {
+			// ATTRTYPE DATE/TIME
+			tal_content += `\n\t<div class="$${sid}" tal:condition="$${sid}" tal:content="python:zmscontext.getLangFmtDate($${sid},request.get('lang'))">$${sid}</div>`;
+		} else if ( meta_model[id]['meta_repetitive'] ) {
+			// ATTRTYPE COMPLEX/REPETITIVE 
+			tal_content += `\n\t<div class="$${sid} repetitive" tal:condition="$${sid}_list">\n\t\t<tal:block tal:repeat="$${sid}_listitem $${sid}_list" tal:content="structure python:$${sid}_listitem.renderShort(request)">$${sid}</tal:block>\n\t</div>`;
+		} else {
+			// ATTRTYPE STRING (STANDARD)
+			tal_content += `\n\t<div class="$${sid}" tal:content="$${sid}">$${sid}</div>`;
+		}
+	}
+
+	// Render TAL-Code-Templates Parts
+	Object.keys(meta_model).forEach(tal_def_render);
+	Object.keys(meta_model).forEach(tal_content_render);
 	
-	var default_template = `<div title="Template-Helper: pre-alpha" 
+	// Assemble TAL-Code
+	var default_template = `<div title="EXPERIMENTAL: Generator for Default-ZPT-Code" 
 		tal:define="zmscontext options/zmscontext;
 		id python:zmscontext.getId();
 		css_class python:zmscontext.meta_id;$${tal_defs}"
 	tal:attributes="id id;class css_class">$${tal_content}\n</div>`;
+
+	// Write TAL-Code into Textarea
 	$target.val(default_template);
 	$target.animate({height: $target.prop('scrollHeight') + 'px'},600);
 
 }
-var zmi_code_default_btn = '<i onclick="generate_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default fas fa-sync  text-primary text-center\" style=\"cursor:pointer;display: block;position: absolute;text-align: right !important;right: .75em;padding: .5em;\"></i>';
+// Add Execute Button for TAL-Code-Regeneration
+var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default fas fa-redo-alt text-primary text-center\" style=\"cursor:pointer;display: block;position: absolute;text-align: right !important;right: .75em;padding: .5em;\"></i>';
 $(function(){
 	$('#meta_properties input[name="attr_type_standard_html"] ~ .zmi-code').prepend( zmi_code_default_btn);
 });

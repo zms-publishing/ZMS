@@ -250,7 +250,7 @@ $(function(){
 									eval($(this).attr('data-dblclickhandler'));
 								});
 						// Add closing button
-						var close_btn = '<i title="Close Editing" class="zmi-code-close fas fa-chevron-up text-primary text-center" style="cursor:pointer;margin: 0 0 0 calc(50% - 1rem);"></i>';
+						var close_btn = '<i title="Close Editing" class="zmi-code-close fas fa-chevron-up text-primary text-center" style="cursor:pointer;margin: 0 0 0 calc(50%);"></i>';
 						$single_line.append(close_btn);
 						$('.zmi-code-close',$single_line).click(
 							function() {

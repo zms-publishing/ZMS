@@ -149,17 +149,21 @@ class ObjInputs(object):
   #
   #	@param fmName
   #	@param elName
-  #	@param elId
+  #	@param elId		(optional: "string" or "")
   #	@param value
   #	@param enabled
   #	@param hidden	Add hidden Input-Field if not enabled
   #	@param css		CSS-Class
   #	@param btn		Appear as Bootstrap Button
   #	@return String
+  #
+  # Hint: In order to avoid multiple identical ids (HTML5 conformance) 
+  # call getCheckbox(..., elId='', ...) with an empty string for elId
   # ----------------------------------------------------------------------------
   def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, css='', btn=False, options=[0, 1]):
     lang = self.REQUEST.get('lang', self.getPrimaryLanguage())
-    elId = elName
+    if elId==None:
+      elId = elName
     if elId.endswith('_%s'%lang):
       elId = elId[:-len('_%s'%lang)]
     html = []
@@ -174,9 +178,9 @@ class ObjInputs(object):
     if btn:
       html.append('<span class="btn btn-secondary">')
     html.append('<input ')
-    if isinstance(elId, str):
+    if isinstance(elId, str) and elId!='':
       html.append(' id="%s"'%elId)
-    html.append(' class="%s"'%' '.join([css, elId, lang]))
+    html.append(' class="%s"'%' '.join([elId in [None,''] and elName or elId, css, lang]))
     html.append(' type="checkbox"')
     if not enabled:
       html.append(' disabled="disabled"')

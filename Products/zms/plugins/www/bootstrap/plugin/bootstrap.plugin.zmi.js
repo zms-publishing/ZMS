@@ -964,13 +964,13 @@ ZMI.prototype.initInputFields = function(container) {
 							);
 					}
 					var fn = function() {
-							$inputgroup.next("nav").remove();
+							$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
 							$.ajax({
 									url: 'zmi_breadcrumbs_obj_path',
 									data:{lang:getZMILang(),zmi_breadcrumbs_ref_obj_path:$input.val()},
 									datatype:'text',
 									success:function(response) {
-											$inputgroup.next("nav").remove();
+											$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
 											$inputgroup.after(response.replace(/<!--(.*?)-->/gi,'').trim());
 										}
 								});

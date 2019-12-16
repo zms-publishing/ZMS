@@ -810,8 +810,9 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     msg = "[%s@%s]"%(self.meta_id,self.absolute_url())+''.join(format_exception(t, v, tb))
     writeError(self,'[ZMSIndexZCatalog_func_] except %s'%msg)
 
-  response = request.RESPONSE
-  response.setHeader('Content-Type','text/plain')
+  response = getattr(request,'RESPONSE',None)
+  if response is not None:
+    response.setHeader('Content-Type','text/plain')
   return '\n'.join(printed)]]>
                   </item>
                   <item key="default"></item>
@@ -869,7 +870,7 @@ if url.startswith('{$') and url.endswith('}'):
   elif not url.startswith('__'):
     url = url.replace('@','/content/')
     l = url.split('/') 
-    ob = zmscontext
+    ob = zmscontext.getDocumentElement()
     try:
       for id in [x for x in l if x]:
         ob = getattr(ob,id,None)
@@ -1253,7 +1254,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.4.15</item>
+          <item key="revision">1.5.1</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -1272,7 +1273,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.4.15</item>
+          <item key="revision">1.5.1</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

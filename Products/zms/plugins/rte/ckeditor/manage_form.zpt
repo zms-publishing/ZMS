@@ -18,6 +18,7 @@
 <tal:block tal:condition="python:request.get('f_zmiRichtextOnSubmitEventHandler',True)">
 
 <!-- 
+OBSOLETE:
 Fix for can't edit fields of CKEditor in jQuery UI modal dialog
 @see http://forum.jquery.com/topic/can-t-edit-fields-of-ckeditor-in-jquery-ui-modal-dialog 
 -->

@@ -19,7 +19,7 @@ function ZMSGraphic_extEdit_initialize() {
 	$("body").append("<style>div.jcrop-holder input {display:none;visibility:hidden;}</style>");
 	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_crop").click(function() {
 			ZMSGraphic_action = 'crop';
-			changeJcropAvailability(true,true);
+			changeCropperAvailability(true,true);
 		});
 	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_preview").click(function() {
 			ZMSGraphic_action = 'preview';
@@ -139,7 +139,7 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 					$ZMI.writeDebug("BO beforeClose");
 					$('div#ZMSGraphic_extEdit_image').html('');
 					//$(".vslider").slider('destroy');
-					changeJcropAvailability(false);
+					changeCropperAvailability(false);
 					$ZMI.writeDebug("EO beforeClose");
 				}
 		});
@@ -272,14 +272,14 @@ function ZMSGraphic_extEdit_apply() {
 	return false;
 }
 
-function changeJcropAvailability(available, cropping)
+function changeCropperAvailability(available, cropping)
 {
 	if ($ZMSGraphic_cropapi != null) {
 		$ZMSGraphic_cropapi.destroy();
 	}
 	if (available) {
-		runPluginJcrop(function() {
-			$ZMSGraphic_img.Jcrop({
+		runPluginCropper(function() {
+			$ZMSGraphic_img.cropper({
 					allowSelect	: false,
 					setSelect: [ 0, 0, 25, 25 ],
 					minSize		: [25, 25],

@@ -73,13 +73,14 @@ function pluginSortable(s, c) {
 
 
 /**
- * Jcrop - the jQuery Image Cropping Plugin
- * @see http://deepliquid.com/content/Jcrop.html
+ * jquery-cropper - the jQuery Image Cropping Plugin
+ * @see https://github.com/fengyuanchen/jquery-cropper/
  */
-function runPluginJcrop(c) {
-	$.plugin('jcrop',{
-		files: ['/++resource++zms_/jquery/jcrop/jquery.Jcrop.min.js',
-				'/++resource++zms_/jquery/jcrop/jquery.Jcrop.css']
+function runPluginCropper(c) {
+	$.plugin('cropper',{
+		files: ['/++resource++zms_/jquery/cropper/cropper.min.js',
+				'/++resource++zms_/jquery/cropper/cropper.css',
+				'/++resource++zms_/jquery/cropper/jquery-cropper.min.js']
 		});
-	$.plugin('jcrop').get('body',c);
+	$.plugin('cropper').get('body',c);
 }

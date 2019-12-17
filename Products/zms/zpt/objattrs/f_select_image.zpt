@@ -27,7 +27,7 @@
 								<input class="form-control" type="text" id="ZMSGraphic_extEdit_width" name="ZMSGraphic_extEdit_width:int" size="4" value="0" />
 							</div>
 							<div class="form-group mr-2">
-								<label class="control-label mr-2" for="ZMSGraphic_extEdit_width" tal:content="structure python:' %s px '%(here.getZMILangStr('ATTR_HEIGHT'))"> Height px </label>
+								<label class="control-label mr-2" for="ZMSGraphic_extEdit_height" tal:content="structure python:' %s px '%(here.getZMILangStr('ATTR_HEIGHT'))"> Height px </label>
 								<input class="form-control" type="text" id="ZMSGraphic_extEdit_height" name="ZMSGraphic_extEdit_height:int" size="4" value="0" />
 							</div>
 							<div class="form-group form-check mr-2">
@@ -40,19 +40,18 @@
 			 	</tr>
 				<tr>
 					<td>
-						<!--
 						<div class="ZMSGraphic_extEdit_action">
-							<span class="btn btn-secondary" id="ZMSGraphic_extEdit_preview" tal:attributes="title python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview)),str(here.getConfProperty(max_generate_preview)))">
-								<i class="icon-resize-small"></i>
+							<span class="btn btn-secondary" id="ZMSGraphic_extEdit_preview" 
+									tal:attributes="title python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview)),str(here.getConfProperty(max_generate_preview)))">
+								<i class="fas fa-compress"></i>
 							</span>
 						</div>
 						<div class="ZMSGraphic_extEdit_action">
 							<span class="btn btn-secondary" id="ZMSGraphic_extEdit_crop" title="Crop image">
-								<i class="icon-crop"></i>
+								<i class="fas fa-crop"></i>
 							</span>
 						</div>
-						-->
-						<div class="verticalize" style="transform: rotate(90deg);width: 50px">
+						<div class="verticalize" style="transform: rotate(90deg);width:3.5rem;margin-top:2rem;">
 							<input type="range" id="ZMSGraphic_extEdit_slider" name="ZMSGraphic_extEdit_slider" 
 								class="custom-range mb-0 mt-4" style="width: auto;"
 								min="0" max="200" step="1" value="100" title="100"

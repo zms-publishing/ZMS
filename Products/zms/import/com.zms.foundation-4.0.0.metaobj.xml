@@ -3790,7 +3790,7 @@ return zmscontext.metaobj_recordset_main_grid( \
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![## Script (Python) "ZMSObjectSet.sortChildNodes"
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSObjectSet.sortChildNodes"
 ##bind container=container
 ##bind context=context
 ##bind namespace=

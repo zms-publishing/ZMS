@@ -121,7 +121,11 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 							$('div#ZMSGraphic_extEdit_image').html('<img src="'+result['src']+'" width="'+v+'%"/>');
 							$ZMSGraphic_img = $('div#ZMSGraphic_extEdit_image img');
 							// Slider
-							$("#ZMSGraphic_extEdit_slider").on("input", function() {
+
+							$(".modal-body #ZMSGraphic_extEdit_slider").on("input", function() {
+								$(this).trigger('change');
+							})
+							$(".modal-body #ZMSGraphic_extEdit_slider").on("change", function() {
 										var v = parseInt($(this).val());
 										console.log('Slider: ' + v);
 										var w = Math.round(v*ZMSGraphic_act_width/100);
@@ -142,8 +146,10 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 					changeCropperAvailability(false);
 					$ZMI.writeDebug("EO beforeClose");
 				}
+			// $('#ZMSGraphic_extEdit_template').remove();
 		});
 }
+
 
 /**
  * Apply changes to image.

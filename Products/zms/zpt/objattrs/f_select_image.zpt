@@ -11,7 +11,7 @@
 			'imgsuperres':'InstalledProducts.pil.hires.thumbnail.max'}.get(key,None)">
 
 	<tal:block tal:condition="python:request.get('f_zmiGraphicExtEdit',True)">
-		<div class="d-none">
+		<div id="ZMSGraphic_extEdit_template" class="d-none">
 			<div id="ZMSGraphic_extEdit_actions">
 				<table class="table table-borderless">
 				<colgroup>
@@ -23,11 +23,13 @@
 					<td>
 						<div class="form-inline">
 							<div class="form-group mr-2">
-								<label class="control-label mr-2" for="ZMSGraphic_extEdit_width" tal:content="structure python:'%s px '%(here.getZMILangStr('ATTR_WIDTH'))"> Width px </label>
+								<label class="control-label mr-2" for="ZMSGraphic_extEdit_width" 
+									tal:content="structure python:'%s px '%(here.getZMILangStr('ATTR_WIDTH'))"> Width px </label>
 								<input class="form-control" type="text" id="ZMSGraphic_extEdit_width" name="ZMSGraphic_extEdit_width:int" size="4" value="0" />
 							</div>
 							<div class="form-group mr-2">
-								<label class="control-label mr-2" for="ZMSGraphic_extEdit_height" tal:content="structure python:' %s px '%(here.getZMILangStr('ATTR_HEIGHT'))"> Height px </label>
+								<label class="control-label mr-2" for="ZMSGraphic_extEdit_height" 
+									tal:content="structure python:' %s px '%(here.getZMILangStr('ATTR_HEIGHT'))"> Height px </label>
 								<input class="form-control" type="text" id="ZMSGraphic_extEdit_height" name="ZMSGraphic_extEdit_height:int" size="4" value="0" />
 							</div>
 							<div class="form-group form-check mr-2">
@@ -42,7 +44,7 @@
 					<td>
 						<div class="ZMSGraphic_extEdit_action">
 							<span class="btn btn-secondary" id="ZMSGraphic_extEdit_preview" 
-									tal:attributes="title python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview)),str(here.getConfProperty(max_generate_preview)))">
+									tal:attributes="title python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview,400)),str(here.getConfProperty(max_generate_preview,400)))">
 								<i class="fas fa-compress"></i>
 							</span>
 						</div>
@@ -55,7 +57,6 @@
 							<input type="range" id="ZMSGraphic_extEdit_slider" name="ZMSGraphic_extEdit_slider" 
 								class="custom-range mb-0 mt-4" style="width: auto;"
 								min="0" max="200" step="1" value="100" title="100"
-								oninput="$(this).attr('value',this.value);$(this).attr('title',this.value);$('div#ZMSGraphic_extEdit_image').width(this.value+'%');console.log(this.value);"
 							/>
 						</div>
 					</td>

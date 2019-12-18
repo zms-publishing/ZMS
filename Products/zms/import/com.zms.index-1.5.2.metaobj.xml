@@ -398,7 +398,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       func_ = args[0]
     else:
       func_ = request.get('func_')
-    writeInfo(self,'########## ZMSIndexZCatalog.%s: args=%s, kwargs=%s'%(func_,str(args),str(kwargs)))
+    writeDebug(self,'########## ZMSIndexZCatalog.%s: args=%s, kwargs=%s'%(func_,str(args),str(kwargs)))
 
     ##############################################################################
     # Get uid
@@ -1254,7 +1254,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.5.1</item>
+          <item key="revision">1.5.2</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>
@@ -1273,7 +1273,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">com.zms.index</item>
           <item key="name">com.zms.index</item>
           <item key="package"></item>
-          <item key="revision">1.5.1</item>
+          <item key="revision">1.5.2</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

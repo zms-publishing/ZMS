@@ -21,7 +21,7 @@ from AccessControl.SecurityInfo import ModuleSecurityInfo
 import tempfile
 # Product Imports.
 from . import _fileutil
-# from . import standard
+from . import standard
 
 security = ModuleSecurityInfo('Products.zms.pilutil')
 

@@ -878,10 +878,15 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi .zmi-image-preview, .zmi-image-preview * {
 	max-width:100px;
 }
+.zmi .zmi-image-generate-preview {
+	padding-left:.5em;
+	padding-top:.5em;
+	font-size:smaller;
+}
 .zmi .zmi-image-generate-preview * {
 	float:left;
-	padding-left:0.5em;
-	padding-right:0.5em;
+	padding-left:.5em;
+	padding-right:.5em;
 	color:#888;
 }
 .zmi div.ZMSGraphic_extEdit_action {

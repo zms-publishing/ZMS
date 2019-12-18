@@ -94,7 +94,7 @@ function onExportFormatChange(el) {
 				</select>
 			</div>
 			<div id="div_charset" class="col-md-3 d-none">
-				<tal:block tal:content="structure python:here.getSelect(fmName='exportForm',elName='ZMS_CHARSET',value='utf-8',inputtype='select',lang_str='Encoding',required=1,optpl=here.enumManager.getValues('charset'), enabled=1, REQUEST=request)"></tal:block>
+				<tal:block tal:content="structure python:here.getSelect(fmName='exportForm',elName='ZMS_CHARSET',value='utf-8',inputtype='select',lang_str='Encoding',required=1,optpl=here.enumManager.getValues('charset'))"></tal:block>
 			</div><!-- .col-lg-3 -->
 			<div id="div_debug" class="col-md-2 d-none">
 				<tal:block tal:condition="python:'zms_log' in here.getDocumentElement().objectIds()">

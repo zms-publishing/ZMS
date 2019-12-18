@@ -49,7 +49,7 @@
 		<div class="form-group row">
 			<label class="col-sm-3 col-md-2 control-label mandatory" for="charset"><span>Charset</span></label>
 			<div class="col-sm-9 col-md-10">
-				<tal:block tal:content="structure python:here.getSelect(fmName='form0',elName='charset',value=getattr(here,'charset','utf-8'),inputtype='select',lang_str='Charset',required=1,optpl=here.enumManager.getValues('charset'),enabled=1,REQUEST=request)">select</tal:block>
+				<tal:block tal:content="structure python:here.getSelect(fmName='form0',elName='charset',value=getattr(here,'charset','utf-8'),inputtype='select',lang_str='Charset',required=1,optpl=here.enumManager.getValues('charset'))">select</tal:block>
 			</div>
 		</div><!-- .form-group -->
 		<div class="form-group row">

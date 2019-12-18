@@ -60,7 +60,7 @@ class DeprecatedAPI(object):
 
   def f_selectInput(self, *args, **kwargs):
     warn(self, 'f_selectInput', 'getSelect')
-    return here.getSelect(fmName=kwargs['fmName'], elName=kwargs['elName'], value=kwargs['value'], inputtype=kwargs['inputtype'], lang_str=kwargs['lang_str'], required=kwargs['required'], optpl=kwargs['optpl'], enabled=kwargs['enabled'], REQUEST=self.REQUEST)
+    return here.getSelect(fmName=kwargs['fmName'], elName=kwargs['elName'], value=kwargs['value'], inputtype=kwargs['inputtype'], lang_str=kwargs['lang_str'], required=kwargs['required'], optpl=kwargs['optpl'], enabled=kwargs['enabled'])
 
   def f_headline(self, *args, **kwargs):
     warn(self, 'f_headline', 'None')

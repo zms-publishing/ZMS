@@ -3900,7 +3900,7 @@ for filterIndex in range(10):
     res = standard.filter_list(res,sessionattr,sessionvalue,sessionop)
 
 # Order
-if 'qorder' in request and 'qorderdir' request:
+if 'qorder' in request and 'qorderdir' in request:
   session.set('qorder%s'%zmscontext.id,request['qorder'])
   session.set('qorderdir%s'%zmscontext.id,request['qorderdir'])
 qorder = ''

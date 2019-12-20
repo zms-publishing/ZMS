@@ -205,11 +205,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         v = record[k]
         if self.getConfProperty('ZMSSqlDb.record_encode__.k.lower'):
           k = k.lower()
-        if v is not None and (isinstance(v, str) or isinstance(v, str)):
-          try:
-            v = str(v, charset).encode(encoding)
-          except:
-            row[k+'_exception'] = standard.writeError( self, '[record_encode__]: can\'t %s'%k)
         row[k] = v
       return row
 
@@ -271,7 +266,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         except:
           return "NULL"
       else:
-        v = str(str(v), 'utf-8').encode(getattr(self, 'charset', 'utf-8'))
         if v.find("\'") >= 0: 
           v=''.join(v.split("\'"))
         return "'%s'"%v
@@ -597,11 +591,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
               for r in self.query('\n'.join(sql))['records']:
                 qkey = r['qkey']
                 qvalue = r['qvalue']
-                try:
-                  qkey =str(qkey, qcharset).encode('utf-8')
-                  qvalue = str(qvalue, qcharset).encode('utf-8')
-                except:
-                  pass
                 options.append([qkey, qvalue])
           column['value'] = value
           column['options'] = options
@@ -657,11 +646,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             for r in self.query('\n'.join(sql))['records']:
               qkey = r['qkey']
               qvalue = r['qvalue']
-              try:
-                qkey =str(qkey, qcharset).encode('utf-8')
-                qvalue = str(qvalue, qcharset).encode('utf-8')
-              except:
-                pass
               options.append([qkey, qvalue])
           column['src'] = src
           column['dst'] = dst
@@ -733,11 +717,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
               for r in self.query(sql)['records']:
                 qkey = r['qkey']
                 qvalue = r['qvalue']
-                try:
-                  qkey =str(qkey, qcharset).encode('utf-8')
-                  qvalue = str(qvalue, qcharset).encode('utf-8')
-                except:
-                  pass
                 options.append([qkey, qvalue])
               stereotype['options'] = stereotype.get('options', {})
               stereotype['options'][item['tablename']] = options
@@ -778,11 +757,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                 if r['fk%i'%i]:
                   qkey = str(r['fk%i'%i])
                   qvalue = str(r['displayfield%i'%i])
-                  try:
-                    qkey =str(qkey, qcharset).encode('utf-8')
-                    qvalue = str(qvalue, qcharset).encode('utf-8')
-                  except:
-                    pass
                 v.append(qkey)
                 l.append(qvalue)
               value.append(('|'.join(v), ' | '.join(l)))
@@ -894,7 +868,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                     colType = 'text'
                   else:
                     colType = 'string'
-                colId = str(colId).encode('utf-8')
                 col = {}
                 col['key'] = colId
                 col['description'] = colDescr.strip()

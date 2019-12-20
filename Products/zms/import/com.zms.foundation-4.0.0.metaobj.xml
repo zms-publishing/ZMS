@@ -3482,7 +3482,7 @@ $(function() {
 		});
 
 	$("#tabProperties").hide();
-	$(".zmi-change-uid").after(' <a href="javascript:;" onclick="$(\'#tabProperties\').toggle();">'+$ZMI.icon('fas fa-cogs')+'</a>');
+	$(".zmi-change-uid").after(' <a href="javascript:;" title="Change Objectset Configuration" onclick="$(\'#tabProperties\').toggle();"><i class="fas fa-cog"></i></a>');
 
 	// Relocate buttons.
 	var e = $(".controls.save:gt(0)").detach();

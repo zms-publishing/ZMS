@@ -5352,11 +5352,11 @@ function onKeyUpZMSTableDivContenteditable() {
 			<span class="btn btn-secondary" onclick="actionBtnClick(this,'move_col_left')"><i class="fas fa-caret-left" tal:attributes="title python:here.getZMILangStr('ACTION_MOVELEFT')"></i></span>
 			<span class="btn btn-secondary" onclick="actionBtnClick(this,'move_col_right')"><i class="fas fa-caret-right" tal:attributes="title python:here.getZMILangStr('ACTION_MOVERIGHT')"></i></span>
 			<span class="btn btn-secondary" onclick="actionBtnClick(this,'delete_col')" tal:condition="python:col_index>0 or table_type==1"><i class="fas fa-trash" tal:attributes="title python:here.getZMILangStr('ACTION_DELETE_COL')"></i></span>
-			<span class="btn btn-secondary" onclick="actionBtnClick(this,'insert_col')" tal:condition="python:col_index>0 or table_type==1"><i class="fas fa-expand-alt" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_COL')"></i></span>
+			<span class="btn btn-secondary" onclick="actionBtnClick(this,'insert_col')" tal:condition="python:col_index>0 or table_type==1"><i class="fas fa-plus" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_COL')"></i></span>
 		</div><!-- .btn-group -->
 	</td>
 	<td>
-		<span class="btn btn-secondary" onclick="actionBtnClick(this,'insert_col')"><i class="fas fa-expand-alt" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_COL')"></i></span>
+		<span class="btn btn-secondary" onclick="actionBtnClick(this,'insert_col')"><i class="fas fa-plus" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_COL')"></i></span>
 	</td>
 </tr>
 
@@ -5367,7 +5367,7 @@ function onKeyUpZMSTableDivContenteditable() {
 			
 			<span class="btn btn-secondary" onclick="actionBtnClick(this,'move_row_down')" tal:condition="python:row_index>0 or table_type==3"><i class="fas fa-caret-down" tal:attributes="title python:here.getZMILangStr('ACTION_MOVEDOWN')"></i></span>
 			<span class="btn btn-secondary" onclick="actionBtnClick(this,'delete_row')" tal:condition="python:row_index>0 or table_type==3"><i class="fas fa-trash" tal:attributes="title python:here.getZMILangStr('ACTION_DELETE_ROW')"></i></span>
-			<span class="btn btn-secondary" onclick="actionBtnClick(this,'insert_row')" tal:condition="python:row_index>0 or table_type==3"><i class="fas fa-expand-alt" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_ROW')"></i></span>
+			<span class="btn btn-secondary" onclick="actionBtnClick(this,'insert_row')" tal:condition="python:row_index>0 or table_type==3"><i class="fas fa-plus" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_ROW')"></i></span>
 		</div><!-- .btn-group -->
 	</td>
 	<tal:block tal:repeat="col_index python:range(len(table_table[row_index]))">
@@ -5409,7 +5409,7 @@ function onKeyUpZMSTableDivContenteditable() {
 
 <tr>
 	<td>
-		<span class="btn btn-secondary" onclick="actionBtnClick(this,'insert_row')"><i class="fas fa-expand-alt" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_ROW')"></i></span>
+		<span class="btn btn-secondary" onclick="actionBtnClick(this,'insert_row')"><i class="fas fa-plus" tal:attributes="title python:here.getZMILangStr('ACTION_INSERT_ROW')"></i></span>
 	</td>
 </tr>
 
@@ -5910,7 +5910,7 @@ if key.startswith('table_'):
           <item key="id">ZMSTable</item>
           <item key="name">ZMSTable</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">3.2.11</item>
+          <item key="revision">3.2.12</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>

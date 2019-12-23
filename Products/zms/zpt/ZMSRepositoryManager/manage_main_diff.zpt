@@ -86,14 +86,14 @@
 		</div>
 	</tal:block>
 
-	<tal:block tal:condition="provider_diffs_count">
-	<tal:block tal:repeat="provider_diff provider_diffs">
-	<tal:block tal:define="
+	<tal:block tal:condition="provider_diffs_count"
+	><tal:block tal:repeat="provider_diff provider_diffs"
+	><tal:block tal:define="
 		zmscontext python:here.getSelf();
 		provider python:provider_diff[0]; 
 		diffs python:provider_diff[1]; 
-		ids python:sorted(standard.distinct_list([x[2] for x in diffs])); ">
-	<div class="form-group row" tal:condition="ids">
+		ids python:sorted(standard.distinct_list([x[2] for x in diffs])); "
+	><div class="form-group row" tal:condition="ids">
 		<label class="col-sm-2 text-right" style="margin:0 0 auto 0;">
 			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"
 				tal:content="python:provider.id">the provider_diff
@@ -103,8 +103,8 @@
 			<table id="repo-diff-files" class="table">
 				<colgroup>
 				<col width="1em"/>
-				<col width="20%"/>
-				<col width="80%"/>
+				<col width="30%"/>
+				<col width="*"/>
 			</colgroup>
 			<tal:block tal:repeat="id ids">
 				<tr>
@@ -157,56 +157,54 @@
 	</tal:block>
 	</tal:block>
 
-	<tal:block tal:repeat="provider_diff provider_diffs"
-	><tal:block tal:define="provider python:provider_diff[0]; diffs python:provider_diff[1];"
-		><tal:block tal:repeat="diff diffs"
-		><tal:block tal:define="
-				filename python:diff[0];
-				mt python:diff[1];
-				l python:diff[3];
-				r python:diff[4];
-				ld python:[l.get('data'),''][l.get('data') is None];
-				rd python:[r.get('data'),''][r.get('data') is None];
-				is_modified python:len(ld)>0 and len(rd)>0;
-				is_text python:mt.startswith('text/') or mt in ['application/javascript']"
-		><table id="repo-diff-details" class="table table-borderless" tal:condition="is_modified" tal:attributes="id python:here.id_quote(filename)">
-		<tr>
-			<td>
-				<strong class="text-primary" tal:content="python:here.get_conf_basepath(provider.id+'/'+filename)"></strong>
-				(<em class="text-muted" tal:content="mt"></em>)
-				<small style="display:block">
-					<tal:block tal:condition="r">
-						Repository: 
-						<tal:block tal:content="python:'%s;; %i Bytes'%(str(r['version']),len(rd))"></tal:block>
+	<div id="repo-changesets">
+		<tal:block tal:repeat="provider_diff provider_diffs"
+			><tal:block tal:define="provider python:provider_diff[0]; diffs python:provider_diff[1];"
+				><tal:block tal:repeat="diff diffs"
+					><tal:block tal:define="
+							filename python:diff[0];
+							mt python:diff[1];
+							l python:diff[3];
+							r python:diff[4];
+							ld python:[l.get('data'),''][l.get('data') is None];
+							rd python:[r.get('data'),''][r.get('data') is None];
+							is_modified python:len(ld)>0 and len(rd)>0;
+							is_text python:mt.startswith('text/') or mt in ['application/javascript']"
+						><table id="repo-diff-details" class="table table-borderless" tal:condition="is_modified" tal:attributes="id python:here.id_quote(filename)">
+							<tr>
+								<td>
+									<strong class="text-primary" tal:content="python:here.get_conf_basepath(provider.id+'/'+filename)"></strong>
+									(<em class="text-muted" tal:content="mt"></em>)
+									<small style="display:block">
+										<tal:block tal:condition="l" tal:content="python:'ZODB: %s;; %i Bytes'%(str(l['version']),len(ld))"></tal:block>
+										<i tal:condition="python:here.get_colormode()=='outgoing'" class="icon-arrow-right fas fa-arrow-right"></i>
+										<i tal:condition="python:here.get_colormode()=='incoming'" class="icon-arrow-left fas fa-arrow-left"></i>
+										<tal:block tal:condition="r" tal:content="python:'Repository: %s;; %i Bytes'%(str(r['version']),len(rd))"></tal:block>
+									</small>
+								</td>
+							</tr>
+							<tr>
+								<td class="prettyTextDiff">
+									<pre class="diff"></pre>
+									<pre class="changed repository" tal:condition="is_text" tal:content="rd"></pre>
+									<pre class="original local" tal:condition="is_text" tal:content="ld"></pre>
+								</td>
+							</tr>
+						</table>
 					</tal:block>
-					<i tal:condition="python:here.get_colormode()=='incoming'" class="icon-arrow-right fas fa-arrow-right"></i>
-					<i tal:condition="python:here.get_colormode()=='outgoing'" class="icon-arrow-left fas fa-arrow-left"></i>
-					<tal:block tal:condition="l">
-						ZODB: 
-						<tal:block tal:content="python:'%s;; %i Bytes'%(str(l['version']),len(ld))"></tal:block>
-					</tal:block>
-				</small>
-			</td>
-		</tr>
-		<tr>
-			<td class="prettyTextDiff">
-				<pre class="diff"></pre>
-				<pre class="changed repository" tal:condition="is_text" tal:content="rd"></pre>
-				<pre class="original local" tal:condition="is_text" tal:content="ld"></pre>
-			</td>
-		</tr>
-		</table>
+				</tal:block>
+			</tal:block>
 		</tal:block>
-		</tal:block>
-	</tal:block>
-	</tal:block>
-
-	</tal:block>
+	</div>
+</tal:block>
 </tal:block>
 
 <script>
 //<!--
 	$(function() {
+		if ( $('.prettyTextDiff') ) {
+			$('#repo-changesets').prepend('<h4>Changesets</h4>');
+		}
 		$(".prettyTextDiff").each(function() {
 			var diffContainer = ".diff";
 			$(this).prettyTextDiff({

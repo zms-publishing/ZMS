@@ -107,6 +107,14 @@ class ZMSRepositoryManager(
 
 
     """
+    Returns coloring mode showing code diffs: 
+    incomming vs. outgoing
+    """
+    def get_colormode(self):
+      return getattr(self,'colormode','incoming')
+
+
+    """
     Returns auto-update.
     """
     def get_auto_update(self):
@@ -137,6 +145,7 @@ class ZMSRepositoryManager(
     def startDaemon(self):
       self.writeLog("[startDaemon]")
       self.exec_auto_update()
+
 
     """
     @see IZMSRepositoryManager
@@ -208,12 +217,12 @@ class ZMSRepositoryManager(
         r = remote.get(filename, {})
         if isinstance(l.get('data', ''),bytes):
           try:
-            l['data'] = l['data'].decode()
+            l['data'] = l['data'].decode('utf-8')
           except:
             pass
         if isinstance(r.get('data', ''),bytes):
           try:
-            r['data'] = r['data'].decode()
+            r['data'] = r['data'].decode('utf-8')
           except:
             pass
         if l.get('data', '') != r.get('data', ''):
@@ -487,6 +496,7 @@ class ZMSRepositoryManager(
         self.auto_update = REQUEST.get('auto_update','')!=''
         self.last_update = self.parseLangFmtDate(REQUEST.get('last_update',''))
         self.setConfProperty('ZMS.conf.path',REQUEST.get('basepath',''))
+        self.colormode = REQUEST.get('colormode','incoming')
         message = self.getZMILangStr('MSG_CHANGED')
       
       elif btn == 'commit':

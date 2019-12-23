@@ -1,69 +1,75 @@
 <style>
-.line-number {
-	width:4em;
-	background:#FEFEFE;
-	color:#101010;
-	border:1px solid #CCC;
-	display:inline-block;
-	text-align:right;
-	padding:0 4px 0 4px;
-}
-.line-number.line-changed {
-	background:#101010;
-	color:#FEFEFE;
-}
-.arrow-right {
-	display:inline-block;
-	margin-left:.5em;
-	width: 0; 
-	height: 0; 
-	border-top: 4px solid transparent;
-	border-bottom: 4px solid transparent;
-	border-left: 4px solid #101010;
-}
-.arrow-left {
-	display:inline-block;
-	margin-left:.5em;
-	width: 0; 
-	height: 0; 
-	border-top: 4px solid transparent;
-	border-bottom: 4px solid transparent; 
-	border-right:4px solid #418CF1; 
+/*<!--*/
+	.line-number {
+		width:4em;
+		background:#FEFEFE;
+		color:#101010;
+		border:1px solid #CCC;
+		display:inline-block;
+		text-align:right;
+		padding:0 4px 0 4px;
 	}
-.state {
-	display:inline-block;
-	width:16px;
-	height:16px;
-	border:solid 1px #ccc;
-}
-del {
-	color:#777!important;
-	background-color:#F2DEDE!important;
-	text-decoration:line-through;
-}
-ins {
-	color: #3C763D!important;
-	background-color: #DFF0D8!important;
-	text-decoration:none;
-}
-.prettyTextDiff .original, 
-.prettyTextDiff .changed {
-	display:none;
-}
+	.line-number.line-changed {
+		background:#101010;
+		color:#FEFEFE;
+	}
+	.state {
+		display:inline-block;
+		width:16px;
+		height:16px;
+		border:solid 1px #ccc;
+	}
+	del {
+		color:#777!important;
+		background-color:#f8d7da!important;
+		text-decoration:line-through;
+	}
+	ins {
+		color: #3C763D!important;
+		background-color: #d4edda!important;
+		text-decoration:none;
+	}
+	.tab-content[data-colormode='outgoing'] ins,
+	.tab-content[data-colormode='outgoing'] table .state.alert-success {
+		background-color:#f8d7da!important;
+		text-decoration:line-through;
+	}
+	.tab-content[data-colormode='outgoing'] del,
+	.tab-content[data-colormode='outgoing'] table .state.alert-danger {
+		background-color:#d4edda !important;
+		text-decoration:none;
+	}
+	.prettyTextDiff .original, 
+	.prettyTextDiff .changed {
+		display:none;
+	}
+	.table.table-borderless,
+	.table.table-borderless th,
+	.table.table-borderless td {
+		border:none !important;
+		padding:.2em 0;
+	}
+	.table.table-borderless {
+		margin-bottom:3em;
+	}
+/*-->*/
 </style>
 
-	<tal:block tal:define="
-			dummy0 python:request.set('ZMI_LIBS_SCRIPT',request.get('ZMI_LIBS_SCRIPT',[])+
-				['/++resource++zms_/jquery/diff/diff_match_patch.js'
-				,'/++resource++zms_/jquery/diff/jquery.pretty-text-diff.min.js'
-				]);
-			standard modules/Products.zms/standard;
-			provider_diffs python:[(x,here.getDiffs(x)) for x in here.getRepositoryProviders()];
-			provider_diffs_count python:sum([len(x[1]) for x in provider_diffs]+[0])">
+<tal:block tal:define="
+	dummy0 python:request.set('ZMI_LIBS_SCRIPT',request.get('ZMI_LIBS_SCRIPT',[])+
+		['/++resource++zms_/jquery/diff/diff_match_patch.js'
+		,'/++resource++zms_/jquery/diff/jquery.pretty-text-diff.min.js'
+		]);
+	standard modules/Products.zms/standard;
+	provider_diffs string: TYPE-ERROR by python3: [(x,here.getDiffs(x)) for x in here.getRepositoryProviders()] == cannot use a bytes pattern on a string-like object;
+	provider_diffs python:[];
+	provider_diffs_count python:sum([len(x[1]) for x in provider_diffs]+[0])">
+
+	<div class="alert alert-danger">ERROR: Diff-Generation with Python 3 still under Construction!</div>
 
 	<tal:block tal:condition="not:provider_diffs_count">
-		<div class="form-group row" tal:repeat="provider python:here.getRepositoryProviders()">
-			<label class="col-sm-2 text-right" style="margin:0.75em 0 auto 0;">
+		<div class="form-group filelist row" tal:repeat="provider python:here.getRepositoryProviders()">
+			<label class="col-sm-2 text-right" style="margin:0 0 auto 0;">
 				<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
 			</label>
 			<div class="col-sm-10" tal:define="
@@ -72,8 +78,8 @@ ins {
 					">
 				<div tal:repeat="id ids">
 					<i class="fas fa-check text-success"></i>
-					<a tal:attributes="href python:'%s/manage_main?lang=%s&id=%s'%(provider.absolute_url(),request['lang'],id)" target="_blank"> 
-						<tal:block tal:content="id"></tal:block>
+					<a tal:attributes="href python:'%s/manage_main?lang=%s&id=%s'%(provider.absolute_url(),request['lang'],id)" target="_blank"
+						tal:content="id">id
 					</a>
 				</div>
 			</div>
@@ -83,17 +89,19 @@ ins {
 	<tal:block tal:condition="provider_diffs_count">
 	<tal:block tal:repeat="provider_diff provider_diffs">
 	<tal:block tal:define="
-			zmscontext python:here.getSelf();
-			provider python:provider_diff[0]; 
-			diffs python:provider_diff[1]; 
-			ids python:sorted(standard.distinct_list([x[2] for x in diffs])); ">
+		zmscontext python:here.getSelf();
+		provider python:provider_diff[0]; 
+		diffs python:provider_diff[1]; 
+		ids python:sorted(standard.distinct_list([x[2] for x in diffs])); ">
 	<div class="form-group row" tal:condition="ids">
-		<label class="col-sm-2 text-right" style="margin:0.75em 0 auto 0;">
-			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
+		<label class="col-sm-2 text-right" style="margin:0 0 auto 0;">
+			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"
+				tal:content="python:provider.id">the provider_diff
+			</a>
 		</label>
 		<div class="col-sm-10">
-			<table class="table">
-			<colgroup>
+			<table id="repo-diff-files" class="table">
+				<colgroup>
 				<col width="1em"/>
 				<col width="20%"/>
 				<col width="80%"/>
@@ -120,17 +128,24 @@ ins {
 								is_incoming python:is_modified and sum((str(i).isdigit() and int(i)) for i in l.get('version',[0])) < sum((str(i).isdigit() and int(i)) for i in r.get('version',[0]));
 								is_outgoing python:is_modified and sum((str(i).isdigit() and int(i)) for i in l.get('version',[0])) > sum((str(i).isdigit() and int(i)) for i in r.get('version',[0]));
 								is_removed python:len(ld)>0 and len(rd)==0;">
-									<i tal:condition="python:l and l.get('data') is None" class="icon-warning-sign text-danger" title="not found!"></i>
+									<i tal:condition="python:l and l.get('data') is None" class="fas fa-warning-sign text-danger" title="not found!"></i>
 									<tal:block tal:condition="not:python:l and l.get('data') is None">
 										<span tal:attributes="class python:' '.join(['state']
 											+[[],['alert-success']][is_new]
 											+[[],['alert-warning']][is_modified]
 											+[[],['alert-danger']][is_removed]
-											)">&nbsp;</span>
+											);title python: is_incoming and 
+											'INCOMING - ZODB: %s;; Repository: %s'%(
+												str(l.get('version','')),
+												str(r.get('version',''))
+												) or ( 
+											is_outgoing and 
+											'OUTGOING - ZODB: %s;; Repository: %s'%(
+												str(l.get('version','')),
+												str(r.get('version',''))
+												) or '')">&nbsp;</span>
 									</tal:block>
 									<a tal:attributes="href python:'#%s'%here.id_quote(filename)" tal:content="python:filename">the filename</a>
-									<tal:block tal:condition="is_incoming"><div class="arrow-left" tal:attributes="title python:'Incoming - ZODB: %s;; Repository: %s'%(str(l.get('version','')),str(r.get('version','')))"></div></tal:block>
-									<tal:block tal:condition="is_outgoing"><div class="arrow-right" tal:attributes="title python:'Outgoing - ZODB: %s;; Repository: %s'%(str(l.get('version','')),str(r.get('version','')))"></div></tal:block>
 						</tal:block>
 					</div>
 					</td>
@@ -142,21 +157,10 @@ ins {
 	</tal:block>
 	</tal:block>
 
-	<div class="form-group row">
-		<label class="col-sm-2"></label>
-		<div class="col-sm-10">
-			<small>
-				<span class="state alert-success">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_NEW')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<span class="state alert-warning">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<span class="state balert-danger">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_DELETED')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			</small>
-		</div><!-- .col-sm-10 -->
-	</div><!-- .form-group -->
-
-	<tal:block tal:repeat="provider_diff provider_diffs">
-	<tal:block tal:define="provider python:provider_diff[0]; diffs python:provider_diff[1];">
-		<tal:block tal:repeat="diff diffs">
-		<tal:block tal:define="
+	<tal:block tal:repeat="provider_diff provider_diffs"
+	><tal:block tal:define="provider python:provider_diff[0]; diffs python:provider_diff[1];"
+		><tal:block tal:repeat="diff diffs"
+		><tal:block tal:define="
 				filename python:diff[0];
 				mt python:diff[1];
 				l python:diff[3];
@@ -164,24 +168,24 @@ ins {
 				ld python:[l.get('data'),''][l.get('data') is None];
 				rd python:[r.get('data'),''][r.get('data') is None];
 				is_modified python:len(ld)>0 and len(rd)>0;
-				is_text python:mt.startswith('text/') or mt in ['application/javascript']">
-		<table class="table" tal:condition="is_modified" tal:attributes="id python:here.id_quote(filename)">
+				is_text python:mt.startswith('text/') or mt in ['application/javascript']"
+		><table id="repo-diff-details" class="table table-borderless" tal:condition="is_modified" tal:attributes="id python:here.id_quote(filename)">
 		<tr>
 			<td>
-				<strong tal:content="python:here.get_conf_basepath(provider.id+'/'+filename)"></strong>
-				(<em tal:content="mt"></em>)
-				<small>
+				<strong class="text-primary" tal:content="python:here.get_conf_basepath(provider.id+'/'+filename)"></strong>
+				(<em class="text-muted" tal:content="mt"></em>)
+				<small style="display:block">
 					<tal:block tal:condition="r">
 						Repository: 
 						<tal:block tal:content="python:'%s;; %i Bytes'%(str(r['version']),len(rd))"></tal:block>
 					</tal:block>
-					->
+					<i tal:condition="python:here.get_colormode()=='incoming'" class="icon-arrow-right fas fa-arrow-right"></i>
+					<i tal:condition="python:here.get_colormode()=='outgoing'" class="icon-arrow-left fas fa-arrow-left"></i>
 					<tal:block tal:condition="l">
 						ZODB: 
 						<tal:block tal:content="python:'%s;; %i Bytes'%(str(l['version']),len(ld))"></tal:block>
 					</tal:block>
 				</small>
-				<a href="#zmi-tab"><i class="icon-collapse-top far fa-caret-square-up"></i></a>
 			</td>
 		</tr>
 		<tr>
@@ -196,55 +200,58 @@ ins {
 		</tal:block>
 	</tal:block>
 	</tal:block>
+
 	</tal:block>
-	</tal:block>
+</tal:block>
 
 <script>
+//<!--
 	$(function() {
 		$(".prettyTextDiff").each(function() {
-						var diffContainer = ".diff";
-						$(this).prettyTextDiff({
-								cleanup:true,
-								originalContainer:".original",
-								changedContainer:".changed",
-								diffContainer:diffContainer
-							});
-						var $diffContainer = $(diffContainer,this);
-						var lines = $diffContainer.html().replace(/<span>/gi,'').replace(/<\/span>/gi,'').split("<br>");
-						var show = [];
-						var changed = false;
-						for (var i = 0; i < lines.length; i++) {
-							var line = lines[i];
-							changed |= line.indexOf("<"+"del>")>=0 || line.indexOf("<ins>")>=0;
-							if (changed) {
-								show.push(i);
-							}
-							changed &= !(line.indexOf("<"+"/del>")>=0 || line.indexOf("</ins>")>=0);
-						}
-						var html = [];
-						changed = false;
-						for (var i = 0; i < lines.length; i++) {
-							var line = lines[i];
-							changed |= line.indexOf("<"+"del>")>=0 || line.indexOf("<"+"ins>")>=0;
-							line = '<'+'span class="line-number'+(changed?' line-changed':'')+'">'+(i+1)+'</span> '+lines[i];
-							if (!(show.contains(i-1) || show.contains(i) || show.contains(i+1))) {
-								line = '<'+'span class="diff-unchanged d-none">'+line+'<'+'/span>';
-							}
-							else {
-								line = line+'<'+'br/>';
-							}
-							html.push(line);
-							changed &= !(line.indexOf("<"+"/del>")>=0 || line.indexOf("<"+"/ins>")>=0);
-						}
-						$diffContainer.html(html.join(""));
-						$("strong",$(this).closest("tr").prev("tr")).addClass("zmi-helper-clickable").click(function() {
-								if ($(".diff-unchanged.d-none",$diffContainer).length > 0) {
-									$(".diff-unchanged",$diffContainer).removeClass("d-none").after("<br>");
-								}
-								else if ($(".diff-unchanged",$diffContainer).length > 0) {
-									$(".diff-unchanged",$diffContainer).addClass("d-none").next("br").remove();
-								}
-							});
+			var diffContainer = ".diff";
+			$(this).prettyTextDiff({
+				cleanup:true,
+				originalContainer:".original",
+				changedContainer:".changed",
+				diffContainer:diffContainer
+			});
+			var $diffContainer = $(diffContainer,this);
+			var lines = $diffContainer.html().replace(/<span>/gi,'').replace(/<\/span>/gi,'').split("<br>");
+			var show = [];
+			var changed = false;
+			for (var i = 0; i < lines.length; i++) {
+				var line = lines[i];
+				changed |= line.indexOf("<"+"del>")>=0 || line.indexOf("<ins>")>=0;
+				if (changed) {
+					show.push(i);
+				}
+				changed &= !(line.indexOf("<"+"/del>")>=0 || line.indexOf("</ins>")>=0);
+			}
+			var html = [];
+			changed = false;
+			for (var i = 0; i < lines.length; i++) {
+				var line = lines[i];
+				changed |= line.indexOf("<"+"del>")>=0 || line.indexOf("<"+"ins>")>=0;
+				line = '<'+'span class="line-number'+(changed?' line-changed':'')+'">'+(i+1)+'</span> '+lines[i];
+				if (!(show.contains(i-1) || show.contains(i) || show.contains(i+1))) {
+					line = '<'+'span class="diff-unchanged d-none">'+line+'<'+'/span>';
+				}
+				else {
+					line = line+'<'+'br/>';
+				}
+				html.push(line);
+				changed &= !(line.indexOf("<"+"/del>")>=0 || line.indexOf("<"+"/ins>")>=0);
+			}
+			$diffContainer.html(html.join(""));
+			$("strong",$(this).closest("tr").prev("tr")).addClass("zmi-helper-clickable").click(function() {
+				if ($(".diff-unchanged.d-none",$diffContainer).length > 0) {
+					$(".diff-unchanged",$diffContainer).removeClass("d-none").after("<br>");
+				}
+				else if ($(".diff-unchanged",$diffContainer).length > 0) {
+					$(".diff-unchanged",$diffContainer).addClass("d-none").next("br").remove();
+				}
 			});
 		});
+	});
+// -->
 </script>

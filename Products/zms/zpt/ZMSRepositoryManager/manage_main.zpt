@@ -24,7 +24,7 @@
 		</li>
 	</ul>
 </nav><!-- #subTab -->
-<div class="tab-content">
+<div class="tab-content" tal:attributes="data-colormode here/get_colormode"> 
 	<div class="tab-pane fade active show" id="diff">
 		<form class="form-horizontal card" action="manage_change" method="post">
 		<input type="hidden" name="lang" tal:attributes="value request/lang" />

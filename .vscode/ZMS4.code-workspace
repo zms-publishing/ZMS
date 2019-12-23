@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "/home/dev/workspace/zopefoundation/Products.LDAPMultiPlugins"
+		},
+		{
+			"path": "/home/dev/workspace/ZMS3"
 		}
 	],
 	"settings": {

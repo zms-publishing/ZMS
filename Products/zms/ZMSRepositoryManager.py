@@ -227,8 +227,12 @@ class ZMSRepositoryManager(
             pass
         if l.get('data', '') != r.get('data', ''):
           data = l.get('data', r.get('data', ''))
-          mt, enc = standard.guess_content_type(filename, data)
-          diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
+          try:
+            mt, enc = standard.guess_content_type(filename, data)
+            diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
+          except:
+            self.writeBlock("[getDiffs]: Error in appending filename = %s to variable data, Line 232"%str(filename))
+            pass
       return diff
 
 

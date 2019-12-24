@@ -28,7 +28,7 @@
 		"svn.default.encoding":"utf-8",
 		"svn.enableProposedApi": "product",
 		"svn.defaultCheckoutDirectory": "https://zmslabs.org/svn/zmslabs/ZMS/branches/zms4/",
-		"workbench.iconTheme": "vscode-icons",
+		"workbench.iconTheme": "vs-minimal",
 		"files.associations": {
 			"*.zpt": "html",
 			"*.zcml": "xml"

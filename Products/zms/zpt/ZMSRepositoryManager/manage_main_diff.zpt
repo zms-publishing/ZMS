@@ -78,12 +78,7 @@
 	provider_diffs_count python:sum([len(x[1]) for x in provider_diffs]+[0])">
 
 	<div class="alert alert-info">
-		INFO: Diff-Processing with Python 3 still under Construction!
-		<code class="d-block">
-			Model data are exported as byte stream and not decoded as utf-8.
-			Thus a type error "cannot use a bytes pattern on a string-like object" may occur due to getDiffs(x) in LINE 64
-		</code>
-
+		INFO: Use with care; diff-processing with Python3 is still under construction!
 	</div>
 
 	<tal:block tal:condition="not:provider_diffs_count">
@@ -97,7 +92,7 @@
 					">
 				<div tal:repeat="id ids">
 					<i class="fas fa-check text-success"></i>
-					<a tal:attributes="href python:'%s/manage_main?lang=%s&id=%s'%(provider.absolute_url(),request['lang'],id)" target="_blank"
+					<a tal:attributes="href python:'%s/manage_%s?lang=%s&id=%s'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id)" target="_blank"
 						tal:content="id">id
 					</a>
 				</div>
@@ -129,7 +124,7 @@
 				<tr>
 					<td><input type="checkbox" name="ids:list" tal:attributes="value python:'%s:%s'%(provider.id,id)" checked="checked"></td>
 					<td>
-						<a tal:attributes="href python:'%s/manage_main?lang=%s&id=%s'%(provider.absolute_url(),request['lang'],id)" target="_blank"> 
+						<a tal:attributes="href python:'%s/manage_%s?lang=%s&id=%s'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id)" target="_blank"> 
 							<strong tal:content="id">the id</strong>
 						</a>
 					</td>

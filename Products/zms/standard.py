@@ -1582,13 +1582,13 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
       else:
         i = i.encode(encoding, errors)
     else:
-      i = str(i)
+      i = i.decode(encoding,errors) # str(i)
     if allow_booleans and i in ['true','false']:
       return i
     else:
       if type(i) is not str:
-        i = str(i)
-      return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
+        i = i.decode(encoding,errors) # str(i)
+    return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
   return '""'
 
 

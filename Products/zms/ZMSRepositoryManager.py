@@ -39,6 +39,8 @@ from . import zopeutil
 
 
 def get_class(py):
+  if isinstance(py,bytes):
+    py = py.decode('utf-8')
   id = re.findall('class (.*?):', py)[0]
   exec(py)
   return eval(id)
@@ -367,6 +369,11 @@ class ZMSRepositoryManager(
               f = open(filepath, "rb")
               py = f.read()
               f.close()
+              try:
+                if isinstance(py, bytes):
+                  py = py.decode('utf-8')
+              except:
+                pass
               # Analyze python-representation of repository-object
               d = {}
               try:
@@ -392,11 +399,17 @@ class ZMSRepositoryManager(
                         f = open(artefact, "rb")
                         data = f.read()
                         f.close()
-                        if artefact.endswith('.zpt') and type(data) is str:
-                          data = unicode(data,'utf-8')
+                        try:
+                          if isinstance(data, bytes):
+                            data = data.decode('utf-8')
+                        except:
+                          pass
                         vv['data'] = data
                         break
-                    v.append((py.find('\t\t%s ='%kk), vv))
+                    if isinstance(py,bytes):
+                      v.append((py.decode('utf-8').find('\t\t%s ='%kk), vv))
+                    else:
+                      v.append((py.find('\t\t%s ='%kk), vv))
                   v.sort()
                   v = [x[1] for x in v]
                 r[id][k] = v

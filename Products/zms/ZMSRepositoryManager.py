@@ -127,13 +127,13 @@ class ZMSRepositoryManager(
     Returns last-update.
     """
     def get_last_update(self):
-      return getattr(self, 'last_update', None)
+      return getattr(self, 'last_update', 0)
 
 
     """
     Returns conf-basepath.
     """
-    def get_conf_basepath(self, id=''):
+    def get_conf_basepath(self, id='conf'):
       basepath = self.get_conf_property('ZMS.conf.path')
       basepath = basepath.replace('$INSTANCE_HOME', standard.getINSTANCE_HOME())
       basepath = basepath.replace('$HOME_ID',"/".join([x.getHome().id for x in self.breadcrumbs_obj_path() if x.meta_id=='ZMS']))
@@ -165,7 +165,8 @@ class ZMSRepositoryManager(
     def exec_auto_update(self):
       #-- [ReqBuff]: Fetch buffered value from Http-Request.
       reqBuffId = 'ZMSRepositoryManager.exec_auto_update'
-      try: return self.fetchReqBuff(reqBuffId)
+      try: 
+        return self.fetchReqBuff(reqBuffId)
       except:
         #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
         self.storeReqBuff(reqBuffId, True)
@@ -174,7 +175,7 @@ class ZMSRepositoryManager(
         current_time = time.time()
         if self.get_auto_update():
           last_update = self.get_last_update()
-          if last_update is None or standard.getDateTime(last_update)<standard.getDateTime(self.Control_Panel.process_start) or self.getConfProperty('ZMS.debug', 0):
+          if ( last_update==0 or standard.getDateTime(last_update)<standard.getDateTime(self.Control_Panel.process_start) ) and self.getConfProperty('ZMS.debug', 0)==True:
             self.writeBlock("[exec_auto_update]: Run...")
             def traverse(path):
               l = []
@@ -189,23 +190,23 @@ class ZMSRepositoryManager(
               return l
             basepath = self.get_conf_basepath()
             files = traverse(basepath)
-            mtime = max([x[0] for x in files]+[None])
-            self.writeBlock("[exec_auto_update]: %s<%s"%(str(last_update), str(mtime)))
-            if last_update is None or standard.getDateTime(last_update)<standard.getDateTime(mtime):
+            mtime = max([x[0] for x in files]+[0])
+            self.writeBlock("[exec_auto_update]: %s < %s"%(standard.format_datetime_iso(standard.getDateTime(last_update)), standard.format_datetime_iso(standard.getDateTime(mtime))))
+            if last_update==0 or ( standard.getDateTime(last_update) < standard.getDateTime(mtime) ):
               update_files = [x[1][len(basepath):] for x in files if last_update is None or standard.getDateTime(x[0])<standard.getDateTime(last_update)]
               temp_files = [x.split(os.path.sep) for x in update_files]
               temp_files = \
                 [[x[0], x[-1].replace('.py', '')] for x in temp_files if len(x)==2] + \
                 [[x[0], x[-2]] for x in temp_files if len(x)>2]
-              # avoid processing of hidden files, e.g. .DS_Store on macOS
-              temp_files = [x for x in temp_files if x.startswith('.')]
+              # avoid processing of hidden files, e.g. .DS_Store on macOS (1)
+              temp_files = [x for x in temp_files if x[-1].startswith('.')]
               ids = list(set([':'.join(x) for x in temp_files]))
-              # avoid processing of hidden files, e.g. .DS_Store on macOS
-              ids = [x for x in ids if ':.' not in x]
+              # avoid processing of hidden files, e.g. .DS_Store on macOS (2)
+              # ids = [x for x in ids if ':.' not in x]
               self.writeBlock("[exec_auto_update]: %s"%str(ids))
               self.updateChanges(ids, override=True)
             self.last_update = standard.getDateTime(current_time)
-        self.writeLog("[exec_auto_update]: %s"%str(time.time()-current_time))
+        self.writeLog("[exec_auto_update]: %s seconds needed"%(str(time.time()-current_time)))
 
 
     def getDiffs(self, provider):
@@ -230,7 +231,10 @@ class ZMSRepositoryManager(
         if l.get('data', '') != r.get('data', ''):
           data = l.get('data', r.get('data', ''))
           try:
-            mt, enc = standard.guess_content_type(filename, data)
+            try:
+              mt, enc = standard.guess_content_type(filename.split('/')[-1], data)
+            except:
+              mt, enc = standard.guess_content_type(filename.split('/')[-1], data.encode('utf-8'))
             diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
           except:
             self.writeBlock("[getDiffs]: Error in appending filename = %s to variable data, Line 232"%str(filename))
@@ -332,8 +336,8 @@ class ZMSRepositoryManager(
               rd['data'] = py
               rd['version'] = d.get("revision",self.getLangFmtDate(os.path.getmtime(filepath),'eng'))
               r[rd['filename']] = rd
-              # Read artefacts
-              for file in [x for x in names if x != name]:
+              # Read artefacts and avoid processing of hidden files, e.g. .DS_Store on macOS 
+              for file in [x for x in names if x != name and not x.startswith('.')]:
                 artefact = os.path.join(path,file)
                 mode = os.stat(artefact)[stat.ST_MODE]
                 if not stat.S_ISDIR(mode):

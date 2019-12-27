@@ -31,13 +31,12 @@
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
 	<input tal:condition="python:'qorder' in request" type="hidden" name="qorder" tal:attributes="value request/qorder">
 	<input tal:condition="python:'qorderdir' in request" type="hidden" name="qorderdir" tal:attributes="value request/qorderdir">
-	<div class="card perc100">
-		<div class="card-header attr_last_modified btn-collapse">
-			<a class="btn card-toggle pull-left" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
-				><i class="fas fa-caret-right"></i
-				><tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
+	<div class="card">
+		<div class="card-header attr_last_modified clearfix btn-collapse">
+			<a class="btn card-toggle" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
+				><i class="fas fa-caret-right"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
 			></a>
-			<div class="pull-left" tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
+			<div class="btn zmi-changes" tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
 		</div><!-- .card-header -->
 		<div id="attrActivity" class="collapse">
 			<div class="card-body">
@@ -49,20 +48,20 @@
 				<span title="Unique ID" class="get_uid" tal:content="python:'ID:%s'%(here.get_uid())">unique-id</span>
 			</div><!-- .card-body -->
 		</div><!-- .collapse -->
-		<div class="card-header filters">
+
+		<div class="card-header filters clearfix btn-collapse">
 			<a class="btn card-toggle pull-left" data-toggle="collapse" href="#attrProperties">
 				<i class="fas fa-caret-down"></i>
-			</a>
-			<label class="control-label">
 				<i class="fas fa-filter"></i>
 				<tal:block tal:content="structure python:here.getZMILangStr('ATTR_FILTER')">the label</tal:block>
-			</label>
+			</a>
+			<input type="hidden" id="qfilters" name="qfilters:int" tal:attributes="value request/qfilters" />
 		</div><!-- .card-header -->
 
 		<div id="attrProperties" class="filters collapse show">
 			<div class="card-body">
 				<tal:block tal:repeat="filterIndex python:range(request.get('qfilters',1)+1)">
-					<div tal:attributes="class python:' '.join(['form-row']+[[],['hidden']][int(filterIndex==request.get('qfilters',1))])">
+					<div tal:attributes="class python:' '.join(['form-row']+[[],['d-none']][int(filterIndex==request.get('qfilters',1))])">
 						<div class="form-group col-md-4">
 							<select class="form-control form-control-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
 								<option value="" tal:content="python:here.getZMILangStr('CAPTION_SELECT')">the option</option>

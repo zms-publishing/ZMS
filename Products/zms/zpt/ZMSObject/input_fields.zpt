@@ -11,8 +11,7 @@
 		<div class="card-header attr_last_modified clearfix btn-collapse">
 				<div class="btn-group">
 					<a id="zmi-toggle-activity-btn" class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
-						><i class="fas fa-invisible"></i>
-						&nbsp;<tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block>&nbsp;</a>
+						><i class="fas fa-invisible"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block></a>
 					<div class="btn zmi-changes"
 							tal:condition="not:python:request.get('ZMS_INSERT',False)" 
 							tal:define="change_uid python:here.attr('change_uid');change_dt python:here.attr('change_dt')">
@@ -226,7 +225,7 @@
 										<i tal:attributes="class python:'fas fa-%s'%(['caret-down',''][hasChildren])"></i>
 										<tal:block tal:content="elLabel">the label</tal:block>
 									</a>
-									<span tal:content="structure python:'&nbsp;&nbsp;(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>
+									<div class="btn zmi-changes" tal:content="structure python:'&nbsp;&nbsp;(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</div>
 								</div><!-- .card-header -->
 								<tal:block tal:content="structure python:'' \
 									+'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['collapse','container','zmi-children']+[[''],['show']][hasChildren])) \

@@ -100,7 +100,7 @@
 	<div class="form-group row">
 		<label class="col-lg-2 control-label">Outfilename</label>
 		<div class="col-lg-10">
-			<p class="form-control-static" tal:content="request/outfilename">Outfilename</p>
+			<div class="form-control-static" tal:content="request/outfilename">Outfilename</div>
 		</div>
 	</div>
 	<div class="form-group row">

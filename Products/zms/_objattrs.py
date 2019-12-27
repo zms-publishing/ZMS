@@ -305,7 +305,7 @@ class ObjAttrs(object):
       #-- ID-Fields.
       if inputtype == 'identifier':
         if value == '': value = 'e%i'%self.getSequence().nextVal()
-        return '<div class="form-control-static"><code><input type="hidden" name="%s" value="%s">%s</code></div>'%(elName, value, value)
+        return '<div class="form-control-static"><input type="hidden" name="%s" value="%s">%s</div>'%(elName, value, value)
       
       #-- Richtext-Fields.
       elif inputtype == 'richtext':

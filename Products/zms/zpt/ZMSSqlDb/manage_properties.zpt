@@ -15,8 +15,13 @@
 <form class="form-horizontal" name="form0" action="manage_changeProperties" method="post" onsubmit="return onImportFormSubmit(this)" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<div class="card">
-		<div class="collapse">
-		<legend tal:content="python:here.getZMILangStr('TAB_PROPERTIES')">Properties</legend>
+	<div class="card-header btn-collapse">
+		<a class="btn card-toggle pull-left" data-toggle="collapse" href="#TAB_PROPERTIES">
+			<i class="fas fa-caret-down"></i> <tal:block tal:content="python:here.getZMILangStr('TAB_PROPERTIES')">Properties</tal:block>
+		</a>
+	</div><!-- .card-header -->
+	<div id="TAB_PROPERTIES" class="collapse container show">
+		<div class="card-body">
 		<div class="form-group row">
 			<label class="col-sm-3 col-md-2 control-label mandatory" for="connection_id"><span>Connection Id</span></label>
 			<div class="col-sm-9 col-md-10">
@@ -54,7 +59,7 @@
 		</div><!-- .form-group -->
 		<div class="form-group row">
 			<label class="col-sm-3 col-md-2 control-label mandatory" for="model"><span>Model</span></label>
-			<div class="col-sm-9 col-md-10">
+			<div class="col-sm-9 col-md-10" tal:define="ob python:here.getModelContainer()" tal:on-error="python:standard.writeError(here,'can\'t get ACE Editor')">
 				<!-- ACE Editor -->
 				<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='model',ob=here.getModelContainer())">ACE Editor</tal:block>
 				<!-- /ACE Editor -->
@@ -65,7 +70,8 @@
 				<button type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			</div>
 		</div>
-		</div><!-- .collapse -->
+		</div><!-- .card-body -->
+	</div><!-- .collapse -->
 	</div><!-- .card -->
 </form>
 

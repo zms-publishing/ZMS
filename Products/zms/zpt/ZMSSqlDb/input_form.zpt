@@ -25,13 +25,16 @@
 	<input type="hidden" id="qindex" name="qindex:int" tal:attributes="value qindex">
 	<input type="hidden" id="rowid" name="rowid" tal:attributes="value rowid">
 	<legend>
-		<i class="fas fa-th"></i>
-		<span tal:attributes="title entity/id" tal:content="entity/label">the label</span>
 	</legend>
 	<div class="card">
-		<div class="card-header">
-			<a class="btn card-toggle" href="#" tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</a>
+		<div class="card-header btn-collapse">
+			<a class="btn card-toggle" href="#">
+				<i class="fas fa-th"></i>
+				<strong tal:attributes="title entity/id" tal:content="entity/label">the label</strong>:
+				<tal:block tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</tal:block>
+			</a>
 		</div><!-- card-header -->
+		<div class="card-body">
 		<tal:block tal:repeat="column entity/columns">
 			<tal:block tal:condition="python:'details' not in column" tal:define="global
 					metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);">
@@ -65,14 +68,14 @@
 				##### Auto #############################################################
 				</tal:block>
 				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-auto" tal:condition="python:not done and metaObjAttr.get('auto') not in ['',None]">
-					<tal:block tal:condition="python:metaObjAttr.get('datatype') in ['datetime']">
+					<div class="form-control-static" tal:condition="python:metaObjAttr.get('datatype') in ['datetime']">
 						<input type="hidden" tal:attributes="name elName; value python:DateTime(elValue)"/>
-						<p class="form-control-static" tal:content="python:DateTime(elValue)">the value</p>
-					</tal:block>
-					<tal:block tal:condition="not:python:metaObjAttr.get('datatype') in ['datetime']">
+						<tal:block tal:content="python:DateTime(elValue)">the value</tal:block>
+					</div>
+					<div class="form-control-static" tal:condition="not:python:metaObjAttr.get('datatype') in ['datetime']">
 						<input type="hidden" tal:attributes="name elName; value elValue"/>
-						<p class="form-control-static" tal:content="elValue">the value</p>
-					</tal:block>
+						<tal:block tal:content="elValue">the value</tal:block>
+					</div>
 					<tal:block tal:define="dummy0 python:done.append(True)"></tal:block>
 				</div>
 
@@ -225,14 +228,16 @@
 			</tal:block>
 			</tal:block>
 		</tal:block>
-	</div><!-- .card -->
 
-	<div class="form-row">
-		<div class="controls save">
-			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-		</div>
-	</div><!-- .form-row -->
+			<div class="form-row">
+				<div class="controls save">
+					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+				</div>
+			</div><!-- .form-row -->
+
+		</div><!-- card-body -->
+	</div><!-- .card -->
 
 </form><!-- .form-horizontal -->
 

@@ -326,7 +326,7 @@ class DeprecatedAPI(object):
     return standard.operator_getattr(a, b, c)
   
   def operator_delattr(self, a, b):
-    warn(self, 'operator_absattr', 'Products.zms.standard.operator_delattr')
+    warn(self, 'operator_delattr', 'Products.zms.standard.operator_delattr')
     return standard.operator_delattr(a, b)
   
   def intersection_list(self, l1, l2):

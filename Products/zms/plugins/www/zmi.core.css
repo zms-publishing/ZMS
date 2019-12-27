@@ -675,6 +675,15 @@ li.zmi-item span.zmi-ids {
 	background-color:#d1ecf1;
 	padding:.5em .75em;
 }
+.zmi.properties .card > .zmi-children {
+	background: #F5F5F5;
+	width:100%;
+}
+.zmi.properties .card > .zmi-children,
+.zmi.properties .card > .zmi-children > .card-body {
+	margin:0;
+	padding:0;
+}
 
 .pull-left {
 	float: left !important;

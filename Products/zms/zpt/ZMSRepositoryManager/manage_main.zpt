@@ -36,8 +36,12 @@
 				<button type="submit" class="btn btn-secondary" name="btn" value="refresh"><i class="icon-repeat fas fa-redo-alt"></i> Refresh</button>
 				<tal:block tal:define="meta_cmds python:here.getMetaCmds(here,'repository')">
 					<div class="btn-group" tal:condition="not:meta_cmds">
-						<button type="submit" class="btn btn-secondary" name="btn" value="update" title="Update from Working-Copy">Update</button>
-						<button type="submit" class="btn btn-secondary" name="btn" value="commit" title="Commit to Working-Copy">Commit</button>
+						<button type="submit" class="btn btn-secondary" name="btn" value="update" title="Import from Filesystem">
+							<i class="fas fa-upload"></i>
+							Import</button>
+						<button type="submit" class="btn btn-secondary" name="btn" value="commit" title="Export to Filesystem">
+							<i class="fas fa-download"></i>
+							Export</button>
 					</div>
 					<div class="dropdown" tal:condition="meta_cmds">
 						<button class="btn btn-secondary dropdown-toggle" type="button" id="teamDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -91,9 +95,9 @@
 		<form class="form-horizontal card" action="manage_change" method="post">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group row">
-				<label class="col-sm-2 control-label">
+				<label class="col-sm-2 control-label" title="Automatic synchronization of ZMS-Status and Filesystem">
 					<i class="fas fa-sync-alt mr-1"></i>
-					Auto-Update
+					Auto-Sync
 				</label>
 				<div class="col-sm-10">
 					<span class="btn btn-default">

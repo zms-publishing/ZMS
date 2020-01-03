@@ -32,6 +32,11 @@
 		border: 1px solid #ccc;
 		border-radius: 4px;
 	}
+	.focus pre {
+		border-color: #80bdff;
+		outline: 0;
+		box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+	}
 	del {
 		color:#777!important;
 		background-color:#f8d7da!important;
@@ -65,6 +70,20 @@
 	.table.table-borderless {
 		margin-bottom:3em;
 	}
+	.diffcoloring .form-control {
+		display:flex;
+		justify-content: space-between;
+	}
+	.diffcoloring .form-control span.selected {
+		display: inline-block;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.diffcoloring .form-control small {
+    	white-space:nowrap;
+	}
+
 /*-->*/
 </style>
 
@@ -110,7 +129,7 @@
 			</a>
 		</label>
 		<div class="col-sm-10">
-			<table id="repo-diff-files" class="table">
+			<table class="table repo-diff-files">
 				<colgroup>
 				<col width="1em"/>
 				<col width="30%"/>
@@ -125,7 +144,7 @@
 						</a>
 					</td>
 					<td>
-					<div tal:repeat="diff python:[x for x in diffs if x[2]==id]">
+					<div style="white-space: nowrap;" tal:repeat="diff python:[x for x in diffs if x[2]==id]">
 						<tal:block tal:define="
 								filename python:diff[0];
 								mt python:diff[1];
@@ -152,7 +171,8 @@
 												str(r.get('version',''))
 												) or '')">&nbsp;</span>
 									</tal:block>
-									<a tal:attributes="href python:'#%s'%here.id_quote(filename)" tal:content="python:filename">the filename</a>
+									<a href="#" tal:attributes="onclick python:'javascript:focus_anchorid(\'#%s\');;return false'%(here.id_quote(filename))" 
+										tal:content="python:filename">the filename</a>
 						</tal:block>
 					</div>
 					</td>
@@ -177,12 +197,14 @@
 							rd python:[r.get('data'),''][r.get('data') is None];
 							is_modified python:len(ld)>0 and len(rd)>0;
 							is_text python:mt.startswith('text/') or mt in ['application/javascript']"
-						><table id="repo-changeset" class="table table-borderless" tal:condition="is_modified" tal:attributes="id python:here.id_quote(filename)">
+						><table class="repo-changeset table table-borderless" tal:condition="is_modified" tal:attributes="id python:here.id_quote(filename)">
 							<tr>
 								<td>
-									<strong class="text-primary" tal:content="python:here.get_conf_basepath(provider.id+'/'+filename)"></strong>
-									(<em class="text-muted" tal:content="mt"></em>)
-									<small style="display:block">
+									<span class="file_name">
+										<strong class="text-primary" tal:content="python:here.get_conf_basepath(provider.id+'/'+filename)"></strong>
+										<em class="text-muted" tal:content="python:'(%s)'%(mt)"></em>
+									</span>
+									<small class="file_details" style="display:block">
 										<tal:block tal:condition="l" tal:content="python:'ZODB: %s;; %i Bytes'%(str(l.get('version','')),len(ld))"></tal:block>
 										<i tal:condition="python:here.get_colormode()=='Saving'" class="icon-arrow-right fas fa-arrow-right"></i>
 										<i tal:condition="python:here.get_colormode()=='Loading'" class="icon-arrow-left fas fa-arrow-left"></i>
@@ -258,5 +280,10 @@
 			});
 		});
 	});
+	function focus_anchorid(anchorid) {
+		$('.table.focus').removeClass('focus');
+		$(document).scrollTop( $(anchorid).offset().top );
+		$(anchorid).addClass('focus');
+	}
 // -->
 </script>

@@ -59,7 +59,7 @@
 				</tal:block>
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
-		<div class="form-group row" 
+		<div class="form-group row filesystempath" 
 			title="Filesystem-Path connected to a Versioning Repository. Please, Double-Click for Editing.">
 			<label class="col-sm-2 control-label">Filesystem-Path</label>
 			<div class="col-sm-10">
@@ -69,13 +69,13 @@
 				</div>
 			</div>
 		</div>
-		<div class="form-group row mb-5"
+		<div class="form-group row mb-5 diffcoloring"
 			title="Coloring the latest Code Differences in ZMS on Loading or in Filesystem on Saving. Please, Double-Click for Selecting the Coloring Mode.">
 			<label class="col-sm-2 control-label">Diff-Coloring</label>
 			<div class="col-sm-10">
 				<div class="form-control" readonly="readonly" style="user-select:none;background:#f5f5f5"
 					ondblclick="javascript:$('a#nav-link-properties').click();$('#colormode').focus()">
-					<tal:block tal:content="python:here.get_colormode()=='Loading' and 'Loading Mode: Show ZMS Code Changes (Default)' or 'Saving Mode: Show Filesystem Changes'">Loading Mode</tal:block>
+					<span class="selected" tal:content="python:here.get_colormode()=='Loading' and 'Loading Mode: Show ZMS Code Changes (Default)' or 'Saving Mode: Show Filesystem Changes'">Loading Mode</span>
 					<small style="float:right;padding-top:0.2em">
 						<span class="state alert-success">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_NEW')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<span class="state alert-warning">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

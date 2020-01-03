@@ -42,13 +42,13 @@
 		background-color: #d4edda!important;
 		text-decoration:none;
 	}
-	.tab-content[data-colormode='outgoing'] ins,
-	.tab-content[data-colormode='outgoing'] table .state.alert-success {
+	.tab-content[data-colormode='Saving'] ins,
+	.tab-content[data-colormode='Saving'] table .state.alert-success {
 		background-color:#f8d7da!important;
 		text-decoration:line-through;
 	}
-	.tab-content[data-colormode='outgoing'] del,
-	.tab-content[data-colormode='outgoing'] table .state.alert-danger {
+	.tab-content[data-colormode='Saving'] del,
+	.tab-content[data-colormode='Saving'] table .state.alert-danger {
 		background-color:#d4edda !important;
 		text-decoration:none;
 	}
@@ -76,10 +76,6 @@
 	standard modules/Products.zms/standard;
 	provider_diffs python:[(x,here.getDiffs(x)) for x in here.getRepositoryProviders()];
 	provider_diffs_count python:sum([len(x[1]) for x in provider_diffs]+[0])">
-
-	<div class="alert alert-info">
-		INFO: Use with care; diff-processing with Python3 is still under construction!
-	</div>
 
 	<tal:block tal:condition="not:provider_diffs_count">
 		<div class="form-group filelist row" tal:repeat="provider python:here.getRepositoryProviders()">
@@ -188,8 +184,8 @@
 									(<em class="text-muted" tal:content="mt"></em>)
 									<small style="display:block">
 										<tal:block tal:condition="l" tal:content="python:'ZODB: %s;; %i Bytes'%(str(l.get('version','')),len(ld))"></tal:block>
-										<i tal:condition="python:here.get_colormode()=='outgoing'" class="icon-arrow-right fas fa-arrow-right"></i>
-										<i tal:condition="python:here.get_colormode()=='incoming'" class="icon-arrow-left fas fa-arrow-left"></i>
+										<i tal:condition="python:here.get_colormode()=='Saving'" class="icon-arrow-right fas fa-arrow-right"></i>
+										<i tal:condition="python:here.get_colormode()=='Loading'" class="icon-arrow-left fas fa-arrow-left"></i>
 										<tal:block tal:condition="r" tal:content="python:'Repository: %s;; %i Bytes'%(str(r.get('version','')),len(rd))"></tal:block>
 									</small>
 								</td>

@@ -36,12 +36,12 @@
 				<button type="submit" class="btn btn-secondary" name="btn" value="refresh"><i class="icon-repeat fas fa-redo-alt"></i> Refresh</button>
 				<tal:block tal:define="meta_cmds python:here.getMetaCmds(here,'repository')">
 					<div class="btn-group" tal:condition="not:meta_cmds">
-						<button type="submit" class="btn btn-secondary" name="btn" value="update" title="Import from Filesystem">
-							<i class="fas fa-upload"></i>
-							Import</button>
-						<button type="submit" class="btn btn-secondary" name="btn" value="commit" title="Export to Filesystem">
+						<button type="submit" class="btn btn-secondary" name="btn" value="commit" title="Save Sources to Filesystem">
 							<i class="fas fa-download"></i>
-							Export</button>
+							Save</button>
+						<button type="submit" class="btn btn-secondary" name="btn" value="update" title="Load Sources from Filesystem">
+							<i class="fas fa-upload"></i>
+							Load</button>
 					</div>
 					<div class="dropdown" tal:condition="meta_cmds">
 						<button class="btn btn-secondary dropdown-toggle" type="button" id="teamDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -61,7 +61,7 @@
 		</div><!-- .form-group -->
 		<div class="form-group row" 
 			title="Filesystem-Path connected to a Versioning Repository. Please, Double-Click for Editing.">
-			<label class="col-sm-2 control-label">Working-Copy</label>
+			<label class="col-sm-2 control-label">Filesystem-Path</label>
 			<div class="col-sm-10">
 				<div class="form-control" readonly="readonly" style="user-select:none;background:#f5f5f5"
 					ondblclick="javascript:$('a#nav-link-properties').click();$('#basepath').focus()"
@@ -70,12 +70,12 @@
 			</div>
 		</div>
 		<div class="form-group row mb-5"
-			title="Coloring the latest Code Differences in ZODB compared to the Working-Copy in Filesystem. Please, Double-Click for Selecting Incoming or Outgoing Mode.">
+			title="Coloring the latest Code Differences in ZMS on Loading or in Filesystem on Saving. Please, Double-Click for Selecting the Coloring Mode.">
 			<label class="col-sm-2 control-label">Diff-Coloring</label>
 			<div class="col-sm-10">
 				<div class="form-control" readonly="readonly" style="user-select:none;background:#f5f5f5"
 					ondblclick="javascript:$('a#nav-link-properties').click();$('#colormode').focus()">
-					<tal:block tal:content="python:here.get_colormode().title()">Incomming</tal:block> Mode
+					<tal:block tal:content="python:here.get_colormode()=='Loading' and 'Loading Mode: Show ZMS Code Changes (Default)' or 'Saving Mode: Show Filesystem Changes'">Loading Mode</tal:block>
 					<small style="float:right;padding-top:0.2em">
 						<span class="state alert-success">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_NEW')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<span class="state alert-warning">&nbsp;</span> <tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -117,7 +117,7 @@
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<label class="col-sm-2 control-label mandatory">
-					Repository
+					Filesystem-Path
 				</label>
 				<div class="col-sm-10">
 					 <input id="basepath" name="basepath" class="form-control" type="text" tal:attributes="value python:here.get_conf_basepath('')" />
@@ -129,8 +129,8 @@
 				</label>
 				<div class="col-sm-10">
 					 <select id="colormode" name="colormode" class="form-control" title="Please select how to color the code differences...">
-						<option value="incoming" tal:attributes="selected python:here.get_colormode()=='incoming' and 'selected' or None">Incoming Mode: Updating ZMS-Status from Filesystem (Default)</option>
-						<option value="outgoing" tal:attributes="selected python:here.get_colormode()=='outgoing' and 'selected' or None">Outgoing Mode: Committing ZMS-Status to Filesystem</option>
+						<option value="Loading" tal:attributes="selected python:here.get_colormode()=='Loading' and 'selected' or None">Loading Mode: Show ZMS Code Changes on Loading from Filesystem (Default)</option>
+						<option value="Saving" tal:attributes="selected python:here.get_colormode()=='Saving' and 'selected' or None">Saving Mode: Show Filesystem Code Changes on Saving from ZMS</option>
 					</select>
 				</div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->

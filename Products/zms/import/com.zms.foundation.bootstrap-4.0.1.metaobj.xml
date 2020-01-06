@@ -29,10 +29,8 @@
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[<div class="alert alert-dark">
-<i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/collapse/#accordion-example" target="_blank">Accordion &middot Bootstrap</a></div>
-p</a><br/>
-<i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/navs/" target="_blank">Tab-Pages &middot Bootstrap</a></div>
-p</a><br/>
+<i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/collapse/#accordion-example" target="_blank">Accordion &middot Bootstrap</a><br/>
+<i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/navs/" target="_blank">Tab-Pages &middot Bootstrap</a><br/>
 </div>]]>
                   </item>
                   <item key="default"></item>
@@ -103,17 +101,7 @@ p</a><br/>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- Page Template Diagnostics
- Compilation failed
- chameleon.exc.ParseError: Unexpected end tag.
-
- - String:     "</ul>"
- - Filename:   LgBootstrapArea.standard_html
- - Location:   (line 18: col 1)
- - Source:     </ul>
-               ^^^^^
--->
-<!-- LgBootstrapArea.standard_html -->
+                  <item key="custom"><![CDATA[<!-- LgBootstrapArea.standard_html -->
 
 <tal:block tal:define="
 		zmscontext options/zmscontext;
@@ -124,7 +112,7 @@ p</a><br/>
 			<tal:block tal:content="structure python:item.getBodyContent(request)"></tal:block>
 		</tal:block>
 	</div>
-	 <ul class="nav nav-tabs"tal:condition="python:stereotype=='Tabs'">
+	 <ul class="nav nav-tabs" tal:condition="python:stereotype=='Tabs'">
 		<tal:block tal:repeat="item items">
 			<li class="nav-item">
 				<a tal:attributes="class python:' '.join(['nav-link']+[['','active'][items.index(item)==0]]); href python:'#page_%s'%item.id" tal:content="structure python:item.attr('headline')">Item</a>
@@ -175,7 +163,7 @@ p</a><br/>
           <item key="id">LgBootstrapArea</item>
           <item key="name">Area</item>
           <item key="package">com.zms.foundation.bootstrap</item>
-          <item key="revision">4.0.0</item>
+          <item key="revision">4.0.1</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -1357,7 +1345,7 @@ $(function() {
           <item key="id">com.zms.foundation.bootstrap</item>
           <item key="name">com.zms.foundation.bootstrap</item>
           <item key="package"></item>
-          <item key="revision">4.0.0</item>
+          <item key="revision">4.0.1</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

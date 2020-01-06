@@ -56,36 +56,32 @@
 		</title>
 
 		<!-- Bootstrap core CSS -->
-		<link rel="stylesheet" href="/++resource++zms_/bootstrap/css/bootstrap.css"/>
+		<link rel="stylesheet" type="text/css" href="/++resource++zmi/bootstrap-4.1.1/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="/++resource++zmi/fontawesome-free-5.8.1/css/all.css" />
 		<!-- Custom styles for this template -->
-		<link tal:attributes="href python:'%s/webdesign/docs.css'%theme_common" rel="stylesheet">
+		<link tal:attributes="href python:'%s/webdesign/docs.min.css'%theme_common" rel="stylesheet">
 		<link tal:attributes="href python:'%s/webdesign/style.css'%theme_common" rel="stylesheet">
-
-		<!-- ZMI core JS -->
-		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:zmscontext.getConfProperty('plugins.zmi.js')"></script>
 
 	</head>
 
 	<body tal:attributes="id python:[zmscontext.id,'zmsroot'][zmscontext.getId()=='content'];class python:'web %s %s'%(zmscontext.meta_id,lang)" >
 		<a class="sr-only" href="#content"></a>
+        
+        
 		<!-- Docs master nav -->
-		<header id="top" class="navbar navbar-static-top bs-docs-nav" role="banner">
-			<div class="container">
-				<div class="col-md-10">
-					<nav role="navigation">
-						<ul class="nav navbar-nav">
-							<li class="first">
-								<a tal:attributes="href python:zmsroot.getHref2IndexHtml(request,deep=False);" tal:content="python:zmsroot.getTitlealt(request)">the titlealt</a>
-							</li>
-							<tal:block tal:repeat="childNode python:[x for x in zmsroot.filteredChildNodes(request,'ZMSFolder') if not x.isResource(request)]">
-								<li tal:attributes="class python:' '.join([[],['active']][int(childNode.id in zmscontext.getPhysicalPath())]);">
-									<a tal:attributes="href python:childNode.getHref2IndexHtml(request,deep=False);" tal:content="structure python:childNode.getTitlealt(request)">the titlealt</a>
-								</li>
-							</tal:block>
-						</ul>
-					</nav>
-				</div><!-- .col-md-10 -->
-				<div class="col-md-2">
+		<header id="top" class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
+			<a class="navbar-brand" tal:attributes="href python:zmsroot.getHref2IndexHtml(request,deep=False);" tal:content="python:zmsroot.getTitlealt(request)">Navbar</a>
+			<div class="navbar-nav-scroll" id="navbarSupportedContent">
+				<ul class="navbar-nav bd-navbar-nav flex-row">
+					<tal:block tal:repeat="childNode python:[x for x in zmsroot.filteredChildNodes(request,'ZMSFolder') if not x.isResource(request)]">
+						<li class="nav-item">
+							<a tal:attributes="class python:' '.join(['nav-link']+[[],['active']][int(childNode.id in zmscontext.getPhysicalPath())]); href python:childNode.getHref2IndexHtml(request,deep=False);" tal:content="structure python:childNode.getTitlealt(request)">the titlealt</a>
+						</li>
+					</tal:block>
+				</ul>
+			</div>
+			<ul class="navbar-nav ml-md-auto">
+				<li class="nav-item">
 					<div class="navbar-header">
 						<div id="navbar-search" class="inactive" onclick="$(this).removeClass('inactive',{duration:500});$('input',this).focus();" 
 								tal:define="search_channel_key python:zmscontext.id_quote(zmscontext.getLangStr('SEARCH_HEADER',lang))"
@@ -117,28 +113,30 @@
 							</div>
 						</div><!-- .navbar-menu -->
 					</div><!-- .navbar-header -->
-				</div><!-- .col-md-2 -->
-			</div><!-- .container -->
+				</li>
+			</ul>
 		</header>
 
 		<!-- Docs page layout -->
 		<div id="content" class="bs-docs-header">
 			<div class="container">
-				<h1 tal:content="python:zmscontext.getTitle(request)">The title</h1>
-				<p tal:content="python:zmscontext.attr('attr_dc_description')">The description</p>
+				<h1 class="bd-title" tal:content="python:zmscontext.getTitle(request)">The title</h1>
+				<p class="bd-lead" tal:content="python:zmscontext.attr('attr_dc_description')">The description</p>
 			</div>
 		</div><!-- #content -->
 
 		<div class="container" tal:condition="python:zmscontext.getLevel()>0">
-			<ol class="breadcrumb">
-				<tal:block tal:repeat="node python:zmscontext.breadcrumbs_obj_path()">
-					<li tal:attributes="class python:['','active'][int(node==zmscontext)]">
-						<a tal:attributes="href python:node.getHref2IndexHtml(request,deep=0)" tal:content="python:node.getTitlealt(request)">
-							the titlealt
-						</a>
-					</li>
-				</tal:block>
-			</ol>
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<tal:block tal:repeat="node python:zmscontext.breadcrumbs_obj_path()">
+						<li tal:attributes="class python:' '.join(['breadcrumb-item']+[[],['active']][int(node==zmscontext)])">
+							<a tal:attributes="href python:node.getHref2IndexHtml(request,deep=0)" tal:content="python:node.getTitlealt(request)">
+								the titlealt
+							</a>
+						</li>
+					</tal:block>
+				</ol>
+			</nav>
 		</div><!-- .container -->
 
 	<tal:block tal:define="
@@ -198,7 +196,7 @@
 		<footer class="bs-docs-footer" role="contentinfo">
 			<div class="container">
 				<div class="col-md-12">
-					<p style="font-size:10px">Content Management System ZMS is based on Python, jquery and bootstrap – and 100% free of PHP</p>
+					<p style="font-size:10px">Content Management System ZMS is based on Python, jQuery and Bootstrap</p>
 				</div>
 			</div>
 		</footer>
@@ -206,10 +204,8 @@
 		<!-- Bootstrap core JavaScript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%request['lang']"></script>
-		<tal:block tal:repeat="src python:[zmscontext.getConfProperty(x) for x in zmscontext.getConfProperty('bootstrap.libs').split(',') if x]"
-			><script type="text/javascript" charset="UTF-8" tal:attributes="src src"></script>
-		</tal:block>
+		<script src="/++resource++zmi/jquery-3.2.1.min.js"></script>
+		<script src="/++resource++zmi/bootstrap-4.1.1/bootstrap.bundle.min.js"></script>
 		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/js/jquery-ui.min.js'%theme_common"></script>
 		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/js/script.js'%theme_common"></script>
 		<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/js/bookmarks.js'%theme_common"></script>
@@ -233,7 +229,7 @@
           <item type="dictionary">
             <dictionary>
               <item key="custom">
-                <data content_type="image/vnd.microsoft.icon" filename="favicon.ico" type="file">b'622730303030303130303031303031303130303230303031303030313030623030303030303031363030303030303238303030303030313030303030303032303030303030303031303030313030303030303030303030303030303030303030303030303030303030303030303030323030303030303030303030303030666666666666303066666362303030306666666630303030666666663030303066666666303030306666666630303030386162333030303062616164303030306461616430303030646162623030303064393337303030306539326430303030656261643030303038626233303030306666666630303030666666663030303066666666303030306666666630303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303027'</data>
+                <data content_type="image/vnd.microsoft.icon" filename="favicon.ico" type="file">b'622736323237333033303330333033303331333033303330333133303330333133303331333033303332333033303330333133303330333033313330333036323330333033303330333033303330333133363330333033303330333033303332333833303330333033303330333033313330333033303330333033303330333233303330333033303330333033303330333133303330333033313330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033323330333033303330333033303330333033303330333033303330333036363636363636363636363633303330363636363633363233303330333033303636363636363636333033303330333036363636363636363330333033303330363636363636363633303330333033303636363636363636333033303330333033383631363233333330333033303330363236313631363433303330333033303634363136313634333033303330333036343631363236323330333033303330363433393333333733303330333033303635333933323634333033303330333036353632363136343330333033303330333836323632333333303330333033303636363636363636333033303330333036363636363636363330333033303330363636363636363633303330333033303636363636363636333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330333033303330323727'</data>
               </item>
               <item key="default"></item>
               <item key="id">myZMStheme32/favicon.ico</item>
@@ -247,25 +243,6 @@
               <item key="name">favicon.ico</item>
               <item key="repetitive" type="int">0</item>
               <item key="type">Image</item>
-            </dictionary>
-          </item>
-          <item type="dictionary">
-            <dictionary>
-              <item key="custom">
-                <data content_type="text/css" filename="style.css" type="file"><![CDATA[/* zmi custom styles */]]></data>
-              </item>
-              <item key="default"></item>
-              <item key="id">myZMStheme32/common/css/style.css</item>
-              <item key="keys" type="list">
-                <list>
-                </list>
-              </item>
-              <item key="mandatory" type="int">0</item>
-              <item key="meta_type"></item>
-              <item key="multilang" type="int">0</item>
-              <item key="name">style.css</item>
-              <item key="repetitive" type="int">0</item>
-              <item key="type">File</item>
             </dictionary>
           </item>
           <item type="dictionary">
@@ -370,7 +347,7 @@ $(function() {
           <item type="dictionary">
             <dictionary>
               <item key="custom">
-                <data content_type="image/png" filename="zoomImg.png" type="file">b'6227383935303465343730643061316130613030303030303064343934383434353230303030303031353030303030303137303830363030303030306534646630343964303030303030303436373431346434313030303061666338333730353861653930303030303031393734343535383734353336663636373437373631373236353030343136343666363236353230343936643631363736353532363536313634373937316339363533633030303030323336343934343431353437386461363266633066303430633534303638633530343331626139363932383133303330646330643033313934303539376334626631666566343437363266393936336234653966383335383162373566376633303733373030626666643562326634666239303132653337613465383838336539306463393131663566316336333639336461643634356161633761656466353135333531353162393035313362663733303763386437623462613135353764643763646234623833666630636631326537643766353562353037366365303233333536396437306138363739346434313562623935383939336566646662666438643666356435646134356164666565363336613862356137623138653432373335376664303136363462383433353439383965356333393539366633626430383565366631396439373337623638373334373162313365653765643862653838623763636563616335316264326265623161393333646566636632396465626462643532366166336361393466363434343764313462613761653130333162303338333232343334323938656430646130303033383633336362666633356330646161653062663664353863323064343532306533633338356162366331663139313838343838663066653137636565623637656530303064373036343930313237666661623132666132333866323134323832633831663037313434383431643033383331393433656638616630343330613430623166643637616561623764363136303338633434666438353039656566396132363261623766363966373961306636656361353334376664313861313563623139313839653461393739613463353032623538643137643438316163383631373837393561656230313530613538613839653632643165303638366566343437383966666639646236383163303266303638366662306330623536316464363030613530653930613861343861323432633035333031653565623534306533336539303231363061306664306265386361373763343235323936306563643765363335396236633037633737653131633366326136613037656134643832666563646266643934653131373833313463336334306439626436353963623330356361363461336138356231373536633533616637376237613731663134653536303738383936653238373330333130303065393833633838323163323261616366646362643963356532386230666466636662663865353762663665666266666633303831373239343433363064363964666565653861346466633466636666333665333962303433663365326564666664636436306532363666623835393138626535323565663466646663323062636130626563303739636139653262396133613265653564373637373638343665363536373430313834633565383163323265663033366131373163326465353031353336383635623066646536383232316233383561343830663231343330313032306330303030353830323665623534663230376330303030303030303439343534653434616534323630383227'</data>
+                <data content_type="image/png" filename="zoomImg.png" type="file">b'62273632323733383339333533303334363533343337333036343330363133313631333036313330333033303330333033303330363433343339333433383334333433353332333033303330333033303330333133353330333033303330333033303331333733303338333033363330333033303330333033303635333436343636333033343339363433303330333033303330333033303334333633373334333133343634333433313330333033303330363136363633333833333337333033353338363136353339333033303330333033303330333133393337333433343335333533383337333433353333333636363336333633373334333733373336333133373332333633353330333033343331333633343336363633363332333633353332333033343339333636343336333133363337333633353335333233363335333633313336333433373339333733313633333933363335333336333330333033303330333033323333333633343339333433343334333133353334333733383634363133363332363636333330363633303334333036333335333433303336333836333335333033343333333136323631333933363339333233383331333333303333333036343633333036343330333333313339333433303335333933373633333436323636333136363635363633343334333733363332363633393339333633333632333436353339363633383333333533383331363233373335363633373636333333303337333333373330333036323636363636343335363233323636333436363632333933303331333236353333333736313334363533383338333833333635333933303634363333393331333136363335363633313633333633333336333933333634363136343336333433353631363136333337363136353634363633353331333533333335333133353331363233393330333533313333363236363337333333303337363333383634333736323334363236313331333533353337363436343337363336343632333436323338333336363636333036333636333133323635333736343337363633353335363233353330333733363633363533303332333333333335333633393634333733303631333833363337333933343634333433313335363236323339333533383339333933333635363636343636363236363634333836343336363633353634333536343631333433353631363436363635363533363333333636313338363233353631333736323331333836353334333233373333333533373636363433303331333633363334363233383334333333353334333933383339363533353633333333393335333933363636333336323634333033383335363533363636333133393634333933373333333736323336333833373333333433373331363233313333363536353337363536343338363236353338333836323337363336333635363336313633333533313632363433323632363536323331363133393333333336343635363636333636333233393634363536323634363236343335333233363631363633333633363133393334363633363334333433343337363433313334363236313337363136353331333033333331363233303333333833333332333233343333333433323339333836353634333036343631333033303330333333383336333333333633363236363636333333353633333036343631363136353330363236363336363433353338363333323330363433343335333233303635333336333333333833353631363233363633333136363331333933313338333833343338333836363330363636353331333736333635363536323336333736353635333033303330363433373330333633343339333033313332333736363636363136323331333236363631333233333338363633323331333433323338333236333338333136363330333733313334333433383334333136343330333333383333333133393334333336353636333836313636333033343333333036313334333036323331363636343336333736313635363136323337363433363331333633303333333836333334333436363634333833353330333936353635363633393631333233363332363136323337363633363339363633373339363133303636333636353633363133353333333433373636363433313338363133313335363336323331333933313338333936353334363133393337333936313334363333353330333236323335333836343331333736343334333833313631363333383336333133373338333733393335363136353632333033313335333036313335333836313338333936353336333236343331363533303336333833363635363633343334333733383339363636363636333936343632333633383331363333303332363633303336333833363636363233303633333036323335333633313634363433363330333036313335333036353339333036313338363133343338363133323334333236333330333533333330333136353335363536323335333433303635333333333635333933303332333133363330363133303636363433303632363533383633363133373337363333343332333533323339333633303635363336343337363533363333333533393632333636333330333736333337333736353331333136333333363633323631333636313330333736353631333436343338333236363635363336343632363636343339333436353331333133373338333333313334363333333633333433303634333936323634333633353339363336323333333033353633363133363334363133333631333833353632333133373335333636333335333336313636333733373632333736313337333136363331333436353335333633303337333833383339333636353332333833373333333033333331333033303330363533393338333336333338333833323331363333323332363136313633363636343633363236343339363333353635333233383632333036363634363636333636363236363338363533353337363236363336363536363632363636363636333333303338333133373332333933343334333333363330363433363339363436363635363536353338363133343634363636333334363636333636363633333336363533333339363233303334333336363333363533323635363436363636363436333634333633303635333233363336363636323338333533393331333836323635333533323335363536363334363636343636363333323330363236333631333036323635363333303337333936333631333936353332363233393631333336313332363536353335363433373336333733373336333833343336363533363335333633373334333033313338333436333335363533383331363333323332363536363330333333363631333133373331363333323634363533353330333133353333333633383336333536323330363636343635333633383332333233313632333333383335363133343338333036363332333133343333333033313330333233303633333033303330333033353338333033323336363536323335333436363332333033373633333033303330333033303330333033303334333933343335333436353334333436313635333433323336333033383332323727'</data>
               </item>
               <item key="default"></item>
               <item key="id">myZMStheme32/common/js/images/zoomImg.png</item>
@@ -4332,50 +4309,32 @@ var effect = $.effects;
           <item type="dictionary">
             <dictionary>
               <item key="custom">
-                <data content_type="text/css" filename="style.css" type="file"><![CDATA[.navbar-container {
-	padding:0;
-}
-.navbar-header {
-	position:relative;
-	float:none;
-}
-.navbar-nav {
-	float:none;
-}
-.navbar-nav > li.first > a {
-	font-weight:bold;
-}
-.bs-docs-nav .navbar-nav > li > a {
-	color:#333!important;
-}
-.bs-docs-nav .navbar-nav > li.active > a {
-	text-decoration:underline!important;
+                <data content_type="text/css" filename="style.css" type="file"><![CDATA[.bd-navbar {
+	background-color: #0092C3;
+	background-image: -webkit-linear-gradient(top, #00AEE9 0%, #0092C3 100%);
+	background-image: linear-gradient(to bottom, #00AEE9 0%, #0092C3 100%);
+	background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00AEE9', endColorstr='#0092C3', GradientType=0);
 }
 #navbar-menu {
+	display:block;
 	float:left;
-	position: absolute;
-	top: 4px;
-	right: 0px;
 }
 #navbar-menu button {
 	border-radius:0;
 	height: 36px;
 }
 #navbar-search.inactive {
-	width: 40px;
+	background-color:transparent;
+	width: 5em;
 	cursor:w-resize;
 }
 #navbar-search {
+	display:block;
 	float:left;
-	position: absolute;
-	top: 4px;
-	right: 45px;
-	width: 200px;
+	width: 20em;
 	height: 36px;
 	overflow:hidden;
-	padding: 0 !important;
-	margin: 0 !important;
-	border:1px solid #CCC;
 }
 #navbar-search.inactive .input-group-addon {
 	background-color:#FEFEFE;
@@ -4391,44 +4350,7 @@ var effect = $.effects;
 	color:#FFF;
 	font-weight:bold;
 }
-.bs-docs-header {
-	padding:30px 30px 0 30px;
-	margin-bottom:20px;
-}
-.bs-docs-header h1 {
-	font-size: 24px;
-	font-weight: bold;
-	line-height: 28px;
-}
-.bs-docs-header p {
-	font-size: 16px;
-	padding-bottom:30px;
-}
-.bs-docs-footer {
-	margin-top:20px;
-}
 
-.bs-docs-sidebar h2.small-head {
-	padding-bottom:0;
-	margin-bottom:0;
-}
-.bs-docs-sidebar ul.bs-docs-sidenav {
-	padding:0;
-	margin:0;
-}
-
-.bs-docs-sidebar .nav > li > a {
-	color: #333;
-	text-decoration:underline;
-}
-@media (min-width: 768px) {
-	.col-md-9 .bs-docs-sidebar {
-		padding-left:0;
-	}
-}
-.col-md-3 .bs-docs-sidebar .back-to-top {
-	display:none;
-}
 .small-head {
 	color: #00AEE9;
 	line-height: 2;
@@ -4586,1435 +4508,17 @@ div.zoomImg {
           <item type="dictionary">
             <dictionary>
               <item key="custom">
-                <data content_type="text/css" filename="docs.css" type="file"><![CDATA[/*csslint ids: false, overqualified-elements: false, fallback-colors: false*/
-
-/*!
- * Bootstrap Docs (http://getbootstrap.com)
- * Copyright 2011-2014 Twitter, Inc.
- * Licensed under the Creative Commons Attribution 3.0 Unported License. For
- * details, see http://creativecommons.org/licenses/by/3.0/.
- */
-
-
-/*
- * Bootstrap Documentation
- * Special styles for presenting Bootstrap's documentation and code examples.
- *
- * Table of contents:
- *
- * Scaffolding
- * Main navigation
- * Footer
- * Social buttons
- * Homepage
- * Page headers
- * Old docs callout
- * Ads
- * Side navigation
- * Docs sections
- * Callouts
- * Grid styles
- * Examples
- * Code snippets (highlight)
- * Responsive tests
- * Glyphicons
- * Customizer
- * Miscellaneous
- */
-
-
-/*
- * Scaffolding
- *
- * Update the basics of our documents to prep for docs content.
- */
-
-body {
-  position: relative; /* For scrollspy */
-}
-
-/* Keep code small in tables on account of limited space */
-.table code {
-  font-size: 13px;
-  font-weight: normal;
-}
-
-/* Outline button for use within the docs */
-.btn-outline {
-  color: #017D87;
-  background-color: transparent;
-  border-color: #00AEE9;
-}
-.btn-outline:hover,
-.btn-outline:focus,
-.btn-outline:active {
-  color: #fff;
-  background-color: #00AEE9;
-  border-color: #00AEE9;
-}
-
-/* Inverted outline button (white on dark) */
-.btn-outline-inverse {
-  color: #fff;
-  background-color: transparent;
-  border-color: #eee;
-}
-.btn-outline-inverse:hover,
-.btn-outline-inverse:focus,
-.btn-outline-inverse:active {
-  color: #00AEE9;
-  text-shadow: none;
-  background-color: #fff;
-  border-color: #fff;
-}
-
-/* Bootstrap "B" icon */
-.bs-docs-booticon {
-  display: block;
-  font-weight: 500;
-  color: #fff;
-  background-color: #00AEE9;
-  border-radius: 15%;
-  cursor: default;
-  text-align: center;
-}
-.bs-docs-booticon-sm {
-  width: 30px;
-  height: 30px;
-  font-size: 20px;
-  line-height: 28px;
-}
-.bs-docs-booticon-lg {
-  width: 144px;
-  height: 144px;
-  font-size: 108px;
-  line-height: 140px;
-}
-.bs-docs-booticon-inverse {
-  color: #00AEE9;
-  background-color: #fff;
-}
-.bs-docs-booticon-outline {
-  background-color: transparent;
-  border: 1px solid #eee;
-}
-
-
-/*
- * Main navigation
- *
- * Turn the `.navbar` at the top of the docs purple.
- */
-
-.bs-docs-nav {
-  margin-bottom: 0;
-  background-color: #fff;
-  border-bottom: 0;
-}
-.bs-home-nav .bs-nav-b {
-  display: none;
-}
-.bs-docs-nav .navbar-brand {
-  padding:0;
-}
-.bs-docs-nav .navbar-brand,
-.bs-docs-nav .navbar-nav > li > a {
-  color: #00AEE9;
-  font-weight: 500;
-}
-.bs-docs-nav .navbar-nav > li > a:hover,
-.bs-docs-nav .navbar-nav > .active > a,
-.bs-docs-nav .navbar-nav > .active > a:hover {
-  color: #000;
-  background-color: #f9f9f9;
-}
-.bs-docs-nav .navbar-toggle .icon-bar {
-  background-color: #00AEE9;
-}
-.bs-docs-nav .navbar-header .navbar-toggle {
-  border-color: #fff;
-}
-.bs-docs-nav .navbar-header .navbar-toggle:hover,
-.bs-docs-nav .navbar-header .navbar-toggle:focus {
-  background-color: #f9f9f9;
-  border-color: #f9f9f9;
-}
-
-
-/*
- * Footer
- *
- * Separated section of content at the bottom of all pages, save the homepage.
- */
-
-.bs-docs-footer {
-  padding-top: 40px;
-  padding-bottom: 40px;
-  margin-top: 100px;
-  color: #777;
-  text-align: center;
-  border-top: 1px solid #e5e5e5;
-}
-.bs-docs-footer-links {
-  margin-top: 20px;
-  padding-left: 0;
-  color: #999;
-}
-.bs-docs-footer-links li {
-  display: inline;
-  padding: 0 2px;
-}
-.bs-docs-footer-links li:first-child {
-  padding-left: 0;
-}
-
-@media (min-width: 768px) {
-  .bs-docs-footer p {
-    margin-bottom: 0;
-  }
-}
-
-
-/*
- * Social buttons
- *
- * Twitter and GitHub social action buttons (for homepage and footer).
- */
-
-.bs-docs-social {
-  margin-bottom: 20px;
-  text-align: center;
-}
-.bs-docs-social-buttons {
-  display: inline-block;
-  margin-bottom: 0;
-  padding-left: 0;
-  list-style: none;
-}
-.bs-docs-social-buttons li {
-  display: inline-block;
-  line-height: 1;
-  padding: 5px 8px;
-}
-.bs-docs-social-buttons .twitter-follow-button {
-  width: 225px !important;
-}
-.bs-docs-social-buttons .twitter-share-button {
-  width: 98px !important;
-}
-/* Style the GitHub buttons via CSS instead of inline attributes */
-.github-btn {
-  border: 0;
-  overflow: hidden;
-}
-
-
-/*
- * Homepage
- *
- * Tweaks to the custom homepage and the masthead (main jumbotron).
- */
-
-/* Share masthead with page headers */
-.bs-docs-masthead,
-.bs-docs-header {
-  position: relative;
-  padding: 30px 15px;
-  color: #eee;
-  text-align: center;
-  text-shadow: 0 1px 0 rgba(0,0,0,.1);
-  background-color: #0092C3;
-  background-image: -webkit-linear-gradient(top, #00AEE9 0%, #0092C3 100%);
-  background-image: linear-gradient(to bottom, #00AEE9 0%, #0092C3 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00AEE9', endColorstr='#0092C3', GradientType=0);
-}
-
- /* Masthead (headings and download button) */
-.bs-docs-masthead .bs-docs-booticon {
-  margin: 0 auto 30px;
-}
-.bs-docs-masthead h1 {
-  font-weight: 300;
-  line-height: 1;
-  color: #fff;
-}
-.bs-docs-masthead .lead {
-  margin: 0 auto 30px;
-  font-size: 20px;
-  color: #fff;
-}
-.bs-docs-masthead .version {
-  margin-top: -15px;
-  margin-bottom: 30px;
-  color: #9783b9;
-}
-.bs-docs-masthead .btn {
-  width: 100%;
-  padding: 15px 30px;
-  font-size: 20px;
-}
-
-@media (min-width: 480px) {
-  .bs-docs-masthead .btn {
-    width: auto;
-  }
-}
-
-@media (min-width: 768px) {
-  .bs-docs-masthead {
-    padding-top: 80px;
-    padding-bottom: 80px;
-  }
-  .bs-docs-masthead h1 {
-    font-size: 60px;
-  }
-  .bs-docs-masthead .lead {
-    font-size: 24px;
-  }
-}
-
-@media (min-width: 992px) {
-  .bs-docs-masthead .lead {
-    width: 80%;
-    font-size: 30px;
-  }
-}
-
-
-/*
- * Page headers
- *
- * Jumbotron-esque headers at the top of every page that's not the homepage.
- */
-
-/* Page headers */
-.bs-docs-header {
-  margin-bottom: 40px;
-  font-size: 20px;
-}
-.bs-docs-header h1 {
-  margin-top: 0;
-  color: #fff;
-}
-.bs-docs-header p {
-  margin-bottom: 0;
-  font-weight: 300;
-  line-height: 1.4;
-}
-.bs-docs-header .container {
-  position: relative;
-}
-
-@media (min-width: 768px) {
-  .bs-docs-header {
-    padding-top: 60px;
-    padding-bottom: 60px;
-    font-size: 24px;
-    text-align: left;
-  }
-  .bs-docs-header h1 {
-    font-size: 60px;
-    line-height: 1;
-  }
-}
-
-@media (min-width: 992px) {
-  .bs-docs-header h1,
-  .bs-docs-header p {
-    margin-right: 380px;
-  }
-}
-
-
-/*
- * Carbon ads
- *
- * Single display ad that shows on all pages (except homepage) in page headers.
- * The hella `!important` is required for any pre-set property.
- */
-
-.carbonad {
-  width: auto !important;
-  margin: 30px -30px -31px !important;
-  padding: 20px !important;
-  overflow: hidden; /* clearfix */
-  height: auto !important;
-  font-size: 13px !important;
-  line-height: 16px !important;
-  text-align: left;
-  background: transparent !important;
-  border: solid #866ab3 !important;
-  border-width: 1px 0 !important;
-}
-.carbonad-img {
-  margin: 0 !important;
-}
-.carbonad-text,
-.carbonad-tag {
-  float: none !important;
-  display: block !important;
-  width: auto !important;
-  height: auto !important;
-  margin-left: 145px !important;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-}
-.carbonad-text {
-  padding-top: 0 !important;
-}
-.carbonad-tag {
-  color: inherit !important;
-  text-align: left !important;
-}
-.carbonad-text a,
-.carbonad-tag a {
-  color: #fff !important;
-}
-.carbonad #azcarbon > img {
-  display: none; /* hide what I assume are tracking images */
-}
-
-@media (min-width: 480px) {
-  .carbonad {
-    width: 330px !important;
-    margin: 20px auto !important;
-    border-radius: 4px;
-    border-width: 1px !important;
-  }
-  .bs-docs-masthead .carbonad {
-    margin: 50px auto 0 !important;
-  }
-}
-
-@media (min-width: 768px) {
-  .carbonad {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-}
-
-@media (min-width: 992px) {
-  .carbonad {
-    position: absolute;
-    top: 0;
-    right: 15px; /* 15px instead of 0 since box-sizing */
-    margin: 0 !important;
-    padding: 15px !important;
-    width: 330px !important;
-  }
-  .bs-docs-masthead .carbonad {
-    position: static;
-  }
-}
-
-
-/*
- * Homepage featurettes
- *
- * Reasons to use Bootstrap, entries from the Expo, and more.
- */
-
-.bs-docs-featurette {
-  padding-top:    40px;
-  padding-bottom: 40px;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #555;
-  text-align: center;
-  background-color: #fff;
-  border-bottom: 1px solid #e5e5e5;
-}
-.bs-docs-featurette + .bs-docs-footer {
-  margin-top: 0;
-  border-top: 0;
-}
-
-.bs-docs-featurette-title {
-  font-size: 30px;
-  font-weight: normal;
-  color: #333;
-  margin-bottom: 5px;
-}
-.half-rule {
-  width: 100px;
-  margin: 40px auto;
-}
-.bs-docs-featurette h3 {
-  font-weight: normal;
-  color: #333;
-  margin-bottom: 5px;
-}
-.bs-docs-featurette-img {
-  display: block;
-  margin-bottom: 20px;
-  color: #333;
-}
-.bs-docs-featurette-img:hover {
-  text-decoration: none;
-  color: #428bca;
-}
-.bs-docs-featurette-img img {
-  display: block;
-  margin-bottom: 15px;
-}
-
-/* Featured sites */
-.bs-docs-featured-sites {
-  margin-left: -1px;
-  margin-right: -1px;
-}
-.bs-docs-featured-sites .col-sm-3 {
-  padding-left: 1px;
-  padding-right: 1px;
-}
-
-@media (min-width: 480px) {
-  .bs-docs-featurette .img-responsive {
-    margin-top: 30px;
-  }
-}
-@media (min-width: 768px) {
-  .bs-docs-featurette {
-    padding-top:    100px;
-    padding-bottom: 100px;
-  }
-  .bs-docs-featurette-title {
-    font-size: 40px;
-  }
-  .bs-docs-featurette .lead {
-    margin-left:  auto;
-    margin-right: auto;
-    max-width: 80%;
-  }
-  .bs-docs-featured-sites .col-sm-3:first-child img {
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-  }
-  .bs-docs-featured-sites .col-sm-3:last-child img {
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-  }
-
-  .bs-docs-featurette .img-responsive {
-    margin-top: 0;
-  }
-}
-
-
-/*
- * Side navigation
- *
- * Scrollspy and affixed enhanced navigation to highlight sections and secondary
- * sections of docs content.
- */
-
-/* By default it's not affixed in mobile views, so undo that */
-.bs-docs-sidebar.affix {
-  position: static;
-  
-}
-@media (min-width: 768px) {
-  .bs-docs-sidebar {
-    padding-left: 20px;
-    
-  }
-}
-
-/* First level of nav */
-.bs-docs-sidenav {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-/* All levels of nav */
-.bs-docs-sidebar .nav > li > a {
-  display: block;
-  font-size: 13px;
-  font-weight: 500;
-  color: #999;
-  padding: 4px 20px;
-}
-.bs-docs-sidebar .nav > li > a:hover,
-.bs-docs-sidebar .nav > li > a:focus {
-  padding-left: 19px;
-  color: #00AEE9;
-  text-decoration: none;
-  background-color: transparent;
-  border-left: 1px solid #00AEE9;
-}
-.bs-docs-sidebar .nav > .active > a,
-.bs-docs-sidebar .nav > .active:hover > a,
-.bs-docs-sidebar .nav > .active:focus > a {
-  padding-left: 18px;
-  font-weight: bold;
-  color: #00AEE9;
-  background-color: transparent;
-  border-left: 2px solid #00AEE9;
-}
-
-/* Nav: second level (shown on .active) */
-.bs-docs-sidebar .nav .nav {
-  display: none; /* Hide by default, but at >768px, show it */
-  padding-bottom: 10px;
-}
-.bs-docs-sidebar .nav .nav > li > a {
-  padding-top:    1px;
-  padding-bottom: 1px;
-  padding-left: 30px;
-  font-size: 12px;
-  font-weight: normal;
-}
-.bs-docs-sidebar .nav .nav > li > a:hover,
-.bs-docs-sidebar .nav .nav > li > a:focus {
-  padding-left: 29px;
-}
-.bs-docs-sidebar .nav .nav > .active > a,
-.bs-docs-sidebar .nav .nav > .active:hover > a,
-.bs-docs-sidebar .nav .nav > .active:focus > a {
-  font-weight: 500;
-  padding-left: 28px;
-}
-
-/* Back to top (hidden on mobile) */
-.back-to-top {
-  display: none;
-  margin-top: 10px;
-  margin-left: 10px;
-  padding: 4px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #999;
-}
-.back-to-top:hover {
-  text-decoration: none;
-  color: #00AEE9;
-}
-
-@media (min-width: 768px) {
-  .back-to-top {
-    display: block;
-  }
-}
-
-/* Show and affix the side nav when space allows it */
-@media (min-width: 992px) {
-  .bs-docs-sidebar .nav > .active > ul {
-    display: block;
-  }
-  /* Widen the fixed sidebar */
-  .bs-docs-sidebar.affix,
-  .bs-docs-sidebar.affix-bottom {
-    width: 213px;
-  }
-  .bs-docs-sidebar.affix {
-    position: fixed; /* Undo the static from mobile first approach */
-    top: 20px;
-  }
-  .bs-docs-sidebar.affix-bottom {
-    position: absolute; /* Undo the static from mobile first approach */
-  }
-  .bs-docs-sidebar.affix-bottom .bs-docs-sidenav,
-  .bs-docs-sidebar.affix .bs-docs-sidenav {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-}
-@media (min-width: 1200px) {
-  /* Widen the fixed sidebar again */
-  .bs-docs-sidebar.affix-bottom,
-  .bs-docs-sidebar.affix {
-    width: 263px;
-  }
-}
-
-
-/*
- * Docs sections
- *
- * Content blocks for each component or feature.
- */
-
-/* Space things out */
-.bs-docs-section {
-  margin-bottom: 60px;
-}
-.bs-docs-section:last-child {
-  margin-bottom: 0;
-}
-
-h1[id] {
-  margin-top: 0;
-  padding-top: 20px;
-}
-
-
-/*
- * Callouts
- *
- * Not quite alerts, but custom and helpful notes for folks reading the docs.
- * Requires a base and modifier class.
- */
-
-/* Common styles for all types */
-.bs-callout {
-  margin: 20px 0;
-  padding: 20px;
-  border-left: 3px solid #eee;
-}
-.bs-callout h4 {
-  margin-top: 0;
-  margin-bottom: 5px;
-}
-.bs-callout p:last-child {
-  margin-bottom: 0;
-}
-.bs-callout code {
-  background-color: #fff;
-  border-radius: 3px;
-}
-
-/* Variations */
-.bs-callout-danger {
-  background-color: #fdf7f7;
-  border-color: #d9534f;
-}
-.bs-callout-danger h4 {
-  color: #d9534f;
-}
-.bs-callout-warning {
-  background-color: #fcf8f2;
-  border-color: #f0ad4e;
-}
-.bs-callout-warning h4 {
-  color: #f0ad4e;
-}
-.bs-callout-info {
-  background-color: #f4f8fa;
-  border-color: #5bc0de;
-}
-.bs-callout-info h4 {
-  color: #5bc0de;
-}
-
-
-/*
- * Color swatches
- *
- * Color swatches and associated values for our grayscale and brand colors.
- */
-
-.color-swatches {
-  margin: 0 -5px;
-  overflow: hidden; /* clearfix */
-}
-.color-swatch {
-  float: left;
-  width:  60px;
-  height: 60px;
-  margin: 0 5px;
-  border-radius: 3px;
-}
-
-@media (min-width: 768px) {
-  .color-swatch {
-    width:  100px;
-    height: 100px;
-  }
-}
-
-/* Framework colors */
-.color-swatches .gray-darker   { background-color: #222; }
-.color-swatches .gray-dark     { background-color: #333; }
-.color-swatches .gray          { background-color: #555; }
-.color-swatches .gray-light    { background-color: #999; }
-.color-swatches .gray-lighter  { background-color: #eee; }
-.color-swatches .brand-primary { background-color: #428bca; }
-.color-swatches .brand-success { background-color: #5cb85c; }
-.color-swatches .brand-warning { background-color: #f0ad4e; }
-.color-swatches .brand-danger  { background-color: #d9534f; }
-.color-swatches .brand-info    { background-color: #5bc0de; }
-
-/* Docs colors */
-.color-swatches .bs-purple          { background-color: #00AEE9; }
-.color-swatches .bs-purple-light    { background-color: #c7bfd3; }
-.color-swatches .bs-purple-lighter  { background-color: #e5e1ea; }
-.color-swatches .bs-gray            { background-color: #f9f9f9; }
-
-
-/*
- * Team members
- *
- * Avatars, names, and usernames for core team.
- */
-
-.bs-team .team-member {
-  color: #555;
-  line-height: 32px;
-}
-.bs-team .team-member:hover {
-  color: #333;
-  text-decoration: none;
-}
-.bs-team .github-btn {
-  float: right;
-  margin-top: 6px;
-  width: 180px;
-  height: 20px;
-}
-.bs-team img {
-  float: left;
-  width: 32px;
-  margin-right: 10px;
-  border-radius: 4px;
-}
-
-
-/*
- * Grid examples
- *
- * Highlight the grid columns within the docs so folks can see their padding,
- * alignment, sizing, etc.
- */
-
-.show-grid {
-  margin-bottom: 15px;
-}
-.show-grid [class^="col-"] {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background-color: #eee;
-  background-color: rgba(86,61,124,.15);
-  border: 1px solid #ddd;
-  border: 1px solid rgba(86,61,124,.2);
-}
-
-
-/*
- * Examples
- *
- * Isolated sections of example content for each component or feature. Usually
- * followed by a code snippet.
- */
-
-.bs-example {
-  position: relative;
-  padding: 45px 15px 15px;
-  margin: 0 -15px 15px;
-  background-color: #fafafa;
-  box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
-  border-color: #e5e5e5 #eee #eee;
-  border-style: solid;
-  border-width: 1px 0;
-}
-/* Echo out a label for the example */
-.bs-example:after {
-  content: "Example";
-  position: absolute;
-  top:  15px;
-  left: 15px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #bbb;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Tweak display of the code snippets when following an example */
-.bs-example + .highlight {
-  margin: -15px -15px 15px;
-  border-radius: 0;
-  border-width: 0 0 1px;
-}
-
-/* Make the examples and snippets not full-width */
-@media (min-width: 768px) {
-  .bs-example {
-    margin-left: 0;
-    margin-right: 0;
-    background-color: #fff;
-    border-width: 1px;
-    border-color: #ddd;
-    border-radius: 4px 4px 0 0;
-    box-shadow: none;
-  }
-  .bs-example + .highlight {
-    margin-top: -16px;
-    margin-left: 0;
-    margin-right: 0;
-    border-width: 1px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-  }
-}
-
-/* Undo width of container */
-.bs-example .container {
-  width: auto;
-}
-
-/* Tweak content of examples for optimum awesome */
-.bs-example > p:last-child,
-.bs-example > ul:last-child,
-.bs-example > ol:last-child,
-.bs-example > blockquote:last-child,
-.bs-example > .form-control:last-child,
-.bs-example > .table:last-child,
-.bs-example > .navbar:last-child,
-.bs-example > .jumbotron:last-child,
-.bs-example > .alert:last-child,
-.bs-example > .panel:last-child,
-.bs-example > .list-group:last-child,
-.bs-example > .well:last-child,
-.bs-example > .progress:last-child,
-.bs-example > .table-responsive:last-child > .table {
-  margin-bottom: 0;
-}
-.bs-example > p > .close {
-  float: none;
-}
-
-/* Typography */
-.bs-example-type .table .type-info {
-  color: #999;
-  vertical-align: middle;
-}
-.bs-example-type .table td {
-  padding: 15px 0;
-  border-color: #eee;
-}
-.bs-example-type .table tr:first-child td {
-  border-top: 0;
-}
-.bs-example-type h1,
-.bs-example-type h2,
-.bs-example-type h3,
-.bs-example-type h4,
-.bs-example-type h5,
-.bs-example-type h6 {
-  margin: 0;
-}
-
-/* Contextual background colors */
-.bs-example-bg-classes p {
-  padding: 15px;
-}
-
-/* Images */
-.bs-example > .img-circle,
-.bs-example > .img-rounded,
-.bs-example > .img-thumbnail {
-  margin: 5px;
-}
-
-/* Tables */
-.bs-example > .table-responsive > .table {
-  background-color: #fff;
-}
-
-/* Buttons */
-.bs-example > .btn,
-.bs-example > .btn-group {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-.bs-example > .btn-toolbar + .btn-toolbar {
-  margin-top: 10px;
-}
-
-/* Forms */
-.bs-example-control-sizing select,
-.bs-example-control-sizing input[type="text"] + input[type="text"] {
-  margin-top: 10px;
-}
-.bs-example-form .input-group {
-  margin-bottom: 10px;
-}
-.bs-example > textarea.form-control {
-  resize: vertical;
-}
-
-/* List groups */
-.bs-example > .list-group {
-  max-width: 400px;
-}
-
-/* Navbars */
-.bs-example .navbar:last-child {
-  margin-bottom: 0;
-}
-.bs-navbar-top-example,
-.bs-navbar-bottom-example {
-  z-index: 1;
-  padding: 0;
-  overflow: hidden; /* cut the drop shadows off */
-}
-.bs-navbar-top-example .navbar-header,
-.bs-navbar-bottom-example .navbar-header {
-  margin-left: 0;
-}
-.bs-navbar-top-example .navbar-fixed-top,
-.bs-navbar-bottom-example .navbar-fixed-bottom {
-  position: relative;
-  margin-left: 0;
-  margin-right: 0;
-}
-.bs-navbar-top-example {
-  padding-bottom: 45px;
-}
-.bs-navbar-top-example:after {
-  top: auto;
-  bottom: 15px;
-}
-.bs-navbar-top-example .navbar-fixed-top {
-  top: -1px;
-}
-.bs-navbar-bottom-example {
-  padding-top: 45px;
-}
-.bs-navbar-bottom-example .navbar-fixed-bottom {
-  bottom: -1px;
-}
-.bs-navbar-bottom-example .navbar {
-  margin-bottom: 0;
-}
-@media (min-width: 768px) {
-  .bs-navbar-top-example .navbar-fixed-top,
-  .bs-navbar-bottom-example .navbar-fixed-bottom {
-    position: absolute;
-  }
-  .bs-navbar-top-example {
-    border-radius: 0 0 4px 4px;
-  }
-  .bs-navbar-bottom-example {
-    border-radius: 4px 4px 0 0;
-  }
-}
-
-/* Pagination */
-.bs-example .pagination {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-/* Pager */
-.bs-example > .pager {
-  margin-top: 0;
-}
-
-/* Example modals */
-.bs-example-modal {
-  background-color: #f5f5f5;
-}
-.bs-example-modal .modal {
-  position: relative;
-  top: auto;
-  right: auto;
-  left: auto;
-  bottom: auto;
-  z-index: 1;
-  display: block;
-}
-.bs-example-modal .modal-dialog {
-  left: auto;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Example dropdowns */
-.bs-example > .dropdown > .dropdown-menu {
-  position: static;
-  display: block;
-  margin-bottom: 5px;
-}
-
-/* Example tabbable tabs */
-.bs-example-tabs .nav-tabs {
-  margin-bottom: 15px;
-}
-
-/* Tooltips */
-.bs-example-tooltips {
-  text-align: center;
-}
-.bs-example-tooltips > .btn {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-/* Popovers */
-.bs-example-popover {
-  padding-bottom: 24px;
-  background-color: #f9f9f9;
-}
-.bs-example-popover .popover {
-  position: relative;
-  display: block;
-  float: left;
-  width: 260px;
-  margin: 20px;
-}
-
-/* Scrollspy demo on fixed height div */
-.scrollspy-example {
-  position: relative;
-  height: 200px;
-  margin-top: 10px;
-  overflow: auto;
-}
-
-
-/*
- * Code snippets
- *
- * Generated via Pygments and Jekyll, these are snippets of HTML, CSS, and JS.
- */
-
-.highlight {
-  padding: 9px 14px;
-  margin-bottom: 14px;
-  background-color: #f7f7f9;
-  border: 1px solid #e1e1e8;
-  border-radius: 4px;
-}
-.highlight pre {
-  padding: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  background-color: transparent;
-  border: 0;
-  white-space: nowrap;
-}
-.highlight pre code {
-  font-size: inherit;
-  color: #333; /* Effectively the base text color */
-}
-.highlight pre .lineno {
-  display: inline-block;
-  width: 22px;
-  padding-right: 5px;
-  margin-right: 10px;
-  text-align: right;
-  color: #bebec5;
-}
-
-
-/*
- * Responsive tests
- *
- * Generate a set of tests to show the responsive utilities in action.
- */
-
-/* Responsive (scrollable) doc tables */
-.table-responsive .highlight pre {
-  white-space: normal;
-}
-
-/* Utility classes table  */
-.bs-table th small,
-.responsive-utilities th small {
-  display: block;
-  font-weight: normal;
-  color: #999;
-}
-.responsive-utilities tbody th {
-  font-weight: normal;
-}
-.responsive-utilities td {
-  text-align: center;
-}
-.responsive-utilities td.is-visible {
-  color: #468847;
-  background-color: #dff0d8 !important;
-}
-.responsive-utilities td.is-hidden {
-  color: #ccc;
-  background-color: #f9f9f9 !important;
-}
-
-/* Responsive tests */
-.responsive-utilities-test {
-  margin-top: 5px;
-}
-.responsive-utilities-test .col-xs-6 {
-  margin-bottom: 10px;
-}
-.responsive-utilities-test span {
-  display: block;
-  padding: 15px 10px;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 1.1;
-  text-align: center;
-  border-radius: 4px;
-}
-.visible-on .col-xs-6 .hidden-xs,
-.visible-on .col-xs-6 .hidden-sm,
-.visible-on .col-xs-6 .hidden-md,
-.visible-on .col-xs-6 .hidden-lg,
-.hidden-on .col-xs-6 .hidden-xs,
-.hidden-on .col-xs-6 .hidden-sm,
-.hidden-on .col-xs-6 .hidden-md,
-.hidden-on .col-xs-6 .hidden-lg {
-  color: #999;
-  border: 1px solid #ddd;
-}
-.visible-on .col-xs-6 .visible-xs,
-.visible-on .col-xs-6 .visible-sm,
-.visible-on .col-xs-6 .visible-md,
-.visible-on .col-xs-6 .visible-lg,
-.hidden-on .col-xs-6 .visible-xs,
-.hidden-on .col-xs-6 .visible-sm,
-.hidden-on .col-xs-6 .visible-md,
-.hidden-on .col-xs-6 .visible-lg {
-  color: #468847;
-  background-color: #dff0d8;
-  border: 1px solid #d6e9c6;
-}
-
-
-/*
- * Glyphicons
- *
- * Special styles for displaying the icons and their classes in the docs.
- */
-
-.bs-glyphicons {
-  margin: 0 -19px 20px -16px;
-  overflow: hidden;
-}
-.bs-glyphicons-list {
-  padding-left: 0;
-  list-style: none;
-}
-.bs-glyphicons li {
-  float: left;
-  width: 25%;
-  height: 115px;
-  padding: 10px;
-  font-size: 10px;
-  line-height: 1.4;
-  text-align: center;
-  border: 1px solid #fff;
-  background-color: #f9f9f9;
-}
-.bs-glyphicons .glyphicon {
-  margin-top: 5px;
-  margin-bottom: 10px;
-  font-size: 24px;
-}
-.bs-glyphicons .glyphicon-class {
-  display: block;
-  text-align: center;
-  word-wrap: break-word; /* Help out IE10+ with class names */
-}
-.bs-glyphicons li:hover {
-  color: #fff;
-  background-color: #00AEE9;
-}
-
-@media (min-width: 768px) {
-  .bs-glyphicons {
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .bs-glyphicons li {
-    width: 12.5%;
-    font-size: 12px;
-  }
-}
-
-
-/*
- * Customizer
- *
- * Since this is so form control heavy, we have quite a few styles to customize
- * the display of inputs, headings, and more. Also included are all the download
- * buttons and actions.
- */
-
-.bs-customizer .toggle {
-  float: right;
-  margin-top: 25px;
-}
-
-/* Headings and form contrls */
-.bs-customizer label {
-  margin-top: 10px;
-  font-weight: 500;
-  color: #555;
-}
-.bs-customizer h2 {
-  margin-top: 0;
-  margin-bottom: 5px;
-  padding-top: 30px;
-}
-.bs-customizer h3 {
-  margin-bottom: 0;
-}
-.bs-customizer h4 {
-  margin-top: 15px;
-  margin-bottom: 0;
-}
-.bs-customizer .bs-callout h4 {
-  margin-top: 0; /* lame, but due to specificity we have to duplicate */
-  margin-bottom: 5px;
-}
-.bs-customizer input[type="text"] {
-  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-  background-color: #fafafa;
-}
-.bs-customizer .help-block {
-  font-size: 12px;
-  margin-bottom: 5px;
-}
-
-/* For the variables, use regular weight */
-#less-section label {
-  font-weight: normal;
-}
-
-.bs-customizer-input {
-  float: left;
-  width: 33.333333%;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-/* Downloads */
-.bs-customize-download .btn-outline {
-  padding: 20px;
-}
-
-/* Error handling */
-.bs-customizer-alert {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1030;
-  padding: 15px 0;
-  color: #fff;
-  background-color: #d9534f;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
-  border-bottom: 1px solid #b94441;
-}
-.bs-customizer-alert .close {
-  margin-top: -4px;
-  font-size: 24px;
-}
-.bs-customizer-alert p {
-  margin-bottom: 0;
-}
-.bs-customizer-alert .glyphicon {
-  margin-right: 5px;
-}
-.bs-customizer-alert pre {
-  margin: 10px 0 0;
-  color: #fff;
-  background-color: #a83c3a;
-  border-color: #973634;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,.05), 0 1px 0 rgba(255,255,255,.1);
-}
-
-
-/*
- * Brand guidelines
- *
- * Extra styles for displaying wordmarks, logos, etc.
- */
-
-/* Logo series wrapper */
-.bs-brand-logos {
-  display: table;
-  width: 100%;
-  margin-bottom: 15px;
-  overflow: hidden;
-  color: #00AEE9;
-  background-color: #f9f9f9;
-  border-radius: 4px;
-}
-
-/* Individual items */
-.bs-brand-item {
-  padding: 60px 0;
-  text-align: center;
-}
-.bs-brand-item + .bs-brand-item {
-  border-top: 1px solid #fff;
-}
-.bs-brand-logos .inverse {
-  color: #fff;
-  background-color: #00AEE9;
-}
-
-/* Heading content within */
-.bs-brand-item h1,
-.bs-brand-item h3 {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-.bs-brand-item .bs-docs-booticon {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Make the icons stand out on what is/isn't okay */
-.bs-brand-item .glyphicon {
-  width: 30px;
-  height: 30px;
-  margin: 10px auto -10px;
-  line-height: 30px;
-  color: #fff;
-  border-radius: 50%;
-}
-.bs-brand-item .glyphicon-ok { background-color: #5cb85c; }
-.bs-brand-item .glyphicon-times { background-color: #d9534f; }
-
-@media (min-width: 768px) {
-  .bs-brand-item {
-    display: table-cell;
-    width: 1%;
-  }
-  .bs-brand-item + .bs-brand-item {
-    border-top: 0;
-    border-left: 1px solid #fff;
-  }
-  .bs-brand-item h1 {
-    font-size: 60px;
-  }
-}
-
-
-/*
- * Miscellaneous
- *
- * Odds and ends for optimum docs display.
- */
-
-/* Examples gallery: space out content better */
-.bs-examples .thumbnail {
-  margin-bottom: 10px;
-}
-.bs-examples h4 {
-  margin-bottom: 5px;
-}
-.bs-examples p {
-  margin-bottom: 20px;
-}
-
-/* Pseudo :focus state for showing how it looks in the docs */
-#focusedInput {
-  border-color: rgb(204,204,204); /* Restate unfocused value to make CSSLint happy that there's a pre-CSS3 fallback*/
-  border-color: rgba(82,168,236,.8);
-  outline: 0;
-  outline: thin dotted \9; /* IE6-9 */
-  -moz-box-shadow: 0 0 8px rgba(82,168,236,.6);
-       box-shadow: 0 0 8px rgba(82,168,236,.6);
-}
-]]></data>
+                <data content_type="text/css" filename="docs.min.css" type="file"><![CDATA[/*!
+ * Bootstrap Docs (https://getbootstrap.com/)
+ * Copyright 2011-2019 The Bootstrap Authors
+ * Copyright 2011-2019 Twitter, Inc.
+ * Licensed under the Creative Commons Attribution 3.0 Unported License.
+ * For details, see https://creativecommons.org/licenses/by/3.0/.
+ */.bd-navbar{min-height:4rem;background-color:#563d7c;box-shadow:0 .5rem 1rem rgba(0,0,0,.05),inset 0 -1px 0 rgba(0,0,0,.1);}@media (max-width:991.98px){.bd-navbar{padding-right:.5rem;padding-left:.5rem}.bd-navbar .navbar-nav-scroll{max-width:100%;height:2.5rem;margin-top:.25rem;overflow:hidden}.bd-navbar .navbar-nav-scroll .navbar-nav{padding-bottom:2rem;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}}@media (min-width:768px){@supports ((position:-webkit-sticky) or (position:sticky)){.bd-navbar{position:-webkit-sticky;position:sticky;top:0;z-index:1071}}}.bd-navbar .navbar-nav .nav-link{padding-right:.5rem;padding-left:.5rem;color:#cbbde2}.bd-navbar .navbar-nav .nav-link.active,.bd-navbar .navbar-nav .nav-link:hover{color:#fff;background-color:transparent}.bd-navbar .navbar-nav .nav-link.active{font-weight:600}.bd-navbar .navbar-nav-svg{display:inline-block;width:1rem;height:1rem;vertical-align:text-top}.bd-navbar .dropdown-menu{font-size:.875rem}.bd-navbar .dropdown-item.active{font-weight:600;color:#212529;background:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23292b2c' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") no-repeat .4rem .6rem/.75rem .75rem}.bd-masthead{position:relative;padding:3rem 15px}.bd-masthead h1{font-size:4rem;line-height:1}@media (max-width:1200px){.bd-masthead h1{font-size:calc(1.525rem + 3.3vw)}}.bd-masthead .btn{padding:.8rem 2rem;font-weight:600;font-size:1.25rem}.bd-masthead .carbonad{margin-top:0!important;margin-bottom:-3rem!important}@media (min-width:576px){.bd-masthead{padding-top:5rem;padding-bottom:5rem}.bd-masthead .carbonad{margin-bottom:0!important}}@media (min-width:768px){.bd-masthead .carbonad{margin-top:3rem!important}}.half-rule{width:6rem;margin:2.5rem 0}.masthead-followup .bd-clipboard{display:none}.masthead-followup .highlight{padding:.5rem 0;background-color:transparent}#carbonads{position:static;display:block;max-width:400px;padding:15px 15px 15px 160px;margin:2rem 0;overflow:hidden;font-size:.8125rem;line-height:1.4;text-align:left;background-color:rgba(0,0,0,.05)}#carbonads a{color:#333;text-decoration:none}@media (min-width:576px){#carbonads{max-width:330px;border-radius:4px}}.carbon-img{float:left;margin-left:-145px}.carbon-poweredby{display:block;margin-top:.75rem;color:#777!important}.bd-content{-ms-flex-order:1;order:1}.bd-content>h2[id],.bd-content>h3[id],.bd-content>h4[id]{pointer-events:none}.bd-content>h2[id]::before,.bd-content>h3[id]::before,.bd-content>h4[id]::before{display:block;height:6rem;margin-top:-6rem;content:""}.bd-content>table{width:100%;max-width:100%;margin-bottom:1rem}@media (max-width:991.98px){.bd-content>table{display:block;overflow-x:auto}.bd-content>table.table-bordered{border:0}}.bd-content>table>tbody>tr>td,.bd-content>table>tbody>tr>th,.bd-content>table>tfoot>tr>td,.bd-content>table>tfoot>tr>th,.bd-content>table>thead>tr>td,.bd-content>table>thead>tr>th{padding:.75rem;vertical-align:top;border:1px solid #dee2e6}.bd-content>table>tbody>tr>td>p:last-child,.bd-content>table>tbody>tr>th>p:last-child,.bd-content>table>tfoot>tr>td>p:last-child,.bd-content>table>tfoot>tr>th>p:last-child,.bd-content>table>thead>tr>td>p:last-child,.bd-content>table>thead>tr>th>p:last-child{margin-bottom:0}.bd-content>table td:first-child>code{white-space:nowrap}.bd-content-title{display:block;pointer-events:auto}.bd-content>h2{font-size:2rem}@media (max-width:1200px){.bd-content>h2{font-size:calc(1.325rem + .9vw)}}.bd-content>h3{font-size:1.75rem}@media (max-width:1200px){.bd-content>h3{font-size:calc(1.3rem + .6vw)}}.bd-content>h4{font-size:1.5rem}@media (max-width:1200px){.bd-content>h4{font-size:calc(1.275rem + .3vw)}}.bd-content>h2:not(:first-child){margin-top:3rem}.bd-content>h3{margin-top:1.5rem}.bd-content>ol li,.bd-content>ul li{margin-bottom:.25rem}@media (min-width:992px){.bd-content>ol,.bd-content>p,.bd-content>ul{max-width:80%}}.bd-title{margin-top:1rem;margin-bottom:.5rem;font-weight:300;font-size:3rem}@media (max-width:1200px){.bd-title{font-size:calc(1.425rem + 2.1vw)}}.bd-lead{font-size:1.5rem;font-weight:300}@media (max-width:1200px){.bd-lead{font-size:calc(1.275rem + .3vw)}}@media (min-width:992px){.bd-lead{max-width:80%}}.bd-text-purple{color:#563d7c}.bd-text-purple-bright{color:#7952b3}.skippy{display:block;padding:1em;color:#fff;text-align:center;background-color:#563d7c;outline:0}.skippy:hover{color:#fff}.skippy-text{padding:.5em;outline:1px dotted}.bd-toc{-ms-flex-order:2;order:2;padding-top:1.5rem;padding-bottom:1.5rem;font-size:.875rem}@supports ((position:-webkit-sticky) or (position:sticky)){.bd-toc{position:-webkit-sticky;position:sticky;top:4rem;height:calc(100vh - 4rem);overflow-y:auto}}.section-nav{padding-left:0;border-left:1px solid #eee}.section-nav ul{padding-left:1rem}.toc-entry{display:block}.toc-entry a{display:block;padding:.125rem 1.5rem;color:#77757a}.toc-entry a:hover{color:#007bff;text-decoration:none}.bd-sidebar{-ms-flex-order:0;order:0;border-bottom:1px solid rgba(0,0,0,.1)}@media (min-width:768px){.bd-sidebar{border-right:1px solid rgba(0,0,0,.1)}@supports ((position:-webkit-sticky) or (position:sticky)){.bd-sidebar{position:-webkit-sticky;position:sticky;top:4rem;z-index:1000;height:calc(100vh - 4rem)}}}@media (min-width:1200px){.bd-sidebar{-ms-flex:0 1 320px;flex:0 1 320px}}.bd-links{padding-top:1rem;padding-bottom:1rem;margin-right:-15px;margin-left:-15px}@media (min-width:768px){@supports ((position:-webkit-sticky) or (position:sticky)){.bd-links{max-height:calc(100vh - 9rem);overflow-y:auto}}}@media (min-width:768px){.bd-links{display:block!important}}.bd-search{position:relative;padding:1rem 15px;margin-right:-15px;margin-left:-15px;border-bottom:1px solid rgba(0,0,0,.05)}.bd-search .form-control:focus{border-color:#7952b3;box-shadow:0 0 0 3px rgba(121,82,179,.25)}.bd-search-docs-toggle{line-height:1;color:#212529}.bd-sidenav{display:none}.bd-toc-link{display:block;padding:.25rem 1.5rem;font-weight:600;color:rgba(0,0,0,.65)}.bd-toc-link:hover{color:rgba(0,0,0,.85);text-decoration:none}.bd-toc-item.active{margin-bottom:1rem}.bd-toc-item.active:not(:first-child){margin-top:1rem}.bd-toc-item.active>.bd-toc-link{color:rgba(0,0,0,.85)}.bd-toc-item.active>.bd-toc-link:hover{background-color:transparent}.bd-toc-item.active>.bd-sidenav{display:block}.bd-sidebar .nav>li>a{display:block;padding:.25rem 1.5rem;font-size:90%;color:rgba(0,0,0,.65)}.bd-sidebar .nav>li>a:hover{color:rgba(0,0,0,.85);text-decoration:none;background-color:transparent}.bd-sidebar .nav>.active:hover>a,.bd-sidebar .nav>.active>a{font-weight:600;color:rgba(0,0,0,.85);background-color:transparent}.bd-footer{font-size:.875rem;text-align:center;background-color:#f7f7f7}.bd-footer a{font-weight:600;color:#495057}.bd-footer a:focus,.bd-footer a:hover{color:#007bff}.bd-footer p{margin-bottom:0}@media (min-width:576px){.bd-footer{text-align:left}}.bd-footer-links{padding-left:0;margin-bottom:1rem}.bd-footer-links li{display:inline-block}.bd-footer-links li+li{margin-left:1rem}.bd-example-row .row>.col,.bd-example-row .row>[class^=col-]{padding-top:.75rem;padding-bottom:.75rem;background-color:rgba(86,61,124,.15);border:1px solid rgba(86,61,124,.2)}.bd-example-row .row+.row{margin-top:1rem}.bd-example-row .flex-items-bottom,.bd-example-row .flex-items-middle,.bd-example-row .flex-items-top{min-height:6rem;background-color:rgba(255,0,0,.1)}.bd-example-row-flex-cols .row{min-height:10rem;background-color:rgba(255,0,0,.1)}.bd-highlight{background-color:rgba(86,61,124,.15);border:1px solid rgba(86,61,124,.15)}.bd-example-responsive-containers [class^=container]{padding-top:.75rem;padding-bottom:.75rem;background-color:rgba(86,61,124,.15);border:1px solid rgba(86,61,124,.2)}.example-container{width:800px;width:100%;padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}.example-row{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;margin-right:-15px;margin-left:-15px}.example-content-main{position:relative;width:100%;padding-right:15px;padding-left:15px}@media (min-width:576px){.example-content-main{-ms-flex:0 0 50%;flex:0 0 50%;max-width:50%}}@media (min-width:992px){.example-content-main{-ms-flex:0 0 66.666667%;flex:0 0 66.666667%;max-width:66.666667%}}.example-content-secondary{position:relative;width:100%;padding-right:15px;padding-left:15px}@media (min-width:576px){.example-content-secondary{-ms-flex:0 0 50%;flex:0 0 50%;max-width:50%}}@media (min-width:992px){.example-content-secondary{-ms-flex:0 0 33.333333%;flex:0 0 33.333333%;max-width:33.333333%}}.bd-example{position:relative;padding:1rem;margin:1rem -15px 0;border:solid #f8f9fa;border-width:.2rem 0 0}.bd-example::after{display:block;clear:both;content:""}@media (min-width:576px){.bd-example{padding:1.5rem;margin-right:0;margin-left:0;border-width:.2rem}}.bd-example+.clipboard+.highlight,.bd-example+.highlight{margin-top:0}.bd-example+p{margin-top:2rem}.bd-example .pos-f-t{position:relative;margin:-1rem}@media (min-width:576px){.bd-example .pos-f-t{margin:-1.5rem}}.bd-example .custom-file-input:lang(es)~.custom-file-label::after{content:"Elegir"}.bd-example>.form-control+.form-control{margin-top:.5rem}.bd-example>.alert+.alert,.bd-example>.nav+.nav,.bd-example>.navbar+.navbar,.bd-example>.progress+.btn,.bd-example>.progress+.progress{margin-top:1rem}.bd-example>.dropdown-menu:first-child{position:static;display:block}.bd-example>.form-group:last-child{margin-bottom:0}.bd-example>.close{float:none}.bd-example-type .table td{padding:1rem 0;border-color:#eee}.bd-example-type .table tr:first-child td{border-top:0}.bd-example-type h1,.bd-example-type h2,.bd-example-type h3,.bd-example-type h4,.bd-example-type h5,.bd-example-type h6{margin-top:0;margin-bottom:0}.bd-example-bg-classes p{padding:1rem}.bd-example>img+img,.bd-example>svg+svg{margin-left:.5rem}.bd-example>.btn,.bd-example>.btn-group{margin-top:.25rem;margin-bottom:.25rem}.bd-example>.btn-toolbar+.btn-toolbar{margin-top:.5rem}.bd-example-control-sizing input[type=text]+input[type=text],.bd-example-control-sizing select{margin-top:.5rem}.bd-example-form .input-group{margin-bottom:.5rem}.bd-example>textarea.form-control{resize:vertical}.bd-example>.list-group{max-width:400px}.bd-example>[class*=list-group-horizontal]{max-width:100%}.bd-example .fixed-top,.bd-example .sticky-top{position:static;margin:-1rem -1rem 1rem}.bd-example .fixed-bottom{position:static;margin:1rem -1rem -1rem}@media (min-width:576px){.bd-example .fixed-top,.bd-example .sticky-top{margin:-1.5rem -1.5rem 1rem}.bd-example .fixed-bottom{margin:1rem -1.5rem -1.5rem}}.bd-example .pagination{margin-top:.5rem;margin-bottom:.5rem}.modal{z-index:1072}.modal .popover,.modal .tooltip{z-index:1073}.modal-backdrop{z-index:1071}.bd-example-modal{background-color:#fafafa}.bd-example-modal .modal{position:relative;top:auto;right:auto;bottom:auto;left:auto;z-index:1;display:block}.bd-example-modal .modal-dialog{left:auto;margin-right:auto;margin-left:auto}.bd-example-tabs .nav-tabs{margin-bottom:1rem}.bd-example-popover-static{padding-bottom:1.5rem;background-color:#f9f9f9}.bd-example-popover-static .popover{position:relative;display:block;float:left;width:260px;margin:1.25rem}.tooltip-demo a{white-space:nowrap}.bd-example-tooltip-static .tooltip{position:relative;display:inline-block;margin:10px 20px;opacity:1}.scrollspy-example{position:relative;height:200px;margin-top:.5rem;overflow:auto}.scrollspy-example-2{position:relative;height:350px;overflow:auto}.bd-example-border-utils [class^=border]{display:inline-block;width:5rem;height:5rem;margin:.25rem;background-color:#f5f5f5}.bd-example-border-utils-0 [class^=border]{border:1px solid #dee2e6}.highlight{padding:1rem;margin-top:1rem;margin-bottom:1rem;background-color:#f8f9fa;-ms-overflow-style:-ms-autohiding-scrollbar}@media (min-width:576px){.highlight{padding:1.5rem}}.bd-content .highlight{margin-right:-15px;margin-left:-15px}@media (min-width:576px){.bd-content .highlight{margin-right:0;margin-left:0}}.highlight pre{padding:0;margin-top:0;margin-bottom:0;background-color:transparent;border:0}.highlight pre code{font-size:inherit;color:#212529}.btn-bd-primary{font-weight:600;color:#7952b3;border-color:#7952b3}.btn-bd-primary:active,.btn-bd-primary:hover{color:#fff;background-color:#7952b3;border-color:#7952b3}.btn-bd-primary:focus{box-shadow:0 0 0 3px rgba(121,82,179,.25)}.btn-bd-download{font-weight:600;color:#ffe484;border-color:#ffe484}.btn-bd-download:active,.btn-bd-download:hover{color:#2a2730;background-color:#ffe484;border-color:#ffe484}.btn-bd-download:focus{box-shadow:0 0 0 3px rgba(255,228,132,.25)}.bd-callout{padding:1.25rem;margin-top:1.25rem;margin-bottom:1.25rem;border:1px solid #eee;border-left-width:.25rem;border-radius:.25rem}.bd-callout h4{margin-top:0;margin-bottom:.25rem}.bd-callout p:last-child{margin-bottom:0}.bd-callout code{border-radius:.25rem}.bd-callout+.bd-callout{margin-top:-.25rem}.bd-callout-info{border-left-color:#5bc0de}.bd-callout-info h4{color:#5bc0de}.bd-callout-warning{border-left-color:#f0ad4e}.bd-callout-warning h4{color:#f0ad4e}.bd-callout-danger{border-left-color:#d9534f}.bd-callout-danger h4{color:#d9534f}.bd-browser-bugs td p{margin-bottom:0}.bd-browser-bugs th:first-child{width:18%}.bd-brand-logos{display:table;width:100%;margin-bottom:1rem;overflow:hidden;color:#563d7c;background-color:#f9f9f9;border-radius:.25rem}.bd-brand-logos .inverse{color:#fff;background-color:#563d7c}.bd-brand-item{padding:4rem 0;text-align:center}.bd-brand-item+.bd-brand-item{border-top:1px solid #fff}.bd-brand-item h1,.bd-brand-item h3{margin-top:0;margin-bottom:0}@media (min-width:768px){.bd-brand-item{display:table-cell;width:1%}.bd-brand-item+.bd-brand-item{border-top:0;border-left:1px solid #fff}.bd-brand-item h1{font-size:4rem}}@media (min-width:768px) and (max-width:1200px){.bd-brand-item h1{font-size:calc(1.525rem + 3.3vw)}}.color-swatches{margin:0 -5px;overflow:hidden}.color-swatches .bd-purple{background-color:#563d7c}.color-swatches .bd-purple-light{background-color:#cbbde2}.color-swatches .bd-purple-lighter{background-color:#e5e1ea}.color-swatches .bd-gray{background-color:#f9f9f9}.color-swatch{float:left;width:4rem;height:4rem;margin-right:.25rem;margin-left:.25rem;border-radius:.25rem}@media (min-width:768px){.color-swatch{width:6rem;height:6rem}}.swatch-blue{color:#fff;background-color:#007bff}.swatch-indigo{color:#fff;background-color:#6610f2}.swatch-purple{color:#fff;background-color:#6f42c1}.swatch-pink{color:#fff;background-color:#e83e8c}.swatch-red{color:#fff;background-color:#dc3545}.swatch-orange{color:#212529;background-color:#fd7e14}.swatch-yellow{color:#212529;background-color:#ffc107}.swatch-green{color:#fff;background-color:#28a745}.swatch-teal{color:#fff;background-color:#20c997}.swatch-cyan{color:#fff;background-color:#17a2b8}.swatch-white{color:#212529;background-color:#fff}.swatch-gray{color:#fff;background-color:#6c757d}.swatch-gray-dark{color:#fff;background-color:#343a40}.swatch-100{color:#212529;background-color:#f8f9fa}.swatch-200{color:#212529;background-color:#e9ecef}.swatch-300{color:#212529;background-color:#dee2e6}.swatch-400{color:#212529;background-color:#ced4da}.swatch-500{color:#212529;background-color:#adb5bd}.swatch-600{color:#fff;background-color:#6c757d}.swatch-700{color:#fff;background-color:#495057}.swatch-800{color:#fff;background-color:#343a40}.swatch-900{color:#fff;background-color:#212529}.bd-clipboard{position:relative;display:none;float:right}.bd-clipboard+.highlight{margin-top:0}@media (min-width:768px){.bd-clipboard{display:block}}.btn-clipboard{position:absolute;top:.5rem;right:.5rem;z-index:10;display:block;padding:.25rem .5rem;font-size:75%;color:#818a91;background-color:transparent;border:0;border-radius:.25rem}.btn-clipboard:hover{color:#fff;background-color:#027de7}.bd-placeholder-img{font-size:1.125rem;text-anchor:middle;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.bd-placeholder-img-lg{font-size:3.5rem}@media (max-width:1200px){.bd-placeholder-img-lg{font-size:calc(1.475rem + 2.7vw)}}.hll{background-color:#ffc}.c{color:#999}.k{color:#069}.o{color:#555}.cm{color:#999}.cp{color:#099}.c1{color:#999}.cs{color:#999}.gd{background-color:#fcc;border:1px solid #c00}.ge{font-style:italic}.gr{color:red}.gh{color:#030}.gi{background-color:#cfc;border:1px solid #0c0}.go{color:#aaa}.gp{color:#009}.gu{color:#030}.gt{color:#9c6}.kc{color:#069}.kd{color:#069}.kn{color:#069}.kp{color:#069}.kr{color:#069}.kt{color:#078}.m{color:#f60}.s{color:#d44950}.na{color:#4f9fcf}.nb{color:#366}.nc{color:#0a8}.no{color:#360}.nd{color:#99f}.ni{color:#999}.ne{color:#c00}.nf{color:#c0f}.nl{color:#99f}.nn{color:#0cf}.nt{color:#2f6f9f}.nv{color:#033}.ow{color:#000}.w{color:#bbb}.mf{color:#f60}.mh{color:#f60}.mi{color:#f60}.mo{color:#f60}.sb{color:#c30}.sc{color:#c30}.sd{font-style:italic;color:#c30}.s2{color:#c30}.se{color:#c30}.sh{color:#c30}.si{color:#a00}.sx{color:#c30}.sr{color:#3aa}.s1{color:#c30}.ss{color:#fc3}.bp{color:#366}.vc{color:#033}.vg{color:#033}.vi{color:#033}.il{color:#f60}.css .nt+.nt,.css .o,.css .o+.nt{color:#999}.language-bash::before,.language-sh::before{color:#009;content:"$ ";-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.language-powershell::before{color:#009;content:"PM> ";-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.anchorjs-link{font-weight:400;color:rgba(0,123,255,.5);transition:color .15s ease-in-out,opacity .15s ease-in-out}@media (prefers-reduced-motion:reduce){.anchorjs-link{transition:none}}.anchorjs-link:hover{color:#007bff;text-decoration:none}.algolia-autocomplete{display:block!important;-ms-flex:1;flex:1}.algolia-autocomplete .ds-dropdown-menu{width:100%;min-width:0!important;max-width:none!important;padding:.75rem 0!important;background-color:#fff;background-clip:padding-box;border:1px solid rgba(0,0,0,.1);box-shadow:0 .5rem 1rem rgba(0,0,0,.175)}@media (min-width:768px){.algolia-autocomplete .ds-dropdown-menu{width:175%}}.algolia-autocomplete .ds-dropdown-menu::before{display:none!important}.algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-]{padding:0!important;overflow:visible!important;background-color:transparent!important;border:0!important}.algolia-autocomplete .ds-dropdown-menu .ds-suggestions{margin-top:0!important}.algolia-autocomplete .algolia-docsearch-suggestion{padding:0!important;overflow:visible!important}.algolia-autocomplete .algolia-docsearch-suggestion--category-header{padding:.125rem 1rem!important;margin-top:0!important;font-size:.875rem!important;font-weight:600!important;color:#7952b3!important;border-bottom:0!important}.algolia-autocomplete .algolia-docsearch-suggestion--wrapper{float:none!important;padding-top:0!important}.algolia-autocomplete .algolia-docsearch-suggestion--subcategory-column{float:none!important;width:auto!important;padding:0!important;text-align:left!important}.algolia-autocomplete .algolia-docsearch-suggestion--subcategory-inline{display:block!important;font-size:.875rem;color:#495057}.algolia-autocomplete .algolia-docsearch-suggestion--subcategory-inline::after{padding:0 .25rem;content:"/"}.algolia-autocomplete .algolia-docsearch-suggestion--content{display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;float:none!important;width:100%!important;padding:.25rem 1rem!important}.algolia-autocomplete .algolia-docsearch-suggestion--content::before{display:none!important}.algolia-autocomplete .ds-suggestion:not(:first-child) .algolia-docsearch-suggestion--category-header{padding-top:.75rem!important;margin-top:.75rem!important;border-top:1px solid rgba(0,0,0,.1)}.algolia-autocomplete .ds-suggestion .algolia-docsearch-suggestion--subcategory-column{display:none!important}.algolia-autocomplete .algolia-docsearch-suggestion--title{display:block;margin-bottom:0!important;font-size:.875rem!important;font-weight:400!important}.algolia-autocomplete .algolia-docsearch-suggestion--text{-ms-flex:0 0 100%;flex:0 0 100%;max-width:100%;padding:.2rem 0;font-size:.8125rem!important;font-weight:400;line-height:1.25!important;color:#6c757d}.algolia-autocomplete .algolia-docsearch-footer{float:none!important;width:auto!important;height:auto!important;padding:.75rem 1rem 0;font-size:.75rem!important;line-height:1!important;color:#767676!important;border-top:1px solid rgba(0,0,0,.1)}.algolia-autocomplete .algolia-docsearch-footer--logo{display:inline!important;overflow:visible!important;color:inherit!important;text-indent:0!important;background:0 0!important}.algolia-autocomplete .algolia-docsearch-suggestion--highlight{color:#5f2dab;background-color:rgba(154,132,187,.12)}.algolia-autocomplete .algolia-docsearch-suggestion--text .algolia-docsearch-suggestion--highlight{box-shadow:inset 0 -2px 0 0 rgba(95,45,171,.5)!important}.algolia-autocomplete .ds-suggestion.ds-cursor .algolia-docsearch-suggestion--content{background-color:rgba(208,189,236,.15)!important}
+/*# sourceMappingURL=docs.min.css.map */]]></data>
               </item>
               <item key="default"></item>
-              <item key="id">myZMStheme32/common/webdesign/docs.css</item>
+              <item key="id">myZMStheme32/common/webdesign/docs.min.css</item>
               <item key="keys" type="list">
                 <list>
                 </list>
@@ -6022,7 +4526,7 @@ h1[id] {
               <item key="mandatory" type="int">0</item>
               <item key="meta_type"></item>
               <item key="multilang" type="int">0</item>
-              <item key="name">docs.css</item>
+              <item key="name">docs.min.css</item>
               <item key="repetitive" type="int">0</item>
               <item key="type">File</item>
             </dictionary>
@@ -6086,7 +4590,7 @@ h1[id] {
       <item key="id">myZMStheme32</item>
       <item key="name">myZMStheme32</item>
       <item key="package"></item>
-      <item key="revision">0.1.1</item>
+      <item key="revision">4.0.0</item>
       <item key="type">ZMSLibrary</item>
     </dictionary>
   </item>

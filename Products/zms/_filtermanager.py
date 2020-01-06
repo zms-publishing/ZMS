@@ -443,9 +443,9 @@ def processCommand(self, filename, command):
       outfilename += '.tmp'
   tmpoutfilename = outfilename + '~'
   instance_home = standard.getINSTANCE_HOME()
-  software_home = os.path.join(SOFTWARE_HOME, '..%s..' % os.sep)
-  software_home = os.path.normpath(software_home)  
-  command = command.replace( '{software_home}', software_home)
+  package_home = standard.getPACKAGE_HOME()
+  package_home = os.path.normpath(package_home)
+  command = command.replace( '{package_home}', package_home)
   command = command.replace( '{instance_home}', instance_home)
   command = command.replace( mCurDir, _fileutil.getFilePath(infilename))
   command = command.replace( mIn, infilename)
@@ -564,12 +564,11 @@ class FilterItem(object):
     def initExportFilter(self, id, REQUEST):
       # Set environment variables.
       instance_home = standard.getINSTANCE_HOME()
-      software_home = os.path.join(SOFTWARE_HOME, '..%s..' % os.sep)
-      software_home = os.path.normpath(software_home)  
+      package_home = standard.getPACKAGE_HOME()
+      package_home = os.path.normpath(package_home)
       REQUEST.set( 'ZMS_FILTER', True)
-      REQUEST.set( 'ZMS_FILTER_SOFTWARE_HOME', software_home)
       REQUEST.set( 'ZMS_FILTER_INSTANCE_HOME', instance_home)
-      REQUEST.set( 'ZMS_FILTER_PACKAGE_HOME', _fileutil.getOSPath(package_home(globals())))
+      REQUEST.set( 'ZMS_FILTER_PACKAGE_HOME', package_home)
       # Set local variables.
       ob_filter = self.getFilter(id)
       ob_filter_format = ob_filter.get('format', '')

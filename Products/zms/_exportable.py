@@ -300,11 +300,10 @@ class Exportable(_filtermanager.FilterItem):
       # myXML.
       elif export_format == 3: 
         instance_home = standard.getINSTANCE_HOME()
-        software_home = os.path.join(SOFTWARE_HOME, '..%s..' % os.sep)
-        software_home = os.path.normpath(software_home)  
-        REQUEST.set( 'ZMS_FILTER_SOFTWARE_HOME', software_home)
+        package_home = standard.getPACKAGE_HOME()
+        package_home = os.path.normpath(package_home)
         REQUEST.set( 'ZMS_FILTER_INSTANCE_HOME', instance_home)
-        REQUEST.set( 'ZMS_FILTER_PACKAGE_HOME', package_home(globals()))
+        REQUEST.set( 'ZMS_FILTER_PACKAGE_HOME', package_home)
         filename = '%s.xml'%title
         export = self.getXmlHeader() + getattr( self, 'getObjToXml_DocElmnt')(context=self)
         content_type = 'text/xml'

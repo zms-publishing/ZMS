@@ -248,7 +248,7 @@
 			</h5>
 		</div><!-- .card-header -->
 		<div tal:attributes="id python:'collapse_%s'%zmscontext.id; class python:' '.join(['collapse']+[['','show'][expanded]]); aria-labelledby python:'heading_%s'%zmscontext.id; data-parent python:'#%s'%accordion.id">
-			<div class="card-body">
+			<div class="card-body" tal:content="structure body">
 				Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
 			</div>
 		</div>
@@ -297,7 +297,7 @@
           <item key="id">LgBootstrapAreaItem</item>
           <item key="name">Complex-Item</item>
           <item key="package">com.zms.foundation.bootstrap</item>
-          <item key="revision">4.0.0</item>
+          <item key="revision">4.0.1</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -379,7 +379,7 @@
 			</h5>
 		</div><!-- .card-header -->
 		<div tal:attributes="id python:'collapse_%s'%zmscontext.id; class python:' '.join(['collapse']+[['','show'][expanded]]); aria-labelledby python:'heading_%s'%zmscontext.id; data-parent python:'#%s'%accordion.id">
-			<div class="card-body">
+			<div class="card-body" tal:content="structure body">
 				Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
 			</div>
 		</div>
@@ -428,7 +428,7 @@
           <item key="id">LgBootstrapAreaRecord</item>
           <item key="name">Simple-Item</item>
           <item key="package">com.zms.foundation.bootstrap</item>
-          <item key="revision">4.0.0</item>
+          <item key="revision">4.0.1</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>

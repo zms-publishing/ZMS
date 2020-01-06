@@ -1103,7 +1103,8 @@ table.table-sm td.meta-type .form-control {
 }
 table.table-sm td.meta-mandatory,
 table.table-sm td.meta-multilang,
-table.table-sm td.meta-repetitive {
+table.table-sm td.meta-repetitive,
+table.table-sm td.meta-displaycol {
 	width: 2rem !important;
 	vertical-align: top;
 	padding-top: 1rem;

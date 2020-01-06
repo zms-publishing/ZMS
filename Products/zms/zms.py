@@ -162,6 +162,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
 
   ### Init ZMS object-model.
   _confmanager.initConf(obj, 'com.zms.foundation', remote=False)
+  _confmanager.initConf(obj, 'com.zms.foundation.bootstrap', remote=False)
   _confmanager.initConf(obj, 'com.zms.foundation.theme', remote=False)
   _confmanager.initConf(obj, 'com.zms.index', remote=False)
 

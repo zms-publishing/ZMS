@@ -1,0 +1,1366 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?zms version='ZMS4-4.0.0.dev.REV
+'?>
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key">LgBootstrapArea</item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[fas fa-align-justify]]></item>
+                  <item key="default"></item>
+                  <item key="id">icon_clazz</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">constant</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<div class="alert alert-dark">
+<i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/collapse/#accordion-example" target="_blank">Accordion &middot Bootstrap</a></div>
+p</a><br/>
+<i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/navs/" target="_blank">Tab-Pages &middot Bootstrap</a></div>
+p</a><br/>
+</div>]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">interface0</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">interface0</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">interface</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">stereotype</item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item>Accordion</item>
+                      <item>Tabs</item>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Stereotype</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">select</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">title</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Title</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">string</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">items</item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item>LgBootstrapAreaItem</item>
+                      <item>LgBootstrapAreaRecord</item>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Items</item>
+                  <item key="repetitive" type="int">1</item>
+                  <item key="type">*</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- Page Template Diagnostics
+ Compilation failed
+ chameleon.exc.ParseError: Unexpected end tag.
+
+ - String:     "</ul>"
+ - Filename:   LgBootstrapArea.standard_html
+ - Location:   (line 18: col 1)
+ - Source:     </ul>
+               ^^^^^
+-->
+<!-- LgBootstrapArea.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		stereotype python:zmscontext.attr('stereotype');
+		items python:zmscontext.filteredObjChildren('items',request)">
+	<div tal:condition="python:stereotype=='Accordion'" tal:attributes="id zmscontext/id">
+		<tal:block tal:repeat="item items">
+			<tal:block tal:content="structure python:item.getBodyContent(request)"></tal:block>
+		</tal:block>
+	</div>
+	 <ul class="nav nav-tabs"tal:condition="python:stereotype=='Tabs'">
+		<tal:block tal:repeat="item items">
+			<li class="nav-item">
+				<a tal:attributes="class python:' '.join(['nav-link']+[['','active'][items.index(item)==0]]); href python:'#page_%s'%item.id" tal:content="structure python:item.attr('headline')">Item</a>
+			</li>
+		</tal:block>
+	</ul>
+</tal:block>
+
+<!-- /LgBootstrapArea.standard_html -->]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">standard_html</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: Accordion]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">zpt</item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete_custom"></item>
+              <item key="delete_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+              <item key="insert_custom">{$}</item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id">LgBootstrapArea</item>
+          <item key="name">Area</item>
+          <item key="package">com.zms.foundation.bootstrap</item>
+          <item key="revision">4.0.0</item>
+          <item key="type">ZMSObject</item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key">LgBootstrapAreaItem</item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[fas fa-indent]]></item>
+                  <item key="default"></item>
+                  <item key="id">icon_clazz</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">constant</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">headline</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Headline</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">string</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">body</item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item>type(ZMSObject)</item>
+                      <item>type(ZMSRecordSet)</item>
+                      <item>type(ZMSModule)</item>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Body</item>
+                  <item key="repetitive" type="int">1</item>
+                  <item key="type">*</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- LgBootstrapAreaItem.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		accordion python:zmscontext.getParentNode();
+		siblings python:accordion.filteredObjChildren('items',request);
+		expanded python:siblings.index(zmscontext)==0;
+		headline python:zmscontext.attr('headline');
+		body python:''.join([x.getBodyContent(request) for x in zmscontext.filteredObjChildren('body',request)]);">
+	<div class="card">
+		<div class="card-header" tal:attributes="id python:'heading_%s'%zmscontext.id">
+			<h5 class="mb-0">
+				<button class="btn btn-link" data-toggle="collapse" tal:attributes="data-target python:'#collapse_%s'%zmscontext.id; aria-expanded expanded; aria-controls python:'collapse_%s'%zmscontext.id" tal:content="structure headline">
+					Collapsible Group Item #N
+				</button>
+			</h5>
+		</div><!-- .card-header -->
+		<div tal:attributes="id python:'collapse_%s'%zmscontext.id; class python:' '.join(['collapse']+[['','show'][expanded]]); aria-labelledby python:'heading_%s'%zmscontext.id; data-parent python:'#%s'%accordion.id">
+			<div class="card-body">
+				Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+			</div>
+		</div>
+	</div><!-- .card -->
+</tal:block>
+
+<!-- /LgBootstrapAreaItem.standard_html -->]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">standard_html</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: Complex-Item]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">zpt</item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete_custom"></item>
+              <item key="delete_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+              <item key="insert_custom">{$}</item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">0</item>
+          <item key="id">LgBootstrapAreaItem</item>
+          <item key="name">Complex-Item</item>
+          <item key="package">com.zms.foundation.bootstrap</item>
+          <item key="revision">4.0.0</item>
+          <item key="type">ZMSObject</item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key">LgBootstrapAreaRecord</item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[fas fa-grip-lines]]></item>
+                  <item key="default"></item>
+                  <item key="id">icon_clazz</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">constant</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">headline</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Headline</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">string</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">body</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Body</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">richtext</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- LgBootstrapAreaRecord.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		accordion python:zmscontext.getParentNode();
+		siblings python:accordion.filteredObjChildren('items',request);
+		expanded python:siblings.index(zmscontext)==0;
+		headline python:zmscontext.attr('headline');
+		body python:zmscontext.attr('body');">
+	<div class="card">
+		<div class="card-header" tal:attributes="id python:'heading_%s'%zmscontext.id">
+			<h5 class="mb-0">
+				<button class="btn btn-link" data-toggle="collapse" tal:attributes="data-target python:'#collapse_%s'%zmscontext.id; aria-expanded expanded; aria-controls python:'collapse_%s'%zmscontext.id" tal:content="structure headline">
+					Collapsible Group Item #N
+				</button>
+			</h5>
+		</div><!-- .card-header -->
+		<div tal:attributes="id python:'collapse_%s'%zmscontext.id; class python:' '.join(['collapse']+[['','show'][expanded]]); aria-labelledby python:'heading_%s'%zmscontext.id; data-parent python:'#%s'%accordion.id">
+			<div class="card-body">
+				Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+			</div>
+		</div>
+	</div><!-- .card -->
+</tal:block>
+
+<!-- /LgBootstrapAreaRecord.standard_html -->]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">standard_html</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: Simple-Item]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">zpt</item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete_custom"></item>
+              <item key="delete_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+              <item key="insert_custom">{$}</item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">0</item>
+          <item key="id">LgBootstrapAreaRecord</item>
+          <item key="name">Simple-Item</item>
+          <item key="package">com.zms.foundation.bootstrap</item>
+          <item key="revision">4.0.0</item>
+          <item key="type">ZMSObject</item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key">LgBootstrapCard</item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[far fa-address-card]]></item>
+                  <item key="default"></item>
+                  <item key="id">icon_clazz</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">constant</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<div class="alert alert-dark"><i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/card/" target="_blank">Card &middot Bootstrap</a></div>]]></item>
+                  <item key="default"></item>
+                  <item key="id">interface0</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">interface0</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">interface</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">image</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Image (286x180)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">image</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">title</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Title</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">string</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">subtitle</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Subtitle</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">string</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">text</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Text</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">text</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">links</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Links</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">LgBootstrapLinkList</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- LgBootstrapCard.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		img python:zmscontext.attr('image');
+		src python:img.getHref(request);
+		title python:zmscontext.attr('title');
+		subtitle python:zmscontext.attr('subtitle');
+		text python:zmscontext.attr('text');
+		links python:zmscontext.links.attr('links');">
+	<div class="card" style="width: 18rem;">
+		<img class="card-img-top" tal:attributes="src src; alt title">
+		<div class="card-body">
+			<h5 class="card-title" tal:content="structure title">Card title</h5>
+			<h6 class="card-subtitle mb-2 text-muted" tal:content="structure subtitle" tal:condition="subtitle">Card subtitle</h6>
+			<p class="card-text" tal:content="structure text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+			<tal:block tal:repeat="link links">
+				<a tal:attributes="href link/url" class="btn btn-primary" tal:content="structure link/label">Go somewhere</a>
+			</tal:block>
+		</div>
+	</div>
+</tal:block>
+
+<!-- /LgBootstrapCard.standard_html -->]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">standard_html</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: Card]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">zpt</item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete_custom"></item>
+              <item key="delete_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+              <item key="insert_custom">{$}</item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id">LgBootstrapCard</item>
+          <item key="name">Card</item>
+          <item key="package">com.zms.foundation.bootstrap</item>
+          <item key="revision">4.0.0</item>
+          <item key="type">ZMSObject</item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key">LgBootstrapCarousel</item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[far fa-images]]></item>
+                  <item key="default"></item>
+                  <item key="id">icon_clazz</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">constant</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<div class="alert alert-dark"><i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/carousel/" target="_blank">Carousel &middot Bootstrap</a></div>]]></item>
+                  <item key="default"></item>
+                  <item key="id">interface0</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">interface0</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">interface</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default">5000</item>
+                  <item key="id">interval</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Interval</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">int</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default">1</item>
+                  <item key="id">indicators</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Show indicators]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">boolean</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default">1</item>
+                  <item key="id">controls</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Show controls (prev/next)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">boolean</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default">1</item>
+                  <item key="id">captions</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Show captions]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">boolean</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">slides</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Slides</item>
+                  <item key="repetitive" type="int">1</item>
+                  <item key="type">LgBootstrapSlide</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- LgBootstrapCarousel.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		indicators python:zmscontext.attr('indicators');
+		controls python:zmscontext.attr('controls');
+		slides python:zmscontext.filteredObjChildren('slides',request);">
+	<div tal:attributes="id zmscontext/id" class="carousel slide" data-ride="carousel">
+		<ol tal:condition="indicators" class="carousel-indicators">
+			<li tal:repeat="slide slides" tal:attributes="data-target python:'#%s'%zmscontext.id; data-slide-to python:slides.index(slide); class python:['','active'][slides.index(slide)==0]">
+			</li>
+		</ol><!-- .carousel-indicators -->
+		<div class="carousel-inner">
+			<div tal:repeat="slide slides" tal:attributes="class python:' '.join(['carousel-item']+[['','active'][slides.index(slide)==0]])" tal:content="structure python:slide.getBodyContent(request)">
+			</div>
+		</div><!-- .carousel inner -->
+		<tal:block tal:condition="controls">
+			<a class="carousel-control-prev" tal:attributes="href python:'#%s'%zmscontext.id;" role="button" data-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			</a>
+			<a class="carousel-control-next" tal:attributes="href python:'#%s'%zmscontext.id;" role="button" data-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			</a>
+	</tal:block>
+	</div><!-- .carousel slide -->
+</tal:block>
+
+<!-- /LgBootstrapCarousel.standard_html -->]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">standard_html</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: Carousel]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">zpt</item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete_custom"></item>
+              <item key="delete_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+              <item key="insert_custom">{$}</item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id">LgBootstrapCarousel</item>
+          <item key="name">Carousel</item>
+          <item key="package">com.zms.foundation.bootstrap</item>
+          <item key="revision">4.0.0</item>
+          <item key="type">ZMSObject</item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key">LgBootstrapJumbotron</item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[fas fa-republican]]></item>
+                  <item key="default"></item>
+                  <item key="id">icon_clazz</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">constant</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<div class="alert alert-dark"><i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/jumbotron/" target="_blank">Jumbotron &middot Bootstrap</a></div>]]></item>
+                  <item key="default"></item>
+                  <item key="id">interface0</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">interface0</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">interface</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">title</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Title</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">string</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">subtitle</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Subtitle</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">string</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">text</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Text</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">richtext</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">links</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Links</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">LgBootstrapLinkList</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- LgBootstrapJumbotron.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		title python:zmscontext.attr('title');
+		subtitle python:zmscontext.attr('subtitle');
+		text python:zmscontext.attr('text');
+		links python:zmscontext.links.attr('links');">
+	<div class="jumbotron">
+		<h1 class="display-4" tal:content="structure title">Jumbotron title</h1>
+		<p class="lead" tal:content="structure subtitle" tal:condition="subtitle">Jumbotron subtitle</p>
+		<hr class="my-4"/>
+		<p tal:content="structure text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+		<p class="lead" tal:condition="links">
+			<tal:block tal:repeat="link links">
+				<a tal:attributes="href link/url" class="btn btn-primary btn-lg" role="button" tal:content="structure link/label">Learn more</a>
+			</tal:block>
+		</p>
+	</div>
+</tal:block>
+
+<!-- /LgBootstrapJumbotron.standard_html -->]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">standard_html</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: Jumbotron]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">zpt</item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete_custom"></item>
+              <item key="delete_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+              <item key="insert_custom">{$}</item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id">LgBootstrapJumbotron</item>
+          <item key="name">Jumbotron</item>
+          <item key="package">com.zms.foundation.bootstrap</item>
+          <item key="revision">4.0.0</item>
+          <item key="type">ZMSObject</item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key">LgBootstrapLinkList</item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">links</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Links</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">list</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- LgBootstrapLinkList.interface0 -->
+
+<div class="form-group row" id="tr_links_interface0" tal:define="zmscontext options/zmscontext">
+	<div class="col-sm-2"></div>
+	<div class="col-sm-10">
+		<table class="table table-bordered m-0">
+			<colgroup>
+				<col width="5rem"/>
+			</colgroup>
+			<tbody>
+			<tr class="row_insert">
+				<td class="meta-sort"><span class="btn btn-light btn-add"><i class="fas fa-plus"></i></td>
+				<td class="meta-url"><input class="form-control form-control-sm url-input" name="links_url__" placeholder="Select Url..."/>
+				<td class="meta-label"><input class="form-control form-control-sm" name="links_label__" placeholder="Enter Label..."/>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<script>
+$(function() {
+		$("#tr_links_links").hide();
+		var links = [];
+		var $table = $("#tr_links_interface0 table");
+		var xml = $.parseXML($("#links_links").val());
+		var $xml = $(xml);
+		$("list > item > dictionary",$xml).each(function() {
+				var record = {};
+				$("item",this).each(function() {
+						var $item = $(this);
+						record[$item.attr("key")] = $item.text();
+					});
+				links.push(record);
+			});
+		var refreshData = function() {
+				var xml = '';
+				xml += '<list>\n';
+				for (var i=0; i < links.length; i++) {
+					var record = links[i];
+					xml += '<item type="dict">\n';
+					xml += '<dictionary>\n';
+					for (var k in record) {
+						xml += '<item key="'+k+'"><!{CDATA{'+record[k]+'}}></item>\n';
+					}
+					xml += '</dictionary>\n';
+					xml += '</item>\n';
+				}
+				xml += '</list>';
+				$("#links_links").val(xml);
+			};
+		var refreshView = function() {
+				$("tr:not(:last)",$table).remove();
+				var $last = ("tr:last",$table);
+				var html = '';
+				for (var i=0; i < links.length; i++) {
+					var record = links[i];
+					html += '<tr>\n';
+					html += '<td class="meta-sort">\n';
+					html += '<div class="input-group input-group-sm">\n';
+					html += '<select class="zmi-sort">\n';
+					for (var j=0; j < links.length; j++) {
+						html += '<option value="'+j+'"' + (j==i?' selected="selected"':'') + '>'+(j+1)+'<'+'/option>\n';
+					}
+					html += '</select>\n';
+					html += '<a class="btn btn-secondary" href="javascript:;" onclick="if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){$(this).parents(\'tr\').remove()}"><i class="fas fa-times"></i></a>';
+					html += '</div>\n';
+					html += '</td>\n';
+					html += '<td class="meta-url">\n';
+					html += '<input class="form-control form-control-sm url-input" name="links_url_'+i+'" value="'+record.url+'">\n';
+					html += '</td>\n';
+					html += '<td class="meta-label">\n';
+					html += '<input class="form-control form-control-sm" name="links_label_'+i+'" value="'+record.label+'">\n';
+					html += '</td>\n';
+					html += '</tr>\n';
+				}
+				$last.prepend(html);
+				$("tr:not(:last) input",$table).change(function() {
+						links = [];
+						$("tr:not(:last)",$table).each(function() {
+								var $tr = $(this);
+								var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
+								links.push(record);
+							});
+						refreshData();
+					});
+			};
+		var refreshData = function() {
+				var xml = '';
+				xml += '<list>\n';
+				for (var i=0; i < links.length; i++) {
+					var record = links[i];
+					xml += '<item type="dict">\n';
+					xml += '<dictionary>\n';
+					for (var k in record) {
+						xml += '<item key="'+k+'"><!{CDATA{'+record[k]+'}}></item>\n';
+					}
+					xml += '</dictionary>\n';
+					xml += '</item>\n';
+				}
+				xml += '</list>';
+				$("#links_links").val(xml);
+			};
+		refreshData();
+		refreshView();
+		$(".btn-add",$table).click(function() {
+				var $tr = $(this).parents("tr")[0];
+				if ($("input[value='']",$tr).length==0) {
+					var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
+					links.push(record);
+					$("input",$tr).val("");
+				}
+				refreshData();
+				refreshView();
+			});
+	});
+</script>
+
+<!-- /LgBootstrapLinkList.interface0 -->]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">interface0</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">interface0</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">interface</item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete_custom"></item>
+              <item key="delete_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+              <item key="insert_custom">{$}</item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">0</item>
+          <item key="id">LgBootstrapLinkList</item>
+          <item key="name">Links</item>
+          <item key="package">com.zms.foundation.bootstrap</item>
+          <item key="revision">4.0.0</item>
+          <item key="type">ZMSResource</item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key">LgBootstrapSlide</item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[far fa-image]]></item>
+                  <item key="default"></item>
+                  <item key="id">icon_clazz</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">constant</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">image</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Image</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">image</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">headline</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Headline</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">string</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">text</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Text</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">text</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- LgBootstrapSlide.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		img python:zmscontext.attr('image');
+		src python:img.getHref(request);
+		headline python:zmscontext.attr('headline');
+		text python:zmscontext.attr('text');
+		captions python:zmscontext.getParentNode().attr('captions');">
+	<img class="d-block w-100" tal:attributes="src src; alt headline;">
+	<div tal:condition="captions" class="carousel-caption d-none d-md-block">
+		<h5 tal:content="structure headline">the headline</h5>
+		<p tal:content="structure text">the text</p>
+	</div>
+</tal:block>
+
+<!-- /LgBootstrapSlide.standard_html -->]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">standard_html</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: Slide]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">zpt</item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete_custom"></item>
+              <item key="delete_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+              <item key="insert_custom">{$}</item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">0</item>
+          <item key="id">LgBootstrapSlide</item>
+          <item key="name">Slide</item>
+          <item key="package">com.zms.foundation.bootstrap</item>
+          <item key="revision">4.0.0</item>
+          <item key="type">ZMSObject</item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key">com.zms.foundation.bootstrap</item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+            </list>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id">com.zms.foundation.bootstrap</item>
+          <item key="name">com.zms.foundation.bootstrap</item>
+          <item key="package"></item>
+          <item key="revision">4.0.0</item>
+          <item key="type">ZMSPackage</item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+</list>

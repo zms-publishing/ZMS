@@ -62,7 +62,7 @@ class ZMSLog(ZMSItem.ZMSItem):
     # -------------------
     def manage_options(self):
       return (
-        { 'label': 'TAB_CONFIGURATION','action': '../manage_customize'},
+        { 'label': 'Settings','action': '../manage_customize'},
         )
 
     # Management Interface.
@@ -111,6 +111,27 @@ class ZMSLog(ZMSItem.ZMSItem):
       if getattr( self, 'copy_to_stdout', True):
         standard.writeStdout(self, '%s %s(%i) %s'%(str(log_time()), severity_string(severity), int(severity), info))
 
+    # --------------------------------------------------------------------------
+    #  ZMSLog.getLOG:
+    # --------------------------------------------------------------------------
+    def getLOG(self, REQUEST, RESPONSE=None):
+      """ ZMSLog.getLOG """
+      filename = os.path.join(standard.getINSTANCE_HOME(),'var','log','event.log')
+      RESPONSE.setHeader( 'Content-Type','text/plain')
+      RESPONSE.setHeader( 'Content-Disposition','inline;filename="%s"'%_fileutil.extractFilename( filename))
+      file = open( filename, 'r')
+      rtn = file.read() 
+      file.close()
+      return rtn
+
+    # --------------------------------------------------------------------------
+    #  ZMSLog.tail_event_log:
+    # --------------------------------------------------------------------------
+    def tail_event_log(self, linesback=100, returnlist=True):
+      filename = os.path.join(standard.getINSTANCE_HOME(),'var','log','event.log')
+      return _fileutil.tail_lines(filename,linesback,returnlist)
+
+
 
     ############################################################################
     ###
@@ -122,7 +143,7 @@ class ZMSLog(ZMSItem.ZMSItem):
     #  ZMSLog.getPath
     # --------------------------------------------------------------------------
     def getPath(self, REQUEST): 
-      path = SOFTWARE_HOME
+      path = standard.getPACKAGE_HOME()
       if 'path' in REQUEST:
         path = REQUEST['path']
       path = path.strip()

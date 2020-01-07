@@ -107,18 +107,33 @@
 		zmscontext options/zmscontext;
 		stereotype python:zmscontext.attr('stereotype');
 		items python:zmscontext.filteredObjChildren('items',request)">
+
 	<div tal:condition="python:stereotype=='Accordion'" tal:attributes="id zmscontext/id">
 		<tal:block tal:repeat="item items">
 			<tal:block tal:content="structure python:item.getBodyContent(request)"></tal:block>
 		</tal:block>
 	</div>
-	 <ul class="nav nav-tabs" tal:condition="python:stereotype=='Tabs'">
-		<tal:block tal:repeat="item items">
-			<li class="nav-item">
-				<a tal:attributes="class python:' '.join(['nav-link']+[['','active'][items.index(item)==0]]); href python:'#page_%s'%item.id" tal:content="structure python:item.attr('headline')">Item</a>
-			</li>
-		</tal:block>
-	</ul>
+
+	<tal:block tal:condition="python:stereotype=='Tabs'">
+		 <ul class="nav nav-tabs" role="tablist" tal:attributes="id zmscontext/id">
+			<tal:block tal:repeat="item items">
+				<li class="nav-item" tal:define="active python:items.index(item)==0">
+					<a tal:attributes="class python:' '.join(['nav-link']+[['','active'][active]]); aria-selected active; aria-controls item/id; href python:'#%s'%item.id" data-toggle="tab" tal:content="structure python:item.attr('headline')">Item</a>
+				</li>
+			</tal:block>
+		</ul>
+		<div class="tab-content" tal:attributes="id python:'%sContent'%zmscontext.id">
+			<tal:block tal:repeat="item items">
+				<div role="tabpanel"
+						tal:define="active python:items.index(item)==0" 
+						tal:attributes="id item/id; class python:' '.join(['tab-pane','fade']+[[],['show','active']][active])"
+						tal:content="structure python:item.attr('body')+''.join([x.getBodyContent(request) for x in item.filteredObjChildren('body',request)])">
+					the body
+				</div>
+			</tal:block>
+		</div><!-- .tab-content -->
+	</tal:block>
+
 </tal:block>
 
 <!-- /LgBootstrapArea.standard_html -->]]>
@@ -567,7 +582,7 @@
 		subtitle python:zmscontext.attr('subtitle');
 		text python:zmscontext.attr('text');
 		links python:zmscontext.links.attr('links');">
-	<div class="card" style="width: 18rem;">
+	<div class="card">
 		<img class="card-img-top" tal:attributes="src src; alt title">
 		<div class="card-body">
 			<h5 class="card-title" tal:content="structure title">Card title</h5>
@@ -618,11 +633,136 @@
               </item>
             </dictionary>
           </item>
-          <item key="enabled" type="int">1</item>
+          <item key="enabled" type="int">0</item>
           <item key="id">LgBootstrapCard</item>
           <item key="name">Card</item>
           <item key="package">com.zms.foundation.bootstrap</item>
-          <item key="revision">4.0.0</item>
+          <item key="revision">4.0.1</item>
+          <item key="type">ZMSObject</item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key">LgBootstrapCardLayout</item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[far fa-address-card]]></item>
+                  <item key="default"></item>
+                  <item key="id">icon_clazz</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">constant</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">layout</item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item>##</item>
+                      <item><![CDATA[return []]></item>
+                      <item><![CDATA[    ('card-group','Group'),]]></item>
+                      <item><![CDATA[    ('card-deck','Deck'),]]></item>
+                      <item><![CDATA[    ('card-columms','Columns'),]]></item>
+                      <item><![CDATA[  ]]]></item>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Layout</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">select</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">cards</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Cards</item>
+                  <item key="repetitive" type="int">1</item>
+                  <item key="type">LgBootstrapCard</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- LgBootstrapCardColumns.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		layout python:zmscontext.attr('layout');
+		cards python:zmscontext.filteredObjChildren('cards',request);">
+	<div tal:attributes="class layout">
+		<tal:block tal:repeat="card cards">
+			<tal:block tal:content="structure python:card.getBodyContent(request)"></tal:block>
+		</tal:block>
+	</div>
+</tal:block>
+
+<!-- /LgBootstrapCardColumns.standard_html -->]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">standard_html</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: Card-Columns]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">zpt</item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete_custom"></item>
+              <item key="delete_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+              <item key="insert_custom">{$}</item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id">LgBootstrapCardLayout</item>
+          <item key="name">Card-Layout</item>
+          <item key="package">com.zms.foundation.bootstrap</item>
+          <item key="revision">4.0.1</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>

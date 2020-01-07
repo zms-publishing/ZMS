@@ -27,6 +27,7 @@ __version__ = '0.1'
 from App.Common import package_home
 import configparser as ConfigParser
 import OFS.misc_
+import codecs
 import fnmatch
 import os
 import re
@@ -129,14 +130,6 @@ def initialize(context):
         confdict = _confmanager.ConfDict.get()
         OFS.misc_.misc_.zms['confdict']=confdict
         
-        # automated assembly of conf-properties
-        standard.writeStdout(context, "automated assembly of conf-properties")
-        l = assembleConfProperties(package_home(globals()), '*.py,*.zpt')
-        d = dict((l[i], l[i+1]) for i in range(0, len(l), 2))
-        keys = sorted(d)
-        for key in []:#--keys:
-          standard.writeStdout(context, '%s=%s'%(key, str(d[key])))
-        
         # automated minification
         confkeys = confdict.keys()
         for confkey in [x for x in confkeys if x.startswith('gen.') and x+'.include' in confkeys]:
@@ -234,7 +227,7 @@ def initialize(context):
         for lang in langs:
           filename = os.sep.join([package_home(globals())]+['plugins', 'www', 'i18n', '%s.js'%lang])
           standard.writeStdout(context, "generate: %s"%filename)
-          fileobj = open(filename, 'w')
+          fileobj = codecs.open(filename, mode='w', encoding='utf-8')
           fileobj.write('var zmiLangStr={\'lang\':\'%s\''%lang)
           for k in d.keys():
             v = d[k].get(lang)
@@ -284,31 +277,5 @@ def translate_path(s):
   if s.startswith('/++resource++zms_/'):
     l = ['plugins', 'www']+s.split('/')[2:]
   return os.sep.join([ZMS_HOME]+l)
-
-def assembleConfProperties(path, pattern):
-  """
-  assemble conf-properties
-  """
-  l = []
-  for file in os.listdir(path):
-    filepath = path+os.sep+file
-    mode = os.stat(filepath)[stat.ST_MODE]
-    if stat.S_ISDIR(mode): 
-      l.extend(assembleConfProperties(filepath, pattern))
-    elif len([x for x in pattern.split(',') if fnmatch.fnmatch(file,x)]) > 0:
-      f = open(filepath, 'r')
-      data = f.read()
-      f.close()
-      sp = data.split('getConfProperty(')
-      if len(sp) > 1:
-        for s in sp[1:]:
-          s = s[:s.find(')')]
-          i = s.find(',')
-          k = s[:i]
-          k = k[k.find('\'')+1:k.rfind('\'')]
-          v = s[i+1:]
-          if k:
-            l.extend([k, v])
-  return l
 
 ################################################################################

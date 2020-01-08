@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<?zms version='ZMS4'?>
+<?xml version="1.0" encoding="utf-8" ?>
+<?zms version='ZMS4-4.0.0.dev.REV
+'?>
 <list>
   <item type="dictionary">
     <dictionary>
@@ -10,7 +11,7 @@
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">fas fa-home</item>
+                  <item key="custom"><![CDATA[fas fa-home]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -18,6 +19,7 @@
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -65,6 +67,7 @@
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Titleimage</item>
                   <item key="repetitive" type="int">0</item>
@@ -83,6 +86,7 @@
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Level</item>
                   <item key="repetitive" type="int">0</item>
@@ -98,6 +102,7 @@
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">TAB_METADATA</item>
                   <item key="repetitive" type="int">0</item>
@@ -182,6 +187,7 @@
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Permalinks</item>
                   <item key="repetitive" type="int">0</item>
@@ -230,6 +236,7 @@
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">interface_permalinks</item>
                   <item key="repetitive" type="int">0</item>
@@ -245,6 +252,7 @@
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">ZMSIndex</item>
                   <item key="repetitive" type="int">0</item>
@@ -265,6 +273,7 @@
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Objects</item>
                   <item key="repetitive" type="int">1</item>
@@ -311,6 +320,7 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: onChange]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -336,6 +346,7 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMS]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -383,7 +394,7 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">far fa-file-alt</item>
+                  <item key="custom"><![CDATA[far fa-file-alt]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -391,6 +402,7 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -438,6 +450,7 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Titleimage</item>
                   <item key="repetitive" type="int">0</item>
@@ -456,6 +469,7 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Level</item>
                   <item key="repetitive" type="int">0</item>
@@ -471,6 +485,7 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">TAB_METADATA</item>
                   <item key="repetitive" type="int">0</item>
@@ -558,6 +573,7 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Objects</item>
                   <item key="repetitive" type="int">1</item>
@@ -583,6 +599,7 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSDocument]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -638,6 +655,7 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -681,6 +699,7 @@ div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Default]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -712,6 +731,7 @@ div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">File</item>
                   <item key="repetitive" type="int">0</item>
@@ -732,6 +752,7 @@ div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Align</item>
                   <item key="repetitive" type="int">0</item>
@@ -782,6 +803,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">interface0</item>
                   <item key="repetitive" type="int">0</item>
@@ -797,6 +819,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">TAB_METADATA</item>
                   <item key="repetitive" type="int">0</item>
@@ -846,6 +869,7 @@ return zmscontext.getMimeTypeIconSrc(mt)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Teaser.Image]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -878,6 +902,7 @@ return file.getHref(zmscontext.REQUEST)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Teaser.Url]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -909,6 +934,7 @@ return zmscontext.attr('attr_dc_description')
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Teaser.Abstract]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -943,6 +969,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Function: index_html]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1001,6 +1028,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSFile]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1048,7 +1076,7 @@ return ''
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">far fa-folder</item>
+                  <item key="custom"><![CDATA[far fa-folder]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -1056,6 +1084,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1103,6 +1132,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Titleimage</item>
                   <item key="repetitive" type="int">0</item>
@@ -1121,6 +1151,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Level</item>
                   <item key="repetitive" type="int">0</item>
@@ -1136,6 +1167,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">TAB_METADATA</item>
                   <item key="repetitive" type="int">0</item>
@@ -1224,6 +1256,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Objects</item>
                   <item key="repetitive" type="int">1</item>
@@ -1249,6 +1282,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSFolder]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1304,6 +1338,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1418,6 +1453,7 @@ a.superzoom img.superzoom {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Default]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1433,6 +1469,7 @@ a.superzoom img.superzoom {
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Display-Type</item>
                   <item key="repetitive" type="int">0</item>
@@ -1448,6 +1485,7 @@ a.superzoom img.superzoom {
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Image</item>
                   <item key="repetitive" type="int">0</item>
@@ -1463,6 +1501,7 @@ a.superzoom img.superzoom {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Image (Hires)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1478,6 +1517,7 @@ a.superzoom img.superzoom {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Image (Superres)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1493,6 +1533,7 @@ a.superzoom img.superzoom {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">WAI-Attributes</item>
                   <item key="repetitive" type="int">0</item>
@@ -1508,6 +1549,7 @@ a.superzoom img.superzoom {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Image (URL)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1528,6 +1570,7 @@ a.superzoom img.superzoom {
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Align</item>
                   <item key="repetitive" type="int">0</item>
@@ -1543,6 +1586,7 @@ a.superzoom img.superzoom {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Text</item>
                   <item key="repetitive" type="int">0</item>
@@ -1560,6 +1604,7 @@ return context.getTextFormatDefault()]]>
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Format</item>
                   <item key="repetitive" type="int">0</item>
@@ -1578,6 +1623,7 @@ return context.getTextFormatDefault()]]>
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Text-Align</item>
                   <item key="repetitive" type="int">0</item>
@@ -1621,6 +1667,7 @@ except:
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">DC.Title.Alt</item>
                   <item key="repetitive" type="int">0</item>
@@ -1655,6 +1702,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Function: index_html]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1712,6 +1760,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSGraphic]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1766,6 +1815,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Default]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1797,6 +1847,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: Page]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1883,6 +1934,7 @@ return context.str_json(result)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Upload: Media]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -1981,6 +2033,7 @@ return context.str_json(result)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Show version]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2014,6 +2067,7 @@ RESPONSE.redirect(context.objectValues(['ZMS'])[0].getHref2IndexHtml(request,dee
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Index-Html</item>
                   <item key="repetitive" type="int">0</item>
@@ -2055,7 +2109,7 @@ RESPONSE.redirect(context.objectValues(['ZMS'])[0].getHref2IndexHtml(request,dee
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">fas fa-link</item>
+                  <item key="custom"><![CDATA[fas fa-link]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -2063,6 +2117,7 @@ RESPONSE.redirect(context.objectValues(['ZMS'])[0].getHref2IndexHtml(request,dee
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2083,6 +2138,7 @@ RESPONSE.redirect(context.objectValues(['ZMS'])[0].getHref2IndexHtml(request,dee
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Defaults]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2208,6 +2264,7 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">interface0</item>
                   <item key="repetitive" type="int">0</item>
@@ -2228,6 +2285,7 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Align</item>
                   <item key="repetitive" type="int">0</item>
@@ -2243,6 +2301,7 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Link-Elements</item>
                   <item key="repetitive" type="int">1</item>
@@ -2307,6 +2366,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: onChangeObj]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2346,6 +2406,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSLinkContainer]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2393,7 +2454,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">fas fa-link</item>
+                  <item key="custom"><![CDATA[fas fa-link]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -2401,6 +2462,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2419,6 +2481,7 @@ if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Default]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2629,6 +2692,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">inferface0</item>
                   <item key="repetitive" type="int">0</item>
@@ -2644,6 +2708,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Reference</item>
                   <item key="repetitive" type="int">0</item>
@@ -2659,6 +2724,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Reference (lang)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2680,6 +2746,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Type</item>
                   <item key="repetitive" type="int">0</item>
@@ -2700,6 +2767,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Align</item>
                   <item key="repetitive" type="int">0</item>
@@ -2715,6 +2783,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">TAB_METADATA</item>
                   <item key="repetitive" type="int">0</item>
@@ -2746,6 +2815,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type">attr_dc_creator</item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">DC.Creator</item>
                   <item key="repetitive" type="int">0</item>
@@ -2786,6 +2856,7 @@ return ref
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Url]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2817,6 +2888,7 @@ return zmscontext.attr('attr_dc_description')
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Abstract]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2861,6 +2933,7 @@ return constraints
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Hook: Check constraints]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2933,6 +3006,7 @@ return constraints
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSLinkElement]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2988,6 +3062,7 @@ return constraints
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -2997,7 +3072,7 @@ return constraints
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="image/gif" filename="zmsnote_bg.gif" type="file">4749463839610d000d00b30000fcce64fcf6bcfcda8cfcd274fffffffcce6cfcfecc000077788268ed00211200e80000009002fe0000ff0000ff0000ff21f90400000000002c000000000d000d0003042cb09049eb04c26a1086ae8011641f118ade778aa4b5a29b21cba33bcf1d78e3ed7bd7a6dd2f5300188f486304003b</data>
+                    <data content_type="image/gif" filename="zmsnote_bg.gif" type="file">b'6227343734393436333833393631306430303064303062333030303066636365363466636636626366636461386366636432373466666666666666636365366366636665636330303030373737383832363865643030323131323030653830303030303039303032666530303030666630303030666630303030666632316639303430303030303030303030326330303030303030303064303030643030303330343263623039303439656230346332366131303836616538303131363431663131386164653737386161346235613239623231636261333362636631643738653365643762643761366464326635333030313838663438363330343030336227'</data>
                   </item>
                   <item key="default"></item>
                   <item key="id">zmsnote_bg.gif</item>
@@ -3006,6 +3081,7 @@ return constraints
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Resource: Background]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -3021,6 +3097,7 @@ return constraints
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Memotext</item>
                   <item key="repetitive" type="int">0</item>
@@ -3043,6 +3120,7 @@ return constraints
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">interface</item>
                   <item key="repetitive" type="int">0</item>
@@ -3059,6 +3137,7 @@ return constraints
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Hook: Catalog-Text]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -3136,6 +3215,7 @@ function onChangeZMSNoteDiv(id) {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -3168,6 +3248,7 @@ zmscontext.commitObj(request)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: onChangeObj]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -3215,7 +3296,7 @@ zmscontext.commitObj(request)
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">far fa-list-alt</item>
+                  <item key="custom"><![CDATA[far fa-list-alt]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -3223,6 +3304,7 @@ zmscontext.commitObj(request)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -3246,6 +3328,7 @@ zmscontext.commitObj(request)
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Type(s)</item>
                   <item key="repetitive" type="int">0</item>
@@ -3261,6 +3344,7 @@ zmscontext.commitObj(request)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Attribute(s) [id:type,...]]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -3276,6 +3360,7 @@ zmscontext.commitObj(request)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Sort-Order (Default) [id:asc|desc]]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -3366,30 +3451,29 @@ $(function() {
 		});
 	});
 </script>
+
 	<form class="form-filter" method="get" tal:attributes="action request/URL">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text"><i class="fas fa-filter"></i></span>
-					</div>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></span>
 					<input type="text" class="form-control filter" name="search" placeholder="Filter"/>
 				</div><!-- .input-group -->
 			</div>
 		</div><!-- .row -->
 	</form>
 
-	<ul class="ZMSObjectSet">
+	<div class="ZMSObjectSet">
 		<tal:block tal:repeat="childNode python:zmscontext.filteredChildNodes(request)">
-			<div class="panel" tal:attributes="class python:' '.join(['panel'])">
-				<h3 class="panel-title">
+			<div class="card">
+				<div class="card-header">
 					<a tal:attributes="href python:childNode.getHref2IndexHtml(request,deep=False); class python:childNode.meta_id;">
 						<span class="title" tal:content="python:childNode.getTitle(request)">the title</span>
 					</a>
-				</h3><!-- /.panel-title -->
-			</div><!-- /.panel -->
+				</div>
+			</div>
 		</tal:block>
-	</ul>
+	</div>
 </tal:block>
 
 <!-- /effective_standard_html(default) -->]]>
@@ -3400,6 +3484,7 @@ $(function() {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Standard Html]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -3574,6 +3659,7 @@ $(function() {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Script ZMI (JS)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -3649,7 +3735,7 @@ tr.inactive * {
 		<div id="attrProperties" class="filters collapse show">
 			<div class="card-body">
 				<tal:block tal:repeat="filterIndex python:range(request.get('qfilters',1)+1)">
-					<div tal:attributes="class python:' '.join(['form-row']+[[],['hidden']][int(filterIndex==request.get('qfilters',1))])">
+					<div tal:attributes="class python:' '.join(['form-row']+[[],['d-none']][int(filterIndex==request.get('qfilters',1))])">
 						<div class="form-group col-md-4">
 							<select class="form-control form-control-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
 								<option value="" tal:content="python:zmscontext.getZMILangStr('CAPTION_SELECT')">the option</option>
@@ -3705,6 +3791,7 @@ tr.inactive * {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">interface0</item>
                   <item key="repetitive" type="int">0</item>
@@ -3722,6 +3809,7 @@ tr.inactive * {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Records</item>
                   <item key="repetitive" type="int">1</item>
@@ -3782,6 +3870,7 @@ return zmscontext.metaobj_recordset_main_grid( \
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Grid record-set.]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -3836,6 +3925,7 @@ return records
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Sort record-set.]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -3929,6 +4019,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Prepare record-set.]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -3972,6 +4063,7 @@ return attrs
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Record-Attrs</item>
                   <item key="repetitive" type="int">0</item>
@@ -4014,6 +4106,7 @@ return record_handler
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Record-Handler</item>
                   <item key="repetitive" type="int">0</item>
@@ -4065,6 +4158,7 @@ return None
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Record-Duplicate</item>
                   <item key="repetitive" type="int">0</item>
@@ -4088,6 +4182,7 @@ return None
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSObjectSet]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -4120,7 +4215,7 @@ return None
           <item key="id">ZMSObjectSet</item>
           <item key="name">ZMSObjectSet</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">3.4.3</item>
+          <item key="revision">3.4.4</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -4135,7 +4230,7 @@ return None
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">fas fa-file-word</item>
+                  <item key="custom"><![CDATA[fas fa-file-word]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -4143,6 +4238,7 @@ return None
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -4198,6 +4294,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">interface0</item>
                   <item key="repetitive" type="int">0</item>
@@ -4213,6 +4310,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Text</item>
                   <item key="repetitive" type="int">0</item>
@@ -4283,6 +4381,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Event: onChange-Object]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -4311,6 +4410,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSRichtext]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -4358,7 +4458,7 @@ zmscontext.attr('text',text)
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">fas fa-database</item>
+                  <item key="custom"><![CDATA[fas fa-database]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -4366,6 +4466,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -4399,6 +4500,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -4446,7 +4548,7 @@ zmscontext.attr('text',text)
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">fas fa-folder</item>
+                  <item key="custom"><![CDATA[fas fa-folder]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -4454,6 +4556,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -4502,6 +4605,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Cacheable</item>
                   <item key="repetitive" type="int">0</item>
@@ -4517,6 +4621,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">TAB_METADATA</item>
                   <item key="repetitive" type="int">0</item>
@@ -4628,6 +4733,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">interface0</item>
                   <item key="repetitive" type="int">0</item>
@@ -4675,7 +4781,7 @@ zmscontext.attr('text',text)
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">fas fa-table</item>
+                  <item key="custom"><![CDATA[fas fa-table]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -4683,6 +4789,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -4698,6 +4805,7 @@ zmscontext.attr('text',text)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Caption</item>
                   <item key="repetitive" type="int">0</item>
@@ -5434,6 +5542,7 @@ function onKeyUpZMSTableDivContenteditable() {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">interface0</item>
                   <item key="repetitive" type="int">0</item>
@@ -5449,6 +5558,7 @@ function onKeyUpZMSTableDivContenteditable() {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Sortable</item>
                   <item key="repetitive" type="int">0</item>
@@ -5464,6 +5574,7 @@ function onKeyUpZMSTableDivContenteditable() {
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Type</item>
                   <item key="repetitive" type="int">0</item>
@@ -5479,6 +5590,7 @@ function onKeyUpZMSTableDivContenteditable() {
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Table</item>
                   <item key="repetitive" type="int">0</item>
@@ -5494,6 +5606,7 @@ function onKeyUpZMSTableDivContenteditable() {
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Colgroup</item>
                   <item key="repetitive" type="int">0</item>
@@ -5509,6 +5622,7 @@ function onKeyUpZMSTableDivContenteditable() {
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Cols</item>
                   <item key="repetitive" type="int">0</item>
@@ -5530,6 +5644,7 @@ var firstAvailCol;if(typeof(matrix[rowIndex])=="undefined"){matrix[rowIndex]=[];
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[jQuery tablesorter plugin: http://tablesorter.com]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -5539,7 +5654,7 @@ var firstAvailCol;if(typeof(matrix[rowIndex])=="undefined"){matrix[rowIndex]=[];
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="image/gif" filename="asc.gif" type="file">47494638396115000400800000232d30ffffff21f90401000001002c000000001500040000020d8c1fa00be8cfda9b67d16b242d003b</data>
+                    <data content_type="image/gif" filename="asc.gif" type="file">b'622734373439343633383339363131353030303430303830303030303233326433306666666666663231663930343031303030303031303032633030303030303030313530303034303030303032306438633166613030626538636664613962363764313662323432643030336227'</data>
                   </item>
                   <item key="default"></item>
                   <item key="id">small_asc.gif</item>
@@ -5548,6 +5663,7 @@ var firstAvailCol;if(typeof(matrix[rowIndex])=="undefined"){matrix[rowIndex]=[];
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[tablesorter: Asc]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -5557,7 +5673,7 @@ var firstAvailCol;if(typeof(matrix[rowIndex])=="undefined"){matrix[rowIndex]=[];
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="image/gif" filename="desc.gif" type="file">47494638396115000400800000232d30ffffff21f90401000001002c000000001500040000020d8c8f01c9adb09c8354328a5901003b</data>
+                    <data content_type="image/gif" filename="desc.gif" type="file">b'622734373439343633383339363131353030303430303830303030303233326433306666666666663231663930343031303030303031303032633030303030303030313530303034303030303032306438633866303163396164623039633833353433323861353930313030336227'</data>
                   </item>
                   <item key="default"></item>
                   <item key="id">small_desc.gif</item>
@@ -5566,6 +5682,7 @@ var firstAvailCol;if(typeof(matrix[rowIndex])=="undefined"){matrix[rowIndex]=[];
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[tablesorter: Desc]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -5575,7 +5692,7 @@ var firstAvailCol;if(typeof(matrix[rowIndex])=="undefined"){matrix[rowIndex]=[];
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="image/gif" filename="bg.gif" type="file">47494638396115000900800000232d30ffffff21f90401000001002c00000000150009000002178c8f80cb09da627854328aadde06573e6560f78c895500003b</data>
+                    <data content_type="image/gif" filename="bg.gif" type="file">b'6227343734393436333833393631313530303039303038303030303032333264333066666666666632316639303430313030303030313030326330303030303030303135303030393030303030323137386338663830636230396461363237383534333238616164646530363537336536353630663738633839353530303030336227'</data>
                   </item>
                   <item key="default"></item>
                   <item key="id">small.gif</item>
@@ -5584,6 +5701,7 @@ var firstAvailCol;if(typeof(matrix[rowIndex])=="undefined"){matrix[rowIndex]=[];
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[tablesorter: Small]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -5618,6 +5736,7 @@ return zmscontext.display_type(zmscontext.REQUEST)
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">DC.Title.Alt</item>
                   <item key="repetitive" type="int">0</item>
@@ -5660,6 +5779,7 @@ return [int((x*100.0)/sum(weights)) for x in weights]
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Col-Widths [list]]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -5698,6 +5818,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[contentEditable.Cell: Get format (@key)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -5738,6 +5859,7 @@ if key.startswith('table_'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[contentEditable.Cell: Set property (@pKey,@pValue)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -5878,6 +6000,7 @@ if key.startswith('table_'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSTable]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -5925,7 +6048,7 @@ if key.startswith('table_'):
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">fas fa-bullhorn</item>
+                  <item key="custom"><![CDATA[fas fa-bullhorn]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -5933,6 +6056,7 @@ if key.startswith('table_'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -5948,6 +6072,7 @@ if key.startswith('table_'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Default]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -5966,6 +6091,7 @@ if key.startswith('table_'):
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Teaser-Elements</item>
                   <item key="repetitive" type="int">1</item>
@@ -6023,6 +6149,7 @@ return teaserElmnts
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Function: Teaser-Elements]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -6075,6 +6202,7 @@ return printed
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: Teaser]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -6122,6 +6250,7 @@ return printed
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[ZMI: Render short]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -6169,7 +6298,7 @@ return printed
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">fas fa-bullhorn</item>
+                  <item key="custom"><![CDATA[fas fa-bullhorn]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -6177,6 +6306,7 @@ return printed
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -6192,6 +6322,7 @@ return printed
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[CSS: Default]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -6210,6 +6341,7 @@ return printed
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Penetrance</item>
                   <item key="repetitive" type="int">0</item>
@@ -6225,6 +6357,7 @@ return printed
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Url</item>
                   <item key="repetitive" type="int">0</item>
@@ -6240,6 +6373,7 @@ return printed
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Image</item>
                   <item key="repetitive" type="int">0</item>
@@ -6271,6 +6405,7 @@ return printed
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Text</item>
                   <item key="repetitive" type="int">0</item>
@@ -6305,6 +6440,7 @@ return ''
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Image]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -6336,6 +6472,7 @@ return zmscontext.attr('text')
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Alias: Abstract]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -6392,6 +6529,7 @@ return zmscontext.attr('text')
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: Teaser-Element]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -6423,6 +6561,7 @@ return zmscontext.attr('text')
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSTeaserElement]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -6470,7 +6609,7 @@ return zmscontext.attr('text')
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom">fas fa-align-left</item>
+                  <item key="custom"><![CDATA[fas fa-align-left]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -6478,6 +6617,7 @@ return zmscontext.attr('text')
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Icon (Class)]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -6534,6 +6674,7 @@ $(function(){
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">interface0</item>
                   <item key="repetitive" type="int">0</item>
@@ -6551,6 +6692,7 @@ return context.getTextFormatDefault()]]>
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Format</item>
                   <item key="repetitive" type="int">0</item>
@@ -6566,6 +6708,7 @@ return context.getTextFormatDefault()]]>
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
                   <item key="name">Text</item>
                   <item key="repetitive" type="int">0</item>
@@ -6604,6 +6747,7 @@ return constraints
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Hook: check constraints]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -6632,6 +6776,7 @@ return constraints
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name"><![CDATA[Template: ZMSTextarwa]]></item>
                   <item key="repetitive" type="int">0</item>
@@ -6665,6 +6810,366 @@ return constraints
           <item key="name">ZMSTextarea</item>
           <item key="package">com.zms.foundation</item>
           <item key="revision">3.1.2</item>
+          <item key="type">ZMSObject</item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="key">ZMSVideo</item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[fas fa-film]]></item>
+                  <item key="default"></item>
+                  <item key="id">icon_clazz</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">constant</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">title</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">title</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">DC.Title</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">string</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[## Script (Python) "ZMSVideo.titlealt"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=zmscontext=None
+##title=py: DC.Title.Alt
+##
+# --// titlealt //--
+return zmscontext.attr('title')
+# --// /titlealt //--
+]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">titlealt</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">DC.Title.Alt</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">py</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">attr_dc_description</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type">attr_dc_description</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">DC.Description</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">text</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">img</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Preview-Screen</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">image</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">videodata</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[MP4 File Upload]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">file</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">provider</item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item>fileupload</item>
+                      <item>vimeo</item>
+                      <item>youtube</item>
+                      <item>switch</item>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Video Provider]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">select</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">videoId</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Video-ID</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">string</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">videoHint</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[<div id="tr_videoHint" class="form-group row"><label class="col-sm-2 control-label" for="videoHint"><span>Hinweise</span></label><div id="videoHint" class="col-sm-10">Der Kurztitel ist nur für die interne Darstellung/Referenzierung.<br />WICHTIG: Die Option "Einbetten auf Anfrage" des YouTube Videos darf nicht deaktiviert sein!<br />Die YouTube ID kann aus der URL des Browsers beim Betrachten des Videos entnommen werden:<ol><li>http://www.youtube.com/watch?v=<strong style="color:darkred">7nxwgSxLA68</strong></li><li>http://youtu.be/<strong style="color:darkred">7nxwgSxLA68</strong></li></ol></div></div>]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">hint</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">videoWidth</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Breite</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">int</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">videoHeight</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">Höhe</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">int</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<script>
+	function changeGUI() {
+		$('#tr_videoId').hide();
+		$('#tr_videoHint').hide();
+		$('#tr_videoWidth').hide();
+		$('#tr_videoHeight').hide();
+		$('#tr_videodata').hide();
+		if ( $('#tr_provider select option:selected').val()!='switch' ) {
+			if ( $('#tr_provider select option:selected').val()=='youtube' ) {
+				$('#tr_videoHint').show();
+			}
+			if ( $('#tr_provider select option:selected').val()=='fileupload' ) {
+				$('#tr_videodata').show();
+				$('#tr_videoId label').removeClass('mandatory');
+			}
+			else {
+				$('#tr_videoId').show();
+				$('#tr_videoId label').addClass('mandatory');
+			}
+			$('#tr_videoWidth').show();
+			$('#tr_videoHeight').show();
+		};
+	};
+	$(document).ready( function() {
+		$('#tr_provider select').change(function() { changeGUI() });
+		changeGUI();
+	});
+</script>]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">interface</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name">interface</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">interface</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- ZMSVideo.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		zmi python:request.get('URL').find('/manage')>=0;
+		id python:zmscontext.getId();
+		title python:zmscontext.attr('title');
+		description python:zmscontext.attr('attr_dc_description');
+		img python:zmscontext.attr('img');
+		videodata python:zmscontext.attr('videodata');
+		provider python:zmscontext.attr('provider');
+		videoId python:zmscontext.attr('videoId');
+		videoWidth python:zmscontext.attr('videoWidth');
+		videoHeight python:zmscontext.attr('videoHeight');
+		videoURL python:{'fileupload':'','vimeo':'//player.vimeo.com/video/%s?badge=0','youtube':'http://www.youtube.com/embed/%s','switch':'https://tube.switch.ch/embed/%s'}[provider]">
+
+<style type="text/css" tal:condition="python:request.get('first_video_on_page',True)">
+	.video-wrapper {margin: 1em 0;}
+	.youtube { position: relative; padding-bottom: 55%; padding-top: 15px; height: 0; overflow: hidden;}
+	.youtube iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+	.video-wrapper p.description {font-size:90%;font-style:italic;}
+</style>
+<tal:block tal:define="first_video_on_page python:request.set('first_video_on_page',False)"></tal:block>
+
+<div class="note" tal:condition="zmi">
+	<strong tal:content="title">Titel</strong> - web size:
+	<strong tal:content="videoWidth">videoWidth</strong> x <strong tal:content="videoHeight">videoHeight</strong> Pixel.
+</div>
+
+<div tal:attributes="class python:'video-wrapper elastic-video %s'%(provider);title title;id id">
+	<div class="embed-responsive embed-responsive-16by9">
+	<tal:block tal:condition="python:img!='' and img!=None"
+		><img tal:attributes="src python:img.getHref(request);
+			width videoWidth;
+			height videoHeight;
+			style python:['cursor:pointer','display:none'][img==''];
+			onclick python:'javascript:$(\047#%s img\047).hide()\073$(\047#%s .video\047).show()'%(id,id)"
+	/></tal:block>
+	<iframe tal:condition="python:provider!='fileupload'"
+		tal:attributes="src python:videoURL%(videoId); width python:[None,videoWidth][videoWidth>0]; height python:[None,videoHeight][videoHeight>0];style python:['display:none',''][img=='' or img==None]"
+		class="embed-responsive-item"
+		frameborder="0"
+		webkitallowfullscreen=""
+		mozallowfullscreen=""
+		allowfullscreen="">
+	</iframe>
+	<video tal:condition="python:provider=='fileupload' and videodata!=''"
+		tal:attributes="width python:[None,videoWidth][videoWidth>0]; height python:[None,videoHeight][videoHeight>0]; style python:['display:none',''][img=='' or img==None]"
+		class="embed-responsive-item"
+		frameborder="0"
+		controls="">
+		<source src="movie.mp4" type="video/mp4" tal:attributes="src python:videodata.getHref(request)" />
+		ERROR: Your browser does not support the video tag.
+	</video>
+	</div>    
+	<div tal:condition="python:(provider=='fileupload' and videodata=='') or (provider!='fileupload' and videoId=='')"
+		class="alert alert-warning">No video file uploaded or no provider video specified.
+	</div>
+	<p class="description" tal:condition="description" tal:content="description">description</p>
+</div>
+
+</tal:block>
+
+<!-- /ZMSVideo.standard_html -->]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">standard_html</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Template: YouTube Video]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">zpt</item>
+                </dictionary>
+              </item>
+            </list>
+          </item>
+          <item key="access" type="dictionary">
+            <dictionary>
+              <item key="delete_custom"></item>
+              <item key="delete_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+              <item key="insert_custom">{$}</item>
+              <item key="insert_deny" type="list">
+                <list>
+                  <item></item>
+                  <item></item>
+                  <item></item>
+                </list>
+              </item>
+            </dictionary>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id">ZMSVideo</item>
+          <item key="name">ZMSVideo</item>
+          <item key="package">com.zms.foundation</item>
+          <item key="revision">4.0.0</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>

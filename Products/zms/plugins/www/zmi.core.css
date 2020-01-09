@@ -1472,6 +1472,7 @@ body.browse_iframe .toggle {
 	flex-wrap: wrap;
 	margin-right: -15px;
 	margin-left: -15px;
+	align-items: center;
 }
 
 .zmi-richtext .inlinelinks {

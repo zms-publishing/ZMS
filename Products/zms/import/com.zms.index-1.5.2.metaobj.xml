@@ -61,7 +61,7 @@ function openWindow(url) {
 				</div>
 				<label class="control-label">&nbsp;All Clients</label>
 			</div>
-			<div class="zms4-row col-sm-2">
+			<div class="zms4-row col-sm-2 m-0">
 				<div class="btn btn-default">
 					<input type="checkbox" checked="checked" id="resync-dryrun" name="resync-dryrun"/>
 				</div>
@@ -81,7 +81,7 @@ function openWindow(url) {
 	<div class="form-group zms4-row">
 		<label class="col-sm-2 control-label">&nbsp;</label>
 		<div class="col-sm-10 zms4-row">
-			<div class="zmi-sitemap-expand" onclick="$('#zmsindex .zmi-sitemap').toggleClass('full');$('#zmsindex .zmi-sitemap-expand i').toggleClass('icon-resize-small')">
+			<div class="zmi-sitemap-expand align-items-start" onclick="$('#zmsindex .zmi-sitemap').toggleClass('full');$('#zmsindex .zmi-sitemap-expand i').toggleClass('icon-resize-small')">
 				<i class="icon icon-resize-full fas fa-expand-arrows-alt" title="Seitenanfang"></i>
 			</div>
 			<div class="zmi-sitemap">

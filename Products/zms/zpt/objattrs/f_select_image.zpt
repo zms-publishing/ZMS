@@ -7,8 +7,8 @@
 		value options/value;
 		can_generate_preview python:pilutil.enabled() and (key.endswith('hires') or key.endswith('superres'));
 		max_generate_preview python:{
-			'imghires':'InstalledProducts.pil.thumbnail.max',
-			'imgsuperres':'InstalledProducts.pil.hires.thumbnail.max'}.get(key,None)">
+		'imghires':'InstalledProducts.pil.thumbnail.max',
+		'imgsuperres':'InstalledProducts.pil.hires.thumbnail.max'}.get(key,None)">
 
 	<tal:block tal:condition="python:request.get('f_zmiGraphicExtEdit',True)">
 		<div id="ZMSGraphic_extEdit_template" class="d-none">

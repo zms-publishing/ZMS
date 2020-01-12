@@ -10,7 +10,7 @@ ZMI.prototype.multiselect = function(context) {
 				$("option[data-value='"+data_value+"']",$select).prop({selected:"selected",value:val});
 				c++;
 			});
-			sortable(".zmi-select.zmi-sortable", "reload");
+			// sortable(".zmi-select.zmi-sortable", "reload");
 		}
 		var refreshDropdown = function($select,$dropdown) {
 			if ($select.attr('data-autocomplete-add')=="false" 

@@ -1795,3 +1795,81 @@ ul.pagination {
 	background-color: #08C;
 	border-color: #08C;
 }
+
+
+/* ####################### */
+/* ZMSObjectSet            */
+/* ####################### */
+
+.zmi .ZMSObjectSet .panel {
+	box-shadow:none !important;
+	border:none !important;
+	-webkit-box-shadow:none !important;
+	margin:.5em 0;
+	background-color:transparent !important;
+}
+.zmi .ZMSObjectSet .panel h3 {
+	font-size:14px;
+}
+.zmi .ZMSObjectSet .panel h3:before {
+	content:"\f016";
+	font-family:Fontawesome;
+	position:absolute;
+	display:block;
+	border:1px solid #cccccc;
+	border-radius:4px;
+	padding:.6em;
+	margin-left:-40px;
+	width:41px;
+	text-align:center;
+	border-top-right-radius:0;
+	border-bottom-right-radius:0;
+	background-color:#eeeeee
+}
+.zmi .ZMSObjectSet .panel a {
+	display:block;
+	box-shadow:none !important;
+	border:1px solid #cccccc;
+	border-radius:4px;
+	padding:.6em;
+	margin-right:15px;
+	border-top-left-radius:0;
+	border-bottom-left-radius:0;
+	background-color:white !important;
+}
+.zmi .ZMSObjectSet .panel a span.title {
+	max-width: calc(100% - 8em);
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: inline-block;
+	vertical-align: text-bottom;
+}
+.zmi .ZMSObjectSet .panel a em.date {
+	float: right;
+	margin-left: 1em;
+	opacity: .5;
+	font-style: normal;
+}
+.zmi .ZMSObjectSet .form-filter .row {
+	margin: .5em -0 1.25em -15px;
+}
+@media (max-width: 767px) {
+	.zmi .ZMSObjectSet .form-filter .row {
+		margin: .5em 35px 1.25em -15px;
+	}
+}
+.zmi .ZMSObjectSet .form-filter ul.ZMSObjectSet {
+	margin-top:1em;
+}
+.zmi .ZMSObjectSet .form-filter .highlight {
+	color:#333;
+	background-color: #fff59B;
+	border:0;
+	padding:1px 0 1px 0;
+	margin:1px 0 1px 0;
+	font-weight:bold;
+}
+.zmi .ZMSObjectSet .form-filter .matched > a {
+	font-weight:bold;
+}

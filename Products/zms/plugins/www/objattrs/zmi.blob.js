@@ -83,11 +83,7 @@ function zmiUndoBlobBtnClick(elName) {
 	// Undo delete.
 	zmiUndoBlobDelete(elName);
 	// Restore properties.
-	var d = zmiBlobDict[elName];
-	for (var k in d) {
-		var v = d[k];
-		$('#'+k+'_'+elName).html(v);
-	}
+	$('#filename_'+elName+' label del').contents().unwrap();
 	// Remove from temp_folder.
 	var params = zmiBlobParamsDict[elName];
 	if ( params != null) {
@@ -106,10 +102,7 @@ function zmiDelBlobBtnClick(elName) {
 		// Apply flag.
 		$('input[name=del_'+elName+']').val(1);
 		// Clear properties.
-		var l = ['filename','dimensions','size'];
-		for (var i=0; i < l.length; i++) {
-			$('#'+l[i]+'_'+elName).html('<del>'+$('#'+l[i]+'_'+elName).html()+'</del>');
-		}
+		$('#filename_'+elName+' label').contents().wrap('<del>');
 		// Create transparent overlay.
 		var img = $('img#img_'+elName);
 		if (img.length > 0) {

@@ -6,7 +6,7 @@
 <tal:block tal:define="
 		master python:here.getPortalMaster();
 		masterMetaCmdIds python:master.getMetaCmdIds();
-		acquireObjs python:[(None,x,master.getMetaCmd(x)['name']) for x in masterMetaCmdIds;
+		acquireObjs python:[(None,x,master.getMetaCmd(x)['name']) for x in masterMetaCmdIds];
 		">
 
 <tal:block tal:define="dummy0 python:acquireObjs.sort()"></tal:block>

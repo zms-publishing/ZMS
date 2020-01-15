@@ -713,7 +713,7 @@ def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False):
   # Attributes.
   keys = self.getObjAttrs().keys()
   if self.getType() == 'ZMSRecordSet':
-    keys = ['active', self.getMetaobjAttrIds(self.meta_id)[0]]
+    keys = ['active', self.getMetaobjAttrIds(self.meta_id,types=['list'])[0]]
   for key in keys:
     obj_attr = self.getObjAttr(key)
     if obj_attr['xml'] or key in ['change_dt','change_uid','created_dt','created_uid']:

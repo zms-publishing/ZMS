@@ -555,7 +555,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       size = 0
       keys = self.getObjAttrs().keys()
       if self.getType()=='ZMSRecordSet':
-        keys = [self.getMetaobjAttrIds(self.meta_id)[0]]
+        keys = [self.getMetaobjAttrIds(self.meta_id,types=['list'])[0]]
       for key in keys:
         objAttr = self.getObjAttr(key)
         value = self.getObjAttrValue( objAttr, REQUEST)

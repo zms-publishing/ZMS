@@ -62,7 +62,7 @@ def recurse_addMediaDb(self, mediadb):
 
   # Process recordset.
   if self.getType()=='ZMSRecordSet':
-    key = self.getMetaobjAttrIds(self.meta_id)[0]
+    key = self.getMetaobjAttrIds(self.meta_id,types=['list'])[0]
     obj_attr = self.getObjAttr(key)
     lang = self.getPrimaryLanguage()
     for obj_vers in self.getObjVersions():
@@ -210,7 +210,7 @@ def recurse_delMediaDb(self, mediadb):
 
   # Process recordset.
   if self.getType()=='ZMSRecordSet':
-    key = self.getMetaobjAttrIds(self.meta_id)[0]
+    key = self.getMetaobjAttrIds(self.meta_id,types=['list'])[0]
     obj_attr = self.getObjAttr(key)
     lang = self.getPrimaryLanguage()
     for obj_vers in self.getObjVersions():

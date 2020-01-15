@@ -330,10 +330,10 @@ class ZMSMetaobjManager(object):
         filename = '%s-%s.metaobj.xml'%(ids[0], revision)
       else:
         filename = 'export.metaobj.xml'
+      # Export value with filename.
       content_type = 'text/xml; charset=utf-8'
-      processing_instruction = '<?zms version=\'%s\'?>'%(context.zms_version())
+      processing_instruction = '<?zms version=\'%s\'?>'%(self.zms_version())
       export = self.getXmlHeader() + processing_instruction + standard.toXmlString(self, value, xhtml=True)
-      
       if RESPONSE:
         RESPONSE.setHeader('Content-Type', content_type)
         RESPONSE.setHeader('Content-Disposition', 'attachment;filename="%s"'%filename)

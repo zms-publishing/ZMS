@@ -18,6 +18,7 @@
 
 # Imports.
 from io import StringIO
+from DateTime import DateTime
 import copy
 import os
 import pyexpat
@@ -109,7 +110,7 @@ def getXmlType(v):
     t = ' type="dictionary"'
   elif isinstance(v, list):
     t = ' type="list"'
-  elif isinstance(v, tuple) or isinstance(v, time.struct_time):
+  elif isinstance(v, tuple) or isinstance(v, time.struct_time) or isinstance(v, DateTime):
     t = ' type="datetime"'
   elif isinstance(v, _blobfields.MyImage):
     t = ' type="image"'
@@ -594,7 +595,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
       xml.append('</list>')
 
     # Tuples (DateTime)
-    elif isinstance(value, tuple) or isinstance(value, time.struct_time):
+    elif isinstance(value, tuple) or isinstance(value, time.struct_time) or isinstance(value, DateTime):
       try:
         s_value = self.getLangFmtDate(value, 'eng', 'DATETIME_FMT')
         if len(s_value) > 0:

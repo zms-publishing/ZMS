@@ -342,7 +342,7 @@ def exportObj(obj, filename, filetype='b'):
     if isinstance(data, bytes):
       objfile.write(data)
     elif isinstance(data, str):
-      objfile.write(bytes(data,"utf-8"))
+      objfile.write(data.encode())
     elif isinstance(data,io.RawIOBase):
       objfile.write(data.read())
     else:

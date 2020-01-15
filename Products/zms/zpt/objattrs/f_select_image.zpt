@@ -102,8 +102,8 @@
 						data-href href;
 						data-dimensions dimensions;
 						data-size size;">
-				<input class="custom-file-input" type="file" size="25" value=""
-					onchange="$(this).next().html($(this).val().replace(/^.*(\\|\/|\:)/, ''));$(this).next().addClass('new_file');"
+				<input class="custom-file-input" type="file" value=""
+					onchange="$(this).next().html($(this).val().replace(/^.*(\\|\/|\:)/, ''));$(this).next().addClass('new_file');$(this).parent().nextAll().css('visibility','hidden');$(this).parents('.col-10').next('.col-2').css('visibility','hidden');"
 					tal:attributes="id options/elName; name options/elName; maxlength python:options.get('elMaxLength','')" />
 				<label class="custom-file-label"
 					tal:attributes="for options/elName;class python:'custom-file-label%s'%(has_file and ' has_file' or '')"

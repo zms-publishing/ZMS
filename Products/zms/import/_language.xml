@@ -5599,7 +5599,7 @@
     <Cell><Data ss:Type="String">סגנון אקספלורר</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">SITEMAPLAYOUT1</Data></Cell>
+    <Cell><Data ss:Type="String">HORIZONTAL</Data></Cell>
     <Cell><Data ss:Type="String">Horizontal</Data></Cell>
     <Cell><Data ss:Type="String">Horizontal</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Orizzontale</Data></Cell>
@@ -5612,7 +5612,7 @@
     <Cell><Data ss:Type="String">מאוזן</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">SITEMAPLAYOUT2</Data></Cell>
+    <Cell><Data ss:Type="String">VERTICAL</Data></Cell>
     <Cell><Data ss:Type="String">Vertikal</Data></Cell>
     <Cell><Data ss:Type="String">Vertical</Data></Cell>
     <Cell ss:Index="6"><Data ss:Type="String">Verticale</Data></Cell>
@@ -5623,19 +5623,6 @@
     <Cell><Data ss:Type="String">رأسي</Data></Cell>
     <Cell><Data ss:Type="String">Dọc</Data></Cell>
     <Cell><Data ss:Type="String">מאונך</Data></Cell>
-   </Row>
-   <Row>
-    <Cell><Data ss:Type="String">SITEMAPLAYOUT3</Data></Cell>
-    <Cell><Data ss:Type="String">Explorer-Style (AJAX)</Data></Cell>
-    <Cell><Data ss:Type="String">Explorer-Style (AJAX)</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Sile Explorer (AJAX)</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">Explorer 的样弿 (AJAX)</Data></Cell>
-    <Cell><Data ss:Type="String">شکل نمايشگر</Data></Cell>
-    <Cell><Data ss:Type="String">Стиль исследователя</Data></Cell>
-    <Cell><Data ss:Type="String">अन्वेषक-शैली</Data></Cell>
-    <Cell><Data ss:Type="String">طراز المستكشف (AJAX)</Data></Cell>
-    <Cell><Data ss:Type="String">Kiểu-Trình duyệt (AJAX)</Data></Cell>
-    <Cell><Data ss:Type="String">סגנון אקספלורר (AJAX)</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">SOTYPE_ZMSDOCUMENT</Data></Cell>

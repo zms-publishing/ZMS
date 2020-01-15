@@ -860,9 +860,9 @@ class MyImage(MyBlob, Image):
       filename = _fileutil.getOSPath(_fileutil.extractFilename(getattr(self, 'filename', '')))
       if data2hex:
         if getattr(self, 'content_type', '').find('text/') == 0:
-          data = '<![CDATA[%s]]>'%str(self.getData( sender))
+          data = '<![CDATA[%s]]>'%self.getData( sender).decode()
         else:
-          data = standard.bin2hex(self.getData( sender))
+          data = standard.bin2hex(self.getData( sender)).decode()
         objtype = ' type="image"'
       else:
         filename = self.getFilename()
@@ -952,9 +952,9 @@ class MyFile(MyBlob, File):
       filename = _fileutil.getOSPath(_fileutil.extractFilename(getattr(self, 'filename', '')))
       if data2hex:
         if getattr(self, 'content_type', '').find('text/') == 0:
-          data = '<![CDATA[%s]]>'%str(self.getData( sender))
+          data = '<![CDATA[%s]]>'%self.getData( sender).decode()
         else:
-          data = standard.bin2hex(self.getData( sender))
+          data = standard.bin2hex(self.getData( sender)).decode()
         objtype = ' type="file"'
       else:
         filename = self.getFilename()

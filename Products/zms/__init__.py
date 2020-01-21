@@ -31,7 +31,6 @@ import codecs
 import fnmatch
 import os
 import re
-import stat
 # Product Imports.
 from . import standard
 from . import zms

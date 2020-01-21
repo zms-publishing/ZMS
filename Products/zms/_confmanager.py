@@ -33,7 +33,6 @@ import configparser
 import importlib
 import operator
 import os
-import stat
 import tempfile
 import time
 import urllib.request, urllib.parse, urllib.error
@@ -265,11 +264,10 @@ class ConfManager(
             else:
               for filepath in filepaths:
                 if os.path.exists( filepath):
-                  for filename in os.listdir(filepath+location):
+                  for filename in os.listdir(filepath + location):
                     path = filepath + filename
-                    mode = os.stat(path)[stat.ST_MODE]
-                    if not stat.S_ISDIR(mode):
-                      if filename not in filenames:
+                    if os.path.isfile(path):
+                      if path not in filenames:
                         filenames[path] = filename
           break
       # Filter.

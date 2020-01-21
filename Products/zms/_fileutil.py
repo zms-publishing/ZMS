@@ -23,7 +23,6 @@ import fnmatch
 import io
 import os
 import shutil
-import stat
 import sys
 import tempfile
 import zipfile
@@ -167,8 +166,7 @@ def findExtension(extension, path, deep=1):
     if extractFileExt(file).lower() == extension:
       return filepath
     elif deep:
-      mode = os.stat(filepath)[stat.ST_MODE]
-      if stat.S_ISDIR(mode):
+      if os.path.isdir(filepath):
         rtn = findExtension(extension, filepath, deep)
         if rtn is not None:
           return rtn
@@ -189,19 +187,14 @@ def readPath(path, data=True, recursive=True):
     path = getFilePath( path)
   else:
     filter = None
-  mode = os.stat(path)[stat.ST_MODE]
-  if stat.S_ISDIR(mode):
+  if os.path.isdir(path):
     for filename in os.listdir(path):
-      local_filename = path + os.sep + filename
-      mode = os.stat(local_filename)[stat.ST_MODE]
+      local_filename = os.path.join(path,filename)
       if filter is None or fnmatch.fnmatch(filename, filter):
-        u_local_filename = local_filename
-        if not isinstance(u_local_filename, str):
-          u_local_filename = str(local_filename, 'latin-1')
         d = {}
-        d['local_filename']=u_local_filename.encode('utf-8')
-        d['filename']=extractFilename(u_local_filename).encode('utf-8')
-        if stat.S_ISDIR(mode):
+        d['local_filename']=local_filename
+        d['filename']=extractFilename(local_filename)
+        if os.path.isdir(local_filename):
           mtime = os.path.getmtime( local_filename)
           d['mtime']=mtime
           d['isdir']=True
@@ -226,7 +219,7 @@ def readPath(path, data=True, recursive=True):
           d['mtime']=mtime
           d['isdir']=False
           l.append(d)
-      if stat.S_ISDIR(mode) and recursive:
+      if os.path.isdir(local_filename) and recursive:
         if filter is not None:
           local_filename = local_filename + '/' + filter
         l.extend(readPath(local_filename, data, recursive))
@@ -264,8 +257,7 @@ Removes path.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def remove(path, deep=0):
   path = getOSPath(path)
-  mode = os.stat(path)[stat.ST_MODE]
-  if stat.S_ISDIR(mode):
+  if os.path.isdir(path):
     shutil.rmtree(path)
   else:
     os.remove(path)
@@ -377,8 +369,7 @@ def readDir(path):
     filepath = path + os.sep + file 
     ob['mtime'] = os.path.getmtime(filepath)
     ob['size'] = os.path.getsize(filepath)
-    mode = os.stat(filepath)[stat.ST_MODE]
-    if stat.S_ISDIR(mode): 
+    if os.path.isdir(filepath): 
       ob['type'] = 'd'
     else:
       ob['type'] = 'f'
@@ -454,8 +445,7 @@ _fileutil.writeZipFile:
 def writeZipFile( zf, basepath, path, filter):
   for file in os.listdir( path):
     filepath = path+os.sep+file
-    mode = os.stat( filepath)[stat.ST_MODE]
-    if stat.S_ISDIR( mode): 
+    if os.path.isdir(filepath): 
       writeZipFile( zf, basepath, filepath, filter)
     else:
       arcname = filepath[len( basepath)+1:]

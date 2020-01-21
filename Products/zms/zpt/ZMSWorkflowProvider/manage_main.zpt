@@ -447,12 +447,13 @@ $(function(){
 			</div>
 		</div><!-- .form-group -->
 		<div class="form-row">
-			<div class="controls save">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-10 controls">
 				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 				<a class="btn btn-secondary" tal:attributes="href python:'javascript:if(confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_changeWorkflow?lang=%s&btn=%s\'}'%(request['lang'],here.getZMILangStr('BTN_CLEAR')); title python:here.getZMILangStr('BTN_CLEAR')+'...'"><tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')"></tal:block></a>
 				<div class="btn-group packaging">
-					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).text(),closeText:getZMILangStr('BTN_CLOSE')});return false;"><i class="fas fa-upload"></i></span>
-					<a class="btn btn-secondary" tal:attributes="href python:'manage_changeWorkflow?lang=%s&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><i class="fas fa-download"></i></a>
+					<span class="btn btn-light" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).text(),closeText:getZMILangStr('BTN_CLOSE')});return false;"><i class="fas fa-upload"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_IMPORT')"></tal:block></span>
+					<a class="btn btn-light" tal:attributes="href python:'manage_changeWorkflow?lang=%s&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><i class="fas fa-download"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_EXPORT')"></tal:block></a>
 				</div><!-- .btn-group -->
 			</div>
 		</div>

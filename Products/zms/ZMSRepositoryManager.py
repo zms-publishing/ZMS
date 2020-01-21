@@ -23,7 +23,6 @@ import copy
 import inspect
 import os
 import re
-import stat
 import time
 import urllib.request, urllib.parse, urllib.error
 from zope.interface import implementer, providedBy
@@ -145,7 +144,7 @@ class ZMSRepositoryManager(
     @see IZMSDaemon
     """
     def startDaemon(self):
-      self.writeLog("[startDaemon]")
+      standard.writeLog(self,"[startDaemon]")
       self.exec_auto_update()
 
 
@@ -155,7 +154,7 @@ class ZMSRepositoryManager(
     def exec_auto_commit(self, provider, id):
       if self.get_auto_update():
         ids = [':'.join([provider.id, id])]
-        self.writeLog("[exec_auto_commit]: Run... %s"%str(ids))
+        standard.writeLog(self,"[exec_auto_commit]: Run... %s"%str(ids))
         self.commitChanges(ids)
 
 
@@ -171,19 +170,18 @@ class ZMSRepositoryManager(
         #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
         self.storeReqBuff(reqBuffId, True)
         # Execute once.
-        self.writeLog("[exec_auto_update]")
+        standard.writeLog(self,"[exec_auto_update]")
         current_time = time.time()
         if self.get_auto_update():
           last_update = self.get_last_update()
           if ( last_update==0 or standard.getDateTime(last_update)<standard.getDateTime(self.Control_Panel.process_start) ) and self.getConfProperty('ZMS.debug', 0)==True:
-            self.writeBlock("[exec_auto_update]: Run...")
+            standard.writeLog(self,"[exec_auto_update]: Run...")
             def traverse(path):
               l = []
               if os.path.exists(path):
                 for file in os.listdir(path):
                   filepath = os.path.join(path, file)
-                  mode = os.stat(filepath)[stat.ST_MODE]
-                  if stat.S_ISDIR(mode):
+                  if os.path.isdir(filepath):
                     l.extend(traverse(filepath))
                   else:
                     l.append((os.path.getmtime(filepath), filepath))
@@ -191,7 +189,7 @@ class ZMSRepositoryManager(
             basepath = self.get_conf_basepath()
             files = traverse(basepath)
             mtime = max([x[0] for x in files]+[0])
-            self.writeBlock("[exec_auto_update]: %s < %s"%(standard.format_datetime_iso(standard.getDateTime(last_update)), standard.format_datetime_iso(standard.getDateTime(mtime))))
+            standard.writeLog(self,"[exec_auto_update]: %s < %s"%(standard.format_datetime_iso(standard.getDateTime(last_update)), standard.format_datetime_iso(standard.getDateTime(mtime))))
             if last_update==0 or ( standard.getDateTime(last_update) < standard.getDateTime(mtime) ):
               update_files = [x[1][len(basepath):] for x in files if last_update is None or standard.getDateTime(x[0])<standard.getDateTime(last_update)]
               temp_files = [x.split(os.path.sep) for x in update_files]
@@ -203,14 +201,14 @@ class ZMSRepositoryManager(
               ids = list(set([':'.join(x) for x in temp_files]))
               # avoid processing of hidden files, e.g. .DS_Store on macOS (2)
               # ids = [x for x in ids if ':.' not in x]
-              self.writeBlock("[exec_auto_update]: %s"%str(ids))
+              standard.writeLog(self,"[exec_auto_update]: %s"%str(ids))
               self.updateChanges(ids, override=True)
             self.last_update = standard.getDateTime(current_time)
-        self.writeLog("[exec_auto_update]: %s seconds needed"%(str(time.time()-current_time)))
+        standard.writeLog(self,"[exec_auto_update]: %s seconds needed"%(str(time.time()-current_time)))
 
 
     def getDiffs(self, provider):
-      self.writeBlock("[getDiffs]: provider=%s"%str(provider))
+      standard.writeLog(self,"[getDiffs]: provider=%s"%str(provider))
       diff = []
       local = self.localFiles(provider)
       remote = self.remoteFiles(provider)
@@ -237,7 +235,7 @@ class ZMSRepositoryManager(
               mt, enc = standard.guess_content_type(filename.split('/')[-1], data.encode('utf-8'))
             diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
           except:
-            self.writeBlock("[getDiffs]: Error in appending filename = %s to variable data, Line 232"%str(filename))
+            standard.writeLog(self,"[getDiffs]: Error in appending filename = %s to variable data, Line 232"%str(filename))
             pass
       return diff
 
@@ -248,7 +246,7 @@ class ZMSRepositoryManager(
 
 
     def localFiles(self, provider, ids=None):
-      self.writeBlock("[localFiles]: provider=%s"%str(provider))
+      standard.writeLog(self,"[localFiles]: provider=%s"%str(provider))
       l = {}
       local = provider.provideRepository(ids)
       for id in local:
@@ -303,7 +301,7 @@ class ZMSRepositoryManager(
 
 
     def remoteFiles(self, provider):
-      self.writeBlock("[remoteFiles]: provider=%s"%str(provider))
+      standard.writeLog(self,"[remoteFiles]: provider=%s"%str(provider))
       r = {}
       basepath = self.get_conf_basepath(provider.id)
       if os.path.exists(basepath):
@@ -311,14 +309,11 @@ class ZMSRepositoryManager(
           names = os.listdir(path)
           for name in names:
             filepath = os.path.join(path, name)
-            mode = os.stat(filepath)[stat.ST_MODE]
-            if stat.S_ISDIR(mode):
-              traverse(base, filepath)
-            if stat.S_ISDIR(mode):
+            if os.path.isdir(filepath):
               traverse(base,filepath)
             elif name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
-              self.writeLog("[remoteFiles]: read %s"%filepath)
+              standard.writeLog(self,"[remoteFiles]: read %s"%filepath)
               f = open(filepath,"rb")
               py = f.read()
               f.close()
@@ -328,7 +323,7 @@ class ZMSRepositoryManager(
                 c = get_class(py)
                 d = c.__dict__
               except:
-                d['revision'] = self.writeError("[traverse]: can't analyze filepath=%s"%filepath)
+                d['revision'] = standard.writeError(self,"[traverse]: can't analyze filepath=%s"%filepath)
               id = d.get('id',name)
               rd = {}
               rd['id'] = id
@@ -339,9 +334,8 @@ class ZMSRepositoryManager(
               # Read artefacts and avoid processing of hidden files, e.g. .DS_Store on macOS 
               for file in [x for x in names if x != name and not x.startswith('.')]:
                 artefact = os.path.join(path,file)
-                mode = os.stat(artefact)[stat.ST_MODE]
-                if not stat.S_ISDIR(mode):
-                  self.writeLog("[remoteFiles]: read artefact %s"%artefact)
+                if os.path.isfile(artefact):
+                  standard.writeLog(self,"[remoteFiles]: read artefact %s"%artefact)
                   f = open(artefact,"rb")
                   data = f.read()
                   f.close()
@@ -356,7 +350,7 @@ class ZMSRepositoryManager(
 
 
     def readRepository(self, provider):
-      self.writeBlock("[readRepository]: provider=%s"%str(provider))
+      standard.writeLog(self,"[readRepository]: provider=%s"%str(provider))
       r = {}
       basepath = self.get_conf_basepath(provider.id)
       if os.path.exists(basepath):
@@ -364,12 +358,11 @@ class ZMSRepositoryManager(
           names = os.listdir(path)
           for name in names:
             filepath = os.path.join(path, name)
-            mode = os.stat(filepath)[stat.ST_MODE]
-            if stat.S_ISDIR(mode):
+            if os.path.isdir(filepath):
               traverse(base, filepath)
             elif name.startswith('__') and name.endswith('__.py'):
               # Read python-representation of repository-object
-              self.writeBlock("[readRepository]: read %s"%filepath)
+              standard.writeLog(self,"[readRepository]: read %s"%filepath)
               f = open(filepath, "rb")
               py = f.read()
               f.close()
@@ -384,7 +377,7 @@ class ZMSRepositoryManager(
                 c = get_class(py)
                 d = c.__dict__
               except:
-                d['revision'] = self.writeError("[readRepository]: ")
+                d['revision'] = standard.writeError(self,"[readRepository]: ")
               id = d.get('id',name)
               r[id] = {}
               for k in [x for x in d if not x.startswith('__')]:
@@ -399,7 +392,7 @@ class ZMSRepositoryManager(
                       fileprefix = vv['id'].split('/')[-1]
                       for file in [x for x in names if x==fileprefix or x.startswith('%s.'%fileprefix)]:
                         artefact = os.path.join(path, file)
-                        self.writeBlock("[readRepository]: read artefact %s"%artefact)
+                        standard.writeLog(self,"[readRepository]: read artefact %s"%artefact)
                         f = open(artefact, "rb")
                         data = f.read()
                         f.close()
@@ -425,38 +418,43 @@ class ZMSRepositoryManager(
     Commit ZODB to repository.
     """
     def commitChanges(self, ids):
-      self.writeBlock("[commitChanges]: ids=%s"%str(ids))
+      standard.writeLog(self,"[commitChanges]: ids=%s"%str(ids))
       standard.triggerEvent(self,'beforeCommitRepositoryEvt')
       success = []
       failure = []
       for provider_id in list(set([x.split(':')[0] for x in ids])):
         provider = getattr(self, provider_id)
+        basepath = self.get_conf_basepath(provider.id)
         for id in list(set([x.split(':')[1] for x in ids if x.split(':')[0]==provider_id])):
           try:
             # Read local-files from provider.
             files = self.localFiles(provider, [id])
             # Recreate folder.
-            basepath = self.get_conf_basepath(provider.id)
             if os.path.exists(basepath):
               for name in os.listdir(basepath):
                 filepath = os.path.join(basepath, name)
-                mode = os.stat(filepath)[stat.ST_MODE]
-                if stat.S_ISDIR(mode) and name == id:
-                  self.writeBlock("[commitChanges]: clear dir %s"%filepath)
+                if os.path.isdir(filepath) and name == id:
+                  standard.writeLog(self,"[commitChanges]: clear dir %s"%filepath)
                   dir = [os.path.join(filepath, x) for x in os.listdir(filepath)]
-                  dir = [x for x in dir if not stat.S_ISDIR(os.stat(x)[stat.ST_MODE])]
-                  [_fileutil.remove(x) for x in dir]
-                elif not stat.S_ISDIR(mode) and name == '%s.py'%id:
-                  self.writeBlock("[commitChanges]: remove file %s"%filepath)
+                  [_fileutil.remove(x) for x in dir if os.path.isfile(x)]
+                elif os.path.isfile(filepath) and name == '%s.py'%id:
+                  standard.writeLog(self,"[commitChanges]: remove file %s"%filepath)
                   _fileutil.remove(filepath)
+            # Clear folders.
+            dir = list(set([os.path.join(basepath,x[:x.rfind(os.path.sep)]) for x in files if x.endswith('__init__.py')]))
+            dir = [x for x in dir if x.split(os.path.sep)[-1] in [y.split(':')[-1] for y in ids]]
+            [print("#####",x,os.listdir(x)) for x in dir if os.path.isdir(x)]
+            [[print("#########",y,os.path.isfile(os.path.join(x,y))) for y in os.listdir(x)] for x in dir if os.path.isdir(x)]
+            [[os.remove(z) for z in [os.path.join(x,y) for y in os.listdir(x)] if os.path.isfile(z)] for x in dir if os.path.isdir(x)]
             # Write files.
             for file in files:
               filepath = os.path.join(basepath,file)
               folder = filepath[:filepath.rfind(os.path.sep)]
+              standard.writeLog(self,"[commitChanges]: exists folder %s %s"%(folder,str(os.path.exists(folder))))
               if not os.path.exists(folder):
-                self.writeBlock("[commitChanges]: create folder %s"%folder)
+                standard.writeLog(self,"[commitChanges]: create folder %s"%folder)
                 _fileutil.mkDir(folder)
-              self.writeBlock("[commitChanges]: write %s"%filepath)
+              standard.writeLog(self,"[commitChanges]: write %s"%filepath)
               data = files[file]['data']
               if data is not None:
                 f = open(filepath,"wb")
@@ -477,7 +475,7 @@ class ZMSRepositoryManager(
     Update ZODB from repository.
     """
     def updateChanges(self, ids, override=False):
-      self.writeBlock("[updateChanges]: ids=%s"%str(ids))
+      standard.writeLog(self,"[updateChanges]: ids=%s"%str(ids))
       standard.triggerEvent(self,'beforeUpdateRepositoryEvt')
       success = []
       failure = []

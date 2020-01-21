@@ -149,6 +149,7 @@ class ZMSMetaobjManager(object):
             for key in list(attr):
               if not key in mandatory_keys:
                 del attr[key]
+          d['version'] = self.getMetaobjRevision(id)
           d['Attrs'] = d['attrs']
           del d['attrs']
           r[id] = d

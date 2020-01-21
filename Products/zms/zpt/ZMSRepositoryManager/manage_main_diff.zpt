@@ -106,7 +106,7 @@
 					ids python:sorted(standard.distinct_list([x['id'] for x in local_files]));
 					">
 				<div tal:repeat="id ids">
-					<i class="fas fa-check text-success"></i>
+					<i class="fas fa-check-circle text-success"></i>
 					<a tal:attributes="href python:'%s/manage_%s?lang=%s&id=%s'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id)" target="_blank"
 						tal:content="id">id
 					</a>

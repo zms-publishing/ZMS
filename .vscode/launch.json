@@ -6,7 +6,7 @@
             "type": "python",
             "request": "launch",
             "program": "/home/dev/workspace/zopefoundation/Zope/src/Zope2/Startup/serve.py",
-            "module": "Zope2.Startup.serve",
+            // "module": "Zope2.Startup.serve",
             "justMyCode": false,
             "console": "integratedTerminal",
             "args": [

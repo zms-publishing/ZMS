@@ -4303,7 +4303,7 @@
     <Cell><Data ss:Type="String">הועבר s% למעלה.</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">MSG_MULTILANG</Data></Cell>
+    <Cell><Data ss:Type="String">TIP_MULTILANG</Data></Cell>
     <Cell><Data ss:Type="String">In der symmetrischen Multilingualität wird für jede Sprache eine identische Variante der Objekte des Content-Baums angelegt.</Data></Cell>
     <Cell><Data ss:Type="String">In symmetrical multiligualism for every language an identical variant of all content tree objects is realized.</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">在对称的多語言环境中为毿秿语言创建相忌的内容树为对象.</Data></Cell>
@@ -4315,7 +4315,7 @@
     <Cell><Data ss:Type="String">ברב-לשונות סימטרית ממומשת לכל שפה גרסה זהה של כל פריטי העץ. </Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">MSG_MULTILANGDICT</Data></Cell>
+    <Cell><Data ss:Type="String">TIP_MULTILANGDICT</Data></Cell>
     <Cell><Data ss:Type="String">Im Wörterbuch werden Schlüsselwörter für multilinguale Templates hinterlegt.</Data></Cell>
     <Cell><Data ss:Type="String">Register keywords for multilingual templates in the dictionary.</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">在诿典中多语言的关键诿为登记。</Data></Cell>

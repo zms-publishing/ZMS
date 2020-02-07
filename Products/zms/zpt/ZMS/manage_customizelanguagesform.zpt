@@ -54,10 +54,14 @@ function zmiFormSubmit(sender,d) {
 
 <form class="form-horizontal card" id="changeLanguagesForm" action="manage_changeLanguages" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<legend tal:content="python:here.getZMILangStr('TAB_LANGUAGES')"
-		data-toggle="tooltip" data-placement="bottom" title="Tooltip"
-		tal:attributes="title python:here.getZMILangStr('MSG_MULTILANG')"
-	>Languages</legend>
+	<legend>
+		<span class="has_tooltip" 
+			data-toggle="tooltip" data-placement="left" title="Tooltip"
+			tal:attributes="title python:here.getZMILangStr('TIP_MULTILANG')"
+			tal:content="python:here.getZMILangStr('TAB_LANGUAGES')">
+			Languages
+		</span>
+	</legend>
 	<table class="table table-sm table-striped table-bordered">
 	<thead>
 	<tr>
@@ -124,10 +128,14 @@ function zmiFormSubmit(sender,d) {
 
 <form class="form-horizontal card mt-3" id="changeLangDictForm" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<legend tal:content="python:here.getZMILangStr('ATTR_DICTIONARY')"
-		data-toggle="tooltip" data-placement="bottom" title="Tooltip"
-		tal:attributes="title python:here.getZMILangStr('MSG_MULTILANGDICT')"
-	>Dictionary</legend>
+	<legend>
+		<span class="has_tooltip"
+		data-toggle="tooltip" data-placement="right" title="Tooltip"
+		tal:attributes="title python:here.getZMILangStr('TIP_MULTILANGDICT')"
+		tal:content="python:here.getZMILangStr('ATTR_DICTIONARY')">
+			Dictionary
+		</span>
+	</legend>
 	<table class="table table-sm table-striped table-bordered table-hover">
 	<thead>
 	<tr>

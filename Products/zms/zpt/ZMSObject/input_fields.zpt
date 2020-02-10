@@ -235,7 +235,9 @@
 												+[[],['is-new']][int(childNode.inObjStates(['STATE_NEW'],request))] \
 												+[[],['is-modified']][int(childNode.inObjStates(['STATE_MODIFIED'],request))] \
 												+[[],['is-deleted']][int(childNode.inObjStates(['STATE_DELETED'],request))])">
-											<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
+											<div class="center"
+												tal:on-error="structure string: <code style='display:block'>ERROR: childNode.renderShort(request)</code>"  
+												tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
 												tal:content="structure python:childNode.renderShort(request)">
 												the rendered child-node
 											</div><!-- .center -->

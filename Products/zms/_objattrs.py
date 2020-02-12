@@ -955,13 +955,6 @@ class ObjAttrs(object):
     # --------------------------------------------------------------------------
     def setObjProperty(self, key, value, lang=None, forced=0):
       
-      #-- CUSTOM
-      if key not in self.getObjAttrs().keys():
-        self.REQUEST.set('pKey', key)
-        self.REQUEST.set('pValue', value)
-        self.getObjProperty('setObjProperty', self.REQUEST)
-        return
-      
       #-- Get definition.
       obj_attr = self.getObjAttr(key)
       

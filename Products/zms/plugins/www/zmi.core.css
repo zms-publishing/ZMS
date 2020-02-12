@@ -323,7 +323,7 @@ footer .back-to-top.hide {
 	opacity:0.5;
 }
 #zmi-tab .card .card-header.btn-collapse > div > a > i,
-#zmiIframeAddDialog .card .card-header.btn-collapse > div > a > i, {
+#zmiIframeAddDialog .card .card-header.btn-collapse > div > a > i {
 	width:.867rem;
 }
 #zmi-tab .card .card-header.btn-collapse #zmi-toggle-activity,
@@ -901,7 +901,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 
 .zmi div.ZMSGraphic div.graphic img.img-responsive {
 	max-width: 100%;
-	max-width:-webkit-fill-available
+	max-width:-webkit-fill-available;
 	width: inherit;
 	height:auto;
 }

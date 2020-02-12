@@ -1884,3 +1884,19 @@ ul.pagination {
 .zmi-manage-main-toggle .fa-info-circle.active {
 	color:#08c;
 }
+
+/* ++++++++++++++++++++++++++ */
+/* CK Editor Fixes            */
+/* ++++++++++++++++++++++++++ */
+
+.cke_reset_all table tr:nth-child(even) td {
+	background-color: unset;
+}
+.cke_reset_all fas, .cke_reset_all * .fas {
+	font-family: 'Font Awesome 5 Free' !important;
+	font-weight: 900 !important;
+}
+.cke_reset_all far, .cke_reset_all * .far {
+	font-family: 'Font Awesome 5 Free' !important;
+	font-weight: 400 !important;
+}

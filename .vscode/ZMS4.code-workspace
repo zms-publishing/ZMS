@@ -4,17 +4,11 @@
 			"path": "../"
 		},
 		{
-			"path": "/home/dev/workspace/zopefoundation/Products.LDAPUserFolder"
+			"path": "/home/dev/workspace/ZMS3"
 		},
 		{
 			"path": "/home/dev/workspace/zopefoundation/Zope"
 		},
-		{
-			"path": "/home/dev/workspace/zopefoundation/Products.LDAPMultiPlugins"
-		},
-		{
-			"path": "/home/dev/workspace/ZMS3"
-		}
 	],
 	"settings": {
 		"python.pythonPath": "/home/zope/vpy37/bin/",

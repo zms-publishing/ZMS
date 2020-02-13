@@ -714,6 +714,12 @@ class ConfManager(
         k = REQUEST.get( 'conf_key', '')
         if btn == 'Change':
           v = REQUEST.get( 'conf_value', '')
+          if type(v) is str:
+            if (v.startswith('{') and not v.startswith('{$') and v.endswith('}')) or (v.startswith('[') and v.endswith(']')):
+              try:
+                v = eval(v)
+              except:
+                standard.writeError(self,'can\'t eval conf-property %s'%key)
           self.setConfProperty( k, v)
           if REQUEST.get('portal_clients'):
             for portalClient in self.getPortalClients():

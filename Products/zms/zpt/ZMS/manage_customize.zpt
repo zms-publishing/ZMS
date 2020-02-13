@@ -215,7 +215,10 @@
 							<a tal:condition="python:conf_key in conf" class="btn btn-secondary" tal:attributes="href python:'manage_customizeSystem?lang=%s&amp;conf_key=%s&btn=Delete&key=Custom'%(request['lang'],conf_key); title python:'Delete'"><i class="fas fa-times text-danger"></i></a>
 						</td>
 						<td class="systemprop-key">
-							<a class="zmi-code pt-1" tal:attributes="href python:'%s?lang=%s&amp;conf_key=%s#Custom'%(request['URL'],request['lang'],conf_key); title python:'Change'" tal:content="conf_key">the conf_key</a>
+							<a class="zmi-code pt-1" tal:attributes="href python:'%s?lang=%s&amp;conf_key=%s#Custom'%(request['URL'],request['lang'],conf_key); title python:'Change'">
+								<strong tal:content="conf_key">the conf_key</strong>
+								(<tal:block tal:content="python:standard.operator_getattr(standard.operator_gettype(here.getConfProperty(conf_key)),'__name__')"></tal:block>)
+							</a>
 						</td>
 						<td class="systemprop-value">
 							<span class="zmi-code pt-1" tal:condition="not:python:conf_key.endswith('.password')" tal:content="python:here.getConfProperty(conf_key)">the conf_value</span>

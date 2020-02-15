@@ -1109,21 +1109,7 @@ return ''
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- ZMSFlexbox.standard_html -->
-<div class="ZMSFlexbox"
-	tal:define="zmscontext options/zmscontext;
-		childnodes python:zmscontext.filteredChildNodes(request);
-		itemcount python:len(childnodes);"
-	tal:attributes="class python:'ZMSFlexbox itemcount-%s'%(itemcount)">
-	<div class="ZMSFlexboxItem"
-		tal:repeat="childnode childnodes"
-		tal:attributes="style python:'--data-itemcount:%s'%(itemcount)"
-		tal:content="structure python:childnode.renderShort(request)">
-	</div>
-</div>
-<style
-	tal:define="init_ZMSFlexbox python:request.get('init_ZMSFlexbox',True)"
-	tal:replace="python: init_ZMSFlexbox and default or None">
+                  <item key="custom"><![CDATA[@media only screen and (max-width: 576px) {
 	.ZMSFlexbox:not(.contentEditable) {
 		display: flex;
 		flex-direction: row;
@@ -1142,8 +1128,36 @@ return ''
 	.ZMSFlexbox .ZMSFlexboxItem {
 		flex-basis:calc((100% / var(--data-itemcount)) - 3rem);
 	}
-</style>
-<tal:block tal:define="init_ZMSFlexbox python:request.set('init_ZMSFlexbox',False)"></tal:block>
+}]]>
+                  </item>
+                  <item key="default"></item>
+                  <item key="id">f_css_defaults</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[CSS Default]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">constant</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[<!-- ZMSFlexbox.standard_html -->
+<div class="ZMSFlexbox"
+	tal:define="zmscontext options/zmscontext;
+		childnodes python:zmscontext.filteredChildNodes(request);
+		itemcount python:len(childnodes);"
+	tal:attributes="class python:'ZMSFlexbox itemcount-%s'%(itemcount)">
+	<div class="ZMSFlexboxItem"
+		tal:repeat="childnode childnodes"
+		tal:attributes="style python:'--data-itemcount:%s'%(itemcount)"
+		tal:content="structure python:childnode.renderShort(request)">
+	</div>
+</div>
 <!-- /ZMSFlexbox.standard_html -->]]>
                   </item>
                   <item key="default"></item>
@@ -1186,7 +1200,7 @@ return ''
           <item key="id">ZMSFlexbox</item>
           <item key="name">Flexbox-Container</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">0.0.4</item>
+          <item key="revision">0.0.5</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>

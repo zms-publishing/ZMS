@@ -32,6 +32,7 @@
 						'TAB_METACMD' : 'a',
 						'TAB_TEXTFORMATS' : 'b',
 						'TAB_CHARFORMATS' : 'i',
+						'TAB_WORKFLOW' : 'w',
 						'REPOSITORY' : 'r',
 						'TAB_SEARCH' : 'h',
 						'TAB_FILTER' : 'f',

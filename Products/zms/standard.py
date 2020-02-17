@@ -39,6 +39,7 @@ import cgi
 import copy
 import fnmatch
 import inspect
+import json
 import logging
 import operator
 import os
@@ -1571,10 +1572,8 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
       return '"%s"'%format_datetime_iso(i)
     except:
       pass
-  elif type(i) is int or type(i) is float:
-    return str(i)
-  elif type(i) is bool:
-    return str(i).lower()
+  elif type(i) is int or type(i) is float or type(i) is bool:
+    return json.dumps(i)
   elif i is not None:
     if type(i) is str:
       if not (i.strip().startswith('<') and i.strip().endswith('>')):

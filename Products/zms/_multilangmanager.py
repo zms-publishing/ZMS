@@ -297,7 +297,8 @@ class MultiLanguageManager(object):
           metaobjAttr = self.getMetaobjAttr(metaobjId, metaobjAttrId)
           custom = metaobjAttr['custom']
           try:
-            d = eval(custom)
+            from ast import literal_eval
+            d = literal_eval(custom)
             if key in d and lang in d[key]:
               return d[key][lang]
           except:

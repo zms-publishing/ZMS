@@ -717,7 +717,8 @@ class ConfManager(
           if type(v) is str:
             if (v.startswith('{') and not v.startswith('{$') and v.endswith('}')) or (v.startswith('[') and v.endswith(']')):
               try:
-                v = eval(v)
+                from ast import literal_eval
+                v = literal_eval(v)
               except:
                 standard.writeError(self,'can\'t eval conf-property %s'%key)
           self.setConfProperty( k, v)

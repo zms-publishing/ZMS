@@ -21,8 +21,11 @@
 			><i tal:condition="python:childNode==childNodes[-1]"
 				tal:on-error="structure python:'<i class=\042fas fa-warning\042></i>'"
 				tal:attributes="class python:childNode.zmi_icon()"></i
-		></span>&nbsp;<a tal:define="titlealt python:childNode.getTitlealt(request);title python:childNode.getTitle(request)" 
-			tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang']);title title" 
+		></span>&nbsp;<a tal:define="
+				titlealt python:childNode.getTitlealt(request);
+				title python:childNode.getTitle(request);
+				accesskey repeat/childNode/number;"
+				tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang']);title title;accesskey accesskey" 
 			tal:content="structure titlealt">titlealt
 	</a></li>
 	<li class="breadcrumb-item" tal:repeat="extra python:options.get('extra',[])">

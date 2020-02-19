@@ -413,7 +413,7 @@
 						<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><i class="fas fa-times"></i></a>
 					</div><!-- .btn-group -->
 					<div class="btn-group packaging">
-						<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><i class="far fa-share"></i></a>
+						<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share"></i></a>
 						<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')})"><i class="fas fa-upload"></i></a>
 						<a class="btn btn-secondary" href="javascript:;" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i></a>
 					</div><!-- .btn-group -->

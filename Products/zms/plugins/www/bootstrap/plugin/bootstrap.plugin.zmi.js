@@ -335,8 +335,8 @@ $(function(){
 	$('table.table-hover tbody tr')
 		.dblclick( function(evt) {
 			var href = null;
-			if ((href==null || typeof href=="undefined") && $('a '+$ZMI.icon_selector("fa-pencil"),this).length > 0) {
-				return $('a '+$ZMI.icon_selector("fa-pencil"),this).parents("a:first").click();
+			if ((href==null || typeof href=="undefined") && $('a '+$ZMI.icon_selector("fa-pencil-alt"),this).length > 0) {
+				return $('a '+$ZMI.icon_selector("fa-pencil-alt"),this).parents("a:first").click();
 			}
 			else if ((href==null || typeof href=="undefined")) {
 				href = $('a[target=]',this).attr('href');

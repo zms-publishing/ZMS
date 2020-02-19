@@ -54,7 +54,7 @@
 			></tal:block
 		></tal:block
 		><span class="zmi-state zmi-state-success" tal:condition="python:'STATE_NEW' in objStates"><i class="fas fa-plus-sign"></i>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_NEW')"></tal:block></span
-		><span class="zmi-state zmi-state-info" tal:condition="python:'STATE_MODIFIED' in objStates"><i class="fas fa-pencil"></i>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block></span
+		><span class="zmi-state zmi-state-info" tal:condition="python:'STATE_MODIFIED' in objStates"><i class="fas fa-pencil-alt"></i>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block></span
 		><span class="zmi-state zmi-state-default" tal:condition="python:len(wfStates)>0 and here.isVersionContainer() and here.hasObjModifiedChildren(request)"><i class="fas fa-edit"></i>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_MODIFIED')"></tal:block></span
 		><span class="zmi-state zmi-state-danger" tal:condition="python:'STATE_DELETED' in objStates"><i class="fas fa-trash"></i>&nbsp;<tal:block tal:content="python:here.getZMILangStr('STATE_DELETED')"></tal:block></span
 	></tal:block

@@ -312,23 +312,27 @@
 	</div><!-- .form-row -->
 
 	<!-- BO Usage -->
-	<div class="meta-usage col-12" tal:define="l python:[]">
-		<tal:block tal:repeat="metaObj2 metaObjs">
-			<tal:block tal:define="objAttrs python:here.getMetaobjAttrs(metaObj2['id'])">
-				<tal:block tal:repeat="objAttr objAttrs">
-					<tal:block tal:condition="python:(objAttr['type']==metaObj['id']) or \
-														(objAttr['type']=='*' and metaObj['id'] in objAttr['keys'])">
+	<div class="meta-usage col-12" 
+		tal:define="l python:[]"
+		><tal:block tal:repeat="metaObj2 metaObjs"
+			><tal:block tal:define="objAttrs python:here.getMetaobjAttrs(metaObj2['id'])"
+				><tal:block tal:repeat="objAttr objAttrs"
+					><tal:block tal:condition="python:(objAttr['type']==metaObj['id']) or \
+							(objAttr['type']=='*' and metaObj['id'] in objAttr['keys'])">
 						<strong tal:condition="python:len(l)==0">Usage:</strong>
-						<tal:block tal:condition="not:python:len(l)==0">,</tal:block>
-						<a tal:attributes="href python:'%s?lang=%s&id=%s'%(request['URL'],request['lang'],metaObj2['id']); title python:'%s (%s)'%(metaObj2['name'],objAttr['name'])" target="_blank" tal:define="dummy0 python:l.append(1)">
-							<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
-							<tal:block tal:content="python:'%s.%s'%(metaObj2['id'],objAttr['id'])">object-name.attribute-name</tal:block>
-						</a>
-					</tal:block>
-				</tal:block>
-			</tal:block>
-		</tal:block>
-	</div>
+						<tal:block tal:condition="not:python:len(l)==0">,</tal:block
+						><a target="_blank"
+							tal:define="dummy0 python:l.append(1)"
+							tal:attributes="href python:'%s?lang=%s&id=%s'%(request['URL'],request['lang'],metaObj2['id']); 
+								title python:'%s (%s)'%(metaObj2['name'],objAttr['name'])"><i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i><tal:block
+									tal:content="python:'%s.%s'%(metaObj2['id'],objAttr['id'])">
+									object-name.attribute-name
+								</tal:block
+						></a></tal:block
+				></tal:block
+			></tal:block
+		></tal:block
+	></div>
 	<!-- EO Usage -->
 
 	<!-- BO Access -->
@@ -621,7 +625,7 @@ $(function(){
 /**
  * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  * EXPERIMENTAL: Generator for Default-ZPT-Code.
- * Cave: ZPT Processing requires $$ for JS String Templates 
+ * Cave: ZPT Processing in Zope4 requires $$ for JS String Templates 
  * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
  function set_zmi_code_default(event) {
@@ -675,7 +679,7 @@ $(function(){
 		if ( meta_model[id]['meta_type'] =='url' ) {
 			// ATTRTYPE URL 
 			tal_defs += `\n\t\t$${sid} python:zmscontext.attr('$${id}');`
-			tal_defs += `\n\t\t$${sid}_obj python:'{' in url and zmscontext.getLinkObj($${sid},request) or None;`
+			tal_defs += `\n\t\t$${sid}_obj python:'{' in $${sid} and zmscontext.getLinkObj($${sid},request) or None;`
 			tal_defs += `\n\t\t$${sid}_target python:$${sid}_obj and $${sid}_obj.getHref2IndexHtml(request) or $${sid};`
 		} else if ( meta_model[id]['meta_repetitive'] ) {
 			// ATTRTYPE COMPLEX/REPETITIVE 
@@ -731,7 +735,7 @@ $(function(){
 
 }
 // Add Execute Button for TAL-Code-Regeneration
-var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default fas fa-redo-alt text-primary text-center\" style=\"cursor:pointer;display: block;position: absolute;text-align: right !important;right: .75em;padding: .5em;\"></i>';
+var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default icon-repeat fas fa-redo-alt text-primary text-center\" style=\"cursor:pointer;display:block;position:absolute;text-align:right !important;right:0.75em;padding:0.5em;\"></i>';
 $(function(){
 	$('#meta_properties input[name="attr_type_standard_html"] ~ .zmi-code').prepend( zmi_code_default_btn);
 });

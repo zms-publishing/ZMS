@@ -9,23 +9,31 @@
 	tal:define="global
 		packageId request/id;
 		metaObjIds python:here.getMetaobjIds();
+		metaObjIds_sorted python:metaObjIds.sort();
 		metaObjs python:[here.getMetaobj(x) for x in metaObjIds]">
 	<legend class="navbar navbar-nav navbar-expand navbar-dark" 
 		tal:content="python:'BigPicture::LogicalView::%s'%packageId">the legend</legend>
-	<ol class="objlist">
+	<ol class="objlist form-control">
 		<li tal:repeat="metaObj python:[x for x in metaObjs if x['package']==packageId]">
-			<a tal:attributes="href python:'#%s'%(metaObj.get('id',''))" tal:content="metaObj/name">the name</a>
+			<tal:block tal:define="
+					oid python:metaObj.get('id','');
+					oname python:metaObj.get('name','');
+					odisplay python:oid!=oname and '({})'.format(oname) or ''">
+				<a tal:attributes="href python:'#%s'%(metaObj.get('id','')); title metaObj/name"
+					tal:content="python:oid">the name</a>
+				<span tal:replace="odisplay"></span>
+			</tal:block>
 		</li>
 	</ol>
 
 	<tal:block tal:repeat="metaObj python:[x for x in metaObjs if x['package']==packageId]">
 		<p class="box_number" tal:content="repeat/metaObj/number">1</p>
 		<div class="box" tal:attributes="id metaObj/id">
-			<div class="objtype" tal:content="metaObj/type">the type</div>
+			<div class="objtype" tal:content="metaObj/type" title="Object Type">the type</div>
 			<div class="objid">
 				<i tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
 				<a title="Edit Model..." target="_blank" tal:attributes="href python:'manage_main?id=%s'%(metaObj['id'])" tal:content="metaObj/id">the id</a>
-				<span class="objname">
+				<span class="objname" title="Display Name">
 					= <tal:block 
 						tal:define="l python:request.get('manage_lang','ger');
 									n python:metaObj.get('name','');
@@ -114,15 +122,20 @@ p.box_number {
 }
 ol.objlist {
 	position: fixed;
-	top: 3.5rem;
-	right: 0;
-	border: 1px solid #354f6778;
-	border-right: none;
-	border-radius: 4px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	top: 59px;
+	bottom: 55px;
+	right: 20px;
 	padding: .5em 3em;
-	background: #fff;
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
+	background: #fcfcfc;
+	box-shadow: inset 0 2px 2px rgba(0,0,0,.075);
+	width: auto;
+	height: calc(100vh - 120px);
+}
+ol.objlist li {
+	font-size: smaller;
+	line-height: 1.75;
 }
 .box div {
 	padding:.15em .5em
@@ -181,15 +194,39 @@ ol.objlist {
 @media print {
 	ol.objlist {
 		position: relative;
-		left: 0;
-		right:auto;
-		border: none;
+		border: unset;
 		padding: 2.5em;
-		background:none;
-		box-shadow: none;
+		background:unset;
+		box-shadow: unset;
+		height:unset;
+		overflow-y: unset;
+		left: unset;
+		right:unset;
+		top:unset;
+		bottom: unset;
 	}
 	.box {
 		page-break-inside: avoid;
+	}
+	.zmi legend {
+		margin: 0 -20px;
+		background:none;
+		width: unset;
+		padding: 5px 35px;
+		height: 42px;
+		color:unset;
+	}
+	p.box_number {
+	width: 2rem;
+		display: block;
+		background:unset;
+		position: absolute;
+		z-index: 100;
+		margin: 0 0 0 .9rem;
+		border-top-left-radius: 4px;
+		color: unset;
+		padding: 0 .5rem 0 0;
+		text-align: right;
 	}
 }
 </style>

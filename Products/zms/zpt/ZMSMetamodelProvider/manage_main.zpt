@@ -639,6 +639,11 @@ $(function(){
 	const meta_id_ignored = ['standard_html','check_constraints'];
 	const meta_type_ignored = ['delimiter','interface','constant'];
 
+	var meta_obj_id = $('table#meta_properties .row_metadata #id').val();
+	var target_id = $('.meta-id input', event.srcElement.parentNode.parentNode.parentNode).val();
+	var comment0 = `<!\-\- $${meta_obj_id}.$${target_id} \-\->`;
+	var comment1 =  `<!\-\- $${meta_obj_id}.$${target_id} \-\->`;
+
 	// Generate Model based on GUI-Form
 	$('#meta_properties tbody:nth-child(2) tr').each( function() {
 		var meta_id = $('.meta-id input', this).val();
@@ -730,11 +735,11 @@ $(function(){
 	tal:attributes="id id;class css_class">$${tal_content}\n</div>`;
 
 	// Write TAL-Code into Textarea
-	$target.val(default_template);
+	$target.val(`$${comment1}\n$${default_template}\n$${comment1}`);
 	$target.animate({height: $target.prop('scrollHeight') + 'px'},600);
 
 }
-// Add Execute Button for TAL-Code-Regeneration
+// Add Execute Button for TAL-Code-Regeneration om a ZPT-Method named standard_html
 var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default icon-repeat fas fa-redo-alt text-primary text-center\" style=\"cursor:pointer;display:block;position:absolute;text-align:right !important;right:0.75em;padding:0.5em;\"></i>';
 $(function(){
 	$('#meta_properties input[name="attr_type_standard_html"] ~ .zmi-code').prepend( zmi_code_default_btn);

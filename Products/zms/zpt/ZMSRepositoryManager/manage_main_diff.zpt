@@ -47,15 +47,15 @@
 		background-color: #d4edda!important;
 		text-decoration:none;
 	}
-	.tab-content[data-colormode='Saving'] ins {
+	.tab-content.update_direction-Saving ins {
 		text-decoration:line-through;
 	}
-	.tab-content[data-colormode='Saving'] ins,
-	.tab-content[data-colormode='Saving'] table .state.alert-success {
+	.tab-content.update_direction-Saving ins,
+	.tab-content.update_direction-Saving table .state.alert-success {
 		background-color:#f8d7da!important;
 	}
-	.tab-content[data-colormode='Saving'] del,
-	.tab-content[data-colormode='Saving'] table .state.alert-danger {
+	.tab-content.update_direction-Saving del,
+	.tab-content.update_direction-Saving table .state.alert-danger {
 		background-color:#d4edda !important;
 		text-decoration:none;
 	}
@@ -85,6 +85,21 @@
 	.diffcoloring .form-control small {
 		white-space:nowrap;
 	}
+	.tab-content.update_direction-Loading.auto_update-True.debug-1 #btn_load_from_repo span:before,
+	.tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo span:before {
+		content: "Auto-";
+	}
+	.tab-content.update_direction-Loading.auto_update-True.debug-1 #btn_load_from_repo span:after,
+	.tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo span:after {
+		content: " active";
+	}
+	.tab-content.update_direction-Loading.auto_update-True.debug-1 #btn_load_from_repo,
+	.tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo {
+		color: #fff !important;
+		background-color: #4CAF50 !important;
+	}
+
+
 
 /*-->*/
 </style>
@@ -209,8 +224,8 @@
 									</span>
 									<small class="file_details" style="display:block">
 										<tal:block tal:condition="l" tal:content="python:'ZODB: %s;; %i Bytes'%(str(l.get('version','')),len(ld))"></tal:block>
-										<i tal:condition="python:here.get_colormode()=='Saving'" class="icon-arrow-right fas fa-arrow-right"></i>
-										<i tal:condition="python:here.get_colormode()=='Loading'" class="icon-arrow-left fas fa-arrow-left"></i>
+										<i tal:condition="python:here.get_update_direction()=='Saving'" class="icon-arrow-right fas fa-arrow-right"></i>
+										<i tal:condition="python:here.get_update_direction()=='Loading'" class="icon-arrow-left fas fa-arrow-left"></i>
 										<tal:block tal:condition="r" tal:content="python:'Repository: %s;; %i Bytes'%(str(r.get('version','')),len(rd))"></tal:block>
 									</small>
 								</td>

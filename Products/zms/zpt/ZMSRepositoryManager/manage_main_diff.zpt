@@ -95,12 +95,26 @@
 	}
 	.tab-content.update_direction-Loading.auto_update-True.debug-1 #btn_load_from_repo,
 	.tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo {
-		color: #fff !important;
-		background-color: #4CAF50 !important;
+		color: #fff;
+		background-color: #4CAF50;
 	}
-
-
-
+	.tab-content.update_direction-Loading.auto_update-True.debug-1 #btn_load_from_repo:hover,
+	.tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo:hover {
+		background-color: #545b62;
+		border-color: #4e555b;
+	}
+	label.zms-component {
+		margin:0 0 auto 0 !important;
+		border-top: 1px solid #dddddd;
+		white-space: nowrap;
+	}
+	@media all and (max-width: 768px) {
+		label.zms-component {
+			margin:1rem 0 !important;
+			border-top: none;
+			font-weight:bold !important;
+		}
+	}
 /*-->*/
 </style>
 
@@ -115,7 +129,7 @@
 
 	<tal:block tal:condition="not:provider_diffs_count">
 		<div class="form-group filelist row" tal:repeat="provider python:here.getRepositoryProviders()">
-			<label class="col-sm-2 text-right" style="margin:0 0 auto 0;">
+			<label class="col-sm-2 control-label zms-component">
 				<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
 			</label>
 			<div class="col-sm-10" tal:define="
@@ -140,7 +154,7 @@
 		diffs python:provider_diff[1]; 
 		ids python:sorted(standard.distinct_list([x[2] for x in diffs])); "
 	><div class="form-group row" tal:condition="ids">
-		<label class="col-sm-2 text-right" style="margin:0 0 auto 0;">
+		<label class="col-sm-2 control-label zms-component">
 			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"
 				tal:content="python:provider.id">the provider_diff
 			</a>

@@ -76,6 +76,33 @@ header.navbar-nav ul.navbar-nav {
 	background: #354f67;
 	z-index: 1;
 }
+/* Show Debug Mode: ZMS.debug=1 */
+header.zmsdebug .navbar-brand .slogan {
+	visibility: collapse;
+}
+header.zmsdebug .navbar-brand .product:after {
+	content: "DEBUG MODE";
+	font-size: .9rem;
+	color: white;
+	font-weight: normal;
+	line-height: 1;
+	display: block;
+	height: 2.65rem;
+	padding: .9rem .4rem;
+	background: #759bbd;
+	position: absolute;
+	top: 0;
+	left: 105px;
+}
+@media (max-width: 767px) {
+	header.zmsdebug .navbar-brand .product:after {
+		content:"\F188";
+		font-family:'Font Awesome 5 Free',fontawesome;
+		font-size: 1.2rem;
+		padding: .78rem .4rem;
+	}
+}
+
 /* Show Config-Menu Accesskeys on Hover */
 header .navbar-nav .dropdown-menu > a.dropdown-item[accesskey]:hover:after {
 	content:"\F11C";
@@ -286,7 +313,7 @@ footer .back-to-top.hide {
 	background-color: #ffffff;
 }
 .zmi #zmi-tab nav#subTab ul {
-	margin: 0 0 -1px -1px;
+	margin: 0 0 -1.35px -1px;
 	overflow: hidden;
 	white-space: nowrap;
 	border: none;

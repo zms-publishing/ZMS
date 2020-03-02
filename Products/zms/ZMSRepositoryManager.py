@@ -442,8 +442,6 @@ class ZMSRepositoryManager(
             # Clear folders.
             dir = list(set([os.path.join(basepath,x[:x.rfind(os.path.sep)]) for x in files if x.endswith('__init__.py')]))
             dir = [x for x in dir if x.split(os.path.sep)[-1] in [y.split(':')[-1] for y in ids]]
-            [print("#####",x,os.listdir(x)) for x in dir if os.path.isdir(x)]
-            [[print("#########",y,os.path.isfile(os.path.join(x,y))) for y in os.listdir(x)] for x in dir if os.path.isdir(x)]
             [[os.remove(z) for z in [os.path.join(x,y) for y in os.listdir(x)] if os.path.isfile(z)] for x in dir if os.path.isdir(x)]
             # Write files.
             for file in files:

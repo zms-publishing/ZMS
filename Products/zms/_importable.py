@@ -20,6 +20,7 @@
 from App.Common import package_home
 from io import StringIO
 import ZPublisher.HTTPRequest
+import collections
 import os
 import sys
 import tempfile
@@ -100,8 +101,8 @@ def importContent(self, file):
   catalog_awareness = self.getConfProperty('ZMS.CatalogAwareness.active', 1)
   self.setConfProperty('ZMS.CatalogAwareness.active', 0)
 
-  self.dTagStack = _globals.MyStack()
-  self.dValueStack = _globals.MyStack()
+  self.dTagStack = collections.deque()
+  self.dValueStack = collections.deque()
   self.oParent = self.getParentNode()
   
   # Parse XML-file.

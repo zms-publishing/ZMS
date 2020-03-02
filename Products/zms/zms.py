@@ -21,6 +21,7 @@ from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
 from sys import *
+import collections
 import copy
 import os
 import shutil
@@ -36,7 +37,6 @@ from . import _builder
 from . import _confmanager
 from . import _enummanager
 from . import _fileutil
-from . import _globals
 from . import _importable
 from . import _mediadb
 from . import _objattrs
@@ -565,8 +565,8 @@ class ZMS(
         self.manage_delObjects(ids=ids)
 
       # initialize stacks.
-      self.dTagStack = _globals.MyStack()
-      self.dValueStack  = _globals.MyStack()
+      self.dTagStack = collections.deque()
+      self.dValueStack  = collections.deque()
 
       # WORKAROUND! The member variable "aq_parent" does not contain the right
       # parent object at this stage of the creation process (it will later on!).

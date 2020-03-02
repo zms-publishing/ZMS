@@ -23,6 +23,7 @@ from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 # TODO from Products.ZCatalog import CatalogPathAwareness
 import ZPublisher.HTTPRequest
+import collections
 import urllib.request, urllib.parse, urllib.error
 import re
 import string
@@ -1589,8 +1590,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     def xmlOnStartElement(self, sTagName, dTagAttrs, oParentNode):
         standard.writeLog( self, "[xmlOnStartElement]: sTagName=%s"%sTagName)
         
-        self.dTagStack    = _globals.MyStack()
-        self.dValueStack  = _globals.MyStack()
+        self.dTagStack    = collections.deque()
+        self.dValueStack  = collections.deque()
         
         # WORKAROUND! The member variable "aq_parent" does not contain the right 
         # parent object at this stage of the creation process (it will later 

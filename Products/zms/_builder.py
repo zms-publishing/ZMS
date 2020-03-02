@@ -170,7 +170,7 @@ class Builder(object):
       """ Builder.OnStartElement """
       if True:
         standard.writeLog( self, "[Builder.OnStartElement(" + str(name) + ")]")
-        skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
+        skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack if x.get('skip')]) > 0
         if not skip and name in self.getMetaobjIds():
           meta_id = name
           if self.oRootTag is None: 
@@ -260,7 +260,7 @@ class Builder(object):
       """ Builder.OnEndElement """
       if True:
         standard.writeLog( self, "[Builder.OnEndElement(" + str(name) + ")]")
-        skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack.get_all() if x.get('skip')]) > 0
+        skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack if x.get('skip')]) > 0
         if not skip and name == self.oCurrNode.meta_id:
             standard.writeLog( self, "[Builder.OnEndElement]: object finished")
             

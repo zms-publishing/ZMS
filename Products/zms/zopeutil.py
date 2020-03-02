@@ -135,7 +135,7 @@ def readData(ob, default=None):
       m = id
     filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
     if os.path.exists(filepath):
-      f = open(filepath, 'r')
+      f = open(filepath, 'rb')
       data = f.read()
       f.close()
   elif ob.meta_type == 'Z SQL Method':

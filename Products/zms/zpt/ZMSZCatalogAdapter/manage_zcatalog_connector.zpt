@@ -25,9 +25,9 @@
 			<div class="input-group">
 				<input type="text" class="form-control" id="qsearch" name="q" tal:attributes="value python:request.get('q','*')">
 				<div class="input-group-append">
-					<a class="btn btn-primary" href="javascript:;" 
-						tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_xml\',{q:$(\'#ZCatalogConnector #qsearch\').val()},{iframe:true,title:\'ZCatalog: Select\'})'%here.absolute_url()"
-						><i class="fas fa-external-link-alt"></i></a>
+					<button class="btn btn-primary" 
+						tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_xml\',{q:$(\'#ZCatalogConnector #qsearch\').val()},{iframe:true,title:\'ZCatalog: Select\'});;return false'%(here.absolute_url())"
+						><i class="fas fa-external-link-alt"></i></button>
 				</div>
 			</div>
 		</div>
@@ -38,9 +38,9 @@
 			<div class="input-group">
 				<input type="text" class="form-control" id="qsuggest" name="q" tal:attributes="value python:request.get('q','*')">
 				<div class="input-group-append">
-					<a class="btn btn-primary" href="javascript:;" 
-						tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/suggest_xml\',{q:$(\'#ZCatalogConnector #qsuggest\').val()},{iframe:true,title:\'ZCatalog: Suggest\'})'%here.absolute_url()"
-						><i class="fas fa-external-link-alt"></i></a>
+					<button class="btn btn-primary"
+						tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/suggest_xml\',{q:$(\'#ZCatalogConnector #qsuggest\').val()},{iframe:true,title:\'ZCatalog: Suggest\'});;return false'%(here.absolute_url())"
+						><i class="fas fa-external-link-alt"></i></button>
 				</div>
 			</div>
 		</div>

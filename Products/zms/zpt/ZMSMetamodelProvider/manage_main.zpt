@@ -407,7 +407,7 @@
 		<tr>
 			<th>
 				<div class="btn-group">
-					<button class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="far fa-check-square"></i></a>
+					<button class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="far fa-check-square"></i></button>
 				</div>
 			</th>
 			<th colspan="2">

@@ -11,7 +11,7 @@ function pluginLanguage() {
  */
 function zmiAutocomplete(s, o) {
 	pluginAutocomplete(s,function() {
-		$(s).autocomplete(o).after('<i class="fas fa-search"></i>').parent().addClass("inner-addon right-addon");
+		$(s).autocomplete(o).before('<div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-search"></i></span></div>');
 	});
 }
 

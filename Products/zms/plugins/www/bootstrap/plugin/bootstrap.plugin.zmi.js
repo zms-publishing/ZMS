@@ -813,7 +813,7 @@ ZMI.prototype.initInputFields = function(container) {
 						+ '<div class="input-group form-multiautocomplete">'
 							+ '<input type="text" id="_'+id+'" class="form-control form-autocomplete" data-ajax-url="'+ajax_url+'" data-obj-id="'+obj_id+'" data-attr-id="'+attr_id+'"/>'
 							+ '<div class="input-group-append">'
-								+ '<a href="javascript:;"><i class="fas fa-plus text-primary"></i></a>'
+								+ '<a href="javascript:;" class="btn btn-secondary"><i class="fas fa-plus text-primary"></i></a>'
 							+ '</div>'
 						+ '</div><!-- .input-group -->');
 					var $inputgroup = $select.prev();
@@ -825,16 +825,16 @@ ZMI.prototype.initInputFields = function(container) {
 								return false;
 							}
 						});
-					$(".input-group-append",$inputgroup).click(function() {
+					$(".input-group-append .btn",$inputgroup).click(function() {
 							// get value
-							var $input = $(this).prev();
+							var $input = $("input",$inputgroup);
 							var v = $input.val();
 							if (v.length>0) {
 								$input.val("");
 								if ($select.children("option[value='"+v+"']").length==0) {
-								  $select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+v+'</option>').removeClass("d-none");
-								  // rebuild multiselect
-								  $ZMI.multiselect(context);
+									$select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+v+'</option>').removeClass("d-none");
+									// rebuild multiselect
+									$ZMI.multiselect(context);
 								}
 							}
 						});

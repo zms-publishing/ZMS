@@ -22,7 +22,7 @@
 # Imports.
 from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-
+import sys
 
 # MD5
 import AccessControl
@@ -203,27 +203,11 @@ def get_size(v):
   @return: Size in bytes
   @rtype: C{int}
   """
-  size = 0
-  if v is not None:
-    if is_str_type(v):
-      size = size + len(v)
-    elif isinstance(v, list):
-      size = sum([get_size(x) for x in v])
-    elif isinstance(v, dict):
-      size = sum([get_size(x)+get_size(v[x]) for x in v])
-    elif isinstance(v, int) or isinstance(v, float):
-      size = size + 4
-    elif hasattr(v, 'get_real_size') and callable(getattr(v, 'get_real_size')):
-      try:
-        size = size + v.get_real_size()
-      except:
-        pass
-    elif hasattr(v, 'get_size') and callable(getattr(v, 'get_size')):
-      try:
-        size = size + v.get_size()
-      except:
-        pass
-  return size
+  if hasattr(v, 'get_real_size') and callable(getattr(v, 'get_real_size')):
+      return v.get_real_size()
+  elif hasattr(v, 'get_size') and callable(getattr(v, 'get_size')):
+      return v.get_size()
+  return sys.getsizeof(v)
 
 
 ################################################################################

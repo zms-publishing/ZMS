@@ -95,72 +95,82 @@
 </form>
 
 <div class="added_css card">
-<legend>CSS</legend>
-<table class="table table-striped table-bordered table-hover mb-0">
-<thead>
-	<tr>
-		<th></th>
-		<th tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</th>
-	</tr>
-</thead>
+	<legend>Additional CSS</legend>
+	<table class="table table-striped table-bordered table-hover mb-0">
+	<thead>
+		<tr>
+			<th></th>
+			<th tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</th>
+		</tr>
+	</thead>
+	<tbody>
+	<tal:block tal:define="css_ids python:['zmi.css.added_zmi','zmi.css.added_web']"
+		><tal:block tal:repeat="css_id css_ids"
+			><tal:block tal:define="
+					href python:here.getConfProperty(css_id,'$ZMS_HOME/$ZMS_THEME/common/css/added_zmi.css').replace('$ZMS_HOME/',here.getHome().id+'/');
+					href python:href.replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0]);
+					global css python:here.getHome()"
+				><tal:block tal:repeat="id python:href.split('/')"
+					><tal:block tal:condition="python:css is not None"
+						><tal:block tal:define="global css python:here.operator_getattr(css,id)"></tal:block
+					></tal:block
+				></tal:block>
+				<tr>
+					<td></td>
+					<td>
+						<tal:block on-error="string:Icon-Error">
+							<tal:block tal:condition="css"><i tal:attributes="class python:css.zmi_icon"></i></tal:block>
+							<tal:block tal:condition="not:css"><i class="fas fa-bug text-danger"></i></tal:block>
+						</tal:block>
+						<a tal:content="href" 
+							tal:define="missing_msg string:javascript:alert('Please, add CSS objects at configured path as a system-property, e.g. zmi.css.added_zmi = $$ZMS_HOME/$$ZMS_THEME/common/css/added_zmi.css ')"
+							tal:attributes="href python:css is None and missing_msg or '?id=%s'%css_id;
+								title python:css is None and 'CSS-Object is missing!' or '%s/manage'%(href);
+								class python:css is None and 'text-danger alert-danger' or ''">href</a>
+						<a tal:condition="css" target="_blank" tal:attributes="href python:'%s/manage'%href"
+							><i class="icon-external-link fas fa-external-link-alt"></i>
+						</a>
 
-<tal:block tal:define="css_ids python:['zmi.css.added_zmi','zmi.css.added_web']">
-<tal:block tal:repeat="css_id css_ids"
-><tal:block tal:define="
-	href python:here.getConfProperty(css_id).replace('$ZMS_HOME/',here.getHome().id+'/');
-	href python:href.replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0]);
-	global css python:here.getHome()"
-><tal:block tal:repeat="id python:href.split('/')"
-	><tal:block tal:condition="python:css is not None"
-		><tal:block tal:define="global css python:here.operator_getattr(css,id)"></tal:block
-	></tal:block
-></tal:block>
+						<div class="d-none" tal:condition="python:request.get('id')==css_id">
+							<div id="editObj" class="inner">
+								<form class="form-horizontal" name="editForm" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
+									<input type="hidden" name="section" value="css" />
+									<input type="hidden" name="id" tal:attributes="value request/id" />
+									<input type="hidden" name="lang" tal:attributes="value request/lang" />
+									<!-- ACE Editor -->
+									<tal:block tal:on-error="string:ace" tal:content="structure python:here.zmi_ace_editor(here,request,name=css_id,ob=css,text=str(css))">ACE Editor</tal:block>
+									<!-- /ACE Editor -->
+									<div class="form-row">
+										<div class="controls save">
+											<button type="submit" name="btn" class="btn btn-primary" 
+												tal:attributes="value python:here.getZMILangStr('BTN_SAVE');
+													disabled python:'Filesystem' in css.meta_type and 'disabled' or None;
+													title python:'Filesystem' in css.meta_type and 'IMPORTANT NOTE: Filesystem files are not editable here!' or None;"
+												tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+											<button type="submit" name="btn" class="btn btn-secondary" 
+												tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" 
+												tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+										</div>
+									</div><!-- .form-row -->
+								</form>
+							</div><!-- #editObj.inner -->
+						</div><!-- .d-none -->
 
-<tr>
-<td></td>
-<td>
-<tal:block tal:condition="css">
-	<i tal:attributes="class python:css.zmi_icon"></i></tal:block>
-<a tal:content="href" 
-	tal:attributes="href python:css is None and '#' or '?id=%s'%css_id;
-		title python:css is None and '#' or '%s/manage'%(href);
-		class python:css is None and 'text-danger' or ''">href</a>
-<a tal:condition="css" target="_blank" 
-	tal:attributes="href python:'%s/manage'%href"><i class="fas fa-external-link-alt"></i></a>
+					</td>
+				</tr>
 
-<div class="d-none" tal:condition="python:request.get('id')==css_id">
-	<div id="editObj" class="inner">
-		<form class="form-horizontal" name="editForm" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="section" value="css" />
-			<input type="hidden" name="id" tal:attributes="value request/id" />
-			<input type="hidden" name="lang" tal:attributes="value request/lang" />
-			<!-- ACE Editor -->
-			<tal:block tal:on-error="string:ace" tal:content="structure python:here.zmi_ace_editor(here,request,name=css_id,ob=css,text=str(css))">ACE Editor</tal:block>
-			<!-- /ACE Editor -->
-			<div class="form-row">
-				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
-				</div>
-			</div><!-- .form-row -->
-		</form>
-	</div><!-- #editObj.inner -->
-</div><!-- .d-none -->
-
-</td>
-</tr>
-
-</tal:block>
-</tal:block>
-</tal:block>
-</table>
+			</tal:block>
+		</tal:block>
+	</tal:block>
+	</tbody>
+	</table>
 </div><!-- .card -->
 
 </div><!-- #zmi-tab -->
 <script>
 
 /**
- * Export xml.
+ * Save active theme.
  */
 function zmiSaveBtnClick(sender) {
 	var $fm = $(sender).closest("form");

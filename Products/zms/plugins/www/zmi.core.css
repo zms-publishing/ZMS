@@ -1117,6 +1117,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi form:not(.form-insert) > .card {
 	border-radius:0;
 }
+.zmi .card legend,
 .zmi form.card legend {
 	color: #888;
 	padding:0.25rem 0.5rem;
@@ -1814,19 +1815,6 @@ li#manage_addProduct .center i.fa-plus-sign:before {
 		transition:height .35s ease;
 	}
 }
-.zmi.design .added_css legend {
-	color: #888;
-	padding: 0.25rem 0.5rem;
-	margin: 0;
-	font-size: inherit;
-	background: #50769626;
-	color: #888;
-	font-weight: bold;
-}
-.zmi.design div.added_css {
-	margin:1.25rem;
-}
-
 .nowrap {
 	white-space: nowrap;
 	overflow:hidden;

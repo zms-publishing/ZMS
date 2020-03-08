@@ -14,11 +14,11 @@
 		<form class="form-horizontal" name="insertObjForm" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="section" value="theme" />
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
-			<div class="form-group meta_id">
+			<div class="form-group row meta_id">
 				<label for="_meta_id" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
 				<div class="col-lg-10"><input type="text" id="newId" name="newId" class="form-control form-control-sm" /></div>
 			</div><!-- .form-group -->
-			<div class="form-group meta_name">
+			<div class="form-group row meta_name">
 				<label for="_meta_name" class="col-lg-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TITLE')">Title</span></label>
 				<div class="col-lg-10"><input type="text" id="newTitle" name="newTitle" class="form-control form-control-sm" /></div>
 			</div><!-- .form-group -->
@@ -53,7 +53,7 @@
 </div><!-- #importObj -->
 
 <form class="form-horizontal card" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="section" value="theme" />
+	<input type="hidden" name="section" value="theme" />
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('CAPTION_THEME')">Theme</legend>
 	<table class="table table-striped table-bordered table-hover mb-0">
@@ -94,7 +94,7 @@
 	</table>
 </form>
 
-<div class="added_css card">
+<div class="form-horizontal added_css card mt-5">
 	<legend>Additional CSS</legend>
 	<table class="table table-striped table-bordered table-hover mb-0">
 	<thead>

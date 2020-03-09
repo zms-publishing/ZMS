@@ -336,7 +336,7 @@ $(function(){
 		.dblclick( function(evt) {
 			var href = null;
 			if ((href==null || typeof href=="undefined") && $('a '+$ZMI.icon_selector("fa-pencil-alt"),this).length > 0) {
-				return $('a '+$ZMI.icon_selector("fa-pencil-alt"),this).parents("a:first").click();
+				return $('a '+$ZMI.icon_selector("fa-pencil-alt"),this).parents("a")[0].click();
 			}
 			else if ((href==null || typeof href=="undefined")) {
 				href = $('a[target=]',this).attr('href');

@@ -11,7 +11,7 @@
 
 <div class="d-none">
 	<div id="insertObj" class="inner">
-		<form class="form-horizontal" name="insertObjForm" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
+		<form id="insertObjForm" name="insertObjForm" class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="section" value="theme" />
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<div class="form-group row meta_id">
@@ -33,12 +33,12 @@
 
 <div class="d-none">
 	<div id="importObj" class="inner">
-		<form class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
+		<form id="importObjForm" name="importObjForm" class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="section" value="theme" />
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group row">
 				<label for="file" class="col-lg-2 control-label">
-					<i class="fas fa-folder far fa-folder"></i>
+					<i class="icon-folder-open-alt fas fa-folder far fa-folder"></i>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
 				<div class="col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
@@ -52,13 +52,14 @@
 	</div><!-- .inner -->
 </div><!-- #importObj -->
 
-<form class="form-horizontal card" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
+<form id="editThemeForm" name="editThemeForm" class="form-horizontal card" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="section" value="theme" />
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('CAPTION_THEME')">Theme</legend>
 	<table class="table table-striped table-bordered table-hover mb-0">
 	<colgroup>
-		<col width="40"/>
+		<col width="56"/>
+		<col width="*"/>
 	</colgroup>
 	<thead>
 	<tr>
@@ -86,7 +87,7 @@
 		<td>
 			<input onchange="zmiSaveBtnClick(this)" type="radio" name="id" tal:attributes="value python:si.id; checked python:here.getConfProperty('ZMS.theme','')==si.id" />
 			<i tal:on-error="string:Icon Error" tal:attributes="class python:si.zmi_icon"></i>
-			<a tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:si.id">id</a>
+			<a target="_blank" tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:si.id">id</a>
 			(<tal:block tal:content="python:(si.meta_type=='Filesystem Directory View' and si.getDirPath() or si.title)">title</tal:block>)
 		</td>
 	</tr>
@@ -97,6 +98,10 @@
 <div class="form-horizontal added_css card mt-5">
 	<legend>Additional CSS</legend>
 	<table class="table table-striped table-bordered table-hover mb-0">
+	<colgroup>
+		<col width="56"/>
+		<col width="*"/>
+	</colgroup>
 	<thead>
 		<tr>
 			<th></th>
@@ -117,23 +122,31 @@
 				></tal:block>
 				<tr>
 					<td></td>
-					<td>
-						<tal:block on-error="string:Icon-Error">
-							<tal:block tal:condition="css"><i tal:attributes="class python:css.zmi_icon"></i></tal:block>
-							<tal:block tal:condition="not:css"><i class="fas fa-bug text-danger"></i></tal:block>
-						</tal:block>
-						<a tal:content="href" 
-							tal:define="missing_msg string:javascript:alert('Please, add CSS objects at configured path as a system-property, e.g. zmi.css.added_zmi = $$ZMS_HOME/$$ZMS_THEME/common/css/added_zmi.css ')"
-							tal:attributes="href python:css is None and missing_msg or '?id=%s'%css_id;
-								title python:css is None and 'CSS-Object is missing!' or '%s/manage'%(href);
-								class python:css is None and 'text-danger alert-danger' or ''">href</a>
-						<a tal:condition="css" target="_blank" tal:attributes="href python:'%s/manage'%href"
+					<td tal:define="missing_msg string:javascript:alert('Please, add CSS objects at configured path as a system-property, e.g. zmi.css.added_zmi = $$ZMS_HOME/$$ZMS_THEME/common/css/added_zmi.css ');
+							cssedit_href python:css is None and missing_msg or '?id=%s'%css_id;
+							cssedit_title python:css is None and 'CSS-Object is missing!' or 'CSS-Code-Editor for %s/manage'%(href);
+							csssedit_class python:css is None and 'text-danger alert-danger' or ''"
+						tal:attributes="class csssedit_class; id python:css_id.split('.')[-1]">
+						<a href="#" tal:attributes="
+								class python:css is None and 'text-danger' or '';
+								title python:css is None and 'CSS-Object is missing!' or 'CSS-Code-Preview';
+								onclick python:css is None and cssedit_href or 'zmiPreviewBtnClick(this)'">
+							<i tal:condition="css" class="icon-caret-right fas fa-caret-right"></i>
+							<i tal:condition="not:css" class="icon-bug fas fa-bug text-danger"></i>
+							<span tal:content="href">href</span>
+						</a>
+						<a tal:attributes="href cssedit_href; title cssedit_title; class csssedit_class">
+							<i class="icon-pencil fas fa-pen"></i>
+						</a>
+						<a tal:condition="css" target="_blank" class="pull-right"
+							title="Link to Zope Object Editor"
+							tal:attributes="href python:'%s/manage'%href"
 							><i class="icon-external-link fas fa-external-link-alt"></i>
 						</a>
-
+						<pre class="alert alert-info preview" style="display:none;"></pre>
 						<div class="d-none" tal:condition="python:request.get('id')==css_id">
 							<div id="editObj" class="inner">
-								<form class="form-horizontal" name="editForm" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
+								<form id="editForm" name="editForm" class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
 									<input type="hidden" name="section" value="css" />
 									<input type="hidden" name="id" tal:attributes="value request/id" />
 									<input type="hidden" name="lang" tal:attributes="value request/lang" />
@@ -210,6 +223,21 @@ function zmiArchiveBtnClick(sender) {
 	$fm.append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_COPY')+'">').submit();
 	return false;
 }
+
+
+/**
+ * Show CSS Preview.
+ */
+function zmiPreviewBtnClick(sender) {
+	var container = $(sender).parent('td')
+	var css_url = $('a span',container).text(); 
+	// alert(css_url);
+	$.get( css_url, function( data ) {
+		$('pre',container).html( data ).toggle();
+		$('i.fa-caret-right',container).toggleClass('fa-rotate-90')
+	});
+}
+
 
 $(function(){
 		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800,remove:true});

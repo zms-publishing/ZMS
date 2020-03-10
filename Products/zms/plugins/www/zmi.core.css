@@ -1951,3 +1951,23 @@ ul.pagination {
 	font-family: 'Font Awesome 5 Free' !important;
 	font-weight: 400 !important;
 }
+
+/* ++++++++++++++++++++++++++ */
+/* ZMS Theme Editor           */
+/* ++++++++++++++++++++++++++ */
+.zmi.design .added_css i.icon-caret-right {
+	margin-right: .5em;
+	display: inline-block;
+}
+.zmi.design .added_css a:focus,
+.zmi.design .added_css a:hover {
+	text-decoration: none !important;
+}
+.zmi.design .added_css a span,
+.zmi.design .added_css a span {
+	display: inline-block;
+	margin-right: .5em;
+}
+.zmi.design .added_css pre.preview {
+	margin: .5em 0 0;
+}

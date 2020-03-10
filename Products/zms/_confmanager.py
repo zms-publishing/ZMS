@@ -403,7 +403,7 @@ class ConfManager(
       for container in self.getResourceFolders():
         for folder in [ getattr( container, 'css', None), container]:
           if folder is not None:
-            for ob in folder.objectValues(['DTML Method', 'DTML Document', 'File', 'Filesystem File']):
+            for ob in folder.objectValues(['DTML Method', 'DTML Document', 'File', 'Filesystem File','Filesystem DTML Method']):
               id = ob.getId()
               path = ob.getPhysicalPath()
               if len([x for x in path if x.endswith('css')]) > 0 and id not in ids:

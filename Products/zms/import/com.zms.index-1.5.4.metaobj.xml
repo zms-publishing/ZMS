@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
+<?zms version='ZMS4-4.0.0.dev.REV
+'?>
 <list>
   <item type="dictionary">
     <dictionary>
@@ -41,7 +43,7 @@
 				<div class="col-sm-2">
 					<button class="btn btn-danger w-100" name="btn"
 						title="REINDEX: Fully rebuilding the ZCatalog index of all (multisite) hierarchy objects."
-						onclick="return openWindow('zmsindex/ZMSIndexZCatalog_func_?func_=reindex'+'&loglevel='+$('#reindex-loglevel').val());">Reindex
+						onclick="return zmiFuncIndex('reindex');">Reindex
 					</button>
 				</div>
 				<div class="col-sm-2" tal:condition="python: context.getDocumentElement().getConfProperty('ExtensionPoint.ZMSObject.get_uid')==None">
@@ -87,7 +89,7 @@
 				</div>
 				<div class="col-sm-2">
 					<button title="RESYNC: Validating and refreshing link objects, inline links and backlink on the selected node (default: full hierarchy)."
-						class="btn btn-danger w-100" name="btn" onclick="return zmiResyncIndex();" tal:condition="initialized">Resync
+						class="btn btn-danger w-100" name="btn" onclick="return zmiFuncIndex('resync');" tal:condition="initialized">Resync
 					</button>
 				</div>
 			</div>
@@ -153,7 +155,7 @@
 
 <script>
 //<!--
-	function zmiResyncIndex() {
+	function zmiFuncIndex(func_) {
 		$(".zmi-sitemap .response").remove();
 		var $inputs = $(".zmi-sitemap input:checked");
 		var i = 0;
@@ -161,7 +163,7 @@
 			if (i < $inputs.length) {
 				var $input = $($inputs[i]);
 				var uid = $input.val();
-				var data = {func_:'resync',url:uid,loglevel:$('#resync-loglevel').val(),dryrun:''+$('#resync-dryrun').prop('checked'),i:i};
+				var data = {func_:func_,url:uid,loglevel:$('#'+func_+'-loglevel').val(),dryrun:''+$('#resync-dryrun').prop('checked'),i:i};
 				var $a = $input.next("a");
 				var viewport_pos = $(window).scrollTop();
 				var btn_close = '<' + 'a class="close" data-dismiss="alert" href="#"' + '>' + '×' + '<' + '/a' + '>';
@@ -208,7 +210,9 @@
 					else {
 						$(".zmi-sitemap ."+$ZMI.icon_clazz("icon-home").replace(/\s/gi,'.')).each(function() {
 								var $a = $(this).parent("a");
-								var uid = $a.attr('data-uid');
+								var root = $("body").attr('data-root');
+								var phys_path = $a.attr('data-page-physical-path');
+								var uid = '{'+'$'+phys_path.substr(phys_path.indexOf(root)+root.length+1).replace('/content','@').replace('content','')+'}';
 								$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked"> ');
 							});
 					}
@@ -462,21 +466,26 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     # Reindex
     ##############################################################################
     elif func_ == 'reindex':
-      rootelmnt = self.getRootElement()
-      home = rootelmnt.getHome()
-      # (Re-)create catalog.)
-      if id in home.objectIds(['ZCatalog']):
-        home.manage_delObjects(ids=[id])
-      catalog = ZCatalog.ZCatalog(id=id, title=self.meta_id, container=home)
-      home._setObject(catalog.id, catalog)
-      catalog = getattr(home,id,None)
-      # Add indices.
-      for index_name in index_names:
-        catalog.manage_addIndex(index_name,'FieldIndex')
-      catalog.manage_addIndex('path','PathIndex')
-      # Add columns
-      for index_name in index_names + ['getPath']:
-        catalog.manage_addColumn(index_name)
+
+      def recreate_catalog():
+        writeInfo(self,'[ZMSIndexZCatalog_func_] ### recreate catalog')
+        rootelmnt = self.getRootElement()
+        home = rootelmnt.getHome()
+        # (Re-)create catalog.)
+        if id in home.objectIds(['ZCatalog']):
+          home.manage_delObjects(ids=[id])
+        catalog = ZCatalog.ZCatalog(id=id, title=self.meta_id, container=home)
+        home._setObject(catalog.id, catalog)
+        catalog = getattr(home,id,None)
+        # Add indices.
+        for index_name in index_names:
+          catalog.manage_addIndex(index_name,'FieldIndex')
+        catalog.manage_addIndex('path','PathIndex')
+        # Add columns
+        for index_name in index_names + ['getPath']:
+          catalog.manage_addColumn(index_name)
+        return catalog
+
       # Visit tree
       def visit(node):
         l = []
@@ -487,17 +496,26 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           node.setConfProperty('ExtensionPoint.ZMSObject.get_uid','%s.get_uid'%meta_id)
           node.setConfProperty('ExtensionPoint.ZReferableItem.getRefObjPath','%s.getRefObjPath'%meta_id)
           node.setConfProperty('ExtensionPoint.ZReferableItem.getLinkObj','%s.getLinkObj'%meta_id)
+          # Clear catalog
+          for i in catalog({'path':'/'.join(node.getPhysicalPath())}):
+            path = i['getPath']
+            writeInfo(self,'[ZMSIndexZCatalog_func_] uncatalog_object %s'%path)
+            catalog.uncatalog_object(path)
         writeInfo(self,'[ZMSIndexZCatalog_func_] catalog_object %s %s'%(node.getPath(),str(node.get_uid())))
         catalog_object(catalog,node)
         for childNode in node.objectValues(meta_types):
           l.extend(visit(childNode))
-        if node.meta_id == 'ZMS':
-          for childNode in node.getPortalClients():
-            l.extend(visit(childNode))
         return l
-      t0 = time.time()
-      index = visit(self.getDocumentElement())
-      writeInfo(self,'[ZMSIndexZCatalog_func_] reindex done: %i in %.2fsecs.'%(len(index),time.time()-t0))
+
+      for url in request.get('url','{$}').split(','):
+        if url == '{$}':
+          catalog = recreate_catalog()
+        writeInfo(self,'[ZMSIndexZCatalog_func_] ### reindex for %s'%url)
+        t0 = time.time()
+        base = self.getLinkObj(url)
+        if base is not None:
+          count = visit(base)
+          writeInfo(self,'[ZMSIndexZCatalog_func_] reindex for %s done: %i in %.2fsecs.'%(url,len(count),time.time()-t0))
 
     ##############################################################################
     # Activate
@@ -1270,11 +1288,13 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
                   <item></item>
                   <item></item>
                   <item></item>
+                  <item></item>
                 </list>
               </item>
               <item key="insert_custom">{$}</item>
               <item key="insert_deny" type="list">
                 <list>
+                  <item></item>
                   <item></item>
                   <item></item>
                   <item></item>
@@ -1286,7 +1306,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.5.3</item>
+          <item key="revision">1.5.4</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>

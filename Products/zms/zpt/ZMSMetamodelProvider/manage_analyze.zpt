@@ -51,7 +51,7 @@
 	<tal:block tal:repeat="key python:attrIds+subObjectIds">
 		<tr tal:define="global metaObjAttr python:here.getMetaobjAttr(meta_id,key)">
 			<td class="meta_id">
-				<tal:block tal:content="metaObjAttr/name">the name</tal:block>
+				<tal:block tal:content="structure metaObjAttr/name">the name</tal:block>
 				(<tal:block tal:content="metaObjAttr/id">the id</tal:block>: <tal:block tal:content="metaObjAttr/type">the type</tal:block>)
 			</td>
 			<td class="usage">

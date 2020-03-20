@@ -654,10 +654,24 @@ def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
         except:
           pass
 
-    # Objects.
+    #-- Blob-Fields
     if datatype in _globals.DT_BLOBS:
       xml += value.toXml(self, base_path, data2hex)
 
+    #-- Text-Fields
+    elif datatype in _globals.DT_TEXTS:
+      request = self.REQUEST
+      request.set('ExtensionPoint.ZReferableItem.getRefObjPath','disabled')
+      value = self.validateInlineLinkObj(value)
+      xml += toXml(self, value)
+      
+    #-- Url-Fields
+    elif datatype == _globals.DT_URL:
+      request = self.REQUEST
+      request.set('ExtensionPoint.ZReferableItem.getRefObjPath','disabled')
+      value = self.validateLinkObj(value)
+      xml += toXml(self, value)
+    
     # XML.
     elif datatype == _globals.DT_XML or \
          datatype == _globals.DT_BOOLEAN or \

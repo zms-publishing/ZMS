@@ -156,7 +156,9 @@ class ZReferableItem(object):
         if path.startswith('@'):
           path = path[1:]
         return '{$' + path + anchor + '}'
-      ref = self.evalExtensionPoint('ExtensionPoint.ZReferableItem.getRefObjPath', default, ob=ob, anchor=anchor)
+      request = self.REQUEST
+      key = request.get('ExtensionPoint.ZReferableItem.getRefObjPath','ExtensionPoint.ZReferableItem.getRefObjPath')
+      ref = self.evalExtensionPoint(key,default,ob=ob,anchor=anchor)
     return ref
 
 

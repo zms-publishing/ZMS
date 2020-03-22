@@ -104,18 +104,18 @@ return '<br />'.join(msg)
 						><tal:block tal:condition="python:request.get('btn','')=='all_urls' or request.get('btn','')=='this_url'"
 							tal:define="url python:here.getHref2IndexHtml({'lang':request.get('lang',here.getPrimaryLanguage()),'preview':''});
 								url python:( ip_or_domain in url ) and url or ( protocol + '://' + ip_or_domain + url.split('/content')[1] )"
-								tal:replace="python:'%s\n%s\n'%(url,url.split('index_')[0])">node url</tal:block
+								tal:replace="python: len(url.split('index_'))>1 and '%s\n%s\n'%(url,url.split('index_')[0]) or '%s\n'%(url)">node url</tal:block
 						><tal:block
 							tal:condition="python:request.get('btn','')=='all_urls'"
 							tal:repeat="ob python:here.filteredTreeNodes(request,here.PAGES,max_len=None)"
 							><tal:block tal:define="url python:ob.getHref2IndexHtml({'lang':request.get('lang',here.getPrimaryLanguage()),'preview':''});
 								url python:( ip_or_domain in url ) and url or ( protocol + '://' + ip_or_domain + url.split('/content')[1] )"
-								tal:replace="python:'%s\n%s\n'%(url,url.split('index_')[0])">node url</tal:block
+								tal:replace="python: len(url.split('index_'))>1 and '%s\n%s\n'%(url,url.split('index_')[0]) or '%s\n'%(url)">node url</tal:block
 						></tal:block
 					></textarea>
 				</div>
 			</div>
-			<div class="form-row" tal:define="reset_preview python:request.set('preview','preview')">
+			<div class="form-group row" tal:define="reset_preview python:request.set('preview','preview')">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-secondary" value="this_url" title="Write this URL into List">Get this URL</button>
 					<button type="submit" name="btn" class="btn btn-warning" value="all_urls" title="Recursively write all dependent URLs into List">Get URLs recursivly</button>

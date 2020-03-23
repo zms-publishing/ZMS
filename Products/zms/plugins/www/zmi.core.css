@@ -1955,19 +1955,25 @@ ul.pagination {
 /* ++++++++++++++++++++++++++ */
 /* ZMS Theme Editor           */
 /* ++++++++++++++++++++++++++ */
-.zmi.design .added_css i.icon-caret-right {
+
+.zmi.design .additionals i.icon-caret-right {
 	margin-right: .5em;
 	display: inline-block;
 }
-.zmi.design .added_css a:focus,
-.zmi.design .added_css a:hover {
+.zmi.design .additionals a:focus,
+.zmi.design .additionals a:hover {
 	text-decoration: none !important;
 }
-.zmi.design .added_css a span,
-.zmi.design .added_css a span {
+.zmi.design .additionals a span,
+.zmi.design .additionals a span {
 	display: inline-block;
 	margin-right: .5em;
 }
-.zmi.design .added_css pre.preview {
+.zmi.design .additionals pre.preview {
 	margin: .5em 0 0;
+}
+.zmi.design.config .additionals th.text-center.text-muted {
+	background: #759bbd !important;
+	color: rgba(255, 255, 255, 0.75) !important;
+	text-transform: lowercase;
 }

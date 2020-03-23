@@ -86,7 +86,7 @@
 		</td>
 		<td>
 			<input onchange="zmiSaveBtnClick(this)" type="radio" name="id" tal:attributes="value python:si.id; checked python:here.getConfProperty('ZMS.theme','')==si.id" />
-			<i tal:on-error="string:Icon Error" tal:attributes="class python:si.zmi_icon"></i>
+			<i tal:on-error="string:Icon Error" tal:attributes="class python:'%s px-1'%(si.zmi_icon)"></i>
 			<a target="_blank" tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:si.id">id</a>
 			(<tal:block tal:content="python:(si.meta_type=='Filesystem Directory View' and si.getDirPath() or si.title)">title</tal:block>)
 		</td>
@@ -95,11 +95,14 @@
 	</table>
 </form>
 
-<div class="form-horizontal added_css card mt-5">
+<!-- #### ############## ### -->
+<!-- #### ADDITIONAL CSS ### -->
+<!-- #### ############## ### -->
+<section class="form-horizontal additionals added_css card mt-5">
 	<legend>Additional CSS</legend>
 	<table class="table table-striped table-bordered table-hover mb-0">
 	<colgroup>
-		<col width="56"/>
+		<col width="64"/>
 		<col width="*"/>
 	</colgroup>
 	<thead>
@@ -109,10 +112,11 @@
 		</tr>
 	</thead>
 	<tbody>
-	<tal:block tal:define="css_ids python:['zmi.css.added_zmi','zmi.css.added_web']"
+		<tal:block tal:define="css_ids python:['ZMS.added.css.zmi','ZMS.added.css.web']"
 		><tal:block tal:repeat="css_id css_ids"
 			><tal:block tal:define="
-					href python:here.getConfProperty(css_id,'$ZMS_HOME/$ZMS_THEME/common/css/added_zmi.css').replace('$ZMS_HOME/',here.getHome().id+'/');
+					fname python:'%s.css'%(css_id.split('.')[-1]);
+					href python:here.getConfProperty(css_id,'%s/$ZMS_THEME/common/added/%s'%(here.getHome().id,fname));
 					href python:href.replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0]);
 					global css python:here.getHome()"
 				><tal:block tal:repeat="id python:href.split('/')"
@@ -121,12 +125,12 @@
 					></tal:block
 				></tal:block>
 				<tr>
-					<td></td>
-					<td tal:define="missing_msg string:javascript:alert('Please, add CSS objects at configured path as a system-property, e.g. zmi.css.added_zmi = $$ZMS_HOME/$$ZMS_THEME/common/css/added_zmi.css ');
+					<th class="text-center text-muted" tal:content="python:css_id.split('.')[-1]"></th>
+					<td tal:define="missing_msg string:javascript:alert('Please, add CSS objects at configured path as a system-property, e.g. ZMS.added.css.zmi = $$ZMS_HOME/$$ZMS_THEME/common/added/zmi.css ');
 							cssedit_href python:css is None and missing_msg or '?id=%s'%css_id;
 							cssedit_title python:css is None and 'CSS-Object is missing!' or 'CSS-Code-Editor for %s/manage'%(href);
-							csssedit_class python:css is None and 'text-danger alert-danger' or ''"
-						tal:attributes="class csssedit_class; id python:css_id.split('.')[-1]">
+							cssedit_class python:css is None and 'text-danger alert-danger' or ''"
+						tal:attributes="class cssedit_class; id python:'%s_css'%(css_id.split('.')[-1])">
 						<a href="#" tal:attributes="
 								class python:css is None and 'text-danger' or '';
 								title python:css is None and 'CSS-Object is missing!' or 'CSS-Code-Preview';
@@ -135,9 +139,14 @@
 							<i tal:condition="not:css" class="icon-bug fas fa-bug text-danger"></i>
 							<span tal:content="href">href</span>
 						</a>
-						<a tal:attributes="href cssedit_href; title cssedit_title; class csssedit_class">
-							<i class="icon-pencil fas fa-pen"></i>
-						</a>
+						<span tal:on-error="nothing"
+								tal:define="fs_located python:'Filesystem' in css.meta_type"
+								tal:omit-tag="not:fs_located" title="Filessystem-Object: Not Editable">
+							<a tal:omit-tag="fs_located"
+								tal:attributes="href cssedit_href; title cssedit_title; class cssedit_class;">
+								<i class="icon-pencil fas fa-pen" tal:attributes="class python:fs_located and 'icon-file-alt fas fa-file-alt' or default"></i>
+							</a>
+						</span>
 						<a tal:condition="css" target="_blank" class="pull-right"
 							title="Link to Zope Object Editor"
 							tal:attributes="href python:'%s/manage'%href"
@@ -147,7 +156,7 @@
 						<div class="d-none" tal:condition="python:request.get('id')==css_id">
 							<div id="editObj" class="inner">
 								<form id="editForm" name="editForm" class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
-									<input type="hidden" name="section" value="css" />
+									<input type="hidden" name="section" value="added" />
 									<input type="hidden" name="id" tal:attributes="value request/id" />
 									<input type="hidden" name="lang" tal:attributes="value request/lang" />
 									<!-- ACE Editor -->
@@ -159,25 +168,133 @@
 												tal:attributes="value python:here.getZMILangStr('BTN_SAVE');
 													disabled python:'Filesystem' in css.meta_type and 'disabled' or None;
 													title python:'Filesystem' in css.meta_type and 'IMPORTANT NOTE: Filesystem files are not editable here!' or None;"
-												tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+												tal:content="python:here.getZMILangStr('BTN_SAVE')"
+												>Save</button>
 											<button type="submit" name="btn" class="btn btn-secondary" 
 												tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" 
-												tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+												tal:content="python:here.getZMILangStr('BTN_CLOSE')"
+												>Close</button>
 										</div>
 									</div><!-- .form-row -->
 								</form>
 							</div><!-- #editObj.inner -->
 						</div><!-- .d-none -->
-
 					</td>
 				</tr>
-
 			</tal:block>
 		</tal:block>
 	</tal:block>
 	</tbody>
 	</table>
-</div><!-- .card -->
+</section><!-- .card -->
+
+<!-- #### ############# ### -->
+<!-- #### ADDITIONAL JS ### -->
+<!-- #### ############# ### -->
+<section class="form-horizontal additionals added_js card mt-5">
+	<legend>Additional JS</legend>
+	<table class="table table-striped table-bordered table-hover mb-0">
+	<colgroup>
+		<col width="64"/>
+		<col width="*"/>
+	</colgroup>
+	<thead>
+		<tr>
+			<th></th>
+			<th tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</th>
+		</tr>
+	</thead>
+	<tbody>
+	<tal:block tal:define="js_ids python:['ZMS.added.js.zmi','ZMS.added.js.web']"
+		><tal:block tal:repeat="js_id js_ids"
+			><tal:block tal:define="
+					fname python:'%s.js'%(js_id.split('.')[-1]);
+					href python:here.getConfProperty(js_id,'%s/$ZMS_THEME/common/added/%s'%(here.getHome().id,fname));
+					href python:href.replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0]);
+					global js python:here.getHome()"
+				><tal:block tal:repeat="id python:href.split('/')"
+					><tal:block tal:condition="python:js is not None"
+						><tal:block tal:define="global js python:here.operator_getattr(js,id)"></tal:block
+					></tal:block
+				></tal:block>
+				<tr>
+					<th class="text-center text-muted" tal:content="python:js_id.split('.')[-1]"></th>
+					<td tal:define="missing_msg string:javascript:alert('Please, add JS objects at configured path as a system-property, e.g. ZMS.added.js.zmi = $$ZMS_HOME/$$ZMS_THEME/common/added/zmi.js ');
+							jsedit_href python:js is None and missing_msg or '?id=%s'%js_id;
+							jsedit_title python:js is None and 'JS-Object is missing!' or 'JS-Code-Editor for %s/manage'%(href);
+							jsedit_class python:js is None and 'text-danger alert-danger' or ''"
+						tal:attributes="class jsedit_class; id python:'%s_js'%(js_id.split('.')[-1])">
+						<a href="#" tal:attributes="
+								class python:js is None and 'text-danger' or '';
+								title python:js is None and 'js-Object is missing!' or 'js-Code-Preview';
+								onclick python:js is None and jsedit_href or 'zmiPreviewBtnClick(this)'">
+							<i tal:condition="js" class="icon-caret-right fas fa-caret-right"></i>
+							<i tal:condition="not:js" class="icon-bug fas fa-bug text-danger"></i>
+							<span tal:content="href">href</span>
+						</a>
+						<span tal:on-error="nothing"
+								tal:define="fs_located python:'Filesystem' in js.meta_type"
+								tal:omit-tag="not:fs_located" title="Filessystem-Object: Not Editable">
+							<a tal:omit-tag="fs_located"
+								tal:attributes="href jsedit_href; title jsedit_title; class jsedit_class;">
+								<i class="icon-pencil fas fa-pen" tal:attributes="class python:fs_located and 'icon-file-alt fas fa-file-alt' or default"></i>
+							</a>
+						</span>
+						<a tal:condition="js" target="_blank" class="pull-right"
+							title="Link to Zope Object Editor"
+							tal:attributes="href python:'%s/manage'%href"
+							><i class="icon-external-link fas fa-external-link-alt"></i>
+						</a>
+						<pre class="alert alert-info preview" style="display:none;"></pre>
+						<div class="d-none" tal:condition="python:request.get('id')==js_id">
+							<div id="editObj" class="inner">
+								<form id="editForm" name="editForm" class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
+									<input type="hidden" name="section" value="added" />
+									<input type="hidden" name="id" tal:attributes="value request/id" />
+									<input type="hidden" name="lang" tal:attributes="value request/lang" />
+									<!-- ACE Editor -->
+									<tal:block tal:on-error="string:ace" tal:content="structure python:here.zmi_ace_editor(here,request,name=js_id,ob=js,text=str(js))">ACE Editor</tal:block>
+									<!-- /ACE Editor -->
+									<div class="form-row">
+										<div class="controls save">
+											<button type="submit" name="btn" class="btn btn-primary"
+												tal:attributes="value python:here.getZMILangStr('BTN_SAVE');
+													disabled python:'Filesystem' in js.meta_type and 'disabled' or None;
+													title python:'Filesystem' in js.meta_type and 'IMPORTANT NOTE: Filesystem files are not editable here!' or None;"
+												tal:content="python:here.getZMILangStr('BTN_SAVE')"
+												>Save</button>
+											<button type="submit" name="btn" class="btn btn-secondary"
+												tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')"
+												tal:content="python:here.getZMILangStr('BTN_CLOSE')"
+												>Close</button>
+										</div>
+									</div><!-- .form-row -->
+								</form>
+							</div><!-- #editObj.inner -->
+						</div><!-- .d-none -->
+					</td>
+				</tr>
+			</tal:block>
+		</tal:block>
+	</tal:block>
+	</tbody>
+	</table>
+</section><!-- .card -->
+
+<section class="form-horizontal card p-3" style="font-size:90%">
+	<span style="opacity:.5;">
+		<i class="icon-question-sign fas fa-question-circle"></i>
+		The additional files allow a quick customisation of the selected theme and its ZMI representation.
+		The files are coventionally located in the common-folder, respectively common/css and common/js or 
+		the locations can be configured by the following keys: 
+	</span>
+	<code class="alert-info">
+		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.css.zmi#Custom'%(context.getHome().absolute_url())">ZMS.added.css.zmi</a>,
+		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.css.added.web#Custom'%(context.getHome().absolute_url())">ZMS.added.css.web</a>,
+		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.js.zmi#Custom'%(context.getHome().absolute_url())">ZMS.added.js.zmi</a>,
+		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.js.web#Custom'%(context.getHome().absolute_url())">ZMS.added.js.web</a>
+	</code>
+</section>
 
 </div><!-- #zmi-tab -->
 <script>
@@ -224,20 +341,18 @@ function zmiArchiveBtnClick(sender) {
 	return false;
 }
 
-
 /**
- * Show CSS Preview.
+ * Show Additional CSS/JS Preview.
  */
 function zmiPreviewBtnClick(sender) {
 	var container = $(sender).parent('td')
-	var css_url = $('a span',container).text(); 
-	// alert(css_url);
-	$.get( css_url, function( data ) {
+	var additional_url = $('a span',container).text(); 
+	// alert(additional_url);
+	$.get( additional_url, function( data ) {
 		$('pre',container).html( data ).toggle();
 		$('i.fa-caret-right',container).toggleClass('fa-rotate-90')
 	});
 }
-
 
 $(function(){
 		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800,remove:true});

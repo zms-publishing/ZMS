@@ -870,9 +870,10 @@ class ConfManager(
       
       # Save css.
       # -----
-      if btn == self.getZMILangStr('BTN_SAVE') and section == 'css':
-        css_id = REQUEST.get('id', '')
-        href = self.getConfProperty(css_id).replace('$ZMS_HOME/',self.getHome().id+'/')
+      if btn == self.getZMILangStr('BTN_SAVE') and section == 'added':
+        added_id = REQUEST.get('id', '')
+        fname= '%s.%s'%(added_id.split('.')[-1],added_id.split('.')[-2])
+        href = self.getConfProperty(added_id,'%s/$ZMS_THEME/common/added/%s'%(self.getHome().id,fname))
         href = href.replace('$ZMS_THEME/',[self.getConfProperty('ZMS.theme','')+'/',''][len(self.getConfProperty('ZMS.theme',''))==0])
         # Traverse to get object.
         ob = self.getHome()
@@ -882,7 +883,7 @@ class ConfManager(
             break
         # Set object
         if ob is not None:
-          ob.manage_edit(title=ob.title, content_type=ob.content_type, filedata=REQUEST[css_id])
+          ob.manage_edit(title=ob.title, content_type=ob.content_type, filedata=REQUEST[added_id])
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Save theme.

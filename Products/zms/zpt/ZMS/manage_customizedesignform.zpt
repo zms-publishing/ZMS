@@ -290,7 +290,7 @@
 	</span>
 	<code class="alert-info">
 		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.css.zmi#Custom'%(context.getHome().absolute_url())">ZMS.added.css.zmi</a>,
-		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.css.added.web#Custom'%(context.getHome().absolute_url())">ZMS.added.css.web</a>,
+		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.css.web#Custom'%(context.getHome().absolute_url())">ZMS.added.css.web</a>,
 		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.js.zmi#Custom'%(context.getHome().absolute_url())">ZMS.added.js.zmi</a>,
 		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.js.web#Custom'%(context.getHome().absolute_url())">ZMS.added.js.web</a>
 	</code>

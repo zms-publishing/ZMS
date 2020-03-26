@@ -19,6 +19,7 @@
 
 # Imports.
 from io import BytesIO
+from DateTime import DateTime
 from distutils.version import LooseVersion
 import ZPublisher.HTTPRequest
 import collections
@@ -69,6 +70,8 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
         absolute_url__roles__=None
         def absolute_url(self):
           return '#'
+        def bobobase_modification_time(self):
+          return DateTime()
       artefact = MissingArtefactProxy(attr['id'], attr['type'])
     if artefact is not None:
       attr['ob'] = artefact

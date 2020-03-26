@@ -118,6 +118,7 @@
 					fname python:'%s.css'%(css_id.split('.')[-1]);
 					href python:here.getConfProperty(css_id,'%s/$ZMS_THEME/common/added/%s'%(here.getHome().id,fname));
 					href python:href.replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0]);
+					href python:href.replace('$ZMS_HOME/',here.getHome().id + '/'); 
 					global css python:here.getHome()"
 				><tal:block tal:repeat="id python:href.split('/')"
 					><tal:block tal:condition="python:css is not None"
@@ -211,6 +212,7 @@
 					fname python:'%s.js'%(js_id.split('.')[-1]);
 					href python:here.getConfProperty(js_id,'%s/$ZMS_THEME/common/added/%s'%(here.getHome().id,fname));
 					href python:href.replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0]);
+					href python:href.replace('$ZMS_HOME/',here.getHome().id + '/'); 
 					global js python:here.getHome()"
 				><tal:block tal:repeat="id python:href.split('/')"
 					><tal:block tal:condition="python:js is not None"

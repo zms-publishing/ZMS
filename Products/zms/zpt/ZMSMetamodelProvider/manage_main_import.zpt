@@ -59,7 +59,6 @@
 				f python:getattr(here.temp_folder,request.get('temp_import_file_id'));
 				xmlfile python:standard.getTempFile(here,request.get('temp_import_file_id'));
 				xml python:standard.parseXmlString(xmlfile);
-				xml python:[[xml],xml][isinstance(xml,list)];
 				packages python:[];
 				importObjs python:[]">
 			<tal:block tal:repeat="item xml">

@@ -1884,7 +1884,7 @@ def dt_exec(context, v, o={}):
   @return:
   @rtype: C{any}
   """
-  if _globals.is_str_type(v):
+  if type(v) is str:
     if v.startswith('##'):
       v = dt_py(context, v, o)
     elif v.find('<tal:') >= 0:
@@ -1921,6 +1921,8 @@ def dt_html(context, value, REQUEST):
   value = re.sub( '</dtml-var>', '', value)
   dtml = DocumentTemplate.DT_HTML.HTML(value)
   value = dtml( context, REQUEST)
+  if type(value) is bytes:
+    value = value.decode('utf-8','ignore')
   return value
 
 def dt_py( context, script, kw={}):

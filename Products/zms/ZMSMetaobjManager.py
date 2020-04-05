@@ -19,7 +19,6 @@
 
 # Imports.
 from io import BytesIO
-from DateTime import DateTime
 from distutils.version import LooseVersion
 import ZPublisher.HTTPRequest
 import collections
@@ -70,8 +69,6 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
         absolute_url__roles__=None
         def absolute_url(self):
           return '#'
-        def bobobase_modification_time(self):
-          return DateTime()
       artefact = MissingArtefactProxy(attr['id'], attr['type'])
     if artefact is not None:
       attr['ob'] = artefact
@@ -396,13 +393,11 @@ class ZMSMetaobjManager(object):
             v = obj.attr(tmpltId)
             break
           elif tmpltId not in ["standard_html"]:
-            tmpltDtml = getattr(obj, tmpltId, None)
-            if tmpltDtml is not None:
-              v = tmpltDtml(obj, obj.REQUEST)
-              try:
-                v = v.encode('utf-8')
-              except UnicodeDecodeError:
-                v = str(v)
+            tmplt = getattr(obj, tmpltId, None)
+            if tmplt is not None:
+              v = tmplt(obj, obj.REQUEST)
+              if type(v) is bytes:
+                v = v.decode('utf-8','ignore')
               break
       return v
 

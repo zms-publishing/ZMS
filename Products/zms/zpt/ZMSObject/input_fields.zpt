@@ -216,7 +216,7 @@
 										<div class="zmi-action btn-group dropleft">
 											<span class="d-none zmi-sort-id" tal:content="python:9990">the sort-id</span>
 											<button class="btn btn-secondary split-left"></button>
-											<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown"><i class="fas fa-plus-sign"></i></button>
+											<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown"><i class="fas fa-plus-square"></i></button>
 										</div><!-- .btn-group -->
 									</div><!-- .col-sm-10 -->
 								</li><!-- .zmi-item -->

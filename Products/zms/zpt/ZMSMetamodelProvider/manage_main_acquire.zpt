@@ -22,8 +22,7 @@
 				))"></tal:block>
 	</tal:block>
 </tal:block>
-<tal:block tal:define="global dummy0 python:acquireObjs.sort()"></tal:block>
-	<div class="container">
+<div class="container" tal:define="global dummy0 python:acquireObjs.sort()">
 	<tal:block tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</tal:block>
 	<form class="form-horizontal col-xs-10" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="lang" tal:attributes="value request/lang">
@@ -31,11 +30,10 @@
 
 		<tal:block tal:condition="python:request.get('section')=='acquire'">
 			<input type="hidden" name="immediately:int" value="1" />
-			<h1 style="margin-left: -0.5em;">Content Object Aquisition</h1>
-			<div class="form-group row">
-				<tal:block tal:define="global temp_ids python:request.get('temp_ids').split(',')">
-				<tal:block tal:repeat="acquireObj acquireObjs">
-					<label class="checkbox" 
+			<legend>Content Object Aquisition</legend>
+			<tal:block tal:define="global temp_ids python:request.get('temp_ids').split(',')"
+				><tal:block tal:repeat="acquireObj acquireObjs"
+					><div class="form-group row"
 						tal:condition="python:acquireObj[1] in temp_ids" 
 						tal:define="global masterMetaObj python:master.getMetaobj(acquireObj[1]); metaObj python:here.getMetaobj(acquireObj[1])">
 						<input type="checkbox" name="aq_ids:list" tal:attributes="value masterMetaObj/id; title masterMetaObj/id" checked="checked" />
@@ -48,13 +46,13 @@
 						</tal:block>
 						<tal:block tal:content="python:masterMetaObj.get('revision','0.0.0')">the revision</tal:block>
 						(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%masterMetaObj['type'].upper())">the type</tal:block>)
-					</label><!-- label -->
+					</div>
 				</tal:block>
 			</tal:block>
-			<br />
-			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
-		</div>
-</tal:block>
+			<div class="controls">
+				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
+			</div>
+		</tal:block>
 
 <tal:block tal:condition="python:request.get('section')!='acquire'">
 		<div class="form-group row">

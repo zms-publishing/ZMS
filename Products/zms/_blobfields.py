@@ -565,6 +565,9 @@ class MyBlob(object):
             standard.writeError(parent,'[__call__]: can\'t %s'%name)
         # Raise unauthorized error.
         else:
+          RESPONSE.setHeader('Expires', '-1')
+          RESPONSE.setHeader('Cache-Control', 'no-cache')
+          RESPONSE.setHeader('Pragma', 'no-cache')
           raise zExceptions.Unauthorized
         
         # Set custom response-headers:

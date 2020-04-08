@@ -1453,6 +1453,39 @@ body.browse_iframe .toggle {
 	display: none;
 }
 
+/* Modal GUI: Content Modell Import/Acquisition */
+.zmi.metas_import .form-group {
+	margin-bottom: 0.3rem;
+	margin-left: 0;
+}
+.zmi.metas_import .form-group.row i {
+	min-width: 1.5rem;
+	font-size:1rem
+}
+.zmi.metas_import input[type="checkbox"] {
+	margin: 0 0.8rem;
+}
+.zmi.metas_import  .btn {
+	margin-bottom:1rem;
+}
+.zmi.metas_import .btn-group legend {
+	display: inline-block !important;
+	width: auto;
+	padding-left: .3rem;
+	margin: 0;
+	font-size: 1.25rem;
+	line-height: inherit;
+	color: #333;
+	border: 0;
+	border-bottom: none;
+}
+.zmi.metas_acquire.loading input[type="checkbox"] {
+	margin: 0 0.8rem;
+}
+.zmi.metas_acquire.loading .form-group.row i {
+	min-width: 1.5rem;
+	font-size: 1rem;
+}
 
 .zmi table.table-access-control {
 	background: #efefef;

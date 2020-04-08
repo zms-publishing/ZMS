@@ -16,35 +16,7 @@
 		}
 	});
 </script>
-<style>
-	body.import .form-group {
-		margin-bottom: 0.3rem;
-		margin-left: 0;
-	}
-	body.import .form-group.row i {
-		min-width: 1.5rem;
-		font-size:1rem
-	}
-	body.import input[type="checkbox"] {
-		margin: 0 0.8rem;
-	}
-	body.import .btn {
-		margin-bottom:1rem;
-	}
-	body.import .btn-group legend {
-		display: inline-block !important;
-		width: auto;
-		padding-left: .3rem;
-		margin: 0;
-		font-size: 1.25rem;
-		line-height: inherit;
-		color: #333;
-		border: 0;
-		border-bottom: none;
-	}
-</style>
-
-<body tal:attributes="class python:here.zmi_body_class(id='metas import')">
+<body tal:attributes="class python:here.zmi_body_class(id='metas_import')">
 <tal:block tal:define="global
 		metaObjIds python:here.getMetaobjIds();
 		metaObjs python:[here.getMetaobj(x) for x in metaObjIds];

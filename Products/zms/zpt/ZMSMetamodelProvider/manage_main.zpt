@@ -434,12 +434,13 @@
 				</td>
 				<td colspan="2">
 					<tal:block tal:condition="python:metaObjPackage"
-						><i tal:condition="python:metaObj.get('acquired',0)" class="fas fa-share" title="042acquired"></i>
+						><i tal:condition="python:metaObj.get('acquired',None)" class="fas fa-share" title="acquired"></i>
 						<a tal:condition="python:metaObjPackage" 
 							tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank"
 							><i class="fas fa-briefcase"></i>
 						</a>&nbsp;
-						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])"
+						<a tal:omit-tag="python:metaObj.get('acquired',None)"
+							tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])"
 							><strong tal:on-error="string:ERROR metaObjPackage"
 							tal:content="metaObjPackage">the id</strong></a>
 					</tal:block>
@@ -470,14 +471,21 @@
 				<td></td>
 				<td>
 					<span tal:attributes="id python:metaObj['id'];title python:metaObj['id'];class python:' '.join([[''],['enabled']][metaObj.get('enabled',0) in [1,True]])">
-						<i tal:condition="python:metaObj.get('acquired',None)" class="fas fa-share icon-share" title="acquired"></i>
+						<a tal:condition="python:metaObj.get('acquired',None)"
+							target="_blank"
+							tal:attributes="
+								href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getRootElement().absolute_url(),request['lang'],metaObj['id']);
+								title python:'acquired from: %s (%s)'%(context.getRootElement().getHome().id, context.getRootElement().attr('titlealt'))">
+							<i class="fas fa-share icon-share"></i>
+						</a>
 						<a href="javascript:;" onclick="zmiEnabledBtnClick(this)">
 							<i tal:attributes="class python:' '.join(['enabled-toggle']+[['far fa-square icon-square'],['far fa-check-square icon-check-square']][metaObj.get('enabled',0) in [1,True]])"></i>
 						</a>
 						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank">
 							<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
 						</a>
-						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
+						<a tal:omit-tag="python:metaObj.get('acquired',None)"
+							tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
 							<span tal:on-error="string:ERROR name" tal:replace="metaObj/name">the name</span>
 						</a>
 						<tal:block tal:content="revision">the revision</tal:block>

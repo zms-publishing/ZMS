@@ -783,6 +783,9 @@ li.zmi-item span.zmi-ids {
 .zmi table#meta_overview.table tr.zmi-selectable :first-child  {
 	width:2em;
 }
+.zmi table#meta_overview.table td a {
+	text-decoration: none !important;
+}
 .zmi table.table tr.zmi-selectable :first-child {
 	text-align:center;
 	width:3em;

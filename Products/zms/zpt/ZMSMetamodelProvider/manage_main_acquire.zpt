@@ -3,7 +3,7 @@
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='metas_acquire')">
 
-<tal:block tal:define="global
+<tal:block tal:define="
 		metaObjIds python:here.getMetaobjIds();
 		metaObjs python:[here.getMetaobj(x) for x in metaObjIds];
 		metaObjPackages python:here.sort_list(standard.distinct_list([x.get('package') for x in metaObjs]));
@@ -44,9 +44,9 @@
 						<i tal:condition="python:masterMetaObj['type']!='ZMSPackage'" tal:attributes="class python:master.zmi_icon(masterMetaObj['id'])"></i>
 						<tal:block tal:content="masterMetaObj/name">the name</tal:block>
 						<tal:block tal:condition="python:masterMetaObj['id'] in metaObjIds">
-							<tal:block tal:content="metaObj/revision">the revision</tal:block> &rarr;
+							<tal:block tal:content="python:metaObj.get('revision','0.0.0')">the revision</tal:block> &rarr;
 						</tal:block>
-						<tal:block tal:content="masterMetaObj/revision">the revision</tal:block>
+						<tal:block tal:content="python:masterMetaObj.get('revision','0.0.0')">the revision</tal:block>
 						(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%masterMetaObj['type'].upper())">the type</tal:block>)
 					</label><!-- label -->
 				</tal:block>

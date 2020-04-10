@@ -169,10 +169,10 @@ header .navbar-nav .dropdown-menu > a.dropdown-item[accesskey]:hover:before {
 .zmi header.navbar ul.navbar-nav li a i {
 	font-size:1rem;
 }
-.zmi header.navbar ul.navbar-nav li.zmi-authenticated_user {
+.zmi header.navbar ul.navbar-nav li#zmi-authenticated_user {
 	cursor:default;
 }
-.zmi header.navbar ul.navbar-nav li.zmi-authenticated_user:before {
+.zmi header.navbar ul.navbar-nav li#zmi-authenticated_user:before {
 	content: "\f007";
 	font-family:Font Awesome\ 5 Free;
 	font-weight:bold;
@@ -180,7 +180,16 @@ header .navbar-nav .dropdown-menu > a.dropdown-item[accesskey]:hover:before {
 	color:silver;
 	font-size:1rem;
 }
-
+@media (max-width: 768px) {
+	.zmi header.navbar ul.navbar-nav li#zmi-authenticated_user {
+		display:none;
+	}
+}
+@media (max-width: 546px) {
+	.zmi header.navbar ul.navbar-nav li#toggle_menu {
+		display:none;
+	}
+}
 .zmi:not(.manage-menu) footer {
 	margin: -32px 0 0 0;
 	height: 32px;
@@ -210,12 +219,6 @@ footer .back-to-top {
 footer .back-to-top.hide {
 	visibility: hidden;
 	opacity: 0;
-}
-
-@media (max-width: 768px) {
-	.zmi header.navbar ul.navbar-nav li.zmi-authenticated_user span.authenticated_user {
-		display:none;
-	}
 }
 
 /* BO HORIZONTAL SCROLLING MAIN NAVIGATION */
@@ -368,6 +371,12 @@ footer .back-to-top.hide {
 #zmi-tab .card .card-header.btn-collapse .zmi-changes,
 #zmiIframeAddDialog .card .card-header.btn-collapse .zmi-changes {
 	opacity:0.5;
+}
+@media (max-width: 546px) {
+	#zmi-tab .card .card-header.btn-collapse .zmi-changes,
+	#zmiIframeAddDialog .card .card-header.btn-collapse .zmi-changes {
+		display:none;
+	}
 }
 #zmi-tab .card .card-header.btn-collapse > div > a > i,
 #zmiIframeAddDialog .card .card-header.btn-collapse > div > a > i {
@@ -524,7 +533,10 @@ body.zmi ul.zmi-container > .zmi-item > .right {
 @media (max-width: 767px) {
 	body.zmi header.navbar {
 		max-width: 100%;
-		overflow:hidden;
+		/* overflow:hidden; # hides dropdown menu as an unpleasant side effect */
+	}
+	.zmi header.navbar ul.navbar-nav li span.language_label {
+		display: none;
 	}
 	body.zmi header.navbar li.view_preview i {
 		display:inline-block !important;

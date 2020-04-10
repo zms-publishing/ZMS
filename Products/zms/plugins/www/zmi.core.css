@@ -780,11 +780,24 @@ li.zmi-item span.zmi-ids {
 .zmi table.table .input-group {
 	flex-wrap: nowrap;
 }
-.zmi table#meta_overview.table tr.zmi-selectable :first-child  {
-	width:2em;
+.zmi table#meta_overview.table tr > :first-child,
+.zmi table#meta_overview.table td.meta-space  {
+	text-align:center;
+	width:3em;
 }
-.zmi table#meta_overview.table td a {
-	text-decoration: none !important;
+.zmi table#meta_overview.table td.meta-id {
+	width: auto !important;
+}
+.zmi.metas table#meta_overview td.meta-id i {
+	margin:0 .5em;
+}
+.zmi.metas table#meta_overview td.meta-id a:hover i {
+	text-decoration: none;
+}
+@media(max-width:767px) {
+	.zmi.metas table#meta_overview span.meta-id-info {
+		display:none;
+	}
 }
 .zmi table.table tr.zmi-selectable :first-child {
 	text-align:center;

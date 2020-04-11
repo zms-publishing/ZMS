@@ -134,8 +134,8 @@
 			</label>
 			<div class="col-sm-10" tal:define="
 					local_files python:here.localFiles(provider).values();
-					ids python:sorted(standard.distinct_list([x['id'] for x in local_files]));
-					">
+					ids python:standard.distinct_list([x['id'] for x in local_files]);
+					ids_sorting python:ids.sort();">
 				<div tal:repeat="id ids">
 					<i class="fas fa-check-circle text-success"></i>
 					<a tal:attributes="href python:'%s/manage_%s?lang=%s&id=%s'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id)" target="_blank"
@@ -148,11 +148,12 @@
 
 	<tal:block tal:condition="provider_diffs_count"
 	><tal:block tal:repeat="provider_diff provider_diffs"
-	><tal:block tal:define="
-		zmscontext python:here.getSelf();
-		provider python:provider_diff[0]; 
-		diffs python:provider_diff[1]; 
-		ids python:sorted(standard.distinct_list([x[2] for x in diffs])); "
+	><tal:block
+		tal:define="zmscontext python:here.getSelf();
+			provider python:provider_diff[0];
+			diffs python:provider_diff[1];
+			ids python:standard.distinct_list([x[2] for x in diffs]);
+			ids_sorting python:ids.sort();"
 	><div class="form-group row" tal:condition="ids">
 		<label class="col-sm-2 control-label zms-component">
 			<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"
@@ -175,8 +176,11 @@
 						</a>
 					</td>
 					<td>
-					<div style="white-space: nowrap;" tal:repeat="diff python:[x for x in diffs if x[2]==id]">
-						<tal:block tal:define="
+					<div style="white-space: nowrap;" 
+						tal:repeat="diff python:[x for x in diffs if x[2]==id]">
+						<tal:block 
+							tal:on-error="structure python:'<code><i class=\042fa fa-exclamation-triangle\042></i> ERROR: %s</code>'%(diff[0])"
+							tal:define="
 								filename python:diff[0];
 								mt python:diff[1];
 								l python:diff[3];
@@ -185,19 +189,19 @@
 								rd python:[r.get('data'),''][r.get('data') is None];
 								is_new python:len(ld)==0 and len(rd)>0;
 								is_modified python:len(ld)>0 and len(rd)>0;
-								is_incoming python:is_modified and sum((str(i).isdigit() and int(i)) for i in l.get('version',[0])) < sum((str(i).isdigit() and int(i)) for i in r.get('version',[0]));
-								is_outgoing python:is_modified and sum((str(i).isdigit() and int(i)) for i in l.get('version',[0])) > sum((str(i).isdigit() and int(i)) for i in r.get('version',[0]));
+								is_incoming python:is_modified and l.get('version',0)<r.get('version',0);
+								is_outgoing python:is_modified and l.get('version',0)>r.get('version',0);
 								is_removed python:len(ld)>0 and len(rd)==0;">
-							<i tal:condition="python:l and l.get('data') is None" class="fas fa-warning-sign text-danger" title="not found!"></i>
+							<i tal:condition="python:l and l.get('data') is None" class="fa fa-exclamation-triangle text-danger" title="not found!"></i>
 							<tal:block tal:condition="not:python:l and l.get('data') is None">
 								<span tal:attributes="class python:' '.join(['state']
 									+[[],['alert-success']][is_new]
 									+[[],['alert-warning']][is_modified]
 									+[[],['alert-danger']][is_removed]
-									);title python: is_incoming and 'INCOMING - ZODB: %s;; Repository: %s'%(
+									);title python: is_incoming and 'INCOMING - ZODB: %s vs. Repository: %s'%(
 										str(l.get('version','')),
 										str(r.get('version',''))
-										) or ( is_outgoing and 'OUTGOING - ZODB: %s;; Repository: %s'%(
+										) or ( is_outgoing and 'OUTGOING - ZODB: %s vs. Repository: %s'%(
 										str(l.get('version','')),
 										str(r.get('version',''))
 										) or '')">&nbsp;</span>
@@ -237,10 +241,10 @@
 										<em class="text-muted" tal:content="python:'(%s)'%(mt)"></em>
 									</span>
 									<small class="file_details" style="display:block">
-										<tal:block tal:condition="l" tal:content="python:'ZODB: %s;; %i Bytes'%(str(l.get('version','')),len(ld))"></tal:block>
+										<tal:block tal:condition="l" tal:content="python:'ZODB: %s - %i Bytes'%(str(l.get('version','')),len(ld))"></tal:block>
 										<i tal:condition="python:here.get_update_direction()=='Saving'" class="icon-arrow-right fas fa-arrow-right"></i>
 										<i tal:condition="python:here.get_update_direction()=='Loading'" class="icon-arrow-left fas fa-arrow-left"></i>
-										<tal:block tal:condition="r" tal:content="python:'Repository: %s;; %i Bytes'%(str(r.get('version','')),len(rd))"></tal:block>
+										<tal:block tal:condition="r" tal:content="python:'Repository: %s - %i Bytes'%(str(r.get('version','')),len(rd))"></tal:block>
 									</small>
 								</td>
 							</tr>

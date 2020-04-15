@@ -734,7 +734,7 @@ class AccessManager(AccessableContainer):
             d['plugin'] = plugin
             editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
             container = userFldr.aq_parent
-            v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),plugin.zmi_icon)
+            v = '<a href="%s" title="%s" target="_blank"><i class="%s"></i></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),plugin.zmi_icon)
             t = 'html'
           else:
             v = user[extra]

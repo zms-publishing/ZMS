@@ -602,17 +602,19 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             brains = []
             if ids:
               for brain in query('id',ids[-1]):
-                if ids[-1] == 'content':
-                  if brain['getPath'].endswith(data_id):
-                    writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %s->%s'%(data_id,brain['getPath']))
-                    brains.append((1,brain))
+                if brain['getPath'].endswith(data_id):
+                  writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain.100 %s->%s'%(data_id,brain['getPath']))
+                  brains.append((100,brain))
+                elif ids[-1] == 'content' and len(ids)>=2 and brain['getPath'].endswith('/'.join(ids[-2:])):
+                  writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain.1 %s->%s'%(data_id,brain['getPath']))
+                  brains.append((1,brain))
                 else:
                   score = len([1 for id in ids if id in brain['getPath'].split('/')])
                   writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %i->%s'%(score,brain['getPath']))
                   brains.append((score,brain))
             if brains:
               sorted(brains,key=lambda x:x[0])
-              rtn = brains[-1][1]
+              rtn = brains[0][1]
           writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %s->%s'%(data_id,str(rtn is not None)))
           return rtn
 
@@ -1306,7 +1308,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id">ZMSIndexZCatalog</item>
           <item key="name">ZMSIndexZCatalog</item>
           <item key="package">com.zms.index</item>
-          <item key="revision">1.5.4</item>
+          <item key="revision">1.5.5</item>
           <item key="type">ZMSResource</item>
         </dictionary>
       </item>

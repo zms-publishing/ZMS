@@ -613,8 +613,8 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                   writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %i->%s'%(score,brain['getPath']))
                   brains.append((score,brain))
             if brains:
-              sorted(brains,key=lambda x:x[0])
-              rtn = brains[0][1]
+              brains = sorted(brains,key=lambda x:x[0])
+              rtn = brains[-1][1]
           writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %s->%s'%(data_id,str(rtn is not None)))
           return rtn
 

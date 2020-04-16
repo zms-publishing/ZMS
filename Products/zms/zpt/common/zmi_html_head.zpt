@@ -6,16 +6,20 @@
 		dummy python:here.zmi_page_request(here,request)">
 <head>
 	<title tal:content="python:'ZMS | %s | %s'%(here.display_type(),request['lang'])">the title</title>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
 	<meta name="version_container_abs_url" tal:attributes="content python:here.getVersionContainer().absolute_url()" />
 	<meta name="physical_path" tal:attributes="content python:'/'.join(here.getPhysicalPath())" />
-	<tal:block tal:repeat="href python:list(zmi_paths['css_paths'])+[here.getConfProperty(x) for x in here.getConfProperty('zmi.css').split(',')]">
-		<link tal:condition="href" type="text/css" rel="stylesheet" tal:attributes="
-			href python:href.replace('$ZMS_HOME/',here.getHome().absolute_url()+'/').replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0])"/>
+	<tal:block tal:repeat="href python:list(zmi_paths['css_paths'])+[here.getConfProperty(x) for x in here.getConfProperty('zmi.css').split(',')]"
+		><link tal:condition="href" type="text/css" rel="stylesheet" tal:attributes="
+			href python:href.replace('$ZMS_HOME/',here.getHome().absolute_url()+'/').replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0])" />
 	</tal:block>
-	<tal:block tal:repeat="src python:[here.getConfProperty('plugins.zmi.js')]">
-		<script type="text/javascript" charset="UTF-8" tal:attributes="src src"></script>
+	<link type="text/css" rel="stylesheet" 
+		tal:define="added_css_zmi python:here.getConfProperty('ZMS.added.css.zmi','common/added/zmi.css')"
+		tal:condition="added_css_zmi"
+		tal:attributes="href python:added_css_zmi.replace('$ZMS_HOME/',here.getHome().absolute_url()+'/').replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0])" />
+	<tal:block tal:repeat="src python:[here.getConfProperty('plugins.zmi.js')]"
+		><script type="text/javascript" charset="UTF-8" tal:attributes="src src"></script>
 	</tal:block>
 </head>
 </tal:block>

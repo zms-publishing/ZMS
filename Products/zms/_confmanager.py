@@ -873,7 +873,8 @@ class ConfManager(
       if btn == self.getZMILangStr('BTN_SAVE') and section == 'added':
         added_id = REQUEST.get('id', '')
         fname= '%s.%s'%(added_id.split('.')[-1],added_id.split('.')[-2])
-        href = self.getConfProperty(added_id,'%s/$ZMS_THEME/common/added/%s'%(self.getHome().id,fname))
+        href = self.getConfProperty(added_id,'%s/%scommon/added/%s'%(self.getHome().id,[self.getConfProperty('ZMS.theme','')+'/',''][len(self.getConfProperty('ZMS.theme',''))==0],fname))
+        href = href.replace('$ZMS_HOME',self.getHome().id)
         href = href.replace('$ZMS_THEME/',[self.getConfProperty('ZMS.theme','')+'/',''][len(self.getConfProperty('ZMS.theme',''))==0])
         # Traverse to get object.
         ob = self.getHome()

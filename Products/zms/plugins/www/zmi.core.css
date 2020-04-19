@@ -2038,3 +2038,9 @@ ul.pagination {
 	color: rgba(255, 255, 255, 0.75) !important;
 	text-transform: lowercase;
 }
+.zmi.design.config .additionals table th.icon {
+	padding: 0;
+	text-align: center;
+	vertical-align:middle !important;
+	color: #759bbd
+}

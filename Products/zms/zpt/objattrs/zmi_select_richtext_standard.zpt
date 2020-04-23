@@ -112,7 +112,8 @@ function zmiRicheditInsertTab( fmName, elName) {
 		</div><!-- .btn-group -->
 		<div class="btn-group pull-left ATTRS_ERROR" tal:condition="python:len(here.getCharFormats())>0"
 		><tal:block tal:repeat="charFormat python:here.getCharFormats()"
-			><tal:block tal:define="
+			><tal:block tal:on-error="nothing"
+				tal:define="
 					title   python:charFormat.get('display');
 					btn     python:charFormat.get('btn');
 					fmKey   python:charFormat.get('tag');

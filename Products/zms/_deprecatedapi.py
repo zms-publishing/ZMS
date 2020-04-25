@@ -100,17 +100,13 @@ class DeprecatedAPI(object):
     s = '' 
     ob = self 
     while ob is not None: 
-      if html in ob.getMetaobjIds(): 
-        metaObj = ob.getMetaobj( html) 
-        metaObjAttr = ob.getMetaobjAttr( metaObj['id'], 'getLinkHtml') 
-        if isinstance(metaObjAttr, dict): 
-          REQUEST.set( 'ref_id', url) 
-          return standard.dt_exec(self, metaObjAttr['custom']) 
+      if html in ob.getMetaobjIds() and 'getLinkHtml' in ob.getMetaobjAttrIds(html):
+        REQUEST.set( 'ref_id', url) 
+        return ob.evalMetaobjAttr('%s.getLinkHtml'%html,ref_id=url)
       ob = ob.getPortalMaster() 
     ob = self.getLinkObj(url) 
     if ob is not None: 
-      if ob.isActive(REQUEST) and \
-         ob.isVisible(REQUEST): 
+      if ob.isVisible(REQUEST): 
         url = ob.getHref2IndexHtml(REQUEST) 
         s = html%url 
     return s 

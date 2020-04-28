@@ -52,12 +52,12 @@ class ZMSCharformatManager(object):
         if len(newId) == 0:
           newId = self.getNewId('fmt')
         newId = item.get('id', newId)
-        newBtn = item.get('btn', '')
+        newIconClazz = item.get('icon_clazz', '')
         newDisplay = item.get('display', '')
         newTag = item.get('tag', '')
         newAttrs = item.get('attrs', '')
         newJS = item.get('js', '')
-        self.setCharformat( None, newId, newBtn, newDisplay, newTag, newAttrs, newJS)
+        self.setCharformat( None, newId, newIconClazz, newDisplay, newTag, newAttrs, newJS)
         # Make persistent.
         self.charformats = copy.deepcopy(self.charformats)
 
@@ -99,8 +99,6 @@ class ZMSCharformatManager(object):
       charformats = [x for x in obs if x['id'] == id]
       if len(charformats) > 0:
         ob = charformats[0]
-        if ob.get('btn') in self.objectIds():
-          self.manage_delObjects(ids=[ob['btn']])
         self.charformats.remove(ob)
         # Make persistent.
         self.charformats = copy.deepcopy(self.charformats)
@@ -110,7 +108,7 @@ class ZMSCharformatManager(object):
     # ------------------------------------------------------------------------------
     #  ZMSCharformatManager.setCharformat:
     # ------------------------------------------------------------------------------
-    def setCharformat(self, oldId, newId, newBtn, newDisplay, newTag='', newAttrs='', newJS=''):
+    def setCharformat(self, oldId, newId, newIconClazz, newDisplay, newTag='', newAttrs='', newJS=''):
       obs = self.charformats
       if oldId is None:
         oldId = newId
@@ -121,15 +119,8 @@ class ZMSCharformatManager(object):
         i = len(obs)
         obs.append({})
       ob = obs[i]
-      if isinstance( newBtn, _blobfields.MyImage):
-        if ob.get('btn') in self.objectIds():
-          self.manage_delObjects(ids=[ob['btn']])
-        self.manage_addImage( id=newBtn.getFilename(), file=newBtn.getData(), title='', content_type=newBtn.getContentType())
-        newBtn = newBtn.getFilename()
-      else:
-        newBtn = ob.get('btn')
       ob['id'] = newId
-      ob['btn'] = newBtn
+      ob['icon_clazz'] = newIconClazz
       ob['display'] = newDisplay
       ob['tag'] = newTag
       ob['attrs'] = newAttrs
@@ -153,14 +144,12 @@ class ZMSCharformatManager(object):
       # -------
       if REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
         newId = REQUEST['new_id'].strip()
-        newBtn = REQUEST.get('new_btn', '')
-        if isinstance(newBtn, ZPublisher.HTTPRequest.FileUpload) and newBtn.filename != '':
-          newBtn = _blobfields.createBlobField(self, _blobfields.MyImage, newBtn)
+        newIconClazz = REQUEST.get('new_icon_clazz', '')
         newDisplay = REQUEST['new_display'].strip()
         newTag = REQUEST['new_tag'].strip()
         newAttrs = REQUEST['new_attrs'].strip()
         newJS = REQUEST['new_js'].strip()
-        id = self.setCharformat(id, newId, newBtn, newDisplay, newTag, newAttrs, newJS)
+        id = self.setCharformat(id, newId, newIconClazz, newDisplay, newTag, newAttrs, newJS)
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Delete.
@@ -180,11 +169,9 @@ class ZMSCharformatManager(object):
       elif REQUEST['btn'] == self.getZMILangStr('BTN_INSERT'):
         fmts = self.getCharFormats()
         newId = REQUEST['_id'].strip()
-        newBtn = REQUEST.get('_btn', '')
-        if isinstance(newBtn, ZPublisher.HTTPRequest.FileUpload) and newBtn.filename != '':
-          newBtn = _blobfields.createBlobField(self, _blobfields.MyImage, newBtn)
+        newIconClazz = REQUEST.get('_icon_clazz', '')
         newDisplay = REQUEST['_display'].strip()
-        id = self.setCharformat(None, newId, newBtn, newDisplay)
+        id = self.setCharformat(None, newId, newIconClazz, newDisplay)
         message = self.getZMILangStr('MSG_INSERTED')%id
       
       # Export.
@@ -192,9 +179,6 @@ class ZMSCharformatManager(object):
       elif REQUEST['btn'] == self.getZMILangStr('BTN_EXPORT'):
         ids = REQUEST.get('ids', [])
         value = [x.copy() for x in self.getCharFormats() if x['id'] in ids or len(ids) == 0]
-        for x in value:
-          if x.get('btn'):
-            x['btn'] = _blobfields.createBlobField( self, _blobfields.MyImage, file={'data':getattr( self, x.get('btn')).data,'filename':x.get('btn')})
         if len(value)==1:
           value = value[0]
         content_type = 'text/xml; charset=utf-8'

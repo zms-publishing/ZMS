@@ -27,16 +27,8 @@
 				<div class="col-sm-10"><input class="form-control form-control-sm" type="text" id="new_display" name="new_display" tal:attributes="value python:format['display']" /></div><!-- .col-sm-10 -->
 			</div><!-- .form-group -->
 			<div class="form-group row">
-				<label for="new_btn" class="col-sm-2 control-label"><span>Button</span></label>
-				<div class="col-sm-10">
-					<input class="btn btn-file" type="file" id="new_btn" name="new_btn" />
-					<tal:block tal:condition="python:format.get('btn')">
-						<a class="button"><img tal:attributes="src python:format['btn']; title python:format['display']"/></a>
-					</tal:block>
-					<tal:block tal:condition="python:not format.get('btn')">
-						&nbsp;<img src="/++resource++zms_/img/spacer.gif" class="zmiVSep" align="absmiddle" />&nbsp;
-					</tal:block>
-				</div><!-- .col-sm-10 -->
+				<label for="new_icon_clazz" class="col-sm-2 control-label"><span>Icon</span></label>
+				<div class="col-sm-9"><input type="text" id="new_icon_clazz" name="new_icon_clazz" class="form-control form-control-sm zmi-input-icon-clazz" tal:attributes="value python:format.get('icon_clazz','')"/></div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<label for="new_tag" class="col-sm-2 control-label"><span>&lt;<tal:block tal:content="python:here.getZMILangStr('ATTR_TAG')">Tag</tal:block>&gt;</span></label>
@@ -77,6 +69,10 @@
 			<div class="form-group row">
 				<label for="_id" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
 				<div class="col-sm-10"><input class="form-control form-control-sm" type="text" id="_id" name="_id" /></div><!-- .col-sm-10 -->
+			</div><!-- .form-group -->
+			<div class="form-group row">
+				<label for="_icon_clazz" class="col-sm-2 control-label mandatory"><span>Icon</span></label>
+				<div class="col-sm-9"><input type="text" id="_icon_clazz" name="_icon_clazz" class="form-control form-control-sm zmi-input-icon-clazz""/></div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<label for="_display" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
@@ -151,11 +147,12 @@
 			</td>
 			<td>
 				<tal:block tal:condition="python:format.get('btn')">
-					<a class="button"><img tal:attributes="src python:format['btn']; title python:format['display']"/></a>
+					<a class="btn btn-secondary" tal:condition="python:format.get('icon_clazz')"><i tal:attributes="class python:format['icon_clazz'];  title python:format['display']"></i></a>
+					<a class="btn btn-secondary" tal:condition="python:format.get('btn') and not format.get('icon_clazz')"><img tal:attributes="src python:format['btn']; title python:format['display']"/></a>
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.get('id',''))" target="" tal:content="python:format['id']">Id</a>
 				</tal:block>
-				<tal:block tal:condition="not:python:format.get('btn')">
-					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.get('id',''))" target=""><img src="/++resource++zms_/img/spacer.gif" title="vertical separator" class="zmiVSep"/></a>
+				<tal:block tal:condition="not:python:format.get('icon_clazz') or format.get('btn')">
+					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format['id'])" target=""><i title="vertical separator" class="zmiVSep fas fa-grip-lines-vertical"></i></a>
 				</tal:block>
 				<tal:block tal:condition="python:format.get('tag')" tal:content="structure python:'<%s %s>%s</%s>'%(format['tag'],format['attrs'],format['display'],format['tag'])">preview</tal:block>
 			</td>

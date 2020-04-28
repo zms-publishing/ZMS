@@ -927,7 +927,7 @@ ZMI.prototype.initInputFields = function(container) {
 						$label.prepend('<i class="fas fa-exclamation"></i>');
 					});
 			}
-				// Icon-Class
+			// Icon-Class
 			$('input.zmi-input-icon-clazz',this).each(function() {
 				$(this).wrap( '<div class="input-group"></div>' );
 				$(this).before('<span class="input-group-text"><i class="fas fa-invisible"></i></span>');
@@ -936,7 +936,7 @@ ZMI.prototype.initInputFields = function(container) {
 					var $input = $(this);
 					var $formGroup = $input.parents(".form-group");
 					var $i = $("i",$formGroup);
-					$i.replaceWith($ZMI.icon($input.val()));
+					$i.attr("class",$input.val());
 				};
 				$(this).change(fn).keyup(fn).change();
 			});

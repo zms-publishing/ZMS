@@ -2,7 +2,7 @@
 <list>
 <item type="dictionary"><dictionary>
 <item key="attrs"><![CDATA[title="" lang="<dtml-var lang>"]]></item>
-<item key="icon_clazz"><![CDATA[zmsicon-charfmt-abbreviation]]></item>
+<item key="icon_clazz"><![CDATA[zmsicon-charfmt-abreviation]]></item>
 <item key="display"><![CDATA[Abbreviation]]></item>
 <item key="tag"><![CDATA[abbr]]></item>
 </dictionary>

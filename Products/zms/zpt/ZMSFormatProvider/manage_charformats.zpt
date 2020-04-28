@@ -146,7 +146,7 @@
 				<input type="checkbox" name="ids:list" tal:attributes="value python:format.get('id','')" />
 			</td>
 			<td>
-				<tal:block tal:condition="python:format.get('btn')">
+				<tal:block tal:condition="python:format.get('icon_clazz') or format.get('btn')">
 					<a class="btn btn-secondary" tal:condition="python:format.get('icon_clazz')"><i tal:attributes="class python:format['icon_clazz'];  title python:format['display']"></i></a>
 					<a class="btn btn-secondary" tal:condition="python:format.get('btn') and not format.get('icon_clazz')"><img tal:attributes="src python:format['btn']; title python:format['display']"/></a>
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],format.get('id',''))" target="" tal:content="python:format['id']">Id</a>

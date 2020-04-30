@@ -23,6 +23,7 @@ from OFS.Image import Image, File
 from io import StringIO
 # from mimetools import choose_boundary
 from email.generator import _make_boundary as choose_boundary
+import base64
 import copy
 import time
 import urllib.request, urllib.parse, urllib.error
@@ -158,7 +159,14 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
     file = file.read()
   except:
     pass
-  mt, enc = standard.guess_content_type(filename, file)
+  f = None
+  if type(file) is str:
+    f = re.findall('^data:(.*?);base64,([\s\S]*)$',file)
+  if f:
+    mt = f[0][0]
+    file = base64.b64decode(f[0][1])
+  else:
+    mt, enc = standard.guess_content_type(filename,file)
   if clazz in [_globals.DT_IMAGE, 'image'] or mt.startswith('image'):
     clazz = MyImage
   elif clazz in [_globals.DT_FILE, 'file']:
@@ -672,6 +680,15 @@ class MyBlob(object):
 
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlob.getDataURI
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    getDataURI__roles__ = None
+    def getDataURI(self):
+      dataURI = 'data:%s;base64,%s'%(self.getContentType(),base64.b64encode(bytes(self.getData())))
+      return dataURI
+
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlob.getHref:
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     getHref__roles__ = None
@@ -1009,6 +1026,14 @@ class MyBlobWrapper(object):
     getData__roles__ = None
     def getData(self, parent=None):
       return self.f.data
+
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    MyBlobWrapper.getDataURI:
+    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+    getDataURI__roles__ = None
+    def getDataURI(self):
+      dataURI = 'data:%s;base64,%s'%(self.getContentType(),base64.b64encode(bytes(self.getData())))
+      return dataURI
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     MyBlobWrapper.__str__:

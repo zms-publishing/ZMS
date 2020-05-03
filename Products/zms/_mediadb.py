@@ -288,9 +288,17 @@ class MediaDb(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     def __init__(self, location, structure=0):
       self.id = 'acl_mediadb'
-      self.location = location
+      self.setLocation(location)
       self.structure = structure
       _fileutil.mkDir(self.getLocation())
+
+    # --------------------------------------------------------------------------
+    # MediaDb.setLocation
+    # --------------------------------------------------------------------------
+    def setLocation(self, location):
+      if location.endswith('/'):
+        location = location[:-1]
+      self.location = location
 
     # --------------------------------------------------------------------------
     # MediaDb.getLocation
@@ -499,11 +507,12 @@ class MediaDb(
       """ MediaDb.manage_changeProperties """
       
       message = ''
-
+      
       # Change.
       if submit == 'Change':
-        self.location = REQUEST.get('location',self.location)
-        
+        location = REQUEST.get('location',self.location)
+        self.setLocation(location)
+
       # Return.
       if RESPONSE is not None:
         RESPONSE.redirect('manage_properties?manage_tabs_message=%s'%urllib.quote(message))

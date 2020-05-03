@@ -138,9 +138,6 @@ def manage_structureMediaDb(self, structure, REQUEST=None, RESPONSE=None):
       if os.path.isdir(filepath):
         traverse(filepath,p)
       elif os.path.isfile(filepath):
-        f = open(filepath,"rb")
-        data = f.read()
-        f.close()
         targetpath = mediadb.targetFile(filepath)
         standard.writeBlock( self, "[manage_structureMediaDb]: %s -> %s"%(filepath,targetpath))
         targetdir = os.sep.join(targetpath.split(os.sep)[:-1])

@@ -756,9 +756,7 @@ class ZMSMetaobjManager(object):
       
       # Defaults for Insert
       method_types = [ 'method', 'py', 'zpt'] + self.valid_zopetypes
-      if oldId is None and \
-         newType in method_types and \
-         (newCustom == '' or not isinstance(newCustom, str)):
+      if oldId is None and not newCustom:
         if newType in [ 'method', 'DTML Method', 'DTML Document']:
           newCustom = ''
           newCustom += '<!-- '+ newId + ' -->\n'
@@ -770,7 +768,15 @@ class ZMSMetaobjManager(object):
           newCustom += '\n'
           newCustom += 'def ' + newId + '( self):\n'
           newCustom += '  return "This is the external method ' + newId + '"\n'
-        elif newType in [ 'zpt', 'Page Template']:
+        elif newType in [ 'zpt']:
+          newCustom = ''
+          newCustom += '<!-- '+ newId + ' -->\n\n'
+          newCustom += '<tal:block tal:define="zmscontext options/zmscontext;\n'
+          newCustom += '\t\ttitle python:zmscontext getTitle(request);">\n'
+          newCustom += '\t<h4 tal:content="structure title">the title</h4>\n'
+          newCustom += '</tal:block>\n\n'
+          newCustom += '<!--/ '+ newId + ' -->\n'
+        elif newType in [ 'Page Template']:
           newCustom = ''
           newCustom += '<span tal:replace="here/title_or_id">content title or id</span>'
           newCustom += '<span tal:condition="template/title" tal:replace="template/title">optional template title</span>'

@@ -126,7 +126,7 @@ function zmiFormSubmit(sender,d) {
 	</div>
 </form>
 
-<form class="form-horizontal card mt-3" id="changeLangDictForm" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
+<form class="form-horizontal card" id="changeLangDictForm" action="manage_changeLangDictProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend>
 		<span class="has_tooltip"

@@ -489,7 +489,7 @@ $ZMI.registerReady(function(){
 	</table>
 </form>
 
-<form class="form-horizontal card mt-3" action="manage_changeProcess" method="post" enctype="multipart/form-data">
+<form class="form-horizontal card" action="manage_changeProcess" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('ATTR_PROCESSES')">Processes</legend>
 	<table class="table table-striped table-bordered zmi-sortable mb-0">

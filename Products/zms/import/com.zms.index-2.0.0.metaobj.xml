@@ -18,13 +18,11 @@
 		uid python:request.form.get('uid','');
 		loglevels python:['DEBUG','INFO','ERROR'];">
 <script>
-//<!--
 	function openWindow(url) {
 		var newWindow = window.open(url);
 		newWindow.addEventListener('load',function(){self.location.reload()},false);
 		return false;
 	}
-//-->
 </script>
 	<div class="form-group row">
 		<label class="col-sm-2 control-label">Index</label>
@@ -140,7 +138,6 @@
 	</div>
 
 <script>
-//<!--
 	function zmiFuncIndex(func_) {
 		$(".zmi-sitemap .response").remove();
 		var $inputs = $(".zmi-sitemap input:checked");
@@ -182,6 +179,8 @@
 	}
 	
 	$(function() {
+		// Default-Collapse
+		$("a[href='#zmsindex']:not(.collapsed)").click();
 		// Sitemap
 		var href = $ZMI.getPhysicalPath();
 		$ZMI.objectTree.init(".zmi-sitemap",href,{
@@ -207,7 +206,6 @@
 			}
 		});
 	});
-//-->
 </script>
 <style>
 /* Make BS4-row work with ZMS4 */

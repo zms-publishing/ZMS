@@ -47,7 +47,7 @@
 				<div class="col-sm-2" tal:condition="python: context.getDocumentElement().getConfProperty('ExtensionPoint.ZMSObject.get_uid')==None">
 					<button class="btn btn-danger w-100" name="btn"
 						title="ACTIVATE: Activate ZCatalog index for links."
-						onclick="return openWindow('zmsindex/ZMSIndexZCatalog_func_?func_=activate'+'&loglevel='+$('#reindex-loglevel').val());">Activate
+						onclick="return openWindow('zmsindex/ZMSIndexZCatalog_func_?ZMSIndexZCatalog_func_=activate'+'&loglevel='+$('#reindex-loglevel').val());">Activate
 					</button>
 				</div>
 			</div>
@@ -146,7 +146,7 @@
 			if (i < $inputs.length) {
 				var $input = $($inputs[i]);
 				var uid = $input.val();
-				var data = {func_:func_,url:uid,loglevel:$('#'+func_+'-loglevel').val(),i:i};
+				var data = {ZMSIndexZCatalog_func_:func_,url:uid,loglevel:$('#'+func_+'-loglevel').val(),i:i};
 				var $a = $input.next("a");
 				var viewport_pos = $(window).scrollTop();
 				var btn_close = '<' + 'a class="close" data-dismiss="alert" href="#"' + '>' + '×' + '<' + '/a' + '>';
@@ -426,7 +426,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     if len(args) > 0:
       func_ = args[0]
     else:
-      func_ = request.get('func_')
+      func_ = request.get('ZMSIndexZCatalog_func_')
     writeDebug(self,'########## ZMSIndexZCatalog.%s: args=%s, kwargs=%s'%(func_,str(args),str(kwargs)))
 
     ##############################################################################
@@ -499,7 +499,8 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           l.extend(visit(childNode))
         return l
 
-      for url in request.get('url','{$}').split(','):
+      urls = [x for x in request.get('url','').split(',') if x]
+      for url in urls:
         if url == '{$}':
           catalog = recreate_catalog()
         writeInfo(self,'[ZMSIndexZCatalog_func_] ### reindex for %s'%url)

@@ -1005,7 +1005,7 @@ return uid
 request = context.REQUEST
 base = list(context.getRootElement().getPhysicalPath())[:-1]
 url = list(context.getDocumentElement().getPhysicalPath())[len(base):-1]
-request.set('url','{$'+'/'.join(url)+'@}')
+request.set('url','{$'+['','/'.join(url)+'@'][len(url)>0]+'}')
 zmscontext.ZMSIndexZCatalog_func_(zmscontext,'reindex')
 zmscontext.ZMSIndexZCatalog_func_(zmscontext,'activate')
 

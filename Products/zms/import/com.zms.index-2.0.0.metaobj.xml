@@ -1002,6 +1002,9 @@ return uid
 ##
 # --// onCreateObjEvt //--
 
+base = list(context.getRootElement().getPhysicalPath())[:-1]
+url = list(context.getDocumentElement().getPhysicalPath())[len(base):-1]
+request.set('url','{$'+'/'.join(url))+'@}')
 zmscontext.ZMSIndexZCatalog_func_(zmscontext,'reindex')
 zmscontext.ZMSIndexZCatalog_func_(zmscontext,'activate')
 

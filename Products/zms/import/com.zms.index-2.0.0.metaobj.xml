@@ -41,7 +41,7 @@
 				</div>
 				<div class="col-sm-2">
 					<button class="btn btn-danger w-100" name="btn"
-						title="REINDEX: Fully rebuilding the ZCatalog index of all (multisite) hierarchy objects."
+						title="REINDEX: Rebuilding the ZCatalog index of all selected (multisite) hierarchy objects."
 						onclick="return zmiFuncIndex('reindex');">Reindex
 					</button>
 				</div>

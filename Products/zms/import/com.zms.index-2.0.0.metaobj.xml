@@ -1002,6 +1002,7 @@ return uid
 ##
 # --// onCreateObjEvt //--
 
+request = context.REQUEST
 base = list(context.getRootElement().getPhysicalPath())[:-1]
 url = list(context.getDocumentElement().getPhysicalPath())[len(base):-1]
 request.set('url','{$'+'/'.join(url)+'@}')

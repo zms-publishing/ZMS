@@ -13,6 +13,7 @@
                 <dictionary>
                   <item key="custom"><![CDATA[<tal:block tal:define="
 		zmscontext options/zmscontext;
+		oid python:zmscontext.get_oid();
 		active python:zmscontext.getConfProperty('ExtensionPoint.ZMSObject.get_uid','')=='%s.get_uid'%zmscontext.meta_id;
 		initialized python:'zcatalog_index' in zmscontext.getRootElement().getHome().objectIds();
 		uid python:request.form.get('uid','');
@@ -146,7 +147,7 @@
 			if (i < $inputs.length) {
 				var $input = $($inputs[i]);
 				var uid = $input.val();
-				var data = {ZMSIndexZCatalog_func_:func_,url:uid,loglevel:$('#'+func_+'-loglevel').val(),i:i};
+				var data = {ZMSIndexZCatalog_func_:func_,oid_:$('#oid_').val(),url:uid,loglevel:$('#'+func_+'-loglevel').val(),i:i};
 				var $a = $input.next("a");
 				var viewport_pos = $(window).scrollTop();
 				var btn_close = '<' + 'a class="close" data-dismiss="alert" href="#"' + '>' + '×' + '<' + '/a' + '>';
@@ -499,7 +500,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           l.extend(visit(childNode))
         return l
 
-      urls = [x for x in request.get('url','').split(',') if x]
+      urls = [x for x in request['url'].split(',') if x]
       for url in urls:
         if url == '{$}':
           catalog = recreate_catalog()
@@ -509,6 +510,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
         if base is not None:
           count = visit(base)
           writeInfo(self,'[ZMSIndexZCatalog_func_] reindex for %s done: %i in %.2fsecs.'%(url,len(count),time.time()-t0))
+
 
     ##############################################################################
     # Activate
@@ -817,7 +819,8 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           request.SESSION.set('ZMSIndexZCatalog_func_domains',domains)
         domains = request.SESSION.get('ZMSIndexZCatalog_func_domains')
 
-        for url in request.get('url','{$}').split(','):
+        urls = [x for x in request['url'].split(',') if x]
+        for url in urls:
           writeInfo(self,'[ZMSIndexZCatalog_func_] ### resync for %s'%url)
           t0 = time.time()
           base = self.getLinkObj(url)

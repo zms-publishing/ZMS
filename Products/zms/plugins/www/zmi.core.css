@@ -2069,9 +2069,8 @@ ul.pagination {
 	font-weight: normal;
 	font-style: normal;
 	font-display: block;
-  }
-  
-  [class^="zmsicon-"], [class*=" zmsicon-"] {
+}
+[class^="zmsicon-"], [class*=" zmsicon-"] {
 	/* use !important to prevent issues with browser extensions that change fonts */
 	font-family: 'ZMS' !important;
 	speak: none;
@@ -2080,19 +2079,25 @@ ul.pagination {
 	font-variant: normal;
 	text-transform: none;
 	line-height: 1;
-  
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-  }
-  
-  .zmsicon-charfmt-abreviation:before {
+}
+.zmsicon-charfmt-abreviation:before {
 	content: "\e600";
-  }
-  .zmsicon-charfmt-acronym:before {
+}
+.zmsicon-charfmt-acronym:before {
 	content: "\e601";
-  }
-  .zmsicon-charfmt-language:before {
+}
+.zmsicon-charfmt-language:before {
 	content: "\e602";
-  }
-  
+}
+.zmsicon-charfmt-insert:before {
+	content: "\e603";
+}
+.zmsicon-charfmt-delete:before {
+	content: "\e604";
+}
+.zmsicon-charfmt-erase:before {
+	content: "\e605";
+}

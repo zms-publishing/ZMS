@@ -112,21 +112,21 @@ function zmiRicheditInsertTab( fmName, elName) {
 		</div><!-- .btn-group -->
 		<div class="btn-group pull-left" tal:condition="python:len(here.getCharFormats())>0"
 		><tal:block tal:repeat="charFormat python:here.getCharFormats()"
-			><tal:block tal:on-error="structure string: <!-- ERROR: charFormat  -->"
+			><tal:block
 				tal:define="
 					title      python:charFormat.get('display');
 					icon_clazz python:charFormat.get('icon_clazz');
 					btn        python:charFormat.get('btn');
 					fmKey      python:charFormat.get('tag');
-					js         python:standard.dt_exec(here,charFormat.get('js','')).strip();
-					attrs      python:standard.dt_exec(here,charFormat.get('attrs','')).strip();
-					onclick    python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%((fmKey+' '.join([' %s=\042%s\042'%(x,attrs[x]) for x in attrs])).replace('\042','\'+unescape(\'\%'+'22\')+\'').strip(),options['fmName'],options['elName'])"
+					cjs         python:standard.dt_exec(here,charFormat.get('js','')).strip();
+					cattrs      python:standard.dt_exec(here,charFormat.get('attrs','')).strip();
+					conclick    python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%((fmKey+(' ' if cattrs else '')+cattrs).replace('\042','\'+unescape(\'\%'+'22\')+\'').strip(),options['fmName'],options['elName'])"
 				><tal:block tal:condition="python:icon_clazz or btn"
-					><tal:block tal:condition="python:len(js)>0"
-						><tal:block tal:condition="python:request.get('f_zmiRichtextEditor',True)" tal:content="structure python:'<script>%s</script>'%js"></tal:block
-						><tal:block tal:define="global onclick python:js[js.lower().find('function')+len('function'):js.lower().find('{')].strip()"></tal:block
+					><tal:block tal:condition="cjs"
+						><tal:block tal:condition="python:request.get('f_zmiRichtextEditor',True)" tal:content="structure python:'<script>%s</script>'%cjs"></tal:block
+						><tal:block tal:define="global conclick python:js[js.lower().find('function')+len('function'):js.lower().find('{')].strip()"></tal:block
 					></tal:block
-					><span class="btn btn-secondary" tal:attributes="onclick onclick"
+					><span class="btn btn-secondary" tal:attributes="onclick conclick"
 						><i tal:condition="python:icon_clazz" tal:attributes="class icon_clazz; title title"></i
 						><img tal:condition="python:btn and not icon_clazz" tal:attributes="src python:['%s/format_manager/%s'%(here.getDocumentElement().absolute_url(),btn),btn][int(btn.startswith(here.getDocumentElement().absolute_url()))]; title title"/>
 					</span

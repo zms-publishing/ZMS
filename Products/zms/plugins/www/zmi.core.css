@@ -8,6 +8,16 @@ body.zmi .form-control {
 a {
 	color: #08c;
 }
+del {
+	color:#777!important;
+	background-color:#f8d7da!important;
+	text-decoration:line-through;
+}
+ins {
+	color: #3C763D!important;
+	background-color: #d4edda!important;
+	text-decoration:none;
+}
 
 /* HEADER BAR */
 
@@ -353,7 +363,6 @@ footer .back-to-top.hide {
 #zmi-tab .form-horizontal {
 	background-color: white;
 }
-
 #zmi-tab .card .card-header,
 #zmiIframeAddDialog .card .card-header {
 	border:none;
@@ -378,7 +387,6 @@ footer .back-to-top.hide {
 		display:none;
 	}
 }
-
 #zmi-tab .card .card-header.btn-collapse > a > i,
 #zmiIframeAddDialog .card .card-header.btn-collapse > a > i,
 #zmi-tab .card .card-header.btn-collapse > div > a > i,
@@ -1047,6 +1055,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	max-height: 80vh;
 	overflow-y: auto;
 }
+.zmi .card-header .zmi-action .dropdown-menu.dropdown-menu-right {
+	padding: 0 0 .5rem 0;	
+}
 .zmi .dropdown-menu .dropdown-header {
 	padding: 5px 13px;
 	font-size: inherit;
@@ -1277,6 +1288,117 @@ table.table-sm tr.row_insert td .btn-add {
 	font-size:10px;
 	padding-left: 0;
 }
+
+
+/*  Repository Manager
+    ------------------------------------------------------- */
+.zmi.repository_manager_main .line-number {
+	width:4em;
+	background:#FEFEFE;
+	color:#101010;
+	border:1px solid #CCC;
+	display:inline-block;
+	text-align:right;
+	padding:0 4px 0 4px;
+}
+.zmi.repository_manager_main .line-number.line-changed {
+	background:#101010;
+	color:#FEFEFE;
+}
+.zmi.repository_manager_main .state {
+	display:inline-block;
+	width:16px;
+	height:16px;
+	border:solid 1px #ccc;
+}
+.zmi.repository_manager_main pre {
+	display: block;
+	padding: 9.5px;
+	margin: 0 0 10px;
+	font-size: 13px;
+	line-height: 1.42857143;
+	color: #333;
+	word-break: break-all;
+	word-wrap: break-word;
+	background-color: #f5f5f5;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+.zmi.repository_manager_main .focus pre {
+	border-color: #80bdff;
+	outline: 0;
+	box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+.zmi.repository_manager_main .tab-content.update_direction-Saving ins {
+	text-decoration:line-through;
+}
+.zmi.repository_manager_main .tab-content.update_direction-Saving ins,
+.zmi.repository_manager_main .tab-content.update_direction-Saving table .state.alert-success {
+	background-color:#f8d7da!important;
+}
+.zmi.repository_manager_main .tab-content.update_direction-Saving del,
+.zmi.repository_manager_main .tab-content.update_direction-Saving table .state.alert-danger {
+	background-color:#d4edda !important;
+	text-decoration:none;
+}
+.zmi.repository_manager_main .prettyTextDiff .original,
+.zmi.repository_manager_main .prettyTextDiff .changed {
+	display:none;
+}
+.zmi.repository_manager_main .table.table-borderless,
+.zmi.repository_manager_main .table.table-borderless th,
+.zmi.repository_manager_main .table.table-borderless td {
+	border:none !important;
+	padding:.2em 0;
+}
+.zmi.repository_manager_main .table.table-borderless {
+	margin-bottom:3em;
+}
+.zmi.repository_manager_main .diffcoloring .form-control {
+	display:flex;
+	justify-content: space-between;
+}
+.zmi.repository_manager_main .diffcoloring .form-control span.selected {
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.zmi.repository_manager_main .diffcoloring .form-control small {
+	white-space:nowrap;
+}
+.zmi.repository_manager_main .tab-content.update_direction-Loading.auto_update-True.debug-1 #btn_load_from_repo span:before,
+.zmi.repository_manager_main .tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo span:before {
+	content: "Auto-";
+}
+.zmi.repository_manager_main .tab-content.update_direction-Loading.auto_update-True.debug-1 #btn_load_from_repo span:after,
+.zmi.repository_manager_main .tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo span:after {
+	content: " active";
+}
+.zmi.repository_manager_main .tab-content.update_direction-Loading.auto_update-True.debug-1 #btn_load_from_repo,
+.zmi.repository_manager_main .tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo {
+	color: #fff;
+	background-color: #4CAF50;
+}
+.zmi.repository_manager_main .tab-content.update_direction-Loading.auto_update-True.debug-1 #btn_load_from_repo:hover,
+.zmi.repository_manager_main .tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo:hover {
+	background-color: #545b62;
+	border-color: #4e555b;
+}
+.zmi.repository_manager_main label.zms-component {
+	margin:0 0 auto 0 !important;
+	border-top: 1px solid #dddddd;
+	white-space: nowrap;
+}
+@media all and (max-width: 768px) {
+	.zmi.repository_manager_main label.zms-component {
+		margin:1rem 0 !important;
+		border-top: none;
+		font-weight:bold !important;
+	}
+}
+
+
 
 /*  Sitemap Menu
     ------------------------------------------------------- */

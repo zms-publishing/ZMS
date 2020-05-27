@@ -118,13 +118,13 @@ function zmiRicheditInsertTab( fmName, elName) {
 					icon_clazz python:charFormat.get('icon_clazz');
 					btn        python:charFormat.get('btn');
 					fmKey      python:charFormat.get('tag');
-					cjs         python:standard.dt_exec(here,charFormat.get('js','')).strip();
-					cattrs      python:standard.dt_exec(here,charFormat.get('attrs','')).strip();
-					conclick    python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%((fmKey+(' ' if cattrs else '')+cattrs).replace('\042','\'+unescape(\'\%'+'22\')+\'').strip(),options['fmName'],options['elName'])"
+					cjs        python:standard.dt_exec(here,charFormat.get('js','')).strip();
+					cattrs     python:standard.dt_exec(here,charFormat.get('attrs','')).strip();
+					conclick   python:'setTextFormatInput(\'%s\',\'%s\',\'%s\')'%((fmKey+(' ' if cattrs else '')+cattrs).replace('\042','\'+unescape(\'\%'+'22\')+\'').strip(),options['fmName'],options['elName'])"
 				><tal:block tal:condition="python:icon_clazz or btn"
 					><tal:block tal:condition="cjs"
 						><tal:block tal:condition="python:request.get('f_zmiRichtextEditor',True)" tal:content="structure python:'<script>%s</script>'%cjs"></tal:block
-						><tal:block tal:define="global conclick python:js[js.lower().find('function')+len('function'):js.lower().find('{')].strip()"></tal:block
+						><tal:block tal:define="global conclick python:cjs[cjs.lower().find('function')+len('function'):cjs.lower().find('{')].strip()"></tal:block
 					></tal:block
 					><span class="btn btn-secondary" tal:attributes="onclick conclick"
 						><i tal:condition="python:icon_clazz" tal:attributes="class icon_clazz; title title"></i

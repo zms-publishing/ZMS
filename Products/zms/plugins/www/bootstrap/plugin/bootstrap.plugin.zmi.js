@@ -2009,6 +2009,8 @@ function setTextFormatInput( tag, fmName, elName) {
 	if (typeof self.el == 'undefined') {
 		self.el = document.getElementsByName(elName)[0];
 	}
+	// Avoid loosing focus by fitting textarea to content amount
+	$('#' + elName ).height(document.getElementById(elName).scrollHeight);
 	formatSelected(tag,'<','>');
 }
 

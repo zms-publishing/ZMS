@@ -548,6 +548,26 @@ body.zmi ul.zmi-container.zmi-sortable.pages li:last-child div.center {
 body.zmi ul.zmi-container > .zmi-item > .right {
 	flex-basis: 20%;
 }
+body.zmi ul.zmi-container > .zmi-item .right i.titleimage-preview:hover {
+	cursor:help;
+}
+body.zmi ul.zmi-container > .zmi-item .right i.titleimage-preview:hover::after {
+	content:"";
+	width:20%;
+	height:250px;
+	display:block;
+	position:absolute;
+	background-image:var(--titleimage_url);
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position-y:center;
+	background-color:white;
+	border:1px solid #c0c0c07d;
+	border-radius:4px;
+	z-index:1000;
+	margin-left:-10%;
+	box-shadow: 5px 5px 20px #c0c0c094
+}
 
 @media (max-width: 767px) {
 	body.zmi header.navbar {

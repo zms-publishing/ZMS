@@ -24,7 +24,7 @@ from . import _zreferableitem
 class ObjInputs(object):
 
   # ----------------------------------------------------------------------------
-  #  ObjInputs.getUrlInput:
+  # ObjInputs.getUrlInput:
   #
   #	@param fmName
   #	@param elName
@@ -40,7 +40,7 @@ class ObjInputs(object):
 
 
   # ----------------------------------------------------------------------------
-  #  getDateTimeInput:
+  # getDateTimeInput:
   #
   #	@param fmName
   #	@param elName
@@ -71,14 +71,14 @@ class ObjInputs(object):
 
 
   # ----------------------------------------------------------------------------
-  #  getPasswordInput:
+  # getPasswordInput:
   #
   #	@param fmName
   #	@param elName
   #	@param size
   #	@param value
   #	@param enabled
-  #	@param css	CSS-Class
+  #	@param css    CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
   def getPasswordInput(self, fmName, elName, size=15, value='', enabled=True, css='form-control'):
@@ -86,14 +86,14 @@ class ObjInputs(object):
 
 
   # ----------------------------------------------------------------------------
-  # 	getTextInput:
+  # getTextInput:
   #
   #	@param fmName
   #	@param elName
   #	@param size
-  #	@param value (optional)
-  #	@param type (optional: "text" or "password")
-  #	@param css	CSS-Class
+  #	@param value  (optional)
+  #	@param type   (optional: "text" or "password")
+  #	@param css    CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
   def getTextInput(self, fmName, elName, size=None, value='', type='text', enabled=True, css='form-control', placeholder=''):
@@ -120,7 +120,7 @@ class ObjInputs(object):
 
 
   # ----------------------------------------------------------------------------
-  # 	getSelect:
+  # getSelect:
   #
   #	@param fmName
   #	@param elName
@@ -130,12 +130,14 @@ class ObjInputs(object):
   #	@param required
   #	@param optpl
   #	@param enabled
-  #	@param css		CSS-Class
+  #	@param css    CSS-Class
   #	@return String
   # ----------------------------------------------------------------------------
   def getSelect(self, fmName, elName, value, inputtype, lang_str, required=False, optpl=[], enabled=True, css='form-control', maxlen=30):
     if inputtype in ['select', 'multiline']:
       return self.zmi_input_select(self, name=elName, value=value, lang_str=lang_str, mandatory=required, options=optpl, enabled=enabled)
+    elif inputtype in ['color']:
+      return self.zmi_input_color(self,name=elName,value=value,lang_str=lang_str,mandatory=required,options=optpl,enabled=enabled)
     elif inputtype in ['multiselect']:
       return self.zmi_input_multiselect(self, name=elName, value=value, lang_str=lang_str, mandatory=required, options=optpl, enabled=enabled)
     elif type in ['text']:
@@ -149,12 +151,12 @@ class ObjInputs(object):
   #
   #	@param fmName
   #	@param elName
-  #	@param elId		(optional: "string" or "")
+  #	@param elId   (optional: "string" or "")
   #	@param value
   #	@param enabled
-  #	@param hidden	Add hidden Input-Field if not enabled
-  #	@param css		CSS-Class
-  #	@param btn		Appear as Bootstrap Button
+  #	@param hidden Add hidden Input-Field if not enabled
+  #	@param css    CSS-Class
+  #	@param btn    Appear as Bootstrap Button
   #	@return String
   #
   # Hint: In order to avoid multiple identical ids (HTML5 conformance) 
@@ -194,7 +196,7 @@ class ObjInputs(object):
 
 
   # ----------------------------------------------------------------------------
-  # 	getTextArea:
+  # getTextArea:
   #
   #	@param fmName
   #	@param elName
@@ -202,8 +204,8 @@ class ObjInputs(object):
   #	@param rows
   #	@param value
   #	@param enabled
-  #	@param css		CSS-Class
-  #	@param wrap		Word-Wrap (on|off)
+  #	@param css    CSS-Class
+  #	@param wrap   Word-Wrap (on|off)
   #	@return String
   # ----------------------------------------------------------------------------
   def getTextArea(self, fmName, elName, cols, rows, value, enabled=True, css='form-control', wrap='virtual'):

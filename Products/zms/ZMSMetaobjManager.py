@@ -107,7 +107,7 @@ class ZMSMetaobjManager(object):
 
     # Globals.
     # --------
-    valid_types =     ['amount', 'autocomplete', 'boolean', 'date', 'datetime', 'dictionary', 'file', 'float', 'identifier', 'image', 'int', 'list', 'multiautocomplete', 'multiselect', 'password', 'richtext', 'select', 'string', 'text', 'time', 'url', 'xml']
+    valid_types =     ['amount', 'autocomplete', 'boolean', 'color', 'date', 'datetime', 'dictionary', 'file', 'float', 'identifier', 'image', 'int', 'list', 'multiautocomplete', 'multiselect', 'password', 'richtext', 'select', 'string', 'text', 'time', 'url', 'xml']
     valid_zopeattrs = ['method', 'py', 'zpt', 'interface', 'resource']
     valid_xtypes =    ['constant', 'delimiter', 'hint']+valid_zopeattrs
     valid_datatypes = sorted(valid_types+valid_xtypes)
@@ -747,7 +747,7 @@ class ZMSMetaobjManager(object):
         newCustom = ''
       if newType in ['resource'] and (isinstance(newCustom, str) or isinstance(newCustom, int)):
         newCustom = None
-      if newType not in ['*', 'autocomplete', 'multiautocomplete', 'multiselect', 'recordset', 'select']:
+      if newType not in ['*', 'autocomplete', 'color', 'multiautocomplete', 'multiselect', 'recordset', 'select']:
         newKeys = []
       if newType in self.getMetadictAttrs():
         newId = newType

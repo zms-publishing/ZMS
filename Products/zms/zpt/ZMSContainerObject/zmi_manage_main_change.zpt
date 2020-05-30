@@ -1,7 +1,11 @@
 <tal:block tal:replace="nothing">
 #####  Object State  ###########################################################
 </tal:block>
-<span class="object_has_titleimage" title="Title Image Preview" tal:condition="python:here.attr('titleimage')"><i class="far fa-image text-primary titleimage-preview" tal:attributes="style python:'--titleimage_url:url(%s)'%(here.attr('titleimage').getHref(request))"></i></span>
+<a class="object_has_titleimage" title="Title Image Preview: Click to Edit" 
+	tal:condition="python:here.attr('titleimage')" 
+	tal:attributes="href python:'%s/manage_properties?lang=%s'%(here.absolute_url(),request['manage_lang'])"
+	><i class="far fa-image text-primary titleimage-preview" tal:attributes="style python:'--titleimage_url:url(%s)'%(here.attr('titleimage').getHref(request))"></i>
+</a>
 <span class="version_object_state" tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</span>
 <tal:block tal:define="standard modules/Products.zms/standard;
 	change_uid python:here.attr('change_uid');

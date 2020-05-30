@@ -1,0 +1,16 @@
+<!-- objattrs/zmi_input_color -->
+
+<tal:block tal:define="global 
+	name      options/name;
+	lang_str  options/lang_str;
+	value     python:options.get('value');
+	opts      python:options.get('options',[]);
+	mandatory python:options.get('mandatory',False);">
+<input type="color" class="form-control" list="colorpalette_"
+	tal:attributes="name name;id name;value value;list python:'colorpalette_%s'%(name)" />
+<datalist id="colorpalette_" tal:attributes="id python:'colorpalette_%s'%(name)">
+	<tal:block tal:repeat="opt python:[o[0] for o in opts]"><option tal:content="opt"></option></tal:block>
+</datalist>
+</tal:block>
+
+<!-- /objattrs/zmi_input_color --> 

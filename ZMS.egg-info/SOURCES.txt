@@ -756,6 +756,7 @@ Products/zms/zpt/objattrs/zmi_displaytype_right.zpt
 Products/zms/zpt/objattrs/zmi_displaytype_top.zpt
 Products/zms/zpt/objattrs/zmi_input_autocomplete.zpt
 Products/zms/zpt/objattrs/zmi_input_multiselect.zpt
+Products/zms/zpt/objattrs/zmi_input_color.zpt
 Products/zms/zpt/objattrs/zmi_input_select.zpt
 Products/zms/zpt/objattrs/zmi_select_richtext_standard.zpt
 Products/zms/zpt/objattrs/zmi_select_richtext_wysiwyg.zpt

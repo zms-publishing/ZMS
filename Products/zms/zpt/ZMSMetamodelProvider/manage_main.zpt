@@ -265,7 +265,7 @@
 							<td class="meta-multilang input-group-sm" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_multilang_%s:int'%objAttr['id']; checked python:['','checked'][objAttr.get('multilang',0) in [1,True]]" value="1"/></td>
 							<td class="meta-repetitive input-group-sm" tal:condition="not:metaObjRecordSet"><input type="checkbox" tal:attributes="name python:'attr_repetitive_%s:int'%objAttr['id']; checked python:['','checked'][objAttr.get('repetitive',0) in [1,True]]" value="1"/></td>
 							<td class="meta-default input-group-sm">
-								<div class="single-line" tal:condition="python:objAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','*']">
+								<div class="single-line" tal:condition="python:objAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','color','*']">
 									<i class="fas fa-key"></i>
 									<textarea tal:attributes="name python:'attr_keys_%s'%objAttr['id']; title python:here.getZMILangStr('ATTR_KEYS'); class python:' '.join([['form-control form-control-sm'],['form-control form-control-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:'\n'.join(objAttr['keys'])">keys</textarea>
 								</div>
@@ -279,7 +279,7 @@
 								<div class="single-line zmi-code" tal:condition="python:objAttr['type'] in ['constant']">
 									<textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]" tal:content="python:objAttr.get('custom','')">custom</textarea>
 								</div>
-								<div class="single-line zmi-code" tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','*'] and objAttr['type'] in here.valid_types">
+								<div class="single-line zmi-code" tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','color','*'] and objAttr['type'] in here.valid_types">
 									<textarea tal:attributes="name python:'attr_default_%s'%objAttr['id']; title python:'Default'; class python:' '.join(['zmi-element-default']+[['form-control form-control-sm'],['form-control form-control-sm zmi-element-disabled']][isMetaDictAttr])" tal:content="python:objAttr.get('default','')">default</textarea>
 								</div>
 							</td>

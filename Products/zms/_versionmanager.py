@@ -24,15 +24,14 @@ import copy
 import operator
 import sys
 import time
-import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
-from . import standard
-from . import zopeutil 
-from . import _blobfields
-from . import _confmanager
-from . import _globals
-from . import _zmsattributecontainer
+from Products.zms import standard
+from Products.zms import zopeutil 
+from Products.zms import _blobfields
+from Products.zms import _confmanager
+from Products.zms import _globals
+from Products.zms import _zmsattributecontainer
 
 
 # ------------------------------------------------------------------------------
@@ -1074,7 +1073,7 @@ class VersionItem(object):
           message = self.getZMILangStr('MSG_CHANGED')
 
       # Return with message.
-      message = urllib.parse.quote(message)
+      message = standard.url_quote(message)
       return REQUEST.RESPONSE.redirect('manage_UndoVersionForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 

@@ -24,13 +24,12 @@ import pickle
 import re
 import sys
 import time
-import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
-from . import standard
-from . import _confmanager
-from . import _globals
-from . import _xmllib
+from Products.zms import standard
+from Products.zms import _confmanager
+from Products.zms import _globals
+from Products.zms import _xmllib
 
 
 # ------------------------------------------------------------------------------
@@ -420,7 +419,7 @@ class AccessableObject(object):
       
       # Return with message.
       if RESPONSE:
-        message = urllib.parse.quote(message)
+        message = standard.urllib_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 

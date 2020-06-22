@@ -23,14 +23,13 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import sys
 import time
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import standard
-from . import zmscontainerobject
-from . import _confmanager
-from . import _fileutil
-from . import _importable
-from . import _ziputil
+from Products.zms import _confmanager
+from Products.zms import _fileutil
+from Products.zms import _importable
+from Products.zms import _ziputil
+from Products.zms import standard
+from Products.zms import zmscontainerobject
 
 
 # ------------------------------------------------------------------------------
@@ -536,7 +535,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       
       # Return with message.
       if RESPONSE is not None:
-        message = urllib.parse.quote(message)
+        message = standard.url_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang, message))
       else:
         return ob

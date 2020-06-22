@@ -26,15 +26,14 @@ from email.generator import _make_boundary as choose_boundary
 import base64
 import copy
 import time
-import urllib.request, urllib.parse, urllib.error
 import warnings
 import zExceptions 
 # Product Imports.
-from . import standard
-from . import pilutil
-from . import zopeutil
-from . import _fileutil
-from . import _globals
+from Products.zms import standard
+from Products.zms import pilutil
+from Products.zms import zopeutil
+from Products.zms import _fileutil
+from Products.zms import _globals
 
 __all__= ['MyBlob', 'MyImage', 'MyFile']
 
@@ -824,7 +823,7 @@ class MyBlob(object):
       @rtype: C{string}
       @deprecated: Use zmscontext.getMimeTypeIconSrc(mt) instead!
       """
-      from . import _mimetypes
+      from Products.zms import _mimetypes
       warnings.warn('Using MyBlob.getMimeTypeIconSrc() is deprecated.'
                    ' Use zmscontext.getMimeTypeIconSrc(mt) instead.',
                      DeprecationWarning, 

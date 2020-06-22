@@ -29,28 +29,31 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import OFS.misc_
-import configparser
+try: # py3
+  import configparser
+except: # py2
+  import ConfigParser as configparser
 import importlib
 import operator
 import os
 import tempfile
 import time
-import urllib.request, urllib.parse, urllib.error
 import xml.dom.minidom
 import zExceptions
 from zope.interface import implementer, providedBy
 # Product imports.
-from . import standard
+from Products.zms import standard
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
-from . import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
-from . import _exportable
-from . import _fileutil
-from . import _filtermanager
-from . import _mediadb
-from . import _multilangmanager
-from . import _sequence
-from . import zopeutil
-from . import zmslog
+from Products.zms import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
+from Products.zms import _exportable
+from Products.zms import _fileutil
+from Products.zms import _filtermanager
+from Products.zms import _mediadb
+from Products.zms import _multilangmanager
+from Products.zms import _sequence
+from Products.zms import standard
+from Products.zms import zopeutil
+from Products.zms import zmslog
 
 
 UNINHERITED_PROPERTIES = ['ASP','Portal']
@@ -930,7 +933,7 @@ class ConfManager(
         message = self.getZMILangStr('MSG_INSERTED')%newId
       
       # Return with message.
-      message = urllib.parse.quote(message)
+      message = standard.urllib_quote(message)
       return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 
@@ -1171,5 +1174,20 @@ class ConfManager(
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
 InitializeClass(ConfManager)
+
+__REGISTRY__ = None
+def getRegistry():
+    global __REGISTRY__
+    if __REGISTRY__ is None:
+        print("__REGISTRY__['confdict']",__REGISTRY__)
+        __REGISTRY__ = {}
+        try:
+          __REGISTRY__['confdict'] = ConfDict.get()
+        except:
+          import sys, traceback, string
+          type, val, tb = sys.exc_info()
+          sys.stderr.write(string.join(traceback.format_exception(type, val, tb), ''))
+    return __REGISTRY__
+getRegistry()
 
 ################################################################################

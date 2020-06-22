@@ -23,8 +23,8 @@ from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import os
 # Product Imports.
-from . import standard
-from . import _fileutil
+from Products.zms import standard
+from Products.zms import _fileutil
 
 security = ModuleSecurityInfo('Products.zms.zopeutil')
 

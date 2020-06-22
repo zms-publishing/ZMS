@@ -20,8 +20,8 @@
 import copy
 import re
 # Product Imports.
-from . import standard
-from . import _globals
+from Products.zms import standard
+from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------

@@ -19,10 +19,9 @@
 # Imports.
 import ZPublisher.HTTPRequest
 import copy
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import standard
-from . import _blobfields
+from Products.zms import standard
+from Products.zms import _blobfields
 
 
 ################################################################################
@@ -210,7 +209,7 @@ class ZMSCharformatManager(object):
         id = ''
       
       # Return with message.
-      message = urllib.parse.quote(message)
+      message = standard.urllib_quote(message)
       return RESPONSE.redirect('manage_charformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
 
 ################################################################################

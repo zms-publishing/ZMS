@@ -17,9 +17,9 @@
 ################################################################################
 
 # Product Imports.
-from . import standard
-from . import _globals
-from . import _objattrs
+from Products.zms import standard
+from Products.zms import _globals
+from Products.zms import _objattrs
 
 
 class TextFormatObject(object):

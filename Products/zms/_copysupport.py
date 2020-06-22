@@ -19,11 +19,10 @@
 # Imports.
 import copy
 import time
-import urllib.request, urllib.parse, urllib.error
 from OFS import Moniker
 from OFS.CopySupport import _cb_decode, _cb_encode, CopyError # TODO , eNoData, eNotFound, eInvalid
 # Product Imports.
-from . import standard
+from Products.zms import standard
 
 
 # ------------------------------------------------------------------------------
@@ -202,7 +201,7 @@ class CopySupport(object):
       # Return with message.
       if RESPONSE is not None:
         message = ''
-        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], urllib.parse.quote(message)))
+        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.urllib_quote(message)))
 
 
     ############################################################################
@@ -215,7 +214,7 @@ class CopySupport(object):
       # Return with message.
       if RESPONSE is not None:
         message = ''
-        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], urllib.parse.quote(message)))
+        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.urllib_quote(message)))
 
 
     ############################################################################
@@ -263,6 +262,6 @@ class CopySupport(object):
       if RESPONSE is not None:
         message = self.getZMILangStr('MSG_PASTED')
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], urllib.parse.quote(message)))
+        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.url_quote(message)))
 
 ################################################################################

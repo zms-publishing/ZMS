@@ -26,14 +26,13 @@ import sys
 import tempfile
 import time
 import transaction
-import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
-from . import standard
-from . import _blobfields
-from . import _fileutil
-from . import _filtermanager
-from . import _globals
+from Products.zms import standard
+from Products.zms import _blobfields
+from Products.zms import _fileutil
+from Products.zms import _filtermanager
+from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------

@@ -25,29 +25,28 @@ __version__ = '0.1'
 
 # Imports.
 from App.Common import package_home
-import configparser as ConfigParser
 import OFS.misc_
 import codecs
 import fnmatch
 import os
 import re
 # Product Imports.
-from . import standard
-from . import zms
-from . import zmscustom
-from . import zmssqldb
-from . import zmslinkcontainer
-from . import zmslinkelement
-from . import _confmanager
-from . import _multilangmanager
-from . import _mediadb
-from . import _sequence
-from . import _zmsattributecontainer
-from . import ZMSZCatalogAdapter
-from . import ZMSFormatProvider, ZMSFormatProviderAcquired
-from . import ZMSMetacmdProvider, ZMSMetacmdProviderAcquired
-from . import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
-from . import ZMSRepositoryManager
+from Products.zms import standard
+from Products.zms import zms
+from Products.zms import zmscustom
+from Products.zms import zmssqldb
+from Products.zms import zmslinkcontainer
+from Products.zms import zmslinkelement
+from Products.zms import _confmanager
+from Products.zms import _multilangmanager
+from Products.zms import _mediadb
+from Products.zms import _sequence
+from Products.zms import _zmsattributecontainer
+from Products.zms import ZMSZCatalogAdapter
+from Products.zms import ZMSFormatProvider, ZMSFormatProviderAcquired
+from Products.zms import ZMSMetacmdProvider, ZMSMetacmdProviderAcquired
+from Products.zms import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
+from Products.zms import ZMSRepositoryManager
 
 try:
   from Products.CMFCore.DirectoryView import registerFileExtension
@@ -108,7 +107,6 @@ def initialize(context):
             _mediadb.MediaDb,
             permission = 'Add ZMSs',
             constructors = (_mediadb.manage_addMediaDb, _mediadb.manage_addMediaDb),
-            icon = 'fas fa-images',
             container_filter = _mediadb.containerFilter,
             )
         context.registerClass(

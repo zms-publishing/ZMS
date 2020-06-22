@@ -20,13 +20,12 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from zope.interface import implementer
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import standard
-from . import _xmllib
-from . import IZMSCatalogConnector
-from . import ZMSZCatalogAdapter
-from . import ZMSItem
+from Products.zms import IZMSCatalogConnector
+from Products.zms import ZMSZCatalogAdapter
+from Products.zms import ZMSItem
+from Products.zms import standard
+from Products.zms import _xmllib
 
 
 ################################################################################

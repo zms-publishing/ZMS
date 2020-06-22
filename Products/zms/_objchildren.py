@@ -24,11 +24,10 @@
 # Imports.
 import copy
 import time
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import _blobfields
-from . import _fileutil
-from . import standard
+from Products.zms import _blobfields
+from Products.zms import _fileutil
+from Products.zms import standard
 
 
 ################################################################################
@@ -204,7 +203,7 @@ class ObjChildren(object):
       # Return with message.
       if RESPONSE is not None:
         message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
-        message = urllib.parse.quote(message)
+        message = standard.url_quote(message)
         target = REQUEST.get('manage_target', '%s/manage_main'%obj.id)
         RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target, lang, message))
 

@@ -20,11 +20,11 @@
 import copy
 import re
 # Product Imports.
-from . import standard
-from . import _blobfields
-from . import _confmanager
-from . import _fileutil
-from . import _globals
+from Products.zms import standard
+from Products.zms import _blobfields
+from Products.zms import _confmanager
+from Products.zms import _fileutil
+from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------

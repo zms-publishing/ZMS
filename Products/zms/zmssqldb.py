@@ -22,15 +22,14 @@ from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import urllib.request, urllib.parse, urllib.error
 import time
 import zExceptions
 # Product Imports.
-from . import zmscustom
-from . import standard
-from . import _confmanager
-from . import _fileutil
-from . import _globals
+from Products.zms import zmscustom
+from Products.zms import standard
+from Products.zms import _confmanager
+from Products.zms import _fileutil
+from Products.zms import _globals
 
 
 ################################################################################
@@ -64,7 +63,7 @@ def manage_addZMSSqlDb(self, lang, _sort_id, REQUEST, RESPONSE):
   # Return with message.
   if REQUEST.RESPONSE:
     message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
-    REQUEST.RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), obj.id, lang, urllib.parse.quote(message)))
+    REQUEST.RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), obj.id, lang, standard.url_quote(message)))
 
 
 ################################################################################
@@ -1776,8 +1775,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Return with message.
-      message = urllib.parse.quote(message)
-      el_data = urllib.parse.quote(el_data)
+      message = standard.url_quote(message)
+      el_data = standard.url_quote(el_data)
       return RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s&el_data=%s'%(target, lang, message, el_data))
 
 

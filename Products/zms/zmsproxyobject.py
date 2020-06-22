@@ -19,9 +19,9 @@
 # Imports.
 from zope.interface import implementer
 # Product Imports.
-from . import IZMSMetamodelProvider, IZMSFormatProvider
-from . import zmscontainerobject
-from . import  _globals
+from Products.zms import IZMSMetamodelProvider, IZMSFormatProvider
+from Products.zms import zmscontainerobject
+from Products.zms import  _globals
 
 
 ################################################################################

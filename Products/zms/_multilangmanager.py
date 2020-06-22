@@ -20,13 +20,12 @@
 from App.Common import package_home
 import OFS.misc_
 import copy
-import urllib.request, urllib.parse, urllib.error
 from zope.interface import implementer
 # Product Imports.
-from . import IZMSLocale
-from . import _fileutil
-from . import _xmllib
-from . import standard
+from Products.zms import IZMSLocale
+from Products.zms import _fileutil
+from Products.zms import _xmllib
+from Products.zms import standard
 
 
 # ------------------------------------------------------------------------------
@@ -527,7 +526,7 @@ class MultiLanguageManager(object):
           self.setLanguage(newId, newLabel, newParent, newManage)
       
       # Return with message.
-      message = urllib.parse.quote(self.getZMILangStr('MSG_CHANGED'))
+      message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
       return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 
@@ -659,7 +658,7 @@ class MultiLanguageManager(object):
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
         
         # Return with message.
-        message = urllib.parse.quote(self.getZMILangStr('MSG_CHANGED'))
+        message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
         return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s#langdict'%(lang, message))
 
 ################################################################################

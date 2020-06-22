@@ -24,14 +24,13 @@ from zope.interface import implementer
 import copy
 import sys
 import time
-import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
-from . import standard
-from . import IZMSCatalogConnector
-from . import ZMSZCatalogAdapter
-from . import ZMSItem
-from . import _globals
+from Products.zms import standard
+from Products.zms import IZMSCatalogConnector
+from Products.zms import ZMSZCatalogAdapter
+from Products.zms import ZMSItem
+from Products.zms import _globals
 
 
 extra_column_ids = ['loc', 'index_html', 'custom']

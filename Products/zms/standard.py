@@ -47,15 +47,29 @@ import re
 import sys
 import time
 import traceback
-import urllib.request, urllib.parse, urllib.error
+try: # py3
+  from urllib.parse import quote_plus as urllib_quote_plus
+  from urllib.parse import unquote    as urllib_unquote
+  from urllib.parse import urlparse   as urllib_urlparse
+except: # py2
+  from urllib import quote_plus       as urllib_quote_plus
+  from urllib import unquote          as urllib_quote
+  from urlparse import urlparse       as urllib_urlparse
 import zExceptions
 import six
 # Product Imports.
-from . import _globals
-from . import _fileutil
-from . import _mimetypes
+from Products.zms import _globals
+from Products.zms import _fileutil
+from Products.zms import _mimetypes
 
 security = ModuleSecurityInfo('Products.zms.standard')
+
+def urllib_quote(s):
+  try: # py3
+    from urllib.parse import quote as _urllib_quote
+  except: # py2
+    from urllib import quote as _urllib_quote
+  return _urllib_quote(s)
 
 """
 @group PIL (Python Imaging Library): pil_img_*
@@ -77,7 +91,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   homeElmnt = [x for x in self.objectValues() if x.id == homeElmnt.id][0]
   
   ##### Add ZMS ####
-  from . import zms
+  from Products.zms import zms
   zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
   zms.initContent(homeElmnt.content, 'content.default.zip', REQUEST)
 
@@ -213,11 +227,11 @@ def url_append_params(url, dict, sep='&amp;'):
     value = dict[key]
     if isinstance(value, list):
       for item in value:
-        qi = key + ':list=' + urllib.parse.quote(str(item))
+        qi = key + ':list=' + urllib_quote(str(item))
         url += qs + qi
         qs = sep
     else:
-      qi = key + '=' + urllib.parse.quote(str(value))
+      qi = key + '=' + urllib_quote(str(value))
       if url.find( '?' + qi) < 0 and url.find( '&' + qi) < 0 and url.find( '&amp;' + qi) < 0:
         url += qs + qi
       qs = sep
@@ -251,18 +265,18 @@ def url_inherit_params(url, REQUEST, exclude=[], sep='&amp;'):
           else:
             url += sep
           if isinstance(v, int):
-            url += urllib.parse.quote(key+':int') + '=' + urllib.parse.quote(str(v))
+            url += urllib_quote(key+':int') + '=' + urllib_quote(str(v))
           elif isinstance(v, float):
-            url += urllib.parse.quote(key+':float') + '=' + urllib.parse.quote(str(v))
+            url += urllib_quote(key+':float') + '=' + urllib_quote(str(v))
           elif isinstance(v, list):
             c = 0
             for i in v:
               if c > 0:
                 url += sep
-              url += urllib.parse.quote(key+':list') + '=' + urllib.parse.quote(str(i))
+              url += urllib_quote(key+':list') + '=' + urllib_quote(str(i))
               c = c + 1
           else:
-            url += key + '=' + urllib.parse.quote(str(v))
+            url += key + '=' + urllib_quote(str(v))
   return url+anchor
 
 
@@ -313,7 +327,7 @@ def url_encode(url):
   @return: Encoded string
   @rtype: C{str}
   """
-  return ''.join([urllib.parse.quote_plus(x) for x in url])
+  return ''.join([urllib_quote_plus(x) for x in url])
 
 
 security.declarePublic('guess_content_type')
@@ -541,7 +555,7 @@ def qs_append(qs, p, v):
     qs += '?'
   else:
     qs += '&amp;'
-  qs += p + '=' + urllib.parse.quote(v)
+  qs += p + '=' + urllib_quote(v)
   return qs
 
 
@@ -721,8 +735,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   @rtype: C{str}
   """
   # Parse URL.
-  import urllib.parse
-  u = urllib.parse.urlparse(url)
+  u = urllib_urlparse(url)
   writeLog( context, "[http_import.%s]: %s"%(method, str(u)))
   scheme = u[0]
   netloc = u[1]
@@ -754,7 +767,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   # Set request-headers.
   if auth is not None:
     userpass = auth['username']+':'+auth['password']
-    userpass = base64.encodestring(urllib.parse.unquote(userpass)).strip()
+    userpass = base64.encodestring(urllib_unquote(userpass)).strip()
     headers['Authorization'] =  'Basic '+userpass
   if method == 'GET' and query:
     path += '?' + query
@@ -1541,7 +1554,7 @@ def is_equal(x, y):
         return True
     elif type(x) is dict:
       if len(x) == len(y):
-        for k in x.keys():
+        for k in x:
           if not k in x or not k in y or not is_equal(x.get(k),y.get(k)):
             return False
         return True
@@ -1785,7 +1798,7 @@ def getXmlHeader(encoding='utf-8'):
   @type encoding: C{str}
   @rtype: C{str}
   """
-  from . import _xmllib
+  from Products.zms import _xmllib
   return _xmllib.xml_header(encoding)
 
 
@@ -1803,7 +1816,7 @@ def toXmlString(context, v, xhtml=False, encoding='utf-8'):
   @type encoding
   @rtype: C{string}
   """
-  from . import _xmllib
+  from Products.zms import _xmllib
   return _xmllib.toXml(context, v, xhtml=xhtml, encoding=encoding)
 
 
@@ -1816,7 +1829,7 @@ def parseXmlString(xml):
   @return: C{list} or C{dict}
   @rtype: C{any}
   """
-  from . import _xmllib
+  from Products.zms import _xmllib
   builder = _xmllib.XmlAttrBuilder()
   if isinstance(xml, str):
     xml = xml.encode()
@@ -1841,7 +1854,7 @@ def processData(context, processId, data, trans=None):
   @return: the transformed data
   @rtype: C{str}
   """
-  from . import _filtermanager
+  from Products.zms import _filtermanager
   return _filtermanager.processData(context, processId, data, trans)
 
 
@@ -2113,7 +2126,7 @@ def extutil():
   """
   Returns util to handle zms3.extensions
   """
-  from . import _extutil
+  from Products.zms import _extutil
   return _extutil.ZMSExtensions()
 
 

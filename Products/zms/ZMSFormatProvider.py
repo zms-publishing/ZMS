@@ -22,10 +22,10 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 from zope.interface import implementer
 # Product Imports.
-from . import _confmanager
-from . import IZMSConfigurationProvider
-from . import IZMSFormatProvider, ZMSTextformatManager, ZMSCharformatManager
-from . import ZMSItem
+from Products.zms import _confmanager
+from Products.zms import IZMSConfigurationProvider
+from Products.zms import IZMSFormatProvider, ZMSTextformatManager, ZMSCharformatManager
+from Products.zms import ZMSItem
 
 
 ################################################################################

@@ -23,14 +23,13 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 import copy
 import os
-import urllib.request, urllib.parse, urllib.error
 from zope.interface import implementer
 # Product Imports.
-from . import _fileutil
-from . import standard
-from . import zopeutil
-from . import IZMSMetacmdProvider, IZMSConfigurationProvider, IZMSRepositoryProvider
-from . import ZMSItem
+from Products.zms import _fileutil
+from Products.zms import standard
+from Products.zms import zopeutil
+from Products.zms import IZMSMetacmdProvider, IZMSConfigurationProvider, IZMSRepositoryProvider
+from Products.zms import ZMSItem
 
 
 # Example code.
@@ -568,7 +567,7 @@ class ZMSMetacmdProvider(
         self.getRepositoryManager().exec_auto_commit(self, id)
         
         # Return with message.
-        message = urllib.parse.quote(message)
+        message = standard.url_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
 
 ################################################################################

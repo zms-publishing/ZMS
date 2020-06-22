@@ -24,17 +24,16 @@ import inspect
 import os
 import re
 import time
-import urllib.request, urllib.parse, urllib.error
 from zope.interface import implementer, providedBy
 # Product Imports.
-from . import IZMSConfigurationProvider
-from . import IZMSDaemon
-from . import IZMSRepositoryManager
-from . import IZMSRepositoryProvider
-from . import ZMSItem
-from . import _fileutil
-from . import standard
-from . import zopeutil
+from Products.zms import IZMSConfigurationProvider
+from Products.zms import IZMSDaemon
+from Products.zms import IZMSRepositoryManager
+from Products.zms import IZMSRepositoryProvider
+from Products.zms import ZMSItem
+from Products.zms import _fileutil
+from Products.zms import standard
+from Products.zms import zopeutil
 
 
 def get_class(py):

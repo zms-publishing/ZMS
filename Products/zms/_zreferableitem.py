@@ -21,11 +21,10 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import base64
 import copy
 import re
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import standard
-from . import _confmanager
-from . import _objattrs
+from Products.zms import _confmanager
+from Products.zms import _objattrs
+from Products.zms import standard
 
 # ------------------------------------------------------------------------------
 #  isMailLink:

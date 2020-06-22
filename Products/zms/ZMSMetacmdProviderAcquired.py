@@ -20,7 +20,7 @@
 # Imports.
 from zope.interface import implementer
 # Product Imports.
-from . import IZMSMetacmdProvider, ZMSMetacmdProvider
+from Products.zms import IZMSMetacmdProvider, ZMSMetacmdProvider
 
 
 ################################################################################

@@ -20,16 +20,15 @@
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 import sys
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import zmscontainerobject
-from . import zmscustom
-from . import zmsobject
-from . import zmsproxyobject
-from . import standard
-from . import _confmanager
-from . import _xmllib
-from . import _zreferableitem
+from Products.zms import zmscontainerobject
+from Products.zms import zmscustom
+from Products.zms import zmsobject
+from Products.zms import zmsproxyobject
+from Products.zms import standard
+from Products.zms import _confmanager
+from Products.zms import _xmllib
+from Products.zms import _zreferableitem
 
 
 """

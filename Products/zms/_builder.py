@@ -22,7 +22,7 @@
 import pyexpat
 import time
 # Product Imports.
-from . import standard
+from Products.zms import standard
 
 ################################################################################
 # class ParseError(Exception):

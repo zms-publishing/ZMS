@@ -26,13 +26,12 @@ import copy
 import os
 import tempfile
 import time
-import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
-from . import _blobfields
-from . import _fileutil
-from . import standard
-from . import zopeutil
+from Products.zms import _blobfields
+from Products.zms import _fileutil
+from Products.zms import standard
+from Products.zms import zopeutil
 
 
 ################################################################################
@@ -847,7 +846,7 @@ class FilterManager(object):
         message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%pid), (pos+1))
       
       # Return with message.
-      message = urllib.parse.quote(message)
+      message = standard.url_quote(message)
       return RESPONSE.redirect('manage_customizeFilterForm?id=%s&pid:int=%i&lang=%s&manage_tabs_message=%s'%(id, pid, lang, message))
 
 
@@ -909,7 +908,7 @@ class FilterManager(object):
         message = self.getZMILangStr('MSG_INSERTED')%id
 
       # Return with message.
-      message = urllib.parse.quote(message)
+      message = standard.url_quote(message)
       return RESPONSE.redirect('manage_customizeFilterForm?id=%s&lang=%s&manage_tabs_message=%s'%(id, lang, message))
 
 ################################################################################

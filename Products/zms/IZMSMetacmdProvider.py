@@ -19,7 +19,7 @@
 # Imports.
 from zope.interface import Interface
 # Product Imports.
-from . import IZMSActionListContributor
+from Products.zms import IZMSActionListContributor
 
 class IZMSMetacmdProvider(Interface, IZMSActionListContributor.IZMSActionListContributor):
 

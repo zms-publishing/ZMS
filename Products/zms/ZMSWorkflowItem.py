@@ -17,7 +17,7 @@
 ################################################################################
 
 # Product Imports.
-from . import standard
+from Products.zms import standard
 
 
 class ZMSWorkflowItem(object): 

@@ -19,10 +19,9 @@
 # Imports.
 from App.Common import package_home
 import copy
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import ZMSTextformat
-from . import standard
+from Products.zms import ZMSTextformat
+from Products.zms import standard
 
 
 ################################################################################
@@ -225,7 +224,7 @@ class ZMSTextformatManager(object):
       
       # Return with message.
       if RESPONSE:
-        message = urllib.parse.quote(message)
+        message = standard.url_quote(message)
         return RESPONSE.redirect('manage_textformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
       
       return message

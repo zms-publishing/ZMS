@@ -34,12 +34,12 @@ from App.Common import package_home
 from OFS.Image import File
 
 # Product Imports
-from . import standard
-from . import _blobfields
-from . import _fileutil
-from . import _globals
-from . import _objattrs
-from . import zopeutil
+from Products.zms import standard
+from Products.zms import _blobfields
+from Products.zms import _fileutil
+from Products.zms import _globals
+from Products.zms import _objattrs
+from Products.zms import zopeutil
 
 
 # Product Imports.
@@ -455,7 +455,7 @@ def toCdata(self, s, xhtml=False):
   rtn = ''
 
   # Return Text (HTML) in CDATA as XHTML.
-  from . import _filtermanager
+  from Products.zms import _filtermanager
   processId = 'tidy'
   if not xhtml \
      and self.getConfProperty('ZMS.export.xml.tidy', 0) \

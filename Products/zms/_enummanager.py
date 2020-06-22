@@ -19,7 +19,7 @@
 # Imports.
 from App.Common import package_home
 # Product Imports.
-from . import _xmllib
+from Products.zms import _xmllib
 
 
 ################################################################################

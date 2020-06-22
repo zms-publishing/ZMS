@@ -25,15 +25,14 @@ import fnmatch
 import math
 import string
 import time
-import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
-from . import ZMSMetaobjManager
-from . import pilutil
-from . import standard
-from . import zopeutil
-from . import _blobfields
-from . import _globals
+from Products.zms import ZMSMetaobjManager
+from Products.zms import pilutil
+from Products.zms import standard
+from Products.zms import zopeutil
+from Products.zms import _blobfields
+from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------

@@ -22,11 +22,10 @@ from Products.PythonScripts import PythonScript
 import copy
 import sys
 import time
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import IZMSRepositoryProvider
-from . import standard
-from . import zopeutil
+from Products.zms import IZMSRepositoryProvider
+from Products.zms import standard
+from Products.zms import zopeutil
 
 
 ################################################################################
@@ -196,7 +195,7 @@ class ZMSWorkflowTransitionsManager(object):
       id = ''
     
     # Return with message.
-    message = urllib.parse.quote(message)
+    message = standard.url_quote(message)
     return RESPONSE.redirect('manage_main?id=%s&lang=%s&key=%s&manage_tabs_message=%s'%(id, lang, key, message))
 
 ################################################################################

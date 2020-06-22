@@ -29,13 +29,13 @@ import time
 import zExceptions
 import zope.interface
 # Product Imports.
-from . import IZMSRepositoryProvider
-from . import standard
-from . import zopeutil
-from . import _blobfields
-from . import _fileutil
-from . import _globals
-from . import _ziputil
+from Products.zms import IZMSRepositoryProvider
+from Products.zms import standard
+from Products.zms import zopeutil
+from Products.zms import _blobfields
+from Products.zms import _fileutil
+from Products.zms import _globals
+from Products.zms import _ziputil
 
 
 # ------------------------------------------------------------------------------

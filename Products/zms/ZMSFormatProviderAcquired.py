@@ -21,7 +21,7 @@
 import copy
 from zope.interface import implementer
 # Product Imports.
-from . import IZMSFormatProvider, ZMSFormatProvider
+from Products.zms import IZMSFormatProvider, ZMSFormatProvider
 
 
 ################################################################################

@@ -19,11 +19,10 @@
 # Imports.
 import ZPublisher.HTTPRequest
 import copy
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import IZMSRepositoryProvider
-from . import standard
-from . import _blobfields
+from Products.zms import IZMSRepositoryProvider
+from Products.zms import standard
+from Products.zms import _blobfields
 
 
 ################################################################################
@@ -227,7 +226,7 @@ class ZMSWorkflowActivitiesManager(object):
       id = ''
     
     # Return with message.
-    message = urllib.parse.quote(message)
+    message = standard.url_quote(message)
     return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 ################################################################################

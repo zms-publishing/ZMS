@@ -21,7 +21,7 @@ import re
 import sys
 import zope.interface
 # Product Imports.
-from . import standard
+from Products.zms import standard
 
 
 ################################################################################

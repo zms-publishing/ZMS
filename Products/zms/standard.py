@@ -70,10 +70,8 @@ if sys.version.startswith("2."):
   def pybytes(object=u'', encoding='utf-8', errors='strict'):
     return str(object)
 else:
-  def pystr(object=b'', encoding='utf-8', errors='strict'):
-    return str(object,encoding,errors)
-  def pybytes(object=u'', encoding='utf-8', errors='strict'):
-    return bytes(object,encoding,errors)
+  pystr = str
+  pybytes = bytes
 
 def url_quote(s):
   try: # py3

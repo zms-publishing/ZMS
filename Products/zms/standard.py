@@ -64,7 +64,18 @@ from Products.zms import _mimetypes
 
 security = ModuleSecurityInfo('Products.zms.standard')
 
-def urllib_quote(s):
+if sys.version.startswith("2."):
+  def pystr(object='', encoding='utf-8', errors='strict'):
+    return unicode(object)
+  def pybytes(object=u'', encoding='utf-8', errors='strict'):
+    return str(object)
+else:
+  def pystr(object=b'', encoding='utf-8', errors='strict'):
+    return str(object,encoding,errors)
+  def pybytes(object=u'', encoding='utf-8', errors='strict'):
+    return bytes(object,encoding,errors)
+
+def url_quote(s):
   try: # py3
     from urllib.parse import quote as _urllib_quote
   except: # py2
@@ -229,12 +240,12 @@ def url_append_params(url, dict, sep='&amp;'):
     value = dict[key]
     if isinstance(value, list):
       for item in value:
-        qi = key + ':list=' + urllib_quote(str(item))
+        qi = key + ':list=' + url_quote(str(item))
         url += qs + qi
         qs = sep
     else:
       try:
-        qi = key + '=' + urllib_quote(str(value))
+        qi = key + '=' + url_quote(str(value))
       except:
         qi = key + '=' + value.encode('utf-8','replace')
       if url.find( '?' + qi) < 0 and url.find( '&' + qi) < 0 and url.find( '&amp;' + qi) < 0:
@@ -270,18 +281,18 @@ def url_inherit_params(url, REQUEST, exclude=[], sep='&amp;'):
           else:
             url += sep
           if isinstance(v, int):
-            url += urllib_quote(key+':int') + '=' + urllib_quote(str(v))
+            url += url_quote(key+':int') + '=' + url_quote(str(v))
           elif isinstance(v, float):
-            url += urllib_quote(key+':float') + '=' + urllib_quote(str(v))
+            url += url_quote(key+':float') + '=' + url_quote(str(v))
           elif isinstance(v, list):
             c = 0
             for i in v:
               if c > 0:
                 url += sep
-              url += urllib_quote(key+':list') + '=' + urllib_quote(str(i))
+              url += url_quote(key+':list') + '=' + url_quote(str(i))
               c = c + 1
           else:
-            url += key + '=' + urllib_quote(str(v))
+            url += key + '=' + url_quote(str(v))
   return url+anchor
 
 
@@ -301,7 +312,7 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
   @rtype: C{str}
   """
   if encoding is not None:
-    s = str( s, encoding)
+    s = standard.pystr( s, encoding)
   else:
     s = str(s)
   # remove all tags.
@@ -560,7 +571,7 @@ def qs_append(qs, p, v):
     qs += '?'
   else:
     qs += '&amp;'
-  qs += p + '=' + urllib_quote(v)
+  qs += p + '=' + url_quote(v)
   return qs
 
 

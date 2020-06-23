@@ -126,7 +126,7 @@ def localHtml(self, html):
     default_charset = 'utf-8'
     charset = self.REQUEST.get('ZMS_CHARSET', default_charset)
     if not isinstance(html, str):
-      html = str( html, default_charset)
+      html = standard.pystr( html, default_charset)
     html = html.encode( charset)
   except ( UnicodeDecodeError, UnicodeEncodeError):
     standard.writeError( self, "[localHtml]")

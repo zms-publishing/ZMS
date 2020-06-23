@@ -179,7 +179,7 @@ for client in context.getPortalClients():
 					metaObjAttrIds = [x['id'] for x in metaObj['attrs']]
 					clientMetaObjAttrIds = [x['id'] for x in clientMetaObj['attrs']]
 					if metaObjAttrIds != clientMetaObjAttrIds:
-						title += ' (-%s, +%s)'%(str([x for x in metaObjAttrIds if x not in clientMetaObjAttrIds]),str([x for x in clientMetaObjAttrIds if x not in metaObjAttrIds]))
+						title += ' (-%s, +%s)'%(standard.pystr([x for x in metaObjAttrIds if x not in clientMetaObjAttrIds]),standard.pystr([x for x in clientMetaObjAttrIds if x not in metaObjAttrIds]))
 						clazz.append('warning')
 				clazz.append('active')
 		else:

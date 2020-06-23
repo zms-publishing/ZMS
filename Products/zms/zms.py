@@ -236,7 +236,7 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     # Return with message.
     message = obj.getLangStr('MSG_INSERTED', manage_lang)%obj.meta_type
     message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-    RESPONSE.redirect('%s/%s/manage?manage_tabs_message=%s'%(homeElmnt.absolute_url(), obj.id, standard.urllib_quote(message)))
+    RESPONSE.redirect('%s/%s/manage?manage_tabs_message=%s'%(homeElmnt.absolute_url(), obj.id, standard.url_quote(message)))
 
   else:
     RESPONSE.redirect('%s/manage_main'%self.absolute_url())

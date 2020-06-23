@@ -1673,7 +1673,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       if i > 0:
         fileext = filename[ i:]
         filename = filename[ :i]
-      filename = filename + '_' + str( rowid) + fileext
+      filename = filename + '_' + standard.pystr( rowid) + fileext
       # Update
       oldfilename = 'None'
       if rowid is not None:

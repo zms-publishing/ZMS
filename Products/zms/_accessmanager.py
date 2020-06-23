@@ -419,7 +419,7 @@ class AccessableObject(object):
       
       # Return with message.
       if RESPONSE:
-        message = standard.urllib_quote(message)
+        message = standard.url_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 

@@ -209,7 +209,7 @@ class ZMSCharformatManager(object):
         id = ''
       
       # Return with message.
-      message = standard.urllib_quote(message)
+      message = standard.url_quote(message)
       return RESPONSE.redirect('manage_charformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
 
 ################################################################################

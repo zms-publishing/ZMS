@@ -518,7 +518,7 @@ class ConfManager(
       d = self.get_conf_properties()
       if REQUEST is not None:
         import base64
-        prefix = str(base64.b64decode(prefix),'utf-8')
+        prefix = standard.pystr(base64.b64decode(prefix),'utf-8')
         r = {}
         for x in d:
           if x.startswith(prefix+'.'):
@@ -585,7 +585,7 @@ class ConfManager(
         import base64
         try:
           #Py3
-          key = str(base64.b64decode(key),'utf-8')
+          key = standard.pystr(base64.b64decode(key),'utf-8')
         except:
           #Py2
           key = base64.b64decode(key)
@@ -938,7 +938,7 @@ class ConfManager(
         message = self.getZMILangStr('MSG_INSERTED')%newId
       
       # Return with message.
-      message = standard.urllib_quote(message)
+      message = standard.url_quote(message)
       return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 

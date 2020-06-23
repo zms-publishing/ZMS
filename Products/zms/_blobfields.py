@@ -179,7 +179,7 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
     blob = clazz( id='',title='',file='')
   except:
     py_ver = 3
-    blob = clazz( id='', title='', file=bytes('','utf-8'))
+    blob = clazz( id='', title='', file=standard.pybytes('','utf-8'))
   blob.update_data(file, content_type=mt, size=len(file))
   blob.aq_parent = self
   blob.mediadbfile = None

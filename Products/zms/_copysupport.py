@@ -201,7 +201,7 @@ class CopySupport(object):
       # Return with message.
       if RESPONSE is not None:
         message = ''
-        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.urllib_quote(message)))
+        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.url_quote(message)))
 
 
     ############################################################################
@@ -214,7 +214,7 @@ class CopySupport(object):
       # Return with message.
       if RESPONSE is not None:
         message = ''
-        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.urllib_quote(message)))
+        RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.url_quote(message)))
 
 
     ############################################################################

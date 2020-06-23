@@ -66,6 +66,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
   t0 = time.time()
   target = self.absolute_url()
   
+  print(REQUEST['btn'],type(REQUEST['btn']),self.getZMILangStr('BTN_INSERT'),type(self.getZMILangStr('BTN_INSERT')))
   if REQUEST['btn'] == self.getZMILangStr('BTN_INSERT'):
     
     # Create

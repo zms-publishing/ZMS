@@ -583,7 +583,12 @@ class ConfManager(
       REQUEST = kwargs.get('REQUEST')
       if REQUEST is not None:
         import base64
-        key = str(base64.b64decode(key),'utf-8')
+        try:
+          #Py3
+          key = str(base64.b64decode(key),'utf-8')
+        except:
+          #Py2
+          key = base64.b64decode(key)
       if key in OFS.misc_.misc_.zms['confdict']:
         default = OFS.misc_.misc_.zms['confdict'].get(key)
       value = default

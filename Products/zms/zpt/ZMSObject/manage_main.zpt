@@ -29,13 +29,12 @@
 	<input type="hidden" id="_sort_id" name="_sort_id:int" value="0" />
 	<input type="hidden" id="custom" name="custom" value="" />
 	<tal:block tal:define="global dummy0 python:here.initObjChildren(request)"></tal:block>
-	<tal:block tal:content="structure python:here.obj_input_fields(action='Save',meta_id=request.get('ZMS_INSERT',here.meta_id))">
+	<tal:block tal:content="structure python:here.obj_input_fields(action='Save', meta_id=request.get('ZMS_INSERT', here.meta_id) )">
 		the input-fields
 	</tal:block>
 </form>
 </tal:block>
 
-<div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 </body>

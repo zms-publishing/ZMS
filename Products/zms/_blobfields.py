@@ -138,9 +138,13 @@ def createBlobField(self, objtype, file=b''):
     blob = uploadBlobField( self, objtype, file)
   elif isinstance(file, dict):
     data = file.get( 'data', '')
-    if type(data) is str:
-      data = bytes(data,'utf-8')
     if isinstance(data, StringType):
+      try:
+        #Py3
+        data = bytes(data,'utf-8')
+      except:
+        #Py2
+        data = unicode(data,'utf-8','replace')
       data = StringIO( data)
     blob = uploadBlobField( self, objtype, data, file.get('filename', ''))
     if file.get('content_type'):
@@ -170,11 +174,19 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
     clazz = MyImage
   elif clazz in [_globals.DT_FILE, 'file']:
     clazz = MyFile
-  blob = clazz( id='', title='', file=bytes('','utf-8'))
+  try:
+    py_ver = 2
+    blob = clazz( id='',title='',file='')
+  except:
+    py_ver = 3
+    blob = clazz( id='', title='', file=bytes('','utf-8'))
   blob.update_data(file, content_type=mt, size=len(file))
   blob.aq_parent = self
   blob.mediadbfile = None
-  blob.filename = _fileutil.extractFilename( filename, undoable=True)
+  if py_ver == 3:
+    blob.filename = _fileutil.extractFilename( filename, undoable=True)
+  else:
+    blob.filename = _fileutil.extractFilename( filename, undoable=True).encode('utf-8')
   # Check size.
   if self is not None:
     maxlength_prop = 'ZMS.input.%s.maxlength'%['file','image'][isinstance(blob,MyImage)]

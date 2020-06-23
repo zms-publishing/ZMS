@@ -317,8 +317,7 @@
 		><tal:block tal:repeat="metaObj2 metaObjs"
 			><tal:block tal:define="objAttrs python:here.getMetaobjAttrs(metaObj2['id'])"
 				><tal:block tal:repeat="objAttr objAttrs"
-					><tal:block tal:condition="python:(objAttr['type']==metaObj['id']) or \
-							(objAttr['type']=='*' and metaObj['id'] in objAttr['keys'])">
+					><tal:block tal:condition="python:(objAttr['type']==metaObj['id']) or (objAttr['type']=='*' and metaObj['id'] in objAttr['keys'])">
 						<strong tal:condition="python:len(l)==0">Usage:</strong>
 						<tal:block tal:condition="not:python:len(l)==0">,</tal:block
 						><a target="_blank"

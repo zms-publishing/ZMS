@@ -231,7 +231,10 @@ def url_append_params(url, dict, sep='&amp;'):
         url += qs + qi
         qs = sep
     else:
-      qi = key + '=' + urllib_quote(str(value))
+      try:
+        qi = key + '=' + urllib_quote(str(value))
+      except:
+        qi = key + '=' + value.encode('utf-8','replace')
       if url.find( '?' + qi) < 0 and url.find( '&' + qi) < 0 and url.find( '&amp;' + qi) < 0:
         url += qs + qi
       qs = sep

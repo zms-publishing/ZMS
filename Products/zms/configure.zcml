@@ -11,13 +11,13 @@
       />
 
   <browser:resourceDirectory
-      name="zmi"
+      name="zmi_"
       directory="zmi/styles/resources"
       />
 
   <configure    
       xmlns:cmf="http://namespaces.zope.org/cmf"
-      xmlns:zcml="http://namespaces.zope.org/zcml"   
+      xmlns:zcml="http://namespaces.zope.org/zcml"
       zcml:condition="installed Products.CMFCore"
       >
     <cmf:registerDirectory name="myZMStheme33" recursive="True" />

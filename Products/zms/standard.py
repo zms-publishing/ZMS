@@ -133,6 +133,8 @@ def zmi_paths(context):
 	# remove zmi base css/js
 	kw["css_paths"] = css_paths(context)[:-1]
 	kw["js_paths"] = js_paths(context)[:-2]
+	kw["css_paths"] = tuple([x.replace('++resource++zmi/','++resource++zmi_/') for x in kw["css_paths"]])
+	kw["js_paths"] = tuple([x.replace('++resource++zmi/','++resource++zmi_/') for x in kw["js_paths"]])
 	return kw
 
 

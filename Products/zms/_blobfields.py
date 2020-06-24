@@ -174,19 +174,13 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
     clazz = MyImage
   elif clazz in [_globals.DT_FILE, 'file']:
     clazz = MyFile
-  try:
-    py_ver = 2
-    blob = clazz( id='',title='',file='')
-  except:
-    py_ver = 3
-    blob = clazz( id='', title='', file=standard.pybytes('','utf-8'))
+  # blob = clazz( id='', title='', file='')
+  blob = clazz( id='', title='', file=standard.pybytes('','utf-8'))
   blob.update_data(file, content_type=mt, size=len(file))
   blob.aq_parent = self
   blob.mediadbfile = None
-  if py_ver == 3:
-    blob.filename = _fileutil.extractFilename( filename, undoable=True)
-  else:
-    blob.filename = _fileutil.extractFilename( filename, undoable=True).encode('utf-8')
+  # blob.filename = _fileutil.extractFilename( filename, undoable=True).encode('utf-8')
+  blob.filename = standard.pybytes(_fileutil.extractFilename( filename, undoable=True).encode('utf-8'))
   # Check size.
   if self is not None:
     maxlength_prop = 'ZMS.input.%s.maxlength'%['file','image'][isinstance(blob,MyImage)]

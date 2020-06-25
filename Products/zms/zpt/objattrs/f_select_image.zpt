@@ -125,16 +125,19 @@
 					<a class="dropdown-item" tal:attributes="id python:'undo_btn_%s'%elName"><i class="fas fa-undo"></i><tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">Undo</tal:block></a>
 					<tal:block tal:condition="python:request.get('f_zmiSelectDisplaytype',True) and 'metaObj' in options and len([x for x in options['metaObj']['attrs'] if x['id'] == 'displaytype']) == 1"
 						><tal:block tal:define="global displaytypes python:[['top',2,'OPT_A_TOP'],['bottom',3,'OPT_A_BOTTOM'],['left',5,'OPT_A_LEFT_FLOAT'],['right',6,'OPT_A_RIGHT_FLOAT']]"
-							><div class="dropdown-header"><i class="fas fa-caret-down" title=""></i> <span tal:replace="python:here.getZMILangStr('ALIGN')"></div>
-								<input type="hidden" id="displaytype" name="displaytype:int" tal:attributes="value python:here.attr('displaytype')"
-								><tal:block tal:repeat="i python:range(len(displaytypes))"
-									><tal:block tal:define="global displaytype python:displaytypes[i]"
-										><a class="dropdown-item displaytype"
-											tal:attributes="data-value python:displaytype[1];title python:here.getZMILangStr(displaytype[2])"
-											><img tal:attributes="src python:'/++resource++zms_/img/btn_displaytype_%s.gif'%displaytype[0]"
-										/><span tal:content="python:here.getZMILangStr(displaytype[2]).split('(')[0]"></span></a
-									></tal:block
+							><div class="dropdown-header">
+								<i class="fas fa-caret-down" title=""></i>
+								<tal:block tal:replace="python:here.getZMILangStr('ALIGN')"></tal:block>
+							</div>
+							<input type="hidden" id="displaytype" name="displaytype:int" tal:attributes="value python:here.attr('displaytype')"
+							><tal:block tal:repeat="i python:range(len(displaytypes))"
+								><tal:block tal:define="global displaytype python:displaytypes[i]"
+									><a class="dropdown-item displaytype"
+										tal:attributes="data-value python:displaytype[1];title python:here.getZMILangStr(displaytype[2])"
+										><img tal:attributes="src python:'/++resource++zms_/img/btn_displaytype_%s.gif'%displaytype[0]"
+									/><span tal:content="python:here.getZMILangStr(displaytype[2]).split('(')[0]"></span></a
 								></tal:block
+							></tal:block
 						></tal:block>
 						<tal:block tal:define="dummy0 python:request.set('f_zmiSelectDisplaytype',False)"></tal:block>
 					</tal:block>

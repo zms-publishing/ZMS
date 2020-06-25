@@ -1669,7 +1669,7 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 								self.btnClicked = $(this).text();
 								var $fm = $(".modal form.form-horizontal");
 								$("input[name=btn]:hidden",$fm).remove();
-								$fm.append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_INSERT')+'">');
+								$fm.append('<input type="hidden" name="btn" value="BTN_INSERT">');
 								$fm.submit();
 							});
 					$('#addCancelBtn').click(function() {

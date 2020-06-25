@@ -66,20 +66,34 @@ from Products.zms import _mimetypes
 
 security = ModuleSecurityInfo('Products.zms.standard')
 
-# six-1.15.0
-# install six --upgrade --no-deps
-def is_str(v):
-  return isinstance(v,str)
-def is_bytes(v):
-  return isinstance(v,bytes)
-pystr = six.ensure_str
-pybytes = six.ensure_binary
+if six.PY2:
+  def is_str(v):
+    return isinstance(v,unicode)
+  def is_bytes(v):
+    return isinstance(v,str) or isinstance(v,bytes)
+  def pystr(object, encoding='latin-1', errors='strict'):
+    if type(object) is str:
+      object = unicode(object,encoding).encode('utf-8')
+    else:
+      object = unicode(object)
+    return object
+  def pybytes(object, encoding='latin-1', errors='strict'):
+    if type(object) is unicode:
+      object = object.encode(encoding,errors)
+    return object
+if six.PY3:
+  def is_str(v):
+    return isinstance(v,str)
+  def is_bytes(v):
+    return isinstance(v,bytes)
+  pystr = str
+  pybytes = bytes
 
 def url_quote(s):
-  try: # py3
-    from urllib.parse import quote as _urllib_quote
-  except: # py2
+  if six.PY2:
     from urllib import quote as _urllib_quote
+  if six.PY3:
+    from urllib.parse import quote as _urllib_quote
   return _urllib_quote(s)
 
 """

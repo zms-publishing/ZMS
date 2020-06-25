@@ -496,19 +496,19 @@ class MultiLanguageManager(object):
     #
     #  Change languages.
     ############################################################################
-    def manage_changeLanguages(self, lang, REQUEST, RESPONSE):
+    def manage_changeLanguages(self, lang, btn, REQUEST, RESPONSE):
       """ MultiLanguageManager.manage_changeLanguages """
       
       # Delete.
       # -------
-      if REQUEST['btn'] == self.getZMILangStr('BTN_DELETE'):
+      if btn == 'BTN_DELETE':
         ids = REQUEST.get('ids', [])
         for id in ids:
           self.delLanguage(id) 
       
       # Change.
       # -------
-      elif REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
+      elif btn == 'BTN_SAVE':
         for id in self.getLangIds():
           newLabel = REQUEST.get('%s_label'%id).strip()
           newParent = REQUEST.get('%s_parent'%id).strip()
@@ -605,12 +605,12 @@ class MultiLanguageManager(object):
     #
     #  Change property of language-dictionary.
     ############################################################################
-    def manage_changeLangDictProperties(self, lang, REQUEST, RESPONSE=None):
+    def manage_changeLangDictProperties(self, lang, btn, REQUEST, RESPONSE=None):
         """ MultiLanguageManager.manage_changeLangDictProperties """
         
         # Delete.
         # -------
-        if REQUEST['btn'] == self.getZMILangStr('BTN_DELETE'):
+        if btn == 'BTN_DELETE':
           ids = REQUEST.get('ids', [])
           dict = self.get_lang_dict()
           lang_dict = {}
@@ -621,7 +621,7 @@ class MultiLanguageManager(object):
         
         # Change.
         # -------
-        elif REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
+        elif btn == 'BTN_SAVE':
           d = self.get_lang_dict()
           lang_dict = {}
           for key in d.keys():
@@ -641,13 +641,13 @@ class MultiLanguageManager(object):
         
         # Export.
         # -------
-        elif REQUEST['btn'] == self.getZMILangStr('BTN_EXPORT'):
+        elif btn == 'BTN_EXPORT':
           ids = REQUEST.get('ids', [])
           return exportXml(self, ids, REQUEST, RESPONSE)
         
         # Import.
         # -------
-        elif REQUEST['btn'] == self.getZMILangStr('BTN_IMPORT'):
+        elif btn == 'BTN_IMPORT':
           f = REQUEST['file']
           if f:
             filename = f.filename

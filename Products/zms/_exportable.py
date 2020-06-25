@@ -17,6 +17,7 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from App.Common import package_home
@@ -58,7 +59,7 @@ def exportFiles(self, root, id, path):
       try:
         ob_id = ob.id()
       except:
-        ob_id = str(ob.id)
+        ob_id = standard.pystr(ob.id)
       _fileutil.exportObj(ob, '%s/%s'%(path, ob_id))
 
 
@@ -76,7 +77,7 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
         try:
           ob_id = ob.id()
         except:
-          ob_id = str(ob.id)
+          standard.pyob_id = str(ob.id)
         if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Page Template', 'Script (Python)']:
           try:
             if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Page Template']:
@@ -130,7 +131,7 @@ def localHtml(self, html):
     html = html.encode( charset)
   except ( UnicodeDecodeError, UnicodeEncodeError):
     standard.writeError( self, "[localHtml]")
-    v = str(sys.exc_info()[1])
+    v = standard.pystr(sys.exc_info()[1])
     STR_POSITION = ' position '
     i = v.find(STR_POSITION)
     if i > 0:

@@ -22,7 +22,7 @@
 				</tal:block>
 			</select>
 			<br />
-			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
+			<button type="submit" name="btn" class="btn btn-primary" value="BTN_ACQUIRE" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
 		</div><!-- .form-group -->
 	</form>
 	</div>

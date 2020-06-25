@@ -149,12 +149,12 @@ class ZMSWorkflowTransitionsManager(object):
     
     # Cancel.
     # -------
-    if btn in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+    if btn in [ 'BTN_CANCEL', 'BTN_BACK']:
       id = ''
     
     # Change.
     # -------
-    if btn == self.getZMILangStr('BTN_SAVE'):
+    if btn == 'BTN_SAVE':
       item = self.getTransition(id)
       newId = REQUEST.get('inpId').strip()
       newIconClazz = REQUEST.get('inpIconClazz', '')
@@ -170,13 +170,13 @@ class ZMSWorkflowTransitionsManager(object):
     
     # Delete.
     # -------
-    elif btn in ['delete', self.getZMILangStr('BTN_DELETE')]:
+    elif btn == 'BTN_DELETE':
       id = self.delItem(id, 'transitions')
       message = self.getZMILangStr('MSG_CHANGED')
     
     # Insert.
     # -------
-    elif btn == self.getZMILangStr('BTN_INSERT'):
+    elif btn == 'BTN_INSERT':
       item = {}
       newId = REQUEST.get('newId').strip()
       newName = REQUEST.get('newName').strip()

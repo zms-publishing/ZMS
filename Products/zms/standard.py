@@ -26,6 +26,7 @@ Scripts.  It can be accessed from Python with the statement
 "import Products.zms.standard"
 """
 # Imports.
+from __future__ import absolute_import
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 from AccessControl import AuthEncoding
 from App.Common import package_home
@@ -44,6 +45,7 @@ import logging
 import operator
 import os
 import re
+import six
 import sys
 import time
 import traceback
@@ -64,14 +66,14 @@ from Products.zms import _mimetypes
 
 security = ModuleSecurityInfo('Products.zms.standard')
 
-if sys.version.startswith("2."):
-  def pystr(object='', encoding='utf-8', errors='strict'):
-    return unicode(object)
-  def pybytes(object=u'', encoding='utf-8', errors='strict'):
-    return str(object)
-else:
-  pystr = str
-  pybytes = bytes
+# six-1.15.0
+# install six --upgrade --no-deps
+def is_str(v):
+  return isinstance(v,str)
+def is_bytes(v):
+  return isinstance(v,bytes)
+pystr = six.ensure_str
+pybytes = six.ensure_binary
 
 def url_quote(s):
   try: # py3
@@ -137,13 +139,15 @@ def getINSTANCE_HOME():
 
 security.declarePublic('zmi_paths')
 def zmi_paths(context):
-	from zmi.styles.subscriber import css_paths, js_paths
 	kw = {}
-	# remove zmi base css/js
-	kw["css_paths"] = css_paths(context)[:-1]
-	kw["js_paths"] = js_paths(context)[:-2]
-	kw["css_paths"] = tuple([x.replace('++resource++zmi/','++resource++zmi_/') for x in kw["css_paths"]])
-	kw["js_paths"] = tuple([x.replace('++resource++zmi/','++resource++zmi_/') for x in kw["js_paths"]])
+	try:
+		from zmi.styles.subscriber import css_paths, js_paths
+		# remove zmi base css/js
+		kw["css_paths"] = css_paths(context)[:-1]
+		kw["js_paths"] = js_paths(context)[:-2]
+	except:
+		kw["css_paths"] = ("/++resource++zmi_/bootstrap-4.1.1/bootstrap.min.css","/++resource++zmi_/fontawesome-free-5.8.1/css/all.css",)
+		kw["js_paths"] = ("/++resource++zmi_/jquery-3.2.1.min.js","/++resource++zmi_/bootstrap-4.1.1/bootstrap.bundle.min.js",)
 	return kw
 
 
@@ -238,7 +242,7 @@ def url_append_params(url, dict, sep='&amp;'):
     value = dict[key]
     if isinstance(value, list):
       for item in value:
-        qi = key + ':list=' + url_quote(str(item))
+        qi = key + ':list=' + url_quote(pystr(item))
         url += qs + qi
         qs = sep
     else:
@@ -310,9 +314,9 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
   @rtype: C{str}
   """
   if encoding is not None:
-    s = standard.pystr( s, encoding)
+    s = pystr( s, encoding)
   else:
-    s = str(s)
+    s = pystr(s)
   # remove all tags.
   s = re.sub( '<!--(.*?)-->', '', s)
   s = re.sub( '<script((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</script>', '', s)
@@ -365,7 +369,7 @@ html_quote:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def html_quote(v, name='(Unknown name)', md={}):
   if not isinstance(v,str):
-    v = str(v)
+    v = pystr(v)
   return cgi.escape(v, 1)
 
 

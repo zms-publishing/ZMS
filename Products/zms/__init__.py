@@ -17,13 +17,8 @@
 #
 ################################################################################
 
-"""ZMS Product"""
-# Documentation string.
-__doc__ = """initialization module."""
-# Version string.
-__version__ = '0.1'
-
 # Imports.
+from __future__ import absolute_import
 from App.Common import package_home
 import OFS.misc_
 import codecs
@@ -47,6 +42,12 @@ from Products.zms import ZMSFormatProvider, ZMSFormatProviderAcquired
 from Products.zms import ZMSMetacmdProvider, ZMSMetacmdProviderAcquired
 from Products.zms import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 from Products.zms import ZMSRepositoryManager
+
+"""ZMS Product"""
+# Documentation string.
+__doc__ = """initialization module."""
+# Version string.
+__version__ = '0.1'
 
 try:
   from Products.CMFCore.DirectoryView import registerFileExtension

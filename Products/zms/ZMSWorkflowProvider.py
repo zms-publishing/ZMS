@@ -335,7 +335,7 @@ class ZMSWorkflowProvider(
       elif key == 'properties':
         # Save.
         # ------
-        if btn == self.getZMILangStr('BTN_SAVE'):
+        if btn == 'BTN_SAVE':
           # Autocommit & Nodes.
           old_autocommit = self.autocommit
           new_autocommit = REQUEST.get('workflow', 0) == 0
@@ -348,7 +348,7 @@ class ZMSWorkflowProvider(
       
         # Clear.
         # ------
-        elif btn == self.getZMILangStr('BTN_CLEAR'):
+        elif btn == 'BTN_CLEAR':
           self.doAutocommit(lang, REQUEST)
           self.autocommit = 1
           self.activities = []
@@ -357,12 +357,12 @@ class ZMSWorkflowProvider(
      
         # Export.
         # -------
-        elif btn == self.getZMILangStr('BTN_EXPORT'):
+        elif btn == 'BTN_EXPORT':
           return exportXml(self, REQUEST, RESPONSE)
       
         # Import.
         # -------
-        elif btn == self.getZMILangStr('BTN_IMPORT'):
+        elif btn == 'BTN_IMPORT':
           f = REQUEST['file']
           if f:
             filename = f.filename

@@ -115,8 +115,8 @@
 	</div><!-- .control-group -->
 	<div class="control-group">
 		<div class="controls">
-			<button name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SEND')" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
-			<button name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+			<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
+			<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 </form>
@@ -125,7 +125,7 @@
 <!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
      +-  E x e c u t e
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
-<tal:block tal:condition="python:request.get('btn','')==here.getZMILangStr('BTN_SEND')">
+<tal:block tal:condition="python:request.get('btn','')=='BTN_SEND'">
 	<tal:block tal:define="mto python:','.join(request.get('recipients',[]));
 			msubject python:'[ZMS::%s - %s]: Sofort Publiziert'%(zmscontext.getDocumentElement().getTitlealt(request),zmscontext.getTitlealt(request));
 			mbody python:[];
@@ -152,7 +152,7 @@
 <!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
      +-  C a n c e l
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
-<tal:block tal:condition="python:request.get('btn','')==here.getZMILangStr('BTN_CANCEL')">
+<tal:block tal:condition="python:request.get('btn','')=='BTN_CANCEL'">
 	<tal:block tal:define="global
 			message python:'Vorgang abgebrochen.';
 			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
@@ -236,8 +236,8 @@
 	</div><!-- .control-group -->
 	<div class="control-group">
 		<div class="controls">
-			<button name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SEND')" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
-			<button name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+			<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
+			<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 </form>
@@ -246,7 +246,7 @@
 <!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
      +-  E x e c u t e
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
-<tal:block tal:condition="python:request.get('btn','')==here.getZMILangStr('BTN_SEND')">
+<tal:block tal:condition="python:request.get('btn','')=='BTN_SEND'">
 	<tal:block tal:define="
 			global mto python:','.join(request.get('recipients',[]));
 			global msubject python:'[ZMS::%s - %s]: Bitte Publizieren'%(zmscontext.getDocumentElement().getTitlealt(request),zmscontext.getTitlealt(request));
@@ -289,7 +289,7 @@
 <!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
      +-  C a n c e l
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
-<tal:block tal:condition="python:request.get('btn','')==here.getZMILangStr('BTN_CANCEL')">
+<tal:block tal:condition="python:request.get('btn','')=='BTN_CANCEL'">
 	<tal:block tal:define="global
 			message python:'Vorgang abgebrochen.';
 			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
@@ -351,8 +351,8 @@
 	</div><!-- .control-group -->
 	<div class="control-group">
 		<div class="controls">
-			<button name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SEND')" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
-			<button name="btn" class="btn" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+			<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
+			<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 		</div><!-- .controls -->
 	</div><!-- .control-group -->
 </form>
@@ -361,7 +361,7 @@
 <!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
      +-  E x e c u t e
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
-<tal:block tal:condition="python:request.get('btn','')==here.getZMILangStr('BTN_SEND')">
+<tal:block tal:condition="python:request.get('btn','')=='BTN_SEND'">
 	<tal:block tal:define="
 			global mto python:zmscontext.getRecipientsByRole(['ZMSEditor'],request);
 			global msubject python:'[ZMS::%s - %s]: Ablehnung'%(zmscontext.getDocumentElement().getTitlealt(request),zmscontext.getTitlealt(request));
@@ -404,7 +404,7 @@
 <!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
      +-  C a n c e l
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
-<tal:block tal:condition="python:request.get('btn','')==here.getZMILangStr('BTN_CANCEL')">
+<tal:block tal:condition="python:request.get('btn','')=='BTN_CANCEL'">
 	<tal:block tal:define="global
 			message python:'Operation cancelled.';
 			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">

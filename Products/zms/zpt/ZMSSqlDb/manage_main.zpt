@@ -151,11 +151,11 @@
 					</div><!-- .form-row -->
 				</tal:block>
 				<div class="form-row">
-					<button type="submit" id="btn-search" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_REFRESH')">
+					<button type="submit" id="btn-search" class="btn btn-primary" name="btn" value="BTN_REFRESH">
 						<i class="fas fa-search"></i>
 						<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>
 					</button>
-					<button type="submit" id="btn-reset" class="btn btn-secondary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
+					<button type="submit" id="btn-reset" class="btn btn-secondary" name="btn" value="BTN_RESET">
 						<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
 					</button>
 					&nbsp;

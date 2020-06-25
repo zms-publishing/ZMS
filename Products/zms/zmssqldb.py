@@ -1850,7 +1850,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       
       # Change.
       # -------
-      if btn == self.getZMILangStr('BTN_SAVE'):
+      if btn == 'BTN_SAVE':
         model = self.getModel()
         entities = [x for x in model if x['id'].upper()==id.upper()]
         if entities:
@@ -1971,7 +1971,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       
       # Delete.
       # -------
-      elif btn == 'delete':
+      elif btn == 'BTN_DELETE':
         attr_id = REQUEST['attr_id'].strip()
         model = self.getModel()
         entities = [x for x in model if x['id'].upper()==id.upper()]
@@ -1984,7 +1984,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       
       # Import.
       # -------
-      elif btn == self.getZMILangStr('BTN_IMPORT'):
+      elif btn == 'BTN_IMPORT':
         f = REQUEST['file']
         filename = f.filename
         self.setModel(f)
@@ -1992,7 +1992,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       
       # Insert.
       # -------
-      elif btn == self.getZMILangStr('BTN_INSERT'):
+      elif btn == 'BTN_INSERT':
         attr_id = REQUEST['attr_id'].strip()
         model = self.getModel()
         newValue = {}

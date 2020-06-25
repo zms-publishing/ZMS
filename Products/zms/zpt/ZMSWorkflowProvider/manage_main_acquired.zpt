@@ -33,7 +33,7 @@ function selectObject(ignoredUrl, ignoredTitle, nodeName) {
 		</div>
 	</div>
 	<div class="controls save">
-		<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 	</div>
 </form>
 

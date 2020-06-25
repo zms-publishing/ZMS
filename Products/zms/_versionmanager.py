@@ -1053,13 +1053,13 @@ class VersionItem(object):
     #  Undo version changes.
     ############################################################################
     manage_UndoVersionForm = PageTemplateFile('zpt/versionmanager/manage_undoversionform', globals())
-    def manage_UndoVersion(self, lang, REQUEST):
+    def manage_UndoVersion(self, lang, btn, REQUEST):
       """ VersionItem.manage_UndoVersion """
       message = ''
       
       # Reset.
       # ------
-      if REQUEST.get('btn', '') == self.getZMILangStr('BTN_RESET'):
+      if btn == 'BTN_RESET':
         version_nrs = REQUEST.get('version_nrs', [])
         if len(version_nrs) == 1:
           version_nr = version_nrs[0]

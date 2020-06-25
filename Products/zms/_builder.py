@@ -19,6 +19,7 @@
 ################################################################################
 
 # Imports
+from __future__ import absolute_import
 import pyexpat
 import time
 # Product Imports.
@@ -169,7 +170,7 @@ class Builder(object):
     def OnStartElement(self, name, attrs):
       """ Builder.OnStartElement """
       if True:
-        standard.writeLog( self, "[Builder.OnStartElement(" + str(name) + ")]")
+        standard.writeLog( self, "[Builder.OnStartElement(" + standard.pystr(name) + ")]")
         skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack if x.get('skip')]) > 0
         if not skip and name in self.getMetaobjIds():
           meta_id = name
@@ -210,7 +211,7 @@ class Builder(object):
             newNode = constructor(id, sort_id, meta_id)
             self.oCurrNode._setObject(newNode.id, newNode)
             newNode = getattr(self.oCurrNode, newNode.id)
-            standard.writeLog( self, "[Builder.OnStartElement]: object with id " + str(newNode.id) + " of class " + str(newNode.__class__) + " created in " + str(self.oCurrNode.__class__))
+            standard.writeLog( self, "[Builder.OnStartElement]: object with id " + standard.pystr(newNode.id) + " of class " + standard.pystr(newNode.__class__) + " created in " + standard.pystr(self.oCurrNode.__class__))
           
           ##### Uid ####
           if 'uid' in attrs:
@@ -259,7 +260,7 @@ class Builder(object):
     def OnEndElement(self, name):
       """ Builder.OnEndElement """
       if True:
-        standard.writeLog( self, "[Builder.OnEndElement(" + str(name) + ")]")
+        standard.writeLog( self, "[Builder.OnEndElement(" + standard.pystr(name) + ")]")
         skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack if x.get('skip')]) > 0
         if not skip and name == self.oCurrNode.meta_id:
             standard.writeLog( self, "[Builder.OnEndElement]: object finished")

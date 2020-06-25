@@ -17,6 +17,7 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -59,15 +60,14 @@ def parseXmlString(self, file):
 ################################################################################
 ################################################################################
 manage_addZMSCustomForm = PageTemplateFile('manage_addzmscustomform', globals()) 
-def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
+def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
   """ manage_addZMSCustom """
   message = ''
   messagekey = 'manage_tabs_message'
   t0 = time.time()
   target = self.absolute_url()
   
-  print(REQUEST['btn'],type(REQUEST['btn']),self.getZMILangStr('BTN_INSERT'),type(self.getZMILangStr('BTN_INSERT')))
-  if REQUEST['btn'] == self.getZMILangStr('BTN_INSERT'):
+  if btn == 'BTN_INSERT':
     
     # Create
     id_prefix = standard.id_prefix(REQUEST.get('id_prefix', 'e'))

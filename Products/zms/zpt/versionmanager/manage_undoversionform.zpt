@@ -134,11 +134,11 @@
 		<hr />
 		<div class="form-row">
 			<div class="controls save">
-				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_COMPARE')">
+				<button type="submit" name="btn" class="btn btn-primary" value="BTN_COMPARE">
 					<i class="fas fa-random"></i>
 					<tal:block tal:content="python:here.getZMILangStr('BTN_COMPARE')">Compare</tal:block>
 				</button>
-				<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_RESET')">
+				<button type="submit" name="btn" class="btn btn-secondary" value="BTN_RESET">
 					<i class="fas fa-undo"></i>
 					<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
 				</button>

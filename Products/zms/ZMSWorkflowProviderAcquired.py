@@ -146,7 +146,7 @@ class ZMSWorkflowProviderAcquired(
       
       # Active.
       # -------
-      if key == 'custom' and btn == self.getZMILangStr('BTN_SAVE'):
+      if key == 'custom' and btn == 'BTN_SAVE':
         # Autocommit & Nodes.
         old_autocommit = getattr(self, 'autocommit', 1)
         new_autocommit = REQUEST.get('workflow', 0) == 0

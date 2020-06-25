@@ -17,6 +17,7 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 import ZPublisher.HTTPRequest
 import copy
 # Product Imports.
@@ -134,14 +135,14 @@ class ZMSCharformatManager(object):
     #
     #  Change char-formats.
     ############################################################################
-    def manage_changeCharformat(self, lang, REQUEST, RESPONSE):
+    def manage_changeCharformat(self, lang, btn, REQUEST, RESPONSE):
       """ ZMSCharformatManager.manage_changeCharformat """
       message = ''
       id = REQUEST.get('id', '')
       
       # Change.
       # -------
-      if REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
+      if btn == 'BTN_SAVE':
         newId = REQUEST['new_id'].strip()
         newIconClazz = REQUEST.get('new_icon_clazz', '')
         newDisplay = REQUEST['new_display'].strip()
@@ -153,7 +154,7 @@ class ZMSCharformatManager(object):
       
       # Delete.
       # -------
-      elif REQUEST['btn'] in [ self.getZMILangStr('BTN_DELETE'), 'delete']:
+      elif btn == 'BTN_DELETE':
         if id:
           ids = [id]
         else:
@@ -165,7 +166,7 @@ class ZMSCharformatManager(object):
       
       # Insert.
       # -------
-      elif REQUEST['btn'] == self.getZMILangStr('BTN_INSERT'):
+      elif btn == 'BTN_INSERT':
         fmts = self.getCharFormats()
         newId = REQUEST['_id'].strip()
         newIconClazz = REQUEST.get('_icon_clazz', '')
@@ -175,7 +176,7 @@ class ZMSCharformatManager(object):
       
       # Export.
       # -------
-      elif REQUEST['btn'] == self.getZMILangStr('BTN_EXPORT'):
+      elif btn == 'BTN_EXPORT':
         ids = REQUEST.get('ids', [])
         value = [x.copy() for x in self.getCharFormats() if x['id'] in ids or len(ids) == 0]
         if len(value)==1:
@@ -189,7 +190,7 @@ class ZMSCharformatManager(object):
       
       # Import.
       # -------
-      elif REQUEST['btn'] == self.getZMILangStr('BTN_IMPORT'):
+      elif btn == 'BTN_IMPORT':
         f = REQUEST['file']
         if f:
           filename = f.filename
@@ -201,7 +202,7 @@ class ZMSCharformatManager(object):
       
       # Move to.
       # --------
-      elif REQUEST['btn'] == 'move_to':
+      elif btn == 'move_to':
         pos = REQUEST['pos']
         id = int(id)
         self.moveCharformat( self, id, pos)

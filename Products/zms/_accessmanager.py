@@ -17,6 +17,7 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.userfolder import UserFolder
 import copy
@@ -405,7 +406,7 @@ class AccessableObject(object):
       
       # Change.
       # -------
-      if btn == self.getZMILangStr('BTN_SAVE'):
+      if btn == 'BTN_SAVE':
         id = getUserId(REQUEST['AUTHENTICATED_USER'])
         user = self.findUser(id)
         password = REQUEST.get('password', '******')
@@ -451,14 +452,14 @@ class AccessableContainer(AccessableObject):
             l.append((id, d[nodekey]['roles']))
       manager_permissions = [x['name'] for x in self.permissionsOfRole('Manager') if x['selected'] == 'SELECTED']
       for i in l:
-        standard.writeLog(self, '[synchronizeRolesAccess]: role=%s, role_permissions=%s'%(i[0], str(i[1])))
+        standard.writeLog(self, '[synchronizeRolesAccess]: role=%s, role_permissions=%s'%(i[0], standard.pystr(i[1])))
         permissions = []
         for role in i[1]:
           role_permissions = role_defs.get(role, [])
           if '*' in role_permissions:
             role_permissions = manager_permissions
           permissions = standard.concat_list(permissions, role_permissions)
-        standard.writeLog(self, '[synchronizeRolesAccess]: role_to_manage=%s, permissions=%s'%(i[0], str(permissions)))
+        standard.writeLog(self, '[synchronizeRolesAccess]: role_to_manage=%s, permissions=%s'%(i[0], standard.pystr(permissions)))
         self.manage_role(role_to_manage=i[0], permissions=permissions)
 
     # --------------------------------------------------------------------------
@@ -935,7 +936,7 @@ class AccessManager(AccessableContainer):
           elif userid in invalid_userids:
             b = True
         if b:
-          rtn += ob.absolute_url()+ " " + userid + ": remove " + str(userroles) + "<br/>"
+          rtn += ob.absolute_url()+ " " + userid + ": remove " + standard.pystr(userroles) + "<br/>"
           delLocalRoles(ob, userid)
       
       # Process subtree.
@@ -1041,12 +1042,12 @@ class AccessManager(AccessableContainer):
       try:
           # Cancel.
           # -------
-          if btn in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+          if btn in [ 'BTN_CANCEL', 'BTN_BACK']:
             id = ''
           
           # Insert.
           # -------
-          if btn == self.getZMILangStr('BTN_INSERT'):
+          if btn == 'BTN_INSERT':
             if key=='obj':
               id = REQUEST.get('newId').strip()
               addRole(self, id)
@@ -1072,7 +1073,7 @@ class AccessManager(AccessableContainer):
           
           # Delete.
           # -------
-          elif btn in ['delete', self.getZMILangStr('BTN_DELETE')]:
+          elif btn == 'BTN_DELETE':
             if key=='obj':
               root = self.getRootElement()
               #-- Delete local role.
@@ -1127,12 +1128,12 @@ class AccessManager(AccessableContainer):
       try:
         # Cancel.
         # -------
-        if btn in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+        if btn in [ 'BTN_CANCEL', 'BTN_BACK']:
           id = ''
         
         # Add.
         # ----
-        if btn == self.getZMILangStr('BTN_ADD'):
+        if btn == 'BTN_ADD':
           id = REQUEST.get('newId', '')
           newPassword = REQUEST.get('newPassword', '')
           newConfirm = REQUEST.get('newConfirm', '')
@@ -1145,7 +1146,7 @@ class AccessManager(AccessableContainer):
         
         # Insert.
         # -------
-        elif btn == self.getZMILangStr('BTN_INSERT'):
+        elif btn == 'BTN_INSERT':
           langs = REQUEST.get('langs', [])
           if not isinstance(langs, list): langs = [langs]
           roles = REQUEST.get('roles', [])
@@ -1160,7 +1161,7 @@ class AccessManager(AccessableContainer):
         
         # Change.
         # -------
-        elif btn == self.getZMILangStr('BTN_SAVE'):
+        elif btn == 'BTN_SAVE':
           if key=='obj':
             attrActive = self.getUserAttr(id, 'attrActive', 1)
             newAttrActive = REQUEST.get('attrActive', 0)
@@ -1185,7 +1186,7 @@ class AccessManager(AccessableContainer):
         
         # Delete.
         # -------
-        elif btn in ['delete', 'remove', self.getZMILangStr('BTN_DELETE')]:
+        elif btn in ['delete', 'remove', 'BTN_DELETE']:
           if key=='obj':
             #-- Delete user.
             deleteUser(self, id)
@@ -1209,7 +1210,7 @@ class AccessManager(AccessableContainer):
         
         # Invite.
         # -------
-        elif btn in ['invite', self.getZMILangStr('BTN_INVITE')]:
+        elif btn == 'BTN_INVITE':
           email = self.getUserAttr(id, 'email', '')
           nodekeys = REQUEST.get('nodekeys', [])
           if len(email) > 0 and len(nodekeys) > 0:
@@ -1244,7 +1245,7 @@ class AccessManager(AccessableContainer):
             mbody.append('\n' + self.getZMILangStr('WITH_BEST_REGARDS').replace('\\n', '\n'))
             if len(self.getZMILangStr('WITH_BEST_REGARDS')) < 32:
                 mbody.append('\n-------------------------------')
-                mbody.append('\n' + str(REQUEST['AUTHENTICATED_USER']))
+                mbody.append('\n' + standard.pystr(REQUEST['AUTHENTICATED_USER']))
                 mbody.append('\n-------------------------------')
             mbody = ''.join(mbody)
             #-- Subject
@@ -1260,7 +1261,7 @@ class AccessManager(AccessableContainer):
         
         # Export.
         # -------
-        elif btn in ['export', self.getZMILangStr('BTN_EXPORT')]:
+        elif btn == 'BTN_EXPORT':
           content_type = 'text/xml; charset=utf-8'
           filename = 'userlist.xml'
           RESPONSE.setHeader('Content-Type', content_type)
@@ -1313,7 +1314,7 @@ class AccessManager(AccessableContainer):
         
         # Import.
         # -------
-        elif btn in ['import', self.getZMILangStr('BTN_IMPORT')]:
+        elif btn == 'BTN_IMPORT':
           f = REQUEST['file']
           filename = f.filename
           dom = _xmllib.parseString(f.read())

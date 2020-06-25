@@ -18,6 +18,7 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 from io import StringIO
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
@@ -802,7 +803,7 @@ class ConfManager(
           zmsext = REQUEST.get('zmsext', '')
           target = 'manage_main'
           ZMSExtension  = standard.extutil()
-          standard.writeBlock(self, "[ConfManager.manage_customizeSystem] InstallTheme:"+str(zmsext))
+          standard.writeBlock(self, "[ConfManager.manage_customizeSystem] InstallTheme:"+standard.pystr(zmsext))
           if ZMSExtension.installTheme(self, zmsext):
             return True
           else:
@@ -878,7 +879,7 @@ class ConfManager(
       
       # Save css.
       # -----
-      if btn == self.getZMILangStr('BTN_SAVE') and section == 'added':
+      if btn == 'BTN_SAVE' and section == 'added':
         added_id = REQUEST.get('id', '')
         fname= '%s.%s'%(added_id.split('.')[-1],added_id.split('.')[-2])
         href = self.getConfProperty(added_id,'%s/%scommon/added/%s'%(self.getHome().id,[self.getConfProperty('ZMS.theme','')+'/',''][len(self.getConfProperty('ZMS.theme',''))==0],fname))
@@ -897,27 +898,27 @@ class ConfManager(
       
       # Save theme.
       # -----
-      elif btn == self.getZMILangStr('BTN_SAVE'):
+      elif btn == 'BTN_SAVE':
         id = REQUEST.get('id', '')
         self.setConfProperty('ZMS.theme', id)
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Delete theme.
       # -------
-      elif btn == self.getZMILangStr('BTN_DELETE'):
+      elif btn == 'BTN_DELETE':
         ids = REQUEST.get('ids', [])
         home.manage_delObjects(ids)
         message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
       
       # Copy theme.
       # -----
-      elif btn == self.getZMILangStr('BTN_COPY'):
+      elif btn == 'BTN_COPY':
         self.metaobj_manager.importTheme(id)
         message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+id+'</code>')
       
       # Import theme.
       # -------
-      elif btn == self.getZMILangStr('BTN_IMPORT'):
+      elif btn == 'BTN_IMPORT':
         file = REQUEST['file']
         filename = _fileutil.extractFilename(file.filename)
         id = filename[:filename.rfind('.')]
@@ -929,7 +930,7 @@ class ConfManager(
       
       # Insert theme.
       # -------
-      elif btn == self.getZMILangStr('BTN_INSERT'):
+      elif btn == 'BTN_INSERT':
         newId = REQUEST['newId']
         newTitle = REQUEST['newTitle']
         home.manage_addFolder(id=newId, title=newTitle)

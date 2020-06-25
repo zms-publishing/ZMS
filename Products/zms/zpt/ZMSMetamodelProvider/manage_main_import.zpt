@@ -79,7 +79,7 @@
 		</tal:block>
 	</tal:block>
 	<br />
-	<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+	<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 	</form>
 </tal:block>
 
@@ -104,7 +104,7 @@
 		</div><!-- .form-group -->
 		<div class="form-group row">
 			<div class="col-sm-10">
-				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+				<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 			</div>
 		</div><!-- .form-group -->
 	</form>

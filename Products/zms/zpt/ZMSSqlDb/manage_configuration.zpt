@@ -226,8 +226,8 @@ function mms_normalize_rows(el_tbody) {
 					</tal:block>
 				</select>
 				<div class="controls save pull-right">
-					<button type="submit" name="btn" class="btn btn-primary btn-sm" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-					<button type="submit" name="btn" class="btn btn-secondary btn-sm" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+					<button type="submit" name="btn" class="btn btn-primary btn-sm" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+					<button type="submit" name="btn" class="btn btn-secondary btn-sm" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div><!-- .controls -->
 			</div>
 			<div style="clear:both;">&nbsp;</div>
@@ -516,7 +516,7 @@ function mms_normalize_rows(el_tbody) {
 		</div><!-- .form-group -->
 		<div class="form-group row">
 			<div class="col-lg-12">
-				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+				<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 			</div><!-- .col-lg-12-->
 		</div><!-- .form-group -->
 	</div><!-- .inner -->

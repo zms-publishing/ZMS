@@ -172,7 +172,7 @@ $ZMI.registerReady(function(){
 				</div>
 			</div><!-- .form-group -->
 			<div class="form-group container controls">
-				<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+				<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 			</div><!-- .form-group -->
 		</form>
 	</div><!-- .inner -->
@@ -193,8 +193,8 @@ $ZMI.registerReady(function(){
 				</div><!-- .form-group -->
 				<div class="form-row">
 					<div class="controls save">
-						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-						<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+						<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 					</div><!-- .controls.save -->
 				</div><!-- .form-row -->
 				<div class="form-group inpFormat">
@@ -323,8 +323,8 @@ $ZMI.registerReady(function(){
 			</div><!-- .form-group -->
 			<div class="form-row">
 				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div><!-- .controls.save -->
 			</div><!-- .form-row -->
 			<div class="form-group inpCommand">
@@ -369,8 +369,8 @@ $ZMI.registerReady(function(){
 			</div><!-- .form-group -->
 			<div class="form-row">
 				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
 			</div><!-- .form-row -->
 		</form>
@@ -402,8 +402,8 @@ $ZMI.registerReady(function(){
 			</div><!-- .form-group -->
 			<div class="form-row">
 				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
 			</div><!-- .form-row -->
 		</form>

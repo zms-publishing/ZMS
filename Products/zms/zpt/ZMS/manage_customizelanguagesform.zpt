@@ -121,8 +121,8 @@ function zmiFormSubmit(sender,d) {
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-		<button name="btn" type="submit" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
+		<button name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		<button name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
 	</div>
 </form>
 
@@ -171,8 +171,8 @@ function zmiFormSubmit(sender,d) {
 	</tbody>
 	</table>
 	<div class="controls save">
-		<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-		<button name="btn" type="submit" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_DELETE')" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
+		<button name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+		<button name="btn" type="submit" class="btn btn-secondary" value="BTN_DELETE" tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</button>
 	</div>
 </form>
 
@@ -194,7 +194,7 @@ function zmiFormSubmit(sender,d) {
 		</div><!-- .col-lg-10 -->
 	</div><!-- .form-group -->
 	<div class="controls save">
-		<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+		<button name="btn" type="submit" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 	</div>
 </form>
 </div><!-- #importLangDict -->

@@ -136,12 +136,12 @@ def getXmlTypeSaveValue(v, attrs):
     try:
       v = float(v)
     except:
-      standard.writeError(self, "[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!" % (t, str(v)))
+      standard.writeError(self, "[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!" % (t, standard.pystr(v)))
   elif t == 'int':
     try:
       v = int(v)
     except:
-      standard.writeError(self, "[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!" % (t, str(v)))
+      standard.writeError(self, "[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!" % (t, standard.pystr(v)))
   elif t == 'datetime':
     new = standard.parseLangFmtDate(v)
     if new is not None:
@@ -312,7 +312,7 @@ def xmlOnUnknownEndTag(self, sTagName):
         try:
           data = standard.hex2bin(cdata)
         except:
-          data = bytes(cdata,'utf-8')
+          data = standard.pybytes(cdata,'utf-8')
         value['data'] = data
       self.dValueStack.append(value)
 

@@ -36,11 +36,11 @@
 		</select></div>
 		<div class="pull-left"><input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex,'')" /></div>
 		<div class="pull-left">
-			<button type="submit" class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_REFRESH')">
+			<button type="submit" class="btn btn-primary" name="btn" value="BTN_REFRESH">
 				<i class="fas fa-search"></i>
 			</button>
-			<button class="btn btn-primary" name="btn" tal:attributes="value python:here.getZMILangStr('BTN_ADD');
-			   onclick python:'javascript:window.open(\'manage_main?lang=ger&action=insertForm&qentity=%s\',\'%s\')'%(entity['id'],here.getZMILangStr('BTN_ADD'))">
+			<button class="btn btn-primary" name="btn" value="BTN_ADD"
+				tal:attributes="onclick python:'javascript:window.open(\'manage_main?lang=ger&action=insertForm&qentity=%s\',\'%s\')'%(entity['id'],here.getZMILangStr('BTN_ADD'))">
 				<i class="fas fa-plus"></i>
 			</button>
 			&nbsp;
@@ -80,8 +80,8 @@
 	</tal:block>
 	<div class="form-row">
 		<div class="controls save">
-			<button type="submit" name="btn" class="btn btn-primary" onclick="zmiSelectBtnClick()" tal:attributes="value python:here.getZMILangStr('BTN_SELECT')" tal:content="python:here.getZMILangStr('BTN_SELECT')">Select</button>
-			<button type="submit" name="btn" class="btn btn-secondary" onclick="zmiCloseBtnClick()" tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
+			<button type="submit" name="btn" class="btn btn-primary" onclick="zmiSelectBtnClick()" value="BTN_SELECT" tal:content="python:here.getZMILangStr('BTN_SELECT')">Select</button>
+			<button type="submit" name="btn" class="btn btn-secondary" onclick="zmiCloseBtnClick()" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 		</div>
 	</div><!-- .form-row -->
 </tal:block>

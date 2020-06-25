@@ -270,7 +270,7 @@ class ZMSMetadictManager(object):
           
           # Acquire.
           # --------
-          if btn == self.getZMILangStr('BTN_ACQUIRE'):
+          if btn == 'BTN_ACQUIRE':
             ids = REQUEST.get('aq_ids', [])
             for newId in ids:
               newAcquired = 1
@@ -279,7 +279,7 @@ class ZMSMetadictManager(object):
           
           # Change.
           # -------
-          elif btn == self.getZMILangStr('BTN_SAVE'): 
+          elif btn == 'BTN_SAVE': 
             for oldId in REQUEST.get('old_ids', []):
               if 'attr_id_%s'%oldId in REQUEST:
                 newId = REQUEST['attr_id_%s'%oldId].strip()
@@ -312,7 +312,7 @@ class ZMSMetadictManager(object):
           
           # Copy.
           # -----
-          elif btn == self.getZMILangStr('BTN_COPY'):
+          elif btn == 'BTN_COPY':
             metaOb = self.getMetadictAttr(id)
             if metaOb.get('acquired', 0) == 1:
               masterRoot = getattr(self, self.getConfProperty('Portal.Master'))
@@ -324,7 +324,7 @@ class ZMSMetadictManager(object):
           
           # Delete.
           # -------
-          elif btn in ['delete', self.getZMILangStr('BTN_DELETE')]:
+          elif btn == 'BTN_DELETE':
             oldId = id
             self.delMetadictAttr( oldId)
             for portalClient in self.getPortalClients():
@@ -335,7 +335,7 @@ class ZMSMetadictManager(object):
           
           # Export.
           # -------
-          elif btn == self.getZMILangStr('BTN_EXPORT'):
+          elif btn == 'BTN_EXPORT':
             value = []
             ids = REQUEST.get('ids', [])
             metadicts = self.metas
@@ -360,7 +360,7 @@ class ZMSMetadictManager(object):
           
           # Import.
           # -------
-          elif btn == self.getZMILangStr('BTN_IMPORT'):
+          elif btn == 'BTN_IMPORT':
             f = REQUEST['file']
             if f:
               filename = f.filename

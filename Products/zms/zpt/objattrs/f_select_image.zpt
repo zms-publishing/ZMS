@@ -36,7 +36,7 @@
 								<input type="checkbox" id="ZMSGraphic_extEdit_proportional" checked="checked" />
 								<label class="form-check-label ml-2" for="ZMSGraphic_extEdit_proportional">Proportional</label>
 							</div>
-							<input class="btn btn-secondary" type="submit" name="btn" onclick="return ZMSGraphic_extEdit_apply();" tal:attributes="value python:here.getZMILangStr('BTN_APPLY')" />
+							<input class="btn btn-secondary" type="submit" name="btn" onclick="return ZMSGraphic_extEdit_apply();" value="BTN_APPLY" />
 						</div>
 					</td>
 			 	</tr>

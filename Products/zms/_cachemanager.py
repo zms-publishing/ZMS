@@ -17,6 +17,7 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 import time
 # Product Imports.
 from Products.zms import standard

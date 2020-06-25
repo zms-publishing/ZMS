@@ -746,7 +746,7 @@ class FilterManager(object):
       
       # Acquire.
       # --------
-      if btn == self.getZMILangStr('BTN_ACQUIRE'):
+      if btn == 'BTN_ACQUIRE':
         newId = REQUEST.get('aq_id')
         newAcquired = 1
         id = setFilter(self, newId, newAcquired)
@@ -754,7 +754,7 @@ class FilterManager(object):
       
       # Change.
       # -------
-      elif btn == self.getZMILangStr('BTN_SAVE'):
+      elif btn == 'BTN_SAVE':
         cp = self.getFilter(id)
         # Filter.
         newId = REQUEST.get('inpId').strip()
@@ -787,26 +787,27 @@ class FilterManager(object):
       
       # Delete.
       # -------
-      elif btn == self.getZMILangStr('BTN_DELETE') and key == 'obj':
-        ids = REQUEST.get('ids', [])
-        for id in ids:
-          delFilter(self, id)
-        message = self.getZMILangStr('MSG_DELETED')%len(ids)
-      elif btn == 'delete' and key == 'attr':
-        ids = [REQUEST.get('id')]
-        for id in ids:
-          if id is not None:
-            delFilterProcess(self, id, pid)
-        message = self.getZMILangStr('MSG_DELETED')%len(ids)
+      elif btn == 'BTN_DELETE':
+        if key == 'obj':
+          ids = REQUEST.get('ids', [])
+          for id in ids:
+            delFilter(self, id)
+          message = self.getZMILangStr('MSG_DELETED')%len(ids)
+        elif key == 'attr':
+          ids = [REQUEST.get('id')]
+          for id in ids:
+            if id is not None:
+              delFilterProcess(self, id, pid)
+          message = self.getZMILangStr('MSG_DELETED')%len(ids)
       
       # Export.
       # -------
-      elif btn == self.getZMILangStr('BTN_EXPORT'):
+      elif btn == 'BTN_EXPORT':
         return exportXml(self, REQUEST, RESPONSE)
       
       # Import.
       # -------
-      elif btn == self.getZMILangStr('BTN_IMPORT'):
+      elif btn == 'BTN_IMPORT':
         f = REQUEST['file']
         if f:
           filename = f.filename
@@ -818,7 +819,7 @@ class FilterManager(object):
       
       # Insert.
       # -------
-      elif btn == self.getZMILangStr('BTN_INSERT'):
+      elif btn == 'BTN_INSERT':
         if key == 'obj':
           newId = REQUEST.get('newId').strip()
           newAcquired = 0
@@ -862,7 +863,7 @@ class FilterManager(object):
 
       # Change.
       # -------
-      if btn == self.getZMILangStr('BTN_SAVE'):
+      if btn == 'BTN_SAVE':
         newId = REQUEST.get('inpId').strip()
         newAcquired = 0
         newName = REQUEST.get('inpName').strip()
@@ -874,7 +875,7 @@ class FilterManager(object):
 
       # Delete.
       # -------
-      elif btn == self.getZMILangStr('BTN_DELETE'):
+      elif btn == 'BTN_DELETE':
         ids = REQUEST.get('ids', [])
         for id in ids:
           delProcess(self, id)
@@ -882,12 +883,12 @@ class FilterManager(object):
 
       # Export.
       # -------
-      elif btn == self.getZMILangStr('BTN_EXPORT'):
+      elif btn == 'BTN_EXPORT':
         return exportXml(self, REQUEST, RESPONSE)
 
       # Import.
       # -------
-      elif btn == self.getZMILangStr('BTN_IMPORT'):
+      elif btn == 'BTN_IMPORT':
         f = REQUEST['file']
         if f:
           filename = f.filename
@@ -899,7 +900,7 @@ class FilterManager(object):
 
       # Insert.
       # -------
-      elif btn == self.getZMILangStr('BTN_INSERT'):
+      elif btn == 'BTN_INSERT':
         newId = REQUEST.get('newId').strip()
         newAcquired = 0
         newName = REQUEST.get('newName').strip()

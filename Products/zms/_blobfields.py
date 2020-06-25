@@ -26,6 +26,7 @@ from io import StringIO
 from email.generator import _make_boundary as choose_boundary
 import base64
 import copy
+import re
 import time
 import warnings
 import zExceptions 

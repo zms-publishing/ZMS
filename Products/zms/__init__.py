@@ -226,8 +226,13 @@ def initialize(context):
               d[k] = {}
               for i in range(len(l)-1):
                 d[k][langs[i]] = l[i+1]
+
+        # populate language-strings to i18n-js
+        path = os.sep.join([package_home(globals())]+['plugins', 'www', 'i18n'])
+        if not os.path.exists(path):
+          os.mkdir(path)
         for lang in langs:
-          filename = os.sep.join([package_home(globals())]+['plugins', 'www', 'i18n', '%s.js'%lang])
+          filename = os.sep.join([path, '%s.js'%lang])
           standard.writeStdout(context, "generate: %s"%filename)
           fileobj = codecs.open(filename, mode='w', encoding='utf-8')
           fileobj.write('var zmiLangStr={\'lang\':\'%s\''%lang)

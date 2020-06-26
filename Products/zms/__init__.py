@@ -25,6 +25,7 @@ import codecs
 import fnmatch
 import os
 import re
+import six
 # Product Imports.
 from Products.zms import standard
 from Products.zms import zms
@@ -280,3 +281,20 @@ def translate_path(s):
   return os.sep.join([ZMS_HOME]+l)
 
 ################################################################################
+# Dynamic Modification of the Zope Skin
+################################################################################
+confdict = _confmanager.ConfDict.get()
+if six.PY2 and confdict['zmi.console'] in ['light','dark']:
+  from App.special_dtml import DTMLFile
+  from App.Management import Navigation
+  from App.Management import Tabs
+  from App.ApplicationManager import DebugManager
+  from OFS.ObjectManager import ObjectManager
+  Navigation.manage = DTMLFile('skins/zope/manage', globals())
+  setattr(Navigation, 'manage_page_style.css', DTMLFile('skins/zope/manage_page_style_%s.css'%(confdict['zmi.console']), globals()))
+  Navigation.manage_page_header = DTMLFile('skins/zope/manage_page_header', globals())
+  Navigation.manage_page_footer = DTMLFile('skins/zope/manage_page_footer', globals())
+  Navigation.manage_menu = DTMLFile('skins/zope/menu', globals())
+  Tabs.manage_tabs = DTMLFile('skins/zope/manage_tabs', globals())
+  ObjectManager.manage_main = DTMLFile('skins/zope/main', globals())
+  DebugManager.manage_main = DTMLFile('skins/zope/debug', globals())

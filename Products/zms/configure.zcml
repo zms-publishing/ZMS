@@ -9,7 +9,12 @@
       name="zms_"
       directory="plugins/www"
       />
-
+  <!-- Optional Zope2/Py2 GUI Enhancement -->
+  <browser:resourceDirectory
+      name="zmi_"
+      directory="skins/zope"
+      />
+  <!-- Zope4/Py4 GUI Resources for ZMS-ZMI -->
   <configure
     xmlns:zcml="http://namespaces.zope.org/zcml"
     zcml:condition="not-installed zmi.styles">

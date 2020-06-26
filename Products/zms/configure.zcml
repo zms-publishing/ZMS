@@ -10,10 +10,14 @@
       directory="plugins/www"
       />
 
-  <browser:resourceDirectory
-      name="zmi"
-      directory="zmi/styles/resources"
-      />
+  <configure
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    zcml:condition="not-installed zmi.styles">
+    <browser:resourceDirectory
+        name="zmi"
+        directory="zmi/styles/resources"
+        />
+  </configure>
 
   <configure
       xmlns:cmf="http://namespaces.zope.org/cmf"

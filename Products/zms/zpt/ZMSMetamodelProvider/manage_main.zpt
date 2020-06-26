@@ -209,8 +209,8 @@
 					<tal:block tal:condition="python:objAttr['type'] in ['interface','method','py','resource','zpt']+here.valid_zopetypes">
 						<td tal:attributes="colspan python:[5,6][objAttr['type'] in ['interface']]" class="meta-code" tal:condition="python:objAttr['type'] not in ['resource','File','Folder','Image'] and objAttr.get('ob') is not None">
 							<tal:block tal:define="global readData python:zopeutil.readData(objAttr['ob'],default=objAttr.get('custom','ERROR: Not found!')); global errors python:''"></tal:block>
-							<tal:block tal:condition="python:'## Errors:' in str(readData).split('\n')">
-								<tal:block tal:define="lines python:str(readData).split('\n'); global errors python:lines[lines.index('## Errors:')+1][2:]"></tal:block>
+							<tal:block tal:condition="python:'## Errors:' in str(readData)">
+								<tal:block tal:define="lines python:standard.pystr(readData,'ignore').split('\n'); global errors python:lines[lines.index('## Errors:')+1][2:]"></tal:block>
 							</tal:block>
 							<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:[objAttr.get('type'),objAttr.get('meta_type')][objAttr.get('meta_type') in here.getMetadictAttrs()]"/>
 							<div class="single-line zmi-code" tal:condition="python:objAttr.get('ob') is not None"

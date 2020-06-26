@@ -73,13 +73,13 @@ class TextFormatObject(object):
   #
   #  Returns text with section-number.
   # ----------------------------------------------------------------------------
-  def getText( self, REQUEST, key='text'):
+  def getText( self, REQUEST, key='text', encoding='utf-8', errors='strict'):
     s = self.getObjProperty(key, REQUEST)
     if self.isPageElement():
       sec_no = self.getSecNo()
       if len(sec_no) > 0:
-        s = sec_no + ' ' + s
-    return s
+        s = '%s %s'%(sec_no, s)
+    return standard.pystr(s, encoding, errors)
 
 
   # ----------------------------------------------------------------------------

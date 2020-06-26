@@ -73,7 +73,7 @@ if six.PY2:
     return isinstance(v,str) or isinstance(v,bytes)
   def pystr(object, encoding='latin-1', errors='strict'):
     if type(object) is str:
-      object = unicode(object,encoding).encode('utf-8')
+      object = unicode(object,encoding).encode('utf-8',errors)
     else:
       object = unicode(object)
     return object

@@ -274,7 +274,7 @@ class ZMSTextformat(object):
   #  Render text.
   # ----------------------------------------------------------------------------
   renderText__roles__ = None
-  def renderText(self, text, REQUEST, id=None, clazz=None):
+  def renderText(self, text, REQUEST, id=None, clazz=None, encoding='utf-8', errors='strict'):
     html = ''
     # Open tag.
     html += self.getStartTag( id, clazz)
@@ -282,7 +282,7 @@ class ZMSTextformat(object):
     text = br_quote( text, self.getSubTag(), REQUEST)
     # Value.
     try:
-      html += standard.pystr( text)
+      html += standard.pystr(text, encoding, errors)
     except:
       html += text
     # Close tag.

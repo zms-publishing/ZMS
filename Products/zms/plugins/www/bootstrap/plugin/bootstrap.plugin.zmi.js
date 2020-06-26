@@ -763,34 +763,122 @@ ZMI.prototype.initInputFields = function(container) {
 					$controlGroup.addClass("has-error");
 					b = false;
 				}
-				// Lock
-				if (b && $('input[name="form_unlock"]',this).length==0) {
+				// Check for intermediate modification by other user
+				if (b && $('input#last_change_dt:hidden',this).length && $('input[name="form_unlock"]',this).length==0) {
 					var result = $.ajax({
-						url: 'ajaxGetNode',
-						data:{lang:getZMILang()},
+						url: 'manage_get_node_json',
+						data:{lang:getZMILang(),preview:'preview'},
 						datatype:'text',
 						async: false
-						}).responseText;
-					var xmlDoc = $.parseXML(result);
-					var $xml = $(xmlDoc);
-					var change_dt = $('change_dt',$xml).text();
-					var change_uid = $('change_uid',$xml).text();
-					var form_id = $('input[name=form_id]').val();
-					var form_dt = new Date(parseFloat(form_id)*1000);
-					var checkLock = new Date(change_dt).getTime() > form_dt.getTime();
-					if (checkLock) {
-						zmiModal(null,{
-								body:''
-									+ '<div class="alert alert-error">'
-										+ '<h4><i class="fas fa-warning-sign"></i> '+getZMILangStr('ACTION_MANAGE_CHANGEPROPERTIES')+'</h4>'
-										+ '<div>'+change_dt+' '+getZMILangStr('BY')+' '+change_uid+'</div>'
-									+ '</div>'
-									+ '<div class="form-group row">'
-										+ '<button class="btn btn-primary" value="'+getZMILangStr('BTN_OVERWRITE')+'" onclick="zmiUnlockForm(\''+form_id+'\')">'+getZMILangStr('BTN_OVERWRITE')+'</button> '
-										+ '<button class="btn btn-secondary" value="'+getZMILangStr('BTN_DISPLAY')+'" onclick="window.open(self.location.href);">'+getZMILangStr('BTN_DISPLAY')+'</button> '
-									+ '</div>',
-								title: getZMILangStr('CAPTION_WARNING')
-							});
+						});
+					var node = eval("("+result.responseText+")");
+					var change_dt = node["change_dt"];
+					var change_uid = node["change_uid"];
+					var last_change_dt = $('input#last_change_dt:hidden',this).val();
+					var last_change_uid = $('input#last_change_uid:hidden',this).val();
+					// Intermediate modification?
+ 					if (change_dt != last_change_dt) {
+						var body = '<div class="alert alert-error">'
+									+ '<h4>'+$ZMI.icon("icon-warning-sign")+' '+getZMILangStr('ATTR_LAST_MODIFIED')+'</h4>'
+									+ '<div>'+change_dt+' '+getZMILangStr('BY')+' '+change_uid+'</div>'
+								+ '</div>'
+								+ '<table class="table table-bordered table-striped">'
+								+ '<thead>'
+								+ '<tr class="form-group">'
+									+ '<th><label class="control-label">' + '</label></th>'
+									+ '<th><em>Diff</em></th>'
+									+ '<th><em>Mine</em></span></th>'
+									+ '<th><em>Theirs</em> ('+change_uid+' <span class="zmi-change-dt">'+(new Date(change_dt)).toLocaleFormat(getZMILangStr('DATETIME_FMT'))+'</span>)</th>'
+								+ '</thead>'
+								+ '</tr>';
+						for (var key in node) {
+							var $input = $("[name='"+key+"'],[name='"+key+"_"+getZMILang()+"']",this).filter("[data-initial-value]");
+							if ($input.length > 0) {
+								var $controlGroup = $input.parents(".form-group");
+								var $label = $("label.control-label:first",$controlGroup);
+								var remoteVal = (""+node[key]).replace(/\r\n/gi,"\n").trim();
+								var currentVal = (""+$input.val()).replace(/\r\n/gi,"\n").trim();
+								var initialVal = (""+$input.attr("data-initial-value")).replace(/\r\n/gi,"\n").trim();
+								if ("file"==$input.attr("type")) {
+									if (currentVal=="") {
+										currentVal = initialVal;
+									}
+								}
+								if (currentVal != initialVal) {
+									$input.addClass("form-modified");
+								}
+								if (currentVal != remoteVal) {
+									$input.removeClass("form-modified").addClass("form-conflicted").attr("data-remote-value",remoteVal);
+									body += '<tr class="form-group">'
+											+ '<td><label class="control-label"><span>' + $label.text() + '</span></label></td>'
+											+ '<td><div style="overflow-y:scroll;max-height:20em" class="diff" id="'+$input.attr("name")+'_diff"></div></td>'
+											+ '<td><div style="overflow-y:scroll;max-height:20em" class="mine" id="'+$input.attr("name")+'_mine">'+currentVal+'</div></td>'
+											+ '<td><div style="overflow-y:scroll;max-height:20em" class="theirs" id="'+$input.attr("name")+'_theirs">'+remoteVal+'</div></td>'
+										+ '</tr>';
+								}
+							}
+						}
+						var conflicts = $(".form-conflicted",this).length;
+						if (conflicts > 0) {
+							b = false;
+							// confirm
+							var form_id = $('input[name=form_id]').val();
+							body += '</table>'
+								+ '<div class="form-group">'
+									+ '<button class="btn btn-primary" value="'+getZMILangStr('BTN_SAVE')+'" onclick="zmiUnlockForm(\''+form_id+'\')">'+getZMILangStr('BTN_SAVE')+'</button> '
+									+ '<button class="btn btn-default" value="'+getZMILangStr('BTN_CANCEL')+'" onclick="window.open(self.location.href);">'+getZMILangStr('BTN_CANCEL')+'</button> '
+								+ '</div>';
+							zmiModal(null,{
+									body:body,
+									title: getZMILangStr('CAPTION_WARNING')
+								});
+							// show diffs
+							$.plugin('diff',{
+									files: [
+										'/++resource++zms_/jquery/diff/diff_match_patch.js',
+										'/++resource++zms_/jquery/diff/jquery.pretty-text-diff.min.js'
+								]});
+							$.plugin('diff').set({context:this});
+							$.plugin('diff').get(".form-conflicted",function() {
+									$(".form-conflicted",context).each(function(){
+											var id = $(this).attr("name")+"_diff";
+											var $diffContainer = $("#"+id);
+											$(this).prettyTextDiff({
+													cleanup:true,
+													originalContent:$(this).attr("data-initial-value").replace(/</gi,'&lt;'),
+													changedContent:$(this).val().replace(/</gi,'&lt;'),
+													diffContainer:$diffContainer
+												});
+											var lines = $diffContainer.html().replace(/<span>/gi,'').replace(/<\/span>/gi,'').split("<br>");
+											var show = [];
+											var changed = false;
+											for (var i = 0; i < lines.length; i++) {
+												var line = lines[i];
+												changed |= line.indexOf("<del>")>=0 || line.indexOf("<ins>")>=0;
+												if (changed) {
+													show.push(i);
+												}
+												changed &= !(line.indexOf("</del>")>=0 || line.indexOf("</ins>")>=0);
+											}
+											var html = [];
+											changed = false;
+											for (var i = 0; i < lines.length; i++) {
+												var line = lines[i];
+												changed |= line.indexOf("<del>")>=0 || line.indexOf("<ins>")>=0;
+												line = '<span class="line-number'+(changed?' line-changed':'')+'">'+(i+1)+'</span> '+lines[i];
+												if (!(show.contains(i-1) || show.contains(i) || show.contains(i+1))) {
+													line = '<span class="diff-unchanged hidden">'+line+'</span>';
+												}
+												else {
+													line = line+'<'+'br/>';
+												}
+												html.push(line);
+												changed &= !(line.indexOf("</del>")>=0 || line.indexOf("</ins>")>=0);
+											}
+											$diffContainer.html(html.join(""));
+										});
+								});
+						}
 					}
 				}
 				return b;
@@ -927,6 +1015,19 @@ ZMI.prototype.initInputFields = function(container) {
 						$label.prepend('<i class="fas fa-exclamation"></i>');
 					});
 			}
+			// Check for intermediate modification by other user
+			$("input,select,textarea",this).each(function() {
+					var $this = $(this);
+					$this.attr("data-initial-value",$this.val());
+					$this.change(function() {
+							if ($this.val()==$this.attr("data-initial-value")) {
+								$this.removeClass("form-modified");
+							}
+							else {
+								$this.addClass("form-modified");
+							}
+						});
+				});
 			// Icon-Class
 			$('input.zmi-input-icon-clazz',this).each(function() {
 				$(this).wrap( '<div class="input-group"></div>' );

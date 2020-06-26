@@ -11,11 +11,11 @@
       />
 
   <browser:resourceDirectory
-      name="zmi_"
+      name="zmi"
       directory="zmi/styles/resources"
       />
 
-  <configure    
+  <configure
       xmlns:cmf="http://namespaces.zope.org/cmf"
       xmlns:zcml="http://namespaces.zope.org/zcml"
       zcml:condition="installed Products.CMFCore"

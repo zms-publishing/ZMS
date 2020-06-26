@@ -20,6 +20,7 @@
 from App.Common import package_home
 import OFS.misc_
 import copy
+import six
 from zope.interface import implementer
 # Product Imports.
 from Products.zms import IZMSLocale
@@ -269,7 +270,7 @@ class MultiLanguageManager(object):
         RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
       return lang_str
 
-    def getLangStr(self, key, lang=None):
+    def _getLangStr(self, key, lang=None):
       """
       Returns language-string for current content-language.
       """
@@ -304,6 +305,16 @@ class MultiLanguageManager(object):
             standard.writeError(self,'[getLangStr]: can\'t get from %s.%s'%(metaobjAttr,metaobjAttrId))
       
       return key
+
+
+    def getLangStr(self, key, lang=None):
+      """
+      Returns language-string for current content-language.
+      """
+      lang_str = self._getLangStr(key,lang)
+      if six.PY2:
+        lang_str = standard.pybytes(lang_str,'utf-8')
+      return lang_str
 
 
     # --------------------------------------------------------------------------

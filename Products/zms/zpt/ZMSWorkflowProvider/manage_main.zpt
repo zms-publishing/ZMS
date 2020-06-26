@@ -488,7 +488,7 @@ $(function(){
 							</select>
 							<div class="input-group-append">
 								<a class="btn btn-secondary" href="javascript:;" 
-									tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%activityId; title python:here.getZMILangStr('BTN_DELETE')"
+									tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',id:\'%s\'})'%activityId; title python:here.getZMILangStr('BTN_DELETE')"
 									><i class="fas fa-times"></i></a>
 							</div>
 						</div>
@@ -543,7 +543,7 @@ $(function(){
 							</select>
 							<div class="input-group-append">
 								<a class="btn btn-secondary" href="javascript:;" 
-									tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%transition['id']; title python:here.getZMILangStr('BTN_DELETE')"
+									tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',id:\'%s\'})'%transition['id']; title python:here.getZMILangStr('BTN_DELETE')"
 									><i class="fas fa-times"></i></a></div>
 						</div>
 					</td>

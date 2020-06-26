@@ -216,7 +216,7 @@ class UserFolderIAddUserPluginWrapper(object):
     self.userFldr = userFldr
     self.id = userFldr.id
     self.meta_type = userFldr.meta_type
-    self.zmi_icon = userFldr.zmi_icon
+    self.zmi_icon = getattr(userFldr,'zmi_icon','fas fa-users')
 
   absolute_url__roles__ = None
   def absolute_url( self):
@@ -739,7 +739,7 @@ class AccessManager(AccessableContainer):
             d['plugin'] = plugin
             editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
             container = userFldr.aq_parent
-            v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),plugin.zmi_icon)
+            v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),getattr(plugin,'zmi_icon','fas fa-users'))
             t = 'html'
           else:
             v = user[extra]

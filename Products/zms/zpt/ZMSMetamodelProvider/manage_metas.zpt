@@ -136,7 +136,7 @@ function zmiFormSubmit(sender,d) {
 				</select>
 				<div class="input-group-append">
 					<a class="btn btn-secondary" href="javascript:;" 
-						tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"
+						tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"
 						><i class="fas fa-times"></i></a>
 				</div>
 			</div>

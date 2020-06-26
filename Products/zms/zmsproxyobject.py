@@ -434,9 +434,9 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     # --------------------------------------------------------------------------
     #	ZMSProxyObject.getZMILangStr:
     # --------------------------------------------------------------------------
-    def getZMILangStr(self, key):
+    def getZMILangStr(self, key, REQUEST=None, RESPONSE=None):
       proxy = self.proxy
-      rtn = proxy.getZMILangStr( key)
+      rtn = proxy.getZMILangStr( key, REQUEST, RESPONSE)
       return rtn
 
 

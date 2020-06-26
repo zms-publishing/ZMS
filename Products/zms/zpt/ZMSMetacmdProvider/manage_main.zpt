@@ -209,7 +209,7 @@
 				<div class="btn-toolbar" role="toolbar">
 					<div class="btn-group managing">
 						<button class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')});return false"><i class="fas fa-plus"></i></button>
-						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'});return false"><i class="fas fa-times"></i></button>
+						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'});return false"><i class="fas fa-times"></i></button>
 					</div><!-- .btn-group -->
 					<div class="btn-group packaging">
 						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share"></i></button>
@@ -247,7 +247,7 @@
 					<tal:block tal:condition="not:python:metaCmd.get('acquired',False)">
 						<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id']); title python:'%s (%s)'%(ob.id,ob.meta_type)">
 							<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>
-							<strong tal:content="python:metaCmd['id']">the id</strong> 
+							<strong tal:content="python:metaCmd['id']">the id</strong>
 							(<tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">the name</tal:block>)
 						</a>
 					</tal:block>
@@ -255,7 +255,7 @@
 					(<tal:block tal:content="python:metaCmd['meta_type']">the type</tal:block>)
 				</tal:block>
 				<div class="text-danger alert-danger" tal:condition="python:ob is None">
-					<i class="fas fa-warning-sign" tal:attributes="title python:'%s not found'%(metaCmd['id'])"></i>
+					<i class="fas fa-warning-sign" tal:attributes="title python:'%s not found'%metaCmd['id']"></i>
 					<tal:block tal:condition="python:metaCmd.get('acquired',False)"
 						><a tal:attributes="href python:'/'.join([here.getPortalMaster().absolute_url()]+request['URL'].split('/')[-2:])" target="_blank"
 							><i class="fas fa-share" title="acquired"></i></a>

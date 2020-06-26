@@ -145,12 +145,7 @@ $ZMI.registerReady(function(){
 		filters python:[here.getFilter(x) for x in filterIds];
 		processIds python:here.getProcessIds();
 		processes python:[here.getProcess(x) for x in processIds];
-		filterFormats python:[ \
-				['import', 'Import' ], \
-				['export', 'Export' ], \
-				['XML', 'XML-Export' ], \
-				['XHTML', 'XHTML-Export' ]]+ \
-				[[],['myXML',standard.operator_getattr(here,'getObjToXml_DocElmnt',here).title_or_id()]][int(standard.operator_getattr(here,'getObjToXml_DocElmnt',None) is not None)]">
+		filterFormats python:[ ['import', 'Import' ], ['export', 'Export' ], ['XML', 'XML-Export' ], ['XHTML', 'XHTML-Export' ]]+ [[],['myXML',standard.operator_getattr(here,'getObjToXml_DocElmnt',here).title_or_id()]][int(standard.operator_getattr(here,'getObjToXml_DocElmnt',None) is not None)]">
 
 <div class="d-none">
 	<div id="importConf" class="inner">
@@ -253,7 +248,7 @@ $ZMI.registerReady(function(){
 						</select>
 						<div class="input-group-append">
 							<a class="btn btn-secondary" href="javascript:;" 
-								tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\',\'pid:int\':%i,key:\'attr\'})'%(filter['id'],pid); title python:here.getZMILangStr('BTN_DELETE')"
+								tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',id:\'%s\',\'pid:int\':%i,key:\'attr\'})'%(filter['id'],pid); title python:here.getZMILangStr('BTN_DELETE')"
 								><i class="fas fa-times"></i></a>
 							</div>
 							
@@ -428,7 +423,7 @@ $ZMI.registerReady(function(){
 				<th>
 					<div class="btn-group">
 						<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertFilter',{title:$(this).attr('title')})"><i class="fas fa-plus"></i></span>
-						<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><i class="fas fa-times"></i></span>
+						<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'})"><i class="fas fa-times"></i></span>
 						<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><i class="fas fa-upload"></i></span>
 						<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i></span>
 					</div>
@@ -506,7 +501,7 @@ $ZMI.registerReady(function(){
 			<th>
 				<div class="btn-group">
 					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertProcess',{title:$(this).attr('title')})"><i class="fas fa-plus"></i></span>
-					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'})"><i class="fas fa-times"></i></span>
+					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'})"><i class="fas fa-times"></i></span>
 					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><i class="fas fa-upload"></i></span>
 					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i></span>
 				</div>

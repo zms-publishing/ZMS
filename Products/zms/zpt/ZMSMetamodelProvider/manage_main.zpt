@@ -198,7 +198,7 @@
 							</select>
 							<div class="input-group-append">
 								<a class="btn btn-secondary" href="javascript:;" 
-									tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',key:\'attr\',attr_id:\'%s\'})'%objAttrId; title python:here.getZMILangStr('BTN_DELETE')"
+									tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',key:\'attr\',attr_id:\'%s\'})'%objAttrId; title python:here.getZMILangStr('BTN_DELETE')"
 									><i class="fas fa-times"></i></a>
 							</div>
 						</div>
@@ -413,7 +413,7 @@
 				<div class="btn-toolbar" role="toolbar">
 					<div class="btn-group managing">
 						<button class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertObj',{title:$(this).attr('title')});return false"><i class="fas fa-plus icon-plus"></i></button>
-						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:getZMILangStr('BTN_DELETE'),key:'obj'});return false"><i class="fas fa-times"></i></button>
+						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'});return false"><i class="fas fa-times"></i></button>
 					</div><!-- .btn-group -->
 					<div class="btn-group packaging">
 						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share icon-share"></i></button>

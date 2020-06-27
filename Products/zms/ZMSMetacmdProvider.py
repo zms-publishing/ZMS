@@ -338,6 +338,8 @@ class ZMSMetacmdProvider(
         return None
       # Refresh Object.
       metaCmd = obs[0]
+      if metaCmd.get('home',None)==None:
+        return None
       if 'exec' in metaCmd:
         metaCmd['execution'] = metaCmd['exec']
         del metaCmd['exec']

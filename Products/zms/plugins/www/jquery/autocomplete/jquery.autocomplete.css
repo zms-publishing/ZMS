@@ -5,18 +5,31 @@
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
 
+
 /* enable absolute positioning */
 .inner-addon { 
 	position: relative; 
 }
-
+.inner-addon  .ui-autocomplete-input {
+	display:inline;
+}
 /* style icon */
 .inner-addon .fas {
 	position: absolute;
-	margin-top: -1.6em;
+	margin-top: 1rem;
+	margin-right: 1rem;
 	pointer-events: none;
+	z-index: 999;
+	color: silver;
 }
-
+.inner-addon:active .fas,
+.inner-addon:hover .fas {
+	color: #0088cc;
+}
 /* align icon */
-.left-addon .fas  { left:  1.8em;}
-.right-addon .fas { right: 1.8em;}
+.left-addon .fas  { 
+	left:  2rem;
+}
+.right-addon .fas { 
+	right: 2rem;
+}

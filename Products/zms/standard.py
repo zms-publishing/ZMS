@@ -1622,7 +1622,10 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
   elif i is not None:
     if type(i) is str:
       if not (i.strip().startswith('<') and i.strip().endswith('>')):
-        i = cgi.escape(i).encode(encoding, errors)
+        try:
+          i = cgi.escape(i).encode(encoding, errors)
+        except:
+          pass
       else:
         i = i.encode(encoding, errors)
     else:

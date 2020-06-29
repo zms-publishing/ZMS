@@ -49,20 +49,19 @@ import six
 import sys
 import time
 import traceback
-try: # py3
+if six.PY3:                           # Py3
   import urllib.parse                 as urllib_parse
   from urllib.parse import quote_plus as urllib_quote_plus
   from urllib.parse import unquote    as urllib_unquote
   from urllib.parse import urlparse   as urllib_urlparse
   from io import BytesIO              as PyBytesIO
-except: # py2
+else:                                 # Py2
   import urlparse                     as urllib_parse
   from urllib import quote_plus       as urllib_quote_plus
   from urllib import unquote          as urllib_quote
   from urlparse import urlparse       as urllib_urlparse
   from cStringIO import StringIO      as PyBytesIO
 import zExceptions
-import six
 # Product Imports.
 from Products.zms import _globals
 from Products.zms import _fileutil
@@ -2201,7 +2200,7 @@ def getTempFile( context, id):
   if is_str(data):
     b = pybytes(data)
   elif not is_bytes(data):
-    b = pybytes('')
+    b = pybytes(b'')
     while data is not None:
        b += data.data
        data=data.next

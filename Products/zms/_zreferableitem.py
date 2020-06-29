@@ -128,17 +128,16 @@ class ZReferableItem(object):
   #  ZReferableItem.getRelativeUrl:
   # ----------------------------------------------------------------------------
   def getRelativeUrl(self, path, url):
-    import urllib.parse
     import posixpath
-    u_dest = urllib.parse.urlsplit(url)
-    u_src = urllib.parse.urlsplit(path)
-    _uc1 = urllib.parse.urlunsplit(u_dest[:2]+tuple('' for i in range(3)))
-    _uc2 = urllib.parse.urlunsplit(u_src[:2]+tuple('' for i in range(3)))
+    u_dest = standard.urllib_parse.urlsplit(url)
+    u_src = standard.urllib_parse.urlsplit(path)
+    _uc1 = standard.urllib_parse.urlunsplit(u_dest[:2]+tuple('' for i in range(3)))
+    _uc2 = standard.urllib_parse.urlunsplit(u_src[:2]+tuple('' for i in range(3)))
     if _uc1 != _uc2:
         ## This is a different domain
         return url
     _relpath = posixpath.relpath(u_dest.path, posixpath.dirname(u_src.path))
-    return './%s'%urllib.parse.urlunsplit(('', '', _relpath, u_dest.query, u_dest.fragment))
+    return './%s'%standard.urllib_parse.urlunsplit(('', '', _relpath, u_dest.query, u_dest.fragment))
 
   # ----------------------------------------------------------------------------
   #  ZReferableItem.getRefObjPath:

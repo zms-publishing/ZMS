@@ -50,13 +50,17 @@ import sys
 import time
 import traceback
 try: # py3
+  import urllib.parse                 as urllib_parse
   from urllib.parse import quote_plus as urllib_quote_plus
   from urllib.parse import unquote    as urllib_unquote
   from urllib.parse import urlparse   as urllib_urlparse
+  from io import BytesIO              as PyBytesIO
 except: # py2
+  import urlparse                     as urllib_parse
   from urllib import quote_plus       as urllib_quote_plus
   from urllib import unquote          as urllib_quote
   from urlparse import urlparse       as urllib_urlparse
+  from cStringIO import StringIO      as PyBytesIO
 import zExceptions
 import six
 # Product Imports.
@@ -515,19 +519,12 @@ def unencode( p, enc='utf-8'):
   Unencodes given parameter.
   """
   if isinstance(p, dict):
-    for key in p.keys():
-      if isinstance(p[ key], str):
-        p[ key] = p[ key].encode( enc)
+    for key in p:
+      p[key] = unencode(p[key],enc)
   elif isinstance(p, list):
-    l = []
-    for i in p:
-      if isinstance(i, str):
-        l.append( i.encode( enc))
-      else:
-        l.append( i)
-    p = l
-  elif isinstance(p, str):
-    p = p.encode( enc)
+    p = [unencode(x,enc) for x in p]
+  elif six.PY2 and is_str(p):
+    p = pybytes(p,enc)
   return p
 
 
@@ -1866,10 +1863,10 @@ def parseXmlString(xml):
   """
   from Products.zms import _xmllib
   builder = _xmllib.XmlAttrBuilder()
-  if isinstance(xml, str):
-    xml = xml.encode()
-  if isinstance(xml, bytes):
-    xml = BytesIO(xml)
+  if is_str(xml):
+    xml = pybytes(xml)
+  if is_bytes(xml):
+    xml = PyBytesIO(xml)
   v = builder.parse(xml)
   return v
 
@@ -2201,13 +2198,13 @@ def getTempFile( context, id):
   temp_file = getattr(temp_folder,id)
   data = temp_file.data
   b = data
-  if isinstance(data, str):
-    b = data.encode()
-  elif not isinstance(data, bytes):
-    b = b''
+  if is_str(data):
+    b = pybytes(data)
+  elif not is_bytes(data):
+    b = pybytes('')
     while data is not None:
        b += data.data
-       data=data.next  
+       data=data.next
   return b
   
 

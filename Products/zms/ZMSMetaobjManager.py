@@ -18,7 +18,6 @@
 
 
 # Imports.
-from io import BytesIO
 from distutils.version import LooseVersion
 import ZPublisher.HTTPRequest
 import collections
@@ -907,7 +906,7 @@ class ZMSMetaobjManager(object):
             zopeutil.removeObject(oldContainer, oldObId)
         # Insert Zope-Object.
         if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
-        if isinstance(newCustom,str): 
+        if standard.is_str(newCustom): 
            newCustom = newCustom.encode('utf-8').replace(b'\r', b'')
            newCustom = newCustom.decode('utf-8')
         zopeutil.addObject(container, newType, newObId, newName, newCustom)
@@ -1252,14 +1251,15 @@ class ZMSMetaobjManager(object):
                  for name in zip_buffer.namelist():
                    if name.endswith(".xml"):
                      filename = name
-                     xmlfile = BytesIO(zip_buffer.read(filename))
+                     xmlfile = standard.PyBytesIO(zip_buffer.read(filename))
                      break
               # parse xml
               if not immediately:
                 xml = xmlfile.read()
                 # open string-io.
-                xmlfile = BytesIO(xml)
+                xmlfile = standard.PyBytesIO(xml)
                 v = standard.parseXmlString(xmlfile)
+                xmlfile = standard.PyBytesIO(xml)
                 if not isinstance(v,list):
                   v = []
                 if temp_id in temp_folder.objectIds():

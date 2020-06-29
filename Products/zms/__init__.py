@@ -289,7 +289,7 @@ def translate_path(s):
 # Dynamic Modification of the Zope Skin
 ################################################################################
 confdict = _confmanager.ConfDict.get()
-if six.PY2 and confdict['zmi.console'] in ['light','dark']:
+if six.PY2 and confdict.get('zmi.console') in ['light','dark']:
   from App.special_dtml import DTMLFile
   from App.Management import Navigation
   from App.Management import Tabs

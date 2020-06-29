@@ -136,11 +136,11 @@ IN:    clazz        [C{MyImage}|C{MyFile}]
 OUT:    blob        [MyImage|MyFile]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def createBlobField(self, objtype, file=b''):
-  if type(file) is bytes:
+  if standard.is_bytes(file):
     blob = uploadBlobField( self, objtype, file)
   elif isinstance(file, dict):
     data = file.get( 'data', '')
-    if isinstance(data, StringType):
+    if standard.is_str(data):
       data = standard.pybytes(data,'utf-8')
       data = StringIO( data)
     blob = uploadBlobField( self, objtype, data, file.get('filename', ''))
@@ -160,7 +160,7 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
   except:
     pass
   f = None
-  if type(file) is str:
+  if standard.is_str(file):
     f = re.findall('^data:(.*?);base64,([\s\S]*)$',file)
   if f:
     mt = f[0][0]

@@ -31,10 +31,11 @@
 				f python:getattr(here.temp_folder,request.get('temp_import_file_id'));
 				xmlfile python:standard.getTempFile(here,request.get('temp_import_file_id'));
 				xml python:standard.parseXmlString(xmlfile);
+				xml python:[[xml],xml][standard.operator_gettype(xml) is list];
 				packages python:[];
 				importObjs python:[]">
 			<tal:block tal:repeat="item xml">
-				<tal:block tal:define="global
+				<tal:block on-error="python:item" tal:define="global
 						importObj python:{'id':item['key'],'name':item['value']['name'],'type':item['value']['type'],'package':item['value'].get('package',None),'revision':item['value'].get('revision','0.0.0')}">
 					<tal:block tal:condition="python:importObj['type']=='ZMSPackage' and not importObj['id'] in packages">
 						<tal:block tal:define="global dummy0 python:packages.append(importObj['id'])"></tal:block>

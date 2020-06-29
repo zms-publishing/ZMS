@@ -16,6 +16,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
+import six
 # Product Imports.
 from Products.zms import standard
 from Products.zms import _globals
@@ -79,8 +80,10 @@ class TextFormatObject(object):
       sec_no = self.getSecNo()
       if len(sec_no) > 0:
         s = '%s %s'%(sec_no, s)
-    return standard.pystr(s, encoding, errors)
-
+    if six.PY2:
+      return standard.pystr(s, encoding, errors)
+    else:
+      return s
 
   # ----------------------------------------------------------------------------
   #  TextFormatObject.renderText:

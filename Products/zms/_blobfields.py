@@ -21,7 +21,6 @@ from __future__ import absolute_import
 from DateTime.DateTime import DateTime
 from ZPublisher import HTTPRangeSupport, HTTPRequest
 from OFS.Image import Image, File
-from io import StringIO
 # from mimetools import choose_boundary
 from email.generator import _make_boundary as choose_boundary
 import base64
@@ -142,7 +141,7 @@ def createBlobField(self, objtype, file=b''):
     data = file.get( 'data', '')
     if standard.is_str(data):
       data = standard.pybytes(data,'utf-8')
-      data = StringIO( data)
+      data = standard.PyBytesIO( data)
     blob = uploadBlobField( self, objtype, data, file.get('filename', ''))
     if file.get('content_type'):
       blob.content_type = file.get('content_type')

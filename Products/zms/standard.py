@@ -69,6 +69,10 @@ from Products.zms import _mimetypes
 
 security = ModuleSecurityInfo('Products.zms.standard')
 
+security.declarePublic('is_str')
+security.declarePublic('is_bytes')
+security.declarePublic('pystr')
+security.declarePublic('pybytes')
 if six.PY2:
   def is_str(v):
     return isinstance(v,unicode)
@@ -84,6 +88,8 @@ if six.PY2:
     if type(object) is unicode:
       object = object.encode(encoding,errors)
     return object
+  def pyopen(name, mode, buffering=-1, encoding=None):
+    return open(name, mode, buffering)
 if six.PY3:
   def is_str(v):
     return isinstance(v,str)
@@ -91,6 +97,7 @@ if six.PY3:
     return isinstance(v,bytes)
   pystr = str
   pybytes = bytes
+  pyopen = open
 
 def url_quote(s):
   if six.PY2:

@@ -105,7 +105,7 @@ def importContent(self, file):
   self.oParent = self.getParentNode()
   
   # Parse XML-file.
-  ob = self.parse(StringIO(file.read()), self, 1)
+  ob = self.parse(file, self, 1)
   
   # Process objects after import
   recurse_importContent(ob, _fileutil.getFilePath(file.name))
@@ -156,7 +156,7 @@ def importFile(self, file, REQUEST, handler):
   
   # Import XML-file.
   standard.writeBlock( self, '[importFile]: filename='+filename)
-  f = open(filename, 'r', encoding='utf-8')
+  f = standard.pyopen(filename, 'r', encoding='utf-8')
   ob = handler(self, f)
   f.close()
   

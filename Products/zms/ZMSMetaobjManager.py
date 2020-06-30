@@ -735,7 +735,7 @@ class ZMSMetaobjManager(object):
     #  Set/add meta-object attribute with specified values.
     # --------------------------------------------------------------------------
     def setMetaobjAttr(self, id, oldId, newId, newName='', newMandatory=0, newMultilang=1, newRepetitive=0, newType='string', newKeys=[], newCustom='', newDefault=''):
-      self.writeBlock("[setMetaobjAttr]: %s %s %s"%(str(id), str(oldId), str(newId)))
+      self.writeLog("[setMetaobjAttr]: %s %s %s"%(str(id), str(oldId), str(newId)))
       self.clearReqBuff('ZMSMetaobjManager')
       ob = self.__get_metaobj__(id)
       if ob is None: return

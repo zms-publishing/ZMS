@@ -885,7 +885,7 @@ class XmlAttrBuilder(object):
       cdata = standard.unencode(tag['cdata'])
       # Hack for nested CDATA
       cdata = re.compile('\<\!\{CDATA\{(.*?)\}\}\>').sub('<![CDATA[\\1]]>',cdata)
-                            
+
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + str(sTagName) + ") expected (" + str(name) + ")")
 

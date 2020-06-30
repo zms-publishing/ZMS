@@ -129,8 +129,7 @@ class Builder(object):
         p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
         
         #### parsing ####
-        standard.writeLog( self, "#### parsing ####")
-        if isinstance(input, str):
+        if standard.is_bytes(input):
           # input is a string!
           rv = p.Parse(input, 1)
         else:
@@ -168,9 +167,10 @@ class Builder(object):
     #     attrs = dictionary of element attributes
     ############################################################################
     def OnStartElement(self, name, attrs):
-      """ Builder.OnStartElement """
-      if True:
+        """ Builder.OnStartElement """
         standard.writeLog( self, "[Builder.OnStartElement(" + standard.pystr(name) + ")]")
+        name = standard.unencode( name)
+        attrs = standard.unencode( attrs)
         skip = self.oCurrNode is not None and len([x for x in self.oCurrNode.dTagStack if x.get('skip')]) > 0
         if not skip and name in self.getMetaobjIds():
           meta_id = name

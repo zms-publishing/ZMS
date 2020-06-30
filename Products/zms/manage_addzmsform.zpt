@@ -49,11 +49,7 @@
 		<div class="form-group row">
 			<label for="preview" class="form-label col-sm-3 col-md-2">Preview</label>
 			<div class="col-sm-9 col-md-10">
-				<table>
-				<tr>
-					<td><div id="preview"><img style="border-radius: 4px;margin-bottom:.5em;" name="img_theme" src="/++resource++zms_/img/spacer.gif" border="0" width="250" height="160" /></div></td>
-				</tr>
-				</table>
+				<div id="preview"></div>
 			</div>
 		</div>
 
@@ -75,7 +71,7 @@
 		<div class="form-group row save">
 			<div class="col-sm-12 col-md-12">
 				<button type="submit" name="btn" value="Add" class="btn btn-primary">Add</button>
-				<button type="submit" name="btn" value="Cancel" class="btn">Cancel</button>
+				<button type="submit" name="btn" value="Cancel" class="btn btn-default">Cancel</button>
 			</div>
 		</div>
 
@@ -100,7 +96,7 @@ function themeChange(el) {
             img_src = "/++resource++zms_/themes/"+img_src;
         }
     }
-    document.img_theme.src = img_src;
+    $("#preview").html('<'+'img style="border-radius: 4px;margin-bottom:.5em;" src="'+img_src+'" border="0" width="250" height="160" />');
 }
 
 $(function() {

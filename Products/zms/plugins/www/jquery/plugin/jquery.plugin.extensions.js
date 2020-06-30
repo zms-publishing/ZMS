@@ -12,6 +12,7 @@ function pluginLanguage() {
 function zmiAutocomplete(s, o) {
 	pluginAutocomplete(s,function() {
 		$(s).autocomplete(o).before('<div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-search"></i></span></div>');
+		$(s).closest('.col-sm-10').wrapInner('<div class="input-group"></div>');
 	});
 }
 

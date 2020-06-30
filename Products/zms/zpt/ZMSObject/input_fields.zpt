@@ -225,7 +225,7 @@
 									</a>
 									<div class="btn zmi-changes" tal:content="structure python:'&nbsp;&nbsp;(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</div>
 								</div><!-- .card-header -->
-								<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['collapse','zmi-children']+[[''],['show']][hasChildren])) +'<div class=\042card-body container\042>'"></tal:block>
+								<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['collapse','zmi-children']+[[''],['show']][hasChildren])) +'<div class=\042card-body\042>'"></tal:block>
 								<ul class="zmi-container zmi-sortable">
 									<tal:block tal:repeat="childNode objChildren">
 										<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable']+[['pageelement'],[]][int(childNode.isPage())] + [[],['is-new']][int(childNode.inObjStates(['STATE_NEW'],request))] + [[],['is-modified']][int(childNode.inObjStates(['STATE_MODIFIED'],request))] + [[],['is-deleted']][int(childNode.inObjStates(['STATE_DELETED'],request))])">

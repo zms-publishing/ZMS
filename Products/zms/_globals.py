@@ -22,6 +22,7 @@
 # Imports.
 from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+import six
 import sys
 
 # MD5
@@ -235,13 +236,23 @@ class StaticPageTemplateFile(PageTemplateFile):
 ################################################################################
 # Define MyClass.
 ################################################################################
-class MyClass(object):
+if six.PY2:
+  class MyClass:
+  
+    # ----------------------------------------------------------------------------
+    #  MyClass.keys:
+    # ----------------------------------------------------------------------------
+    def keys(self):
+      return self.__dict__.keys()
 
-  # ----------------------------------------------------------------------------
-  #  MyClass.keys:
-  # ----------------------------------------------------------------------------
-  def keys(self):
-    return self.__dict__.keys()
+if six.PY3:
+  class MyClass(object):
+  
+    # ----------------------------------------------------------------------------
+    #  MyClass.keys:
+    # ----------------------------------------------------------------------------
+    def keys(self):
+      return self.__dict__.keys()
 
 
 ################################################################################

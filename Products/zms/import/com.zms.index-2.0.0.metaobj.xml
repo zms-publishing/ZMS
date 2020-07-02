@@ -1024,12 +1024,12 @@ zmscontext.ZMSIndexZCatalog_func_(zmscontext,'activate')
 ##
 # --// onImportObjEvt //--
 
-request = context.REQUEST
-base = list(context.getRootElement().getPhysicalPath())[:-1]
-url = list(context.getDocumentElement().getPhysicalPath())[len(base):-1]
-request.set('url','{$'+['','/'.join(url)+'@'][len(url)>0]+'}')
-zmscontext.ZMSIndexZCatalog_func_(zmscontext,'reindex')
-zmscontext.ZMSIndexZCatalog_func_(zmscontext,'resync')
+if zmscontext.getConfProperty('ZMSIndexZCatalog.onImportObjEvt',True) == True:
+  request = context.REQUEST
+  base = list(context.getRootElement().getPhysicalPath())[:-1]
+  url = list(context.getDocumentElement().getPhysicalPath())[len(base):-1]
+  request.set('url','{$'+['','/'.join(url)+'@'][len(url)>0]+'}')
+  zmscontext.ZMSIndexZCatalog_func_(zmscontext,'resync')
 
 # --// /onImportObjEvt //--
 ]]>

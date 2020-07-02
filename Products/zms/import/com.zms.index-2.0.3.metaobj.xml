@@ -101,6 +101,32 @@ function openWindow(url) {
 		</div><!-- .col-sm-5-->
 	</div><!-- .form-group -->
 
+	<div class="form-group zms4-row" tal:condition="initialized">
+		<label class="col-sm-2 control-label">Uid</label>
+		<div class="col-sm-5">
+			<div class="input-group" title="SEARCH for a given uid and show the index details.">
+				<input class="form-control" type="text" name="uid" tal:attributes="value uid" placeholder="Enter uid"/>
+				<div class="input-group-append input-group-btn">
+					<button class="btn btn-primary" name="btn" value="search"
+						onclick="$(this).parents('form').attr({action:self.location.href})">
+						<i class="icon-search fas fa-search"></i>
+					</button>
+				</div>
+			</div><!-- .input-group -->
+		</div>
+	</div><!-- .form-group -->
+	<div class="form-group zms4-row" tal:condition="uid">
+  	<label class="col-sm-2 control-label">&nbsp;</label>
+		<div class="col-sm-10" tal:define="q python:zmscontext.zcatalog_index({'get_uid':uid[2:-1]})">
+			<strong><tal:block tal:content="python:zmscontext.getZMILangStr('SEARCH_RETURNEDRESULTS')">returned results</tal:block>: <tal:block tal:content="python:len(q)">#q</tal:block></strong>
+			<ul>
+				<tal:block tal:repeat="r q">
+					<li><a tal:attributes="href python:'%s/manage'%r['getPath']" target="_blank" tal:content="python:r['getPath']">the path</a></li>
+				</tal:block>
+			</ul>
+		</div>
+	</div>
+
 <script>
 function set_progress( v, func_name ) {
 	var perc = Math.round(v * 10000) / 100;

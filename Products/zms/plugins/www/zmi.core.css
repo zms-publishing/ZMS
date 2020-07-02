@@ -1839,7 +1839,7 @@ body.browse_iframe .toggle {
 }
 #ZMSZCatalogConnector .zmi-sitemap,
 #ZMSZCatalogSolrConnector .zmi-sitemap,
-#zmsindex .zmi-sitemap {
+#zmsindex .zmi-sitemap-container {
 	width:100%;
 	max-height: 30rem;
 	height: fit-content;

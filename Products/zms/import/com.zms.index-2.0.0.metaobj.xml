@@ -1024,7 +1024,7 @@ zmscontext.ZMSIndexZCatalog_func_(zmscontext,'activate')
 ##
 # --// onImportObjEvt //--
 
-if zmscontext.getConfProperty('ZMSIndexZCatalog.onImportObjEvt',True) == True:
+if zmscontext.getConfProperty('ZMSIndexZCatalog.onImportObjEvt',False) == True:
   request = context.REQUEST
   base = list(context.getRootElement().getPhysicalPath())[:-1]
   url = list(context.getDocumentElement().getPhysicalPath())[len(base):-1]

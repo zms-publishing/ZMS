@@ -24,8 +24,8 @@ from Acquisition import Implicit
 import OFS.SimpleItem, OFS.ObjectManager
 import zope.interface
 # Product Imports.
-from . import IZMSDaemon
-from . import standard
+from Products.zms import IZMSDaemon
+from Products.zms import standard
 
 
 ################################################################################

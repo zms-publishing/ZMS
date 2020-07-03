@@ -16,10 +16,11 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
+import six
 # Product Imports.
-from . import standard
-from . import _globals
-from . import _objattrs
+from Products.zms import standard
+from Products.zms import _globals
+from Products.zms import _objattrs
 
 
 class TextFormatObject(object):
@@ -73,14 +74,16 @@ class TextFormatObject(object):
   #
   #  Returns text with section-number.
   # ----------------------------------------------------------------------------
-  def getText( self, REQUEST, key='text'):
+  def getText( self, REQUEST, key='text', encoding='utf-8', errors='strict'):
     s = self.getObjProperty(key, REQUEST)
     if self.isPageElement():
       sec_no = self.getSecNo()
       if len(sec_no) > 0:
-        s = sec_no + ' ' + s
-    return s
-
+        s = '%s %s'%(sec_no, s)
+    if six.PY2:
+      return standard.pystr(s, encoding, errors)
+    else:
+      return s
 
   # ----------------------------------------------------------------------------
   #  TextFormatObject.renderText:

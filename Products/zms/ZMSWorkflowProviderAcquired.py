@@ -19,13 +19,12 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import urllib.request, urllib.parse, urllib.error
 from zope.interface import implementer
 # Product Imports.
-from . import standard
-from . import IZMSConfigurationProvider
-from . import IZMSWorkflowProvider, ZMSWorkflowProvider
-from . import ZMSItem
+from Products.zms import standard
+from Products.zms import IZMSConfigurationProvider
+from Products.zms import IZMSWorkflowProvider, ZMSWorkflowProvider
+from Products.zms import ZMSItem
 
 
 @implementer(
@@ -147,7 +146,7 @@ class ZMSWorkflowProviderAcquired(
       
       # Active.
       # -------
-      if key == 'custom' and btn == self.getZMILangStr('BTN_SAVE'):
+      if key == 'custom' and btn == 'BTN_SAVE':
         # Autocommit & Nodes.
         old_autocommit = getattr(self, 'autocommit', 1)
         new_autocommit = REQUEST.get('workflow', 0) == 0
@@ -158,7 +157,7 @@ class ZMSWorkflowProviderAcquired(
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Return with message.
-      message = urllib.parse.quote(message)
+      message = standard.url_quote(message)
       return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#_%s'%(lang, message, key))
 
 ################################################################################

@@ -16,21 +16,15 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
-# Documentation string.
-from builtins import str
-__doc__ = """ZMS product module."""
-# Version string. 
-__version__ = '0.1' 
-
 # Imports.
+from __future__ import absolute_import
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
-import urllib.request, urllib.parse, urllib.error
 import time
-import string
 # Product Imports.
-from . import _objattrs
-from . import _pathhandler
+from Products.zms import _objattrs
+from Products.zms import _pathhandler
+from Products.zms import standard
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -138,6 +132,6 @@ class ZMSAttributeContainer(
         REQUEST.set('lang', self.getPrimaryLanguage())
         self.setReqProperty(key, REQUEST, 1)
     # Return with message.
-    return RESPONSE.redirect('manage_propertiesForm?manage_tabs_message=%s'%(urllib.parse.quote(message)))
+    return RESPONSE.redirect('manage_propertiesForm?manage_tabs_message=%s'%(standard.url_quote(message)))
 
 ################################################################################

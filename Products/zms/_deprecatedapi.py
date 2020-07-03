@@ -17,12 +17,13 @@
 ################################################################################
 
 # Imports.
-import tempfile
+from __future__ import absolute_import
 from App.Common import package_home
+import tempfile
 # Product Imports.
-from . import standard
-from . import _fileutil
-from . import _xmllib
+from Products.zms import standard
+from Products.zms import _fileutil
+from Products.zms import _xmllib
 
 def warn(self,old,new=None):
   import warnings

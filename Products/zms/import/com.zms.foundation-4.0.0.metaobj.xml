@@ -5217,12 +5217,8 @@ return zmscontext.display_type(zmscontext.REQUEST)
 						<tal:block tal:content="structure python:here.f_selectRichtext(ob=here,fmName=request['fmName'],elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=request['lang'],lang_str=here.getZMILangStr('ACTION_EDIT_CELL'),custom_str=custom,REQUEST=request,wrap='virtual',format='')"></tal:block>
 						<div class="form-row">
 							<div class="controls save">
-								<button class="btn btn-primary" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_CHANGE')" onclick="return table_cell_change();">
-									<tal:block tal:content="python:here.getZMILangStr('BTN_CHANGE')">Change</tal:block>
-								</button>
-								<button class="btn btn-secondary" type="submit" tal:attributes="value python:here.getZMILangStr('BTN_CANCEL')" onclick="return table_cell_cancel();">
-									<tal:block tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</tal:block>
-								</button>
+								<button class="btn btn-primary" type="submit" value="BTN_CHANGE" onclick="return table_cell_change();" tal:content="python:here.getZMILangStr('BTN_CHANGE')"></button>
+								<button class="btn btn-secondary" type="submit" value="BTN_CANCEL" onclick="return table_cell_cancel();" tal:content="python:here.getZMILangStr('BTN_CANCEL')"></button>
 							</div>
 						</div>
 					</div>

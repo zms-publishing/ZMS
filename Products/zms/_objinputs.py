@@ -17,8 +17,8 @@
 ################################################################################
 
 # Product Imports.
-from . import standard
-from . import _zreferableitem
+from Products.zms import standard
+from Products.zms import _zreferableitem
 
 
 class ObjInputs(object):

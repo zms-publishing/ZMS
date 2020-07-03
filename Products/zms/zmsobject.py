@@ -17,6 +17,7 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from DateTime.DateTime import DateTime
@@ -24,34 +25,32 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 # TODO from Products.ZCatalog import CatalogPathAwareness
 import ZPublisher.HTTPRequest
 import collections
-import urllib.request, urllib.parse, urllib.error
 import re
-import string
 import time
 # Product Imports.
-from . import standard
-from . import zopeutil
-from . import ZMSItem
-from . import ZMSWorkflowItem
-from . import _accessmanager
-from . import _blobfields
-from . import _cachemanager
-from . import _confmanager
-from . import _copysupport
-from . import _deprecatedapi
-from . import _exportable
-from . import _globals
-from . import _multilangmanager
-from . import _objattrs
-from . import _objchildren
-from . import _objinputs
-from . import _objtypes
-from . import _pathhandler
-from . import _versionmanager
-from . import _xmllib
-from . import _textformatmanager
-from . import _zmsattributecontainer
-from . import _zreferableitem
+from Products.zms import _accessmanager
+from Products.zms import _blobfields
+from Products.zms import _cachemanager
+from Products.zms import _confmanager
+from Products.zms import _copysupport
+from Products.zms import _deprecatedapi
+from Products.zms import _exportable
+from Products.zms import _globals
+from Products.zms import _multilangmanager
+from Products.zms import _objattrs
+from Products.zms import _objchildren
+from Products.zms import _objinputs
+from Products.zms import _objtypes
+from Products.zms import _pathhandler
+from Products.zms import _versionmanager
+from Products.zms import _xmllib
+from Products.zms import _textformatmanager
+from Products.zms import _zmsattributecontainer
+from Products.zms import _zreferableitem
+from Products.zms import ZMSItem
+from Products.zms import ZMSWorkflowItem
+from Products.zms import standard
+from Products.zms import zopeutil
 
 __all__= ['ZMSObject']
 
@@ -1145,6 +1144,33 @@ class ZMSObject(ZMSItem.ZMSItem,
 
 
     # --------------------------------------------------------------------------
+    #  ZMSObject.manage_get_node_json:
+    # --------------------------------------------------------------------------
+    def manage_get_node_json(self):
+      """ ZMSObject.manage_get_node_json """
+      content_type = 'text/json; charset=utf-8'
+      filename = '%s.json'%self.id
+      request = self.REQUEST
+      RESPONSE = request.RESPONSE
+      RESPONSE.setHeader('Content-Type',content_type)
+      RESPONSE.setHeader('Content-Disposition','inline;filename="%s"'%filename)
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
+      self.f_standard_html_request( self, request)
+      d = {}
+      d['id'] = self.id
+      d['uid'] = self.get_uid()
+      d['physical_path'] = '/'.join(self.getPhysicalPath())
+      obj_attrs = self.getObjAttrs()
+      for key in obj_attrs:
+        v = self.attr(key)
+        if isinstance( v, _blobfields.MyBlob):
+            v = v.getHref(request)
+        d[key] = v
+      return standard.str_json(d)
+
+
+    # --------------------------------------------------------------------------
     #  ZMSObject.ajaxGetNode:
     # --------------------------------------------------------------------------
     security.declareProtected('View', 'ajaxGetNode')
@@ -1383,7 +1409,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       parent.normalizeSortIds(standard.id_prefix(self.id))
       # Return with message.
       message = self.getZMILangStr('MSG_MOVEDOBJUP')%("<i>%s</i>"%self.display_type(REQUEST))
-      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(), lang, urllib.parse.quote(message), self.id))
+      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(), lang, standard.url_quote(message), self.id))
 
 
     ############################################################################
@@ -1399,7 +1425,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       parent.normalizeSortIds(standard.id_prefix(self.id))
       # Return with message.
       message = self.getZMILangStr('MSG_MOVEDOBJDOWN')%("<i>%s</i>"%self.display_type(REQUEST))
-      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(), lang, urllib.parse.quote(message), self.id))
+      RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(), lang, standard.url_quote(message), self.id))
 
 
     ############################################################################
@@ -1474,7 +1500,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           return RESPONSE.redirect(self.url_append_params(metaCmd['id'], params, sep='&'))
       
       # Return with message.
-      message = urllib.parse.quote(message)
+      message = standard.url_quote(message)
       return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(), lang, message))
 
 

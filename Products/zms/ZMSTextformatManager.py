@@ -19,10 +19,9 @@
 # Imports.
 from App.Common import package_home
 import copy
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import ZMSTextformat
-from . import standard
+from Products.zms import ZMSTextformat
+from Products.zms import standard
 
 
 ################################################################################
@@ -149,14 +148,14 @@ class ZMSTextformatManager(object):
     #
     #  Change text-formats.
     ############################################################################
-    def manage_changeTextformat(self, lang, REQUEST, RESPONSE): 
+    def manage_changeTextformat(self, lang, btn, REQUEST, RESPONSE): 
       """ ZMSTextformatManager.manage_changeTextformat """
       message = ''
       id = REQUEST.get('id', '')
       
       # Change.
       # -------
-      if REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
+      if btn == 'BTN_SAVE':
         old_id = REQUEST['id']
         id = REQUEST['new_id'].strip()
         display = REQUEST['new_display'].strip()
@@ -173,7 +172,7 @@ class ZMSTextformatManager(object):
       
       # Delete.
       # -------
-      elif REQUEST['btn'] == self.getZMILangStr('BTN_DELETE'):
+      elif btn == 'BTN_DELETE':
         if id:
           ids = [id]
         else:
@@ -185,7 +184,7 @@ class ZMSTextformatManager(object):
       
       # Insert.
       # -------
-      elif REQUEST['btn'] == self.getZMILangStr('BTN_INSERT'):
+      elif btn == 'BTN_INSERT':
         id = REQUEST['_id'].strip()
         display = REQUEST['_display'].strip()
         self.setTextformat(None, id, display, self.get_manage_lang())
@@ -193,7 +192,7 @@ class ZMSTextformatManager(object):
       
       # Export.
       # -------
-      elif REQUEST['btn'] == self.getZMILangStr('BTN_EXPORT'):
+      elif btn == 'BTN_EXPORT':
         value = []
         ids = REQUEST.get('ids', [])
         fmts = self.textformats
@@ -213,7 +212,7 @@ class ZMSTextformatManager(object):
       
       # Import.
       # -------
-      elif REQUEST['btn'] == self.getZMILangStr('BTN_IMPORT'):
+      elif btn == 'BTN_IMPORT':
         f = REQUEST['file']
         if f:
           filename = f.filename
@@ -225,7 +224,7 @@ class ZMSTextformatManager(object):
       
       # Return with message.
       if RESPONSE:
-        message = urllib.parse.quote(message)
+        message = standard.url_quote(message)
         return RESPONSE.redirect('manage_textformats?lang=%s&manage_tabs_message=%s&id=%s'%(lang, message, id))
       
       return message

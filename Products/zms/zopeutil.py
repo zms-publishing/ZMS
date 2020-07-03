@@ -23,8 +23,8 @@ from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import os
 # Product Imports.
-from . import standard
-from . import _fileutil
+from Products.zms import standard
+from Products.zms import _fileutil
 
 security = ModuleSecurityInfo('Products.zms.zopeutil')
 
@@ -112,7 +112,7 @@ def readData(ob, default=None):
     try:
       b = b''
       while data is not None:
-        b += bytes(data.data)
+        b += standard.pybytes(data.data)
         data = data.next
       data = b
     except:
@@ -288,7 +288,7 @@ def addFile(container, id, title, data, content_type=None):
   """
   if content_type is None:
     if type(data) is str:
-      data = bytes(data,'utf-8')
+      data = standard.pybytes(data,'utf-8')
     content_type, enc = standard.guess_content_type(id, data)
   container.manage_addFile(id=id, title=title, file=data, content_type=content_type)
   ob = getattr( container, id)

@@ -26,6 +26,7 @@ Scripts.  It can be accessed from Python with the statement
 "import Products.zms.standard"
 """
 # Imports.
+from __future__ import absolute_import
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 from AccessControl import AuthEncoding
 from App.Common import package_home
@@ -44,18 +45,66 @@ import logging
 import operator
 import os
 import re
+import six
 import sys
 import time
 import traceback
-import urllib.request, urllib.parse, urllib.error
+if six.PY3:                           # Py3
+  import urllib.parse                 as urllib_parse
+  from urllib.parse import quote_plus as urllib_quote_plus
+  from urllib.parse import unquote    as urllib_unquote
+  from urllib.parse import urlparse   as urllib_urlparse
+  from io import BytesIO              as PyBytesIO
+else:                                 # Py2
+  import urlparse                     as urllib_parse
+  from urllib import quote_plus       as urllib_quote_plus
+  from urllib import unquote          as urllib_quote
+  from urlparse import urlparse       as urllib_urlparse
+  from cStringIO import StringIO      as PyBytesIO
 import zExceptions
-import six
 # Product Imports.
-from . import _globals
-from . import _fileutil
-from . import _mimetypes
+from Products.zms import _globals
+from Products.zms import _fileutil
+from Products.zms import _mimetypes
 
 security = ModuleSecurityInfo('Products.zms.standard')
+
+security.declarePublic('is_str')
+security.declarePublic('is_bytes')
+security.declarePublic('pystr')
+security.declarePublic('pybytes')
+if six.PY2:
+  def is_str(v):
+    return isinstance(v,unicode)
+  def is_bytes(v):
+    return isinstance(v,str) or isinstance(v,bytes)
+  def pystr(object, encoding='latin-1', errors='strict'):
+    if type(object) is str:
+      object = unicode(object,encoding).encode('utf-8',errors)
+    else:
+      object = unicode(object)
+    return object
+  def pybytes(object, encoding='latin-1', errors='strict'):
+    if type(object) is unicode:
+      object = object.encode(encoding,errors)
+    return object
+  def pyopen(name, mode, buffering=-1, encoding=None):
+    return open(name, mode, buffering)
+if six.PY3:
+  def is_str(v):
+    return isinstance(v,str)
+  def is_bytes(v):
+    return isinstance(v,bytes)
+  pystr = str
+  pybytes = bytes
+  pyopen = open
+
+def url_quote(s):
+  if six.PY2:
+    from urllib import quote as _urllib_quote
+  if six.PY3:
+    from urllib.parse import quote as _urllib_quote
+  return _urllib_quote(s)
 
 """
 @group PIL (Python Imaging Library): pil_img_*
@@ -77,7 +126,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   homeElmnt = [x for x in self.objectValues() if x.id == homeElmnt.id][0]
   
   ##### Add ZMS ####
-  from . import zms
+  from Products.zms import zms
   zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
   zms.initContent(homeElmnt.content, 'content.default.zip', REQUEST)
 
@@ -114,11 +163,15 @@ def getINSTANCE_HOME():
 
 security.declarePublic('zmi_paths')
 def zmi_paths(context):
-	from zmi.styles.subscriber import css_paths, js_paths
 	kw = {}
-	# remove zmi base css/js
-	kw["css_paths"] = css_paths(context)[:-1]
-	kw["js_paths"] = js_paths(context)[:-2]
+	try:
+		from zmi.styles.subscriber import css_paths, js_paths
+		# remove zmi base css/js
+		kw["css_paths"] = css_paths(context)[:-1]
+		kw["js_paths"] = js_paths(context)[:-2]
+	except:
+		kw["css_paths"] = ("/++resource++zmi/bootstrap-4.1.1/bootstrap.min.css","/++resource++zmi/fontawesome-free-5.8.1/css/all.css",)
+		kw["js_paths"] = ("/++resource++zmi/jquery-3.2.1.min.js","/++resource++zmi/bootstrap-4.1.1/bootstrap.bundle.min.js",)
 	return kw
 
 
@@ -213,11 +266,14 @@ def url_append_params(url, dict, sep='&amp;'):
     value = dict[key]
     if isinstance(value, list):
       for item in value:
-        qi = key + ':list=' + urllib.parse.quote(str(item))
+        qi = key + ':list=' + url_quote(pystr(item))
         url += qs + qi
         qs = sep
     else:
-      qi = key + '=' + urllib.parse.quote(str(value))
+      try:
+        qi = key + '=' + url_quote(str(value))
+      except:
+        qi = key + '=' + value.encode('utf-8','replace')
       if url.find( '?' + qi) < 0 and url.find( '&' + qi) < 0 and url.find( '&amp;' + qi) < 0:
         url += qs + qi
       qs = sep
@@ -251,18 +307,18 @@ def url_inherit_params(url, REQUEST, exclude=[], sep='&amp;'):
           else:
             url += sep
           if isinstance(v, int):
-            url += urllib.parse.quote(key+':int') + '=' + urllib.parse.quote(str(v))
+            url += url_quote(key+':int') + '=' + url_quote(str(v))
           elif isinstance(v, float):
-            url += urllib.parse.quote(key+':float') + '=' + urllib.parse.quote(str(v))
+            url += url_quote(key+':float') + '=' + url_quote(str(v))
           elif isinstance(v, list):
             c = 0
             for i in v:
               if c > 0:
                 url += sep
-              url += urllib.parse.quote(key+':list') + '=' + urllib.parse.quote(str(i))
+              url += url_quote(key+':list') + '=' + url_quote(str(i))
               c = c + 1
           else:
-            url += key + '=' + urllib.parse.quote(str(v))
+            url += key + '=' + url_quote(str(v))
   return url+anchor
 
 
@@ -282,9 +338,9 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
   @rtype: C{str}
   """
   if encoding is not None:
-    s = str( s, encoding)
+    s = pystr( s, encoding)
   else:
-    s = str(s)
+    s = pystr(s)
   # remove all tags.
   s = re.sub( '<!--(.*?)-->', '', s)
   s = re.sub( '<script((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</script>', '', s)
@@ -313,7 +369,7 @@ def url_encode(url):
   @return: Encoded string
   @rtype: C{str}
   """
-  return ''.join([urllib.parse.quote_plus(x) for x in url])
+  return ''.join([urllib_quote_plus(x) for x in url])
 
 
 security.declarePublic('guess_content_type')
@@ -337,7 +393,7 @@ html_quote:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def html_quote(v, name='(Unknown name)', md={}):
   if not isinstance(v,str):
-    v = str(v)
+    v = pystr(v)
   return cgi.escape(v, 1)
 
 
@@ -469,19 +525,12 @@ def unencode( p, enc='utf-8'):
   Unencodes given parameter.
   """
   if isinstance(p, dict):
-    for key in p.keys():
-      if isinstance(p[ key], str):
-        p[ key] = p[ key].encode( enc)
+    for key in p:
+      p[key] = unencode(p[key],enc)
   elif isinstance(p, list):
-    l = []
-    for i in p:
-      if isinstance(i, str):
-        l.append( i.encode( enc))
-      else:
-        l.append( i)
-    p = l
-  elif isinstance(p, str):
-    p = p.encode( enc)
+    p = [unencode(x,enc) for x in p]
+  elif six.PY2 and is_str(p):
+    p = pybytes(p,enc)
   return p
 
 
@@ -541,7 +590,7 @@ def qs_append(qs, p, v):
     qs += '?'
   else:
     qs += '&amp;'
-  qs += p + '=' + urllib.parse.quote(v)
+  qs += p + '=' + url_quote(v)
   return qs
 
 
@@ -721,8 +770,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   @rtype: C{str}
   """
   # Parse URL.
-  import urllib.parse
-  u = urllib.parse.urlparse(url)
+  u = urllib_urlparse(url)
   writeLog( context, "[http_import.%s]: %s"%(method, str(u)))
   scheme = u[0]
   netloc = u[1]
@@ -754,7 +802,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   # Set request-headers.
   if auth is not None:
     userpass = auth['username']+':'+auth['password']
-    userpass = base64.encodestring(urllib.parse.unquote(userpass)).strip()
+    userpass = base64.encodestring(urllib_unquote(userpass)).strip()
     headers['Authorization'] =  'Basic '+userpass
   if method == 'GET' and query:
     path += '?' + query
@@ -1541,7 +1589,7 @@ def is_equal(x, y):
         return True
     elif type(x) is dict:
       if len(x) == len(y):
-        for k in x.keys():
+        for k in x:
           if not k in x or not k in y or not is_equal(x.get(k),y.get(k)):
             return False
         return True
@@ -1577,7 +1625,10 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
   elif i is not None:
     if type(i) is str:
       if not (i.strip().startswith('<') and i.strip().endswith('>')):
-        i = cgi.escape(i).encode(encoding, errors)
+        try:
+          i = cgi.escape(i).encode(encoding, errors)
+        except:
+          pass
       else:
         i = i.encode(encoding, errors)
     else:
@@ -1785,7 +1836,7 @@ def getXmlHeader(encoding='utf-8'):
   @type encoding: C{str}
   @rtype: C{str}
   """
-  from . import _xmllib
+  from Products.zms import _xmllib
   return _xmllib.xml_header(encoding)
 
 
@@ -1803,7 +1854,7 @@ def toXmlString(context, v, xhtml=False, encoding='utf-8'):
   @type encoding
   @rtype: C{string}
   """
-  from . import _xmllib
+  from Products.zms import _xmllib
   return _xmllib.toXml(context, v, xhtml=xhtml, encoding=encoding)
 
 
@@ -1816,12 +1867,12 @@ def parseXmlString(xml):
   @return: C{list} or C{dict}
   @rtype: C{any}
   """
-  from . import _xmllib
+  from Products.zms import _xmllib
   builder = _xmllib.XmlAttrBuilder()
-  if isinstance(xml, str):
-    xml = xml.encode()
-  if isinstance(xml, bytes):
-    xml = BytesIO(xml)
+  if is_str(xml):
+    xml = pybytes(xml)
+  if is_bytes(xml):
+    xml = PyBytesIO(xml)
   v = builder.parse(xml)
   return v
 
@@ -1841,7 +1892,7 @@ def processData(context, processId, data, trans=None):
   @return: the transformed data
   @rtype: C{str}
   """
-  from . import _filtermanager
+  from Products.zms import _filtermanager
   return _filtermanager.processData(context, processId, data, trans)
 
 
@@ -2113,7 +2164,7 @@ def extutil():
   """
   Returns util to handle zms3.extensions
   """
-  from . import _extutil
+  from Products.zms import _extutil
   return _extutil.ZMSExtensions()
 
 
@@ -2153,13 +2204,13 @@ def getTempFile( context, id):
   temp_file = getattr(temp_folder,id)
   data = temp_file.data
   b = data
-  if isinstance(data, str):
-    b = data.encode()
-  elif not isinstance(data, bytes):
-    b = b''
+  if is_str(data):
+    b = pybytes(data)
+  elif not is_bytes(data):
+    b = pybytes(b'')
     while data is not None:
        b += data.data
-       data=data.next  
+       data=data.next
   return b
   
 

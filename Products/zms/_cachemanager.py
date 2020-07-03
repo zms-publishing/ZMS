@@ -17,9 +17,10 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 import time
 # Product Imports.
-from . import standard
+from Products.zms import standard
 
 class Buff(object):
   pass

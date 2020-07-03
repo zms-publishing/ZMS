@@ -110,8 +110,8 @@
 				<input type="hidden" tal:attributes="name python:'filterattr%i'%filterIndex" value="%">
 				<input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),'')" />
 				<div class="input-group-append">
-					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_SEARCH'); title python:here.getZMILangStr('BTN_SEARCH')"><i class="fas fa-search"></i></button>
-					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_RESET'); title python:here.getZMILangStr('BTN_RESET')"><i class="fas fa-times"></i></button>
+					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_SEARCH" tal:attributes="title python:here.getZMILangStr('BTN_SEARCH')"><i class="fas fa-search"></i></button>
+					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_RESET" tal:attributes="title python:here.getZMILangStr('BTN_RESET')"><i class="fas fa-times"></i></button>
 				</div>
 			</div><!-- .input-group -->
 		</div><!-- .form-group -->
@@ -315,8 +315,8 @@
 				<input type="hidden" tal:attributes="name python:'filterattr%i'%filterIndex" value="%">
 				<input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.SESSION.get('filtervalue%i_%s'%(filterIndex,zmscontext.id),'')" />
 				<div class="input-group-append">
-					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_SEARCH'); title python:here.getZMILangStr('BTN_SEARCH')"><i class="fas fa-search"></i></button>
-					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:here.getZMILangStr('BTN_RESET'); title python:here.getZMILangStr('BTN_RESET')"><i class="fas fa-times"></i></button>
+					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_SEARCH" tal:attributes="title python:here.getZMILangStr('BTN_SEARCH')"><i class="fas fa-search"></i></button>
+					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_RESET" tal:attributes="title python:here.getZMILangStr('BTN_RESET')"><i class="fas fa-times"></i></button>
 				</div>
 			</div><!-- .input-group -->
 		</div><!-- .form-group -->

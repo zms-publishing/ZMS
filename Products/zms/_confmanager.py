@@ -18,6 +18,7 @@ from __future__ import absolute_import
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 from io import StringIO
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
@@ -29,28 +30,31 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import OFS.misc_
-import configparser
+try: # py3
+  import configparser
+except: # py2
+  import ConfigParser as configparser
 import importlib
 import operator
 import os
 import tempfile
 import time
-import urllib.request, urllib.parse, urllib.error
 import xml.dom.minidom
 import zExceptions
 from zope.interface import implementer, providedBy
 # Product imports.
-from . import standard
+from Products.zms import standard
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
-from . import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
-from . import _exportable
-from . import _fileutil
-from . import _filtermanager
-from . import _mediadb
-from . import _multilangmanager
-from . import _sequence
-from . import zopeutil
-from . import zmslog
+from Products.zms import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
+from Products.zms import _exportable
+from Products.zms import _fileutil
+from Products.zms import _filtermanager
+from Products.zms import _mediadb
+from Products.zms import _multilangmanager
+from Products.zms import _sequence
+from Products.zms import standard
+from Products.zms import zopeutil
+from Products.zms import zmslog
 
 
 UNINHERITED_PROPERTIES = ['ASP','Portal']
@@ -504,6 +508,7 @@ class ConfManager(
         {'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
         {'key':'ZMSGraphic.superres','title':'Image superres-attribute','desc':'Super-resolution attribute for ZMS standard image-objects.','datatype':'boolean','default':0},
         {'key':'ZCatalog.TextIndexType','title':'Search with TextIndex-type','desc':'Use specified TextIndex-type (default: ZCTextIndex)','datatype':'string','default':'ZCTextIndex'},
+        {'key':'ZMSIndexZCatalog.onImportObjEvt','title':'Resync ZMSIndex on content import','desc':'Please be aware that activating implicit ZMSIndex-resync on content import can block bigger sites for a while','datatype':'boolean','default':0},
         ];
     
     """
@@ -515,7 +520,7 @@ class ConfManager(
       d = self.get_conf_properties()
       if REQUEST is not None:
         import base64
-        prefix = str(base64.b64decode(prefix),'utf-8')
+        prefix = standard.pystr(base64.b64decode(prefix),'utf-8')
         r = {}
         for x in d:
           if x.startswith(prefix+'.'):
@@ -580,7 +585,12 @@ class ConfManager(
       REQUEST = kwargs.get('REQUEST')
       if REQUEST is not None:
         import base64
-        key = str(base64.b64decode(key),'utf-8')
+        try:
+          #Py3
+          key = standard.pystr(base64.b64decode(key),'utf-8')
+        except:
+          #Py2
+          key = base64.b64decode(key)
       if key in OFS.misc_.misc_.zms['confdict']:
         default = OFS.misc_.misc_.zms['confdict'].get(key)
       value = default
@@ -794,7 +804,7 @@ class ConfManager(
           zmsext = REQUEST.get('zmsext', '')
           target = 'manage_main'
           ZMSExtension  = standard.extutil()
-          standard.writeBlock(self, "[ConfManager.manage_customizeSystem] InstallTheme:"+str(zmsext))
+          standard.writeBlock(self, "[ConfManager.manage_customizeSystem] InstallTheme:"+standard.pystr(zmsext))
           if ZMSExtension.installTheme(self, zmsext):
             return True
           else:
@@ -870,7 +880,7 @@ class ConfManager(
       
       # Save css.
       # -----
-      if btn == self.getZMILangStr('BTN_SAVE') and section == 'added':
+      if btn == 'BTN_SAVE' and section == 'added':
         added_id = REQUEST.get('id', '')
         fname= '%s.%s'%(added_id.split('.')[-1],added_id.split('.')[-2])
         href = self.getConfProperty(added_id,'%s/%scommon/added/%s'%(self.getHome().id,[self.getConfProperty('ZMS.theme','')+'/',''][len(self.getConfProperty('ZMS.theme',''))==0],fname))
@@ -889,27 +899,27 @@ class ConfManager(
       
       # Save theme.
       # -----
-      elif btn == self.getZMILangStr('BTN_SAVE'):
+      elif btn == 'BTN_SAVE':
         id = REQUEST.get('id', '')
         self.setConfProperty('ZMS.theme', id)
         message = self.getZMILangStr('MSG_CHANGED')
       
       # Delete theme.
       # -------
-      elif btn == self.getZMILangStr('BTN_DELETE'):
+      elif btn == 'BTN_DELETE':
         ids = REQUEST.get('ids', [])
         home.manage_delObjects(ids)
         message = self.getZMILangStr('MSG_DELETED')%int(len(ids))
       
       # Copy theme.
       # -----
-      elif btn == self.getZMILangStr('BTN_COPY'):
+      elif btn == 'BTN_COPY':
         self.metaobj_manager.importTheme(id)
         message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+id+'</code>')
       
       # Import theme.
       # -------
-      elif btn == self.getZMILangStr('BTN_IMPORT'):
+      elif btn == 'BTN_IMPORT':
         file = REQUEST['file']
         filename = _fileutil.extractFilename(file.filename)
         id = filename[:filename.rfind('.')]
@@ -921,7 +931,7 @@ class ConfManager(
       
       # Insert theme.
       # -------
-      elif btn == self.getZMILangStr('BTN_INSERT'):
+      elif btn == 'BTN_INSERT':
         newId = REQUEST['newId']
         newTitle = REQUEST['newTitle']
         home.manage_addFolder(id=newId, title=newTitle)
@@ -930,7 +940,7 @@ class ConfManager(
         message = self.getZMILangStr('MSG_INSERTED')%newId
       
       # Return with message.
-      message = urllib.parse.quote(message)
+      message = standard.url_quote(message)
       return RESPONSE.redirect('manage_customizeDesignForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 
@@ -1171,5 +1181,20 @@ class ConfManager(
 # call this to initialize framework classes, which
 # does the right thing with the security assertions.
 InitializeClass(ConfManager)
+
+__REGISTRY__ = None
+def getRegistry():
+    global __REGISTRY__
+    if __REGISTRY__ is None:
+        print("__REGISTRY__['confdict']",__REGISTRY__)
+        __REGISTRY__ = {}
+        try:
+          __REGISTRY__['confdict'] = ConfDict.get()
+        except:
+          import sys, traceback, string
+          type, val, tb = sys.exc_info()
+          sys.stderr.write(string.join(traceback.format_exception(type, val, tb), ''))
+    return __REGISTRY__
+getRegistry()
 
 ################################################################################

@@ -26,14 +26,13 @@ import sys
 import tempfile
 import time
 import transaction
-import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
-from . import standard
-from . import _blobfields
-from . import _fileutil
-from . import _filtermanager
-from . import _globals
+from Products.zms import standard
+from Products.zms import _blobfields
+from Products.zms import _fileutil
+from Products.zms import _filtermanager
+from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------
@@ -106,7 +105,7 @@ def importContent(self, file):
   self.oParent = self.getParentNode()
   
   # Parse XML-file.
-  ob = self.parse(StringIO(file.read()), self, 1)
+  ob = self.parse(file, self, 1)
   
   # Process objects after import
   recurse_importContent(ob, _fileutil.getFilePath(file.name))
@@ -157,7 +156,7 @@ def importFile(self, file, REQUEST, handler):
   
   # Import XML-file.
   standard.writeBlock( self, '[importFile]: filename='+filename)
-  f = open(filename, 'r', encoding='utf-8')
+  f = standard.pyopen(filename, 'r', encoding='utf-8')
   ob = handler(self, f)
   f.close()
   

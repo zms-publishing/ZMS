@@ -20,13 +20,13 @@
 from App.Common import package_home
 import OFS.misc_
 import copy
-import urllib.request, urllib.parse, urllib.error
+import six
 from zope.interface import implementer
 # Product Imports.
-from . import IZMSLocale
-from . import _fileutil
-from . import _xmllib
-from . import standard
+from Products.zms import IZMSLocale
+from Products.zms import _fileutil
+from Products.zms import _xmllib
+from Products.zms import standard
 
 
 # ------------------------------------------------------------------------------
@@ -270,7 +270,7 @@ class MultiLanguageManager(object):
         RESPONSE.setHeader('Content-Type', 'text/plain; charset=utf-8')
       return lang_str
 
-    def getLangStr(self, key, lang=None):
+    def _getLangStr(self, key, lang=None):
       """
       Returns language-string for current content-language.
       """
@@ -305,6 +305,16 @@ class MultiLanguageManager(object):
             standard.writeError(self,'[getLangStr]: can\'t get from %s.%s'%(metaobjAttr,metaobjAttrId))
       
       return key
+
+
+    def getLangStr(self, key, lang=None):
+      """
+      Returns language-string for current content-language.
+      """
+      lang_str = self._getLangStr(key,lang)
+      if six.PY2:
+        lang_str = standard.pybytes(lang_str,'utf-8')
+      return lang_str
 
 
     # --------------------------------------------------------------------------
@@ -497,19 +507,19 @@ class MultiLanguageManager(object):
     #
     #  Change languages.
     ############################################################################
-    def manage_changeLanguages(self, lang, REQUEST, RESPONSE):
+    def manage_changeLanguages(self, lang, btn, REQUEST, RESPONSE):
       """ MultiLanguageManager.manage_changeLanguages """
       
       # Delete.
       # -------
-      if REQUEST['btn'] == self.getZMILangStr('BTN_DELETE'):
+      if btn == 'BTN_DELETE':
         ids = REQUEST.get('ids', [])
         for id in ids:
           self.delLanguage(id) 
       
       # Change.
       # -------
-      elif REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
+      elif btn == 'BTN_SAVE':
         for id in self.getLangIds():
           newLabel = REQUEST.get('%s_label'%id).strip()
           newParent = REQUEST.get('%s_parent'%id).strip()
@@ -527,7 +537,7 @@ class MultiLanguageManager(object):
           self.setLanguage(newId, newLabel, newParent, newManage)
       
       # Return with message.
-      message = urllib.parse.quote(self.getZMILangStr('MSG_CHANGED'))
+      message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
       return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 
@@ -606,12 +616,12 @@ class MultiLanguageManager(object):
     #
     #  Change property of language-dictionary.
     ############################################################################
-    def manage_changeLangDictProperties(self, lang, REQUEST, RESPONSE=None):
+    def manage_changeLangDictProperties(self, lang, btn, REQUEST, RESPONSE=None):
         """ MultiLanguageManager.manage_changeLangDictProperties """
         
         # Delete.
         # -------
-        if REQUEST['btn'] == self.getZMILangStr('BTN_DELETE'):
+        if btn == 'BTN_DELETE':
           ids = REQUEST.get('ids', [])
           dict = self.get_lang_dict()
           lang_dict = {}
@@ -622,7 +632,7 @@ class MultiLanguageManager(object):
         
         # Change.
         # -------
-        elif REQUEST['btn'] == self.getZMILangStr('BTN_SAVE'):
+        elif btn == 'BTN_SAVE':
           d = self.get_lang_dict()
           lang_dict = {}
           for key in d.keys():
@@ -642,13 +652,13 @@ class MultiLanguageManager(object):
         
         # Export.
         # -------
-        elif REQUEST['btn'] == self.getZMILangStr('BTN_EXPORT'):
+        elif btn == 'BTN_EXPORT':
           ids = REQUEST.get('ids', [])
           return exportXml(self, ids, REQUEST, RESPONSE)
         
         # Import.
         # -------
-        elif REQUEST['btn'] == self.getZMILangStr('BTN_IMPORT'):
+        elif btn == 'BTN_IMPORT':
           f = REQUEST['file']
           if f:
             filename = f.filename
@@ -659,7 +669,7 @@ class MultiLanguageManager(object):
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
         
         # Return with message.
-        message = urllib.parse.quote(self.getZMILangStr('MSG_CHANGED'))
+        message = standard.url_quote(self.getZMILangStr('MSG_CHANGED'))
         return RESPONSE.redirect('manage_customizeLanguagesForm?lang=%s&manage_tabs_message=%s#langdict'%(lang, message))
 
 ################################################################################

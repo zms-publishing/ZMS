@@ -17,6 +17,7 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 from App.Common import package_home
 from OFS.role import RoleManager
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -24,17 +25,16 @@ from OFS.CopySupport import _cb_decode, _cb_encode, CopyError # TODO , eNoData, 
 import copy
 import re
 import sys
-import urllib.request, urllib.parse, urllib.error
 import time
 # Product Imports.
-from . import zmsobject
-from . import standard
-from . import _accessmanager
-from . import _confmanager
-from . import _fileutil
-from . import _objattrs
-from . import _versionmanager
-from . import _zmi_actions_util
+from Products.zms import zmsobject
+from Products.zms import standard
+from Products.zms import _accessmanager
+from Products.zms import _confmanager
+from Products.zms import _fileutil
+from Products.zms import _objattrs
+from Products.zms import _versionmanager
+from Products.zms import _zmi_actions_util
 
 __all__= ['ZMSContainerObject']
 
@@ -304,7 +304,7 @@ class ZMSContainerObject(
         message += self.getZMILangStr('MSG_DELETED')%count
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
         target = REQUEST.get('manage_target', 'manage_main')
-        return RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target, lang, urllib.parse.quote(message)))
+        return RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target, lang, standard.url_quote(message)))
 
 
     ############################################################################
@@ -340,7 +340,7 @@ class ZMSContainerObject(
         message += self.getZMILangStr('MSG_UNDONE')%c
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
         target = REQUEST.get('manage_target', 'manage_main')
-        return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target, lang, urllib.parse.quote(message)))
+        return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target, lang, standard.url_quote(message)))
 
 
     ############################################################################
@@ -383,7 +383,7 @@ class ZMSContainerObject(
         message += self.getZMILangStr('MSG_TRASHED')%len(ids)
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
         target = REQUEST.get('manage_target', 'manage_main')
-        return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target, lang, urllib.parse.quote(message)))
+        return RESPONSE.redirect('%s?preview=preview&lang=%s&manage_tabs_message=%s'%(target, lang, standard.url_quote(message)))
 
 
     # --------------------------------------------------------------------------
@@ -959,7 +959,7 @@ class ZMSContainerObject(
       
       # Return with message.
       message = self.getZMILangStr('MSG_INSERTED')%attr['name']
-      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), new_id, lang, urllib.parse.quote(message)))
+      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), new_id, lang, standard.url_quote(message)))
 
     def manage_addZMSModule(self, lang, _sort_id, custom, REQUEST, RESPONSE):
       """
@@ -985,6 +985,6 @@ class ZMSContainerObject(
       
       # Return with message.
       message = self.getZMILangStr('MSG_INSERTED')%custom
-      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), new_id, lang, urllib.parse.quote(message)))
+      RESPONSE.redirect('%s/%s/manage_main?lang=%s&manage_tabs_message=%s'%(self.absolute_url(), new_id, lang, standard.url_quote(message)))
 
 ################################################################################

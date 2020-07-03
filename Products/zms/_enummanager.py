@@ -17,9 +17,10 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 from App.Common import package_home
 # Product Imports.
-from . import _xmllib
+from Products.zms import _xmllib
 
 
 ################################################################################

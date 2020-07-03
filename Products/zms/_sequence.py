@@ -18,9 +18,9 @@
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import ZMSItem
+from Products.zms import standard
+from Products.zms import ZMSItem
 
 
 ################################################################################
@@ -127,6 +127,6 @@ class Sequence(ZMSItem.ZMSItem):
 
       # Return.
       if RESPONSE is not None:
-        RESPONSE.redirect('%s?manage_tabs_message=%s'%(REQUEST[ 'HTTP_REFERER'], urllib.parse.quote(message)))
+        RESPONSE.redirect('%s?manage_tabs_message=%s'%(REQUEST[ 'HTTP_REFERER'], standard.url_quote(message)))
 
 ################################################################################

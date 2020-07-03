@@ -20,11 +20,11 @@
 import copy
 import re
 # Product Imports.
-from . import standard
-from . import _blobfields
-from . import _confmanager
-from . import _fileutil
-from . import _globals
+from Products.zms import standard
+from Products.zms import _blobfields
+from Products.zms import _confmanager
+from Products.zms import _fileutil
+from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------
@@ -308,7 +308,7 @@ class PathHandler(object):
           except:
              v = standard.writeError( self, '[__bobo_traverse__]: name=%s'%name)
           if v is not None:
-            if isinstance(v, str):
+            if standard.is_str(v):
               v = self.FileFromData( v, content_type='text/plain;charset=utf-8')
               v.aq_parent = self
               v.key = name

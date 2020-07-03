@@ -21,20 +21,20 @@ from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Persistence import Persistent
 from ZPublisher.Iterators import filestream_iterator
+from platform import python_version
 from zExceptions import NotFound
 import OFS.SimpleItem
 import Acquisition
 import os
-import urllib.request, urllib.parse, urllib.error
 import shutil
 import time
 import tempfile
 # Product Imports.
-from . import standard
-from . import _blobfields
-from . import _fileutil
-from . import _globals
-from . import _objattrs
+from Products.zms import standard
+from Products.zms import _blobfields
+from Products.zms import _fileutil
+from Products.zms import _globals
+from Products.zms import _objattrs
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -266,8 +266,12 @@ class MediaDb(
     # Properties.
     # -----------
     meta_type = 'MediaDb'
-    zmi_icon = "fas fa-images"
-    icon_clazz = zmi_icon
+    if python_version().startswith("3."): # py3
+      zmi_icon = "fas fa-images"
+      icon_clazz = zmi_icon
+    else: # py2
+      zmi_icon = "icon-folder-close"
+      icon_clazz = zmi_icon
 
     # Management Options.
     # -------------------
@@ -316,7 +320,7 @@ class MediaDb(
     #  MediaDb.urlQuote
     # --------------------------------------------------------------------------
     def urlQuote(self, s): 
-      return urllib.parse.quote(s)
+      return standard.url_quote(s)
 
     # --------------------------------------------------------------------------
     #  MediaDb.getPath

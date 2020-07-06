@@ -24,15 +24,14 @@ import copy
 import operator
 import sys
 import time
-import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
-from . import standard
-from . import zopeutil 
-from . import _blobfields
-from . import _confmanager
-from . import _globals
-from . import _zmsattributecontainer
+from Products.zms import standard
+from Products.zms import zopeutil 
+from Products.zms import _blobfields
+from Products.zms import _confmanager
+from Products.zms import _globals
+from Products.zms import _zmsattributecontainer
 
 
 # ------------------------------------------------------------------------------
@@ -145,7 +144,7 @@ class VersionItem(object):
             change_history = []
             record = {}
             record[ 'version_dt'] = standard.getDateTime( time.time())
-            record[ 'version_uid'] = str( REQUEST.get( 'AUTHENTICATED_USER'))
+            record[ 'version_uid'] = standard.pystr( REQUEST.get( 'AUTHENTICATED_USER'))
             record[ 'master_version'] = master_version
             record[ 'major_version'] = 0
             change_history.append( record)
@@ -1054,13 +1053,13 @@ class VersionItem(object):
     #  Undo version changes.
     ############################################################################
     manage_UndoVersionForm = PageTemplateFile('zpt/versionmanager/manage_undoversionform', globals())
-    def manage_UndoVersion(self, lang, REQUEST):
+    def manage_UndoVersion(self, lang, btn, REQUEST):
       """ VersionItem.manage_UndoVersion """
       message = ''
       
       # Reset.
       # ------
-      if REQUEST.get('btn', '') == self.getZMILangStr('BTN_RESET'):
+      if btn == 'BTN_RESET':
         version_nrs = REQUEST.get('version_nrs', [])
         if len(version_nrs) == 1:
           version_nr = version_nrs[0]
@@ -1074,7 +1073,7 @@ class VersionItem(object):
           message = self.getZMILangStr('MSG_CHANGED')
 
       # Return with message.
-      message = urllib.parse.quote(message)
+      message = standard.url_quote(message)
       return REQUEST.RESPONSE.redirect('manage_UndoVersionForm?lang=%s&manage_tabs_message=%s'%(lang, message))
 
 
@@ -1317,7 +1316,7 @@ class VersionManagerContainer(object):
               change_history.append( record)
             record = {}
             record[ 'version_dt'] = standard.getDateTime( time.time())
-            record[ 'version_uid'] = str( REQUEST.get( 'AUTHENTICATED_USER', None))
+            record[ 'version_uid'] = standard.pystr( REQUEST.get( 'AUTHENTICATED_USER', None))
             record[ 'master_version'] = self.getObjProperty( 'master_version', REQUEST)
             record[ 'major_version'] = self.getObjProperty( 'major_version', REQUEST) + 1
             change_history.append( record)

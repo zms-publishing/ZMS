@@ -19,11 +19,11 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 # Product Imports.
-from . import _blobfields
-from . import _confmanager
-from . import _fileutil
-from . import standard
-from . import _zreferableitem
+from Products.zms import _blobfields
+from Products.zms import _confmanager
+from Products.zms import _fileutil
+from Products.zms import standard
+from Products.zms import _zreferableitem
 
 
 # ------------------------------------------------------------------------------

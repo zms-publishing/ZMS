@@ -25,15 +25,14 @@ import fnmatch
 import math
 import string
 import time
-import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product Imports.
-from . import ZMSMetaobjManager
-from . import pilutil
-from . import standard
-from . import zopeutil
-from . import _blobfields
-from . import _globals
+from Products.zms import ZMSMetaobjManager
+from Products.zms import pilutil
+from Products.zms import standard
+from Products.zms import zopeutil
+from Products.zms import _blobfields
+from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------
@@ -316,7 +315,7 @@ class ObjAttrs(object):
         filteredMetaObjAttrs = [x for x in metaObj['attrs'] if x['id'] == 'format']
         if len(filteredMetaObjAttrs) == 1:
           if REQUEST.get('ZMS_INSERT'):
-            default = standard.dt_exec(self, str( filteredMetaObjAttrs[0].get('default', '')))
+            default = standard.dt_exec(self, standard.pystr( filteredMetaObjAttrs[0].get('default', '')))
             if default:
               fmt = default
             else:

@@ -23,12 +23,7 @@
 			<form class="form-horizontal card" title="Manager" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 				<input type="hidden" name="key" value="Manager" />
-				<tal:block tal:define="global meta_types python:[x for x in here.filtered_meta_types() if not x['product']=='zms' and x['name'].startswith('ZMS')] \
-					+[{'name':x,'action':x,} for x in ['Sequence','ZMSLog','ZMSZCatalogAdapter' \
-						,'ZMSFormatProvider','ZMSFormatProviderAcquired' \
-						,'ZMSMetacmdProvider','ZMSMetacmdProviderAcquired' \
-						,'ZMSWorkflowProvider','ZMSWorkflowProviderAcquired' \
-						,'ZMSRepositoryManager']]">
+				<tal:block tal:define="global meta_types python:[x for x in here.filtered_meta_types() if not x['product']=='zms' and x['name'].startswith('ZMS')] + [{'name':x,'action':x,} for x in ['Sequence', 'ZMSLog', 'ZMSZCatalogAdapter', 'ZMSFormatProvider', 'ZMSFormatProviderAcquired', 'ZMSMetacmdProvider', 'ZMSMetacmdProviderAcquired', 'ZMSWorkflowProvider', 'ZMSWorkflowProviderAcquired', 'ZMSRepositoryManager']]">
 				<div class="col-12 form-group">
 					<label class="d-none" for="meta_type">ZMS base-components</label>
 					<div class="btn-group">
@@ -134,16 +129,7 @@
 		<tal:block tal:define="global
 			conf python:here.getConfProperties();
 			conf_inherited python:here.getConfProperties(inherited=True);
-			conf_keys python:[x for x in conf_inherited if \
-				not x.startswith('ZMS.workflow') and \
-				not x.startswith('ZMS.version') and \
-				not x=='ZMS.log' and \
-				not x.startswith('ZMS.security') and \
-				not x.startswith('zms.misc') and \
-				not x.startswith('ZMS.filter') and \
-				not x.startswith('ZMS.custom') and \
-				not x.startswith('Portal.') \
-				];
+			conf_keys python:[x for x in conf_inherited if not x.startswith('ZMS.workflow') and not x.startswith('ZMS.version') and not x=='ZMS.log' and not x.startswith('ZMS.security') and not x.startswith('zms.misc') and not x.startswith('ZMS.filter') and not x.startswith('ZMS.custom') and not x.startswith('Portal.') ];
 				dummy0 python:conf_keys.sort();
 				res python:here.getConfPropertiesDefaults();
 				res_keys python:[x['key'] for x in here.sort_list(res,'title','asc')]">

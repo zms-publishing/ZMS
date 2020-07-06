@@ -17,11 +17,12 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 from zope.interface import implementer
 # Product Imports.
-from . import IZMSMetamodelProvider, IZMSFormatProvider
-from . import zmscontainerobject
-from . import  _globals
+from Products.zms import IZMSMetamodelProvider, IZMSFormatProvider
+from Products.zms import zmscontainerobject
+from Products.zms import  _globals
 
 
 ################################################################################
@@ -433,9 +434,9 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     # --------------------------------------------------------------------------
     #	ZMSProxyObject.getZMILangStr:
     # --------------------------------------------------------------------------
-    def getZMILangStr(self, key):
+    def getZMILangStr(self, key, REQUEST=None, RESPONSE=None):
       proxy = self.proxy
-      rtn = proxy.getZMILangStr( key)
+      rtn = proxy.getZMILangStr( key, REQUEST, RESPONSE)
       return rtn
 
 

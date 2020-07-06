@@ -16,11 +16,7 @@
 ### Avoid duplicate content under same url.
 </tal:block
 ><tal:block tal:define="target python:here.getHref2IndexHtml({'lang':request['lang'],'preview':request.get('preview',None),'ZMS_INDEX_HTML':[0,1][request.get('preview',None)=='preview']},deep=here.getConfProperty('index_html.redirect.deep',0))"
-><tal:block tal:condition="python:not done \
-			and here.getDeclId({'lang':request['lang']})!=here.id \
-			and not request['URL']=='%sindex_html'%target \
-			and (request['URL'].endswith('/%s/index_html'%here.getDeclId({'lang':request['lang']})) \
-				or request['URL'].endswith('/%s/index_html'%here.id))"
+><tal:block tal:condition="python:not done and here.getDeclId({'lang':request['lang']})!=here.id and not request['URL']=='%sindex_html'%target and (request['URL'].endswith('/%s/index_html'%here.getDeclId({'lang':request['lang']})) or request['URL'].endswith('/%s/index_html'%here.id))"
 	><tal:block tal:define="
 			dummy0 python:request.set('ZMS_INDEX_HTML',1);
 			dummy0 python:request.RESPONSE.redirect(target,301);

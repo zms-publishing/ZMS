@@ -20,16 +20,15 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import urllib.request, urllib.parse, urllib.error
 from zope.interface import implementer
 # Product Imports.
-from . import standard
-from . import IZMSConfigurationProvider, IZMSRepositoryProvider
-from . import IZMSWorkflowProvider, ZMSWorkflowActivitiesManager, ZMSWorkflowTransitionsManager
-from . import ZMSItem
-from . import zopeutil
-from . import _accessmanager
-from . import _fileutil
+from Products.zms import standard
+from Products.zms import IZMSConfigurationProvider, IZMSRepositoryProvider
+from Products.zms import IZMSWorkflowProvider, ZMSWorkflowActivitiesManager, ZMSWorkflowTransitionsManager
+from Products.zms import ZMSItem
+from Products.zms import zopeutil
+from Products.zms import _accessmanager
+from Products.zms import _fileutil
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -336,7 +335,7 @@ class ZMSWorkflowProvider(
       elif key == 'properties':
         # Save.
         # ------
-        if btn == self.getZMILangStr('BTN_SAVE'):
+        if btn == 'BTN_SAVE':
           # Autocommit & Nodes.
           old_autocommit = self.autocommit
           new_autocommit = REQUEST.get('workflow', 0) == 0
@@ -349,7 +348,7 @@ class ZMSWorkflowProvider(
       
         # Clear.
         # ------
-        elif btn == self.getZMILangStr('BTN_CLEAR'):
+        elif btn == 'BTN_CLEAR':
           self.doAutocommit(lang, REQUEST)
           self.autocommit = 1
           self.activities = []
@@ -358,12 +357,12 @@ class ZMSWorkflowProvider(
      
         # Export.
         # -------
-        elif btn == self.getZMILangStr('BTN_EXPORT'):
+        elif btn == 'BTN_EXPORT':
           return exportXml(self, REQUEST, RESPONSE)
       
         # Import.
         # -------
-        elif btn == self.getZMILangStr('BTN_IMPORT'):
+        elif btn == 'BTN_IMPORT':
           f = REQUEST['file']
           if f:
             filename = f.filename
@@ -375,7 +374,7 @@ class ZMSWorkflowProvider(
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       # Return with message.
-      message = urllib.parse.quote(message)
+      message = standard.url_quote(message)
       return RESPONSE.redirect('manage_main?lang=%s&key=%s&manage_tabs_message=%s#_properties'%(lang, key, message))
 
 ################################################################################

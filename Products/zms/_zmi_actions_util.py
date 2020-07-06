@@ -17,7 +17,7 @@
 ################################################################################
 
 # Product imports.
-from . import standard
+from Products.zms import standard
 
 def zmi_actions(container, context, attr_id='e'):
   """

@@ -34,12 +34,12 @@ from App.Common import package_home
 from OFS.Image import File
 
 # Product Imports
-from . import standard
-from . import _blobfields
-from . import _fileutil
-from . import _globals
-from . import _objattrs
-from . import zopeutil
+from Products.zms import standard
+from Products.zms import _blobfields
+from Products.zms import _fileutil
+from Products.zms import _globals
+from Products.zms import _objattrs
+from Products.zms import zopeutil
 
 
 # Product Imports.
@@ -81,7 +81,7 @@ def getText(nodelist, encoding='utf-8'):
     for childNode in node.childNodes:
       if childNode.nodeType == childNode.TEXT_NODE:
         rc.append(childNode.data)
-  return str(''.join(rc).encode(encoding))
+  return standard.pystr(''.join(rc).encode(encoding))
 
 # ------------------------------------------------------------------------------
 #  _xmllib.parseString:
@@ -136,12 +136,12 @@ def getXmlTypeSaveValue(v, attrs):
     try:
       v = float(v)
     except:
-      standard.writeError(self, "[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!" % (t, str(v)))
+      standard.writeError(self, "[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!" % (t, standard.pystr(v)))
   elif t == 'int':
     try:
       v = int(v)
     except:
-      standard.writeError(self, "[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!" % (t, str(v)))
+      standard.writeError(self, "[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!" % (t, standard.pystr(v)))
   elif t == 'datetime':
     new = standard.parseLangFmtDate(v)
     if new is not None:
@@ -277,9 +277,9 @@ def xmlOnUnknownEndTag(self, sTagName):
     # -- TAG-STACK
     tag = self.dTagStack.pop()
     skip = len([x for x in self.oCurrNode.dTagStack if x.get('skip')]) > 0
-    name = tag['name']
-    attrs = tag['attrs']
-    cdata = tag['cdata']
+    name = standard.unencode(tag['name'])
+    attrs = standard.unencode(tag['attrs'])
+    cdata = standard.unencode(tag['cdata'])
 
     # -- ITEM (DICTIONARY|LIST) --
     #----------------------------
@@ -312,7 +312,7 @@ def xmlOnUnknownEndTag(self, sTagName):
         try:
           data = standard.hex2bin(cdata)
         except:
-          data = bytes(cdata,'utf-8')
+          data = standard.pybytes(cdata,'utf-8')
         value['data'] = data
       self.dValueStack.append(value)
 
@@ -455,7 +455,7 @@ def toCdata(self, s, xhtml=False):
   rtn = ''
 
   # Return Text (HTML) in CDATA as XHTML.
-  from . import _filtermanager
+  from Products.zms import _filtermanager
   processId = 'tidy'
   if not xhtml \
      and self.getConfProperty('ZMS.export.xml.tidy', 0) \
@@ -510,7 +510,7 @@ def toCdata(self, s, xhtml=False):
   # Return Text in CDATA.
   elif s is not None:
     if type(s) is bytes:
-      s = str(s,'utf-8')
+      s = standard.pystr(s,'utf-8')
     # Hack for invalid characters
     s = s.replace(chr(30), '')
     # Hack for nested CDATA
@@ -814,7 +814,7 @@ class XmlAttrBuilder(object):
       p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
 
       #### parsing ####
-      if isinstance(input, bytes):
+      if standard.is_bytes(input):
         # input is a string!
         rv = p.Parse(input, 1)
       else:
@@ -880,9 +880,9 @@ class XmlAttrBuilder(object):
 
       # -- TAG-STACK
       tag = self.dTagStack.pop()
-      name = tag['name']
-      attrs = tag['attrs']
-      cdata = tag['cdata']
+      name = standard.unencode(tag['name'])
+      attrs = standard.unencode(tag['attrs'])
+      cdata = standard.unencode(tag['cdata'])
       # Hack for nested CDATA
       cdata = re.compile('\<\!\{CDATA\{(.*?)\}\}\>').sub('<![CDATA[\\1]]>',cdata)
 
@@ -896,7 +896,7 @@ class XmlAttrBuilder(object):
         try:
           data = standard.hex2bin(cdata)
         except:
-          data = bytes(cdata,'utf-8')
+          data = standard.pybytes(cdata,'utf-8')
         file = {'data':data, 'filename':filename, 'content_type':content_type}
         objtype = attrs.get('type')
         item = _blobfields.createBlobField(None, objtype, file)
@@ -1163,10 +1163,10 @@ class XmlBuilder(object):
       """ XmlBuilder.OnEndElement """
       
       lTag = self.dTagStack.pop()
-      name = lTag['name']
-      attrs = lTag['attrs']
-      lCdata = lTag['cdata']
-      lTags = lTag['tags']
+      name = standard.unencode(lTag['name'])
+      attrs = standard.unencode(lTag['attrs'])
+      lCdata = standard.unencode(lTag['cdata'])
+      lTags = standard.unencode(lTag['tags'])
 
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + sTagName + ")")

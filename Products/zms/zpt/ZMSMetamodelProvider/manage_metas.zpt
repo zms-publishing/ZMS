@@ -65,7 +65,7 @@ function zmiFormSubmit(sender,d) {
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<div class="col-lg-12">
-					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_ACQUIRE')" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_ACQUIRE" tal:content="python:here.getZMILangStr('BTN_ACQUIRE')">Acquire</button>
 				</div><!-- .col-lg-12 -->
 			</div><!-- .form-group -->
 		</form>
@@ -93,7 +93,7 @@ function zmiFormSubmit(sender,d) {
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<div class="col-lg-12">
-					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 				</div><!-- .col-lg-12 -->
 			</div><!-- .form-group -->
 		</form>
@@ -136,7 +136,7 @@ function zmiFormSubmit(sender,d) {
 				</select>
 				<div class="input-group-append">
 					<a class="btn btn-secondary" href="javascript:;" 
-						tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'delete\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"
+						tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',id:\'%s\'})'%metadictAttr['id']; title python:here.getZMILangStr('BTN_DELETE')"
 						><i class="fas fa-times"></i></a>
 				</div>
 			</div>
@@ -207,7 +207,7 @@ function zmiFormSubmit(sender,d) {
 	</table>
 	<div class="form-row">
 		<div class="controls save">
-			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			<button name="btn" type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 		</div>
 	</div>
 </form>

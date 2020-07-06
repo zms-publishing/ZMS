@@ -17,24 +17,24 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from App.Common import package_home
 from OFS.Image import Image
 import codecs
 import copy
-import urllib.request, urllib.parse, urllib.error
 import tempfile
 import os
 import re
 import sys
 # Product Imports.
-from . import standard
-from . import _blobfields
-from . import _fileutil
-from . import _filtermanager
-from . import _globals
-from . import _xmllib
+from Products.zms import standard
+from Products.zms import _blobfields
+from Products.zms import _fileutil
+from Products.zms import _filtermanager
+from Products.zms import _globals
+from Products.zms import _xmllib
 
 
 def writeFile(self, filename, data, mode='w', encoding='utf-8'):
@@ -59,7 +59,7 @@ def exportFiles(self, root, id, path):
       try:
         ob_id = ob.id()
       except:
-        ob_id = str(ob.id)
+        ob_id = standard.pystr(ob.id)
       _fileutil.exportObj(ob, '%s/%s'%(path, ob_id))
 
 
@@ -77,7 +77,7 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
         try:
           ob_id = ob.id()
         except:
-          ob_id = str(ob.id)
+          standard.pyob_id = str(ob.id)
         if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Page Template', 'Script (Python)']:
           try:
             if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Page Template']:
@@ -127,11 +127,11 @@ def localHtml(self, html):
     default_charset = 'utf-8'
     charset = self.REQUEST.get('ZMS_CHARSET', default_charset)
     if not isinstance(html, str):
-      html = str( html, default_charset)
+      html = standard.pystr( html, default_charset)
     html = html.encode( charset)
   except ( UnicodeDecodeError, UnicodeEncodeError):
     standard.writeError( self, "[localHtml]")
-    v = str(sys.exc_info()[1])
+    v = standard.pystr(sys.exc_info()[1])
     STR_POSITION = ' position '
     i = v.find(STR_POSITION)
     if i > 0:

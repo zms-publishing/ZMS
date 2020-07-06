@@ -17,20 +17,20 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import sys
 import time
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import standard
-from . import zmscontainerobject
-from . import _confmanager
-from . import _fileutil
-from . import _importable
-from . import _ziputil
+from Products.zms import _confmanager
+from Products.zms import _fileutil
+from Products.zms import _importable
+from Products.zms import _ziputil
+from Products.zms import standard
+from Products.zms import zmscontainerobject
 
 
 # ------------------------------------------------------------------------------
@@ -60,14 +60,14 @@ def parseXmlString(self, file):
 ################################################################################
 ################################################################################
 manage_addZMSCustomForm = PageTemplateFile('manage_addzmscustomform', globals()) 
-def manage_addZMSCustom(self, meta_id, lang, _sort_id, REQUEST, RESPONSE):
+def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
   """ manage_addZMSCustom """
   message = ''
   messagekey = 'manage_tabs_message'
   t0 = time.time()
   target = self.absolute_url()
   
-  if REQUEST['btn'] == self.getZMILangStr('BTN_INSERT'):
+  if btn == 'BTN_INSERT':
     
     # Create
     id_prefix = standard.id_prefix(REQUEST.get('id_prefix', 'e'))
@@ -536,7 +536,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       
       # Return with message.
       if RESPONSE is not None:
-        message = urllib.parse.quote(message)
+        message = standard.url_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(lang, message))
       else:
         return ob

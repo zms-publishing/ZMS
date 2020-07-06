@@ -22,11 +22,10 @@ import copy
 import logging
 import os
 import time
-import urllib.request, urllib.parse, urllib.error
 # Product Imports.
-from . import standard
-from . import ZMSItem
-from . import _fileutil
+from Products.zms import standard
+from Products.zms import ZMSItem
+from Products.zms import _fileutil
 
 
 def severity_string(severity, mapping={

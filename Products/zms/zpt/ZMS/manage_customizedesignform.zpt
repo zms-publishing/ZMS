@@ -24,7 +24,7 @@
 			</div><!-- .form-group -->
 			<div class="form-row">
 				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_INSERT')" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
 				</div><!-- .controls.save -->
 			</div><!-- .form-row -->
 		</form>
@@ -45,7 +45,7 @@
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<div class="col-lg-12">
-					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_IMPORT')" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
 				</div><!-- .col-lg-12 -->
 			</div><!-- .form-group -->
 		</form>
@@ -165,14 +165,13 @@
 									<!-- /ACE Editor -->
 									<div class="form-row">
 										<div class="controls save">
-											<button type="submit" name="btn" class="btn btn-primary" 
-												tal:attributes="value python:here.getZMILangStr('BTN_SAVE');
+											<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE"
+												tal:attributes="
 													disabled python:'Filesystem' in css.meta_type and 'disabled' or None;
 													title python:'Filesystem' in css.meta_type and 'IMPORTANT NOTE: Filesystem files are not editable here!' or None;"
 												tal:content="python:here.getZMILangStr('BTN_SAVE')"
 												>Save</button>
-											<button type="submit" name="btn" class="btn btn-secondary" 
-												tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')" 
+											<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE"
 												tal:content="python:here.getZMILangStr('BTN_CLOSE')"
 												>Close</button>
 										</div>
@@ -259,14 +258,13 @@
 									<!-- /ACE Editor -->
 									<div class="form-row">
 										<div class="controls save">
-											<button type="submit" name="btn" class="btn btn-primary"
-												tal:attributes="value python:here.getZMILangStr('BTN_SAVE');
+											<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE"
+												tal:attributes="
 													disabled python:'Filesystem' in js.meta_type and 'disabled' or None;
 													title python:'Filesystem' in js.meta_type and 'IMPORTANT NOTE: Filesystem files are not editable here!' or None;"
 												tal:content="python:here.getZMILangStr('BTN_SAVE')"
 												>Save</button>
-											<button type="submit" name="btn" class="btn btn-secondary"
-												tal:attributes="value python:here.getZMILangStr('BTN_CLOSE')"
+											<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE"
 												tal:content="python:here.getZMILangStr('BTN_CLOSE')"
 												>Close</button>
 										</div>

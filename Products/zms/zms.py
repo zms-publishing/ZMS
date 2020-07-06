@@ -17,6 +17,7 @@
 ################################################################################
 
 # Imports.
+from __future__ import absolute_import
 from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
@@ -28,29 +29,28 @@ import shutil
 import sys
 import time
 import transaction
-import urllib.request, urllib.parse, urllib.error
 import zExceptions
 # Product imports.
-from . import standard
-from . import _accessmanager
-from . import _builder
-from . import _confmanager
-from . import _enummanager
-from . import _fileutil
-from . import _importable
-from . import _mediadb
-from . import _objattrs
-from . import _xmllib
-from . import _zcatalogmanager
-from . import _zmsattributecontainer
-from . import  ZMSMetacmdProvider, ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider
-from .zmscustom import ZMSCustom
-from .zmslinkcontainer import ZMSLinkContainer
-from .zmslinkelement import ZMSLinkElement
-from .zmslog import ZMSLog
-from .zmsobject import ZMSObject
-from .zmssqldb import ZMSSqlDb
-from .zmstrashcan import ZMSTrashcan
+from Products.zms import standard
+from Products.zms import _accessmanager
+from Products.zms import _builder
+from Products.zms import _confmanager
+from Products.zms import _enummanager
+from Products.zms import _fileutil
+from Products.zms import _importable
+from Products.zms import _mediadb
+from Products.zms import _objattrs
+from Products.zms import _xmllib
+from Products.zms import _zcatalogmanager
+from Products.zms import _zmsattributecontainer
+from Products.zms import ZMSMetacmdProvider, ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider
+from Products.zms.zmscustom import ZMSCustom
+from Products.zms.zmslinkcontainer import ZMSLinkContainer
+from Products.zms.zmslinkelement import ZMSLinkElement
+from Products.zms.zmslog import ZMSLog
+from Products.zms.zmsobject import ZMSObject
+from Products.zms.zmssqldb import ZMSSqlDb
+from Products.zms.zmstrashcan import ZMSTrashcan
 
 __all__= ['ZMS']
 
@@ -237,7 +237,7 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     # Return with message.
     message = obj.getLangStr('MSG_INSERTED', manage_lang)%obj.meta_type
     message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-    RESPONSE.redirect('%s/%s/manage?manage_tabs_message=%s'%(homeElmnt.absolute_url(), obj.id, urllib.parse.quote(message)))
+    RESPONSE.redirect('%s/%s/manage?manage_tabs_message=%s'%(homeElmnt.absolute_url(), obj.id, standard.url_quote(message)))
 
   else:
     RESPONSE.redirect('%s/manage_main'%self.absolute_url())

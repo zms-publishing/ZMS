@@ -21,12 +21,11 @@
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import time
-import urllib.request, urllib.parse, urllib.error
 import zope.interface
 # Product Imports.
-from . import standard
-from . import IZMSCatalogAdapter, IZMSConfigurationProvider
-from . import ZMSItem
+from Products.zms import standard
+from Products.zms import IZMSCatalogAdapter, IZMSConfigurationProvider
+from Products.zms import ZMSItem
 
 
 # ------------------------------------------------------------------------------
@@ -235,7 +234,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.addConnector
     # --------------------------------------------------------------------------
     def addConnector(self, meta_type):
-      from . import _confmanager
+      from Products.zms import _confmanager
       connector = _confmanager.ConfDict.forName(meta_type+'.'+meta_type)()
       self._setObject(connector.id, connector)
       return getattr(self, connector.id)
@@ -398,7 +397,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
             message += self.getZMILangStr('MSG_DELETED')%len(ids)
 
         # Return with message.
-        message = urllib.parse.quote(message)
+        message = standard.url_quote(message)
         return RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s#%s'%(lang, message, REQUEST.get('tab')))
 
 ################################################################################

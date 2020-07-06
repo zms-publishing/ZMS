@@ -67,7 +67,7 @@
 		</div><!-- .form-group -->
 		<div class="form-row">
 			<div class="controls save">
-				<button type="submit" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+				<button type="submit" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 			</div>
 		</div>
 		</div><!-- .card-body -->

@@ -39,7 +39,7 @@
 	</div><!-- .form-group -->
 	<div class="form-row">
 		<div class="controls save">
-			<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:here.getZMILangStr('BTN_SAVE')" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+			<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 		</div>
 	</div><!-- .form-row -->
 </tal:block>
@@ -51,7 +51,7 @@
 function form0Submit(fm) {
 	var b = true;
 	$(".has-error",fm).removeClass("has-error");
-	if (self.btnClicked==getZMILangStr('BTN_SAVE')) {
+	if (self.btnClicked=='BTN_SAVE') {
 		if (fm.elements['password'] && fm.elements['confirm']) {
 			var $password = $("input[name=password]",fm);
 			var $confirm = $("input[name=confirm]",fm);

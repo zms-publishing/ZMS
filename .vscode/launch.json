@@ -2,23 +2,26 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Zope-ZMS3",
+            "name": "Python3: Zope-ZMS4",
             "type": "python",
             "request": "launch",
-            "program": "/home/zope/vpy27/lib/python2.7/site-packages/Zope2/Startup/run.py",
-            // "module": "Zope2.Startup.run",
+            "program": "/home/dev/workspace/zopefoundation/Zope/src/Zope2/Startup/serve.py",
+            // "module": "Zope2.Startup.serve",
+            "justMyCode": false,
             "console": "integratedTerminal",
             "args": [
-                "-C ../../../instance/zms4_on_zope2/etc/zope.conf",
-                // "-X 'debug-mode=on'",
+                "-d",
+                "-v",
+                "/home/zope/instance/zms4_dev/etc/zope.ini"
             ],
             "env": {
-                "CONFIG_FILE": "/home/zope/instance/zms4_on_zope2/etc/zope.conf",
-                "INSTANCE_HOME": "/home/zope/instance/zms4_on_zope2",
-                "PYTHON": "/home/zope/vpy27/bin/python",
-                "SOFTWARE_HOME": "/home/zope/vpy27/bin/",
-                "ZDCTL": "/home/zope/vpy27/bin/zopectl",
-                "ZOPE_RUN": "/home/zope/vpy27/bin/runzope",
+                "PYTHONUNBUFFERED":"1",
+                "CONFIG_FILE": "/home/zope/instance/zms4_dev/etc/zope.ini",
+                "INSTANCE_HOME": "/home/zope/instance/zms4_dev",
+                "CLIENT_HOME": "/home/zope/instance/zms4_dev",
+                "PYTHON": "/home/zope/vpy37/bin/python",
+                "SOFTWARE_HOME": "/home/zope/vpy37/bin/"
             },
-        },    ]
+        }
+    ]
 }

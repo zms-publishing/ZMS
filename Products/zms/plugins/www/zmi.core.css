@@ -279,8 +279,9 @@ footer .back-to-top.hide {
 	vertical-align:middle;
 	position:absolute;
 	z-index:1000;
-	margin:-.35rem 0;
-	height:2.85rem;
+	margin:0;
+	height: calc(3rem - 1px);
+	top:0;
 }
 .zmi nav .scroller,
 .zmi nav .scroller i,

@@ -89,7 +89,7 @@
 		</tal:block>
 	</select>
 
-	<div class="d-flex flex-row justify-content-between align-items-start">
+	<div class="d-flex flex-row justify-content-between align-items-start py-2">
 		<div class="btn-group m-2" role="group" aria-label="Object Class Selector">
 			<div class="zmi-action btn-group dropleft" tal:attributes="title python:here.getZMILangStr('CAPTION_CHOOSEOBJ')">
 				<button class="btn btn-secondary" data-toggle="dropdown"><i class="fas fa-caret-down"></i></button>

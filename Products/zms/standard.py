@@ -32,7 +32,6 @@ from AccessControl import AuthEncoding
 from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
-from io import BytesIO
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
 import base64
@@ -45,23 +44,34 @@ import logging
 import operator
 import os
 import re
-import six
 import sys
 import time
 import traceback
-if six.PY3:                           # Py3
-  import urllib.parse                 as urllib_parse
-  from urllib.parse import quote_plus as urllib_quote_plus
-  from urllib.parse import unquote    as urllib_unquote
-  from urllib.parse import urlparse   as urllib_urlparse
-  from io import BytesIO              as PyBytesIO
-else:                                 # Py2
-  import urlparse                     as urllib_parse
-  from urllib import quote_plus       as urllib_quote_plus
-  from urllib import unquote          as urllib_quote
-  from urlparse import urlparse       as urllib_urlparse
-  from cStringIO import StringIO      as PyBytesIO
 import zExceptions
+import six
+
+from six.moves.urllib import parse as urllib_parse 
+from six.moves.urllib.parse import quote as urllib_quote
+from six.moves.urllib.parse import quote_plus as urllib_quote_plus
+from six.moves.urllib.parse import unquote as urllib_unquote
+from six.moves.urllib.parse import urlparse as urllib_urlparse
+
+# if six.PY3:
+#   import urllib.parse                 as urllib_parse
+#   from urllib.parse import quote_plus as urllib_quote_plus
+#   from urllib.parse import unquote    as urllib_unquote
+#   from urllib.parse import urlparse   as urllib_urlparse
+# else:
+#   import urlparse                     as urllib_parse
+#   from urllib import quote_plus       as urllib_quote_plus
+#   from urllib import unquote          as urllib_unquote
+#   from urlparse import urlparse       as urllib_urlparse
+
+if six.PY3:
+  from io import BytesIO as PyBytesIO
+else:
+  from cStringIO import StringIO as PyBytesIO
+
 # Product Imports.
 from Products.zms import _globals
 from Products.zms import _fileutil
@@ -100,11 +110,7 @@ if six.PY3:
   pyopen = open
 
 def url_quote(s):
-  if six.PY2:
-    from urllib import quote as _urllib_quote
-  if six.PY3:
-    from urllib.parse import quote as _urllib_quote
-  return _urllib_quote(s)
+  return urllib_quote(s)
 
 """
 @group PIL (Python Imaging Library): pil_img_*

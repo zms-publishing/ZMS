@@ -202,7 +202,7 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
    html = html.replace(s_old, s_new)
    
    # Remove preview parameters.
-   html = re.sub('(\?|&)preview=preview', '', html)
+   html = re.sub(r'(\?|&)preview=preview', '', html)
    
    # Process declarative URLs
    if self.getConfProperty('ZMS.pathhandler', 0):
@@ -512,7 +512,7 @@ class Exportable(_filtermanager.FilterItem):
         
         # Blank lines in includes cause PHP session errors
         # @see http://bugs.php.net/bug.php?id=8974
-        html = standard.re_sub('^\s*', '', html)
+        html = standard.re_sub(r'^\s*', '', html)
         
         # Localize html.
         html = localHtml( obj, html)

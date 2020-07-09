@@ -514,7 +514,7 @@ def toCdata(self, s, xhtml=False):
     # Hack for invalid characters
     s = s.replace(chr(30), '')
     # Hack for nested CDATA
-    s = re.compile('\<\!\[CDATA\[(.*?)\]\]\>').sub('<!{CDATA{\\1}}>', s)
+    s = re.compile(r'\<\!\[CDATA\[(.*?)\]\]\>').sub(r'<!{CDATA{\1}}>', s)
     # Wrap with CDATA
     rtn = '<![CDATA[%s]]>' % s
 
@@ -884,7 +884,7 @@ class XmlAttrBuilder(object):
       attrs = standard.unencode(tag['attrs'])
       cdata = standard.unencode(tag['cdata'])
       # Hack for nested CDATA
-      cdata = re.compile('\<\!\{CDATA\{(.*?)\}\}\>').sub('<![CDATA[\\1]]>',cdata)
+      cdata = re.compile(r'\<\!\{CDATA\{(.*?)\}\}\>').sub(r'<![CDATA[\1]]>',cdata)
 
       if name != sTagName:
         raise ParseError("Unmatching end tag (" + str(sTagName) + ") expected (" + str(name) + ")")

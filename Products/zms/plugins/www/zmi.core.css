@@ -41,7 +41,7 @@ header .navbar-brand {
 	display:none;
 }
 .zmi.preview_top header .navbar-brand .preview-message {
-	display:inline;
+	display:inline-block;
 	position: absolute;
 	padding:.5rem 1rem;
 	left:0;
@@ -539,6 +539,7 @@ body.zmi ul.zmi-container > .zmi-item > .center {
 	flex-basis: 80%;
 	border-top:1px dotted #ccc !important;
 	min-height:4.2rem;
+	overflow-x: hidden;
 }
 body.zmi ul.zmi-container .zmi-item.pageelement .center > * {
 	padding-left:.8em;
@@ -2112,9 +2113,10 @@ ul.pagination {
 	border-top-left-radius:0;
 	border-bottom-left-radius:0;
 	background-color:white !important;
+	text-decoration: none;
 }
 .zmi .ZMSObjectSet .panel a span.title {
-	max-width: calc(100% - 8em);
+	max-width: calc(100% - 5rem) !important;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;

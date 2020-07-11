@@ -21,7 +21,7 @@
 	offset python:options.get('offset',pageStart);">
 
 <form method="get" tal:attributes="action form_action">
-<div class="d-flex justify-content-between pagination-pre mb-3">
+<div class="d-flex justify-content-between pagination-pre">
 	<div class="pull-left" tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">
 		zmi_pagination
 	</div>
@@ -209,7 +209,7 @@
 	</tal:block>
 </tbody>
 </table>
-<div class="pagination-post">
+<div class="pagination-post clearfix">
 	<div class="pull-left" tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</div>
 </div>
 </form>

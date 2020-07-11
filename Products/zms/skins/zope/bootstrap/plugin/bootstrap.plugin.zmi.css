@@ -1063,7 +1063,9 @@ div.accordion-heading a.accordion-toggle:focus {
 	color:#000000;
 }
 div.accordion-heading a.accordion-toggle .icon-caret-right,
-div.accordion-heading a.accordion-toggle .icon-caret-down {
+div.accordion-heading a.accordion-toggle .fa-caret-right,
+div.accordion-heading a.accordion-toggle .icon-caret-down,
+div.accordion-heading a.accordion-toggle .fa-caret-down {
 	margin-right:0.3em;
 }
 

@@ -310,7 +310,7 @@ function initBookmarks() {
 				+ '<a href="javascript:;" onclick="self.location.href=\''+l[i].href+'\'"'
 				+ ' onmouseover="$(\'.glyphicon-remove\',this).removeClass(\'text-muted\').addClass(\'text-danger\')"'
 				+ ' onmouseout="$(\'.glyphicon-remove\',this).removeClass(\'text-danger\').addClass(\'text-muted\')"'
-				+ '><span class="glyphicon glyphicon-star text-primary"></span> '
+				+ '><span class="glyphicon glyphicon-star fas fa-star text-primary"></span> '
 				+ l[i].title + ' '
 				+ '<span class="glyphicon glyphicon-remove text-muted" title="Favorit entfernen"'
 				+ ' onclick="var event=arguments[0]||window.event;event.stopPropagation();if(confirm(\'Wollen Sie Favorit \\\''+l[i].title+'\\\' wirklich entfernen?\')){removeBookmark(\''+l[i].href+'\')};"'

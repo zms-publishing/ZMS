@@ -1,6 +1,6 @@
 <!-- ZMSRecordSet/main -->
 
-<div class="ZMSRecordSet main"  tal:define="global
+<div class="ZMSRecordSet main" tal:define="global
 		standard modules/Products/zms/standard;
 		meta_id options/meta_id;
 		metaObj python:here.getMetaobj(meta_id);

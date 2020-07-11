@@ -1159,6 +1159,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	padding: 0.5rem 0.5rem;
 	min-width:1rem;
 }
+.zmi table.table-sm th {
+	vertical-align: middle;
+}
 .zmi.metas table.table-sm td, 
 .zmi.metas table.table-sm th {
 	white-space: nowrap;
@@ -1889,10 +1892,10 @@ body.browse_iframe .toggle {
 #zmsindex .zmi-sitemap.full {
 	max-height: unset;
 }
-#ZMSZCatalogConnector .zmi-sitemap  div#loading,
-#ZMSZCatalogConnector .zmi-sitemap  div#loading .icon-spinner,
-#ZMSZCatalogSolrConnector .zmi-sitemap  div#loading,
-#ZMSZCatalogSolrConnector .zmi-sitemap  div#loading .icon-spinner,
+#ZMSZCatalogConnector .zmi-sitemap div#loading,
+#ZMSZCatalogConnector .zmi-sitemap div#loading .icon-spinner,
+#ZMSZCatalogSolrConnector .zmi-sitemap div#loading,
+#ZMSZCatalogSolrConnector .zmi-sitemap div#loading .icon-spinner,
 #zmsindex .zmi-sitemap div#loading,
 #zmsindex .zmi-sitemap div#loading .icon-spinner {
 	color: #08c;
@@ -2053,14 +2056,10 @@ li#manage_addProduct .center i.fa-plus-sign:before {
 }
 
 /* Pagination */
-.pagination-pre {
-	margin-top:1rem;
-	background: #EAEDEF;
-	border: #DEE1E3 1px solid;
-}
-.pagination-pre, .pagination-post {
-	padding-left:.5rem;
-	padding-right:.5rem;
+.pagination-pre, 
+.pagination-post {
+	padding:1rem .5rem;
+	background:white;
 }
 ul.pagination {
 	margin-bottom:0;
@@ -2186,7 +2185,8 @@ ul.pagination {
 /* ZMS Theme Editor           */
 /* ++++++++++++++++++++++++++ */
 
-.zmi.design .additionals i.icon-caret-right {
+.zmi.design .additionals i.icon-caret-right,
+.zmi.design .additionals i.fa-caret-right {
 	margin-right: .5em;
 	display: inline-block;
 }
@@ -2257,4 +2257,37 @@ ul.pagination {
 }
 .zmsicon-charfmt-erase:before {
 	content: "\e605";
+}
+
+/* ++++++++++++++++++++++++++ */
+/* FA-Icons Compatibilty      */
+/* ++++++++++++++++++++++++++ */
+
+.icon-caret-down:before{content:"\f0d7";}
+.icon-caret-up:before{content:"\f0d8";}
+.icon-caret-left:before{content:"\f0d9";}
+.icon-caret-right:before{content:"\f0da";}
+
+/* ++++++++++++++++++++++++++ */
+/* ZMSRecordset               */
+/* ++++++++++++++++++++++++++ */
+.ZMSRecordSet.main_grid table > thead > tr > th {
+	background: #607d8ba6;
+	color: white;
+	font-weight: normal !important;
+	max-width:10%;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow: ellipsis;
+}
+.ZMSRecordSet.main_grid table > thead > tr > th > a {
+	color: white;
+}
+.ZMSRecordSet.main_grid table tbody  tr td.data .html {
+	min-width: 4rem;
+	width:8rem;
+	max-width:12rem;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow: ellipsis;
 }

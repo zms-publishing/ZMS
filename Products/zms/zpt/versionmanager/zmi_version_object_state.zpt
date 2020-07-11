@@ -21,19 +21,19 @@
 		><tal:block tal:condition="python:len(seq_desc_langs)>1 and coverage.find('global')>=0"
 			><tal:block tal:condition="python:seq_lang!=request['lang']"
 				><span class="zmi-state zmi-state-info" tal:condition="python:here.isModifiedInParentLanguage(request['lang'],request)"
-					><i class="icon-globe" tal:attributes="title python:'local: %s: %s (%s)'%(here.getZMILangStr('ATTR_LANG'),seq_lang,here.getZMILangStr('STATE_MODIFIED'))"></i
+					><i class="icon-globe fas fa-globe" tal:attributes="title python:'local: %s: %s (%s)'%(here.getZMILangStr('ATTR_LANG'),seq_lang,here.getZMILangStr('STATE_MODIFIED'))"></i
 				></span
 				><span class="zmi-state zmi-state-info" tal:condition="not:python:here.isModifiedInParentLanguage(request['lang'],request)"
-					><i class="icon-globe" tal:attributes="title python:'local: %s: %s'%(here.getZMILangStr('ATTR_LANG'),seq_lang)"></i
+					><i class="icon-globe fas fa-globe" tal:attributes="title python:'local: %s: %s'%(here.getZMILangStr('ATTR_LANG'),seq_lang)"></i
 				></span
 			></tal:block
 			><tal:block tal:condition="not:python:seq_lang!=request['lang']"
-				><span class="zmi-state zmi-state-info"><i class="icon-globe" tal:attributes="title python:'global: %s: %s'%(here.getZMILangStr('ATTR_LANG'),', '.join(seq_desc_langs))"></i></span
+				><span class="zmi-state zmi-state-info"><i class="icon-globe fas fa-globe" tal:attributes="title python:'global: %s: %s'%(here.getZMILangStr('ATTR_LANG'),', '.join(seq_desc_langs))"></i></span
 			></tal:block
 		></tal:block
 	></tal:block
 	><tal:block tal:condition="not:python:here.attr('change_uid')"
-		><span class="zmi-state zmi-state-warning"><i class="icon-globe" tal:attributes="title python:here.getZMILangStr('STATE_TRANSLATE')"></i></span
+		><span class="zmi-state zmi-state-warning"><i class="icon-globe fas fa-globe" tal:attributes="title python:here.getZMILangStr('STATE_TRANSLATE')"></i></span
 	></tal:block
 ></tal:block
 ><tal:block tal:replace="nothing">

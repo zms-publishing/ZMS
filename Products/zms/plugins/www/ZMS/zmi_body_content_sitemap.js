@@ -35,7 +35,7 @@ function zmiToggleClick(toggle, callback) {
 		var base = $ZMI.getPhysicalPath();
 		base = base.substr(0,base.indexOf('/'+homeId));
 		// Set wait-cursor.
-		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
+		$container.append( '<div id="loading" class="zmi-page"><i class="icon-spinner icon-spin fas fa-spinner fa-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'<'+'/div>');
 		// JQuery.AJAX.get
 		$ZMI.writeDebug('zmiToggleClick:'+base+href+'/manage_ajaxGetChildNodes?lang='+getZMILang());
 		$.get(base+href+'/ajaxGetChildNodes',{lang:getZMILang(),'meta_types:int':0},function(data){

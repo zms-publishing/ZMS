@@ -3619,7 +3619,7 @@ $(function() {
 		<div class="row">
 			<div class="col-md-12">
 				<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-filter fas fa-filter"></span></span>
 					<input type="text" class="form-control filter" name="search" placeholder="Filter"/>
 				</div><!-- .input-group -->
 			</div>
@@ -3784,10 +3784,10 @@ $(function() {
 
 					// Assemble info.
 					$(".zmi-info",$grid).each(function() {
-							if (!$(this).hasClass("active")) {
-								$(this).parents("tr").addClass("inactive");
-							}
-						});
+            if (!$(this).hasClass("active")) {
+              $(this).parents("tr").addClass("inactive");
+            }
+					});
 
 					// Assemble update.
 					$(".dropdown-menu a[onclick='[[UPDATE]]']",$grid).each(function() {
@@ -3795,19 +3795,25 @@ $(function() {
 							var id = $("input[name='qindices:list']",$btnGroup).val();
 							var href = id + '/manage_main?lang=' + getZMILang();
 							$(this).attr({href:href,onclick:''});
-						});
+					});
 
 					// Assemble insert.
 					var insertHtml = ''
-					insertHtml += '<li class="dropdown-header insert-action"><i class="icon-caret-down"></i> '+getZMILangStr('BTN_INSERT')+'</li>';
+					insertHtml += '<li class="dropdown-header insert-action"><i class="icon-caret-down fas fa-caret-down"></i> '+getZMILangStr('BTN_INSERT')+'</li>';
 					$("select[name='record_meta_ids:list'] option:selected").each(function() {
 							var $option = $(this);
 							insertHtml += '<a class="dropdown-item" href="javascript:;" onclick="addZMSCustom(0,\''+$option.text().trim()+'\')">'+$option.html().replace(/<!--/gi,'<').replace(/-->/gi,'>')+'</a>';
-						});
-					insertHtml += '<li class="dropdown-header insert-action"><i class="icon-caret-down"></i> '+getZMILangStr('ATTR_ACTION')+'</li>';
+					});
+					insertHtml += '<li class="dropdown-header insert-action"><i class="icon-caret-down fas fa-caret-down"></i> '+getZMILangStr('ATTR_ACTION')+'</li>';
 					$(".dropdown-menu .fa-plus",$grid).each(function() {
 							$(this).parents(".dropdown-item").replaceWith(insertHtml);
-						});
+					});
+
+					$(".ZMSRecordSet.main_grid table.zmi-sortable th a").on("click",function() {
+							$(".ZMSRecordSet.main_grid form").css({'transition':'opacity 1.5s','opacity':'0.25'});
+							$(".ZMSRecordSet.main_grid").prepend( "<div id='loading' class='zmi-page text-center' style='width:100%;position:absolute;margin-bottom:0.75em'><i class='text-primary icon-spinner icon-3x icon-spin fas fa-spinner fa-spin fa-3x'></i></div>");
+					})
+
 				});
 		});
 });]]></data>
@@ -3852,7 +3858,7 @@ $(function() {
 .card.zmi-container {
 	display:none;
 }
-tr.inactive * {
+tr.inactive > td.data > * {
 	color:#AAA;
 }
 </style>
@@ -3885,7 +3891,7 @@ tr.inactive * {
 	<div class="card" tal:define="filter_columns attr_ids">
 		<div class="card-header filters btn-collapse">
 			<a class="btn card-toggle pull-left" data-toggle="collapse" href="#attrProperties">
-				<i class="fas fa-caret-down"></i>
+				<i class="icon-caret-down fas fa-caret-down"></i>
 				<tal:block tal:content="structure python:zmscontext.getZMILangStr('ATTR_FILTER')">the label</tal:block>
 			</a>
 		</div><!-- .card-header -->
@@ -3928,9 +3934,9 @@ tr.inactive * {
 </form>
 </div><!-- .ZMSRecordSet -->
 
-<div id="metaobj_recordset_main_grid"><i class="fas fa-spinner"></i></div>
+<div id="metaobj_recordset_main_grid"><div class="container text-center p-3"><i class="fas fa-spinner fa-spin fa-3x text-primary"></i></div></div>
 
-		</tal:block>
+</tal:block>
 
 <tal:block tal:content="structure python:'<'+'form class=\042form-horizontal\042>'"></tal:block>
 <tal:block tal:content="structure python:'<'+'div>'"></tal:block>

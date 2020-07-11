@@ -152,7 +152,7 @@
 									</tal:block>
 									<label id="coverageBtn" for="attr_dc_coverage" class="text-muted" tal:attributes="style python:'opacity:%i.5'%int(coverage.find('global.')==0)">
 									<i tal:attributes="title python:here.getZMILangStr('ATTR_MULTILANG')"
-										class="icon icon-globe icon-large text-primary" style="margin: 0 .7em 0 .9em;"></i>
+										class="icon icon-globe fas fa-globe icon-large fa-lg text-primary" style="margin: 0 .7em 0 .9em;"></i>
 									<tal:block tal:content="python:['local','global'][int(here.getParentLanguage(seq_lang)=='')]">the label</tal:block>
 								</label>
 								</div>

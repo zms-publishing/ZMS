@@ -394,14 +394,14 @@ $(function() {
 	}); 
 	$("button[class*='btn btn-primary']").click(function() {
 		if ($(this).text()!='Change') {
-			$(this).html("Installing..."+" <"+"i class='icon-spin icon-spinner'"+"><"+"/i"+">");
+			$(this).html("Installing..."+" <"+"i class='icon-spin icon-spinner fas fa-spinner fa-spin'"+"><"+"/i"+">");
 		}
 	}); 
 	$("i[class^='ImportExample icon-upload']").click(function() {
 			var btn = $(this);
 			var res = confirm("Import Example?\n\nHINT:\nYou can configure the parameter {ZMS.Examples} at ZMS > Configuration > System > Miscellaneous with a link to the desired import destination (default is the instance's root element).");
 			if (res == true) {
-				btn.toggleClass("icon-upload icon-spin icon-spinner");
+				btn.toggleClass("icon-upload icon-spin icon-spinner fas fa-spinner fa-spin");
 				btn.unbind("click");
 				btn.unbind("mouseenter");
 				btn.unbind("mouseleave");
@@ -411,13 +411,13 @@ $(function() {
 					data : {key:'InstalledProducts', btn:'ImportExample', zmsext:btn.data('zmsext'), lang:getZMILang()}
 				}).done(function(data) {
 						if (data == "True") {
-							btn.toggleClass("icon-ok-sign icon-spin icon-spinner");
+							btn.toggleClass("icon-ok-sign icon-spin icon-spinner fas fa-spinner fa-spin");
 							btn.css("color", "#5cb85c");
 							btn.parent().attr("href", btn.parent().data("link"));
 							btn.parent().attr("title", "Go to Example...");
 						}
 						else {
-							btn.toggleClass("icon-exclamation-circle icon-spin icon-spinner");
+							btn.toggleClass("icon-exclamation-circle icon-spin icon-spinner fas fa-spinner fa-spin");
 							btn.css("color", "#d9534f");
 							btn.parent().attr("title", "An Error occured!");
 						}
@@ -428,7 +428,7 @@ $(function() {
 			var btn = $(this);
 			var res = confirm("Install Theme?");
 			if (res == true) {
-				btn.toggleClass("icon-upload icon-spin icon-spinner");
+				btn.toggleClass("icon-upload icon-spin icon-spinner fas fa-spinner fa-spin");
 				btn.unbind("click");
 				btn.unbind("mouseenter");
 				btn.unbind("mouseleave");
@@ -438,13 +438,13 @@ $(function() {
 					data : {key:'InstalledProducts', btn:'InstallTheme', zmsext:btn.data('zmsext'), lang:getZMILang()}
 				}).done(function(data) {
 						if (data == "True") {
-							btn.toggleClass("icon-ok-sign icon-spin icon-spinner");
+							btn.toggleClass("icon-ok-sign icon-spin icon-spinner fas fa-spinner fa-spin");
 							btn.css("color", "#5cb85c");
 							btn.parent().attr("href", btn.parent().data("link"));
 							btn.parent().attr("title", "Go to Theme...");
 						}
 						else {
-							btn.toggleClass("icon-exclamation-circle icon-spin icon-spinner");
+							btn.toggleClass("icon-exclamation-circle icon-spin icon-spinner fas fa-spinner fa-spin");
 							btn.css("color", "#d9534f");
 							btn.parent().attr("title", "An Error occured!");
 						}
@@ -469,7 +469,7 @@ $(function() {
 				$('#BTN_Restart').prop("disabled", true);
 				var spinner = "";
 				if (data!='No daemon.') {
-					spinner = " <"+"i class='icon-spin icon-spinner'"+"><"+"/i"+">";
+					spinner = " <"+"i class='icon-spin icon-spinner fas fa-spinner fa-spin'"+"><"+"/i"+">";
 				}
 				$('#BTN_Restart').html(data + spinner)
 			});

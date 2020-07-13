@@ -27,7 +27,7 @@
 						<tal:block tal:repeat="SQLConnectionID python:here.SQLConnectionIDs()">
 							<a class="dropdown-item" href="#" tal:attributes="onclick python:'javascript:$(\'#connection_id\').val(\'%s\')\073$(\'button:first\',$(this).parents(\'.btn-group\')).html($(this).html())'%SQLConnectionID[1]">
 								<span tal:attributes="data-url python:getattr(here,SQLConnectionID[1]).absolute_url()">
-									<img tal:on-error="string:icon-error" tal:attributes="src python:getattr(here,SQLConnectionID[1]).icon"/>
+									<i class="fas fa-database"></i>
 									<tal:block tal:content="python:SQLConnectionID[1]">SQLConnectionID</tal:block>
 								</span>
 							</a>

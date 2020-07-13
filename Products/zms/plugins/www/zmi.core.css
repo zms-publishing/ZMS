@@ -1638,7 +1638,7 @@ body.browse_iframe .toggle {
 	}
 }
 @media (min-width: 1200px) {
-	.zmi .modal-dialog {
+	.zmi div:not(#zmiModalupdateEntity) .modal-dialog {
 		max-width: 960px !important;
 	}
 }

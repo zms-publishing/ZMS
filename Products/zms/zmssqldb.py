@@ -190,7 +190,11 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     def setModel(self, newModel):
       container = self.getModelContainer()
-      container.manage_edit( title=container.title, content_type=container.content_type, filedata=newModel)
+      try:
+        container.manage_edit( title=container.title, content_type=container.content_type, filedata=newModel)
+      except:
+        standard.writeError( self, '[ZMSSqlDb.setModel]: can\'t write newModel')
+        pass
 
 
     # --------------------------------------------------------------------------

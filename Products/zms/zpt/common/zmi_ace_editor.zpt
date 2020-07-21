@@ -5,7 +5,9 @@
 		text python:options.get('text');
 		height python:options.get('height','20em')">
 	<tal:block tal:condition="python:text is None"><tal:block tal:define="global text python:zopeutil.readObject(here,ob.getId())"></tal:block></tal:block>
-	<tal:block tal:condition="python:ob is not None and ob.meta_type in ['Script (Python)']" tal:define="errors python:[x.replace(' ','&nbsp\073') for x in text.split('##') if x.startswith(' ')][1:]">
+	<tal:block tal:on-error="structure string:<div class='alert alert-danger mx-0 alert-dismissible fade show' role='alert'>TypeError: a bytes-like object is required, not str</div>"
+		tal:condition="python:ob is not None and ob.meta_type in ['Script (Python)']" 
+		tal:define="errors python:[x.replace(' ','&nbsp\073') for x in text.split('##') if x.startswith(' ')][1:]">
 		<div class="alert alert-danger mx-0 alert-dismissible fade show" role="alert" tal:condition="python:len(errors)>0 and errors[0].find('Errors:')>=0" tal:content="structure python:'<br/>'.join(errors)">the errors</div>
 		<div class="alert alert-warning mx-0 alert-dismissible fade show" role="alert" tal:condition="python:len(errors)>0 and errors[0].find('Warnings:')>=0" tal:content="structure python:'<br/>'.join(errors)">the warnings</div>
 	</tal:block>

@@ -53,6 +53,12 @@ __version__ = '0.1'
 try:
   from Products.CMFCore.DirectoryView import registerFileExtension
   from Products.CMFCore.FSFile import FSFile
+  registerFileExtension('xlsx', FSFile)
+  registerFileExtension('xls', FSFile)
+  registerFileExtension('doc', FSFile)
+  registerFileExtension('docx', FSFile)
+  registerFileExtension('ppt', FSFile)
+  registerFileExtension('pptx', FSFile)
   registerFileExtension('map', FSFile)
   registerFileExtension('svg', FSFile)
   registerFileExtension('ttf', FSFile)

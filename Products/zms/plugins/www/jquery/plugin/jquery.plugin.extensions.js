@@ -11,8 +11,17 @@ function pluginLanguage() {
  */
 function zmiAutocomplete(s, o) {
 	pluginAutocomplete(s,function() {
-		$(s).autocomplete(o).before('<div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-search"></i></span></div>');
-		$(s).closest('.col-sm-10').wrapInner('<div class="input-group"></div>');
+		try {
+			var prev_el = $(s).autocomplete(o).prev()[0];
+			if ( $(prev_el).attr('class')!='input-group-prepend' ) {
+				$(s).autocomplete(o).before('<div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-search"></i></span></div>');
+				$(s).closest('.col-sm-10,td').wrapInner('<div class="input-group"></div>');
+			}
+		} catch (error) {
+			console.error(error);
+			$(s).autocomplete(o).before('<div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-search"></i></span></div>');
+			$(s).closest('.col-sm-10,td').wrapInner('<div class="input-group"></div>');
+		}
 	});
 }
 

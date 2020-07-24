@@ -209,8 +209,10 @@
 	</tal:block>
 </tbody>
 </table>
-<div class="pagination-post clearfix">
-	<div class="pull-left" tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">zmi_pagination</div>
+<div class="pagination-post clearfix"
+	tal:define="pagination python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)"
+	tal:condition="python:request.get('has_pagination',True)">
+	<div class="pull-left" tal:content="structure pagination">zmi_pagination</div>
 </div>
 </form>
 

@@ -50,9 +50,8 @@
 		</div><!-- .collapse -->
 
 		<div class="card-header filters clearfix btn-collapse">
-			<a class="btn card-toggle pull-left" data-toggle="collapse" href="#attrProperties">
+			<a class="btn card-toggle pull-left col-sm-2 col-lg-2" data-toggle="collapse" href="#attrProperties">
 				<i class="fas fa-caret-down"></i>
-				<i class="fas fa-filter"></i>
 				<tal:block tal:content="structure python:here.getZMILangStr('ATTR_FILTER')">the label</tal:block>
 			</a>
 			<input type="hidden" id="qfilters" name="qfilters:int" tal:attributes="value request/qfilters" />

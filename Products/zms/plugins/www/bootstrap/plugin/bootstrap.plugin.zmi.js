@@ -244,11 +244,21 @@ $(function(){
 					if ( !$(this).hasClass('open-zmi-code') ) {
 						$(this)
 							.addClass('open-zmi-code')
+							.removeClass('alert-warning')
 							.css('height','auto')
-							.animate({height: $(this).prop('scrollHeight') + 'px'},600)
-							.dblclick(function(e) {
-									eval($(this).attr('data-dblclickhandler'));
-								});
+							.animate({height: $(this).prop('scrollHeight') + 'px'},600);
+						if ( $(this).attr('data-dblclickhandler') ) {
+							$(this).dblclick(function(e) {
+								$('.zmi-code-close',$single_line).remove();
+								$('textarea',$single_line)
+									.animate({height: '30px'},0)
+									.css('height','auto')
+									.removeClass('open-zmi-code')
+									.addClass('alert-warning')
+									.blur();
+								eval($(this).attr('data-dblclickhandler'));
+							})
+						}
 						// Add closing button
 						var close_btn = '<i title="Close Editing" class="zmi-code-close fas fa-chevron-up text-primary text-center" style="cursor:pointer;margin: 0 0 0 calc(50%);"></i>';
 						$single_line.append(close_btn);

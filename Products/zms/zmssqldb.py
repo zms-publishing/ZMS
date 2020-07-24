@@ -1071,6 +1071,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         qualifiedname = d.get('qualifiedname', columnname)
         op            = d['op']
         value         = d['value']
+        if op=='':
+          op = '='
         if op in [ 'NULL', 'NOT NULL']:
           sqlStatement.append('%s IS %s'%(qualifiedname, op))
         elif value != '':

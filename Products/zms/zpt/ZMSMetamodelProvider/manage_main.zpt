@@ -629,7 +629,8 @@ $(function(){
 /**
  * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  * EXPERIMENTAL: Generator for Default-ZPT-Code.
- * Cave: ZPT Processing in Zope4 requires $$ for JS String Templates 
+ * Cave: ZPT Processing in Zope4 requires $$ 
+ * for JS String Templates, but not Zope2 or Zope5
  * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
  function set_zmi_code_default(event) {
@@ -645,8 +646,8 @@ $(function(){
 
 	var meta_obj_id = $('table#meta_properties .row_metadata #id').val();
 	var target_id = $('.meta-id input', event.srcElement.parentNode.parentNode.parentNode).val();
-	var comment0 = `<!\-\- $${meta_obj_id}.$${target_id} \-\->`;
-	var comment1 =  `<!\-\- $${meta_obj_id}.$${target_id} \-\->`;
+	var comment0 = `<!\-\- ${meta_obj_id}.${target_id} \-\->`;
+	var comment1 =  `<!\-\- ${meta_obj_id}.${target_id} \-\->`;
 
 	// Generate Model based on GUI-Form
 	$('#meta_properties tbody:nth-child(2) tr').each( function() {
@@ -687,15 +688,15 @@ $(function(){
 		var sid = shorten_id(id);
 		if ( meta_model[id]['meta_type'] =='url' ) {
 			// ATTRTYPE URL 
-			tal_defs += `\n\t\t$${sid} python:zmscontext.attr('$${id}');`
-			tal_defs += `\n\t\t$${sid}_obj python:'{' in $${sid} and zmscontext.getLinkObj($${sid},request) or None;`
-			tal_defs += `\n\t\t$${sid}_target python:$${sid}_obj and $${sid}_obj.getHref2IndexHtml(request) or $${sid};`
+			tal_defs += `\n\t\t${sid} python:zmscontext.attr('${id}');`
+			tal_defs += `\n\t\t${sid}_obj python:'{' in ${sid} and zmscontext.getLinkObj(${sid},request) or None;`
+			tal_defs += `\n\t\t${sid}_target python:${sid}_obj and ${sid}_obj.getHref2IndexHtml(request) or ${sid};`
 		} else if ( meta_model[id]['meta_repetitive'] ) {
 			// ATTRTYPE COMPLEX/REPETITIVE 
-			tal_defs +=`\n\t\t$${sid}_list python:zmscontext.filteredChildNodes(request,'$${meta_model[id]['meta_type']}');`
+			tal_defs +=`\n\t\t${sid}_list python:zmscontext.filteredChildNodes(request,'${meta_model[id]['meta_type']}');`
 		} else {
 			// ATTRTYPE STRING (STANDARD)
-			tal_defs += `\n\t\t$${sid} python:zmscontext.attr('$${id}');`
+			tal_defs += `\n\t\t${sid} python:zmscontext.attr('${id}');`
 		}
 	}
 
@@ -705,25 +706,25 @@ $(function(){
 		var sid = shorten_id(id);
 		if ( meta_model[id]['meta_type']=='image' ) {
 			// ATTRTYPE IMAGE
-			tal_content += `\n\t<img class="$${sid}" tal:attributes="src python:$${sid}.getHref(request)" alt="Image" />`;
+			tal_content += `\n\t<img class="${sid}" tal:attributes="src python:${sid}.getHref(request)" alt="Image" />`;
 		} else if ( meta_model[id]['meta_type']=='url' ) {
 			// ATTRTYPE URL 
-			tal_content += `\n\t<a class="$${sid}" tal:condition="$${sid}" tal:attributes="href python:$${sid}_obj and $${sid}_target or $${sid}; target python:$${sid}_obj and '_self' or '_blank';">Link...</a>`;
+			tal_content += `\n\t<a class="${sid}" tal:condition="${sid}" tal:attributes="href python:${sid}_obj and ${sid}_target or ${sid}; target python:${sid}_obj and '_self' or '_blank';">Link...</a>`;
 		} else if ( meta_model[id]['meta_type'] == 'file' ) {
 			// ATTRTYPE FILE
-			tal_content += `\n\t<a class="$${sid}" tal:condition="$${sid}" tal:attributes="href python:$${sid}.getHref(request);title python:'Download-File Size: %s, Type: %s'%($${sid}.getDataSizeStr(),$${sid}.getContentType())" tal:content="python:$${sid}.getFilename()">Filename</a>`;
+			tal_content += `\n\t<a class="${sid}" tal:condition="${sid}" tal:attributes="href python:${sid}.getHref(request);title python:'Download-File Size: %s, Type: %s'%(${sid}.getDataSizeStr(),${sid}.getContentType())" tal:content="python:${sid}.getFilename()">Filename</a>`;
 		} else if ( meta_model[id]['meta_type'] == 'richtext' ) {
 			// ATTRTYPE RICHTEXT
-			tal_content += `\n\t<div class="$${sid}" tal:content="structure $${sid}">$${sid}</div>`;
+			tal_content += `\n\t<div class="${sid}" tal:content="structure ${sid}">${sid}</div>`;
 		} else if ( meta_model[id]['meta_type'] == 'datetime' ) {
 			// ATTRTYPE DATE/TIME
-			tal_content += `\n\t<div class="$${sid}" tal:condition="$${sid}" tal:content="python:zmscontext.getLangFmtDate($${sid},request.get('lang'))">$${sid}</div>`;
+			tal_content += `\n\t<div class="${sid}" tal:condition="${sid}" tal:content="python:zmscontext.getLangFmtDate(${sid},request.get('lang'))">${sid}</div>`;
 		} else if ( meta_model[id]['meta_repetitive'] ) {
 			// ATTRTYPE COMPLEX/REPETITIVE 
-			tal_content += `\n\t<div class="$${sid} repetitive" tal:condition="$${sid}_list">\n\t\t<tal:block tal:repeat="$${sid}_listitem $${sid}_list" tal:content="structure python:$${sid}_listitem.renderShort(request)">$${sid}</tal:block>\n\t</div>`;
+			tal_content += `\n\t<div class="${sid} repetitive" tal:condition="${sid}_list">\n\t\t<tal:block tal:repeat="${sid}_listitem ${sid}_list" tal:content="structure python:${sid}_listitem.renderShort(request)">${sid}</tal:block>\n\t</div>`;
 		} else {
 			// ATTRTYPE STRING (STANDARD)
-			tal_content += `\n\t<div class="$${sid}" tal:content="$${sid}">$${sid}</div>`;
+			tal_content += `\n\t<div class="${sid}" tal:content="${sid}">${sid}</div>`;
 		}
 	}
 
@@ -735,11 +736,11 @@ $(function(){
 	var default_template = `<div title="EXPERIMENTAL: Generator for Default-ZPT-Code" 
 		tal:define="zmscontext options/zmscontext;
 		id python:zmscontext.getId();
-		css_class python:zmscontext.meta_id;$${tal_defs}"
-	tal:attributes="id id;class css_class">$${tal_content}\n</div>`;
+		css_class python:zmscontext.meta_id;${tal_defs}"
+	tal:attributes="id id;class css_class">${tal_content}\n</div>`;
 
 	// Write TAL-Code into Textarea
-	$target.val(`$${comment1}\n$${default_template}\n$${comment1}`);
+	$target.val(`${comment1}\n${default_template}\n${comment1}`);
 	$target.animate({height: $target.prop('scrollHeight') + 'px'},600);
 
 }

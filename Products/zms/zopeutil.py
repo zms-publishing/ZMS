@@ -22,6 +22,7 @@ from Products.ExternalMethod import ExternalMethod
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import os
+import re
 # Product Imports.
 from Products.zms import standard
 from Products.zms import _fileutil
@@ -139,9 +140,14 @@ def readData(ob, default=None):
       data = f.read()
       f.close()
   elif ob.meta_type == 'Z SQL Method':
-    connection = ob.connection_id 
-    params = ob.arguments_src
-    data = '<connection>%s</connection>\n<params>%s</params>\n%s'%(connection,params,ob.src)
+    lines = []
+    lines.append('<connection>%s</connection>'%ob.connection_id)
+    lines.append('<params>%s</params>'%ob.arguments_src)
+    lines.append('<max_rows>%i</max_rows>'%ob.max_rows_)
+    lines.append('<max_cache>%i</max_cache>'%ob.max_cache_)
+    lines.append('<cache_time>%i</cache_time>'%ob.cache_time_)
+    lines.append(ob.src)
+    data = '\n'.join(lines)
   return data
 
 security.declarePublic('readObject')
@@ -270,17 +276,22 @@ def addZSqlMethod(container, id, title, data):
     pass
   if data:
     ob = getattr( container, id)
-    connection = data
-    connection = connection[connection.find('<connection>'):connection.find('</connection>')]
-    connection = connection[connection.find('>')+1:]
-    arguments = data
-    arguments = arguments[arguments.find('<params>'):arguments.find('</params>')]
-    arguments = arguments[arguments.find('>')+1:]
-    template = data
-    template = template[template.find('</params>'):]
-    template = template[template.find('>')+1:]
-    template = '\n'.join([x for x in template.split('\n') if len(x) > 0])
-    ob.manage_edit(title=title, connection_id=connection, arguments=arguments, template=template)
+    d = {}
+    d['connection'] = ob.connection_id
+    d['params'] = ob.arguments_src
+    d['max_rows'] = ob.max_rows_
+    d['max_cache'] = ob.max_cache_
+    d['cache_time'] = ob.cache_time_
+    for key in d:
+      f = re.findall('<%s>((.|\s)*?)</%s>\n'%(key,key),data)
+      if f:
+        value = f[0][0]
+        d[key] = value
+        data = data.replace('<%s>%s</%s>'%(key,value,key),'').strip()
+    ob.manage_edit(title=title,connection_id=d['connection'],arguments=d['params'],template=data) 
+    ob.max_rows_ = int(d['max_rows'])
+    ob.max_cache_ = int(d['max_cache'])
+    ob.cache_time_ = int(d['cache_time'])
 
 def addFile(container, id, title, data, content_type=None):
   """

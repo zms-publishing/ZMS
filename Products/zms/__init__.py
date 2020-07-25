@@ -301,11 +301,11 @@ if six.PY2 and confdict.get('zmi.console') in ['light','dark']:
   from App.Management import Tabs
   from App.ApplicationManager import DebugManager
   from OFS.ObjectManager import ObjectManager
-  Navigation.manage = DTMLFile('skins/zope/manage', globals())
-  setattr(Navigation, 'manage_page_style.css', DTMLFile('skins/zope/manage_page_style_%s.css'%(confdict['zmi.console']), globals()))
-  Navigation.manage_page_header = DTMLFile('skins/zope/manage_page_header', globals())
-  Navigation.manage_page_footer = DTMLFile('skins/zope/manage_page_footer', globals())
-  Navigation.manage_menu = DTMLFile('skins/zope/menu', globals())
-  Tabs.manage_tabs = DTMLFile('skins/zope/manage_tabs', globals())
-  ObjectManager.manage_main = DTMLFile('skins/zope/main', globals())
-  DebugManager.manage_main = DTMLFile('skins/zope/debug', globals())
+  Navigation.manage = DTMLFile('skins/zope2/manage', globals())
+  setattr(Navigation, 'manage_page_style.css', DTMLFile('skins/zope2/manage_page_style_%s.css'%(confdict['zmi.console']), globals()))
+  Navigation.manage_page_header = DTMLFile('skins/zope2/manage_page_header', globals())
+  Navigation.manage_page_footer = DTMLFile('skins/zope2/manage_page_footer', globals())
+  Navigation.manage_menu = DTMLFile('skins/zope2/menu', globals())
+  Tabs.manage_tabs = DTMLFile('skins/zope2/manage_tabs', globals())
+  ObjectManager.manage_main = DTMLFile('skins/zope2/main', globals())
+  DebugManager.manage_main = DTMLFile('skins/zope2/debug', globals())

@@ -12,7 +12,7 @@
   <!-- Optional Zope2/Py2 GUI Enhancement -->
   <browser:resourceDirectory
       name="zmi_"
-      directory="skins/zope"
+      directory="skins/zope2"
       />
   <!-- Zope4/Py4 GUI Resources for ZMS-ZMI -->
   <configure

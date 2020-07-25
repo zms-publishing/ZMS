@@ -1,13 +1,14 @@
-/* ZMS CUSTOM STYLES: LIGHT 2020-06-01 */
+/* ZMS CUSTOM STYLES: DARK 2020-06-01 */
 /* <dtml-call "RESPONSE.setHeader('Content-Type','text/css')"> */
 /* <dtml-call "RESPONSE.setHeader('Cache-Control','public,max-age=3600')"> */
 
-@import url("/++resource++zmi_/bootstrap/css/bootstrap-all.min.css");
+@import url("/++resource++zmi_/bootstrap3/css/bootstrap-all.min.css");
 @import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,400italic);
 
 body {
-	background-color:#f6f6f6 !important;
-	color: #333;
+	background-color: #404040 !important;
+	color: #ddd;
 	margin: 0;
 	padding: 0 30px !important;
 	font-family:'Roboto',Arial,Helvetica,sans-serif;
@@ -24,7 +25,7 @@ body {
 }
 #toggle_menu a {
 	position: relative;
-	color: #888;
+	color: silver;
 	right: 1.9em;
 	z-index: 1001;
 	font-size: 90%;
@@ -32,15 +33,16 @@ body {
 	top: 1.2em;
 }
 #toggle_menu a:hover i {
-	color:black;
+	color:white;
 }
 h1, h2, h3, p {
 	margin:1em 0;
 }
 a {
-	color:black;
+	color:white;
 }
 a:focus, a:hover {
+	color: #9DDDFF;
 	text-decoration: none;
 }
 .breadcrumb {
@@ -57,21 +59,22 @@ a:focus, a:hover {
 .breadcrumb a {
 	margin:0 .1em 0 .1em;
 	padding:0.1em .3em;
-	border:1px solid #ccc;
+	border:1px solid #888;
 }
 .breadcrumb a:hover {
-	background:#ddd;
+	background:black;
 }
 .nav-tabs {
 	margin:0 -30px 0 -30px;
 	padding-top:15px;
-	background-color:white;
+	background-color: #333333;
 	min-width: 640px;
 }
 .nav-tabs li.first-tab {
 	margin-left:3em;
 } 
 .nav-tabs li.active > a {
+	background-color: #404040 !important;
 	font-weight: bold;
 }
 .nav>li>a {
@@ -80,17 +83,17 @@ a:focus, a:hover {
 .nav-tabs>li.active>a,
 .nav-tabs>li.active>a:focus,
 .nav-tabs>li.active>a:hover {
-	color: inherit;
+	color: white;
 }
 .location-bar .form-title {
 	margin: -.5em -30px;
 	padding: 1em 2em;
-	background: #fff;
+	background: #333333;
 	width: 100%;
 	position: absolute;
 	font-weight: bold;
-	color:#333;
-	border-bottom:1px solid #ddd
+	color:white;
+	border-bottom:1px solid #ddd;
 }
 table {
 	margin:0 0em 2em 0em;
@@ -134,7 +137,7 @@ table.main-table td img {
 	visibility:hidden;
 }
 .table-striped>tbody>tr:nth-of-type(odd) {
- background-color: rgb(222, 226, 229);
+	background-color: rgba(0, 0, 0, 0.2);
 }
 .table>tbody>tr>td,
 .table>tbody>tr>th,
@@ -147,16 +150,14 @@ table.main-table td img {
 table td {
 	padding:0.5em 0.5em 0.5em 0;
 }
-
-
-.table>tbody>tr.list-item:hover,
+.table>tbody>tr:hover,
 .nav>li>a:focus,
 .nav>li>a:hover {
-	 background-color: rgba(154, 181, 204, 0.69) !important
+	background: rgba(240, 248, 255, 0.15) !important;
 }
-.table>tbody>tr:hover *,
+.table>tbody>tr.list-item:hover *,
 .main-table a[href*='content/'] {
-	color: #337ab7;
+	color: #9DDDFF;
 }
 .table.main-table tr.ZMS:hover {
 	background-color:rgba(0, 136, 204, 0.33) !important;
@@ -169,7 +170,7 @@ form {
 	margin:0;
 }
 fieldset legend {
-	/* color: inherit; */
+	color: white;
 	font-size: 100%;
 	letter-spacing: .1em;
 	text-transform: uppercase;
@@ -191,6 +192,7 @@ input.form-element {
 	border-radius: 4px;
 	margin-right: .5em;
 }
+
 form.row {
 	margin:0 -30px 0 -30px;
 }
@@ -199,16 +201,18 @@ form.row .controls {
 }
 form[name='form0'] input.form-submit:hover,
 form.row .controls input:hover {
-	background: #0088CC;
-	border: 1px solid #0088CC;
+	background: #000;
+	border: 1px solid #ccc;
 	color: white;
 }
 select {
 	display: inline-block;
 	width: auto;
 	vertical-align: middle;
+	background-color: #404040;
 	box-shadow: none;
-	border: 1px solid #aaa;
+	color: #ddd;
+	border: 1px solid #ccc;
 	text-transform: none;
 	display: block;
 	height: 34px;
@@ -260,7 +264,7 @@ select {
 	.breadcrumb {
 		padding: 0
 	}
-	form.form-initialized {
+	form {
 		margin: 0;
 	}
 	table {
@@ -270,37 +274,39 @@ select {
 .zope_actions select,
 .zope_actions input {
 	border:0;
-	background-color: #F6F6F6;
+	background-color: #404040;
 	box-shadow:none;
-	color:#333;
-	border: 1px solid silver;
+	color:#ddd;
+	border: 1px solid #ccc;
 	display:inline-block !important;
 }
 .zope_actions select {
 	max-width: 75%;
 }
 .system-msg {
-	background-color: rgba(0, 136, 204, 0.10);
-	border: 1px solid silver;
+	background-color: #08c;
+	border: 0px solid black;
 	margin: 1em 0 !important;
 	padding: 15px;
 	border-radius: 4px;
 }
 textarea,
 textarea.form-control,
-main  select.form-control {
+main select.form-control {
 	overflow: auto;
-	color:#000;
+	color: chartreuse;
+	color:#00CCFF;
 	font-family: courier, monospace !important;
 	padding: 1em;
+	background: black;
 	border-radius: 6px;
 	padding: .3em;
 	margin: 1em 0;
-	font-size: 90%;
 }
 input[type="reset"],
 input[type="submit"] {
 	margin-right: 0.5em;
+	color: #ddd;
 	display: inline-block;
 	width: auto;
 	vertical-align: middle;
@@ -310,7 +316,7 @@ input[type="submit"] {
 	height: 34px;
 	padding: 6px 12px;
 	line-height: 1.42857143;
-	border: 1px solid silver;
+	border: 1px solid #ccc;
 	border-radius: 4px;
 	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
 	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
@@ -327,24 +333,30 @@ input[type="text"],
 input[type="password"],
 input[type="file"],
 input[name='encoding'] {
+	background: black;
 	border: 1px solid silver;
 	padding: 6px 12px;
 	border-radius: 6px;
 	font-family: courier, monospace;
+	color: chartreuse;
+	color:#00CCFF;
 }
 input[type="file"] {
 	color:silver;
 }
 input[type="file" i]::-webkit-file-upload-button {
 	padding: 6px 12px;
-	border: 1px solid silver;
+	background: #404040;
+	border: 1px solid #00CCFF;
 	border-radius:4px;
+	color: #00CCFF;
 }
 input[type="file" i]::-webkit-file-upload-button:hover {
+	background: #00CCFF;
 	color: black;
 }
 i.icon-home {
-	color:#337ab7;
+	color:#9DDDFF;
 }
 form[action='manage_changePermissions'] {
 	margin-top:1em;
@@ -360,14 +372,14 @@ form[action='manage_changePermissions'] table td {
 /* ZMS CUSTOM MENU */
 #menu_buttons {
 	padding: 1.4em 30px .65em 30px;
-	border-bottom: 1px solid silver;
+	border-bottom: 1px solid #ddd;
 	margin: 0 -30px;
-	background-color:white;
+	/* background-color: #333333; */
 }
 #menu_buttons button {
 	width: 100%;
 	background: transparent;
-	color: black;
+	color: silver;
 	text-align: left;
 	border: 0;
 	padding: 0;
@@ -378,24 +390,24 @@ form[action='manage_changePermissions'] table td {
 }
 #menu_buttons ul.dropdown-menu {
 	margin: -6px 30px 0;
-
+	background: #888;
 }
 #menu_buttons ul.dropdown-menu a {
-
+	color: white;
 }
 #menu_buttons .dropdown-menu>li>a:focus,
 #menu_buttons .dropdown-menu>li>a:hover {
-
+	background:rgba(0, 0, 0, 0.22) !important;
 }
 
 table#menu_title td,
-div#menu_tree table td{
+div#menu_tree table td {
 	padding:0.2em .3em 0 .4em !important;
 	min-width:1em;
 	white-space:nowrap !important;
 }
 div#menu_title a {
-	color:inherit;
+	color:white;
 }
 div#menu_tree i.icon.icon-expand-alt,
 div#menu_tree i.icon.icon-collapse-alt {
@@ -404,7 +416,7 @@ div#menu_tree i.icon.icon-collapse-alt {
 }
 div#menu_tree i.icon.icon-expand-alt:hover,
 div#menu_tree i.icon.icon-collapse-alt:hover {
-	color: #000 !important;
+	color: #fff !important;
 }
 div#menu_tree a:focus,
 div#menu_tree i.icon.icon-expand-alt:focus,
@@ -460,14 +472,13 @@ td.main-time div.list-item {
 	white-space:nowrap;
 }
 #nodeid_error_log div div table {
-	background: #888;
+	background: black;
 	width: 100%;
 	border-radius:6px;
 }
 #nodeid_error_log div div table tr th {
 	white-space: nowrap;
 	padding: .3em 1em .3em .5em;
-	color:white
 }
 #nodeid_error_log div div table tr td {
 	padding: .3em .5em;

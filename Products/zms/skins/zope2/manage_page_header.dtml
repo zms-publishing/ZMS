@@ -12,7 +12,7 @@
 
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/i18n/eng.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/++resource++zmi_/bootstrap/bootstrap-all.min.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/++resource++zmi_/bootstrap3/bootstrap-all.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="&dtml-BASEPATH1;/manage_page_style.css" />
 <script>

@@ -1762,8 +1762,8 @@ body.browse_iframe .toggle {
 	float: right;
 	width: fit-content;
 	right: 0;
-	height: 1.8rem;
-	font-size: .8rem !important;
+	height: 2rem;
+	font-size: .9rem !important;
 	background: #428bca;
 	color: aliceblue;
 	border-radius: 0;

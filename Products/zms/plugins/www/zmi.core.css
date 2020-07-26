@@ -1183,6 +1183,12 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi table.table-sm th i {
 	font-size:1rem;
 }
+.zmi table.table-sm td.meta-id > span:not(.enabled) i {
+	opacity:0.5;
+}
+.zmi table.table-sm td.meta-id > span:not(.enabled) > a {
+	color:#212529
+}
 .zmi.metas table.table-sm td.meta-resource.input-group-sm a {
 	text-decoration: none;
 	overflow: hidden;

@@ -65,7 +65,7 @@
 						<div class="dropdown-menu">
 							<a block tal:condition="python:size>0 and not 'select' in actions"
 								class="dropdown-item" href="javascript:;" onclick="zmiToggleSelectionButtonClick(this)">
-								<i class="far fa-check-square"></i>
+								<i class="fas fa-check-square"></i>
 								<tal:block tal:content="python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))">Select all/none</tal:block>
 							</a>
 							<a tal:condition="python:'insert' in actions"

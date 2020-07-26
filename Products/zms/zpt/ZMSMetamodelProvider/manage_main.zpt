@@ -408,7 +408,7 @@
 		<tr>
 			<th class="meta-select">
 				<div class="btn-group">
-					<button class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="far fa-check-square"></i></button>
+					<button class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
 				</div>
 			</th>
 			<th colspan="2" class="meta-toolbar">
@@ -479,7 +479,7 @@
 								href python:'%s/metaobj_manager/manage_main?lang=%s&id=%s'%(context.getRootElement().absolute_url(),request['lang'],metaObj['id']);
 								title python:'acquired from: %s (%s)'%(context.getRootElement().getHome().id, context.getRootElement().attr('titlealt'))"
 							><i class="fas fa-share icon-share"></i></a>
-						<a title="Enabled" href="javascript:;" onclick="zmiEnabledBtnClick(this)"><i tal:attributes="class python:' '.join(['enabled-toggle']+[['far fa-square icon-check-empty'],['far fa-check-square icon-check']][metaObj.get('enabled',0) in [1,True]])"></i></a>
+						<a title="Enabled" href="javascript:;" onclick="zmiEnabledBtnClick(this)"><i tal:attributes="class python:' '.join(['enabled-toggle']+[['far fa-square'],['far fa-check-square']][metaObj.get('enabled',0) in [1,True]])"></i></a>
 						<a tal:attributes="href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); title python:'%s - Click for content analysis...'%metaObj['id']" target="_blank"><i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i></a>
 						<a tal:omit-tag="python:metaObj.get('acquired',None)" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])"><span tal:on-error="string:ERROR name" tal:replace="metaObj/name">the name</span></a>
 						<span class="meta-id-info">

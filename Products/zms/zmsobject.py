@@ -621,11 +621,11 @@ class ZMSObject(ZMSItem.ZMSItem,
         clazz = self.evalMetaobjAttr( '%s.%s'%(id, 'icon_clazz'))
         if not clazz:
           meta_obj = self.getMetaobj(id)
-          clazzes = {'ZMSResource':'fas fa-asterisk text-muted', \
-              'ZMSLibrary':'fas fa-flask text-muted', \
-              'ZMSPackage':'fas fa-suitcase text-muted',
-              'ZMSRecordSet':'far fa-list-alt text-muted',
-              'ZMSReference':'fas fa-link text-muted'}
+          clazzes = {'ZMSResource':'fas fa-asterisk', \
+              'ZMSLibrary':'fas fa-flask', \
+              'ZMSPackage':'fas fa-suitcase',
+              'ZMSRecordSet':'far fa-list-alt',
+              'ZMSReference':'fas fa-link'}
           clazz = clazzes.get(meta_obj.get('type'), 'fas fa-exclamation-triangle text-danger')
       return clazz
 

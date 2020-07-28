@@ -214,7 +214,7 @@ $(function() {
 	// Default-Collapse
 	var data_root = $("body").attr('data-root');
 	var id = "zmsindex";
-	var key = "ZMS."+data_root+".accordion-body-"+id;
+	var key = "ZMS."+data_root+".collapse-"+id;
 	$ZMILocalStorageAPI.set(key,'0');
 	// Sitemap
 	var initialized = false;

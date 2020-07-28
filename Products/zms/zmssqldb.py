@@ -107,7 +107,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         )
     __administratorPermissions__ = (
         'manage_properties', 'manage_changeProperties', 'manage_changeTempBlobjProperty',
-        'manage_configuration', 'manage_changeConfiguration',
+        'manage_configuration','manage_configuration_table', 'manage_changeConfiguration',
         )
     __ac_permissions__=(
         ('ZMS Author', __authorPermissions__),
@@ -123,6 +123,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     manage_main = PageTemplateFile('zpt/ZMSSqlDb/manage_main', globals())
     manage_properties = PageTemplateFile('zpt/ZMSSqlDb/manage_properties', globals())
     manage_configuration = PageTemplateFile('zpt/ZMSSqlDb/manage_configuration', globals())
+    manage_configuration_table = PageTemplateFile('zpt/ZMSSqlDb/manage_configuration_table', globals())
 
     # Valid Types.
     # ------------

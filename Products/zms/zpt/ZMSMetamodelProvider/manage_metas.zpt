@@ -15,7 +15,7 @@
  */
 function zmiExportBtnClick(sender) {
 	var fm = $(sender).parents("form")[0];
-	var href = fm.action+'?lang='+getZMILang()+'&btn='+getZMILangStr('BTN_EXPORT');
+	var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
 	$('input[name="ids:list"]:checked',fm).each(function(){
 			href += '&'+$(this).attr("name")+'='+$(this).val();
 		});

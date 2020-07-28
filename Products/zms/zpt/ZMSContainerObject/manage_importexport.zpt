@@ -123,7 +123,7 @@ function onExportFormatChange(el) {
 		<div class="form-group row">
 			<div class="col-md-2">&nbsp;</div>
 			<div class="col-md-10">
-				<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_EXPORT')">Import</button>
+				<button type="submit" class="btn btn-primary" tal:content="python:here.getZMILangStr('BTN_EXPORT')">Export</button>
 			</div>
 		</div>
 	</div>

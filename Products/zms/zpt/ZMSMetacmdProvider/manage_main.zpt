@@ -294,7 +294,7 @@
  */
 function zmiExportBtnClick(sender,btn,target) {
 	if (typeof btn=="undefined") {
-		btn = getZMILangStr('BTN_EXPORT');
+		btn = 'BTN_EXPORT';
 	}
 	if (typeof target=="undefined") {
 		target="_blank";
@@ -334,7 +334,7 @@ function zmiDeleteObjBtnClick(sender,d) {
 
 $(function(){
 		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800,remove:true});
-		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
+		$('button[name=btn][value=BTN_CLOSE]').click(function() {
 				zmiModal("hide");
 				return false;
 			});

@@ -177,7 +177,7 @@
 	$(function(){
 		zmiModal('#updateActivity',{title:getZMILangStr('TAB_PROPERTIES')+': Activity',width:800,remove:true});
 		zmiModal('#updateTransition',{title:getZMILangStr('TAB_PROPERTIES')+': Transition',width:800,remove:true});
-		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
+		$('button[name=btn][value=BTN_CLOSE]').click(function() {
 			zmiModal("hide");
 			return false;
 		});
@@ -431,7 +431,7 @@
 				<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 				<a class="btn btn-secondary mx-1" tal:attributes="href python:'javascript:if(confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_changeWorkflow?lang=%s&btn=%s\'}'%(request['lang'],here.getZMILangStr('BTN_CLEAR')); title python:here.getZMILangStr('BTN_CLEAR')+'...'"><tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')"></tal:block></a>
 				<span class="btn btn-secondary mx-1" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).text(),closeText:getZMILangStr('BTN_CLOSE')});return false;"><i class="fas fa-upload"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_IMPORT')"></tal:block></span>
-				<a class="btn btn-secondary mx-1" tal:attributes="href python:'manage_changeWorkflow?lang=%s&btn=%s'%(request['lang'],here.getZMILangStr('BTN_EXPORT')); title python:here.getZMILangStr('BTN_EXPORT')+'...'"><i class="fas fa-download"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_EXPORT')"></tal:block></a>
+				<a class="btn btn-secondary mx-1" tal:attributes="href python:'manage_changeWorkflow?lang=%s&btn=BTN_EXPORT'%request['lang']; title python:here.getZMILangStr('BTN_EXPORT')+'...'"><i class="fas fa-download"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_EXPORT')"></tal:block></a>
 			</div>
 		</div>
 	</form>

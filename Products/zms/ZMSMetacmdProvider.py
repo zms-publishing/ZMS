@@ -489,7 +489,7 @@ class ZMSMetacmdProvider(
             portalMaster = self.getPortalMaster()
             if portalMaster is not None:
               REQUEST.set('ids', [id])
-              xml =  portalMaster.manage_changeMetacmds(self.getZMILangStr('BTN_EXPORT'), lang, REQUEST, RESPONSE)
+              xml =  portalMaster.manage_changeMetacmds('BTN_EXPORT', lang, REQUEST, RESPONSE)
               self.importXml(xml=xml)
               message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%id)
         

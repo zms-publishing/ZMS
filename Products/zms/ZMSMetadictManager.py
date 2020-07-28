@@ -318,7 +318,7 @@ class ZMSMetadictManager(object):
               masterRoot = getattr(self, self.getConfProperty('Portal.Master'))
               masterDocElmnt = masterRoot.content
               REQUEST.set('ids', [id])
-              xml =  masterDocElmnt.manage_changeMetaProperties(self.getZMILangStr('BTN_EXPORT'), lang, REQUEST, RESPONSE)
+              xml =  masterDocElmnt.manage_changeMetaProperties('BTN_EXPORT', lang, REQUEST, RESPONSE)
               self.importMetadictXml(xml=xml)
               message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%id)
           

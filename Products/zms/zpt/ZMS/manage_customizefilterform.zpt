@@ -96,7 +96,7 @@ select.zmi-sort {
  */
 function zmiExportBtnClick(sender) {
 	var fm = $(sender).parents("form")[0];
-	var href = fm.action+'?lang='+getZMILang()+'&btn='+getZMILangStr('BTN_EXPORT');
+	var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
 	$('input[name="ids:list"]:checked').each(function(){
 			href += '&'+$(this).attr("name")+'='+$(this).val();
 		});
@@ -131,7 +131,7 @@ function zmiFormSubmit(sender,d) {
 $ZMI.registerReady(function(){
 		zmiModal('#updateFilter',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER'),minWidth:800,remove:true});
 		zmiModal('#updateProcess',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES'),minWidth:800,remove:true});
-		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
+		$('button[name=btn][value=BTN_CLOSE]').click(function() {
 				zmiModal("hide");
 				return false;
 			});

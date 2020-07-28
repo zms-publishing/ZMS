@@ -304,7 +304,7 @@
  */
 function zmiSaveBtnClick(sender) {
 	var $fm = $(sender).closest("form");
-	$fm.append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_SAVE')+'">').submit();
+	$fm.append('<input type="hidden" name="btn" value="BTN_SAVE">').submit();
 	return false;
 }
 
@@ -327,7 +327,7 @@ function zmiExportBtnClick(sender) {
 function zmiDeleteBtnClick(sender) {
 	var $fm = $(sender).closest("form");
 	if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-		$fm.append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_DELETE')+'">').submit();
+		$fm.append('<input type="hidden" name="btn" value="BTN_DELETE">').submit();
 	}
 	return false;
 }
@@ -337,7 +337,7 @@ function zmiDeleteBtnClick(sender) {
  */
 function zmiArchiveBtnClick(sender) {
 	var $fm = $(sender).closest("form");
-	$fm.append('<input type="hidden" name="btn" value="'+getZMILangStr('BTN_COPY')+'">').submit();
+	$fm.append('<input type="hidden" name="btn" value="BTN_COPY">').submit();
 	return false;
 }
 
@@ -356,7 +356,7 @@ function zmiPreviewBtnClick(sender) {
 
 $(function(){
 		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800,remove:true});
-		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
+		$('button[name=btn][value=BTN_CLOSE]').click(function() {
 				zmiModal("hide");
 				return false;
 			});

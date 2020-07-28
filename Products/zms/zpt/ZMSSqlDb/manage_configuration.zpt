@@ -102,7 +102,7 @@ function onAttrTypeChange( el) {
 
 $ZMI.registerReady(function(){
 		zmiModal('#updateEntity',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_TABLE'), width:'90%'});
-		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
+		$('button[name=btn][value=BTN_CLOSE]').click(function() {
 				zmiModal("hide");
 				return false;
 			});

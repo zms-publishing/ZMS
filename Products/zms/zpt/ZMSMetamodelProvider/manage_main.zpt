@@ -537,7 +537,7 @@ function zmiEnabledBtnClick(sender) {
  */
 function zmiExportBtnClick(sender,btn,target) {
 	if (typeof btn=="undefined") {
-		btn = getZMILangStr('BTN_EXPORT');
+		btn = 'BTN_EXPORT';
 	}
 	if (typeof target=="undefined") {
 		target="_blank";

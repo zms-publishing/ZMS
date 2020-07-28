@@ -177,7 +177,7 @@
  */
 function zmiExportBtnClick(sender) {
 	var fm = $(sender).parents("form")[0];
-	var href = fm.action+'?lang='+getZMILang()+'&btn='+getZMILangStr('BTN_EXPORT');
+	var href = fm.action+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
 	$('input[name="ids:list"]:checked',fm).each(function(){
 			href += '&'+$(this).attr("name")+'='+$(this).val();
 		});
@@ -204,7 +204,7 @@ function zmiDeleteObjBtnClick(sender,d) {
 
 $(function(){
 		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),remove:true})
-		$('button[name=btn][value='+getZMILangStr('BTN_CLOSE')+']').click(function() {
+		$('button[name=btn][value=BTN_CLOSE]').click(function() {
 				zmiModal("hide");
 				return false;
 			});

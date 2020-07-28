@@ -25,11 +25,12 @@ import copy
 import time
 import zExceptions
 # Product Imports.
-from Products.zms import zmscustom
-from Products.zms import standard
 from Products.zms import _confmanager
 from Products.zms import _fileutil
 from Products.zms import _globals
+from Products.zms import standard
+from Products.zms import zmscustom
+from Products.zms import zopeutil
 
 
 ################################################################################
@@ -162,10 +163,11 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     def getModelContainer( self):
       id = 'sqlmodel.xml'
-      if id not in self.objectIds(['DTML Method']):
-        model_xml =  getattr(self, 'model_xml', '<list>\n</list>')
-        self.manage_addDTMLMethod( id, 'SQL-Model (XML)', model_xml)
-      return getattr( self, id)
+      container = zopeutil.getObject(self,id)
+      if container is None:
+        model_xml =  getattr(self, 'model_xml', standard.str_json([]))
+        container = zopeutil.addObject(self,'DTML Method',id,'SQL-Model (XML)',model_xml)
+      return container
 
 
     # --------------------------------------------------------------------------
@@ -173,10 +175,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     def getModel(self):
       container = self.getModelContainer()
-      container_xml = container.raw
+      container_xml = zopeutil.readData(container)
       model_xml =  getattr(self, 'model_xml', None)
       if model_xml is None:
-        model_xml = '<list>\n</list>'
+        model_xml = standard.str_json([])
         self.model_xml = model_xml
         self.model = []
       if container_xml != model_xml:
@@ -190,11 +192,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     def setModel(self, newModel):
       container = self.getModelContainer()
-      try:
-        container.manage_edit( title=container.title, content_type=container.content_type, filedata=newModel)
-      except:
-        standard.writeError( self, '[ZMSSqlDb.setModel]: can\'t write newModel')
-        pass
+      id = container.id()
+      zopeutil.removeObject(self,id)
+      zopeutil.addObject(self,'DTML Method',id,'SQL-Model (XML)',newModel)
 
 
     # --------------------------------------------------------------------------

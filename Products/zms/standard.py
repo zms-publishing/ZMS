@@ -1876,7 +1876,7 @@ def parseXmlString(xml):
   from Products.zms import _xmllib
   builder = _xmllib.XmlAttrBuilder()
   if is_str(xml):
-    xml = pybytes(xml)
+    xml = pybytes(xml,'utf-8')
   if is_bytes(xml):
     xml = PyBytesIO(xml)
   v = builder.parse(xml)

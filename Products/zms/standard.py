@@ -100,6 +100,7 @@ if six.PY2:
     return object
   def pyopen(name, mode, buffering=-1, encoding=None):
     return open(name, mode, buffering)
+  from cgi import escape as html_escape
 if six.PY3:
   def is_str(v):
     return isinstance(v,str)
@@ -108,6 +109,7 @@ if six.PY3:
   pystr = str
   pybytes = bytes
   pyopen = open
+  from html import escape as html_escape
 
 def url_quote(s):
   return urllib_quote(s)
@@ -400,7 +402,7 @@ html_quote:
 def html_quote(v, name='(Unknown name)', md={}):
   if not isinstance(v,str):
     v = pystr(v)
-  return cgi.escape(v, 1)
+  return html_escape(v, 1)
 
 
 def bin2hex(m):
@@ -1632,7 +1634,7 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
     if type(i) is str:
       if not (i.strip().startswith('<') and i.strip().endswith('>')):
         try:
-          i = cgi.escape(i).encode(encoding, errors)
+          i = html_escape(i).encode(encoding, errors)
         except:
           pass
       else:

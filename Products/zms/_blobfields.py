@@ -30,11 +30,11 @@ import time
 import warnings
 import zExceptions 
 # Product Imports.
-from Products.zms import standard
-from Products.zms import pilutil
-from Products.zms import zopeutil
 from Products.zms import _fileutil
 from Products.zms import _globals
+from Products.zms import pilutil
+from Products.zms import standard
+from Products.zms import zopeutil
 
 __all__= ['MyBlob', 'MyImage', 'MyFile']
 

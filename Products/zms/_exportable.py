@@ -29,12 +29,12 @@ import os
 import re
 import sys
 # Product Imports.
-from Products.zms import standard
 from Products.zms import _blobfields
 from Products.zms import _fileutil
 from Products.zms import _filtermanager
 from Products.zms import _globals
 from Products.zms import _xmllib
+from Products.zms import standard
 
 
 def writeFile(self, filename, data, mode='w', encoding='utf-8'):

@@ -673,6 +673,7 @@ $(function(){
 		// Remove namespace ornaments from meta_id name
 		str = str.split('attr_').reverse()[0];
 		str = str.split('dc_').reverse()[0];
+		str = str.split('/').reverse()[0];
 		return str
 	}
 
@@ -694,6 +695,9 @@ $(function(){
 		} else if ( meta_model[id]['meta_repetitive'] ) {
 			// ATTRTYPE COMPLEX/REPETITIVE 
 			tal_defs +=`\n\t\t${sid}_list python:zmscontext.filteredChildNodes(request,'${meta_model[id]['meta_type']}');`
+		} else if ( meta_model[id]['meta_type'] == 'Script (Python)' ) {
+			// ATTRTYPE PYTHON SCRIPT (ZOPE OBJECT)
+			tal_defs += `\n\t\t${sid} here/${id};`
 		} else {
 			// ATTRTYPE STRING (STANDARD)
 			tal_defs += `\n\t\t${sid} python:zmscontext.attr('${id}');`
@@ -722,6 +726,9 @@ $(function(){
 		} else if ( meta_model[id]['meta_repetitive'] ) {
 			// ATTRTYPE COMPLEX/REPETITIVE 
 			tal_content += `\n\t<div class="${sid} repetitive" tal:condition="${sid}_list">\n\t\t<tal:block tal:repeat="${sid}_listitem ${sid}_list" tal:content="structure python:${sid}_listitem.renderShort(request)">${sid}</tal:block>\n\t</div>`;
+		} else if ( meta_model[id]['meta_type'] =='Script (Python)' ) {
+			// ATTRTYPE PYTHON SCRIPT (ZOPE OBJECT)
+			tal_content += `\n\t<div class="${sid}" tal:content="structure ${sid}">${id}</div>`;
 		} else {
 			// ATTRTYPE STRING (STANDARD)
 			tal_content += `\n\t<div class="${sid}" tal:content="${sid}">${sid}</div>`;

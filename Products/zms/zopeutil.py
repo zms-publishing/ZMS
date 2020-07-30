@@ -48,29 +48,34 @@ def getExternalMethodModuleName(container, id):
   return m
 
 security.declarePublic('addObject')
-def addObject(container, meta_type, id, title, data):
+def addObject(container, meta_type, id, title, data, permissions={}):
   """
   Add Zope-object to container.
   """
-  if meta_type == 'DTML Document':
-    addDTMLDocument( container, id, title, data)
-  elif meta_type == 'DTML Method':
-    addDTMLMethod( container, id, title, data)
-  elif meta_type == 'External Method':
-    addExternalMethod( container, id, title, data)
-  elif meta_type == 'File':
-    addFile( container, id, title, data)
-  elif meta_type == 'Image':
-    addImage( container, id, title, data)
-  elif meta_type == 'Page Template':
-    addPageTemplate( container, id, title, data)
-  elif meta_type == 'Script (Python)':
-    addPythonScript( container, id, title, data)
-  elif meta_type == 'Folder':
-    addFolder( container, id, title, data)
-  elif meta_type == 'Z SQL Method':
-    addZSqlMethod( container, id, title, data)
-  return getObject( container, id)
+  try:
+    if meta_type == 'DTML Document':
+      addDTMLDocument( container, id, title, data)
+    elif meta_type == 'DTML Method':
+      addDTMLMethod( container, id, title, data)
+    elif meta_type == 'External Method':
+      addExternalMethod( container, id, title, data)
+    elif meta_type == 'File':
+      addFile( container, id, title, data)
+    elif meta_type == 'Image':
+      addImage( container, id, title, data)
+    elif meta_type == 'Page Template':
+      addPageTemplate( container, id, title, data)
+    elif meta_type == 'Script (Python)':
+      addPythonScript( container, id, title, data)
+    elif meta_type == 'Folder':
+      addFolder( container, id, title, data)
+    elif meta_type == 'Z SQL Method':
+      addZSqlMethod( container, id, title, data)
+    initPermissions(container, id, permissions)
+    return getObject(container, id)
+  except:
+    standard.writeError(container, "can't addObject")
+    return None
 
 security.declarePublic('getObject')
 def getObject(container, id):
@@ -175,22 +180,30 @@ def removeObject(container, id, removeFile=True):
     container.manage_delObjects(ids=[id])
 
 security.declarePublic('initPermissions')
-def initPermissions(container, id):
+def initPermissions(container, id, permissions={}):
   """
   Init permissions for Zope-object:
   - set Proxy-role 'Manager'
   - set View-permissions to 'Authenticated' and remove acquired permissions for manage-objects.
   """
-  ob = getattr( container, id)
-  ob._proxy_roles=('Authenticated', 'Manager')
-  permissions = []
+  ob = getattr( container, id, None)
+  if ob is None: return
+  
+  # apply proxy-roles
+  ob._proxy_roles=('Authenticated','Manager')
+  # manage-artefacts need at least view permission
   if id.find( 'manage_') >= 0:
-    ob.manage_role(role_to_manage='Authenticated', permissions=['View'])
-  else:
-    # activate all acquired permissions
-    permissions = [x['name'] for x in ob.permissionsOfRole('Manager') if x['selected'] == 'SELECTED']
-  # FIXME AttributeError: 'PythonScript' object has no attribute 'manage_historyCopy'
-  #ob.manage_acquiredPermissions(permissions)
+    permissions['Authenticated'] = list(set(permissions.get('Authenticated',[]) + ['View']))
+  # apply permissions for roles
+  role_permissions = []
+  for role in permissions:
+    permission = permissions[role]
+    ob.manage_role(role_to_manage=role,permissions=permission)
+    role_permissions = list(set(role_permissions+permission))
+  # activate all acquired permissions
+  manager_permissions = [x['name'] for x in ob.permissionsOfRole('Manager') if x['selected']=='SELECTED']
+  acquired_permissions = [x for x in manager_permissions if x not in role_permissions]
+  ob.manage_acquiredPermissions(acquired_permissions)
 
 def addDTMLMethod(container, id, title, data):
   """

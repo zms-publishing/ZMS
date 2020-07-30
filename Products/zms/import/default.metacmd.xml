@@ -163,7 +163,7 @@
 		<tal:block tal:define="
 				unsorted python:[(x.attr('change_dt'),x) for x in [here]+here.getTreeNodes(request)];
 				dummy0 python:unsorted.sort(reverse=True);
-				dummy0 python:obs.extend([x[1],unsorted])"></tal:block>
+				dummy0 python:obs.extend(map(lambda x:x[1],unsorted))"></tal:block>
 	</tal:block>
 	<tal:block tal:condition="python:request['task_type'] not in ids">
 		<tal:block tal:repeat="lang python:[request['lang']]+[[],here.getDescendantLanguages(request['lang'],request)][int('descendant_langs' in request.form)]">

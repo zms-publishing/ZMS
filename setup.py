@@ -22,9 +22,6 @@ for path in sys.path:
   if path.endswith('site-packages'):
     site_packages = path
 
-
-README = open(os.path.join(setup_path, 'README')).read()
-
 def read_version():
     # Remove text from version for PyPI
     raw_version = open(os.path.join(setup_path, 'Products', 'zms', 'version.txt')).read()
@@ -57,7 +54,7 @@ CLASSIFIERS = [
 setup(
   name                  = 'ZMS',
   description           = 'ZMS: Simplified Content Modelling',
-  long_description      = README,
+  long_description      = open(os.path.join(setup_path, 'README')).read(),
   version               = read_version(),
   author                = 'HOFFMANN+LIEBENBERG in association with SNTL Publishing, Berlin',
   author_email          = 'zms@sntl-publishing.com',

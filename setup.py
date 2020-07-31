@@ -32,7 +32,6 @@ INSTALL_REQUIRES = [
   'Products.MailHost>=4.7',
   'Products.Sessions>=4',
   'Products.StandardCacheManagers>=4',
-  'tempstorage>=4',
   'zope.app.publication>=4',
   'zope.authentication>=4',
   'zope.untrustedpython>=4',

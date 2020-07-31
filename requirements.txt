@@ -13,4 +13,3 @@ Products.SiteErrorLog
 Products.StandardCacheManagers
 Products.Sessions
 Products.TemporaryFolder
-tempstorage

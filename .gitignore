@@ -1,0 +1,3 @@
+*.egg-info/
+Products/zms/plugins/www/zms-all.min.js
+

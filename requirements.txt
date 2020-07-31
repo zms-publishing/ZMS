@@ -12,3 +12,9 @@ Products.SiteErrorLog
 Products.StandardCacheManagers
 Products.Sessions
 Products.TemporaryFolder
+
+zope.app.publication
+zope.authentication
+zope.untrustedpython
+zope.error
+ZopeUndo

@@ -22,21 +22,6 @@ for path in sys.path:
   if path.endswith('site-packages'):
     site_packages = path
 
-INSTALL_REQUIRES = [
-  'Zope[wsgi]>=4.1.2',
-  'docutils',
-  'Products.CMFCore>=2.4.0',
-  'Products.ExternalMethod>=4.3',
-  'Products.GenericSetup>=2.0',
-  'Products.MailHost>=4.7',
-  'Products.Sessions>=4',
-  'Products.StandardCacheManagers>=4',
-  'zope.app.publication>=4',
-  'zope.authentication>=4',
-  'zope.untrustedpython>=4',
-  'zope.error>=4',
-  'ZopeUndo>=4',
-]
 
 README = open(os.path.join(setup_path, 'README')).read()
 
@@ -75,7 +60,7 @@ setup(
   author_email          = 'zms@sntl-publishing.com',
   url                   = 'http://www.zms-publishing.com',
   download_url          = 'https://zmslabs.org',
-  install_requires      = INSTALL_REQUIRES,
+  install_requires      = open(os.path.join(setup_path, 'requirements.txt')).readlines(),
   namespace_packages    = ['Products'],
   packages              = ['Products.zms'],
   classifiers           = CLASSIFIERS,

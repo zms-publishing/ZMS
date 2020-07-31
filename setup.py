@@ -25,12 +25,15 @@ for path in sys.path:
 
 README = open(os.path.join(setup_path, 'README')).read()
 
-# Remove text from version for PyPI
-VERSION = open(os.path.join(setup_path, 'Products', 'zms', 'version.txt')).read().replace('ZMS4-', '').replace('.REV', '')
-VERSION = VERSION.strip().split('.')
-# Remove revision too
-if len(VERSION)==4: VERSION.pop()
-VERSION = '.'.join(VERSION)
+def read_version():
+    # Remove text from version for PyPI
+    raw_version = open(os.path.join(setup_path, 'Products', 'zms', 'version.txt')).read()
+    cleaned_version = raw_version.replace('ZMS4-', '').replace('.REV', '')
+    version_list = cleaned_version.strip().split('.')
+    # Remove revision too
+    if 4 == len(version_list):
+        version_list.pop()
+    return '.'.join(version_list)
 
 CLASSIFIERS = [
   'Development Status :: 4 - Beta',
@@ -55,7 +58,7 @@ setup(
   name                  = 'ZMS',
   description           = 'ZMS: Simplified Content Modelling',
   long_description      = README,
-  version               = VERSION,
+  version               = read_version(),
   author                = 'HOFFMANN+LIEBENBERG in association with SNTL Publishing, Berlin',
   author_email          = 'zms@sntl-publishing.com',
   url                   = 'http://www.zms-publishing.com',

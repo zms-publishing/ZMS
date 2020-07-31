@@ -1,9 +1,8 @@
 # ZMS Dependencies
 wheel
-Paste
 docutils
 configparser
-Zope
+Zope[wsgi] < 5
 Products.GenericSetup
 Products.MailHost
 Products.ExternalMethod

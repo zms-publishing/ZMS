@@ -913,29 +913,54 @@
 
 <tal:block tal:define="
 		zmscontext options/zmscontext;
+		id zmscontext/id;
+		interval python:zmscontext.attr('interval');
 		indicators python:zmscontext.attr('indicators');
 		controls python:zmscontext.attr('controls');
-		slides python:zmscontext.filteredObjChildren('slides',request);">
-	<div tal:attributes="id zmscontext/id" class="carousel slide" data-ride="carousel">
+		slides python:zmscontext.filteredObjChildren('slides',request);
+		is_manage python:len(request.get('URL','').split('/manage'))>1;">
+	<div class="carousel slide" data-ride="carousel"
+	    tal:attributes="id id;class python:is_manage and default or 'carousel slide carousel-fade';data-interval interval">
 		<ol tal:condition="indicators" class="carousel-indicators">
-			<li tal:repeat="slide slides" tal:attributes="data-target python:'#%s'%zmscontext.id; data-slide-to python:slides.index(slide); class python:['','active'][slides.index(slide)==0]">
+			<li tal:repeat="slide slides"
+				tal:attributes="data-target python:'#%s'%(id); data-slide-to python:slides.index(slide); class python:['','active'][slides.index(slide)==0]">
 			</li>
 		</ol><!-- .carousel-indicators -->
 		<div class="carousel-inner">
-			<div tal:repeat="slide slides" tal:attributes="class python:' '.join(['carousel-item']+[['','active'][slides.index(slide)==0]])" tal:content="structure python:slide.getBodyContent(request)">
-			</div>
+            <tal:block tal:repeat="slide slides">
+    			<div class="carousel-item"
+    			    tal:define="active_css python:slides.index(slide)==0 and 'active' or '';set_active_css python:request.set('active_css',active_css)"
+    			    tal:replace="structure python:slide.getBodyContent(request)">
+    				<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><rect width="100%" height="100%" fill="#00000066"/></svg>
+    				<div class="container">
+    					<div class="carousel-caption text-left">
+    						<h1>Example headline.</h1>
+    						<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+    						<p><a class="btn btn-lg btn-danger" href="#" role="button">Sign up today</a></p>
+    					</div>
+    				</div>
+    			</div>
+			</tal:block>
 		</div><!-- .carousel inner -->
-		<tal:block tal:condition="controls">
-			<a class="carousel-control-prev" tal:attributes="href python:'#%s'%zmscontext.id;" role="button" data-slide="prev">
+		<tal:block tal:condition="controls" tal:define="
+				ATTR_PREVIOUS python:zmscontext.getZMILangStr('ATTR_PREVIOUS');
+				ATTR_NEXT python:zmscontext.getZMILangStr('ATTR_NEXT')">
+			<a class="carousel-control-prev" tal:attributes="href python:'#%s'%(id);title ATTR_PREVIOUS"
+				role="button" data-slide="prev">
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="sr-only">Previous</span>
+				<span class="sr-only" tal:content="ATTR_PREVIOUS">Previous</span>
 			</a>
-			<a class="carousel-control-next" tal:attributes="href python:'#%s'%zmscontext.id;" role="button" data-slide="next">
+			<a class="carousel-control-next" tal:attributes="href python:'#%s'%(id);title ATTR_NEXT"
+				role="button" data-slide="next">
 				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="sr-only">Next</span>
+				<span class="sr-only" tal:content="ATTR_NEXT">Next</span>
 			</a>
 	</tal:block>
 	</div><!-- .carousel slide -->
+	<script 
+	    tal:condition="not:is_manage"
+	    tal:content="python:'$ZMI.registerReady(function(){ $(\'#%s\').carousel({interval: %s }) })'%(id, interval)">
+	</script>
 </tal:block>
 
 <!-- /bt_carousel.standard_html -->]]>
@@ -1403,15 +1428,38 @@ $(function() {
               <item type="dictionary">
                 <dictionary>
                   <item key="default"></item>
-                  <item key="id">headline</item>
+                  <item key="id">image_filter</item>
+                  <item key="keys" type="list">
+                    <list>
+                      <item>##</item>
+                      <item><![CDATA[return []]></item>
+                      <item><![CDATA[	('#00000000','No Filter'),]]></item>
+                      <item><![CDATA[	('#00000033','12% Darker'),]]></item>
+                      <item><![CDATA[	('#00000066','25% Darker'),]]></item>
+                      <item><![CDATA[	('#00000099','40% Darker')]]></item>
+                      <item>]</item>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Image Filter]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">select</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">title</item>
                   <item key="keys" type="list">
                     <list>
                     </list>
                   </item>
-                  <item key="mandatory" type="int">1</item>
+                  <item key="mandatory" type="int">0</item>
                   <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
-                  <item key="name">Headline</item>
+                  <item key="name">title</item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type">string</item>
                 </dictionary>
@@ -1434,21 +1482,72 @@ $(function() {
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="default"></item>
+                  <item key="id">url</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Link</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">url</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">url_title</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">Link-Titel</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">string</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="custom"><![CDATA[<!-- bt_slide.standard_html -->
 
-<tal:block tal:define="
+<div class="carousel-item" 
+    tal:define="
 		zmscontext options/zmscontext;
-		img python:zmscontext.attr('image');
-		src python:img.getHref(request);
-		headline python:zmscontext.attr('headline');
+		title python:zmscontext.attr('title');
 		text python:zmscontext.attr('text');
-		captions python:zmscontext.getParentNode().attr('captions');">
-	<img class="d-block w-100" tal:attributes="src src; alt headline;">
-	<div tal:condition="captions" class="carousel-caption d-none d-md-block">
-		<h5 tal:content="structure headline">the headline</h5>
-		<p tal:content="structure text">the text</p>
+		img python:zmscontext.attr('image');
+		img_filter python:zmscontext.attr('image_filter');
+		src python:img.getHref(request);
+		url python:zmscontext.attr('url');
+		url_obj python:'{' in url and zmscontext.getLinkObj(url,request) or None;
+		url_target python:url_obj and url_obj.getHref2IndexHtml(request) or url;		
+		url_title python:zmscontext.attr('url_title');
+		show_captions python:zmscontext.getParentNode().attr('captions');"
+		tal:attributes="
+    		class python:'carousel-item %s'%(request.get('active_css',''));
+	    	style python:'background-image:url(\'%s\');;background-size:cover;;background-position:center;;'%(src)">
+    <svg class="bd-placeholder-img imgage_filter" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img" focusable="false">
+        <rect width="100%" height="100%" fill="#00000066" tal:attributes="fill python:img_filter and img_filter or '#00000000'" />
+    </svg>
+	<div class="container" tal:condition="show_captions">
+		<div class="carousel-caption text-left">
+		    <h1 tal:content="title">Example headline.</h1>
+			<p tal:condition="text" tal:content="text">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+			<p tal:condition="url">
+		        <a class="btn btn-lg btn-danger" href="#" role="button"
+		            tal:attributes="href url" tal:content="python:url_title!='' and url_title or 'More ...' ">
+                    Sign up today
+		        </a>
+            </p>
+		</div>
 	</div>
-</tal:block>
+</div>
 
 <!-- /bt_slide.standard_html -->]]>
                   </item>
@@ -1490,7 +1589,7 @@ $(function() {
           </item>
           <item key="enabled" type="int">0</item>
           <item key="id">bt_slide</item>
-          <item key="name">Slide</item>
+          <item key="name">Carousel-Slide</item>
           <item key="package">com.zms.foundation.bootstrap</item>
           <item key="revision">4.1.0</item>
           <item key="type">ZMSObject</item>

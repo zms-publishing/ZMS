@@ -71,7 +71,7 @@
 								is_modified python:len(ld)>0 and len(rd)>0;
 								is_removed python:len(ld)>0 and len(rd)==0;
 								filestate python:is_new and 'new' or (is_modified and 'modified' or (is_removed and 'removed' or ''));
-								filestate_css python:{'new':'sucess','modified':'warning','removed':'danger','':'info'}[filestate];">
+								filestate_css python:{'new':'success','modified':'warning','removed':'danger','':'info'}[filestate];">
 							<i tal:condition="python:l and l.get('data') is None" class="fa fa-exclamation-triangle text-danger" title="not found!"></i>
 							<span title="State"
 								tal:condition="not:python:l and l.get('data') is None"

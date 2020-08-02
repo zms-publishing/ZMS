@@ -4,7 +4,7 @@
 <list>
   <item type="dictionary">
     <dictionary>
-      <item key="key">LgBootstrapArea</item>
+      <item key="key">bt_area</item>
       <item key="value" type="dictionary">
         <dictionary>
           <item key="__obj_attrs__" type="list">
@@ -28,9 +28,14 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<div class="alert alert-dark">
-<i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/collapse/#accordion-example" target="_blank">Accordion &middot Bootstrap</a><br/>
-<i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/navs/" target="_blank">Tab-Pages &middot Bootstrap</a><br/>
+                  <item key="custom"><![CDATA[<div title="Bootstrap-Accordion & Tab-Pages" class="helpbtn btn btn-light" id="bt_area0">
+    <i class="fas fa-question-circle"></i>
+    <a href="https://getbootstrap.com/docs/4.1/components/collapse/#accordion-example" target="_blank">
+        Accordion
+    </a>
+    <a href="https://getbootstrap.com/docs/4.1/components/navs/" target="_blank">
+        Tab-Pages
+    </a>
 </div>]]>
                   </item>
                   <item key="default"></item>
@@ -87,8 +92,8 @@
                   <item key="id">items</item>
                   <item key="keys" type="list">
                     <list>
-                      <item>LgBootstrapAreaItem</item>
-                      <item>LgBootstrapAreaRecord</item>
+                      <item>bt_area_item</item>
+                      <item>bt_area_record</item>
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
@@ -175,10 +180,10 @@
             </dictionary>
           </item>
           <item key="enabled" type="int">1</item>
-          <item key="id">LgBootstrapArea</item>
+          <item key="id">bt_area</item>
           <item key="name">Area</item>
           <item key="package">com.zms.foundation.bootstrap</item>
-          <item key="revision">4.0.1</item>
+          <item key="revision">4.1.0</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -186,7 +191,7 @@
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="key">LgBootstrapAreaItem</item>
+      <item key="key">bt_area_item</item>
       <item key="value" type="dictionary">
         <dictionary>
           <item key="__obj_attrs__" type="list">
@@ -245,7 +250,7 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- LgBootstrapAreaItem.standard_html -->
+                  <item key="custom"><![CDATA[<!-- bt_area_item.standard_html -->
 
 <tal:block tal:define="
 		zmscontext options/zmscontext;
@@ -270,7 +275,7 @@
 	</div><!-- .card -->
 </tal:block>
 
-<!-- /LgBootstrapAreaItem.standard_html -->]]>
+<!-- /bt_area_item.standard_html -->]]>
                   </item>
                   <item key="default"></item>
                   <item key="id">standard_html</item>
@@ -309,10 +314,10 @@
             </dictionary>
           </item>
           <item key="enabled" type="int">0</item>
-          <item key="id">LgBootstrapAreaItem</item>
+          <item key="id">bt_area_item</item>
           <item key="name">Complex-Item</item>
           <item key="package">com.zms.foundation.bootstrap</item>
-          <item key="revision">4.0.1</item>
+          <item key="revision">4.1.0</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -320,7 +325,7 @@
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="key">LgBootstrapAreaRecord</item>
+      <item key="key">bt_area_record</item>
       <item key="value" type="dictionary">
         <dictionary>
           <item key="__obj_attrs__" type="list">
@@ -376,7 +381,7 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- LgBootstrapAreaRecord.standard_html -->
+                  <item key="custom"><![CDATA[<!-- bt_area_record.standard_html -->
 
 <tal:block tal:define="
 		zmscontext options/zmscontext;
@@ -401,7 +406,7 @@
 	</div><!-- .card -->
 </tal:block>
 
-<!-- /LgBootstrapAreaRecord.standard_html -->]]>
+<!-- /bt_area_record.standard_html -->]]>
                   </item>
                   <item key="default"></item>
                   <item key="id">standard_html</item>
@@ -440,10 +445,10 @@
             </dictionary>
           </item>
           <item key="enabled" type="int">0</item>
-          <item key="id">LgBootstrapAreaRecord</item>
+          <item key="id">bt_area_record</item>
           <item key="name">Simple-Item</item>
           <item key="package">com.zms.foundation.bootstrap</item>
-          <item key="revision">4.0.1</item>
+          <item key="revision">4.1.0</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -451,7 +456,7 @@
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="key">LgBootstrapCard</item>
+      <item key="key">bt_card</item>
       <item key="value" type="dictionary">
         <dictionary>
           <item key="__obj_attrs__" type="list">
@@ -475,7 +480,13 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<div class="alert alert-dark"><i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/card/" target="_blank">Card &middot Bootstrap</a></div>]]></item>
+                  <item key="custom"><![CDATA[<div title="Bootstrap-Card" class="helpbtn btn btn-light" id="bt_card0">
+    <i class="fas fa-question-circle"></i>
+    <a href="https://getbootstrap.com/docs/4.1/components/card/" target="_blank">
+        Card
+    </a>
+</div>]]>
+                  </item>
                   <item key="default"></item>
                   <item key="id">interface0</item>
                   <item key="keys" type="list">
@@ -567,12 +578,12 @@
                   <item key="multilang" type="int">0</item>
                   <item key="name">Links</item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type">LgBootstrapLinkList</item>
+                  <item key="type">bt_link_list</item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- LgBootstrapCard.standard_html -->
+                  <item key="custom"><![CDATA[<!-- bt_card.standard_html -->
 
 <tal:block tal:define="
 		zmscontext options/zmscontext;
@@ -595,7 +606,7 @@
 	</div>
 </tal:block>
 
-<!-- /LgBootstrapCard.standard_html -->]]>
+<!-- /bt_card.standard_html -->]]>
                   </item>
                   <item key="default"></item>
                   <item key="id">standard_html</item>
@@ -634,10 +645,10 @@
             </dictionary>
           </item>
           <item key="enabled" type="int">0</item>
-          <item key="id">LgBootstrapCard</item>
+          <item key="id">bt_card</item>
           <item key="name">Card</item>
           <item key="package">com.zms.foundation.bootstrap</item>
-          <item key="revision">4.0.1</item>
+          <item key="revision">4.1.0</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -645,7 +656,7 @@
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="key">LgBootstrapCardLayout</item>
+      <item key="key">bt_card_layout</item>
       <item key="value" type="dictionary">
         <dictionary>
           <item key="__obj_attrs__" type="list">
@@ -675,10 +686,10 @@
                     <list>
                       <item>##</item>
                       <item><![CDATA[return []]></item>
-                      <item><![CDATA[    ('card-group','Group'),]]></item>
-                      <item><![CDATA[    ('card-deck','Deck'),]]></item>
-                      <item><![CDATA[    ('card-columms','Columns'),]]></item>
-                      <item><![CDATA[  ]]]></item>
+                      <item>('card-group','Group'),</item>
+                      <item>('card-deck','Deck'),</item>
+                      <item>('card-columms','Columns'),</item>
+                      <item>]</item>
                     </list>
                   </item>
                   <item key="mandatory" type="int">1</item>
@@ -702,12 +713,12 @@
                   <item key="multilang" type="int">0</item>
                   <item key="name">Cards</item>
                   <item key="repetitive" type="int">1</item>
-                  <item key="type">LgBootstrapCard</item>
+                  <item key="type">bt_card</item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- LgBootstrapCardColumns.standard_html -->
+                  <item key="custom"><![CDATA[<!-- bt_card_layout.standard_html -->
 
 <tal:block tal:define="
 		zmscontext options/zmscontext;
@@ -720,7 +731,7 @@
 	</div>
 </tal:block>
 
-<!-- /LgBootstrapCardColumns.standard_html -->]]>
+<!-- /bt_card_layout.standard_html -->]]>
                   </item>
                   <item key="default"></item>
                   <item key="id">standard_html</item>
@@ -759,10 +770,10 @@
             </dictionary>
           </item>
           <item key="enabled" type="int">1</item>
-          <item key="id">LgBootstrapCardLayout</item>
+          <item key="id">bt_card_layout</item>
           <item key="name">Card-Layout</item>
           <item key="package">com.zms.foundation.bootstrap</item>
-          <item key="revision">4.0.1</item>
+          <item key="revision">4.1.0</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -770,7 +781,7 @@
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="key">LgBootstrapCarousel</item>
+      <item key="key">bt_carousel</item>
       <item key="value" type="dictionary">
         <dictionary>
           <item key="__obj_attrs__" type="list">
@@ -794,7 +805,14 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<div class="alert alert-dark"><i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/carousel/" target="_blank">Carousel &middot Bootstrap</a></div>]]></item>
+                  <item key="custom"><![CDATA[<div title="Bootstrap-Carousel" class="helpbtn btn btn-light" id="bt_carousel0">
+    <i class="fas fa-question-circle"></i>
+    <a href="https://getbootstrap.com/docs/4.1/components/carousel/" target="_blank">
+        Carousel
+    </a>
+</div>
+]]>
+                  </item>
                   <item key="default"></item>
                   <item key="id">interface0</item>
                   <item key="keys" type="list">
@@ -886,12 +904,12 @@
                   <item key="multilang" type="int">0</item>
                   <item key="name">Slides</item>
                   <item key="repetitive" type="int">1</item>
-                  <item key="type">LgBootstrapSlide</item>
+                  <item key="type">bt_slide</item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- LgBootstrapCarousel.standard_html -->
+                  <item key="custom"><![CDATA[<!-- bt_carousel.standard_html -->
 
 <tal:block tal:define="
 		zmscontext options/zmscontext;
@@ -920,7 +938,7 @@
 	</div><!-- .carousel slide -->
 </tal:block>
 
-<!-- /LgBootstrapCarousel.standard_html -->]]>
+<!-- /bt_carousel.standard_html -->]]>
                   </item>
                   <item key="default"></item>
                   <item key="id">standard_html</item>
@@ -959,10 +977,10 @@
             </dictionary>
           </item>
           <item key="enabled" type="int">1</item>
-          <item key="id">LgBootstrapCarousel</item>
+          <item key="id">bt_carousel</item>
           <item key="name">Carousel</item>
           <item key="package">com.zms.foundation.bootstrap</item>
-          <item key="revision">4.0.0</item>
+          <item key="revision">4.1.0</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -970,7 +988,7 @@
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="key">LgBootstrapJumbotron</item>
+      <item key="key">bt_jumbotron</item>
       <item key="value" type="dictionary">
         <dictionary>
           <item key="__obj_attrs__" type="list">
@@ -994,7 +1012,14 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<div class="alert alert-dark"><i class="fas fa-question-circle"></i> <a href="https://getbootstrap.com/docs/4.0/components/jumbotron/" target="_blank">Jumbotron &middot Bootstrap</a></div>]]></item>
+                  <item key="custom"><![CDATA[<div title="Bootstrap-Jumbotron" class="helpbtn btn btn-light" id="bt_jumbotron0">
+    <i class="fas fa-question-circle"></i>
+    <a href="https://getbootstrap.com/docs/4.1/components/jumbotron/" target="_blank">
+        Jumbotron
+    </a>
+</div>
+]]>
+                  </item>
                   <item key="default"></item>
                   <item key="id">interface0</item>
                   <item key="keys" type="list">
@@ -1070,12 +1095,12 @@
                   <item key="multilang" type="int">0</item>
                   <item key="name">Links</item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type">LgBootstrapLinkList</item>
+                  <item key="type">bt_link_list</item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- LgBootstrapJumbotron.standard_html -->
+                  <item key="custom"><![CDATA[<!-- bt_jumbotron.standard_html -->
 
 <tal:block tal:define="
 		zmscontext options/zmscontext;
@@ -1096,7 +1121,7 @@
 	</div>
 </tal:block>
 
-<!-- /LgBootstrapJumbotron.standard_html -->]]>
+<!-- /bt_jumbotron.standard_html -->]]>
                   </item>
                   <item key="default"></item>
                   <item key="id">standard_html</item>
@@ -1135,10 +1160,10 @@
             </dictionary>
           </item>
           <item key="enabled" type="int">1</item>
-          <item key="id">LgBootstrapJumbotron</item>
+          <item key="id">bt_jumbotron</item>
           <item key="name">Jumbotron</item>
           <item key="package">com.zms.foundation.bootstrap</item>
-          <item key="revision">4.0.0</item>
+          <item key="revision">4.1.0</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -1146,7 +1171,7 @@
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="key">LgBootstrapLinkList</item>
+      <item key="key">bt_link_list</item>
       <item key="value" type="dictionary">
         <dictionary>
           <item key="__obj_attrs__" type="list">
@@ -1169,7 +1194,7 @@
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- LgBootstrapLinkList.interface0 -->
+                  <item key="custom"><![CDATA[<!-- bt_link_list.interface0 -->
 
 <div class="form-group row" id="tr_links_interface0" tal:define="zmscontext options/zmscontext">
 	<div class="col-sm-2"></div>
@@ -1286,7 +1311,7 @@ $(function() {
 	});
 </script>
 
-<!-- /LgBootstrapLinkList.interface0 -->]]>
+<!-- /bt_link_list.interface0 -->]]>
                   </item>
                   <item key="default"></item>
                   <item key="id">interface0</item>
@@ -1325,18 +1350,19 @@ $(function() {
             </dictionary>
           </item>
           <item key="enabled" type="int">0</item>
-          <item key="id">LgBootstrapLinkList</item>
+          <item key="id">bt_link_list</item>
           <item key="name">Links</item>
           <item key="package">com.zms.foundation.bootstrap</item>
           <item key="revision">4.0.0</item>
           <item key="type">ZMSResource</item>
+          <item key="version">4.0.0</item>
         </dictionary>
       </item>
     </dictionary>
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="key">LgBootstrapSlide</item>
+      <item key="key">bt_slide</item>
       <item key="value" type="dictionary">
         <dictionary>
           <item key="__obj_attrs__" type="list">
@@ -1408,7 +1434,7 @@ $(function() {
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- LgBootstrapSlide.standard_html -->
+                  <item key="custom"><![CDATA[<!-- bt_slide.standard_html -->
 
 <tal:block tal:define="
 		zmscontext options/zmscontext;
@@ -1424,7 +1450,7 @@ $(function() {
 	</div>
 </tal:block>
 
-<!-- /LgBootstrapSlide.standard_html -->]]>
+<!-- /bt_slide.standard_html -->]]>
                   </item>
                   <item key="default"></item>
                   <item key="id">standard_html</item>
@@ -1463,10 +1489,10 @@ $(function() {
             </dictionary>
           </item>
           <item key="enabled" type="int">0</item>
-          <item key="id">LgBootstrapSlide</item>
+          <item key="id">bt_slide</item>
           <item key="name">Slide</item>
           <item key="package">com.zms.foundation.bootstrap</item>
-          <item key="revision">4.0.0</item>
+          <item key="revision">4.1.0</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>
@@ -1485,8 +1511,9 @@ $(function() {
           <item key="id">com.zms.foundation.bootstrap</item>
           <item key="name">com.zms.foundation.bootstrap</item>
           <item key="package"></item>
-          <item key="revision">4.0.1</item>
+          <item key="revision">4.1.0</item>
           <item key="type">ZMSPackage</item>
+          <item key="version">4.0.2</item>
         </dictionary>
       </item>
     </dictionary>

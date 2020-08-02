@@ -138,6 +138,11 @@ class ZMSItem(
         request.set( 'manage_tabs_message', self.getConfProperty('ZMS.manage_tabs_message', ''))
       if 'zmi-manage-system' in request.form:
         standard.set_session_value(self,'zmi-manage-system',int(request.get('zmi-manage-system',0)))
+      # manage must not be accessible for Anonymous
+      if request['URL0'].find('/manage') >= 0:
+        if request['AUTHENTICATED_USER'].has_role('Anonymous'):
+          import zExceptions
+          raise zExceptions.Unauthorized
       # avoid declarative urls
       path_to_handle = request['URL0'][len(request['BASE0']):]
       path = path_to_handle.split('/')

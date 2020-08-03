@@ -11,6 +11,7 @@
 		<div class="card-header attr_last_modified clearfix btn-collapse">
 				<div class="btn-group">
 					<a id="zmi-toggle-activity-btn" class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
+						tal:attributes="href python:'#attrActivity%s'%(request.get('ZMS_INSERT',False) and '_insert' or '')"
 						><i class="fas fa-invisible"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block></a>
 					<div class="btn zmi-changes"
 							tal:condition="not:python:request.get('ZMS_INSERT',False)" 
@@ -48,9 +49,10 @@
 				</tal:block>
 			</div>
 		</div><!-- .card-header -->
-		<div id="attrActivity" class="collapse">
+		<div id="attrActivity" class="collapse"
+			tal:attributes="id python:'attrActivity%s'%(request.get('ZMS_INSERT',False) and '_insert' or '')">
 			<div class="card-body">
-				<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
+				<tal:block tal:condition="not:python:request.get('ZMS_INSERT',False)">
 				<div class="form-group row">
 					<label class="control-label col-sm-2">
 						<span>Info</span>
@@ -99,7 +101,7 @@
 								dummy0 python:options.append('local.'+request['lang'])"></tal:block>
 						</tal:block>
 					</tal:block>
-					<tal:block tal:condition="not:python:request.get('ZMS_INSERT')" tal:define="global
+					<tal:block tal:condition="not:python:request.get('ZMS_INSERT',False)" tal:define="global
 							coverage python:here.getDCCoverage(request);
 							coverage_lang python:coverage[coverage.find('.')+1:];">
 						<tal:block tal:condition="not:python:request['lang']==coverage_lang">

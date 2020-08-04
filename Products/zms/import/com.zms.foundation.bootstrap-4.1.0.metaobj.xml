@@ -11,9 +11,8 @@
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[far fa-address-card]]></item>
                   <item key="default"></item>
-                  <item key="id">icon_clazz</item>
+                  <item key="id">header</item>
                   <item key="keys" type="list">
                     <list>
                     </list>
@@ -21,19 +20,25 @@
                   <item key="mandatory" type="int">0</item>
                   <item key="meta_type"></item>
                   <item key="multilang" type="int">1</item>
-                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="name"><![CDATA[Header (Optional)]]></item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type">constant</item>
+                  <item key="type">string</item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[<script>
-// Add Help Button
-$ZMI.registerReady(function() {
-	$('.zmi-action.btn-group.pull-right').append('<a class="btn" title="Bootstrap-Card" href="https://getbootstrap.com/docs/4.1/components/card/" target="_blank"><i class="fas fa-question-circle"></i></i></a>')
-})
-</script>]]>
+	// Add Help Button
+	$ZMI.registerReady(function() {
+		$('.zmi-action.btn-group.pull-right').append('<a class="btn" title="Bootstrap-Card" href="https://getbootstrap.com/docs/4.1/components/card/" target="_blank"><i class="fas fa-question-circle"></i></i></a>')
+	})
+</script>
+<style>
+	input.form-control.header,
+	input.form-control.footer  {
+		background: rgba(51, 122, 182, 0.15)
+	}
+</style>]]>
                   </item>
                   <item key="default"></item>
                   <item key="id">interface0</item>
@@ -116,22 +121,6 @@ $ZMI.registerReady(function() {
               <item type="dictionary">
                 <dictionary>
                   <item key="default"></item>
-                  <item key="id">header</item>
-                  <item key="keys" type="list">
-                    <list>
-                    </list>
-                  </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="meta_type"></item>
-                  <item key="multilang" type="int">1</item>
-                  <item key="name"><![CDATA[Header (Optional)]]></item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type">string</item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="default"></item>
                   <item key="id">footer</item>
                   <item key="keys" type="list">
                     <list>
@@ -163,10 +152,28 @@ $ZMI.registerReady(function() {
               </item>
               <item type="dictionary">
                 <dictionary>
+                  <item key="custom"><![CDATA[far fa-address-card]]></item>
+                  <item key="default"></item>
+                  <item key="id">icon_clazz</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">constant</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
                   <item key="custom"><![CDATA[<!-- bt_card.standard_html -->
 
 <tal:block tal:define="
 		zmscontext options/zmscontext;
+		id zmscontext/id;
 		img python:zmscontext.attr('image');
 		src python:img and img.getHref(request) or None;
 		title python:zmscontext.attr('title');
@@ -174,16 +181,18 @@ $ZMI.registerReady(function() {
 		text python:zmscontext.attr('text');
 		header python:zmscontext.attr('header');
 		footer python:zmscontext.attr('footer');
-		links python:zmscontext.links.attr('links');">
-	<div class="card">
+		links python:zmscontext.getChildNodes(request,['bt_link_list']) and zmscontext.links.attr('links') or None;">
+	<div class="card" tal:attributes="id id">
 		<div class="card-header" tal:condition="header" tal:content="header">header</div>
 		<img class="card-img-top" tal:condition="img" tal:attributes="src src; alt title">
 		<div class="card-body">
 			<h5 class="card-title" tal:condition="title" tal:content="structure title">Card title</h5>
 			<h6 class="card-subtitle mb-2 text-muted" tal:condition="subtitle" tal:content="structure subtitle">Card subtitle</h6>
-			<p class="card-text" tal:condition="text" tal:content="structure text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-			<tal:block tal:repeat="link links">
-				<a tal:attributes="href link/url" class="btn btn-primary" tal:content="structure link/label">Go somewhere</a>
+			<p class="card-text" tal:condition="text" tal:content="structure text">
+			    Some quick example text to build on the card title and make up the bulk of the card's content.
+			</p>
+			<tal:block tal:condition="links">
+				<a tal:repeat="link links" tal:attributes="href link/url" class="btn btn-primary" tal:content="structure link/label">Go somewhere</a>
 			</tal:block>
 		</div>
 		<div class="card-footer" tal:condition="footer"><small class="text-muted" tal:content="footer">footer</small></div>
@@ -306,9 +315,10 @@ $ZMI.registerReady(function() {
 
 <tal:block tal:define="
 		zmscontext options/zmscontext;
+		id zmscontext/id;
 		layout python:zmscontext.attr('layout');
 		cards python:zmscontext.filteredObjChildren('cards',request);">
-	<div tal:attributes="class layout">
+	<div tal:attributes="class python:'bt_card_layout %s'%(layout); id id">
 		<tal:block tal:repeat="card cards">
 			<tal:block tal:content="structure python:card.getBodyContent(request)"></tal:block>
 		</tal:block>
@@ -1069,7 +1079,8 @@ $ZMI.registerReady(function() {
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[// Add Help Button
+                  <item key="custom"><![CDATA[<script>
+// Add Help Button
 $ZMI.registerReady(function() {
 	$('.zmi-action.btn-group.pull-right').append('<a class="btn" title="Bootstrap-Jumbotron" href="https://getbootstrap.com/docs/4.1/components/jumbotron/" target="_blank"><i class="fas fa-question-circle"></i></i></a>')
 })
@@ -1537,18 +1548,20 @@ $(function() {
 
 <div class="carousel-item" 
     tal:define="
-		zmscontext options/zmscontext;
-		title python:zmscontext.attr('title');
-		text python:zmscontext.attr('text');
-		img python:zmscontext.attr('image');
-		img_filter python:zmscontext.attr('image_filter');
-		src python:img.getHref(request);
-		url python:zmscontext.attr('url');
-		url_obj python:'{' in url and zmscontext.getLinkObj(url,request) or None;
-		url_target python:url_obj and url_obj.getHref2IndexHtml(request) or url;		
-		url_title python:zmscontext.attr('url_title');
-		show_captions python:zmscontext.getParentNode().attr('captions');"
-		tal:attributes="
+	zmscontext options/zmscontext;
+	id zmscontext/id;
+	title python:zmscontext.attr('title');
+	text python:zmscontext.attr('text');
+	img python:zmscontext.attr('image');
+	img_filter python:zmscontext.attr('image_filter');
+	src python:img.getHref(request);
+	url python:zmscontext.attr('url');
+	url_obj python:'{' in url and zmscontext.getLinkObj(url,request) or None;
+	url_target python:url_obj and url_obj.getHref2IndexHtml(request) or url;		
+	url_title python:zmscontext.attr('url_title');
+	show_captions python:zmscontext.getParentNode().attr('captions');"
+	tal:attributes="
+  		id id;
     		class python:'carousel-item %s'%(request.get('active_css',''));
 	    	style python:'background-image:url(\'%s\');;background-size:cover;;background-position:center;;'%(src)">
     <svg class="bd-placeholder-img imgage_filter" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img" focusable="false">

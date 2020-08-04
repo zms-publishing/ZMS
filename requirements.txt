@@ -1,7 +1,7 @@
 # ZMS Dependencies
 docutils
 configparser
-Zope[wsgi] < 5
+Zope[wsgi]
 Products.GenericSetup
 Products.MailHost
 Products.ExternalMethod

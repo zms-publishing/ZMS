@@ -278,6 +278,7 @@ def xmlOnUnknownEndTag(self, sTagName):
     tag = self.dTagStack.pop()
     skip = len([x for x in self.oCurrNode.dTagStack if x.get('skip')]) > 0
     name = standard.unencode(tag['name'])
+    if name != sTagName: return 0  # don't accept any unknown tag
     attrs = standard.unencode(tag['attrs'])
     cdata = standard.unencode(tag['cdata'])
 
@@ -424,8 +425,7 @@ def xmlOnUnknownEndTag(self, sTagName):
     #------------                            
     else:
       value = None
-      if len(self.dTagStack):
-        self.dTagStack.pop()
+      if len(self.dTagStack): value = self.dTagStack.pop()
       if value is None: value = {'cdata':''}
       cdata = value.get('cdata', '')
       cdata += '<' + tag['name']

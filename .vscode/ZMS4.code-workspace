@@ -3,12 +3,12 @@
 		{
 			"path": "../"
 		},
-		{
-			"path": "/home/dev/workspace/ZMS3"
-		},
-		{
-			"path": "/home/dev/workspace/zopefoundation/Zope"
-		},
+//		{
+//			"path": "/home/dev/workspace/ZMS3"
+//		},
+//		{
+//			"path": "/home/dev/workspace/zopefoundation/Zope"
+//		},
 	],
 	"settings": {
 		"python.pythonPath": "/home/zope/vpy37/bin/",

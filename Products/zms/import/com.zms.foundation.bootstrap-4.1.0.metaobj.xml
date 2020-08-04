@@ -1313,7 +1313,7 @@ $(function() {
 						html += '<option value="'+j+'"' + (j==i?' selected="selected"':'') + '>'+(j+1)+'<'+'/option>\n';
 					}
 					html += '</select>\n';
-					html += '<a class="btn btn-secondary" href="javascript:;" onclick="if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){$(this).parents(\'tr\').remove()}"><i class="fas fa-times"></i></a>';
+					html += '<a class="btn btn-secondary btn-delete" href="javascript:;"><i class="fas fa-times"></i></a>';
 					html += '</div>\n';
 					html += '</td>\n';
 					html += '<td class="meta-url">\n';
@@ -1325,7 +1325,7 @@ $(function() {
 					html += '</tr>\n';
 				}
 				$last.prepend(html);
-				$("tr:not(:last) input",$table).change(function() {
+				var refreshLinks = function() {
 						links = [];
 						$("tr:not(:last)",$table).each(function() {
 								var $tr = $(this);
@@ -1333,25 +1333,16 @@ $(function() {
 								links.push(record);
 							});
 						refreshData();
-					});
-			};
-		var refreshData = function() {
-				var xml = '';
-				xml += '<list>\n';
-				for (var i=0; i < links.length; i++) {
-					var record = links[i];
-					xml += '<item type="dict">\n';
-					xml += '<dictionary>\n';
-					for (var k in record) {
-						xml += '<item key="'+k+'"><!{CDATA{'+record[k]+'}}></item>\n';
 					}
-					xml += '</dictionary>\n';
-					xml += '</item>\n';
-				}
-				xml += '</list>';
-				$("#links_links").val(xml);
+				$(".btn-delete",$table).click(function() {
+						if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+							$(this).parents('tr').remove();
+							refreshLinks();
+						}
+					});
+				$("tr:not(:last) input",$table).change(refreshLinks);
+				refreshData();
 			};
-		refreshData();
 		refreshView();
 		$(".btn-add",$table).click(function() {
 				var $tr = $(this).parents("tr")[0];
@@ -1360,7 +1351,6 @@ $(function() {
 					links.push(record);
 					$("input",$tr).val("");
 				}
-				refreshData();
 				refreshView();
 			});
 	});

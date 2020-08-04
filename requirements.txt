@@ -1,5 +1,4 @@
 # ZMS Dependencies
-wheel
 docutils
 configparser
 Zope[wsgi] < 5

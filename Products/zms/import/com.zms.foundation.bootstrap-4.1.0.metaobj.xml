@@ -30,7 +30,11 @@
                   <item key="custom"><![CDATA[<script>
 	// Add Help Button
 	$ZMI.registerReady(function() {
-		$('.zmi-action.btn-group.pull-right').append('<a class="btn" title="Bootstrap-Card" href="https://getbootstrap.com/docs/4.1/components/card/" target="_blank"><i class="fas fa-question-circle"></i></i></a>')
+		try {
+			$('.zmi-action.btn-group.pull-right').first().append('<a class="btn" title="Bootstrap-Card" href="https://getbootstrap.com/docs/4.1/components/card/" target="_blank"><i class="fas fa-question-circle"></i></i></a>');
+		} catch {
+			console.log('ERROR: Add Help Button');
+		}
 	})
 </script>
 <style>
@@ -142,7 +146,7 @@
                     <list>
                     </list>
                   </item>
-                  <item key="mandatory" type="int">0</item>
+                  <item key="mandatory" type="int">1</item>
                   <item key="meta_type"></item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Links</item>
@@ -400,10 +404,14 @@
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[<script>
-// Add Help Button
-$ZMI.registerReady(function() {
-	$('.zmi-action.btn-group.pull-right').append('<a class="btn" title="Bootstrap-Carousel" href="https://getbootstrap.com/docs/4.1/components/carousel/" target="_blank"><i class="fas fa-question-circle"></i></i></a>')
-})
+	// Add Help Button
+	$ZMI.registerReady(function() {
+		try {
+			$('.zmi-action.btn-group.pull-right').first().append('<a class="btn" title="Bootstrap-Carousel" href="https://getbootstrap.com/docs/4.1/components/carousel/" target="_blank"><i class="fas fa-question-circle"></i></i></a>');
+		} catch {
+			console.log('ERROR: Add Help Button');
+		}
+	})
 </script>]]>
                   </item>
                   <item key="default"></item>
@@ -631,10 +639,14 @@ $ZMI.registerReady(function() {
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[<script>
-// Add Help Button
-$ZMI.registerReady(function() {
-	$('.zmi-action.btn-group.pull-right').append('<a class="btn" title="Bootstrap-Collapsible Content: Accordion & Tabs" href="https://getbootstrap.com/docs/4.1/components/collapse" target="_blank"><i class="fas fa-question-circle"></i></i></a>')
-})
+	// Add Help Button
+	$ZMI.registerReady(function() {
+		try {
+			$('.zmi-action.btn-group.pull-right').first().append('<a class="btn" title="Bootstrap-Collapsible Content: Accordion & Tabs" href="https://getbootstrap.com/docs/4.1/components/collapse" target="_blank"><i class="fas fa-question-circle"></i></i></a>');
+		} catch {
+			console.log('ERROR: Add Help Button');
+		}
+	})
 </script>]]>
                   </item>
                   <item key="default"></item>
@@ -1080,10 +1092,14 @@ $ZMI.registerReady(function() {
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[<script>
-// Add Help Button
-$ZMI.registerReady(function() {
-	$('.zmi-action.btn-group.pull-right').append('<a class="btn" title="Bootstrap-Jumbotron" href="https://getbootstrap.com/docs/4.1/components/jumbotron/" target="_blank"><i class="fas fa-question-circle"></i></i></a>')
-})
+	// Add Help Button
+	$ZMI.registerReady(function() {
+		try {
+			$('.zmi-action.btn-group.pull-right').first().append('<a class="btn" title="Bootstrap-Jumbotron" href="https://getbootstrap.com/docs/4.1/components/jumbotron/" target="_blank"><i class="fas fa-question-circle"></i></i></a>')
+		} catch {
+			console.log('ERROR: Add Help Button');
+		}
+	})
 </script>]]>
                   </item>
                   <item key="default"></item>

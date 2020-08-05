@@ -69,7 +69,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
           if not can_edit:
             break
     if can_edit:
-      actions.append((container.getZMILangStr('BTN_EDIT'), objPath+'manage_main', 'fas fa-pencil'))
+      actions.append((container.getZMILangStr('BTN_EDIT'), objPath+'manage_main', 'fas fa-pencil-alt'))
     if context.getLevel() > 0:
       if repetitive or not mandatory:
         #-- Action: Undo.

@@ -61,7 +61,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
     user_roles = [x for x in context.getUserRoles(auth_user, resolve=False) if x in userdef_roles]
     can_edit = True
     constraints = context.attr('check_constraints')
-    if isinstance(constraints, dict) and 'RESTRICTIONS' in constraints.keys():
+    if isinstance(constraints, dict) and 'RESTRICTIONS' in constraints:
       for restriction in constraints.get('RESTRICTIONS'):
         permissions = restriction[2]
         for permission in permissions:
@@ -69,16 +69,16 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
           if not can_edit:
             break
     if can_edit:
-      actions.append((container.getZMILangStr('BTN_EDIT'), objPath+'manage_main', 'icon-edit'))
+      actions.append((container.getZMILangStr('BTN_EDIT'), objPath+'manage_main', 'fas fa-pencil'))
     if context.getLevel() > 0:
       if repetitive or not mandatory:
         #-- Action: Undo.
         can_undo = context.inObjStates( [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED'], REQUEST)
         if can_undo:
-          actions.append((container.getZMILangStr('BTN_UNDO'), 'manage_undoObjs', 'icon-undo'))
+          actions.append((container.getZMILangStr('BTN_UNDO'), 'manage_undoObjs', 'fas fa-undo'))
         #-- Action: Delete.
-        if not objAttr.keys():
-          actions.append((container.getZMILangStr('BTN_DELETE'), 'manage_eraseObjs', 'icon-trash'))
+        if not objAttr:
+          actions.append((container.getZMILangStr('BTN_DELETE'), 'manage_eraseObjs', 'fas fa-times'))
         else:
           can_delete = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
           if can_delete:
@@ -90,13 +90,13 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
             can_delete = can_delete and len([x for x in user_roles if x not in mo_access_deny]) > 0
             can_delete = can_delete or auth_user.has_role('Manager')
           if can_delete:
-            actions.append((container.getZMILangStr('BTN_DELETE'), 'manage_deleteObjs', 'icon-trash'))
+            actions.append((container.getZMILangStr('BTN_DELETE'), 'manage_deleteObjs', 'fas fa-trash-alt'))
         #-- Action: Cut.
         can_cut = not context.inObjStates( [ 'STATE_DELETED'], REQUEST) and context.getAutocommit() or context.getDCCoverage(REQUEST).endswith('.'+lang)
         if can_cut:
-          actions.append((container.getZMILangStr('BTN_CUT'), 'manage_cutObjects', 'icon-cut')) 
+          actions.append((container.getZMILangStr('BTN_CUT'), 'manage_cutObjects', 'fas fa-cut')) 
       #-- Action: Copy.
-      actions.append((container.getZMILangStr('BTN_COPY'), 'manage_copyObjects', 'icon-copy'))
+      actions.append((container.getZMILangStr('BTN_COPY'), 'manage_copyObjects', 'fas fa-copy'))
       #-- Actions: Move.
       can_move = objChildren > 1
       if can_move:
@@ -121,7 +121,7 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
       except:
         append = False
       if append:
-        actions.append((container.getZMILangStr('BTN_PASTE'), 'manage_pasteObjs', 'icon-paste'))
+        actions.append((container.getZMILangStr('BTN_PASTE'), 'manage_pasteObjs', 'fas fa-paste'))
   
   #-- Custom Commands.
   actions.extend(zmi_command_actions(context, stereotype='', objPath=objPath))
@@ -135,7 +135,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
   Returns sorted list of insert actions. 
   """
   actions = []
-  if not objAttr.keys():
+  if not objAttr:
     return actions
   
   REQUEST = container.REQUEST

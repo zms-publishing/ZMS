@@ -55,7 +55,8 @@ def getobjattrdefault(obj, obj_attr, lang):
       elif type(default) is dict:
         v = default.copy()
       else:
-        if type( default) is str and len( default) > 0:
+        datatype = obj_attr['datatype_key']
+        if default and datatype not in _globals.DT_TEXTS and standard.is_str(default):
           default = standard.dt_exec(obj,default)
         v = default
     return v
@@ -75,12 +76,12 @@ def getobjattr(self, obj, obj_attr, lang):
   # Get other.
   v = None
   key = self._getObjAttrName(obj_attr, lang)
-  if key in obj.__dict__.keys():
+  if key in obj.__dict__:
     v = getattr(obj, key)
   # Default mono-lingual attributes to primary-lang.
   if v is None:
     key = self._getObjAttrName({'id':obj_attr['id'],'multilang':not obj_attr['multilang']}, self.getPrimaryLanguage())
-    if key in obj.__dict__.keys():
+    if key in obj.__dict__:
       v = getattr(obj, key)
   # Default value.
   if v is None:

@@ -101,7 +101,7 @@ function zmiHistoryChanged() {
 						if (typeof not_found=="undefined" || not_found!="1") {
 							var titlealt = $(this).attr("titlealt");
 							var absolute_url = $(this).attr("absolute_url");
-							var icon = $(this).attr("display_icon");
+							var icon = $(this).attr("zmi_icon");
 							if (icon && icon.indexOf('<')!=0) {
 								icon = $ZMI.icon(icon);
 							}

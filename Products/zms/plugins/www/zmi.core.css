@@ -1109,11 +1109,14 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	background-color: #818EA2;
 	height: 2rem;
 }
+.zmi .dropdown-menu .dropdown-header i {
+	color: #fff !important;
+}
+
 .zmi .dropdown-menu a.dropdown-item:focus, 
 .zmi .dropdown-menu a.dropdown-item:hover {
 	background-color: rgba(53, 79, 103, 0.15);
 }
-
 .zmi .dropdown-menu a.dropdown-item {
 	padding: .3rem .75rem;
 }

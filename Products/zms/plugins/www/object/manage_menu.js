@@ -18,6 +18,12 @@ function zmiRefresh() {
 	$ZMI.objectTree.init(".zmi-sitemap",href,{params:{meta_types:$ZMI.getConfProperty('zms.plugins.www.object.manage_menu.meta_types','0,1,ZMSTrashcan')}});
 }
 
+// Leading Zeros
+// https://gist.github.com/aemkei/1180489
+function pad(a,b){
+	return(1e15+a+"").slice(-b)
+}
+
 function zmiBookmarksChanged() {
 	var data_root = $("body").attr('data-root');
 	var key = "ZMS."+data_root+".bookmarks";
@@ -113,7 +119,7 @@ function zmiHistoryChanged() {
 								html += '<div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
 								html += '<div class="dropdown-header">'+$ZMI.icon('far-fa-clock')+' Verlauf</div>';
 							}
-							html += '<a class="dropdown-item" href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main">'+(i+1)+'. '+icon+' '+titlealt+'</a>';
+							html += '<a class="dropdown-item" href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main">'+pad((i+1),2)+'. '+icon+' '+titlealt+'</a>';
 							i++;
 						}
 					});

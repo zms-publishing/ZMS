@@ -999,6 +999,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	overflow:hidden;
 	white-space:nowrap;
 }
+.zmi .zmi-input-file .custom-file-label.new_label,
 .zmi .zmi-input-file .custom-file-label.new_file {
 	background:aliceblue;
 }

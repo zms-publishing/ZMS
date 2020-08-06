@@ -259,6 +259,12 @@ function ZMSGraphic_extEdit_apply() {
 				$('input#width_'+ZMSGraphic_elName).val(w);
 				$('input#height_'+ZMSGraphic_elName).val(h)
 			}
+			dims = `(${w}x${h}px)`;
+			new_label = $(`.custom-file label[for="${ZMSGraphic_elName}"]`).text().replace(/\(.*\)/g, dims);
+			$(`.custom-file label[for="${ZMSGraphic_elName}"]`)
+				.text(new_label)
+				.addClass('new_label');
+
 		}
 	}
 	// Close dialog.

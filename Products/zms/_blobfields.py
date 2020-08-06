@@ -49,6 +49,20 @@ StringType=type('')
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.guess_svg_dimensions:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def guess_svg_dimensions(self):
+  if self.filename.endswith(".svg"):
+    data = str(self.getData())
+    d = dict(re.findall('\\s(.*?)="(.*?)"', data))
+    if 'viewBox' in d:
+        viewBox = [int(x) for x in d['viewBox'].split(' ')]
+        self.width = viewBox[2] - viewBox[0]
+        self.height = viewBox[3] - viewBox[1]
+        print(self.width,self.height)
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _blobfields.rfc1123_date:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def rfc1123_date(dt):
@@ -907,6 +921,10 @@ class MyImage(MyBlob, Image):
       """
       w = self.width
       if not w:
+        if self.filename.endswith(".svg"):
+          guess_svg_dimensions(self)
+          w = self.width
+      if not w:
         w = self.aq_parent.getConfProperty('ZMS.image.default.width', 640)
       return w
 
@@ -919,6 +937,10 @@ class MyImage(MyBlob, Image):
       @rtype: C{int}
       """
       h = self.height
+      if not h:
+        if self.filename.endswith(".svg"):
+          guess_svg_dimensions(self)
+          h = self.height
       if not h:
         h = self.aq_parent.getConfProperty('ZMS.image.default.height', 400)
       return h

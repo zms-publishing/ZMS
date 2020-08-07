@@ -420,7 +420,7 @@
 					<div class="btn-group packaging">
 						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_ACQUIRE')+'...'" onclick="$ZMI.iframe('manage_main_acquire',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false" tal:condition="python:here.getPortalMaster() is not None"><i class="fas fa-share icon-share"></i></button>
 						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload icon-upload-alt"></i></button>
-						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this);return false"><i class="fas fa-download icon-download-alt"></i></button>
+						<button class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="return zmiExportBtnClick(this);"><i class="fas fa-download icon-download-alt"></i></button>
 					</div><!-- .btn-group -->
 				</div><!-- .btn-toolbar -->
 			</th>
@@ -535,26 +535,13 @@ function zmiEnabledBtnClick(sender) {
 /**
  * Export xml.
  */
-function zmiExportBtnClick(sender,btn,target) {
-	if (typeof btn=="undefined") {
-		btn = 'BTN_EXPORT';
-	}
-	if (typeof target=="undefined") {
-		target="_blank";
-	}
+function zmiExportBtnClick(sender) {
 	var $fm = $(sender).closest("form");
-	if (target=="_blank") {
-		var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn='+btn;
-		$('input[name="id"]:text,input[name="ids:list"]:checked',$fm).each(function(){
-				href += '&ids:list='+$(this).val();
-			});
-		window.open(href);
-	}
-	else {
-		$fm.attr("target",target);
-		$fm.append('<input type="hidden" name="btn" value="'+btn+'"/>');
-		$fm.submit();
-	}
+	var href = $fm.attr('action')+'?lang='+getZMILang()+'&btn=BTN_EXPORT';
+	$('input[name="id"]:text,input[name="ids:list"]:checked',$fm).each(function(){
+			href += '&ids:list='+$(this).val();
+		});
+	window.open(href);
 	return false;
 }
 

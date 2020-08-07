@@ -88,13 +88,13 @@ if six.PY2:
     return isinstance(v,unicode)
   def is_bytes(v):
     return isinstance(v,str) or isinstance(v,bytes)
-  def pystr(object, encoding='latin-1', errors='strict'):
+  def pystr(object, encoding='utf-8', errors='strict'):
     if type(object) is str:
-      object = unicode(object,encoding).encode('utf-8',errors)
+      object = unicode(object,encoding,errors)
     else:
       object = unicode(object)
     return object
-  def pybytes(object, encoding='latin-1', errors='strict'):
+  def pybytes(object, encoding='utf-8', errors='strict'):
     if type(object) is unicode:
       object = object.encode(encoding,errors)
     return object
@@ -236,12 +236,12 @@ def umlaut_quote(s, mapping={}):
   @return: Quoted string
   @rtype: C{str}
   """
-  if isinstance(s, bytes):
-    s = s.decode()
+  if is_bytes(s):
+    s = pystr(s)
   for x in _globals.umlaut_map:
     mapping[x] = _globals.umlaut_map[x]
   for key in mapping:
-    s = s.replace(key, mapping[key])
+    s = s.replace(key, pystr(mapping[key]))
   return s
 
 
@@ -570,7 +570,7 @@ def id_quote(s, mapping={
   """
   s = umlaut_quote(s, mapping)
   valid = [ord(x[0]) for x in mapping.values()] + [ord('_')] + list(range(ord('0'), ord('9')+1)) + list(range(ord('A'), ord('Z')+1)) + list(range(ord('a'), ord('z')+1))
-  s = [x for x in s if type(x) is str and len(x) == 1 and ord(x) in valid]
+  s = [x for x in s if is_str(x) and len(x) == 1 and ord(x) in valid]
   while len(s) > 0 and s[0] == '_':
       s = s[1:]
   s = ''.join(s).lower()

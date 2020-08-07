@@ -68,6 +68,13 @@ header.navbar-nav .navbar-brand {
 	font-weight:bold;
 	font-size: 1.125rem;
 }
+.zmi.preview_top header a {
+	color: silver;
+	text-decoration: none;
+}
+.zmi.preview_top header a:hover {
+	color: white;
+}
 header.navbar-nav .navbar-brand .slogan {
 	display:none;
 	position: absolute;
@@ -545,6 +552,12 @@ body.zmi ul.zmi-container > .zmi-item > .center {
 }
 body.zmi ul.zmi-container .zmi-item.pageelement .center > * {
 	padding-left:.8em;
+}
+body.zmi.ZMSTeaserContainer ul.zmi-container .zmi-item.pageelement .center .ZMSTeaserContainer > .ZMSTeaserElement {
+	max-width: 20rem;
+	padding: .65rem 1rem;
+	background-color: #d1ecf1;
+	min-height:4rem;
 }
 body.zmi ul.zmi-container.zmi-sortable.pages li:last-child div.center {
 	border-bottom:1px dotted #cccccc;

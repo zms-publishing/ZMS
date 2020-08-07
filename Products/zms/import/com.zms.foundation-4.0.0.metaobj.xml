@@ -6617,44 +6617,35 @@ return zmscontext.attr('text')
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- pageelement_TeaserElement -->
-
-	<div class="ZMSTeaserElement" tal:define="global 
-		url           python:here.getLinkUrl(here.attr('attr_url'),request);
-		target_url    python:['_self','_blank'][here.attr('attr_url').rfind('://')>0];
-		img_src_attr  python:here.attr('attr_img_src');
-		img_src       python:img_src_attr+'?';
-		img_filename  python:img_src[img_src.rfind('/')+1:img_src.find('?')];
-		title_url     python:here.attr('title');
-		title_txt     python:title_url;
-		abstract      python:here.attr('attr_abstract');
-		id            python:here.getId()"
+<div class="ZMSTeaserElement" tal:define="
+			zmscontext here;
+			id python:zmscontext.getId();
+			attr_url python:zmscontext.attr('attr_url');
+			url python:zmscontext.getLinkUrl(attr_url,request);
+			url_error python:'error' in url;
+			url_target python:attr_url.rfind('://')>0 and '_blank' or 'self';
+			img_src_attr python:zmscontext.attr('attr_img_src');
+			img_src python:img_src_attr+'?';
+			img_filename python:img_src[img_src.rfind('/')+1:img_src.find('?')];
+			title python:zmscontext.attr('title');
+			text python:zmscontext.attr('attr_abstract');"
 		tal:attributes="id id">
-		
-			<tal:block tal:condition="python:len(title_url) > 4 and title_url.startswith('__') and title_url.endswith('__')">
-				<tal:block tal:define="global title_url python:title_url[2:-2]; title_txt python:''"></tal:block>
-			</tal:block>
-			
-			<tal:block tal:condition="python:title_txt or img_filename" tal:define="global 
-					img python:'<img class=\042title\042 src=\042'+img_src_attr+'\042 alt=\042'+title_txt+'\042 border=\0420\042/>'">
-				
-				<div class="graphic" tal:condition="python:img_filename">
-					<tal:block tal:condition="python:url" tal:content="structure python:here.tal_anchor(url,target=target_url,attrs={'title':title_url},content=img)">the image</tal:block>
-					<tal:block tal:condition="python:not url" tal:content="structure img">the image</tal:block>
-				</div>
-				<div class="title" tal:condition="python:title_txt">
-					<tal:block tal:condition="python:url" tal:content="structure python:here.tal_anchor(url,target=target_url,attrs={'title':title_url},content=title_txt)">the title</tal:block>
-					<tal:block tal:condition="python:not url" tal:content="structure title_txt">the title</tal:block>
-				</div>
-				
-				<div tal:condition="python:len(abstract)+len(url)>0" class="text">
-					<tal:block tal:content="structure abstract">The abstract</tal:block>
-					<span class="HREF_MORE" tal:condition="python:len(abstract)>0 and len(url)>0" tal:content="structure python:here.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042 title=\042%s\042'%(url,title_url))">the url</span>
-				</div>
-				
-			</tal:block>
-			
+	<div class="graphic" tal:condition="python:img_filename">
+		<a href="#" tal:omit-tag="python:(not attr_url) or url_error" tal:attributes="href url">
+			<img src="#" border="0" tal:attributes="src img_src_attr;title title;alt title" />
+		</a>
 	</div>
-
+	<div class="title" tal:condition="title">
+		<a tal:omit-tag="python:(not attr_url) or url_error" tal:attributes="href url" tal:content="title">TITLE</a>
+	</div>
+	<div class="text" tal:condition="text">
+		<span tal:replace="structure text">TEXT</span>
+		<span class="HREF_MORE" tal:condition="python:text and (url and not url_error)"
+			tal:content="structure python:here.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042 title=\042%s\042'%(url,title))">
+			MORE...
+		</span>
+	</div>
+</div>
 <!-- /pageelement_TeaserElement -->]]>
                   </item>
                   <item key="default"></item>
@@ -6674,19 +6665,12 @@ return zmscontext.attr('text')
               <item type="dictionary">
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- ZMSTeaserElement.standard_html -->
-
-<tal:block tal:define="global 
-		zmscontext options/zmscontext">
-	<div tal:condition="python:request.get('URL').find('/manage')>0" class="ZMSTeaserContainer">
-		<tal:block tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
-			The teaser-element
-		</tal:block>
-	</div>
-	<tal:block  tal:condition="not:python:request.get('URL').find('/manage')>0" tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
-		The teaser-element
-	</tal:block >
-</tal:block>
-
+<div class="ZMSTeaserContainer" 
+	tal:omit-tag="python:request.get('URL').find('/manage') < 0"
+	tal:define="zmscontext options/zmscontext"
+	tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
+	The teaser-element
+</div>
 <!-- /ZMSTeaserElement.standard_html -->]]>
                   </item>
                   <item key="default"></item>
@@ -6729,7 +6713,7 @@ return zmscontext.attr('text')
           <item key="id">ZMSTeaserElement</item>
           <item key="name">ZMSTeaserElement</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">3.1.2</item>
+          <item key="revision">4.0.0</item>
           <item key="type">ZMSTeaserElement</item>
         </dictionary>
       </item>

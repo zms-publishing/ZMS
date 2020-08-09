@@ -402,8 +402,11 @@ class ZMSZCatalogConnector(
           results.append((item.data_record_score_, result))
       
       # Sort search-results.
-      results.sort()
-      results.reverse()
+      try:
+        results.sort()
+        results.reverse()
+      except:
+          writeChangesLog(zcatalog, 'ZMSZCatalogConnector.search(): Sort-Error Line 406')
       
       # Append search-results.
       rtn.extend([x[1] for x in results])

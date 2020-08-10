@@ -297,7 +297,7 @@ class ZMSZCatalogConnector(
         xmlr += '<str name="msg">%s</str>'%standard.html_quote(msg)
         xmlr += '<int name="code">%i</int>'%status
         xmlr += '</lst>'
-      xml += str(xmlr)
+      xml += standard.pystr(xmlr)
       xml += '</response>'
       return xml
 
@@ -402,11 +402,8 @@ class ZMSZCatalogConnector(
           results.append((item.data_record_score_, result))
       
       # Sort search-results.
-      try:
-        results.sort()
-        results.reverse()
-      except:
-          writeChangesLog(zcatalog, 'ZMSZCatalogConnector.search(): Sort-Error Line 406')
+      results = sorted( results, key=lambda x: x[0])
+      results.reverse()
       
       # Append search-results.
       rtn.extend([x[1] for x in results])

@@ -1,5 +1,8 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 ################################################################################
-# ZMSZCatalogAdapter.py
+# _globals.py
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -15,7 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
-
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -52,19 +54,22 @@ def updateVersion(root):
 #  remove_tags:
 # ------------------------------------------------------------------------------
 def remove_tags(self, s):
-  s = str(s) \
-    .replace('&ndash;', '-') \
-    .replace('&middot;', '.') \
-    .replace('&nbsp;', ' ') \
-    .replace('&ldquo;', '') \
-    .replace('&sect;', '') \
-    .replace('&Auml;', '\xc2\x8e') \
-    .replace('&Ouml;', '\xc2\x99') \
-    .replace('&Uuml;', '\xc2\x9a') \
-    .replace('&auml;', '\xc2\x84') \
-    .replace('&ouml;', '\xc2\x94') \
-    .replace('&uuml;', '\xc2\x81') \
-    .replace('&szlig;', '\xc3\xa1')
+  d = {
+    '&ndash;':'-',
+    '&middot;': '.',
+    '&nbsp;': ' ',
+    '&ldquo;': '',
+    '&sect;': '',
+    '&Auml;': u'Ä',
+    '&Ouml;': u'Ö',
+    '&Uuml;': u'Ü',
+    '&auml;': u'ä',
+    '&ouml;': u'ö',
+    '&uuml;': u'ü',
+    '&szlig;': u'ß'}
+  s = standard.pystr(s)
+  for x in d:
+    s = s.replace(x,d[x])
   s = standard.re_sub('<script(.*?)>(.|\\n|\\r|\\t)*?</script>', ' ', s)
   s = standard.re_sub('<style(.*?)>(.|\\n|\\r|\\t)*?</style>', ' ', s)
   s = standard.re_sub('<[^>]*>', ' ', s)

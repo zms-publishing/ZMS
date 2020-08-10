@@ -91,7 +91,7 @@ class ZMSZCatalogSolrConnector(
       p['start'] = page_index
       p['rows'] = page_size
       p['defType'] = 'edismax'
-      p['qf'] = ' '.join(['%s^%s'%(self._get_field_name(x), str(attrs[x].get('boost', 1.0))) for x in attrs])
+      p['qf'] = ' '.join(['%s^%s'%(self._get_field_name(x), standard.pystr(attrs[x].get('boost', 1.0))) for x in attrs])
       p['hl'] = 'true'
       p['hl.fragsize']  = self.getConfProperty('solr.select.hl.fragsize', 200)
       p['hl.fl'] = self.getConfProperty('solr.select.hl.fl', ','.join([self._get_field_name(x) for x in attrs]))
@@ -132,7 +132,7 @@ class ZMSZCatalogSolrConnector(
     def __get_delete_xml(self, query='*:*', attrs={}):
       xml =  []
       xml.append('<?xml version="1.0"?>')
-      xml.append('<delete'+' '.join(['']+['%s="%s"'%(x, str(attrs[x])) for x in attrs])+'>')
+      xml.append('<delete'+' '.join(['']+['%s="%s"'%(x, standard.pystr(attrs[x])) for x in attrs])+'>')
       xml.append('<query>%s</query>'%query)
       xml.append('</delete>')
       return '\n'.join(xml)
@@ -163,7 +163,7 @@ class ZMSZCatalogSolrConnector(
       attrs = zcm.getAttrs()
       xml =  []
       xml.append('<?xml version="1.0"?>')
-      xml.append('<add'+' '.join(['']+['%s="%s"'%(x, str(xmlattrs[x])) for x in xmlattrs])+'>')
+      xml.append('<add'+' '.join(['']+['%s="%s"'%(x, standard.pystr(xmlattrs[x])) for x in xmlattrs])+'>')
       def cb(node, d):
         xml.append('<doc>')
         text = []

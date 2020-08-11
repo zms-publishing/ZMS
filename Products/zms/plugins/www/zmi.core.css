@@ -520,6 +520,9 @@ body.zmi.properties .alert.alert-success.zmi-dragged-info span.message {
 	line-height: 2.65rem;
 	border-top: 1px solid #c3e6cb;
 }
+div[draggable=true].btn:not(:disabled):not(.disabled) {
+	cursor: move;
+}
 @media (max-width: 767px) {
 	body.zmi.properties .alert.zmi-dragged-info {
 		width:calc(100% - 3rem);

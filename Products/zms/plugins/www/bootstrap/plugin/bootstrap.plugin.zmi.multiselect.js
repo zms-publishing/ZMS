@@ -78,6 +78,9 @@ ZMI.prototype.multiselect = function(context) {
 				forcePlaceholderSize: true,
 				placeholderClass: 'btn btn-light sortable-placeholder',
 			});
+			$(".zmi-select.zmi-sortable").bind('sortupdate', function() {
+				refreshContainer($container);
+			});
 		});
 	});
 }

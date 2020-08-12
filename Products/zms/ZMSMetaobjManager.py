@@ -1045,7 +1045,7 @@ class ZMSMetaobjManager(object):
           # Delete.
           # -------
           # Delete Object.
-          if key == 'obj' and btn == 'BTN_DELETE':
+          if btn == 'BTN_DELETE' and key == 'obj':
             if id:
               meta_ids = [id]
             else:
@@ -1063,7 +1063,7 @@ class ZMSMetaobjManager(object):
             id = ''
             message = self.getZMILangStr('MSG_DELETED')%len(meta_ids)
           # Delete Attribute.
-          elif key == 'attr' and btn == 'delete':
+          elif btn == 'BTN_DELETE' and key == 'attr':
             attr_id = REQUEST['attr_id']
             self.delMetaobjAttr( id, attr_id)
           

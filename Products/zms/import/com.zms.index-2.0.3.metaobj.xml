@@ -238,6 +238,7 @@ $(function() {
 								$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 							});
 							reset_progress()
+							$('#zmsindex .progress .progress-bar span').text('');
 						}
 					}
 					fn();

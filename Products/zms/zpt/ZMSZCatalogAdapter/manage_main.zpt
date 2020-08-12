@@ -315,7 +315,7 @@ function zmiReindexCatalog() {
 				var langs = $("#langs").val().join(';');
 				var data = {uid:uid,langs:langs};
 				var $a = $input.next("a");
-				$a.after('<'+'span class="response ml-2 p-1 zmi-code" style="white-space:wrap"> '+$ZMI.icon('icon-spinner')+' <'+'/span>');
+				$a.after(`<span class="response alert zmi-code"><i class="fas fa-spinner fa-spin"></i></span>`);
 				$.ajax({
 					url:"manage_reindex",
 					data:data,

@@ -75,30 +75,32 @@ function GetPagination(fn, size, pageSize, pageIndex) {
   if (size > pageSize) {
     var pageCount = Math.floor(((size-1)/pageSize)+1);
     html += ''
+      + '<nav aria-label="Page navigation">'
       + '<ul class="pagination">';
     html += ''
-      + '<li class="'+(pageIndex==0?"disabled":"")+'">'
-      + '<a href="'+(pageIndex==0?'javascript:;':fn(pageIndex-1))+'">'+$ZMI.icon('fa fa-chevron-left icon-chevron-left')+'</span></a>'
+      + '<li class="page-item '+(pageIndex==0?"disabled":"")+'">'
+      + '<a class="page-link" href="'+(pageIndex==0?'javascript:;':fn(pageIndex-1))+'">'+$ZMI.icon('fa fa-chevron-left icon-chevron-left')+'</span></a>'
       + '</li>';
     for (var page = 0; page < pageCount; page++) {
       if (pageCount>=10 && page==pageCount-1 && pageIndex<pageCount-(3+1)-1) {
-        html += '<li class="disabled"><span>...</span></li>';
+        html += '<li class="page-item disabled"><span>...</span></li>';
       }
       if (pageCount<10 || (page==0) || (page>=pageIndex-3 && page<=pageIndex+3) || (page==pageCount-1)) {
         html += ''
-          + '<li class="' + (pageIndex==page?"active":"") + '">'
-          + '<a href="'+(pageIndex==page?'javascript:;':fn(page))+'">'+(page+1)+'</a>'
+          + '<li class="page-item ' + (pageIndex==page?"active":"") + '">'
+          + '<a class="page-link" href="'+(pageIndex==page?'javascript:;':fn(page))+'">'+(page+1)+'</a>'
           + '</li>';
       }
       if (pageCount>=10 && page==0 && pageIndex>(3+1)) {
-        html += '<li class="disabled"><span>...</span></li>';
+        html += '<li class="page-item disabled"><span>...</span></li>';
       } 
     }
     html += ''
-      + '<li class="last' + (pageIndex==pageCount-1?" disabled":"") + '">'
-      + '<a href="'+(pageIndex==pageCount-1?'javascript:;':fn(pageIndex+1))+'">'+$ZMI.icon('fa fa-chevron-right icon-chevron-right')+'</a>'
+      + '<li class="page-item last' + (pageIndex==pageCount-1?" disabled":"") + '">'
+      + '<a  class="page-link" href="'+(pageIndex==pageCount-1?'javascript:;':fn(pageIndex+1))+'">'+$ZMI.icon('fa fa-chevron-right icon-chevron-right')+'</a>'
       + '</li>'
-      + '</ul><!-- .pagination -->';
+      + '</ul>'
+      + '</nav><!-- .pagination -->';
   }
   $(".pagination").replaceWith(html);
 }

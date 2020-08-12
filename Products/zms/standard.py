@@ -527,6 +527,55 @@ def getMimeTypeIconSrc(mt):
   return'/++resource++zms_/img/%s'%_mimetypes.dctMimeType.get( mt, _mimetypes.content_unknown)
 
 
+security.declarePublic('getFileTypeIconCSS')
+def getFileTypeIconCSS(fn):
+  """
+  Returns the FontAwesome CSS class of an icon representing the specified file type.
+  @param fn: filename with extension (e.g. picture.gif).
+  @type mt: C{str}
+  @rtype: C{str}
+  """
+  fontAwesomeIconClasses = {
+    # Media
+    'png': 'far fa-file-image',
+    'jpg': 'far fa-file-image',
+    'jpeg': 'far fa-file-image',
+    'gif': 'far fa-file-image',
+    'dcm': 'fas fa-file-medical',
+    'mp3': 'far fa-file-audio',
+    'mpg': 'far fa-file-video',
+    'mpeg': 'far fa-file-video',
+    'mp4': 'far fa-file-video',
+    # Documents
+    'pdf': 'far fa-file-pdf',
+    'pages': 'far fa-file-word',
+    'doc': 'far fa-file-word',
+    'docx': 'far fa-file-word',
+    'odt': 'far fa-file-word',
+    'xls': 'far fa-file-excel',
+    'numbers': 'far fa-file-excel',
+    'xlsx': 'far fa-file-excel',
+    'ods': 'far fa-file-excel',
+    'csv': 'fas fa-file-csv',
+    'ppt': 'far fa-file-powerpoint',
+    'pptx': 'far fa-file-powerpoint',
+    'key': 'far fa-file-powerpoint',
+    'odp': 'far fa-file-powerpoint',
+    'txt': 'far fa-file-alt',
+    'htm': 'far fa-file-code',
+    'html': 'far fa-file-code',
+    'json': 'far fa-file-code',
+    # Archives
+    'gzip': 'far fa-file-archive',
+    'zip': 'far fa-file-archive'
+  }
+  icon_class = 'far fa-file'
+  if fn != None:
+    fn_ext = fn.split('.')[-1]
+    icon_class = (fn_ext in fontAwesomeIconClasses.keys()) and fontAwesomeIconClasses[fn_ext] or icon_class
+  return icon_class
+
+
 security.declarePublic('unencode')
 def unencode( p, enc='utf-8'):
   """

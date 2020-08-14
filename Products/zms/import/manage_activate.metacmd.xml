@@ -23,7 +23,7 @@ return target,printed
       </item>
       <item key="description"/>
       <item key="execution" type="int">1</item>
-      <item key="icon_clazz"><![CDATA[icon-check-square-sign text-primary]]></item>
+      <item key="icon_clazz"><![CDATA[far fa-check-square]]></item>
       <item key="id"><![CDATA[manage_activate]]></item>
       <item key="meta_type"><![CDATA[Script (Python)]]></item>
       <item key="meta_types" type="list">
@@ -34,6 +34,7 @@ return target,printed
         </list>
       </item>
       <item key="name"><![CDATA[Activate]]></item>
+      <item key="revision">4.0.0</item>
       <item key="roles" type="list">
         <list>
           <item><![CDATA[ZMSAdministrator]]></item>
@@ -66,7 +67,7 @@ return target,printed
       </item>
       <item key="description"/>
       <item key="execution" type="int">1</item>
-      <item key="icon_clazz"><![CDATA[icon-ban-circle text-primary]]></item>
+      <item key="icon_clazz"><![CDATA[far fa-square]]></item>
       <item key="id"><![CDATA[manage_deactivate]]></item>
       <item key="meta_type"><![CDATA[Script (Python)]]></item>
       <item key="meta_types" type="list">
@@ -77,6 +78,7 @@ return target,printed
         </list>
       </item>
       <item key="name"><![CDATA[Deactivate]]></item>
+      <item key="revision">4.0.0</item>
       <item key="roles" type="list">
         <list>
           <item><![CDATA[ZMSAdministrator]]></item>

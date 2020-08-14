@@ -711,6 +711,8 @@ body.zmi .zmi-action .btn.split-left {
 	border: 1px solid rgba(0,0,0,0.1);
 	border-right:none
 }
+
+
 body.zmi .dropdown-menu {
 	font-size: inherit !important;
 	box-shadow: 0 6px 12px rgba(0,0,0,.175)
@@ -746,7 +748,14 @@ body.zmi .zmi-action.show .btn.split-right:before {
 body.zmi .zmi-action:hover .btn.split-right:before {
 	opacity:1;
 }
-
+body.zmi .right .zmi-action:hover .btn.dropdown-toggle > i:before,
+body.zmi .right .zmi-action.show .btn.dropdown-toggle > i:before {
+	content: "\f055" !important;
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+	opacity:.5;
+	transition:opacity 1s
+}
 .zmi-action .btn.split-right.dropdown-toggle {
 	border-color: rgba(0,0,0,0.1);
 	border-left: 1px rgba(0,0,0,0.05) solid;

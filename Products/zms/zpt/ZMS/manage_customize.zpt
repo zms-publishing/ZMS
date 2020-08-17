@@ -24,22 +24,23 @@
 				<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 				<input type="hidden" name="key" value="Manager" />
 				<tal:block tal:define="global meta_types python:[x for x in here.filtered_meta_types() if not x['product']=='zms' and x['name'].startswith('ZMS')] + [{'name':x,'action':x,} for x in ['Sequence', 'ZMSLog', 'ZMSZCatalogAdapter', 'ZMSFormatProvider', 'ZMSFormatProviderAcquired', 'ZMSMetacmdProvider', 'ZMSMetacmdProviderAcquired', 'ZMSWorkflowProvider', 'ZMSWorkflowProviderAcquired', 'ZMSRepositoryManager']]">
-				<div class="col-12 form-group">
+				<div class="col-12 form-group mb-4">
 					<label class="d-none" for="meta_type">ZMS base-components</label>
 					<div class="btn-group">
-						<select class="form-control form-control-sm" style="display:inline-block;width:auto;" id="meta_type" name="meta_type"
-							title="Add New ZMS base-components"
+						<select class="form-control form-control" id="meta_type" name="meta_type" title="Add New ZMS base-components"
 							onchange="if($(this).val().indexOf('manage_add')==0){self.location.href=$(this).val();}else if ($(this).val()!=''){document.getElementById('addMetaTypeBtn').click();}">
 							<option value="">Select type to add...</option>
 							<tal:block tal:repeat="meta_type meta_types"
-								><option tal:condition="python:len(here.objectValues(meta_type['name']))==0"	tal:attributes="value meta_type/action" tal:content="python:here.getZMILangStr(meta_type['name'])">name</option>
+								><option tal:condition="python:len(here.objectValues(meta_type['name']))==0"
+									tal:attributes="value meta_type/action" 
+									tal:content="python:here.getZMILangStr(meta_type['name'])">name</option>
 							</tal:block>
 						</select>
-						<button style="display:inline-block;" name="btn" type="submit" class="btn btn-secondary btn-sm" value="Add">Add</button>
+						<button name="btn" type="submit" class="btn btn-secondary btn" value="Add">Add</button>
 					</div>
 				</div><!-- .form-group -->
 				<tal:block tal:repeat="si python:here.objectValues(['MediaDb']+[x['name'] for x in meta_types])">
-				<div class="form-group col-sm-12">
+				<div class="form-group col-12 text-truncate">
 					<label>
 						<span class="btn btn-secondary">
 							<i tal:on-error="structure string:<i class='fas fa-ban' title='Icon Error'></i>"

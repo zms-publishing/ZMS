@@ -6,14 +6,17 @@ Products.PluggableAuthService
 Products.PluginRegistry
 Products.LDAPUserFolder
 -e git+ssh://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
+
 # SQL
 mysqlclient
 Products.ZMySQLDA
 Products.ZSQLMethods
+
 # LDAP
 python-ldap
 Products.LDAPMultiPlugins
 Products.LDAPUserFolder
+
 # TEXT
 beautifulsoup4
 lxml

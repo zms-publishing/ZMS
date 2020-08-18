@@ -1,0 +1,38 @@
+# ZMS Dependencies
+docutils
+configparser
+Zope[wsgi]
+Products.GenericSetup
+Products.MailHost
+Products.ExternalMethod
+Products.CMFCore
+Products.PythonScripts
+Products.SiteErrorLog
+Products.StandardCacheManagers
+Products.Sessions
+Products.TemporaryFolder
+
+zope.app.publication
+zope.authentication
+zope.untrustedpython
+zope.error
+ZopeUndo
+
+# PAS
+Products.PluggableAuthService
+Products.PluginRegistry
+Products.LDAPUserFolder
+-e git+https://github.com:sntl-projects/Products.zmsPluggableAuthService.git@master#egg=Products.zmsPluggableAuthService
+# SQL
+mysqlclient
+Products.ZMySQLDA
+Products.ZSQLMethods
+# LDAP
+python-ldap
+Products.LDAPMultiPlugins
+Products.LDAPUserFolder
+# TEXT
+beautifulsoup4
+lxml
+Markdown
+pyScss

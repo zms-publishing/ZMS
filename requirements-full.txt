@@ -4,7 +4,6 @@
 # PAS
 Products.PluggableAuthService
 Products.PluginRegistry
-Products.LDAPUserFolder
 -e git+ssh://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
 
 # SQL

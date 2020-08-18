@@ -5,7 +5,7 @@
 Products.PluggableAuthService
 Products.PluginRegistry
 Products.LDAPUserFolder
--e git+https://github.com:sntl-projects/Products.zmsPluggableAuthService.git@master#egg=Products.zmsPluggableAuthService
+-e git+ssh://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
 # SQL
 mysqlclient
 Products.ZMySQLDA

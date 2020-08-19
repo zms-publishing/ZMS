@@ -38,6 +38,6 @@
 
   </configure>
 
-  <!-- include file="$INSTANCE_HOME/etc/skins.zcml" / -->
+  <include files="$INSTANCE_HOME/etc/skins.zcml"/>
 
 </configure>

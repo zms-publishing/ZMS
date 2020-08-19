@@ -13,9 +13,7 @@
 <tal:block tal:content="structure python:'<script>'"></tal:block>
 
 function zmiStandardOnSubmitEventHandler(fm) {
-	$ZMI.writeDebug("[zmiStandardOnSubmitEventHandler]");
 	for (var id in tinyMCE.editors) {
-		$ZMI.writeDebug("[zmiStandardOnSubmitEventHandler]: id="+id);
 		tinyMCE.editors[id].save();
 	}
 }
@@ -38,7 +36,6 @@ function zmiRichtextOnSubmitEventHandler(fm) {
 }
 
 function zmiRichtextInit(id) {
-	$ZMI.writeDebug("[zmiRichtextInit]: id="+id);
 	$("textarea#editor_"+id).val($("textarea#"+id).val());
 	tinymce.init({
 		selector: "textarea#editor_"+id,

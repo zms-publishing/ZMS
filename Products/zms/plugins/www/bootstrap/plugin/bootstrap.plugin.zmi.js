@@ -1,6 +1,6 @@
 // Ensure all pages that load this js know that they are waiting for it to finish loading
 var zmi_body = document.body;
-zmi_body.classList.add("loading")
+zmi_body.classList.add("loading");
 
 $(function(){
 
@@ -77,7 +77,6 @@ $(function(){
   var $change_dt = $(".zmi-change-dt,.zmi-created-dt");
   if ($change_dt.length > 0) {
     var fn = function() {
-        $ZMI.writeDebug("change_dt");
         $change_dt.each(function() {
           var $el = $(this);
           var mydate = $el.attr("title");
@@ -103,7 +102,6 @@ $(function(){
             now = new Date();
             var secondsBetween = (now.valueOf()-date.valueOf())/(1000);
             var minutesBetween = secondsBetween/(60);
-            $ZMI.writeDebug("change_dt: mydate="+mydate+"; now="+now+"; dm="+minutesBetween+"; ds="+secondsBetween);
             $(this).text(getZMILangStr('TODAY')+" "+(minutesBetween<60?Math.floor(minutesBetween)+" min. ":df['%H']+':'+df['%M']));
           }
           else if (daysBetween<2) {
@@ -683,7 +681,6 @@ ZMI.prototype.initInputFields = function(container) {
 			});
 	$('form:not(.form-initialized)',container)
 		.submit(function() {
-				$ZMI.writeDebug("form:not(.form-initialized): submit");
 				var b = true;
 				var context = this;
 				// Button
@@ -714,7 +711,6 @@ ZMI.prototype.initInputFields = function(container) {
 						var $controlGroup = $label.parents(".form-group");
 						var $controls = $("div:first",$controlGroup);
 						var $control = $('input[name='+forName+'],select:not([name^="zms_mms_src_"])',$controls);
-						$ZMI.writeDebug('submit: '+forName+'('+labelText+') mandatory? ['+$control.length+']');
 						$label.attr("title","");
 						$control.attr("title","");
 						if ($control.length==1) {
@@ -729,10 +725,8 @@ ZMI.prototype.initInputFields = function(container) {
 								if (isBlank && nodeType=="file") {
 									var name = $control.attr("name");
 									var exists = $('input[name="exists_'+forName+'"]:hidden',$controlGroup).val();
-									$ZMI.writeDebug('submit: exists_'+forName+'='+exists);
 									isBlank = !(exists=='True');
 									var generate_preview = $('input[name="generate_preview_'+forName.replace(/_/,'hires_')+':int"]:checked',context).val();
-									$ZMI.writeDebug('submit: generate_preview_'+forName.replace(/_/,'hires_')+':int='+generate_preview);
 									isBlank &= !(generate_preview=='1');
 								}
 							}
@@ -941,7 +935,6 @@ ZMI.prototype.initInputFields = function(container) {
 			$('.form-autocomplete:not(.d-none)',context).each(function() {
 					$(this).addClass("ui-autocomplete-input");
 					var id = $(this).attr('id');
-					$ZMI.writeDebug('autocomplete:'+id);
 					var ajax_url = $(this).attr('data-ajax-url');
 					var obj_id = $(this).attr('data-obj-id');
 					var attr_id = $(this).attr('data-attr-id');
@@ -986,7 +979,6 @@ ZMI.prototype.initInputFields = function(container) {
 					});
 				}
 			// Button-Clicked
-			$ZMI.writeDebug("zmiInitInputFields: submit["+$('input[type="submit"],button[type="submit"]',context).length+"]");
 			$('input[type="submit"],button[type="submit"]',context)
 				.click(function() {
 						self.btnClicked = $(this).attr("value");
@@ -1202,7 +1194,6 @@ function zmiModal(s, opt) {
 	$ZMI.setCursorWait("zmiModal");
 	if (typeof opt == "undefined") {
 		var id = zmiModalStack[zmiModalStack.length-1];
-		$ZMI.writeDebug("zmiModal:"+s+"(id="+id+")");
 		$('#'+id).modal(s);
 	}
 	else if (typeof opt == "object") {
@@ -1213,7 +1204,6 @@ function zmiModal(s, opt) {
 		}
 		if (typeof id!="undefined" && typeof body!="undefined") {
 			zmiModalStack.push(id);
-			$ZMI.writeDebug("zmiModal:init(id="+id+")");
 			var html = ''
 				+'<div class="modal" id="'+id+'" tabindex="-1" role="dialog">'
 					+'<div class="modal-dialog" role="document">'
@@ -1226,7 +1216,6 @@ function zmiModal(s, opt) {
 								+'</div>'
 							+'<div class="modal-body">'+body+'</div>'
 							+'<div class="modal-footer">'
-							//+'<button type="button" class="btn btn-secondary" data-dismiss="modal">'+getZMILangStr('BTN_CLOSE')+'</button>'
 							+'</div>'
 						+'</div><!-- /.modal-content -->'
 					+'</div><!-- /.modal-dialog -->'
@@ -1252,13 +1241,11 @@ function zmiModal(s, opt) {
 			}
 			$('#'+id)
 				.on('show.bs.modal',function(){
-						$ZMI.writeDebug("zmiModal:show(id="+zmiModalStack[zmiModalStack.length-1]+")");
 						if (typeof opt['beforeOpen'] == 'function') {
 							opt['beforeOpen'](this);
 						}
 					})
 				.on('shown.bs.modal',function(){
-						$ZMI.writeDebug("zmiModal:shown(id="+zmiModalStack[zmiModalStack.length-1]+")");
 						if (typeof opt["width"] != "undefined") {
 							$("#"+id+" .modal-dialog").css({width:opt["width"]});
 						}
@@ -1268,13 +1255,11 @@ function zmiModal(s, opt) {
 						$ZMI.initInputFields($("#"+id));
 					})
 				.on('hide.bs.modal',function(){
-						$ZMI.writeDebug("zmiModal:hide(id="+zmiModalStack[zmiModalStack.length-1]+")");
 						if (typeof opt['beforeClose'] == 'function') {
 							opt['beforeClose'](this);
 						}
 					})
 				.on('hidden.bs.modal',function(){
-						$ZMI.writeDebug("zmiModal:hidden(id="+zmiModalStack[zmiModalStack.length-1]+")");
 						if (typeof opt['close'] == 'function') {
 							opt['close'](this);
 						}
@@ -1299,15 +1284,10 @@ ZMI.prototype.iframe = function(href, data, opt) {
 	$ZMI.setCursorWait("$ZMI.iframe");
 	data = typeof data == "undefined" ? {} : data;
 	opt = typeof opt == "undefined" ? {} : opt;
-	// Debug
-	if ( typeof zmiParams["zmi-debug"] != "undefined") {
-		data["zmi-debug"] = zmiParams["zmi-debug"];
-	}
 	var url = href + "?";
 	for (var k in data) {
 		url += k + "=" + data[k] + "&";
 	}
-	$ZMI.writeDebug("$ZMI.iframe:url="+url);
 	// Iframe
 	if (typeof opt['iframe'] != 'undefined') {
 		var width = '100%';
@@ -1318,7 +1298,6 @@ ZMI.prototype.iframe = function(href, data, opt) {
 	}
 	else {
 		$.get( href, data, function(result) {
-				$ZMI.writeDebug("$ZMI.iframe:result="+result);
 				var $result = $(result);
 				if ($("div#system_msg",$result).length>0) {
 					var manage_tabs_message = $("div#system_msg",$result).text();
@@ -1654,9 +1633,8 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		var actions = value['actions'];
 		$(el).append('<div class="dropdown-menu"></div>');
 		$ul = $(".dropdown-menu",el);
-		$ZMI.writeDebug("[ZMIActionList.over]: "+actions[1][0]);
 		var startsWithSubmenu = actions.length > 1 && actions[1][0].indexOf("-----") == 0 && actions[1][0].lastIndexOf("-----") > 0;
-		$ZMI.writeDebug("[ZMIActionList.over]: startsWithSubmenu="+startsWithSubmenu);
+		console.log("[ZMIActionList.over]: startsWithSubmenu="+startsWithSubmenu);
 		var o = 0;
 		if (startsWithSubmenu) {
 			o = 2;
@@ -1925,9 +1903,6 @@ function zmiBrowseObjs(fmName, elName, lang) {
 	if ( typeof selectedText == "string") {
 		href += '&selectedText=' + escape( selectedText);
 	}
-	if ( typeof zmiParams["zmi-debug"] != "undefined") {
-		href += '&zmi-debug='+zmiParams["zmi-debug"];
-	}
 	zmiModal(null,{
 			body: '<iframe src="'+href+'" style="width:100%; min-width:'+$ZMI.getConfProperty('zmiBrowseObjs.minWidth',200)+'px; height:100%; min-height: '+$ZMI.getConfProperty('zmiBrowseObjs.minHeight',320)+'px; border:0;"></iframe>',
 			title: title
@@ -1958,7 +1933,6 @@ function zmiDialogClose() {
  * @see http://stackoverflow.com/questions/1981088/set-textarea-selection-in-internet-explorer
  */
 function setInputSelection(e, selection){
-	$ZMI.writeDebug("[setInputSelection]: "+selection.start+"-"+selection.end);
 	e.focus();
 	if(e.setSelectionRange) {
 		e.setSelectionRange(selection.start, selection.end);
@@ -2007,7 +1981,6 @@ function getInputSelection(el) {
 			}
 		}
 	}
-	$ZMI.writeDebug("[getInputSelection]: "+start+"-"+end);
 	return {
 		start: start,
 		end: end
@@ -2033,10 +2006,6 @@ function untagSelected(tag, leftDelimiter, rightDelimiter) {
 	var endRe = new RegExp(leftDelimiter + "/" + tag + rightDelimiter, "gi");
 	var preMatch = pre.match(startRe);
 	var postMatch = post.match(endRe);
-	$ZMI.writeDebug("[untagSelected]: pre='"+pre+"'");
-	$ZMI.writeDebug("[untagSelected]: post='"+post+"'");
-	$ZMI.writeDebug("[untagSelected]: startRe='"+preMatch+"' "+startRe);
-	$ZMI.writeDebug("[untagSelected]: endRe='"+postMatch+"' "+endRe);
 	if (preMatch!=null && postMatch!=null) {
     	var preMatch = preMatch[preMatch.length-1];
     	var postMatch = postMatch[0];
@@ -2065,8 +2034,6 @@ function tagSelected(tag, leftDelimiter, rightDelimiter) {
 	}
 	var tagName = tag.indexOf(" ")>0?tag.substr(0,tag.indexOf(" ")):tag;
 	var tagAttrs = tag.indexOf(" ")>0?tag.substr(tag.indexOf(" ")):"";
-	$ZMI.writeDebug("[tagSelected]: tagName='"+tagName+"'");
-	$ZMI.writeDebug("[tagSelected]: tagAttrs='"+tagAttrs+"'");
 	if (tagName == 'a' && tagAttrs == '') {
 		if (range.indexOf("@") > 0) {
 			tagAttrs = ' href="mailto:'+range+'"';
@@ -2082,10 +2049,6 @@ function tagSelected(tag, leftDelimiter, rightDelimiter) {
 		var startTag = leftDelimiter + tagName + tagAttrs + rightDelimiter;
 		var endTag = leftDelimiter + "/" + tagName + rightDelimiter;
 		var newRange = startTag + range + endTag; 
-		$ZMI.writeDebug("[tagSelected]: pre='"+pre+"'");
-		$ZMI.writeDebug("[tagSelected]: range='"+range+"'");
-		$ZMI.writeDebug("[tagSelected]: post='"+post+"'");
-		$ZMI.writeDebug("[tagSelected]: newRange='"+newRange+"'");
 		$(selectedInput).val(pre+newRange+post);
 		// Set selection.
 		var offset = startTag.length;
@@ -2097,7 +2060,6 @@ function tagSelected(tag, leftDelimiter, rightDelimiter) {
 }
 
 function formatSelected(tag, leftDelimiter, rightDelimiter) {
-	$ZMI.writeDebug("[formatSelected]: tag="+leftDelimiter+tag+rightDelimiter);
 	if (!untagSelected(tag, leftDelimiter, rightDelimiter)) {
 		tagSelected(tag, leftDelimiter, rightDelimiter);
 	}
@@ -2202,7 +2164,6 @@ $(function() {
 		}
 	};
 	var reAdjust = function(){
-		console.log("wrapper.outerWidth()="+$('.wrapper').outerWidth()+"<"+ widthOfList());
 		if (($('.wrapper').outerWidth()) < widthOfList()) {
 			$('.scroller-right').show();
 		}
@@ -2210,7 +2171,6 @@ $(function() {
 			$('.scroller-right').hide();
 		}
 		
-		console.log("getLeftPosi()="+getLeftPosi());
 		if (getLeftPosi()<0) {
 			$('.scroller-left').show();
 		}
@@ -2220,7 +2180,6 @@ $(function() {
 		}
 	}
 	$('.scroller-right').click(function() {
-		console.log("widthOfHidden()="+widthOfHidden());
 		$('.scroller-left').fadeIn('slow');
 		$('.scroller-right').fadeOut('slow');
 		$('.wrapper .nav.nav-tabs').animate({left:"+="+widthOfHidden()+"px"},'slow',function(){ });

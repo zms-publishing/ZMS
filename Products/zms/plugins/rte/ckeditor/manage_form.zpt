@@ -65,7 +65,6 @@ var CKEDITOR_BASEPATH = '/++resource++zms_/ckeditor/';
 var CKEDITOR_LOADED = {};
 
 function pluginCkeditor(s, c) {
-  $ZMI.writeDebug("[pluginCkeditor]: s="+s);
   $.plugin('ckeditor',{
       cache: false,
       files: ['/++resource++zms_/ckeditor/ckeditor.js']
@@ -74,7 +73,6 @@ function pluginCkeditor(s, c) {
 }
 
 function loadCkeditor(id, opt) {
-  $ZMI.writeDebug("[loadCkeditor]: id="+id);
   var instance = CKEDITOR.instances[id];
   if(instance){
     CKEDITOR.remove(instance);
@@ -84,11 +82,9 @@ function loadCkeditor(id, opt) {
 }
 
 function zmiRichtextResize(id) {
-  $ZMI.writeDebug("[zmiRichtextResize]: id="+id);
   var instance = CKEDITOR.instances['editor_'+id];
   if(instance){
     var newHeight = $("div#zmiRichtextEditor"+id).height()-100;
-    $ZMI.writeDebug("ckeditor.manage_form.zmiRichtextResize(): "+newHeight+"["+$(".cke_contents").length+"]");
     $(".cke_contents").css("height",newHeight);
     // Ticket #132: hide image-button
     $('.cke_button__image').hide();
@@ -96,16 +92,11 @@ function zmiRichtextResize(id) {
 }
 
 function zmiRichtextInit(id) {
-  $ZMI.writeDebug("[zmiRichtextInit]: id="+id);
-
   pluginCkeditor('#editor_'+id,function() {
-    $ZMI.writeDebug("[zmiRichtextInit]: plugin loaded");
-
     $('#editor_'+id).parents("form").submit(function() {
         zmiRichtextOnSubmitEventHandler();
         return true;
       });
-
     ZMI.prototype.CKEDITOR_editorConfig = function( config ) {
         var language = {'eng':'en','fra':'fr','ger':'de','ita':'it','ned':'nl'};
         config.height = $ZMI.getConfProperty('plugin.rte.ckeditor.Height',400);
@@ -195,7 +186,6 @@ function zmiRichtextInit(id) {
 }
 
 function zmiRichtextSyncDataToView(id) {
-  $ZMI.writeDebug("[zmiRichtextSyncDataToView]: id="+id);
   $( '#editor_'+id).val( $('#'+id).val());
   $( '#editor_'+id).prop('defaultValue',$( '#editor_'+id).val());
   var data = $('#'+id).val();

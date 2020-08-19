@@ -13,7 +13,7 @@ function zmiRefresh() {
 		href = window.parent.manage_main.$ZMI.getPhysicalPath();
 	}
 	catch(e) {
-		$ZMI.writeDebug('zmiRefresh: cannot get physical-path from parent - ' + e);
+		console.log('zmiRefresh: cannot get physical-path from parent - ' + e);
 	}
 	$ZMI.objectTree.init(".zmi-sitemap",href,{params:{meta_types:$ZMI.getConfProperty('zms.plugins.www.object.manage_menu.meta_types','0,1,ZMSTrashcan')}});
 }

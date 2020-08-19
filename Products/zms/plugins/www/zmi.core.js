@@ -59,14 +59,10 @@ $(function(){
 		}
 	}
 	zmiParams['base_url'] = base_url;
-	if (typeof zmiParams['zmi-debug'] != "undefined") {
-		$ZMI.toggleDebug(true);
-	}
 
 	$ZMI.setCursorWait("BO zmi.extensions");
 
 	// Execute registered onReady-callbacks.
-	$ZMI.writeDebug("zmi.extensions: Execute registered onReady-callbacks.");
 	$ZMI.runReady();
 
 	// Content-Editable ////////////////////////////////////////////////////////
@@ -162,30 +158,6 @@ ZMI.prototype.icon_selector = function(name) {
 }
 
 /**
- * Debug
- */
-ZMI.prototype.toggleDebug = function(b) {
-	var $div = $("div#zmi-debug");
-	if ($div.length==0) {
-		$("body").append('<div id="zmi-debug"></div>');
-		$div = $("div#zmi-debug");
-	}
-	if (b) {
-		$div.css("display","block");
-	}
-	else {
-		$div.css("display","none");
-	}
-};
-ZMI.prototype.writeDebug = function(s) {
-	var $div = $("div#zmi-debug");
-	if ($div.css("display")!="none") {
-		var d = new Date();
-		$div.html("<code>["+(d)+'...'+(d.getMilliseconds())+"] "+s.replace(/</gi,'&lt;')+'</code><br/>'+$div.html());
-	}
-};
-
-/**
  *  Wait cursor.
  */
 var zmiCursor = [];
@@ -194,11 +166,9 @@ ZMI.prototype.setCursorWait = function(s) {
 		$("body").css("cursor","wait");
 	}
 	zmiCursor.push(s);
-	this.writeDebug(">>>> " + zmiCursor.join(" > "));
 }
 
 ZMI.prototype.setCursorAuto = function() {
-	this.writeDebug("<<<< " + zmiCursor.join(" > "));
 	zmiCursor.pop();
 	if (zmiCursor.length == 0) {
 		$("body").css("cursor","auto");
@@ -290,7 +260,6 @@ ZMI.prototype.getReqProperty = function(key, defaultValue) {
 		datatype: 'text',
 		async: false
 		}).responseText;
-	this.writeDebug(url+'/getReqProperty('+key+','+defaultValue+'): '+r);
 	return r;
 }
 
@@ -325,7 +294,6 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 			datatype: 'text',
 			async: false
 			}).responseText;
-		this.writeDebug(url+'/getConfProperty('+key+','+defaultValue+'): '+r);
 		this.setCachedValue(key,r);
 	}
 	return r;
@@ -347,7 +315,6 @@ ZMI.prototype.getConfProperties = function(prefix) {
 			datatype: 'text',
 			async: false
 			}).responseText;
-		this.writeDebug(url+'/getConfProperties('+prefix+'): '+r);
 		this.setCachedValue(prefix,r);
 	}
 	return eval("("+r+")");
@@ -368,7 +335,6 @@ ZMI.prototype.display_icon = function(meta_type) {
 		} else {
 			url='';
 		}
-		this.writeDebug(url+'/display_icon');
 		v = $.ajax({
 			url: url+'/display_icon',
 			data: data,

@@ -8,7 +8,7 @@ function zmiSelectObject(sender) {
 	uid = uid.substr(0,uid.lastIndexOf('}'))+(typeof selectedLang=='undefined' || selectedLang==''?'':';lang='+selectedLang)+"}";
 	var href = $(sender).attr('href');
 	var titlealt = $(sender).attr('data-page-titlealt');
-	$ZMI.writeDebug('zmiSelectObject: uid='+uid+'\nhref='+href+'\ntitlealt='+titlealt);
+	console.log('zmiSelectObject: uid='+uid+'\nhref='+href+'\ntitlealt='+titlealt);
 	var fm;
 	var fmName = zmiParams['fmName']; 
 	var elName = zmiParams['elName']; 
@@ -29,7 +29,7 @@ function zmiSelectObject(sender) {
  */
 function selectUrl(href) {
 	var titlealt = '';
-	$ZMI.writeDebug('selectUrl: href='+href+'\ntitlealt='+titlealt);
+	console.log('selectUrl: href='+href+'\ntitlealt='+titlealt);
 	var fm;
 	var fmName = zmiParams['fmName']; 
 	var elName = zmiParams['elName']; 

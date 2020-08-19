@@ -64,10 +64,10 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 			title:getZMILangStr('ATTR_IMAGE')+': '+getZMILangStr('BTN_EDIT'),
 			width:800,
 			open:function() {
-					$ZMI.writeDebug("BO open");
+					console.log("BO open");
 					$.get('getTempBlobjPropertyUrl',ZMSGraphic_params,
 						function(data) {
-							$ZMI.writeDebug("BO getTempBlobjPropertyUrl");
+							console.log("BO getTempBlobjPropertyUrl");
 							var result = eval('('+data+')');
 							ZMSGraphic_act_width = result['width'];
 							ZMSGraphic_act_height = result['height'];
@@ -136,7 +136,7 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 							ZMSGraphic_extEdit_initialize();
 							$ZMI.setCursorAuto("ZMSGraphic_extEdit_action");
 					});
-					$ZMI.writeDebug("EO open");
+					console.log("EO open");
 				},
 				beforeClose:function() {
 					$('div#ZMSGraphic_extEdit_image').html('');
@@ -193,7 +193,7 @@ function ZMSGraphic_extEdit_set(elName, src, filename, width, height, elParams, 
  * Apply changes.
  */
 function ZMSGraphic_extEdit_apply() {
-	$ZMI.writeDebug("ZMSGraphic_extEdit_apply:"+ZMSGraphic_action);
+	console.log("ZMSGraphic_extEdit_apply:"+ZMSGraphic_action);
 	// Preview
 	if (ZMSGraphic_action == 'preview') {
 		var params = {'action':ZMSGraphic_action};
@@ -222,7 +222,7 @@ function ZMSGraphic_extEdit_apply() {
 		if ( w != w_orig || h != h_orig) {
 			ZMSGraphic_action = 'resize,crop';
 		}
-		$ZMI.writeDebug('ZMSGraphic_extEdit_apply: action='+ZMSGraphic_action+';width='+w+';height='+h+';v='+v+';x0='+Math.round(v*c.x)+';y0='+Math.round(v*c.y)+';x1='+Math.round(v*c.x2)+';y2='+Math.round(v*c.y2));
+		console.log('ZMSGraphic_extEdit_apply: action='+ZMSGraphic_action+';width='+w+';height='+h+';v='+v+';x0='+Math.round(v*c.x)+';y0='+Math.round(v*c.y)+';x1='+Math.round(v*c.x2)+';y2='+Math.round(v*c.y2));
 		var params = {'action':ZMSGraphic_action,'width:int':w,'height:int':h,'x0:int':Math.round(v*c.x),'y0:int':Math.round(v*c.y),'x1:int':Math.round(v*c.x2),'y2:int':Math.round(v*c.y2)};
 		for (var i in ZMSGraphic_params) {
 			params[i] = ZMSGraphic_params[i];

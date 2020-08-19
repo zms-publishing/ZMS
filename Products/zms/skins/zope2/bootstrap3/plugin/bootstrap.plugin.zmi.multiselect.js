@@ -5,9 +5,9 @@ ZMI.prototype.multiselect = function(context) {
 					$("option",$select).prop("selected","");
 					$container.children().each(function() {
 						var data_value = $(this).attr("data-value");
-						$ZMI.writeDebug("refreshContainer: data-value="+data_value);
+						console.log("refreshContainer: data-value="+data_value);
 						var val = ($container.hasClass("zmi-sortable")?c+":":"")+data_value;
-						$ZMI.writeDebug("refreshContainer: val="+val);
+						console.log("refreshContainer: val="+val);
 						$("option[data-value='"+data_value+"']",$select).prop({selected:"selected",value:val});
 						c++;
 					});

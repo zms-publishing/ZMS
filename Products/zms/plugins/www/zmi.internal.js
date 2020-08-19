@@ -103,8 +103,6 @@ ZMI.prototype.relativateUrl = function(url,anchor,page_abs_url) {
 	}
 	var currntPath = page_abs_url.substr(page_server_url.length);
 	var targetPath = url.substr(server_url.length);
-	$ZMI.writeDebug("currntPath="+currntPath);
-	$ZMI.writeDebug("targetPath="+targetPath);
 	while ( currntPath.length > 0 && targetPath.length > 0) {
 		var i = currntPath.indexOf( '/');
 		var j = targetPath.indexOf( '/');
@@ -180,4 +178,4 @@ ZMI.prototype.relativateUrls = function(html,page_abs_url) {
 		html = v;
 	}
 	return html;
-}
+};

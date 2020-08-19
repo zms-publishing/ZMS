@@ -41,7 +41,6 @@ function add_zmslightbox(hiurl) {
 				center_zmslightbox($('#zmslightbox-wrapper img'));
 				zlb_shift_x = (zlb_cur_xpos * zlb_img_scale)-zlb_ww/2;
 				zlb_shift_y = (zlb_cur_ypos * zlb_img_scale)-zlb_wh/2;
-				// console.log('COORDS: izlb_mg_scale=' + zlb_img_scale + ' zlb_shift_x=' + zlb_shift_x + ' zlb_shift_y=' + zlb_shift_y);
 				$(window).scrollLeft(zlb_shift_x);
 				$(window).scrollTop(zlb_shift_y);
 			} else {
@@ -75,7 +74,6 @@ function center_zmslightbox(imgobj) {
 	zlb_cy = zlb_wt + zlb_wh/2;
 	zlb_iw = imgobj.width();
 	zlb_ih = imgobj.height();
-	// console.log('imgobj.height: ' + ih);
 	if ( zlb_wh > $('body').height() ) {
 		$('#zmslightbox-bg').css('height', zlb_wh+'px');
 	} else {

@@ -623,7 +623,6 @@ $(function(){
  function set_zmi_code_default(event) {
 	var confirmed = confirm("The Experimental Generator for Default-ZPT-Code asks:\nReally Reset to Default-Code?");
 	if (!confirmed == true) {
-		console.log('INFO: Function get_zmi_code_default() not executed.');
 		return false;
 	}
 	var $target = $('textarea.zpt',event.srcElement.parentNode);
@@ -653,8 +652,6 @@ $(function(){
 			meta_model[meta_id] = { 'meta_type':meta_type,'meta_repetitive':meta_repetitive };
 		}
 	});
-
-	console.log( 'meta_model = ' + JSON.stringify(meta_model) );
 
 	function shorten_id(str) {
 		// Remove namespace ornaments from meta_id name

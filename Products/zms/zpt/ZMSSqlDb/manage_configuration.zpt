@@ -57,7 +57,6 @@ function zmiFormSubmit(sender,d) {
 	var $fm = $(sender).closest("form");
 	var html = '';
 	for (var i in d) {
-		$ZMI.writeDebug(i);
 		$('input[name="' + i + '"]',$fm).remove();
 		html += '<input type="hidden" name="' + i + '" value="' + d[i] +'"/>';
 	}
@@ -79,7 +78,6 @@ function zmiChangeTablename(sender, names) {
 			var column = $(columns[j]).text().trim();
 			lookup.push(column);
 		}
-		$ZMI.writeDebug('[zmiChangeTablename]: lookup='+lookup.join(','));
 		for (var i = 0; i < names.length; i++) {
 			var name = names[i];
 			var $input = $('*[name='+name+']');

@@ -328,13 +328,11 @@ function zmiMultimultiselect(id) {
  * callback for zmi_lazy_select_form.
  */
 function zmiLazySelect(id, option) {
-	$ZMI.writeDebug("zmiLazySelect: id="+id+";option="+option);
 	if ($("#"+id).hasClass("lazy")) {
 		$("#"+id).val(option["value"]);
 		$("#label_"+id).val(option["label"]);
 	}
 	else {
-		$ZMI.writeDebug("zmiLazySelect: appendToMultiselect");
 		$ZMI.appendToMultiselect(id, option);
 	}
 }

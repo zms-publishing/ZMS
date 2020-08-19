@@ -25,9 +25,10 @@ ZMI.prototype.parseURLParams = function(url) {
 	return qd;
 }
 
-var zmiParams = {};
-$(function(){
+var zmiParams;
+$ZMI.registerReady(function(){
 	// Parse params (?) and pseudo-params (#).
+	zmiParams = {};
 	var href = self.location.href;
 	var base_url = href;
 	var delimiter_list = ['?','#'];
@@ -60,59 +61,6 @@ $(function(){
 	}
 	zmiParams['base_url'] = base_url;
 
-	$ZMI.setCursorWait("BO zmi.extensions");
-
-	// Execute registered onReady-callbacks.
-	$ZMI.runReady();
-
-	// Content-Editable ////////////////////////////////////////////////////////
-	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
-		$('.zmi-selectable .center')
-			.mouseover( function(evt) {
-					$(this).addClass('zmi-highlight'); 
-				})
-			.mouseout( function(evt) {
-					$(this).removeClass('zmi-highlight'); 
-				})
-			.click( function(evt) {
-				evt.stopPropagation();
-				if (evt.target != "undefined" && $.inArray(evt.target.nodeName.toLowerCase(),['a','button','input','select','textarea']) > -1) {
-					return;
-				}
-				var href = $(this).find(':first-child').attr("data-absolute-url");
-				var lang = getZMILang();
-				if (self.location.href.indexOf(href+'/manage_main')>=0) {
-					href += '/manage_properties';
-				}
-				else {
-					href += '/manage_main';
-				}
-				if (self.location.href.indexOf('/manage_translate')>0) {
-					href += '_iframe';
-					href += '?lang='+lang;
-					href += '&ZMS_NO_BODY=1';
-					$ZMI.iframe(href,{},{});
-				}
-				else if (self.location.href.indexOf('/manage')>0) {
-					href += '?lang='+lang;
-					self.location.href = href;
-				}
-				else {
-					href += '_iframe';
-					href += '?lang='+lang;
-					showFancybox({
-						'autoDimensions':false,
-						'hideOnOverlayClick':false,
-						'href':href,
-						'transitionIn':'fade',
-						'transitionOut':'fade',
-						'type':'iframe',
-						'width':819
-					});
-				}
-			})
-		.attr( "title", "Click to edit!");
-	}
 	// ZMS plugins
 	if (typeof zmiParams['ZMS_HIGHLIGHT'] != 'undefined' && typeof zmiParams[zmiParams['ZMS_HIGHLIGHT']] != 'undefined') {
 		$.plugin('zmi_highlight',{
@@ -120,7 +68,6 @@ $(function(){
 			});
 		$.plugin('zmi_highlight').get('body',function(){});
 	}
-	$ZMI.setCursorAuto("EO zmi.extensions");
 });
 
 /**
@@ -166,6 +113,8 @@ ZMI.prototype.setCursorWait = function(s) {
 		$("body").css("cursor","wait");
 	}
 	zmiCursor.push(s);
+	console.log("setCursorWait[" + zmiCursor.length + "]: " + s);
+
 }
 
 ZMI.prototype.setCursorAuto = function() {

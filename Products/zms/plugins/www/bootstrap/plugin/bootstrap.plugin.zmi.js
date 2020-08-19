@@ -1,8 +1,4 @@
-// Ensure all pages that load this js know that they are waiting for it to finish loading
-var zmi_body = document.body;
-zmi_body.classList.add("loading");
-
-$(function(){
+$ZMI.registerReady(function(){
 
 	$ZMI.setCursorWait("BO bootstrap.plugin.zmi");
 
@@ -585,18 +581,6 @@ $(function(){
 				});
 		});
 
-	// Setup signaling, so js and / or AC tests know when the page has finished loading
-	// not perfect, as this guesses, but at least it waits for all ajax requests to finish
-	$(document).ready(function() { /* we want to run after all known document.ready handlers */
-		if ($.active !== 0) { /* if there are ajax requests currently running. Will change to $.ajax.active sometime in the future */
-			$(document).ajaxStop(function() { /* when all ajax requests are done */
-				$("body").removeClass("loading").addClass("loaded");
-			})
-		} else { /* if there are no known ajax requests */
-			$("body").removeClass("loading").addClass("loaded");
-		}
-	});
-	
 	$ZMI.setCursorAuto("EO bootstrap.plugin.zmi");
 
 });
@@ -2142,7 +2126,7 @@ function zmiRecordSetDuplicateRow(context, qIndex) {
 // ############################################################################
 // ### HORIZONTAL SCROLLING MAIN NAVIGATION FOR SMALL SCREENS
 // ############################################################################
-$(function() {
+$ZMI.registerReady(function(){
 	var hidWidth;
 	var scrollBarWidths = 40;
 	var widthOfList = function(){
@@ -2197,7 +2181,7 @@ $(function() {
 // ############################################################################
 // ### BACK-TO-TOP-SCROLL BUTTON
 // ############################################################################
-$(function() {
+$ZMI.registerReady(function(){
 	// Reference: https://getflywheel.com/layout/sticky-back-to-top-button-tutorial/
 	const scrollToTopButton = document.getElementById('js-top');
 	if ( scrollToTopButton ) {

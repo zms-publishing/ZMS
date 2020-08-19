@@ -4,17 +4,13 @@
 ZMI = function() { this.readyFn = []};
 ZMI.prototype.registerReady = function(fn) {this.readyFn.push(fn)};
 ZMI.prototype.ready = function(fn) {this.readyFn.push(fn)};
-ZMI.prototype.runReady = function() {while (this.readyFn.length > 0) this.readyFn.pop()()};
+ZMI.prototype.runReady = function() {this.readyFn.map(x=>x())};
 $ZMI = new ZMI();
-/**
- * $: Register 
- */
-if (typeof $ == "undefined") {
-	$ = function(arg0, arg1) {
-		if (typeof arg0 == "function") {
-			$ZMI.registerReady(arg0);
-		}
-		return $ZMI;
-	}
-}
 
+/**
+ * Turbolinks
+ */
+document.addEventListener("turbolinks:load", function() {
+	console.log("turbolinks:load");
+	$ZMI.runReady();
+});

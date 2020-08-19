@@ -80,7 +80,6 @@
  *
  ******************************/
 
-;$(function(){
 // Storage objects
 	$.plugins = $.plugins || {};
 	$.plugins.cache = window.sessionStorage || {};
@@ -334,4 +333,3 @@
 	// Backwards compatibility
 		getPlugin : function(){ return $.plugin.apply(this,arguments);	}
 	});
-});

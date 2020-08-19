@@ -19,7 +19,7 @@
 		tal:define="added_css_zmi python:here.getConfProperty('ZMS.added.css.zmi','common/added/zmi.css')"
 		tal:condition="added_css_zmi"
 		tal:attributes="href python:added_css_zmi.replace('$ZMS_HOME/',here.getHome().absolute_url()+'/').replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0])" />
-	<tal:block tal:repeat="src python:[here.getConfProperty('plugins.zmi.js')]"
+	<tal:block tal:repeat="src python:here.getConfProperty('plugins.zmi.js').split(',')"
 		><script type="text/javascript" charset="UTF-8" tal:attributes="src src"></script>
 	</tal:block>
 <tal:block tal:define="

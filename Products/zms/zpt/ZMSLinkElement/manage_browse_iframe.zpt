@@ -112,7 +112,6 @@
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
 	<input type="hidden" name="fmName" tal:condition="python:'fmName' in request" tal:attributes="value python:request.get('fmName','')" />
 	<input type="hidden" name="elName" tal:condition="python:'elName' in request" tal:attributes="value python:request.get('elName','')" />
-	<legend tal:content="python:zmscontext.getZMILangStr('SEARCH_HEADER')">Search header</legend>
 	<div class="form-group row">
 		<div class="col-md-12">
 			<div class="input-group">
@@ -147,21 +146,25 @@
 
 <div class="tab-pane" id="link">
 	<div class="form-inline">
-		<div class="form-group row">
-			<label class="sr-only" for="url"><span tal:content="structure python:zmscontext.getZMILangStr('ATTR_URL')">the label</span></label>
-			<select class="form-control" id="type" name="type">
-				<option value="">--- <tal:block tal:content="python:zmscontext.getZMILangStr('ACTION_SELECT')%zmscontext.getZMILangStr('ATTR_TYPE')">Select tyype</tal:block> ---</option>
-				<option value="http://">http:</option>
-				<option value="https://">https:</option>
-				<option value="file://" tal:content="python:zmscontext.getZMILangStr('ATTR_FILE')">file</option>
-				<option value="mailto:" tal:content="python:zmscontext.getZMILangStr('ATTR_EMAIL')">mailto</option>
-				<option value="ftp://">ftp:</option>
-			</select>
+		<div class="form-group">
+			<div class="mb-3">
+				<label class="sr-only" for="url"><span tal:content="structure python:zmscontext.getZMILangStr('ATTR_URL')">the label</span></label>
+				<select class="form-control" id="type" name="type">
+					<option value="">--- <tal:block tal:content="python:zmscontext.getZMILangStr('ACTION_SELECT')%zmscontext.getZMILangStr('ATTR_TYPE')">Select tyype</tal:block> ---</option>
+					<option value="http://">http:</option>
+					<option value="https://">https:</option>
+					<option value="file://" tal:content="python:zmscontext.getZMILangStr('ATTR_FILE')">file</option>
+					<option value="mailto:" tal:content="python:zmscontext.getZMILangStr('ATTR_EMAIL')">mailto</option>
+					<option value="ftp://">ftp:</option>
+				</select>
+			</div><!-- .mb-3 -->
 		</div><!-- .form-group -->
-		<div class="form-group row">
-			<input class="form-control" type="text" name="url" size="25" tal:attributes="value python:request.get('url','')"/>
+		<div class="form-group">
+			<div class="mb-3">
+				<input class="form-control" type="text" name="url" size="25" tal:attributes="value python:request.get('url','')"/>
+			</div><!-- .mb-3 -->
 		</div><!-- .form-group -->
-		<button class="btn btn-primary" type="submit" name="btn">Ok</button>
+		<button class="btn btn-primary mb-1" type="submit" name="btn">Ok</button>
 	</div><!-- .form-inline -->
 </div><!-- #link -->
 

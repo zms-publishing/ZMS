@@ -10,9 +10,18 @@ $ZMI = new ZMI();
 /**
  * Turbolinks
  */
+Turbolinks.setProgressBarDelay(0);
+document.addEventListener("turbolinks:visit", function() {
+	var ts = performance.now();
+	console.log("BO turbolinks:visit " + ts);
+});
+document.addEventListener("turbolinks:request-start", function() {
+	var ts = performance.now();
+	console.log("BO turbolinks:visit " + ts);
+});
 document.addEventListener("turbolinks:load", function() {
 	var ts = performance.now();
-	console.log("BO turbolinks:load ");
+	console.log("BO turbolinks:load " + ts);
 	$ZMI.runReady();
-	console.log("EO turbolinks:load " + (performance.now()-ts)+"msec");
+	console.log("EO turbolinks:load " + ts + "->" + (performance.now()-ts) + "msec");
 });

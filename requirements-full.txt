@@ -13,7 +13,8 @@ Products.ZSQLMethods
 
 # LDAP
 python-ldap
-Products.LDAPMultiPlugins
+# Need our py3 fork
+-e git+https://github.com/zms-publishing/Products.LDAPMultiPlugins#egg=Products.LDAPMultiPlugins
 Products.LDAPUserFolder
 
 # TEXT

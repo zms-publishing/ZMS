@@ -328,3 +328,10 @@ ZMI.prototype.CopyToClipboard = function(str) {
 	}
 	$temp.remove();
 }
+
+/**
+ * $: Register 
+ */
+if (typeof $ != "undefined") {
+	$ZMI.runReady();
+}

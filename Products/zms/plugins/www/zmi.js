@@ -8,20 +8,30 @@ ZMI.prototype.runReady = function() {this.readyFn.map(x=>x())};
 $ZMI = new ZMI();
 
 /**
+ * $: Register 
+ */
+if (typeof $ == "undefined") {
+	$ = function(arg0, arg1) {
+		if (typeof arg0 == "function") {
+			$ZMI.registerReady(arg0);
+		}
+		return $ZMI;
+	}
+}
+
+/**
  * Turbolinks
  */
-Turbolinks.setProgressBarDelay(0);
-document.addEventListener("turbolinks:visit", function() {
-	var ts = performance.now();
-	console.log("BO turbolinks:visit " + ts);
-});
-document.addEventListener("turbolinks:request-start", function() {
-	var ts = performance.now();
-	console.log("BO turbolinks:visit " + ts);
-});
-document.addEventListener("turbolinks:load", function() {
-	var ts = performance.now();
-	console.log("BO turbolinks:load " + ts);
-	$ZMI.runReady();
-	console.log("EO turbolinks:load " + ts + "->" + (performance.now()-ts) + "msec");
-});
+if (typeof Turbolinks != "undefined") {
+	Turbolinks.setProgressBarDelay(0);
+	document.addEventListener("turbolinks:visit", function() {
+		var ts = performance.now();
+		console.log("BO turbolinks:visit " + ts);
+	});
+	document.addEventListener("turbolinks:load", function() {
+		var ts = performance.now();
+		console.log("BO turbolinks:load " + ts);
+		$ZMI.runReady();
+		console.log("EO turbolinks:load " + ts + "->" + (performance.now()-ts) + "msec");
+	});
+}

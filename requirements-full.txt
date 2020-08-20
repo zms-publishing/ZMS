@@ -4,6 +4,7 @@
 # PAS
 Products.PluggableAuthService
 Products.PluginRegistry
+Products.LDAPUserFolder
 -e git+ssh://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
 
 # SQL
@@ -15,7 +16,8 @@ Products.ZSQLMethods
 python-ldap
 # Need our py3 fork
 -e git+https://github.com/zms-publishing/Products.LDAPMultiPlugins#egg=Products.LDAPMultiPlugins
-Products.LDAPUserFolder
+# need master for py3 compatible
+-e git+https://github.com/dataflake/Products.LDAPUserFolder#egg=Products.LDAPUserFolder
 
 # TEXT
 beautifulsoup4

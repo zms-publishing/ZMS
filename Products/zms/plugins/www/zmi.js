@@ -11,6 +11,8 @@ $ZMI = new ZMI();
  * Turbolinks
  */
 document.addEventListener("turbolinks:load", function() {
-	console.log("turbolinks:load");
+	var ts = performance.now();
+	console.log("BO turbolinks:load ");
 	$ZMI.runReady();
+	console.log("EO turbolinks:load " + (performance.now()-ts)+"msec");
 });

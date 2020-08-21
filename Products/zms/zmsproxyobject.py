@@ -544,7 +544,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     def getMetaobjId(self, name):
       return self.proxy.getMetaobjId( name)
 
-    def getMetaobjIds(self, sort=False, excl_ids=[]):
+    def getMetaobjIds(self, sort=None, excl_ids=[]):
       return self.proxy.getMetaobjIds( sort, excl_ids)
 
     def getMetaobj(self, id):

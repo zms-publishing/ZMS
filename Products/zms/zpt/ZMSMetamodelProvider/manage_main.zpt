@@ -12,7 +12,7 @@
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:define="
-		metaObjIds python:here.getMetaobjIds(sort=True);
+		metaObjIds python:here.getMetaobjIds(sort=False);
 		metaObjs python:[here.getMetaobj(x,aq_attrs=['enabled']) for x in metaObjIds];
 		metaObjPackages python:standard.sort_list(['']+[x['id'] for x in metaObjs if x['type'] == 'ZMSPackage']);
 		metaObjPackages2 python:standard.distinct_list([x for x in [x.get('package') for x in metaObjs] if x not in metaObjPackages])">

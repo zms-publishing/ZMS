@@ -993,7 +993,7 @@ class ConfManager(
         class DefaultMetaobjManager(object):
           def importXml(self, xml): pass
           def getMetaobjId(self, name): return None
-          def getMetaobjIds(self, sort=False, excl_ids=[]): return []
+          def getMetaobjIds(self, sort=None, excl_ids=[]): return []
           def getMetaobj(self, id): return None
           def getMetaobjAttrIds(self, meta_id, types=[]): return []
           def getMetaobjAttrs(self, meta_id,  types=[]): return []
@@ -1009,7 +1009,7 @@ class ConfManager(
     def getMetaobjId(self, name):
       return self.getMetaobjManager().getMetaobjId( name)
 
-    def getMetaobjIds(self, sort=False, excl_ids=[]):
+    def getMetaobjIds(self, sort=None, excl_ids=[]):
       return self.getMetaobjManager().getMetaobjIds( sort, excl_ids)
 
     def getMetaobj(self, id):

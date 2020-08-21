@@ -461,15 +461,17 @@ class ZMSMetaobjManager(object):
     #
     #  Returns list of all meta-ids in model.
     # --------------------------------------------------------------------------
-    def getMetaobjIds(self, sort=False, excl_ids=[]):
+    def getMetaobjIds(self, sort=None, excl_ids=[]):
       obs = self.__get_metaobjs__()
       ids = [obs[x]['id'] for x in obs]
       # exclude ids
       if excl_ids:
         ids = [x for x in ids if x not in excl_ids]
       # sort
-      if sort:
+      if sort == True:
         ids = sorted(ids,key=lambda x:self.display_type(self.REQUEST, x))
+      elif sort == False:
+        ids = sorted(ids,key=lambda x:obs[x]['name'])
       return ids
 
 

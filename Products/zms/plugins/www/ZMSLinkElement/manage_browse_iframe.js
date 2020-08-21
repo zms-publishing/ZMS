@@ -59,6 +59,32 @@ $(function(){
 	if (typeof href == "undefined" || href == "") {
 		href = $ZMI.getPhysicalPath();
 	}
+	// filter
+	var t = null;
+	var search_results = $("#search_results").html();
+	var applyListFilter = function() {
+			var filter = $('input.filter').val().trim();
+			var v = filter;
+			if (v.length == 0) {
+				$("#search_results").html(search_results).hide();
+				$(".zmi-sitemap").show();
+			}
+			else {
+				$("#search_results").html(search_results).show();
+				$(".zmi-sitemap").hide();
+				var pageSize = 10;
+				var pageIndex = parseInt(GetURLParameter('pageIndex:int','0'));
+				zmiBodyContentSearch(v,pageSize,pageIndex);
+			}
+		};
+	$('input.filter').keyup(function(e) {
+		var that = this;
+		if (t != null) {
+			clearTimeout(t);
+		}
+		t = setTimeout(applyListFilter, 500);
+	});
+	// sitemap
 	$ZMI.objectTree.init(".zmi-sitemap",href,{});
 });
 

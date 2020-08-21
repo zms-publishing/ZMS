@@ -219,15 +219,14 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
                   } else {
                     loc = $(">index_html",this).text();
                   }
-                  breadcrumb += breadcrumb.length==0?'':' &raquo; '
-                  breadcrumb += '<a href="'+loc+'">'+title+'</a>';
+                  breadcrumb += '<li class="breadcrumb-item"><a href="'+loc+'">'+title+'</a></li>';
                 });
               }
               html += ''
                 + '<div class="line row'+(c%2==0?" gray":"")+'">'
                 + '<div class="col-sm-12">'
                 + '<h2 class="'+meta_id+'"><a href="'+href+'">'+title+'</a></h2>'
-                + (breadcrumb.length==0?'':'<div class="breadcrumb">'+breadcrumb+'</div><!-- .breadcrumb -->')
+                + (breadcrumb.length==0?'':'<nav aria-label="breadcrumb"><ol class="breadcrumb">'+breadcrumb+'</ol></nav><!-- .breadcrumb -->')
                 + '<p>'+snippet+'</p>'
                 + '</div>'
                 + '</div><!-- .line.row -->';

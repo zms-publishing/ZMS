@@ -1571,7 +1571,7 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 	var context_id = this.getContextId(el);
 	// Edit action
 	$("button.split-left",el).click(function() {
-			if ($(this).parents(".loading").length==0) {
+			if (!$(el).hasClass("loading")) {
 				if ($(".fa-plus-sign",this).length==0) {
 					var action = self.location.href;
 					action = action.substr(0,action.lastIndexOf("/")+1);

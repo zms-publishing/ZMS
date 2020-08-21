@@ -19,31 +19,28 @@
 	border:none;
 	padding:1em 0em;
 }
-.zmi.browse_iframe #search .line.row.gray {
+.zmi.browse_iframe #search_results .line.row.gray {
 	background-color:#f8f8f8;
 }
-.zmi.browse_iframe #search .line.row p {
+.zmi.browse_iframe #search_results .line.row p {
 	font-size:x-small;
 }
-.zmi.browse_iframe #search .line.row h2 {
-	font-size:14px;
-	color:#333;
+.zmi.browse_iframe #search_results .line.row h2 {
 	margin-bottom:0;
 }
-.zmi.browse_iframe #search h2 a {
-	color:#333!important;
+.zmi.browse_iframe #search_results h2 a {
 	font-size:medium;
 }
-.zmi.browse_iframe #search .breadcrumb {
+.zmi.browse_iframe #search_results .breadcrumb {
 	font-size:small;
 	padding:3px 0 0 0;
 	background:transparent;
 	margin:0;
 }
-.zmi.browse_iframe #search h4 {
+.zmi.browse_iframe #search_results h4 {
 	color:#999;
 }
-.zmi.browse_iframe #search .header.row {
+.zmi.browse_iframe #search_results .header.row {
 	display:none;
 }
 .zmi.browse_iframe  .form-inline .form-control {
@@ -73,7 +70,6 @@
 
 <ul class="nav nav-pills">
 	<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#sitemap" tal:attributes="title python:'%s: %s'%(zmscontext.getZMILangStr('ATTR_LINK_INTERNAL'),zmscontext.getZMILangStr('TAB_SITEMAP'))"><i class="fas fa-sitemap"></i></a></li>
-	<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#search" tal:attributes="title python:'%s: %s'%(zmscontext.getZMILangStr('ATTR_LINK_INTERNAL'),zmscontext.getZMILangStr('TAB_SEARCH'))"><i class="fas fa-search"></i></a></li>
 	<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#link" tal:attributes="title python:zmscontext.getZMILangStr('ATTR_LINK_EXTERNAL')"><i class="fas fa-link"></i></a></li>
 	<li class="nav-item dropdown languages" tal:condition="python:len(zmscontext.getLangIds())>1">
 		<a href="#" class="dropdown-toggle" data-toggle="dropdown" tal:attributes="title python:zmscontext.getZMILangStr('TAB_LANGUAGES')">
@@ -101,47 +97,40 @@
 <div class="tab-content">
 
 <div class="tab-pane active" id="sitemap">
-<div class="zmi-sitemap">
-</div><!-- .zmi-sitemap -->
-</div>
-
-<div class="tab-pane" id="search">
-<form name="searchform" method="get" tal:attributes="action python:'%s#search'%request['URL']">
+<form class="zmi-filter" onsubmit="return false;">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
-	<input type="hidden" name="defaultLang" tal:attributes="value python:request['defaultLang']" />
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
-	<input type="hidden" name="fmName" tal:condition="python:'fmName' in request" tal:attributes="value python:request.get('fmName','')" />
-	<input type="hidden" name="elName" tal:condition="python:'elName' in request" tal:attributes="value python:request.get('elName','')" />
 	<div class="form-group row">
 		<div class="col-md-12">
 			<div class="input-group">
-				<tal:block tal:content="structure python:zmscontext.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
-				<div class="input-group-append">
-					<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+				<div class="input-group-prepend">
+					<span class="input-group-text"><i class="fas fa-filter"></i> <span class="badge badge-pill badge-info">0</span></span>
 				</div>
+				<input type="text" class="form-control filter" name="search" placeholder=""/>
 			</div>
 		</div>
 	</div><!-- .form-group -->
-<div id="search_results" class="form-group row" style="display:none">
-	<div class="col-md-10">
-		<h4 tal:content="python:zmscontext.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
-		<div class="header row">
-			<div class="col-md-6">
-				<span class="small-head">
-					<img src="/++resource++zms_/img/loading.gif" alt="Loading..."/>
-					<tal:block tal:content="python:zmscontext.getZMILangStr('MSG_LOADING')">loading</tal:block>
-				</span>
-			</div>
-			<div class="meta-info col-sm-12 col-md-6 col-ns-5 col-ns-offset-1">
-			</div>
-		</div><!-- .header.row -->
-		<div class="line row"></div><!-- .row -->
+	<div id="search_results" class="form-group row" style="display:none">
+		<div class="col-md-10">
+			<div class="header row">
+				<div class="col-md-6">
+					<span class="small-head">
+						<i class="text-primary icon-spinner icon-spin fas fa-spinner fa-spin"></i>
+						<tal:block tal:content="python:zmscontext.getZMILangStr('MSG_LOADING')">loading</tal:block>
+					</span>
+				</div>
+				<div class="meta-info col-sm-12 col-md-6 col-ns-5 col-ns-offset-1">
+				</div>
+			</div><!-- .header.row -->
+			<div class="line row"></div><!-- .row -->
 			<div class="pull-right">
 				<ul class="pagination"></ul>
 			</div>
+		</div>
 	</div>
-</div>
 </form>
+<div class="zmi-sitemap">
+</div><!-- .zmi-sitemap -->
 </div>
 
 <div class="tab-pane" id="link">

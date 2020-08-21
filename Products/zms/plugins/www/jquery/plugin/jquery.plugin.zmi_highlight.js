@@ -29,30 +29,29 @@ RegExp.escape = function(text) {
  * 
  * @see http://stackoverflow.com/questions/3241169/highlight-search-terms-select-only-leaf-nodes
  */
-function htmlReplace($context, exp, newvalue) {
-	newvalue = newvalue.replace(/class="(.*?)"/i,'class="$1 nohighlight"');
-	var regexp = new RegExp(exp, "gi");
-	$('*',$context)
-		.addBack()
-		.contents()
-		.filter(function(){
-			// nodyType=3 (Text) Represents textual content in an element or attribute
-			return this.nodeType === 3;
-		})
-		.filter(function(){
-			// Only match when contains 'simple string' anywhere in the text
-			return this.nodeValue.match(regexp);
-		})
-		.each(function(i, el){
-			// Do something with this.nodeValue
-			if ($(el).parents(".nohighlight,a,button,input").length==0) {
-				var data = el.data;
-				if (data = data.replace(regexp, newvalue)) {
-					var wrapper = $("<span>").html(data);
-					$(el).before(wrapper.contents()).remove();
+function htmlReplace($context, exp, newvalue, newoptions, parentsfilter) {
+	newoptions = (typeof newoptions == "undefined" || newoptions == "") ? "gi" : newoptions;
+	parentsfilter = (typeof parentsfilter == "undefined" || parentsfilter == "") ? "" : "," + parentsfilter;
+	newvalue = newvalue.replace(/class="(.*?)"/i, 'class="$1 nohighlight"');
+	console.log(exp + "," + newoptions + "==>" + newvalue);
+	var regexp = new RegExp(exp, newoptions);
+	$('*', $context).addBack().contents().filter(function() {
+		// nodyType=3 (Text) Represents textual content in an element or attribute
+		return this.nodeType === 3;
+	}).filter(function() {
+		// Only match when contains 'simple string' anywhere in the text
+		return this.nodeValue.match(regexp);
+	}).each(
+			function(i, el) {
+				// Do something with this.nodeValue
+				if ($(el).parents(".nohighlight,input,option,select,textarea" + parentsfilter).length == 0) {
+					var data = el.data;
+					if (data = data.replace(regexp, newvalue)) {
+						var wrapper = $("<span>").html(data);
+						$(el).before(wrapper.contents()).remove();
+					}
 				}
-			}
-		});
+			});
 }
 
 /**

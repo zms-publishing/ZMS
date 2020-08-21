@@ -3553,41 +3553,12 @@ return zmscontext.getId()
 
 <tal:block tal:define="zmscontext context">
 
+<script src="/++resource++zms_/jquery/plugin/jquery.plugin.zmi_highlight.js"></script>
 <script>
-/**
- * Highlight all occurences of given text.
- * 
- * @see http://stackoverflow.com/questions/3241169/highlight-search-terms-select-only-leaf-nodes
- */
-function htmlReplace($context, exp, newvalue, parentsfilter) {
-	parentsfilter = (typeof parentsfilter=="undefined" || parentsfilter=="")?"":","+parentsfilter;
-	newvalue = newvalue.replace(/class="(.*?)"/i,'class="$1 nohighlight"');
-	var regexp = new RegExp(exp, "gi");
-	$('*',$context)
-		.addBack()
-		.contents()
-		.filter(function(){
-			// nodyType=3 (Text) Represents textual content in an element or attribute
-			return this.nodeType === 3;
-		})
-		.filter(function(){
-			// Only match when contains 'simple string' anywhere in the text
-			return this.nodeValue.match(regexp);
-		})
-		.each(function(i, el){
-			// Do something with this.nodeValue
-			if ($(el).parents(".nohighlight,button,input,option,select"+parentsfilter).length==0) {
-				var data = el.data;
-				if (data = data.replace(regexp, newvalue)) {
-					var wrapper = $("<span>").html(data);
-					$(el).before(wrapper.contents()).remove();
-				}
-			}
-		});
-}
 $(function() {
-	$('input.filter').focus().keyup(function(e) {
-			var v = $(this).val().toLowerCase();
+	var applyListFilter = function() {
+			var filter = $('input.filter').val().toLowerCase().trim();
+			var v = filter;
 			var regexp = new RegExp('<span class="highlight(.*?)">(.*?)</span>', "gi");
 			$(".card .card-header.matched").removeClass("matched").each(function() {
 					var html = $(this).html();
@@ -3611,15 +3582,25 @@ $(function() {
 					}
 				});
 			$(window).trigger('resize');
-		});
+		};
+	var t = null;
+	$('input.filter').focus().keyup(function(e) {
+		var that = this;
+		if (t != null) {
+			clearTimeout(t);
+		}
+		t = setTimeout(applyListFilter, 500);
 	});
+});
 </script>
 
 	<form class="form-filter" method="get" tal:attributes="action request/URL">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-filter fas fa-filter"></span></span>
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fas fa-filter"></i> <span class="badge badge-pill badge-info">0</span></span>
+					</div>
 					<input type="text" class="form-control filter" name="search" placeholder="Filter"/>
 				</div><!-- .input-group -->
 			</div>

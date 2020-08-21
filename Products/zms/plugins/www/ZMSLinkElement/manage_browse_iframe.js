@@ -129,6 +129,7 @@ var URLParser = (function (document) {
 
 function zmiBodyContentSearchDone() {
 	$("#search_results h4:first").hide();
+	$(".zmi-filter .badge.badge-pill.badge-info").text($(".line.row").length);
 	$(".line.row").each(function() {
 			var $h2 = $("h2",this);
 			var meta_id = $("h2").attr("class");

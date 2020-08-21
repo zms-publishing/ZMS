@@ -253,17 +253,7 @@ def thumbnailImage(self, hiresKey, loresKey, maxdim, lang, REQUEST):
   message = ''
   try:
     if hiresKey in self.getObjAttrs() and REQUEST.get('generate_preview_%s_%s'%(hiresKey,lang),0) == 1:
-      req = {'lang':lang,'preview':'preview'}
-      hiresImg = self.getObjProperty(hiresKey,req)
-      loresImg = self.getObjProperty(loresKey,req)
-      if hiresImg is None and loresImg is not None:
-        if loresImg.getWidth() > int(maxdim):
-          hiresImg = loresImg
-      if hiresImg is not None:
-        standard.writeLog( self, '[thumbnailImage]: Create >%s< from >%s<...'%(loresKey,hiresKey))
-        thumb = pilutil.thumbnail( hiresImg, int(maxdim))
-        self.setObjProperty(loresKey,thumb,lang)
-        self.setObjProperty(hiresKey,hiresImg,lang)
+      pilutil.generate_preview(self, hiresKey, loresKey, maxdim)
   except:
     standard.writeError( self, '[thumbnailImage]')
   return message

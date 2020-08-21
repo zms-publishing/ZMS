@@ -37,6 +37,20 @@ def enabled():
     except:
       return False
 
+security.declarePublic('generate_preview')
+def generate_preview(self, hiresKey, loresKey, maxdim):
+  request = self.REQUEST
+  lang = request['lang']
+  hires = self.attr(hiresKey)
+  lores = self.attr(loresKey)
+  if hires is None and lores is not None:
+    if lores.getWidth() > int(maxdim):
+      hires = lores
+  if hires is not None:
+    thumb = thumbnail( hires, int(maxdim))
+    self.setObjProperty(loresKey,thumb,lang)
+    self.setObjProperty(hiresKey,hires,lang)
+
 
 security.declarePublic('thumbnail')
 def thumbnail(img, maxdim, qual=75):

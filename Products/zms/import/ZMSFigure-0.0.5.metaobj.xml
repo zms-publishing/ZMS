@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?zms version='ZMS3-3.4.2dev (snapshot #5747M)'?>
+<?zms version='ZMS3-3.4.2dev (snapshot #5747:5810M)'?>
 <dictionary>
   <item key="key">ZMSFigure</item>
   <item key="value" type="dictionary">
@@ -163,24 +163,26 @@ return ''
 ##
 # --// onChangeObjEvt //--
 
-request = zmscontext.REQUEST
-lang =  request.get('lang',zmscontext.getPrimaryLanguage())
-hiresKey = 'img_%s'%(lang)
-loresKey = '_img_%s'%(lang)
-maxdim = int(zmscontext.getConfProperty('InstalledProducts.pil.thumbnail.max',480))
-img = zmscontext.attr('img')
-imgwidth = img and int(img.getWidth()) or 0;
-imgheight = img and int(img.getHeight()) or 0;
+from Products.zms import pilutil
 
-# new picture added
-if int(request.get('del_img_%s'%(lang),0))==1:
-  zmscontext.attr('_img',None)
-if (imgwidth < maxdim or imgheight < maxdim):
-  zmscontext.attr('_img',None)
-if request.has_key(hiresKey) and (imgwidth > maxdim or imgheight > maxdim):
-  from Products.zms import pilutil
-  return pilutil.generate_preview(zmscontext, 'img', '_img', maxdim)
+if pilutil.enabled():
+	request = zmscontext.REQUEST
+	lang =  request.get('lang',zmscontext.getPrimaryLanguage())
+	hiresKey = 'img_%s'%(lang)
+	loresKey = '_img_%s'%(lang)
+	maxdim = int(zmscontext.getConfProperty('InstalledProducts.pil.thumbnail.max',480))
+	img = zmscontext.attr('img')
+	imgwidth = img and int(img.getWidth()) or 0;
+	imgheight = img and int(img.getHeight()) or 0;
 
+	# new picture added
+	if int(request.get('del_img_%s'%(lang),0))==1:
+		zmscontext.attr('_img',None)
+	if (imgwidth < maxdim or imgheight < maxdim):
+		zmscontext.attr('_img',None)
+	if request.has_key(hiresKey) and (imgwidth > maxdim or imgheight > maxdim):
+		from Products.zms import pilutil
+		return pilutil.generate_preview(zmscontext, 'img', '_img', maxdim)
 
 return None
 
@@ -213,21 +215,24 @@ return None
 		imgheight python:img and int(img.getHeight()) or 0;
 		img_preview python:zmscontext.attr('_img');
 		imgsrc_preview python:img_preview and img_preview.getHref(request) or '#';
+		imgwidth_preview python: img_preview and int(img_preview.getWidth()) or imgwidth;
 		imgmaxsize python:int(zmscontext.getConfProperty('InstalledProducts.pil.thumbnail.max',460));
 		figcaption python:zmscontext.attr('figcaption');
 		is_manage python:len(request.get('URL','').split('/manage'))>1;"
-	tal:attributes="id id; style python:is_manage and 'max-width:100%%;;display:inline-block;;' or default; data-imgwidth imgwidth; data-imgmaxsize imgmaxsize">
-	<a class="zmslightbox fancybox" 
+	tal:attributes="
+		id id; 
+		style python:is_manage and 'max-width:100%;;display:inline-block;;' or default; 
+		title python:'Image Dimensions: %spx x %spx, Preview Max. Dimension: %s'%(imgwidth, imgheight, imgmaxsize);"
+	><a class="zmslightbox fancybox" 
 		tal:omit-tag="python:imgwidth < imgmaxsize and imgheight < imgmaxsize"
 		tal:condition="img" 
 		tal:attributes="href imgsrc">
-		<img class="img img-responsive" style="max-width:100%;" alt="Image" 
+		<img class="img img-responsive" style="max-width:100%;max-height:auto;" alt="Image" 
 			tal:attributes="
 				src python:img_preview and imgsrc_preview or imgsrc; 
 				data-hiresimg imgsrc; 
-				style python:'max-width:100%%;;max-height:%spx;;%s'%(imgmaxsize,img_preview and 'cursor:zoom-in' or '')" 
-		/>
-	</a>
+				style python:'width:%spx;;max-width:100%%;;max-height:auto;;%s'%(imgwidth_preview, img_preview and 'cursor:zoom-in' or '')" 
+	/></a>
 	<figcaption class="text" tal:condition="figcaption" tal:content="figcaption" class="text-italic">figcaption</figcaption>
 </figure>
 <!-- ZMSFigure.standard_html -->]]>
@@ -272,7 +277,7 @@ return None
       <item key="id">ZMSFigure</item>
       <item key="name">ZMSFigure</item>
       <item key="package">com.zms.foundation</item>
-      <item key="revision">0.0.4</item>
+      <item key="revision">0.0.5</item>
       <item key="type">ZMSObject</item>
     </dictionary>
   </item>

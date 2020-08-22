@@ -6455,6 +6455,22 @@
     <Cell><Data ss:Type="String">מסמך</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">TYPE_ZMSFIGURE</Data></Cell>
+    <Cell><Data ss:Type="String">Abbildung</Data></Cell>
+    <Cell><Data ss:Type="String">Figure</Data></Cell>
+    <Cell><Data ss:Type="String">Afbeelding</Data></Cell>
+    <Cell><Data ss:Type="String">Image</Data></Cell>
+    <Cell><Data ss:Type="String">Grafico</Data></Cell>
+    <Cell><Data ss:Type="String">Imagen</Data></Cell>
+    <Cell><Data ss:Type="String">图僿</Data></Cell>
+    <Cell><Data ss:Type="String">تصوير</Data></Cell>
+    <Cell><Data ss:Type="String">картинка</Data></Cell>
+    <Cell><Data ss:Type="String">प्रतिबिंब</Data></Cell>
+    <Cell><Data ss:Type="String">صورة</Data></Cell>
+    <Cell><Data ss:Type="String">Hình ảnh</Data></Cell>
+    <Cell><Data ss:Type="String">תמונה</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">TYPE_ZMSFILE</Data></Cell>
     <Cell><Data ss:Type="String">Datei</Data></Cell>
     <Cell><Data ss:Type="String">File</Data></Cell>
@@ -6488,8 +6504,8 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TYPE_ZMSGRAPHIC</Data></Cell>
-    <Cell><Data ss:Type="String">Abbildung</Data></Cell>
-    <Cell><Data ss:Type="String">Image</Data></Cell>
+    <Cell><Data ss:Type="String">Grafik</Data></Cell>
+    <Cell><Data ss:Type="String">Graphic</Data></Cell>
     <Cell><Data ss:Type="String">Afbeelding</Data></Cell>
     <Cell><Data ss:Type="String">Image</Data></Cell>
     <Cell><Data ss:Type="String">Grafico</Data></Cell>

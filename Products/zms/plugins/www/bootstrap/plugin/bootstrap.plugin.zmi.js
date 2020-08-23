@@ -1656,8 +1656,9 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		// Expandable headers
 		$(".dropdown-header",$ul)
 			.click(function (event) {
+				var duration = (event.pageX && event.pageY) ? 400 : 0; // User-event show animation
 				$("i",this).toggleClass("fa-caret-down").toggleClass("fa-caret-right");
-				$(this).nextUntil(".dropdown-header").slideToggle();
+				$(this).nextUntil(".dropdown-header").slideToggle(duration);
 				event.stopImmediatePropagation();
 				event.stopPropagation();
 			});

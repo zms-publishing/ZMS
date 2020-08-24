@@ -4049,7 +4049,7 @@ if not qorder:
     qorderdir = qorderdefault[qorderdefault.find(':')+1:]
   qorder = standard.get_session_value(zmscontext,'qorder%s'%zmscontext.id,qorder)
   qorderdir = standard.get_session_value(zmscontext,'qorderdir%s'%zmscontext.id,qorderdir)
-if qorder and qorderdir:
+if records and qorder and qorderdir:
   if prepare:
     records = [{qorder:x.attr(qorder),'ob':x} for x in records]
   [standard.operator_setitem(x,qorder,'None') for x in records if x.get(qorder) is None]

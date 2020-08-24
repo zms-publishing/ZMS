@@ -61,6 +61,56 @@ $ZMI.registerReady(function(){
 	}
 	zmiParams['base_url'] = base_url;
 
+	// Content-Editable ////////////////////////////////////////////////////////
+	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
+		$("<style type='text/css'>.contentEditable.zmi-highlight{background-color:#f7f7f9;}</style>").appendTo("head");
+		$('.contentEditable')
+			.mouseover( function(evt) {
+					$(this).addClass('zmi-highlight'); 
+				})
+			.mouseout( function(evt) {
+					$(this).removeClass('zmi-highlight'); 
+				})
+			.click( function(evt) {
+				evt.stopPropagation();
+				if (evt.target != "undefined" && $.inArray(evt.target.nodeName.toLowerCase(),['a','button','input','select','textarea']) > -1) {
+					return;
+				}
+				var href = $(this).attr("data-absolute-url");
+				var lang = getZMILang();
+				if (self.location.href.indexOf(href+'/manage_main')>=0) {
+					href += '/manage_properties';
+				}
+				else {
+					href += '/manage_main';
+				}
+				if (self.location.href.indexOf('/manage_translate')>0) {
+					href += '_iframe';
+					href += '?lang='+lang;
+					href += '&ZMS_NO_BODY=1';
+					$ZMI.iframe(href,{},{});
+				}
+				else if (self.location.href.indexOf('/manage')>0) {
+					href += '?lang='+lang;
+					self.location.href = href;
+				}
+				else {
+					href += '_iframe';
+					href += '?lang='+lang;
+					showFancybox({
+						'autoDimensions':false,
+						'hideOnOverlayClick':false,
+						'href':href,
+						'transitionIn':'fade',
+						'transitionOut':'fade',
+						'type':'iframe',
+						'width':819
+					});
+				}
+			})
+		.attr( "title", "Click to edit!");
+	}
+
 	// ZMS plugins
 	if (typeof zmiParams['ZMS_HIGHLIGHT'] != 'undefined' && typeof zmiParams[zmiParams['ZMS_HIGHLIGHT']] != 'undefined') {
 		$.plugin('zmi_highlight',{

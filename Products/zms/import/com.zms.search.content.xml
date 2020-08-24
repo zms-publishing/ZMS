@@ -43,7 +43,7 @@
 		<div class="header row">
 			<div class="col-md-12">
 				<span class="small-head">
-					<span class="glyphicon glyphicon-refresh" alt="Loading..."></span>
+					<i class="text-primary fas fa-spinner fa-spin"></i>
 					<tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>
 				</span>
 			</div>

@@ -89,7 +89,9 @@
 							tal:condition="python:search_channel_key in channels">
 						<form method="get" tal:attributes="action python:channels[search_channel_key].getHref2IndexHtml(request)">
 							<div class="search-container input-group">
-								<span class="input-group-addon glyphicon glyphicon-search"></span>
+								<div class="input-group-prepend">
+									<span class="input-group-text"><span class="fas fa-search"></span>
+								</div>
 								<input name="search" id="srch-term" type="text" autocomplete="off" tal:attributes="placeholder python:channels[search_channel_key].getTitlealt(request)" class="form-control autocomplete" onfocus="select()" 
 									onchange="if($(this).val().length>0)$('#navbar-search').removeClass('inactive');"
 									onblur="if($(this).val().length==0)$('#navbar-search').addClass('inactive',{duration:500});"/>
@@ -100,15 +102,15 @@
 				<li class="nav-item">
 					<div id="navbar-menu" class="btn-group">
 						<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-							<span class="glyphicon glyphicon-align-justify"></span>
+							<i class="fas fa-bars"></i>
 						</button>
 						<div class="dropdown-menu dropdown-menu-right" role="menu">
 							<a class="dropdown-item" href="http://www.zms-publishing.com" target="_blank">
-								<span class="glyphicon glyphicon-globe text-primary"></span>
+								<i class="fas fa-globe text-primary"></i>
 								www.zms-publishing.com
 							</a>
 							<a class="dropdown-item" href="http://zmslabs.org" target="_blank">
-								<span class="glyphicon glyphicon-globe text-primary"></span>
+								<i class="fas fa-globe text-primary"></i>
 								zmslabs.org
 							</a>
 							<div class="dropdown-divider"></div>
@@ -160,7 +162,7 @@
 						<li tal:repeat="childNode childDocuments">
 							<a tal:attributes="href python:'#%s'%childNode.id">
 								<tal:block tal:content="python:childNode.getTitle(request)">The title</tal:block>
-								<span class="glyphicon glyphicon-arrow-right"></span>
+								<i class="fas fa-arrow-right"></i>
 							</a>
 						</li>
 					</ul>
@@ -308,13 +310,13 @@ function initBookmarks() {
 		$("#add-bookmark").after(''
 				+ '<li>'
 				+ '<a href="javascript:;" onclick="self.location.href=\''+l[i].href+'\'"'
-				+ ' onmouseover="$(\'.glyphicon-remove\',this).removeClass(\'text-muted\').addClass(\'text-danger\')"'
-				+ ' onmouseout="$(\'.glyphicon-remove\',this).removeClass(\'text-danger\').addClass(\'text-muted\')"'
-				+ '><span class="glyphicon glyphicon-star fas fa-star text-primary"></span> '
+				+ ' onmouseover="$(\'.fa-times\',this).removeClass(\'text-muted\').addClass(\'text-danger\')"'
+				+ ' onmouseout="$(\'.fa-times\',this).removeClass(\'text-danger\').addClass(\'text-muted\')"'
+				+ '><i class="fas fa-star text-primary"></i> '
 				+ l[i].title + ' '
-				+ '<span class="glyphicon glyphicon-remove text-muted" title="Favorit entfernen"'
-				+ ' onclick="var event=arguments[0]||window.event;event.stopPropagation();if(confirm(\'Wollen Sie Favorit \\\''+l[i].title+'\\\' wirklich entfernen?\')){removeBookmark(\''+l[i].href+'\')};"'
-				+ '></span>'
+				+ '<i class="fas fa-times text-muted" title="Favorit entfernen"'
+				+ ' onclick="var event=arguments[0]||window.event;event.stopPropagation();if(confirm(\'Do you really want to remove bookmark \\\''+l[i].title+'\\\'?\')){removeBookmark(\''+l[i].href+'\')};"'
+				+ '></i>'
 				+ '</a>'
 				+ '</li>');
 	}

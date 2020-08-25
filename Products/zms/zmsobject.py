@@ -309,11 +309,9 @@ class ZMSObject(ZMSItem.ZMSItem,
         RESPONSE.setHeader( 'Content-Disposition', 'inline;filename="%s"'%v.getFilename())
         v = v.getData()
       except:
-        masterId = self.getConfProperty('Portal.Master', '')
-        if len(masterId) > 0:
-          masterHome = getattr(self.getHome(), masterId)
-          masterDocElmnt = masterHome.content
-          v = masterDocElmnt.get_conf_blob(path, REQUEST, RESPONSE)
+        portalMaster = self.getPortalMaster()
+        if portalMaster is not None:
+          v = portalMaster.get_conf_blob(path, REQUEST, RESPONSE)
         else:
           standard.writeError(self, "[get_conf_blob]: path=%s"%str(path))
       return v

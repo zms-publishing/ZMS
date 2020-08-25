@@ -104,7 +104,7 @@ function zmiFormSubmit(sender,d) {
 		</tal:block>
 	</tal:block>
 	<tr class="row_insert">
-		<td class="text-center"><span class="btn btn-light"><i class="fas fa-plus"></i></span></td>
+		<td class="text-center"><i class="fas fa-plus"></i></td>
 		<td class="language_id"><input class="form-control form-control-sm" type="text" name="language_id" /></td>
 		<td class="language_label"><input class="form-control form-control-sm" type="text" name="language_label" /></td>
 		<td class="language_parent">
@@ -164,7 +164,7 @@ function zmiFormSubmit(sender,d) {
 		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]" tal:content="python:langDict.get(langId,'')"></textarea></div></td>
 	</tr>
 	<tr class="row_insert">
-		<td class="text-center"><span class="btn btn-light"><i class="fas fa-plus"></i></span></td>
+		<td class="text-center"><i class="fas fa-plus"></i></td>
 		<td><input class="form-control form-control-sm" type="text" name="_key" /></td>
 		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_value_%s'%(langId)"></textarea></div></td>
 	</tr>

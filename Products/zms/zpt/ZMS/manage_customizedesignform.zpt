@@ -135,7 +135,7 @@
 						<a href="#" tal:attributes="
 								class python:css is None and 'text-danger' or '';
 								title python:css is None and 'CSS-Object is missing!' or 'CSS-Code-Preview';
-								onclick python:css is None and cssedit_href or 'zmiPreviewBtnClick(this)'">
+								onclick python:css is None and cssedit_href or 'return zmiPreviewBtnClick(this)'">
 							<i tal:condition="css" class="icon-caret-right fas fa-caret-right"></i>
 							<i tal:condition="not:css" class="icon-bug fas fa-bug text-danger"></i>
 							<span tal:content="href">href</span>
@@ -228,7 +228,7 @@
 						<a href="#" tal:attributes="
 								class python:js is None and 'text-danger' or '';
 								title python:js is None and 'js-Object is missing!' or 'js-Code-Preview';
-								onclick python:js is None and jsedit_href or 'zmiPreviewBtnClick(this)'">
+								onclick python:js is None and jsedit_href or 'return zmiPreviewBtnClick(this)'">
 							<i tal:condition="js" class="icon-caret-right fas fa-caret-right"></i>
 							<i tal:condition="not:js" class="icon-bug fas fa-bug text-danger"></i>
 							<span tal:content="href">href</span>
@@ -352,6 +352,7 @@ function zmiPreviewBtnClick(sender) {
 		$('pre',container).html( data ).toggle();
 		$('i.fa-caret-right',container).toggleClass('fa-rotate-90')
 	});
+	return false;
 }
 
 $(function(){

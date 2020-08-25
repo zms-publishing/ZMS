@@ -65,7 +65,7 @@
 			></tal:block>
 			<!-- /ACE Editor -->
 
-			<div class="form-group">
+			<div class="form-group row">
 				<table class="table-access-control">
 				<thead>
 				<tr>

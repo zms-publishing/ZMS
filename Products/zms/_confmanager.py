@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 ################################################################################
 # _confmanager.py
 #
@@ -45,10 +44,9 @@ from zope.interface import implementer, providedBy
 # Product imports.
 from Products.zms import standard
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
-from Products.zms import IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
+from Products.zms import ZMSFilterManager, IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
 from Products.zms import _exportable
 from Products.zms import _fileutil
-from Products.zms import _filtermanager
 from Products.zms import _mediadb
 from Products.zms import _multilangmanager
 from Products.zms import _sequence
@@ -140,7 +138,6 @@ def updateConf(self):
     IZMSFormatProvider.IZMSFormatProvider)
 class ConfManager(
     _multilangmanager.MultiLanguageManager,
-    _filtermanager.FilterManager,
     ):
 
     # Create a SecurityInfo for this class. We will use this
@@ -153,7 +150,6 @@ class ConfManager(
     manage_customize = PageTemplateFile('zpt/ZMS/manage_customize', globals())
     manage_customizeInstalledProducts = PageTemplateFile('zpt/ZMS/manage_customizeinstalledproducts', globals())
     manage_customizeLanguagesForm = PageTemplateFile('zpt/ZMS/manage_customizelanguagesform', globals())
-    manage_customizeFilterForm = PageTemplateFile('zpt/ZMS/manage_customizefilterform', globals())
     manage_customizeDesignForm = PageTemplateFile('zpt/ZMS/manage_customizedesignform', globals())
 
 
@@ -200,7 +196,7 @@ class ConfManager(
         if filename.find('.charfmt.') > 0:
           self.format_manager.importCharformatXml(xmlfile, createIfNotExists)
         elif filename.find('.filter.') > 0:
-          _filtermanager.importXml(self, xmlfile, createIfNotExists)
+          self.getFilterManager().importXml(self, xmlfile, createIfNotExists)
         elif filename.find('.metadict.') > 0:
           self.getMetaobjManager().importMetadictXml(xmlfile, createIfNotExists)
           syncNecessary = True
@@ -441,7 +437,6 @@ class ConfManager(
         if IZMSConfigurationProvider in list(providedBy(ob)):
           for d in ob.manage_sub_options():
             l.append(self.operator_setitem(d.copy(), 'action', ob.id+'/'+d['action']))
-      l.append({'label':'TAB_FILTER','action':'manage_customizeFilterForm'})
       l.append({'label':'TAB_DESIGN','action':'manage_customizeDesignForm'})
       p = self.REQUEST['URL'].split('/')[-1].startswith('manage')
       if p:
@@ -979,6 +974,31 @@ class ConfManager(
       if workflow_manager is None:
         return None
       return workflow_manager.getTransition(id)
+
+
+    ############################################################################
+    ###
+    ###   Interface IZMSFilterManager: delegate
+    ###
+    ############################################################################
+
+    def getFilterManager(self):
+      ### updateVersion
+      filters = self.getConfProperty('ZMS.filter.filters', {})
+      processes = self.getConfProperty('ZMS.filter.processes', {})
+      if filters or processes:
+        meta_type = 'ZMSFilterManager'
+        obj = ConfDict.forName(meta_type+'.'+meta_type)(filters,processes)
+        self._setObject( obj.id, obj)
+        self.delConfProperty('ZMS.filter.filters')
+        self.delConfProperty('ZMS.filter.processes')
+      ###
+      manager = [x for x in self.getDocumentElement().objectValues() if ZMSFilterManager.ZMSFilterManager in list(providedBy(x))]
+      if len(manager)==0:
+        class DefaultManager(object):
+          def importXml(self, xml): pass
+        manager = [DefaultManager()]
+      return manager[0]
 
 
     ############################################################################

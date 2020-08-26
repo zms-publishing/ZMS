@@ -285,41 +285,9 @@ class ZMSObject(ZMSItem.ZMSItem,
       return self
 
     # --------------------------------------------------------------------------
-    #  ZMSObject.get_conf_blob:
-    # --------------------------------------------------------------------------
-    security.declarePublic('get_conf_blob')
-    def get_conf_blob(self, path, REQUEST, RESPONSE):
-      """ ZMS.get_conf_blob """
-      v = self.getConfProperties()
-      try:
-        for id in path.split('/'):
-          if isinstance(v, dict):
-            v = v[id]
-          elif isinstance(v, list):
-            if id.find( ':int') > 0:
-              v = v[ int( id[:id.find( ':int')])]
-            elif id in v:
-              v = v[ v.index(id)+1]
-            else:
-              l = [x for x in v if x.get('id', None) == id]
-              if len(l) > 0:
-                v = l[0]
-        RESPONSE.setHeader( 'Cache-Control', 'public, max-age=3600')
-        RESPONSE.setHeader( 'Content-Type', v.getContentType())
-        RESPONSE.setHeader( 'Content-Disposition', 'inline;filename="%s"'%v.getFilename())
-        v = v.getData()
-      except:
-        portalMaster = self.getPortalMaster()
-        if portalMaster is not None:
-          v = portalMaster.get_conf_blob(path, REQUEST, RESPONSE)
-        else:
-          standard.writeError(self, "[get_conf_blob]: path=%s"%str(path))
-      return v
-
-    # --------------------------------------------------------------------------
     #  ZMSObject.FileFromData
     # --------------------------------------------------------------------------
-    def FileFromData( self, data, filename='', content_type=None, mediadbStorable=False):
+    def FileFromData( self, data, filename='', content_type=None):
         """
         Creates a new instance of a file from given data.
         @param data: File-data (binary)
@@ -339,7 +307,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.ImageFromData:
     # --------------------------------------------------------------------------
-    def ImageFromData( self, data, filename='', content_type=None, mediadbStorable=False):
+    def ImageFromData( self, data, filename='', content_type=None):
         file = {}
         file['data'] = data
         file['filename'] = filename

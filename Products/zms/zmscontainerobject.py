@@ -120,6 +120,7 @@ class ZMSContainerObject(
     manage_properties = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
     manage_system = PageTemplateFile('zpt/ZMSContainerObject/manage_system', globals())
     manage_importexport = PageTemplateFile('zpt/ZMSContainerObject/manage_importexport', globals())
+    manage_importexportDebugFilter = PageTemplateFile('zpt/ZMSContainerObject/manage_importexportdebugfilter', globals())
 
 
     # Role Manager.

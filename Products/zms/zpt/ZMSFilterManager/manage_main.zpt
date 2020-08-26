@@ -248,7 +248,7 @@ $ZMI.registerReady(function(){
 						</select>
 						<div class="input-group-append">
 							<a class="btn btn-secondary" href="javascript:;" 
-								tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',id:\'%s\',\'pid:int\':%i,key:\'attr\'})'%(filter['id'],pid); title python:here.getZMILangStr('BTN_DELETE')"
+								tal:attributes="onclick python:'javascript:zmiDeleteObjBtnClick(this,{btn:\'BTN_DELETE\',id:\'%s\',\'index:int\':%i,key:\'attr\'})'%(filter['id'],pid); title python:here.getZMILangStr('BTN_DELETE')"
 								><i class="fas fa-times"></i></a>
 							</div>
 							
@@ -301,15 +301,15 @@ $ZMI.registerReady(function(){
 		<form class="form-horizontal" action="manage_changeProcess" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<input type="hidden" name="id" tal:attributes="value request/id"/>
-			<div class="form-group inpId">
+			<div class="form-group row inpId">
 				<label for="inpId" class="col-md-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
 				<div class="col-md-9"><input class="form-control" type="text" id="inpId" name="inpId" tal:attributes="value process/id"/></div>
 			</div><!-- .form-group -->
-			<div class="form-group inpName">
+			<div class="form-group row inpName">
 				<label for="inpName" class="col-md-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 				<div class="col-md-9"><input class="form-control" type="text" id="inpName" name="inpName" tal:attributes="value process/name"/></div>
 			</div><!-- .form-group -->
-			<div class="form-group Type">
+			<div class="form-group row Type">
 				<label for="inpType" class="col-md-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
 				<div class="col-md-9">
 					<input type="hidden" name="inpType" tal:attributes="value process/type"/>
@@ -322,7 +322,7 @@ $ZMI.registerReady(function(){
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div><!-- .controls.save -->
 			</div><!-- .form-row -->
-			<div class="form-group inpCommand">
+			<div class="form-group row inpCommand">
 				<div class="col-md-12"><textarea class="form-control" id="inpCommand" name="inpCommand" tal:content="process/command" cols="80" rows="25">the command</textarea></div>
 			</div><!-- .form-group -->
 		</form>
@@ -334,15 +334,15 @@ $ZMI.registerReady(function(){
 		<form class="form-horizontal" name="insertObjForm" action="manage_changeFilter" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<input type="hidden" name="key" value="obj"/>
-			<div class="form-group newId">
+			<div class="form-group row newId">
 				<label for="newId" class="col-md-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
 				<div class="col-md-9"><input class="form-control" type="text" id="newId" name="newId"/></div>
 			</div><!-- .form-group -->
-			<div class="form-group newName">
+			<div class="form-group row newName">
 				<label for="newName" class="col-md-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 				<div class="col-md-9"><input class="form-control" type="text" id="newName" name="newName"/></div>
 			</div><!-- .form-group -->
-			<div class="form-group inpFormat">
+			<div class="form-group row inpFormat">
 				<label for="inpFormat" class="col-md-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_FORMAT')">Format</span></label>
 				<div class="col-md-9">
 					<select class="form-control" id="newFormat" name="newFormat">
@@ -352,7 +352,7 @@ $ZMI.registerReady(function(){
 					</select>
 				</div>
 			</div><!-- .form-group -->
-			<div class="form-group inpContentType">
+			<div class="form-group row inpContentType">
 				<label for="inpContentType" class="col-md-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
 				<div class="col-md-9">
 					<select class="form-control" id="newContentType" name="newContentType">
@@ -376,15 +376,15 @@ $ZMI.registerReady(function(){
 	<div id="insertProcess" class="inner">
 		<form class="form-horizontal" name="insertObjForm" action="manage_changeProcess" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
-			<div class="form-group newId">
+			<div class="form-group row newId">
 				<label for="newId" class="col-md-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span></label>
 				<div class="col-md-9"><input class="form-control" type="text" id="newId" name="newId"/></div>
 			</div><!-- .form-group -->
-			<div class="form-group newName">
+			<div class="form-group row newName">
 				<label for="newName" class="col-md-3 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_DISPLAY')">Display</span></label>
 				<div class="col-md-9"><input class="form-control" type="text" id="newName" name="newName"/></div>
 			</div><!-- .form-group -->
-			<div class="form-group newType">
+			<div class="form-group row newType">
 				<label for="newType" class="col-md-3 control-label"><span tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</span></label>
 				<div class="col-md-9">
 					<select class="form-control" name="newType">
@@ -459,7 +459,7 @@ $ZMI.registerReady(function(){
 									<td><hr style="margin:1em 0;width:120px;border-top:1px solid #888;padding:0;" /></td>
 									<td><div class="filterProcessFile">
 										<a tal:attributes="href filterProcess/file_href; title python:'%s (%s)'%(filterProcess['file_filename'], filterProcess['file_content_type'])" target="_blank">
-											<img tal:attributes="src python:here.getMimeTypeIconSrc(filterProcess['file_content_type']); alt filterProcess/file_filename"/>
+											<i tal:attributes="class python:standard.getFileTypeIconCSS(filterProcess['file_filename']); title python:filterProcess['file_content_type']"></i>
 											<tal:block tal:content="filterProcess/file_filename"></tal:block>
 										</a>
 									</div></td>
@@ -517,7 +517,7 @@ $ZMI.registerReady(function(){
 				</td>
 				<td>
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
-						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is not None"><img tal:on-error="nothing" tal:attributes="src python:getattr(here,process['id']).icon"/></tal:block>
+						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is not None"><i tal:on-error="nothing" tal:attributes="class python:getattr(here,process['id']).zmi_icon"></i></tal:block>
 						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is None"><i class="fas fa-arrow-cog"></i></tal:block>
 						<tal:block tal:content="process/id">the id</tal:block>
 					</a>
@@ -532,7 +532,6 @@ $ZMI.registerReady(function(){
 
 </tal:block>
 
-<div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 </body>

@@ -504,13 +504,13 @@ def toCdata(self, s, xhtml=False):
       rtn += '<!-- ' + log + '-->'
 
   # Return Text.
-  elif s is not None and str(s).find(' ') < 0 and str(s).find('<') < 0 and str(s).find('&') < 0:
+  elif standard.is_str(s) and s.find(' ') < 0 and s.find('<') < 0 and s.find('&') < 0:
     rtn = s
 
   # Return Text in CDATA.
   elif s is not None:
-    if type(s) is bytes:
-      s = standard.pystr(s,'utf-8')
+    if standard.is_bytes(s):
+      s = standard.pystr(s)
     # Hack for invalid characters
     s = s.replace(chr(30), '')
     # Hack for nested CDATA
@@ -549,16 +549,13 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
       xml.append('>')
       data = value.data
       if content_type.startswith('text/') or content_type in ['application/css','application/javascript']:
-        b = ''
-        if isinstance(data, bytes):
-          b = data.decode()
-        elif not isinstance(data, str):
-          while data is not None:
-             b += data.data.decode()
-             data=data.next  
+        if standard.is_bytes(data):
+          b = data
+        elif not standard.is_str(data):
+          b = bytes(data)
         xml.append('<![CDATA[%s]]>' % b)
       else:
-        xml.append(standard.bin2hex(data))
+        xml.append(standard.bin2hex(bytes(data)))
       xml.append('</%s>' % tagname)
 
     # Dictionaries
@@ -611,7 +608,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
 
     # Numbers
     elif isinstance(value, int) or isinstance(value, float):
-      xml.append(str(value))
+      xml.append(value)
 
     else:
       # Zope-Objects
@@ -623,7 +620,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
         xml.append(toCdata(self, value, xhtml))
 
   # Return xml.
-  return ''.join([str(x) for x in xml])
+  return ''.join([standard.pystr(x) for x in xml])
 
 
 # ------------------------------------------------------------------------------

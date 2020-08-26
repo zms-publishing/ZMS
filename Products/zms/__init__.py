@@ -39,6 +39,7 @@ from Products.zms import zmssqldb
 from Products.zms import zmslinkcontainer
 from Products.zms import zmslinkelement
 from Products.zms import ZMSZCatalogAdapter
+from Products.zms import ZMSFilterManager
 from Products.zms import ZMSFormatProvider, ZMSFormatProviderAcquired
 from Products.zms import ZMSMetacmdProvider, ZMSMetacmdProviderAcquired
 from Products.zms import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired

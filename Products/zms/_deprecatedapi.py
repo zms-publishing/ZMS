@@ -408,7 +408,7 @@ class DeprecatedAPI(object):
     warn(self, 'toXmlString', 'Products.zms.standard.toXmlString')
     return standard.toXmlString(self, v, xhtml, encoding)
 
-  def parseXmlString(self, xml, mediadbStorable=True):
+  def parseXmlString(self, xml):
     warn(self, 'parseXmlString', 'Products.zms.standard.parseXmlString')
     return standard.parseXmlString(xml)
 

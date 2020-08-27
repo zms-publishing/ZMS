@@ -154,7 +154,6 @@ def manage_addZIPMultiUpload(self):
 
 	html += '</form><!-- .form-horizontal -->'
 	html += '</div><!-- .card -->'
-	html += '<div style="clear:both;">&nbsp;</div>'
 	html += '</div><!-- #zmi-tab -->'
 	html += self.zmi_body_footer(self,request)
 	html += '</body>'

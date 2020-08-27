@@ -45,7 +45,6 @@ pageTemplateExampleCode = \
   '<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>\n' + \
   '<div id="zmi-tab">\n' + \
   '<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>\n' + \
-  '<div style="clear:both;">&nbsp;</div>\n' + \
   '</div><!-- #zmi-tab -->\n' + \
   '<script>\n' + \
   '</script>\n' + \

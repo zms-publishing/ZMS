@@ -91,7 +91,6 @@ else:
 
 print('</div><!-- .card-body -->')
 print('</form><!-- .form-horizontal -->')
-print('<div style="clear:both;">&nbsp;</div>')
 print('</div><!-- #zmi-tab -->')
 print(context.zmi_body_footer(context,request))
 print('</body>')

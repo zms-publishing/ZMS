@@ -452,6 +452,7 @@ $ZMI.registerReady(function(){
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	// Checkboxes
+	$("input[name='ids:list']").popover({content:getZMILangStr('ACTION_SELECT').replace('%s',getZMILangStr('ATTR_OBJECT')),placement:'bottom',trigger:'hover'});
 	$(".zmi-container .zmi-item:first .right input[name='active']:checkbox")
 		.change(function() {
 				zmiToggleSelectionButtonClick(this,$(this).prop("checked"));
@@ -464,28 +465,6 @@ $ZMI.registerReady(function(){
 			var $container = $(this).parents(".right");
 			$(".split-right",$container).tooltip({html:true,title:$("div.constraint",$container)[0].outerHTML});
 		});
-	// Detail-Info
-	var data_root = $("body").attr('data-root');
-	var key = "ZMS."+data_root+".zmi-manage-main-change";
-	var value = $ZMILocalStorageAPI.get(key,null);
-  var c = 0;
-	$(".zmi-container .zmi-item .zmi-manage-main-change").each( function() {
-			$(this).html($(this).html().replace(/<span([^<]*?)>(\r|\n|\t|\s)*?<\/span>/gi,''));
-			if (c==0) {
-				$('<a class="zmi-manage-main-toggle" href="javascript:;"><i class="fas fa-info-circle"></i></a>').insertBefore($(this));
-			}
-			c++;
-		});
-	$(".zmi-manage-main-toggle .fa-info-circle").on('click',function(event,programmatically,speed) {
-			if (!programmatically) {
-				$ZMILocalStorageAPI.toggle(key);
-			}
-			$(this).toggleClass('active');
-			$('.zmi-manage-main-change').toggle(typeof speed=='undefined'?'normal':speed);
-		});
-	if (value!=null) {
-		$(".zmi-manage-main-toggle .fa-info-circle").trigger('click',[true,'fast']);
-	}
 	// Action-Lists
 	$(".btn-group")
 		.mouseover( function(evt) {
@@ -1543,6 +1522,7 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 	}
 	var $button = $('button.btn.split-right.dropdown-toggle',el);
 	// Expandable headers.
+	$button.popover({content:getZMILangStr('ACTION_SELECT').replace('%s',getZMILangStr('ATTR_ACTION')),placement:'bottom',trigger:'hover'});
 	$button.click(function() {
 			var $right = $(this).parents(".right");
 			var selected = $("input:checkbox",$right).length?$("input:checkbox",$right).prop("checked"):false;

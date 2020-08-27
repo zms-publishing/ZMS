@@ -128,7 +128,6 @@ html += '</div><!-- .form-row -->'
 
 html += '</div><!--. card-body -->'
 html += '</form><!-- .form-horizontal -->'
-html += '<div style="clear:both;">&nbsp;</div>'
 html += '</div><!-- #zmi-tab -->'
 html += context.zmi_body_footer(context,request)
 html += '''<script>

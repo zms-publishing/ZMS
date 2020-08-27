@@ -33,10 +33,10 @@ function onExportFormatChange(el) {
 		filterIds python:filter_manager.getFilterIds();
 		filters python:[x for x in [filter_manager.getFilter(x) for x in filterIds] 
 				if here.meta_id in x['meta_types']
-				and (request['AUTHENTICATED_USER'].has_role('Manager') or len(here.intersection_list(here.getUserRoles(request['AUTHENTICATED_USER']),x.get('roles',[])))>0)
+				and (request['AUTHENTICATED_USER'].has_role('Manager') or len(standard.intersection_list(here.getUserRoles(request['AUTHENTICATED_USER']),x.get('roles',[])))>0)
 				];
-		importFilters python:[x for x in filters if len(here.intersection_list([x['format']],['import'])) > 0];
-		exportFilters python:[x for x in filters if len(here.intersection_list([x['format']],['export','XML','XHTML','myXML'])) > 0]">
+		importFilters python:[x for x in filters if len(standard.intersection_list([x['format']],['import'])) > 0];
+		exportFilters python:[x for x in filters if len(standard.intersection_list([x['format']],['export','XML','XHTML','myXML'])) > 0]">
 
 <form class="form-horizontal card" name="importForm" action="manage_import" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang" />

@@ -221,9 +221,8 @@ def renderHtml():
    </form>
    <div id="ObjList"> </div>'''
 
-  s+='<div style="clear:both;">&nbsp;</div></div><!-- #zmi-tab -->'
+  s+='</div><!-- #zmi-tab -->'
   s+= thisobj.zmi_body_footer(context,request)
-  #s+= thisobj.zmi_html_foot(context,request)
   s+='</body></html>'
   return s
 

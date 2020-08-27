@@ -118,7 +118,6 @@ def manage_collect_zope_artifacts(self, request=None):
 	# ---------------------------------
 
 	rtn.append('</form><!-- .form-horizontal -->')
-	rtn.append('<div style="clear:both;">&nbsp;</div>')
 	rtn.append('</div><!-- #zmi-tab -->')
 	try:
 		rtn.append(self.zmi_body_footer(self,request))

@@ -15,7 +15,7 @@
 	.form-richtext select#format {
 		max-width: 180px;
 	}
-	.form-richtext .pull-left {
+	.form-richtext .float-left {
 		margin-right:.5em;
 		margin-bottom:.1em;
 	}

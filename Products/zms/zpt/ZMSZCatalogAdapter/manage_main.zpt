@@ -235,7 +235,6 @@
 </form>
 
 </tal:block>
-<div style="clear:both;">&nbsp;</div>
 </div><!-- #zmi-tab -->
 
 <script>

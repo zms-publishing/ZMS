@@ -150,9 +150,7 @@
 	</tal:block>
 
 </form><!-- .form-horizontal -->
-
-<div style="clear:both;">&nbsp;</div>
-</div><!-- #zmi-tab -->
+- #zmi-tab -->
 
 
 <style>

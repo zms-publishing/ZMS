@@ -463,9 +463,10 @@ $ZMI.registerReady(function(){
 	// Constraints
 	$(".split-left i.constraint").each(function() {
 			var $container = $(this).parents(".right");
-			$(".split-right",$container).tooltip({html:true,title:$("div.constraint",$container)[0].outerHTML});
+			$(".split-right",$container).popover({html:true,title:$("div.constraint",$container)[0].outerHTML});
 		});
 	// Action-Lists
+	$('button.btn.split-right.dropdown-toggle').popover({content:getZMILangStr('ACTION_SELECT').replace('%s',getZMILangStr('ATTR_ACTION')),placement:'bottom',trigger:'hover'});
 	$(".btn-group")
 		.mouseover( function(evt) {
 				$(this).parents(".collapse").css({overflow:"visible"});
@@ -1522,7 +1523,6 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 	}
 	var $button = $('button.btn.split-right.dropdown-toggle',el);
 	// Expandable headers.
-	$button.popover({content:getZMILangStr('ACTION_SELECT').replace('%s',getZMILangStr('ATTR_ACTION')),placement:'bottom',trigger:'hover'});
 	$button.click(function() {
 			var $right = $(this).parents(".right");
 			var selected = $("input:checkbox",$right).length?$("input:checkbox",$right).prop("checked"):false;

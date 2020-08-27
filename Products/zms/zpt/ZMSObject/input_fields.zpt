@@ -28,9 +28,7 @@
 						metaCmds python:[x for x in here.getMetaCmds(here,'') if x['stereotype'] == ''];
 						actions python:[[],[(here.getZMILangStr('BTN_UNDO'),'../manage_undoObjs?ids:list=%s'%here.id,'icon-undo')]][here.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request)] + [[x['name'],'manage_executeMetacmd?id=%s'%x['id'],x.get('icon_clazz'),x.get('title')] for x in metaCmds] + here.filtered_workflow_actions()"
 					><tal:block tal:condition="python:len(actions)>0">
-						<button class="btn dropdown-toggle" data-toggle="dropdown"
-							tal:attributes="title python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')" 
-						><i class="fas fa-caret-square-down"></i></button>
+						<button class="btn split-right dropdown-toggle" data-toggle="dropdown"><i class="fas fa-bars"></i></button>
 						<div class="dropdown-menu dropdown-menu-right">
 							<tal:block tal:repeat="action actions">
 								<div tal:condition="python:action[0].startswith('-----') and action[0].endswith('-----')" class="dropdown-header">

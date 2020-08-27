@@ -128,13 +128,9 @@ function zmiFormSubmit(sender,d) {
 		.submit();
 }
 
-$ZMI.registerReady(function(){
+$(function(){
 		zmiModal('#updateFilter',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_FILTER'),minWidth:800,remove:true});
 		zmiModal('#updateProcess',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_PROCESSES'),minWidth:800,remove:true});
-		$('button[name=btn][value=BTN_CLOSE]').click(function() {
-				zmiModal("hide");
-				return false;
-			});
 	});
 
 </script>
@@ -310,7 +306,6 @@ $ZMI.registerReady(function(){
 			<div class="form-row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div><!-- .controls.save -->
 			</div><!-- .form-row -->
 			<div class="form-group row inpCommand">
@@ -356,7 +351,6 @@ $ZMI.registerReady(function(){
 			<div class="form-row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
 			</div><!-- .form-row -->
 		</form>
@@ -389,7 +383,6 @@ $ZMI.registerReady(function(){
 			<div class="form-row">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_INSERT" tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</button>
-					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CLOSE" tal:content="python:here.getZMILangStr('BTN_CLOSE')">Close</button>
 				</div>
 			</div><!-- .form-row -->
 		</form>
@@ -510,7 +503,7 @@ $ZMI.registerReady(function(){
 				<td>
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
 						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is not None"><i tal:on-error="nothing" tal:attributes="class python:getattr(here,process['id']).zmi_icon"></i></tal:block>
-						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is None"><i class="fas fa-arrow-cog"></i></tal:block>
+						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is None"><i class="fas fa-cog"></i></tal:block>
 						<tal:block tal:content="process/id">the id</tal:block>
 					</a>
 					(<tal:block tal:content="process/name">the name</tal:block>)

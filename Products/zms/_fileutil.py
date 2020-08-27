@@ -23,6 +23,7 @@ import fnmatch
 import io
 import os
 import shutil
+import six
 import sys
 import tempfile
 import zipfile
@@ -331,10 +332,8 @@ def exportObj(obj, filename, filetype='b'):
   #-- Save to file.
   if data is not None:
     objfile = open(filename, 'w%s'%filetype)
-    if isinstance(data, bytes):
+    if isinstance(data, six.string_types):
       objfile.write(data)
-    elif isinstance(data, str):
-      objfile.write(data.encode())
     elif isinstance(data,io.RawIOBase):
       objfile.write(data.read())
     else:

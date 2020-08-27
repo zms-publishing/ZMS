@@ -29,13 +29,10 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import OFS.misc_
-try: # py3
-  import configparser
-except: # py2
-  import ConfigParser as configparser
 import importlib
 import operator
 import os
+import six.moves
 import tempfile
 import time
 import xml.dom.minidom
@@ -72,7 +69,7 @@ class ConfDict(object):
             for home in [PRODUCT_HOME, standard.getINSTANCE_HOME()]:
               fp = os.path.join(home, 'etc', 'zms.conf')
               if os.path.exists(fp):
-                cfp = configparser.ConfigParser()
+                cfp = six.moves.configparser.ConfigParser()
                 cfp.readfp(open(fp))
                 for section in cfp.sections():
                     for option in cfp.options(section):
@@ -196,7 +193,7 @@ class ConfManager(
         if filename.find('.charfmt.') > 0:
           self.format_manager.importCharformatXml(xmlfile, createIfNotExists)
         elif filename.find('.filter.') > 0:
-          self.getFilterManager().importXml(self, xmlfile, createIfNotExists)
+          self.getFilterManager().importXml(xmlfile, createIfNotExists)
         elif filename.find('.metadict.') > 0:
           self.getMetaobjManager().importMetadictXml(xmlfile, createIfNotExists)
           syncNecessary = True
@@ -993,10 +990,14 @@ class ConfManager(
         self.delConfProperty('ZMS.filter.filters')
         self.delConfProperty('ZMS.filter.processes')
       ###
-      manager = [x for x in self.getDocumentElement().objectValues() if ZMSFilterManager.ZMSFilterManager in list(providedBy(x))]
+      manager = [x for x in self.getDocumentElement().objectValues() if isinstance(x,ZMSFilterManager.ZMSFilterManager)]
       if len(manager)==0:
         class DefaultManager(object):
-          def importXml(self, xml): pass
+          def getFilter(self, id): return {}
+          def getFilterIds(self): return []
+          def getFilterProcesses(self, id): return []
+          def getProcess(self, id): return {}
+          def importXml(self, xml, createIfNotExists=True): pass
         manager = [DefaultManager()]
       return manager[0]
 

@@ -53,8 +53,8 @@ def processData(self, processId, data, trans=None):
   filename = _fileutil.getOSPath('%s/in.dat'%folder)
   _fileutil.exportObj(data, filename)
   # Save transformation to file.
-  if trans is not None and trans != '':
-    transfilename = _fileutil.getOSPath('%s/%s'%(folder, trans.getFilename()))
+  if trans:
+    transfilename = _fileutil.getOSPath('%s/%s'%(folder, trans.getId()))
     _fileutil.exportObj(trans, transfilename)
   # Process file.
   filename = processFile(self, processId, filename, trans)
@@ -156,11 +156,11 @@ def processCommand(self, filename, command):
 def processFile(self, processId, filename, trans=None):
   standard.writeLog( self, '[processFile]: processId=%s'%processId)
   folder = _fileutil.getFilePath(filename)
-  processOb = self.getProcess(processId)
+  processOb = self.getFilterManager().getProcess(processId)
   command = processOb.get('command')
   # Save transformation to file.
-  if trans is not None and trans != '':
-    transfilename = '%s/%s'%( folder, trans.getFilename())
+  if trans:
+    transfilename = '%s/%s'%( folder, trans.getId())
     command = command.replace( '{trans}', transfilename)
   # Execute command.
   filename = processCommand(self, filename, command)
@@ -174,7 +174,7 @@ def processFile(self, processId, filename, trans=None):
 #  Process filter.
 # ------------------------------------------------------------------------------
 def processFilter(self, ob_filter, folder, filename, REQUEST):
-  for ob_process in ob_filter.get('processes', []):
+  for ob_process in self.getFilterManager().getFilterProcesses(ob_filter['id']):
     filename = self.execProcessFilter( ob_process, folder, filename, REQUEST)
   # Return filename.
   return filename
@@ -184,7 +184,7 @@ def processFilter(self, ob_filter, folder, filename, REQUEST):
 #  _filtermanager.importFilter:
 # ------------------------------------------------------------------------------
 def importFilter(self, filename, id, REQUEST):
-  ob_filter = self.getFilter(id)
+  ob_filter = self.getFilterManager().getFilter(id)
   folder = _fileutil.getFilePath(filename)
   # Process filter.
   filename = processFilter(self, ob_filter, folder, filename, REQUEST)
@@ -197,7 +197,7 @@ def importFilter(self, filename, id, REQUEST):
 # ------------------------------------------------------------------------------
 def exportFilter(self, id, REQUEST):
   # Set local variables.
-  ob_filter = self.getFilter(id)
+  ob_filter = self.getFilterManager().getFilter(id)
   tempfolder, outfilename = self.initExportFilter( id, REQUEST)
   # Process filter.
   outfilename = processFilter(self, ob_filter, tempfolder, outfilename, REQUEST)
@@ -230,7 +230,7 @@ def exportFilter(self, id, REQUEST):
 class FilterItem(object):
 
     # --------------------------------------------------------------------------
-    #  FilterManager.initExportFilter:
+    #  FilterItem.initExportFilter:
     # --------------------------------------------------------------------------
     def initExportFilter(self, id, REQUEST):
       # Set environment variables.
@@ -241,7 +241,7 @@ class FilterItem(object):
       REQUEST.set( 'ZMS_FILTER_INSTANCE_HOME', instance_home)
       REQUEST.set( 'ZMS_FILTER_PACKAGE_HOME', package_home)
       # Set local variables.
-      ob_filter = self.getFilter(id)
+      ob_filter = self.getFilterManager().getFilter(id)
       ob_filter_format = ob_filter.get('format', '')
       # Create temporary folder.
       tempfolder = tempfile.mktemp()
@@ -270,18 +270,18 @@ class FilterItem(object):
 
 
     # --------------------------------------------------------------------------
-    #  _filtermanager.execProcessFilter:
+    #  FilterItem.execProcessFilter:
     # --------------------------------------------------------------------------
     def execProcessFilter(self, ob_process, folder, filename, REQUEST):
       processId = ob_process.get( 'id')
-      processOb = self.getProcess( processId)
+      processOb = self.getFilterManager().getProcess(processId)
       if processOb is not None:
         processType = processOb.get( 'type', 'process')
-        trans = ob_process.get( 'file', None)
+        trans = ob_process.get('file')
         # Save transformation to file.
-        if trans is not None and trans != '':
-          transfilename = '%s/%s'%( folder, trans.getFilename())
-          _fileutil.exportObj( trans.getData(), transfilename)
+        if trans:
+          transfilename = '%s/%s'%(folder,trans.getId())
+          _fileutil.exportObj( trans, transfilename)
         if processType in [ 'DTML Method', 'External Method', 'Script (Python)']:
           filename = processMethod(self, processId, filename, trans, REQUEST)
         else:

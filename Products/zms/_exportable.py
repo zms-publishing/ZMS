@@ -70,14 +70,10 @@ def exportFolder(self, root, path, id, REQUEST, depth=0):
   if hasattr(root, id):
     folder = getattr(root, id)
     for ob in folder.objectValues():
+      ob_id = ob.getId()
       if ob.meta_type == 'Folder':
-        ob_id = ob.id
         exportFolder(self, ob, '%s/%s'%(path, id), ob_id, REQUEST, depth+1)
       elif 'content' not in folder.objectIds(['ZMS']):
-        try:
-          ob_id = ob.id()
-        except:
-          standard.pyob_id = str(ob.id)
         if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Page Template', 'Script (Python)']:
           try:
             if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Page Template']:
@@ -309,7 +305,7 @@ class Exportable(_filtermanager.FilterItem):
         content_type = 'text/xml'
       
       # Export Filter.
-      elif export_format in self.getFilterIds():
+      elif export_format in self.getFilterManager().getFilterIds():
         if REQUEST.get('debug'):
           url = self.url_append_params( 'manage_importexportDebugFilter', { 'lang': lang, 'filterId': export_format, 'debug': 1})
           return RESPONSE.redirect( url)
@@ -406,9 +402,6 @@ class Exportable(_filtermanager.FilterItem):
       ressources = []
       
       if from_zms:
-        folder = 'misc_/zms'
-        for obj_id in self.misc_.zms._d.keys():
-          _fileutil.exportObj(self.misc_.zms[obj_id], '%s/%s/%s'%(tempfolder, folder, obj_id))
         exportFiles( self, self.getDocumentElement(), 'metaobj_manager', '%s/metaobj_manager'%tempfolder)
       
       if from_home:

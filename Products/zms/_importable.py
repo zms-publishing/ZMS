@@ -151,7 +151,7 @@ def importFile(self, file, REQUEST, handler):
       raise zExceptions.InternalError('XML-File not found!')
   
   # Import Filter.
-  if REQUEST.get('filter', '') in self.getFilterIds():
+  if REQUEST.get('filter', '') in self.getFilterManager().getFilterIds():
     filename = _filtermanager.importFilter(self, filename, REQUEST.get('filter', ''), REQUEST)
   
   # Import XML-file.

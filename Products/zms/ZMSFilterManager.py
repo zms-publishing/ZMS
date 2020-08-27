@@ -21,100 +21,14 @@ from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import ZPublisher.HTTPRequest
 import copy
-import inspect
-import os
-import re
 import time
-import uuid
 from zope.interface import implementer, providedBy
 # Product Imports.
 from Products.zms import _blobfields
-from Products.zms import IZMSConfigurationProvider
+from Products.zms import IZMSConfigurationProvider, IZMSRepositoryProvider
 from Products.zms import ZMSItem
 from Products.zms import standard
 from Products.zms import zopeutil
-
-
-################################################################################
-#
-#  XML IM/EXPORT
-#
-################################################################################
-
-# ------------------------------------------------------------------------------
-#  importXml
-# ------------------------------------------------------------------------------
-
-def _importXml(self, item, createIfNotExists=True):
-  itemType = item.get('type')
-  itemOb = item.get('value')
-  if itemType == 'filter':
-    newId = itemOb.get('id')
-    newAcquired = 0
-    newName = itemOb.get('name')
-    newFormat = itemOb.get('format')
-    newContentType = itemOb.get('content_type')
-    newDescription = itemOb.get('description', '')
-    newRoles = itemOb.get('roles', [])
-    newMetaTypes = itemOb.get('meta_types', [])
-    if createIfNotExists:
-      self.setFilter(None, newId, newAcquired, newName, newFormat, newContentType, newDescription, newRoles, newMetaTypes)
-      index = 0
-      for process in itemOb.get('processes', []):
-        newProcessId = process.get('id')
-        newProcessFile = process.get('file')
-        self.setFilterProcess(newId, index, newProcessId, newProcessFile)
-        index += 1
-  elif itemType == 'process':
-    newId = itemOb.get('id')
-    newAcquired = 0
-    newName = itemOb.get('name')
-    newType = itemOb.get('type', 'process')
-    newCommand = itemOb.get('command')
-    if createIfNotExists:
-      self.setProcess(None, newId, newAcquired, newName, newType, newCommand)
-  else:
-    standard.writeError(self, "[_importXml]: Unknown type >%s<"%itemType)
-
-def importXml(self, xml, createIfNotExists=True):
-  v = standard.parseXmlString(xml)
-  if isinstance(v, list):
-    for item in v:
-      id = _importXml(self, item, createIfNotExists)
-  else:
-    id = _importXml(self, v, createIfNotExists)
-
-# ------------------------------------------------------------------------------
-#  exportXml
-# ------------------------------------------------------------------------------
-def exportXml(self, REQUEST, RESPONSE):
-  value = []
-  ids = REQUEST.get('ids', [])
-  filterIds = []
-  for id in self.getFilterIds():
-    if id in ids or len(ids) == 0:
-      ob = self.getFilter(id).copy()
-      value.append({'type':'filter','value':ob})
-      filterIds.append(id)
-  for id in self.getProcessIds():
-    if id in ids or len(ids) == 0:
-      ob = self.getProcess(id).copy()
-      value.append({'type':'process','value':ob})
-  # Filename.
-  filename = 'export'
-  if len(filterIds)==1:
-    filename = filterIds[0]
-  elif len(ids)==1:
-    filename = ids[0]
-  # XML.
-  if len(value)==1:
-    value = value[0]
-  content_type = 'text/xml; charset=utf-8'
-  filename = '%s.filter.xml'%filename
-  export = self.getXmlHeader() + self.toXmlString(value, 1)
-  RESPONSE.setHeader('Content-Type', content_type)
-  RESPONSE.setHeader('Content-Disposition', 'attachment;filename="%s"'%filename)
-  return export
 
 
 ################################################################################
@@ -125,7 +39,8 @@ def exportXml(self, REQUEST, RESPONSE):
 ################################################################################
 ################################################################################
 @implementer(
-        IZMSConfigurationProvider.IZMSConfigurationProvider)
+        IZMSConfigurationProvider.IZMSConfigurationProvider,
+        IZMSRepositoryProvider.IZMSRepositoryProvider,)
 class ZMSFilterManager(
         ZMSItem.ZMSItem):
 
@@ -186,6 +101,112 @@ class ZMSFilterManager(
         self.setProcess(None, x['id'], x['acquired'], x['name'], x['type'], x['command'])
 
 
+    ############################################################################
+    #
+    #  IRepositoryProvider
+    #
+    ############################################################################
+
+    """
+    @see IRepositoryProvider
+    """
+    def provideRepository(self, r, ids=None):
+      r = {}
+      id = 'filters'
+      d = {'id':id,'__filename__':['__init__.py']}
+      r[id] = d
+      return r
+
+    """
+    @see IRepositoryProvider
+    """
+    def updateRepository(self, r):
+      id = r['id']
+      return id
+
+
+    ################################################################################
+    #
+    #  XML IM/EXPORT
+    #
+    ################################################################################
+    
+    # ------------------------------------------------------------------------------
+    #  importXml
+    # ------------------------------------------------------------------------------
+    
+    def _importXml(self, item, createIfNotExists=True):
+      itemType = item.get('type')
+      itemOb = item.get('value')
+      if itemType == 'filter':
+        newId = itemOb.get('id')
+        newAcquired = 0
+        newName = itemOb.get('name')
+        newFormat = itemOb.get('format')
+        newContentType = itemOb.get('content_type')
+        newDescription = itemOb.get('description', '')
+        newRoles = itemOb.get('roles', [])
+        newMetaTypes = itemOb.get('meta_types', [])
+        if createIfNotExists:
+          self.setFilter(None, newId, newAcquired, newName, newFormat, newContentType, newDescription, newRoles, newMetaTypes)
+          index = 0
+          for process in itemOb.get('processes', []):
+            newProcessId = process.get('id')
+            newProcessFile = process.get('file')
+            self.setFilterProcess(newId, index, newProcessId, newProcessFile)
+            index += 1
+      elif itemType == 'process':
+        newId = itemOb.get('id')
+        newAcquired = 0
+        newName = itemOb.get('name')
+        newType = itemOb.get('type', 'process')
+        newCommand = itemOb.get('command')
+        if createIfNotExists:
+          self.setProcess(None, newId, newAcquired, newName, newType, newCommand)
+      else:
+        standard.writeError(self, "[_importXml]: Unknown type >%s<"%itemType)
+    
+    def importXml(self, xml, createIfNotExists=True):
+      v = standard.parseXmlString(xml)
+      if isinstance(v, list):
+        for item in v:
+          id = self._importXml(item, createIfNotExists)
+      else:
+        id = self._importXml(v, createIfNotExists)
+    
+    # ------------------------------------------------------------------------------
+    #  exportXml
+    # ------------------------------------------------------------------------------
+    def exportXml(self, REQUEST, RESPONSE):
+      value = []
+      ids = REQUEST.get('ids', [])
+      filterIds = []
+      for id in self.getFilterIds():
+        if id in ids or len(ids) == 0:
+          ob = self.getFilter(id).copy()
+          value.append({'type':'filter','value':ob})
+          filterIds.append(id)
+      for id in self.getProcessIds():
+        if id in ids or len(ids) == 0:
+          ob = self.getProcess(id).copy()
+          value.append({'type':'process','value':ob})
+      # Filename.
+      filename = 'export'
+      if len(filterIds)==1:
+        filename = filterIds[0]
+      elif len(ids)==1:
+        filename = ids[0]
+      # XML.
+      if len(value)==1:
+        value = value[0]
+      content_type = 'text/xml; charset=utf-8'
+      filename = '%s.filter.xml'%filename
+      export = self.getXmlHeader() + self.toXmlString(value, 1)
+      RESPONSE.setHeader('Content-Type', content_type)
+      RESPONSE.setHeader('Content-Disposition', 'attachment;filename="%s"'%filename)
+      return export
+    
+    
     # --------------------------------------------------------------------------
     #  FilterManager.getProcessIds:
     # 
@@ -263,30 +284,6 @@ class ZMSFilterManager(
       return ob
 
 
-    # --------------------------------------------------------------------------
-    #  FilterManager.getFilterProcesses:
-    # 
-    #  Returns list of processes for filter specified by Id.
-    # --------------------------------------------------------------------------
-    def getFilterProcesses(self, id):
-      obs = []
-      c = 0
-      for process in self.getFilter( id).get( 'processes', []):
-        ob = process.copy()
-        ob[ 'type'] = ob.get( 'type', 'process')
-        if ob.get('file') not in ['', None]:
-          f = ob['file']
-          ob['file_href'] = 'get_conf_blob?path=ZMS.filter.filters/%s/processes/%i:int/file'%(id, c)
-          ob['file_filename'] = f.getFilename()
-          ob['file_content_type'] = f.getContentType()
-          ob['file_size'] = f.get_size()
-        process = self.getProcess( ob[ 'id'])
-        if process is not None:
-          obs.append( ob)
-        c += 1
-      return obs
-
-
     """
     ################################################################################
     #
@@ -294,7 +291,7 @@ class ZMSFilterManager(
     #
     ################################################################################
     """
-    
+
     # ------------------------------------------------------------------------------
     #  _filtermanager.setFilter:
     # 
@@ -315,7 +312,7 @@ class ZMSFilterManager(
       # Rename assets.
       if oldId != newId:
         oldprefix = '%s.'%(oldId)
-        ids = [x.startswith(oldprefix) for x in self.objectIds('File')]
+        ids = [x for x in self.objectIds('File') if x.startswith(oldprefix)]
         for id in ids:
           suffix = '.'.join(id.split('.')[1:])
           self.manage_renameObject(id=id, new_id='%s%s'%('%s.'%newId,suffix))
@@ -323,7 +320,7 @@ class ZMSFilterManager(
       self.filters = obs.copy()
       # Return with new id.
       return newId
-    
+
     # ------------------------------------------------------------------------------
     #  _filtermanager.delFilter:
     # 
@@ -338,15 +335,15 @@ class ZMSFilterManager(
           obs[key] = cp[key]
       # Delete assets.
       prefix = '%s.'%(id)
-      ids = [x.startswith(prefix) for x in self.objectIds('File')]
+      ids = [x for x in self.objectIds('File') if x.startswith(prefix)]
       if ids:
         self.manage_delObjects(ids=ids)
       # Set attribute.
       self.filters = obs.copy()
       # Return with empty id.
       return ''
-    
-    
+
+
     """
     ################################################################################
     #
@@ -354,7 +351,33 @@ class ZMSFilterManager(
     #
     ################################################################################
     """
-    
+
+    # --------------------------------------------------------------------------
+    #  FilterManager.getFilterProcesses:
+    # 
+    #  Returns list of processes for filter specified by Id.
+    # --------------------------------------------------------------------------
+    def getFilterProcesses(self, id):
+      obs = []
+      index = 0
+      for process in self.getFilter( id).get( 'processes', []):
+        ob = process.copy()
+        ob[ 'type'] = ob.get( 'type', 'process')
+        prefix = '%s.%i.'%(id,index)
+        ids = [x for x in self.objectIds('File') if x.startswith(prefix)]
+        if ids:
+          f = zopeutil.getObject(self,ids[0])
+          ob['file'] = f
+          ob['file_href'] = f.absolute_url()
+          ob['file_filename'] = '.'.join(f.getId().split('.')[2:])
+          ob['file_content_type'] = f.getContentType()
+          ob['file_size'] = f.get_size()
+        p = self.getProcess(ob['id'])
+        if p is not None:
+          obs.append( ob)
+        index += 1
+      return obs
+
     # ------------------------------------------------------------------------------
     #  _filtermanager.setFilterProcess:
     # 
@@ -365,7 +388,6 @@ class ZMSFilterManager(
       obs = self.filters
       ob = {}
       ob['id'] = newProcessId
-      ob['file'] = newProcessFile
       pobs = obs[id].get('processes', [])
       pobs.append(ob)
       obs[id]['processes'] = pobs
@@ -373,7 +395,7 @@ class ZMSFilterManager(
       if isinstance(newProcessFile, _blobfields.MyBlob):
         prefix = '%s.%i.'%(id,index)
         # Delete asset with prefix.
-        ids = [x.startswith(prefix) for x in self.objectIds('File')]
+        ids = [x for x in self.objectIds('File') if x.startswith(prefix)]
         if ids:
           self.manage_delObjects(ids=ids)
         # Add asset with prefix.
@@ -384,8 +406,7 @@ class ZMSFilterManager(
       self.filters = obs.copy()
       # Return with new id.
       return len(pobs)-1
-    
-    
+
     # ------------------------------------------------------------------------------
     #  _filtermanager.delFilterProcess:
     # 
@@ -400,31 +421,30 @@ class ZMSFilterManager(
       # Asset.
       prefix = '%s.%i.'%(id,index)
       # Delete asset with prefix.
-      ids = [x.startswith(prefix) for x in self.objectIds('File')]
+      ids = [x for x in self.objectIds('File') if x.startswith(prefix)]
       if ids:
         self.manage_delObjects(ids=ids)
       # Rename assets.
       for i in range(len(p)-index):
         oldprefix = '%s.%i.'%(id,i+index+1)
         newprefix = '%s.%i.'%(id,i+index)
-        old = [x.startswith(oldprefix) for x in self.objectIds('File')]
+        old = [x for x in self.objectIds('File') if x.startswith(oldprefix)]
         if old:
-          id = old[0]
-          fn = '.'.join(id.split('.')[2:])
-        self.manage_renameObject(id=id, new_id='%s%s'%(newprefix,fn))
+          old_id = old[0]
+          fn = '.'.join(old_id.split('.')[2:])
+          new_id = '%s%s'%(newprefix,fn)
+          self.manage_renameObject(id=old_id, new_id=new_id)
       # Set attribute.
       self.filters = obs.copy()
       # Return with empty id.
       return -1
-    
-    
+
     # ------------------------------------------------------------------------------
     #  _filtermanager.moveFilterProcess:
     # 
     #  Move filter-process by given id and index to specified position.
     # ------------------------------------------------------------------------------
     def moveFilterProcess(self, id, index, pos):
-      standard.writeLog( self, '[moveFilterProcess]:id=%s; index=%s; dir=%s'%(id, str(index), str(dir)))
       # Set.
       obs = self.filters
       p = obs[id].get('processes', [])
@@ -432,21 +452,31 @@ class ZMSFilterManager(
       p.remove(ob)
       p.insert(pos, ob)
       obs[id]['processes'] = p
+      # Asset.
+      prefix = '%s.%i.'%(id,index)
+      # Rename asset with prefix.
+      ids = [x for x in self.objectIds('File') if x.startswith(prefix)]
+      if ids:
+        old_id = ids[0]
+        fn = '.'.join(old_id.split('.')[2:])
+        new_id='%s.%i.%s'%(id,pos,fn)
+        self.manage_renameObject(id=old_id,new_id=new_id)
       # Rename assets after move.
-      for i in range(abs(index-pos)-1):
+      for i in range(abs(index-pos)):
         oldprefix = '%s.%i.'%(id,i+min(index,pos)+1)
         newprefix = '%s.%i.'%(id,i+min(index,pos))
-        old = [x.startswith(oldprefix) for x in self.objectIds('File')]
+        old = [x for x in self.objectIds('File') if x.startswith(oldprefix)]
         if old:
-          id = old[0]
-          fn = '.'.join(id.split('.')[2:])
-        self.manage_renameObject(id=id, new_id='%s%s'%(newprefix,fn))
+          old_id = old[0]
+          fn = '.'.join(old_id.split('.')[2:])
+          new_id='%s%s'%(newprefix,fn)
+          self.manage_renameObject(id=old_id, new_id=new_id)
       # Set attribute.
       self.filters = obs.copy()
       # Return with new id.
       return pos
-    
-    
+
+
     ############################################################################
     #  FilterManager.manage_changeFilter:
     #
@@ -504,13 +534,13 @@ class ZMSFilterManager(
           ids = [REQUEST.get('id')]
           for id in ids:
             if id is not None:
-              delFilterProcess(self, id, index)
+              self.delFilterProcess(id, index)
           message = self.getZMILangStr('MSG_DELETED')%len(ids)
       
       # Export.
       # -------
       elif btn == 'BTN_EXPORT':
-        return exportXml(self, REQUEST, RESPONSE)
+        return self.exportXml(REQUEST, RESPONSE)
       
       # Import.
       # -------
@@ -518,7 +548,7 @@ class ZMSFilterManager(
         f = REQUEST['file']
         if f:
           filename = f.filename
-          importXml(self, xml=f)
+          self.importXml(xml=f)
         else:
           filename = REQUEST['init']
           self.importConf(filename, createIfNotExists=True)
@@ -539,7 +569,7 @@ class ZMSFilterManager(
       # --------
       elif btn == 'move_to':
         pos = REQUEST['pos']
-        index = moveFilterProcess(self, id, index, pos)
+        self.moveFilterProcess(id, index, pos)
         message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<em>%s</em>"%index), (pos+1))
       
       # Return with message.
@@ -654,7 +684,7 @@ class ZMSFilterManager(
       # Export.
       # -------
       elif btn == 'BTN_EXPORT':
-        return exportXml(self, REQUEST, RESPONSE)
+        return self.exportXml(REQUEST, RESPONSE)
 
       # Import.
       # -------
@@ -662,7 +692,7 @@ class ZMSFilterManager(
         f = REQUEST['file']
         if f:
           filename = f.filename
-          importXml(self, xml=f)
+          self.importXml(xml=f)
         else:
           filename = REQUEST['init']
           self.importConf(filename, createIfNotExists=True)

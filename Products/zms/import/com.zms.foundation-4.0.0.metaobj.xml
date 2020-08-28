@@ -79,13 +79,12 @@
                   <item key="id">levelnfc</item>
                   <item key="keys" type="list">
                     <list>
-                      <item>0</item>
-                      <item>1</item>
-                      <item>2</item>
+                      <item><![CDATA[##]]></item>
+                      <item><![CDATA[return [(x,context.getZMILangStr('OPT_L_%i'%x)) for x in range(3)]]]></item>
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="meta_type"></item>
+                  <item key="meta_type">levelnfc</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Level</item>
                   <item key="repetitive" type="int">0</item>
@@ -462,13 +461,12 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
                   <item key="id">levelnfc</item>
                   <item key="keys" type="list">
                     <list>
-                      <item>0</item>
-                      <item>1</item>
-                      <item>2</item>
+                      <item><![CDATA[##]]></item>
+                      <item><![CDATA[return [(x,context.getZMILangStr('OPT_L_%i'%x)) for x in range(3)]]]></item>
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="meta_type"></item>
+                  <item key="meta_type">levelnfc</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Level</item>
                   <item key="repetitive" type="int">0</item>
@@ -1293,13 +1291,12 @@ return ''
                   <item key="id">levelnfc</item>
                   <item key="keys" type="list">
                     <list>
-                      <item>0</item>
-                      <item>1</item>
-                      <item>2</item>
+                      <item><![CDATA[##]]></item>
+                      <item><![CDATA[return [(x,context.getZMILangStr('OPT_L_%i'%x)) for x in range(3)]]]></item>
                     </list>
                   </item>
                   <item key="mandatory" type="int">0</item>
-                  <item key="meta_type"></item>
+                  <item key="meta_type">levelnfc</item>
                   <item key="multilang" type="int">0</item>
                   <item key="name">Level</item>
                   <item key="repetitive" type="int">0</item>

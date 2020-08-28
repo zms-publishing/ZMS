@@ -142,7 +142,7 @@
 																	<input type="checkbox" name="ids:list" tal:attributes="value metaObj/id;
 																			data-attrs python:','.join(
 																				['%s(%s)'%(xx['id'],xx['type']) for xx in
-																					[here.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['id'] not in ['icon','icon_clazz','levelnfc'] and x['type'] not in ['*','image','file','delimiter','hint','interface']]]);
+																					[here.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['type'] not in ['*','constant','delimiter','file','hint','image','interface']]]);
 																			checked python:['','checked'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])];
 																			disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()"/>
 																</td>

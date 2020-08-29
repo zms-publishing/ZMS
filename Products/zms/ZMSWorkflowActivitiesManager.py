@@ -172,7 +172,7 @@ class ZMSWorkflowActivitiesManager(object):
     
     # Cancel.
     # -------
-    if btn in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+    if btn in [ 'BTN_CANCEL', 'BTN_BACK']:
       id = ''
     
     # Change.

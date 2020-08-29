@@ -106,7 +106,7 @@ class ZMSTrashcan(zmscontainerobject.ZMSContainerObject):
     def manage_changeProperties(self, lang, REQUEST=None): 
       """ ZMSTrashcan.manage_changeProperties """
       
-      if REQUEST.get('btn', '') in  [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+      if REQUEST.get('btn') in  [ 'BTN_CANCEL', 'BTN_BACK']:
         return REQUEST.RESPONSE.redirect('manage_main?lang=%s'%lang)
         
       ##### Garbage Collection #####

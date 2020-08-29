@@ -148,7 +148,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
       
       target = REQUEST.get( 'manage_target', '%s/manage_main'%self.getParentNode().absolute_url())
       message = ''
-      if REQUEST.get('btn', '') not in  [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+      if REQUEST.get('btn', '') not in  [ 'BTN_CANCEL', 'BTN_BACK']:
         try:
           
           ##### Object State ####

@@ -780,9 +780,9 @@ class ZMSObject(ZMSItem.ZMSItem,
       for attr in self.getMetaobj(self.meta_id)['attrs']:
         attr_type = attr['type']
         redirect_self = redirect_self or attr_type in self.getMetaobjIds()+['*']
-      redirect_self = redirect_self and (self.isPageContainer() or not REQUEST.get('btn', '') in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')])
+      redirect_self = redirect_self and (self.isPageContainer() or not REQUEST.get('btn') in [ 'BTN_CANCEL', 'BTN_BACK'])
       
-      if REQUEST.get('btn', '') not in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+      if REQUEST.get('btn', '') not in [ 'BTN_CANCEL', 'BTN_BACK']:
         try:
           # Object State
           self.setObjStateModified(REQUEST)

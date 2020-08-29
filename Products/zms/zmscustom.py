@@ -82,7 +82,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
     for attr in metaObj['attrs']:
       attr_type = attr['type']
       redirect_self = redirect_self or attr_type in self.getMetaobjIds()+['*']
-    redirect_self = redirect_self and not REQUEST.get('btn', '') in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]
+    redirect_self = redirect_self and not REQUEST.get('btn', '') in [ 'BTN_CANCEL', 'BTN_BACK']
     
     obj = getattr(self, obj.id)
     try:
@@ -250,7 +250,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       sessionvalue='%s_%s'%(filtervalue, self.id)
       standard.set_session_value(self,sessionattr, REQUEST.form.get(filterattr, standard.get_session_value(self,sessionattr, '')))
       standard.set_session_value(self,sessionvalue, REQUEST.form.get(filtervalue, standard.get_session_value(self,sessionvalue, '')))
-      if REQUEST.get('btn', '')==self.getZMILangStr('BTN_RESET'):
+      if REQUEST.get('btn')=='BTN_RESET':
         standard.set_session_value(self,sessionattr, '')
         standard.set_session_value(self,sessionvalue, '')
       if standard.get_session_value(self,sessionattr, '') != '' and \
@@ -270,7 +270,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
           requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
           sessionkey = '%s_%s'%(requestkey, self.id)
           requestvalue = REQUEST.form.get(requestkey, standard.get_session_value(self,sessionkey, ''))
-          if REQUEST.get('btn', '')==self.getZMILangStr('BTN_RESET'):
+          if REQUEST.get('btn')=='BTN_RESET':
             requestvalue = ''
           REQUEST.set(requestkey, requestvalue)
           standard.set_session_value(self,sessionkey, requestvalue)
@@ -416,7 +416,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       params = {'lang':lang}
       t0 = time.time()
       
-      if action or btn and btn not in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+      if action or btn and btn not in [ 'BTN_CANCEL', 'BTN_BACK']:
         try:
           ##### Object State #####
           self.setObjStateModified(REQUEST)

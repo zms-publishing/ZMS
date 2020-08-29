@@ -1100,7 +1100,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
           sessionkey = '%s_%s'%(requestkey, self.id)
           requestvalue = REQUEST.form.get(requestkey, standard.get_session_value(self,sessionkey, ''))
-          if REQUEST.get('btn', '')==self.getZMILangStr('BTN_RESET'):
+          if REQUEST.get('btn')=='BTN_RESET':
             requestvalue = ''
           REQUEST.set(requestkey, requestvalue)
           standard.set_session_value(self,sessionkey, requestvalue)
@@ -1775,7 +1775,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       el_data = REQUEST.get('el_data', '')
       target = 'manage_properties'
       
-      if REQUEST.get('btn', '') not in [ self.getZMILangStr('BTN_CANCEL'), self.getZMILangStr('BTN_BACK')]:
+      if REQUEST.get('btn', '') not in [ 'BTN_CANCEL', 'BTN_BACK']:
         self.connection_id = REQUEST['connection_id']
         self.charset = REQUEST['charset']
         self.setModel(REQUEST['model'])

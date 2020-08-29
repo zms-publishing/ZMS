@@ -1,39 +1,14 @@
-<!DOCTYPE html>
+f<!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='filter config')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
 <div id="zmi-tab">
-<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'TAB_FILTER','action':'manage_customizeFilterForm'}])">zmi_breadcrumbs</tal:block>
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'TAB_FILTER','action':'manage_main'}])">zmi_breadcrumbs</tal:block>
 
 <style>
-.horizontal-group .form-group {
-	float:left;
-	margin-right:0.5em;
-}
-.horizontal-group .mandatory span {
-	background: none !important;
-	padding-left: 0 !important;
-}
-.horizontal-group .controls {
-	margin-left: 0px;
-}
-.horizontal-group .form-group label {
-	float:none;
-	width:auto;
-	text-align:left;
-}
-.horizontal-group .controls.save {
-	margin-top:2.1em;
-}
-select.zmi-sort {
-	font-size:14px;
-}
-.filterName {
-	padding-left:0.4em;
-}
-.idsSelect {
-	text-align: center;
+.table tr > .text-center {
+	width:4em;
 }
 .filterDelimiter {
 	background-color:#D0D0FF;
@@ -63,7 +38,7 @@ select.zmi-sort {
 	border-radius:4px;
 	font-weight:normal;
 	padding: 4px 1em;
-	max-width: 15rem;
+	max-width: 12rem;
 	overflow:hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -84,8 +59,8 @@ select.zmi-sort {
 	padding:0;
 }
 .modal-dialog {
-  min-width:600px;
-  width:90%;
+	min-width:600px;
+	width:90%;
 }
 </style>
 
@@ -242,7 +217,7 @@ $(function(){
 					</div>
 				</td>
 				<td>
-					<select class="form-control form-control-sm" tal:attributes="name python:'newFilterProcessId_%i'%index">
+					<select class="form-control form-control" tal:attributes="name python:'newFilterProcessId_%i'%index">
 						<tal:block tal:repeat="process python:[here.getProcess(x) for x in processIds]">
 							<option tal:attributes="value process/id; selected python:['','selected'][int(filterProcess['id']==process['id'])]" tal:content="process/name">the process</option>
 						</tal:block>
@@ -250,25 +225,22 @@ $(function(){
 				</td>
 				<td>
 					<tal:block tal:condition="python:process.get('type','process') in ['DTML Method','External Method','Script (Python)'] or process.get('command','').find('{trans}')>=0">
-						<div class="pull-left">
 							<code style="display:inline-block;margin-right:1em;">{trans}</code>
 							<input style="display:inline-block;" class="btn btn-file" type="file" tal:attributes="name python:'newFilterProcessFile_%i'%index" />
-							
-						</div>
-						<div class="pull-left filterProcessFile" tal:condition="python:filterProcess.get('file_filename')">
+						<tal:block tal:condition="python:filterProcess.get('file_filename')">
 							<input type="checkbox" checked="checked"/>
 							<a tal:attributes="href filterProcess/file_href; title python:filterProcess['file_content_type']" target="_blank">
 								<tal:block tal:content="filterProcess/file_filename"></tal:block>
 							</a>
-						</div>
+						</tal:block>
 					</tal:block>
 				</td>
 			</tal:block>
 			</tr>
 			<tr class="row_insert">
-				<td class="meta-sort"><i class="fas fa-plus"></i></td>
+				<td class="text-right"><i class="fas fa-plus"></i></td>
 				<td>
-					<select class="form-control form-control-sm" tal:attributes="name python:'newFilterProcessId_%i'%len(filterProcesses)">
+					<select class="form-control form-control" tal:attributes="name python:'newFilterProcessId_%i'%len(filterProcesses)">
 						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_TYPE')">--- Select type ---</option>
 						<tal:block tal:repeat="process python:[here.getProcess(x) for x in processIds]">
 							<option tal:attributes="value process/id" tal:content="process/name">the process</option>
@@ -394,12 +366,9 @@ $(function(){
 	<legend tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</legend>
 	<p class="well well-small d-none" tal:content="structure python:here.getZMILangStr('MSG_FILTER')">well</p>
 	<table class="table table-bordered zmi-sortable mb-0">
-		<colgroup>
-			<col width="1em"/>
-		</colgroup>
 		<thead>
 			<tr>
-				<th>
+				<th class="text-center">
 					<div class="btn-group">
 						<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
 					</div>
@@ -417,7 +386,7 @@ $(function(){
 		<tbody>
 			<tr tal:repeat="filterId filterIds">
 			<tal:block tal:define="global filter python:here.getFilter(filterId)">
-				<td class="idsSelect">
+				<td class="text-center">
 					<input type="checkbox" name="ids:list" tal:attributes="value filterId">
 				</td>
 				<td>
@@ -429,7 +398,7 @@ $(function(){
 						<table class="layoutTable">
 						<tr><td><div class="filterDelimiter">
 							<tal:block tal:condition="python:filter['format']=='import'">
-								<img tal:attributes="src python:here.getMimeTypeIconSrc(filter['content_type']); title filter/content_type"/> 
+								<i tal:attributes="class python:standard.getFileTypeIconCSS(filter['content_type']); title filter/content_type"></i>
 								<i class="fas fa-arrow-up',extra='title=\042Import\042"></i>
 							</tal:block>
 							<tal:block tal:condition="python:filter['format']!='import'">
@@ -452,11 +421,12 @@ $(function(){
 						</tr>
 						<tr><td><div class="filterDelimiter">
 							<tal:block tal:condition="python:filter['format']=='import'">
-								<img tal:attributes="src python:here.getMimeTypeIconSrc('text/xml')"/>
+								<i tal:attributes="class python:standard.getFileTypeIconCSS('text/xml')"></i>
+								<i class="fas fa-file-import',extra='title=\042Import\042"></i>
 							</tal:block>
 							<tal:block tal:condition="python:filter['format']!='import'">
-								<img tal:attributes="src python:here.getMimeTypeIconSrc(filter['content_type']); title filter/content_type"/> 
-								<i class="fas fa-arrow-down',extra='title=\042Export\042"></i>
+								<i tal:attributes="class python:standard.getFileTypeIconCSS(filter['content_type'])"></i>
+								<i class="fas fa-file-export',extra='title=\042Export\042"></i>
 							</tal:block>
 							<tal:block tal:content="filter/content_type"></tal:block>
 						</div></td></tr>
@@ -473,12 +443,9 @@ $(function(){
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('ATTR_PROCESSES')">Processes</legend>
 	<table class="table table-bordered zmi-sortable mb-0">
-		<colgroup>
-			<col width="1em"/>
-		</colgroup>
 		<thead>
 		<tr>
-			<th>
+			<th class="text-center">
 				<div class="btn-group">
 					<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
 				</div>
@@ -497,7 +464,7 @@ $(function(){
 		<tbody>
 			<tr tal:repeat="processId processIds">
 			<tal:block tal:define="global process python:here.getProcess(processId)">
-				<td class="idsSelect">
+				<td class="text-center">
 					<input type="checkbox" name="ids:list" tal:attributes="value processId">
 				</td>
 				<td>

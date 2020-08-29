@@ -548,6 +548,7 @@ def getFileTypeIconCSS(fn):
     'mp4': 'far fa-file-video',
     # Documents
     'pdf': 'far fa-file-pdf',
+    'pdf': 'far fa-file-pdf',
     'pages': 'far fa-file-word',
     'doc': 'far fa-file-word',
     'docx': 'far fa-file-word',
@@ -571,7 +572,7 @@ def getFileTypeIconCSS(fn):
   }
   icon_class = 'far fa-file'
   if fn != None:
-    fn_ext = fn.split('.')[-1]
+    fn_ext = fn.split('.')[-1].split('/')[-1]
     icon_class = (fn_ext in fontAwesomeIconClasses.keys()) and fontAwesomeIconClasses[fn_ext] or icon_class
   return icon_class
 

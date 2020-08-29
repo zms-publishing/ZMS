@@ -842,7 +842,7 @@ li.zmi-item span.zmi-ids {
 .pull-right {
 	float: right !important;
 }
-.zmi table.table td.meta-sort {
+.zmi table.table tr .meta-sort {
 	width:5rem;
 }
 .zmi table.table-sm td.meta-sort div select,

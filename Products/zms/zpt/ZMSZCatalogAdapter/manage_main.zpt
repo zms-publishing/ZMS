@@ -109,9 +109,6 @@
 										<td class="p-0">
 
 											<table class="table table-sm" id="meta_types">
-												<colgroup>
-													<col width="40"/>
-												</colgroup>
 												<tbody>
 													<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
 														<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
@@ -160,11 +157,6 @@
 										</td>
 										<td class="p-0 border-left">
 											<table class="table table-sm" id="indexes">
-												<colgroup>
-													<col width="10%"/>
-													<col width="60%"/>
-													<col width="30%"/>
-												</colgroup>
 											</table>
 										</td>
 									</tr>

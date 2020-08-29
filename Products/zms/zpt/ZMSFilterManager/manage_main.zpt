@@ -7,9 +7,6 @@ f<!DOCTYPE html>
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'TAB_FILTER','action':'manage_main'}])">zmi_breadcrumbs</tal:block>
 
 <style>
-.table tr > .text-center {
-	width:4em;
-}
 .filterDelimiter {
 	background-color:#D0D0FF;
 	border:1px navy solid;
@@ -368,7 +365,7 @@ $(function(){
 	<table class="table table-bordered zmi-sortable mb-0">
 		<thead>
 			<tr>
-				<th class="text-center">
+				<th class="meta-sort text-center">
 					<div class="btn-group">
 						<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
 					</div>
@@ -386,7 +383,7 @@ $(function(){
 		<tbody>
 			<tr tal:repeat="filterId filterIds">
 			<tal:block tal:define="global filter python:here.getFilter(filterId)">
-				<td class="text-center">
+				<td class="meta-sort text-center">
 					<input type="checkbox" name="ids:list" tal:attributes="value filterId">
 				</td>
 				<td>
@@ -445,7 +442,7 @@ $(function(){
 	<table class="table table-bordered zmi-sortable mb-0">
 		<thead>
 		<tr>
-			<th class="text-center">
+			<th class="meta-sort text-center">
 				<div class="btn-group">
 					<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
 				</div>
@@ -464,7 +461,7 @@ $(function(){
 		<tbody>
 			<tr tal:repeat="processId processIds">
 			<tal:block tal:define="global process python:here.getProcess(processId)">
-				<td class="text-center">
+				<td class="meta-sort text-center">
 					<input type="checkbox" name="ids:list" tal:attributes="value processId">
 				</td>
 				<td>

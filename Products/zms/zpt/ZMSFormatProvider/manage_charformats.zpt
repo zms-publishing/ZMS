@@ -119,12 +119,9 @@
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('TAB_CHARFORMATS')">Char-Formats</legend>
 	<table class="table table-sm table-striped table-bordered table-hover mb-0">
-	<colgroup>
-		<col width="40"/>
-	</colgroup>
 	<thead tal:condition="python:here.meta_type.find('Acquired')<0">
 		<tr>
-			<th>
+			<th class="meta-sort text-center">
 				<div class="btn-group">
 					<button class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
 				</div>
@@ -142,7 +139,7 @@
 	<tbody>
 	<tal:block tal:repeat="format formats">
 		<tr>
-			<td style="text-align:center;">
+			<td class="meta-sort text-center">
 				<input type="checkbox" name="ids:list" tal:attributes="value python:format.get('id','')" />
 			</td>
 			<td>

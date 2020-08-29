@@ -198,9 +198,6 @@
 
 <div class="control-group" tal:define="zmscontext options/zmscontext">
 	<table class="table table-bordered m-0" title="Permalinks">
-		<colgroup>
-			<col width="2em"/>
-		</colgroup>
 		<tbody tal:define="prefix python:'%s.permalink.'%zmscontext.meta_id;
 			keys python:[x for x in zmscontext.getConfProperties() if x.startswith(prefix)];
 			dummy0 python:keys.sort();">
@@ -2331,7 +2328,7 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
 		<col style="width:5%">
 	</colgroup> 
 	<th>&nbsp;</th>
-	<th align="center">
+	<th class="text-center">
 		<label for="_active" tal:content="structure python:here.getZMILangStr('ATTR_ACTIVE')">Active*</label>
 	</th>
 	<th>

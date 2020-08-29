@@ -11,7 +11,7 @@
 <div id="zmi-tab" class="pb-4">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="card form-horizontal" name="searchform" method="get">
+<form class="card form-horizontal" name="searchform" method="get" action="manage_tab_search">
 	<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 	<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
 	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
@@ -56,7 +56,7 @@
 			qs python:here.getCatalogQueryString(request.get('raw',''),request.get('option',''));
 			qres python:[]">
 
-	<form class="card form-horizontal" method="get">
+	<form class="card form-horizontal" method="get" action="manage_tab_search">
 		<legend tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</legend>
 		<div class="card-body"
 			tal:content="structure python:here.getZMILangStr('SEARCH_YOURQUERY')%('<b>%s</b>'%qs)+' '+here.getZMILangStr('SEARCH_RETURNEDRESULTS')+':'"
@@ -120,7 +120,7 @@
 <tal:block tal:define="global ids python:['TASK_ZMSNOTE', 'TASK_UNTRANSLATED', 'TASK_CHANGED_BY_DATE']">
 
 
-<form class="form-horizontal card" role="form" name="form0" method="get">
+<form class="form-horizontal card" role="form" name="form0" method="get" action="manage_tab_tasks">
 	<legend><span tal:replace="python:here.getZMILangStr('TAB_TASKS')">the task-type</span></legend>
 	<div class="card-body">
 		<div class="form-group row task_type">

@@ -53,13 +53,20 @@
 		border-top:1px solid #888;
 		padding:0;
 	}
-	.modal-dialog {
+	.zmi .modal .modal-dialog {
 		min-width:600px;
-		width:90%;
+		width:90vw !important;
+		max-width: 90vw !important;
+	}
+	@media (min-width: 1200px) {
+		.zmi div:not(#zmiModalupdateEntity) .modal-dialog {
+			max-width: 90vw !important;
+		}
 	}
 	.filterProcesses i.fa-long-arrow-alt-down {
 		color: #0088cc80;
 	}
+
 </style>
 
 <script>
@@ -225,10 +232,10 @@ $(function(){
 					<tal:block tal:condition="python:process.get('type','process') in ['DTML Method','External Method','Script (Python)'] or process.get('command','').find('{trans}')>=0">
 							<code style="display:inline-block;margin-right:1em;">{trans}</code>
 							<input style="display:inline-block;" class="btn btn-file" type="file" tal:attributes="name python:'newFilterProcessFile_%i'%index" />
-						<tal:block tal:condition="python:filterProcess.get('file_filename')">
+						<tal:block tal:condition="python:filterProcess.get('file_filename',None)">
 							<input type="checkbox" checked="checked"/>
-							<a tal:attributes="href filterProcess/file_href; title python:filterProcess['file_content_type']" target="_blank">
-								<tal:block tal:content="filterProcess/file_filename"></tal:block>
+							<a tal:attributes="href filterProcess/file_href; title python:'%s (%s)'%(filterProcess.get('file_filename',None),filterProcess.get('file_content_type',None))" 
+								target="_blank" tal:content="filterProcess/file_filename">FILENAME
 							</a>
 						</tal:block>
 					</tal:block>

@@ -119,12 +119,12 @@
 							<tal:block tal:condition="python:filter['format']!='import'">
 								<tal:block tal:content="filter/format">the format</tal:block>
 							</tal:block>
-						</div><i class="icon-long-arrow-down center"></i></td></tr>
+						</div><i class="fas fa-long-arrow-alt-down center"></i></td></tr>
 						<tr tal:repeat="i python:range(len(filterProcesses))">
 							<tal:block tal:define="
 									filterProcess python:filterProcesses[i];
 									process python:filter_manager.getProcess(filterProcess['id'])">
-								<td><div tal:attributes="class python:' '.join(['filterProcess']+[[],['active']][int(step==i+1)])" tal:content="process/name">the process-name</div><i class="icon-long-arrow-down center"></i></td>
+								<td><div tal:attributes="class python:' '.join(['filterProcess']+[[],['active']][int(step==i+1)])" tal:content="process/name">the process-name</div><i class="fas fa-long-arrow-alt-down center"></i></td>
 								<tal:block tal:condition="python:filterProcess.get('file_filename')">
 									<td><hr style="margin:1em 0;width:120px;border-top:1px solid #888;padding:0;" /></td>
 									<td><div class="filterProcessFile">

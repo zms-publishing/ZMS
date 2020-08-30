@@ -1,4 +1,4 @@
-f<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='filter config')">
@@ -7,58 +7,59 @@ f<!DOCTYPE html>
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'label':'TAB_FILTER','action':'manage_main'}])">zmi_breadcrumbs</tal:block>
 
 <style>
-.filterDelimiter {
-	background-color:#D0D0FF;
-	border:1px navy solid;
-	border-radius:4px;
-	margin:.1em;
-	max-width:20em;
-	min-width:10em;
-	overflow:hidden;
-	text-align:center;
-	padding:2px 4px 2px 4px;
-}
-.filterProcess {
-	background-color:#D0FFD0;
-	border:1px navy solid;
-	border-radius:4px;
-	font-weight:normal;
-	margin:.1em;
-	max-width:20em;
-	text-align:center;
-	padding:2px 4px 2px 4px;
-}
-.filterProcessFile {
-	text-align:left;
-	background-color:white;
-	border:1px #CCC solid;
-	border-radius:4px;
-	font-weight:normal;
-	padding: 4px 1em;
-	max-width: 12rem;
-	overflow:hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-.layoutTable th, .layoutTable td {
-	padding:0;
-	vertical-align:top;
-	border:0 !important;
-	text-align:center;
-}
-.layoutTable td {
-	padding:0 !important;
-}
-.layoutTable td hr {
-	margin:1em 0;
-	width:5rem;
-	border-top:1px solid #888;
-	padding:0;
-}
-.modal-dialog {
-	min-width:600px;
-	width:90%;
-}
+	.filterProcess,
+	.filterDelimiter,
+	.filterProcessFile {
+		background-color:#D0FFD0;
+		border:1px navy solid;
+		border-radius:4px;
+		margin:.1em;
+		max-width:30vw;
+		width:20rem;
+		text-align:center;
+		padding:.3rem;
+		overflow:hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.filterDelimiter {
+		background-color:#D0D0FF;
+	}
+	.filterProcessFile {
+		text-align:left;
+		background-color:white;
+		border:1px #CCC solid;
+		padding: .3rem .75rem;
+		width:auto;
+	}
+	.filterProcesses .layoutTable {
+		margin-bottom:1rem;
+	}
+	.layoutTable tr {
+		background: transparent !important;
+	}
+	.layoutTable th, .layoutTable td {
+		padding:0;
+		vertical-align:top;
+		border:0 !important;
+		text-align:center;
+	}
+	.layoutTable td {
+		padding:0 !important;
+	}
+	.layoutTable td hr {
+		margin:1em 0;
+		width:5rem;
+		border-top:1px solid #888;
+		padding:0;
+	}
+	.modal-dialog {
+		min-width:600px;
+		width:90%;
+	}
+	.filterProcesses i.fa-long-arrow-alt-down {
+		color: #0088cc80;
+	}
 </style>
 
 <script>
@@ -196,7 +197,7 @@ $(function(){
 					<div class="col-md-10"><textarea class="form-control" name="inpDescription" tal:content="python:filter.get('description','')">the description</textarea></div>
 				</div><!-- .form-group -->
 			<legend tal:content="python:here.getZMILangStr('ATTR_PROCESS')">Process</legend>
-			<table class="table zmi-sortable">
+			<table class="table table-sm table-striped zmi-sortable">
 			<tbody tal:define="global filterProcesses python:here.getFilterProcesses(filter['id'])">
 			<tr tal:repeat="index python:range(len(filterProcesses))">
 			<tal:block tal:define="global filterProcess python:filterProcesses[index]; process python:here.getProcess(filterProcess['id'])">
@@ -253,7 +254,7 @@ $(function(){
 </div><!-- #updateFilter -->
 
 <div class="d-none" tal:condition="python:request.get('id') in processIds">
-	<div id="updateProcess" class="inner" tal:define="global process python:here.getProcess(request['id'])">
+	<div id="updateProcess" class="inner" tal:define="process python:here.getProcess(request['id'])">
 		<form class="form-horizontal" action="manage_changeProcess" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 			<input type="hidden" name="id" tal:attributes="value request/id"/>
@@ -280,7 +281,19 @@ $(function(){
 			<div class="form-group row inpCommand">
 				<div class="col-md-12"><textarea class="form-control" id="inpCommand" name="inpCommand" tal:content="process/command" cols="80" rows="25">the command</textarea></div>
 			</div><!-- .form-group -->
-		</form>
+
+<tal:block tal:replace="nothing">
+			<!-- ACE Editor -->
+			<div class="form-group row inpCommand">
+				<div class="col-md-12">
+					<input type="hidden" name="el_method" tal:attributes="value process/id" />
+					<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='inpCommand',ob=process,text=process.get('command',''))">ACE Editor</tal:block>
+				</div>
+			</div><!-- .form-group -->
+			<!-- /ACE Editor -->
+</tal:block>
+
+</form>
 	</div><!-- .inner -->
 </div><!-- #updateProcess -->
 
@@ -362,7 +375,7 @@ $(function(){
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</legend>
 	<p class="well well-small d-none" tal:content="structure python:here.getZMILangStr('MSG_FILTER')">well</p>
-	<table class="table table-bordered zmi-sortable mb-0">
+	<table class="table table-sm table-striped table-bordered zmi-sortable mb-0">
 		<thead>
 			<tr>
 				<th class="meta-sort text-center">
@@ -401,10 +414,10 @@ $(function(){
 							<tal:block tal:condition="python:filter['format']!='import'">
 								<tal:block tal:content="filter/format">the format</tal:block>
 							</tal:block>
-						</div><i class="icon-long-arrow-down center"></i></td></tr>
+						</div><i class="fas fa-long-arrow-alt-down center"></i></td></tr>
 						<tr tal:repeat="filterProcess python:here.getFilterProcesses(filterId)">
 							<tal:block tal:define="global process python:here.getProcess(filterProcess['id'])">
-								<td><div class="filterProcess" tal:content="process/name">the process-name</div><i class="icon-long-arrow-down center"></i></td>
+								<td><div class="filterProcess" tal:content="process/name">the process-name</div><i class="fas fa-long-arrow-alt-down center"></i></td>
 								<tal:block tal:condition="python:filterProcess.get('file_filename')">
 									<td><hr/></td>
 									<td><div class="filterProcessFile">
@@ -439,7 +452,7 @@ $(function(){
 <form class="form-horizontal card" action="manage_changeProcess" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend tal:content="python:here.getZMILangStr('ATTR_PROCESSES')">Processes</legend>
-	<table class="table table-bordered zmi-sortable mb-0">
+	<table class="table table-sm table-striped table-bordered zmi-sortable mb-0">
 		<thead>
 		<tr>
 			<th class="meta-sort text-center">
@@ -460,7 +473,7 @@ $(function(){
 		</thead>
 		<tbody>
 			<tr tal:repeat="processId processIds">
-			<tal:block tal:define="global process python:here.getProcess(processId)">
+			<tal:block tal:define="process python:here.getProcess(processId)">
 				<td class="meta-sort text-center">
 					<input type="checkbox" name="ids:list" tal:attributes="value processId">
 				</td>
@@ -468,9 +481,9 @@ $(function(){
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
 						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is not None"><i tal:on-error="nothing" tal:attributes="class python:getattr(here,process['id']).zmi_icon"></i></tal:block>
 						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is None"><i class="fas fa-cog"></i></tal:block>
-						<tal:block tal:content="process/id">the id</tal:block>
+						<b class="ml-2 processId" tal:content="process/id">the id</b>
 					</a>
-					(<tal:block tal:content="process/name">the name</tal:block>)
+					<span class="processName text-muted ml-2" tal:content="python:'%s'%(process.get('name','Name Missing!'))">the name</span>
 				</td>
 				<td><code tal:content="python:standard.string_maxlen(process['command'],50)">the command</code></td>
 			</tal:block>

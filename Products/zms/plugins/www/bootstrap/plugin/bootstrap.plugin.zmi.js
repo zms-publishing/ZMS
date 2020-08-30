@@ -452,7 +452,7 @@ $ZMI.registerReady(function(){
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	// Checkboxes
-	$("input[name='ids:list']").popover({content:getZMILangStr('ACTION_SELECT').replace('%s',getZMILangStr('ATTR_OBJECT')),placement:'bottom',trigger:'hover'});
+	$("input[name='ids:list']").attr('title',getZMILangStr('ACTION_SELECT').replace('%s',getZMILangStr('ATTR_OBJECT')));
 	$(".zmi-container .zmi-item:first .right input[name='active']:checkbox")
 		.change(function() {
 				zmiToggleSelectionButtonClick(this,$(this).prop("checked"));
@@ -466,7 +466,7 @@ $ZMI.registerReady(function(){
 			$(".split-right",$container).popover({html:true,title:$("div.constraint",$container)[0].outerHTML});
 		});
 	// Action-Lists
-	$('button.btn.split-right.dropdown-toggle').popover({content:getZMILangStr('ACTION_SELECT').replace('%s',getZMILangStr('ATTR_ACTION')),placement:'bottom',trigger:'hover'});
+	$('button.btn.split-right.dropdown-toggle').attr('title',getZMILangStr('ACTION_SELECT').replace('%s',getZMILangStr('ATTR_ACTION')));
 	$(".btn-group")
 		.mouseover( function(evt) {
 				$(this).parents(".collapse").css({overflow:"visible"});

@@ -48,7 +48,7 @@
 		padding:0 !important;
 	}
 	.layoutTable td hr {
-		margin:1em 0;
+		margin:1rem 0;
 		width:5rem;
 		border-top:1px solid #888;
 		padding:0;
@@ -243,7 +243,7 @@ $(function(){
 			</tal:block>
 			</tr>
 			<tr class="row_insert">
-				<td class="text-right"><i class="fas fa-plus"></i></td>
+				<td class="text-right"><span class="btn"><i class="fas fa-plus"></i></span></td>
 				<td>
 					<select class="form-control form-control" tal:attributes="name python:'newFilterProcessId_%i'%len(filterProcesses)">
 						<option value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_TYPE')">--- Select type ---</option>
@@ -286,7 +286,7 @@ $(function(){
 				</div><!-- .controls.save -->
 			</div><!-- .form-row -->
 			<div class="form-group row inpCommand">
-				<div class="col-md-12"><textarea class="form-control" id="inpCommand" name="inpCommand" tal:content="process/command" cols="80" rows="25">the command</textarea></div>
+				<div class="col-md-12"><textarea class="form-control zmi-code" id="inpCommand" name="inpCommand" tal:content="process/command" cols="80" rows="25">the command</textarea></div>
 			</div><!-- .form-group -->
 
 <tal:block tal:replace="nothing">
@@ -428,9 +428,9 @@ $(function(){
 								<tal:block tal:condition="python:filterProcess.get('file_filename')">
 									<td><hr/></td>
 									<td><div class="filterProcessFile">
-										<a tal:attributes="href filterProcess/file_href; title python:'%s (%s)'%(filterProcess['file_filename'], filterProcess['file_content_type'])" target="_blank">
-											<i tal:attributes="class python:standard.getFileTypeIconCSS(filterProcess['file_filename']); title python:filterProcess['file_content_type']"></i>
-											<tal:block tal:content="filterProcess/file_filename"></tal:block>
+										<i tal:attributes="class python:standard.getFileTypeIconCSS(filterProcess['file_filename']); title python:filterProcess['file_content_type']"></i>&nbsp;
+										<a tal:attributes="href filterProcess/file_href; title python:'%s (%s)'%(filterProcess['file_filename'], filterProcess['file_content_type'])" 
+											target="_blank" tal:content="filterProcess/file_filename">FILENAME
 										</a>
 									</div></td>
 								</tal:block>

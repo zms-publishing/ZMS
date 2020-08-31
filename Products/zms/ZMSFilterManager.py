@@ -90,16 +90,21 @@ class ZMSFilterManager(
     def __init__(self, filters={}, processes={}):
       self.id = 'filter_manager'
       self.filters = {}
-      for x in filters:
-        self.setFilter(x['id'], x['acquired'], x['name'], x['format'], x['content_type'], x['description'], x['roles'], x['meta_types'])
-        index = 0
-        for p in x.get('processes', []):
-          self.setFilterProcess(x['id'], index, p['id'], p['file'])
-          index += 1
+      try:
+        for x in filters:
+          self.setFilter(x['id'], x['acquired'], x['name'], x['format'], x['content_type'], x['description'], x['roles'], x['meta_types'])
+          index = 0
+          for p in x.get('processes', []):
+            self.setFilterProcess(x['id'], index, p['id'], p['file'])
+            index += 1
+      except:
+        pass
       self.processes = {}
-      for x in processes:
-        self.setProcess(None, x['id'], x['acquired'], x['name'], x['type'], x['command'])
-
+      try:
+        for x in processes:
+          self.setProcess(None, x['id'], x['acquired'], x['name'], x['type'], x['command'])
+      except:
+        pass
 
     ############################################################################
     #

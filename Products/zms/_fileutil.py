@@ -333,7 +333,7 @@ def exportObj(obj, filename, filetype='b'):
   if data is not None:
     objfile = open(filename, 'w%s'%filetype)
     if isinstance(data, six.string_types):
-      objfile.write(data)
+      objfile.write(six.ensure_binary(data))
     elif isinstance(data,io.RawIOBase):
       objfile.write(data.read())
     else:

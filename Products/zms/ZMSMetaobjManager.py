@@ -471,7 +471,10 @@ class ZMSMetaobjManager(object):
       if sort == True:
         ids = sorted(ids,key=lambda x:self.display_type(self.REQUEST, x))
       elif sort == False:
-        ids = sorted(ids,key=lambda x:obs[x]['name'])
+        try:
+  	        ids = sorted(ids,key=lambda x:obs[x]['name'])
+        except:
+            pass
       return ids
 
 

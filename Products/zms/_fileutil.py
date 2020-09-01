@@ -334,6 +334,8 @@ def exportObj(obj, filename, filetype='b'):
     objfile = open(filename, 'w%s'%filetype)
     if isinstance(data, six.string_types):
       objfile.write(six.ensure_binary(data))
+    elif isinstance(data, six.binary_type):
+      objfile.write(data)
     elif isinstance(data,io.RawIOBase):
       objfile.write(data.read())
     else:

@@ -43,12 +43,6 @@ def rfc1123_date():
  return 'ERROR rfc1123_date()'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_blobfields.StringType:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-StringType=type('')
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _blobfields.guess_svg_dimensions:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def guess_svg_dimensions(self):
@@ -56,10 +50,9 @@ def guess_svg_dimensions(self):
     data = str(self.getData())
     d = dict(re.findall('\\s(.*?)="(.*?)"', data))
     if 'viewBox' in d:
-        viewBox = [int(x) for x in d['viewBox'].split(' ')]
-        self.width = viewBox[2] - viewBox[0]
-        self.height = viewBox[3] - viewBox[1]
-        print(self.width,self.height)
+      viewBox = [int(x) for x in d['viewBox'].split(' ')]
+      self.width = viewBox[2] - viewBox[0]
+      self.height = viewBox[3] - viewBox[1]
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -388,7 +381,7 @@ class MyBlob(object):
                     RESPONSE.setStatus(206) # Partial content
 
                     data = self.data
-                    if isinstance(data, StringType):
+                    if standard.is_bytes(data):
                         RESPONSE.write(data[start:end])
                         return True
 
@@ -459,7 +452,7 @@ class MyBlob(object):
                             'Content-Range: bytes %d-%d/%d\r\n\r\n' % (
                                 start, end - 1, self.size))
 
-                        if isinstance(data, StringType):
+                        if standard.is_bytes(data):
                             RESPONSE.write(data[start:end])
 
                         else:

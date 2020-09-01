@@ -79,6 +79,11 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
   except:
     import Image
   
+  # SVG
+  if img.filename.endswith(".svg"):
+    img.width, img.height = size
+    return img
+  
   # Save image in temp-folder
   context = img.aq_parent
   tempfolder = tempfile.mktemp()

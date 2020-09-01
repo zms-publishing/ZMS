@@ -408,6 +408,9 @@ footer .back-to-top.hide {
 	color: #354f67a6 !important;
 	font-weight:bold;
 }
+#zmi-tab .card  .card-header span.zmi-state {
+	margin:0 .35rem
+}
 #zmi-tab .card .card-header.btn-collapse #zmi-toggle-activity,
 #zmiIframeAddDialog .card .card-header.btn-collapse #zmi-toggle-activity {
 	margin-left:0.6rem;
@@ -949,6 +952,10 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	padding: 0 .2rem 0 .15rem;
 	height:1.5rem;
 	border:1px solid transparent;
+	max-width: 12rem;
+	white-space:nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .zmi .breadcrumb li.breadcrumb-item.active a {
 	color:#999fa5;

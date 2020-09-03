@@ -140,7 +140,9 @@ class ZMSItem(
         standard.set_session_value(self,'zmi-manage-system',int(request.get('zmi-manage-system',0)))
       # manage must not be accessible for Anonymous
       if request['URL0'].find('/manage') >= 0:
-        if request['AUTHENTICATED_USER'].has_role('Anonymous'):
+        lower = self.getUserAttr(request['AUTHENTICATED_USER'],'attrActiveStart',None)
+        upper = self.getUserAttr(request['AUTHENTICATED_USER'],'attrActiveEnd',None)
+        if not standard.todayInRange(lower, upper) or request['AUTHENTICATED_USER'].has_role('Anonymous'):
           import zExceptions
           raise zExceptions.Unauthorized
       # avoid declarative urls

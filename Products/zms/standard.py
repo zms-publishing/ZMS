@@ -1211,6 +1211,28 @@ def daysBetween(t0, t1):
   d = 24.0*60.0*60.0
   return int((t1-t0)//d)
 
+
+security.declarePublic('todayInRange')
+def todayInRange(start, end):
+  """
+  Checks if today is in given range.
+  @param start
+  @type start C{any}
+  @param end
+  @type end C{any}
+  """
+  b = True
+  if start is not None:
+    dt = getDateTime(start)
+    dt = DateTime(time.mktime(dt))
+    b = b and dt.isPast()
+  if end is not None:
+    dt = getDateTime(end)
+    dt = DateTime(time.mktime(dt))
+    b = b and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))
+  return b
+
+
 security.declarePublic('compareDate')
 def compareDate(t0, t1):
   """

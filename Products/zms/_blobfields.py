@@ -34,6 +34,7 @@ from Products.zms import _fileutil
 from Products.zms import _globals
 from Products.zms import pilutil
 from Products.zms import standard
+from Products.zms import svgutil
 from Products.zms import zopeutil
 
 __all__= ['MyBlob', 'MyImage', 'MyFile']
@@ -41,18 +42,6 @@ __all__= ['MyBlob', 'MyImage', 'MyFile']
 # PY3 PATCH
 def rfc1123_date():
  return 'ERROR rfc1123_date()'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-_blobfields.guess_svg_dimensions:
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def guess_svg_dimensions(self):
-  if self.filename.endswith(".svg"):
-    data = str(self.getData())
-    d = dict(re.findall('\\s(.*?)="(.*?)"', data))
-    if 'viewBox' in d:
-      viewBox = [int(x) for x in d['viewBox'].split(' ')]
-      self.width = viewBox[2] - viewBox[0]
-      self.height = viewBox[3] - viewBox[1]
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -903,8 +892,10 @@ class MyImage(MyBlob, Image):
       """
       w = self.width
       if not w:
-        if self.filename.endswith(".svg"):
-          guess_svg_dimensions(self)
+          size = svgutil.get_dimensions(self)
+          if size is not None:
+            self.width = int(size[0])
+            self.height = int(size[1])
           w = self.width
       if not w:
         w = self.aq_parent.getConfProperty('ZMS.image.default.width', 640)
@@ -920,8 +911,10 @@ class MyImage(MyBlob, Image):
       """
       h = self.height
       if not h:
-        if self.filename.endswith(".svg"):
-          guess_svg_dimensions(self)
+          size = svgutil.get_dimensions(self)
+          if size is not None:
+            self.width = int(size[0])
+            self.height = int(size[1])
           h = self.height
       if not h:
         h = self.aq_parent.getConfProperty('ZMS.image.default.height', 400)

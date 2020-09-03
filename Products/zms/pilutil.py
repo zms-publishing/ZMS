@@ -22,6 +22,7 @@ import tempfile
 # Product Imports.
 from Products.zms import _fileutil
 from Products.zms import standard
+from Products.zms import svgutil
 
 security = ModuleSecurityInfo('Products.zms.pilutil')
 
@@ -80,8 +81,9 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
     import Image
   
   # SVG
-  if img.filename.endswith(".svg"):
-    img.width, img.height = size
+  svg_dim = svgutil.get_dimensions(img)
+  if svg_dim is not None:
+    img = svgutil.set_dimensions(img,size)
     return img
   
   # Save image in temp-folder

@@ -472,13 +472,17 @@ function zmiModalInsertUserOpen(context) {
 	<tr tal:repeat="userName userNames" tal:attributes="id userName" class="userName">
 		<td tal:define="
 				securityUser python:securityUsers.get(userName,{});
+				lower python:securityUser.get('attrActiveStart',None);
+				upper python:securityUser.get('attrActiveEnd',None);
+				active python:standard.todayInRange(lower, upper);
 				acquired python:securityUser.get('acquired',False);
 				nodes python:securityUser.get('nodes',{});">
 			<tal:block tal:content="repeat/userName/number"></tal:block>.
 			<input type="checkbox" name="ids:list" tal:attributes="value userName"/>
 			<i class="icon-spinner icon-spin fas fa-share" tal:condition="acquired"></i>
 			<a data-placement="top"
-				tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName); class python:['','text-muted'][acquired];"
+				tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName); 
+					class python:['','text-muted'][acquired or not active];"
 				><span><i class="icon-spinner icon-spin fas fa-spinner fa-spin"></i> <tal:block tal:content="userName">userName</tal:block></span>
 			</a><tal:block tal:condition="python:len(nodes)>0"
 				>&nbsp;(<tal:block tal:define="

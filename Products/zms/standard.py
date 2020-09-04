@@ -410,7 +410,7 @@ def bin2hex(m):
   @rtype: C{bytes}
   """
   import binascii
-  return binascii.hexlify(m)
+  return six.ensure_string(binascii.hexlify(m))
 
 
 def hex2bin(m):

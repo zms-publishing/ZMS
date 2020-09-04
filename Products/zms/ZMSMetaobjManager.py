@@ -861,7 +861,7 @@ class ZMSMetaobjManager(object):
         zopeutil.removeObject(self, newObId)
         # Insert Zope-Object.
         if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
-        if _globals.is_str_type(newCustom): newCustom = newCustom.replace('\r', '')
+        if standard.is_str(newCustom): newCustom = newCustom.replace('\r', '')
         zopeutil.addObject(self, mapTypes[newType], newObId, newName, newCustom)
         del attr['custom']
       

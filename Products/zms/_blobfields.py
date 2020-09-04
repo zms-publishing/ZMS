@@ -863,11 +863,12 @@ class MyImage(MyBlob, Image):
       data = ''
       objtype = ''
       filename = _fileutil.getOSPath(_fileutil.extractFilename(getattr(self, 'filename', '')))
+      content_type = getattr(self, 'content_type', '')
       if data2hex:
-        if getattr(self, 'content_type', '').find('text/') == 0:
-          data = '<![CDATA[%s]]>'%self.getData( sender).decode()
+        if content_type.startswith('text/') or content_type in ['application/css','application/javascript','image/svg']:
+          data = '<![CDATA[%s]]>'%standard.pystr(self.getData(sender),'utf-8')
         else:
-          data = standard.bin2hex(self.getData( sender)).decode()
+          data = standard.bin2hex(standard.pybytes(self.getData(sender)))
         objtype = ' type="image"'
       else:
         filename = self.getFilename()
@@ -876,7 +877,7 @@ class MyImage(MyBlob, Image):
       xml = '\n<data'
       xml += ' width="%s"'%standard.pystr(getattr(self, 'width', ''))
       xml += ' height="%s"'%standard.pystr(getattr(self, 'height', ''))
-      xml += ' content_type="%s"'%standard.pystr(getattr(self, 'content_type', ''))
+      xml += ' content_type="%s"'%content_type
       xml += ' filename="%s"'%filename
       xml += objtype + '>' + data
       xml += '</data>'
@@ -973,18 +974,19 @@ class MyFile(MyBlob, File):
       data = ''
       objtype = ''
       filename = _fileutil.getOSPath(_fileutil.extractFilename(getattr(self, 'filename', '')))
+      content_type = getattr(self, 'content_type', '')
       if data2hex:
-        if getattr(self, 'content_type', '').find('text/') == 0:
-          data = '<![CDATA[%s]]>'%self.getData( sender).decode()
+        if content_type.startswith('text/') or content_type in ['application/css','application/javascript','image/svg']:
+          data = '<![CDATA[%s]]>'%standard.pystr(self.getData(sender),'utf-8')
         else:
-          data = standard.bin2hex(self.getData( sender)).decode()
+          data = standard.bin2hex(standard.pybytes(self.getData(sender)))
         objtype = ' type="file"'
       else:
         filename = self.getFilename()
         filename = getLangFilename(sender, filename, self.lang)
         filename = '%s%s'%(base_path, filename)
       xml = '\n<data'
-      xml += ' content_type="%s"'%standard.pystr(getattr(self, 'content_type', ''))
+      xml += ' content_type="%s"'%content_type
       xml += ' filename="%s"'%filename
       xml += objtype + '>' + data
       xml += '</data>'

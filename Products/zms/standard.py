@@ -55,6 +55,7 @@ from six.moves.urllib.parse import quote as urllib_quote
 from six.moves.urllib.parse import quote_plus as urllib_quote_plus
 from six.moves.urllib.parse import unquote as urllib_unquote
 from six.moves.urllib.parse import urlparse as urllib_urlparse
+from six import BytesIO as PyBytesIO
 
 # if six.PY3:
 #   import urllib.parse                 as urllib_parse
@@ -66,11 +67,6 @@ from six.moves.urllib.parse import urlparse as urllib_urlparse
 #   from urllib import quote_plus       as urllib_quote_plus
 #   from urllib import unquote          as urllib_unquote
 #   from urlparse import urlparse       as urllib_urlparse
-
-if six.PY3:
-  from io import BytesIO as PyBytesIO
-else:
-  from cStringIO import StringIO as PyBytesIO
 
 # Product Imports.
 from Products.zms import _globals
@@ -1703,21 +1699,18 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
   elif type(i) is int or type(i) is float or type(i) is bool:
     return json.dumps(i)
   elif i is not None:
-    if type(i) is str:
+    if is_str(i):
       if not (i.strip().startswith('<') and i.strip().endswith('>')):
-        try:
-          i = html_escape(i).encode(encoding, errors)
-        except:
-          pass
+        i = pystr(html_escape(i))
       else:
-        i = i.encode(encoding, errors)
+        i = pystr(i)
     else:
-      i = i.decode(encoding,errors) # str(i)
+        i = pystr(i)
     if allow_booleans and i in ['true','false']:
       return i
     else:
-      if type(i) is not str:
-        i = i.decode(encoding,errors) # str(i)
+      if not is_str(i):
+        i = pystr(i)
     return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
   return '""'
 

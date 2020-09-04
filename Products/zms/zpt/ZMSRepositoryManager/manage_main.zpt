@@ -90,9 +90,7 @@
 				</div>
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->
-		<tal:block
-			tal:on-error="structure python:'<code>ERROR manage_main_diff %s: %s</code>'%(error.type, error.value)"
-			tal:content="structure python:here.manage_main_diff(here,request)">
+		<tal:block tal:content="structure python:here.manage_main_diff(here,request)">
 			the diff
 		</tal:block>
 		</form>

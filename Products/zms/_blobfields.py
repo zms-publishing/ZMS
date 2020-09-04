@@ -892,11 +892,14 @@ class MyImage(MyBlob, Image):
       """
       w = self.width
       if not w:
-          size = svgutil.get_dimensions(self)
-          if size is not None:
-            self.width = int(size[0])
-            self.height = int(size[1])
-          w = self.width
+          try:
+            size = svgutil.get_dimensions(self)
+            if size is not None:
+              self.width = int(size[0])
+              self.height = int(size[1])
+            w = self.width
+          except:
+            standard.writeError(self.aq_parent,'can\'t geWidth')
       if not w:
         w = self.aq_parent.getConfProperty('ZMS.image.default.width', 640)
       return w
@@ -911,11 +914,14 @@ class MyImage(MyBlob, Image):
       """
       h = self.height
       if not h:
-          size = svgutil.get_dimensions(self)
-          if size is not None:
-            self.width = int(size[0])
-            self.height = int(size[1])
-          h = self.height
+          try:
+            size = svgutil.get_dimensions(self)
+            if size is not None:
+              self.width = int(size[0])
+              self.height = int(size[1])
+            h = self.height
+          except:
+            standard.writeError(self.aq_parent,'can\'t getHeight')
       if not h:
         h = self.aq_parent.getConfProperty('ZMS.image.default.height', 400)
       return h

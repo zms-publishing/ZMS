@@ -297,7 +297,10 @@ class ZMSRepositoryManager(
                   l[d['filename']] = d
                 if 'ob' in i:
                   del i['ob']
-                py.append('\t\t%s = %s'%(self.id_quote(i['id']), standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
+                try:
+                  py.append('\t\t%s = %s'%(self.id_quote(i['id']), standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
+                except:
+                  py.append('\t\t# ERROR: '+standard.writeError(self,'can\'t localFiles \'%s\''%i['id']))
                 py.append('')
         d = {}
         d['id'] = id

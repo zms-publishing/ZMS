@@ -55,9 +55,10 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
       artefact = getattr(container, artefact_id, None)
     if artefact is None and attr['type'] in ['External Method']:
       class MissingArtefactProxy(object):
-        def __init__(self, id, meta_type):
+        def __init__(self, id, meta_type, data=None):
           self.id=id
           self.meta_type=meta_type
+          self.data = data
         icon__roles__=None
         def zmi_icon(self):
           return 'fas fa-skull-crossbones text-danger'
@@ -66,10 +67,13 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
         getId__roles__=None
         def getId(self):
           return self.id
+        getData__roles__=None
+        def getData(self):
+          return self.data
         absolute_url__roles__=None
         def absolute_url(self):
           return '#'
-      artefact = MissingArtefactProxy(attr['id'], attr['type'])
+      artefact = MissingArtefactProxy(attr['id'], attr['type'], attr.get('custom'))
     if artefact is not None:
       attr['ob'] = artefact
   except:

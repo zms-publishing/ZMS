@@ -123,7 +123,7 @@ def readData(ob, default=None):
     data = ob.read()
   elif ob.meta_type == 'External Method':
     context = ob
-    id = ob.id
+    id = ob.getId()
     while context is not None:
       m = getExternalMethodModuleName(context, id)
       filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
@@ -140,6 +140,11 @@ def readData(ob, default=None):
       f = open(filepath, 'rb')
       data = standard.pystr(f.read(),encoding='utf-8')
       f.close()
+    else:
+      try:
+        data = ob.getData()
+      except:
+        pass
   elif ob.meta_type == 'Z SQL Method':
     lines = []
     lines.append('<connection>%s</connection>'%ob.connection_id)

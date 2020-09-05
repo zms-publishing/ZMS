@@ -59,12 +59,10 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
           self.id=id
           self.meta_type=meta_type
         icon__roles__=None
-        def icon_clazz(self):
-          return {'External Method':'fa fa-external-link-square-alt'}.get(self.meta_type, 'far fa-file-archive')
+        def zmi_icon(self):
+          return 'fas fa-skull-crossbones text-danger'
         def zmi_icon(self):
           return icon_clazz(self)
-        def icon(self): # obsolete?
-          return '<i title="%s" class="%s"></i>'%(self.meta_type, zmi_icon(self))
         getId__roles__=None
         def getId(self):
           return self.id
@@ -865,8 +863,11 @@ class ZMSMetaobjManager(object):
         # Insert Zope-Object.
         if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
         if standard.is_str(newCustom): newCustom = newCustom.replace('\r', '')
-        zopeutil.addObject(self, mapTypes[newType], newObId, newName, newCustom)
-        del attr['custom']
+        try:
+          zopeutil.addObject(self, mapTypes[newType], newObId, newName, newCustom)
+          del attr['custom']
+        except:
+          standard.writeError(self,"can't addObject %s (%s)"%(newObId,newType))
       
       # Replace
       ids = [x['id'] for x in attrs]
@@ -914,9 +915,11 @@ class ZMSMetaobjManager(object):
         if standard.is_str(newCustom): 
            newCustom = newCustom.encode('utf-8').replace(b'\r', b'')
            newCustom = newCustom.decode('utf-8')
-        zopeutil.addObject(container, newType, newObId, newName, newCustom)
-        artefact = zopeutil.getObject(container, newObId)
-        del attr['custom']
+        try:
+          zopeutil.addObject(container, newType, newObId, newName, newCustom)
+          del attr['custom']
+        except:
+          standard.writeError(self,"can't addObject %s (%s)"%(newObId,newType))
         # Change Zope-Object (special).
         newOb = zopeutil.getObject(container, newObId)
         if newType == 'Folder':

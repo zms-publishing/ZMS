@@ -65,6 +65,9 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
           return icon_clazz(self)
         def icon(self): # obsolete?
           return '<i title="%s" class="%s"></i>'%(self.meta_type, zmi_icon(self))
+        getId__roles__=None
+        def getId(self):
+          return self.id
         absolute_url__roles__=None
         def absolute_url(self):
           return '#'

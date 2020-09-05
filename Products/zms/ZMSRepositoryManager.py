@@ -287,12 +287,15 @@ class ZMSRepositoryManager(
                 if ob is not None:
                   fileexts = {'DTML Method':'.dtml', 'DTML Document':'.dtml', 'External Method':'.py', 'Page Template':'.zpt', 'Script (Python)':'.py', 'Z SQL Method':'.zsql'}
                   fileprefix = i['id'].split('/')[-1]
-                  data = zopeutil.readData(ob) 
+                  data = zopeutil.readData(ob)
+                  version = ''
+                  if hasattr(ob,'_p_mtime'):
+                    version = standard.getLangFmtDate(DateTime(ob._p_mtime).timeTime(), 'eng')
                   d = {}
                   d['id'] = id
                   d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix, fileexts.get(ob.meta_type, ''))])
                   d['data'] = data
-                  d['version'] = self.getLangFmtDate(DateTime(ob._p_mtime).timeTime(), 'eng')
+                  d['version'] = version
                   d['meta_type'] = ob.meta_type
                   l[d['filename']] = d
                 if 'ob' in i:

@@ -23,6 +23,7 @@ import ZPublisher.HTTPRequest
 import collections
 import copy
 import os
+import six
 import sys
 import time
 import zExceptions
@@ -52,28 +53,7 @@ def syncZopeMetaobjAttr( self, metaObj, attr):
       for artefact_id in attr_id.split('/')[:-1]:
          container = getattr( container, artefact_id)
       artefact_id = attr['id'].split('/')[-1]
-      artefact = getattr(container, artefact_id, None)
-    if artefact is None and attr['type'] in ['External Method']:
-      class MissingArtefactProxy(object):
-        def __init__(self, id, meta_type, data=None):
-          self.id=id
-          self.meta_type=meta_type
-          self.data = data
-        icon__roles__=None
-        def zmi_icon(self):
-          return 'fas fa-skull-crossbones text-danger'
-        def zmi_icon(self):
-          return icon_clazz(self)
-        getId__roles__=None
-        def getId(self):
-          return self.id
-        getData__roles__=None
-        def getData(self):
-          return self.data
-        absolute_url__roles__=None
-        def absolute_url(self):
-          return '#'
-      artefact = MissingArtefactProxy(attr['id'], attr['type'], attr.get('custom'))
+      artefact = zopeutil.getObject(container, artefact_id, attr.get('type'), attr.get('custom'))
     if artefact is not None:
       attr['ob'] = artefact
   except:
@@ -130,7 +110,7 @@ class ZMSMetaobjManager(object):
     @see IRepositoryProvider
     """
     def provideRepositoryModel(self, r, ids=None):
-      self.writeBlock("[provideRepositoryModel]: ids=%s"%str(ids))
+      standard.writeBlock(self,"[provideRepositoryModel]: ids=%s"%str(ids))
       valid_ids = self.getMetaobjIds()
       if ids is None:
         ids = valid_ids
@@ -164,7 +144,7 @@ class ZMSMetaobjManager(object):
     def updateRepositoryModel(self, r):
       id = r['id']
       if not id.startswith('__') and not id.endswith('__'):
-        self.writeBlock("[updateRepositoryModel]: id=%s"%id)
+        standard.writeBlock(self,"[updateRepositoryModel]: id=%s"%id)
         r['attrs'] = r.get('Attrs', [])
         if 'Attrs' in r: del r['Attrs']
         self.delMetaobj(id)
@@ -199,6 +179,7 @@ class ZMSMetaobjManager(object):
     def _importMetaobjXml(self, item, createIfNotExists=1, createIdsFilter=None):
       ids = []
       id = item['key']
+      standard.writeBlock(self,'[ZMSMetaobjManager._importMetaobjXml]: id=%s'%str(id))
       meta_types = list(self.model)
       if (createIfNotExists == 1) and \
          (createIdsFilter is None or (id in createIdsFilter)):
@@ -276,7 +257,6 @@ class ZMSMetaobjManager(object):
           if attr_id not in attr_ids:
             self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             attr_ids.append(attr_id)
-      standard.writeBlock( self, '[ZMSMetaobjManager._importMetaobjXml]: id=%s'%str(id))
       return id
 
     def importMetaobjXml(self, xml, createIfNotExists=1, createIdsFilter=None):
@@ -290,7 +270,7 @@ class ZMSMetaobjManager(object):
         ids.append( id)
       if len( ids) == 1:
         ids = ids[ 0]
-      standard.writeBlock( self, '[ZMSMetaobjManager.importMetaobjXml]: ids=%s'%str(ids))
+      standard.writeBlock(self,'[ZMSMetaobjManager.importMetaobjXml]: ids=%s'%str(ids))
       return ids
 
     def exportMetaobjXml(self, ids, REQUEST=None, RESPONSE=None):
@@ -742,7 +722,7 @@ class ZMSMetaobjManager(object):
     #  Set/add meta-object attribute with specified values.
     # --------------------------------------------------------------------------
     def setMetaobjAttr(self, id, oldId, newId, newName='', newMandatory=0, newMultilang=1, newRepetitive=0, newType='string', newKeys=[], newCustom='', newDefault=''):
-      self.writeLog("[setMetaobjAttr]: %s %s %s"%(str(id), str(oldId), str(newId)))
+      self.writeBlock("[setMetaobjAttr]: %s %s %s"%(str(id), str(oldId), str(newId)))
       self.clearReqBuff('ZMSMetaobjManager')
       ob = self.__get_metaobj__(id)
       if ob is None: return
@@ -916,14 +896,29 @@ class ZMSMetaobjManager(object):
             zopeutil.removeObject(oldContainer, oldObId)
         # Insert Zope-Object.
         if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
+        # Line-breaks.
         if standard.is_str(newCustom): 
-           newCustom = newCustom.encode('utf-8').replace(b'\r', b'')
-           newCustom = newCustom.decode('utf-8')
+           newCustom = newCustom.replace('\r', '')
+         # Strip errors.
+        if isinstance(newCustom,six.string_types): 
+           if newCustom.find("## Errors:") >= 0:
+             lines = [x for x in newCustom.split('\n')]
+             remove = False
+             i = 0
+             while lines and lines[i].startswith("##"):
+               if lines[i].startswith("## Errors:"):
+                 remove = True
+               else: 
+                 i += 1
+               if remove:
+                 lines.pop(i)
+             newCustom = '\n'.join(lines)
         try:
-          zopeutil.addObject(container, newType, newObId, newName, newCustom)
-          del attr['custom']
+          newOb = zopeutil.addObject(container, newType, newObId, newName, newCustom)
+          if newOb is not None:
+            del attr['custom']
         except:
-          standard.writeError(self,"can't addObject %s (%s)"%(newObId,newType))
+          attr['custom'] = "## Errors:\n" + "##  " + standard.writeError(self,"") + "\n" + "##\n" + newCustom
         # Change Zope-Object (special).
         newOb = zopeutil.getObject(container, newObId)
         if newType == 'Folder':

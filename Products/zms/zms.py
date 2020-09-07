@@ -178,7 +178,10 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setObjProperty('titlealt', titlealt, lang)
   obj.setObjProperty('title', title, lang)
   obj.onChangeObj(REQUEST, forced=1)
-
+  
+  # Init Object-Children
+  obj.initObjChildren(REQUEST)
+  
   ### Return new ZMS instance.
   return obj
 

@@ -26,6 +26,7 @@ from email.generator import _make_boundary as choose_boundary
 import base64
 import copy
 import re
+import six
 import time
 import warnings
 import zExceptions 
@@ -155,7 +156,7 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
   except:
     pass
   f = None
-  if standard.is_str(file):
+  if isinstance(file,six.string_types):
     f = re.findall('^data:(.*?);base64,([\s\S]*)$',file)
   if f:
     mt = f[0][0]
@@ -370,7 +371,7 @@ class MyBlob(object):
                     RESPONSE.setStatus(206) # Partial content
 
                     data = self.data
-                    if standard.is_bytes(data):
+                    if isinstance(data,six.string_types):
                         RESPONSE.write(data[start:end])
                         return True
 
@@ -441,7 +442,7 @@ class MyBlob(object):
                             'Content-Range: bytes %d-%d/%d\r\n\r\n' % (
                                 start, end - 1, self.size))
 
-                        if standard.is_bytes(data):
+                        if isinstance(data,six.string_types):
                             RESPONSE.write(data[start:end])
 
                         else:

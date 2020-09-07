@@ -29,6 +29,26 @@ from Products.zms import _fileutil
 
 security = ModuleSecurityInfo('Products.zms.zopeutil')
 
+class MissingArtefactProxy(object):
+  def __init__(self, id, meta_type, data=None):
+    self.id=id
+    self.meta_type=meta_type
+    self.data = data
+  icon__roles__=None
+  def zmi_icon(self):
+    return 'fas fa-skull-crossbones text-danger'
+  def zmi_icon(self):
+    return icon_clazz(self)
+  getId__roles__=None
+  def getId(self):
+    return self.id
+  getData__roles__=None
+  def getData(self):
+    return self.data
+  absolute_url__roles__=None
+  def absolute_url(self):
+    return '#'
+
 def nextObject(container, meta_type):
   """
   Get next parent Zope-object with given meta_type.
@@ -74,11 +94,13 @@ def addObject(container, meta_type, id, title, data, permissions={}):
   return getObject(container, id)
 
 security.declarePublic('getObject')
-def getObject(container, id):
+def getObject(container, id, meta_type=None, default=None):
   """
   Get Zope-object from container.
   """
   ob = getattr(container, id, None)
+  if ob is None and meta_type in ['External Method']:
+    ob = MissingArtefactProxy(id, meta_type, default)
   return ob
 
 security.declarePublic('callObject')
@@ -121,30 +143,28 @@ def readData(ob, default=None):
       pass
   elif ob.meta_type in [ 'Filesystem Page Template', 'Filesystem Script (Python)', 'Page Template', 'Script (Python)']:
     data = ob.read()
-  elif ob.meta_type == 'External Method':
-    context = ob
-    id = ob.getId()
-    while context is not None:
-      m = getExternalMethodModuleName(context, id)
+  elif ob.meta_type in [ 'External Method']:
+    if isinstance(ob,MissingArtefactProxy):
+      return ob.getData()
+    else:
+      context = ob
+      id = ob.getId()
+      while context is not None:
+        m = getExternalMethodModuleName(context, id)
+        filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
+        if os.path.exists(filepath):
+          break
+        try:
+          context = context.getParentNode()
+        except:
+          context = None
+      if context is None:
+        m = id
       filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
       if os.path.exists(filepath):
-        break
-      try:
-        context = context.getParentNode()
-      except:
-        context = None
-    if context is None:
-      m = id
-    filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
-    if os.path.exists(filepath):
-      f = open(filepath, 'rb')
-      data = standard.pystr(f.read(),encoding='utf-8')
-      f.close()
-    else:
-      try:
-        data = ob.getData()
-      except:
-        pass
+        f = open(filepath, 'rb')
+        data = standard.pystr(f.read(),encoding='utf-8')
+        f.close()
   elif ob.meta_type == 'Z SQL Method':
     lines = []
     lines.append('<connection>%s</connection>'%ob.connection_id)

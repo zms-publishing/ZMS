@@ -42,7 +42,7 @@
 <tr>
 	<th style="width:5rem;text-align:center;">
 		<div class="btn-group">
-			<button class="btn btn-secondary" onclick="zmiToggleSelectionButtonClick(this);return false" title="Alle auswählen/Nichts auswählen"><i class="fas fa-check-square"></i></button>
+			<button class="btn btn-secondary" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
 		</div>
 	</th>
 	<tal:block define="global

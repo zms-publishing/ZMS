@@ -25,4 +25,4 @@ pyScss
 # PAS
 Products.PluggableAuthService
 Products.PluginRegistry
--e git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
+# -e git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService

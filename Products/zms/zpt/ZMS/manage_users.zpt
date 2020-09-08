@@ -234,11 +234,11 @@ function zmiModalInsertUserOpen(context) {
 					</div>
 					<div class="form-group row activity_start">
 						<label class="col-sm-2 control-label" for="attrActiveStart"><span tal:content="structure python:here.getZMILangStr('ATTR_START_DAT')">the label</span></label>
-						<div class="input-group" tal:content="structure python:here.getDateTimeInput(fmName='userform',elName='attrActiveStart',value=here.getUserAttr(request['id'],'attrActiveStart',None),fmt_str='DATE_FMT')">the control</div>
+						<div class="input-group col-sm-10" tal:content="structure python:here.getDateTimeInput(fmName='userform',elName='attrActiveStart',value=here.getUserAttr(request['id'],'attrActiveStart',None),fmt_str='DATE_FMT')">the control</div>
 					</div>
 					<div class="form-group row activity_end">
 						<label class="col-sm-2 control-label" for="attrActiveEnd"><span tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span></label>
-						<div class="input-group" tal:content="structure python:here.getDateTimeInput(fmName='userform',elName='attrActiveEnd',value=here.getUserAttr(request['id'],'attrActiveEnd',None),fmt_str='DATE_FMT')">the control</div>
+						<div class="input-group col-sm-10" tal:content="structure python:here.getDateTimeInput(fmName='userform',elName='attrActiveEnd',value=here.getUserAttr(request['id'],'attrActiveEnd',None),fmt_str='DATE_FMT')">the control</div>
 					</div>
 					<tal:block tal:condition="python:userObj.get('password')==True">
 						<div id="tr_password" class="form-group row">

@@ -21,6 +21,7 @@ from __future__ import absolute_import
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.userfolder import UserFolder
 import copy
+import six
 import pickle
 import re
 import sys
@@ -721,12 +722,13 @@ class AccessManager(AccessableContainer):
           uid = plugin.getUserIdForLogin(login_name)
         if uid is not None:
           d['user_id_'] = uid
-          try:
-            if uid.startswith('\x01\x05\x00\x00'):
-              import binascii
-              uid = binascii.b2a_hex(buffer(uid))
-          except:
-            standard.writeError(self,'[getValidUserids]: _uid_attr=%s'%_uid_attr)
+          if six.PY2:
+            try:
+              if uid.startswith('\x01\x05\x00\x00'):
+                import binascii
+                uid = binascii.b2a_hex(buffer(uid))
+            except:
+              standard.writeError(self,'[getValidUserids]: _uid_attr=%s'%_uid_attr)
           d['user_id'] = uid
           if len([x for x in c if x['id'] == 'user_id'])==0:
             c.append({'id':'user_id','name':_uid_attr.capitalize(),'type':'string'})
@@ -739,7 +741,7 @@ class AccessManager(AccessableContainer):
             d['plugin'] = plugin
             editurl = userFldr.absolute_url()+'/'+user.get('editurl','%s/manage_main'%pluginid)
             container = userFldr.aq_parent
-            v = '<a href="%s" title="%s" target="_blank"><img src="%s"/></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),getattr(plugin,'zmi_icon','fas fa-users'))
+            v = '<a href="%s" title="%s" target="_blank"><i class="%s"></i></a>'%(editurl,'%s.%s (%s)'%(container.id,plugin.title_or_id(),plugin.meta_type),getattr(plugin,'zmi_icon','fas fa-users'))
             t = 'html'
           else:
             v = user[extra]

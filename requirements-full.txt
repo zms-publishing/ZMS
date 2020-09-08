@@ -2,12 +2,12 @@
 -r requirements.txt
 
 # Theming
--e git+ssh://github.com/zms-publishing/Products.zms-skins.git#egg=Products.zms-skins
+-e git+https://github.com/zms-publishing/Products.zms-skins.git#egg=Products.zms-skins
 
 # PAS
 Products.PluggableAuthService
 Products.PluginRegistry
--e git+ssh://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
+-e git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
 
 # SQL
 mysqlclient

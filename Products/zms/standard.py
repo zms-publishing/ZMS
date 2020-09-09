@@ -1699,13 +1699,6 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
   elif type(i) is int or type(i) is float or type(i) is bool:
     return json.dumps(i)
   elif i is not None:
-    if is_str(i):
-      if not (i.strip().startswith('<') and i.strip().endswith('>')):
-        i = pystr(html_escape(i))
-      else:
-        i = pystr(i)
-    else:
-        i = pystr(i)
     if allow_booleans and i in ['true','false']:
       return i
     else:

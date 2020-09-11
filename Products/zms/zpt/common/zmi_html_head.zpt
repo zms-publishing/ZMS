@@ -1,10 +1,9 @@
 <!-- common/zmi_html_head -->
 
-<tal:block tal:define="
+<head tal:define="
 		standard modules/Products.zms/standard;
 		zmi_paths python:standard.zmi_paths(here);
 		dummy python:here.zmi_page_request(here,request)">
-<head>
 	<title tal:content="python:'ZMS | %s | %s'%(here.display_type(),request['lang'])">the title</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
@@ -22,9 +21,6 @@
 	<tal:block tal:repeat="src python:here.getConfProperty('plugins.zmi.js').split(',')"
 		><script type="text/javascript" charset="UTF-8" tal:attributes="src src"></script>
 	</tal:block>
-<tal:block tal:define="
-		standard modules/Products.zms/standard;
-		zmi_paths python:standard.zmi_paths(here)">
 	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%request['manage_lang']"></script>
 	<tal:block tal:repeat="src python:list(zmi_paths['js_paths'])+[here.getConfProperty(x) for x in here.getConfProperty('bootstrap.libs').split(',')]"
 		><script type="text/javascript" charset="UTF-8" tal:condition="src" tal:attributes="src src"></script>
@@ -36,7 +32,6 @@
 	<tal:block tal:condition="python:here.getUserAttr(request['AUTHENTICATED_USER'],'forceChangePassword',0)==1">
 		<script type="text/javascript">$(function(){$ZMI.forceChangePassword()});</script>
 	</tal:block>
-</tal:block>
 </head>
 </tal:block>
 

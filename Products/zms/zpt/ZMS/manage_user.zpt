@@ -61,8 +61,8 @@ function form0Submit(fm) {
 				alert(getZMILangStr('ATTR_PASSWORD')+'<>'+getZMILangStr('ATTR_CONFIRM')+'!');
 				b = false;
 			}
-			var password_regexp = $ZMI.getConfProperty('zms.password.regexp','');
-			var password_hint = $ZMI.getConfProperty('zms.password.hint','');
+			var password_regexp = $ZMI.getConfProperty('ZMS.password.regexp','');
+			var password_hint = $ZMI.getConfProperty('ZMS.password.hint','');
 			if (password_regexp.length>0) {
 				var re = new RegExp(password_regexp,"g");
 				if (!$password.val().match(re)) {
@@ -78,8 +78,8 @@ function form0Submit(fm) {
 }
 
 $(function(){
-	var password_regexp = $ZMI.getConfProperty('zms.password.regexp','');
-	var password_hint = $ZMI.getConfProperty('zms.password.hint','');
+	var password_regexp = $ZMI.getConfProperty('ZMS.password.regexp','');
+	var password_hint = $ZMI.getConfProperty('ZMS.password.hint','');
 	$('.form-control[name=password]:password')
 		.attr('title',password_hint)
 		.tooltip({html:true,placement:'bottom'});

@@ -121,7 +121,8 @@ class ZMSFilterManager(
       for id in self.getFilterIds():
         d = self.getFilter(id)
         d['__filename__'] = ['filters',id,'__init__.py']
-        del d['processes']
+        if 'processes' in d:
+          del d['processes']
         d['Processes'] = []
         for fp in self.getFilterProcesses(id):
           p = {}
@@ -140,6 +141,8 @@ class ZMSFilterManager(
           attr['id'] = id
           attr['ob'] = ob
           attr['type'] = ob.meta_type
+          if 'command' in d:
+            del d['command']
           d['Command'] = [attr]
         r[id] = d
       return r
@@ -149,6 +152,8 @@ class ZMSFilterManager(
     """
     def updateRepository(self, r):
       id = r['id']
+      if not id.startswith('__') and not id.endswith('__'):
+        standard.writeBlock(self,"[updateRepository]: id=%s"%id)
       return id
 
 

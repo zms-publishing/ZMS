@@ -120,6 +120,7 @@ class ZMSFilterManager(
       r = {}
       for id in self.getFilterIds():
         d = self.getFilter(id)
+        d['meta_type'] = 'filter'
         d['__filename__'] = ['filters',id,'__init__.py']
         if 'processes' in d:
           del d['processes']
@@ -134,16 +135,17 @@ class ZMSFilterManager(
         r[id] = d
       for id in self.getProcessIds():
         d = self.getProcess(id)
+        d['meta_type'] = 'process'
         d['__filename__'] = ['processes',id,'__init__.py']
         ob = zopeutil.getObject(self,id)
         if ob:
-          attr = {}
-          attr['id'] = id
-          attr['ob'] = ob
-          attr['type'] = ob.meta_type
+          command = {}
+          command['id'] = id
+          command['ob'] = ob
+          command['type'] = ob.meta_type
           if 'command' in d:
             del d['command']
-          d['Command'] = [attr]
+          d['Command'] = [command]
         r[id] = d
       return r
 
@@ -154,6 +156,18 @@ class ZMSFilterManager(
       id = r['id']
       if not id.startswith('__') and not id.endswith('__'):
         standard.writeBlock(self,"[updateRepository]: id=%s"%id)
+        oldId = id
+        newId = id
+        if r['meta_type'] == 'filter':
+          pass
+        elif r['meta_type'] == 'process':
+          newName = r['name']
+          newType = r['type']
+          newCommand = attr.get('command',None)
+          for command in r.get('Command',[]):
+            newCommand = command['data']
+            break
+          self.setProcess(oldId, newId, newAcquired=0, newName=newName, newType=newType, newCommand=newCommand)
       return id
 
 

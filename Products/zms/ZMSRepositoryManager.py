@@ -295,7 +295,6 @@ class ZMSRepositoryManager(
                   d['id'] = id
                   d['filename'] = os.path.sep.join(filename[:-1]+['%s%s'%(fileprefix, fileexts.get(ob.meta_type, ''))])
                   d['data'] = data
-                  
                   d['version'] = version
                   d['meta_type'] = ob.meta_type
                   l[d['filename']] = d

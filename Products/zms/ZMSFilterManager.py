@@ -118,9 +118,30 @@ class ZMSFilterManager(
     """
     def provideRepository(self, r, ids=None):
       r = {}
-      id = 'filters'
-      d = {'id':id,'__filename__':['__init__.py']}
-      r[id] = d
+      for id in self.getFilterIds():
+        d = self.getFilter(id)
+        d['__filename__'] = ['filters',id,'__init__.py']
+        del d['processes']
+        d['Processes'] = []
+        for fp in self.getFilterProcesses(id):
+          p = {}
+          p['id'] = fp['id']
+          if 'file' in fp:
+            p['id'] = '%s/%i.%s'%(fp['id'],len(d['Processes']),fp['file_filename'])
+            p['ob'] = fp['file']
+          d['Processes'].append(p)
+        r[id] = d
+      for id in self.getProcessIds():
+        d = self.getProcess(id)
+        d['__filename__'] = ['processes',id,'__init__.py']
+        ob = zopeutil.getObject(self,id)
+        if ob:
+          attr = {}
+          attr['id'] = id
+          attr['ob'] = ob
+          attr['type'] = ob.meta_type
+          d['Command'] = [attr]
+        r[id] = d
       return r
 
     """

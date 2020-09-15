@@ -407,11 +407,12 @@ $(function(){
 					<input type="checkbox" name="ids:list" tal:attributes="value filterId">
 				</td>
 				<td>
-					<legend class="filterName"><a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
+					<a href="javascript:;" onclick="$('i',this).toggleClass('fa-chevron-right fa-chevron-down');$(this).siblings('.filterProcesses').toggle('normal');"><i class="fas fa-chevron-right"></i></a>
+					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
 						<i class="fas fa-filter"></i>
 						<tal:block tal:content="filter/name">the filter-name</tal:block>
-					</a></legend>
-					<div class="filterProcesses">
+					</a>
+					<div class="filterProcesses" style="display:none">
 						<table class="layoutTable">
 						<tr><td><div class="filterDelimiter">
 							<tal:block tal:condition="python:filter['format']=='import'">

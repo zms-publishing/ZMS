@@ -33,6 +33,5 @@
 		<script type="text/javascript">$(function(){$ZMI.forceChangePassword()});</script>
 	</tal:block>
 </head>
-</tal:block>
 
 <!-- /common/zmi_html_head -->

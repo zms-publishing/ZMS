@@ -158,9 +158,9 @@ class ZMSFilterManager(
         standard.writeBlock(self,"[updateRepository]: id=%s"%id)
         oldId = id
         newId = id
-        if r['meta_type'] == 'filter':
+        if r.get('meta_type') == 'filter':
           pass
-        elif r['meta_type'] == 'process':
+        elif r.get('meta_type') == 'process':
           newName = r['name']
           newType = r['type']
           newCommand = r.get('command',None)

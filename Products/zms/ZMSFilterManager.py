@@ -163,11 +163,11 @@ class ZMSFilterManager(
         elif r['meta_type'] == 'process':
           newName = r['name']
           newType = r['type']
-          newCommand = attr.get('command',None)
+          newCommand = r.get('command',None)
           for command in r.get('Command',[]):
             newCommand = command['data']
             break
-          self.setProcess(oldId, newId, newAcquired=0, newName=newName, newType=newType, newCommand=newCommand)
+          self.setProcess(oldId, newId, newName=newName, newType=newType, newCommand=newCommand)
       return id
 
 

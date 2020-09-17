@@ -38,6 +38,7 @@
 	><tal:block
 		tal:define="zmscontext python:here.getSelf();
 			provider python:provider_diff[0];
+			local_files python:list(here.localFiles(provider).values());
 			diffs python:provider_diff[1];
 			ids python:standard.distinct_list([x[2] for x in diffs]);
 			ids_sorting python:ids.sort();"
@@ -49,18 +50,19 @@
 		</label>
 		<div class="col-sm-10">
 			<table class="table repo-diff-files">
-				<colgroup>
-				<col width="1em"/>
-				<col width="30%"/>
-				<col width="*"/>
-			</colgroup>
 			<tal:block tal:repeat="id ids">
 				<tr>
-					<td><input type="checkbox" name="ids:list" tal:attributes="value python:'%s:%s'%(provider.id,id)" checked="checked"></td>
+					<td class="meta-ids"><input type="checkbox" name="ids:list" tal:attributes="value python:'%s:%s'%(provider.id,id)" checked="checked"></td>
 					<td>
 						<a tal:attributes="href python:'%s/manage_%s?lang=%s&id=%s'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id)" target="_blank"> 
+							<tal:block tal:repeat="icon python:[x['__icon__'] for x in local_files if x['id']==id and '__icon__' in x and x['__icon__']]">
+								<i tal:attributes="class icon"></i>
+							</tal:block>
 							<strong tal:content="id">the id</strong>
 						</a>
+						<tal:block tal:repeat="desc python:[x['__description__'] for x in local_files if x['id']==id and '__description__' in x and x['__description__']]">
+							( <tal:block tal:content="desc">the description</tal:block> )
+						</tal:block>
 					</td>
 					<td>
 					<div style="white-space: nowrap;" 

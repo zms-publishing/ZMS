@@ -200,7 +200,7 @@
 	<table class="table table-striped table-bordered table-hover mb-0">
 	<thead>
 		<tr tal:condition="python:here.meta_type=='ZMSMetacmdProvider'">
-			<th style="width:64px">
+			<th class="meta-ids">
 				<div class="btn-group">
 					<button class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
 				</div>
@@ -220,7 +220,7 @@
 			</th>
 		</tr>
 		<tr>
-			<th></th>
+			<th class="meta-ids"></th>
 			<th tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</th>
 			<th tal:content="python:here.getZMILangStr('ATTR_SIZE')">Size</th>
 			<th tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">Last Modified</th>
@@ -232,7 +232,7 @@
 				metaCmd python:here.getMetaCmd(metaCmdId);
 				ob python:getattr(here,metaCmdId,None);
 				revision python:metaCmd.get('revision','0.0.0');">
-			<td>
+			<td class="meta-ids">
 				<input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id" />
 			</td>
 			<td>

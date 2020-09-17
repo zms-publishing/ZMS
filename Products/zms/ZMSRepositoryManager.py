@@ -306,6 +306,8 @@ class ZMSRepositoryManager(
                   py.append('\t\t# ERROR: '+standard.writeError(self,'can\'t localFiles \'%s\''%i['id']))
                 py.append('')
         d = {}
+        d['__icon__'] = o.get('__icon__')
+        d['__description__'] = o.get('__description__')
         d['id'] = id
         d['filename'] = os.path.sep.join(filename)
         d['data'] = '\n'.join(py)

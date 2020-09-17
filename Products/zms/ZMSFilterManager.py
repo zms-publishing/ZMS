@@ -121,6 +121,8 @@ class ZMSFilterManager(
       for id in self.getFilterIds():
         d = self.getFilter(id)
         d['meta_type'] = 'filter'
+        d['__icon__'] = 'fas fa-filter'
+        d['__description__'] = self.getZMILangStr('ATTR_FILTER')
         d['__filename__'] = ['filters',id,'__init__.py']
         if 'processes' in d:
           del d['processes']
@@ -136,6 +138,8 @@ class ZMSFilterManager(
       for id in self.getProcessIds():
         d = self.getProcess(id)
         d['meta_type'] = 'process'
+        d['__icon__'] = 'fas fa-cog'
+        d['__description__'] = self.getZMILangStr('ATTR_PROCESS')
         d['__filename__'] = ['processes',id,'__init__.py']
         ob = zopeutil.getObject(self,id)
         if ob:

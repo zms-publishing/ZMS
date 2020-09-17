@@ -14,14 +14,20 @@
 				<a tal:attributes="href python:'%s/manage_main?lang=%s'%(provider.absolute_url(),request['lang'])" target="_blank"><tal:block tal:content="python:provider.id">the provider</tal:block></a>
 			</label>
 			<div class="col-sm-10" tal:define="
-					local_files python:here.localFiles(provider).values();
+					local_files python:list(here.localFiles(provider).values());
 					ids python:standard.distinct_list([x['id'] for x in local_files]);
 					ids_sorting python:ids.sort();">
 				<div tal:repeat="id ids">
 					<i class="fas fa-check-circle text-success"></i>
-					<a tal:attributes="href python:'%s/manage_%s?lang=%s&id=%s'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id)" target="_blank"
-						tal:content="id">id
+					<a tal:attributes="href python:'%s/manage_%s?lang=%s&id=%s'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id)" target="_blank">
+						<tal:block tal:repeat="icon python:[x['__icon__'] for x in local_files if x['id']==id and '__icon__' in x and x['__icon__']]">
+							<i tal:attributes="class icon"></i>
+						</tal:block>
+						<tal:block tal:content="id">id</tal:block>
 					</a>
+					<tal:block tal:repeat="desc python:[x['__description__'] for x in local_files if x['id']==id and '__description__' in x and x['__description__']]">
+						( <tal:block tal:content="desc">the description</tal:block> )
+					</tal:block>
 				</div>
 			</div>
 		</div>

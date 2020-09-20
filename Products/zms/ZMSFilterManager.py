@@ -163,7 +163,19 @@ class ZMSFilterManager(
         oldId = id
         newId = id
         if r.get('meta_type') == 'filter':
-          pass
+          newName = r['name']
+          newFormat = r['format']
+          newContentType = r['content_type']
+          newDescription = r['description']
+          newRoles = r.get('roles',[])
+          newMetaTypes = r.get('meta_types',[])
+          self.setFilter(self, oldId, newId, newName=newName, newFormat=newFormat, newContentType=newContentType, newDescription=newDescription, newRoles=newRoles, newMetaTypes=newMetaTypes)
+          index = 0
+          for process in r.get('Processes', []):
+            newProcessId = process.get('id')
+            newProcessFile = process.get('file')
+            self.setFilterProcess(newId, index, newProcessId, newProcessFile)
+            index += 1
         elif r.get('meta_type') == 'process':
           newName = r['name']
           newType = r['type']

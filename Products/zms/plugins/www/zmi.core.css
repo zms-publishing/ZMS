@@ -489,7 +489,8 @@ body.zmi ul.zmi-container .zmi-item .portalClient .portalClientId {
 	font-size:12px;
 }
 /* Item Drag or Select */
-body.zmi ul.zmi-container .zmi-item.zmi-selected .center {
+body.zmi ul.zmi-container .zmi-item.pageelement.zmi-selected .center,
+body.zmi ul.zmi-container .zmi-item.page.zmi-selected .center {
 	background-color:rgba(0, 136, 204, 0.10);	
 }
 body.zmi ul.zmi-container.zmi-sortable .zmi-item.zmi-data-transfer-drag .center { 
@@ -796,7 +797,6 @@ li.zmi-item span.zmi-ids {
 	cursor:pointer;
 }
 .zmi-manage-main-change {
-	display:none;
 	color:#888;
 	font-size:11px;
 	margin:4px 0 0 11px;

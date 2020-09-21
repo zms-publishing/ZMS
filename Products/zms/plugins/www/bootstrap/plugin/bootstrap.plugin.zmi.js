@@ -1817,11 +1817,9 @@ function zmiActionButtonsRefresh(sender,evt) {
 	$(".zmi-selectable").each(function() {
 			if ($(".right input:checked",this).length > 0) {
 				$(this).addClass("zmi-selected");
-				$(".zmi-manage-main-change",this).show();
 			}
 			else {
 				$(this).removeClass("zmi-selected");
-				$(".zmi-manage-main-change",this).hide();
 			}
 		});
 }

@@ -92,7 +92,7 @@ class ZMSFilterManager(
       self.filters = {}
       for x in filters:
         try:
-          self.setFilter(x['id'], x['acquired'], x['name'], x['format'], x['content_type'], x['description'], x['roles'], x['meta_types'])
+          self.setFilter(None, x['id'], x['acquired'], x['name'], x['format'], x['content_type'], x['description'], x['roles'], x['meta_types'])
           index = 0
           for p in x.get('processes', []):
             self.setFilterProcess(x['id'], index, p['id'], p['file'])
@@ -166,14 +166,21 @@ class ZMSFilterManager(
           newName = r['name']
           newFormat = r['format']
           newContentType = r['content_type']
-          newDescription = r['description']
+          newDescription = r.get('description','')
           newRoles = r.get('roles',[])
           newMetaTypes = r.get('meta_types',[])
-          self.setFilter(self, oldId, newId, newName=newName, newFormat=newFormat, newContentType=newContentType, newDescription=newDescription, newRoles=newRoles, newMetaTypes=newMetaTypes)
+          self.setFilter(oldId, newId, newAcquired=0, newName=newName, newFormat=newFormat, newContentType=newContentType, newDescription=newDescription, newRoles=newRoles, newMetaTypes=newMetaTypes)
           index = 0
           for process in r.get('Processes', []):
             newProcessId = process.get('id')
-            newProcessFile = process.get('file')
+            newProcessFile = None
+            if newProcessId.find('/') >= 0:
+              data = process.get('data')
+              filename = process.get('id')
+              filename = filename[filename.find('/')+1:]
+              filename = filename[filename.find('.')+1:]
+              newProcessId = newProcessId[:newProcessId.find('/')]
+              newProcessFile = standard.FileFromData(self,data,filename)
             self.setFilterProcess(newId, index, newProcessId, newProcessFile)
             index += 1
         elif r.get('meta_type') == 'process':

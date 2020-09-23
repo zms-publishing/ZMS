@@ -708,7 +708,7 @@ def get_session_value(context, key, defaultValue=None):
   session = get_session(context)
   if session is not None:
     return session.get(key,defaultValue)
-  return None
+  return defaultValue
 
 
 security.declarePublic('set_session_value')
@@ -719,8 +719,7 @@ def set_session_value(context, key, value):
   session = get_session(context)
   if session is not None:
     session.set(key,value)
-    return value
-  return None
+  return value
 
 
 def triggerEvent(context, *args, **kwargs):

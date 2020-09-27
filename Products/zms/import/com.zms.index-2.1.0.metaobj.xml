@@ -1082,12 +1082,10 @@ return uid
 
 from Products.zms import standard
 request = zmscontext.REQUEST
-active = zmscontext.getConfProperty('ExtensionPoint.ZMSObject.get_uid','')=='%s.get_uid'%zmscontext.meta_id
-if not active:
-  base = list(context.getRootElement().getPhysicalPath())[:-1]
-  url = list(context.getDocumentElement().getPhysicalPath())[len(base):-1]
-  request.set('url','{$'+['','/'.join(url)+'@'][len(url)>0]+'}')
-  zmscontext.ZMSIndexZCatalog_func_(zmscontext,'reindex')
+base = list(context.getRootElement().getPhysicalPath())[:-1]
+url = list(context.getDocumentElement().getPhysicalPath())[len(base):-1]
+request.set('url','{$'+['','/'.join(url)+'@'][len(url)>0]+'}')
+zmscontext.ZMSIndexZCatalog_func_(zmscontext,'reindex')
 
 # --// /onCreateObjEvt //--
 ]]>

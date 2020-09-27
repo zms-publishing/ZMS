@@ -671,6 +671,9 @@ class ObjAttrs(object):
         b = b and v
       obj_vers = self.getObjVersion(REQUEST)
       obj_attrs = self.getObjAttrs()
+      now = datetime.datetime.now()
+      if REQUEST.has_key('preview_time_travel'):
+        now = datetime.datetime.strptime(REQUEST['preview_time_travel'],self.getZMILangStr('SHORTDATE_FMT'))
       for key in ['active', 'attr_active_start', 'attr_active_end']:
         if key in obj_attrs:
           obj_attr = obj_attrs[key]
@@ -689,23 +692,13 @@ class ObjAttrs(object):
           # Start time.
           elif key == 'attr_active_start':
             if value is not None:
-              try:
-                dt = DateTime(time.mktime(value))
-                b = b and dt.isPast()
-              except:
-                # todo: consistent replacement of time by datetime
-                dtValue = datetime.datetime(value[0], value[1], value[2], value[3], value[4], value[5], value[6])
-                b = b and datetime.datetime.now() > dtValue
+              dt = datetime.datetime.fromtimestamp(time.mktime(value))
+              b = b and now > dt
           # End time.
           elif key == 'attr_active_end':
             if value is not None:
-              try:
-                dt = DateTime(time.mktime(value))
-                b = b and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))
-              except:
-                # todo: consistent replacement of time by datetime
-                dtValue = datetime.datetime(value[0], value[1], value[2], value[3], value[4], value[5], value[6])
-                b = b and dtValue < datetime.datetime.now()
+              dt = datetime.datetime.fromtimestamp(time.mktime(value))
+              b = b and dt < now
           if not b: break
       return b
 

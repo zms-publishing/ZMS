@@ -2,6 +2,12 @@
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='preview_top')">
+<style>
+	a, i {
+		color:silver;
+		margin-left:1em;
+	}
+</style>
 <tal:block tal:content="structure python:'<script>'"></tal:block>
 	function compile_lesscss() {
 		$.get("compile_lesscss",function(result){
@@ -9,7 +15,17 @@
 				self.parent.partner.location.reload();
 			});
 	}
-	function open_partner(sender,preview) {
+	function open_preview(sender) {
+		$(".zmi-top-active").removeClass("zmi-top-active");
+		$(sender).addClass("zmi-top-active");
+		var url = self.parent.partner.location.href;
+		if (url.indexOf("?") > 0) {
+			url = url.substr(0,url.indexOf("?"));
+		}
+		url += "?preview=preview&preview_time_travel="+$("#time_travel").val();
+		self.parent.partner.location.href = url;
+	}
+	function open_partner(sender) {
 		$(".zmi-top-active").removeClass("zmi-top-active");
 		$(sender).addClass("zmi-top-active");
 		var url = self.parent.partner.location.href;
@@ -26,30 +42,28 @@
 		if (url.indexOf("?") > 0) {
 			url = url.substr(0,url.indexOf("?"));
 		}
-		if (preview) {
-			url += "?preview=preview";
-			// window.location.reload()
-		}
 		self.parent.partner.location.href = url;
 	}
+	$(function() {
+			open_preview($("preview"));
+		});
 <tal:block tal:content="structure python:'</script>'"></tal:block>
 <header class="navbar navbar-nav navbar-expand navbar-dark flex-row justify-content-between bd-navbar">
 	<tal:block tal:content="structure python:here.zmi_navbar_brand(here,request)">zmi_navbar_brand</tal:block>
-	<div>
-		&nbsp;&nbsp;<a tal:attributes="href python:'manage_main?lang=%s'%request.get('lang','ger')" target="_parent">
+	<div class="float-right">
+		<a tal:attributes="href python:'manage_main?lang=%s'%request.get('lang','ger')" target="_parent">
 			<tal:block tal:content="python:'%s %s %s'%(here.getZMILangStr('BACK'),here.getZMILangStr('TO'),here.display_type(request))">back to display_type</tal:block>
 		</a>
-		&nbsp;&nbsp;
-		<a class="zmi-top-active" tal:attributes="href python:'preview_html?lang=%s'%request.get('lang','ger')" target="_parent"
-			tal:content="python:here.getZMILangStr('TAB_PREVIEW')">preview
+		<i class="fas fa-user-clock"></i><input class="form-control" style="display:inline-block; margin-left:.5em; width:6em; opacity:.7;" type="text" id="time_travel" tal:attributes="value python:here.getLangFmtDate(DateTime(),fmt_str='SHORTDATE_FMT')">
+		<a id="preview" href="javascript:;" onclick="open_preview(this);">
+			<tal:block tal:content="python:here.getZMILangStr('TAB_PREVIEW')">preview</tal:block>
 		</a>
 		<tal:block tal:condition="python:len(here.getConfProperty('ASP.ip_or_domain',''))>0 or not here.getAutocommit()">
-			&nbsp;&nbsp;
-			<a href="javascript:;" onclick="open_partner(this,false);">
+			<a id="live" href="javascript:;" onclick="open_partner(this);">
 				<tal:block tal:content="python:here.getZMILangStr('TAB_LIVE')">live</tal:block>
 			</a>
 		</tal:block>
-	</div><!-- .pull-right -->
+	</div>
 </header>
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 </body>

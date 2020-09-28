@@ -672,7 +672,7 @@ class ObjAttrs(object):
       obj_vers = self.getObjVersion(REQUEST)
       obj_attrs = self.getObjAttrs()
       now = datetime.datetime.now()
-      if REQUEST.has_key('preview_time_travel'):
+      if 'preview_time_travel' in REQUEST.keys():
         now = datetime.datetime.strptime(REQUEST['preview_time_travel'],self.getZMILangStr('SHORTDATE_FMT'))
       for key in ['active', 'attr_active_start', 'attr_active_end']:
         if key in obj_attrs:

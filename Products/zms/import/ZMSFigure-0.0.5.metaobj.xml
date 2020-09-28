@@ -180,7 +180,7 @@ if pilutil.enabled():
 		zmscontext.attr('_img',None)
 	if (imgwidth < maxdim or imgheight < maxdim):
 		zmscontext.attr('_img',None)
-	if request.has_key(hiresKey) and (imgwidth > maxdim or imgheight > maxdim):
+	if (hiresKey in request.keys()) and (imgwidth > maxdim or imgheight > maxdim):
 		from Products.zms import pilutil
 		return pilutil.generate_preview(zmscontext, 'img', '_img', maxdim)
 

@@ -90,7 +90,7 @@ function openWindow(url) {
 		<label class="col-sm-2 control-label">Attributes</label>
 		<div class="col-sm-5">
 			<div class="input-group">
-				<tal:block tal:condition="python:request.has_key('zmsindex_index_names')">
+				<tal:block tal:condition="python:'zmsindex_index_names' in request.keys()">
 					<tal:block tal:define="value python:zmscontext.operator_setattr(zmscontext,'index_names',request.get('zmsindex_index_names'))"></tal:block>
 				</tal:block>
 				<input class="form-control" type="text" name="zmsindex_index_names"

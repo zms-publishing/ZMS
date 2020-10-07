@@ -1529,23 +1529,21 @@ table.table-sm tr.row_insert td .btn-add {
 	margin-bottom: -1px;
 }
 .zmi-browse-iframe-preview {
-	z-index:99999;
-	padding:1em;
 	position:absolute;
-	/* Fallback for web browsers that doesn't support RGBa */
-	background: white;
-	/* RGBa with 0.6 opacity */
-	background: rgba(255, 255, 255, 0.6);
-	/* For IE 5.5 - 7*/
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
-	/* For IE 8*/
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
 	max-width:40em;
-	border:1px dotted black;
+	background-color:#FFFFFF;
+	box-shadow: 0 0 2em #00000033;
+	margin: 0.2em;
+	padding:0;
+	border:none;
+	z-index:99999;
 }
 .zmi-browse-iframe-preview .contentEditable {
 	zoom: 0.6;
 	-moz-transform:scale(0.6);
+}
+.zmi-browse-iframe-preview .ZMSGraphic .graphic {
+	margin:0;
 }
 .zmi-sitemap > div,
 .zmi-sitemap ul,

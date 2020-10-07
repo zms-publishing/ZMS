@@ -1489,7 +1489,7 @@ ZMIObjectTree.prototype.previewClick = function(sender) {
 				$('body').append(''
 						+'<div id="zmi_preview_'+data_id+'">'
 							+'<div class="zmi-browse-iframe-preview">'
-								+'<div class="bg-primary" style="margin:-1em -1em 0 -1em;padding:0 4px 2px 4px;cursor:pointer;text-align:right;font-size:smaller;" onclick="$(\'#zmi_preview_'+data_id+'\').remove()"><i class="fas fa-times"></i>'+getZMILangStr('BTN_CLOSE')+'</div>'
+								+'<div class="btn btn-default" title="' + getZMILangStr('BTN_CLOSE') + '" style="position:absolute;border-radius:0;" onclick="$(\'#zmi_preview_'+data_id+'\').remove()"><i class="icon-remove fas fa-times"></i></div>'
 								+data
 							+'</div><!-- .zmi-browse-iframe-preview -->'
 						+'</div><!-- #zmi-preview -->'
@@ -1859,7 +1859,7 @@ function zmiBrowseObjs(fmName, elName, lang) {
 		href += '&selectedText=' + escape( selectedText);
 	}
 	zmiModal(null,{
-			body: '<iframe src="'+href+'" style="width:100%; min-width:'+$ZMI.getConfProperty('zmiBrowseObjs.minWidth',200)+'px; height:100%; min-height: '+$ZMI.getConfProperty('zmiBrowseObjs.minHeight',320)+'px; border:0;"></iframe>',
+			body: '<iframe src="'+href+'" style="width:100%; min-width:'+$ZMI.getConfProperty('zmiBrowseObjs.minWidth','200px')+'; height:100%; min-height: '+$ZMI.getConfProperty('zmiBrowseObjs.minHeight','62vh')+'; border:0;"></iframe>',
 			title: title
 		});
 	return false;

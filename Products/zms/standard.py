@@ -85,13 +85,11 @@ if six.PY2:
   def is_bytes(v):
     return isinstance(v,str) or isinstance(v,bytes)
   def pystr(object, encoding='utf-8', errors='strict'):
-    if type(object) is str:
+    if not is_str(object):
       object = unicode(object,encoding,errors)
-    else:
-      object = unicode(object)
     return object
   def pybytes(object, encoding='utf-8', errors='strict'):
-    if type(object) is unicode:
+    if is_str(object):
       object = object.encode(encoding,errors)
     return object
   def pyopen(name, mode, buffering=-1, encoding=None):
@@ -410,7 +408,7 @@ def bin2hex(m):
   @rtype: C{bytes}
   """
   import binascii
-  return six.ensure_string(binascii.hexlify(m))
+  return six.ensure_str(binascii.hexlify(m))
 
 
 def hex2bin(m):

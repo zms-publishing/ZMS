@@ -547,11 +547,16 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
       xml.append(' filename="%s"' % value.title)
       xml.append(' type="file"')
       xml.append('>')
-      data = value.data
-      if content_type.startswith('text/') or content_type in ['application/css','application/javascript','image/svg']:
-        xml.append('<![CDATA[%s]]>'%standard.pystr(data,'utf-8'))
-      else:
-        xml.append(standard.bin2hex(standard.pybytes(data)))
+      data = zopeutil.readData(value)
+      cdata = '<![CDATA[%s]]>'%standard.pystr(data,'utf-8')
+      # Ensure CDATA is valid.
+      try:
+        p = pyexpat.ParserCreate()
+        rv = p.Parse('<?xml version="1.0" encoding="utf-8"?><%s>%s</%s>'%(tagname,cdata,tagname), 1)
+      # Otherwise use binary encoding.
+      except:
+        cdata = standard.bin2hex(standard.pybytes(data))
+      xml.append(cdata)
       xml.append('</%s>' % tagname)
 
     # Dictionaries

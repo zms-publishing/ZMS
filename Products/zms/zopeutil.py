@@ -133,14 +133,12 @@ def readData(ob, default=None):
     data = ob.raw
   elif ob.meta_type in [ 'File', 'Filesystem File', 'Filesystem Image', 'Image']:
     data = ob.data
-    try:
+    if not standard.is_bytes(data):
       b = b''
       while data is not None:
-        b += standard.pybytes(data.data)
+        b += data.data
         data = data.next
       data = b
-    except:
-      pass
   elif ob.meta_type in [ 'Filesystem Page Template', 'Filesystem Script (Python)', 'Page Template', 'Script (Python)']:
     data = ob.read()
   elif ob.meta_type in [ 'External Method']:

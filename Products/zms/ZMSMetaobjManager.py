@@ -605,7 +605,7 @@ class ZMSMetaobjManager(object):
                 keys.append(v)
                 sync_id = meta_id
             if sync_id:
-              self.setMetaobjAttr( meta_id, key, key, attr['name'], attr['mandatory'], attr['multilang'], attr['repetitive'], attr['type'], keys, attr['custom'], attr['default'])
+              self.setMetaobjAttr( meta_id, key, key, attr['name'], attr['mandatory'], attr['multilang'], attr['repetitive'], attr['type'], keys, attr.get('custom',None), attr['default'])
       
       ##### SYNCHRONIZE ####
       if sync_id:

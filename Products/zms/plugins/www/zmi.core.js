@@ -291,6 +291,7 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 			url: url+'/getConfProperty',
 			data: data,
 			datatype: 'text',
+			headers: {'Cache-Control': 'max-age=1800'},
 			async: false
 			}).responseText;
 		this.setCachedValue(key,r);

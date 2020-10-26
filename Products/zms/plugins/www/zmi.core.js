@@ -234,9 +234,8 @@ ZMI.prototype.getLangStr = function(key, lang) {
 /**
  * Cache Ajax requests.
  */
-var zmiCache = {};
-ZMI.prototype.getCachedValue = function(k) {return zmiCache[k];}
-ZMI.prototype.setCachedValue = function(k,v) {zmiCache[k]=v;return v;}
+ZMI.prototype.getCachedValue = function(k) {return localStorage.getItem("zmiCache["+k+"]");}
+ZMI.prototype.setCachedValue = function(k,v) {localStorage.setItem("zmiCache["+k+"]",v);return v;}
 
 /**
  * Returns request-property.

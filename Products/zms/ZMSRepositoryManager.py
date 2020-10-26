@@ -272,10 +272,9 @@ class ZMSRepositoryManager(
         keys = sorted([x for x in o if not x.startswith('__') and x not in e])
         for k in keys:
           v = o.get(k)
-          if v:
-            py.append('\t# %s'%k.capitalize())
-            py.append('\t%s = %s'%(standard.id_quote(k), standard.str_json(v, encoding="utf-8", formatted=True, level=2, allow_booleans=False)))
-            py.append('')
+          py.append('\t# %s'%k.capitalize())
+          py.append('\t%s = %s'%(standard.id_quote(k), standard.str_json(v, encoding="utf-8", formatted=True, level=2, allow_booleans=False)))
+          py.append('')
         for k in e:
           v = o.get(k)
           if v and isinstance(v, list):

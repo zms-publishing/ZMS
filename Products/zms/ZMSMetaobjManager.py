@@ -121,12 +121,12 @@ class ZMSMetaobjManager(object):
           attrs = d.get('attrs',[])
           package = d.get('package','')
           mandatory_keys = ['access','enabled','id','name','package','revision','type']
-          for key in d:
+          for key in list(d):
             if key not in mandatory_keys:
               del d[key]
           d['__filename__'] = [[],[package]][len(package)>0]+[id,'__init__.py']
-          for attr in d['attrs']:
-            syncZopeMetaobjAttr(self, o, attr)
+          for attr in attrs:
+            syncZopeMetaobjAttr(self, d, attr)
             mandatory_keys = ['id', 'name', 'type', 'meta_type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
             if attr['type']=='interface':
               attr['name'] = attr['id']
@@ -136,8 +136,7 @@ class ZMSMetaobjManager(object):
               if not key in mandatory_keys:
                 del attr[key]
           d['version'] = self.getMetaobjRevision(id)
-          d['Attrs'] = d['attrs']
-          del d['attrs']
+          d['Attrs'] = attrs
           r[id] = d
 
     """

@@ -1767,12 +1767,13 @@ ZMIActionList.prototype.confirm = function(fm, target, data) {
 		i = 1;
 	}
 	if (target.indexOf("manage_rollbackObjChanges") >= 0) {
-		b = confirm(getZMILangStr('MSG_ROLLBACKVERSIONCHANGES'));
+		var msg = getZMILangStr('MSG_ROLLBACKVERSIONCHANGES');
+		msg = msg.replace("%i",""+i);
+		b = confirm(msg);
 	}
 	else if (target.indexOf("manage_cutObjects") >= 0) {
-		var msg = getZMILangStr('MSG_CONFIRM_CUTOBJS');
+		var msg = getZMILangStr('MSG_CONFIRM_CUTOBJS') + $ZMI.getDescendantLanguages();
 		msg = msg.replace("%i",""+i);
-		msg += $ZMI.getDescendantLanguages();
 		b = i > 0 && confirm(msg);
 	}
 	else if (target.indexOf("manage_eraseObjs") >= 0) {
@@ -1792,15 +1793,16 @@ ZMIActionList.prototype.confirm = function(fm, target, data) {
 		b = i > 0 && confirm(msg);
 	}
 	else if (target.indexOf("manage_executeMetacmd") >=0 ) {
-		var description = $.ajax({
+		var msg = $.ajax({
 			url: 'getMetaCmdDescription',
 			data:data,
 			datatype:'text',
 			traditional: true,
 			async: false
 			}).responseText;
-		if (typeof description != 'undefined' && description.length > 0) {
-			b = confirm(description);
+		if (typeof msg != 'undefined' && msg.length > 0) {
+			msg = msg.replace("%i",""+i);
+			b = confirm(msg);
 		}
 	}
 	else if (target == "") {

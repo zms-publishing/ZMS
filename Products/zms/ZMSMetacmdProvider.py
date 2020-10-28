@@ -146,7 +146,7 @@ class ZMSMetacmdProvider(
             d[k] = o[k]
           ob = getattr(self, id)
           if ob:
-            d['__icon__'] = ob.zmi_icon
+            d['__icon__'] = ob.zmi_icon() if 'zmi_icon' in ob.__dict__ else 'fas fa-cog'
             d['__description__'] = ob.meta_type
             attr = {}
             attr['id'] = id

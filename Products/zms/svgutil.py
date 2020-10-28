@@ -62,8 +62,9 @@ def set_dimensions(image, size):
             if 'height' in svg.attributes:
               oldheight = 'height="%s"'%svg.attributes['height'].value
               newheight = ''
-            data = data.replace(six.ensure_binary(oldwidth),six.ensure_binary('%s width="%i" '%(newwidth,w)))
-            data = data.replace(six.ensure_binary(oldwidth),six.ensure_binary('%s height="%i" '%(newheight,h)))
+            from Products.zms import standard
+            data = data.replace(standard.six_ensure_binary(oldwidth),six.ensure_binary('%s width="%i" '%(newwidth,w)))
+            data = data.replace(standard.six_ensure_binary(oldwidth),six.ensure_binary('%s height="%i" '%(newheight,h)))
         image.data = data
     return image
 

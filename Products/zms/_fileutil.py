@@ -333,7 +333,8 @@ def exportObj(obj, filename, filetype='b'):
   if data is not None:
     objfile = open(filename, 'w%s'%filetype)
     if isinstance(data, six.string_types):
-      objfile.write(six.ensure_binary(data))
+      from Products.zms import standard
+      objfile.write(standard.six_ensure_binary(data))
     elif isinstance(data, six.binary_type):
       objfile.write(data)
     elif isinstance(data,io.RawIOBase):

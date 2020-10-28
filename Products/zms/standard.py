@@ -105,6 +105,42 @@ if six.PY3:
   pyopen = open
   from html import escape as html_escape
 
+# added in six-1.12.0
+def six_ensure_binary(s, encoding='utf-8', errors='strict'):
+    """Coerce **s** to six.binary_type.
+    For Python 2:
+      - `unicode` -> encoded to `str`
+      - `str` -> `str`
+    For Python 3:
+      - `str` -> encoded to `bytes`
+      - `bytes` -> `bytes`
+    """
+    if isinstance(s, six.text_type):
+        return s.encode(encoding, errors)
+    elif isinstance(s, six.binary_type):
+        return s
+    else:
+        raise TypeError("not expecting type '%s'" % type(s))
+
+# added in six-1.12.0
+def six_ensure_str(s, encoding='utf-8', errors='strict'):
+    """Coerce *s* to `str`.
+    For Python 2:
+      - `unicode` -> encoded to `str`
+      - `str` -> `str`
+    For Python 3:
+      - `str` -> `str`
+      - `bytes` -> decoded to `str`
+    """
+    if not isinstance(s, (six.text_type, six.binary_type)):
+        raise TypeError("not expecting type '%s'" % type(s))
+    if PY2 and isinstance(s, six.text_type):
+        s = s.encode(encoding, errors)
+    elif PY3 and isinstance(s, six.binary_type):
+        s = s.decode(encoding, errors)
+    return s
+
+
 def url_quote(s):
   return urllib_quote(s)
 
@@ -408,7 +444,7 @@ def bin2hex(m):
   @rtype: C{bytes}
   """
   import binascii
-  return six.ensure_str(binascii.hexlify(m))
+  return six_ensure_str(binascii.hexlify(m))
 
 
 def hex2bin(m):

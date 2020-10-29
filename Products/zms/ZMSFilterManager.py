@@ -325,7 +325,7 @@ class ZMSFilterManager(
     # 
     #  Returns list of filter-Ids.
     # --------------------------------------------------------------------------
-    def getFilterIds(self, sort=1):
+    def getFilterIds(self, sort=True):
       obs = self.filters
       ids = list(obs)
       if sort:

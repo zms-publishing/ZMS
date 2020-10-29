@@ -290,20 +290,6 @@ class MultiLanguageManager(object):
         if lang in d[key]:
           return d[key][lang]
       
-      # Return content-object value.
-      metaobjAttrId = 'langdict'
-      for metaobjId in self.getMetaobjIds():
-        if metaobjAttrId in self.getMetaobjAttrIds(metaobjId):
-          metaobjAttr = self.getMetaobjAttr(metaobjId, metaobjAttrId)
-          custom = metaobjAttr['custom']
-          try:
-            from ast import literal_eval
-            d = literal_eval(custom)
-            if key in d and lang in d[key]:
-              return d[key][lang]
-          except:
-            standard.writeError(self,'[getLangStr]: can\'t get from %s.%s'%(metaobjAttr,metaobjAttrId))
-      
       return key
 
 
@@ -561,12 +547,12 @@ class MultiLanguageManager(object):
       portalMaster = self.getPortalMaster()
       if portalMaster is not None:
         lang_dict = portalMaster.get_lang_dict()
-        for key in lang_dict.keys():
+        for key in lang_dict:
           d[key] = lang_dict[key].copy()
           lang_ids = lang_dict[key].keys()
           d[key]['acquired'] = standard.concat_list(d[key].get('acquired', []), lang_ids)
       lang_dict = self.getConfProperty('ZMS.custom.langs.dict', {})
-      for key in lang_dict.keys():
+      for key in lang_dict:
         if key in d:
           lang_ids = lang_dict[key].keys()
           for lang_id in lang_ids:
@@ -574,6 +560,17 @@ class MultiLanguageManager(object):
               d[key][lang_id] = lang_dict[key][lang_id]
         else:
           d[key] = lang_dict[key].copy()
+      
+      #-- Get value fron content-objects.
+      metaobjAttrId = 'langdict'
+      for metaobjId in self.getMetaobjIds():
+        if metaobjAttrId in self.getMetaobjAttrIds(metaobjId):
+          v = self.evalMetaobjAttr("%s.%s"%(metaobjId,metaobjAttrId))
+          if type(v) is not dict:
+            from ast import literal_eval
+            v = literal_eval(v)
+          for key in v:
+            d[key] = v[key]
       
       #-- [ReqBuff]: Returns value and stores it in buffer of Http-Request.
       self.storeReqBuff( reqBuffId, d)

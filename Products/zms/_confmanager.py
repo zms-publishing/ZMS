@@ -993,10 +993,15 @@ class ConfManager(
       manager = [x for x in self.getDocumentElement().objectValues() if isinstance(x,ZMSFilterManager.ZMSFilterManager)]
       if len(manager)==0:
         class DefaultManager(object):
+          getFilter__roles__ = None
           def getFilter(self, id): return {}
-          def getFilterIds(self): return []
+          getFilterIds__roles__ = None
+          def getFilterIds(self, sort=True): return []
+          getFilterProcesses__roles__ = None
           def getFilterProcesses(self, id): return []
+          getProcess__roles__ = None
           def getProcess(self, id): return {}
+          importXml__roles__ = None
           def importXml(self, xml, createIfNotExists=True): pass
         manager = [DefaultManager()]
       return manager[0]

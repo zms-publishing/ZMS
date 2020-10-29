@@ -340,6 +340,7 @@ class ZReferableItem(object):
             d[{'data-url':q}.get(k, k)] = ild[k]
           new = p.replace('(.*?)', ' '.join(['']+['%s="%s"'%(x,d[x]) for x in d]))
           if old != new:
+            # @FIXME UnicodeDecodeError: 'ascii' codec can't decode byte 0x## in position ###: ordinal not in range(128)
             text = text.replace(old, new)
     return text
 

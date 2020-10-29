@@ -548,9 +548,12 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
       xml.append(' type="file"')
       xml.append('>')
       data = zopeutil.readData(value)
-      cdata = '<![CDATA[%s]]>'%standard.pystr(data,'utf-8')
+      if content_type.startswith('text/') or content_type in ['application/css','application/javascript','image/svg']:
+        data = standard.pystr(data,'utf-8')
+      cdata = None
       # Ensure CDATA is valid.
       try:
+        cdata = '<![CDATA[%s]]>'%standard.pystr(data,'utf-8')
         p = pyexpat.ParserCreate()
         rv = p.Parse('<?xml version="1.0" encoding="utf-8"?><%s>%s</%s>'%(tagname,cdata,tagname), 1)
       # Otherwise use binary encoding.
@@ -569,7 +572,11 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
         k = ' key="%s"' % x
         xv = value[x]
         tv = getXmlType(xv)
-        sv = toXml(self, xv, indentlevel + 2, xhtml, encoding)
+        try:
+          sv = toXml(self, xv, indentlevel + 2, xhtml, encoding)
+        except:
+          print(value.get('id'),k,xv)
+          raise TypeError('')
         xml.append(indentstr)
         xml.append('<item%s%s>' % (k, tv))
         xml.append(sv)

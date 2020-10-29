@@ -86,7 +86,10 @@ if six.PY2:
     return isinstance(v,str) or isinstance(v,bytes)
   def pystr(object, encoding='utf-8', errors='strict'):
     if not is_str(object):
-      object = unicode(object,encoding,errors)
+      if isinstance(object,str):
+        object = unicode(object,encoding,errors)
+      else:
+        object = unicode(object)
     return object
   def pybytes(object, encoding='utf-8', errors='strict'):
     if is_str(object):
@@ -879,12 +882,12 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
       netloc = proxy
 
   # Open HTTP connection.
-  import http.client
+  from six.moves import http_client
   writeLog( context, "[http_import.%s]: %sConnection(%s) -> %s"%(method, scheme, netloc, path))
   if scheme == 'http':
-    conn = http.client.HTTPConnection(netloc, timeout=timeout)
+    conn = http_client.HTTPConnection(netloc, timeout=timeout)
   else:
-    conn = http.client.HTTPSConnection(netloc, timeout=timeout)
+    conn = http_client.HTTPSConnection(netloc, timeout=timeout)
 
   # Set request-headers.
   if auth is not None:

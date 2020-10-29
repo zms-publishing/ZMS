@@ -500,8 +500,6 @@ class VersionItem(object):
     #  VersionItem.onChangeObj:
     # --------------------------------------------------------------------------
     def onChangeObj(self, REQUEST, forced=False, do_history=True):
-      try:
-        standard.writeLog( self, "[onChangeObj]")
         prim_lang = self.getPrimaryLanguage()
         lang = REQUEST.get('lang', prim_lang)
         
@@ -516,12 +514,6 @@ class VersionItem(object):
           self.commitObj(REQUEST, forced, do_history)
         else:
           self.autoWfTransition(REQUEST)
-        standard.writeLog( self, "[onChangeObj]: finished")
-      except Exception as e:
-        standard.writeError( self, "[onChangeObj]: abort transaction")
-        import transaction
-        transaction.abort()
-        raise e
 
     # --------------------------------------------------------------------------
     #  VersionItem.commitObjChanges

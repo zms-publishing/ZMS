@@ -553,7 +553,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
       cdata = None
       # Ensure CDATA is valid.
       try:
-        cdata = '<![CDATA[%s]]>'%standard.pystr(data,'utf-8')
+        cdata = '<![CDATA[%s]]>'%data
         p = pyexpat.ParserCreate()
         rv = p.Parse('<?xml version="1.0" encoding="utf-8"?><%s>%s</%s>'%(tagname,cdata,tagname), 1)
       # Otherwise use binary encoding.
@@ -572,11 +572,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
         k = ' key="%s"' % x
         xv = value[x]
         tv = getXmlType(xv)
-        try:
-          sv = toXml(self, xv, indentlevel + 2, xhtml, encoding)
-        except:
-          print(value.get('id'),k,xv)
-          raise TypeError('')
+        sv = toXml(self, xv, indentlevel + 2, xhtml, encoding)
         xml.append(indentstr)
         xml.append('<item%s%s>' % (k, tv))
         xml.append(sv)

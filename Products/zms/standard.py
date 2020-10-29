@@ -137,9 +137,9 @@ def six_ensure_str(s, encoding='utf-8', errors='strict'):
     """
     if not isinstance(s, (six.text_type, six.binary_type)):
         raise TypeError("not expecting type '%s'" % type(s))
-    if PY2 and isinstance(s, six.text_type):
+    if six.PY2 and isinstance(s, six.text_type):
         s = s.encode(encoding, errors)
-    elif PY3 and isinstance(s, six.binary_type):
+    elif six.PY3 and isinstance(s, six.binary_type):
         s = s.decode(encoding, errors)
     return s
 

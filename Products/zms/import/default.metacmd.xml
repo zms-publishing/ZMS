@@ -10,11 +10,15 @@
 ##bind script=script
 ##bind subpath=traverse_subpath
 ##parameters=
-##title=LANGUAGES
+##title=TAB_LANGUAGES
 ##
 from Products.zms import standard
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
+langIds = context.getLangIds(sort=True)
+xml = context.getMetaobjManager().exportMetaobjXml(ids=[context.meta_id])
+rs = standard.distinct_list([x.split(',')[0] for x in standard.re_search('getLangStr\((.*?)\)',xml) if len(x.split(','))==2])
+rs.sort()
 
 prt = []
 prt.append('<!DOCTYPE html>')
@@ -42,19 +46,21 @@ else:
 	prt.append('<table class="table table-sm table-striped table-bordered table-hover">')
 	prt.append('<thead>')
 	prt.append('<tr>')
-	prt.append('<th class="text-center">')
-	prt.append('<div class="btn-group">')
-	prt.append('<span class="btn btn-secondary" title="%s/%s" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>'%(standard.pystr(context.getZMILangStr('BTN_SLCTALL')),standard.pystr(context.getZMILangStr('BTN_SLCTNONE'))))
-	prt.append('</div>')
-	prt.append('</th>')
+	prt.append('<th>%s</th>'%standard.pystr(context.getZMILangStr('ATTR_KEY')))
+	prt.extend(['<th>%s</th>'%standard.pystr(context.getLanguageLabel(x)) for x in langIds])
 	prt.append('</tr>')
 	prt.append('</thead>')
 	prt.append('<tbody>')
+	for ri in rs:
+		prt.append('<tr>')
+		prt.append('<th>%s</th>'%standard.pystr(ri))
+		prt.extend(['<th><input name="%s" value="%s"></th>'%(x,standard.pystr(context.getLangStr(standard.pybytes(ri),x))) for x in langIds])
+		prt.append('</tr>')
 	prt.append('</tbody>')
 	prt.append('</table>')
 	prt.append('<div class="form-row">')
 	prt.append('<div class="controls save">')
-	prt.append('<button type="submit" name="btn" class="btn btn-primary" value="BTN_EXECUTE">%s</button> '%standard.pystr(context.getZMILangStr('BTN_SAVE')))
+	prt.append('<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE">%s</button> '%standard.pystr(context.getZMILangStr('BTN_SAVE')))
 	prt.append('<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button> '%standard.pystr(context.getZMILangStr('BTN_CANCEL')))
 	prt.append('</div><!-- .controls.save -->')
 	prt.append('</div><!-- .form-group -->')

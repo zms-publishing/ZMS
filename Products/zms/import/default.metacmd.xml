@@ -18,6 +18,7 @@ RESPONSE =  request.RESPONSE
 langIds = context.getLangIds(sort=True)
 xml = context.getMetaobjManager().exportMetaobjXml(ids=[context.meta_id])
 rs = standard.distinct_list([x.split(',')[0] for x in standard.re_search('getLangStr\((.*?)\)',xml) if len(x.split(','))==2])
+rs = [x[1:-1] for x in rs if len(x)>2 and x[0] in ["'",'"'] and x[0] == x[-1]]
 rs.sort()
 
 prt = []
@@ -53,8 +54,8 @@ else:
 	prt.append('<tbody>')
 	for ri in rs:
 		prt.append('<tr>')
-		prt.append('<th>%s</th>'%standard.pystr(ri))
-		prt.extend(['<th><input name="%s" value="%s"></th>'%(x,standard.pystr(context.getLangStr(standard.pybytes(ri),x))) for x in langIds])
+		prt.append('<td>%s</td>'%standard.pystr(ri))
+		prt.extend(['<td><div class="single-line"><textarea class="form-control form-control-sm" name="%s" placeholder="%s">%s</textarea></div></td>'%(ri+'_'+x[0],x[1],[x[1],''][int(ri==x[1])]) for x in [(y,standard.pystr(context.getLangStr(standard.pybytes(ri),y))) for y in langIds]])
 		prt.append('</tr>')
 	prt.append('</tbody>')
 	prt.append('</table>')

@@ -846,6 +846,7 @@ li.zmi-item span.zmi-ids {
 .zmi table.table td.meta-ids {
 	width:1rem;
 }
+.zmi table.table th.meta-sort,
 .zmi table.table td.meta-sort {
 	width:5rem;
 }

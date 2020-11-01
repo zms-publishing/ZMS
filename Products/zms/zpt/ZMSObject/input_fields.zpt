@@ -1,5 +1,7 @@
 <!-- ZMSObject/input_fields -->
-	<tal:block tal:define="global
+
+	<tal:block tal:define="
+			standard modules/Products.zms/standard;
 			action options/action;
 			meta_id options/meta_id;
 			dummy0 python:request.set('ZMS_HIDE_ELEMENTS',[]);
@@ -66,8 +68,17 @@
 						<span title="This Node Contains ..." tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
 						<span title="Data Size" class="get_size" tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>,
 						<span title="Unique ID: Click to Clipboard Copy" class="get_uid"
-							tal:attributes="onclick python:'$ZMI.CopyToClipboard(\'{$%s}\')'%(here.get_uid())" 
-							tal:content="python:'ID:%s'%(here.get_uid())">unique-id</span>
+							tal:define="
+								cataloged python:here.getLinkObj('{$%s}'%here.get_uid()) is not None;"
+							tal:attributes="
+								onclick python:'$ZMI.CopyToClipboard(\'{$%s}\')'%(here.get_uid());
+								class python:' '.join(['get_uid']+[['text-danger'],[]][cataloged]);">
+							<tal:block tal:condition="not:cataloged">
+								<tal:block tal:define="dummy0 python:standard.triggerEvent(here,'*.ObjectAdded')">
+									<i class="text-danger fas fa-ambulance"></i>
+								</tal:block>
+							</tal:block>
+							<tal:block tal:content="python:'ID:%s'%(here.get_uid())">unique-id</tal:block></span>
 					</span>
 					</div><!-- .col-sm-8 -->
 				</div><!-- .form-group -->

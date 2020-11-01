@@ -189,7 +189,7 @@ invalid syntax (PythonExpr, line 1) in expression u"python:[[x,here.display_type
 </html>]]>
       </item>
       <item key="description"></item>
-      <item key="execution" type="int">False</item>
+      <item key="execution" type="int">0</item>
       <item key="icon_clazz"><![CDATA[fas fa-cogs]]></item>
       <item key="id"><![CDATA[manage_tab_search]]></item>
       <item key="meta_type"><![CDATA[Page Template]]></item>
@@ -289,7 +289,7 @@ invalid syntax (PythonExpr, line 1) in expression u"python:[[x,here.display_type
 </html>]]>
       </item>
       <item key="description"></item>
-      <item key="execution" type="int">False</item>
+      <item key="execution" type="int">0</item>
       <item key="icon_clazz"><![CDATA[fas fa-cogs]]></item>
       <item key="id"><![CDATA[manage_tab_tasks]]></item>
       <item key="meta_type"><![CDATA[Page Template]]></item>

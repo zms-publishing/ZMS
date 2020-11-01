@@ -759,6 +759,7 @@ def set_session_value(context, key, value):
   return value
 
 
+security.declarePublic('triggerEvent')
 def triggerEvent(context, *args, **kwargs):
   """
   Hook for trigger of custom event (if there is one)

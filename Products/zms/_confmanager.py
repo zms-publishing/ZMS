@@ -985,10 +985,13 @@ class ConfManager(
       processes = self.getConfProperty('ZMS.filter.processes', {})
       if filters or processes:
         meta_type = 'ZMSFilterManager'
-        obj = ConfDict.forName(meta_type+'.'+meta_type)(filters,processes)
-        self._setObject( obj.id, obj)
-        self.delConfProperty('ZMS.filter.filters')
-        self.delConfProperty('ZMS.filter.processes')
+        try:
+          obj = ConfDict.forName(meta_type+'.'+meta_type)(filters,processes)
+          self._setObject( obj.id, obj)
+          self.delConfProperty('ZMS.filter.filters')
+          self.delConfProperty('ZMS.filter.processes')
+        except:
+          standard.writeError(self, "[getFilterManager]: can't init new %s"%meta_type)
       ###
       manager = [x for x in self.getDocumentElement().objectValues() if isinstance(x,ZMSFilterManager.ZMSFilterManager)]
       if len(manager)==0:
@@ -1001,6 +1004,8 @@ class ConfManager(
           def getFilterProcesses(self, id): return []
           getProcess__roles__ = None
           def getProcess(self, id): return {}
+          getProcessIds__roles__ = None
+          def getProcessIds(self, sort=True): return []
           importXml__roles__ = None
           def importXml(self, xml, createIfNotExists=True): pass
         manager = [DefaultManager()]

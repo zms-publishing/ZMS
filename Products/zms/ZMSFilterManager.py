@@ -281,7 +281,7 @@ class ZMSFilterManager(
     # 
     #  Returns list of process-Ids.
     # --------------------------------------------------------------------------
-    def getProcessIds(self, sort=1):
+    def getProcessIds(self, sort=True):
       obs = self.processes
       ids = list(obs)
       portalMaster = self.getPortalMaster()

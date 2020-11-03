@@ -260,7 +260,7 @@ class ZReferableItem(object):
             v = getattr(obj_vers, '%s%s'%(key, lang_suffix), None)
             if v is not None:
               if datatype in ['richtext', 'string', 'text']:
-                for iv in getInlineRefs(str(v)):
+                for iv in getInlineRefs(v):
                   ref_ob = self.getLinkObj(iv)
                   if ref_ob is not None:
                     ref = self.getRefObjPath(ref_ob)
@@ -326,11 +326,13 @@ class ZReferableItem(object):
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
     if not int(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return text
+    if not standard.is_str(text):
+      text = standard.pystr(text)
     for pq in [('<a(.*?)>', 'href'), ('<img(.*?)>', 'src')]:
       p = pq[0]
       q = pq[1]
       r = re.compile(p)
-      for f in r.findall(str(text)):
+      for f in r.findall(text):
         d = dict(re.findall('\\s(.*?)="(.*?)"', f))
         if 'data-id' in d:
           old = p.replace('(.*?)', f)

@@ -103,7 +103,6 @@ def setobjattr(self, obj, obj_attr, value, lang):
 #  cloneobjattr:
 # ------------------------------------------------------------------------------
 def cloneobjattr(self, src, dst, obj_attr, lang):
-  standard.writeLog( self, "[cloneobjattr]: Clone object-attribute '%s' from '%s' to '%s'"%(obj_attr['id'],str(src),str(dst)))
   # Fetch value.
   v = getobjattr(self, src, obj_attr, lang)
   # Clone value.
@@ -330,11 +329,6 @@ class ObjAttrs(object):
           REQUEST.set('data', data)
           text_fmt = self.getTextFormat(fmt, REQUEST)
           form_fixed = form_fixed or ( text_fmt is not None and not text_fmt.getTag() and not text_fmt.getSubTag())
-        ltxt = str(value).lower()
-        form_fixed = form_fixed or ( ltxt.find( '<form') >= 0 or ltxt.find( '<input') >= 0 or ltxt.find( '<script') >= 0)
-        if form_fixed:
-          css = 'form-control form-fixed'
-          wrap = 'off'
         if disabled: 
           css += '-disabled'
         return self.f_selectRichtext(self, ob=self, fmName=fmName, elName=elName, cols=50, rows=15, value=value, key=obj_attr['id'], metaObj=metaObj, enabled=enabled, lang=lang, lang_str=lang_str, REQUEST=REQUEST, css=css, wrap=wrap)
@@ -353,22 +347,18 @@ class ObjAttrs(object):
       
       #-- Dictionary/List-Fields.
       elif inputtype in [ 'dictionary', 'list']:
-        css = 'form-fixed form-control'
         wrap = 'virtual'
         if disabled: 
           css += '-disabled'
-        cols = 35
-        rows = 1
-        inp = []
-        inp.append(self.getTextArea(fmName, elName, cols, rows, self.toXmlString(value), enabled, css, wrap))
-        return ''.join(inp)
+        cols = None
+        rows = 5
+        return self.getTextArea(fmName, elName, cols, rows, self.toXmlString(value), enabled, css, wrap)
       
       #-- Text-Fields.
       elif inputtype in [ 'text', 'xml']:
         css = 'form-control'
         wrap = 'virtual'
         if inputtype in ['xml']:
-          css = 'form-fixed'
           wrap = 'off'
         if disabled: 
           css += '-disabled'
@@ -935,7 +925,6 @@ class ObjAttrs(object):
       
       #-- SET?
       if set:
-        standard.writeLog( self, "[setReqProperty] %s=%s"%(key, str(value)))
         self.setObjProperty(key, value, lang)
 
 
@@ -958,7 +947,6 @@ class ObjAttrs(object):
       self.notifyMetaobjAttrAboutValue( self.meta_id, key, value)
       
       #-- SET!
-      standard.writeLog( self, "[setObjProperty]: %s=%s"%(key, str(value)))
       ob = self.getObjVersion({'preview':'preview'})
       setobjattr(self, ob, obj_attr, value, lang)
       if forced:
@@ -1257,7 +1245,6 @@ class ObjAttrsManager(object):
       """
       rtn = []
       rtn.append('[%s.synchronizeObjAttrs]: %s'%(self.absolute_url(), str(sync_id)))
-      standard.writeLog( self, '[synchronizeObjAttrs]')
       
       # Prepare defaults.
       defaults_obj_attrs = {}

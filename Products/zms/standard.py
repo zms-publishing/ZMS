@@ -2016,7 +2016,8 @@ def dt_executable(context, v):
   @return:
   @rtype: C{Bool}
   """
-  if _globals.is_str_type(v):
+  if is_str(v) or is_bytes(v):
+    print(v)
     if v.startswith('##'):
       return 'py'
     elif v.find('<tal:') >= 0:
@@ -2038,7 +2039,7 @@ def dt_exec(context, v, o={}):
   @return:
   @rtype: C{any}
   """
-  if type(v) is str:
+  if is_str(v) or is_bytes(v):
     if v.startswith('##'):
       v = dt_py(context, v, o)
     elif v.find('<tal:') >= 0:
@@ -2060,6 +2061,8 @@ def dt_html(context, value, REQUEST):
   @rtype: C{any}
   """
   import DocumentTemplate.DT_HTML
+  if not is_bytes(value):
+    value = pybytes(value)
   i = 0
   while True:
     i = value.find( '<dtml-', i)
@@ -2075,8 +2078,8 @@ def dt_html(context, value, REQUEST):
   value = re.sub( '</dtml-var>', '', value)
   dtml = DocumentTemplate.DT_HTML.HTML(value)
   value = dtml( context, REQUEST)
-  if type(value) is bytes:
-    value = value.decode('utf-8','ignore')
+  if not is_str(value):
+    value = pystr(value)
   return value
 
 def dt_py( context, script, kw={}):

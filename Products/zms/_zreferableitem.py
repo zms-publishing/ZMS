@@ -94,7 +94,7 @@ def getInlineRefs(text):
   l = []
   p = '<a(.*?)>(.*?)<\\/a>'
   r = re.compile(p)
-  for f in r.findall(str(text)):
+  for f in r.findall(text):
     d = dict(re.findall('\\s(.*?)="(.*?)"', f[0]))
     if 'data-id' in d:
       l.append(d['data-id'])

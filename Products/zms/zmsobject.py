@@ -368,7 +368,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             if metaObjAttr[ 'type'] in [ 'constant', 'method', 'py', 'string', 'select', 'color']:
               if c == offs:
                 v = self.getObjProperty( metaObjAttr[ 'id'], REQUEST)
-                if _globals.is_str_type(v):
+                if standard.is_str(v) or standard.is_bytes(v):
                   s = v
                   break
               c = c + 1
@@ -783,17 +783,14 @@ class ZMSObject(ZMSItem.ZMSItem,
       redirect_self = redirect_self and (self.isPageContainer() or not REQUEST.get('btn') in [ 'BTN_CANCEL', 'BTN_BACK'])
       
       if REQUEST.get('btn', '') not in [ 'BTN_CANCEL', 'BTN_BACK']:
-        try:
           # Object State
           self.setObjStateModified(REQUEST)
           # Change Properties
           self.changeProperties(lang)
           # Message
           message = self.getZMILangStr('MSG_CHANGED')
-        except:
-          message = standard.writeError(self, "[manage_changeProperties]")
           messagekey = 'manage_tabs_error_message'
-        message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+          message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
       
       # Return with message.
       target_ob = self.getParentNode()

@@ -145,6 +145,8 @@ def six_ensure_str(s, encoding='utf-8', errors='strict'):
 
 
 def url_quote(s):
+  if not is_bytes(s):
+    s = pybytes(s)  
   return urllib_quote(s)
 
 """
@@ -2017,7 +2019,6 @@ def dt_executable(context, v):
   @rtype: C{Bool}
   """
   if is_str(v) or is_bytes(v):
-    print(v)
     if v.startswith('##'):
       return 'py'
     elif v.find('<tal:') >= 0:

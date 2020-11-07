@@ -789,7 +789,6 @@ class ZMSObject(ZMSItem.ZMSItem,
           self.changeProperties(lang)
           # Message
           message = self.getZMILangStr('MSG_CHANGED')
-          messagekey = 'manage_tabs_error_message'
           message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
       
       # Return with message.

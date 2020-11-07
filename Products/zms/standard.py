@@ -305,18 +305,18 @@ def url_append_params(url, dict, sep='&amp;'):
   i = url.find(qs)
   if i >= 0:
     qs = sep
-  for key in dict.keys():
+  for key in dict:
     value = dict[key]
     if isinstance(value, list):
       for item in value:
-        qi = key + ':list=' + url_quote(pystr(item))
+        qi = key + ':list=' + url_quote(pystr(item,'utf-8'))
         url += qs + qi
         qs = sep
     else:
       try:
-        qi = key + '=' + url_quote(str(value))
+        qi = key + '=' + url_quote(pystr(value,'utf-8'))
       except:
-        qi = key + '=' + value.encode('utf-8','replace')
+        qi = key + '=' + pystr(value,'utf-8')
       if url.find( '?' + qi) < 0 and url.find( '&' + qi) < 0 and url.find( '&amp;' + qi) < 0:
         url += qs + qi
       qs = sep
@@ -350,18 +350,18 @@ def url_inherit_params(url, REQUEST, exclude=[], sep='&amp;'):
           else:
             url += sep
           if isinstance(v, int):
-            url += url_quote(key+':int') + '=' + url_quote(str(v))
+            url += url_quote(key+':int') + '=' + url_quote(pystr(v,'utf-8'))
           elif isinstance(v, float):
-            url += url_quote(key+':float') + '=' + url_quote(str(v))
+            url += url_quote(key+':float') + '=' + url_quote(pystr(v,'utf-8'))
           elif isinstance(v, list):
             c = 0
             for i in v:
               if c > 0:
                 url += sep
-              url += url_quote(key+':list') + '=' + url_quote(str(i))
+              url += url_quote(key+':list') + '=' + url_quote(pystr(i,'utf-8'))
               c = c + 1
           else:
-            url += key + '=' + url_quote(str(v))
+            url += key + '=' + url_quote(pystr(v,'utf-8'))
   return url+anchor
 
 

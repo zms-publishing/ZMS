@@ -59,7 +59,7 @@ file(s).
 		<a href="./getLOG" target="_blank" title="Download Log"><i class="fas fa-download text-primary"></i></a>
 	</div>
 	<div class="card-body zmi-traceback">
-		<pre tal:content="python:'\n'.join(here.tail_event_log(linesback=int(getattr(here,'tail_event_log_linesback',100))))">the tail event-log</pre>
+		<pre tal:on-error="string:not found" tal:content="python:'\n'.join(here.tail_event_log(linesback=int(getattr(here,'tail_event_log_linesback',100))))">the tail event-log</pre>
 	</div>
 </div>
 

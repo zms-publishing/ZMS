@@ -943,21 +943,16 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
 ##
 # --// ZMSIndexZCatalog.getLinkObj //--
 
+from Products.zms import standard
 request = zmscontext.REQUEST
 zmsroot = zmscontext.getRootElement()
 url = options['url']
 try: return zmsroot.fetchReqBuff(options['url'],request)
 except: pass
 
-ob = None
-if url.startswith('{$') and url.endswith('}'):
-  url = url[2:-1]
-  # Strip suffixes
-  i = max(url.find('#'),url.find(','))
-  if i > 0:
-    url = url[:i]
-  if url.find('id:') >= 0:
-    q = zmscontext.zcatalog_index({'get_uid':url})
+def resolvePath(query):
+    ob = None
+    q = zmscontext.zcatalog_index(query)
     for r in q:
       zmspath  = '%s/'%r['getPath']
       l = zmspath[1:-1].split('/')
@@ -968,7 +963,20 @@ if url.startswith('{$') and url.endswith('}'):
         break
       except:
         pass
-  elif not url.startswith('__'):
+    return ob
+
+ob = None
+if url.startswith('{$') and url.endswith('}'):
+  url = url[2:-1]
+  # Strip suffixes
+  i = max(url.find('#'),url.find(','))
+  if i > 0:
+    url = url[:i]
+  # find by catalog
+  if url.find('id:') >= 0:
+    ob = resolvePath({'get_uid':url})
+  if ob is None and not url.startswith('__'):
+    # find by ids
     url = url.replace('@','/content/')
     l = url.split('/') 
     ob = zmscontext.getDocumentElement()
@@ -977,6 +985,14 @@ if url.startswith('{$') and url.endswith('}'):
         ob = getattr(ob,id,None)
     except:
       pass
+    # find by home-id and object-id
+    if ob is None:
+      home_id = zmscontext.getDocumentElement().getHome().id
+      i = url.find('@')
+      if i > 0:
+        home_id = url[:i].split('/')[-1]
+      ob_id = url.split('/')[-1]
+      ob = resolvePath({'home_id':home_id,'id':ob_id})
 return zmsroot.storeReqBuff(options['url'],ob)
 
 # --// /ZMSIndexZCatalog.getLinkObj //--

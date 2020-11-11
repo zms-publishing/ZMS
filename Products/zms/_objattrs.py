@@ -688,7 +688,7 @@ class ObjAttrs(object):
           elif key == 'attr_active_end':
             if value is not None:
               dt = datetime.datetime.fromtimestamp(time.mktime(value))
-              b = b and dt < now
+              b = b and now < dt
           if not b: break
       return b
 

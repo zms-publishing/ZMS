@@ -54,12 +54,12 @@
 							Team
 						</button>
 						<div class="dropdown-menu" aria-labelledby="teamDropdownMenuButton">
-								<li tal:repeat="meta_cmd meta_cmds">
-									<a tal:attributes="href python:meta_cmd['id'];title python:meta_cmd.get('title','id')">
+								<tal:block tal:repeat="meta_cmd meta_cmds">
+									<a class="dropdown-item" tal:attributes="href python:meta_cmd['id'];title python:meta_cmd.get('title','id')">
 										<i tal:condition="python:meta_cmd.get('icon_clazz')" tal:attributes="class python:meta_cmd.get('icon_clazz','fas fa-square')"></i>
 										<tal:block tal:content="python:here.getZMILangStr(meta_cmd['name'])">the action-name</tal:block>
 									</a>
-								</li>
+								</tal:block>
 						</div>
 					</div>
 				</tal:block>

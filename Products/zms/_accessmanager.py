@@ -723,12 +723,13 @@ class AccessManager(AccessableContainer):
         if uid is not None:
           d['user_id_'] = uid
           try:
-            if uid.startswith('\x01\x05\x00\x00'):
+            uid = standard.pybytes(uid)
+            if uid.startswith(standard.pybytes('\x01\x05\x00\x00')):
               buid = None
               if six.PY2:
                 buid = buffer(uid)
               elif six.PY3:
-                buid = memoryview(standard.pybytes(uid))
+                buid = memoryview(uid)
               import binascii
               uid = binascii.b2a_hex(buid)
           except:

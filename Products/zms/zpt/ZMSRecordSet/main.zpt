@@ -34,16 +34,16 @@
 	<div class="card">
 		<div class="card-header attr_last_modified clearfix btn-collapse">
 			<a class="btn card-toggle" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
-				><i class="fas fa-caret-right"></i> <tal:block tal:content="python:standard.pystr(here.getZMILangStr('ATTR_ACTIVITY'))">Activity</tal:block
+				><i class="fas fa-caret-right"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
 			></a>
-			<div class="btn zmi-changes" tal:content="python:standard.pystr(here.getZMILangStr('ATTR_LAST_MODIFIED'))+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
+			<div class="btn zmi-changes" tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
 		</div><!-- .card-header -->
 		<div id="attrActivity" class="collapse">
 			<div class="card-body">
 				<tal:block tal:condition="python:here.attr('created_dt') and here.attr('created_uid')">
-					<span tal:content="python:'%s: %s %s %s'%(standard.pystr(here.getZMILangStr('ATTR_CREATED')),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
+					<span tal:content="python:'%s: %s %s %s'%(here.getZMILangStr('ATTR_CREATED'),here.getLangFmtDate(here.attr('created_dt')),here.getZMILangStr('BY'),here.attr('created_uid'))">Createad: %d.%m.%Y by %s</span>,
 				</tal:block>
-				<span title="This Node Contains ..." tal:content="python:'%i %s'%(len(here.getChildNodes(request)),standard.pystr(here.getZMILangStr('ATTR_OBJECTS')))">%i Objects</span>,
+				<span title="This Node Contains ..." tal:content="python:'%i %s'%(len(here.getChildNodes(request)),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</span>,
 				<span title="Data Size" class="get_size" tal:content="python:here.getDataSizeStr(here.get_size())">%i Bytes</span>,
 				<span title="Unique ID" class="get_uid" tal:content="python:'ID:%s'%(here.get_uid())">unique-id</span>
 			</div><!-- .card-body -->
@@ -52,7 +52,7 @@
 		<div class="card-header filters clearfix btn-collapse">
 			<a class="btn card-toggle pull-left col-sm-2 col-lg-2" data-toggle="collapse" href="#attrProperties">
 				<i class="fas fa-caret-down"></i>
-				<tal:block tal:content="structure python:standard.pystr(here.getZMILangStr('ATTR_FILTER'))">the label</tal:block>
+				<tal:block tal:content="structure python:here.getZMILangStr('ATTR_FILTER')">the label</tal:block>
 			</a>
 			<input type="hidden" id="qfilters" name="qfilters:int" tal:attributes="value request/qfilters" />
 		</div><!-- .card-header -->
@@ -84,10 +84,10 @@
 				<div class="form-row">
 					<button type="submit" id="btn-search" class="btn btn-primary" name="btn" value="BTN_REFRESH">
 						<i class="fas fa-search"></i>
-						<tal:block tal:content="python:standard.pystr(here.getZMILangStr('BTN_SEARCH'))">Search</tal:block>
+						<tal:block tal:content="python:here.getZMILangStr('BTN_SEARCH')">Search</tal:block>
 					</button>
 					<button type="submit" id="btn-reset" class="btn btn-secondary" name="btn" value="BTN_RESET">
-						<tal:block tal:content="python:standard.pystr(here.getZMILangStr('BTN_RESET'))">Reset</tal:block>
+						<tal:block tal:content="python:here.getZMILangStr('BTN_RESET')">Reset</tal:block>
 					</button>
 				</div><!-- .form-row -->
 			</div><!-- .card-body -->

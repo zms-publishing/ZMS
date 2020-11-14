@@ -265,7 +265,7 @@ function zmiModalInsertUserOpen(context) {
 						<label for="profile" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_PROFILE')">Profile</span></label>
 						<div class="col-sm-10" tal:content="structure python:here.getUrlInput(fmName='userform',elName='profile',value=here.getUserAttr(userObj['name'],'profile',''))">the control</div><!-- .col-sm-10 -->
 					</div>
-					<div class="form-group row mb-0 pb-4">
+					<div class="form-group row">
 						<div class="controls save">
 							<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:condition="python:userObj is not None"><i class="fas fa-ok"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</tal:block></button>
 							<button type="submit" name="btn" class="btn btn-secondary" value="BTN_DELETE" tal:condition="python:userName in userNames"><i class="fas fa-times"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></button>

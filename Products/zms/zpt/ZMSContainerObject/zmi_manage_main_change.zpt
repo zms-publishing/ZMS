@@ -1,8 +1,7 @@
 <tal:block tal:replace="nothing">
 #####  Object State  ###########################################################
 </tal:block>
-<a class="object_has_titleimage" title="Title Image Preview: Click to Edit"
-	tal:on-error="python:here.attr('titleimage')"
+<a class="object_has_titleimage" title="Title Image Preview: Click to Edit" 
 	tal:condition="python:here.attr('titleimage')" 
 	tal:attributes="href python:'%s/manage_properties?lang=%s'%(here.absolute_url(),request['manage_lang'])"
 	><i class="far fa-image text-primary titleimage-preview" tal:attributes="style python:'--titleimage_url:url(%s)'%(here.attr('titleimage').getHref(request))"></i>

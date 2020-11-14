@@ -133,14 +133,15 @@ def getXmlTypeSaveValue(v, attrs):
   # Type.
   t = attrs.get('type', '?')
   if t == 'float':
-    v = float(v)
+    try:
+      v = float(v)
+    except:
+      standard.writeError(self, "[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!" % (t, standard.pystr(v)))
   elif t == 'int':
-    if v == 'False':
-      v = 0
-    elif v == 'True':
-      v = 1
-    else:
+    try:
       v = int(v)
+    except:
+      standard.writeError(self, "[_xmllib.getXmlTypeSaveValue]: Conversion to '%s' failed for '%s'!" % (t, standard.pystr(v)))
   elif t == 'datetime':
     new = standard.parseLangFmtDate(v)
     if new is not None:

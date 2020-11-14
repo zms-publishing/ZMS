@@ -20,8 +20,8 @@
 import copy
 import re
 # Product Imports.
-from Products.zms import _globals
 from Products.zms import standard
+from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------
@@ -30,8 +30,8 @@ from Products.zms import standard
 def br_quote(text, subtag, REQUEST):
   if len(subtag) == 0:
     return text
-  if not standard.is_str(text):
-    text = standard.pystr(text)
+  if type(text) not in [str, str]:
+    text = str(text)
   rtn = ''
   qcr = ''
   qtab = '&nbsp;'*6

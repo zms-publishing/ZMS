@@ -13,7 +13,7 @@
 	<legend tal:content="python:here.getZMILangStr('TAB_HISTORY')">History</legend>
 	<p class="well" tal:content="structure python:here.getZMILangStr('MSG_UNDOVERSION')">well</p>
 
-<tal:block tal:condition="python:request.get('btn')==here.getZMILangStr('BTN_COMPARE')" tal:define="ids python:request.get('ids',[]); ids python:[x.id for x in here.getObjVersions() if x.id in ids];">
+<tal:block tal:condition="python:request.get('btn')==here.getZMILangStr('BTN_COMPARE')" tal:define="ids python:request.get('ids',[]); ids python:^[x.id for x in here.getObjVersions() if x.id in ids];">
 	<tal:block tal:condition="python:len(ids)>1">
 	<div class="card">
 		<div class="card-header btn-collapse">

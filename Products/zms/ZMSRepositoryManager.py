@@ -472,7 +472,9 @@ class ZMSRepositoryManager(
               data = files[file]['data']
               if data is not None:
                 f = open(filepath,"wb")
-                f.write(standard.pybytes(data,"utf-8"))
+                if isinstance(data,str):
+                  data = data.encode("utf-8")
+                f.write(data)
                 f.close()
               else:
                 failure.append('%s is None'%file)

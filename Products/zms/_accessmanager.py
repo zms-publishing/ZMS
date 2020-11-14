@@ -722,18 +722,13 @@ class AccessManager(AccessableContainer):
           uid = plugin.getUserIdForLogin(login_name)
         if uid is not None:
           d['user_id_'] = uid
-          try:
-            uid = standard.pybytes(uid)
-            if uid.startswith(standard.pybytes('\x01\x05\x00\x00')):
-              buid = None
-              if six.PY2:
-                buid = buffer(uid)
-              elif six.PY3:
-                buid = memoryview(uid)
-              import binascii
-              uid = binascii.b2a_hex(buid)
-          except:
-            standard.writeError(self,'[getValidUserids]: _uid_attr=%s'%_uid_attr)
+          if six.PY2:
+            try:
+              if uid.startswith('\x01\x05\x00\x00'):
+                import binascii
+                uid = binascii.b2a_hex(buffer(uid))
+            except:
+              standard.writeError(self,'[getValidUserids]: _uid_attr=%s'%_uid_attr)
           d['user_id'] = uid
           if len([x for x in c if x['id'] == 'user_id'])==0:
             c.append({'id':'user_id','name':_uid_attr.capitalize(),'type':'string'})

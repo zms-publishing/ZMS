@@ -1181,7 +1181,7 @@ class ZMSObject(ZMSItem.ZMSItem,
              obj_attr['datatype_key'] in _globals.DT_DATETIMES:
             v = self.attr(key)
             if v:
-              xml += "<%s>%s</%s>"%(key, standard.toXmlString(self,v).encode('utf-8'), key)
+              xml += "<%s>%s</%s>"%(key, standard.pystr(standard.toXmlString(self,v),'utf-8'), key)
           elif obj_attr['datatype_key'] in _globals.DT_BLOBS:
             v = self.attr(key)
             if v:

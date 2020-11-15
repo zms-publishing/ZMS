@@ -30,13 +30,13 @@ $ virtualenv ZMS5
 
 ::     
 
-$ ./ZMS5/bin/pip install ZMS3 [--upgrade]
+$ ./ZMS5/bin/pip install https://github.com/zms-publishing/ZMS5/archive/master.zip [--upgrade]
 
 **(3) Create an Instance [or restart on Upgrade]**
 
 ::     
 
-$ ./ZMS5/bin/mkzopeinstance --dir ZMS3/instance
+$ ./ZMS5/bin/mkzopeinstance --dir ZMS5/instance
 $ ./ZMS5/instance/bin/zopectl start
 
     and finally "Add ZMS" via web user interface

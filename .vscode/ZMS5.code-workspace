@@ -18,10 +18,6 @@
 		"editor.renderWhitespace": "all",
 		"editor.renderControlCharacters": false,
 		"team.showWelcomeMessage": false,
-		"svn.enabled":true,
-		"svn.default.encoding":"utf-8",
-		"svn.enableProposedApi": "product",
-		"svn.defaultCheckoutDirectory": "https://zmslabs.org/svn/zmslabs/ZMS/branches/zms4/",
 		"workbench.iconTheme": "vs-minimal",
 		"files.associations": {
 			"*.zpt": "html",
@@ -29,7 +25,6 @@
 		},
 		"scm.alwaysShowProviders": true,
 		"scm.alwaysShowActions": true,
-		"svn.autorefresh": false,
 		"files.exclude": {
 			"*.pyc": true
 		},

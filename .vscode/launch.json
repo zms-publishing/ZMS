@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python3: Zope-ZMS4",
+            "name": "Python3: Zope-ZMS5",
             "type": "python",
             "request": "launch",
             "program": "/home/dev/workspace/zopefoundation/Zope/src/Zope2/Startup/serve.py",
@@ -12,13 +12,13 @@
             "args": [
                 "-d",
                 "-v",
-                "/home/zope/instance/zms4_dev/etc/zope.ini"
+                "/home/zope/instance/zms5_dev/etc/zope.ini"
             ],
             "env": {
                 "PYTHONUNBUFFERED":"1",
-                "CONFIG_FILE": "/home/zope/instance/zms4_dev/etc/zope.ini",
-                "INSTANCE_HOME": "/home/zope/instance/zms4_dev",
-                "CLIENT_HOME": "/home/zope/instance/zms4_dev",
+                "CONFIG_FILE": "/home/zope/instance/zms5_dev/etc/zope.ini",
+                "INSTANCE_HOME": "/home/zope/instance/zms5_dev",
+                "CLIENT_HOME": "/home/zope/instance/zms5_dev",
                 "PYTHON": "/home/zope/vpy37/bin/python",
                 "SOFTWARE_HOME": "/home/zope/vpy37/bin/"
             },

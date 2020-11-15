@@ -10,9 +10,9 @@ http://www.zms-publishing.com
 Changelog
 ---------
 
-    * Changes: https://zmslabs.org/trac/wiki/CHANGES
-    * Revisions: https://zmslabs.org/trac/log/ZMS/trunk
-    * Source: https://zmslabs.org/trac/browser/ZMS/trunk
+    * Changes: https://github.com/zms-publishing/ZMS5/blob/master/CHANGES
+    * Revisions: https://github.com/zms-publishing/ZMS5/commits/master
+    * Source: https://github.com/zms-publishing/ZMS5/archive/master.zip
 
 Installation (GNU/Linux, OSX/Darwin and Windows/WSL)
 ----------------------------------------------------
@@ -24,20 +24,20 @@ Installation (GNU/Linux, OSX/Darwin and Windows/WSL)
 ::
 
 $ cd ~
-$ virtualenv ZMS3
+$ virtualenv ZMS5
            
 **(2) Install [or Upgrade] the Product**
 
 ::     
 
-$ ./ZMS3/bin/pip install ZMS3 [--upgrade]
+$ ./ZMS5/bin/pip install ZMS3 [--upgrade]
 
 **(3) Create an Instance [or restart on Upgrade]**
 
 ::     
 
-$ ./ZMS3/bin/mkzopeinstance --dir ZMS3/instance
-$ ./ZMS3/instance/bin/zopectl start
+$ ./ZMS5/bin/mkzopeinstance --dir ZMS3/instance
+$ ./ZMS5/instance/bin/zopectl start
 
     and finally "Add ZMS" via web user interface
 
@@ -59,4 +59,4 @@ Prerequisites
 
     If you get compilation errors like ``fatal error: Python.h: No such file or directory compilation terminated``, install development headers using your system's recommended package manager.
 
-Copyright (c) 2000-2017 `HOFFMANN+LIEBENBERG <http://www.hoffmannliebenberg.de>`_ in association with `SNTL Publishing <http://www.sntl-publishing.com>`_, Berlin. Code released under the `GNU General Public License v3 <http://www.gnu.org/licenses/gpl.html>`_ license.
+Copyright (c) 2000-2020 `HOFFMANN+LIEBENBERG <http://www.hoffmannliebenberg.de>`_ in association with `SNTL Publishing <http://www.sntl-publishing.com>`_, Berlin. Code released under the `GNU General Public License v3 <http://www.gnu.org/licenses/gpl.html>`_ license.

@@ -138,6 +138,15 @@ def importFile(self, file, REQUEST, handler):
   filename = _fileutil.getOSPath('%s/%s'%(folder, _fileutil.extractFilename(filename)))
   _fileutil.exportObj(file, filename)
   
+  # Import ZEXP-file.
+  if _fileutil.extractFileExt(filename) == 'zexp':
+    ob =  self._importObjectFromFile(filename,verify=0)
+    # Remove temporary files.
+    _fileutil.remove(folder, deep=1)
+    # Refresh zcatalog_index
+    standard.triggerEvent( self, '*.onImportObjEvt')
+    return ob
+  
   # Find XML-file.
   if _fileutil.extractFileExt(filename) == 'zip':
     _fileutil.extractZipArchive(filename)

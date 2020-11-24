@@ -41,7 +41,7 @@ def parseXmlString(self, file):
   message = ''
   REQUEST = self.REQUEST
   lang = REQUEST.get( 'lang', self.getPrimaryLanguage())
-  v = self.parseXmlString(file)
+  v = standard.parseXmlString(file)
   metaObj = self.getMetaobj(self.meta_id)
   res_id = metaObj['attrs'][0]['id']
   res_abs = self.getObjProperty(res_id, REQUEST)

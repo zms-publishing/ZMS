@@ -387,6 +387,7 @@ def xmlOnUnknownEndTag(self, sTagName):
                           item_data = item[ key]
                           if isinstance(item_data, dict):
                             blob = _blobfields.createBlobField(self, item_datatype, item_data)
+                            blob.on_setobjattr()
                             item[ key] = blob
               # -- Convert multilingual to monolingual attributes.
               if obj_attr['multilang'] == 0 and \

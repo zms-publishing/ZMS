@@ -87,10 +87,6 @@ def recurse_addMediaDb(self, mediadb):
           for obj_vers in self.getObjVersions():
             v = _objattrs.getobjattr(self,obj_vers,obj_attr,lang)
             if isinstance(v,_blobfields.MyBlob):
-              mediadbfile = mediadb.storeFile(v)
-              v.aq_parent = None
-              v.mediadbfile = mediadbfile
-              v.data = ''
               _objattrs.setobjattr(self,obj_vers,obj_attr,v,lang)
   
   # Process children.

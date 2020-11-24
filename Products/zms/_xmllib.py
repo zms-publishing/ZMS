@@ -81,7 +81,7 @@ def getText(nodelist, encoding='utf-8'):
     for childNode in node.childNodes:
       if childNode.nodeType == childNode.TEXT_NODE:
         rc.append(childNode.data)
-  return standard.pystr(''.join(rc).encode(encoding))
+  return ''.join(rc)
 
 # ------------------------------------------------------------------------------
 #  _xmllib.parseString:

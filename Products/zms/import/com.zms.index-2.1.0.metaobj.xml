@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<?zms version='ZMS4-4.0.0.dev.REV
+<?zms version='ZMS5-5.0.0.dev.REV
 '?>
 <list>
   <item type="dictionary">
@@ -383,7 +383,7 @@ $(function() {
 		background-color: #f2dede;
 	}
 
-	/* ZMS4 specifics */
+	/* ZMS4+ specifics */
 	body.zmi.zms #zmsindex .icon.icon-resize-full:before {
 		font-family: 'Font Awesome 5 Free';
 		font-weight: 900;

@@ -15,6 +15,7 @@ of depending packages (see requirements.txt).
 """
 import os
 import sys
+import re
 from setuptools import setup
 
 setup_path = os.path.dirname(__file__)
@@ -25,7 +26,7 @@ for path in sys.path:
 def read_version():
     # Remove text from version for PyPI
     raw_version = open(os.path.join(setup_path, 'Products', 'zms', 'version.txt')).read()
-    cleaned_version = raw_version.replace('ZMS4-', '').replace('.REV', '')
+    cleaned_version = re.sub(r'ZMS\d*-', '', raw_version).replace('.REV', '')
     version_list = cleaned_version.strip().split('.')
     # Remove revision too
     if 4 == len(version_list):

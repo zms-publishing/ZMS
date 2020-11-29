@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<?zms version='ZMS4-4.0.0.dev.REV
+<?zms version='ZMS5-5.0.0.dev.REV
 '?>
 <dictionary>
   <item key="key">myZMStheme32</item>
@@ -203,7 +203,7 @@
                 <li><a href="https://zmslabs.org">ZMSlabs</a></li>
             </ul>
             <p>Built with Content Management System <a href="http://www.zms-publishing-com" target="_blank">ZMS</a> is based on <a href="http://python.org">Python</a>, <a href="https://jquery.com/" target="_blank">jQuery</a> and <a href="https://getbootstrap.com/" target="_blank">Bootstrap</a>.</p>
-            <p><a href="https://github.com/zms-publishing/zms4" tal:content="python:here.zms_version()">">zms_version</a>.</p>
+            <p><a href="https://github.com/zms-publishing/zms5" tal:content="python:here.zms_version()">">zms_version</a>.</p>
         </div>
     </footer>
 

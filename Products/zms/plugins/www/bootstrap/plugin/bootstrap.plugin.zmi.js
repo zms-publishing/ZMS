@@ -1434,7 +1434,7 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 		// Set wait-cursor.
 		$container.append('<div id="loading" class="zmi-page"><i class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'</div>');
 		// JQuery.AJAX.get
-		var params = {lang:getZMILang(),preview:'preview',physical_path:$('meta[name=physical_path]').attr('content')}
+		var params = {lang:getZMILang(),preview:'preview',physical_path:$('meta[name=physical_path]').attr('content'),'get_attrs:int':0};
 		if (typeof that.p["params"] == "object") {
 			for (var i in that.p["params"]) {
 				params[i] = that.p["params"][i];

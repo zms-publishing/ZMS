@@ -654,11 +654,12 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
                   writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain.100 %s->%s'%(data_id,brain['getPath']))
                   brains.append((100,brain))
                 elif ids[-1] == 'content' and len(ids)>=2 and brain['getPath'].endswith('/'.join(ids[-2:])):
-                  writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain.1 %s->%s'%(data_id,brain['getPath']))
-                  brains.append((1,brain))
+                  score = len([1 for id in ids if id in brain['getPath'].split('/')])
+                  writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain#1 %i->%s'%(score,brain['getPath']))
+                  brains.append((score,brain))
                 else:
                   score = len([1 for id in ids if id in brain['getPath'].split('/')])
-                  writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain %i->%s'%(score,brain['getPath']))
+                  writeDebug(self,'[ZMSIndexZCatalog_func_] find_brain#2 %i->%s'%(score,brain['getPath']))
                   brains.append((score,brain))
             if brains:
               brains = sorted(brains,key=lambda x:x[0])

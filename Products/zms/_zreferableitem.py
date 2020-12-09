@@ -94,7 +94,7 @@ def getInlineRefs(text):
   l = []
   p = '<a(.*?)>(.*?)<\\/a>'
   r = re.compile(p)
-  for f in r.findall(str(text)):
+  for f in r.findall(standard.pystr(text)):
     d = dict(re.findall('\\s(.*?)="(.*?)"', f[0]))
     if 'data-id' in d:
       l.append(d['data-id'])
@@ -260,7 +260,7 @@ class ZReferableItem(object):
             v = getattr(obj_vers, '%s%s'%(key, lang_suffix), None)
             if v is not None:
               if datatype in ['richtext', 'string', 'text']:
-                for iv in getInlineRefs(str(v)):
+                for iv in getInlineRefs(standard.pystr(v)):
                   ref_ob = self.getLinkObj(iv)
                   if ref_ob is not None:
                     ref = self.getRefObjPath(ref_ob)
@@ -330,7 +330,7 @@ class ZReferableItem(object):
       p = pq[0]
       q = pq[1]
       r = re.compile(p)
-      for f in r.findall(str(text)):
+      for f in r.findall(standard.pystr(text)):
         d = dict(re.findall('\\s(.*?)="(.*?)"', f))
         if 'data-id' in d:
           old = p.replace('(.*?)', f)
@@ -442,7 +442,7 @@ class ZReferableItem(object):
   # ----------------------------------------------------------------------------
   def tal_anchor(self, href, target='', attrs={}, content=''):
     filtered_attrs_keys = [x for x in attrs if x]
-    str_attrs = ' '.join(['%s=\042%s\042'%(str(x),str(attrs[x])) for x in filtered_attrs_keys])
+    str_attrs = ' '.join(['%s=\042%s\042'%(standard.pystr(x),str(attrs[x])) for x in filtered_attrs_keys])
     return '<a href="%s" %s %s>%s</a>'%(href, ['', ' target="%s"'%target][int(len(target)>0)], str_attrs, content)
 
 ################################################################################

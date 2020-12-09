@@ -368,7 +368,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             if metaObjAttr[ 'type'] in [ 'constant', 'method', 'py', 'string', 'select', 'color']:
               if c == offs:
                 v = self.getObjProperty( metaObjAttr[ 'id'], REQUEST)
-                if _globals.is_str_type(v):
+                if standard.is_str(v) or standard.is_bytes(v):
                   s = v
                   break
               c = c + 1
@@ -783,17 +783,13 @@ class ZMSObject(ZMSItem.ZMSItem,
       redirect_self = redirect_self and (self.isPageContainer() or not REQUEST.get('btn') in [ 'BTN_CANCEL', 'BTN_BACK'])
       
       if REQUEST.get('btn', '') not in [ 'BTN_CANCEL', 'BTN_BACK']:
-        try:
           # Object State
           self.setObjStateModified(REQUEST)
           # Change Properties
           self.changeProperties(lang)
           # Message
           message = self.getZMILangStr('MSG_CHANGED')
-        except:
-          message = standard.writeError(self, "[manage_changeProperties]")
-          messagekey = 'manage_tabs_error_message'
-        message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+          message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
       
       # Return with message.
       target_ob = self.getParentNode()
@@ -1171,8 +1167,8 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " is_page=\"%s\""%str(int(self.isPage()))
       xml += " is_pageelement=\"%s\""%str(int(self.isPageElement()))
       xml += " meta_id=\"%s\""%(self.meta_id)
-      xml += " title=\"%s\""%standard.html_quote(self.getTitle(REQUEST))
-      xml += " titlealt=\"%s\""%standard.html_quote(self.getTitlealt(REQUEST))
+      xml += " title=\"%s\""%standard.pystr(standard.html_quote(self.getTitle(REQUEST)))
+      xml += " titlealt=\"%s\""%standard.pystr(standard.html_quote(self.getTitlealt(REQUEST)))
       xml += " restricted=\"%s\""%str(self.hasRestrictedAccess())
       xml += " attr_dc_type=\"%s\""%(self.attr('attr_dc_type'))
       xml += ">"
@@ -1185,7 +1181,12 @@ class ZMSObject(ZMSItem.ZMSItem,
              obj_attr['datatype_key'] in _globals.DT_DATETIMES:
             v = self.attr(key)
             if v:
-              xml += "<%s>%s</%s>"%(key, standard.toXmlString(self,v).encode('utf-8'), key)
+              try:
+                v = standard.pystr(v,'utf-8','replace')
+                xml += "<%s>%s</%s>"%(key, v, key)
+              except:
+                v = standard.pybytes(v,'utf-8','replace')
+                xml += "<%s>%s</%s>"%(key, v, key)
           elif obj_attr['datatype_key'] in _globals.DT_BLOBS:
             v = self.attr(key)
             if v:

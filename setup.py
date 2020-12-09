@@ -67,4 +67,7 @@ setup(
   classifiers           = CLASSIFIERS,
   include_package_data  = True,
   zip_safe              = False,
+  extras_require        = {
+      'zeo' : open(os.path.join(setup_path, 'requirements-zeo.txt')).readlines(),
+  },
 )

@@ -5,7 +5,8 @@
 -e git+https://github.com/zms-publishing/Products.zms-skins.git#egg=Products.zms-skins
 
 # SQL
-mysqlclient
+# version 2.0.2 fails to compile on centos 7 @see https://github.com/PyMySQL/mysqlclient/issues/460
+mysqlclient<2.0.2
 Products.ZMySQLDA
 Products.ZSQLMethods
 

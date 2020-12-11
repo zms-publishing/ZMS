@@ -512,7 +512,7 @@ class ConfManager(
       d = self.get_conf_properties()
       if REQUEST is not None:
         import base64
-        prefix = standard.pystr(base64.b64decode(prefix),'utf-8')
+        prefix = str(base64.b64decode(prefix),'utf-8')
         r = {}
         for x in d:
           if x.startswith(prefix+'.'):
@@ -579,7 +579,7 @@ class ConfManager(
         import base64
         try:
           #Py3
-          key = standard.pystr(base64.b64decode(key),'utf-8')
+          key = str(base64.b64decode(key),'utf-8')
         except:
           #Py2
           key = base64.b64decode(key)
@@ -796,7 +796,7 @@ class ConfManager(
           zmsext = REQUEST.get('zmsext', '')
           target = 'manage_main'
           ZMSExtension  = standard.extutil()
-          standard.writeBlock(self, "[ConfManager.manage_customizeSystem] InstallTheme:"+standard.pystr(zmsext))
+          standard.writeBlock(self, "[ConfManager.manage_customizeSystem] InstallTheme:"+str(zmsext))
           if ZMSExtension.installTheme(self, zmsext):
             return True
           else:

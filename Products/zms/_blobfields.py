@@ -137,7 +137,7 @@ def createBlobField(self, objtype, file=b''):
   elif isinstance(file, dict):
     data = file.get( 'data', '')
     if standard.is_str(data):
-      data = standard.pybytes(data,'utf-8')
+      data = bytes(data,'utf-8')
       data = standard.PyBytesIO( data)
     blob = uploadBlobField( self, objtype, data, file.get('filename', ''))
     if file.get('content_type'):
@@ -168,11 +168,11 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
   elif clazz in [_globals.DT_FILE, 'file']:
     clazz = MyFile
   # blob = clazz( id='', title='', file='')
-  blob = clazz( id='', title='', file=standard.pybytes('','utf-8'))
+  blob = clazz( id='', title='', file=bytes('','utf-8'))
   blob.update_data(file, content_type=mt, size=len(file))
   blob.aq_parent = self
   blob.mediadbfile = None
-  blob.filename = standard.pystr(_fileutil.extractFilename( filename, undoable=True))
+  blob.filename = str(_fileutil.extractFilename( filename, undoable=True))
   # Check size.
   if self is not None:
     maxlength_prop = 'ZMS.input.%s.maxlength'%['file','image'][isinstance(blob,MyImage)]
@@ -659,7 +659,7 @@ class MyBlob(object):
           try:
             data = mediadb.retrieveFile( mediadbfile)
           except:
-            standard.writeError( parent, "[getData]: can't retrieve file from mediadb: %s"%standard.pystr(mediadbfile))
+            standard.writeError( parent, "[getData]: can't retrieve file from mediadb: %s"%str(mediadbfile))
       else:
         data = getattr(self, 'data', '')
       return data
@@ -869,17 +869,17 @@ class MyImage(MyBlob, Image):
       content_type = getattr(self, 'content_type', '')
       if data2hex:
         if content_type.startswith('text/') or content_type in ['application/css','application/javascript','image/svg']:
-          data = '<![CDATA[%s]]>'%standard.pystr(self.getData(sender),'utf-8')
+          data = '<![CDATA[%s]]>'%str(self.getData(sender),'utf-8')
         else:
-          data = standard.bin2hex(standard.pybytes(self.getData(sender)))
+          data = standard.bin2hex(bytes(self.getData(sender)))
         objtype = ' type="image"'
       else:
         filename = self.getFilename()
         filename = getLangFilename(sender, filename, self.lang)
         filename = '%s%s'%(base_path, filename)
       xml = '\n<data'
-      xml += ' width="%s"'%standard.pystr(getattr(self, 'width', ''))
-      xml += ' height="%s"'%standard.pystr(getattr(self, 'height', ''))
+      xml += ' width="%s"'%str(getattr(self, 'width', ''))
+      xml += ' height="%s"'%str(getattr(self, 'height', ''))
       xml += ' content_type="%s"'%content_type
       xml += ' filename="%s"'%filename
       xml += objtype + '>' + data
@@ -980,9 +980,9 @@ class MyFile(MyBlob, File):
       content_type = getattr(self, 'content_type', '')
       if data2hex:
         if content_type.startswith('text/') or content_type in ['application/css','application/javascript','image/svg']:
-          data = '<![CDATA[%s]]>'%standard.pystr(self.getData(sender),'utf-8')
+          data = '<![CDATA[%s]]>'%str(self.getData(sender),'utf-8')
         else:
-          data = standard.bin2hex(standard.pybytes(self.getData(sender)))
+          data = standard.bin2hex(bytes(self.getData(sender)))
         objtype = ' type="file"'
       else:
         filename = self.getFilename()
@@ -1048,6 +1048,6 @@ class MyBlobWrapper(object):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     __str____roles__ = None
     def __str__(self):
-      return standard.pybytes(self.getData())
+      return bytes(self.getData())
 
 ################################################################################

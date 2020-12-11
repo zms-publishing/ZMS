@@ -282,7 +282,7 @@ class ZMSTextformat(object):
     text = br_quote( text, self.getSubTag(), REQUEST)
     # Value.
     try:
-      html += standard.pystr(text, encoding, errors)
+      html += str(text, encoding, errors)
     except:
       html += text
     # Close tag.

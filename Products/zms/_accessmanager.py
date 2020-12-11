@@ -453,14 +453,14 @@ class AccessableContainer(AccessableObject):
             l.append((id, d[nodekey]['roles']))
       manager_permissions = [x['name'] for x in self.permissionsOfRole('Manager') if x['selected'] == 'SELECTED']
       for i in l:
-        standard.writeLog(self, '[synchronizeRolesAccess]: role=%s, role_permissions=%s'%(i[0], standard.pystr(i[1])))
+        standard.writeLog(self, '[synchronizeRolesAccess]: role=%s, role_permissions=%s'%(i[0], str(i[1])))
         permissions = []
         for role in i[1]:
           role_permissions = role_defs.get(role, [])
           if '*' in role_permissions:
             role_permissions = manager_permissions
           permissions = standard.concat_list(permissions, role_permissions)
-        standard.writeLog(self, '[synchronizeRolesAccess]: role_to_manage=%s, permissions=%s'%(i[0], standard.pystr(permissions)))
+        standard.writeLog(self, '[synchronizeRolesAccess]: role_to_manage=%s, permissions=%s'%(i[0], str(permissions)))
         self.manage_role(role_to_manage=i[0], permissions=permissions)
 
     # --------------------------------------------------------------------------
@@ -938,7 +938,7 @@ class AccessManager(AccessableContainer):
           elif userid in invalid_userids:
             b = True
         if b:
-          rtn += ob.absolute_url()+ " " + userid + ": remove " + standard.pystr(userroles) + "<br/>"
+          rtn += ob.absolute_url()+ " " + userid + ": remove " + str(userroles) + "<br/>"
           delLocalRoles(ob, userid)
       
       # Process subtree.
@@ -1247,7 +1247,7 @@ class AccessManager(AccessableContainer):
             mbody.append('\n' + self.getZMILangStr('WITH_BEST_REGARDS').replace('\\n', '\n'))
             if len(self.getZMILangStr('WITH_BEST_REGARDS')) < 32:
                 mbody.append('\n-------------------------------')
-                mbody.append('\n' + standard.pystr(REQUEST['AUTHENTICATED_USER']))
+                mbody.append('\n' + str(REQUEST['AUTHENTICATED_USER']))
                 mbody.append('\n-------------------------------')
             mbody = ''.join(mbody)
             #-- Subject

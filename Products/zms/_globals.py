@@ -236,19 +236,7 @@ class StaticPageTemplateFile(PageTemplateFile):
 ################################################################################
 # Define MyClass.
 ################################################################################
-if six.PY2:
-  # class MyClass:
-  # class MyClass(object):
-  class MyClass:
-
-    # ----------------------------------------------------------------------------
-    #  MyClass.keys:
-    # ----------------------------------------------------------------------------
-    def keys(self):
-      return self.__dict__.keys()
-
-if six.PY3:
-  class MyClass(object):
+class MyClass(object):
   
     # ----------------------------------------------------------------------------
     #  MyClass.keys:

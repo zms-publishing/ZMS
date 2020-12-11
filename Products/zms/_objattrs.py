@@ -316,7 +316,7 @@ class ObjAttrs(object):
         filteredMetaObjAttrs = [x for x in metaObj['attrs'] if x['id'] == 'format']
         if len(filteredMetaObjAttrs) == 1:
           if REQUEST.get('ZMS_INSERT'):
-            default = standard.dt_exec(self, standard.pystr( filteredMetaObjAttrs[0].get('default', '')))
+            default = standard.dt_exec(self, str( filteredMetaObjAttrs[0].get('default', '')))
             if default:
               fmt = default
             else:

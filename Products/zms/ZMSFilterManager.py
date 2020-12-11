@@ -75,7 +75,8 @@ class ZMSFilterManager(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     __administratorPermissions__ = (
         'manage_main',
-        'manage_change',
+        'manage_changeFilter',
+        'manage_changeProcess',
         )
     __ac_permissions__=(
         ('ZMS Administrator', __administratorPermissions__),
@@ -98,13 +99,13 @@ class ZMSFilterManager(
             self.setFilterProcess(x['id'], index, p['id'], p['file'])
             index += 1
         except:
-          standard.writeError(self,'can\'t __init__ filter: %s'%standard.pystr(x))
+          standard.writeError(self,'can\'t __init__ filter: %s'%str(x))
       self.processes = {}
       for x in processes:
         try:
           self.setProcess(None, x['id'], x['acquired'], x['name'], x['type'], x['command'])
         except:
-          standard.writeError(self,'can\'t __init__ process: %s'%standard.pystr(x))
+          standard.writeError(self,'can\'t __init__ process: %s'%str(x))
 
 
     ############################################################################

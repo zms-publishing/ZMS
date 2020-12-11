@@ -312,7 +312,7 @@ def xmlOnUnknownEndTag(self, sTagName):
         try:
           data = standard.hex2bin(cdata)
         except:
-          data = standard.pybytes(cdata,'utf-8')
+          data = bytes(cdata,'utf-8')
         value['data'] = data
       self.dValueStack.append(value)
 
@@ -510,7 +510,7 @@ def toCdata(self, s, xhtml=False):
   # Return Text in CDATA.
   elif s is not None:
     if standard.is_bytes(s):
-      s = standard.pystr(s)
+      s = str(s)
     # Hack for invalid characters
     s = s.replace(chr(30), '')
     # Hack for nested CDATA
@@ -549,7 +549,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
       xml.append('>')
       data = zopeutil.readData(value)
       if content_type.startswith('text/') or content_type in ['application/css','application/javascript','image/svg']:
-        data = standard.pystr(data,'utf-8')
+        data = str(data,'utf-8')
       cdata = None
       # Ensure CDATA is valid.
       try:
@@ -558,7 +558,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
         rv = p.Parse('<?xml version="1.0" encoding="utf-8"?><%s>%s</%s>'%(tagname,cdata,tagname), 1)
       # Otherwise use binary encoding.
       except:
-        cdata = standard.bin2hex(standard.pybytes(data))
+        cdata = standard.bin2hex(bytes(data))
       xml.append(cdata)
       xml.append('</%s>' % tagname)
 
@@ -624,7 +624,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
         xml.append(toCdata(self, value, xhtml))
 
   # Return xml.
-  return ''.join([standard.pystr(x) for x in xml])
+  return ''.join([str(x) for x in xml])
 
 
 # ------------------------------------------------------------------------------
@@ -661,15 +661,11 @@ def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
 
     #-- Text-Fields
     elif datatype in _globals.DT_TEXTS:
-      request = self.REQUEST
-      request.set('ExtensionPoint.ZReferableItem.getRefObjPath','disabled')
       value = self.validateInlineLinkObj(value)
       xml += toXml(self, value)
       
     #-- Url-Fields
     elif datatype == _globals.DT_URL:
-      request = self.REQUEST
-      request.set('ExtensionPoint.ZReferableItem.getRefObjPath','disabled')
       value = self.validateLinkObj(value)
       xml += toXml(self, value)
     
@@ -897,7 +893,7 @@ class XmlAttrBuilder(object):
         try:
           data = standard.hex2bin(cdata)
         except:
-          data = standard.pybytes(cdata,'utf-8')
+          data = bytes(cdata,'utf-8')
         file = {'data':data, 'filename':filename, 'content_type':content_type}
         objtype = attrs.get('type')
         item = _blobfields.createBlobField(None, objtype, file)

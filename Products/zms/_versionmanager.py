@@ -144,7 +144,7 @@ class VersionItem(object):
             change_history = []
             record = {}
             record[ 'version_dt'] = standard.getDateTime( time.time())
-            record[ 'version_uid'] = standard.pystr( REQUEST.get( 'AUTHENTICATED_USER'))
+            record[ 'version_uid'] = str( REQUEST.get( 'AUTHENTICATED_USER'))
             record[ 'master_version'] = master_version
             record[ 'major_version'] = 0
             change_history.append( record)
@@ -1308,7 +1308,7 @@ class VersionManagerContainer(object):
               change_history.append( record)
             record = {}
             record[ 'version_dt'] = standard.getDateTime( time.time())
-            record[ 'version_uid'] = standard.pystr( REQUEST.get( 'AUTHENTICATED_USER', None))
+            record[ 'version_uid'] = str( REQUEST.get( 'AUTHENTICATED_USER', None))
             record[ 'master_version'] = self.getObjProperty( 'master_version', REQUEST)
             record[ 'major_version'] = self.getObjProperty( 'major_version', REQUEST) + 1
             change_history.append( record)

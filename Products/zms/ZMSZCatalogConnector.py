@@ -297,7 +297,7 @@ class ZMSZCatalogConnector(
         xmlr += '<str name="msg">%s</str>'%standard.html_quote(msg)
         xmlr += '<int name="code">%i</int>'%status
         xmlr += '</lst>'
-      xml += standard.pystr(xmlr)
+      xml += str(xmlr)
       xml += '</response>'
       return xml
 

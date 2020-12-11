@@ -57,17 +57,6 @@ from six.moves.urllib.parse import unquote as urllib_unquote
 from six.moves.urllib.parse import urlparse as urllib_urlparse
 from six import BytesIO as PyBytesIO
 
-# if six.PY3:
-#   import urllib.parse                 as urllib_parse
-#   from urllib.parse import quote_plus as urllib_quote_plus
-#   from urllib.parse import unquote    as urllib_unquote
-#   from urllib.parse import urlparse   as urllib_urlparse
-# else:
-#   import urlparse                     as urllib_parse
-#   from urllib import quote_plus       as urllib_quote_plus
-#   from urllib import unquote          as urllib_unquote
-#   from urlparse import urlparse       as urllib_urlparse
-
 # Product Imports.
 from Products.zms import _globals
 from Products.zms import _fileutil
@@ -79,70 +68,14 @@ security.declarePublic('is_str')
 security.declarePublic('is_bytes')
 security.declarePublic('pystr')
 security.declarePublic('pybytes')
-if six.PY2:
-  def is_str(v):
-    return isinstance(v,unicode)
-  def is_bytes(v):
-    return isinstance(v,str) or isinstance(v,bytes)
-  def pystr(object, encoding='utf-8', errors='strict'):
-    if not is_str(object):
-      if isinstance(object,str):
-        object = unicode(object,encoding,errors)
-      else:
-        object = unicode(object)
-    return object
-  def pybytes(object, encoding='utf-8', errors='strict'):
-    if is_str(object):
-      object = object.encode(encoding,errors)
-    return object
-  def pyopen(name, mode, buffering=-1, encoding=None):
-    return open(name, mode, buffering)
-  from cgi import escape as html_escape
-if six.PY3:
-  def is_str(v):
+def is_str(v):
     return isinstance(v,str)
-  def is_bytes(v):
+def is_bytes(v):
     return isinstance(v,bytes)
-  pystr = str
-  pybytes = bytes
-  pyopen = open
-  from html import escape as html_escape
-
-# added in six-1.12.0
-def six_ensure_binary(s, encoding='utf-8', errors='strict'):
-    """Coerce **s** to six.binary_type.
-    For Python 2:
-      - `unicode` -> encoded to `str`
-      - `str` -> `str`
-    For Python 3:
-      - `str` -> encoded to `bytes`
-      - `bytes` -> `bytes`
-    """
-    if isinstance(s, six.text_type):
-        return s.encode(encoding, errors)
-    elif isinstance(s, six.binary_type):
-        return s
-    else:
-        raise TypeError("not expecting type '%s'" % type(s))
-
-# added in six-1.12.0
-def six_ensure_str(s, encoding='utf-8', errors='strict'):
-    """Coerce *s* to `str`.
-    For Python 2:
-      - `unicode` -> encoded to `str`
-      - `str` -> `str`
-    For Python 3:
-      - `str` -> `str`
-      - `bytes` -> decoded to `str`
-    """
-    if not isinstance(s, (six.text_type, six.binary_type)):
-        raise TypeError("not expecting type '%s'" % type(s))
-    if six.PY2 and isinstance(s, six.text_type):
-        s = s.encode(encoding, errors)
-    elif six.PY3 and isinstance(s, six.binary_type):
-        s = s.decode(encoding, errors)
-    return s
-
+pystr = str
+pybytes = bytes
+pyopen = open
+from html import escape as html_escape
 
 def url_quote(s):
   return urllib_quote(s)
@@ -447,7 +380,7 @@ def bin2hex(m):
   @rtype: C{bytes}
   """
   import binascii
-  return six_ensure_str(binascii.hexlify(m))
+  return six.ensure_str(binascii.hexlify(m))
 
 
 def hex2bin(m):
@@ -1683,9 +1616,8 @@ def string_list(s, sep='\n', trim=True):
       l.append(i)
   return l
 
-if six.PY3:
-  def cmp(x, y):
-      return (x > y) - (x < y)
+def cmp(x, y):
+  return (x > y) - (x < y)
 
 security.declarePublic('is_equal')
 def is_equal(x, y):

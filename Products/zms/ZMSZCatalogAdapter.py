@@ -67,7 +67,7 @@ def remove_tags(self, s):
     '&ouml;': u'ö',
     '&uuml;': u'ü',
     '&szlig;': u'ß'}
-  s = standard.pystr(s)
+  s = str(s)
   for x in d:
     s = s.replace(x,d[x])
   s = standard.re_sub('<script(.*?)>(.|\\n|\\r|\\t)*?</script>', ' ', s)

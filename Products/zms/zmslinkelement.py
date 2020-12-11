@@ -173,7 +173,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
         ##### Failure Message ####
         except ConstraintViolation:
           target = REQUEST.get( 'manage_target', '%s/manage_main'%self.absolute_url())
-          message = "[ConstraintViolation]: " + standard.pystr( sys.exc_info()[1])
+          message = "[ConstraintViolation]: " + str( sys.exc_info()[1])
       
       # Return with message.
       target = self.url_append_params( target, { 'lang': lang, 'manage_tabs_message': message})

@@ -81,7 +81,7 @@ class TextFormatObject(object):
       if len(sec_no) > 0:
         s = '%s %s'%(sec_no, s)
     if six.PY2:
-      return standard.pystr(s, encoding, errors)
+      return str(s, encoding, errors)
     else:
       return s
 

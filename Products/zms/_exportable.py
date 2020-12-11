@@ -59,7 +59,7 @@ def exportFiles(self, root, id, path):
       try:
         ob_id = ob.id()
       except:
-        ob_id = standard.pystr(ob.id)
+        ob_id = str(ob.id)
       _fileutil.exportObj(ob, '%s/%s'%(path, ob_id))
 
 
@@ -123,11 +123,11 @@ def localHtml(self, html):
     default_charset = 'utf-8'
     charset = self.REQUEST.get('ZMS_CHARSET', default_charset)
     if not isinstance(html, str):
-      html = standard.pystr( html, default_charset)
+      html = str( html, default_charset)
     html = html.encode( charset)
   except ( UnicodeDecodeError, UnicodeEncodeError):
     standard.writeError( self, "[localHtml]")
-    v = standard.pystr(sys.exc_info()[1])
+    v = str(sys.exc_info()[1])
     STR_POSITION = ' position '
     i = v.find(STR_POSITION)
     if i > 0:

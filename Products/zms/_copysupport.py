@@ -262,7 +262,7 @@ class CopySupport(object):
       # Return with message.
       if RESPONSE is not None:
         message = self.getZMILangStr('MSG_PASTED')
-        message += ' (in '+standard.pystr(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+        message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
         RESPONSE.redirect('manage_main?lang=%s&manage_tabs_message=%s'%(REQUEST['lang'], standard.url_quote(message)))
 
 ################################################################################

@@ -161,7 +161,7 @@ def readData(ob, default=None):
       filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
       if os.path.exists(filepath):
         f = open(filepath, 'rb')
-        data = standard.pystr(f.read(),encoding='utf-8')
+        data = str(f.read(),encoding='utf-8')
         f.close()
   elif ob.meta_type == 'Z SQL Method':
     lines = []
@@ -331,7 +331,7 @@ def addFile(container, id, title, data, content_type=None):
   """
   if content_type is None:
     if type(data) is str:
-      data = standard.pybytes(data,'utf-8')
+      data = bytes(data,'utf-8')
     content_type, enc = standard.guess_content_type(id, data)
   container.manage_addFile(id=id, title=title, file=data, content_type=content_type)
   ob = getattr( container, id)

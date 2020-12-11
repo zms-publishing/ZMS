@@ -299,7 +299,7 @@ class MultiLanguageManager(object):
       """
       lang_str = self._getLangStr(key,lang)
       if six.PY2:
-        lang_str = standard.pybytes(lang_str,'utf-8')
+        lang_str = bytes(lang_str,'utf-8')
       return lang_str
 
 

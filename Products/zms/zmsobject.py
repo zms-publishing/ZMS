@@ -27,6 +27,7 @@ import ZPublisher.HTTPRequest
 import collections
 import re
 import time
+import zExceptions
 # Product Imports.
 from Products.zms import _accessmanager
 from Products.zms import _blobfields
@@ -226,6 +227,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.set_uid:
     # --------------------------------------------------------------------------
     def set_uid(self, uid):
+      if self.getLinkObj('{$%s}'%uid) is not None:
+        raise zExceptions.InternalError("can't set_uid: %s already exists!"%uid)
       self._uid = uid.replace('uid:', '')
 
     # --------------------------------------------------------------------------

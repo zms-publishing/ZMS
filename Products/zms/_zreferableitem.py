@@ -53,6 +53,8 @@ def getInternalLinkDict(self, url):
   d = {}
   # Params.
   ref_params = ''
+  if url.startswith('{$__') and url.endswith('__}'):
+    url = '{$%s}'%url[len('{$__'):-len('__}')]
   if url.find(';') > 0:
     ref_params = url[url.find(';'):-1]
     url = '{$%s}'%url[2:url.find(';')]
@@ -330,7 +332,7 @@ class ZReferableItem(object):
       p = pq[0]
       q = pq[1]
       r = re.compile(p)
-      for f in r.findall(standard.pystr(text)):
+      for f in r.findall(standard.pybytes(text)):
         d = dict(re.findall('\\s(.*?)="(.*?)"', f))
         if 'data-id' in d:
           old = p.replace('(.*?)', f)
@@ -340,7 +342,6 @@ class ZReferableItem(object):
             d[{'data-url':q}.get(k, k)] = ild[k]
           new = p.replace('(.*?)', ' '.join(['']+['%s="%s"'%(x,d[x]) for x in d]))
           if old != new:
-            # @FIXME UnicodeDecodeError: 'ascii' codec can't decode byte 0x## in position ###: ordinal not in range(128)
             text = text.replace(old, new)
     return text
 

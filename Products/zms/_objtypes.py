@@ -178,10 +178,10 @@ class ObjTypes(object):
         imgtag += ' src="%s"'%imgsrc
         if imgclass is not None and len(imgclass) > 0:
           imgtag += ' class="%s"'%imgclass
-        if imgspecial is None or len(imgspecial)==0:
+        if imgspecial is None or len(imgspecial)==0 or imgspecial.find('\"\"') > 0:
           imgtag += ' alt="%s"'%imgalt
         else:
-          if imgspecial.find('=\'') > 0 or imgspecial.find('=\"') > 0:
+          if imgspecial.find('=\"') > 0:
             imgtag += ' %s'%imgspecial
           else:
             imgtag += ' alt="%s"'%imgspecial

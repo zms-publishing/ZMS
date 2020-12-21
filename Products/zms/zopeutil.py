@@ -133,7 +133,7 @@ def readData(ob, default=None):
     data = ob.raw
   elif ob.meta_type in [ 'File', 'Filesystem File', 'Filesystem Image', 'Image']:
     data = ob.data
-    if not standard.is_bytes(data):
+    if not isinstance(data,bytes):
       b = b''
       while data is not None:
         b += data.data

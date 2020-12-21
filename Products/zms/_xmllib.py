@@ -509,7 +509,7 @@ def toCdata(self, s, xhtml=False):
 
   # Return Text in CDATA.
   elif s is not None:
-    if standard.is_bytes(s):
+    if isinstance(s,bytes):
       s = str(s)
     # Hack for invalid characters
     s = s.replace(chr(30), '')
@@ -811,7 +811,7 @@ class XmlAttrBuilder(object):
       p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
 
       #### parsing ####
-      if standard.is_bytes(input):
+      if isinstance(input,bytes):
         # input is a string!
         rv = p.Parse(input, 1)
       else:

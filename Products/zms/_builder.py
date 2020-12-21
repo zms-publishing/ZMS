@@ -129,7 +129,7 @@ class Builder(object):
         p.EndNamespaceDeclHandler = self.OnEndNamespaceDecl
         
         #### parsing ####
-        if standard.is_bytes(input):
+        if isinstance(input,bytes):
           # input is a string!
           rv = p.Parse(input, 1)
         else:

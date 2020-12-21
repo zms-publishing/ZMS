@@ -132,7 +132,7 @@ IN:    clazz        [C{MyImage}|C{MyFile}]
 OUT:    blob        [MyImage|MyFile]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def createBlobField(self, objtype, file=b''):
-  if standard.is_bytes(file):
+  if isinstance(file,bytes):
     blob = uploadBlobField( self, objtype, file)
   elif isinstance(file, dict):
     data = file.get( 'data', '')

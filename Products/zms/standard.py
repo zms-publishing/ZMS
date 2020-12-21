@@ -202,8 +202,8 @@ def umlaut_quote(s, mapping={}):
   @return: Quoted string
   @rtype: C{str}
   """
-  if is_bytes(s):
-    s = pystr(s)
+  if not isinstance(s,str):
+    s = str(s)
   for x in _globals.umlaut_map:
     mapping[x] = _globals.umlaut_map[x]
   for key in mapping:
@@ -1904,9 +1904,9 @@ def parseXmlString(xml):
   """
   from Products.zms import _xmllib
   builder = _xmllib.XmlAttrBuilder()
-  if is_str(xml):
-    xml = pybytes(xml,'utf-8')
-  if is_bytes(xml):
+  if isinstance(v,str):
+    xml = bytes(xml,'utf-8')
+  if isinstance(v,bytes):
     xml = PyBytesIO(xml)
   v = builder.parse(xml)
   return v
@@ -2239,10 +2239,10 @@ def getTempFile( context, id):
   temp_file = getattr(temp_folder,id)
   data = temp_file.data
   b = data
-  if is_str(data):
-    b = pybytes(data)
-  elif not is_bytes(data):
-    b = pybytes(b'')
+  if isinstance(data,str):
+    b = bytes(data)
+  elif not isinstance(v,bytes):
+    b = bytes(b'')
     while data is not None:
        b += data.data
        data=data.next

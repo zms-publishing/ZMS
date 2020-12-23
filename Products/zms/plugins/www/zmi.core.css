@@ -1128,8 +1128,10 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi #ZMSGraphic_extEdit_actions .form-group .form-control {
 	width:4em;
 }
+.zmi .zmi-action .dropdown-menu {
+	padding: 0;
+}
 .zmi .zmi-action .dropdown-menu:not(.dropdown-menu-right) {
-	padding: 0 0 .5rem 0;
 	margin:1.93rem -2.75rem 0 0 !important;
 	transform: none !important;
 	z-index:10000;
@@ -1137,8 +1139,8 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	max-height: 80vh;
 	overflow-y: auto;
 }
-.zmi .card-header .zmi-action .dropdown-menu.dropdown-menu-right {
-	padding: 0 0 .5rem 0;	
+.zmi .zmi-action .dropdown-menu:not(.dropdown-menu-right) a.dropdown-item:last-child {
+	margin-bottom: .5rem;
 }
 .zmi .dropdown-menu .dropdown-header {
 	padding: 5px 13px;

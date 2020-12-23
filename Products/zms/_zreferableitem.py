@@ -262,13 +262,13 @@ class ZReferableItem(object):
             v = getattr(obj_vers, '%s%s'%(key, lang_suffix), None)
             if v is not None:
               if datatype in ['richtext', 'string', 'text']:
-                for iv in getInlineRefs(standard.pystr(v)):
-                  ref_ob = self.getLinkObj(iv)
+                for iv in getInlineRefs(v):
+                  ref_ob = self.getLinkObj(str(iv))
                   if ref_ob is not None:
                     ref = self.getRefObjPath(ref_ob)
                     d[ref] = 1
               elif datatype in ['url']:
-                ref_ob = self.getLinkObj(v)
+                ref_ob = self.getLinkObj(str(v))
                 if ref_ob is not None:
                   ref = self.getRefObjPath(ref_ob)
                   d[ref] = 1
@@ -366,7 +366,7 @@ class ZReferableItem(object):
   #  Resolves internal/external links and returns Object.
   # ----------------------------------------------------------------------------
   def getLinkObj(self, url, REQUEST=None):
-    ob = None
+    ob = None 
     if isInternalLink(url):
       def default(*args, **kwargs):
         self = args[0]

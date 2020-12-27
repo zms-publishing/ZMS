@@ -1188,11 +1188,11 @@ def todayInRange(start, end):
   @type end C{any}
   """
   b = True
-  if start is not None:
+  if start:
     dt = getDateTime(start)
     dt = DateTime(time.mktime(dt))
     b = b and dt.isPast()
-  if end is not None:
+  if end:
     dt = getDateTime(end)
     dt = DateTime(time.mktime(dt))
     b = b and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))

@@ -16,6 +16,7 @@ python-ldap
 -e git+https://github.com/zms-publishing/Products.LDAPMultiPlugins#egg=Products.LDAPMultiPlugins
 # need master for py3 compatible
 -e git+https://github.com/dataflake/Products.LDAPUserFolder#egg=Products.LDAPUserFolder
+# -e git+https://github.com/zms-publishing/Products.LDAPUserFolder4#egg=Products.LDAPUserFolder4
 
 # TEXT
 beautifulsoup4

@@ -22,7 +22,6 @@ from zope.interface import implementer
 # Product Imports.
 from Products.zms import IZMSMetamodelProvider, IZMSFormatProvider
 from Products.zms import zmscontainerobject
-from Products.zms import  _globals
 
 
 ################################################################################
@@ -85,7 +84,7 @@ class ZMSProxyObject(zmscontainerobject.ZMSContainerObject):
     # --------------------------------------------------------------------------
     def __request__(self, REQUEST):
       proxy = self.proxy
-      if _globals.is_str_type(REQUEST):
+      if isinstance(REQUEST, bytes) or isinstance(REQUEST, str):
         return proxy.REQUEST
       return REQUEST
 

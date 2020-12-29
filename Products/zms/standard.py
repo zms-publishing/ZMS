@@ -236,7 +236,7 @@ def url_append_params(url, dict, sep='&amp;'):
   i = url.find(qs)
   if i >= 0:
     qs = sep
-  for key in dict.keys():
+  for key in dict:
     value = dict[key]
     if isinstance(value, list):
       for item in value:
@@ -1330,13 +1330,14 @@ def operator_getitem(a, b, c=None, ignorecase=True):
   @type c: C{any}
   @rtype: C{any}
   """
-  if ignorecase and _globals.is_str_type(b):
+  if ignorecase and (isinstance(v, bytes) or isinstance(v, str)
+  ):
     flags = re.IGNORECASE
     pattern = '^%s$'%b
-    for key in a.keys():
+    for key in a:
       if re.search(pattern, key, flags) is not None:
         return operator.getitem(a, key)
-  if b in a.keys():
+  if b in a:
     return operator.getitem(a, b)
   return c
 
@@ -1948,7 +1949,7 @@ def dt_executable(context, v):
   @return:
   @rtype: C{Bool}
   """
-  if _globals.is_str_type(v):
+  if isinstance(v, bytes) or isinstance(v, str):
     if v.startswith('##'):
       return 'py'
     elif v.find('<tal:') >= 0:

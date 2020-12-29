@@ -19,9 +19,6 @@
 # Imports.
 from io import BytesIO
 import zipfile
-# Product Imports.
-# import standard
-from Products.zms import _globals
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _ziputil.exportZodb2Zip:
@@ -58,7 +55,7 @@ _ziputil.importZip2Zodb:
 Extracts and imports zip-file to zodb.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def importZip2Zodb(root, data):
-  if _globals.is_str_type(data):
+  if isinstance(data, bytes) or isinstance(data, str):
     data = BytesIO( data)
   zf = zipfile.ZipFile( data, 'r')
   for name in zf.namelist():

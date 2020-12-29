@@ -21,7 +21,6 @@ import copy
 import re
 # Product Imports.
 from Products.zms import standard
-from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------
@@ -226,7 +225,7 @@ class ZMSTextformat(object):
   getRichedit__roles__ = None
   def getRichedit(self): return self.richedit
   def setRichedit(self, richedit):
-    if _globals.is_str_type(richedit) and len(richedit) > 0:
+    if isinstance(richedit, bytes) or isinstance(richedit, str) and len(richedit) > 0:
       richedit = 1
     self.richedit = richedit
 

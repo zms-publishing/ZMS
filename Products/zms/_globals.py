@@ -188,16 +188,6 @@ def datatype_key(datatype):
     return DT_UNKNOWN
 
 
-def is_str_type(v):
-  """
-  Is str type.
-  @param
-  @return
-  @rtype: C(Boolean)
-  """
-  return isinstance(v, bytes) or isinstance(v, str)
-
-
 def get_size(v):
   """
   Returns size of given object v in bytes.

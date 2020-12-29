@@ -1255,11 +1255,11 @@ def todayInRange(start, end):
   @type end C{any}
   """
   b = True
-  if start is not None:
+  if start:
     dt = getDateTime(start)
     dt = DateTime(time.mktime(dt))
     b = b and dt.isPast()
-  if end is not None:
+  if end:
     dt = getDateTime(end)
     dt = DateTime(time.mktime(dt))
     b = b and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))
@@ -1397,13 +1397,15 @@ def operator_getitem(a, b, c=None, ignorecase=True):
   @type c: C{any}
   @rtype: C{any}
   """
-  if ignorecase and _globals.is_str_type(b):
+  if ignorecase and is_str(b):
+    b = pybytes(b)
+  if ignorecase and is_bytes(b):
     flags = re.IGNORECASE
     pattern = '^%s$'%b
-    for key in a.keys():
+    for key in a:
       if re.search(pattern, key, flags) is not None:
         return operator.getitem(a, key)
-  if b in a.keys():
+  if b in a:
     return operator.getitem(a, b)
   return c
 

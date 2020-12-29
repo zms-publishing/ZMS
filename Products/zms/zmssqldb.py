@@ -839,14 +839,14 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                       uctype = cl[1].upper()
                       if not ucid in ['CHECK', 'FOREIGN', 'PRIMARY'] and not uctype.startswith('KEY') and not uctype.startswith('(') and not ucid.startswith('\''):
                         col = {}
-                        col["id"] = cid
-                        col["description"] = ' '.join(cl[1:])
+                        col["id"] = standard.pybytes(cid)
+                        col["description"] = standard.pybytes(' '.join(cl[1:]))
                         columnBrwsrs.append(col)
               else:
                 for columnBrwsr in tableBrwsr.tpValues():
                   col = {}
-                  col["id"] = columnBrwsr.tpId()
-                  col["description"] = getattr(columnBrwsr, 'Description', getattr(columnBrwsr, 'description', None))().upper()
+                  col["id"] = standard.pybytes(columnBrwsr.tpId())
+                  col["description"] = standard.pybytes(getattr(columnBrwsr, 'Description', getattr(columnBrwsr, 'description', None))().upper())
                   columnBrwsrs.append(col)
               for columnBrwsr in columnBrwsrs:
                 colId = columnBrwsr["id"]

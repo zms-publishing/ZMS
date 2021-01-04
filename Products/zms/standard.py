@@ -654,6 +654,7 @@ def get_session(context):
   """
   Get http-session.
   """
+  create_session_storage_if_neccessary(context)
   req = getattr( context, 'REQUEST', None)
   req_session = req.get('SESSION',req.environ.get('beaker.session',None))
   session = None
@@ -667,6 +668,30 @@ def get_session(context):
     session = SessionBTreeWrapper(req_session.get('__zms_session__'))
   return session
 
+security.declarePublic('create_session_storage_if_neccessary')
+def create_session_storage_if_neccessary(context):
+  """
+  Ensure containers for temporary data.
+  """
+  from OFS.Folder import Folder
+  from Products.Transience.Transience import TransientObjectContainer
+
+  root = context.getPhysicalRoot()
+  if not 'temp_folder' in root:
+    # Adding a 'folder' is a just fallback
+    # if a 'mount_point' is not available 
+    # like usually configured via zope.conf
+    temp_folder = Folder('temp_folder')
+    root._setObject('temp_folder', temp_folder)
+    # writeLog( context, 'Missing temp_folder added')
+  if not 'session_data' in root.temp_folder:
+    container = TransientObjectContainer(
+        'session_data',
+        title='Session Data Container',
+        timeout_mins=20
+    )
+    root.temp_folder._setObject('session_data', container)
+    # writeLog( context, 'Missing session_data-container added')
 
 security.declarePublic('get_session_value')
 def get_session_value(context, key, defaultValue=None):
@@ -1903,9 +1928,9 @@ def parseXmlString(xml):
   """
   from Products.zms import _xmllib
   builder = _xmllib.XmlAttrBuilder()
-  if isinstance(v,str):
+  if isinstance(xml,str):
     xml = bytes(xml,'utf-8')
-  if isinstance(v,bytes):
+  if isinstance(xml,bytes):
     xml = PyBytesIO(xml)
   v = builder.parse(xml)
   return v

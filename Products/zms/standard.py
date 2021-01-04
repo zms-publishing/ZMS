@@ -1930,9 +1930,9 @@ def parseXmlString(xml):
   """
   from Products.zms import _xmllib
   builder = _xmllib.XmlAttrBuilder()
-  if isinstance(v,str):
+  if isinstance(xml,str):
     xml = bytes(xml,'utf-8')
-  if isinstance(v,bytes):
+  if isinstance(xml,bytes):
     xml = PyBytesIO(xml)
   v = builder.parse(xml)
   return v

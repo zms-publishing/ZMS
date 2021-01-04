@@ -553,8 +553,6 @@ def unencode( p, enc='utf-8'):
       p[key] = unencode(p[key],enc)
   elif isinstance(p, list):
     p = [unencode(x,enc) for x in p]
-  elif six.PY2 and is_str(p):
-    p = pybytes(p,enc)
   return p
 
 

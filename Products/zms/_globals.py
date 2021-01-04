@@ -22,7 +22,6 @@
 # Imports.
 from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-import six
 import sys
 
 # MD5

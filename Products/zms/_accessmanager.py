@@ -21,7 +21,6 @@ from __future__ import absolute_import
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.userfolder import UserFolder
 import copy
-import six
 import pickle
 import re
 import sys

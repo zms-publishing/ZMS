@@ -25,7 +25,6 @@ import codecs
 import fnmatch
 import os
 import re
-import six
 # Product Imports.
 from Products.zms import _confmanager
 from Products.zms import _multilangmanager

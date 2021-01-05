@@ -433,8 +433,8 @@ def guess_content_type(filename, data):
 html_quote:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def html_quote(v, name='(Unknown name)', md={}):
-  if not isinstance(v,str):
-    v = pystr(v)
+  if not isinstance(v,bytes):
+    v = pybytes(v)
   return html_escape(v, 1)
 
 

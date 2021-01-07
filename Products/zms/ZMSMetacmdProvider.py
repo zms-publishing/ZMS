@@ -371,9 +371,8 @@ class ZMSMetacmdProvider(
       obs = self.commands
       if sort:
         obs = [self.getMetaCmd(x['id']) for x in obs]
-        obs = [(x['name'], x) for x in obs if x is not None]
-        obs = sorted(obs)
-        obs = [x[1] for x in obs]
+        obs = [x for x in obs if x]
+        obs = sorted(obs,key=lambda x: x['name'])
       ids = [x['id'] for x in obs]
       return ids
 

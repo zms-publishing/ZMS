@@ -1,1 +1,4 @@
 ZEO
+
+# MemCacheD to replace mappingstorage
+Products.mcdutils

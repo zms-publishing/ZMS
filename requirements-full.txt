@@ -28,3 +28,6 @@ pyScss
 Products.PluggableAuthService
 Products.PluginRegistry
 # -e git+https://github.com/sntl-projects/Products.zmsPluggableAuthService.git#egg=Products.zmsPluggableAuthService
+
+# MemCacheD
+Products.mcdutils

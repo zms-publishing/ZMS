@@ -36,8 +36,8 @@ $ ./ZMS5/bin/pip install https://github.com/zms-publishing/ZMS5/archive/master.z
 
 ::     
 
-$ ./ZMS5/bin/mkzopeinstance --dir ZMS5/instance
-$ ./ZMS5/instance/bin/zopectl start
+$ ./ZMS5/bin/mkwsgiinstance -d ../instance
+$ ./ZMS5/bin/runwsgi -v ../instance/etc/zope.ini
 
     and finally "Add ZMS" via web user interface
 

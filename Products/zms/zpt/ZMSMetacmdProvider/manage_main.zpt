@@ -238,10 +238,12 @@
 			<td>
 				<tal:block tal:condition="python:ob is not None">
 					<tal:block tal:condition="python:metaCmd.get('acquired',False)">
-						<a tal:attributes="href python:'/'.join([here.getPortalMaster().absolute_url()]+request['URL'].split('/')[-2:]); title python:'%s (%s)'%(ob.id,ob.meta_type)" target="_blank">
-							<tal:block tal:condition="python:metaCmd.get('acquired',False)"><i class="fas fa-share',extra='title=\042acquired\042"></i>acquired</tal:block>
-						</a>
-						<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>
+						<a target="_blank"
+							tal:attributes="
+								href python:'%s/metacmd_manager/manage_main?lang=%s&id=%s'%(context.getRootElement().absolute_url(),request['lang'],metaCmd['id']);
+								title python:'acquired from: %s (%s)'%(context.getRootElement().getHome().id, context.getRootElement().attr('titlealt'))"
+							><i class="fas fa-share"></i></a>
+						<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>&nbsp;&nbsp;
 						<strong tal:content="python:metaCmd['id']">the id</strong> ( <tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">Name</tal:block> )
 					</tal:block>
 					<tal:block tal:condition="not:python:metaCmd.get('acquired',False)">

@@ -745,8 +745,7 @@ class MyBlob(object):
         filename = filename.decode()
       while filename.startswith( '_'):
         filename = filename[1:]
-      for ch in [ '+', '%', ' ', '!', '?', '#', '"', '(', ')', '&' ]:
-        filename = filename.replace(ch, '')
+      filename = "".join( x for x in filename if (x.isalnum() or x in "._- "))
       if filename != self.filename and len( self.data) > 0: 
         self.filename = filename
       return filename

@@ -1353,7 +1353,7 @@ def operator_getitem(a, b, c=None, ignorecase=True):
   @type c: C{any}
   @rtype: C{any}
   """
-  if ignorecase and (isinstance(v, bytes) or isinstance(v, str)
+  if ignorecase and (isinstance(b, bytes) or isinstance(b, str)
   ):
     flags = re.IGNORECASE
     pattern = '^%s$'%b

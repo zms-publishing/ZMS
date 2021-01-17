@@ -47,7 +47,7 @@
 	<tr tal:define="target python:here.getLinkObj(node)" tal:on-error="structure string: <!-- ERROR: missing nodekey -->">
 		<td>
 			<div class="text-danger alert-danger" tal:condition="python:target is None">
-				<i class="fas fa-warning-sign" tal:attributes="title python:'%s not found'%(nodekey)"></i>
+				<i class="fas fa-exclamation-triangle" tal:attributes="title python:'%s not found'%(nodekey)"></i>
 				<tal:block tal:content="nodekey">the node-key</tal:block>
 			</div>
 			<tal:block tal:condition="python:target is not None" tal:content="structure python:target.zmi_breadcrumbs_obj_path(middot='manage_access')">zmi_breadcrumbs_obj_path</tal:block>

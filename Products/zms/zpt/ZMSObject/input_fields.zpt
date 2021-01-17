@@ -178,7 +178,7 @@
 			tal:condition="constraints">
 			<tal:block tal:on-error="nothing" tal:repeat="category python:list(constraints)">
 				<div tal:attributes="class python:'constraint constraint-%s'%category[:-1].lower()">
-					<i class="fas fa-warning-sign" tal:attributes="title python:category[:-1] + ' ' + category[:-1] + ';; '.join([ x[1] for x in constraints[category] ] )"></i>
+					<i class="fas fa-exclamation-triangle" tal:attributes="title python:category[:-1] + ' ' + ' | '.join([ x[1] for x in constraints[category] ] )"></i>
 				</div>
 			</tal:block>
 		</tal:block>
@@ -239,7 +239,7 @@
 								<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['collapse','zmi-children']+[[''],['show']][hasChildren])) +'<div class=\042card-body\042>'"></tal:block>
 								<ul class="zmi-container zmi-sortable">
 									<tal:block tal:repeat="childNode objChildren">
-										<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable']+[['pageelement'],[]][int(childNode.isPage())] + [[],['is-new']][int(childNode.inObjStates(['STATE_NEW'],request))] + [[],['is-modified']][int(childNode.inObjStates(['STATE_MODIFIED'],request))] + [[],['is-deleted']][int(childNode.inObjStates(['STATE_DELETED'],request))])">
+										<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable']+[['pageelement'],['page']][int(childNode.isPage())] + [[],['is-new']][int(childNode.inObjStates(['STATE_NEW'],request))] + [[],['is-modified']][int(childNode.inObjStates(['STATE_MODIFIED'],request))] + [[],['is-deleted']][int(childNode.inObjStates(['STATE_DELETED'],request))])">
 											<div class="center"
 												tal:on-error="structure string: <code style='display:block'>ERROR: childNode.renderShort(request)</code>"  
 												tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"

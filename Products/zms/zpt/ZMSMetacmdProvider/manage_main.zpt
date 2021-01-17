@@ -257,7 +257,7 @@
 					(<tal:block tal:content="python:metaCmd['meta_type']">the type</tal:block>)
 				</tal:block>
 				<div class="text-danger alert-danger" tal:condition="python:ob is None">
-					<i class="fas fa-warning-sign" tal:attributes="title python:'%s not found'%metaCmd['id']"></i>
+					<i class="fas fa-exclamation-triangle" tal:attributes="title python:'%s not found'%metaCmd['id']"></i>
 					<tal:block tal:condition="python:metaCmd.get('acquired',False)"
 						><a tal:attributes="href python:'/'.join([here.getPortalMaster().absolute_url()]+request['URL'].split('/')[-2:])" target="_blank"
 							><i class="fas fa-share" title="acquired"></i></a>

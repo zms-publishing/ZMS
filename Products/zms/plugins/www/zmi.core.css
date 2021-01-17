@@ -673,6 +673,7 @@ body.zmi .zmi-container .zmi-item .center .contentEditable h2 {
 body.zmi ul.zmi-container .zmi-item.pageelement .center .contentEditable {
 	padding:3px 6px 3px 1.5em;
 	overflow:hidden;
+	min-height:inherit;
 }
 body.zmi ul.zmi-container .zmi-item.page .center .contentEditable {
 	padding-top: .4rem;
@@ -848,17 +849,23 @@ li.zmi-item span.zmi-ids {
 .zmi.properties .card .constraint-error {
 	color:#721c24;
 	background-color:#f8d7da;
-	padding:.5em .75em;
+	padding:.5em 1.5em;
 }
 .zmi.properties .card .constraint-warning {
 	color:#856404; 
 	background-color:#fff3cd;
-	padding:.5em .75em;
+	padding:.5em 1.5em;
 }
 .zmi.properties .card .constraint-restriction {
 	color:#0c5460;
 	background-color:#d1ecf1;
-	padding:.5em .75em;
+	padding:.5em 1.5em;
+}
+.zmi.properties .card .constraint i:after {
+	content:attr(title);
+	font-family:var(--font-family-sans-serif);
+	font-weight: 400;
+	margin-left:.5rem
 }
 .zmi.properties .card > .zmi-children {
 	background: #F5F5F5;

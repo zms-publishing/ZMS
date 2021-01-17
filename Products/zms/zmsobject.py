@@ -632,7 +632,7 @@ class ZMSObject(ZMSItem.ZMSItem,
               name += ' constraint-restriction'
               title += '; '+'; '.join(['RESTRICTION: '+x[1] for x in constraints['RESTRICTIONS']])
       else:
-        name = 'icon-warning-sign fas fa-exclamation-triangle constraint-error'
+        name = 'fas fa-exclamation-triangle constraint-error'
         title = '%s not found!'%str(id)
       return '<i class="%s" title="%s"%s></i>'%(name,title,extra)
 

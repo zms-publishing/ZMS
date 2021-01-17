@@ -738,7 +738,7 @@ ZMI.prototype.initInputFields = function(container) {
 					// Intermediate modification?
  					if (change_dt != last_change_dt) {
 						var body = '<div class="alert alert-error">'
-									+ '<h4>'+$ZMI.icon("icon-warning-sign")+' '+getZMILangStr('ATTR_LAST_MODIFIED')+'</h4>'
+									+ '<h4><i class="fas fa-exclamation-triangle"></i> '+getZMILangStr('ATTR_LAST_MODIFIED')+'</h4>'
 									+ '<div>'+change_dt+' '+getZMILangStr('BY')+' '+change_uid+'</div>'
 								+ '</div>'
 								+ '<table class="table table-bordered table-striped">'

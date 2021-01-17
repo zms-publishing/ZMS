@@ -382,28 +382,28 @@
 </style>
 <script>
 $(function() {
-	$("i[class*='icon-cloud-download']").parent().popover({
+	$("i[class*='fa-cloud-download]").parent().popover({
 		html: true
 	});	 
-	$("i[class*='icon-info-circle']").parent().popover({
+	$("i[class*='fa-info-circle']").parent().popover({
 		html: true
 	}); 
-	$("i[class*='icon-warning-sign']").parent().popover({
+	$("i[class*='fa-exclamation-triangle']").parent().popover({
 		html: true
 	}); 
-	$("i[class*='icon-hdd']").parent().popover({
+	$("i[class*='fa-hdd']").parent().popover({
 		html: true
 	}); 
 	$("button[class*='btn btn-primary']").click(function() {
 		if ($(this).text()!='Change') {
-			$(this).html("Installing..."+" <"+"i class='icon-spin icon-spinner fas fa-spinner fa-spin'"+"><"+"/i"+">");
+			$(this).html("Installing..."+" <"+"i class='fas fa-spinner fa-spin'"+"><"+"/i"+">");
 		}
 	}); 
-	$("i[class^='ImportExample icon-upload']").click(function() {
+	$("i[class^='ImportExample fa-upload']").click(function() {
 			var btn = $(this);
 			var res = confirm("Import Example?\n\nHINT:\nYou can configure the parameter {ZMS.Examples} at ZMS > Configuration > System > Miscellaneous with a link to the desired import destination (default is the instance's root element).");
 			if (res == true) {
-				btn.toggleClass("icon-upload icon-spin icon-spinner fas fa-spinner fa-spin");
+				btn.toggleClass("fa-upload fas fa-spinner fa-spin");
 				btn.unbind("click");
 				btn.unbind("mouseenter");
 				btn.unbind("mouseleave");
@@ -413,13 +413,13 @@ $(function() {
 					data : {key:'InstalledProducts', btn:'ImportExample', zmsext:btn.data('zmsext'), lang:getZMILang()}
 				}).done(function(data) {
 						if (data == "True") {
-							btn.toggleClass("icon-ok-sign icon-spin icon-spinner fas fa-spinner fa-spin");
+							btn.toggleClass("fa-check-circle fas fa-spinner fa-spin");
 							btn.css("color", "#5cb85c");
 							btn.parent().attr("href", btn.parent().data("link"));
 							btn.parent().attr("title", "Go to Example...");
 						}
 						else {
-							btn.toggleClass("icon-exclamation-circle icon-spin icon-spinner fas fa-spinner fa-spin");
+							btn.toggleClass("fa-exclamation-circle fas fa-spinner fa-spin");
 							btn.css("color", "#d9534f");
 							btn.parent().attr("title", "An Error occured!");
 						}
@@ -430,7 +430,7 @@ $(function() {
 			var btn = $(this);
 			var res = confirm("Install Theme?");
 			if (res == true) {
-				btn.toggleClass("icon-upload icon-spin icon-spinner fas fa-spinner fa-spin");
+				btn.toggleClass("fa-upload fas fa-spinner fa-spin");
 				btn.unbind("click");
 				btn.unbind("mouseenter");
 				btn.unbind("mouseleave");
@@ -440,26 +440,26 @@ $(function() {
 					data : {key:'InstalledProducts', btn:'InstallTheme', zmsext:btn.data('zmsext'), lang:getZMILang()}
 				}).done(function(data) {
 						if (data == "True") {
-							btn.toggleClass("icon-ok-sign icon-spin icon-spinner fas fa-spinner fa-spin");
+							btn.toggleClass("fa-check-circle fas fa-spinner fa-spin");
 							btn.css("color", "#5cb85c");
 							btn.parent().attr("href", btn.parent().data("link"));
 							btn.parent().attr("title", "Go to Theme...");
 						}
 						else {
-							btn.toggleClass("icon-exclamation-circle icon-spin icon-spinner fas fa-spinner fa-spin");
+							btn.toggleClass("fa-exclamation-circle fas fa-spinner fa-spin");
 							btn.css("color", "#d9534f");
 							btn.parent().attr("title", "An Error occured!");
 						}
 					});
 			}
 	});
-	$("#InstalledProducts i[class*='icon']").mouseenter(function() {
+	$("#InstalledProducts i[class*='fa-']").mouseenter(function() {
 		$(this).css("color", "#3071a9");
 	});
-	$("#InstalledProducts i[class*='icon']").mouseleave(function() {
+	$("#InstalledProducts i[class*='fa-']").mouseleave(function() {
 		$(this).css("color", "#428bca");
 	});	
-	$("#InstalledProducts i[class*='icon-info-circle']").mouseleave(function() {
+	$("#InstalledProducts i[class*='fa-info-circle']").mouseleave(function() {
 		$(this).css("color", "#ccc");
 	});
 	$('#BTN_Restart').click(function() {
@@ -471,7 +471,7 @@ $(function() {
 				$('#BTN_Restart').prop("disabled", true);
 				var spinner = "";
 				if (data!='No daemon.') {
-					spinner = " <"+"i class='icon-spin icon-spinner fas fa-spinner fa-spin'"+"><"+"/i"+">";
+					spinner = " <"+"i class='fas fa-spinner fa-spin'"+"><"+"/i"+">";
 				}
 				$('#BTN_Restart').html(data + spinner)
 			});

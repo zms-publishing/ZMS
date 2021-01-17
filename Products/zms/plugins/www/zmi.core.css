@@ -408,8 +408,23 @@ footer .back-to-top.hide {
 	color: #354f67a6 !important;
 	font-weight:bold;
 }
-#zmi-tab .card  .card-header span.zmi-state {
-	margin:0 .35rem
+#zmi-tab .card  .card-header .zmi-state {
+	margin:0 .25rem;
+	font-size:inherit;
+	font-family:inherit;
+	font-weight:inherit;
+}
+#zmi-tab .card  .card-header .zmi-state.fas:before {
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+}
+#zmi-tab .card  .card-header .zmi-state.far:before {
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 400;
+}
+#zmi-tab .card  .card-header span.zmi-state.far:before,
+#zmi-tab .card  .card-header span.zmi-state.fas:before {
+	margin-right: .2rem;
 }
 #zmi-tab .card .card-header.btn-collapse #zmi-toggle-activity,
 #zmiIframeAddDialog .card .card-header.btn-collapse #zmi-toggle-activity {
@@ -797,18 +812,31 @@ li.zmi-item span.zmi-ids {
 	cursor:pointer;
 }
 .zmi-manage-main-change {
-	color:#888;
+	color:#999;
 	font-size:11px;
-	margin:.25rem 0 0 0;
+	margin:.35rem 0 0 0;
 	overflow: hidden;
 	text-overflow:ellipsis;
 	display:block;
 	padding-left: 1rem;
+	white-space: nowrap;
+	max-width: 20vw;
 }
-.zmi-manage-main-change i {
-	font-size: 12px;
-	display:inline-block;
-	margin:0 .25rem;
+.zmi-manage-main-change .zmi-state.fa, 
+.zmi-manage-main-change .zmi-state.fas,
+.zmi-manage-main-change .zmi-state.far {
+	font-family: inherit;
+	font-weight: inherit;
+}
+.zmi-manage-main-change .zmi-state.fas:before,
+.zmi-manage-main-change .zmi-state.far:before {
+	font-family: 'Font Awesome 5 Free';
+	font-weight: 900;
+	font-size: 12px !important;
+	margin: 0 0.25rem;
+}
+.zmi-manage-main-change .zmi-state.far:before {
+	font-weight: 400;
 }
 /* Contraints */
 .zmi-manage-main-change .constraint {

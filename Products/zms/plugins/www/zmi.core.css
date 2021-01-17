@@ -799,9 +799,16 @@ li.zmi-item span.zmi-ids {
 .zmi-manage-main-change {
 	color:#888;
 	font-size:11px;
-	margin:4px 0 0 11px;
+	margin:.25rem 0 0 0;
 	overflow: hidden;
 	text-overflow:ellipsis;
+	display:block;
+	padding-left: 1rem;
+}
+.zmi-manage-main-change i {
+	font-size: 12px;
+	display:inline-block;
+	margin:0 .25rem;
 }
 /* Contraints */
 .zmi-manage-main-change .constraint {

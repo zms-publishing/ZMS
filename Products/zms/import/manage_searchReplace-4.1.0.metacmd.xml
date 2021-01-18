@@ -27,7 +27,7 @@ def replace(o, old, new):
   return o
 
 def run(here, old, new):
-  c = 0
+  rtn = []
   for key in here.getObjAttrs():
     objAttr = here.getObjAttr(key)
     langIds = ['']
@@ -40,11 +40,12 @@ def run(here, old, new):
         if objAttrVal:
           newVal = replace(objAttrVal,old,new)
           if newVal != objAttrVal:
-            here.operator_setattr(objVers,objAttrName,objAttrVal.replace(old,new))
-            c += 1
+            if request.get('replace'):
+              here.operator_setattr(objVers,objAttrName,objAttrVal.replace(old,new))
+            rtn.append(here)
   for childNode in here.getChildNodes():
-    c += run(childNode,old,new)
-  return c
+    rtn.extend(run(childNode,old,new))
+  return rtn
 
 print('<!DOCTYPE html>')
 print('<html lang="en">')
@@ -65,8 +66,9 @@ if request.form.get('btn')=='BTN_EXECUTE':
 	message = []
 	old = request['old']
 	new = request['new']
-	c = run(context,old,new)
-	message.append('%s (%i)'%(context.getZMILangStr('MSG_CHANGED'),c))
+	res = run(context,old,new)
+	message.append('%s (%i)'%(context.getZMILangStr('MSG_CHANGED'),len(res)))
+	message.extend(['<a href="%s/manage_main" target="_blank">%s</a>'%(x.absolute_url(),x.absolute_url()) for x in res])
 	request.response.redirect(context.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
 # --- Display initial insert form.
@@ -77,7 +79,9 @@ else:
 	print('<div class="col-sm-10"><input class="form-control" name="old" type="text" size="25" value=""></div>')
 	print('</div><!-- .form-group -->')
 	print('<div class="form-group row">')
-	print('<label for="new" class="col-sm-2 control-label mandatory">Replace with</label>')
+	print('<label for="new" class="col-sm-2 control-label">Replace with')
+	print('<input type="checkbox" name="replace" value="1"/>')
+	print('</label>')
 	print('<div class="col-sm-10"><input class="form-control" name="new" type="text" size="25" value=""></div>')
 	print('</div><!-- .form-group -->')
 	print('<div class="form-row">')
@@ -100,7 +104,7 @@ return printed
 ]]>
       </item>
       <item key="description"></item>
-      <item key="execution" type="int">False</item>
+      <item key="execution" type="int">0</item>
       <item key="icon_clazz"><![CDATA[fas fa-random]]></item>
       <item key="id">manage_searchReplace</item>
       <item key="meta_type"><![CDATA[Script (Python)]]></item>
@@ -111,7 +115,7 @@ return printed
         </list>
       </item>
       <item key="name">Search+Replace...</item>
-      <item key="revision">4.0.0</item>
+      <item key="revision">4.1.0</item>
       <item key="roles" type="list">
         <list>
           <item>ZMSAdministrator</item>

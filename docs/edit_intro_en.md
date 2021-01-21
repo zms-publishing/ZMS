@@ -6,7 +6,7 @@ the editor produces a document as a sequence of small content-blocks. A content-
 A new content block is added by clicking on one of the listed content classes and filling the following form.
 
 
-![ZMS GUI](images/zms_gui_start.gif)
+![ZMS GUI](images/edit_gui_start_en.gif)
 *The ZMS editing GUI shows the reduced page preview by listing all its containing content blocks. New content blocks are added by clicking the pop-up menu on the right of the content-blocks*
 
 ## <a id="zmi"></a>The ZMS Management Interface (ZMI)
@@ -50,7 +50,7 @@ The path or breadcrumb nagivation is located below the main menu and shows the d
 ## <a id="sitemap"></a>Site Map
 Clicking onto the sitemap icon in the top menu generated a left handed navigation frame of the content. The sitemap can be used to browse through the document tree quickly.
 
-![ZMS GUI](images/zms_gui_sitemap.gif)
+![ZMS GUI](images/edit_gui_sitemap_en.gif)
 *Site map navigation browsing the document tree*
 
 

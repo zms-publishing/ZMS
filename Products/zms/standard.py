@@ -2269,7 +2269,7 @@ def getTempFile( context, id):
   b = data
   if isinstance(data,str):
     b = bytes(data)
-  elif not isinstance(v,bytes):
+  elif not isinstance(data,bytes):
     b = bytes(b'')
     while data is not None:
        b += data.data

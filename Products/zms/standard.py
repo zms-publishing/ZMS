@@ -207,7 +207,7 @@ def umlaut_quote(s, mapping={}):
   for x in _globals.umlaut_map:
     mapping[x] = _globals.umlaut_map[x]
   for key in mapping:
-    s = s.replace(key, pystr(mapping[key]))
+    s = s.replace(key, str(mapping[key]))
   return s
 
 
@@ -240,7 +240,7 @@ def url_append_params(url, dict, sep='&amp;'):
     value = dict[key]
     if isinstance(value, list):
       for item in value:
-        qi = key + ':list=' + url_quote(pystr(item))
+        qi = key + ':list=' + url_quote(str(item))
         url += qs + qi
         qs = sep
     else:
@@ -312,9 +312,9 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
   @rtype: C{str}
   """
   if encoding is not None:
-    s = pystr( s, encoding)
+    s = str( s, encoding)
   else:
-    s = pystr(s)
+    s = str(s)
   # remove all tags.
   s = re.sub( '<!--(.*?)-->', '', s)
   s = re.sub( '<script((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</script>', '', s)
@@ -367,7 +367,7 @@ html_quote:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def html_quote(v, name='(Unknown name)', md={}):
   if not isinstance(v,str):
-    v = pystr(v)
+    v = str(v)
   return html_escape(v, 1)
 
 
@@ -1688,14 +1688,19 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
       return '"%s"'%format_datetime_iso(i)
     except:
       pass
-  elif type(i) is int or type(i) is float or type(i) is bool:
+  elif type(i) is int or type(i) is float:
     return json.dumps(i)
+  elif type(i) is bool:
+    if allow_booleans:
+      return json.dumps(i)
+    else:
+      return str(i)
   elif i is not None:
     if allow_booleans and i in ['true','false']:
       return i
     else:
       if not is_str(i):
-        i = pystr(i)
+        i = str(i)
     return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
   return '""'
 

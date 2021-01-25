@@ -1735,8 +1735,13 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
       return '"%s"'%format_datetime_iso(i)
     except:
       pass
-  elif type(i) is int or type(i) is float or type(i) is bool:
+  elif type(i) is int or type(i) is float:
     return json.dumps(i)
+  elif type(i) is bool:
+    if allow_booleans:
+      return json.dumps(i)
+    else:
+      return str(i)
   elif i is not None:
     if allow_booleans and i in ['true','false']:
       return i

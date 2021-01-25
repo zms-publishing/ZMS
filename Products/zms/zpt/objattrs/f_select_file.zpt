@@ -17,6 +17,7 @@
 	<div class="col-10 row">
 
 		<div class="zmi-input-file btn-group mr-3"
+			tal:on-error="python:standard.writeError(here,'')"
 			tal:define="has_file python:value is not None and here.operator_gettype(value) is not str;
 				allowed_ext python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif']);
 				filename python:has_file and value.getFilename() or 'None';

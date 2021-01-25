@@ -219,7 +219,7 @@ function zmiModalInsertUserOpen(context) {
 							<div tal:attributes="class python:' '.join(['form-group','row']+[[],['has-error']][int(hasError)]); title python:['','ERROR: %s'%str(userAttr)][int(hasError)]">
 								<label tal:attributes="for userObjDetail/name" class="col-sm-2 control-label"><span tal:content="userObjDetail/label">the label</span></label>
 								<div class="col-sm-10">
-									<input tal:attributes="name userObjDetail/name; value userObjDetail/value; class python:'form-control'" disabled="disabled"/>
+									<input tal:attributes="name userObjDetail/name; value python:unicode(userObjDetail['value'],'latin-1','ignore').encode('utf-8','ignore'); class python:'form-control'" disabled="disabled"/>
 								</div>
 							</div>
 						</tal:block>

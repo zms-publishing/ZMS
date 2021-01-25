@@ -66,7 +66,7 @@
 				</label>
 				<div class="col-sm-9 col-md-10">
 
-					<tal:block tal:condition="python:metaObjAttr['type'] in here.metaobj_manager.valid_types" tal:content="structure 
+					<tal:block tal:on-error="python:elValue" tal:condition="python:metaObjAttr['type'] in here.metaobj_manager.valid_types" tal:content="structure 
 							python:here.getObjAttrInput(fmName='form0',obj_attr=here.getObjAttr(elName),value=elValue,REQUEST=request)">
 						the control
 					</tal:block>

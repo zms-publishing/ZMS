@@ -94,6 +94,8 @@ if six.PY2:
   def pybytes(object, encoding='utf-8', errors='strict'):
     if is_str(object):
       object = object.encode(encoding,errors)
+    elif not is_bytes(object):
+      object = bytes(object)
     return object
   def pyopen(name, mode, buffering=-1, encoding=None):
     return open(name, mode, buffering)
@@ -433,8 +435,7 @@ def guess_content_type(filename, data):
 html_quote:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def html_quote(v, name='(Unknown name)', md={}):
-  if not isinstance(v,bytes):
-    v = pybytes(v)
+  v = pybytes(v)
   return html_escape(v, 1)
 
 
@@ -1735,13 +1736,8 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
       return '"%s"'%format_datetime_iso(i)
     except:
       pass
-  elif type(i) is int or type(i) is float:
+  elif type(i) is int or type(i) is float or type(i) is bool:
     return json.dumps(i)
-  elif type(i) is bool:
-    if allow_booleans:
-      return json.dumps(i)
-    else:
-      return str(i)
   elif i is not None:
     if allow_booleans and i in ['true','false']:
       return i

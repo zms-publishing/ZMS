@@ -144,19 +144,18 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     def manage_options(self):
       pc = 'e' in [x['id'] for x in self.getMetaobjAttrs(self.meta_id, types=['*'])]
       opts = []
-      opts.append({'label': 'TAB_EDIT',         'action': 'manage_main'})
+      opts.append({'label': 'TAB_EDIT', 'action': 'manage_main'})
       if pc:
         opts.append({'label': 'TAB_PROPERTIES', 'action': 'manage_properties'})
       opts.append({'label': 'TAB_IMPORTEXPORT', 'action': 'manage_importexport'})
-      opts.append({'label': 'TAB_REFERENCES',   'action': 'manage_RefForm'})
+      opts.append({'label': 'TAB_REFERENCES', 'action': 'manage_RefForm'})
       if not self.getAutocommit() or self.getHistory():
-        opts.append({'label': 'TAB_HISTORY',    'action': 'manage_UndoVersionForm'})
+        opts.append({'label': 'TAB_HISTORY', 'action': 'manage_UndoVersionForm'})
       for metaObjAttr in [x for x in self.getMetaobjAttrs(self.meta_id) if x['id'].startswith('manage_tab')]:
-        opt = {'label': metaObjAttr['name'],    'action': 'manage_executeMetacmd', 'alias':metaObjAttr['id'], 'params':{'id':metaObjAttr['id']}}
+        opt = {'label': metaObjAttr['name'], 'action': 'manage_executeMetacmd', 'alias':metaObjAttr['id'], 'params':{'id':metaObjAttr['id']}}
         opts.append(opt)
       for metaCmd in self.getMetaCmds(self, 'tab'):
-        opt = {'label': metaCmd['name'],        'action': 'manage_executeMetacmd', 'alias':metaCmd['id'], 'params':{'id':metaCmd['id']}}
-        opts.append(opt)
+        opts.append({'label': metaCmd['name'], 'action': metaCmd['id']})
       return tuple(opts)
 
     # Management Permissions.

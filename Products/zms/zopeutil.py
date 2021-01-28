@@ -202,17 +202,13 @@ security.declarePublic('initPermissions')
 def initPermissions(container, id, permissions={}):
   """
   Init permissions for Zope-object:
-  - set Proxy-role 'Manager'
-  - set View-permissions to 'Authenticated' and remove acquired permissions for manage-objects.
+  - set Proxy-roles 'Authenticated' and 'Manager'
   """
-  ob = getattr( container, id, None)
+  ob = getObject(container, id)
   if ob is None: return
   
   # apply proxy-roles
   ob._proxy_roles=('Authenticated','Manager')
-  # manage-artefacts need at least view permission
-  if id.find( 'manage_') >= 0:
-    permissions['Authenticated'] = list(set(permissions.get('Authenticated',[]) + ['View']))
   # apply permissions for roles
   role_permissions = []
   for role in permissions:
@@ -220,7 +216,7 @@ def initPermissions(container, id, permissions={}):
     ob.manage_role(role_to_manage=role,permissions=permission)
     role_permissions = list(set(role_permissions+permission))
   # activate all acquired permissions
-  manager_permissions = [x['name'] for x in ob.permissionsOfRole('Manager') if x['selected']=='SELECTED']
+  manager_permissions = [x['name'] for x in ob.permissionsOfRole('Manager')]
   acquired_permissions = [x for x in manager_permissions if x not in role_permissions]
   ob.manage_acquiredPermissions(acquired_permissions)
 

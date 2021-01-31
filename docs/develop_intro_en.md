@@ -7,7 +7,7 @@ ZMS needs a Python version 3.6+; please check your installed python version
 ~$: python3 --version
 ```
 and update or reinstall Python3, if it is missing or a former Python version is installed.
-ZMS is running on Zope (Version 5+) as the underlaying Python3 applications server. The ZMS setup routine automatically installs Zope. Zope needs some basic OS packages for communication and compiling; the following packages should be installed on your system:
+ZMS is running on Zope (Version 5+) as the underlaying Python3 application server. The ZMS setup routine automatically installs Zope. Zope needs some basic OS packages for communication and compiling; the following packages should be installed on your system:
 ```
 ~$: sudo apt-get install gcc
 ~$: sudo apt-get install openssh-server

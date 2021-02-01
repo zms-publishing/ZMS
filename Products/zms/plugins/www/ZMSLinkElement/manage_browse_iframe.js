@@ -22,6 +22,8 @@ function zmiSelectObject(sender) {
 		parent.selectObject(href,titlealt,uid);
 	}
 	self.window.parent.zmiModal("hide");
+	// console.log('function zmiSelectObject: prevent link propagation on selecting click')
+	return false;
 }
 
 /**

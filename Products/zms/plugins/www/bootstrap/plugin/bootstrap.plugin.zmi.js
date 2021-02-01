@@ -1389,7 +1389,7 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 				+ ' data-anchor="'+anchor+'"'
 				+ ' data-page-is-page="'+page_is_page+'"'
 				+ ' data-page-titlealt="'+page_titlealt.replace(/"/g,'&quot;').replace(/'/g,'&apos;')+'"'
-				+ ' onclick="return zmiSelectObject(this)">';
+				+ ' onclick="return zmiSelectObject(this);return false;">';
 		if (!page_is_pageelement) {
 			html += '<i class="'+page_icon+'"></i> ';
 		}

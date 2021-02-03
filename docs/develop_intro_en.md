@@ -51,9 +51,7 @@ The _add menu_ is located in the Zope top bar. Please select the object type 'ZM
 
 # Working with Visual Studio Code
 ## Installation & Setup of Visual Studio Code
-[Visual Studio Code](https://code.visualstudio.com/) (VSCode) is a free source-code editor made by Microsoft for Windows, Linux and macOS - and a perfect environment for developing ZMS websites.
-
-On linux You can install VSCode by running:
+[Visual Studio Code](https://code.visualstudio.com/) (VSCode) is a free source-code editor made by Microsoft for Windows, Linux and macOS - and a perfect environment for developing ZMS websites. On linux you can install VSCode by running:
 ```
 sudo snap install --classic code
 ```

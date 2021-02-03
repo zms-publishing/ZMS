@@ -4,14 +4,14 @@
 			"path": "../"
 		},
 //		{
-//			"path": "/home/dev/workspace/ZMS3"
+//			"path": "~/src/ZMS3"
 //		},
 //		{
-//			"path": "/home/dev/workspace/zopefoundation/Zope"
-//		}
+//			"path": "~/src/zopefoundation/Zope"
+//		},
 	],
 	"settings": {
-		"python.pythonPath": "/home/zope/vpy37/bin/",
+		"python.pythonPath": "~/vpy37/bin/",
 		"window.zoomLevel": 0,
 		"git.ignoreMissingGitWarning": true,
 		"editor.minimap.enabled": false,

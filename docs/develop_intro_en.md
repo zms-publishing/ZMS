@@ -117,3 +117,35 @@ The file [launch.json](https://github.com/zms-publishing/ZMS5/blob/master/.vscod
 If the paths in launch config correspond to the ones of your development machine you can start Zope with the Python debugger via the configuration item *Python3: Zope-ZMS5* in the debug menu of VSCode. The Zope server can be addressed in a web browser via `http://localhost:8080`. The environment will look like this:
 
 ![Install VSCode](images/develop_vscode_setup.png)
+
+<br />
+
+## Git Connection
+VSCode has git support built in, so you do not  need a further extension. The main Git features are:
++ initialize / clone a repository.
++ create branches and tags
++ stage and commit changes.
++ push/pull/sync with a remote branch.
++ resolve merge conflicts.
++ view diffs
+
+
+The prerequisites for using Git are 
+1. Git needs to be installed on the system (on Windows it is easier to use Git via WSL)
+2. Public keys of the Git domains should be saved in the `~/.ssh/known_hosts` file
+3. Private keys (if used for ssh connection) should be referenced in `~/.ssh/config` like this
+
+```
+host github.com
+	HostName github.com
+	# Port 443
+	IdentityFile ~/.ssh/myname_openssh.ppk
+	User myname
+```
+
+Useful hints:
++ [On Ubuntu VSCode gives me an ssh_askpass error when I try to push the changes to my Github repository](https://stackoverflow.com/questions/52885928/vs-code-gives-me-an-ssh-askpass-error-when-i-try-to-push-the-changes-to-my-githu#52886041)
+
++ [How to use Git credential store on Windows Sublinux, WSL?]( https://stackoverflow.com/questions/45925964/how-to-use-git-credential-store-on-wsl-ubuntu-on-windows)
+
++ [VSCode extension for managing pull requests and issues on Github](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)

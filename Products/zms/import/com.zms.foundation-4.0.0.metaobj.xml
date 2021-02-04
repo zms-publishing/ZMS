@@ -3711,7 +3711,7 @@ $(function() {
 	var e = $(".controls.save:gt(0)").detach();
 	e.insertAfter(".form-group.coverage");
 
-	$(".ZMSRecordSet form.form-horizontal").each(function() {
+	$(".ZMSRecordSet form.form-horizontal,.ZMSRecordSet.main_grid > form").each(function() {
 			var prefix = $("meta[name=physical_path]").attr("content").split("/");
 			prefix = prefix[prefix.length-1]+".ZMSRecordSet.";
 			console.log(prefix);
@@ -3752,6 +3752,8 @@ $(function() {
 					params[i.substr(prefix.length)] = localStorage[i];
 				}
 			}
+			// Force to ZMI language
+			params['lang'] = zmiParams['lang'];
 
 			$.get("publicRecordSetGrid",params,function(data) {
 					// Assemble grid.

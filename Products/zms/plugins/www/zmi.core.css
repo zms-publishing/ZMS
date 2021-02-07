@@ -2330,17 +2330,41 @@ ul.pagination {
 .zmi.design .additionals pre.preview {
 	margin: .5em 0 0;
 }
+.zmi.design .additionals td.open:hover {
+	background-color:white !important;
+} 
 .zmi.design.config .additionals th.text-center.text-muted {
 	background: #759bbd !important;
 	color: rgba(255, 255, 255, 0.75) !important;
 	text-transform: lowercase;
 }
+.zmi.design.config .additionals table thead th {
+	border-bottom-width: 1px !important;
+}
+.zmi.design.config .additionals table.added_css {
+	border-bottom-width: 0px;
+}
+.zmi.design.config .additionals table th.legend {
+	color: #759bbd;
+}
 .zmi.design.config .additionals table th.icon {
 	padding: 0;
 	text-align: center;
 	vertical-align:middle !important;
-	color: #759bbd
 }
+.zmi.design.config .additionals table th.icon i {
+	color: #759bbd;
+	opacity:.5;
+	font-size:2rem;
+}
+.zmi.design.config .additionals table.added_css th.icon i {
+	color: #0088cc;
+}
+.zmi.design.config .additionals table.added_js th.icon i {
+	color: #FFC107;
+	opacity:1;
+}
+
 
 /* ++++++++++++++++++++++++++ */
 /* ZMS Specific Icons         */

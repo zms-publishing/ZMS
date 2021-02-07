@@ -55,7 +55,7 @@
 <form id="editThemeForm" name="editThemeForm" class="form-horizontal card" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="section" value="theme" />
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<legend tal:content="python:here.getZMILangStr('CAPTION_THEME')">Theme</legend>
+	<legend tal:content="python:here.getZMILangStr('CAPTION_THEME')">Themes</legend>
 	<table class="table table-striped table-bordered table-hover mb-0">
 	<colgroup>
 		<col width="56"/>
@@ -95,12 +95,26 @@
 	</table>
 </form>
 
-<!-- #### ############## ### -->
-<!-- #### ADDITIONAL CSS ### -->
-<!-- #### ############## ### -->
-<section class="form-horizontal additionals added_css card mt-5">
-	<legend>Additional CSS</legend>
-	<table class="table table-striped table-bordered table-hover mb-0">
+<section class="form-horizontal additionals card pt-5 border-0">
+	<legend>Additionals</legend>
+	<section class="form-horizontal p-3" style="font-size:90%">
+		<span style="opacity:.5;">
+			<i class="icon-question-sign fas fa-question-circle"></i>
+			The additional files allow a quick customisation of the selected theme and its ZMI representation.
+			The files are coventionally located in the common-folder, respectively common/css and common/js or 
+			the locations can be configured by the following keys: 
+		</span>
+		<code class="alert-info">
+			<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.css.zmi#Custom'%(context.getHome().absolute_url())">ZMS.added.css.zmi</a>,
+			<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.css.web#Custom'%(context.getHome().absolute_url())">ZMS.added.css.web</a>,
+			<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.js.zmi#Custom'%(context.getHome().absolute_url())">ZMS.added.js.zmi</a>,
+			<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.js.web#Custom'%(context.getHome().absolute_url())">ZMS.added.js.web</a>
+		</code>
+	</section>
+	<table class="added_css table table-bordered table-hover mb-5">
+	<!-- #### ############## ### -->
+	<!-- #### ADDITIONAL CSS ### -->
+	<!-- #### ############## ### -->
 	<colgroup>
 		<col width="64"/>
 		<col width="*"/>
@@ -108,7 +122,7 @@
 	<thead>
 		<tr>
 			<th class="icon"><i class="fab fa-css3 fa-2x"></i></th>
-			<th tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</th>
+			<th class="legend">Additional CSS</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -187,14 +201,10 @@
 	</tal:block>
 	</tbody>
 	</table>
-</section><!-- .card -->
-
-<!-- #### ############# ### -->
-<!-- #### ADDITIONAL JS ### -->
-<!-- #### ############# ### -->
-<section class="form-horizontal additionals added_js card mt-5">
-	<legend>Additional JavaScript</legend>
-	<table class="table table-striped table-bordered table-hover mb-0">
+	<table class="added_js table table-bordered table-hover mb-0">
+	<!-- #### ############# ### -->
+	<!-- #### ADDITIONAL JS ### -->
+	<!-- #### ############# ### -->
 	<colgroup>
 		<col width="64"/>
 		<col width="*"/>
@@ -202,7 +212,7 @@
 	<thead>
 		<tr>
 			<th class="icon"><i class="fab fa-js fa-2x"></i></th>
-			<th tal:content="python:here.getZMILangStr('ATTR_NAME')">Name</th>
+			<th class="legend">Additional JavaScript</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -248,7 +258,7 @@
 							tal:attributes="href python:'%s/manage'%href"
 							><i class="icon-external-link fas fa-external-link-alt"></i>
 						</a>
-						<pre class="alert alert-info preview" style="display:none;"></pre>
+						<pre class="alert alert-warning preview" style="display:none;"></pre>
 						<div class="d-none" tal:condition="python:request.get('id')==js_id">
 							<div id="editObj" class="inner">
 								<form id="editForm" name="editForm" class="form-horizontal" action="manage_customizeDesign" method="post" enctype="multipart/form-data">
@@ -282,21 +292,6 @@
 	</tbody>
 	</table>
 </section><!-- .card -->
-
-<section class="form-horizontal card p-3" style="font-size:90%">
-	<span style="opacity:.5;">
-		<i class="icon-question-sign fas fa-question-circle"></i>
-		The additional files allow a quick customisation of the selected theme and its ZMI representation.
-		The files are coventionally located in the common-folder, respectively common/css and common/js or 
-		the locations can be configured by the following keys: 
-	</span>
-	<code class="alert-info">
-		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.css.zmi#Custom'%(context.getHome().absolute_url())">ZMS.added.css.zmi</a>,
-		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.css.web#Custom'%(context.getHome().absolute_url())">ZMS.added.css.web</a>,
-		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.js.zmi#Custom'%(context.getHome().absolute_url())">ZMS.added.js.zmi</a>,
-		<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.js.web#Custom'%(context.getHome().absolute_url())">ZMS.added.js.web</a>
-	</code>
-</section>
 
 </div><!-- #zmi-tab -->
 <script>
@@ -352,7 +347,8 @@ function zmiPreviewBtnClick(sender) {
 	// alert(additional_url);
 	$.get( additional_url, function( data ) {
 		$('pre',container).html( data ).toggle();
-		$('i.fa-caret-right',container).toggleClass('fa-rotate-90')
+		$('i.fa-caret-right',container).toggleClass('fa-rotate-90');
+		$(container).toggleClass('open');
 	});
 	return false;
 }

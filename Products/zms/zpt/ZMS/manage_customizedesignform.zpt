@@ -125,8 +125,7 @@
 			<th class="legend">Additional CSS</th>
 		</tr>
 	</thead>
-	<tbody>
-		<tal:block tal:define="css_ids python:['ZMS.added.css.zmi','ZMS.added.css.web']"
+	<tbody tal:define="css_ids python:['ZMS.added.css.zmi','ZMS.added.css.web']"
 		><tal:block tal:repeat="css_id css_ids"
 			><tal:block tal:define="
 					fname python:'%s.css'%(css_id.split('.')[-1]);
@@ -198,7 +197,6 @@
 				</tr>
 			</tal:block>
 		</tal:block>
-	</tal:block>
 	</tbody>
 	</table>
 	<table class="added_js table table-bordered table-hover mb-0">
@@ -215,8 +213,7 @@
 			<th class="legend">Additional JavaScript</th>
 		</tr>
 	</thead>
-	<tbody>
-	<tal:block tal:define="js_ids python:['ZMS.added.js.zmi','ZMS.added.js.web']"
+	<tbody tal:define="js_ids python:['ZMS.added.js.zmi','ZMS.added.js.web']"
 		><tal:block tal:repeat="js_id js_ids"
 			><tal:block tal:define="
 					fname python:'%s.js'%(js_id.split('.')[-1]);
@@ -288,7 +285,6 @@
 				</tr>
 			</tal:block>
 		</tal:block>
-	</tal:block>
 	</tbody>
 	</table>
 </section><!-- .card -->
@@ -356,14 +352,19 @@ function zmiPreviewBtnClick(sender) {
 $(function(){
 		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800,remove:true});
 		$('button[name=btn][value=BTN_CLOSE]').click(function() {
-				zmiModal("hide");
-				return false;
-			});
+			zmiModal("hide");
+			return false;
+		});
 });
 
 </script>
 
-<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+<script tal:define="
+		ref_split python:request.get('HTTP_REFERER',None).split('?id=');
+		ref_edited python:len(ref_split) > 1 and ref_split[1] or None"
+	tal:condition="ref_edited"
+	tal:content="python:'$(function(){ $(\'a[href=\042?id=%s\042]\').prev().click() })'%(ref_edited)">
+</script>
 
 </body>
 </html>

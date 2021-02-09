@@ -137,16 +137,14 @@ def getINSTANCE_HOME():
 
 security.declarePublic('zmi_paths')
 def zmi_paths(context):
-	kw = {}
-	try:
-		from zmi.styles.subscriber import css_paths, js_paths
-		# remove zmi base css/js
-		kw["css_paths"] = css_paths(context)[:-1]
-		kw["js_paths"] = js_paths(context)[:-2]
-	except:
-		kw["css_paths"] = ("/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css","/++resource++zmi/fontawesome-free-5.15.2/css/all.css",)
-		kw["js_paths"] = ("/++resource++zmi/jquery-3.5.1.min.js","/++resource++zmi/bootstrap-4.6.0/bootstrap.bundle.min.js",)
-	return kw
+  kw = {}
+  from zmi.styles.subscriber import css_paths, js_paths
+  # ZMI resources without Zope base css/js
+  # css_paths = ("/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css","/++resource++zmi/fontawesome-free-5.15.2/css/all.css")
+  # js_paths = ("/++resource++zmi/jquery-3.5.1.min.js","/++resource++zmi/bootstrap-4.6.0/bootstrap.bundle.min.js",)
+  kw["css_paths"] = css_paths(context)[:-1]
+  kw["js_paths"] = js_paths(context)[:-2]
+  return kw
 
 
 security.declarePublic('FileFromData')

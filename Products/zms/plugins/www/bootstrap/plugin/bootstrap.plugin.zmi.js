@@ -1722,7 +1722,7 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 				},
 				buttons:[
 						{id:'addInsertBtn', text:getZMILangStr('BTN_INSERT'), name:'btn', 'class':'btn btn-primary'},
-						{id:'addCancelBtn', text:getZMILangStr('BTN_CANCEL'), name:'btn', 'class':'btn'}
+						{id:'addCancelBtn', text:getZMILangStr('BTN_CANCEL'), name:'btn', 'class':'btn btn-secondary'}
 				]
 			});
 	}

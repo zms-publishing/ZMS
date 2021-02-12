@@ -417,7 +417,7 @@ def encrypt_password(pw, algorithm='md5', hex=False):
   @rtype: C{str}
   """
   algorithm = algorithm.lower()
-  algorithm = algorithm=='sha-1' and 'sha1' or algorithm
+  algorithm = algorithm in ['sha-1','sha'] and 'sha1' or algorithm
   enc = None
   if algorithm in list(hashlib.algorithms_available):
     h = hashlib.new(algorithm)

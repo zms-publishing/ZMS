@@ -28,7 +28,7 @@ Scripts.  It can be accessed from Python with the statement
 # Imports.
 from __future__ import absolute_import
 from AccessControl.SecurityInfo import ModuleSecurityInfo
-from AccessControl import AuthEncoding
+from AuthEncoding import AuthEncoding
 from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
@@ -400,10 +400,7 @@ def encrypt_schemes():
   @return: list of encryption-scheme ids
   @rtype: C{list}
   """
-  ids = []
-  for id, prefix, scheme in AuthEncoding._schemes:
-    ids.append( id)
-  return ids
+  return AuthEncoding.listSchemes()
 
 
 security.declarePublic('encrypt_password')
@@ -419,18 +416,18 @@ def encrypt_password(pw, algorithm='md5', hex=False):
   @return: Encrypted password
   @rtype: C{str}
   """
+  scheme = algorithm.upper()
   enc = None
-  if algorithm.upper() == 'SHA-1':
-    import sha
-    enc = sha.new(pw)
+  if scheme == 'SHA-1':
+    from hashlib import sha1 as sha
+    enc = sha(pw.encode())
     if hex:
       enc = enc.hexdigest()
     else:
       enc = enc.digest()
-  else:
-    for id, prefix, scheme in AuthEncoding._schemes:
-      if algorithm.upper() == id:
-        enc = scheme.encrypt(pw)
+  if scheme != 'SHA-1' and scheme in AuthEncoding.listSchemes():
+    scheme_prefix = b'{%b}'%(scheme.encode())
+    enc = AuthEncoding.pw_encrypt(pw.encode(),scheme).split(scheme_prefix)[1]
   return enc
 
 

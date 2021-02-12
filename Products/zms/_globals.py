@@ -33,14 +33,14 @@ class MD5DigestScheme(object):
   def encrypt(self, pw):
     enc = hashlib.md5(pw)
     enc = enc.hexdigest()
-    return enc
+    return enc.encode()
 
   def validate(self, reference, attempt):
     compare = self.encrypt(attempt)[:-1]
     return (compare == reference)
 
-import AccessControl.AuthEncoding
-AccessControl.AuthEncoding.registerScheme('MD5', MD5DigestScheme())
+from AuthEncoding import AuthEncoding
+AuthEncoding.registerScheme('MD5', MD5DigestScheme())
 
 
 # Umlauts

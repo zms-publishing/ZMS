@@ -28,7 +28,6 @@ Scripts.  It can be accessed from Python with the statement
 # Imports.
 from __future__ import absolute_import
 from AccessControl.SecurityInfo import ModuleSecurityInfo
-from AuthEncoding import AuthEncoding
 from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
@@ -38,6 +37,7 @@ import base64
 import cgi
 import copy
 import fnmatch
+import hashlib
 import inspect
 import json
 import logging
@@ -400,7 +400,7 @@ def encrypt_schemes():
   @return: list of encryption-scheme ids
   @rtype: C{list}
   """
-  return AuthEncoding.listSchemes()
+  return list(hashlib.algorithms_available)
 
 
 security.declarePublic('encrypt_password')
@@ -409,27 +409,24 @@ def encrypt_password(pw, algorithm='md5', hex=False):
   Encrypts given password.
   @param pw: Password
   @type pw: C{str}
-  @param algorithm: Encryption-algorithm (md5, sha-1, etc.)
+  @param algorithm: Encryption-algorithm (md5, sha1, etc.)
   @type algorithm: C{str}
   @param hex: Hexlify
   @type hex: C{bool}
   @return: Encrypted password
   @rtype: C{str}
   """
-  scheme = algorithm.upper()
+  algorithm = algorithm.lower()
+  algorithm = algorithm=='sha-1' and 'sha1' or algorithm
   enc = None
-  if scheme == 'SHA-1':
-    from hashlib import sha1 as sha
-    enc = sha(pw.encode())
+  if algorithm in list(hashlib.algorithms_available):
+    h = hashlib.new(algorithm)
+    h.update(pw.encode())
     if hex:
-      enc = enc.hexdigest()
+      enc = h.hexdigest()
     else:
-      enc = enc.digest()
-  if scheme != 'SHA-1' and scheme in AuthEncoding.listSchemes():
-    scheme_prefix = b'{%b}'%(scheme.encode())
-    enc = AuthEncoding.pw_encrypt(pw.encode(),scheme).split(scheme_prefix)[1]
+      enc = h.digest()
   return enc
-
 
 security.declarePublic('encrypt_ordtype')
 def encrypt_ordtype(s):

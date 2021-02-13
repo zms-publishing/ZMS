@@ -24,25 +24,6 @@ from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import sys
 
-# MD5
-import AccessControl
-import hashlib
-
-class MD5DigestScheme(object):
-
-  def encrypt(self, pw):
-    enc = hashlib.md5(pw)
-    enc = enc.hexdigest()
-    return enc
-
-  def validate(self, reference, attempt):
-    compare = self.encrypt(attempt)[:-1]
-    return (compare == reference)
-
-import AccessControl.AuthEncoding
-AccessControl.AuthEncoding.registerScheme('MD5', MD5DigestScheme())
-
-
 # Umlauts
 umlaut_map = {
         # German

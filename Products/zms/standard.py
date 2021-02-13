@@ -28,7 +28,6 @@ Scripts.  It can be accessed from Python with the statement
 # Imports.
 from __future__ import absolute_import
 from AccessControl.SecurityInfo import ModuleSecurityInfo
-from AccessControl import AuthEncoding
 from App.Common import package_home
 from App.config import getConfiguration
 from DateTime.DateTime import DateTime
@@ -38,6 +37,7 @@ import base64
 import cgi
 import copy
 import fnmatch
+import hashlib
 import inspect
 import json
 import logging
@@ -137,16 +137,14 @@ def getINSTANCE_HOME():
 
 security.declarePublic('zmi_paths')
 def zmi_paths(context):
-	kw = {}
-	try:
-		from zmi.styles.subscriber import css_paths, js_paths
-		# remove zmi base css/js
-		kw["css_paths"] = css_paths(context)[:-1]
-		kw["js_paths"] = js_paths(context)[:-2]
-	except:
-		kw["css_paths"] = ("/++resource++zmi/bootstrap-4.1.1/bootstrap.min.css","/++resource++zmi/fontawesome-free-5.8.1/css/all.css",)
-		kw["js_paths"] = ("/++resource++zmi/jquery-3.2.1.min.js","/++resource++zmi/bootstrap-4.1.1/bootstrap.bundle.min.js",)
-	return kw
+  kw = {}
+  from zmi.styles.subscriber import css_paths, js_paths
+  # ZMI resources without Zope base css/js
+  # css_paths = ("/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css","/++resource++zmi/fontawesome-free-5.15.2/css/all.css")
+  # js_paths = ("/++resource++zmi/jquery-3.5.1.min.js","/++resource++zmi/bootstrap-4.6.0/bootstrap.bundle.min.js",)
+  kw["css_paths"] = css_paths(context)[:-1]
+  kw["js_paths"] = js_paths(context)[:-2]
+  return kw
 
 
 security.declarePublic('FileFromData')
@@ -402,10 +400,7 @@ def encrypt_schemes():
   @return: list of encryption-scheme ids
   @rtype: C{list}
   """
-  ids = []
-  for id, prefix, scheme in AuthEncoding._schemes:
-    ids.append( id)
-  return ids
+  return list(hashlib.algorithms_available)
 
 
 security.declarePublic('encrypt_password')
@@ -414,27 +409,24 @@ def encrypt_password(pw, algorithm='md5', hex=False):
   Encrypts given password.
   @param pw: Password
   @type pw: C{str}
-  @param algorithm: Encryption-algorithm (md5, sha-1, etc.)
+  @param algorithm: Encryption-algorithm (md5, sha1, etc.)
   @type algorithm: C{str}
   @param hex: Hexlify
   @type hex: C{bool}
   @return: Encrypted password
   @rtype: C{str}
   """
+  algorithm = algorithm.lower()
+  algorithm = algorithm in ['sha-1','sha'] and 'sha1' or algorithm
   enc = None
-  if algorithm.upper() == 'SHA-1':
-    import sha
-    enc = sha.new(pw)
+  if algorithm in list(hashlib.algorithms_available):
+    h = hashlib.new(algorithm)
+    h.update(pw.encode())
     if hex:
-      enc = enc.hexdigest()
+      enc = h.hexdigest()
     else:
-      enc = enc.digest()
-  else:
-    for id, prefix, scheme in AuthEncoding._schemes:
-      if algorithm.upper() == id:
-        enc = scheme.encrypt(pw)
+      enc = h.digest()
   return enc
-
 
 security.declarePublic('encrypt_ordtype')
 def encrypt_ordtype(s):

@@ -627,7 +627,7 @@ function zmiModalInsertUserOpen(context) {
 				if (result!=1 && result!="1") {
 					$("td",$this).addClass("alert-danger");
 					$("a",$this).addClass("text-danger");
-					$("a>i",$this).attr("class","fas fa-user-slash");
+					$("a i",$this).attr("class","fas fa-user-slash");
 				}
 				else {
 					$("a i",$this).attr("class","fas fa-user");

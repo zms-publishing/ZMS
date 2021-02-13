@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 
 <list>
   <item type="dictionary">
@@ -69,10 +69,11 @@ def manage_exportZodbNative2LocalFS( self):
   html += '<div id="zmi-tab">'
   html += self.zmi_breadcrumbs(self,request)
   html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+  html += '<div class="card">'
   html += '<legend>Export ZODB to LocalFS</legend>'
   
   html += '' \
-    + '<div class="form-group row">' \
+    + '<div class="form-group row card-body">' \
     + '<label class="col-sm-2 control-label mandatory"><span>Path</span></label>' \
     + '<div class="col-sm-10">' \
     + '<input class="form-control" id="path" name="path" value="'+request.get('path',self.getINSTANCE_HOME())+'">' \
@@ -88,15 +89,15 @@ def manage_exportZodbNative2LocalFS( self):
 
   html += '<table class="table">'
   html += '<tr>'
-  html += '''<th>
+  html += '''<th class="text-center">
             <div class="btn-group">
               <span class="btn btn-secondary" title="%s/%s" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
             </div>
           </th>'''%( self.getZMILangStr('BTN_SLCTALL'), self.getZMILangStr('BTN_SLCTNONE') )
-  html += '<th>Objekt</th>'
-  html += '<th>Status</th>'
+  html += '<th class="align-middle">Objekt</th>'
+  html += '<th class="align-middle">Status</th>'
   html += '</tr>'
-  html += '\n'.join(['<tr><td align="center"><input type="checkbox" name="ids:list" value="%s" checked="checked"/></td><td><a href="%s/manage_main" target="_blank">%s%s</a> (%s)</td><td>%s</td></tr>'%(
+  html += '\n'.join(['<tr><td class="text-center bg-light"><input type="checkbox" name="ids:list" value="%s" checked="checked"/></td><td><a href="%s/manage_main" target="_blank">%s%s</a> (%s)</td><td>%s</td></tr>'%(
       '/'.join(x['node'].getPhysicalPath()),
       '/'.join(x['node'].getPhysicalPath()),
       '/'.join(x['node'].getPhysicalPath()),
@@ -107,7 +108,7 @@ def manage_exportZodbNative2LocalFS( self):
   html += '</table><!-- .table -->'
   
   # ---------------------------------
-  
+  html += '</div>'
   html += '</form><!-- .form-horizontal -->'
   html += '</div><!-- #zmi-tab -->'
   html += self.zmi_body_footer(self,request)
@@ -118,19 +119,19 @@ def manage_exportZodbNative2LocalFS( self):
       </item>
       <item key="description"></item>
       <item key="execution" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-download text-danger]]></item>
-      <item key="id"><![CDATA[manage_exportZodbNative2LocalFS]]></item>
+      <item key="icon_clazz"><![CDATA[icon-download fas fa-file-export text-danger]]></item>
+      <item key="id">manage_exportZodbNative2LocalFS</item>
       <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">
         <list>
-          <item><![CDATA[ZMS]]></item>
+          <item>ZMS</item>
         </list>
       </item>
       <item key="name"><![CDATA[Export ZODB to LocalFS]]></item>
-      <item key="revision"><![CDATA[0.0.0]]></item>
+      <item key="revision">5.0.0</item>
       <item key="roles" type="list">
         <list>
-          <item><![CDATA[ZMSAdministrator]]></item>
+          <item>ZMSAdministrator</item>
         </list>
       </item>
       <item key="title"><![CDATA[Export ZODB to LocalFS]]></item>

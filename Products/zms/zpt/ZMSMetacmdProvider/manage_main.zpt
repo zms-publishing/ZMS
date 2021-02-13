@@ -82,14 +82,14 @@
 						<textarea class="form-control url-input" name="el_nodes" tal:content="python:metaCmd.get('nodes','{$}')"></textarea>
 					</td>
 					<td tal:define="roles python:['*']+here.getUserDefinedRoles()">
-						<select name="el_roles:list" size="10" multiple="multiple" class="form-control-sm container">
+						<select name="el_roles:list" size="10" multiple="multiple" class="form-control form-control-sm">
 							<tal:block tal:repeat="role roles"
 								><option tal:attributes="value role; selected python:['','selected'][int(role in metaCmd.get('roles',[]))]" tal:content="python:here.getRoleName(role)">role</option>
 							</tal:block>
 						</select>
 					</td>
 					<td>
-						<select name="el_meta_types:list" size="10" multiple="multiple" class="form-control-sm container">
+						<select name="el_meta_types:list" size="10" multiple="multiple" class="form-control form-control-sm">
 							<tal:block tal:repeat="meta_type python:['*']"
 								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="meta_type">meta_type</option>
 							</tal:block

@@ -1,13 +1,4 @@
-<tal:block tal:condition="python:request.get('mode','')=='existsUser'"
-	><tal:block tal:define="
-		name request/id;
-		users python:here.searchUsers(name);
-		found python:int(len([x for x in users if x==name])==1);"
-		><tal:block tal:content="found">found</tal:block
-	></tal:block
-></tal:block
-
-><tal:block tal:condition="python:request.get('mode')=='findUser'"
+<tal:block tal:condition="python:request.get('mode')=='findUser'"
 	><tal:block tal:define="
 		name request/id;
 		user python:here.findUser(name);"
@@ -468,10 +459,11 @@ function zmiModalInsertUserOpen(context) {
 			</th>
 		</tr>
 	</thead>
-	<tbody tal:define="securityUsers python:here.getSecurityUsers(request.get('show_acquired',False))">
+	<tbody tal:define="securityUsers python:here.getSecurityUsers(request.get('show_acquired',False)); existingUsers python:here.searchUsers('*');">
 	<tr tal:repeat="userName userNames" tal:attributes="id userName" class="userName">
 		<td tal:define="
 				securityUser python:securityUsers.get(userName,{});
+				existsUser python:userName in existingUsers;
 				lower python:securityUser.get('attrActiveStart',None);
 				upper python:securityUser.get('attrActiveEnd',None);
 				active python:standard.todayInRange(lower, upper);
@@ -479,11 +471,11 @@ function zmiModalInsertUserOpen(context) {
 				nodes python:securityUser.get('nodes',{});">
 			<tal:block tal:content="repeat/userName/number"></tal:block>.
 			<input type="checkbox" name="ids:list" tal:attributes="value userName"/>
-			<i class="icon-spinner icon-spin fas fa-share" tal:condition="acquired"></i>
+			<i class="fas fa-share" tal:condition="acquired"></i>
 			<a data-placement="top"
 				tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName); 
-					class python:['','text-muted'][acquired or not active];"
-				><span><i class="icon-spinner icon-spin fas fa-spinner fa-spin"></i> <tal:block tal:content="userName">userName</tal:block></span>
+					class python:['text-danger',['','text-muted'][acquired or not active]][existsUser];"
+				><span><i tal:attributes="class python:['fas fa-user-slash','fas fa-user'][existsUser]"></i> <tal:block tal:content="userName">userName</tal:block></span>
 			</a><tal:block tal:condition="python:len(nodes)>0"
 				>&nbsp;(<tal:block tal:define="
 						all_roles python:sum([nodes[x].get('roles',[]) for x in nodes],[]);
@@ -592,9 +584,7 @@ function zmiModalInsertUserOpen(context) {
 
 <script>
 	$(function(){
-
 		var looper = $.Deferred().resolve();
-
 		var ajaxFindUser = function(item, id, url) {
 			var $a = $(item);
 			return $.get(url,{mode:'findUser',id:id}, function(result) {
@@ -618,44 +608,6 @@ function zmiModalInsertUserOpen(context) {
 				return $.Deferred().resolve().promise();
 			});
 		}
-
-		var ajaxExistsUser = function(item) {
-			var $this = $(item);
-			var id = $this.attr("id");
-			var url = [location.protocol, '//', location.host, location.pathname].join('');
-			return $.get(url,{mode:'existsUser',id:id}, function(result) {
-				if (result!=1 && result!="1") {
-					$("td",$this).addClass("alert-danger");
-					$("a",$this).addClass("text-danger");
-					$("a i",$this).attr("class","fas fa-user-slash");
-				}
-				else {
-					$("a i",$this).attr("class","fas fa-user");
-					$("a:first",$this).mouseover(function() {
-						 var $a = $(this);
-						 if (typeof $a.attr("title")=="undefined") {
-							 $a.attr("title","Data loading ...");
-							 $.when.apply($, $.map($a, function(item) {
-								 looper = looper.then(function() {
-									 return ajaxFindUser(item, id, url);
-								 });
-								 return looper;
-							 }));
-							 //ajaxFindUser($a, id, url);
-						 }
-					});
-				}
-				return $.Deferred().resolve().promise();
-			});
-		}
-
-		var $collection = $(".userName");
-		$.when.apply($, $.map($collection, function(item) {
-			looper = looper.then(function() {
-				return ajaxExistsUser(item);
-			});
-			return looper;
-		}));
 	});
 </script>
 

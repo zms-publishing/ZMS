@@ -21,6 +21,7 @@ from __future__ import absolute_import
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.userfolder import UserFolder
 import copy
+import glob
 import pickle
 import re
 import sys
@@ -591,7 +592,7 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def searchUsers(self, search_term=''):
       users = []
-      if search_term != '':
+      if search_term:
         userFldr = self.getUserFolder()
         doc_elmnts = userFldr.aq_parent.objectValues(['ZMS'])
         if doc_elmnts:
@@ -601,9 +602,9 @@ class AccessManager(AccessableContainer):
           elif userFldr.meta_type == 'Pluggable Auth Service':
             users.extend([x['login'] for x in userFldr.searchUsers(login=search_term, id=None, exact_match=True)])
           else:
-            login_attr = 'login'
-            users.extend([x for x in userFldr.getUserNames() if x == search_term])
+            users.extend([x for x in userFldr.getUserNames() if glob.fnmatch.fnmatch(x,search_term)])
       return users
+
     # --------------------------------------------------------------------------
     #  AccessManager.getSearchableAttrs:
     #
@@ -631,7 +632,6 @@ class AccessManager(AccessableContainer):
       traverseUserFolders(self.getUserFolder())
       attrs = sorted(attrs,key=lambda x:x[1])
       return attrs
-
 
     # --------------------------------------------------------------------------
     #  AccessManager.getValidUserids:

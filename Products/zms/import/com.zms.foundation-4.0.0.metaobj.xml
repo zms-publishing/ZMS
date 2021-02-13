@@ -1869,7 +1869,7 @@ return ''
 		imgurl        python:zmscontext.getLinkUrl(zmscontext.attr('attr_url'),request);
 		isimghires    python:zmscontext.attr('imghires');
 		imgthumb      python:request['URL'].find('/manage')>0;
-		imgspecial    python:standard.pystr(zmscontext.attr('img_attrs_spec'));">
+		imgspecial    python:str(zmscontext.attr('img_attrs_spec'));">
 	<tal:block tal:condition="python:imgurl and isimghires">
 		<tal:block
 			tal:define="global text python:text+'\n<span class=\042imgurl\042>'+zmscontext.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042'%imgurl)+'</span>';

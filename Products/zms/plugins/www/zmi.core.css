@@ -1191,6 +1191,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	background-color: #818EA2;
 	height: 2rem;
 }
+.zmi .dropdown-menu .dropdown-header.select-action {
+	cursor:pointer;
+}
 .zmi .dropdown-menu .dropdown-header i {
 	color: #fff !important;
 }

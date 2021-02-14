@@ -1149,7 +1149,7 @@ class ZMSMetaobjManager(object):
                     if key2.startswith('_lang_dict_value_%i_'%i):
                       lang_id = key2[len('_lang_dict_value_%i_'%i):]
                       lang_dict[k][lang_id] = REQUEST[key2].strip()
-                self.set_lang_dict(lang_dict)
+                  self.set_lang_dict(lang_dict)
           elif key == 'obj' and btn == 'BTN_SAVE':
             # Change Acquired-Object.
             subobjects = REQUEST.get('obj_subobjects', 0)

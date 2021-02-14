@@ -28,6 +28,7 @@ import sys
 import tempfile
 import zipfile
 import zope.contenttype
+from Products.zms import zopeutil
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -311,23 +312,26 @@ def exportObj(obj, filename, filetype='b'):
   
   #-- Get object data.
   data = None
-  try: # ImageFile
-    f = open(obj.path,'r%s'%filetype)
-    data = f.read()
-    f.close()
-  except:
-    try: # Image / File
-      data = obj.data
-      if len(data) == 0:
-        data = obj.getData()
-    except: 
-      try:
-        data = obj.raw # DTML Method
-      except:
+  if isinstance(obj, six.string_types)==False and obj.meta_type=='Z SQL Method':
+    data = zopeutil.readData(obj)
+  else:
+    try: # ImageFile
+      f = open(obj.path,'r%s'%filetype)
+      data = f.read()
+      f.close()
+    except:
+      try: # Image / File
+        data = obj.data
+        if len(data) == 0:
+          data = obj.getData()
+      except: 
         try:
-          data = obj.read() # REQUEST.enctype multipart/form-data
+          data = obj.raw # DTML Method
         except:
-          data = str(obj)
+          try:
+            data = obj.read() # REQUEST.enctype multipart/form-data
+          except:
+            data = str(obj)
     
   #-- Save to file.
   if data is not None:

@@ -9,7 +9,7 @@ from Products.zms import _fileutil
 def manage_exportZodbNative2LocalFS( self):
   request = self.REQUEST
   request.set('lang',request.get('lang',self.getPrimaryLanguage()))
-  zope_objects = {'DTML Method':'.dtml','Page Template':'.zpt','File':'','Image':'','Script (Python)':'.py'}
+  zope_objects = {'DTML Method':'.dtml','Page Template':'.zpt','File':'','Image':'','Script (Python)':'.py','Z SQL Method':'.zsql'}
   
   def traverse(node,execute):
     rtn = []
@@ -128,7 +128,7 @@ def manage_exportZodbNative2LocalFS( self):
         </list>
       </item>
       <item key="name"><![CDATA[Export ZODB to LocalFS]]></item>
-      <item key="revision">5.0.0</item>
+      <item key="revision">5.0.1</item>
       <item key="roles" type="list">
         <list>
           <item>ZMSAdministrator</item>

@@ -188,6 +188,41 @@ def set_response_headers(fn, mt='application/octet-stream', size=None, request=N
     RESPONSE.setHeader('Content-Length', size)
   RESPONSE.setHeader('Accept-Ranges', 'bytes')
 
+security.declarePublic('set_response_headers_cache')
+def set_response_headers_cache(context, request=None, cache_max_age=24*3600):
+  """
+  Set default and dynamic cache response headers according to ZMS_CACHE_EXPIRE_DATETIME
+  which is determined in ObjAttrs.isActive for each page element as the earliest time for invalidation.
+  @see: http://nginx.org/en/docs/http/ngx_http_headers_module.html#expires
+  @see: https://www.nginx.com/resources/wiki/start/topics/examples/x-accel/
+  @return: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
+  """
+  if request is not None:
+    is_preview = request.get('preview', '') == 'preview'
+    is_restricted = len([ob for ob in context.breadcrumbs_obj_path(portalMaster=False)
+                         if ob.attr('attr_dc_accessrights_restricted') in [1, True]]) > 0
+
+    if is_restricted or is_preview:
+      request.RESPONSE.setHeader('Cache-Control', 'no-cache')
+      request.RESPONSE.setHeader('Expires', '-1')
+      request.RESPONSE.setHeader('Pragma', 'no-cache')
+    else:
+      request.RESPONSE.setHeader('Cache-Control',
+                                 'max-age={}, public, must-revalidate, proxy-revalidate'.format(cache_max_age))
+      now = time.time()
+      expire_datetime = DateTime(request.get('ZMS_CACHE_EXPIRE_DATETIME', now + cache_max_age))
+      t1 = expire_datetime.millis()
+      t0 = DateTime(now).millis()
+      expire_in_secs = int((t1-t0)/1000)
+      expire_datetime_gmt = expire_datetime.toZone('GMT')
+
+      if t1 > t0 and cache_max_age > expire_in_secs:
+        request.RESPONSE.setHeader('Expires', expire_datetime_gmt.asdatetime().strftime('%a, %d %b %Y %H:%M:%S %Z'))
+        request.RESPONSE.setHeader('X-Accel-Expires', expire_in_secs)
+
+      return expire_datetime_gmt.ISO8601(), expire_in_secs
+
+  return None
 
 security.declarePublic('get_installed_packages')
 def get_installed_packages():

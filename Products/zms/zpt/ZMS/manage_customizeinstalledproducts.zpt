@@ -1,6 +1,8 @@
 <tal:block tal:on-error="structure string:<!-- ERROR: manage_customizeinstalledproducts.zpt -->" tal:define="
 		standard modules/Products.zms/standard;
 		Std modules/Products/PythonScripts/standard">
-  <textarea disabled="disabled" style="font-family: monospace; font-size: larger; width: 100%; height: 50vh"
-          tal:content="structure python:standard.get_installed_packages()"></textarea>
+	<textarea disabled="disabled"
+		style="font-family:monospace;width:100%;height:50vh"
+		tal:content="structure python:standard.get_installed_packages()">
+	</textarea>
 </tal:block>

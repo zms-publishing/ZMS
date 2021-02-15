@@ -21,7 +21,6 @@ from __future__ import absolute_import
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.userfolder import UserFolder
 import copy
-import glob
 import pickle
 import re
 import sys
@@ -600,9 +599,9 @@ class AccessManager(AccessableContainer):
             login_attr = self.getConfProperty('LDAPUserFolder.login_attr', userFldr.getProperty('_login_attr'))
             users.extend([x[login_attr] for x in userFldr.findUser(search_param=login_attr, search_term=search_term)])
           elif userFldr.meta_type == 'Pluggable Auth Service':
-            users.extend([x['login'] for x in userFldr.searchUsers(login=search_term, id=None, exact_match='*' not in search_term)])
+            users.extend([x['login'] for x in userFldr.searchUsers(login=search_term, id=None, exact_match=True)])
           else:
-            users.extend([x for x in userFldr.getUserNames() if glob.fnmatch.fnmatch(x,search_term)])
+            users.extend([x for x in userFldr.getUserNames() if x == search_term])
       return users
 
     # --------------------------------------------------------------------------

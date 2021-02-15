@@ -1,4 +1,13 @@
-<tal:block tal:condition="python:request.get('mode')=='findUser'"
+<tal:block tal:condition="python:request.get('mode','')=='existsUser'"
+	><tal:block tal:define="
+		name request/id;
+		users python:here.searchUsers(name);
+		found python:int(len([x for x in users if x==name])==1);"
+		><tal:block tal:content="found">found</tal:block
+	></tal:block
+></tal:block
+
+><tal:block tal:condition="python:request.get('mode')=='findUser'"
 	><tal:block tal:define="
 		name request/id;
 		user python:here.findUser(name);"
@@ -90,7 +99,7 @@ function zmiModalInsertUserLoad(url) {
 	$("select option:selected").each(function() {
 			data[$(this).parent().attr("name")] = $(this).val();
 		});
-	$('#zmiModalinsertUser .modal-body').html($ZMI.icon("icon-spinner icon-spin")+'&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING'));
+	$('#zmiModalinsertUser .modal-body').html(<i class="fas fa-spinner"></i>' '+getZMILangStr('MSG_LOADING'));
 	$.get(self.location.href,data,function(result) {
 			$('#zmiModalinsertUser .modal-body').html(result);
 			$("#zmiModalinsertUser #insertUserForm .btn-group")
@@ -455,15 +464,15 @@ function zmiModalInsertUserOpen(context) {
 					<a class="btn btn-secondary" href="javascript:;" onclick="zmiModal('#importUsers',{title:$(this).attr('title')})" tal:attributes="title python:'%s...'%here.getZMILangStr('BTN_IMPORT')"><i class="fas fa-upload"></i></a>
 					<a class="btn btn-secondary" href="javascript:;" onclick="var $fm=$(this).closest('form');$('input[name=btn]',$fm).val('BTN_EXPORT');$fm.attr('target','_blank').submit();" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')"><i class="fas fa-download"></i></a>
 					<a class="btn btn-secondary alert-danger" tal:condition="python:request['AUTHENTICATED_USER'].has_role('Manager')" tal:attributes="href python:'?lang=%s&btn=Purge'%request['lang']" title="Purge Local Roles (WARNING: Using this function deletes the local roles of users who no longer exist. Click only if you are aware of the consequences.)"><i class="fas fa-eraser"></i></a>
+					<a class="btn btn-secondary" href="javascript:;" onclick="zmiSynchronizeUsers(this)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_USERS'), here.getZMILangStr('BTN_SYNCHRONIZE'))"><i class="fas fa-sync"></i></a>
 				</div><!-- .btn-group -->
 			</th>
 		</tr>
 	</thead>
-	<tbody tal:define="securityUsers python:here.getSecurityUsers(request.get('show_acquired',False)); existingUsers python:here.searchUsers('*');">
+	<tbody tal:define="securityUsers python:here.getSecurityUsers(request.get('show_acquired',False))">
 	<tr tal:repeat="userName userNames" tal:attributes="id userName" class="userName">
 		<td tal:define="
 				securityUser python:securityUsers.get(userName,{});
-				existsUser python:userName in existingUsers;
 				lower python:securityUser.get('attrActiveStart',None);
 				upper python:securityUser.get('attrActiveEnd',None);
 				active python:standard.todayInRange(lower, upper);
@@ -474,8 +483,8 @@ function zmiModalInsertUserOpen(context) {
 			<i class="fas fa-share" tal:condition="acquired"></i>
 			<a data-placement="top"
 				tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName); 
-					class python:['text-danger',['','text-muted'][acquired or not active]][existsUser];"
-				><span><i tal:attributes="class python:['fas fa-user-slash','fas fa-user'][existsUser]"></i> <tal:block tal:content="userName">userName</tal:block></span>
+					class python:['','text-muted'][acquired or not active];"
+				><span><i class="fas fa-user"></i> <tal:block tal:content="userName">userName</tal:block></span>
 			</a><tal:block tal:condition="python:len(nodes)>0"
 				>&nbsp;(<tal:block tal:define="
 						all_roles python:sum([nodes[x].get('roles',[]) for x in nodes],[]);
@@ -583,8 +592,10 @@ function zmiModalInsertUserOpen(context) {
 <tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 
 <script>
-	$(function(){
+	function zmiSynchronizeUsers(sender){
+
 		var looper = $.Deferred().resolve();
+
 		var ajaxFindUser = function(item, id, url) {
 			var $a = $(item);
 			return $.get(url,{mode:'findUser',id:id}, function(result) {
@@ -608,7 +619,46 @@ function zmiModalInsertUserOpen(context) {
 				return $.Deferred().resolve().promise();
 			});
 		}
-	});
+
+		var ajaxExistsUser = function(item) {
+			var $this = $(item);
+			var id = $this.attr("id");
+			var url = [location.protocol, '//', location.host, location.pathname].join('');
+			return $.get(url,{mode:'existsUser',id:id}, function(result) {
+				if (result!=1 && result!="1") {
+					$("td",$this).addClass("alert-danger");
+					$("a",$this).addClass("text-danger");
+					$("a i",$this).attr("class","fas fa-user-slash");
+				}
+				else {
+					$("a i",$this).attr("class","fas fa-user");
+					$("a:first",$this).mouseover(function() {
+						 var $a = $(this);
+						 if (typeof $a.attr("title")=="undefined") {
+							 $a.attr("title","Data loading ...");
+							 $.when.apply($, $.map($a, function(item) {
+								 looper = looper.then(function() {
+									 return ajaxFindUser(item, id, url);
+								 });
+								 return looper;
+							 }));
+							 //ajaxFindUser($a, id, url);
+						 }
+					});
+				}
+				return $.Deferred().resolve().promise();
+			});
+		}
+
+		var $collection = $(".userName");
+		$("a i.fa-user").removeClass("fa-user").addClass("fa-spinner");
+		$.when.apply($, $.map($collection, function(item) {
+			looper = looper.then(function() {
+				return ajaxExistsUser(item);
+			});
+			return looper;
+		}));
+	}
 </script>
 
 </body>

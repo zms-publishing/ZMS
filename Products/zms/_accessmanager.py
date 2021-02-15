@@ -600,7 +600,7 @@ class AccessManager(AccessableContainer):
             login_attr = self.getConfProperty('LDAPUserFolder.login_attr', userFldr.getProperty('_login_attr'))
             users.extend([x[login_attr] for x in userFldr.findUser(search_param=login_attr, search_term=search_term)])
           elif userFldr.meta_type == 'Pluggable Auth Service':
-            users.extend([x['login'] for x in userFldr.searchUsers(login=search_term, id=None, exact_match=True)])
+            users.extend([x['login'] for x in userFldr.searchUsers(login=search_term, id=None, exact_match='*' not in search_term)])
           else:
             users.extend([x for x in userFldr.getUserNames() if glob.fnmatch.fnmatch(x,search_term)])
       return users

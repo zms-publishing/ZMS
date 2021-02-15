@@ -312,7 +312,7 @@ def exportObj(obj, filename, filetype='b'):
   
   #-- Get object data.
   data = None
-  if isinstance(obj, six.string_types)==False and obj.meta_type=='Z SQL Method':
+  if getattr(obj, 'meta_type','na')=='Z SQL Method':
     data = zopeutil.readData(obj)
   else:
     try: # ImageFile

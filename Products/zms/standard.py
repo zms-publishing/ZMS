@@ -189,6 +189,16 @@ def set_response_headers(fn, mt='application/octet-stream', size=None, request=N
   RESPONSE.setHeader('Accept-Ranges', 'bytes')
 
 
+security.declarePublic('get_installed_packages')
+def get_installed_packages():
+  import subprocess
+  pipfreeze = subprocess.Popen("../../../bin/pip freeze --all",
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                               shell=True, cwd=getPACKAGE_HOME(), universal_newlines=True)
+  packages = pipfreeze.communicate()[0].strip()
+  return packages
+
+
 security.declarePublic('umlaut_quote')
 def umlaut_quote(s, mapping={}):
   """
@@ -2200,10 +2210,6 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
         part.add_header('Content-Disposition', 'attachment; filename="%s"'%filename)
         mime_msg.attach(part)
 
-      # TODO: Handle data from filesystem or other sources
-      elif isinstance(filedata, file):
-        raise NotImplementedError
-
   # Send mail.
   try:
     #writeBlock( context, "[sendMail]: %s"%mime_msg.as_string())
@@ -2212,15 +2218,6 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
   except:
     writeError(context, '[sendMail]: can\'t send')
     return -1
-
-
-security.declarePublic('extutil')
-def extutil():
-  """
-  Returns util to handle zms3.extensions
-  """
-  from Products.zms import _extutil
-  return _extutil.ZMSExtensions()
 
 
 security.declarePublic('getPlugin')

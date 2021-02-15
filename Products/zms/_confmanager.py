@@ -736,96 +736,13 @@ class ConfManager(
               portalClient.delConfProperty( k)
           message = self.getZMILangStr('MSG_DELETED')%int(1)
       
-      ##### InstalledProducts ####
-      elif key == 'InstalledProducts':
+      ##### Configuration ####
+      elif key == 'Configuration':
         if btn == 'Change':
           self.setConfProperty('InstalledProducts.lesscss', REQUEST.get('lesscss', ''))
           self.setConfProperty('InstalledProducts.pil.thumbnail.max', REQUEST.get('pil_thumbnail_max', self.getConfProperty('InstalledProducts.pil.thumbnail.max')))
           self.setConfProperty('InstalledProducts.pil.hires.thumbnail.max', REQUEST.get('pil_hires_thumbnail_max', self.getConfProperty('InstalledProducts.pil.hires.thumbnail.max')))
           message = self.getZMILangStr('MSG_CHANGED')
-        elif btn == 'Import':
-          zmsext = REQUEST.get('zmsext', '')
-          # hand over import to Deployment Library if available
-          revobj = self.getMetaobjRevision('zms3.deployment')
-          revreq = '0.2.0'
-          if revobj >= revreq:
-            target = 'manage_deployment'
-            target = self.url_append_params(target, {'zmsext': zmsext})
-            return RESPONSE.redirect(target)
-          # otherwise import now
-          target = 'manage_customize'
-          isProcessed = False
-          try:
-            ZMSExtension  = standard.extutil()
-            filesToImport = ZMSExtension.getFilesToImport(zmsext, self.getDocumentElement())
-            if len(filesToImport)>0:
-              for f in filesToImport:
-                self.importConf(f, createIfNotExists=True, syncIfNecessary=False)
-              self.synchronizeObjAttrs()
-              isProcessed = True
-          except:
-            isProcessed = False
-          if isProcessed:
-            message = self.getZMILangStr('MSG_IMPORTED')%('<code class="alert-success">'+self.str_item(ZMSExtension.getFiles(zmsext))+'</code>')
-            target = self.url_append_params(target, {'manage_tabs_message': message})
-          else:
-            message = self.getZMILangStr('MSG_EXCEPTION') 
-            message += ': <code class="alert-danger">%s</code>'%('No conf files found.')
-            target = self.url_append_params(target, {'manage_tabs_error_message': message})
-            standard.writeError(self, "[ConfManager.manage_customizeSystem] No conf files found.")
-          return RESPONSE.redirect(target + '#%s'%key)
-        elif btn == 'ImportExample':
-          zmsext = REQUEST.get('zmsext', '')
-          target = 'manage_main'
-          ZMSExtension  = standard.extutil()
-          isProcessed = False
-          try:
-            if ZMSExtension.getExample(zmsext) is not None:
-              destination = self.getLinkObj(self.getConfProperty('ZMS.Examples', {}))
-              if destination is None:
-                destination = self.getDocumentElement()
-              ZMSExtension.importExample(zmsext, destination, REQUEST)
-              isProcessed = True
-          except:
-            isProcessed = False
-          if isProcessed:
-            return True
-          else:
-            return False
-        elif btn == 'InstallTheme':
-          zmsext = REQUEST.get('zmsext', '')
-          target = 'manage_main'
-          ZMSExtension  = standard.extutil()
-          standard.writeBlock(self, "[ConfManager.manage_customizeSystem] InstallTheme:"+str(zmsext))
-          if ZMSExtension.installTheme(self, zmsext):
-            return True
-          else:
-            return False
-
-      ##### Instance ####
-      elif key == 'Instance':
-        if btn == 'Restart':
-          target = 'manage_customize'
-          
-          if 'ZMANAGED' in os.environ:
-            from Lifetime import shutdown
-            from cgi import escape
-            from .standard import writeBlock
-            try:
-              user = '"%s"' % REQUEST['AUTHENTICATED_USER']
-            except:
-              user = 'unknown user'
-            writeBlock(self, " Restart requested by %s" % user)
-            shutdown(1)
-            message = self.getZMILangStr('ZMS3 instance restarted.')
-            target = self.url_append_params(target, {'manage_tabs_message': message})
-            return """<html>
-            <head><meta HTTP-EQUIV=REFRESH CONTENT="10; URL=%s">
-            </head>
-            <body>Restarting...</body></html>
-            """ % escape(target + '#%s'%key, 1)
-          else:       
-            return "No daemon."
       
       ##### Manager ####
       elif key == 'Manager':

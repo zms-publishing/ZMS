@@ -720,7 +720,8 @@ class AccessManager(AccessableContainer):
           uid = plugin.getUserIdForLogin(login_name)
         if uid is not None:
           d['user_id_'] = uid
-          uid = standard.pybytes(uid)
+          if isinstance(uid,str):
+            uid = bytes(uid,'utf-8')
           if uid.startswith(b'\x01\x05\x00\x00'):
             import binascii
             buid = memoryview(uid)

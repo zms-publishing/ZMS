@@ -99,7 +99,7 @@ function zmiModalInsertUserLoad(url) {
 	$("select option:selected").each(function() {
 			data[$(this).parent().attr("name")] = $(this).val();
 		});
-	$('#zmiModalinsertUser .modal-body').html('<i class="fas fa-spinner"></i>' '+getZMILangStr('MSG_LOADING'));
+	$('#zmiModalinsertUser .modal-body').html('<i class="fas fa-spinner"></i>' +getZMILangStr('MSG_LOADING'));
 	$.get(self.location.href,data,function(result) {
 			$('#zmiModalinsertUser .modal-body').html(result);
 			$("#zmiModalinsertUser #insertUserForm .btn-group")

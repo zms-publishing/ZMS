@@ -1439,8 +1439,11 @@ class ZMSObject(ZMSItem.ZMSItem,
     #
     #  Execute Meta-Command.
     ############################################################################
-    def manage_executeMetacmd(self, id, lang, REQUEST, RESPONSE):
+    def manage_executeMetacmd(self, lang, REQUEST, RESPONSE=None):
       """ MetacmdObject.manage_executeMetacmd """
+      id = REQUEST.get('id')
+      RESPONSE.setHeader('Cache-Control', 'no-cache')
+      RESPONSE.setHeader('Pragma', 'no-cache')
       message = ''
       target = self
       
@@ -1448,13 +1451,13 @@ class ZMSObject(ZMSItem.ZMSItem,
       metaObjAttr = self.getMetaobjAttr(self.meta_id, id)
       if metaObjAttr is not None:
         # Execute directly.
-        return self.attr(REQUEST.get('id'))
+        return self.attr(id)
       
       # METACMD
       metaCmd = self.getMetaCmd(id)
       if metaCmd is not None:
         # Execute directly.
-        if metaCmd.get('execution', 0) == 1:
+        if not metaCmd['id'].startswith('manage_tab_') and metaCmd.get('execution', 0) == 1:
           ob = zopeutil.getObject(self, id)
           value = zopeutil.callObject(ob, zmscontext=self)
           if isinstance(value, str):
@@ -1464,8 +1467,8 @@ class ZMSObject(ZMSItem.ZMSItem,
             message = value[1]
         # Execute redirect.
         else:
-          params = {'lang':REQUEST.get('lang'),'id_prefix':REQUEST.get('id_prefix'),'ids':REQUEST.get('ids', [])}
-          return RESPONSE.redirect(self.url_append_params(metaCmd['id'], params, sep='&'))
+          RESPONSE.setBody('', lock=True)
+          return RESPONSE.redirect('%s/%s?lang=%s'%(target.absolute_url(),metaCmd['id'],lang))
       
       # Return with message.
       message = standard.url_quote(message)

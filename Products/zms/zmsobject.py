@@ -1457,9 +1457,9 @@ class ZMSObject(ZMSItem.ZMSItem,
       metaCmd = self.getMetaCmd(id)
       if metaCmd is not None:
         # Execute directly.
+        ob = zopeutil.getObject(self, id)
+        value = zopeutil.callObject(ob, zmscontext=self)
         if not metaCmd['id'].startswith('manage_tab_') and metaCmd.get('execution', 0) == 1:
-          ob = zopeutil.getObject(self, id)
-          value = zopeutil.callObject(ob, zmscontext=self)
           if isinstance(value, str):
             message = value
           elif isinstance(value, tuple):
@@ -1467,8 +1467,11 @@ class ZMSObject(ZMSItem.ZMSItem,
             message = value[1]
         # Execute redirect.
         else:
-          RESPONSE.setBody('', lock=True)
-          return RESPONSE.redirect('%s/%s?lang=%s'%(target.absolute_url(),metaCmd['id'],lang))
+          loc = '%s/%s?lang=%s'%(target.absolute_url(),metaCmd['id'],lang)
+          RESPONSE.setHeader('Location',loc)
+          RESPONSE.setHeader('Turbolinks-Location',loc)
+          RESPONSE.redirect(loc,status=201)
+          return value
       
       # Return with message.
       message = standard.url_quote(message)

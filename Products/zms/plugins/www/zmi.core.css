@@ -571,6 +571,9 @@ body.zmi ul.zmi-container > .zmi-item > .center {
 	min-height:4.2rem;
 	overflow-x: hidden;
 }
+body.zmi form.form-container ul.zmi-sortable.zmi-container:last-child > li:last-child > div.center {
+	border-bottom:1px dotted #cccccc;
+}
 body.zmi ul.zmi-container .zmi-item.pageelement .center > * {
 	padding-left:.8em;
 }
@@ -579,9 +582,6 @@ body.zmi.ZMSTeaserContainer ul.zmi-container .zmi-item.pageelement .center .ZMST
 	padding: .65rem 1rem;
 	background-color: #d1ecf1;
 	min-height:4rem;
-}
-body.zmi ul.zmi-container.zmi-sortable.pages li:last-child div.center {
-	border-bottom:1px dotted #cccccc;
 }
 body.zmi ul.zmi-container > .zmi-item > .right {
 	flex-basis: 20%;

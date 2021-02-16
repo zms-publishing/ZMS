@@ -215,8 +215,8 @@
 		</tal:block>
 		<tr class="row_insert">
 			<td class="meta-sort"><span class="btn btn-light"><i class="fas fa-plus"></i></td>
-			<td class="meta-id"><input class="form-control form-control-sm" name="permalink_key__" placeholder="Enter Id..."/>
-			<td class="meta-url form-group"><input class="form-control form-control-sm url-input" name="permalink_val__" placeholder="Select Url..."/>
+			<td class="meta-id"><input class="form-control form-control" name="permalink_key__" placeholder="Enter Id..."/>
+			<td class="meta-url form-group"><input class="form-control form-control url-input" name="permalink_val__" placeholder="Select Url..."/>
 		</tr>
 		</tbody>
 	</table>

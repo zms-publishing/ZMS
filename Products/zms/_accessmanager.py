@@ -53,7 +53,7 @@ def updateVersion(root):
               if key not in userDef:
                 userDef[key] = value[key]
           nodes = value.get('nodes', {})
-          for nodekey in nodes:
+          for nodekey in list(nodes):
             node = docelmnt.getLinkObj(nodekey)
             if node is not None:
               newkey = root.getRefObjPath(node)
@@ -101,7 +101,7 @@ def updateVersion(root):
       for name in d:
         value = d[name]
         nodes = value.get('nodes', {})
-        for nodekey in nodes:
+        for nodekey in list(nodes):
           node = root.getLinkObj(nodekey)
           if node is not None:
             nodes[nodekey]['home_id'] = node.getHome().id
@@ -198,7 +198,7 @@ def deleteUser(self, id):
   
   # Delete local roles in node.
   nodes = self.getUserAttr(id, 'nodes', {})
-  for node in nodes:
+  for node in list(nodes):
     ob = self.getLinkObj(node)
     if ob is not None:
       user_id = self.getUserAttr(id, 'user_id_', id)
@@ -283,7 +283,7 @@ class AccessableObject(object):
           raise zExceptions.InternalError("Maximum recursion depth exceeded")
         depth = depth + 1
         nodekey = root.getRefObjPath(ob)
-        if nodekey in nodes:
+        if nodekey in list(nodes):
           roles = standard.concat_list(roles, nodes[nodekey]['roles'])
           break
         if aq_parent:
@@ -319,7 +319,7 @@ class AccessableObject(object):
           raise zExceptions.InternalError("Maximum recursion depth exceeded")
         depth = depth + 1
         nodekey = root.getRefObjPath(ob)
-        if nodekey in nodes:
+        if nodekey in list(nodes):
           langs = nodes[nodekey]['langs']
           break
         if aq_parent:
@@ -910,7 +910,7 @@ class AccessManager(AccessableContainer):
         d = self.getSecurityUsers()
         for userid in d:
           nodes = self.getUserAttr(userid, 'nodes', {}) 
-          for node in nodes:
+          for node in list(nodes):
               target = self.getLinkObj(node)
               if target is None:
                 self.delLocalUser(userid, node)
@@ -959,7 +959,7 @@ class AccessManager(AccessableContainer):
         dt = DateTime(time.mktime(attrActiveEnd))
         active = active and (dt.isFuture() or (dt.equalTo(dt.earliestTime()) and dt.latestTime().isFuture()))
       nodes = self.getUserAttr(id, 'nodes', {})
-      for node in nodes:
+      for node in list(nodes):
         ob = self.getLinkObj(node)
         if ob is not None:
           user_id = self.getUserAttr(id, 'user_id_', id)
@@ -1005,7 +1005,7 @@ class AccessManager(AccessableContainer):
       # Delete node from user-properties.
       root = self.getRootElement()
       nodes = root.getUserAttr(id, 'nodes', {})
-      if node in nodes: 
+      if node in list(nodes): 
         del nodes[node]
         root.setUserAttr(id, 'nodes', nodes)
       
@@ -1226,7 +1226,7 @@ class AccessManager(AccessableContainer):
             mbody.append('\n')
             nodes = self.getUserAttr(id, 'nodes', {})
             security_roles = self.getSecurityRoles()
-            for nodekey in nodes:
+            for nodekey in list(nodes):
               if nodekey in nodekeys:
                 node = nodes[nodekey]
                 roles = node.get('roles', [])
@@ -1285,7 +1285,7 @@ class AccessManager(AccessableContainer):
               xml += '<email>%s</email>'%standard.html_quote(email)
             nodes = self.getUserAttr(userName, 'nodes', {})
             xml += '<nodelist>'
-            for nodekey in nodes:
+            for nodekey in list(nodes):
               xml += '<node>'
               xml += '<nodeid>%s</nodeid>'%nodekey
               try:

@@ -909,12 +909,15 @@ class AccessManager(AccessableContainer):
         ob = self
         d = self.getSecurityUsers()
         for userid in d:
-          nodes = self.getUserAttr(userid, 'nodes', {}) 
-          for node in list(nodes):
-              target = self.getLinkObj(node)
-              if target is None:
-                self.delLocalUser(userid, node)
-                rtn += userid + ": remove " + node + "<br/>"
+          if userid is None:
+            deleteUser(userid)
+          else:
+            nodes = self.getUserAttr(userid, 'nodes', {}) 
+            for node in list(nodes):
+                target = self.getLinkObj(node)
+                if target is None:
+                  self.delLocalUser(userid, node)
+                  rtn += userid + ": remove " + node + "<br/>"
       root = self.getRootElement()
       for local_role in ob.get_local_roles():
         b = False

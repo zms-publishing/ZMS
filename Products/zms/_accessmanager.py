@@ -915,7 +915,7 @@ class AccessManager(AccessableContainer):
               if target is None:
                 self.delLocalUser(userid, node)
                 rtn += userid + ": remove " + node + "<br/>"
-      
+      root = self.getRootElement()
       for local_role in ob.get_local_roles():
         b = False
         userid = local_role[0]
@@ -930,7 +930,8 @@ class AccessManager(AccessableContainer):
               valid_userids.append(userid)
           if userid in valid_userids:
             nodes = self.getUserAttr(userid, 'nodes', {})
-            if len([x for x in nodes if (x=="{$}" and ob.id=="content") or x=="{$%s}"%ob.id or x.endswith("/%s}"%ob.id)])==0:
+            ref = root.getRefObjPath(self)
+            if len([x for x in nodes if (x==ref) or (x=="{$}" and ob.id=="content") or x=="{$%s}"%ob.id or x.endswith("/%s}"%ob.id)])==0:
               b = True
           elif userid in invalid_userids:
             b = True

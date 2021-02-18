@@ -76,7 +76,7 @@ function openWindow(url) {
 			</div>
 			<div class="zmi-sitemap-container loading">
 				<div class="progress">
-					<div class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active"
+					<div class="progress-bar progress-bar-striped progress-bar-animated active"
 						role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
 						<span>Loading Sitemap ... </span>
 					</div>
@@ -136,10 +136,11 @@ function openWindow(url) {
 <script>
 function set_progress( v, func_name ) {
 	var perc = Math.round(v * 10000) / 100;
-	var bar_type = func_name=='reindex' && 'warning' || 'danger';
+	var bar_type_dict = {'reindex':'warning','test':'info','resync':'danger'};
+	var bar_type = bar_type_dict[func_name];
 	$('#zmsindex .progress .progress-bar')
 		.addClass('active')
-		.addClass('progress-bar-' + bar_type)
+		.addClass('bg-' + bar_type)
 		.attr('aria-valuenow',perc)
 		.css('width',perc + '%')
 		.find('span').text( perc + '%' );
@@ -147,21 +148,21 @@ function set_progress( v, func_name ) {
 		$('#zmsindex .progress .progress-bar')
 			.removeClass('active')
 			.removeClass('progress-bar-animated')
-			.removeClass('progress-bar-striped')
+			.removeClass('progress-bar-striped');
 	}
 }
 function reset_progress() {
-	$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 	$('#zmsindex .progress .progress-bar')
 		.addClass('progress-bar-striped')
 		.addClass('progress-bar-animated')
-		.removeClass('progress-bar-info')
-		.removeClass('progress-bar-warning')
-		.removeClass('progress-bar-danger')
+		.removeClass('bg-info')
+		.removeClass('bg-warning')
+		.removeClass('bg-danger')
 		.removeClass('active')
 		.attr('aria-valuenow',0)
 		.css('width','0%')
 		.find('span').text( 'Loading Sitemap ... ' );
+		$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 }
 function zmiFuncIndex(func_) {
 	$(".zmi-sitemap .response").remove();
@@ -221,6 +222,9 @@ $(function() {
 	var data_root = $("body").attr('data-root');
 	var id = "zmsindex";
 	var key = "ZMS."+data_root+".collapse-"+id;
+	$('#'+id).collapse('hide');
+	$("a[href='#zmsindex']").collapse();
+	$("a[href='#"+id+"'] i").removeClass("fa-caret-down").addClass("fa-caret-right");
 	$ZMILocalStorageAPI.set(key,'0');
 	// Sitemap
 	var initialized = false;
@@ -238,7 +242,7 @@ $(function() {
 							$ZMI.objectTree.toggleClick($($toggle[0]),fn);
 						}
 						else {
-							$(".zmi-sitemap ."+$ZMI.icon_clazz("icon-home").replace(/\s/gi,'.')).each(function() {
+							$(".zmi-sitemap .fas.fa-home, .zmi-sitemap icon-home").each(function() {
 								var $a = $(this).parent("a");
 								var uid = $a.attr('data-uid');
 								$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
@@ -251,6 +255,7 @@ $(function() {
 				}});
 			}
 		});
+		$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 	});
 </script>
 <style>
@@ -296,7 +301,13 @@ $(function() {
 		max-height: unset;
 	}
 	#zmsindex .zmi-sitemap-container.loading {
-		background:#eee;
+		background:#b1bbc1;
+	}
+	#zmsindex .zmi-sitemap-container.loading a,
+	#zmsindex .zmi-sitemap-container.loading .toggle,
+	#zmsindex .zmi-sitemap-container.loading div#loading,
+	.zmi #zmsindex .zmi-sitemap-container.loading div#loading .icon-spinner {
+		color: #fff !important;
 	}
 	#zmsindex .zmi-sitemap-container.loading ul li > * {
 	color:#ccc !important
@@ -304,8 +315,9 @@ $(function() {
 	#zmsindex .zmi-sitemap-container .progress {
 		padding-left:0;
 		margin-right: 30px;
-		background: #ddd;
+		background: #337ab740;
 		height:1.25rem;
+		direction: ltr;
 	}
 	#zmsindex .zmi-sitemap-container .progress .progress-bar {
 		width:0%;
@@ -313,6 +325,7 @@ $(function() {
 	}
 	#zmsindex .zmi-sitemap-container .progress .progress-bar.active {
 		min-width:5em;
+    	width: fit-content;
 	}
 	#zmsindex .zmi-sitemap-container .progress .progress-bar span {
 		margin:0 1em;
@@ -1366,7 +1379,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="name"><![CDATA[ZMSIndexZCatalog]]></item>
           <item key="package"><![CDATA[com.zms.index]]></item>
-          <item key="revision"><![CDATA[2.1.0]]></item>
+          <item key="revision"><![CDATA[2.1.1]]></item>
           <item key="type"><![CDATA[ZMSResource]]></item>
         </dictionary>
       </item>
@@ -1385,7 +1398,7 @@ return standard.FileFromData(zmscontext,"'%s' not found!"%path_)
           <item key="id"><![CDATA[com.zms.index]]></item>
           <item key="name"><![CDATA[com.zms.index]]></item>
           <item key="package"></item>
-          <item key="revision"><![CDATA[2.1.0]]></item>
+          <item key="revision"><![CDATA[2.1.1]]></item>
           <item key="type"><![CDATA[ZMSPackage]]></item>
         </dictionary>
       </item>

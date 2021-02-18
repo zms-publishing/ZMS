@@ -601,6 +601,7 @@ function zmiModalInsertUserOpen(context) {
 			return $.get(url,{mode:'findUser',id:id}, function(result) {
 				var details = eval("("+result+")");
 				var text = $a.text().trim();
+				// debugger;
 				var extra = [];
 				var title = [];
 				for (var i=0; i < details.length; i++) {
@@ -609,13 +610,13 @@ function zmiModalInsertUserOpen(context) {
 					if (v!=text && l.toLowerCase().indexOf('name')>=0) {
 						extra[extra.length] = v;
 					}
-					//title[title.length] = l+"="+v;
+					title[title.length] = l+"="+v;
 				}
 				if (extra.length>0) {
 					$a.append(' ( ' + extra.join(', ') + ' ) ');
 				}
-				//$a.attr("title",title.join("; ")).tooltip("show");
-				$a.attr("title", "Double-click to edit!");
+				$a.attr("title",title.join("; ")).tooltip("show");
+				//$a.attr("title", "Double-click to edit!");
 				return $.Deferred().resolve().promise();
 			});
 		}
@@ -635,12 +636,13 @@ function zmiModalInsertUserOpen(context) {
 					$("a:first",$this).mouseover(function() {
 						 var $a = $(this);
 						 if (typeof $a.attr("title")=="undefined") {
-							 $a.attr("title","Data loading ...");
-							 $.when.apply($, $.map($a, function(item) {
-								 looper = looper.then(function() {
-									 return ajaxFindUser(item, id, url);
-								 });
-								 return looper;
+							// debugger;
+							$a.attr("title","Data loading ...");
+							$.when.apply($, $.map($a, function(item) {
+								looper = looper.then(function() {
+									return ajaxFindUser(item, id, url);
+								});
+								return looper;
 							 }));
 							 //ajaxFindUser($a, id, url);
 						 }

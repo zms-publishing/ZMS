@@ -324,8 +324,11 @@ footer .back-to-top.hide {
 	color: #6c757d !important;
 }
 .zmi #zmi-tab {
-	min-height: calc(100vh - 90px);
+	min-height: calc(100vh - 6rem);
 	padding-bottom: 4rem;
+}
+.zmi.users.config #zmi-tab {
+	min-height: calc(100vh - 8rem);
 }
 .zmi #zmi-tab nav#subTab {
 	margin:1rem 1.25rem 0 1.25rem;

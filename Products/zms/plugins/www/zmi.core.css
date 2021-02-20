@@ -1063,15 +1063,21 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi .zmi-file .btn-group {
 	width:100%;
 	width: -webkit-fill-available;
-	height: calc(2.25rem + 2px);
 }
 .zmi .zmi-image .btn-group > div:not(.dropdown-menu),
 .zmi .zmi-file .btn-group > div:not(.dropdown-menu) {
 	z-index: 0;
 }
+.zmi .zmi-image .btn.dropdown-toggle > span.caret,
+.zmi .zmi-file .btn.dropdown-toggle > span.caret {
+	margin-left:-.15rem;
+}
 .zmi .zmi-input-file .custom-file-label,
 .zmi .zmi-input-file .custom-file-label:after {
 	line-height: 1.65;
+}
+.zmi .has_file > .zmi-input-file .custom-file-label,
+.zmi .has_file > .zmi-input-file .custom-file-label:after {
 	border-top-right-radius: 0;
 	border-bottom-right-radius:0;
 }
@@ -1113,7 +1119,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	margin-right:.85rem
 }
 .zmi .zmi-image-preview, .zmi-image-preview * {
-	max-width:100px;
+	max-width:100%;
 }
 .zmi .zmi-image-generate-preview {
 	padding-left:.5em;

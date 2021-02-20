@@ -1144,7 +1144,11 @@ class ObjAttrs(object):
           rtn['height'] = int(h)
         rtn['content_type'] = file.content_type
         rtn['filename'] = file.title
-        rtn['src'] = self.url_append_params(file.absolute_url(), {'ts':time.time()})
+        fileurl = file.absolute_url()
+        if len(fileurl.split('//')) > 2:
+        # Fix ocasionally missing temp_folder path
+          fileurl = '%s//temp_folder/%s'%(fileurl.rsplit('//',1)[0],fileurl.rsplit('//',1)[1])
+        rtn['src'] = self.url_append_params(fileurl, {'ts':time.time()})
       # Return JSON.
       if format == 'json':
         rtn = self.str_json(rtn)

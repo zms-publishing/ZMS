@@ -1746,7 +1746,9 @@ body.browse_iframe .toggle {
 .zmi .modal-backdrop.show {
 	opacity: .3;
 }
-
+.zmi .modal-dialog > .modal-content > .modal-body {
+	overflow-x: auto;
+}
 @media (max-width: 767px) {
 	div#zmiIframeAddDialog,
 	div#zmiIframeAddDialog > div.modal-dialog,

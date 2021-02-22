@@ -910,7 +910,7 @@ class AccessManager(AccessableContainer):
         d = self.getSecurityUsers()
         for userid in d:
           if userid is None:
-            deleteUser(userid)
+            deleteUser(self, userid)
           else:
             nodes = self.getUserAttr(userid, 'nodes', {}) 
             for node in list(nodes):

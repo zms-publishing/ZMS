@@ -89,7 +89,7 @@
 
 						<tal:block tal:define="global
 								metaObjIds python:here.getMetaobjIds();
-								metaObjs python:[x for x in [here.getMetaobj(y) for y in metaObjIds] if x['id'] not in ['ZMS'] and x['type'] in ['ZMSPackage','ZMSDocument','ZMSObject']];
+								metaObjs python:[x for x in [here.getMetaobj(y) for y in metaObjIds] if x['id'] not in ['ZMS'] and x['type'] in ['ZMSPackage','ZMSDocument','ZMSObject','ZMSRecordSet']];
 								metaObjPackages python:here.sort_list(['']+[x['id'] for x in metaObjs if x['type']=='ZMSPackage']);
 								metaObjPackages2 python:[x.get('package') for x in metaObjs if x.get('package') not in metaObjPackages]">
 

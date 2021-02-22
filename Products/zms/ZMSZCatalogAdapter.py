@@ -311,8 +311,10 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
               result.append(msg)
           if attr_type in ['date', 'datetime']:
             value = self.getLangFmtDate(value, 'eng', 'ISO8601')
-          if type(value) in [str, str]:
-            value = str(value)
+          elif type(value) in (dict, list):
+            value = standard.str_item(value,f=True)            
+            print(value)
+          value = str(value)
           d[attr_id] = remove_tags(self, value)
         cb(node, d)
 

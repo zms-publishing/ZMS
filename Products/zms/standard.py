@@ -1768,10 +1768,7 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
         + (['','\n'][formatted]+(['','\t'][formatted]*level)+',').join(['"%s":%s'%(x,str_json(i[x],encoding,errors,formatted,level+1,allow_booleans,sort_keys)) for x in k]) \
         + '}'
   elif type(i) is time.struct_time:
-    try:
-      return '"%s"'%format_datetime_iso(i)
-    except:
-      pass
+    return '"%s"'%format_datetime_iso(i)
   elif type(i) is int or type(i) is float:
     return json.dumps(i)
   elif type(i) is bool:
@@ -1790,20 +1787,17 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
 
 
 security.declarePublic('str_item')
-def str_item(i):
+def str_item(i, f=False):
   """
   Returns a string representation of the item.
   @rtype: C{str}
   """
-  if isinstance(i, list) or isinstance(i, tuple):
-    return '\n'.join([str_item(x) for x in i])
+  if isinstance(i, time.struct_time):
+    return format_datetime_iso(i)
+  elif isinstance(i, list) or isinstance(i, tuple):
+    return '\n'.join([str_item(x,f) for x in i])
   elif isinstance(i, dict):
-    return '\n'.join([str_item(i[x]) for x in i])
-  elif isinstance(i, time.struct_time):
-    try:
-      return format_datetime_iso(i)
-    except:
-      pass
+    return '\n'.join([str_item(i[x],f) for x in i if not f or not x.startswith('_')])
   if i is not None:
     return str(i)
   return ''

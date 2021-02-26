@@ -3,8 +3,9 @@
 	dummy0 python:here.zmi_page_request(here,request);
 	zmscontext python:here.getSelf();
 	standard modules/Products.zms/standard;
-	ZMS_HOME python:here.getHome().absolute_url()+'/';
-	ZMS_THEME python:[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0];">
+	ZMS_HOME python:here.getHome().absolute_url(relative=1)+'/';
+	ZMS_THEME python:here.getConfProperty('ZMS.theme','');
+	ZMS_THEME python:ZMS_THEME!='' and (ZMS_THEME +'/') or '';">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='design config')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
@@ -137,7 +138,7 @@
 					global css python:here.getHome()"
 				><tal:block tal:repeat="id python:href.split('/')"
 					><tal:block tal:condition="python:css is not None"
-						><tal:block tal:define="global css python:here.operator_getattr(css,id)"></tal:block
+						><tal:block tal:define="global css python:standard.operator_getattr(css,id)"></tal:block
 					></tal:block
 				></tal:block>
 				<tr>
@@ -225,7 +226,7 @@
 					global js python:here.getHome()"
 				><tal:block tal:repeat="id python:href.split('/')"
 					><tal:block tal:condition="python:js is not None"
-						><tal:block tal:define="global js python:here.operator_getattr(js,id)"></tal:block
+						><tal:block tal:define="global js python:standard.operator_getattr(js,id)"></tal:block
 					></tal:block
 				></tal:block>
 				<tr>

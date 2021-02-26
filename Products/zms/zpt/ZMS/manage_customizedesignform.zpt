@@ -88,7 +88,7 @@
 		</td>
 		<td>
 			<input onchange="zmiSaveBtnClick(this)" type="radio" name="id" tal:attributes="value python:si.id; checked python:here.getConfProperty('ZMS.theme','')==si.id" />
-			<i tal:on-error="string:Icon Error" tal:attributes="class python:'%s px-1'%(si.zmi_icon)"></i>
+			<i class="icon-folder-close far fa-folder px-1 text-primary" style="margin:0 .25em 0 .5em"></i>
 			<a target="_blank" tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:si.id">id</a>
 			(<tal:block tal:content="python:(si.meta_type=='Filesystem Directory View' and si.getDirPath() or si.title)">title</tal:block>)
 		</td>

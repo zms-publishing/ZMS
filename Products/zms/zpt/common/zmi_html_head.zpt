@@ -2,10 +2,11 @@
 
 <head tal:define="
 		standard modules/Products.zms/standard;
+		dummy0 python:here.zmi_page_request(here,request);
 		zmi_paths python:standard.zmi_paths(here);
-		ZMS_HOME python:here.getHome().absolute_url()+'/';
-		ZMS_THEME python:[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0];
-		dummy python:here.zmi_page_request(here,request)">
+		ZMS_HOME python:'/%s/'%(here.getHome().absolute_url(relative=1));
+		ZMS_THEME python:here.getConfProperty('ZMS.theme','');
+		ZMS_THEME python:ZMS_THEME!='' and (ZMS_THEME +'/') or '';">
 	<title tal:content="python:'ZMS | %s | %s'%(here.display_type(),request['lang'])">the title</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />

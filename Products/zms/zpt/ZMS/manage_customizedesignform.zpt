@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" tal:define="
-	dummy0 python:here.zmi_page_request(here,request);
-	zmscontext python:here.getSelf();
 	standard modules/Products.zms/standard;
-	ZMS_HOME python:here.getHome().absolute_url(relative=1)+'/';
-	ZMS_THEME python:here.getConfProperty('ZMS.theme','');
+	dummy0 python:here.zmi_page_request(here,request);
+	zmscontext python:context.getSelf();
+	zmshome python:here.getHome();
+	ZMS_HOME python:'/%s/'%(zmshome.absolute_url(relative=1));
+	ZMS_THEME python:zmscontext.getConfProperty('ZMS.theme','');
 	ZMS_THEME python:ZMS_THEME!='' and (ZMS_THEME +'/') or '';">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='design config')">
@@ -108,10 +109,10 @@
 			the locations can be configured by the following keys: 
 		</span>
 		<code class="alert-info">
-			<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.css.zmi#Custom'%(context.getHome().absolute_url())">ZMS.added.css.zmi</a>,
-			<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.css.web#Custom'%(context.getHome().absolute_url())">ZMS.added.css.web</a>,
-			<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.js.zmi#Custom'%(context.getHome().absolute_url())">ZMS.added.js.zmi</a>,
-			<a href="#" tal:attributes="href python:'%s/content/manage_customize?lang=ger&conf_key=ZMS.added.js.web#Custom'%(context.getHome().absolute_url())">ZMS.added.js.web</a>
+			<a href="#" tal:attributes="href python:'%scontent/manage_customize?lang=ger&conf_key=ZMS.added.css.zmi#Custom'%(ZMS_HOME)">ZMS.added.css.zmi</a>,
+			<a href="#" tal:attributes="href python:'%scontent/manage_customize?lang=ger&conf_key=ZMS.added.css.web#Custom'%(ZMS_HOME)">ZMS.added.css.web</a>,
+			<a href="#" tal:attributes="href python:'%scontent/manage_customize?lang=ger&conf_key=ZMS.added.js.zmi#Custom'%(ZMS_HOME)">ZMS.added.js.zmi</a>,
+			<a href="#" tal:attributes="href python:'%scontent/manage_customize?lang=ger&conf_key=ZMS.added.js.web#Custom'%(ZMS_HOME)">ZMS.added.js.web</a>
 		</code>
 	</section>
 	<table class="added_css table table-bordered table-hover mb-5">
@@ -132,11 +133,11 @@
 		><tal:block tal:repeat="css_id css_ids"
 			><tal:block tal:define="
 					fname python:'%s.css'%(css_id.split('.')[-1]);
-					href python:here.getConfProperty(css_id,'%s/$ZMS_THEME/common/added/%s'%(here.getHome().id,fname));
-					href python:href.replace('$ZMS_THEME/',ZMS_THEME);
-					href python:href.replace('$ZMS_HOME/',ZMS_HOME); 
-					global css python:here.getHome()"
-				><tal:block tal:repeat="id python:href.split('/')"
+					href python:here.getConfProperty(css_id,'$ZMS_HOME/$ZMS_THEME/common/added/%s'%(fname));
+					href python:href.replace('$ZMS_THEME/',ZMS_THEME).replace('$ZMS_HOME/',ZMS_HOME);
+					idlist python:(href.startswith('/') and href[1:] or href).split('/');
+					global css zmshome"
+				><tal:block tal:repeat="id idlist"
 					><tal:block tal:condition="python:css is not None"
 						><tal:block tal:define="global css python:standard.operator_getattr(css,id)"></tal:block
 					></tal:block
@@ -220,11 +221,11 @@
 		><tal:block tal:repeat="js_id js_ids"
 			><tal:block tal:define="
 					fname python:'%s.js'%(js_id.split('.')[-1]);
-					href python:here.getConfProperty(js_id,'%s/$ZMS_THEME/common/added/%s'%(here.getHome().id,fname));
-					href python:href.replace('$ZMS_THEME/',ZMS_THEME);
-					href python:href.replace('$ZMS_HOME/',ZMS_HOME); 
-					global js python:here.getHome()"
-				><tal:block tal:repeat="id python:href.split('/')"
+					href python:here.getConfProperty(js_id,'$ZMS_HOME/$ZMS_THEME/common/added/%s'%(fname));
+					href python:href.replace('$ZMS_THEME/',ZMS_THEME).replace('$ZMS_HOME/',ZMS_HOME);
+					idlist python:(href.startswith('/') and href[1:] or href).split('/');
+					global js zmshome"
+				><tal:block tal:repeat="id idlist"
 					><tal:block tal:condition="python:js is not None"
 						><tal:block tal:define="global js python:standard.operator_getattr(js,id)"></tal:block
 					></tal:block

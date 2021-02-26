@@ -243,7 +243,7 @@ $ZMI.registerReady(function(){
 							.animate({height: $(this).prop('scrollHeight') + 'px'},600);
 						if ( $(this).attr('data-dblclickhandler') ) {
 							$(this).dblclick(function(e) {
-								// Show Zope editor only if no text is selected
+								// Show Zope Code editor only if no text is selected
 								var seltxt = window.getSelection().toString();
 								// debugger; console.log('Selected text: ' + seltxt + ' ' + seltxt.length + ' ' +!/\s/.test(seltxt) );
 								if ( seltxt.length == 0 || /\s/.test(seltxt) ) {

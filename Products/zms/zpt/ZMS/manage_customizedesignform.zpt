@@ -2,7 +2,9 @@
 <html lang="en" tal:define="
 	dummy0 python:here.zmi_page_request(here,request);
 	zmscontext python:here.getSelf();
-	standard modules/Products.zms/standard">
+	standard modules/Products.zms/standard;
+	ZMS_HOME python:here.getHome().absolute_url()+'/';
+	ZMS_THEME python:[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0];">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='design config')">
 <tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
@@ -130,8 +132,8 @@
 			><tal:block tal:define="
 					fname python:'%s.css'%(css_id.split('.')[-1]);
 					href python:here.getConfProperty(css_id,'%s/$ZMS_THEME/common/added/%s'%(here.getHome().id,fname));
-					href python:href.replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0]);
-					href python:href.replace('$ZMS_HOME/',here.getHome().id + '/'); 
+					href python:href.replace('$ZMS_THEME/',ZMS_THEME);
+					href python:href.replace('$ZMS_HOME/',ZMS_HOME); 
 					global css python:here.getHome()"
 				><tal:block tal:repeat="id python:href.split('/')"
 					><tal:block tal:condition="python:css is not None"
@@ -152,7 +154,7 @@
 							<i tal:condition="css" class="icon-caret-right fas fa-caret-right"></i>
 							<i tal:condition="not:css" class="icon-bug fas fa-bug text-danger" tal:attributes="style python:not css and 'opacity:0.35' or None"></i>
 							<span tal:condition="href" tal:content="href">href</span>
-							<code tal:condition="not:href" tal:content="python:'%s = Unset'%(js_id)">href</code>
+							<code tal:condition="not:href" tal:content="python:'%s = Unset'%(css_id)">href</code>
 						</a>
 						<span tal:on-error="nothing"
 								tal:define="fs_located python:'Filesystem' in css.meta_type"
@@ -218,8 +220,8 @@
 			><tal:block tal:define="
 					fname python:'%s.js'%(js_id.split('.')[-1]);
 					href python:here.getConfProperty(js_id,'%s/$ZMS_THEME/common/added/%s'%(here.getHome().id,fname));
-					href python:href.replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0]);
-					href python:href.replace('$ZMS_HOME/',here.getHome().id + '/'); 
+					href python:href.replace('$ZMS_THEME/',ZMS_THEME);
+					href python:href.replace('$ZMS_HOME/',ZMS_HOME); 
 					global js python:here.getHome()"
 				><tal:block tal:repeat="id python:href.split('/')"
 					><tal:block tal:condition="python:js is not None"
@@ -238,7 +240,7 @@
 								title python:js is None and 'js-Object is missing!' or 'js-Code-Preview';
 								onclick python:js is None and jsedit_href or 'return zmiPreviewBtnClick(this)'">
 							<i tal:condition="js" class="icon-caret-right fas fa-caret-right"></i>
-							<i tal:condition="not:js" class="icon-bug fas fa-bug text-danger" tal:attributes="style python:not href and 'opacity:0.35' or None"></i>
+							<i tal:condition="not:js" class="icon-bug fas fa-bug text-danger" tal:attributes="style python:not js and 'opacity:0.35' or None"></i>
 							<span tal:condition="href" tal:content="href">href</span>
 							<code tal:condition="not:href" tal:content="python:'%s = Unset'%(js_id)">href</code>
 						</a>

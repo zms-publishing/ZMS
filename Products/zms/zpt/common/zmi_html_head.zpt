@@ -3,6 +3,8 @@
 <head tal:define="
 		standard modules/Products.zms/standard;
 		zmi_paths python:standard.zmi_paths(here);
+		ZMS_HOME python:here.getHome().absolute_url()+'/';
+		ZMS_THEME python:[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0];
 		dummy python:here.zmi_page_request(here,request)">
 	<title tal:content="python:'ZMS | %s | %s'%(here.display_type(),request['lang'])">the title</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -12,12 +14,14 @@
 	<meta name="generator" content="ZMS5" />
 	<tal:block tal:repeat="href python:list(zmi_paths['css_paths'])+[here.getConfProperty(x) for x in here.getConfProperty('zmi.css').split(',')]"
 		><link tal:condition="href" type="text/css" rel="stylesheet" tal:attributes="
-			href python:href.replace('$ZMS_HOME/',here.getHome().absolute_url()+'/').replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0])" />
+			href python:href.replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME)" />
 	</tal:block>
 	<link type="text/css" rel="stylesheet" 
-		tal:define="added_css_zmi python:here.getConfProperty('ZMS.added.css.zmi','common/added/zmi.css')"
-		tal:condition="added_css_zmi"
-		tal:attributes="href python:added_css_zmi.replace('$ZMS_HOME/',here.getHome().absolute_url()+'/').replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0])" />
+		tal:define="
+			added_css_zmi python:here.getConfProperty('ZMS.added.css.zmi','common/added/zmi.css');
+			added_css_zmi_href python:added_css_zmi.replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME);"
+		tal:condition="python:added_css_zmi.find('.css')>-1"
+		tal:attributes="href added_css_zmi_href" />
 	<tal:block tal:repeat="src python:here.getConfProperty('plugins.zmi.js').split(',')"
 		><script type="text/javascript" charset="UTF-8" tal:attributes="src src"></script>
 	</tal:block>
@@ -26,9 +30,11 @@
 		><script type="text/javascript" charset="UTF-8" tal:condition="src" tal:attributes="src src"></script>
 	</tal:block>
 	<script type="text/javascript" charset="UTF-8" defer="defer" 
-		tal:define="added_js_zmi python:here.getConfProperty('ZMS.added.js.zmi','common/added/zmi.js')"
-		tal:condition="added_js_zmi"
-		tal:attributes="src python:added_js_zmi.replace('$ZMS_HOME/',here.getHome().absolute_url()+'/').replace('$ZMS_THEME/',[here.getConfProperty('ZMS.theme','')+'/',''][len(here.getConfProperty('ZMS.theme',''))==0])"></script>
+		tal:define="
+			added_js_zmi python:here.getConfProperty('ZMS.added.js.zmi','common/added/zmi.js');
+			added_js_zmi_href python:added_js_zmi.replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME);"
+		tal:condition="python:added_js_zmi.find('.js')>-1"
+		tal:attributes="src added_js_zmi_href"></script>
 	<tal:block tal:condition="python:here.getUserAttr(request['AUTHENTICATED_USER'],'forceChangePassword',0)==1">
 		<script type="text/javascript">$(function(){$ZMI.forceChangePassword()});</script>
 	</tal:block>

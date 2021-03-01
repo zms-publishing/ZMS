@@ -58,6 +58,12 @@
 			</div>
 		</div><!-- .form-group -->
 		<div class="form-group row">
+			<label class="col-sm-3 col-md-2 control-label mandatory" for="table_filter"><span>Table-Filter</span></label>
+			<div class="col-sm-9 col-md-10">
+				<input class="form-control" type="text" name="table_filter" tal:attributes="value python:getattr(here,'table_filter','(.*?)')"/>
+			</div>
+		</div><!-- .form-group -->
+		<div class="form-group row">
 			<label class="col-sm-3 col-md-2 control-label mandatory" for="model"><span>Model</span></label>
 			<div class="col-sm-9 col-md-10" tal:define="ob python:here.getModelContainer()" tal:on-error="python:standard.writeError(here,'can\'t get ACE Editor')">
 				<!-- ACE Editor -->

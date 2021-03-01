@@ -22,6 +22,7 @@ from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
+import re
 import time
 import zExceptions
 # Product Imports.
@@ -807,10 +808,11 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       
       #-- retrieve entities from table-browsers
       if len( entities) == 0:
+        p = re.compile(getattr(self,'table_filter','(.*?)'))
         for tableBrwsr in tableBrwsrs:
           tableName = str(getattr(tableBrwsr, 'Name', getattr(tableBrwsr, 'name', None))())
           tableType = str(getattr(tableBrwsr, 'Type', getattr(tableBrwsr, 'type', None))())
-          if tableType.upper() == 'TABLE':
+          if tableType.upper() == 'TABLE' and p.match(tableName):
             
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
             # +- COLUMNS
@@ -1778,6 +1780,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       if REQUEST.get('btn', '') not in [ 'BTN_CANCEL', 'BTN_BACK']:
         self.connection_id = REQUEST['connection_id']
         self.charset = REQUEST['charset']
+        self.table_filter = REQUEST['table_filter']
         self.setModel(REQUEST['model'])
         message = self.getZMILangStr('MSG_CHANGED')
       

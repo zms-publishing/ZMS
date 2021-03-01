@@ -1167,7 +1167,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       except:
         xml += " zmi_icon=\"%s\""%self.zmi_icon
       xml += " display_type=\"%s\""%str(self.display_type(REQUEST))
-      xml += " uid=\"{$%s}\""%(self.get_uid(implementation=self.getConfProperty('ExtensionPoint.ZMSObject.get_uid.implementation', 'undefined')))
+      xml += " uid=\"{$%s}\""%(self.get_uid())
       xml += " id=\"%s_%s\""%(self.getHome().id, self.id)
       xml += " home_id=\"%s\""%(self.getHome().id)
       xml += " index_html=\"%s\""%standard.html_quote(self.getHref2IndexHtml(REQUEST))
@@ -1179,7 +1179,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " restricted=\"%s\""%str(self.hasRestrictedAccess())
       xml += " attr_dc_type=\"%s\""%(self.attr('attr_dc_type'))
       xml += ">"
-      if REQUEST.form.get('get_attrs', 1):
+      if REQUEST.form.get('get_attrs', 0):
         obj_attrs = self.getObjAttrs()
         for key in [x for x in obj_attrs if x not in ['title', 'titlealt', 'change_dt', 'change_uid', 'change_history', 'created_dt', 'created_uid', 'attr_dc_coverage', 'attr_cacheable', 'work_dt', 'work_uid']]:
           obj_attr = obj_attrs[ key]
@@ -1237,7 +1237,6 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " level=\"%i\""%self.getLevel()
       xml += ">\n"
       # Process nodes.
-      REQUEST.form['get_attrs'] = REQUEST.form.get('get_attrs', 0)
       for node in self.breadcrumbs_obj_path():
         nodexml = node.ajaxGetNode( context=context, lang=lang, xml_header=False, meta_types=meta_types, REQUEST=REQUEST)
         try:

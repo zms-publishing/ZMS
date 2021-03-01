@@ -243,14 +243,19 @@ $ZMI.registerReady(function(){
 							.animate({height: $(this).prop('scrollHeight') + 'px'},600);
 						if ( $(this).attr('data-dblclickhandler') ) {
 							$(this).dblclick(function(e) {
-								$('.zmi-code-close',$single_line).remove();
-								$('textarea',$single_line)
-									.animate({height: '30px'},0)
-									.css('height','auto')
-									.removeClass('open-zmi-code')
-									.addClass('alert-warning')
-									.blur();
-								eval($(this).attr('data-dblclickhandler'));
+								// Show Zope Code editor only if no text is selected
+								var seltxt = window.getSelection().toString();
+								// debugger; console.log('Selected text: ' + seltxt + ' ' + seltxt.length + ' ' +!/\s/.test(seltxt) );
+								if ( seltxt.length == 0 || /\s/.test(seltxt) ) {
+									$('.zmi-code-close',$single_line).remove();
+									$('textarea',$single_line)
+										.animate({height: '30px'},0)
+										.css('height','auto')
+										.removeClass('open-zmi-code')
+										.addClass('alert-warning')
+										.blur();
+									eval($(this).attr('data-dblclickhandler'));
+								};
 							})
 						}
 						// Add closing button

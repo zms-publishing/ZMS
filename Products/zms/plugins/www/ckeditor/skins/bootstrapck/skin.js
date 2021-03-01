@@ -1,0 +1,1 @@
+// empty: /++resource++zms_/ckeditor/skins/bootstrapck/skin.js

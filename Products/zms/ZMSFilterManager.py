@@ -735,7 +735,7 @@ class ZMSFilterManager(
       # Change.
       # -------
       if btn == 'BTN_SAVE':
-        newId = REQUEST.get('inindex').strip()
+        newId = REQUEST.get('inpId').strip()
         newAcquired = 0
         newName = REQUEST.get('inpName').strip()
         newType = REQUEST.get('inpType').strip()

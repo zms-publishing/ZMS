@@ -312,10 +312,7 @@ $ZMI.registerReady(function(){
 												+ '</div><!-- .input-group -->'
 											+ '</div><!-- .col-lg-10 -->';
 								}
-								html = html
-											+ '<textarea class="form-control" rows="10" wrap="off" style="overflow:scroll">' + $textarea.val() + '</textarea>'
-										+ '</form>'
-									+ '</div><!-- #zmi-single-line-edit -->';
+								html = `${html}<textarea class="form-control zmi-code" rows="10" wrap="off">${$textarea.val()}</textarea></form></div><!-- #zmi-single-line-edit -->`;
 								zmiModal(null,{
 									body:html,
 									resizable:true,

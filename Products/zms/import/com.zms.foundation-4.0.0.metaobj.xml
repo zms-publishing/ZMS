@@ -3817,7 +3817,7 @@ $(function() {
 	zmscontext options/zmscontext;
 	attr_ids python:zmscontext.attr('record_attrs');">
 
-<tal:block tal:content="structure python:'<'+'/div><!-- .card-body -->'"></tal:block>
+<code title="HTML-Consistency: Pre-Closing 1" tal:replace="structure string:</div>"></code>
 		<div class="card-body">
 			<div class="form-row">
 				<div class="controls save">
@@ -3826,10 +3826,7 @@ $(function() {
 				</div>
 			</div><!-- .form-row -->
 		</div><!-- .card-body -->
-<tal:block tal:content="structure python:'<'+'/div><!-- .card-body -->'"></tal:block>
-<tal:block tal:content="structure python:'<'+'/div><!-- .collapse -->'"></tal:block>
-<tal:block tal:content="structure python:'<'+'/div><!-- .card -->'"></tal:block>
-<tal:block tal:content="structure python:'<'+'/form>'"></tal:block>
+<code title="HTML-Consistency: Pre-Closing 2" tal:replace="structure string:</div></div></div></form>"></code>
 
 <script type="text/javascript" tal:attributes="src python:'%s/%s.script.zmi.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
 <style>
@@ -3916,10 +3913,7 @@ tr.inactive > td.data > * {
 
 </tal:block>
 
-<tal:block tal:content="structure python:'<'+'form class=\042form-horizontal\042>'"></tal:block>
-<tal:block tal:content="structure python:'<'+'div>'"></tal:block>
-<tal:block tal:content="structure python:'<'+'div>'"></tal:block>
-<tal:block tal:content="structure python:'<'+'div>'"></tal:block>
+<tal:block title="Set of ZMI/HTML closing tags" tal:content="structure string:<form><div><div><<div><div>"></tal:block>
 
 <tal:block tal:define="dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['records'])"></tal:block>
 </tal:block>

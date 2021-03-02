@@ -40,7 +40,8 @@
 	><input type="hidden" tal:attributes="name name; value python:url_params[name]" />
 </tal:block>
 
-<table class="table table-responsive table-sm table-striped table-bordered table-hover zmi-sortable zmi-selectable">
+<div class="table-responsive mb-2">
+<table class="table table-sm table-striped table-bordered table-hover zmi-sortable zmi-selectable mb-0">
 	<colgroup>
 		<col />
 		<tal:block tal:repeat="metaObjAttr metaObjAttrs">
@@ -209,6 +210,7 @@
 	</tal:block>
 </tbody>
 </table>
+</div>
 </form>
 <div class="pagination-post clearfix"
 	tal:define="pagination python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)"

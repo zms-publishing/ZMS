@@ -40,7 +40,7 @@
 	><input type="hidden" tal:attributes="name name; value python:url_params[name]" />
 </tal:block>
 
-<table class="table table-sm table-striped table-bordered table-hover zmi-sortable zmi-selectable">
+<table class="table table-responsive table-sm table-striped table-bordered table-hover zmi-sortable zmi-selectable">
 	<colgroup>
 		<col />
 		<tal:block tal:repeat="metaObjAttr metaObjAttrs">
@@ -122,7 +122,7 @@
 						<tal:block tal:define="global title python:here.getLangFmtDate(record.get('_change_dt'))+' '+here.getZMILangStr('BY')+' '+str(record.get('_change_uid'))"></tal:block>
 					</tal:block>
 					<div class="btn-group" tal:attributes="title title">
-						<span class="checkbox btn btn-secondary">
+						<span class="checkbox btn btn-secondary text-nowrap">
 							<input tal:attributes="name name; type python:['checkbox','radio'][int('select' in actions)]; class python:['','radio-inline'][int('select' in actions)]; value value" />
 							<span class="index"><tal:block tal:content="python:pageStart+rindex+1">index</tal:block>.</span>
 						</span>

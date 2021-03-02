@@ -87,7 +87,7 @@
 								tal:attributes="class python:'state alert-%s'%(filestate_css);
 									title python:'State: %s'%(filestate)">&nbsp;
 							</span>
-							<a href="#" tal:attributes="onclick python:'javascript:focus_anchorid(\'#%s\');;return false'%(here.id_quote(filename))" 
+							<a href="javascript:;" tal:attributes="onclick python:'javascript:focus_anchorid(\'#%s\');;return false'%(here.id_quote(filename))" 
 								tal:content="python:filename">the filename
 							</a>
 						</tal:block>

@@ -28,7 +28,7 @@
 	</legend>
 	<div class="card">
 		<div class="card-header btn-collapse">
-			<a class="btn card-toggle" href="#">
+			<a class="btn card-toggle" href="javascript:;">
 				<i class="fas fa-th"></i>
 				<strong tal:attributes="title entity/id" tal:content="entity/label">the label</strong>:
 				<tal:block tal:content="python:here.getZMILangStr({'insert':'CAPTION_INSERT','update':'CAPTION_EDIT'}[action])%here.getZMILangStr('ATTR_RECORD')">the heading</tal:block>

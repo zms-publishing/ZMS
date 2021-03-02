@@ -72,7 +72,7 @@
 	<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#sitemap" tal:attributes="title python:'%s: %s'%(zmscontext.getZMILangStr('ATTR_LINK_INTERNAL'),zmscontext.getZMILangStr('TAB_SITEMAP'))"><i class="fas fa-sitemap"></i></a></li>
 	<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#link" tal:attributes="title python:zmscontext.getZMILangStr('ATTR_LINK_EXTERNAL')"><i class="fas fa-external-link-alt"></i></a></li>
 	<li class="nav-item dropdown languages" tal:condition="python:len(zmscontext.getLangIds())>1">
-		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" tal:attributes="title python:zmscontext.getZMILangStr('TAB_LANGUAGES')">
+		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:;" role="button" aria-haspopup="true" aria-expanded="false" tal:attributes="title python:zmscontext.getZMILangStr('TAB_LANGUAGES')">
 			<i class="fas fa-flag"></i>
 		</a>
 		<div class="dropdown-menu">

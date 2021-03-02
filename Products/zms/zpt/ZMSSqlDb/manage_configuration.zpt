@@ -234,7 +234,7 @@ function mms_normalize_rows(el_tbody) {
 			<a class="btn card-toggle" data-toggle="collapse" tal:attributes="href python:'#%s-columns'%table['id']">
 				<i class="fas"></i>
 			</a>
-			<a href="#" tal:attributes="title python:here.getZMILangStr('ATTR_TABLE');
+			<a href="javascript:;" tal:attributes="title python:here.getZMILangStr('ATTR_TABLE');
 				onclick python:'javascript:return loadTableEditor(urlparams=\'lang=%s&id=%s\')'%(request['lang'],table['id']); ">
 				<i tal:condition="python:table['type']!='intersection'" class="fas fa-th-list"></i>
 				<i tal:condition="python:table['type']=='intersection'" class="fas fa-link"></i>

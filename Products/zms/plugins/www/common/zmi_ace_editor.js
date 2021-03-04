@@ -25,6 +25,9 @@ $(function(){
 			var value = $textarea.val();
 			var editor = ace.edit("editor_"+name);
 			var content_type = $("input#content_type",this).val();
+			if ( $textarea.attr('data-content_type') ) {
+				content_type = $textarea.attr('data-content_type');
+			}
 			if (typeof content_type == "undefined" || content_type == null || content_type == '' || content_type == 'text/x-unknown-content-type') {
 				var absolute_url = $(".control-label-ace-editor a",this).attr("href");
 				absolute_url = absolute_url.substr(0,absolute_url.lastIndexOf("/")); // strip manage_main
@@ -42,17 +45,17 @@ $(function(){
 					content_type = "text/html";
 				}
 			}
-			if (value.indexOf("<html") == 0) {
+			if ( 0 === value.indexOf("<html") && content_type != 'dtml') {
 				content_type = "text/html";
 			}
-			if (value.indexOf("<?xml") == 0 || value.indexOf("tal:") >= 0) {
+			if ( 0 === value.indexOf("<?xml") || value.indexOf("tal:") >= 0) {
 				content_type = "text/xml";
 			}
-			if (value.indexOf("#!/usr/bin/python") == 0 || value.indexOf("## Script (Python)") == 0) {
+			if ( 0 === value.indexOf("#!/usr/bin/python") || 0 === value.indexOf("## Script (Python)") ) {
 				content_type = "python";
 			}
 			var mode = "text";
-			if (content_type == "text/html") {
+			if (content_type == "html" || content_type == "text/html") {
 				mode = "html";
 			}
 			else if (content_type == "text/css" || content_type == "application/css" || content_type == "application/x-css") {
@@ -70,7 +73,16 @@ $(function(){
 			else if (content_type == "python") {
 				mode = 'python';
 			}
-			editor.setTheme("ace/theme/chrome");
+			else if (content_type == "sql") {
+				mode = 'sql';
+			}
+			else if (content_type == "json") {
+				mode = 'json';
+			}
+			else if (content_type == "dtml") {
+				mode = 'markdown';
+			}
+			editor.setTheme("ace/theme/eclipse");
 			editor.getSession().setMode('ace/mode/'+mode);
 			editor.getSession().setValue(value);
 			editor.getSession().on("change",function() {

@@ -3,7 +3,8 @@
 		name python:options['name'];
 		ob python:options['ob'];
 		text python:options.get('text');
-		height python:options.get('height','20em')">
+		height python:options.get('height','20em');
+		content_type python:options.get('content_type','dtml')">
 	<tal:block tal:condition="python:text is None"><tal:block tal:define="global text python:zopeutil.readObject(here,ob.getId())"></tal:block></tal:block>
 	<tal:block tal:on-error="structure string:<div class='alert alert-danger mx-0 alert-dismissible fade show' role='alert'>TypeError: a bytes-like object is required, not str</div>"
 		tal:condition="python:ob is not None and ob.meta_type in ['Script (Python)']" 
@@ -17,7 +18,7 @@
 			<tal:block tal:condition="python:text is not None">(<tal:block tal:content="python:here.getDataSizeStr(len(text))">the size</tal:block>)</tal:block>
 		</div>
 		<div>
-			<textarea class="form-control-ace-editor" tal:attributes="name name" tal:content="text">the text</textarea>
+			<textarea class="form-control-ace-editor" tal:attributes="name name;data-content_type content_type" tal:content="text">the text</textarea>
 		</div>
 		<div tal:attributes="id python:'editor_%s'%name" style="height:92%;width:100%;border:1px solid #ccc;border-radius:4px">
 			ace editor text

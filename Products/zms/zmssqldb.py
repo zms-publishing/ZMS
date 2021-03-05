@@ -203,13 +203,14 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     #  ZMSSqlDb.record_encode__:
     # --------------------------------------------------------------------------
     def record_encode__(self, cols, record, encoding='utf-8'):
-      charset = getattr(self, 'charset', 'utf-8')
       row = {}
       for col in cols:
         k = col['id']
         v = record[k]
         if self.getConfProperty('ZMSSqlDb.record_encode__.k.lower'):
           k = k.lower()
+        if type(v) is bytes:
+          v = str(v,encoding)
         row[k] = v
       return row
 

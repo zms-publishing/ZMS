@@ -402,7 +402,7 @@ $(function(){
 		</thead>
 		<tbody>
 			<tr tal:repeat="filterId filterIds">
-			<tal:block tal:define="global filter python:here.getFilter(filterId)">
+			<tal:block tal:define="filter python:here.getFilter(filterId)">
 				<td class="meta-sort text-center">
 					<input type="checkbox" name="ids:list" tal:attributes="value filterId">
 				</td>
@@ -410,17 +410,17 @@ $(function(){
 					<a href="javascript:;" onclick="$('i',this).toggleClass('fa-chevron-right fa-chevron-down');$(this).siblings('.filterProcesses').toggle('normal');"><i class="fas fa-chevron-right"></i></a>
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
 						<i class="fas fa-filter"></i>
-						<tal:block tal:content="filter/name">the filter-name</tal:block>
+						<tal:block tal:content="python:filter.get('name','Missing filter name')">the filter-name</tal:block>
 					</a>
 					<div class="filterProcesses" style="display:none">
 						<table class="layoutTable">
 						<tr><td><div class="filterDelimiter">
-							<tal:block tal:condition="python:filter['format']=='import'">
+							<tal:block tal:condition="python:filter.get('format','Missing filter format')=='import'">
 								<i tal:attributes="class python:standard.getFileTypeIconCSS(filter['content_type']); title filter/content_type"></i>
 								<i class="fas fa-arrow-up',extra='title=\042Import\042"></i>
 							</tal:block>
-							<tal:block tal:condition="python:filter['format']!='import'">
-								<tal:block tal:content="filter/format">the format</tal:block>
+							<tal:block tal:condition="python:filter.get('format','Missing filter format')!='import'">
+								<tal:block tal:content="python:filter.get('format','Missing format')">the format</tal:block>
 							</tal:block>
 						</div><i class="fas fa-long-arrow-alt-down center"></i></td></tr>
 						<tr tal:repeat="filterProcess python:here.getFilterProcesses(filterId)">
@@ -438,15 +438,15 @@ $(function(){
 							</tal:block>
 						</tr>
 						<tr><td><div class="filterDelimiter">
-							<tal:block tal:condition="python:filter['format']=='import'">
+							<tal:block tal:condition="python:filter.get('format','Missing filter format')=='import'">
 								<i tal:attributes="class python:standard.getFileTypeIconCSS('text/xml')"></i>
 								<i class="fas fa-file-import',extra='title=\042Import\042"></i>
 							</tal:block>
-							<tal:block tal:condition="python:filter['format']!='import'">
-								<i tal:attributes="class python:standard.getFileTypeIconCSS(filter['content_type'])"></i>
+							<tal:block tal:condition="python:filter.get('format','Missing filter format')!='import'">
+								<i tal:attributes="class python:standard.getFileTypeIconCSS(filter.get('content_type',None))"></i>
 								<i class="fas fa-file-export',extra='title=\042Export\042"></i>
 							</tal:block>
-							<tal:block tal:content="filter/content_type"></tal:block>
+							<tal:block tal:content="python:filter.get('content_type','Unkown content type')"></tal:block>
 						</div></td></tr>
 						</table><!-- .layoutTable -->
 					</div><!-- .filterProcesses -->

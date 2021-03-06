@@ -88,9 +88,11 @@ function pluginSortable(s, c) {
  */
 function runPluginCropper(s,c) {
 	$.plugin('cropper',{
-		files: ['/++resource++zms_/jquery/cropper/cropper.min.js',
-				'/++resource++zms_/jquery/cropper/cropper.css',
-				'/++resource++zms_/jquery/cropper/jquery-cropper.min.js']
-		});
+		files: [
+			'/++resource++zms_/jquery/cropper/cropper.css',
+			'/++resource++zms_/jquery/cropper/cropper.min.js',
+			'/++resource++zms_/jquery/cropper/jquery-cropper.min.js'
+		]
+	});
 	$.plugin('cropper').get(s,c);
 }

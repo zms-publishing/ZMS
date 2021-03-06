@@ -18,16 +18,17 @@ var ZMSGraphic_extEdit_slider = false;
 function ZMSGraphic_extEdit_initialize() {
 	$("body").append("<style>div.jcrop-holder input {display:none;visibility:hidden;}</style>");
 	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_crop").click(function() {
-			ZMSGraphic_action = 'crop';
-			changeCropperAvailability(true,true);
-		});
+		ZMSGraphic_action = 'crop';
+		alert('Sorry, image cropping still does not work');
+		changeCropperAvailability(true,true);
+	});
 	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_preview").click(function() {
-			ZMSGraphic_action = 'preview';
-			if (confirm($(this).attr('title')+'?')) {
-				ZMSGraphic_extEdit_apply();
-			}
-			ZMSGraphic_action = null;
-		});
+		ZMSGraphic_action = 'preview';
+		if (confirm($(this).attr('title')+'?')) {
+			ZMSGraphic_extEdit_apply();
+		}
+		ZMSGraphic_action = null;
+	});
 }
 
 /**
@@ -64,79 +65,79 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 			title:getZMILangStr('ATTR_IMAGE')+': '+getZMILangStr('BTN_EDIT'),
 			width:800,
 			open:function() {
-					console.log("BO open");
-					$.get('getTempBlobjPropertyUrl',ZMSGraphic_params,
-						function(data) {
-							console.log("BO getTempBlobjPropertyUrl");
-							var result = eval('('+data+')');
-							ZMSGraphic_act_width = result['width'];
-							ZMSGraphic_act_height = result['height'];
-							// Dimensions
-							var w = $('input#width_'+ZMSGraphic_elName).val();
-							var h = $('input#height_'+ZMSGraphic_elName).val();
-							$('input#ZMSGraphic_extEdit_width').val(w)
-								.keyup(function(){
-										var w = parseInt($(this).val());
-										if (!(isNaN(w))) {
-										$('input#ZMSGraphic_extEdit_width').val(w);
-										if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
-											var v = w/ZMSGraphic_act_width;
-											var h = Math.round(v*ZMSGraphic_act_height);
-											$("input#ZMSGraphic_extEdit_height").val(h);
-										}
-										var h = $("#ZMSGraphic_extEdit_height").val();
-										$ZMSGraphic_img.attr({'width':w,'height':h});
-										}
-									});
-							$('input#ZMSGraphic_extEdit_height').val(h)
-								.keyup(function(){
-										var h = parseInt($(this).val());
-										if (!(isNaN(h))) {
-										$('input#ZMSGraphic_extEdit_height').val(h);
-										if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
-											var v = h/ZMSGraphic_act_height;
-											var w = Math.round(v*ZMSGraphic_act_width);
-											$("input#ZMSGraphic_extEdit_width").val(w);
-										}
-										var w = $("input#ZMSGraphic_extEdit_width").val();
-										$ZMSGraphic_img.attr({'width':w,'height':h});
-										}
-									});
-							var v = Math.round(100*w/ZMSGraphic_act_width);
-							// Image
-							var canvasMax = 600;
-							var canvasHeight = ZMSGraphic_act_height;
-							var canvasWidth = ZMSGraphic_act_width;
-							if (canvasWidth > canvasMax || canvasHeight > canvasMax) {
-								if (canvasWidth > canvasMax) {
-									canvasHeight = Math.round(canvasHeight*canvasMax/canvasWidth);
-									canvasWidth = canvasMax;
-								}
-								else {
-									canvasWidth = Math.round(canvasWidth*canvasMax/canvasHeight);
-									canvasHeight = canvasMax;
-								}
+				console.log("BO ZMSGraphic_extEdit_actions.open");
+				$.get('getTempBlobjPropertyUrl',ZMSGraphic_params,
+					function(data) {
+						console.log("BO getTempBlobjPropertyUrl");
+						var result = eval('('+data+')');
+						ZMSGraphic_act_width = result['width'];
+						ZMSGraphic_act_height = result['height'];
+						// Dimensions
+						var w = $(`input#width_${ZMSGraphic_elName}`).val();
+						var h = $(`input#height_${ZMSGraphic_elName}`).val();
+						$('input#ZMSGraphic_extEdit_width').val(w)
+							.keyup(function(){
+									var w = parseInt($(this).val());
+									if (!(isNaN(w))) {
+									$('input#ZMSGraphic_extEdit_width').val(w);
+									if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
+										var v = w/ZMSGraphic_act_width;
+										var h = Math.round(v*ZMSGraphic_act_height);
+										$("input#ZMSGraphic_extEdit_height").val(h);
+									}
+									var h = $("#ZMSGraphic_extEdit_height").val();
+									$ZMSGraphic_img.attr({'width':w,'height':h});
+									}
+								});
+						$('input#ZMSGraphic_extEdit_height').val(h)
+							.keyup(function(){
+									var h = parseInt($(this).val());
+									if (!(isNaN(h))) {
+									$('input#ZMSGraphic_extEdit_height').val(h);
+									if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
+										var v = h/ZMSGraphic_act_height;
+										var w = Math.round(v*ZMSGraphic_act_width);
+										$("input#ZMSGraphic_extEdit_width").val(w);
+									}
+									var w = $("input#ZMSGraphic_extEdit_width").val();
+									$ZMSGraphic_img.attr({'width':w,'height':h});
+									}
+								});
+						var v = Math.round(100*w/ZMSGraphic_act_width);
+						// Image
+						var canvasMax = 600;
+						var canvasHeight = ZMSGraphic_act_height;
+						var canvasWidth = ZMSGraphic_act_width;
+						if (canvasWidth > canvasMax || canvasHeight > canvasMax) {
+							if (canvasWidth > canvasMax) {
+								canvasHeight = Math.round(canvasHeight*canvasMax/canvasWidth);
+								canvasWidth = canvasMax;
 							}
-							$('div#ZMSGraphic_extEdit_image').css({width:canvasWidth,height:canvasHeight});
-							$('div#ZMSGraphic_extEdit_image').html('<img src="'+result['src']+'" width="'+v+'%"/>');
-							$ZMSGraphic_img = $('div#ZMSGraphic_extEdit_image img');
-							// Slider
+							else {
+								canvasWidth = Math.round(canvasWidth*canvasMax/canvasHeight);
+								canvasHeight = canvasMax;
+							}
+						}
+						$('.modal-body div#ZMSGraphic_extEdit_image').css({width:canvasWidth,height:canvasHeight});
+						$('.modal-body div#ZMSGraphic_extEdit_image').html('<img src="'+result['src']+'" width="'+v+'%"/>');
+						$ZMSGraphic_img = $('.modal-body div#ZMSGraphic_extEdit_image img');
+						// Slider
 
-							$(".modal-body #ZMSGraphic_extEdit_slider").on("input", function() {
-								$(this).trigger('change');
-							})
-							$(".modal-body #ZMSGraphic_extEdit_slider").on("change", function() {
-										var v = parseInt($(this).val());
-										var w = Math.round(v*ZMSGraphic_act_width/100);
-										var h = Math.round(v*ZMSGraphic_act_height/100);
-										$('input#ZMSGraphic_extEdit_width').val(w);
-										$('input#ZMSGraphic_extEdit_height').val(h);
-										$ZMSGraphic_img.attr({width:v+'%'});
-									});
-							ZMSGraphic_extEdit_initialize();
-							$ZMI.setCursorAuto("ZMSGraphic_extEdit_action");
+						$(".modal-body #ZMSGraphic_extEdit_slider").on("input", function() {
+							$(this).trigger('change');
+						})
+						$(".modal-body #ZMSGraphic_extEdit_slider").on("change", function() {
+									var v = parseInt($(this).val());
+									var w = Math.round(v*ZMSGraphic_act_width/100);
+									var h = Math.round(v*ZMSGraphic_act_height/100);
+									$('input#ZMSGraphic_extEdit_width').val(w);
+									$('input#ZMSGraphic_extEdit_height').val(h);
+									$ZMSGraphic_img.attr({width:v+'%'});
+								});
+						ZMSGraphic_extEdit_initialize();
+						$ZMI.setCursorAuto("ZMSGraphic_extEdit_action");
 					});
-					console.log("EO open");
+					console.log("EO ZMSGraphic_extEdit_actions.open");
 				},
 				beforeClose:function() {
 					$('div#ZMSGraphic_extEdit_image').html('');
@@ -279,19 +280,24 @@ function changeCropperAvailability(available, cropping)
 	}
 	if (available) {
 		runPluginCropper(function() {
-			$ZMSGraphic_img.cropper({
-					allowSelect	: false,
-					setSelect: [ 0, 0, 25, 25 ],
-					minSize		: [25, 25],
-					maxSize		: [ZMSGraphic_act_width, ZMSGraphic_act_height],
-					handles		: true,
-					onChange	: ZMSGraphic_extEdit_changedSelection,
-					onSelect	: ZMSGraphic_extEdit_changedSelection
-				},function() {
+			$('#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_image img').cropper({
+				allowSelect	: false,
+				setSelect: [ 0, 0, 25, 25 ],
+				minSize		: [25, 25],
+				maxSize		: [ZMSGraphic_act_width, ZMSGraphic_act_height],
+				handles		: true,
+				onChange	: ZMSGraphic_extEdit_changedSelection,
+				onSelect	: ZMSGraphic_extEdit_changedSelection,
+				crop: function(e) {
 					$ZMSGraphic_cropapi = this;
-					$ZMSGraphic_cropapi.setOptions({ allowResize: true, allowMove: cropping});
+					try {
+						$ZMSGraphic_cropapi.setOptions({ allowResize: true, allowMove: cropping});
+					} catch {
+						console.log('$ZMSGraphic_cropapi.setOptions() failed')
+					}
 					$ZMSGraphic_cropapi.focus();
-				});
+				}
+			});
 		});
 	}
 }

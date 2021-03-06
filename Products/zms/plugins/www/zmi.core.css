@@ -2464,7 +2464,7 @@ ul.pagination {
 .ZMSRecordSet.main_grid table > thead > tr > th > a {
 	color: white;
 }
-.ZMSRecordSet.main_grid table tbody  tr td.data div,
+.ZMSRecordSet.main_grid table tbody  tr td.data div:not(.url),
 .ZMSRecordSet.main_grid table tbody  tr td.data .html {
 	min-width: 4rem;
 	width:8rem;

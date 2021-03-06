@@ -41,16 +41,12 @@
 </tal:block>
 
 <div class="table-responsive mb-2">
-<table class="table table-sm table-striped table-bordered table-hover zmi-sortable zmi-selectable mb-0">
+<table class="table table-sm table-striped table-bordered table-hover zmi-sortable zmi-selectable mb-0"
+	tal:attributes="data-cols python:len(metaObjAttrs) ">
 	<colgroup>
-		<col />
-		<tal:block tal:repeat="metaObjAttr metaObjAttrs">
-			<tal:block tal:define="global 
-				elType python:metaObjAttr.get('type','string')">
-				<col tal:condition="python:elType in ['int']" style="width:3em;"/>
-				<col tal:condition="python:elType not in ['int']"/>
-			</tal:block>
-		</tal:block>
+		<col style="width:7.5rem">
+		<col tal:repeat="metaObjAttr metaObjAttrs" 
+			tal:attributes="style python:(metaObjAttr.get('type','string') in ['int']) and 'width:3em' or None" />
 	</colgroup>
 	<thead>
 		<tr>

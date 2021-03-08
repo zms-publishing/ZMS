@@ -287,7 +287,7 @@ class ZMSFilterManager(
       ids = list(obs)
       portalMaster = self.getPortalMaster()
       if portalMaster is not None:
-        ids = list(set(ids + portalMaster.getFilterManager().getProcessIds()))
+        ids = list(set(ids+portalMaster.getFilterManager().getProcessIds()))
       if sort:
         ids = sorted(ids,key=lambda x:self.getProcess(x)['name'])
       return ids
@@ -331,10 +331,9 @@ class ZMSFilterManager(
       ids = list(obs)
       portalMaster = self.getPortalMaster()
       if portalMaster is not None:
-        ids = list(set(ids + portalMaster.getFilterManager().getFilterIds()))
-      if ids and sort:
-        # sort by filter's name
-        ids = sorted([self.getFilter(id).get('name',id) for id in ids])
+        ids = list(set(ids+portalMaster.getFilterManager().getFilterIds()))
+      if sort:
+        ids = sorted(ids,key=lambda x:self.getFilter(x)['name'])
       return ids
 
 
@@ -347,9 +346,9 @@ class ZMSFilterManager(
       obs = self.filters
       ob = {}
       if id in obs:
-        ob = obs.get(id).copy()
-      # Acquire from parent.
-      if ob.get('acquired', 0) == 1:
+        ob = obs.get( id).copy()
+      else:
+        # Acquire from parent.
         portalMaster = self.getPortalMaster()
         if portalMaster is not None:
           ob = portalMaster.getFilterManager().getFilter(id)

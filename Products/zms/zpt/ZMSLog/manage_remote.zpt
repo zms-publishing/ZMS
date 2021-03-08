@@ -1,10 +1,12 @@
 <tal:header replace="structure here/manage_page_header" />
 
-<tal:tabs replace="structure here/manage_tabs" />
+<tal:tabs replace="structure here/manage_tabs" 
+	tal:condition="python:'/tmp' not in request.get('path','')" />
 
-<main class="container-fluid">
+<main class="container-fluid pt-4">
 
-<form class="form-horizontal" action="manage_remote" method="get" enctype = "multipart/form-data" tal:define="standard modules/Products.zms/standard; path python:here.getPath(request)">
+<form class="form-horizontal" action="manage_remote" method="get" enctype="multipart/form-data" 
+	tal:define="standard modules/Products.zms/standard; path python:here.getPath(request)">
 
 <script language="JavaScript">
 
@@ -22,7 +24,9 @@ function uploadBtnClick() {
 	<div class="col-sm-10">
 		<div class="input-group">
 			<input class="form-control" type="text" name="command" size="50" tal:attributes="value python:request.get('command','')"/>
-			<span class="input-group-btn"><button class="btn btn-secondary" name="btn" value="Execute" onclick="uploadBtnClick()"><i class="fas fa-cog"></i> Execute</button></span>
+			<div class="input-group-append">
+				<button class="btn btn-secondary" name="btn" value="Execute" onclick="uploadBtnClick()"><i class="fas fa-cog"></i> Execute</button>
+			</div>
 		</div><!-- .input-group -->
 	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
@@ -30,20 +34,34 @@ function uploadBtnClick() {
 <div class="form-group row">
 	<label class="col-sm-2 control-label" for="file"><span>Upload file</span></label>
 	<div class="col-sm-10">
-		<input class="btn btn-file" type="file" name="file" size="50" />
-		<button class="btn btn-secondary" name="btn" value="Upload" onclick="uploadBtnClick()">Upload</button>
+		<div class="input-group" title="Select Local File for Uploading">
+			<div class="custom-file">
+				<input type="file" name="file" class="custom-file-input" id="file-data" value=""
+					onchange="$('.custom-file label span').html($(this).val().replace(/^.*(\\|\/|\:)/, ''));" />
+				<label class="custom-file-label" for="file-data"><span>Choose file</span></label>
+			</div>
+			<div class="input-group-append">
+				<button class="btn btn-secondary" name="btn" value="Upload" onclick="uploadBtnClick()">Upload</button>
+			</div>
+		</div>
 	</div><!-- .col-lg-10 -->
 </div><!-- .form-group -->
 
+
 <div class="form-group row">
-	<div class="input-group col-sm-12">
-		<select class="form-control" style="max-width:2em" onchange="$('input[name=path]').val($(this).val());$(this).val('');">
-			<option tal:attributes="value python:here.getINSTANCE_HOME()" tal:content="python:'Instance Home (%s)'%here.getINSTANCE_HOME()">Instance Home</option>
-			<option tal:attributes="value python:here.getPRODUCT_HOME()" tal:content="python:'Product Home (%s)'%here.getPRODUCT_HOME()">Product Home</option>
-			<option tal:attributes="value python:here.getPACKAGE_HOME()" tal:content="python:'Package Home (%s)'%here.getPACKAGE_HOME()">Package Home</option>
-		</select>
-		<input class="form-control" type="text" name="path" size="50" tal:attributes="value path"/>
-		<span class="input-group-btn"><button class="btn btn-secondary" name="btn" value="Chdir"><i class="fas fa-sync"></i></button></span>
+	<label class="col-sm-2 control-label" for="file"><span>Path-View</span></label>
+	<div class="col-sm-10">
+		<div class="input-group">
+			<select class="form-control" style="max-width:2em" onchange="$('input[name=path]').val($(this).val());$(this).val('');">
+				<option tal:attributes="value python:here.getINSTANCE_HOME()" tal:content="python:'Instance Home (%s)'%here.getINSTANCE_HOME()">Instance Home</option>
+				<option tal:attributes="value python:here.getPRODUCT_HOME()" tal:content="python:'Product Home (%s)'%here.getPRODUCT_HOME()">Product Home</option>
+				<option tal:attributes="value python:here.getPACKAGE_HOME()" tal:content="python:'Package Home (%s)'%here.getPACKAGE_HOME()">Package Home</option>
+			</select>
+			<input class="form-control" type="text" name="path" size="50" tal:attributes="value path"/>
+			<div class="input-group-append">
+				<button class="btn btn-secondary" name="btn" value="Chdir"><i class="fas fa-sync"></i></button>
+			</div>
+		</div>
 	</div><!-- .input-group -->
 </div>
 

@@ -89,76 +89,83 @@
 				"></tal:block>
 	</tal:block>
 
-<form class="form-horizontal" action="manage_importexportDebugFilter">
-<input type="hidden" name="lang" tal:attributes="value request/lang"/>
-<input type="hidden" name="filterId" tal:attributes="value request/filterId"/>
-<input type="hidden" name="debug:int" tal:attributes="value request/debug"/>
-<input type="hidden" name="step:int" tal:attributes="value python:step+1"/>
-<input type="hidden" name="tempfolder" tal:attributes="value request/tempfolder"/>
-<input type="hidden" name="outfilename" tal:attributes="value request/outfilename"/>
-<div class="pull-left perc50">
+<form class="form-horizontal card" action="manage_importexportDebugFilter">
+	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+	<input type="hidden" name="filterId" tal:attributes="value request/filterId"/>
+	<input type="hidden" name="debug:int" tal:attributes="value request/debug"/>
+	<input type="hidden" name="step:int" tal:attributes="value python:step+1"/>
+	<input type="hidden" name="tempfolder" tal:attributes="value request/tempfolder"/>
+	<input type="hidden" name="outfilename" tal:attributes="value request/outfilename"/>
+
 	<legend tal:content="python:here.getZMILangStr('ATTR_EXPORT')+' [%i/%i]'%(step,len(filterProcesses))">Export</legend>
-	<div class="form-group row">
-		<label class="col-lg-2 control-label">Outfilename</label>
-		<div class="col-lg-10">
-			<div class="form-control-static" tal:content="request/outfilename">Outfilename</div>
-		</div>
-	</div>
-	<div class="form-group row">
-		<label class="col-lg-2 control-label">
-			<i class="fas fa-filter"></i>
-			<tal:block tal:content="filter/name">the filter-name</tal:block>
-		</label>
-		<div class="col-lg-10">
+
+	<div class="card-body">
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group row">
+					<label class="col-sm-4 control-label">Outfilename</label>
+					<div class="col-sm-8">
+						<code class="form-control-static" tal:content="request/outfilename">Outfilename</code>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 control-label">
+						<i class="fas fa-filter"></i>
+						<tal:block tal:content="filter/name">the filter-name</tal:block>
+					</label>
+					<div class="col-sm-8">
 						<table class="layoutTable">
-						<tr><td><div tal:attributes="class python:' '.join(['filterDelimiter']+[[],['active']][int(step==0)])">
-							<tal:block tal:condition="python:filter['format']=='import'">
-								<img tal:attributes="src python:here.getMimeTypeIconSrc(filter['content_type']); title filter/content_type"/> 
-								<i class="fas fa-arrow-up',extra='title=\042Import\042"></i>
-							</tal:block>
-							<tal:block tal:condition="python:filter['format']!='import'">
-								<tal:block tal:content="filter/format">the format</tal:block>
-							</tal:block>
-						</div><i class="fas fa-long-arrow-alt-down center"></i></td></tr>
-						<tr tal:repeat="i python:range(len(filterProcesses))">
-							<tal:block tal:define="
-									filterProcess python:filterProcesses[i];
-									process python:filter_manager.getProcess(filterProcess['id'])">
-								<td><div tal:attributes="class python:' '.join(['filterProcess']+[[],['active']][int(step==i+1)])" tal:content="process/name">the process-name</div><i class="fas fa-long-arrow-alt-down center"></i></td>
-								<tal:block tal:condition="python:filterProcess.get('file_filename')">
-									<td><hr style="margin:1em 0;width:120px;border-top:1px solid #888;padding:0;" /></td>
-									<td><div class="filterProcessFile">
-										<a tal:attributes="href filterProcess/file_href; title python:'%s (%s)'%(filterProcess['file_filename'], filterProcess['file_content_type'])" target="_blank">
-											<img tal:attributes="src python:here.getMimeTypeIconSrc(filterProcess['file_content_type']); alt filterProcess/file_filename"/>
-											<tal:block tal:content="filterProcess/file_filename"></tal:block>
-										</a>
-									</div></td>
+							<tr><td><div tal:attributes="class python:' '.join(['filterDelimiter']+[[],['active']][int(step==0)])">
+								<tal:block tal:condition="python:filter['format']=='import'">
+									<img tal:attributes="src python:here.getMimeTypeIconSrc(filter['content_type']); title filter/content_type"/> 
+									<i class="fas fa-arrow-up',extra='title=\042Import\042"></i>
 								</tal:block>
-							</tal:block>
-						</tr>
-						<tr><td><div class="filterDelimiter">
-							<tal:block tal:condition="python:filter['format']=='import'">
-								<img tal:attributes="src python:here.getMimeTypeIconSrc('text/xml')"/>
-							</tal:block>
-							<tal:block tal:condition="python:filter['format']!='import'">
-								<img tal:attributes="src python:here.getMimeTypeIconSrc(filter['content_type']); title filter/content_type"/> 
-								<i class="fas fa-arrow-down',extra='title=\042Export\042"></i>
-							</tal:block>
-						</div></td></tr>
+								<tal:block tal:condition="python:filter['format']!='import'">
+									<tal:block tal:content="filter/format">the format</tal:block>
+								</tal:block>
+							</div><i class="fas fa-long-arrow-alt-down center"></i></td></tr>
+							<tr tal:repeat="i python:range(len(filterProcesses))">
+								<tal:block tal:define="
+										filterProcess python:filterProcesses[i];
+										process python:filter_manager.getProcess(filterProcess['id'])">
+									<td><div tal:attributes="class python:' '.join(['filterProcess']+[[],['active']][int(step==i+1)])" tal:content="process/name">the process-name</div><i class="fas fa-long-arrow-alt-down center"></i></td>
+									<tal:block tal:condition="python:filterProcess.get('file_filename')">
+										<td><hr style="margin:1em 0;width:120px;border-top:1px solid #888;padding:0;" /></td>
+										<td><div class="filterProcessFile">
+											<a tal:attributes="href filterProcess/file_href; title python:'%s (%s)'%(filterProcess['file_filename'], filterProcess['file_content_type'])" target="_blank">
+												<img tal:attributes="src python:here.getMimeTypeIconSrc(filterProcess['file_content_type']); alt filterProcess/file_filename"/>
+												<tal:block tal:content="filterProcess/file_filename"></tal:block>
+											</a>
+										</div></td>
+									</tal:block>
+								</tal:block>
+							</tr>
+							<tr><td><div class="filterDelimiter">
+								<tal:block tal:condition="python:filter['format']=='import'">
+									<img tal:attributes="src python:here.getMimeTypeIconSrc('text/xml')"/>
+								</tal:block>
+								<tal:block tal:condition="python:filter['format']!='import'">
+									<img tal:attributes="src python:here.getMimeTypeIconSrc(filter['content_type']); title filter/content_type"/> 
+									<i class="fas fa-arrow-down',extra='title=\042Export\042"></i>
+								</tal:block>
+							</div></td></tr>
 						</table><!-- .layoutTable -->
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-4 control-label"></label>
+					<div class="col-sm-8">
+						<button class="btn btn-primary"><i class="fas fa-cog"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_NEXT')">Next</tal:block></button>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-6 pt-4">
+				<iframe tal:attributes="src python:'%s/manage_remote?path=%s'%(here.zms_log.absolute_url(),request['tempfolder'])" 
+					width="100%" height="600" style="height:100vh;"></iframe>
+			</div>
 		</div>
 	</div>
-	<div class="form-group row">
-		<label class="col-lg-2 control-label"></label>
-		<div class="col-lg-10">
-			<button class="btn btn-primary"><i class="fas fa-cog"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_NEXT')">Next</tal:block></button>
-		</div>
-	</div>
-</div>
-<div class="pull-left perc50">
-	<iframe tal:attributes="src python:'%s/manage_remote?path=%s'%(here.zms_log.absolute_url(),request['tempfolder'])" width="100%" height="600"></iframe>
-</div>
-<div class="clearfix"></div>
 </form>
 
 </tal:block>

@@ -407,6 +407,7 @@ $(function(){
 					<input type="checkbox" name="ids:list" tal:attributes="value filterId">
 				</td>
 				<td>
+					<i tal:condition="python:filter.get('acquired')" class="icon-share fas fa-share mr-2" title="acquired"></i>
 					<a href="javascript:;" onclick="$('i',this).toggleClass('fa-chevron-right fa-chevron-down');$(this).siblings('.filterProcesses').toggle('normal');"><i class="fas fa-chevron-right"></i></a>
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
 						<i class="fas fa-filter"></i>
@@ -486,6 +487,7 @@ $(function(){
 					<input type="checkbox" name="ids:list" tal:attributes="value processId">
 				</td>
 				<td>
+					<i tal:condition="python:process.get('acquired')" class="icon-share fas fa-share mr-2" title="acquired"></i>
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
 						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is not None"><i tal:on-error="nothing" tal:attributes="class python:getattr(here,process['id']).zmi_icon"></i></tal:block>
 						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is None"><i class="fas fa-cog"></i></tal:block>

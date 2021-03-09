@@ -1466,14 +1466,14 @@ class ZMSObject(ZMSItem.ZMSItem,
             message = value[1]
         # Execute redirect.
         else:
-          loc = '%s/%s?lang=%s'%(target.absolute_url(),metaCmd['id'],lang)
-          status = 302
-          if REQUEST.method == 'GET':
-            status = 201 # Turbolinks
-            RESPONSE.setHeader('Location',loc)
-            RESPONSE.setHeader('Turbolinks-Location',loc)
-          RESPONSE.redirect(loc,status=status)
-          return value
+          loc = '%s/%s?lang=%s'%(target.absolute_url(),metaCmd['id'],lang)
+          status = 302
+          if REQUEST.method == 'GET':
+            status = 201 # Turbolinks
+            RESPONSE.setHeader('Location',loc)
+            RESPONSE.setHeader('Turbolinks-Location',loc)
+          RESPONSE.redirect(loc,status=status)
+          return value
 
       # Return with message.
       message = standard.url_quote(message)

@@ -2464,8 +2464,8 @@ ul.pagination {
 .ZMSRecordSet.main_grid table > thead > tr > th > a {
 	color: white;
 }
-.ZMSRecordSet.main_grid table tbody  tr td.data div:not(.url),
-.ZMSRecordSet.main_grid table tbody  tr td.data .html {
+.ZMSRecordSet.main_grid table tbody tr td.data div:not(.url),
+.ZMSRecordSet.main_grid table tbody tr td.data .html {
 	min-width: 4rem;
 	width:8rem;
 	max-width:12rem;
@@ -2492,4 +2492,7 @@ ul.pagination {
 	min-width: 1.75rem;
 	display: inline-block;
 	text-align: right !important;
+}
+#zmiModalinsertUser .modal-body .ZMSRecordSet.main_grid div.table-responsive {
+	min-height:16rem
 }

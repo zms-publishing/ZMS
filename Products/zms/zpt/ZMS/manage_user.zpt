@@ -6,7 +6,7 @@
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:' '.join(['zms',request['lang'],'user config',here.meta_id])">
 
-<form name="form0" class="form-horizontal" action="manage_user" target="_parent" method="post" onsubmit="return form0Submit(this);">
+<form name="form0" class="form-horizontal container" action="manage_user" target="_parent" method="post" onsubmit="return form0Submit(this);">
 
 <tal:block tal:content="structure python:here.zmi_manage_tabs_message(here,request)">zmi_manage_tabs_message</tal:block>
 
@@ -16,8 +16,8 @@
 <tal:block tal:condition="python:userObj is not None">
 	<legend><i class="fas fa-user"></i> <tal:block tal:content="python:'%s: %s'%(here.getZMILangStr('ATTR_USER'),userObj['name'])">User: Id</tal:block></legend>
 	<div class="form-group row" tal:repeat="userObjDetail userObj/details">
-				<label tal:attributes="for userObjDetail/name" class="col-sm-2 control-label"><span tal:content="userObjDetail/label">the label</span></label>
-				<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='newId',size=30,value=userObjDetail['value'],enabled=False)">the value</div><!-- .col-sm-10 -->
+		<label tal:attributes="for userObjDetail/name" class="col-sm-2 control-label"><span tal:content="userObjDetail/label">the label</span></label>
+		<div class="col-sm-10" tal:content="structure python:here.getTextInput(fmName='userform',elName='newId',size=30,value=userObjDetail['value'],enabled=False)">the value</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
 	<tal:block tal:condition="python:userObj.get('password')==True">
 		<div class="form-group row">

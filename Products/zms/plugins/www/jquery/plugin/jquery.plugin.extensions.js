@@ -86,7 +86,7 @@ function pluginSortable(s, c) {
  * jquery-cropper - the jQuery Image Cropping Plugin
  * @see https://github.com/fengyuanchen/jquery-cropper/
  */
-function runPluginCropper(s,c) {
+function runPluginCropper(c) {
 	$.plugin('cropper',{
 		files: [
 			'/++resource++zms_/jquery/cropper/cropper.css',
@@ -94,5 +94,5 @@ function runPluginCropper(s,c) {
 			'/++resource++zms_/jquery/cropper/jquery-cropper.min.js'
 		]
 	});
-	$.plugin('cropper').get(s,c);
+	$.plugin('cropper').get('body',c);
 }

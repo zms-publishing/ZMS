@@ -70,12 +70,6 @@
 				</table>
 			</div><!-- #ZMSGraphic_extEdit_actions -->
 		</div>
-
-		<!-- @work: lazy loading -->
-		<link type="text/css" rel="stylesheet" href="/++resource++zms_/jquery/cropper/cropper.css" />
-		<script type="text/javascript" src="/++resource++zms_/jquery/cropper/cropper.min.js"></script> 
-		<script type="text/javascript" src="/++resource++zms_/jquery/cropper/jquery-cropper.min.js"></script> 
-
 		<script type="text/javascript" src="/++resource++zms_/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
 		<tal:block tal:define="dummy0 python:request.set('f_zmiGraphicExtEdit',False)"></tal:block>
 	</tal:block>

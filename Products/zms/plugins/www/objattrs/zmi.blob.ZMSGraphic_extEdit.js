@@ -19,7 +19,6 @@ function ZMSGraphic_extEdit_initialize() {
 	$("body").append("<style>div.jcrop-holder input {display:none;visibility:hidden;}</style>");
 	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_crop").click(function() {
 		ZMSGraphic_action = 'crop';
-		alert('Sorry, image cropping still does not work');
 		changeCropperAvailability(true,true);
 	});
 	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_preview").click(function() {

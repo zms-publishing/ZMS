@@ -1112,6 +1112,7 @@ ZMI.prototype.initInputFields = function(container) {
 						});
 				}
 			// Date-Picker
+			var is_firefox = /firefox/i.test(navigator.userAgent);
 			$("input.datepicker,input.datetimepicker",this).each(function() {
 				$(this).closest("div")
 					.addClass("input-group")
@@ -1120,6 +1121,10 @@ ZMI.prototype.initInputFields = function(container) {
 					.removeClass("col-md-10")
 					.wrap('<div class="col-sm-4 col-md-3 col-lg-3"></div>');
 				$(this).before('<div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar"></i></span></div>');
+				if (is_firefox) {
+					$(this).attr('type','date');
+					$(this).attr('value',$(this).attr('value').split('T')[0]);
+				}
 			})
 		});
 	if (typeof this.afterInitInputFieldsHandler != "undefined") {

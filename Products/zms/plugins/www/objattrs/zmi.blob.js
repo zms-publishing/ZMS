@@ -73,7 +73,10 @@ function zmiUndoBlobDelete(elName) {
 	// Reset flag.
 	$('input[name=del_'+elName+']').val(0);
 	// Remove transparent overlay.
-	$('#div_opaque_'+elName).remove();
+	var img = $('img#img_'+elName);
+	if (img.length > 0) {
+		img.removeClass('deleted');
+	}
 }
 
 /**
@@ -106,19 +109,7 @@ function zmiDelBlobBtnClick(elName) {
 		// Create transparent overlay.
 		var img = $('img#img_'+elName);
 		if (img.length > 0) {
-			$('body').append('<div id="div_opaque_'+elName+'" class="zmiDivOpaque">&nbsp;</div>');
-			var div = $('div#div_opaque_'+elName);
-			var pos = img.offset();
-			var css = {
-				position:'absolute',
-				left:pos.left,
-				top:pos.top,
-				width:img.outerWidth(),
-				height:img.outerHeight(),
-				backgroundColor:"white",
-				opacity:0.8
-			};
-			div.css(css);
+			img.addClass('deleted');
 		}
 	}
 	// Refresh buttons.

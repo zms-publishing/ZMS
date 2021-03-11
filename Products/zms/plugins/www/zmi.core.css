@@ -1174,6 +1174,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	outline: 0;
 	box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
 }
+.zmi a.ZMSGraphic_extEdit_action img.deleted {
+	opacity:0.2;
+}
 .zmi a.ZMSGraphic_extEdit_action .zmi-zoom-in {
 	color: #333;
 	background-color: #FFF;

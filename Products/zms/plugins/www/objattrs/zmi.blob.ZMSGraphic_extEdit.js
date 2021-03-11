@@ -162,16 +162,7 @@ function ZMSGraphic_extEdit_set(elName, src, filename, width, height, elParams, 
 			html += ','+pil;
 		}
 		html += ')" class="ZMSGraphic_extEdit_action">';
-		html += '<img id="img_'+elName+'"';
-		if (width > 80 || height > 80) {
-			if ( width > height) {
-				html += ' width="80"';
-			}
-			else {
-				html += ' height="80"';
-			}
-		}
-		html += '>';
+		html += '<img id="img_'+elName+'">';
 		html += '</a>';
 		$('#ZMSGraphic_extEdit_preview_'+elName).html(html);
 	}
@@ -179,6 +170,8 @@ function ZMSGraphic_extEdit_set(elName, src, filename, width, height, elParams, 
 		zmiUndoBlobDelete(elName);
 	}
 	img = $('img#img_'+elName);
+	img.attr("src",src);
+	img.css({maxHeight:80,maxWidth:80});
 	img.parent().addClass('changed');
 	$('input#width_'+elName).val(width);
 	$('input#height_'+elName).val(height);
@@ -216,14 +209,10 @@ function ZMSGraphic_extEdit_apply() {
 		var h = parseInt($('input#ZMSGraphic_extEdit_height').val());
 		var h_orig = parseInt($('input#height_'+ZMSGraphic_elName).val());
 		var c = ZMSGraphic_cropcoords;
-		var canvasWidth = $('div#ZMSGraphic_extEdit_image').css('width');
-		canvasWidth = parseInt(canvasWidth.substr(0,canvasWidth.length-2));
-		var v = w/canvasWidth;
 		if ( w != w_orig || h != h_orig) {
 			ZMSGraphic_action = 'resize,crop';
 		}
-		console.log('ZMSGraphic_extEdit_apply: action='+ZMSGraphic_action+';width='+w+';height='+h+';v='+v+';x0='+Math.round(v*c.x)+';y0='+Math.round(v*c.y)+';x1='+Math.round(v*c.x2)+';y2='+Math.round(v*c.y2));
-		var params = {'action':ZMSGraphic_action,'width:int':w,'height:int':h,'x0:int':Math.round(v*c.x),'y0:int':Math.round(v*c.y),'x1:int':Math.round(v*c.x2),'y2:int':Math.round(v*c.y2)};
+		var params = {'action':ZMSGraphic_action,'width:int':w,'height:int':h,'x0:int':Math.round(c.x),'y0:int':Math.round(c.y),'x1:int':Math.round(c.x+c.width),'y2:int':Math.round(c.y+c.height)};
 		for (var i in ZMSGraphic_params) {
 			params[i] = ZMSGraphic_params[i];
 		}
@@ -231,6 +220,7 @@ function ZMSGraphic_extEdit_apply() {
 				function(data){
 					if (data.length==0) return;
 					var result = eval('('+data+')');
+                    console.log(result);
 					ZMSGraphic_extEdit_set(ZMSGraphic_elName,result['src'],result['filename'],result['width'],result['height']);
 				});
 	}
@@ -285,24 +275,12 @@ function changeCropperAvailability(available, cropping)
 				minSize		: [25, 25],
 				maxSize		: [ZMSGraphic_act_width, ZMSGraphic_act_height],
 				handles		: true,
-				onChange	: ZMSGraphic_extEdit_changedSelection,
-				onSelect	: ZMSGraphic_extEdit_changedSelection,
-				crop: function(e) {
-					$ZMSGraphic_cropapi = this;
-					try {
-						$ZMSGraphic_cropapi.setOptions({ allowResize: true, allowMove: cropping});
-					} catch {
-						console.log('$ZMSGraphic_cropapi.setOptions() failed')
+				crop		: function(e) {
+						if (ZMSGraphic_action == 'crop') {
+							ZMSGraphic_cropcoords = e.detail;
+						}
 					}
-					$ZMSGraphic_cropapi.focus();
-				}
 			});
 		});
-	}
-}
-
-function ZMSGraphic_extEdit_changedSelection(c) {
-	if (ZMSGraphic_action == 'crop') {
-		ZMSGraphic_cropcoords = c;
 	}
 }

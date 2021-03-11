@@ -2339,6 +2339,9 @@ ul.pagination {
 	font-family: 'Font Awesome 5 Free' !important;
 	font-weight: 400 !important;
 }
+.cke_combopanel {
+	width:16rem !important;
+}
 
 /* ++++++++++++++++++++++++++ */
 /* ZMS Theme Editor           */

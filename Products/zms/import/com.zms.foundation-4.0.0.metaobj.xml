@@ -3681,6 +3681,10 @@ function zmiObjectSetCopy(sender) {
 	return _zmiObjectSetExec(sender,'manage_copyObjects');
 }
 
+function zmiObjectSetPaste(sender) {
+	return _zmiObjectSetExec(sender,'manage_pasteObjs');
+}
+
 $(function() {
 
 	// always collapse last-modified-accordion
@@ -4015,12 +4019,13 @@ return zmscontext.metaobj_recordset_main_grid( \
 		record_handler=zmscontext.attr('record_handler'), \
 		records=request['res'], \
 		filtered_records=request['res'], \
-		actions=['insert','update','delete','cut','copy'], \
+		actions=['insert','update','delete','cut','copy','paste'], \
 		insert='[[INSERT]]', \
 		update='[[UPDATE]]', \
 		delete='zmiObjectSetDelete(this)', \
 		cut='zmiObjectSetCut(this)', \
 		copy='zmiObjectSetCopy(this)', \
+		paste='zmiObjectSetPaste(this)', \
 		)
 
 # --// /publicRecordSetGrid //--

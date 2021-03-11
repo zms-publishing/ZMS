@@ -134,11 +134,11 @@
 									<tal:block tal:content="python:here.getZMILangStr('BTN_EDIT')">Edit</tal:block>
 								</a>
 								<tal:block tal:repeat="action python:['delete','cut','copy','paste','duplicate']">
-								<a tal:condition="python:action in actions"
-									class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get(action,'return zmiRecordSet%sRow(this,%i)'%(action.capitalize(),qindex))">
-									<i tal:attributes="class python:'fas fa-%s'%{'delete':'times','duplicate':'clone'}.get(action,action)"></i>
-									<tal:block tal:content="python:here.getZMILangStr('BTN_%s'%action.upper())">Action</tal:block>
-								</a>
+									<a tal:condition="python:action in actions"
+										class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get(action,'return zmiRecordSet%sRow(this,%i)'%(action.capitalize(),qindex))">
+										<i tal:attributes="class python:'fas fa-%s'%{'delete':'times','duplicate':'clone'}.get(action,action)"></i>
+										<tal:block tal:content="python:here.getZMILangStr('BTN_%s'%action.upper())">Action</tal:block>
+									</a>
 								</tal:block>
 								<tal:block tal:condition="sorted">
 									<a class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get('sort','javascript:return zmiRecordSetMoveRow(this,%i,-1)'%index)"><i class="fas fa-arrow-up"></i> <tal:block tal:content="python:here.getZMILangStr('ACTION_MOVEUP')">Move up</tal:block></a>

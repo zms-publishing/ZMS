@@ -62,9 +62,7 @@
 						</div>
 					</td>
 					<td style="background-color:#F5F5F5;height:20rem;">
-						<div id="ZMSGraphic_extEdit_image">
-							<img src="#" alt="" border="0" />
-						</div>
+						<div id="ZMSGraphic_extEdit_image"></div>
 					</td>
 				</tr>
 				</table>

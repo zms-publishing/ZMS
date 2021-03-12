@@ -1119,7 +1119,7 @@ ZMI.prototype.initInputFields = function(container) {
 					.removeClass("col-sm-9")
 					.removeClass("col-sm-10")
 					.removeClass("col-md-10")
-					.wrap('<div class="col-sm-4 col-md-3 col-lg-3"></div>');
+					.wrap('<div class="col-sm-5 col-md-4 col-lg-3"></div>');
 				$(this).before('<div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar"></i></span></div>');
 				if (is_firefox) {
 					$(this).attr('type','date');

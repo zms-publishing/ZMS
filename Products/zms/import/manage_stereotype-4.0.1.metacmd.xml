@@ -12,8 +12,6 @@
 ##parameters=
 ##title=*** DO NOT DELETE OR MODIFY ***
 ##
-from Products.PythonScripts.standard import html_quote
-from Products.zms import standard
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
 
@@ -67,39 +65,49 @@ html += '<!DOCTYPE html>'
 html += '<html lang="en">'
 html += context.zmi_html_head(context,request)
 html += '<body class="%s">'%(' '.join(['zmi',request['lang'],context.meta_id]))
-html += context.zmi_body_header(context,request,options=[{'action':'#','label':'Stereotype...'}])
+html += context.zmi_body_header(context,request,options=[
+	{'label': 'TAB_EDIT', 'action': 'manage_main'},
+	{'label': 'TAB_PROPERTIES', 'action': 'manage_properties'},
+	{'label': 'TAB_IMPORTEXPORT', 'action': 'manage_importexport'},
+	{'label': 'TAB_REFERENCES', 'action': 'manage_RefForm'},
+	{'label': 'TAB_SEARCH', 'action': 'manage_tab_search'},
+	{'label': 'TAB_TASKS', 'action': 'manage_tab_tasks'},
+	{'label': 'ATTR_STATISTICS', 'action': 'manage_tab_statistics'},
+	{'label': 'Stereotypes', 'action': 'manage_tab_stereotypes'},
+])
 html += '<div id="zmi-tab">'
 html += context.zmi_breadcrumbs(context,request)
 html += '<form class="form-horizontal card" method="post" enctype="multipart/form-data">'
 
 html += '<legend>Select Attribute Mappings</legend>'
-html += '<div class="alert alert-light">For migration one content-object into an aother please choose the target stereotype and select its target attributes</div>'
 html += '<div class="card-body">'
-
+html += '<div class="alert alert-warning mx-0">For migration one content-object into an aother please choose the target stereotype and select its target attributes</div>'
 html += '<div class="form-group row">'
 html += '<label class="col-sm-2 control-label mandatory"><span>Stereotype</span></label>'
 html += '<div class="col-sm-10">'
+html += '<div class="formgroup row">'
 html += '<div class="col-sm-6">'
 html += '<label class="control-label" style="margin-bottom:0.5em"><i class="text-muted">Source</i></label>'
 html += '<select class="form-control" style="background:#f2dede;"name="src_meta_id">'
 for meta_id in context.getMetaobjIds(sort=True):
 	metaObj = context.getMetaobj(meta_id)
 	if metaObj['type'] in ['ZMSDocument','ZMSObject']:
-		data_attrs = [context.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['type'] not in ['constant','delimiter','hint','interface','method','py','resource','zpt']]
+		data_attrs = [context.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['id'] not in ['icon','icon_clazz','levelnfc'] and x['type'] not in ['constant','delimiter','hint','interface','method','py','resource','zpt']]
 		data_attrs= ','.join(['%s(%s)'%(x['id'],x['type']) for x in data_attrs])
 		html += '<option value="%s" data-attrs="%s"%s>%s (%s)</option>'%(metaObj['id'],data_attrs,['',' selected="selected"'][int(request.get('src_meta_id',context.meta_id)==metaObj['id'])],str(context.display_type(request,metaObj['id'])),metaObj['id'])
 html += '</select><!-- .form-control -->'
 html += '</div>'
 html += '<div class="col-sm-6">'
 html += '<label class="control-label" style="margin-bottom:0.5em"><i class="text-muted">Target</i></label>'
-html += '<select class="form-control col-sm-6" style="background:#d9edf7;" name="meta_id">'
+html += '<select class="form-control" style="background:#d9edf7;" name="meta_id">'
 for meta_id in context.getMetaobjIds(sort=True):
 	metaObj = context.getMetaobj(meta_id)
 	if metaObj['type'] in ['ZMSDocument','ZMSObject']:
-		data_attrs = [context.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['type'] not in ['constant','delimiter','hint','interface','method','py','resource','zpt']]
+		data_attrs = [context.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['id'] not in ['icon','icon_clazz','levelnfc'] and x['type'] not in ['constant','delimiter','hint','interface','method','py','resource','zpt']]
 		data_attrs= ','.join(['%s(%s)'%(x['id'],x['type']) for x in data_attrs])
 		html += '<option value="%s" data-attrs="%s"%s>%s (%s)</option>'%(metaObj['id'],data_attrs,['',' selected="selected"'][int(request.get('meta_id',context.meta_id)==metaObj['id'])],str(context.display_type(request,metaObj['id'])),metaObj['id'])
 html += '</select><!-- .form-control -->'
+html += '</div>'
 html += '</div>'
 html += '</div><!--.col-sm-10 -->'
 html += '</div>'
@@ -132,36 +140,39 @@ html += '</div><!-- #zmi-tab -->'
 html += context.zmi_body_footer(context,request)
 html += '''<script>
 function onSelectMetaIdChange() {
-		var $selectSrc = $("select[name=src_meta_id]");
-		var $selectedSrc = $("option:selected",$selectSrc);
-		var attrsSrc = $selectedSrc.attr("data-attrs").split(",");
-		var $select = $("select[name=meta_id]");
-		var $selected = $("option:selected",$select);
-		var attrs = $selected.attr("data-attrs").split(",");
-		var html = "";
-		for (var i = 0; i < attrsSrc.length; i++) {
-			var src = attrsSrc[i];
-			var name = src.substr(0,src.indexOf('('));
-			var type = src.substr(src.indexOf('(')+1);
-			type = type.substr(0,type.indexOf(')'));
-			html += '<div class="form-group row">'
-			html += '<label class="col-sm-6 control-label text-right">' + src+'</label>';
-			html += '<div class="col-sm-4">';
-			html += '<select class="form-control" style="background:#d9edf7" name="meta_attr_'+name+"_"+type+'">';
-			html += '<option></option>';
-			for (var j = 0; j < attrs.length; j++) {
-			var target = attrs[j];
-			html += '<option' + (target.indexOf(name+'(')==0?' selected="selected"':'')+' value="'+target+'">'+target+'</option>';
-			}
-			html += '</select>';
-			html += '</div>';
-			html += '</div>';
+	var $selectSrc = $("select[name=src_meta_id]");
+	var $selectedSrc = $("option:selected",$selectSrc);
+	var attrsSrc = $selectedSrc.attr("data-attrs").split(",");
+	var $select = $("select[name=meta_id]");
+	var $selected = $("option:selected",$select);
+	var attrs = $selected.attr("data-attrs").split(",");
+	var html = "";
+	for (var i = 0; i < attrsSrc.length; i++) {
+		var src = attrsSrc[i];
+		var name = src.substr(0,src.indexOf('('));
+		var type = src.substr(src.indexOf('(')+1);
+		type = type.substr(0,type.indexOf(')'));
+		html += '<div class="form-group row">'
+		html += '<label class="col-sm-6 control-label text-right">' + src+'</label>';
+		html += '<div class="col-sm-6">';
+		html += '<select class="form-control" style="background:#d9edf7" name="meta_attr_'+name+"_"+type+'">';
+		html += '<option></option>';
+		for (var j = 0; j < attrs.length; j++) {
+		var target = attrs[j];
+		html += '<option' + (target.indexOf(name+'(')==0?' selected="selected"':'')+' value="'+target+'">'+target+'</option>';
 		}
-		$(".attrs").html(html);
+		html += '</select>';
+		html += '</div>';
+		html += '</div>';
+	}
+	$(".attrs").html(html);
 }
 $("select[name$=meta_id].form-control").each(function() {
-		$(this).change(onSelectMetaIdChange).change();
-	});
+	$(this).change(onSelectMetaIdChange).change();
+});
+$(function(){
+	$('li.nav-item[data-action=manage_tab_stereotypes]').addClass('active');
+})
 </script>'''
 html += '</body>'
 html += '</html>'
@@ -188,7 +199,7 @@ return html
         </list>
       </item>
       <item key="name"><![CDATA[Change stereotype]]></item>
-      <item key="revision">4.0.0</item>
+      <item key="revision">4.0.1</item>
       <item key="roles" type="list">
         <list>
           <item>ZMSAdministrator</item>

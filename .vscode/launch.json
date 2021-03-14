@@ -1,34 +1,26 @@
 {
-	"version": "0.2.0",
-	"configurations": [
-		{
-			"name": "Python3: Zope-ZMS5",
-			"type": "python",
-			"request": "launch",
-			"program": "~/src/Zope/src/Zope2/Startup/serve.py",
-			// "module": "Zope2.Startup.serve",
-			"justMyCode": false,
-			"console": "integratedTerminal",
-			"args": [
-				"-d",
-				"-v",
-				"~/instance/zms5_dev/etc/zope.ini"
-			],
-			"env": {
-				"PYTHONUNBUFFERED":"1",
-				"CONFIG_FILE": "~/instance/zms5_dev/etc/zope.ini",
-				"INSTANCE_HOME": "~/instance/zms5_dev",
-				"CLIENT_HOME": "~/instance/zms5_dev",
-				"PYTHON": "~/vpy37/bin/python",
-				"SOFTWARE_HOME": "~/vpy37/bin/"
-			},
-		},
-//		{
-//			"name":"Python3: Current File",
-//			"type":"python",
-//			"request": "launch",
-//			"program": "${file}",
-//			"console": "integratedTerminal",
-//		}
-	]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "ZMS5-Py3WSGI",
+            "type": "python",
+            "request": "launch",
+            "program": "~/vpy38/bin/runwsgi",
+            "console": "integratedTerminal",
+            "args": [
+                "-d",
+                "-v",
+                "~/instance/zms5_dev/etc/zope.ini",
+                "debug-mode=on"
+            ],
+            "env": {
+                "PYTHONUNBUFFERED":"1",
+                "CONFIG_FILE": "~/instance/zms5_dev/etc/zope.ini",
+                "INSTANCE_HOME": "~/instance/zms5_dev",
+                "CLIENT_HOME": "~/instance/zms5_dev",
+                "PYTHON": "~/vpy38/bin/python",
+                "SOFTWARE_HOME": "~/vpy38/bin/"
+            },
+        },
+    ]
 }

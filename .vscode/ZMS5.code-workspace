@@ -4,14 +4,14 @@
 			"path": "../"
 		},
 //		{
-//			"path": "~/src/ZMS3"
+//			"path": "~/src/zms-publishing/ZMS3"
 //		},
 //		{
 //			"path": "~/src/zopefoundation/Zope"
 //		},
 	],
 	"settings": {
-		"python.pythonPath": "~/vpy37/bin/",
+		"python.pythonPath": "~/vpy38/bin/",
 		"window.zoomLevel": 0,
 		"git.ignoreMissingGitWarning": true,
 		"editor.minimap.enabled": false,
@@ -37,5 +37,5 @@
 		"workbench.colorTheme": "Visual Studio Light",
 		"python.linting.enabled": true
 	},
-	"remoteAuthority": "wsl+Ubuntu-18.04"
+	"remoteAuthority": "wsl+Ubuntu-20.04"
 }

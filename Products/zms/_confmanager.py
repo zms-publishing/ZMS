@@ -706,6 +706,9 @@ class ConfManager(
           location = REQUEST['mediadb_location'].strip()
           _mediadb.manage_addMediaDb(self, location)
           message = self.getZMILangStr('MSG_CHANGED')
+        elif btn == 'Change':
+          structure = int(REQUEST['mediadb_structure'])
+          message = _mediadb.manage_structureMediaDb(self,structure)
         elif btn == 'Pack':
           message = _mediadb.manage_packMediaDb(self)
         elif btn == 'Remove':

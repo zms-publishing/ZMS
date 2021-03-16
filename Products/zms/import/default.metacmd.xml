@@ -48,7 +48,7 @@ else:
 	prt.append('<thead>')
 	prt.append('<tr>')
 	prt.append('<th>%s</th>'%context.getZMILangStr('ATTR_KEY'))
-	prt.extend(['<th>%s</th>'context.getLanguageLabel(x) for x in langIds])
+	prt.extend(['<th>%s</th>'%context.getLanguageLabel(x) for x in langIds])
 	prt.append('</tr>')
 	prt.append('</thead>')
 	prt.append('<tbody>')

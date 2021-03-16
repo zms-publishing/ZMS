@@ -1341,7 +1341,8 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	border-radius:0;
 	border: none;
 }
-.zmi form:not(.form-insert) > .card {
+.zmi form:not(.form-insert) > .card,
+.zmi form:not(.form-insert) > .card .card-header:first-child {
 	border-radius:0;
 }
 .zmi .card legend,

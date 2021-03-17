@@ -121,25 +121,17 @@ header.zmsdebug .navbar-brand .product:after {
 }
 
 /* Show Config-Menu Accesskeys on Hover */
-header .navbar-nav .dropdown-menu > a.dropdown-item[accesskey]:hover:after {
-	content:"\F11C";
-	display:block;
-	float:right;
-	color:#818ea254;
-	font-family: FontAwesome;
+header .navbar-nav .dropdown-menu > a.dropdown-item[accesskey] {
+	display:inline-flex;
+}
+header .navbar-nav .dropdown-menu > a.dropdown-item[accesskey]:hover:after {  
+	content: attr(accesskey);
+	font-family:Menlo,Monaco,Consolas,"Courier New",monospace;
+	color: #818ea254;
 	font-weight: normal;
 	font-style: normal;
-	text-decoration: inherit;
-	-webkit-font-smoothing: antialiased;
-}
-header .navbar-nav .dropdown-menu > a.dropdown-item[accesskey]:hover:before {
-	content:attr(accesskey);
-	display:block;
-	float:right;
-	color:#818ea287;
-	font-family:Menlo,Monaco,Consolas,"Courier New",monospace;
-	padding-left:.3rem;
-	margin-right:-.4rem;
+	text-decoration: none;
+	margin-left: auto;
 }
 .zmi:not(.manage-menu) header.navbar-nav .dropdown-menu a.dropdown-item {
 	color:#212529;	
@@ -742,7 +734,7 @@ body.zmi .dropdown-menu {
 	box-shadow: 0 6px 12px rgba(0,0,0,.175)
 }
 body.zmi .dropdown-menu a.dropdown-item {
-	max-width: 260px;
+	max-width: 14rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }

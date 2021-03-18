@@ -192,11 +192,10 @@ Returns filename concatenated with language suffix.
 def getLangFilename(self, filename, lang):
   i = filename.rfind('.')
   name = filename[:i]
-  name = name.replace(' ', '_')
   ext = filename[i+1:]
   if len(self.getLangIds()) > 1 and lang is not None:
     suffix = '_' + lang
-    if len(name) < len(suffix) or name[-len(suffix):] != suffix:
+    if not name.endswith(suffix):
       name += suffix
   name += '.' + ext
   return name
@@ -745,7 +744,7 @@ class MyBlob(object):
         filename = filename.decode()
       while filename.startswith( '_'):
         filename = filename[1:]
-      filename = "".join( x for x in filename if (x.isalnum() or x in "._- "))
+      filename = "".join( x for x in filename if (x.isalnum() or x in "._-"))
       if filename != self.filename and len( self.data) > 0: 
         self.filename = filename
       return filename

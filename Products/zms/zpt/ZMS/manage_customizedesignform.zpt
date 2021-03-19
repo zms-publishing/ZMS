@@ -5,6 +5,7 @@
 	zmscontext python:context.getSelf();
 	zmshome python:here.getHome();
 	ZMS_HOME python:'/%s/'%(zmshome.absolute_url(relative=1));
+	ZMS_HOME python:ZMS_HOME.startswith('http') and ZMS_HOME or ZMS_HOME.replace('//','/');
 	ZMS_THEME python:zmscontext.getConfProperty('ZMS.theme','');
 	ZMS_THEME python:ZMS_THEME!='' and (ZMS_THEME +'/') or '';">
 <tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>

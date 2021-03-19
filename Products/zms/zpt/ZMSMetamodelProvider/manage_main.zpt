@@ -655,7 +655,7 @@ $(function(){
 /**
  * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  * EXPERIMENTAL: Generator for Default-ZPT-Code.
- * Cave: ZPT Processing in Zope4 requires $$ 
+ * Cave: ZPT Processing in Zope5 requires $$ 
  * for JS String Templates, but not Zope2 or Zope5
  * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
@@ -717,7 +717,11 @@ $(function(){
 			tal_defs += `\n\t\t${sid}_target python:${sid}_obj and ${sid}_obj.getHref2IndexHtml(request) or ${sid};`
 		} else if ( meta_model[id]['meta_repetitive'] ) {
 			// ATTRTYPE COMPLEX/REPETITIVE 
-			tal_defs +=`\n\t\t${sid}_list python:zmscontext.filteredChildNodes(request,'${meta_model[id]['meta_type']}');`
+			if (meta_model[id]['meta_type']!='*') {
+				tal_defs +=`\n\t\t${sid}_list python:zmscontext.filteredChildNodes(request,'${meta_model[id]['meta_type']}');`
+			} else {
+				tal_defs +=`\n\t\t${sid}_list python:zmscontext.filteredChildNodes(request);`
+			}
 		} else if ( meta_model[id]['meta_type'] == 'Script (Python)' ) {
 			// ATTRTYPE PYTHON SCRIPT (ZOPE OBJECT)
 			tal_defs += `\n\t\t${sid} here/${id};`
@@ -763,7 +767,7 @@ $(function(){
 	Object.keys(meta_model).forEach(tal_content_render);
 	
 	// Assemble TAL-Code
-	var default_template = `<div title="EXPERIMENTAL: Generator for Default-ZPT-Code" 
+	var default_template = `<div title="Default-ZPT-Code" 
 		tal:define="zmscontext options/zmscontext;
 		id python:zmscontext.getId();
 		css_class python:zmscontext.meta_id;${tal_defs}"

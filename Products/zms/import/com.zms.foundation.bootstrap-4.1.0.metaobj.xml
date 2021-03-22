@@ -177,6 +177,8 @@
 
 <tal:block tal:define="
 		zmscontext options/zmscontext;
+	    Std modules/Products.PythonScripts/standard;
+	    newline_to_br nocall:Std/newline_to_br;
 		id zmscontext/id;
 		img python:zmscontext.attr('image');
 		src python:img and img.getHref(request) or None;
@@ -192,7 +194,7 @@
 		<div class="card-body">
 			<h5 class="card-title" tal:condition="title" tal:content="structure title">Card title</h5>
 			<h6 class="card-subtitle mb-2 text-muted" tal:condition="subtitle" tal:content="structure subtitle">Card subtitle</h6>
-			<p class="card-text" tal:condition="text" tal:content="structure text">
+			<p class="card-text" tal:condition="text" tal:content="structure python:newline_to_br(text)">
 				Some quick example text to build on the card title and make up the bulk of the card's content.
 			</p>
 			<tal:block tal:condition="linklist" tal:repeat="link linklist" 
@@ -1201,13 +1203,13 @@
 		text python:zmscontext.attr('text');
 		linklist python:zmscontext.getChildNodes(request,['bt_link_list']) and zmscontext.links.attr('links') or None;">
 	<div class="jumbotron">
-		<h1 class="display-4" tal:content="structure title">Jumbotron title</h1>
-		<p class="lead" tal:content="structure subtitle" tal:condition="subtitle">Jumbotron subtitle</p>
-		<hr class="my-4"/>
+		<h1 tal:condition="title" class="display-4" tal:content="structure title">Jumbotron title</h1>
+		<p tal:condition="subtitle" class="lead" tal:content="structure subtitle" tal:condition="subtitle">Jumbotron subtitle</p>
+		<hr tal:condition="python: title or subtitle" class="my-4"/>
 		<p tal:content="structure text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 		<p class="lead" tal:condition="linklist">
 			<tal:block tal:repeat="link linklist" tal:on-error="structure string:<!-- ERROR: linklist -->">
-				<a	class="btn btn-primary btn-lg" role="button" 
+				<a	class="btn btn-primary btn-lg mb-3" role="button" 
 					tal:define="
 						url link/url; 
 						url_obj python:'{' in url and zmscontext.getLinkObj(url,request) or None; 

@@ -30,8 +30,8 @@ from Products.zms import _globals
 def br_quote(text, subtag, REQUEST):
   if len(subtag) == 0:
     return text
-  if type(text) not in [str, str]:
-    text = str(text)
+  if standard.is_str(text):
+    text = standard.pybytes(text)
   rtn = ''
   qcr = ''
   qtab = '&nbsp;'*6

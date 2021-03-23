@@ -328,11 +328,12 @@ class ZReferableItem(object):
   # ----------------------------------------------------------------------------
   def validateInlineLinkObj(self, text):
     if not int(self.getConfProperty('ZReferableItem.validateLinkObj', 1)): return text
+    text = standard.pybytes(text)
     for pq in [('<a(.*?)>', 'href'), ('<img(.*?)>', 'src')]:
       p = pq[0]
       q = pq[1]
       r = re.compile(p)
-      for f in r.findall(standard.pybytes(text)):
+      for f in r.findall(text):
         d = dict(re.findall('\\s(.*?)="(.*?)"', f))
         if 'data-id' in d:
           old = p.replace('(.*?)', f)
@@ -340,7 +341,7 @@ class ZReferableItem(object):
           ild = getInternalLinkDict(self, url)
           for k in ild:
             d[{'data-url':q}.get(k, k)] = ild[k]
-          new = p.replace('(.*?)', ' '.join(['']+['%s="%s"'%(x,d[x]) for x in d]))
+          new = p.replace('(.*?)', ' '.join(['']+['%s="%s"'%(x,standard.pybytes(d[x])) for x in d]))
           if old != new:
             text = text.replace(old, new)
     return text

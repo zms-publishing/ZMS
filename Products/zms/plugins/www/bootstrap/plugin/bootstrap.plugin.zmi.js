@@ -989,16 +989,16 @@ ZMI.prototype.initInputFields = function(container) {
 				});
 			// Icon-Class
 			$('input.zmi-input-icon-clazz',this).each(function() {
-				$(this).wrap( '<div class="input-group"></div>' );
-				$(this).before('<span class="input-group-text"><i class="fas fa-invisible"></i></span>');
-				$(this).parent().children('span.input-group-text').wrap( '<div class="input-group-prepend"></div>');
+				$var $input = $(this);
+				$input.wrap( '<div class="input-group"></div>' );
+				$input.before('<span class="input-group-text"><i class="fas fa-invisible"></i></span>');
+				$input.parent().children('span.input-group-text').wrap( '<div class="input-group-prepend"></div>');
 				var fn = function() {
-					var $input = $(this);
-					var $formGroup = $input.parents(".form-group");
-					var $i = $("i",$formGroup);
+					var $container = $input.parents(".input-group");
+					var $i = $("i",$container);
 					$i.attr("class",$input.val());
 				};
-				$(this).change(fn).keyup(fn).change();
+				$input.change(fn).keyup(fn).change();
 			});
 			// Url-Picker
 			var fn_url_input_each = function() {

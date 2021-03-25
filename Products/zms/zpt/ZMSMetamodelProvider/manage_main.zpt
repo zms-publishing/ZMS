@@ -288,7 +288,10 @@
 										</tal:block>
 									</select>
 								</div>
-								<div class="single-line zmi-code" tal:condition="python:objAttr['type'] in ['constant']">
+								<tal:block tal:condition="python:objAttr['type'] in ['constant'] and objAttr['id'].startswith('icon')">
+									<input class="form-control form-control-sm zmi-input-icon-clazz" type="text" tal:attributes="name python:'attr_custom_%s'%objAttr['id']; value python:objAttr.get('custom','')"/>
+								</tal:block>
+								<div class="single-line zmi-code" tal:condition="python:objAttr['type'] in ['constant'] and not objAttr['id'].startswith('icon')">
 									<textarea tal:attributes="name python:'attr_custom_%s'%objAttr['id']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]" tal:content="python:objAttr.get('custom','')">custom</textarea>
 								</div>
 								<div class="single-line zmi-code" tal:condition="python:objAttr['type'] not in ['boolean','autocomplete','multiautocomplete','multiselect','select','color','*'] and objAttr['type'] in here.valid_types">

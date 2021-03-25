@@ -1191,6 +1191,7 @@ class ZMSMetaobjManager(object):
               self.setMetaobj( newValue)
               # Insert Attributes.
               if newValue['type'] == 'ZMSDocument':
+                message += self.setMetaobjAttr(id, None, newId='icon_clazz', newName='Icon (Class)', newType='constant', newCustom='fas fa-file-alt')
                 message += self.setMetaobjAttr(id, None, newId='titlealt', newType='titlealt')
                 message += self.setMetaobjAttr(id, None, newId='title', newType='title')
               elif newValue['type'] == 'ZMSTeaserElement':

@@ -673,38 +673,14 @@ def nvl(a1, a2, n=None):
     return a2
 
 
-class SessionBTreeWrapper:
-  
-  def __init__(self, t):
-    self.t = t
-  
-  security.declarePublic('set')
-  def set(self, k, v):
-    self.t.update({k:v})
-    return v
-
-  security.declarePublic('get')
-  def get(self, k, v=None):
-    return self.t.get(k,v)
-
-
 security.declarePublic('get_session')
 def get_session(context):
   """
   Get http-session.
   """
   create_session_storage_if_neccessary(context)
-  req = getattr( context, 'REQUEST', None)
-  req_session = req.get('SESSION',req.environ.get('beaker.session',None))
-  session = None
-  if req_session:
-    if req_session.get('__zms_session__') is None:
-      from BTrees.OOBTree import OOBTree
-      try:
-        req_session.set('__zms_session__',OOBTree()) # FIXME: why does set work?
-      except:
-        req_session['__zms_session__'] = OOBTree()
-    session = SessionBTreeWrapper(req_session.get('__zms_session__'))
+  request = getattr( context, 'REQUEST', None)
+  session = request.get('SESSION',request.environ.get('beaker.session',None))
   return session
 
 security.declarePublic('create_session_storage_if_neccessary')

@@ -989,7 +989,7 @@ ZMI.prototype.initInputFields = function(container) {
 				});
 			// Icon-Class
 			$('input.zmi-input-icon-clazz',this).each(function() {
-				$var $input = $(this);
+				var $input = $(this);
 				$input.wrap( '<div class="input-group"></div>' );
 				$input.before('<span class="input-group-text"><i class="fas fa-invisible"></i></span>');
 				$input.parent().children('span.input-group-text').wrap( '<div class="input-group-prepend"></div>');

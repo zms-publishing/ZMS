@@ -136,7 +136,7 @@ function zmiFormSubmit(sender,d) {
 			Dictionary
 		</span>
 	</legend>
-	<table class="table table-sm table-striped table-bordered table-hover">
+	<table class="table table-sm table-striped table-bordered table-hover table-responsive">
 	<thead>
 	<tr>
 		<th class="text-center">

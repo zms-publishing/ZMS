@@ -850,7 +850,7 @@ li.zmi-item span.zmi-ids {
 .zmi-manage-main-change .zmi-state.far:before {
 	font-weight: 400;
 }
-/* Contraints */
+/* Constraints */
 .zmi-manage-main-change .constraint {
 	display: inline;
 }
@@ -995,6 +995,12 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 }
 .single-line.input-group .input-group-prepend span.btn.btn-secondary:hover i {
 	color:#999 !important;
+}
+.zmi.config.languages #changeLangDictForm textarea.form-control:focus {
+	min-width: 20rem;
+}
+.zmi.config.languages #zmiModalimportLangDict.modal .controls  {
+	margin-top:2rem;
 }
 
 /* BREADCRUMB NAV */

@@ -112,7 +112,7 @@ $ZMI.registerReady(function(){
 					self.location.href = href;
 				}
 				else {
-					href += '?lang='+lang;
+					href += '?lang='+lang +'&preview=contentEditable';
 					window.top.location.href = href;
 				}
 			})

@@ -65,16 +65,24 @@ $ZMI.registerReady(function(){
 	if (self.location.href.indexOf('/manage')>0 || self.location.href.indexOf('preview=preview')>0) {
 		var hilight_css = `
 			<style type="text/css">
-				.contentEditable:hover {
+				body:not(.zmi) .contentEditable.zmi-highlight:hover {
 					cursor:pointer;
 					background:unset !important;
 					box-shadow: 0 0 0 1px black;
-					cursor: url("data:image/svg+xml;utf8,<svg width='20' height='20' viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'><circle fill='black' cx='256' cy='256' r='247.66' /><path d='m400 284c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12z' fill='white'/></svg>") 16 0,auto;
+				}
+				body:not(.zmi) .contentEditable.zmi-highlight:hover:before {
+					content:" ";
+					width:20px;
+					height:20px;
+					position:absolute;
+					background-color:black;
+					background-image: url("data:image/svg+xml;utf8,<svg width='20' height='20' viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'><circle fill='black' cx='256' cy='256' r='247.66' /><path d='m400 284c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12z' fill='white'/></svg>");
 				}
 			</style>`;
 		$('head').append(hilight_css);
 		$('.contentEditable')
 			.mouseover( function(evt) {
+					evt.stopPropagation();
 					$(this).addClass('zmi-highlight'); 
 				})
 			.mouseout( function(evt) {

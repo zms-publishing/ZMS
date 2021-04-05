@@ -806,6 +806,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           # Remain in Current Menu
           REQUEST.set( 'manage_target', '%s/manage_properties'%target_ob.absolute_url())
       elif REQUEST.get('preview','preview')=='contentEditable':
+        target_ob = self
         REQUEST.set( 'manage_target', '%s/preview_html'%target_ob.absolute_url())
       target = REQUEST.get( 'manage_target', '%s/manage_main'%target_ob.absolute_url())
       target = self.url_append_params( target, { 'lang': lang, messagekey: message})

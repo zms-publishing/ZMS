@@ -130,13 +130,14 @@ function zmiFormSubmit(sender,d) {
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<legend>
 		<span class="has_tooltip"
-		data-toggle="tooltip" data-placement="right" title="Tooltip"
-		tal:attributes="title python:here.getZMILangStr('TIP_MULTILANGDICT')"
-		tal:content="python:here.getZMILangStr('ATTR_DICTIONARY')">
+			data-toggle="tooltip" data-placement="right" title="Tooltip"
+			tal:attributes="title python:here.getZMILangStr('TIP_MULTILANGDICT')"
+			tal:content="python:here.getZMILangStr('ATTR_DICTIONARY')">
 			Dictionary
 		</span>
 	</legend>
-	<table class="table table-sm table-striped table-bordered table-hover table-responsive">
+	<table class="table table-sm table-striped table-bordered table-hover table-responsive"
+		tal:attributes="class python:'table table-sm table-striped table-bordered table-hover %s'%(len(langIds)>6 and 'table-responsive' or '')">
 	<thead>
 	<tr>
 		<th class="text-center">

@@ -461,6 +461,13 @@ class AccessableContainer(AccessableObject):
           permissions = standard.concat_list(permissions, role_permissions)
         standard.writeLog(self, '[synchronizeRolesAccess]: role_to_manage=%s, permissions=%s'%(i[0], str(permissions)))
         self.manage_role(role_to_manage=i[0], permissions=permissions)
+      # Grant View permission to Authenticated.
+      for i in [['Authenticated',['View']]]:
+        role = i[0]
+        permissions = i[1]
+        role_permissions = [x['name'] for x in self.permissionsOfRole(role) if x['selected'] == 'SELECTED']
+        permissions = standard.concat_list(permissions, role_permissions)
+        self.manage_role(role_to_manage=role, permissions=permissions)
 
     # --------------------------------------------------------------------------
     #  AccessableContainer.grantPublicAccess:

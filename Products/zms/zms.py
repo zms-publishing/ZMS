@@ -275,6 +275,10 @@ class ZMS(
 
     # Management Permissions.
     # -----------------------
+    __viewPermissions__ = (
+        'manage', 'manage_main', 'manage_main_iframe', 'manage_container', 'manage_workspace', 'manage_menu',
+        'manage_ajaxGetChildNodes',
+        )
     __administratorPermissions__ = (
         'manage_customize',
         'manage_customizeInstalledProducts',
@@ -283,7 +287,6 @@ class ZMS(
         'manage_customizeDesign', 'manage_customizeDesignForm',
         )
     __authorPermissions__ = (
-        'manage', 'manage_main', 'manage_main_iframe', 'manage_workspace',
         'manage_addZMSModule',
         'manage_deleteObjs', 'manage_undoObjs',
         'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',
@@ -291,6 +294,7 @@ class ZMS(
         'manage_ajaxDragDrop', 'manage_ajaxZMIActions',
         'manage_properties', 'manage_changeProperties', 'manage_changeTempBlobjProperty',
         'manage_wfTransition', 'manage_wfTransitionFinalize',
+        'manage_RefForm',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
         'manage_executeMetacmd',
@@ -299,6 +303,7 @@ class ZMS(
         'manage_users', 'manage_users_sitemap', 'manage_userProperties', 'manage_roleProperties', 'userdefined_roles',
         )
     __ac_permissions__=(
+        ('View', __viewPermissions__),
         ('ZMS Administrator', __administratorPermissions__),
         ('ZMS Author', __authorPermissions__),
         ('ZMS UserAdministrator', __userAdministratorPermissions__),

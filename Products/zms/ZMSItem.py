@@ -49,14 +49,11 @@ class ZMSItem(
     
     # Management Permissions.
     # -----------------------
-    __authorPermissions__ = (
-      'manage_page_header', 'manage_page_footer', 'manage_tabs', 'manage_main_iframe' 
-      )
     __viewPermissions__ = (
-      'manage_menu',
+        'manage_page_header', 'manage_page_footer', 'manage_tabs',
+        'manage', 'manage_main', 'manage_main_iframe', 'manage_container', 'manage_workspace', 'manage_menu',
       )
     __ac_permissions__=(
-      ('ZMS Author', __authorPermissions__),
       ('View', __viewPermissions__),
       )
 
@@ -139,10 +136,18 @@ class ZMSItem(
       if 'zmi-manage-system' in request.form:
         standard.set_session_value(self,'zmi-manage-system',int(request.get('zmi-manage-system',0)))
       # manage must not be accessible for Anonymous
+      auth_user = request['AUTHENTICATED_USER']
       if request['URL0'].find('/manage') >= 0:
-        lower = self.getUserAttr(request['AUTHENTICATED_USER'],'attrActiveStart','')
-        upper = self.getUserAttr(request['AUTHENTICATED_USER'],'attrActiveEnd','')
-        if not standard.todayInRange(lower, upper) or request['AUTHENTICATED_USER'].has_role('Anonymous'):
+        lower = self.getUserAttr(auth_user,'attrActiveStart','')
+        upper = self.getUserAttr(auth_user,'attrActiveEnd','')
+        if not standard.todayInRange(lower, upper) or auth_user.has_role('Anonymous'):
+          import zExceptions
+          raise zExceptions.Unauthorized
+      if len(auth_user.getRolesInContext(self))==1 and auth_user.has_role('Authenticated'):
+        register = self.getConfProperty('ZMS.register.href','')
+        if register:
+          request.RESPONSE.redirect(register)
+        else:
           import zExceptions
           raise zExceptions.Unauthorized
       # avoid declarative urls

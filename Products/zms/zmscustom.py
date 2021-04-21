@@ -160,9 +160,11 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
 
     # Management Permissions.
     # -----------------------
+    __viewPermissions__ = (
+        'manage', 'manage_main', 'manage_main_iframe', 'manage_container', 'manage_workspace', 'manage_menu',
+        'manage_ajaxGetChildNodes',
+        )
     __authorPermissions__ = (
-        'manage', 'manage_main', 'manage_main_iframe', 'manage_container', 'manage_workspace',
-        'manage_menu',
         'manage_addZMSModule',
         'manage_changeRecordSet',
         'manage_properties', 'manage_changeProperties', 'manage_changeTempBlobjProperty',
@@ -171,16 +173,14 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         'manage_ajaxDragDrop', 'manage_ajaxZMIActions',
         'manage_UndoVersionForm', 'manage_UndoVersion',
         'manage_wfTransition', 'manage_wfTransitionFinalize',
+        'manage_RefForm',
         'manage_userForm', 'manage_user',
         'manage_importexport', 'manage_import', 'manage_export',
         'manage_executeMetacmd',
         )
-    __viewPermissions__ = (
-        'manage_ajaxGetChildNodes',
-        )
     __ac_permissions__=(
-        ('ZMS Author', __authorPermissions__),
         ('View', __viewPermissions__),
+        ('ZMS Author', __authorPermissions__),
         )
 
 

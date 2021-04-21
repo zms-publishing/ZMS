@@ -143,10 +143,16 @@ class ZMSItem(
         if not standard.todayInRange(lower, upper) or auth_user.has_role('Anonymous'):
           import zExceptions
           raise zExceptions.Unauthorized
+      # manage may be registrable for Authenticated without permissions
       if len(auth_user.getRolesInContext(self))==1 and auth_user.has_role('Authenticated'):
+        standard.writeError(self, "[zmi_page_request]: %s"%str(auth_user))
         register = self.getConfProperty('ZMS.register.href','')
-        if register:
-          request.RESPONSE.redirect(register)
+        if len(register) > 0:
+          url = standard.url_append_params(register,{'came_from':request['URL0']})
+          standard.writeError(self, "[zmi_page_request]: redirect to %s"%str(url))
+          RESPONSE.redirect(url, lock=1)
+          RESPONSE.setHeader('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT')
+          RESPONSE.setHeader('Cache-Control', 'no-cache')
         else:
           import zExceptions
           raise zExceptions.Unauthorized

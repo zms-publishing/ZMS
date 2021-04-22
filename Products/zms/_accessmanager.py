@@ -798,11 +798,14 @@ class AccessManager(AccessableContainer):
         # TODO make this code more generic and remove hard-coded dependency to ZMS PluggableAuthService SSO Plugin
         if userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'ZMS PluggableAuthService SSO Plugin':
            user_attr = self.getUserAttr(name)
+           user['debug'] = {}
+           user['debug']['user_attr'] = user_attr
            if user_attr is not None:
              for id in user_attr:
                name = id
                label = name.capitalize()
                value = user_attr[id]
+               user['debug'][id] = {'name':name,'label':label,'value':value}
                user['details'].append({'name':name,'label':label,'value':value})
         # Skip private (e.g. User ID)
         user['details'] = [x for x in user['details'] if not x['label'].startswith('_')]

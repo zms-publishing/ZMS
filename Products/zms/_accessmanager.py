@@ -778,10 +778,10 @@ class AccessManager(AccessableContainer):
         # Details
         user['details'] = []
         if 'user_id' in user:
-          name = 'user_id'
+          key = 'user_id'
           label = 'User Id'
           value = user['user_id']
-          user['details'].append({'name':name,'label':label,'value':value})
+          user['details'].append({'name':key,'label':label,'value':value})
         # LDAPUserFolder: handle schema
         ldapUserFldr = None
         if userFldr.meta_type == 'LDAPUserFolder':
@@ -790,23 +790,21 @@ class AccessManager(AccessableContainer):
           ldapUserFldr = getattr(user['plugin'],'acl_users')
         if ldapUserFldr is not None:
           for schema in ldapUserFldr.getLDAPSchema():
-            name = schema[0]
+            key = schema[0]
             label = schema[1]
-            value = user.get(name,'')
-            user['details'].append({'name':name,'label':label,'value':value})
+            value = user.get(key,'')
+            user['details'].append({'name':key,'label':label,'value':value})
         # ZMS PluggableAuthService SSO Plugin: handle dict
         # TODO make this code more generic and remove hard-coded dependency to ZMS PluggableAuthService SSO Plugin
         if userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'ZMS PluggableAuthService SSO Plugin':
            user_attr = self.getUserAttr(name)
-           user['debug'] = {}
-           user['debug']['user_attr'] = user_attr
            if user_attr is not None:
              for id in user_attr:
-               name = id
-               label = name.capitalize()
-               value = user_attr[id]
-               user['debug'][id] = {'name':name,'label':label,'value':value}
-               user['details'].append({'name':name,'label':label,'value':value})
+               if id not in user:
+                 key = id
+                 label = ' '.join([x.capitalize() for x in key.split('_')])
+                 value = user_attr[id]
+                 user['details'].append({'name':key,'label':label,'value':value})
         # Skip private (e.g. User ID)
         user['details'] = [x for x in user['details'] if not x['label'].startswith('_')]
       return user

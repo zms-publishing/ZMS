@@ -853,6 +853,12 @@ class AccessManager(AccessableContainer):
       return v
 
     # --------------------------------------------------------------------------
+    #  AccessManager.delUser:
+    # --------------------------------------------------------------------------
+    def delUser(self, id):
+      deleteUser(self, id)
+
+    # --------------------------------------------------------------------------
     #  AccessManager.delUserAttr:
     # --------------------------------------------------------------------------
     def delUserAttr(self, user):
@@ -917,7 +923,7 @@ class AccessManager(AccessableContainer):
         d = self.getSecurityUsers()
         for userid in d:
           if userid is None:
-            deleteUser(self, userid)
+            self.delUser(userid)
           else:
             nodes = self.getUserAttr(userid, 'nodes', {}) 
             for node in list(nodes):
@@ -1199,7 +1205,7 @@ class AccessManager(AccessableContainer):
         elif btn in ['delete', 'remove', 'BTN_DELETE']:
           if key=='obj':
             #-- Delete user.
-            deleteUser(self, id)
+            self.delUser(id)
             #-- Remove user.
             if btn == 'remove':
               userAdderPlugin = self.getUserAdderPlugin()

@@ -761,8 +761,8 @@ class AccessManager(AccessableContainer):
       if columns is None:
         columns = c
       return {'columns':columns,'records':records}
-  
-  
+
+
     # --------------------------------------------------------------------------
     #  AccessManager.findUser:
     # --------------------------------------------------------------------------
@@ -782,21 +782,30 @@ class AccessManager(AccessableContainer):
           label = 'User Id'
           value = user['user_id']
           user['details'].append({'name':name,'label':label,'value':value})
-        # LDAP schema
+        # LDAPUserFolder: handle schema
         ldapUserFldr = None
         if userFldr.meta_type == 'LDAPUserFolder':
           ldapUserFldr = userFldr
         elif userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'LDAP Multi Plugin':
           ldapUserFldr = getattr(user['plugin'],'acl_users')
         if ldapUserFldr is not None:
-          details = ldapUserFldr.getUserDetails(encoded_dn=user['dn'],format='dictionary')
           for schema in ldapUserFldr.getLDAPSchema():
             name = schema[0]
             label = schema[1]
             value = user.get(name,'')
             user['details'].append({'name':name,'label':label,'value':value})
-          # User ID
-          user['details'] = [x for x in user['details'] if not x['label'].startswith('_')]
+        # ZMS PluggableAuthService SSO Plugin: handle dict
+        # TODO make this code more generic and remove hard-coded dependency to ZMS PluggableAuthService SSO Plugin
+        if userFldr.meta_type == 'Pluggable Auth Service' and user['plugin'].meta_type == 'ZMS PluggableAuthService SSO Plugin':
+           user_attrs = self.getUserAttrs(name)
+           for id in user_attrs:
+             if id not in user:
+               name = id
+               label = name.capitalize()
+               value = user_attrs[id]
+               user['details'].append({'name':name,'label':label,'value':value})
+        # Skip private (e.g. User ID)
+        user['details'] = [x for x in user['details'] if not x['label'].startswith('_')]
       return user
 
 

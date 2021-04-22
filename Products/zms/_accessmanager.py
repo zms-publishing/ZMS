@@ -800,11 +800,10 @@ class AccessManager(AccessableContainer):
            user_attr = self.getUserAttr(name)
            if user_attr is not None:
              for id in user_attr:
-               if id not in user:
-                 name = id
-                 label = name.capitalize()
-                 value = user_attr[id]
-                 user['details'].append({'name':name,'label':label,'value':value})
+               name = id
+               label = name.capitalize()
+               value = user_attr[id]
+               user['details'].append({'name':name,'label':label,'value':value})
         # Skip private (e.g. User ID)
         user['details'] = [x for x in user['details'] if not x['label'].startswith('_')]
       return user

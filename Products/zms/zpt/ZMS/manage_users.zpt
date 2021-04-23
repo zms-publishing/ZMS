@@ -473,6 +473,7 @@ function zmiModalInsertUserOpen(context) {
 	<tr tal:repeat="userName userNames" tal:attributes="id userName" class="userName">
 		<td tal:define="
 				securityUser python:securityUsers.get(userName,{});
+				label python:securityUser.get('label',securityUser.get('details',{}).get('label',None));
 				lower python:securityUser.get('attrActiveStart',None);
 				upper python:securityUser.get('attrActiveEnd',None);
 				active python:standard.todayInRange(lower, upper);
@@ -486,7 +487,9 @@ function zmiModalInsertUserOpen(context) {
 					class python:['','text-muted'][acquired or not active];"
 				><span><i class="fas fa-user"></i> <tal:block tal:content="userName">userName</tal:block></span>
 			</a><tal:block tal:condition="python:len(nodes)>0"
-				>&nbsp;(<tal:block tal:define="
+				>&nbsp;(
+						<tal:block tal:condition="label"><tal:block tal:content="label"></tal:block>,</tal:block>
+						<tal:block tal:define="
 						all_roles python:sum([nodes[x].get('roles',[]) for x in nodes],[]);
 						distinct_roles python:standard.distinct_list(all_roles);
 						sorted_roles python:standard.sort_list([(here.getRoleName(x),x) for x in distinct_roles]);

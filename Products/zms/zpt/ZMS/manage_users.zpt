@@ -486,7 +486,7 @@ function zmiModalInsertUserOpen(context) {
 				tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],userName); 
 					class python:['','text-muted'][acquired or not active];"
 				><span><i class="fas fa-user"></i> <tal:block tal:content="userName">userName</tal:block></span>
-			</a><tal:block tal:condition="python:len(nodes)>0"
+			</a><tal:block tal:condition="python:label or len(nodes)>0"
 				>&nbsp;(
 						<tal:block tal:condition="label"><tal:block tal:content="label"></tal:block>,</tal:block>
 						<tal:block tal:define="

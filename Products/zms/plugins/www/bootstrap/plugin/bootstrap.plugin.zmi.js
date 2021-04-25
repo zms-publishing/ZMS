@@ -5,113 +5,112 @@ $ZMI.registerReady(function(){
 	var manage_menu = typeof window.parent.frames!="undefined"&&typeof window.parent.frames.manage_menu!="undefined";
 
 	$("body").each(function() {
-			var data_root = $(this).attr('data-root');
-			var data_path = $(this).attr('data-path');
-			if (typeof data_root != "undefined" && typeof data_path != "undefined") {
-				// Bookmark
-				if (manage_menu) {
-					$("#zmi-tab .breadcrumb .active").each(function() {
-							$(this).append(' <a href="javascript:;" title="Bookmark"><i class="fas fa-bookmark-empty text-muted"></a>');
-							var key = "ZMS."+data_root+".bookmarks";
-							var bookmarks = $ZMILocalStorageAPI.get(key,[]);
-							$("a:last",this).click(function() {
-									var index = bookmarks.indexOf(data_path);
-									if (index >= 0) {
-										bookmarks.splice(index,1);
-										$('.fa-bookmark',this).removeClass("fa-bookmark text-primary").addClass("fa-bookmark-empty text-muted");
-									}
-									else {
-										bookmarks.push(data_path);
-										$('.fa-bookmark-empty',this).removeClass("fa-bookmark-empty text-muted").addClass("fa-bookmark text-primary");
-									}
-									$ZMILocalStorageAPI.replace(key,bookmarks);
-									var frames = window.parent.frames;
-									try {
-									for (var i = 0; i < frames.length; i++) {
-										if (frames[i] != window && typeof frames[i].zmiBookmarksChanged == "function") {
-											frames[i].zmiBookmarksChanged();
-										}
-									}
-									}
-									catch (e) {
-									}
-								});
-							var index = bookmarks.indexOf(data_path);
-							if (index >= 0) {
-								$('.fa-bookmark-empty',this).removeClass("fa-bookmark-empty text-muted").addClass("fa-bookmark text-primary");
+		var data_root = $(this).attr('data-root');
+		var data_path = $(this).attr('data-path');
+		if (typeof data_root != "undefined" && typeof data_path != "undefined") {
+			// Bookmark
+			if (manage_menu) {
+				$("#zmi-tab .breadcrumb .active").each(function() {
+					$(this).append(' <a href="javascript:;" title="Bookmark"><i class="fas fa-bookmark-empty text-muted"></a>');
+					var key = "ZMS."+data_root+".bookmarks";
+					var bookmarks = $ZMILocalStorageAPI.get(key,[]);
+					$("a:last",this).click(function() {
+						var index = bookmarks.indexOf(data_path);
+						if (index >= 0) {
+							bookmarks.splice(index,1);
+							$('.fa-bookmark',this).removeClass("fa-bookmark text-primary").addClass("fa-bookmark-empty text-muted");
+						}
+						else {
+							bookmarks.push(data_path);
+							$('.fa-bookmark-empty',this).removeClass("fa-bookmark-empty text-muted").addClass("fa-bookmark text-primary");
+						}
+						$ZMILocalStorageAPI.replace(key,bookmarks);
+						var frames = window.parent.frames;
+						try {
+						for (var i = 0; i < frames.length; i++) {
+							if (frames[i] != window && typeof frames[i].zmiBookmarksChanged == "function") {
+								frames[i].zmiBookmarksChanged();
 							}
-							else {
-								$('.fa-bookmark',this).removeClass("fa-bookmark text-primary").addClass("fa-bookmark-empty text-muted");
-							}
-						});
-				}
-				// History
-				var key = "ZMS."+data_root+".history";
-				var history = $ZMILocalStorageAPI.get(key,[]);
-				var index = history.indexOf(data_path);
-				if (index >= 0) {
-					history.splice(index,1);
-				}
-				history.splice(0,0,data_path);
-				while (history.length > 10) {
-					history.splice(history.length-1,1);
-				}
-				$ZMILocalStorageAPI.replace(key,history);
-				var frames = window.parent.frames;
-				try {
-				for (var i = 0; i < frames.length; i++) {
-					if (frames[i] != window && typeof frames[i].zmiHistoryChanged == "function") {
-						frames[i].zmiHistoryChanged();
+						}
+						}
+						catch (e) {
+						}
+					});
+					var index = bookmarks.indexOf(data_path);
+					if (index >= 0) {
+						$('.fa-bookmark-empty',this).removeClass("fa-bookmark-empty text-muted").addClass("fa-bookmark text-primary");
+					} else {
+						$('.fa-bookmark',this).removeClass("fa-bookmark text-primary").addClass("fa-bookmark-empty text-muted");
 					}
-				}
-				}
-				catch (e) {
+				});
+			}
+			// History
+			var key = "ZMS."+data_root+".history";
+			var history = $ZMILocalStorageAPI.get(key,[]);
+			var index = history.indexOf(data_path);
+			if (index >= 0) {
+				history.splice(index,1);
+			}
+			history.splice(0,0,data_path);
+			while (history.length > 10) {
+				history.splice(history.length-1,1);
+			}
+			$ZMILocalStorageAPI.replace(key,history);
+			var frames = window.parent.frames;
+			try {
+			for (var i = 0; i < frames.length; i++) {
+				if (frames[i] != window && typeof frames[i].zmiHistoryChanged == "function") {
+					frames[i].zmiHistoryChanged();
 				}
 			}
-		});
+			}
+			catch (e) {
+			}
+		}
+	});
 
-  var $change_dt = $(".zmi-change-dt,.zmi-created-dt");
-  if ($change_dt.length > 0) {
-    var fn = function() {
-        $change_dt.each(function() {
-          var $el = $(this);
-          var mydate = $el.attr("title");
-          if (typeof mydate=="undefined") {
-            mydate = $el.text();
-          }
-          var myformat = getZMILangStr('DATETIME_FMT');
-          var dtsplit=mydate.split(/[\/ .:]/);
-          var dfsplit=myformat.split(/[\/ .:]/);
-          // creates assoc array for date
-          df = new Array();
-          for(dc=0;dc<dtsplit.length;dc++) {
-            df[dfsplit[dc]]=dtsplit[dc];
-            df[dfsplit[dc].substr(1)]=parseInt(dtsplit[dc]);
-          }
-          var dstring = df['%Y']+'-'+df['%m']+'-'+df['%d']+' '+df['%H']+':'+df['%M']+':'+df['%S'];
-          var date = new Date(df['Y'],df['m']-1,df['d']);
-          var now = new Date();
-          now.setHours(0,0,0);
-          var daysBetween = (now.valueOf()-date.valueOf())/(24*60*60*1000);
-          if (daysBetween<1) {
-            date = new Date(df['Y'],df['m']-1,df['d'],df['H'],df['M'],df['S']);
-            now = new Date();
-            var secondsBetween = (now.valueOf()-date.valueOf())/(1000);
-            var minutesBetween = secondsBetween/(60);
-            $(this).text(getZMILangStr('TODAY')+" "+(minutesBetween<60?Math.floor(minutesBetween)+" min. ":df['%H']+':'+df['%M']));
-          }
-          else if (daysBetween<2) {
-            $(this).text(getZMILangStr('YESTERDAY')+" "+df['%H']+':'+df['%M']);
-          }
-          else {
-            $(this).text(getZMILangStr('DATE_FMT').replace('%Y',df['%Y']).replace('%m',df['%m']).replace('%d',df['%d']));
-          }
-        $(this).attr("title",mydate);
-      });
-      setTimeout(fn,10000);
-    };
-    fn();
-  }
+	var $change_dt = $(".zmi-change-dt,.zmi-created-dt");
+	if ($change_dt.length > 0) {
+		var fn = function() {
+				$change_dt.each(function() {
+					var $el = $(this);
+					var mydate = $el.attr("title");
+					if (typeof mydate=="undefined") {
+						mydate = $el.text();
+					}
+					var myformat = getZMILangStr('DATETIME_FMT');
+					var dtsplit=mydate.split(/[\/ .:]/);
+					var dfsplit=myformat.split(/[\/ .:]/);
+					// creates assoc array for date
+					df = new Array();
+					for(dc=0;dc<dtsplit.length;dc++) {
+						df[dfsplit[dc]]=dtsplit[dc];
+						df[dfsplit[dc].substr(1)]=parseInt(dtsplit[dc]);
+					}
+					var dstring = df['%Y']+'-'+df['%m']+'-'+df['%d']+' '+df['%H']+':'+df['%M']+':'+df['%S'];
+					var date = new Date(df['Y'],df['m']-1,df['d']);
+					var now = new Date();
+					now.setHours(0,0,0);
+					var daysBetween = (now.valueOf()-date.valueOf())/(24*60*60*1000);
+					if (daysBetween<1) {
+						date = new Date(df['Y'],df['m']-1,df['d'],df['H'],df['M'],df['S']);
+						now = new Date();
+						var secondsBetween = (now.valueOf()-date.valueOf())/(1000);
+						var minutesBetween = secondsBetween/(60);
+						$(this).text(getZMILangStr('TODAY')+" "+(minutesBetween<60?Math.floor(minutesBetween)+" min. ":df['%H']+':'+df['%M']));
+					}
+					else if (daysBetween<2) {
+						$(this).text(getZMILangStr('YESTERDAY')+" "+df['%H']+':'+df['%M']);
+					}
+					else {
+						$(this).text(getZMILangStr('DATE_FMT').replace('%Y',df['%Y']).replace('%m',df['%m']).replace('%d',df['%d']));
+					}
+				$(this).attr("title",mydate);
+			});
+			setTimeout(fn,10000);
+		};
+		fn();
+	}
 
 	// Toggle: Classical Sitemap Icon
 	$('a#navbar-sitemap').each(function() {
@@ -154,188 +153,188 @@ $ZMI.registerReady(function(){
 		}
 	});
 
-  // Filters
-  $(".collapse.filters").each(function() {
-      var $body = $(this);
-      var f = function() {
-          // Ensure at least one empty filter (cloned from hidden prototype).
-          var $hidden = $(".form-group.d-none",$body);
-          var $other = $hidden.prevAll(".form-group");
-          var $selects = $("select[name^='filterattr']",$other);
-          var i = 0;
-          var c = 0;
-          $selects.each(function() {
-              i++;
-              if ($(this).val()=='') {
-                if (i<$selects.length) {
-                  $(this).parents(".form-group").remove();
-                }
-                c++;
-              }
-            });
-          if (c==0) {
-            var $cloned = $hidden.clone(true);
-            $cloned.insertBefore($hidden).removeClass("d-none");
-          }
-          // Rename filters (ordered by DOM).
-          var qfilters = 0;
-          var d = {}
-          $("*[name^='filter']",$body).each(function() {
-              var nodeName = this.nodeName.toLowerCase();
-              if (nodeName=='input' || nodeName=='select') {
-                var name = $(this).attr("name").replace(/\d/gi,'');
-                if (typeof d[name]=="undefined") {
-                  d[name] = 0;
-                }
-                $(this).attr("name",name+d[name]);
-                qfilters = d[name];
-                d[name]++;
-              }
-            });
-          $("input#qfilters").val(qfilters);
-        };
-      $("select[name^=filterattr]",$body).each(function() {
-          var that = this;
-          $(that).click(f).keyup(f);
-        });
-      f();
-    });
+	// Filters
+	$(".collapse.filters").each(function() {
+		var $body = $(this);
+		var f = function() {
+			// Ensure at least one empty filter (cloned from hidden prototype).
+			var $hidden = $(".form-group.d-none",$body);
+			var $other = $hidden.prevAll(".form-group");
+			var $selects = $("select[name^='filterattr']",$other);
+			var i = 0;
+			var c = 0;
+			$selects.each(function() {
+				i++;
+				if ($(this).val()=='') {
+					if (i<$selects.length) {
+						$(this).parents(".form-group").remove();
+					}
+					c++;
+				}
+			});
+			if (c==0) {
+				var $cloned = $hidden.clone(true);
+				$cloned.insertBefore($hidden).removeClass("d-none");
+			}
+			// Rename filters (ordered by DOM).
+			var qfilters = 0;
+			var d = {}
+			$("*[name^='filter']",$body).each(function() {
+					var nodeName = this.nodeName.toLowerCase();
+					if (nodeName=='input' || nodeName=='select') {
+						var name = $(this).attr("name").replace(/\d/gi,'');
+						if (typeof d[name]=="undefined") {
+							d[name] = 0;
+						}
+						$(this).attr("name",name+d[name]);
+						qfilters = d[name];
+						d[name]++;
+					}
+				});
+			$("input#qfilters").val(qfilters);
+		};
+		$("select[name^=filterattr]",$body).each(function() {
+			var that = this;
+			$(that).click(f).keyup(f);
+		});
+		f();
+	});
 
-  // Filters (ii)
-  // @see zpt/ZMSRecordSet/main_grid.zpt
-  var filter_timeout = null;
-  $('table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable input.form-control:text').keyup(function(e) {
-    var that = this;
-    if ($(that).hasClass("form-disabled")) {
-      return false;
-    }
-    var f = function() {
-        $(that).addClass("form-disabled");
-        var form = that.form;
-        form.action = self.location.href;
-        form.submit();
-      }
-    clearTimeout(filter_timeout);
-    switch (e.keyCode) {
-      case 13:
-        f();
-        return false;
-      default:
-        filter_timeout = setTimeout(f, 500);
-        return true;
-    }
-  });
+	// Filters (ii)
+	// @see zpt/ZMSRecordSet/main_grid.zpt
+	var filter_timeout = null;
+	$('table.table.table-striped.table-bordered.table-hover.zmi-sortable.zmi-selectable input.form-control:text').keyup(function(e) {
+		var that = this;
+		if ($(that).hasClass("form-disabled")) {
+			return false;
+		}
+		var f = function() {
+			$(that).addClass("form-disabled");
+			var form = that.form;
+			form.action = self.location.href;
+			form.submit();
+		}
+		clearTimeout(filter_timeout);
+		switch (e.keyCode) {
+			case 13:
+				f();
+				return false;
+			default:
+				filter_timeout = setTimeout(f, 500);
+				return true;
+		}
+	});
 
 	// Textarea:
 	// single-line
 	$('div.single-line').each(function() {
-			var $single_line = $(this);
-			var $textarea = $('textarea',this);
-			$textarea.prop({rows:1,wrap:'off'});
-			
-			if ($single_line.hasClass("zmi-code")) {
-				$('textarea',$single_line).on('focus', function() {
-					if ( !$(this).hasClass('open-zmi-code') ) {
-						$(this)
-							.addClass('open-zmi-code')
-							.removeClass('alert-warning')
-							.css('height','auto')
-							.animate({height: $(this).prop('scrollHeight') + 'px'},600);
-						if ( $(this).attr('data-dblclickhandler') ) {
-							$(this).dblclick(function(e) {
-								// Show Zope Code editor only if no text is selected
-								var seltxt = window.getSelection().toString();
-								// debugger; console.log('Selected text: ' + seltxt + ' ' + seltxt.length + ' ' +!/\s/.test(seltxt) );
-								if ( seltxt.length == 0 || /\s/.test(seltxt) ) {
-									$('.zmi-code-close',$single_line).remove();
-									$('textarea',$single_line)
-										.animate({height: '30px'},0)
-										.css('height','auto')
-										.removeClass('open-zmi-code')
-										.addClass('alert-warning')
-										.blur();
-									eval($(this).attr('data-dblclickhandler'));
-								};
-							})
-						}
-						// Add closing button
-						var close_btn = '<i title="Close Editing" class="zmi-code-close fas fa-chevron-up text-primary text-center" style="cursor:pointer;margin: 0 0 0 calc(50%);"></i>';
-						$single_line.append(close_btn);
-						$('.zmi-code-close',$single_line).click(
-							function() {
+		var $single_line = $(this);
+		var $textarea = $('textarea',this);
+		$textarea.prop({rows:1,wrap:'off'});
+		
+		if ($single_line.hasClass("zmi-code")) {
+			$('textarea',$single_line).on('focus', function() {
+				if ( !$(this).hasClass('open-zmi-code') ) {
+					$(this)
+						.addClass('open-zmi-code')
+						.removeClass('alert-warning')
+						.css('height','auto')
+						.animate({height: $(this).prop('scrollHeight') + 'px'},600);
+					if ( $(this).attr('data-dblclickhandler') ) {
+						$(this).dblclick(function(e) {
+							// Show Zope Code editor only if no text is selected
+							var seltxt = window.getSelection().toString();
+							// debugger; console.log('Selected text: ' + seltxt + ' ' + seltxt.length + ' ' +!/\s/.test(seltxt) );
+							if ( seltxt.length == 0 || /\s/.test(seltxt) ) {
+								$('.zmi-code-close',$single_line).remove();
 								$('textarea',$single_line)
-									.animate({height: '30px'},600)
+									.animate({height: '30px'},0)
 									.css('height','auto')
-									.removeClass('open-zmi-code');
-								$(this).remove();
-							}
-						);
+									.removeClass('open-zmi-code')
+									.addClass('alert-warning')
+									.blur();
+								eval($(this).attr('data-dblclickhandler'));
+							};
+						})
 					}
-				});
-				return;
-			}
-			
-			if ($single_line.hasClass("zmi-nodes")) {
-				$textarea.prop({title:getZMILangStr('ATTR_NODE')});
-			}
-			if ($("span.input-group-append",this).length==0) {
-				$(this).addClass("input-group");
-				if ($textarea.prev('i').length==1) {
-					$textarea.prev('i').wrap('<div class="input-group-prepend"><span class="btn btn-secondary"></span></div>')
-				}
-				if ($textarea.attr('data-style')) {
-					$(this).append('<div class="input-group-append"><a href="javascript:;" class="btn btn-secondary" title="Click for Code Popup or Dbl-Click for Native Editor!" style="' + $textarea.attr('data-style') + '"></a></div>');
-				} else {
-					$(this).append('<div class="input-group-append"><a href="javascript:;" class="btn btn-secondary">...</a></div>');
-				};
-				var clicks, timer, delay;
-				clicks=0;delay=500;timer=null;
-				$('.input-group-append',this).on('click', function(){
-					clicks++;
-					timer = setTimeout(function() {
-						switch(clicks){
-							case 1:
-								var html = '';
-								html = html
-									+ '<div id="zmi-single-line-edit" class="inner">'
-										+ '<form class="form-horizontal" name="zmi-single-line-form">';
-								if ($single_line.hasClass("zmi-nodes")) {
-									html = html
-											+ '<div class="col-lg-10">'
-												+ '<div class="input-group">'
-													+ '<input class="form-control url-input" type="text" name="zmi-nodespicker-url-input">'
-													+ '<div class="input-group-append">'
-														+ '<a class="btn btn-secondary" href="javascript:;" onclick="zmiBrowseObjs(\'zmi-single-line-form\',\'zmi-nodespicker-url-input\',getZMILang())">'
-															+ '...'
-														+ '</a>'
-													+ '</div>'
-												+ '</div><!-- .input-group -->'
-											+ '</div><!-- .col-lg-10 -->';
-								}
-								html = `${html}<textarea class="form-control zmi-code" rows="10" wrap="off">${$textarea.val()}</textarea></form></div><!-- #zmi-single-line-edit -->`;
-								zmiModal(null,{
-									body:html,
-									resizable:true,
-									title:getZMILangStr('BTN_EDIT')+': '+$textarea.attr('title'),
-									resize: function( event, ui ) {
-										var $container = $('#zmi-single-line-edit');
-										var $ta = $('textarea',$container);
-										var taCoords = $ZMI.getCoords($ta[0],"relative");
-										$ta.css({height:Math.max(20,$container.innerHeight()-taCoords.y-20)+'px'});
-									},
-									close: function( event, ui ) {
-										$textarea.val($('#zmi-single-line-edit textarea').val());
-									}});
-							break;
-							case 2:
-								eval($textarea.attr('data-dblclickhandler'));
-							break;
+					// Add closing button
+					var close_btn = '<i title="Close Editing" class="zmi-code-close fas fa-chevron-up text-primary text-center" style="cursor:pointer;margin: 0 0 0 calc(50%);"></i>';
+					$single_line.append(close_btn);
+					$('.zmi-code-close',$single_line).click(
+						function() {
+							$('textarea',$single_line)
+								.animate({height: '30px'},600)
+								.css('height','auto')
+								.removeClass('open-zmi-code');
+							$(this).remove();
 						}
-					clicks=0;
-					}, delay);
-				});
+					);
+				}
+			});
+			return;
+		}
+		
+		if ($single_line.hasClass("zmi-nodes")) {
+			$textarea.prop({title:getZMILangStr('ATTR_NODE')});
+		}
+		if ($("span.input-group-append",this).length==0) {
+			$(this).addClass("input-group");
+			if ($textarea.prev('i').length==1) {
+				$textarea.prev('i').wrap('<div class="input-group-prepend"><span class="btn btn-secondary"></span></div>')
 			}
-		});
+			if ($textarea.attr('data-style')) {
+				$(this).append('<div class="input-group-append"><a href="javascript:;" class="btn btn-secondary" title="Click for Code Popup or Dbl-Click for Native Editor!" style="' + $textarea.attr('data-style') + '"></a></div>');
+			} else {
+				$(this).append('<div class="input-group-append"><a href="javascript:;" class="btn btn-secondary">...</a></div>');
+			};
+			var clicks, timer, delay;
+			clicks=0;delay=500;timer=null;
+			$('.input-group-append',this).on('click', function(){
+				clicks++;
+				timer = setTimeout(function() {
+					switch(clicks){
+						case 1:
+							var html = '';
+							html = html
+								+ '<div id="zmi-single-line-edit" class="inner">'
+									+ '<form class="form-horizontal" name="zmi-single-line-form">';
+							if ($single_line.hasClass("zmi-nodes")) {
+								html = html
+										+ '<div class="col-lg-10">'
+											+ '<div class="input-group">'
+												+ '<input class="form-control url-input" type="text" name="zmi-nodespicker-url-input">'
+												+ '<div class="input-group-append">'
+													+ '<a class="btn btn-secondary" href="javascript:;" onclick="zmiBrowseObjs(\'zmi-single-line-form\',\'zmi-nodespicker-url-input\',getZMILang())">'
+														+ '...'
+													+ '</a>'
+												+ '</div>'
+											+ '</div><!-- .input-group -->'
+										+ '</div><!-- .col-lg-10 -->';
+							}
+							html = `${html}<textarea class="form-control zmi-code" rows="10" wrap="off">${$textarea.val()}</textarea></form></div><!-- #zmi-single-line-edit -->`;
+							zmiModal(null,{
+								body:html,
+								resizable:true,
+								title:getZMILangStr('BTN_EDIT')+': '+$textarea.attr('title'),
+								resize: function( event, ui ) {
+									var $container = $('#zmi-single-line-edit');
+									var $ta = $('textarea',$container);
+									var taCoords = $ZMI.getCoords($ta[0],"relative");
+									$ta.css({height:Math.max(20,$container.innerHeight()-taCoords.y-20)+'px'});
+								},
+								close: function( event, ui ) {
+									$textarea.val($('#zmi-single-line-edit textarea').val());
+								}});
+						break;
+						case 2:
+							eval($textarea.attr('data-dblclickhandler'));
+						break;
+					}
+				clicks=0;
+				}, delay);
+			});
+		}
+	});
 
 	// Double-Clickable
 	$('table.table-hover tbody tr')
@@ -356,16 +355,16 @@ $ZMI.registerReady(function(){
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	// Selectable
 	$("table.zmi-selectable input:checkbox,table.zmi-selectable input:radio").change(function() {
-			var $table = $(this).parents("table");
-			$("tr",$table).each(function() {
-					if ($("td:first input:checked",this).length == 0) {
-						$(this).removeClass("zmi-selected");
-					}
-					else {
-						$(this).addClass("zmi-selected");
-					}
-				});
+		var $table = $(this).parents("table");
+		$("tr",$table).each(function() {
+			if ($("td:first input:checked",this).length == 0) {
+				$(this).removeClass("zmi-selected");
+			}
+			else {
+				$(this).addClass("zmi-selected");
+			}
 		});
+	});
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	// Sortable
@@ -458,15 +457,15 @@ $ZMI.registerReady(function(){
 	$(".zmi-container .zmi-item:first .right input[name='active']:checkbox")
 		.change(function() {
 				zmiToggleSelectionButtonClick(this,$(this).prop("checked"));
-			});
+		});
 	$(".zmi-container .right input[name='ids:list']")
 		.change(zmiActionButtonsRefresh)
 		;
 	// Constraints
 	$(".split-left i.constraint").each(function() {
-			var $container = $(this).parents(".right");
-			$(".split-right",$container).popover({html:true,title:$("div.constraint",$container)[0].outerHTML});
-		});
+		var $container = $(this).parents(".right");
+		$(".split-right",$container).popover({html:true,title:$("div.constraint",$container)[0].outerHTML});
+	});
 	// Action-Lists
 	$('button.btn.split-right.dropdown-toggle').attr('title',getZMILangStr('ACTION_SELECT').replace('%s',getZMILangStr('ATTR_ACTION')));
 	$(".btn-group")
@@ -532,29 +531,32 @@ $ZMI.registerReady(function(){
 
 	// Select tab.
 	$("#subTab ul.nav.nav-tabs").each(function() {
-			var anchor = $("a:first",this).attr("href");
-			if (self.location.href.indexOf("#")>0) {
-				anchor = self.location.href.substr(self.location.href.indexOf("#")+1);
-				if (anchor.indexOf('_')==0) {
-					anchor = anchor.substr(1);
-				}
-				anchor = '#'+anchor;
+		var anchor = $("a:first",this).attr("href");
+		if (self.location.href.indexOf("#")>0) {
+			anchor = self.location.href.substr(self.location.href.indexOf("#")+1);
+			if (anchor.indexOf('_')==0) {
+				anchor = anchor.substr(1);
 			}
-			$("a[href='"+anchor+"']",this).click();
-		});
+			anchor = '#'+anchor;
+		}
+		$("a[href='"+anchor+"']",this).click();
+	});
 
 	// Ajax Lazy Load
 	$(".ajax-lazy-load").each(function() {
-			var $that = $(this);
-			$that.html('<i class="fas fa-spinner fa-spin"></i>&nbsp;'+getZMILangStr('MSG_LOADING'));
-			var ajax_url = $that.attr("data-ajax-url");
-			var params = {};
-			$.get( ajax_url, params, function( data) {
-					$that.html(data);
-				});
-		});
+		var $that = $(this);
+		$that.html('<i class="fas fa-spinner fa-spin"></i>&nbsp;'+getZMILangStr('MSG_LOADING'));
+		var ajax_url = $that.attr("data-ajax-url");
+		var params = {};
+		$.get( ajax_url, params, function( data) {
+				$that.html(data);
+			});
+	});
 
 	$ZMI.setCursorAuto("EO bootstrap.plugin.zmi");
+
+	// Set Save-Button Behaviour: Menu Lock
+	$('#menulock').prop('checked', JSON.parse($ZMILocalStorageAPI.get('ZMS.menulock',false)));
 
 });
 
@@ -586,264 +588,263 @@ ZMI.prototype.initInputFields = function(container) {
 			// highlight default collapse item
 			var data_root = $("body").attr('data-root');
 			$(".collapse",context).each(function() {
-					var id = $(this).attr('id');
-					if (typeof id != "undefined") {
-						var $toggle = $('a.card-toggle[href=\'#'+id+'\']');
-						if ($toggle.length > 0) {
-							var key = "ZMS."+data_root+".collapse-"+id;
-							var value = $ZMILocalStorageAPI.get(key,'1');
-							if (value != null) {
-								if ($(this).hasClass('show')) {
-									if (value == '0') {
-										$(this).removeClass('show');
-									}
+				var id = $(this).attr('id');
+				if (typeof id != "undefined") {
+					var $toggle = $('a.card-toggle[href=\'#'+id+'\']');
+					if ($toggle.length > 0) {
+						var key = "ZMS."+data_root+".collapse-"+id;
+						var value = $ZMILocalStorageAPI.get(key,'1');
+						if (value != null) {
+							if ($(this).hasClass('show')) {
+								if (value == '0') {
+									$(this).removeClass('show');
 								}
-								else {
-									if (value == '1') {
-										$(this).addClass('show');
-									}
+							} else {
+								if (value == '1') {
+									$(this).addClass('show');
 								}
 							}
 						}
 					}
-				});
+				}
+			});
 			$("i:first",$(".collapse",context).prev('.card-header')).removeClass("fa-caret-down").addClass("fa-caret-right");
 			$("i:first",$(".collapse.show",context).prev('.card-header')).removeClass("fa-caret-right").addClass("fa-caret-down");
 			$("a.card-toggle",this).click(function(){
-					$(this).blur();
-					var id = $(this).attr('href').substr(1);
-					var key = "ZMS."+data_root+".collapse-"+id;
-					var $icon = $("i:first",this);
-					var showing = $icon.hasClass("fa-caret-down")?1:0;
-					if (showing) {
-						$icon.removeClass("fa-caret-down").addClass("fa-caret-right");
-						$ZMILocalStorageAPI.set(key,'0');
-					}
-					else {
-						$icon.removeClass("fa-caret-right").addClass("fa-caret-down");
-						$ZMILocalStorageAPI.set(key,'1');
-					}
-				});
-				// Password
-				$("input[type=password]",this).focus(function() {
-						if ($(this).val()=='******') {
-							$(this).val('');
-						}
-					})
-				.blur(function() {
-						if ($(this).val()=='') {
-							$(this).val('******');
-						}
-					});
+				$(this).blur();
+				var id = $(this).attr('href').substr(1);
+				var key = "ZMS."+data_root+".collapse-"+id;
+				var $icon = $("i:first",this);
+				var showing = $icon.hasClass("fa-caret-down")?1:0;
+				if (showing) {
+					$icon.removeClass("fa-caret-down").addClass("fa-caret-right");
+					$ZMILocalStorageAPI.set(key,'0');
+				}
+				else {
+					$icon.removeClass("fa-caret-right").addClass("fa-caret-down");
+					$ZMILocalStorageAPI.set(key,'1');
+				}
 			});
+			// Password
+			$("input[type=password]",this).focus(function() {
+				if ($(this).val()=='******') {
+					$(this).val('');
+				}
+			})
+			.blur(function() {
+				if ($(this).val()=='') {
+					$(this).val('******');
+				}
+			});
+		});
 	$('form:not(.form-initialized)',container)
 		.submit(function() {
-				var b = true;
-				var context = this;
-				// Button
-				if( typeof self.btnClicked=="undefined" ||
-						self.btnClicked=="BTN_BACK" ||
-						self.btnClicked=="BTN_CANCEL" ||
-						self.btnClicked=="BTN_DELETE" ) {
-					return b;
+			var b = true;
+			var context = this;
+			// Button
+			if( typeof self.btnClicked=="undefined" ||
+					self.btnClicked=="BTN_BACK" ||
+					self.btnClicked=="BTN_CANCEL" ||
+					self.btnClicked=="BTN_DELETE" ) {
+				return b;
+			}
+			// Richedit
+			if ($(".form-richtext",this).length > 0) {
+				zmiRichtextOnSubmitEventHandler(this);
+			}
+			// Multiple-Selects
+			$('select[multiple="multiple"]',this).each(function() {
+				var name = $(this).attr("name");
+				var form = $(this).parents("form");
+				if ($(this).hasClass('form-on-submit-selected')||($('select[name="zms_mms_src_'+name+'"]',form).length>0)) {
+					$("option",this).prop("selected","selected");
 				}
-				// Richedit
-				if ($(".form-richtext",this).length > 0) {
-					zmiRichtextOnSubmitEventHandler(this);
-				}
-				// Multiple-Selects
-				$('select[multiple="multiple"]',this).each(function() {
-						var name = $(this).attr("name");
-						var form = $(this).parents("form");
-						if ($(this).hasClass('form-on-submit-selected')||($('select[name="zms_mms_src_'+name+'"]',form).length>0)) {
-							$("option",this).prop("selected","selected");
+			});
+			// Mandatory
+			$(".has-error",this).removeClass("has-error");
+			$(".form-group label.control-label.mandatory",this).filter(":visible").each(function() {
+				var $label = $(this);
+				var forName = $(this).attr("for");
+				var labelText = $label.text().basicTrim();
+				var $controlGroup = $label.parents(".form-group");
+				var $controls = $("div:first",$controlGroup);
+				var $control = $('input[name='+forName+'],select:not([name^="zms_mms_src_"])',$controls);
+				$label.attr("title","");
+				$control.attr("title","");
+				if ($control.length==1) {
+					var isBlank = false;
+					var nodeName = $control.prop("nodeName").toLowerCase();
+					var nodeType = $control.prop("type").toLowerCase();
+					if (nodeName=="input") {
+						if ($control.val().basicTrim().length==0 && typeof $control.attr("data-value-attr")!="undefined") {
+							$control.val($control.attr($control.attr("data-value-attr")));
 						}
-					});
-				// Mandatory
-				$(".has-error",this).removeClass("has-error");
-				$(".form-group label.control-label.mandatory",this).filter(":visible").each(function() {
-						var $label = $(this);
-						var forName = $(this).attr("for");
-						var labelText = $label.text().basicTrim();
-						var $controlGroup = $label.parents(".form-group");
-						var $controls = $("div:first",$controlGroup);
-						var $control = $('input[name='+forName+'],select:not([name^="zms_mms_src_"])',$controls);
-						$label.attr("title","");
-						$control.attr("title","");
-						if ($control.length==1) {
-							var isBlank = false;
-							var nodeName = $control.prop("nodeName").toLowerCase();
-							var nodeType = $control.prop("type").toLowerCase();
-							if (nodeName=="input") {
-								if ($control.val().basicTrim().length==0 && typeof $control.attr("data-value-attr")!="undefined") {
-									$control.val($control.attr($control.attr("data-value-attr")));
-								}
-								isBlank = $control.val().basicTrim().length==0;
-								if (isBlank && nodeType=="file") {
-									var name = $control.attr("name");
-									var exists = $('input[name="exists_'+forName+'"]:hidden',$controlGroup).val();
-									isBlank = !(exists=='True');
-									var generate_preview = $('input[name="generate_preview_'+forName.replace(/_/,'hires_')+':int"]:checked',context).val();
-									isBlank &= !(generate_preview=='1');
-								}
-							}
-							else if (nodeName=="select") {
-								isBlank = ($("option:selected",$control).length==0) 
-									|| ($("option:selected",$control).length==1 && $("option:selected",$control).attr("value")=="");
-							}
-							if (isBlank) {
+						isBlank = $control.val().basicTrim().length==0;
+						if (isBlank && nodeType=="file") {
+							var name = $control.attr("name");
+							var exists = $('input[name="exists_'+forName+'"]:hidden',$controlGroup).val();
+							isBlank = !(exists=='True');
+							var generate_preview = $('input[name="generate_preview_'+forName.replace(/_/,'hires_')+':int"]:checked',context).val();
+							isBlank &= !(generate_preview=='1');
+						}
+					}
+					else if (nodeName=="select") {
+						isBlank = ($("option:selected",$control).length==0) 
+							|| ($("option:selected",$control).length==1 && $("option:selected",$control).attr("value")=="");
+					}
+					if (isBlank) {
+						$controlGroup.addClass("has-error");
+						$label.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText));
+						$control.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText)).tooltip({placement:'top'});
+						if (b) {
+							$control.focus();
+						}
+						b = false;
+					}
+					else {
+						var dataExclude = $(this).attr("data-exclude");
+						if (typeof dataExclude != "undefined") {
+							var excludeList = dataExclude.split(",");
+							var v = $control.val();
+							if ($.inArray(v,excludeList)) {
 								$controlGroup.addClass("has-error");
-								$label.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText));
-								$control.attr("title",getZMILangStr("MSG_REQUIRED").replace(/%s/,labelText)).tooltip({placement:'top'});
-								if (b) {
-									$control.focus();
-								}
-								b = false;
 							}
-							else {
-								var dataExclude = $(this).attr("data-exclude");
-								if (typeof dataExclude != "undefined") {
-									var excludeList = dataExclude.split(",");
-									var v = $control.val();
-									if ($.inArray(v,excludeList)) {
-										$controlGroup.addClass("has-error");
-									}
-								}
-							}
-						}
-					});
-				// Password
-				var $password = $("input[type=password]",this).filter(":visible");
-				if (($password.length==2)
-					&& ($($password[0]).prop("name").toLowerCase().indexOf("confirm")<0)
-					&& ($($password[1]).prop("name").toLowerCase().indexOf("confirm")>=0)
-					&& ($($password[0]).val().length == 0
-						|| $($password[0]).val() != $($password[1]).val())) {
-					var $controlGroup = $password.parents(".form-group");
-					var $label = $("label.control-label",$controlGroup);
-					$controlGroup.addClass("has-error");
-					b = false;
-				}
-				// Check for intermediate modification by other user
-				if (b && $('input#last_change_dt:hidden',this).length && $('input[name="form_unlock"]',this).length==0) {
-					var result = $.ajax({
-						url: 'manage_get_node_json',
-						data:{lang:getZMILang(),preview:'preview'},
-						datatype:'text',
-						async: false
-						});
-					var node = eval("("+result.responseText+")");
-					var change_dt = node["change_dt"];
-					var change_uid = node["change_uid"];
-					var last_change_dt = $('input#last_change_dt:hidden',this).val();
-					var last_change_uid = $('input#last_change_uid:hidden',this).val();
-					// Intermediate modification?
- 					if (change_dt != last_change_dt) {
-						var body = '<div class="alert alert-error">'
-									+ '<h4><i class="fas fa-exclamation-triangle"></i> '+getZMILangStr('ATTR_LAST_MODIFIED')+'</h4>'
-									+ '<div>'+change_dt+' '+getZMILangStr('BY')+' '+change_uid+'</div>'
-								+ '</div>'
-								+ '<table class="table table-bordered table-striped">'
-								+ '<thead>'
-								+ '<tr class="form-group">'
-									+ '<th><label class="control-label">' + '</label></th>'
-									+ '<th><em>Diff</em></th>'
-									+ '<th><em>Mine</em></span></th>'
-									+ '<th><em>Theirs</em> ('+change_uid+' <span class="zmi-change-dt">'+(new Date(change_dt)).toLocaleFormat(getZMILangStr('DATETIME_FMT'))+'</span>)</th>'
-								+ '</thead>'
-								+ '</tr>';
-						for (var key in node) {
-							var $input = $("[name='"+key+"'],[name='"+key+"_"+getZMILang()+"']",this).filter("[data-initial-value]");
-							if ($input.length > 0) {
-								var $controlGroup = $input.parents(".form-group");
-								var $label = $("label.control-label:first",$controlGroup);
-								var remoteVal = (""+node[key]).replace(/\r\n/gi,"\n").trim();
-								var currentVal = (""+$input.val()).replace(/\r\n/gi,"\n").trim();
-								var initialVal = (""+$input.attr("data-initial-value")).replace(/\r\n/gi,"\n").trim();
-								if ("file"==$input.attr("type")) {
-									if (currentVal=="") {
-										currentVal = initialVal;
-									}
-								}
-								if (currentVal != initialVal) {
-									$input.addClass("form-modified");
-								}
-								if (currentVal != remoteVal) {
-									$input.removeClass("form-modified").addClass("form-conflicted").attr("data-remote-value",remoteVal);
-									body += '<tr class="form-group">'
-											+ '<td><label class="control-label"><span>' + $label.text() + '</span></label></td>'
-											+ '<td><div style="overflow-y:scroll;max-height:20em" class="diff" id="'+$input.attr("name")+'_diff"></div></td>'
-											+ '<td><div style="overflow-y:scroll;max-height:20em" class="mine" id="'+$input.attr("name")+'_mine">'+currentVal+'</div></td>'
-											+ '<td><div style="overflow-y:scroll;max-height:20em" class="theirs" id="'+$input.attr("name")+'_theirs">'+remoteVal+'</div></td>'
-										+ '</tr>';
-								}
-							}
-						}
-						var conflicts = $(".form-conflicted",this).length;
-						if (conflicts > 0) {
-							b = false;
-							// confirm
-							var form_id = $('input[name=form_id]').val();
-							body += '</table>'
-								+ '<div class="form-group">'
-									+ '<button class="btn btn-primary" value="'+getZMILangStr('BTN_SAVE')+'" onclick="zmiUnlockForm(\''+form_id+'\')">'+getZMILangStr('BTN_SAVE')+'</button> '
-									+ '<button class="btn btn-default" value="'+getZMILangStr('BTN_CANCEL')+'" onclick="window.open(self.location.href);">'+getZMILangStr('BTN_CANCEL')+'</button> '
-								+ '</div>';
-							zmiModal(null,{
-									body:body,
-									title: getZMILangStr('CAPTION_WARNING')
-								});
-							// show diffs
-							$.plugin('diff',{
-									files: [
-										'/++resource++zms_/jquery/diff/diff_match_patch.js',
-										'/++resource++zms_/jquery/diff/jquery.pretty-text-diff.min.js'
-								]});
-							$.plugin('diff').set({context:this});
-							$.plugin('diff').get(".form-conflicted",function() {
-									$(".form-conflicted",context).each(function(){
-											var id = $(this).attr("name")+"_diff";
-											var $diffContainer = $("#"+id);
-											$(this).prettyTextDiff({
-													cleanup:true,
-													originalContent:$(this).attr("data-initial-value").replace(/</gi,'&lt;'),
-													changedContent:$(this).val().replace(/</gi,'&lt;'),
-													diffContainer:$diffContainer
-												});
-											var lines = $diffContainer.html().replace(/<span>/gi,'').replace(/<\/span>/gi,'').split("<br>");
-											var show = [];
-											var changed = false;
-											for (var i = 0; i < lines.length; i++) {
-												var line = lines[i];
-												changed |= line.indexOf("<del>")>=0 || line.indexOf("<ins>")>=0;
-												if (changed) {
-													show.push(i);
-												}
-												changed &= !(line.indexOf("</del>")>=0 || line.indexOf("</ins>")>=0);
-											}
-											var html = [];
-											changed = false;
-											for (var i = 0; i < lines.length; i++) {
-												var line = lines[i];
-												changed |= line.indexOf("<del>")>=0 || line.indexOf("<ins>")>=0;
-												line = '<span class="line-number'+(changed?' line-changed':'')+'">'+(i+1)+'</span> '+lines[i];
-												if (!(show.contains(i-1) || show.contains(i) || show.contains(i+1))) {
-													line = '<span class="diff-unchanged hidden">'+line+'</span>';
-												}
-												else {
-													line = line+'<'+'br/>';
-												}
-												html.push(line);
-												changed &= !(line.indexOf("</del>")>=0 || line.indexOf("</ins>")>=0);
-											}
-											$diffContainer.html(html.join(""));
-										});
-								});
 						}
 					}
 				}
-				return b;
-			})
+			});
+			// Password
+			var $password = $("input[type=password]",this).filter(":visible");
+			if (($password.length==2)
+				&& ($($password[0]).prop("name").toLowerCase().indexOf("confirm")<0)
+				&& ($($password[1]).prop("name").toLowerCase().indexOf("confirm")>=0)
+				&& ($($password[0]).val().length == 0
+					|| $($password[0]).val() != $($password[1]).val())) {
+				var $controlGroup = $password.parents(".form-group");
+				var $label = $("label.control-label",$controlGroup);
+				$controlGroup.addClass("has-error");
+				b = false;
+			}
+			// Check for intermediate modification by other user
+			if (b && $('input#last_change_dt:hidden',this).length && $('input[name="form_unlock"]',this).length==0) {
+				var result = $.ajax({
+					url: 'manage_get_node_json',
+					data:{lang:getZMILang(),preview:'preview'},
+					datatype:'text',
+					async: false
+					});
+				var node = eval("("+result.responseText+")");
+				var change_dt = node["change_dt"];
+				var change_uid = node["change_uid"];
+				var last_change_dt = $('input#last_change_dt:hidden',this).val();
+				var last_change_uid = $('input#last_change_uid:hidden',this).val();
+				// Intermediate modification?
+				if (change_dt != last_change_dt) {
+					var body = '<div class="alert alert-error">'
+							+ '<h4><i class="fas fa-exclamation-triangle"></i> '+getZMILangStr('ATTR_LAST_MODIFIED')+'</h4>'
+							+ '<div>'+change_dt+' '+getZMILangStr('BY')+' '+change_uid+'</div>'
+						+ '</div>'
+						+ '<table class="table table-bordered table-striped">'
+						+ '<thead>'
+						+ '<tr class="form-group">'
+							+ '<th><label class="control-label">' + '</label></th>'
+							+ '<th><em>Diff</em></th>'
+							+ '<th><em>Mine</em></span></th>'
+							+ '<th><em>Theirs</em> ('+change_uid+' <span class="zmi-change-dt">'+(new Date(change_dt)).toLocaleFormat(getZMILangStr('DATETIME_FMT'))+'</span>)</th>'
+						+ '</thead>'
+						+ '</tr>';
+					for (var key in node) {
+						var $input = $("[name='"+key+"'],[name='"+key+"_"+getZMILang()+"']",this).filter("[data-initial-value]");
+						if ($input.length > 0) {
+							var $controlGroup = $input.parents(".form-group");
+							var $label = $("label.control-label:first",$controlGroup);
+							var remoteVal = (""+node[key]).replace(/\r\n/gi,"\n").trim();
+							var currentVal = (""+$input.val()).replace(/\r\n/gi,"\n").trim();
+							var initialVal = (""+$input.attr("data-initial-value")).replace(/\r\n/gi,"\n").trim();
+							if ("file"==$input.attr("type")) {
+								if (currentVal=="") {
+									currentVal = initialVal;
+								}
+							}
+							if (currentVal != initialVal) {
+								$input.addClass("form-modified");
+							}
+							if (currentVal != remoteVal) {
+								$input.removeClass("form-modified").addClass("form-conflicted").attr("data-remote-value",remoteVal);
+								body += '<tr class="form-group">'
+										+ '<td><label class="control-label"><span>' + $label.text() + '</span></label></td>'
+										+ '<td><div style="overflow-y:scroll;max-height:20em" class="diff" id="'+$input.attr("name")+'_diff"></div></td>'
+										+ '<td><div style="overflow-y:scroll;max-height:20em" class="mine" id="'+$input.attr("name")+'_mine">'+currentVal+'</div></td>'
+										+ '<td><div style="overflow-y:scroll;max-height:20em" class="theirs" id="'+$input.attr("name")+'_theirs">'+remoteVal+'</div></td>'
+									+ '</tr>';
+							}
+						}
+					}
+					var conflicts = $(".form-conflicted",this).length;
+					if (conflicts > 0) {
+						b = false;
+						// confirm
+						var form_id = $('input[name=form_id]').val();
+						body += '</table>'
+							+ '<div class="form-group">'
+								+ '<button class="btn btn-primary" value="'+getZMILangStr('BTN_SAVE')+'" onclick="zmiUnlockForm(\''+form_id+'\')">'+getZMILangStr('BTN_SAVE')+'</button> '
+								+ '<button class="btn btn-default" value="'+getZMILangStr('BTN_CANCEL')+'" onclick="window.open(self.location.href);">'+getZMILangStr('BTN_CANCEL')+'</button> '
+							+ '</div>';
+						zmiModal(null,{
+							body:body,
+							title: getZMILangStr('CAPTION_WARNING')
+						});
+						// show diffs
+						$.plugin('diff',{
+							files: [
+								'/++resource++zms_/jquery/diff/diff_match_patch.js',
+								'/++resource++zms_/jquery/diff/jquery.pretty-text-diff.min.js'
+						]});
+						$.plugin('diff').set({context:this});
+						$.plugin('diff').get(".form-conflicted",function() {
+							$(".form-conflicted",context).each(function(){
+								var id = $(this).attr("name")+"_diff";
+								var $diffContainer = $("#"+id);
+								$(this).prettyTextDiff({
+										cleanup:true,
+										originalContent:$(this).attr("data-initial-value").replace(/</gi,'&lt;'),
+										changedContent:$(this).val().replace(/</gi,'&lt;'),
+										diffContainer:$diffContainer
+									});
+								var lines = $diffContainer.html().replace(/<span>/gi,'').replace(/<\/span>/gi,'').split("<br>");
+								var show = [];
+								var changed = false;
+								for (var i = 0; i < lines.length; i++) {
+									var line = lines[i];
+									changed |= line.indexOf("<del>")>=0 || line.indexOf("<ins>")>=0;
+									if (changed) {
+										show.push(i);
+									}
+									changed &= !(line.indexOf("</del>")>=0 || line.indexOf("</ins>")>=0);
+								}
+								var html = [];
+								changed = false;
+								for (var i = 0; i < lines.length; i++) {
+									var line = lines[i];
+									changed |= line.indexOf("<del>")>=0 || line.indexOf("<ins>")>=0;
+									line = '<span class="line-number'+(changed?' line-changed':'')+'">'+(i+1)+'</span> '+lines[i];
+									if (!(show.contains(i-1) || show.contains(i) || show.contains(i+1))) {
+										line = '<span class="diff-unchanged hidden">'+line+'</span>';
+									}
+									else {
+										line = line+'<'+'br/>';
+									}
+									html.push(line);
+									changed &= !(line.indexOf("</del>")>=0 || line.indexOf("</ins>")>=0);
+								}
+								$diffContainer.html(html.join(""));
+							});
+						});
+					}
+				}
+			}
+			return b;
+		})
 		.each(function() {
 			var context = this;
 			if ($(this).parents(".d-none").length>0) {
@@ -852,64 +853,64 @@ ZMI.prototype.initInputFields = function(container) {
 			$(this).addClass('form-initialized');
 			// Multi-Autocomplete
 			$('select.form-multiautocomplete[multiple]:not(.d-none)',context).each(function() {
-					var $select = $(this);
-					var id = $select.attr('id');
-					var ajax_url = $select.attr('data-ajax-url');
-					var obj_id = $select.attr('data-obj-id');
-					var attr_id = $select.attr('data-attr-id');
-					$select.removeClass("form-control").addClass("zmi-select").attr({"data-autocomplete-add":false});
-					$select.before(''
-						+ '<div class="input-group form-multiautocomplete">'
-							+ '<input type="text" id="_'+id+'" class="form-control form-autocomplete" data-ajax-url="'+ajax_url+'" data-obj-id="'+obj_id+'" data-attr-id="'+attr_id+'"/>'
-							+ '<div class="input-group-append">'
-								+ '<a href="javascript:;" class="btn btn-secondary"><i class="fas fa-plus text-primary"></i></a>'
-							+ '</div>'
-						+ '</div><!-- .input-group -->');
-					var $inputgroup = $select.prev();
-					$("input",$inputgroup).keydown(function(e) {
-							if (e.which==13) {
-								e.preventDefault();
-								e.stopPropagation();
-								$(".input-group-append",$inputgroup).trigger("click");
-								return false;
-							}
-						});
-					$(".input-group-append .btn",$inputgroup).click(function() {
-							// get value
-							var $input = $("input",$inputgroup);
-							var v = $input.val();
-							if (v.length>0) {
-								$input.val("");
-								if ($select.children("option[value='"+v+"']").length==0) {
-									$select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+v+'</option>').removeClass("d-none");
-									// rebuild multiselect
-									$ZMI.multiselect(context);
-								}
-							}
-						});
+				var $select = $(this);
+				var id = $select.attr('id');
+				var ajax_url = $select.attr('data-ajax-url');
+				var obj_id = $select.attr('data-obj-id');
+				var attr_id = $select.attr('data-attr-id');
+				$select.removeClass("form-control").addClass("zmi-select").attr({"data-autocomplete-add":false});
+				$select.before(''
+					+ '<div class="input-group form-multiautocomplete">'
+						+ '<input type="text" id="_'+id+'" class="form-control form-autocomplete" data-ajax-url="'+ajax_url+'" data-obj-id="'+obj_id+'" data-attr-id="'+attr_id+'"/>'
+						+ '<div class="input-group-append">'
+							+ '<a href="javascript:;" class="btn btn-secondary"><i class="fas fa-plus text-primary"></i></a>'
+						+ '</div>'
+					+ '</div><!-- .input-group -->');
+				var $inputgroup = $select.prev();
+				$("input",$inputgroup).keydown(function(e) {
+					if (e.which==13) {
+						e.preventDefault();
+						e.stopPropagation();
+						$(".input-group-append",$inputgroup).trigger("click");
+						return false;
+					}
 				});
+				$(".input-group-append .btn",$inputgroup).click(function() {
+					// get value
+					var $input = $("input",$inputgroup);
+					var v = $input.val();
+					if (v.length>0) {
+						$input.val("");
+						if ($select.children("option[value='"+v+"']").length==0) {
+							$select.append('<option selected="selected" value="'+v+'" data-value="'+v+'">'+v+'</option>').removeClass("d-none");
+							// rebuild multiselect
+							$ZMI.multiselect(context);
+						}
+					}
+				});
+			});
 			// Autocomplete
 			$('.form-autocomplete:not(.d-none)',context).each(function() {
-					$(this).addClass("ui-autocomplete-input");
-					var id = $(this).attr('id');
-					var ajax_url = $(this).attr('data-ajax-url');
-					var obj_id = $(this).attr('data-obj-id');
-					var attr_id = $(this).attr('data-attr-id');
-					zmiAutocomplete('#'+id,{
-							serviceUrl:ajax_url,
-							paramName:'q',
-							params:{obj_id:obj_id,attr_id:attr_id},
-							transformResult: function(response, originalQuery) {
-									var m = {
-										query: originalQuery,
-										suggestions: $.map(response.split("\n"), function(x) {
-											return { value: x, data: x };
-										})
-									};
-									return m;
-								}
-					});
+				$(this).addClass("ui-autocomplete-input");
+				var id = $(this).attr('id');
+				var ajax_url = $(this).attr('data-ajax-url');
+				var obj_id = $(this).attr('data-obj-id');
+				var attr_id = $(this).attr('data-attr-id');
+				zmiAutocomplete('#'+id,{
+					serviceUrl:ajax_url,
+					paramName:'q',
+					params:{obj_id:obj_id,attr_id:attr_id},
+					transformResult: function(response, originalQuery) {
+						var m = {
+							query: originalQuery,
+							suggestions: $.map(response.split("\n"), function(x) {
+								return { value: x, data: x };
+							})
+						};
+						return m;
+					}
 				});
+			});
 			// Multiselect
 			$.plugin('multiselect',{
 				files: [
@@ -922,71 +923,69 @@ ZMI.prototype.initInputFields = function(container) {
 			// Activity-Toggle
 			if ($("#zmi-toggle-activity").length==0) {
 				$("#attrActivity",context).each(function() {
-						var $input = $(".activity input:checkbox",this);
-						if ($input.length>0) {
-							$(this).prev(".attr_last_modified").each(function() {
-									$("#zmi-toggle-activity-btn",this).append('<span id="zmi-toggle-activity" style="vertical-align:inherit" title="'+getZMILangStr('ATTR_ACTIVE')+'">'+$ZMI.icon(($input.prop('checked')?'fas fa-check-square':'far fa-square')+' ui-helper-clickable')+'</span>&nbsp;');
-									$("#zmi-toggle-activity").click(function(event) {
-											$input.click();
-											$("i",this).attr("class",($input.prop('checked')?'fas fa-check-square':'far fa-square')+' ui-helper-clickable');
-											event.stopPropagation();
-										});
-								});
-						}
-					});
-				}
+					var $input = $(".activity input:checkbox",this);
+					if ($input.length>0) {
+						$(this).prev(".attr_last_modified").each(function() {
+							$("#zmi-toggle-activity-btn",this).append('<span id="zmi-toggle-activity" style="vertical-align:inherit" title="'+getZMILangStr('ATTR_ACTIVE')+'">'+$ZMI.icon(($input.prop('checked')?'fas fa-check-square':'far fa-square')+' ui-helper-clickable')+'</span>&nbsp;');
+							$("#zmi-toggle-activity").click(function(event) {
+								$input.click();
+								$("i",this).attr("class",($input.prop('checked')?'fas fa-check-square':'far fa-square')+' ui-helper-clickable');
+								event.stopPropagation();
+							});
+						});
+					}
+				});
+			}
 			// Button-Clicked
 			$('input[type="submit"],button[type="submit"]',context)
 				.click(function() {
-						self.btnClicked = $(this).attr("value");
-					});
+					self.btnClicked = $(this).attr("value");
+				});
 			// Button-Radiogroup
 			$('.btn-radiogroup',context).each(function() {
-					var key = $(this).attr('data-value');
-					var $input = $('input#'+key);
-					var val = $input.val();
-					$(this).children('span')
-						.addClass("btn")
-						.click(function() {
-								var item = $(this).attr('data-value');
-								$input.val(item);
-								$(this).siblings('.btn-info').removeClass('btn-info').addClass('btn-secondary');
-								$(this).removeClass('btn-secondary').addClass('btn-info');
-							})
-						.each(function() {
-								var item = $(this).attr('data-value');
-								if (val == "") {
-									val = item;
-									$input.val(val);
-								}
-								if (item==val) {
-									$(this).addClass("btn-info");
-								}
-								else {
-									$(this).addClass("btn-secondary");
-								}
-							});
-				});
+				var key = $(this).attr('data-value');
+				var $input = $('input#'+key);
+				var val = $input.val();
+				$(this).children('span')
+					.addClass("btn")
+					.click(function() {
+						var item = $(this).attr('data-value');
+						$input.val(item);
+						$(this).siblings('.btn-info').removeClass('btn-info').addClass('btn-secondary');
+						$(this).removeClass('btn-secondary').addClass('btn-info');
+					})
+					.each(function() {
+						var item = $(this).attr('data-value');
+						if (val == "") {
+							val = item;
+							$input.val(val);
+						}
+						if (item==val) {
+							$(this).addClass("btn-info");
+						} else {
+							$(this).addClass("btn-secondary");
+						}
+					});
+			});
 			// Mandatory
 			if ($(this).hasClass('form-insert')) {
 				$(".form-group label.col-lg-2 control-label.mandatory",this).each(function() {
-						var $label = $(this);
-						$label.prepend('<i class="fas fa-exclamation"></i>');
-					});
+					var $label = $(this);
+					$label.prepend('<i class="fas fa-exclamation"></i>');
+				});
 			}
 			// Check for intermediate modification by other user
 			$("input,select,textarea",this).each(function() {
-					var $this = $(this);
-					$this.attr("data-initial-value",$this.val());
-					$this.change(function() {
-							if ($this.val()==$this.attr("data-initial-value")) {
-								$this.removeClass("form-modified");
-							}
-							else {
-								$this.addClass("form-modified");
-							}
-						});
+				var $this = $(this);
+				$this.attr("data-initial-value",$this.val());
+				$this.change(function() {
+					if ($this.val()==$this.attr("data-initial-value")) {
+						$this.removeClass("form-modified");
+					} else {
+						$this.addClass("form-modified");
+					}
 				});
+			});
 			// Icon-Class
 			$('input.zmi-input-icon-clazz',this).each(function() {
 				var $input = $(this);
@@ -1002,115 +1001,114 @@ ZMI.prototype.initInputFields = function(container) {
 			});
 			// Url-Picker
 			var fn_url_input_each = function() {
-					var $input = $(this);
-					var fmName = $input.parents("form").attr("name");
-					var elName = $input.attr("name");
-					$input.wrap('<div class="input-group"></div>');
-					var $inputgroup = $input.parent();
-					if ($input.prop("disabled")) {
-						$inputgroup.append(''
-								+ '<div class="input-group-append">'
-									+ '<span class="input-group-text"><i class="fas fa-ban-circle"></i></span>'
-								+ '</div>'
-							);
-					}
-					else {
-						$inputgroup.append(''
-									+ '<div class="input-group-append">'
-										+ '<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
-											+ '<i class="fas fa-link"></i>'
-										+ '</a>'
-									+ '</div>'
-							);
-					}
-					var fn = function() {
-							$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
-							$.ajax({
-									url: 'zmi_breadcrumbs_obj_path',
-									data:{lang:getZMILang(),zmi_breadcrumbs_ref_obj_path:$input.val()},
-									datatype:'text',
-									success:function(response) {
-											$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
-											$inputgroup.after(response.replace(/<!--(.*?)-->/gi,'').trim());
-										}
-								});
-						};
-					$input.change(fn).change();
+				var $input = $(this);
+				var fmName = $input.parents("form").attr("name");
+				var elName = $input.attr("name");
+				$input.wrap('<div class="input-group"></div>');
+				var $inputgroup = $input.parent();
+				if ($input.prop("disabled")) {
+					$inputgroup.append(''
+							+ '<div class="input-group-append">'
+								+ '<span class="input-group-text"><i class="fas fa-ban-circle"></i></span>'
+							+ '</div>'
+						);
+				} else {
+					$inputgroup.append(''
+						+ '<div class="input-group-append">'
+							+ '<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+								+ '<i class="fas fa-link"></i>'
+							+ '</a>'
+						+ '</div>'
+					);
 				}
+				var fn = function() {
+					$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
+					$.ajax({
+						url: 'zmi_breadcrumbs_obj_path',
+						data:{lang:getZMILang(),zmi_breadcrumbs_ref_obj_path:$input.val()},
+						datatype:'text',
+						success:function(response) {
+							$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
+							$inputgroup.after(response.replace(/<!--(.*?)-->/gi,'').trim());
+						}
+					});
+				};
+				$input.change(fn).change();
+			}
 			$("input.url-input",this).each(fn_url_input_each);
 			$("textarea.url-input",this).each(function() {
-					var $input = $(this);
-					var fmName = $input.parents("form").attr("name");
-					var elName = $input.attr("name");
-					var $container = $input.parent();
-					$input.hide();
-					$container.append(''
-						+ '<div class="url-input-container"></div>'
-						+'<input type="hidden" name="new_'+elName+'"/>'
-						+'<a href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'new_' + elName + '\',getZMILang())" class="btn btn-secondary">'
-						+'<i class="fas fa-plus"></i>'
-						+'</a>');
-					$("input[name='new_"+elName+"']",$container).change(function() {
+				var $input = $(this);
+				var fmName = $input.parents("form").attr("name");
+				var elName = $input.attr("name");
+				var $container = $input.parent();
+				$input.hide();
+				$container.append(''
+					+ '<div class="url-input-container"></div>'
+					+'<input type="hidden" name="new_'+elName+'"/>'
+					+'<a href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'new_' + elName + '\',getZMILang())" class="btn btn-secondary">'
+					+'<i class="fas fa-plus"></i>'
+					+'</a>');
+				$("input[name='new_"+elName+"']",$container).change(function() {
+						var v = $(this).val();
+						var l = $input.val().length==0?[]:$input.val().split("\n");
+						if (!l.contains()) {
+							l.push(v);
+							$input.val(l.join("\n")).change();
+						}
+						$(this).val("");
+					});
+				$input.change(function() {
+					var v = $(this).val();
+					var l = $input.val().length==0?[]:$input.val().split("\n");
+					var $inputContainer = $(".url-input-container",$container);
+					$inputContainer.html('');
+					for (var i = 0; i < l.length; i++) {
+						$inputContainer.append('<input class="form-control url-input" type="text" value="'+l[i]+'" disabled="disabled"> ');
+					}
+					$("input.url-input",$inputContainer).each(fn_url_input_each);
+					$(".input-group-append",$inputContainer).replaceWith('<a class="btn btn-secondary" href="javascript:;"><i class="fas fa-times"></i></a>');
+					$("input.url-input",$inputContainer).next().click(function() {
+						$(this).parents(".input-group").next(".breadcrumb").remove();
+						$(this).parents(".input-group").remove();
+						var l = [];
+						$("input",$inputContainer).each(function() {
 							var v = $(this).val();
-							var l = $input.val().length==0?[]:$input.val().split("\n");
-							if (!l.contains()) {
+							if (v.length > 0) {
 								l.push(v);
-								$input.val(l.join("\n")).change();
 							}
-							$(this).val("");
 						});
-					$input.change(function() {
-							var v = $(this).val();
-							var l = $input.val().length==0?[]:$input.val().split("\n");
-							var $inputContainer = $(".url-input-container",$container);
-							$inputContainer.html('');
-							for (var i = 0; i < l.length; i++) {
-								$inputContainer.append('<input class="form-control url-input" type="text" value="'+l[i]+'" disabled="disabled"> ');
-							}
-							$("input.url-input",$inputContainer).each(fn_url_input_each);
-							$(".input-group-append",$inputContainer).replaceWith('<a class="btn btn-secondary" href="javascript:;"><i class="fas fa-times"></i></a>');
-							$("input.url-input",$inputContainer).next().click(function() {
-									$(this).parents(".input-group").next(".breadcrumb").remove();
-									$(this).parents(".input-group").remove();
-									var l = [];
-									$("input",$inputContainer).each(function() {
-											var v = $(this).val();
-											if (v.length > 0) {
-												l.push(v);
-											}
-										});
-									$input.val(l.join("\n")).change();
-								});
-						}).change();
+						$input.val(l.join("\n")).change();
+					});
+				}).change();
+			});
+			// Richedit
+			var $richedits = $('div[id^="zmiStandardEditor"]',this);
+			if ($richedits.length > 0) {
+				$richedits.each(function() {
+					var elName = $(this).attr("id").substr("zmiStandardEditor".length);
+					zmiRichtextInit(elName);
+					var v = $("#"+elName).val();
+					function matchAll(source, regexp) {
+						var matches = [];
+						source.replace(regexp, function() {
+							var arr = ([]).slice.call(arguments, 0);
+							var extras = arr.splice(-2);
+							arr.index = extras[0];
+							arr.input = extras[1];
+							matches.push(arr);
+						});
+						return matches.length ? matches : [];
+					}
+					var l = matchAll(v,/<a data-id="(.*?)"(.*?)>(.*?)<\/a>/gi);
+					if (l.length > 0) {
+						var labels = [];
+						for (var i = 0; i < l.length; i++) {
+							labels.push(' <span class="label">'+l[i][0]+'</span>');
+						}
+						$(this).siblings(":last").after('<div class="inlinelinks">Inline-Links: '+labels.join(', ')+'</div>')
+					}
 				});
-				// Richedit
-				var $richedits = $('div[id^="zmiStandardEditor"]',this);
-				if ($richedits.length > 0) {
-					$richedits.each(function() {
-							var elName = $(this).attr("id").substr("zmiStandardEditor".length);
-							zmiRichtextInit(elName);
-							var v = $("#"+elName).val();
-							function matchAll(source, regexp) {
-								var matches = [];
-								source.replace(regexp, function() {
-										var arr = ([]).slice.call(arguments, 0);
-										var extras = arr.splice(-2);
-										arr.index = extras[0];
-										arr.input = extras[1];
-										matches.push(arr);
-								});
-								return matches.length ? matches : [];
-							}
-							var l = matchAll(v,/<a data-id="(.*?)"(.*?)>(.*?)<\/a>/gi);
-							if (l.length > 0) {
-								var labels = [];
-								for (var i = 0; i < l.length; i++) {
-									labels.push(' <span class="label">'+l[i][0]+'</span>');
-								}
-								$(this).siblings(":last").after('<div class="inlinelinks">Inline-Links: '+labels.join(', ')+'</div>')
-							}
-						});
-				}
+			}
 			// Date-Picker
 			var is_firefox = /firefox/i.test(navigator.userAgent);
 			$("input.datepicker,input.datetimepicker",this).each(function() {
@@ -1195,8 +1193,7 @@ function zmiModal(s, opt) {
 						var v = button[k];
 						if (typeof v == "function") {
 							$button.on(k,eval("("+v+")"));
-						}
-						else {
+						} else {
 							$button.attr(k,v);
 						}
 					}
@@ -1258,29 +1255,27 @@ ZMI.prototype.iframe = function(href, data, opt) {
 		opt['body'] = '<iframe src="' + url + '" width="' + width + '" height="' + height + '" frameBorder="0"></iframe>';
 		zmiModal(null,opt);
 		$ZMI.setCursorAuto("zmiIframe");
-	}
-	else {
+	} else {
 		$.get( href, data, function(result) {
-				var $result = $(result);
-				if ($("div#system_msg",$result).length>0) {
-					var manage_tabs_message = $("div#system_msg",$result).text();
-					manage_tabs_message = manage_tabs_message.substr(0,manage_tabs_message.lastIndexOf("("));
-					var href = self.location.href;
-					href = href.substr(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
-					self.location.href = href;
-				}
-				else {
-					opt['body'] = result;
-					if (typeof opt['title'] == "undefined") {
-						var title = $("div.zmi",result).attr("title");
-						if (typeof title != "undefined" && title) {
-							opt['title'] = title;
-						}
+			var $result = $(result);
+			if ($("div#system_msg",$result).length>0) {
+				var manage_tabs_message = $("div#system_msg",$result).text();
+				manage_tabs_message = manage_tabs_message.substr(0,manage_tabs_message.lastIndexOf("("));
+				var href = self.location.href;
+				href = href.substr(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
+				self.location.href = href;
+			} else {
+				opt['body'] = result;
+				if (typeof opt['title'] == "undefined") {
+					var title = $("div.zmi",result).attr("title");
+					if (typeof title != "undefined" && title) {
+						opt['title'] = title;
 					}
-					zmiModal(null,opt);
-					$ZMI.setCursorAuto("$ZMI.iframe");
 				}
-			});
+				zmiModal(null,opt);
+				$ZMI.setCursorAuto("$ZMI.iframe");
+			}
+		});
 	}
 	return false;
 }
@@ -1306,25 +1301,25 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 		}
 	}
 	$.get(href,params,function(result) {
-			$(s).html("");
-			var context = s;
-			var pages = $("page",result);
-			for (var i = 0; i < pages.length; i++) {
-				var $page = $(pages[i]);
-				var page_home_id = $page.attr("home_id");
-				var page_id = $page.attr("id").substr(page_home_id.length+1);
-				var html = that.addPages([pages[i]]);
-				$(context).append(html);
-				context = "ul[data-home-id="+page_home_id+"][data-id="+page_id+"] li";
-				// Remember preselected active.
-				that.active.push({id:page_id,home_id:page_home_id});
-			}
-			$("li",s).addClass("active");
-			var callback = that.p['init.callback'];
-			if (typeof callback != "undefined") {
-				callback();
-			}
-		});
+		$(s).html("");
+		var context = s;
+		var pages = $("page",result);
+		for (var i = 0; i < pages.length; i++) {
+			var $page = $(pages[i]);
+			var page_home_id = $page.attr("home_id");
+			var page_id = $page.attr("id").substr(page_home_id.length+1);
+			var html = that.addPages([pages[i]]);
+			$(context).append(html);
+			context = "ul[data-home-id="+page_home_id+"][data-id="+page_id+"] li";
+			// Remember preselected active.
+			that.active.push({id:page_id,home_id:page_home_id});
+		}
+		$("li",s).addClass("active");
+		var callback = that.p['init.callback'];
+		if (typeof callback != "undefined") {
+			callback();
+		}
+	});
 }
 
 ZMIObjectTree.prototype.addPages = function(pages) {
@@ -1420,19 +1415,19 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 		var href = '';
 		var homeId = null;
 		$(toggle).parents(".zmi-page").each(function(){
-				var dataId = $(this).attr("data-id");
-				var dataHomeId = $(this).attr("data-home-id");
-				if (homeId == null) {
-					homeId = dataHomeId;
-				}
-				if (homeId != dataHomeId) {
-					href = '/'+dataHomeId+'/'+homeId+href;
-					homeId = dataHomeId;
-				}
-				else {
-					href = '/'+dataId+href;
-				}
-			});
+			var dataId = $(this).attr("data-id");
+			var dataHomeId = $(this).attr("data-home-id");
+			if (homeId == null) {
+				homeId = dataHomeId;
+			}
+			if (homeId != dataHomeId) {
+				href = '/'+dataHomeId+'/'+homeId+href;
+				homeId = dataHomeId;
+			}
+			else {
+				href = '/'+dataId+href;
+			}
+		});
 		if (!href.indexOf('/'+homeId)==0) {
 			href = '/'+homeId+href;
 		}
@@ -1448,28 +1443,27 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 			}
 		}
 		$.get(base+href+'/manage_ajaxGetChildNodes',params,function(result){
-				// Reset wait-cursor.
-				$("#loading").remove();
-				// Get and iterate pages.
-				var pages = $('page',result);
-				if ( pages.length == 0) {
-					$(toggle).removeClass("fa-caret-down").attr({title:''});
+			// Reset wait-cursor.
+			$("#loading").remove();
+			// Get and iterate pages.
+			var pages = $('page',result);
+			if ( pages.length == 0) {
+				$(toggle).removeClass("fa-caret-down").attr({title:''});
+			}
+			else {
+				var html = that.addPages(pages);
+				$container.append(html);
+				// Set preselected active.
+				for (var i = 0; i < that.active.length; i++) {
+					var d = that.active[i];
+					$('ul[data-id='+d.id+'][data-home-id='+d.home_id+'] > li').addClass('active');
 				}
-				else {
-					var html = that.addPages(pages);
-					$container.append(html);
-					// Set preselected active.
-					for (var i = 0; i < that.active.length; i++) {
-						var d = that.active[i];
-						$('ul[data-id='+d.id+'][data-home-id='+d.home_id+'] > li').addClass('active');
-					}
-				}
-				if (typeof callback == 'function') {
-					callback();
-				}
-			});
-	}
-	else {
+			}
+			if (typeof callback == 'function') {
+				callback();
+			}
+		});
+	} else {
 		if ($(toggle).hasClass("fa-caret-down")) {
 			$(toggle).removeClass("fa-caret-down").addClass("fa-caret-right").attr({title:'+'});
 		}
@@ -1492,17 +1486,17 @@ ZMIObjectTree.prototype.previewClick = function(sender) {
 		var coords = $ZMI.getCoords(sender);
 		var abs_url = $(sender).parent('li').children('[data-page-physical-path]').attr('data-page-physical-path');
 		$.get(abs_url+'/ajaxGetBodyContent',{lang:getZMILang(),preview:'preview'},function(data){
-				$('div.zmi-browse-iframe-preview').remove();
-				$('body').append(''
-						+'<div id="zmi_preview_'+data_id+'">'
-							+'<div class="zmi-browse-iframe-preview">'
-								+'<div class="btn btn-default" title="' + getZMILangStr('BTN_CLOSE') + '" style="position:absolute;border-radius:0;" onclick="$(\'#zmi_preview_'+data_id+'\').remove()"><i class="icon-remove fas fa-times"></i></div>'
-								+data
-							+'</div><!-- .zmi-browse-iframe-preview -->'
-						+'</div><!-- #zmi-preview -->'
-					);
-				$('div.zmi-browse-iframe-preview').css({top:coords.y+$(sender).height(),left:coords.x+$(sender).width()});
-			});
+			$('div.zmi-browse-iframe-preview').remove();
+			$('body').append(''
+				+'<div id="zmi_preview_'+data_id+'">'
+					+'<div class="zmi-browse-iframe-preview">'
+						+'<div class="btn btn-default" title="' + getZMILangStr('BTN_CLOSE') + '" style="position:absolute;border-radius:0;" onclick="$(\'#zmi_preview_'+data_id+'\').remove()"><i class="icon-remove fas fa-times"></i></div>'
+						+data
+					+'</div><!-- .zmi-browse-iframe-preview -->'
+				+'</div><!-- #zmi-preview -->'
+			);
+			$('div.zmi-browse-iframe-preview').css({top:coords.y+$(sender).height(),left:coords.x+$(sender).width()});
+		});
 	}
 }
 
@@ -1532,15 +1526,15 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 	var $button = $('button.btn.split-right.dropdown-toggle',el);
 	// Expandable headers.
 	$button.click(function() {
-			var $right = $(this).parents(".right");
-			var selected = $("input:checkbox",$right).length?$("input:checkbox",$right).prop("checked"):false;
-			$(".dropdown-header",$right).each(function(index) {
-					var actualCollapsed = $("i",this).hasClass("fa-caret-right");
-					var expectedCollapsed = (index == 0 && !selected) || (index > 0 && selected);
-					if (actualCollapsed != expectedCollapsed) {
-						$(this).click();
-					}
-				});
+		var $right = $(this).parents(".right");
+		var selected = $("input:checkbox",$right).length?$("input:checkbox",$right).prop("checked"):false;
+		$(".dropdown-header",$right).each(function(index) {
+				var actualCollapsed = $("i",this).hasClass("fa-caret-right");
+				var expectedCollapsed = (index == 0 && !selected) || (index > 0 && selected);
+				if (actualCollapsed != expectedCollapsed) {
+					$(this).click();
+				}
+			});
 		});
 	$('*',$button).hide();
 	// Exit.
@@ -1559,28 +1553,28 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 	var context_id = this.getContextId(el);
 	// Edit action
 	$("button.split-left",el).click(function() {
-			if (!$(el).hasClass("loading")) {
-				if ($(".fa-plus-sign",this).length==0) {
-					var action = self.location.href;
-					action = action.substr(0,action.lastIndexOf("/")+1);
-					if (context_id=="") {
-						action += "manage_properties";
-					}
-					else {
-						if ($ul.html().indexOf(context_id+"/manage_main")<0) {
-							return false;
-						}
-						action += context_id+"/manage_main";
-					}
-					action += "?lang=" + lang;
-					self.location.href = action;
+		if (!$(el).hasClass("loading")) {
+			if ($(".fa-plus-sign",this).length==0) {
+				var action = self.location.href;
+				action = action.substr(0,action.lastIndexOf("/")+1);
+				if (context_id=="") {
+					action += "manage_properties";
 				}
 				else {
-					$('button.btn.split-right.dropdown-toggle',el).click();
+					if ($ul.html().indexOf(context_id+"/manage_main")<0) {
+						return false;
+					}
+					action += context_id+"/manage_main";
 				}
+				action += "?lang=" + lang;
+				self.location.href = action;
 			}
-			return false;
-		});
+			else {
+				$('button.btn.split-right.dropdown-toggle',el).click();
+			}
+		}
+		return false;
+	});
 	// Build action and params.
 	var action = zmiParams['base_url'];
 	action = action.substr(0,action.lastIndexOf("/"));
@@ -1678,8 +1672,7 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 	var id_prefix = this.getContextId(sender);
 	if (typeof id_prefix != 'undefined' && id_prefix != '') {
 		id_prefix = id_prefix.replace(/(\d*?)$/gi,'');
-	}
-	else {
+	} else {
 		id_prefix = 'e';
 	}
 	var $el = $(".zmi-action",sender);
@@ -1705,33 +1698,33 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 		$('<li id="manage_addProduct" class="zmi-item zmi-highlighted"><div class="center">'+title+'</div></li>').insertAfter($el.parents(".zmi-item"));
 		// Show add-dialog.
 		$ZMI.iframe(target,data,{
-				id:'zmiIframeAddDialog',
-				title:title,
-				width:800,
-				open:function(event,ui) {
-					$ZMI.runReady();
-					$('#addInsertBtn').click(function() {
-								self.btnClicked = $(this).text();
-								var $fm = $(".modal form.form-horizontal");
-								$("input[name=btn]:hidden",$fm).remove();
-								$fm.append('<input type="hidden" name="btn" value="BTN_INSERT">');
-								$fm.submit();
-							});
-					$('#addCancelBtn').click(function() {
-								zmiModal("hide");
-							});
-					if($('#zmiIframeAddDialog .form-control').length==0) {
-						$('#addInsertBtn').click();
-					}
-				},
-				close:function(event,ui) {
-					$('#manage_addProduct').remove();
-				},
-				buttons:[
-						{id:'addInsertBtn', text:getZMILangStr('BTN_INSERT'), name:'btn', 'class':'btn btn-primary'},
-						{id:'addCancelBtn', text:getZMILangStr('BTN_CANCEL'), name:'btn', 'class':'btn btn-secondary'}
-				]
-			});
+			id:'zmiIframeAddDialog',
+			title:title,
+			width:800,
+			open:function(event,ui) {
+				$ZMI.runReady();
+				$('#addInsertBtn').click(function() {
+					self.btnClicked = $(this).text();
+					var $fm = $(".modal form.form-horizontal");
+					$("input[name=btn]:hidden",$fm).remove();
+					$fm.append('<input type="hidden" name="btn" value="BTN_INSERT">');
+					$fm.submit();
+				});
+				$('#addCancelBtn').click(function() {
+					zmiModal("hide");
+				});
+				if($('#zmiIframeAddDialog .form-control').length==0) {
+					$('#addInsertBtn').click();
+				}
+			},
+			close:function(event,ui) {
+				$('#manage_addProduct').remove();
+			},
+			buttons:[
+				{id:'addInsertBtn', text:getZMILangStr('BTN_INSERT'), name:'btn', 'class':'btn btn-primary'},
+				{id:'addCancelBtn', text:getZMILangStr('BTN_CANCEL'), name:'btn', 'class':'btn btn-secondary'}
+			]
+		});
 	}
 	else {
 		var $div = $el.parents("div.right");
@@ -1824,13 +1817,13 @@ ZMIActionList.prototype.confirm = function(fm, target, data) {
  */
 function zmiActionButtonsRefresh(sender,evt) {
 	$(".zmi-selectable").each(function() {
-			if ($(".right input:checked",this).length > 0) {
-				$(this).addClass("zmi-selected");
-			}
-			else {
-				$(this).removeClass("zmi-selected");
-			}
-		});
+		if ($(".right input:checked",this).length > 0) {
+			$(this).addClass("zmi-selected");
+		}
+		else {
+			$(this).removeClass("zmi-selected");
+		}
+	});
 }
 
 /**
@@ -1868,9 +1861,9 @@ function zmiBrowseObjs(fmName, elName, lang) {
 		href += '&selectedText=' + escape( selectedText);
 	}
 	zmiModal(null,{
-			body: '<iframe src="'+href+'" style="width:100%; min-width:'+$ZMI.getConfProperty('zmiBrowseObjs.minWidth','200px')+'; height:100%; min-height: '+$ZMI.getConfProperty('zmiBrowseObjs.minHeight','62vh')+'; border:0;"></iframe>',
-			title: title
-		});
+		body: '<iframe src="'+href+'" style="width:100%; min-width:'+$ZMI.getConfProperty('zmiBrowseObjs.minWidth','200px')+'; height:100%; min-height: '+$ZMI.getConfProperty('zmiBrowseObjs.minHeight','62vh')+'; border:0;"></iframe>',
+		title: title
+	});
 	return false;
 }
 
@@ -1878,10 +1871,10 @@ function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue, elTitle) {
 	$('form[name='+fmName+'] input[name='+elName+']').val(elValue).change();
 	if (typeof elTitle != "undefined") {
 		$('form[name='+fmName+'] input[name^=title]:text').each(function() {
-				if ($(this).val()=='') {
-					$(this).val(elTitle).change();
-				} 
-			});
+			if ($(this).val()=='') {
+				$(this).val(elTitle).change();
+			} 
+		});
 	}
 }
 
@@ -1971,17 +1964,17 @@ function untagSelected(tag, leftDelimiter, rightDelimiter) {
 	var preMatch = pre.match(startRe);
 	var postMatch = post.match(endRe);
 	if (preMatch!=null && postMatch!=null) {
-    	var preMatch = preMatch[preMatch.length-1];
-    	var postMatch = postMatch[0];
-    	if (pre.endsWith(preMatch) && post.startsWith(postMatch)) {
-    		var newPre = pre.replace(preMatch,'');
-    		var newPost = post.replace(postMatch,'');
-    		$(selectedInput).val(newPre+range+newPost);
-    		// Set selection.
-    		var offset = newPre.length-pre.length;
-    		selectedText = {start:selectedText.start+offset,end:selectedText.start+offset+range.length};
-    		setInputSelection(selectedInput,selectedText);
-        }
+		var preMatch = preMatch[preMatch.length-1];
+		var postMatch = postMatch[0];
+		if (pre.endsWith(preMatch) && post.startsWith(postMatch)) {
+			var newPre = pre.replace(preMatch,'');
+			var newPost = post.replace(postMatch,'');
+			$(selectedInput).val(newPre+range+newPost);
+			// Set selection.
+			var offset = newPre.length-pre.length;
+			selectedText = {start:selectedText.start+offset,end:selectedText.start+offset+range.length};
+			setInputSelection(selectedInput,selectedText);
+		}
 		return true;
 	}
 	return false;
@@ -2130,15 +2123,13 @@ $ZMI.registerReady(function(){
 	var reAdjust = function(){
 		if (($('.wrapper').outerWidth()) < widthOfList()) {
 			$('.scroller-right').show();
-		}
-		else {
+		} else {
 			$('.scroller-right').hide();
 		}
 		
 		if (getLeftPosi()<0) {
 			$('.scroller-left').show();
-		}
-		else {
+		} else {
 			$('.item').animate({left:"-="+getLeftPosi()+"px"},'slow');
 			$('.scroller-left').hide();
 		}
@@ -2209,20 +2200,20 @@ function zmiExpandConfFiles(el, pattern) {
 			}
 			// JQuery.AJAX.get
 			$.get( 'getConfFiles',{pattern:pattern},function(data) {
-						if (first!=null) {
-							$("option:first",el).html(first);
-						}
-						var items = $("item",data);
-						for (var i = 0; i < items.length; i++) {
-							var item = $(items[i]);
-							var value = item.attr("key");
-							var label = item.text();
-							$(el).append('<option value="'+value+'">'+label+'</option>');
-						}
-						zmiExpandConfFilesProgress = false;
-						// Reset wait-cursor.
-						$ZMI.setCursorAuto("zmiExpandConfFiles");
-					});
+				if (first!=null) {
+					$("option:first",el).html(first);
+				}
+				var items = $("item",data);
+				for (var i = 0; i < items.length; i++) {
+					var item = $(items[i]);
+					var value = item.attr("key");
+					var label = item.text();
+					$(el).append('<option value="'+value+'">'+label+'</option>');
+				}
+				zmiExpandConfFilesProgress = false;
+				// Reset wait-cursor.
+				$ZMI.setCursorAuto("zmiExpandConfFiles");
+			});
 		}
 	}
 }
@@ -2344,7 +2335,7 @@ function addOption( object, name, value, selectedValue) {
 	var selected = value.length > 0 && value == selectedValue;
 	object.options[object.length] = new Option( name, value, defaultSelected, selected);
 }
-  
+	
 /**
  * Sort options.
  */

@@ -53,6 +53,45 @@ Der Klick auf das Sitemap-Icon erzeigt auf der linken Bildschirmseite eine Baum-
 ![ZMS GUI](images/edit_gui_sitemap_en.gif)
 *Sitemap-Navigation zum schnellen Browser durch den Dokument-Baum*
 
+## Kontext-Menü: Content-Objekte anlegen und bearbeiten
+Rechts neben dem Inhalt befindet sich neben jedem Content-Block ein Button für das sogenannte Kontext-Menü. Dieses Menü klappt auf Maus-Klick auf zeigt eine Liste möglicher Aktionen (Einfügen, Kopieren, Löschen etc.) sowie eine Liste von Content-Typen, die in den aktuellen Kontext eingefügt werden können.
+
+ZMS hierarchisiert Inhalte in einem Dokumentbaum analog einem Buch, in dem der Inhalt als Folge von geschachtelten Kapiteln organisiert ist. Dieser Baum wird aus seiten-artigen Content-Objekte (Dokument, Ordner; auch "Page", oder "Container" genannt) aufgebaut. Der eigentliche Inhalt einer Seite wird als Serie von Content-Blöcken erzeugt (Textabschnitt, Bild, Teaser, Donwload-Datei). Der Unterschied zwischen den seiten.artigen Objekten, *Dokumenten* und *Ordnern* besteht darin, dass Ordner auch weitere Unterseiten (Ordner und Dokumente) enthalten können, während ein "Dokument" immer das Ende einer Verzeigung im Dokumentbaum darstellt.
+
+![ZMS GUI](images/edit_gui_contextmenu_page_de.png)
+*Ein neues Dokument wird in den aktuellen Ordner über das Kontext-Menü eingefügt*
+
+
+Nachdem via Kontext-Menu ein Content-Typ, z.B. "Dokument" ausgewählt wurde, erscheint eine Maske zur Eingabe der inhaltlichen Eigeschaften (Metadaten, Atribute) für das Dokument:
+* Kurztitel (Kurzer, technischer Titel für die Navigation)
+* Titel (Redaktioneller Langtitel für den Seitenkörper )
+* Beschreibung (Knappe Zusammenfassung des Dokumentinhalts)
+* Schlagworte
+* Typ
+* Name des Autors
+<br/>
+<br/>
+
+
+![ZMS GUI](images/edit_gui_document_de.png)
+*Wenn ein neues Dokument einfügt wird, sind zunächst alle Dokument-Eigeschaften zuerfassen, zumindest Kurztitel und Titel*
+<br/>
+<br/>
+
+![ZMS GUI](images/edit_gui_contextmenu_block_de.png)
+*Ein neues Bild wird in das aktuelle Dokument über das Kontext-Menü eingefügt*
+<br/>
+<br/>
+
+
+![ZMS GUI](images/edit_gui_zmsgraphic_de.png)
+*Die Maske für das Bearbeiten eines Bild-Objektes erlaubt das Hochladen eines Bildes in zwei Auflösungen sowie die Erfassung einer Legende (Text), einer URL (mit der das Bild zum Link wird), von WAI-Attribute und die Auswahlliste tzr Ausrichtung des Bildes*
+<br/>
+<br/>
+
+
+
+
 
 
 

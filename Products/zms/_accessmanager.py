@@ -682,7 +682,18 @@ class AccessManager(AccessableContainer):
               if plugin.meta_type == 'ZODB User Manager':
                 users.append(user)
           else:
-            users.extend(usersDefs)
+            if plugin.meta_type == 'ZMS PluggableAuthService SSO Plugin':
+              secUsers = self.getSecurityUsers()
+              secUsers = [{'login':x,'user':secUsers[x]} for x in secUsers]
+              secUsers = [{'login':x['login'],'label':x['user'].get('label',x['user'].get('details',{}).get('label',''))} for x in secUsers]
+              secUsers = [x for x in secUsers if x['label'].lower().find(search_term.lower())>=0]
+              for user in userDefs:
+                secUser = [x for x in secUsers if x['login'] == user['login']]
+                if secUser:
+                  user['label'] = secUser[0]['label']
+                  users.append(user)
+            else:
+              users.extend(usersDefs)
       else:
         login_attr = 'name'
         for userName in userFldr.getUserNames():

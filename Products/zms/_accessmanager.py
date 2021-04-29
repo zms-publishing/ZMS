@@ -686,7 +686,7 @@ class AccessManager(AccessableContainer):
             secUsers = [{'login':x,'user':secUsers[x]} for x in secUsers]
             secUsers = [{'login':x['login'],'label':x['user'].get('label',x['user'].get('details',{}).get('label',''))} for x in secUsers]
             secUsers = [x for x in secUsers if x['label'].lower().find(search_term.lower())>=0]
-            for user in userDefs:
+            for user in usersDefs:
               plugin = getattr(userFldr,user['pluginid'])
               if plugin.meta_type == 'ZMS PluggableAuthService SSO Plugin':
                 secUser = [x for x in secUsers if x['login'] == user['login']]

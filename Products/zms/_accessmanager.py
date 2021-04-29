@@ -692,7 +692,9 @@ class AccessManager(AccessableContainer):
                 secUser = [x for x in secUsers if x['login'] == user['login']]
                 if secUser:
                   user['label'] = secUser[0]['label']
-              users.append(user)
+                  users.append(user)
+              else:
+                users.append(user)
       else:
         login_attr = 'name'
         for userName in userFldr.getUserNames():

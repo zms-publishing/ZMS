@@ -18,6 +18,15 @@ ins {
 	background-color: #d4edda!important;
 	text-decoration:none;
 }
+::placeholder{
+	color:rgba(108, 117, 125, .5) !important;
+}
+:-ms-input-placeholder {
+	color:rgba(108, 117, 125, .5) !important;
+}
+::-ms-input-placeholder {
+	color:rgba(108, 117, 125, .5) !important;
+}
 
 /* HEADER BAR */
 
@@ -333,7 +342,7 @@ footer .back-to-top.hide {
 	overflow: hidden;
 	white-space: nowrap;
 	border: none;
-	z-index: 1;
+	z-index: inherit;
 }
 .zmi #zmi-tab .tab-content .card {
 	padding: 2rem 1rem 1rem 1rem !important;

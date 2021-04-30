@@ -29,7 +29,8 @@
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group input-group btn-group mb-4"
 				tal:define="searchable_attributes python:[x for x in here.getSearchableAttrs() if not x[1].startswith('_')]"
-				><a class="btn btn-secondary" target="_blank" title="Acquired User Folder"
+				><a class="btn btn-secondary" style="max-width:4rem;" 
+					target="_blank" title="Acquired User Folder"
 					tal:attributes="href python:'%s/manage_main'%userFolder.absolute_url(); title python:'%s (%s)'%(userFolder.title_or_id(),userFolder.meta_type)">
 					<i class="far fa-folder"></i>
 				</a>
@@ -45,7 +46,8 @@
 				</select>
 				<input class="form-control" id="search_term" name="search_term"
 					tal:attributes="value python:request.get('search_term',''); placeholder python:here.getZMILangStr('ATTR_SEARCHTERM')" />
-				<button class="btn btn-primary btn-search" value="BTN_SEARCH" tal:attributes="title python:here.getZMILangStr('BTN_SEARCH')">
+				<button class="btn btn-primary btn-search" style="max-width:4rem;" 
+					value="BTN_SEARCH" tal:attributes="title python:here.getZMILangStr('BTN_SEARCH')">
 					<i class="fas fa-search"></i>
 				</button>
 			</div><!-- .form-row -->

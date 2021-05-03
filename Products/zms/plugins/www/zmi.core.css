@@ -1773,8 +1773,14 @@ body.browse_iframe .toggle {
 .zmi .modal-backdrop.show {
 	opacity: .3;
 }
-.zmi .modal-dialog > .modal-content > .modal-body {
+.zmi .modal .modal-dialog > .modal-content > .modal-body {
 	overflow-x: auto;
+}
+.zmi.users.config .modal .modal-dialog > .modal-content > .modal-body form {
+	min-height:42vh;
+}
+.zmi.users.config .modal#zmiModalinsertNode  .modal-dialog > .modal-content > .modal-body form .controls {
+	margin-top:10rem
 }
 @media (max-width: 767px) {
 	div#zmiIframeAddDialog,
@@ -2506,7 +2512,4 @@ ul.pagination {
 	min-width: 1.75rem;
 	display: inline-block;
 	text-align: right !important;
-}
-#zmiModalinsertUser .modal-body .ZMSRecordSet.main_grid div.table-responsive {
-	min-height:16rem
 }

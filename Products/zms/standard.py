@@ -678,8 +678,9 @@ def get_session(context):
   """
   Get http-session.
   """
-  create_session_storage_if_neccessary(context)
   request = getattr( context, 'REQUEST', None)
+  if request.get('SESSION', None) == None:
+    create_session_storage_if_neccessary(context)
   session = request.get('SESSION',request.environ.get('beaker.session',None))
   return session
 

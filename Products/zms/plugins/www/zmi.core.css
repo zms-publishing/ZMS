@@ -2513,3 +2513,6 @@ ul.pagination {
 	display: inline-block;
 	text-align: right !important;
 }
+#metaobj_recordset_main_grid .ZMSRecordSet.main_grid div.table-responsive {
+	min-height: 24em;
+}

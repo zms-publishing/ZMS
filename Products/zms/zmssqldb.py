@@ -1781,7 +1781,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       if REQUEST.get('btn', '') not in [ 'BTN_CANCEL', 'BTN_BACK']:
         self.connection_id = REQUEST['connection_id']
         self.charset = REQUEST['charset']
-        self.table_filter = REQUEST['table_filter']
+        self.table_filter = REQUEST.get('table_filter','')
         self.setModel(REQUEST['model'])
         message = self.getZMILangStr('MSG_CHANGED')
       

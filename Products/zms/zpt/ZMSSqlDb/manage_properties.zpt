@@ -60,7 +60,7 @@
 		<div class="form-group row">
 			<label class="col-sm-3 col-md-2 control-label mandatory" for="table_filter"><span>Table-Filter</span></label>
 			<div class="col-sm-9 col-md-10">
-				<input class="form-control" type="text" name="table_filter" tal:attributes="value python:getattr(here,'table_filter','(.*?)')"/>
+				<input class="form-control" type="text" name="table_filter" placeholder="Please enter RegExp like: (.*?)" tal:attributes="value python:getattr(here,'table_filter','(.*?)')"/>
 			</div>
 		</div><!-- .form-group -->
 		<div class="form-group row align-items-start">

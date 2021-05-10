@@ -1016,7 +1016,8 @@ class AccessManager(AccessableContainer):
       
       # Set user id.
       user = self.findUser(id)
-      self.setUserAttr(id, 'user_id_', user['user_id_'])
+      if user is not None:
+        self.setUserAttr(id, 'user_id_', user['user_id_'])
       
       # Insert node to user-properties.
       root = self.getRootElement()

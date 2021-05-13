@@ -782,6 +782,44 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
 
 
     # --------------------------------------------------------------------------
+    #  ZMSSqlDb.getEntitiesSQLAlchemyDA:
+    # --------------------------------------------------------------------------
+    def getEntitiesSQLAlchemyDA(self):
+      from sqlalchemy import create_engine
+      from sqlalchemy import inspect
+      from sqlalchemy import MetaData
+      from sqlalchemy import Table
+      da = self.getDA()
+      dsn = da.getProperty('dsn')
+      engine = create_engine(dsn)
+      # Create a MetaData instance
+      metadata = MetaData()
+      # reflect db schema to MetaData
+      metadata.reflect(bind=engine)
+      entities = []
+      for tablename in metadata.tables:
+        table = metadata.tables[tablename]
+        cols = []
+        for column in table.columns:
+          col = {}
+          col["id"] = column.name
+          col["key"] = column.name
+          col['label'] = ' '.join([x.capitalize() for x in column.name.split('_')]).strip()
+          col["type"] = 'string'
+          cols.append(col)
+        if len(cols) > 0:
+          entity = {}
+          entity['id'] = tablename
+          entity['type'] = 'table'
+          entity['label'] = ' '.join([x.capitalize() for x in tablename.split('_')]).strip()
+          entity['sort_id'] = entity['label'].upper()
+          entity['columns'] = standard.sort_list(cols, 'index')
+          # Add Table.
+          entities.append(entity)
+      return entities
+
+
+    # --------------------------------------------------------------------------
     #  ZMSSqlDb.getEntities:
     # --------------------------------------------------------------------------
     def getEntities(self):
@@ -806,6 +844,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       method = getattr(self, 'getEntities%s'%self.connection_id, None)
       if method is not None:
         entities = method( self, REQUEST)
+      
+      #-- retrieve entities from sqlalchemy
+      if len( entities) == 0 and da.meta_type.startswith('SQLAlchemyDA'):
+        entities = self.getEntitiesSQLAlchemyDA()
       
       #-- retrieve entities from table-browsers
       if len( entities) == 0:

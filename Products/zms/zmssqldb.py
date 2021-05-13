@@ -225,20 +225,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       conn_id = getattr( self, "connection_id", None)
       if conn_id is not None:
         da = getattr(self, conn_id, None)
-        if da is not None:
-          if da.meta_type == 'Z MySQL Database Connection':
-            # Try to re-connect if not connected.
-            try: 
-              dbc = da._v_database_connection 
-            except AttributeError: 
-              da.connect(da.connection_string) 
-              dbc = da._v_database_connection
-            # Try to set character-set to utf-8.
-            try:
-              dbc.query('SET NAMES utf8') 
-              dbc.query('SET CHARACTER SET utf8')
-            except:
-              pass
       return da
 
 
@@ -283,7 +269,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     """
     def commit(self):
       da = self.getDA()
-      dbc = da._v_database_connection
+      dbc = da
+      if not da.meta_type.startswith('SQLAlchemyDA'):
+        dbc = da._v_database_connection
       conn = dbc.getconn(False)
       conn.commit()
 
@@ -294,7 +282,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     """
     def rollback(self):
       da = self.getDA()
-      dbc = da._v_database_connection
+      dbc = da
+      if not da.meta_type.startswith('SQLAlchemyDA'):
+        dbc = da._v_database_connection
       conn = dbc.getconn(False)
       conn.rollback()
 
@@ -312,7 +302,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     """
     def execute(self, sql, params=(), max_rows=0, encoding=None):
       da = self.getDA()
-      dbc = da._v_database_connection
+      dbc = da
+      if not da.meta_type.startswith('SQLAlchemyDA'):
+        dbc = da._v_database_connection
       c = getattr(dbc, "execute", None)
       if c is not None:
         result = dbc.execute(sql, params, max_rows)
@@ -408,7 +400,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     def query(self, sql, max_rows=0, encoding=None):
       standard.writeLog( self, '[query]: sql=%s, max_rows=%i'%(sql, max_rows))
       da = self.getDA()
-      dbc = da._v_database_connection
+      dbc = da
+      if not da.meta_type.startswith('SQLAlchemyDA'):
+        dbc = da._v_database_connection
       if da.meta_type == 'Z SQLite Database Connection': sql = str(sql)
       return self.assemble_query_result(dbc.query(sql, max_rows), encoding)
 
@@ -428,7 +422,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       result = []
       if self.getConfProperty('ZMSSqlDb.execute', 1)==1:
         da = self.getDA()
-        dbc = da._v_database_connection
+        dbc = da
+        if not da.meta_type.startswith('SQLAlchemyDA'):
+          dbc = da._v_database_connection
         res = dbc.query(sql)
         if isinstance(res, str):
           f=StringIO()

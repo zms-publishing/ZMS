@@ -802,6 +802,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         cols = []
         for column in table.columns:
           col = {}
+          col['index'] = int(col.get('index', len(cols)))
           col["id"] = column.name
           col["key"] = column.name
           col['label'] = ' '.join([x.capitalize() for x in column.name.split('_')]).strip()

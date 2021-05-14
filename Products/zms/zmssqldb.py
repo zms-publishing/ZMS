@@ -797,12 +797,41 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         table = metadata.tables[tablename]
         cols = []
         for column in table.columns:
+          colName = col.name
+          colDescr = col.type
+          colType = 'string'
+          colSize = None
+          if colDescr.find('INT') >= 0:
+            colType = 'int'
+          elif colDescr.find('DATE') >= 0 or \
+               colDescr.find('TIME') >= 0:
+            colType = 'datetime'
+          elif colDescr.find('CLOB') >= 0:
+            colType = 'text'
+          elif colDescr.find('CHAR') >= 0 or \
+               colDescr.find('STRING') >= 0:
+            colSize = 255
+            i = colDescr.find('(')
+            if i >= 0:
+              j = colDescr.find(')')
+              if j >= 0:
+                colSize = int(colDescr[i+1:j])
+            if colSize > 255:
+              colType = 'text'
+            else:
+              colType = 'string'
           col = {}
           col['index'] = int(col.get('index', len(cols)))
-          col["id"] = column.name
-          col["key"] = column.name
-          col['label'] = ' '.join([x.capitalize() for x in column.name.split('_')]).strip()
-          col["type"] = 'string'
+          col["id"] = colName
+          col["key"] = colName
+          col['label'] = ' '.join([x.capitalize() for x in colName.split('_')]).strip()
+          col["type"] = colType
+          col['description'] = colDescr.strip()
+          col['name'] = col['label']
+          col['mandatory'] = colDescr.find('NOT NULL') > 0
+          col['sort'] = 1
+          col['nullable'] = not col['mandatory']
+          # Add Column.
           cols.append(col)
         if len(cols) > 0:
           entity = {}

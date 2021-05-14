@@ -797,8 +797,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         table = metadata.tables[tablename]
         cols = []
         for column in table.columns:
-          colName = column.name
-          colDescr = column.type
+          colName = str(column.name)
+          colDescr = str(column.type)
           colType = 'string'
           colSize = None
           if colDescr.find('INT') >= 0:

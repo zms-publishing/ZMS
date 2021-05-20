@@ -212,13 +212,13 @@ function zmiModalInsertUserOpen(context) {
 			</legend>
 			<div class="card-body pb-0">
 				<tal:block tal:condition="python:userObj is not None">
-					<div class="form-group row" tal:condition="python:'pluginid' in userObj">
+					<div class="form-group row source" tal:condition="python:'pluginid' in userObj">
 						<label for="source" class="col-sm-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_SOURCE')">Source</span></label>
 						<div class="col-sm-10" tal:content="structure userObj/pluginid">the user-pluginid</div><!-- .col-sm-10 -->
 					</div>
 					<tal:block tal:repeat="userObjDetail userObj/details">
 						<tal:block tal:define="userAttr python:here.getUserAttr(userObj,userObjDetail['name'],''); hasError python:userAttr!='' and userAttr!=userObjDetail['value']">
-							<div tal:attributes="class python:' '.join(['form-group','row']+[[],['has-error']][int(hasError)]); title python:['','ERROR: %s'%str(userAttr)][int(hasError)]">
+							<div tal:attributes="class python:' '.join(['form-group','row',userObjDetail['name']]+[[],['has-error']][int(hasError)]); title python:['','ERROR: %s'%str(userAttr)][int(hasError)]">
 								<label tal:attributes="for userObjDetail/name" class="col-sm-2 control-label"><span tal:content="userObjDetail/label">the label</span></label>
 								<div class="col-sm-10">
 									<input tal:attributes="name userObjDetail/name; value userObjDetail/value; class python:'form-control'" disabled="disabled"/>

@@ -22,7 +22,7 @@
 				x['id'] not in ['__sort_id']
 				and x['type'] in here.metaobj_manager.valid_types+here.getMetaobjIds()
 				and x['type'] not in ['password','resource']];
-		metaObjAttrs python:[x for x in filter_columns if x['custom']]">
+		metaObjAttrs python:[x for x in filter_columns if x.get('custom')]">
 
 <tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']">
 

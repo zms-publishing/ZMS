@@ -1122,6 +1122,10 @@ ZMI.prototype.initInputFields = function(container) {
 				if (is_firefox) {
 					$(this).attr('type','date');
 					$(this).attr('value',$(this).attr('value').split('T')[0]);
+					$(this).dblclick(() => {
+						$(this).attr('type','datetime-local');
+						$(this).attr('value',$(this).attr('data-initial-value'));
+					});
 				}
 			})
 		});

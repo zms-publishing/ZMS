@@ -3,9 +3,9 @@
 	standard modules/Products.zms/standard;
 	pilutil modules/Products.zms/pilutil;
 	filter_manager python:here.getFilterManager();">
-<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="class python:here.zmi_body_class(id='customize config')">
-<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
+<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 	<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'action':'manage_customize','label':'TAB_SYSTEM'}])">zmi_breadcrumbs</tal:block>
 	<nav id="subTab">

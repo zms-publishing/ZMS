@@ -6,10 +6,10 @@
 ><tal:block tal:condition="not:python:standard.get_session_value(here,'zmi-manage-system',0)==1"
 ><!DOCTYPE html>
 <html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
-<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 
 <body tal:attributes="class python:here.zmi_body_class(id='workflow_manager_main config')">
-<tal:block tal:content="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</tal:block>
+<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 
 <div id="zmi-tab">
 

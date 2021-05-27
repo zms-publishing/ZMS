@@ -40,15 +40,15 @@ dtmlExampleCode = '<!-- @deprecated -->'
 pageTemplateExampleCode = \
   '<!DOCTYPE html>\n' + \
   '<html lang="en">\n' + \
-  '<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>\n' + \
+  '<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>\n' + \
   '<body class="zmi">\n' + \
-  '<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>\n' + \
+  '<header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>\n' + \
   '<div id="zmi-tab">\n' + \
-  '<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>\n' + \
-  '</div><!-- #zmi-tab -->\n' + \
+  '<tal:block tal:replace="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block >\n' + \
   '<script>\n' + \
   '</script>\n' + \
-  '<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>\n' + \
+  '<div>\n' + \
+  '<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>\n' + \
   '</body>\n' + \
   '</html>\n'
 

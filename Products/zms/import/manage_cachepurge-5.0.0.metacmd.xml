@@ -77,9 +77,9 @@ return '<br />'.join(msg)
       <item key="data"><![CDATA[<!DOCTYPE html>
 <html lang="en">
 <!-- IMPORTANT: This script needs an External Method cache_purge(url) purging the cached data from file system -->
-	<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+	<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 	<body class="zmi">
-	<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+	<header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 
 	<div id="zmi-tab">
 

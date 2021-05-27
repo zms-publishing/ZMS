@@ -27,11 +27,11 @@
 		stat0 python:{};
 		dummy0 python:map(lambda x:here.operator_setitem(stat0,x,[]),attrIds+subObjectIds)">
 
-<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
+<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 
 <body tal:attributes="class python:here.zmi_body_class(id='analyze')">
 
-<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
+<header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 
 <div id="zmi-tab">
 

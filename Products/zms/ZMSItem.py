@@ -144,7 +144,7 @@ class ZMSItem(
           import zExceptions
           raise zExceptions.Unauthorized
       # manage may be registrable for Authenticated without permissions
-      if len(auth_user.getRolesInContext(self))==1 and auth_user.has_role('Authenticated'):
+      if not isinstance(auth_user,str) and len(auth_user.getRolesInContext(self))==1 and auth_user.has_role('Authenticated'):
         standard.writeError(self, "[zmi_page_request]: %s"%str(auth_user))
         register = self.getConfProperty('ZMS.register.href','')
         if len(register) > 0:

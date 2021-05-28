@@ -1567,10 +1567,11 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             self.executeQuery('SET @auth_user=\'%s\''%auth_user)
         except:
           raise zExceptions.InternalError(standard.writeError( self, '[recordSet_Update]: can\'t set auth_user variable'))
-        try:
-          self.executeQuery( sqlStatement)
-        except:
-          raise zExceptions.InternalError(standard.writeError( self, '[recordSet_Update]: can\'t update row - sqlStatement=' + sqlStatement))
+        #try:
+        #  self.executeQuery( sqlStatement)
+        #except:
+        #  raise zExceptions.InternalError(standard.writeError( self, '[recordSet_Update]: can\'t update row - sqlStatement=' + sqlStatement))
+        self.executeQuery( sqlStatement)
       # Update intersections.
       if update_intersections:
         self.recordSet_UpdateIntersections(tablename, rowid, values)

@@ -354,10 +354,16 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     """
     def assemble_query_result(self, res, encoding=None):
       from io import StringIO
+      from io import BytesIO
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB
       if isinstance(res, str):
         f=StringIO()
+        f.write(res)
+        f.seek(0)
+        result = RDB.File(f)
+      elif isinstance(res, bytes):
+        f=BytesIO()
         f.write(res)
         f.seek(0)
         result = RDB.File(f)
@@ -416,6 +422,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     """
     def executeQuery(self, sql):
       from io import StringIO
+      from io import BytesIO
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB
       standard.writeBlock( self, '[executeQuery]: sql=%s'%sql)
@@ -431,8 +438,15 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           f.write(res)
           f.seek(0)
           result=RDB.File(f)
+        elif isinstance(res, bytes):
+          f=BytesIO()
+          f.write(res)
+          f.seek(0)
+          result=RDB.File(f)
         else:
           result=Results(res)
+      if result is None:
+        result = []
       return len(result)
 
 

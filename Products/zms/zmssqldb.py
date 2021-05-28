@@ -445,6 +445,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           result = RDB.File(f)
         else:
           result = Results(res)
+      standard.writeBlock(self,'executeQuery: result=%s'%str(result))
       NoneType = type(None)
       if isinstance(result, NoneType):
         return 0

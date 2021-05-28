@@ -445,7 +445,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           result = RDB.File(f)
         else:
           result = Results(res)
-      if result is None:
+      NoneType = type(None)
+      if isinstance(result, NoneType):
         return 0
       return len(result)
 

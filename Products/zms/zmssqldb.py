@@ -437,16 +437,16 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           f=StringIO()
           f.write(res)
           f.seek(0)
-          result=RDB.File(f)
+          result = RDB.File(f)
         elif isinstance(res, bytes):
           f=BytesIO()
           f.write(res)
           f.seek(0)
-          result=RDB.File(f)
+          result = RDB.File(f)
         else:
-          result=Results(res)
+          result = Results(res)
       if result is None:
-        result = []
+        return 0
       return len(result)
 
 

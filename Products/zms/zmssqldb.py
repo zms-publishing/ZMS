@@ -354,16 +354,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     """
     def assemble_query_result(self, res, encoding=None):
       from io import StringIO
-      from io import BytesIO
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB
       if isinstance(res, str):
         f=StringIO()
-        f.write(res)
-        f.seek(0)
-        result = RDB.File(f)
-      elif isinstance(res, bytes):
-        f=BytesIO()
         f.write(res)
         f.seek(0)
         result = RDB.File(f)
@@ -422,7 +416,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     """
     def executeQuery(self, sql):
       from io import StringIO
-      from io import BytesIO
       from Shared.DC.ZRDB.Results import Results
       from Shared.DC.ZRDB import RDB
       standard.writeBlock( self, '[executeQuery]: sql=%s'%sql)
@@ -437,19 +430,14 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           f=StringIO()
           f.write(res)
           f.seek(0)
-          result = RDB.File(f)
-        elif isinstance(res, bytes):
-          f=BytesIO()
-          f.write(res)
-          f.seek(0)
-          result = RDB.File(f)
+          result=RDB.File(f)
         else:
-          result = Results(res)
-      standard.writeBlock(self,'executeQuery: result=%s'%str(result))
-      NoneType = type(None)
-      if isinstance(result, NoneType):
-        return 0
-      return len(result)
+          result=Results(res)
+      try:
+        result = len(result)
+      except:
+        result = 0
+      return result
 
 
     # --------------------------------------------------------------------------
@@ -1583,11 +1571,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             self.executeQuery('SET @auth_user=\'%s\''%auth_user)
         except:
           raise zExceptions.InternalError(standard.writeError( self, '[recordSet_Update]: can\'t set auth_user variable'))
-        #try:
-        #  self.executeQuery( sqlStatement)
-        #except:
-        #  raise zExceptions.InternalError(standard.writeError( self, '[recordSet_Update]: can\'t update row - sqlStatement=' + sqlStatement))
-        self.executeQuery( sqlStatement)
+        try:
+          self.executeQuery( sqlStatement)
+        except:
+          raise zExceptions.InternalError(standard.writeError( self, '[recordSet_Update]: can\'t update row - sqlStatement=' + sqlStatement))
       # Update intersections.
       if update_intersections:
         self.recordSet_UpdateIntersections(tablename, rowid, values)

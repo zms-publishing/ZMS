@@ -55,7 +55,7 @@ class ObjInputs(object):
     html = []
     input_type = 'date'
     if not isinstance(value, str):
-      fmt = {'DATE_FMT':'%Y-%m-%d','DATETIME_FMT':'%Y-%m-%dT%H:%M'}
+      fmt = {'DATE_FMT':'%Y-%m-%d','DATETIME_FMT':'%Y-%m-%dT%H:%M','TIME_FMT':'%H:%M'}
       value = self.getLangFmtDate(value, manage_lang, fmt.get(fmt_str))
     if value is not None and self.parseLangFmtDate(value) is None:
       value = ''
@@ -63,6 +63,9 @@ class ObjInputs(object):
     if enabled:
       if fmt_str == 'DATE_FMT':
         css += ' datepicker'
+      elif fmt_str == 'TIME_FMT':
+        css += ' timepicker'
+        input_type = 'time'
       elif fmt_str == 'DATETIME_FMT':
         css += ' datetimepicker'
         input_type = 'datetime-local'

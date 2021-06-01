@@ -5780,16 +5780,16 @@ return zmscontext.display_type(zmscontext.REQUEST)
 								<div class="ZMSTable">
 									<table style="width:100%" class="ZMSTable">
 									<tr>
-										<tal:block tal:content="structure python:'<%s title=\042onDblClick: %s\042 class=\042table_cell_editable\042>'%(['td',cell['tag']][cell['tag']!=''],here.getZMILangStr('ACTION_EDIT_CELL'))">start-tag</tal:block>
-										<input type="hidden" tal:attributes="id python:'tag_%i_%i'%(col_index,row_index); value cell/tag" />
+										<tal:block tal:content="structure python:'<%s title=\042onDblClick: %s\042 class=\042table_cell_editable\042>'%(['td',cell.get('tag','')][cell.get('tag','')!=''],here.getZMILangStr('ACTION_EDIT_CELL'))">start-tag</tal:block>
+										<input type="hidden" tal:attributes="id python:'tag_%i_%i'%(col_index,row_index); value python:cell.get('tag','')" />
 										<input type="hidden" tal:attributes="id python:'format_%i_%i'%(col_index,row_index); value cell_format" />
 										<div tal:attributes="id python:'input_%i_%i'%(col_index,row_index); class python:['','d-none'][richedit_preview]">
-											<textarea tal:attributes="id python:'content_%i_%i'%(col_index,row_index); placeholder python:'table:'+['td',cell['tag']][cell['tag']!='']" tal:content="cell_content"></textarea>
+											<textarea tal:attributes="id python:'content_%i_%i'%(col_index,row_index); placeholder python:'table:'+['td',cell.get('tag','')][cell.get('tag','')!='']" tal:content="cell_content"></textarea>
 										</div>
-										<div tal:attributes="id python:'preview_%i_%i'%(col_index,row_index);class python:cell['tag']+[' placeholder',''][len(cell_content)>0]+[' d-none',''][richedit_preview]"
+										<div tal:attributes="id python:'preview_%i_%i'%(col_index,row_index);class python:cell.get('tag','')+[' placeholder',''][len(cell_content)>0]+[' d-none',''][richedit_preview]"
 											><tal:block tal:condition="cell/content" tal:content="structure cell_content">the cell-content</tal:block
 										></div>
-										<tal:block tal:content="structure python:'</%s><!-- .table_cell_editable -->'%cell['tag']">end-tag</tal:block>
+										<tal:block tal:content="structure python:'</%s><!-- .table_cell_editable -->'%(cell.get('tag',''))">end-tag</tal:block>
 									</tr>
 									</table>
 								</div>
@@ -6170,7 +6170,7 @@ return [int((x*100.0)/sum(weights)) for x in weights]
           <item key="id">ZMSTable</item>
           <item key="name">ZMSTable</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">4.0.0</item>
+          <item key="revision">4.0.1</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>

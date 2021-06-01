@@ -1127,7 +1127,16 @@ ZMI.prototype.initInputFields = function(container) {
 						$(this).attr('value',$(this).attr('data-initial-value'));
 					});
 				}
-			})
+			});
+			$("input.timepicker",this).each(function() {
+				$(this).closest("div")
+					.addClass("input-group")
+					.removeClass("col-sm-9")
+					.removeClass("col-sm-10")
+					.removeClass("col-md-10")
+					.wrap('<div class="col-sm-5 col-md-4 col-lg-3"></div>');
+				$(this).before('<div class="input-group-prepend"><span class="input-group-text"><i class="far fa-clock"></i></span></div>');
+			});
 		});
 	if (typeof this.afterInitInputFieldsHandler != "undefined") {
 		for (var i in this.afterInitInputFieldsHandler) {

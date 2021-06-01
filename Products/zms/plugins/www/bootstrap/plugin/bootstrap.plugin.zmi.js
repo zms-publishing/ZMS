@@ -1111,14 +1111,18 @@ ZMI.prototype.initInputFields = function(container) {
 			}
 			// Date-Picker
 			var is_firefox = /firefox/i.test(navigator.userAgent);
-			$("input.datepicker,input.datetimepicker",this).each(function() {
+			var icon_datepicker = 'far fa-calendar';
+			var icon_datetimepicker = 'far fa-calendar';
+			var icon_timepicker = 'far fa-clock';
+			$("input.datepicker,input.datetimepicker,input.timepicker",this).each(function() {
 				$(this).closest("div")
 					.addClass("input-group")
 					.removeClass("col-sm-9")
 					.removeClass("col-sm-10")
 					.removeClass("col-md-10")
 					.wrap('<div class="col-sm-5 col-md-4 col-lg-3"></div>');
-				$(this).before('<div class="input-group-prepend"><span class="input-group-text"><i class="far fa-calendar"></i></span></div>');
+				var icon_picker =  eval('icon_' + $(this).prop('class').split(' ').filter(function(v) {return v.endsWith('picker')}));
+				$(this).before('<div class="input-group-prepend"><span class="input-group-text"><i class="'+ icon_picker +'"></i></span></div>');
 				if (is_firefox) {
 					$(this).attr('type','date');
 					$(this).attr('value',$(this).attr('value').split('T')[0]);
@@ -1127,7 +1131,7 @@ ZMI.prototype.initInputFields = function(container) {
 						$(this).attr('value',$(this).attr('data-initial-value'));
 					});
 				}
-			})
+			});
 		});
 	if (typeof this.afterInitInputFieldsHandler != "undefined") {
 		for (var i in this.afterInitInputFieldsHandler) {

@@ -572,10 +572,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             value = self.operator_getitem(row, columnName, ignorecase=True)
             # Select.MySQLSet
             if 'mysqlset' in stereotype:
-              for r in self.query( 'DESCRIBE %s %s'%(tableName, columnName))['records']:
-                rtype = r['type']
-                for i in rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'', '').split(','):
-                  options.append([i, i])
+              rtype = column['description']
+              for i in rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'', '').split(','):
+                options.append([i, i])
             # Select.Options
             elif 'options' in stereotype:
               options.extend(stereotype['options'])

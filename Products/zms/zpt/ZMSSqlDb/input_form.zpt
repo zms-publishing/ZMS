@@ -46,7 +46,7 @@
 			<input tal:condition="python:column['id'].lower() in request_form_inherit" type="hidden" tal:attributes="name elName; value elValue"/>
 			<div tal:condition="python:column['id'].lower() not in request_form_inherit" class="form-group row" tal:define="global done python:[]" tal:attributes="id python:'tr_%s'%(elName)">
 
-				<tal:block tal:on-error="structure string: <!-- INTERFACE ERROR -->" tal:replace="python:metaObjAttr.get('interface','')">table interface element</tal:block>
+				<tal:block tal:replace="python:metaObjAttr.get('interface','')">table interface element</tal:block>
 
 				<tal:block tal:replace="nothing">
 				##### Label ############################################################

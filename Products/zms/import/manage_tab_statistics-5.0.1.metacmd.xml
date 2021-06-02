@@ -55,6 +55,7 @@
         <option value="/sites/kinderkrebsinfo/"
             tal:attributes="value python:portal_master.absolute_url().split(request['SERVER_URL'])[-1]"
             >All</option>
+		<tal:block tal:condition="python:here.getHome().getId()!='unibe'">
         <option value="/sites/kinderkrebsinfo/"
             tal:attributes="value python:here.getDocumentElement().absolute_url().split(request['SERVER_URL'])[-1]"
             tal:content="python:here.getHome().getId()"
@@ -64,6 +65,17 @@
             tal:attributes="value python:portal_client.absolute_url().split(request['SERVER_URL'])[-1]"
             tal:content="python:portal_client.getHome().getId()"
             >Client</option>
+		</tal:block>
+		<tal:block tal:condition="python:here.getHome().getId()=='unibe'">
+		<option value="/portal/content">Portal</option>
+		<option value="/uniintern/content">Uni Intern</option>
+		<option value="/uniapp/content">UniBE Mobile</option>
+        <option value="/jahresbericht_">Jahresberichte (all)</option>
+        <option value="/portal/fak_">Faculties (all)</option>
+        <option value="/micro_">Microsites (all)</option>
+        <option value="/portal/microsites">Microsites (portal)</option>
+        <option value="/uniintern/Microsites">Microsites (uniintern)</option>
+		</tal:block>
     </select>
     <select id="max_objs" name="limit" class="form-control mr-2">
         <option value>---Maximum---</option>
@@ -117,8 +129,8 @@
 				</a>
 				<ol tal:attributes="id python:'ol_%s1'%metaObjAttr['id']" style="visibility:hidden;display:none;">
 					<li tal:repeat="ob python:stat1[metaObjAttr['id']]"
-					    ><a tal:attributes="title python:'%s/manage_main'%ob['abs_url'];href python:'%s/manage_main'%ob['abs_url']" 
-					        target="_blank" tal:content="python:(ob['abs_url']).split('/content/')[-1]"
+					    ><a tal:attributes="title python:'%s/manage_main'%ob['abs_url'];href python:'%s/manage_main'%ob['abs_url']"
+					        target="_blank" tal:content="python:(ob['abs_url']).split(path_filter)[-1]"
 					        >the url</a></li>
 				</ol>
 			</td>
@@ -130,8 +142,8 @@
 				</a>
 				<ol tal:attributes="id python:'ol_%s0'%metaObjAttr['id']" style="visibility:hidden;display:none;">
 					<li tal:repeat="ob python:stat0[metaObjAttr['id']]"
-					    ><a tal:attributes="title python:'%s/manage_main'%ob['abs_url'];href python:'%s/manage_main'%ob['abs_url']" 
-					        target="_blank" tal:content="python:(ob['abs_url']).split('/content/')[-1]"
+					    ><a tal:attributes="title python:'%s/manage_main'%ob['abs_url'];href python:'%s/manage_main'%ob['abs_url']"
+					        target="_blank" tal:content="python:(ob['abs_url']).split(path_filter)[-1]"
 		                    >the url</a></li>
 				</ol>
 			</td>
@@ -147,7 +159,7 @@
 
 </form>
 
-<div/>
+</div>
 
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 
@@ -189,7 +201,7 @@ $ZMI.registerReady(function() {
         </list>
       </item>
       <item key="name">Statistics</item>
-      <item key="revision">5.0.0</item>
+      <item key="revision">5.0.1</item>
       <item key="roles" type="list">
         <list>
           <item>ZMSAdministrator</item>

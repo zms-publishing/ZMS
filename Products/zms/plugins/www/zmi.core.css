@@ -740,10 +740,10 @@ body.zmi .zmi-action .btn.split-left {
 
 body.zmi .dropdown-menu {
 	font-size: inherit !important;
-	box-shadow: 0 6px 12px rgba(0,0,0,.175)
+	box-shadow: 0 6px 12px rgba(0,0,0,.175);
+	max-width: 14rem;
 }
 body.zmi .dropdown-menu a.dropdown-item {
-	max-width: 14rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }

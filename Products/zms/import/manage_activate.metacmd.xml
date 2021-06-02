@@ -1,9 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
+
 <list>
   <item type="dictionary">
     <dictionary>
-      <item key="custom"/>
-      <item key="data"><![CDATA[request = container.REQUEST
+      <item key="data"><![CDATA[## Script (Python) "manage_activate"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=
+##title=Activate selected content items
+##
+request = container.REQUEST
 RESPONSE =  request.RESPONSE
 lang = request['lang']
 
@@ -21,33 +30,42 @@ print('%i Objects activated'%len(ids))
 return target,printed
 ]]>
       </item>
-      <item key="description"/>
+      <item key="description"></item>
       <item key="execution" type="int">1</item>
       <item key="icon_clazz"><![CDATA[far fa-check-square]]></item>
-      <item key="id"><![CDATA[manage_activate]]></item>
+      <item key="id">manage_activate</item>
       <item key="meta_type"><![CDATA[Script (Python)]]></item>
       <item key="meta_types" type="list">
         <list>
-          <item><![CDATA[type(ZMSDocument)]]></item>
-          <item><![CDATA[type(ZMSObject)]]></item>
-          <item><![CDATA[type(ZMSTeaserElement)]]></item>
+          <item>type(ZMSDocument)</item>
+          <item>type(ZMSObject)</item>
+          <item>type(ZMSTeaserElement)</item>
         </list>
       </item>
-      <item key="name"><![CDATA[Activate]]></item>
-      <item key="revision">4.0.0</item>
+      <item key="name">Activate</item>
+      <item key="revision">4.0.1</item>
       <item key="roles" type="list">
         <list>
-          <item><![CDATA[ZMSAdministrator]]></item>
-          <item><![CDATA[ZMSAuthor]]></item>
-          <item><![CDATA[ZMSEditor]]></item>
+          <item>ZMSAdministrator</item>
+          <item>ZMSEditor</item>
+          <item>ZMSAuthor</item>
         </list>
       </item>
+      <item key="title"><![CDATA[Activate selected content items]]></item>
     </dictionary>
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="custom"/>
-      <item key="data"><![CDATA[request = container.REQUEST
+      <item key="data"><![CDATA[## Script (Python) "manage_deactivate"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=
+##title=Deactivate selected content items
+##
+request = container.REQUEST
 RESPONSE =  request.RESPONSE
 lang = request['lang']
 
@@ -65,27 +83,28 @@ print('%i Objects deactivated'%len(ids))
 return target,printed
 ]]>
       </item>
-      <item key="description"/>
+      <item key="description"></item>
       <item key="execution" type="int">1</item>
       <item key="icon_clazz"><![CDATA[far fa-square]]></item>
-      <item key="id"><![CDATA[manage_deactivate]]></item>
+      <item key="id">manage_deactivate</item>
       <item key="meta_type"><![CDATA[Script (Python)]]></item>
       <item key="meta_types" type="list">
         <list>
-          <item><![CDATA[type(ZMSDocument)]]></item>
-          <item><![CDATA[type(ZMSObject)]]></item>
-          <item><![CDATA[type(ZMSTeaserElement)]]></item>
+          <item>type(ZMSDocument)</item>
+          <item>type(ZMSObject)</item>
+          <item>type(ZMSTeaserElement)</item>
         </list>
       </item>
-      <item key="name"><![CDATA[Deactivate]]></item>
-      <item key="revision">4.0.0</item>
+      <item key="name">Deactivate</item>
+      <item key="revision">4.0.1</item>
       <item key="roles" type="list">
         <list>
-          <item><![CDATA[ZMSAdministrator]]></item>
-          <item><![CDATA[ZMSAuthor]]></item>
-          <item><![CDATA[ZMSEditor]]></item>
+          <item>ZMSAdministrator</item>
+          <item>ZMSEditor</item>
+          <item>ZMSAuthor</item>
         </list>
       </item>
+      <item key="title"><![CDATA[Deactivate selected content items]]></item>
     </dictionary>
   </item>
 </list>

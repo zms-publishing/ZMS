@@ -692,8 +692,18 @@ body.zmi  ul.zmi-container .right div input {
 	margin:8px;
 }
 body.zmi ul.zmi-container .zmi-item .zmi-action {
-	margin-left: -257px;
 	margin-left:-179px;
+}
+/* Fix left alignment on initially missing center-div */
+@media (max-width: 767px) {
+	.zmi-item.form-group.row > div.col-sm-10 > .zmi-action{
+		float:right;
+	}
+}
+@media (min-width: 768px) {
+	.zmi-item.form-group.row > div.col-sm-10 > .zmi-action {
+		margin-left:calc(100% - 20vw - 176px) !important;
+	}
 }
 body.zmi ul.zmi-container .zmi-item .zmi-action .split-left {
 	width:180px;

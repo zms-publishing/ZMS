@@ -75,37 +75,38 @@ $ZMI.registerReady(function(){
 				$change_dt.each(function() {
 					var $el = $(this);
 					var mydate = $el.attr("title");
-					if (typeof mydate=="undefined") {
-						mydate = $el.text();
-					}
-					var myformat = getZMILangStr('DATETIME_FMT');
-					var dtsplit=mydate.split(/[\/ .:]/);
-					var dfsplit=myformat.split(/[\/ .:]/);
-					// creates assoc array for date
-					df = new Array();
-					for(dc=0;dc<dtsplit.length;dc++) {
-						df[dfsplit[dc]]=dtsplit[dc];
-						df[dfsplit[dc].substr(1)]=parseInt(dtsplit[dc]);
-					}
-					var dstring = df['%Y']+'-'+df['%m']+'-'+df['%d']+' '+df['%H']+':'+df['%M']+':'+df['%S'];
-					var date = new Date(df['Y'],df['m']-1,df['d']);
-					var now = new Date();
-					now.setHours(0,0,0);
-					var daysBetween = (now.valueOf()-date.valueOf())/(24*60*60*1000);
-					if (daysBetween<1) {
-						date = new Date(df['Y'],df['m']-1,df['d'],df['H'],df['M'],df['S']);
-						now = new Date();
-						var secondsBetween = (now.valueOf()-date.valueOf())/(1000);
-						var minutesBetween = secondsBetween/(60);
-						$(this).text(getZMILangStr('TODAY')+" "+(minutesBetween<60?Math.floor(minutesBetween)+" min. ":df['%H']+':'+df['%M']));
-					}
-					else if (daysBetween<2) {
-						$(this).text(getZMILangStr('YESTERDAY')+" "+df['%H']+':'+df['%M']);
+					if (typeof mydate!="undefined") {
+						var myformat = getZMILangStr('DATETIME_FMT');
+						var dtsplit=mydate.split(/[\/ .:]/);
+						var dfsplit=myformat.split(/[\/ .:]/);
+						// creates assoc array for date
+						df = new Array();
+						for(dc=0;dc<dtsplit.length;dc++) {
+							df[dfsplit[dc]]=dtsplit[dc];
+							df[dfsplit[dc].substr(1)]=parseInt(dtsplit[dc]);
+						}
+						var dstring = df['%Y']+'-'+df['%m']+'-'+df['%d']+' '+df['%H']+':'+df['%M']+':'+df['%S'];
+						var date = new Date(df['Y'],df['m']-1,df['d']);
+						var now = new Date();
+						now.setHours(0,0,0);
+						var daysBetween = (now.valueOf()-date.valueOf())/(24*60*60*1000);
+						if (daysBetween<1) {
+							date = new Date(df['Y'],df['m']-1,df['d'],df['H'],df['M'],df['S']);
+							now = new Date();
+							var secondsBetween = (now.valueOf()-date.valueOf())/(1000);
+							var minutesBetween = secondsBetween/(60);
+							$(this).attr("data-mydate",getZMILangStr('TODAY')+" "+(minutesBetween<60?Math.floor(minutesBetween)+" min. ":df['%H']+':'+df['%M']));
+						}
+						else if (daysBetween<2) {
+							$(this).attr("data-mydate",getZMILangStr('YESTERDAY')+" "+df['%H']+':'+df['%M']);
+						}
+						else {
+							$(this).attr("data-mydate",getZMILangStr('DATE_FMT').replace('%Y',df['%Y']).replace('%m',df['%m']).replace('%d',df['%d']));
+						}
 					}
 					else {
-						$(this).text(getZMILangStr('DATE_FMT').replace('%Y',df['%Y']).replace('%m',df['%m']).replace('%d',df['%d']));
+						$(this).attr("data-mydate",mydate);
 					}
-				$(this).attr("title",mydate);
 			});
 			setTimeout(fn,10000);
 		};

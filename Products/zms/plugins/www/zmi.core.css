@@ -824,7 +824,6 @@ body.zmi .right .zmi-action.show .btn.dropdown-toggle > i:before {
 }
 
 li.zmi-item span.zmi-ids {
-	/* position: absolute; */
 	display:inline-block;
 	margin: 6px;
 	vertical-align:top;
@@ -836,19 +835,29 @@ li.zmi-item span.zmi-ids {
 .zmi-manage-main-change {
 	color:#999;
 	font-size:11px;
-	margin:.35rem 0 0 0;
+	margin:.7rem 0 0 0;
 	overflow: hidden;
 	text-overflow:ellipsis;
 	display:block;
 	padding-left: 1rem;
 	white-space: nowrap;
 	max-width: 20vw;
+	line-height:1;
 }
-.zmi-manage-main-change .zmi-state.fa, 
-.zmi-manage-main-change .zmi-state.fas,
-.zmi-manage-main-change .zmi-state.far {
+.zmi-manage-main-change .zmi-state {
 	font-family: inherit;
-	font-weight: inherit;
+	font-weight: normal;
+	display:inline-block;
+	max-width:6vw;
+	overflow:hidden;
+	text-overflow:ellipsis
+}
+.zmi-manage-main-change span.zmi-state:after {
+	content:attr(title);
+}
+.zmi-manage-main-change span.zmi-state.zmi-change-dt:after {
+	content:attr(data-mydate);
+	max-width: 6em;
 }
 .zmi-manage-main-change .zmi-state.fas:before,
 .zmi-manage-main-change .zmi-state.far:before {
@@ -856,9 +865,11 @@ li.zmi-item span.zmi-ids {
 	font-weight: 900;
 	font-size: 12px !important;
 	margin: 0 0.25rem;
+	display:inline-block;
 }
 .zmi-manage-main-change .zmi-state.far:before {
 	font-weight: 400;
+	display:inline-block;
 }
 /* Constraints */
 .zmi-manage-main-change .constraint {

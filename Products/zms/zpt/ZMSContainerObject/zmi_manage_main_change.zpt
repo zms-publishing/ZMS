@@ -11,8 +11,8 @@
 	change_uid python:here.attr('change_uid');
 	change_dt  python:here.attr('change_dt');
 	constraints python:here.attr('check_constraints');">
-	<span class="zmi-state zmi-change-uid" tal:condition="change_uid" tal:content="structure python:standard.string_maxlen(change_uid,20)">the change-uid</span>
-	<span class="zmi-state zmi-change-dt" tal:condition="change_dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
+	<span class="zmi-state zmi-change-uid" tal:condition="change_uid" tal:attributes="title python:standard.string_maxlen(change_uid,20)"></span>
+	<span class="zmi-state zmi-change-dt" tal:condition="change_dt" tal:attributes="title python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')"></span>
 	<tal:block  tal:repeat="category python:list(constraints)">
 		<div style="white-space:nowrap" tal:attributes="class python:'constraint constraint-%s'%category[:-1].lower()">
 			<i class="fas fa-exclamation-triangle text-danger" 

@@ -702,11 +702,12 @@ body.zmi ul.zmi-container .zmi-item .zmi-action .split-left {
 	text-align:left;
 	z-index:9999;
 	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 body.zmi ul.zmi-container .zmi-item .zmi-action.show button.split-left {
 	visibility: visible !important;
 }
-body.zmi  .checkbox.split-left {
+body.zmi .checkbox.split-left {
 	height:1em;
 }
 body.zmi .checkbox.split-left input {

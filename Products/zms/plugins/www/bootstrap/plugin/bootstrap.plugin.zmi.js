@@ -1125,10 +1125,17 @@ ZMI.prototype.initInputFields = function(container) {
 				var icon_picker =  eval('icon_' + $(this).prop('class').split(' ').filter(function(v) {return v.endsWith('picker')}));
 				$(this).before('<div class="input-group-prepend"><span class="input-group-text"><i class="'+ icon_picker +'"></i></span></div>');
 				if (is_firefox) {
-					$(this).attr('type','date');
+					if ($(this).attr('type') == 'datetime-local') {
+						$(this).attr('type', 'date');
+					}
 					$(this).attr('value',$(this).attr('value').split('T')[0]);
 					$(this).dblclick(() => {
-						$(this).attr('type','datetime-local');
+						if ($(this).attr('type') == 'datetime-local') {
+							$(this).attr('type', 'date');
+						}
+						else if ($(this).attr('type') == 'date') {
+							$(this).attr('type', 'datetime-local');
+						}
 						$(this).attr('value',$(this).attr('data-initial-value'));
 					});
 				}

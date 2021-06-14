@@ -290,9 +290,9 @@ class ZMSMetaobjManager(object):
         for attr_id in [x['id'] for x in ob['attrs']]:
           attr = self.getMetaobjAttr(id, attr_id)
           mandatory_keys = ['id', 'name', 'type', 'meta_type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
-          if attr['type']=='interface':
+          if attr['type'] == 'interface':
             attr['name'] = attr['id']
-          if attr['type']=='constant':
+          if (ob['type'] == 'ZMSRecordSet' and attr.get('custom')) or attr['type'] == 'constant':
             mandatory_keys += ['custom']
           for key in list(attr):
             if (not attr[key] and REQUEST is None) or \

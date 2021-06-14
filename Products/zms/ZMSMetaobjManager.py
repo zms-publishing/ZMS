@@ -130,7 +130,7 @@ class ZMSMetaobjManager(object):
             mandatory_keys = ['id', 'name', 'type', 'meta_type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
             if attr['type']=='interface':
               attr['name'] = attr['id']
-            if attr['type']=='constant':
+            if (o['type'] == 'ZMSRecordSet' and attr.get('custom')) or attr['type'] == 'constant':
               mandatory_keys += ['custom']
             for key in list(attr):
               if not key in mandatory_keys:

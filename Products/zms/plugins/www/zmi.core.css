@@ -2521,9 +2521,7 @@ ul.pagination {
 	background:transparent;
 	border:none
 }
-.ZMSRecordSet.main_grid table thead th input.form-control.form-control-sm::placeholder,
-.ZMSRecordSet.main_grid table thead th input.form-control.form-control-sm::-ms-input-placeholder,
-.ZMSRecordSet.main_grid table thead th input.form-control.form-control-sm::-ms-input-placeholder {
+.ZMSRecordSet.main_grid table thead th input.form-control.form-control-sm::placeholder {
 	color:#ffffffb3 !important;
 }
 .ZMSRecordSet.main_grid .btn-group .checkbox.btn.btn-secondary {

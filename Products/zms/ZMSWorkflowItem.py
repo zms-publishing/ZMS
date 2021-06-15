@@ -72,7 +72,7 @@ class ZMSWorkflowItem(object):
           append = append or (len(standard.intersection_list(wfStates, wfFrom)) > 0 and len(wfTo) > 0)
           append = append and (len(standard.intersection_list(roles, wfPerformer)) > 0 or auth_user.has_permission('Manager', self))
           if append:
-            actions.append((transition['name'], path+'manage_wfTransition', transition.get('icon_clazz', 'icon-square')))
+            actions.append((transition['name'], path+'manage_wfTransition', transition.get('icon_clazz', 'fas fa-square')))
       
       #-- Headline,
       if len( actions) > 0:

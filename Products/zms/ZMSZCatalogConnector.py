@@ -195,8 +195,8 @@ class ZMSZCatalogConnector(
     # Properties.
     # -----------
     meta_type = 'ZMSZCatalogConnector'
-    icon = "++resource++zms_/img/ZCatalog.png"
-    icon_clazz = "icon-search"
+    icon = " fas fa-search"
+    icon_clazz = "icon-search fas fa-search"
 
     # Management Interface.
     # ---------------------

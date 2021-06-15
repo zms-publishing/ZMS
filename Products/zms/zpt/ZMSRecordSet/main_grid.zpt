@@ -171,7 +171,7 @@
 							</a>
 						</tal:block
 						><tal:block tal:condition="python:elType in ['boolean']"
-							><center><i tal:condition="python:elValue" class="icon-ok"></i></center>
+							><center><i tal:condition="python:elValue" class="fas fa-check-square"></i></center>
 						</tal:block
 						><tal:block tal:condition="python:elType in ['image']"
 							><tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is not str"

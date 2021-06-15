@@ -694,17 +694,6 @@ body.zmi  ul.zmi-container .right div input {
 body.zmi ul.zmi-container .zmi-item .zmi-action {
 	margin-left:-179px;
 }
-/* Fix left alignment on initially missing center-div */
-@media (max-width: 767px) {
-	.zmi-item.form-group.row > div.col-sm-10 > .zmi-action{
-		float:right;
-	}
-}
-@media (min-width: 768px) {
-	.zmi-item.form-group.row > div.col-sm-10 > .zmi-action {
-		margin-left:calc(100% - 20vw - 176px) !important;
-	}
-}
 body.zmi ul.zmi-container .zmi-item .zmi-action .split-left {
 	width:180px;
 	overflow:hidden;
@@ -1243,6 +1232,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 }
 .zmi .zmi-action .dropdown-menu:not(.dropdown-menu-right) a.dropdown-item:last-child {
 	margin-bottom: .5rem;
+}
+.zmi .zmi-action .dropdown-menu:not(.dropdown-menu-right) a.dropdown-item:first-child {
+	margin-bottom: unset;
 }
 .zmi .dropdown-menu .dropdown-header {
 	padding: 5px 13px;

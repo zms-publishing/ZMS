@@ -3938,7 +3938,7 @@ tr.inactive > td.data > * {
 </tal:block>
 
 <tal:block 
-    tal:replace="structure string:<form><div><div><<div><div>">
+    tal:replace="structure string:<form><div><div><div><div>">
     <!-- Set of ZMI/HTML closing tags-->
 </tal:block>
 
@@ -4368,7 +4368,7 @@ return None
           <item key="id">ZMSObjectSet</item>
           <item key="name">ZMSObjectSet</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">4.1.1</item>
+          <item key="revision">4.1.2</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>

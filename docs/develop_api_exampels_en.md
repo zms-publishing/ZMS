@@ -1,4 +1,4 @@
-# ZMS Development:
+# ZMS Development
 
 ## Practical Examples for Using API Functions
 
@@ -10,10 +10,10 @@ To any object class defined via ZMS configuration menu a custom `renderShort()` 
 
 
 ![Add ZMS](images/develop_api_renderShort.png)
-*Adding a renderShort funtion as a py-primitive allow you to customize the objects view in the ZMS GUI*
+*Adding a renderShort function as a py-primitive allow you to customize the objects view in the ZMS GUI*
 
 #### Custom Code Example
-The code adds the document desciption to the title and a warning is shown if the editor forgot naming the creator:
+The code shows the title and the desciption attribute. Conditionally a warning is shown if the editor forgot naming the creator of the document:
 ```
 ## Script (Python) "ZMSDocument.renderShort"
 ##bind container=container

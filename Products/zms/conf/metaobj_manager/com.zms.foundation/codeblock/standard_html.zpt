@@ -1,0 +1,33 @@
+<!-- codeblock.standard_html --> 
+<tal:block 
+	tal:define="global zmscontext options/zmscontext;
+		lang python:request.get('lang','eng');
+		info python:zmscontext.attr('info');
+		codeblock python:(zmscontext.attr('code') and zmscontext.attr('text')=='') or zmscontext.attr('text');
+		display python:zmscontext.attr('display');
+		onlythirdview python:(zmscontext.attr('onlythirdview') and display=='') or display=='rendered_preview_only';
+		roles python:zmscontext.attr('attr_dc_accessrights_restrictedEditors');
+		omit_tag python:zmscontext.attr('omit_div_container');
+		is_manage python:request.get('URL').find('/manage')>-1">
+	<div class="alert alert-info" style="margin:1em 0;" 
+		tal:condition="python:(is_manage and info) or (is_manage and roles)">
+		<tal:block tal:content="python: info and info or 'HINT: This object contains programming code.'">
+		</tal:block>
+		<tal:block tal:condition="roles">
+			Editing is restricted to the role(s) <span class="roles" tal:content="roles">roles</span>.
+		</tal:block>
+	</div>
+	<div class="codeblock" 
+		tal:omit-tag="omit_tag"
+		tal:condition="python:codeblock and ( (not is_manage and onlythirdview) or display=='rendered') and not display=='as_raw_code'" 
+		tal:content="structure codeblock">
+		codeblock
+	</div>
+	<pre class="code codeblock" 
+		tal:omit-tag="omit_tag"
+		tal:condition="python:display=='as_raw_code'" 
+		tal:content="python:zmscontext.getObjAttrValue(zmscontext.getObjAttr('text'),request)">
+		codeblock
+	</pre>
+</tal:block>
+<!-- /codeblock.standard_html -->

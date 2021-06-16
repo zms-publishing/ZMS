@@ -1,0 +1,40 @@
+<tal:block tal:define="
+	zmscontext options/zmscontext;
+	dummy0 python:request.set('CKEDITOR_config_removeButtons','JustifyLeft,JustifyCenter,JustifyRight')">
+<script type="text/javascript">
+
+$(function(){
+	$('#text_'+getZMILang()).parent('form').submit(function() {
+			var b = true;
+			if (self.btnClicked != getZMILangStr('BTN_CANCEL') &&
+					self.btnClicked != getZMILangStr('BTN_BACK')) {
+				var txt = '<'+'xml>'+$('#text_'+getZMILang()).val().replace('&','')+'<'+'/xml>';
+				if ( txt.indexOf( '<'+'dtml-') < 0) {
+					try {
+						var xmlString = txt.replace(/\&(\w*)\;/g,'');
+						if (window.DOMParser) {
+							var parser=new DOMParser();
+							var doc=parser.parseFromString(xmlString,"text/xml");
+							if ( doc.childNodes[0].nodeName == 'parsererror') {
+								b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+doc.childNodes[0].childNodes[0].nodeValue+'\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
+							}
+						} else if (window.ActiveXObject) {
+							var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+							xmlDoc.async="false";
+							xmlDoc.loadXML(xmlString);
+							if ( xmlDoc.childNodes.length == 0) {
+								b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+'Invalid (X)HTML!\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
+							}
+						}
+					}
+					catch(e) {
+						alert(e.message);
+					}
+				}
+			}
+			return b;
+		});
+	});
+
+</script>
+</tal:block>

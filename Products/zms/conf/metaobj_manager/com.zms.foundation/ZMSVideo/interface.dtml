@@ -1,0 +1,28 @@
+<script>
+	function changeGUI() {
+		$('#tr_videoId').hide();
+		$('#tr_videoHint').hide();
+		$('#tr_videoWidth').hide();
+		$('#tr_videoHeight').hide();
+		$('#tr_videodata').hide();
+		if ( $('#tr_provider select option:selected').val()!='switch' ) {
+			if ( $('#tr_provider select option:selected').val()=='youtube' ) {
+				$('#tr_videoHint').show();
+			}
+			if ( $('#tr_provider select option:selected').val()=='fileupload' ) {
+				$('#tr_videodata').show();
+				$('#tr_videoId label').removeClass('mandatory');
+			}
+			else {
+				$('#tr_videoId').show();
+				$('#tr_videoId label').addClass('mandatory');
+			}
+			$('#tr_videoWidth').show();
+			$('#tr_videoHeight').show();
+		};
+	};
+	$(document).ready( function() {
+		$('#tr_provider select').change(function() { changeGUI() });
+		changeGUI();
+	});
+</script>

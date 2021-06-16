@@ -1,0 +1,58 @@
+<!-- bt_carousel.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		id zmscontext/id;
+		interval python:zmscontext.attr('interval');
+		indicators python:zmscontext.attr('indicators');
+		controls python:zmscontext.attr('controls');
+		slides python:zmscontext.filteredObjChildren('slides',request);
+		is_manage python:len(request.get('URL','').split('/manage'))>1;
+		">
+	<div class="carousel slide" data-ride="carousel"
+		tal:attributes="id id;class python:is_manage and default or 'carousel slide carousel-fade';data-interval interval">
+		<ol tal:condition="indicators" class="carousel-indicators">
+			<li tal:repeat="slide slides"
+				tal:attributes="data-target python:'#%s'%(id); data-slide-to python:slides.index(slide); class python:['','active'][slides.index(slide)==0]">
+			</li>
+		</ol><!-- .carousel-indicators -->
+		<div class="carousel-inner">
+			<tal:block tal:repeat="slide slides">
+				<div class="carousel-item"
+					tal:define="
+						active_css python:slides.index(slide)==0 and 'active' or '';
+						set_active_css python:request.set('active_css',active_css)"
+					tal:replace="structure python:slide.getBodyContent(request)">
+					<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img" focusable="false"><rect width="100%" height="100%" fill="#00000066"/></svg>
+					<div class="container">
+						<div class="carousel-caption text-left">
+							<h1>Example headline.</h1>
+							<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+							<p><a class="btn btn-lg btn-danger" href="#" role="button">Sign up today</a></p>
+						</div>
+					</div>
+				</div>
+			</tal:block>
+		</div><!-- .carousel inner -->
+		<tal:block tal:condition="controls" tal:define="
+				ATTR_PREVIOUS python:zmscontext.getZMILangStr('ATTR_PREVIOUS');
+				ATTR_NEXT python:zmscontext.getZMILangStr('ATTR_NEXT')">
+			<a class="carousel-control-prev" tal:attributes="href python:'#%s'%(id);title ATTR_PREVIOUS"
+				role="button" data-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="sr-only" tal:content="ATTR_PREVIOUS">Previous</span>
+			</a>
+			<a class="carousel-control-next" tal:attributes="href python:'#%s'%(id);title ATTR_NEXT"
+				role="button" data-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="sr-only" tal:content="ATTR_NEXT">Next</span>
+			</a>
+	</tal:block>
+	</div><!-- .carousel slide -->
+	<script 
+		tal:condition="not:is_manage"
+		tal:content="python:'$ZMI.registerReady(function(){ $(\'#%s\').carousel({interval: %s }) })'%(id, interval)">
+	</script>
+</tal:block>
+
+<!-- /bt_carousel.standard_html -->

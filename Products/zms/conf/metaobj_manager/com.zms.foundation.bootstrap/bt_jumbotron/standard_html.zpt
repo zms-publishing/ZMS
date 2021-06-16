@@ -1,0 +1,28 @@
+<!-- bt_jumbotron.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		title python:zmscontext.attr('title');
+		subtitle python:zmscontext.attr('subtitle');
+		text python:zmscontext.attr('text');
+		linklist python:zmscontext.getChildNodes(request,['bt_link_list']) and zmscontext.links.attr('links') or None;">
+	<div class="jumbotron">
+		<h1 tal:condition="title" class="display-4" tal:content="structure title">Jumbotron title</h1>
+		<p tal:condition="subtitle" class="lead" tal:content="structure subtitle" tal:condition="subtitle">Jumbotron subtitle</p>
+		<hr tal:condition="python: title or subtitle" class="my-4"/>
+		<p tal:content="structure text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+		<p class="lead" tal:condition="linklist">
+			<tal:block tal:repeat="link linklist" tal:on-error="structure string:<!-- ERROR: linklist -->">
+				<a	class="btn btn-primary btn-lg mb-3" role="button" 
+					tal:define="
+						url link/url; 
+						url_obj python:'{' in url and zmscontext.getLinkObj(url,request) or None; 
+						url_target python:url_obj and url_obj.getHref2IndexHtml(request) or url;"
+				tal:attributes="href url_target"
+				tal:content="structure link/label">Learn more</a>
+			</tal:block>
+		</p>
+	</div>
+</tal:block>
+
+<!-- /bt_jumbotron.standard_html -->

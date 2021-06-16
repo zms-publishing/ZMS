@@ -1,0 +1,61 @@
+<!-- ZMSNote.renderShort -->
+
+<tal:block tal:define="global zmscontext options/zmscontext;
+	ishtml python:zmscontext.attr('text').find('<');
+	id python:zmscontext.id;
+	containerid python:'contentEditable_%s_%s'%(id,request.get('lang','ger'))">
+
+<tal:block tal:condition="python:not request.get('ZMSNote.renderShort')">
+
+<script language="JavaScript">
+var firedZMSNoteDiv = false;
+var repeatZMSNoteDiv = false;
+
+function onKeyUpZMSNoteDiv(el) {
+	if (!firedZMSNoteDiv) {
+		firedZMSNoteDiv = true;
+		setTimeout('onChangeZMSNoteDiv(\''+el.id+'\')',500);
+	}
+	else {
+		repeatZMSNoteDiv = true;
+	}
+}
+
+function onChangeZMSNoteDiv(id) {
+	if (repeatZMSNoteDiv) {
+		repeatZMSNoteDiv = false;
+		setTimeout('onChangeZMSNoteDiv(\''+id+'\')',500);
+	}
+	else {
+		firedZMSNoteDiv = false;
+		repeatZMSNoteDiv = false;
+		var el = $('div#'+id);
+		var v = el.text();
+		el.addClass('zmiTeaserColor');
+		var lang = getZMILang();
+		var params = {};
+		params['lang'] = lang;
+		params['text_'+lang] = v;
+		$.post(id+'/manage_changeProperties',params,function(data){
+			el.removeClass('zmiTeaserColor');
+		},'html');
+	}
+}
+</script>
+
+<tal:block tal:define="global dummy0 python:request.set('ZMSNote.renderShort',True)"></tal:block>
+</tal:block>
+
+<div class="note alert alert-warning">
+	<div 
+		contentEditable="true"
+		onkeyup="onKeyUpZMSNoteDiv(this)" 
+		tal:attributes="id id;
+			contentEditable python:'true' and ishtml<0 or 'false'; 
+			onkeyup python:'onKeyUpZMSNoteDiv(this)' and ishtml<0 or None"
+		tal:content="structure python:zmscontext.getText(request).replace('\n','<br/>')">the text</div>
+</div>
+
+</tal:block>
+
+<!-- /ZMSNote.renderShort -->

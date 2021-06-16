@@ -1,0 +1,16 @@
+<script>
+	// Add Help Button
+	$ZMI.registerReady(function() {
+		try {
+			$('.zmi-action.btn-group.pull-right').first().append('<a class="btn" title="Bootstrap-Card" href="https://getbootstrap.com/docs/4.1/components/card/" target="_blank"><i class="fas fa-question-circle"></i></i></a>');
+		} catch {
+			console.log('ERROR: Add Help Button');
+		}
+	})
+</script>
+<style>
+	input.form-control.header,
+	input.form-control.footer	{
+		background: rgba(51, 122, 182, 0.15)
+	}
+</style>

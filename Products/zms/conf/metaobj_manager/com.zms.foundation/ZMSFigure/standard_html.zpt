@@ -1,0 +1,31 @@
+<!-- ZMSFigure.standard_html -->
+<figure role="group" style="max-width:100%;margin:1em 0;" class="ZMSFigure ZMSGraphic"
+	tal:define="zmscontext options/zmscontext;
+		id python:zmscontext.getId();
+		img python:zmscontext.attr('img');
+		imgsrc python:img and img.getHref(request) or '#';
+		imgwidth python:img and int(img.getWidth()) or 0;
+		imgheight python:img and int(img.getHeight()) or 0;
+		img_preview python:zmscontext.attr('_img');
+		imgsrc_preview python:img_preview and img_preview.getHref(request) or '#';
+		imgwidth_preview python: img_preview and int(img_preview.getWidth()) or imgwidth;
+		imgmaxsize python:int(zmscontext.getConfProperty('InstalledProducts.pil.thumbnail.max',460));
+		figcaption python:zmscontext.attr('figcaption');
+		is_manage python:len(request.get('URL','').split('/manage'))>1;"
+	tal:attributes="
+		id id; 
+		style python:is_manage and 'max-width:100%;;display:inline-block;;' or default; 
+		title python:'Image Dimensions: %spx x %spx, Preview Max. Dimension: %s'%(imgwidth, imgheight, imgmaxsize);"
+	><a class="zmslightbox fancybox" 
+		tal:omit-tag="python:imgwidth < imgmaxsize and imgheight < imgmaxsize"
+		tal:condition="img" 
+		tal:attributes="href imgsrc">
+		<img class="img img-responsive" style="max-width:100%;max-height:auto;" alt="Image" 
+			tal:attributes="
+				src python:img_preview and imgsrc_preview or imgsrc; 
+				data-hiresimg imgsrc; 
+				style python:'width:%spx;;max-width:100%%;;max-height:auto;;%s'%(imgwidth_preview, img_preview and 'cursor:zoom-in' or '')" 
+	/></a>
+	<figcaption class="text" tal:condition="figcaption" tal:content="figcaption" class="text-italic">figcaption</figcaption>
+</figure>
+<!-- ZMSFigure.standard_html -->

@@ -1,0 +1,29 @@
+<!-- ZMS.interface_permalinks -->
+
+<div class="control-group" tal:define="zmscontext options/zmscontext">
+	<table class="table table-bordered m-0" title="Permalinks">
+		<tbody tal:define="prefix python:'%s.permalink.'%zmscontext.meta_id;
+			keys python:[x for x in zmscontext.getConfProperties() if x.startswith(prefix)];
+			dummy0 python:keys.sort();">
+		<tal:block tal:repeat="key keys">
+		<tr tal:define="id python:key[len(prefix):]">
+			<td class="meta-sort">
+				<div class="btn-group">
+					<a class="btn btn-secondary" href="javascript:;" tal:attributes="onclick python:'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){$(this).parents(\'tr\').remove()}'; title python:here.getZMILangStr('BTN_DELETE')"
+						><i class="fas fa-times"></i></a>
+				</div><!-- .btn-group -->
+			</td>
+			<td class="meta-id"><input class="form-control form-control" tal:attributes="name python:'permalink_key_%s'%id; value id;"/>
+			<td class="meta-url form-group"><input class="form-control form-control url-input" tal:attributes="name python:'permalink_val_%s'%id; value python:zmscontext.getConfProperty(key)"/>
+		</tr>
+		</tal:block>
+		<tr class="row_insert">
+			<td class="meta-sort"><span class="btn btn-light"><i class="fas fa-plus"></i></td>
+			<td class="meta-id"><input class="form-control form-control" name="permalink_key__" placeholder="Enter Id..."/>
+			<td class="meta-url form-group"><input class="form-control form-control url-input" name="permalink_val__" placeholder="Select Url..."/>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<!-- /ZMS.interface_permalinks -->

@@ -1,0 +1,6 @@
+<script language="JavaScript">
+	$ZMI.registerReady(function(){
+		$('#zmiIframeAddDialog textarea').attr('title','INFO: the note element is just for internal usage - it is not published');
+		$('#zmiIframeAddDialog textarea').attr('placeholder','INFO: the note element is just for internal usage - it is not published');
+	});
+	</script>

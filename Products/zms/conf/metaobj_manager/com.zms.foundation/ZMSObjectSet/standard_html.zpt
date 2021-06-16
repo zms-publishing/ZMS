@@ -1,0 +1,7 @@
+<!-- ZMSObjectSet.standard_html -->
+
+<tal:block tal:define="zmscontext options/zmscontext">
+	<tal:block tal:content="structure python:zmscontext.attr('effective_standard_html')"></tal:block>
+</tal:block>
+
+<!-- /ZMSObjectSet.standard_html -->

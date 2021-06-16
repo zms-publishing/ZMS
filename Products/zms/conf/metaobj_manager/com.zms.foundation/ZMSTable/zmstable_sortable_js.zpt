@@ -1,0 +1,16 @@
+<!-- LOADING JS: PUT AT THE END OF MASTER-TEMPLATE -->
+<tal:block tal:condition="python:request.get('ZMSTable.sortable',False)"
+		tal:define="metaobj_url python:zmscontext.metaobj_manager.absolute_url()">
+	<script type="text/javascript" charset="UTF-8" 
+		tal:attributes="src python:'%s/ZMSTable.jquery.tablesorter.min.js'%(metaobj_url)">
+	</script>
+	<script>
+		//<!--
+		$(function(){ 
+			$('.ZMSTable.sortable').tablesorter(); 
+		});
+		//-->
+	</script>
+	<link type="text/css" rel="stylesheet"
+		tal:attributes="href python:'%s/ZMSTable.zmstable_sortable_css'%(metaobj_url)"></link>
+</tal:block>

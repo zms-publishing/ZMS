@@ -1,0 +1,56 @@
+<!-- ZMSLinkElement.standard_html -->
+
+<tal:block tal:on-error="structure string:<!-- URL ERROR -->" tal:define="global
+		zmscontext options/zmscontext;
+		zmsid         python:zmscontext.getId();
+		title         python:zmscontext.attr('title');
+		titlealt      python:zmscontext.attr('titlealt');
+		ref           python:zmscontext.attr('attr_url');
+		target        python:zmscontext.attr('attr_type');
+		align         python:zmscontext.attr('align');
+		abstract      python:zmscontext.attr('attr_abstract').replace('\n','<br/>');
+		domain        python:zmscontext.getConfProperty('ASP.ip_or_domain','');
+		subclass      python:[zmscontext.meta_id]+[['external','internal'][int((domain != '' and domain in ref) or (ref.startswith('{$') and ref.endswith('}')))]];"
+	><tal:block tal:condition="python:target!='iframe'"
+		><tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']"
+			><tal:block tal:define="global subclass python:subclass+[align.lower()]"></tal:block
+		></tal:block
+		><tal:block tal:condition="python:align in [ 'LEFT_FLOAT']"
+			><tal:block tal:define="global subclass python:subclass+['floatleft']"></tal:block
+		></tal:block
+		><tal:block tal:condition="python:align in [ 'RIGHT_FLOAT']"
+			><tal:block tal:define="global subclass python:subclass+['floatright']"></tal:block
+		></tal:block
+		><div tal:condition="python:zmscontext.getParentNode().meta_id=='ZMSLinkContainer' or align not in ['','NONE'] or request.get('URL','').find('/manage')>0"
+				tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
+			<div class="title" tal:condition="title">
+				<tal:block tal:content="structure python:zmscontext.tal_anchor(zmscontext.getLinkUrl(ref,request),target=['','_blank'][int(zmscontext.attr('attr_type')=='new')],content=titlealt)">the link</tal:block>
+			</div>
+			<div tal:condition="python:title and title!=titlealt" class="text" tal:content="structure title">The title</div>
+			<div tal:condition="python:abstract" class="description" tal:content="structure abstract">The abstract</div>
+		</div>
+	</tal:block
+	><tal:block tal:condition="python:target=='iframe'"
+		><iframe class="ZMSLinkElement" tal:attributes="src ref; id zmsid" style="width:100%;padding:0;margin:0;border:0;min-height:260px;background-color:#f5f5f5">IFRAME CONTENT</iframe>
+		<tal:block tal:replace="structure python:'<script type=\042text/javascript\042>'"></tal:block>
+			// $ZMI Register function: On Docment Ready the iFrameResizer Script will be Executed
+			// IMOPRTANT HINT: Targetted Content Needs to be linked to the iframeResizer.contentWindow Script:
+			// /++resource++zms_/iframeresizer/iframeResizer.contentWindow.min.js
+			// SOURCE: https://github.com/davidjbradshaw/iframe-resizer/blob/master/js/iframeResizer.contentWindow.min.js
+			if (typeof(ZMI)!='undefined') {
+				$ZMI.registerReady(function() {
+					try {
+						<tal:block tal:replace="python:'iFrameResize({},\047iframe#%s.ZMSLinkElement\047);'%(zmsid)"></tal:block>
+					}
+					catch(err) {
+					}
+				})
+			}
+		<tal:block tal:replace="structure string:</script>"></tal:block>
+		<script tal:condition="python:request.get('link_iframeResizer',True)"
+			src="/++resource++zms_/iframeresizer/iframeResizer.min.js"></script>
+		<tal:block tal:define="iframeexists python:request.set('link_iframeResizer',False)"></tal:block>
+	</tal:block>
+</tal:block>
+
+<!-- /ZMSLinkElement.standard_html -->

@@ -1,0 +1,15 @@
+<tal:block tal:define="zmscontext options/zmscontext; cols python:zmscontext.attr('cols'); d python:{}">
+    <tal:block tal:repeat="col python:zmscontext.attr('widths')">
+        <tal:block tal:define="col_index repeat/col/index">
+            <tal:block tal:condition="python:col_index<len(cols) and cols[col_index]">
+                <tal:block tal:define="dummy0 python:zmscontext.operator_setitem(d,col_index+1,str(cols[col_index])+'%')"></tal:block>
+            </tal:block>
+        </tal:block>
+    </tal:block>
+    <tal:block tal:condition="python:len(d)>0">
+        @media screen and (min-width:560px){
+            <tal:block tal:repeat="k d">
+                table#<tal:block tal:content="python:zmscontext.id"></tal:block> tr th:nth-child(<tal:block tal:content="k"></tal:block>), table#<tal:block tal:content="python:zmscontext.id"></tal:block> tr td:nth-child(<tal:block tal:content="k"></tal:block>) { width:<tal:block tal:content="python:d[k]"></tal:block> }</tal:block>
+        }
+    </tal:block>
+</tal:block>

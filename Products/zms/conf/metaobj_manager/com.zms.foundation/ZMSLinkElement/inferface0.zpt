@@ -1,0 +1,162 @@
+<div id="inferface0" tal:define="global
+		zmscontext options/zmscontext;
+		dummy0 python:request.set('beforeSubmitBtnClick','if ( zmiOnSubmitEventHandler(this)) { ');
+		dummy0 python:request.set('afterSubmitBtnClick',' } ')">
+<script type="text/javascript">
+<!--//
+
+var btn = null;
+var remoteHref = null;
+var remoteHrefValid = false;
+var remoteHrefResponseWaiting = false;
+var remoteHrefResponseTimeout = 5000;
+
+function zmiOnSubmitEventHandler(el) {
+	btn = el;
+	if ($("#attr_type").val() == "remote") {
+		var href = $("#attr_ref").val();
+		if ( !remoteHrefValid || remoteHref != href) {
+			remoteHref = href;
+			remoteHrefValid = false;
+			remoteHrefResponseWaiting = true;
+			self.btnClicked = 'break';
+			// Set wait-cursor.
+			$(document.body).css( "cursor", "wait");
+			// JQuery.AJAX.get
+			$.get( remoteHref+"/ajaxGetBodyContent", remoteResponse);
+			// Set time-out.
+			setTimeout("remoteResponseTimedout()",remoteHrefResponseTimeout);
+		}
+		return remoteHrefValid;
+	}
+	return true;
+}
+
+function remoteResponse(data) {
+	if (remoteHrefResponseWaiting) {
+		remoteHrefResponseWaiting = false;
+		// Reset wait-cursor.
+		$(document.body).css( "cursor", "auto");
+		//
+		$("#attr_ref").removeClass("form-error");
+		remoteHrefValid = true;
+		btn.click();
+	}
+}
+
+function remoteResponseTimedout() {
+	if (remoteHrefResponseWaiting) {
+		remoteHrefResponseWaiting = false;
+		// Reset wait-cursor.
+		$(document.body).css( "cursor", "auto");
+		//
+		$("#attr_ref").addClass("form-error");
+		remoteHrefValid = false;
+		if (confirm( "Time-Out "+getZMILangStr('ATTR_URL')+": "+remoteHref)) {
+			remoteHrefValid = true;
+			btn.click();
+		}
+	}
+}
+
+initAttrRef = function() {
+		var v = $(this).val();
+		var $select = $("select#attr_type");
+		$("option",$select).each(function() {
+			$(this).prop("disabled","");
+			if (v.indexOf("{$")!=0 && $.inArray($(this).prop("value"),["embed","recursive","remote"])>=0) {
+				$(this).prop("disabled","disable");
+			}
+		});
+	};
+
+$(function(){
+
+	$ZMI.afterInitInputFields(function() {
+		$("input#attr_ref").each(function() {
+				var $input = $(this);
+				var $inputgroup = $input.parent();
+				if ($input.val().indexOf('{$')==0 && $input.prop("disabled")) {
+					$input.attr("data-value",$input.val());
+					if ($(".dropdown.languages .dropdown-menu li").length>0) {
+						var html = ''
+							+ '<div class="btn-group">'
+							+ '<button type="button" class="dropdown-toggle btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+								+ '<i class="fas fa-flag"></i>'
+							+ '</button>'
+							+ '<div class="dropdown-menu">'
+							+ '<a class="dropdown-item" href="#" data-language=""><i class="far fa-square"></i> Default</a>';
+						$(".dropdown.languages .dropdown-menu li").each(function() {
+								html += '<a class="dropdown-item" href="#" data-language="'+$("a",this).attr("data-language")+'"><i class="far fa-square"></i> '+$("a",this).text()+'</a>';
+							});
+						html += ''
+							+ '</div>'
+							+ '</div>';
+						$(".input-group-addon",$inputgroup).html(html).addClass("input-group-dropdown");
+						var fn = function() {
+								var v = $("#ref_lang").val();
+								var attr_ref = $input.attr("data-value");
+								if (v!="") {
+									attr_ref = attr_ref.replace(/;lang\=\w*/gi,'');
+									attr_ref = attr_ref.substr(0,attr_ref.indexOf('}'));
+									attr_ref += ';lang='+v+'}';
+								}
+								$input.val(attr_ref).change();
+								$(".input-group-addon button .fas fa-flag",$inputgroup).removeClass("text-muted text-primary").addClass(v==""?"text-muted":"text-primary");
+								$(".input-group-addon .dropdown-menu li a",$inputgroup).each(function() {
+										$(".fa-check-square",this).toggleClass("fa-square fa-check-square");
+										if (v==$(this).attr("data-language")) {
+											$(".fa-square",this).toggleClass("fa-square fa-check-square");
+										}
+									});
+							};
+						fn();
+						$(".input-group-addon .dropdown-menu li a",$inputgroup)
+							.click(function() {
+									$("#ref_lang").val($(this).attr("data-language"));
+									fn();
+								});
+					}
+				}
+				else {
+				$("#ref_lang").val("");
+				}
+			});
+		});
+
+	$("input#attr_ref").change(initAttrRef).change();
+	$("#tr_attr_ref_type select").css("width", "100%");
+});
+
+//-->
+</script>
+<!--
+################################################################################
+##### Ref & Type: EDIT
+################################################################################
+-->
+<input type="hidden" id="ref_lang" tal:attributes="name python:'ref_lang_%s'%request['lang']; value python:zmscontext.attr('ref_lang')"/>
+<div class="form-group row" id="tr_attr_ref">
+	<label class="col-sm-2 col-md-2 col-lg-2 control-label mandatory" for="attr_ref"><span tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url</span></label>
+	<div class="col-sm-10">
+		<div class="pull-left" style="width:50%">
+			<tal:block tal:content="structure python:zmscontext.getObjInput('attr_ref',request)">the ref-input</tal:block>
+		</div>
+		<div id="tr_attr_ref_type" class="form-inline" style="width:50%;float:right" tal:content="structure python:zmscontext.getObjInput('attr_type',request)">the type-input</div>
+	</div>
+</div>
+<!--
+################################################################################
+##### Embedded Object: PREVIEW
+################################################################################
+-->
+<div class="form-group row" id="tr_attr_preview" tal:condition="not:python:request.get('ZMS_INSERT')">
+	<label class="col-sm-2 control-label" for="attr_ref_preview"><span tal:content="structure python:here.getZMILangStr('TAB_PREVIEW')"></span></label>
+	<div id="attr_ref_preview" class="col-sm-10 attr_ref_preview"
+		tal:attributes="style python:['background-color:#fff','background-color:#eee'][int(zmscontext.isPage())]"
+		tal:content="structure python:zmscontext.renderShort(request)">
+			renderShort
+	</div>
+</div>
+<tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['attr_ref','ref_lang','attr_type'])"></tal:block>
+</div>

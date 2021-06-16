@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<tal:block tal:define="global zmscontext options/zmscontext" tal:content="structure python:zmscontext.zmi_html_head(zmscontext,request)">zmi_html_head</tal:block>
+<body tal:attributes="class python:' '.join(['zms',request['lang'],'transition',zmscontext.meta_id])">
+<tal:block tal:content="structure python:zmscontext.zmi_body_header(zmscontext,request)">zmi_body_header</tal:block>
+<div id="zmi-tab">
+<tal:block tal:content="structure python:zmscontext.zmi_breadcrumbs(zmscontext,request)">zmi_breadcrumbs</tal:block>
+
+<!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+     +-  F o r m
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
+<tal:block tal:condition="python:request.get('btn','')==''">
+<form class="form-horizontal" name="form0" method="post">
+	<input type="hidden" name="preview" value="preview"/>
+	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
+	<input type="hidden" name="custom" tal:attributes="value request/custom"/>
+	<legend tal:content="request/custom">the headline</legend>
+	<div class="control-group">
+
+	<div class="form-group row"
+		tal:define="
+			myusers python:[[context.content.getUserAttr(u, 'email', ''),u] for u in context.content.getUsers(request)];
+			myeditors python:[u for u in myusers if 'ZMSEditor' in context.content.getUserRoles(u[1]))">
+		<label style="text-align:left !important" for="recipients" class="col-sm-12 control-label"><span tal:content="python:here.getZMILangStr('ROLE_ZMSEDITOR')">ROLE_ZMSEDITOR</span></label>
+		<div class="col-sm-12" tal:content="structure python:here.zmi_input_multiselect(here,name='recipients',value=[],lang_str='ROLE_ZMSEDITOR',options=myeditors)">the control</div>
+	</div><!-- .form-group -->
+
+	<label class="control-label mandatory" for="comment"><span>Comment</span></label>
+		<div class="controls"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .controls -->
+	</div><!-- .control-group -->
+	<div class="control-group">
+		<div class="controls">
+			<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
+			<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+		</div><!-- .controls -->
+	</div><!-- .control-group -->
+</form>
+</tal:block>
+
+<!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+     +-  E x e c u t e
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
+<tal:block tal:condition="python:request.get('btn','')=='BTN_SEND'">
+	<tal:block tal:define="mto python:','.join(request.get('recipients',[]));
+			msubject python:'[ZMS::%s - %s]: Sofort Publiziert'%(zmscontext.getDocumentElement().getTitlealt(request),zmscontext.getTitlealt(request));
+			mbody python:[];
+			dummy0 python:mbody.append(''
+				+ 'INFO: Folgendes Objekt wude publiziert:\n'
+				+ '%s: \t'%zmscontext.display_type(request)
+				+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
+				+ 'MANAGE: \t%s/manage\n'%zmscontext.absolute_url()
+				+ 'PREVIEW: \t%s/preview_html\n\n'%zmscontext.absolute_url()
+				+ '\n\n'
+				+ 'Meldung von %s:\n'%(str(request['AUTHENTICATED_USER']))
+				+ '================================================\n'
+				+ '%s\r\n'%request.get('comment','k.A.')
+				+ '================================================\n\n\n'
+				+ '------------------------------------------------\n'
+				+ 'Diese Nachricht wurde automatisch generiert.\n');
+			dummy0 python:['No Recipients',zmscontext.sendMail(mto, msubject, ''.join(mbody), request)][len(mto)>0];
+			newcontext python:zmscontext.commitObj(request);
+			message python:'Aktuelle Ãnderungen wurden sofort publiziert%s'%([', ohne dass eine Nachricht versendet wurde.','.'][len(mto)>0]);
+			dummy0 python:request.RESPONSE.redirect(here.url_append_params('%s/manage_main'%newcontext.absolute_url(),{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
+	</tal:block>
+</tal:block>
+
+<!-- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+     +-  C a n c e l
+     +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
+<tal:block tal:condition="python:request.get('btn','')=='BTN_CANCEL'">
+	<tal:block tal:define="global
+			message python:'Vorgang abgebrochen.';
+			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
+	</tal:block>
+</tal:block>
+
+</div><!-- #zmi-tab -->
+<tal:block tal:content="structure python:zmscontext.zmi_body_footer(zmscontext,request)">zmi_body_footer</tal:block>
+</body>
+</html>

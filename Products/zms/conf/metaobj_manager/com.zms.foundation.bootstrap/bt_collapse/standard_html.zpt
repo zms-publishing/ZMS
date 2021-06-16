@@ -1,0 +1,36 @@
+<!-- bt_collapse.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		stereotype python:zmscontext.attr('stereotype');
+		items python:zmscontext.filteredObjChildren('items',request)">
+
+	<div tal:condition="python:stereotype=='Accordion'" tal:attributes="id zmscontext/id">
+		<tal:block tal:repeat="item items">
+			<tal:block tal:content="structure python:item.getBodyContent(request)"></tal:block>
+		</tal:block>
+	</div>
+
+	<tal:block tal:condition="python:stereotype=='Tabs'">
+		 <ul class="nav nav-tabs" role="tablist" tal:attributes="id zmscontext/id">
+			<tal:block tal:repeat="item items">
+				<li class="nav-item" tal:define="active python:items.index(item)==0">
+					<a tal:attributes="class python:' '.join(['nav-link']+[['','active'][active]]); aria-selected active; aria-controls item/id; href python:'#%s'%item.id" data-toggle="tab" tal:content="structure python:item.attr('headline')">Item</a>
+				</li>
+			</tal:block>
+		</ul>
+		<div class="tab-content" tal:attributes="id python:'%sContent'%zmscontext.id">
+			<tal:block tal:repeat="item items">
+				<div role="tabpanel"
+						tal:define="active python:items.index(item)==0" 
+						tal:attributes="id item/id; class python:' '.join(['tab-pane','fade']+[[],['show','active']][active])"
+						tal:content="structure python:item.attr('body')+''.join([x.getBodyContent(request) for x in item.filteredObjChildren('body',request)])">
+					the body
+				</div>
+			</tal:block>
+		</div><!-- .tab-content -->
+	</tal:block>
+
+</tal:block>
+
+<!-- /bt_collapse.standard_html -->

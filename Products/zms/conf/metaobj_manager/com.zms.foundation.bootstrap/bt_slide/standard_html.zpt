@@ -1,0 +1,38 @@
+<!-- bt_slide.standard_html -->
+
+<div class="carousel-item" 
+	tal:define="
+	zmscontext options/zmscontext;
+	id zmscontext/id;
+	title python:zmscontext.attr('title');
+	text python:zmscontext.attr('text');
+	img python:zmscontext.attr('image');
+	img_filter python:zmscontext.attr('image_filter');
+	src python:img.getHref(request);
+	url python:zmscontext.attr('url');
+	url_obj python:'{' in url and zmscontext.getLinkObj(url,request) or None;
+	url_target python:url_obj and url_obj.getHref2IndexHtml(request) or url;		
+	url_title python:zmscontext.attr('url_title');
+	show_captions python:zmscontext.getParentNode().attr('captions');"
+	tal:attributes="
+			id id;
+			class python:'carousel-item %s'%(request.get('active_css','active'));
+			style python:'background-image:url(\'%s\');;background-size:cover;;background-position:center;;'%(src)">
+	<svg class="bd-placeholder-img imgage_filter" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" role="img" focusable="false">
+		<rect width="100%" height="100%" fill="#00000066" tal:attributes="fill python:img_filter and img_filter or '#00000000'" />
+	</svg>
+	<div class="container" tal:condition="show_captions">
+		<div class="carousel-caption text-left">
+			<h1 tal:content="title">Example headline.</h1>
+			<p tal:condition="text" tal:content="text">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+			<p tal:condition="url">
+				<a class="btn btn-lg btn-danger" href="#" role="button"
+					tal:attributes="href url" tal:content="python:url_title!='' and url_title or 'More ...' ">
+					Sign up today
+				</a>
+			</p>
+		</div>
+	</div>
+</div>
+
+<!-- /bt_slide.standard_html -->

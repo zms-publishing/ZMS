@@ -1,0 +1,25 @@
+<script type="text/javascript">
+
+$(function(){
+	$('#file_'+getZMILang()).change( function() {
+		var filename = $(this).val();
+		var i = Math.max(filename.lastIndexOf('/'),filename.lastIndexOf('\\'));
+		if (i > 0) {
+			filename = filename.substring(i+1);
+		}
+		var title = $('.ZMSFile.properties #title_'+getZMILang()+',.modal-body #title_'+getZMILang());
+		var titlealt = $('.ZMSFile.properties #titlealt_'+getZMILang()+',.modal-body #titlealt_'+getZMILang());
+		if (title.val().length == 0) {
+			title
+				.attr({'data-value-attr':'placeholder','placeholder':filename})
+				.val(filename)
+		};
+		if (titlealt.val().length == 0) {
+			titlealt
+				.attr({'data-value-attr':'placeholder','placeholder':filename})
+				.val(filename)
+		};
+	});
+});
+
+</script>

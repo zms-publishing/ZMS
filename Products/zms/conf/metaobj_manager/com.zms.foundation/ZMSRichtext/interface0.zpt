@@ -1,0 +1,39 @@
+<tal:block tal:define="
+		standard modules/Products.zms/standard;
+		zmscontext options/zmscontext;
+		dummy0 python:request.set('CKEDITOR_config_toolbar',[
+				['Format'],
+				['Bold','Italic','Underline','NumberedList','BulletedList'],
+				['Undo','Redo'],
+				['mediabutton'],
+				['Find','linkbutton','Link','Unlink'],
+				['Anchor','Table'],
+				['Source','ShowBlocks','Maximize','About']
+			])">
+
+<style>
+span.active {
+	background-color:#FFF;
+	font-weight:bold;
+}
+span.mouseover {
+	border:1px solid #999;
+	background-color:#DFF1FF;
+}
+</style>
+
+<!--
+////////////////////////////////////////////////////////////////////////////////
+/// CKEDITOR Plugin
+////////////////////////////////////////////////////////////////////////////////
+-->
+
+<tal:block tal:content="structure python:'<script>'">script</tal:block>
+
+$(function(){
+	$(".zmiRichtextEditorHeadline").hide();
+});
+
+<tal:block tal:content="structure python:'</script>'">/script</tal:block>
+
+</tal:block>

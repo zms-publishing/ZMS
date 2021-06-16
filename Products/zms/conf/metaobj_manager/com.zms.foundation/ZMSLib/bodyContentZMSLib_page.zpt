@@ -1,0 +1,15 @@
+<!-- bodyContentZMSLib_page -->
+
+	<tal:block tal:condition="python:here.meta_id in ['ZMS','ZMSFolder','ZMSDocument']" tal:define="global 
+		childNodes python:here.getObjChildren('e',request,here.PAGEELEMENTS)">
+			<tal:block tal:repeat="childNode childNodes" tal:content="structure python:childNode.getBodyContent(request)">
+				The page-element body-content
+			</tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:here.meta_id not in ['ZMS','ZMSFolder','ZMSDocument']">
+		<tal:block tal:content="structure python:here.getBodyContent(request)">
+			The body-content
+		</tal:block>
+	</tal:block>
+
+<!-- /bodyContentZMSLib_page -->

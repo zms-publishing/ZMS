@@ -1,0 +1,82 @@
+<!-- ZMSLib.show_version -->
+
+<tal:block tal:define="global zmscontext options/zmscontext">
+	<tal:block tal:condition="python:zmscontext.getHistory()">
+		<script>
+		<!--
+			function showHistory(el) {
+				var v = $(el).val();
+				var version_nr = v.substr(0,v.indexOf(" "));
+				var version_dt = v.substr(v.indexOf(" ")+1);
+				// $(el).prop('selectedIndex',0);
+				$.get("ajaxBodyContentObjHistory",{lang:$("input#lang").val(),version_nr:version_nr,revision:1,ts:new Date()},function(data) {
+					var $xml = $( data );
+					var body = $xml.find( "ObjHistory" );
+					var title = $xml.find("title").text();
+					var description = $xml.find("description").text();
+					if ($("div#revision").length==0) {
+						$("body").append('<'+'div id="revision"><'+'/div>');
+					}
+					var html = ''
+						+ '<'+'div id="flow" class="hyphenate">'
+						+ '<'+'article>'
+						+ '<'+'header>'
+						+ '<'+'h1 style="font-weight:bold!important">'+title+'<'+'/h1>'
+						+ '<'+'p style="text-decoration:italic!important" class="description">'+description+'<'+'/p>'
+						+ '<'+'/header>'
+						+ '<'+'/section>';
+					for (var i = 0; i < body.length; i++) {
+						html += $(body[i]).text();
+					}
+					html += ''
+						+ '<'+'/section>';
+						+ '<'+'/article>';
+						+ '<'+'/div>';
+					$("div#revision").html(html);
+					if ($("div#revision .ZMSGraphic").length> 0){
+						showFancybox({
+							'href':'#revision',
+							'title':'r'+v,
+							'autoDimensions':true,
+							'transitionIn':'fade',
+							'transitionOut':'fade',
+							onCleanup:function() {
+								$("div#revision").remove();
+							}
+						});
+					}
+					$("div#revision>div").show();
+					// Quickfix1: Remove ZMSLinkElement doublicates
+					$('#Content .ZMSLinkElement[id]').each(function (i) {
+						$('[id="' + this.id + '"]').slice(1).remove();
+					});
+					$('#Content .ZMSTeaserContainer,#Content .ZMSTeaserElement').hide();
+					
+				});
+			}
+			// Quickfix2: Load last version initially
+			$ZMI.registerReady(function(){
+			var historyselect = $("div#ZMSLib-show_version select");
+			if ( historyselect.children().length > 1 ) {
+				showHistory(historyselect.prop("selectedIndex", 1));
+				historyselect.prop("selectedIndex", 1);
+			}
+			});
+		-->
+		</script>
+		<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang"/>
+		<select onchange="showHistory(this)">
+			<option value="" tal:content="python:'--- %s ---'%zmscontext.getLangStr('TAB_HISTORY',request['lang'])">the history</option>
+			<tal:block tal:define="global 
+					change_history python:zmscontext.attr('change_history');
+					rchange_history python:[change_history[len(change_history)-(x+1)] for x in range(len(change_history))]"
+					tal:repeat="history rchange_history">
+				<option
+						tal:attributes="value python:'%i.%i.%i %s'%(history['master_version'],history['major_version'],0,zmscontext.getLangFmtDate(history['version_dt'],request['lang'],'SHORTDATETIME_FMT'))" 
+						tal:content="python:'r%i.%i.%i (%s)'%(history['master_version'],history['major_version'],0,zmscontext.getLangFmtDate(history['version_dt'],request['lang'],'SHORTDATETIME_FMT'))">version_nr version_dt</option>
+			</tal:block>
+		</select>
+	</tal:block>
+</tal:block>
+
+<!-- /ZMSLib.show_version -->

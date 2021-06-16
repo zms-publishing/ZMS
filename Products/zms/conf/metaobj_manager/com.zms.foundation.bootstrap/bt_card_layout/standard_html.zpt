@@ -1,0 +1,15 @@
+<!-- bt_card_layout.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		id zmscontext/id;
+		layout python:zmscontext.attr('layout');
+		cards python:zmscontext.filteredObjChildren('cards',request);">
+	<div tal:attributes="class python:'bt_card_layout %s'%(layout); id id">
+		<tal:block tal:repeat="card cards">
+			<tal:block tal:content="structure python:card.getBodyContent(request)"></tal:block>
+		</tal:block>
+	</div>
+</tal:block>
+
+<!-- /bt_card_layout.standard_html -->

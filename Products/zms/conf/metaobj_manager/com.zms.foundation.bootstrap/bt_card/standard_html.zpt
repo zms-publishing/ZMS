@@ -1,0 +1,40 @@
+<!-- bt_card.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		Std modules/Products.PythonScripts/standard;
+		newline_to_br nocall:Std/newline_to_br;
+		id zmscontext/id;
+		img python:zmscontext.attr('image');
+		src python:img and img.getHref(request) or None;
+		title python:zmscontext.attr('title');
+		subtitle python:zmscontext.attr('subtitle');
+		text python:zmscontext.attr('text');
+		header python:zmscontext.attr('header');
+		footer python:zmscontext.attr('footer');
+		linklist python:zmscontext.getChildNodes(request,['bt_link_list']) and zmscontext.links.attr('links') or None;">
+	<div class="card" tal:attributes="id id">
+		<div class="card-header" tal:condition="header" tal:content="header">header</div>
+		<img class="card-img-top" tal:condition="img" tal:attributes="src src; alt title">
+		<div class="card-body">
+			<h5 class="card-title" tal:condition="title" tal:content="structure title">Card title</h5>
+			<h6 class="card-subtitle mb-2 text-muted" tal:condition="subtitle" tal:content="structure subtitle">Card subtitle</h6>
+			<p class="card-text" tal:condition="text" tal:content="structure python:zmscontext.re_search('<.*?>',text) and text or newline_to_br(text)">
+				Some quick example text to build on the card title and make up the bulk of the card's content.
+			</p>
+			<tal:block tal:condition="linklist" tal:repeat="link linklist" 
+				tal:on-error="structure string:<!-- ERROR: linklist -->">
+				<a class="btn btn-primary" 
+					tal:define="
+						url link/url; 
+						url_obj python:'{' in url and zmscontext.getLinkObj(url,request) or None; 
+						url_target python:url_obj and url_obj.getHref2IndexHtml(request) or url;"
+				tal:attributes="href url_target"
+				tal:content="structure link/label">Go somewhere</a>
+			</tal:block>
+		</div>
+		<div class="card-footer" tal:condition="footer"><small class="text-muted" tal:content="footer">footer</small></div>
+	</div>
+</tal:block>
+
+<!-- /bt_card.standard_html -->

@@ -1,0 +1,105 @@
+<!-- bt_link_list.interface0 -->
+
+<div class="form-group row" id="tr_links_interface0" tal:define="zmscontext options/zmscontext">
+	<div class="col-sm-2"></div>
+	<div class="col-sm-10">
+		<table class="table table-bordered m-0">
+			<tbody>
+			<tr class="row_insert">
+				<td class="meta-sort"><span class="btn btn-light btn-add"><i class="fas fa-plus"></i></td>
+				<td class="meta-url"><input class="form-control form-control url-input" name="links_url__" placeholder="Select Url..."/>
+				<td class="meta-label"><input class="form-control form-control" name="links_label__" placeholder="Enter Label..."/>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<script>
+$(function() {
+		$("#tr_links_links").hide();
+		var links = [];
+		var $table = $("#tr_links_interface0 table");
+		var xml = $.parseXML($("#links_links").val());
+		var $xml = $(xml);
+		$("list > item > dictionary",$xml).each(function() {
+				var record = {};
+				$("item",this).each(function() {
+						var $item = $(this);
+						record[$item.attr("key")] = $item.text();
+					});
+				links.push(record);
+			});
+		var refreshData = function() {
+				var xml = '';
+				xml += '<list>\n';
+				for (var i=0; i < links.length; i++) {
+					var record = links[i];
+					xml += '<item type="dict">\n';
+					xml += '<dictionary>\n';
+					for (var k in record) {
+						xml += '<item key="'+k+'"><![CDATA['+record[k]+']]></item>\n';
+					}
+					xml += '</dictionary>\n';
+					xml += '</item>\n';
+				}
+				xml += '</list>';
+				$("#links_links").val(xml);
+			};
+		var refreshView = function() {
+				$("tr:not(:last)",$table).remove();
+				var $last = ("tr:last",$table);
+				var html = '';
+				for (var i=0; i < links.length; i++) {
+					var record = links[i];
+					html += '<tr>\n';
+					html += '<td class="meta-sort">\n';
+					html += '<div class="input-group input-group">\n';
+					html += '<select class="zmi-sort">\n';
+					for (var j=0; j < links.length; j++) {
+						html += '<option value="'+j+'"' + (j==i?' selected="selected"':'') + '>'+(j+1)+'<'+'/option>\n';
+					}
+					html += '</select>\n';
+					html += '<a class="btn btn-secondary btn-delete" href="javascript:;"><i class="fas fa-times"></i></a>';
+					html += '</div>\n';
+					html += '</td>\n';
+					html += '<td class="meta-url">\n';
+					html += '<input class="form-control form-control url-input" name="links_url_'+i+'" value="'+record.url+'">\n';
+					html += '</td>\n';
+					html += '<td class="meta-label">\n';
+					html += '<input class="form-control form-control" name="links_label_'+i+'" value="'+record.label+'">\n';
+					html += '</td>\n';
+					html += '</tr>\n';
+				}
+				$last.prepend(html);
+				var refreshLinks = function() {
+						links = [];
+						$("tr:not(:last)",$table).each(function() {
+								var $tr = $(this);
+								var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
+								links.push(record);
+							});
+						refreshData();
+					}
+				$(".btn-delete",$table).click(function() {
+						if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+							$(this).parents('tr').remove();
+							refreshLinks();
+						}
+					});
+				$("tr:not(:last) input",$table).change(refreshLinks);
+				refreshData();
+			};
+		refreshView();
+		$(".btn-add",$table).click(function() {
+				var $tr = $(this).parents("tr")[0];
+				if ($("input[value='']",$tr).length==0) {
+					var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
+					links.push(record);
+					$("input",$tr).val("");
+				}
+				refreshView();
+			});
+	});
+</script>
+
+<!-- /bt_link_list.interface0 -->

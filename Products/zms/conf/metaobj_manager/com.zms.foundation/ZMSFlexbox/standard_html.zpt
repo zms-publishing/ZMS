@@ -1,0 +1,13 @@
+<!-- ZMSFlexbox.standard_html -->
+<div class="ZMSFlexbox"
+	tal:define="zmscontext options/zmscontext;
+		childnodes python:zmscontext.filteredChildNodes(request);
+		itemcount python:len(childnodes);"
+	tal:attributes="class python:'ZMSFlexbox itemcount-%s'%(itemcount)">
+	<div class="ZMSFlexboxItem"
+		tal:repeat="childnode childnodes"
+		tal:attributes="style python:'--data-itemcount:%s'%(itemcount)"
+		tal:content="structure python:childnode.renderShort(request)">
+	</div>
+</div>
+<!-- /ZMSFlexbox.standard_html -->

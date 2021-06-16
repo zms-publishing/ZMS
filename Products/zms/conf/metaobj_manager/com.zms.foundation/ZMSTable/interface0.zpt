@@ -1,0 +1,789 @@
+<tal:block tal:define="textFormatDefault python:here.getConfProperty('ZMSTable.getTextFormatDefault',here.getTextFormatDefault())">
+	<!-- ### Table(Type,Cols,Rows): INSERT ### -->
+	<tal:block tal:condition="python:request.get('ZMS_INSERT')">
+		<input type="hidden" name="redirect_self:int" value="1"/>
+		<span class="d-none" id="fmName" tal:content="request/fmName"></span>
+		<span class="d-none" id="textFormatDefault" tal:content="textFormatDefault"></span>
+		<script>
+		var fmName;
+		var textFormatDefault;
+
+		$(function() {
+				fmName = $('#fmName').text();
+				textFormatDefault = $("#textFormatDefault").text();
+				$("form[name="+fmName+"]").submit( onZMSTableFormSubmit);
+
+				$("[name=\x22type:int\x22]").on('change',function(){
+					let sortableTr = $('#tr_sortable');
+					if(this.value==3){
+						sortableTr.hide();
+					}else{
+						sortableTr.show()
+					}
+				});
+			});
+
+		function onZMSTableFormSubmit() {
+			var xml = '';
+			var type = parseInt($("[name=\x22type:int\x22]").val());
+			xml += '<'+'list>\n';
+			for ( var y = 0; y < parseInt($('#rows').val()); y++) {
+				xml += '<'+'item type="list"><list>\n';
+				if ( y==0 && type == 2) {
+					xml += '<'+'item type="dictionary"><'+'dictionary>\n';
+					xml += '<'+'item key="colspan" type="int">'+parseInt($('#cols').val())+'<'+'/item>\n';
+					xml += '<'+'item key="content"><'+'/item>\n';
+					xml += '<'+'item key="format">'+textFormatDefault+'<'+'/item>\n';
+					xml += '<'+'item key="tag">th<'+'/item>\n';
+					xml += '<'+'/dictionary><'+'/item>\n';
+				}
+				else {
+					for ( var x = 0; x < parseInt($('#cols').val()); x++) {
+						xml += '<'+'item type="dictionary"><'+'dictionary>\n';
+						if ( y==0 && x == 0 && type == 4) {
+							xml += '<'+'item key="colspan" type="int">1<'+'/item>\n';
+						}
+						else {
+							var tag = "td";
+							if ( (type == 1 && y == 0) ||
+								(type == 3 && x == 0) ||
+								(type == 4 && (x == 0 || y == 0))) {
+								tag = "th";
+							}
+							xml += '<'+'item key="colspan" type="int">1<'+'/item>\n';
+							xml += '<'+'item key="content"><'+'/item>\n';
+							xml += '<'+'item key="format">'+textFormatDefault+'<'+'/item>\n';
+							xml += '<'+'item key="tag">'+tag+'<'+'/item>\n';
+						}
+						xml += '<'+'/dictionary><'+'/item>\n';
+					}
+				}
+				xml += '<'+'/list><'+'/item>\n';
+			}
+			xml += '<'+'/list>\n';
+			$("#table_table").val( xml);
+			return true;
+		}
+		</script>
+
+<div class="form-group row">
+	<label class="col-sm-2 control-label mandatory"><span tal:content="structure python:here.getZMILangStr('ATTR_COLS')">Cols</span></label>
+	<div class="col-sm-2">
+		<tal:block tal:content="structure python:here.getTextInput(fmName=request['fmName'],elName='cols',value='3',size=2)"></tal:block>
+	</div>
+	<label class="col-sm-1 control-label mandatory"><span tal:content="structure python:here.getZMILangStr('ATTR_ROWS')">Rows</span></label>
+	<div class="col-sm-2">
+		<tal:block tal:content="structure python:here.getTextInput(fmName=request['fmName'],elName='rows',value='3',size=2)"></tal:block>
+	</div>
+</div>
+
+<div class="form-group row">
+	<label class="col-sm-2 control-label mandatory" tal:content="python:here.getZMILangStr('ATTR_TYPE')">the type-label</label>
+	<div class="col-sm-10 form-group row">
+		<div class="mr-2" title="Type 1">
+			<input type="radio" name="type:int" value="1" checked="checked" /> <tal:block tal:content="python:here.getZMILangStr('HORIZONTAL')"></tal:block>
+			<table class="ZMSTable table table-sm">
+			<thead>
+				<tr><th>Firstname</th><th>Lastname</th><th>Age</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>Jill</td><td>Smith</td><td>50</td></tr>
+				<tr><td>John</td><td>Doe</td><td>38</td></tr>
+			</tbody>
+			</table>
+		</div>
+		<div class="mr-2" title="Type 3">
+			<input type="radio" name="type:int" value="3" /> <tal:block tal:content="python:here.getZMILangStr('VERTICAL')"></tal:block>
+			<table class="ZMSTable table table-sm">
+			<tbody>
+				<tr><th>Firstname</th><td>Jill</td><td>John</td></tr>
+				<tr><th>Lastname</th><td>Smith</td><td>Doe</td></tr>
+				<tr><th>Age</th><td>50</td><td>38</td></tr>
+			</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="form-group col-sm-12 col-sm-push-2" style="font-size: small;color: #999;"
+	tal:content="python:here.getZMILangStr('MSG_ZMSTABLE_TYPE')">Note: Type can not be changed later
+</div>
+
+	</tal:block>
+
+	<!-- ### Table(Type,Cols,Rows): EDIT ### -->
+	<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
+		<tal:block tal:define="zmscontext options/zmscontext;
+					table_table python:zmscontext.attr('table');
+					table_type python:zmscontext.attr('type');
+					table_colgroup_cols python:zmscontext.attr('cols');
+					table_cols python:len(table_table[-1]);
+					table_rows python:len(table_table);
+					table_widths python:zmscontext.attr('widths');">
+
+			<!--### Table-Cell Styles ###-->
+			<style>
+				.th.placeholder {
+					background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='50px' width='200px'><text x='20' y='20' fill='gray' font-size='12' font-family='Arial'>Enter Header here...</text></svg>");
+					background-repeat:no-repeat;
+				}
+				.td.placeholder {
+					background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='50px' width='200px'><text x='20' y='20' fill='silver' font-size='12' font-family='Arial'>Enter Data here...</text></svg>");
+					background-repeat:no-repeat;
+				}
+				td.ZMSTable-cell {
+					padding: 0;
+				}
+				#table_cell_editor > thead > tr > th {
+					background-color: #32475b;
+					color: #fff;
+				}
+				#table_cell_editor > thead > tr > th,
+				#table_cell_editor > thead > tr > td {
+					padding: 1.57143em 1.14286em 1.57143em 1.14286em;
+
+				}
+				#table_cell_editor tr th p:last-child,
+				#table_cell_editor tr td p:last-child {
+					 margin-bottom: 0;
+				}
+				#table_cell_editor .table_cell_editable.current {
+					background-color: rgba(0,123,255,.15);
+					color: #212529;
+				}
+				table tr:nth-child(even) td {
+					background-color: #e3e8ed;
+				}
+				#table_cell_editor > thead > tr:first-child td{
+					background-color: #32475b;
+					color: #fff;
+				}
+				.zmi-interface table th textarea.form-control{
+					color:white;
+				}
+				<tal:block tal:condition="python:table_type == 3">
+					#tr_sortable{
+						display:none;
+					}
+
+					#table_cell_editor>tbody>tr:nth-child(odd) td {
+						background-color: #e3e8ed;
+					}
+					#table_cell_editor>tbody>tr:nth-child(even) td {
+						background-color: #FFFFFF;
+					}
+
+					#table_cell_editor>tbody>tr>td:first-child{
+						background-color: #32475b;
+					}
+					#table_cell_editor tr#colgrouping td{
+						background-color:#FFFFFF;
+					}
+				</tal:block>
+			</style>
+
+			<!--### Table-Cell Editor ###-->
+			<tal:block tal:define="celltypes python:[['td','td'],['th','th']];custom python:'<div class=\042pull-left celltypes\042>%s</div>'%(here.zmi_input_select(name='tag',value='',lang_str=here.getZMILangStr('ATTR_FORMAT'),options=celltypes))">
+				<div class="d-none ui-helper-overlay modal-backdrop in">&nbsp;</div>
+				<div class="d-none">
+					<div id="div_table_cell_editor">
+						<tal:block tal:content="structure python:here.f_selectRichtext(ob=here,fmName=request['fmName'],elName='content_editor',cols=25,rows=10,value='',key='cell',enabled=True,lang=request['lang'],lang_str=here.getZMILangStr('ACTION_EDIT_CELL'),custom_str=custom,REQUEST=request,wrap='virtual',format='')"></tal:block>
+						<div class="form-row">
+							<div class="controls save">
+								<button class="btn btn-primary" type="submit" value="BTN_CHANGE" onclick="return table_cell_change();" tal:content="python:here.getZMILangStr('BTN_CHANGE')"></button>
+								<button class="btn btn-secondary" type="submit" value="BTN_CANCEL" onclick="return table_cell_cancel();" tal:content="python:here.getZMILangStr('BTN_CANCEL')"></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</tal:block>
+
+			<!-- ### Table-Cell Grid ###-->
+
+			<span class="d-none" id="fmName" tal:content="request/fmName"></span>
+			<span class="d-none" id="elName" tal:content="request/elName"></span>
+
+			<span class="d-none" id="textFormatDefault" tal:content="textFormatDefault"></span>
+			<tal:block tal:condition="python:request.get('richedit_fmt',None)"><span class="d-none" id="richedit_fmt" tal:content="python:request.get('richedit_fmt').getId()"></span></tal:block>
+			<span class="d-none" id="table_type" tal:content="table_type"></span>
+			<span class="d-none" id="table_cell_uid" tal:content="python:table_cols*table_rows"></span>
+			<style>
+				#table_cell_editor .btn {
+					padding: 0 .3em;
+				}
+				.zmi.ZMSTable.properties .modal-backdrop.in {
+					filter: alpha(opacity=30);
+					opacity: .3;
+				}
+				.div_table_cell_editor_parent {
+					position:absolute;
+					background:#FEFEFE;
+					z-index:9999;
+					border-radius: 4px;
+					box-shadow: 0 4px 16px #333;
+				}
+				#div_table_cell_editor {
+					width:65em;
+					margin:1em;
+				}
+				#table_cell_editor #colgrouping td {
+					min-width:6em
+				}
+				.celltypes select {
+					width:10em;
+				}
+				/* Compensate Preview Styles */
+				#table_cell_editor table.ZMSTable {
+					margin:0
+				}
+				#table_cell_editor table.ZMSTable td,
+				#table_cell_editor table.ZMSTable th {
+					border:0 !important;
+					margin:0;
+					padding:0;
+				}
+				#table_cell_editor table.ZMSTable th > div,
+				#table_cell_editor table.ZMSTable td > div {
+					padding:.5em;
+				}
+				#table_cell_editor table.ZMSTable [contenteditable]:focus {
+					outline: 2px dotted #007bff;
+					background-color:rgba(0, 123, 255, 0.05);
+				}
+				img.vbutton {
+					border:1px solid #CCC;
+					height:16px!important;
+					width:8px!important;
+					border-radius:3px;
+				}
+				img.hbutton {
+					border:1px solid #CCC;
+					height:8px!important;
+					width:16px!important;
+					border-radius:3px;
+				}
+				td .btn-group {
+					width:80px;
+				}
+				.ZMSTable-cell {
+					border:1px solid #CCC;
+				}
+				.ZMSTable-cell.top,
+				.ZMSTable-cell.right,
+				.ZMSTable-cell.bottom,
+				.ZMSTable-cell.left {
+					border-top:2px solid #666;
+				}
+				.table_cell_editable.changed {
+					background-color:#FFF;
+				}
+				.table_cell_editable.active {
+					background-color:#FFC;
+				}
+				.table_cell_editable.new {
+					background-color:#DFD;
+				}
+				.table_cell_editable.moved {
+					background-color:#FFF;
+				}
+				/* shift url select modal win to top */
+				.modal {
+					z-index:10000;
+				}
+			</style>
+
+			<script>
+				var fmName;
+				var elName;
+				var textFormatDefault;
+				var richedit_fmt;
+				var table_type;
+				var table_cell_uid;
+				var table_cell_id;
+				var table_cell_offs;
+
+				$(function() {
+						fmName = $('#fmName').text();
+						elName = $('#elName').text();
+						textFormatDefault = $("#textFormatDefault").text();
+						richedit_fmt = $('#richedit_fmt').text();
+						table_type = parseInt($('#table_type').text());
+						table_cell_uid = $('#table_cell_uid').text();
+						table_cell_id = '';
+						table_cell_offs = 2;
+						$('form[name='+fmName+']').submit( onZMSTableFormSubmit);
+						table_cell_init();
+					});
+
+				function onZMSTableFormSubmit() {
+					var xml = '';
+					xml += '<'+'list>\n';
+					var el_tbody = $($("#table_cell_editor").children()[0]);
+					var el_trs = el_tbody.children().filter(":gt(0)");
+					for ( var i=0; i < el_trs.length; i++) {
+						xml += '<'+'item type="list"><'+'list>\n';
+						//changed by uzk
+						var el_tds = $(el_trs[i]).children();
+						//var el_tds = $(el_trs[i]).children().filter(":gt(0)").filter(":not(:last)");
+						for ( var j=0; j < el_tds.length; j++) {
+							xml += '<'+'item type="dictionary"><'+'dictionary>\n';
+							xml += '<'+'item key="colspan" type="int">'+1+'<'+'/item>\n';
+							var el_inputs = $("textarea,input",el_tds[j]);
+							for ( var k=0; k < el_inputs.length; k++) {
+								var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
+								xml += '<'+'item key="'+key+'"><'+'![CDATA'+'['+$(el_inputs[k]).val()+']'+']><'+'/item>\n';
+							}
+							xml += '<'+'/dictionary><'+'/item>\n';
+						}
+						xml += '<'+'/list><'+'/item>\n';
+					}
+					xml += '<'+'/list>\n';
+					$("#table_table").val( xml);
+
+					xml = '';
+					xml += '<'+'list>\n';
+					var el_trs = el_tbody.children().filter(":eq(0)");
+					for ( var i=0; i < el_trs.length; i++) {
+						var el_inputs = $("input:text",el_trs[i]);
+						for ( var j = 0; j < el_inputs.length; j++) {
+							xml += '<'+'item type="string">'+$(el_inputs[j]).val()
+							+'<'+'/item>\n';
+						}
+					}
+					xml += '<'+'/list>\n';
+
+					$("#table_colgroup_cols").val( xml);
+					return true;
+				}
+
+
+				function table_cell_edit(el_td) {
+					var el = $('textarea',el_td);
+					var el_name = el.attr('id');
+					table_cell_id = el_name.substr(el_name.indexOf('_')+1);
+					// Set cell background.
+					el_td.addClass("active");
+					// Apply values.
+					$('#zmiRichtextEditor'+elName).hide();
+					$('#zmiStandardEditor'+elName).show();
+					$('#content_editor').val($('#content_'+ table_cell_id).val());
+					$('select[name="tag"]').val($('#tag_'+ table_cell_id).val());
+					$('#format').val($('#format_'+ table_cell_id).val());
+					if (typeof richedit_fmt != 'undefined') {
+						zmiRichtextSyncDataToView(elName);
+						if ( $('#format').val()==richedit_fmt) {
+							$('#zmiRichtextEditor'+'content_editor').show();
+							$('#zmiStandardEditor'+'content_editor').hide();
+							zmiStandardOnSubmitEventHandler();
+						}
+					}
+					// Open cell editor.
+					var offset = $(el_td).offset();
+					$('.ui-helper-overlay').removeClass('d-none');
+					//$('#div_table_cell_editor').parent().addClass('div_table_cell_editor_parent').css({left:offset.left,top:offset.top}).removeClass('d-none');
+					let cell_editor = $('#div_table_cell_editor');
+					let left = cell_editor.width() < window.innerWidth ? (window.innerWidth - cell_editor.width())/2  : 0;
+					let top =  window.innerHeight > 400 ? (window.innerHeight - 400)/2 : 0;
+					$('#div_table_cell_editor').parent().addClass('div_table_cell_editor_parent').css({left:left, top:top}).removeClass('d-none');
+					$('#zmiRichtextEditor'+'content_editor').height(300);
+					zmiRichtextResize('content_editor');
+				}
+
+				function table_cell_change() {
+					if (typeof richedit_fmt != 'undefined') {
+						if ( $('#format').val()==richedit_fmt) {
+							zmiRichtextOnSubmitEventHandler();
+							$('#input_'+ table_cell_id).hide();
+							$('#preview_'+ table_cell_id).show();
+						}
+						else {
+							$('#input_'+ table_cell_id).show();
+							$('#preview_'+ table_cell_id).hide();
+						}
+					}
+					$('#format_'+ table_cell_id).val($('#format').val());
+					$('#tag_'+ table_cell_id).val($('select[name="tag"]').val());
+					$('#content_'+ table_cell_id).val($('#content_editor').val());
+					$('#preview_'+ table_cell_id).html($('#content_editor').val());
+					return table_cell_cancel();
+				}
+
+				function table_cell_cancel(event) {
+					// Reset cell background.
+					var el_td = $("td.active");
+					el_td.removeClass("active");
+					// Close cell editor.
+					if (!event) {
+						/*
+						$('#div_table_cell_editor').modal('hide');
+						*/
+						$('.ui-helper-overlay').addClass('d-none');
+						$('#div_table_cell_editor').parent().addClass('d-none');
+					}
+					return false;
+				}
+
+
+				function table_cell_init() {
+					$("form[name="+fmName+"] input[type=hidden]+textarea").change( function () { $(this).parents(".table_cell_editable").addClass('changed').removeClass('changed',1000);});
+					$("form[name="+fmName+"] .table_cell_editable").dblclick( function () { table_cell_edit($(this));});
+					$('div[id^=preview_]')
+						.attr('contenteditable','').keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable).on('contextmenu',function(){onKeyUpZMSTableDivContenteditable});
+				}
+
+				function actionBtnClick(el, fct) {
+					var x = 0;
+					var $td = $(el).closest("td");
+					while ( $td.prev().length > 0) {
+						x++;
+						$td = $td.prev();
+					}
+					var y = 0;
+					var $tr = $($td.parent("tr"));
+					while ( $tr.prev().length > 0) {
+						y++;
+						$tr = $tr.prev();
+					}
+					var $tbody = $(el).closest("tbody");
+					//////////////////////////////////////////////////////////////////////////////
+					/// DELETE
+					//////////////////////////////////////////////////////////////////////////////
+					if (fct.indexOf('delete') == 0) {
+						if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+							if (fct.indexOf('delete_col') == 0) {
+								var $trs = $tbody.children();
+								for ( var i = 0; i < $trs.length; i++) {
+									if ( i == table_cell_offs && table_type == 2) {
+										var $td = $($trs[i]).children().filter(":eq("+table_cell_offs+")");
+										$td.prop("colspan",parseInt($td.prop("colspan"))-1);
+									}
+									else {
+										var $td = $($trs[i]).children().filter(":eq("+x+")");
+										$td.remove();
+									}
+								}
+								$('#cols').val( parseInt($('#cols').val())-1);
+							}
+							else if (fct.indexOf('delete_row') == 0) {
+								var $tr = $tbody.children().filter(":eq("+y+")");
+								$tr.remove();
+								$('#rows').val( parseInt($('#rows').val())-1);
+							}
+						}
+					}
+					//////////////////////////////////////////////////////////////////////////////
+					/// INSERT
+					//////////////////////////////////////////////////////////////////////////////
+					else if (fct.indexOf('insert_col') == 0) {
+						var $trs = $tbody.children();
+						for ( var i = 0; i < $trs.length; i++) {
+							if ( i == table_cell_offs && table_type == 2) {
+								var $td = $($trs[i]).children().filter(":eq("+table_cell_offs+")");
+								$td.attr("colspan",parseInt($td.attr("colspan"))+1);
+							}
+							else {
+								var $tds = $($trs[i]).children();
+								var $td = $tds.filter(":eq("+x+")");
+								var new_td = insertCell($tds[$tds.length-2]);
+								if(fct.indexOf('insert_col_left') == 0){
+									new_td.insertBefore( $td);
+								}else{
+									new_td.insertAfter( $td);
+								}
+
+							}
+						}
+						$('#cols').val( parseInt($('#cols').val())+1);
+						table_cell_init();
+					}
+					else if (fct.indexOf('insert_row') == 0) {
+						var $trs = $tbody.children();
+						var $tr = $trs.filter(":eq("+y+")");
+						var new_tr = insertCell($trs[$trs.length-2]);
+						if(fct.indexOf('insert_row_above') == 0) {
+							new_tr.insertBefore( $tr);
+						}else{
+							new_tr.insertAfter( $tr);
+						}
+
+						$('#rows').val( parseInt($('#rows').val())-1);
+						table_cell_init();
+					}
+					//////////////////////////////////////////////////////////////////////////////
+					/// MOVE
+					//////////////////////////////////////////////////////////////////////////////
+					else if (fct.indexOf('move_col') == 0) {
+						var source_x = x;
+						var target_x = x;
+						if (fct == 'move_col_left') {
+							target_x = target_x - 1;
+						}
+						else {
+							target_x = target_x + 1;
+						}
+						var $trs = $tbody.children().filter(":gt(0)");
+						for ( var i = 0; i < $trs.length; i++) {
+							var source_td = $($trs[i]).children().filter(":eq("+source_x+")");
+							var target_td = $($trs[i]).children().filter(":eq("+target_x+")");
+							moveCell(source_td, target_td);
+						}
+					}
+					else if (fct.indexOf('move_row') == 0) {
+						var source_y = y;
+						var target_y = y;
+						if (fct == 'move_row_up') {
+							target_y = target_y - 1;
+						}
+						else {
+							target_y = target_y + 1;
+						}
+						var source_tr = $tbody.children().filter(":eq("+source_y+")");
+						var target_tr = $tbody.children().filter(":eq("+target_y+")");
+						moveCell(source_tr, target_tr);
+					}
+					else {
+						var par = Math.max(x,y)-table_cell_offs;
+						var fm = document.forms[fmName];
+						fm.elements['function'].value = fct;
+						fm.elements['param'].value = par;
+						fm.submit();
+					}
+				}
+
+				function insertCell(source) {
+					var $clone = $(source).clone();
+					$("table.ZMSTable th, table.ZMSTable td",$clone).each(function() {
+							// Remove table with inline-links (if exists).
+							$("table",this).remove();
+							$("textarea,input",this).each(function() {
+									var key = this.id.substr(0,this.id.indexOf("_"));
+									$(this).attr( "id", key+"_" + table_cell_uid);
+									$(this).attr( "name", key+"_" + table_cell_uid);
+									if ( key.indexOf("format") == 0) {
+										$(this).val( textFormatDefault);
+									}
+									else if ( key.indexOf("content") == 0) {
+										$(this).val( "").css( 'border', '2px solid #00FF00');
+									}
+								});
+							$('div[id^="preview"]',this).each(function() {
+									$(this).attr("id","preview_"+table_cell_uid)
+										.html('')
+										.attr('contenteditable','')
+										.keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable);
+								});
+							$(this).addClass('new').removeClass('new',1000);
+							table_cell_uid++;
+						});
+					return $clone;
+				}
+
+				function moveCell(source, target) {
+					var source_inp = $("textarea,input",source);
+					var target_inp = $("textarea,input",target);
+					for ( var j = 0; j < source_inp.length; j++) {
+						var v = $(source_inp[j]).val();
+						$(source_inp[j]).val( $(target_inp[j]).val());
+						$(target_inp[j]).val( v);
+					}
+					var source_preview = $("div[id^=preview]",source);
+					var target_preview = $("div[id^=preview]",target);
+					for ( var j = 0; j < source_preview.length; j++) {
+						var v = $(source_preview[j]).html();
+						$(source_preview[j]).html( $(target_preview[j]).html());
+						$(target_preview[j]).html( v);
+					}
+					$("td.table_cell_editable",target).addClass("moved").removeClass("moved",1000);
+				}
+
+				function onKeyUpZMSTableDivContenteditable() {
+					if ($(this).text().length==0) {
+						$(this).addClass('placeholder');
+					}
+					else {
+						$(this).removeClass('placeholder');
+					}
+					var $textarea = $("textarea",$(this).prev());
+					$textarea.val($(this).html());
+				}
+			</script>
+
+			<!-- BO Dropdown -->
+			<div class="dropdown-menu dropdown-menu-sm" id="context-menu">
+				<a class="dropdown-item move_col_left" href="#"><i class="fas fa-caret-left"></i>Spalte nach Link verschieben</a>
+				<a class="dropdown-item move_col_right" href="#"><i class="fas fa-caret-right"></i>Spalte nach Rechts verschieben</a>
+				<a class="dropdown-item delete_col" href="#"><i class="fas fa-trash"></i>Ganze Spalte l&ouml;schen</a>
+				<a class="dropdown-item insert_col_left" href="#"><i class="far fa-plus-square"></i>Neue Spalte links einf&uuml;gen</a>
+				<a class="dropdown-item insert_col_right" href="#"><i class="far fa-plus-square"></i>Neue Spalte rechts einf&uuml;gen</a>
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item move_row_up" href="#"><i class="fas fa-caret-up"></i>Zeile nach oben verschieben</a>
+				<a class="dropdown-item move_row_down" href="#"><i class="fas fa-caret-down"></i>Zeile nach unten verschieben</a>
+
+				<a class="dropdown-item delete_row" href="#"><i class="fas fa-trash"></i>Ganze Zeile l&ouml;schen</a>
+				<a class="dropdown-item insert_row_above" href="#"><i class="far fa-plus-square"></i>Neue Zeile oberhalb einf&uuml;gen</a>
+				<a class="dropdown-item insert_row_below" href="#"><i class="far fa-plus-square"></i>Neue Zeile unterhalb einf&uuml;gen</a>
+			</div>
+			<style>
+				.dropdown-menu{ position:absolute; }
+				.div_table_cell_editor_parent{ position:fixed; }
+				.dropdown-item.disabled, .dropdown-item:disabled { cursor: no-drop;}
+			</style>
+			<script>
+			// <!--
+				$(function () {
+					$('table.table *, table.table *').on('contextmenu', function (e) {
+						$('table#table_cell_editor .table_cell_editable.current').removeClass('current');
+						let contextMenu = $("#context-menu");
+						var target = e.target;
+						let card = contextMenu.closest('.card');
+						var top = e.pageY - card.position().top;
+						var left = e.pageX - card.position().left;
+
+						var height =$("#context-menu").height();
+						var bottom = top + height;
+						var width = $("#context-menu").width();
+						var right = left + width;
+
+						var doc_bottom =  (window.pageYOffset + window.innerHeight);
+						var doc_right = (window.pageXOffset + window.innerWidth);
+
+						if(bottom > doc_bottom){
+							top = top - height;
+						}
+						if( right > doc_right){
+							left = left - width;
+						}
+
+						$("#context-menu").css({
+							display: "block",
+							top: top,
+							left: left
+						}).addClass("show");
+
+
+						if($(target).hasClass('ZMSTable-cell')){
+							target = $('.table_cell_editable', target).first();
+						}
+
+						let contextmenu = $('#context-menu');
+						let selector = '.table_cell_edit';
+						let btn = $(selector, contextmenu);
+						let table_cell = $($(target).closest('.table_cell_editable'));
+						table_cell.addClass('current');
+						let actionlist = ['move_col_left', 'move_col_right', 'move_row_down', 'move_row_up', 'insert_row_above', 'insert_row_below', 'delete_row', 'insert_col_left', 'insert_col_right', 'delete_col'];
+						for (let action of actionlist) {
+							let selector = '.' + action;
+							let btn = $('.' + action, contextmenu);
+							let actionAvailable = true;
+
+							if(action == 'move_row_up' && (table_cell.closest('tr#table_row_0').length > 0 || (table_type == 1 && table_cell.closest('tr#table_row_1').length > 0)) ){
+								actionAvailable = false;
+							}else if(action == 'move_col_left' && (table_cell.closest('.ZMSTable-cell').prev().length == 0 || table_type == 3 && table_cell.closest('.ZMSTable-cell').prevAll('.ZMSTable-cell').length == 1)){
+								actionAvailable = false;
+							}else if(action == 'move_col_right' && table_cell.closest('.ZMSTable-cell').next().length == 0){
+								actionAvailable = false;
+							}else if(action == 'move_row_down' && table_cell.closest('.ZMSTable-cell').closest('tr').next().length==0){
+								actionAvailable = false;
+							}else if(table_cell.prop("tagName") == "TH") {
+								if(table_type == 1 && ['move_row_down','insert_row_above','delete_row'].includes(action)){
+									actionAvailable = false;
+								}else if(table_type == 3 && ['move_col_left','move_col_right','insert_col_left','delete_col'].includes(action)){
+									actionAvailable = false;
+								}
+							}
+
+							if(actionAvailable){
+								btn.show();
+								btn.off('click');
+								btn.on('click', function (event) {
+									event.preventDefault();
+									actionBtnClick($(target).closest('.ZMSTable'), action);
+									$('table#table_cell_editor .table_cell_editable.current').removeClass('current');
+									contextmenu.removeClass("show").hide();
+								});
+							}else{
+								btn.hide();
+							}
+						}
+
+						return false; //blocks default Webbrowser right click menu
+					})
+
+					$(document).on("click ", function (event) {
+						$('table#table_cell_editor .table_cell_editable.current').removeClass('current');
+						$('#context-menu').removeClass("show").hide();
+					});
+				});
+			//-->
+			</script>
+			<!-- EO Dropdown -->
+
+			<table id="table_cell_editor" class="table" cellspacing="0" cellpadding="0" border="0">
+				<tr id="colgrouping">
+					<tal:block tal:repeat="col_index python:range(table_cols)">
+						<td align="center" tal:attributes="style python:'width:%s'%([ 'initial', '%s%%'%((table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))]) ][zmscontext.attr('colgroup')] )">
+							<tal:block tal:condition="python:zmscontext.attr('colgroup')">
+								<input class="form-control form-control-sm" type="text" size="3"
+									style="display:inline;width:4em;"
+									onchange="$(this).parent().css('width',$(this).val()+'%')"
+									tal:attributes="name python:'col%i'%col_index;
+										value python:(table_colgroup_cols+[''])[min(col_index,len(table_colgroup_cols))];
+										title python: 'Calculated Average-Width = %s%%'%(table_widths[col_index])" />
+								&#37;
+							</tal:block>
+						</td>
+					</tal:block>
+				</tr>
+				<tr tal:repeat="row_index python:range(table_rows)" tal:attributes="id python:'table_row_%i'%row_index">
+					<tal:block tal:repeat="col_index python:range(len(table_table[row_index]))">
+						<tal:block tal:define="global
+								cell python:table_table[row_index][col_index];
+								pattern python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
+								replacement python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
+								cell_content python:here.re_sub(pattern,replacement,cell.get('content',''));
+								cell_format python:cell.get('format',textFormatDefault);
+								richedit_preview python:int(request.get('richedit_fmt') is not None and cell_format==request.get('richedit_fmt').getId())">
+
+							<td class="ZMSTable-cell" tal:attributes="colspan cell/colspan">
+								<div class="ZMSTable">
+									<table style="width:100%" class="ZMSTable">
+									<tr>
+										<tal:block tal:content="structure python:'<%s title=\042onDblClick: %s\042 class=\042table_cell_editable\042>'%(['td',cell.get('tag','')][cell.get('tag','')!=''],here.getZMILangStr('ACTION_EDIT_CELL'))">start-tag</tal:block>
+										<input type="hidden" tal:attributes="id python:'tag_%i_%i'%(col_index,row_index); value python:cell.get('tag','')" />
+										<input type="hidden" tal:attributes="id python:'format_%i_%i'%(col_index,row_index); value cell_format" />
+										<div tal:attributes="id python:'input_%i_%i'%(col_index,row_index); class python:['','d-none'][richedit_preview]">
+											<textarea tal:attributes="id python:'content_%i_%i'%(col_index,row_index); placeholder python:'table:'+['td',cell.get('tag','')][cell.get('tag','')!='']" tal:content="cell_content"></textarea>
+										</div>
+										<div tal:attributes="id python:'preview_%i_%i'%(col_index,row_index);class python:cell.get('tag','')+[' placeholder',''][len(cell_content)>0]+[' d-none',''][richedit_preview]"
+											><tal:block tal:condition="cell/content" tal:content="structure cell_content">the cell-content</tal:block
+										></div>
+										<tal:block tal:content="structure python:'</%s><!-- .table_cell_editable -->'%(cell.get('tag',''))">end-tag</tal:block>
+									</tr>
+									</table>
+								</div>
+							</td>
+
+						</tal:block>
+					</tal:block>
+				</tr>
+			</table>
+			<div class="form-group row">
+				<div class="col-sm-12">
+					<small class="form-text text-muted mb-3"><i class="fas fa-info-circle"></i>
+						<i class="fas fa-mouse"></i> <span class="badge badge-dark">Click</span> cell to edit,
+						<span class="badge badge-dark">Double-click</span> cell to open WYSIWYG-editor,
+						<span class="badge badge-dark">Right-click</span> to insert, move or delete cells.
+					</small>
+				</div>
+			</div>
+			<input type="hidden" id="cols" tal:attributes="value table_cols" />
+			<input type="hidden" id="rows" tal:attributes="value table_rows" />
+
+		</tal:block>
+	</tal:block>
+
+	<input type="hidden" id="table_table" tal:attributes="name python:'table_%s'%request['lang']" value="<list></list>"/>
+	<input type="hidden" id="table_colgroup_cols" tal:attributes="name python:'cols_%s'%request['lang']" value="<list></list>"/>
+	<tal:block tal:define="global dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['type','table','colgroup','cols','sortable'])"></tal:block>
+
+</tal:block>

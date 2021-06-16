@@ -1,0 +1,43 @@
+<!-- ZMSFile.standard_html -->
+
+<tal:block tal:define="Std modules/Products.PythonScripts/standard; newline_to_br nocall:Std/newline_to_br; global 
+		zmscontext options/zmscontext;
+		subclass      python:[zmscontext.meta_id];
+		title         python:zmscontext.attr('title');
+		titlealt      python:zmscontext.attr('titlealt');
+		file          python:zmscontext.attr('file');
+		align         python:zmscontext.attr('align');
+		displaytype   python:zmscontext.attr('displaytype');
+		abstract      python:zmscontext.attr('attr_abstract')">
+	<tal:block tal:condition="python:align not in ['','NONE'] or request.get('URL','').find('/manage')>0">
+		<tal:block tal:condition="python:align in [ '', 'NONE']">
+			<tal:block tal:define="global subclass python:subclass+['none']"></tal:block>
+		</tal:block>
+		<tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
+			<tal:block tal:define="global subclass python:subclass+[align.lower()]"></tal:block>
+		</tal:block>
+		<tal:block tal:condition="python:align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']">
+			<tal:block tal:define="global subclass python:subclass+['floatleft']"></tal:block>
+		</tal:block>
+		<tal:block tal:condition="python:align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']">
+			<tal:block tal:define="global subclass python:subclass+['floatright']"></tal:block>
+		</tal:block>
+		<div tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
+			<tal:block tal:condition="python:file">
+				<div class="title" tal:define="mt python:file.getContentType()">
+					<img style="width:1rem;vertical-align:bottom" src="data:image/svg+xml,%3Csvg aria-hidden='true' focusable='false' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'%3E%3Cpath fill='%23666666' d='M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm76.45 211.36l-96.42 95.7c-6.65 6.61-17.39 6.61-24.04 0l-96.42-95.7C73.42 337.29 80.54 320 94.82 320H160v-80c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v80h65.18c14.28 0 21.4 17.29 11.27 27.36zM377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9z'%3E%3C/path%3E%3C/svg%3E"
+						tal:attributes="title python:'%s (%s)'%(mt,file.getDataSizeStr())" border="0" alt="Icon" align="absmiddle" />
+					<a tal:attributes="href python:file.getHref(request)" tal:content="structure python:titlealt" target="_blank">The titlealt</a>
+					(<span tal:content="python:file.getDataSizeStr()">The data-size string</span>)
+				</div>
+				<div tal:condition="python:title and title!=titlealt" tal:content="structure title" class="text">The title</div>
+				<div tal:condition="python:abstract" tal:content="structure python:newline_to_br(abstract)" class="description">The abstract</div>
+			</tal:block>
+			<tal:block tal:condition="python:not (file)" tal:content="python:zmscontext.getZMILangStr('ATTR_NONE')">
+				None
+			</tal:block>
+		</div>
+	</tal:block>
+</tal:block>
+
+<!-- /ZMSFile.standard_html -->

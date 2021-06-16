@@ -1,0 +1,10 @@
+<script>
+	// Add Help Button
+	$ZMI.registerReady(function() {
+		try {
+			$('.zmi-action.btn-group.pull-right').first().append('<a class="btn" title="Bootstrap-Jumbotron" href="https://getbootstrap.com/docs/4.1/components/jumbotron/" target="_blank"><i class="fas fa-question-circle"></i></i></a>')
+		} catch {
+			console.log('ERROR: Add Help Button');
+		}
+	})
+</script>

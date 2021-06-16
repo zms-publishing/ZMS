@@ -1,0 +1,26 @@
+<!-- bt_area_record.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		accordion python:zmscontext.getParentNode();
+		siblings python:accordion.filteredObjChildren('items',request);
+		expanded python:siblings.index(zmscontext)==0;
+		headline python:zmscontext.attr('headline');
+		body python:zmscontext.attr('body');">
+	<div class="card">
+		<div class="card-header" tal:attributes="id python:'heading_%s'%zmscontext.id">
+			<h5 class="mb-0">
+				<button class="btn btn-link" data-toggle="collapse" tal:attributes="data-target python:'#collapse_%s'%zmscontext.id; aria-expanded expanded; aria-controls python:'collapse_%s'%zmscontext.id" tal:content="structure headline">
+					Collapsible Group Item #N
+				</button>
+			</h5>
+		</div><!-- .card-header -->
+		<div tal:attributes="id python:'collapse_%s'%zmscontext.id; class python:' '.join(['collapse']+[['','show'][expanded]]); aria-labelledby python:'heading_%s'%zmscontext.id; data-parent python:'#%s'%accordion.id">
+			<div class="card-body" tal:content="structure body">
+				Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+			</div>
+		</div>
+	</div><!-- .card -->
+</tal:block>
+
+<!-- /bt_area_record.standard_html -->

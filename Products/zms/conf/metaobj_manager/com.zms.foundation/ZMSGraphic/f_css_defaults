@@ -1,0 +1,96 @@
+
+/*--------- .ZMSGraphic --------------*/
+a.fancybox img {
+	padding:1px 1px 21px 1px;
+	background:transparent url(/++resource++zms_/img/zoom.gif) bottom right no-repeat;
+	background-color:transparent;
+}
+div.ZMSGraphic {
+	background-color: transparent;
+	margin: 1em 0;
+}
+.zmi div.ZMSGraphic {
+	margin:0;
+}
+div.ZMSGraphic.left {
+	text-align:left;
+}
+div.ZMSGraphic.right {
+	text-align:right;
+}
+div.ZMSGraphic.center {
+	text-align:center;
+}
+div.ZMSGraphic.floatleft {
+	float:left;
+	margin-right:2em;
+}
+div.ZMSGraphic.floatright {
+	float:right;
+	margin-left:2em;
+}
+div.ZMSGraphic .alignleft {
+	margin-right:10px;
+}
+div.ZMSGraphic.center div.graphic {
+	text-align:center;
+	margin:0px auto;
+}
+div.graphic {
+	max-width:100% !important;
+}
+div.graphic.alignleft {
+	float:left;
+	text-align:right;
+}
+div.graphic.alignright {
+	float:right;
+	text-align:right;
+}
+div.ZMSGraphic div.text {
+	padding: 4px;
+}
+.ZMSGraphic .text {
+	background-color:transparent;
+	padding:.5em 1em 0em 1em;
+	font-size:smaller;
+	font-style:italic;
+}
+.ZMSGraphic .graphic {
+	margin-bottom: 7px;
+}
+.ZMSGraphic.center div.graphic  {
+	margin:0 auto
+}
+.ZMSGraphic.left .graphic.alignleft {
+	float:left;
+	margin-right:15px;
+}
+.ZMSGraphic.left .text,
+.ZMSGraphic.right .graphic,
+.ZMSGraphic.right .text {
+	width: auto !important;
+}
+/*-- ## FF Patch ## --*/
+div.ZMSGraphic.right div.graphic {
+	width:100% !important;
+}
+div.ZMSGraphic.right div.graphic img {
+	display:inline !important;
+}
+a.zoom img.zoom,
+a.superzoom img.superzoom {
+	width: 26px;
+	height: 21px;
+	background-position:top right;
+	background-repeat:no-repeat;
+	margin:0px;
+	padding:0px;
+}
+a.zoom img.zoom {
+	background-image: url(/++resource++zms_/img/zoom.gif);
+}
+a.superzoom img.superzoom {
+	background-image: url(/++resource++zms_/img/superzoom.gif);
+}
+/*--------- /.ZMSGraphic --------------*/

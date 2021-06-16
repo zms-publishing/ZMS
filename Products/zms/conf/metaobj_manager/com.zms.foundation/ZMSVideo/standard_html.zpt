@@ -1,0 +1,64 @@
+<!-- ZMSVideo.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		zmi python:request.get('URL').find('/manage')>=0;
+		id python:zmscontext.getId();
+		title python:zmscontext.attr('title');
+		description python:zmscontext.attr('attr_dc_description');
+		img python:zmscontext.attr('img');
+		videodata python:zmscontext.attr('videodata');
+		provider python:zmscontext.attr('provider');
+		videoId python:zmscontext.attr('videoId');
+		videoWidth python:zmscontext.attr('videoWidth');
+		videoHeight python:zmscontext.attr('videoHeight');
+		videoURL python:{'fileupload':'','vimeo':'//player.vimeo.com/video/%s?badge=0','youtube':'http://www.youtube.com/embed/%s','switch':'https://tube.switch.ch/embed/%s'}[provider]">
+
+<style type="text/css" tal:condition="python:request.get('first_video_on_page',True)">
+	.video-wrapper {margin: 1em 0;}
+	.youtube { position: relative; padding-bottom: 55%; padding-top: 15px; height: 0; overflow: hidden;}
+	.youtube iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+	.video-wrapper p.description {font-size:90%;font-style:italic;}
+</style>
+<tal:block tal:define="first_video_on_page python:request.set('first_video_on_page',False)"></tal:block>
+
+<div class="note" tal:condition="zmi">
+	<strong tal:content="title">Titel</strong> - web size:
+	<strong tal:content="videoWidth">videoWidth</strong> x <strong tal:content="videoHeight">videoHeight</strong> Pixel.
+</div>
+
+<div tal:attributes="class python:'video-wrapper elastic-video %s'%(provider);title title;id id">
+	<div class="embed-responsive embed-responsive-16by9">
+	<tal:block tal:condition="python:img!='' and img!=None"
+		><img tal:attributes="src python:img.getHref(request);
+			width videoWidth;
+			height videoHeight;
+			style python:['cursor:pointer','display:none'][img==''];
+			onclick python:'javascript:$(\047#%s img\047).hide()\073$(\047#%s .video\047).show()'%(id,id)"
+	/></tal:block>
+	<iframe tal:condition="python:provider!='fileupload'"
+		tal:attributes="src python:videoURL%(videoId); width python:[None,videoWidth][videoWidth>0]; height python:[None,videoHeight][videoHeight>0];style python:['display:none',''][img=='' or img==None]"
+		class="embed-responsive-item"
+		frameborder="0"
+		webkitallowfullscreen=""
+		mozallowfullscreen=""
+		allowfullscreen="">
+	</iframe>
+	<video tal:condition="python:provider=='fileupload' and videodata!=''"
+		tal:attributes="width python:[None,videoWidth][videoWidth>0]; height python:[None,videoHeight][videoHeight>0]; style python:['display:none',''][img=='' or img==None]"
+		class="embed-responsive-item"
+		frameborder="0"
+		controls="">
+		<source src="movie.mp4" type="video/mp4" tal:attributes="src python:videodata.getHref(request)" />
+		ERROR: Your browser does not support the video tag.
+	</video>
+	</div>    
+	<div tal:condition="python:(provider=='fileupload' and videodata=='') or (provider!='fileupload' and videoId=='')"
+		class="alert alert-warning">No video file uploaded or no provider video specified.
+	</div>
+	<p class="description" tal:condition="description" tal:content="description">description</p>
+</div>
+
+</tal:block>
+
+<!-- /ZMSVideo.standard_html -->

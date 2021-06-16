@@ -1,0 +1,109 @@
+<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
+<tal:block tal:define="global
+		zmscontext options/zmscontext;">
+
+<style>
+table.ZMSLinkContainer td.meta-sort .input-group {
+	width: 68px;
+}
+table.ZMSLinkContainer td.meta-sort select.zmi-sort {
+    width: 3em !important;
+}
+.zmi-manage-main-change div.constraint {
+	display:inline-block;
+	max-width:200px;
+	overflow:hidden;
+}
+</style>
+
+<!--
+################################################################################
+##### Align: EDIT
+################################################################################
+-->
+<div class="form-group row" id="tr_align" tal:condition="python:zmscontext.getParentNode().meta_id in ['ZMS','ZMSFolder','ZMSDocument']">
+	<label class="col-sm-2 control-label" for="title_ger"><span tal:content="structure python:here.getZMILangStr('ALIGN')">Align</span></label>
+	<div class="col-sm-10" tal:content="structure python:zmscontext.getObjInput('align',request)">the align-input</div>
+</div>
+
+<table class="table table-striped table-bordered zmi-sortable ZMSLinkContainer">
+<tr>
+	<colgroup>
+		<col style="width:5%">
+		<col style="width:5%">
+		<col style="width:29%">
+		<col style="width:29%">
+		<col style="width:29%">
+		<col style="width:5%">
+	</colgroup> 
+	<th>&nbsp;</th>
+	<th class="text-center">
+		<label for="_active" tal:content="structure python:here.getZMILangStr('ATTR_ACTIVE')">Active*</label>
+	</th>
+	<th>
+		<label for="_url" tal:content="structure python:here.getZMILangStr('ATTR_URL')">Url*</label>
+	</th>
+	<th>
+		<label for="_title" tal:content="structure python:here.getZMILangStr('ATTR_TITLE')">Title*</label>
+	</th>
+	<th colspan="2">
+		<label for="_description" tal:content="structure python:here.getZMILangStr('ATTR_DESCRIPTION')">Description</label>
+	</th>
+</tr>
+
+<!--
+################################################################################
+##### Link-Elements: EDIT
+################################################################################
+-->
+<tal:block tal:condition="python:request.get( 'ZMS_INSERT', None)==None">
+<tal:block tal:define="objChildren python:zmscontext.getObjChildren('e',request); hasChildren python:len(objChildren)>0">
+<tr tal:repeat="childNode objChildren">
+	<td class="meta-sort">
+		<div class="input-group">
+			<select class="zmi-sort" tal:attributes="onchange python:'location.href=\'%s/manage_moveObjToPos?lang=%s&pos:int=\'+(this.selectedIndex+1)'%(childNode.id,request['lang'])">
+				<tal:block tal:repeat="seqindex python:range(len(objChildren))">
+					<option tal:attributes="selected python:['','selected'][int(seqindex==objChildren.index(childNode))]" tal:content="python:seqindex+1">seqindex+1</option>
+				</tal:block>
+			</select>
+			<div class="input-group-append">
+				<a class="btn btn-secondary" href="javascript:;" 
+					tal:attributes="onclick python:'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_deleteObjs?ids:list=%s&lang=%s&preview=%s\'}'%(childNode.id,request['lang'],request['preview']); title python:here.getZMILangStr('BTN_DELETE')"
+					><i class="fas fa-times"></i></a>
+			</div>
+		</div><!-- .input-group -->
+	</td>
+	<td align="center" tal:content="structure python:childNode.getCheckbox(fmName='form0',elName='active%s'%(childNode.getId()),value=childNode.isActive(request))"></td>
+	<td tal:content="structure python:childNode.getUrlInput(fmName='form0',elName='url%s'%(childNode.getId()),elTextName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_ref'),request))"><input/></td>
+	<td tal:content="structure python:childNode.getTextInput(fmName='form0',elName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('title'),request))"><input/></td>
+	<td tal:content="structure python:childNode.getTextArea(fmName='form0',elName='description%s'%(childNode.getId()),cols=20,rows=2,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_dc_description'),request))"><textarea/></td>
+	<td>
+		<div class="zmi-manage-main-change" style="display:block;visibility:visible" tal:content="structure python:childNode.zmi_manage_main_change(childNode,request)">
+			the info child-node
+		</div>
+	</td>
+</tr>
+</tal:block>
+</tal:block>
+<!--
+################################################################################
+##### Link-Elements: INSERT
+################################################################################
+-->
+<tal:block tal:define="global dummy0 python:request.set( 'ZMS_INSERT', 'ZMSLinkElement')"></tal:block>
+<tr class="row_insert">
+	<td class="meta-sort"><span class="btn btn-light"><i class="fas fa-plus"></i></span></td>
+	<td align="center" tal:content="structure python:here.getCheckbox(fmName='form0',elName='active_',value=True)"></td>
+	<td tal:content="structure python:here.getUrlInput(fmName='form0',elName='url_',elTextName='_title',size=15,value='')"><input/></td>
+	<td tal:content="structure python:here.getTextInput(fmName='form0',elName='title_',size=15,value='')"><input/></td>
+	<td colspan="2"
+		tal:content="structure python:here.getTextArea(fmName='form0',elName='description_',cols=20,rows=2,value='')"><textarea/>
+	</td>
+</tr>
+<tal:block tal:define="global dummy0 python:request.set( 'ZMS_INSERT', None)"></tal:block>
+
+</table>
+
+</tal:block>
+</tal:block>
+<tal:block tal:define="dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['align','e'])"></tal:block>

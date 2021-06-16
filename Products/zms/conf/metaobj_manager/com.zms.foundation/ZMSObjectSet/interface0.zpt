@@ -1,0 +1,109 @@
+<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
+<tal:block tal:define="standard modules/Products.zms/standard;
+	zmscontext options/zmscontext;
+	attr_ids python:zmscontext.attr('record_attrs');">
+
+<code title="HTML-Consistency: Pre-Closing 1" tal:replace="structure string:</div>"></code>
+		<div class="card-body">
+			<div class="form-row">
+				<div class="controls save">
+					<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:zmscontext.getZMILangStr('BTN_SAVE')" tal:content="python:zmscontext.getZMILangStr('BTN_SAVE')">Action</button>
+					<button type="submit" name="btn" class="btn btn-secondary" tal:attributes="value python:zmscontext.getZMILangStr('BTN_CANCEL')" tal:content="python:zmscontext.getZMILangStr('BTN_CANCEL')">Cancel</button>
+				</div>
+			</div><!-- .form-row -->
+		</div><!-- .card-body -->
+<code title="HTML-Consistency: Pre-Closing 2" tal:replace="structure string:</div></div></div></form>"></code>
+
+<script type="text/javascript" tal:attributes="src python:'%s/%s.script.zmi.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
+<style>
+.card.zmi-container {
+	display:none;
+}
+tr.inactive > td.data > * {
+	color:#AAA;
+}
+</style>
+
+		<tal:block tal:define="global
+				record_duplicate python:zmscontext.attr('record_duplicate');
+				metaObjAttrs python:[{'id':'objectset','name':'','type':'html'}]
+						+attr_ids
+						+[{'id':'change_uid','name':zmscontext.getZMILangStr('BY'),'type':'string'}]
+						+[{'id':'change_dt','name':zmscontext.getZMILangStr('ON'),'type':'datetime'}];
+				metaObjAttrIds python:['__id__']+[x['id'] for x in metaObjAttrs];
+				dummy0 python:zmscontext.attr('recordSet_Prepare')">
+
+<tal:block tal:condition="record_duplicate">
+	<tal:block tal:define="dummy0 python:request.RESPONSE.redirect('%s/manage_main?manage_tabs_message=%s'%(record_duplicate[0].absolute_url(),record_duplicate[1]))"></tal:block>
+</tal:block>
+
+<tal:block tal:repeat="record_meta_id python:zmscontext.attr('record_meta_ids')">
+	<tal:block tal:condition="python:'objectset_interface' in zmscontext.getMetaobjAttrIds(record_meta_id)">
+		<tal:block tal:content="structure python:zmscontext.evalMetaobjAttr('%s.objectset_interface'%record_meta_id)"></tal:block>
+	</tal:block>
+</tal:block>
+
+<div class="ZMSRecordSet">
+<form method="get" class="form-horizontal">
+	<input type="hidden" name="lang" tal:attributes="value request/lang">
+	<input type="hidden" name="preview" tal:attributes="value request/preview">
+	<input tal:condition="python:'qorder' in request" type="hidden" name="qorder" tal:attributes="value request/qorder">
+	<input tal:condition="python:'qorderdir' in request" type="hidden" name="qorderdir" tal:attributes="value request/qorderdir">
+	<div class="card" tal:define="filter_columns attr_ids">
+		<div class="card-header filters btn-collapse">
+			<a class="btn card-toggle pull-left" data-toggle="collapse" href="#attrProperties">
+				<i class="icon-caret-down fas fa-caret-down"></i>
+				<tal:block tal:content="structure python:zmscontext.getZMILangStr('ATTR_FILTER')">the label</tal:block>
+			</a>
+		</div><!-- .card-header -->
+		<div id="attrProperties" class="filters collapse show">
+			<div class="card-body">
+				<tal:block tal:repeat="filterIndex python:range(request.get('qfilters',1)+1)">
+					<div tal:attributes="class python:' '.join(['form-row']+[[],['d-none']][int(filterIndex==request.get('qfilters',1))])">
+						<div class="form-group col-md-4">
+							<select class="form-control form-control-sm" tal:attributes="name python:'filterattr%i'%filterIndex">
+								<option value="" tal:content="python:zmscontext.getZMILangStr('CAPTION_SELECT')">the option</option>
+								<tal:block tal:repeat="filter_column filter_columns">
+									<option tal:attributes="value python:filter_column['id']; selected python:['','selected'][int(standard.get_session_value(zmscontext,'filterattr%i_%s'%(filterIndex,zmscontext.id))==filter_column['id'])]" tal:content="filter_column/name">label</option>
+								</tal:block>
+							</select>
+						</div>
+						<div class="form-group col-md-2">
+							<select class="form-control form-control-sm" tal:attributes="name python:'filterop%i'%filterIndex">
+								<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
+									<option tal:attributes="value python:op; selected python:['','selected'][str(op).lower()==str(request.get('filterop%i'%filterIndex, standard.get_session_value(zmscontext,'filterop%i_%s'%(filterIndex,zmscontext.id),''))).lower()]" tal:content="python:op">op</option>
+								</tal:block>
+							</select>
+						</div>
+						<div class="form-group col-md-6">
+							<input class="form-control form-control-sm" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex, standard.get_session_value(zmscontext,'filtervalue%i_%s'%(filterIndex,zmscontext.id),''))" />
+						</div>
+					</div><!-- .form-row -->
+				</tal:block>
+				<div class="form-row">
+					<button type="submit" id="btn-search" class="btn btn-primary" name="btn" tal:attributes="value python:zmscontext.getZMILangStr('BTN_REFRESH')">
+						<i class="fas fa-search"></i>
+						<tal:block tal:content="python:zmscontext.getZMILangStr('BTN_SEARCH')">Search</tal:block>
+					</button>
+					<button type="submit" id="btn-reset" class="btn btn-secondary" name="btn" tal:attributes="value python:zmscontext.getZMILangStr('BTN_RESET')">
+						<tal:block tal:content="python:zmscontext.getZMILangStr('BTN_RESET')">Reset</tal:block>
+					</button>
+				</div><!-- .form-row -->
+			</div><!-- .card-body -->
+		</div><!-- .collapse -->
+	</div><!-- .card -->
+</form>
+</div><!-- .ZMSRecordSet -->
+
+<div id="metaobj_recordset_main_grid"><div class="container text-center p-3"><i class="fas fa-spinner fa-spin fa-3x text-primary"></i></div></div>
+
+</tal:block>
+
+<tal:block 
+    tal:replace="structure string:<form><div><div><div><div>">
+    <!-- Set of ZMI/HTML closing tags-->
+</tal:block>
+
+<tal:block tal:define="dummy0 python:request.set('ZMS_HIDE_ELEMENTS',request.get('ZMS_HIDE_ELEMENTS',[])+['records'])"></tal:block>
+</tal:block>
+</tal:block>

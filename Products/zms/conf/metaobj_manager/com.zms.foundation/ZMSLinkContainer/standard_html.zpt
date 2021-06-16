@@ -1,0 +1,23 @@
+<!-- ZMSLinkContainer.standard_html -->
+
+<tal:block tal:define="global 
+		zmscontext options/zmscontext;
+		subclass      python:[zmscontext.meta_id];
+		align         python:zmscontext.attr('align')">
+  <tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
+    <tal:block tal:define="global subclass python:subclass+[align.lower()]"></tal:block>
+  </tal:block>
+  <tal:block tal:condition="python:align in [ 'LEFT_FLOAT']">
+    <tal:block tal:define="global subclass python:subclass+['floatleft']"></tal:block>
+  </tal:block>
+  <tal:block tal:condition="python:align in [ 'RIGHT_FLOAT']">
+    <tal:block tal:define="global subclass python:subclass+['floatright']"></tal:block>
+  </tal:block>
+  <div tal:condition="python:len(subclass)>0"
+       tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)"
+       tal:content="structure python:''.join([x.renderShort(request) for x in zmscontext.filteredChildNodes(request,'ZMSLinkElement')])">
+    The content
+  </div>
+</tal:block>
+
+<!-- /ZMSLinkContainer.standard_html -->

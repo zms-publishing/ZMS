@@ -1,0 +1,42 @@
+<!-- ZMSGraphic.standard_html -->
+
+<tal:block tal:define="
+		standard      modules/Products/zms/standard;
+		zmscontext    options/zmscontext;
+		subclass      python:[zmscontext.meta_id];
+		text          python:zmscontext.getText(request);
+		format        python:zmscontext.attr('format');
+		textclass     python:'text';
+		displaytype   python:zmscontext.dctDisplaytype.get(str(zmscontext.attr('displaytype')),'left');
+		align         python:zmscontext.attr('align');
+		textalign     python:zmscontext.attr('textalign');
+		imgclass      python:'img img-responsive';
+		imgurl        python:zmscontext.getLinkUrl(zmscontext.attr('attr_url'),request);
+		isimghires    python:zmscontext.attr('imghires');
+		imgthumb      python:request['URL'].find('/manage')>0;
+		imgspecial    python:str(zmscontext.attr('img_attrs_spec'));">
+	<tal:block tal:condition="python:imgurl and isimghires">
+		<tal:block
+			tal:define="global text python:text+'\n<span class=\042imgurl\042>'+zmscontext.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042'%imgurl)+'</span>';
+			            global imgurl python:''">
+		</tal:block>
+	</tal:block>
+	<tal:block
+		tal:define="global renderedtext python:zmscontext.renderText(format,'text',text,request);
+		            global bodyContent python:zmscontext.renderDisplaytype(displaytype,'img','imghires',imgurl,imgthumb,imgspecial,imgclass,renderedtext,textalign,textclass,request)">
+	</tal:block>
+	<tal:block tal:condition="python:align in [ 'LEFT', 'CENTER', 'RIGHT']">
+		<tal:block tal:define="global subclass python:subclass+[align.lower()]"></tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:align in [ 'LEFT_FLOAT'] and displaytype in [ 'top', 'bottom']">
+		<tal:block tal:define="global subclass python:subclass+['floatleft']"></tal:block>
+	</tal:block>
+	<tal:block tal:condition="python:align in [ 'RIGHT_FLOAT'] and displaytype in [ 'top', 'bottom']">
+		<tal:block tal:define="global subclass python:subclass+['floatright']"></tal:block>
+	</tal:block>
+	<div tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)" tal:content="structure bodyContent">
+		The graphic
+	</div>
+</tal:block>
+
+<!-- /ZMSGraphic.standard_html -->

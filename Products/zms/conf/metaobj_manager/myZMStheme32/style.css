@@ -1,0 +1,178 @@
+.bd-navbar {
+	background-color: #0092C3;
+	background-image: -webkit-linear-gradient(top, #00AEE9 0%, #0092C3 100%);
+	background-image: linear-gradient(to bottom, #00AEE9 0%, #0092C3 100%);
+	background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00AEE9', endColorstr='#0092C3', GradientType=0);
+}
+.bd-navbar .navbar-nav .nav-link {
+    color:#e9ecef;
+}
+#navbar-menu button {
+	border:0;
+    background:transparent;
+    color:#e9ecef;
+}
+#navbar-search.inactive {
+    width: 4.3em;
+    cursor:w-resize;
+}
+#navbar-search {
+    width: 100%;
+}
+#navbar-search input {
+    border:0;
+    border-radius:1em;
+    box-shadow:none;
+}
+
+.bs-docs-container {
+    margin-bottom:1rem;    
+}
+.bs-docs-sidenav {
+    display:block;    
+}
+::placeholder, :-ms-input-placeholder {
+    color: #666; 
+} 
+.small-head {
+	color: #00AEE9;
+	line-height: 2;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+a {
+	color:#333;
+}
+a:hover {
+	color:#333;
+	text-decoration:underline;
+}
+a.active {
+	font-weight:bold;
+}
+
+/*----- Highlight (Search-Result) -----*/
+.highlight {
+	background-color: #fffccd;
+	-moz-border-radius: 3px; /* FF1+ */
+	-webkit-border-radius: 3px; /* Saf3-4 */
+	border-radius: 3px; /* Opera 10.5, IE 9, Saf5, Chrome */
+	padding:1px;
+	margin:1px;
+}
+
+.ZMSTable.table {
+	border: 1px solid #CCC;
+}
+.ZMSTable.table caption {
+	background-color:#43C9D5;
+	color:#fff;
+	font-weight:bold;
+}
+.ZMSTable.table th {
+	background-color:#f8f8f8!important;
+}
+.ZMSTable.table td {
+	background-color:#fff!important;
+}
+
+.ZMSGraphic .graphic {
+	border:1px solid #aaa;
+	box-shadow: 6px 6px 3px #ccc;
+	-moz-box-shadow: 6px 6px 3px #ccc;
+	-webkit-box-shadow: 6px 6px 3px #ccc;
+	-khtml-box-shadow: 6px 6px 3px #ccc;
+}
+
+.ZMSGraphic .text {
+	margin-top:1em!important;
+	background-color:#fafafa;
+	padding:.5em 1em 0em 1em;
+	font-size:smaller;
+}
+
+.ZMSGraphic {
+	margin-bottom:2em!important;
+}
+
+.ZMSFile {
+	padding:10px;
+	margin:15px 0 30px 0;
+	background-color:#eee;
+	border:1px solid #aaa;
+	box-shadow: 6px 6px 3px #ccc;
+	-moz-box-shadow: 6px 6px 3px #ccc;
+	-webkit-box-shadow: 6px 6px 3px #ccc;
+	-khtml-box-shadow: 6px 6px 3px #ccc;
+}
+
+/*--------- div.zoomImg inserted by jQuery --------------*/
+div.zoomImg {
+	margin-top:-25px;
+	margin-right:-2px;
+	}
+
+#fancybox-overlay {
+	background: #000 !important;
+	opacity: 0.75 !important; /* standard: ff gt 1.5, opera, safari */
+	-ms-filter: "alpha(opacity=75)" !important; /* ie 8 */
+	filter: alpha(opacity=75) !important; /* ie lt 7 */
+	-khtml-opacity: 0.75 !important; /* safari 1.x */
+	-moz-opacity: 0.75 !important; /* ff lt 1.5, netscape */
+	}
+
+.ZMSTeaserContainer {
+	border-top: 1px solid #EEE;
+	border-right: 1px solid #EEE;
+	border-bottom: 1px solid #EEE;
+	border-left: 5px solid #00AEE9;
+	margin-bottom: 20px;
+}
+.ZMSTeaserElement {
+	padding-bottom:0.5em;
+}
+.ZMSTeaserElement .graphic {
+	float:left;
+}
+.ZMSTeaserElement .title {
+	color: #00AEE9;
+	font-weight:bold;
+	padding:4px 4px 1px 10px;
+}
+.ZMSTeaserElement .text {
+	padding:1px 4px 1px 10px;
+}
+
+.list .breadcrumb {
+	background:transparent;
+	padding:0;
+}
+
+.list a {
+	text-decoration:none;
+	font-weight:bold;
+}
+.list .line.gray {
+	background-color: #F7F7F7;
+	border-color: #DBDBDB;
+	border-style: solid;
+	border-width: 1px 0px;
+}
+.list .line {
+	position: relative;
+	min-height: 100px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.col-md-9 .back-to-top {
+	margin-left: 0;
+	padding-left: 0;
+	color: rgb(92, 127, 174);
+	display: inline-block;
+	padding: 2px 4px;
+	background: rgb(220, 235, 249);
+	float:right;
+}

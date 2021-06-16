@@ -1,0 +1,17 @@
+<!-- ZMSSqlDb.renderShort -->
+
+<tal:block tal:define="global 
+		zmscontext options/zmscontext">
+	<h4>
+		<i class="icon-table"></i>
+		<tal:block tal:content="python:zmscontext.connection_id">the connection-id</tal:block>
+	</h4>
+	<ul>
+		<li tal:repeat="table python:[x for x in zmscontext.getEntities() if x['type']=='table']">
+			<a tal:attributes="href python:'%s/manage_main?qentity=%s'%(zmscontext.id,table['id'])" tal:content="table/id">the table</a>
+		</li>
+	</ul>
+	<br/>
+</tal:block>
+
+<!-- /ZMSSqlDb.renderShort -->

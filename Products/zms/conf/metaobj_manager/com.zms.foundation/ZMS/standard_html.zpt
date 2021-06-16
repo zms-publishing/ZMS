@@ -1,0 +1,9 @@
+<!-- ZMS.standard_html -->
+
+<tal:block tal:define="global 
+		zmscontext options/zmscontext"
+		tal:content="structure python:zmscontext.bodyContentZMSLib_page(zmscontext,request)">
+	The page-content
+</tal:block>
+
+<!-- /ZMS.standard_html -->

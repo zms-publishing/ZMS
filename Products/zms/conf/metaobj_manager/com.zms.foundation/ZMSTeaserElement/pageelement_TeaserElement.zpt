@@ -1,0 +1,31 @@
+<!-- pageelement_TeaserElement -->
+<div class="ZMSTeaserElement" tal:define="
+			zmscontext here;
+			id python:zmscontext.getId();
+			attr_url python:zmscontext.attr('attr_url');
+			url python:zmscontext.getLinkUrl(attr_url,request);
+			url_error python:'error' in url;
+			url_target python:attr_url.rfind('://')>0 and '_blank' or 'self';
+			img_src_attr python:zmscontext.attr('attr_img_src');
+			img_src python:img_src_attr+'?';
+			img_filename python:img_src[img_src.rfind('/')+1:img_src.find('?')];
+			title python:zmscontext.attr('title');
+			text python:zmscontext.attr('attr_abstract');"
+		tal:attributes="id id">
+	<div class="graphic" tal:condition="python:img_filename">
+		<a href="#" tal:omit-tag="python:(not attr_url) or url_error" tal:attributes="href url">
+			<img src="#" border="0" tal:attributes="src img_src_attr;title title;alt title" />
+		</a>
+	</div>
+	<div class="title" tal:condition="title">
+		<a tal:omit-tag="python:(not attr_url) or url_error" tal:attributes="href url" tal:content="title">TITLE</a>
+	</div>
+	<div class="text" tal:condition="text">
+		<span tal:replace="structure text">TEXT</span>
+		<span class="HREF_MORE" tal:condition="python:text and (url and not url_error)"
+			tal:content="structure python:here.getLangStr('HREF_MORE',request['lang'])%(' href=\042%s\042 title=\042%s\042'%(url,title))">
+			MORE...
+		</span>
+	</div>
+</div>
+<!-- /pageelement_TeaserElement -->

@@ -1,0 +1,25 @@
+
+div.ZMSFile.none, div.ZMSLinkElement.none 
+	{
+	background-color: transparent;
+	border: 2px dashed #eee;
+	}
+
+div.ZMSFile.floatleft, div.ZMSLinkElement.floatleft 
+	{ 
+	float:left;
+	width:50%
+	}
+
+div.ZMSFile.floatright, div.ZMSLinkElement.floatright 
+	{ 
+	float:right;
+	width:50%
+	}
+
+div.ZMSFile div.title a:link, div.ZMSFile div.title a:visited, 
+div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited 
+	{
+	font-weight:bold;
+	text-decoration:none;
+	}

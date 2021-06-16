@@ -1,0 +1,8 @@
+<!-- ZMSTeaserElement.standard_html -->
+<div class="ZMSTeaserContainer" 
+	tal:omit-tag="python:request.get('URL').find('/manage') < 0"
+	tal:define="zmscontext options/zmscontext"
+	tal:content="structure python:zmscontext.pageelement_TeaserElement(zmscontext,request)">
+	The teaser-element
+</div>
+<!-- /ZMSTeaserElement.standard_html -->

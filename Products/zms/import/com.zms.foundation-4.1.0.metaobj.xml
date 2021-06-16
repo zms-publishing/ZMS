@@ -641,25 +641,40 @@ if 'permalink_key__' in request and 'permalink_val__' in request:
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[fas fa-download]]></item>
                   <item key="default"></item>
-                  <item key="id">icon_clazz</item>
+                  <item key="id">titlealt</item>
                   <item key="keys" type="list">
                     <list>
                     </list>
                   </item>
-                  <item key="mandatory" type="int">0</item>
-                  <item key="meta_type"></item>
-                  <item key="multilang" type="int">0</item>
-                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">titlealt</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">DC.Title.Alt</item>
                   <item key="repetitive" type="int">0</item>
-                  <item key="type">constant</item>
+                  <item key="type">string</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="default"></item>
+                  <item key="id">title</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">1</item>
+                  <item key="meta_type">title</item>
+                  <item key="multilang" type="int">1</item>
+                  <item key="name">DC.Title</item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">string</item>
                 </dictionary>
               </item>
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="text/plain" filename="default.css" type="file"><![CDATA[
+                    <data content_type="text/plain" filename="f_css_defaults" type="file"><![CDATA[
 div.ZMSFile.none, div.ZMSLinkElement.none 
 	{
 	background-color: transparent;
@@ -703,22 +718,6 @@ div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited
               <item type="dictionary">
                 <dictionary>
                   <item key="default"></item>
-                  <item key="id">title</item>
-                  <item key="keys" type="list">
-                    <list>
-                    </list>
-                  </item>
-                  <item key="mandatory" type="int">1</item>
-                  <item key="meta_type">title</item>
-                  <item key="multilang" type="int">1</item>
-                  <item key="name">DC.Title</item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type">string</item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="default"></item>
                   <item key="id">file</item>
                   <item key="keys" type="list">
                     <list>
@@ -755,37 +754,28 @@ div.ZMSLinkElement div.title a:link, div.ZMSLinkElement div.title a:visited
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="default"></item>
-                  <item key="id">titlealt</item>
-                  <item key="keys" type="list">
-                    <list>
-                    </list>
-                  </item>
-                  <item key="mandatory" type="int">1</item>
-                  <item key="meta_type">titlealt</item>
-                  <item key="multilang" type="int">1</item>
-                  <item key="name">DC.Title.Alt</item>
-                  <item key="repetitive" type="int">0</item>
-                  <item key="type">string</item>
-                </dictionary>
-              </item>
-              <item type="dictionary">
-                <dictionary>
-                  <item key="custom"><![CDATA[<script type="text/javascript" tal:define="global
-		zmscontext options/zmscontext">
+                  <item key="custom"><![CDATA[<script type="text/javascript">
 
 $(function(){
-	$("#file_"+getZMILang()).change( function() {
-			var filename = $(this).val();
-			var i = Math.max(filename.lastIndexOf('/'),filename.lastIndexOf('\\'));
-			if (i > 0) {
-				filename = filename.substring(i+1);
-			}
-			var title = $("#title_"+getZMILang());
-			if (title.val().length == 0) {
-				title.attr({'data-value-attr':'placeholder','placeholder':filename});
-			}
-		});
+	$('#file_'+getZMILang()).change( function() {
+		var filename = $(this).val();
+		var i = Math.max(filename.lastIndexOf('/'),filename.lastIndexOf('\\'));
+		if (i > 0) {
+			filename = filename.substring(i+1);
+		}
+		var title = $('.ZMSFile.properties #title_'+getZMILang()+',.modal-body #title_'+getZMILang());
+		var titlealt = $('.ZMSFile.properties #titlealt_'+getZMILang()+',.modal-body #titlealt_'+getZMILang());
+		if (title.val().length == 0) {
+			title
+				.attr({'data-value-attr':'placeholder','placeholder':filename})
+				.val(filename)
+		};
+		if (titlealt.val().length == 0) {
+			titlealt
+				.attr({'data-value-attr':'placeholder','placeholder':filename})
+				.val(filename)
+		};
+	});
 });
 
 </script>]]>
@@ -834,6 +824,23 @@ $(function(){
                   <item key="name">DC.Description</item>
                   <item key="repetitive" type="int">0</item>
                   <item key="type">text</item>
+                </dictionary>
+              </item>
+              <item type="dictionary">
+                <dictionary>
+                  <item key="custom"><![CDATA[fas fa-download]]></item>
+                  <item key="default"></item>
+                  <item key="id">icon_clazz</item>
+                  <item key="keys" type="list">
+                    <list>
+                    </list>
+                  </item>
+                  <item key="mandatory" type="int">0</item>
+                  <item key="meta_type"></item>
+                  <item key="multilang" type="int">0</item>
+                  <item key="name"><![CDATA[Icon (Class)]]></item>
+                  <item key="repetitive" type="int">0</item>
+                  <item key="type">constant</item>
                 </dictionary>
               </item>
               <item type="dictionary">
@@ -999,7 +1006,8 @@ return ''
 		<div tal:attributes="id python:zmscontext.id; class python:' '.join(subclass)">
 			<tal:block tal:condition="python:file">
 				<div class="title" tal:define="mt python:file.getContentType()">
-					<img tal:attributes="src python:zmscontext.getMimeTypeIconSrc(mt); title python:'%s (%s)'%(mt,file.getDataSizeStr())" border="0" alt="Icon" align="absmiddle"/>
+					<img style="width:1rem;vertical-align:bottom" src="data:image/svg+xml,%3Csvg aria-hidden='true' focusable='false' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'%3E%3Cpath fill='%23666666' d='M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm76.45 211.36l-96.42 95.7c-6.65 6.61-17.39 6.61-24.04 0l-96.42-95.7C73.42 337.29 80.54 320 94.82 320H160v-80c0-8.84 7.16-16 16-16h32c8.84 0 16 7.16 16 16v80h65.18c14.28 0 21.4 17.29 11.27 27.36zM377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9z'%3E%3C/path%3E%3C/svg%3E"
+						tal:attributes="title python:'%s (%s)'%(mt,file.getDataSizeStr())" border="0" alt="Icon" align="absmiddle" />
 					<a tal:attributes="href python:file.getHref(request)" tal:content="structure python:titlealt" target="_blank">The titlealt</a>
 					(<span tal:content="python:file.getDataSizeStr()">The data-size string</span>)
 				</div>
@@ -1039,11 +1047,13 @@ return ''
                   <item></item>
                   <item></item>
                   <item></item>
+                  <item></item>
                 </list>
               </item>
               <item key="insert_custom">{$}</item>
               <item key="insert_deny" type="list">
                 <list>
+                  <item></item>
                   <item></item>
                   <item></item>
                   <item></item>
@@ -1055,7 +1065,7 @@ return ''
           <item key="id">ZMSFile</item>
           <item key="name">ZMSFile</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">3.3.9</item>
+          <item key="revision">3.4.0</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>

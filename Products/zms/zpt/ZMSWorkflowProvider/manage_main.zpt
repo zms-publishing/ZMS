@@ -340,7 +340,7 @@
 			<div class="form-group row newIconClazz">
 				<label for="newIconClazz" class="col-sm-2 control-label"><span>Icon</span></label>
 				<div class="col-sm-10">
-					<input class="form-control form-control-sm zmi-input-icon-clazz" type="text" id="newIconClazz" name="newIconClazz" />
+					<input placeholder="Enter Fontawesome class e.g.: fas fa-edit text-secondary" class="form-control form-control-sm zmi-input-icon-clazz" type="text" id="newIconClazz" name="newIconClazz" value="fas fa-edit text-secondary" />
 				</div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
@@ -385,7 +385,7 @@
 </div><!-- #insertTransition -->
 
 
-<nav>
+<nav id="subTab">
 <ul class="nav nav-tabs" role="tablist" tal:attributes="title python:here.getRevision()">
 		<li class="nav-item"><a class="nav-link" href="#edit" data-toggle="tab" 
 			tal:attributes="class python:request.get('key','edit')=='edit' and 'nav-link active show' or 'nav-link'"
@@ -401,9 +401,9 @@
 
 <div class="tab-content">
 
-<div class="tab-pane fade show active" id="edit" role="tabpanel"
-	tal:attributes="class python:request.get('key','edit')=='edit' and 'tab-pane fade show active' or 'tab-pane fade'"
-	><form class="card form-horizontal activities border-bottom-0" name="edit_form" action="manage_changeActivities" method="post" enctype="multipart/form-data" 
+<div class="tab-pane fade card show active" id="edit" role="tabpanel"
+	tal:attributes="class python:request.get('key','edit')=='edit' and 'tab-pane fade card show active' or 'tab-pane card fade'"
+	><form class="form-horizontal activities border-bottom-0" name="edit_form" action="manage_changeActivities" method="post" enctype="multipart/form-data" 
 		tal:define="global activityIds python:here.getActivityIds()">
 		<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 		<input type="hidden" name="key" value="edit" />
@@ -458,8 +458,8 @@
 		</tal:block>
 		</table>
 	</form>
-
-	<form class="card form-horizontal transitions" action="manage_changeTransitions" method="post" enctype="multipart/form-data" tal:define="global transitionIds python:here.getTransitionIds()">
+	<hr />
+	<form class="form-horizontal transitions" action="manage_changeTransitions" method="post" enctype="multipart/form-data" tal:define="global transitionIds python:here.getTransitionIds()">
 		<input type="hidden" name="lang" tal:attributes="value request/lang" />
 		<input type="hidden" name="key" value="edit" />
 		<table class="table zmi-sortable">
@@ -537,9 +537,9 @@
 	</form>
 </div><! --#edit -->
 
-<div class="tab-pane fade" id="properties" role="tabpanel"
-	tal:attributes="class python:request.get('key')=='properties' and 'tab-pane fade show active' or 'tab-pane fade'"
-	><form class="card form-horizontal" name="properties_form" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
+<div class="tab-pane card fade" id="properties" role="tabpanel"
+	tal:attributes="class python:request.get('key')=='properties' and 'tab-pane card fade show active' or 'tab-pane card  fade'"
+	><form class="form-horizontal" name="properties_form" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="lang" tal:attributes="value request/lang" />
 		<input type="hidden" name="key" value="properties" />
 		<div class="form-group row" id="tr_revision">
@@ -573,9 +573,9 @@
 	</form>
 </div><!--#properties -->
 
-<div class="tab-pane fade" id="history"
-	tal:attributes="class python:request.get('key')=='history' and 'tab-pane fade show active' or 'tab-pane fade'"
-	><form class="card form-horizontal" title="History: Activate or deactivate the integrated history-mechanism." 
+<div class="tab-pane card fade" id="history"
+	tal:attributes="class python:request.get('key')=='history' and 'tab-pane fade card  show active' or 'tab-pane card fade'"
+	><form class="form-horizontal" title="History: Activate or deactivate the integrated history-mechanism." 
 		name="history_form" action="manage_changeWorkflow" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 		<input type="hidden" name="key" value="history" />

@@ -26,8 +26,8 @@
 
 <div class="tab-content" 
 	tal:attributes="class python:'tab-content update_direction-%s auto_update-%s debug-%s'%(here.get_update_direction(),here.get_auto_update(),here.getConfProperty('ZMS.debug',0))"> 
-	<div class="tab-pane fade active show" id="diff">
-		<form class="form-horizontal card" action="manage_change" method="post">
+	<div class="tab-pane fade active show card" id="diff">
+		<form class="form-horizontal" action="manage_change" method="post">
 		<input type="hidden" name="lang" tal:attributes="value request/lang" />
 		<div class="form-group row">
 			<label class="col-sm-2"></label>
@@ -95,8 +95,8 @@
 		</tal:block>
 		</form>
 	</div><!-- .tab-pane -->
-	<div id="properties" class="tab-pane">
-		<form class="form-horizontal card" action="manage_change" method="post">
+	<div id="properties" class="tab-pane card">
+		<form class="form-horizontal" action="manage_change" method="post">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group row">
 				<label class="col-sm-2 control-label mandatory">

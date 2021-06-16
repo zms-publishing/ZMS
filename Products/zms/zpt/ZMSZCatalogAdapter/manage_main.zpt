@@ -58,8 +58,8 @@
 	</nav>
 
 	<div class="tab-content">
-		<div class="tab-pane fade active show" tal:attributes="id here/meta_type">
-			<div class="card form-horizontal">
+		<div class="tab-pane fade active card show" tal:attributes="id here/meta_type">
+			<div class="form-horizontal">
 				<div class="form-group row">
 					<label class="col-sm-2 control-label" for="connectors"><span>Connectors</span></label>
 					<div class="col-sm-4">
@@ -177,8 +177,8 @@
 			</div><!-- .form-horizontal -->
 		</div><!-- .tab-pane -->
 
-		<div class="tab-pane fade" tal:repeat="si connectors" tal:attributes="id si/meta_type">
-			<div class="card form-horizontal">
+		<div class="tab-pane fade card" tal:repeat="si connectors" tal:attributes="id si/meta_type">
+			<div class="form-horizontal">
 				<tal:block tal:content="structure python:si.manage_input_form(here,request)">
 					the zmi input-form
 				</tal:block>

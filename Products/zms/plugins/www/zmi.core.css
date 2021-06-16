@@ -242,8 +242,8 @@ footer .back-to-top.hide {
 /* BO HORIZONTAL SCROLLING MAIN NAVIGATION */
 
 /* TAB NAVIGATION */
-.zmi nav .nav-tabs .nav-item:first-child {
-	margin-left: 1em;
+.zmi nav#tabs .nav-tabs .nav-item:first-child {
+	margin-left: 1rem;
 }
 .zmi nav .nav-tabs .nav-item a {
 	padding-left:1em;
@@ -332,20 +332,24 @@ footer .back-to-top.hide {
 	min-height: calc(100vh - 8rem);
 }
 .zmi #zmi-tab nav#subTab {
-	margin:1rem 1.25rem 0 1.25rem;
+	margin:0 1.5rem;
+	z-index:1;
 }
-.zmi #zmi-tab nav#subTab .nav-tabs .nav-link.active {
-	background-color: #ffffff;
-}
+
 .zmi #zmi-tab nav#subTab ul {
-	margin: 0 0 -1.35px -1px;
+	margin: 0 0 -1.35px 1.25rem;
 	overflow: hidden;
 	white-space: nowrap;
 	border: none;
 	z-index: inherit;
 }
-.zmi #zmi-tab .tab-content .card {
+.zmi #zmi-tab nav#subTab .nav-tabs .nav-link.active {
+	background-color: #ffffff;
+}
+.zmi #zmi-tab .tab-content > .card {
 	padding: 2rem 1rem 1rem 1rem !important;
+	margin: 0 1.25rem;
+	min-height: calc(100vh - 20rem );
 }
 .zmi #zmi-tab #Manager.tab-pane i,
 .zmi.system i {

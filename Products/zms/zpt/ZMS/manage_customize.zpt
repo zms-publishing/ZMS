@@ -19,7 +19,7 @@
 		</ul>
 	</nav>
 	<div class="tab-content">
-		<div class="tab-pane fade active show" id="Manager" role="tabpanel">
+		<div class="tab-pane fade active show card" id="Manager" role="tabpanel">
 			<form class="form-horizontal card" title="Manager" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 				<input type="hidden" name="key" value="Manager" />
@@ -61,7 +61,7 @@
 			</form>
 		</div>
 
-		<div class="tab-pane fade" id="Clients" role="tabpanel">
+		<div class="tab-pane fade card" id="Clients" role="tabpanel">
 			<form class="form-horizontal card" title="Portal: Register the folder-ids of this site's master- and client-sites." name="ClientsForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 				<input type="hidden" name="key" value="Clients" />
@@ -103,7 +103,7 @@
 			</form>
 		</div>
 
-		<div class="tab-pane fade" id="Configuration" role="tabpanel">
+		<div class="tab-pane fade card" id="Configuration" role="tabpanel">
 			<form class="form-horizontal card" title="Configuration: Import complete configuration packages with language-dictionaries, metadata-, special-object-, action- and filter-definitions contained in one single zip-archive."
 				name="ImportForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
@@ -159,7 +159,7 @@
 			</form>
 		</div>
 
-	<div class="tab-pane fade" id="Custom" role="tabpanel">
+	<div class="tab-pane fade card" id="Custom" role="tabpanel">
 		<form class="form-horizontal card" title="System-Properties" name="CustomForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 		<input type="hidden" name="key" value="Custom" />
@@ -254,7 +254,7 @@
 		</form>
 		</div><!-- #System-Properties -->
 
-		<div class="tab-pane fade" id="MediaDb" role="tabpanel">
+		<div class="tab-pane fade card" id="MediaDb" role="tabpanel">
 			<form class="form-horizontal card" title="Media-Folder:Use the Media-Folder to store binary data of media (e.g. images, files) in the file-system of your server instead of ZODB."
 				name="CatalogForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
@@ -313,7 +313,7 @@
 			</form>
 		</div>
 
-		<div class="tab-pane fade" id="Info" role="tabpanel">
+		<div class="tab-pane fade card" id="Info" role="tabpanel">
 			<form class="form-horizontal card" title="System-Info" name="InfoForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 				<input type="hidden" name="key" value="Info" />

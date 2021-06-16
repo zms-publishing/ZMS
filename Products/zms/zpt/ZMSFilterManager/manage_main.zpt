@@ -390,16 +390,12 @@ $(function(){
 						<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
 					</div>
 				</th>
-				<th width="50%">
+				<th width="100%">
 					<div class="btn-group">
 						<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertFilter',{title:$(this).attr('title')})"><i class="fas fa-plus"></i></span>
 						<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'})"><i class="fas fa-times"></i></span>
-					</div>
-				</th>
-				<th width="50%" style="text-align:right">
-					<div class="btn-group">
-						<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><i class="fas fa-upload"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_IMPORT')"></tal:block></span>
-						<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_EXPORT')"></tal:block></span>
+						<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><i class="fas fa-upload"></i></span>
+						<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i></span>
 					</div>
 				</th>
 			</tr>
@@ -410,7 +406,7 @@ $(function(){
 				<td class="meta-sort text-center">
 					<input type="checkbox" name="ids:list" tal:attributes="value filterId">
 				</td>
-				<td colspan="2">
+				<td>
 					<i tal:condition="python:filter.get('acquired')" class="icon-share fas fa-share mr-2" title="acquired"></i>
 					<a href="javascript:;" onclick="$('i',this).toggleClass('fa-chevron-right fa-chevron-down');$(this).siblings('.filterProcesses').toggle('normal');"><i class="fas fa-chevron-right"></i></a>
 					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
@@ -477,6 +473,8 @@ $(function(){
 				<div class="btn-group">
 					<span class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_INSERT')+'...'" onclick="zmiModal('#insertProcess',{title:$(this).attr('title')})"><i class="fas fa-plus"></i></span>
 					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')+'...'" onclick="zmiDeleteObjBtnClick(this,{btn:'BTN_DELETE',key:'obj'})"><i class="fas fa-times"></i></span>
+					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')})"><i class="fas fa-upload"></i></span>
+					<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')+'...'" onclick="zmiExportBtnClick(this)"><i class="fas fa-download"></i></span>
 				</div>
 			</th>
 			<th width="50%" tal:content="python:here.getZMILangStr('ATTR_COMMANDLINE')">Commandline</th>

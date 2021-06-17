@@ -346,6 +346,13 @@ footer .back-to-top.hide {
 .zmi #zmi-tab nav#subTab .nav-tabs .nav-link.active {
 	background-color: #ffffff;
 }
+@media (max-width: 546px) {
+	#zmi-tab > form.card,
+	#subTab,
+	.tab-content .tab-pane.card {
+		overflow-x: scroll;
+	}
+}
 .zmi #zmi-tab .tab-content > .card {
 	padding: 2rem 1rem 1rem 1rem !important;
 	margin: 0 1.25rem;

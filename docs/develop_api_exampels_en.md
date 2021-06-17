@@ -31,4 +31,3 @@ if zmscontext.attr('attr_dc_creator'):
 return '<h1>%s<br/><small>%s</small></h1>%s'%(zmscontext.attr('title'), zmscontext.attr('attr_dc_description'), alert)
 # --// /renderShort //--
 ```
-

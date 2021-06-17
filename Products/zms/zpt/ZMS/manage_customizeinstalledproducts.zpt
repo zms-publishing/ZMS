@@ -2,7 +2,7 @@
 		standard modules/Products.zms/standard;
 		Std modules/Products/PythonScripts/standard">
 	<textarea disabled="disabled"
-		style="font-family:monospace;width:100%;height:50vh"
+		style="font-family:monospace;width:100%;height:50vh;padding:0 .5rem;background:#354f67;color:white;border:0;"
 		tal:content="structure python:standard.get_installed_packages()">
 	</textarea>
 </tal:block>

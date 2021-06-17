@@ -351,6 +351,7 @@ footer .back-to-top.hide {
 	#subTab,
 	.tab-content .tab-pane.card {
 		overflow-x: scroll;
+		overflow-y: hidden;
 	}
 }
 .zmi #zmi-tab .tab-content > .card {
@@ -952,11 +953,11 @@ li.zmi-item span.zmi-ids {
 }
 .zmi form table.table td.meta-sort select.zmi-sort {
 	direction:rtl;
-	width: 3em;
-	padding-right: .25em;
-	border-color: silver;
+	border: 1px solid silver;
+	border-radius: 0;
 	border-bottom-left-radius: .25rem;
 	border-top-left-radius: .25rem;
+	padding-right: .25em;
 }
 .zmi form.manage_metas table.table td.meta-sort select.zmi-sort {
 	width: 3.9em;
@@ -1008,6 +1009,7 @@ input.btn.btn-file {
 	overflow:hidden;
 	font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",Courier,monospace  !important;
 	width:100%;
+	min-width:3rem;
 }
 .zmi-code {
 	font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",Courier,monospace !important;

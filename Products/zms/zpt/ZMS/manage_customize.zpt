@@ -318,7 +318,7 @@
 				<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 				<input type="hidden" name="key" value="Info" />
 				<div class="form-group row">
-					<label class="col-sm-2 control-label"><strong>ZMS Version</strong></label>
+					<label class="col-sm-2 control-label">ZMS Version</label>
 					<div class="col-sm-10">
 						<samp tal:content="structure python:here.zms_version()">zms_version</samp>
 					</div>
@@ -342,16 +342,18 @@
 					</div>
 				</div><!-- .form-group -->
 				<div class="form-group row" style="align-items:normal;">
-					<label class="col-sm-2 control-label" for="installed_python_packages"><strong>Installed Python Packages</strong></label>
-					<div class="col-sm-8">
+					<label class="col-sm-2 control-label" for="installed_python_packages">
+						Installed Python Packages
+						<p class="help-text small mt-sm-3 mb-0">
+							Tools such as the <a href="https://pip.pypa.io/en/stable/reference/pip/" target="_blank">Python Package Installer</a>
+							with <a href="https://pip.pypa.io/en/stable/user_guide/#requirements-files" target="_blank">requirements</a>
+							and <a href="https://pip.pypa.io/en/stable/user_guide/#constraints-files" target="_blank">constraints</a> files
+							and <a href="https://requires.io/github/zopefoundation/Zope/requirements/?branch=master" target="_blank">requires.io</a>
+							help manage and monitor package dependencies.
+						</p>
+					</label>
+					<div class="col-sm-10">
 						<div class="ajax-lazy-load" data-ajax-url="manage_customizeInstalledProducts"></div>
-					</div>
-					<div class="col-sm-2">
-						Tools such as the <a href="https://pip.pypa.io/en/stable/reference/pip/" target="_blank">Python Package Installer</a>
-						with <a href="https://pip.pypa.io/en/stable/user_guide/#requirements-files" target="_blank">requirements</a>
-						and <a href="https://pip.pypa.io/en/stable/user_guide/#constraints-files" target="_blank">constraints</a> files
-						and <a href="https://requires.io/github/zopefoundation/Zope/requirements/?branch=master" target="_blank">requires.io</a>
-						help manage and monitor package dependencies.
 					</div>
 				</div><!-- .form-group -->
 			</form>

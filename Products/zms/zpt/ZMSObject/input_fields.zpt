@@ -217,42 +217,26 @@
 									objChildren python:here.getObjChildren(metaObjAttr['id'],request);
 									hasChildren python:len(objChildren)>0">
 
-							<tal:block tal:condition="not:hasChildren">
-								<div class="card-header btn-collapse">
-									<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id']">
-										<i class="fas fa-caret-down"></i>
-										<tal:block tal:content="elLabel">the label</tal:block>
-									</a>
-									<div class="btn zmi-changes" tal:content="structure python:'(0 %s)'%(here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</div>
-								</div><!-- .card-header -->
-								<div class="collapse zmi-children" tal:attributes="id python:metaObjAttr['id']">
-									<div class="card-body">
-										<ul class="zmi-container zmi-children">
-											<li class="zmi-item form-group" tal:attributes="id python:'zmi_item_%s'%metaObjAttr['id']">
-												<div class="center">&nbsp;</div>
-												<div class="right">
-													<div class="zmi-action btn-group dropleft">
-														<span class="d-none zmi-sort-id" tal:content="python:9990">the sort-id</span>
-														<button class="btn btn-secondary split-left"></button>
-														<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown"><i class="fas fa-plus-square"></i></button>
-													</div><!-- .btn-group -->
-												</div><!-- .right -->
-											</li><!-- .zmi-item -->
-										</ul>
-									</div><!-- .card-body -->
-								</div><!-- .collapse -->
-							</tal:block>
-
-							<tal:block tal:condition="hasChildren">
-								<div class="card-header btn-collapse">
-									<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id'];data-toggle python:['','collapse'][hasChildren]">
-										<i tal:attributes="class python:'fas fa-%s'%(['caret-down',''][hasChildren])"></i>
-										<tal:block tal:content="elLabel">the label</tal:block>
-									</a>
-									<div class="btn zmi-changes" tal:content="structure python:'(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</div>
-								</div><!-- .card-header -->
-								<tal:block tal:content="structure python:'<div id=\042%s\042 class=\042%s\042>'%(metaObjAttr['id'],' '.join(['collapse','zmi-children']+[[''],['show']][hasChildren])) +'<div class=\042card-body\042>'"></tal:block>
-								<ul class="zmi-container zmi-sortable zmi-children">
+							<div class="card-header btn-collapse">
+								<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id'];data-toggle python:['','collapse'][hasChildren]">
+									<i tal:attributes="class python:'fas fa-%s'%(['caret-down',''][hasChildren])"></i>
+									<tal:block tal:content="elLabel">the label</tal:block>
+								</a>
+								<div class="btn zmi-changes" tal:content="structure python:'(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</div>
+							</div><!-- .card-header -->
+							<div class="collapse zmi-sortable zmi-children" tal:attributes="id python:metaObjAttr['id']">
+								<div class="card-body">
+									<ul class="zmi-container zmi-children">
+										<li class="zmi-item" tal:condition="not:hasChildren" tal:attributes="id python:'zmi_item_%s'%metaObjAttr['id']">
+											<div class="center">&nbsp;</div>
+											<div class="right">
+												<div class="zmi-action btn-group dropleft">
+													<span class="d-none zmi-sort-id" tal:content="python:9990">the sort-id</span>
+													<button class="btn btn-secondary split-left"></button>
+													<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown"><i class="fas fa-plus-square"></i></button>
+												</div><!-- .btn-group -->
+											</div><!-- .right -->
+										</li><!-- .zmi-item -->
 									<tal:block tal:repeat="childNode objChildren">
 										<li tal:attributes="id python:'zmi_item_%s'%childNode.id; class python:' '.join([childNode.meta_id,'zmi-item','zmi-selectable']+[['pageelement'],['page']][int(childNode.isPage())] + [[],['is-new']][int(childNode.inObjStates(['STATE_NEW'],request))] + [[],['is-modified']][int(childNode.inObjStates(['STATE_MODIFIED'],request))] + [[],['is-deleted']][int(childNode.inObjStates(['STATE_DELETED'],request))])">
 											<div class="center"
@@ -281,9 +265,10 @@
 											</div><!-- .right -->
 										</li><!-- .zmi-item -->
 									</tal:block>
-								</ul><!-- .zmi-container.zmi-sortable -->
-								<tal:block tal:content="structure python:'' + '</div><!-- .card-body -->' + '</div><!-- .collapse -->' "></tal:block>
-							</tal:block>
+									</ul>
+								</div><!-- .card-body -->
+							</div><!-- .collapse -->
+
 						</tal:block>
 					</tal:block>
 				</tal:block>

@@ -31,7 +31,7 @@ class manage_tab_tasks:
 	nodes = "{$}"
 
 	# Revision
-	revision = "4.0.0"
+	revision = "5.0.0"
 
 	# Roles
 	roles = ["*"]

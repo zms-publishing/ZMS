@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
-<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+<tal:block tal:content="structure python:here.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <body tal:attributes="class python:here.zmi_body_class(id='tasks')">
-<header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
+<tal:block tal:content="structure python:here.zmi_body_header(here,request)">zmi_body_header</tal:block>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<tal:block tal:define="global ids python:['TASK_ZMSNOTE', 'TASK_UNTRANSLATED', 'TASK_CHANGED_BY_DATE']">
-
+<tal:block tal:define="
+    task_ids python:['TASK_ZMSNOTE', 'TASK_UNTRANSLATED', 'TASK_CHANGED_BY_DATE'];
+    global obs python:[]">
 
 <form class="form-horizontal card" role="form" name="form0" method="get">
 	<legend><span tal:replace="python:here.getZMILangStr('TAB_TASKS')">the task-type</span></legend>
@@ -20,14 +21,14 @@
 				<select class="form-control" id="task_type" name="task_type">
 					<option value="" tal:content="python:'----- %s -----'%(here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_DISPLAY'))">--- ACTION_SELECT%ATTR_DISPLAY ---</option>
 					<option tal:repeat="wfActivity python:here.getWfActivities()" tal:attributes="value python:wfActivity['id']; selected python:['','selected'][int(request.get('task_type','')==wfActivity['id'])]" tal:content="python:wfActivity['name']">the name</option>
-					<option tal:repeat="id ids" tal:attributes="value id; selected python:['','selected'][int(request.get('task_type','')==id)]" tal:content="python:here.getZMILangStr(id)">the name</option>
+					<option tal:repeat="id task_ids" tal:attributes="value id; selected python:['','selected'][int(request.get('task_type','')==id)]" tal:content="python:here.getZMILangStr(id)">the name</option>
 				</select>
 			</div>
 		</div><!-- .form-group -->
 	</div>
 </form>
 
-<div class="form-horizontal card mt-4" tal:condition="python:'task_type' in request.form" tal:define="obs python:[]">
+<div class="form-horizontal card mt-4" tal:condition="python:'task_type' in request.form">
 	<div class="card-body">
 	<tal:block tal:condition="python:request['task_type']=='TASK_ZMSNOTE'">
 		<tal:block tal:define="dummy0 python:obs.extend(here.getTreeNodes(request,'ZMSNote'))"></tal:block>
@@ -36,12 +37,12 @@
 		<tal:block tal:repeat="lang python:[request['lang']]+[[],here.getDescendantLanguages(request['lang'],request)][int('descendant_langs' in request.form)]">
 			<tal:block tal:repeat="ob python:[here]+here.getTreeNodes(request,here.PAGES)">
 				<tal:block tal:condition="python:not ob.isTranslated(lang,request) or ob.isModifiedInParentLanguage(lang,request)">
-					<tal:block tal:define="global dummy0 python:obs.append(ob)"></tal:block>
+					<tal:block tal:define="dummy0 python:obs.append(ob)"></tal:block>
 				</tal:block>
 				<tal:block tal:condition="not:python:not ob.isTranslated(lang,request) or ob.isModifiedInParentLanguage(lang,request)">
 					<tal:block tal:repeat="subob python:ob.getChildNodes(request,[here.PAGEELEMENTS,'ZMSTeaserElement'])">
 						<tal:block tal:condition="python:not subob.isTranslated(lang,request) or subob.isModifiedInParentLanguage(lang,request)">
-							<tal:block tal:define="global dummy0 python:obs.append(subob)"></tal:block>
+							<tal:block tal:define="dummy0 python:obs.append(subob)"></tal:block>
 						</tal:block>
 					</tal:block>
 				</tal:block>
@@ -50,17 +51,17 @@
 	</tal:block>
 	<tal:block tal:condition="python:request['task_type']=='TASK_CHANGED_BY_DATE'">
 		<tal:block tal:define="
-				unsorted python:[(x.attr('change_dt'),x) for x in [here]+here.getTreeNodes(request)];
-				dummy0 python:unsorted.sort(reverse=True);
-				dummy0 python:obs.extend(map(lambda x:x[1],unsorted))"></tal:block>
+				obj_tuples python:[ ( x.attr('change_dt'), x ) for x in [here]+here.getTreeNodes(request) ];
+				obj_tuples python:sorted(obj_tuples, key=lambda obj: obj[0], reverse=True);
+				global obs python:[obj[1] for obj in obj_tuples]"></tal:block>
 	</tal:block>
-	<tal:block tal:condition="python:request['task_type'] not in ids">
+	<tal:block tal:condition="python:request['task_type'] not in task_ids">
 		<tal:block tal:repeat="lang python:[request['lang']]+[[],here.getDescendantLanguages(request['lang'],request)][int('descendant_langs' in request.form)]">
 			<tal:block tal:repeat="ob python:[here]+here.getTreeNodes(request,here.PAGES)">
 				<tal:block tal:condition="python:ob.inObjStates([request['task_type']],request) and
 						(ob.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request) or
 						(len(ob.getWfStates(request))>0 and ob.isVersionContainer() and ob.hasObjModifiedChildren(request)))">
-					<tal:block tal:define="global dummy0 python:obs.append(ob)"></tal:block>
+					<tal:block tal:define="dummy0 python:obs.append(ob)"></tal:block>
 				</tal:block>
 			</tal:block>
 		</tal:block>

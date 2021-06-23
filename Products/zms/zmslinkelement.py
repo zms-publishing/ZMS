@@ -485,7 +485,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
 
     def getNavItems(self, current, REQUEST, opt={}, depth=0):
       proxy = self.getProxy()
-      rtn = self.getNavItemsPROXY( proxy, current, REQUEST, opt, depth)
+      rtn = self.getNavItemsPROXY( proxy, current.getProxy(), REQUEST, opt, depth)
       return rtn
 
 

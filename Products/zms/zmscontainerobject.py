@@ -667,7 +667,7 @@ class ZMSContainerObject(
             css.append( 'current')
             css.append( 'active')
             css.append( ob.meta_id + '1') 
-          elif ob.id != self.id and (ob.id in current.getPhysicalPath() or ob.getDeclId() in REQUEST['URL'].split('/')):
+          elif ob.id != self.id and ob.id in current.getPhysicalPath():
             css.append( 'active')
             css.append( ob.meta_id + '1') 
           else: 

@@ -645,9 +645,9 @@ class ZMSContainerObject(
       @rtype: C{str}
       """
       items = []
-      items.append(str(current.id))
-      items.append(str(current.getPhysicalPath()))
-      items.append(str(current.absolute_url()))
+      items.append(str(current.id)+'\n')
+      items.append(str(current.getPhysicalPath())+'\n')
+      items.append(str(current.absolute_url())+'\n')
       obs = []
       if opt.get('add_self', False):
         obs.append( self)

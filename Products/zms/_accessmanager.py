@@ -328,6 +328,48 @@ class AccessableObject(object):
           ob = None
       return langs
 
+    #
+    # @see ZMSItem#zmi_page_request
+    #
+    def zmi_page_request(self, *args, **kwargs):
+      request = self.REQUEST
+      RESPONSE = request.RESPONSE
+      auth_user = request['AUTHENTICATED_USER']
+      # update user-attrs for sso-plugin
+      user = self.getValidUserids(search_term=name,exact_match=True)
+      if user is not None:
+        userFldr = user['localUserFldr']
+        if userFldr.meta_type == 'Pluggable Auth Service':
+          plugin = user['plugin']
+          if plugin.meta_type == 'ZMS PluggableAuthService SSO Plugin':
+            creds = plugin.extractCredentials(request)
+            d = {'name':'label','email':'email'}
+            for x in d:
+              name = d[x]
+              v = creds[x]
+              if x in creds and self.getUserAttr(auth_user,name,v) != v:
+                self.setUserAttr(auth_user,name,v)
+      # manage must not be accessible for Anonymous
+      if request['URL0'].find('/manage') >= 0:
+        lower = self.getUserAttr(auth_user,'attrActiveStart','')
+        upper = self.getUserAttr(auth_user,'attrActiveEnd','')
+        if not standard.todayInRange(lower, upper) or auth_user.has_role('Anonymous'):
+          import zExceptions
+          raise zExceptions.Unauthorized
+      # manage may be registrable for Authenticated without permissions
+      if not isinstance(auth_user,str) and len(auth_user.getRolesInContext(self))==1 and auth_user.has_role('Authenticated'):
+        standard.writeError(self, "[zmi_page_request]: %s"%str(auth_user))
+        register = self.getConfProperty('ZMS.register.href','')
+        if len(register) > 0:
+          url = standard.url_append_params(register,{'came_from':request['URL0']})
+          standard.writeError(self, "[zmi_page_request]: redirect to %s"%str(url))
+          RESPONSE.redirect(url, lock=1)
+          RESPONSE.setHeader('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT')
+          RESPONSE.setHeader('Cache-Control', 'no-cache')
+        else:
+          import zExceptions
+          raise zExceptions.Unauthorized
+
 
     ############################################################################
     ###

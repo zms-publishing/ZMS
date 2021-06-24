@@ -26,6 +26,7 @@ import zope.interface
 # Product Imports.
 from Products.zms import IZMSDaemon
 from Products.zms import standard
+from Products.zms import _accessmanager
 
 
 ################################################################################
@@ -135,27 +136,8 @@ class ZMSItem(
         request.set( 'manage_tabs_message', self.getConfProperty('ZMS.manage_tabs_message', ''))
       if 'zmi-manage-system' in request.form:
         standard.set_session_value(self,'zmi-manage-system',int(request.get('zmi-manage-system',0)))
-      # manage must not be accessible for Anonymous
-      auth_user = request['AUTHENTICATED_USER']
-      if request['URL0'].find('/manage') >= 0:
-        lower = self.getUserAttr(auth_user,'attrActiveStart','')
-        upper = self.getUserAttr(auth_user,'attrActiveEnd','')
-        if not standard.todayInRange(lower, upper) or auth_user.has_role('Anonymous'):
-          import zExceptions
-          raise zExceptions.Unauthorized
-      # manage may be registrable for Authenticated without permissions
-      if not isinstance(auth_user,str) and len(auth_user.getRolesInContext(self))==1 and auth_user.has_role('Authenticated'):
-        standard.writeError(self, "[zmi_page_request]: %s"%str(auth_user))
-        register = self.getConfProperty('ZMS.register.href','')
-        if len(register) > 0:
-          url = standard.url_append_params(register,{'came_from':request['URL0']})
-          standard.writeError(self, "[zmi_page_request]: redirect to %s"%str(url))
-          RESPONSE.redirect(url, lock=1)
-          RESPONSE.setHeader('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT')
-          RESPONSE.setHeader('Cache-Control', 'no-cache')
-        else:
-          import zExceptions
-          raise zExceptions.Unauthorized
+      # AccessableObject
+      _accessmanager.AccessableObject.zmi_page_request(self, args, kwargs)
       # avoid declarative urls
       path_to_handle = request['URL0'][len(request['BASE0']):]
       path = path_to_handle.split('/')

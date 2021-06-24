@@ -692,7 +692,7 @@ class ZMSContainerObject(
              ((opt.get('complete', False)) or \
               (opt.get('deep', True) and ob.id != self.id and \
                 (ob.id in current.getPhysicalPath() or \
-                 ob.id in REQUEST['URL'].split('/')))):
+                 ob.getDeclId() in REQUEST['URL'].split('/')))):
             items.append( ob.getNavItems( current, REQUEST, opt, depth+1))
           items.append('</li>\n')
       if len( items) > 0:

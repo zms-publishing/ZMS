@@ -645,6 +645,9 @@ class ZMSContainerObject(
       @rtype: C{str}
       """
       items = []
+      items.append(str(current.id)+'\n')
+      items.append(str(current.getPhysicalPath())+'\n')
+      items.append(str(current.absolute_url())+'\n')
       obs = []
       if opt.get('add_self', False):
         obs.append( self)
@@ -667,7 +670,7 @@ class ZMSContainerObject(
             css.append( 'current')
             css.append( 'active')
             css.append( ob.meta_id + '1') 
-          elif ob.id != self.id and ob.id in current.getPhysicalPath():
+          elif ob.id != self.id and (ob.id in current.getPhysicalPath() or ob.getDeclId() in REQUEST['URL'].split('/')):
             css.append( 'active')
             css.append( ob.meta_id + '1') 
           else: 

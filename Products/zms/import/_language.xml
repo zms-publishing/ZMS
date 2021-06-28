@@ -6504,8 +6504,8 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">TYPE_ZMSGRAPHIC</Data></Cell>
-    <Cell><Data ss:Type="String">Grafik</Data></Cell>
-    <Cell><Data ss:Type="String">Graphic</Data></Cell>
+    <Cell><Data ss:Type="String">Abbildung</Data></Cell>
+    <Cell><Data ss:Type="String">Image</Data></Cell>
     <Cell><Data ss:Type="String">Afbeelding</Data></Cell>
     <Cell><Data ss:Type="String">Image</Data></Cell>
     <Cell><Data ss:Type="String">Grafico</Data></Cell>

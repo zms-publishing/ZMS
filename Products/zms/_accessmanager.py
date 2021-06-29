@@ -336,8 +336,8 @@ class AccessableObject(object):
       RESPONSE = request.RESPONSE
       auth_user = request['AUTHENTICATED_USER']
       # update user-attrs for sso-plugin
-      # user = self.getValidUserids(search_term=name,exact_match=True)
-      user = self.getValidUserids(search_term=auth_user,exact_match=True)
+      name = str(auth_user)
+      user = self.getValidUserids(search_term=name,exact_match=True)
       if user is not None:
         userFldr = user['localUserFldr']
         if userFldr.meta_type == 'Pluggable Auth Service':

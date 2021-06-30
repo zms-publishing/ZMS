@@ -347,9 +347,10 @@ class AccessableObject(object):
             d = {'name':'label','email':'email'}
             for x in d:
               name = d[x]
-              v = creds[x]
-              if x in creds and self.getUserAttr(auth_user,name,v) != v:
-                self.setUserAttr(auth_user,name,v)
+              if x in creds:
+                v = creds[x]
+                if self.getUserAttr(auth_user,name,v) != v:
+                  self.setUserAttr(auth_user,name,v)
       # manage must not be accessible for Anonymous
       if request['URL0'].find('/manage') >= 0:
         lower = self.getUserAttr(auth_user,'attrActiveStart','')

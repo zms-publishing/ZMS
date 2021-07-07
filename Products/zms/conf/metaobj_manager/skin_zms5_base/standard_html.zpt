@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" tal:define="
+		Std modules/Products.PythonScripts/standard;
+		newline_to_br nocall:Std/newline_to_br;
+		zmscontext options/zmscontext;
+		dummy0 python:zmscontext.f_standard_html_request();
+		zmsroot python:zmscontext.breadcrumbs_obj_path()[0];
+		zmsclient python:zmscontext.content;
+		lang request/lang;
+		this here;
+		title python:zmscontext.attr('title');
+		attr_dc_type python:zmscontext.attr('attr_dc_type').lower();
+		search_node python:zmscontext.getLinkObj(zmscontext.getConfProperty('ZMS.permalink.search', default='{$@content}'), request);
+		imprint_node python:zmscontext.getLinkObj(zmscontext.getConfProperty('ZMS.permalink.imprint', default='{$@content}'), request);
+		privacy_node python:zmscontext.getLinkObj(zmscontext.getConfProperty('ZMS.permalink.privacy', default='{$@content}'), request);
+		login_node python:zmscontext.getLinkObj(zmscontext.getConfProperty('ZMS.permalink.login', default='{$@content}'), request);
+		contact_node python:zmscontext.getLinkObj(zmscontext.getConfProperty('ZMS.permalink.contact', default='{$@content}'), request);
+		dummy python:request.set('ZMS_THIS',here);
+		common python:container.common.absolute_url();
+		tmpl_url python:container.absolute_url();
+		channels python:{};
+		dummy0 python:[x.operator_setitem(channels,x.id_quote(x.getTitlealt(request)),x) for x in zmscontext.getDocumentElement().filteredChildNodes(request,zmscontext.PAGES)];
+		">
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="generator" content="ZMS5" />
+	<title tal:content="structure python:zmscontext.getTitlealt(request)">ZMS</title>
+	<meta tal:attributes="content python:zmscontext.attr('attr_dc_description')" name="description" content="">
+	<meta tal:attributes="content python:zmscontext.attr('attr_dc_subject')" name="keywords" content="">
+	<meta name="author" tal:attributes="content python:zmscontext.attr('attr_dc_creator')">
+
+	<link type="text/css" rel="stylesheet" href="/++resource++zmi/bootstrap-4.6.0/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="/++resource++zmi/fontawesome-free-5.15.2/css/all.css" />
+	<!-- CSS Customization -->
+	<link rel="stylesheet" href="assets/css/custom.css" tal:attributes="href python:'%s/added/web.css'%(common)" />
+
+	<!-- ZMS Assets -->
+	<script src="/++resource++zms_/zmi.js"></script>
+	<link rel="shortcut icon" href="common/img/favicon.ico" type="image/ico" tal:attributes="href python:'%s/common/img/favicon.ico'%(common)" />
+
+	<!-- Matomo -->
+	<script type="text/javascript">
+		var _paq = window._paq = window._paq || [];
+		/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+		_paq.push(['trackPageView']);
+		_paq.push(['enableLinkTracking']);
+		(function() {
+			var u="https://analytics.zms.hosting/";
+			_paq.push(['setTrackerUrl', u+'matomo.php']);
+			_paq.push(['setSiteId', '5']);
+			var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+			g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+		})();
+	</script>
+	<!-- End Matomo Code -->
+
+</head>
+<body tal:attributes="
+	data-path python:zmscontext.getRootElement().getRefObjPath(here);
+	data-root python:zmscontext.getRootElement().getHome().id;
+	data-client python:zmsclient.getHome().id;
+	id python:'zmsid_%s'%(zmscontext.id);
+	class python:'zms web %s %s'%(zmscontext.meta_id, attr_dc_type)">
+	<span id="header_nav_toggler" class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#header_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="fas fa-bars"></span>
+	</span>
+	<header class="collapse" id="header_nav">
+		<nav id="topbar">
+			<a href="#" class="nav-item pr-3" tal:attributes="href python:search_node.getHref2IndexHtml(request)"><i class="fas fa-search"></i>&nbsp;<span tal:replace="python:zmscontext.getLangStr('SEARCH')">Suche</span></a>
+			<a href="#" class="nav-item px-3" tal:attributes="href python:login_node.getHref2IndexHtml(request)"><i class="fas fa-lock"></i>&nbsp;Login</a>
+			<a href="#" class="nav-item px-3" tal:attributes="href python:imprint_node.getHref2IndexHtml(request)"><span tal:replace="python:zmscontext.getLangStr('IMPRINT')">Impresssum</span></a>
+			<a href="#" class="nav-item px-3 d-none d-md-inline" tal:attributes="href python:privacy_node.getHref2IndexHtml(request)"><span tal:replace="python:zmscontext.getLangStr('PRIVACY')">Datenschutz</span></a>
+			<a href="#" class="nav-item pl-3 d-none d-md-inline" tal:attributes="href python:contact_node.getHref2IndexHtml(request)"><span tal:replace="python:zmscontext.getLangStr('CONTACT')">Kontakt</span></a>
+		</nav>
+		<nav class="navbar navbar-expand-lg" aria-label="Main Navigation">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#"
+					tal:attributes="href python:zmsclient.getHref2IndexHtml(request)">
+					<img src="common/img/zmslogo.svg" alt="Logo"
+						tal:attributes="src python:'%s/common/img/zmslogo.svg'%(tmpl_url)" />
+				</a>
+			</div>
+			<div class="navbar-collapse collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto" 
+					tal:define="child_nodes python:zmsclient.filteredChildNodes(request, zmsroot.PAGES)">
+					<tal:block tal:repeat="child_node python:[node for node in child_nodes if node.attr('attr_dc_type')!='Resource']">
+						<li class="nav-item active"
+							tal:define="
+								sub_children python:child_node.filteredChildNodes(request, zmsroot.PAGES);
+								has_children python:len(sub_children)>0"
+							tal:attributes="class python:'nav-item%s%s'%(child_node in zmscontext.breadcrumbs_obj_path() and ' active' or '', has_children and ' dropdown' or '');id python:'nav_%s'%(child_node.getId())">
+								<div class="nav-link text-nowrap">
+									<a href="#" class="text-truncate text-uppercase font-weight-bold"
+										tal:attributes="
+											href python:child_node.getHref2IndexHtml(request);
+											title python:child_node.attr('title');"
+										><tal:block tal:replace="python:child_node.getTitlealt(request)">TITLE</tal:block> <span class="sr-only" tal:condition="python:child_node.getId()==zmscontext.getId()">(Akuelle Position)</span>
+									</a>
+									<a tal:condition="has_children" href="#" data-toggle="dropdown" role="botton"  data-target="#dropdown-menu" aria-haspopup="true" aria-expanded="false"
+										tal:attributes="
+											id python:child_node.getId();
+											data-target python:'#dropdown_%s'%child_node.getId();
+											X-href python:'#dropdown_%s'%child_node.getId();">
+										<i class="fas fa-angle-down"></i>
+									</a>
+								</div>
+								<div class="dropdown-menu" tal:condition="has_children" tal:attributes="id python:'dropdown_%s'%child_node.getId();aria-labelledby python:child_node.getId()">
+								<a class="dropdown-item" tal:repeat="sub_child_node sub_children" tal:attributes="href python:sub_child_node.getHref2IndexHtml(request); class python:sub_child_node in zmscontext.breadcrumbs_obj_path() and 'dropdown-item active' or default" tal:content="python:sub_child_node.getTitlealt(request)">TITLE</a>
+							</div>
+						</li>
+					</tal:block>
+				</ul>
+			</div>
+		</nav>
+	</header>
+	<section id="bt_carousel" class="carousel slide" data-ride="carousel" 
+		tal:condition="python:zmscontext.getChildNodes(request,['bt_carousel'])"
+		tal:replace="structure python:zmscontext.getChildNodes(request,['bt_carousel'])[0].getBodyContent(request)">
+	</section>
+
+
+	<main role="main" class="container">
+
+		<article data-title="Home Page Content"
+			tal:condition="python:zmscontext.getId()==zmsroot.getId()"
+			tal:content="structure python:zmscontext.getBodyContent(request)">
+		</article>
+
+		<div class="row pt-5" data-title="Standard Page Content" tal:condition="python:zmscontext.getId()!=zmsroot.getId()">
+			<aside class="col-md-5 col-lg-4 sidebar">
+				<nav aria-label="context-navigation" tal:content="structure python:zmscontext.getParentByLevel(1).getNavItems(zmscontext,request,{'add_self':False,'deep':True,'complete':False, 'id':'sidebarnav','cssclass':'sidenav'})"></nav>
+				<div class="teasers alert alert-info mt-5" tal:define="teasers python:zmscontext.getTeaserElements()" tal:condition="python:len(teasers)>0">
+					<div tal:repeat="teaser teasers" tal:replace="structure python:teaser.renderShort(request)"></div>
+				</div>
+			</aside>
+			<article class="col-md-7 col-lg-8 pt-0 pl-lg-5">
+				<nav aria-label="breadcrumb">
+					<small>
+						<ol class="breadcrumb bg-white p-0 justify-content-start">
+							<li class="breadcrumb-item" 
+								tal:repeat="node python:zmscontext.breadcrumbs_obj_path()"
+								tal:attributes="class python: node==zmscontext and 'breadcrumb-item active' or default">
+								<a tal:attributes="href python:node.getHref2IndexHtml(request,deep=1)" tal:content="python:node.getTitlealt(request)">the titlealt</a>
+							</li>
+							<li>
+								<span id="edit_document" title="Edit Document..." class="ml-1 px-1 text-danger" style="cursor:pointer;" rel="nofollow" href="#" target="_top"
+									onclick="window.location.href = $(this).attr('data-href')"
+									tal:attributes="data-href python:'%s/manage?lang=%s&dtpref_sitemap=1'%(zmscontext.absolute_url(),request.get('lang','eng'))">
+									&middot;
+								</span>
+							</li>
+						</ol>
+					</small>
+				</nav>
+				<div class="intro mb-5">
+					<img class="title-img img-responsive" tal:condition="python:zmscontext.attr('titleimage')" tal:attributes="src python: zmscontext.attr('titleimage').getHref(request)" />
+					<h1 class="title" tal:content="structure python:zmscontext.attr('title')">TITLE</h1>
+					<p class="lead" tal:content="structure python:newline_to_br(zmscontext.attr('attr_dc_description'))">DESCRIPTION</p>
+				</div>
+				<div class="flow" tal:content="structure python:zmscontext.getBodyContent(request)">CONTENT BODY</div>
+				<nav class="toc" metal:use-macro="container/pageelements/macros/toc">TABLE OF CONTENT</nav>
+			</article>
+		</div>
+	</main>
+
+
+	<section id="overview" class="footer" metal:use-macro="container/pageelements/macros/footer">FOOTER</section>
+
+
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/i18n/ger.js" tal:attributes="src python:'/++resource++zms_/i18n/%s.js'%request.get('lang','eng')"></script>
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zmi/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zmi/bootstrap-4.6.0/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.core.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
+	<script>
+		// $ZMI.registerReady(function() { });
+		$(function(){
+			$('[data-toggle="tooltip"]').tooltip();
+
+			var $header_dropdown_id = $('header .dropdown-item.active').parent().attr('id');
+			var $header_dropdown_cloned = $('header .dropdown-item.active').parent().clone();
+			var $aside_nav_items = $('aside #sidebarnav');
+
+			function translate_sidebarnav(win_width) {
+				if ( win_width < 768 && $('aside #sidebarnav') ) {
+					 $('header .dropdown-item.active').parent().empty().append( $aside_nav_items );
+				} else if ( win_width > 768 && $('header #sidebarnav') ) {
+					$('header #sidebarnav').parent().replaceWith($header_dropdown_cloned)
+					$('aside nav').append( $aside_nav_items );
+				}
+			}
+
+			translate_sidebarnav(win_width=$(window).width());
+			$(window).resize(function() {
+				console.log(`WINDOWS WIDTH CHANGED: $${$(window).width()}`);
+				translate_sidebarnav(win_width=$(window).width());
+			})
+
+		})
+	</script>
+
+	<noscript><p><img src="https://analytics.zms.hosting/matomo.php?idsite=5&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+</body>
+</html>

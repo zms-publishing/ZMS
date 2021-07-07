@@ -1,4 +1,5 @@
-<tal:block tal:define="
+<tal:block 
+	tal:define="
 	dummy0 python:request.set('ZMI_LIBS_JS',request.get('ZMI_LIBS_JS',[])+
 		['/++resource++zms_/jquery/diff/diff_match_patch.js'
 		,'/++resource++zms_/jquery/diff/jquery.pretty-text-diff.min.js'

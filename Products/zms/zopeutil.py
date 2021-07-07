@@ -129,50 +129,53 @@ def readData(ob, default=None):
   data = default
   if ob is None and default is not None:
     return default
-  if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Filesystem DTML Document', 'Filesystem DTML Method']:
-    data = ob.raw
-  elif ob.meta_type in [ 'File', 'Filesystem File', 'Filesystem Image', 'Image']:
-    data = ob.data
-    if not isinstance(data,bytes):
-      b = b''
-      while data is not None:
-        b += data.data
-        data = data.next
-      data = b
-  elif ob.meta_type in [ 'Filesystem Page Template', 'Filesystem Script (Python)', 'Page Template', 'Script (Python)']:
-    data = ob.read()
-  elif ob.meta_type in [ 'External Method']:
-    if isinstance(ob,MissingArtefactProxy):
-      return ob.getData()
-    else:
-      context = ob
-      id = ob.getId()
-      while context is not None:
-        m = getExternalMethodModuleName(context, id)
+  try:
+    if ob.meta_type in [ 'DTML Document', 'DTML Method', 'Filesystem DTML Document', 'Filesystem DTML Method']:
+      data = ob.raw
+    elif ob.meta_type in [ 'File', 'Filesystem File', 'Filesystem Image', 'Image']:
+      data = ob.data
+      if not isinstance(data,bytes):
+        b = b''
+        while data is not None:
+          b += data.data
+          data = data.next
+        data = b
+    elif ob.meta_type in [ 'Filesystem Page Template', 'Filesystem Script (Python)', 'Page Template', 'Script (Python)']:
+      data = ob.read()
+    elif ob.meta_type in [ 'External Method']:
+      if isinstance(ob,MissingArtefactProxy):
+        return ob.getData()
+      else:
+        context = ob
+        id = ob.getId()
+        while context is not None:
+          m = getExternalMethodModuleName(context, id)
+          filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
+          if os.path.exists(filepath):
+            break
+          try:
+            context = context.getParentNode()
+          except:
+            context = None
+        if context is None:
+          m = id
         filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
         if os.path.exists(filepath):
-          break
-        try:
-          context = context.getParentNode()
-        except:
-          context = None
-      if context is None:
-        m = id
-      filepath = standard.getINSTANCE_HOME()+'/Extensions/'+m+'.py'
-      if os.path.exists(filepath):
-        f = open(filepath, 'rb')
-        data = str(f.read(),encoding='utf-8')
-        f.close()
-  elif ob.meta_type == 'Z SQL Method':
-    lines = []
-    lines.append('<connection>%s</connection>'%ob.connection_id)
-    lines.append('<params>%s</params>'%ob.arguments_src)
-    lines.append('<max_rows>%i</max_rows>'%ob.max_rows_)
-    lines.append('<max_cache>%i</max_cache>'%ob.max_cache_)
-    lines.append('<cache_time>%i</cache_time>'%ob.cache_time_)
-    lines.append(ob.src)
-    data = '\n'.join(lines)
-  return data
+          f = open(filepath, 'rb')
+          data = str(f.read(),encoding='utf-8')
+          f.close()
+    elif ob.meta_type == 'Z SQL Method':
+      lines = []
+      lines.append('<connection>%s</connection>'%ob.connection_id)
+      lines.append('<params>%s</params>'%ob.arguments_src)
+      lines.append('<max_rows>%i</max_rows>'%ob.max_rows_)
+      lines.append('<max_cache>%i</max_cache>'%ob.max_cache_)
+      lines.append('<cache_time>%i</cache_time>'%ob.cache_time_)
+      lines.append(ob.src)
+      data = '\n'.join(lines)
+    return data
+  except:
+    return default
 
 security.declarePublic('readObject')
 def readObject(container, id, default=None):

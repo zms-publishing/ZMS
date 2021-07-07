@@ -33,6 +33,15 @@ class ZMSFigure:
 
 	# Attrs
 	class Attrs:
+		titlealt = {"default":""
+			,"id":"titlealt"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"DC.Title.Alt"
+			,"repetitive":0
+			,"type":"py"}
+
 		img = {"default":""
 			,"id":"img"
 			,"keys":[]
@@ -42,7 +51,7 @@ class ZMSFigure:
 			,"repetitive":0
 			,"type":"image"}
 
-		img = {"default":""
+		previewimg = {"default":""
 			,"id":"_img"
 			,"keys":[]
 			,"mandatory":0
@@ -69,15 +78,6 @@ class ZMSFigure:
 			,"name":"Icon-Class (CSS)"
 			,"repetitive":0
 			,"type":"constant"}
-
-		titlealt = {"default":""
-			,"id":"titlealt"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"DC.Title.Alt"
-			,"repetitive":0
-			,"type":"py"}
 
 		gethref2indexhtml = {"default":""
 			,"id":"getHref2IndexHtml"

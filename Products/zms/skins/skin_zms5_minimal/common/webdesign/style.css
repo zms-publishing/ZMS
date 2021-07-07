@@ -17,7 +17,7 @@ header {
 }
 header .grid {
   grid-template-areas:"logo nav";
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 260px 1fr;
   grid-template-rows: 100px;
  /* EDGE SYNTAX: https://docs.microsoft.com/en-us/microsoft-edge/dev-guide/css/grid-layout */
   -ms-grid-columns: 320px 1fr;
@@ -27,17 +27,19 @@ header .grid {
 header .logo {
   grid-area: logo;
   align-self:center;
-  padding-left:2em;
   text-align:left;
   -ms-grid-column: 1;
   -ms-grid-row: 1;
   -ms-grid-row-align: center;
 }
-header .logo > a {
-  font-size: 170%;
-  text-transform: uppercase;
-  text-decoration: none;
+header .logo a {
   display:block;
+  width:100%;
+  text-align:left;  
+}
+header .logo a img {
+  display:block;
+  margin:auto;  
 }
 header nav {
   grid-area: nav;
@@ -128,6 +130,9 @@ aside.left a {
 }
 
 /* CONTENT TYPOGRAPHY*/
+article {
+  padding: 1em 2rem !important;  
+}
 article section {
   padding-top:0;
 }
@@ -151,8 +156,8 @@ article a {
   z-index:1;
   display:block;
   list-style-type:none;
-  margin: -1em -1em 0 -1em;
-  padding: 1em;
+  margin: -1em -2em 0 -2em;
+  padding: 1em 2em;
   width: 100%;
   font-size:100%;
   background:#eee;
@@ -220,7 +225,7 @@ nav ul li a {
 
 header nav > ul > li {
   line-height:2em;
-  background-color:rgba(0,0,0,.1);
+  background-color:rgba(0,0,0,.0);
 }
 header nav ul li.active,
 header nav ul li:hover {
@@ -335,7 +340,7 @@ footer p a {
     right: 0;
     min-height: 204px;
     min-width: 160px;
-    background-color: rgb(148, 148, 148);
+    background:none !important;
     padding: 0.2em .5em;
     display: inline-block;
     font-size: 90%;
@@ -354,8 +359,8 @@ footer p a {
     padding: 1px 3px 2px 3px;
     font-size: 18px;
     line-height: .8;
-    color:white;
-    border: 1px solid white;
+    color:black;
+    border: 1px solid black;
     margin: 7px;
   }
   #zmsroot .navtoggle {
@@ -363,11 +368,31 @@ footer p a {
     border-color:black;
   }
   #zmsroot .expand .navtoggle {
-    color:white;
-    border-color:white;
+    color:black;
+    border-color:black;
   }
   aside .navtoggle {
     padding: 0px 3px 3px 3px;
     margin: 4px 7px;
   }
+}
+
+article .form-filter {
+  display:none
+}
+article .ZMSObjectSet.accordion {
+  list-style: square;
+  font-weight:normal;
+  margin-left:2rem;
+}
+article .ZMSObjectSet .card {
+  display:list-item;
+  font-size:normal;
+  font-weight:normal;
+}
+article .ZMSObjectSet .card-header {
+  margin:.5em;
+}
+article .ZMSObjectSet .card a {
+  font-weight:normal;
 }

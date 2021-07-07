@@ -22,7 +22,7 @@ class com_zms_foundation:
 	package = ""
 
 	# Revision
-	revision = "4.1.2"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSPackage"

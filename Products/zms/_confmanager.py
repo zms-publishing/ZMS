@@ -949,7 +949,7 @@ class ConfManager(
           def getMetaobj(self, id): return None
           def getMetaobjAttrIds(self, meta_id, types=[]): return []
           def getMetaobjAttrs(self, meta_id,  types=[]): return []
-          def getMetaobjAttr(self, id, attr_id): return None
+          def getMetaobjAttr(self, id, attr_id, sync=True): return None
           def getMetaobjAttrIdentifierId(self, meta_id): return None
           def notifyMetaobjAttrAboutValue(self, meta_id, key, value): return None
         manager = DefaultMetaobjManager()

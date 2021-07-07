@@ -142,10 +142,18 @@ def recreateCatalog(self, zcm, lang):
   
   #-- Add Indexes (incl. Columns)
   for attr_id in zcm._getAttrIds():
+    attr_type = 'string'
+    for meta_id in self.getMetaobjIds():
+      meta_obj_attr = self.getMetaobjAttr(meta_id,attr_id)
+      if meta_obj_attr:
+        attr_type = meta_obj_attr['type']
+        break
     index_name = 'zcat_index_%s'%attr_id
     index_type = zcm.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
     if attr_id == 'home_id':
       index_type = 'KeywordIndex'
+    elif attr_type == 'date':
+      index_type = 'DateIndex'
     extra = None
     if index_type == 'ZCTextIndex':
       extra = Empty()
@@ -162,20 +170,6 @@ def recreateCatalog(self, zcm, lang):
       extra['splitter_max_len'] = 64
       extra['splitter_separators'] = '.+-_@'
       extra['splitter_single_chars'] = 0
-      if index_type == 'TextIndexNG2':
-        extra['use_converters'] = 1
-        extra['use_normalizer'] = ''
-        # setattr(index_extra,'use_stemmer','')
-        extra['use_stopwords'] = ''
-      elif index_type == 'TextIndexNG3':
-        extra['languages'] = (lang,)
-        extra['query_parser'] = 'txng.parsers.en'
-        extra['index_unknown_languages'] = True
-        extra['dedicated_storage'] = True
-        extra['use_stopwords'] = False
-        extra['use_normalizer'] = False
-        extra['use_converters'] = True
-        extra['use_stemmer'] = False
     zcatalog.manage_addColumn(index_name)
     zcatalog.manage_addIndex(index_name, index_type, extra)
 
@@ -446,9 +440,12 @@ class ZMSZCatalogConnector(
         value = d.get(attr_id)
         setattr(node, attr_name, value)
       for attr_id in zcm._getAttrIds():
-        last_id = attr_id
         attr_name = 'zcat_index_%s'%attr_id
-        value = umlaut_quote(self, d.get(attr_id))
+        value = d.get(attr_id)
+        if value == 'None':
+          value = None
+        if value:
+          value = umlaut_quote(self, value)
         setattr(node, attr_name, value)
       # Reindex object.
       request = self.REQUEST

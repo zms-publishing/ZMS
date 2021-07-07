@@ -175,6 +175,7 @@ def readData(ob, default=None):
       data = '\n'.join(lines)
     return data
   except:
+    standard.writeError(ob, "[object data not readable]")
     return default
 
 security.declarePublic('readObject')

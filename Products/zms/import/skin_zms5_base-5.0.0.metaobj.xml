@@ -1442,9 +1442,6 @@ div.infobox div.ZMSFile div.title a:visited {
           <item type="dictionary">
             <dictionary>
               <item key="custom">
-          <item type="dictionary">
-            <dictionary>
-              <item key="custom">
                 <data content_type="image/svg+xml" filename="zmslogo.svg" type="file"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    width="172"

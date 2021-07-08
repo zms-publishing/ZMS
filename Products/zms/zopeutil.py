@@ -343,6 +343,7 @@ def addImage(container, id, title, data, content_type=None):
   """
   if content_type is None:
     content_type, enc = standard.guess_content_type(id, data)
+  print(id,title,data,content_type)
   container.manage_addImage(id=id, title=title, file=data, content_type=content_type)
   ob = getattr( container, id)
   return ob

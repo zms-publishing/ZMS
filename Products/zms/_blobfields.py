@@ -866,10 +866,15 @@ class MyImage(MyBlob, Image):
       filename = _fileutil.getOSPath(_fileutil.extractFilename(getattr(self, 'filename', '')))
       content_type = getattr(self, 'content_type', '')
       if data2hex:
-        if content_type.startswith('text/') or content_type in ['application/css','application/javascript','image/svg']:
-          data = '<![CDATA[%s]]>'%str(self.getData(sender),'utf-8')
+        data = self.getData(sender)
+        if [x for x in ['text/','application/css','application/javascript','image/svg'] if content_type.startswith(x)]:
+          if type(data) is bytes:
+            data = data.decode('utf-8')
+          else:
+            data = str(data,'utf-8')
+          data = '<![CDATA[%s]]>'%data
         else:
-          data = standard.bin2hex(bytes(self.getData(sender)))
+          data = standard.bin2hex(bytes(data))
         objtype = ' type="image"'
       else:
         filename = self.getFilename()
@@ -977,10 +982,15 @@ class MyFile(MyBlob, File):
       filename = _fileutil.getOSPath(_fileutil.extractFilename(getattr(self, 'filename', '')))
       content_type = getattr(self, 'content_type', '')
       if data2hex:
-        if content_type.startswith('text/') or content_type in ['application/css','application/javascript','image/svg']:
-          data = '<![CDATA[%s]]>'%str(self.getData(sender),'utf-8')
+        data = self.getData(sender)
+        if [x for x in ['text/','application/css','application/javascript','image/svg'] if content_type.startswith(x)]:
+          if type(data) is bytes:
+            data = data.decode('utf-8')
+          else:
+            data = str(data,'utf-8')
+          data = '<![CDATA[%s]]>'%data
         else:
-          data = standard.bin2hex(bytes(self.getData(sender)))
+          data = standard.bin2hex(bytes(data))
         objtype = ' type="file"'
       else:
         filename = self.getFilename()

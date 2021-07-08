@@ -916,6 +916,8 @@ class AccessManager(AccessableContainer):
               v = detail.get('value', None)
         if v is None and name == 'email':
           v = self.getUserAttr(user, 'mail')
+      if name == 'user_id_' and type(v) is bytes:
+        v = v.decode('utf-8')
       return v
 
     # --------------------------------------------------------------------------

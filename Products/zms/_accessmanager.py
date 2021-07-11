@@ -147,7 +147,7 @@ def updateUserPassword(self, user, password, confirm):
     if password != confirm:
       raise zExceptions.InternalError("Passwort <> Confirm")
     userFldr = user['localUserFldr']
-    id = user['user_id_']
+    id = user['login_name']
     if userFldr.meta_type == 'User Folder':
       roles = userFldr.getUser(id).getRoles()
       domains = userFldr.getUser(id).getDomains()
@@ -201,8 +201,7 @@ def deleteUser(self, id):
   for node in list(nodes):
     ob = self.getLinkObj(node)
     if ob is not None:
-      user_id = self.getUserAttr(id, 'user_id_', id)
-      delLocalRoles(ob, user_id)
+      delLocalRoles(ob, id)
   
   # Delete user from ZMS dictionary.
   self.delUserAttr(id)
@@ -752,7 +751,6 @@ class AccessManager(AccessableContainer):
         d = {}
         d['localUserFldr'] = userFldr
         d['name'] = login_name
-        d['user_id_'] = login_name
         d['user_id'] = login_name
         d['roles'] = []
         d['domains'] = []
@@ -782,13 +780,6 @@ class AccessManager(AccessableContainer):
           _uid_attr = login_attr
           uid = plugin.getUserIdForLogin(login_name)
         if uid is not None:
-          d['user_id_'] = uid
-          if isinstance(uid,str):
-            uid = bytes(uid,'utf-8')
-          if uid.startswith(b'\x01\x05\x00\x00'):
-            import binascii
-            buid = memoryview(uid)
-            uid = binascii.b2a_hex(buid)
           d['user_id'] = uid
           if len([x for x in c if x['id'] == 'user_id'])==0:
             c.append({'id':'user_id','name':_uid_attr.capitalize(),'type':'string'})
@@ -867,16 +858,6 @@ class AccessManager(AccessableContainer):
 
 
     # --------------------------------------------------------------------------
-    #  AccessManager.getUserName:
-    # --------------------------------------------------------------------------
-    def getUserName(self, uid):
-      d = self.getSecurityUsers()
-      for k in d:
-        if d.get('user_id_', k) == uid:
-          return k
-      return None
-
-    # --------------------------------------------------------------------------
     #  AccessManager.setUserAttr:
     # --------------------------------------------------------------------------
     def setUserAttr(self, user, name, value):
@@ -916,8 +897,6 @@ class AccessManager(AccessableContainer):
               v = detail.get('value', None)
         if v is None and name == 'email':
           v = self.getUserAttr(user, 'mail')
-      if name == 'user_id_' and type(v) is bytes:
-        v = v.decode('utf-8')
       return v
 
     # --------------------------------------------------------------------------
@@ -1006,8 +985,7 @@ class AccessManager(AccessableContainer):
         userroles = local_role[1]
         if 'Owner' not in userroles:
           if userid not in valid_userids and userid not in invalid_userids:
-            name = self.getUserName(userid)
-            user = ob.findUser(name)
+            user = ob.findUser(userid)
             if user is None:
               invalid_userids.append(userid)
             else:
@@ -1047,23 +1025,17 @@ class AccessManager(AccessableContainer):
       for node in list(nodes):
         ob = self.getLinkObj(node)
         if ob is not None:
-          user_id = self.getUserAttr(id, 'user_id_', id)
           if active:
             roles = nodes[node].get('roles', [])
-            setLocalRoles(ob, user_id, roles)
+            setLocalRoles(ob, id, roles)
           else:
-            delLocalRoles(ob, user_id)
+            delLocalRoles(ob, id)
 
 
     # --------------------------------------------------------------------------
     #  AccessManager.setLocalUser:
     # --------------------------------------------------------------------------
     def setLocalUser(self, id, node, roles, langs):
-      
-      # Set user id.
-      user = self.findUser(id)
-      if user is not None:
-        self.setUserAttr(id, 'user_id_', user['user_id_'])
       
       # Insert node to user-properties.
       root = self.getRootElement()
@@ -1079,8 +1051,7 @@ class AccessManager(AccessableContainer):
       # Set local roles in node.
       ob = self.getLinkObj(node)
       if ob is not None:
-        user_id = self.getUserAttr(id, 'user_id_', id)
-        setLocalRoles(ob, user_id, roles)
+        setLocalRoles(ob, id, roles)
 
 
     # --------------------------------------------------------------------------
@@ -1098,8 +1069,7 @@ class AccessManager(AccessableContainer):
       # Delete local roles in node.
       ob = root.getLinkObj(node)
       if ob is not None:
-        user_id = root.getUserAttr(id, 'user_id_', id)
-        delLocalRoles(ob, user_id)
+        delLocalRoles(ob, id)
 
 
     ############################################################################

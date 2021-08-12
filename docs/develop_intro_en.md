@@ -17,6 +17,7 @@ ZMS is running on Zope (Version 5+) as the underlaying Python3 application serve
 ~$: sudo apt-get install python3-venv
 ~$: sudo apt-get install git
 ```
+
 ## 1. Setup virtual Python environment
 The first step is to setup a virtual Python environment which is a kind of copy of the primary Python installation which easily can be extended or replaced. The following example places the virtual environment into the home-folder of user _zope_:
 ```

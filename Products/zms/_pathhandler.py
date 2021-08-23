@@ -204,6 +204,7 @@ class PathHandler(object):
               proxy = thisOb.initProxy( thisOb.aq_parent, thisOb.absolute_url(), ob, recursive)
               c = 0
               l = TraversalRequest[ 'path_to_handle']
+              i = 0
               if thisOb.id in l:
                 i = l.index( thisOb.id) + 1
               elif thisOb.getDeclId(request) in l:

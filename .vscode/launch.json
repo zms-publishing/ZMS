@@ -1,17 +1,21 @@
 {
     "version": "0.2.0",
+
+
+
     "configurations": [
         {
-            "name": "ZMS5-Py3WSGI",
+            "name": "ZMS5-DEV",
             "type": "python",
             "request": "launch",
             "program": "~/vpy38/bin/runwsgi",
             "console": "integratedTerminal",
             "args": [
-                "-d",
-                "-v",
+                "--debug",
+                "--verbose",
                 "~/instance/zms5_dev/etc/zope.ini",
-                "debug-mode=on"
+                "debug-mode=on",
+                // "http_port=8086",
             ],
             "env": {
                 "PYTHONUNBUFFERED":"1",
@@ -20,6 +24,11 @@
                 "CLIENT_HOME": "~/instance/zms5_dev",
                 "PYTHON": "~/vpy38/bin/python",
                 "SOFTWARE_HOME": "~/vpy38/bin/"
+            },
+            "serverReadyAction":{
+                "pattern":"Serving on http://localhost:8081",
+                "uriFormat": "http://localhost:8081/manage_main",
+                "action": "openExternally",
             },
         },
     ]

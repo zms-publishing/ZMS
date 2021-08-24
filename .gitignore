@@ -3,3 +3,4 @@
 Products/zms/plugins/www/zms-all.min.js
 Products/zms/plugins/www/i18n/*.js
 .vscode/ZMS5.code-workspace
+.vscode/settings.json

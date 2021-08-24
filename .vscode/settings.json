@@ -1,1 +1,3 @@
-{ }
+{
+	"python.pythonPath": "~/vpy38/bin/python3"
+}

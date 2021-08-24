@@ -18,14 +18,15 @@
 		tal:attributes="class python:' '.join(['breadcrumb-item']+[['','active'][int(childNode==childNodes[-1])]])"
 		><span tal:omit-tag="python:not request['AUTHENTICATED_USER'].has_permission('ZMS Administrator',zmscontext)"
 			tal:attributes="onclick python:'javascript:window.open(\'%s/%s\',\'MetaObjectManagerWindow\')'%(zmscontext.getDocumentElement().absolute_url(),middot)"
-			><i tal:condition="python:childNode==childNodes[-1]"
-				tal:on-error="structure python:'<i class=\042fas fa-warning\042></i>'"
-				tal:attributes="class python:childNode.zmi_icon()"></i
-		></span>&nbsp;<a tal:define="
+			><tal:block tal:condition="python:childNode==childNodes[-1]"
+				tal:on-error="nothing"
+				><i class="far fa-file-alt" title="Icon" tal:attributes="class python:childNode.zmi_icon();title python:childNode.meta_id"></i
+			></tal:block
+			></span>&nbsp;<a tal:define="
 				titlealt python:childNode.getTitlealt(request);
 				title python:childNode.getTitle(request);
 				accesskey repeat/childNode/number;"
-				tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang']);title title;accesskey accesskey" 
+				tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang']);title title;accesskey accesskey"
 			tal:content="structure titlealt">titlealt
 	</a></li>
 	<li class="breadcrumb-item" tal:repeat="extra python:options.get('extra',[])">

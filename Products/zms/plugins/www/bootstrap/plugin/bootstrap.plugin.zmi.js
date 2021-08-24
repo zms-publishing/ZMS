@@ -1884,7 +1884,7 @@ function zmiBrowseObjs(fmName, elName, lang) {
 }
 
 function zmiBrowseObjsApplyUrlValue(fmName, elName, elValue, elTitle) {
-	$('form[name='+fmName+'] input[name='+elName+']').val(elValue).change();
+	$('form[name='+fmName+'] input[name="'+elName+'"]').val(elValue).change();
 	if (typeof elTitle != "undefined") {
 		$('form[name='+fmName+'] input[name^=title]:text').each(function() {
 			if ($(this).val()=='') {

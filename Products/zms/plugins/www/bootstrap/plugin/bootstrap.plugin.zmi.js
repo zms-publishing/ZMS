@@ -1864,7 +1864,7 @@ function zmiToggleSelectionButtonClick(sender,v) {
 function zmiBrowseObjs(fmName, elName, lang) {
 	var elValue = '';
 	if (fmName.length>0 && elName.length>0) {
-		elValue = $('form[name='+fmName+'] input[name='+elName+']').val();
+		elValue = $('form[name='+fmName+'] input[name="'+elName+'"]').val();
 	}
 	var title = getZMILangStr('CAPTION_CHOOSEOBJ');
 	var href = "manage_browse_iframe";

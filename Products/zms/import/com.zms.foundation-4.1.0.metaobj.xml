@@ -6160,8 +6160,8 @@ zmscontext.setObjProperty('table',table,lang)
 
 REQUEST = zmscontext.REQUEST
 table = zmscontext.attr('table')
-ncols = max(map(lambda x: len(x), table))
-weights = map(lambda x: 1, range( ncols))
+ncols = max([len(x) for x in table])
+weights = [1 for x in range( ncols)]
 for row in table:
     i = 0
     for cell in row:
@@ -6282,6 +6282,7 @@ return [int((x*100.0)/sum(weights)) for x in weights]
                                            replacement   python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
                                            content       python:zmscontext.re_sub(pattern,replacement,column.get('content',''));
                                            content       python:[content,newline_to_br(content)][format==''];
+                                           content       python:zmscontext.validateInlineLinkObj(content);
                                            col_text      python:[zmscontext.dt_exec(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in map(lambda x: x.getId(),rteformats)];
                                            col_text      python:zmscontext.re_sub('^(B \073)','',col_text);
                                            col_text      python:zmscontext.re_sub('^<p>((\\w|\\W)*?)</p>$','\\1',col_text)">
@@ -6338,7 +6339,7 @@ return [int((x*100.0)/sum(weights)) for x in weights]
           <item key="id">ZMSTable</item>
           <item key="name">ZMSTable</item>
           <item key="package">com.zms.foundation</item>
-          <item key="revision">4.1.1</item>
+          <item key="revision">4.1.2</item>
           <item key="type">ZMSObject</item>
         </dictionary>
       </item>

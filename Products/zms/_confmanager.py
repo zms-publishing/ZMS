@@ -536,7 +536,6 @@ class ConfManager(
     @type key: C{string}
     @return None
     """
-    security.declareProtected('ZMS Administrator', 'delConfProperty')
     def delConfProperty(self, key):
       self.setConfProperty(key, None)
 
@@ -616,7 +615,6 @@ class ConfManager(
     @type value: C{any}
     @return None
     """
-    security.declareProtected('ZMS Administrator', 'setConfProperty')
     def setConfProperty(self, key, value):
       if key.startswith("Portal"):
         self.clearReqBuff()

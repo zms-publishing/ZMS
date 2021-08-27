@@ -177,6 +177,10 @@ header .navbar-nav .dropdown-menu > a.dropdown-item[accesskey]:hover:after {
 	margin-left: -2px;
 	margin-right: 2px;
 }
+.zmi li.dropdown.dropdown.languages .dropdown-item.primary_language:after {
+	content: ' *';
+	color:#0088cc;
+}
 .zmi header.navbar ul.navbar-nav li.form-inline {
 	-ms-flex-flow: row nowrap;
 	flex-flow: row nowrap;

@@ -26,7 +26,7 @@ class ZMSTable:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "4.1.1"
+	revision = "4.1.3"
 
 	# Type
 	type = "ZMSObject"

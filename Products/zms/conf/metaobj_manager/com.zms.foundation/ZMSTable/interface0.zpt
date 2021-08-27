@@ -25,11 +25,12 @@
 
 		function onZMSTableFormSubmit() {
 			var xml = '';
-			var type = parseInt($("[name=\x22type:int\x22]").val());
+			var type = parseInt($("[name=\x22type:int\x22]:checked").val());
 			xml += '<'+'list>\n';
 			for ( var y = 0; y < parseInt($('#rows').val()); y++) {
 				xml += '<'+'item type="list"><list>\n';
 				if ( y==0 && type == 2) {
+					// Type 2: First Row Merged
 					xml += '<'+'item type="dictionary"><'+'dictionary>\n';
 					xml += '<'+'item key="colspan" type="int">'+parseInt($('#cols').val())+'<'+'/item>\n';
 					xml += '<'+'item key="content"><'+'/item>\n';
@@ -45,10 +46,9 @@
 						}
 						else {
 							var tag = "td";
-							if ( (type == 1 && y == 0) ||
-								(type == 3 && x == 0) ||
-								(type == 4 && (x == 0 || y == 0))) {
-								tag = "th";
+							if ( ( type == 1 && y == 0 ) || ( type == 3 && x == 0 ) ||
+								 ( type == 4 && ( x == 0 || y == 0 ) ) ) {
+									tag = "th";
 							}
 							xml += '<'+'item key="colspan" type="int">1<'+'/item>\n';
 							xml += '<'+'item key="content"><'+'/item>\n';

@@ -830,12 +830,10 @@ class ZMSObject(ZMSItem.ZMSItem,
       declId = ''
       try:
         if self.getConfProperty( 'ZMS.pathhandler', 0) != 0:
-          obj_attrs_keys = self.getMetaobjAttrIds(self.meta_id)
           for key in [ 'attr_dc_identifier_doi', 'attr_dc_identifier_url_node']:
-            if key in obj_attrs_keys:
-              declId = self.getObjProperty( key, REQUEST)
-              if len( declId) > 0:
-                break
+            declId = self.getObjProperty( key, REQUEST)
+            if len( declId) > 0:
+              break
           if len(declId) == 0:
             declId = self.getTitlealt( REQUEST)
           mapping = standard.dict_list(self.getConfProperty('ZMS.pathhandler.id_quote.mapping', ' _-_/_\'_'))

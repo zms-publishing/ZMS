@@ -312,12 +312,9 @@ class ZMSFilterManager(
       process['id'] = id
       process['name'] = process.get('name',process['id'])
       # Synchronize type.
-      try:
-        container = self.getHome()
-        ob = zopeutil.getObject( container, process['id'])
+      ob = zopeutil.getObject( self, process['id'])
+      if ob is not None:
         process['command'] = zopeutil.readData( ob)
-      except:
-        pass
       return process
 
 

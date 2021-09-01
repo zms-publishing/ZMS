@@ -26,7 +26,7 @@ class codeblock:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "4.0.1"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSObject"

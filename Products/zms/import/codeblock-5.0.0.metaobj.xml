@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<?zms version='ZMS3-3.4.2dev (snapshot #)'?>
+<?xml version="1.0" encoding="utf-8" ?>
+<?zms version='ZMS5-5.0.216'?>
 <dictionary>
   <item key="key">codeblock</item>
   <item key="value" type="dictionary">
@@ -50,7 +50,7 @@
 <script type="text/javascript" charset="UTF-8" src="/++resource++zmi/ace.ajax.org/ace.js"></script>
 <script type="text/javascript">
 	$(function(){
-		$('textarea#text_'+getZMILang()).wrap('<div id="editor_container" class="form-group"></div>');
+		$('textarea#text_'+getZMILang()).wrap('<div id="editor_container" class="form-group px-0"></div>');
 		$('textarea#text_'+getZMILang()).before('<div id="editor">ace editor text</div>');
 		var dom = ace.require("ace/lib/dom");
 		// add command to all new editor instances
@@ -137,7 +137,8 @@
 </script>
 <style>
 	.ace_editor {
-		min-height: 520px
+		min-height: 520px;
+        font-size: .867rem;
 	}
 	.ace_editor.fullScreen {
 		height: 100vh !important;
@@ -154,7 +155,7 @@
 		background: white !important;
 	}
 	#editor_container {
-		padding: 0 16px;
+		padding: 0;
 	}
 	#editor_container:after {
 		content:"Press F10 for Toggeling Full Screen View";
@@ -223,7 +224,7 @@
           </item>
           <item type="dictionary">
             <dictionary>
-              <item key="custom">icon-code</item>
+              <item key="custom"><![CDATA[fas fa-code]]></item>
               <item key="default"></item>
               <item key="id">icon_clazz</item>
               <item key="keys" type="list">
@@ -314,13 +315,11 @@
               <item></item>
               <item></item>
               <item></item>
-              <item></item>
             </list>
           </item>
           <item key="insert_custom">{$}</item>
           <item key="insert_deny" type="list">
             <list>
-              <item></item>
               <item></item>
               <item></item>
               <item></item>
@@ -332,7 +331,7 @@
       <item key="id">codeblock</item>
       <item key="name">Code-Block</item>
       <item key="package">com.zms.foundation</item>
-      <item key="revision">4.0.0</item>
+      <item key="revision">5.0.0</item>
       <item key="type">ZMSObject</item>
     </dictionary>
   </item>

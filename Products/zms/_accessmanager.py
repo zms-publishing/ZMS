@@ -1229,13 +1229,12 @@ class AccessManager(AccessableContainer):
             self.setUserAttr(id, 'attrActive', newAttrActive)
             self.setUserAttr(id, 'attrActiveStart', self.parseLangFmtDate(REQUEST.get('attrActiveStart')))
             self.setUserAttr(id, 'attrActiveEnd', self.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
-            self.setUserAttr(id, 'email', REQUEST.get('email', '').strip())
-            self.setUserAttr(id, 'profile', REQUEST.get('profile', '').strip())
-            self.setUserAttr(id, 'user_id', REQUEST.get('user_id', '').strip())
+            for key in ['email','profile','user_id']:
+              if REQUEST.has_key(key):  
+                value = REQUEST.get(key, '').strip()
+                self.setUserAttr(id, key, value)
             if attrActive != newAttrActive:
               self.toggleUserActive(id)
-          elif key=='attr':
-            pass
           #-- Assemble message.
           message = self.getZMILangStr('MSG_CHANGED')
         

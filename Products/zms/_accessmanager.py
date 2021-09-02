@@ -622,14 +622,14 @@ class AccessManager(AccessableContainer):
           value = d[name]
           nodes = value.get('nodes', {})
           nodekeys = [x for x in nodes if nodes[x].get('home_id') == home_id]
-          aq_nodekeys = [x for x in nodes if nodes[x].get('home_id') in home_ids]
-          if len(nodekeys) > 0 or (acquired and len(aq_nodekeys) > 0):
+          if len(nodekeys) > 0 or acquired:
             userDef = {'nodes':{}}
             for key in value:
               if key not in userDef:
                 userDef[key] = value[key]
             if acquired:
               userDef['acquired'] = len(nodekeys) == 0
+              aq_nodekeys = [x for x in nodes if nodes[x].get('home_id') in home_ids]
               nodekeys.extend(aq_nodekeys)
             for nodekey in nodekeys:
               userDef['nodes'][nodekey] = nodes[nodekey]

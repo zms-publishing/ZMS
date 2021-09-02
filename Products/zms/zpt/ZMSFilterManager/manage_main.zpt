@@ -191,18 +191,26 @@ $(function(){
 				<div class="form-group row inpRoles">
 					<label for="inpDescription" class="col-md-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_ROLES')">Roles</span></label>
 					<div class="col-md-3">
-						<select class="form-control" id="inpRoles" name="inpRoles:list" multiple="multiple">
-							<tal:block tal:repeat="role python:here.userdefined_roles()"><tal:block tal:define="global lang_key python:'ROLE_%s'%role.upper(); lang_str python:here.getZMILangStr(lang_key)">
-								<option tal:attributes="value role; selected python:['','selected'][int(role in filter.get('roles',[]))]" tal:content="python:[lang_str,role][int(lang_key==lang_str)]">the role</option>
-							</tal:block></tal:block>
+						<select class="form-control" id="inpRoles" name="inpRoles:list" multiple="multiple" tal:define="roles python:['*']+here.getUserDefinedRoles()">
+							<tal:block tal:repeat="role roles"
+								><option tal:attributes="value role; selected python:['','selected'][int(role in filter.get('roles',[]))]" tal:content="python:here.getRoleName(role)">role</option>
+							</tal:block>
 						</select>
 					</div>
 					<label for="inpDescription" class="col-md-2 control-label"><span tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</span></label>
 					<div class="col-md-3">
 						<select class="form-control" id="inpMetaTypes" name="inpMetaTypes:list" multiple="multiple">
-							<tal:block tal:repeat="meta_id python:here.getMetaobjIds(sort=True)">
-								<option tal:attributes="value meta_id; selected python:['','selected'][int(meta_id in filter.get('meta_types',[]))]" tal:content="python:here.display_type(request,meta_id)">the meta-type</option>
-							</tal:block>
+							<tal:block tal:repeat="meta_type python:['*']"
+								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in filter.get('meta_types',[]))]" tal:content="meta_type">meta_type</option>
+							</tal:block
+							><tal:block tal:repeat="meta_type python:here.getMetaobjIds(sort=True)"
+								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in filter.get('meta_types',[]))]" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
+							</tal:block
+							><tal:block tal:repeat="objtype python:here.metaobj_manager.valid_objtypes"
+								><tal:block tal:define="global meta_type python:'type(%s)'%objtype"
+									><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in filter.get('meta_types',[]))]" tal:content="meta_type">meta_type</option>
+								</tal:block
+							></tal:block>
 						</select>
 					</div>
 				</div><!-- .form-group -->

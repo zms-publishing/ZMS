@@ -442,9 +442,10 @@ class ZMSFilterManager(
           ob['file_filename'] = '.'.join(f.getId().split('.')[2:])
           ob['file_content_type'] = f.getContentType()
           ob['file_size'] = f.get_size()
-        p = self.getProcess(ob['id'])
-        if p is not None:
-          obs.append( ob)
+        if ob['id']:
+          p = self.getProcess(ob['id'])
+          if p is not None:
+            obs.append( ob)
         index += 1
       return obs
 

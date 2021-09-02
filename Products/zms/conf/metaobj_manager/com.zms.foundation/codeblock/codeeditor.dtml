@@ -95,7 +95,8 @@
 </script>
 <style>
 	.ace_editor {
-		min-height: 520px
+		min-height: 520px;
+		font-size: .867rem;
 	}
 	.ace_editor.fullScreen {
 		height: 100vh !important;
@@ -112,7 +113,7 @@
 		background: white !important;
 	}
 	#editor_container {
-		padding: 0 16px;
+		padding: 0;
 	}
 	#editor_container:after {
 		content:"Press F10 for Toggeling Full Screen View";

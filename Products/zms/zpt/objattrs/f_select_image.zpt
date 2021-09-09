@@ -4,7 +4,7 @@
 		fmName options/fmName;
 		elName options/elName;
 		key options/key;
-		value options/value;
+		value python:options['value'].delegate();
 		can_generate_preview python:pilutil.enabled() and (key.endswith('hires') or key.endswith('superres'));
 		max_generate_preview python:{
 				'imghires':'InstalledProducts.pil.thumbnail.max',

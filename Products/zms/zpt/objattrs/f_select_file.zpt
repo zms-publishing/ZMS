@@ -3,7 +3,7 @@
 		fmName options/fmName;
 		elName options/elName;
 		key options/key;
-		value options/value;">
+		value python:options['value'].delegate();">
 
 	<tal:block tal:condition="python:request.get('f_zmiBlobJs',True)">
 		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script> 

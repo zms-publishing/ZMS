@@ -1007,6 +1007,19 @@ class MyFile(MyBlob, File):
 ################################################################################
 ################################################################################
 
+class MyBlobDelegate(object):
+
+  def __init__(self, delegate):
+    self._delegate = delegate
+
+  delegate__roles__ = None
+  def delegate(self):
+    return self._delegate
+
+
+################################################################################
+################################################################################
+
 class MyBlobWrapper(object):
 
     # Documentation string.

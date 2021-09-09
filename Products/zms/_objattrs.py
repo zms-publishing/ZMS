@@ -341,11 +341,11 @@ class ObjAttrs(object):
       
       #-- Image-Fields.
       elif inputtype == 'image':
-        return self.f_selectImage(self, ob=self, fmName=fmName, elName=elName, value=value, key=obj_attr['id'], metaObj=metaObj, lang=lang, REQUEST=REQUEST)
+        return self.f_selectImage(self, ob=self, fmName=fmName, elName=elName, value=_blobfields.MyBlobDelegate(value), key=obj_attr['id'], metaObj=metaObj, lang=lang, REQUEST=REQUEST)
       
       #-- File-Fields.
       elif inputtype == 'file':
-        return self.f_selectFile(self, ob=self, fmName=fmName, elName=elName, value=value, key=obj_attr['id'], metaObj=metaObj, lang=lang, REQUEST=REQUEST)
+        return self.f_selectFile(self, ob=self, fmName=fmName, elName=elName, value=_blobfields.MyBlobDelegate(value), key=obj_attr['id'], metaObj=metaObj, lang=lang, REQUEST=REQUEST)
       
       #-- Password-Fields.
       if inputtype == 'password':

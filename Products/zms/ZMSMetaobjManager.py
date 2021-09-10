@@ -597,7 +597,7 @@ class ZMSMetaobjManager(object):
         # Self-learning auto-complete attributes.
         if attr.get('type') in ['autocomplete', 'multiautocomplete']:
           keys = attr['keys']
-          if ''.join(keys).find('<dtml') < 0:
+          if ''.join(keys).find('<dtml') < 0 and ''.join(keys).find('##') < 0:
             if not isinstance(value, list):
               value = [value]
             for v in value:

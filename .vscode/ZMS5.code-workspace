@@ -6,9 +6,9 @@
 //		{
 //			"path": "~/src/zms-publishing/ZMS3"
 //		},
-//		{
-//			"path": "~/src/zopefoundation/Zope"
-//		},
+		{
+			"path": "/home/zope/src/zopefoundation/Zope"
+		},
 	],
 	"settings": {
 		"python.pythonPath": "~/vpy38/bin/python",

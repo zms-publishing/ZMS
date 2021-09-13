@@ -147,7 +147,7 @@ def updateUserPassword(self, user, password, confirm):
     if password != confirm:
       raise zExceptions.InternalError("Passwort <> Confirm")
     userFldr = user['localUserFldr']
-    id = user['login_name']
+    id = user.get('login_name',user.get('user_id'))
     if userFldr.meta_type == 'User Folder':
       roles = userFldr.getUser(id).getRoles()
       domains = userFldr.getUser(id).getDomains()

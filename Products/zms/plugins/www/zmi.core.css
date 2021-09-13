@@ -2544,3 +2544,6 @@ ul.pagination {
 #metaobj_recordset_main_grid .ZMSRecordSet.main_grid div.table-responsive {
 	min-height: 24em;
 }
+#zmiModalinsertUser .ZMSRecordSet.main_grid .table-responsive {
+	min-height:8rem;
+}

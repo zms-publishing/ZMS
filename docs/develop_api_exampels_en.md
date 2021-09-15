@@ -33,8 +33,8 @@ return '<h1>%s<br/><small>%s</small></h1>%s'%(zmscontext.attr('title'), zmsconte
 ```
 
 ### 2. Using Zope-ZCatalog Search
-The ZCatalog mmodule provides a simple index for Zope contents. ZMS can address this index by default: the admin menu "Search" allows to select all the content object classes and their attributes to be indexed.
-Via "ZCatalog-Connector" tab the Zope objects containing the index are listed and can be administered (delete, refresh etc.).
+The ZCatalog module provides a simple index for Zope contents. ZMS can address this index by default: the admin menu *Search* allows to select all the content object classes and their attributes to be indexed.
+Via *ZCatalog-Connector* tab the Zope objects containing the index are listed and can be administered (by buttons like *Delete*, *Refresh" etc.).
 
 ![Administration of Metadata to be indexed](images/admin_gui_search1.gif)
 _Administration of metadata to be indexed_

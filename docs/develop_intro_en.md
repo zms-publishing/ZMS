@@ -3,12 +3,12 @@
 ## Prerequisites
 The following setup is working on Ubuntu 20.4. and will run in a similar way on other unix-like operating systems (as well as *Windows Sublinux*, WSL). It is recomended to add a special non-root user like _zope_ for running the zope application server.
 ZMS needs a Python version 3.6+; please check your installed python version
-```
+```console
 ~$: python3 --version
 ```
 and update or reinstall Python3, if it is missing or a former Python version is installed.
 ZMS is running on Zope (Version 5+) as the underlaying Python3 application server. The ZMS setup routine automatically installs Zope. Zope needs some basic OS packages for communication and compiling; the following packages should be installed on your system:
-```
+```console
 ~$: sudo apt-get install gcc
 ~$: sudo apt-get install openssh-server
 ~$: sudo apt-get install build-essential 
@@ -20,24 +20,24 @@ ZMS is running on Zope (Version 5+) as the underlaying Python3 application serve
 
 ## 1. Setup virtual Python environment
 The first step is to setup a virtual Python environment which is a kind of copy of the primary Python installation which easily can be extended or replaced. The following example places the virtual environment into the home-folder of user _zope_:
-```
+```console
 ~$: python3 -m venv /home/zope/vpy3
 ```
 ## 2. Install ZMS into the virtual Python environment
 After changing to the `bin`-folder of the installed virtual environment, simply install ZMS with `pip` from the ZMS-github-master: https://github.com/zms-publishing/ZMS5
-```
+```console
 ~$: cd /home/zope/vpy3/bin/
 ~$: ./pip install https://github.com/zms-publishing/ZMS5/archive/master.zip
 ```
 ## 3. Add new Zope instance
 After the ZMS installation the bin-folder of the virtual environment contains a lot of new scipts. Please use `mkwsgiinstance` to generate an new zope-instance, named zms5_dev as an example:
-```
+```console
 ~$: ./mkwsgiinstance -d /home/zope/instance/zms5_dev
 ```
 More: https://zope.readthedocs.io/en/latest/operation.html#creating-a-zope-instance
 
 ## 4. Start Zope server (default port 8080)
-```
+```console
 ~$: ./runwsgi -v /home/zope/instance/zms5_dev/etc/zope.ini
 ```
 More: https://zope.readthedocs.io/en/latest/operation.html#running-zope
@@ -53,7 +53,7 @@ The _add menu_ is located in the Zope top bar. Please select the object type 'ZM
 # Working with Visual Studio Code
 ## Installation & Setup of Visual Studio Code
 [Visual Studio Code](https://code.visualstudio.com/) (VS Code) is a free source-code editor made by Microsoft for Windows, Linux and macOS - and a perfect environment for developing ZMS websites. On linux you can install VS Code by running:
-```
+```console
 sudo snap install --classic code
 ```
 ![Install VS Code](images/develop_vscode_install.gif)
@@ -88,7 +88,7 @@ The file [launch.json](https://github.com/zms-publishing/ZMS5/blob/master/.vscod
 2. the name of the Zope instance is `zms5_dev`
 3. the git-cloned code of Zope and ZMS are placed in a source folder called `~/src`
 
-```
+```json
 {
 	"configurations": [
 		{
@@ -136,7 +136,7 @@ The prerequisites for using Git are
 2. Public keys of the Git domains should be saved in the `~/.ssh/known_hosts` file
 3. Private keys (if used for ssh connection) should be referenced in `~/.ssh/config` like this
 
-```
+```txt
 host github.com
 	HostName github.com
 	# Port 443
@@ -190,7 +190,7 @@ In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#
 ### launch.config
 *Important hint*: Please, set the `http_port` argument to run the Zope instance for debugging on a vacant port:
 
-```
+```json
 {
 	"configurations": [
 

@@ -16,7 +16,7 @@ The configuration menu primarily provides ten options for the configuration of t
 ****
 
 ## Meta-Attributes
-Meta attributes ("metas") are a set of general descriptions supporting the automatic processing of content entities. The idea of schematic categorization of content has a long tradition; for web content it started 1994 with the Dublin Core (DC)Metadata Initiative [https://en.wikipedia.org/wiki/Dublin_Core]. ZMS refers to the DC metadata set and provides a minimal list of standard attributes. The ZMS administrator can add more attributes to that list and select from a bunch of data-types. Actually any meta attributes becomes another data-type and is prolonging the data type list.
+Meta attributes ("metas") are a set of general descriptions supporting the automatic processing of content entities (e.g. keyword search). The idea of schematic categorization of content has a long tradition; for web content it started 1994 with the Dublin Core (DC) Metadata Initiative [https://en.wikipedia.org/wiki/Dublin_Core]. ZMS refers to the DC metadata set and provides a minimal list of standard attributes. The ZMS administrator can add further attributes to the list and assign a data type to each of these attributes. In fact, each meta-attribute becomes another data type and extends the list of data types.
 Since each content class can use these metas as its own attributes, the entire namespace of the attributes is reduced and template coding becomes easier.
 
 ![Administration of Metadata](images/admin_gui_metas1.gif)

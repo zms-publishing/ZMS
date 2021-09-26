@@ -122,11 +122,8 @@ function zmiBodyContentSearch(q,pageSize,pageIndex) {
 		p['page_size'] = pageSize;
 		p['page_index'] = pageIndex;
 		var fq = [];
-		if (zmi) {
-			var home_id = $ZMI.getPhysicalPath();
-			home_id = home_id.substr(0,home_id.indexOf('/content'));
-			home_id = home_id.substr(home_id.lastIndexOf('/')+1);
-			fq.push('home_id_s:'+home_id);
+    if ('home_id' in zmiParams && zmiParams['home_id'].length > 0) {
+			fq.push('home_id_s:'+zmiParams['home_id']);
 		}
 		p['fq'] = fq;
 		var baseurl = $('meta[name=physical_path]').attr('content');

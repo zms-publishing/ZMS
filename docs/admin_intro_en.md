@@ -63,6 +63,15 @@ First a ZMS document node is needed for showing the search form and the results;
 			</div>
 		</div>
 	</div><!-- .form-group -->
+	<div class="form-group row" tal:condition="python:here.getPortalMaster() is not None or len(here.getPortalClients())>0">
+		<div class="control-label col-md-12" tal:define="home_id python:here.getHome().id">
+			<input type="hidden" name="home_id" tal:attributes="value python:request.get('home_id',home_id); data-value home_id">
+			<input type="checkbox" class="form-check-input" onchange="var $i=$('input[name=home_id]');$i.val(this.checked?$i.attr('data-value'):'');" tal:attributes="checked python:['','checked'][request.get('home_id',home_id)==home_id]">
+			<label class="form-check-label control-label">
+				<strong tal:content="home_id">the home-id</strong> (local)
+			</label>
+		</div>
+	</div><!-- .form-group -->
 	</tal:block>
 
 <div id="search_results" class="form-group" style="display:none">
@@ -88,7 +97,7 @@ First a ZMS document node is needed for showing the search form and the results;
 </form>
 ```
 The TAL code has two sections:
-1. input form 
+1. input form (with optional toggle for local search-results only inside current site) 
 2. html placeholder for presenting search results and pagination 
 
 The form's request is responded by an XML stream which is transformed into an HTML list by JavaScript. That is why the frontend code need to reference a special, ready to use JS module for handling the search gui:

@@ -11,8 +11,8 @@
 
 REQUEST = zmscontext.REQUEST
 table = zmscontext.attr('table')
-ncols = max(map(lambda x: len(x), table))
-weights = map(lambda x: 1, range( ncols))
+ncols = max([len(x) for x in table])
+weights = [1 for x in range( ncols)]
 for row in table:
     i = 0
     for cell in row:

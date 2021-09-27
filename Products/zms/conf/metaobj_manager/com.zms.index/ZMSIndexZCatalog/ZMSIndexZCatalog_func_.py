@@ -34,7 +34,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
   def writeError(c,s):
     write(logging.ERROR,c,s)
 
-  def catalog_object(catalog,node):
+  def catalog_object(catalog,node,regenerate_duplicates=False):
     # Prepare object.
     for attr_id in zmsindex_index_names:
       attr_name = 'zcat_%s'%attr_id
@@ -44,7 +44,8 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     # Sanity check: if uid is already catalogued we have to generate new uid
     q = catalog({'get_uid':node.get_uid()})
     if len(q) > 0:
-      #node._uid = str(uuid.uuid4())
+      if regenerate_duplicates:
+        node._uid = str(uuid.uuid4())
       writeError(node,'[ZMSIndexZCatalog_func_] WARNING duplicate uid: %s'%node.get_uid())
     # Catalog object.
     catalog.catalog_object(node, path)
@@ -95,6 +96,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
     # Reindex
     ##############################################################################
     elif func_ == 'reindex':
+      regenerate_duplicates = catalog is None
 
       def recreate_catalog():
         writeInfo(self,'[ZMSIndexZCatalog_func_] ### recreate catalog')
@@ -129,7 +131,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
             writeInfo(self,'[ZMSIndexZCatalog_func_] uncatalog_object %s'%path)
             catalog.uncatalog_object(path)
         writeInfo(self,'[ZMSIndexZCatalog_func_] catalog_object %s %s'%(node.getPath(),str(node.get_uid())))
-        catalog_object(catalog,node)
+        catalog_object(catalog,node,regenerate_duplicates)
         for childNode in node.objectValues(meta_types):
           l.extend(visit(childNode))
         return l

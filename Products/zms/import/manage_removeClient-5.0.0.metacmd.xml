@@ -33,6 +33,7 @@ print('<div class="card-body">')
 # --- Execute.
 # ---------------------------------
 if request.form.get('btn')=='BTN_DELETE':
+	context.getHome().manage_delObjects(ids=[context.id]) # remove ZMS seperately to force deleting records from ZMSIndex
 	master.getHome().manage_delObjects(ids=[context.getHome().id])
 	message = []
 	message.append(master.getZMILangStr('MSG_DELETED')%1)

@@ -1538,8 +1538,6 @@ class ZMSObject(ZMSItem.ZMSItem,
           html = self._getBodyContentContentEditable(html)
         else:
           html = self._getBodyContent(REQUEST)
-        # Process html <form>-tags.
-        html = standard.form_quote(html, REQUEST)
       except:
         html = standard.writeError(self, "[renderShort]")
         html = '<br/>'.join(standard.html_quote(html).split('\n'))

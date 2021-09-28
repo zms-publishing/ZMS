@@ -161,7 +161,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     # Management Permissions.
     # -----------------------
     __viewPermissions__ = (
-        'manage', 'manage_main', 'manage_main_iframe', 'manage_container', 'manage_workspace', 'manage_menu',
+        'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
         'manage_ajaxGetChildNodes',
         )
     __authorPermissions__ = (
@@ -187,7 +187,6 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     # Templates.
     # ----------
     manage_properties = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
-    manage_main_iframe = PageTemplateFile('zpt/ZMSObject/manage_main_iframe', globals())
     manage_menu = PageTemplateFile('zpt/object/manage_menu', globals())
     metaobj_recordset_main_grid = PageTemplateFile('zpt/ZMSRecordSet/main_grid', globals())
     metaobj_recordset_main = PageTemplateFile('zpt/ZMSRecordSet/main', globals())

@@ -52,7 +52,7 @@ class ZMSItem(
     # -----------------------
     __viewPermissions__ = (
         'manage_page_header', 'manage_page_footer', 'manage_tabs',
-        'manage', 'manage_main', 'manage_main_iframe', 'manage_container', 'manage_workspace', 'manage_menu',
+        'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
       )
     __ac_permissions__=(
       ('View', __viewPermissions__),
@@ -63,7 +63,6 @@ class ZMSItem(
     manage = PageTemplateFile('zpt/object/manage', globals())
     manage_workspace = PageTemplateFile('zpt/object/manage', globals())
     manage_main = PageTemplateFile('zpt/ZMSObject/manage_main', globals())
-    manage_main_iframe = PageTemplateFile('zpt/ZMSObject/manage_main_iframe', globals())
 
     # --------------------------------------------------------------------------
     #  ZMSItem.zmi_body_content:

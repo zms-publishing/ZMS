@@ -276,7 +276,7 @@ class ZMS(
     # Management Permissions.
     # -----------------------
     __viewPermissions__ = (
-        'manage', 'manage_main', 'manage_main_iframe', 'manage_container', 'manage_workspace', 'manage_menu',
+        'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
         'manage_ajaxGetChildNodes',
         )
     __administratorPermissions__ = (

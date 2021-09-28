@@ -3,12 +3,23 @@
 	<tal:block tal:define="
 			standard modules/Products.zms/standard;
 			action options/action;
+			command options/command;
 			meta_id options/meta_id;
 			dummy0 python:request.set('ZMS_HIDE_ELEMENTS',[]);
 			metaObj python:here.getMetaobj(meta_id);
 			metaObjIds python:here.getMetaobjIds();
 			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
 			objAttrs python:here.getObjAttrs(metaObj['id'])">
+
+<form class="form-horizontal" id="form0" name="form0" tal:attributes="action action" method="post" enctype="multipart/form-data">
+	<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang" />
+	<input type="hidden" id="preview" name="preview" tal:attributes="value request/preview" />
+	<input type="hidden" id="form_id" name="form_id" tal:attributes="value python:DateTime().timeTime()" />
+	<input type="hidden" name="meta_id" tal:attributes="value meta_id" />
+	<input type="hidden" name="ZMS_INSERT" tal:attributes="value python:request.get('ZMS_INSERT',here.meta_id)" />
+	<input type="hidden" id="_sort_id" name="_sort_id:int" tal:attributes="value python:request.get('_sort_id',0)" />
+	<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value python:request.get('id_prefix','')" />
+
 	<div class="card">
 		<div class="card-header attr_last_modified clearfix btn-collapse">
 				<div class="btn-group">
@@ -196,7 +207,7 @@
 							title="Menu Lock: Stay in the menu after clicking the save button.">
 							<input type="checkbox" id="menulock" name="menulock:int" onclick="$ZMILocalStorageAPI.set('ZMS.menulock',this.checked)" value="1" /><i class="fas fa-lock pl-2"></i>
 						</div>
-						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:'BTN_%s'%action.upper()" tal:content="python:here.getZMILangStr('BTN_%s'%action.upper())">Action</button>
+						<button type="submit" name="btn" class="btn btn-primary" tal:attributes="value python:'BTN_%s'%command.upper()" tal:content="python:here.getZMILangStr('BTN_%s'%command.upper())">Action</button>
 						<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
 					</div>
 				</div><!-- .form-row -->
@@ -205,7 +216,18 @@
 
 	</div><!-- .card -->
 
-	<div class="card zmi-container" tal:condition="python:action.lower()!='insert'">
+</form>
+
+	<div class="card zmi-container" tal:condition="python:command.lower()!='insert'">
+
+		<form class="zmi-action-form d-none">
+			<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang" />
+			<input type="hidden" id="preview" name="preview" tal:attributes="value request/preview" />
+			<input type="hidden" id="custom" name="custom" value="" />
+			<input type="hidden" id="_sort_id" name="_sort_id:int" tal:attributes="value python:request.get('_sort_id',0)" />
+			<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value python:request.get('id_prefix','')" />
+		</form>
+
 		<tal:block tal:repeat="metaObjAttrId metaObjAttrIds"
 			><tal:block tal:define="global 
 					metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId);

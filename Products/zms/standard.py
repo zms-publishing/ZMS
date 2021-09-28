@@ -630,19 +630,6 @@ def id_quote(s, mapping={
   return s
 
 
-security.declarePublic('form_quote')
-def form_quote(text, REQUEST):
-  """
-  Remove <form>-tags for Management Interface.
-  """
-  rtn = text
-  if isManagementInterface(REQUEST):
-    rtn = re.sub( '<form(.*?)>', '<noform\\1>', rtn)
-    rtn = re.sub( ' name="lang"', ' name="_lang"', rtn)
-    rtn = re.sub( '</form(.*?)>', '</noform\\1>', rtn)
-  return rtn
-
-
 def qs_append(qs, p, v):
   """
     Append to query-string.

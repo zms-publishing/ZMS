@@ -969,12 +969,10 @@ ZMI.prototype.initInputFields = function(container) {
 					});
 			});
 			// Mandatory
-			if ($(this).hasClass('form-insert')) {
-				$(".form-group label.col-lg-2 control-label.mandatory",this).each(function() {
-					var $label = $(this);
-					$label.prepend('<i class="fas fa-exclamation"></i>');
-				});
-			}
+			$(".form-group label.col-lg-2 control-label.mandatory",this).each(function() {
+				var $label = $(this);
+				$label.prepend('<i class="fas fa-exclamation"></i>');
+			});
 			// Check for intermediate modification by other user
 			$("input,select,textarea",this).each(function() {
 				var $this = $(this);
@@ -1692,7 +1690,7 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 		id_prefix = 'e';
 	}
 	var $el = $(".zmi-action",sender);
-	var $fm = $el.parents("form");
+	var $fm = $(".zmi-action-form");
 	var sort_id = $(".zmi-sort-id",$el).text();
 	$("input[name='custom']").val(label);
 	if (typeof sort_id!="undefined"&&sort_id.length>0&&!isNaN(sort_id)) {
@@ -1758,6 +1756,8 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 				c++;
 			}
 			$("input[name='id_prefix']",$fm).val(id_prefix);
+			$("input[name='ids:list']",$fm).remove();
+			$input.each(function() {if(this.checked)$fm.append(this)});
 			$fm.attr("action",target);
 			$fm.attr("method","POST");
 			$fm.submit();

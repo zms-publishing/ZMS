@@ -189,8 +189,9 @@
 			<th class="meta-default" tal:attributes="title python:here.getZMILangStr('ATTR_DEFAULT')" tal:content="python:'%s/%s'%(here.getZMILangStr('ATTR_DEFAULT'),here.getZMILangStr('OPT_S_CODE'))"></th>
 		</tr>
 
-		<tbody>
-			<tr tal:repeat="objAttrId objAttrIds" tal:attributes="class python:' '.join([]+[[],['zmi-selected']][int(objAttrId==request.get('attr_id'))])">
+		<tbody tal:define="req_attr_id_match python:request.get('attr_id') in objAttrIds">
+			<tr tal:repeat="objAttrId objAttrIds" 
+				tal:attributes="class python:request.get('attr_id') and ( ( req_attr_id_match and request.get('attr_id')==objAttrId ) and 'zmi-selected table-warning' or ( ( not req_attr_id_match and ( len(request.get('attr_id'))>1 and request.get('attr_id') in objAttrId ) ) and  'zmi-selected table-warning' or '' ) );">
 				<tal:block tal:define="
 						objAttr python:metaObjAttrs[objAttrIds.index(objAttrId)];
 						isMetaDictAttr python:int(objAttr['meta_type'] not in [0,'',False,None]);">

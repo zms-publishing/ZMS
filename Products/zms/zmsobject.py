@@ -809,7 +809,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         target_ob = self
         REQUEST.set( 'manage_target', '%s/preview_html'%target_ob.absolute_url())
       target = REQUEST.get( 'manage_target', '%s/manage_main'%target_ob.absolute_url())
-      target = self.url_append_params( target, { 'lang': lang, messagekey: message})
+      target = self.url_append_params( target, { 'lang': lang, messagekey: message},sep='&')
       target = '%s#zmi_item_%s'%( target, self.id)
       if RESPONSE is not None:
         return RESPONSE.redirect( target)

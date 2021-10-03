@@ -6,9 +6,9 @@
 		<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang" />
 		<input type="hidden" id="preview" name="preview" tal:attributes="value request/preview" />
 		<input type="hidden" name="form_id" tal:attributes="value python:DateTime().timeTime()" />
-		<input type="hidden" name="id_prefix" tal:attributes="value python:request['id_prefix']" />
-		<input type="hidden" name="_sort_id:int" tal:attributes="value python:request['_sort_id']" />
-		<input type="hidden" name="ZMS_INSERT" tal:attributes="value python:request['ZMS_INSERT']" />
+		<input type="hidden" id="_sort_id" name="_sort_id:int" tal:attributes="value python:request.get('_sort_id',0)" />
+		<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value python:request.get('id_prefix','')" />
+		<input type="hidden" id="ZMS_INSERT" name="ZMS_INSERT" tal:condition="python:'ZMS_INSERT' in request.form" tal:attributes="value python:request.form.get('ZMS_INSERT','')" />
 		<div class="form-group row"  id="tr_connection_id">
 			<label for="connection_id" class="col-lg-2 control-label mandatory">
 				<span>Connection ID</span>

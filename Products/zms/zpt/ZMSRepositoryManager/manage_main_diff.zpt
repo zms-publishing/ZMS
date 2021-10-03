@@ -89,7 +89,7 @@
 									title python:'State: %s'%(filestate)">&nbsp;
 							</span>
 							<a href="#" 
-								tal:define="attr_id python:len(filename.split(id))>0 and (filename.split(id+'/')[1]).split('.')[0] or id"
+								tal:define="attr_id python:[id,filename.replace(id+'/','').split('.')[0]][len(filename.split(id+'/'))>0]"
 								tal:attributes="
 									onclick python:'javascript:focus_anchorid(\'#%s\');;return false'%(here.id_quote(filename));
 									ondblclick python:'javascript:window.open(\'%s/manage_%s?lang=%s&id=%s&attr_id=%s\', target=\'_blank\')'%(provider.absolute_url(), id=='__metas__' and 'metas' or 'main',request['lang'],id, attr_id);" 

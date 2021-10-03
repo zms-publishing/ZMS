@@ -120,7 +120,7 @@ def importTheme(folder, theme):
   
   else:
     id = filename[:filename.find('-')]
-    _confmanager.initConf(folder.content, id, remote=False)
+    _confmanager.initConf(folder.content, id)
   
   return id
 
@@ -161,13 +161,13 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setConfProperty('ZMS.autocommit', 1)
 
   ### Init ZMS object-model.
-  _confmanager.initConf(obj, 'com.zms.foundation', remote=False)
-  _confmanager.initConf(obj, 'com.zms.foundation.bootstrap', remote=False)
-  _confmanager.initConf(obj, 'com.zms.foundation.theme', remote=False)
-  _confmanager.initConf(obj, 'com.zms.index', remote=False)
+  _confmanager.initConf(obj, 'com.zms.foundation')
+  _confmanager.initConf(obj, 'com.zms.foundation.bootstrap')
+  _confmanager.initConf(obj, 'com.zms.foundation.theme')
+  _confmanager.initConf(obj, 'com.zms.index')
 
   ### Init default-configuration.
-  _confmanager.initConf(obj, 'default', remote=False)
+  _confmanager.initConf(obj, 'default')
 
   ### Init Role-Definitions and Permission Settings.
   obj.initRoleDefs()

@@ -167,6 +167,25 @@ class ZMSMetaobjManager(object):
       return id
 
 
+    """
+    @see IRepositoryProvider
+    """
+    def translateRepositoryModel(self, r):
+      l = []
+      for k in r:
+          v  = r[k]
+          # map attributes
+          v['attrs'] = v.get('Attrs',[])
+          # map Zope-native attributes (py, zpt, etc.)
+          for attr in v['attrs']:
+              if 'data' in attr:
+                  attr['custom'] = attr['data']
+                  del attr['data']
+          d = {'key':k,'value':v}
+          l.append(d)
+      return l
+
+
     ############################################################################
     #
     #  XML IM/EXPORT

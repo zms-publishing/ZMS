@@ -39,11 +39,12 @@ import xml.dom.minidom
 import zExceptions
 from zope.interface import implementer, providedBy
 # Product imports.
-from Products.zms import standard
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
+from Products.zms import standard
 from Products.zms import ZMSFilterManager, IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
 from Products.zms import _exportable
 from Products.zms import _fileutil
+from Products.zms import _repositoryutil
 from Products.zms import _mediadb
 from Products.zms import _multilangmanager
 from Products.zms import _sequence
@@ -97,17 +98,17 @@ class ConfDict(object):
 # ------------------------------------------------------------------------------
 #  _confmanager.initConf:
 # ------------------------------------------------------------------------------
-def initConf(self, profile, remote=True):
+def initConf(self, profile):
   standard.writeBlock( self, '[initConf]: profile='+profile)
   createIfNotExists = True
-  files = self.getConfFiles(remote)
+  files = self.getConfFiles()
   for filename in files:
     label = files[filename]
-    if label.startswith(profile + '.') or label.startswith(profile + '-'):
+    if label.startswith(profile + '-'):
       standard.writeBlock( self, '[initConf]: filename='+filename)
-      if filename.find('.zip') > 0:
+      if filename.endswith('.zip'):
         self.importConfPackage(filename, createIfNotExists)
-      elif filename.find('.xml') > 0:
+      else:
         self.importConf(filename, createIfNotExists=createIfNotExists)
 
 
@@ -171,14 +172,22 @@ class ConfManager(
     # --------------------------------------------------------------------------
     def getConfXmlFile(self, file):
       if isinstance(file, dict):
-        filename = file['filename']
-        xmlfile = StringIO( file['data'])
-      elif isinstance(file, str) and (file.startswith('http://') or file.startswith('https://')):
-        filename = _fileutil.extractFilename(file)
-        xmlfile = StringIO( self.http_import(file))
+          filename = file['filename']
+          xml = file['data']
+          xmlfile = StringIO( xml)
+      elif isinstance(file, str) and (file.startswith('conf:')):
+          filename = file[file.find(':')+1:]
+          basepath = _repositoryutil.get_system_conf_basepath()
+          path = os.path.join(basepath, filename)
+          r = _repositoryutil.readRepository(self, path)
+          container = zopeutil.getObject(self,filename.split(os.path.sep)[0])
+          l = container.translateRepositoryModel(r)
+          xml = standard.toXmlString(self, l)
+          xml = standard.pybytes(xml, "utf-8")
+          xmlfile = standard.PyBytesIO( xml)
       else:
-        filename = _fileutil.extractFilename(file)
-        xmlfile = open(_fileutil.getOSPath(file), 'rb')
+          filename = _fileutil.extractFilename(file)
+          xmlfile = open(_fileutil.getOSPath(file), 'rb')
       return filename, xmlfile
 
 
@@ -189,20 +198,21 @@ class ConfManager(
       message = ''
       syncNecessary = False
       filename, xmlfile = self.getConfXmlFile( file)
+      standard.writeBlock( self, '[importConf]: filename='+filename)
       if not filename.startswith('._'): # ignore hidden files in ZIP created by MacOSX
         if filename.find('.charfmt.') > 0:
           self.format_manager.importCharformatXml(xmlfile, createIfNotExists)
-        elif filename.find('.filter.') > 0:
+        elif filename.find('.filter.') > 0 or filename.startswith('filter_manager'):
           self.getFilterManager().importXml(xmlfile, createIfNotExists)
         elif filename.find('.metadict.') > 0:
           self.getMetaobjManager().importMetadictXml(xmlfile, createIfNotExists)
           syncNecessary = True
-        elif filename.find('.metaobj.') > 0:
+        elif filename.find('.metaobj.') > 0 or filename.startswith('metaobj_manager'):
           self.getMetaobjManager().importMetaobjXml(xmlfile, createIfNotExists)
           syncNecessary = True
-        elif filename.find('.workflow.') > 0:
+        elif filename.find('.workflow.') > 0 or filename.startswith('workflow_manager'):
           self.getWorkflowManager().importXml(xmlfile, createIfNotExists)
-        elif filename.find('.metacmd.') > 0:
+        elif filename.find('.metacmd.') > 0 or filename.startswith('metacmd_manager'):
           self.getMetacmdManager().importXml(xmlfile, createIfNotExists)
         elif filename.find('.langdict.') > 0:
           _multilangmanager.importXml(self, xmlfile, createIfNotExists)
@@ -231,42 +241,18 @@ class ConfManager(
     #  Returns configuration-files from $ZMS_HOME/import-Folder
     # --------------------------------------------------------------------------
     security.declareProtected('ZMS Administrator', 'getConfFiles')
-    def getConfFiles(self, remote=True, pattern=None, REQUEST=None, RESPONSE=None):
+    def getConfFiles(self, pattern=None, REQUEST=None, RESPONSE=None):
       """
       ConfManager.getConfFiles
       """
       filenames = {}
-      filepaths = [
-        standard.getINSTANCE_HOME()+'/etc/zms/import/',
-        package_home(globals())+'/import/',]
-      for filepath in filepaths:
-        filename = os.path.join(filepath, 'configure.zcml')
-        if os.path.exists(filename):
-          standard.writeBlock( self, "[getConfFiles]: Read from "+filename)
-          xmldoc = xml.dom.minidom.parse(filename)
-          for source in xmldoc.getElementsByTagName('source'):
-            location = source.attributes['location'].value
-            if location.startswith('http://') or location.startswith('https://'):
-              if remote:
-                remote_location = location+'configure.zcml'
-                try:
-                  remote_xml = standard.http_import(self, remote_location)
-                  remote_xmldoc = xml.dom.minidom.parseString(remote_xml)
-                  for remote_file in remote_xmldoc.getElementsByTagName('file'):
-                    filename = remote_file.attributes['id'].value
-                    if filename not in filenames:
-                      filenames[location+filename] = filename+' ('+remote_file.attributes['title'].value+')'
-                except:
-                  standard.writeError(self, "[getConfFiles]: can't get conf-files from remote URL=%s"%remote_location)
-            else:
-              for filepath in filepaths:
-                if os.path.exists( filepath):
-                  for filename in os.listdir(filepath + location):
-                    path = filepath + filename
-                    if os.path.isfile(path):
-                      if path not in filenames:
-                        filenames[path] = filename
-          break
+      # Import-Folder.
+      filepath = package_home(globals())+'/import/'
+      for filename in os.listdir(filepath):
+          path = filepath + filename
+          if os.path.isfile(path):
+              if path not in filenames:
+                  filenames[path] = filename
       # Filter.
       if pattern is not None:
         lk = list(filenames)
@@ -280,19 +266,27 @@ class ConfManager(
               i = len(v)
             v = v[:v.find(pattern)]+v[i:]
             filenames[k] = v
+      # Repository.
+      basepath = _repositoryutil.get_system_conf_basepath()
+      for filename in os.listdir(basepath):
+          path = os.path.join(basepath, filename)
+          if os.path.isdir(path):
+              if pattern is None or filename.startswith(pattern[1:-1]):
+                  r = _repositoryutil.readRepository(self, path, deep=False)
+                  for k in r:
+                      v = r[k]
+                      filenames['conf:%s/%s'%(filename,k)] = '%s-%s'%(k,v.get('revision','0.0.0'))   
       # Return.
-      if REQUEST is not None and \
-         RESPONSE is not None:
-        RESPONSE = REQUEST.RESPONSE
-        content_type = 'text/xml; charset=utf-8'
-        filename = 'getConfFiles.xml'
-        RESPONSE.setHeader('Content-Type', content_type)
-        RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
-        RESPONSE.setHeader('Cache-Control', 'no-cache')
-        RESPONSE.setHeader('Pragma', 'no-cache')
-        return self.getXmlHeader() + self.toXmlString( filenames)
-      else:
-        return filenames
+      if REQUEST is not None and RESPONSE is not None:
+          RESPONSE = REQUEST.RESPONSE
+          content_type = 'text/xml; charset=utf-8'
+          filename = 'getConfFiles.xml'
+          RESPONSE.setHeader('Content-Type', content_type)
+          RESPONSE.setHeader('Content-Disposition', 'inline;filename="%s"'%filename)
+          RESPONSE.setHeader('Cache-Control', 'no-cache')
+          RESPONSE.setHeader('Pragma', 'no-cache')
+          return self.getXmlHeader() + self.toXmlString( filenames)
+      return filenames
 
 
     """

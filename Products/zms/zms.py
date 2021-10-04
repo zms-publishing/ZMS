@@ -160,11 +160,12 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setConfProperty('HTTP.proxy', REQUEST.get('http_proxy', ''))
   obj.setConfProperty('ZMS.autocommit', 1)
 
-  ### Init ZMS object-model.
-  _confmanager.initConf(obj, 'com.zms.foundation')
-  _confmanager.initConf(obj, 'com.zms.foundation.bootstrap')
-  _confmanager.initConf(obj, 'com.zms.foundation.theme')
+  ### Init ZMS default content-model.
+  _confmanager.initConf(obj, 'com.zms.foundation*')
   _confmanager.initConf(obj, 'com.zms.index')
+
+  ### Init ZMS default actions.
+  _confmanager.initConf(obj, 'manage_tab_*')
 
   ### Init default-configuration.
   _confmanager.initConf(obj, 'default')

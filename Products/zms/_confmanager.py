@@ -18,6 +18,7 @@
 
 # Imports.
 from __future__ import absolute_import
+from fnmatch import fnmatch
 from io import StringIO
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
@@ -98,13 +99,13 @@ class ConfDict(object):
 # ------------------------------------------------------------------------------
 #  _confmanager.initConf:
 # ------------------------------------------------------------------------------
-def initConf(self, profile):
-  standard.writeBlock( self, '[initConf]: profile='+profile)
+def initConf(self, pattern):
+  standard.writeBlock( self, '[initConf]: pattern='+pattern)
   createIfNotExists = True
   files = self.getConfFiles()
   for filename in files:
     label = files[filename]
-    if label.startswith(profile + '-'):
+    if fnmatch(label,'%s-*'%pattern):
       standard.writeBlock( self, '[initConf]: filename='+filename)
       if filename.endswith('.zip'):
         self.importConfPackage(filename, createIfNotExists)

@@ -181,6 +181,23 @@ class ZMSMetacmdProvider(
         newNodes)
 
 
+    """
+    @see IRepositoryProvider
+    """
+    def translateRepositoryModel(self, r):
+      standard.writeError(self,"##### r\n"+str(r))
+      l = []
+      for k in r:
+          v  = r[k]
+          # map implementation
+          impl = v['Impl'][0]
+          v['meta_type'] = impl['type']
+          v['data'] = impl['data']
+          del v['Impl']
+          l.append(v)
+      return l
+
+
     ############################################################################
     #
     #  XML IM/EXPORT

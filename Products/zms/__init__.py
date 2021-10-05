@@ -44,6 +44,13 @@ from Products.zms import ZMSMetacmdProvider, ZMSMetacmdProviderAcquired
 from Products.zms import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
 from Products.zms import ZMSRepositoryManager
 
+# ### Allow additional Python modules in restricted context
+# ### Use with:
+# ### import pdb; pdb.set_trace()
+# 
+# from AccessControl import allow_module
+# allow_module('pdb')
+
 """ZMS Product"""
 # Documentation string.
 __doc__ = """initialization module."""

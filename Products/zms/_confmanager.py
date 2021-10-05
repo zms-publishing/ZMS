@@ -100,17 +100,20 @@ class ConfDict(object):
 #  _confmanager.initConf:
 # ------------------------------------------------------------------------------
 def initConf(self, pattern):
-  standard.writeBlock( self, '[initConf]: pattern='+pattern)
-  createIfNotExists = True
-  files = self.getConfFiles()
-  for filename in files:
-    label = files[filename]
-    if fnmatch(label,'%s-*'%pattern):
-      standard.writeBlock( self, '[initConf]: filename='+filename)
-      if filename.endswith('.zip'):
-        self.importConfPackage(filename, createIfNotExists)
-      else:
-        self.importConf(filename, createIfNotExists=createIfNotExists)
+    standard.writeBlock( self, '[initConf]: pattern='+pattern)
+    prefix = pattern.split(':')[0]
+    pattern = pattern.split(':')[1]
+    createIfNotExists = True
+    files = self.getConfFiles()
+    for filename in files:
+        if filename.startswith(prefix):
+            label = files[filename]
+            if fnmatch(label,'%s-*'%pattern):
+                standard.writeBlock( self, '[initConf]: filename='+filename)
+                if filename.endswith('.zip'):
+                    self.importConfPackage(filename, createIfNotExists=createIfNotExists)
+                else:
+                    self.importConf(filename, createIfNotExists=createIfNotExists)
 
 
 # ------------------------------------------------------------------------------

@@ -96,32 +96,11 @@ zope.event.subscribers.append(subscriber)
 #  importTheme:
 # ------------------------------------------------------------------------------
 def importTheme(folder, theme):
-  
   filename = _fileutil.extractFilename(theme)
   id = filename[:filename.rfind('.')]
-  
-  if filename.endswith('.zexp'):
-    ### Store copy of ZEXP in INSTANCE_HOME/import-folder.
-    filepath = standard.getINSTANCE_HOME() + '/import/' + filename
-    if theme.startswith('http://'):
-      initutil = standard.initutil()
-      initutil.setConfProperty('HTTP.proxy',REQUEST.get('http_proxy',''))
-      zexp = standard.http_import( initutil, theme)
-      _fileutil.exportObj( zexp, filepath)
-    else:
-      packagepath = package_home(globals()) + '/import/' + filename
-      try:
-        os.stat(_fileutil.getOSPath(filepath))
-      except OSError:
-        shutil.copy( packagepath, filepath)
-    
-    ### Import theme from ZEXP.
-    _fileutil.importZexp( folder, filename)
-  
-  else:
-    id = filename[:filename.find('-')]
-    _confmanager.initConf(folder.content, id)
-  
+  filepath = package_home(globals()) + '/import/'
+  path = filepath + filename
+  folder.content.importConf(path)
   return id
 
 
@@ -161,14 +140,14 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setConfProperty('ZMS.autocommit', 1)
 
   ### Init ZMS default content-model.
-  _confmanager.initConf(obj, 'com.zms.foundation*')
-  _confmanager.initConf(obj, 'com.zms.index')
+  _confmanager.initConf(obj, 'conf:com.zms.foundation*')
+  _confmanager.initConf(obj, 'conf:com.zms.index')
 
   ### Init ZMS default actions.
-  _confmanager.initConf(obj, 'manage_tab_*')
+  _confmanager.initConf(obj, 'conf:manage_tab_*')
 
   ### Init default-configuration.
-  _confmanager.initConf(obj, 'default')
+  _confmanager.initConf(obj, ':default')
 
   ### Init Role-Definitions and Permission Settings.
   obj.initRoleDefs()

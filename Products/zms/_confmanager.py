@@ -103,7 +103,6 @@ def initConf(self, pattern):
     standard.writeBlock( self, '[initConf]: pattern='+pattern)
     prefix = pattern.split(':')[0]
     pattern = pattern.split(':')[1]
-    createIfNotExists = True
     files = self.getConfFiles()
     for filename in files:
         if filename.startswith(prefix):
@@ -111,21 +110,9 @@ def initConf(self, pattern):
             if fnmatch(label,'%s-*'%pattern):
                 standard.writeBlock( self, '[initConf]: filename='+filename)
                 if filename.endswith('.zip'):
-                    self.importConfPackage(filename, createIfNotExists=createIfNotExists)
+                    self.importConfPackage(filename)
                 else:
-                    self.importConf(filename, createIfNotExists=createIfNotExists)
-
-
-# ------------------------------------------------------------------------------
-#  _confmanager.updateConf:
-# ------------------------------------------------------------------------------
-def updateConf(self):
-  createIfNotExists = False
-  for filename in self.getConfFiles():
-    try:
-      self.importConf(filename)
-    except:
-      pass
+                    self.importConf(filename)
 
 
 ################################################################################
@@ -158,7 +145,7 @@ class ConfManager(
     # --------------------------------------------------------------------------
     #  ConfManager.importConfPackage:
     # --------------------------------------------------------------------------
-    def importConfPackage(self, file, createIfNotExists=0):
+    def importConfPackage(self, file):
       
       if isinstance(file, str):
         if file.startswith('http://') or file.startswith('https://'):
@@ -168,7 +155,7 @@ class ConfManager(
       files = _fileutil.getZipArchive( file)
       for f in files:
         if not f.get('isdir'):
-          self.importConf(f, createIfNotExists=createIfNotExists)
+          self.importConf(f)
 
 
     # --------------------------------------------------------------------------
@@ -198,30 +185,30 @@ class ConfManager(
     # --------------------------------------------------------------------------
     #  ConfManager.importConf:
     # --------------------------------------------------------------------------
-    def importConf(self, file, createIfNotExists=0, syncIfNecessary=True):
+    def importConf(self, file, syncIfNecessary=True):
       message = ''
       syncNecessary = False
       filename, xmlfile = self.getConfXmlFile( file)
       standard.writeBlock( self, '[importConf]: filename='+filename)
       if not filename.startswith('._'): # ignore hidden files in ZIP created by MacOSX
         if filename.find('.charfmt.') > 0:
-          self.format_manager.importCharformatXml(xmlfile, createIfNotExists)
+          self.format_manager.importCharformatXml(xmlfile)
         elif filename.find('.filter.') > 0 or filename.startswith('filter_manager'):
-          self.getFilterManager().importXml(xmlfile, createIfNotExists)
+          self.getFilterManager().importXml(xmlfile)
         elif filename.find('.metadict.') > 0:
-          self.getMetaobjManager().importMetadictXml(xmlfile, createIfNotExists)
+          self.getMetaobjManager().importMetadictXml(xmlfile)
           syncNecessary = True
         elif filename.find('.metaobj.') > 0 or filename.startswith('metaobj_manager'):
-          self.getMetaobjManager().importMetaobjXml(xmlfile, createIfNotExists)
+          self.getMetaobjManager().importMetaobjXml(xmlfile)
           syncNecessary = True
         elif filename.find('.workflow.') > 0 or filename.startswith('workflow_manager'):
-          self.getWorkflowManager().importXml(xmlfile, createIfNotExists)
+          self.getWorkflowManager().importXml(xmlfile)
         elif filename.find('.metacmd.') > 0 or filename.startswith('metacmd_manager'):
-          self.getMetacmdManager().importXml(xmlfile, createIfNotExists)
+          self.getMetacmdManager().importXml(xmlfile)
         elif filename.find('.langdict.') > 0:
-          _multilangmanager.importXml(self, xmlfile, createIfNotExists)
+          _multilangmanager.importXml(self, xmlfile)
         elif filename.find('.textfmt.') > 0:
-          self.format_manager.importTextformatXml(xmlfile, createIfNotExists)
+          self.format_manager.importTextformatXml(xmlfile)
         xmlfile.close()
       if syncIfNecessary and syncNecessary:
         self.synchronizeObjAttrs()
@@ -647,13 +634,12 @@ class ConfManager(
       if key == 'Import':
         if btn == 'Import':
           f = REQUEST['file']
-          createIfNotExists = 1
           if f:
             filename = f.filename
-            self.importConfPackage( f, createIfNotExists)
+            self.importConfPackage(f)
           else:
             filename = REQUEST['init']
-            self.importConfPackage( filename, createIfNotExists)
+            self.importConfPackage(filename)
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       ##### History ####
@@ -924,7 +910,7 @@ class ConfManager(
           getProcessIds__roles__ = None
           def getProcessIds(self, sort=True): return []
           importXml__roles__ = None
-          def importXml(self, xml, createIfNotExists=True): pass
+          def importXml(self, xml): pass
         manager = [DefaultManager()]
       return manager[0]
 

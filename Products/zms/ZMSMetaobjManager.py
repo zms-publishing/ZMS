@@ -195,13 +195,12 @@ class ZMSMetaobjManager(object):
     # --------------------------------------------------------------------------
     #  ZMSMetaobjManager.importMetaobjXml
     # --------------------------------------------------------------------------
-    def _importMetaobjXml(self, item, createIfNotExists=1, createIdsFilter=None):
+    def _importMetaobjXml(self, item, createIdsFilter=None):
       ids = []
       id = item['key']
       standard.writeBlock(self,'[ZMSMetaobjManager._importMetaobjXml]: id=%s'%str(id))
       meta_types = list(self.model)
-      if (createIfNotExists == 1) and \
-         (createIdsFilter is None or (id in createIdsFilter)):
+      if createIdsFilter is None or (id in createIdsFilter):
         # Register Meta Attributes.
         metadictAttrs = []
         if id in meta_types:
@@ -220,12 +219,14 @@ class ZMSMetaobjManager(object):
         if id in ids:
           self.delMetaobj( id)
         # Set Object.
+        standard.writeBlock(self,'[ZMSMetaobjManager._importMetaobjXml]: setMetaobj(%s)'%str(id))
         self.setMetaobj( newValue)
         # Set Attributes.
         attr_ids = []
         for attr in newAttrs:
           # Mandatory.
           attr_id = attr['id']
+          standard.writeBlock(self,'[ZMSMetaobjManager._importMetaobjXml]: setMetaobjAttr(%s,%s)'%(str(id),str(attr_id)))
           newName = attr['name']
           newMandatory = attr.get('mandatory', 0)
           newMultilang = attr.get('multilang', 0)
@@ -278,14 +279,14 @@ class ZMSMetaobjManager(object):
             attr_ids.append(attr_id)
       return id
 
-    def importMetaobjXml(self, xml, createIfNotExists=1, createIdsFilter=None):
+    def importMetaobjXml(self, xml, createIdsFilter=None):
       self.REQUEST.set( '__get_metaobjs__', True)
       ids = []
       v = standard.parseXmlString(xml)
       if not isinstance(v, list):
         v = [v]
       for item in v:
-        id = self._importMetaobjXml(item, createIfNotExists, createIdsFilter)
+        id = self._importMetaobjXml(item, createIdsFilter)
         ids.append( id)
       if len( ids) == 1:
         ids = ids[ 0]

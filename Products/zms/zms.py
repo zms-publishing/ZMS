@@ -95,12 +95,12 @@ zope.event.subscribers.append(subscriber)
 # ------------------------------------------------------------------------------
 #  importTheme:
 # ------------------------------------------------------------------------------
-def importTheme(folder, theme):
+def importTheme(self, theme):
   filename = _fileutil.extractFilename(theme)
-  id = filename[:filename.rfind('.')]
+  id = filename[:filename.rfind('-')]
   filepath = package_home(globals()) + '/import/'
   path = filepath + filename
-  folder.content.importConf(path)
+  self.importConf(path)
   return id
 
 
@@ -199,7 +199,7 @@ def manage_addZMS(self, lang, manage_lang, REQUEST, RESPONSE):
     obj = initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
     
     ##### Add Theme ####
-    themeId = importTheme(homeElmnt,REQUEST['theme'])
+    themeId = importTheme(obj,REQUEST['theme'])
     obj.setConfProperty('ZMS.theme',themeId)
 
     ##### Default content ####

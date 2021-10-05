@@ -185,7 +185,6 @@ class ZMSMetacmdProvider(
     @see IRepositoryProvider
     """
     def translateRepositoryModel(self, r):
-      standard.writeError(self,"##### r\n"+str(r))
       l = []
       for k in r:
           v  = r[k]
@@ -207,9 +206,8 @@ class ZMSMetacmdProvider(
     # ------------------------------------------------------------------------------
     #  ZMSMetacmdProvider.importXml
     # ------------------------------------------------------------------------------
-    def _importXml(self, item, createIfNotExists=1):
-      id = item['id']
-      if createIfNotExists == 1:
+    def _importXml(self, item):
+        id = item['id']
         
         # Delete existing object.
         try: self.delMetacmd(id)
@@ -235,13 +233,13 @@ class ZMSMetacmdProvider(
           newData, newExecution, newDescription, newIconClazz, newMetaTypes, newRoles, \
           newNodes)
 
-    def importXml(self, xml, createIfNotExists=1):
+    def importXml(self, xml):
       v = standard.parseXmlString(xml)
       if isinstance(v, list):
         for item in v:
-          id = self._importXml(item, createIfNotExists)
+          id = self._importXml(item)
       else:
-        id = self._importXml(v, createIfNotExists)
+        id = self._importXml(v)
 
 
     # ------------------------------------------------------------------------------
@@ -564,7 +562,7 @@ class ZMSMetacmdProvider(
             self.importXml(xml=f)
           else:
             filename = REQUEST['init']
-            self.importConf(filename, createIfNotExists=1)
+            self.importConf(filename)
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%f.filename)
         
         # Insert.

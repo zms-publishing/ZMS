@@ -46,8 +46,7 @@ class ZMSCharformatManager(object):
     #  ZMSCharformatManager.importCharformatXml
     # --------------------------------------------------------------------------
 
-    def _importCharformatXml(self, item, createIfNotExists=1):
-      if createIfNotExists == 1:
+    def _importCharformatXml(self, item):
         newId = self.id_quote(item.get('display', ''))
         if len(newId) == 0:
           newId = self.getNewId('fmt')
@@ -61,13 +60,13 @@ class ZMSCharformatManager(object):
         # Make persistent.
         self.charformats = copy.deepcopy(self.charformats)
 
-    def importCharformatXml(self, xml, createIfNotExists=1):
+    def importCharformatXml(self, xml):
       v = self.parseXmlString(xml)
       if isinstance(v, list):
         for item in v:
-          self._importCharformatXml(item, createIfNotExists)
+          self._importCharformatXml(item)
       else:
-        self._importCharformatXml(v, createIfNotExists)
+        self._importCharformatXml(v)
 
 
     # --------------------------------------------------------------------------
@@ -197,7 +196,7 @@ class ZMSCharformatManager(object):
           self.importCharformatXml(xml=f)
         else:
           filename = REQUEST['init']
-          self.importConf(filename, createIfNotExists=1)
+          self.importConf(filename)
         message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       # Move to.

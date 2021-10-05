@@ -205,7 +205,7 @@ class ZMSFilterManager(
     #  importXml
     # ------------------------------------------------------------------------------
     
-    def _importXml(self, item, createIfNotExists=True):
+    def _importXml(self, item):
       itemType = item.get('type')
       itemOb = item.get('value')
       if itemType == 'filter':
@@ -217,10 +217,9 @@ class ZMSFilterManager(
         newDescription = itemOb.get('description', '')
         newRoles = itemOb.get('roles', [])
         newMetaTypes = itemOb.get('meta_types', [])
-        if createIfNotExists:
-          self.setFilter(None, newId, newAcquired, newName, newFormat, newContentType, newDescription, newRoles, newMetaTypes)
-          index = 0
-          for process in itemOb.get('processes', []):
+        self.setFilter(None, newId, newAcquired, newName, newFormat, newContentType, newDescription, newRoles, newMetaTypes)
+        index = 0
+        for process in itemOb.get('processes', []):
             newProcessId = process.get('id')
             newProcessFile = process.get('file')
             self.setFilterProcess(newId, index, newProcessId, newProcessFile)
@@ -231,18 +230,17 @@ class ZMSFilterManager(
         newName = itemOb.get('name')
         newType = itemOb.get('type', 'process')
         newCommand = itemOb.get('command')
-        if createIfNotExists:
-          self.setProcess(None, newId, newAcquired, newName, newType, newCommand)
+        self.setProcess(None, newId, newAcquired, newName, newType, newCommand)
       else:
         standard.writeError(self, "[_importXml]: Unknown type >%s<"%itemType)
     
-    def importXml(self, xml, createIfNotExists=True):
+    def importXml(self, xml):
       v = standard.parseXmlString(xml)
       if isinstance(v, list):
         for item in v:
-          id = self._importXml(item, createIfNotExists)
+          id = self._importXml(item)
       else:
-        id = self._importXml(v, createIfNotExists)
+        id = self._importXml(v)
     
     # ------------------------------------------------------------------------------
     #  exportXml
@@ -622,7 +620,7 @@ class ZMSFilterManager(
           self.importXml(xml=f)
         else:
           filename = REQUEST['init']
-          self.importConf(filename, createIfNotExists=True)
+          self.importConf(filename)
         message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%filename)
       
       # Insert.
@@ -766,7 +764,7 @@ class ZMSFilterManager(
           self.importXml(xml=f)
         else:
           filename = REQUEST['init']
-          self.importConf(filename, createIfNotExists=True)
+          self.importConf(filename)
         message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%filename)
 
       # Insert.

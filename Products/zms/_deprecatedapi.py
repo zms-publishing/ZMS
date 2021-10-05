@@ -380,7 +380,7 @@ class DeprecatedAPI(object):
     warn(self, 'aggregate_list', 'Products.zms.standard.aggregate_list')
     return standard.aggregate_list(l, i)
 
-  def url_append_params(self, url, dict, sep='&amp;'):
+  def url_append_params(self, url, dict, sep='&'):
     warn(self, 'url_append_params', 'Products.zms.standard.url_append_params')
     return standard.url_append_params(url, dict, sep)
 

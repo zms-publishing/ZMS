@@ -199,7 +199,7 @@ class ZMSWorkflowProvider(
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProvider.importXml
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    def importXml(self, xml, createIfNotExists=1):
+    def importXml(self, xml):
       ids = [self.activities[x*2] for x in range(len(self.activities)//2)]
       for id in ids:
         self.delItem(id, 'activities')

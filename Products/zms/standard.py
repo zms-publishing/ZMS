@@ -257,7 +257,7 @@ def umlaut_quote(s, mapping={}):
 
 
 security.declarePublic('url_append_params')
-def url_append_params(url, dict, sep='&amp;'):
+def url_append_params(url, dict, sep='&'):
   """
   Append params from dict to given url.
   @param url: Url

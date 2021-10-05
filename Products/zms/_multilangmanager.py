@@ -31,8 +31,7 @@ from Products.zms import standard
 # ------------------------------------------------------------------------------
 #  importXml
 # ------------------------------------------------------------------------------
-def _importXml(self, item, createIfNotExists=1):
-  if createIfNotExists:
+def _importXml(self, item):
     key = item['key']
     lang_dict = self.get_lang_dict()
     lang_dict[key] = {}
@@ -41,7 +40,7 @@ def _importXml(self, item, createIfNotExists=1):
         lang_dict[key][langId] = item[langId]
     self.setConfProperty('ZMS.custom.langs.dict', lang_dict.copy())
 
-def importXml(self, xml, createIfNotExists=1):
+def importXml(self, xml):
   if not isinstance(xml, str):
     xml = xml.read()
   value = standard.parseXmlString(xml)
@@ -71,9 +70,9 @@ def importXml(self, xml, createIfNotExists=1):
           r += 1
   if isinstance(value, list):
     for item in value:
-      _importXml( self, item, createIfNotExists)
+      _importXml( self, item)
   else:
-    _importXml( self, value, createIfNotExists)
+    _importXml( self, value)
 
 def exportXml(self, ids, REQUEST=None, RESPONSE=None):
   value = []
@@ -658,7 +657,7 @@ class MultiLanguageManager(object):
             importXml(self, xml=f)
           else:
             filename = REQUEST['init']
-            self.importConf(filename, createIfNotExists=1)
+            self.importConf(filename)
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
         
         # Return with message.

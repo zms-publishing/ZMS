@@ -43,7 +43,7 @@ class ZMSTextformatManager(object):
     #  ZMSTextformatManager.importTextformatXml
     # --------------------------------------------------------------------------
 
-    def _importTextformatXml(self, item, createIfNotExists=1):
+    def _importTextformatXml(self, item):
       id = item['key']
       dict = item['value']
       dict['default'] = dict.get('default', 0)
@@ -55,13 +55,13 @@ class ZMSTextformatManager(object):
       # Make persistent.
       self.textformats = copy.deepcopy(self.textformats)
 
-    def importTextformatXml(self, xml, createIfNotExists=1):
+    def importTextformatXml(self, xml):
       v = standard.parseXmlString(xml)
       if isinstance(v, list):
         for item in v:
-          self._importTextformatXml(item, createIfNotExists)
+          self._importTextformatXml(item)
       else:
-        self._importTextformatXml(v, createIfNotExists)
+        self._importTextformatXml(v)
 
 
     # --------------------------------------------------------------------------
@@ -219,7 +219,7 @@ class ZMSTextformatManager(object):
           self.importTextformatXml(xml=f)
         else:
           filename = REQUEST['init']
-          self.importConf(filename, createIfNotExists=1)
+          self.importConf(filename)
         message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       # Return with message.

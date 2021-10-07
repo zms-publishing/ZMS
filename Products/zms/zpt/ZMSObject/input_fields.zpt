@@ -17,7 +17,12 @@
 	<input type="hidden" id="form_id" name="form_id" tal:attributes="value python:DateTime().timeTime()" />
 	<input type="hidden" id="_sort_id" name="_sort_id:int" tal:attributes="value python:request.get('_sort_id',0)" />
 	<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value python:request.get('id_prefix','')" />
+
+	<input type="hidden" name="meta_id" tal:attributes="value meta_id" />
+	<input type="hidden" name="ZMS_INSERT" tal:attributes="value python:request.get('ZMS_INSERT',here.meta_id)" />
+<!--
 	<input type="hidden" id="ZMS_INSERT" name="ZMS_INSERT" tal:condition="python:'ZMS_INSERT' in request.form" tal:attributes="value python:request.form.get('ZMS_INSERT','')" />
+-->
 
 	<div class="card">
 		<div class="card-header attr_last_modified clearfix btn-collapse">

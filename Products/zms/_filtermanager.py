@@ -54,7 +54,9 @@ def processData(self, processId, data, trans=None):
   _fileutil.exportObj(data, filename)
   # Save transformation to file.
   if trans:
-    transfilename = _fileutil.getOSPath('%s/%s'%(folder, trans.getId()))
+    transid = trans.getId()
+    transid = '.'.join(transid.split('.')[2:]) # <process-id>.<process-nr>.<filename>
+    transfilename = os.path.join(folder, transid)
     _fileutil.exportObj(trans, transfilename)
   # Process file.
   filename = processFile(self, processId, filename, trans)
@@ -281,7 +283,9 @@ class FilterItem(object):
         trans = ob_process.get('file')
         # Save transformation to file.
         if trans:
-          transfilename = '%s/%s'%(folder,trans.getId())
+          transid = trans.getId()
+          transid = '.'.join(transid.split('.')[2:]) # <process-id>.<process-nr>.<filename>
+          transfilename = os.path.join(folder,transid)
           _fileutil.exportObj( trans, transfilename)
         if processType in [ 'DTML Method', 'External Method', 'Script (Python)']:
           filename = processMethod(self, processId, filename, trans, REQUEST)

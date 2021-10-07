@@ -125,7 +125,7 @@ class ZMSContainerObject(
 
     # Role Manager.
     # -------------
-    def manage_addZMSCustom(self, meta_id, values={}, REQUEST=None):
+    def manage_addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
       """
       Add a custom node of the type designated by meta_id in current context.
       @param meta_id: the meta-id / type of the new ZMSObject
@@ -137,8 +137,9 @@ class ZMSContainerObject(
       @return: the new node
       @rtype: C{zmsobject.ZMSObject}
       """
-      values['meta_id'] = meta_id
-      return self.manage_addZMSObject('ZMSCustom', values, REQUEST)
+      request = self.REQUEST
+      values['meta_id'] = request.get('ZMS_INSERT',meta_id)
+      return self.manage_addZMSObject('ZMSCustom', values, request)
 
 
     # --------------------------------------------------------------------------

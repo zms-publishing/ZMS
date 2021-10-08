@@ -18,9 +18,6 @@
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.ExternalMethod import ExternalMethod
-from Products.PageTemplates import ZopePageTemplate
-from Products.PythonScripts import PythonScript
 import ZPublisher.HTTPRequest
 import copy
 import os
@@ -41,6 +38,14 @@ from Products.zms import zopeutil
 ################################################################################
 """
 
+def getTransFilename(self, folder, trans):
+      transid = trans.getId()
+      transid = '.'.join(transid.split('.')[2:]) # <process-id>.<process-nr>.<filename>
+      transfilename = os.path.join(folder, transid)
+      standard.writeLog(self,"[getTransFilename]: transfilename=%s"%(transfilename))
+      return transfilename
+
+
 # ------------------------------------------------------------------------------
 #  _filtermanager.processData:
 #
@@ -54,10 +59,7 @@ def processData(self, processId, data, trans=None):
   _fileutil.exportObj(data, filename)
   # Save transformation to file.
   if trans:
-    transid = trans.getId()
-    transid = '.'.join(transid.split('.')[2:]) # <process-id>.<process-nr>.<filename>
-    transfilename = os.path.join(folder, transid)
-    _fileutil.exportObj(trans, transfilename)
+      _fileutil.exportObj(trans, getTransFilename(self, folder, trans))
   # Process file.
   filename = processFile(self, processId, filename, trans)
   # Read data from file.
@@ -66,7 +68,7 @@ def processData(self, processId, data, trans=None):
   f.close()
   # Remove temporary folder.
   if not self.getConfProperty('ZMS.debug', 0):
-    _fileutil.remove(folder, deep=1)
+      _fileutil.remove(folder, deep=1)
   # Return data.
   return data
 
@@ -77,7 +79,7 @@ def processData(self, processId, data, trans=None):
 #  Process DTML method.
 # ------------------------------------------------------------------------------
 def processMethod(self, processId, filename, trans, REQUEST):
-  standard.writeLog( self, '[processMethod]: processId=%s'%processId)
+  standard.writeBlock( self, '[processMethod]: processId=%s'%processId)
   infilename = filename
   outfilename = filename
   REQUEST.set( 'ZMS_FILTER_IN', infilename)
@@ -85,10 +87,10 @@ def processMethod(self, processId, filename, trans, REQUEST):
   REQUEST.set( 'ZMS_FILTER_TRANS', trans)
   REQUEST.set( 'ZMS_FILTER_CUR_DIR', _fileutil.getFilePath(infilename))
   try:
-    process = zopeutil.getObject( self.getFilterManager(), processId) 
-    value = zopeutil.callObject( process, self)
+      process = zopeutil.getObject( self.getFilterManager(), processId) 
+      value = zopeutil.callObject( process, self)
   except:
-    value = standard.writeError( self, '[processMethod]: processId=%s'%processId)
+      value = standard.writeError( self, '[processMethod]: processId=%s'%processId)
   outfilename = REQUEST.get( 'ZMS_FILTER_OUT')
   # Return filename.
   return outfilename
@@ -100,7 +102,7 @@ def processMethod(self, processId, filename, trans, REQUEST):
 #  Process file with command.
 # ------------------------------------------------------------------------------
 def processCommand(self, filename, command):
-  standard.writeLog( self, '[processCommand]: infilename=%s'%filename)
+  standard.writeBlock( self, '[processCommand]: infilename=%s'%filename)
   infilename = _fileutil.getOSPath( filename)
   outfilename = _fileutil.getOSPath( filename)
   mCurDir = '{cur_dir}'
@@ -108,13 +110,13 @@ def processCommand(self, filename, command):
   mOut = '{out}'
   i = command.find(mOut[:-1])
   if i >= 0:
-    j = command.find('}', i)
-    mExt = command[i+len(mOut[:-1]):j]
-    mOut = command[i:j+1]
-    if len(mExt) > 0:
-      outfilename = outfilename[:outfilename.rfind('.')] + mExt
-    else:
-      outfilename += '.tmp'
+      j = command.find('}', i)
+      mExt = command[i+len(mOut[:-1]):j]
+      mOut = command[i:j+1]
+      if len(mExt) > 0:
+          outfilename = outfilename[:outfilename.rfind('.')] + mExt
+      else:
+          outfilename += '.tmp'
   tmpoutfilename = outfilename + '~'
   instance_home = standard.getINSTANCE_HOME()
   package_home = standard.getPACKAGE_HOME()
@@ -126,28 +128,28 @@ def processCommand(self, filename, command):
   command = command.replace( mOut, tmpoutfilename)
   # Change directory (deprecated!).
   if self.getConfProperty('ZMS.filtermanager.processCommand.chdir', 0):
-    path = _fileutil.getFilePath(filename)
-    standard.writeLog( self, '[processCommand]: path=%s'%path)
-    os.chdir(path)
+      path = _fileutil.getFilePath(filename)
+      standard.writeBlock( self, '[processCommand]: path=%s'%path)
+      os.chdir(path)
   # Execute command.
-  standard.writeLog( self, '[processCommand]: command=%s'%command)
+  standard.writeBlock( self, '[processCommand]: command=%s'%command)
   os.system(command)
   # Check if output file exists.
   try: 
-    os.stat( _fileutil.getOSPath( tmpoutfilename)) 
-    standard.writeLog( self, '[processCommand]: rename %s to %s'%( tmpoutfilename, outfilename))
-    try:
-      os.remove( outfilename)
-    except OSError:
-      pass
-    os.rename( tmpoutfilename, outfilename)
+      os.stat( _fileutil.getOSPath( tmpoutfilename)) 
+      standard.writeBlock( self, '[processCommand]: rename %s to %s'%( tmpoutfilename, outfilename))
+      try:
+          os.remove( outfilename)
+      except OSError:
+          pass
+      os.rename( tmpoutfilename, outfilename)
   except OSError:
-    outfilename = infilename
+      outfilename = infilename
   # Remove input file if it is the result of a transformation of output file.
   if outfilename != infilename:
-    os.remove( infilename)
+      os.remove( infilename)
   # Return filename.
-  standard.writeLog( self, '[processCommand]: outfilename=%s'%( outfilename))
+  standard.writeBlock( self, '[processCommand]: outfilename=%s'%( outfilename))
   return outfilename
 
 
@@ -157,14 +159,13 @@ def processCommand(self, filename, command):
 #  Process file with custom transformation.
 # ------------------------------------------------------------------------------
 def processFile(self, processId, filename, trans=None):
-  standard.writeLog( self, '[processFile]: processId=%s'%processId)
+  standard.writeBlock( self, '[processFile]: processId=%s'%processId)
   folder = _fileutil.getFilePath(filename)
   processOb = self.getFilterManager().getProcess(processId)
   command = processOb.get('command')
   # Save transformation to file.
   if trans:
-    transfilename = '%s/%s'%( folder, trans.getId())
-    command = command.replace( '{trans}', transfilename)
+      command = command.replace( '{trans}', getTransFilename(self, folder, trans))
   # Execute command.
   filename = processCommand(self, filename, command)
   # Return filename.
@@ -212,7 +213,7 @@ def exportFilter(self, id, REQUEST):
     data = _fileutil.buildZipArchive( outfilename, get_data=True)
   # Read File.
   else:
-    standard.writeLog( self, '[exportFilter]: Read %s'%outfilename)
+    standard.writeBlock( self, '[exportFilter]: Read %s'%outfilename)
     f = open(outfilename, 'rb')
     data = f.read()
     f.close()
@@ -277,16 +278,15 @@ class FilterItem(object):
     # --------------------------------------------------------------------------
     def execProcessFilter(self, ob_process, folder, filename, REQUEST):
       processId = ob_process.get( 'id')
+      standard.writeBlock(self,"[execProcessFilter]: processId=%s"%(processId))
       processOb = self.getFilterManager().getProcess(processId)
       if processOb is not None:
         processType = processOb.get( 'type', 'process')
+        standard.writeBlock(self,"[execProcessFilter]: processId=%s, processType=%s"%(processId,processType))
         trans = ob_process.get('file')
         # Save transformation to file.
         if trans:
-          transid = trans.getId()
-          transid = '.'.join(transid.split('.')[2:]) # <process-id>.<process-nr>.<filename>
-          transfilename = os.path.join(folder,transid)
-          _fileutil.exportObj( trans, transfilename)
+          _fileutil.exportObj( trans, getTransFilename(self, folder, trans))
         if processType in [ 'DTML Method', 'External Method', 'Script (Python)']:
           filename = processMethod(self, processId, filename, trans, REQUEST)
         else:

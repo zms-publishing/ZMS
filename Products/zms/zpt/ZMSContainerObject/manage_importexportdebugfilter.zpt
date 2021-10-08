@@ -82,7 +82,7 @@
 				dummy0      python:request.set('outfilename',tpl[1]);
 				"></tal:block>
 	</tal:block>
-	<tal:block tal:condition="python:step>0">
+	<tal:block tal:condition="python:step>0 and step <= len(filterProcesses)">
 		<tal:block define="global
 				dummy0 python:request.set('outfilename',here.execProcessFilter(filterProcesses[step-1],request['tempfolder'],request['outfilename'],request));
 				dummy0 python:request.RESPONSE.setHeader('Content-Type','text/html\073charset=%s'%request['ZMS_CHARSET']);

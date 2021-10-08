@@ -252,6 +252,13 @@ class ZMSFilterManager(
       for id in self.getFilterIds():
         if id in ids or len(ids) == 0:
           ob = self.getFilter(id).copy()
+          ob['processes'] = []
+          for fp in self.getFilterProcesses(id):
+            p = {}
+            p['id'] = fp['id']
+            if 'file'in fp:
+              p['file'] = fp['file']
+            ob['processes'].append(fp)
           value.append({'type':'filter','value':ob})
           filterIds.append(id)
       for id in self.getProcessIds():

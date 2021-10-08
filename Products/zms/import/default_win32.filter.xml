@@ -4393,9 +4393,9 @@ show-body-only: yes
 <item key="type"><![CDATA[process]]></item>
 <item key="value" type="dictionary"><dictionary>
 <item key="acquired" type="int">0</item>
-<item key="command"><![CDATA[java -jar C:\Programme\zms\saxon\saxon.jar {in} {trans} > {out.xml}]]></item>
+<item key="command"><![CDATA[xalan -in {in} -xsl {trans} -out {out.xml}]]></item>
 <item key="id"><![CDATA[xslt]]></item>
-<item key="name"><![CDATA[XSLT (Saxon)]]></item>
+<item key="name"><![CDATA[XSLT (Xalan)]]></item>
 <item key="type"><![CDATA[process]]></item>
 </dictionary>
 </item>
@@ -4405,9 +4405,9 @@ show-body-only: yes
 <item key="type"><![CDATA[process]]></item>
 <item key="value" type="dictionary"><dictionary>
 <item key="acquired" type="int">0</item>
-<item key="command"><![CDATA[java -jar C:\Programme\zms\saxon\saxon.jar {in} {cur_dir}/trans.xsl > {out.xml}]]></item>
+<item key="command"><![CDATA[xalan -in {in} -xsl {cur_dir}/trans.xsl -out {out.xml}]]></item>
 <item key="id"><![CDATA[xslt_trans_xsl]]></item>
-<item key="name"><![CDATA[XSLT (Saxon) {cur_dir}/trans.xsl]]></item>
+<item key="name"><![CDATA[XSLT (Xalan) {cur_dir}/trans.xsl]]></item>
 <item key="type"><![CDATA[process]]></item>
 </dictionary>
 </item>

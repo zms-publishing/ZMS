@@ -42,10 +42,7 @@ if request.form.get('btn')=='BTN_DELETE':
 # --- Display initial insert form.
 # ---------------------------------
 else:
-	print('<div class="form-group row">')
-	print('<label for="old" class="col-sm-2 control-label mandatory"><i class="fas fa-question-circle text-danger"></i></label>')
-	print('<div class="col-sm-10">Do you really want to remove ZMS-Client?</div>')
-	print('</div><!-- .form-group -->')
+	print('<div class="alert alert-danger">Do you really want to remove ZMS-Client?</div>')
 	print('<div class="form-row">')
 	print('<div class="controls save">')
 	print('<button type="submit" name="btn" class="btn btn-primary" value="BTN_DELETE">%s</button> '%(context.getZMILangStr('BTN_DELETE')))
@@ -76,7 +73,7 @@ return printed
         </list>
       </item>
       <item key="name"><![CDATA[Remove ZMS-Client...]]></item>
-      <item key="revision">5.0.0</item>
+      <item key="revision">5.0.1</item>
       <item key="roles" type="list">
         <list>
           <item>ZMSAdministrator</item>

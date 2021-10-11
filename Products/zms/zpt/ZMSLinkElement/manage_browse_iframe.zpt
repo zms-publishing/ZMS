@@ -14,6 +14,9 @@
 .zmi.browse_iframe .tab-content {
 	padding-top:50px;
 }
+.zmi.browse_iframe .tab-content .zmi-filter .input-group-prepend > .input-group-text {
+	padding: 0rem 0.62rem;
+}
 .zmi.browse_iframe .tabbable .tab-pane form {
 	box-shadow:none;
 	border:none;

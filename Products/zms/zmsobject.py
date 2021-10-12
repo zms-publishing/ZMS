@@ -615,7 +615,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         name = self.evalMetaobjAttr( '%s.%s'%(id, 'icon_clazz'))
         if not name:
           metaObj = self.getMetaobj(id)
-          names = {'ZMSResource':'fas fa-asterisk icon-asterisk','ZMSLibrary':'fas fa-flask icon-beaker','ZMSPackage':'fas fa-suitcase icon-suitcase','ZMSRecordSet':'far fa-list-alt icon-list','ZMSReference':'fas fa-link icon-link'}
+          names = {'ZMSResource':'fas fa-asterisk icon-asterisk','ZMSLibrary':'fas fa-flask icon-beaker','ZMSPackage':'fas fa-suitcase icon-suitcase','ZMSRecordSet':'far fa-list-alt icon-list','ZMSReference':'fas fa-link icon-link','ZMSTrashcan':'fas fa-trash'}
           name = names.get(metaObj.get('type'), 'icon-file-alt')
         if meta_type is None:
           constraints = self.attr('check_constraints')

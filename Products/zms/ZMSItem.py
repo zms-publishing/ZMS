@@ -52,7 +52,7 @@ class ZMSItem(
     # -----------------------
     __viewPermissions__ = (
         'manage_page_header', 'manage_page_footer', 'manage_tabs',
-        'manage', 'manage_main', 'manage_container', 'manage_workspace', 'manage_menu',
+        'manage', 'manage_main', 'manage_workspace', 'manage_menu',
       )
     __ac_permissions__=(
       ('View', __viewPermissions__),

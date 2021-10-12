@@ -85,7 +85,7 @@ def addObject(container, meta_type, id, title, data, permissions={}):
   elif meta_type == 'Script (Python)':
     addPythonScript( container, id, title, data)
   elif meta_type == 'Folder':
-    addFolder( container, id, title, data)
+    addFolder( container, id, title)
   elif meta_type == 'Z SQL Method':
     addZSqlMethod( container, id, title, data)
   initPermissions(container, id, permissions)
@@ -284,7 +284,7 @@ def addPythonScript(container, id, title, data):
   ob.write( data)
   initPermissions(container, id)
 
-def addFolder(container, id, title, data):
+def addFolder(container, id, title):
   """
   Add Folder to container.
   """

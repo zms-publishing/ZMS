@@ -926,8 +926,9 @@ class ZMSObject(ZMSItem.ZMSItem,
       return href
       
     #++
-    def getAbsoluteUrlInContext(self, context):
-      index_html = self.absolute_url()
+    def getAbsoluteUrlInContext(self, context, index_html=None):
+      context = standard.nvl(context,self)
+      index_html = standard.nvl(index_html,self.absolute_url())
       if self.REQUEST.get('ZMS_CONTEXT_URL', False) or self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.forced', False) or self.getHome() != context.getHome():
         protocol = self.getConfProperty('ASP.protocol', 'http')
         domain = self.getConfProperty('ASP.ip_or_domain', None)
@@ -945,6 +946,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     
     #++
     def getHref2IndexHtmlInContext(self, context, index_html=None, REQUEST=None, deep=1):
+      context = standard.nvl(context,self)
       if index_html is None:
         index_html = self.getHref2IndexHtml(REQUEST, deep)
       if REQUEST.get('ZMS_CONTEXT_URL', False) or self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.forced', False) or self.getHome() != context.getHome():

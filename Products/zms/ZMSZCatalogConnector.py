@@ -33,6 +33,9 @@ from Products.zms import ZMSItem
 from Products.zms import _globals
 
 
+# ------------------------------------------------------------------------------
+#  ZMSZCatalogConnector.extra_column_ids:
+# ------------------------------------------------------------------------------
 extra_column_ids = ['loc', 'index_html', 'custom']
 
 

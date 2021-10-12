@@ -84,7 +84,9 @@ class ZMSItem(
     def zmi_body_class(self, *args, **kwargs):
       request = self.REQUEST
       l = ['zmi','zms', 'loading']
-      l.append(request['lang'])
+      l.append(request.get('lang'))
+      l.append('lang-%s'%(request.get('lang')))
+      l.append('manage_lang-%s'%(request.get('manage_lang')))
       l.extend(kwargs.values())
       l.append(self.meta_id)
       # FOR EVALUATION: adding node specific css classes [list]

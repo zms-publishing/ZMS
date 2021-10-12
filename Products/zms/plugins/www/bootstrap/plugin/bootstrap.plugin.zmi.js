@@ -487,45 +487,6 @@ $ZMI.registerReady(function(){
 				$ZMI.actionList.out(this);
 			})
 		;
-	// Additional Add Button
-	// var c = 0;
-	// $(".zmi-container .zmi-item.pageelement .zmi-action:last,.zmi-container .zmi-item.page .zmi-action:first").each(function() {
-	// 		if (c > 0) {
-	// 			return;
-	// 		}
-	// 		c++;
-	// 		var $that = $(this);
-	// 		$that.parents(".zmi-container").append('<div id="zmi-action-default"><i class="fas fa-plus"></i></div>');
-	// 		$("#zmi-action-default")
-	// 			.hover( function(evt) {
-	// 					var $zmiActionDefault = $(this);
-	// 					var cb = function() {
-	// 						if ($("#zmi-action-default-dropdown").length==0) {
-	// 							var html = '<div id="zmi-action-default-dropdown" class="dropdown-menu">';
-	// 							html += $(".insert-action",$that).nextAll().clone().wrapAll("<div/>").parent().html();
-	// 							html += '</div>'
-	// 							$("body").append(html);
-	// 							var $zmiActionDropdown = $("#zmi-action-default-dropdown");
-	// 							$zmiActionDropdown
-	// 								.css({
-	// 									position:"absolute",
-	// 									top:($zmiActionDefault.offset().top+$zmiActionDefault.outerHeight()/2-$zmiActionDropdown.outerHeight())+"px",
-	// 									left:($zmiActionDefault.offset().left+$zmiActionDefault.outerWidth()/2)+"px"
-	// 								})
-	// 								.hover( function(evt) {
-	// 									},function(evt) {
-	// 										$(this).hide();
-	// 								});
-								
-	// 						}
-	// 						$("#zmi-action-default-dropdown").show();
-	// 					}
-	// 					$ZMI.actionList.over($that,evt,cb);
-	// 				},
-	// 				function(evt) {
-	// 				})
-	// 			;
-	// 	});
 
 	// Inputs
 	$ZMI.initInputFields($("body"));

@@ -926,6 +926,24 @@ class ZMSObject(ZMSItem.ZMSItem,
       return href
       
     #++
+    def getAbsoluteUrlInContext(self, context):
+      index_html = self.absolute_url()
+      if self.REQUEST.get('ZMS_CONTEXT_URL', False) or self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.forced', False) or self.getHome() != context.getHome():
+        protocol = self.getConfProperty('ASP.protocol', 'http')
+        domain = self.getConfProperty('ASP.ip_or_domain', None)
+        if domain:
+          l = index_html.split('/')
+          if 'content' in l:
+            i = l.index('content')
+            if l[i-1] != self.getHome().id and self.getRootElement().getHome().id in l:
+              i = l.index(self.getRootElement().getHome().id)
+            else:
+              i += 1
+            l = l[i:]
+            index_html = protocol + '://' + domain + '/' + '/'.join(l)
+      return index_html
+    
+    #++
     def getHref2IndexHtmlInContext(self, context, index_html=None, REQUEST=None, deep=1):
       if index_html is None:
         index_html = self.getHref2IndexHtml(REQUEST, deep)
@@ -1159,7 +1177,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         self.f_standard_html_request( self, REQUEST)
         xml += self.getXmlHeader()
       xml += '<page'
-      xml += " absolute_url=\"%s\""%str(self.absolute_url())
+      xml += " absolute_url=\"%s\""%str(self.getAbsoluteUrlInContext(context))
       xml += " physical_path=\"%s\""%('/'.join(self.getPhysicalPath()))
       xml += " access=\"%s\""%str(int(self.hasAccess(REQUEST)))
       xml += " active=\"%s\""%str(int(self.isActive(REQUEST)))
@@ -1171,7 +1189,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " uid=\"{$%s}\""%(self.get_uid())
       xml += " id=\"%s_%s\""%(self.getHome().id, self.id)
       xml += " home_id=\"%s\""%(self.getHome().id)
-      xml += " index_html=\"%s\""%standard.html_quote(self.getHref2IndexHtml(REQUEST))
+      xml += " index_html=\"%s\""%standard.html_quote(self.getHref2IndexHtmlInContext(context,REQUEST=REQUEST))
       xml += " is_page=\"%s\""%str(int(self.isPage()))
       xml += " is_pageelement=\"%s\""%str(int(self.isPageElement()))
       xml += " meta_id=\"%s\""%(self.meta_id)

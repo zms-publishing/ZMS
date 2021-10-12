@@ -22,7 +22,7 @@ recordSet_Interface*:interface will only be display for grid-view (UzK)
 <tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']"
 	><tal:block tal:repeat="metaObjAttr metaObj/attrs"
 		><tal:block tal:condition="python:metaObjAttr['type']=='interface' and metaObjAttr['id'].startswith('recordSet_Interface')"
-			><div class="zmi-interface" tal:content="structure python:here.attr(metaObjAttr['id'])">the interface</div
+			><tal:block tal:content="structure python:here.attr(metaObjAttr['id'])">the record-set interface</tal:block
 		></tal:block
 	></tal:block	  
 ></tal:block>	  

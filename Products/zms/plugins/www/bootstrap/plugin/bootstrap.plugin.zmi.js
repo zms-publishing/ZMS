@@ -485,8 +485,16 @@ $ZMI.registerReady(function(){
 			},
 			function(evt) {
 				$ZMI.actionList.out(this);
-			})
-		;
+			});
+	$(".zmi-action button.dropdown-toggle")
+		.click( function(evt) {
+				var el = $(this);
+				if(!el.parent(".zmi-action").hasClass('loaded')) {
+						evt.preventDefault();
+						evt.stopPropagation();
+						setTimeout(function() {el.click();}, 100);
+				}
+			});
 
 	// Inputs
 	$ZMI.initInputFields($("body"));

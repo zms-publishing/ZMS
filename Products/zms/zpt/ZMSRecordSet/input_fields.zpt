@@ -54,7 +54,7 @@
 			><tal:block tal:condition="python:metaObjAttr['type']=='hint'"
 				><div class="zmi-hint" tal:content="structure elLabel">the hint</div>
 			</tal:block
-			><tal:block tal:condition="python:metaObjAttr['type']=='interface'"
+			><tal:block tal:condition="python:metaObjAttr['type']=='interface' and not metaObjAttr['id'].startswith('recordSet_Interface')"
 				><div class="zmi-interface" tal:content="structure python:here.attr(metaObjAttrId)">the interface</div
 			></tal:block
 

@@ -12,11 +12,24 @@
 		dummy0 python:standard.set_session_value(here,'qsize_%s'%here.id,request.get('qsize'));
 		dummy0 python:standard.set_session_value(here,'qfilters_%s'%here.id,request.get('qfilters'));
 		dummy0 python:standard.set_session_value(here,'qindex_%s'%here.id,request.get('qindex'));
-		dummy0 python:here.recordSet_Init(request);
-		dummy0 python:here.recordSet_Filter(request);
-		dummy0 python:here.recordSet_Sort(request)">
+		dummy0 python:here.recordSet_Init(request);">
+
+<tal:block tal:replace="nothing">
+-----
+recordSet_Interface*:interface will only be display for grid-view (UzK)
+-----
+</tal:block>
+<tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']"
+	><tal:block tal:repeat="metaObjAttr metaObj/attrs"
+		><tal:block tal:condition="python:metaObjAttr['type']=='interface' and metaObjAttr['id'].startswith('recordSet_Interface')"
+			><div class="zmi-interface" tal:content="structure python:here.attr(metaObjAttr['id'])">the interface</div
+		></tal:block
+	></tal:block	  
+></tal:block>	  
 
 <tal:block tal:define="global
+		dummy0 python:here.recordSet_Filter(request);
+		dummy0 python:here.recordSet_Sort(request);
 		records python:here.attr(metaObjAttrIds[0]);
 		filter_columns python:[x for x in metaObj['attrs'][1:] if 
 				x['id'] not in ['__sort_id']

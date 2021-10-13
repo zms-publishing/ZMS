@@ -149,7 +149,10 @@
 		<tr class="row_metadata">
 			<td class="meta-sort">
 				<span tal:content="python:here.getZMILangStr('ATTR_VERSION')">Version</span>
-				<input title="Object Revision Scheme 0.0.0" class="form-control form-control-sm" type="text"  id="obj_revision" name="obj_revision" size="6" placeholder="0.0.0" tal:attributes="value python:here.getMetaobjRevision(metaObj['id'])"/>
+				<input title="Object Revision Scheme 0.0.0" class="form-control form-control-sm" 
+					placeholder="0.0.0" pattern="[\d]*\.[\d]*\.[\d]*" 
+					type="text" id="obj_revision" name="obj_revision" size="6"
+					tal:attributes="value python:here.getMetaobjRevision(metaObj['id'])"/>
 			</td>
 			<td class="meta-id">
 				<span tal:content="python:here.getZMILangStr('ATTR_ID')">Id</span>

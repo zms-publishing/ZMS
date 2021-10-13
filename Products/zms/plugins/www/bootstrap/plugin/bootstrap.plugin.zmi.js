@@ -1726,7 +1726,7 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 			}
 			$("input[name='id_prefix']",$fm).val(id_prefix);
 			$("input[name='ids:list']",$fm).remove();
-			$input.each(function() {if(this.checked)$fm.append(this)});
+			$("input[name='ids:list']",$("div.right")).each(function() {if(this.checked)$fm.append(this)});
 			$fm.attr("action",target);
 			$fm.attr("method","POST");
 			$fm.submit();
@@ -1818,7 +1818,7 @@ function zmiActionButtonsRefresh(sender,evt) {
  * @param v Boolean value for new (un-)checked state.
  */
 function zmiToggleSelectionButtonClick(sender,v) {
-	var $fm = $(sender).parents('form');
+	var $fm = $(sender).parents('form,.zmi-form-container');
 	var $inputs = $('input:checkbox:not([id~="active"]):not([id~="attr_dc_coverage"])',$fm);
 	if (typeof v == "undefined") {
 		v = !$inputs.prop('checked');

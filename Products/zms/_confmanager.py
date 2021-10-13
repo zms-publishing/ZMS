@@ -171,11 +171,15 @@ class ConfManager(
           basepath = _repositoryutil.get_system_conf_basepath()
           path = os.path.join(basepath, filename)
           r = _repositoryutil.readRepository(self, path)
-          container = zopeutil.getObject(self,filename.split(os.path.sep)[0])
-          l = container.translateRepositoryModel(r)
-          xml = standard.toXmlString(self, l)
-          xml = standard.pybytes(xml, "utf-8")
-          xmlfile = standard.PyBytesIO( xml)
+          container_id = filename.split('/')[0]
+          container = zopeutil.getObject(self,container_id)
+          if container is not None:
+              l = container.translateRepositoryModel(r)
+              xml = standard.toXmlString(self, l)
+              xml = standard.pybytes(xml, "utf-8")
+              xmlfile = standard.PyBytesIO( xml)
+          else:
+              standard.writeError(self,'[getConfXmlFile]: container %s not found'%container_id)
       else:
           filename = _fileutil.extractFilename(file)
           xmlfile = open(_fileutil.getOSPath(file), 'rb')

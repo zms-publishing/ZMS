@@ -6,7 +6,7 @@
 		dummy0 python:request.set('fmName',request.get('fmName','form0'));
 		dummy0 python:here.zmi_page_request(here,request)">
 <div class="zmi properties">
-	<tal:block tal:condition="not:python:metaObj['type']=='ZMSRecordSet'" tal:content="structure python:here.obj_input_fields(action='%s/manage_addZMSCustom'%request['URL1'][len(request['BASE0']):],command='insert',meta_id=meta_id)">
+	<tal:block tal:content="structure python:here.obj_input_fields(action='%s/manage_addZMSCustom'%request['URL1'][len(request['BASE0']):],command='insert',meta_id=meta_id)">
 		the input-fields
 	</tal:block>
 </div><!-- .zmi.properties -->

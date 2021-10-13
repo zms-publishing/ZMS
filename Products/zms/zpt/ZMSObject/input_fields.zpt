@@ -19,6 +19,7 @@
 	<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value python:request.get('id_prefix','')" />
 	<input type="hidden" id="meta_id" name="meta_id" tal:attributes="value meta_id" />
 	<input type="hidden" id="ZMS_INSERT" name="ZMS_INSERT" tal:condition="python:request.get('ZMS_INSERT',False)" tal:attributes="value python:request.get('ZMS_INSERT','')" />
+<tal:block  tal:condition="python:metaObj['type']!='ZMSRecordSet' or command.lower()!='insert'">
 
 	<div class="card">
 		<div class="card-header attr_last_modified clearfix btn-collapse">
@@ -216,9 +217,10 @@
 
 	</div><!-- .card -->
 
+</tal:block>
 </form>
 
-	<div class="card zmi-container" tal:condition="python:command.lower()!='insert'">
+	<div class="card zmi-form-container zmi-container" tal:condition="python:command.lower()!='insert'">
 
 		<form class="zmi-action-form d-none">
 			<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang" />

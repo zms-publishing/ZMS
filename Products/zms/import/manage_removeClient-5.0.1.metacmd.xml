@@ -33,11 +33,18 @@ print('<div class="card-body">')
 # --- Execute.
 # ---------------------------------
 if request.form.get('btn')=='BTN_DELETE':
-	context.getHome().manage_delObjects(ids=[context.id]) # remove ZMS seperately to force deleting records from ZMSIndex
-	master.getHome().manage_delObjects(ids=[context.getHome().id])
-	message = []
-	message.append(master.getZMILangStr('MSG_DELETED')%1)
-	return request.response.redirect(master.url_append_params('%s/manage_main'%master.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+    home = context.getHome()
+    home_id = home.id
+    home.manage_delObjects(ids=[context.id]) # remove ZMS seperately to force deleting records from ZMSIndex
+    master.getHome().manage_delObjects(ids=[home_id])
+    # deregister at master
+    l = master.getConfProperty('Portal.Clients', [])
+    l.remove(home_id)
+    master.setConfProperty('Portal.Clients', l)
+    # Return with message
+    message = []
+    message.append(master.getZMILangStr('MSG_DELETED')%1)
+    return request.response.redirect(master.url_append_params('%s/manage_main'%master.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
 # --- Display initial insert form.
 # ---------------------------------

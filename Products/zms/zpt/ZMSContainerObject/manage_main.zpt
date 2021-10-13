@@ -24,6 +24,7 @@
 		<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value id_prefix" />
 	</form>
 
+	<div class="zmi-form-container">
 	<ul class="zmi-container">
 		<li class="zmi-item zmi-selectable pageelement" tal:define="global childNode python:here" tal:attributes="id python:'zmi_item_'">
 			<div tal:attributes="class python:'center%s'%([' inactive',''][childNode.isActive(request)])"
@@ -103,6 +104,7 @@
 			</li>
 		</tal:block>
 	</ul><!-- .zmi-container -->
+	</div><!-- .zmi-form-container -->
 
 </tal:block>
 </div><!-- #zmi-tab -->

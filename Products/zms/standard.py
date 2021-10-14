@@ -1668,6 +1668,13 @@ def is_equal(x, y):
       return cmp(x.toXml(),y.toXml())==0
   return cmp(x, y)==0
 
+security.declarePublic('parse_json')
+def parse_json(*args, **kwargs):
+  """
+  Returns an object representation of the json-string.
+  @rtype: C{dict|list|int|etc.}
+  """
+  return json.loads(*args, **kwargs)
 
 security.declarePublic('str_json')
 def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, level=0, allow_booleans=True, sort_keys=True):

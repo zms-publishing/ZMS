@@ -13,7 +13,7 @@ class manage_collect_zope_artifacts:
 	description = ""
 
 	# Execution
-	execution = False
+	execution = 0
 
 	# Icon_clazz
 	icon_clazz = "icon-briefcase fas fa-briefcase"
@@ -31,7 +31,7 @@ class manage_collect_zope_artifacts:
 	nodes = "{$}"
 
 	# Revision
-	revision = "4.0.0"
+	revision = "5.0.0"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

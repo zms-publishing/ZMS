@@ -200,7 +200,7 @@ class ZMSMetaobjManager(object):
       id = item['key']
       standard.writeBlock(self,'[ZMSMetaobjManager._importMetaobjXml]: id=%s'%str(id))
       meta_types = list(self.model)
-      if createIdsFilter is None or (id in createIdsFilter):
+      if createIdsFilter is None or id in createIdsFilter:
         # Register Meta Attributes.
         metadictAttrs = []
         if id in meta_types:
@@ -277,6 +277,11 @@ class ZMSMetaobjManager(object):
           if attr_id not in attr_ids:
             self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             attr_ids.append(attr_id)
+        # Lang-Dict.
+        if '__lang_dict__' in newValue:
+          lang_dict = self.get_lang_dict()
+          lang_dict = {**lang_dict, **newValue['__lang_dict__']} # merge
+          self.set_lang_dict(lang_dict)
       return id
 
     def importMetaobjXml(self, xml, createIdsFilter=None):
@@ -326,6 +331,11 @@ class ZMSMetaobjManager(object):
         for key in ['attrs', 'acquired']:
           if key in ob:
             del ob[key]
+        # Lang-Dict.
+        lang_dict = self.get_lang_dict()
+        l = [x for x in lang_dict if x.startswith('%s.'%id)]
+        if l:
+          ob['__lang_dict__'] = {x:lang_dict[x] for x in l}
         # Value.
         value.append({'key':id,'value':ob})
       if len(value)==1:

@@ -248,9 +248,9 @@
 								</a>
 								<div class="btn zmi-changes" tal:content="structure python:'(%i %s)'%(len(objChildren),here.getZMILangStr('ATTR_OBJECTS'))">%i Objects</div>
 							</div><!-- .card-header -->
-							<div class="collapse zmi-sortable zmi-children" tal:attributes="id python:metaObjAttr['id']">
+							<div class="collapse zmi-children" tal:attributes="id python:metaObjAttr['id']">
 								<div class="card-body">
-									<ul class="zmi-container zmi-children">
+									<ul class="zmi-container zmi-sortable zmi-children">
 										<li class="zmi-item" tal:condition="not:hasChildren" tal:attributes="id python:'zmi_item_%s'%metaObjAttr['id']">
 											<div class="center">&nbsp;</div>
 											<div class="right">

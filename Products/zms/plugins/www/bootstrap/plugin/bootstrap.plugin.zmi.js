@@ -1510,7 +1510,7 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 	// Expandable headers.
 	$button.click(function() {
 		var $right = $(this).parents(".right");
-		var selected = $("input:checkbox",$right).length?$("input:checkbox",$right).prop("checked"):false;
+		var selected = false;
 		$(".dropdown-header",$right).each(function(index) {
 				var actualCollapsed = $("i",this).hasClass("fa-caret-right");
 				var expectedCollapsed = (index == 0 && !selected) || (index > 0 && selected);
@@ -1588,9 +1588,6 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 			$("button.split-left",el).html(opticon+' '+optlabel);
 		}
 		for (var i = o; i < actions.length; i++) {
-			if (o==0 && i==1) {
-				$ul.append('<a class="dropdown-item" href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'))"><i class="fas fa-check-square"></i> '+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a>');
-			}
 			var action = actions[i];
 			var optlabel = action[0];
 			var optvalue = action[1];
@@ -1602,6 +1599,9 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 				optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
 				optlabel = optlabel.basicTrim();
 				$ul.append('<div class="dropdown-header '+optvalue+'">'+opticon+' '+optlabel+'</div>');
+				if (optvalue=='select-action') {
+					$ul.append('<a class="dropdown-item" href="javascript:zmiToggleSelectionButtonClick($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'))"><i class="fas fa-check-square"></i> '+getZMILangStr('BTN_SLCTALL')+'/'+getZMILangStr('BTN_SLCTNONE')+'</a>');
+				}
 			}
 			else {
 				if (opticon.indexOf('<')!=0) {

@@ -889,9 +889,13 @@ li.zmi-item span.zmi-ids {
 /* Constraints */
 .zmi-manage-main-change .constraint {
 	display: inline;
+	vertical-align: top;
+	padding-left: .35rem;
+	white-space: nowrap;
 }
 .zmi-manage-main-change .constraint span {
 	display:none;
+	padding-left: .25rem;
 }
 .zmi.properties .card .constraint-error {
 	color:#721c24;

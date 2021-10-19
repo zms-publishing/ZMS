@@ -1265,7 +1265,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	}
 	.zmi .zmi-action .dropdown-menu[x-placement="top-start"] {
 		top: .1rem !important;
-		box-shadow:0 0 12px rgb(0 0 0 / 18%);
+		box-shadow:0 0 12px rgba(0,0,0,0.18);
 	}
 }
 @media all and (min-width: 1200px) {

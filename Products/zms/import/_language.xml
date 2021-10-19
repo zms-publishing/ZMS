@@ -935,6 +935,22 @@
     <Cell><Data ss:Type="String">עמודות</Data></Cell>
    </Row>
    <Row>
+    <Cell><Data ss:Type="String">ATTR_CONTENT</Data></Cell>
+    <Cell><Data ss:Type="String">Inhalt</Data></Cell>
+    <Cell><Data ss:Type="String">Content</Data></Cell>
+    <Cell><Data ss:Type="String">Inhoud</Data></Cell>
+    <Cell><Data ss:Type="String">Contenu</Data></Cell>
+    <Cell><Data ss:Type="String">Contenuto</Data></Cell>
+    <Cell><Data ss:Type="String">Contenido</Data></Cell>
+    <Cell><Data ss:Type="String">内容</Data></Cell>
+    <Cell><Data ss:Type="String">محتوی</Data></Cell>
+    <Cell><Data ss:Type="String">Содержание</Data></Cell>
+    <Cell><Data ss:Type="String">अंतर्वस्तु</Data></Cell>
+    <Cell><Data ss:Type="String">محتويات </Data></Cell>
+    <Cell><Data ss:Type="String">nội dung</Data></Cell>
+    <Cell><Data ss:Type="String">תוכן</Data></Cell>
+   </Row>
+   <Row>
     <Cell><Data ss:Type="String">ATTR_COMMANDLINE</Data></Cell>
     <Cell><Data ss:Type="String">Kommandozeile</Data></Cell>
     <Cell><Data ss:Type="String">Command-line</Data></Cell>

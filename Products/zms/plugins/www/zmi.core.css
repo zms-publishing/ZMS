@@ -2587,3 +2587,6 @@ ul.pagination {
 #zmiModalinsertUser .ZMSRecordSet.main_grid .table-responsive {
 	min-height:8rem;
 }
+.ZMSSqlDbForm-multiselect select {
+	min-height:5.5rem
+}

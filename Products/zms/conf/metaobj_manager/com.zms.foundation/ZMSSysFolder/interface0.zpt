@@ -15,7 +15,7 @@
 	<select class="form-control" style="background-color: aliceblue;"
 			name=":action" tal:attributes="onchange python:'this.name=\':action\';;location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
 		<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type(request)">----- Insert -----</option>
-		<tal:block tal:repeat="meta_type python:[x for x in standard.sort_list(zmscontext.filtered_meta_types(),'name') if x['name'].find('ZMS')<>0]">
+		<tal:block tal:repeat="meta_type python:[x for x in standard.sort_list(zmscontext.filtered_meta_types(),'name') if x['name'].find('ZMS') != 0]">
 			<option tal:attributes="value python:meta_type['action']" tal:content="python:meta_type['name']">the name</option>
 		</tal:block>
 	</select>
@@ -27,7 +27,7 @@
 ################################################################################
 -->
 
-<tal:block tal:define="global items python:[x for x in zmscontext.objectItems() if x[1].meta_type.find('ZMS')<>0]">
+<tal:block tal:define="global items python:[x for x in zmscontext.objectItems() if x[1].meta_type.find('ZMS') != 0]">
 <tal:block tal:condition="python:len(items)>0">
 <table class="table table-striped">
 <thead>
@@ -49,9 +49,7 @@
 <tr tal:repeat="item items">
 	<td><input type="checkbox" name="ids:list" tal:attributes="value python:item[0]"/></td>
 	<td>
-		<tal:block tal:condition="python:item[1].icon">
-			<img tal:attributes="src python:item[1].icon; title python:item[1].meta_type"/>
-		</tal:block>
+		<i tal:attributes="class python:item[1].zmi_icon"></i>
 	</td>
 	<td>
 		<a tal:attributes="href python:'%s/manage_workspace'%item[1].absolute_url()">
@@ -60,7 +58,7 @@
 		</a>
 	</td>
 	<td><tal:block tal:content="python:zmscontext.getDataSizeStr(item[1].get_size())">the size</tal:block></td>
-	<td><tal:block tal:content="python:zmscontext.getLangFmtDate(item[1].bobobase_modification_time())">the timestamp</tal:block></td>
+	<td><tal:block tal:content="python:zmscontext.last_modified(item[1])">the timestamp</tal:block></td> 
 </tr>
 </tbody>
 </table>

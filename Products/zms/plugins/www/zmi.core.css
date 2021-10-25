@@ -1886,6 +1886,24 @@ body.browse_iframe .toggle {
 	display: none;
 }
 
+/* Modal GUI: ZMSSQLDB lazy_select_form main */
+body.lazy_select_form main {
+	margin-bottom:5rem;
+	zoom:0.9;
+}
+body.lazy_select_form footer {
+	margin:0 !important;
+	top:calc(100vh - 4rem);
+	position:fixed;
+	z-index:10;
+	border-top:1px solid #eee;
+}
+body.lazy_select_form footer .controls {
+	padding:1rem !important;
+	height:4rem;
+	background-color:#ffffff;
+}
+
 /* Modal GUI: Content Modell Import/Acquisition */
 .zmi.metas_import .form-group {
 	margin-bottom: 0.3rem;

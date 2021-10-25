@@ -486,7 +486,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
               standard.writeError( self, '[getEntityRecordHandler]: can\'t %s'%k)
             d[k] = value
           primary_key = context.getEntityPK(tableName)
-          rowid = context.operator_getitem(d, primary_key, ignorecase=True)
+          rowid = standard.operator_getitem(d, primary_key, ignorecase=True)
           d['__id__'] = rowid
           d['params'] = {'rowid':rowid}
           return d
@@ -523,7 +523,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           value = None
           column['type'] = stereotype['type']
           if row is not None:
-            rowid = self.sql_quote__(tableName, primary_key, self.operator_getitem(row, primary_key, ignorecase=True))
+            rowid = self.sql_quote__(tableName, primary_key, standard.operator_getitem(row, primary_key, ignorecase=True))
             class BlobWrapper(object):
               def __init__(self, tableName, columnName, rowid, blob):
                 self.tableName = tableName
@@ -569,7 +569,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           value = None
           options = []
           if row is not None:
-            value = self.operator_getitem(row, columnName, ignorecase=True)
+            value = standard.operator_getitem(row, columnName, ignorecase=True)
             # Select.MySQLSet
             if 'mysqlset' in stereotype:
               rtype = column['description']
@@ -618,16 +618,16 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             sql = '' \
               + 'SELECT ' + dst['id'] + ' AS dst_id ' \
               + 'FROM ' + intersection['id'] + ' ' \
-              + 'WHERE ' + src['id'] + '=' + self.sql_quote__(tableName, primary_key, self.operator_getitem(row, primary_key, ignorecase=True))
+              + 'WHERE ' + src['id'] + '=' + self.sql_quote__(tableName, primary_key, self(row, primary_key, ignorecase=True))
             column['valuesql'] = sql
             for r in self.query(sql)['records']:
               value.append(r['dst_id'])
           # Multiselect.MySQLSet
           if 'mysqlset' in stereotype:
             if row is not None:
-              value = standard.nvl(self.operator_getitem(row, columnName, ignorecase=True), '').split(',')
+              value = standard.nvl(standard.operator_getitem(row, columnName, ignorecase=True), '').split(',')
               for r in self.query( 'DESCRIBE %s %s'%(tableName, columnName))['records']:
-                rtype = r['type']
+                rtype = standard.operator_getitem(r, 'type', ignorecase=True)
                 for i in rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'', '').split(','):
                   options.append([i, i])
           # Multiselect.Options
@@ -683,7 +683,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                 + 'SELECT '+', '.join(columns)+' ' \
                 + 'FROM '+stereotype['tablename']+' ' \
                 + '\n'.join(joins) \
-                + 'WHERE '+stereotype['fk']+'=' + self.sql_quote__(tableName, primary_key, self.operator_getitem(row, primary_key, ignorecase=True)) 
+                + 'WHERE '+stereotype['fk']+'=' + self.sql_quote__(tableName, primary_key, standard.operator_getitem(row, primary_key, ignorecase=True)) 
               column['valuesql'] = sql
               column['value'] = []
               try:
@@ -697,7 +697,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
               sql = '' \
                 + 'SELECT * ' \
                 + 'FROM '+stereotype['tablename']+' ' \
-                + 'WHERE '+stereotype['fk']+'='+self.sql_quote__(tableName, primary_key, self.operator_getitem(row, primary_key, ignorecase=True))
+                + 'WHERE '+stereotype['fk']+'='+self.sql_quote__(tableName, primary_key, standard.operator_getitem(row, primary_key, ignorecase=True))
               column['valuesql'] = sql
               column['value'] = []
               try:
@@ -750,7 +750,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
               sql.append(' LEFT JOIN '.join(['']+leftjoins))
             if outerjoins:
               sql.append(' LEFT OUTER JOIN '.join(['']+outerjoins))
-            sql.append(' WHERE ' + stereotype['tablename'] + '.' + stereotype['fk'] + '=' + self.sql_quote__(tableName, primary_key, self.operator_getitem(row, primary_key, ignorecase=True)))
+            sql.append(' WHERE ' + stereotype['tablename'] + '.' + stereotype['fk'] + '=' + self.sql_quote__(tableName, primary_key, standard.operator_getitem(row, primary_key, ignorecase=True)))
             column['valuesql'] = '\n'.join(sql)
             for r in self.query('\n'.join(sql))['records']:
               v = []

@@ -1889,7 +1889,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       sql = 'SELECT %s AS pk, %s AS displayfield FROM %s WHERE UPPER(%s) LIKE %s ORDER BY UPPER(%s)'%(pk, columnname, tablename, columnname, self.sql_quote__(tablename, columnname, '%'+q+'%'), columnname)
       for r in self.query(sql)['records']:
         if len(l) < limit:
-          v = r['displayfield']
+          v = standard.operator_getitem(r, 'displayfield', ignorecase=True)
           if type(v) is bytes:
             v = str(v,'utf-8')
           l.append(v)

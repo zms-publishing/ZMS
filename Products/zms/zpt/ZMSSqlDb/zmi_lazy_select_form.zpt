@@ -25,22 +25,22 @@
 		<input type="hidden" name="qcolumns:list" tal:attributes="value columns"/>
 
 		<div class="form-group form-inline" tal:repeat="filterIndex python:range(len(request['qcolumns']))">
-			<select class="form-control ml-2" tal:attributes="name python:'filterattr%i'%filterIndex">
+			<select class="form-control ml-2 mb-2" tal:attributes="name python:'filterattr%i'%filterIndex">
 				<option tal:attributes="value python:request['qcolumns'][filterIndex]; selected python:'selected'" tal:content="entity/label">column</option>
 			</select>
-			<select class="form-control ml-2" tal:attributes="name python:'filterop%i'%filterIndex">
+			<select class="form-control ml-2 mb-2" tal:attributes="name python:'filterop%i'%filterIndex">
 				<tal:block tal:repeat="op python:['LIKE','=','<','<=','>','>=','NULL','NOT NULL']">
 					<option tal:attributes="value python:op; selected python:['','selected'][op.lower()==request.get('filterop%i'%filterIndex,'').lower()]" tal:content="python:op">op</option>
 				</tal:block>
 			</select>
-			<input class="form-control ml-2" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex,'')" />
-			<button type="submit" class="btn btn-primary ml-2" name="btn" value="BTN_REFRESH"><i class="fas fa-search"></i></button>
-			<button class="btn btn-primary ml-2" name="btn" value="BTN_ADD" tal:attributes="onclick python:'javascript:window.open(\'manage_main?lang=ger&action=insertForm&qentity=%s\',\'%s\')'%(entity['id'],here.getZMILangStr('BTN_ADD'))"><i class="fas fa-plus"></i></button>
+			<input class="form-control ml-2 mb-2" type="text" tal:attributes="name python:'filtervalue%i'%filterIndex; value python:request.get('filtervalue%i'%filterIndex,'')" />
+			<button type="submit" class="btn btn-primary ml-2 mb-2" name="btn" value="BTN_REFRESH"><i class="fas fa-search"></i></button>
+			<button class="btn btn-primary ml-2 mb-2" name="btn" value="BTN_ADD" tal:attributes="onclick python:'javascript:window.open(\'manage_main?lang=ger&action=insertForm&qentity=%s\',\'%s\')'%(entity['id'],here.getZMILangStr('BTN_ADD'))"><i class="fas fa-plus"></i></button>
 			&nbsp;&nbsp;
 			<a href="javascript:;" onclick="$('#manage_main_div_sql').toggle()" title="Show SQL Code">&middot;</a>
 		</div><!-- .form-group -->
 
-		<div id="manage_main_div_sql" class="alert alert-info" style="display:none;margin:0 0.5rem"><code tal:content="structure python:resSlctStmnt.replace('\n','<br>')">resSlctStmnt</code></div>
+		<div id="manage_main_div_sql" class="alert alert-info mb-2" style="display:none;margin:0 0.5rem"><code tal:content="structure python:resSlctStmnt.replace('\n','<br>')">resSlctStmnt</code></div>
 
 	</form>
 

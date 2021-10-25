@@ -55,7 +55,7 @@
 <tal:block tal:condition="python:request.get('action') not in ['updateForm','insertForm']" tal:define="global
 			query python:here.query(resSlctStmnt,encoding=encoding);
 			metaObjAttrIds python:['displayvalue'];
-			metaObjAttrs python:[for x in entity['columns'] if x['id'].upper() in [x.upper() for x in metaObjAttrIds]]+[{'id':'displayvalue','label':entity['label']}];
+			metaObjAttrs python:[x for x in entity['columns'] if x['id'].upper() in [x.upper() for x in metaObjAttrIds]]+[{'id':'displayvalue','label':entity['label']}];
 			dummy0 python:[here.operator_setitem(x,'name',x['label']) for x in metaObjAttrs];
 			res python:query['records'];
 			dummy0 python:[here.operator_setitem(x,'__id__',here.operator_getitem(x,pk,ignorecase=True)) for x in res];

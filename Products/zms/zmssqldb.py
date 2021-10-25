@@ -618,7 +618,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             sql = '' \
               + 'SELECT ' + dst['id'] + ' AS dst_id ' \
               + 'FROM ' + intersection['id'] + ' ' \
-              + 'WHERE ' + src['id'] + '=' + self.sql_quote__(tableName, primary_key, self(row, primary_key, ignorecase=True))
+              + 'WHERE ' + src['id'] + '=' + self.sql_quote__(tableName, primary_key, standard.operator_getitem(row, primary_key, ignorecase=True))
             column['valuesql'] = sql
             for r in self.query(sql)['records']:
               value.append(r['dst_id'])

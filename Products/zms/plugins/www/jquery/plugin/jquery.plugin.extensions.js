@@ -15,12 +15,12 @@ function zmiAutocomplete(s, o) {
 			var prev_el = $(s).autocomplete(o).prev()[0];
 			if ( $(prev_el).attr('class')!='input-group-prepend' ) {
 				$(s).autocomplete(o).before('<div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-search"></i></span></div>');
-				$(s).closest('.col-sm-10,td').wrapInner('<div class="input-group"></div>');
+				$(s).closest('.col-sm-10,td,.col-sm-9.col-md-10').wrapInner('<div class="input-group"></div>');
 			}
 		} catch (error) {
 			console.error(error);
 			$(s).autocomplete(o).before('<div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-search"></i></span></div>');
-			$(s).closest('.col-sm-10,td').wrapInner('<div class="input-group"></div>');
+			$(s).closest('.col-sm-10,td,.col-sm-9.col-md-10').wrapInner('<div class="input-group"></div>');
 		}
 	});
 }

@@ -626,7 +626,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           if 'mysqlset' in stereotype:
             if row is not None:
               value = standard.nvl(standard.operator_getitem(row, columnName, ignorecase=True), '').split(',')
-              for r in self.query( 'DESCRIBE %s %s'%(tableName, columnName))['records']:
+              for r in self.query( 'DESCRIBE %s %s'%(tableName, columnName),encoding='utf-8')['records']:
                 rtype = standard.operator_getitem(r, 'type', ignorecase=True)
                 for i in rtype[rtype.find('(')+1:rtype.rfind(')')].replace('\'', '').split(','):
                   options.append([i, i])
@@ -1889,7 +1889,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       sql = 'SELECT %s AS pk, %s AS displayfield FROM %s WHERE UPPER(%s) LIKE %s ORDER BY UPPER(%s)'%(pk, columnname, tablename, columnname, self.sql_quote__(tablename, columnname, '%'+q+'%'), columnname)
       for r in self.query(sql)['records']:
         if len(l) < limit:
-          # v = standard.operator_getitem(r, 'displayfield', ignorecase=True)
           v = r['displayfield']
           if type(v) is bytes:
             v = str(v,'utf-8')

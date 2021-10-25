@@ -145,7 +145,7 @@ def ececuteAttrChange(cselected, aselected, searchstr,replacestr):
         if mode=='Replace':
           try:
             e.setObjStateModified(request)
-            e.setObjProperty(aselected, [x for x in v if x!=searchstr]+[replacestr],lang=lang)
+            e.setObjProperty(aselected, v.replace(searchstr,replacestr),lang=lang)
             e.onChangeObj(request,forced=1)
             e.commitObj(request)
             s+=' <span style="color:green">Changed.</span> '

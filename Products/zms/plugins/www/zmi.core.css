@@ -748,8 +748,6 @@ body.zmi .zmi-action .btn.split-left {
 	border: 1px solid rgba(0,0,0,0.1);
 	border-right:none
 }
-
-
 body.zmi .dropdown-menu {
 	font-size: inherit !important;
 	box-shadow: 0 6px 12px rgba(0,0,0,.175);
@@ -758,6 +756,9 @@ body.zmi .dropdown-menu {
 body.zmi .dropdown-menu a.dropdown-item {
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+body.zmi.ZMSSqlDb #TAB_PROPERTIES .dropdown-menu {
+	max-width:fit-content;
 }
 body.zmi .dropleft .dropdown-toggle::before { 
 	display:none; 

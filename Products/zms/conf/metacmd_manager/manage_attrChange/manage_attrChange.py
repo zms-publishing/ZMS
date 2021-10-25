@@ -1,9 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<list>
-  <item type="dictionary">
-    <dictionary>
-      <item key="data"><![CDATA[## Script (Python) "manage_attrChange"
+## Script (Python) "manage_attrChange"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -25,8 +20,9 @@ request.set( 'ZMI_TIME',DateTime().timeTime())
 request.set('attrChangeCount',0)
 
 #################################################
-# Version 3.0, FH 2016-03-15
-# Refactored for ZMS3
+# Version 5.0, FH 2021-10-26
+# Fitted to ZMS5
+# Refactored for ZMS3, Version 3.0, FH 2016-03-15
 # based on V.1.2 (2010-06-03) Onkodin Bildatlas
 #################################################
 
@@ -120,11 +116,11 @@ def ececuteAttrChange(cselected, aselected, searchstr,replacestr):
     for e in l:
       v = e.getObjProperty(aselected,request)
       v = v.strip()
-      s+='<li><a target="_blank" href="%s/manage"><code class="text-primary bg-info">%s</code></a><samp>: %s</samp>'%(str(e.absolute_url()), e.getId(), v )
+      s+='<li><a target="_blank" href="%s/manage" title="%s: %s"><code class="text-white bg-dark px-2">%s</code></a><samp>: %s</samp>'%(str(e.absolute_url()),e.meta_id,str(e.absolute_url()), e.getId(), v )
       # type string/select
       # http://osdir.com/ml/python.general.german/2005-12/msg00061.html
-      if isinstance(v, basestring) and searchstr==v:
-        s+='<strong style="color:green"><i class="icon-exchange"></i> %s </strong>'%(replacestr)
+      if isinstance(v, str) and searchstr==v:
+        s+='<strong style="color:green"><i class="fas fa-exchange-alt px-2"></i> %s </strong>'%(replacestr)
         attrFindCount+=1
       # Execute type string/select
         if mode=='Replace':
@@ -140,7 +136,7 @@ def ececuteAttrChange(cselected, aselected, searchstr,replacestr):
       # type multiselect
       elif searchstr!='' and searchstr in v:
         try:
-          s+=' <strong style="color:green"><i class="icon-exchange"></i> <samp>%s</samp></strong>'%([x for x in v if x!=searchstr]+[replacestr])
+          s+=' <strong style="color:green;"><i class="fas fa-exchange-alt px-2"></i><samp>%s</samp></strong>'%(v.replace(searchstr,replacestr))
           attrFindCount+=1
         except:
           sError += '<li style="list-style-type:square;">No Specified Object Classes <em>%s</em> found. <a href="%s/manage_system" target="_blank">Iteration Error</a></li>'%(str(cselected), str(e.absolute_url()))
@@ -187,39 +183,44 @@ def renderHtml():
        $('#aselected').load('manage_attrChange?cselected=' + cselected );
       };
       function ajaxPreview(cselected, aselected, searchstr, replacestr, lang) {
-       $('div#ObjList').html('<i class="icon-spinner icon-spin icon-large"></i>');
+       $('div#ObjList').html('<i class="text-primary icon-spinner icon-3x icon-spin fas fa-spinner fa-spin fa-3x"></i>');
        $('div#ObjList').load('manage_attrChange?cselected=' + cselected + '&aselected=' + aselected + '&searchstr=' + encodeURI(searchstr) + '&replacestr=' + encodeURI(replacestr) + '&lang=' + lang + '&mode=Preview' );
       }
       function ajaxReplace(cselected, aselected, searchstr, replacestr, lang) {
        Check = confirm("Wollen Sie wirklich ersetzen?");
        if (Check == true) {
-         $('div#ObjList').html('<i class="icon-spinner icon-spin icon-large"></i>');
+         $('div#ObjList').html('<i class="text-primary icon-spinner icon-3x icon-spin fas fa-spinner fa-spin fa-3x"></i>');
          $('div#ObjList').load('manage_attrChange?cselected=' + cselected + '&aselected=' + aselected + '&searchstr=' + encodeURI(searchstr) + '&replacestr=' + encodeURI(replacestr) + '&lang=' + lang + '&mode=Replace' );
         };
       }
     </script>
+
     <style type="text/css">
-      form#fAttrChange, div#ObjList{padding:2em 1em; font-family:Arial;font-size:12px;white-space:nowrap}
-      form#fAttrChange select {width:240px}
-      form#fAttrChange input#searchstr, form#fAttrChange input#replacestr {min-width:85px}
-      form#fAttrChange select#lang {width:auto !important}
-      div#ObjList ol {border:1px solid #ccc; background-color:#ffe;border-radius:4px;padding:1em 3em; margin:0px;overflow:hidden;}
+      form#fAttrChange select {width:fit-content;}
+      form#fAttrChange input {min-width:10rem; border:1px solid #ced4da;}
+      div#ObjList ol {border:1px solid #ccc;border-radius:4px;background-color:#fff;padding:1rem 2rem;margin:0;overflow:hidden;}
       div#ObjList pre {margin-top:1em;}
-    </style>'''
-  s+= '<form id="fAttrChange" class="form-inline">'
+    </style>
+    '''
+
+  s+= '<form id="fAttrChange" class="form-inline col pt-3 pb-2">'
+  s+='<div class="input-group my-3 mr-3">'
   s+= renderContentClassSelector()
-  s+= '&nbsp;'
   s+= renderAttrSelector(cselected=None)
   s+= '''
-      &nbsp;Search &nbsp;<input class="form-control" id="searchstr" name="searchstr" type="text" title="Suchwert eingeben" value="" size="16" placeholder="Old String..."/>
-      &nbsp;Replace&nbsp;<input class="form-control" id="replacestr" name="replacestr" type="text" title="Ersatzwert eingeben" value="" size="16" placeholder="New String..."/>
-      &nbsp;'''
+    <input class="form-control alert-info text-monospace" id="searchstr" name="searchstr" type="text" title="Search for" value="" size="24" placeholder="Enter Old String..."/>
+    <input class="form-control alert-danger text-monospace" id="replacestr" name="replacestr" type="text" title="Replace with" value="" size="24" placeholder="Enter New String..."/>
+    '''
   s+= renderLangSelector()
-  s+= '''&nbsp;
-    <input class="form-control btn btn-primary" id="Preview" name="Preview" type="button" value="Preview" onclick="javascript:ajaxPreview($('#cselected option:selected').val(), $('#aselected option:selected').val(), escape($('#searchstr').val()), escape($('#replacestr').val()), $('#lang').val() ); return false;" />&nbsp;
-    <input class="form-control btn btn-warning" id="Replace" name="Replace" type="button" value="Replace" onclick="javascript:ajaxReplace($('#cselected option:selected').val(), $('#aselected option:selected').val(), escape($('#searchstr').val()), escape($('#replacestr').val()), $('#lang').val() ); return false;" />
-   </form>
-   <div id="ObjList"> </div>'''
+  s+='</div>'
+  s+= '''
+    <div class="controls my-3">
+    <button type="submit" class="btn btn-info"" id="Preview" name="Preview" value="Preview" onclick="javascript:ajaxPreview($('#cselected option:selected').val(), $('#aselected option:selected').val(), escape($('#searchstr').val()), escape($('#replacestr').val()), $('#lang').val() ); return false;">Preview</button>
+    <button type="submit" class="btn btn-danger ml-3"" id="Replace" name="Replace" value="Replace" onclick="javascript:ajaxReplace($('#cselected option:selected').val(), $('#aselected option:selected').val(), escape($('#searchstr').val()), escape($('#replacestr').val()), $('#lang').val() ); return false;">Replace</button>
+    </div>
+    </form>
+    <div id="ObjList" class="p-3"> </div>
+    '''
 
   s+='</div><!-- #zmi-tab -->'
   s+= thisobj.zmi_body_footer(context,request)
@@ -245,28 +246,3 @@ print(html)
 # print(request)
 RESPONSE.setHeader('Content-Type','text/html;charset=utf-8')
 return printed
-]]>
-      </item>
-      <item key="description"></item>
-      <item key="execution" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-exchange]]></item>
-      <item key="id"><![CDATA[manage_attrChange]]></item>
-      <item key="meta_type"><![CDATA[Script (Python)]]></item>
-      <item key="meta_types" type="list">
-        <list>
-          <item><![CDATA[ZMSDocument]]></item>
-          <item><![CDATA[ZMSFolder]]></item>
-          <item><![CDATA[ZMS]]></item>
-        </list>
-      </item>
-      <item key="name"><![CDATA[Change Attribute Values]]></item>
-      <item key="revision"><![CDATA[3.0.0]]></item>
-      <item key="roles" type="list">
-        <list>
-          <item><![CDATA[ZMSAdministrator]]></item>
-        </list>
-      </item>
-      <item key="title"><![CDATA[Change Attribute Values]]></item>
-    </dictionary>
-  </item>
-</list>

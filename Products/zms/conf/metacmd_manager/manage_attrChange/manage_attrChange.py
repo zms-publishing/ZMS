@@ -203,24 +203,28 @@ def renderHtml():
     </style>
     '''
 
-  s+= '<form id="fAttrChange" class="form-inline col pt-3 pb-2">'
-  s+='<div class="input-group my-3 mr-3">'
+  s+= '''
+    <form id="fAttrChange" class="card">
+    <legend>Change Attribute Values by Search &amp; Replace</legend>
+    <div class="card-body"><div class="form-inline">
+    <div class="input-group my-3 mr-3">
+  '''
   s+= renderContentClassSelector()
   s+= renderAttrSelector(cselected=None)
   s+= '''
     <input class="form-control alert-info text-monospace" id="searchstr" name="searchstr" type="text" title="Search for" value="" size="24" placeholder="Enter Old String..."/>
     <input class="form-control alert-danger text-monospace" id="replacestr" name="replacestr" type="text" title="Replace with" value="" size="24" placeholder="Enter New String..."/>
-    '''
+  '''
   s+= renderLangSelector()
   s+='</div>'
   s+= '''
     <div class="controls my-3">
     <button type="submit" class="btn btn-info"" id="Preview" name="Preview" value="Preview" onclick="javascript:ajaxPreview($('#cselected option:selected').val(), $('#aselected option:selected').val(), escape($('#searchstr').val()), escape($('#replacestr').val()), $('#lang').val() ); return false;">Preview</button>
     <button type="submit" class="btn btn-danger ml-3"" id="Replace" name="Replace" value="Replace" onclick="javascript:ajaxReplace($('#cselected option:selected').val(), $('#aselected option:selected').val(), escape($('#searchstr').val()), escape($('#replacestr').val()), $('#lang').val() ); return false;">Replace</button>
-    </div>
+    </div></div></div>
     </form>
     <div id="ObjList" class="p-3"> </div>
-    '''
+  '''
 
   s+='</div><!-- #zmi-tab -->'
   s+= thisobj.zmi_body_footer(context,request)

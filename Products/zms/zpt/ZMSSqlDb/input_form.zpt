@@ -133,7 +133,7 @@
 						<div class="pull-left">
 							<div class="btn-group-vertical" 
 								tal:on-error="python:'ERROR: %s'%str(metaObjAttr)">
-								<a class="btn btn-primary" href="javascript:;" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'multiselect\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['dst']['fk']['tablename'],str(metaObjAttr['dst']['fk']['fieldname']).replace('\'','\\\''),str(metaObjAttr['dst']['fk']['displayfield']).replace('\'','\\\''),elLabel) title python:here.getZMILangStr('BTN_ADD');"
+								<a class="btn btn-primary" href="javascript:;" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'multiselect\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['dst']['fk']['tablename'],str(metaObjAttr['dst']['fk']['fieldname']).replace('\'','\\\''),str(metaObjAttr['dst']['fk']['displayfield']).replace('\'','\\\''),elLabel);title python:here.getZMILangStr('BTN_ADD')"
 									><i class="fas fa-plus-square"></i></a>
 								<a class="btn btn-secondary" href="javascript:;" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%elName; title python:here.getZMILangStr('BTN_DELETE');" 
 									><i class="fas fa-minus-square text-danger"></i></a>

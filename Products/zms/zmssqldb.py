@@ -821,7 +821,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                 try:
                   colSize = int(colDescr[i+1:j])
                 except:
-                  colSize = 255
+                  pass
             if colSize > 255:
               colType = 'text'
             else:

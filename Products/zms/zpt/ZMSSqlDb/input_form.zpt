@@ -94,7 +94,7 @@
 									<input class="lazy" type="hidden" tal:attributes="id metaObjAttr/id; name elName; value python:option[0]"/>
 									<input class="form-control" type="text" tal:attributes="id python:'label_%s'%(elName); value python:option[1]" disabled="disabled"/>
 									<div class="input-group-append" tal:define="actions python:['select']+[[],['insert']][int(metaObjAttr['fk'].get('editable',0))]">
-										<a class="btn btn-secondary btn-sm" href="javascript:;" 
+										<a class="btn btn-secondary" href="javascript:;" 
 											tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions\':\'%s\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],tablename,fieldname,displayfield,','.join(actions),elLabel)" 
 											><i class="fas fa-pencil-alt"></i></a>
 									</div>
@@ -133,11 +133,11 @@
 						<div class="pull-left">
 							<div class="btn-group-vertical" 
 								tal:on-error="python:'ERROR: %s'%str(metaObjAttr)">
-								<a class="btn btn-primary btn-sm" href="javascript:;" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'multiselect\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['dst']['fk']['tablename'],str(metaObjAttr['dst']['fk']['fieldname']).replace('\'','\\\''),str(metaObjAttr['dst']['fk']['displayfield']).replace('\'','\\\''),elLabel)"
+								<a class="btn btn-primary" href="javascript:;" tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'multiselect\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_INSERT\')+\': %s\'})'%(here.absolute_url(),metaObjAttr['id'],metaObjAttr['dst']['fk']['tablename'],str(metaObjAttr['dst']['fk']['fieldname']).replace('\'','\\\''),str(metaObjAttr['dst']['fk']['displayfield']).replace('\'','\\\''),elLabel)"
 									><i class="fas fa-plus-square"></i></a>
-								<a class="btn btn-secondary btn-sm" href="javascript:;" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%elName" 
+								<a class="btn btn-secondary" href="javascript:;" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%elName" 
 									><i class="fas fa-minus-square text-danger"></i></a>
-								<a class="btn btn-secondary btn-sm" href="javascript:;" tal:attributes="onclick python:'$(\'select#%s option\').prop(\'selected\',true)'%elName" 
+								<a class="btn btn-secondary" href="javascript:;" tal:attributes="onclick python:'$(\'select#%s option\').prop(\'selected\',true)'%elName" 
 									><i class="fas fa-check-square text-success"></i></a>
 							</div><!-- .btn-group -->
 						</div><!-- .pull-left -->

@@ -818,7 +818,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             if i >= 0:
               j = colDescr.find(')')
               if j >= 0:
-                colSize = int(colDescr[i+1:j])
+                try:
+                  colSize = int(colDescr[i+1:j])
+                except:
+                  colSize = 255
             if colSize > 255:
               colType = 'text'
             else:

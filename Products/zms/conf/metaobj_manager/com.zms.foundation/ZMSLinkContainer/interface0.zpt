@@ -1,6 +1,5 @@
 <tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
-<tal:block tal:define="global
-		zmscontext options/zmscontext;">
+<tal:block tal:define="global zmscontext options/zmscontext;">
 
 <style>
 table.ZMSLinkContainer td.meta-sort .input-group {
@@ -67,7 +66,7 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
 				</tal:block>
 			</select>
 			<div class="input-group-append">
-				<a class="btn btn-secondary" href="javascript:;" 
+				<a class="btn btn-secondary" href="javascript:;"
 					tal:attributes="onclick python:'if (confirm(getZMILangStr(\'MSG_CONFIRM_DELOBJ\'))){self.location.href=\'manage_deleteObjs?ids:list=%s&lang=%s&preview=%s\'}'%(childNode.id,request['lang'],request['preview']); title python:here.getZMILangStr('BTN_DELETE')"
 					><i class="fas fa-times"></i></a>
 			</div>

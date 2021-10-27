@@ -17,7 +17,7 @@ def equals(o, d):
 
 request = zmscontext.REQUEST
 lang = request['lang']
-if request.get('btn') == zmscontext.getZMILangStr('BTN_SAVE'):
+if request.get('btn') == 'BTN_SAVE':
   align = zmscontext.attr('align')
   # Save.
   for childNode in zmscontext.getChildNodes(request,['ZMSLinkElement']):

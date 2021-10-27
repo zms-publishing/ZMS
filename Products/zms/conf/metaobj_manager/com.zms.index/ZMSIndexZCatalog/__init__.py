@@ -28,7 +28,7 @@ class ZMSIndexZCatalog:
 	package = "com.zms.index"
 
 	# Revision
-	revision = "2.1.2"
+	revision = "2.1.3"
 
 	# Type
 	type = "ZMSResource"

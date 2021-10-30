@@ -39,10 +39,11 @@ index = 0
 for filterIndex in range(100):
   for filterStereotype in ['attr', 'op', 'value']:
     requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
-    requestvalue = request.form.get(requestkey, standard.get_session_value(zmscontext, sessionkey, ''))
-    if request.get('btn') == 'BTN_RESET':
-      requestvalue = ''
-    sessionkey = '%s_%s'%(requestkey, zmscontext.id)
+    sessionkey = '%s_%s'%(requestkey, zmscontrext.id)
+    defaultvalue = ''
+    if request.get('btn') is None:
+      defaultvalue = standard.get_session_value(self, sessionkey, defaultvalue)
+    requestvalue = request.form.get(requestkey, defaultvalue)
     standard.set_session_value(zmscontext, sessionkey, requestvalue)
     if requestvalue != '':
       requestkey = 'filter%s%i'%(filterStereotype, index)

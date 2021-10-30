@@ -511,8 +511,7 @@ class ZMSZCatalogConnector(
       container = self.getLinkObj(uid)
       home_id = container.getHome().id
       try:
-        langs = request.get('langs', ';'.join(container.getLangIds())).split(';')
-        for lang in langs:
+        for lang in container.getLangIds():
           request.set('lang', lang)
           lresult = []
           lresult.append('language: %s'%lang)

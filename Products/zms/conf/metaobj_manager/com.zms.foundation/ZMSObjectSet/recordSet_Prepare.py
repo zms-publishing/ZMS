@@ -50,7 +50,7 @@ for filterIndex in range(100):
       sessionkey = '%s_%s'%(requestkey, zmscontext.id)
       standard.set_session_valuezmscontext, sessionkey, requestvalue)
       index += 1
-request.form.set('qfilters', index + 1)
+request.set('qfilters', index + 1)
 standard.set_session_value(zmscontext,'qfilters_%s'%zmscontext.id, index + 1)
 # apply filter
 for filterIndex in range(100):

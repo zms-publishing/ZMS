@@ -288,7 +288,6 @@ function toggleMetaobj() {
 }
 
 function zmiReindexCatalog() {
-	//$(this).closest('form').append('<input type=\042hidden\042 name=\042objectIds:list\042 value=\042'+$(this).attr('data-id')+'\042><input type=\042hidden\042 name=\042btn\042 value=\042Reindex\042>').submit();
 	$(".zmi-sitemap .response").remove();
 	var $inputs = $(".zmi-sitemap input:checked");
 	var i = 0;

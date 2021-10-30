@@ -35,22 +35,23 @@ res = records
 request.set('res',res)
 
 # init filter from request.
+self = zmscontext
+REQUEST = request
 index = 0
 for filterIndex in range(100):
-  for filterStereotype in ['attr', 'op', 'value']:
-    requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
-    sessionkey = '%s_%s'%(requestkey, zmscontrext.id)
-    defaultvalue = ''
-    if request.get('btn') is None:
-      defaultvalue = standard.get_session_value(self, sessionkey, defaultvalue)
-    requestvalue = request.form.get(requestkey, defaultvalue)
-    standard.set_session_value(zmscontext, sessionkey, requestvalue)
-    if requestvalue != '':
-      requestkey = 'filter%s%i'%(filterStereotype, index)
-      request.set(requestkey, requestvalue)
-      sessionkey = '%s_%s'%(requestkey, zmscontext.id)
-      standard.set_session_valuezmscontext, sessionkey, requestvalue)
-      index += 1
+    for filterStereotype in ['attr', 'op', 'value']:
+          requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
+          sessionkey = '%s_%s'%(requestkey, self.id)
+          defaultvalue = standard.get_session_value(self, sessionkey, '')
+          requestvalue = REQUEST.form.get(requestkey, defaultvalue)
+          if REQUEST.get('btn') == 'BTN_RESET':
+            requestvalue = ''
+          requestkey = 'filter%s%i'%(filterStereotype, index)
+          sessionkey = '%s_%s'%(requestkey, self.id)
+          REQUEST.set(requestkey, requestvalue)
+          standard.set_session_value(self, sessionkey, requestvalue)
+          if filterStereotype == 'value' and requestvalue != '':
+            index += 1
 request.set('qfilters', index + 1)
 standard.set_session_value(zmscontext,'qfilters_%s'%zmscontext.id, index + 1)
 # apply filter

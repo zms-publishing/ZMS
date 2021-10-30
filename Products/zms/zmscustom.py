@@ -267,18 +267,15 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         for filterStereotype in ['attr', 'op', 'value']:
           requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
           sessionkey = '%s_%s'%(requestkey, self.id)
-          defaultvalue = ''
-          if REQUEST.get('btn') is None:
-            defaultvalue = standard.get_session_value(self, sessionkey, defaultvalue)
+          defaultvalue = standard.get_session_value(self, sessionkey, '')
           requestvalue = REQUEST.form.get(requestkey, defaultvalue)
           if REQUEST.get('btn') == 'BTN_RESET':
             requestvalue = ''
+          requestkey = 'filter%s%i'%(filterStereotype, index)
+          sessionkey = '%s_%s'%(requestkey, self.id)
+          REQUEST.set(requestkey, requestvalue)
           standard.set_session_value(self, sessionkey, requestvalue)
-          if requestvalue != '':
-            requestkey = 'filter%s%i'%(filterStereotype, index)
-            REQUEST.set(requestkey, requestvalue)
-            sessionkey = '%s_%s'%(requestkey, self.id)
-            standard.set_session_value(self, sessionkey, requestvalue)
+          if filterStereotype == 'value' and requestvalue != '':
             index += 1
       REQUEST.set('qfilters', index + 1)
       standard.set_session_value(self,'qfilters_%s'%self.id, index + 1)

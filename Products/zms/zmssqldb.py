@@ -1176,10 +1176,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       for filterIndex in range(100):
         for filterStereotype in ['attr', 'op', 'value']:
           requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
+          sessionkey = '%s_%s'%(requestkey, self.id)
           requestvalue = REQUEST.form.get(requestkey, standard.get_session_value(self, sessionkey, ''))
           if REQUEST.get('btn') == 'BTN_RESET':
             requestvalue = ''
-          sessionkey = '%s_%s'%(requestkey, self.id)
           standard.set_session_value(self, sessionkey, requestvalue)
           if requestvalue != '':
             requestkey = 'filter%s%i'%(filterStereotype, index)

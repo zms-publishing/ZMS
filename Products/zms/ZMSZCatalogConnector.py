@@ -104,6 +104,7 @@ def addLexicon( container, cat):
 def getZCatalog(self, lang):
   cat_id = 'catalog_%s'%lang
   root = self.getRootElement()
+  # remove deprecated local catalog from client
   if root != self and cat_id in self.objectIds():
     self.manage_delObjects([cat_id])
   zcatalog = getattr(root, cat_id, None)
@@ -128,11 +129,12 @@ def recreateCatalog(self, zcm, lang):
   
   #-- Create catalog
   cat_id = 'catalog_%s'%lang
-  if cat_id in self.objectIds():
-    self.manage_delObjects([cat_id])
+  root = self.getRootElement()
+  if cat_id in root.objectIds():
+    root.manage_delObjects([cat_id])
   cat_title = 'Default catalog'
-  zcatalog = ZCatalog.ZCatalog(id=cat_id, title=cat_title, container=self)
-  self._setObject(zcatalog.id, zcatalog)
+  zcatalog = ZCatalog.ZCatalog(id=cat_id, title=cat_title, container=root)
+  root._setObject(zcatalog.id, zcatalog)
   zcatalog = getZCatalog(self, lang)
   writeChangesLog(zcatalog, '[recreateCatalog]: '+self.getZMILangStr('MSG_INSERTED')%zcatalog.meta_type)
   

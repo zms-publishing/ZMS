@@ -1187,7 +1187,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             sessionkey = '%s_%s'%(requestkey, self.id)
             standard.set_session_value(self, sessionkey, requestvalue)
             index += 1
-      REQUEST.form.get('qfilters', index + 1)
+      REQUEST.form.set('qfilters', index + 1)
       standard.set_session_value(self,'qfilters_%s'%self.id, index + 1)
       # apply filter
       tablename = standard.get_session_value(self,'qentity_%s'%self.id)

@@ -305,7 +305,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           try:
             value = node.attr(attr_id)
           except:
-            msg = '[@%s.get_sitemap]: can\'t get attr \'%s.%s\' - see error-log for details'%('/'.join(node.getPhysicalPath()).id, node.meta_id, attr_id)
+            msg = '[@%s.get_sitemap]: can\'t get attr \'%s.%s\' - see error-log for details'%('/'.join(node.getPhysicalPath()), node.meta_id, attr_id)
             standard.writeError(self, msg)
             if msg not in result:
               result.append(msg)

@@ -29,7 +29,7 @@ from Products.zms import standard
 from Products.zms import _confmanager
 from Products.zms import _xmllib
 from Products.zms import _zreferableitem
-
+from Products.zms import zmslinkelement
 
 """
 ################################################################################

@@ -34,18 +34,26 @@ for childNode in zmscontext.getChildNodes(request):
 res = records
 request.set('res',res)
 
-# Filter
-for filterIndex in range(10):
-  for filterStereotype in ['attr','op','value']:
-    requestkey = 'filter%s%i'%(filterStereotype,filterIndex)
-    sessionkey = '%s_%s'%(requestkey,zmscontext.id)
-    requestvalue = request.form.get(requestkey,standard.get_session_value(zmscontext,sessionkey,''))
-    if request.get('btn','')==zmscontext.getZMILangStr('BTN_RESET'):
+# init filter from request.
+index = 0
+for filterIndex in range(100):
+  for filterStereotype in ['attr', 'op', 'value']:
+    requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
+    requestvalue = request.form.get(requestkey, standard.get_session_value(zmscontext, sessionkey, ''))
+    if request.get('btn') == 'BTN_RESET':
       requestvalue = ''
-    request.set(requestkey,requestvalue)
-    standard.set_session_value(zmscontext,sessionkey,requestvalue)
-standard.set_session_value(zmscontext,'qfilters_%s'%zmscontext.id,request.form.get('qfilters',standard.get_session_value(zmscontext,'qfilters_%s'%zmscontext.id,1)))
-for filterIndex in range(10):
+    sessionkey = '%s_%s'%(requestkey, zmscontext.id)
+    standard.set_session_value(zmscontext, sessionkey, requestvalue)
+    if requestvalue != '':
+      requestkey = 'filter%s%i'%(filterStereotype, index)
+      request.set(requestkey, requestvalue)
+      sessionkey = '%s_%s'%(requestkey, zmscontext.id)
+      standard.set_session_valuezmscontext, sessionkey, requestvalue)
+      index += 1
+request.form.get('qfilters', index + 1)
+standard.set_session_value(zmscontext,'qfilters_%s'%zmscontext.id, index + 1)
+# apply filter
+for filterIndex in range(100):
   suffix = '%i_%s'%(filterIndex,zmscontext.id)
   sessionattr = standard.get_session_value(zmscontext,'filterattr%s'%suffix,'')
   sessionop = standard.get_session_value(zmscontext,'filterop%s'%suffix,'%')

@@ -58,7 +58,7 @@ tr.inactive > td.data > * {
 		</div><!-- .card-header -->
 		<div id="attrProperties" class="filters collapse show">
 			<div class="card-body">
-				<tal:block tal:repeat="filterIndex python:range(request.get('qfilters',1)+1)">
+				<tal:block tal:repeat="filterIndex python:range(request.get('qfilters',1))">
 					<div tal:attributes="class python:' '.join(['form-row']+[[],['d-none']][int(filterIndex==request.get('qfilters',1))])">
 						<div class="form-group col-md-4">
 							<select class="form-control form-control-sm" tal:attributes="name python:'filterattr%i'%filterIndex">

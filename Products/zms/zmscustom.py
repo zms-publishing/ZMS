@@ -262,16 +262,23 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         REQUEST.set('masterMetaObj', masterMetaObj)
         REQUEST.set('masterRow', masterRows[0])
       # init filter from request.
+      index = 0
       for filterIndex in range(100):
         for filterStereotype in ['attr', 'op', 'value']:
           requestkey = 'filter%s%i'%(filterStereotype, filterIndex)
-          sessionkey = '%s_%s'%(requestkey, self.id)
-          requestvalue = REQUEST.form.get(requestkey, standard.get_session_value(self,sessionkey, ''))
-          if REQUEST.get('btn')=='BTN_RESET':
+          requestvalue = REQUEST.form.get(requestkey, standard.get_session_value(self, sessionkey, ''))
+          if REQUEST.get('btn') == 'BTN_RESET':
             requestvalue = ''
-          REQUEST.set(requestkey, requestvalue)
-          standard.set_session_value(self,sessionkey, requestvalue)
-      standard.set_session_value(self,'qfilters_%s'%self.id, REQUEST.form.get('qfilters', standard.get_session_value(self,'qfilters_%s'%self.id, 1)))
+          sessionkey = '%s_%s'%(requestkey, self.id)
+          standard.set_session_value(self, sessionkey, requestvalue)
+          if requestvalue != '':
+            requestkey = 'filter%s%i'%(filterStereotype, index)
+            REQUEST.set(requestkey, requestvalue)
+            sessionkey = '%s_%s'%(requestkey, self.id)
+            standard.set_session_value(self, sessionkey, requestvalue)
+            index += 1
+      REQUEST.form.get('qfilters', index + 1)
+      standard.set_session_value(self,'qfilters_%s'%self.id, index + 1)
       # apply filter
       for filterIndex in range(100):
         suffix = '%i_%s'%(filterIndex, self.id)

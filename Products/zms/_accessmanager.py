@@ -1230,7 +1230,7 @@ class AccessManager(AccessableContainer):
             self.setUserAttr(id, 'attrActiveStart', self.parseLangFmtDate(REQUEST.get('attrActiveStart')))
             self.setUserAttr(id, 'attrActiveEnd', self.parseLangFmtDate(REQUEST.get('attrActiveEnd')))
             for key in ['email','profile','user_id']:
-              if REQUEST.has_key(key):  
+              if key in REQUEST.keys():  
                 value = REQUEST.get(key, '').strip()
                 self.setUserAttr(id, key, value)
             if attrActive != newAttrActive:

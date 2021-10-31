@@ -499,7 +499,8 @@ body.zmi ul.zmi-container .contentEditable {
 	cursor:pointer;
 }
 
-body.zmi ul.zmi-container li.zmi-item .inactive .contentEditable {
+body.zmi ul.zmi-container li.zmi-item .inactive .contentEditable,
+body.zmi ul.zmi-container li.zmi-item .contentEditable.ZMSTeaserContainer .inactive {
 	filter:Alpha(opacity=40);
 	-moz-opacity:0.40;
 	opacity:0.40

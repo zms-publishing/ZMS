@@ -26,7 +26,7 @@ class ZMSTeaserContainer:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "3.3.0"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSObject"

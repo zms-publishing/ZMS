@@ -2,28 +2,25 @@
 
 <tal:block tal:define="global 
 		zmscontext options/zmscontext">
-	<div class="form-small" tal:repeat="teaserElmnt python:zmscontext.getChildNodes(request)">
+	<div class="ZMSTeaserElement" tal:repeat="teaserElmnt python:zmscontext.getChildNodes(request)"
+	    tal:attributes="class python:teaserElmnt.isActive(request)==False and 'ZMSTeaserElement inactive' or default">
 		<a tal:attributes="
 						href python:'%s/manage_main?lang=%s'%(teaserElmnt.absolute_url(),request['lang']); 
 						title python:zmscontext.getZMILangStr('CAPTION_EDIT')%teaserElmnt.display_type(request)"
 				tal:content="structure python:teaserElmnt.display_icon(request)">
 			the internal link
 		</a>
-		<tal:block tal:define="global 
+		<tal:block 
+		    tal:define="
 				url      python:zmscontext.getLinkUrl(teaserElmnt.attr('attr_url'));
 				img_src  python:teaserElmnt.attr('attr_img_src')+'?';
 				title    python:teaserElmnt.attr('title');
-				abstract python:zmscontext.search_quote(teaserElmnt.attr('attr_abstract'))">
+				abstract python:zmscontext.search_quote(teaserElmnt.attr('attr_abstract')) or teaserElmnt.attr('text')">
 			<tal:block tal:condition="python:title">
 				<a tal:condition="python:url" tal:attributes="href url" target="_blank" class="zmi" tal:content="title"><b>The title</b></a>
 				<tal:block tal:condition="python:not url" tal:content="title">The title</tal:block>
 			</tal:block>
-			<tal:block tal:condition="python:not title">
-				<tal:block tal:condition="python:img_src">
-					<div><i>&laquo;<tal:block tal:content="python:img_src[img_src.rfind('/')+1:img_src.find('?')]"></tal:block>&raquo;</i></div>
-				</tal:block>
-			</tal:block>
-			<div tal:content="structure abstract">The abstract</div>
+			<tal:block tal:condition="python:not title" tal:content="structure abstract"></tal:block>
 		</tal:block>
 	</div>
 </tal:block>

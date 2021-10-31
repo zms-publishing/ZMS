@@ -667,9 +667,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
               ldst = [x for x in details['columns'] if x.get('fk') is not None and 'tablename' in x['fk'] and x['fk']['tablename']!=tableName]
               columns = []
               joins = []
+              dst = {}
               for x in [x['id'] for x in details['columns'] if x.get('datatype', '?')!='?']:
                 columns.append(x)
-                fdst = [x for x in ldst if x==dst['id']]
+                fdst = [x for x in ldst if x==dst.get('id')]
                 if fdst:
                   dst = fdst[0]
                   fktablename = dst['fk']['tablename']
@@ -1001,6 +1002,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           for modelTableCol in [x for x in modelTable.get('columns', []) if x['id'].upper() not in colNames]:
             col = modelTableCol
             col['id'] = col.get('id', '?')
+            col['name'] = col.get('id', '?')
             col['index'] = int(col.get('index', len(cols)))
             col['type'] = col.get('type', '?')
             col['key'] = col.get('key', col.get('id'))

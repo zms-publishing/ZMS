@@ -9,14 +9,15 @@
 		metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);
 		elName python:metaObjAttr['id'];
 		elLabel python:metaObjAttr['label'];">
-	<div class="card" tal:attributes="id python:'tr_%s'%(elName)"
-		><div class="card-header"
-			>&nbsp;&nbsp;<a class="btn card-toggle" tal:attributes="href python:'#detailstable_%s'%(elLabel)">
-				<i class="fas"></i>
+	<div class="card" tal:attributes="id python:'tr_%s'%(elName)">
+		<div class="card-header btn-collapse">
+			<a class="btn card-toggle" data-toggle="collapse" 
+				tal:attributes="href python:'#detailstable_%s'%(elLabel);id python:'zmi-toggle-detailstable_%s-btn'%(elLabel)">
+				<i class="fas fas fa-th"></i>
 				<tal:block tal:content="elLabel">the heading</tal:block>
 			</a>
 		</div><!-- card-header -->
-		<div class="collapse"
+		<div class="X-collapse"
 				tal:attributes="id python:'#detailstable_%s'%(elLabel)"
 				tal:define="global details python:here.getEntity(metaObjAttr['details']['tablename']);"
 			><a href="javascript:;" onclick="$('.zmi_details_grid').toggle()" title="Show SQL Code">

@@ -41,8 +41,13 @@ class EditPageExample(ZMSTestCase):
         self._find_element(By.CSS_SELECTOR, '.alert-success')
         
         # open preview
-        with self._wait_for_page_load(roottag='frameset'):
-            self._wait_for_click(self._find_element(By.LINK_TEXT, "Vorschau"),By.CSS_SELECTOR,'frameset')
+        management_window = self.driver.window_handles[0]
+        self._find_element(By.LINK_TEXT, "Vorschau").click()
+        # with self._wait_for_page_load(roottag='frameset'):
+            # self._wait_for_click(self._find_element(By.LINK_TEXT, "Vorschau"),By.CSS_SELECTOR,'frameset')
+        
+        preview_window = self.driver.window_handles[1]
+        self.driver.switch_to_window(preview_window)
         
         frame = self._find_element(By.NAME, "partner")
         self.driver.switch_to.frame(frame)
@@ -50,6 +55,10 @@ class EditPageExample(ZMSTestCase):
         # ensure text is there
         self._find_element(By.XPATH, '//p[text()="%s"]' % MARKER)
         
+        self.driver.close()
+        
+        self.driver.switch_to_window(management_window)
+
         self._tear_down()
         print("<EditPageExample.test_edit>")
 

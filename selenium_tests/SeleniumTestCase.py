@@ -4,7 +4,11 @@ from __future__ import print_function
 import unittest
 import os
 from contextlib import contextmanager
-from urlparse import urlparse, urljoin
+try:
+    from urlparse import urlparse, urljoin, urlsplit, urlunsplit, SplitResult
+except ImportError:
+    from urllib.parse import urlparse, urljoin, urlsplit, urlunsplit, SplitResult
+
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -68,7 +72,8 @@ class SeleniumTestCase(unittest.TestCase):
         root = self._find_element(By.CSS_SELECTOR, roottag, timeout=timeout)
         classes = root.get_attribute("class").split(' ')
         if 'zmi' in classes and 'loading' in classes:
-            self._find_element(By.CSS_SELECTOR, roottag+'.loaded', timeout=timeout)
+            # self._find_element(By.CSS_SELECTOR, roottag+'.loaded', timeout=timeout)
+            pass
     
     def _wait_for_ajax(self, script, timeout=DEFAULT_TIMEOUT):
         source = self.driver.page_source
@@ -113,17 +118,17 @@ class SeleniumTestCase(unittest.TestCase):
         #     self.driver.switch_to.alert.send_keys(self.login + Keys.TAB + self.password)
         #     self.driver.switch_to.alert.accept()
         # else:
-        import urlparse
-        components = urlparse.urlsplit(login_url)
+        components = urlsplit(login_url)
         credentials = '%s:%s@' % (self.login, self.password)
-        components_with_auth = urlparse.SplitResult(components[0], credentials + components[1], *components[2:])
-        self.driver.get(urlparse.urlunsplit(components_with_auth))
+        components_with_auth = SplitResult(components[0], credentials + components[1], *components[2:])
+        self.driver.get(urlunsplit(components_with_auth))
     
     def _create_or_navigate_to_zms(self):
         # expects to be logged in
         # ensure we're on the manage_main page
-        self._wait_for_text('Control_Panel')
+        self._wait_for_text('acl_users')
         
+        # quite slow, but only once
         if 0 == len(self.driver.find_elements(By.LINK_TEXT, 'sites')):
             # create folder
             select = Select(self._find_element(By.CSS_SELECTOR, 'select[name=":action"]'))
@@ -144,7 +149,7 @@ class SeleniumTestCase(unittest.TestCase):
         
         # detail page has loaded
         self._find_element(By.CSS_SELECTOR, 'input[value="Import/Export"]') # finished loading
-        if 0 == len(self.driver.find_elements(By.PARTIAL_LINK_TEXT, 'zms (ZMS - Python-based contentmanagement')):
+        if 0 == len(self.driver.find_elements(By.PARTIAL_LINK_TEXT, 'ZMS - Python-based contentmanagement')):
             # create zms
             # if no link with zms is there
             try:
@@ -164,12 +169,12 @@ class SeleniumTestCase(unittest.TestCase):
                 self._find_element(By.CSS_SELECTOR, 'button[value="Add"]').click()
         else:
             with self._wait_for_page_load():
-                self._find_element(By.PARTIAL_LINK_TEXT, 'zms (ZMS - Python-based contentmanagement').click()
+                self._find_element(By.PARTIAL_LINK_TEXT, 'ZMS - Python-based contentmanagement').click()
             with self._wait_for_page_load():
                 self._find_element(By.PARTIAL_LINK_TEXT, 'content').click()
         
         # zms content edit page has loaded
-        self._wait_for_text('ZMS - Python-based contentmanagement system')
+        self._wait_for_text('ZMS - Python-based contentmanagement')
     
     ## Plumbing
     

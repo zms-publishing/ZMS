@@ -2562,6 +2562,9 @@ ul.pagination {
 /* ++++++++++++++++++++++++++ */
 /* ZMSRecordset               */
 /* ++++++++++++++++++++++++++ */
+.ZMSRecordSet.main_grid form table.table {
+	min-height:10rem
+}
 .ZMSRecordSet.main_grid table > thead > tr > th {
 	background: #607d8ba6;
 	color: white;

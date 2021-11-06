@@ -2587,6 +2587,19 @@ ul.pagination {
 	overflow:hidden;
 	text-overflow: ellipsis;
 }
+.ZMSRecordSet.main_grid table .zmi-datatype-action {
+	width:7.5rem;
+}
+.ZMSRecordSet.main_grid table .zmi-datatype-int,
+.ZMSRecordSet.main_grid table tbody tr td.data.zmi-datatype-int div:not(.url) {
+	min-width: unset;
+	width:3rem;
+	max-width:unset;
+}
+.zmi_details_grid .ZMSRecordSet.main_grid table .zmi-datatype-int,
+.zmi_details_grid .ZMSRecordSet.main_grid table tbody tr td.data.zmi-datatype-int div:not(.url) {
+	width:unset;
+}
 .ZMSRecordSet.main_grid table thead th input.form-control.form-control-sm {
 	max-width:calc(100% - 1rem);
 	color:white;

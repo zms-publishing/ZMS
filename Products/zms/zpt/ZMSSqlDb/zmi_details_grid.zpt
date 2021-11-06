@@ -35,6 +35,7 @@
 			dummy0 python:[here.operator_setitem(x,'name',x['label']) for x in metaObjAttrs];
 			metaObjAttrIds python:[x['id'] for x in metaObjAttrs];"
 		tal:attributes="id python:'#detailstable_%s'%(elLabel)">
+		<!-- DEBUG: pre tal:content="r"></pre -->
 		<div class="ZMSRecordSet main_grid" 
 			tal:replace="structure python:here.metaobj_recordset_main_grid(
 				metaObjAttrIds=metaObjAttrIds,

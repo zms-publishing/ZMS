@@ -487,6 +487,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             d[k] = value
           primary_key = context.getEntityPK(tableName)
           rowid = standard.operator_getitem(d, primary_key, ignorecase=True)
+          # rowid  = r.get(primary_key)
           d['__id__'] = rowid
           d['params'] = {'rowid':rowid}
           return d

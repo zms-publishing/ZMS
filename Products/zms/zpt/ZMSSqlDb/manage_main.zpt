@@ -90,7 +90,7 @@
 	<div class="card">
 
 		<div class="card-header attr_last_modified clearfix btn-collapse">
-			<a class="btn card-toggle col-sm-2 col-lg-1 text-left" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
+			<a class="btn card-toggle text-left" data-toggle="collapse" href="#attrActivity" aria-expanded="false"
 				><i class="fas fa-caret-right"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block
 			></a>
 			<div class="btn zmi-changes" tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')+' '+here.getLangFmtDate(here.attr('change_dt'))+' '+here.getZMILangStr('BY')+' '+here.attr('change_uid')">change_dt by change_uid</div>
@@ -107,7 +107,7 @@
 		</div><!-- .collapse -->
 
 		<div class="card-header filters clearfix btn-collapse">
-			<a class="btn card-toggle pull-left py-2 col-sm-2 col-lg-1 text-left" data-toggle="collapse" href="#attrProperties">
+			<a class="btn card-toggle pull-left py-2 mt-1 text-left" data-toggle="collapse" href="#attrProperties">
 				<i class="fas fa-caret-down"></i>
 				<tal:block tal:content="structure python:here.getZMILangStr('ATTR_FILTER')">the label</tal:block>
 			</a>

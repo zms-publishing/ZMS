@@ -1,14 +1,14 @@
 <tal:block tal:define="
-			standard modules/Products.zms/standard;
-			action options/action;
-			qindex options/qindex;
-			rowid options/rowid;
-			row options/row;
-			encoding python:getattr(here,'charset','utf-8');
-			entity options/entity;
-			primary_key python:here.getEntityPK(entity['id']);
-			input_form python:options.get('input_form',True);
-			request_form_inherit python:['lang','preview','qentity']+options.get('request_form_inherit',[]);">
+	standard modules/Products.zms/standard;
+	action options/action;
+	qindex options/qindex;
+	rowid options/rowid;
+	row options/row;
+	encoding python:getattr(here,'charset','utf-8');
+	entity options/entity;
+	primary_key python:here.getEntityPK(entity['id']);
+	input_form python:options.get('input_form',True);
+	request_form_inherit python:['lang','preview','qentity']+options.get('request_form_inherit',[]);">
 
 <form class="form-horizontal" id="form0" name="form0" method="post" enctype="multipart/form-data" 
 	tal:omit-tag="not:input_form"
@@ -17,15 +17,12 @@
 		primary_key python:here.getEntityPK(entity['id']).lower();
 		qcharset python:request.get('qcharset','utf-8')">
 	<tal:block tal:repeat="key python:[x for x in request_form_inherit if x in list(request.keys())]">
-		<input type="hidden" 
-			tal:omit-tag="python: not input_form and key in ['lang','preview']"
-			tal:attributes="id key; name key; value python:request[key]"/>
+		<input type="hidden" tal:omit-tag="python: not input_form and key in ['lang','preview']" tal:attributes="id key; name key; value python:request[key]" />
 	</tal:block>
-	<input type="hidden" id="action" name="action" tal:attributes="value action">
-	<input type="hidden" id="qindex" name="qindex:int" tal:attributes="value qindex">
-	<input type="hidden" id="rowid" name="rowid" tal:attributes="value rowid">
-	<legend>
-	</legend>
+	<input type="hidden" id="action" name="action" tal:attributes="value action" />
+	<input type="hidden" id="qindex" name="qindex:int" tal:attributes="value qindex" />
+	<input type="hidden" id="rowid" name="rowid" tal:attributes="value rowid" />
+	<legend></legend>
 	<div class="card">
 		<div class="card-header btn-collapse">
 			<a class="btn card-toggle" href="javascript:;">

@@ -427,6 +427,7 @@ footer .back-to-top.hide {
 #zmiIframeAddDialog .card  .card-header a.card-toggle {
 	color: #354f67a6 !important;
 	font-weight:bold;
+	min-width: 7rem;
 }
 #zmi-tab .card  .card-header .zmi-state {
 	margin:0 .25rem;

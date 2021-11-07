@@ -2049,7 +2049,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                         d[ xk[0]][ xk[-1]][ xk[1]] = xv
               for i in c:
                 l = d[i].values()
-                l = sorted(x,key=lambda x:x.get('index', l.index(x)))
+                # l = sorted(x,key=lambda x:x.get('index', l.index(x)))
+                l = sorted(list(l),key=lambda x:x.get('index', list(l).index(x)))
                 for x in l:
                   if not x.get('display'):
                     x['hide'] = 1

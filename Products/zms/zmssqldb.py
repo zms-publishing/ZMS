@@ -486,8 +486,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
               standard.writeError( self, '[getEntityRecordHandler]: can\'t %s'%k)
             d[k] = value
           primary_key = context.getEntityPK(tableName)
-          rowid = standard.operator_getitem(d, primary_key, ignorecase=True)
-          # rowid  = r.get(primary_key)
+          rowid = standard.operator_getitem(r, primary_key, ignorecase=True)
           d['__id__'] = rowid
           d['params'] = {'rowid':rowid}
           return d

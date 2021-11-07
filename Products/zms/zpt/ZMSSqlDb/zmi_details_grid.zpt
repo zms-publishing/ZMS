@@ -1,8 +1,7 @@
 <!-- zmi_details_grid -->
 
 <div class="card zmi_details_grid" 
-	tal:define="dummy python:here.zmi_page_request(here,request);
-		entity python:here.getEntity(request['qentity']);
+	tal:define="entity python:here.getEntity(request['qentity']);
 		primary_key python:here.getEntityPK(entity['id']).lower();
 		column python:{'id':request['qcolumn']};
 		qentitypkval request/qentitypkval;

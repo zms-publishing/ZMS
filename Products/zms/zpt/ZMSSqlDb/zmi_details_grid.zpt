@@ -12,6 +12,17 @@
 		elLabel python:metaObjAttr['label'];
 		details python:here.getEntity(metaObjAttr['details']['tablename']);"
 	tal:attributes="id python:'tr_%s'%(elName)">
+	<div class="debug" tal:condition="python:request.get('debug')">
+		<div>entity=<tal:block tal:content="entity"></tal:block></div>
+		<div>primary_key=<tal:block tal:content="primary_key"></tal:block></div>
+		<div>column=<tal:block tal:content="column"></tal:block></div>
+		<div>qentitypkval=<tal:block tal:content="qentitypkval"></tal:block></div>
+		<div>row=<tal:block tal:content="row"></tal:block></div>
+		<div>metaObjAttr=<tal:block tal:content="metaObjAttr"></tal:block></div>
+		<div>elName=<tal:block tal:content="elName"></tal:block></div>
+		<div>elLabel=<tal:block tal:content="elLabel"></tal:block></div>
+		<div>details=<tal:block tal:content="details"></tal:block></div>
+	</div>
 	<div class="card-header btn-collapse">
 		<a class="btn card-toggle mr-1" data-toggle="collapse" 
 			tal:attributes="href python:'#detailstable_%s'%(elLabel);id python:'zmi-toggle-detailstable_%s-btn'%(elLabel)">
@@ -35,7 +46,11 @@
 			dummy0 python:[here.operator_setitem(x,'name',x['label']) for x in metaObjAttrs];
 			metaObjAttrIds python:[x['id'] for x in metaObjAttrs];"
 		tal:attributes="id python:'#detailstable_%s'%(elLabel)">
-		<!-- DEBUG: pre tal:content="r"></pre -->
+		<div class="debug" tal:condition="python:request.get('debug')">
+			<div>r=<tal:block tal:content="r"></tal:block></div>
+			<div>metaObjAttrs=<tal:block tal:content="metaObjAttrs"></tal:block></div>
+			<div>metaObjAttrIds=<tal:block tal:content="column"></tal:block></div>
+		</div>
 		<div class="ZMSRecordSet main_grid" 
 			tal:replace="structure python:here.metaobj_recordset_main_grid(
 				metaObjAttrIds=metaObjAttrIds,

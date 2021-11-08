@@ -370,10 +370,11 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         for s in colName.split('_'):
           colLabel += s.capitalize()
         try:
-          colType = {'i':'int','n':'float','t':'string','s':'string','d':'datetime','l':'string'}[result_column['type']]
+          colType = {'i':'int','n':'float','t':'string','s':'string','d':'datetime','l':'string',None:'string'}[result_column['type']]
         except:
           colType = result_column.get('type', None)
           standard.writeError(self, '[query]: Column ' + colName + ' has unknown type ' + str(colType) + '!')
+          pass
         column = {}
         column['id'] = colName
         column['key'] = colName

@@ -2627,3 +2627,9 @@ ul.pagination {
 .ZMSSqlDbForm-multiselect select {
 	min-height:6.25rem
 }
+.zmi .form-group.row .ZMSSqlDbForm-multiselect select {
+	min-height:6.25rem !important
+}
+.zmi .form-group.row .ZMSSqlDbForm-multimultiselect .input-group .control-group {
+	width:calc(50% - 38.5px)
+}

@@ -175,7 +175,7 @@
 									</div>
 								</tal:block>
 							</div><!-- .pull-left -->
-							<span class="btn btn-primary" tal:attributes="onclick python:'zmiMultimultiselect(\'%s\')'%metaObjAttr['id']"><i class="fas fa-plus-square"></i></span>
+							<span class="btn btn-secondary" tal:attributes="onclick python:'zmiMultimultiselect(\'%s\')'%metaObjAttr['id']"><i class="fas fa-plus"></i></span>
 							<span class="btn btn-secondary" tal:attributes="onclick python:'$ZMI.removeFromMultiselect(document.getElementById(\'%s\'))'%metaObjAttr['id']"><i class="fas fa-minus"></i></span>
 						</div><!-- .input-group -->
 						<div class="control-group">

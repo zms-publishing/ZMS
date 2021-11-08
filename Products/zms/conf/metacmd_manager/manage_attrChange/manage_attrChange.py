@@ -183,13 +183,13 @@ def renderHtml():
        $('#aselected').load('manage_attrChange?cselected=' + cselected );
       };
       function ajaxPreview(cselected, aselected, searchstr, replacestr, lang) {
-       $('div#ObjList').html('<i class="text-primary icon-spinner icon-3x icon-spin fas fa-spinner fa-spin fa-3x"></i>');
+       $('div#ObjList').html('<i class="text-primary fas fa-spinner fa-spin fa-3x"></i>');
        $('div#ObjList').load('manage_attrChange?cselected=' + cselected + '&aselected=' + aselected + '&searchstr=' + encodeURI(searchstr) + '&replacestr=' + encodeURI(replacestr) + '&lang=' + lang + '&mode=Preview' );
       }
       function ajaxReplace(cselected, aselected, searchstr, replacestr, lang) {
        Check = confirm("Wollen Sie wirklich ersetzen?");
        if (Check == true) {
-         $('div#ObjList').html('<i class="text-primary icon-spinner icon-3x icon-spin fas fa-spinner fa-spin fa-3x"></i>');
+         $('div#ObjList').html('<i class="text-primary fas fa-spinner fa-spin fa-3x"></i>');
          $('div#ObjList').load('manage_attrChange?cselected=' + cselected + '&aselected=' + aselected + '&searchstr=' + encodeURI(searchstr) + '&replacestr=' + encodeURI(replacestr) + '&lang=' + lang + '&mode=Replace' );
         };
       }

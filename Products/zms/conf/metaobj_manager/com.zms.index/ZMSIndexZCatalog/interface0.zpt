@@ -165,9 +165,9 @@ function zmiFuncIndex(func_) {
 				var $a = $input.next("a");
 				var viewport_pos = $(window).scrollTop();
 				var btn_close = '<'+'a class="close" data-dismiss="alert" href="#">×<'+'/a>';
-				$a.after('<'+'span class="response">&nbsp;&nbsp;<'+'i class="icon-spinner icon-spin fas fa-spinner fa-spin text-primary"><'+'/i><'+'/span>');
+				$a.after('<'+'span class="response">&nbsp;&nbsp;<'+'i class="fas fa-spinner fa-spin text-primary"><'+'/i><'+'/span>');
 				// Show syncing node
-				$('#zmsindex .zmi-sitemap .icon-spinner').get(0).scrollIntoView();
+				$('#zmsindex .zmi-sitemap .fa-spinner').get(0).scrollIntoView();
 				$(window).scrollTop(viewport_pos);
 				$.ajax({
 					url:"zmsindex/ZMSIndexZCatalog_func_",
@@ -293,7 +293,7 @@ $(function() {
 	#zmsindex .zmi-sitemap-container.loading a,
 	#zmsindex .zmi-sitemap-container.loading .toggle,
 	#zmsindex .zmi-sitemap-container.loading div#loading,
-	.zmi #zmsindex .zmi-sitemap-container.loading div#loading .icon-spinner {
+	.zmi #zmsindex .zmi-sitemap-container.loading div#loading .fa-spinner {
 		color: #fff !important;
 	}
 	#zmsindex .zmi-sitemap-container.loading ul li > * {
@@ -348,10 +348,10 @@ $(function() {
 		cursor: pointer;
 	}
 	#zmsindex .zmi-sitemap div#loading,
-	#zmsindex .zmi-sitemap div#loading .icon-spinner {
+	#zmsindex .zmi-sitemap div#loading .fa-spinner {
 		color: #08c !important;
 	}
-	#zmsindex .zmi-sitemap .icon-spinner.icon-spin {
+	#zmsindex .zmi-sitemap .fa-spinner.fa-spin {
 		zoom: 1.5;
 	}
 	#zmsindex .response.text-success,

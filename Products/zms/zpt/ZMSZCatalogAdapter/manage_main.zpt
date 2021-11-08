@@ -186,8 +186,8 @@
 					<div class="col-sm-2">&nbsp;</div>
 					<div class="col-sm-10">
 						<div>
-							<div class="zmi-sitemap-expand" onclick="$('#ZMSZCatalogConnector .zmi-sitemap').toggleClass('full');$('#ZMSZCatalogConnector .zmi-sitemap-expand i').toggleClass('icon-resize-small')">
-								<i class="icon icon-resize-full fas fa-expand-arrows-alt" title="Seitenanfang"></i>
+							<div class="zmi-sitemap-expand" onclick="$('.zmi-sitemap').toggleClass('full');$('.zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+								<i class="fas fa-expand-arrows-alt" title="Seitenanfang"></i>
 							</div>
 							<div class="zmi-sitemap">
 							</div><!-- .zmi-sitemap -->

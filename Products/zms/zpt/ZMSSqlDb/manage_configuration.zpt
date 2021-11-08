@@ -100,7 +100,7 @@ function onAttrTypeChange( el) {
 
 function loadTableEditor(urlparms) {
 	zmiModal('#updateEntity',{title:getZMILangStr('TAB_PROPERTIES')+': '+getZMILangStr('ATTR_TABLE'), width:'90%'});
-	$('#zmiModalupdateEntity .modal-body').html('<div style="margin:1rem auto;text-align:center"><i class="icon-spinner icon-spin fas fa-spinner fa-spin text-primary fa-3x"></i></div>');
+	$('#zmiModalupdateEntity .modal-body').html('<div style="margin:1rem auto;text-align:center"><i class="fas fa-spinner fa-spin text-primary fa-3x"></i></div>');
 	$('button[name=btn][value=BTN_CLOSE]').click(function() {
 			zmiModal("hide");
 			return false;

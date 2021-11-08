@@ -179,7 +179,7 @@ $(function() {
 
 					$(".ZMSRecordSet.main_grid table.zmi-sortable th a").on("click",function() {
 							$(".ZMSRecordSet.main_grid form").css({'transition':'opacity 1.5s','opacity':'0.25'});
-							$(".ZMSRecordSet.main_grid").prepend( "<div id='loading' class='zmi-page text-center' style='width:100%;position:absolute;margin-bottom:0.75em'><i class='text-primary icon-spinner icon-3x icon-spin fas fa-spinner fa-spin fa-3x'></i></div>");
+							$(".ZMSRecordSet.main_grid").prepend( "<div id='loading' class='zmi-page text-center' style='width:100%;position:absolute;margin-bottom:0.75em'><i class='text-primary fas fa-spinner fa-spin fa-3x'></i></div>");
 					})
 
 				});

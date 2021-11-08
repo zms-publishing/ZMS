@@ -2294,6 +2294,9 @@ li#manage_addProduct .center i.fa-plus-sign:before {
 ul.pagination {
 	margin-bottom:0;
 }
+ul.pagination .page-item {
+	cursor:pointer; 
+}
 .page-link {
 	color: #08C;
 }

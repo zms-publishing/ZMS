@@ -50,6 +50,29 @@
 			metaobj_recordset_main_grid
 		</div>
 	</div><!-- .collapse -->
+
+	<script>
+		$(function(){ 
+			// Switch to Ajax Pagination
+			var $div = $('#div_<tal:block tal:content="column/id">column/id</tal:block>');
+			var spinner = '<i class="fas fa-spinner fa-spin"></i>';
+			$('ul.pagination a.page-link',$div).each(
+				function() {
+					plnk = $(this).attr('href');
+					$(this).attr('data-href',plnk);
+					$(this).removeAttr('href');
+					$(this).on('click', function() {
+						$(this).html(spinner);
+						$('form',$div).fadeTo( "slow", 0.33);
+						$.get($(this).attr('data-href'),
+						function(data, status) {
+							$div.html(data);
+						})
+					})
+				}
+			)
+		});
+	</script>
 </div><!-- .card -->
 
 <!-- /zmi_details_grid -->

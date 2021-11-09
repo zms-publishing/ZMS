@@ -11,9 +11,8 @@
 ##### Action-List
 ################################################################################
 -->
-<div class="pull-right" style="margin:1.5em 0 0.5em">
-	<select class="form-control" style="background-color: aliceblue;"
-			name=":action" tal:attributes="onchange python:'this.name=\':action\';;location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
+<div class="pull-right py-3">
+	<select class="form-control" id="addItemSelect" name=":action" tal:attributes="onchange python:'this.name=\':action\';;location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
 		<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type(request)">----- Insert -----</option>
 		<tal:block tal:repeat="meta_type python:[x for x in standard.sort_list(zmscontext.filtered_meta_types(),'name') if x['name'].find('ZMS') != 0]">
 			<option tal:attributes="value python:meta_type['action']" tal:content="python:meta_type['name']">the name</option>
@@ -32,17 +31,19 @@
 <table class="table table-sm table-striped zopeobjects objectItems">
 <thead>
 <tr>
-	<th style="width:5rem;text-align:center;">
+	<th class="zmi-object-check">
 		<div class="btn-group">
 			<button class="btn btn-secondary border-0" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
 		</div>
 	</th>
-	<tal:block define="global
-			columns python:['meta_type','id','get_size','bobobase_modification_time'];
+	<tal:block define="columns python:['meta_type','id','get_size','bobobase_modification_time'];
 			labels python:{'meta_type':'type','id':'name','get_size':'size','bobobase_modification_time':'last_modified'}">
 		<tal:block tal:repeat="column columns">
-			<i tal:condition="python:skey==column or rkey==column" tal:attributes="class python:'text-danger fas fa-caret-%s'%(['down','up'][int(rkey==column)])"></i>
-			<a class="text-dark" tal:attributes="href python:zmscontext.url_append_params(request['URL'],{['skey','rkey'][int(skey==column)]:column}); title python:'Sort objects by %s'%label"
+			<th tal:define="label python:zmscontext.getZMILangStr('ATTR_%s'%labels[column].upper())"
+				tal:attributes="class python:'zmi-object-%s'%(labels[column])">
+				<i tal:condition="python:skey==column or rkey==column" 
+					tal:attributes="class python:'text-danger fas fa-caret-%s'%(['down','up'][int(rkey==column)])"></i>
+				<a class="text-dark" tal:attributes="href python:zmscontext.url_append_params(request['URL'],{['skey','rkey'][int(skey==column)]:column}); title python:'Sort objects by %s'%label"
 					tal:content="label">the label
 				</a>
 			</th>
@@ -52,34 +53,38 @@
 </thead>
 <tbody>
 <tr tal:repeat="item items">
-	<td style="width:5rem;text-align:center;">
+	<td class="zmi-object-check">
 		<input type="checkbox" name="ids:list" tal:attributes="value python:item[0]"/>
 	</td>
-	<td style="width:4rem;">
+	<td class="zmi-object-type">
 		<tal:block tal:define="icon python:item[1].zmi_icon"
 			tal:on-error="structure string:<i title='Error: No Icon Found' class='far fa-file-alt'></i>">
 			<i tal:attributes="class icon" />
 		</tal:block>
 	</td>
-	<td>
-		<a tal:attributes="href python:'%s/manage_workspace'%item[1].absolute_url()">
+	<td class="zmi-object-id">
+		<a target="_blank" tal:attributes="href python:'%s/manage_workspace'%item[1].absolute_url()">
 			<tal:block tal:content="python:item[0]">the id</tal:block>
-			<tal:block tal:condition="python:item[1].title">(<tal:block tal:content="python:item[1].title">the title</tal:block>)</tal:block>
+			<tal:block tal:condition="python:item[1].title_or_id()">
+				(<tal:block tal:content="python:item[1].title_or_id()">the title</tal:block>)
+			</tal:block>
 		</a>
 	</td>
-	<td><tal:block tal:content="python:zmscontext.getDataSizeStr(item[1].get_size())">the size</tal:block></td>
-	<td><tal:block tal:content="python:zmscontext.last_modified(item[1])">the timestamp</tal:block></td> 
+	<td class="zmi-object-size"><tal:block tal:content="python:zmscontext.getDataSizeStr(item[1].get_size())" tal:on-error="string:get_size is not defined!">the size</tal:block></td>
+	<td class="zmi-object-date zmi-object-last_modified hidden-xs"><tal:block tal:content="python:zmscontext.last_modified(zmscontext)" tal:on-error="string:last_modified is not defined!">the timestamp</tal:block></td>
 </tr>
 </tbody>
 </table>
-<tal:block tal:condition="not:python:request.get('dontAllowCopyAndPaste')">
-	<input class="btn" type="submit" name="manage_renameForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_RENAME')" tal:condition="items"/>
-	<input class="btn" type="submit" name="manage_cutForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_CUT')" tal:condition="items"/>
-	<input class="btn" type="submit" name="manage_copyForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_COPY')" tal:condition="items"/>
-	<input class="btn" type="submit" name="manage_pasteForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_PASTE')" tal:condition="python:request.get('cb_dataValid')"/>
-	<input class="btn" type="submit" name="manage_delObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_DELETE')" tal:condition="python:SecurityManager.checkPermission('Delete objects',zmscontext)"/>
-	<input class="btn" type="submit" name="manage_importExportForm:method" value="Import/Export" tal:condition="python:SecurityManager.checkPermission('Import/Export objects',zmscontext)"/>
-</tal:block>
+<div class="form-group form-inline zmi-controls" tal:condition="not:python:request.get('dontAllowCopyAndPaste')">
+	<div class="pb-4 pl-2">
+		<input class="btn btn-secondary m-1" type="submit" name="manage_renameForm:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_RENAME')" tal:condition="items"/>
+		<input class="btn btn-secondary m-1" type="submit" name="manage_cutObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_CUT')" tal:condition="items"/>
+		<input class="btn btn-secondary m-1" type="submit" name="manage_copyObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_COPY')" tal:condition="items"/>
+		<input class="btn btn-secondary m-1" type="submit" name="manage_pasteObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_PASTE')" tal:condition="python:here.cb_dataValid()"/>
+		<input class="btn btn-secondary m-1" type="submit" name="manage_delObjects:method" tal:attributes="value python:zmscontext.getZMILangStr('BTN_DELETE')" tal:condition="python:SecurityManager.checkPermission('Delete objects',zmscontext)"/>
+		<input class="btn btn-secondary m-1" type="submit" name="manage_importExportForm:method" value="Import/Export" tal:condition="python:SecurityManager.checkPermission('Import/Export objects',zmscontext)"/>
+	</div>
+</div>
 </tal:block>
 </tal:block>
 

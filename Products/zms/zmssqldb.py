@@ -456,7 +456,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.getEntityRecordHandler
     # --------------------------------------------------------------------------
-    def getEntityRecordHandler(self, tableName, stereotypes=['*']):
+    def getEntityRecordHandler(self, tableName, stereotypes=['*'], colNames=None):
       class EntityRecordHandler(object):
         def __init__(self, parent, tableName):
           self.parent = parent 
@@ -465,6 +465,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         def handle_record(self, r):
           context = self.parent
           d = {}
+          if colNames:
+            r = { k:r[k] for k in r.keys() if k in colNames }
           for k in r:
             value = r[k]
             try:

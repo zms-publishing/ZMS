@@ -165,8 +165,9 @@
 		</div><!-- .collapse -->
 	</div><!-- .card -->
 </form>
-
-<tal:block tal:define="dummy0 python:[here.operator_setitem(x,'name',x['label']) for x in metaObjAttrs]">
+<tal:block tal:define="
+	dummy0 python:[here.operator_setitem(x,'name',x['label']) for x in metaObjAttrs];
+	colNames python:[x['id'] for x in metaObjAttrs if x.get('hide',0) == 0]">
 	<tal:block tal:content="structure python:here.metaobj_recordset_main_grid(
 			metaObjAttrIds=metaObjAttrIds,
 			metaObjAttrs=metaObjAttrs,
@@ -177,7 +178,7 @@
 			filtered=True,
 			form_action=request['URL'],
 			url_params={'qentity':request.get('qentity')},
-			record_handler=here.getEntityRecordHandler(entity['id'],['blob']))">
+			record_handler=here.getEntityRecordHandler(entity['id'],['blob'],colNames))">
 		metaobj_recordset_main_grid
 	</tal:block>
 </tal:block>

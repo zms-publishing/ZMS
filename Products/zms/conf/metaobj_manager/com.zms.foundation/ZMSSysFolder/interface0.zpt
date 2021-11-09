@@ -29,17 +29,22 @@
 
 <tal:block tal:define="global items python:[x for x in zmscontext.objectItems() if x[1].meta_type.find('ZMS') != 0]">
 <tal:block tal:condition="python:len(items)>0">
-<table class="table table-striped">
+<table class="table table-sm table-striped zopeobjects objectItems">
 <thead>
 <tr>
-	<th>&nbsp;</th>
+	<th style="width:5rem;text-align:center;">
+		<div class="btn-group">
+			<button class="btn btn-secondary border-0" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
+		</div>
+	</th>
 	<tal:block define="global
 			columns python:['meta_type','id','get_size','bobobase_modification_time'];
 			labels python:{'meta_type':'type','id':'name','get_size':'size','bobobase_modification_time':'last_modified'}">
 		<tal:block tal:repeat="column columns">
-			<th tal:define="global label python:zmscontext.getZMILangStr('ATTR_%s'%labels[column].upper())">
-				<i tal:condition="python:skey==column or rkey==column" tal:attributes="class python:['icon-caret-down','icon-caret-up'][int(rkey==column)]"></i>
-				<a tal:attributes="href python:zmscontext.url_append_params(request['URL'],{['skey','rkey'][int(skey==column)]:column}); title python:'Sort objects by %s'%label"><tal:block tal:content="label">the label</tal:block></a>
+			<i tal:condition="python:skey==column or rkey==column" tal:attributes="class python:'text-danger fas fa-caret-%s'%(['down','up'][int(rkey==column)])"></i>
+			<a class="text-dark" tal:attributes="href python:zmscontext.url_append_params(request['URL'],{['skey','rkey'][int(skey==column)]:column}); title python:'Sort objects by %s'%label"
+					tal:content="label">the label
+				</a>
 			</th>
 		</tal:block>
 	</tal:block>
@@ -47,9 +52,14 @@
 </thead>
 <tbody>
 <tr tal:repeat="item items">
-	<td><input type="checkbox" name="ids:list" tal:attributes="value python:item[0]"/></td>
-	<td>
-		<i tal:attributes="class python:item[1].zmi_icon"></i>
+	<td style="width:5rem;text-align:center;">
+		<input type="checkbox" name="ids:list" tal:attributes="value python:item[0]"/>
+	</td>
+	<td style="width:4rem;">
+		<tal:block tal:define="icon python:item[1].zmi_icon"
+			tal:on-error="structure string:<i title='Error: No Icon Found' class='far fa-file-alt'></i>">
+			<i tal:attributes="class icon" />
+		</tal:block>
 	</td>
 	<td>
 		<a tal:attributes="href python:'%s/manage_workspace'%item[1].absolute_url()">

@@ -37,12 +37,12 @@
 
 <tal:block tal:define="global items python:zmscontext.objectItems()">
 <tal:block tal:condition="python:len(items)>0">
-<table class="table table-striped zopeobjects">
+<table class="table table-sm table-striped zopeobjects objectItems">
 <thead>
 <tr>
 	<th style="width:5rem;text-align:center;">
 		<div class="btn-group">
-			<button class="btn btn-secondary" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
+			<button class="btn btn-secondary border-0" onclick="zmiToggleSelectionButtonClick(this);return false"><i class="fas fa-check-square"></i></button>
 		</div>
 	</th>
 	<tal:block define="global
@@ -50,8 +50,10 @@
 			labels python:{'meta_type':'type','id':'name','get_size':'size','bobobase_modification_time':'last_modified'}">
 		<tal:block tal:repeat="column columns">
 			<th tal:define="global label python:zmscontext.getZMILangStr('ATTR_%s'%labels[column].upper())">
-				<i tal:condition="python:skey==column or rkey==column" tal:attributes="class python:'fas fa-caret-%s'%(['down','up'][int(rkey==column)])"></i>
-				<a tal:attributes="href python:zmscontext.url_append_params(request['URL'],{['skey','rkey'][int(skey==column)]:column}); title python:'Sort objects by %s'%label"><tal:block tal:content="label">the label</tal:block></a>
+				<i tal:condition="python:skey==column or rkey==column" tal:attributes="class python:'text-danger fas fa-caret-%s'%(['down','up'][int(rkey==column)])"></i>
+				<a class="text-dark" tal:attributes="href python:zmscontext.url_append_params(request['URL'],{['skey','rkey'][int(skey==column)]:column}); title python:'Sort objects by %s'%label"
+					tal:content="label">the label
+				</a>
 			</th>
 		</tal:block>
 	</tal:block>

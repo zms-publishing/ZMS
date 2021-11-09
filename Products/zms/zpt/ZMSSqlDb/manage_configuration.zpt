@@ -15,7 +15,11 @@
 }
 .zmi .form-horizontal .fieldlist label.control-label {
 	text-align:left; 
-	padding-left:3rem;
+}
+@media (min-width: 768px) {
+	.zmi .form-horizontal .fieldlist label.control-label {
+		padding-left:3rem;
+	}
 }
 .zmi .form-horizontal .fieldlist i,
 .zmi .form-horizontal .column-description i,
@@ -246,7 +250,7 @@ function mms_normalize_rows(el_tbody) {
 		<div tal:attributes="id python:'%s-columns'%table['id']; class python:' '.join(['collapse']+[[],['show']][int(table==tables[0])])">
 			<div class="card-body fieldlist">
 				<tal:block tal:repeat="column table/columns">
-					<div class="form-group row">
+					<div class="form-group row nowrap">
 						<label tal:attributes="class python:' '.join(['col-sm-3 col-lg-2 control-label']+[[],['mandatory']][int(column.get('mandatory',0))]);title python:['','mandatory'][int(column.get('mandatory',0))]">
 							<span>
 								<tal:block tal:content="repeat/column/number">number</tal:block>. 

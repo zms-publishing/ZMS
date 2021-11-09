@@ -147,28 +147,26 @@
 				<tal:block tal:replace="nothing">
 				##### Multimultiselect #################################################
 				</tal:block>
-				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-multimultiselect" tal:condition="python:not done and metaObjAttr.get('multimultiselect') not in ['',None]">
+				<div class="col-sm-9 col-md-10 ZMSSqlDbForm-multimultiselect" 
+					tal:condition="python:not done and metaObjAttr.get('multimultiselect') not in ['',None]">
 					<tal:block tal:define="global
 							elName python:'%s_%s'%(metaObjAttr['multimultiselect']['tablename'],metaObjAttr['multimultiselect']['fk']);
 							items python:metaObjAttr['multimultiselect'].get('tables',[])">
 						<div class="input-group" style="background-color:#eaedef;">
 							<div class="control-group" tal:repeat="item items">
 								<tal:block tal:define="global i python:items.index(item)">
-									<div tal:condition="python:item.get('lazy')">
-										<div class="input-element" tal:attributes="class python:' '.join(['input-element']+[[],['mandatory']][int(item.get('nullable') not in ['',None])])">
-											<input class="lazy" type="hidden" tal:attributes="id python:'%s%i'%(elName,i); name python:'%s%i'%(elName,i)"/>
-											<input class="form-control" type="text" tal:attributes="id python:'label_%s%i'%(elName,i); name python:'label_%s%i'%(elName,i)" disabled="disabled"/>
-										</div>
-										<div>
-											<span class="btn btn-secondary" 
-												tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url()
-																	,'%s%i'%(elName,i)
-																	,item['tablename'].lower()
-																	,item['fieldname'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\'')
-																	,item['displayfield'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\'')
-																	,elLabel)"
-											><i class="fas fa-pencil-alt"></i></span>
-										</div>
+									<div tal:condition="python:item.get('lazy')"
+										class="input-group" tal:attributes="class python:' '.join(['input-group']+[[],['mandatory']][int(item.get('nullable') not in ['',None])])">
+										<input class="lazy" type="hidden" tal:attributes="id python:'%s%i'%(elName,i); name python:'%s%i'%(elName,i)"/>
+										<input class="form-control" type="text" tal:attributes="id python:'label_%s%i'%(elName,i); name python:'label_%s%i'%(elName,i)" disabled="disabled"/>
+										<span class="btn btn-secondary" 
+											tal:attributes="onclick python:'$ZMI.iframe(\'%s/manage_zmi_lazy_select_form\',{id:\'%s\',qentity:\'%s\',\'primary_key\':\'%s\',\'qcolumns:list\':\'%s\',\'actions:list\':\'select\'},{iframe:true,height:400,title:getZMILangStr(\'BTN_SELECT\')+\': %s\'})'%(here.absolute_url()
+												,'%s%i'%(elName,i)
+												,item['tablename'].lower()
+												,item['fieldname'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\'')
+												,item['displayfield'].lower().replace('%s.'%item['tablename'].lower(),'').replace('\'','\\\'')
+												,elLabel)"
+										><i class="fas fa-pencil-alt"></i></span>
 									</div>
 									<div tal:condition="not:python:item.get('lazy')">
 										<tal:block tal:content="structure python:here.zmi_input_select(here,name='%s%i'%(elName,i),value=None,lang_str=item['label'],options=metaObjAttr['multimultiselect']['options'][item['tablename']])">the control</tal:block>

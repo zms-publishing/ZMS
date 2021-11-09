@@ -27,34 +27,17 @@
 
 <style>
 	.ace_editor.fullScreen {
-		height: 768px !important;
-		width: 1280px !important;
-		border: 0;
-		margin: 0;
-		position: fixed !important;
-		top: 0;
-		bottom: 0;
-		left: -350px;
-		right: 0;
-		z-index: 10;
-		overflow: hidden;
-	}
-	.zmi.modal-open.fullScreen .modal.show {
-		padding:0 !important;
-	}
-	.zmi.modal-open.fullScreen .modal.show .modal-dialog {
-		margin: 0 !important;
-		max-width: unset !important;
-		width: unset !important;
-	}
-	.zmi.modal-open.fullScreen .modal.show .modal-dialog .ace_editor.fullScreen {
 		height: 100vh !important;
 		width: 100vw !important;
+		max-width: unset !important;
 		border: 0;
 		margin: 0;
+		padding:0 !important;
 		top: 0;
 		left: 0;
-		border-radius:0;		
+		border-radius:0 !important;
+		position:fixed;
+		z-index:100000;
 	}
 </style>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zmi/ace.ajax.org/ace.js"></script>

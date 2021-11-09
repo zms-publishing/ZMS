@@ -91,7 +91,7 @@ class ZMSMetaobjManager(object):
 
     # Globals.
     # --------
-    valid_types =     ['amount', 'autocomplete', 'boolean', 'color', 'date', 'datetime', 'dictionary', 'file', 'float', 'identifier', 'image', 'int', 'list', 'multiautocomplete', 'multiselect', 'password', 'richtext', 'select', 'string', 'text', 'time', 'url', 'xml']
+    valid_types =     ['amount', 'autocomplete', 'boolean', 'color', 'date', 'datetime', 'dictionary', 'file', 'float', 'identifier', 'image', 'int', 'list', 'long', 'multiautocomplete', 'multiselect', 'password', 'richtext', 'select', 'string', 'text', 'time', 'url', 'xml']
     valid_zopeattrs = ['method', 'py', 'zpt', 'interface', 'resource']
     valid_xtypes =    ['constant', 'delimiter', 'hint']+valid_zopeattrs
     valid_datatypes = sorted(valid_types+valid_xtypes)
@@ -648,7 +648,7 @@ class ZMSMetaobjManager(object):
     #  Get attribute-id of identifier for datatable specified by meta-id.
     # --------------------------------------------------------------------------
     def getMetaobjAttrIdentifierId(self, meta_id):
-      for attr_id in self.getMetaobjAttrIds( meta_id, types=[ 'identifier', 'string', 'int']):
+      for attr_id in self.getMetaobjAttrIds( meta_id, types=[ 'identifier', 'string', 'int', 'long']):
         return attr_id
       return None
 

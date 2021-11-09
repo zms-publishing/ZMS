@@ -21,8 +21,8 @@
 </div><!-- .zmi-sitemap -->
 
 <footer>
-	<a class="refresh zmi-helper-clickable" href="javascript:;" onclick="zmiRefresh()">
-		<i class="fas fa-sync-alt"></i> <tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block>
+	<a class="refresh zmi-helper-clickable" title="Click for Refresh" href="javascript:;" 
+		onclick="zmiRefresh()"><i class="fas fa-sync-alt ml-3 mr-2"></i><tal:block tal:content="python:here.getZMILangStr('BTN_UPDATE')">Update</tal:block>
 	</a>
 </footer>
 

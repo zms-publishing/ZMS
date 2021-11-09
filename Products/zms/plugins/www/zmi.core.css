@@ -1800,9 +1800,8 @@ body.browse_iframe .toggle {
 .zmi.manage-menu #loading i {
 	color: #CCCCCC !important;
 }
-.zmi.manage-menu .zmi-helper-clickable.refresh {
-	font-size: 14px;
-	margin-left: .7em;
+.zmi.manage-menu .zmi-helper-clickable.refresh:hover {
+	text-decoration: none !important;
 }
 .zmi .alert {
 	margin: 0 1rem 1rem;

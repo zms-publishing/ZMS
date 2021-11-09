@@ -231,15 +231,17 @@ function mms_normalize_rows(el_tbody) {
 	<tal:block tal:repeat="table tables">
 	<div tal:attributes="class python:' '.join(['card']+[[''],['inactive']][int(table['type']!='table')])">
 		<div class="card-header btn-collapse">
-			<a class="btn card-toggle" data-toggle="collapse" tal:attributes="href python:'#%s-columns'%table['id']">
+			<a class="btn card-toggle" data-toggle="collapse" title="Show/Hide Table Definition"
+				tal:attributes="href python:'#%s-columns'%table['id']">
 				<i class="fas"></i>
-			</a>
-			<a href="javascript:;" tal:attributes="title python:here.getZMILangStr('ATTR_TABLE');
-				onclick python:'javascript:return loadTableEditor(urlparams=\'lang=%s&id=%s\')'%(request['lang'],table['id']); ">
 				<i tal:condition="python:table['type']!='intersection'" class="fas fa-th-list"></i>
 				<i tal:condition="python:table['type']=='intersection'" class="fas fa-link"></i>
 				<tal:block tal:content="table/label">table-label</tal:block>
 				(<tal:block tal:content="table/id">table-id</tal:block>)
+			</a>
+			<a href="javascript:;" class="btn btn-primary pull-right rounded-0" title="Edit Table Definition" 
+				tal:attributes="onclick python:'javascript:return loadTableEditor(urlparams=\'lang=%s&id=%s\')'%(request['lang'],table['id']); ">
+				<i class="far fa-edit"></i>
 			</a>
 		</div><!-- .card-header -->
 		<div tal:attributes="id python:'%s-columns'%table['id']; class python:' '.join(['collapse']+[[],['show']][int(table==tables[0])])">

@@ -2003,12 +2003,13 @@ body.lazy_select_form footer .controls {
 	width: fit-content;
 	right: 0;
 	height: 2rem;
-	font-size: .9rem !important;
-	background: #428bca;
-	color: aliceblue;
+	background: #354f67;
 	border-radius: 0;
-	border-top-right-radius: 4px;
 	border: 0;
+	color: silver;
+	outline-color: transparent;
+	outline-style: none;
+	cursor:pointer
 }
 .zms4-row {
 	display: -ms-flexbox;

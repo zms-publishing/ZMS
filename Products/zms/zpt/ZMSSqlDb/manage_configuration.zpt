@@ -10,9 +10,8 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <style>
-.zmi .form-horizontal .card.inactive a, 
-.zmi .form-horizontal .card.inactive label span {
-	color:#cccccc;
+.zmi .form-horizontal .card.inactive a {
+	opacity:0.6;
 }
 .zmi .form-horizontal .fieldlist label.control-label {
 	text-align:left; 

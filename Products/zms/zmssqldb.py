@@ -244,6 +244,11 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           return str(int(str(v)))
         except:
           return "NULL"
+      elif col['type'] in ['long']:
+        try:
+          return str(long(str(v)))
+        except:
+          return "NULL"
       elif col['type'] in ['float']:
         try:
           return str(float(str(v)))
@@ -370,10 +375,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         for s in colName.split('_'):
           colLabel += s.capitalize()
         try:
-          colType = {'i':'int','n':'float','t':'string','s':'string','d':'datetime','l':'string'}[result_column['type']]
+          colType = {'i':'int','n':'float','t':'string','s':'string','d':'datetime','l':'long'}.get(result_column['type'],'string')
         except:
-          colType = result_column.get('type', None)
-          standard.writeError(self, '[query]: Column ' + colName + ' has unknown type ' + str(colType) + '!')
+          colType = result_column.get('type', 'string')
+          standard.writeDebug(self, '[query]: Column ' + colName + ' has unknown type ' + str(colType) + '!')
         column = {}
         column['id'] = colName
         column['key'] = colName
@@ -455,7 +460,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     #  ZMSSqlDb.getEntityRecordHandler
     # --------------------------------------------------------------------------
-    def getEntityRecordHandler(self, tableName, stereotypes=['*']):
+    def getEntityRecordHandler(self, tableName, stereotypes=['*'], colNames=None):
       class EntityRecordHandler(object):
         def __init__(self, parent, tableName):
           self.parent = parent 
@@ -464,6 +469,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         def handle_record(self, r):
           context = self.parent
           d = {}
+          if colNames:
+            r = { k:r[k] for k in r.keys() if k in colNames }
           for k in r:
             value = r[k]
             try:
@@ -1413,7 +1420,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           if tablecol.get('auto') in ['insert', 'update']:
             if tablecol.get('type') in ['date', 'datetime']:
               c.append({'id':id,'value':self.getLangFmtDate(time.time(), lang, '%s_FMT'%tablecol['type'].upper())})
-            elif tablecol.get('type') in ['int']:
+            elif tablecol.get('type') in ['int','long']:
               new_id = 0
               try:
                 rs = self.query('SELECT MAX(%s) AS max_id FROM %s'%(id, tablename))['records']

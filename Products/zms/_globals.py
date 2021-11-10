@@ -123,7 +123,6 @@ DT_FILE = 5
 DT_FLOAT = 6
 DT_IMAGE = 7
 DT_INT = 8
-DT_LONG = 18
 DT_LIST = 9
 DT_PASSWORD = 10
 DT_STRING = 11
@@ -150,7 +149,6 @@ datatype_map = [
   [ 'float', 0.0],
   [ 'image', None],
   [ 'int', 0],
-  [ 'long', 0],
   [ 'list', []],
   [ 'password', ''],
   [ 'string', ''],

@@ -428,6 +428,7 @@ footer .back-to-top.hide {
 	color: #354f67a6 !important;
 	font-weight:bold;
 	min-width: 7rem;
+	text-align: left;
 }
 #zmi-tab .card  .card-header .zmi-state {
 	margin:0 .25rem;

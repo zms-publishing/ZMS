@@ -925,16 +925,27 @@ class ZMSObject(ZMSItem.ZMSItem,
           href = href[len(base):]
       return href
       
-    #++
-    def getAbsoluteUrlInContext(self, context, index_html=None):
+    # --------------------------------------------------------------------------
+    #  ZMSObject.getAbsoluteUrlInContext:
+    #  @param context the current context
+    #  @Configuration
+    #  ZMSObject.getAbsoluteUrlInContext=True
+    #  ASP.protocol=[http]
+    #  ASP.ip_or_domain=[Not empty]
+    #
+    #  Contextualize absolute_url used in ZMI with subdomain from 
+    #  config-properties.
+    #  Used to keep ZMS-users in configured subdomain-context.
+    # --------------------------------------------------------------------------
+    def getAbsoluteUrlInContext(self, context):
       context = standard.nvl(context,self)
-      index_html = standard.nvl(index_html,self.absolute_url())
+      abs_url = self.absolute_url()
       if self.getConfProperty('ZMSObject.getAbsoluteUrlInContext', False):
-        if self.REQUEST.get('ZMS_CONTEXT_URL', False) or self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.forced', False) or self.getHome() != context.getHome():
+        if self.getHome() != context.getHome():
           protocol = self.getConfProperty('ASP.protocol', 'http')
           domain = self.getConfProperty('ASP.ip_or_domain', None)
           if domain:
-            l = index_html.split('/')
+            l = abs_url.split('/')
             if 'content' in l:
               i = l.index('content')
               if l[i-1] != self.getHome().id and self.getRootElement().getHome().id in l:
@@ -942,10 +953,18 @@ class ZMSObject(ZMSItem.ZMSItem,
               else:
                 i += 1
               l = l[i:]
-              index_html = protocol + '://' + domain + '/' + '/'.join(l)
-      return index_html
+              abs_url = protocol + '://' + domain + '/' + '/'.join(l)
+      return abs_url
     
-    #++
+    # --------------------------------------------------------------------------
+    #  ZMSObject.getHref2IndexHtmlInContext:
+    #  @param context the current-context
+    #  @param index_html the index-html
+    #  @param REQUEST the http-request
+    #  @param deep the depth-parameter passed to fallback getHref2IndexHtml
+    #
+    #  Contextualize index_html with subdomain from config-properties.
+    # --------------------------------------------------------------------------
     def getHref2IndexHtmlInContext(self, context, index_html=None, REQUEST=None, deep=1):
       context = standard.nvl(context,self)
       if index_html is None:
@@ -1019,6 +1038,7 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # --------------------------------------------------------------------------
     #  ZMSObject.is_child:
+    #  @param ob the object
     #
     #  True if self is child of given object.
     # --------------------------------------------------------------------------
@@ -1032,6 +1052,7 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # --------------------------------------------------------------------------
     #  ZMSObject.isAncestor:
+    #  @param ob the object
     #
     #  True if self is ancestor of given object.
     # --------------------------------------------------------------------------
@@ -1045,6 +1066,7 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # --------------------------------------------------------------------------
     #  ZMSObject.getParentByDepth:
+    #  @param deep the depth
     #
     #  The parent of this node by depth. 
     # --------------------------------------------------------------------------
@@ -1057,6 +1079,7 @@ class ZMSObject(ZMSItem.ZMSItem,
 
     # --------------------------------------------------------------------------
     #  ZMSObject.getParentByLevel:
+    #  @param level the level
     #
     #  The parent of this node by level. 
     # --------------------------------------------------------------------------

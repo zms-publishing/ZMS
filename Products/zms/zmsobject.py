@@ -929,19 +929,20 @@ class ZMSObject(ZMSItem.ZMSItem,
     def getAbsoluteUrlInContext(self, context, index_html=None):
       context = standard.nvl(context,self)
       index_html = standard.nvl(index_html,self.absolute_url())
-      if self.REQUEST.get('ZMS_CONTEXT_URL', False) or self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.forced', False) or self.getHome() != context.getHome():
-        protocol = self.getConfProperty('ASP.protocol', 'http')
-        domain = self.getConfProperty('ASP.ip_or_domain', None)
-        if domain:
-          l = index_html.split('/')
-          if 'content' in l:
-            i = l.index('content')
-            if l[i-1] != self.getHome().id and self.getRootElement().getHome().id in l:
-              i = l.index(self.getRootElement().getHome().id)
-            else:
-              i += 1
-            l = l[i:]
-            index_html = protocol + '://' + domain + '/' + '/'.join(l)
+      if self.getConfProperty('ZMSObject.getAbsoluteUrlInContext', False):
+        if self.REQUEST.get('ZMS_CONTEXT_URL', False) or self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.forced', False) or self.getHome() != context.getHome():
+          protocol = self.getConfProperty('ASP.protocol', 'http')
+          domain = self.getConfProperty('ASP.ip_or_domain', None)
+          if domain:
+            l = index_html.split('/')
+            if 'content' in l:
+              i = l.index('content')
+              if l[i-1] != self.getHome().id and self.getRootElement().getHome().id in l:
+                i = l.index(self.getRootElement().getHome().id)
+              else:
+                i += 1
+              l = l[i:]
+              index_html = protocol + '://' + domain + '/' + '/'.join(l)
       return index_html
     
     #++

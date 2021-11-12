@@ -1,18 +1,21 @@
 <!-- ZMSTable.standard_html -->
 
 <div tal:define="zmscontext    options/zmscontext;
-                 Std           modules/Products.PythonScripts/standard; 
+                 Std           modules/Products.PythonScripts/standard;
                  newline_to_br nocall:Std/newline_to_br;
-                 rteformats    python:filter(lambda x: str(x.getRichedit())=='1',here.getTextFormats(request)); 
+                 rteformats    python:filter(lambda x: str(x.getRichedit())=='1',here.getTextFormats(request));
                  table         python:zmscontext.attr('table');
                  sortable      python:int(zmscontext.attr('sortable') in [1,True]);
                  req_sortable  python:sortable and request.set('ZMSTable.sortable',True);
                  caption       python:zmscontext.attr('caption');
+                 caption_side  python:zmscontext.attr('caption_side');
                  table_type    python:zmscontext.attr('type');"
      class="uzk15__editorblock">
     <style tal:condition="python:zmscontext.attr('colgroup')" tal:content="structure python:zmscontext.attr('zmstable_colgroup_css')"></style>
     <table tal:attributes="id python:zmscontext.id; class python:' '.join(['ZMSTable table bs-table']+[[],['sortable']][sortable])">
-        <caption tal:condition="python:caption" tal:content="structure caption"></caption>
+        <caption tal:condition="python:caption"
+             tal:attributes="style python:caption_side and 'caption-side:%s'%(caption_side) or None"
+             tal:content="structure caption"></caption>
         <tal:block tal:repeat="row table">
             <tal:block tal:condition="python:table_type==1 and row==table[0]" tal:content="structure python:'<thead>'"></tal:block>
             <tal:block tal:condition="python:table_type==1 and row==table[1]" tal:content="structure python:'<tbody>'"></tal:block>

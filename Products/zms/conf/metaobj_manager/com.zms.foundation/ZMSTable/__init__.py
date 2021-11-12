@@ -26,7 +26,7 @@ class ZMSTable:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "4.1.3"
+	revision = "4.2.0"
 
 	# Type
 	type = "ZMSObject"
@@ -41,6 +41,16 @@ class ZMSTable:
 			,"name":"Caption"
 			,"repetitive":0
 			,"type":"string"}
+
+		caption_side = {"default":""
+			,"id":"caption_side"
+			,"keys":["bottom"
+				,"top"]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Align"
+			,"repetitive":0
+			,"type":"select"}
 
 		attr_dc_description = {"default":""
 			,"id":"attr_dc_description"

@@ -161,6 +161,22 @@
 				.zmi-interface table th textarea.form-control{
 					color:white;
 				}
+				#table_cell_editor table.ZMSTable textarea {
+					width:100% !important;
+					border:0;
+					background-color:transparent
+				}
+				#table_cell_editor table.ZMSTable textarea[placeholder="table:th"] {
+					font-weight:bold
+				}
+				#table_cell_editor table.ZMSTable td,
+				#table_cell_editor table.ZMSTable th,
+				#table_cell_editor table.ZMSTable div {
+					border: 0 !important;
+					margin: 0;
+					padding: 0;
+					border-spacing: 0;
+				}
 				<tal:block tal:condition="python:table_type == 3">
 					#tr_sortable{
 						display:none;

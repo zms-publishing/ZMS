@@ -1451,7 +1451,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       if fmt == 'json':
         return self.str_json(message)
       else:
-        RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,urllib.quote(message),self.id))
+        RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s#zmi_item_%s'%(parent.absolute_url(),lang,standard.urllib_quote(message),self.id))
 
 
     ############################################################################

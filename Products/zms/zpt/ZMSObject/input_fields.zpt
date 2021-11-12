@@ -37,7 +37,7 @@
 						<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
 					</div>
 			</div>
-			<div class="zmi-action btn-group pull-right dropleft" tal:condition="not:python: request.get('ZMS_INSERT',False)">
+			<div class="zmi-action loaded btn-group pull-right dropleft" tal:condition="not:python: request.get('ZMS_INSERT',False)">
 				<tal:block tal:define="
 						metaCmds python:[x for x in here.getMetaCmds(here,'') if x['stereotype'] == ''];
 						actions python:[[],[(here.getZMILangStr('BTN_UNDO'),'../manage_undoObjs?ids:list=%s'%here.id,'icon-undo')]][here.inObjStates(['STATE_NEW','STATE_MODIFIED','STATE_DELETED'],request)] + [[x['name'],'manage_executeMetacmd?id=%s'%x['id'],x.get('icon_clazz'),x.get('title')] for x in metaCmds] + here.filtered_workflow_actions()"

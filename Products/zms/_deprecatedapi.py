@@ -155,7 +155,7 @@ class DeprecatedAPI(object):
       try:
         s = stylesheet(self)
       except:
-        s = bytes(stylesheet).decode()
+        s = standard.pystr(stylesheet)
       css.append("/* ######################################################################")
       css.append("   ### %s"%stylesheet.absolute_url())
       css.append("   ###################################################################### */")

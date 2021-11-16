@@ -226,16 +226,8 @@ class ZMSRepositoryManager(
           continue
         l = local.get(filename, {})
         r = remote.get(filename, {})
-        if isinstance(l.get('data', ''),bytes):
-          try:
-            l['data'] = l['data'].decode('utf-8')
-          except:
-            pass
-        if isinstance(r.get('data', ''),bytes):
-          try:
-            r['data'] = r['data'].decode('utf-8')
-          except:
-            pass
+        l['data'] = standard.pystr(l.get('data',''))
+        r['data'] = standard.pystr(r.get('data',''))
         if l.get('data', '') != r.get('data', ''):
           data = l.get('data', r.get('data', ''))
           try:

@@ -196,7 +196,7 @@ class ZMSZCatalogSolrConnector(
       solr_core = self.getConfProperty('solr.core', self.getAbsoluteHome().id)
       url = '%s/%s/update'%(solr_url, solr_core)
       url = '%s?%s'%(url, xml)
-      result = self.http_import(url, method='POST', headers={'Content-Type':'text/xml;charset=UTF-8'})
+      result = standard.http_import(self, url, method='POST', headers={'Content-Type':'text/xml;charset=UTF-8'})
       self.writeLog("[ZMSZCatalogSolrConnector._update]: %s"%str(result))
       return result
 
@@ -212,7 +212,7 @@ class ZMSZCatalogSolrConnector(
         result.append(self._update(self.__get_add_xml(root, recursive=True)))
       result.append(self._update(self.__get_command_xml('commit')))
       result.append(self._update(self.__get_command_xml('optimize')))
-      return ', '.join([x for x in result if x])
+      return ', '.join([standard.pystr(x) for x in result if x])
 
 
     # --------------------------------------------------------------------------
@@ -229,7 +229,7 @@ class ZMSZCatalogSolrConnector(
         result.append(self._update(self.__get_command_xml('optimize')))
       except:
         result.append(standard.writeError(self, 'can\'t reindex_self'))
-      return ', '.join([x for x in result if x])
+      return ', '.join([standard.pystr(x) for x in result if x])
 
 
     # --------------------------------------------------------------------------

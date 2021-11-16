@@ -739,9 +739,7 @@ class MyBlob(object):
       Returns filename.
       @rtype: C{string}
       """
-      filename = self.filename
-      if isinstance(filename,bytes):
-        filename = filename.decode()
+      filename = standard.pystr(self.filename)
       while filename.startswith( '_'):
         filename = filename[1:]
       filename = "".join( x for x in filename if (x.isalnum() or x in "._-"))
@@ -868,10 +866,7 @@ class MyImage(MyBlob, Image):
       if data2hex:
         data = self.getData(sender)
         if [x for x in ['text/','application/css','application/javascript','image/svg'] if content_type.startswith(x)]:
-          if type(data) is bytes:
-            data = data.decode('utf-8')
-          else:
-            data = str(data,'utf-8')
+          data = standard.pystr(data)
           data = '<![CDATA[%s]]>'%data
         else:
           data = standard.bin2hex(bytes(data))
@@ -984,10 +979,7 @@ class MyFile(MyBlob, File):
       if data2hex:
         data = self.getData(sender)
         if [x for x in ['text/','application/css','application/javascript','image/svg'] if content_type.startswith(x)]:
-          if type(data) is bytes:
-            data = data.decode('utf-8')
-          else:
-            data = str(data,'utf-8')
+          data = standard.pystr(data)
           data = '<![CDATA[%s]]>'%data
         else:
           data = standard.bin2hex(bytes(data))

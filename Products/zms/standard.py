@@ -54,7 +54,6 @@ from six.moves.urllib import parse as urllib_parse
 from six.moves.urllib.parse import quote as urllib_quote
 from six.moves.urllib.parse import quote_plus as urllib_quote_plus
 from six.moves.urllib.parse import unquote as urllib_unquote
-from six.moves.urllib.parse import urlparse as urllib_urlparse
 from six import BytesIO as PyBytesIO
 
 # Product Imports.
@@ -66,15 +65,23 @@ security = ModuleSecurityInfo('Products.zms.standard')
 
 security.declarePublic('is_str')
 security.declarePublic('is_bytes')
-security.declarePublic('pystr')
 security.declarePublic('pybytes')
 def is_str(v):
     return isinstance(v,str)
 def is_bytes(v):
     return isinstance(v,bytes)
-pystr = str
 pybytes = bytes
 pyopen = open
+
+security.declarePublic('pystr')
+def pystr(v, encoding='utf-8', errors='ignore'):
+    if isinstance(v,bytes):
+        v = v.decode(encoding)
+    elif not isinstance(v,str):
+        v = str(v,encoding)
+    return v
+
+
 from html import escape as html_escape
 
 def url_quote(s):
@@ -820,7 +827,8 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   @rtype: C{str}
   """
   # Parse URL.
-  u = urllib_urlparse(url)
+  import urllib.parse
+  u = urllib.parse.urlparse(url)
   writeLog( context, "[http_import.%s]: %s"%(method, str(u)))
   scheme = u[0]
   netloc = u[1]
@@ -842,12 +850,12 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
       netloc = proxy
 
   # Open HTTP connection.
-  from six.moves import http_client
+  import http.client
   writeLog( context, "[http_import.%s]: %sConnection(%s) -> %s"%(method, scheme, netloc, path))
   if scheme == 'http':
-    conn = http_client.HTTPConnection(netloc, timeout=timeout)
+    conn = http.client.HTTPConnection(netloc, timeout=timeout)
   else:
-    conn = http_client.HTTPSConnection(netloc, timeout=timeout)
+    conn = http.client.HTTPSConnection(netloc, timeout=timeout)
 
   # Set request-headers.
   if auth is not None:
@@ -2039,8 +2047,7 @@ def dt_html(context, value, REQUEST):
   value = re.sub( '</dtml-var>', '', value)
   dtml = DocumentTemplate.DT_HTML.HTML(value)
   value = dtml( context, REQUEST)
-  if type(value) is bytes:
-    value = value.decode('utf-8','ignore')
+  value = pystr(value)
   return value
 
 def dt_py( context, script, kw={}):
@@ -2102,8 +2109,7 @@ def dt_tal(context, text, options={}):
   pt.setEnv(context, options)
   request = context.REQUEST
   rendered = pt.pt_render(extra_context={'here':context,'request':request})
-  if isinstance(rendered,bytes):
-    rendered = rendered.decode()
+  rendered = pystr(rendered)
   return rendered
 
 #}

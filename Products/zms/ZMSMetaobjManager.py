@@ -410,8 +410,7 @@ class ZMSMetaobjManager(object):
             tmplt = getattr(obj, tmpltId, None)
             if tmplt is not None:
               v = tmplt(obj, obj.REQUEST)
-              if type(v) is bytes:
-                v = v.decode('utf-8','ignore')
+              v = standard.pystr(v)
               break
       return v
 

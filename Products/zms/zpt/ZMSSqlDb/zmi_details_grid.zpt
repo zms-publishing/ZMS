@@ -56,7 +56,7 @@
 			// Switch to Ajax Pagination
 			var $div = $('#div_<tal:block tal:content="column/id">column/id</tal:block>');
 			var spinner = '<i class="fas fa-spinner fa-spin"></i>';
-			$('ul.pagination a.page-link',$div).each(
+			$('ul.pagination a.page-link, table th:not(:first-child) a',$div).each(
 				function() {
 					plnk = $(this).attr('href');
 					$(this).attr('data-href',plnk);

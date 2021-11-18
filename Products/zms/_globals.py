@@ -23,6 +23,7 @@
 from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import sys
+from Products.zms import standard
 
 # Umlauts
 umlaut_map = {

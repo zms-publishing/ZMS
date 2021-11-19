@@ -67,19 +67,22 @@ security.declarePublic('is_str')
 security.declarePublic('is_bytes')
 security.declarePublic('pybytes')
 def is_str(v):
-    return isinstance(v,str)
+  return isinstance(v,str)
 def is_bytes(v):
-    return isinstance(v,bytes)
+  return isinstance(v,bytes)
 pybytes = bytes
 pyopen = open
 
 security.declarePublic('pystr')
 def pystr(v, encoding='utf-8', errors='ignore'):
-    if isinstance(v,bytes):
-        v = v.decode(encoding)
-    elif not isinstance(v,str):
-        v = str(v,encoding)
-    return v
+  if isinstance(v,bytes):
+    v = v.decode(encoding)
+  elif not isinstance(v,str):
+    try:
+      v = str(v,encoding)
+    except:
+      v = str(v)
+  return v
 
 
 from html import escape as html_escape

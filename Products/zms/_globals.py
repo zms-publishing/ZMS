@@ -104,12 +104,13 @@ umlaut_map = {
         u'Я': 'JA',}
 
 def sort_item( i):
-  i = standard.pystr(i)
-  if isinstance(i, str):
-    mapping = umlaut_map
-    for key in mapping.keys():
-      try: i = i.replace(key, mapping[key])
-      except: pass
+  if not isinstance(i, int):
+    i = standard.pystr(i)
+    if isinstance(i, str):
+      mapping = umlaut_map
+      for key in mapping.keys():
+        try: i = i.replace(key, mapping[key])
+        except: pass
   return i
 
 

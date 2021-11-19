@@ -2630,13 +2630,23 @@ ul.pagination .page-item {
 .ZMSRecordSet.main_grid table > thead > tr > th > a {
 	color: white;
 }
-.ZMSRecordSet.main_grid table tbody tr td.data div:not(.url),
-.ZMSRecordSet.main_grid table tbody tr td.data .html {
-	min-width: 4rem;
-	width:8rem;
-	max-width:12rem;
-	white-space:nowrap;
-	overflow:hidden;
+.ZMSRecordSet.main_grid table tbody tr td.data div {
+	--font-size: 13.872px;
+	--line-height: 1.5;
+	--lines-to-show: 2;
+}
+.ZMSRecordSet.main_grid table tbody tr td.data div {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	display: block;
+	display: -webkit-box;
+	height: calc(var(--line-height) * var(--lines-to-show) * var(--font-size));
+	font-size: var(--font-size);
+	line-height: var(--line-height);
+	-webkit-line-clamp: var(--lines-to-show);
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 	text-overflow: ellipsis;
 }
 .ZMSRecordSet.main_grid table .zmi-datatype-action {

@@ -127,3 +127,12 @@ class zms_formulator_lib:
 			,"name":"downloadData"
 			,"repetitive":0
 			,"type":"External Method"}
+
+		readmemd = {"default":""
+			,"id":"readme.md"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Readme"
+			,"repetitive":0
+			,"type":"zpt"}

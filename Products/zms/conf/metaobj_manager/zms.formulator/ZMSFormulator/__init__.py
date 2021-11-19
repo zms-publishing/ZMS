@@ -135,7 +135,7 @@ class ZMSFormulator:
 			,"repetitive":0
 			,"type":"delimiter"}
 
-		optionsjs = {"default":"// Disable additional properties\r\nZMSFormulator.options.no_additional_properties = true;\r\n\r\n// Require all properties by default\r\nZMSFormulator.options.required_by_default = true;"
+		optionsjs = {"default":"// Disable additional properties\nZMSFormulator.options.no_additional_properties = true;\n\n// Require all properties by default\nZMSFormulator.options.required_by_default = true;"
 			,"id":"optionsJS"
 			,"keys":[]
 			,"mandatory":0
@@ -297,7 +297,7 @@ class ZMSFormulator:
 			,"repetitive":0
 			,"type":"boolean"}
 
-		mailfrmtcss = {"default":"table { background-color:#fff; border:1px solid #000; }\r\nth { text-align:right; vertical-align: bottom; font-family:sans-serif; padding:0 0.5em; font-weight:normal; }\r\ntd { text-align:left; vertical-align: bottom; font-family:sans-serif; padding:0 0.5em; font-size:1.5em; }\r\nh1, h3 { font-weight:normal; }"
+		mailfrmtcss = {"default":"table { background-color:#fff; border:1px solid #000; }\nth { text-align:right; vertical-align: bottom; font-family:sans-serif; padding:0 0.5em; font-weight:normal; }\ntd { text-align:left; vertical-align: bottom; font-family:sans-serif; padding:0 0.5em; font-size:1.5em; }\nh1, h3 { font-weight:normal; }"
 			,"id":"mailFrmtCSS"
 			,"keys":[]
 			,"mandatory":0

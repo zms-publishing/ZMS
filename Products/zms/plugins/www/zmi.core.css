@@ -2648,6 +2648,15 @@ ul.pagination .page-item {
 	width:3rem;
 	max-width:unset;
 }
+.ZMSRecordSet.main_grid table .zmi-datatype-boolean {
+	max-width:5rem;
+}
+.ZMSRecordSet.main_grid table td.zmi-datatype-boolean {
+	text-align:center;
+}
+.ZMSRecordSet.main_grid table td.zmi-datatype-boolean div {
+	width:unset !important;
+}
 .zmi_details_grid .ZMSRecordSet.main_grid table th i.fas.fa-sort {
 	/* As long as the a-container does not have enough specific url parameters */
 	display:none;

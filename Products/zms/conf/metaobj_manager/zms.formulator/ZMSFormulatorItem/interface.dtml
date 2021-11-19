@@ -1,0 +1,127 @@
+<script type="text/javascript" charset="UTF-8" src="/++resource++zmi/ace.ajax.org/ace.js"></script>
+<script type="text/javascript">
+$ZMI.registerReady(function() {
+  $('#tabProperties .accordion-inner').attr('class','accordion-inner ' + $('#tr_type :selected').text());
+  $('#tr_replyToField').hide();
+  $('#tr_replyToField').next('.zmi-interface').hide();
+  $('#tr_copyToField').hide();
+  $('#tr_mailDataIncluded').hide();
+  $('#tr_mailTextCc_'+getZMILang()).hide();
+  $('#tr_type select').change(function() {
+    $('#tabProperties .accordion-inner').attr('class','accordion-inner ' + $('#tr_type :selected').text());
+    if ($('#tr_type select').val() != 'custom') {
+      $('#ACE_Editor1').hide();
+      $('.ACE_Editor').height(0);
+    }
+    else {
+      $('#ACE_Editor1').show();
+      $('.ACE_Editor').height('20em');
+    }
+    if ($('#tr_type select').val() == 'email') {
+      $('#tr_replyToField').show();
+      $('#tr_replyToField').next('.zmi-interface').show();
+      $('#tr_copyToField').show();
+      $('#tr_mailDataIncluded').show();
+      $('#tr_mailTextCc_'+getZMILang()).show();
+      if ($('#copyToField').is(':checked') == true) {
+        $('#tr_mailDataIncluded').show();
+        $('#tr_mailTextCc_'+getZMILang()).show();
+      }
+      else {
+        $('#tr_mailDataIncluded').hide();
+        $('#tr_mailTextCc_'+getZMILang()).hide();
+      }
+    }
+    if ($('#tr_type select').val() == 'mailattachment') {
+      $('#tr_hiddenField').hide();
+      $('#tr_mandatoryField').hide();
+      $('#tr_replyToField').hide();
+      $('#tr_replyToField').next('.zmi-interface').hide();
+      $('#tr_copyToField').hide();
+      $('#tr_mailDataIncluded').hide();
+      $('#tr_mailTextCc_'+getZMILang()).hide();
+    }
+    else if ($('#tr_type select').val() != 'email') {
+      $('#tr_hiddenField').show();
+      $('#tr_mandatoryField').show();
+      $('#tr_replyToField').hide();
+      $('#tr_replyToField').next('.zmi-interface').hide();
+      $('#tr_copyToField').hide();
+      $('#tr_mailDataIncluded').hide();
+      $('#tr_mailTextCc_'+getZMILang()).hide();
+    }
+  });
+  $('#copyToField').change(function() {
+    if ($('#copyToField').is(':checked') == true) {
+      $('#tr_mailDataIncluded').show();
+      $('#tr_mailTextCc_'+getZMILang()).show();
+    }
+    else {
+      $('#tr_mailDataIncluded').hide();
+      $('#tr_mailTextCc_'+getZMILang()).hide();
+    }
+  });
+  if ($('#tr_type select').val() != 'custom') {
+    $('#ACE_Editor1').hide();
+  }
+  if ($('#tr_type select').val() == 'email') {
+      $('#tr_replyToField').show();
+      $('#tr_replyToField').next('.zmi-interface').show();
+      $('#tr_copyToField').show();
+      if ($('#copyToField').is(':checked') == true) {
+        $('#tr_mailDataIncluded').show();
+        $('#tr_mailTextCc_'+getZMILang()).show();
+      }
+  }
+  var dom = ace.require("ace/lib/dom");
+  // add command to all new editor instances
+  ace.require("ace/commands/default_commands").commands.push({
+    name: "Toggle Fullscreen",
+    bindKey: "F10",
+    exec: function(editor) {
+      var fullScreen = dom.toggleCssClass(document.body, "fullScreen")
+      dom.setCssClass(editor.container, "fullScreen", fullScreen)
+      editor.setAutoScrollEditorIntoView(!fullScreen)
+      editor.resize()
+    }
+  });
+  var edit1 = ace.edit("ACE_Editor1");
+  var text1 = $('textarea#rawJSON_'+getZMILang()).hide(); 
+  edit1.setTheme("ace/theme/chrome");
+  edit1.getSession().setMode("ace/mode/javascript");
+  edit1.getSession().setValue(text1.val());
+  edit1.getSession().on("change",function() {
+  text1.val(edit1.getSession().getValue()).change();
+  });
+});
+</script>
+<style>
+.ACE_Editor {
+  position: relative;
+  height: 20em;
+}
+#ACE_Editor1, #ACE_Editor2 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ddd;
+}
+.ace_editor.fullScreen {
+  height: 90% !important;
+  width: 90% !important;
+  border: 1px solid #000 !important;
+  margin: 0;
+  padding: 1em !important;
+  position: fixed !important;
+  top: 50px;
+  bottom: 0;
+  left: 50px;
+  right: 0;
+  z-index: 100;
+  overflow: hidden;
+}
+#mandatoryField, #hiddenField {
+  position: relative;
+  margin-left: 0px;
+}
+</style>

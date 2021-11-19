@@ -1,0 +1,29 @@
+<!-- ZMSFormulator.standard_html -->
+
+<tal:block tal:define="global this options/zmscontext">
+<style>
+#editor_holder .checkbox {
+	line-height: normal;
+}
+#editor_holder h3 {
+	display: none;
+}
+#editor_holder label.control-label {
+	white-space: normal;
+}
+button {
+	font-family: FrutigerLTW02-45Light,Arial,Helvetica,sans-serif;
+}
+#editor_holder div[data-schemapath*="TEXTAREA"] label,
+#editor_holder div[data-schemapath*="TEXTAREA"] input {
+	 display:none;
+}
+div#ZMSFormulatorFeedback .modal-content {
+	min-height:15rem;
+}
+</style>
+
+<div tal:replace="structure python:this.getJSONEditor()"></div>
+</tal:block>
+
+<!-- /ZMSFormulator.standard_html -->

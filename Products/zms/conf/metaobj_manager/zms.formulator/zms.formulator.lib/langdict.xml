@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?zms version='ZMS5-5.0.218'?>
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng">Restore</item>
+      <item key="fra">Restaurer</item>
+      <item key="ger">Zurücksetzen</item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_BUTTON_RESTORE</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng">Submit</item>
+      <item key="fra">Soumettre</item>
+      <item key="ger">Absenden</item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_BUTTON_SUBMIT</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[No additional items allowed in this array]]></item>
+      <item key="fra"><![CDATA[No additional items allowed in this array]]></item>
+      <item key="ger"><![CDATA[Keine weiteren Elemente in diesem Array erlaubt!]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_ADDITIONALITEMS</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[No additional properties allowed, but property {{0}} is set]]></item>
+      <item key="fra"><![CDATA[No additional properties allowed, but property {{0}} is set]]></item>
+      <item key="ger"><![CDATA[Keine weiteren Eigenschaften sind erlaubt; die Eigenschaft {{0}} ist gesetzt]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_ADDITIONAL_PROPERTIES</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must validate against at least one of the provided schemas]]></item>
+      <item key="fra"><![CDATA[Value must validate against at least one of the provided schemas]]></item>
+      <item key="ger"><![CDATA[Value must validate against at least one of the provided schemas]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_ANYOF</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Must have property {{0}}]]></item>
+      <item key="fra"><![CDATA[Must have property {{0}}]]></item>
+      <item key="ger"><![CDATA[Muss die Eigenschaft {0}} haben]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_DEPENDENCY</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must not be of type {{0}}]]></item>
+      <item key="fra"><![CDATA[Value must not be of type {{0}}]]></item>
+      <item key="ger"><![CDATA[Der Wert darf nicht dem Typen {{0}} entsprechen]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_DISALLOW</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must not be one of the provided disallowed types]]></item>
+      <item key="fra"><![CDATA[Value must not be one of the provided disallowed types]]></item>
+      <item key="ger"><![CDATA[Der Wert darf nicht einem der unerlaubten Typen entsprechen]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_DISALLOW_UNION</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must be one of the enumerated values]]></item>
+      <item key="fra"><![CDATA[Value must be one of the enumerated values]]></item>
+      <item key="ger"><![CDATA[Der Wert muss einem der aufgezählten Werte entsprechen]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_ENUM</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value is mandatory]]></item>
+      <item key="fra"><![CDATA[Value is mandatory]]></item>
+      <item key="ger"><![CDATA[Der Wert ist eine Pflichtangabe]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_MANDATORY</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must be less than {{0}}]]></item>
+      <item key="fra"><![CDATA[Value must be less than {{0}}]]></item>
+      <item key="ger"><![CDATA[Der Wert muss kleiner sein als {{0}}]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_MAXIMUM_EXCL</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must be at most {{0}}]]></item>
+      <item key="fra"><![CDATA[Value must be at most {{0}}]]></item>
+      <item key="ger"><![CDATA[Der Wert muss maximal {{0}} sein]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_MAXIMUM_INCL</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must have at most {{0}} items]]></item>
+      <item key="fra"><![CDATA[Value must have at most {{0}} items]]></item>
+      <item key="ger"><![CDATA[Der Wert darf maximal {{0}} Elemente enthalten]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_MAXITEMS</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must be at most {{0}} characters long]]></item>
+      <item key="fra"><![CDATA[Value must be at most {{0}} characters long]]></item>
+      <item key="ger"><![CDATA[Der Wert darf maximal {{0}} Zeichen lang sein]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_MAXLENGTH</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Object must have at most {{0}} properties]]></item>
+      <item key="fra"><![CDATA[Object must have at most {{0}} properties]]></item>
+      <item key="ger"><![CDATA[Das Objekt darf maximal {{0}} Eigenschaften haben]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_MAXPROPERTIES</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must be greater than {{0}}]]></item>
+      <item key="fra"><![CDATA[Value must be greater than {{0}}]]></item>
+      <item key="ger"><![CDATA[Der Wert muss grösser sein als {{0}}]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_MINIMUM_EXCL</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must be at least {{0}}]]></item>
+      <item key="fra"><![CDATA[Value must be at least {{0}}]]></item>
+      <item key="ger"><![CDATA[Der Wert muss mindestens {{0}} sein]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_MINIMUM_INCL</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must have at least {{0}} items]]></item>
+      <item key="fra"><![CDATA[Value must have at least {{0}} items]]></item>
+      <item key="ger"><![CDATA[Der Wert muss mindestens {{0}} Elemente enthalten]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_MINITEMS</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must be at least {{0}} characters long]]></item>
+      <item key="fra"><![CDATA[Value must be at least {{0}} characters long]]></item>
+      <item key="ger"><![CDATA[Der Wert muss mindestens {{0}} Zeichen lang sein]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_MINLENGTH</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Object must have at least {{0}} properties]]></item>
+      <item key="fra"><![CDATA[Object must have at least {{0}} properties]]></item>
+      <item key="ger"><![CDATA[Das Objekt muss mindestens {{0}} Eigenschaften haben]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_MINPROPERTIES</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must be a multiple of {{0}}]]></item>
+      <item key="fra"><![CDATA[Value must be a multiple of {{0}}]]></item>
+      <item key="ger"><![CDATA[Der Wert muss ein Vielfaches von {{0}} sein]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_MULTIPLEOF</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must not validate against the provided schema]]></item>
+      <item key="fra"><![CDATA[Value must not validate against the provided schema]]></item>
+      <item key="ger"><![CDATA[Value must not validate against the provided schema]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_NOT</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value required]]></item>
+      <item key="fra"><![CDATA[Value required]]></item>
+      <item key="ger"><![CDATA[Es wird ein Wert benötigt]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_NOTEMPTY</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Property must be set]]></item>
+      <item key="fra"><![CDATA[Property must be set]]></item>
+      <item key="ger"><![CDATA[Eigenschaft muss angegeben werden]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_NOTSET</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must validate against exactly one of the provided schemas. It currently validates against {{0}} of the schemas.]]></item>
+      <item key="fra"><![CDATA[Value must validate against exactly one of the provided schemas. It currently validates against {{0}} of the schemas.]]></item>
+      <item key="ger"><![CDATA[Value must validate against exactly one of the provided schemas. It currently validates against {{0}} of the schemas.]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_ONEOF</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must match the provided pattern]]></item>
+      <item key="fra"><![CDATA[Value must match the provided pattern]]></item>
+      <item key="ger"><![CDATA[Der Wert muss dem vorgegebenen Muster entsprechen]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_PATTERN</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Object is missing the required property '{{0}}']]></item>
+      <item key="fra"><![CDATA[Object is missing the required property '{{0}}']]></item>
+      <item key="ger"><![CDATA[Dem Objekt fehlt die benötigte Eigenschaft ’{{0}}]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_REQUIRED</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must be of type {{0}}]]></item>
+      <item key="fra"><![CDATA[Value must be of type {{0}}]]></item>
+      <item key="ger"><![CDATA[Der Wert muss dem Typen {{0}} entsprechen]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_TYPE</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Value must be one of the provided types]]></item>
+      <item key="fra"><![CDATA[Value must be one of the provided types]]></item>
+      <item key="ger"><![CDATA[Der Wert muss dem vorgegebenen Typen entsprechen]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_TYPE_UNION</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Array must have unique items]]></item>
+      <item key="fra"><![CDATA[Array must have unique items]]></item>
+      <item key="ger"><![CDATA[Das Feld darf nur eindeutige Elemente enthalten!]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_ERROR_UNIQUEITEMS</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Thank you, we have received the data.]]></item>
+      <item key="fra"><![CDATA[Thank you, we have received the data.]]></item>
+      <item key="ger"><![CDATA[Vielen Dank, die Daten sind bei uns eingegangen.]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_FEEDBACK_MSG</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Please check your input!]]></item>
+      <item key="fra"><![CDATA[Please check your input!]]></item>
+      <item key="ger"><![CDATA[Bitte überprüfen Sie Ihre Eingabe!]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_HINT_CHECKINPUT</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Data was not sent. Are you a robot?]]></item>
+      <item key="fra"><![CDATA[Data was not sent. Are you a robot?]]></item>
+      <item key="ger"><![CDATA[Daten wurden nicht übertragen! Bist du etwa ein Roboter?]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_HINT_DATANOTSENT</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Data was sent.]]></item>
+      <item key="fra"><![CDATA[Data was sent.]]></item>
+      <item key="ger"><![CDATA[Die Daten wurden übertragen.]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_HINT_DATASENT</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[E-Mails expect a format like \"user@domain.tld\"]]></item>
+      <item key="fra"><![CDATA[E-Mails expect a format like \"user@domain.tld\"]]></item>
+      <item key="ger"><![CDATA[E-Mails erwarten ein Format wie \"user@domain.tld\"]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_HINT_EMAILSYNTAX</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[An Error occurred!]]></item>
+      <item key="fra"><![CDATA[An Error occurred!]]></item>
+      <item key="ger"><![CDATA[Es ist ein Fehler aufgetreten!]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_HINT_ERROROCCURED</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[File size:]]></item>
+      <item key="fra"><![CDATA[File size:]]></item>
+      <item key="ger">Dateigröße:</item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_HINT_FILESIZE</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[File type:]]></item>
+      <item key="fra"><![CDATA[File type:]]></item>
+      <item key="ger">Dateityp:</item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_HINT_FILETYPE</item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="eng"><![CDATA[Hint: Select multiple entries by holding cmd- or Ctrl-key.]]></item>
+      <item key="fra"><![CDATA[Hint: Select multiple entries by holding cmd- or Ctrl-key.]]></item>
+      <item key="ger"><![CDATA[Tipp: Sie können mehrere Einträge durch das Halten der cmd- bzw. Strg-Taste auswählen.]]></item>
+      <item key="ita"></item>
+      <item key="key">ZMSFORMULATOR_HINT_MULTISELECT</item>
+    </dictionary>
+  </item>
+</list>

@@ -1,0 +1,5 @@
+<!-- Titlealt HINT -->
+<tal:block>
+<div class="col-sm-2"></div>
+<div class="col-sm-10" style="font-size:x-small;margin-bottom:2em;">Used as column name in data table &ndash; one single word without special characters is recommended.</div>
+</tal:block>

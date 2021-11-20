@@ -80,7 +80,7 @@ class ZMSFormulator_class:
   def getData(self):
 
     if self.SQLStorage and not self.noStorage:
-      self.engine = create_engine(self.dbconnection + '?charset=utf8')
+      self.engine = create_engine(self.dbconnection + '?charset=utf8mb4')
       metadata = MetaData()
       try:
         self.sqldb = Table(self.this.getId(), metadata, autoload=True, autoload_with=self.engine)

@@ -21,35 +21,37 @@ How it works
 zms.formulator is an authoring tool for web forms and delivering an abstract content model for arbitrary sequences 
 of form fields. After adding a ZMS-Formulator object to the ZMS content tree the form fields can be added as 
 zms.formulator-items. Following item types are available and automaticallygenerate its web form elements:
-1. string
-2. email
-3. mailattachment
-4. textarea
-5. date
-6. select
-8. multiselect
-9. checkbox
-10. integer
-11. float
-12. custom (customizable according to _JSON editor_)
+  1. string
+  2. email
+  3. mailattachment
+  4. textarea
+  5. date
+  6. select
+  8. multiselect
+  9. checkbox
+  10. integer
+  11. float
+  12. custom (customizable according to _JSON editor_)
 
 To write the web form data into a SQL database a SQL schema is needed and its sqlalchemy-like DNS set as ZMS parameter.  
 zms.formulator is generating a new SQL table for any content instance. The table's name is the coresponding ZMS id and 
-any archived field content results in a data row abstractly representing the field model.  
+any archived field content results in a data row abstractly representing the field model. 
 
 
 Requirements
 ----------
 
-* ftfy
-* sqlalchemy
+  * ftfy
+  * sqlalchemy
 
 
 Installation
 ----------
-1. Import zms.formulator.lib/langdict.xml as language terms (menu: configuration / language)
-2. Add database DSN as ZMS configuration parameter `ZMSFormulator.dbconnection.password` according to (sqlalchemy syntax), e.g. mysql://root:passwd@127.0.0.1:3306/zms_forms
-3. In case of using Google recaptcha add two more parameters: `Google.API.sitekey.password`, `Google.API.secretkey.password`
+  1. Import the zms.formulator content model from the the list of default models (menu; configuration / content objects )
+  2. Import zms.formulator.lib/langdict.xml as language terms (menu: configuration / language)
+  3. Add database DSN as ZMS configuration parameter `ZMSFormulator.dbconnection.password` according to (sqlalchemy syntax), e.g. mysql://root:passwd@127.0.0.1:3306/zms_forms
+  4. In case of using Google recaptcha add two more parameters: `Google.API.sitekey.password`, `Google.API.secretkey.password`
+  5. After adding the new ZMS params a Zope restart is needed 
 
 
 References

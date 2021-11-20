@@ -49,9 +49,9 @@ Installation
 ----------
   1. Import the zms.formulator content model from the the list of default models (menu; configuration / content objects )
   2. Import zms.formulator.lib/langdict.xml as language terms (menu: configuration / language)
-  3. Add database DSN as ZMS configuration parameter `ZMSFormulator.dbconnection.password` according to (sqlalchemy syntax), e.g. mysql://root:passwd@127.0.0.1:3306/zms_forms
-  4. In case of using Google recaptcha add two more parameters: `Google.API.sitekey.password`, `Google.API.secretkey.password`
-  5. After adding the new ZMS params a Zope restart is needed 
+  3. Add a new SQL schema for the incoming data, e.g. `zms_forms` with da default characterset `utf8mb4`
+  4. Add a database DSN as ZMS configuration parameter `ZMSFormulator.dbconnection.password` according to sqlalchemy syntax, e.g. mysql://root:passwd@127.0.0.1:3306/zms_forms
+  5. In case of using Google recaptcha add two more parameters: `Google.API.sitekey.password`, `Google.API.secretkey.password`
 
 
 References

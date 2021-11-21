@@ -30,10 +30,11 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates import ZopePageTemplate
 from Products.PythonScripts import PythonScript
 import OFS.misc_
+import configparser
 import importlib
+import io
 import operator
 import os
-import six.moves
 import tempfile
 import time
 import xml.dom.minidom
@@ -71,7 +72,7 @@ class ConfDict(object):
             for home in [PRODUCT_HOME, standard.getINSTANCE_HOME()]:
               fp = os.path.join(home, 'etc', 'zms.conf')
               if os.path.exists(fp):
-                cfp = six.moves.configparser.ConfigParser()
+                cfp = configparser.ConfigParser()
                 cfp.readfp(open(fp))
                 for section in cfp.sections():
                     for option in cfp.options(section):
@@ -177,7 +178,7 @@ class ConfManager(
               l = container.translateRepositoryModel(r)
               xml = standard.toXmlString(self, l)
               xml = standard.pybytes(xml, "utf-8")
-              xmlfile = standard.PyBytesIO( xml)
+              xmlfile = io.BytesIO( xml)
           else:
               standard.writeError(self,'[getConfXmlFile]: container %s not found'%container_id)
       else:

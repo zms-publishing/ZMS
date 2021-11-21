@@ -25,8 +25,8 @@ from OFS.Image import Image, File
 from email.generator import _make_boundary as choose_boundary
 import base64
 import copy
+import io
 import re
-import six
 import time
 import warnings
 import zExceptions 
@@ -138,7 +138,7 @@ def createBlobField(self, objtype, file=b''):
     data = file.get( 'data', '')
     if standard.is_str(data):
       data = bytes(data,'utf-8')
-      data = standard.PyBytesIO( data)
+      data = io.BytesIO( data)
     blob = uploadBlobField( self, objtype, data, file.get('filename', ''))
     if file.get('content_type'):
       blob.content_type = file.get('content_type')
@@ -156,7 +156,7 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
   except:
     pass
   f = None
-  if isinstance(file,six.string_types):
+  if isinstance(file,str):
     f = re.findall('^data:(.*?);base64,([\s\S]*)$',file)
   if f:
     mt = f[0][0]
@@ -370,7 +370,7 @@ class MyBlob(object):
                     RESPONSE.setStatus(206) # Partial content
 
                     data = self.data
-                    if isinstance(data,six.string_types):
+                    if isinstance(data,str) or isinstance(data,bytes):
                         RESPONSE.write(data[start:end])
                         return True
 
@@ -441,7 +441,7 @@ class MyBlob(object):
                             'Content-Range: bytes %d-%d/%d\r\n\r\n' % (
                                 start, end - 1, self.size))
 
-                        if isinstance(data,six.string_types):
+                        if isinstance(data,str) or isinstance(data,bytes):
                             RESPONSE.write(data[start:end])
 
                         else:

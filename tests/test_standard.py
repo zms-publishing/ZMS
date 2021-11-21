@@ -19,3 +19,4 @@ class StandardTests(unittest.TestCase):
     def test_pystr(self):
         self.assertEquals(standard.pystr('ABC'),'ABC')
         self.assertEquals(standard.pystr(b'ABC'),'ABC')
+        self.assertEquals(standard.pystr(123),'123')

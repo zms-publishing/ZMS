@@ -105,12 +105,11 @@ umlaut_map = {
 
 def sort_item( i):
   if not isinstance(i, int):
-    i = standard.pystr(i)
-    if isinstance(i, str):
+      i = standard.pystr(i)
       mapping = umlaut_map
-      for key in mapping.keys():
-        try: i = i.replace(key, mapping[key])
-        except: pass
+      for key in mapping:
+          try: i = i.replace(key, mapping[key])
+          except: pass
   return i
 
 
@@ -133,7 +132,6 @@ DT_URL = 14
 DT_ID = 15
 DT_XML = 16
 DT_AMOUNT = 17
-DT_LONG = 18
 DT_TEXTS = [ DT_STRING, DT_TEXT ]
 DT_STRINGS = [ DT_STRING, DT_TEXT, DT_URL, DT_PASSWORD, DT_XML ]
 DT_BLOBS = [ DT_IMAGE, DT_FILE ]
@@ -160,7 +158,6 @@ datatype_map = [
   [ 'identifier', ''],
   [ 'xml', ''],
   [ 'amount', 0.0],
-  [ 'long', 0],
 ]
 
 def datatype_key(datatype):

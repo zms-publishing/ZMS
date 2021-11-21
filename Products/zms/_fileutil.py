@@ -336,10 +336,10 @@ def exportObj(obj, filename, filetype='b'):
   #-- Save to file.
   if data is not None:
     objfile = open(filename, 'w%s'%filetype)
-    if isinstance(data, six.string_types):
+    if isinstance(data,str):
       from Products.zms import standard
       objfile.write(six.ensure_binary(data))
-    elif isinstance(data, six.binary_type):
+    elif isinstance(data,bytes):
       objfile.write(data)
     elif isinstance(data,io.RawIOBase):
       objfile.write(data.read())

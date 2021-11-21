@@ -39,6 +39,7 @@ import copy
 import fnmatch
 import hashlib
 import inspect
+import io
 import json
 import logging
 import operator
@@ -54,7 +55,6 @@ from six.moves.urllib import parse as urllib_parse
 from six.moves.urllib.parse import quote as urllib_quote
 from six.moves.urllib.parse import quote_plus as urllib_quote_plus
 from six.moves.urllib.parse import unquote as urllib_unquote
-from six import BytesIO as PyBytesIO
 
 # Product Imports.
 from Products.zms import _globals
@@ -1941,7 +1941,7 @@ def parseXmlString(xml):
   """
   Parse value from ZMS XML-Structure.
   @param xml
-  @type xml: C{str} or C{BytesIO}
+  @type xml: C{str} or C{io.BytesIO}
   @return: C{list} or C{dict}
   @rtype: C{any}
   """
@@ -1950,7 +1950,7 @@ def parseXmlString(xml):
   if isinstance(xml,str):
     xml = bytes(xml,'utf-8')
   if isinstance(xml,bytes):
-    xml = PyBytesIO(xml)
+    xml = io.BytesIO(xml)
   v = builder.parse(xml)
   return v
 
@@ -1964,7 +1964,7 @@ def processData(context, processId, data, trans=None):
   @param processId: the process-id
   @type processId: C{str}
   @param data: the xml-data
-  @type data: C{str} or C{BytesIO}
+  @type data: C{str} or C{io.BytesIO}
   @param trans: the transformation
   @type trans: C{str}
   @return: the transformed data

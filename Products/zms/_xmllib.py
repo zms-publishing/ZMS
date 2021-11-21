@@ -549,7 +549,10 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
       xml.append('>')
       data = zopeutil.readData(value)
       if [x for x in ['text/','application/css','application/javascript','image/svg'] if content_type.startswith(x)]:
-        data = standard.pystr(data)
+        if type(data) is bytes:
+          data = data.decode('utf-8')
+        else:
+          data = str(data,'utf-8')
       cdata = None
       # Ensure CDATA is valid.
       try:

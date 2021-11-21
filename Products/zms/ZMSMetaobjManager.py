@@ -22,8 +22,8 @@ from distutils.version import LooseVersion
 import ZPublisher.HTTPRequest
 import collections
 import copy
+import io
 import os
-import six
 import sys
 import time
 import zExceptions
@@ -91,7 +91,7 @@ class ZMSMetaobjManager(object):
 
     # Globals.
     # --------
-    valid_types =     ['amount', 'autocomplete', 'boolean', 'color', 'date', 'datetime', 'dictionary', 'file', 'float', 'identifier', 'image', 'int', 'long', 'list', 'multiautocomplete', 'multiselect', 'password', 'richtext', 'select', 'string', 'text', 'time', 'url', 'xml']
+    valid_types =     ['amount', 'autocomplete', 'boolean', 'color', 'date', 'datetime', 'dictionary', 'file', 'float', 'identifier', 'image', 'int', 'list', 'multiautocomplete', 'multiselect', 'password', 'richtext', 'select', 'string', 'text', 'time', 'url', 'xml']
     valid_zopeattrs = ['method', 'py', 'zpt', 'interface', 'resource']
     valid_xtypes =    ['constant', 'delimiter', 'hint'] + valid_zopeattrs
     valid_datatypes = sorted(valid_types + valid_xtypes)
@@ -647,7 +647,7 @@ class ZMSMetaobjManager(object):
     #  Get attribute-id of identifier for datatable specified by meta-id.
     # --------------------------------------------------------------------------
     def getMetaobjAttrIdentifierId(self, meta_id):
-      for attr_id in self.getMetaobjAttrIds( meta_id, types=[ 'identifier', 'string', 'int', 'long']):
+      for attr_id in self.getMetaobjAttrIds( meta_id, types=[ 'identifier', 'string', 'int']):
         return attr_id
       return None
 
@@ -929,7 +929,7 @@ class ZMSMetaobjManager(object):
         if standard.is_str(newCustom): 
            newCustom = newCustom.replace('\r', '')
          # Strip errors.
-        if isinstance(newCustom,six.string_types): 
+        if isinstance(newCustom,str): 
            if newCustom.find("## Errors:") >= 0:
              lines = [x for x in newCustom.split('\n')]
              remove = False
@@ -1301,15 +1301,15 @@ class ZMSMetaobjManager(object):
                  for name in zip_buffer.namelist():
                    if name.endswith(".xml"):
                      filename = name
-                     xmlfile = standard.PyBytesIO(zip_buffer.read(filename))
+                     xmlfile = io.BytesIO(zip_buffer.read(filename))
                      break
               # parse xml
               if not immediately:
                 xml = xmlfile.read()
                 # open string-io.
-                xmlfile = standard.PyBytesIO(xml)
+                xmlfile = io.BytesIO(xml)
                 v = standard.parseXmlString(xmlfile)
-                xmlfile = standard.PyBytesIO(xml)
+                xmlfile = io.BytesIO(xml)
                 if not isinstance(v,list):
                   v = []
                 if temp_id in temp_folder.objectIds():

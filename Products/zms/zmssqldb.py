@@ -239,14 +239,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       col = ([x for x in entity['columns'] if x['id'].upper()==columnname.upper()]+[{'type':'string'}])[0]
       if col.get('nullable') and v in ['', None]:
         return "NULL"
-      elif col['type'] in ['int']:
+      elif col['type'] in ['int','long']:
         try:
           return str(int(str(v)))
-        except:
-          return "NULL"
-      elif col['type'] in ['long']:
-        try:
-          return str(long(str(v)))
         except:
           return "NULL"
       elif col['type'] in ['float']:
@@ -375,7 +370,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         for s in colName.split('_'):
           colLabel += s.capitalize()
         try:
-          colType = {'i':'int','n':'float','t':'string','s':'string','d':'datetime','l':'long'}.get(result_column['type'],'string')
+          colType = {'i':'int','n':'float','t':'string','s':'string','d':'datetime','l':'int'}.get(result_column['type'],'string')
         except:
           colType = result_column.get('type', 'string')
           standard.writeDebug(self, '[query]: Column ' + colName + ' has unknown type ' + str(colType) + '!')

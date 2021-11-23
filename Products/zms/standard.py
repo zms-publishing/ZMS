@@ -74,6 +74,7 @@ pybytes = bytes
 pyopen = open
 
 security.declarePublic('pystr')
+pystr_ = str
 def pystr(v, encoding='utf-8', errors='ignore'):
   if isinstance(v,bytes):
     v = v.decode(encoding)
@@ -2050,7 +2051,6 @@ def dt_html(context, value, REQUEST):
   value = re.sub( '</dtml-var>', '', value)
   dtml = DocumentTemplate.DT_HTML.HTML(value)
   value = dtml( context, REQUEST)
-  value = pystr(value)
   return value
 
 def dt_py( context, script, kw={}):
@@ -2112,7 +2112,6 @@ def dt_tal(context, text, options={}):
   pt.setEnv(context, options)
   request = context.REQUEST
   rendered = pt.pt_render(extra_context={'here':context,'request':request})
-  rendered = pystr(rendered)
   return rendered
 
 #}

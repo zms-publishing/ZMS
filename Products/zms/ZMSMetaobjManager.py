@@ -180,6 +180,8 @@ class ZMSMetaobjManager(object):
           for attr in v['attrs']:
               if 'data' in attr:
                   attr['custom'] = attr['data']
+                  if attr.get('type') in ['resource']:
+                    attr['custom'] = _blobfields.createBlobField( self, _blobfields.MyFile, {'data':attr['custom'],'filename':attr['id']})
                   del attr['data']
           d = {'key':k,'value':v}
           l.append(d)

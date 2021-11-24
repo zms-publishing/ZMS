@@ -226,7 +226,7 @@ class ZMSRepositoryManager(
           continue
         l = local.get(filename, {})
         r = remote.get(filename, {})
-        if l['meta_type']!='File':
+        if l.get('meta_type','')!='File':
           # string comparison only non-binary data 
           l['data'] = standard.pystr(l.get('data',''))
           r['data'] = standard.pystr(r.get('data',''))

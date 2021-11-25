@@ -476,7 +476,7 @@ $ZMI.registerReady(function(){
 		.mouseout( function(evt) {
 				$(this).parents(".collapse").css({overflow:"hidden"});
 			});
-	$(".zmi-container .zmi-item .zmi-action")
+	$(".zmi-container .zmi-item .zmi-action, .card-header .zmi-action")
 		.focus( function(evt) {
 				$ZMI.actionList.over(this,evt);
 			})

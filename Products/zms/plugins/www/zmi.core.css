@@ -1250,15 +1250,19 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	overflow-y: auto;
 }
 .zmi .zmi-action .dropdown-menu[x-placement="left-start"] {
-		top: 1.93rem !important;
-		left: 3.1rem !important;
+	top: 1.93rem !important;
+	left: 3.1rem !important;
+}
+.zmi .card-header .zmi-action .dropdown-menu[x-placement="left-start"] {
+	top: 1.65rem !important;
+	left: 2.75rem !important;
 }
 .zmi .zmi-action .dropdown-menu[x-placement=bottom-start] {
-		top: -1px !important;
-		left: .35rem !important;
+	top: -1px !important;
+	left: .35rem !important;
 }
 .zmi .zmi-action .dropdown-menu[x-placement="top-start"] {
-		left: .1rem !important;
+	left: .1rem !important;
 }
 @media all and (min-width: 767px) and (max-width: 1199px) {
 	.zmi .zmi-action .dropdown-menu[x-placement="left-start"] {
@@ -1290,7 +1294,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 		left: 5.1rem !important;
 	}
 }
-
 .zmi .zmi-action .dropdown-menu:not(.dropdown-menu-right) a.dropdown-item:last-child {
 	margin-bottom: .5rem;
 }
@@ -1310,7 +1313,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi .dropdown-menu .dropdown-header i {
 	color: #fff !important;
 }
-
 .zmi .dropdown-menu a.dropdown-item:focus, 
 .zmi .dropdown-menu a.dropdown-item:hover {
 	background-color: rgba(53, 79, 103, 0.15);

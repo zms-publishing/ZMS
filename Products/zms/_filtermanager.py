@@ -244,6 +244,9 @@ class FilterItem(object):
       REQUEST.set( 'ZMS_FILTER', True)
       REQUEST.set( 'ZMS_FILTER_INSTANCE_HOME', instance_home)
       REQUEST.set( 'ZMS_FILTER_PACKAGE_HOME', package_home)
+      # Set session variables
+      session = REQUEST.SESSION
+      session['ZMS_FILTER_CONTEXT'] = self.getRefObjPath(self)
       # Set local variables.
       ob_filter = self.getFilterManager().getFilter(id)
       ob_filter_format = ob_filter.get('format', '')

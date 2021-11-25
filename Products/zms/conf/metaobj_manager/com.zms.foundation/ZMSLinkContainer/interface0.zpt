@@ -72,8 +72,8 @@ table.ZMSLinkContainer td.meta-sort select.zmi-sort {
 			</div>
 		</div><!-- .input-group -->
 	</td>
-	<td align="center" tal:content="structure python:childNode.getCheckbox(fmName='form0',elName='active%s'%(childNode.getId()),value=childNode.isActive(request))"></td>
-	<td tal:content="structure python:childNode.getUrlInput(fmName='form0',elName='url%s'%(childNode.getId()),elTextName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_ref'),request))"><input/></td>
+	<td class="text-center" tal:content="structure python:childNode.getCheckbox(fmName='form0',elName='active%s'%(childNode.getId()),value=childNode.isActive(request))"></td>
+	<td class="form-group" tal:content="structure python:childNode.getUrlInput(fmName='form0',elName='url%s'%(childNode.getId()),elTextName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_ref'),request))"><input/></td>
 	<td tal:content="structure python:childNode.getTextInput(fmName='form0',elName='title%s'%(childNode.getId()),size=15,value=childNode.getObjAttrValue(childNode.getObjAttr('title'),request))"><input/></td>
 	<td tal:content="structure python:childNode.getTextArea(fmName='form0',elName='description%s'%(childNode.getId()),cols=20,rows=2,value=childNode.getObjAttrValue(childNode.getObjAttr('attr_dc_description'),request))"><textarea/></td>
 	<td>

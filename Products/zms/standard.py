@@ -86,6 +86,18 @@ def pystr(v, encoding='utf-8', errors='ignore'):
   return v
 
 
+security.declarePublic('addZMSCustom')
+def addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
+  """
+  Public alias for manage_addZMSCustom
+  @param meta_id
+  @param values
+  @param REQUEST
+  @rtype: C{ZMSCustom}
+  """
+  return self.manage_addZMSCustom(meta_id, values, REQUEST)
+
+
 from html import escape as html_escape
 
 def url_quote(s):

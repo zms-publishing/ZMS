@@ -35,8 +35,6 @@ def get_system_conf_basepath():
 Get class from py-string.
 """
 def get_class(py):
-  if isinstance(py,bytes):
-    py = py.decode('utf-8')
   id = re.findall('class (.*?):', py)[0]
   exec(py)
   return eval(id)
@@ -59,7 +57,7 @@ def remoteFiles(self, basepath):
               # Read python-representation of repository-object
               standard.writeLog(self,"[remoteFiles]: read %s"%filepath)
               f = open(filepath,"rb")
-              py = f.read()
+              py = standard.pystr(f.read())
               f.close()
               # Analyze python-representation of repository-object
               d = {}
@@ -110,13 +108,8 @@ def readRepository(self, basepath, deep=True):
               # Read python-representation of repository-object
               standard.writeLog(self,"[readRepository]: read %s"%filepath)
               f = open(filepath, "rb")
-              py = f.read()
+              py = standard.pystr(f.read())
               f.close()
-              try:
-                  if isinstance(py, bytes):
-                      py = py.decode('utf-8')
-              except:
-                  pass
               # Analyze python-representation of repository-object
               d = {}
               try:
@@ -149,10 +142,7 @@ def readRepository(self, basepath, deep=True):
                             pass
                         vv['data'] = data
                         break
-                    if isinstance(py,bytes):
-                        v.append((py.decode('utf-8').find('\t\t%s ='%kk), vv))
-                    else:
-                        v.append((py.find('\t\t%s ='%kk), vv))
+                    v.append((py.find('\t\t%s ='%kk), vv))
                   v.sort()
                   v = [x[1] for x in v]
                 r[id][k] = v

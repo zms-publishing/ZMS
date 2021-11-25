@@ -37,14 +37,6 @@ from Products.zms import standard
 from Products.zms import zopeutil
 
 
-def get_class(py):
-  if isinstance(py,bytes):
-    py = py.decode('utf-8')
-  id = re.findall('class (.*?):', py)[0]
-  exec(py)
-  return eval(id)
-
-
 ################################################################################
 ################################################################################
 ###

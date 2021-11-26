@@ -40,7 +40,7 @@ class manage_repository_config:
 	stereotype = "repository"
 
 	# Title
-	title = "TAB_CONFIGURATION"
+	title = "Git-Configuration"
 
 	# Impl
 	class Impl:

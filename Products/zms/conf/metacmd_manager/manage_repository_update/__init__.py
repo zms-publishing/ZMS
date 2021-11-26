@@ -40,7 +40,7 @@ class manage_repository_update:
 	stereotype = "repository"
 
 	# Title
-	title = "BTN_UPDATE"
+	title = "Git Pull"
 
 	# Impl
 	class Impl:

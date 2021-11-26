@@ -40,7 +40,7 @@ class manage_repository_commit:
 	stereotype = "repository"
 
 	# Title
-	title = "BTN_COMMIT"
+	title = "Git Push"
 
 	# Impl
 	class Impl:

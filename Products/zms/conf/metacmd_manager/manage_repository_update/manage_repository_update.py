@@ -32,9 +32,10 @@ def manage_repository_update(self, request=None):
 		userid = self.getConfProperty('ZMSRepository.git.server.userid')
 		password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
 		url = self.getConfProperty('ZMSRepository.git.server.url').split('//')[-1]
-		command = 'cd %s\ngit pull https://{$CREDENTIALS}@%s --all'%(base_path, url)
+		command = 'git pull https://{$CREDENTIALS}@%s --all'%(url)
+		os.chdir(base_path)
 		result = os.system(command.replace('{$CREDENTIALS}','%s:%s'%(userid,password)))
-		message.append('<code>%s [%s]</code>'%(command,str(result)))
+		message.append('<code>%s [%s]</code>'%(command, str(result)))
 		# import from working-copy
 		# success = self.updateChanges(REQUEST.get('ids',[]),btn=='override')
 		# message.append(self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success)))

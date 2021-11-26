@@ -20,7 +20,7 @@ def manage_repository_config(self, request=None):
 	printed.append('<html lang="en">')
 	printed.append(self.zmi_html_head(self,request))
 	printed.append('<body class="%s">'%(' '.join(['zmi',request['lang'],self.meta_id])))
-	printed.append(self.zmi_body_header(self,request,options=[{'action':'#','label':'SVN-%s...'%self.getZMILangStr('TAB_CONFIGURATION')}]))
+	printed.append(self.zmi_body_header(self,request,options=[{'action':'#','label':'GIT-%s...'%self.getZMILangStr('TAB_CONFIGURATION')}]))
 	printed.append('<div id="zmi-tab">')
 	printed.append(self.zmi_breadcrumbs(self,request))
 	printed.append('<div class="card">')
@@ -46,9 +46,10 @@ def manage_repository_config(self, request=None):
 		userid = self.getConfProperty('ZMSRepository.git.server.userid')
 		password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
 		url = self.getConfProperty('ZMSRepository.git.server.url').split('//')[-1]
-		command = "cd %s\ngit clone https://{$CREDENTIALS}@%s"%(url)
-		result = os.system(command.replace('{$CREDENTIALS}','%s:%s'%(userid,password)))
-		printed.append('<div><code>%s [%s]</code></div>'%(command,str(result)))
+		os.chdir(base_path)
+		command = "git clone https://%s"%(url)
+		result = os.system(command)
+		printed.append('<div class="alert alert-info my-3"><code>%s [%s]</code></div>'%(command, str(result)))
 
 	# --- Cancel.
 	# ---------------------------------

@@ -476,7 +476,7 @@ $ZMI.registerReady(function(){
 		.mouseout( function(evt) {
 				$(this).parents(".collapse").css({overflow:"hidden"});
 			});
-	$(".zmi-container .zmi-item .zmi-action, .card-header .zmi-action")
+	$(".zmi-container .zmi-item .zmi-action")
 		.focus( function(evt) {
 				$ZMI.actionList.over(this,evt);
 			})
@@ -486,10 +486,11 @@ $ZMI.registerReady(function(){
 			function(evt) {
 				$ZMI.actionList.out(this);
 			});
-	$(".zmi-action button.dropdown-toggle")
+	$(".zmi-action button.dropdown-toggle:not(.btn-card-header-menu)")
 		.click( function(evt) {
+				// For ajax afterload-menus prevent click event until class 'loaded' was added
 				var el = $(this);
-				if(!el.parent(".zmi-action").hasClass('loaded')) {
+				if (!el.parent(".zmi-action").hasClass('loaded')) {
 						evt.preventDefault();
 						evt.stopPropagation();
 						setTimeout(function() {el.click();}, 100);

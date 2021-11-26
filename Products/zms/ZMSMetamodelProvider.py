@@ -141,7 +141,7 @@ class ZMSMetamodelProvider(
     @see IRepositoryProvider
     """
     def provideRepository(self, ids=None):
-      self.writeBlock("[provideRepository]: ids=%s"%str(ids))
+      standard.writeBlock(self, "[provideRepository]: ids=%s"%str(ids))
       r = {}
       self.provideRepositoryMetas(r, ids)
       self.provideRepositoryModel(r, ids)

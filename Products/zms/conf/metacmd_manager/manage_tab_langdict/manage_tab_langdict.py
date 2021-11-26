@@ -50,7 +50,7 @@ else:
 	for ri in rs:
 		prt.append('<tr>')
 		prt.append('<td>%s</td>'%str(ri))
-		prt.extend(['<td><div class="single-line"><textarea class="form-control form-control-sm" name="%s" placeholder="%s">%s</textarea></div></td>'%(ri+'_'+x[0],x[1],[x[1],''][int(ri==x[1])]) for x in [(y,context.getLangStr(standard.pybytes(ri),y)) for y in langIds]])
+		prt.extend(['<td><div class="single-line"><textarea class="form-control form-control-sm" name="%s" placeholder="%s">%s</textarea></div></td>'%(ri+'_'+x[0],x[1],[x[1],''][int(ri==x[1])]) for x in [(y,context.getLangStr(bytes(ri,'utf-8'),y)) for y in langIds]])
 		prt.append('</tr>')
 	prt.append('</tbody>')
 	prt.append('</table>')

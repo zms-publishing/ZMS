@@ -65,13 +65,10 @@ security = ModuleSecurityInfo('Products.zms.standard')
 
 security.declarePublic('is_str')
 security.declarePublic('is_bytes')
-security.declarePublic('pybytes')
 def is_str(v):
   return isinstance(v,str)
 def is_bytes(v):
   return isinstance(v,bytes)
-pybytes = bytes
-pyopen = open
 
 security.declarePublic('pystr')
 pystr_ = str

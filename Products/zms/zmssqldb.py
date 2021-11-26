@@ -1312,7 +1312,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     @rtype: int
     """
     def getFk(self, tablename, id, name, value, createIfNotExists=True):
-      self.writeBlock('[getFk]: tablename=%s, id=%s, name=%s, value=%s, createIfNotExists=%s'%(tablename, id, name, str(value), str(createIfNotExists)))
+      standard.writeBlock(self, '[getFk]: tablename=%s, id=%s, name=%s, value=%s, createIfNotExists=%s'%(tablename, id, name, str(value), str(createIfNotExists)))
       tabledefs = self.getEntities()
       tabledef = [x for x in tabledefs if x['id'].upper()==tablename.upper()][0]
       tablecols = tabledef['columns']

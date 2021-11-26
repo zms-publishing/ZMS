@@ -176,7 +176,7 @@ class ZMSWorkflowProvider(
     @see IRepositoryProvider
     """
     def provideRepository(self, r, ids=None):
-      self.writeBlock("[provideRepository]: ids=%s"%str(ids))
+      standard.writeBlock(self, "[provideRepository]: ids=%s"%str(ids))
       r = {}
       id = 'workflow'
       d = {'id':id,'revision':self.getRevision(),'__filename__':['__init__.py']}

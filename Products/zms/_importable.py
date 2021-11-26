@@ -160,7 +160,7 @@ def importFile(self, file, REQUEST, handler):
   
   # Import XML-file.
   standard.writeBlock( self, '[importFile]: filename='+filename)
-  f = standard.pyopen(filename, 'r', encoding='utf-8')
+  f = open(filename, 'r', encoding='utf-8')
   ob = handler(self, f)
   f.close()
   

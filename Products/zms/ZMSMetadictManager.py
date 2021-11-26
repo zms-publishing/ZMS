@@ -44,7 +44,7 @@ class ZMSMetadictManager(object):
     @see IRepositoryProvider
     """
     def provideRepositoryMetas(self, r, ids=None):
-      self.writeBlock("[provideRepositoryMetas]: ids=%s"%str(ids))
+      standard.writeBlock(self, "[provideRepositoryMetas]: ids=%s"%str(ids))
       valid_ids = ['__metas__']
       if ids is None:
         ids = valid_ids
@@ -61,7 +61,7 @@ class ZMSMetadictManager(object):
     def updateRepositoryMetas(self, r):
       id = r['id']
       if id == '__metas__':
-        self.writeBlock("[updateRepositoryMetas]: id=%s"%id)
+        standard.writeBlock(self, "[updateRepositoryMetas]: id=%s"%id)
         self.metas = []
         for attr in r.get('Metas', []):
           self.metas.extend([attr['id'], attr])

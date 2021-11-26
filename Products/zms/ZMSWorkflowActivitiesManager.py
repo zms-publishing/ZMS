@@ -44,7 +44,7 @@ class ZMSWorkflowActivitiesManager(object):
   @see IRepositoryProvider
   """
   def provideRepositoryActivities(self, r, ids=None):
-    self.writeBlock("[provideRepositoryActivities]: ids=%s"%str(ids))
+    standard.writeBlock(self, "[provideRepositoryActivities]: ids=%s"%str(ids))
     r['workflow']['Activities'] = []
     for id in self.getActivityIds():
       d = self.getActivity(id)
@@ -56,7 +56,7 @@ class ZMSWorkflowActivitiesManager(object):
   """
   def updateRepositoryActivities(self, r):
     id = r['id']
-    self.writeBlock("[updateRepositoryActivities]: id=%s"%id)
+    standard.writeBlock(self, "[updateRepositoryActivities]: id=%s"%id)
     # Clear.
     self.activities = []
     # Set.

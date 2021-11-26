@@ -177,7 +177,7 @@ class ConfManager(
           if container is not None:
               l = container.translateRepositoryModel(r)
               xml = standard.toXmlString(self, l)
-              xml = standard.pybytes(xml, "utf-8")
+              xml = bytes(xml, "utf-8")
               xmlfile = io.BytesIO( xml)
           else:
               standard.writeError(self,'[getConfXmlFile]: container %s not found'%container_id)

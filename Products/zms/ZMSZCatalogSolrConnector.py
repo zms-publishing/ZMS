@@ -197,7 +197,7 @@ class ZMSZCatalogSolrConnector(
       url = '%s/%s/update'%(solr_url, solr_core)
       url = '%s?%s'%(url, xml)
       result = standard.http_import(self, url, method='POST', headers={'Content-Type':'text/xml;charset=UTF-8'})
-      self.writeLog("[ZMSZCatalogSolrConnector._update]: %s"%str(result))
+      standard.writeLog(self, "[ZMSZCatalogSolrConnector._update]: %s"%str(result))
       return result
 
 

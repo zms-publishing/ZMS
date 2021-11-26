@@ -32,10 +32,11 @@ def manage_repository_commit(self, request=None):
 		success = self.commitChanges(request.get('ids',[]))
 		message.append(self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%' '.join(success)))
 		# commit to repository
-		command = 'git commit -a -m "%s"\ngit push'%(request.get('message'))
 		userid = self.getConfProperty('ZMSRepository.git.server.userid')
 		password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
-		result = os.system(command.replace('{$CREDENTIALS}',' --username %s --password %s'%(userid,password)))
+		url = self.getConfProperty('ZMSRepository.git.server.url').split('//')[-1]
+		command = 'cd %s\ngit commit -a -m "%s"\ngit push https://{$CREDENTIALS}@%s --all'%(base_path, request.get('message'), url)
+		result = os.system(command.replace('{$CREDENTIALS}','%s:%s'%(userid,password)))
 		message.append('<code>%s [%s]</code>'%(command,str(result)))
 		# return with message
 		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))

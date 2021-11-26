@@ -43,10 +43,11 @@ def manage_repository_config(self, request=None):
 	# --- Checkout.
 	# ---------------------------------
 	elif btn=='BTN_CLONE':
-		command = "svn --non-interactive --no-auth-cache {$CREDENTIALS} checkout %s %s"%(self.getConfProperty('ZMSRepository.git.server.url'),base_path)
 		userid = self.getConfProperty('ZMSRepository.git.server.userid')
 		password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
-		result = os.system(command.replace('{$CREDENTIALS}',' --username %s --password %s'%(userid,password)))
+		url = self.getConfProperty('ZMSRepository.git.server.url').split('//')[-1]
+		command = "cd %s\ngit clone https://{$CREDENTIALS}@%s"%(url)
+		result = os.system(command.replace('{$CREDENTIALS}','%s:%s'%(userid,password)))
 		printed.append('<div><code>%s [%s]</code></div>'%(command,str(result)))
 
 	# --- Cancel.

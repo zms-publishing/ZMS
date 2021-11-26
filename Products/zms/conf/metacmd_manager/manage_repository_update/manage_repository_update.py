@@ -29,14 +29,15 @@ def manage_repository_update(self, request=None):
 	if btn=='BTN_UPDATE':
 		message = []
 		# update from repository
-		command = 'git pull'
 		userid = self.getConfProperty('ZMSRepository.git.server.userid')
 		password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
-		result = os.system(command.replace('{$CREDENTIALS}',' --username %s --password %s'%(userid,password)))
+		url = self.getConfProperty('ZMSRepository.git.server.url').split('//')[-1]
+		command = 'cd %s\ngit pull https://{$CREDENTIALS}@%s --all'%(base_path, url)
+		result = os.system(command.replace('{$CREDENTIALS}','%s:%s'%(userid,password)))
 		message.append('<code>%s [%s]</code>'%(command,str(result)))
 		# import from working-copy
-		success = self.updateChanges(REQUEST.get('ids',[]),btn=='override')
-		message.append(self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success)))
+		# success = self.updateChanges(REQUEST.get('ids',[]),btn=='override')
+		# message.append(self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success)))
 		# return with message
 		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 

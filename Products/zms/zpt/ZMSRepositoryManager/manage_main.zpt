@@ -31,11 +31,11 @@
 		<input type="hidden" name="lang" tal:attributes="value request/lang" />
 		<div class="form-group row">
 			<label class="col-sm-2"></label>
-			<div class="col-sm-10 text-nowrap">
+			<div class="col-sm-10 text-nowrap form-group">
 				<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
 				<button type="submit" class="btn btn-secondary" name="btn" value="refresh"><i class="icon-repeat fas fa-redo-alt"></i> Refresh</button>
 				<tal:block tal:define="meta_cmds python:here.getMetaCmds(here,'repository')">
-					<div class="btn-group" tal:condition="not:meta_cmds">
+					<div class="btn-group">
 						<button id="btn_save_to_repo" 
 							type="submit" class="btn btn-secondary" name="btn" value="commit" title="Export to Filesystem"
 							tal:attributes="class python:here.get_update_direction()=='Saving' and 'btn btn-primary' or default">
@@ -49,17 +49,16 @@
 							<span>Import</span>
 						</button>
 					</div>
-					<div class="dropdown" tal:condition="meta_cmds">
-						<button class="btn btn-secondary dropdown-toggle" type="button" id="teamDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Team
+					<div class="btn-group dropdown" tal:condition="meta_cmds">
+						<button class="btn btn-danger dropdown-toggle" type="button" id="teamDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Repository-Interaction
 						</button>
 						<div class="dropdown-menu" aria-labelledby="teamDropdownMenuButton">
-								<li tal:repeat="meta_cmd meta_cmds">
-									<a tal:attributes="href python:meta_cmd['id'];title python:meta_cmd.get('title','id')">
-										<i tal:condition="python:meta_cmd.get('icon_clazz')" tal:attributes="class python:meta_cmd.get('icon_clazz','fas fa-square')"></i>
-										<tal:block tal:content="python:here.getZMILangStr(meta_cmd['name'])">the action-name</tal:block>
-									</a>
-								</li>
+							<a tal:repeat="meta_cmd meta_cmds" class="dropdown-item"
+								tal:attributes="href python:meta_cmd['id'];title python:meta_cmd.get('title','id')">
+								<i tal:condition="python:meta_cmd.get('icon_clazz')" tal:attributes="class python:meta_cmd.get('icon_clazz','fas fa-square')"></i>
+								<span tal:replace="python:here.getZMILangStr(meta_cmd['name'])">the action-name</span>
+							</a>
 						</div>
 					</div>
 				</tal:block>

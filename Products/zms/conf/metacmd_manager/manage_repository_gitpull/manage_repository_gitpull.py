@@ -36,7 +36,7 @@ def manage_repository_gitpull(self, request=None):
 		command = 'git pull'
 		os.chdir(base_path)
 		result = os.system(command)
-		message.append('<code class="d-block">%s [%s]</code>'%(command, str(result)))
+		message.append('<code class="d-block mb-3">%s [%s]</code>'%(command, str(result)))
 		### import from working-copy
 		# success = self.updateChanges(REQUEST.get('ids',[]),btn=='override')
 		# message.append(self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success)))

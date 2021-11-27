@@ -45,7 +45,7 @@ def manage_repository_gitpush(self, request=None):
 		result2 = os.system(command2)
 		message.append('<code class="d-block">%s [%s]</code>'%(command2, str(result2)))
 		result3 = os.system(command3)
-		message.append('<code class="d-block">%s [%s]</code>'%(command3, str(result3)))
+		message.append('<code class="d-block mb-3">%s [%s]</code>'%(command3, str(result3)))
 		### return with message
 		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':''.join(message)}))
 

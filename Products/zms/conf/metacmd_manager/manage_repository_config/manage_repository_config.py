@@ -43,11 +43,11 @@ def manage_repository_config(self, request=None):
 	# --- Checkout.
 	# ---------------------------------
 	elif btn=='BTN_CLONE':
-		userid = self.getConfProperty('ZMSRepository.git.server.userid')
-		password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
-		url = self.getConfProperty('ZMSRepository.git.server.url').split('//')[-1]
+		# userid = self.getConfProperty('ZMSRepository.git.server.userid')
+		# password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
+		url = self.getConfProperty('ZMSRepository.git.server.url')
 		os.chdir(base_path)
-		command = "git clone https://%s"%(url)
+		command = "git clone %s"%(url)
 		result = os.system(command)
 		printed.append('<div class="alert alert-info my-3"><code>%s [%s]</code></div>'%(command, str(result)))
 
@@ -60,13 +60,14 @@ def manage_repository_config(self, request=None):
 	# -------------------------
 	else:
 		printed.append('<div class="card-body">')
+		printed.append('<div class="alert alert-info m-0 mb-4">IMPORTANT NOTE: Please make sure that a certificate based communication with the GIT server is configured properly on the system</div>')
 		printed.append('<div class="form-group row">')
 		printed.append('<label for="url" class="col-sm-2 control-label mandatory">Working-copy</label>')
 		printed.append('<div class="col-sm-10"><input class="form-control" name="path" type="text" size="25" value="%s" readonly></div>'%base_path)
 		printed.append('</div><!-- .form-group -->')
 		printed.append('<div class="form-group row">')
 		printed.append('<label for="url" class="col-sm-2 control-label mandatory">Server</label>')
-		printed.append('<div class="col-sm-10"><input class="form-control" name="url" type="text" size="25" value="%s"></div>'%self.getConfProperty('ZMSRepository.git.server.url','https://zmslabs.org/svn/demo/myzmsx'))
+		printed.append('<div class="col-sm-10"><input class="form-control" name="url" type="text" size="25" value="%s"></div>'%self.getConfProperty('ZMSRepository.git.server.url','git@github.com:myname/myproject.git'))
 		printed.append('</div><!-- .form-group -->')
 		printed.append('<div class="form-group row">')
 		printed.append('<label for="userid" class="col-sm-2 control-label mandatory">User-ID</label>')

@@ -24,25 +24,28 @@ def manage_repository_commit(self, request=None):
 	printed.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
 	printed.append('<legend>GIT-%s...</legend>'%(self.getZMILangStr('BTN_COMMIT')))
 
-	# --- COMMIT.
+	# --- COMMIT/PUSH. +++IMPORTANT+++: Use SSH/cert and git credential manager
 	# ---------------------------------
 	if btn=='BTN_COMMIT':
 		message = []
-		# export to working-copy
+		### export to working-copy
 		success = self.commitChanges(request.get('ids',[]))
 		# message.append(self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%(' '.join(success)))
-		# commit to repository
-		userid = self.getConfProperty('ZMSRepository.git.server.userid')
-		password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
-		url = self.getConfProperty('ZMSRepository.git.server.url').split('//')[-1]
+		### commit to repository
+		# userid = self.getConfProperty('ZMSRepository.git.server.userid')
+		# password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
+		# url = self.getConfProperty('ZMSRepository.git.server.url')
 		os.chdir(base_path)
-		command1 = 'git commit -a -m "%s"'%(request.get('message'))
-		command2 = 'git push https://{$CREDENTIALS}@%s --all'%(url)
+		command1 = 'git add .'
+		command2 = 'git commit -a -m "%s"'%(request.get('message'))
+		command3 = 'git push'
 		result1 = os.system(command1)
 		message.append('<code>%s [%s]</code>'%(command1, str(result1)))
-		result2 = os.system(command2.replace('{$CREDENTIALS}','%s:%s'%(userid, password)))
+		result2 = os.system(command2)
 		message.append('<code>%s [%s]</code>'%(command2, str(result2)))
-		# return with message
+		result3 = os.system(command3)
+		message.append('<code>%s [%s]</code>'%(command3, str(result3)))
+		### return with message
 		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
 	# --- Cancel.
@@ -65,7 +68,7 @@ def manage_repository_commit(self, request=None):
 		printed.append('<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>'%(self.getZMILangStr('BTN_CANCEL')))
 		printed.append('</div>')
 		printed.append('</div><!-- .form-group -->')
-		printed.append(self.manage_main_diff(self,request))
+		# printed.append(self.manage_main_diff(self,request))
 		printed.append('</div>')
 	# ---------------------------------
 

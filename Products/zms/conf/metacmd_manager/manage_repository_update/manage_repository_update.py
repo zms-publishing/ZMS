@@ -24,22 +24,22 @@ def manage_repository_update(self, request=None):
 	printed.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
 	printed.append('<legend>GIT-%s...</legend>'%self.getZMILangStr('BTN_UPDATE'))
 
-	# --- COMMIT.
+	# --- UPDATE/PULL. +++IMPORTANT+++: Use SSH/cert and git credential manager
 	# ---------------------------------
 	if btn=='BTN_UPDATE':
 		message = []
-		# update from repository
-		userid = self.getConfProperty('ZMSRepository.git.server.userid')
-		password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
-		url = self.getConfProperty('ZMSRepository.git.server.url').split('//')[-1]
-		command = 'git pull https://{$CREDENTIALS}@%s --all'%(url)
+		### update from repository
+		# userid = self.getConfProperty('ZMSRepository.git.server.userid')
+		# password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
+		# url = self.getConfProperty('ZMSRepository.git.server.url')
+		command = 'git pull'
 		os.chdir(base_path)
-		result = os.system(command.replace('{$CREDENTIALS}','%s:%s'%(userid,password)))
+		result = os.system(command)
 		message.append('<code>%s [%s]</code>'%(command, str(result)))
-		# import from working-copy
+		### import from working-copy
 		# success = self.updateChanges(REQUEST.get('ids',[]),btn=='override')
 		# message.append(self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success)))
-		# return with message
+		### return with message
 		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
 	# --- Cancel.
@@ -61,7 +61,7 @@ def manage_repository_update(self, request=None):
 		printed.append('<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>'%(self.getZMILangStr('BTN_CANCEL')))
 		printed.append('</div>')
 		printed.append('</div><!-- .form-group -->')
-		printed.append(self.manage_main_diff(self,request))
+		# printed.append(self.manage_main_diff(self,request))
 		printed.append('</div><!-- .card-body -->')
 	# ---------------------------------
 

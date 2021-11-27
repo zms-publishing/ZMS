@@ -1,0 +1,11 @@
+<!-- DATA Preview -->
+<tal:block tal:define="zmscontext options/zmscontext" 
+    tal:condition="python:request.get('ZMS_INSERT',None) is None">
+<pre id="DATA_Preview" 
+    style="font-size: x-small; height: 25em; overflow: scroll; background-color: #EAEDEF; padding: 1em;" 
+    tal:condition="python:not zmscontext.attr('dataStorageDisabled')" 
+    tal:content="structure python:zmscontext.printData()" 
+    tal:on-error="structure string:<span style='color:red;'>An error occurred: ${error/value}</span>">
+    data
+</pre>
+</tal:block>

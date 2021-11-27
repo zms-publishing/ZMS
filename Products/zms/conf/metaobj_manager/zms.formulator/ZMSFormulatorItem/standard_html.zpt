@@ -1,0 +1,14 @@
+<!-- ZMSFormulatorItem.standard_html -->
+
+<tal:block tal:define="global
+    this options/zmscontext">
+<strong tal:content="python:this.attr('titlealt').upper()" tal:attributes="style python:this.attr('hiddenField')==True and 'color:lightgrey' or ''">titlealt</strong>
+<sup tal:condition="python:this.attr('mandatoryField')==True" style="font-size:small;color:red;">*</sup>
+<code tal:content="python:this.attr('type')">type</code>
+<i tal:condition="python:this.attr('type')=='email' and this.attr('replyToField')==True" class="icon-mail-reply fas fa-mail-reply" title="Used as Reply-To"></i>
+<i tal:condition="python:this.attr('type')=='email' and this.attr('copyToField')==True" class="icon-mail-reply-all fas fa-mail-reply-all icon-flip-horizontal fas fa-flip-horizontal" title="Send a copy to submitter"></i>
+<p tal:content="python:this.attr('title')">titlealt</p>
+<em tal:content="python:this.attr('attr_dc_description')">titlealt</em>
+</tal:block>
+
+<!-- /ZMSFormulatorItem.standard_html -->

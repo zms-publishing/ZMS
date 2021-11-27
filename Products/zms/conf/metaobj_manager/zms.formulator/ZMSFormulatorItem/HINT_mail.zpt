@@ -1,0 +1,7 @@
+<!-- Mail Address [REPLY/COPY] HINT -->
+<tal:block  tal:define="global this options/zmscontext" tal:condition="python:request.get('ZMS_INSERT',None) is None">
+<div class="col-sm-2"></div>
+<div class="col-sm-10" style="font-size:x-small;margin-bottom:2em;">You can use the received value of this <code>ZMSFormulatorItem</code> as default for mail replies on notifications and/or send copies of the submitted data as acknowledgement.</div>
+<div class="col-sm-2"></div>
+<div class="col-sm-10" style="margin-left:-1em; margin-bottom:1em; color:#c7254e;"><span tal:condition="python:this.getParentNode().attr('sendViaMail') not in [True, 1]" class="alert alert-danger alert-box-error" style="border:solid 1px #c7254e; padding:0.5em;">Send Mails is currently deactivated. <span tal-on-error="" tal-omit-tag="">You can activate it <a href="#" tal:attributes="href python:this.getParentNode().getHref2IndexHtml(request).rsplit('/', 1)[0]+'/manage'">here</a>.</span></span></div>
+</tal:block>

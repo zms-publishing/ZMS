@@ -1,13 +1,13 @@
-class manage_repository_update:
+class manage_repository_gitpull:
 	"""
-	python-representation of manage_repository_update
+	python-representation of manage_repository_gitpull
 	"""
 
 	# Acquired
 	acquired = 0
 
 	# Action
-	action = "%smanage_executeMetacmd?id=manage_repository_update"
+	action = "%smanage_executeMetacmd?id=manage_repository_gitpull"
 
 	# Description
 	description = ""
@@ -19,19 +19,19 @@ class manage_repository_update:
 	icon_clazz = "fas fa-backward"
 
 	# Id
-	id = "manage_repository_update"
+	id = "manage_repository_gitpull"
 
 	# Meta_types
 	meta_types = ["ZMS"]
 
 	# Name
-	name = "BTN_UPDATE"
+	name = "BTN_GITPULL"
 
 	# Nodes
 	nodes = "{$}"
 
 	# Revision
-	revision = "4.9.9"
+	revision = "5.0.0"
 
 	# Roles
 	roles = ["ZMSAdministrator"]
@@ -44,5 +44,5 @@ class manage_repository_update:
 
 	# Impl
 	class Impl:
-		manage_repository_update = {"id":"manage_repository_update"
+		manage_repository_gitpull = {"id":"manage_repository_gitpull"
 			,"type":"External Method"}

@@ -1,7 +1,7 @@
 from Products.zms import standard
 import os
 
-def manage_repository_config(self, request=None):
+def manage_repository_gitconfig(self, request=None):
 	printed = []
 	request = self.REQUEST
 	RESPONSE =  request.RESPONSE
@@ -20,9 +20,10 @@ def manage_repository_config(self, request=None):
 	printed.append('<html lang="en">')
 	printed.append(self.zmi_html_head(self,request))
 	printed.append('<body class="%s">'%(' '.join(['zmi',request['lang'],self.meta_id])))
-	printed.append(self.zmi_body_header(self,request,options=[{'action':'#','label':'GIT-%s...'%self.getZMILangStr('TAB_CONFIGURATION')}]))
+	#printed.append(self.zmi_body_header(self,request,options=[{'action':'#','label':'GIT-%s...'%self.getZMILangStr('TAB_CONFIGURATION')}]))
+	printed.append(self.zmi_body_header(self,request,options=self.repository_manager.customize_manage_options()))
 	printed.append('<div id="zmi-tab">')
-	printed.append(self.zmi_breadcrumbs(self,request))
+	printed.append(self.zmi_breadcrumbs(self,request,extra=[self.manage_sub_options()[0]]))
 	printed.append('<div class="card">')
 	printed.append('<form class="form-horizontal" method="post" enctype="multipart/form-data">')
 	printed.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
@@ -34,9 +35,9 @@ def manage_repository_config(self, request=None):
 	if btn=='BTN_CHANGE':
 		message = []
 		self.setConfProperty('ZMSRepository.git.server.url',request['url'])
-		self.setConfProperty('ZMSRepository.git.server.userid',request['userid'])
-		if request['password'] != '******':
-			self.setConfProperty('ZMSRepository.git.server.password',request['password']) # TODO: encrypt
+		# self.setConfProperty('ZMSRepository.git.server.userid',request['userid'])
+		# if request['password'] != '******':
+		# 	self.setConfProperty('ZMSRepository.git.server.password',request['password']) # TODO: encrypt
 		message.append(self.getZMILangStr('MSG_CHANGED'))
 		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
@@ -47,9 +48,9 @@ def manage_repository_config(self, request=None):
 		# password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
 		url = self.getConfProperty('ZMSRepository.git.server.url')
 		os.chdir(base_path)
-		command = "git clone %s"%(url)
+		command = "git clone %s ."%(url)
 		result = os.system(command)
-		printed.append('<div class="alert alert-info my-3"><code>%s [%s]</code></div>'%(command, str(result)))
+		printed.append('<div class="alert alert-info my-3"><code class="d-block">%s [%s]</code></div>'%(command, str(result)))
 
 	# --- Cancel.
 	# ---------------------------------
@@ -92,6 +93,7 @@ def manage_repository_config(self, request=None):
 	printed.append('</div><!-- .card -->')
 	printed.append('</div><!-- #zmi-tab -->')
 	printed.append(self.zmi_body_footer(self,request))
+	printed.append('<script>$ZMI.registerReady(function(){ $(\'#tabs_items li a\').removeClass(\'active\');$(\'#tabs_items li[data-action*=\"repository_manager\"] a\').addClass(\'active\'); })</script>')
 	printed.append('</body>')
 	printed.append('</html>')
 

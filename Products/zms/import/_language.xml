@@ -2965,8 +2965,11 @@
     <Cell><Data ss:Type="String">Aufklappen</Data></Cell>
     <Cell><Data ss:Type="String">Expand</Data></Cell>
     <Cell><Data ss:Type="String">Opklappen</Data></Cell>
-    <Cell ss:Index="6"><Data ss:Type="String">Aprire</Data></Cell>
-    <Cell ss:Index="9"/>
+    <Cell><Data ss:Type="String">Étendre</Data></Cell>
+    <Cell><Data ss:Type="String">Espandere</Data></Cell>
+    <Cell><Data ss:Type="String">Expandir</Data></Cell>
+    <Cell><Data ss:Type="String">拓展</Data></Cell>
+    <Cell><Data ss:Type="String">وسعت</Data></Cell>
     <Cell><Data ss:Type="String">открыть</Data></Cell>
     <Cell><Data ss:Type="String">फैलाना</Data></Cell>
     <Cell><Data ss:Type="String">تمديد</Data></Cell>
@@ -2980,14 +2983,46 @@
     <Cell><Data ss:Type="String">Exporteren</Data></Cell>
     <Cell><Data ss:Type="String">Exporter</Data></Cell>
     <Cell><Data ss:Type="String">Esportare</Data></Cell>
-    <Cell ss:Index="8"><Data ss:Type="String">导出</Data></Cell>
-
+    <Cell><Data ss:Type="String">Export</Data></Cell>
+    <Cell><Data ss:Type="String">导出</Data></Cell>
     <Cell><Data ss:Type="String">صادرات</Data></Cell>
     <Cell><Data ss:Type="String">экспортировать</Data></Cell>
     <Cell><Data ss:Type="String">निर्यात</Data></Cell>
     <Cell><Data ss:Type="String">تصدير</Data></Cell>
     <Cell><Data ss:Type="String">Xuất ra</Data></Cell>
     <Cell><Data ss:Type="String">מייצא</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">BTN_GITPULL</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+    <Cell><Data ss:Type="String">Git Pull</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">BTN_GITPUSH</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
+    <Cell><Data ss:Type="String">Git Push</Data></Cell>
    </Row>
    <Row>
     <Cell><Data ss:Type="String">BTN_IMPORT</Data></Cell>

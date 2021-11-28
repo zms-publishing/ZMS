@@ -33,7 +33,9 @@ def manage_repository_gitpull(self, request=None):
 		# userid = self.getConfProperty('ZMSRepository.git.server.userid')
 		# password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
 		# url = self.getConfProperty('ZMSRepository.git.server.url')
-		command = 'git pull'
+		command = 'git checkout master;git pull'
+		if request.get('revision')!='HEAD' and request.get('revision') is not None:
+			command = 'git checkout %s'%(request.get('revision'))
 		os.chdir(base_path)
 		result = os.system(command)
 		message.append('<code class="d-block mb-3">%s [%s]</code>'%(command, str(result)))
@@ -54,7 +56,7 @@ def manage_repository_gitpull(self, request=None):
 		printed.append('<div class="card-body">')
 		printed.append('<div class="form-group row">')
 		printed.append('<label for="revision" class="col-sm-2 control-label mandatory">Revision</label>')
-		printed.append('<div class="col-sm-10"><input class="form-control" name="revision" type="text" size="25" value="HEAD" placeholder="Enter commit message here"></div>')
+		printed.append('<div class="col-sm-10"><input class="form-control" name="revision" type="text" size="25" value="HEAD" title="Default value HEAD pulls the latest revision. Please, enter the hexadecimal ID for checking out a specific revision." placeholder="Enter HEAD or Revision-ID"></div>')
 		printed.append('</div><!-- .form-group -->')
 		printed.append('<div class="form-group">')
 		printed.append('<div class="controls save">')

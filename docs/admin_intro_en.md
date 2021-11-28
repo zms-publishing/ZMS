@@ -124,4 +124,47 @@ and a link to the search page can be generated like this;
 </a>
 ```
 
+## Managing ZMS Custom Code & Configurations
+
+ZMS can contain a lot of custom code defining metadata, content models, custom actions, workfow steps and Zope object bundeled as ZMS libraries.
+To maintain this code externally  ZMS offers a module called "Repository Manager"; the ZMS Administrator can activate this aditional functionality in the system menu:
+
+![Adding the ZMS Repository Manager](images/admin_repo_init.png)
+_Adding the ZMS Repository Manager_
+
+In general the Repository Manager allows the synchronisation of the ZMS custom code by export/importing it between ZODB and file-system. It's _properties menu_ provides the definition of a target folder where the ZMS code is replicated into the file system. The code differences between ZODB and file-system are shown in detail as a list of the diff-marked files.
+
+![ZMS Repository Manager Menu](images/admin_repo_view.png)
+_ZMS Repository Manager menu: code files containg differences can be synct by "Export" (ZODB to file-system) or "Import" (file-system to ZODB)_
+
+
+### ZMS Git Bridge
+
+The ZMS Git bridge is a very simple approach to establish Git-based collaboration to the code management in ZMS. Thus the TTW-coding, which is very efficient for many project setups, still can be applied while combined with a professional code version management and deployment. 
+
+In this scenario the system folder containing the exported Zope/ZMS code files will be a clone of an external Git repository. To synchronize the code by Git the ZMS Repository Manager can be extended by a set of specific ZMS-actions (named like _manage_repository\__*). As a default ZMS provides three preconfigured actions (gitconfig. gitpull, gitpush). These easily can be imported via the _Actions_ menu:
+
+![Import Git Actions](images/admin_repo_import_gitactions.png)
+_Import three Git actions used in ZMS Repository Manager_
+
+After importing the Git actions the ZMS Repository Manager shows an additional pop-up button "Repository Interactions". Any action is represented as a menu item.
+
+![Repository Manager GUI](images/admin_repo_show_gitactions.png)
+_ZMS Repository Manager GUI enhanced by Git actions_
+
+
+The additional menu provides there functions:
+1. _Git Configuration_: needs the Git URL, allows the cloning of the repository
+2. _Git Pull_: pulls the latest revsion by default; optionally entering a revision id may pull a specific revision
+3. _Git Push_: allows entering a commit message and executes the Git push onto the repository server
+
+![Git push menu](images/admin_repo_show_gitpush.png)
+_Git push menu: before executing the Git push a commit message can be entered_
+
+![Git push executed](images/admin_repo_execute_gitpush.png)
+_Git push return: after executing the Git push the commit will be shown on the Git repo (e.g. at github.com)_
+
+
+
+
 

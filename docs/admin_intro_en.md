@@ -13,7 +13,7 @@ The configuration menu primarily provides ten options for the configuration of t
 9. Search: configuring content indexing
 10. Design: design themes and JS/CSS customization 
 
-****
+---
 
 ## Meta-Attributes
 Meta attributes ("metas") are a set of general descriptions supporting the automatic processing of content entities (e.g. keyword search). The idea of schematic categorization of content has a long tradition; for web content it started 1994 with the Dublin Core (DC) Metadata Initiative [https://en.wikipedia.org/wiki/Dublin_Core]. ZMS refers to the DC metadata set and provides a minimal list of standard attributes. The ZMS administrator can add further attributes to the list and assign a data type to each of these attributes. In fact, each meta-attribute becomes another data type and extends the list of data types.
@@ -164,7 +164,47 @@ _Git push menu: before executing the Git push a commit message can be entered_
 ![Git push executed](images/admin_repo_execute_gitpush.png)
 _Git push return: after executing the Git push the commit will be shown on the Git repo (e.g. at github.com)_
 
+---
 
+### Some Hints about Git Configuration
+The ZMS Git Bridge uses just a minimal set of Git commands:
+1. Git Pull: pulls (combined with a checkout) the latest version of the main branch ("HEAD") or alternativly pulls a specified revision by a checkout command
+2. Git Push:  pushes code status into the main branch
 
+The Git URL (saved by the _Git Configuration_ menu) is (only) necessary if a cloning will be performed by the ZMS GUI and the .git/config file will be written initally.
+If the git folder is already configured it is not needed to save the Git URL in the ZMS Git Configuration.
 
+Actually it is recommended to configure the Git folder properly before using it with ZMS. Because the ZMS Git Bridge does not save any user data a special Git user and its certificate should be available in the file system and be accessible by the zope user.
 
+EXAMPLE:
+
+1. `/home/my/.ssh/my_cert`
+2. `/home/my/.ssh/my_cert.pub`
+3. `/home/my/.ssh/config` :
+
+	```ini
+	Host github.com
+		HostName github.com
+		IdentityFile ~/.ssh/my_cert
+		User git
+	```
+
+4. `/home/my/src/myproject/.git/config` :
+
+	```ini
+	[user]
+		name=mygituser
+		email=mygituser@mydomain.tld
+	[core]
+		repositoryformatversion = 0
+		filemode = true
+		symlinks=true
+		bare = false
+		logallrefupdates = true
+	[remote "origin"]
+		url = git@github.com:mydomain/myproject.git
+		fetch = +refs/heads/*:refs/remotes/origin/*
+	[branch "master"]
+		remote = origin
+		merge = refs/heads/master
+	```

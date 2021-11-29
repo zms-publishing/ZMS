@@ -465,7 +465,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           context = self.parent
           d = {}
           if len(colNames)>0:
-            r = { k:r[k] for k in r.keys() if k in colNames }
+            r = { k:r[k] for k in r.keys() if k.lower() in [c.lower() for c in colNames] }
           for k in r:
             value = r[k]
             try:

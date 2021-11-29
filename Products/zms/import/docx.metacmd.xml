@@ -437,7 +437,7 @@ def manage_exportDocx( self):
       </item>
       <item key="description"></item>
       <item key="execution" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-download]]></item>
+      <item key="icon_clazz"><![CDATA[fas fa-download]]></item>
       <item key="id"><![CDATA[manage_exportDocx]]></item>
       <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">

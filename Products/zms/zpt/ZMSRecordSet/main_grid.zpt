@@ -19,6 +19,7 @@
 	pageStart python:pageIndex*pageSize;
 	pageEnd python:min(pageStart+pageSize,size);
 	offset python:options.get('offset',pageStart);">
+
 <div class="d-flex justify-content-between pagination-pre">
 	<div class="pull-left" tal:content="structure python:here.zmi_pagination(size=size,pageSize=pageSize,pageIndex=pageIndex)">
 		zmi_pagination
@@ -191,7 +192,7 @@
 									</tal:block
 								></tal:block
 								><tal:block tal:condition="python:elType in ['file'] and elValue is not None"
-									><i class="icon-download"></i> <tal:block 
+									><i class="fas fa-download"></i> <tal:block 
 										tal:on-error="string:<!-- FILENAME-ERROR -->" 
 										tal:content="structure python:(here.operator_gettype(elValue) is not str) and elValue.getFilename() or elValue">filename</tal:block
 								></tal:block

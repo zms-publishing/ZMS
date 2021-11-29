@@ -13,7 +13,7 @@ class manage_repository_gitpull:
 	description = ""
 
 	# Execution
-	execution = 0
+	execution = False
 
 	# Icon_clazz
 	icon_clazz = "fas fa-backward"

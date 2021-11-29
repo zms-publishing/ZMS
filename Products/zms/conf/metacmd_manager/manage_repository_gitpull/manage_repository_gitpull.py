@@ -10,6 +10,8 @@ def manage_repository_gitpull(self, request=None):
 	if came_from.find('?') > 0:
 		came_from = came_from[:came_from.find('?')]
 	base_path = self.get_conf_basepath()
+	branch = self.getConfProperty('ZMSRepository.git.server.branch','master').replace('"','').replace(';','')
+	hardreset_cmd = 'git reset --hard origin/%s'%(branch)
 
 	printed.append('<!DOCTYPE html>')
 	printed.append('<html lang="en">')
@@ -23,7 +25,8 @@ def manage_repository_gitpull(self, request=None):
 	printed.append('<form class="form-horizontal" method="post" enctype="multipart/form-data">')
 	printed.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
 	printed.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
-	printed.append('<legend>%s...</legend>'%self.getZMILangStr('BTN_GITPULL'))
+	printed.append('<legend>%s, Current Branch %s</legend>'%(self.getZMILangStr('BTN_GITPULL'),branch))
+
 
 	# --- PULL. +++IMPORTANT+++: Use SSH/cert and git credential manager
 	# ---------------------------------
@@ -33,15 +36,21 @@ def manage_repository_gitpull(self, request=None):
 		# userid = self.getConfProperty('ZMSRepository.git.server.userid')
 		# password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
 		# url = self.getConfProperty('ZMSRepository.git.server.url')
-		command = 'git checkout master;git pull'
-		if request.get('revision')!='HEAD' and request.get('revision') is not None:
-			command = 'git checkout %s'%(request.get('revision'))
-		os.chdir(base_path)
-		result = os.system(command)
-		message.append('<code class="d-block mb-3">%s [%s]</code>'%(command, str(result)))
-		### import from working-copy
-		# success = self.updateChanges(REQUEST.get('ids',[]),btn=='override')
-		# message.append(self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success)))
+		if len([x for x in request['AUTHENTICATED_USER'].getRolesInContext(self) if x in ['Manager','ZMSAdminstrator']]) > 0:
+			os.chdir(base_path)
+			if request.get('hardreset'):
+				result = os.system(hardreset_cmd)
+				message.append('<code class="d-block">%s [%s]</code>'%(hardreset_cmd, str(result)))
+			command = 'git checkout %s;git pull'%(branch)
+			if request.get('revision')!='HEAD' and request.get('revision') is not None:
+				command = 'git checkout %s'%(request.get('revision').replace('"','').replace(';',''))
+			result = os.system(command)
+			message.append('<code class="d-block mb-3">%s [%s]</code>'%(command, str(result)))
+			### import from working-copy
+			# success = self.updateChanges(REQUEST.get('ids',[]),btn=='override')
+			# message.append(self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success)))
+		else:
+			message.append('Error: To execute this function a user role Manager or ZMSAdministrator is needed.')
 		### return with message
 		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':''.join(message)}))
 
@@ -57,6 +66,10 @@ def manage_repository_gitpull(self, request=None):
 		printed.append('<div class="form-group row">')
 		printed.append('<label for="revision" class="col-sm-2 control-label mandatory">Revision</label>')
 		printed.append('<div class="col-sm-10"><input class="form-control" name="revision" type="text" size="25" value="HEAD" title="Default value HEAD pulls the latest revision. Please, enter the hexadecimal ID for checking out a specific revision." placeholder="Enter HEAD or Revision-ID"></div>')
+		printed.append('</div><!-- .form-group -->')
+		printed.append('<div class="form-group row">')
+		printed.append('<label for="hardreset" class="col-sm-2 control-label mandatory">Use Hard Reset</label>')
+		printed.append('<div class="col-sm-10"><input type="checkbox" name="hardreset" value="hardreset" title="git reset --hard origin/%s" /></div>'%(branch))
 		printed.append('</div><!-- .form-group -->')
 		printed.append('<div class="form-group">')
 		printed.append('<div class="controls save">')

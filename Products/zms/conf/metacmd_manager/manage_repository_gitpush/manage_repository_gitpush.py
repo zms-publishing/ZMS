@@ -23,29 +23,34 @@ def manage_repository_gitpush(self, request=None):
 	printed.append('<form class="form-horizontal" method="post" enctype="multipart/form-data">')
 	printed.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
 	printed.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
-	printed.append('<legend>%s...</legend>'%(self.getZMILangStr('BTN_GITPUSH')))
+	printed.append('<legend>%s, Current Branch %s</legend>'%(self.getZMILangStr('BTN_GITPUSH'),self.getConfProperty('ZMSRepository.git.server.branch','master')))
+
 
 	# --- COMMIT/PUSH. +++IMPORTANT+++: Use SSH/cert and git credential manager
 	# ---------------------------------
 	if btn=='BTN_GITPUSH':
 		message = []
 		### export to working-copy
-		success = self.commitChanges(request.get('ids',[]))
+		# success = self.commitChanges(request.get('ids',[]))
 		# message.append(self.getZMILangStr('MSG_EXPORTED')%('<em>%s</em>'%(' '.join(success)))
 		### commit to repository
 		# userid = self.getConfProperty('ZMSRepository.git.server.userid')
 		# password = self.getConfProperty('ZMSRepository.git.server.password') # TODO: decrypt
 		# url = self.getConfProperty('ZMSRepository.git.server.url')
-		os.chdir(base_path)
-		command1 = 'git add .'
-		command2 = 'git commit -a -m "%s"'%(request.get('message'))
-		command3 = 'git push'
-		result1 = os.system(command1)
-		message.append('<code class="d-block">%s [%s]</code>'%(command1, str(result1)))
-		result2 = os.system(command2)
-		message.append('<code class="d-block">%s [%s]</code>'%(command2, str(result2)))
-		result3 = os.system(command3)
-		message.append('<code class="d-block mb-3">%s [%s]</code>'%(command3, str(result3)))
+		if len([x for x in request['AUTHENTICATED_USER'].getRolesInContext(self) if x in ['Manager','ZMSAdminstrator']]) > 0:
+			userid = str(request.get('AUTHENTICATED_USER'))[0:3]
+			os.chdir(base_path)
+			command1 = 'git add .'
+			command2 = 'git commit -a -m "%s (%s)"'%(request.get('message').replace('"','').replace(';',''), userid)
+			command3 = 'git push'
+			result1 = os.system(command1)
+			message.append('<code class="d-block">%s [%s]</code>'%(command1, str(result1)))
+			result2 = os.system(command2)
+			message.append('<code class="d-block">%s [%s]</code>'%(command2, str(result2)))
+			result3 = os.system(command3)
+			message.append('<code class="d-block mb-3">%s [%s]</code>'%(command3, str(result3)))
+		else:
+			message.append('Error: To execute this function a user role Manager or ZMSAdministrator is needed.')
 		### return with message
 		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':''.join(message)}))
 

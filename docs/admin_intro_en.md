@@ -127,12 +127,19 @@ and a link to the search page can be generated like this;
 ## Managing ZMS Custom Code & Configurations
 
 ZMS can contain a lot of custom code defining metadata, content models, custom actions, workfow steps and Zope object bundeled as ZMS libraries.
-To maintain this code externally  ZMS offers a module called "Repository Manager"; the ZMS Administrator can activate this aditional functionality in the system menu:
+To maintain this code externally ZMS offers a module called "Repository Manager"; the ZMS Administrator can activate this aditional functionality in the system menu:
 
 ![Adding the ZMS Repository Manager](images/admin_repo_init.png)
 _Adding the ZMS Repository Manager_
 
-In general the Repository Manager allows the synchronisation of the ZMS custom code by export/importing it between ZODB and file-system. It's _properties menu_ provides the definition of a target folder where the ZMS code is replicated into the file system. The code differences between ZODB and file-system are shown in detail as a list of the diff-marked files.
+In general the Repository Manager allows the synchronisation of the ZMS custom code by _Export_/_Import_ (buttons) between ZODB and file-system. It's _properties menu_ provides the definition of a target folder where the ZMS code is replicated into the file system. The code differences between ZODB and file-system are shown in detail as a list of the diff-marked files.
+The diffs are marked by a conventional color scheme:
+1. green = new
+2. red = deleted
+3. yellow = modified
+
+The diff-perspective can be changed between the working modes Export vs. Import: the Export-mode marks new code edited in ZODB as green whereas the Import-View will marks it as red (indicating the it will get overwritten on import). 
+
 
 ![ZMS Repository Manager Menu](images/admin_repo_view.png)
 _ZMS Repository Manager menu: code files containg differences can be synct by "Export" (ZODB to file-system) or "Import" (file-system to ZODB)_
@@ -155,8 +162,11 @@ _ZMS Repository Manager GUI enhanced by Git actions_
 
 The additional menu provides there functions:
 1. _Git Configuration_: needs the Git URL, allows the cloning of the repository
-2. _Git Pull_: pulls the latest revsion by default; optionally entering a revision id may pull a specific revision
+2. _Git Pull_: pulls the latest revsion by default; optionally entering a revision id may pull a specific revision; by clicking the checkbox "Hard Reset" forced pull will be performed and overwrite all local changes.
 3. _Git Push_: allows entering a commit message and executes the Git push onto the repository server
+
+![Git pull menu](images/admin_repo_show_gitpull.png)
+_Git pull menu: per default the latest version is pulled, instead of latest "HEAD" a certain revision id can be pull. To overwrite local changes the option "Hard Reset"should activated; thus merging conflicts can be avoided._
 
 ![Git push menu](images/admin_repo_show_gitpush.png)
 _Git push menu: before executing the Git push a commit message can be entered_

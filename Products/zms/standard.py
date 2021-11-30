@@ -1337,6 +1337,24 @@ def parseLangFmtDate(s):
 #
 ############################################################################
 
+security.declarePublic('operator_contains')
+def operator_contains(c, v, ignorecase=False):
+  """
+  Check if collection contains value.
+  @param c: Collection
+  @type c: C{list|set|tuple}
+  @param v: Value
+  @type v: C{any}
+  @param ignorecase: Ignore Case-Sensitivity
+  @type ignorecase: C{Bool}
+  @return: Collection contains value
+  @rtype: C{Bool}
+  """
+  if ignorecase:
+    return v.lower() in [x.lower() for x in c]
+  else:
+    return v in c
+
 security.declarePublic('operator_gettype')
 def operator_gettype(v):
   """
@@ -1375,6 +1393,8 @@ def operator_getitem(a, b, c=None, ignorecase=True):
   @type b: C{any}
   @param c: Default-Value
   @type c: C{any}
+  @param ignorecase: Ignore Case-Sensitivity
+  @type ignorecase: C{Bool}
   @rtype: C{any}
   """
   if ignorecase and ( isinstance(b, bytes) or isinstance(b, str) ):

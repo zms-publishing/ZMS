@@ -207,9 +207,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       for col in cols:
         k = col['id']
         v = record[k]
-        if self.getConfProperty('ZMSSqlDb.record_encode__.k.lower'):
-          k = k.lower()
-        if type(v) is bytes:
+        if isinstance(v, bytes):
           v = str(v,encoding)
         row[k] = v
       return row
@@ -465,7 +463,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           context = self.parent
           d = {}
           if len(colNames)>0:
-            r = { k:r[k] for k in r.keys() if k.lower() in [c.lower() for c in colNames] }
+            r = { k: r[k] for k in r if standard.operator_contains(colNames,k,ignorecase=True) }
           for k in r:
             value = r[k]
             try:
@@ -1048,7 +1046,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       #-- Defaults
       for entity in entities:
         for column in entity['columns']:
-          #column['id'] = column['id'].lower()
           column['multilang'] = False
           column['datatype'] = column.get('type', '?')
           column['datatype_key'] = _globals.datatype_key(column['datatype'])
@@ -1280,8 +1277,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       if len(tabledefs) > 0:
         tabledef = [x for x in tabledefs if x['id'].upper()==tablename.upper()][0]
         tablecols = tabledef['columns']
+        colNames = [x['id'] for x in tablecols]
         #-- ORDER BY
-        if qorder == '' or not qorder.lower() in [x['id'].lower() for x in tablecols]:
+        if qorder == '' or not standard.operator_contains(colNames,qorder,ignorecase=True):
           for col in tablecols:
             if col.get('hide', 0) != 1:
               qorder = '%s.%s'%(tablename, col['id'])
@@ -1449,7 +1447,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
           (not tablecol.get('details')) and \
           (not tablecol.get('multiselect') or tablecol.get('multiselect').get('custom') or tablecol.get('multiselect').get('mysqlset')) and \
           (not tablecol.get('multimultiselect')):
-          value = values.get(id, values.get(id.lower(), values.get(id.upper(), '')))
+          value = standard.operator_getitem(values, id, '', ignorecase=True)
           if isinstance(value, list):
             value = ','.join(value)
           c.append({'id':id,'value':value})

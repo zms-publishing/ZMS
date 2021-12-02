@@ -361,9 +361,9 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     #  ZMSCustom.recordSet_Export:
     # --------------------------------------------------------------------------
     security.declareProtected('View', 'recordSet_Export')
-    def recordSet_Export(self, lang, qorder, qorderdir, qindex=[], REQUEST=None, RESPONSE=None):
+    def recordSet_Export(self, lang, qorder, qorderdir, qindex=[], REQUEST=None, RESPONSE=None, mode='xml'):
       """
-      Export record-set to XML.
+      Export record-set to XML or CSV via /recordSet_Export?lang=&qorder=&qorderdir=&mode=csv
       """
       self.recordSet_Init(REQUEST)
       self.recordSet_Filter(REQUEST)
@@ -376,6 +376,36 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       RESPONSE.setHeader('Content-Type', 'text/xml; charset=utf-8')
       RESPONSE.setHeader('Content-Disposition', 'attachment;filename="recordSet_Export.xml"')
       export = self.getXmlHeader() + self.toXmlString(value, True)
+
+      if mode == 'csv':
+        import csv
+        import io
+        import xmltodict  # Prerequiste: https://github.com/martinblech/xmltodict => $ pip install xmltodict
+
+        xml = xmltodict.parse(export)
+        keys = []
+        rows = []
+
+        for listitem in xml['list']['item']:
+          values = {}
+          for dictitem in listitem['dictionary']['item']:
+            key = dictitem.get('@key')
+            if key not in keys:
+              keys.append(key)
+            values[key] = dictitem.get('#text')
+          rows.append(values)
+
+        csvfile = io.StringIO()
+        csvfile_writer = csv.writer(csvfile)
+        csvfile_writer.writerow(keys)
+        for row in rows:
+          values = map(lambda x: row.get(x), keys)
+          csvfile_writer.writerow(values)
+
+        RESPONSE.setHeader('Content-Type', 'text/csv; charset=utf-8')
+        RESPONSE.setHeader('Content-Disposition', 'attachment;filename="recordSet_Export.csv"')
+        return csvfile.getvalue()
+
       return export
 
 

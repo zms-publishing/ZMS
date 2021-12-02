@@ -69,12 +69,12 @@
 								<i class="fas fa-plus"></i>
 								<tal:block tal:content="python:here.getZMILangStr('BTN_INSERT')">Insert</tal:block>
 							</a>
-							<tal:block tal:repeat="action python:['delete','cut','copy','paste','duplicate']">
-							<a tal:condition="python:action in actions"
-								class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get(action,'return zmiRecordSet%sRow(this)'%action.capitalize())">
-								<i tal:attributes="class python:'fas fa-%s'%{'delete':'times','duplicate':'clone'}.get(action,action)"></i>
-								<tal:block tal:content="python:here.getZMILangStr('BTN_%s'%action.upper())">Action</tal:block>
-							</a>
+							<tal:block tal:repeat="action python:['delete','cut','copy','paste','duplicate']"
+								><a tal:condition="python:action in actions"
+									class="dropdown-item" href="javascript:;" tal:attributes="onclick python:options.get(action,'return zmiRecordSet%sRow(this)'%action.capitalize())">
+									<i tal:attributes="class python:'fas fa-%s'%{'delete':'times','duplicate':'clone'}.get(action,action)"></i>
+									<tal:block tal:content="python:here.getZMILangStr('BTN_%s'%action.upper())">Action</tal:block
+								></a>
 							</tal:block>
 						</div>
 					</tal:block>
@@ -107,11 +107,13 @@
 				index python:offset+rindex;
 				record python:filtered_records[index];
 				qindex python:records.index(record);
-				name python:['qindices:list','qindex'][int('select' in actions)]"
-				><tal:block tal:condition="python:'record_handler' in options"
+				name python:['qindices:list','qindex'][int('select' in actions)]">
+
+				<tal:block tal:condition="python:'record_handler' in options"
 					><tal:block tal:define="global record python:options['record_handler'].handle_record(record)"></tal:block
 				></tal:block>
-			<tr tal:define="value python:record.get('__id__',qindex)" 
+
+				<tr tal:define="value python:record.get('__id__',qindex)" 
 				tal:attributes="id python:'tr_%i'%qindex; 
 				class python:['','zmi-selected'][int(str(value)==str(request.get('qindex')) or str(value) in [str(x) for x in request.get('qindices',[])])]">
 				<td class="zmi-datatype-action"
@@ -158,52 +160,54 @@
 					><tal:block tal:define="elName python:metaObjAttr['id'];
 							elValue python:here.operator_getitem(record,elName,metaObjAttr.get('default'),ignorecase=True);
 							elType python:metaObjAttr.get('type','string')"
-					><td class="data" tal:attributes="class python:'data data-%s zmi-datatype-%s'%(elName,elType)"><div tal:attributes="class elType"
-						><tal:block tal:condition="python:elType=='url'" tal:define="global target python:here.getLinkObj(elValue)"
-							><tal:block tal:condition="python:target is not None"
-								><tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block
-							></tal:block
-							><tal:block tal:condition="not:python:target is not None"
-								><tal:block tal:content="python:standard.string_maxlen(str(elValue),50)">elValue</tal:block
-							></tal:block
-						></tal:block
-						><tal:block tal:condition="python:elType in ['html']"
-							><tal:block tal:content="structure elValue">the value</tal:block
-						></tal:block
-						><tal:block tal:condition="python:elType in ['object']"
-							><a tal:attributes="href python:'%s/manage_main'%elValue.absolute_url()" target="_blank">
-								<img tal:attributes="src python:elValue.icon"/>
-								<tal:block tal:content="python:elValue.title_or_id()">the title or id</tal:block>
-							</a>
-						</tal:block
-						><tal:block tal:condition="python:elType in ['boolean']"
-							><i tal:condition="python:elValue" class="fas fa-check-square"></i>
-						</tal:block
-						><tal:block tal:condition="python:elType in ['image']"
-							><tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is not str"
-								><a tal:attributes="href python:elValue.getHref(request)" class="thumbnail" target="_blank"><img tal:attributes="src python:elValue.getHref(request)"/></a>
-							</tal:block
-							><tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is str">
-								<img src="data:image/png;base64," tal:attributes="data-previewbase64 elValue" width="32" height="32" />
-							</tal:block
-						></tal:block
-						><tal:block tal:condition="python:elType in ['file'] and elValue is not None"
-							><i class="icon-download"></i> <tal:block 
-								tal:on-error="string:<!-- FILENAME-ERROR -->" 
-								tal:content="structure python:(here.operator_gettype(elValue) is not str) and elValue.getFilename() or elValue">filename</tal:block
-						></tal:block
-						><tal:block tal:condition="python:elType in ['date','datetime', 'time']"
-							><tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%elType).upper())">elValue</tal:block
-						></tal:block
-						><tal:block tal:condition="python:elType in ['float','int']"
-							><tal:block tal:content="elValue">elValue</tal:block
-						></tal:block
-						><tal:block tal:condition="not:python:elType in ['boolean','date','datetime','time','float','html','image','file','int','object','url','None']"
-							><tal:block tal:condition="python:elValue is not None"
-								tal:on-error="elValue" 
-								tal:content="structure elValue">elValue</tal:block
-						></tal:block
-					></div></td>
+						><td class="data" tal:attributes="class python:'data data-%s zmi-datatype-%s'%(elName, metaObjAttr.get('fk') and 'fk'or elType)"
+							><div tal:attributes="class elType" 
+								><tal:block tal:condition="python:elType=='url'" 
+									tal:define="target python:here.getLinkObj(elValue)"
+									><tal:block tal:condition="python:target is not None"
+										><tal:block tal:content="structure python:target.zmi_breadcrumbs()">zmi_breadcrumbs</tal:block
+									></tal:block
+									><tal:block tal:condition="not:python:target is not None"
+										><tal:block tal:content="python:standard.string_maxlen(str(elValue),50)">elValue</tal:block
+									></tal:block
+								></tal:block
+								><tal:block tal:condition="python:elType in ['html']"
+									><tal:block tal:content="structure elValue">the value</tal:block
+								></tal:block
+								><tal:block tal:condition="python:elType in ['object']"
+									><a tal:attributes="href python:'%s/manage_main'%elValue.absolute_url()" target="_blank">
+										<img tal:attributes="src python:elValue.icon"/>
+										<tal:block tal:content="python:elValue.title_or_id()">the title or id</tal:block
+									></a>
+								</tal:block
+								><tal:block tal:condition="python:elType in ['boolean']"
+									><i class="fas fa-check-square" tal:attributes="class python:'far fa-%ssquare'%(elValue and 'check-' or '')"></i>
+								</tal:block
+								><tal:block tal:condition="python:elType in ['image']"
+									><tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is not str"
+										><a tal:attributes="href python:elValue.getHref(request)" class="thumbnail" target="_blank"><img tal:attributes="src python:elValue.getHref(request)"/></a>
+									</tal:block
+									><tal:block tal:condition="python:elValue is not None and here.operator_gettype(elValue) is str">
+										<img src="data:image/png;base64," tal:attributes="data-previewbase64 elValue" width="32" height="32" />
+									</tal:block
+								></tal:block
+								><tal:block tal:condition="python:elType in ['file'] and elValue is not None"
+									><i class="fas fa-download"></i> <tal:block 
+										tal:on-error="string:<!-- FILENAME-ERROR -->" 
+										tal:content="structure python:(here.operator_gettype(elValue) is not str) and elValue.getFilename() or elValue">filename</tal:block
+								></tal:block
+								><tal:block tal:condition="python:elType in ['date','datetime','time']"
+									><tal:block tal:content="python:here.getLangFmtDate(elValue,request['manage_lang'],('%s_fmt'%elType).upper())">elValue</tal:block
+								></tal:block
+								><tal:block tal:condition="python:elType in ['float','int']"
+									><tal:block tal:content="elValue">elValue</tal:block
+								></tal:block
+								><tal:block tal:condition="not:python:elValue is not None and elType in ['boolean','date','datetime','time','float','html','image','file','int','object','url','None']"
+									tal:on-error="elValue" 
+									tal:content="structure elValue">elValue
+								></tal:block
+							></div>
+						</td>
 					</tal:block>
 				</tal:block>
 			</tr>

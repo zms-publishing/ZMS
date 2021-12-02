@@ -6,12 +6,14 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<form class="form-horizontal" tal:define="
+<form class="form-horizontal card" tal:define="
 		level python:here.getLevel();
 		obj_versions python:here.getObjVersions();">
 
-	<legend tal:content="python:here.getZMILangStr('TAB_HISTORY')">History</legend>
-	<p class="well" tal:content="structure python:here.getZMILangStr('MSG_UNDOVERSION')">well</p>
+	<legend tal:content="python:here.getZMILangStr('TAB_HISTORY')"
+		tal:attributes="title python:here.getZMILangStr('MSG_UNDOVERSION')"
+		>History
+	</legend>
 
 <tal:block tal:condition="python:request.get('btn')==here.getZMILangStr('BTN_COMPARE')" 
 	tal:define="ids python:request.get('ids',[]); ids python:[x.id for x in here.getObjVersions() if x.id in ids];">
@@ -151,7 +153,7 @@
 	</tal:block>
 
 </form><!-- .form-horizontal -->
-- #zmi-tab -->
+<!-- #zmi-tab -->
 
 
 <style>

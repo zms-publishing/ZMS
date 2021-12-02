@@ -10,17 +10,15 @@ Products.ZSQLMethods
 
 # LDAP
 python-ldap
-# Need our py3 fork
--e git+https://github.com/zms-publishing/Products.LDAPMultiPlugins#egg=Products.LDAPMultiPlugins
-# need master for py3 compatible
-# -e git+https://github.com/dataflake/Products.LDAPUserFolder#egg=Products.LDAPUserFolder
--e git+https://github.com/zms-publishing/Products.LDAPUserFolder#egg=Products.LDAPUserFolder
+Products.LDAPMultiPlugins
+Products.LDAPUserFolder
 
 # TEXT
 beautifulsoup4
 lxml
 Markdown
 pyScss
+xmltodict
 
 # PAS
 Products.PluggableAuthService

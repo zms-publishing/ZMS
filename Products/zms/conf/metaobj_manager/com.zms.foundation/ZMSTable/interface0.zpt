@@ -80,26 +80,26 @@
 <div class="form-group row">
 	<label class="col-sm-2 control-label mandatory" tal:content="python:here.getZMILangStr('ATTR_TYPE')">the type-label</label>
 	<div class="col-sm-10 form-group row">
-		<div class="mr-2" title="Type 1">
+		<div class="mr-4" title="Type 1">
 			<input type="radio" name="type:int" value="1" checked="checked" /> <tal:block tal:content="python:here.getZMILangStr('HORIZONTAL')"></tal:block>
-			<table class="ZMSTable table table-sm">
-			<thead>
-				<tr><th>Firstname</th><th>Lastname</th><th>Age</th></tr>
-			</thead>
-			<tbody>
-				<tr><td>Jill</td><td>Smith</td><td>50</td></tr>
-				<tr><td>John</td><td>Doe</td><td>38</td></tr>
-			</tbody>
+			<table class="ZMSTable table table-sm table-bordered">
+				<thead>
+					<tr><th>Firstname</th><th>Lastname</th><th>Age</th></tr>
+				</thead>
+				<tbody>
+					<tr><td>Jill</td><td>Smith</td><td>50</td></tr>
+					<tr><td>John</td><td>Doe</td><td>38</td></tr>
+				</tbody>
 			</table>
 		</div>
 		<div class="mr-2" title="Type 3">
 			<input type="radio" name="type:int" value="3" /> <tal:block tal:content="python:here.getZMILangStr('VERTICAL')"></tal:block>
-			<table class="ZMSTable table table-sm">
-			<tbody>
-				<tr><th>Firstname</th><td>Jill</td><td>John</td></tr>
-				<tr><th>Lastname</th><td>Smith</td><td>Doe</td></tr>
-				<tr><th>Age</th><td>50</td><td>38</td></tr>
-			</tbody>
+			<table class="ZMSTable table table-sm table-bordered">
+				<tbody>
+					<tr><th>Firstname</th><td>Jill</td><td>John</td></tr>
+					<tr><th>Lastname</th><td>Smith</td><td>Doe</td></tr>
+					<tr><th>Age</th><td>50</td><td>38</td></tr>
+				</tbody>
 			</table>
 		</div>
 	</div>
@@ -625,7 +625,7 @@
 			</script>
 
 			<!-- BO Dropdown -->
-			<div class="dropdown-menu dropdown-menu-sm" id="context-menu">
+			<div class="dropdown-menu dropdown-menu-sm mw-100" id="context-menu">
 				<a class="dropdown-item move_col_left" href="#"><i class="fas fa-caret-left"></i>Spalte nach Link verschieben</a>
 				<a class="dropdown-item move_col_right" href="#"><i class="fas fa-caret-right"></i>Spalte nach Rechts verschieben</a>
 				<a class="dropdown-item delete_col" href="#"><i class="fas fa-trash"></i>Ganze Spalte l&ouml;schen</a>

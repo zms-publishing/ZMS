@@ -10,9 +10,9 @@ http://www.zms-publishing.com
 Changelog
 ---------
 
-    * Changes: https://github.com/zms-publishing/ZMS5/blob/master/CHANGES
-    * Revisions: https://github.com/zms-publishing/ZMS5/commits/master
-    * Source: https://github.com/zms-publishing/ZMS5/archive/master.zip
+    * Changes: https://github.com/zms-publishing/ZMS/blob/master/CHANGES
+    * Revisions: https://github.com/zms-publishing/ZMS/commits/master
+    * Source: https://github.com/zms-publishing/ZMS/archive/master.zip
 
 Installation (GNU/Linux, OSX/Darwin and Windows/WSL)
 ----------------------------------------------------
@@ -30,14 +30,14 @@ $ python3 -m venv ~/vpy3
 
 ::     
 
-$ ./ZMS5/bin/pip install https://github.com/zms-publishing/ZMS5/archive/master.zip [--upgrade]
+$ ./ZMS/bin/pip install https://github.com/zms-publishing/ZMS/archive/master.zip [--upgrade]
 
 **(3) Create an Instance [or restart on Upgrade]**
 
 ::     
 
-$ ./ZMS5/bin/mkwsgiinstance -d ../instance
-$ ./ZMS5/bin/runwsgi -v ../instance/etc/zope.ini
+$ ./ZMS/bin/mkwsgiinstance -d ../instance
+$ ./ZMS/bin/runwsgi -v ../instance/etc/zope.ini
 
     and finally "Add ZMS" via web user interface
 

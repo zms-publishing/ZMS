@@ -3,3 +3,5 @@
 Products/zms/plugins/www/zms-all.min.js
 Products/zms/plugins/www/i18n/*.js
 .vscode/
+dist/
+build/

@@ -34,7 +34,7 @@ def read_version():
     return '.'.join(version_list)
 
 CLASSIFIERS = [
-  'Development Status :: 5 - Beta',
+  'Development Status :: 5 - Production/Stable',
   'Framework :: Zope :: 5',
   'Programming Language :: Python :: 3',
   'Operating System :: OS Independent',
@@ -60,7 +60,7 @@ setup(
   author                = 'HOFFMANN+LIEBENBERG in association with SNTL Publishing, Berlin',
   author_email          = 'zms@sntl-publishing.com',
   url                   = 'https://www.zms-publishing.com',
-  download_url          = 'https://github.com/zms-publishing/ZMS5',
+  download_url          = 'https://github.com/zms-publishing/ZMS',
   install_requires      = open(os.path.join(setup_path, 'requirements.txt')).readlines(),
   namespace_packages    = ['Products'],
   packages              = ['Products.zms'],

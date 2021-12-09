@@ -34,7 +34,7 @@ def read_version():
     return '.'.join(version_list)
 
 CLASSIFIERS = [
-  'Development Status :: 5 - Beta',
+  'Development Status :: 5 - Production/Stable',
   'Framework :: Zope :: 5',
   'Programming Language :: Python :: 3',
   'Operating System :: OS Independent',

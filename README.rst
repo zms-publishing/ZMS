@@ -10,9 +10,9 @@ http://www.zms-publishing.com
 Changelog
 ---------
 
-    * Changes: https://github.com/zms-publishing/ZMS/blob/master/CHANGES
+    * Source: https://github.com/zms-publishing/ZMS/
     * Revisions: https://github.com/zms-publishing/ZMS/commits/master
-    * Source: https://github.com/zms-publishing/ZMS/archive/master.zip
+    * Archive: https://github.com/zms-publishing/ZMS/archive/master.zip
 
 Installation (GNU/Linux, OSX/Darwin and Windows/WSL)
 ----------------------------------------------------
@@ -31,6 +31,12 @@ $ python3 -m venv ~/vpy3
 ::     
 
 $ ./ZMS/bin/pip install https://github.com/zms-publishing/ZMS/archive/master.zip [--upgrade]
+
+or install from pypi
+
+::     
+
+$ ./ZMS/bin/pip install ZMS [--upgrade]
 
 **(3) Create an Instance [or restart on Upgrade]**
 

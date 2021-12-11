@@ -1,9 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
-
-<list>
-  <item type="dictionary">
-    <dictionary>
-      <item key="data"><![CDATA[## Script (Python) "manage_removeClient"
+## Script (Python) "manage_removeClient"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -25,7 +20,7 @@ print(context.zmi_body_header(context,request,options=[{'action':'#','label':'Re
 print('<div id="zmi-tab">')
 print(context.zmi_breadcrumbs(context,request))
 print('<form class="form-horizontal card" method="post" enctype="multipart/form-data">')
-print('<input type="hidden" name="form_id" value="manage_addClient"/>')
+print('<input type="hidden" name="form_id" value="manage_removeClient"/>')
 print('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
 print('<legend>Remove ZMS-Client...</legend>')
 print('<div class="card-body">')
@@ -33,6 +28,7 @@ print('<div class="card-body">')
 # --- Execute.
 # ---------------------------------
 if request.form.get('btn')=='BTN_DELETE':
+    # import pdb; pdb.set_trace()
     home = context.getHome()
     home_id = home.id
     home.manage_delObjects(ids=[context.id]) # remove ZMS seperately to force deleting records from ZMSIndex
@@ -67,26 +63,3 @@ print('</body>')
 print('</html>')
 
 return printed
-]]>
-      </item>
-      <item key="description"><![CDATA[Do you really want to remove ZMS-Client?]]></item>
-      <item key="execution" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[fas fa-times text-danger]]></item>
-      <item key="id">manage_removeClient</item>
-      <item key="meta_type"><![CDATA[Script (Python)]]></item>
-      <item key="meta_types" type="list">
-        <list>
-          <item>ZMS</item>
-        </list>
-      </item>
-      <item key="name"><![CDATA[Remove ZMS-Client...]]></item>
-      <item key="revision">5.0.1</item>
-      <item key="roles" type="list">
-        <list>
-          <item>ZMSAdministrator</item>
-        </list>
-      </item>
-      <item key="title"><![CDATA[Remove ZMS-Client...]]></item>
-    </dictionary>
-  </item>
-</list>

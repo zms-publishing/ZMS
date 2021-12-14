@@ -364,7 +364,10 @@ class ZMSRepositoryManager(
               if data is not None:
                 f = open(filepath,"wb")
                 if isinstance(data,str):
-                  data = data.encode("utf-8")
+                  try:
+                    data = data.encode("utf-8")
+                  except:
+                    pass
                 f.write(data)
                 f.close()
               else:

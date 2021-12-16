@@ -107,6 +107,9 @@ def importTheme(self, theme):
 # ------------------------------------------------------------------------------
 #  initZMS:
 # ------------------------------------------------------------------------------
+# A new ZMS node can be initalized as a stand-alone client (master) or 
+# as subordinated client acquiring content models and sharing the zmsindex.
+# Use a request variable 'acquire' =  1 to initalize ZMS as a client
 def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
 
   ### Constructor.
@@ -141,7 +144,8 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
 
   ### Init ZMS default content-model.
   _confmanager.initConf(obj, 'conf:com.zms.foundation*')
-  _confmanager.initConf(obj, 'conf:com.zms.index')
+  if not REQUEST.get('acquire'):
+    _confmanager.initConf(obj, 'conf:com.zms.index')
 
   ### Init ZMS default actions.
   _confmanager.initConf(obj, 'conf:manage_tab_*')

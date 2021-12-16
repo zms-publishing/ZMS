@@ -1,9 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
-
-<list>
-  <item type="dictionary">
-    <dictionary>
-      <item key="data"><![CDATA[from Products.PythonScripts.standard import html_quote
+from Products.PythonScripts.standard import html_quote
 
 def manage_addClient(self):
 	request = self.REQUEST
@@ -32,7 +27,7 @@ def manage_addClient(self):
 		zms_inst = self.initZMS(folder_inst, 'content', request['titlealt'], request['title'], request['lang'], request['manage_lang'], request)
 		zms_inst.setConfProperty('Portal.Master',home.id)
 		if request.get('acquire'):
-			for id in self.getMetaobjIds():
+			for id in [id for id in self.getMetaobjIds() if id not in ['ZMSIndexZCatalog','com.zms.index']]:
 				zms_inst.metaobj_manager.acquireMetaobj(id)
 		self.setConfProperty('Portal.Clients',self.getConfProperty('Portal.Clients',[])+[request['id']])
 		message.append(self.getZMILangStr('MSG_INSERTED')%request['id'])
@@ -73,26 +68,4 @@ def manage_addClient(self):
 	html += '</body>'
 	html += '</html>'
 
-	return html]]>
-      </item>
-      <item key="description"></item>
-      <item key="execution" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[fas fa-home]]></item>
-      <item key="id">manage_addClient</item>
-      <item key="meta_type"><![CDATA[External Method]]></item>
-      <item key="meta_types" type="list">
-        <list>
-          <item>ZMS</item>
-        </list>
-      </item>
-      <item key="name">ZMS-Client...</item>
-      <item key="revision">4.0.0</item>
-      <item key="roles" type="list">
-        <list>
-          <item>ZMSAdministrator</item>
-        </list>
-      </item>
-      <item key="title"><![CDATA[Insert new ZMS-Client]]></item>
-    </dictionary>
-  </item>
-</list>
+	return html

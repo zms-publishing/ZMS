@@ -6,6 +6,7 @@
 
 # SQL
 Products.ZMySQLDA
+Products.SQLAlchemyDA
 Products.ZSQLMethods
 
 # LDAP

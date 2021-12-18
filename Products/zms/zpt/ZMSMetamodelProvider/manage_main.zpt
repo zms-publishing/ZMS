@@ -547,7 +547,7 @@
 
 </div><!-- #zmi-tab -->
 
-<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
+<footer tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <script>
 // <!--

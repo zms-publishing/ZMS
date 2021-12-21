@@ -2619,6 +2619,9 @@ ul.pagination .page-item {
 .ZMSRecordSet.main_grid form table.table {
 	min-height:10rem
 }
+#zmiModalinsertUser .ZMSRecordSet.main_grid form table.table {
+	min-height:unset;
+}
 .ZMSRecordSet.main_grid table > thead > tr > th {
 	background: #607d8ba6;
 	color: white;
@@ -2650,6 +2653,10 @@ ul.pagination .page-item {
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+#zmiModalinsertUser .ZMSRecordSet.main_grid table tbody tr td.data div {
+	/* ignore inherited styles */
+	display:contents;
 }
 .ZMSRecordSet.main_grid table .zmi-datatype-action {
 	width:7.5rem;

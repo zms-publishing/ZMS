@@ -209,16 +209,6 @@ def set_response_headers(fn, mt='application/octet-stream', size=None, request=N
   RESPONSE.setHeader('Accept-Ranges', 'bytes')
 
 
-security.declarePublic('get_installed_packages')
-def get_installed_packages():
-  import subprocess
-  pipfreeze = subprocess.Popen("../../../bin/pip freeze --all",
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                               shell=True, cwd=getPACKAGE_HOME(), universal_newlines=True)
-  packages = pipfreeze.communicate()[0].strip()
-  return packages
-
-
 security.declarePublic('set_response_headers_cache')
 def set_response_headers_cache(context, request=None, cache_max_age=24*3600):
   """
@@ -254,6 +244,16 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600):
       return expire_datetime_gmt.ISO8601(), expire_in_secs
 
   return None
+
+
+security.declarePublic('get_installed_packages')
+def get_installed_packages():
+  import subprocess
+  pipfreeze = subprocess.Popen("../../../bin/pip freeze --all",
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                               shell=True, cwd=getPACKAGE_HOME(), universal_newlines=True)
+  packages = pipfreeze.communicate()[0].strip()
+  return packages
 
 
 security.declarePublic('umlaut_quote')

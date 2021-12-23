@@ -62,7 +62,7 @@ class JSONEditor_class:
         self.JSONDict['properties'][var]                     = {}
         self.JSONDict['properties'][var]['type']             = item.type == 'float' and 'number' or item.type == 'mailattachment' and 'object' or item.type
         self.JSONDict['properties'][var]['title']            = item.title + (item.mandatory and ' *' or '')
-        self.JSONDict['properties'][var]['description']      = item.description + (item.type == 'multiselect' and obj.this.getLangStr('ZMSFORMULATOR_HINT_MULTISELECT',obj.this.REQUEST.get('lang')) or '')
+        self.JSONDict['properties'][var]['description']      = item.description + (item.type == 'multiselect' and obj.this.getLangStr('zms.formulator.lib.HINT_MULTISELECT',obj.this.REQUEST.get('lang')) or '')
         self.JSONDict['properties'][var]['propertyOrder']    = i
         self.JSONDict['properties'][var]['options']          = {}
         
@@ -193,8 +193,8 @@ class JSONEditor_class:
     langstr = ''
 
     for item in obj.this.getLangDict():
-      if item['key'].startswith('ZMSFORMULATOR_'):
-        langstr += '\n%s: "%s",'%(item['key'].replace('ZMSFORMULATOR_','').lower(), item[lang])
+      if item['key'].startswith('zms.formulator.lib.'):
+        langstr += '\n%s: "%s",'%(item['key'].replace('zms.formulator.lib.','').lower(), item[lang])
     
     return """JSONEditor.defaults.languages.%s = { %s };\nJSONEditor.defaults.language = "%s";
     """%(lang, langstr, lang)

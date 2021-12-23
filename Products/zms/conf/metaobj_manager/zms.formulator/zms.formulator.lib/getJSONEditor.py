@@ -11,7 +11,7 @@ def getJSONEditor(self):
       <span id="valid_indicator"></span>
       <input id="captcha" type="hidden" />
       <br />
-    '''%(self.getLangStr('ZMSFORMULATOR_BUTTON_SUBMIT',self.REQUEST.get('lang')), self.getLangStr('ZMSFORMULATOR_BUTTON_RESTORE',self.REQUEST.get('lang')))
+    '''%(self.getLangStr('zms.formulator.lib.BUTTON_SUBMIT',self.REQUEST.get('lang')), self.getLangStr('zms.formulator.lib.BUTTON_RESTORE',self.REQUEST.get('lang')))
   else:
     output = '''
       <div id="editor_holder"></div>
@@ -30,7 +30,7 @@ def getJSONEditor(self):
         function validate_or_submit(){if (grecaptcha.getResponse() ==""){grecaptcha.execute()}else{$('#submit').trigger('click')}}
       </script> 
       <br />
-    '''%(frmu.GoogleAPIKey,self.getLangStr('ZMSFORMULATOR_BUTTON_SUBMIT',self.REQUEST.get('lang')),self.getLangStr('ZMSFORMULATOR_BUTTON_RESTORE',self.REQUEST.get('lang')))
+    '''%(frmu.GoogleAPIKey,self.getLangStr('zms.formulator.lib.BUTTON_SUBMIT',self.REQUEST.get('lang')),self.getLangStr('zms.formulator.lib.BUTTON_RESTORE',self.REQUEST.get('lang')))
 
   if (frmu.feedbackMsg!=''):
     feedback = '''
@@ -47,7 +47,7 @@ def getJSONEditor(self):
           <div class="modal-content" style="padding:1em;">%s</div>
         </div>
       </div>
-      '''%(self.getLangStr('ZMSFORMULATOR_FEEDBACK_MSG',self.REQUEST.get('lang')).replace('\n','<br />'))
+      '''%(self.getLangStr('zms.formulator.lib.FEEDBACK_MSG',self.REQUEST.get('lang')).replace('\n','<br />'))
 
   self.REQUEST.RESPONSE.setHeader('Cache-Control', 'no-cache')
   self.REQUEST.RESPONSE.setHeader('Pragma', 'no-cache')

@@ -35,6 +35,7 @@ from Products.zms import zopeutil
 from Products.zms import _blobfields
 from Products.zms import _fileutil
 from Products.zms import _globals
+from Products.zms import _multilangmanager
 from Products.zms import _ziputil
 
 
@@ -127,6 +128,13 @@ class ZMSMetaobjManager(object):
           d['__filename__'] = [[],[package]][len(package)>0]+[id,'__init__.py']
           for attr in attrs:
             syncZopeMetaobjAttr(self, d, attr)
+            if attr['id'] == 'langdict.xml':
+              lang_dict = self.get_lang_dict()
+              l = [x for x in lang_dict if x.startswith('%s.' % id)]
+              if l:
+                if 'ob' not in attr:
+                  attr['ob'] = _blobfields.MyFile('langdict.xml', 'langdict.xml', b'')
+                attr['ob'].data = _multilangmanager.exportXml(self, l).encode()
             mandatory_keys = ['id', 'name', 'type', 'meta_type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
             if attr['type']=='interface':
               attr['name'] = attr['id']
@@ -163,6 +171,8 @@ class ZMSMetaobjManager(object):
             newDefault = attr.get('default', '')
             if newType in ['resource']:
               newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'data':newCustom,'filename':newId})
+            if newId == 'langdict.xml':
+              self.importConf({'data': attr.get('data', ''), 'filename': '{}.{}'.format(id, newId)})
             self.setMetaobjAttr(id, oldId, newId, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
       return id
 

@@ -52,7 +52,7 @@ class zms_formulator_lib:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Importfile Lang-Dict.xml"
+			,"name":"langdict.xml"
 			,"repetitive":0
 			,"type":"resource"}
 

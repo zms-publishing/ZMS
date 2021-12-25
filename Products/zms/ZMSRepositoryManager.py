@@ -228,6 +228,9 @@ class ZMSRepositoryManager(
             r['data'] = r['data'].decode('utf-8')
           except:
             pass
+        # Normalize Windows CR+LF line break to Unix LF
+        l['data'] = l['data'].replace('\r\n','\n')
+        r['data'] = r['data'].replace('\r\n','\n')
         if l.get('data', '') != r.get('data', ''):
           data = l.get('data', r.get('data', ''))
           try:

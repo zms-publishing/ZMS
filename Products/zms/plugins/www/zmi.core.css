@@ -694,6 +694,9 @@ body.zmi ul.zmi-container .zmi-item.pageelement .center .contentEditable {
 	overflow:hidden;
 	min-height:inherit;
 }
+body.zmi ul.zmi-container .zmi-item.pageelement .center .contentEditable .contentEditable {
+	padding:unset;
+}
 body.zmi ul.zmi-container .zmi-item.page .center .contentEditable {
 	padding-top: .4rem;
 	padding-left: 1rem;

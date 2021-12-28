@@ -218,31 +218,22 @@ class ZMSRepositoryManager(
           continue
         l = local.get(filename, {})
         r = remote.get(filename, {})
-        if isinstance(l.get('data', ''),bytes):
-          try:
-            l['data'] = l['data'].decode('utf-8')
-          except:
-            pass
-        if isinstance(r.get('data', ''),bytes):
-          try:
-            r['data'] = r['data'].decode('utf-8')
-          except:
-            pass
+        if isinstance(l.get('data'), bytes):
+          l['data'] = l['data'].decode('utf-8')
+        if isinstance(r.get('data'), bytes):
+          r['data'] = r['data'].decode('utf-8')
         # Normalize Windows CR+LF line break to Unix LF in string objects
-        if l.get('data', None) and isinstance(l.get('data', ''),str):
+        if isinstance(l.get('data'), str):
           l['data'] = l['data'].replace('\r\n','\n')
-        if r.get('data', None) and isinstance(r.get('data', ''),str):
+        if isinstance(r.get('data'), str):
           r['data'] = r['data'].replace('\r\n','\n')
-        if l.get('data', '') != r.get('data', ''):
-          data = l.get('data', r.get('data', ''))
+        if l.get('data') != r.get('data'):
+          data = l.get('data', r.get('data'))
           try:
-            try:
-              mt, enc = standard.guess_content_type(filename.split('/')[-1], data)
-            except:
-              mt, enc = standard.guess_content_type(filename.split('/')[-1], data.encode('utf-8'))
+            mt, enc = standard.guess_content_type(filename.split('/')[-1], data.encode('utf-8'))
             diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
           except:
-            standard.writeLog(self,"[getDiffs]: Error in appending filename = %s to variable data, Line 232"%str(filename))
+            standard.writeError(self,"[getDiffs]: error in filename=%s"%str(filename))
             pass
       return diff
 

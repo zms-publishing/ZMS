@@ -101,7 +101,7 @@ _fileutil.getOSPath:
 Return path with OS separators.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def getOSPath(path, chs=list(range(32))+[34, 39, 60, 62, 63, 127], undoable=False):
-  if type(path) is bytes:
+  if isinstance(path, bytes):
     path = path.decode('utf-8')
   path = path.replace('\\', os.sep)
   path = path.replace('/', os.sep)

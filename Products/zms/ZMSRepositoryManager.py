@@ -228,10 +228,10 @@ class ZMSRepositoryManager(
             r['data'] = r['data'].decode('utf-8')
           except:
             pass
-        # Normalize Windows CR+LF line break to Unix LF
-        if l.get('data', None):
+        # Normalize Windows CR+LF line break to Unix LF in string objects
+        if l.get('data', None) and isinstance(l.get('data', ''),str):
           l['data'] = l['data'].replace('\r\n','\n')
-        if r.get('data', None):
+        if r.get('data', None) and isinstance(r.get('data', ''),str):
           r['data'] = r['data'].replace('\r\n','\n')
         if l.get('data', '') != r.get('data', ''):
           data = l.get('data', r.get('data', ''))

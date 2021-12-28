@@ -1,5 +1,5 @@
 ################################################################################
-# svglutil.py
+# svgutil.py
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,10 +18,9 @@
 
 # Imports.
 from AccessControl.SecurityInfo import ModuleSecurityInfo
-import six
 import xml.dom.minidom
 
-security = ModuleSecurityInfo('Products.zms.zmsutil')
+security = ModuleSecurityInfo('Products.zms.svgutil')
 
 security.declarePublic('get_svg_dimensions')
 def get_dimensions(image):
@@ -62,9 +61,8 @@ def set_dimensions(image, size):
             if 'height' in svg.attributes:
               oldheight = 'height="%s"'%svg.attributes['height'].value
               newheight = ''
-            from Products.zms import standard
-            data = data.replace(six.ensure_binary(oldwidth),six.ensure_binary('%s width="%i" '%(newwidth,w)))
-            data = data.replace(six.ensure_binary(oldwidth),six.ensure_binary('%s height="%i" '%(newheight,h)))
+            data = data.replace(bytes(oldwidth, 'utf-8'), bytes('%s width="%i" '%(newwidth, w), 'utf-8'))
+            data = data.replace(bytes(oldwidth, 'utf-8'), bytes('%s height="%i" '%(newheight, h), 'utf-8'))
         image.data = data
     return image
 

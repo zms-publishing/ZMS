@@ -51,11 +51,6 @@ import traceback
 import zExceptions
 import six
 
-from six.moves.urllib import parse as urllib_parse 
-from six.moves.urllib.parse import quote as urllib_quote
-from six.moves.urllib.parse import quote_plus as urllib_quote_plus
-from six.moves.urllib.parse import unquote as urllib_unquote
-
 # Product Imports.
 from Products.zms import _globals
 from Products.zms import _fileutil
@@ -95,10 +90,9 @@ def addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
   return self.manage_addZMSCustom(meta_id, values, REQUEST)
 
 
-from html import escape as html_escape
-
-def url_quote(s):
-  return urllib_quote(s)
+def url_quote(string, safe='/', encoding=None, errors=None):
+  from urllib.parse import quote
+  return quote(string, safe, encoding, errors)
 
 """
 @group PIL (Python Imaging Library): pil_img_*
@@ -408,7 +402,8 @@ def url_encode(url):
   @return: Encoded string
   @rtype: C{str}
   """
-  return ''.join([urllib_quote_plus(x) for x in url])
+  from urllib.parse import quote_plus
+  return ''.join([quote_plus(x) for x in url])
 
 
 security.declarePublic('guess_content_type')
@@ -431,33 +426,10 @@ def guess_content_type(filename, data):
 html_quote:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 def html_quote(v, name='(Unknown name)', md={}):
+  import html
   if not isinstance(v,str):
     v = str(v)
-  return html_escape(v, 1)
-
-
-def bin2hex(m):
-  """
-  Returns a string with the hexadecimal representation of integer m.
-  @param m: Binary
-  @type m: C{int}
-  @return: String
-  @rtype: C{bytes}
-  """
-  import binascii
-  return six.ensure_str(binascii.hexlify(m))
-
-
-def hex2bin(m):
-  """
-  Converts a hexadecimal-string m to an integer.
-  @param m: Hexadecimal.
-  @type m: C{bytes}
-  @return: Integer
-  @rtype: C{bytes}
-  """
-  import binascii
-  return binascii.unhexlify(m)
+  return html.escape(v, 1)
 
 
 security.declarePublic('encrypt_schemes')
@@ -872,8 +844,9 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
 
   # Set request-headers.
   if auth is not None:
+    from urllib.parse import unquote
     userpass = auth['username']+':'+auth['password']
-    userpass = base64.encodestring(urllib_unquote(userpass)).strip()
+    userpass = base64.encodestring(unquote(userpass)).strip()
     headers['Authorization'] =  'Basic '+userpass
   if method == 'GET' and query:
     path += '?' + query

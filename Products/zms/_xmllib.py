@@ -460,14 +460,14 @@ def toCdata(self, s, xhtml=False):
 
   # Return Text in CDATA.
   elif s is not None:
-    if isinstance(s,bytes):
-      s = str(s)
+    if isinstance(s, bytes):
+      s = s.deocde('utf-8')
     # Hack for invalid characters
     s = s.replace(chr(30), '')
     # Hack for nested CDATA
     s = re.compile(r'\<\!\[CDATA\[(.*?)\]\]\>').sub(r'<!{CDATA{\1}}>', s)
     # Wrap with CDATA
-    rtn = '<![CDATA[%s]]>' % s
+    rtn = '<![CDATA[%s]]>'%s
 
   # Return.
   return rtn
@@ -499,20 +499,19 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
       xml.append(' type="file"')
       xml.append('>')
       data = zopeutil.readData(value)
-      if [x for x in ['text/','application/css','application/javascript','image/svg'] if content_type.startswith(x)]:
-        if isinstance(data, bytes):
-          data = data.decode('utf-8')
-        else:
-          data = str(data,'utf-8')
       cdata = None
-      # Ensure CDATA is valid.
-      try:
-        cdata = '<![CDATA[%s]]>'%data
-        p = pyexpat.ParserCreate()
-        rv = p.Parse('<?xml version="1.0" encoding="utf-8"?><%s>%s</%s>'%(tagname,cdata,tagname), 1)
-      # Otherwise use binary encoding.
-      except:
-        cdata = standard.bin2hex(bytes(data))
+      if [x for x in ['text/','application/css','application/javascript','image/svg'] if content_type.startswith(x)]:
+        try:
+          # Ensure CDATA is valid.
+          s = '<![CDATA[%s]]>'%data.decode('utf-8')
+          p = pyexpat.ParserCreate()
+          rv = p.Parse('<?xml version="1.0" encoding="utf-8"?><%s>%s</%s>'%(tagname,s,tagname), 1)
+          cdata = s
+        except:
+          pass
+      # Otherwise hexlify
+      if cdata is None:
+        cdata = data.hex()
       xml.append(cdata)
       xml.append('</%s>' % tagname)
 

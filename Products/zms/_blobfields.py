@@ -869,7 +869,7 @@ class MyImage(MyBlob, Image):
           data = standard.pystr(data)
           data = '<![CDATA[%s]]>'%data
         else:
-          data = standard.bin2hex(bytes(data))
+          data = bytes(data).hex()
         objtype = ' type="image"'
       else:
         filename = self.getFilename()
@@ -982,7 +982,7 @@ class MyFile(MyBlob, File):
           data = standard.pystr(data)
           data = '<![CDATA[%s]]>'%data
         else:
-          data = standard.bin2hex(bytes(data))
+          data = bytes(data).hex()
         objtype = ' type="file"'
       else:
         filename = self.getFilename()

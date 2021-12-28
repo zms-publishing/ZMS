@@ -454,57 +454,8 @@ def xmlOnUnknownEndTag(self, sTagName):
 def toCdata(self, s, xhtml=False):
   rtn = ''
 
-  # Return Text (HTML) in CDATA as XHTML.
-  from Products.zms import _filtermanager
-  processId = 'tidy'
-  if not xhtml \
-     and self.getConfProperty('ZMS.export.xml.tidy', 0) \
-     and processId in self.getProcessIds():
-
-    # Create temporary folder.
-    folder = tempfile.mktemp()
-    os.mkdir(folder)
-
-    # Save <HTML> to file.
-    filename = _fileutil.getOSPath('%s/xhtml.html' % folder)
-    _fileutil.exportObj(s, filename)
-
-    # Call <HTML>Tidy
-    processOb = self.getProcess(processId)
-    command = processOb.get('command')
-    if command.find('{trans}') >= 0:
-      trans = _fileutil.getOSPath(package_home(globals()) + '/conf/xsl/tidy.html2xhtml.conf')
-      command = command.replace('{trans}', trans)
-    filename = _filtermanager.processCommand(self, filename, command)
-
-    # Read <XHTML> from file.
-    f = open(htmfilename, 'rb')
-    rtn = f.read().strip()
-    f.close()
-
-    # Read Error-Log from file.
-    f = open(logfilename, 'rb')
-    log = f.read().strip()
-    f.close()
-
-    # Remove temporary files.
-    _fileutil.remove(folder, deep=1)
-
-    # Process <XHTML>.
-    prefix = '<p>'
-    if s[:len(prefix)] != prefix and rtn[:len(prefix)] == prefix:
-      rtn = rtn[len(prefix):]
-      suffix = '</p>'
-      if s[-len(suffix):] != suffix and rtn[-len(suffix):] == suffix:
-        rtn = rtn[:-len(suffix)]
-    f.close()
-
-    # Process Error-Log.
-    if log.find('0 errors') < 0:
-      rtn += '<!-- ' + log + '-->'
-
   # Return Text.
-  elif standard.is_str(s) and s.find(' ') < 0 and s.find('<') < 0 and s.find('&') < 0:
+  if standard.is_str(s) and s.find(' ') < 0 and s.find('<') < 0 and s.find('&') < 0:
     rtn = s
 
   # Return Text in CDATA.

@@ -119,19 +119,6 @@
 </item>
 <item key="name"><![CDATA[HTML-Printversion]]></item>
 <item key="processes" type="list"><list>
-<item type="dictionary"><dictionary>
-<item key="file" type="file">
-<data content_type="text/plain" filename="tidy.zms2html.conf" type="file"><![CDATA[add-xml-decl: no
-doctype: omit
-enclose-block-text: yes
-enclose-text: yes
-input-encoding: utf8
-output-encoding: utf8
-
-]]></data></item>
-<item key="id"><![CDATA[tidy]]></item>
-</dictionary>
-</item>
 </list>
 </item>
 <item key="roles" type="list"><list>
@@ -330,19 +317,6 @@ output-encoding: utf8
 </item>
 <item key="name"><![CDATA[PDF-Printversion]]></item>
 <item key="processes" type="list"><list>
-<item type="dictionary"><dictionary>
-<item key="file" type="file">
-<data content_type="text/plain" filename="tidy.zms2html.conf" type="file"><![CDATA[add-xml-decl: yes
-doctype: omit
-enclose-block-text: yes
-enclose-text: yes
-input-encoding: utf8
-output-encoding: utf8
-
-]]></data></item>
-<item key="id"><![CDATA[tidy]]></item>
-</dictionary>
-</item>
 <item type="dictionary"><dictionary>
 <item key="file" type="file">
 <data content_type="text/xml" filename="xhtml1-transitional.dtd" type="file"><![CDATA[<!--
@@ -3850,20 +3824,6 @@ several semantically related columns together.
 <item key="processes" type="list"><list>
 <item type="dictionary"><dictionary>
 <item key="file" type="file">
-<data content_type="text/plain" filename="tidy.html2zms.conf" type="file"><![CDATA[add-xml-decl: yes
-enclose-block-text: yes
-enclose-text: yes
-hide-comments: yes
-input-encoding: utf8
-doctype: omit
-output-encoding: utf8
-show-body-only: yes
-]]></data></item>
-<item key="id"><![CDATA[tidy]]></item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="file" type="file">
 <data content_type="text/xml" filename="html2zms.xsl" type="file"><![CDATA[<?xml version="1.0" encoding="ISO-8859-1"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="no"/>
@@ -4265,16 +4225,6 @@ show-body-only: yes
 <item key="type"><![CDATA[DTML Method]]></item>
 </dictionary>
 </item>
-</dictionary>
-</item>
-<item type="dictionary"><dictionary>
-<item key="type"><![CDATA[process]]></item>
-<item key="value" type="dictionary"><dictionary>
-<item key="acquired" type="int">0</item>
-<item key="command"><![CDATA[C:\Programme\zms\tidy\tidy.exe -asxml -config {trans} -m {in}]]></item>
-<item key="id"><![CDATA[tidy]]></item>
-<item key="name"><![CDATA[<HTML>Tidy]]></item>
-<item key="type"><![CDATA[process]]></item>
 </dictionary>
 </item>
 </dictionary>

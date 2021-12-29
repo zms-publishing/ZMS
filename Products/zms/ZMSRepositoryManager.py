@@ -229,18 +229,17 @@ class ZMSRepositoryManager(
           except:
             pass
         # Normalize Windows CR+LF line break to Unix LF in string objects
-        if l.get('data', None) and isinstance(l.get('data'), str):
+        if isinstance(l.get('data'), str):
           l['data'] = l['data'].replace('\r\n','\n')
-        if r.get('data', None) and isinstance(r.get('data'), str):
+        if isinstance(r.get('data'), str):
           r['data'] = r['data'].replace('\r\n','\n')
         if l.get('data') != r.get('data'):
           data = l.get('data', r.get('data'))
           try:
             mt, enc = standard.guess_content_type(filename.split('/')[-1], data.encode('utf-8'))
-            diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
           except:
-            standard.writeError(self,"[getDiffs]: error in filename=%s"%str(filename))
-            pass
+            mt, enc = standard.guess_content_type(filename.split('/')[-1], data)
+          diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
       return diff
 
 

@@ -80,6 +80,8 @@ def addObject(container, meta_type, id, title, data, permissions={}):
   elif meta_type == 'File':
     addFile( container, id, title, data)
   elif meta_type == 'Image':
+    if isinstance(data, str): # SVG Images
+      data = data.encode('utf-8')
     addImage( container, id, title, data)
   elif meta_type == 'Page Template':
     addPageTemplate( container, id, title, data)

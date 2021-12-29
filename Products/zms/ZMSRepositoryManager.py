@@ -237,6 +237,8 @@ class ZMSRepositoryManager(
           r['data'] = r['data'].replace('\r\n','\n')
         if l.get('data') != r.get('data'):
           data = l_data or r_data
+          if isinstance(data, str):
+            data = data.encode('utf-8')
           mt, enc = standard.guess_content_type(filename.split('/')[-1], data)
           diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
       return diff

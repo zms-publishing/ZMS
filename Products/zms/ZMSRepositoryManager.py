@@ -219,13 +219,19 @@ class ZMSRepositoryManager(
         l = local.get(filename, {})
         r = remote.get(filename, {})
         if isinstance(l.get('data'), bytes):
-          l['data'] = l['data'].decode('utf-8')
+          try:
+            l['data'] = l['data'].decode('utf-8')
+          except: # data is no text, but image etc.
+            pass
         if isinstance(r.get('data'), bytes):
-          r['data'] = r['data'].decode('utf-8')
+          try:
+            r['data'] = r['data'].decode('utf-8')
+          except:
+            pass
         # Normalize Windows CR+LF line break to Unix LF in string objects
-        if isinstance(l.get('data'), str):
+        if l.get('data', None) and isinstance(l.get('data'), str):
           l['data'] = l['data'].replace('\r\n','\n')
-        if isinstance(r.get('data'), str):
+        if r.get('data', None) and isinstance(r.get('data'), str):
           r['data'] = r['data'].replace('\r\n','\n')
         if l.get('data') != r.get('data'):
           data = l.get('data', r.get('data'))

@@ -220,6 +220,7 @@ class ZMSRepositoryManager(
         l_data = l.get('data')
         r = remote.get(filename, {})
         r_data = r.get('data')
+        # Check whether any bytes data are decodeable as utf-8 text
         if isinstance(l_data, bytes):
           try:
             l['data'] = l_data.decode('utf-8')
@@ -230,11 +231,12 @@ class ZMSRepositoryManager(
             r['data'] = r_data.decode('utf-8')
           except:
             pass
-        # Normalize Windows CR+LF line break to Unix LF in string objects
+        # If text then normalize Windows CR+LF line break to Unix LF
         if isinstance(l.get('data'), str):
-          l['data'] = l['data'].replace('\r\n','\n')
+          l['data'] = l['data'].replace('\r','')
         if isinstance(r.get('data'), str):
-          r['data'] = r['data'].replace('\r\n','\n')
+          r['data'] = r['data'].replace('\r','')
+        # Only if text is not equal add to diff list
         if l.get('data') != r.get('data'):
           data = l_data or r_data
           if isinstance(data, str):

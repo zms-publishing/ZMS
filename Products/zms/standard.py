@@ -67,12 +67,12 @@ def is_bytes(v):
 
 security.declarePublic('pystr')
 pystr_ = str
-def pystr(v, encoding='utf-8', errors='ignore'):
-  if isinstance(v,bytes):
-    v = v.decode(encoding)
-  elif not isinstance(v,str):
+def pystr(v, encoding='utf-8', errors='strict'):
+  if isinstance(v, bytes):
+    v = v.decode(encoding, errors)
+  elif not isinstance(v, str):
     try:
-      v = str(v,encoding)
+      v = str(v, encoding, errors)
     except:
       v = str(v)
   return v

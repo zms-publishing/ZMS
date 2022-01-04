@@ -200,7 +200,7 @@
 						<button name="btn" type="submit" class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_SAVE')" value="Save">
 							<tal:block tal:content="structure python:here.getZMILangStr('BTN_SAVE')"></tal:block>
 						</button>
-						<button name="btn" type="submit" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE')" value="Delete">
+						<button name="btn" type="submit" class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_DELETE'); value python:'Delete:%s'%si.getId()">
 							<tal:block tal:content="structure python:here.getZMILangStr('BTN_DELETE')"></tal:block>
 						</button>
 						<div class="btn-group">

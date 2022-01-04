@@ -396,6 +396,13 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           self.setAttrs(attrs)
           message += self.getZMILangStr('MSG_CHANGED')
 
+        # Delete.
+        # -------
+        elif btn.startswith('Delete:'):
+          ids = [btn[btn.find(':')+1:]]
+          self.manage_delObjects(ids)
+          message += self.getZMILangStr('MSG_DELETED')%len(ids)
+
         # Remove.
         # -------
         elif btn == 'Remove':

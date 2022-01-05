@@ -217,28 +217,31 @@ class ZMSRepositoryManager(
           # if there are no references in model
           continue
         l = local.get(filename, {})
+        l_data = l.get('data')
         r = remote.get(filename, {})
-        if isinstance(l.get('data'), bytes):
+        r_data = r.get('data')
+        # Check whether any bytes data are decodeable as utf-8 text
+        if isinstance(l_data, bytes):
           try:
-            l['data'] = l['data'].decode('utf-8')
+            l['data'] = l_data.decode('utf-8')
           except: # data is no text, but image etc.
             pass
-        if isinstance(r.get('data'), bytes):
+        if isinstance(r_data, bytes):
           try:
-            r['data'] = r['data'].decode('utf-8')
+            r['data'] = r_data.decode('utf-8')
           except:
             pass
-        # Normalize Windows CR+LF line break to Unix LF in string objects
+        # If text then normalize Windows CR+LF line break to Unix LF
         if isinstance(l.get('data'), str):
-          l['data'] = l['data'].replace('\r\n','\n')
+          l['data'] = l['data'].replace('\r','')
         if isinstance(r.get('data'), str):
-          r['data'] = r['data'].replace('\r\n','\n')
+          r['data'] = r['data'].replace('\r','')
+        # Only if text is not equal add to diff list
         if l.get('data') != r.get('data'):
-          data = l.get('data', r.get('data'))
-          try:
-            mt, enc = standard.guess_content_type(filename.split('/')[-1], data.encode('utf-8'))
-          except:
-            mt, enc = standard.guess_content_type(filename.split('/')[-1], data)
+          data = l_data or r_data
+          if isinstance(data, str):
+            data = data.encode('utf-8')
+          mt, enc = standard.guess_content_type(filename.split('/')[-1], data)
           diff.append((filename, mt, l.get('id', r.get('id', '?')), l, r))
       return diff
 

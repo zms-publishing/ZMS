@@ -16,7 +16,7 @@ class com_zms_index:
 	package = ""
 
 	# Revision
-	revision = "2.1.2"
+	revision = "2.1.3"
 
 	# Type
 	type = "ZMSPackage"

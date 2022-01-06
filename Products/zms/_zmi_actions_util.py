@@ -96,7 +96,9 @@ def zmi_basic_actions(container, context, objAttr, objChildren, objPath=''):
         if can_cut:
           actions.append((container.getZMILangStr('BTN_CUT'), 'manage_cutObjects', 'fas fa-cut')) 
       #-- Action: Copy.
-      actions.append((container.getZMILangStr('BTN_COPY'), 'manage_copyObjects', 'fas fa-copy'))
+      can_copy = context.getParentByLevel(1).meta_id!='ZMSTrashcan'
+      if can_copy: 
+        actions.append((container.getZMILangStr('BTN_COPY'), 'manage_copyObjects', 'fas fa-copy'))
       #-- Actions: Move.
       can_move = objChildren > 1
       if can_move:

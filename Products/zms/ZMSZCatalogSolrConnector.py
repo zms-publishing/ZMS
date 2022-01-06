@@ -158,13 +158,12 @@ class ZMSZCatalogSolrConnector(
       return k
 
 
-    def __get_add_xml(self, node, recursive, xmlattrs={}):
+    def __get_add_xml(self, node, recursive, xmlattrs={}, update=False):
+      results = []
       zcm = self.getCatalogAdapter()
       attrs = zcm.getAttrs()
-      xml =  []
-      xml.append('<?xml version="1.0"?>')
-      xml.append('<add'+' '.join(['']+['%s="%s"'%(x, str(xmlattrs[x])) for x in xmlattrs])+'>')
       def cb(node, d):
+        xml =  []
         xml.append('<doc>')
         text = []
         for k in d:
@@ -174,45 +173,61 @@ class ZMSZCatalogSolrConnector(
           if k not in ['id']:
             if k in attrs:
               boost = attrs[k]['boost']
-              if type(v) in (str, str):
+              if isinstance(v, str):
                 name = '%s_t'%k
                 text.append(v)
             else:
-              if type(v) in (str, str):
+              if isinstance(v, str):
                 name = '%s_s'%k
           xml.append('<field name="%s" boost="%.1f">%s</field>'%(name, boost, v))
         xml.append('<field name="text_t">%s</field>'%' '.join([x for x in text if x]))
         xml.append('</doc>')
+        try:
+          if update:
+            xml.insert(0, '<?xml version="1.0"?>')
+            xml.insert(1, '<add'+' '.join(['']+['%s="%s"'%(x, str(xmlattrs[x])) for x in xmlattrs])+'>')
+            xml.append('</add>')
+            results.append(self._update('update', '\n'.join(xml)))
+          else:
+            results.extend(xml)
+        except:
+          standard.writeError(node,"can't cb")
       zcm.get_sitemap(cb, node, recursive)
-      xml.append('</add>')
-      return '\n'.join(xml)
+      if not update:
+        results.insert(0, '<?xml version="1.0"?>')
+        results.insert(1, '<add'+' '.join(['']+['%s="%s"'%(x, str(xmlattrs[x])) for x in xmlattrs])+'>')
+        results.append('</add>')
+      return ['\n',','][int(update)].join(results)
 
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogSolrConnector._update:
     # --------------------------------------------------------------------------
-    def _update(self, xml):
+    def _update(self, action, xml):
       solr_url = self.getConfProperty('solr.url', 'http://localhost:8983/solr')
       solr_core = self.getConfProperty('solr.core', self.getAbsoluteHome().id)
       url = '%s/%s/update'%(solr_url, solr_core)
       url = '%s?%s'%(url, xml)
-      result = standard.http_import(self, url, method='POST', headers={'Content-Type':'text/xml;charset=UTF-8'})
-      standard.writeLog(self, "[ZMSZCatalogSolrConnector._update]: %s"%str(result))
-      return result
+      result = standard.pystr(standard.http_import(self, url, method='POST', headers={'Content-Type':'text/xml;charset=UTF-8'}))
+      standard.writeLog(self, "[ZMSZCatalogSolrConnector._update]: %s=%s"%(action,result))
+      return '%s=%s'%(action,result)
 
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogSolrConnector.reindex_all:
     # --------------------------------------------------------------------------
-    def reindex_all(self):
+    def reindex_all(self, container=None):
       result = []
-      result.append(self._update(self.__get_delete_xml()))
-      container = self.getDocumentElement()
-      for root in container+[self.getPortalClients()]:
-        result.append(self._update(self.__get_add_xml(root, recursive=True)))
-      result.append(self._update(self.__get_command_xml('commit')))
-      result.append(self._update(self.__get_command_xml('optimize')))
-      return ', '.join([standard.pystr(x) for x in result if x])
+      if container is None:
+        container = self.getDocumentElement()
+      home_id = container.getHome().id
+      result.append(self._update('delete', self.__get_delete_xml(query='home_id_s:%s'%home_id)))
+      result.append(self.__get_add_xml(container, recursive=True, update=True))
+      result.append(self._update('commit', self.__get_command_xml('commit')))
+      result.append(self._update('optimize', self.__get_command_xml('optimize')))
+      for portalClient in self.getPortalClients():
+        result.append(self.reindex_all(portalClient))
+      return ', '.join([x for x in result if x])
 
 
     # --------------------------------------------------------------------------
@@ -222,14 +237,11 @@ class ZMSZCatalogSolrConnector(
       result = []
       container = self.getLinkObj(uid)
       home_id = container.getHome().id
-      try:
-        result.append(self._update(self.__get_delete_xml(query='home_id_s:%s'%home_id)))
-        result.append(self._update(self.__get_add_xml(container, recursive=True)))
-        result.append(self._update(self.__get_command_xml('commit')))
-        result.append(self._update(self.__get_command_xml('optimize')))
-      except:
-        result.append(standard.writeError(self, 'can\'t reindex_self'))
-      return ', '.join([standard.pystr(x) for x in result if x])
+      result.append(self._update('delete', self.__get_delete_xml(query='home_id_s:%s'%home_id)))
+      result.append(self.__get_add_xml(container, recursive=True, update=True))
+      result.append(self._update('commit', self.__get_command_xml('commit')))
+      result.append(self._update('optimize', self.__get_command_xml('optimize')))
+      return ', '.join([x for x in result if x])
 
 
     # --------------------------------------------------------------------------

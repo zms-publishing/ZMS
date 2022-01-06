@@ -33,7 +33,13 @@ def manage_repository_gitpush(self, request=None):
 			userid = str(request.get('AUTHENTICATED_USER'))[0:3]
 			os.chdir(base_path)
 			command1 = 'git add .'
-			command2 = 'git commit -a -m "%s (%s)"'%(request.get('message').replace('"','').replace(';',''), userid)
+			command2 = 'git commit -a -m'
+			if int(request.get('sign',0))==1:
+				self.setConfProperty('ZMSRepository.git.commit.sign', 1)
+				command2 = 'git commit -a -S -m'
+			elif self.getConfProperty('ZMSRepository.git.commit.sign', 0) == 1:
+				self.setConfProperty('ZMSRepository.git.commit.sign', 0)
+			command2 = '%s %s (%s)"'%(command2, request.get('message').replace('"','').replace(';',''), userid)
 			command3 = 'git push'
 			result1 = os.system(command1)
 			message.append('<code class="d-block">%s [%s]</code>'%(command1, str(result1)))
@@ -54,11 +60,17 @@ def manage_repository_gitpush(self, request=None):
 	# --- Display initial form.
 	# -------------------------
 	else:
-
 		html.append('<div class="card-body">')
 		html.append('<div class="form-group row">')
 		html.append('<label for="message" class="col-sm-2 control-label mandatory">Message</label>')
 		html.append('<div class="col-sm-10"><input class="form-control" name="message" type="text" size="25" value="" placeholder="Enter commit message here"></div>')
+		html.append('</div><!-- .form-group -->')
+		html.append('<div class="form-group row">')
+		html.append('<label for="sign" class="col-sm-2 control-label mandatory">Sign</label>')
+		html.append('<div class="col-sm-10">')
+		html.append('<input type="checkbox" name="sign" id="sign" value="1" %s title="Adds the -S param to the commit. Please make sure a certificate without passphrase is installed." />'%(self.getConfProperty('ZMSRepository.git.commit.sign', 0)==1 and 'checked=\042checked\042' or ''))
+		html.append('<small class="px-2 float-right"><a class="text-info" target="_blank" href="https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work">More about Git signing...</a></small>')
+		html.append('</div>')
 		html.append('</div><!-- .form-group -->')
 		html.append('<div class="form-group">')
 		html.append('<div class="controls save">')

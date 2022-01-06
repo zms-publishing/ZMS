@@ -42,9 +42,6 @@ def manage_repository_gitpull(self, request=None):
 				command = 'git checkout %s'%(request.get('revision').replace('"','').replace(';',''))
 			result = os.system(command)
 			message.append('<code class="d-block mb-3">%s [%s]</code>'%(command, str(result)))
-			### import from working-copy
-			# success = self.updateChanges(REQUEST.get('ids',[]),btn=='override')
-			# message.append(self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%' '.join(success)))
 		else:
 			message.append('Error: To execute this function a user role Manager or ZMSAdministrator is needed.')
 		### return with message

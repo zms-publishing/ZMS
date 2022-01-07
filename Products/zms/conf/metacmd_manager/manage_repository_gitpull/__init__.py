@@ -13,7 +13,7 @@ class manage_repository_gitpull:
 	description = ""
 
 	# Execution
-	execution = False
+	execution = 0
 
 	# Icon_clazz
 	icon_clazz = "fas fa-backward"
@@ -29,6 +29,9 @@ class manage_repository_gitpull:
 
 	# Nodes
 	nodes = "{$}"
+
+	# Package
+	package = "com.zms.foundation.metacmd.gitbridge"
 
 	# Revision
 	revision = "5.0.0"

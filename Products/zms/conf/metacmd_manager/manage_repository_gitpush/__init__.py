@@ -13,7 +13,7 @@ class manage_repository_gitpush:
 	description = ""
 
 	# Execution
-	execution = False
+	execution = 0
 
 	# Icon_clazz
 	icon_clazz = "fas fa-forward"
@@ -29,6 +29,9 @@ class manage_repository_gitpush:
 
 	# Nodes
 	nodes = "{$}"
+
+	# Package
+	package = "com.zms.foundation.metacmd.gitbridge"
 
 	# Revision
 	revision = "5.0.0"

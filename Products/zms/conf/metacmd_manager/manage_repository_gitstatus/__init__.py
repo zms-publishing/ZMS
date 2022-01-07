@@ -30,6 +30,9 @@ class manage_repository_gitstatus:
 	# Nodes
 	nodes = "{$}"
 
+	# Package
+	package = "com.zms.foundation.metacmd.gitbridge"
+
 	# Revision
 	revision = "5.0.0"
 

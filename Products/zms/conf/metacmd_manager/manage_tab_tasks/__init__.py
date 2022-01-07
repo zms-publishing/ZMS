@@ -30,6 +30,9 @@ class manage_tab_tasks:
 	# Nodes
 	nodes = "{$}"
 
+	# Package
+	package = "com.zms.foundation.metacmd.tabs"
+
 	# Revision
 	revision = "5.0.0"
 

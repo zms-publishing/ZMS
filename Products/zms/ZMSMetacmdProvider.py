@@ -164,6 +164,7 @@ class ZMSMetacmdProvider(
       impl = r['Impl'][0]
       newId = id
       newAcquired = 0
+      newPackage = r.get('package', '')
       newRevision = r.get('revision', '0.0.0')
       newName = r['name']
       newTitle = r.get('title', '')
@@ -176,7 +177,7 @@ class ZMSMetacmdProvider(
       newRoles = r.get('roles',[])
       newNodes = r.get('nodes', '{$}')
       self.delMetacmd(id)
-      return self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, \
+      return self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, \
         newData, newExecution, newDescription, newIconClazz, newMetaTypes, newRoles, \
         newNodes)
 
@@ -216,6 +217,7 @@ class ZMSMetacmdProvider(
         # Initialize attributes of new object.
         newId = id
         newAcquired = 0
+        newPackage = item.get('package','')
         newRevision = item.get('revision', '0.0.0')
         newName = item['name']
         newTitle = item.get('title', '')
@@ -229,7 +231,7 @@ class ZMSMetacmdProvider(
         newData = item['data']
         
         # Return with new id.
-        return self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, \
+        return self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, \
           newData, newExecution, newDescription, newIconClazz, newMetaTypes, newRoles, \
           newNodes)
 
@@ -276,7 +278,7 @@ class ZMSMetacmdProvider(
     #
     #  Set/add Action specified by given Id.
     # ------------------------------------------------------------------------------
-    def setMetacmd(self, id, newId, newAcquired, newRevision='0.0.0', newName='', newTitle='', newMethod=None, \
+    def setMetacmd(self, id, newId, newAcquired, newPackage='', newRevision='0.0.0', newName='', newTitle='', newMethod=None, \
           newData=None, newExecution=0, newDescription='', newIconClazz='', newMetaTypes=[], \
           newRoles=['ZMSAdministrator'], newNodes='{$}'):
       
@@ -289,6 +291,7 @@ class ZMSMetacmdProvider(
       # Values.
       new = {}
       new['id'] = newId
+      new['package'] = newPackage
       new['acquired'] = newAcquired
       new['revision'] = newRevision
       new['name'] = newName
@@ -480,6 +483,7 @@ class ZMSMetacmdProvider(
           id = REQUEST['id']
           newId = REQUEST['el_id'].strip()
           newAcquired = 0
+          newPackage = REQUEST.get('el_package', '').strip()
           newRevision = REQUEST.get('el_revision', '').strip()
           newName = REQUEST.get('el_name', '').strip()
           newTitle = REQUEST.get('el_title', '').strip()
@@ -491,8 +495,8 @@ class ZMSMetacmdProvider(
           newMetaTypes = REQUEST.get('el_meta_types', [])
           newRoles = REQUEST.get('el_roles', [])
           newNodes = REQUEST.get('el_nodes', '')
-          id = self.setMetacmd(id, newId, newAcquired, newRevision, newName, newTitle, \
-            newMethod, newData, newExecution, newDescription, newIconClazz, \
+          id = self.setMetacmd(id, newId, newAcquired, newPackage, newRevision, newName, \
+            newTitle, newMethod, newData, newExecution, newDescription, newIconClazz, \
             newMetaTypes, newRoles, newNodes)
           message = self.getZMILangStr('MSG_CHANGED')
         
@@ -570,6 +574,7 @@ class ZMSMetacmdProvider(
         elif btn == 'BTN_INSERT':
           newId = REQUEST.get('_id').strip()
           newAcquired = 0
+          newPackage = REQUEST.get('_package', '').strip()
           newRevision = REQUEST.get('_revision', '0.0.0').strip()
           newName = REQUEST.get('_name').strip()
           newTitle = REQUEST.get('_title').strip()
@@ -577,7 +582,7 @@ class ZMSMetacmdProvider(
           newData = None
           newExecution = REQUEST.get('_execution', 0)
           newIconClazz = REQUEST.get('_icon_clazz', '')
-          id = self.setMetacmd(None, newId, newAcquired, newRevision, newName, newTitle, newMethod, newData, newExecution, newIconClazz=newIconClazz)
+          id = self.setMetacmd(None, newId, newAcquired, newPackage, newRevision, newName, newTitle, newMethod, newData, newExecution, newIconClazz=newIconClazz)
           message = self.getZMILangStr('MSG_INSERTED')%id
         
         # Sync with repository.

@@ -30,6 +30,9 @@ class manage_tab_search:
 	# Nodes
 	nodes = "{$}"
 
+	# Package
+	package = "com.zms.foundation.metacmd.tabs"
+
 	# Revision
 	revision = "0.0.0"
 

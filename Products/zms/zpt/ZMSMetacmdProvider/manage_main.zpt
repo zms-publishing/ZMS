@@ -7,8 +7,10 @@
 <tal:block tal:define="
 		execution_options python:[(0,'None'),(1,'Omit UI'),(2,'Script')];
 		action python:'manage_changeMetacmds';
-		metaCmdIds python:here.getMetaCmdIds();
-		metaCmds python:[here.getMetaCmd(x) for x in metaCmdIds]">
+		metaCmdIds python:standard.sort_list(here.getMetaCmdIds());
+		metaCmds python:[here.getMetaCmd(x) for x in metaCmdIds];
+		packages python:standard.sort_list(standard.distinct_list([x.get('package','') for x in metaCmds]));
+		">
 
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]]+[{'action':'?id=%s'%x['id'],'label':x['name']} for x in metaCmds if x['id']==request.get('id')])">zmi_breadcrumbs</tal:block>
 
@@ -23,6 +25,11 @@
 				<div class="col-sm-6"><input type="text" name="el_id" class="form-control form-control-sm" tal:attributes="value python:metaCmd['id']"/></div>
 				<label for="el_revision" class="col-sm-1 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_VERSION')">Version</span></label>
 				<div class="col-sm-2"><input type="text" name="el_revision" class="form-control form-control-sm" tal:attributes="value python:metaCmd.get('revision','0.0.0')"/></div>
+			</div>
+
+			<div class="form-group row">
+				<label for="el_package" class="col-sm-3 control-label"><span>Package</span></label>
+				<div class="col-sm-9"><input type="text" name="el_package" class="form-control form-control-sm" tal:attributes="value python:metaCmd.get('package','')"/></div>
 			</div>
 
 			<div class="form-group row">
@@ -227,10 +234,19 @@
 		</tr>
 	</thead>
 	<tbody>
-	<tal:block tal:repeat="metaCmdId python:here.sort_list(metaCmdIds)">
+	<tal:block tal:repeat="package packages">
+		<tr class="meta-package">
+			<td colspan="4">
+				<strong>
+					<i class="fas fa-briefcase icon-briefcase"></i>
+				 	<tal:block tal:condition="not:package">[default package]</tal:block>
+					<tal:block tal:condition="package" tal:content="package">the package</tal:block>
+				</strong>
+			</td>
+		</tr>
+	<tal:block tal:repeat="metaCmd python:[x for x in metaCmds if x.get('package','')==package]">
 		<tr class="zmi-selectable" tal:define="
-				metaCmd python:here.getMetaCmd(metaCmdId);
-				ob python:getattr(here,metaCmdId,None);
+				ob python:getattr(here,metaCmd['id'],None);
 				revision python:metaCmd.get('revision','0.0.0');">
 			<td class="meta-ids">
 				<input type="checkbox" name="ids:list" tal:attributes="value metaCmd/id" />
@@ -279,6 +295,7 @@
 				><tal:block tal:condition="python:metaCmd.get('bobobase_modification_time') is None">N/A </tal:block>
 			</td>
 		</tr>
+	</tal:block>
 	</tal:block>
 	</tbody>
 	</table>

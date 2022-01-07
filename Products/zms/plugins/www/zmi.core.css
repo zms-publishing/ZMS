@@ -977,7 +977,8 @@ li.zmi-item span.zmi-ids {
 	flex-wrap: nowrap;
 }
 .zmi table#meta_overview.table tr > :first-child,
-.zmi table#meta_overview.table td.meta-space  {
+.zmi table#meta_overview.table td.meta-space,
+.zmi table#meta_commands.table td.meta-space {
 	text-align:center;
 	width:3em;
 }

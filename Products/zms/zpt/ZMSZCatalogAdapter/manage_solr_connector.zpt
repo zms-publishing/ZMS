@@ -1,4 +1,5 @@
-<tal:block tal:define="zmscontext python:here.getSelf();">
+<tal:block tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard;">
+
 <div class="help" data-for="qsuggest">
 	<div class="well">
 		<h4>Suggest with facets</h4>
@@ -13,11 +14,10 @@
 	</div>
 </div>
 
-
 <div id="ZCatalogSolrConnector"  tal:define="
 		solr_url python:here.getConfProperty('solr.url','http://localhost:8983/solr');
 		solr_core python:here.getConfProperty('solr.core',here.getAbsoluteHome().id);
-		admin_url python:'%s/#/%s'%(solr_url,solr_core);
+		admin_url python:'%s/#/%s/core-overview'%(solr_url,solr_core);
 		select_url python:'%s/%s/select'%(solr_url,solr_core);
 		suggest_url python:'%s/%s/suggest'%(solr_url,solr_core);
 		">
@@ -33,6 +33,14 @@
 		<label class="col-sm-2 control-label" for="admin_url"><span>Admin</span></label>
 		<div class="col-sm-10"><a tal:attributes="href admin_url" target="_blank" tal:content="admin_url">the solr-admin</a></div>
 	</div>
+	<div class="form-group row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-10">
+			<button name="btn" type="submit" class="btn btn-primary" tal:attributes="title python:here.getZMILangStr('BTN_SAVE')" value="Save">
+				<tal:block tal:content="structure python:here.getZMILangStr('BTN_SAVE')"></tal:block>
+			</button>
+		</div><!-- .col-sm-10 -->
+	</div><!-- .form-group -->
 	<div class="form-group row">
 		<label class="col-sm-2 control-label" for="qsearch"><span>Query</span></label>
 		<div class="col-sm-10">
@@ -59,5 +67,37 @@
 			</div>
 		</div>
 	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">&nbsp;</div>
+		<div class="col-sm-10">
+			<div>
+				<div class="zmi-sitemap-expand" onclick="$('.zmi-sitemap').toggleClass('full');$('.zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+					<i class="fas fa-expand-arrows-alt" title="Seitenanfang"></i>
+				</div>
+				<div class="zmi-sitemap">
+				</div><!-- .zmi-sitemap -->
+			</div>
+		</div><!-- .col-sm-10 -->
+	</div><!-- .form-group -->
+	<div class="form-group row">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-10">
+			<tal:block tal:define="meta_cmds python:standard.sort_list(here.getMetaCmds(here,'zcatalog'),'name')">
+				<div class="btn-group dropdown" tal:condition="meta_cmds">
+					<button class="btn btn-warning dropdown-toggle" type="button" id="teamDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>
+					</button>
+					<div class="dropdown-menu" aria-labelledby="teamDropdownMenuButton">
+						<a tal:repeat="meta_cmd meta_cmds" class="dropdown-item" href="javascript:;"
+							tal:attributes="onclick python:'return zmiExecuteCatalog(\'%s\')'%meta_cmd['id'];title python:meta_cmd.get('title','id')">
+							<i tal:condition="python:meta_cmd.get('icon_clazz')" tal:attributes="class python:meta_cmd.get('icon_clazz','fas fa-square')"></i>
+							<span tal:replace="python:here.getZMILangStr(meta_cmd['name'])">the action-name</span>
+						</a>
+					</div>
+				</div>
+			</tal:block>
+		</div><!-- .col-sm-10 -->
+	</div><!-- .form-group -->
 </div>
+
 </tal:block>

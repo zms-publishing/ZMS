@@ -195,9 +195,8 @@ class ZMSLog(ZMSItem.ZMSItem):
         
       elif REQUEST.get("btn") == "Upload":
         obj = REQUEST['file']
-        type = 'b'
         filename = "%s%s%s"%(path, os.sep, _fileutil.extractFilename(obj.filename))
-        _fileutil.exportObj( obj, filename, type)
+        _fileutil.exportObj( obj, filename)
         message = "Upload complete."
       
       return REQUEST.RESPONSE.redirect( self.url_append_params( REQUEST[ 'HTTP_REFERER'], { 'manage_tabs_message' :message }))

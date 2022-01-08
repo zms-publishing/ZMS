@@ -50,41 +50,6 @@ def updateVersion(root):
       root.setConfProperty('ZMS.catalog.build', 2)
 
 
-# ------------------------------------------------------------------------------
-#  remove_tags:
-# ------------------------------------------------------------------------------
-def remove_tags(self, s):
-  d = {
-    '&ndash;':'-',
-    '&middot;': '.',
-    '&nbsp;': ' ',
-    '&ldquo;': '',
-    '&sect;': '',
-    '&Auml;': u'Ä',
-    '&Ouml;': u'Ö',
-    '&Uuml;': u'Ü',
-    '&auml;': u'ä',
-    '&ouml;': u'ö',
-    '&uuml;': u'ü',
-    '&szlig;': u'ß'}
-  s = str(s)
-  for x in d:
-    s = s.replace(x,d[x])
-  s = standard.re_sub('<script(.*?)>(.|\\n|\\r|\\t)*?</script>', ' ', s)
-  s = standard.re_sub('<style(.*?)>(.|\\n|\\r|\\t)*?</style>', ' ', s)
-  s = standard.re_sub('<[^>]*>', ' ', s)
-  while s.find('\t') >= 0:
-    s = s.replace('\t', ' ')
-  while s.find('\n') >= 0:
-    s = s.replace('\n', ' ')
-  while s.find('\r') >= 0:
-    s = s.replace('\r', ' ')
-  while s.find('  ') >= 0:
-    s = s.replace('  ', ' ')
-  s = s.strip()
-  return s
-
-
 ################################################################################
 ################################################################################
 ###
@@ -312,10 +277,8 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
           if attr_type in ['date', 'datetime']:
             value = self.getLangFmtDate(value, 'eng', 'ISO8601')
           elif type(value) in (dict, list):
-            value = standard.str_item(value,f=True)            
-            print(value)
-          value = str(value)
-          d[attr_id] = remove_tags(self, value)
+            value = standard.str_item(value,f=True)  
+          d[attr_id] = standard.remove_tags(value)
         cb(node, d)
 
       # Traverse tree.

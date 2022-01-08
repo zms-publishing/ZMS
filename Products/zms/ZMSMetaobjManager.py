@@ -887,7 +887,7 @@ class ZMSMetaobjManager(object):
         zopeutil.removeObject(self, newObId)
         # Insert Zope-Object.
         if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
-        if standard.is_str(newCustom): newCustom = newCustom.replace('\r', '')
+        if isinstance(newCustom, str): newCustom = newCustom.replace('\r', '')
         try:
           zopeutil.addObject(self, mapTypes[newType], newObId, newName, newCustom)
           del attr['custom']
@@ -938,8 +938,7 @@ class ZMSMetaobjManager(object):
         # Insert Zope-Object.
         if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
         # Line-breaks.
-        if standard.is_str(newCustom): 
-           newCustom = newCustom.replace('\r', '')
+        if isinstance(newCustom, str): newCustom = newCustom.replace('\r', '')
          # Strip errors.
         if isinstance(newCustom,str): 
            if newCustom.find("## Errors:") >= 0:

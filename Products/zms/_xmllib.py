@@ -455,7 +455,7 @@ def toCdata(self, s, xhtml=False):
   rtn = ''
 
   # Return Text.
-  if standard.is_str(s) and s.find(' ') < 0 and s.find('<') < 0 and s.find('&') < 0:
+  if isinstance(s, str) and s.find(' ') < 0 and s.find('<') < 0 and s.find('&') < 0:
     rtn = s
 
   # Return Text in CDATA.

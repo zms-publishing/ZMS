@@ -136,7 +136,7 @@ def createBlobField(self, objtype, file=b''):
     blob = uploadBlobField( self, objtype, file)
   elif isinstance(file, dict):
     data = file.get( 'data', '')
-    if standard.is_str(data):
+    if isinstance(data, str):
       data = bytes(data,'utf-8')
       data = io.BytesIO( data)
     blob = uploadBlobField( self, objtype, data, file.get('filename', ''))

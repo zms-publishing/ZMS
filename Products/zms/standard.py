@@ -58,13 +58,6 @@ from Products.zms import _mimetypes
 
 security = ModuleSecurityInfo('Products.zms.standard')
 
-security.declarePublic('is_str')
-security.declarePublic('is_bytes')
-def is_str(v):
-  return isinstance(v,str)
-def is_bytes(v):
-  return isinstance(v,bytes)
-
 security.declarePublic('pystr')
 pystr_ = str
 def pystr(v, encoding='utf-8', errors='strict'):
@@ -615,7 +608,7 @@ def id_quote(s, mapping={
   """
   s = umlaut_quote(s, mapping)
   valid = [ord(x[0]) for x in mapping.values()] + [ord('_')] + list(range(ord('0'), ord('9')+1)) + list(range(ord('A'), ord('Z')+1)) + list(range(ord('a'), ord('z')+1))
-  s = [x for x in s if is_str(x) and len(x) == 1 and ord(x) in valid]
+  s = [x for x in s if isinstance(x, str) and len(x) == 1 and ord(x) in valid]
   while len(s) > 0 and s[0] == '_':
       s = s[1:]
   s = ''.join(s).lower()
@@ -1717,10 +1710,9 @@ def str_json(i, encoding='ascii', errors='xmlcharrefreplace', formatted=False, l
     else:
       return str(i)
   elif i is not None:
-    if allow_booleans and i in ['true','false']:
+    if allow_booleans and i in ['true', 'false']:
       return i
-    else:
-      if not is_str(i):
+    elif not isinstance(i, str):
         i = str(i)
     return '"%s"'%(i.replace('\\','\\\\').replace('"','\\"').replace('\n','\\n').replace('\r','\\r'))
   return '""'

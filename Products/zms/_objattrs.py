@@ -56,7 +56,7 @@ def getobjattrdefault(obj, obj_attr, lang):
         v = default.copy()
       else:
         datatype = obj_attr['datatype_key']
-        if default and datatype not in _globals.DT_TEXTS and standard.is_str(default):
+        if default and datatype not in _globals.DT_TEXTS and isinstance(default, str):
           default = standard.dt_exec(obj,default)
         v = default
     return v

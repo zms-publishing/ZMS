@@ -696,7 +696,7 @@ class ZMSFilterManager(
       zopeutil.removeObject(self, newId)
       # Insert Zope-Object.
       if isinstance(newCommand,_blobfields.MyBlob): newCommand = newCommand.getData()
-      if standard.is_str(newCommand): newCommand = newCommand.replace('\r', '')
+      if isinstance(newCommand, str): newCommand = newCommand.replace('\r', '')
       zopeutil.addObject(self, newType, newId, newName, newCommand)
       # Set.
       obs = self.processes

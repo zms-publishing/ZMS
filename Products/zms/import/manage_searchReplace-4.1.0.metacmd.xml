@@ -17,7 +17,7 @@ request = container.REQUEST
 RESPONSE =  request.RESPONSE
 
 def replace(o, old, new):
-  if standard.is_str(o):
+  if isinstance(o, str):
     return o.replace(old,new)
   elif standard.operator_gettype(o) is standard.operator_gettype({}):
     for k in o:

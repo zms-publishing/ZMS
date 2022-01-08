@@ -309,7 +309,7 @@ class PathHandler(object):
           except:
              v = standard.writeError( self, '[__bobo_traverse__]: name=%s'%name)
           if v is not None:
-            if standard.is_str(v):
+            if isinstance(v, str):
               v = self.FileFromData( v, content_type='text/plain;charset=utf-8')
               v.aq_parent = self
               v.key = name

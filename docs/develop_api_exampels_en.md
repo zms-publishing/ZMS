@@ -27,7 +27,7 @@ The code shows the title and the desciption attribute. Conditionally a warning i
 # --// renderShort //--
 alert = '<div class="alert alert-warning mx-0">Creator is missing!</div>'
 if zmscontext.attr('attr_dc_creator'): 
-    alert=''
+	alert=''
 return '<h1>%s<br/><small>%s</small></h1>%s'%(zmscontext.attr('title'), zmscontext.attr('attr_dc_description'), alert)
 # --// /renderShort //--
 ```
@@ -49,12 +49,65 @@ So simply add your own _pathhandler_ attribute (python type, "py") to the ZMSFil
 # --// pathhandler //--
 request = container.REQUEST
 if zmscontext.isActive(request):
-  return zmscontext.attr('file')
+	return zmscontext.attr('file')
 else:
-  return False
+	return False
 # --// /pathhandler //--
 ```
 Now ZMS.pathhandler will executes this attribute code when traversing the URL path: the file will only be returned if the ZMSFile object is marked as active.
 
 ![Pathhandler](images/develop_api_pathhandler.png)
 *ZMSFile content object definition: Adding a pathhandler function as a py-primitive allow you to customize the response on URL pathes*
+
+
+### 3. getNavItems()
+*getNavItems()* allows a quick and simple creation of a navigation. It generates a HTML output as a hierarchical list if li>a elements with a set of helpful css classes:
+1. ZMS-ID
+2. Meta-ID
+3. in/active 
+2. current (if current document node)
+4. childpages (if sub documents exists)
+
+The functon parameters are
+1. document context
+2. request
+3. parameter dictionary
+	- I{id} (C{str=''}) id of base ul-element
+	- I{cssclass} (C{str=''}) css class of base ul-element
+	- I{add_self} (C{boolean=False}) add self to list
+	- I{deep} (C{boolean=True}) process child nodes
+	- I{complete} (C{boolean=False}) process complete subtree
+	- I{maxdepth} (C{int=100}) limits node list to a given depth
+	- I{getrestricted} (C{boolean=True}) get is restricted
+
+```python
+request = container.REQUEST
+zmscontext = context.content
+nav = zmscontext.getNavItems(zmscontext, request, {
+		'add_self':False,
+		'deep':True,
+		'complete':True,
+		'maxdepth':2,
+		'id':'sidebarnav',
+		'cssclass':'sidenav'
+	})
+return nav
+```
+
+![getNavItems](images/develop_api_getNavItems.png)
+*Example code: a Zope Python Script object creating a two level list of the document tree*
+
+The corresponding TAL-code looks like this:
+
+```html
+<nav aria-label="context-navigation" 
+	tal:content="structure python: zmscontext.getNavItems(zmscontext, request, {
+		'add_self':False,
+		'deep':True,
+		'complete':True,
+		'maxdepth':2,
+		'id':'sidebarnav',
+		'cssclass':'sidenav'
+	})"></nav>
+```
+

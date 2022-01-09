@@ -1,9 +1,8 @@
 
 # <a id="editorsguide"></a>Editor's Guide: Content Production
 
-The ZMS GUI for editors is primarily focussed on the content. To archive a design-neutral content stream
-the editor produces a document as a sequence of small content-blocks. A content-block may be a text block, a link, a picture, a video or any other content class which is availabe in the right pop-up menu ("context menu").
-A new content block is added by clicking on one of the listed content classes and filling the following form.
+The ZMS GUI for editors is primarily focussed on the content. To archive a design-neutral content stream the editor produces a document (aka page) as a sequence of small content-blocks. A content-block may be a text block, a link, a picture, a video or any other content class which is availabe in the right pop-up menu ("context menu").
+A new content object is added by clicking on one of the listed content classes and filling the following form.
 
 
 ![ZMS GUI](images/edit_gui_start_en.gif)
@@ -18,7 +17,7 @@ The ZMI mainly has two functional purposes: navigating and editing. For navigati
 4. Site Map (content tree)
 
 and for editing:
-1. context menu (adds content items, executes functions)
+1. context menu (adds content items, executes commands)
 2. content class specific data entry form (content production)
 
 ## <a id="topbar"></a>Top Bar
@@ -52,6 +51,31 @@ Clicking onto the sitemap icon in the top menu generated a left handed navigatio
 
 ![ZMS GUI](images/edit_gui_sitemap_en.gif)
 *Site map navigation browsing the document tree*
+
+## Pages: Building a Content Tree with Folders and Documents
+In general ZMS differs two types of content classes: 
+1. **page**-like object classes like *Folder* or *Document* working as an aggregator of the 
+2. **block** elements (or *page-elements*) for containing the content itself.
+
+The page-like objects (also known as *nodes*) can be considered as a blank sheet of paper that can be filled with the content *blocks*. The special role of the *Folder* is to structure the pages into a tree hierarchy, because a *Folder* can contain (besides content blocks) other folders or documents. In contrast a *Document* is just the end of a hierarchy (like a leaf of the document tree).
+
+![ZMSDocument](images/edit_gui_document_de.png)
+*Document: adding a new page starts with entering some bibliographic meta-data like title, navigation title (short title), description and others*
+
+A good way to start a new websites is to build its folder structure and thus to get a first idea about the expected amount of content. This  empty tree is also helpful as a mockup  generating  the website navigation automatically.
+
+
+## Blocks: Filling Pages with Content 
+Page-objects like *Folder* and *Document* are sequentally filled with content blocks. Typical block elements are:
+1. Textblock
+2. File
+3. Link
+4. Image
+5. Table
+6. Video
+
+![ZMSGraphic](images/edit_gui_zmsgraphic_de.png)
+*Example of a content block: Image is a typical part of a document; it is placed in a sequence with other content blocks like text-blocks and tables. The Image is constructed by a set of attributes. On uploading the image data file (gif, jpg, png, svg) the editor has to provide some additional descriptive informations like a legend text, maybe an URL the image links or a second variant in an higher resolution (and bigger data size).*
 
 
 

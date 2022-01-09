@@ -7,7 +7,7 @@ class workflow:
 	id = "workflow"
 
 	# Revision
-	revision = "0.0.0"
+	revision = "5.0.0"
 
 	# Activities
 	class Activities:

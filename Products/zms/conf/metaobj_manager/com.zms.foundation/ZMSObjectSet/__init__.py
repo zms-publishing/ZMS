@@ -26,7 +26,7 @@ class ZMSObjectSet:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "4.1.2"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSObject"

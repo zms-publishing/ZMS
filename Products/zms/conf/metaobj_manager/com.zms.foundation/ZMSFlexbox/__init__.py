@@ -26,7 +26,7 @@ class ZMSFlexbox:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "0.0.6"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSObject"

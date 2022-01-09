@@ -22,7 +22,7 @@ class ZMSLib:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "3.1.2"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSLibrary"

@@ -26,7 +26,7 @@ class ZMSLinkElement:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "3.1.20"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSObject"

@@ -26,7 +26,7 @@ class ZMSTeaserElement:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "4.0.0"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSTeaserElement"

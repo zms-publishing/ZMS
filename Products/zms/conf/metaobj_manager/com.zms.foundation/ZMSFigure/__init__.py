@@ -26,7 +26,7 @@ class ZMSFigure:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "0.0.5"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSObject"

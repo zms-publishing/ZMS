@@ -28,7 +28,7 @@ class ZMSFile:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "3.4.0"
+	revision = "5.0.0"
 
 	# Type
 	type = "ZMSObject"

@@ -1,4 +1,4 @@
 ZEO
 
 # MemCacheD to replace mappingstorage
-Products.mcdutils
+Products.mcdutils>=3.2

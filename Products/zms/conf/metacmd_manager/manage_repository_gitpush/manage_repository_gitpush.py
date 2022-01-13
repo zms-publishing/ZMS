@@ -39,7 +39,7 @@ def manage_repository_gitpush(self, request=None):
 				command2 = 'git commit -a -S -m'
 			elif self.getConfProperty('ZMSRepository.git.commit.sign', 0) == 1:
 				self.setConfProperty('ZMSRepository.git.commit.sign', 0)
-			command2 = '%s %s (%s)"'%(command2, request.get('message').replace('"','').replace(';',''), userid)
+			command2 = '%s %s "(%s)"'%(command2, request.get('message').replace('"','').replace(';',''), userid)
 			command3 = 'git push'
 			result1 = os.system(command1)
 			message.append('<code class="d-block">%s [%s]</code>'%(command1, str(result1)))

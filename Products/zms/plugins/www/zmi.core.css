@@ -1665,6 +1665,7 @@ table.table-sm tr.row_insert td .btn-add {
 	border-top: 1px solid #dddddd;
 	white-space: nowrap;
 }
+
 @media all and (max-width: 768px) {
 	.zmi.repository_manager_main label.zms-component {
 		margin:1rem 0 !important;
@@ -1673,6 +1674,9 @@ table.table-sm tr.row_insert td .btn-add {
 	}
 }
 
+.zmi.repository_manager_main .table.repo-changeset .zmi-helper-clickable {
+    cursor:pointer;
+}
 
 
 /*  Sitemap Menu

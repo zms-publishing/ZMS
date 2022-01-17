@@ -94,6 +94,8 @@ class ZMSItem(
       if isinstance(internal_dict, dict) and internal_dict.get('css_classes', None):
         l.extend( internal_dict['css_classes'] )
       l.extend(self.getUserRoles(request['AUTHENTICATED_USER']))
+      # Additionally configured css classes [string]
+      l.append(self.getConfProperty('ZMS.added.zmi.body_class',''))
       return ' '.join(l)
 
     # --------------------------------------------------------------------------

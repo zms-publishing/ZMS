@@ -52,7 +52,7 @@ tr.inactive > td.data > * {
 	<div class="card" tal:define="filter_columns attr_ids">
 		<div class="card-header filters btn-collapse">
 			<a class="btn card-toggle pull-left" data-toggle="collapse" href="#attrProperties">
-				<i class="icon-caret-down fas fa-caret-down"></i>
+				<i class="fas fa-caret-down"></i>
 				<tal:block tal:content="structure python:zmscontext.getZMILangStr('ATTR_FILTER')">the label</tal:block>
 			</a>
 		</div><!-- .card-header -->

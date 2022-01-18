@@ -6,8 +6,7 @@
 <data width="20" height="20" content_type="image/gif" filename="icon_bulletlist.gif" type="image">47494638396114001400b30000040204fc02fc3432341c22140c0e04242a245452542c221c141214ed006412004c0000779b02fe0000ff0000ff0000ff21f90401000001002c000000001400140000042930c849abbd38ebcdbbff20374c40596e8520996785b08871042c80aa34bb11a41efec0a070481c4600003b</data></item>
 <item key="display"><![CDATA[Insert Bullet]]></item>
 <item key="id"><![CDATA[insert_bullet]]></item>
-<item key="js"><![CDATA[function zmiRicheditInsertBullet() 
-{
+<item key="js"><![CDATA[function zmiRicheditInsertBullet() {
     var doc = document;
     var fm = doc.forms['<dtml-var fmName>'];
     var input = fm.elements['<dtml-var elName>'];
@@ -105,8 +104,7 @@
 <data width="20" height="20" content_type="image/gif" filename="icon_numlist.gif" type="image">47494638396114001400b30000040204fc02fc3432341c22140c0e04242a245452542c221c141214ed006412004c0000779b02fe0000ff0000ff0000ff21f90401000001002c000000001400140000042730c849abbd38ebcdbbff1ed00d142072855062886922c6319d5bba724445837cefffc0a0d01201003b</data></item>
 <item key="display"><![CDATA[Insert Enumeration]]></item>
 <item key="id"><![CDATA[insert_enumeration]]></item>
-<item key="js"><![CDATA[function zmiRicheditInsertEnummeration() 
-{
+<item key="js"><![CDATA[function zmiRicheditInsertEnummeration() {
     var doc = document;
     var fm = doc.forms['<dtml-var fmName>'];
     var input = fm.elements['<dtml-var elName>'];

@@ -2,17 +2,14 @@
 <html lang="en" tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard">
 <tal:block tal:content="structure python:zmscontext.zmi_html_head(here,request)">zmi_html_head</tal:block>
 <style>
-.zmi.browse_iframe .nav-pills {
-	position:fixed;
-	top:0;
-	left:0;
-	width:100%;
-	background-color:white;
-	padding-bottom:5px;
-	z-index:9999;
+.zmi.browse_iframe .nav-tabs a.nav-link.active {
+	background: #f5f6f7;
+	border-bottom-color: transparent !important;
 }
 .zmi.browse_iframe .tab-content {
-	padding-top:50px;
+	border: 1px solid #dee2e6;
+	margin-top: -1px;
+	background: #f5f6f7;
 }
 .zmi.browse_iframe .tab-content .zmi-filter .input-group-prepend > .input-group-text {
 	padding: 0rem 0.62rem;
@@ -22,14 +19,18 @@
 	border:none;
 	padding:1em 0em;
 }
+.zmi.browse_iframe #search_results .line.row {
+	margin:0 0.1rem
+}
 .zmi.browse_iframe #search_results .line.row.gray {
-	background-color:#f8f8f8;
+	background-color:#fff;
+}
+.zmi.browse_iframe #search_results .line.row h2 {
+	line-height:1 !important;
+	margin-bottom:0;
 }
 .zmi.browse_iframe #search_results .line.row p {
 	font-size:x-small;
-}
-.zmi.browse_iframe #search_results .line.row h2 {
-	margin-bottom:0;
 }
 .zmi.browse_iframe #search_results h2 a {
 	font-size:medium;
@@ -60,6 +61,13 @@
 	margin-top: 1em;
 	vertical-align:baseline;
 }
+.zmi.browse_iframe .pull-right nav {
+	margin: 3rem .5rem .5rem 0;
+}
+.zmi.browse_iframe .zmi-sitemap  > .fa-spin {
+	margin: 1rem .3rem 1rem 1rem;
+}
+
 </style>
 <body tal:attributes="class python:zmscontext.zmi_body_class(id='browse_iframe')">
 
@@ -71,7 +79,7 @@
 
 <div class="tabbable tabs-left">
 
-<ul class="nav nav-pills">
+<ul class="nav nav-tabs">
 	<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#sitemap" tal:attributes="title python:'%s: %s'%(zmscontext.getZMILangStr('ATTR_LINK_INTERNAL'),zmscontext.getZMILangStr('TAB_SITEMAP'))"><i class="fas fa-sitemap"></i></a></li>
 	<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#link" tal:attributes="title python:zmscontext.getZMILangStr('ATTR_LINK_EXTERNAL')"><i class="fas fa-external-link-alt"></i></a></li>
 	<li class="nav-item dropdown languages" tal:condition="python:len(zmscontext.getLangIds())>1">
@@ -102,15 +110,15 @@
 	<form class="zmi-filter" onsubmit="return false;">
 		<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 		<input type="hidden" name="preview" tal:attributes="value python:request['preview']" />
-		<div class="input-group pr-3">
+		<div class="input-group px-3">
 			<div class="input-group-prepend">
 				<span class="input-group-text"><i class="fas fa-filter text-dark"></i>&nbsp;&nbsp;<span class="badge badge-pill badge-info">0</span></span>
 			</div>
-			<input type="text" class="form-control filter" name="search" placeholder=""/>
+			<input type="text" class="form-control filter" name="search" placeholder="" />
 		</div><!-- .input-group -->
-		<div id="search_results" class="form-group p-3" style="display:none">
-			<div class="header alert alert-info mx-0">
-				<span class="small-head">
+		<div id="search_results" class="form-group p-3 m-0" style="display:none">
+			<div class="header alert alert-info p-0 mx-0">
+				<span class="small-head m-3 d-block">
 					<i class="text-primary fas fa-spinner fa-spin"></i>
 					<tal:block tal:content="python:zmscontext.getZMILangStr('MSG_LOADING')">loading</tal:block>
 				</span>
@@ -126,7 +134,7 @@
 </div>
 
 <div class="tab-pane" id="link">
-	<div class="input-group mb-3">
+	<div class="input-group p-3">
 		<div class="input-group-prepend">
 			<label class="sr-only" for="url"><span tal:content="structure python:zmscontext.getZMILangStr('ATTR_URL')">the label</span></label>
 			<select class="form-control" id="type" name="type">

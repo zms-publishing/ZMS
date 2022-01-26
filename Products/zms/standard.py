@@ -457,6 +457,8 @@ def remove_tags(s):
     s = s.replace('\n', ' ')
   while s.find('\r') >= 0:
     s = s.replace('\r', ' ')
+  while s.find('\f') >= 0:
+    s = s.replace('\f', ' ')
   while s.find('  ') >= 0:
     s = s.replace('  ', ' ')
   s = s.strip()

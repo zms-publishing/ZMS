@@ -2,14 +2,6 @@
 
 from Products.zms import standard
 
-def clean_whitespace(s):
-  s = s.replace('\n',' ')
-  s = s.replace('\r',' ')
-  s = s.replace('\t',' ')
-  s = s.replace('\f',' ')
-  s = s.replace('  ',' ')
-  return s
-
 def manage_zcatalog_create_sitemap( self):
   msg = []
   request = self.REQUEST
@@ -81,9 +73,9 @@ def manage_zcatalog_create_sitemap( self):
           if isinstance(v, str):
             name = '%s_s'%k
       if name.endswith("_t"):
-        v = '<![CDATA[%s]]>'%(clean_whitespace(v))
+        v = '<![CDATA[%s]]>'%(standard.remove_tags(v))
       doc.append('<field name="%s" boost="%.1f">%s</field>'%(name, boost, v))
-    doc.append('<field name="text_t"><![CDATA[%s]]></field>'%(clean_whitespace(' '.join([x for x in text if x]))))
+    doc.append('<field name="text_t"><![CDATA[%s]]></field>'%(standard.remove_tags(' '.join([x for x in text if x]))))
     doc.append('</doc>')
     xml.extend(doc)
   zca.get_sitemap(cb, zmscontext, recursive=True)

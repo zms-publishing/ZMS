@@ -34,7 +34,7 @@
 			<div class="col-sm-10 text-nowrap form-group">
 				<span class="btn btn-secondary" tal:attributes="title python:'%s/%s'%(here.getZMILangStr('BTN_SLCTALL'),here.getZMILangStr('BTN_SLCTNONE'))" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
 				<button type="submit" class="btn btn-secondary" name="btn" value="refresh"><i class="icon-repeat fas fa-redo-alt"></i> Refresh</button>
-				<tal:block tal:define="meta_cmds python:here.getMetaCmds(here,'repository')">
+				<tal:block tal:define="meta_cmds python:standard.sort_list(here.getMetaCmds(here,'repository'),'name')">
 					<div class="btn-group">
 						<button id="btn_save_to_repo" 
 							type="submit" class="btn btn-secondary" name="btn" value="commit" title="Export to Filesystem"

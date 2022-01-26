@@ -28,7 +28,6 @@ import zExceptions
 # Product Imports.
 from Products.zms import standard
 from Products.zms import IZMSCatalogConnector
-from Products.zms import ZMSZCatalogAdapter
 from Products.zms import ZMSItem
 from Products.zms import _globals
 
@@ -272,7 +271,7 @@ class ZMSZCatalogConnector(
               elif k == 'zcat_column_custom':
                 k = 'custom'
               elif k == 'standard_html':
-                v = ZMSZCatalogAdapter.remove_tags(self, v)
+                v = standard.remove_tags(self, v)
               xmlr += '<arr name="%s">'%k
               if isinstance(v,str):
                 for x in range(16):

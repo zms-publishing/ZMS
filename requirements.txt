@@ -1,6 +1,7 @@
 # ZMS Dependencies
 docutils
 configparser
+requests
 Zope[wsgi]
 Products.GenericSetup
 Products.MailHost

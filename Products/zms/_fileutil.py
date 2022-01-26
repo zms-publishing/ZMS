@@ -302,7 +302,7 @@ def executeCommand(path, command):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _fileutil.exportObj:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-def exportObj(obj, filename, filetype='b'):
+def exportObj(obj, filename):
   
   #-- Try to create directory-tree.
   filename = getOSPath(filename)
@@ -311,41 +311,31 @@ def exportObj(obj, filename, filetype='b'):
   
   #-- Get object data.
   data = None
-  if getattr(obj, 'meta_type','na')=='Z SQL Method':
+  if getattr(obj, 'meta_type',None) is not None:
     data = zopeutil.readData(obj)
   else:
     try: # ImageFile
-      f = open(obj.path,'r%s'%filetype)
+      f = open(obj.path,'rb')
       data = f.read()
       f.close()
     except:
-      try: # Image / File
-        data = obj.data
-        if len(data) == 0:
-          data = obj.getData()
-      except: 
-        try:
-          data = obj.raw # DTML Method
-        except:
-          try:
-            data = obj.read() # REQUEST.enctype multipart/form-data
-          except:
-            data = str(obj)
+      try:
+        # data,io.RawIOBase
+        data = obj.read()
+      except:
+        data = obj
     
   #-- Save to file.
   if data is not None:
-    objfile = open(filename, 'w%s'%filetype)
-    if isinstance(data,str):
-      objfile.write(data.encode('utf-8'))
-    elif isinstance(data,bytes):
-      objfile.write(data)
-    elif isinstance(data,io.RawIOBase):
-      objfile.write(data.read())
-    else:
-      while data is not None:
-        objfile.write(data.data)
-        data=data.next
+    objfile = open(filename, 'wb')
+    if isinstance(data, str):
+      try:
+        data = data.encode("utf-8")
+      except:
+        pass
+    objfile.write(data)
     objfile.close()
+  return data
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

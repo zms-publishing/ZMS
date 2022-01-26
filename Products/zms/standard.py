@@ -425,6 +425,44 @@ def html_quote(v, name='(Unknown name)', md={}):
   return html.escape(v, 1)
 
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+remove_tags
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+security.declarePublic('remove_tags')
+def remove_tags(s):
+  d = {
+    '&ndash;':'-',
+    '&nbsp;':' ',
+    '&ldquo;':'',
+    '&lsquo;':'\'',
+    '&rsquo;':'\'',
+    '&sect;':'',
+    '&Auml;':'\xc2\x8e',
+    '&Ouml;':'\xc2\x99',
+    '&Uuml;':'\xc2\x9a',
+    '&auml;':'\xc2\x84',
+    '&ouml;':'\xc2\x94',
+    '&uuml;':'\xc2\x81',
+    '&szlig;':'\xc3\xa1',
+  }
+  s = pystr(s)
+  for x in d:
+    s = s.replace(x,d[x])
+  s = re_sub('<script(.*?)>(.|\\n|\\r|\\t)*?</script>', ' ', s)
+  s = re_sub('<style(.*?)>(.|\\n|\\r|\\t)*?</style>', ' ', s)
+  s = re_sub('<[^>]*>', ' ', s)
+  while s.find('\t') >= 0:
+    s = s.replace('\t', ' ')
+  while s.find('\n') >= 0:
+    s = s.replace('\n', ' ')
+  while s.find('\r') >= 0:
+    s = s.replace('\r', ' ')
+  while s.find('  ') >= 0:
+    s = s.replace('  ', ' ')
+  s = s.strip()
+  return s
+
+
 security.declarePublic('encrypt_schemes')
 def encrypt_schemes():
   """
@@ -785,6 +823,17 @@ def unescape(s):
   return s
 
 
+security.declarePublic('http_request')
+def http_request(url, method='GET', data={}, auth=None, timeout=10, headers={'Accept':'*/*'}):
+  import requests
+  response = None
+  if method == 'POST':
+    response = requests.post(url, files=data)
+  elif method == 'GET':
+    response = requests.get( url, params=data)
+  return response
+
+
 security.declarePublic('http_import')
 def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
   """
@@ -811,7 +860,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   scheme = u[0]
   netloc = u[1]
   path = u[2]
-  query = u[4]
+  query = u[4].encode('utf-8')
 
   # Get Proxy.
   useproxy = True
@@ -850,9 +899,9 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   message = response.reason
 
   #### get parameter from content
-  if reply_code == 404 or reply_code >= 500:
+  if reply_code >= 400 or reply_code >= 500:
     error = "[%i]: %s at %s [%s]"%(reply_code, message, url, method)
-    writeLog( context, "[http_import.error]: %s"%error)
+    writeError( context, "[http_import.error]: %s"%error)
     raise zExceptions.InternalError(error)
   elif reply_code==200:
     # get content
@@ -911,6 +960,8 @@ def writeLog(context, info):
   @rtype: C{str}
   """
   try:
+    if isinstance(info, bytes):
+      info = info.decode('utf-8')
     zms_log = getLog(context)
     severity = logging.DEBUG
     if zms_log.hasSeverity(severity):
@@ -929,6 +980,8 @@ def writeBlock(context, info):
   @rtype: C{str}
   """
   try:
+    if isinstance(info, bytes):
+      info = info.decode('utf-8')
     zms_log = getLog(context)
     severity = logging.INFO
     if zms_log.hasSeverity(severity):
@@ -947,6 +1000,8 @@ def writeError(context, info):
   @rtype: C{str}
   """
   t, v, tb = sys.exc_info()
+  if isinstance(info, bytes):
+    info = info.decode('utf-8')
   info += '\n'.join(traceback.format_tb(tb))
   try:
     info = "[%s@%s] "%(context.meta_id, '/'.join(context.getPhysicalPath())) + info
@@ -1485,7 +1540,7 @@ def localfs_write(filename, v, mode='b'):
   # Get absolute filename.
   filename = _fileutil.absoluteOSPath(filename)
   # Write file.
-  _fileutil.exportObj( v, filename, mode)
+  return _fileutil.exportObj( v, filename)
 
 
 security.declarePublic('localfs_remove')

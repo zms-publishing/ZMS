@@ -40,9 +40,3 @@ class IZMSCatalogConnector(Interface):
       Reindex single node.
       @rtype: C{str}
       """
-
-    def get_sitemap(self):
-      """
-      Returns sitemap.
-      @rtype: C{list}
-      """

@@ -1294,6 +1294,9 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 			var page_id = $page.attr("id").substr(page_home_id.length+1);
 			var html = that.addPages([pages[i]]);
 			$(context).append(html);
+			if (typeof that.p['addPages.callback'] == 'function') {
+				that.p['addPages.callback']();
+			}
 			context = "ul[data-home-id="+page_home_id+"][data-id="+page_id+"] li";
 			// Remember preselected active.
 			that.active.push({id:page_id,home_id:page_home_id});
@@ -1437,6 +1440,9 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 			else {
 				var html = that.addPages(pages);
 				$container.append(html);
+				if (typeof that.p['addPages.callback'] == 'function') {
+					that.p['addPages.callback']();
+				}
 				// Set preselected active.
 				for (var i = 0; i < that.active.length; i++) {
 					var d = that.active[i];

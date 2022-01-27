@@ -15,9 +15,14 @@ function openWindow(url) {
 	<div class="form-group zms4-row">
 		<label class="col-sm-2 control-label">All Clients</label>
 		<div class="col-sm-10 form-inline">
-			<div class="btn btn-default btn-secondary" style="margin-right:1em">
-				<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-					onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" />
+			<div class="input-group" style="margin-right:1em">
+				<div class="btn btn-default btn-secondary">
+					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
+						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" />
+				</div>
+				<a class="btn btn-default btn-secondary" target="_blank" href="javascript:;" onclick="return zmiExpandObjectTree(-1);">
+						<i class="icon fas fa-plus-square"></i>
+				</a>
 			</div>
 			<a tal:condition="initialized"
 				class="btn btn-default btn-secondary" target="_blank" style="margin-right:1em"
@@ -61,11 +66,11 @@ function openWindow(url) {
 			<div class="zmi-sitemap-expand" onclick="$('#zmsindex .zmi-sitemap-container').toggleClass('full');$('#zmsindex .zmi-sitemap-expand i').toggleClass('icon-resize-small')">
 				<i class="icon icon-resize-full fas fa-expand-arrows-alt" title="Seitenanfang"></i>
 			</div>
-			<div class="zmi-sitemap-container loading">
+			<div class="zmi-sitemap-container">
 				<div class="progress">
 					<div class="progress-bar progress-bar-striped progress-bar-animated active"
 						role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-						<span>Loading Sitemap ... </span>
+						<span></span>
 					</div>
 				</div>
 				<div class="zmi-sitemap"></div><!-- .zmi-sitemap -->
@@ -93,32 +98,6 @@ function openWindow(url) {
 			</div><!-- .input-group -->
 		</div><!-- .col-sm-5-->
 	</div><!-- .form-group -->
-
-	<div class="form-group zms4-row" tal:condition="initialized">
-		<label class="col-sm-2 control-label">Uid</label>
-		<div class="col-sm-5">
-			<div class="input-group" title="SEARCH for a given uid and show the index details.">
-				<input class="form-control" type="text" name="uid" tal:attributes="value uid" placeholder="Enter uid"/>
-				<div class="input-group-append input-group-btn">
-					<button class="btn btn-primary" name="btn" value="search"
-						onclick="$(this).parents('form').attr({action:self.location.href})">
-						<i class="icon-search fas fa-search"></i>
-					</button>
-				</div>
-			</div><!-- .input-group -->
-		</div>
-	</div><!-- .form-group -->
-	<div class="form-group zms4-row" tal:condition="uid">
-  	<label class="col-sm-2 control-label">&nbsp;</label>
-		<div class="col-sm-10" tal:define="q python:zmscontext.zcatalog_index({'get_uid':uid[2:-1]})">
-			<strong><tal:block tal:content="python:zmscontext.getZMILangStr('SEARCH_RETURNEDRESULTS')">returned results</tal:block>: <tal:block tal:content="python:len(q)">#q</tal:block></strong>
-			<ul>
-				<tal:block tal:repeat="r q">
-					<li><a tal:attributes="href python:'%s/manage'%r['getPath']" target="_blank" tal:content="python:r['getPath']">the path</a></li>
-				</tal:block>
-			</ul>
-		</div>
-	</div>
 
 <script>
 function set_progress( v, func_name ) {
@@ -204,6 +183,27 @@ function zmiSelectObject() {
 	return false;
 }
 
+function zmiExpandObjectTree(max) {
+	var fn = function() {
+		var done = false;
+		$(".zmi-sitemap .toggle[title='+']").each(function() {
+				var $toggle = $(this);
+				var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
+				var $container = $($toggle.parents("li")[0]);
+				var level = $parents.length - 1;
+				if (level < max || -1 == max) {
+					$ZMI.objectTree.toggleClick($toggle,fn);
+					done = true;
+				}
+			});
+		if (!done) {
+			reset_progress()
+		}
+	}
+	fn();
+	return false;
+}
+
 $(function() {
 	// Default-Collapse
 	var data_root = $("body").attr('data-root');
@@ -218,28 +218,24 @@ $(function() {
 	$("a[href='#"+id+"']").click(function() {
 		if (!initialized) {
 			initialized = true;
+			set_progress( 0, func_name='test');
 			var href = $ZMI.getPhysicalPath();
 			$ZMI.objectTree.init(".zmi-sitemap",href,{
 				'params':{meta_types:'ZMS'},
 				'init.href':'ajaxGetNode',
 				'init.callback':function() {
-					var fn = function() {
-						var $toggle = $(".zmi-sitemap .toggle[title='+']");
-						if ($toggle.length > 0) {
-							$ZMI.objectTree.toggleClick($($toggle[0]),fn);
-						}
-						else {
-							$(".zmi-sitemap .fas.fa-home, .zmi-sitemap icon-home").each(function() {
-								var $a = $(this).parent("a");
+						zmiExpandObjectTree(1);
+					},
+				'addPages.callback':function() {
+                        console.log('addPages.callback')
+						$(".zmi-sitemap a:not(.checkboxed)").each(function() {
+								var $a = $(this);
+								$a.addClass("checkboxed");
 								var uid = $a.attr('data-uid');
 								$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 							});
-							reset_progress()
-							$('#zmsindex .progress .progress-bar span').text('');
-						}
-					}
-					fn();
-				}});
+					},
+				});
 			}
 		});
 		$('#zmsindex .zmi-sitemap-container').removeClass('loading');

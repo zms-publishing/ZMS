@@ -34,7 +34,7 @@
 
 
 		<tal:comment replace="nothing">
-			<div class="form-group row" tal:define="global optpl python:[[x,here.display_type(request,x)] for x in here.getMetaobjIds(excl_ids=['ZMS']])">
+			<div class="form-group row" tal:define="global optpl python:[ [x, here.display_type(request,x)] for x in here.getMetaobjIds(excl_ids=['ZMS']) ]">
 				<div class="col-sm-9 col-md-10" tal:content="structure python:here.zmi_input_multiselect(here,name='search_meta_types',value=request.get('search_meta_types',[]),type='multiselect',lang_str='ATTR_TYPE',options=optpl)">the control</div>
 			</div><!-- .form-group -->
 		</tal:comment>
@@ -70,13 +70,13 @@
 
 		<!-- @TODO: ZMSIndex-based -->
 		<tal:block tal:condition="python:not request.get('raw') and request.get('search_meta_types')">
-			<tal:block tal:define="global dummy0 python:qres.extend([{ \
-					'ob':x, \
-					'title':x.getTitle(request), \
-					'raw':x.renderShort(request), \
-					'score':1, \
-					'time':x.attr('change_dt'), \
-					'url':'%s/manage_main'%x.absolute_url(), \
+			<tal:block tal:define="global dummy0 python:qres.extend([{ 
+					'ob':x, 
+					'title':x.getTitle(request), 
+					'raw':x.renderShort(request), 
+					'score':1, 
+					'time':x.attr('change_dt'), 
+					'url':'%s/manage_main'%x.absolute_url(), 
 					} for x in here.getTreeNodes(request,request.get('search_meta_types'))])">
 			</tal:block>
 			<tal:block tal:define="global obs python:[x['ob'] for x in qres]">

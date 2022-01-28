@@ -70,7 +70,10 @@ def manage_tab_ZMSIndexZCatalog( self):
     prt.append('<div class="form-group zms4-row" tal:condition="uid">')
     prt.append('<label class="col-sm-2 control-label">&nbsp;</label>')
     prt.append('<div class="col-sm-10">')
-    prt.append('<strong>%s: %i</strong>'%(self.getZMILangStr('SEARCH_RETURNEDRESULTS'),len(q)))
+    if btn == 'uncatalog':
+      prt.append('<strong>%s</strong>'%(self.getZMILangStr('MSG_DELETED')%len(q)))
+    else:
+      prt.append('<strong>%s: %i</strong>'%(self.getZMILangStr('SEARCH_RETURNEDRESULTS'),len(q)))
     prt.append('<ol>')
     for r in q:
       if btn == 'uncatalog':

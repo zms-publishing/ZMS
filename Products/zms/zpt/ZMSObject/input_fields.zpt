@@ -86,7 +86,7 @@
 								onclick python:'$ZMI.CopyToClipboard(\'{$%s}\')'%(here.get_uid());
 								class python:' '.join(['get_uid']+[['text-danger'],[]][cataloged]);">
 							<tal:block tal:condition="not:cataloged">
-								<tal:block tal:condition="not:request.get('regenerate_uid')">
+								<tal:block tal:condition="python:request.get('regenerate_uid')">
 									<tal:block tal:define="dummy0 python:standard.triggerEvent(here,'*.ObjectAdded')"></tal:block>
 								</tal:block>
 								<i class="text-danger fas fa-ambulance"></i>

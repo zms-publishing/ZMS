@@ -85,13 +85,14 @@
 							tal:attributes="
 								onclick python:'$ZMI.CopyToClipboard(\'{$%s}\')'%(here.get_uid());
 								class python:' '.join(['get_uid']+[['text-danger'],[]][cataloged]);">
+							<tal:block tal:content="python:'ID:%s'%(here.get_uid())">unique-id</tal:block>
 							<tal:block tal:condition="not:cataloged">
 								<tal:block tal:condition="python:request.get('refresh_catalog')">
 									<tal:block tal:define="dummy0 python:standard.triggerEvent(here,'*.ObjectMoved')"></tal:block>
 								</tal:block>
-								<i class="text-danger fas fa-ambulance"></i>
+								<a href="javascript:;" onclick="if(confirm('Refresh catalog?')){self.location.href='?refresh_catalog=True'}return false;" class="btn btn-danger"><i title="Refresh catalog" class="fas fa-ambulance"></i></a>
 							</tal:block>
-							<tal:block tal:content="python:'ID:%s'%(here.get_uid())">unique-id</tal:block></span>
+						</span>
 					</span>
 					</div><!-- .col-sm-8 -->
 				</div><!-- .form-group -->

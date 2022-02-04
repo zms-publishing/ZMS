@@ -2142,16 +2142,20 @@ body.lazy_select_form footer .controls {
 .zmi.users.config .table tbody tr.userRole td input {
 	margin-left:.3rem;
 }
-.zmi.users.config .table th,
-.zmi.users.config .table td {
+.zmi.users.config .list_users .table th,
+.zmi.users.config .list_users .table td,
+.zmi.users.config .list_roles .table th,
+.zmi.users.config .list_roles .table td {
 	vertical-align:middle;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	max-width: calc(50vw - 1rem);
 }
 @media (max-width: 546px) {
-	.zmi.users.config .table th,
-	.zmi.users.config .table td {
+	.zmi.users.config .list_users .table th,
+	.zmi.users.config .list_users .table td,
+	.zmi.users.config .list_roles .table th,
+	.zmi.users.config .list_roles .table td {
 		max-width: calc(100vw - 1rem);
 	}
 }

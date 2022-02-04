@@ -197,18 +197,21 @@ def set_response_headers(fn, mt='application/octet-stream', size=None, request=N
 
 
 security.declarePublic('set_response_headers_cache')
-def set_response_headers_cache(context, request=None, cache_max_age=24*3600):
+def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cache_s_maxage=-1):
   """
   Set default and dynamic cache response headers according to ZMS_CACHE_EXPIRE_DATETIME
   which is determined in ObjAttrs.isActive for each page element as the earliest time for invalidation.
+  @param cache_max_age: seconds the element remains in all caches (public/proxy and private/browser)
+  @param cache_s_maxage: seconds the element remains in public/proxy cache (value -1 means cache_s_maxage = cache_max_age)
+  @see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#directives
   @see: http://nginx.org/en/docs/http/ngx_http_headers_module.html#expires
   @see: https://www.nginx.com/resources/wiki/start/topics/examples/x-accel/
   @return: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
-  USAGE: Add to standard_html master template, e.g. 
-  <tal:block tal:define="
-    standard modules/Products.zms/standard;
-    cache_expire python:standard.set_response_headers_cache(this, request, cache_max_age=6*3600)">
-  </tal:block>
+  @usage: Add to standard_html master template, e.g. 
+    <tal:block tal:define="
+      standard modules/Products.zms/standard;
+      cache_expire python:standard.set_response_headers_cache(this, request, cache_max_age=0, cache_s_maxage=6*3600)">
+    </tal:block>
   """
   if request is not None:
     is_preview = request.get('preview', '') == 'preview'
@@ -220,10 +223,12 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600):
       request.RESPONSE.setHeader('Expires', '-1')
       request.RESPONSE.setHeader('Pragma', 'no-cache')
     else:
-      request.RESPONSE.setHeader('Cache-Control',
-                                 'max-age={}, public, must-revalidate, proxy-revalidate'.format(cache_max_age))
+      cache_s_maxage = cache_s_maxage==-1 and cache_max_age or cache_s_maxage
+      request.RESPONSE.setHeader('Cache-Control', 
+        's-maxage={}, max-age={}, public, must-revalidate, proxy-revalidate'.format(cache_s_maxage, cache_max_age))
+
       now = time.time()
-      expire_datetime = DateTime(request.get('ZMS_CACHE_EXPIRE_DATETIME', now + cache_max_age))
+      expire_datetime = DateTime(request.get('ZMS_CACHE_EXPIRE_DATETIME', now + cache_s_maxage))
       t1 = expire_datetime.millis()
       t0 = DateTime(now).millis()
       expire_in_secs = int((t1-t0)/1000)
@@ -231,6 +236,7 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600):
 
       if t1 > t0 and cache_max_age > expire_in_secs:
         request.RESPONSE.setHeader('Expires', expire_datetime_gmt.asdatetime().strftime('%a, %d %b %Y %H:%M:%S %Z'))
+        request.RESPONSE.setHeader('Cache-Control','s-maxage={}, max-age={}, public, must-revalidate, proxy-revalidate'.format(expire_in_secs, expire_in_secs))
         request.RESPONSE.setHeader('X-Accel-Expires', expire_in_secs)
 
       return expire_datetime_gmt.ISO8601(), expire_in_secs

@@ -204,5 +204,10 @@
 
 	<noscript><p><img src="https://analytics.zms.hosting/matomo.php?idsite=5&amp;rec=1" style="border:0;" alt="" /></p></noscript>
 
+	<tal:block tal:define="
+		standard modules/Products.zms/standard;
+		cache_expire python:standard.set_response_headers_cache(this, request, cache_max_age=6*3600, cache_s_maxage=-1)">
+	</tal:block>
+
 </body>
 </html>

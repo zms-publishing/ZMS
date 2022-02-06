@@ -113,3 +113,81 @@ The corresponding TAL-code looks like this:
 	})"></nav>
 ```
 
+## 4. set_response_headers_cache()
+In a production enviroment ZMS does not communicate with the web browser by the Zope web server but this is done by a web server application like Apache or nginx. These applications are specialized on scaling, handling the virtual hosts und work as a proxy server. Controlling the caching latency may be an important issue if some documents must be published instantly or to a definied date.
+ZMS allows to set a starting date and an ending date to any item. When rendering a page the item with the closest date defines the maximun duration the document may be published by the caching server or the browser cache. This closest expiry date is written as a parameter into the Zope request object and can be read when the page is rendered by the Zope Page Template (TAL) or any other output codes (Py-Script, DTML) generating the http repsonse.
+To write the expiring time of a web document into the _http header_ as a parameter like `cache-control` the function `set_response_headers_cache()` of the module zms.standard is used. The following TAL-snippet can be added to the end of the standard_html template of the pages and will set cache control parameters to the http header:
+
+```html
+<tal:block 
+	tal:define="standard modules/Products.zms/standard;
+		cache_expire python:standard.set_response_headers_cache(
+			this, 
+			request, 
+			cache_max_age=0, 
+			cache_s_maxage=6*3600
+		)">
+</tal:block>
+```
+The crucial parameters are `cache_max_age` (sets `max-age`) for the latency the browser (as _private proxy_) should save the document and `cache_s_maxage` (sets `s-maxage`) for the (public) proxy cache latency. If the website often publishes documents which are time critical, it will be useful to set the max-age parameter very low so that the browser cache latency is minimized (but do not forget your mobile users and their connectivity costs).
+
+### Instant removal of cache storage
+
+To let the editor manually initialize the removal of a single page or a list of pages from the cache storage a ZMS action _manage_cachepurge_ can be imported into the ZMS configuration. Two ZMS Actions (Purge a single page, Purge a list of pages) will appear in the contextual action menu and triggers an External Python Method named `cache_purge` [1] which controls the final backend job [2] and should be fitted to the system environment. 
+
+[1] External Method cache_purge the ZMS Action needs to trigger the cache purging in the backend; this method just calls the final shell script as a (non-blocking) subprocess :
+```python
+import subprocess, shlex
+import os
+
+def cache_purge(arg):
+    args = ['sudo', '-u', 'nginx', '/usr/local/bin/cache_purge'] + shlex.split(arg)
+    subprocess.check_call(args)
+    return ('Cache Deleted: %s' % arg)
+```
+
+
+[2] Shell scipt for identifying and defeting a cached document: 
+```python
+#!/usr/bin/env python
+
+import os
+from hashlib import md5
+from os import path
+
+"""
+    This script assumes an nginx proxy configuration that looks similar to this:
+    
+    proxy_cache_path /var/cache/nginx levels=2:2 keys_zone=varcachenginx:10m;
+    proxy_cache_key $scheme://$host$request_uri;
+"""
+
+PROXY_CACHE_PATH="/var/cache/nginx"
+
+def proxy_cache_key(url):
+    # This assumes exactly the URL is the cache key for nginx.
+    # If that ever changes, this script needs adaptation.
+    m = md5()
+    m.update(url)
+    return m.hexdigest()
+
+def purge(url):
+    key = proxy_cache_key(url)
+    level1 = key[-2:]
+    level2 = key[-4:-2]
+    potential_cache_file = path.join(PROXY_CACHE_PATH, level1, level2, key)
+    
+    if path.exists(potential_cache_file):
+        os.unlink(potential_cache_file)
+    else:
+        print("File %s for URL %r does not exist" % (potential_cache_file, url))
+
+
+def _main():
+    import sys
+    for url in sys.argv[1:]:
+        purge(url)
+
+if __name__ == '__main__':
+    _main()
+```

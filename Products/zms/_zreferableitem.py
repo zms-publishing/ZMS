@@ -50,22 +50,37 @@ def getInternalLinkDict(self, url):
   reqBuffId = 'getInternalLinkDict.%s'%url
   try: return docelmnt.fetchReqBuff(reqBuffId)
   except: pass
+  request = self.REQUEST
   d = {}
   # Params.
-  ref_params = ''
+  anchor = ''
+  ref_params = {}
   if url.find(';') > 0:
-    ref_params = url[url.find(';'):-1]
+    anchor = url[url.find(';'):-1]
+    ref_params = dict(re.findall(';(\w*)=(\w*)', anchor))
     url = '{$%s}'%url[2:url.find(';')]
+  # Anchor.
+  ref_anchor = ''
+  if url.find('#') > 0:
+    ref_anchor = url[url.find('#'):-1]
+  # Get index_html.
   ref_obj = self.getLinkObj(url)
   if ref_obj is not None:
-    request = self.REQUEST
-    url = '{$%s%s}'%(self.getRefObjPath( ref_obj)[2:-1], ref_params)
+    # Prepare request.
+    bak_params = {}
+    for key in ref_params:
+      bak_params[key] = request.get(key, None)
+      request.set(key, ref_params[key])
+    url = '{$%s%s}'%(self.getRefObjPath( ref_obj)[2:-1], anchor)
     d['data-id'] = url
     d['data-url'] = getInternalLinkUrl(self, url, ref_obj)
     if not ref_obj.isActive(request):
       d['data-target'] = "inactive"
     elif self.getTrashcan().isAncestor(ref_obj):
       d['data-target'] = 'trashcan'
+    # Unprepare request.
+    for key in bak_params:
+      request.set(key, bak_params[key])
   else:
     d['data-id'] = "{$__%s__}"%url[2:-1]
     d['data-target'] = "missing"

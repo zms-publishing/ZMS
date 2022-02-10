@@ -799,7 +799,7 @@ class ZMSMetaobjManager(object):
           newCustom = ''
           newCustom += '<!-- '+ newId + ' -->\n\n'
           newCustom += '<tal:block tal:define="zmscontext options/zmscontext;\n'
-          newCustom += '\t\ttitle python:zmscontext getTitle(request);">\n'
+          newCustom += '\t\ttitle python:zmscontext.getTitle(request);">\n'
           newCustom += '\t<h4 tal:content="structure title">the title</h4>\n'
           newCustom += '</tal:block>\n\n'
           newCustom += '<!--/ '+ newId + ' -->\n'

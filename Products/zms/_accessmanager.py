@@ -862,8 +862,6 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def setUserAttr(self, user, name, value):
       user = getUserId(user)
-      if not user:
-        raise zExceptions.InternalError("User must not be empty")
       root = self.getRootElement()
       d = root.getConfProperty('ZMS.security.users', {})
       i = d.get(user, {})
@@ -884,8 +882,6 @@ class AccessManager(AccessableContainer):
     # --------------------------------------------------------------------------
     def getUserAttr(self, user, name=None, default=None):
       user = getUserId(user)
-      # if not user:
-      #  raise zExceptions.InternalError("User must not be empty")
       root = self.getRootElement()
       d = root.getConfProperty('ZMS.security.users', {})
       if name is None:

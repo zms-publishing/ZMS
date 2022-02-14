@@ -234,7 +234,7 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
       expire_in_secs = int((t1-t0)/1000)
       expire_datetime_gmt = expire_datetime.toZone('GMT')
 
-      if t1 > t0 and cache_max_age > expire_in_secs:
+      if t1 > t0 and cache_s_maxage > expire_in_secs:
         request.RESPONSE.setHeader('Expires', expire_datetime_gmt.asdatetime().strftime('%a, %d %b %Y %H:%M:%S %Z'))
         request.RESPONSE.setHeader('Cache-Control','s-maxage={}, max-age={}, public, must-revalidate, proxy-revalidate'.format(expire_in_secs, expire_in_secs))
         request.RESPONSE.setHeader('X-Accel-Expires', expire_in_secs)

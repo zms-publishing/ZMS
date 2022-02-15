@@ -45,9 +45,9 @@ Individual paragraph formats are defined by:
 3. nesting html element
 4. html attributes
 5. newline-tag
-6. Usage: in plain text or rich text editor
-7. used as default format
-8. using the rich text gui
+6. format may be used in plain text or/and rich text editor
+7. format ist used as a default
+8. force the text block using the rich text editor gui
 
 The configuraton form ends up with a preview of the rendered html output.
 

@@ -92,4 +92,4 @@ def manage_repository_gitconfig(self, request=None):
 	html.append('</body>')
 	html.append('</html>')
 
-	return '\n'.join(printed)
+	return '\n'.join(html)

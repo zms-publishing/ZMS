@@ -164,7 +164,7 @@
 								tal:omit-tag="not:fs_located" title="Filessystem-Object: Not Editable">
 							<a tal:omit-tag="fs_located"
 								tal:attributes="href cssedit_href; title cssedit_title; class cssedit_class;">
-								<i class="icon-pencil fas fa-pen" tal:attributes="class python:fs_located and 'icon-file-alt fas fa-file-alt' or default"></i>
+								<i class="icon-pencil fas fa-pen" tal:attributes="class python:fs_located and 'icon-hdd fas fa-hdd text-secondary' or default"></i>
 							</a>
 						</span>
 						<a tal:condition="css" target="_blank" class="pull-right"
@@ -252,7 +252,7 @@
 								tal:omit-tag="not:fs_located" title="Filessystem-Object: Not Editable">
 							<a tal:omit-tag="fs_located"
 								tal:attributes="href jsedit_href; title jsedit_title; class jsedit_class;">
-								<i class="icon-pencil fas fa-pen" tal:attributes="class python:fs_located and 'icon-file-alt fas fa-file-alt' or default"></i>
+								<i class="icon-pencil fas fa-pen" tal:attributes="class python:fs_located and 'icon-hdd fas fa-hdd text-secondary' or default"></i>
 							</a>
 						</span>
 						<a tal:condition="js" target="_blank" class="pull-right"

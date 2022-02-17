@@ -8,11 +8,13 @@
 ##title=Rollback
 ##
 request = zmscontext.REQUEST
+message = 'Changes were rolled back. '
 
 ##### Notification ####
 # Recipient
 name = zmscontext.attr('work_uid')
 mto = zmscontext.getRecipientWf(request)
+
 # Subject
 msubject = '[ZMS::%s]: Änderungen wurden zurück gezogen'%zmscontext.getDocumentElement().getTitle(request)
 # Body
@@ -24,11 +26,13 @@ mbody.append('%s\r\n\n\n'%(str(request['AUTHENTICATED_USER'])))
 mbody.append('------------------------------------------------\n')
 mbody.append('Diese Nachricht wurde automatisch generiert.\n')
 # Send notification via MailHost
-zmscontext.sendMail(mto, msubject, ''.join(mbody), request)
+try:
+    zmscontext.sendMail(mto, msubject, ''.join(mbody), request)
+except:
+    message += 'Info: E-Mail could not be sent.'
 
 ##### Rollback ####
 zmscontext.rollbackObj(request)
-
 # Return with message
 message = 'Changes were rolled back.'
 return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransitionFinalize',{

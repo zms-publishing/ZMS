@@ -7,7 +7,7 @@ class workflow:
 	id = "workflow"
 
 	# Revision
-	revision = "5.0.0"
+	revision = "0.0.1"
 
 	# Activities
 	class Activities:
@@ -39,7 +39,7 @@ class workflow:
 	# Transitions
 	class Transitions:
 		tr_enter = {"from":[]
-			,"icon_clazz":""
+			,"icon_clazz":"fas fa-play-circle text-success"
 			,"id":"TR_ENTER"
 			,"name":"Enter Workflow"
 			,"performer":[]
@@ -98,7 +98,7 @@ class workflow:
 
 		tr_leave = {"from":["AC_COMMITTED"
 				,"AC_ROLLEDBACK"]
-			,"icon_clazz":""
+			,"icon_clazz":"fas fa-stop-circle text-danger"
 			,"id":"TR_LEAVE"
 			,"name":"Leave Workflow"
 			,"performer":[]

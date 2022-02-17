@@ -31,7 +31,7 @@
 					tal:content="python:here.getZMILangStr('BTN_SAVE')">
 					Save
 				</button>
-				<button type="button" class="btn"  value="BTN_CANCEL" 
+				<button type="button" class="btn btn-secondary"  value="BTN_CANCEL" 
 					tal:content="python:here.getZMILangStr('BTN_CANCEL')"
 					onclick="window.location.href='./manage_main';">
 					Cancel

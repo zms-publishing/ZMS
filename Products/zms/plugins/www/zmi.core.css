@@ -103,7 +103,6 @@ header.navbar-nav .navbar-brand .slogan {
 }
 header.navbar-nav ul.navbar-nav {
 	background: #354f67;
-	z-index: 0;
 }
 /* Show Debug Mode: ZMS.debug=1 */
 header.zmsdebug .navbar-brand .slogan {

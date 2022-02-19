@@ -70,11 +70,11 @@ body.zmslightbox.masked #zmslightbox-bg {
 }
 #zmslightbox-wrapper #zlb_nav_left {
 	left:0;
-	background:url('data:image/svg+xml;utf8,<svg viewBox="0 0 50 50" width="50" height="50" xmlns="http://www.w3.org/2000/svg"><path d="m 40,39 -20,-20 20,-20" style="fill:none;stroke:white;stroke-width:3;" /></svg>')
+	background:url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 50 50' width='50' height='50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m 40,39 -20,-20 20,-20' style='fill:none;stroke:white;stroke-width:3;' /%3E%3C/svg%3E");
 }
 #zmslightbox-wrapper #zlb_nav_right {
 	right:0;
-	background:url('data:image/svg+xml;utf8,<svg viewBox="0 0 50 50" width="50" height="50" xmlns="http://www.w3.org/2000/svg"><path d="m 10,39 20,-20 -20,-20" style="fill:none;stroke:white;stroke-width:3;" /></svg>')
+	background:url("data:image/svg+xml;utf8,%3Csvg viewBox='0 0 50 50' width='50' height='50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m 10,39 20,-20 -20,-20' style='fill:none;stroke:white;stroke-width:3;' /%3E%3C/svg%3E");
 }
 #zmslightbox-controls {
 	position:fixed;

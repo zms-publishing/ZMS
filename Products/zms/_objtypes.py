@@ -208,7 +208,7 @@ class ObjTypes(object):
               s_url = getHref2Zoom(self, imgzoomobj, REQUEST)
               imgzoomclazz = 'zoom'
               imgzoomalt = '%s (%s)'%(self.getZMILangStr('BTN_ZOOM'), self.getDataSizeStr(imgzoomobj.get_size()))
-              imgzoom += '<a href="%s" class="%s fancybox" target="_blank"><img class="%s" src="%s" title="%s" border="0" /></a>'%( s_url, imgzoomclazz, imgzoomclazz, self.spacer_gif, imgzoomalt)
+              imgzoom += '<a href="%s" class="%s fancybox" data-turbolinks="false" target="_blank"><img class="%s" src="%s" title="%s" border="0" /></a>'%( s_url, imgzoomclazz, imgzoomclazz, self.spacer_gif, imgzoomalt)
               s_url = getHref2Zoom(self, imgsuperzoomobj, REQUEST)
               imgzoomclazz = 'superzoom'
               imgzoomalt = '%s (%s)'%(self.getZMILangStr('ATTR_SUPERRES'), imgsuperzoomobj.getDataSizeStr())
@@ -218,7 +218,7 @@ class ObjTypes(object):
           if imgzoom is not None and len(imgzoom) > 0:
             imgtag += imgzoom
           else:
-            imgtag = '<a href="%s" class="fancybox">%s</a>'%(imgzoomobj.getHref(REQUEST), imgtag)
+            imgtag = '<a href="%s" class="fancybox" data-turbolinks="false">%s</a>'%(imgzoomobj.getHref(REQUEST), imgtag)
       
       # Build <html>-presentation.
       renderer = getattr(self, 'zmi_displaytype_%s'%displaytype)

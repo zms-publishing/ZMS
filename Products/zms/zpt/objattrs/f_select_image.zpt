@@ -24,12 +24,12 @@
 					<td>
 						<div class="form-inline">
 							<div class="form-group mr-2">
-								<label class="control-label mr-2" for="ZMSGraphic_extEdit_width" 
+								<label class="control-label mr-2" for="ZMSGraphic_extEdit_width"
 									tal:content="structure python:'%s px '%(here.getZMILangStr('ATTR_WIDTH'))"> Width px </label>
 								<input class="form-control" type="text" id="ZMSGraphic_extEdit_width" name="ZMSGraphic_extEdit_width:int" size="4" value="0" />
 							</div>
 							<div class="form-group mr-2">
-								<label class="control-label mr-2" for="ZMSGraphic_extEdit_height" 
+								<label class="control-label mr-2" for="ZMSGraphic_extEdit_height"
 									tal:content="structure python:' %s px '%(here.getZMILangStr('ATTR_HEIGHT'))"> Height px </label>
 								<input class="form-control" type="text" id="ZMSGraphic_extEdit_height" name="ZMSGraphic_extEdit_height:int" size="4" value="0" />
 							</div>
@@ -44,7 +44,7 @@
 				<tr>
 					<td>
 						<div class="ZMSGraphic_extEdit_action">
-							<span class="btn btn-secondary" id="ZMSGraphic_extEdit_preview" 
+							<span class="btn btn-secondary" id="ZMSGraphic_extEdit_preview"
 									tal:attributes="title python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview,400)),str(here.getConfProperty(max_generate_preview,400)))">
 								<i class="fas fa-compress"></i>
 							</span>
@@ -55,7 +55,7 @@
 							</span>
 						</div>
 						<div class="verticalize" style="transform: rotate(90deg);width:3.5rem;margin-top:2rem;">
-							<input type="range" id="ZMSGraphic_extEdit_slider" name="ZMSGraphic_extEdit_slider" 
+							<input type="range" id="ZMSGraphic_extEdit_slider" name="ZMSGraphic_extEdit_slider"
 								class="custom-range mb-0 mt-4" style="width: auto;"
 								min="0" max="200" step="1" value="100" title="100"
 							/>
@@ -73,11 +73,11 @@
 	</tal:block>
 
 	<tal:block tal:condition="python:request.get('f_zmiBlobJs',True)">
-		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script> 
+		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script>
 		<tal:block tal:define="dummy0 python:request.set('f_zmiBlobJs',False)"></tal:block>
 	</tal:block>
 
-	<div class="zmi-image d-flex align-items-center row" 
+	<div class="zmi-image d-flex align-items-center row"
 		tal:define="has_file python:value is not None and here.operator_gettype(value) is not str;
 			allowed_ext python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif']);
 			filename python:has_file and value.getFilename() or 'None';
@@ -159,7 +159,7 @@
 				<div class="zmi-image-preview" tal:attributes="id python:'ZMSGraphic_extEdit_preview_%s'%elName" tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
 					<input type="hidden" tal:attributes="id python:'width_%s'%elName; name python:'width_%s:int'%elName; value python:value.getWidth()"/>
 					<input type="hidden" tal:attributes="id python:'height_%s'%elName; name python:'height_%s:int'%elName; value python:value.getHeight()"/>
-					<a tal:attributes="href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&lang=%s&key=%s&form_id=%s'%(request.get('ZMS_INSERT',here.meta_id),request['lang'],key,str(request['ZMI_TIME'])),int(pilutil.enabled()))" class="thumbnail ZMSGraphic_extEdit_action">
+					<a tal:attributes="href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&key=%s'%(request.get('ZMS_INSERT',here.meta_id),key),int(pilutil.enabled()))" class="thumbnail ZMSGraphic_extEdit_action">
 						<img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
 						<div class="zmi-zoom-in"><i class="fas fa-search-plus"></i></div><!-- .zmi-zoom-in -->
 					</a>

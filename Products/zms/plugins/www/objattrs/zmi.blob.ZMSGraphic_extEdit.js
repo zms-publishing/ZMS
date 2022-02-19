@@ -39,7 +39,7 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 		ZMSGraphic_pil = pil;
 	}
 	ZMSGraphic_elName = elName;
-	ZMSGraphic_params = {preview:'preview'};
+	ZMSGraphic_params = {lang:$("#lang").val(),preview:$("#preview").val(),form_id:$("#form_id").val()};
 	var elParamsSplit = elParams.split('&');
 	for (var i = 0; i < elParamsSplit.length; i++) {
 		var s = elParamsSplit[i];
@@ -220,7 +220,7 @@ function ZMSGraphic_extEdit_apply() {
 				function(data){
 					if (data.length==0) return;
 					var result = eval('('+data+')');
-                    console.log(result);
+					console.log(result);
 					ZMSGraphic_extEdit_set(ZMSGraphic_elName,result['src'],result['filename'],result['width'],result['height']);
 				});
 	}

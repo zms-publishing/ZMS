@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?zms version='ZMS3-3.4.2dev (snapshot #5747:5810M)'?>
+<?zms version='ZMS5-0.0.0dev (snapshot #5747:5810M)'?>
 <dictionary>
   <item key="key">ZMSFigure</item>
   <item key="value" type="dictionary">
@@ -223,7 +223,8 @@ return None
 		id id; 
 		style python:is_manage and 'max-width:100%;;display:inline-block;;' or default; 
 		title python:'Image Dimensions: %spx x %spx, Preview Max. Dimension: %s'%(imgwidth, imgheight, imgmaxsize);"
-	><a class="zmslightbox fancybox" 
+	><a class="zmslightbox fancybox"
+		data-turbolinks="false"
 		tal:omit-tag="python:imgwidth < imgmaxsize and imgheight < imgmaxsize"
 		tal:condition="img" 
 		tal:attributes="href imgsrc">
@@ -277,7 +278,7 @@ return None
       <item key="id">ZMSFigure</item>
       <item key="name">ZMSFigure</item>
       <item key="package">com.zms.foundation</item>
-      <item key="revision">0.0.5</item>
+      <item key="revision">5.0.1</item>
       <item key="type">ZMSObject</item>
     </dictionary>
   </item>

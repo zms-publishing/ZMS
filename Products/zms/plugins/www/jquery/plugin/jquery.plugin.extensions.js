@@ -29,18 +29,6 @@ function zmiAutocomplete(s, o) {
 /**
  * ZMSLightbox
  */
-$(function(){
-	$('a.zmslightbox,a.fancybox')
-		.each(function() {
-				var $img = $("img",$(this));
-				console.log('Found ZMSLightbox Element');
-				$img.attr("data-hiresimg",$(this).attr("href"));
-				$(this).click(function() {
-						return showFancybox($img);
-					});
-			});
-});
-
 function pluginFancybox(s, c) {
 	$.plugin('zmslightbox',{
 		files: ['/++resource++zms_/jquery/zmslightbox/zmslightbox.js',

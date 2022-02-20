@@ -529,6 +529,17 @@ $ZMI.registerReady(function(){
 	// Set Save-Button Behaviour: Menu Lock
 	$('#menulock').prop('checked', JSON.parse($ZMILocalStorageAPI.get('ZMS.menulock',false)));
 
+	// ZMSLightbox
+	$('a.zmslightbox, a.fancybox')
+		.each(function() {
+				var $img = $("img",$(this));
+				console.log('Found ZMSLightbox Element');
+				$img.attr("data-hiresimg",$(this).attr("href"));
+				$(this).click(function() {
+					return showFancybox($img);
+				});
+	});
+
 });
 
 /**

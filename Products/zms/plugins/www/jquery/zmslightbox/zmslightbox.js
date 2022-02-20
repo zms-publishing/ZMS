@@ -62,7 +62,11 @@ function remove_zmslightbox(evt_from_history) {
 	$('body').removeClass('zmslightbox');
 	$('body').removeClass('masked');
 	$('html, body').scrollTop( zmslightbox_obj.offset().top );
-	if (!evt_from_history) { history.back() };
+	// Prevent history events on turbolinks 
+	if (typeof Turbolinks == "undefined") {
+		if (!evt_from_history) { history.back() };
+	}
+	return false;
 };
 
 // CENTERING

@@ -27,6 +27,8 @@ import sys
 import tempfile
 import zipfile
 import zope.contenttype
+# Product Imports.
+from Products.zms import _blobfields
 from Products.zms import zopeutil
 
 
@@ -311,7 +313,9 @@ def exportObj(obj, filename):
   
   #-- Get object data.
   data = None
-  if getattr(obj, 'meta_type',None) is not None:
+  if isinstance(obj, _blobfields.MyBlob):
+    data = obj.getData()
+  elif getattr(obj, 'meta_type',None) is not None:
     data = zopeutil.readData(obj)
   else:
     try: # ImageFile

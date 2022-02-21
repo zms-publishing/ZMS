@@ -1,15 +1,15 @@
 <!-- ZMSObject/input_fields -->
 
-	<tal:block tal:define="
-			standard modules/Products.zms/standard;
-			action options/action;
-			command options/command;
-			meta_id options/meta_id;
-			dummy0 python:request.set('ZMS_HIDE_ELEMENTS',[]);
-			metaObj python:here.getMetaobj(meta_id);
-			metaObjIds python:here.getMetaobjIds();
-			metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
-			objAttrs python:here.getObjAttrs(metaObj['id'])">
+<tal:block tal:define="
+		standard modules/Products.zms/standard;
+		action options/action;
+		command options/command;
+		meta_id options/meta_id;
+		dummy0 python:request.set('ZMS_HIDE_ELEMENTS',[]);
+		metaObj python:here.getMetaobj(meta_id);
+		metaObjIds python:here.getMetaobjIds();
+		metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
+		objAttrs python:here.getObjAttrs(metaObj['id'])">
 
 <form class="form-horizontal" id="form0" name="form0" tal:attributes="action action" method="post" enctype="multipart/form-data">
 	<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang" />
@@ -19,23 +19,24 @@
 	<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value python:request.get('id_prefix','')" />
 	<input type="hidden" id="meta_id" name="meta_id" tal:attributes="value meta_id" />
 	<input type="hidden" id="ZMS_INSERT" name="ZMS_INSERT" tal:condition="python:request.get('ZMS_INSERT',False)" tal:attributes="value python:request.get('ZMS_INSERT','')" />
-<tal:block  tal:condition="python:metaObj['type']!='ZMSRecordSet' or command.lower()!='insert'">
 
-	<div class="card">
+	<div class="card" 
+		tal:condition="python:metaObj['type']!='ZMSRecordSet' or command.lower()!='insert'"
+		tal:attributes="class python:'card input_fields_%s'%(meta_id)">
 		<div class="card-header attr_last_modified clearfix btn-collapse">
-				<div class="btn-group">
-					<a id="zmi-toggle-activity-btn" class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
-						tal:attributes="href python:'#attrActivity%s'%(request.get('ZMS_INSERT',False) and '_insert' or '')"
-						><i class="fas fa-invisible"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block></a>
-					<div class="btn zmi-changes"
-							tal:condition="not:python:request.get('ZMS_INSERT',False)" 
-							tal:define="change_uid python:here.attr('change_uid');change_dt python:here.attr('change_dt')">
-							<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
-						<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
-						<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
-						<span class="zmi-change-uid" tal:content="change_uid">the change-uid</span>
-						<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
-					</div>
+			<div class="btn-group">
+				<a id="zmi-toggle-activity-btn" class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
+					tal:attributes="href python:'#attrActivity%s'%(request.get('ZMS_INSERT',False) and '_insert' or '')"
+					><i class="fas fa-invisible"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block></a>
+				<div class="btn zmi-changes"
+						tal:condition="not:python:request.get('ZMS_INSERT',False)" 
+						tal:define="change_uid python:here.attr('change_uid');change_dt python:here.attr('change_dt')">
+						<tal:block tal:content="python:here.getZMILangStr('ATTR_LAST_MODIFIED')">changed by</tal:block>
+					<span class="zmi-change-dt" tal:content="structure python:here.getLangFmtDate(change_dt,request['manage_lang'],'DATETIME_FMT')">the change-dt</span>
+					<tal:block tal:content="python:here.getZMILangStr('BY')">by</tal:block>
+					<span class="zmi-change-uid" tal:content="change_uid">the change-uid</span>
+					<tal:block tal:content="structure python:here.zmi_version_object_state(here,request)">zmi_version_object_state</tal:block>
+				</div>
 			</div>
 			<div class="zmi-action loaded btn-group pull-right dropleft" tal:condition="not:python: request.get('ZMS_INSERT',False)">
 				<tal:block tal:define="
@@ -216,13 +217,12 @@
 				</div><!-- .form-row -->
 			</div><!-- .card-body -->
 		</div><!-- .collapse -->
-
 	</div><!-- .card -->
-
-</tal:block>
 </form>
 
-	<div class="card zmi-form-container zmi-container" tal:condition="python:command.lower()!='insert'">
+	<div class="card zmi-form-container zmi-container"
+		tal:condition="python:command.lower()!='insert'"
+		tal:attributes="class python:'card zmi-form-container zmi-container input_fields_%s'%(meta_id)">
 
 		<form class="zmi-action-form d-none">
 			<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang" />
@@ -302,6 +302,6 @@
 		</tal:block>
 	</div><!-- .card -->
 
-	</tal:block>
+</tal:block>
 
 <!-- /ZMSObject/input_fields -->

@@ -32,11 +32,7 @@ def enabled():
     from PIL import Image
     return True
   except:
-    try:
-      import Image
-      return True
-    except:
-      return False
+    return False
 
 security.declarePublic('generate_preview')
 def generate_preview(self, hiresKey, loresKey, maxdim):
@@ -75,10 +71,8 @@ def resize(img, size, mode='resize', sffx='_thumbnail', qual=75):
   Resize image.
   @rtype: C{MyImage}
   """
-  try:
-    from PIL import Image
-  except:
-    import Image
+  from PIL import Image, ImageFile
+  ImageFile.LOAD_TRUNCATED_IMAGES = True
   
   # Save image in temp-folder
   context = img.aq_parent
@@ -159,10 +153,8 @@ def crop(img, box, qual=75):
   Crop image.
   @rtype: C{MyImage}
   """
-  try:
-    from PIL import Image
-  except:
-    import Image
+  from PIL import Image, ImageFile
+  ImageFile.LOAD_TRUNCATED_IMAGES = True
   
   # Save image in temp-folder
   context = img.aq_parent
@@ -195,10 +187,8 @@ def rotate(img, direction, qual=75):
   """
   Rotate image.
   """
-  try:
-    from PIL import Image
-  except:
-    import Image
+  from PIL import Image, ImageFile
+  ImageFile.LOAD_TRUNCATED_IMAGES = True
   
   # Save image in temp-folder
   context = img.aq_parent
@@ -232,10 +222,8 @@ def optimize(img, qual=75):
   Optimize image.
   @rtype: C{MyImage}
   """
-  try:
-    from PIL import Image
-  except:
-    import Image
+  from PIL import Image, ImageFile
+  ImageFile.LOAD_TRUNCATED_IMAGES = True
   
   # Save image in temp-folder
   context = img.aq_parent

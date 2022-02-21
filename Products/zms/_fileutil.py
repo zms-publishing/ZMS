@@ -313,8 +313,13 @@ def exportObj(obj, filename):
   
   #-- Get object data.
   data = None
+  # MyBlob
   if isinstance(obj, _blobfields.MyBlob):
     data = obj.getData()
+    try:
+      data = data.data
+    except:
+      pass
   elif getattr(obj, 'meta_type',None) is not None:
     data = zopeutil.readData(obj)
   else:

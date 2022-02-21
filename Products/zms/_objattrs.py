@@ -1049,7 +1049,8 @@ class ObjAttrs(object):
       id = form_id + '_' + key
       src = self.getTempBlobjPropertyUrl( format=None, REQUEST=REQUEST, RESPONSE=RESPONSE)['src']
       file = getattr( temp_folder, id)
-      orig = self.ImageFromData(file.data, file.title)
+      data = zopeutil.readData(file)
+      orig = self.ImageFromData(data, file.title)
       orig.lang = lang
       if action == 'preview':
         maxdim = self.getConfProperty('InstalledProducts.pil.thumbnail.max')

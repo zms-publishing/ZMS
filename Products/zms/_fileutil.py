@@ -316,10 +316,6 @@ def exportObj(obj, filename):
   # MyBlob
   if isinstance(obj, _blobfields.MyBlob):
     data = obj.getData()
-    try:
-      data = data.data
-    except:
-      pass
   elif getattr(obj, 'meta_type',None) is not None:
     data = zopeutil.readData(obj)
   else:
@@ -342,7 +338,7 @@ def exportObj(obj, filename):
         data = data.encode("utf-8")
       except:
         pass
-    objfile.write(data)
+    objfile.write(bytes(data))
     objfile.close()
   return data
 

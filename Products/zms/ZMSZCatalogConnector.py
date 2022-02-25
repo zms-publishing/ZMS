@@ -271,7 +271,7 @@ class ZMSZCatalogConnector(
               elif k == 'zcat_column_custom':
                 k = 'custom'
               elif k == 'standard_html':
-                v = standard.remove_tags(self, v)
+                v = standard.remove_tags(v)
               xmlr += '<arr name="%s">'%k
               if isinstance(v,str):
                 for x in range(16):

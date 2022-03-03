@@ -106,12 +106,16 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
           catalog = ZCatalog.ZCatalog(id=id, title=self.meta_id, container=home)
           home._setObject(catalog.id, catalog)
           catalog = getattr(home,id,None)
-          # Add indices.
-          for index_name in index_names:
+        # Add indices.
+        for index_name in index_names:
+          if index_name not in catalog.indexes():
             catalog.manage_addIndex(index_name,'FieldIndex')
-          catalog.manage_addIndex('path','PathIndex')
-          # Add columns
-          for index_name in index_names + ['getPath']:
+        index_name = 'path'
+        if index_name not in catalog.indexes():
+          catalog.manage_addIndex(index_name,'PathIndex')
+        # Add columns
+        for index_name in index_names + ['getPath']:
+          if index_name not in catalog.schema():
             catalog.manage_addColumn(index_name)
         return catalog
 
@@ -138,8 +142,7 @@ def ZMSIndexZCatalog_func_( self, *args, **kwargs):
       
       urls = [x for x in request['url'].split(',') if x]
       for url in urls:
-        if catalog is None or self == home:
-          catalog = recreate_catalog()
+        catalog = recreate_catalog()
         writeInfo(self,'[ZMSIndexZCatalog_func_] ### reindex for %s'%url)
         t0 = time.time()
         base = self.getLinkObj(url)

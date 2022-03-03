@@ -23,17 +23,19 @@ if url.startswith('{$') and url.endswith('}'):
   if i > 0:
     url = url[:i]
   if url.find('id:') >= 0:
-    q = zmscontext.zcatalog_index({'get_uid':url})
-    for r in q:
-      zmspath  = '%s/'%r['getPath']
-      l = zmspath[1:-1].split('/')
-      ob = zmscontext
-      try:
-        for id in [x for x in l if x]:
-          ob = getattr(ob,id,None)
-        break
-      except:
-        pass
+    catalog = getattr(zmscontext,'zcatalog_index',None)
+    if catalog is not None:
+      q = catalog({'get_uid':url})
+      for r in q:
+        zmspath  = '%s/'%r['getPath']
+        l = zmspath[1:-1].split('/')
+        ob = zmscontext
+        try:
+          for id in [x for x in l if x]:
+            ob = getattr(ob,id,None)
+          break
+        except:
+          pass
   elif not url.startswith('__'):
     url = url.replace('@','/content/')
     l = url.split('/') 

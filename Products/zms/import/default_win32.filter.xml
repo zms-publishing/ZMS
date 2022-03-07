@@ -4227,8 +4227,6 @@ several semantically related columns together.
 </item>
 </dictionary>
 </item>
-</dictionary>
-</item>
 <item type="dictionary"><dictionary>
 <item key="type"><![CDATA[process]]></item>
 <item key="value" type="dictionary"><dictionary>

@@ -314,6 +314,7 @@ class ZMSFilterManager(
           if id in portalMaster.getFilterManager().getProcessIds():
             process = portalMaster.getFilterManager().getProcess(id)
             process['acquired'] = 1
+            return process
       process['id'] = id
       process['name'] = process.get('name',process['id'])
       # Synchronize type.

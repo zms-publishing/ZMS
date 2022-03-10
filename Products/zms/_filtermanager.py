@@ -87,8 +87,9 @@ def processMethod(self, processId, filename, trans, REQUEST):
   REQUEST.set( 'ZMS_FILTER_TRANS', trans)
   REQUEST.set( 'ZMS_FILTER_CUR_DIR', _fileutil.getFilePath(infilename))
   try:
-      process = zopeutil.getObject( self.getFilterManager(), processId) 
-      value = zopeutil.callObject( process, self)
+      process = self.getFilterManager().getProcess(processId) 
+      ob = process['ob'] 
+      value = zopeutil.callObject( ob, self)
   except:
       value = standard.writeError( self, '[processMethod]: processId=%s'%processId)
   outfilename = REQUEST.get( 'ZMS_FILTER_OUT')

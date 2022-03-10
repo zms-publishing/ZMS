@@ -320,6 +320,7 @@ class ZMSFilterManager(
       # Synchronize type.
       ob = zopeutil.getObject( self, process['id'])
       if ob is not None:
+        process['ob'] = ob
         process['command'] = zopeutil.readData( ob)
       return process
 
@@ -356,6 +357,7 @@ class ZMSFilterManager(
         if portalMaster is not None:
           ob = portalMaster.getFilterManager().getFilter(id)
           ob['acquired'] = 1
+          return ob
       ob['id'] = id
       return ob
 

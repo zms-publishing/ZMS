@@ -873,7 +873,6 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   scheme = u[0]
   netloc = u[1]
   path = u[2]
-  # query = u[4].encode('utf-8') ## REVOKE SOLR https://github.com/zms-publishing/ZMS/commit/49e0a89b8b1f21ea373354d231e6efa42f51b27f#diff-ca03d9475057635974de854d31d24453143a9f2ad23fa25454d1f371a584a002L814
   query = u[4]
 
   # Get Proxy.
@@ -907,6 +906,8 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   if method == 'GET' and query:
     path += '?' + query
     query = ''
+  else:
+    query = query.encode('utf-8')
   conn.request(method, path, query, headers)
   response = conn.getresponse()
   reply_code = response.status

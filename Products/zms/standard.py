@@ -873,7 +873,7 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   scheme = u[0]
   netloc = u[1]
   path = u[2]
-  query = u[4].encode('utf-8')
+  query = u[4]
 
   # Get Proxy.
   useproxy = True
@@ -906,6 +906,8 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   if method == 'GET' and query:
     path += '?' + query
     query = ''
+  else:
+    query = query.encode('utf-8')
   conn.request(method, path, query, headers)
   response = conn.getresponse()
   reply_code = response.status

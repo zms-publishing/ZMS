@@ -916,7 +916,7 @@ class AccessManager(AccessableContainer):
         del d[user]
         root.setConfProperty('ZMS.security.users', d)
       except:
-        standard.writeError(root, '[delUserAttr]: user=%s not deleted!'%user)
+        standard.writeError(root, '[delUserAttr]: user=%s not deleted!'%str(user))
 
 
     # --------------------------------------------------------------------------

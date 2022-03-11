@@ -35,11 +35,12 @@ def run(here, old, new):
 				objAttrName = here.getObjAttrName(objAttr,langId)
 				objAttrVal = here.operator_getattr(objVers,objAttrName,None)
 				if objAttrVal:
+					# Important: our replace() differs data type: string, list and dict
 					newVal = replace(objAttrVal,old,new)
 					if newVal != objAttrVal:
-						# Do only replacing if checkbox 'replace' was clicked
 						if request.get('replace'):
-							here.operator_setattr(objVers,objAttrName,objAttrVal.replace(old,new))
+							# Do only replace if checkbox 'replace' was clicked
+							here.operator_setattr(objVers,objAttrName, newVal)
 						rtn.append(here)
 	for childNode in here.getChildNodes():
 		rtn.extend(run(childNode,old,new))

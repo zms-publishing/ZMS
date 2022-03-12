@@ -1,5 +1,5 @@
 {
-	"python.pythonPath": "~/vpy38/bin/python3",
+	"python.defaultInterpreterPath": "~/vpy38/bin/python3",
 	"python.testing.unittestArgs": [
 		"-v",
 		"-s",

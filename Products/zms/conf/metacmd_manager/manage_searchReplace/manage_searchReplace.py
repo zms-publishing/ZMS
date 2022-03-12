@@ -10,8 +10,8 @@
 from Products.zms import standard
 request = container.REQUEST
 RESPONSE = request.RESPONSE
-btn_text_exec = standard.pystr(context.getZMILangStr('BTN_EXECUTE'), encoding='utf-8', errors='replace')
-btn_text_cncl = standard.pystr(context.getZMILangStr('BTN_CANCEL'), encoding='utf-8', errors='replace')
+btn_text_exec = context.getZMILangStr('BTN_EXECUTE')
+btn_text_cncl = context.getZMILangStr('BTN_CANCEL')
 html=[]
 
 def replace(o, old, new):
@@ -43,7 +43,7 @@ def run(here, old, new):
 						if request.get('replace'):
 							# Do only replace if checkbox 'replace' was clicked
 							here.operator_setattr(objVers,objAttrName, newVal)
-						rtn.append(here)
+						rtn.append({'node':here,'attr_name':str(objAttrName),'text':objAttrVal})
 	for childNode in here.getChildNodes():
 		rtn.extend(run(childNode,old,new))
 	return rtn
@@ -68,7 +68,7 @@ html.append('''
 	<div class="form-group row">
 		<label for="old" class="col-sm-2 control-label mandatory">Search for</label>
 		<div class="col-sm-10">
-			<input class="form-control" name="old" type="text" size="25" value="" />
+			<input class="form-control" name="old" type="text" size="25" value="%s" />
 		</div>
 	</div><!-- .form-group -->
 	<div class="form-group row">
@@ -78,7 +78,7 @@ html.append('''
 				<div class="input-group-prepend btn btn-warning">
 					<input type="checkbox" name="replace" value="1" class="mt-1">
 				</div>
-				<input class="form-control" name="new" type="text" size="25" value="" />
+				<input class="form-control" name="new" type="text" size="25" value="%s" />
 			</div>
 		</div>
 	</div><!-- .form-group -->
@@ -88,7 +88,7 @@ html.append('''
 			<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>
 		</div><!-- .controls.save -->
 	</div>
-'''%( btn_text_exec, btn_text_cncl))
+'''%( request.get('old',''), request.get('new',''), btn_text_exec, btn_text_cncl ))
 
 # --- Execute.
 # ---------------------------------
@@ -102,7 +102,7 @@ if request.form.get('btn')=='BTN_EXECUTE':
 	else:
 		message.append('%s Results found for <i>%s</i> and NOT changed.'%(len(res),old))
 	message.append('<ol>')
-	message.extend(['<li><a href="%s/manage_main" target="_blank">%s</a></li>'%(x.absolute_url(),x.absolute_url()) for x in res])
+	message.extend(['<li title="Found Item"><a title="<b>%s.%s</b> %s" class="found_item" data-toggle="tooltip" data-html="true" data-placement="left" href="%s/manage_main" target="_blank">%s</a></li>'%(x['node'].meta_id, x['attr_name'], str(standard.remove_tags(x['text'])).replace(old,'<em>%s</em><i>%s</i>'%(old,new)), x['node'].absolute_url(),x['node'].absolute_url()) for x in res])
 	message.append('</ol>')
 
 	html.append('''
@@ -120,6 +120,48 @@ html.append('</div><!-- .card-body -->')
 html.append('</form><!-- .form-horizontal -->')
 html.append('</div><!-- #zmi-tab -->')
 html.append(context.zmi_body_footer(context,request))
+
+html.append('''
+	<style>
+		div.tooltip div.tooltip-inner {
+			text-align: left !important;
+			background:aliceblue;
+			color:#000;
+			border:1px solid  #0056b3 !important;
+			min-width:30vw;
+			width:fit-content;
+			max-width:50vw;
+		}
+		div.tooltip div.tooltip-inner b {
+			font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+			font-weight:bold;
+			display:block;
+			background:#759bbd;
+			color:white;
+			padding:.15em .5em .15em .5em;
+			margin:-.35em -.6em 0 -.6em;
+			border-top-left-radius:4px;
+			border-top-right-radius:4px;
+		}
+		div.tooltip div.tooltip-inner em {
+			font-style:normal;
+			font-weight:normal;
+			background-color: #f8d7da!important;
+		}
+		div.tooltip div.tooltip-inner i {
+			font-style:normal;
+			font-weight:normal;
+			background-color: #d4edda!important;
+		}
+		div.tooltip div.arrow {
+			display:none
+		}
+		div.tooltip {
+			opacity:1 !important;
+		}
+	</style>
+''')
+
 html.append('</body>')
 html.append('</html>')
 

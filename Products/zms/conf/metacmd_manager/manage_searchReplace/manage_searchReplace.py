@@ -13,6 +13,9 @@ RESPONSE = request.RESPONSE
 btn_text_exec = context.getZMILangStr('BTN_EXECUTE')
 btn_text_cncl = context.getZMILangStr('BTN_CANCEL')
 html=[]
+old = request.form.get('old','')
+new = request.form.get('new','')
+did_replace = str(request.form.get('replace',0))=='1'
 
 def replace(o, old, new):
 	if isinstance(o,(str,bytes)):
@@ -51,7 +54,7 @@ def run(here, old, new):
 html.append('<!DOCTYPE html>')
 html.append('<html lang="en">')
 html.append(context.zmi_html_head(context,request))
-html.append('<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',context.meta_id])))
+html.append('<body class="%s">'%(' '.join(['zmi',request['lang'],'search_replace',did_replace and 'replaced' or '', context.meta_id])))
 html.append(context.zmi_body_header(context,request,options=[{'action':'#','label':'Search+Replace...'}]))
 html.append('<div id="zmi-tab">')
 html.append(context.zmi_breadcrumbs(context,request))
@@ -62,7 +65,7 @@ html.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
 html.append('<legend>Search+Replace...</legend>')
 html.append('<div class="card-body">')
 
-# --- Display initial insert form.
+# --- Display insert form.
 # ---------------------------------
 html.append('''
 	<div class="form-group row">
@@ -76,7 +79,7 @@ html.append('''
 		<div class="col-sm-10">
 			<div class="input-group">
 				<div class="input-group-prepend btn btn-warning">
-					<input type="checkbox" name="replace" value="1" class="mt-1">
+					<input type="checkbox" name="replace" value="1" class="mt-1" %s>
 				</div>
 				<input class="form-control" name="new" type="text" size="25" value="%s" />
 			</div>
@@ -88,29 +91,27 @@ html.append('''
 			<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>
 		</div><!-- .controls.save -->
 	</div>
-'''%( request.get('old',''), request.get('new',''), btn_text_exec, btn_text_cncl ))
+'''%( old, did_replace and 'checked="checked"' or '', new, btn_text_exec, btn_text_cncl ))
 
 # --- Execute.
 # ---------------------------------
 if request.form.get('btn')=='BTN_EXECUTE':
 	message = []
-	old = request['old']
-	new = request['new']
 	res = run(context,old,new)
-	if str(request.form.get('replace'))=='1':
-		message.append('%s Results found for <i>%s</i> and changed to <i>%s</i>.'%(len(res),old,new))
+	if did_replace:
+		message.append('<p>%s Results found for <em>%s</em> and changed to <i>%s</i>.</p>'%(len(res),old,new))
 	else:
-		message.append('%s Results found for <i>%s</i> and NOT changed.'%(len(res),old))
+		message.append('<p>%s Results found for <em>%s</em> and NOT changed.</p>'%(len(res),old))
 	message.append('<ol>')
 	message.extend(['<li title="Found Item"><a title="<b>%s.%s</b> %s" class="found_item" data-toggle="tooltip" data-html="true" data-placement="left" href="%s/manage_main" target="_blank">%s</a></li>'%(x['node'].meta_id, x['attr_name'], str(standard.remove_tags(x['text'])).replace(old,'<em>%s</em><i>%s</i>'%(old,new)), x['node'].absolute_url(),x['node'].absolute_url()) for x in res])
 	message.append('</ol>')
 
 	html.append('''
-		<div class="alert alert-success my-3">
+		<div class="alert alert-success my-3 %s">
 			<a class="close" style="font-size:1rem" data-dismiss="alert" href="#"><i class="fas fa-times"></i></a>
 			%s
 		</div>
-	'''%('\n'.join(message)))
+	'''%(did_replace and 'replaced' or '', '\n'.join(message)))
 
 elif request.form.get('btn')=='BTN_CANCEL':
 	request.response.redirect(context.url_append_params('manage_main',{'lang':request['lang']}))
@@ -143,15 +144,24 @@ html.append('''
 			border-top-left-radius:4px;
 			border-top-right-radius:4px;
 		}
+		div.alert > p > em,
 		div.tooltip div.tooltip-inner em {
 			font-style:normal;
 			font-weight:normal;
 			background-color: #f8d7da!important;
 		}
+		.zmi.replaced > p > em,
+		.zmi.replaced div.tooltip div.tooltip-inner em {
+			text-decoration: line-through;
+		}
+		div.alert > p > i,
 		div.tooltip div.tooltip-inner i {
 			font-style:normal;
 			font-weight:normal;
 			background-color: #d4edda!important;
+		}
+		div.alert > p > i {
+			background-color:#acd7c6!important;
 		}
 		div.tooltip div.arrow {
 			display:none

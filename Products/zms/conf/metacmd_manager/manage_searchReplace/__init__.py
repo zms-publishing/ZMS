@@ -16,7 +16,7 @@ class manage_searchReplace:
 	execution = False
 
 	# Icon_clazz
-	icon_clazz = "fas fa-random"
+	icon_clazz = "fas fa-search"
 
 	# Id
 	id = "manage_searchReplace"

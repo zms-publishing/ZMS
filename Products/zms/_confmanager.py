@@ -641,13 +641,15 @@ class ConfManager(
       ##### Import ####
       if key == 'Import':
         if btn == 'Import':
-          f = REQUEST['file']
+          f = REQUEST.get('file')
           if f:
             filename = f.filename
             self.importConfPackage(f)
-          else:
-            filename = REQUEST['init']
+          elif REQUEST.get('init'):
+            filename = REQUEST.get('init')
             self.importConfPackage(filename)
+          else:
+            filename = 'ERROR: No File found!'
           message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
       
       ##### History ####

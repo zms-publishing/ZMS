@@ -845,13 +845,15 @@ def unescape(s):
 
 
 security.declarePublic('http_request')
-def http_request(url, method='GET', data={}, auth=None, timeout=10, headers={'Accept':'*/*'}):
+def http_request(url, method='GET', **kwargs):
   import requests
   response = None
   if method == 'POST':
-    response = requests.post(url, files=data)
+    response = requests.post(url, **kwargs)
   elif method == 'GET':
-    response = requests.get( url, params=data)
+    response = requests.get(url, **kwargs)
+  elif method == 'PURGE':
+    response = requests.request('PURGE', url, **kwargs)
   return response
 
 

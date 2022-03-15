@@ -581,7 +581,15 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             # Select.Fk
             elif 'tablename' in stereotype:
               sql = []
-              sql.append( 'SELECT ' + stereotype['fieldname'] + ' AS qkey, ' + stereotype['displayfield'] + ' AS qvalue FROM ' + stereotype['tablename'])
+              sql.append( 'SELECT ' + stereotype['fieldname'] + ' AS qkey, ' + stereotype['displayfield'] + ' AS qvalue ')
+              sql.append( 'FROM ' + stereotype['tablename'])
+              sql.append( 'WHERE (1=1) ')
+              # Table-Filter
+              tabledef = self.getEntity(stereotype['tablename'])
+              tablefilter = standard.dt_exec(self, tabledef.get('filter', ''))
+              if tablefilter:
+                sql.append('AND (%s) '%tablefilter)
+              # Lazy
               if 'lazy' in stereotype:
                 where = ['1=0']
                 v = value
@@ -590,7 +598,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                     v = [v]
                   for i in v:
                     where.append( stereotype['fieldname'] + '=' + self.sql_quote__(stereotype['tablename'], stereotype['fieldname'], i))
-                sql.append( 'WHERE ' + ' OR '.join(where))
+                sql.append( 'AND (' + ' OR '.join(where) + ') ')
               sql.append( 'ORDER BY ' + str(stereotype.get('sort', 2)))
               column['valuesql'] = '\n'.join(sql)
               for r in self.query('\n'.join(sql))['records']:
@@ -615,12 +623,12 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             dst = [x for x in intersection_fk if x['id'].upper()!=stereotype['fk'].upper() or x['fk']['tablename'].upper()!=tableName.upper()][0]
           # Multiselect.Selected
           if src is not None and dst is not None and row is not None:
-            sql = '' \
-              + 'SELECT ' + dst['id'] + ' AS dst_id ' \
-              + 'FROM ' + intersection['id'] + ' ' \
-              + 'WHERE ' + src['id'] + '=' + self.sql_quote__(tableName, primary_key, standard.operator_getitem(row, primary_key, ignorecase=True))
-            column['valuesql'] = sql
-            for r in self.query(sql)['records']:
+            sql = []
+            sql.append('SELECT ' + dst['id'] + ' AS dst_id')
+            sql.append('FROM ' + intersection['id'])
+            sql.append('WHERE ' + src['id'] + '=' + self.sql_quote__(tableName, primary_key, standard.operator_getitem(row, primary_key, ignorecase=True)))
+            column['valuesql'] = '\n'.join(sql)
+            for r in self.query('\n'.join(sql))['records']:
               value.append(r['dst_id'])
           # Multiselect.MySQLSet
           if 'mysqlset' in stereotype:
@@ -638,6 +646,13 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             sql = []
             sql.append('SELECT ' + dst['fk']['fieldname'] + ' AS qkey, ' + dst['fk']['displayfield'] + ' AS qvalue')
             sql.append('FROM ' + dst['fk']['tablename'])
+            sql.append( 'WHERE (1=1) ')
+            # Table-Filter
+            tabledef = self.getEntity(dst['fk']['tablename'])
+            tablefilter = standard.dt_exec(self, tabledef.get('filter', ''))
+            if tablefilter:
+              sql.append('AND (%s) '%tablefilter)
+            # Lazy
             if 'lazy' in stereotype and row is not None:
               where = ['1=0']
               v = value
@@ -646,7 +661,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                   v = [v]
                 for i in v:
                   where.append( dst['fk']['fieldname'] + '=' + self.sql_quote__(dst['fk']['tablename'], dst['fk']['fieldname'], i))
-              sql.append( 'WHERE ' + ' OR '.join(where))
+              sql.append( 'AND (' + ' OR '.join(where) + ') ')
             column['valuesql'] = '\n'.join(sql)
             for r in self.query('\n'.join(sql))['records']:
               qkey = r['qkey']
@@ -679,30 +694,30 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                   if fkdisplayfield.upper().find('%s.'%fktablename.upper())<0:
                     fkdisplayfield = '%s.%s'%(fktablename, fkdisplayfield)
                   columns.append('%s AS %s_label'%(fkdisplayfield, x))
-                  joins.append('LEFT OUTER JOIN '+fktablename+' ON '+x+'=%s.%s '%(fktablename, fkfieldname))
-              sql = '' \
-                + 'SELECT '+', '.join(columns)+' ' \
-                + 'FROM '+stereotype['tablename']+' ' \
-                + '\n'.join(joins) \
-                + 'WHERE '+stereotype['fk']+'=' + self.sql_quote__(tableName, primary_key, standard.operator_getitem(row, primary_key, ignorecase=True)) 
-              column['valuesql'] = sql
+                  joins.append('LEFT OUTER JOIN ' + fktablename + ' ON ' + x + '=%s.%s '%(fktablename, fkfieldname))
+              sql = []
+              sql.append('SELECT ' + ', '.join(columns))
+              sql.append('FROM ' + stereotype['tablename'])
+              sql.extend(joins)
+              sql.append('WHERE ' + stereotype['fk'] + '=' + self.sql_quote__(tableName, primary_key, standard.operator_getitem(row, primary_key, ignorecase=True))) 
+              column['valuesql'] = '\n'.join(sql)
               column['value'] = []
               try:
-                records = self.query(sql, encoding=encoding)['records']
+                records = self.query('\n'.join(sql), encoding=encoding)['records']
                 column['value'] = records
               except:
                 column['error'] = standard.writeError(self, 'can\'t get value')
           # Details.Table
           else:
             if row:
-              sql = '' \
-                + 'SELECT * ' \
-                + 'FROM '+stereotype['tablename']+' ' \
-                + 'WHERE '+stereotype['fk']+'='+self.sql_quote__(tableName, primary_key, standard.operator_getitem(row, primary_key, ignorecase=True))
-              column['valuesql'] = sql
+              sql = []
+              sql.append('SELECT *')
+              sql.append('FROM ' + stereotype['tablename'])
+              sql.append('WHERE ' + stereotype['fk'] + '=' + self.sql_quote__(tableName, primary_key, standard.operator_getitem(row, primary_key, ignorecase=True)))
+              column['valuesql'] = '\n'.join(sql)
               column['value'] = []
               try:
-                records = self.query(sql, encoding=encoding)['records']
+                records = self.query('\n'.join(sql), encoding=encoding)['records']
                 column['value'] = records
               except:
                 column['error'] = standard.writeError(self, 'can\'t get value')
@@ -716,11 +731,11 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
               pass
             else:
               options = []
-              sql = '' \
-                + 'SELECT ' + item['fieldname'] + ' AS qkey, ' + item['displayfield'] + ' AS qvalue ' \
-                + 'FROM ' + item['tablename'] + ' ' \
-                + 'ORDER BY ' + item['displayfield']
-              for r in self.query(sql)['records']:
+              sql = []
+              sql.append('SELECT ' + item['fieldname'] + ' AS qkey, ' + item['displayfield'] + ' AS qvalue ')
+              sql.append('FROM ' + item['tablename'])
+              sql.append('ORDER BY ' + item['displayfield'])
+              for r in self.query('\n'.join(sql))['records']:
                 qkey = r['qkey']
                 qvalue = r['qvalue']
                 options.append([qkey, qvalue])

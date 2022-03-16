@@ -8,8 +8,7 @@
 <form class="form-horizontal card"
 	tal:define="global
 		meta_id request/id;
-		res python:here.getDocumentElement().getTreeNodes(request,meta_id);
-		res python:'zcatalog_index' in here.getAbsoluteHome() and here.getAbsoluteHome().zcatalog_index({'meta_id':meta_id}) or here.getDocumentElement().getTreeNodes(request,meta_id); 
+		res python:here.zcatalog_index({'meta_id':meta_id}); 
 		metaObjIds python:here.getMetaobjIds(); 
 		meta_types python:[x for x in metaObjIds if x not in ['ZMS']];
 		metaObjAttrIds python:here.getMetaobjAttrIds(request['id']);

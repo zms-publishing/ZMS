@@ -160,22 +160,10 @@ class ZReferableItem(object):
   #  ZReferableItem.getRefObjPath:
   # ----------------------------------------------------------------------------
   def getRefObjPath(self, ob, anchor=''):
-    ref = ''
-    if ob is not None:
-      def default(*args, **kwargs):
-        self = args[0]
-        ob = args[1]['ob']
-        anchor = args[1]['anchor']
-        abs_home = self.getAbsoluteHome().getPhysicalPath()
-        ob_home = ob.getPhysicalPath()[len(abs_home)-1:]
-        path = '/'.join(ob_home).replace('/content/', '@')
-        if path.startswith('@'):
-          path = path[1:]
-        return '{$' + path + anchor + '}'
-      request = self.REQUEST
-      key = request.get('ExtensionPoint.ZReferableItem.getRefObjPath','ExtensionPoint.ZReferableItem.getRefObjPath')
-      ref = self.evalExtensionPoint(key,default,ob=ob,anchor=anchor)
-    return ref
+    ref = ob.get_uid()
+    if anchor:
+      ref += '#'+anchor
+    return '{$%s}'%ref
 
 
   """
@@ -405,7 +393,34 @@ class ZReferableItem(object):
         ref_params = dict(re.findall(';(\w*)=(\w*)', url[url.find(';'):-1]))
         url = '{$%s}'%url[2:url.find(';')]
       # Get object.
-      ob = self.evalExtensionPoint('ExtensionPoint.ZReferableItem.getLinkObj', default, url=url)
+      if url.startswith('{$') and url.endswith('}'):
+        url = url[2:-1]
+        # Strip suffixes
+        i = max(url.find('#'),url.find(','))
+        if i > 0:
+          url = url[:i]
+        if url.find('id:') >= 0:
+          catalog = self.getZMSIndex().get_catalog()
+          q = catalog({'get_uid':url})
+          for r in q:
+            zmspath  = '%s/'%r['getPath']
+            l = zmspath[1:-1].split('/')
+            ob = self
+            try:
+              for id in [x for x in l if x]:
+                ob = getattr(ob,id,None)
+              break
+            except:
+              pass
+        elif not url.startswith('__'):
+          url = url.replace('@','/content/')
+          l = url.split('/') 
+          ob =self.getDocumentElement()
+          try:
+            for id in [x for x in l if x]:
+              ob = getattr(ob,id,None)
+          except:
+            pass
       # Prepare request
       if ob is not None and ob.id not in self.getPhysicalPath():
         request = self.REQUEST

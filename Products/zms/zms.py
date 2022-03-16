@@ -47,6 +47,7 @@ from Products.zms import ZMSMetacmdProvider, ZMSMetamodelProvider, ZMSFormatProv
 from Products.zms.zmscustom import ZMSCustom
 from Products.zms.zmslinkcontainer import ZMSLinkContainer
 from Products.zms.zmslinkelement import ZMSLinkElement
+from Products.zms.zmsindex import ZMSIndex
 from Products.zms.zmslog import ZMSLog
 from Products.zms.zmsobject import ZMSObject
 from Products.zms.zmssqldb import ZMSSqlDb
@@ -81,7 +82,7 @@ def subscriber(event):
         standard.triggerEvent(event.object, "*.ObjectRemoved")
   elif isinstance(event, ObjectRemovedEvent):
     if isinstance(event.object, ZMSObject):
-        # trigger object-removed event
+      # trigger object-removed event
       standard.triggerEvent(event.object, "*.ObjectRemoved")
 zope.event.subscribers.append(subscriber)
 
@@ -144,8 +145,9 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
 
   ### Init ZMS default content-model.
   _confmanager.initConf(obj, 'conf:com.zms.foundation*')
-  if not REQUEST.get('acquire'):
-    _confmanager.initConf(obj, 'conf:com.zms.index')
+
+  ### Init ZMS index.
+  obj.getZMSIndex()
 
   ### Init ZMS default actions.
   _confmanager.initConf(obj, 'conf:manage_tab_*')

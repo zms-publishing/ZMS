@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" tal:define="standard modules/Products.zms/standard">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="data-path python:here.getRootElement().getRefObjPath(here);data-root python:here.getRootElement().getHome().id;data-client python:here.getHome().id;id python:'zmsid_%s'%(here.id);class python:here.zmi_body_class(id='properties')">
+<body tal:attributes="
+	data-path python:here.getRootElement().getRefObjPath(here);
+	data-root python:here.getRootElement().getHome().id;
+	data-client python:here.getHome().id;
+	id python:'zmsid_%s'%(here.id);
+	class python:here.zmi_body_class(id='properties')">
 <header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
@@ -10,11 +15,11 @@
 /></tal:block>
 
 <tal:block tal:define=" 
-			id_prefix    python:['e',''][int(here.meta_id=='ZMSTrashcan')];
-			childNodes   python:here.getObjChildren(id_prefix,request);
-			pageelements python:[x for x in childNodes if not x.isPage()];
-			pages        python:[x for x in childNodes if x.isPage()];
-			nodelists    python:[['pageelements',pageelements],['pages',pages]]">
+	id_prefix    python:['e',''][int(here.meta_id=='ZMSTrashcan')];
+	childNodes   python:here.getObjChildren(id_prefix,request);
+	pageelements python:[x for x in childNodes if not x.isPage()];
+	pages        python:[x for x in childNodes if x.isPage()];
+	nodelists    python:[['pageelements',pageelements],['pages',pages]]">
 
 	<form class="zmi-action-form d-none">
 		<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang" />

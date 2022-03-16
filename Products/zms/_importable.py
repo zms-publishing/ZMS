@@ -107,7 +107,6 @@ def importContent(self, file):
   
   # Cleanup.
   self.setConfProperty('ZMS.CatalogAwareness.active', catalog_awareness)
-  standard.triggerEvent( self, '*.onImportObjEvt')
   
   # Return imported object.
   return ob
@@ -139,7 +138,7 @@ def importFile(self, file, REQUEST, handler):
     # Remove temporary files.
     _fileutil.remove(folder, deep=1)
     # Refresh zcatalog_index
-    standard.triggerEvent( self, '*.onImportObjEvt')
+    standard.triggerEvent( self, '*.ObjectImported')
     return ob
   
   # Find XML-file.

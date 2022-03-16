@@ -20,6 +20,8 @@
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog import ZCatalog
+from Products.PluginIndexes.DateIndex.DateIndex import DateIndex
+from Products.PluginIndexes.KeywordIndex.KeywordIndex import KeywordIndex
 from zope.interface import implementer
 import copy
 import sys
@@ -155,9 +157,9 @@ def recreateCatalog(self, zcm, lang):
     index_name = 'zcat_index_%s'%attr_id
     index_type = zcm.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
     if attr_id == 'home_id':
-      index_type = 'KeywordIndex'
+      index_type = KeywordIndex(attr_id)
     elif attr_type == 'date':
-      index_type = 'DateIndex'
+      index_type = DateIndex(attr_id)
     extra = None
     if index_type == 'ZCTextIndex':
       extra = Empty()

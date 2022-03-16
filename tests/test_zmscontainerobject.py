@@ -42,15 +42,12 @@ class ZMSContainerObjectTest(ZMSTestCase):
     self.assertEqual(7,len(folder.getTreeNodes(request)))
     
     print('>>>>>>>>>> test zmsindex')
-    catalog = getattr(context,'zcatalog_index',None)
-    if catalog is None:
-      print('skip')
-    else:
-      print('inline-link from ta11 (%s) to doc2 (%s)'%(ta11.absolute_url(),doc2.absolute_url()))
-      ta11.setObjProperty('text','Lorem <a data-id="{$%s}" href="test.html">ipsum</a> dolor'%doc2.get_uid(),request['lang'])
-      href = context.getRelativeUrl(ta11.getHref2IndexHtml(request),doc2.getHref2IndexHtml(request))
-      print('inline-link from ta11 to doc2: '+href)
-      # FIXME self.assertTrue(ta11.attr('text').find('href="%s"'%href)>0)
+    # FIXME catalog = context.zcatalog_index
+    print('inline-link from ta11 (%s) to doc2 (%s)'%(ta11.absolute_url(),doc2.absolute_url()))
+    ta11.setObjProperty('text','Lorem <a data-id="{$%s}" href="test.html">ipsum</a> dolor'%doc2.get_uid(),request['lang'])
+    href = context.getRelativeUrl(ta11.getHref2IndexHtml(request),doc2.getHref2IndexHtml(request))
+    print('inline-link from ta11 to doc2: '+href)
+    # FIXME self.assertTrue(ta11.attr('text').find('href="%s"'%href)>0)
 
   def tearDown(self):
     zmscontext = self.context

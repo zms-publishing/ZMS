@@ -1,38 +1,41 @@
 {
 	"folders": [
 		{
+			"name": "ZMS5",
 			"path": "../"
 		},
-//		{
-//			"path": "~/src/zms-publishing/ZMS3"
-//		},
 		{
+			"name": "Zope 5",
 			"path": "/home/zope/src/zopefoundation/Zope"
 		},
+		{
+			"name": "ZMS5 Dev Instance",
+			"path": "/home/zope/instance/zms5_dev"
+		},
+		{
+			"name": "Zope-WebDAV Access",
+			"uri": "webdav://admin:admin@localhost:8091/"
+		}
 	],
 	"settings": {
-		"python.pythonPath": "~/vpy38/bin/python",
+		"python.defaultInterpreterPath": "~/vpy38/bin/python",
 		"window.zoomLevel": 0,
 		"git.ignoreMissingGitWarning": true,
 		"editor.minimap.enabled": false,
 		"editor.renderWhitespace": "all",
 		"editor.renderControlCharacters": false,
-		"team.showWelcomeMessage": false,
 		"workbench.iconTheme": "vs-minimal",
 		"files.associations": {
 			"*.zpt": "html",
 			"*.zcml": "xml"
 		},
-		"scm.alwaysShowProviders": true,
 		"scm.alwaysShowActions": true,
 		"files.exclude": {
 			"*.pyc": true,
-			"*-all.min.*":true
+			"*-all.min.*":true,
+			"**/cache/**": true,
+			"**/Data.*": true,
 		},
-		"python.workspaceSymbols.exclusionPatterns": [
-			"**/site-packages/**",
-			"*.pyc"
-		],
 		"files.eol": "\n",
 		"files.autoSave": "afterDelay",
 		"workbench.colorTheme": "Visual Studio Light",

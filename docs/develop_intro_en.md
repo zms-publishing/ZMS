@@ -221,3 +221,40 @@ In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#
 ```
 *After setting up  VS Code to launch the remote Zope in debug-mode you can interfere with Zope/ZMS code on the remote machine:*
 ![Debugging in a ZEO environment](images/develop_vscode_remote4.png)
+
+## WebDAV-Editing of Zope Objects
+Since Zope's new default web server (<a href="https://zope.readthedocs.io/en/latest/news.html?highlight=ftp#wsgi-as-the-new-default-server-type">WSGI</a>) does not provide ftp communication, the WebDAV protocol can be used for Zope object editing. Zope's WebDAV interface is configured in two steps:
+
+1. Add a new address to the default Zope WSGI server config-file `./etc/zope.ini`. The new address for the WebDAV connection will be `127.0.0.1:8091`:
+	```
+	[server:main]
+	use = egg:waitress#main
+	# listen = 127.0.0.1
+	# port = 8080
+	listen = 127.0.0.1:8080 127.0.0.1:8091 
+	```
+
+2. Add a new line to  Zope config-file `./etc/zope.conf` to enable the WebDAV feature:
+	```
+	webdav-source-port 8091
+	```
+
+After restarting the Zope instance WebDAV protocol will be available. 
+To make VSCode work with WebDAV a special plugin is needed: "Remote Workspace" can be installed via VSCode Marketplace
+
+https://marketplace.visualstudio.com/items?itemName=Liveecommerce.vscode-remote-workspace
+
+To show Zope's object tree as an editable file tree,  VSCode's _code-workspace_ file needs a new entry to establish the WebDAV connections:
+
+```
+{
+	"name": "Zope-WebDAV Access",
+	"uri": "webdav://admin:****@localhost:8090/"
+}
+```
+Now the  WebDAV file tree apears in the VSCode Explorer view, can be naviagated and nodes can be edited.
+
+![Debugging in a ZEO environment](images/develop_vscode_webdav.gif)
+_WebDAV editing of Zope objects: the left screen shows the browser based ZMI and the right screen shows the VSCode editor view of the Zope document tree and the same Python Script object_
+
+**Important Note**: WebDAV should only be used in a safe (development) environment like localhost and/or SSL port-forwarding.

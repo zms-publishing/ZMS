@@ -197,9 +197,13 @@ def renderHtml():
 		else:
 			message.append('<p>%s Results found for <em>%s</em> and NOT changed.</p>'%(len(res),old))
 		message.append('<ol>')
-		message.extend(['<li title="Found Item"><a title="<b>%s.%s</b> %s" class="found_item" data-toggle="tooltip" data-html="true" data-placement="left" href="%s/manage_main" target="_blank">%s</a></li>'%(x['node'].meta_id, x['attr_name'], str(standard.remove_tags(x['text'])).replace(old,'<em>%s</em><i>%s</i>'%(old,new)), x['node'].absolute_url(),x['node'].absolute_url()) for x in res])
+		for e in res:
+			node_url = e['node'].absolute_url()
+			node_meta = e['node'].meta_id
+			node_attr = e['attr_name']
+			node_text = str(standard.remove_tags(e['text'])).replace('\"','').replace(old,'<em>%s</em><i>%s</i>'%(old,new))
+			message.append('<li title="Found Item"><a title="<b>%s.%s</b> %s" class="found_item" data-toggle="tooltip" data-html="true" data-placement="left" href="%s/manage_main" target="_blank">%s</a></li>'%( node_meta, node_attr, node_text, node_url, node_url))
 		message.append('</ol>')
-
 		html.append('''
 			<div class="alert alert-success my-3 %s">
 				<a class="close" style="font-size:1rem" data-dismiss="alert" href="#"><i class="fas fa-times"></i></a>

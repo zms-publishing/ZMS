@@ -84,7 +84,7 @@ The only item in [settings.json](https://github.com/zms-publishing/ZMS5/blob/mas
 
 ### launch.json
 The file [launch.json](https://github.com/zms-publishing/ZMS5/blob/master/.vscode/launch.json) is the most important config file bedause it tells VS Code how the Python extension will start the debugger. So all relevant paths must be mentioned, especially the starting `programm` and the `env`ironment variables Zope needs for starting a Zope instance. The following example config file assumes that 
-1. there is a user `zope` using the its home folder as a location for the virtual python (`~/vpy3/`) and the zope instances (`~/instance/`)
+1. there is a user `zope` using its home folder as a location for the virtual python (`~/vpy3/`) and the zope instances (`~/instance/`)
 2. the name of the Zope instance is `zms5_dev`
 3. the git-cloned code of Zope and ZMS are placed in a source folder called `~/src`
 
@@ -92,16 +92,18 @@ The file [launch.json](https://github.com/zms-publishing/ZMS5/blob/master/.vscod
 {
 	"configurations": [
 		{
-			"name": "ZMS5-Demo",
+			"name": "ZMS5-DEV",
 			"type": "python",
 			"request": "launch",
-			"program": "~/src/Zope/src/Zope2/Startup/serve.py",
+			"program": "~/vpy37/bin/runwsgi",
 			"justMyCode": false,
 			"console": "integratedTerminal",
 			"args": [
-				"-d",
-				"-v",
-				"~/instance/zms5_dev/etc/zope.ini"
+				"--debug",
+				"--verbose",
+				"~/instance/zms5_dev/etc/zope.ini",
+				"debug-mode=on",
+				// "http_port=8086",
 			],
 			"env": {
 				"PYTHONUNBUFFERED":"1",
@@ -182,7 +184,7 @@ Then you can open folders on the remote machine and save them as a VS Code *work
 
 
 ## Debugging in a ZEO environment
-In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#what-is-zeo) an you can start a separate Zope instance in parallel to the running ZEO clients. The launch script needs an additional argument for a separate HTTP port (e.g. `http_port=8088`) this instance should communicate with. VS Code recognized all the ports that are served by ZEO clients and shows it in the remote explorer menu. You can click on the browser button to address this port via port forewarding on localhost for viewing the just started debugging instance:
+In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#what-is-zeo) VS Code can launch one more Zope instance in parallel to the running ZEO clients. The launch script needs an additional argument for a separate HTTP port (e.g. `http_port=8088`) the launched instance should communicate with. VS Code recognizes all the ports that are served by ZEO clients and shows it in the remote explorer menu. You can click on the browser button to address this port via port forewarding on localhost for viewing the just started debugging instance:
 
 ![Debugging in a ZEO environment](images/develop_vscode_remote3.png)
 *After launching the Zope debugging instance by VS Code the remote explorer menu automatically shows all ports the ZEO environment is communicating with (left side, bottom). A click on a browser icon starts a new browser windows requesting that port via VS Code controlled forwording*
@@ -195,17 +197,18 @@ In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#
 	"configurations": [
 
 		{
-			"name": "ZMS5-Demo",
+			"name": "ZMS5-DEV",
 			"type": "python",
 			"request": "launch",
+			"program": "~/vpy37/bin/runwsgi",
+			"justMyCode": false,
 			"console": "integratedTerminal",
-			"program": "~/src/Zope/src/Zope2/Startup/serve.py",
 			"args": [
 				"--debug",
 				"--verbose",
-				"~/instance/zms5_dev/etc/zope.ini"
-				"debug_mode=on",
-				"http_port=8088"
+				"~/instance/zms5_dev/etc/zope.ini",
+				"debug-mode=on",
+				"http_port=8086",
 			],
 			"env": {
 				"PYTHONUNBUFFERED":"1",
@@ -221,6 +224,85 @@ In an [ZEO environment](https://zope.readthedocs.io/en/latest/zopebook/ZEO.html#
 ```
 *After setting up  VS Code to launch the remote Zope in debug-mode you can interfere with Zope/ZMS code on the remote machine:*
 ![Debugging in a ZEO environment](images/develop_vscode_remote4.png)
+
+
+### Configuring HTTP Port Number as a Script Argument
+Usually ZEO starts one installed Zope instance multiple times on several ports and thus runs them in different processes in parallel.
+To manage that Zope's ini-file `$instance_dir/etc/zope.ini` gets the http-port as a variable `%(http_port)s`:
+
+```
+[app:zope]
+use = egg:Zope#main
+zope_conf = %(here)s/zope.conf
+
+[server:main]
+use = egg:waitress#main
+host = 127.0.0.1
+# port = 8080
+port = %(http_port)s
+
+```
+
+Now the upper launch script will start Zope on that port which is given as an argument.
+
+## Configuring Zope for the Use of ZEO
+
+The `zope.conf` needs some changes of the database section for accessing the ZODB via ZEO as client:
+
+```xml
+%define INSTANCE /home/zope/instances/zms5
+
+instancehome $INSTANCE
+trusted-proxy 127.0.0.1
+
+%import ZEO
+
+<zodb_db main>
+    <clientstorage>
+        server $INSTANCE/var/zeosocket
+        storage main
+        name zeostorage Data.fs
+        client-label zms5_zeo 8080
+    </clientstorage>
+    mount-point /
+</zodb_db>
+```
+
+
+An additional file `zeo.conf` sets the application's socket file:
+
+```xml
+%define INSTANCE /home/zope/instances/zms5
+
+<zeo>
+    address $INSTANCE/var/zeosocket
+</zeo>
+
+<filestorage main>
+    path $INSTANCE/var/Data.fs
+</filestorage>
+```
+As an example the following shell scripts starts ZEO first and then the Zope instance two times on different ports: 
+
+
+```sh
+#!/bin/bash
+
+instance_dir="/home/zope/instances/zms5_dev"
+venv_bin_dir="/home/zope/vpy38/bin"
+
+nohup  $venv_bin_dir/runzeo --configure $instance_dir/etc/zeo.conf 1>/dev/null 2>/dev/null &
+echo "ZEO started"
+nohup  $venv_bin_dir/runwsgi --debug --verbose $instance_dir/etc/zope.ini debug-mode=on http_port=8085 1>/dev/null 2>/dev/null &
+echo "ZOPE 8085 started"
+nohup $venv_bin_dir/runwsgi --debug --verbose $instance_dir/etc/zope.ini debug-mode=on http_port=8086 1>/dev/null 2>/dev/null &
+echo "ZOPE 8086 started"
+```
+
+
+More details  about the ZEO configuration are described in the <a href="https://zeo.readthedocs.io/en/latest/clients.html#configuration-strings-files">ZEO docs</a> 
+
+
 
 ## WebDAV-Editing of Zope Objects
 Since Zope's new default web server (<a href="https://zope.readthedocs.io/en/latest/news.html?highlight=ftp#wsgi-as-the-new-default-server-type">WSGI</a>) does not provide ftp communication, the WebDAV protocol can be used for Zope object editing. Zope's WebDAV interface is configured in two steps:
@@ -246,7 +328,7 @@ https://marketplace.visualstudio.com/items?itemName=Liveecommerce.vscode-remote-
 
 To show Zope's object tree as an editable file tree,  VSCode's _code-workspace_ file needs a new entry to establish the WebDAV connections:
 
-```
+```json
 {
 	"name": "Zope-WebDAV Access",
 	"uri": "webdav://admin:****@localhost:8090/"

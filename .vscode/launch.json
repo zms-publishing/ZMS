@@ -1,14 +1,13 @@
 {
     "version": "0.2.0",
 
-
-
     "configurations": [
         {
             "name": "ZMS5-DEV",
             "type": "python",
             "request": "launch",
             "program": "~/vpy38/bin/runwsgi",
+            "justMyCode": false,
             "console": "integratedTerminal",
             "args": [
                 "--debug",

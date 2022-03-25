@@ -214,8 +214,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.set_uid:
     # --------------------------------------------------------------------------
     def set_uid(self, uid):
-      if self.getLinkObj('{$%s}'%uid) is not None:
-        raise zExceptions.InternalError("can't set_uid: %s already exists!"%uid)
       self._uid = uid.replace('uid:', '')
 
     # --------------------------------------------------------------------------

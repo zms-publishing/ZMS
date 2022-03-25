@@ -86,7 +86,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       base = list(self.getRootElement().getPhysicalPath())[:-1]
       url = list(self.getDocumentElement().getPhysicalPath())[len(base):-1]
       request.set('url','{$'+['','/'.join(url)+'@'][len(url)>0]+'}')
-      self.manage_reindex()
+      self.manage_reindex(regenerate_duplicates=True)
       if self.getConfProperty('ZMSIndexZCatalog.ObjectImported',False) == True:
         self.manage_resync()
 
@@ -218,7 +218,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
     ##############################################################################
     # Reindex
     ##############################################################################
-    def manage_reindex(self):
+    def manage_reindex(self, regenerate_duplicates=False):
       """ ZMSIndex.manage_reindex """
       request = self.REQUEST
       response = request.RESPONSE
@@ -227,7 +227,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       zmsroot = self.getRootElement()
       home = zmsroot.getHome()
       catalog = getattr(home,self.catalog_id,None)
-      regenerate_duplicates = catalog is None
+      regenerate_duplicates = regenerate_duplicates or catalog is None
 
       # Visit tree
       def visit(node):

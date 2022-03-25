@@ -96,8 +96,10 @@ class ZMSIndex(ZMSItem.ZMSItem):
     def ObjectAdded(self, context):
       catalog = self.get_catalog()
       def traverse(node):
+         # Create new uid.
+        node.get_uid(True)
         # Catalog object.
-        self.catalog_object(catalog,node,regenerate_duplicates=True)
+        self.catalog_object(catalog,node)
         # Traverse.
         for childNode in node.getChildNodes():
           traverse(childNode)

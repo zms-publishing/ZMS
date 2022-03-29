@@ -45,7 +45,7 @@ def getobjattrdefault(obj, obj_attr, lang):
     if datatype in range(len(_globals.datatype_map)):
       default = obj_attr.get('default',_globals.datatype_map[datatype][1])
     # Default inactive in untranslated languages.
-    if obj_attr['id'] == 'active' and len(obj.getLangIds()) > 1 and not ( obj.isTranslated(lang,obj.REQUEST) or lang == obj.getPrimaryLanguage() ):
+    if obj_attr['id'] == 'active' and len(obj.getLangIds()) > 1 and not obj.isTranslated(lang,obj.REQUEST):
         default = 0
     if default is not None:
       if datatype in _globals.DT_DATETIMES and default == '{now}':

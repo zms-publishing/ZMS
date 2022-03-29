@@ -59,8 +59,6 @@ def getobjattrdefault(obj, obj_attr, lang):
         if default and datatype not in _globals.DT_TEXTS and isinstance(default, str):
           default = standard.dt_exec(obj,default)
         v = default
-    if obj.getSelf().id == 'e146':
-      standard.writeBlock(obj,str(('getobjattrdefault',obj_attr['id'],v,lang)))
     return v
 
 

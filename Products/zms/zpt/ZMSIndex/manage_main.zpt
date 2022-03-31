@@ -172,6 +172,9 @@ function zmiFuncIndex(func_) {
 					data:data,
 					error: function (xhr, ajaxOptions, thrownError) {
 							$a.next('.response').addClass('alert modal-content alert-danger text-danger').html( btn_close + '( '+thrownError+' )' );
+							if ( !$('#logshow').prop('checked') ) {
+								$(".zmi-sitemap .response").remove();
+							}
 							i++;
 							console.log('Indexing Client No.' + i + ': ERROR');
 							$('#zmsindex .progress').addClass('error');
@@ -180,6 +183,9 @@ function zmiFuncIndex(func_) {
 						},
 					success:function(response) {
 							$a.next('.response').addClass('alert modal-content alert-success text-success').html( btn_close + '( '+response+' )' );
+							if ( !$('#logshow').prop('checked') ) {
+								$(".zmi-sitemap .response").remove();
+							}
 							i++;
 							console.log('Indexing Client No.' + i + ': done');
 							set_progress( v=(i/n), func_name=func_ );

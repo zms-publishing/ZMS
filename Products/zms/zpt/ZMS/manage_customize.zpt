@@ -50,7 +50,7 @@
 						<span class="btn btn-secondary">
 							<i tal:on-error="structure string:<i class='fas fa-ban' title='Icon Error'></i>"
 								tal:attributes="class python:si.zmi_icon"
-								></i>&nbsp;&nbsp;<input type="checkbox" name="ids:list" tal:attributes="value python:si.id" />
+								></i>&nbsp;&nbsp;<input type="checkbox" name="ids:list" tal:attributes="value python:si.id; disabled python:si.id=='zmsindex' and 'disabled' or None" />
 						</span>
 						&nbsp;<a tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</a>
 					</label>

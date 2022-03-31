@@ -189,7 +189,7 @@ def set_response_headers(fn, mt='application/octet-stream', size=None, request=N
   RESPONSE = request.RESPONSE
   RESPONSE.setHeader('Content-Type', mt)
   content_disposition = ';  filename="%s"'%_fileutil.extractFilename(fn)
-  content_disposition = request.get('ZMS_ADDITIONAL_CONTENT_DISPOSITION','inline;') + content_disposition
+  content_disposition = request.get('ZMS_ADDITIONAL_CONTENT_DISPOSITION','inline') + content_disposition
   RESPONSE.setHeader('Content-Disposition',content_disposition)
   if size:
     RESPONSE.setHeader('Content-Length', size)

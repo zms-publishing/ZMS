@@ -150,7 +150,7 @@ The form's request is responded by an XML stream which is transformed into an HT
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
 ```
 
-Hint:
+**Hint-1:**
 The page containing the search form may be linked from different navigation items. Instead of linking the node explicitly it might be easier to reference the page with a "permalink" (as metalement of the ZMS-root node). In the first element of the master template _standard_html_ the link to that page can defined as an object variable like this
 
 ```html
@@ -166,6 +166,16 @@ and a link to the search page can be generated like this;
 	<i class="fas fa-search"></i>&nbsp;
 	<span tal:replace="python:zmscontext.getLangStr('SEARCH')">Suche</span>
 </a>
+```
+
+**Hint-2:** 
+If you are working with a multisite and a common index, you can filter the search results for  the current ZMS client just by adding the form variable "home_id" to the search form. E.g. , the ZMS client is named 'myzms', the search form could start like this:  
+
+```html
+<form class="search" method="get">
+	<input type="hidden" name="home_id" value="myzms">
+....
+</form>
 ```
 
 ## Managing ZMS Custom Code & Configurations

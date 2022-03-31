@@ -22,7 +22,6 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog import ZCatalog
 from Products.PluginIndexes.FieldIndex.FieldIndex import FieldIndex
 from Products.PluginIndexes.PathIndex.PathIndex import PathIndex
-import logging
 import os
 import re
 import sys
@@ -58,8 +57,6 @@ class ZMSIndex(ZMSItem.ZMSItem):
     # Management Interface.
     # ---------------------
     manage_main = PageTemplateFile( 'zpt/ZMSIndex/manage_main', globals())
-
-    LOGGER = logging.getLogger("ZMS")
 
     # Catalog Id
     catalog_id = 'zcatalog_index'
@@ -137,6 +134,13 @@ class ZMSIndex(ZMSItem.ZMSItem):
       traverse(context)
 
     ##############################################################################
+    # Get Log
+    ##############################################################################
+    def get_log(self, log, request):
+      loglevel = request.get('loglevel','<NONE>')
+      return '\n'.join([x for x in log if x.startswith('%s '%loglevel)])
+
+    ##############################################################################
     # Get Catalog
     ##############################################################################
     def get_catalog(self, createIfNotExists=True):
@@ -193,7 +197,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       if len(q) > 0:
         if regenerate_duplicates:
           node.get_uid(forced=True)
-        printed.append(standard.writeError(node,'[ZMSIndex] WARNING duplicate uid: %s->%s'%(uid,node.get_uid())))
+        printed.append('ERROR %s'%standard.writeError(node,'[ZMSIndex] WARNING duplicate uid: %s->%s'%(uid,node.get_uid())))
       # Catalog object.
       catalog.catalog_object(node, path)
       # Unprepare object.
@@ -237,9 +241,9 @@ class ZMSIndex(ZMSItem.ZMSItem):
           # Clear catalog
           for i in catalog({'path':'/'.join(node.getPhysicalPath())}):
             path = i['getPath']
-            log.append(standard.writeBlock(self,'[ZMSIndex] uncatalog_object %s'%path))
+            log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] uncatalog_object %s'%path))
             catalog.uncatalog_object(path)
-        log.append(standard.writeBlock(self,'[ZMSIndex] catalog_object %s %s'%(node.getPath(),str(node.get_uid()))))
+        log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] catalog_object %s %s'%(node.getPath(),str(node.get_uid()))))
         self.catalog_object(catalog,node,regenerate_duplicates)
         for childNode in node.getChildNodes():
           l.extend(visit(childNode))
@@ -248,13 +252,13 @@ class ZMSIndex(ZMSItem.ZMSItem):
       urls = [x for x in request['url'].split(',') if x]
       for url in urls:
         catalog = self.get_catalog()
-        log.append(standard.writeBlock(self,'[ZMSIndex] ### reindex for %s'%url))
+        log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] ### reindex for %s'%url))
         t0 = time.time()
         base = self.getLinkObj(url)
         if base is not None:
           count = visit(base.getDocumentElement())
-          log.append(standard.writeBlock(self,'[ZMSIndex] reindex for %s done: %i in %.2fsecs.'%(url,len(count),time.time()-t0)))
-      return '\n'.join(log)
+          log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] reindex for %s done: %i in %.2fsecs.'%(url,len(count),time.time()-t0)))
+      return self.get_log(log,request)
 
     ##############################################################################
     # Test
@@ -285,7 +289,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       if catalog is not None:
         urls = [x for x in request['url'].split(',') if x]
         for url in urls:
-          log.append(standard.writeBlock(self,'[ZMSIndex] ### test for %s'%url))
+          log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] ### test for %s'%url))
           t0 = time.time()
           base = self.getLinkObj(url)
           if base is not None:
@@ -295,18 +299,18 @@ class ZMSIndex(ZMSItem.ZMSItem):
             for i in from_catalog:
               if i not in from_tree:
                 if c == 0:
-                  log.append(standard.writeBlock(self,'[ZMSIndex] found in catalog, missing in tree:'))
-                log.append(standard.writeBlock(self,'[ZMSIndex] %i.: %s'%(c,str(i))))
+                  log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] found in catalog, missing in tree:'))
+                log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] %i.: %s'%(c,str(i))))
                 c += 1
             c = 0
             for i in from_tree:
               if i not in from_catalog:
                 if c == 0:
-                  log.append(standard.writeBlock(self,'[ZMSIndex] found in tree, missing in catalog:'))
-                log.append(standard.writeBlock(self,'[ZMSIndex] %i.: %s'%(c,str(i))))
+                  log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] found in tree, missing in catalog:'))
+                log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] %i.: %s'%(c,str(i))))
                 c += 1
-            log.append(standard.writeBlock(self,'[ZMSIndex] test for %s done: %i / %i in %.2fsecs.'%(url,len(from_catalog),len(from_tree),time.time()-t0)))
-      return '\n'.join(log)
+            log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] test for %s done: %i / %i in %.2fsecs.'%(url,len(from_catalog),len(from_tree),time.time()-t0)))
+      return self.get_log(log,request)
 
     ##############################################################################
     # Resync
@@ -361,21 +365,21 @@ class ZMSIndex(ZMSItem.ZMSItem):
           if ids:
             for brain in query('id',ids[-1]):
               if brain['getPath'].endswith(data_id):
-                log.append(standard.writeLog(self,'[ZMSIndex] find_brain.100 %s->%s'%(data_id,brain['getPath'])))
+                log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] find_brain.100 %s->%s'%(data_id,brain['getPath'])))
                 brains.append((100,brain))
               elif ids[-1] == 'content' and len(ids)>=2 and brain['getPath'].endswith('/'.join(ids[-2:])):
                 score = len([1 for id in ids if id in brain['getPath'].split('/')])
-                log.append(standard.writeLog(self,'[ZMSIndex] find_brain#1 %i->%s'%(score,brain['getPath'])))
+                log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] find_brain#1 %i->%s'%(score,brain['getPath'])))
                 brains.append((score,brain))
               else:
                 score = len([1 for id in ids if id in brain['getPath'].split('/')])
-                log.append(standard.writeLog(self,'[ZMSIndex] find_brain#2 %i->%s'%(score,brain['getPath'])))
+                log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] find_brain#2 %i->%s'%(score,brain['getPath'])))
                 brains.append((score,brain))
           if brains:
             brains = sorted(brains,key=lambda x:x[0])
-            log.append(standard.writeLog(self,'[ZMSIndex] find_brain brains=%s'%str([(x[0],x[1]['getPath']) for x in brains])))
+            log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] find_brain brains=%s'%str([(x[0],x[1]['getPath']) for x in brains])))
             rtn = brains[-1][1]
-        log.append(standard.writeLog(self,'[ZMSIndex] find_brain %s->%s'%(data_id,str(rtn is not None))))
+        log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] find_brain %s->%s'%(data_id,str(rtn is not None))))
         return rtn
 
       def find_decl_id(base, id):
@@ -398,7 +402,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
         for id in path.split('/'):
           ids.extend(id.split('#'))
         ids = [x for x in ids if x not in ['','.','..'] and not (x.startswith('index_') and x.endswith('.html'))]
-        log.append(standard.writeLog(self,'[ZMSIndex] find_node ids=%s'%str(ids)))
+        log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] find_node ids=%s'%str(ids)))
         if len(ids)==0 or len([x for x in ids if x.startswith('manage')]) > 0:
           return None
         # find id in catalog
@@ -426,7 +430,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
           ref = node.getLinkObj(data_id)
           if ref:
             new = ref.absolute_url()
-            log.append(standard.writeLog(node,'[ZMSIndex] handleInline %s->%s'%(old,new)))
+            log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline %s->%s'%(old,new)))
             v = v.replace(old,new)
         p = '<a(.*?)>(.*?)<\\/a>'
         r = re.compile(p)
@@ -436,7 +440,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
           d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
           if brain is None and 'data-id' in d:
             data_id = d['data-id']
-            log.append(standard.writeLog(node,'[ZMSIndex] handleInline data_id=%s'%data_id))
+            log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline data_id=%s'%data_id))
             brain = find_brain(data_id)
             if data_id.find(';') > 0:
               data_data = data_id[data_id.find(';'):-1]
@@ -446,7 +450,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
             for domain in domains:
               path = domains[domain]
               href = re.sub(domain,path,href)
-            log.append(standard.writeLog(node,'[ZMSIndex] handleInline href=%s'%href))
+            log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline href=%s'%href))
             if href.startswith('.') or href.startswith('/'):
               nf = re.compile('(.*?)\\?op=not_found&url={\\$(.*?)}').findall(href)
               if nf:
@@ -466,7 +470,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
             if old != new:
               ref = getLinkObj('{$%s}'%brain['get_uid'])
               ref.registerRefObj(node)
-              log.append(standard.writeBlock(node,'[ZMSIndex] handleInline %s->%s'%(old,new)))
+              log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline %s->%s'%(old,new)))
               v = v.replace(old,new)
         return v
 
@@ -489,7 +493,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
                 ref = getLinkObj('{$%s}'%brain['get_uid'])
                 ref.registerRefObj(node)
             else:
-              log.append(standard.writeError(node,'[ZMSIndex] handleUrl ### MISSING LINKTARGET %s'%(v)))
+              log.append('ERROR %s'%standard.writeBlock(node,'[ZMSIndex] handleUrl ### MISSING LINKTARGET %s'%(v)))
               v = '{$__%s__}'%v[2:-1]
         return v
 
@@ -529,7 +533,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       def visit(node):
         count = []
         count.append(1)
-        log.append(standard.writeBlock(node,'[ZMSIndex] resync'))
+        log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] resync'))
         
         try:
           if node.meta_id!='ZMSLinkElement' and node.getType()=='ZMSRecordSet':
@@ -574,13 +578,13 @@ class ZMSIndex(ZMSItem.ZMSItem):
         except:
           t,v,tb = sys.exc_info()
           msg = ''.join(format_exception(t, v, tb))
-          log.append(standard.writeError(node,'[ZMSIndex] can\'t visit %s'%msg))
+          log.append('ERROR %s'%standard.writeBlock(node,'[ZMSIndex] can\'t visit %s'%msg))
 
         # premature commit
         req_key = 'ZMSIndexZCatalog.resync.transaction_count'
         cfg_key = 'ZMSIndexZCatalog.resync.transaction_size'
         if request.get(req_key,0)>=int(self.getConfProperty(cfg_key,1000000)):
-          log.append(standard.writeBlock(node,'[ZMSIndex] +++ COMMIT +++'))
+          log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] +++ COMMIT +++'))
           import transaction
           transaction.commit()
           request.set(req_key,0)
@@ -597,10 +601,10 @@ class ZMSIndex(ZMSItem.ZMSItem):
           domain = '^http(\\w)?://%s'%domain
           path = '/'.join(doc.getPhysicalPath())
           if domain in domains:
-            log.append(standard.writeError(doc,'[ZMSIndex] ### init_domains DUPLICATE %s=%s'%(domain,path)))
+            log.append('ERROR %s'%standard.writeBlock(doc,'[ZMSIndex] ### init_domains DUPLICATE %s=%s'%(domain,path)))
           else:
             domains[domain] = path
-            log.append(standard.writeBlock(doc,'[ZMSIndex] init_domains %s=%s'%(domain,path)))
+            log.append('INFO %s'%standard.writeBlock(doc,'[ZMSIndex] init_domains %s=%s'%(domain,path)))
         for portalClient in doc.getPortalClients():
           init_domains(portalClient,domains)
       if int(request.get('i',0)) == 0 or session is None or session.get('ZMSIndex_domains') is None:
@@ -612,13 +616,13 @@ class ZMSIndex(ZMSItem.ZMSItem):
 
       urls = [x for x in request['url'].split(',') if x]
       for url in urls:
-        log.append(standard.writeBlock(self,'[ZMSIndex] ### resync for %s'%url))
+        log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] ### resync for %s'%url))
         t0 = time.time()
         base = self.getLinkObj(url)
         if base is not None:
           count = visit(base)
-          log.append(standard.writeBlock(self,'[ZMSIndex] resync for %s done: %i in %.2fsecs.'%(url,len(count),time.time()-t0)))
-      return '\n'.join(log)
+          log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] resync for %s done: %i in %.2fsecs.'%(url,len(count),time.time()-t0)))
+      return self.get_log(log,request)
 
     # README: To use redirecting short urls like /doi/10.1109/5.771073 or /doi/faq 
     # based on ZMSIndex, please add a meta-attribute 'attr_dc_identifier_doi' to the 

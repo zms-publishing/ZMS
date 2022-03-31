@@ -19,7 +19,8 @@
 <tal:block tal:define="
 		zmscontext context;
 		oid python:zmscontext.get_oid();
-		uid python:request.form.get('uid','');">
+		uid python:request.form.get('uid','');
+		loglevels python:['DEBUG','INFO','ERROR'];">
 
 <script>
 function openWindow(url) {
@@ -61,6 +62,16 @@ function openWindow(url) {
 				title="RESYNC: Validating and refreshing link objects, inline links and backlink on the selected node (default: full hierarchy)."
 				onclick="return zmiFuncIndex('manage_resync');">Resync
 			</button>
+			<div class="input-group">
+				<select class="form-control" id="loglevel" name="loglevel" style="display:inline-block;width:unset;"
+					title="Select the Debug-Level for Logging Messages while Indexing">
+					<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
+				</select>
+				<div class="btn btn-default btn-secondary input-group-addon"
+					title="Show all Logging Info Directly ">
+					<input id="logshow" name="logshow" type="checkbox" />
+				</div>
+			</div>
 		</div>
 	</div><!-- .form-group -->
 
@@ -148,7 +159,7 @@ function zmiFuncIndex(func_) {
 			if (i < n ) {
 				var $input = $($inputs[i]);
 				var uid = $input.val();
-				var data = {oid_:$('#oid_').val(),url:uid,i:i};
+				var data = {oid_:$('#oid_').val(),url:uid,loglevel:$('#loglevel').val(),i:i};
 				var $a = $input.next("a");
 				var viewport_pos = $(window).scrollTop();
 				var btn_close = '<'+'a class="close" data-dismiss="alert" href="#">×<'+'/a>';

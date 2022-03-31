@@ -762,6 +762,14 @@ def triggerEvent(context, *args, **kwargs):
   l = []
   name = args[0]
 
+  # Object triggers.
+  if name.startswith('*.Object'):
+    root = context.getRootElement()
+    for node in root.objectValues():
+      m = getattr(node,name[2:],None)
+      if m is not None:
+        m(context) 
+
   # Always call local trigger for global triggers.
   if name.startswith('*.'):
     triggerEvent(context, name[2:]+'Local')

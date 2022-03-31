@@ -465,9 +465,6 @@ class VersionItem(object):
       lang = REQUEST['lang']
       for langId in [lang]+self.getDescendantLanguages(lang):
         self.setObjState(obj_state, langId)
-      
-      ##### Trigger custom onCreateObj-Event (if there is one) ####
-      standard.triggerEvent( self, 'onCreateObjEvt')
 
     # --------------------------------------------------------------------------
     #  VersionItem.setObjStateModified

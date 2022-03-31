@@ -4,8 +4,13 @@
 	pilutil modules/Products.zms/pilutil;
 	filter_manager python:here.getFilterManager();">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='customize config')">
-<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
+<body tal:attributes="
+	data-path python:here.getRootElement().getRefObjPath(here);
+	data-root python:here.getRootElement().getHome().id;
+	data-client python:here.getHome().id;
+	id python:'zmsid_%s'%(here.id);
+	class python:here.zmi_body_class(id='customize config')">
+	<header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
 <div id="zmi-tab">
 	<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[{'action':'manage_customize','label':'TAB_SYSTEM'}])">zmi_breadcrumbs</tal:block>
 	<nav id="subTab">
@@ -23,7 +28,7 @@
 			<form class="form-horizontal card" title="Manager" name="ManagerForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 				<input type="hidden" name="key" value="Manager" />
-				<tal:block tal:define="global meta_types python:[x for x in here.filtered_meta_types() if not x['product']=='zms' and x['name'].startswith('ZMS')] + [{'name':x,'action':x,} for x in ['Sequence', 'ZMSLog', 'ZMSZCatalogAdapter', 'ZMSFilterManager', 'ZMSFormatProvider', 'ZMSFormatProviderAcquired', 'ZMSMetacmdProvider', 'ZMSMetacmdProviderAcquired', 'ZMSWorkflowProvider', 'ZMSWorkflowProviderAcquired', 'ZMSRepositoryManager']]">
+				<tal:block tal:define="global meta_types python:[x for x in here.filtered_meta_types() if not x['product']=='zms' and x['name'].startswith('ZMS')] + [{'name':x,'action':x,} for x in ['Sequence', 'ZMSIndex', 'ZMSLog', 'ZMSZCatalogAdapter', 'ZMSFilterManager', 'ZMSFormatProvider', 'ZMSFormatProviderAcquired', 'ZMSMetacmdProvider', 'ZMSMetacmdProviderAcquired', 'ZMSWorkflowProvider', 'ZMSWorkflowProviderAcquired', 'ZMSRepositoryManager']]">
 				<div class="col-12 form-group mb-4">
 					<label class="d-none" for="meta_type">ZMS base-components</label>
 					<div class="btn-group">
@@ -45,7 +50,7 @@
 						<span class="btn btn-secondary">
 							<i tal:on-error="structure string:<i class='fas fa-ban' title='Icon Error'></i>"
 								tal:attributes="class python:si.zmi_icon"
-								></i>&nbsp;&nbsp;<input type="checkbox" name="ids:list" tal:attributes="value python:si.id" />
+								></i>&nbsp;&nbsp;<input type="checkbox" name="ids:list" tal:attributes="value python:si.id; disabled python:si.id=='zmsindex' and 'disabled' or None" />
 						</span>
 						&nbsp;<a tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:'%s (%s)'%(si.id,here.getZMILangStr(si.meta_type))">id (meta_type)</a>
 					</label>
@@ -256,7 +261,7 @@
 
 		<div class="tab-pane fade card" id="MediaDb" role="tabpanel">
 			<form class="form-horizontal card" title="Media-Folder:Use the Media-Folder to store binary data of media (e.g. images, files) in the file-system of your server instead of ZODB."
-				name="CatalogForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
+				name="MediaDbForm" action="manage_customizeSystem" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="lang" tal:attributes="value python:request['lang']" />
 				<input type="hidden" name="key" value="MediaDb" />
 				<tal:block tal:condition="python:here.getMediaDb() is None">
@@ -295,10 +300,8 @@
 						<div class="col-sm-2">&nbsp;</div>
 						<div class="col-sm-10">
 							<button name="btn" type="submit" class="btn btn-secondary" value="Change">Change</button>
-							<button name="btn" type="submit" class="btn btn-secondary" value="Remove"
-								title="Reimport outsourced mediafolder files back into ZODB of this ZMS-client">Remove</button>
-							<button name="btn" type="submit" class="btn btn-warning" value="Pack"
-								title="Delete all mediafolder garbage files having no container object in this ZMS client"
+							<button name="btn" type="submit" class="btn btn-secondary" value="Remove" title="Reimport outsourced mediafolder files back into ZODB of this ZMS-client">Remove</button>
+							<button name="btn" type="submit" class="btn btn-warning" value="Pack" title="Delete all mediafolder garbage files having no container object in this ZMS client"
 								tal:attributes="class python:here.getMediaDb().location.replace('\\','/').find('/'+here.getHome().id)>=0 and 'btn btn-warning' or 'btn btn-danger'">Pack</button>
 							<div tal:condition="python:here.getMediaDb().location.replace('\\','/').find('/'+here.getHome().id)<0"
 								class="alert alert-danger" style="margin:2em 0">

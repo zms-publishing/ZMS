@@ -149,7 +149,11 @@ class Builder(object):
         if not rv:
             raise ParseError('%s at line %s' % (pyexpat.ErrorString(p.ErrorCode), p.ErrorLineNumber))
         ####
-        
+
+        # reindex
+        standard.triggerEvent( self, '*.ObjectImported')
+        ####
+
         return root
 
 

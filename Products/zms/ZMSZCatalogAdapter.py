@@ -106,6 +106,16 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
       self.id = 'zcatalog_adapter'
 
 
+    ############################################################################
+    #  Initialize 
+    ############################################################################
+    def initialize(self):
+      self.setIds(['ZMSFolder', 'ZMSDocument', 'ZMSFile'])
+      self.setAttrIds(['title', 'titlealt', 'attr_dc_description', 'standard_html'])
+      # FIXME ImportError: No module named 'ZMSZCatalogConnector'
+      #self.addConnector('ZMSZCatalogConnector')
+
+
     # --------------------------------------------------------------------------
     #  ZMSZCatalogAdapter.search:
     # --------------------------------------------------------------------------

@@ -2192,20 +2192,23 @@ body.lazy_select_form footer .controls {
 #ZMSZMSZCatalogSolrConnector #indexes td {
 	padding:.3rem;
 }
+#zmsindex select.form-control:not([size]):not([multiple]) {
+	height: inherit;
+}
 #ZMSZCatalogConnector .zmi-sitemap,
 #ZMSZCatalogSolrConnector .zmi-sitemap,
 #zmsindex .zmi-sitemap-container {
 	width:100%;
 	max-height: 30rem;
 	height: fit-content;
-	min-height: 4rem;
+	min-height: 6rem;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	background: #e8f3fb;
 	margin: 0 0 3rem 0;
 	direction: rtl;
 	display: block;
-	padding: 6px 12px;
+	padding: 10px 12px;
 	line-height: 1.42857143;
 	background-image: none;
 	border: 1px solid #ccc;
@@ -2217,6 +2220,52 @@ body.lazy_select_form footer .controls {
 	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	clear:both !important;
 }
+#zmsindex .zmi-sitemap-container.full {
+	max-height: unset;
+}
+#zmsindex .zmi-sitemap-container.loading {
+	background:#b1bbc1;
+}
+#zmsindex .zmi-sitemap-container.loading a,
+#zmsindex .zmi-sitemap-container.loading .toggle,
+#zmsindex .zmi-sitemap-container.loading div#loading,
+#zmsindex .zmi-sitemap-container.loading div#loading .fa-spinner {
+	color: #fff !important;
+}
+#zmsindex .zmi-sitemap-container.loading ul li > * {
+	color:#ccc !important
+}
+#zmsindex .zmi-sitemap-container .progress {
+	padding-left:0;
+	margin-right: 30px;
+	background: #337ab740;
+	height:1.25rem;
+	direction: ltr;
+}
+#zmsindex .zmi-sitemap-container .progress .progress-bar {
+	width:0%;
+	text-align:right;
+}
+#zmsindex .zmi-sitemap-container .progress .progress-bar.active {
+	min-width:5em;
+	width: fit-content;
+}
+#zmsindex .zmi-sitemap-container .progress .progress-bar span {
+	margin:0 1em;
+}
+#zmsindex .zmi-sitemap-container.loading .progress .progress-bar {
+	width:100%;
+}
+#zmsindex .zmi-sitemap-container .progress.error .progress-bar {
+	background-color:#9C27B0
+}
+#zmsindex .zmi-sitemap-container .progress.error:after {
+	content:"INDEXING ERROR occured: details see event-log";
+	display:block;
+	color:#9C27B0;
+	position:absolute;
+	margin-top:1.5em;
+}
 #ZMSZCatalogConnector .zmi-sitemap > ul,
 #ZMSZCatalogSolrConnector .zmi-sitemap > ul,
 #zmsindex .zmi-sitemap > ul {
@@ -2227,6 +2276,7 @@ body.lazy_select_form footer .controls {
 #ZMSZCatalogSolrConnector .zmi-sitemap-expand,
 #zmsindex .zmi-sitemap-expand {
 	display: block;
+	top:0;
 	position: absolute;
 	color: #333;
 	right: 16px;
@@ -2248,7 +2298,10 @@ body.lazy_select_form footer .controls {
 #ZMSZCatalogSolrConnector .zmi-sitemap div#loading .fa-spinner,
 #zmsindex .zmi-sitemap div#loading,
 #zmsindex .zmi-sitemap div#loading .fa-spinner {
-	color: #08c;
+	color: #08c !important;
+}
+#zmsindex .zmi-sitemap .fa-spinner.fa-spin {
+	zoom: 1.5;
 }
 #ZMSZCatalogConnector .zmi-sitemap:not(.full) div#loading,
 #ZMSZCatalogSolrConnector .zmi-sitemap:not(.full) div#loading,
@@ -2262,7 +2315,6 @@ body.loading #ZMSZCatalogConnector .zmi-sitemap,
 body.loading #ZMSZCatalogSolrConnector .zmi-sitemap {
 	background:#b1bbc1;
 }
-
 body.loading #ZMSZCatalogConnector .zmi-sitemap a,
 body.loading #ZMSZCatalogConnector .zmi-sitemap .toggle,
 body.loading #ZMSZCatalogConnector .zmi-sitemap div#loading,
@@ -2314,7 +2366,9 @@ body.loading #ZMSZCatalogSolrConnector .zmi-sitemap div#loading .fa-spinner {
 	background-color: #f2dede;
 }
 
-/* MediaDB */
+/* --------------------- */
+/* MediaDB               */
+/* --------------------- */
 body.zmi.browse .table-responsive table td {
 	max-width: calc(100vw - 300px) !important;
 	text-overflow: ellipsis;

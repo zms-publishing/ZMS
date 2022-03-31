@@ -52,6 +52,7 @@ from Products.zms import _multilangmanager
 from Products.zms import _sequence
 from Products.zms import standard
 from Products.zms import zopeutil
+from Products.zms import zmsindex
 from Products.zms import zmslog
 
 
@@ -490,7 +491,7 @@ class ConfManager(
         {'key':'ZMS.input.image.maxlength','title':'Image.upload maxlength','desc':'ZMS can limit the maximum upload-image size to the given value (in Bytes).','datatype':'string'},
         {'key':'ZMSGraphic.superres','title':'Image superres-attribute','desc':'Super-resolution attribute for ZMS standard image-objects.','datatype':'boolean','default':0},
         {'key':'ZCatalog.TextIndexType','title':'Search with TextIndex-type','desc':'Use specified TextIndex-type (default: ZCTextIndex)','datatype':'string','default':'ZCTextIndex'},
-        {'key':'ZMSIndexZCatalog.onImportObjEvt','title':'Resync ZMSIndex on content import','desc':'Please be aware that activating implicit ZMSIndex-resync on content import can block bigger sites for a while','datatype':'boolean','default':0},
+        {'key':'ZMSIndexZCatalog.ObjectImported','title':'Resync ZMSIndex on content import','desc':'Please be aware that activating implicit ZMSIndex-resync on content import can block bigger sites for a while','datatype':'boolean','default':0},
         {'key':'ZReferableItem.validateLinkObj','title':'Auto-correct inline-links on save','desc':'Ensure valid inline-links by text-parsing and using ZMSIndex for refreshing target urls on save event','datatype':'boolean','default':1},
       ]
     
@@ -851,6 +852,28 @@ class ConfManager(
 
     ############################################################################
     ###
+    ###   Component ZMSIndex
+    ###
+    ############################################################################
+
+    def getZMSIndex(self):
+      root = self.getRootElement()
+      index = getattr(root,"zmsindex",None)
+      if index is not None and index.meta_type != "ZMSIndex":
+        root.manage_delObjects(ids=["zmsindex"])
+        self.getMetaobjManager().delMetaobj("com.zms.index")
+        self.getMetaobjManager().delMetaobjAttr("ZMS","zmsindex")
+        index = None
+      if index is None:
+        index = zmsindex.ZMSIndex()
+        root._setObject(index.id, index)
+        index = getattr(root,"zmsindex",None)
+        index.initialize()
+      return index
+
+
+    ############################################################################
+    ###
     ###   Interface IZMSWorkflowProvider: delegate to workflow_manager
     ###
     ############################################################################
@@ -1088,10 +1111,7 @@ class ConfManager(
       adapter = ZMSZCatalogAdapter.ZMSZCatalogAdapter()
       self._setObject( adapter.id, adapter)
       adapter = getattr(self, adapter.id)
-      adapter.setIds(['ZMSFolder', 'ZMSDocument', 'ZMSFile'])
-      adapter.setAttrIds(['title', 'titlealt', 'attr_dc_description', 'standard_html'])
-      # FIXME ImportError: No module named 'ZMSZCatalogConnector'
-      #adapter.addConnector('ZMSZCatalogConnector')
+      adapter.initialize()
       return adapter
 
 

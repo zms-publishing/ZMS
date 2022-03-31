@@ -142,15 +142,6 @@ class ZMS:
 			,"repetitive":0
 			,"type":"interface"}
 
-		zmsindex = {"default":""
-			,"id":"zmsindex"
-			,"keys":[]
-			,"mandatory":1
-			,"multilang":0
-			,"name":"ZMSIndex"
-			,"repetitive":0
-			,"type":"ZMSIndexZCatalog"}
-
 		e = {"default":""
 			,"id":"e"
 			,"keys":["type(ZMSDocument)"

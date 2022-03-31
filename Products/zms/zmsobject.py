@@ -200,35 +200,20 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.get_uid:
     # --------------------------------------------------------------------------
-    def get_uid(self, forced=False, implementation=None):
-      def default(*args, **kwargs):
-        self = args[0]
-        forced = args[1]['forced']
-        root_id = self.getRootElement().getHome().id
-        physical_path = self.getPhysicalPath()
-        home_path = physical_path[physical_path.index(root_id):physical_path.index('content')]
-        object_path = physical_path[physical_path.index('content')+1:]
-        return '%s@%s'%('/'.join(home_path), '/'.join(object_path))
-      can_ep = True
-      if isinstance(implementation, str):
-        ep = self.getConfProperty('ExtensionPoint.ZMSObject.get_uid', '')
-        can_ep = ep.startswith(implementation)
-      if can_ep:
-        try:
-          uid = self.evalExtensionPoint('ExtensionPoint.ZMSObject.get_uid',default,forced=forced)
-        except:
-          standard.writeError(self,'can\'t ExtensionPoint.ZMSObject.get_uid')
-          can_ep = False
-      if not can_ep:
-        uid = default(self,{'forced':forced})
-      return uid
+    def get_uid(self, forced=False):
+      import uuid
+      if forced \
+          or '_uid' not in self.__dict__ \
+          or len(getattr(self,'_uid','')) == 0 \
+          or len(getattr(self,'_uid','').split('-')) < 5:
+        new_uid = str(uuid.uuid4())
+        self._uid = new_uid
+      return 'uid:%s'%self._uid
 
     # --------------------------------------------------------------------------
     #  ZMSObject.set_uid:
     # --------------------------------------------------------------------------
     def set_uid(self, uid):
-      if self.getLinkObj('{$%s}'%uid) is not None:
-        raise zExceptions.InternalError("can't set_uid: %s already exists!"%uid)
       self._uid = uid.replace('uid:', '')
 
     # --------------------------------------------------------------------------

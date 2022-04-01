@@ -1349,7 +1349,7 @@ class AccessManager(AccessableContainer):
                 xml += '<nodeurl></nodeurl>'
               try:  
                 title = re.sub('&.*;', '', self.getLinkObj(nodekey).getTitle(REQUEST).strip())
-                xml += '<nodetitle>%s</nodetitle>'%title
+                xml += '<nodetitle><![CDATA[%s]]></nodetitle>'%title
               except:
                 xml += '<nodetitle></nodetitle>'
               xml += '<langlist>'

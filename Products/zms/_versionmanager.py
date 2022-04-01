@@ -717,7 +717,7 @@ class VersionItem(object):
           self.version_work_id = None
           if len( ids) > 0:
             standard.writeLog( self, "[_rollbackObjChanges]: Remove work-version: ids=%s"%str(ids))
-          self.manage_delObjects( ids=ids)
+            self.manage_delObjects( ids=ids)
         elif self.version_work_id in attrCntnrIds:
           self.version_live_id = self.version_work_id
           self.version_work_id = None

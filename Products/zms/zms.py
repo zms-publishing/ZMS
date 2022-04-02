@@ -374,7 +374,13 @@ class ZMS(
       file.close()
       zms_custom_version = os.environ.get('ZMS_CUSTOM_VERSION', '')
       if zms_custom_version != '':
-          rtn += ' ({})'.format(zms_custom_version)
+        rtn += ' ({})'.format(zms_custom_version)
+      if os.path.exists(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD')):
+        file = open(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD'),'r')
+        FETCH_HEAD = file.read()
+        file.close()
+        FETCH_HEAD = FETCH_HEAD[0:7]
+        rtn += ' git#%s'%(FETCH_HEAD)
       return rtn
 
     # --------------------------------------------------------------------------

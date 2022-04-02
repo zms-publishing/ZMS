@@ -138,7 +138,7 @@
 <style>
 	.ace_editor {
 		min-height: 520px;
-        font-size: .867rem;
+		font-size: .867rem;
 	}
 	.ace_editor.fullScreen {
 		height: 100vh !important;

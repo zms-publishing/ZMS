@@ -1032,6 +1032,22 @@ input.btn.btn-file {
 .zmi .single-line.zmi-code.input-group .input-group-append {
 	height: 1.8rem;
 }
+
+/* Using ACE Editor*/
+.ace_editor.fullScreen {
+	position: fixed;
+	height: 100vh !important;
+	width: 100vw !important;
+	left: 0;
+	top: 0;
+	border:0 !important;
+	border-radius:0 !important;
+	z-index:1000;
+}
+.zmi.modal-open.fullScreen .modal-dialog {
+	transform:none !important;
+}
+
 div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	margin-left:1em;
 }

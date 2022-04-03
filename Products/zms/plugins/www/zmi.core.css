@@ -1035,7 +1035,7 @@ input.btn.btn-file {
 
 /* Using ACE Editor*/
 .ace_editor {
-	min-height: 20rem;
+	height: 20rem;
 	line-height: 1.3;
 }
 .ace_editor.fullScreen {

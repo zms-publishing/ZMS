@@ -3,8 +3,19 @@
  */
 function zmiSelectObject(sender) {
 	$(".zmi-sitemap .active").removeClass("active");
-	$(sender).parents("li").addClass("active");
-	window.parent.manage_main.location.href=$(sender).attr("href")+"/manage_main?lang="+getZMILang();
+	let $sender = $(sender);
+	$sender.parents("li").addClass("active");
+	let origin = window.location.origin;
+	let href = $sender.attr("href");
+	let lang = getZMILang();
+	// same origin?
+	if (href.startsWith(origin)) {
+			// change location in manage_main-frame
+			window.parent.manage_main.location.href=href + "/manage_main?lang=" + lang;
+	} else {
+			// open new home in new tab
+			window.open(href + "/manage?lang=" + lang + "&dtpref_sitemap=1", "_blank").focus();
+	}
 	return false;
 }
 function zmiRefresh() {

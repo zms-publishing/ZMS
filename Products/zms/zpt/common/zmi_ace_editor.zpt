@@ -16,8 +16,10 @@
 		class="form-group zmi-ace-editor" 
 		tal:attributes="style python:'height:%s'%height">
 		<div class="control-label-ace-editor">
-			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank" tal:content="python:ob.getId()">id</a>
-			<tal:block tal:condition="python:text is not None">(<tal:block tal:content="python:here.getDataSizeStr(len(text))">the size</tal:block>)</tal:block>
+			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank">
+				<tal:block tal:content="python:ob.getId()">id<</tal:block>
+				<tal:block tal:condition="python:text is not None">(<tal:block tal:content="python:here.getDataSizeStr(len(text))">the size</tal:block>)</tal:block>
+			</a> 
 		</div>
 		<div>
 			<textarea class="form-control-ace-editor" tal:attributes="name name;id name;data-content_type content_type" tal:content="text">the text</textarea>

@@ -2002,41 +2002,49 @@ body.lazy_select_form footer .controls {
 	letter-spacing: .02rem;
 	line-height: 1.25rem;
 }
+.zmi .meta-code .zmi-ace-editor:after {
+	content:"Please press F10 for full screen view";
+	display:block;
+	margin-top:0;
+	font-size:12px;
+	color:#999;
+	letter-spacing: .02rem;
+	line-height: 1.25rem;
+	float:left;
+}
 .zmi .control-label-ace-editor {
+	font-size:12px;
 	text-align: right;
-	display: inline-block;
-	padding: 0 .5em;
+	display: block;
+	padding: 0;
 	float: right;
 	font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+	color:#75A7C0;
 }
-.zmi .meta-code .control-label-ace-editor {
-	display:inline-block;
-	z-index: 10;
-	right: 2rem;
-	padding: 0;
-	margin: 0 ;
-	margin-top: -1.25rem;
-	font-size: 10px;
-    letter-spacing: .02rem;
-    line-height: 1.25rem;
-}
-.zmi .control-label-ace-editor,
 .zmi .control-label-ace-editor a {
 	color:#75A7C0;
 	text-decoration:none;
 }
-.zmi .control-label-ace-editor:hover,
-.zmi .control-label-ace-editor:hover a {
+.zmi .control-label-ace-editor a:hover {
 	color:#007aff;
 }
-.zmi .control-label-ace-editor::before {
+.zmi .control-label-ace-editor a::before {
 	content:'\f35d';
 	font-family:'Font Awesome 5 Free',fontawesome;
 	font-weight:bold;
 	display:inline-block;
+	margin: 0 0.35rem 0 0;
 }
-.zmi .control-label-ace-editor:hover::before {
+.zmi .control-label-ace-editor a:hover::before {
 	color:#e83e8c
+}
+.zmi .control-label-ace-editor .close {
+	color:#75A7C0;
+	margin-left:0.35rem;
+	opacity:1 !important;
+}
+.zmi .control-label-ace-editor .close:hover {
+	color:#354f67;
 }
 
 .zmi.customize.config #zmi-tab #Manager.tab-pane .btn img {

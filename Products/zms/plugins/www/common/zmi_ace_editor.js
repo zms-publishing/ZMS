@@ -12,11 +12,15 @@ function show_ace_editor(e, toggle=false) {
 	} else {
 		var $textarea = $(e);
 		var editor_id = 'editor_' + $textarea.attr('id');
+		if ( $(e).closest('td').find('#'+editor_id).length > 0 ) {
+			// Avoid stacking multiple editors 
+			return;
+		};
 		var zopeurl = $(e).attr('data-zopeurl');
 		$textarea.addClass('form-control-ace-editor');
 		$textarea.parent().addClass('zmi-ace-editor')
 		$textarea.after('<div id="' + editor_id + '">ace editor text</div>');
-		$textarea.closest('td').append('<div class="control-label-ace-editor" title="Zope-Object-Editor"><a target="_blank" href="' + zopeurl + '">' + $textarea.attr('id').split('attr_custom_')[1] + '</a></div>');
+		$textarea.closest('td').append('<div class="control-label-ace-editor"><a title="Zope-Object-Editor" target="_blank" href="' + zopeurl + '">' + $textarea.attr('id').split('attr_custom_')[1] + '</a> <i onclick="remove_ace_editor(\'' + editor_id + '\')" title="Close Editor" class="close fas fa-window-close"></i></div>');
 	}
 
 	var dom = ace.require("ace/lib/dom");
@@ -102,6 +106,16 @@ function show_ace_editor(e, toggle=false) {
 			$textarea.val(editor.getSession().getValue()).change();
 		});
 	}
+}
+
+function remove_ace_editor(id) {
+	var $ace = $('#' + id);
+	var $ace_td = $ace.closest('td');
+	$('.zmi-code', $ace_td).removeClass('zmi-ace-editor');
+	$('.control-label-ace-editor', $ace_td).remove();
+	ace.edit(id).destroy();
+	$('#' + id).remove();
+	$('.zmi-code textarea', $ace_td).show();
 }
 
 $(function(){

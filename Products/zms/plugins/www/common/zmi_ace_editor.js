@@ -114,8 +114,12 @@ function remove_ace_editor(id) {
 	$('.zmi-code', $ace_td).removeClass('zmi-ace-editor');
 	$('.control-label-ace-editor', $ace_td).remove();
 	ace.edit(id).destroy();
-	$('#' + id).remove();
-	$('.zmi-code textarea', $ace_td).show();
+	$('#' + id).animate({height: 0},600, 
+		function () {
+			$('#' + id).remove();
+			$('.zmi-code textarea', $ace_td).show();
+		}
+	);
 }
 
 $(function(){

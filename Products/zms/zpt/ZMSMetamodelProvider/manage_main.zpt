@@ -233,7 +233,7 @@
 									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">
 										<textarea class="form-control-ace-editor form-control form-control-sm"
 											tal:attributes="name python:'attr_custom_%s'%objAttr['id']; 
-												id  python:'attr_custom_%s'%objAttr['id'];
+												id  python:'attr_custom_%s'%(str(objAttr['id']).replace('/','__'));
 												data-content_type python:objAttr['type'];
 												title python:['%s (%s) - Double-Click for Code-Editor'%(objAttr['id'],objAttr['type']),errors][len(errors)>0];
 												class python:' '.join(['form-control','form-control-sm']+objAttr['type'].lower().split(' ')+[[],['alert-danger']][len(errors)>0]);

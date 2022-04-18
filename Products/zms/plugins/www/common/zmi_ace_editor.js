@@ -68,7 +68,7 @@ function show_ace_editor(e, toggle=false) {
 		if ( 0 === value.indexOf("<?xml") || value.indexOf("tal:") >= 0) {
 			content_type = "text/xml";
 		}
-		if ( 0 === value.indexOf("#!/usr/bin/python") || 0 === value.indexOf("## Script (Python)") ) {
+		if ( 0 === value.indexOf("#!/usr/bin/python") || 0 === value.indexOf("## Script (Python)") || content_type=='External Method' || content_type=='Python Script' ) {
 			content_type = "python";
 		}
 		var mode = "text";
@@ -90,7 +90,7 @@ function show_ace_editor(e, toggle=false) {
 		else if (content_type == "python") {
 			mode = 'python';
 		}
-		else if (content_type == "sql") {
+		else if (content_type == "sql" || content_type=='Z SQL Method') {
 			mode = 'sql';
 		}
 		else if (content_type == "json") {

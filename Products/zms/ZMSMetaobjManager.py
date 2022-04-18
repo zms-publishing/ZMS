@@ -838,9 +838,12 @@ class ZMSMetaobjManager(object):
           newCustom += 'return "\\n".join(p)\n'
           newCustom += '\n'
           newCustom += '# --// /'+ newId + ' //--\n'
-        elif newType in [ 'Z SQL Method']:
+        elif newType in ['Z SQL Method']:
           newCustom = ''
-          newCustom += '<connection>%s</connection>\n'%self.SQLConnectionIDs()[0][1]
+          if self.SQLConnectionIDs():
+            newCustom += '<connection>%s</connection>\n'%self.SQLConnectionIDs()[0][1]
+          else:
+            newCustom += '<connection>NA</connection>\n' 
           newCustom += '<params></params>\n'
           newCustom += 'SELECT * FROM tablename\n'
       

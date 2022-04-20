@@ -44,10 +44,19 @@
 			</div>
 			<tal:block tal:repeat="metaObjAttrId python:here.getMetaobjAttrIds(metaObj['id'])">
 				<tal:block tal:define="global metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId)">
-					<div tal:attributes="class python:' '.join(['attr']+[[],['subobject']][int(metaObjAttr['type'] in ['*']+metaObjIds)])" tal:condition="python:metaObjAttr['type'] not in ['delimiter','interface']">
-						<span class="attrType" tal:content="metaObjAttr/type">the type</span>
+					<div tal:attributes="class python:' '.join(['attr']+[[],['subobject']][int(metaObjAttr['type'] in ['*']+metaObjIds)])"
+						tal:condition="python:metaObjAttr['type'] not in ['delimiter','interface']"
+						style="cursor: default !important;">
+						<span class="attrType" tal:content="metaObjAttr/type" data-html="true" data-placement="right"
+							tal:define="has_defaults python:(metaObjAttr['type'] in ['autocomplete','multiautocomplete','multiselect','select','color','string']) and metaObjAttr.get('keys')"
+							tal:attributes="
+								title python:has_defaults  and '<br>'.join(metaObjAttr.get('keys','')) or None; 
+								style python:has_defaults and 'cursor: pointer' or None;
+								data-toggle python:has_defaults and 'tooltip' or None;"
+							>the type</span>
 						<span class="attrId" tal:content="metaObjAttr/id">the id</span>:
-						<span class="attrName">(<tal:block tal:content="structure metaObjAttr/name" tal:condition="python:metaObjAttr['type'] not in ['hint']">the name</tal:block>)</span>
+						<span class="attrName">(<tal:block tal:content="structure metaObjAttr/name" 
+							tal:condition="python:metaObjAttr['type'] not in ['hint']">the name</tal:block>)</span>
 					</div><!-- .attr -->
 					<div class="ref" tal:condition="python:metaObjAttr['type'] in ['*']+metaObjIds">
 						<table cellspacing="0" cellpadding="0" border="0">
@@ -78,11 +87,12 @@
 <script>
 	$ZMI.registerReady(function(){
 		$('ol.objlist a').click( function() { 
-		$('ol.objlist a').removeClass('active');
-		$('.box').removeClass('focused');
-		$(this).addClass('active'); 
-		$($(this).attr('href')).addClass('focused');
-		})
+			$('ol.objlist a').removeClass('active');
+			$('.box').removeClass('focused');
+			$(this).addClass('active'); 
+			$($(this).attr('href')).addClass('focused');
+		});
+		$('[data-toggle="tooltip"]').tooltip();
 	})
 </script>
 
@@ -223,6 +233,15 @@ ol.objlist li {
 		color:black;
 		text-align: left;
 	}
+}
+.tooltip.bs-tooltip-right .tooltip-inner {
+	text-align:left !important;
+	background-color:#354f67;
+	font-family: monospace;
+	font-size:12px;
+}
+.tooltip.bs-tooltip-right .arrow:before {
+	border-right-color: #354f67 !important;
 }
 </style>
 

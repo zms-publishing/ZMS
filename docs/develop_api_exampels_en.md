@@ -191,3 +191,42 @@ def _main():
 if __name__ == '__main__':
     _main()
 ```
+
+## 5. evalMetaobjAttr()
+A content model can use primitive _py_-attributes for specific functions. In contrast to the Zope object _Script (Python)_ these primitive attributes are hidden in the ZMS metaobject manager  and preserve a tidy look of your upper Zope folder hierarchy.
+Actually these py-Methodes are stored like this (_hint: The ID contains a dot!_):
+`content/metaobj_manager/test.primitive_py`
+
+On the object class' content instance (aka. _zmscontext_) the execution of the py-attributes is similar to any other attribute calls, it's done 'object-like': 
+`
+zmscontext.attr('primitive_py')
+`
+
+But in some cases it might be useful to call the py-code from a different context. 
+A direct access via object notation does not work, because the _py_-attributes Zope representation contains a dot in its id.
+
+<a href="https://github.com/zms-publishing/ZMS/blob/dd9ef2de2c84d8b54d31c01a5210af1b634b5011/Products/zms/ZMSMetaobjManager.py#L692" target="_blank">`ZMSMetaobjManager.evalMetaobjAttr()`</a> is the helper that resolves the object path correctly.
+
+_Code-Example: 
+res1 uses the attribute call from the object's context, res2 calls the function directly via evalMetaobjAttr()_
+
+```py
+request = container.REQUEST
+response =  request.response
+
+zmscontext = context.content.e5.e157
+
+res1 = zmscontext.attr('primitive_py')
+
+res2 = zmscontext.getRootElement().metaobj_manager.evalMetaobjAttr('test','primitive_py',options={'zmscontext':zmscontext})
+
+print(res1)
+print(10*'-- ')
+print(res1)
+return printed
+```
+
+_Screen shot: shows the corresponding object setup: the py-attribute code can be executed from a different context, here a Zope Py-Script object._
+
+![evalMetaobjAttr](images/develop_api_evalMetaobjAttr.gif)
+

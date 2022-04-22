@@ -194,7 +194,7 @@ if __name__ == '__main__':
 
 ## 5. evalMetaobjAttr()
 A content model can use primitive _py_-attributes for specific functions. In contrast to the Zope object _Script (Python)_ these primitive attributes are hidden in the ZMS metaobject manager  and preserve a tidy look of your upper Zope folder hierarchy.
-Actually these py-Methodes are stored like this (_hint: The ID contains a dot!_):
+Actually these py-Methods are stored like this (_hint: the Zope ID contains a dot!_):
 `content/metaobj_manager/test.primitive_py`
 
 On the object class' content instance (aka. _zmscontext_) the execution of the py-attributes is similar to any other attribute calls, it's done 'object-like': 

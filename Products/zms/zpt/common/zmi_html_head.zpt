@@ -2,6 +2,7 @@
 
 <head tal:define="
 		standard modules/Products.zms/standard;
+		SESSION request/SESSION;
 		dummy0 python:here.zmi_page_request(here,request);
 		zmi_paths python:standard.zmi_paths(here);
 		zmshome python:here.getHome();
@@ -38,9 +39,15 @@
 			added_js_zmi_href python:added_js_zmi.replace('$ZMS_HOME/',ZMS_HOME).replace('$ZMS_THEME/',ZMS_THEME);"
 		tal:condition="python:added_js_zmi.find('.js')>-1"
 		tal:attributes="src added_js_zmi_href"></script>
-	<tal:block tal:condition="python:here.getUserAttr(request['AUTHENTICATED_USER'],'forceChangePassword',0)==1">
-		<script type="text/javascript">$(function(){$ZMI.forceChangePassword()});</script>
+	<tal:block tal:condition="python:not SESSION.get('did_updateUserdata')">
+		<tal:block tal:condition="python:here.getUserAttr(request['AUTHENTICATED_USER'],'forceChangePassword',0)==1">
+			<script type="text/javascript">$(function(){$ZMI.forceChangePassword()});</script>
+		</tal:block>
+		<tal:block tal:define="updateUserdata python:here.setUserAttr(request['AUTHENTICATED_USER'], 'login_date', context.ZopeTime().strftime('%Y-%m-%d'))"></tal:block>
+		<tal:block tal:define="updateUserdata python:SESSION.set('did_updateUserdata',True)"></tal:block>
 	</tal:block>
+
+		<tal:block tal:replace="python:here.getUserAttr(request['AUTHENTICATED_USER'],'login_date',0)"></tal:block>
 </head>
 
 <!-- /common/zmi_html_head -->

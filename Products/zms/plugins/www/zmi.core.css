@@ -2219,9 +2219,10 @@ body.lazy_select_form footer .controls {
 	color:white;
 	font-family:monospace;
 	float:right;
+	font-size:11px;
 	position:absolute;
-	background:#b1c4d1;
-	padding:.5rem;
+	background:#333333;
+	padding:.1rem .5rem;;
 	margin-top:-.5rem;
 }
 /* ZMSLinkElement */

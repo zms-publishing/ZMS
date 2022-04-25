@@ -26,7 +26,6 @@
 		<div class="card-header attr_last_modified clearfix btn-collapse">
 			<div class="btn-group">
 				<a id="zmi-toggle-activity-btn" class="btn card-toggle" data-toggle="collapse" href="#attrActivity"
-					tal:attributes="href python:'#attrActivity%s'%(request.get('ZMS_INSERT',False) and '_insert' or '')"
 					><i class="fas fa-invisible"></i> <tal:block tal:content="python:here.getZMILangStr('ATTR_ACTIVITY')">Activity</tal:block></a>
 				<div class="btn zmi-changes"
 						tal:condition="not:python:request.get('ZMS_INSERT',False)" 
@@ -62,11 +61,9 @@
 				</tal:block>
 			</div>
 		</div><!-- .card-header -->
-		<div id="attrActivity" class="collapse"
-			tal:attributes="id python:'attrActivity%s'%(request.get('ZMS_INSERT',False) and '_insert' or '')">
+		<div id="attrActivity" class="collapse">
 			<div class="card-body">
-				<tal:block tal:condition="not:python:request.get('ZMS_INSERT',False)">
-				<div class="form-group row">
+				<div class="form-group row" tal:condition="not:python:request.get('ZMS_INSERT',False)">
 					<label class="control-label col-sm-2">
 						<span>Info</span>
 					</label>
@@ -109,7 +106,6 @@
 					<label class="col-sm-2 control-label" tal:attributes="for python:here.getObjAttrName(here.getObjAttr('attr_active_end'),request['lang'])"><span tal:content="structure python:here.getZMILangStr('ATTR_END_DAT')">the label</span></label>
 					<div class="input-group" tal:content="structure python:here.getObjInput('attr_active_end',request)">the control</div>
 				</div>
-				</tal:block>
 				<tal:block tal:define="global options python:[]">
 					<tal:block tal:condition="python:request.get('ZMS_INSERT')" tal:define="global
 							parent_coverage python:here.getDCCoverage(request)">

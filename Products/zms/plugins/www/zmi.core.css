@@ -2212,7 +2212,18 @@ body.lazy_select_form footer .controls {
 	margin:0;
 	border:1px dotted #607D8B;
 }
-
+.zmi.config.users .list_users table.show_lastlogin tr.userName td:before {
+	content:attr(data-lastlogin);
+	display:block;
+	right:0;
+	color:white;
+	font-family:monospace;
+	float:right;
+	position:absolute;
+	background:#b1c4d1;
+	padding:.5rem;
+	margin-top:-.5rem;
+}
 /* ZMSLinkElement */
 .zmi #tr_attr_ref #tr_attr_ref_type select#attr_type {
 	height: 2.125rem !important;

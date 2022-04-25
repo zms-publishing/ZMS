@@ -466,6 +466,7 @@ function zmiModalInsertUserOpen(context) {
 					<a class="btn btn-secondary btn-users_import" href="javascript:;" onclick="zmiModal('#importUsers',{title:$(this).attr('title')})" tal:attributes="title python:'%s...'%here.getZMILangStr('BTN_IMPORT')"><i class="fas fa-upload"></i></a>
 					<a class="btn btn-secondary btn-users_export" href="javascript:;" onclick="var $fm=$(this).closest('form');$('input[name=btn]',$fm).val('BTN_EXPORT');$fm.attr('target','_blank').submit();" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')"><i class="fas fa-download"></i></a>
 					<a class="btn btn-secondary btn-users_purge alert-danger" tal:condition="python:request['AUTHENTICATED_USER'].has_role('Manager')" tal:attributes="href python:'?lang=%s&btn=Purge'%request['lang']" title="Purge Local Roles (WARNING: Using this function deletes the local roles of users who no longer exist. Click only if you are aware of the consequences.)"><i class="fas fa-eraser"></i></a>
+					<a class="btn btn-secondary btn-users_lastlogin" href="javascript:;" onclick="$(this).closest('table').toggleClass('show_lastlogin')" title="Last Logins"><i class="far fa-clock"></i></a>
 					<a class="btn btn-secondary btn-users_sync" href="javascript:;" onclick="zmiSynchronizeUsers(this)" tal:attributes="title python:'%s %s'%(here.getZMILangStr('ATTR_USERS'), here.getZMILangStr('BTN_SYNCHRONIZE'))"><i class="fas fa-sync"></i></a>
 				</div><!-- .btn-group -->
 			</th>
@@ -480,7 +481,9 @@ function zmiModalInsertUserOpen(context) {
 				upper python:securityUser.get('attrActiveEnd',None);
 				active python:standard.todayInRange(lower, upper);
 				acquired python:securityUser.get('acquired',False);
-				nodes python:securityUser.get('nodes',{});">
+				lastlogin python:securityUser.get('lastlogin',None);
+				nodes python:securityUser.get('nodes',{});"
+			tal:attributes="data-lastlogin lastlogin">
 			<tal:block tal:content="repeat/userName/number"></tal:block>.
 			<input type="checkbox" name="ids:list" tal:attributes="value userName"/>
 			<i class="fas fa-share" tal:condition="acquired"></i>

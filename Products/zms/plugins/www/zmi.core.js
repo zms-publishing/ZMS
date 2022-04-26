@@ -69,6 +69,8 @@ $ZMI.registerReady(function(){
 					cursor:pointer;
 					background:unset !important;
 					box-shadow: 0 0 0 1px black;
+				}
+				body:not(.zmi) .contentEditable.zmi-highlight:hover > * {
 					transform:unset !important;
 				}
 				body:not(.zmi) .contentEditable.zmi-highlight:hover:before {

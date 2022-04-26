@@ -16,7 +16,7 @@ class manage_collect_zope_artifacts:
 	execution = 0
 
 	# Icon_clazz
-	icon_clazz = "icon-briefcase fas fa-briefcase"
+	icon_clazz = "fas fa-briefcase"
 
 	# Id
 	id = "manage_collect_zope_artifacts"

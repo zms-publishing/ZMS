@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=meta_id='csslib', css_attr='default_scss', syntax='scss'
+##parameters=meta_id='CSSLib', css_attr='default_scss', syntax='scss'
 ##title=
 ##
 # --// get_metaobj_css //--

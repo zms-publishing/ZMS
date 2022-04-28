@@ -51,7 +51,7 @@ $(function() {
 				var html = '';
 				for (var i=0; i < links.length; i++) {
 					var record = links[i];
-					html += '<tr>\n';
+					html += '<tr class="url-inputs">\n';
 					html += '<td class="meta-sort">\n';
 					html += '<div class="input-group input-group">\n';
 					html += '<select class="zmi-sort">\n';
@@ -71,6 +71,7 @@ $(function() {
 					html += '</tr>\n';
 				}
 				$last.prepend(html);
+				$ZMI.initUrlInput($(".url-inputs",$table));
 				var refreshLinks = function() {
 						links = [];
 						$("tr:not(:last)",$table).each(function() {
@@ -95,7 +96,7 @@ $(function() {
 				if ($("input[value='']",$tr).length==0) {
 					var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
 					links.push(record);
-					$("input",$tr).val("");
+					$("input",$tr).val("").change();
 				}
 				refreshView();
 			});

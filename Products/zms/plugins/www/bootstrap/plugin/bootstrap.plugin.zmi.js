@@ -980,87 +980,7 @@ ZMI.prototype.initInputFields = function(container) {
 				$input.change(fn).keyup(fn).change();
 			});
 			// Url-Picker
-			var fn_url_input_each = function() {
-				var $input = $(this);
-				var fmName = $input.parents("form").attr("name");
-				var elName = $input.attr("name");
-				$input.wrap('<div class="input-group"></div>');
-				var $inputgroup = $input.parent();
-				if ($input.prop("disabled")) {
-					$inputgroup.append(''
-							+ '<div class="input-group-append">'
-								+ '<span class="input-group-text"><i class="fas fa-ban-circle"></i></span>'
-							+ '</div>'
-						);
-				} else {
-					$inputgroup.append(''
-						+ '<div class="input-group-append">'
-							+ '<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
-								+ '<i class="fas fa-link"></i>'
-							+ '</a>'
-						+ '</div>'
-					);
-				}
-				var fn = function() {
-					$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
-					$.ajax({
-						url: 'zmi_breadcrumbs_obj_path',
-						data:{lang:getZMILang(),zmi_breadcrumbs_ref_obj_path:$input.val()},
-						datatype:'text',
-						success:function(response) {
-							$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
-							$inputgroup.after(response.replace(/<!--(.*?)-->/gi,'').trim());
-						}
-					});
-				};
-				$input.change(fn).change();
-			}
-			$("input.url-input",this).each(fn_url_input_each);
-			$("textarea.url-input",this).each(function() {
-				var $input = $(this);
-				var fmName = $input.parents("form").attr("name");
-				var elName = $input.attr("name");
-				var $container = $input.parent();
-				$input.hide();
-				$container.append(''
-					+ '<div class="url-input-container"></div>'
-					+'<input type="hidden" name="new_'+elName+'"/>'
-					+'<a href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'new_' + elName + '\',getZMILang())" class="btn btn-secondary">'
-					+'<i class="fas fa-plus"></i>'
-					+'</a>');
-				$("input[name='new_"+elName+"']",$container).change(function() {
-						var v = $(this).val();
-						var l = $input.val().length==0?[]:$input.val().split("\n");
-						if (!l.contains()) {
-							l.push(v);
-							$input.val(l.join("\n")).change();
-						}
-						$(this).val("");
-					});
-				$input.change(function() {
-					var v = $(this).val();
-					var l = $input.val().length==0?[]:$input.val().split("\n");
-					var $inputContainer = $(".url-input-container",$container);
-					$inputContainer.html('');
-					for (var i = 0; i < l.length; i++) {
-						$inputContainer.append('<input class="form-control url-input" type="text" value="'+l[i]+'" disabled="disabled"> ');
-					}
-					$("input.url-input",$inputContainer).each(fn_url_input_each);
-					$(".input-group-append",$inputContainer).replaceWith('<a class="btn btn-secondary" href="javascript:;"><i class="fas fa-times"></i></a>');
-					$("input.url-input",$inputContainer).next().click(function() {
-						$(this).parents(".input-group").next(".breadcrumb").remove();
-						$(this).parents(".input-group").remove();
-						var l = [];
-						$("input",$inputContainer).each(function() {
-							var v = $(this).val();
-							if (v.length > 0) {
-								l.push(v);
-							}
-						});
-						$input.val(l.join("\n")).change();
-					});
-				}).change();
-			});
+			$ZMI.initUrlInput(this);
 			// Richedit
 			var $richedits = $('div[id^="zmiStandardEditor"]',this);
 			if ($richedits.length > 0) {
@@ -2219,6 +2139,94 @@ function zmiExpandConfFiles(el, pattern) {
 			});
 		}
 	}
+}
+
+// /////////////////////////////////////////////////////////////////////////////
+//  Url-Input
+// /////////////////////////////////////////////////////////////////////////////
+
+ZMI.prototype.initUrlInput = function(context) { 
+	var fn_url_input_each = function() {
+		var $input = $(this);
+		var fmName = $input.parents("form").attr("name");
+		var elName = $input.attr("name");
+		$input.wrap('<div class="input-group"></div>');
+		var $inputgroup = $input.parent();
+		if ($input.prop("disabled")) {
+			$inputgroup.append(''
+					+ '<div class="input-group-append">'
+						+ '<span class="input-group-text"><i class="fas fa-ban-circle"></i></span>'
+					+ '</div>'
+				);
+		} else {
+			$inputgroup.append(''
+				+ '<div class="input-group-append">'
+					+ '<a class="btn btn-secondary" href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'' + elName + '\',getZMILang())">'
+						+ '<i class="fas fa-link"></i>'
+					+ '</a>'
+				+ '</div>'
+			);
+		}
+		var fn = function() {
+			$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
+			$.ajax({
+				url: 'zmi_breadcrumbs_obj_path',
+				data:{lang:getZMILang(),zmi_breadcrumbs_ref_obj_path:$input.val()},
+				datatype:'text',
+				success:function(response) {
+					$inputgroup.next(".breadcrumb, [aria-label=breadcrumb]").remove();
+					$inputgroup.after(response.replace(/<!--(.*?)-->/gi,'').trim());
+				}
+			});
+		};
+		$input.change(fn).change();
+	}
+	$("input.url-input",context).each(fn_url_input_each);
+	$("textarea.url-input",context).each(function() {
+		var $input = $(this);
+		var fmName = $input.parents("form").attr("name");
+		var elName = $input.attr("name");
+		var $container = $input.parent();
+		$input.hide();
+		$container.append(''
+			+ '<div class="url-input-container"></div>'
+			+'<input type="hidden" name="new_'+elName+'"/>'
+			+'<a href="javascript:;" onclick="return zmiBrowseObjs(\'' + fmName + '\',\'new_' + elName + '\',getZMILang())" class="btn btn-secondary">'
+			+'<i class="fas fa-plus"></i>'
+			+'</a>');
+		$("input[name='new_"+elName+"']",$container).change(function() {
+				var v = $(this).val();
+				var l = $input.val().length==0?[]:$input.val().split("\n");
+				if (!l.contains()) {
+					l.push(v);
+					$input.val(l.join("\n")).change();
+				}
+				$(this).val("");
+			});
+		$input.change(function() {
+			var v = $(this).val();
+			var l = $input.val().length==0?[]:$input.val().split("\n");
+			var $inputContainer = $(".url-input-container",$container);
+			$inputContainer.html('');
+			for (var i = 0; i < l.length; i++) {
+				$inputContainer.append('<input class="form-control url-input" type="text" value="'+l[i]+'" disabled="disabled"> ');
+			}
+			$("input.url-input",$inputContainer).each(fn_url_input_each);
+			$(".input-group-append",$inputContainer).replaceWith('<a class="btn btn-secondary" href="javascript:;"><i class="fas fa-times"></i></a>');
+			$("input.url-input",$inputContainer).next().click(function() {
+				$(this).parents(".input-group").next(".breadcrumb").remove();
+				$(this).parents(".input-group").remove();
+				var l = [];
+				$("input",$inputContainer).each(function() {
+					var v = $(this).val();
+					if (v.length > 0) {
+						l.push(v);
+					}
+				});
+				$input.val(l.join("\n")).change();
+			});
+		}).change();
+	});
 }
 
 // /////////////////////////////////////////////////////////////////////////////

@@ -1,14 +1,14 @@
-<!-- bt_link_list.interface0 -->
+<tal:block tal:content="structure string:<!--bt_link_list.interface0 -->"></tal:block>
 
 <div class="form-group row" id="tr_links_interface0" tal:define="zmscontext options/zmscontext">
 	<div class="col-sm-2"></div>
 	<div class="col-sm-10">
 		<table class="table table-bordered m-0">
 			<tbody>
-			<tr class="row_insert">
-				<td class="meta-sort"><span class="btn btn-light btn-add"><i class="fas fa-plus"></i></td>
-				<td class="meta-url"><input class="form-control form-control url-input" name="links_url__" placeholder="Select Url..."/>
-				<td class="meta-label"><input class="form-control form-control" name="links_label__" placeholder="Enter Label..."/>
+			<tr class="row_insert bg-light">
+				<td class="meta-sort"><span class="btn btn-primary btn-add"><i class="fas fa-plus"></i></td>
+				<td class="meta-label"><input class="form-control" name="links_label__" placeholder="Enter Label..."/>
+				<td class="meta-url"><input class="form-control url-input" name="links_url__" placeholder="Select Url..."/>
 			</tr>
 			</tbody>
 		</table>
@@ -29,7 +29,7 @@ $(function() {
 					});
 				links.push(record);
 			});
-		var refreshData = function() {
+		const refreshData = function() {
 				var xml = '';
 				xml += '<list>\n';
 				for (var i=0; i < links.length; i++) {
@@ -45,13 +45,13 @@ $(function() {
 				xml += '</list>';
 				$("#links_links").val(xml);
 			};
-		var refreshView = function() {
+		const refreshView = function() {
 				$("tr:not(:last)",$table).remove();
 				var $last = ("tr:last",$table);
 				var html = '';
 				for (var i=0; i < links.length; i++) {
 					var record = links[i];
-					html += '<tr>\n';
+					html += '<tr class="url-inputs">\n';
 					html += '<td class="meta-sort">\n';
 					html += '<div class="input-group input-group">\n';
 					html += '<select class="zmi-sort">\n';
@@ -62,16 +62,17 @@ $(function() {
 					html += '<a class="btn btn-secondary btn-delete" href="javascript:;"><i class="fas fa-times"></i></a>';
 					html += '</div>\n';
 					html += '</td>\n';
-					html += '<td class="meta-url">\n';
-					html += '<input class="form-control form-control url-input" name="links_url_'+i+'" value="'+record.url+'">\n';
-					html += '</td>\n';
 					html += '<td class="meta-label">\n';
-					html += '<input class="form-control form-control" name="links_label_'+i+'" value="'+record.label+'">\n';
+					html += '<input class="form-control" name="links_label_'+i+'" value="'+record.label+'">\n';
+					html += '</td>\n';
+					html += '<td class="meta-url">\n';
+					html += '<input class="form-control url-input" name="links_url_'+i+'" value="'+record.url+'">\n';
 					html += '</td>\n';
 					html += '</tr>\n';
 				}
 				$last.prepend(html);
-				var refreshLinks = function() {
+				$ZMI.initUrlInput($(".url-inputs",$table));
+				const refreshLinks = function() {
 						links = [];
 						$("tr:not(:last)",$table).each(function() {
 								var $tr = $(this);
@@ -95,11 +96,12 @@ $(function() {
 				if ($("input[value='']",$tr).length==0) {
 					var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
 					links.push(record);
-					$("input",$tr).val("");
+					$("input",$tr).val("").change();
 				}
 				refreshView();
 			});
 	});
 </script>
 
-<!-- /bt_link_list.interface0 -->
+
+<tal:block tal:content="structure string:<!--/bt_link_list.interface0 -->"></tal:block>

@@ -1547,7 +1547,7 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 				}
 				var html = '';
 				html += '<a class="dropdown-item" title="'+opttitle+'" href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
-				html += opticon+' '+optlabel;
+				html += opticon+' <span>'+optlabel+'</span>';
 				html += '</a>';
 				$ul.append(html);
 			}

@@ -565,7 +565,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def zmi_icon(self,*args, **kwargs):
       """ ZMSObject.zmi_icon """
-      clazz = 'fas fa-exclamation-triangle text-danger'
       if 'name' in kwargs:
         clazz = kwargs['name'].replace('icon-','fas fa-')
       else:
@@ -575,12 +574,20 @@ class ZMSObject(ZMSItem.ZMSItem,
         clazz = self.evalMetaobjAttr( '%s.%s'%(id, 'icon_clazz'))
         if not clazz:
           meta_obj = self.getMetaobj(id)
-          clazzes = {'ZMSResource':'fas fa-asterisk', \
-              'ZMSLibrary':'fas fa-flask', \
+          clazzes = {'ZMSResource':'fas fa-asterisk',
+              'ZMSLibrary':'fas fa-flask',
               'ZMSPackage':'fas fa-suitcase',
               'ZMSRecordSet':'far fa-list-alt',
               'ZMSReference':'fas fa-link'}
-          clazz = clazzes.get(meta_obj.get('type'), 'fas fa-exclamation-triangle text-danger')
+          clazz = clazzes.get(meta_obj.get('type'))
+        if not clazz:
+          meta_cmd = self.getMetaCmd(id)
+          if meta_cmd is not None:
+            clazz = meta_cmd.get('icon_clazz')
+          elif id == 'workflow':
+            clazz = 'fas fa-cog'
+        if not clazz:
+          clazz = 'fas fa-exclamation-triangle text-danger'
       return clazz
 
 
@@ -601,7 +608,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         if not name:
           metaObj = self.getMetaobj(id)
           names = {'ZMSResource':'fas fa-asterisk icon-asterisk','ZMSLibrary':'fas fa-flask icon-beaker','ZMSPackage':'fas fa-suitcase icon-suitcase','ZMSRecordSet':'far fa-list-alt icon-list','ZMSReference':'fas fa-link icon-link','ZMSTrashcan':'fas fa-trash'}
-          name = names.get(metaObj.get('type'), 'icon-file-alt')
+          name = names.get(metaObj.get('type'), 'fas fa-file-alt icon-file-alt')
         if meta_type is None:
           constraints = self.attr('check_constraints')
           if isinstance(constraints, dict):

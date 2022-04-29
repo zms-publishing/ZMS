@@ -44,7 +44,7 @@
 					<span class="d-none zmi-sort-id">0</span>
 					<button class="btn split-left">
 						<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
-						<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
+						<span tal:content="python:childNode.display_type(request)">the child-node</span>
 					</button>
 					<button class="btn split-right dropdown-toggle" data-toggle="dropdown">
 						<tal:block tal:content="structure python:childNode.display_icon(request)">the icon</tal:block>
@@ -72,7 +72,7 @@
 							<span class="d-none zmi-sort-id" tal:content="python:childNode.getSortId()">the sort-id</span>
 							<button class="btn btn-secondary split-left">
 								<i tal:attributes="class python:childNode.zmi_icon()"></i>
-								<tal:block tal:content="python:childNode.display_type(request)">the child-node</tal:block>
+								<span tal:content="python:childNode.display_type(request)">the child-node</span>
 							</button>
 							<button class="btn btn-secondary split-right dropdown-toggle" data-toggle="dropdown">
 								<i tal:attributes="class python:childNode.zmi_icon()"></i>

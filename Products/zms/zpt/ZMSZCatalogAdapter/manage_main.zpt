@@ -147,7 +147,7 @@
 																			disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()"/>
 																</td>
 																<td>
-																	<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
+																	<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>&nbsp;
 																	<span tal:on-error="string:ERROR" tal:content="metaObj/name">the name</span>
 																	<span>(<tal:block tal:content="python:here.getZMILangStr('SOTYPE_%s'%metaObj['type'].upper())">the type</tal:block>)</span>
 																</td>

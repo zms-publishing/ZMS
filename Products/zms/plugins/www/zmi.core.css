@@ -984,6 +984,24 @@ li.zmi-item span.zmi-ids {
 	text-align:center;
 	width:3em;
 }
+.zmi table#meta_commands.table td a > i.deprecated,
+.zmi table#meta_commands.table td a + i.deprecated,
+.zmi table#meta_types.table td > i.deprecated,
+.zmi table.repo-diff-files td a i.deprecated,
+.zmi-action.nav-metaobj button.btn.btn-default > i.deprecated {
+	color: #6c757d;
+	opacity: 0.5;
+}
+.zmi table#meta_overview.table td.meta-id span i.deprecated + a,
+.zmi table#meta_commands.table td a > i.deprecated + strong,
+.zmi table#meta_commands.table td a + i.deprecated + strong,
+.zmi table#meta_types.table td > i.deprecated + span,
+.zmi table.repo-diff-files td a i.deprecated + strong,
+.zmi-action.nav-metaobj button.btn.btn-default > i.deprecated + span {
+	color: #6c757d;
+	opacity: 0.5;
+	text-decoration: line-through;
+}
 .zmi table#meta_overview.table td.meta-id {
 	width: auto !important;
 }
@@ -1364,6 +1382,15 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	margin-right:.4rem
 }
 
+.zmi-action .dropdown-menu i.deprecated,
+.zmi-action .btn.split-left i.deprecated {
+	opacity: 0.5;
+}
+.zmi-action .dropdown-menu i.deprecated + span,
+.zmi-action .btn.split-left i.deprecated + span {
+	opacity: 0.5;
+	text-decoration: line-through;
+}
 
 /* ZMS-Buttons */
 

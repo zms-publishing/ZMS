@@ -969,15 +969,24 @@ ZMI.prototype.initInputFields = function(container) {
 			// Icon-Class
 			$('input.zmi-input-icon-clazz',this).each(function() {
 				var $input = $(this);
+				var t = 'Use icon classes on https://fontawesome.com/v5/search?m=free \nand specifier classes like \'text-danger\' or \'deprecated\'';
 				$input.wrap( '<div class="input-group"></div>' );
 				$input.before('<span class="input-group-text"><i class="fas fa-invisible"></i></span>');
-				$input.parent().children('span.input-group-text').wrap( '<div class="input-group-prepend"></div>');
+				$input.parent().children('span.input-group-text').wrap( '<div class="input-group-prepend" style="cursor:pointer;" title="' + t + '"></div>');
 				var fn = function() {
 					var $container = $input.parents(".input-group");
 					var $i = $("i",$container);
 					$i.attr("class",$input.val());
 				};
 				$input.change(fn).keyup(fn).change();
+				$input.prev().on('click', function() {
+					// Show icon details on https://fontawesome.com/v5
+					var s = '';
+					if ( $input.val().split('fa-').length > 1 ) {
+						s = $input.val().split('fa-')[1];
+					};
+					window.open('https://fontawesome.com/v5/search?m=free&q=' + s,'Fontawesome-V5','toolbar=no,scrollbars=yes,resizable=yes,top=100,left=100,width=480,height=720');
+				});
 			});
 			// Url-Picker
 			$ZMI.initUrlInput(this);

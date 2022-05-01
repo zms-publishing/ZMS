@@ -587,7 +587,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           elif id == 'workflow':
             clazz = 'fas fa-cog'
         if not clazz:
-          clazz = 'fas fa-exclamation-triangle text-danger'
+          clazz = 'far fa-file undefined'
       return clazz
 
 

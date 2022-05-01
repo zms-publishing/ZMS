@@ -2041,6 +2041,8 @@ body.lazy_select_form footer .controls {
 	float: right;
 	font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 	color:#75A7C0;
+}
+.zmi .meta-code .control-label-ace-editor {
 	width:50%;
 	justify-content: space-between;
 }

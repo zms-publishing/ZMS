@@ -296,7 +296,7 @@
 			+ 'Diese Nachricht wurde automatisch generiert.\n'
 		);
 		dummy0 python:zmscontext.sendMail(mto, msubject, ''.join(mbody), request);
-		message python:'Ihre Ãnderungen wurden zur Publikation eingereicht. Vielen Dank!';
+		message python:'Ihre Änderungen wurden zur Publikation eingereicht. Vielen Dank!';
 		dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_wfTransitionFinalize',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))">
 	</tal:block>
 </tal:block>

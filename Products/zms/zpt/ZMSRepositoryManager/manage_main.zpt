@@ -99,12 +99,30 @@
 		<form class="form-horizontal" action="manage_change" method="post">
 			<input type="hidden" name="lang" tal:attributes="value request/lang" />
 			<div class="form-group row">
-				<label class="col-sm-2 control-label mandatory">
+				<label class="col-sm-2 control-label mandatory" for="basepath">
 					System Path
 				</label>
-				<div class="col-sm-10">
-					 <input id="basepath" name="basepath" class="form-control" type="text" tal:attributes="value python:here.get_conf_basepath('')" />
+				<div class="col-sm-10"
+					tal:define="paths python:zmscontext.getConfProperty('ZMS.conf.paths')">
+					 <input id="basepath" name="basepath" class="form-control" type="text"
+							tal:condition="python:paths is None"
+							tal:attributes="value python:here.get_conf_basepath('')"/>
+					 <select id="basepath" name="basepath" class="form-control"
+					 		tal:condition="python:paths is not None">
+						 <option tal:repeat="path python:map(lambda x: x.strip(), paths.split(','))"
+								 tal:attributes="value path; selected python:path==zmscontext.getConfProperty('ZMS.conf.path');"
+								 tal:content="path"></option>
+					 </select>
 				</div><!-- .col-sm-10 -->
+				<div class="help d-none" data-for="basepath"
+					tal:define="systemprops python:'%s/manage_customize?lang=%s'%(zmscontext.breadcrumbs_obj_path()[0].absolute_url(), request['lang']);">
+					<div class="well">The path of the used repository is stored as system property
+						<a tal:attributes="href python:systemprops+'&conf_key=ZMS.conf.path#Custom'" target="_blank"><code>ZMS.conf.path</code></a>.
+						The system property
+						<a tal:attributes="href python:systemprops+'&conf_key=ZMS.conf.paths#Custom'" target="_blank"><code>ZMS.conf.paths</code></a>
+						can be preset with a comma-separated list of repository paths for selection.
+					</div>
+				</div>
 			</div><!-- .form-group -->
 			<div class="form-group row">
 				<label class="col-sm-2 control-label">

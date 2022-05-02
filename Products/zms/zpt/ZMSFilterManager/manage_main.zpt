@@ -250,7 +250,8 @@ $(function(){
 						<tal:block tal:condition="python:filterProcess.get('file_filename',None)">
 							<input type="checkbox" checked="checked"/>
 							<a tal:attributes="href filterProcess/file_href; title python:'%s (%s)'%(filterProcess.get('file_filename',None),filterProcess.get('file_content_type',None))" 
-								target="_blank" tal:content="filterProcess/file_filename">FILENAME
+								target="_blank" data-turbolinks="false"
+								tal:content="filterProcess/file_filename">FILENAME
 							</a>
 						</tal:block>
 					</tal:block>

@@ -1,7 +1,8 @@
 <tal:block tal:define="global
 		zopeutil modules/Products.zms/zopeutil;
-		name python:options['name'];
-		ob python:options['ob'];
+		name python:options.get('name');
+		id python:options.get('id') and options.get('id') or name;
+		ob python:options.get('ob');
 		text python:options.get('text');
 		height python:options.get('height','20em');
 		content_type python:options.get('content_type','dtml')">
@@ -22,9 +23,9 @@
 			</a> 
 		</div>
 		<div>
-			<textarea class="form-control-ace-editor" tal:attributes="name name;id name;data-content_type content_type" tal:content="text">the text</textarea>
+			<textarea class="form-control-ace-editor" tal:attributes="name name;id id;data-content_type content_type" tal:content="text">the text</textarea>
 		</div>
-		<div tal:attributes="id python:'editor_%s'%name" style="height:92%;width:100%;border:1px solid #ccc;border-radius:4px">
+		<div tal:attributes="id python:'editor_%s'%id" style="height:92%;width:100%;border:1px solid #ccc;border-radius:4px">
 			ace editor text
 		</div>
 	</div><!-- .form-group -->

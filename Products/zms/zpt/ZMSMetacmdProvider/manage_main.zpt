@@ -9,8 +9,7 @@
 		action python:'manage_changeMetacmds';
 		metaCmdIds python:standard.sort_list(here.getMetaCmdIds());
 		metaCmds python:[here.getMetaCmd(x) for x in metaCmdIds];
-		packages python:standard.sort_list(standard.distinct_list([x.get('package','') for x in metaCmds]));
-		">
+		packages python:standard.sort_list(standard.distinct_list([x.get('package','') for x in metaCmds]));">
 
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request,extra=[here.manage_sub_options()[0]]+[{'action':'?id=%s'%x['id'],'label':x['name']} for x in metaCmds if x['id']==request.get('id')])">zmi_breadcrumbs</tal:block>
 
@@ -67,7 +66,7 @@
 			<tal:block tal:define="ob python:getattr(here,request['id'],None)"
 				><tal:block tal:condition="python:ob is not None"
 					><input type="hidden" name="el_method" tal:attributes="value ob/meta_type"
-					/><tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='el_data:text',ob=ob,text=metaCmd['data'])">ACE Editor</tal:block
+					/><textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='el_data',id='cmd_%s'%(ob.getId()),ob=ob,text=metaCmd['data'])">ACE Editor</textarea
 				></tal:block
 			></tal:block>
 			<!-- /ACE Editor -->
@@ -261,7 +260,7 @@
 				<td>
 					<tal:block tal:condition="python:ob is not None">
 						<tal:block tal:condition="python:metaCmd.get('acquired',False)">
-							<a target="_blank"
+							<a target="_blank" data-turbolinks="false"
 								tal:attributes="
 									href python:'%s/metacmd_manager/manage_main?lang=%s&id=%s'%(context.getRootElement().absolute_url(),request['lang'],metaCmd['id']);
 									title python:'acquired from: %s (%s)'%(context.getRootElement().getHome().id, context.getRootElement().attr('titlealt'))"
@@ -270,7 +269,8 @@
 							<strong tal:content="python:metaCmd['id']">the id</strong> ( <tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">Name</tal:block> )
 						</tal:block>
 						<tal:block tal:condition="not:python:metaCmd.get('acquired',False)">
-							<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id']); title python:'%s (%s)'%(ob.id,ob.meta_type)">
+							<a data-turbolinks="false"
+								tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaCmd['id']); title python:'%s (%s)'%(ob.id,ob.meta_type)">
 								<i tal:condition="python:metaCmd.get('icon_clazz',False)" tal:attributes="class python:metaCmd.get('icon_clazz')"></i>
 								<strong tal:content="python:metaCmd['id']">the id</strong>
 								(<tal:block tal:content="python:here.getZMILangStr(metaCmd['name'])">the name</tal:block>)

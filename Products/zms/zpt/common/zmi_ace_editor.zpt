@@ -4,19 +4,19 @@
 		id python:options.get('id') and options.get('id') or name;
 		ob python:options.get('ob');
 		text python:options.get('text');
+		text python:text is None and zopeutil.readObject(here,ob.getId()) or text;
 		height python:options.get('height','20em');
 		content_type python:options.get('content_type','dtml')">
-	<tal:block tal:condition="python:text is None"><tal:block tal:define="global text python:zopeutil.readObject(here,ob.getId())"></tal:block></tal:block>
 	<tal:block tal:on-error="structure string:<div class='alert alert-danger mx-0 alert-dismissible fade show' role='alert'>TypeError: a bytes-like object is required, not str</div>"
 		tal:condition="python:ob is not None and ob.meta_type in ['Script (Python)']" 
 		tal:define="errors python:[x.replace(' ','&nbsp\073') for x in text.split('##') if x.startswith(' ')][1:]">
 		<div class="alert alert-danger mx-0 alert-dismissible fade show" role="alert" tal:condition="python:len(errors)>0 and errors[0].find('Errors:')>=0" tal:content="structure python:'<br/>'.join(errors)">the errors</div>
 		<div class="alert alert-warning mx-0 alert-dismissible fade show" role="alert" tal:condition="python:len(errors)>0 and errors[0].find('Warnings:')>=0" tal:content="structure python:'<br/>'.join(errors)">the warnings</div>
 	</tal:block>
-	<div tal:condition="python:ob is not None" 
-		class="form-group zmi-ace-editor" 
+	<div class="form-group zmi-ace-editor" 
 		tal:attributes="style python:'height:%s'%height">
-		<div class="control-label-ace-editor">
+		<div tal:condition="python:ob is not None"  
+			class="control-label-ace-editor">
 			<a tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" target="_blank">
 				<tal:block tal:content="python:ob.getId()">id<</tal:block>
 				<tal:block tal:condition="python:text is not None">(<tal:block tal:content="python:here.getDataSizeStr(len(text))">the size</tal:block>)</tal:block>

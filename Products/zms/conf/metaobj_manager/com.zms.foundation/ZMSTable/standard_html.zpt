@@ -10,7 +10,7 @@
                  caption       python:zmscontext.attr('caption');
                  caption_side  python:zmscontext.attr('caption_side');
                  table_type    python:zmscontext.attr('type');"
-     class="uzk15__editorblock">
+     class="table-responsive">
     <style tal:condition="python:zmscontext.attr('colgroup')" tal:content="structure python:zmscontext.attr('zmstable_colgroup_css')"></style>
     <table tal:attributes="id python:zmscontext.id; class python:' '.join(['ZMSTable table bs-table']+[[],['sortable']][sortable])">
         <caption tal:condition="python:caption"

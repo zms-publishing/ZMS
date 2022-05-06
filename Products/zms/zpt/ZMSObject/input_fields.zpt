@@ -239,7 +239,7 @@
 									hasChildren python:len(objChildren)>0">
 
 							<div class="card-header btn-collapse">
-								<a class="btn card-toggle pull-left" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id'];data-toggle python:['','collapse'][hasChildren]">
+								<a class="btn card-toggle pull-left" data-turbolinks="false" data-toggle="collapse" tal:attributes="href python:'#%s'%metaObjAttr['id'];data-toggle python:['','collapse'][hasChildren]">
 									<i tal:attributes="class python:'fas fa-%s'%(['caret-down',''][hasChildren])"></i>
 									<tal:block tal:content="elLabel">the label</tal:block>
 								</a>

@@ -1,12 +1,14 @@
 <tal:block tal:define="
 	dummy0 python:here.zmi_page_request(here,request); 
-	global standard modules/Products.zms/standard; 
-	global zopeutil modules/Products/zms/zopeutil;
-	global session python:standard.get_session(here);"></tal:block
-><tal:block tal:condition="python:standard.get_session_value(here,'zmi-manage-system',0)==1"><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block></tal:block
+	standard modules/Products.zms/standard; 
+	zopeutil modules/Products.zms/zopeutil;
+	session python:standard.get_session(here);"
+><tal:block tal:condition="python:standard.get_session_value(here,'zmi-manage-system',0)==1"
+	><tal:block tal:content="structure python:here.manage_system(here,request)"></tal:block
+></tal:block
 ><tal:block tal:condition="not:python:standard.get_session_value(here,'zmi-manage-system',0)==1"
 ><!DOCTYPE html>
-<html lang="en" tal:define="standard modules/Products.zms/standard">
+<html lang="en">
 <head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
 <body tal:attributes="class python:here.zmi_body_class(id='filter config')">
 <header tal:replace="structure python:here.zmi_body_header(here,request,options=here.customize_manage_options())">zmi_body_header</header>
@@ -250,7 +252,8 @@ $(function(){
 						<tal:block tal:condition="python:filterProcess.get('file_filename',None)">
 							<input type="checkbox" checked="checked"/>
 							<a tal:attributes="href filterProcess/file_href; title python:'%s (%s)'%(filterProcess.get('file_filename',None),filterProcess.get('file_content_type',None))" 
-								target="_blank" tal:content="filterProcess/file_filename">FILENAME
+								target="_blank" data-turbolinks="false"
+								tal:content="filterProcess/file_filename">FILENAME
 							</a>
 						</tal:block>
 					</tal:block>
@@ -301,21 +304,14 @@ $(function(){
 				</div><!-- .controls.save -->
 			</div><!-- .form-row -->
 			<div class="form-group row inpCommand">
-				<div class="col-md-12"><textarea class="form-control zmi-code" id="inpCommand" name="inpCommand" tal:content="process/command" cols="80" rows="25">the command</textarea></div>
-			</div><!-- .form-group -->
-
-<tal:block tal:replace="nothing">
-			<!-- ACE Editor -->
-			<div class="form-group row inpCommand">
 				<div class="col-md-12">
 					<input type="hidden" name="el_method" tal:attributes="value process/id" />
-					<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='inpCommand',ob=process,text=process.get('command',''))">ACE Editor</tal:block>
+					<textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='inpCommand',id='filtercmd_%s'%(process.get('id')),ob=None,text=process.get('command',''))">
+						ACE Editor
+					</textarea>
 				</div>
 			</div><!-- .form-group -->
-			<!-- /ACE Editor -->
-</tal:block>
-
-</form>
+		</form>
 	</div><!-- .inner -->
 </div><!-- #updateProcess -->
 
@@ -424,7 +420,8 @@ $(function(){
 				<td>
 					<i tal:condition="python:filter.get('acquired')" class="icon-share fas fa-share mr-2" title="acquired"></i>
 					<a href="javascript:;" onclick="$('i',this).toggleClass('fa-chevron-right fa-chevron-down');$(this).siblings('.filterProcesses').toggle('normal');"><i class="fas fa-chevron-right"></i></a>
-					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
+					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],filterId); title python:here.getZMILangStr('BTN_EDIT')+'...'"
+						data-turbolinks="false">
 						<i class="fas fa-filter"></i>
 						<tal:block tal:content="python:filter.get('name','Missing filter name')">the filter-name</tal:block>
 					</a>
@@ -500,9 +497,10 @@ $(function(){
 				</td>
 				<td>
 					<i tal:condition="python:process.get('acquired')" class="icon-share fas fa-share mr-2" title="acquired"></i>
-					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'">
-						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is not None"><i tal:on-error="nothing" tal:attributes="class python:getattr(here,process['id']).zmi_icon"></i></tal:block>
-						<tal:block tal:condition="python:standard.operator_getattr(here,process['id'],None) is None"><i class="fas fa-cog"></i></tal:block>
+					<a tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],processId); title python:here.getZMILangStr('BTN_EDIT')+'...'"
+						data-turbolinks="false">
+						<i tal:condition="python:standard.operator_getattr(here,process['id'],None) is not None" tal:on-error="nothing" tal:attributes="class python:getattr(here,process['id']).zmi_icon"></i>
+						<i tal:condition="python:standard.operator_getattr(here,process['id'],None) is None" class="fas fa-cog"></i>
 						<b class="ml-2 processId" tal:content="process/id">the id</b>
 					</a>
 					<span class="processName text-muted ml-2" tal:content="python:'%s'%(process.get('name','Name Missing!'))">the name</span>
@@ -520,4 +518,5 @@ $(function(){
 <footer tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>
+</tal:block>
 </tal:block>

@@ -231,7 +231,7 @@ _Screen shot: shows the corresponding object setup: the py-attribute code can be
 ![evalMetaobjAttr](images/develop_api_evalMetaobjAttr.gif)
 
 ## 6. standard_error_message
-The Zope Error Handler expects a Zope object named  _standard_error_message_. This object gets a set of parameters (as defined in (`interfaces.IItem. raise_standardErrorMessage()`)) that can be used to control the behaviour on certain types of errors.
+The Zope Error Handler expects a Zope object named  _standard_error_message_. This object gets a set of parameters (as defined in (`interfaces.IItem. raise_standardErrorMessage()`) that can be used to control the behaviour on certain types of errors.
 The following picture shows a simple example for redirecting to a special 404-page in case of the error type 'NotFound'; otherwise it return the standard error message:
 
 ```python

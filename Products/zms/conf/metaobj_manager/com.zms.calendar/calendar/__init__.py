@@ -32,7 +32,7 @@ class calendar:
 	package = "com.zms.calendar"
 
 	# Revision
-	revision = "0.0.2"
+	revision = "0.0.3"
 
 	# Type
 	type = "ZMSObject"
@@ -66,6 +66,16 @@ class calendar:
 			,"name":"Calendar-Items"
 			,"repetitive":0
 			,"type":"calendar_items"}
+
+		default_css = {"custom":".calendar table th.month-head {\r\n	background-color:#17a2b8;\r\n	color:white;\r\n}\r\n.calendar table td {\r\n	vertical-align:top;\r\n	width:6rem;\r\n}\r\n.calendar table td:hover {\r\n	background-color:#eee;\r\n}\r\n.calendar table td span.day {\r\n	color:#aaa;\r\n}\r\n.calendar table td p {\r\n	width:4rem;\r\n	white-space:nowrap;\r\n	overflow:hidden;\r\n	text-overflow:ellipsis;\r\n}"
+			,"default":""
+			,"id":"default_css"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"CSS Defaults"
+			,"repetitive":0
+			,"type":"constant"}
 
 		get_events = {"default":""
 			,"id":"get_events"

@@ -230,3 +230,31 @@ _Screen shot: shows the corresponding object setup: the py-attribute code can be
 
 ![evalMetaobjAttr](images/develop_api_evalMetaobjAttr.gif)
 
+## 6. standard_error_message
+The Zope Error Handler expects a Zope object named  _standard_error_message_. This object gets a set of parameters (as defined in (`interfaces.IItem. raise_standardErrorMessage()`)) that can be used to control the behaviour on certain types of errors.
+The following picture shows a simple example for redirecting to a special 404-page in case of the error type 'NotFound'; otherwise it return the standard error message:
+
+```python
+## Script (Python) "standard_error_message"
+##bind container=container
+##bind context=context
+##bind namespace=
+##bind script=script
+##bind subpath=traverse_subpath
+##parameters=error_type='', error_value='', error_tb='', error_traceback='', error_message='', error_log_url=''
+##title=py: MY ERROR HANDLER
+##
+request = container.REQUEST
+response =  request.response
+if error_type == 'NotFound':
+    response.redirect('/404')
+else:
+    text = error_message
+print(text)
+return printed
+```
+
+_Screen shot: shows the effect of the example code. Requesting a not existing URL like /XXXX results in a redirect to a Page Template object named /404_
+
+![evalMetaobjAttr](images/develop_api_standard_error_message.gif)
+

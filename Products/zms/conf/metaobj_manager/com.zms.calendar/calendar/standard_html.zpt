@@ -1,0 +1,13 @@
+<!-- calendar.standard_html -->
+<div title="Default-ZPT-Code" 
+		tal:define="zmscontext options/zmscontext;
+		id python:zmscontext.getId();
+		css_class python:zmscontext.meta_id;
+		year python:context.ZopeTime().year();
+		month python:context.ZopeTime().month();
+		get_events python:list(zmscontext.attr('get_events'));
+		get_calendar python:zmscontext.get_calendar(year=year, month=month, events=get_events);"
+	tal:attributes="id id; class css_class">
+	<div class="get_calendar" tal:content="structure get_calendar">get_calendar</div>
+</div>
+<!-- calendar.standard_html -->

@@ -61,9 +61,11 @@ class Calendar(HTMLCalendar):
 		else:
 			events_dt = filter_events_by_date(self.events, self.year, self.month, day)
 			events_titles = [e.get('title','') for e in events_dt]
-			s = '<br/>'.join(events_titles)
+			events_titles_long = ['%s : %s'%(e.get('title',''), e.get('description','')) for e in events_dt]
+			titles = '<br/>'.join(events_titles)
+			titles_long = '\n'.join(events_titles_long)
 			# return '<td class="%s">%d</td>' % (self.cssclasses[weekday], day)
-			return '<td style="%s" class="%s" title="%s">%d <p style="%s">%s</p></td>' % (self.td_style, self.cssclasses[weekday], s, day, self.e_style, s)
+			return '<td style="%s" class="%s" data-toggle="tooltip" title="%s">%d <p style="%s">%s</p></td>' % (self.td_style, self.cssclasses[weekday], titles_long, day, self.e_style, titles)
 
 
 def get_calendar(self,year=2000,month=1,events=[]):

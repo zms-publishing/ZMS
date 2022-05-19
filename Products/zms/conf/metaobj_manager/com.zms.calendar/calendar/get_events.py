@@ -12,7 +12,7 @@ from Products.zms import standard
 request = container.REQUEST
 RESPONSE =  request.RESPONSE
 
-fieldnames = ['start_time','end_time','title','description','url']
+fieldnames = ['col_id','start_time','end_time','title','description','location','url']
 events=[]
 res = zmscontext.events.attr('records')
 for e in res:

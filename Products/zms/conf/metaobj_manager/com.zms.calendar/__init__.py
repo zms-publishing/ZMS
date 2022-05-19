@@ -16,7 +16,7 @@ class com_zms_calendar:
 	package = ""
 
 	# Revision
-	revision = "0.0.2"
+	revision = "0.0.5"
 
 	# Type
 	type = "ZMSPackage"

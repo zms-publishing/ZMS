@@ -60,19 +60,24 @@ class Calendar(HTMLCalendar):
 			events_dt = filter_events_by_date(self.events, self.year, self.month, day)
 			t_short = ''
 			t_long = ''
+			event_link = ''
+			has_events = False
 			if events_dt:
-				events_titles = [e.get('title','') for e in events_dt]
+				has_events = True
+				event_id = [e.get('col_id','') for e in events_dt][0]
+				event_link = 'onclick="document.getElementById(\'%s\').classList.add(\'hilight\');$(\'html,body\').animate({scrollTop:$(\'#%s\').offset().top}, 600)"'%(event_id,event_id)
+				events_titles = [(e.get('start_time','').split(' ')[-1] == '00:00' and e.get('title','') or '%s | %s'%(e.get('start_time','').split(' ')[-1], e.get('title',''))) for e in events_dt]
 				events_titles_long = ['%s : %s'%(e.get('title',''), e.get('description','')) for e in events_dt]
 				t_short = '<br/>'.join(events_titles)
 				t_long = '\n'.join(events_titles_long)
 		# return '<td class="%s">%d</td>' % (self.cssclasses[weekday], day)
-		return '<td class="%s" data-toggle="tooltip" title="%s"><span class="day">%d</span> %s</td>' % (self.cssclasses[weekday], t_long, day, '<p>%s</p>'%(t_short))
+		return '<td %s class="%s" %s title="%s"><span class="day">%d</span> %s</td>' % (event_link, self.cssclasses[weekday], has_events and 'data-toggle="tooltip"' or '',  t_long, day, has_events and '<p><i class="far fa-calendar text-info"></i> %s</p>'%(t_short) or '<p></p>')
 
 
 def get_calendar(self,year=2000,month=1,events=[]):
 	htmlcal = Calendar(year=year,month=month,events=events)
-	htmlcal.cssclasses = [style + " text-nowrap" for style in HTMLCalendar.cssclasses]
+	htmlcal.cssclasses = [style + ' text-nowrap' for style in HTMLCalendar.cssclasses]
 	htmlcal.cssclass_month = "month table table-bordered"
-	htmlcal.cssclass_month_head = "month-head"
+	htmlcal.cssclass_month_head = "month-head text-center"
 	# htmlcal.cssclass_year = "text-italic lead"
 	return htmlcal.formatmonth(htmlcal.year, htmlcal.month)

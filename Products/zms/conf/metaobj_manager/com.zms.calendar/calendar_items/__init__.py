@@ -32,7 +32,7 @@ class calendar_items:
 	package = "com.zms.calendar"
 
 	# Revision
-	revision = "0.0.2"
+	revision = "0.0.5"
 
 	# Type
 	type = "ZMSRecordSet"
@@ -48,7 +48,8 @@ class calendar_items:
 			,"repetitive":0
 			,"type":"list"}
 
-		col_id = {"default":""
+		col_id = {"custom":1
+			,"default":""
 			,"id":"col_id"
 			,"keys":[]
 			,"mandatory":1
@@ -77,13 +78,23 @@ class calendar_items:
 			,"repetitive":0
 			,"type":"datetime"}
 
+		all_day = {"custom":1
+			,"default":"0"
+			,"id":"all_day"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Ganztags"
+			,"repetitive":0
+			,"type":"boolean"}
+
 		title = {"custom":1
 			,"default":""
 			,"id":"title"
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Title"
+			,"name":"Titel"
 			,"repetitive":0
 			,"type":"string"}
 
@@ -93,9 +104,27 @@ class calendar_items:
 			,"keys":[]
 			,"mandatory":0
 			,"multilang":0
-			,"name":"Description"
+			,"name":"Info-Text"
 			,"repetitive":0
 			,"type":"text"}
+
+		location = {"default":""
+			,"id":"location"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Ort"
+			,"repetitive":0
+			,"type":"string"}
+
+		contact = {"default":""
+			,"id":"contact"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Ansprechpartner"
+			,"repetitive":0
+			,"type":"string"}
 
 		url = {"default":""
 			,"id":"url"

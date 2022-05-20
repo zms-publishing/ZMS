@@ -82,7 +82,10 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
       attr_type = attr['type']
       redirect_self = redirect_self or attr_type in self.getMetaobjIds()+['*']
     redirect_self = redirect_self and not REQUEST.get('btn', '') in [ 'BTN_CANCEL', 'BTN_BACK']
-    
+
+    if metaObj['type'] == 'ZMSRecordSet':
+      lang = self.getPrimaryLanguage()
+
     obj = getattr(self, obj.id)
     try:
       # Object State
@@ -386,14 +389,19 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         keys = []
         rows = []
 
-        for listitem in xml['list']['item']:
-          values = {}
-          for dictitem in listitem['dictionary']['item']:
-            key = dictitem.get('@key')
-            if key not in keys:
-              keys.append(key)
-            values[key] = dictitem.get('#text')
-          rows.append(values)
+        if xml['list'] is not None:
+          xmllistitem = xml['list']['item']
+          if type(xml['list']['item']) is not list:
+            # handle one row
+            xmllistitem = [xml['list']['item']]
+          for listitem in xmllistitem:
+            values = {}
+            for dictitem in listitem['dictionary']['item']:
+              key = dictitem.get('@key')
+              if key not in keys:
+                keys.append(key)
+              values[key] = dictitem.get('#text')
+            rows.append(values)
 
         csvfile = io.StringIO()
         csvfile_writer = csv.writer(csvfile)
@@ -461,7 +469,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       params = {'lang':lang}
       t0 = time.time()
       
-      if action or btn and btn not in [ 'BTN_CANCEL', 'BTN_BACK']:
+      if (action or btn) and (btn not in ['BTN_CANCEL', 'BTN_BACK']):
         try:
           ##### Object State #####
           self.setObjStateModified(REQUEST)

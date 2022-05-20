@@ -16,10 +16,10 @@
 </div>
 <script>
 $(function() {
-		$("#tr_links_links").hide();
+		$("div[id^='tr_links_links']").hide();
 		var links = [];
 		var $table = $("#tr_links_interface0 table");
-		var xml = $.parseXML($("#links_links").val());
+		var xml = $.parseXML($("textarea[id^='links_links']").val());
 		var $xml = $(xml);
 		$("list > item > dictionary",$xml).each(function() {
 				var record = {};
@@ -43,7 +43,7 @@ $(function() {
 					xml += '</item>\n';
 				}
 				xml += '</list>';
-				$("#links_links").val(xml);
+				$("textarea[id^='links_links']").val(xml);
 			};
 		const refreshView = function() {
 				$("tr:not(:last)",$table).remove();

@@ -368,14 +368,14 @@ class ZMS(
     #
     #  Get version.
     # --------------------------------------------------------------------------
-    def zms_version(self):
+    def zms_version(self, custom=False):
       file = open(_fileutil.getOSPath(package_home(globals())+'/version.txt'),'r')
       rtn = file.read()
       file.close()
       zms_custom_version = os.environ.get('ZMS_CUSTOM_VERSION', '')
-      if zms_custom_version != '':
+      if custom and zms_custom_version != '':
         rtn += ' ({})'.format(zms_custom_version)
-      if os.path.exists(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD')):
+      if custom and os.path.exists(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD')):
         file = open(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD'),'r')
         FETCH_HEAD = file.read()
         file.close()

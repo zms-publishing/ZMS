@@ -126,15 +126,16 @@ class ZMSMetaobjManager(object):
             if key not in mandatory_keys:
               del d[key]
           d['__filename__'] = [[],[package]][len(package)>0]+[id,'__init__.py']
+          # Lang-Dict.
+          lang_dict = self.get_lang_dict()
+          # (1) lang-dict entry must start with id
+          # (2) and id must match prefix separated by exactly or must not be element of other ids
+          other_ids = [x for x in valid_ids if x != id]
+          l = [x for x in lang_dict if x.startswith('%s.'%id) and (x[:x.rfind('.')]==id or not x[:x.rfind('.')] in other_ids)]
+          if l:
+            d['lang_dict'] = {x:lang_dict[x] for x in l}
           for attr in attrs:
             syncZopeMetaobjAttr(self, d, attr)
-            if attr['id'] == 'langdict.xml':
-              lang_dict = self.get_lang_dict()
-              l = [x for x in lang_dict if x.startswith('%s.' % id)]
-              if l:
-                if 'ob' not in attr:
-                  attr['ob'] = _blobfields.MyFile('langdict.xml', 'langdict.xml', b'')
-                attr['ob'].data = _multilangmanager.exportXml(self, l).encode()
             mandatory_keys = ['id', 'name', 'type', 'meta_type', 'default', 'keys', 'mandatory', 'multilang', 'ob', 'repetitive']
             if attr['type']=='interface':
               attr['name'] = attr['id']
@@ -171,9 +172,12 @@ class ZMSMetaobjManager(object):
             newDefault = attr.get('default', '')
             if newType in ['resource']:
               newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'data':newCustom,'filename':newId})
-            if newId == 'langdict.xml':
-              self.importConf({'data': attr.get('data', ''), 'filename': '{}.{}'.format(id, newId)})
             self.setMetaobjAttr(id, oldId, newId, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
+        # Lang-Dict.
+        if 'lang_dict' in r:
+          lang_dict = self.get_lang_dict()
+          lang_dict = {**lang_dict, **r['lang_dict']} # merge
+          self.set_lang_dict(lang_dict)
       return id
 
 
@@ -313,6 +317,7 @@ class ZMSMetaobjManager(object):
     def exportMetaobjXml(self, ids, REQUEST=None, RESPONSE=None):
       value = []
       revision = '0.0.0'
+      valid_ids = self.getMetaobjIds()
       for id in effective_ids(self, ids):
         ob = None
         context = self
@@ -345,7 +350,10 @@ class ZMSMetaobjManager(object):
             del ob[key]
         # Lang-Dict.
         lang_dict = self.get_lang_dict()
-        l = [x for x in lang_dict if x.startswith('%s.'%id)]
+        # (1) lang-dict entry must start with id
+        # (2) and id must match prefix separated by exactly or must not be element of other ids
+        other_ids = [x for x in valid_ids if x != id]
+        l = [x for x in lang_dict if x.startswith('%s.'%id) and (x[:x.rfind('.')]==id or not x[:x.rfind('.')] in other_ids)]
         if l:
           ob['__lang_dict__'] = {x:lang_dict[x] for x in l}
         # Value.

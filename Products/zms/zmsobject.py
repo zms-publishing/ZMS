@@ -945,7 +945,9 @@ class ZMSObject(ZMSItem.ZMSItem,
               else:
                 i += 1
               l = l[i:]
-              abs_url = protocol + '://' + domain + '/' + '/'.join(l)
+              abs_url = protocol + '://' + domain  
+              if l:
+                abs_url = abs_url + '/' + '/'.join(l)
       return abs_url
     
     # --------------------------------------------------------------------------

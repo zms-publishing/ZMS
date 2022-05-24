@@ -20,6 +20,8 @@ lxml
 Markdown
 pyScss
 xmltodict
+ftfy
+pdfminer.six
 
 # PAS
 Products.PluggableAuthService

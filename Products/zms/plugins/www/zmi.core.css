@@ -2640,6 +2640,16 @@ ul.pagination .page-item {
 		margin-top: 1.75rem;
 	}
 }
+/* ++++++++++++++++++++++++++ */
+/* ZMSTextarea                */
+/* ++++++++++++++++++++++++++ */
+
+.zmi.ZMSTextarea  div[id^="zmiStandardEditortext"] textarea {
+	min-height: calc(100vh - 27rem);
+}
+.zmi.ZMSTextarea div[id*="zmiRichtextEditortext"] div.cke_contents {
+	min-height: calc(100vh - 31rem);
+}
 
 /* ++++++++++++++++++++++++++ */
 /* CK Editor Fixes            */

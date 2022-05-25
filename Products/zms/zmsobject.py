@@ -118,6 +118,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # ----------
     f_recordset_grid = PageTemplateFile('zpt/object/f_recordset_grid', globals()) # ZMI RecordSet::Grid
     preview_html = PageTemplateFile('zpt/object/preview', globals())
+    preview_splitscreen = PageTemplateFile('zpt/object/preview_splitscreen', globals())
     preview_top_html = PageTemplateFile('zpt/object/preview_top', globals())
     f_api_html = PageTemplateFile('zpt/object/f_api', globals())
     f_api_top_html = PageTemplateFile('zpt/object/f_api_top', globals())

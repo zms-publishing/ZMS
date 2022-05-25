@@ -117,7 +117,11 @@ $ZMI.registerReady(function(){
 				}
 				else {
 					href += '?lang='+lang +'&preview=contentEditable';
-					window.top.location.href = href;
+					if (window.top.frames[0].name=='editor') {
+						window.top.frames[0].location.href = href
+					} else {
+						window.top.location.href = href;
+					}
 				}
 			})
 		.attr( "title", "Click to edit!");

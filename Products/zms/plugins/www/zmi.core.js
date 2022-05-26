@@ -84,6 +84,14 @@ $ZMI.registerReady(function(){
 				}
 			</style>`;
 		$('head').append(hilight_css);
+
+		// Make sure page content is nested by <article> element
+		var page = $('.zms-page');
+		var page_href = page.attr("data-absolute-url");
+		page.closest('article').wrapInner('<div class="contentEditable zms-page"></div>');
+		page = $('article > .zms-page');
+		page.attr('data-absolute-url',page_href);
+
 		$('.contentEditable')
 			.mouseover( function(evt) {
 					evt.stopPropagation();

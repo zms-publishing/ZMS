@@ -126,7 +126,7 @@
 						<span tal:content="python:here.getZMILangStr('TAB_PREVIEW')">preview</span>
 					</a>
 					<a target="_top" title="Show Preview as Splitted Screen"
-						tal:attributes="href python:'preview_splitscreen?lang=%s&preview=preview'%request['lang']">
+						tal:attributes="href python:'preview_split?lang=%s&preview=preview'%request['lang']">
 						<i class="fas fa-columns" style="display:unset;margin: 0 0 0 1.5em;"></i>
 					</a>
 				</li>

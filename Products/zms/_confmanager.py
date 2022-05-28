@@ -476,6 +476,7 @@ class ConfManager(
         {'key':'EmailMandatory','title':'Email Mandatory?','desc':'Email for users','datatype':'boolean','default':0}, 
         {'key':'ZMS.pathhandler.id_quote.mapping','title':'Declarative IDs-Mapping','desc':'ZMS can map characters in DC.Title.Alt to declarative IDs.','datatype':'string','default':' _-_/_'},
         {'key':'ZMS.preview.contentEditable','title':'Content-Editable Preview','desc':'Make content in ZMS preview editable','datatype':'boolean','default':1},
+        {'key':'ZMS.preview.splitscreen','title':'Preview as Split-Screen (IFrame)','desc':'Preview in the Same Window via IFrame','datatype':'boolean','default':0},
         {'key':'ZMS.pathcropping','title':'Crop URLs','desc':'ZMS can crop the SERVER_NAME from URLs.','datatype':'boolean'},
         {'key':'ZMS.manage_tabs_message','title':'Global Message','desc':'ZMS can display a global message for all users in the management interface.','datatype':'text'},
         {'key':'ZMS.http_accept_language','title':'Http Accept Language','desc':'ZMS can use the HTTP_ACCEPT_LANGUAGE request-parameter to determine initial language.','datatype':'boolean'},

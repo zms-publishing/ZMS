@@ -88,9 +88,24 @@ $ZMI.registerReady(function(){
 		// Make sure page content is nested by <article> element
 		var page = $('.zms-page');
 		var page_href = page.attr("data-absolute-url");
-		page.closest('article').wrapInner('<div class="contentEditable zms-page"></div>');
-		page = $('article > .zms-page');
-		page.attr('data-absolute-url',page_href);
+		var page_container_constructed = false;
+		//debugger;
+		if ( page.closest('article').length > 0 ) {
+			page.closest('article').wrapInner('<div class="contentEditable zms-page" data-absolute-url="'+ page_href +'"></div>');
+			page_container_constructed = true;
+			console.log('Page = article-Element');
+		} else if ( page.closest('.article').length > 0 ) {
+			page.closest('.article').wrapInner('<div class="contentEditable zms-page" data-absolute-url="'+ page_href +'"></div>');
+			page_container_constructed = true;
+			console.log('Page = .article-Class');
+		} else {
+			page.siblings().first().wrapInner('<div class="contentEditable zms-page" data-absolute-url="'+ page_href +'"></div>');
+			page_container_constructed = true;
+			console.log('Page = 1st Sibling of Content Container; maybe use article-Element or .article-Class to mark the Content Container');
+		}
+		if ( page_container_constructed == false ) {
+			console.log('Page-Container Not Found: Please Add article-Element or .article-Class to the HTML-Element that is Nesting the Page Content')
+		}
 
 		$('.contentEditable')
 			.mouseover( function(evt) {
@@ -107,7 +122,7 @@ $ZMI.registerReady(function(){
 				}
 				var href = $(this).attr("data-absolute-url");
 				var lang = getZMILang();
-				if (self.location.href.indexOf(href+'/manage_main')>=0) {
+				if (self.location.href.indexOf(href+'/manage_main')>=0 || evt.shiftKey==true) {
 					href += '/manage_properties';
 				}
 				else {
@@ -126,13 +141,13 @@ $ZMI.registerReady(function(){
 				else {
 					href += '?lang='+lang +'&preview=contentEditable';
 					if (window.top.frames[0].name=='editor') {
-						window.top.frames[0].location.href = href
+						window.top.frames[0].location.href = href;
 					} else {
 						window.top.location.href = href;
 					}
 				}
 			})
-		.attr( "title", "Click to edit!");
+			.attr( "title", "Click to Edit!\nShift+Click to Properties Menu");
 	}
 
 	// ZMS plugins

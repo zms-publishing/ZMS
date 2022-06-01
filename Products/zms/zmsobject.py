@@ -1524,7 +1524,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       request = self.REQUEST
       if standard.isPreviewRequest(request) and \
          (request.get('URL').find('/manage')>0 or self.getConfProperty('ZMS.preview.contentEditable', 1)==1):
-        css = ['contentEditable', self.meta_id]
+        css = ['contentEditable', self.meta_id, self.isPage() and 'zms-page' or 'zms-pageelement']
         html = '<div class="%s" data-absolute-url="%s">%s</div>'%(' '.join(css), self.absolute_url()[len(self.REQUEST['BASE0']):], html)
       return html
 

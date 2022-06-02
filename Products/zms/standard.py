@@ -422,7 +422,25 @@ def guess_content_type(filename, data):
   @rtype: C{tuple}
   """
   import zope.contenttype
-  mt, enc  = zope.contenttype.guess_content_type( filename, data)
+  # MIME-type guessing based on Zope-like filename syntax 
+  # using underscore as a delimiter for the filename extension
+  f_exts = {
+    '_css':'text/css',
+    '_js':'application/javascript',
+    '_svg':'image/svg+xml',
+    '_xml':'text/xml',
+    '_xsl':'text/xml',
+    '_vcf':'text/x-vcard vcf',
+    '_pdf':'application/pdf',
+    '_doc':'application/msword',
+    '_xls':'application/vnd.ms-excel'
+  }
+  default = None
+  for f_ext in f_exts.keys():
+    if filename.endswith(f_ext):
+      default = f_exts[f_ext]
+      break
+  mt, enc  = zope.contenttype.guess_content_type( filename, data, default)
   return mt, enc
 
 

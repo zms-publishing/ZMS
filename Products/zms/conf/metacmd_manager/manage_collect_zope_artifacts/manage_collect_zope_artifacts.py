@@ -58,7 +58,7 @@ def manage_collect_zope_artifacts(self, request=None):
 	rtn.append('<form class="form-horizontal pt-0" method="post" enctype="multipart/form-data">')
 	rtn.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
 	rtn.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
-	rtn.append('<p class="zmi_help alert alert-info m-0 rounded-0"><b>Transfer Zope Artifacts to a ZMS Content-Object Library:</b> Please make sure, that the ZMS Content-Object Library you want to place the Zope objects is existing in the select list. If not, please change to the <a target="_blank" href="../content/metaobj_manager/manage_main">ZMS Content Object Menu</a> first, add a new one and refresh this page. After selecting the ZMS Lib as a target then select one more items from the Zope artifact list below. To start the transfer, please click the button <i>Collect</i>.</p>')
+	rtn.append('<p class="zmi_help alert alert-info rounded-0"><b>Transfer Zope Artifacts to a ZMS Content-Object Library:</b> Please make sure, that the ZMS Content-Object Library you want to place the Zope objects is existing in the select list. If not, please change to the <a target="_blank" href="../content/metaobj_manager/manage_main">ZMS Content Object Menu</a> first, add a new one and refresh this page. After selecting the ZMS Lib as a target then select one more items from the Zope artifact list below. To start the transfer, please click the button <i>Collect</i>.</p>')
 
 	# --- Cancel.
 	# ---------------------------------
@@ -78,8 +78,8 @@ def manage_collect_zope_artifacts(self, request=None):
 	rtn.append('</select>')
 	rtn.append('</div>')
 	rtn.append('<div class="col-md-9 col-sm-8 ">')
-	rtn.append('<button type="submit" name="btn" class="btn btn-primary m-2" value="Collect"><i class="icon-suitcase fas fa-suitcase mr-2"></i>  %s</button>'%('Collect'))
-	rtn.append('<button type="submit" name="btn" class="btn btn-secondary m-2" value="BTN_REFRESH"><i class="icon-sync fas fa-sync mr-2"></i> %s</button>'%(self.getZMILangStr('BTN_REFRESH')))
+	rtn.append('<button type="submit" name="btn" class="btn btn-primary m-2" value="Collect"><i class="fas fa-briefcase mr-2"></i>  %s</button>'%('Collect'))
+	rtn.append('<button type="submit" name="btn" class="btn btn-secondary m-2" value="BTN_REFRESH"><i class="fas fa-sync mr-2"></i> %s</button>'%(self.getZMILangStr('BTN_REFRESH')))
 	rtn.append('<button type="submit" name="btn" class="btn btn-secondary m-2" value="BTN_CANCEL">%s</button>'%(self.getZMILangStr('BTN_CANCEL')))
 	rtn.append('</div><!-- .col-9 -->')
 	rtn.append('</div><!-- .row -->')
@@ -88,7 +88,7 @@ def manage_collect_zope_artifacts(self, request=None):
 	rtn.append('<thead>')
 	rtn.append('<tr>')
 	rtn.append('''<th class="text-center">
-					<span class="btn btn-secondary" title="%s/%s" onclick="zmiToggleSelectionButtonClick(this)"><i class="icon-check-square fas fa-check-square"></i></span>
+					<span class="btn btn-secondary" title="%s/%s" onclick="zmiToggleSelectionButtonClick(this)"><i class="fas fa-check-square"></i></span>
 				</th>'''%(self.getZMILangStr('BTN_SLCTALL'),self.getZMILangStr('BTN_SLCTNONE')))
 	rtn.append('<th class="w-100">Objekt</th>')
 	rtn.append('<th>Status</th>')

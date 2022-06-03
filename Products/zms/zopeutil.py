@@ -100,7 +100,8 @@ def addObject(container, meta_type, id, title, data, permissions={}):
     addFolder( container, id, title)
   elif meta_type == 'Z SQL Method':
     addZSqlMethod( container, id, title, data)
-  initPermissions(container, id, permissions)
+  if permissions:
+    initPermissions(container, id, permissions)
   return getObject(container, id)
 
 security.declarePublic('getObject')
@@ -224,15 +225,15 @@ def initPermissions(container, id, permissions={}):
   # apply proxy-roles
   ob._proxy_roles=('Authenticated','Manager')
   # apply permissions for roles
-  role_permissions = []
   for role in permissions:
     permission = permissions[role]
     ob.manage_role(role_to_manage=role,permissions=permission)
-    role_permissions = list(set(role_permissions+permission))
   # activate all acquired permissions
-  manager_permissions = [x['name'] for x in ob.permissionsOfRole('Manager')]
-  acquired_permissions = [x for x in manager_permissions if x not in role_permissions]
-  ob.manage_acquiredPermissions(acquired_permissions)
+  if permissions:
+    role_permissions = sum([permissions[x] for x in permissions],[])
+    manager_permissions = [x['name'] for x in ob.permissionsOfRole('Manager')]
+    acquired_permissions = [x for x in manager_permissions if x not in role_permissions]
+    ob.manage_acquiredPermissions(acquired_permissions)
   # remove hidden owner to prevent auth-error
   if hasattr(ob, '_owner'):
     del ob._owner

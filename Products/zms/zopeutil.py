@@ -236,7 +236,8 @@ def initPermissions(container, id, permissions={}):
     ob.manage_acquiredPermissions(acquired_permissions)
   # remove hidden owner to prevent auth-error
   if hasattr(ob, '_owner'):
-    del ob._owner
+    # del ob._owner
+    ob._owner = tuple([],None)
 
 def addDTMLMethod(container, id, title, data):
   """

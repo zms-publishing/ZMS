@@ -47,7 +47,7 @@ def manage_repository_gitstatus( self ):
 		message = ''
 		if len([x for x in request['AUTHENTICATED_USER'].getRolesInContext(self) if x in ['Manager','ZMSAdminstrator']]) > 0:
 			os.chdir(base_path)
-			command = 'git status'
+			command = 'git status; echo "\nHISTORY:"; git log -10 --pretty="format:%ad : #%h %s [%an]" --date=short'
 			result = os.popen(command).read()
 			# result = os.system(command)
 			message = '<pre class="zmi-code d-block m-0 p-4" style="color: #dee2e6;background-color: #354f67;"><b>%s</b><br/><br/>%s</pre>'%(command,str(result))

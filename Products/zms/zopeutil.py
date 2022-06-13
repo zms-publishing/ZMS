@@ -234,12 +234,9 @@ def initPermissions(container, id, permissions={}):
     manager_permissions = [x['name'] for x in ob.permissionsOfRole('Manager')]
     acquired_permissions = [x for x in manager_permissions if x not in role_permissions]
     ob.manage_acquiredPermissions(acquired_permissions)
-  # modify hidden owner to prevent auth-error
-  if hasattr(ob, '_owner'):
+  ### Debug Zope object import here on unexpected errors due to (hidden) attrs 
+  # if hasattr(ob, '_owner'):
     # del ob._owner
-    ### as alternative: reduce attr's userfolder list ### 
-    owner_tuple = getattr(ob, '_owner', None)
-    ob._owner = tuple(([owner_tuple[0][-1]],owner_tuple[1]))
 
 def addDTMLMethod(container, id, title, data):
   """

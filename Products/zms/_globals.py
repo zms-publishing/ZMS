@@ -107,6 +107,8 @@ umlaut_map = {
 def sort_item( i):
   if isinstance(i, time.struct_time):
     i = time.strftime('%Y%m%d%H%M%S',i)
+  elif isinstance(i, float):
+    pass
   elif not isinstance(i, int):
       i = standard.pystr(i)
       mapping = umlaut_map

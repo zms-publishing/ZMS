@@ -109,6 +109,8 @@ def sort_item( i):
     i = time.strftime('%Y%m%d%H%M%S',i)
   elif isinstance(i, float):
     pass
+  elif i is None:
+    i = 0
   elif not isinstance(i, int):
       i = standard.pystr(i)
       mapping = umlaut_map

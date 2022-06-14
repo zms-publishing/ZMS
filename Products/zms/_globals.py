@@ -109,7 +109,7 @@ def sort_item( i):
     i = time.strftime('%Y%m%d%H%M%S',i)
   elif isinstance(i, float):
     pass
-  elif i is None:
+  elif i is None or i == '':
     i = 0
   elif not isinstance(i, int):
       i = standard.pystr(i)

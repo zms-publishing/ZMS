@@ -337,7 +337,7 @@ class ConfManager(
     # --------------------------------------------------------------------------
     def getThemes(self):
       obs = []
-      for ob in self.getHome().objectValues():
+      for ob in standard.distinct_list(self.getHome().objectValues() + self.getAbsoluteHome().objectValues()):
         if isinstance(ob, Folder) and 'standard_html' in ob.objectIds():
           obs.append(ob)
       return obs

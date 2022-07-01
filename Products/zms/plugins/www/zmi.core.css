@@ -621,6 +621,7 @@ body.zmi ul.zmi-container > .zmi-item .right i.titleimage-preview::after {
 	background-color:#f5f5f5;
 	box-shadow: none;
 }
+body.zmi ul.zmi-container > .zmi-item .right video,
 body.zmi ul.zmi-container > .zmi-item .right i.titleimage-preview:hover::after {
 	content:"";
 	width:20vw;
@@ -641,7 +642,6 @@ body.zmi ul.zmi-container > .zmi-item .right i.titleimage-preview:hover::after {
 	box-shadow: 5px 5px 20px #c0c0c094;
 	transition: opacity .75s, height .5s, box-shadow 1s, background-color 1s  ease; 
 }
-
 @media (max-width: 767px) {
 	body.zmi header.navbar {
 		max-width: 100%;

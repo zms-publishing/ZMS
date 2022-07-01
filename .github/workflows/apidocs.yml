@@ -29,6 +29,4 @@ jobs:
             --make-html \
             --html-output=./Products/zms/apidocs \
             --project-base-dir="$(pwd)" \
-            --docformat=restructuredtext \
-            --intersphinx=https://docs.python.org/3/objects.inv \
             ./Products/zms/

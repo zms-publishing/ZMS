@@ -1724,7 +1724,11 @@ def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
     tl = [(_globals.sort_item(x[qorder]), x) for x in l]
   if ignorecase and len(tl) > 0 and isinstance(tl[0][0], str):
     tl = [(str(x[0]).upper(), x[1]) for x in tl]
-  tl = sorted(tl,key=lambda x:x[0])
+  try:
+    tl = sorted(tl,key=lambda x:x[0])
+  except:
+    writeError(context, '[sort_list]: mixed datatypes normalized to strings')
+    tl = sorted(tl,key=lambda x:str(x[0]))
   tl = [x[1] for x in tl]
   if qorderdir == 'desc':
     tl.reverse()

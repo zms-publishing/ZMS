@@ -1,0 +1,2 @@
+#!/bin/bash
+~/vpy38/bin/pydoctor ./Products/zms/ --project-name ZMS --project-url https://github.com/zms-publishing/ZMS/ --html-output=./Products/zms/apidocs --make-html --html-viewsource-base https://github.com/zms-publishing/ZMS/tree/main

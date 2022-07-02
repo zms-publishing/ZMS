@@ -1,0 +1,1084 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>zms._xmllib.XmlAttrBuilder</title>
+    <meta name="generator" content="pydoctor 22.5.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a> <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div class="hint" id="search-help-box">
+          <p class="rst-last">
+      
+            Search bar offers the following options:
+            <ul>   
+                <li>
+                  <strong>Term presence.</strong> The below example searches for documents that 
+                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
+                </li> 
+
+                <li>
+                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
+                </li> 
+
+                <li>
+                  <strong>Search in specific fields.</strong> The following search matches all objects 
+                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
+
+                  <p>
+                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
+                    Last two fields are only applicable if "search in docstrings" is enabled.
+                  </p>
+                </li>
+
+                <li>
+                  <strong>Fuzzy matches.</strong> The following search matches all documents 
+                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
+                </li>
+            </ul>
+
+          </p>
+        </div>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 8px;">
+          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="zms._xmllib.XmlAttrBuilder.html" class="internal-link" title="This class"><wbr></wbr>Xml<wbr></wbr>Attr<wbr></wbr>Builder</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="zms._xmllib.XmlAttrBuilder.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#OnCharacterData" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnCharacterData"><wbr></wbr>On<wbr></wbr>Character<wbr></wbr>Data</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#OnComment" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnComment"><wbr></wbr>On<wbr></wbr>Comment</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#OnEndCData" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnEndCData"><wbr></wbr>On<wbr></wbr>End<wbr></wbr>CData</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#OnEndElement" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnEndElement"><wbr></wbr>On<wbr></wbr>End<wbr></wbr>Element</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#OnEndNamespaceDecl" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnEndNamespaceDecl"><wbr></wbr>On<wbr></wbr>End<wbr></wbr>Namespace<wbr></wbr>Decl</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#OnProcessingInstruction" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnProcessingInstruction"><wbr></wbr>On<wbr></wbr>Processing<wbr></wbr>Instruction</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#OnStartCData" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnStartCData"><wbr></wbr>On<wbr></wbr>Start<wbr></wbr>CData</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#OnStartElement" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnStartElement"><wbr></wbr>On<wbr></wbr>Start<wbr></wbr>Element</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#OnStartNamespaceDecl" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnStartNamespaceDecl"><wbr></wbr>On<wbr></wbr>Start<wbr></wbr>Namespace<wbr></wbr>Decl</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#parse" class="internal-link" title="zms._xmllib.XmlAttrBuilder.parse">parse</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#iBufferSize" class="internal-link" title="zms._xmllib.XmlAttrBuilder.iBufferSize">i<wbr></wbr>Buffer<wbr></wbr>Size</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#bInCData" class="internal-link" title="zms._xmllib.XmlAttrBuilder.bInCData">b<wbr></wbr>In<wbr></wbr>CData</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#dTagStack" class="internal-link" title="zms._xmllib.XmlAttrBuilder.dTagStack">d<wbr></wbr>Tag<wbr></wbr>Stack</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#dValueStack" class="internal-link" title="zms._xmllib.XmlAttrBuilder.dValueStack">d<wbr></wbr>Value<wbr></wbr>Stack</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="zms._xmllib.html" class="internal-link" title="The parent of this class">_xmllib</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.ParseError.html" class="internal-link" title="zms._xmllib.ParseError"><wbr></wbr>Parse<wbr></wbr>Error</a></code>
+            </div>
+        
+
+    </li><li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.XmlAttrBuilder.html" class="internal-link" title="zms._xmllib.XmlAttrBuilder"><wbr></wbr>Xml<wbr></wbr>Attr<wbr></wbr>Builder</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.XmlBuilder.html" class="internal-link" title="zms._xmllib.XmlBuilder"><wbr></wbr>Xml<wbr></wbr>Builder</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        <div class="childrenKindTitle">Functions</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#getAttrToXml" class="internal-link" title="zms._xmllib.getAttrToXml">get<wbr></wbr>Attr<wbr></wbr>To<wbr></wbr>Xml</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#getObjPropertyToXml" class="internal-link" title="zms._xmllib.getObjPropertyToXml">get<wbr></wbr>Obj<wbr></wbr>Property<wbr></wbr>To<wbr></wbr>Xml</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#getObjToXml" class="internal-link" title="zms._xmllib.getObjToXml">get<wbr></wbr>Obj<wbr></wbr>To<wbr></wbr>Xml</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#getText" class="internal-link" title="zms._xmllib.getText">get<wbr></wbr>Text</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#getXmlType" class="internal-link" title="zms._xmllib.getXmlType">get<wbr></wbr>Xml<wbr></wbr>Type</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#getXmlTypeSaveValue" class="internal-link" title="zms._xmllib.getXmlTypeSaveValue">get<wbr></wbr>Xml<wbr></wbr>Type<wbr></wbr>Save<wbr></wbr>Value</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#parseString" class="internal-link" title="zms._xmllib.parseString">parse<wbr></wbr>String</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#serialize" class="internal-link" title="zms._xmllib.serialize">serialize</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#toCdata" class="internal-link" title="zms._xmllib.toCdata">to<wbr></wbr>Cdata</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#toXml" class="internal-link" title="zms._xmllib.toXml">to<wbr></wbr>Xml</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#xml_header" class="internal-link" title="zms._xmllib.xml_header">xml<wbr></wbr>_header</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#xmlInitObjProperty" class="internal-link" title="zms._xmllib.xmlInitObjProperty">xml<wbr></wbr>Init<wbr></wbr>Obj<wbr></wbr>Property</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#xmlNodeSet" class="internal-link" title="zms._xmllib.xmlNodeSet">xml<wbr></wbr>Node<wbr></wbr>Set</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#xmlOnCharacterData" class="internal-link" title="zms._xmllib.xmlOnCharacterData">xml<wbr></wbr>On<wbr></wbr>Character<wbr></wbr>Data</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#xmlOnUnknownEndTag" class="internal-link" title="zms._xmllib.xmlOnUnknownEndTag">xml<wbr></wbr>On<wbr></wbr>Unknown<wbr></wbr>End<wbr></wbr>Tag</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#xmlOnUnknownStartTag" class="internal-link" title="zms._xmllib.xmlOnUnknownStartTag">xml<wbr></wbr>On<wbr></wbr>Unknown<wbr></wbr>Start<wbr></wbr>Tag</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#xmlParse" class="internal-link" title="zms._xmllib.xmlParse">xml<wbr></wbr>Parse</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Variables</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._xmllib.html#INDENTSTR" class="internal-link" title="zms._xmllib.INDENTSTR">INDENTSTR</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapseSideBar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <div id="main" class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">zms</a></code><wbr></wbr>.<code><a href="zms._xmllib.html" class="internal-link" title="zms._xmllib">_xmllib</a></code><wbr></wbr>.<code><a href="zms._xmllib.XmlAttrBuilder.html" class="internal-link" title="zms._xmllib.XmlAttrBuilder">XmlAttrBuilder</a></code></code></h1>
+          <div id="showPrivate">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p><code><span class="py-keyword">class</span> <span class="py-defname">XmlAttrBuilder</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L720" class="sourceLink">(source)</a></code></p>
+          <p><a href="classIndex.html#zms._xmllib.XmlAttrBuilder">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>class XmlAttrBuilder</p>
+</div>
+        </div>
+
+        <div id="splitTables">
+          <table class="children sortable" id="id134">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="zms._xmllib.XmlAttrBuilder.__init__">__init__</a></code></td>
+    <td>XmlAttrBuilder.__init__</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#OnCharacterData" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnCharacterData"><wbr></wbr>On<wbr></wbr>Character<wbr></wbr>Data</a></code></td>
+    <td>XmlAttrBuilder.OnCharacterData</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#OnComment" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnComment"><wbr></wbr>On<wbr></wbr>Comment</a></code></td>
+    <td>XmlAttrBuilder.OnComment</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#OnEndCData" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnEndCData"><wbr></wbr>On<wbr></wbr>End<wbr></wbr>CData</a></code></td>
+    <td>XmlAttrBuilder.OnEndCData</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#OnEndElement" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnEndElement"><wbr></wbr>On<wbr></wbr>End<wbr></wbr>Element</a></code></td>
+    <td>XmlAttrBuilder.OnEndElement</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#OnEndNamespaceDecl" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnEndNamespaceDecl"><wbr></wbr>On<wbr></wbr>End<wbr></wbr>Namespace<wbr></wbr>Decl</a></code></td>
+    <td>XmlAttrBuilder.OnEndNamespaceDecl</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#OnProcessingInstruction" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnProcessingInstruction"><wbr></wbr>On<wbr></wbr>Processing<wbr></wbr>Instruction</a></code></td>
+    <td>XmlAttrBuilder.OnProcessingInstruction</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#OnStartCData" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnStartCData"><wbr></wbr>On<wbr></wbr>Start<wbr></wbr>CData</a></code></td>
+    <td>XmlAttrBuilder.OnStartCData</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#OnStartElement" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnStartElement"><wbr></wbr>On<wbr></wbr>Start<wbr></wbr>Element</a></code></td>
+    <td>XmlAttrBuilder.OnStartElement</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#OnStartNamespaceDecl" class="internal-link" title="zms._xmllib.XmlAttrBuilder.OnStartNamespaceDecl"><wbr></wbr>On<wbr></wbr>Start<wbr></wbr>Namespace<wbr></wbr>Decl</a></code></td>
+    <td>XmlAttrBuilder.OnStartNamespaceDecl</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#parse" class="internal-link" title="zms._xmllib.XmlAttrBuilder.parse">parse</a></code></td>
+    <td>XmlAttrBuilder.parse</td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#iBufferSize" class="internal-link" title="zms._xmllib.XmlAttrBuilder.iBufferSize">i<wbr></wbr>Buffer<wbr></wbr>Size</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#bInCData" class="internal-link" title="zms._xmllib.XmlAttrBuilder.bInCData">b<wbr></wbr>In<wbr></wbr>CData</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#dTagStack" class="internal-link" title="zms._xmllib.XmlAttrBuilder.dTagStack">d<wbr></wbr>Tag<wbr></wbr>Stack</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#dValueStack" class="internal-link" title="zms._xmllib.XmlAttrBuilder.dValueStack">d<wbr></wbr>Value<wbr></wbr>Stack</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="childList">
+          <div class="basemethod">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L731">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>XmlAttrBuilder.__init__</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.OnCharacterData">
+    
+  </a>
+  <a name="OnCharacterData">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">OnCharacterData</span>(self, sData):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L885">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>XmlAttrBuilder.OnCharacterData</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.OnComment">
+    
+  </a>
+  <a name="OnComment">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">OnComment</span>(self, data):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L939">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>XmlAttrBuilder.OnComment</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.OnEndCData">
+    
+  </a>
+  <a name="OnEndCData">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">OnEndCData</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L912">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>XmlAttrBuilder.OnEndCData</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.OnEndElement">
+    
+  </a>
+  <a name="OnEndElement">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">OnEndElement</span>(self, sTagName):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L828">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>XmlAttrBuilder.OnEndElement</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.OnEndNamespaceDecl">
+    
+  </a>
+  <a name="OnEndNamespaceDecl">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">OnEndNamespaceDecl</span>(self, prefix):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L966">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>XmlAttrBuilder.OnEndNamespaceDecl</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.OnProcessingInstruction">
+    
+  </a>
+  <a name="OnProcessingInstruction">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">OnProcessingInstruction</span>(self, target, data):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L926">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>XmlAttrBuilder.OnProcessingInstruction</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.OnStartCData">
+    
+  </a>
+  <a name="OnStartCData">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">OnStartCData</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L901">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>XmlAttrBuilder.OnStartCData</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.OnStartElement">
+    
+  </a>
+  <a name="OnStartElement">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">OnStartElement</span>(self, sTagName, dTagAttrs):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L803">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>XmlAttrBuilder.OnStartElement</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.OnStartNamespaceDecl">
+    
+  </a>
+  <a name="OnStartNamespaceDecl">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">OnStartNamespaceDecl</span>(self, prefix, uri):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L953">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>XmlAttrBuilder.OnStartNamespaceDecl</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.parse">
+    
+  </a>
+  <a name="parse">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">parse</span>(self, input):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L745">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>XmlAttrBuilder.parse</p>
+</div>
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.iBufferSize">
+    
+  </a>
+  <a name="iBufferSize">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">iBufferSize</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L724">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.bInCData">
+    
+  </a>
+  <a name="bInCData">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">bInCData</span>: <code>int</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L903">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.dTagStack">
+    
+  </a>
+  <a name="dTagStack">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">dTagStack</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L750">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms._xmllib.XmlAttrBuilder.dValueStack">
+    
+  </a>
+  <a name="dValueStack">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">dValueStack</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_xmllib.py#L749">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div>
+        </div>
+      
+      </div>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container">
+    <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+<script>
+//<!-- OPEN SOURCE LINKS IN FRAMESET 
+  document.addEventListener('DOMContentLoaded', function(){
+  var links = document.getElementsByClassName('sourceLink');
+    var len = links.length;
+    for(var i=0; i<len; i++)
+    {
+      links[i].target = "_blank";
+      links[i].title = "View on Github";
+    }
+  })
+//-->
+</script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

@@ -74,11 +74,17 @@ def pystr(v, encoding='utf-8', errors='strict'):
 security.declarePublic('addZMSCustom')
 def addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
   """
-  Public alias for manage_addZMSCustom
-  @param meta_id
-  @param values
-  @param REQUEST
-  @rtype: C{ZMSCustom}
+  Public alias for manage_addZMSCustom:
+  add a custom node of the type designated by meta_id in current context.
+
+  @param meta_id: the meta-id / type of the new ZMSObject
+  @type meta_id: C{str}
+  @param values: the dictionary of initial attribut-values assigned to the new ZMSObject 
+  @type values: C{dict}
+  @param REQUEST: the triggering request
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @return: the new node
+  @rtype: C{zmsobject.ZMSObject}
   """
   return self.manage_addZMSCustom(meta_id, values, REQUEST)
 
@@ -2386,10 +2392,8 @@ def raiseError(error_type, error_value):
   raise getattr(zExceptions,error_type)(error_value)
 
 
-################################################################################
-# Define the initialize() util.
-################################################################################
 class initutil(object):
+  """Define the initialize() util."""
 
   def __init__(self):
     self.__attr_conf_dict__ = {}
@@ -2404,5 +2408,3 @@ class initutil(object):
     return http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers)
 
 security.apply(globals())
-
-################################################################################

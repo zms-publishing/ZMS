@@ -788,7 +788,7 @@
     
     <td>Method</td>
     <td><code><a href="#getDataSizeStr" class="internal-link" title="zms._blobfields.MyBlob.getDataSizeStr">get<wbr></wbr>Data<wbr></wbr>Size<wbr></wbr>Str</a></code></td>
-    <td>Returns display string for file-size (KB).</td>
+    <td>Returns display string for file-size (kB). Deprecated: Use standard.getDataSizeStr(len) instead!</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -813,7 +813,7 @@
     
     <td>Method</td>
     <td><code><a href="#getMimeTypeIconSrc" class="internal-link" title="zms._blobfields.MyBlob.getMimeTypeIconSrc">get<wbr></wbr>Mime<wbr></wbr>Type<wbr></wbr>Icon<wbr></wbr>Src</a></code></td>
-    <td>Returns the absolute-url of an icon representing the MIME-type of this MyBlob-object.</td>
+    <td>Returns the absolute-url of an icon representing the MIME-type of this MyBlob-object. Deprecated: Use zmscontext.getMimeTypeIconSrc(mt) instead!</td>
   </tr><tr class="method">
     
     <td>Method</td>
@@ -1071,7 +1071,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">getContentType</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L793">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L794">
       
       (source)
     </a>
@@ -1080,7 +1080,7 @@
     
     
     <div><p>Returns MIME-type (e.g. image/gif, text/xml).</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">string</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr></table></div>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">string</tt></td><td class="fieldArgDesc">MIME-type</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1125,8 +1125,8 @@
   <div class="docstring functionBody">
     
     
-    <div><p>Returns display string for file-size (KB).</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">string</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Unknown Field: deprecated</td></tr><tr><td colspan="2">Use standard.getDataSizeStr(len) instead!</td></tr></table></div>
+    <div><p>Returns display string for file-size (kB). Deprecated: Use standard.getDataSizeStr(len) instead!</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">string</tt></td><td class="fieldArgDesc">file-size in kB</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1231,7 +1231,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">getMimeTypeIconSrc</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L805">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L807">
       
       (source)
     </a>
@@ -1239,8 +1239,8 @@
   <div class="docstring functionBody">
     
     
-    <div><p>Returns the absolute-url of an icon representing the MIME-type of this MyBlob-object.</p>
-<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">string</tt></td><td class="fieldArgDesc"><span class="undocumented">Undocumented</span></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Unknown Field: deprecated</td></tr><tr><td colspan="2">Use zmscontext.getMimeTypeIconSrc(mt) instead!</td></tr></table></div>
+    <div><p>Returns the absolute-url of an icon representing the MIME-type of this MyBlob-object. Deprecated: Use zmscontext.getMimeTypeIconSrc(mt) instead!</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">string</tt></td><td class="fieldArgDesc">icon url</td></tr></table></div>
   </div>
 </div><div class="basemethod">
   
@@ -1437,7 +1437,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getContentType__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L792">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L793">
       
       (source)
     </a>
@@ -1598,7 +1598,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">getMimeTypeIconSrc__roles__</span> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L804">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L806">
       
       (source)
     </a>

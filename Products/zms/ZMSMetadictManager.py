@@ -40,9 +40,6 @@ class ZMSMetadictManager(object):
     #
     ############################################################################
 
-    """
-    @see IRepositoryProvider
-    """
     def provideRepositoryMetas(self, r, ids=None):
       standard.writeBlock(self, "[provideRepositoryMetas]: ids=%s"%str(ids))
       valid_ids = ['__metas__']

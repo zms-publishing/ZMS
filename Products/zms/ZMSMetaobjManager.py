@@ -107,9 +107,6 @@ class ZMSMetaobjManager(object):
     #
     ############################################################################
 
-    """
-    @see IRepositoryProvider
-    """
     def provideRepositoryModel(self, r, ids=None):
       standard.writeBlock(self,"[provideRepositoryModel]: ids=%s"%str(ids))
       valid_ids = self.getMetaobjIds()

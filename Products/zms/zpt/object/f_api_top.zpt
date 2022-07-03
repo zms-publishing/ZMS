@@ -25,7 +25,7 @@
 		&nbsp;|&nbsp;<a class="zmi-top-active" href="javascript:;" tal:attributes="onclick python:'open_partner(this,\'%s/$ZMS_HOME/apidocs/zms.standard.html\')'%here.getDocumentElement().absolute_url()">
 			ZMS API
 		</a>
-		&nbsp;|&nbsp;<a href="javascript:;" tal:attributes="onclick python:'open_partner(this,\'http://docs.jquery.com\')'">
+		&nbsp;|&nbsp;<a href="javascript:;" tal:attributes="onclick python:'open_partner(this,\'http://api.jquery.com\')'">
 			jQuery API
 		</a>
 		&nbsp;|&nbsp;<a href="javascript:;" tal:attributes="onclick python:'open_partner(this,\'http://getbootstrap.com\')'">

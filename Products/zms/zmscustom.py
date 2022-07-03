@@ -69,7 +69,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
   @param lang: the language-id.
   @type lang: C{str}
   @param _sort_id: the sort value.
-  @type id_prefix: C{int}
+  @type _sort_id: C{int}
   @param btn: the submitting button value.
   @type lang: C{str}
   @param REQUEST: the triggering request

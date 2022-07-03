@@ -43,9 +43,6 @@ class ZMSWorkflowTransitionsManager(object):
   #
   ############################################################################
 
-  """
-  @see IRepositoryProvider
-  """
   def provideRepositoryTransitions(self, r, ids=None):
     standard.writeBlock(self, "[provideRepositoryTransitions]: ids=%s"%str(ids))
     r['workflow']['Transitions'] = []

@@ -775,9 +775,10 @@ class MyBlob(object):
     getDataSizeStr__roles__ = None
     def getDataSizeStr(self):
       """
-      Returns display string for file-size (KB).
+      Returns display string for file-size (kB).
+      Deprecated: Use standard.getDataSizeStr(len) instead!
+      @return: file-size in kB
       @rtype: C{string}
-      @deprecated: Use standard.getDataSizeStr(len) instead!
       """
       warnings.warn('Using MyBlob.getDataSizeStr() is deprecated.'
                    ' Use standard.getDataSizeStr(len) instead.',
@@ -793,6 +794,7 @@ class MyBlob(object):
     def getContentType(self):
       """
       Returns MIME-type (e.g. image/gif, text/xml).
+      @return: MIME-type
       @rtype: C{string}
       """
       return self.content_type
@@ -805,8 +807,9 @@ class MyBlob(object):
     def getMimeTypeIconSrc(self):
       """
       Returns the absolute-url of an icon representing the MIME-type of this MyBlob-object.
+      Deprecated: Use zmscontext.getMimeTypeIconSrc(mt) instead!
+      @return: icon url
       @rtype: C{string}
-      @deprecated: Use zmscontext.getMimeTypeIconSrc(mt) instead!
       """
       from Products.zms import _mimetypes
       warnings.warn('Using MyBlob.getMimeTypeIconSrc() is deprecated.'

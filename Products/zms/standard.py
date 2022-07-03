@@ -207,17 +207,18 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
   """
   Set default and dynamic cache response headers according to ZMS_CACHE_EXPIRE_DATETIME
   which is determined in ObjAttrs.isActive for each page element as the earliest time for invalidation.
+  I:Usage: Add to standard_html master template, e.g.::
+    <tal:block tal:define="
+      standard modules/Products.zms/standard;
+      cache_expire python:standard.set_response_headers_cache(this, request, cache_max_age=0, cache_s_maxage=6*3600)">
+    </tal:block>
+
   @param cache_max_age: seconds the element remains in all caches (public/proxy and private/browser)
   @param cache_s_maxage: seconds the element remains in public/proxy cache (value -1 means cache_s_maxage = cache_max_age)
   @see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#directives
   @see: http://nginx.org/en/docs/http/ngx_http_headers_module.html#expires
   @see: https://www.nginx.com/resources/wiki/start/topics/examples/x-accel/
   @return: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
-  @usage: Add to standard_html master template, e.g. 
-    <tal:block tal:define="
-      standard modules/Products.zms/standard;
-      cache_expire python:standard.set_response_headers_cache(this, request, cache_max_age=0, cache_s_maxage=6*3600)">
-    </tal:block>
   """
   if request is not None:
     is_preview = request.get('preview', '') == 'preview'
@@ -408,7 +409,7 @@ def url_encode(url):
   All unsafe characters must always be encoded within a URL.
   @see: http://www.ietf.org/rfc/rfc1738.txt
   @param url: Url
-  @type s: C{str}
+  @type url: C{str}
   @return: Encoded string
   @rtype: C{str}
   """
@@ -597,7 +598,7 @@ def getFileTypeIconCSS(fn):
   """
   Returns the FontAwesome CSS class of an icon representing the specified file type.
   @param fn: filename with extension (e.g. picture.gif).
-  @type mt: C{str}
+  @type fn: C{str}
   @rtype: C{str}
   """
   fontAwesomeIconClasses = {
@@ -1078,13 +1079,16 @@ def re_sub( pattern, replacement, subject, ignorecase=False):
   Performs a search-and-replace across subject, replacing all matches of
   regex in subject with replacement. The result is returned by the sub()
   function. The subject string you pass is not modified.
-  convenience-function since re cannot be imported in restricted python
+  Convenience-function since re cannot be imported in restricted python.
+
   @param pattern: the regular expression to which this string is to be matched
   @type pattern: C{str}
   @param replacement: the string to be substituted for each match
   @type replacement: C{str}
-  @param replacement: ignore case considerations
-  @type replacement: C{Bool=False}
+  @param subject: the string in which the replacement has to be done
+  @type subject: C{str}
+  @param ignorecase: ignore case considerations
+  @type ignorecase: C{Bool=False}
   @return: the resulting string.
   @rtype: C{str}
   """
@@ -1299,10 +1303,10 @@ security.declarePublic('todayInRange')
 def todayInRange(start, end):
   """
   Checks if today is in given range.
-  @param start
-  @type start C{any}
-  @param end
-  @type end C{any}
+  @param start: start date
+  @type start: C{any}
+  @param end: end date
+  @type end: C{any}
   """
   b = True
   if start:
@@ -1319,10 +1323,10 @@ def todayInRange(start, end):
 security.declarePublic('compareDate')
 def compareDate(t0, t1):
   """
-  Compares two dates t0 and t1 and returns result.
-   +1: t0 &lt; t1
-    0: t0 == t1
-   -1: t0 &gt; t1
+  Compares two dates t0 and t1 and returns result::
+    +1: t0 &lt; t1
+     0: t0 == t1
+    -1: t0 &gt; t1
   @returns: A negative number if date t0 is before t1, zero if they are equal, or positive if t0 is after t1.
   @rtype: C{int}
   """
@@ -1549,8 +1553,8 @@ def localfs_read(filename, mode='b', cache='public, max-age=3600', REQUEST=None)
   directories in Config-Tab / Miscelleaneous-Section.
   @param filename: Filepath
   @type filename: C{string}
-  @param filename: Access mode
-  @type filename: C{string}, values are 'b' - binary
+  @param mode: Access mode
+  @type mode: C{string}, values are 'b' - binary
   @param cache Cache-Headers
   @type cache C{bool}
   @param REQUEST: the triggering request
@@ -1853,8 +1857,8 @@ def filter_list(l, i, v, o='%'):
   @type i: C{str} or C{int}
   @param v: Field-value
   @type v: C{any}
-  @param v: Match-operator
-  @type v: C{str}, values are '%' (full-text), '=', '==', '>', '<', '>=', '<=', '!=', '<>'
+  @param o: Match-operator
+  @type o: C{str}, values are '%' (full-text), '=', '==', '>', '<', '>=', '<=', '!=', '<>'
   @return: Filtered list.
   @rtype: C{list}
   """
@@ -2025,11 +2029,11 @@ security.declarePublic('toXmlString')
 def toXmlString(context, v, xhtml=False, encoding='utf-8'):
   """
   Serializes value to ZMS XML-Structure.
-  @param context
-  @type context
-  @param v
-  @type v
-  @param xhtml
+  @param context: ZMS context
+  @type context: C{zmsobject.ZMSObject}
+  @param v: content node
+  @type v: C{zmsobject.ZMSObject}
+  @param xhtml: 
   @type xhtml
   @param encoding
   @type encoding
@@ -2043,7 +2047,7 @@ security.declarePublic('parseXmlString')
 def parseXmlString(xml):
   """
   Parse value from ZMS XML-Structure.
-  @param xml
+  @param xml: xml data
   @type xml: C{str} or C{io.BytesIO}
   @return: C{list} or C{dict}
   @rtype: C{any}
@@ -2062,7 +2066,7 @@ security.declarePublic('processData')
 def processData(context, processId, data, trans=None):
   """
   Process data with custom transformation.
-  @param context
+  @param context: ZMS context
   @type context: C{ZMSObject}
   @param processId: the process-id
   @type processId: C{str}
@@ -2195,10 +2199,11 @@ def dt_py( context, script, kw={}):
 def dt_tal(context, text, options={}):
   """
   Execute given TAL-snippet.
+
   @param context: the context
   @type context: C{ZMSObject}
-  @param value: TAL-snippet
-  @type value: C{string}
+  @param text: TAL-snippet
+  @type text: C{string}
   @return: Result of the execution or None
   @rtype: C{any}
   """

@@ -783,7 +783,7 @@
         </div>
 
         <div class="extrasDocstring">
-          <p><code><span class="py-keyword">class</span> <span class="py-defname">MyFile</span>(<a href="zms._blobfields.MyBlob.html" class="internal-link" title="zms._blobfields.MyBlob">MyBlob</a>, File): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L935" class="sourceLink">(source)</a></code></p>
+          <p><code><span class="py-keyword">class</span> <span class="py-defname">MyFile</span>(<a href="zms._blobfields.MyBlob.html" class="internal-link" title="zms._blobfields.MyBlob">MyBlob</a>, File): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L938" class="sourceLink">(source)</a></code></p>
           <p><a href="classIndex.html#zms._blobfields.MyFile">View In Hierarchy</a></p>
         </div>
 
@@ -878,7 +878,7 @@
     
     <td>Method</td>
     <td><code><a href="zms._blobfields.MyBlob.html#getDataSizeStr" class="internal-link" title="zms._blobfields.MyBlob.getDataSizeStr">get<wbr></wbr>Data<wbr></wbr>Size<wbr></wbr>Str</a></code></td>
-    <td>Returns display string for file-size (KB).</td>
+    <td>Returns display string for file-size (kB). Deprecated: Use standard.getDataSizeStr(len) instead!</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
@@ -903,7 +903,7 @@
     
     <td>Method</td>
     <td><code><a href="zms._blobfields.MyBlob.html#getMimeTypeIconSrc" class="internal-link" title="zms._blobfields.MyBlob.getMimeTypeIconSrc">get<wbr></wbr>Mime<wbr></wbr>Type<wbr></wbr>Icon<wbr></wbr>Src</a></code></td>
-    <td>Returns the absolute-url of an icon representing the MIME-type of this MyBlob-object.</td>
+    <td>Returns the absolute-url of an icon representing the MIME-type of this MyBlob-object. Deprecated: Use zmscontext.getMimeTypeIconSrc(mt) instead!</td>
   </tr><tr class="basemethod">
     
     <td>Method</td>
@@ -1034,7 +1034,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">toXml</span>(self, sender=None, base_path=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, data2hex=True):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L963">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L966">
       
       (source)
     </a>
@@ -1057,7 +1057,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__class_name__</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L945">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L948">
       
       (source)
     </a>
@@ -1080,7 +1080,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__doc__</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L938">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L941">
       
       (source)
     </a>
@@ -1103,7 +1103,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__obj_attrs__</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L943">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L946">
       
       (source)
     </a>
@@ -1126,7 +1126,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__version__</span>: <code>str</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L940">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L943">
       
       (source)
     </a>
@@ -1149,7 +1149,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">__xml_attrs__</span>: <code>list[<wbr></wbr>str]</code> =
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L944">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L947">
       
       (source)
     </a>
@@ -1172,7 +1172,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">_getCopy</span>(self):
-    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L947">
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L950">
       
       (source)
     </a>

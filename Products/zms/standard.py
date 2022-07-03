@@ -218,7 +218,8 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
   @see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#directives
   @see: http://nginx.org/en/docs/http/ngx_http_headers_module.html#expires
   @see: https://www.nginx.com/resources/wiki/start/topics/examples/x-accel/
-  @return: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
+  @returns: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
+  @retype: C{tuple}
   """
   if request is not None:
     is_preview = request.get('preview', '') == 'preview'

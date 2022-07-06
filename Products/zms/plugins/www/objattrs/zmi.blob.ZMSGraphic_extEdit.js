@@ -18,8 +18,16 @@ var ZMSGraphic_extEdit_slider = false;
 function ZMSGraphic_extEdit_initialize() {
 	$("body").append("<style>div.jcrop-holder input {display:none;visibility:hidden;}</style>");
 	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_crop").click(function() {
-		ZMSGraphic_action = 'crop';
-		changeCropperAvailability(true,true);
+		if ( $(this).prop('disabled') == undefined || $(this).prop('disabled') == false ) {
+			$(this).prop("disabled",true);
+			$(this).removeClass('btn-secondary').addClass('btn-dark');
+			$(".modal-body #ZMSGraphic_extEdit_slider").prop("disabled",true);
+			ZMSGraphic_action = 'crop';
+			changeCropperAvailability(true,true);
+		} else {
+			// TODO: cropper.clear()
+			ZMSGraphic_action = null;
+		}
 	});
 	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_preview").click(function() {
 		ZMSGraphic_action = 'preview';

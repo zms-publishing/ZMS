@@ -26,8 +26,13 @@ function ZMSGraphic_extEdit_initialize() {
 			changeCropperAvailability(true,true);
 		} else {
 			if ($ZMSGraphic_cropper != null) {
-				$ZMSGraphic_cropper.clear();
+				// $ZMSGraphic_cropper.clear();
+				$ZMSGraphic_cropper.cropper('clear');
+				$ZMSGraphic_cropper.cropper('destroy');
 				$ZMSGraphic_cropper = null;
+				$(this).prop("disabled",false);
+				$(".modal-body #ZMSGraphic_extEdit_slider").prop("disabled",false);
+				$(this).removeClass('btn-dark').addClass('btn-secondary');
 			}
 			ZMSGraphic_action = null;
 		}

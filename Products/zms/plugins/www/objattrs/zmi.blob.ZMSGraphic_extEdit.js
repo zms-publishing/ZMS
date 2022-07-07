@@ -7,8 +7,8 @@ var ZMSGraphic_params = null;
 var ZMSGraphic_lang = null;
 var ZMSGraphic_pil = null;
 var $ZMSGraphic_img = null;
+var $ZMSGraphic_cropper = null;
 var $ZMSGraphic_buttons = null;
-var $ZMSGraphic_cropapi = null;
 var ZMSGraphic_cropcoords = null;
 var ZMSGraphic_action = null;
 var ZMSGraphic_act_width = null;
@@ -25,7 +25,10 @@ function ZMSGraphic_extEdit_initialize() {
 			ZMSGraphic_action = 'crop';
 			changeCropperAvailability(true,true);
 		} else {
-			// TODO: cropper.clear()
+			if ($ZMSGraphic_cropper != null) {
+				$ZMSGraphic_cropper.clear();
+				$ZMSGraphic_cropper = null;
+			}
 			ZMSGraphic_action = null;
 		}
 	});
@@ -272,12 +275,9 @@ function ZMSGraphic_extEdit_apply() {
 
 function changeCropperAvailability(available, cropping)
 {
-	if ($ZMSGraphic_cropapi != null) {
-		$ZMSGraphic_cropapi.destroy();
-	}
 	if (available) {
 		runPluginCropper(function() {
-			$('#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_image img').cropper({
+			$ZMSGraphic_cropper = $('#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_image img').cropper({
 				allowSelect	: false,
 				setSelect: [ 0, 0, 25, 25 ],
 				minSize		: [25, 25],

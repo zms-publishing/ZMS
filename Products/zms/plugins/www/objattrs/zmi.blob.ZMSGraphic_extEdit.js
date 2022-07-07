@@ -21,7 +21,10 @@ function ZMSGraphic_extEdit_initialize() {
 		if ( $(this).prop('disabled') == undefined || $(this).prop('disabled') == false ) {
 			$(this).prop("disabled",true);
 			$(this).removeClass('btn-secondary').addClass('btn-dark');
-			$(".modal-body #ZMSGraphic_extEdit_slider").prop("disabled",true);
+			$("#zmiModalZMSGraphic_extEdit_actions inout#ZMSGraphic_extEdit_slider").prop("disabled",true);
+			$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_width").prop("disabled",true);
+			$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_height").prop("disabled",true);
+			$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_proportional").prop("disabled",true);
 			ZMSGraphic_action = 'crop';
 			changeCropperAvailability(true,true);
 		} else {
@@ -31,8 +34,11 @@ function ZMSGraphic_extEdit_initialize() {
 				$ZMSGraphic_cropper.cropper('destroy');
 				$ZMSGraphic_cropper = null;
 				$(this).prop("disabled",false);
-				$(".modal-body #ZMSGraphic_extEdit_slider").prop("disabled",false);
 				$(this).removeClass('btn-dark').addClass('btn-secondary');
+				$("#zmiModalZMSGraphic_extEdit_actions inout#ZMSGraphic_extEdit_slider").prop("disabled",false);
+				$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_width").prop("disabled",false);
+				$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_height").prop("disabled",false);
+				$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_proportional").prop("disabled",false);
 			}
 			ZMSGraphic_action = null;
 		}
@@ -291,6 +297,8 @@ function changeCropperAvailability(available, cropping)
 				crop		: function(e) {
 						if (ZMSGraphic_action == 'crop') {
 							ZMSGraphic_cropcoords = e.detail;
+							$('#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_width').val( Math.round(ZMSGraphic_cropcoords.width) );
+							$('#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_height').val( Math.round(ZMSGraphic_cropcoords.height) );
 						}
 					}
 			});

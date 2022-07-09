@@ -1,6 +1,4 @@
-/**
- * Functions for advanced ZMSGraphic-editing.
- */
+// Functions for advanced ZMSGraphic-editing
 
 var ZMSGraphic_elName = null;
 var ZMSGraphic_params = null;
@@ -21,7 +19,7 @@ function ZMSGraphic_extEdit_initialize() {
 		if ( $(this).prop('disabled') == undefined || $(this).prop('disabled') == false ) {
 			$(this).prop("disabled",true);
 			$(this).removeClass('btn-secondary').addClass('btn-dark');
-			$("#zmiModalZMSGraphic_extEdit_actions inout#ZMSGraphic_extEdit_slider").prop("disabled",true);
+			$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_slider").prop("disabled",true);
 			$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_width").prop("disabled",true);
 			$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_height").prop("disabled",true);
 			$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_proportional").prop("disabled",true);
@@ -35,7 +33,7 @@ function ZMSGraphic_extEdit_initialize() {
 				$ZMSGraphic_cropper = null;
 				$(this).prop("disabled",false);
 				$(this).removeClass('btn-dark').addClass('btn-secondary');
-				$("#zmiModalZMSGraphic_extEdit_actions inout#ZMSGraphic_extEdit_slider").prop("disabled",false);
+				$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_slider").prop("disabled",false);
 				$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_width").prop("disabled",false);
 				$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_height").prop("disabled",false);
 				$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_proportional").prop("disabled",false);
@@ -284,24 +282,24 @@ function ZMSGraphic_extEdit_apply() {
 	return false;
 }
 
-function changeCropperAvailability(available, cropping)
-{
+function changeCropperAvailability(available, cropping) {
 	if (available) {
 		runPluginCropper(function() {
-			$ZMSGraphic_cropper = $('#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_image img').cropper({
+			$ZMSGraphic_img.cropper({
 				allowSelect	: false,
-				setSelect: [ 0, 0, 25, 25 ],
+				setSelect	: [ 0, 0, 25, 25 ],
 				minSize		: [25, 25],
 				maxSize		: [ZMSGraphic_act_width, ZMSGraphic_act_height],
 				handles		: true,
 				crop		: function(e) {
-						if (ZMSGraphic_action == 'crop') {
-							ZMSGraphic_cropcoords = e.detail;
-							$('#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_width').val( Math.round(ZMSGraphic_cropcoords.width) );
-							$('#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_height').val( Math.round(ZMSGraphic_cropcoords.height) );
-						}
+					if (ZMSGraphic_action == 'crop') {
+						ZMSGraphic_cropcoords = e.detail;
+						$('#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_width').val( Math.round(ZMSGraphic_cropcoords.width) );
+						$('#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_height').val( Math.round(ZMSGraphic_cropcoords.height) );
 					}
+				}
 			});
+			$ZMSGraphic_cropper = $ZMSGraphic_img;
 		});
 	}
 }

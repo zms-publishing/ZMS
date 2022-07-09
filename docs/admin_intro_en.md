@@ -38,7 +38,7 @@ _Administration of content model: the right screen shows a simple content object
 _Nesting of content models: the left side shows a rendered example for a nested object model: 'card container' contains several 'card items'; the right side shows the 'big picture' of the content package with all the attributes and relations. The model may contain several templates which may be applied conditionally. CSS style sets may be applied as attributes of type resource/file. These snippets can be called via CSS import-rules._
 
 ## Paragraph Formats: text block formats
-Text can be edited in two modes: plain or rich text. The plain text editor uses a paragraph format for the whole block whereas the rich text can apply the paragraph formats for any segment of the text stream in the inout field.
+Text can be edited in two modes: plain or rich text. The plain text editor uses a paragraph format for the whole block whereas the rich text can apply the paragraph formats for any segment of the text stream in the input field.
 Individual paragraph formats are defined by:
 1. id
 2. display name

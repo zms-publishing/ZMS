@@ -1,14 +1,12 @@
-/**
- * Functions for advanced ZMSGraphic-editing.
- */
+// Functions for advanced ZMSGraphic-editing
 
 var ZMSGraphic_elName = null;
 var ZMSGraphic_params = null;
 var ZMSGraphic_lang = null;
 var ZMSGraphic_pil = null;
 var $ZMSGraphic_img = null;
+var $ZMSGraphic_cropper = null;
 var $ZMSGraphic_buttons = null;
-var $ZMSGraphic_cropapi = null;
 var ZMSGraphic_cropcoords = null;
 var ZMSGraphic_action = null;
 var ZMSGraphic_act_width = null;
@@ -18,8 +16,30 @@ var ZMSGraphic_extEdit_slider = false;
 function ZMSGraphic_extEdit_initialize() {
 	$("body").append("<style>div.jcrop-holder input {display:none;visibility:hidden;}</style>");
 	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_crop").click(function() {
-		ZMSGraphic_action = 'crop';
-		changeCropperAvailability(true,true);
+		if ( $(this).prop('disabled') == undefined || $(this).prop('disabled') == false ) {
+			$(this).prop("disabled",true);
+			$(this).removeClass('btn-secondary').addClass('btn-dark');
+			$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_slider").prop("disabled",true);
+			$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_width").prop("disabled",true);
+			$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_height").prop("disabled",true);
+			$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_proportional").prop("disabled",true);
+			ZMSGraphic_action = 'crop';
+			changeCropperAvailability(true,true);
+		} else {
+			if ($ZMSGraphic_cropper != null) {
+				// $ZMSGraphic_cropper.clear();
+				$ZMSGraphic_cropper.cropper('clear');
+				$ZMSGraphic_cropper.cropper('destroy');
+				$ZMSGraphic_cropper = null;
+				$(this).prop("disabled",false);
+				$(this).removeClass('btn-dark').addClass('btn-secondary');
+				$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_slider").prop("disabled",false);
+				$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_width").prop("disabled",false);
+				$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_height").prop("disabled",false);
+				$("#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_proportional").prop("disabled",false);
+			}
+			ZMSGraphic_action = null;
+		}
 	});
 	$("#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_preview").click(function() {
 		ZMSGraphic_action = 'preview';
@@ -262,25 +282,24 @@ function ZMSGraphic_extEdit_apply() {
 	return false;
 }
 
-function changeCropperAvailability(available, cropping)
-{
-	if ($ZMSGraphic_cropapi != null) {
-		$ZMSGraphic_cropapi.destroy();
-	}
+function changeCropperAvailability(available, cropping) {
 	if (available) {
 		runPluginCropper(function() {
-			$('#zmiModalZMSGraphic_extEdit_actions #ZMSGraphic_extEdit_image img').cropper({
+			$ZMSGraphic_img.cropper({
 				allowSelect	: false,
-				setSelect: [ 0, 0, 25, 25 ],
+				setSelect	: [ 0, 0, 25, 25 ],
 				minSize		: [25, 25],
 				maxSize		: [ZMSGraphic_act_width, ZMSGraphic_act_height],
 				handles		: true,
 				crop		: function(e) {
-						if (ZMSGraphic_action == 'crop') {
-							ZMSGraphic_cropcoords = e.detail;
-						}
+					if (ZMSGraphic_action == 'crop') {
+						ZMSGraphic_cropcoords = e.detail;
+						$('#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_width').val( Math.round(ZMSGraphic_cropcoords.width) );
+						$('#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_height').val( Math.round(ZMSGraphic_cropcoords.height) );
 					}
+				}
 			});
+			$ZMSGraphic_cropper = $ZMSGraphic_img;
 		});
 	}
 }

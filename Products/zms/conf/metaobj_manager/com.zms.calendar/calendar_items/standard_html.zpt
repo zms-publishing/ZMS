@@ -1,0 +1,52 @@
+<!-- ZMSCalendar_records.standard_html -->
+
+<tal:block tal:define="
+	zmscontext options/zmscontext;
+	is_manage python:'/manage' in request.get('URL','');
+	records python:zmscontext.attr('records')">
+
+	<tal:block tal:condition="is_manage">
+		<h2 tal:content="python:zmscontext.getTitlealt(request)">The title.alt</h2>
+		<p class="description" tal:content="python:'%i %s'%(len(records),zmscontext.getLangStr('ATTR_RECORDS',request['lang']))">#N records</p>
+	</tal:block>
+
+	<table class="table table-striped" tal:condition="not:is_manage">
+		<thead>
+			<tr>
+				<th class="start_date">Datum</th>
+				<th class="start_time">Wann</th>
+				<th class="title">Was</th>
+				<th class="location">Wo</th>
+				<th class="contact">Wer</th>
+				<th class="description">Sonstiges</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr tal:repeat="event records" tal:attributes="id python:event['col_id']">
+				<tal:block tal:define="
+					start_date python:zmscontext.getLangFmtDate(event['start_time'],fmt_str='%d.%m.%Y');
+					start_time python:zmscontext.getLangFmtDate(event['start_time'],fmt_str='%H:%M');
+					start_time python:(start_time=='00:00' or event['all_day']==True) and 'Ganztags' or start_time;"
+					tal:condition="python: '2021' not in str(start_date)">
+					<td class="start_date" tal:content="start_date">Datum</td>
+					<td class="start_time" tal:content="start_time">Wann</td>
+					<td class="title" tal:content="structure python:event['title']">Was</td>
+					<td class="location" tal:content="structure python:event['location']">Wo</td>
+					<td class="contact" tal:content="structure python:event['contact']">Wer</td>
+					<td class="description">
+						<a href="#" target="_blank" title="Mehr Info..." 
+							tal:condition="python:event['url']" 
+							tal:attributes="href python:event['url']"
+							><i class="icon-link fas fa-link"></i>&nbsp;
+						</a>
+						<span tal:content="structure python:event['description']">Sonstiges</span>
+
+					</td>
+				</tal:block>
+			</tr>
+		</tbody>
+	</table>
+
+</tal:block>
+
+<!-- /ZMSCalendar_records.standard_html -->

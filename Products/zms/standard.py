@@ -1146,7 +1146,7 @@ def re_findall( pattern, text, ignorecase=False):
 ############################################################################
 
 # ==========================================================================
-# Index  Field  Values
+# Index Field Values
 # 0  year (for example, 1993)
 # 1  month range [1,12]
 # 2  day range [1,31]
@@ -1156,6 +1156,40 @@ def re_findall( pattern, text, ignorecase=False):
 # 6  weekday range [0,6], Monday is 0
 # 7  Julian day range [1,366]
 # 8  daylight savings flag 0, 1 or -1; see below
+# ==========================================================================
+# C-Style Format Strings
+# %a   An abbreviation for the day of the week. 
+# %A   The full name for the day of the week. 
+# %b   An abbreviation for the month name. 
+# %B   The full name of the month. 
+# %c   A string representing the complete date and time; on my 
+#      computer it's in the form: 10/22/99 19:03:23 
+# %d   The day of the month, formatted with two digits. 
+# %H   The hour (on a 24-hour clock), formatted with two digits. 
+# %I   The hour (on a 12-hour clock), formatted with two digits. 
+# %j   The count of days in the year, formatted with three digits 
+#      (from 001 to 366). 
+# %m   The month number, formatted with two digits. 
+# %M   The minute, formatted with two digits. 
+# %p   Either AM or PM as appropriate. 
+# %S   The second, formatted with two digits. 
+# %U   The week number, formatted with two digits (from 00 to 53; 
+#      week number 1 is taken as beginning with the first Sunday
+#      in a year). See also %W. 
+# %w   A single digit representing the day of the week: 
+#      Sunday is day 0.
+# %W   Another version of the week number: like %U, but 
+#      counting week 1 as beginning with the first Monday in a year. 
+# %x   A string representing the complete date; on my computer 
+#      it's in the format 10/22/99.
+# %X   A string representing the full time of day (hours, minutes, 
+#      and seconds), in a format like the following example: 13:13:13
+# %y   The last two digits of the year. 
+# %Y   The full year, formatted with four digits to include 
+#      the century. 
+# %Z   Defined by ANSI C as eliciting the time zone, if available; 
+#      it is not available in this implementation (which accepts %Z 
+#      but generates no output for it).
 # ==========================================================================
 
 security.declarePublic('format_datetime_iso')

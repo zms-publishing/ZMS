@@ -232,10 +232,12 @@ class ZMSRepositoryManager(
           except:
             pass
         # If text then normalize Windows CR+LF line break to Unix LF
+        # and ignore leading/trailing whitespace since Zope removes 
+        # and github adds them
         if isinstance(l.get('data'), str):
-          l['data'] = l['data'].replace('\r','')
+          l['data'] = l['data'].replace('\r','').strip()
         if isinstance(r.get('data'), str):
-          r['data'] = r['data'].replace('\r','')
+          r['data'] = r['data'].replace('\r','').strip()
         # Only if text is not equal add to diff list
         if l.get('data') != r.get('data'):
           data = l_data or r_data

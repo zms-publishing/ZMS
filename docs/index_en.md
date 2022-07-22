@@ -8,8 +8,9 @@ ZMS ist ein freies Open-Source-Content-Management-System (CMS), das auf dem beka
 The ZMS documentation adresses three target-groups:
 
 1. <a href="edit_intro_en.md">Editor's Guide: Content Production [EN]</a> <a href="edit_intro_de.md">[DE]</a>
-1. <a href="admin_intro_en.md">Site Admins: Setup & Configuration</a>
-1. <a href="develop_intro_en.md">Developers: Programming Code with the ZMS-API</a>
+1. <a href="admin_intro_en.md">Site Admins: ZMS Setup & Configuration</a>
+1. <a href="develop_intro_en.md">Developers: Setup a Programming Enviroment</a>
+1. <a href="develop_api_exampels_en.md">Developers: Programming Code with the ZMS-API</a>
 
 More Links:
 1. <a href="https://zope.readthedocs.io/"> Zope Documentation</a>

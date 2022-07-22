@@ -5,6 +5,7 @@ def manage_repository_gitstatus( self ):
 
 	html = []
 	request = self.REQUEST
+	branch = self.getConfProperty('ZMSRepository.git.server.branch','main')
 	if request.get('lang',None) is None:
 		request['lang'] = 'ger'
 	if request.get('manage_lang',None) is None:
@@ -42,15 +43,15 @@ def manage_repository_gitstatus( self ):
 		html.append('<form class="form-horizontal" method="post" enctype="multipart/form-data">')
 		html.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
 		html.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
-		html.append('<legend>GIT-Status, Current Branch %s</legend>'%(self.getConfProperty('ZMSRepository.git.server.branch','main')))
+		html.append('<legend>GIT-Status, Current Branch = %s</legend>'%(branch))
 
 		message = ''
 		if len([x for x in request['AUTHENTICATED_USER'].getRolesInContext(self) if x in ['Manager','ZMSAdminstrator']]) > 0:
 			os.chdir(base_path)
-			command = 'git status; echo "\nHISTORY:"; git log -10 --pretty="format:%ad : #%h %s [%an]" --date=short'
+			command = 'git checkout %s;'%(branch) + ' echo ""; echo "# BRANCHES:"; git branch -l; echo ""; git status; echo ""; echo "#H ISTORY:"; git log -10 --pretty="format:%ad : #%h %s [%an]" --date=short'
 			result = os.popen(command).read()
 			# result = os.system(command)
-			message = '<pre class="zmi-code d-block m-0 p-4" style="color: #dee2e6;background-color: #354f67;"><b>%s</b><br/><br/>%s</pre>'%(command,str(result))
+			message = '<pre class="zmi-code d-block m-0 p-4" style="color: #dee2e6;background-color: #354f67;"><b style="color:#8d9eaf;">>> %s</b><br/><br/>%s</pre>'%(command,str(result))
 		else:
 			message = 'Error: To execute this function a user role Manager or ZMSAdministrator is needed.'
 		html.append(message)

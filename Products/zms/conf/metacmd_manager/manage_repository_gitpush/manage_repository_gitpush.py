@@ -5,6 +5,7 @@ def manage_repository_gitpush(self, request=None):
 	html = []
 	request = self.REQUEST
 	RESPONSE =  request.RESPONSE
+	branch = self.getConfProperty('ZMSRepository.git.server.branch','main')
 	btn = request.form.get('btn')
 	came_from = request.get('came_from',request['HTTP_REFERER'])
 	if came_from.find('?') > 0:
@@ -22,7 +23,7 @@ def manage_repository_gitpush(self, request=None):
 	html.append('<form class="form-horizontal" method="post" enctype="multipart/form-data">')
 	html.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
 	html.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
-	html.append('<legend>%s, Current Branch %s</legend>'%(self.getZMILangStr('BTN_GITPUSH'),self.getConfProperty('ZMSRepository.git.server.branch','master')))
+	html.append('<legend>%s, Current Branch = %s</legend>'%(self.getZMILangStr('BTN_GITPUSH'), branch))
 
 
 	# --- COMMIT/PUSH. +++IMPORTANT+++: Use SSH/cert and git credential manager
@@ -32,6 +33,7 @@ def manage_repository_gitpush(self, request=None):
 		if len([x for x in request['AUTHENTICATED_USER'].getRolesInContext(self) if x in ['Manager','ZMSAdminstrator']]) > 0:
 			userid = 'zms_%s'%(str(request.get('AUTHENTICATED_USER'))[0:3])
 			os.chdir(base_path)
+			command0 = 'git checkout %s'%(branch)
 			command1 = 'git add .'
 			command2 = 'git commit -a -m'
 			if int(request.get('sign',0))==1:
@@ -41,6 +43,8 @@ def manage_repository_gitpush(self, request=None):
 				self.setConfProperty('ZMSRepository.git.commit.sign', 0)
 			command2 = '%s "%s" --author="%s <>"'%(command2, request.get('message').replace('"','').replace(';',''), userid)
 			command3 = 'git push'
+			result0 = os.system(command0)
+			message.append('<code class="d-block">%s [%s]</code>'%(command0, str(result0)))
 			result1 = os.system(command1)
 			message.append('<code class="d-block">%s [%s]</code>'%(command1, str(result1)))
 			result2 = os.system(command2)

@@ -4,6 +4,7 @@ import os
 def manage_repository_gitconfig(self, request=None):
 	html = []
 	request = self.REQUEST
+	branch = self.getConfProperty('ZMSRepository.git.server.branch','main')
 	if request.get('lang',None) is None:
 		request['lang'] = 'ger'
 	if request.get('manage_lang',None) is None:
@@ -31,7 +32,7 @@ def manage_repository_gitconfig(self, request=None):
 	html.append('<form class="form-horizontal" method="post" enctype="multipart/form-data">')
 	html.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
 	html.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
-	html.append('<legend>GIT-%s, Current Branch %s</legend>'%(self.getZMILangStr('TAB_CONFIGURATION'),self.getConfProperty('ZMSRepository.git.server.branch','main')))
+	html.append('<legend>GIT-%s, Current Branch = %s</legend>'%(self.getZMILangStr('TAB_CONFIGURATION'), branch))
 
 	# --- Change.
 	# ---------------------------------

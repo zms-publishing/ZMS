@@ -24,7 +24,7 @@ def manage_repository_gitpull(self, request=None):
 	html.append('<form class="form-horizontal" method="post" enctype="multipart/form-data">')
 	html.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
 	html.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
-	html.append('<legend>%s, Current Branch %s</legend>'%(self.getZMILangStr('BTN_GITPULL'),branch))
+	html.append('<legend>%s, Current Branch = %s</legend>'%(self.getZMILangStr('BTN_GITPULL'),branch))
 
 
 	# --- PULL. +++IMPORTANT+++: Use SSH/cert and git credential manager

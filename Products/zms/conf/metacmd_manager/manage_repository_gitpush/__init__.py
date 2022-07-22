@@ -34,7 +34,7 @@ class manage_repository_gitpush:
 	package = "com.zms.foundation.metacmd.gitbridge"
 
 	# Revision
-	revision = "5.0.1"
+	revision = "5.0.3"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

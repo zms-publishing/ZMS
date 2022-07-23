@@ -5,7 +5,7 @@ def manage_repository_gitstatus( self ):
 
 	html = []
 	request = self.REQUEST
-	branch = self.getConfProperty('ZMSRepository.git.server.branch','main')
+	git_branch = self.getConfProperty('ZMSRepository.git.server.branch','main')
 	if request.get('lang',None) is None:
 		request['lang'] = 'ger'
 	if request.get('manage_lang',None) is None:
@@ -43,15 +43,35 @@ def manage_repository_gitstatus( self ):
 		html.append('<form class="form-horizontal" method="post" enctype="multipart/form-data">')
 		html.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
 		html.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
-		html.append('<legend>GIT-Status, Current Branch = %s</legend>'%(branch))
+		html.append('<legend>GIT-Status, Current Branch = %s</legend>'%(git_branch))
 
 		message = ''
+		git_commands = []
 		if len([x for x in request['AUTHENTICATED_USER'].getRolesInContext(self) if x in ['Manager','ZMSAdminstrator']]) > 0:
 			os.chdir(base_path)
-			command = 'git checkout %s;'%(branch) + ' echo ""; echo "# BRANCHES:"; git branch -l; echo ""; git status; echo ""; echo "#H ISTORY:"; git log -10 --pretty="format:%ad : #%h %s [%an]" --date=short'
-			result = os.popen(command).read()
+
+			# GIT checkout branch
+			if self.getConfProperty('ZMSRepository.git.server.branch.checkout', 0) == 1:
+				git_commands.append( 'git checkout %s'%(git_branch) )
+				git_commands.append( 'echo ""' )
+
+			# GIT list branches
+			git_commands.append( 'echo "# BRANCHES:"' )
+			git_commands.append( 'git branch -l' )
+			git_commands.append( 'echo ""' )
+
+			# GIT status
+			git_commands.append( 'git status' )
+			git_commands.append( 'echo ""' )
+
+			# GIT history
+			git_commands.append( 'echo "# HISTORY:"' )
+			git_commands.append( 'git log -10 --pretty="format:%ad : #%h %s [%an]" --date=short' )
+
+			gcmd = ';'.join(git_commands)
+			result = os.popen(gcmd).read()
 			# result = os.system(command)
-			message = '<pre class="zmi-code d-block m-0 p-4" style="color: #dee2e6;background-color: #354f67;"><b style="color:#8d9eaf;">>> %s</b><br/><br/>%s</pre>'%(command,str(result))
+			message = '<pre class="zmi-code d-block m-0 p-4" style="color: #dee2e6;background-color: #354f67;"><b style="color:#8d9eaf;">>> %s</b><br/><br/>%s</pre>'%(gcmd,str(result))
 		else:
 			message = 'Error: To execute this function a user role Manager or ZMSAdministrator is needed.'
 		html.append(message)

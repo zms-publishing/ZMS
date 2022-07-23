@@ -4,7 +4,8 @@ import os
 def manage_repository_gitconfig(self, request=None):
 	html = []
 	request = self.REQUEST
-	branch = self.getConfProperty('ZMSRepository.git.server.branch','main')
+	git_branch = self.getConfProperty('ZMSRepository.git.server.branch','main')
+	git_url = self.getConfProperty('ZMSRepository.git.server.url','git@github.com:myname/myproject.git')
 	if request.get('lang',None) is None:
 		request['lang'] = 'ger'
 	if request.get('manage_lang',None) is None:
@@ -32,23 +33,23 @@ def manage_repository_gitconfig(self, request=None):
 	html.append('<form class="form-horizontal" method="post" enctype="multipart/form-data">')
 	html.append('<input type="hidden" name="lang" value="%s"/>'%request['lang'])
 	html.append('<input type="hidden" name="came_from" value="%s"/>'%came_from)
-	html.append('<legend>GIT-%s, Current Branch = %s</legend>'%(self.getZMILangStr('TAB_CONFIGURATION'), branch))
+	html.append('<legend>GIT-%s, Current Branch = %s</legend>'%(self.getZMILangStr('TAB_CONFIGURATION'), git_branch))
 
 	# --- Change.
 	# ---------------------------------
 	if btn=='BTN_CHANGE':
 		message = []
-		self.setConfProperty('ZMSRepository.git.server.url',request['url'])
-		self.setConfProperty('ZMSRepository.git.server.branch',request['branch'])
+		self.setConfProperty('ZMSRepository.git.server.url',request.get('git_url'))
+		self.setConfProperty('ZMSRepository.git.server.branch',request.get('git_branch'))
+		self.setConfProperty('ZMSRepository.git.server.branch.checkout', int(request.get('git_checkout',0)))
 		message.append(self.getZMILangStr('MSG_CHANGED'))
 		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
 	# --- Checkout.
 	# ---------------------------------
 	elif btn=='BTN_CLONE':
-		url = self.getConfProperty('ZMSRepository.git.server.url')
 		os.chdir(base_path)
-		command = "git clone %s ."%(url)
+		command = "git clone %s ."%(git_url)
 		result = os.system(command)
 		html.append('<div class="alert alert-info my-3"><code class="d-block">%s [%s]</code></div>'%(command, str(result)))
 
@@ -68,11 +69,15 @@ def manage_repository_gitconfig(self, request=None):
 		html.append('</div><!-- .form-group -->')
 		html.append('<div class="form-group row">')
 		html.append('<label for="url" class="col-sm-2 control-label mandatory">Server</label>')
-		html.append('<div class="col-sm-10"><input class="form-control" name="url" type="text" size="25" value="%s"></div>'%self.getConfProperty('ZMSRepository.git.server.url','git@github.com:myname/myproject.git'))
+		html.append('<div class="col-sm-10"><input class="form-control" name="git_url" type="text" size="25" value="%s"></div>'%(git_url))
 		html.append('</div><!-- .form-group -->')
 		html.append('<div class="form-group row">')
 		html.append('<label for="branch" class="col-sm-2 control-label mandatory">Branch Name</label>')
-		html.append('<div class="col-sm-10"><input class="form-control" name="branch" placeholder="main" type="text" size="25" value="%s"></div>'%self.getConfProperty('ZMSRepository.git.server.branch','main'))
+		html.append('<div class="col-sm-10"><input class="form-control" name="git_branch" placeholder="main" type="text" size="25" value="%s"></div>'%(git_branch))
+		html.append('</div><!-- .form-group -->')
+		html.append('<div class="form-group row">')
+		html.append('<label for="branch" class="col-sm-2 control-label mandatory">Always checkout first</label>')
+		html.append('<div class="col-sm-10"><input type="checkbox" name="git_checkout" id="git_checkout" value="1" %s title=" Any git command starts with: git checkout %s" /></div>'%(self.getConfProperty('ZMSRepository.git.server.branch.checkout', 0)==1 and 'checked=\042checked\042' or '', git_branch))
 		html.append('</div><!-- .form-group -->')
 		html.append('<div class="form-group row">')
 		html.append('<div class="controls save">')

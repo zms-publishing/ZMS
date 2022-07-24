@@ -20,7 +20,7 @@ def manage_repository_gitconfig(self, request=None):
 	try:
 		standard.localfs_readPath(base_path)
 	except:
-		base_status = standard.writeError(self,'can\'t read base_path') 
+		base_status = standard.writeError(self,'can\'t read base_path')
 
 	html.append('<!DOCTYPE html>')
 	html.append('<html lang="en">')
@@ -77,13 +77,13 @@ def manage_repository_gitconfig(self, request=None):
 		html.append('</div><!-- .form-group -->')
 		html.append('<div class="form-group row">')
 		html.append('<label for="branch" class="col-sm-2 control-label mandatory">Always checkout first</label>')
-		html.append('<div class="col-sm-10"><input type="checkbox" name="git_checkout" id="git_checkout" value="1" %s title=" Any git command starts with: git checkout %s" /></div>'%(self.getConfProperty('ZMSRepository.git.server.branch.checkout', 0)==1 and 'checked=\042checked\042' or '', git_branch))
+		html.append('<div class="col-sm-10"><span class="btn btn-secondary btn-default"><input type="checkbox" name="git_checkout" id="git_checkout" value="1" %s title=" Any git command starts with: git checkout %s" /></span></div>'%(self.getConfProperty('ZMSRepository.git.server.branch.checkout', 0)==1 and 'checked=\042checked\042' or '', git_branch))
 		html.append('</div><!-- .form-group -->')
 		html.append('<div class="form-group row">')
 		html.append('<div class="controls save">')
 		html.append('<button type="submit" name="btn" class="btn btn-primary" value="BTN_CHANGE">%s</button> '%(self.getZMILangStr('BTN_CHANGE')))
 		html.append('<button type="submit" name="btn" class="btn btn-warning" value="BTN_CLONE">%s</button> '%(self.getZMILangStr('BTN_CLONE')=='BTN_CLONE' and 'Clone' or self.getZMILangStr('BTN_CLONE')))
-		html.append('<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button> '%(self.getZMILangStr('BTN_CANCEL')))
+		html.append('<button type="submit" name="btn" class="btn btn-secondary btn-default" value="BTN_CANCEL">%s</button> '%(self.getZMILangStr('BTN_CANCEL')))
 		html.append('</div>')
 		html.append('</div><!-- .form-group -->')
 		html.append('</div><!-- .card-body -->')

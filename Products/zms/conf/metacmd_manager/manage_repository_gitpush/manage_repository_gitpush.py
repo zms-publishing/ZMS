@@ -53,7 +53,7 @@ def manage_repository_gitpush(self, request=None):
 			git_commands.append( '%s "%s" --author="%s <>"'%( git_commit, request.get('git_message').replace('"','').replace(';',''), userid ) )
 
 			# GIT push
-			git_commands.append( 'git push') 
+			git_commands.append( 'git push')
 
 			# EXECUTE GIT COMMANDS
 			for gcmd in git_commands:
@@ -82,14 +82,14 @@ def manage_repository_gitpush(self, request=None):
 		html.append('<div class="form-group row">')
 		html.append('<label for="sign" class="col-sm-2 control-label mandatory">Sign</label>')
 		html.append('<div class="col-sm-10">')
-		html.append('<input type="checkbox" name="git_sign" id="sign" value="1" %s title="Adds the -S param to the commit. Please make sure a certificate without passphrase is installed." />'%(self.getConfProperty('ZMSRepository.git.commit.sign', 0)==1 and 'checked=\042checked\042' or ''))
-		html.append('<small class="px-2 float-right"><a class="text-info" target="_blank" href="https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work">More about Git signing...</a></small>')
+		html.append('<span class="btn btn-secondary btn-default"><input type="checkbox" name="git_sign" id="sign" value="1" %s title="Adds the -S param to the commit. Please make sure a certificate without passphrase is installed." /></span>'%(self.getConfProperty('ZMSRepository.git.commit.sign', 0)==1 and 'checked=\042checked\042' or ''))
+		html.append('<small class="px-2 pull-right float-right"><a class="text-info" target="_blank" href="https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work">More about Git signing...</a></small>')
 		html.append('</div>')
 		html.append('</div><!-- .form-group -->')
 		html.append('<div class="form-group">')
 		html.append('<div class="controls save">')
 		html.append('<button type="submit" name="btn" class="btn btn-primary" value="BTN_GITPUSH">%s</button>'%(self.getZMILangStr('BTN_GITPUSH')))
-		html.append('<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>'%(self.getZMILangStr('BTN_CANCEL')))
+		html.append('<button type="submit" name="btn" class="btn btn-secondary btn-default" value="BTN_CANCEL">%s</button>'%(self.getZMILangStr('BTN_CANCEL')))
 		html.append('</div>')
 		html.append('</div><!-- .form-group -->')
 		# html.append(self.manage_main_diff(self,request))

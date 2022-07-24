@@ -30,7 +30,7 @@ def manage_repository_gitstatus( self ):
 		try:
 			standard.localfs_readPath(base_path)
 		except:
-			base_status = standard.writeError(self,'can\'t read base_path') 
+			base_status = standard.writeError(self,'can\'t read base_path')
 
 		html.append('<!DOCTYPE html>')
 		html.append('<html lang="en">')
@@ -80,7 +80,7 @@ def manage_repository_gitstatus( self ):
 		html.append('<div class="controls save">')
 		html.append('<button type="submit" name="btn" class="btn btn-danger" value="BTN_GITPULL"><i class="fas fa-backward"></i>&nbsp;&nbsp;%s</button> '%(self.getZMILangStr('BTN_GITPULL')))
 		html.append('<button type="submit" name="btn" class="btn btn-success" value="BTN_GITPUSH"><i class="fas fa-forward"></i>&nbsp;&nbsp;%s</button> '%(self.getZMILangStr('BTN_GITPUSH')))
-		html.append('<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">Cancel</button>')
+		html.append('<button type="submit" name="btn" class="btn btn-secondary btn-default" value="BTN_CANCEL">Cancel</button>')
 		html.append('</div>')
 		html.append('</div><!-- .form-group -->')
 		html.append('</div><!-- .card-body -->')

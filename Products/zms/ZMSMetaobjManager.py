@@ -186,6 +186,7 @@ class ZMSMetaobjManager(object):
       for k in r:
           v  = r[k]
           # map attributes
+          v['__lang_dict__'] = v.get('lang_dict',{})
           v['attrs'] = v.get('Attrs',[])
           # map Zope-native attributes (py, zpt, etc.)
           for attr in v['attrs']:

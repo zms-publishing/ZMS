@@ -868,11 +868,14 @@ class MyImage(MyBlob, Image):
       content_type = getattr(self, 'content_type', '')
       if data2hex:
         data = self.getData(sender)
+        hexdata = None
         if [x for x in ['text/','application/css','application/javascript','image/svg'] if content_type.startswith(x)]:
-          data = standard.pystr(data)
-          data = '<![CDATA[%s]]>'%data
-        else:
-          data = bytes(data).hex()
+          sdata = standard.pystr(data)
+          if sdata.find('<![CDATA[') < 0 and sdata.find(']]>') < 0:
+            hexdata = '<![CDATA[%s]]>'%sdata
+        if hexdata is None:
+          hexdata = bytes(data).hex()
+        data = hexdata
         objtype = ' type="image"'
       else:
         filename = self.getFilename()
@@ -981,11 +984,14 @@ class MyFile(MyBlob, File):
       content_type = getattr(self, 'content_type', '')
       if data2hex:
         data = self.getData(sender)
+        hexdata = None
         if [x for x in ['text/','application/css','application/javascript','image/svg'] if content_type.startswith(x)]:
-          data = standard.pystr(data)
-          data = '<![CDATA[%s]]>'%data
-        else:
-          data = bytes(data).hex()
+          sdata = standard.pystr(data)
+          if sdata.find('<![CDATA[') < 0 and sdata.find(']]>') < 0:
+            hexdata = '<![CDATA[%s]]>'%sdata
+        if hexdata is None:
+          hexdata = bytes(data).hex()
+        data = hexdata
         objtype = ' type="file"'
       else:
         filename = self.getFilename()

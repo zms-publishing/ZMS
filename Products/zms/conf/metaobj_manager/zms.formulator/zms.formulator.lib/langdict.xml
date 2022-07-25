@@ -45,7 +45,7 @@
     <dictionary>
       <item key="eng">Must have property {{0}}</item>
       <item key="fra">Must have property {{0}}</item>
-      <item key="ger">Muss die Eigenschaft {0}} haben</item>
+      <item key="ger">Muss die Eigenschaft {{0}} haben</item>
       <item key="key">zms.formulator.lib.ERROR_DEPENDENCY</item>
     </dictionary>
   </item>
@@ -213,7 +213,7 @@
     <dictionary>
       <item key="eng">Object is missing the required property '{{0}}'</item>
       <item key="fra">Object is missing the required property '{{0}}'</item>
-      <item key="ger">Dem Objekt fehlt die benötigte Eigenschaft ’{{0}}</item>
+      <item key="ger">Dem Objekt fehlt die benötigte Eigenschaft '{{0}}'</item>
       <item key="key">zms.formulator.lib.ERROR_REQUIRED</item>
     </dictionary>
   </item>

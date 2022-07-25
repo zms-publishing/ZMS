@@ -1,5 +1,6 @@
 <script type="text/javascript" charset="UTF-8" src="/++resource++zmi/ace.ajax.org/ace.js"></script>
 <script type="text/javascript">
+//<!-- 
 $ZMI.registerReady(function() {
   $('#tabProperties .accordion-inner').attr('class','accordion-inner ' + $('#tr_type :selected').text());
   $('#tr_replyToField').hide();
@@ -94,6 +95,7 @@ $ZMI.registerReady(function() {
   text1.val(edit1.getSession().getValue()).change();
   });
 });
+//-->
 </script>
 <style>
 .ACE_Editor {

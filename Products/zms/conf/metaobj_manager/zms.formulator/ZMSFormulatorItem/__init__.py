@@ -28,7 +28,7 @@ class ZMSFormulatorItem:
 	package = "zms.formulator"
 
 	# Revision
-	revision = "5.0.0"
+	revision = "5.0.1"
 
 	# Type
 	type = "ZMSObject"

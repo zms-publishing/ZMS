@@ -22,7 +22,7 @@ class zms_formulator_lib:
 	package = "zms.formulator"
 
 	# Revision
-	revision = "5.0.0"
+	revision = "5.0.1"
 
 	# Type
 	type = "ZMSLibrary"
@@ -47,15 +47,15 @@ class zms_formulator_lib:
 			,"repetitive":0
 			,"type":"resource"}
 
-		langdictxml = {"default":""
-			,"id":"langdict.xml"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"langdict.xml"
-			,"repetitive":0
-			,"type":"resource"}
-
+		# langdictxml = {"default":""
+		# 	,"id":"langdict.xml"
+		# 	,"keys":[]
+		# 	,"mandatory":0
+		# 	,"multilang":0
+		# 	,"name":"langdict.xml"
+		# 	,"repetitive":0
+		# 	,"type":"resource"}
+		#
 		jsoneditor = {"default":""
 			,"id":"JSONEditor"
 			,"keys":[]

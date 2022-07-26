@@ -1643,7 +1643,7 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 				$('#addCancelBtn').click(function() {
 					zmiModal("hide");
 				});
-				if($('#zmiIframeAddDialog .form-control').length==0) {
+				if($('#zmiIframeAddDialog .form-group:not([class*="activity"]) .form-control').length==0) {
 					$('#addInsertBtn').click();
 				}
 			},

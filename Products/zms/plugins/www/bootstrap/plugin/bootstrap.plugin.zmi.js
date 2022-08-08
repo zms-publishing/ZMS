@@ -464,8 +464,12 @@ $ZMI.registerReady(function(){
 		;
 	// Constraints
 	$(".split-left i.constraint").each(function() {
-		var $container = $(this).parents(".right");
-		$(".split-right",$container).popover({html:true,title:$("div.constraint",$container)[0].outerHTML});
+		try {
+			var $container = $(this).parents(".right");
+			$(".split-right",$container).popover({html:true,title:$("div.constraint",$container)[0].outerHTML});
+		} catch(e) {
+			console.error(e);
+		}
 	});
 	// Action-Lists
 	$('button.btn.split-right.dropdown-toggle').attr('title',getZMILangStr('ACTION_SELECT').replace('%s',getZMILangStr('ATTR_ACTION')));

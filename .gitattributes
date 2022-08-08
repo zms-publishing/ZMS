@@ -1,0 +1,4 @@
+docs/* linguist-documentation
+Products/zms/apidocs/* linguist-documentation
+Products/zms/plugins/www/ckeditor/* linguist-vendored
+Products/zms/plugins/www/tinymce/* linguist-vendored

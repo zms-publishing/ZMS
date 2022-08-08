@@ -356,8 +356,33 @@
 						</p>
 					</label>
 					<div class="col-sm-10">
-						<div class="ajax-lazy-load" data-ajax-url="manage_customizeInstalledProducts"></div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" 
+								onchange="show_pip_cmd($(this))"
+								id="pip_cmd1" name="pip_cmd" value="freeze" checked="checked" />
+							<label class="custom-control-label" for="pip_cmd1"><samp>pip freeze --all</samp></label>
+						  </div>
+						  <div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" class="custom-control-input" 
+								onchange="show_pip_cmd($(this))"
+								id="pip_cmd2" name="pip_cmd" value="list" />
+							<label class="custom-control-label" for="pip_cmd2"><samp>pip list</samp></label>
+						  </div>
+						<div id="installed_products" class="ajax-lazy-load mt-2" data-ajax-url="manage_customizeInstalledProducts"></div>
 					</div>
+					<script>
+						// Ajax Lazy Load
+						function show_pip_cmd($elm) {
+							var pip_cmd = $elm.val();
+							var $installed_products = $('#installed_products');
+							var ajax_url = 'manage_customizeInstalledProducts';
+							var params = { 'pip_cmd':pip_cmd };
+							$installed_products.html('<i class="fas fa-spinner fa-spin"></i>&nbsp;'+getZMILangStr('MSG_LOADING'));
+							$.get( ajax_url, params, function( data) {
+								$installed_products.html(data);
+							});
+						}
+					</script>
 				</div><!-- .form-group -->
 			</form>
 		</div>

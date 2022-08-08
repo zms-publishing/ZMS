@@ -253,16 +253,19 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
 
 
 security.declarePublic('get_installed_packages')
-def get_installed_packages():
+def get_installed_packages(pip_cmd='freeze'):
   import subprocess
-  pip = ('/pip list', '/pip freeze --all')
-  packages = ''
+  pip_cmds = {
+      'list':'/pip list', 
+      'freeze':'/pip freeze --all'
+    }
+  cmd = pip_cmds.get(pip_cmd,'freeze')
   pth = getPACKAGE_HOME().rsplit('/lib/')[0] + '/bin'
-  for cmd in pip:
-    output = subprocess.Popen(pth + cmd,
-                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                              shell=True, cwd=pth, universal_newlines=True)
-    packages += f'# {pth}{cmd}\n\n{output.communicate()[0].strip()}\n\n'
+  packages = ''
+  output = subprocess.Popen(pth + cmd,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            shell=True, cwd=pth, universal_newlines=True)
+  packages = f'# {pth}{cmd}\n\n{output.communicate()[0].strip()}'
   return packages
 
 

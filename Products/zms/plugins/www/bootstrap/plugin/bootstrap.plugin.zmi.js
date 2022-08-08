@@ -1559,7 +1559,12 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 					opticon = $ZMI.icon(opticon);
 				}
 				var html = '';
-				html += '<a class="dropdown-item" title="'+opttitle+'" href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
+				var optid = '';
+				if (optvalue.toLowerCase().indexOf('manage_addproduct/')==0) {
+					// opttitle is meta_id in case of insertable content objects
+					optid = opttitle;
+				}
+				html += '<a class="dropdown-item" title="'+opttitle+'" href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\',\'' + optid + '\')">';
 				html += opticon+' <span>'+optlabel+'</span>';
 				html += '</a>';
 				$ul.append(html);
@@ -1602,7 +1607,7 @@ ZMIActionList.prototype.out = function(el) {
 /**
  *  Execute action.
  */
-ZMIActionList.prototype.exec = function(sender, label, target) {
+ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 	var id_prefix = this.getContextId(sender);
 	if (typeof id_prefix != 'undefined' && id_prefix != '') {
 		id_prefix = id_prefix.replace(/(\d*?)$/gi,'');
@@ -1628,7 +1633,12 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 			}
 		}
 		data['id_prefix'] = id_prefix;
-		var title = '<i class="fas fa-plus-sign"></i> '+getZMILangStr('BTN_INSERT')+': '+label;
+		var title = '<i class="fas fa-plus-sign"></i> ' + getZMILangStr('BTN_INSERT') + ':&nbsp;' + label;
+		// debugger;
+		if (meta_id!='') { 
+			data['meta_id'] = meta_id;
+			console.log('ZMIActionList.exec meta_id = ' + meta_id )
+		}
 		$('<li id="manage_addProduct" class="zmi-item zmi-highlighted"><div class="center">'+title+'</div></li>').insertAfter($el.parents(".zmi-item"));
 		// Show add-dialog.
 		$ZMI.iframe(target,data,{

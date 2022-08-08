@@ -50,7 +50,7 @@
 									<tal:block tal:content="structure python:action[0][5:-5].strip()">the title</tal:block>
 								</div>
 								<tal:block tal:condition="not:python:action[0].startswith('-----') and action[0].endswith('-----')">
-									<a class="dropdown-item" tal:attributes="href python:'javascript:$ZMI.actionList.exec($(\'.attr_last_modified\'),\'%s\',\'%s\')'%(action[0],action[1])">
+									<a class="dropdown-item" tal:attributes="href python:'javascript:$ZMI.actionList.exec($(\'.attr_last_modified\'),\'%s\',\'%s\',\'\')'%(action[0],action[1])">
 										<i tal:condition="python:len(action)>=3 and action[2] is not None" tal:attributes="class python:action[2]"></i>
 										<span tal:content="structure python:action[0]">the title</span>
 									</a>

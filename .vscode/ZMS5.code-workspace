@@ -39,6 +39,9 @@
 			"**/cache/**": true,
 			"**/Data.*": true,
 		},
+		"search.exclude": { 
+			"**/apidocs/**": true
+		},
 		"files.eol": "\n",
 		"files.autoSave": "afterDelay",
 		"workbench.colorTheme": "Visual Studio Light",

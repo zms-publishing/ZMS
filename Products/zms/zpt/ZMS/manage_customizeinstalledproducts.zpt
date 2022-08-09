@@ -1,8 +1,7 @@
-<tal:block tal:on-error="structure string:<!-- ERROR: manage_customizeinstalledproducts.zpt -->" tal:define="
-		standard modules/Products.zms/standard;
-		Std modules/Products/PythonScripts/standard">
+<tal:block tal:on-error="structure string:<samp style='color:red;'>ERROR: zms.standard.get_installed_packages()</samp>"
+		tal:define="standard modules/Products.zms/standard; Std modules/Products/PythonScripts/standard">
 	<textarea disabled="disabled"
 		style="font-family:monospace;width:100%;height:50vh;padding:0 .5rem;background:#354f67;color:white;border:0;"
-		tal:content="structure python:standard.get_installed_packages()">
+		tal:content="structure python:standard.get_installed_packages(pip_cmd=request.get('pip_cmd','freeze'))">
 	</textarea>
 </tal:block>

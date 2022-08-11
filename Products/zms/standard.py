@@ -918,6 +918,15 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   path = u[2]
   query = u[4]
 
+  # Get Auth from URL.
+  if netloc.find(':')>0 and netloc.find('@')>netloc.find(':'):
+    credentials = netloc[:netloc.find('@')]
+    username = credentials[:credentials.find(':')]
+    password = credentials[credentials.find(':')+1:]
+    auth = {'username':username,'password':password}
+    netloc = netloc[netloc.find('@')+1:]
+    url = '%s://%s%s?%s'%(scheme,netloc,path,query)
+
   # Get Proxy.
   useproxy = True
   noproxy = [x.strip() for x in context.getConfProperty('%s.noproxy'%scheme.upper(), '').split(',')]
@@ -942,10 +951,11 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
 
   # Set request-headers.
   if auth is not None:
-    from urllib.parse import unquote
     userpass = auth['username']+':'+auth['password']
-    userpass = base64.encodestring(unquote(userpass)).strip()
-    headers['Authorization'] =  'Basic '+userpass
+    userpass = urllib.parse.unquote(userpass)
+    userpass = userpass.encode('utf-8')
+    userpass = base64.encodestring(userpass).decode('utf-8').strip()
+    headers['Authorization'] = 'Basic '+userpass
   if method == 'GET' and query:
     path += '?' + query
     query = ''

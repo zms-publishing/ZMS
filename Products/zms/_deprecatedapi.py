@@ -472,9 +472,9 @@ class DeprecatedAPI(object):
     warn(self, 'getMimeTypeIconSrc', 'Products.zms.standard.getMimeTypeIconSrc')
     return standard.getMimeTypeIconSrc(mt)
     
-  def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
+  def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}, debug=0 ):
     warn(self, 'http_import', 'Products.zms.standard.http_import')
-    return standard.http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers)
+    return standard.http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers, debug=int(debug) )
 
   def getLangFmtDate(self, t, lang=None, fmt_str='SHORTDATETIME_FMT'):
     warn(self, 'getLangFmtDate', 'Products.zms.standard.getLangFmtDate')

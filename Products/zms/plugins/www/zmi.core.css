@@ -1900,6 +1900,11 @@ body.browse_iframe .toggle {
 .zmi .modal .modal-dialog > .modal-content > .modal-body {
 	overflow-x: auto;
 }
+.zmi.zcatalog.config .modal#solr_query .modal-dialog > .modal-content > .modal-body,
+.zmi.zcatalog.config .modal#solr_suggest .modal-dialog > .modal-content > .modal-body {
+	overflow-x: visible;
+	height: 80vh;
+}
 .zmi.users.config .modal .modal-dialog > .modal-content > .modal-body form {
 	min-height:42vh;
 }

@@ -116,7 +116,7 @@
 															<tr tal:condition="python:len([x for x in metaObjs if x.get('package')==metaObjPackage])>0" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
 																<td colspan="2">
 																	<tal:block tal:condition="python:metaObjPackage">
-																		<a href="#" class="mr-1" target="_blank"
+																		<a href="#" class="mr-1" target="_blank" title="Show Content Package Details (Big Picture)"
 																			tal:attributes="href python:'../metaobj_manager/manage_bigpicture?lang=%s&id=%s'%(request.get('lang','ger'),metaObjPackage)"
 																		><i class="fas fa-briefcase"></i></a>
 																		<strong tal:content="metaObjPackage">the id</strong>

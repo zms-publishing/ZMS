@@ -90,10 +90,10 @@
 	$ZMI.registerReady(function(){
 		$('#toggle_menu').click( function() {
 			if ( $('#toggle_menu').hasClass('fa-times') ) {
-				$('ol#toc').hide();
+				$('ol#toc').hide('fast');
 				$('#toggle_menu').removeClass('fa-times').addClass('fa-bars');
 			} else {
-				$('ol#toc').show();
+				$('ol#toc').show('fast');
 				$('#toggle_menu').removeClass('fa-bars').addClass('fa-times');
 			}
 		});

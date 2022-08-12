@@ -103,7 +103,7 @@ class ZMSZCatalogSolrConnector(
       url = '%s/%s/select'%(solr_url, solr_core)
       url = self.url_append_params(url, p, sep='&')
       result = standard.http_import(self, url, method='GET', debug=debug)
-      # result = standard.re_sub('name="(.*?)_[ist]"', 'name="\\1"', result)
+      result = standard.re_sub('name="(.*?)_[ist]"', 'name="\\1"', standard.pystr(result))
       return result
 
 

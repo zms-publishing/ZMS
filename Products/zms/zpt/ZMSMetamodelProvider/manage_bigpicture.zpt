@@ -19,7 +19,7 @@
 					oid python:metaObj.get('id','');
 					oname python:metaObj.get('name','');
 					odisplay python:oid!=oname and '({})'.format(oname) or ''">
-				<a tal:attributes="href python:'#%s'%(metaObj.get('id','')); title metaObj/name"
+				<a data-turbolinks="false" tal:attributes="href python:'#%s'%(metaObj.get('id','')); title metaObj/name"
 					tal:content="python:oid">the name</a>
 				<span tal:replace="odisplay"></span>
 			</tal:block>
@@ -31,16 +31,17 @@
 			<p class="box_number" tal:content="repeat/metaObj/number">1</p>
 			<div class="objtype" tal:content="metaObj/type" title="Object Type">the type</div>
 			<div class="objid">
+				<a title="Edit Model..." target="_blank" tal:attributes="href python:'manage_main?id=%s'%(metaObj['id'])">
 				<i tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
-				<a title="Edit Model..." target="_blank" tal:attributes="href python:'manage_main?id=%s'%(metaObj['id'])" tal:content="metaObj/id">the id</a>
-				<span class="objname" title="Display Name">
-					= <tal:block 
-						tal:define="l python:request.get('manage_lang','ger');
-									n python:metaObj.get('name','');
-									nstr python:here.getZMILangStr(n,l);
-									tstr python:here.getZMILangStr('TYPE_%s'%(n.upper()),l);"
-						tal:content="python:[tstr,nstr][tstr=='TYPE_%s'%(n.upper())]">the name</tal:block>
+				<span class="objid" tal:content="metaObj/id">the id</span>
+				<span class="objname" title="Display Name"
+					tal:define="l python:request.get('manage_lang','ger');
+						n python:metaObj.get('name','');
+						nstr python:here.getZMILangStr(n,l);
+						tstr python:here.getZMILangStr('TYPE_%s'%(n.upper()),l);"
+					tal:content="python:' = %s'%([tstr,nstr][tstr=='TYPE_%s'%(n.upper())])">the name
 				</span>
+				</a>
 			</div>
 			<tal:block tal:repeat="metaObjAttrId python:here.getMetaobjAttrIds(metaObj['id'])">
 				<tal:block tal:define="global metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId)">
@@ -152,14 +153,16 @@ ol.objlist li {
 .box div {
 	padding:.15em .5em
 }
-.box .objid {
+.box > .objid {
 	border-bottom:1px solid #354f67;
 	text-align:center;
 }
-.box .objid a {
-	font-weight:bold;
+.box > .objid a {
 	color:black;
 	text-decoration:none;
+}
+.box > .objid a .objid {
+	font-weight:bold;
 }
 .box .objtype {
 	text-align:center;

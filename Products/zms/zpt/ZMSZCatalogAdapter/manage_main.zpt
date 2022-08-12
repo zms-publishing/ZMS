@@ -86,12 +86,10 @@
 						<input type="checkbox" value="1" id="catalog_awareness_active" name="catalog_awareness_active:int" tal:attributes="checked python:['','checked'][int(here.getConfProperty('ZMS.CatalogAwareness.active',1)==1)]"/>
 					</div><!-- .col-sm-10 -->
 				</div><!-- .form-group -->
-				<div class="form-group row">
+				<div class="form-group row align-items-baseline">
 					<label class="col-sm-2 control-label" for="catalog_model"><span>Model</span></label>
-					<div class="col-sm-10">
-
-						<tal:block tal:define="global
-							metaObjIds python:here.getMetaobjIds();
+					<div class="col-sm-10"
+						tal:define="metaObjIds python:here.getMetaobjIds();
 							metaObjs python:[x for x in [here.getMetaobj(y) for y in metaObjIds] if x['id'] not in ['ZMS'] and x['type'] in ['ZMSPackage','ZMSDocument','ZMSObject','ZMSRecordSet']];
 							metaObjPackages python:here.sort_list(['']+[x['id'] for x in metaObjs if x['type']=='ZMSPackage']);
 							metaObjPackages2 python:[x.get('package') for x in metaObjs if x.get('package') not in metaObjPackages]">
@@ -111,18 +109,20 @@
 									<tr>
 										<td class="p-0">
 
-											<table class="table table-sm" id="meta_types">
+											<table class="table table-sm table-borderless" id="meta_types">
 												<tbody>
 													<tal:block tal:repeat="metaObjPackage python:here.sort_list(metaObjPackages+metaObjPackages2)">
 														<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
 															<tr tal:condition="python:len([x for x in metaObjs if x.get('package')==metaObjPackage])>0" tal:define="global metaObj python:here.getMetaobj(metaObjPackage)">
 																<td colspan="2">
 																	<tal:block tal:condition="python:metaObjPackage">
-																		<i class="fas fa-briefcase"></i>
+																		<a href="#" class="mr-1" target="_blank"
+																			tal:attributes="href python:'../metaobj_manager/manage_bigpicture?lang=%s&id=%s'%(request.get('lang','ger'),metaObjPackage)"
+																		><i class="fas fa-briefcase"></i></a>
 																		<strong tal:content="metaObjPackage">the id</strong>
 																	</tal:block>
 																	<tal:block tal:condition="python:not metaObjPackage">
-																		<i class="fas fa-briefcase"></i>
+																		<i class="fas fa-briefcase mr-1"></i>
 																		<strong>[default package]</strong>
 																	</tal:block>
 																</td>
@@ -158,15 +158,14 @@
 											</table>
 
 										</td>
-										<td class="p-0 border-left">
-											<table class="table table-sm" id="indexes">
+										<td class="p-0">
+											<table class="table table-sm table-borderless" id="indexes">
+												<!-- filled by script -->
 											</table>
 										</td>
 									</tr>
 								</tbody>
 							</table>
-
-						</tal:block>
 
 					</div><!-- .col-sm-10 -->
 				</div><!-- .form-group -->
@@ -195,6 +194,7 @@
 </div><!-- #zmi-tab -->
 
 <script>
+//<!--
 function toggleMetaobj() {
 	var selected = {};
 	$("table#indexes input:checked").each(function() {
@@ -368,6 +368,7 @@ $(function() {
 	});
 
 });
+//-->
 </script>
 
 <footer tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>

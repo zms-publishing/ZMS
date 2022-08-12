@@ -1,6 +1,6 @@
 <tal:block tal:define="zmscontext python:here.getSelf();">
 	<div id="ZCatalogConnector" tal:define="zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])" tal:condition="python:len(zcatalogs)>0">
-		<div class="form-group row ">
+		<div class="form-group row align-items-baseline">
 			<label class="col-sm-2 control-label" for="zcatalog_objectIds"><span>ZCatalogs</span></label>
 			<div class="col-sm-10">
 				<div tal:repeat="si zcatalogs">
@@ -53,7 +53,7 @@
 				<div class="zmi-sitemap-expand" onclick="$('.zmi-sitemap').toggleClass('full');$('.zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
 					<i class="fas fa-expand-arrows-alt" title="Seitenanfang"></i>
 				</div>
-				<div class="zmi-sitemap">
+				<div class="zmi-sitemap mb-0">
 				</div><!-- .zmi-sitemap -->
 			</div>
 		</div><!-- .col-sm-10 -->

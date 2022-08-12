@@ -84,7 +84,7 @@
 				<div class="zmi-sitemap-expand" onclick="$('.zmi-sitemap').toggleClass('full');$('.zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
 					<i class="fas fa-expand-arrows-alt" title="Seitenanfang"></i>
 				</div>
-				<div class="zmi-sitemap">
+				<div class="zmi-sitemap mb-0">
 				</div><!-- .zmi-sitemap -->
 			</div>
 		</div><!-- .col-sm-10 -->

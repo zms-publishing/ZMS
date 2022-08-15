@@ -891,7 +891,7 @@ def http_request(url, method='GET', **kwargs):
 
 
 security.declarePublic('http_import')
-def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
+def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}, debug=0 ):
   """
   Send Http-Request and return Response-Body.
   @param url: Remote-URL
@@ -906,6 +906,8 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   @type timeout: C{int}, values in seconds
   @param headers: Request-Headers
   @type headers: C{dict}
+  @param debug: Debug Mode will ignores Status Code of Return
+  @type debug: C{int}, values are 0 or 1
   @return: Response-Body
   @rtype: C{str}
   """
@@ -967,11 +969,12 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   message = response.reason
 
   #### get parameter from content
-  if reply_code >= 400 or reply_code >= 500:
+  debug = int(debug)
+  if (reply_code >= 400 or reply_code >= 500 ) and not debug:
     error = "[%i]: %s at %s [%s]"%(reply_code, message, url, method)
     writeError( context, "[http_import.error]: %s"%error)
     raise zExceptions.InternalError(error)
-  elif reply_code==200:
+  elif reply_code==200 or debug:
     # get content
     data = response.read()
     rtn = None
@@ -2461,7 +2464,7 @@ class initutil(object):
   def getConfProperty(self, key, default=None):
     return self.__attr_conf_dict__.get(key, default)
 
-  def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
-    return http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers)
+  def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}, debug=0 ):
+    return http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers, debug=int(debug))
 
 security.apply(globals())

@@ -465,6 +465,7 @@ class VersionItem(object):
       lang = REQUEST['lang']
       for langId in [lang]+self.getDescendantLanguages(lang):
         self.setObjState(obj_state, langId)
+      self.prepareRefreshRefToObjs()
 
     # --------------------------------------------------------------------------
     #  VersionItem.setObjStateModified

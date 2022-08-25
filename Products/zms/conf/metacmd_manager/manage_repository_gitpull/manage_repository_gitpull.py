@@ -43,12 +43,12 @@ def manage_repository_gitpull(self, request=None):
 			if self.getConfProperty('ZMSRepository.git.server.branch.checkout', 0) == 1:
 				git_commands.append( 'git checkout %s'%(git_branch) )
 
-			# GIT pull
-				git_commands.append( 'git pull' )
-
 			# GIT checkout revision
 			if request.get('git_revision')!='HEAD' and request.get('git_revision') is not None:
 				git_commands.append( 'git checkout %s'%(request.get('git_revision').replace('"','').replace(';','')) )
+
+			# GIT pull
+			git_commands.append( 'git pull' )
 
 			# EXECUTE GIT COMMANDS
 			for gcmd in git_commands:

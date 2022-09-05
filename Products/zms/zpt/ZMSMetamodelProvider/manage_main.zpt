@@ -231,7 +231,7 @@
 										lines python:[x.strip() for x in readData.split('\n')];
 										global errors python:lines[lines.index('## Errors:')+1][2:].strip()"></tal:block
 								></tal:block>
-								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:[objAttr.get('type'),objAttr.get('meta_type')][objAttr.get('meta_type') in here.getMetadictAttrs()]" />
+								<input type="hidden" class="content_type" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value python:[objAttr.get('type'),objAttr.get('meta_type')][objAttr.get('meta_type') in here.getMetadictAttrs()]" />
 								<div class="single-line zmi-code" 
 									tal:condition="python:objAttr.get('ob') is not None"
 									tal:define="zopetype python:objAttr['type'] in here.valid_zopetypes; ob python:objAttr.get('ob')">

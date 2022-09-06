@@ -1036,7 +1036,7 @@ ZMI.prototype.initInputFields = function(container) {
 					.wrap('<div class="col-sm-5 col-md-4 col-lg-3"></div>');
 				var icon_picker =  eval('icon_' + $(this).prop('class').split(' ').filter(function(v) {return v.endsWith('picker')}));
 				$(this).before('<div class="input-group-prepend"><span class="input-group-text"><i class="'+ icon_picker +'"></i></span></div>');
-				if (is_firefox) {
+				if (is_firefox && parseInt(navigator.userAgent.split('Firefox/')[1]) < 93) {
 					if ($(this).attr('type') == 'datetime-local') {
 						$(this).attr('type', 'date');
 					}

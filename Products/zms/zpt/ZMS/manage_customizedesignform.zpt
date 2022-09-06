@@ -155,7 +155,7 @@
 								title python:css is None and 'CSS-Object is missing!' or 'CSS-Code-Preview';
 								onclick python:css is None and cssedit_href or 'return zmiPreviewBtnClick(this)'">
 							<i tal:condition="css" class="fas fa-caret-right"></i>
-							<i tal:condition="not:css" class="fa-bug text-danger" tal:attributes="style python:not css and 'opacity:0.35' or None"></i>
+							<i tal:condition="not:css" class="fas fa-bug text-danger" tal:attributes="style python:not css and 'opacity:0.35' or None"></i>
 							<span tal:condition="href" tal:content="href">href</span>
 							<code tal:condition="not:href" tal:content="python:'%s = Unset'%(css_id)">href</code>
 						</a>

@@ -5,65 +5,66 @@
 		<span class="d-none" id="fmName" tal:content="request/fmName"></span>
 		<span class="d-none" id="textFormatDefault" tal:content="textFormatDefault"></span>
 		<script>
-		var fmName;
-		var textFormatDefault;
+		//<!--
+			var fmName;
+			var textFormatDefault;
 
-		$(function() {
-				fmName = $('#fmName').text();
-				textFormatDefault = $("#textFormatDefault").text();
-				$("form[name="+fmName+"]").submit( onZMSTableFormSubmit);
-
-				$("[name=\x22type:int\x22]").on('change',function(){
-					let sortableTr = $('#tr_sortable');
-					if(this.value==3){
-						sortableTr.hide();
-					}else{
-						sortableTr.show()
-					}
+			$(function() {
+					fmName = $('#fmName').text();
+					textFormatDefault = $('#textFormatDefault').text();
+					$('form[name="' + fmName + '"]').submit( onZMSTableFormSubmit);
+					$('[name="type:int"]').on('change',function(){
+						let sortableTr = $('#tr_sortable');
+						if(this.value==3){
+							sortableTr.hide();
+						}else{
+							sortableTr.show()
+						}
+					});
 				});
-			});
 
-		function onZMSTableFormSubmit() {
-			var xml = '';
-			var type = parseInt($("[name=\x22type:int\x22]:checked").val());
-			xml += '<'+'list>\n';
-			for ( var y = 0; y < parseInt($('#rows').val()); y++) {
-				xml += '<'+'item type="list"><list>\n';
-				if ( y==0 && type == 2) {
-					// Type 2: First Row Merged
-					xml += '<'+'item type="dictionary"><'+'dictionary>\n';
-					xml += '<'+'item key="colspan" type="int">'+parseInt($('#cols').val())+'<'+'/item>\n';
-					xml += '<'+'item key="content"><'+'/item>\n';
-					xml += '<'+'item key="format">'+textFormatDefault+'<'+'/item>\n';
-					xml += '<'+'item key="tag">th<'+'/item>\n';
-					xml += '<'+'/dictionary><'+'/item>\n';
-				}
-				else {
-					for ( var x = 0; x < parseInt($('#cols').val()); x++) {
-						xml += '<'+'item type="dictionary"><'+'dictionary>\n';
-						if ( y==0 && x == 0 && type == 4) {
-							xml += '<'+'item key="colspan" type="int">1<'+'/item>\n';
-						}
-						else {
-							var tag = "td";
-							if ( ( type == 1 && y == 0 ) || ( type == 3 && x == 0 ) ||
-								 ( type == 4 && ( x == 0 || y == 0 ) ) ) {
-									tag = "th";
-							}
-							xml += '<'+'item key="colspan" type="int">1<'+'/item>\n';
-							xml += '<'+'item key="content"><'+'/item>\n';
-							xml += '<'+'item key="format">'+textFormatDefault+'<'+'/item>\n';
-							xml += '<'+'item key="tag">'+tag+'<'+'/item>\n';
-						}
-						xml += '<'+'/dictionary><'+'/item>\n';
+			function onZMSTableFormSubmit() {
+				var xml = '';
+				var type = parseInt($('[name="type:int"]:checked').val());
+				xml += '<list>\n';
+				for ( var y = 0; y < parseInt($('#rows').val()); y++) {
+					xml += '<item type="list"><list>\n';
+					if ( y==0 && type == 2) {
+						// Type 2: First Row Merged
+						xml += '<item type="dictionary"><dictionary>\n';
+						xml += '<item key="colspan" type="int">' + parseInt($('#cols').val()) + '</item>\n';
+						xml += '<item key="content"></item>\n';
+						xml += '<item key="format">' + textFormatDefaul t +'</item>\n';
+						xml += '<item key="tag">th</item>\n';
+						xml += '</dictionary></item>\n';
 					}
+					else {
+						for ( var x = 0; x < parseInt($('#cols').val()); x++) {
+							xml += '<item type="dictionary"><dictionary>\n';
+							if ( y==0 && x == 0 && type == 4) {
+								xml += '<item key="colspan" type="int">1</item>\n';
+							}
+							else {
+								var tag = "td";
+								if ( ( type == 1 && y == 0 ) || ( type == 3 && x == 0 ) ||
+									( type == 4 && ( x == 0 || y == 0 ) ) ) {
+										tag = "th";
+								}
+								xml += '<item key="colspan" type="int">1</item>\n';
+								xml += '<item key="content"></item>\n';
+								xml += '<item key="format">' + textFormatDefault + '</item>\n';
+								xml += '<item key="tag">' + tag + '</item>\n';
+							}
+							xml += '</dictionary></item>\n';
+						}
+					}
+					xml += '</list></item>\n';
 				}
-				xml += '<'+'/list><'+'/item>\n';
+				xml += '</list>\n';
+				$('#table_table').val( xml);
+				return true;
 			}
-			xml += '<'+'/list>\n';
-			$("#table_table").val( xml);
-			return true;
-		}
+		//-->
 		</script>
 
 <div class="form-group row">
@@ -114,15 +115,16 @@
 	<!-- ### Table(Type,Cols,Rows): EDIT ### -->
 	<tal:block tal:condition="not:python:request.get('ZMS_INSERT')">
 		<tal:block tal:define="zmscontext options/zmscontext;
-					table_table python:zmscontext.attr('table');
-					table_type python:zmscontext.attr('type');
-					table_colgroup_cols python:zmscontext.attr('cols');
-					table_cols python:len(table_table[-1]);
-					table_rows python:len(table_table);
-					table_widths python:zmscontext.attr('widths');">
+			table_table python:zmscontext.attr('table');
+			table_type python:zmscontext.attr('type');
+			table_colgroup_cols python:zmscontext.attr('cols');
+			table_cols python:len(table_table[-1]);
+			table_rows python:len(table_table);
+			table_widths python:zmscontext.attr('widths');">
 
 			<!--### Table-Cell Styles ###-->
 			<style>
+			/* <!-- */
 				.th.placeholder {
 					background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='50px' width='200px'><text x='20' y='20' fill='gray' font-size='12' font-family='Arial'>Enter Header here...</text></svg>");
 					background-repeat:no-repeat;
@@ -140,7 +142,6 @@
 				#table_cell_editor > thead > tr > th,
 				#table_cell_editor > thead > tr > td {
 					padding: 1.57143em 1.14286em 1.57143em 1.14286em;
-
 				}
 				#table_cell_editor tr th p:last-child,
 				#table_cell_editor tr td p:last-child {
@@ -172,25 +173,26 @@
 					padding: 0;
 					border-spacing: 0;
 				}
-				<tal:block tal:condition="python:table_type == 3">
-					#tr_sortable{
-						display:none;
-					}
-
-					#table_cell_editor>tbody>tr:nth-child(odd) td {
-						background-color: #e3e8ed;
-					}
-					#table_cell_editor>tbody>tr:nth-child(even) td {
-						background-color: #FFFFFF;
-					}
-
-					#table_cell_editor>tbody>tr>td:first-child{
-						background-color: #32475b;
-					}
-					#table_cell_editor tr#colgrouping td{
-						background-color:#FFFFFF;
-					}
-				</tal:block>
+			/* --> */
+			</style>
+			<style tal:condition="python:table_type == 3">
+			/* <!-- */
+				#tr_sortable{
+					display:none;
+				}
+				#table_cell_editor>tbody>tr:nth-child(odd) td {
+					background-color: #e3e8ed;
+				}
+				#table_cell_editor>tbody>tr:nth-child(even) td {
+					background-color: #FFFFFF;
+				}
+				#table_cell_editor>tbody>tr>td:first-child{
+					background-color: #32475b;
+				}
+				#table_cell_editor tr#colgrouping td{
+					background-color:#FFFFFF;
+				}
+			/* --> */
 			</style>
 
 			<!--### Table-Cell Editor ###-->
@@ -219,6 +221,7 @@
 			<span class="d-none" id="table_type" tal:content="table_type"></span>
 			<span class="d-none" id="table_cell_uid" tal:content="python:table_cols*table_rows"></span>
 			<style>
+			/* <!-- */
 				#table_cell_editor .btn {
 					padding: 0 .3em;
 				}
@@ -301,9 +304,11 @@
 				.modal {
 					z-index:10000;
 				}
+			/* --> */
 			</style>
 
 			<script>
+			//<!--
 				var fmName;
 				var elName;
 				var textFormatDefault;
@@ -314,56 +319,55 @@
 				var table_cell_offs;
 
 				$(function() {
-						fmName = $('#fmName').text();
-						elName = $('#elName').text();
-						textFormatDefault = $("#textFormatDefault").text();
-						richedit_fmt = $('#richedit_fmt').text();
-						table_type = parseInt($('#table_type').text());
-						table_cell_uid = $('#table_cell_uid').text();
-						table_cell_id = '';
-						table_cell_offs = 2;
-						$('form[name='+fmName+']').submit( onZMSTableFormSubmit);
-						table_cell_init();
-					});
+					fmName = $('#fmName').text();
+					elName = $('#elName').text();
+					textFormatDefault = $("#textFormatDefault").text();
+					richedit_fmt = $('#richedit_fmt').text();
+					table_type = parseInt($('#table_type').text());
+					table_cell_uid = $('#table_cell_uid').text();
+					table_cell_id = '';
+					table_cell_offs = 2;
+					$('form[name='+fmName+']').submit( onZMSTableFormSubmit);
+					table_cell_init();
+				});
 
 				function onZMSTableFormSubmit() {
 					var xml = '';
-					xml += '<'+'list>\n';
-					var el_tbody = $($("#table_cell_editor").children()[0]);
-					var el_trs = el_tbody.children().filter(":gt(0)");
+					xml += '<list>\n';
+					var el_tbody = $($('#table_cell_editor').children()[0]);
+					var el_trs = el_tbody.children().filter(':gt(0)');
 					for ( var i=0; i < el_trs.length; i++) {
-						xml += '<'+'item type="list"><'+'list>\n';
+						xml += '<item type="list"><list>\n';
 						//changed by uzk
 						var el_tds = $(el_trs[i]).children();
-						//var el_tds = $(el_trs[i]).children().filter(":gt(0)").filter(":not(:last)");
+						//var el_tds = $(el_trs[i]).children().filter(':gt(0)').filter(":not(:last)");
 						for ( var j=0; j < el_tds.length; j++) {
-							xml += '<'+'item type="dictionary"><'+'dictionary>\n';
-							xml += '<'+'item key="colspan" type="int">'+1+'<'+'/item>\n';
-							var el_inputs = $("textarea,input",el_tds[j]);
+							xml += '<item type="dictionary"><dictionary>\n';
+							xml += '<item key="colspan" type="int">' + 1 + '</item>\n';
+							var el_inputs = $('textarea,input',el_tds[j]);
 							for ( var k=0; k < el_inputs.length; k++) {
-								var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf("_"));
-								xml += '<'+'item key="'+key+'"><'+'![CDATA'+'['+$(el_inputs[k]).val()+']'+']><'+'/item>\n';
+								var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf('_'));
+								xml += '<item key="' + key + '"><![CDATA[' + $(el_inputs[k]).val() + ']]></item>\n';
 							}
-							xml += '<'+'/dictionary><'+'/item>\n';
+							xml += '</dictionary></item>\n';
 						}
-						xml += '<'+'/list><'+'/item>\n';
+						xml += '</list></item>\n';
 					}
-					xml += '<'+'/list>\n';
-					$("#table_table").val( xml);
+					xml += '</list>\n';
+					$('#table_table').val( xml);
 
 					xml = '';
-					xml += '<'+'list>\n';
-					var el_trs = el_tbody.children().filter(":eq(0)");
+					xml += '<list>\n';
+					var el_trs = el_tbody.children().filter(':eq(0)');
 					for ( var i=0; i < el_trs.length; i++) {
-						var el_inputs = $("input:text",el_trs[i]);
+						var el_inputs = $('input:text',el_trs[i]);
 						for ( var j = 0; j < el_inputs.length; j++) {
-							xml += '<'+'item type="string">'+$(el_inputs[j]).val()
-							+'<'+'/item>\n';
+							xml += '<item type="string">' + $(el_inputs[j]).val() + '</item>\n';
 						}
 					}
-					xml += '<'+'/list>\n';
+					xml += '</list>\n';
 
-					$("#table_colgroup_cols").val( xml);
+					$('#table_colgroup_cols').val( xml);
 					return true;
 				}
 
@@ -434,10 +438,9 @@
 					return false;
 				}
 
-
 				function table_cell_init() {
-					$("form[name="+fmName+"] input[type=hidden]+textarea").change( function () { $(this).parents(".table_cell_editable").addClass('changed').removeClass('changed',1000);});
-					$("form[name="+fmName+"] .table_cell_editable").dblclick( function () { table_cell_edit($(this));});
+					$('form[name="' + fmName + '"] input[type="hidden"]+textarea').change( function () { $(this).parents('.table_cell_editable').addClass('changed').removeClass('changed',1000);});
+					$('form[name="' + fmName + '"] .table_cell_editable').dblclick( function () { table_cell_edit($(this));});
 					$('div[id^=preview_]')
 						.attr('contenteditable','').keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable).on('contextmenu',function(){onKeyUpZMSTableDivContenteditable});
 				}
@@ -498,10 +501,9 @@
 								var new_td = insertCell($tds[$tds.length-2]);
 								if(fct.indexOf('insert_col_left') == 0){
 									new_td.insertBefore( $td);
-								}else{
+								} else {
 									new_td.insertAfter( $td);
 								}
-
 							}
 						}
 						$('#cols').val( parseInt($('#cols').val())+1);
@@ -513,7 +515,7 @@
 						var new_tr = insertCell($trs[$trs.length-1]);
 						if(fct.indexOf('insert_row_above') == 0) {
 							new_tr.insertBefore( $tr);
-						}else{
+						} else {
 							new_tr.insertAfter( $tr);
 						}
 
@@ -534,8 +536,8 @@
 						}
 						var $trs = $tbody.children().filter(":gt(0)");
 						for ( var i = 0; i < $trs.length; i++) {
-							var source_td = $($trs[i]).children().filter(":eq("+source_x+")");
-							var target_td = $($trs[i]).children().filter(":eq("+target_x+")");
+							var source_td = $($trs[i]).children().filter(':eq(' + source_x + ')');
+							var target_td = $($trs[i]).children().filter(':eq(' + target_x + ')');
 							moveCell(source_td, target_td);
 						}
 					}
@@ -548,8 +550,8 @@
 						else {
 							target_y = target_y + 1;
 						}
-						var source_tr = $tbody.children().filter(":eq("+source_y+")");
-						var target_tr = $tbody.children().filter(":eq("+target_y+")");
+						var source_tr = $tbody.children().filter(':eq(' + source_y + ')');
+						var target_tr = $tbody.children().filter(':eq(' + target_y + ')');
 						moveCell(source_tr, target_tr);
 					}
 					else {
@@ -563,22 +565,22 @@
 
 				function insertCell(source) {
 					var $clone = $(source).clone();
-					$("table.ZMSTable th, table.ZMSTable td",$clone).each(function() {
+					$('table.ZMSTable th, table.ZMSTable td',$clone).each(function() {
 							// Remove table with inline-links (if exists).
-							$("table",this).remove();
-							$("textarea,input",this).each(function() {
-									var key = this.id.substr(0,this.id.indexOf("_"));
-									$(this).attr( "id", key+"_" + table_cell_uid);
-									$(this).attr( "name", key+"_" + table_cell_uid);
-									if ( key.indexOf("format") == 0) {
+							$('table',this).remove();
+							$('textarea,input',this).each(function() {
+									var key = this.id.substr(0,this.id.indexOf('_'));
+									$(this).attr( 'id', key + '_' + table_cell_uid);
+									$(this).attr( 'name', key + '_' + table_cell_uid);
+									if ( key.indexOf('format') == 0) {
 										$(this).val( textFormatDefault);
 									}
-									else if ( key.indexOf("content") == 0) {
-										$(this).val( "").css( 'border', '2px solid #00FF00');
+									else if ( key.indexOf('content') == 0) {
+										$(this).val('').css( 'border', '2px solid #00FF00');
 									}
 								});
 							$('div[id^="preview"]',this).each(function() {
-									$(this).attr("id","preview_"+table_cell_uid)
+									$(this).attr('id','preview_' + table_cell_uid)
 										.html('')
 										.attr('contenteditable','')
 										.keyup(onKeyUpZMSTableDivContenteditable).blur(onKeyUpZMSTableDivContenteditable);
@@ -590,21 +592,21 @@
 				}
 
 				function moveCell(source, target) {
-					var source_inp = $("textarea,input",source);
-					var target_inp = $("textarea,input",target);
+					var source_inp = $('textarea,input',source);
+					var target_inp = $('textarea,input',target);
 					for ( var j = 0; j < source_inp.length; j++) {
 						var v = $(source_inp[j]).val();
 						$(source_inp[j]).val( $(target_inp[j]).val());
 						$(target_inp[j]).val( v);
 					}
-					var source_preview = $("div[id^=preview]",source);
-					var target_preview = $("div[id^=preview]",target);
+					var source_preview = $('div[id^="preview"]',source);
+					var target_preview = $('div[id^="preview"]',target);
 					for ( var j = 0; j < source_preview.length; j++) {
 						var v = $(source_preview[j]).html();
-						$(source_preview[j]).html( $(target_preview[j]).html());
-						$(target_preview[j]).html( v);
+						$(source_preview[j]).html($(target_preview[j]).html());
+						$(target_preview[j]).html(v);
 					}
-					$("td.table_cell_editable",target).addClass("moved").removeClass("moved",1000);
+					$('td.table_cell_editable',target).addClass('moved').removeClass('moved',1000);
 				}
 
 				function onKeyUpZMSTableDivContenteditable() {
@@ -614,9 +616,10 @@
 					else {
 						$(this).removeClass('placeholder');
 					}
-					var $textarea = $("textarea",$(this).prev());
+					var $textarea = $('textarea',$(this).prev());
 					$textarea.val($(this).html());
 				}
+			//-->
 			</script>
 
 			<!-- BO Dropdown -->
@@ -635,24 +638,26 @@
 				<a class="dropdown-item insert_row_below" href="#"><i class="far fa-plus-square"></i>Neue Zeile unterhalb einf&uuml;gen</a>
 			</div>
 			<style>
+			/* <!-- */
 				.dropdown-menu{ position:absolute; }
 				.div_table_cell_editor_parent{ position:fixed; }
 				.dropdown-item.disabled, .dropdown-item:disabled { cursor: no-drop;}
+			/* --> */
 			</style>
 			<script>
 			// <!--
 				$(function () {
 					$('table.table *, table.table *').on('contextmenu', function (e) {
 						$('table#table_cell_editor .table_cell_editable.current').removeClass('current');
-						let contextMenu = $("#context-menu");
+						let contextMenu = $('#context-menu');
 						var target = e.target;
 						let card = contextMenu.closest('.card');
 						var top = e.pageY - card.position().top;
 						var left = e.pageX - card.position().left;
 
-						var height =$("#context-menu").height();
+						var height =$('#context-menu').height();
 						var bottom = top + height;
-						var width = $("#context-menu").width();
+						var width = $('#context-menu').width();
 						var right = left + width;
 
 						var doc_bottom =  (window.pageYOffset + window.innerHeight);
@@ -665,11 +670,11 @@
 							left = left - width;
 						}
 
-						$("#context-menu").css({
-							display: "block",
+						$('#context-menu').css({
+							display: 'block',
 							top: top,
 							left: left
-						}).addClass("show");
+						}).addClass('show');
 
 
 						if($(target).hasClass('ZMSTable-cell')){
@@ -748,12 +753,12 @@
 				<tr tal:repeat="row_index python:range(table_rows)" tal:attributes="id python:'table_row_%i'%row_index">
 					<tal:block tal:repeat="col_index python:range(len(table_table[row_index]))">
 						<tal:block tal:define="global
-								cell python:table_table[row_index][col_index];
-								pattern python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
-								replacement python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
-								cell_content python:here.re_sub(pattern,replacement,cell.get('content',''));
-								cell_format python:cell.get('format',textFormatDefault);
-								richedit_preview python:int(request.get('richedit_fmt') is not None and cell_format==request.get('richedit_fmt').getId())">
+							cell python:table_table[row_index][col_index];
+							pattern python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042&gt\073';
+							replacement python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
+							cell_content python:here.re_sub(pattern,replacement,cell.get('content',''));
+							cell_format python:cell.get('format',textFormatDefault);
+							richedit_preview python:int(request.get('richedit_fmt') is not None and cell_format==request.get('richedit_fmt').getId())">
 
 							<td class="ZMSTable-cell" tal:attributes="colspan cell/colspan">
 								<div class="ZMSTable">

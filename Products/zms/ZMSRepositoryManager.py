@@ -299,7 +299,8 @@ class ZMSRepositoryManager(
                 if 'ob' in i:
                   del i['ob']
                 try:
-                  py.append('\t\t%s = %s'%(self.id_quote(i['id']), standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
+                  id_quoted = i['id'].startswith('_') and i['id'] or self.id_quote(i['id'])
+                  py.append('\t\t%s = %s'%(id_quoted, standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
                 except:
                   py.append('\t\t# ERROR: '+standard.writeError(self,'can\'t localFiles \'%s\''%i['id']))
                 py.append('')

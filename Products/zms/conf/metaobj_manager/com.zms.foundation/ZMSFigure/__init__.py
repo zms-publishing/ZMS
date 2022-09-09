@@ -51,7 +51,7 @@ class ZMSFigure:
 			,"repetitive":0
 			,"type":"image"}
 
-		previewimg = {"default":""
+		_img = {"default":""
 			,"id":"_img"
 			,"keys":[]
 			,"mandatory":0

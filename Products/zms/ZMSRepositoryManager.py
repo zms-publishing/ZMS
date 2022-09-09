@@ -279,6 +279,9 @@ class ZMSRepositoryManager(
           if v and isinstance(v, list):
             py.append('\t# %s'%k.capitalize())
             py.append('\tclass %s:'%standard.id_quote(k).capitalize())
+            # Are there duplicated ids after id-quoting?
+            id_list = [ self.id_quote(i['id']) for i in v if i.get('ob') is None ] 
+            id_duplicates =  [ i for i in id_list if id_list.count(i) > 1 ]
             for i in v:
               if 'id' in i:
                 ob = i.get('ob')
@@ -299,7 +302,8 @@ class ZMSRepositoryManager(
                 if 'ob' in i:
                   del i['ob']
                 try:
-                  id_quoted = i['id'].startswith('_') and i['id'] or self.id_quote(i['id'])
+                  # Prevent id-quoting if duplicates may result
+                  id_quoted = ( i['id'].startswith('_') and ( self.id_quote(i['id']) in id_duplicates) ) and i['id'] or self.id_quote(i['id'])
                   py.append('\t\t%s = %s'%(id_quoted, standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
                 except:
                   py.append('\t\t# ERROR: '+standard.writeError(self,'can\'t localFiles \'%s\''%i['id']))

@@ -61,7 +61,22 @@ def parseXmlString(self, file):
 ################################################################################
 manage_addZMSCustomForm = PageTemplateFile('manage_addzmscustomform', globals()) 
 def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
-  """ manage_addZMSCustom """
+  """
+  Constructor function for adding custom content nodes 
+
+  @param meta_id: the meta-id / type of the new ZMSObject
+  @type meta_id: C{str}
+  @param lang: the language-id.
+  @type lang: C{str}
+  @param _sort_id: the sort value.
+  @type _sort_id: C{int}
+  @param btn: the submitting button value.
+  @type lang: C{str}
+  @param REQUEST: the triggering request
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @param RESPONSE: the triggering request
+  @type RESPONSE: C{ZPublisher.HTTPResponse}
+  """
   message = ''
   messagekey = 'manage_tabs_message'
   t0 = time.time()

@@ -1,0 +1,1431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>zms._blobfields.MyImage</title>
+    <meta name="generator" content="pydoctor 22.5.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a> <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div class="hint" id="search-help-box">
+          <p class="rst-last">
+      
+            Search bar offers the following options:
+            <ul>   
+                <li>
+                  <strong>Term presence.</strong> The below example searches for documents that 
+                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
+                </li> 
+
+                <li>
+                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
+                </li> 
+
+                <li>
+                  <strong>Search in specific fields.</strong> The following search matches all objects 
+                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
+
+                  <p>
+                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
+                    Last two fields are only applicable if "search in docstrings" is enabled.
+                  </p>
+                </li>
+
+                <li>
+                  <strong>Fuzzy matches.</strong> The following search matches all documents 
+                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
+                </li>
+            </ul>
+
+          </p>
+        </div>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 8px;">
+          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="zms._blobfields.MyImage.html" class="internal-link" title="This class"><wbr></wbr>My<wbr></wbr>Image</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getHeight" class="internal-link" title="zms._blobfields.MyImage.getHeight">get<wbr></wbr>Height</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getWidth" class="internal-link" title="zms._blobfields.MyImage.getWidth">get<wbr></wbr>Width</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#toXml" class="internal-link" title="zms._blobfields.MyImage.toXml">to<wbr></wbr>Xml</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_getCopy" class="internal-link" title="zms._blobfields.MyImage._getCopy">_get<wbr></wbr>Copy</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        <div class="childrenKindTitle">Inherited Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#__bobo_traverse__" class="internal-link" title="zms._blobfields.MyBlob.__bobo_traverse__">__bobo<wbr></wbr>_traverse__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#__call__" class="internal-link" title="zms._blobfields.MyBlob.__call__">__call__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#__str__" class="internal-link" title="zms._blobfields.MyBlob.__str__">__str__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#equals" class="internal-link" title="zms._blobfields.MyBlob.equals">equals</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#get_real_size" class="internal-link" title="zms._blobfields.MyBlob.get_real_size">get<wbr></wbr>_real<wbr></wbr>_size</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getContentType" class="internal-link" title="zms._blobfields.MyBlob.getContentType">get<wbr></wbr>Content<wbr></wbr>Type</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getData" class="internal-link" title="zms._blobfields.MyBlob.getData">get<wbr></wbr>Data</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getDataSizeStr" class="internal-link" title="zms._blobfields.MyBlob.getDataSizeStr">get<wbr></wbr>Data<wbr></wbr>Size<wbr></wbr>Str</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getDataURI" class="internal-link" title="zms._blobfields.MyBlob.getDataURI">get<wbr></wbr>Data<wbr></wbr>URI</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getFilename" class="internal-link" title="zms._blobfields.MyBlob.getFilename">get<wbr></wbr>Filename</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getHref" class="internal-link" title="zms._blobfields.MyBlob.getHref">get<wbr></wbr>Href</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getMediadbfile" class="internal-link" title="zms._blobfields.MyBlob.getMediadbfile">get<wbr></wbr>Mediadbfile</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getMimeTypeIconSrc" class="internal-link" title="zms._blobfields.MyBlob.getMimeTypeIconSrc">get<wbr></wbr>Mime<wbr></wbr>Type<wbr></wbr>Icon<wbr></wbr>Src</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getObjAttrs" class="internal-link" title="zms._blobfields.MyBlob.getObjAttrs">get<wbr></wbr>Obj<wbr></wbr>Attrs</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#on_setobjattr" class="internal-link" title="zms._blobfields.MyBlob.on_setobjattr">on<wbr></wbr>_setobjattr</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#_createCopy" class="internal-link" title="zms._blobfields.MyBlob._createCopy">_create<wbr></wbr>Copy</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#_if_modified_since_request_handler" class="internal-link" title="zms._blobfields.MyBlob._if_modified_since_request_handler">_if<wbr></wbr>_modified<wbr></wbr>_since<wbr></wbr>_request<wbr></wbr>_handler</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#_range_request_handler" class="internal-link" title="zms._blobfields.MyBlob._range_request_handler">_range<wbr></wbr>_request<wbr></wbr>_handler</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__doc__" class="internal-link" title="zms._blobfields.MyImage.__doc__">__doc__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__obj_attrs__" class="internal-link" title="zms._blobfields.MyImage.__obj_attrs__">__obj<wbr></wbr>_attrs__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__version__" class="internal-link" title="zms._blobfields.MyImage.__version__">__version__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__xml_attrs__" class="internal-link" title="zms._blobfields.MyImage.__xml_attrs__">__xml<wbr></wbr>_attrs__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getHeight__roles__" class="internal-link" title="zms._blobfields.MyImage.getHeight__roles__">get<wbr></wbr>Height__roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getWidth__roles__" class="internal-link" title="zms._blobfields.MyImage.getWidth__roles__">get<wbr></wbr>Width__roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#height" class="internal-link" title="zms._blobfields.MyImage.height">height</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#width" class="internal-link" title="zms._blobfields.MyImage.width">width</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        <div class="childrenKindTitle">Inherited Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#__call____roles__" class="internal-link" title="zms._blobfields.MyBlob.__call____roles__">__call<wbr></wbr>_<wbr></wbr>_<wbr></wbr>_<wbr></wbr>_roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#__class_name__" class="internal-link" title="zms._blobfields.MyBlob.__class_name__">__class<wbr></wbr>_name__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#get_real_size__roles__" class="internal-link" title="zms._blobfields.MyBlob.get_real_size__roles__">get<wbr></wbr>_real<wbr></wbr>_size<wbr></wbr>_<wbr></wbr>_roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#get_size__roles__" class="internal-link" title="zms._blobfields.MyBlob.get_size__roles__">get<wbr></wbr>_size<wbr></wbr>_<wbr></wbr>_roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getContentType__roles__" class="internal-link" title="zms._blobfields.MyBlob.getContentType__roles__">get<wbr></wbr>Content<wbr></wbr>Type__roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getData__roles__" class="internal-link" title="zms._blobfields.MyBlob.getData__roles__">get<wbr></wbr>Data__roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getDataSizeStr__roles__" class="internal-link" title="zms._blobfields.MyBlob.getDataSizeStr__roles__">get<wbr></wbr>Data<wbr></wbr>Size<wbr></wbr>Str__roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getDataURI__roles__" class="internal-link" title="zms._blobfields.MyBlob.getDataURI__roles__">get<wbr></wbr>Data<wbr></wbr>URI__roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getFilename__roles__" class="internal-link" title="zms._blobfields.MyBlob.getFilename__roles__">get<wbr></wbr>Filename__roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getHref__roles__" class="internal-link" title="zms._blobfields.MyBlob.getHref__roles__">get<wbr></wbr>Href__roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getMediadbfile__roles__" class="internal-link" title="zms._blobfields.MyBlob.getMediadbfile__roles__">get<wbr></wbr>Mediadbfile__roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getMimeTypeIconSrc__roles__" class="internal-link" title="zms._blobfields.MyBlob.getMimeTypeIconSrc__roles__">get<wbr></wbr>Mime<wbr></wbr>Type<wbr></wbr>Icon<wbr></wbr>Src__roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#getObjAttrs__roles__" class="internal-link" title="zms._blobfields.MyBlob.getObjAttrs__roles__">get<wbr></wbr>Obj<wbr></wbr>Attrs__roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#index_html" class="internal-link" title="zms._blobfields.MyBlob.index_html">index<wbr></wbr>_html</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#aq_parent" class="internal-link" title="zms._blobfields.MyBlob.aq_parent">aq<wbr></wbr>_parent</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#data" class="internal-link" title="zms._blobfields.MyBlob.data">data</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#filename" class="internal-link" title="zms._blobfields.MyBlob.filename">filename</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html#mediadbfile" class="internal-link" title="zms._blobfields.MyBlob.mediadbfile">mediadbfile</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="zms._blobfields.html" class="internal-link" title="The parent of this class">_blobfields</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlob.html" class="internal-link" title="zms._blobfields.MyBlob"><wbr></wbr>My<wbr></wbr>Blob</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlobDelegate.html" class="internal-link" title="zms._blobfields.MyBlobDelegate"><wbr></wbr>My<wbr></wbr>Blob<wbr></wbr>Delegate</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyBlobWrapper.html" class="internal-link" title="zms._blobfields.MyBlobWrapper"><wbr></wbr>My<wbr></wbr>Blob<wbr></wbr>Wrapper</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyFile.html" class="internal-link" title="zms._blobfields.MyFile"><wbr></wbr>My<wbr></wbr>File</a></code>
+            </div>
+        
+
+    </li><li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.MyImage.html" class="internal-link" title="zms._blobfields.MyImage"><wbr></wbr>My<wbr></wbr>Image</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        <div class="childrenKindTitle">Functions</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.html#createBlobField" class="internal-link" title="zms._blobfields.createBlobField">create<wbr></wbr>Blob<wbr></wbr>Field</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.html#getLangFilename" class="internal-link" title="zms._blobfields.getLangFilename">get<wbr></wbr>Lang<wbr></wbr>Filename</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.html#recurse_downloadRessources" class="internal-link" title="zms._blobfields.recurse_downloadRessources">recurse_download<wbr></wbr>Ressources</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.html#rfc1123_date" class="internal-link" title="zms._blobfields.rfc1123_date">rfc1123<wbr></wbr>_date</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.html#thumbnailImage" class="internal-link" title="zms._blobfields.thumbnailImage">thumbnail<wbr></wbr>Image</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.html#thumbnailImageFields" class="internal-link" title="zms._blobfields.thumbnailImageFields">thumbnail<wbr></wbr>Image<wbr></wbr>Fields</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._blobfields.html#uploadBlobField" class="internal-link" title="zms._blobfields.uploadBlobField">upload<wbr></wbr>Blob<wbr></wbr>Field</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        
+         
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapseSideBar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <div id="main" class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">zms</a></code><wbr></wbr>.<code><a href="zms._blobfields.html" class="internal-link" title="zms._blobfields">_blobfields</a></code><wbr></wbr>.<code><a href="zms._blobfields.MyImage.html" class="internal-link" title="zms._blobfields.MyImage">MyImage</a></code></code></h1>
+          <div id="showPrivate">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p><code><span class="py-keyword">class</span> <span class="py-defname">MyImage</span>(<a href="zms._blobfields.MyBlob.html" class="internal-link" title="zms._blobfields.MyBlob">MyBlob</a>, Image): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L825" class="sourceLink">(source)</a></code></p>
+          <p><a href="classIndex.html#zms._blobfields.MyImage">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p class="undocumented">Undocumented</p></div>
+        </div>
+
+        <div id="splitTables">
+          <table class="children sortable" id="id78">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getHeight" class="internal-link" title="zms._blobfields.MyImage.getHeight">get<wbr></wbr>Height</a></code></td>
+    <td>Get height of this image.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getWidth" class="internal-link" title="zms._blobfields.MyImage.getWidth">get<wbr></wbr>Width</a></code></td>
+    <td>Get width of this image.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#toXml" class="internal-link" title="zms._blobfields.MyImage.toXml">to<wbr></wbr>Xml</a></code></td>
+    <td>Serialize this file to xml-string.</td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#__doc__" class="internal-link" title="zms._blobfields.MyImage.__doc__">__doc__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#__obj_attrs__" class="internal-link" title="zms._blobfields.MyImage.__obj_attrs__">__obj<wbr></wbr>_attrs__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#__version__" class="internal-link" title="zms._blobfields.MyImage.__version__">__version__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#__xml_attrs__" class="internal-link" title="zms._blobfields.MyImage.__xml_attrs__">__xml<wbr></wbr>_attrs__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#getHeight__roles__" class="internal-link" title="zms._blobfields.MyImage.getHeight__roles__">get<wbr></wbr>Height__roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#getWidth__roles__" class="internal-link" title="zms._blobfields.MyImage.getWidth__roles__">get<wbr></wbr>Width__roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#height" class="internal-link" title="zms._blobfields.MyImage.height">height</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#width" class="internal-link" title="zms._blobfields.MyImage.width">width</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_getCopy" class="internal-link" title="zms._blobfields.MyImage._getCopy">_get<wbr></wbr>Copy</a></code></td>
+    <td>Get copy of this blob.</td>
+  </tr>
+</table>
+          
+            <p class="inheritedFrom">
+              Inherited from <code><a href="zms._blobfields.MyBlob.html" class="internal-link" title="zms._blobfields.MyBlob">MyBlob</a></code>:
+            </p>
+            <table class="children sortable" id="id79">
+  
+  
+  <tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#__bobo_traverse__" class="internal-link" title="zms._blobfields.MyBlob.__bobo_traverse__">__bobo<wbr></wbr>_traverse__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#__call__" class="internal-link" title="zms._blobfields.MyBlob.__call__">__call__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#__str__" class="internal-link" title="zms._blobfields.MyBlob.__str__">__str__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#equals" class="internal-link" title="zms._blobfields.MyBlob.equals">equals</a></code></td>
+    <td>Indicates whether some other MyBlob-object is "equal to" this one.</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#get_real_size" class="internal-link" title="zms._blobfields.MyBlob.get_real_size">get<wbr></wbr>_real<wbr></wbr>_size</a></code></td>
+    <td>Returns real size in ZODB.</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getContentType" class="internal-link" title="zms._blobfields.MyBlob.getContentType">get<wbr></wbr>Content<wbr></wbr>Type</a></code></td>
+    <td>Returns MIME-type (e.g. image/gif, text/xml).</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getData" class="internal-link" title="zms._blobfields.MyBlob.getData">get<wbr></wbr>Data</a></code></td>
+    <td>Returns data.</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getDataSizeStr" class="internal-link" title="zms._blobfields.MyBlob.getDataSizeStr">get<wbr></wbr>Data<wbr></wbr>Size<wbr></wbr>Str</a></code></td>
+    <td>Returns display string for file-size (kB). Deprecated: Use standard.getDataSizeStr(len) instead!</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getDataURI" class="internal-link" title="zms._blobfields.MyBlob.getDataURI">get<wbr></wbr>Data<wbr></wbr>URI</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getFilename" class="internal-link" title="zms._blobfields.MyBlob.getFilename">get<wbr></wbr>Filename</a></code></td>
+    <td>Returns filename.</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getHref" class="internal-link" title="zms._blobfields.MyBlob.getHref">get<wbr></wbr>Href</a></code></td>
+    <td>Returns absolute url.</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getMediadbfile" class="internal-link" title="zms._blobfields.MyBlob.getMediadbfile">get<wbr></wbr>Mediadbfile</a></code></td>
+    <td>Returns mediadb-filename.</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getMimeTypeIconSrc" class="internal-link" title="zms._blobfields.MyBlob.getMimeTypeIconSrc">get<wbr></wbr>Mime<wbr></wbr>Type<wbr></wbr>Icon<wbr></wbr>Src</a></code></td>
+    <td>Returns the absolute-url of an icon representing the MIME-type of this MyBlob-object. Deprecated: Use zmscontext.getMimeTypeIconSrc(mt) instead!</td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getObjAttrs" class="internal-link" title="zms._blobfields.MyBlob.getObjAttrs">get<wbr></wbr>Obj<wbr></wbr>Attrs</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#on_setobjattr" class="internal-link" title="zms._blobfields.MyBlob.on_setobjattr">on<wbr></wbr>_setobjattr</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#__call____roles__" class="internal-link" title="zms._blobfields.MyBlob.__call____roles__">__call<wbr></wbr>_<wbr></wbr>_<wbr></wbr>_<wbr></wbr>_roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#__class_name__" class="internal-link" title="zms._blobfields.MyBlob.__class_name__">__class<wbr></wbr>_name__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#get_real_size__roles__" class="internal-link" title="zms._blobfields.MyBlob.get_real_size__roles__">get<wbr></wbr>_real<wbr></wbr>_size<wbr></wbr>_<wbr></wbr>_roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#get_size__roles__" class="internal-link" title="zms._blobfields.MyBlob.get_size__roles__">get<wbr></wbr>_size<wbr></wbr>_<wbr></wbr>_roles__</a></code></td>
+    <td>MyBlob.get_real_size:</td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getContentType__roles__" class="internal-link" title="zms._blobfields.MyBlob.getContentType__roles__">get<wbr></wbr>Content<wbr></wbr>Type__roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getData__roles__" class="internal-link" title="zms._blobfields.MyBlob.getData__roles__">get<wbr></wbr>Data__roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getDataSizeStr__roles__" class="internal-link" title="zms._blobfields.MyBlob.getDataSizeStr__roles__">get<wbr></wbr>Data<wbr></wbr>Size<wbr></wbr>Str__roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getDataURI__roles__" class="internal-link" title="zms._blobfields.MyBlob.getDataURI__roles__">get<wbr></wbr>Data<wbr></wbr>URI__roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getFilename__roles__" class="internal-link" title="zms._blobfields.MyBlob.getFilename__roles__">get<wbr></wbr>Filename__roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getHref__roles__" class="internal-link" title="zms._blobfields.MyBlob.getHref__roles__">get<wbr></wbr>Href__roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getMediadbfile__roles__" class="internal-link" title="zms._blobfields.MyBlob.getMediadbfile__roles__">get<wbr></wbr>Mediadbfile__roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getMimeTypeIconSrc__roles__" class="internal-link" title="zms._blobfields.MyBlob.getMimeTypeIconSrc__roles__">get<wbr></wbr>Mime<wbr></wbr>Type<wbr></wbr>Icon<wbr></wbr>Src__roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#getObjAttrs__roles__" class="internal-link" title="zms._blobfields.MyBlob.getObjAttrs__roles__">get<wbr></wbr>Obj<wbr></wbr>Attrs__roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseclassvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#index_html" class="internal-link" title="zms._blobfields.MyBlob.index_html">index<wbr></wbr>_html</a></code></td>
+    <td>MyBlob.getObjAttrs:</td>
+  </tr><tr class="baseinstancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#aq_parent" class="internal-link" title="zms._blobfields.MyBlob.aq_parent">aq<wbr></wbr>_parent</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseinstancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#data" class="internal-link" title="zms._blobfields.MyBlob.data">data</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseinstancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#filename" class="internal-link" title="zms._blobfields.MyBlob.filename">filename</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseinstancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#mediadbfile" class="internal-link" title="zms._blobfields.MyBlob.mediadbfile">mediadbfile</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="basemethod private">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#_createCopy" class="internal-link" title="zms._blobfields.MyBlob._createCopy">_create<wbr></wbr>Copy</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="basemethod private">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#_if_modified_since_request_handler" class="internal-link" title="zms._blobfields.MyBlob._if_modified_since_request_handler">_if<wbr></wbr>_modified<wbr></wbr>_since<wbr></wbr>_request<wbr></wbr>_handler</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="basemethod private">
+    
+    <td>Method</td>
+    <td><code><a href="zms._blobfields.MyBlob.html#_range_request_handler" class="internal-link" title="zms._blobfields.MyBlob._range_request_handler">_range<wbr></wbr>_request<wbr></wbr>_handler</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr>
+</table>
+            
+
+            
+        </div>
+
+        <div id="childList">
+          <div class="basemethod">
+  
+  
+  <a name="zms._blobfields.MyImage.getHeight">
+    
+  </a>
+  <a name="getHeight">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getHeight</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L914">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Get height of this image.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">int</tt></td><td class="fieldArgDesc">the height of this image.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._blobfields.MyImage.getWidth">
+    
+  </a>
+  <a name="getWidth">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getWidth</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L892">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Get width of this image.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">int</tt></td><td class="fieldArgDesc">the width of this image.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._blobfields.MyImage.toXml">
+    
+  </a>
+  <a name="toXml">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">toXml</span>(self, sender=None, base_path=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, data2hex=True):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L853">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Serialize this file to xml-string.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">sender:</span><tt class="rst-docutils literal">zmsobject.ZMSObject=None</tt></td><td class="fieldArgDesc">the sender-node</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">base<wbr></wbr>_path:</span><tt class="rst-docutils literal"><span class="pre">str=''</span></tt></td><td class="fieldArgDesc">the base-path</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">data2hex:</span><tt class="rst-docutils literal">Bool=True</tt></td><td class="fieldArgDesc">convert data inline to hex, otherwise saved to file in base-path</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">str</tt></td><td class="fieldArgDesc">the xml-string</td></tr></table></div>
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._blobfields.MyImage.__doc__">
+    
+  </a>
+  <a name="__doc__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">__doc__</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L828">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <code><a href="zms._blobfields.MyBlob.html#__doc__" class="internal-link">zms._blobfields.MyBlob.__doc__</a></code></div>
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._blobfields.MyImage.__obj_attrs__">
+    
+  </a>
+  <a name="__obj_attrs__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">__obj_attrs__</span>: <code>list[<wbr></wbr>str]</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L833">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._blobfields.MyImage.__version__">
+    
+  </a>
+  <a name="__version__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">__version__</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L830">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <code><a href="zms._blobfields.MyBlob.html#__version__" class="internal-link">zms._blobfields.MyBlob.__version__</a></code></div>
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._blobfields.MyImage.__xml_attrs__">
+    
+  </a>
+  <a name="__xml_attrs__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">__xml_attrs__</span>: <code>list[<wbr></wbr>str]</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L834">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._blobfields.MyImage.getHeight__roles__">
+    
+  </a>
+  <a name="getHeight__roles__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">getHeight__roles__</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L913">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._blobfields.MyImage.getWidth__roles__">
+    
+  </a>
+  <a name="getWidth__roles__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">getWidth__roles__</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L891">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms._blobfields.MyImage.height">
+    
+  </a>
+  <a name="height">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">height</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L904">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms._blobfields.MyImage.width">
+    
+  </a>
+  <a name="width">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">width</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L903">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="zms._blobfields.MyImage._getCopy">
+    
+  </a>
+  <a name="_getCopy">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_getCopy</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_blobfields.py#L837">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Get copy of this blob.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><tt class="rst-docutils literal">_blobfields.MyFile</tt></td><td class="fieldArgDesc">the copy of this blob.</td></tr></table></div>
+  </div>
+</div>
+        </div>
+      
+      </div>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container">
+    <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+<script>
+//<!-- OPEN SOURCE LINKS IN FRAMESET 
+  document.addEventListener('DOMContentLoaded', function(){
+  var links = document.getElementsByClassName('sourceLink');
+    var len = links.length;
+    for(var i=0; i<len; i++)
+    {
+      links[i].target = "_blank";
+      links[i].title = "View on Github";
+    }
+  })
+//-->
+</script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

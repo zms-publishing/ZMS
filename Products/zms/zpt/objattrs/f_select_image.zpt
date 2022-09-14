@@ -50,7 +50,7 @@
 							</span>
 						</div>
 						<div class="ZMSGraphic_extEdit_action">
-							<span class="btn btn-secondary" id="ZMSGraphic_extEdit_crop" title="Crop image">
+							<span data-turbolinks="false" class="btn btn-secondary" id="ZMSGraphic_extEdit_crop" title="Crop image">
 								<i class="fas fa-crop"></i>
 							</span>
 						</div>
@@ -116,12 +116,12 @@
 						<span class="caret"></span>
 					</button>
 					<div class="dropdown-menu">
-						<a class="dropdown-item" target="_blank"
+						<a class="dropdown-item" data-turbolinks="false" target="_blank"
 							tal:condition="has_file"
 							tal:attributes="id python:'download_btn_%s'%elName;href href"
 							tal:content="structure python:'%s %s'%('<i class=\042fas fa-eye\042></i>',here.getZMILangStr('TAB_PREVIEW'))">Preview</a>
-						<a class="dropdown-item" tal:attributes="id python:'delete_btn_%s'%elName"><i class="fas fa-trash"></i><tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></a>
-						<a class="dropdown-item" tal:attributes="id python:'undo_btn_%s'%elName"><i class="fas fa-undo"></i><tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">Undo</tal:block></a>
+						<a class="dropdown-item" data-turbolinks="false" tal:attributes="id python:'delete_btn_%s'%elName"><i class="fas fa-trash"></i><tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></a>
+						<a class="dropdown-item" data-turbolinks="false" tal:attributes="id python:'undo_btn_%s'%elName"><i class="fas fa-undo"></i><tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">Undo</tal:block></a>
 						<tal:block tal:condition="python:request.get('f_zmiSelectDisplaytype',True) and 'metaObj' in options and len([x for x in options['metaObj']['attrs'] if x['id'] == 'displaytype']) == 1"
 							><tal:block tal:define="global displaytypes python:[['top',2,'OPT_A_TOP'],['bottom',3,'OPT_A_BOTTOM'],['left',5,'OPT_A_LEFT_FLOAT'],['right',6,'OPT_A_RIGHT_FLOAT']]"
 								><div class="dropdown-header">
@@ -131,7 +131,7 @@
 								<input type="hidden" id="displaytype" name="displaytype:int" tal:attributes="value python:here.attr('displaytype')"
 								><tal:block tal:repeat="i python:range(len(displaytypes))"
 									><tal:block tal:define="global displaytype python:displaytypes[i]"
-										><a class="dropdown-item displaytype"
+										><a data-turbolinks="false" class="dropdown-item displaytype"
 											tal:attributes="data-value python:displaytype[1];title python:here.getZMILangStr(displaytype[2])"
 											><img tal:attributes="src python:'/++resource++zms_/img/btn_displaytype_%s.gif'%displaytype[0]"
 										/><span tal:content="python:here.getZMILangStr(displaytype[2]).split('(')[0]"></span></a
@@ -159,7 +159,7 @@
 				<div class="zmi-image-preview" tal:attributes="id python:'ZMSGraphic_extEdit_preview_%s'%elName" tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
 					<input type="hidden" tal:attributes="id python:'width_%s'%elName; name python:'width_%s:int'%elName; value python:value.getWidth()"/>
 					<input type="hidden" tal:attributes="id python:'height_%s'%elName; name python:'height_%s:int'%elName; value python:value.getHeight()"/>
-					<a tal:attributes="href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&key=%s'%(request.get('ZMS_INSERT',here.meta_id),key),int(pilutil.enabled()))" class="thumbnail ZMSGraphic_extEdit_action">
+					<a data-turbolinks="false" tal:attributes="href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&key=%s'%(request.get('ZMS_INSERT',here.meta_id),key),int(pilutil.enabled()))" class="thumbnail ZMSGraphic_extEdit_action">
 						<img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
 						<div class="zmi-zoom-in"><i class="fas fa-search-plus"></i></div><!-- .zmi-zoom-in -->
 					</a>
@@ -168,7 +168,7 @@
 
 			<tal:block tal:condition="not:python:value is not None and here.operator_gettype(value) is not str">
 				<div class="zmi-image-info">
-					<a tal:attributes="id python:'filename_%s'%elName" target="_blank" tal:content="python:''">the filename</a>
+					<a  data-turbolinks="false" tal:attributes="id python:'filename_%s'%elName" target="_blank" tal:content="python:''">the filename</a>
 					<span class="dimensions" tal:attributes="id python:'dimensions_%s'%elName" tal:content="python:''">the dimensions</span>
 					<span class="size" tal:attributes="id python:'size_%s'%elName" tal:content="python:''">the size</span>
 				</div><!-- .zmi-image-info -->

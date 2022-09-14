@@ -16,7 +16,7 @@
 		id id; 
 		style python:is_manage and 'max-width:100%;;display:inline-block;;' or default; 
 		title python:'Image Dimensions: %spx x %spx, Preview Max. Dimension: %s'%(imgwidth, imgheight, imgmaxsize);"
-	><a class="zmslightbox fancybox" 
+	><a class="zmslightbox fancybox"
 		data-turbolinks="false"
 		tal:omit-tag="python:imgwidth < imgmaxsize and imgheight < imgmaxsize"
 		tal:condition="img" 

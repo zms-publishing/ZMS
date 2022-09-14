@@ -621,6 +621,7 @@ body.zmi ul.zmi-container > .zmi-item .right i.titleimage-preview::after {
 	background-color:#f5f5f5;
 	box-shadow: none;
 }
+body.zmi ul.zmi-container > .zmi-item .right video,
 body.zmi ul.zmi-container > .zmi-item .right i.titleimage-preview:hover::after {
 	content:"";
 	width:20vw;
@@ -641,7 +642,6 @@ body.zmi ul.zmi-container > .zmi-item .right i.titleimage-preview:hover::after {
 	box-shadow: 5px 5px 20px #c0c0c094;
 	transition: opacity .75s, height .5s, box-shadow 1s, background-color 1s  ease; 
 }
-
 @media (max-width: 767px) {
 	body.zmi header.navbar {
 		max-width: 100%;
@@ -902,22 +902,22 @@ li.zmi-item span.zmi-ids {
 	display:none;
 	padding-left: .25rem;
 }
-.zmi.properties .card .constraint-error {
+.zmi.properties .card > .constraint-error {
 	color:#721c24;
 	background-color:#f8d7da;
 	padding:.5em 1.5em;
 }
-.zmi.properties .card .constraint-warning {
+.zmi.properties .card > .constraint-warning {
 	color:#856404; 
 	background-color:#fff3cd;
 	padding:.5em 1.5em;
 }
-.zmi.properties .card .constraint-restriction {
+.zmi.properties .card > .constraint-restriction {
 	color:#0c5460;
 	background-color:#d1ecf1;
 	padding:.5em 1.5em;
 }
-.zmi.properties .card .constraint i:after {
+.zmi.properties .card > .constraint i:after {
 	content:attr(title);
 	font-family:var(--font-family-sans-serif);
 	font-weight: 400;
@@ -1899,6 +1899,10 @@ body.browse_iframe .toggle {
 }
 .zmi .modal .modal-dialog > .modal-content > .modal-body {
 	overflow-x: auto;
+}
+.zmi.zcatalog.config .modal#connector_results .modal-dialog > .modal-content > .modal-body {
+	overflow-x: visible;
+	height: 80vh;
 }
 .zmi.users.config .modal .modal-dialog > .modal-content > .modal-body form {
 	min-height:42vh;

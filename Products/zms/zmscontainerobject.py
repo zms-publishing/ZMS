@@ -966,11 +966,13 @@ class ZMSContainerObject(
     def manage_addZMSModule(self, lang, _sort_id, custom, REQUEST, RESPONSE):
       """
       Add module-node.
-      internal use only
+      Internal use only.
       @param lang: the language-id.
       @type lang: C{str}
-      @param id_prefix: the id-prefix.
-      @type id_prefix: C{str}
+      @param _sort_id: sort id
+      @type _sort_id: C{int}
+      @param custom: the meta-id
+      @type custom: C{str}
       @param REQUEST: the triggering request
       @type REQUEST: C{ZPublisher.HTTPRequest}
       @param RESPONSE: the triggering request

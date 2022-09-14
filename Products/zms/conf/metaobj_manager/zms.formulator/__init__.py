@@ -22,7 +22,7 @@ class zms_formulator:
 	package = ""
 
 	# Revision
-	revision = "5.0.0"
+	revision = "5.0.1"
 
 	# Type
 	type = "ZMSPackage"

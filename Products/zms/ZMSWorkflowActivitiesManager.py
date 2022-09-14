@@ -40,9 +40,6 @@ class ZMSWorkflowActivitiesManager(object):
   #
   ############################################################################
 
-  """
-  @see IRepositoryProvider
-  """
   def provideRepositoryActivities(self, r, ids=None):
     standard.writeBlock(self, "[provideRepositoryActivities]: ids=%s"%str(ids))
     r['workflow']['Activities'] = []

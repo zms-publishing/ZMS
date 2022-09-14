@@ -68,7 +68,7 @@ class ZMSZCatalogSolrConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogSolrConnector.search_xml:
     # --------------------------------------------------------------------------
-    def search_xml(self, q, page_index=0, page_size=10, REQUEST=None, RESPONSE=None):
+    def search_xml(self, q, page_index=0, page_size=10, debug=0, REQUEST=None, RESPONSE=None):
       """ ZMSZCatalogSolrConnector.search_xml """
       # Check constraints.
       zcm = self.getCatalogAdapter()
@@ -78,6 +78,9 @@ class ZMSZCatalogSolrConnector(
       REQUEST.set('lang', REQUEST.get('lang', self.getPrimaryLanguage()))
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml; charset=utf-8'
+      debug = int(debug)
+      if debug:
+        content_type = 'text/plain; charset=utf-8'
       RESPONSE.setHeader('Content-Type', content_type)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
@@ -99,19 +102,22 @@ class ZMSZCatalogSolrConnector(
       solr_core = self.getConfProperty('solr.core', self.getAbsoluteHome().id)
       url = '%s/%s/select'%(solr_url, solr_core)
       url = self.url_append_params(url, p, sep='&')
-      result = self.http_import(url, method='GET')
-      result = standard.re_sub('name="(.*?)_[ist]"', 'name="\\1"', result)
+      result = standard.http_import(self, url, method='GET', debug=debug)
+      result = standard.re_sub('name="(.*?)_[ist]"', 'name="\\1"', standard.pystr(result))
       return result
 
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogSolrConnector.suggest_xml:
     # --------------------------------------------------------------------------
-    def suggest_xml(self, q, REQUEST=None, RESPONSE=None):
+    def suggest_xml(self, q, debug=0, REQUEST=None, RESPONSE=None):
       """ ZMSZCatalogSolrConnector.suggest_xml """
       # Check constraints.
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml; charset=utf-8'
+      debug = int(debug)
+      if debug:
+        content_type = 'text/plain; charset=utf-8'
       RESPONSE.setHeader('Content-Type', content_type)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
@@ -119,11 +125,10 @@ class ZMSZCatalogSolrConnector(
       p = {}
       solr_url = self.getConfProperty('solr.url', 'http://localhost:8983/solr')
       solr_core = self.getConfProperty('solr.core', self.getAbsoluteHome().id)
-      SOLR_SUGGEST_SELECT = 'select?q=*:*&rows=0&facet=true&facet.field=text&facet.prefix=%s&facet.limit=5'
-      SOLR_SUGGEST_SUGGEST = 'suggest?q=%s'
-      solr_suggest = self.getConfProperty('solr.suggest', SOLR_SUGGEST_SELECT)%q
+      SOLR_SUGGEST = 'select?q=*:*&rows=0&facet=true&facet.field=text&facet.prefix=%s&facet.limit=5' # or 'suggest?q=%s'
+      solr_suggest = self.getConfProperty('solr.suggest', SOLR_SUGGEST)%(q)
       url = '%s/%s/%s'%(solr_url, solr_core, solr_suggest)
-      result = self.http_import(url, method='GET')
+      result = standard.http_import(self, url, method='GET',debug=debug)
       return result
 
 

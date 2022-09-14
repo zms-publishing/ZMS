@@ -37,8 +37,37 @@ _Administration of content model: the right screen shows a simple content object
 ![Nesting Content Objects](images/admin_contentmodel_conventions.gif)
 _Nesting of content models: the left side shows a rendered example for a nested object model: 'card container' contains several 'card items'; the right side shows the 'big picture' of the content package with all the attributes and relations. The model may contain several templates which may be applied conditionally. CSS style sets may be applied as attributes of type resource/file. These snippets can be called via CSS import-rules._
 
-## Paragraph Formats: text block formats
-Text can be edited in two modes: plain or rich text. The plain text editor uses a paragraph format for the whole block whereas the rich text can apply the paragraph formats for any segment of the text stream in the inout field.
+
+## Multilingual GUI: Managing Display Label of Custom Content Models
+### The ZMS Approach to Multilingualism
+ZMS considers any content as multilingual using a _symmetric_ and _hierarchical_ content model. _Symmetric_ means that any content object contains all it's translations in parallel (imagine it as _slices_ of any content object). So there is no second or third website needed for the translations. And _hierarchical_ means, that translation will happen in a certain order of dependencies, starting with a _primary language_ used as an origin for the translation into the _secondary_ or _depending_ languages. As you can define the source or _parent_ for any language, a tree of translation dependencies can be built. This language dependecy graph allows a content organisation which is dominated by (business) reagions more than by one or several languages which are spoken there (eg-the French translation of Switzerland-German may differ from the French translation that is considered for France, same in other multilingual countries like Belgium, Ghana etc.) 
+Besides the aquired content of the _parent_ language any language variant can contain exclusive, so called _local_ content, which again may be inherited to it's depending languages.
+
+![ZMS GUI](images/admin_languages.gif)
+_Language Configuration: avaliables languages and their dependencies are set in the upper part. Language terms are set in the lower part, each row starting th language neutral term followed by its translations._  
+
+### Configuring Multilingual Content-Objects
+The ZMS content model fullfills two primary tasks:
+1. providing an interface (GUI) for content production
+2. rendering the content
+
+In a content model some contents/attributes may be language independend, e.g. the date of an event while other have a specifc, translated value for any language, e.g. the event's descriptions. That is why the content object modelling GUI allows to choose the "mulilingual" option (checkbox marked with the globe icon, see upper picture "Administration of content model") for any attribute. Choosing this option invisibily multiplies the number of attributes according the number of configued languages, so that these attributes can be recorded specifically for each language.
+
+To improve the GUI usability for local editors the display labels can be made multilingual, too, using the ZMS Language Dictionary. In general there are two way to accomplish this:
+
+1. using explicitly a language-neutral display label
+1. using implicitly the key as string identifier
+
+Language-neutral display labels are written into the content model in capital letters und start with two specific prefixes
+1. `TYPE_` for content class names, like TYPE_BOX
+2. `ATTR_` for attributes names, Like ATTTR_TITLE
+
+Using language neutral labels _need_ the corresponding translations in the language dictionary, of course.
+The second option for translating display names is getting its translation by the key-value as a word stem. This happens implicitly if a language dict item is found according to the conventions (TYPE_/ATTR_-Prefix) and thus will overwrite the given display name (so display name can stay in natural language and will work without a translation dictionary, too)
+
+
+## Paragraph Formats: Text Block Formats
+Text can be edited in two modes: plain or rich text. The plain text editor uses a paragraph format for the whole block whereas the rich text can apply the paragraph formats for any segment of the text stream in the input field.
 Individual paragraph formats are defined by:
 1. id
 2. display name
@@ -54,7 +83,7 @@ The configuraton form ends up with a preview of the rendered html output.
 ![Paragraph Formats](images/admin_contentmodel_paragraph.gif)
 _Paragraph formats can be simply added by filling a small form for its properties._
 
-## Character-Formats: text inline formats
+## Character-Formats: Text Inline Formats
 Similar to the paragraph configuration ZMS allows adding individual character formats (_inline formats_). The inline formats are shown with the text field GUI and can be applied by mouse click.
 A character format is defined by these properties:
 1. id

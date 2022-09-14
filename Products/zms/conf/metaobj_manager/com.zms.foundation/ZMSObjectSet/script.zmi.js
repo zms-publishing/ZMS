@@ -19,7 +19,7 @@ function addZMSCustom(sort_id,custom) {
 				$('#addCancelBtn').click(function() {
 							zmiModal("hide");
 						});
-				if($('#zmiIframeAddDialog .form-control').length==0) {
+				if($('#zmiIframeAddDialog div.form-group:not([class*="activity"]) .form-control').length==0) {
 					$('#addInsertBtn').click();
 				}
 			},

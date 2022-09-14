@@ -239,16 +239,14 @@ def initPermissions(container, id, permissions={}):
 
 def addDTMLMethod(container, id, title, data):
   """
-  Add DTML-Method to container.
-  @deprecated
+  Add DTML-Method to container: deprecated
   """
   container.manage_addDTMLMethod( id, title, data)
   initPermissions(container, id)
 
 def addDTMLDocument(container, id, title, data):
   """
-  Add DTML-Document to container.
-  @deprecated
+  Add DTML-Document to container: deprecated.
   """
   container.manage_addDTMLDocument( id, title, data)
   initPermissions(container, id)

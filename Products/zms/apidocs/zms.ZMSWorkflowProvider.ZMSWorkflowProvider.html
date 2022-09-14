@@ -1,0 +1,1347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>zms.ZMSWorkflowProvider.ZMSWorkflowProvider</title>
+    <meta name="generator" content="pydoctor 22.5.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a> <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div class="hint" id="search-help-box">
+          <p class="rst-last">
+      
+            Search bar offers the following options:
+            <ul>   
+                <li>
+                  <strong>Term presence.</strong> The below example searches for documents that 
+                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
+                </li> 
+
+                <li>
+                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
+                </li> 
+
+                <li>
+                  <strong>Search in specific fields.</strong> The following search matches all objects 
+                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
+
+                  <p>
+                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
+                    Last two fields are only applicable if "search in docstrings" is enabled.
+                  </p>
+                </li>
+
+                <li>
+                  <strong>Fuzzy matches.</strong> The following search matches all documents 
+                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
+                </li>
+            </ul>
+
+          </p>
+        </div>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 8px;">
+          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.html" class="internal-link" title="This class"><wbr></wbr>ZMSWorkflow<wbr></wbr>Provider</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#delItem" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.delItem">del<wbr></wbr>Item</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#doAutocommit" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.doAutocommit">do<wbr></wbr>Autocommit</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getAutocommit" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.getAutocommit">get<wbr></wbr>Autocommit</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getNodes" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.getNodes">get<wbr></wbr>Nodes</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getRevision" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.getRevision">get<wbr></wbr>Revision</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#importXml" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.importXml">import<wbr></wbr>Xml</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_changeWorkflow" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_changeWorkflow">manage_change<wbr></wbr>Workflow</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_options" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_options">manage<wbr></wbr>_options</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_sub_options" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_sub_options">manage<wbr></wbr>_sub<wbr></wbr>_options</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#moveItem" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.moveItem">move<wbr></wbr>Item</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#provideRepository" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.provideRepository">provide<wbr></wbr>Repository</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#setRevision" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.setRevision">set<wbr></wbr>Revision</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#updateRepository" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.updateRepository">update<wbr></wbr>Repository</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__ac_permissions__" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.__ac_permissions__">__ac<wbr></wbr>_permissions__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__administratorPermissions__" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.__administratorPermissions__">__administrator<wbr></wbr>Permissions__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage">manage</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_main" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_main">manage<wbr></wbr>_main</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_options_default_action" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_options_default_action">manage<wbr></wbr>_options<wbr></wbr>_default<wbr></wbr>_action</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#meta_type" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.meta_type">meta<wbr></wbr>_type</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#zmi_icon" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.zmi_icon">zmi<wbr></wbr>_icon</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#activities" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.activities">activities</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#autocommit" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.autocommit">autocommit</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#id" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.id">id</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#nodes" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.nodes">nodes</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#revision" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.revision">revision</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#transitions" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.transitions">transitions</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="zms.ZMSWorkflowProvider.html" class="internal-link" title="The parent of this class"><wbr></wbr>ZMSWorkflow<wbr></wbr>Provider</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.html" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider"><wbr></wbr>ZMSWorkflow<wbr></wbr>Provider</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        <div class="childrenKindTitle">Functions</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.ZMSWorkflowProvider.html#doAutocommit" class="internal-link" title="zms.ZMSWorkflowProvider.doAutocommit">do<wbr></wbr>Autocommit</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.ZMSWorkflowProvider.html#exportXml" class="internal-link" title="zms.ZMSWorkflowProvider.exportXml">export<wbr></wbr>Xml</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        
+         
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapseSideBar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <div id="main" class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">zms</a></code><wbr></wbr>.<code><a href="zms.ZMSWorkflowProvider.html" class="internal-link" title="zms.ZMSWorkflowProvider">ZMSWorkflowProvider</a></code><wbr></wbr>.<code><a href="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.html" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider">ZMSWorkflowProvider</a></code></code></h1>
+          <div id="showPrivate">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p><code><span class="py-keyword">class</span> <span class="py-defname">ZMSWorkflowProvider</span>(ZMSItem.ZMSItem, ZMSWorkflowActivitiesManager.ZMSWorkflowActivitiesManager, ZMSWorkflowTransitionsManager.ZMSWorkflowTransitionsManager): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L96" class="sourceLink">(source)</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider, Products.zms.IZMSRepositoryProvider.IZMSRepositoryProvider, Products.zms.IZMSWorkflowProvider.IZMSWorkflowProvider</p>
+          <p><a href="classIndex.html#zms.ZMSWorkflowProvider.ZMSWorkflowProvider">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>"" Properties</p>
+</div>
+        </div>
+
+        <div id="splitTables">
+          <table class="children sortable" id="id57">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.__init__">__init__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#delItem" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.delItem">del<wbr></wbr>Item</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#doAutocommit" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.doAutocommit">do<wbr></wbr>Autocommit</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getAutocommit" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.getAutocommit">get<wbr></wbr>Autocommit</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getNodes" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.getNodes">get<wbr></wbr>Nodes</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getRevision" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.getRevision">get<wbr></wbr>Revision</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#importXml" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.importXml">import<wbr></wbr>Xml</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#manage_changeWorkflow" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_changeWorkflow">manage_change<wbr></wbr>Workflow</a></code></td>
+    <td>ZMSWorkflowProvider.manage_changeWorkflow</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#manage_options" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_options">manage<wbr></wbr>_options</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#manage_sub_options" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_sub_options">manage<wbr></wbr>_sub<wbr></wbr>_options</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#moveItem" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.moveItem">move<wbr></wbr>Item</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#provideRepository" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.provideRepository">provide<wbr></wbr>Repository</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#setRevision" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.setRevision">set<wbr></wbr>Revision</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#updateRepository" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.updateRepository">update<wbr></wbr>Repository</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#__ac_permissions__" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.__ac_permissions__">__ac<wbr></wbr>_permissions__</a></code></td>
+    <td>"" ZMSWorkflowProvider.__init__:</td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#__administratorPermissions__" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.__administratorPermissions__">__administrator<wbr></wbr>Permissions__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage">manage</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage_main" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_main">manage<wbr></wbr>_main</a></code></td>
+    <td>"" Management Permissions</td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage_options_default_action" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_options_default_action">manage<wbr></wbr>_options<wbr></wbr>_default<wbr></wbr>_action</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#meta_type" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.meta_type">meta<wbr></wbr>_type</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#zmi_icon" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.zmi_icon">zmi<wbr></wbr>_icon</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#activities" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.activities">activities</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#autocommit" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.autocommit">autocommit</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#id" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.id">id</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#nodes" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.nodes">nodes</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#revision" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.revision">revision</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#transitions" class="internal-link" title="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.transitions">transitions</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="childList">
+          <div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self, autocommit=1, nodes=[<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">{$}</span><span class="rst-variable-quote">'</span>], activities=[], transitions=[]):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L149">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.delItem">
+    
+  </a>
+  <a name="delItem">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">delItem</span>(self, id, key):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L258">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.doAutocommit">
+    
+  </a>
+  <a name="doAutocommit">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">doAutocommit</span>(self, lang, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L297">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.getAutocommit">
+    
+  </a>
+  <a name="getAutocommit">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getAutocommit</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L244">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.getNodes">
+    
+  </a>
+  <a name="getNodes">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getNodes</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L251">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.getRevision">
+    
+  </a>
+  <a name="getRevision">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getRevision</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L234">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.importXml">
+    
+  </a>
+  <a name="importXml">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">importXml</span>(self, xml):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L202">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_changeWorkflow">
+    
+  </a>
+  <a name="manage_changeWorkflow">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_changeWorkflow</span>(self, lang, btn=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>, key=<span class="rst-variable-quote">'</span><span class="rst-variable-string">properties</span><span class="rst-variable-quote">'</span>, REQUEST=None, RESPONSE=None):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L306">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>ZMSWorkflowProvider.manage_changeWorkflow</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_options">
+    
+  </a>
+  <a name="manage_options">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_options</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L116">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_sub_options">
+    
+  </a>
+  <a name="manage_sub_options">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_sub_options</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L119">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.moveItem">
+    
+  </a>
+  <a name="moveItem">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">moveItem</span>(self, id, pos, key):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L278">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.provideRepository">
+    
+  </a>
+  <a name="provideRepository">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">provideRepository</span>(self, r, ids=None):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L178">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.setRevision">
+    
+  </a>
+  <a name="setRevision">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">setRevision</span>(self, revision):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L237">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.updateRepository">
+    
+  </a>
+  <a name="updateRepository">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">updateRepository</span>(self, r):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L191">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.__ac_permissions__">
+    
+  </a>
+  <a name="__ac_permissions__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">__ac_permissions__</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L139">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p>"" ZMSWorkflowProvider.__init__:</p>
+<p>Constructor.</p>
+</div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.__administratorPermissions__">
+    
+  </a>
+  <a name="__administratorPermissions__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">__administratorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L133">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage">
+    
+  </a>
+  <a name="manage">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L127">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_main">
+    
+  </a>
+  <a name="manage_main">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_main</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L128">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p>"" Management Permissions</p>
+</div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.manage_options_default_action">
+    
+  </a>
+  <a name="manage_options_default_action">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_options_default_action</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L115">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.meta_type">
+    
+  </a>
+  <a name="meta_type">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">meta_type</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L108">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.zmi_icon">
+    
+  </a>
+  <a name="zmi_icon">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">zmi_icon</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L109">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.activities">
+    
+  </a>
+  <a name="activities">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">activities</span>: <code>list</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L153">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.autocommit">
+    
+  </a>
+  <a name="autocommit">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">autocommit</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L151">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.id">
+    
+  </a>
+  <a name="id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">id</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L150">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.nodes">
+    
+  </a>
+  <a name="nodes">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">nodes</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L152">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.revision">
+    
+  </a>
+  <a name="revision">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">revision</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L238">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms.ZMSWorkflowProvider.ZMSWorkflowProvider.transitions">
+    
+  </a>
+  <a name="transitions">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">transitions</span>: <code>list</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSWorkflowProvider.py#L154">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div>
+        </div>
+      
+      </div>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container">
+    <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+<script>
+//<!-- OPEN SOURCE LINKS IN FRAMESET 
+  document.addEventListener('DOMContentLoaded', function(){
+  var links = document.getElementsByClassName('sourceLink');
+    var len = links.length;
+    for(var i=0; i<len; i++)
+    {
+      links[i].target = "_blank";
+      links[i].title = "View on Github";
+    }
+  })
+//-->
+</script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

@@ -1,0 +1,1510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>zms.standard.initutil</title>
+    <meta name="generator" content="pydoctor 22.5.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a> <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div class="hint" id="search-help-box">
+          <p class="rst-last">
+      
+            Search bar offers the following options:
+            <ul>   
+                <li>
+                  <strong>Term presence.</strong> The below example searches for documents that 
+                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
+                </li> 
+
+                <li>
+                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
+                </li> 
+
+                <li>
+                  <strong>Search in specific fields.</strong> The following search matches all objects 
+                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
+
+                  <p>
+                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
+                    Last two fields are only applicable if "search in docstrings" is enabled.
+                  </p>
+                </li>
+
+                <li>
+                  <strong>Fuzzy matches.</strong> The following search matches all documents 
+                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
+                </li>
+            </ul>
+
+          </p>
+        </div>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 8px;">
+          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="zms.standard.initutil.html" class="internal-link" title="This class">initutil</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="zms.standard.initutil.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getConfProperty" class="internal-link" title="zms.standard.initutil.getConfProperty">get<wbr></wbr>Conf<wbr></wbr>Property</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#http_import" class="internal-link" title="zms.standard.initutil.http_import">http<wbr></wbr>_import</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#setConfProperty" class="internal-link" title="zms.standard.initutil.setConfProperty">set<wbr></wbr>Conf<wbr></wbr>Property</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__attr_conf_dict__" class="internal-link" title="zms.standard.initutil.__attr_conf_dict__">__attr<wbr></wbr>_conf<wbr></wbr>_dict__</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="zms.standard.html" class="internal-link" title="The parent of this class">standard</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.initutil.html" class="internal-link" title="zms.standard.initutil">initutil</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        <div class="childrenKindTitle">Functions</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#addZMSCustom" class="internal-link" title="zms.standard.addZMSCustom">add<wbr></wbr>ZMSCustom</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#aggregate_list" class="internal-link" title="zms.standard.aggregate_list">aggregate<wbr></wbr>_list</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#cmp" class="internal-link" title="zms.standard.cmp">cmp</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#compareDate" class="internal-link" title="zms.standard.compareDate">compare<wbr></wbr>Date</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#concat_list" class="internal-link" title="zms.standard.concat_list">concat<wbr></wbr>_list</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#copy_list" class="internal-link" title="zms.standard.copy_list">copy<wbr></wbr>_list</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#create_session_storage_if_neccessary" class="internal-link" title="zms.standard.create_session_storage_if_neccessary">create<wbr></wbr>_session<wbr></wbr>_storage<wbr></wbr>_if<wbr></wbr>_neccessary</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#daysBetween" class="internal-link" title="zms.standard.daysBetween">days<wbr></wbr>Between</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#dict_list" class="internal-link" title="zms.standard.dict_list">dict<wbr></wbr>_list</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#difference_list" class="internal-link" title="zms.standard.difference_list">difference<wbr></wbr>_list</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#distinct_list" class="internal-link" title="zms.standard.distinct_list">distinct<wbr></wbr>_list</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#dt_exec" class="internal-link" title="zms.standard.dt_exec">dt<wbr></wbr>_exec</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#dt_executable" class="internal-link" title="zms.standard.dt_executable">dt<wbr></wbr>_executable</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#dt_html" class="internal-link" title="zms.standard.dt_html">dt<wbr></wbr>_html</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#dt_py" class="internal-link" title="zms.standard.dt_py">dt<wbr></wbr>_py</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#dt_tal" class="internal-link" title="zms.standard.dt_tal">dt<wbr></wbr>_tal</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#encrypt_ordtype" class="internal-link" title="zms.standard.encrypt_ordtype">encrypt<wbr></wbr>_ordtype</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#encrypt_password" class="internal-link" title="zms.standard.encrypt_password">encrypt<wbr></wbr>_password</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#encrypt_schemes" class="internal-link" title="zms.standard.encrypt_schemes">encrypt<wbr></wbr>_schemes</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#FileFromData" class="internal-link" title="zms.standard.FileFromData"><wbr></wbr>File<wbr></wbr>From<wbr></wbr>Data</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#filter_list" class="internal-link" title="zms.standard.filter_list">filter<wbr></wbr>_list</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#format_datetime_iso" class="internal-link" title="zms.standard.format_datetime_iso">format<wbr></wbr>_datetime<wbr></wbr>_iso</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#get_installed_packages" class="internal-link" title="zms.standard.get_installed_packages">get<wbr></wbr>_installed<wbr></wbr>_packages</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#get_session" class="internal-link" title="zms.standard.get_session">get<wbr></wbr>_session</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#get_session_value" class="internal-link" title="zms.standard.get_session_value">get<wbr></wbr>_session<wbr></wbr>_value</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#getDataSizeStr" class="internal-link" title="zms.standard.getDataSizeStr">get<wbr></wbr>Data<wbr></wbr>Size<wbr></wbr>Str</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#getDateTime" class="internal-link" title="zms.standard.getDateTime">get<wbr></wbr>Date<wbr></wbr>Time</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#getFileTypeIconCSS" class="internal-link" title="zms.standard.getFileTypeIconCSS">get<wbr></wbr>File<wbr></wbr>Type<wbr></wbr>Icon<wbr></wbr>CSS</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#getINSTANCE_HOME" class="internal-link" title="zms.standard.getINSTANCE_HOME">get<wbr></wbr>INSTANCE_<wbr></wbr>HOME</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#getLangFmtDate" class="internal-link" title="zms.standard.getLangFmtDate">get<wbr></wbr>Lang<wbr></wbr>Fmt<wbr></wbr>Date</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#getLog" class="internal-link" title="zms.standard.getLog">get<wbr></wbr>Log</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#getMimeTypeIconSrc" class="internal-link" title="zms.standard.getMimeTypeIconSrc">get<wbr></wbr>Mime<wbr></wbr>Type<wbr></wbr>Icon<wbr></wbr>Src</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#getPACKAGE_HOME" class="internal-link" title="zms.standard.getPACKAGE_HOME">get<wbr></wbr>PACKAGE_<wbr></wbr>HOME</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#getPlugin" class="internal-link" title="zms.standard.getPlugin">get<wbr></wbr>Plugin</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#getPRODUCT_HOME" class="internal-link" title="zms.standard.getPRODUCT_HOME">get<wbr></wbr>PRODUCT_<wbr></wbr>HOME</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#getTempFile" class="internal-link" title="zms.standard.getTempFile">get<wbr></wbr>Temp<wbr></wbr>File</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#getXmlHeader" class="internal-link" title="zms.standard.getXmlHeader">get<wbr></wbr>Xml<wbr></wbr>Header</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#guess_content_type" class="internal-link" title="zms.standard.guess_content_type">guess<wbr></wbr>_content<wbr></wbr>_type</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#html_quote" class="internal-link" title="zms.standard.html_quote">html<wbr></wbr>_quote</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#http_import" class="internal-link" title="zms.standard.http_import">http<wbr></wbr>_import</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#http_request" class="internal-link" title="zms.standard.http_request">http<wbr></wbr>_request</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#id_prefix" class="internal-link" title="zms.standard.id_prefix">id<wbr></wbr>_prefix</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#id_quote" class="internal-link" title="zms.standard.id_quote">id<wbr></wbr>_quote</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#ImageFromData" class="internal-link" title="zms.standard.ImageFromData"><wbr></wbr>Image<wbr></wbr>From<wbr></wbr>Data</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#initZMS" class="internal-link" title="zms.standard.initZMS">init<wbr></wbr>ZMS</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#intersection_list" class="internal-link" title="zms.standard.intersection_list">intersection<wbr></wbr>_list</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#is_equal" class="internal-link" title="zms.standard.is_equal">is<wbr></wbr>_equal</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#isManagementInterface" class="internal-link" title="zms.standard.isManagementInterface">is<wbr></wbr>Management<wbr></wbr>Interface</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#isPreviewRequest" class="internal-link" title="zms.standard.isPreviewRequest">is<wbr></wbr>Preview<wbr></wbr>Request</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#localfs_read" class="internal-link" title="zms.standard.localfs_read">localfs<wbr></wbr>_read</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#localfs_readPath" class="internal-link" title="zms.standard.localfs_readPath">localfs_read<wbr></wbr>Path</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#localfs_remove" class="internal-link" title="zms.standard.localfs_remove">localfs<wbr></wbr>_remove</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#localfs_write" class="internal-link" title="zms.standard.localfs_write">localfs<wbr></wbr>_write</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#nvl" class="internal-link" title="zms.standard.nvl">nvl</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#operator_contains" class="internal-link" title="zms.standard.operator_contains">operator<wbr></wbr>_contains</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#operator_delattr" class="internal-link" title="zms.standard.operator_delattr">operator<wbr></wbr>_delattr</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#operator_delitem" class="internal-link" title="zms.standard.operator_delitem">operator<wbr></wbr>_delitem</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#operator_getattr" class="internal-link" title="zms.standard.operator_getattr">operator<wbr></wbr>_getattr</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#operator_getitem" class="internal-link" title="zms.standard.operator_getitem">operator<wbr></wbr>_getitem</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#operator_gettype" class="internal-link" title="zms.standard.operator_gettype">operator<wbr></wbr>_gettype</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#operator_setattr" class="internal-link" title="zms.standard.operator_setattr">operator<wbr></wbr>_setattr</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#operator_setitem" class="internal-link" title="zms.standard.operator_setitem">operator<wbr></wbr>_setitem</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#parse_json" class="internal-link" title="zms.standard.parse_json">parse<wbr></wbr>_json</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#parseLangFmtDate" class="internal-link" title="zms.standard.parseLangFmtDate">parse<wbr></wbr>Lang<wbr></wbr>Fmt<wbr></wbr>Date</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#parseXmlString" class="internal-link" title="zms.standard.parseXmlString">parse<wbr></wbr>Xml<wbr></wbr>String</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#processData" class="internal-link" title="zms.standard.processData">process<wbr></wbr>Data</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#pystr" class="internal-link" title="zms.standard.pystr">pystr</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#qs_append" class="internal-link" title="zms.standard.qs_append">qs<wbr></wbr>_append</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#raiseError" class="internal-link" title="zms.standard.raiseError">raise<wbr></wbr>Error</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#rand_int" class="internal-link" title="zms.standard.rand_int">rand<wbr></wbr>_int</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#re_findall" class="internal-link" title="zms.standard.re_findall">re<wbr></wbr>_findall</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#re_search" class="internal-link" title="zms.standard.re_search">re<wbr></wbr>_search</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#re_sub" class="internal-link" title="zms.standard.re_sub">re<wbr></wbr>_sub</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#remove_tags" class="internal-link" title="zms.standard.remove_tags">remove<wbr></wbr>_tags</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#sendMail" class="internal-link" title="zms.standard.sendMail">send<wbr></wbr>Mail</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#set_response_headers" class="internal-link" title="zms.standard.set_response_headers">set<wbr></wbr>_response<wbr></wbr>_headers</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#set_response_headers_cache" class="internal-link" title="zms.standard.set_response_headers_cache">set<wbr></wbr>_response<wbr></wbr>_headers<wbr></wbr>_cache</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#set_session_value" class="internal-link" title="zms.standard.set_session_value">set<wbr></wbr>_session<wbr></wbr>_value</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#sort_list" class="internal-link" title="zms.standard.sort_list">sort<wbr></wbr>_list</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#str_item" class="internal-link" title="zms.standard.str_item">str<wbr></wbr>_item</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#str_json" class="internal-link" title="zms.standard.str_json">str<wbr></wbr>_json</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#string_list" class="internal-link" title="zms.standard.string_list">string<wbr></wbr>_list</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#string_maxlen" class="internal-link" title="zms.standard.string_maxlen">string<wbr></wbr>_maxlen</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#stripDateTime" class="internal-link" title="zms.standard.stripDateTime">strip<wbr></wbr>Date<wbr></wbr>Time</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#sync_list" class="internal-link" title="zms.standard.sync_list">sync<wbr></wbr>_list</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#todayInRange" class="internal-link" title="zms.standard.todayInRange">today<wbr></wbr>In<wbr></wbr>Range</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#toXmlString" class="internal-link" title="zms.standard.toXmlString">to<wbr></wbr>Xml<wbr></wbr>String</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#triggerEvent" class="internal-link" title="zms.standard.triggerEvent">trigger<wbr></wbr>Event</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#umlaut_quote" class="internal-link" title="zms.standard.umlaut_quote">umlaut<wbr></wbr>_quote</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#unencode" class="internal-link" title="zms.standard.unencode">unencode</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#unescape" class="internal-link" title="zms.standard.unescape">unescape</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#url_append_params" class="internal-link" title="zms.standard.url_append_params">url<wbr></wbr>_append<wbr></wbr>_params</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#url_encode" class="internal-link" title="zms.standard.url_encode">url<wbr></wbr>_encode</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#url_inherit_params" class="internal-link" title="zms.standard.url_inherit_params">url<wbr></wbr>_inherit<wbr></wbr>_params</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#url_quote" class="internal-link" title="zms.standard.url_quote">url<wbr></wbr>_quote</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#writeBlock" class="internal-link" title="zms.standard.writeBlock">write<wbr></wbr>Block</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#writeError" class="internal-link" title="zms.standard.writeError">write<wbr></wbr>Error</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#writeLog" class="internal-link" title="zms.standard.writeLog">write<wbr></wbr>Log</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#writeStdout" class="internal-link" title="zms.standard.writeStdout">write<wbr></wbr>Stdout</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#zmi_paths" class="internal-link" title="zms.standard.zmi_paths">zmi<wbr></wbr>_paths</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Variables</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.standard.html#security" class="internal-link" title="zms.standard.security">security</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapseSideBar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <div id="main" class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">zms</a></code><wbr></wbr>.<code><a href="zms.standard.html" class="internal-link" title="zms.standard">standard</a></code><wbr></wbr>.<code><a href="zms.standard.initutil.html" class="internal-link" title="zms.standard.initutil">initutil</a></code></code></h1>
+          <div id="showPrivate">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p><code><span class="py-keyword">class</span> <span class="py-defname">initutil</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2400" class="sourceLink">(source)</a></code></p>
+          <p><a href="classIndex.html#zms.standard.initutil">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>Define the initialize() util.</p>
+</div>
+        </div>
+
+        <div id="splitTables">
+          <table class="children sortable" id="id146">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="zms.standard.initutil.__init__">__init__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getConfProperty" class="internal-link" title="zms.standard.initutil.getConfProperty">get<wbr></wbr>Conf<wbr></wbr>Property</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#http_import" class="internal-link" title="zms.standard.initutil.http_import">http<wbr></wbr>_import</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#setConfProperty" class="internal-link" title="zms.standard.initutil.setConfProperty">set<wbr></wbr>Conf<wbr></wbr>Property</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#__attr_conf_dict__" class="internal-link" title="zms.standard.initutil.__attr_conf_dict__">__attr<wbr></wbr>_conf<wbr></wbr>_dict__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="childList">
+          <div class="basemethod">
+  
+  
+  <a name="zms.standard.initutil.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2403">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.standard.initutil.getConfProperty">
+    
+  </a>
+  <a name="getConfProperty">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getConfProperty</span>(self, key, default=None):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2409">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.standard.initutil.http_import">
+    
+  </a>
+  <a name="http_import">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">http_import</span>(self, url, method=<span class="rst-variable-quote">'</span><span class="rst-variable-string">GET</span><span class="rst-variable-quote">'</span>, auth=None, parse_qs=0, timeout=10, headers={<wbr></wbr><span class="rst-variable-quote">'</span><span class="rst-variable-string">Accept</span><span class="rst-variable-quote">'</span>: <span class="rst-variable-quote">'</span><span class="rst-variable-string">*/*</span><span class="rst-variable-quote">'</span>}):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2412">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.standard.initutil.setConfProperty">
+    
+  </a>
+  <a name="setConfProperty">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">setConfProperty</span>(self, key, value):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2406">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms.standard.initutil.__attr_conf_dict__">
+    
+  </a>
+  <a name="__attr_conf_dict__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">__attr_conf_dict__</span>: <code>dict</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/standard.py#L2404">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div>
+        </div>
+      
+      </div>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container">
+    <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+<script>
+//<!-- OPEN SOURCE LINKS IN FRAMESET 
+  document.addEventListener('DOMContentLoaded', function(){
+  var links = document.getElementsByClassName('sourceLink');
+    var len = links.length;
+    for(var i=0; i<len; i++)
+    {
+      links[i].target = "_blank";
+      links[i].title = "View on Github";
+    }
+  })
+//-->
+</script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

@@ -461,7 +461,7 @@ def toCdata(self, s, xhtml=False):
   # Return Text in CDATA.
   elif s is not None:
     if isinstance(s, bytes):
-      s = s.deocde('utf-8')
+      s = s.decode('utf-8')
     # Hack for invalid characters
     s = s.replace(chr(30), '')
     # Hack for nested CDATA
@@ -1000,8 +1000,9 @@ def xmlNodeSet(mNode, sTagName='', iDeep=0):
 def xmlParse(xml):
   """
   Parse arbitrary XML-Structure into dictionary.
-  @param data: the xml
-  @type data: C{str} or C{StringIO}
+
+  @param xml: xml data
+  @type xml: C{str} or C{StringIO}
   @return: Dictionary of XML-Structure.
   @rtype: C{dict}
   """

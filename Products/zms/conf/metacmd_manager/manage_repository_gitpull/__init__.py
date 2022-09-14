@@ -34,7 +34,7 @@ class manage_repository_gitpull:
 	package = "com.zms.foundation.metacmd.gitbridge"
 
 	# Revision
-	revision = "5.0.0"
+	revision = "5.1.1"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

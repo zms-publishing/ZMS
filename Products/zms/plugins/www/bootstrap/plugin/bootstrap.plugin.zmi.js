@@ -464,8 +464,12 @@ $ZMI.registerReady(function(){
 		;
 	// Constraints
 	$(".split-left i.constraint").each(function() {
-		var $container = $(this).parents(".right");
-		$(".split-right",$container).popover({html:true,title:$("div.constraint",$container)[0].outerHTML});
+		try {
+			var $container = $(this).parents(".right");
+			$(".split-right",$container).popover({html:true,title:$("div.constraint",$container)[0].outerHTML});
+		} catch(e) {
+			console.error(e);
+		}
 	});
 	// Action-Lists
 	$('button.btn.split-right.dropdown-toggle').attr('title',getZMILangStr('ACTION_SELECT').replace('%s',getZMILangStr('ATTR_ACTION')));
@@ -1032,7 +1036,7 @@ ZMI.prototype.initInputFields = function(container) {
 					.wrap('<div class="col-sm-5 col-md-4 col-lg-3"></div>');
 				var icon_picker =  eval('icon_' + $(this).prop('class').split(' ').filter(function(v) {return v.endsWith('picker')}));
 				$(this).before('<div class="input-group-prepend"><span class="input-group-text"><i class="'+ icon_picker +'"></i></span></div>');
-				if (is_firefox) {
+				if (is_firefox && parseInt(navigator.userAgent.split('Firefox/')[1]) < 93) {
 					if ($(this).attr('type') == 'datetime-local') {
 						$(this).attr('type', 'date');
 					}
@@ -1270,28 +1274,14 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 		var page_titlealt = $page.attr("titlealt");
 		var page_icon = $page.attr("zmi_icon");
 		var anchor = "";
-		if ( page_is_pageelement) {
-			var file_filename = $("file>filename",$page);
-			if (file_filename.length) {
-				anchor = "/" + file_filename.text();
-			}
-		}
-		if (page_meta_type=='ZMSGraphic') {
-			var $img = $("img",$page);
-			if ($img.length==1) {
-				link_url = '<img data-id=&quot;'+page_uid+'&quot; src=&quot;'+$("href",$img).text()+'&quot;>';
-				try { page_titlealt = filename; } catch(err) { };
-			}
-		}
-		else if (page_meta_type=='ZMSFile') {
-			var $file = $("file",$page);
-			if ($file.length==1) {
-				var $fname = $("filename",$file).text();
-				var $ext = $fname.substring($fname.lastIndexOf('.')+1,$fname.length);
-				link_url = '<a data-id=&quot;'+page_uid+'&quot; href=&quot;'+$("href",$file).text()+'&quot; target=&quot;_blank&quot;>'+$page.attr("titlealt").replace(/"/g,'')+'&#32;('+$ext.toUpperCase()+',&#32;'+$("size",$file).text()+')</a>'; 
-				try { page_titlealt = filename; } catch(err) { };
-			}
-		}
+
+		if (page_meta_type=='ZMSGraphic' && link_url) {
+			link_url = '<img data-id=&quot;' + page_uid + '&quot;' + ' src=&quot;' + link_url + '&quot;>';
+		} else if (page_meta_type=='ZMSFile' && link_url) {
+			var $path_elements = link_url.split('/');
+			var $fname = $path_elements[$path_elements.length -1 ].split('?')[0];
+			link_url = '<a data-id=&quot;' + page_uid + '&quot;' + ' href=&quot;' + link_url + '&quot; target=&quot;_blank&quot;>' + $fname + '</a>'; 
+		};
 		var callback = that.p['toggleClick.callback'];
 		var css = [];
 		if (!page_is_active) {
@@ -1305,22 +1295,22 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 				css.push('type-'+page_type)
 			}
 		};
-		html += '<ul data-id="'+page_id+'" data-home-id="'+page_home_id+'" class="zmi-page '+page_meta_type+'">';
-		html += '<li class="'+css.join(' ')+'">';
-		html += $ZMI.icon("fas fa-caret-right toggle",'title="+" onclick="$ZMI.objectTree.toggleClick(this'+(typeof callback=="undefined"?'':','+callback)+')"')+' ';
+		html += '<ul data-id="' + page_id + '" data-home-id="' + page_home_id + '" class="zmi-page ' + page_meta_type + '">';
+		html += '<li class="' + css.join(' ') + '">';
+		html += $ZMI.icon("fas fa-caret-right toggle",'title="+" onclick="$ZMI.objectTree.toggleClick(this' + (typeof callback=="undefined"?'':',' + callback) + ')"') + ' ';
 		if (page_is_pageelement) {
-			html += '<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="'+$ZMI.getLangStr('TAB_PREVIEW')+'"><i class="'+page_icon+'"></i></span> ';
+			html += '<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="' + getZMILangStr('TAB_PREVIEW') + '"><i class="' + page_icon + '"></i></span> ';
 		}
-		html += '<a href="'+page_absolute_url+'"'
-				+ ' data-link-url="'+link_url+'"'
-				+ ' data-uid="'+page_uid+'"'
-				+ ' data-page-physical-path="'+page_physical_path+'"'
-				+ ' data-anchor="'+anchor+'"'
-				+ ' data-page-is-page="'+page_is_page+'"'
-				+ ' data-page-titlealt="'+page_titlealt.replace(/"/g,'&quot;').replace(/'/g,'&apos;')+'"'
+		html += '<a href="' + page_absolute_url + '"'
+				+ ' data-link-url="' + link_url + '"'
+				+ ' data-uid="' + page_uid + '"'
+				+ ' data-page-physical-path="' + page_physical_path + '"'
+				+ ' data-anchor="' + anchor + '"'
+				+ ' data-page-is-page="' + page_is_page + '"'
+				+ ' data-page-titlealt="' + page_titlealt.replace(/"/g,'&quot;').replace(/'/g,'&apos;') + '"'
 				+ ' onclick="return zmiSelectObject(this);return false;">';
 		if (!page_is_pageelement) {
-			html += '<i class="'+page_icon+'"></i> ';
+			html += '<i class="' + page_icon + '"></i> ';
 		}
 		html += page_titlealt;
 		html += '</a>';
@@ -1555,7 +1545,12 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 					opticon = $ZMI.icon(opticon);
 				}
 				var html = '';
-				html += '<a class="dropdown-item" title="'+opttitle+'" href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\')">';
+				var optid = '';
+				if (optvalue.toLowerCase().indexOf('manage_addproduct/')==0) {
+					// opttitle is meta_id in case of insertable content objects
+					optid = opttitle;
+				}
+				html += '<a class="dropdown-item" title="'+opttitle+'" href="javascript:$ZMI.actionList.exec($(\'li.zmi-item' + (id==''?':first':'#zmi_item_'+id) + '\'),\'' + optlabel + '\',\'' + optvalue + '\',\'' + optid + '\')">';
 				html += opticon+' <span>'+optlabel+'</span>';
 				html += '</a>';
 				$ul.append(html);
@@ -1598,7 +1593,7 @@ ZMIActionList.prototype.out = function(el) {
 /**
  *  Execute action.
  */
-ZMIActionList.prototype.exec = function(sender, label, target) {
+ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 	var id_prefix = this.getContextId(sender);
 	if (typeof id_prefix != 'undefined' && id_prefix != '') {
 		id_prefix = id_prefix.replace(/(\d*?)$/gi,'');
@@ -1624,7 +1619,12 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 			}
 		}
 		data['id_prefix'] = id_prefix;
-		var title = '<i class="fas fa-plus-sign"></i> '+getZMILangStr('BTN_INSERT')+': '+label;
+		var title = '<i class="fas fa-plus-sign"></i> ' + getZMILangStr('BTN_INSERT') + ':&nbsp;' + label;
+		// debugger;
+		if (meta_id!='') { 
+			data['meta_id'] = meta_id;
+			console.log('ZMIActionList.exec meta_id = ' + meta_id )
+		}
 		$('<li id="manage_addProduct" class="zmi-item zmi-highlighted"><div class="center">'+title+'</div></li>').insertAfter($el.parents(".zmi-item"));
 		// Show add-dialog.
 		$ZMI.iframe(target,data,{
@@ -1643,7 +1643,7 @@ ZMIActionList.prototype.exec = function(sender, label, target) {
 				$('#addCancelBtn').click(function() {
 					zmiModal("hide");
 				});
-				if($('#zmiIframeAddDialog .form-control').length==0) {
+				if($('#zmiIframeAddDialog .form-group:not([class*="activity"]) .form-control').length==0) {
 					$('#addInsertBtn').click();
 				}
 			},

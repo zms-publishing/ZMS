@@ -15,13 +15,13 @@
 	</div>
 </div>
 <script>
-$(function() {
-		$("div[id^='tr_links_links']").hide();
-		var links = [];
-		var $table = $("#tr_links_interface0 table");
-		var xml = $.parseXML($("textarea[id^='links_links']").val());
-		var $xml = $(xml);
-		$("list > item > dictionary",$xml).each(function() {
+	$(function() {
+			$("div[id^='tr_links_links']").hide();
+			var links = [];
+			var $table = $("#tr_links_interface0 table");
+			var xml = $.parseXML($("textarea[id^='links_links']").val());
+			var $xml = $(xml);
+			$("list > item > dictionary",$xml).each(function() {
 				var record = {};
 				$("item",this).each(function() {
 						var $item = $(this);
@@ -29,7 +29,7 @@ $(function() {
 					});
 				links.push(record);
 			});
-		const refreshData = function() {
+			const refreshData = function() {
 				var xml = '';
 				xml += '<list>\n';
 				for (var i=0; i < links.length; i++) {
@@ -45,7 +45,16 @@ $(function() {
 				xml += '</list>';
 				$("textarea[id^='links_links']").val(xml);
 			};
-		const refreshView = function() {
+			const refreshLinks = function() {
+				links = [];
+				$("tr.url-inputs",$table).each(function() {
+						var $tr = $(this);
+						var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
+						links.push(record);
+					});
+				refreshData();
+			}
+			const refreshView = function() {
 				$("tr:not(:last)",$table).remove();
 				var $last = ("tr:last",$table);
 				var html = '';
@@ -71,27 +80,19 @@ $(function() {
 					html += '</tr>\n';
 				}
 				$last.prepend(html);
-				$ZMI.initUrlInput($(".url-inputs",$table));
-				const refreshLinks = function() {
-						links = [];
-						$("tr:not(:last)",$table).each(function() {
-								var $tr = $(this);
-								var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
-								links.push(record);
-							});
-						refreshData();
-					}
+				$ZMI.initUrlInput($("tr.url-inputs",$table));
+				refreshLinks();
 				$(".btn-delete",$table).click(function() {
-						if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
-							$(this).parents('tr').remove();
-							refreshLinks();
-						}
-					});
-				$("tr:not(:last) input",$table).change(refreshLinks);
+					if (confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))) {
+						$(this).parents('tr').remove();
+						refreshLinks();
+					}
+				});
+				$("tr.url-inputs input",$table).change(refreshLinks);
 				refreshData();
 			};
-		refreshView();
-		$(".btn-add",$table).click(function() {
+			refreshView();
+			$(".btn-add",$table).click(function() {
 				var $tr = $(this).parents("tr")[0];
 				if ($("input[value='']",$tr).length==0) {
 					var record = {url:$("input[name^='links_url_']",$tr).val(),label:$("input[name^='links_label_']",$tr).val()};
@@ -100,6 +101,25 @@ $(function() {
 				}
 				refreshView();
 			});
+
+			// Sorting Function
+			$('#tr_links_interface0 .meta-sort select').on('change',function() {
+				var $this_row = $(this).parents('#tr_links_interface0 table tr');
+				var pos = $(this).val();
+				// console.log(pos);
+				$(this).find('option').removeAttr('selected');
+				$(this).find('option[value="' + pos + '"]').attr('selected', 'selected');
+				var $target_row = $('#tr_links_interface0 table tr')[pos];
+				if ( pos==0 ) {
+					$this_row.insertBefore($target_row);
+				} else {
+					$this_row.insertAfter($target_row);
+				};
+				// Refresh XML-List from Re-Ordered Table
+				$table = $("#tr_links_interface0 table");
+				refreshLinks();
+			})
+
 	});
 </script>
 

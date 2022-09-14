@@ -1,0 +1,1402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>zms._mediadb.MediaDb</title>
+    <meta name="generator" content="pydoctor 22.5.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a> <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div class="hint" id="search-help-box">
+          <p class="rst-last">
+      
+            Search bar offers the following options:
+            <ul>   
+                <li>
+                  <strong>Term presence.</strong> The below example searches for documents that 
+                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
+                </li> 
+
+                <li>
+                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
+                </li> 
+
+                <li>
+                  <strong>Search in specific fields.</strong> The following search matches all objects 
+                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
+
+                  <p>
+                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
+                    Last two fields are only applicable if "search in docstrings" is enabled.
+                  </p>
+                </li>
+
+                <li>
+                  <strong>Fuzzy matches.</strong> The following search matches all documents 
+                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
+                </li>
+            </ul>
+
+          </p>
+        </div>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 8px;">
+          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="zms._mediadb.MediaDb.html" class="internal-link" title="This class"><wbr></wbr>Media<wbr></wbr>Db</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="zms._mediadb.MediaDb.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getFile" class="internal-link" title="zms._mediadb.MediaDb.getFile">get<wbr></wbr>File</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getFileSize" class="internal-link" title="zms._mediadb.MediaDb.getFileSize">get<wbr></wbr>File<wbr></wbr>Size</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getLocation" class="internal-link" title="zms._mediadb.MediaDb.getLocation">get<wbr></wbr>Location</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getParentDir" class="internal-link" title="zms._mediadb.MediaDb.getParentDir">get<wbr></wbr>Parent<wbr></wbr>Dir</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getPath" class="internal-link" title="zms._mediadb.MediaDb.getPath">get<wbr></wbr>Path</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getStructure" class="internal-link" title="zms._mediadb.MediaDb.getStructure">get<wbr></wbr>Structure</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_changeProperties" class="internal-link" title="zms._mediadb.MediaDb.manage_changeProperties">manage_change<wbr></wbr>Properties</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_index_html" class="internal-link" title="zms._mediadb.MediaDb.manage_index_html">manage<wbr></wbr>_index<wbr></wbr>_html</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#readDir" class="internal-link" title="zms._mediadb.MediaDb.readDir">read<wbr></wbr>Dir</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#retrieveFile" class="internal-link" title="zms._mediadb.MediaDb.retrieveFile">retrieve<wbr></wbr>File</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#retrieveFileStreamIterator" class="internal-link" title="zms._mediadb.MediaDb.retrieveFileStreamIterator">retrieve<wbr></wbr>File<wbr></wbr>Stream<wbr></wbr>Iterator</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#setLocation" class="internal-link" title="zms._mediadb.MediaDb.setLocation">set<wbr></wbr>Location</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#storeFile" class="internal-link" title="zms._mediadb.MediaDb.storeFile">store<wbr></wbr>File</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#targetFile" class="internal-link" title="zms._mediadb.MediaDb.targetFile">target<wbr></wbr>File</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#urlQuote" class="internal-link" title="zms._mediadb.MediaDb.urlQuote">url<wbr></wbr>Quote</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#valid_filenames" class="internal-link" title="zms._mediadb.MediaDb.valid_filenames">valid<wbr></wbr>_filenames</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_browse" class="internal-link" title="zms._mediadb.MediaDb.manage_browse">manage<wbr></wbr>_browse</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_main" class="internal-link" title="zms._mediadb.MediaDb.manage_main">manage<wbr></wbr>_main</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_options" class="internal-link" title="zms._mediadb.MediaDb.manage_options">manage<wbr></wbr>_options</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_properties" class="internal-link" title="zms._mediadb.MediaDb.manage_properties">manage<wbr></wbr>_properties</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#meta_type" class="internal-link" title="zms._mediadb.MediaDb.meta_type">meta<wbr></wbr>_type</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#security" class="internal-link" title="zms._mediadb.MediaDb.security">security</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#zmi_icon" class="internal-link" title="zms._mediadb.MediaDb.zmi_icon">zmi<wbr></wbr>_icon</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#id" class="internal-link" title="zms._mediadb.MediaDb.id">id</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#location" class="internal-link" title="zms._mediadb.MediaDb.location">location</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#structure" class="internal-link" title="zms._mediadb.MediaDb.structure">structure</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="zms._mediadb.html" class="internal-link" title="The parent of this class">_mediadb</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._mediadb.MediaDb.html" class="internal-link" title="zms._mediadb.MediaDb"><wbr></wbr>Media<wbr></wbr>Db</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        <div class="childrenKindTitle">Functions</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._mediadb.html#containerFilter" class="internal-link" title="zms._mediadb.containerFilter">container<wbr></wbr>Filter</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._mediadb.html#getFilenamesFromValue" class="internal-link" title="zms._mediadb.getFilenamesFromValue">get<wbr></wbr>Filenames<wbr></wbr>From<wbr></wbr>Value</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._mediadb.html#manage_addMediaDb" class="internal-link" title="zms._mediadb.manage_addMediaDb">manage_add<wbr></wbr>Media<wbr></wbr>Db</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._mediadb.html#manage_delMediaDb" class="internal-link" title="zms._mediadb.manage_delMediaDb">manage_del<wbr></wbr>Media<wbr></wbr>Db</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._mediadb.html#manage_packMediaDb" class="internal-link" title="zms._mediadb.manage_packMediaDb">manage_pack<wbr></wbr>Media<wbr></wbr>Db</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._mediadb.html#manage_structureMediaDb" class="internal-link" title="zms._mediadb.manage_structureMediaDb">manage_structure<wbr></wbr>Media<wbr></wbr>Db</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._mediadb.html#recurse_addMediaDb" class="internal-link" title="zms._mediadb.recurse_addMediaDb">recurse_add<wbr></wbr>Media<wbr></wbr>Db</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._mediadb.html#recurse_delMediaDb" class="internal-link" title="zms._mediadb.recurse_delMediaDb">recurse_del<wbr></wbr>Media<wbr></wbr>Db</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        
+         
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapseSideBar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <div id="main" class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">zms</a></code><wbr></wbr>.<code><a href="zms._mediadb.html" class="internal-link" title="zms._mediadb">_mediadb</a></code><wbr></wbr>.<code><a href="zms._mediadb.MediaDb.html" class="internal-link" title="zms._mediadb.MediaDb">MediaDb</a></code></code></h1>
+          <div id="showPrivate">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p><code><span class="py-keyword">class</span> <span class="py-defname">MediaDb</span>(OFS.SimpleItem.Item, Persistent, Acquisition.Implicit): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L252" class="sourceLink">(source)</a></code></p>
+          <p><a href="classIndex.html#zms._mediadb.MediaDb">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p class="undocumented">Undocumented</p></div>
+        </div>
+
+        <div id="splitTables">
+          <table class="children sortable" id="id108">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="zms._mediadb.MediaDb.__init__">__init__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getFile" class="internal-link" title="zms._mediadb.MediaDb.getFile">get<wbr></wbr>File</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getFileSize" class="internal-link" title="zms._mediadb.MediaDb.getFileSize">get<wbr></wbr>File<wbr></wbr>Size</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getLocation" class="internal-link" title="zms._mediadb.MediaDb.getLocation">get<wbr></wbr>Location</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getParentDir" class="internal-link" title="zms._mediadb.MediaDb.getParentDir">get<wbr></wbr>Parent<wbr></wbr>Dir</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getPath" class="internal-link" title="zms._mediadb.MediaDb.getPath">get<wbr></wbr>Path</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getStructure" class="internal-link" title="zms._mediadb.MediaDb.getStructure">get<wbr></wbr>Structure</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#manage_changeProperties" class="internal-link" title="zms._mediadb.MediaDb.manage_changeProperties">manage_change<wbr></wbr>Properties</a></code></td>
+    <td>MediaDb.manage_changeProperties</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#manage_index_html" class="internal-link" title="zms._mediadb.MediaDb.manage_index_html">manage<wbr></wbr>_index<wbr></wbr>_html</a></code></td>
+    <td>MediaDb.manage_index_html</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#readDir" class="internal-link" title="zms._mediadb.MediaDb.readDir">read<wbr></wbr>Dir</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#retrieveFile" class="internal-link" title="zms._mediadb.MediaDb.retrieveFile">retrieve<wbr></wbr>File</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#retrieveFileStreamIterator" class="internal-link" title="zms._mediadb.MediaDb.retrieveFileStreamIterator">retrieve<wbr></wbr>File<wbr></wbr>Stream<wbr></wbr>Iterator</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#setLocation" class="internal-link" title="zms._mediadb.MediaDb.setLocation">set<wbr></wbr>Location</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#storeFile" class="internal-link" title="zms._mediadb.MediaDb.storeFile">store<wbr></wbr>File</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#targetFile" class="internal-link" title="zms._mediadb.MediaDb.targetFile">target<wbr></wbr>File</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#urlQuote" class="internal-link" title="zms._mediadb.MediaDb.urlQuote">url<wbr></wbr>Quote</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#valid_filenames" class="internal-link" title="zms._mediadb.MediaDb.valid_filenames">valid<wbr></wbr>_filenames</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage_browse" class="internal-link" title="zms._mediadb.MediaDb.manage_browse">manage<wbr></wbr>_browse</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage_main" class="internal-link" title="zms._mediadb.MediaDb.manage_main">manage<wbr></wbr>_main</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage_options" class="internal-link" title="zms._mediadb.MediaDb.manage_options">manage<wbr></wbr>_options</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage_properties" class="internal-link" title="zms._mediadb.MediaDb.manage_properties">manage<wbr></wbr>_properties</a></code></td>
+    <td>"" Constructor</td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#meta_type" class="internal-link" title="zms._mediadb.MediaDb.meta_type">meta<wbr></wbr>_type</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#security" class="internal-link" title="zms._mediadb.MediaDb.security">security</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#zmi_icon" class="internal-link" title="zms._mediadb.MediaDb.zmi_icon">zmi<wbr></wbr>_icon</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#id" class="internal-link" title="zms._mediadb.MediaDb.id">id</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#location" class="internal-link" title="zms._mediadb.MediaDb.location">location</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#structure" class="internal-link" title="zms._mediadb.MediaDb.structure">structure</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="childList">
+          <div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self, location, structure=0):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L289">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.getFile">
+    
+  </a>
+  <a name="getFile">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getFile</span>(self, REQUEST, RESPONSE):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L345">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.getFileSize">
+    
+  </a>
+  <a name="getFileSize">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getFileSize</span>(self, filename):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L437">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.getLocation">
+    
+  </a>
+  <a name="getLocation">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getLocation</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L306">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.getParentDir">
+    
+  </a>
+  <a name="getParentDir">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getParentDir</span>(self, path):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L339">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.getPath">
+    
+  </a>
+  <a name="getPath">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getPath</span>(self, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L324">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.getStructure">
+    
+  </a>
+  <a name="getStructure">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getStructure</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L312">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.manage_changeProperties">
+    
+  </a>
+  <a name="manage_changeProperties">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_changeProperties</span>(self, submit, REQUEST, RESPONSE):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L506">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>MediaDb.manage_changeProperties</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.manage_index_html">
+    
+  </a>
+  <a name="manage_index_html">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_index_html</span>(self, filename, REQUEST=None):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L385">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>MediaDb.manage_index_html</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.readDir">
+    
+  </a>
+  <a name="readDir">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">readDir</span>(self, path):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L333">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.retrieveFile">
+    
+  </a>
+  <a name="retrieveFile">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">retrieveFile</span>(self, filename):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L420">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.retrieveFileStreamIterator">
+    
+  </a>
+  <a name="retrieveFileStreamIterator">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">retrieveFileStreamIterator</span>(self, filename, REQUEST=None):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L392">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.setLocation">
+    
+  </a>
+  <a name="setLocation">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">setLocation</span>(self, location):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L298">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.storeFile">
+    
+  </a>
+  <a name="storeFile">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">storeFile</span>(self, file):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L371">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.targetFile">
+    
+  </a>
+  <a name="targetFile">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">targetFile</span>(self, filename):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L354">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.urlQuote">
+    
+  </a>
+  <a name="urlQuote">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">urlQuote</span>(self, s):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L318">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._mediadb.MediaDb.valid_filenames">
+    
+  </a>
+  <a name="valid_filenames">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">valid_filenames</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L447">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._mediadb.MediaDb.manage_browse">
+    
+  </a>
+  <a name="manage_browse">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_browse</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L281">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._mediadb.MediaDb.manage_main">
+    
+  </a>
+  <a name="manage_main">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_main</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L282">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._mediadb.MediaDb.manage_options">
+    
+  </a>
+  <a name="manage_options">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_options</span>: <code>tuple</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L274">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._mediadb.MediaDb.manage_properties">
+    
+  </a>
+  <a name="manage_properties">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_properties</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L283">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p>"" Constructor</p>
+</div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._mediadb.MediaDb.meta_type">
+    
+  </a>
+  <a name="meta_type">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">meta_type</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L264">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._mediadb.MediaDb.security">
+    
+  </a>
+  <a name="security">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">security</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L260">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._mediadb.MediaDb.zmi_icon">
+    
+  </a>
+  <a name="zmi_icon">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">zmi_icon</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L266">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms._mediadb.MediaDb.id">
+    
+  </a>
+  <a name="id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">id</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L290">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms._mediadb.MediaDb.location">
+    
+  </a>
+  <a name="location">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">location</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L301">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms._mediadb.MediaDb.structure">
+    
+  </a>
+  <a name="structure">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">structure</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_mediadb.py#L292">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div>
+        </div>
+      
+      </div>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container">
+    <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+<script>
+//<!-- OPEN SOURCE LINKS IN FRAMESET 
+  document.addEventListener('DOMContentLoaded', function(){
+  var links = document.getElementsByClassName('sourceLink');
+    var len = links.length;
+    for(var i=0; i<len; i++)
+    {
+      links[i].target = "_blank";
+      links[i].title = "View on Github";
+    }
+  })
+//-->
+</script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

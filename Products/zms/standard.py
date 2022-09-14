@@ -74,11 +74,17 @@ def pystr(v, encoding='utf-8', errors='strict'):
 security.declarePublic('addZMSCustom')
 def addZMSCustom(self, meta_id=None, values={}, REQUEST=None):
   """
-  Public alias for manage_addZMSCustom
-  @param meta_id
-  @param values
-  @param REQUEST
-  @rtype: C{ZMSCustom}
+  Public alias for manage_addZMSCustom:
+  add a custom node of the type designated by meta_id in current context.
+
+  @param meta_id: the meta-id / type of the new ZMSObject
+  @type meta_id: C{str}
+  @param values: the dictionary of initial attribut-values assigned to the new ZMSObject 
+  @type values: C{dict}
+  @param REQUEST: the triggering request
+  @type REQUEST: C{ZPublisher.HTTPRequest}
+  @return: the new node
+  @rtype: C{zmsobject.ZMSObject}
   """
   return self.manage_addZMSCustom(meta_id, values, REQUEST)
 
@@ -201,17 +207,19 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
   """
   Set default and dynamic cache response headers according to ZMS_CACHE_EXPIRE_DATETIME
   which is determined in ObjAttrs.isActive for each page element as the earliest time for invalidation.
+  I:Usage: Add to standard_html master template, e.g.::
+    <tal:block tal:define="
+      standard modules/Products.zms/standard;
+      cache_expire python:standard.set_response_headers_cache(this, request, cache_max_age=0, cache_s_maxage=6*3600)">
+    </tal:block>
+
   @param cache_max_age: seconds the element remains in all caches (public/proxy and private/browser)
   @param cache_s_maxage: seconds the element remains in public/proxy cache (value -1 means cache_s_maxage = cache_max_age)
   @see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#directives
   @see: http://nginx.org/en/docs/http/ngx_http_headers_module.html#expires
   @see: https://www.nginx.com/resources/wiki/start/topics/examples/x-accel/
-  @return: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
-  @usage: Add to standard_html master template, e.g. 
-    <tal:block tal:define="
-      standard modules/Products.zms/standard;
-      cache_expire python:standard.set_response_headers_cache(this, request, cache_max_age=0, cache_s_maxage=6*3600)">
-    </tal:block>
+  @returns: Tuple of expires date time in GMT as ISO8601 string and the seconds until expiration
+  @retype: C{tuple}
   """
   if request is not None:
     is_preview = request.get('preview', '') == 'preview'
@@ -245,12 +253,19 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
 
 
 security.declarePublic('get_installed_packages')
-def get_installed_packages():
+def get_installed_packages(pip_cmd='freeze'):
   import subprocess
-  pipfreeze = subprocess.Popen("../../../bin/pip freeze --all",
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                               shell=True, cwd=getPACKAGE_HOME(), universal_newlines=True)
-  packages = pipfreeze.communicate()[0].strip()
+  pip_cmds = {
+      'list':'/pip list', 
+      'freeze':'/pip freeze --all'
+    }
+  cmd = pip_cmds.get(pip_cmd,'freeze')
+  pth = getPACKAGE_HOME().rsplit('/lib/')[0] + '/bin'
+  packages = ''
+  output = subprocess.Popen(pth + cmd,
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            shell=True, cwd=pth, universal_newlines=True)
+  packages = f'# {pth}{cmd}\n\n{output.communicate()[0].strip()}'
   return packages
 
 
@@ -402,7 +417,7 @@ def url_encode(url):
   All unsafe characters must always be encoded within a URL.
   @see: http://www.ietf.org/rfc/rfc1738.txt
   @param url: Url
-  @type s: C{str}
+  @type url: C{str}
   @return: Encoded string
   @rtype: C{str}
   """
@@ -591,7 +606,7 @@ def getFileTypeIconCSS(fn):
   """
   Returns the FontAwesome CSS class of an icon representing the specified file type.
   @param fn: filename with extension (e.g. picture.gif).
-  @type mt: C{str}
+  @type fn: C{str}
   @rtype: C{str}
   """
   fontAwesomeIconClasses = {
@@ -876,7 +891,7 @@ def http_request(url, method='GET', **kwargs):
 
 
 security.declarePublic('http_import')
-def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
+def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}, debug=0 ):
   """
   Send Http-Request and return Response-Body.
   @param url: Remote-URL
@@ -891,6 +906,8 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   @type timeout: C{int}, values in seconds
   @param headers: Request-Headers
   @type headers: C{dict}
+  @param debug: Debug Mode will ignores Status Code of Return
+  @type debug: C{int}, values are 0 or 1
   @return: Response-Body
   @rtype: C{str}
   """
@@ -902,6 +919,15 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   netloc = u[1]
   path = u[2]
   query = u[4]
+
+  # Get Auth from URL.
+  if netloc.find(':')>0 and netloc.find('@')>netloc.find(':'):
+    credentials = netloc[:netloc.find('@')]
+    username = credentials[:credentials.find(':')]
+    password = credentials[credentials.find(':')+1:]
+    auth = {'username':username,'password':password}
+    netloc = netloc[netloc.find('@')+1:]
+    url = '%s://%s%s?%s'%(scheme,netloc,path,query)
 
   # Get Proxy.
   useproxy = True
@@ -927,10 +953,11 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
 
   # Set request-headers.
   if auth is not None:
-    from urllib.parse import unquote
     userpass = auth['username']+':'+auth['password']
-    userpass = base64.encodestring(unquote(userpass)).strip()
-    headers['Authorization'] =  'Basic '+userpass
+    userpass = urllib.parse.unquote(userpass)
+    userpass = userpass.encode('utf-8')
+    userpass = base64.encodestring(userpass).decode('utf-8').strip()
+    headers['Authorization'] = 'Basic '+userpass
   if method == 'GET' and query:
     path += '?' + query
     query = ''
@@ -942,11 +969,12 @@ def http_import(context, url, method='GET', auth=None, parse_qs=0, timeout=10, h
   message = response.reason
 
   #### get parameter from content
-  if reply_code >= 400 or reply_code >= 500:
+  debug = int(debug)
+  if (reply_code >= 400 or reply_code >= 500 ) and not debug:
     error = "[%i]: %s at %s [%s]"%(reply_code, message, url, method)
     writeError( context, "[http_import.error]: %s"%error)
     raise zExceptions.InternalError(error)
-  elif reply_code==200:
+  elif reply_code==200 or debug:
     # get content
     data = response.read()
     rtn = None
@@ -1072,13 +1100,16 @@ def re_sub( pattern, replacement, subject, ignorecase=False):
   Performs a search-and-replace across subject, replacing all matches of
   regex in subject with replacement. The result is returned by the sub()
   function. The subject string you pass is not modified.
-  convenience-function since re cannot be imported in restricted python
+  Convenience-function since re cannot be imported in restricted python.
+
   @param pattern: the regular expression to which this string is to be matched
   @type pattern: C{str}
   @param replacement: the string to be substituted for each match
   @type replacement: C{str}
-  @param replacement: ignore case considerations
-  @type replacement: C{Bool=False}
+  @param subject: the string in which the replacement has to be done
+  @type subject: C{str}
+  @param ignorecase: ignore case considerations
+  @type ignorecase: C{Bool=False}
   @return: the resulting string.
   @rtype: C{str}
   """
@@ -1135,7 +1166,7 @@ def re_findall( pattern, text, ignorecase=False):
 ############################################################################
 
 # ==========================================================================
-# Index  Field  Values
+# Index Field Values
 # 0  year (for example, 1993)
 # 1  month range [1,12]
 # 2  day range [1,31]
@@ -1145,6 +1176,40 @@ def re_findall( pattern, text, ignorecase=False):
 # 6  weekday range [0,6], Monday is 0
 # 7  Julian day range [1,366]
 # 8  daylight savings flag 0, 1 or -1; see below
+# ==========================================================================
+# C-Style Format Strings
+# %a   An abbreviation for the day of the week. 
+# %A   The full name for the day of the week. 
+# %b   An abbreviation for the month name. 
+# %B   The full name of the month. 
+# %c   A string representing the complete date and time; on my 
+#      computer it's in the form: 10/22/99 19:03:23 
+# %d   The day of the month, formatted with two digits. 
+# %H   The hour (on a 24-hour clock), formatted with two digits. 
+# %I   The hour (on a 12-hour clock), formatted with two digits. 
+# %j   The count of days in the year, formatted with three digits 
+#      (from 001 to 366). 
+# %m   The month number, formatted with two digits. 
+# %M   The minute, formatted with two digits. 
+# %p   Either AM or PM as appropriate. 
+# %S   The second, formatted with two digits. 
+# %U   The week number, formatted with two digits (from 00 to 53; 
+#      week number 1 is taken as beginning with the first Sunday
+#      in a year). See also %W. 
+# %w   A single digit representing the day of the week: 
+#      Sunday is day 0.
+# %W   Another version of the week number: like %U, but 
+#      counting week 1 as beginning with the first Monday in a year. 
+# %x   A string representing the complete date; on my computer 
+#      it's in the format 10/22/99.
+# %X   A string representing the full time of day (hours, minutes, 
+#      and seconds), in a format like the following example: 13:13:13
+# %y   The last two digits of the year. 
+# %Y   The full year, formatted with four digits to include 
+#      the century. 
+# %Z   Defined by ANSI C as eliciting the time zone, if available; 
+#      it is not available in this implementation (which accepts %Z 
+#      but generates no output for it).
 # ==========================================================================
 
 security.declarePublic('format_datetime_iso')
@@ -1293,10 +1358,10 @@ security.declarePublic('todayInRange')
 def todayInRange(start, end):
   """
   Checks if today is in given range.
-  @param start
-  @type start C{any}
-  @param end
-  @type end C{any}
+  @param start: start date
+  @type start: C{any}
+  @param end: end date
+  @type end: C{any}
   """
   b = True
   if start:
@@ -1313,10 +1378,10 @@ def todayInRange(start, end):
 security.declarePublic('compareDate')
 def compareDate(t0, t1):
   """
-  Compares two dates t0 and t1 and returns result.
-   +1: t0 &lt; t1
-    0: t0 == t1
-   -1: t0 &gt; t1
+  Compares two dates t0 and t1 and returns result::
+    +1: t0 &lt; t1
+     0: t0 == t1
+    -1: t0 &gt; t1
   @returns: A negative number if date t0 is before t1, zero if they are equal, or positive if t0 is after t1.
   @rtype: C{int}
   """
@@ -1543,8 +1608,8 @@ def localfs_read(filename, mode='b', cache='public, max-age=3600', REQUEST=None)
   directories in Config-Tab / Miscelleaneous-Section.
   @param filename: Filepath
   @type filename: C{string}
-  @param filename: Access mode
-  @type filename: C{string}, values are 'b' - binary
+  @param mode: Access mode
+  @type mode: C{string}, values are 'b' - binary
   @param cache Cache-Headers
   @type cache C{bool}
   @param REQUEST: the triggering request
@@ -1724,7 +1789,11 @@ def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
     tl = [(_globals.sort_item(x[qorder]), x) for x in l]
   if ignorecase and len(tl) > 0 and isinstance(tl[0][0], str):
     tl = [(str(x[0]).upper(), x[1]) for x in tl]
-  tl = sorted(tl,key=lambda x:x[0])
+  try:
+    tl = sorted(tl,key=lambda x:x[0])
+  except:
+    writeError(context, '[sort_list]: mixed datatypes normalized to strings')
+    tl = sorted(tl,key=lambda x:str(x[0]))
   tl = [x[1] for x in tl]
   if qorderdir == 'desc':
     tl.reverse()
@@ -1843,8 +1912,8 @@ def filter_list(l, i, v, o='%'):
   @type i: C{str} or C{int}
   @param v: Field-value
   @type v: C{any}
-  @param v: Match-operator
-  @type v: C{str}, values are '%' (full-text), '=', '==', '>', '<', '>=', '<=', '!=', '<>'
+  @param o: Match-operator
+  @type o: C{str}, values are '%' (full-text), '=', '==', '>', '<', '>=', '<=', '!=', '<>'
   @return: Filtered list.
   @rtype: C{list}
   """
@@ -2015,11 +2084,11 @@ security.declarePublic('toXmlString')
 def toXmlString(context, v, xhtml=False, encoding='utf-8'):
   """
   Serializes value to ZMS XML-Structure.
-  @param context
-  @type context
-  @param v
-  @type v
-  @param xhtml
+  @param context: ZMS context
+  @type context: C{zmsobject.ZMSObject}
+  @param v: content node
+  @type v: C{zmsobject.ZMSObject}
+  @param xhtml: 
   @type xhtml
   @param encoding
   @type encoding
@@ -2033,7 +2102,7 @@ security.declarePublic('parseXmlString')
 def parseXmlString(xml):
   """
   Parse value from ZMS XML-Structure.
-  @param xml
+  @param xml: xml data
   @type xml: C{str} or C{io.BytesIO}
   @return: C{list} or C{dict}
   @rtype: C{any}
@@ -2052,7 +2121,7 @@ security.declarePublic('processData')
 def processData(context, processId, data, trans=None):
   """
   Process data with custom transformation.
-  @param context
+  @param context: ZMS context
   @type context: C{ZMSObject}
   @param processId: the process-id
   @type processId: C{str}
@@ -2185,10 +2254,11 @@ def dt_py( context, script, kw={}):
 def dt_tal(context, text, options={}):
   """
   Execute given TAL-snippet.
+
   @param context: the context
   @type context: C{ZMSObject}
-  @param value: TAL-snippet
-  @type value: C{string}
+  @param text: TAL-snippet
+  @type text: C{string}
   @return: Result of the execution or None
   @rtype: C{any}
   """
@@ -2382,10 +2452,8 @@ def raiseError(error_type, error_value):
   raise getattr(zExceptions,error_type)(error_value)
 
 
-################################################################################
-# Define the initialize() util.
-################################################################################
 class initutil(object):
+  """Define the initialize() util."""
 
   def __init__(self):
     self.__attr_conf_dict__ = {}
@@ -2396,9 +2464,7 @@ class initutil(object):
   def getConfProperty(self, key, default=None):
     return self.__attr_conf_dict__.get(key, default)
 
-  def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}):
-    return http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers)
+  def http_import(self, url, method='GET', auth=None, parse_qs=0, timeout=10, headers={'Accept':'*/*'}, debug=0 ):
+    return http_import( self, url, method=method, auth=auth, parse_qs=parse_qs, timeout=timeout, headers=headers, debug=int(debug))
 
 security.apply(globals())
-
-################################################################################

@@ -1,0 +1,10 @@
+.navbar {
+	border-radius: 0 !important;
+	border: none !important;
+	background-color:#dee2e5;
+}
+@media (min-width: 768px) {
+	.navbars {
+		border-radius: 0;
+	}
+}

@@ -24,13 +24,18 @@ class IZMSMetamodelProvider(Interface):
   def getMetaobjId(self, name):
     """
     Returns id of meta-object specified by name.
-    @rtype: C{string}
+    @returns: the meta-object id
+    @rtype: C{str}
     """
 
   def getMetaobjIds(self, sort=None, excl_ids=[]):
     """ 
     Returns list of all meta-ids in model.
-    @param sort if True sort by display_type, if False sort by name, else no sort.
+    @param sort: if True sort by display_type, if False sort by name, else no sort.
+    @type sort: C{Boolean}
+    @param excl_ids: the list of ids to exclude
+    @type excl_ids: C{list}
+    @returns: list of meta-ids
     @rtype: C{list}
     """
 

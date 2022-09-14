@@ -15,6 +15,9 @@
 		{
 			"name": "Zope-WebDAV Access",
 			"uri": "webdav://admin:admin@localhost:8091/"
+		},
+		{
+			"path": "../../../../vpy38/lib/python3.8/site-packages/pydoctor"
 		}
 	],
 	"settings": {
@@ -35,6 +38,9 @@
 			"*-all.min.*":true,
 			"**/cache/**": true,
 			"**/Data.*": true,
+		},
+		"search.exclude": { 
+			"**/apidocs/**": true
 		},
 		"files.eol": "\n",
 		"files.autoSave": "afterDelay",

@@ -41,11 +41,11 @@
 					'LOGOUT' : 'x'
 					}">
 					<tal:block tal:condition="admin">
-						<a class="dropdown-item" tal:attributes="href python:'f_api_html?lang=%s'%(request['lang'])">
+						<a class="dropdown-item" data-turbolinks="false" tal:attributes="href python:'f_api_html?lang=%s'%(request['lang'])">
 							<i class="fas fa-question-circle"></i> 
 							API
 						</a>
-						<a class="dropdown-item" tal:attributes="href python:'manage_main?lang=%s&zmi-manage-system=%i'%(request['lang'],int(not int(standard.get_session_value(here,'zmi-manage-system',0))));
+						<a class="dropdown-item" data-turbolinks="false" tal:attributes="href python:'manage_main?lang=%s&zmi-manage-system=%i'%(request['lang'],int(not int(standard.get_session_value(here,'zmi-manage-system',0))));
 								accesskey python:accesskey_map.get('ZOPE',None)">
 							<i class="fas fa-bolt"></i> 
 							Zope

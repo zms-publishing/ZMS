@@ -13,13 +13,14 @@
 		metaObjs python:[here.getMetaobj(x) for x in metaObjIds]">
 	<legend class="navbar navbar-nav navbar-expand navbar-dark" 
 		tal:content="python:'BigPicture::LogicalView::%s'%packageId">the legend</legend>
-	<ol class="objlist form-control">
+	<i id="toggle_menu" title="Toggle Menu" class="fas fa-times"></i>
+	<ol id="toc" class="objlist">
 		<li tal:repeat="metaObj python:[x for x in metaObjs if x['package']==packageId]">
 			<tal:block tal:define="
 					oid python:metaObj.get('id','');
 					oname python:metaObj.get('name','');
 					odisplay python:oid!=oname and '({})'.format(oname) or ''">
-				<a tal:attributes="href python:'#%s'%(metaObj.get('id','')); title metaObj/name"
+				<a data-turbolinks="false" tal:attributes="href python:'#%s'%(metaObj.get('id','')); title metaObj/name"
 					tal:content="python:oid">the name</a>
 				<span tal:replace="odisplay"></span>
 			</tal:block>
@@ -31,16 +32,17 @@
 			<p class="box_number" tal:content="repeat/metaObj/number">1</p>
 			<div class="objtype" tal:content="metaObj/type" title="Object Type">the type</div>
 			<div class="objid">
+				<a title="Edit Model..." target="_blank" tal:attributes="href python:'manage_main?id=%s'%(metaObj['id'])">
 				<i tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
-				<a title="Edit Model..." target="_blank" tal:attributes="href python:'manage_main?id=%s'%(metaObj['id'])" tal:content="metaObj/id">the id</a>
-				<span class="objname" title="Display Name">
-					= <tal:block 
-						tal:define="l python:request.get('manage_lang','ger');
-									n python:metaObj.get('name','');
-									nstr python:here.getZMILangStr(n,l);
-									tstr python:here.getZMILangStr('TYPE_%s'%(n.upper()),l);"
-						tal:content="python:[tstr,nstr][tstr=='TYPE_%s'%(n.upper())]">the name</tal:block>
+				<span class="objid" tal:content="metaObj/id">the id</span>
+				<span class="objname" title="Display Name"
+					tal:define="l python:request.get('manage_lang','ger');
+						n python:metaObj.get('name','');
+						nstr python:here.getZMILangStr(n,l);
+						tstr python:here.getZMILangStr('TYPE_%s'%(n.upper()),l);"
+					tal:content="python:' = %s'%([tstr,nstr][tstr=='TYPE_%s'%(n.upper())])">the name
 				</span>
+				</a>
 			</div>
 			<tal:block tal:repeat="metaObjAttrId python:here.getMetaobjAttrIds(metaObj['id'])">
 				<tal:block tal:define="global metaObjAttr python:here.getMetaobjAttr(metaObj['id'],metaObjAttrId)">
@@ -86,8 +88,24 @@
 
 <script>
 	$ZMI.registerReady(function(){
-		$('ol.objlist a').click( function() { 
-			$('ol.objlist a').removeClass('active');
+		$('#toggle_menu').click( function() {
+			if ( $('#toggle_menu').hasClass('fa-times') ) {
+				$('ol#toc').hide('fast');
+				$('#toggle_menu').removeClass('fa-times').addClass('fa-bars');
+			} else {
+				$('ol#toc').show('fast');
+				$('#toggle_menu').removeClass('fa-bars').addClass('fa-times');
+			}
+		});
+		$(window).scroll(function() { 
+			if($(window).scrollTop() > 42) {
+				$('#toc').addClass('scrolled');
+			} else {
+				$('#toc').removeClass('scrolled');
+			}
+		});
+		$('ol#toc a').click( function() { 
+			$('#toc a').removeClass('active');
 			$('.box').removeClass('focused');
 			$(this).addClass('active'); 
 			$($(this).attr('href')).addClass('focused');
@@ -97,12 +115,28 @@
 </script>
 
 <style>
-.zmi.bigpicture form.card legend {
+.zmi.bigpicture form.card legend,
+#toggle_menu  {
 	color:white;
 	background: #354f67;
-	padding-left:1rem;
+	padding:1rem;
 	height:42px;
-	margin-bottom: 1rem;
+}
+#toggle_menu {
+	position: fixed;
+	width: 42px;
+	top: 0;
+	right: 0;
+	cursor:pointer;
+	z-index:2;
+}
+@media (max-width: 767px) {
+	#toggle_menu {
+		display:none;
+	}
+	#toc {
+		display:block !important;
+	}
 }
 .box {
 	background-color:#CFC;
@@ -130,36 +164,39 @@ p.box_number {
 	padding: 0 .5rem;
 	text-align: right;
 }
-ol.objlist {
-	position: fixed;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	top: 59px;
-	bottom: 59px;
-	right: 20px;
-	padding: .5em 3em;
-	background: #fcfcfc;
-	box-shadow: inset 0 2px 2px rgba(0,0,0,.075);
+#toc {
+	top: 42px;
+	padding: 1rem 2rem 1.25rem 3rem;
+	background: #e9ecef;
 	width: auto;
-	height: calc(100vh - 120px);
-	border: 1px solid #ccc;
-	border-radius: 4px;
+	height: fit-content;
+	z-index:1;
 }
-ol.objlist li {
-	font-size: smaller;
+#toc.scrolled {
+	top: 0;
+}
+#toc li {
 	line-height: 1.75;
+}
+@media (min-width: 768px) {
+	#toc {
+		position: fixed;
+		right: 0;
+	}
 }
 .box div {
 	padding:.15em .5em
 }
-.box .objid {
+.box > .objid {
 	border-bottom:1px solid #354f67;
 	text-align:center;
 }
-.box .objid a {
-	font-weight:bold;
+.box > .objid a {
 	color:black;
 	text-decoration:none;
+}
+.box > .objid a .objid {
+	font-weight:bold;
 }
 .box .objtype {
 	text-align:center;
@@ -180,7 +217,7 @@ ol.objlist li {
 	float:right;
 }
 .box .attr.subobject {
-	background-color:#DFD;
+	background-color:#354f6726;
 }
 .box .ref {
 	padding:2px;

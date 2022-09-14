@@ -1,0 +1,24 @@
+<!-- calendar.standard_html -->
+<div tal:define="zmscontext options/zmscontext;
+		id python:zmscontext.getId();
+		css_class python:zmscontext.meta_id;
+		year python:request.get('year',None) and request.get('year',None) or context.ZopeTime().year();
+		month python:request.get('month',None) and request.get('month',None) or context.ZopeTime().month();
+		prev_month python:month - 1;
+		next_month python:month + 1;
+		get_events python:list(zmscontext.attr('get_events'));
+		css python:zmscontext.attr('default_css');
+		get_calendar python:zmscontext.get_calendar(year=year, month=month, events=get_events);"
+	tal:attributes="id id; class css_class">
+	<nav>
+		<a href="#" tal:attributes="href python:'?month:int=%d&year:int=%d'%(prev_month,year)"
+			title="Previous Month"><i class="fas fa-chevron-left"></i></a>
+		<a href="#" tal:attributes="href python:'?month:int=%d&year:int=%d'%(next_month,year)"
+			title="Next Month"><i class="fas fa-chevron-right"></i></a>
+	</nav>
+	<div class="calendar_grid" tal:content="structure get_calendar">Calendar Grid</div>
+	<div class="event_list mt-5" tal:content="structure python:zmscontext.events.getBodyContent(request)">Event List</div>
+	<style tal:content="css">Default CSS</style>
+</div>
+
+<!-- calendar.standard_html -->

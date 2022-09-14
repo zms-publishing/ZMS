@@ -258,3 +258,52 @@ _Screen shot: shows the effect of the example code. Requesting a not existing UR
 
 ![evalMetaobjAttr](images/develop_api_standard_error_message.gif)
 
+## 7. getObjOptions()
+The default values of the attribute types _select_ or _multiselect_ can be configured in two ways:
+1. as a return-separated list of terms or
+2. as a python snippet (marked by intial comment literals) that returns a list tuples showing the second value via ZMS-GUI (ZMI) as a label whereas first (invisible) value is actually stored. (To make it work like a key/value dict the tuple construct can be transformed by a list comprehension).
+
+The second way is practical if the label value of the select list may change sometimes or it contains multiple words (ending up in unreadable or dysfunctional template code).
+The following example returns select list for some event categories:
+
+```python
+## attr_event_category
+return [
+("seminar", "Seminar"),
+("talk", "Talk / Lecture"),
+("conference", "Conference"),
+("workshop", "Workshop / Training"),
+("lang_course", "Language Course"),
+("summer_school", "Summer School"),
+("social", "Social / Networking Event")
+]
+```
+The list can be accessed by two sequential API-Calls:
+1. `ObjAttrs.getObjAttrs(self, meta_id=None)`: returns the definition of all contextual attributes
+2. `ObjAttrs.getObjOptions((self, obj_attr, REQUEST))`: returns as value set as a list of tuples
+
+This following Python-Script illustrates how a specific label text can be returned by a given key
+
+```python
+request = container.REQUEST
+response =  request.response
+request.set('lang','eng')
+zms = context.content
+
+# Example ZMS Object (see following image)
+zmscontext = zms.e1133.e1245.e5563
+v = 'social'
+
+opt = zmscontext.getObjAttrs().get('attr_event_category')
+opt_list = zmscontext.getObjOptions(opt,request)
+# list comprehension: list of tuples becomes dict
+opt_dict = {x[0]:x[1] for x in opt_list}
+
+print(opt_dict.get(v)) 
+return printed
+```
+
+
+_Screen shot: the content model uses a select list for declaring the contents category. The list values are given as a tuple: The ZMS-GUI (ZMI) allways show the 2nd value but stores the tuple's corresponding first value. To show the label text by a HTML/TAL template a dict of of all values is needed to gain the lable text by the stored value._
+
+![getObjOptions](images/develop_api_getObjOptions.gif)

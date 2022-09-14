@@ -34,7 +34,7 @@ class manage_repository_gitstatus:
 	package = "com.zms.foundation.metacmd.gitbridge"
 
 	# Revision
-	revision = "5.0.2"
+	revision = "5.1.0"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

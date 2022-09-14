@@ -65,7 +65,7 @@
 			<!-- ACE Editor -->
 			<tal:block tal:define="ob python:getattr(here,request['id'],None)"
 				><tal:block tal:condition="python:ob is not None"
-					><input type="hidden" name="el_method" tal:attributes="value ob/meta_type"
+					><input type="hidden" class="content_type" name="el_method" tal:attributes="value ob/meta_type"
 					/><textarea tal:replace="structure python:here.zmi_ace_editor(here,request,name='el_data',id='cmd_%s'%(ob.getId()),ob=ob,text=metaCmd['data'])">ACE Editor</textarea
 				></tal:block
 			></tal:block>

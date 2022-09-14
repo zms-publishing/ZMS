@@ -1,0 +1,1801 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>zms._versionmanager.VersionItem</title>
+    <meta name="generator" content="pydoctor 22.5.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a> <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div class="hint" id="search-help-box">
+          <p class="rst-last">
+      
+            Search bar offers the following options:
+            <ul>   
+                <li>
+                  <strong>Term presence.</strong> The below example searches for documents that 
+                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
+                </li> 
+
+                <li>
+                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
+                </li> 
+
+                <li>
+                  <strong>Search in specific fields.</strong> The following search matches all objects 
+                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
+
+                  <p>
+                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
+                    Last two fields are only applicable if "search in docstrings" is enabled.
+                  </p>
+                </li>
+
+                <li>
+                  <strong>Fuzzy matches.</strong> The following search matches all documents 
+                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
+                </li>
+            </ul>
+
+          </p>
+        </div>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 8px;">
+          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="zms._versionmanager.VersionItem.html" class="internal-link" title="This class"><wbr></wbr>Version<wbr></wbr>Item</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#ajaxBodyContentObjHistory" class="internal-link" title="zms._versionmanager.VersionItem.ajaxBodyContentObjHistory">ajax<wbr></wbr>Body<wbr></wbr>Content<wbr></wbr>Obj<wbr></wbr>History</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#commitObjChanges" class="internal-link" title="zms._versionmanager.VersionItem.commitObjChanges">commit<wbr></wbr>Obj<wbr></wbr>Changes</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#delObjStates" class="internal-link" title="zms._versionmanager.VersionItem.delObjStates">del<wbr></wbr>Obj<wbr></wbr>States</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#filteredObjStates" class="internal-link" title="zms._versionmanager.VersionItem.filteredObjStates">filtered<wbr></wbr>Obj<wbr></wbr>States</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getHistory" class="internal-link" title="zms._versionmanager.VersionItem.getHistory">get<wbr></wbr>History</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getObjHistory" class="internal-link" title="zms._versionmanager.VersionItem.getObjHistory">get<wbr></wbr>Obj<wbr></wbr>History</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getObjStateNames" class="internal-link" title="zms._versionmanager.VersionItem.getObjStateNames">get<wbr></wbr>Obj<wbr></wbr>State<wbr></wbr>Names</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getObjStates" class="internal-link" title="zms._versionmanager.VersionItem.getObjStates">get<wbr></wbr>Obj<wbr></wbr>States</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getObjVersion" class="internal-link" title="zms._versionmanager.VersionItem.getObjVersion">get<wbr></wbr>Obj<wbr></wbr>Version</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getObjVersions" class="internal-link" title="zms._versionmanager.VersionItem.getObjVersions">get<wbr></wbr>Obj<wbr></wbr>Versions</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getVersionItems" class="internal-link" title="zms._versionmanager.VersionItem.getVersionItems">get<wbr></wbr>Version<wbr></wbr>Items</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getVersionNr" class="internal-link" title="zms._versionmanager.VersionItem.getVersionNr">get<wbr></wbr>Version<wbr></wbr>Nr</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getWfStates" class="internal-link" title="zms._versionmanager.VersionItem.getWfStates">get<wbr></wbr>Wf<wbr></wbr>States</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#hasObjModifiedChildren" class="internal-link" title="zms._versionmanager.VersionItem.hasObjModifiedChildren">has<wbr></wbr>Obj<wbr></wbr>Modified<wbr></wbr>Children</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#initializeWorkVersion" class="internal-link" title="zms._versionmanager.VersionItem.initializeWorkVersion">initialize<wbr></wbr>Work<wbr></wbr>Version</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#inObjStates" class="internal-link" title="zms._versionmanager.VersionItem.inObjStates">in<wbr></wbr>Obj<wbr></wbr>States</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#isCommitted" class="internal-link" title="zms._versionmanager.VersionItem.isCommitted">is<wbr></wbr>Committed</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#isObjModified" class="internal-link" title="zms._versionmanager.VersionItem.isObjModified">is<wbr></wbr>Obj<wbr></wbr>Modified</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_UndoVersion" class="internal-link" title="zms._versionmanager.VersionItem.manage_UndoVersion">manage_<wbr></wbr>Undo<wbr></wbr>Version</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#onChangeObj" class="internal-link" title="zms._versionmanager.VersionItem.onChangeObj">on<wbr></wbr>Change<wbr></wbr>Obj</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#packHistory" class="internal-link" title="zms._versionmanager.VersionItem.packHistory">pack<wbr></wbr>History</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#resetObjStates" class="internal-link" title="zms._versionmanager.VersionItem.resetObjStates">reset<wbr></wbr>Obj<wbr></wbr>States</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#resetObjTranslation" class="internal-link" title="zms._versionmanager.VersionItem.resetObjTranslation">reset<wbr></wbr>Obj<wbr></wbr>Translation</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#restoreObjVersion" class="internal-link" title="zms._versionmanager.VersionItem.restoreObjVersion">restore<wbr></wbr>Obj<wbr></wbr>Version</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#rollbackObjChanges" class="internal-link" title="zms._versionmanager.VersionItem.rollbackObjChanges">rollback<wbr></wbr>Obj<wbr></wbr>Changes</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#setObjState" class="internal-link" title="zms._versionmanager.VersionItem.setObjState">set<wbr></wbr>Obj<wbr></wbr>State</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#setObjStateDeleted" class="internal-link" title="zms._versionmanager.VersionItem.setObjStateDeleted">set<wbr></wbr>Obj<wbr></wbr>State<wbr></wbr>Deleted</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#setObjStateModified" class="internal-link" title="zms._versionmanager.VersionItem.setObjStateModified">set<wbr></wbr>Obj<wbr></wbr>State<wbr></wbr>Modified</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#setObjStateNew" class="internal-link" title="zms._versionmanager.VersionItem.setObjStateNew">set<wbr></wbr>Obj<wbr></wbr>State<wbr></wbr>New</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#syncObjModifiedChildren" class="internal-link" title="zms._versionmanager.VersionItem.syncObjModifiedChildren">sync<wbr></wbr>Obj<wbr></wbr>Modified<wbr></wbr>Children</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#tagObjVersions" class="internal-link" title="zms._versionmanager.VersionItem.tagObjVersions">tag<wbr></wbr>Obj<wbr></wbr>Versions</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_commitObjChanges" class="internal-link" title="zms._versionmanager.VersionItem._commitObjChanges">_commit<wbr></wbr>Obj<wbr></wbr>Changes</a></code>
+            </div>
+        
+
+    </li><li class="private">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#_rollbackObjChanges" class="internal-link" title="zms._versionmanager.VersionItem._rollbackObjChanges">_rollback<wbr></wbr>Obj<wbr></wbr>Changes</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_UndoVersionForm" class="internal-link" title="zms._versionmanager.VersionItem.manage_UndoVersionForm">manage_<wbr></wbr>Undo<wbr></wbr>Version<wbr></wbr>Form</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#security" class="internal-link" title="zms._versionmanager.VersionItem.security">security</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#zmi_version_object_state" class="internal-link" title="zms._versionmanager.VersionItem.zmi_version_object_state">zmi<wbr></wbr>_version<wbr></wbr>_object<wbr></wbr>_state</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__work_state__" class="internal-link" title="zms._versionmanager.VersionItem.__work_state__">__work<wbr></wbr>_state__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#version_live_id" class="internal-link" title="zms._versionmanager.VersionItem.version_live_id">version<wbr></wbr>_live<wbr></wbr>_id</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#version_work_id" class="internal-link" title="zms._versionmanager.VersionItem.version_work_id">version<wbr></wbr>_work<wbr></wbr>_id</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="zms._versionmanager.html" class="internal-link" title="The parent of this class">_versionmanager</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._versionmanager.VersionItem.html" class="internal-link" title="zms._versionmanager.VersionItem"><wbr></wbr>Version<wbr></wbr>Item</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._versionmanager.VersionManagerContainer.html" class="internal-link" title="zms._versionmanager.VersionManagerContainer"><wbr></wbr>Version<wbr></wbr>Manager<wbr></wbr>Container</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        <div class="childrenKindTitle">Functions</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._versionmanager.html#getObjStateName" class="internal-link" title="zms._versionmanager.getObjStateName">get<wbr></wbr>Obj<wbr></wbr>State<wbr></wbr>Name</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._versionmanager.html#setChangedBy" class="internal-link" title="zms._versionmanager.setChangedBy">set<wbr></wbr>Changed<wbr></wbr>By</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms._versionmanager.html#setCreatedBy" class="internal-link" title="zms._versionmanager.setCreatedBy">set<wbr></wbr>Created<wbr></wbr>By</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        
+         
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapseSideBar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <div id="main" class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">zms</a></code><wbr></wbr>.<code><a href="zms._versionmanager.html" class="internal-link" title="zms._versionmanager">_versionmanager</a></code><wbr></wbr>.<code><a href="zms._versionmanager.VersionItem.html" class="internal-link" title="zms._versionmanager.VersionItem">VersionItem</a></code></code></h1>
+          <div id="showPrivate">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p><code><span class="py-keyword">class</span> <span class="py-defname">VersionItem</span>(object): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L107" class="sourceLink">(source)</a></code></p>
+          <p><a href="classIndex.html#zms._versionmanager.VersionItem">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p class="undocumented">Undocumented</p></div>
+        </div>
+
+        <div id="splitTables">
+          <table class="children sortable" id="id131">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#ajaxBodyContentObjHistory" class="internal-link" title="zms._versionmanager.VersionItem.ajaxBodyContentObjHistory">ajax<wbr></wbr>Body<wbr></wbr>Content<wbr></wbr>Obj<wbr></wbr>History</a></code></td>
+    <td>Returns ajax-xml with body-content of object-history for given version-nr.</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#commitObjChanges" class="internal-link" title="zms._versionmanager.VersionItem.commitObjChanges">commit<wbr></wbr>Obj<wbr></wbr>Changes</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#delObjStates" class="internal-link" title="zms._versionmanager.VersionItem.delObjStates">del<wbr></wbr>Obj<wbr></wbr>States</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#filteredObjStates" class="internal-link" title="zms._versionmanager.VersionItem.filteredObjStates">filtered<wbr></wbr>Obj<wbr></wbr>States</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getHistory" class="internal-link" title="zms._versionmanager.VersionItem.getHistory">get<wbr></wbr>History</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getObjHistory" class="internal-link" title="zms._versionmanager.VersionItem.getObjHistory">get<wbr></wbr>Obj<wbr></wbr>History</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getObjStateNames" class="internal-link" title="zms._versionmanager.VersionItem.getObjStateNames">get<wbr></wbr>Obj<wbr></wbr>State<wbr></wbr>Names</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getObjStates" class="internal-link" title="zms._versionmanager.VersionItem.getObjStates">get<wbr></wbr>Obj<wbr></wbr>States</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getObjVersion" class="internal-link" title="zms._versionmanager.VersionItem.getObjVersion">get<wbr></wbr>Obj<wbr></wbr>Version</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getObjVersions" class="internal-link" title="zms._versionmanager.VersionItem.getObjVersions">get<wbr></wbr>Obj<wbr></wbr>Versions</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getVersionItems" class="internal-link" title="zms._versionmanager.VersionItem.getVersionItems">get<wbr></wbr>Version<wbr></wbr>Items</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getVersionNr" class="internal-link" title="zms._versionmanager.VersionItem.getVersionNr">get<wbr></wbr>Version<wbr></wbr>Nr</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getWfStates" class="internal-link" title="zms._versionmanager.VersionItem.getWfStates">get<wbr></wbr>Wf<wbr></wbr>States</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#hasObjModifiedChildren" class="internal-link" title="zms._versionmanager.VersionItem.hasObjModifiedChildren">has<wbr></wbr>Obj<wbr></wbr>Modified<wbr></wbr>Children</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#initializeWorkVersion" class="internal-link" title="zms._versionmanager.VersionItem.initializeWorkVersion">initialize<wbr></wbr>Work<wbr></wbr>Version</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#inObjStates" class="internal-link" title="zms._versionmanager.VersionItem.inObjStates">in<wbr></wbr>Obj<wbr></wbr>States</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#isCommitted" class="internal-link" title="zms._versionmanager.VersionItem.isCommitted">is<wbr></wbr>Committed</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#isObjModified" class="internal-link" title="zms._versionmanager.VersionItem.isObjModified">is<wbr></wbr>Obj<wbr></wbr>Modified</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#manage_UndoVersion" class="internal-link" title="zms._versionmanager.VersionItem.manage_UndoVersion">manage_<wbr></wbr>Undo<wbr></wbr>Version</a></code></td>
+    <td>VersionItem.manage_UndoVersion</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#onChangeObj" class="internal-link" title="zms._versionmanager.VersionItem.onChangeObj">on<wbr></wbr>Change<wbr></wbr>Obj</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#packHistory" class="internal-link" title="zms._versionmanager.VersionItem.packHistory">pack<wbr></wbr>History</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#resetObjStates" class="internal-link" title="zms._versionmanager.VersionItem.resetObjStates">reset<wbr></wbr>Obj<wbr></wbr>States</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#resetObjTranslation" class="internal-link" title="zms._versionmanager.VersionItem.resetObjTranslation">reset<wbr></wbr>Obj<wbr></wbr>Translation</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#restoreObjVersion" class="internal-link" title="zms._versionmanager.VersionItem.restoreObjVersion">restore<wbr></wbr>Obj<wbr></wbr>Version</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#rollbackObjChanges" class="internal-link" title="zms._versionmanager.VersionItem.rollbackObjChanges">rollback<wbr></wbr>Obj<wbr></wbr>Changes</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#setObjState" class="internal-link" title="zms._versionmanager.VersionItem.setObjState">set<wbr></wbr>Obj<wbr></wbr>State</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#setObjStateDeleted" class="internal-link" title="zms._versionmanager.VersionItem.setObjStateDeleted">set<wbr></wbr>Obj<wbr></wbr>State<wbr></wbr>Deleted</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#setObjStateModified" class="internal-link" title="zms._versionmanager.VersionItem.setObjStateModified">set<wbr></wbr>Obj<wbr></wbr>State<wbr></wbr>Modified</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#setObjStateNew" class="internal-link" title="zms._versionmanager.VersionItem.setObjStateNew">set<wbr></wbr>Obj<wbr></wbr>State<wbr></wbr>New</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#syncObjModifiedChildren" class="internal-link" title="zms._versionmanager.VersionItem.syncObjModifiedChildren">sync<wbr></wbr>Obj<wbr></wbr>Modified<wbr></wbr>Children</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#tagObjVersions" class="internal-link" title="zms._versionmanager.VersionItem.tagObjVersions">tag<wbr></wbr>Obj<wbr></wbr>Versions</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage_UndoVersionForm" class="internal-link" title="zms._versionmanager.VersionItem.manage_UndoVersionForm">manage_<wbr></wbr>Undo<wbr></wbr>Version<wbr></wbr>Form</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#security" class="internal-link" title="zms._versionmanager.VersionItem.security">security</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#zmi_version_object_state" class="internal-link" title="zms._versionmanager.VersionItem.zmi_version_object_state">zmi<wbr></wbr>_version<wbr></wbr>_object<wbr></wbr>_state</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#__work_state__" class="internal-link" title="zms._versionmanager.VersionItem.__work_state__">__work<wbr></wbr>_state__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#version_live_id" class="internal-link" title="zms._versionmanager.VersionItem.version_live_id">version<wbr></wbr>_live<wbr></wbr>_id</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#version_work_id" class="internal-link" title="zms._versionmanager.VersionItem.version_work_id">version<wbr></wbr>_work<wbr></wbr>_id</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_commitObjChanges" class="internal-link" title="zms._versionmanager.VersionItem._commitObjChanges">_commit<wbr></wbr>Obj<wbr></wbr>Changes</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_rollbackObjChanges" class="internal-link" title="zms._versionmanager.VersionItem._rollbackObjChanges">_rollback<wbr></wbr>Obj<wbr></wbr>Changes</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="childList">
+          <div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.ajaxBodyContentObjHistory">
+    
+  </a>
+  <a name="ajaxBodyContentObjHistory">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">ajaxBodyContentObjHistory</span>(self, version_nr, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L807">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Returns ajax-xml with body-content of object-history for given version-nr.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.commitObjChanges">
+    
+  </a>
+  <a name="commitObjChanges">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">commitObjChanges</span>(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L622">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.delObjStates">
+    
+  </a>
+  <a name="delObjStates">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">delObjStates</span>(self, obj_states=[], REQUEST={}):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L360">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.filteredObjStates">
+    
+  </a>
+  <a name="filteredObjStates">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">filteredObjStates</span>(self, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L411">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.getHistory">
+    
+  </a>
+  <a name="getHistory">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getHistory</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L783">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.getObjHistory">
+    
+  </a>
+  <a name="getObjHistory">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getObjHistory</span>(self, version_nr, REQUEST, children=True, deleted=True):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L882">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.getObjStateNames">
+    
+  </a>
+  <a name="getObjStateNames">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getObjStateNames</span>(self, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L428">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.getObjStates">
+    
+  </a>
+  <a name="getObjStates">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getObjStates</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L179">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.getObjVersion">
+    
+  </a>
+  <a name="getObjVersion">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getObjVersion</span>(self, REQUEST={}):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L960">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.getObjVersions">
+    
+  </a>
+  <a name="getObjVersions">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getObjVersions</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L989">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.getVersionItems">
+    
+  </a>
+  <a name="getVersionItems">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getVersionItems</span>(self, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L233">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.getVersionNr">
+    
+  </a>
+  <a name="getVersionNr">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getVersionNr</span>(self, d=None):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L219">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.getWfStates">
+    
+  </a>
+  <a name="getWfStates">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getWfStates</span>(self, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L195">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.hasObjModifiedChildren">
+    
+  </a>
+  <a name="hasObjModifiedChildren">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">hasObjModifiedChildren</span>(self, REQUEST, depth=0):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L282">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.initializeWorkVersion">
+    
+  </a>
+  <a name="initializeWorkVersion">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">initializeWorkVersion</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L305">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.inObjStates">
+    
+  </a>
+  <a name="inObjStates">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">inObjStates</span>(self, obj_states, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L393">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.isCommitted">
+    
+  </a>
+  <a name="isCommitted">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">isCommitted</span>(self, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L327">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.isObjModified">
+    
+  </a>
+  <a name="isObjModified">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">isObjModified</span>(self, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L250">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.manage_UndoVersion">
+    
+  </a>
+  <a name="manage_UndoVersion">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_UndoVersion</span>(self, lang, btn, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1045">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>VersionItem.manage_UndoVersion</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.onChangeObj">
+    
+  </a>
+  <a name="onChangeObj">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">onChangeObj</span>(self, REQUEST, forced=False, do_history=True):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L499">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.packHistory">
+    
+  </a>
+  <a name="packHistory">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">packHistory</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L752">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.resetObjStates">
+    
+  </a>
+  <a name="resetObjStates">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">resetObjStates</span>(self, REQUEST=None):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L378">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.resetObjTranslation">
+    
+  </a>
+  <a name="resetObjTranslation">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">resetObjTranslation</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L292">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.restoreObjVersion">
+    
+  </a>
+  <a name="restoreObjVersion">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">restoreObjVersion</span>(self, ob_version, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1016">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.rollbackObjChanges">
+    
+  </a>
+  <a name="rollbackObjChanges">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">rollbackObjChanges</span>(self, parent, REQUEST, forced=0, do_delete=True):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L731">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.setObjState">
+    
+  </a>
+  <a name="setObjState">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">setObjState</span>(self, obj_state, lang):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L346">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.setObjStateDeleted">
+    
+  </a>
+  <a name="setObjStateDeleted">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">setObjStateDeleted</span>(self, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L482">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.setObjStateModified">
+    
+  </a>
+  <a name="setObjStateModified">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">setObjStateModified</span>(self, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L472">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.setObjStateNew">
+    
+  </a>
+  <a name="setObjStateNew">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">setObjStateNew</span>(self, REQUEST, reset=1):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L452">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.syncObjModifiedChildren">
+    
+  </a>
+  <a name="syncObjModifiedChildren">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">syncObjModifiedChildren</span>(self, REQUEST):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L259">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms._versionmanager.VersionItem.tagObjVersions">
+    
+  </a>
+  <a name="tagObjVersions">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">tagObjVersions</span>(self, master_version, REQUEST, checkPending=None):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L125">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._versionmanager.VersionItem.manage_UndoVersionForm">
+    
+  </a>
+  <a name="manage_UndoVersionForm">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_UndoVersionForm</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L1044">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._versionmanager.VersionItem.security">
+    
+  </a>
+  <a name="security">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">security</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L112">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms._versionmanager.VersionItem.zmi_version_object_state">
+    
+  </a>
+  <a name="zmi_version_object_state">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">zmi_version_object_state</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L117">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms._versionmanager.VersionItem.__work_state__">
+    
+  </a>
+  <a name="__work_state__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">__work_state__</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L182">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms._versionmanager.VersionItem.version_live_id">
+    
+  </a>
+  <a name="version_live_id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">version_live_id</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L314">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms._versionmanager.VersionItem.version_work_id">
+    
+  </a>
+  <a name="version_work_id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">version_work_id</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L313">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="zms._versionmanager.VersionItem._commitObjChanges">
+    
+  </a>
+  <a name="_commitObjChanges">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_commitObjChanges</span>(self, parent, REQUEST, forced=False, do_history=True, do_delete=True):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L518">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="zms._versionmanager.VersionItem._rollbackObjChanges">
+    
+  </a>
+  <a name="_rollbackObjChanges">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_rollbackObjChanges</span>(self, parent, REQUEST, forced=0, do_delete=True):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/_versionmanager.py#L646">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div>
+        </div>
+      
+      </div>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container">
+    <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+<script>
+//<!-- OPEN SOURCE LINKS IN FRAMESET 
+  document.addEventListener('DOMContentLoaded', function(){
+  var links = document.getElementsByClassName('sourceLink');
+    var len = links.length;
+    for(var i=0; i<len; i++)
+    {
+      links[i].target = "_blank";
+      links[i].title = "View on Github";
+    }
+  })
+//-->
+</script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

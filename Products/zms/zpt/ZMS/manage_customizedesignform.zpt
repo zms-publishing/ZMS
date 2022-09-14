@@ -43,7 +43,7 @@
 			<input type="hidden" name="lang" tal:attributes="value request/lang">
 			<div class="form-group row">
 				<label for="file" class="col-lg-2 control-label">
-					<i class="icon-folder-open-alt fas fa-folder far fa-folder"></i>
+					<i class="fas fa-folder far fa-folder"></i>
 					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
 				</label>
 				<div class="col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
@@ -91,7 +91,7 @@
 		</td>
 		<td>
 			<input onchange="zmiSaveBtnClick(this)" type="radio" name="id" tal:attributes="value python:si.id; checked python:here.getConfProperty('ZMS.theme','')==si.id" />
-			<i class="icon-folder-close far fa-folder px-1 text-primary" style="margin:0 .25em 0 .5em"></i>
+			<i class="far fa-folder px-1 text-primary" style="margin:0 .25em 0 .5em"></i>
 			<a target="_blank" tal:attributes="href python:'%s/manage_main'%si.id" tal:content="python:si.id">id</a>
 			(<tal:block tal:content="python:(si.meta_type=='Filesystem Directory View' and si.getDirPath() or si.title)">title</tal:block>)
 		</td>
@@ -104,7 +104,7 @@
 	<legend>Additionals</legend>
 	<section class="form-horizontal p-3" style="font-size:90%">
 		<span style="opacity:.5;">
-			<i class="icon-question-sign fas fa-question-circle"></i>
+			<i class="fas fa-question-circle"></i>
 			The additional files allow a quick customisation of the selected theme and its ZMI representation.
 			The files are coventionally located in the common-folder, respectively common/css and common/js or 
 			the locations can be configured by the following keys: 
@@ -154,8 +154,8 @@
 								class python:css is None and 'text-danger' or '';
 								title python:css is None and 'CSS-Object is missing!' or 'CSS-Code-Preview';
 								onclick python:css is None and cssedit_href or 'return zmiPreviewBtnClick(this)'">
-							<i tal:condition="css" class="icon-caret-right fas fa-caret-right"></i>
-							<i tal:condition="not:css" class="icon-bug fas fa-bug text-danger" tal:attributes="style python:not css and 'opacity:0.35' or None"></i>
+							<i tal:condition="css" class="fas fa-caret-right"></i>
+							<i tal:condition="not:css" class="fas fa-bug text-danger" tal:attributes="style python:not css and 'opacity:0.35' or None"></i>
 							<span tal:condition="href" tal:content="href">href</span>
 							<code tal:condition="not:href" tal:content="python:'%s = Unset'%(css_id)">href</code>
 						</a>
@@ -163,14 +163,15 @@
 								tal:define="fs_located python:'Filesystem' in css.meta_type"
 								tal:omit-tag="not:fs_located" title="Filessystem-Object: Not Editable">
 							<a tal:omit-tag="fs_located"
+								data-turbolinks="false"
 								tal:attributes="href cssedit_href; title cssedit_title; class cssedit_class;">
-								<i class="icon-pencil fas fa-pen" tal:attributes="class python:fs_located and 'icon-hdd fas fa-hdd text-secondary' or default"></i>
+								<i class="fas fa-pen" tal:attributes="class python:fs_located and 'fas fa-hdd text-secondary' or default"></i>
 							</a>
 						</span>
 						<a tal:condition="css" target="_blank" class="pull-right"
 							title="Link to Zope Object Editor"
 							tal:attributes="href python:'%s/manage'%href"
-							><i class="icon-external-link fas fa-external-link-alt"></i>
+							><i class="fas fa-external-link-alt"></i>
 						</a>
 						<pre class="alert alert-info preview" style="display:none;"></pre>
 						<div class="d-none" tal:condition="python:request.get('id')==css_id">
@@ -179,8 +180,9 @@
 									<input type="hidden" name="section" value="added" />
 									<input type="hidden" name="id" tal:attributes="value request/id" />
 									<input type="hidden" name="lang" tal:attributes="value request/lang" />
+									<input type="hidden" name="content_type" class="content_type" value="text/css" />
 									<!-- ACE Editor -->
-									<tal:block tal:on-error="string:ace" tal:content="structure python:here.zmi_ace_editor(here,request,name=css_id,ob=css,text=str(css))">ACE Editor</tal:block>
+									<tal:block tal:on-error="string:ace" tal:content="structure python:here.zmi_ace_editor(here,request,name=css_id,ob=css,text=str(css),content_type='text/css')">ACE Editor</tal:block>
 									<!-- /ACE Editor -->
 									<div class="form-row">
 										<div class="controls save">
@@ -242,8 +244,8 @@
 								class python:js is None and 'text-danger' or '';
 								title python:js is None and 'js-Object is missing!' or 'js-Code-Preview';
 								onclick python:js is None and jsedit_href or 'return zmiPreviewBtnClick(this)'">
-							<i tal:condition="js" class="icon-caret-right fas fa-caret-right"></i>
-							<i tal:condition="not:js" class="icon-bug fas fa-bug text-danger" tal:attributes="style python:not js and 'opacity:0.35' or None"></i>
+							<i tal:condition="js" class="fas fa-caret-right"></i>
+							<i tal:condition="not:js" class="fas fa-bug text-danger" tal:attributes="style python:not js and 'opacity:0.35' or None"></i>
 							<span tal:condition="href" tal:content="href">href</span>
 							<code tal:condition="not:href" tal:content="python:'%s = Unset'%(js_id)">href</code>
 						</a>
@@ -251,14 +253,15 @@
 								tal:define="fs_located python:'Filesystem' in js.meta_type"
 								tal:omit-tag="not:fs_located" title="Filessystem-Object: Not Editable">
 							<a tal:omit-tag="fs_located"
+								data-turbolinks="false"
 								tal:attributes="href jsedit_href; title jsedit_title; class jsedit_class;">
-								<i class="icon-pencil fas fa-pen" tal:attributes="class python:fs_located and 'icon-hdd fas fa-hdd text-secondary' or default"></i>
+								<i class="fas fa-pen" tal:attributes="class python:fs_located and 'fas fa-hdd text-secondary' or default"></i>
 							</a>
 						</span>
 						<a tal:condition="js" target="_blank" class="pull-right"
 							title="Link to Zope Object Editor"
 							tal:attributes="href python:'%s/manage'%href"
-							><i class="icon-external-link fas fa-external-link-alt"></i>
+							><i class="fas fa-external-link-alt"></i>
 						</a>
 						<pre class="alert alert-warning preview" style="display:none;"></pre>
 						<div class="d-none" tal:condition="python:request.get('id')==js_id">
@@ -267,8 +270,9 @@
 									<input type="hidden" name="section" value="added" />
 									<input type="hidden" name="id" tal:attributes="value request/id" />
 									<input type="hidden" name="lang" tal:attributes="value request/lang" />
+									<input type="hidden" name="content_type" class="content_type" value="application/javascript" />
 									<!-- ACE Editor -->
-									<tal:block tal:on-error="string:ace" tal:content="structure python:here.zmi_ace_editor(here,request,name=js_id,ob=js,text=str(js))">ACE Editor</tal:block>
+									<tal:block tal:on-error="string:ace" tal:content="structure python:here.zmi_ace_editor(here,request,name=js_id,ob=js,text=str(js),content_type='application/javascript')">ACE Editor</tal:block>
 									<!-- /ACE Editor -->
 									<div class="form-row">
 										<div class="controls save">

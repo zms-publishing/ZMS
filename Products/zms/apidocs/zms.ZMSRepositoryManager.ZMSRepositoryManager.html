@@ -1,0 +1,1547 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>zms.ZMSRepositoryManager.ZMSRepositoryManager</title>
+    <meta name="generator" content="pydoctor 22.5.1"> 
+        
+    </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    
+
+    <nav class="navbar navbar-default mainnavbar">
+      
+  
+  <div class="container-fluid">
+
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+        <span class="navbar-brand">
+          <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a> <a href="index.html">API Documentation</a>
+        </span>
+
+        <a href="moduleIndex.html">
+          Modules
+        </a>
+
+        <a href="classIndex.html">
+          Classes
+        </a>
+
+        <a href="nameIndex.html">
+          Names
+        </a>
+
+        <div id="search-box-container">
+          <div class="input-group">
+            <input id="search-box" type="search" name="search-query" placeholder="Search..." aria-label="Search" minlength="2" class="form-control" autocomplete="off" />
+            
+            <span class="input-group-btn">
+              <a style="display: none;" class="btn btn-default" id="search-clear-button" title="Clear" onclick="clearSearch()"><img src="fonts/x-circle.svg" alt="Clear" /></a>
+              <a class="btn btn-default" id="search-help-button" title="Help" onclick="toggleSearchHelpText()"><img src="fonts/info.svg" alt="Help" /></a>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="search-results-container" style="display: none;">
+        
+        <div id="search-buttons">
+          <span class="label label-default" id="search-docstrings-button">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="toggle-search-in-docstrings-checkbox" value="false" onclick="toggleSearchInDocstrings()">
+              search in docstrings
+            </input>
+          </label>
+          </span>
+          
+        </div>
+        
+        <noscript>
+            <h1>Cannot search: JavaScript is not supported/enabled in your browser.</h1>
+        </noscript>
+
+        <div class="hint" id="search-help-box">
+          <p class="rst-last">
+      
+            Search bar offers the following options:
+            <ul>   
+                <li>
+                  <strong>Term presence.</strong> The below example searches for documents that 
+                    must contain “foo”, might contain “bar” and must not contain “baz”: <code>+foo bar -baz</code>
+                </li> 
+
+                <li>
+                  <strong>Wildcards.</strong> The below example searches for documents with words beginning with “foo”: <code>foo*</code>
+                </li> 
+
+                <li>
+                  <strong>Search in specific fields.</strong> The following search matches all objects 
+                  in "twisted.mail" that matches “search”: <code>+qname:twisted.mail.* +search</code>
+
+                  <p>
+                    Possible fields: 'name', 'qname' (fully qualified name), 'docstring', and 'kind'.
+                    Last two fields are only applicable if "search in docstrings" is enabled.
+                  </p>
+                </li>
+
+                <li>
+                  <strong>Fuzzy matches.</strong> The following search matches all documents 
+                  that have a word within 1 edit distance of “foo”: <code>foo~1</code>
+                </li>
+            </ul>
+
+          </p>
+        </div>
+
+        <div id="search-status"> </div>
+
+        <div class="warning" id="search-warn-box" style="display: none;">
+          <p class="rst-last"><span id="search-warn"></span></p>
+        </div>
+
+        <table id="search-results">
+          <!-- Filled dynamically by JS -->
+        </table>
+        
+        <div style="margin-top: 8px;">
+          <p>Results provided by <a href="https://lunrjs.com">Lunr.js</a></p>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</nav>
+    
+    <div class="container-fluid">
+
+      <!-- Side navigation -->
+      <div class="sidebarcontainer" style="display: none;">
+        
+        <div class="sidebar"><nav class="sidebar">
+  
+
+  <div>
+
+      <div class="thingTitle">
+        <span>Class</span>
+        <code class="thisobject"><a href="zms.ZMSRepositoryManager.ZMSRepositoryManager.html" class="internal-link" title="This class"><wbr></wbr>ZMSRepository<wbr></wbr>Manager</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        
+        
+
+        <div class="childrenKindTitle">Methods</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__init__" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.__init__">__init__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#commitChanges" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.commitChanges">commit<wbr></wbr>Changes</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#exec_auto_commit" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.exec_auto_commit">exec<wbr></wbr>_auto<wbr></wbr>_commit</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#exec_auto_update" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.exec_auto_update">exec<wbr></wbr>_auto<wbr></wbr>_update</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_auto_update" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_auto_update">get<wbr></wbr>_auto<wbr></wbr>_update</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_conf_basepath" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_conf_basepath">get<wbr></wbr>_conf<wbr></wbr>_basepath</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_ignore_orphans" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_ignore_orphans">get<wbr></wbr>_ignore<wbr></wbr>_orphans</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_last_update" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_last_update">get<wbr></wbr>_last<wbr></wbr>_update</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#get_update_direction" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_update_direction">get<wbr></wbr>_update<wbr></wbr>_direction</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getDiffs" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.getDiffs">get<wbr></wbr>Diffs</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#getRepositoryProviders" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.getRepositoryProviders">get<wbr></wbr>Repository<wbr></wbr>Providers</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#localFiles" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.localFiles">local<wbr></wbr>Files</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_change" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_change">manage<wbr></wbr>_change</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_options" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_options">manage<wbr></wbr>_options</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_sub_options" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_sub_options">manage<wbr></wbr>_sub<wbr></wbr>_options</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#readRepository" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.readRepository">read<wbr></wbr>Repository</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#remoteFiles" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.remoteFiles">remote<wbr></wbr>Files</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#startDaemon" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.startDaemon">start<wbr></wbr>Daemon</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#updateChanges" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.updateChanges">update<wbr></wbr>Changes</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+
+        <div class="childrenKindTitle">Attributes</div>
+        <ul>
+    
+    <li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__ac_permissions__" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.__ac_permissions__">__ac<wbr></wbr>_permissions__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#__administratorPermissions__" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.__administratorPermissions__">__administrator<wbr></wbr>Permissions__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage">manage</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_main" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_main">manage<wbr></wbr>_main</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_main_diff" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_main_diff">manage<wbr></wbr>_main<wbr></wbr>_diff</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_options_default_action" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_options_default_action">manage<wbr></wbr>_options<wbr></wbr>_default<wbr></wbr>_action</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#manage_sub_options__roles__" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_sub_options__roles__">manage<wbr></wbr>_sub<wbr></wbr>_options<wbr></wbr>_<wbr></wbr>_roles__</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#meta_type" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.meta_type">meta<wbr></wbr>_type</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#zmi_icon" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.zmi_icon">zmi<wbr></wbr>_icon</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#auto_update" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.auto_update">auto<wbr></wbr>_update</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#id" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.id">id</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#ignore_orphans" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.ignore_orphans">ignore<wbr></wbr>_orphans</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#last_update" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.last_update">last<wbr></wbr>_update</a></code>
+            </div>
+        
+
+    </li><li class="">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="#update_direction" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.update_direction">update<wbr></wbr>_direction</a></code>
+            </div>
+        
+
+    </li>
+</ul> 
+
+        
+         
+        
+      </div>
+  </div><div>
+
+      <div class="thingTitle">
+        <span>Module</span>
+        <code><a href="zms.ZMSRepositoryManager.html" class="internal-link" title="The parent of this class"><wbr></wbr>ZMSRepository<wbr></wbr>Manager</a></code> 
+      </div>
+      
+      <div>
+        
+
+        
+         
+
+        <div class="childrenKindTitle">Classes</div>
+        <ul>
+    
+    <li class=" thisobject">
+        
+        
+        
+
+        
+            <div class="itemName"><code><a href="zms.ZMSRepositoryManager.ZMSRepositoryManager.html" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager"><wbr></wbr>ZMSRepository<wbr></wbr>Manager</a></code>
+            </div>
+        
+
+    </li>
+</ul>
+
+        
+         
+
+        
+         
+
+        
+         
+
+        
+         
+        
+      </div>
+  </div>
+
+</nav>
+        </div>
+        <div id="collapseSideBar">
+          <a class="btn btn-link" onclick="toggleSideBarCollapse()" title="Toggle Sidebar Collapse">
+          </a>
+        </div> 
+        <script src="sidebartoggle.js" type="text/javascript"></script>
+       
+      </div>
+
+      <div id="main" class="">
+        
+
+        
+
+        <div class="page-header">
+          <h1 class="class"><code><code><a href="index.html" class="internal-link">zms</a></code><wbr></wbr>.<code><a href="zms.ZMSRepositoryManager.html" class="internal-link" title="zms.ZMSRepositoryManager">ZMSRepositoryManager</a></code><wbr></wbr>.<code><a href="zms.ZMSRepositoryManager.ZMSRepositoryManager.html" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager">ZMSRepositoryManager</a></code></code></h1>
+          <div id="showPrivate">
+            <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+          </div>
+        </div>
+
+        <div class="categoryHeader">
+          class documentation
+        </div>
+
+        <div class="extrasDocstring">
+          <p><code><span class="py-keyword">class</span> <span class="py-defname">ZMSRepositoryManager</span>(ZMSItem.ZMSItem): <a href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L47" class="sourceLink">(source)</a></code></p><p>Implements interfaces: Products.zms.IZMSConfigurationProvider.IZMSConfigurationProvider, Products.zms.IZMSDaemon.IZMSDaemon, Products.zms.IZMSRepositoryManager.IZMSRepositoryManager</p>
+          <p><a href="classIndex.html#zms.ZMSRepositoryManager.ZMSRepositoryManager">View In Hierarchy</a></p>
+        </div>
+
+        <div class="moduleDocstring">
+          <div><p>"" Properties</p>
+</div>
+        </div>
+
+        <div id="splitTables">
+          <table class="children sortable" id="id47">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.__init__">__init__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#commitChanges" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.commitChanges">commit<wbr></wbr>Changes</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#exec_auto_commit" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.exec_auto_commit">exec<wbr></wbr>_auto<wbr></wbr>_commit</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#exec_auto_update" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.exec_auto_update">exec<wbr></wbr>_auto<wbr></wbr>_update</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#get_auto_update" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_auto_update">get<wbr></wbr>_auto<wbr></wbr>_update</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#get_conf_basepath" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_conf_basepath">get<wbr></wbr>_conf<wbr></wbr>_basepath</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#get_ignore_orphans" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_ignore_orphans">get<wbr></wbr>_ignore<wbr></wbr>_orphans</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#get_last_update" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_last_update">get<wbr></wbr>_last<wbr></wbr>_update</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#get_update_direction" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_update_direction">get<wbr></wbr>_update<wbr></wbr>_direction</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getDiffs" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.getDiffs">get<wbr></wbr>Diffs</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#getRepositoryProviders" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.getRepositoryProviders">get<wbr></wbr>Repository<wbr></wbr>Providers</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#localFiles" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.localFiles">local<wbr></wbr>Files</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#manage_change" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_change">manage<wbr></wbr>_change</a></code></td>
+    <td>ZMSRepositoryManager.manage_change</td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#manage_options" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_options">manage<wbr></wbr>_options</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#manage_sub_options" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_sub_options">manage<wbr></wbr>_sub<wbr></wbr>_options</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#readRepository" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.readRepository">read<wbr></wbr>Repository</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#remoteFiles" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.remoteFiles">remote<wbr></wbr>Files</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#startDaemon" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.startDaemon">start<wbr></wbr>Daemon</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#updateChanges" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.updateChanges">update<wbr></wbr>Changes</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#__ac_permissions__" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.__ac_permissions__">__ac<wbr></wbr>_permissions__</a></code></td>
+    <td>"" ZMSRepositoryManager.__init__:</td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#__administratorPermissions__" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.__administratorPermissions__">__administrator<wbr></wbr>Permissions__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage">manage</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage_main" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_main">manage<wbr></wbr>_main</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage_main_diff" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_main_diff">manage<wbr></wbr>_main<wbr></wbr>_diff</a></code></td>
+    <td>"" Management Permissions</td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage_options_default_action" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_options_default_action">manage<wbr></wbr>_options<wbr></wbr>_default<wbr></wbr>_action</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#manage_sub_options__roles__" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_sub_options__roles__">manage<wbr></wbr>_sub<wbr></wbr>_options<wbr></wbr>_<wbr></wbr>_roles__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#meta_type" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.meta_type">meta<wbr></wbr>_type</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="classvariable">
+    
+    <td>Class Variable</td>
+    <td><code><a href="#zmi_icon" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.zmi_icon">zmi<wbr></wbr>_icon</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#auto_update" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.auto_update">auto<wbr></wbr>_update</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#id" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.id">id</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#ignore_orphans" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.ignore_orphans">ignore<wbr></wbr>_orphans</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#last_update" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.last_update">last<wbr></wbr>_update</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#update_direction" class="internal-link" title="zms.ZMSRepositoryManager.ZMSRepositoryManager.update_direction">update<wbr></wbr>_direction</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+
+            
+        </div>
+
+        <div id="childList">
+          <div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L98">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.commitChanges">
+    
+  </a>
+  <a name="commitChanges">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">commitChanges</span>(self, ids):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L331">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.exec_auto_commit">
+    
+  </a>
+  <a name="exec_auto_commit">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">exec_auto_commit</span>(self, provider, id):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L154">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.exec_auto_update">
+    
+  </a>
+  <a name="exec_auto_update">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">exec_auto_update</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L164">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_auto_update">
+    
+  </a>
+  <a name="get_auto_update">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_auto_update</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L114">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_conf_basepath">
+    
+  </a>
+  <a name="get_conf_basepath">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_conf_basepath</span>(self, id=<span class="rst-variable-quote">'</span><span class="rst-variable-string"></span><span class="rst-variable-quote">'</span>):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L135">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_ignore_orphans">
+    
+  </a>
+  <a name="get_ignore_orphans">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_ignore_orphans</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L128">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_last_update">
+    
+  </a>
+  <a name="get_last_update">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_last_update</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L121">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.get_update_direction">
+    
+  </a>
+  <a name="get_update_direction">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">get_update_direction</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L107">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.getDiffs">
+    
+  </a>
+  <a name="getDiffs">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getDiffs</span>(self, provider, ignore=True):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L208">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.getRepositoryProviders">
+    
+  </a>
+  <a name="getRepositoryProviders">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">getRepositoryProviders</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L249">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.localFiles">
+    
+  </a>
+  <a name="localFiles">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">localFiles</span>(self, provider, ids=None):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L254">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_change">
+    
+  </a>
+  <a name="manage_change">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_change</span>(self, btn, lang, REQUEST=None, RESPONSE=None):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L421">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>ZMSRepositoryManager.manage_change</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_options">
+    
+  </a>
+  <a name="manage_options">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_options</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L65">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_sub_options">
+    
+  </a>
+  <a name="manage_sub_options">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">manage_sub_options</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L69">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.readRepository">
+    
+  </a>
+  <a name="readRepository">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">readRepository</span>(self, provider):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L322">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.remoteFiles">
+    
+  </a>
+  <a name="remoteFiles">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">remoteFiles</span>(self, provider):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L316">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.startDaemon">
+    
+  </a>
+  <a name="startDaemon">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">startDaemon</span>(self):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L146">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.updateChanges">
+    
+  </a>
+  <a name="updateChanges">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">updateChanges</span>(self, ids, override=False):
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L389">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.__ac_permissions__">
+    
+  </a>
+  <a name="__ac_permissions__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">__ac_permissions__</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L88">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p>"" ZMSRepositoryManager.__init__:</p>
+<p>Constructor.</p>
+</div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.__administratorPermissions__">
+    
+  </a>
+  <a name="__administratorPermissions__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">__administratorPermissions__</span>: <code>tuple[<wbr></wbr>str, <wbr></wbr><span class="rst-variable-ellipsis">...</span>]</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L84">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage">
+    
+  </a>
+  <a name="manage">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L77">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_main">
+    
+  </a>
+  <a name="manage_main">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_main</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L78">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_main_diff">
+    
+  </a>
+  <a name="manage_main_diff">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_main_diff</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L79">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p>"" Management Permissions</p>
+</div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_options_default_action">
+    
+  </a>
+  <a name="manage_options_default_action">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_options_default_action</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L64">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.manage_sub_options__roles__">
+    
+  </a>
+  <a name="manage_sub_options__roles__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">manage_sub_options__roles__</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L68">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.meta_type">
+    
+  </a>
+  <a name="meta_type">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">meta_type</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L57">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseclassvariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.zmi_icon">
+    
+  </a>
+  <a name="zmi_icon">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">zmi_icon</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L58">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.auto_update">
+    
+  </a>
+  <a name="auto_update">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">auto_update</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L427">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.id">
+    
+  </a>
+  <a name="id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">id</span>: <code>str</code> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L99">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.ignore_orphans">
+    
+  </a>
+  <a name="ignore_orphans">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">ignore_orphans</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L429">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.last_update">
+    
+  </a>
+  <a name="last_update">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">last_update</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L204">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="zms.ZMSRepositoryManager.ZMSRepositoryManager.update_direction">
+    
+  </a>
+  <a name="update_direction">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">update_direction</span> =
+    <a class="sourceLink" href="https://github.com/zms-publishing/ZMS/tree/main/Products/zms/ZMSRepositoryManager.py#L431">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+    
+  </div>
+</div>
+        </div>
+      
+      </div>
+    </div>
+
+    <footer class="navbar navbar-default">
+
+  
+  <div class="container">
+    <a href="index.html">API Documentation</a> for <a href="https://github.com/zms-publishing/ZMS/" class="projecthome">ZMS</a>,
+  generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a>
+    <!-- t:slot name="pydoctor_version" /&gt; at <t:slot name="buildtime" / -->.
+  </div>
+
+  <!-- Search related scripts needs to be loaded at the end of HTML 
+    parsing not to introduce overhead and display HTML data asap -->
+  <script src="ajax.js" type="text/javascript"></script>
+  <script src="searchlib.js" type="text/javascript"></script>
+  <script src="search.js" type="text/javascript"></script>
+
+<script>
+//<!-- OPEN SOURCE LINKS IN FRAMESET 
+  document.addEventListener('DOMContentLoaded', function(){
+  var links = document.getElementsByClassName('sourceLink');
+    var len = links.length;
+    for(var i=0; i<len; i++)
+    {
+      links[i].target = "_blank";
+      links[i].title = "View on Github";
+    }
+  })
+//-->
+</script>
+
+</footer>
+  
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

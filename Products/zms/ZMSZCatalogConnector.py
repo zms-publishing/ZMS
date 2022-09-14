@@ -223,14 +223,17 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.search_xml:
     # --------------------------------------------------------------------------
-    def search_xml(self, q, page_index=0, page_size=10, REQUEST=None, RESPONSE=None):
+    def search_xml(self, q, page_index=0, page_size=10, debug=0, REQUEST=None, RESPONSE=None):
       """ ZMSZCatalogConnector.search_xml """
       # Check constraints.
       page_index = int(page_index)
       page_size = int(page_size)
       REQUEST.set('lang', REQUEST.get('lang', self.getPrimaryLanguage()))
       RESPONSE = REQUEST.RESPONSE
-      content_type = 'text/xml;charset=utf-8'
+      content_type = 'text/xml; charset=utf-8'
+      debug = int(debug)
+      if debug:
+        content_type = 'text/plain; charset=utf-8'
       RESPONSE.setHeader('Content-Type', content_type)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')
@@ -305,12 +308,15 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.suggest_xml:
     # --------------------------------------------------------------------------
-    def suggest_xml(self, q, fq='', limit=5, REQUEST=None, RESPONSE=None):
+    def suggest_xml(self, q, fq='', limit=5, debug=0, REQUEST=None, RESPONSE=None):
       """ ZMSZCatalogConnector.suggest_xml """
       # Check constraints.
       REQUEST.set('lang', REQUEST.get('lang', self.getPrimaryLanguage()))
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml;charset=utf-8'
+      debug = int(debug)
+      if debug:
+        content_type = 'text/plain; charset=utf-8'
       RESPONSE.setHeader('Content-Type', content_type)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
       RESPONSE.setHeader('Pragma', 'no-cache')

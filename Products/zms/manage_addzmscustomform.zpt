@@ -1,5 +1,5 @@
 <tal:block tal:define="global
-		meta_id python:here.getMetaobjId(request['custom']);
+		meta_id python:request.get('meta_id') or here.getMetaobjId(request['custom']);
 		metaObj python:here.getMetaobj(meta_id);
 		metaObjIds python:here.getMetaobjIds();
 		dummy0 python:request.set('ZMS_INSERT',meta_id);

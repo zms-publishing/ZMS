@@ -16,7 +16,7 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <style>
-
+	/*<!-- */
 	table.table.zmi-sortable th,
 	table.table.zmi-sortable td {
 		padding: 0;
@@ -135,11 +135,11 @@
 		border: 0;
 		padding: 2rem 0.5rem .5rem !important;
 	}
-
+	/*-->*/
 </style>
 
 <script>
-
+	//<!--
 	/**
 	 * Transfer selected object to node list.
 	 */
@@ -190,7 +190,7 @@
 			}
 		);
 	});
-
+	//-->
 </script>
 
 <div class="d-none">
@@ -386,7 +386,7 @@
 
 
 <nav id="subTab">
-<ul class="nav nav-tabs" role="tablist" tal:attributes="title python:here.getRevision()">
+	<ul class="nav nav-tabs" role="tablist" tal:attributes="title python:here.getRevision()">
 		<li class="nav-item"><a class="nav-link" href="#edit" data-toggle="tab" 
 			tal:attributes="class python:request.get('key','edit')=='edit' and 'nav-link active show' or 'nav-link'"
 			tal:content="python:here.getZMILangStr('TAB_WORKFLOW_MODEL')">Workflow-Model</a></li>
@@ -396,7 +396,7 @@
 		<li class="nav-item"><a class="nav-link" href="#history" data-toggle="tab" 
 			tal:attributes="class python:request.get('key')=='history' and 'nav-link active show' or 'nav-link'"
 			tal:content="python:here.getZMILangStr('TAB_WORKFLOW_VERSION')">Version Control</a></li>
-</ul>
+	</ul>
 </nav>
 
 <div class="tab-content">

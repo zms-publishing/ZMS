@@ -1,47 +1,50 @@
 <!-- ZMSTable.standard_html -->
 
-<div tal:define="zmscontext    options/zmscontext;
-                 Std           modules/Products.PythonScripts/standard;
-                 newline_to_br nocall:Std/newline_to_br;
-                 rteformats    python:filter(lambda x: str(x.getRichedit())=='1',here.getTextFormats(request));
-                 table         python:zmscontext.attr('table');
-                 sortable      python:int(zmscontext.attr('sortable') in [1,True]);
-                 req_sortable  python:sortable and request.set('ZMSTable.sortable',True);
-                 caption       python:zmscontext.attr('caption');
-                 caption_side  python:zmscontext.attr('caption_side');
-                 table_type    python:zmscontext.attr('type');"
-     class="table-responsive">
-    <style tal:condition="python:zmscontext.attr('colgroup')" tal:content="structure python:zmscontext.attr('zmstable_colgroup_css')"></style>
-    <table tal:attributes="id python:zmscontext.id; class python:' '.join(['ZMSTable table bs-table']+[[],['sortable']][sortable])">
-        <caption tal:condition="python:caption"
-             tal:attributes="style python:caption_side and 'caption-side:%s'%(caption_side) or None"
-             tal:content="structure caption"></caption>
-        <tal:block tal:repeat="row table">
-            <tal:block tal:condition="python:table_type==1 and row==table[0]" tal:content="structure python:'<thead>'"></tal:block>
-            <tal:block tal:condition="python:table_type==1 and row==table[1]" tal:content="structure python:'<tbody>'"></tal:block>
-            <tr>
-                <tal:block tal:repeat="column row">
-                    <tal:block tal:define="row_index     repeat/row/index;
-                                           col_index     repeat/column/index;
-                                           tag           python:str(column.get('tag','')).lower();
-                                           format        python:column.get('format','');
-                                           pattern       python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042>\073';
-                                           replacement   python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
-                                           content       python:zmscontext.re_sub(pattern,replacement,column.get('content',''));
-                                           content       python:[content,newline_to_br(content)][format==''];
-                                           content       python:zmscontext.validateInlineLinkObj(content);
-                                           col_text      python:[zmscontext.dt_exec(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in map(lambda x: x.getId(),rteformats)];
-                                           col_text      python:zmscontext.re_sub('^(B \073)','',col_text);
-                                           col_text      python:zmscontext.re_sub('^<p>((\\w|\\W)*?)</p>$','\\1',col_text)">
-                        <th tal:condition="python:tag == 'th'" tal:content="structure python:col_text if col_text else ' '"></th>
-                        <td tal:condition="python:tag != 'th'" tal:content="structure python:col_text if col_text else ' '"></td>
-                    </tal:block>
-                </tal:block>
-            </tr>
-            <tal:block tal:condition="python:table_type==1 and row==table[0]" tal:content="structure python:'</thead>'"></tal:block>
-            <tal:block tal:condition="python:table_type==1 and row==table[-1]" tal:content="structure python:'</tbody>'"></tal:block>
-        </tal:block>
-    </table>
+<div tal:define="zmscontext	options/zmscontext;
+	Std modules/Products.PythonScripts/standard;
+	newline_to_br nocall:Std/newline_to_br;
+	rteformats python:filter(lambda x: str(x.getRichedit())=='1',here.getTextFormats(request));
+	table python:zmscontext.attr('table');
+	sortable python:int(zmscontext.attr('sortable') in [1,True]);
+	req_sortable python:sortable and request.set('ZMSTable.sortable',True);
+	caption python:zmscontext.attr('caption');
+	caption_side python:zmscontext.attr('caption_side');
+	table_type python:zmscontext.attr('type');"
+	class="table-responsive">
+	<style tal:condition="python:zmscontext.attr('colgroup')" 
+		tal:content="structure python:zmscontext.attr('zmstable_colgroup_css')">
+	</style>
+	<table tal:attributes="id python:zmscontext.id; class python:' '.join(['ZMSTable table bs-table']+[[],['sortable']][sortable])">
+		<caption tal:condition="python:caption"
+			 tal:attributes="style python:caption_side and 'caption-side:%s'%(caption_side) or None"
+			 tal:content="structure caption"></caption>
+		<tal:block tal:repeat="row table">
+			<tal:block tal:condition="python:table_type==1 and row==table[0]" tal:content="structure python:'<thead>'"></tal:block>
+			<tal:block tal:condition="python:table_type==1 and row==table[1]" tal:content="structure python:'<tbody>'"></tal:block>
+			<tr>
+				<tal:block tal:repeat="column row"
+					><tal:block tal:on-error="structure string:<td>ERROR</td>"
+						tal:define="row_index repeat/row/index;
+						col_index repeat/column/index;
+						tag python:str(column.get('tag','')).lower();
+						format python:column.get('format','');
+						pattern python:'%3Cdtml-var%20\042 getlinkurl\\((.*?),request\\)\042=\042\042>\042>\073';
+						replacement python:'<dtml-var \042getLinkUrl(\\1,REQUEST)\042>\042>';
+						content python:zmscontext.re_sub(pattern,replacement,column.get('content',''));
+						content python:[content,newline_to_br(content)][format==''];
+						content python:zmscontext.validateInlineLinkObj(content);
+						col_text python:[zmscontext.dt_exec(zmscontext.renderText(format,'table_%i_%i'%(col_index,row_index),content,request)),content][format in map(lambda x: x.getId(),rteformats)];
+						col_text python:zmscontext.re_sub('^(B \073)','',col_text);
+						col_text python:zmscontext.re_sub('^<p>((\\w|\\W)*?)</p>$','\\1',col_text)">
+						<th tal:condition="python:tag == 'th'" tal:content="structure python:col_text if col_text else ' '"></th>
+						<td tal:condition="python:tag != 'th'" tal:content="structure python:col_text if col_text else ' '"></td>
+					</tal:block>
+				</tal:block>
+			</tr>
+			<tal:block tal:condition="python:table_type==1 and row==table[0]" tal:content="structure python:'</thead>'"></tal:block>
+			<tal:block tal:condition="python:table_type==1 and row==table[-1]" tal:content="structure python:'</tbody>'"></tal:block>
+		</tal:block>
+	</table>
 </div>
 
 <!-- /ZMSTable.standard_html -->

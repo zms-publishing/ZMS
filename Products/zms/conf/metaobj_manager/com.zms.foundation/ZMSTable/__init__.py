@@ -26,17 +26,26 @@ class ZMSTable:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "5.0.1"
+	revision = "5.0.2"
 
 	# Type
 	type = "ZMSObject"
 
 	# Attrs
 	class Attrs:
+		titlealt = {"default":""
+			,"id":"titlealt"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"DC.Title.Alt"
+			,"repetitive":0
+			,"type":"py"}
+
 		caption = {"default":""
 			,"id":"caption"
 			,"keys":[]
-			,"mandatory":0
+			,"mandatory":1
 			,"multilang":1
 			,"name":"Caption"
 			,"repetitive":0
@@ -78,15 +87,6 @@ class ZMSTable:
 			,"name":"Colgroup"
 			,"repetitive":0
 			,"type":"boolean"}
-
-		titlealt = {"default":""
-			,"id":"titlealt"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"DC.Title.Alt"
-			,"repetitive":0
-			,"type":"py"}
 
 		interface0 = {"default":""
 			,"id":"interface0"

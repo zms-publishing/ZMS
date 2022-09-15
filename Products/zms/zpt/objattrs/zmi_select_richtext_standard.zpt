@@ -8,15 +8,24 @@
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 
-function selectObject(href, title, oid) {
+function selectObject(href, title, uid) {
+	var is_image = false;
+	var tag_el = 'a';
 	var attrs = [];
-	if (typeof oid != 'undefined') {
-		attrs.push('data-id="'+oid+'"');
+	if (typeof uid != 'undefined') {
+		attrs.push('data-id="'+uid+'"');
 	}
 	if (typeof href != 'undefined') {
-		attrs.push('href="'+href+'"');
+		is_image = (href.match('\.(jpg|gif|jpeg|png)') != null);
+		if (is_image) {
+			attrs.push('src="'+href+'"');
+			tag_el = 'img';
+		} else {
+			attrs.push('href="'+href+'"');
+		}
 	}
-	tagSelected('a '+attrs.join(' '),'<','>');
+	// console.log('selectObject: add link element ' + tag_el)
+	tagSelected(tag_el + ' ' + attrs.join(' '), '<', '>');
 }
 
 // Insert tab into richedit-textarea.

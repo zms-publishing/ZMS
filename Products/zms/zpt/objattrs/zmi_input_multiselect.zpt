@@ -4,10 +4,12 @@
 	><select multiple="multiple"
 		tal:define="
 			value python:[str(x) for x in standard.nvl(options.get('value'),[])];
-			opts python:here.sort_list(options.get('options',[]),1);"
+			opts python:here.sort_list(options.get('options',[]),1);
+			enabled python:options.get('enabled',True);"
 		tal:attributes="
 			name python:'%s:list'%options['name'];
-			class python:' '.join(['zmi-select']+options.get('css',[]));">
+			class python:' '.join(['zmi-select']+options.get('css',[]));
+			disabled python:not enabled and 'disabled' or None">
 		<tal:block tal:repeat="opt opts"
 			><option 
 				tal:condition="python:opt[1]!=''"

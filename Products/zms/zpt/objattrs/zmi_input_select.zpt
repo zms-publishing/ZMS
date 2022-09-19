@@ -5,8 +5,9 @@
 		lang_str  options/lang_str;
 		value     python:options.get('value');
 		opts      python:options.get('options',[]);
+		enabled   python:options.get('enabled',True);
 		mandatory python:options.get('mandatory',False);"
-	><select class="form-control" tal:attributes="name name;id name">
+	><select class="form-control" tal:attributes="name name;id name;disabled python:not enabled and 'disabled' or None">
 		<option value="" tal:condition="not:mandatory">----- <tal:block tal:content="python:here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr(lang_str)">Select option</tal:block> -----</option>
 		<tal:block tal:repeat="opt opts"
 			><option

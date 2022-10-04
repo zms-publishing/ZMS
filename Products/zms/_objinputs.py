@@ -100,7 +100,8 @@ class ObjInputs(object):
   #	@return String
   # ----------------------------------------------------------------------------
   def getTextInput(self, fmName, elName, size=None, value='', type='text', enabled=True, css='form-control', placeholder=''):
-    lang = self.REQUEST.get('lang', self.getPrimaryLanguage())
+    # In case lang is set to None, use primary language
+    lang = self.REQUEST.get('lang') is not None and self.REQUEST.get('lang') or self.getPrimaryLanguage()
     elId = elName
     if elId.endswith('_%s'%lang):
       elId = elId[:-len('_%s'%lang)]
@@ -166,7 +167,8 @@ class ObjInputs(object):
   # call getCheckbox(..., elId='', ...) with an empty string for elId
   # ----------------------------------------------------------------------------
   def getCheckbox(self, fmName, elName, elId=None, value=None, enabled=True, hidden=True, css='', btn=False, options=[0, 1]):
-    lang = self.REQUEST.get('lang', self.getPrimaryLanguage())
+    # In case lang is set to None, use primary language
+    lang = self.REQUEST.get('lang') is not None and self.REQUEST.get('lang') or self.getPrimaryLanguage()
     if elId==None:
       elId = elName
     if elId.endswith('_%s'%lang):
@@ -212,7 +214,8 @@ class ObjInputs(object):
   #	@return String
   # ----------------------------------------------------------------------------
   def getTextArea(self, fmName, elName, cols, rows, value, enabled=True, css='form-control', wrap='virtual'):
-    lang = self.REQUEST.get('lang', self.getPrimaryLanguage())
+    # In case lang is set to None, use primary language
+    lang = self.REQUEST.get('lang') is not None and self.REQUEST.get('lang') or self.getPrimaryLanguage()
     elId = elName
     if elId.endswith('_%s'%lang):
       elId = elId[:-len('_%s'%lang)]

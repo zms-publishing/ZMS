@@ -273,8 +273,7 @@ class MultiLanguageManager(object):
       Returns language-string for current content-language.
       """
       if lang is None:
-        # In case lang is set to None, use primary language
-        lang = self.REQUEST.get('lang') is not None and self.REQUEST.get('lang') or self.getPrimaryLanguage()
+        lang = standard.nvl(self.REQUEST.get('lang'), self.getPrimaryLanguage())
 
       # Return custom value.
       d = self.get_lang_dict()

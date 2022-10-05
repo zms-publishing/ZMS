@@ -364,8 +364,7 @@ class ZMSZCatalogConnector(
       
       # ZCatalog.
       request = self.REQUEST
-      # In case lang is set to None, use primary language
-      lang = self.REQUEST.get('lang') is not None and self.REQUEST.get('lang') or self.getPrimaryLanguage()
+      lang = standard.nvl(self.REQUEST.get('lang'), self.getPrimaryLanguage())
       zcatalog = getZCatalog(self, lang)
       
       # Find search-results.
@@ -427,8 +426,7 @@ class ZMSZCatalogConnector(
       
       # ZCatalog.
       request = self.REQUEST
-      # In case lang is set to None, use primary language
-      lang = self.REQUEST.get('lang') is not None and self.REQUEST.get('lang') or self.getPrimaryLanguage()
+      lang = standard.nvl(self.REQUEST.get('lang'), self.getPrimaryLanguage())
       zcatalog = getZCatalog(self, lang)
       
       # Lexicon.
@@ -463,8 +461,7 @@ class ZMSZCatalogConnector(
         setattr(node, attr_name, value)
       # Reindex object.
       request = self.REQUEST
-      # In case lang is set to None, use primary language
-      lang = self.REQUEST.get('lang') is not None and self.REQUEST.get('lang') or self.getPrimaryLanguage()
+      lang = standard.nvl(self.REQUEST.get('lang'), self.getPrimaryLanguage())
       zcatalog = getZCatalog(self, lang)
       if zcatalog is not None:
         path = node.getPath()

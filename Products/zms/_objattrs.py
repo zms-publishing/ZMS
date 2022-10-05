@@ -263,7 +263,7 @@ class ObjAttrs(object):
     #  ObjAttrs.isDisabledAttr:
     # --------------------------------------------------------------------------
     def isDisabledAttr(self, obj_attr, REQUEST):
-      lang = standard.nvl(self.REQUEST.get('lang'), self.getPrimaryLanguage())
+      lang = standard.nvl(REQUEST.get('lang'), self.getPrimaryLanguage())
       return REQUEST.get(obj_attr['id']+'-disabled', False) or not (obj_attr['multilang'] or REQUEST.get('ZMS_INSERT', None) is not None or self.getDCCoverage(REQUEST).find('.'+lang)>0)
 
 

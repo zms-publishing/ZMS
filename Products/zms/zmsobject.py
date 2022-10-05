@@ -492,7 +492,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def isVisible(self, REQUEST):
       REQUEST = standard.nvl(REQUEST, self.REQUEST)
-      lang = standard.nvl(self.REQUEST.get('lang'), self.getPrimaryLanguage())
+      lang = standard.nvl(REQUEST.get('lang'), self.getPrimaryLanguage())
       visible = True
       visible = visible and self.isTranslated(lang, REQUEST) # Object is translated.
       visible = visible and self.isCommitted(REQUEST) # Object has been committed.

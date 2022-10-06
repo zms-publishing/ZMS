@@ -367,3 +367,7 @@ q = catalog({ cat_attr_name : str(id) })
 for r in q:
     return r.getObject().attr('standard_html')
 ```
+
+In addition ZMS offers useful API functions to make the code short and use it TAL :
+1. zmscontext.get_uid(): returns UID of the context object, eg. `uid:d67ef401-db9b-46bd-9108-35f3c8d959a0`
+2. zmscontext.getLinkObj(url): if url written in ZMS-internal url syntax `{$...}`, the targeted object will be returned, eg. this call `zmscontext.getLinkObj('{$uid:d67ef401-db9b-46bd-9108-35f3c8d959a0}')` will return the object. *Hint*: make sure, that the uid follows the syntax like this `'{$%s}'%(uid)` 

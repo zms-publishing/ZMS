@@ -54,12 +54,20 @@ ZMI.prototype.multiselect = function(context) {
 		$("a.dropdown-item",$dropdown).click(function() {
 			$(this).addClass("d-none");
 			var data_value = $(this).attr('data-value');
-			$container.append(''
-				+'<div class="btn btn-light"'+$select_disabled+'data-value="'+data_value+'">'
-				+'<a href="javascript:;">'+$ZMI.icon('icon-times')+'</a> '
-				+$(this).text()
-				+'</div> '
-			);
+			if ( $select_disabled ) {
+				$container.append(''
+					+ '<div class="btn bg-light" disabled="disabled">'
+					+ $(this).text()
+					+ '</div> '
+				);
+			} else {
+				$container.append(''
+					+ '<div class="btn btn-light" data-value="'+data_value+'">'
+					+ '<a href="javascript:;"><i class="fas fa-times"></i></a> '
+					+ $(this).text()
+					+ '</div> '
+				);
+			};
 			$(".btn a:last",$container).click(function() {
 				var $parent = $(this).parent();
 				$("a.dropdown-item[data-value='"+data_value+"']",$dropdown).removeClass("d-none");

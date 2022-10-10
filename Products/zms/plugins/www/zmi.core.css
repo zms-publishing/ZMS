@@ -1883,6 +1883,9 @@ body.browse_iframe .toggle {
 .zmi .form-horizontal label.control-label span {
 	white-space:nowrap;
 }
+.zmi .form-horizontal .zmi-select-container.form-inline .zmi-select > .btn:last-child {
+	margin-right:0.25rem;
+}
 .zmi .url-input-container .breadcrumb {
 	padding: 0.4em 0 0 0 !important;
 	margin: 0 !important;

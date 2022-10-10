@@ -22,13 +22,14 @@ ZMI.prototype.multiselect = function(context) {
 			}
 		}
 		var $select = $(this);
+		var $select_disabled = ( $select.attr('disabled')=='disabled' ) ? ' disabled="disabled" ': '';
 		$select.next(".zmi-select-container").remove();
 		var html = ''
 			+ '<div class="zmi-select-container form-inline">'
 			+ '<div class="'+$select.attr('class').replace('form-control','')+'">'
 			+ '</div>'
 			+ '<div class="btn-group btn-group-sortable">\n'
-			+ '<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
+			+ '<button type="button"' + $select_disabled + 'class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
 			+ '<i class="fas fa-plus mr-1"></i>'
 			+ '</button>'
 			+ '<div class="dropdown-menu scrollable-menu">';
@@ -53,12 +54,20 @@ ZMI.prototype.multiselect = function(context) {
 		$("a.dropdown-item",$dropdown).click(function() {
 			$(this).addClass("d-none");
 			var data_value = $(this).attr('data-value');
-			$container.append(''
-				+'<div class="btn btn-light" data-value="'+data_value+'">'
-				+'<a href="javascript:;">'+$ZMI.icon('icon-times')+'</a> '
-				+$(this).text()
-				+'</div> '
-			);
+			if ( $select_disabled ) {
+				$container.append(''
+					+ '<div class="btn bg-light" disabled="disabled">'
+					+ $(this).text()
+					+ '</div> '
+				);
+			} else {
+				$container.append(''
+					+ '<div class="btn btn-light" data-value="'+data_value+'">'
+					+ '<a href="javascript:;"><i class="fas fa-times"></i></a> '
+					+ $(this).text()
+					+ '</div> '
+				);
+			};
 			$(".btn a:last",$container).click(function() {
 				var $parent = $(this).parent();
 				$("a.dropdown-item[data-value='"+data_value+"']",$dropdown).removeClass("d-none");

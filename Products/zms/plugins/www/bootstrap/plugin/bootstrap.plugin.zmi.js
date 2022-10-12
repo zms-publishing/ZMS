@@ -885,7 +885,7 @@ ZMI.prototype.initInputFields = function(container) {
 				zmiAutocomplete('#'+id,{
 					serviceUrl:ajax_url,
 					paramName:'q',
-					params:{obj_id:obj_id,attr_id:attr_id},
+					params:{obj_id:obj_id,attr_id:attr_id,lang:getZMILang()},
 					transformResult: function(response, originalQuery) {
 						var m = {
 							query: originalQuery,

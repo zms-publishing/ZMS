@@ -56,13 +56,13 @@ ZMI.prototype.multiselect = function(context) {
 			var data_value = $(this).attr('data-value');
 			if ( $select_disabled ) {
 				$container.append(''
-					+ '<div class="btn bg-light" disabled="disabled">'
+					+ '<div class="btn bg-light mt-2" disabled="disabled">'
 					+ $(this).text()
 					+ '</div> '
 				);
 			} else {
 				$container.append(''
-					+ '<div class="btn btn-light" data-value="'+data_value+'">'
+					+ '<div class="btn btn-light mt-2" data-value="'+data_value+'">'
 					+ '<a href="javascript:;"><i class="fas fa-times"></i></a> '
 					+ $(this).text()
 					+ '</div> '

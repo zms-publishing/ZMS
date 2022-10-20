@@ -47,7 +47,7 @@ function openWindow(url) {
 				</a>
 			</div>
 			<a class="btn btn-default btn-secondary" target="_blank" style="margin-right:1em"
-				tal:attributes="href python:'%s/manage_catalogView'%zmscontext.zcatalog_index.absolute_url()">
+				tal:attributes="href python:'%s/manage_catalogView?filterpath=/'%zmscontext.zcatalog_index.absolute_url()">
 					<i class="icon icon-search fas fa-search"></i> zcatalog_index
 			</a>
 			<button name="btn" class="btn btn-warning" style="margin-right:1em"

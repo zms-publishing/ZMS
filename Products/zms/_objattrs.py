@@ -150,7 +150,7 @@ class ObjAttrs(object):
       obj_attr = self.getObjAttr( key, meta_id)
       l = [x[1] for x in self.getObjOptions( obj_attr, REQUEST)]
       q = REQUEST.get( 'q', '').upper()
-      if q:
+      if q and q!='*':
         l = [x for x in l if x.upper().find(q) >= 0]
       limit = int(REQUEST.get('limit', self.getConfProperty('ZMS.input.autocomplete.limit', 15)))
       if len(l) > limit:

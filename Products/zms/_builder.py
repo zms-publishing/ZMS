@@ -150,10 +150,6 @@ class Builder(object):
             raise ParseError('%s at line %s' % (pyexpat.ErrorString(p.ErrorCode), p.ErrorLineNumber))
         ####
 
-        # reindex
-        standard.triggerEvent( self, '*.ObjectImported')
-        ####
-
         return root
 
 
@@ -274,7 +270,10 @@ class Builder(object):
             
             # notify current node
             self.oCurrNode.xmlOnEndElement()
-            
+
+            # notify index
+            standard.triggerEvent(self.oCurrNode, "*.ObjectAdded")
+
             parent = self.oCurrNode.xmlGetParent()
             
             # set parent node as current node

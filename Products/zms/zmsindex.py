@@ -83,8 +83,9 @@ class ZMSIndex(ZMSItem.ZMSItem):
       base = list(self.getRootElement().getPhysicalPath())[:-1]
       url = list(self.getDocumentElement().getPhysicalPath())[len(base):-1]
       request.set('url','{$'+['','/'.join(url)+'@'][len(url)>0]+'}')
-      self.manage_reindex(regenerate_duplicates=True)
-      if self.getConfProperty('ZMSIndexZCatalog.ObjectImported',False) == True:
+      if self.getConfProperty('ZMSIndexZCatalog.ObjectImported.reindex',True) == False:
+        self.manage_reindex(regenerate_duplicates=True)
+      if self.getConfProperty('ZMSIndexZCatalog.ObjectImported.resync',False) == True:
         self.manage_resync()
 
     ##############################################################################

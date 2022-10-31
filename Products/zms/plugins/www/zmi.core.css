@@ -1484,11 +1484,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	background: #EAEDEF;
 	font-weight: bold;
 	border-top:1px solid rgba(0,0,0,.05);
-	/* margin: 1rem 0 -1rem 20px; */
-	/* display: inline-block; */
-	/* max-width: max-content; */
-	/* text-transform: uppercase; */
-	/* letter-spacing: 1px; */
 }
 .zmi .card legend.filterName {
 	font-size: 1rem;
@@ -1499,7 +1494,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	background:unset;
 	border-top:unset;
 }
-
+.zmi .card legend[title] {
+	cursor: help;
+}
 .zmi .card-body form.form-horizontal {
 	margin:0 !important;
 }

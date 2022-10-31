@@ -102,9 +102,7 @@ function zmiFormSubmit(sender,d) {
 
 <form class="form-horizontal card manage_metas" action="manage_changeMetaProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<legend tal:content="python:here.getZMILangStr('TAB_METADATA')">Metadata</legend>
-	<p class="well well-small d-none" tal:content="structure python:here.getZMILangStr('MSG_METADICT')">well</p>
-
+	<legend tal:attributes="title python:here.getZMILangStr('MSG_METADICT')" tal:content="python:here.getZMILangStr('TAB_METADATA')">Metadata</legend>
 	<table class="table table-striped table-bordered table-sm zmi-sortable">
 	<thead>
 	<tr>

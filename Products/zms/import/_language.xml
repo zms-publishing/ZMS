@@ -4282,8 +4282,8 @@
    </Row>
    <Row>
     <Cell><Data ss:Type="String">MSG_METACMD</Data></Cell>
-    <Cell><Data ss:Type="String">Hier können Sie Ihre eigenen Aktionen und Funktionen für ZMS-Objekte definieren.</Data></Cell>
-    <Cell><Data ss:Type="String">Define your own custom actions and functions on ZMS objects.</Data></Cell>
+    <Cell><Data ss:Type="String">Aktionen erweitern die Funktionalität von ZMS; standardmässig erscheinen sie im 'Aktion auswählen'-Segment des Aktionsmenüs. Per Namenskonvention können sie im GUI aber auch an anderer Stelle erscheinen: 1. 'manage_add...' im Einfügen-Segment der Aktionsliste, 2. 'manage_tab...' als Hauptmenü-Tab, 3. 'manage_repository...' als Custom-Function des Repository-Managers und 4. 'manage_zcatalog...' als Custom-Function des Index-Managers.</Data></Cell>
+    <Cell><Data ss:Type="String">Actions extend the functionality of ZMS; by default they appear in the 'select action' segment of the action menu. Based on a naming convention, they can appear elsewhere in the GUI: 1. 'manage_add...' in the insert segment of the action list, 2. 'manage_tab...' as main menu tab, 3. 'manage_repository...' as custom function of the repository manager and 4. 'manage_zcatalog...' as custom function of the index manager.</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">在此能够定义自己的擿作和功能。</Data></Cell>
     <Cell><Data ss:Type="String">%s به پايين منتقل شد</Data></Cell>
     <Cell/>

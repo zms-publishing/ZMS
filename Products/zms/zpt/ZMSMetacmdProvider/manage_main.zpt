@@ -205,8 +205,7 @@
 
 <form class="form-horizontal card" tal:attributes="action action" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<legend tal:content="python:here.getZMILangStr('TAB_METACMD')">Metacmd</legend>
-	<p class="well well-small d-none" tal:content="structure python:here.getZMILangStr('MSG_METACMD')">well</p>
+	<legend tal:attributes="title python:here.getZMILangStr('MSG_METACMD')" tal:content="python:here.getZMILangStr('TAB_METACMD')">Metacmd</legend>
 	<table id="meta_commands" class="table table-sm table-striped table-bordered table-hover mb-0">
 	<thead>
 		<tr tal:condition="python:here.meta_type=='ZMSMetacmdProvider'">

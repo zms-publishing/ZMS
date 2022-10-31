@@ -459,7 +459,11 @@
 
 <form tal:condition="python:not request.get('id')" class="form-horizontal card" action="manage_changeProperties" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
-	<legend tal:attributes="title python:here.getZMILangStr('MSG_METAOBJ')" tal:content="python:here.getZMILangStr('TAB_METAOBJ')">Metaobj</legend>
+	<legend class="has_tooltip" 
+		tal:attributes="title python:here.getZMILangStr('TIP_METAOBJ')" 
+		tal:content="python:here.getZMILangStr('TAB_METAOBJ')">
+		Metaobj
+	</legend>
 	<table id="meta_overview" class="table table-striped table-hover table-bordered table-sm mb-0">
 	<thead>
 		<tr>

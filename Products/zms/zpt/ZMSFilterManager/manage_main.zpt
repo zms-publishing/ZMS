@@ -391,7 +391,11 @@ $(function(){
 
 <form class="form-horizontal card" tal:attributes="action action" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<legend tal:attributes="title python:here.getZMILangStr('MSG_FILTER')" tal:content="python:here.getZMILangStr('ATTR_FILTER')">Filter</legend>
+	<legend class="has_tooltip" 
+		tal:attributes="title python:here.getZMILangStr('TIP_FILTER')" 
+		tal:content="python:here.getZMILangStr('ATTR_FILTER')">
+		Filter
+	</legend>
 	<table class="table table-sm table-striped table-bordered zmi-sortable mb-0">
 		<thead>
 			<tr>

@@ -4197,7 +4197,7 @@
     <Cell><Data ss:Type="String">%s הוצאו בהצלחה</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">MSG_FILTER</Data></Cell>
+    <Cell><Data ss:Type="String">TIP_FILTER</Data></Cell>
     <Cell><Data ss:Type="String">Definieren Sie Ihre eigenen Im/Export-Filter für ZMS-Objekte und die dafür erforderlichen Prozessschritt-Typen.</Data></Cell>
     <Cell><Data ss:Type="String">Define your own custom im/export-filters for ZMS objects and the required types of processing steps.</Data></Cell>
     <Cell ss:Index="9"/>
@@ -4281,7 +4281,7 @@
     <Cell><Data ss:Type="String">אזהרה:&lt;br/&gt;&#10;i% רשומות (מקסימום i% ) נמצאו</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">MSG_METACMD</Data></Cell>
+    <Cell><Data ss:Type="String">TIP_METACMD</Data></Cell>
     <Cell><Data ss:Type="String">Aktionen erweitern die Funktionalität von ZMS; standardmässig erscheinen sie im 'Aktion auswählen'-Segment des Aktionsmenüs. Per Namenskonvention können sie im GUI aber auch an anderer Stelle erscheinen: 1. 'manage_add...' im Einfügen-Segment der Aktionsliste, 2. 'manage_tab...' als Hauptmenü-Tab, 3. 'manage_repository...' als Custom-Function des Repository-Managers und 4. 'manage_zcatalog...' als Custom-Function des Index-Managers.</Data></Cell>
     <Cell><Data ss:Type="String">Actions extend the functionality of ZMS; by default they appear in the 'select action' segment of the action menu. Based on a naming convention, they can appear elsewhere in the GUI: 1. 'manage_add...' in the insert segment of the action list, 2. 'manage_tab...' as main menu tab, 3. 'manage_repository...' as custom function of the repository manager and 4. 'manage_zcatalog...' as custom function of the index manager.</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">在此能够定义自己的擿作和功能。</Data></Cell>
@@ -4293,7 +4293,7 @@
     <Cell><Data ss:Type="String">הגדר את הפעולות המותאמות אלייך ופונקציות של פריטי ZMS.</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">MSG_METADICT</Data></Cell>
+    <Cell><Data ss:Type="String">TIP_METADICT</Data></Cell>
     <Cell><Data ss:Type="String">Metadaten sind präzise Informationen über (meta) den Inhalt des Dokuments; sie charakterisieren den Inhalt mithilfe eines festgelegten Satzes an Beschreibungs-Elementen (z.B. Titel, Autor, Datum, Verleger, Schlagworte etc.).</Data></Cell>
     <Cell><Data ss:Type="String">Metadata are precise information about (meta) the document content. They characterize the content with the help of a fixed number of description elements (e.g. title, author, date, editor, subjects, etc.).</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">元数濮包快文件确切的信濯。元数濮用固定的元素濿写文件的内容（例如：主题，作者，日期，出版者，关键诿等）。</Data></Cell>
@@ -4305,7 +4305,7 @@
     <Cell><Data ss:Type="String">מטא-נתונים הם מידע מדויק אודות (מטא) תוכן המסמך. הם מאפיינים את התוכן בעזרת מספר קבוע של אלמנטי תיאור( כגון: כותרת, מחבר, תאריך, עורך, נושאים וכו'...)</Data></Cell>
    </Row>
    <Row>
-    <Cell><Data ss:Type="String">MSG_METAOBJ</Data></Cell>
+    <Cell><Data ss:Type="String">TIP_METAOBJ</Data></Cell>
     <Cell><Data ss:Type="String">Hier können Sie Ihr eigenes Modell für ZMS-Objekte definieren.</Data></Cell>
     <Cell><Data ss:Type="String">Define your own model of ZMS objects.</Data></Cell>
     <Cell ss:Index="8"><Data ss:Type="String">用特殊对象创建自定的ZMS对象。对象在正文体中显示，文件代表页鿢，醒目标题元素在醒目标题中显示。</Data></Cell>

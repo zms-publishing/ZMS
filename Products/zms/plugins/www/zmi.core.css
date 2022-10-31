@@ -1494,9 +1494,6 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	background:unset;
 	border-top:unset;
 }
-.zmi .card legend[title] {
-	cursor: help;
-}
 .zmi .card-body form.form-horizontal {
 	margin:0 !important;
 }

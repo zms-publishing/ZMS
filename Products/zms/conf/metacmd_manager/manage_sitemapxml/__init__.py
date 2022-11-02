@@ -13,10 +13,10 @@ class manage_sitemapxml:
 	description = ""
 
 	# Execution
-	execution = False
+	execution = 0
 
 	# Icon_clazz
-	icon_clazz = "fab fa-google"
+	icon_clazz = "fab fa-google text-danger"
 
 	# Id
 	id = "manage_sitemapxml"
@@ -31,10 +31,10 @@ class manage_sitemapxml:
 	nodes = "{$}"
 
 	# Package
-	package = ""
+	package = "com.zms.foundation.metacmd.seo"
 
 	# Revision
-	revision = "5.1.0"
+	revision = "5.1.2"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

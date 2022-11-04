@@ -1350,8 +1350,9 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi .dropdown-menu .dropdown-header i {
 	color: #fff !important;
 }
-.zmi .dropdown-menu a.dropdown-item:focus, 
-.zmi .dropdown-menu a.dropdown-item:hover {
+.zmi .dropdown-menu a.dropdown-item:focus,
+.zmi .dropdown-menu a.dropdown-item:hover,
+.zmi .dropdown-menu a.dropdown-item.selected {
 	background-color: rgba(53, 79, 103, 0.15);
 }
 .zmi .dropdown-menu a.dropdown-item {

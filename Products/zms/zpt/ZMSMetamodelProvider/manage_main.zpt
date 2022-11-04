@@ -106,7 +106,8 @@
 						<tal:block tal:condition="python:metaObjPackage in metaObjPackages">
 							<tal:block tal:condition="metaObjPackage">
 								<tal:block tal:define="metaObj python:here.getMetaobj(metaObjPackage)">
-									<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
+									<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id']);
+										class python:request.get('id','')==metaObj['id'] and 'dropdown-item selected' or default">
 										<i class="fas fa-briefcase"></i>
 										<strong tal:on-error="string:ERROR metaObjPackage" tal:content="metaObjPackage">id</strong>
 									</a>
@@ -115,7 +116,8 @@
 						</tal:block>
 						<tal:block tal:repeat="metaObj metaObjs">
 							<tal:block tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
-								<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id'])">
+								<a class="dropdown-item" tal:attributes="href python:'?lang=%s&id=%s'%(request['lang'],metaObj['id']);
+									class python:request.get('id','')==metaObj['id'] and 'dropdown-item selected' or default">
 									<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
 									<span tal:on-error="string:ERROR Name" tal:content="metaObj/name">name</span>
 								</a>

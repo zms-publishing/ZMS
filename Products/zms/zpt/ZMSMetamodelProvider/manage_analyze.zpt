@@ -39,68 +39,83 @@
 
 	<legend class="navbar navbar-nav navbar-expand navbar-dark" 
 		tal:content="python:'%s (%s)'%(meta_id,here.display_type(request,meta_id))">the display-type</legend>
+
 	<table class="table">
-	<thead>
-	<tr>
-		<th class="meta_id">&nbsp;</th>
-		<th class="usage">Usage [%/Abs.]</th>
-		<th class="empty">Empty [%/Abs.]</th>
-	</tr>
-	</thead>
-	<tbody>
-	<tal:block tal:repeat="key python:attrIds+subObjectIds">
-		<tr tal:define="global metaObjAttr python:here.getMetaobjAttr(meta_id,key)">
-			<td class="meta_id">
-				<tal:block tal:content="structure metaObjAttr/name">the name</tal:block>
-				(<tal:block tal:content="metaObjAttr/id">the id</tal:block>: <tal:block tal:content="metaObjAttr/type">the type</tal:block>)
-			</td>
-			<td class="usage">
-				<a tal:attributes="href python:'javascript:toggleElement(\'img_%s1\',\'ol_%s1\')'%(metaObjAttr['id'],metaObjAttr['id'])" style="text-decoration:none;">
-					<i tal:attributes="id python:'img_%s1'%metaObjAttr['id']" class="fas fa-caret-right toggle"></i>
-					<tal:block tal:on-error="string: 0"
-						tal:content="python:round(100*len(stat1[metaObjAttr['id']])/len(res))">perc</tal:block>% (<tal:block tal:content="python:len(stat1[metaObjAttr['id']])">abs</tal:block>)
-				</a>
-				<ol tal:attributes="id python:'ol_%s1'%metaObjAttr['id']" style="visibility:hidden;display:none;">
-					<li tal:repeat="ob python:stat1[metaObjAttr['id']]"><a tal:attributes="href python:'%s/manage_main'%ob['abs_url']" target="_blank" tal:content="python:ob['abs_url']">the url</a></li>
-				</ol>
-			</td>
-			<td class="empty">
-				<a tal:attributes="href python:'javascript:toggleElement(\'img_%s0\',\'ol_%s0\')'%(metaObjAttr['id'],metaObjAttr['id'])"  style="text-decoration:none;">
-					<i tal:attributes="id python:'img_%s1'%metaObjAttr['id']" class="fas fa-caret-right toggle"></i>
-					<tal:block tal:on-error="string: 0"
-						tal:content="python:100*len(stat0[metaObjAttr['id']])/len(res)">perc</tal:block>% (<tal:block tal:content="python:len(stat0[metaObjAttr['id']])">abs</tal:block>)
-				</a>
-				<ol tal:attributes="id python:'ol_%s0'%metaObjAttr['id']" style="visibility:hidden;display:none;">
-					<li tal:repeat="ob python:stat0[metaObjAttr['id']]"><a tal:attributes="href python:'%s/manage_main'%ob['abs_url']" target="_blank" tal:content="python:ob['abs_url']">the url</a></li>
-				</ol>
-			</td>
-		</tr>
-	</tal:block>
-	<tr>
-		<td>Total:</td>
-		<td><tal:block tal:content="python:len(res)">the total</tal:block></td>
-		<td>&nbsp;</td>
-	</tr>
-	</tbody>
+		<thead>
+			<tr>
+				<th class="meta_id">&nbsp;</th>
+				<th class="usage">Usage [%/Abs.]</th>
+				<th class="empty">Empty [%/Abs.]</th>
+			</tr>
+		</thead>
+		<tbody tal:define="keys python:attrIds+subObjectIds">
+			<tr tal:repeat="key keys">
+				<tal:block tal:define="metaObjAttr python:here.getMetaobjAttr(meta_id,key)">
+					<td class="meta_id">
+						<tal:block tal:content="structure metaObjAttr/name">the name</tal:block>
+						(<tal:block tal:content="metaObjAttr/id">the id</tal:block>: <tal:block tal:content="metaObjAttr/type">the type</tal:block>)
+					</td>
+					<td class="usage">
+						<a tal:attributes="href python:'javascript:toggleElement(\'img_%s1\',\'ol_%s1\')'%(metaObjAttr['id'],metaObjAttr['id'])" style="text-decoration:none;">
+							<i tal:attributes="id python:'img_%s1'%metaObjAttr['id']" class="fas fa-caret-right toggle"></i>
+							<tal:block tal:on-error="string: 0"
+								tal:content="python:round(100*len(stat1[metaObjAttr['id']])/len(res))">perc</tal:block>% (<tal:block tal:content="python:len(stat1[metaObjAttr['id']])">abs</tal:block>)
+						</a>
+						<ol tal:attributes="id python:'ol_%s1'%metaObjAttr['id']" style="visibility:hidden;display:none;">
+							<li tal:repeat="ob python:stat1[metaObjAttr['id']]"><a tal:attributes="href python:'%s/manage_main'%ob['abs_url']" target="_blank" tal:content="python:ob['abs_url']">the url</a></li>
+						</ol>
+					</td>
+					<td class="empty">
+						<a tal:attributes="href python:'javascript:toggleElement(\'img_%s0\',\'ol_%s0\')'%(metaObjAttr['id'],metaObjAttr['id'])"  style="text-decoration:none;">
+							<i tal:attributes="id python:'img_%s1'%metaObjAttr['id']" class="fas fa-caret-right toggle"></i>
+							<tal:block tal:on-error="string: 0"
+								tal:content="python:100*len(stat0[metaObjAttr['id']])/len(res)">perc</tal:block>% (<tal:block tal:content="python:len(stat0[metaObjAttr['id']])">abs</tal:block>)
+						</a>
+						<ol tal:attributes="id python:'ol_%s0'%metaObjAttr['id']" style="visibility:hidden;display:none;">
+							<li tal:repeat="ob python:stat0[metaObjAttr['id']]"><a tal:attributes="href python:'%s/manage_main'%ob['abs_url']" target="_blank" tal:content="python:ob['abs_url']">the url</a></li>
+						</ol>
+					</td>
+				</tal:block>
+			</tr>
+			<tr tal:condition="python:attrIds+subObjectIds==[]">
+				<td class="meta_id"></td>
+				<td class="usage">
+					<ol class="pl-0">
+						<li tal:repeat="ob res" style="list-style-position: inside;"
+							><a href="#" target="_blank" 
+							tal:attributes="href python:'%s/manage_main'%ob['getPath']" 
+							tal:content="python:ob['getPath'].replace('/gpoh/kinderkrebsinfo/','/mysites/mysite').replace('/gpoh','/mysites/mysite')">the path</a></li>
+					</ol>
+				</td>
+				<td class="empty"></td>
+			</tr>
+			<tr>
+				<td>Total:</td>
+				<td><tal:block tal:content="python:len(res)">the total</tal:block></td>
+				<td>&nbsp;</td>
+			</tr>
+		</tbody>
 	</table>
 </form>
 
 <tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
 
 <script language="JavaScript">
-function toggleElement( sender, id) {
-	var speed = "normal";
-	var img = $('#'+sender);
-	var el = $('#'+id);
-	if ( el.css("display").toLowerCase()=="none") {
-		img.attr( { class: "fas fa-caret-down toggle", title: "-"});
-		el.css({'visibility':'visible','display':''});
+//<!--
+	function toggleElement( sender, id) {
+		var speed = "normal";
+		var img = $('#'+sender);
+		var el = $('#'+id);
+		if ( el.css("display").toLowerCase()=="none") {
+			img.attr( { class: "fas fa-caret-down toggle", title: "-"});
+			el.css({'visibility':'visible','display':''});
+		}
+		else {
+			img.attr( { class: "fas fa-caret-right toggle", title: "+"});
+			el.css({'visibility':'hidden','display':'none'});
+		}
 	}
-	else {
-		img.attr( { class: "fas fa-caret-right toggle", title: "+"});
-		el.css({'visibility':'hidden','display':'none'});
-	}
-}
+//-->
 </script>
 <style>
 	.zmi.analyze form.card legend {

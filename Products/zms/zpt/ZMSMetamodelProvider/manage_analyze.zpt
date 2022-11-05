@@ -84,7 +84,7 @@
 						<li tal:repeat="ob res" style="list-style-position: inside;"
 							><a href="#" target="_blank" 
 							tal:attributes="href python:'%s/manage_main'%ob['getPath']" 
-							tal:content="python:ob['getPath'].replace('/gpoh/kinderkrebsinfo/','/mysites/mysite').replace('/gpoh','/mysites/mysite')">the path</a></li>
+							tal:content="python:ob['getPath']">the path</a></li>
 					</ol>
 				</td>
 				<td class="empty"></td>

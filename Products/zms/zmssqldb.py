@@ -227,7 +227,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
 
 
     # --------------------------------------------------------------------------
-    #  ZMSSqlDb.getDA:
+    #  ZMSSqlDb.sql_quote__:
     #
     #  Return quoted value of table-column.
     # --------------------------------------------------------------------------

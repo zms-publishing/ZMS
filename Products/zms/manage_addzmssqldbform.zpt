@@ -10,43 +10,56 @@
 		<input type="hidden" id="id_prefix" name="id_prefix" tal:attributes="value python:request.get('id_prefix','')" />
 		<input type="hidden" id="ZMS_INSERT" name="ZMS_INSERT" tal:condition="python:request.get('ZMS_INSERT',False)" tal:attributes="value python:request.get('ZMS_INSERT','')" />
 
-		<div class="form-group row"  id="tr_connection_id">
-			<label for="connection_id" class="col-lg-2 control-label mandatory">
+		<div class="form-group row" id="tr_connection_id">
+			<label for="connection_id" class="col-sm-3 col-md-2 control-label mandatory">
 				<span>Connection ID</span>
 			</label>
-			<div class="col-lg-10">
+			<div class="col-sm-9 col-md-10">
 				<div class="btn-group">
-					<select class="form-control" id="connection_id" name="connection_id">
-						<option value="" disabled="disabled" tal:content="python:here.getLangStr('ACTION_SELECT')%'Connection ID'"></option>
+					<button type="button" class="btn btn-secondary" style="min-width:10rem;">Select the SQL-Connection-ID...</button>
+					<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+						<span class="caret"></span>
+					</button>
+					<div class="dropdown-menu" role="menu">
 						<tal:block tal:repeat="SQLConnectionID python:here.SQLConnectionIDs()">
-							<option tal:attributes="value python:SQLConnectionID[1]">
-								<i class="fas fa-database"></i>
-								<tal:block tal:content="python:SQLConnectionID[1]">SQLConnectionID</tal:block>
-							</option>
+								<a class="dropdown-item" href="javascript:;" tal:attributes="onclick python:'javascript:$(\'#connection_id\').val(\'%s\')\073$(\'button:first\',$(this).parents(\'.btn-group\')).html($(this).html())'%SQLConnectionID[1]">
+									<span tal:attributes="data-url python:getattr(here,SQLConnectionID[1]).absolute_url()">
+										<i class="fas fa-database"></i>
+										<tal:block tal:content="python:SQLConnectionID[1]">SQLConnectionID</tal:block>
+									</span>
+								</a>
 						</tal:block>
-					</select>
+					</div>
 				</div><!-- .btn-group -->
-			</div><!-- .col-lg-10 -->
+			</div>
 		</div><!-- .form-group -->
 		<div class="form-group row"  id="tr_charset">
-			<label for="charset" class="col-lg-2 control-label mandatory">
+			<label for="charset" class="col-sm-3 col-md-2 control-label mandatory">
 				<span>Charset</span>
 			</label>
-			<div class="col-lg-10">
+			<div class="col-sm-9 col-md-10">
 				<select class="form-control" name="charset">
 					<tal:block tal:repeat="charset python:here.enumManager.getValues('charset')">
 						<option tal:attributes="value python:charset[0]; selected python:['','selected'][int(charset[0]=='utf-8')]" tal:content="python:charset[1]">the charset</option>
 					</tal:block>
 				</select>
-			</div><!-- .col-lg-10 -->
+			</div>
+		</div><!-- .form-group -->
+		<div class="form-group row">
+			<label class="col-sm-3 col-md-2 control-label mandatory" for="table_filter"><span>Table-Filter</span></label>
+			<div class="col-sm-9 col-md-10">
+				<input class="form-control" type="text" name="table_filter" placeholder="Please enter RegExp like: (.*?)" tal:attributes="value python:getattr(here,'table_filter','(.*?)')"/>
+			</div>
 		</div><!-- .form-group -->
 		<div class="form-group row"  id="tr_model">
-			<label for="model" class="col-lg-2 control-label mandatory">
+			<label for="model" class="col-sm-3 col-md-2 control-label mandatory">
 				<span>Model</span>
 			</label>
-			<div class="col-lg-10">
-				<textarea class="form-control" name="model" tal:content="python:here.toXmlString([])">the model</textarea>
-			</div><!-- .col-lg-10 -->
+			<div class="col-sm-9 col-md-10">
+				<!-- ACE Editor -->
+				<tal:block tal:on-error="string:ace" tal:content="structure python:here.zmi_ace_editor(here,request,name='model',text=here.toXmlString([]),content_type='text/xml')">ACE Editor</tal:block>
+				<!-- /ACE Editor -->
+			</div>
 		</div><!-- .form-group -->
-	</form><!-- .form-horizontal -->
+	</form>
 </tal:block>

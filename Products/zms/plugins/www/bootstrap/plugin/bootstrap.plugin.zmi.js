@@ -1643,7 +1643,9 @@ ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 				$('#addCancelBtn').click(function() {
 					zmiModal("hide");
 				});
-				if($('#zmiIframeAddDialog .form-group:not([class*="activity"]) .form-control').length==0) {
+				// Auto-Insert on models without attributes but not ZMSSqlDb or ZMSTable
+				if ( ['ZMSSqlDb','ZMSTable'].indexOf($('#ZMS_INSERT').val())==-1 && 
+					$('#zmiIframeAddDialog .form-group:not([class*="activity"]) .form-control').length==0 ) {
 					$('#addInsertBtn').click();
 				}
 			},

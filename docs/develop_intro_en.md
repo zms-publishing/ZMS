@@ -331,7 +331,7 @@ To show Zope's object tree as an editable file tree,  VSCode's _code-workspace_ 
 ```json
 {
 	"name": "Zope-WebDAV Access",
-	"uri": "webdav://admin:****@localhost:8090/"
+	"uri": "webdav://admin:****@localhost:8091/"
 }
 ```
 Now the  WebDAV file tree apears in the VSCode Explorer view, can be naviagated and nodes can be edited.

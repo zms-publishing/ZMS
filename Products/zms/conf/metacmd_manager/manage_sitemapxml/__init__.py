@@ -34,7 +34,7 @@ class manage_sitemapxml:
 	package = "com.zms.foundation.metacmd.seo"
 
 	# Revision
-	revision = "5.1.2"
+	revision = "5.1.3"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

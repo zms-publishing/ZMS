@@ -675,8 +675,9 @@ ZMI.prototype.initInputFields = function(container) {
 						}
 					}
 					else if (nodeName=="select") {
-						isBlank = ($("option:selected",$control).length==0) 
-							|| ($("option:selected",$control).length==1 && $("option:selected",$control).attr("value")=="");
+						isBlank =  (($("option:selected",$control).length==0) 
+							|| ($("option:selected",$control).length==1 && $("option:selected",$control).attr("value")==""))
+							&& !$control.attr("disabled")=="disabled";
 					}
 					if (isBlank) {
 						$controlGroup.addClass("has-error");

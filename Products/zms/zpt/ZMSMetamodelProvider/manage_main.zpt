@@ -56,7 +56,7 @@
 	objAttrIds python:here.getMetaobjAttrIds(id);
 	metaObjAttrs python:[here.getMetaobjAttr(id,x) for x in objAttrIds];
 	metaObj python:here.getMetaobj(id,aq_attrs=['enabled']);
-	metaObjRecordSet python:metaObj['type']=='ZMSRecordSet'">
+	metaObjRecordSet python:metaObj['type'] == 'ZMSRecordSet'">
 	<legend tal:content="python:here.getZMILangStr('ZMSMetamodelProvider')">Content Model</legend>
 	<input type="hidden" name="key" value="all"/>
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>

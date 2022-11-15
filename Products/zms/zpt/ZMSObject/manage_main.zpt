@@ -21,11 +21,16 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
-<tal:block tal:condition="python:here.getType()=='ZMSRecordSet'" tal:content="structure python:here.metaobj_recordset_main(meta_id=request.get('ZMS_INSERT',here.meta_id))">
-	metaobj_recordset_main
+<tal:block tal:condition="python:here.getType() == 'ZMSRecordSet'">
+	<tal:block tal:condition="not:python:here.attr('_grid')" tal:content="structure python:here.metaobj_recordset_main(meta_id=request.get('ZMS_INSERT',here.meta_id))">
+		metaobj_recordset_main
+	</tal:block>
+	<tal:block tal:condition="python:here.attr('_grid')" tal:content="structure python:here.metaobj_recordset_grid(meta_id=request.get('ZMS_INSERT',here.meta_id))">
+		metaobj_recordset_grid
+	</tal:block>
 </tal:block>
 
-<tal:block tal:condition="python:not here.getType()=='ZMSRecordSet'" tal:define="global dummy0 python:request.set('fmName',request.get('fmName','form0'))">
+<tal:block tal:condition="python:here.getType() != 'ZMSRecordSet'" tal:define="global dummy0 python:request.set('fmName',request.get('fmName','form0'))">
 	<tal:block tal:define="global dummy0 python:here.initObjChildren(request)"></tal:block>
 	<tal:block tal:content="structure python:here.obj_input_fields(action='manage_changeProperties',command='save', meta_id=request.get('ZMS_INSERT', here.meta_id) )">
 		the input-fields

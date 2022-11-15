@@ -208,6 +208,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     metaobj_recordset_main_grid = PageTemplateFile('zpt/ZMSRecordSet/main_grid', globals())
     metaobj_recordset_main = PageTemplateFile('zpt/ZMSRecordSet/main', globals())
     metaobj_recordset_input_fields = PageTemplateFile('zpt/ZMSRecordSet/input_fields', globals())
+    metaobj_recordset_grid = PageTemplateFile('zpt/ZMSRecordSet/grid', globals())
 
 
     """
@@ -476,6 +477,89 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     #
     #  Change record-set.
     ############################################################################
+    def manage_changeRecordGrid(self, lang, btn, REQUEST, RESPONSE):
+      """ ZMSCustom.manage_changeRecordSet """
+      message = ''
+      messagekey = 'manage_tabs_message'
+      target = REQUEST.get('target', 'manage_main')
+      params = {'lang':lang}
+      t0 = time.time()
+      
+      if btn not in ['BTN_CANCEL', 'BTN_BACK']:
+          ##### Object State #####
+          self.setObjStateModified(REQUEST)
+          
+          metaObj = self.getMetaobj(self.meta_id)
+          metaObjAttrIds = self.getMetaobjAttrIds(self.meta_id)
+          record_id = metaObj['attrs'][0]['id']
+          records = standard.sort_list(self.attr(record_id),'_sort_id')
+          filter_columns = [x for x in metaObj['attrs'][1:] if 
+                            x['id'] not in ['__sort_id']
+                            and x['type'] in self.metaobj_manager.valid_types+self.getMetaobjIds()
+                            and x['type'] not in ['resource']]
+          
+          def retrieve(record):
+            changed = False
+            row = copy.deepcopy(record) 
+            row['_change_uid'] = REQUEST['AUTHENTICATED_USER'].getUserName()
+            row['_change_dt'] = standard.getDateTime( time.time())
+            for metaObjAttr in filter_columns:
+              objAttr = self.getObjAttr(metaObjAttr['id'])
+              objAttrName = self.getObjAttrName(objAttr, lang)
+              if metaObjAttr['type'] in self.metaobj_manager.valid_types or \
+                 metaObjAttr['type'] not in self.metaobj_manager.valid_xtypes+self.metaobj_manager.valid_zopetypes:
+                set, value = True, self.formatObjAttrValue(objAttr, REQUEST.get(objAttrName), lang)
+                try: del value['aq_parent']
+                except: pass
+                if value is None and metaObjAttr['id'] == 'sort_id':
+                  value = len(res_abs)
+                if value is None and metaObjAttr['type'] in ['file', 'image'] and int(REQUEST.get('del_%s'%objAttrName, 0)) == 0:
+                  set = False
+                if set:
+                  row[metaObjAttr['id']] = value
+                  if value and not metaObjAttr['type'] in ['identifier']:
+                    changed = True
+            if not changed:
+              row = None
+            return row
+          
+          # Init
+          new_records = []
+          # Update
+          c = 0
+          for record in records:
+            REQUEST.set('objAttrNamePrefix', '');
+            REQUEST.set('objAttrNameSuffix', '_%i'%c);
+            record = retrieve(record)
+            if record is not None:
+              new_records.append(record)
+            c += 1
+          # Insert
+          REQUEST.set('objAttrNamePrefix', '_');
+          REQUEST.set('objAttrNameSuffix', '');
+          record = retrieve({})
+          if record is not None:
+            new_records.append(record)
+          message = self.getZMILangStr('MSG_CHANGED')
+          # Set
+          self.setObjProperty(record_id, new_records, lang)
+          
+          ##### VersionManager ####
+          self.onChangeObj(REQUEST)
+          
+          message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
+      
+      # Return with message.
+      params[messagekey] = message
+      target = self.url_append_params( target, params)
+      return REQUEST.RESPONSE.redirect(target)
+
+
+    ############################################################################
+    #  ZMSCustom.manage_changeRecordSet:
+    #
+    #  Change record-set.
+    ############################################################################
     def manage_changeRecordSet(self, lang, btn, action, REQUEST, RESPONSE):
       """ ZMSCustom.manage_changeRecordSet """
       message = ''
@@ -570,7 +654,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
           ##### VersionManager ####
           self.onChangeObj(REQUEST)
         except:
-          message = standard.writeError(self, "[manage_changeProperties]")
+          message = standard.writeError(self, "[manage_changeRecordSet]")
           messagekey = 'manage_tabs_error_message'
         
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
@@ -595,7 +679,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
         _ziputil.importZip2Zodb( self, file)
         message = self.getZMILangStr('MSG_IMPORTED')%('<em>%s</em>'%_fileutil.extractFilename(file.filename))
       
-      elif self.getType()=='ZMSRecordSet':
+      elif self.getType() == 'ZMSRecordSet':
         message = parseXmlString( self, file)
       
       else:

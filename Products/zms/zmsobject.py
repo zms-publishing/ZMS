@@ -338,7 +338,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.isPageElement:
     # --------------------------------------------------------------------------
     def isPageElement(self):
-      return self.getType() in [ 'ZMSObject', 'ZMSRecordSet'] \
+      return self.getType() in [ 'ZMSObject', 'ZMSRecordSet' ] \
         and not self.meta_id in [ 'ZMSNote', 'ZMSTeaserContainer']
 
 
@@ -508,7 +508,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     def get_size(self, REQUEST={}):
       size = 0
       keys = self.getObjAttrs().keys()
-      if self.getType()=='ZMSRecordSet':
+      if self.getType() == 'ZMSRecordSet':
         keys = [self.getMetaobjAttrIds(self.meta_id,types=['list'])[0]]
       for key in keys:
         objAttr = self.getObjAttr(key)

@@ -537,7 +537,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
         log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] resync'))
         
         try:
-          if node.meta_id!='ZMSLinkElement' and node.getType()=='ZMSRecordSet':
+          if node.meta_id!='ZMSLinkElement' and node.getType() == 'ZMSRecordSet':
             objAttrs = node.getMetaobjAttrs(node.meta_id)
             key = [x for x in objAttrs if x['type']=='list'][0]['id']
             for obj_vers in node.getObjVersions():

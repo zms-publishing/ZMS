@@ -163,9 +163,10 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
       metaobj_manager = container.getMetaobjManager()
       for meta_id in meta_keys:
         if meta_id.startswith('type(') and meta_id.endswith(')'):
+          meta_obj_type = meta_id[5:-1]
           for metaObjId in metaObjIds:
             metaObj = metaobj_manager.getMetaobj( metaObjId, aq_attrs=['enabled'])
-            if metaObj['type'] == meta_id[5:-1] and metaObj['enabled'] == 1:
+            if metaObj['type'] == meta_obj_type and metaObj['enabled']:
               meta_ids.append( metaObj['id'])
         elif meta_id in metaObjIds:
           meta_ids.append( meta_id)
@@ -173,6 +174,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
           container.writeError( '[zmi_insert_actions]: %s.%s contains invalid meta_id \'%s\''%(container.meta_id, objAttr['id'], meta_id))
     else:
       meta_ids.append( objAttr['type'])
+    print(meta_ids)
     for meta_id in meta_ids:
       metaObj = container.getMetaobj(meta_id)
       ob_access = True

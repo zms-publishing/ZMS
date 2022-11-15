@@ -1,0 +1,20 @@
+<!-- bt_scrollspy.standard_html -->
+
+<tal:block tal:define="
+		zmscontext options/zmscontext;
+		records python:zmscontext.attr('records');
+		">
+<div id="list-example" class="list-group">
+<tal:block tal:repeat="record records">
+	<a class="list-group-item list-group-item-action" tal:attributes="href python:'#list-%s'%record['bt_id']" tal:content="record/title">Item 1</a>
+</tal:block>
+</div>
+<div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
+<tal:block tal:repeat="record records">
+  <h4 tal:attributes="id python:'list-%s'%record['bt_id']" tal:content="record/title">Item 1</h4>
+  <p tal:content="record/body">...</p>
+</tal:block>
+</div>
+</tal:block>
+
+<!-- /bt_scrollspy.standard_html -->

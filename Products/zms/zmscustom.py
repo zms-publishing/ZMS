@@ -478,7 +478,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
     #  Change record-set.
     ############################################################################
     def manage_changeRecordGrid(self, lang, btn, REQUEST, RESPONSE):
-      """ ZMSCustom.manage_changeRecordSet """
+      """ ZMSCustom.manage_changeRecordGrid """
       message = ''
       messagekey = 'manage_tabs_message'
       target = REQUEST.get('target', 'manage_main')
@@ -498,9 +498,8 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
                             and x['type'] in self.metaobj_manager.valid_types+self.getMetaobjIds()
                             and x['type'] not in ['resource']]
           
-          def retrieve(record):
+          def retrieve(row):
             changed = False
-            row = copy.deepcopy(record) 
             row['_change_uid'] = REQUEST['AUTHENTICATED_USER'].getUserName()
             row['_change_dt'] = standard.getDateTime( time.time())
             for metaObjAttr in filter_columns:

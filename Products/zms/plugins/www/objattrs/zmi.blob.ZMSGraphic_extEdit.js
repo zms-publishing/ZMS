@@ -299,7 +299,7 @@ function changeCropperAvailability(available, cropping) {
 					}
 				}
 			});
-			$ZMSGraphic_cropper = $ZMSGraphic_img;
+			// $ZMSGraphic_cropper = $ZMSGraphic_img;
 		});
 	}
 }

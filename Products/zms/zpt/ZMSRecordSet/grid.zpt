@@ -8,7 +8,9 @@
 		metaObjAttrIds python:here.getMetaobjAttrIds(metaObj['id']);
 		metaObjAttrs python:metaObj['attrs'][1:];
 		num_rows python:here.attr('_num_rows');
-		command python:'Save';">
+		command python:'Save';
+		dummy0 python:request.set('f_zmiGraphicExtEdit',False);
+		">
 
 <tal:block tal:define="
 		record_id python:metaObjAttrIds[0];

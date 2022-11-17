@@ -9,7 +9,7 @@
 		metaObjAttrs python:metaObj['attrs'][1:];
 		num_rows python:here.attr('_num_rows');
 		command python:'Save';
-		dummy0 python:request.set('f_zmiGraphicExtEdit',False);
+		dummy0 python:standard.once('zmiGraphicExtEdit',request);
 		">
 
 <tal:block tal:define="

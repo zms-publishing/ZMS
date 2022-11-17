@@ -1029,14 +1029,17 @@ ZMI.prototype.initInputFields = function(container) {
 			var icon_datetimepicker = 'far fa-calendar';
 			var icon_timepicker = 'far fa-clock';
 			$("input.datepicker,input.datetimepicker,input.timepicker",this).each(function() {
-				$(this).closest("div")
-					.addClass("input-group")
-					.removeClass("col-sm-9")
-					.removeClass("col-sm-10")
-					.removeClass("col-md-10")
-					.wrap('<div class="col-sm-5 col-md-4 col-lg-3"></div>');
-				var icon_picker =  eval('icon_' + $(this).prop('class').split(' ').filter(function(v) {return v.endsWith('picker')}));
-				$(this).before('<div class="input-group-prepend"><span class="input-group-text"><i class="'+ icon_picker +'"></i></span></div>');
+				if ( !$(this).parent().hasClass('data') ) {
+					// Customize input field width normalization in standard input forms
+					$(this).closest("div")
+						.addClass("input-group")
+						.removeClass("col-sm-9")
+						.removeClass("col-sm-10")
+						.removeClass("col-md-10")
+						.wrap('<div class="col-sm-5 col-md-4 col-lg-3"></div>');
+						var icon_picker =  eval('icon_' + $(this).prop('class').split(' ').filter(function(v) {return v.endsWith('picker')}));
+						$(this).before('<div class="input-group-prepend"><span class="input-group-text"><i class="'+ icon_picker +'"></i></span></div>');
+					}
 				if (is_firefox && parseInt(navigator.userAgent.split('Firefox/')[1]) < 93) {
 					if ($(this).attr('type') == 'datetime-local') {
 						$(this).attr('type', 'date');

@@ -11,7 +11,7 @@
 				'imgsuperres':'InstalledProducts.pil.hires.thumbnail.max'
 			}.get(key,None)">
 
-	<tal:block tal:condition="python:request.get('f_zmiGraphicExtEdit',True)">
+	<tal:block tal:condition="python:standard.once('zmiGraphicExtEdit',request)">
 		<div id="ZMSGraphic_extEdit_template" class="d-none">
 			<div id="ZMSGraphic_extEdit_actions">
 				<table class="table table-borderless">
@@ -69,13 +69,9 @@
 			</div><!-- #ZMSGraphic_extEdit_actions -->
 		</div>
 		<script type="text/javascript" src="/++resource++zms_/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
-		<tal:block tal:define="dummy0 python:request.set('f_zmiGraphicExtEdit',False)"></tal:block>
 	</tal:block>
 
-	<tal:block tal:condition="python:request.get('f_zmiBlobJs',True)">
-		<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script>
-		<tal:block tal:define="dummy0 python:request.set('f_zmiBlobJs',False)"></tal:block>
-	</tal:block>
+	<script tal:condition="python:standard.once('zmiBlobJs',request)" type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script>
 
 	<div class="zmi-image d-flex align-items-center row"
 		tal:define="has_file python:value is not None and here.operator_gettype(value) is not str;
@@ -122,7 +118,7 @@
 							tal:content="structure python:'%s %s'%('<i class=\042fas fa-eye\042></i>',here.getZMILangStr('TAB_PREVIEW'))">Preview</a>
 						<a class="dropdown-item" data-turbolinks="false" tal:attributes="id python:'delete_btn_%s'%elName"><i class="fas fa-trash"></i><tal:block tal:content="python:here.getZMILangStr('BTN_DELETE')">Delete</tal:block></a>
 						<a class="dropdown-item" data-turbolinks="false" tal:attributes="id python:'undo_btn_%s'%elName"><i class="fas fa-undo"></i><tal:block tal:content="python:here.getZMILangStr('BTN_UNDO')">Undo</tal:block></a>
-						<tal:block tal:condition="python:request.get('f_zmiSelectDisplaytype',True) and 'metaObj' in options and len([x for x in options['metaObj']['attrs'] if x['id'] == 'displaytype']) == 1"
+						<tal:block tal:condition="python:'metaObj' in options and len([x for x in options['metaObj']['attrs'] if x['id'] == 'displaytype']) == 1 and standard.once('zmiSelectDisplaytype',request)"
 							><tal:block tal:define="global displaytypes python:[['top',2,'OPT_A_TOP'],['bottom',3,'OPT_A_BOTTOM'],['left',5,'OPT_A_LEFT_FLOAT'],['right',6,'OPT_A_RIGHT_FLOAT']]"
 								><div class="dropdown-header">
 									<i class="fas fa-caret-down" title=""></i>
@@ -138,7 +134,6 @@
 									></tal:block
 								></tal:block
 							></tal:block>
-							<tal:block tal:define="dummy0 python:request.set('f_zmiSelectDisplaytype',False)"></tal:block>
 						</tal:block>
 
 					</div><!-- .dropdown-menu -->

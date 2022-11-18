@@ -252,6 +252,21 @@ def set_response_headers_cache(context, request=None, cache_max_age=24*3600, cac
   return None
 
 
+security.declarePublic('once')
+def once(key, request):
+  """
+  once per request
+  @param key: the key
+  @param request: the request
+  @returns: Boolean execute once
+  @retype: C{boolean} 
+  """
+  req_key = 'f_%s'%key
+  req_val = request.get(req_key,True)
+  request.set(req_key,False)
+  return req_val
+
+
 security.declarePublic('get_installed_packages')
 def get_installed_packages(pip_cmd='freeze'):
   import subprocess
@@ -2450,7 +2465,6 @@ def raiseError(error_type, error_value):
   @rtype: C{zExceptions.Error}
   """
   raise getattr(zExceptions,error_type)(error_value)
-
 
 class initutil(object):
   """Define the initialize() util."""

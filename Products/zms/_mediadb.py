@@ -61,7 +61,7 @@ def containerFilter(container):
 def recurse_addMediaDb(self, mediadb):
 
   # Process recordset.
-  if self.getType()=='ZMSRecordSet':
+  if self.getType() == 'ZMSRecordSet':
     key = self.getMetaobjAttrIds(self.meta_id,types=['list'])[0]
     obj_attr = self.getObjAttr(key)
     lang = self.getPrimaryLanguage()
@@ -202,7 +202,7 @@ def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
 def recurse_delMediaDb(self, mediadb):
 
   # Process recordset.
-  if self.getType()=='ZMSRecordSet':
+  if self.getType() == 'ZMSRecordSet':
     key = self.getMetaobjAttrIds(self.meta_id,types=['list'])[0]
     obj_attr = self.getObjAttr(key)
     lang = self.getPrimaryLanguage()
@@ -451,7 +451,7 @@ class MediaDb(
       objs.extend(objs[0].getTrashcan().getTreeNodes())
       for obj in objs:
         # Process recordset.
-        if obj.getType()=='ZMSRecordSet':
+        if obj.getType() == 'ZMSRecordSet':
           si = obj.getMetaobjAttrIds(obj.meta_id)[0]
           obj_attr = obj.getObjAttr(si)
           for lang in obj.getLangIds():

@@ -256,7 +256,7 @@ class ObjAttrs(object):
       return attr
 
     def getObjAttrName(self, obj_attr, lang=None):
-      attr = self.REQUEST.get('objAttrNamePrefix', '') + self._getObjAttrName(obj_attr, lang)
+      attr = self.REQUEST.get('objAttrNamePrefix', '') + self._getObjAttrName(obj_attr, lang) + self.REQUEST.get('objAttrNameSuffix', '')
       return attr
 
     # --------------------------------------------------------------------------
@@ -661,7 +661,7 @@ class ObjAttrs(object):
     # --------------------------------------------------------------------------
     def isActive(self, REQUEST):
       b = True
-      if self.getType()=='ZMSRecordSet':
+      if self.getType() == 'ZMSRecordSet':
         return b
       v = self.attr('active')
       if isinstance(v, bool):
@@ -741,7 +741,7 @@ class ObjAttrs(object):
       #-- Blob-Fields
       if datatype in _globals.DT_BLOBS:
         stored = False
-        if self.getType()=='ZMSRecordSet' and isinstance(v, _blobfields.MyBlob):
+        if self.getType() == 'ZMSRecordSet' and isinstance(v, _blobfields.MyBlob):
           metaObj = self.getMetaobj(self.meta_id)
           metaObjAttrId = metaObj['attrs'][0]['id']
           l = self.attr(metaObjAttrId)
@@ -766,7 +766,7 @@ class ObjAttrs(object):
           else:
             v = _blobfields.createBlobField(self, datatype, v)
             stored = True
-        if stored and self.getType()=='ZMSRecordSet':
+        if stored and self.getType() == 'ZMSRecordSet':
           v.on_setobjattr()
       
       #-- DateTime-Fields.
@@ -1189,7 +1189,7 @@ class ObjAttrs(object):
       standard.writeBlock( self, "[cloneObjAttrs]: Clone object-attributes from '%s' to '%s'"%(str(src), str(dst)))
       prim_lang = self.getPrimaryLanguage()
       keys = self.getObjAttrs().keys()
-      if self.getType()=='ZMSRecordSet':
+      if self.getType() == 'ZMSRecordSet':
         keys = standard.difference_list( keys, self.getMetaobjAttrIds(self.meta_id)[1:])
       for key in keys:
         obj_attr = self.getObjAttr(key)

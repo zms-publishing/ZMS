@@ -2810,7 +2810,7 @@ ul.pagination .page-item {
 	--line-height: 1.5;
 	--lines-to-show: 2;
 }
-.ZMSRecordSet.main_grid table tbody tr td.data div {
+.ZMSRecordSet.main_grid table tbody tr td.data > div:not(.zmi-image) {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
@@ -2824,7 +2824,13 @@ ul.pagination .page-item {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-#zmiModalinsertUser .ZMSRecordSet.main_grid table tbody tr td.data div {
+.ZMSRecordSet.main_grid table tbody tr td.data > div.zmi-image  div.zmi-image-preview {
+	height: 2.25rem;
+	margin: 0;
+	line-height: 1;
+	overflow: hidden;
+}
+#zmiModalinsertUser .ZMSRecordSet.main_grid table tbody tr td.data:not(.zmi-datatype-image) div {
 	/* ignore inherited styles */
 	display:contents;
 }

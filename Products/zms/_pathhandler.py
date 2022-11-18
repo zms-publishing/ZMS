@@ -247,7 +247,7 @@ class PathHandler(object):
         # If the object is record-set and has blob-fields find by filename and 
         # display data.
         if name.find( '@') == 0:
-          if self.getType()=='ZMSRecordSet':
+          if self.getType() == 'ZMSRecordSet':
             try:
               i = int( name[1:])
               r = self.getObjProperty( self.getMetaobj( self.meta_id)['attrs'][0]['id'], request)

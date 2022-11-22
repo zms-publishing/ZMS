@@ -777,8 +777,7 @@ class ZMSContainerObject(
           if append: 
             rtn.append(ob)
           if not append or (append and recursive):
-            if ob.isPage():
-              rtn.extend(ob.filteredTreeNodes(REQUEST, meta_types, None, order_dir, None, recursive))
+            rtn.extend(ob.filteredTreeNodes(REQUEST, meta_types, None, order_dir, None, recursive))
       
       #-- Order.
       if order_by is not None:

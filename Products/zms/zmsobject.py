@@ -920,6 +920,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     #  ZMSObject.getAbsoluteUrlInContext:
     #  @param context the current context
+    #  @param abs_url e.g. file.getHref(request)
+    #  @param forced if True ignore any other conditions
     #  @Configuration
     #  ZMSObject.getAbsoluteUrlInContext=True
     #  ASP.protocol=[http]
@@ -929,26 +931,17 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  config-properties.
     #  Used to keep ZMS-users in configured subdomain-context.
     # --------------------------------------------------------------------------
-    def getAbsoluteUrlInContext(self, context):
+    def getAbsoluteUrlInContext(self, context, abs_url=None, forced=False):
+      request = self.REQUEST
       context = standard.nvl(context,self)
-      abs_url = self.absolute_url()
-      if self.getConfProperty('ZMSObject.getAbsoluteUrlInContext', False):
-        if self.getHome() != context.getHome():
-          protocol = self.getConfProperty('ASP.protocol', 'http')
-          domain = self.getConfProperty('ASP.ip_or_domain', None)
-          if domain:
-            l = abs_url.split('/')
-            if 'content' in l:
-              i = l.index('content')
-              if l[i-1] != self.getHome().id and self.getRootElement().getHome().id in l:
-                i = l.index(self.getRootElement().getHome().id)
-              else:
-                i += 1
-              l = l[i:]
-              abs_url = protocol + '://' + domain  
-              if l:
-                abs_url = abs_url + '/' + '/'.join(l)
-      return abs_url
+      if abs_url is None:
+        abs_url = self.absolute_url()
+      def default(*args, **kwargs):
+        context = args[1]['context']
+        abs_url = args[1]['abs_url']
+        forced = args[1]['forced']
+        return abs_url
+      return self.evalExtensionPoint('ExtensionPoint.ZMSObject.getAbsoluteUrlInContext',default,context=context,abs_url=abs_url,forced=forced)
     
     # --------------------------------------------------------------------------
     #  ZMSObject.getHref2IndexHtmlInContext:

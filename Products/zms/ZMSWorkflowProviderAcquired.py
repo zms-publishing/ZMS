@@ -37,8 +37,8 @@ class ZMSWorkflowProviderAcquired(
     Properties
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     meta_type = 'ZMSWorkflowProviderAcquired'
-    icon = "fas fa-random"
-    icon_clazz = icon
+    zmi_icon = "fas fa-random acquired"
+    icon_clazz = zmi_icon
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     Management Options

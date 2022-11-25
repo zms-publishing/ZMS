@@ -151,12 +151,21 @@
 		<div class="col-3" tal:condition="has_file">
 
 			<tal:block tal:condition="python:value is not None and here.operator_gettype(value) is not str">
-				<div class="zmi-image-preview" tal:attributes="id python:'ZMSGraphic_extEdit_preview_%s'%elName" tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
+				<div class="zmi-image-preview" tal:attributes="id python:'ZMSGraphic_extEdit_preview_%s'%elName" 
+					tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
 					<input type="hidden" tal:attributes="id python:'width_%s'%elName; name python:'width_%s:int'%elName; value python:value.getWidth()"/>
 					<input type="hidden" tal:attributes="id python:'height_%s'%elName; name python:'height_%s:int'%elName; value python:value.getHeight()"/>
-					<a data-turbolinks="false" tal:attributes="href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&key=%s'%(request.get('ZMS_INSERT',here.meta_id),key),int(pilutil.enabled()))" class="thumbnail ZMSGraphic_extEdit_action">
-						<img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
-						<div class="zmi-zoom-in"><i class="fas fa-search-plus"></i></div><!-- .zmi-zoom-in -->
+					<a data-turbolinks="false" class="thumbnail ZMSGraphic_extEdit_action" 
+						tal:define="
+							imageurl python:value.getHref(request);
+							cssimageurl python:'url(\'%s\')'%(imageurl);"
+						tal:attributes="
+							href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&key=%s'%(request.get('ZMS_INSERT',here.meta_id),key),int(pilutil.enabled()));
+							style python:'background-image:%s;;'%(cssimageurl);
+							id python:'img_%s'%elName;
+							data-src python:value.getHref(request)" 
+						><img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
+						<div class="zmi-zoom-in"><i class="fas fa-search-plus"></i></div>
 					</a>
 				</div>
 			</tal:block>

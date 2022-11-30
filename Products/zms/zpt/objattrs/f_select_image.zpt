@@ -22,7 +22,7 @@
 				<tr>
 					<td>&nbsp;</td>
 					<td>
-						<div class="form-inline">
+						<div class="form-inline" style="gap:1rem 0.5rem;">
 							<div class="form-group mr-2">
 								<label class="control-label mr-2" for="ZMSGraphic_extEdit_width"
 									tal:content="structure python:'%s px '%(here.getZMILangStr('ATTR_WIDTH'))"> Width px </label>
@@ -61,7 +61,7 @@
 							/>
 						</div>
 					</td>
-					<td style="background-color:#F5F5F5;height:20rem;">
+					<td class="alert-info">
 						<div id="ZMSGraphic_extEdit_image"></div>
 					</td>
 				</tr>
@@ -155,7 +155,7 @@
 					tal:condition="python:key.find('superres')<0 and value.getContentType().find('image')==0">
 					<input type="hidden" tal:attributes="id python:'width_%s'%elName; name python:'width_%s:int'%elName; value python:value.getWidth()"/>
 					<input type="hidden" tal:attributes="id python:'height_%s'%elName; name python:'height_%s:int'%elName; value python:value.getHeight()"/>
-					<a data-turbolinks="false" class="thumbnail ZMSGraphic_extEdit_action" 
+					<a data-turbolinks="false" class="thumbnail ZMSGraphic_extEdit_action preview_on_hover" 
 						tal:define="
 							imageurl python:value.getHref(request);
 							cssimageurl python:'url(\'%s\')'%(imageurl);"

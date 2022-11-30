@@ -165,8 +165,8 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 						$('.modal-body div#ZMSGraphic_extEdit_image').css({width:canvasWidth,height:canvasHeight});
 						$('.modal-body div#ZMSGraphic_extEdit_image').html('<img src="'+result['src']+'" width="'+v+'%"/>');
 						$ZMSGraphic_img = $('.modal-body div#ZMSGraphic_extEdit_image img');
-						// Slider
 
+						// Slider
 						$(".modal-body #ZMSGraphic_extEdit_slider").on("input", function() {
 							$(this).trigger('change');
 						})

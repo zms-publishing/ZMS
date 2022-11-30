@@ -148,18 +148,19 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 									}
 								});
 						var v = Math.round(100*w/ZMSGraphic_act_width);
+
 						// Image
-						var canvasMax = 600;
-						var canvasHeight = ZMSGraphic_act_height;
 						var canvasWidth = ZMSGraphic_act_width;
-						if (canvasWidth > canvasMax || canvasHeight > canvasMax) {
-							if (canvasWidth > canvasMax) {
-								canvasHeight = Math.round(canvasHeight*canvasMax/canvasWidth);
-								canvasWidth = canvasMax;
-							}
-							else {
-								canvasWidth = Math.round(canvasWidth*canvasMax/canvasHeight);
-								canvasHeight = canvasMax;
+						var canvasHeight = ZMSGraphic_act_height;
+						var canvasWidthMax = window.innerWidth*0.7;
+						var canvasHeightMax = window.innerHeight*0.6;
+						if (ZMSGraphic_act_width > canvasWidthMax || ZMSGraphic_act_height > canvasHeightMax ) {
+							canvasWidth = canvasWidthMax;
+							canvasHeight = canvasHeightMax;
+							canvasHeight = Math.round(ZMSGraphic_act_height*canvasWidth/ZMSGraphic_act_width);
+							if (canvasHeight > canvasHeightMax) {
+								canvasWidth = Math.round(ZMSGraphic_act_width*canvasHeightMax/ZMSGraphic_act_height);
+								canvasHeight = canvasHeightMax;
 							}
 						}
 						$('.modal-body div#ZMSGraphic_extEdit_image').css({width:canvasWidth,height:canvasHeight});

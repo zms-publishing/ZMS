@@ -152,8 +152,8 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 						// Image
 						var canvasWidth = ZMSGraphic_act_width;
 						var canvasHeight = ZMSGraphic_act_height;
-						var canvasWidthMax = window.innerWidth*0.7;
-						var canvasHeightMax = window.innerHeight*0.6;
+						var canvasWidthMax = window.innerWidth*0.68;
+						var canvasHeightMax = window.innerHeight*0.60;
 						if (ZMSGraphic_act_width > canvasWidthMax || ZMSGraphic_act_height > canvasHeightMax ) {
 							canvasWidth = canvasWidthMax;
 							canvasHeight = canvasHeightMax;
@@ -330,5 +330,18 @@ function changeCropperAvailability(available, cropping) {
 				}
 			});
 		});
+	}
+}
+function get_img_preview_size_class(e, viewport_max=0.8) {
+	var canvas_width_max_px = window.innerWidth*viewport_max;
+	var canvas_height_max_px = window.innerHeight*viewport_max;
+	var ZMSGraphic_act_width = $(e).parent().find('input[id^="width_"]').val();
+	var ZMSGraphic_act_height = $(e).parent().find('input[id^="height_"]').val();
+	if (ZMSGraphic_act_width < canvas_width_max_px && ZMSGraphic_act_height < canvas_height_max_px ) {
+		$(e).addClass('inherit');
+		$(e).removeClass('contain');
+	} else {
+		$(e).addClass('contain');
+		$(e).removeClass('inherit');
 	}
 }

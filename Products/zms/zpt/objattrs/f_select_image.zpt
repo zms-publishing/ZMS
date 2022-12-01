@@ -20,8 +20,8 @@
 					<col width="*"/>
 				</colgroup>
 				<tr>
-					<td>&nbsp;</td>
-					<td>
+					<td class="pt-0">&nbsp;</td>
+					<td class="pt-0">
 						<div class="form-inline" style="gap:1rem 0.5rem;">
 							<div class="form-group mr-2">
 								<label class="control-label mr-2" for="ZMSGraphic_extEdit_width"
@@ -42,7 +42,7 @@
 					</td>
 			 	</tr>
 				<tr>
-					<td>
+					<td class="p-0">
 						<div class="ZMSGraphic_extEdit_action">
 							<span class="btn btn-secondary" id="ZMSGraphic_extEdit_preview"
 									tal:attributes="title python:'%s (max. %sx%spx)'%(here.getZMILangStr('ACTION_GENERATE_PREVIEW'),str(here.getConfProperty(max_generate_preview,400)),str(here.getConfProperty(max_generate_preview,400)))">
@@ -61,7 +61,7 @@
 							/>
 						</div>
 					</td>
-					<td class="alert-info">
+					<td class="p-0">
 						<div id="ZMSGraphic_extEdit_image"></div>
 					</td>
 				</tr>
@@ -161,9 +161,10 @@
 							cssimageurl python:'url(\'%s\')'%(imageurl);"
 						tal:attributes="
 							href python:'javascript:ZMSGraphic_extEdit_action(\'%s\',\'%s\',%i)'%(elName,'meta_id=%s&key=%s'%(request.get('ZMS_INSERT',here.meta_id),key),int(pilutil.enabled()));
+							onmouseover python:'javascript:get_img_preview_size_class($(this))';
 							style python:'background-image:%s;;'%(cssimageurl);
 							id python:'img_%s'%elName;
-							data-src python:value.getHref(request)" 
+							data-src python:value.getHref(request)"
 						><img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
 						<div class="zmi-zoom-in"><i class="fas fa-search-plus"></i></div>
 					</a>

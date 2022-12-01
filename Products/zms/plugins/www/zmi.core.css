@@ -1257,6 +1257,12 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	left: 0;
 	margin:10vh 10vw;
 }
+.zmi a.ZMSGraphic_extEdit_action.preview_on_hover.inherit:hover::after {
+	background-size:inherit;
+}
+.zmi a.ZMSGraphic_extEdit_action.preview_on_hover.contain:hover::after {
+	background-size:contain;
+}
 .zmi a.ZMSGraphic_extEdit_action.changed img {
 	border-color: #80bdff;
 	outline: 0;

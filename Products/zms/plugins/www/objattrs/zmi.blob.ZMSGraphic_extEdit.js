@@ -153,7 +153,7 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 						var canvasWidth = ZMSGraphic_act_width;
 						var canvasHeight = ZMSGraphic_act_height;
 						var canvasWidthMax = window.innerWidth*0.68;
-						var canvasHeightMax = window.innerHeight*0.60;
+						var canvasHeightMax = window.innerHeight*0.65;
 						if (ZMSGraphic_act_width > canvasWidthMax || ZMSGraphic_act_height > canvasHeightMax ) {
 							canvasWidth = canvasWidthMax;
 							canvasHeight = canvasHeightMax;

@@ -15,7 +15,7 @@
 	size python:options.get('size',len(filtered_records));
 	total python:options.get('total',len(records));
 	pageSize python:request.get('qsize',20);
-	pageIndex python:request.get('pageIndex',0);
+	pageIndex python:request.get('pageIndex',int(request.get('qindex',0))//pageSize);
 	pageStart python:pageIndex*pageSize;
 	pageEnd python:min(pageStart+pageSize,size);
 	offset python:options.get('offset',pageStart);">

@@ -529,6 +529,7 @@ body.zmi ul.zmi-container .zmi-item .portalClient .portalClientId {
 	font-size:12px;
 }
 /* Item Drag or Select */
+body.zmi tr.zmi-selected,
 body.zmi ul.zmi-container .zmi-item.pageelement.zmi-selected .center,
 body.zmi ul.zmi-container .zmi-item.page.zmi-selected .center {
 	background-color:rgba(0, 136, 204, 0.10);	

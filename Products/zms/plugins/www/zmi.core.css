@@ -2928,6 +2928,30 @@ ul.pagination .page-item {
 	display: inline-block;
 	text-align: right !important;
 }
+
+.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect {
+	padding-top: .25rem;
+}
+.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect > div {
+	overflow:visible !important;
+}
+.main_grid > form:not(.input_fields) .zmi-datatype-multiselect .dropdown-menu {
+	overflow:overlay;
+}
+.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect .zmi-select-container {
+	display:flex;
+	justify-content: left;
+	flex-wrap: nowrap;
+	flex-direction: row-reverse;
+	gap: .25rem;
+}
+.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect .zmi-select-container .zmi-select .btn  {
+	margin:0 .25rem !important;
+	padding:0;
+	background:none;
+	border:none;
+}
+
 #metaobj_recordset_main_grid .ZMSRecordSet.main_grid div.table-responsive {
 	min-height: 24em;
 }

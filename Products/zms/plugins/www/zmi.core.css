@@ -1283,24 +1283,23 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	max-width: unset !important;
 	max-height: unset !important;
 }
-.zmi .ZMSRecordSet a.ZMSGraphic_extEdit_action img {
+.zmi .ZMSRecordSet table a.ZMSGraphic_extEdit_action img {
 	position: relative;
 	object-fit: cover;
 	width: 100%;
 	margin-left:0.5rem;
 }
-.zmi .ZMSRecordSet a.ZMSGraphic_extEdit_action.preview_on_hover:hover::after {
+.zmi .ZMSRecordSet table a.ZMSGraphic_extEdit_action.preview_on_hover:hover::after {
 	width:68vmin;
 	height:68vmin;
 	margin:10vh calc(( 100vw - 68vmin ) / 2);
 }
-.zmi .ZMSRecordSet .zmi-datatype-image .row,
-.zmi .ZMSRecordSet .zmi-datatype-image .col-9,
-.zmi .ZMSRecordSet .zmi-datatype-image .col-3 {
+.zmi .ZMSRecordSet table .zmi-datatype-image .row,
+.zmi .ZMSRecordSet table .zmi-datatype-image .col-9,
+.zmi .ZMSRecordSet table .zmi-datatype-image .col-3 {
 	padding:0 !important;
 	margin:0 !important
 }
-
 .zmi a.ZMSGraphic_extEdit_action img.deleted {
 	opacity:0.2;
 }

@@ -19,6 +19,7 @@
 # Imports.
 from io import StringIO
 from DateTime import DateTime
+import binascii
 import collections
 import copy
 import os
@@ -310,7 +311,7 @@ def xmlOnUnknownEndTag(self, sTagName):
         filename = attrs.get('filename')
         content_type = attrs.get('content_type')
         try:
-          data = standard.hex2bin(cdata)
+          data = binascii.unhexlify(cdata)
         except:
           data = bytes(cdata,'utf-8')
         value['data'] = data
@@ -844,7 +845,7 @@ class XmlAttrBuilder(object):
         filename = attrs.get('filename')
         content_type = attrs.get('content_type')
         try:
-          data = standard.hex2bin(cdata)
+          data = binascii.unhexlify(cdata)
         except:
           data = bytes(cdata,'utf-8')
         file = {'data':data, 'filename':filename, 'content_type':content_type}

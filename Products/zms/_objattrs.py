@@ -743,15 +743,17 @@ class ObjAttrs(object):
         stored = False
         if self.getType() == 'ZMSRecordSet' and isinstance(v, _blobfields.MyBlob):
           metaObj = self.getMetaobj(self.meta_id)
-          metaObjAttrId = metaObj['attrs'][0]['id']
+          metaObjAttrId = ([x for x in metaObj['attrs'] if x.get('type')=='list']+[{}])[0].get('id')
+          metaObjAttrIdentifier = ([x for x in metaObj['attrs'] if x.get('type')=='identifier']+[{}])[0].get('id')
           l = self.attr(metaObjAttrId)
           r = [x for x in l if v.equals(x.get(obj_attr['id'], None))]
           if len( r) == 0:
             v = None
           else:
+            identifier = r[0][metaObjAttrIdentifier]
             v = v._getCopy()
             v.aq_parent = self
-            v.key = '%s:%i'%(obj_attr['id'], l.index(r[0]))
+            v.key = '%s:%s'%(obj_attr['id'], identifier)
             v.lang = lang
         if isinstance(v, ZPublisher.HTTPRequest.FileUpload):
           if len(getattr(v, 'filename', ''))==0:

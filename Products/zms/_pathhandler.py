@@ -248,13 +248,16 @@ class PathHandler(object):
         # display data.
         if name.find( '@') == 0:
           if self.getType() == 'ZMSRecordSet':
+            metaObj = self.getMetaobj(self.meta_id)
+            metaObjAttrId = ([x for x in metaObj['attrs'] if x.get('type')=='list']+[{}])[0].get('id')
+            metaObjAttrIdentifier = ([x for x in metaObj['attrs'] if x.get('type')=='identifier']+[{}])[0].get('id')
+            l = self.attr(metaObjAttrId)
             try:
-              i = int( name[1:])
-              r = self.getObjProperty( self.getMetaobj( self.meta_id)['attrs'][0]['id'], request)
-              d = r[i]
+              r = [x for x in l if x[metaObjAttrIdentifier]==name[1:]]
+              d = r[0]
               for key in d:
                 value = d[key]
-                if isinstance(value, _blobfields.MyImage) or isinstance(value, _blobfields.MyFile):
+                if isinstance(value, _blobfields.MyBlob):
                   value = value._getCopy()
                   value.aq_parent = self
                   value.key = key

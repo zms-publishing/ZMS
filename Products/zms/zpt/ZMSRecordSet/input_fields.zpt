@@ -20,7 +20,7 @@
 	<input type="hidden" id="preview" name="preview" tal:attributes="value python:request['preview']" />
 	<input type="hidden" id="action" name="action" tal:attributes="value action" />
 	<input type="hidden" id="qindex" name="qindex:int" tal:attributes="value qindex" />
-	<input type="hidden" name="form_id" tal:attributes="value python:request['ZMI_TIME']" />
+	<input type="hidden" id="form_id" name="form_id" tal:attributes="value python:request['ZMI_TIME']" />
 
 	<div class="card">
 

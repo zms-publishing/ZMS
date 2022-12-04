@@ -28,7 +28,7 @@ ZMI.prototype.multiselect = function(context) {
 			+ '<div class="zmi-select-container form-inline">'
 			+ '<div class="'+$select.attr('class').replace('form-control','')+'">'
 			+ '</div>'
-			+ '<div class="btn-group btn-group-sortable">\n'
+			+ '<div class="btn-group btn-group-sortable mt-2">\n'
 			+ '<button type="button"' + $select_disabled + 'class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n'
 			+ '<i class="fas fa-plus mr-1"></i>'
 			+ '</button>'

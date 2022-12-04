@@ -2944,9 +2944,10 @@ ul.pagination .page-item {
 	flex-wrap: nowrap;
 	flex-direction: row-reverse;
 	gap: .25rem;
+	align-items: baseline;
 }
 .ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect .zmi-select-container .zmi-select .btn  {
-	margin:0 .25rem !important;
+	margin-top: 0 !important;;
 	padding:0;
 	background:none;
 	border:none;

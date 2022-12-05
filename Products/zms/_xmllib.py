@@ -19,7 +19,10 @@
 # Imports.
 from io import StringIO
 from DateTime import DateTime
-import binascii
+try:
+  import binascii
+except:
+  pass
 import collections
 import copy
 import os

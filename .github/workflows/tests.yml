@@ -18,7 +18,7 @@ jobs:
         os:
         - ubuntu
         config:
-        - "3.6" # For CentOS 7 deployments
+        - "3.6.8" # For CentOS 7 deployments
         - "3.7"
         - "3.8"
         - "3.9"

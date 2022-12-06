@@ -1,34 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<list>
-  <item type="dictionary">
-    <dictionary>
-      <item key="data"><![CDATA[#!/usr/bin/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+from Products.zms import standard
 
 def manage_addMultiUpload(self):
-	# import Products.zms.standard
 	request = self.REQUEST
 	html = ''
 	html += '<!DOCTYPE html>'
 	html += '<html lang="en">'
 	html += self.zmi_html_head(self,request)
-	# html += '<link href="%s/kartik-v.bootstrap-fileinput.fileinput.css" media="all" rel="stylesheet" type="text/css" />'%self.metaobj_manager.absolute_url()
 	html += '<body class="%s">'%(' '.join(['zmi',request['lang'],'transition',self.meta_id]))
 	html += self.zmi_body_header(self,request,options=[{'action':'#','label':'Multi-Upload...'}])
 	html += '<div id="zmi-tab">'
 	html += self.zmi_breadcrumbs(self,request)
 
-	html += '<form class="form-horizontal" method="post" enctype="multipart/form-data">'
+	html += '<form class="form-horizontal card" method="post" enctype="multipart/form-data">'
 	html += '<input type="hidden" name="form_id" value="manage_addMultiUpload" />'
 	html += '<input type="hidden" name="lang" value="%s" />'%request['lang']
-	html += '<div class="alert" style="min-height:500px">'
 	html += '<legend>Multi-File-Upload</legend>'
+	html += '<div class="card-body" style="min-height:20rem">'
 	html += self.zmi_form_section_begin(self,request)
 
 	# --- Import
 	# ---------------------------------
-	if request.form.get('btn')==self.getZMILangStr('BTN_IMPORT'):
+	if request.form.get('btn')=='BTN_IMPORT':
 		id_prefix = 'e'
 		msg = []
 		files = request.get('file',[])
@@ -44,7 +38,7 @@ def manage_addMultiUpload(self):
 			##################
 			if content_type == 'text/html':
 				newobj = self.manage_addZMSCustom('ZMSTextarea',{ 'id_prefix':id_prefix, 'text':file, 'format':'plain_html', },request)
-				text = data
+				text = standard.pystr(data)
 				# Post-Process HTML
 				i = text.lower().find('<body')
 				if i >= 0:
@@ -78,21 +72,20 @@ def manage_addMultiUpload(self):
 	# ---------------------------------
 	else:
 
-		html += '<div class="form-group row" style="margin:15px 0;">'
-		html += '<label for="file" class="mandatory"><span>%<i class="far fa-folder"></i> %s</span></label>'%( self.getZMILangStr('ATTR_FILE') )
-		html += '<div class="form-control" style="padding:0;height:auto;min-height:34px">'
-		html += '<input style="margin:6px 12px" name="file" type="file" class="file" multiple="true" data-show-upload="false" data-show-caption="true" />'
+		html += '<div class="form-group row"">'
+		html += '<div class="col-sm-12">'
+		html += '<input id="file" style="height:2.55rem;" name="file" type="file" class="form-control file" multiple="true" data-show-upload="false" data-show-caption="true" />'
 		html += '</div>'
 		html += '</div><!-- .form-group -->'
 
 		html += """
 			<div class="form-row">
-				<div class="controls save">
-					<button type="submit" name="btn" class="btn btn-primary" value="%s">%s</button>
-					<button type="submit" name="btn" class="btn btn-white" value="%s">%s</button>
+				<div class="controls save py-3 px-1">
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT">%s</button>
+					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>
 				</div>
 			</div><!-- .form-group -->
-			"""%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_CANCEL'),self.getZMILangStr('BTN_CANCEL'))
+			"""%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_CANCEL'))
 
 	# ---------------------------------
 
@@ -100,34 +93,34 @@ def manage_addMultiUpload(self):
 	html += '</div><!-- .card -->'
 	html += '</div><!-- #zmi-tab -->'
 	html += self.zmi_body_footer(self,request)
-	# html += '<script src="%s/kartik-v.bootstrap-fileinput.fileinput.js" type="text/javascript"></script>'%self.metaobj_manager.absolute_url()
+
+	html += '''
+		<!-- Optional: Applying Bootstrap Fileinput Plugin https://github.com/kartik-v/bootstrap-fileinput --> 
+		<link href="/++resource++zms_/fileupload/bootstrap_fileinput/fileinput.css" media="all" rel="stylesheet" type="text/css" />'
+		<script defer src="/++resource++zms_/fileupload/bootstrap_fileinput/buffer.js" type="text/javascript"></script>
+		<script defer src="/++resource++zms_/fileupload/bootstrap_fileinput/filetype.js" type="text/javascript"></script>
+		<script defer src="/++resource++zms_/fileupload/bootstrap_fileinput/piexif.js" type="text/javascript"></script>
+		<script defer src="/++resource++zms_/fileupload/bootstrap_fileinput/sortable.js" type="text/javascript"></script>
+		<script defer src="/++resource++zms_/fileupload/bootstrap_fileinput/fileinput.js" type="text/javascript"></script>
+		<script defer src="/++resource++zms_/fileupload/bootstrap_fileinput/theme.js" type="text/javascript"></script>
+		<style>
+			/* Fix Plugin Styles */
+			.file-input .file-preview .fileinput-remove {
+				top: .5rem !important;
+				right: .5rem !important;
+			}
+			.file-input .file-caption {
+				margin-top: 1rem !important;
+			}
+		</style>
+		<script>
+			$(document).ready(function() {
+				// Initialize Plugin with Defaults
+				$("#file").fileinput({
+					theme: 'fa5',
+				});
+			});
+		</script>
+	'''
 	html +='</body></html>'
-	return html]]>
-      </item>
-      <item key="description"></item>
-      <item key="execution" type="int">0</item>
-      <item key="icon_clazz"><![CDATA[icon-upload text-primary]]></item>
-      <item key="id"><![CDATA[manage_addMultiUpload]]></item>
-      <item key="meta_type"><![CDATA[External Method]]></item>
-      <item key="meta_types" type="list">
-        <list>
-          <item><![CDATA[ZMSDocument]]></item>
-          <item><![CDATA[ZMSFolder]]></item>
-          <item><![CDATA[ZMS]]></item>
-          <item><![CDATA[LgGalleria]]></item>
-          <item><![CDATA[gallery]]></item>
-        </list>
-      </item>
-      <item key="name"><![CDATA[Multi-Upload]]></item>
-      <item key="revision"><![CDATA[1.0.3]]></item>
-      <item key="roles" type="list">
-        <list>
-          <item><![CDATA[ZMSAdministrator]]></item>
-          <item><![CDATA[ZMSAuthor]]></item>
-          <item><![CDATA[ZMSEditor]]></item>
-        </list>
-      </item>
-      <item key="title"><![CDATA[Upload via Multi-Selection of Files]]></item>
-    </dictionary>
-  </item>
-</list>
+	return html

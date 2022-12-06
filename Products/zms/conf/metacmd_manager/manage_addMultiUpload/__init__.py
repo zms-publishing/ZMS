@@ -13,7 +13,7 @@ class manage_addMultiUpload:
 	description = ""
 
 	# Execution
-	execution = 0
+	execution = False
 
 	# Icon_clazz
 	icon_clazz = "fas fa-upload text-danger"

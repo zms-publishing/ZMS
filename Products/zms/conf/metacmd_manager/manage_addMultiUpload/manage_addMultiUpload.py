@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from Products.zms import standard
 
 def manage_addMultiUpload(self):
-	# import Products.zms.standard
 	request = self.REQUEST
 	html = ''
 	html += '<!DOCTYPE html>'
@@ -38,7 +38,7 @@ def manage_addMultiUpload(self):
 			##################
 			if content_type == 'text/html':
 				newobj = self.manage_addZMSCustom('ZMSTextarea',{ 'id_prefix':id_prefix, 'text':file, 'format':'plain_html', },request)
-				text = data
+				text = standard.pystr(data)
 				# Post-Process HTML
 				i = text.lower().find('<body')
 				if i >= 0:

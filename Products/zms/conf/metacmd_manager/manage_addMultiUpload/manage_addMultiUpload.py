@@ -22,7 +22,7 @@ def manage_addMultiUpload(self):
 
 	# --- Import
 	# ---------------------------------
-	if request.form.get('btn')=='BTN_IMPORT':
+	if request.form.get('btn')=='BTN_UPLOAD':
 		id_prefix = 'e'
 		msg = []
 		files = request.get('file',[])
@@ -72,20 +72,19 @@ def manage_addMultiUpload(self):
 	# ---------------------------------
 	else:
 
-		html += '<div class="form-group row"">'
-		html += '<div class="col-sm-12">'
-		html += '<input id="file" style="height:2.55rem;" name="file" type="file" class="form-control file" multiple="true" data-show-upload="false" data-show-caption="true" />'
-		html += '</div>'
-		html += '</div><!-- .form-group -->'
-
 		html += """
+			<div class="form-group row"">
+				<div class="col-sm-12">
+					<input id="file" style="height:2.55rem;" name="file" type="file" class="form-control file" multiple="true" data-show-upload="false" data-show-caption="true" />
+				</div>'
+			</div><!-- .form-group -->
 			<div class="form-row">
 				<div class="controls save py-3 px-1">
-					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT">%s</button>
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_UPLOAD">%s</button>
 					<button type="submit" name="btn" class="btn btn-secondary" value="BTN_CANCEL">%s</button>
 				</div>
 			</div><!-- .form-group -->
-			"""%(self.getZMILangStr('BTN_IMPORT'),self.getZMILangStr('BTN_CANCEL'))
+			"""%(self.getZMILangStr('BTN_UPLOAD'), self.getZMILangStr('BTN_CANCEL'))
 
 	# ---------------------------------
 

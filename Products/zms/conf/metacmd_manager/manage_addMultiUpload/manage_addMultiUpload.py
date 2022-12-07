@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from io import BytesIO
+from PIL import Image, IptcImagePlugin
+from PIL.ExifTags import TAGS
 from Products.zms import standard
 
 def manage_addMultiUpload(self):
@@ -55,7 +58,73 @@ def manage_addMultiUpload(self):
 			##################
 			elif content_type.startswith('image/'):
 				request.set('generate_preview_imghires_%s'%request.get('lang','ger'),True)
-				newobj = self.manage_addZMSCustom('ZMSGraphic',{'id_prefix':id_prefix, 'img_attrs_spec':'alt=\042'+str(file.filename)+'\042', 'imghires':blob, },request)
+
+				# Extracting EXIF/IPTC Data
+				exif_data = {}
+				copy = desc = ''
+				img_attrs_spec = 'alt=\042%s\042 '%(str(file.filename))
+
+				try:
+					# image = Image.open(BytesIO(file['data']))
+					image = Image.open(BytesIO(data))
+
+					# https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#metadata-properties
+					iptc_data = IptcImagePlugin.getiptcinfo(image)
+					if iptc_data:
+						iptc_title = iptc_data.get((2, 5))  # https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#title
+						iptc_headline = iptc_data.get((2, 105))  # https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#headline
+						iptc_description = iptc_data.get((2, 120))  # https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#description
+						iptc_copright = iptc_data.get((2, 116))  # https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#copyright-notice
+						iptc_creator = iptc_data.get((2, 80))  # https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#creator
+
+						if iptc_description is not None:
+							desc = iptc_description.decode()
+						if iptc_title is not None and iptc_title.decode() not in desc:
+							desc = f'{iptc_title.decode()} {desc}'
+						if iptc_headline is not None and iptc_headline.decode() not in desc:
+							desc = f'{iptc_headline.decode()} {desc}'
+
+						if iptc_copright is not None:
+							copy = iptc_copright.decode()
+						if iptc_creator is not None and iptc_creator.decode() not in copy:
+							copy = f'{copy} {iptc_creator.decode()}'
+
+						desc = desc.strip()
+						copy = copy.strip()
+						copy = not copy.startswith('©') and '© ' + copy or copy
+
+					# https://pillow.readthedocs.io/en/stable/reference/ExifTags.html
+					if image.getexif() is not None:
+						for tag, value in image.getexif().items():
+							if tag in TAGS:
+								exif_data[TAGS[tag]] = value
+
+					if desc.strip() == '':
+						if 'ImageDescription' in exif_data:
+							exif_description = exif_data['ImageDescription'].encode('latin-1').decode()
+							if '©' in exif_description:
+								desc, copy = exif_description.split('©')
+
+					if copy.strip() == '':
+						if 'Copyright' in exif_data:
+							exif_copyright = exif_data['Copyright'].encode('latin-1').decode()
+							if exif_copyright.strip() != '':
+								copy = not exif_copyright.startswith('©') and '© ' + exif_copyright or exif_copyright
+
+					img_attrs_spec += '\n'.join([ 'data-EXIF-%s =\042%s\042 ' %(k, exif_data[k]) for k in exif_data.keys() ])
+
+				except:
+					pass
+
+				newobj = self.manage_addZMSCustom(
+					'ZMSGraphic',{
+						'id_prefix':id_prefix, 
+						'img_attrs_spec':img_attrs_spec, 
+						'align':'LEFT',
+						'text': desc.strip(),
+						'imghires':blob, 
+					}, request)
+
 			##################
 			# OTHER FILE
 			##################
@@ -98,8 +167,6 @@ def manage_addMultiUpload(self):
 		<link href="/++resource++zms_/fileupload/bootstrap_fileinput/fileinput.css" media="all" rel="stylesheet" type="text/css" />'
 		<script defer src="/++resource++zms_/fileupload/bootstrap_fileinput/buffer.js" type="text/javascript"></script>
 		<script defer src="/++resource++zms_/fileupload/bootstrap_fileinput/filetype.js" type="text/javascript"></script>
-		<script defer src="/++resource++zms_/fileupload/bootstrap_fileinput/piexif.js" type="text/javascript"></script>
-		<script defer src="/++resource++zms_/fileupload/bootstrap_fileinput/sortable.js" type="text/javascript"></script>
 		<script defer src="/++resource++zms_/fileupload/bootstrap_fileinput/fileinput.js" type="text/javascript"></script>
 		<script defer src="/++resource++zms_/fileupload/bootstrap_fileinput/theme.js" type="text/javascript"></script>
 		<style>

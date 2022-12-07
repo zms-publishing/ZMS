@@ -65,7 +65,6 @@ def manage_addMultiUpload(self):
 				img_attrs_spec = 'alt=\042%s\042 '%(str(file.filename))
 
 				try:
-					# image = Image.open(BytesIO(file['data']))
 					image = Image.open(BytesIO(data))
 
 					# https://iptc.org/std/photometadata/specification/IPTC-PhotoMetadata#metadata-properties

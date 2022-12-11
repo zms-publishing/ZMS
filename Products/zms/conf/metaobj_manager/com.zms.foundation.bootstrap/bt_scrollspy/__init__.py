@@ -29,7 +29,7 @@ class bt_scrollspy:
 	revision = "0.0.0"
 
 	# Type
-	type = "ZMSRecordGrid"
+	type = "ZMSRecordSet"
 
 	# Attrs
 	class Attrs:

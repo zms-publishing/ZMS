@@ -305,21 +305,30 @@ More details  about the ZEO configuration are described in the <a href="https://
 
 
 ## WebDAV-Editing of Zope Objects
+
+**Important Note**: _WebDAV should only be used in a safe (development) environment with localhost and/or SSL port-forwarding._
+
 Since Zope's new default web server (<a href="https://zope.readthedocs.io/en/latest/news.html?highlight=ftp#wsgi-as-the-new-default-server-type">WSGI</a>) does not provide ftp communication, the WebDAV protocol can be used for Zope object editing. Zope's WebDAV interface is configured in two steps:
 
-1. Add a new address to the default Zope WSGI server config-file `./etc/zope.ini`. The new address for the WebDAV connection will be `127.0.0.1:8091`:
-	```
-	[server:main]
-	use = egg:waitress#main
-	# listen = 127.0.0.1
-	# port = 8080
-	listen = 127.0.0.1:8080 127.0.0.1:8091 
-	```
-
-2. Add a new line to  Zope config-file `./etc/zope.conf` to enable the WebDAV feature:
+1. Add a new line to  Zope config-file `./etc/zope.conf` to enable the WebDAV feature:
 	```
 	webdav-source-port 8091
 	```
+
+2. Add a new address to the default Zope WSGI server config-file `./etc/zope.ini`. The new address for the WebDAV connection `127.0.0.1:8091` will be added by the argument `listen`, which allows multiple host/port combinations. _Hint: arguments `host` and `port` must not be used, if `listen` is used._
+	```
+	[server:main]
+	use = egg:waitress#main
+	# host = 127.0.0.1
+	# port = 8080
+	listen = 127.0.0.1:8080 127.0.0.1:8091 
+	```
+	If the server should accept webdav request from any server-ip the argument `listen` can even use wildcards. _Hint: Be careful with wildcards; for security reasons an exosed system should use the restriction to localhost and for access key-based access with port forwarding should be preferred in general._
+	```
+	listen = 127.0.0.1:8080 *:8091 
+	```
+
+
 
 After restarting the Zope instance WebDAV protocol will be available. 
 To make VSCode work with WebDAV a special plugin is needed: "Remote Workspace" can be installed via VSCode Marketplace
@@ -338,5 +347,3 @@ Now the  WebDAV file tree apears in the VSCode Explorer view, can be naviagated 
 
 ![Debugging in a ZEO environment](images/develop_vscode_webdav.gif)
 _WebDAV editing of Zope objects: the left screen shows the browser based ZMI and the right screen shows the VSCode editor view of the Zope document tree and the same Python Script object_
-
-**Important Note**: WebDAV should only be used in a safe (development) environment like localhost and/or SSL port-forwarding.

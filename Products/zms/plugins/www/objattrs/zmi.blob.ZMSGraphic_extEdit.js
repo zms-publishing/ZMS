@@ -148,25 +148,26 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 									}
 								});
 						var v = Math.round(100*w/ZMSGraphic_act_width);
+
 						// Image
-						var canvasMax = 600;
-						var canvasHeight = ZMSGraphic_act_height;
 						var canvasWidth = ZMSGraphic_act_width;
-						if (canvasWidth > canvasMax || canvasHeight > canvasMax) {
-							if (canvasWidth > canvasMax) {
-								canvasHeight = Math.round(canvasHeight*canvasMax/canvasWidth);
-								canvasWidth = canvasMax;
-							}
-							else {
-								canvasWidth = Math.round(canvasWidth*canvasMax/canvasHeight);
-								canvasHeight = canvasMax;
+						var canvasHeight = ZMSGraphic_act_height;
+						var canvasWidthMax = window.innerWidth*0.68;
+						var canvasHeightMax = window.innerHeight*0.65;
+						if (ZMSGraphic_act_width > canvasWidthMax || ZMSGraphic_act_height > canvasHeightMax ) {
+							canvasWidth = canvasWidthMax;
+							canvasHeight = canvasHeightMax;
+							canvasHeight = Math.round(ZMSGraphic_act_height*canvasWidth/ZMSGraphic_act_width);
+							if (canvasHeight > canvasHeightMax) {
+								canvasWidth = Math.round(ZMSGraphic_act_width*canvasHeightMax/ZMSGraphic_act_height);
+								canvasHeight = canvasHeightMax;
 							}
 						}
 						$('.modal-body div#ZMSGraphic_extEdit_image').css({width:canvasWidth,height:canvasHeight});
 						$('.modal-body div#ZMSGraphic_extEdit_image').html('<img src="'+result['src']+'" width="'+v+'%"/>');
 						$ZMSGraphic_img = $('.modal-body div#ZMSGraphic_extEdit_image img');
-						// Slider
 
+						// Slider
 						$(".modal-body #ZMSGraphic_extEdit_slider").on("input", function() {
 							$(this).trigger('change');
 						})
@@ -329,5 +330,18 @@ function changeCropperAvailability(available, cropping) {
 				}
 			});
 		});
+	}
+}
+function get_img_preview_size_class(e, viewport_max=0.8) {
+	var canvas_width_max_px = window.innerWidth*viewport_max;
+	var canvas_height_max_px = window.innerHeight*viewport_max;
+	var ZMSGraphic_act_width = $(e).parent().find('input[id^="width_"]').val();
+	var ZMSGraphic_act_height = $(e).parent().find('input[id^="height_"]').val();
+	if (ZMSGraphic_act_width < canvas_width_max_px && ZMSGraphic_act_height < canvas_height_max_px ) {
+		$(e).addClass('inherit');
+		$(e).removeClass('contain');
+	} else {
+		$(e).addClass('contain');
+		$(e).removeClass('inherit');
 	}
 }

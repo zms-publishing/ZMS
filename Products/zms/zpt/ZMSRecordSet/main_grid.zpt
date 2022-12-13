@@ -31,12 +31,12 @@
 	</form>
 </div>
 <form method="get" tal:attributes="action form_action">
-<input type="hidden" name="lang" tal:condition="python:'lang' in request" tal:attributes="value request/lang" />
-<input type="hidden" name="preview" tal:condition="python:'preview' in request" tal:attributes="value request/preview" />
-<input type="hidden" name="action" value="" />
-<input type="hidden" name="btn" value="" />
-<input type="hidden" name="target" tal:condition="python:len(input_target)>0" tal:attributes="value input_target" />
-<input type="hidden" name="form_id" tal:condition="python:'ZMI_TIME' in request" tal:attributes="value request/ZMI_TIME" />
+<input type="hidden" id="lang" name="lang" tal:condition="python:'lang' in request" tal:attributes="value request/lang" />
+<input type="hidden" id="preview" name="preview" tal:condition="python:'preview' in request" tal:attributes="value request/preview" />
+<input type="hidden" id="action" name="action" value="" />
+<input type="hidden" id="btn" name="btn" value="" />
+<input type="hidden" id="target" name="target" tal:condition="python:len(input_target)>0" tal:attributes="value input_target" />
+<input type="hidden" id="form_id" name="form_id" tal:condition="python:'ZMI_TIME' in request" tal:attributes="value request/ZMI_TIME" />
 <tal:block tal:repeat="name python:list(url_params)"
 	><input type="hidden" tal:attributes="name name; value python:url_params[name]" />
 </tal:block>

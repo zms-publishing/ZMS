@@ -612,25 +612,32 @@ body.zmi.ZMSTeaserContainer ul.zmi-container .zmi-item.pageelement .center .ZMST
 body.zmi ul.zmi-container > .zmi-item > .right {
 	flex-basis: 20%;
 }
-body.zmi ul.zmi-container > .zmi-item .right i.titleimage-preview:hover {
-	cursor:help;
+
+@media (min-width: 768px) {
+	.ZMSRecordSet.main_grid .table-responsive {
+		overflow:visible
+	}
 }
-body.zmi ul.zmi-container > .zmi-item .right i.titleimage-preview::after {
+
+.preview_on_hover::after {
 	content:"";
 	height:0;
 	opacity:0;
+	background-size:0;
 	background-color:#f5f5f5;
 	box-shadow: none;
+	margin-top:1.5rem;
 }
-body.zmi ul.zmi-container > .zmi-item .right video,
-body.zmi ul.zmi-container > .zmi-item .right i.titleimage-preview:hover::after {
+
+.preview_on_hover:hover::after,
+body.zmi ul.zmi-container > .zmi-item .right video {
 	content:"";
 	width:20vw;
 	height:20vw;
 	opacity:1;
 	display:block;
 	position:absolute;
-	background-image:var(--titleimage_url);
+	background-image:var(--preview_url);
 	background-size:contain;
 	background-repeat:no-repeat;
 	background-position-y:center;
@@ -643,6 +650,7 @@ body.zmi ul.zmi-container > .zmi-item .right i.titleimage-preview:hover::after {
 	box-shadow: 5px 5px 20px #c0c0c094;
 	transition: opacity .75s, height .5s, box-shadow 1s, background-color 1s  ease; 
 }
+
 @media (max-width: 767px) {
 	body.zmi header.navbar {
 		max-width: 100%;
@@ -1234,43 +1242,75 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 .zmi .slider-handle {
 	background-image:none;
 }
-
 .zmi div.ZMSGraphic div.graphic img.img-responsive {
 	max-width: 100%;
 	max-width:-webkit-fill-available;
 	width: inherit;
 	height:auto;
 }
-
-.zmi a.ZMSGraphic_extEdit_action {
-	text-decoration:none;
+.zmi a.ZMSGraphic_extEdit_action.preview_on_hover:hover::after {
+	width:80vw;
+	height:80vh;
+	position:fixed;
+	background-image:inherit;
+	top:0;
+	left: 0;
+	margin:10vh 10vw;
 }
-.zmi a.ZMSGraphic_extEdit_action.changed {
-	display: block;
+.zmi a.ZMSGraphic_extEdit_action.preview_on_hover.inherit:hover::after {
+	background-size:inherit;
+}
+.zmi a.ZMSGraphic_extEdit_action.preview_on_hover.contain:hover::after {
+	background-size:contain;
+}
+.zmi a.ZMSGraphic_extEdit_action.changed img {
 	border-color: #80bdff;
 	outline: 0;
 	box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+}
+.zmi a.ZMSGraphic_extEdit_action.changed.preview_on_hover:hover::after {
+	content: unset;
+}
+.zmi a.ZMSGraphic_extEdit_action.changed .zmi-zoom-in {
+	color:transparent;
+}
+.zmi a.ZMSGraphic_extEdit_action img {
+	position: absolute;
+	display: block;
+	object-fit: cover;
+	width: 90%;
+	height: 100%;
+	max-width: unset !important;
+	max-height: unset !important;
+}
+.zmi .ZMSRecordSet table a.ZMSGraphic_extEdit_action img {
+	position: relative;
+	object-fit: cover;
+	width: 100%;
+	margin-left:0.5rem;
+}
+.zmi .ZMSRecordSet table a.ZMSGraphic_extEdit_action.preview_on_hover:hover::after {
+	width:68vmin;
+	height:68vmin;
+	margin:10vh calc(( 100vw - 68vmin ) / 2);
+}
+.zmi .ZMSRecordSet table .zmi-datatype-image .row,
+.zmi .ZMSRecordSet table .zmi-datatype-image .col-9,
+.zmi .ZMSRecordSet table .zmi-datatype-image .col-3 {
+	padding:0 !important;
+	margin:0 !important
 }
 .zmi a.ZMSGraphic_extEdit_action img.deleted {
 	opacity:0.2;
 }
 .zmi a.ZMSGraphic_extEdit_action .zmi-zoom-in {
-	color: #333;
-	background-color: #FFF;
-	border: 1px solid #CCC;
-	border-radius: 50%;
-	opacity: 0.5;
-	padding: .15rem 0 0 .25rem;
-	width: 1.5rem;
-	height: 1.5rem;
-	margin-top: -1.5rem;
-	margin-left: .15rem;
+	color: white;
+	font-size: 6vw;
+	opacity: .5;
+	text-align: center;
 }
-.zmi a.ZMSGraphic_extEdit_action img,
 .zmi #ZMSGraphic_extEdit_image {
-	border: 1px solid #666;
-	margin:1px;
-	background:#CCC;
+	background:#0000001a;
 }
 .zmi #ZMSGraphic_extEdit_actions .form-group {
 	margin:0.3em 0 1em 0.3em;
@@ -1534,7 +1574,7 @@ table.table-sm td.meta-displaycol {
 	vertical-align: top;
 	padding-top: 1rem;
 }
-table.table-sm .form-control {
+table.table-sm td:not(.zmi-datatype-action) .form-control {
 	font-size: .8rem !important;
 	font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 }
@@ -1924,11 +1964,16 @@ body.browse_iframe .toggle {
 @media (min-width: 767px) {
 	.zmi .modal-dialog {
 		width: 80vw !important;
-		max-width: 80vw;
+		max-width:unset !important;
+		min-height: 80vh !important;
+		margin: 10vh auto;
+	}
+	.zmi .modal-dialog .modal-content {
+		min-height: 80vh !important;
 	}
 }
 @media (min-width: 1200px) {
-	.zmi div:not(#zmiModalupdateEntity) .modal-dialog {
+	.zmi div:not(#zmiModalupdateEntity):not(#zmiModalZMSGraphic_extEdit_actions) .modal-dialog {
 		max-width: 960px !important;
 	}
 }
@@ -2825,11 +2870,16 @@ ul.pagination .page-item {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-.ZMSRecordSet.main_grid table tbody tr td.data > div.zmi-image  div.zmi-image-preview {
+.ZMSRecordSet.main_grid table tbody tr td.data > div.zmi-image div.zmi-image-preview {
 	height: 2.25rem;
 	margin: 0;
 	line-height: 1;
 	overflow: hidden;
+}
+.ZMSRecordSet.main_grid a.ZMSGraphic_extEdit_action .zmi-zoom-in {
+	position: absolute;
+	text-align: center;
+	font-size: 2rem !important;
 }
 #zmiModalinsertUser .ZMSRecordSet.main_grid table tbody tr td.data:not(.zmi-datatype-image) div {
 	/* ignore inherited styles */
@@ -2878,6 +2928,31 @@ ul.pagination .page-item {
 	display: inline-block;
 	text-align: right !important;
 }
+
+.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect {
+	padding-top: .25rem;
+}
+.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect > div {
+	overflow:visible !important;
+}
+.main_grid > form:not(.input_fields) .zmi-datatype-multiselect .dropdown-menu {
+	overflow:overlay;
+}
+.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect .zmi-select-container {
+	display:flex;
+	justify-content: left;
+	flex-wrap: nowrap;
+	flex-direction: row-reverse;
+	gap: .25rem;
+	align-items: baseline;
+}
+.ZMSRecordSet.main_grid > form:not(.input_fields) .zmi-datatype-multiselect .zmi-select-container .zmi-select .btn  {
+	margin-top: 0 !important;;
+	padding:0;
+	background:none;
+	border:none;
+}
+
 #metaobj_recordset_main_grid .ZMSRecordSet.main_grid div.table-responsive {
 	min-height: 24em;
 }

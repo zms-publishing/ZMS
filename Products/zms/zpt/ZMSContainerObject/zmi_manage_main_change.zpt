@@ -4,9 +4,9 @@
 <a class="object_has_titleimage" title="Title Image Preview: Click to Edit" 
 	tal:condition="python:here.attr('titleimage')" 
 	tal:attributes="href python:'%s/manage_properties?lang=%s'%(here.absolute_url(),request['manage_lang'])"
-	><i class="zmi-state far fa-image text-primary titleimage-preview" 
-		tal:define="titleimage_url python:here.attr('titleimage').getHref(request)"
-		tal:attributes="style python:'--titleimage_url:url(%s)'%(titleimage_url); data-titleimage_url titleimage_url;"></i>
+	><i class="zmi-state far fa-image text-primary preview_on_hover" 
+		tal:define="preview_url python:here.attr('titleimage').getHref(request)"
+		tal:attributes="style python:'--preview_url:url(%s)'%(preview_url); data-preview_url preview_url;"></i>
 </a>
 
 <tal:block tal:define="standard modules/Products.zms/standard;

@@ -4,7 +4,7 @@
 <a class="object_has_titleimage" title="Title Image Preview: Click to Edit" 
 	tal:condition="python:here.attr('titleimage')" 
 	tal:attributes="href python:'%s/manage_properties?lang=%s'%(here.absolute_url(),request['manage_lang'])"
-	><i class="zmi-state far fa-image text-primary preview_on_hover" 
+	><i class="zmi-state far fa-image text-info preview_on_hover" 
 		tal:define="preview_url python:here.attr('titleimage').getHref(request)"
 		tal:attributes="style python:'--preview_url:url(%s)'%(preview_url); data-preview_url preview_url;"></i>
 </a>
@@ -17,7 +17,7 @@
 		tal:condition="constraints"
 		tal:repeat="category python:list(constraints)" 
 		tal:attributes="class python:'constraint constraint-%s'%category[:-1].lower()">
-		<i class="fas fa-exclamation-triangle text-danger" 
+		<i class="fas fa-exclamation-triangle text-info"
 			tal:define="constraints_info python:' | '.join([x[1] for x in constraints[category]])"
 			tal:attributes="title python:'%s %s'%(category[:-1], constraints_info)"></i>
 	</span>

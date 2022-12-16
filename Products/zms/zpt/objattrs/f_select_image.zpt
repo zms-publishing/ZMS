@@ -148,7 +148,7 @@
 
 		</div>
 
-		<div class="col-3" tal:condition="has_file">
+		<div class="col mx-3 p-0" tal:condition="has_file">
 
 			<tal:block tal:condition="python:value is not None and here.operator_gettype(value) is not str">
 				<div class="zmi-image-preview" tal:attributes="id python:'ZMSGraphic_extEdit_preview_%s'%elName" 
@@ -165,7 +165,7 @@
 							style python:'background-image:%s;;'%(cssimageurl);
 							id python:'img_%s'%elName;
 							data-src python:value.getHref(request)"
-						><img tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
+						><img onload="javascript:get_img_preview_size_class($(this).parent())" tal:attributes="id python:'img_%s'%elName; src python:value.getHref(request)"/>
 						<div class="zmi-zoom-in"><i class="fas fa-search-plus"></i></div>
 					</a>
 				</div>

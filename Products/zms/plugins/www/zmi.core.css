@@ -1278,10 +1278,14 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	position: absolute;
 	display: block;
 	object-fit: cover;
-	width: 90%;
+	width: 100%;
 	height: 100%;
 	max-width: unset !important;
 	max-height: unset !important;
+	box-shadow: 0 0 1px #000000cc;
+}
+.zmi a.ZMSGraphic_extEdit_action.inherit img {
+	object-fit: contain;
 }
 .zmi .ZMSRecordSet table a.ZMSGraphic_extEdit_action img {
 	position: relative;
@@ -1308,6 +1312,7 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	font-size: 6vw;
 	opacity: .5;
 	text-align: center;
+	text-shadow: 0 0 1rem #00000022;
 }
 .zmi #ZMSGraphic_extEdit_image {
 	background:#0000001a;

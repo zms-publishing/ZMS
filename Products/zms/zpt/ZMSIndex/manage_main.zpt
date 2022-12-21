@@ -184,7 +184,7 @@ function zmiFuncIndex(func_) {
 			if ($regenerate_duplicates) {
 				data['regenerate_duplicates'] = 1;
 			}
-			debugger;
+			// debugger;
 			$.ajax({
 				url:func_,
 				data:data,

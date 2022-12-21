@@ -32,7 +32,7 @@ class manage_searchReplace:
 	nodes = "{$}"
 
 	# Revision
-	revision = "5.3.0"
+	revision = "5.3.1"
 
 	# Roles
 	roles = ["ZMSAdministrator"

@@ -67,7 +67,7 @@ def run(here, old, new):
 #################################################
 excl_ids, types=[],[]
 excl_ids=['ZMS','ZMSLib','ZMSSysFolder','ZMSTable','ZMSSqlDb','ZMSNote','ZMSPackage']
-basictypes=['string','text','richtext','select','multiselect']
+basictypes=['string','text','richtext','select','multiselect','multiautocomplete']
 
 #################################################
 # FUNCTION Alle relevanten Meta-Attributtypen
@@ -109,7 +109,7 @@ def renderAttrSelector(cselected):
 	if cselected:
 		relevanttypes=getAttrTypes()
 		for a in context.getMetaobjAttrIds(cselected,types=relevanttypes):
-			s+='<option value="%s">%s</option>'%(a,a)
+			s+='<option value="%s" %s>%s</option>'%(a, a==aselected and 'selected="selected"' or '', a)
 	else:
 		s+='<option value="">Choose Attribute ...</option>\n'
 

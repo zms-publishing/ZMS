@@ -31,7 +31,7 @@ request.set('attrChangeCount',0)
 #################################################
 excl_ids, types=[],[]
 excl_ids=['ZMS','ZMSLib','ZMSSysFolder','ZMSTable','ZMSSqlDb','ZMSNote']
-basictypes=['string','text','select','multiselect']
+basictypes=['string','text','select','multiselect','multiautocomplete']
 
 
 def decodeURIString(s):
@@ -115,11 +115,10 @@ def ececuteAttrChange(cselected, aselected, searchstr,replacestr):
   if len(l)>0:
     for e in l:
       v = e.getObjProperty(aselected,request)
-      v = v.strip()
       s+='<li><a target="_blank" href="%s/manage" title="%s: %s"><code class="text-white bg-dark px-2">%s</code></a><samp>: %s</samp>'%(str(e.absolute_url()),e.meta_id,str(e.absolute_url()), e.getId(), v )
       # type string/select
       # http://osdir.com/ml/python.general.german/2005-12/msg00061.html
-      if isinstance(v, str) and searchstr==v:
+      if isinstance(v, (str,bytes)) and searchstr==v.strip():
         s+='<strong style="color:green"><i class="fas fa-exchange-alt px-2"></i> %s </strong>'%(replacestr)
         attrFindCount+=1
       # Execute type string/select
@@ -135,8 +134,9 @@ def ececuteAttrChange(cselected, aselected, searchstr,replacestr):
             s+=' <span style="color:red">ERROR: not replaced</span> '
       # type multiselect
       elif searchstr!='' and searchstr in v:
+        new_list_val = [ i if i!=searchstr else replacestr for i in v ]
         try:
-          s+=' <strong style="color:green;"><i class="fas fa-exchange-alt px-2"></i><samp>%s</samp></strong>'%(v.replace(searchstr,replacestr))
+          s+=' <strong style="color:green;"><i class="fas fa-exchange-alt px-2"></i><samp>%s</samp></strong>'%(new_list_val)
           attrFindCount+=1
         except:
           sError += '<li style="list-style-type:square;">No Specified Object Classes <em>%s</em> found. <a href="%s/manage_system" target="_blank">Iteration Error</a></li>'%(str(cselected), str(e.absolute_url()))
@@ -145,7 +145,7 @@ def ececuteAttrChange(cselected, aselected, searchstr,replacestr):
         if mode=='Replace':
           try:
             e.setObjStateModified(request)
-            e.setObjProperty(aselected, v.replace(searchstr,replacestr),lang=lang)
+            e.setObjProperty(aselected, new_list_val, lang=lang)
             e.onChangeObj(request,forced=1)
             e.commitObj(request)
             s+=' <span style="color:green">Changed.</span> '

@@ -68,7 +68,7 @@
 				</table>
 			</div><!-- #ZMSGraphic_extEdit_actions -->
 		</div>
-		<script type="text/javascript" src="/++resource++zms_/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
+		<script defer type="text/javascript" src="/++resource++zms_/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
 	</tal:block>
 
 	<script tal:condition="python:standard.once('zmiBlobJs',request)" type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script>

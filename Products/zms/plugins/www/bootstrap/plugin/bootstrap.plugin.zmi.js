@@ -154,6 +154,26 @@ $ZMI.registerReady(function(){
 		}
 	});
 
+	// Titleimage: Video-Preview on Hover 
+	if ($('.object_has_titleimage')) {
+		$('.object_has_titleimage i.preview_on_hover').each( function() {
+			var media_url = $(this).data('preview_url');
+			if ( media_url.search('.mp4') > -1 ) {
+				var this_container = $(this).closest('.zmi-manage-main-change');
+				var media_html = '<video autoplay="" autostart="" loop="" playsinline="" muted="" preload="auto"><source src="' +  media_url + '"></video>';
+				$(this)
+					.on('mouseout',function() {
+						$('video',this_container).remove();
+					})
+					.on('mouseover',function() {
+						if ($('video',this_container).length==0 ) {
+							this_container.append(media_html)
+						}
+					})
+			};
+		});
+	};
+
 	// Filters
 	$(".collapse.filters").each(function() {
 		var $body = $(this);

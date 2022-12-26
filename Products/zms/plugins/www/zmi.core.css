@@ -650,7 +650,12 @@ body.zmi ul.zmi-container > .zmi-item .right video {
 	box-shadow: 5px 5px 20px #c0c0c094;
 	transition: opacity .75s, height .5s, box-shadow 1s, background-color 1s  ease; 
 }
-
+body.zmi ul.zmi-container > .zmi-item .right video {
+	margin-top:1.5rem;
+	background-color:transparent;
+	border-color:transparent;
+	box-shadow: none;
+}
 @media (max-width: 767px) {
 	body.zmi header.navbar {
 		max-width: 100%;

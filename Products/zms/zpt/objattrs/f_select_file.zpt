@@ -8,7 +8,7 @@
 
 	<div class="zmi-file d-flex align-items-center row" 
 		tal:define="has_file python:value is not None and here.operator_gettype(value) is not str;
-			allowed_ext python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif']);
+			allowed_ext python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif','svg']);
 			filename python:has_file and value.getFilename() or 'None';
 			href python:has_file and value.getHref(request) or 'None';
 			size python:has_file and here.getDataSizeStr(value.get_size()) or 'None';

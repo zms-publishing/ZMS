@@ -6,9 +6,9 @@
 	value python:options['value'].delegate();
 	can_generate_preview python:pilutil.enabled() and (key.endswith('hires') or key.endswith('superres'));
 	max_generate_preview python:{
-			'imghires':'InstalledProducts.pil.thumbnail.max',
-			'imgsuperres':'InstalledProducts.pil.hires.thumbnail.max'
-		}.get(key,None)">
+		'imghires':'InstalledProducts.pil.thumbnail.max',
+		'imgsuperres':'InstalledProducts.pil.hires.thumbnail.max'
+	}.get(key,None)">
 
 	<tal:block tal:condition="python:standard.once('zmiGraphicExtEdit',request)">
 		<div id="ZMSGraphic_extEdit_template" class="d-none">
@@ -74,7 +74,7 @@
 
 	<div class="zmi-image d-flex align-items-center row"
 		tal:define="has_file python:value is not None and here.operator_gettype(value) is not str;
-			allowed_ext python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif']);
+			allowed_ext python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif','svg']);
 			filename python:has_file and value.getFilename() or 'None';
 			href python:has_file and value.getHref(request) or 'None';
 			dimensions python:has_file and '%sx%spx'%(str(value.getWidth()),str(value.getHeight())) or 'None';

@@ -412,7 +412,7 @@ class VersionItem(object):
       obj_states = []
       states = self.getObjStates()
       if len(states) > 0:
-        lang = REQUEST.get('lang', self.getPrimaryLanguage())
+        lang = standard.nvl(REQUEST.get('lang'), self.getPrimaryLanguage())
         for obj_state in [ 'STATE_NEW', 'STATE_MODIFIED', 'STATE_DELETED']:
           obj_state_name = getObjStateName(obj_state, lang)
           if obj_state_name in states:

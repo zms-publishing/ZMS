@@ -1,19 +1,19 @@
-<tal:block tal:define="global
-		standard modules/Products.zms/standard;
-		fmName options/fmName;
-		elName options/elName;
-		key options/key;
-		value python:options['value'].delegate();">
+<tal:block tal:define="standard modules/Products.zms/standard;
+	fmName options/fmName;
+	elName options/elName;
+	key options/key;
+	value python:options['value'].delegate();">
 
 	<script tal:condition="python:standard.once('zmiBlobJs',request)" type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script> 
 
 	<div class="zmi-file d-flex align-items-center row" 
 		tal:define="has_file python:value is not None and here.operator_gettype(value) is not str;
-			allowed_ext python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif']);
+			allowed_ext python:request.set('ZMS_ALLOWED_EXTENSIONS',['jpg', 'jpeg', 'png', 'gif','svg']);
 			filename python:has_file and value.getFilename() or 'None';
 			href python:has_file and value.getHref(request) or 'None';
 			size python:has_file and here.getDataSizeStr(value.get_size()) or 'None';
-			title python:has_file and '%s %s'%(filename,size) or 'No File Uploaded'"
+			title python:has_file and '%s %s'%(filename,size) or 'No File Uploaded';
+			lang python:standard.nvl(request.get('lang'), context.getPrimaryLanguage());"
 		tal:attributes="id python:'zmi-file-%s'%elName">
 		<input type="hidden" tal:attributes="name python:'exists_%s'%elName; value python:request.get('ZMS_INSERT',None) is None and value not in [None,'']" />
 		<input type="hidden" tal:attributes="name python:'del_%s'%elName" value="0" />
@@ -22,7 +22,7 @@
 			<div class="zmi-input-file btn-group">
 
 				<div class="custom-file"
-					tal:condition="python:request['lang'] in here.getLanguages(request)"
+					tal:condition="python:lang in here.getLanguages(request)"
 					tal:attributes="class python:'custom-file%s'%(has_file and '' or ' new');
 						title title;
 						id python:'filename_%s'%elName;

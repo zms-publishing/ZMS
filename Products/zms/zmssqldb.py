@@ -500,7 +500,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       column = {}
       try:
         request = self.REQUEST
-        lang = request.get('lang', self.getPrimaryLanguage())
+        lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
         encoding = getattr(self, 'charset', 'utf-8')
         qcharset = self.REQUEST.get('qcharset', 'utf-8')
         entity = self.getEntity(tableName)

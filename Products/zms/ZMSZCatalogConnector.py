@@ -364,7 +364,7 @@ class ZMSZCatalogConnector(
       
       # ZCatalog.
       request = self.REQUEST
-      lang = request.get('lang', self.getPrimaryLanguage())
+      lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
       zcatalog = getZCatalog(self, lang)
       
       # Find search-results.
@@ -426,7 +426,7 @@ class ZMSZCatalogConnector(
       
       # ZCatalog.
       request = self.REQUEST
-      lang = request.get('lang', self.getPrimaryLanguage())
+      lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
       zcatalog = getZCatalog(self, lang)
       
       # Lexicon.
@@ -461,7 +461,7 @@ class ZMSZCatalogConnector(
         setattr(node, attr_name, value)
       # Reindex object.
       request = self.REQUEST
-      lang = request.get('lang', self.getPrimaryLanguage())
+      lang = standard.nvl(request.get('lang'), self.getPrimaryLanguage())
       zcatalog = getZCatalog(self, lang)
       if zcatalog is not None:
         path = node.getPath()

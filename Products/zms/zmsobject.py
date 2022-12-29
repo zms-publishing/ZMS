@@ -940,6 +940,22 @@ class ZMSObject(ZMSItem.ZMSItem,
         context = args[1]['context']
         abs_url = args[1]['abs_url']
         forced = args[1]['forced']
+        if context.getConfProperty('ZMSObject.getAbsoluteUrlInContext', False):
+          if context.getHome() != context.getHome():
+            protocol = context.getConfProperty('ASP.protocol', 'http')
+            domain = context.getConfProperty('ASP.ip_or_domain', None)
+            if domain:
+              l = abs_url.split('/')
+              if 'content' in l:
+                i = l.index('content')
+                if l[i-1] != context.getHome().id and context.getRootElement().getHome().id in l:
+                  i = l.index(context.getRootElement().getHome().id)
+                else:
+                  i += 1
+                l = l[i:]
+                abs_url = protocol + '://' + domain  
+                if l:
+                  abs_url = abs_url + '/' + '/'.join(l)
         return abs_url
       return self.evalExtensionPoint('ExtensionPoint.ZMSObject.getAbsoluteUrlInContext',default,context=context,abs_url=abs_url,forced=forced)
     

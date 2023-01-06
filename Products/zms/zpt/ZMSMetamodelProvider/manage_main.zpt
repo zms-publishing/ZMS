@@ -90,7 +90,7 @@
 		</tal:block>
 	</select>
 
-	<div class="d-flex flex-row justify-content-between align-items-start py-2">
+	<div class="d-flex flex-row justify-content-between align-items-start py-2 sticky-controls">
 		<div class="btn-group m-2 text-nowrap" role="group" aria-label="Object Class Selector">
 			<div class="zmi-action btn-group dropleft nav-metaobj" tal:attributes="title python:here.getZMILangStr('CAPTION_CHOOSEOBJ')">
 				<input tal:condition="python:metaObj.get('acquired')" type="hidden" name="id" tal:attributes="value metaObj/id">
@@ -361,14 +361,6 @@
 	></div>
 	<!-- EO Usage -->
 
-	<div class="form-row">
-		<div class="controls save text-nowrap">
-			<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<a href="./manage_main" class="btn btn-secondary" value="BTN_BACK" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</a>
-		</div><!-- .controls.save -->
-	</div><!-- .form-row -->
-
-
 	<!-- BO Languages -->
 	<div class="meta-languages mt-3" tal:define="langIds python:here.getLangIds(sort=True)">
 	<table class="table table-sm table-striped table-bordered table-hover">
@@ -564,7 +556,7 @@
 
 </div><!-- #zmi-tab -->
 
-<footer tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <script>
 // <!--

@@ -2110,9 +2110,19 @@ $ZMI.registerReady(function(){
 // ############################################################################
 // ### BACK-TO-TOP-SCROLL BUTTON
 // ############################################################################
+
+function isScrolledIntoView(elem) {
+	var docViewTop = $(window).scrollTop();
+	var docViewBottom = docViewTop + $(window).height();
+	var elemTop = $(elem).offset().top;
+	var elemBottom = elemTop + $(elem).height();
+	return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+};
+
 $ZMI.registerReady(function(){
 	// Reference: https://getflywheel.com/layout/sticky-back-to-top-button-tutorial/
 	const scrollToTopButton = document.getElementById('js-top');
+	const stickyControls = document.getElementsByClassName('sticky-controls')[0];
 	if ( scrollToTopButton ) {
 		const scrollFunc = () => {
 			let y = window.scrollY;
@@ -2120,6 +2130,14 @@ $ZMI.registerReady(function(){
 				scrollToTopButton.className = "back-to-top show";
 			} else {
 				scrollToTopButton.className = "back-to-top hide";
+			}
+			if (stickyControls) {
+				if ( !isScrolledIntoView(stickyControls) ){
+					stickyControls.classList.add('sticky-controls-activated');
+				}
+				if (y == 0) {
+					stickyControls.classList.remove('sticky-controls-activated');
+				}
 			}
 		};
 		window.addEventListener("scroll", scrollFunc);

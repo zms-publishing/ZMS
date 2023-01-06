@@ -195,7 +195,7 @@
 	
 </style>
 
-<footer tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/diff/diff_match_patch.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/diff/jquery.pretty-text-diff.min.js"></script>
 </body>

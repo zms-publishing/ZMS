@@ -575,16 +575,16 @@ div[draggable=true].btn:not(:disabled):not(.disabled) {
 }
 /* Stick 'sticky-controls' bar to the top */
 .zmi .sticky-controls {
+	position: relative;
 	width: 100%;
 	background: white;
-	z-index: 1000;
-	position: relative;
 	box-shadow: unset;
 	transition: box-shadow 0.5s ease-in-out;
 }
 .zmi .sticky-controls.sticky-controls-activated {
 	position: sticky;
 	top: 0;
+	z-index: 999;
 	box-shadow: 0 1rem 1rem -0.5rem #0003;
 	transition: box-shadow 0.3s ease-in-out;
 }

@@ -1887,6 +1887,14 @@ body.browse_iframe .toggle {
 .zmi.manage-menu .dropdown-menu {
 	filter:Alpha(opacity=90);-moz-opacity:0.90;opacity:0.90;
 }
+.zmi.manage-menu #zmi-history .dropdown-item:active, 
+.zmi.manage-menu #zmi-bookmarks .dropdown-item:active {
+	color: inherit;
+}
+.zmi.manage-menu #zmi-bookmarks .close {
+	position: absolute;
+	right: .5rem;
+}
 .zmi.manage-menu .navbar-inverse .navbar-nav .dropdown-menu > li > a {
 	color: #FFFFFF !important;
 }

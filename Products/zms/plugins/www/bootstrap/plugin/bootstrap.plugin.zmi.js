@@ -10,19 +10,19 @@ $ZMI.registerReady(function(){
 		if (typeof data_root != "undefined" && typeof data_path != "undefined") {
 			// Bookmark
 			if (manage_menu) {
-				$("#zmi-tab .breadcrumb .active").each(function() {
-					$(this).append(' <a href="javascript:;" title="Bookmark"><i class="fas fa-bookmark-empty text-muted"></a>');
+				$("#zmi-tab .breadcrumb").each(function() {
+					$(this).append('<li class="btn-bookmark"><a href="javascript:;" title="Set Bookmark" class="align-text-top"><i class="far fa-bookmark text-muted"></a><li>');
 					var key = "ZMS."+data_root+".bookmarks";
 					var bookmarks = $ZMILocalStorageAPI.get(key,[]);
 					$("a:last",this).click(function() {
 						var index = bookmarks.indexOf(data_path);
 						if (index >= 0) {
 							bookmarks.splice(index,1);
-							$('.fa-bookmark',this).removeClass("fa-bookmark text-primary").addClass("fa-bookmark-empty text-muted");
+							$('.fa-bookmark',this).removeClass("fas").addClass("far");
 						}
 						else {
 							bookmarks.push(data_path);
-							$('.fa-bookmark-empty',this).removeClass("fa-bookmark-empty text-muted").addClass("fa-bookmark text-primary");
+							$('.fa-bookmark',this).removeClass("far").addClass("fas");
 						}
 						$ZMILocalStorageAPI.replace(key,bookmarks);
 						var frames = window.parent.frames;
@@ -38,9 +38,9 @@ $ZMI.registerReady(function(){
 					});
 					var index = bookmarks.indexOf(data_path);
 					if (index >= 0) {
-						$('.fa-bookmark-empty',this).removeClass("fa-bookmark-empty text-muted").addClass("fa-bookmark text-primary");
+						$('.fa-bookmark',this).removeClass("far").addClass("fas text-primary");
 					} else {
-						$('.fa-bookmark',this).removeClass("fa-bookmark text-primary").addClass("fa-bookmark-empty text-muted");
+						$('.fa-bookmark',this).removeClass("fas text-primary").addClass("far text-muted");
 					}
 				});
 			}

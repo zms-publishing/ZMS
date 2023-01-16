@@ -56,25 +56,18 @@ function zmiBookmarksChanged() {
 						if (typeof not_found=="undefined" || not_found!="1") {
 							var titlealt = $(this).attr("titlealt");
 							var absolute_url = $(this).attr("absolute_url");
-							var icon = $(this).attr("display_icon");
-							if (icon.indexOf('<')!=0) {
-								icon = $ZMI.icon(icon);
-							}
+							var icon = $(this).attr("zmi_icon");
 							if (i==0) {
-								html += '<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="Favoriten">';
+								html += '<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="Bookmarks">';
 								html += $ZMI.icon('far fa-bookmark')+' ';
-								html += '<b class="caret"></b>';
 								html += '</a>';
 								html += '<div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
-								html += '<div class="dropdown-header">'+$ZMI.icon('far fa-bookmark')+' Favoriten</div>';
+								html += '<div class="dropdown-header">Bookmarks</div>';
 							}
 							html += ''
-									+ '<a class="dropdown-item" href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main"'
-											+ ' onmouseover="$(\'.fa-clock.text-muted\').removeClass(\'text-muted\').addClass(\'text-danger\')"'
-											+ ' onmouseout="$(\'.fa-clock.text-danger\').removeClass(\'text-danger\').addClass(\'text-muted\')"'
-										+ '>'+icon+' '+titlealt+'</span> '
-										+ '<span title="Favorit entfernen" data-path="'+bookmarks[i]+'"'
-											+ '>'+$ZMI.icon('far fa-clock text-muted')+'</span>'
+									+ '<a class="dropdown-item pr-5" href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main">'
+											+ '<span class="title">' + $ZMI.icon(icon)+titlealt+'</span>'
+											+ '<span class="close" title="Remove Favorite" data-path="'+bookmarks[i]+'">×</span>'
 									+ '</a>';
 							i++;
 						}
@@ -83,10 +76,10 @@ function zmiBookmarksChanged() {
 					html += '</div><!-- .dropdown-menu --> ';
 				}
 				$("#zmi-bookmarks").html(html);
-				$("#zmi-bookmarks .fa-clock.text-muted").click(function(event) {
+				$("#zmi-bookmarks .close").click(function(event) {
 						event.preventDefault();
 						event.stopPropagation();
-						var data_path = $(this).parent().attr('data-path');
+						var data_path = $(this).attr('data-path');
 						if(confirm(getZMILangStr('MSG_CONFIRM_DELOBJ'))){
 							var index = bookmarks.indexOf(data_path);
 							bookmarks.splice(index,1);
@@ -123,12 +116,11 @@ function zmiHistoryChanged() {
 								icon = $ZMI.icon(icon);
 							}
 							if (i==0) {
-								html += '<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="Verlauf">';
+								html += '<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="History">';
 								html += $ZMI.icon('far fa-clock')+' ';
-								html += '<b class="caret"></b>';
 								html += '</a>';
 								html += '<div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
-								html += '<div class="dropdown-header">'+$ZMI.icon('far-fa-clock')+' Verlauf</div>';
+								html += '<div class="dropdown-header">History</div>';
 							}
 							html += '<a class="dropdown-item" href="'+absolute_url+'/manage_main?lang='+lang+'" target="manage_main">'+pad((i+1),2)+'. '+icon+' '+titlealt+'</a>';
 							i++;

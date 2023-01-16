@@ -7,16 +7,17 @@
 	id python:'zmsid_%s'%(here.id);
 	class python:here.zmi_body_class(id='manage-menu')">
 <header class="navbar navbar-nav navbar-expand navbar-dark flex-row bd-navbar">
-	<a class="navbar-brand" target="_blank" 
-		style="max-width: 66%;overflow: hidden;white-space: nowrap;"
-		tal:attributes="href python:'../../%s/manage'%here.breadcrumbs_obj_path()[0].getHome().id">
-		<i class="fas fa-cog"></i>&nbsp;
-		<span class="zmi-home-id" tal:content="python:here.breadcrumbs_obj_path()[0].getHome().id">Home-Id</span>
-	</a>
 	<ul class="nav navbar-nav navbar-right">
 		<li id="zmi-history" class="dropdown"></li>
-		<li id="zmi-bookmarks" class="dropdown"></li>
+		<li id="zmi-bookmarks" class="dropdown ml-3"></li>
 	</ul>
+	<a class="navbar-brand" target="_blank" title="Zope Container" 
+		style="max-width: 66%;overflow: hidden;white-space: nowrap;"
+		tal:attributes="href python:'../../%s/manage'%here.breadcrumbs_obj_path()[0].getHome().id">
+		.. /
+		<span class="zmi-home-id" tal:content="python:here.breadcrumbs_obj_path()[0].getHome().id">Home-Id</span>
+	</a>
+
 </header>
 
 <div class="zmi-sitemap"></div>

@@ -67,10 +67,10 @@
 				</table>
 			</div><!-- #ZMSGraphic_extEdit_actions -->
 		</div>
-		<script defer type="text/javascript" src="/++resource++zms_/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
+	<script defer type="text/javascript" src="/++resource++zms_/objattrs/zmi.blob.ZMSGraphic_extEdit.js"></script>
 	</tal:block>
 
-	<script tal:condition="python:standard.once('zmiBlobJs',request)" type="text/javascript" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script>
+	<script defer type="text/javascript" tal:condition="python:standard.once('zmiBlobJs',request)" charset="UTF-8" src="/++resource++zms_/objattrs/zmi.blob.js"></script>
 
 	<div class="zmi-image d-flex align-items-center row"
 		tal:define="has_file python:value is not None and here.operator_gettype(value) is not str;

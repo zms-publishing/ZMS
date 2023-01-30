@@ -121,32 +121,32 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 						var h = $(`input#height_${ZMSGraphic_elName}`).val();
 						$('input#ZMSGraphic_extEdit_width').val(w)
 							.keyup(function(){
-									var w = parseInt($(this).val());
-									if (!(isNaN(w))) {
-									$('input#ZMSGraphic_extEdit_width').val(w);
-									if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
-										var v = w/ZMSGraphic_act_width;
-										var h = Math.round(v*ZMSGraphic_act_height);
-										$("input#ZMSGraphic_extEdit_height").val(h);
-									}
-									var h = $("#ZMSGraphic_extEdit_height").val();
-									$ZMSGraphic_img.attr({'width':w,'height':h});
-									}
-								});
+								var w = parseInt($(this).val());
+								if (!(isNaN(w))) {
+								$('input#ZMSGraphic_extEdit_width').val(w);
+								if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
+									var v = w/ZMSGraphic_act_width;
+									var h = Math.round(v*ZMSGraphic_act_height);
+									$("input#ZMSGraphic_extEdit_height").val(h);
+								}
+								var h = $("#ZMSGraphic_extEdit_height").val();
+								$ZMSGraphic_img.attr({'width':w,'height':h});
+								}
+							});
 						$('input#ZMSGraphic_extEdit_height').val(h)
 							.keyup(function(){
-									var h = parseInt($(this).val());
-									if (!(isNaN(h))) {
-									$('input#ZMSGraphic_extEdit_height').val(h);
-									if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
-										var v = h/ZMSGraphic_act_height;
-										var w = Math.round(v*ZMSGraphic_act_width);
-										$("input#ZMSGraphic_extEdit_width").val(w);
-									}
-									var w = $("input#ZMSGraphic_extEdit_width").val();
-									$ZMSGraphic_img.attr({'width':w,'height':h});
-									}
-								});
+								var h = parseInt($(this).val());
+								if (!(isNaN(h))) {
+								$('input#ZMSGraphic_extEdit_height').val(h);
+								if ($("#ZMSGraphic_extEdit_proportional").prop("checked")) {
+									var v = h/ZMSGraphic_act_height;
+									var w = Math.round(v*ZMSGraphic_act_width);
+									$("input#ZMSGraphic_extEdit_width").val(w);
+								}
+								var w = $("input#ZMSGraphic_extEdit_width").val();
+								$ZMSGraphic_img.attr({'width':w,'height':h});
+								}
+							});
 						var v = Math.round(100*w/ZMSGraphic_act_width);
 
 						// Image
@@ -172,13 +172,13 @@ function ZMSGraphic_extEdit_action( elName, elParams, pil) {
 							$(this).trigger('change');
 						})
 						$(".modal-body #ZMSGraphic_extEdit_slider").on("change", function() {
-									var v = parseInt($(this).val());
-									var w = Math.round(v*ZMSGraphic_act_width/100);
-									var h = Math.round(v*ZMSGraphic_act_height/100);
-									$('input#ZMSGraphic_extEdit_width').val(w);
-									$('input#ZMSGraphic_extEdit_height').val(h);
-									$ZMSGraphic_img.attr({width:v+'%'});
-								});
+							var v = parseInt($(this).val());
+							var w = Math.round(v*ZMSGraphic_act_width/100);
+							var h = Math.round(v*ZMSGraphic_act_height/100);
+							$('input#ZMSGraphic_extEdit_width').val(w);
+							$('input#ZMSGraphic_extEdit_height').val(h);
+							$ZMSGraphic_img.attr({width:v+'%'});
+						});
 						ZMSGraphic_extEdit_initialize();
 						$ZMI.setCursorAuto("ZMSGraphic_extEdit_action");
 					});
@@ -247,13 +247,13 @@ function ZMSGraphic_extEdit_apply() {
 			params[i] = ZMSGraphic_params[i];
 		}
 		$.get('manage_changeTempBlobjProperty',params,
-				function(data){
-					if (data.length==0) return;
-					var result = eval('('+data+')');
-					var elName = result['elName'];
-					var elParams = 'lang='+encodeURI(result['lang'])+'&key='+encodeURI(result['key'])+'&form_id='+encodeURI(result['form_id']);
-					ZMSGraphic_extEdit_set(elName,result['src'],result['filename'],result['width'],result['height'],elParams);
-				});
+			function(data){
+				if (data.length==0) return;
+				var result = eval('('+data+')');
+				var elName = result['elName'];
+				var elParams = 'lang='+encodeURI(result['lang'])+'&key='+encodeURI(result['key'])+'&form_id='+encodeURI(result['form_id']);
+				ZMSGraphic_extEdit_set(elName,result['src'],result['filename'],result['width'],result['height'],elParams);
+			});
 	}
 	// Crop
 	else if (ZMSGraphic_action == 'crop') {
@@ -270,12 +270,12 @@ function ZMSGraphic_extEdit_apply() {
 			params[i] = ZMSGraphic_params[i];
 		}
 		$.get('manage_changeTempBlobjProperty',params,
-				function(data){
-					if (data.length==0) return;
-					var result = eval('('+data+')');
-					console.log(result);
-					ZMSGraphic_extEdit_set(ZMSGraphic_elName,result['src'],result['filename'],result['width'],result['height']);
-				});
+			function(data){
+				if (data.length==0) return;
+				var result = eval('('+data+')');
+				console.log(result);
+				ZMSGraphic_extEdit_set(ZMSGraphic_elName,result['src'],result['filename'],result['width'],result['height']);
+			});
 	}
 	// Resize
 	else {
@@ -291,11 +291,11 @@ function ZMSGraphic_extEdit_apply() {
 					params[i] = ZMSGraphic_params[i];
 				}
 				$.get('manage_changeTempBlobjProperty',params,
-						function(data){
-							if (data.length==0) return;
-							var result = eval('('+data+')');
-							ZMSGraphic_extEdit_set(ZMSGraphic_elName,result['src'],result['filename'],result['width'],result['height']);
-						});
+					function(data){
+						if (data.length==0) return;
+						var result = eval('('+data+')');
+						ZMSGraphic_extEdit_set(ZMSGraphic_elName,result['src'],result['filename'],result['width'],result['height']);
+					});
 				v = 100;
 			}
 			else {
@@ -330,11 +330,10 @@ function changeCropperAvailability(available, cropping) {
 						ZMSGraphic_cropcoords = e.detail;
 						$('#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_width').val(Math.round(ZMSGraphic_cropcoords.width));
 						$('#zmiModalZMSGraphic_extEdit_actions input#ZMSGraphic_extEdit_height').val(Math.round(ZMSGraphic_cropcoords.height));
-					}
-					else {
+					} else {
 						$ZMSGraphic_img.cropper('clear');
 						$ZMSGraphic_img.cropper('destroy');
-					}
+					};
 					$('#ZMSGraphic_extEdit_crop i').attr('class','fas fa-crop');
 				}
 			});

@@ -1070,6 +1070,6 @@ class MyBlobWrapper(object):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     __str____roles__ = None
     def __str__(self):
-      return bytes(self.getData())
+      return self.getData().decode()
 
 ################################################################################

@@ -30,8 +30,21 @@ def get_dimensions(image):
         xmldoc = xml.dom.minidom.parseString(data)
         for svg in xmldoc.getElementsByTagName('svg'):
             if 'height' in svg.attributes and 'width' in svg.attributes:
-              w = int(float(svg.attributes['width'].value))
-              h = int(float(svg.attributes['height'].value))
+              w = svg.attributes['width'].value
+              h = svg.attributes['height'].value
+              try:
+                w = int(float(w))
+                h = int(float(h))
+              except:
+                if str(w).endswith('px'):
+                  w = int(float(w[:-2]))
+                  h = int(float(h[:-2]))
+                elif str(w).endswith('mm'):
+                  w = int(float(w[:-2]) * 3.7795)
+                  h = int(float(h[:-2]) * 3.7795)
+                elif str(w).endswith('cm'):
+                  w = int(float(w[:-2]) * 37.795)
+                  h = int(float(h[:-2]) * 37.795)
               size = (w,h)
               break
             elif 'viewBox' in svg.attributes:

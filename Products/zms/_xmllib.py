@@ -502,7 +502,7 @@ def toXml(self, value, indentlevel=0, xhtml=False, encoding='utf-8'):
           pass
       # Otherwise hexlify
       if cdata is None:
-        cdata = data.hex()
+        cdata = _blobfields.bytes_hex(data)
       xml.append(cdata)
       xml.append('</%s>' % tagname)
 

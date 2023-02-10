@@ -53,6 +53,17 @@ def rfc1123_date(dt):
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.bytes_hex:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def bytes_hex(data):
+    hexdata = None
+    try:
+        hexdata = bytes(data).hex()
+    except:
+        hexdata = bytes(data, encoding='utf-8').hex()
+    return hexdata
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _blobfields.recurse_downloadRessources:
 
 Download from ZODB to file-system during Export.
@@ -872,7 +883,7 @@ class MyImage(MyBlob, Image):
           if sdata.find('<![CDATA[') < 0 and sdata.find(']]>') < 0:
             hexdata = '<![CDATA[%s]]>'%sdata
         if hexdata is None:
-          hexdata = bytes(data).hex()
+          hexdata = bytes_hex(data)
         data = hexdata
         objtype = ' type="image"'
       else:
@@ -988,7 +999,7 @@ class MyFile(MyBlob, File):
           if sdata.find('<![CDATA[') < 0 and sdata.find(']]>') < 0:
             hexdata = '<![CDATA[%s]]>'%sdata
         if hexdata is None:
-          hexdata = bytes(data).hex()
+          hexdata = bytes_hex(data)
         data = hexdata
         objtype = ' type="file"'
       else:

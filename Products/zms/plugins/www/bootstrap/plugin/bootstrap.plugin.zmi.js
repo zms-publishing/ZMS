@@ -2107,10 +2107,10 @@ $ZMI.registerReady(function(){
 			reAdjust();
 	});
 });
+
 // ############################################################################
 // ### BACK-TO-TOP-SCROLL BUTTON
 // ############################################################################
-
 function isScrolledIntoView(elem) {
 	var docViewTop = $(window).scrollTop();
 	var docViewBottom = docViewTop + $(window).height();
@@ -2118,41 +2118,33 @@ function isScrolledIntoView(elem) {
 	var elemBottom = elemTop + $(elem).height();
 	return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
 };
-
 $ZMI.registerReady(function(){
-	// Reference: https://getflywheel.com/layout/sticky-back-to-top-button-tutorial/
 	const scrollToTopButton = document.getElementById('js-top');
 	const stickyControls = document.getElementsByClassName('sticky-controls')[0];
-	if ( scrollToTopButton ) {
-		const scrollFunc = () => {
-			let y = window.scrollY;
-			if (y > 0) {
-				scrollToTopButton.className = "back-to-top show";
-			} else {
-				scrollToTopButton.className = "back-to-top hide";
+	window.onscroll = function () {
+		let y = window.scrollY;
+		if ( y > 42 ) {
+			// Show back-to-top button on scroll
+			scrollToTopButton.className = "back-to-top show";
+		} else {
+			scrollToTopButton.className = "back-to-top hide";
+		}
+		if (stickyControls) {
+			if ( !isScrolledIntoView(stickyControls) ){
+				stickyControls.classList.add('sticky-controls-activated');
 			}
-			if (stickyControls) {
-				if ( !isScrolledIntoView(stickyControls) ){
-					stickyControls.classList.add('sticky-controls-activated');
-				}
-				if (y == 0) {
-					stickyControls.classList.remove('sticky-controls-activated');
-				}
-			}
-		};
-		window.addEventListener("scroll", scrollFunc);
-		const scrollToTop = () => {
-			const c = document.documentElement.scrollTop || document.body.scrollTop;
-			if (c > 0) {
-				window.requestAnimationFrame(scrollToTop);
-				window.scrollTo(0, c - c / 10);
+			if (y == 0) {
+				stickyControls.classList.remove('sticky-controls-activated');
 			}
 		}
-		scrollToTopButton.onclick = function(e) {
-			e.preventDefault();
-			scrollToTop();
-		}
-	}
+	};
+	// Scroll back-to-top after button click
+	scrollToTopButton.onclick = () => {
+		$('html, body').animate({
+			scrollTop: 0
+		}, 600);
+		return false;
+	};
 });
 
 // /////////////////////////////////////////////////////////////////////////////

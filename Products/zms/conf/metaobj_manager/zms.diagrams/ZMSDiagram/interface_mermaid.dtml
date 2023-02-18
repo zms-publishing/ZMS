@@ -1,0 +1,8 @@
+<div class="form-group row" tal:condition="not:python:request.get('ZMS_INSERT')">
+	<label class="col-sm-2 control-label"></label>
+	<div class="col-sm-10">
+	    <small>Copy &amp; Paste <strong>Mermaid.js</strong> code from <a href="https://mermaid.live/" target="_blank">Live Editor</a>
+	    | <a href="https://mermaid.js.org/intro/n00b-syntaxReference.html" target="_blank">Diagram Syntax</a>
+	    </small>
+	</div>
+</div>

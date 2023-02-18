@@ -1,0 +1,25 @@
+<!-- ZMSDiagram.standard_html -->
+<div tal:define="zmscontext options/zmscontext;
+        id python:zmscontext.getId();
+		css_class python:zmscontext.meta_id;
+		type python:zmscontext.attr('attr_dc_type');
+		diagram_code python:zmscontext.attr('diagram_code');
+		diagram_file python:zmscontext.attr('diagram_file');"
+	tal:attributes="id id;class css_class">
+    
+    <tal:block tal:condition="not:diagram_file">
+        <script type="module">
+            import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.esm.min.mjs';
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+        <div class="mermaid" tal:content="diagram_code">diagram_code</div>
+    </tal:block>
+    
+    <tal:block tal:condition="diagram_file">    
+        <a target="_blank"
+            tal:attributes="href python:'%s/diagram_bpmn'%zmscontext.absolute_url()"
+            tal:content="python:diagram_file.getFilename()">Filename
+        </a>
+    </tal:block>
+</div>
+<!-- ZMSDiagram.standard_html -->

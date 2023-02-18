@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <ZMSFolder uid="uid:e2b7b646-1064-4d02-9305-150f212e0ed2" id="e155" id_prefix="e">
+    <attr_dc_coverage>global.ger</attr_dc_coverage>
+    <created_uid>cmeier</created_uid>
+    <created_dt>
+<![CDATA[2023/02/18 17:27:20]]></created_dt>
+    <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+    <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:32:35]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:32:35]]></lang></change_dt>
+    <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+    <titlealt><lang id="ger">Diagrams</lang></titlealt>
+    <title><lang id="ger">Diagrams</lang></title>
+    <ZMSTextarea uid="uid:ffc36952-915f-4d99-915b-a9f92dc20b13" id="e161" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>cmeier</created_uid>
+      <created_dt>
+<![CDATA[2023/02/18 17:58:16]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:59:34]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:58:16]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <format>wysiwyg</format>
+      <text><lang id="ger"><![CDATA[<p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusa.</p>
+<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. &nbsp;Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. &nbsp;&nbsp;</p>
+<p>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusa.</p>]]></lang></text>
+    </ZMSTextarea>
+    <ZMSDiagram uid="uid:dfab1bcd-49ec-4033-abab-99f71bf6fdf6" id="e150" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>cmeier</created_uid>
+      <created_dt>
+<![CDATA[2023/02/18 17:23:01]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:28:01]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:28:01]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <attr_dc_type><lang id="ger"><![CDATA[Sequence Diagram]]></lang></attr_dc_type>
+      <diagram_code><lang id="ger"><![CDATA[sequenceDiagram
+    participant web as Web Browser
+    participant blog as Blog Service
+    participant account as Account Service
+    participant mail as Mail Service
+    participant db as Storage
+
+    Note over web,db: The user must be logged in to submit blog posts
+    web->>+account: Logs in using credentials
+    account->>db: Query stored accounts
+    db->>account: Respond with query result
+
+    alt Credentials not found
+        account->>web: Invalid credentials
+    else Credentials found
+        account->>-web: Successfully logged in
+
+        Note over web,db: When the user is authenticated, they can now submit new posts
+        web->>+blog: Submit new post
+        blog->>db: Store post data
+
+        par Notifications
+            blog--)mail: Send mail to blog subscribers
+            blog--)db: Store in-site notifications
+        and Response
+            blog-->>-web: Successfully posted
+        end
+    end]]></lang></diagram_code>
+    </ZMSDiagram>
+    <ZMSTextarea uid="uid:82de9377-2866-42ca-8207-8e32efde60e8" id="e4" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>author</created_uid>
+      <created_dt>
+<![CDATA[2017/01/01 12:00:00]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:37:15]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:28:01]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <format>wysiwyg</format>
+      <text><lang id="ger"><![CDATA[<p></p>
+<p><strong>Sequence Diagram</strong></p>
+<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. &nbsp;Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. &nbsp;&nbsp;</p>]]></lang></text>
+    </ZMSTextarea>
+    <ZMSDiagram uid="uid:efa6a85e-cb98-4b0f-91ab-3453161ef74f" id="e148" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>cmeier</created_uid>
+      <created_dt>
+<![CDATA[2023/02/18 17:20:38]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:28:01]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:28:01]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <attr_dc_type><lang id="ger"><![CDATA[Entity Relationship Model]]></lang></attr_dc_type>
+      <diagram_code><lang id="ger"><![CDATA[erDiagram
+          CUSTOMER }|..|{ DELIVERY-ADDRESS : has
+          CUSTOMER ||--o{ ORDER : places
+          CUSTOMER ||--o{ INVOICE : "liable for"
+          DELIVERY-ADDRESS ||--o{ ORDER : receives
+          INVOICE ||--|{ ORDER : covers
+          ORDER ||--|{ ORDER-ITEM : includes
+          PRODUCT-CATEGORY ||--|{ PRODUCT : contains
+          PRODUCT ||--o{ ORDER-ITEM : "ordered in"]]></lang></diagram_code>
+    </ZMSDiagram>
+    <ZMSTextarea uid="uid:99ea7c67-b56d-45b7-b099-81dc46740084" id="e149" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>cmeier</created_uid>
+      <created_dt>
+<![CDATA[2023/02/18 17:22:55]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:37:48]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:28:01]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <format>wysiwyg</format>
+      <text><lang id="ger"><![CDATA[<p><strong>Entity Relationship Model</strong></p>
+<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. &nbsp;Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. &nbsp;&nbsp;</p>]]></lang></text>
+    </ZMSTextarea>
+    <ZMSDiagram uid="uid:9a731499-4292-4d5e-a1b1-f4d738d80d9c" id="e147" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>cmeier</created_uid>
+      <created_dt>
+<![CDATA[2023/02/18 15:25:56]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:28:01]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:28:01]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <attr_dc_type><lang id="ger">Mindmap</lang></attr_dc_type>
+      <diagram_code><lang id="ger"><![CDATA[mindmap
+  root((mindmap))
+    Origins
+      Long history
+      ::icon(fa fa-book)
+      Popularisation
+        British popular psychology author Tony Buzan
+    Research
+      On effectivness<br/>and features
+      On Automatic creation
+        Uses
+            Creative techniques
+            Strategic planning
+            Argument mapping
+    Tools
+      Pen and paper
+      Mermaid]]></lang></diagram_code>
+    </ZMSDiagram>
+    <ZMSTextarea uid="uid:a24bcbd6-a122-4267-8d84-51a9c8f0ec2f" id="e151" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>cmeier</created_uid>
+      <created_dt>
+<![CDATA[2023/02/18 17:24:52]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:37:59]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:28:02]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <format>wysiwyg</format>
+      <text><lang id="ger"><![CDATA[<p><strong>Mindmap</strong></p>
+<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. &nbsp;Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. &nbsp;&nbsp;</p>]]></lang></text>
+    </ZMSTextarea>
+    <ZMSDiagram uid="uid:ef0a6c21-7af4-4893-aefb-5e2cafa546d6" id="e152" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>cmeier</created_uid>
+      <created_dt>
+<![CDATA[2023/02/18 17:24:52]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:40:56]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:28:02]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <attr_dc_type><lang id="ger">Gitgraph</lang></attr_dc_type>
+      <diagram_code><lang id="ger"><![CDATA[gitGraph
+    commit "Ashish"
+    branch newbranch
+    checkout newbranch
+    commit id:"1111"
+    commit tag:"test"
+    checkout main
+    commit type: HIGHLIGHT
+    commit
+    merge newbranch
+    commit
+    branch b2
+    commit]]></lang></diagram_code>
+    </ZMSDiagram>
+    <ZMSTextarea uid="uid:6a2d8990-6e37-42f2-837b-131a9bd3e14f" id="e153" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>cmeier</created_uid>
+      <created_dt>
+<![CDATA[2023/02/18 17:27:00]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:39:44]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:28:02]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <format>wysiwyg</format>
+      <text><lang id="ger"><![CDATA[<p><strong>Gitgraph</strong></p>
+<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. &nbsp;Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. &nbsp;&nbsp;</p>]]></lang></text>
+    </ZMSTextarea>
+    <ZMSDiagram uid="uid:89198fad-6158-43e7-9a80-4937da910a81" id="e154" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>cmeier</created_uid>
+      <created_dt>
+<![CDATA[2023/02/18 17:27:00]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:38:38]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:28:02]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <attr_dc_type><lang id="ger">Timeline</lang></attr_dc_type>
+      <diagram_code><lang id="ger"><![CDATA[timeline
+    title Industrial Revolution
+    section 17th-20th century
+        Industry 1.0 : Machinery, Water power, Steam <br>power
+        Industry 2.0 : Electricity, Internal combustion engine, Mass production
+        Industry 3.0 : Electronics, Computers, Automation
+    section 21st century
+        Industry 4.0 : Internet, Robotics, Internet of Things
+        Industry 5.0 : Artificial intelligence, Big data,3D printing]]></lang></diagram_code>
+    </ZMSDiagram>
+    <ZMSTextarea uid="uid:1aa7d8c5-1ab9-49ad-9e01-4ad3174e0ea2" id="e158" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>cmeier</created_uid>
+      <created_dt>
+<![CDATA[2023/02/18 17:39:33]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:39:33]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:39:33]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <format>wysiwyg</format>
+      <text><lang id="ger"><![CDATA[<p><strong>Timeline</strong></p>
+<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. &nbsp;Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. &nbsp;&nbsp;</p>]]></lang></text>
+    </ZMSTextarea>
+    <ZMSTextarea uid="uid:35cc9b29-6114-487c-b11f-d24bc25d3712" id="e160" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>cmeier</created_uid>
+      <created_dt>
+<![CDATA[2023/02/18 17:45:24]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang><lang id="eng">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:45:54]]></lang><lang id="eng">
+<![CDATA[2023/02/18 17:45:24]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <format>wysiwyg</format>
+      <text><lang id="ger"><![CDATA[<p></p>
+<p><strong>Business Process Model and Notation</strong></p>
+<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. &nbsp;Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. &nbsp;&nbsp;</p>]]></lang></text>
+    </ZMSTextarea>
+    <ZMSDiagram uid="uid:51a41441-601c-4fbc-b180-cdf21c0cd6d5" id="e159" id_prefix="e">
+      <attr_dc_coverage>global.ger</attr_dc_coverage>
+      <created_uid>cmeier</created_uid>
+      <created_dt>
+<![CDATA[2023/02/18 17:41:17]]></created_dt>
+      <change_uid><lang id="ger">cmeier</lang></change_uid>
+      <change_dt><lang id="ger">
+<![CDATA[2023/02/18 17:41:28]]></lang></change_dt>
+      <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
+      <attr_dc_type><lang id="ger"><![CDATA[Business Process Model and Notation]]></lang></attr_dc_type>
+      <diagram_file><lang id="ger">
+<data content_type="text/xml" filename="diagram.bpmn"></data></lang></diagram_file>
+    </ZMSDiagram>
+  </ZMSFolder>

@@ -10,7 +10,9 @@
     <tal:block tal:condition="not:diagram_file">
         <script type="module">
             import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.esm.min.mjs';
-            mermaid.initialize({ startOnLoad: true });
+            $(document).on('ready turbolinks:load', function() {
+                mermaid.initialize({ startOnLoad: true });
+            });
         </script>
         <div class="mermaid" tal:content="diagram_code">diagram_code</div>
     </tal:block>

@@ -2889,7 +2889,7 @@ ul.pagination .page-item {
 	--line-height: 1.5;
 	--lines-to-show: 2;
 }
-.ZMSRecordSet.main_grid table tbody tr td.data > div:not(.zmi-image) {
+.ZMSRecordSet.main_grid table tbody tr td.data:not(.zmi-datatype-url) > div:not(.zmi-image) {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
@@ -2902,6 +2902,9 @@ ul.pagination .page-item {
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+.ZMSRecordSet.main_grid table tbody tr td.data > div.input-group a.btn.btn-secondary {
+ 	height:calc(1.5em + .75rem)
 }
 .ZMSRecordSet.main_grid table tbody tr td.data > div.zmi-image div.zmi-image-preview {
 	height: 2.25rem;

@@ -21,7 +21,7 @@ request.set('quickrun', int(request.get('quickrun', 0)))
 
 
 #################################################
-# Version 5.2, FH 2023-01-04
+# Version 5.2.1, FH 2023-02-20
 #################################################
 
 #################################################
@@ -133,7 +133,10 @@ def ececuteAttrChange(cselected, aselected, searchstr,replacestr):
 						s+=' <span style="color:red">ERROR: not replaced</span> '
 			# type multiselect
 			elif searchstr!='' and searchstr in v:
-				new_list_val = [ i if i!=searchstr else replacestr for i in v ]
+				if replacestr=='':
+					new_list_val = [ i for i in v if i!=searchstr ]
+				else:
+					new_list_val = [ i if i!=searchstr else replacestr for i in v ]
 				try:
 					s+=' <strong style="color:green;"><i class="fas fa-exchange-alt px-2"></i><samp>%s</samp></strong>'%(new_list_val)
 					attrFindCount+=1

@@ -33,7 +33,7 @@ class manage_attrChange:
 	nodes = "{$}"
 
 	# Revision
-	revision = "5.2.0"
+	revision = "5.2.1"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

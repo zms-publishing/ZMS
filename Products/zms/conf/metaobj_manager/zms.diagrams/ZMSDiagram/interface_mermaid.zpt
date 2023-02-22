@@ -1,11 +1,13 @@
 <tal:block 
 	tal:define="zmscontext options/zmscontext;"
 	tal:condition="not:python:request.get('ZMS_INSERT')">
+<script type="text/javascript" defer charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
 <div class="form-group row">
 	<label class="col-sm-2 control-label"></label>
 	<div class="col-sm-10">
-		<small>Copy &amp; Paste <strong>Mermaid.js</strong> code from <a href="https://mermaid.live/" target="_blank">Live Editor</a>
-		| <a href="https://mermaid.js.org/intro/n00b-syntaxReference.html" target="_blank">Diagram Syntax</a>
+		<small>
+			Copy &amp; Paste <strong>Mermaid.js</strong> code from <a href="https://mermaid.live/" target="_blank">Live Editor</a>
+			| <a href="https://mermaid.js.org/intro/n00b-syntaxReference.html" target="_blank">Diagram Syntax</a>
 		</small>
 
 		<div id="diagram_code_preview">
@@ -19,17 +21,27 @@
 			import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.esm.min.mjs';
 			$(document).on('ready turbolinks:load', function() {
 				$('body').attr('data-turbolinks','false');
+				let $textarea = $('textarea[id^="diagram_code"]');
+				let $preview = $('#diagram_code_preview')
+				$textarea
+					.addClass('zmi-code')
+					.attr('data-content_type','dtml')
+					.attr('title','Doubleclick for ACE-Editor');
+				$textarea.dblclick(function() {
+					show_ace_editor($(this),true);
+				});
 				mermaid.initialize({ startOnLoad: true });
-				$('textarea[id^="diagram_code"]').on('keydown',function(){
-					let dgrm_code = $('textarea[id^="diagram_code"]').prop('value').trim();
+				$textarea.on('keydown change',function(){
+					let dgrm_code = $textarea.prop('value').trim();
 					let dgrm_html = `<pre class="mermaid" id="diagram_code_rendered">${dgrm_code}</pre>`;
-					$('#diagram_code_preview').html(dgrm_html);
+					$preview.html(dgrm_html);
 					//debugger;
 					let test = mermaid.parse(dgrm_code);
-					$('#diagram_code_preview').html('<pre>Mermaid Parsing = ' + test + '</pre>');
+					$preview.html('<pre>Mermaid Parsing = ' + test + '</pre>');
 					let svg = mermaid.render("diagram_code_rendered", dgrm_code);
-					$('#diagram_code_preview').html(svg);
+					$preview.html(svg);
 				});
+				// show_ace_editor($dgrm_code, true);
 			});
 		//-->
 		</script>
@@ -37,6 +49,7 @@
 		/*<!--*/
 			#diagram_code_preview { width:100%; background:aliceblue}
 			#diagram_code_rendered { width:100%; min-height:20rem;}
+			.ace_editor {border:1px solid #e4e4e4;border-radius:4px;}
 		/*-->*/
 		</style>
 	</div>

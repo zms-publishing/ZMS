@@ -3,11 +3,12 @@
 		id python:zmscontext.getId();
 		css_class python:zmscontext.meta_id;
 		type python:zmscontext.attr('attr_dc_type');
+		is_bpmn python:type in ('Business Process Model and Notation', 'Decision Model and Notation') and True or False;
 		diagram_code python:zmscontext.attr('diagram_code');
 		diagram_file python:zmscontext.attr('diagram_file');"
 	tal:attributes="id id;class css_class">
 
-	<tal:block tal:condition="not:diagram_file">
+	<tal:block tal:condition="not:is_bpmn">
 		<script type="module" 
 			tal:define="dgrm_load python:request.set('dgrm_load',request.get('dgrm_load',0)+1)"
 			tal:condition="python:request.get('dgrm_load',0)==1">
@@ -20,12 +21,12 @@
 		<div class="mermaid" tal:content="diagram_code">diagram_code</div>
 	</tal:block>
 
-	<tal:block tal:condition="diagram_file">
+	<tal:block tal:condition="is_bpmn">
 		<script tal:attributes="src python:zmscontext.breadcrumbs_obj_path()[0].metaobj_manager.absolute_url()+'/ZMSDiagram.bpmn-viewer.js'"></script>
 		<div class="canvas">
 			<div id="js-canvas"></div>
   		</div>
-		<script tal:condition="diagram_file">
+		<script>
 		//<!-- jQuery is required
 
 			var viewer = new BpmnJS({
@@ -57,7 +58,7 @@
 				openFromUrl(url);
 			})();
 		</script>
-		<style tal:condition="diagram_file">
+		<style>
 		/*<!--*/
 			body {
 			  font-family: 'Arial', sans-serif;

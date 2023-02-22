@@ -26,7 +26,7 @@ class ZMSDiagram:
 	package = "zms.diagrams"
 
 	# Revision
-	revision = "0.0.2"
+	revision = "0.0.3"
 
 	# Type
 	type = "ZMSObject"
@@ -60,7 +60,7 @@ class ZMSDiagram:
 				,"Timeline"
 				,"Mindmap"]
 			,"mandatory":0
-			,"multilang":1
+			,"multilang":0
 			,"name":"DC.Type"
 			,"repetitive":0
 			,"type":"select"}

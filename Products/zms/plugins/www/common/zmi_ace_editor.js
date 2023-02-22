@@ -102,6 +102,7 @@ function show_ace_editor(e, toggle=false) {
 		editor.setTheme('ace/theme/eclipse');
 		editor.getSession().setMode('ace/mode/'+mode);
 		editor.getSession().setValue(value);
+		editor.getSession().setOptions({ tabSize: 4, useSoftTabs: false });
 		editor.getSession().on('change',function() {
 			$textarea.val(editor.getSession().getValue()).change();
 		});

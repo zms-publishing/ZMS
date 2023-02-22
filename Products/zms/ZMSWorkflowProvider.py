@@ -195,6 +195,16 @@ class ZMSWorkflowProvider(
       self.updateRepositoryTransitions(r)
       return id
 
+    """
+    @see IRepositoryProvider
+    """
+    def translateRepositoryModel(self, r):
+      d = {}
+      for k in r:
+          v  = r[k]
+          d = v
+      return d
+
 
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     ZMSWorkflowProvider.importXml
@@ -366,12 +376,11 @@ class ZMSWorkflowProvider(
           f = REQUEST['file']
           if f:
             filename = f.filename
-            xml = f
+            self.importXml(xml=f)
           else:
-            filename = REQUEST.get('init')
-            xml = open(_fileutil.getOSPath(filename), 'rb')
-          self.importXml(xml)
-          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
+            filename = REQUEST['init']
+            self.importConf(filename)
+          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%f.filename)
       
       # Return with message.
       message = standard.url_quote(message)

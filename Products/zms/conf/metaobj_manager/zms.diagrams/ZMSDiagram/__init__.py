@@ -101,6 +101,15 @@ class ZMSDiagram:
 			,"repetitive":0
 			,"type":"interface"}
 
+		bpmn_viewerjs = {"default":""
+			,"id":"bpmn-viewer.js"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"BPMN-Viewer-11.4.1"
+			,"repetitive":0
+			,"type":"resource"}
+
 		standard_html = {"default":""
 			,"id":"standard_html"
 			,"keys":[]

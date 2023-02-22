@@ -1,0 +1,44 @@
+<tal:block 
+	tal:define="zmscontext options/zmscontext;"
+	tal:condition="not:python:request.get('ZMS_INSERT')">
+<div class="form-group row">
+	<label class="col-sm-2 control-label"></label>
+	<div class="col-sm-10">
+		<small>Copy &amp; Paste <strong>Mermaid.js</strong> code from <a href="https://mermaid.live/" target="_blank">Live Editor</a>
+		| <a href="https://mermaid.js.org/intro/n00b-syntaxReference.html" target="_blank">Diagram Syntax</a>
+		</small>
+
+		<div id="diagram_code_preview">
+			<pre class="mermaid" id="diagram_code_rendered" tal:content="python:zmscontext.attr('diagram_code')">
+				diagram_code
+			</pre>
+		</div>
+
+		<script type="module">
+		//<!--
+			import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.esm.min.mjs';
+			$(document).on('ready turbolinks:load', function() {
+				$('body').attr('data-turbolinks','false');
+				mermaid.initialize({ startOnLoad: true });
+				$('textarea[id^="diagram_code"]').on('keydown',function(){
+					let dgrm_code = $('textarea[id^="diagram_code"]').prop('value').trim();
+					let dgrm_html = `<pre class="mermaid" id="diagram_code_rendered">${dgrm_code}</pre>`;
+					$('#diagram_code_preview').html(dgrm_html);
+					//debugger;
+					let test = mermaid.parse(dgrm_code);
+					$('#diagram_code_preview').html('<pre>Mermaid Parsing = ' + test + '</pre>');
+					let svg = mermaid.render("diagram_code_rendered", dgrm_code);
+					$('#diagram_code_preview').html(svg);
+				});
+			});
+		//-->
+		</script>
+		<style>
+		/*<!--*/
+			#diagram_code_preview { width:100%; background:aliceblue}
+			#diagram_code_rendered { width:100%; min-height:20rem;}
+		/*-->*/
+		</style>
+	</div>
+</div>
+</tal:block>

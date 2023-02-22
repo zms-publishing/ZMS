@@ -1,4 +1,7 @@
-<div class="form-group row" tal:condition="not:python:request.get('ZMS_INSERT')">
+<tal:block 
+	tal:define="zmscontext options/zmscontext;"
+	tal:condition="not:python:request.get('ZMS_INSERT')">
+<div class="form-group row">
 	<label class="col-sm-2 control-label"></label>
 	<div class="col-sm-10">
 	    <small>Export &amp; Upload <strong>BPMN.io</strong> file from <a href="https://demo.bpmn.io/" target="_blank">Live Editor</a>
@@ -6,3 +9,4 @@
 	    </small>
 	</div>
 </div>
+</tal:block>

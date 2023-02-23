@@ -11,9 +11,13 @@
 		</small>
 
 		<div id="diagram_code_preview">
-			<pre class="mermaid" id="diagram_code_rendered" tal:content="python:zmscontext.attr('diagram_code')">
-				diagram_code
-			</pre>
+			<pre class="mermaid" id="diagram_code_rendered"
+				tal:condition="python:len(zmscontext.attr('diagram_code'))>0"
+				tal:content="python:zmscontext.attr('diagram_code')"
+				>Preview Mermaid Diagram Code</pre>
+			<pre class="alert alert-warning mx-0"
+				tal:condition="python:len(zmscontext.attr('diagram_code'))==0"
+				>No Preview: Mermaid Diagram Code Missing</pre>
 		</div>
 
 		<script type="module">
@@ -35,11 +39,23 @@
 					let dgrm_code = $textarea.prop('value').trim();
 					let dgrm_html = `<pre class="mermaid" id="diagram_code_rendered">${dgrm_code}</pre>`;
 					$preview.html(dgrm_html);
-					//debugger;
-					let test = mermaid.parse(dgrm_code);
-					$preview.html('<pre>Mermaid Parsing = ' + test + '</pre>');
-					let svg = mermaid.render("diagram_code_rendered", dgrm_code);
-					$preview.html(svg);
+					// debugger;
+					let test = false;
+					try {
+						test = mermaid.parse(dgrm_code);
+					} catch(error) {
+						console.log(error);
+					}
+					if (test && dgrm_code.length > 0) {
+						let svg = mermaid.render("diagram_code_rendered", dgrm_code);
+						$preview.html(svg);
+					} else {
+						if (dgrm_code.length > 0) {
+							$preview.html('<pre class="alert alert-danger mx-0">Mermaid Parsing Error: Please Check Syntax on Live Editor</pre>');
+						} else {
+							$preview.html('<pre class="alert alert-warning mx-0">No Preview: Mermaid Diagram Code Missing</pre>');
+						}
+					}
 				});
 				// show_ace_editor($dgrm_code, true);
 			});

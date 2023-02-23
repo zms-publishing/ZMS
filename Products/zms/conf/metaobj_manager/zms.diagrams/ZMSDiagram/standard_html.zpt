@@ -32,9 +32,8 @@
   		</div>
 		<script>
 			var canvas_id = '<tal:block tal:replace="python:'#js-canvas_%s'%(id)"></tal:block>';
-			//<!--
-			var viewer = new BpmnJS({
-				container: document.querySelector(canvas_id),
+			var viewer_<tal:block tal:replace="id"></tal:block> = new BpmnJS({
+				container: canvas_id,
 				height: 600
 			});
 			 function openFromUrl(url) {
@@ -43,14 +42,13 @@
 						return response.text();
 					})
 					.then(async function(xml) {
-						await viewer.importXML(xml);
-						viewer.get('canvas').zoom('fit-viewport');  // TODO: fit all BPMN diagrams on a page - not only the last one
+						await viewer_<tal:block tal:replace="id"></tal:block>.importXML(xml);
+						viewer_<tal:block tal:replace="id"></tal:block>.get('canvas').zoom('fit-viewport');
 					})
 					.catch(function(error) {
 						console.log(error);
 					});
 			}
-			//-->
 			(function () {
 				var url = '<tal:block tal:replace="python:'%s/%s'%(zmscontext.absolute_url(), zmscontext.attr('diagram_file').getFilename())"></tal:block>?preview=preview';
 				openFromUrl(url);

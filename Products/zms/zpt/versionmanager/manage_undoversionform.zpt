@@ -15,7 +15,7 @@
 		>History
 	</legend>
 
-<tal:block tal:condition="python:request.get('btn')==here.getZMILangStr('BTN_COMPARE')" 
+<tal:block tal:condition="python:request.get('btn')=='BTN_COMPARE'" 
 	tal:define="ids python:request.get('ids',[]); ids python:[x.id for x in here.getObjVersions() if x.id in ids];">
 	<tal:block tal:condition="python:len(ids)>1">
 	<div class="card">

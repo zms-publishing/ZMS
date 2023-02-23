@@ -26,14 +26,16 @@
 
 	<tal:block tal:condition="python:is_bpmn and diagram_file">
 		<script tal:attributes="src python:zmscontext.breadcrumbs_obj_path()[0].metaobj_manager.absolute_url()+'/ZMSDiagram.bpmn-viewer.js'"></script>
+		<script tal:content="python:'var canvas_id = \'js-canvas_%s\''%(id)"></script>
+
 		<div class="canvas">
-			<div id="js-canvas"></div>
+			<div id="js-canvas" tal:attributes="id python:'js-canvas_%s'%(id)"></div>
   		</div>
 		<script>
 		//<!-- jQuery is required
 
 			var viewer = new BpmnJS({
-				container: $('#js-canvas'),
+				container: $('#'+canvas_id),
 				height: 600
 			});
 

@@ -16,7 +16,7 @@ class zms_diagrams:
 	package = ""
 
 	# Revision
-	revision = "0.0.3"
+	revision = "0.0.5"
 
 	# Type
 	type = "ZMSPackage"

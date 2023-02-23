@@ -12,7 +12,7 @@
 	    </small>
 		<div class="canvas">
 			<a target="_blank"
-				tal:attributes="href python:'%s/diagram_bpmn'%zmscontext.absolute_url()">
+				tal:attributes="href python:'%s/bpmn-viewer.html'%zmscontext.absolute_url()">
 				<div id="js-canvas"></div>
 			</a>
   		</div>

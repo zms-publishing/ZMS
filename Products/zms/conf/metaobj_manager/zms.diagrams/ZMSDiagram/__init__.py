@@ -110,6 +110,15 @@ class ZMSDiagram:
 			,"repetitive":0
 			,"type":"resource"}
 
+		bpmn_viewerhtml = {"default":""
+			,"id":"bpmn-viewer.html"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"BPMN-Viewer-11.4.1"
+			,"repetitive":0
+			,"type":"Page Template"}
+
 		standard_html = {"default":""
 			,"id":"standard_html"
 			,"keys":[]
@@ -118,12 +127,3 @@ class ZMSDiagram:
 			,"name":"Template: ZMSDiagram"
 			,"repetitive":0
 			,"type":"zpt"}
-
-		diagram_bpmn = {"default":""
-			,"id":"diagram_bpmn"
-			,"keys":[]
-			,"mandatory":0
-			,"multilang":0
-			,"name":"BPMN"
-			,"repetitive":0
-			,"type":"Page Template"}

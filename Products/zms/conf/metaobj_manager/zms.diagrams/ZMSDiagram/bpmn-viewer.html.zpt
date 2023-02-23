@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>BPMN</title>
+    <title>BPMN Viewer</title>
 
     <!-- viewer distro (without pan and zoom) -->
     <!--

@@ -588,7 +588,7 @@ return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransiti
 			dummy0 python:zmscontext.tagObjVersions(zmscontext.attr('master_version')+1,request);
 			message python:'Created Master Version %s.*.* .'%zmscontext.attr('master_version');
 			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))"
-		tal:on-error="python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':'ERROR: New Master Version can not be created.'}))">			>
+		tal:on-error="python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':'ERROR: New Master Version can not be created.'}))">
 	</tal:block>
 </tal:block>
 

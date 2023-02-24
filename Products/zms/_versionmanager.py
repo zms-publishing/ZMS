@@ -158,7 +158,8 @@ class VersionItem(object):
           for obj_version in self.getObjVersions():
             if obj_version.id != self.version_live_id:
               ids.append( obj_version.id)
-          self.manage_delObjects( ids=ids)
+          if ids:
+            self.manage_delObjects( ids=ids)
         #-- Recursion.
         for ob in self.getChildNodes():
           count += ob.tagObjVersions( master_version, REQUEST, checkPending)
@@ -603,8 +604,8 @@ class VersionItem(object):
               if id != self.version_live_id and id != self.version_work_id:
                 ids.append( id)
           self.version_work_id = None
+          standard.writeLog( self, "[_commitObjChanges]: Remove work-version: ids=%s"%str(ids))
           if ids:
-            standard.writeLog( self, "[_commitObjChanges]: Remove work-version: ids=%s"%str(ids))
             self.manage_delObjects( ids=ids)
         elif self.version_work_id in attrCntnrIds:
           self.version_live_id = self.version_work_id
@@ -677,7 +678,8 @@ class VersionItem(object):
                ob_version.getObjProperty('minor_version', REQUEST) > 0:
               ids.append( ob_version.id)
           standard.writeLog( self, "[_rollbackObjChanges]: Remove next minor-versions: ids=%s"%str(ids))
-          self.manage_delObjects( ids=ids)
+          if ids:
+            self.manage_delObjects( ids=ids)
         
         else:
           if self.getObjStateNames(REQUEST) and \
@@ -717,8 +719,8 @@ class VersionItem(object):
               if id != self.version_live_id and id != self.version_work_id:
                 ids.append( id)
           self.version_work_id = None
-          if len( ids) > 0:
-            standard.writeLog( self, "[_rollbackObjChanges]: Remove work-version: ids=%s"%str(ids))
+          standard.writeLog( self, "[_rollbackObjChanges]: Remove work-version: ids=%s"%str(ids))
+          if ids:
             self.manage_delObjects( ids=ids)
         elif self.version_work_id in attrCntnrIds:
           self.version_live_id = self.version_work_id
@@ -760,7 +762,8 @@ class VersionItem(object):
           if id not in [ self.version_work_id, self.version_live_id]:
             ids.append( id)
         count += len( ids)
-        self.manage_delObjects( ids=ids)
+        if ids:
+          self.manage_delObjects( ids=ids)
         #-- Remove version-attributes.
         for key in ['master_version', 'major_version', 'minor_version', 'change_history']:
           for id in [ self.version_work_id, self.version_live_id]:

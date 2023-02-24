@@ -2325,14 +2325,6 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
     auth_user = REQUEST['AUTHENTICATED_USER']
     mto['From'] = mto.get('From', context.getUserAttr(auth_user, 'email', context.getConfProperty('ZMSAdministrator.email', '')))
 
-  # Get MailHost.
-  mailhost = None
-  homeElmnt = context.getHome()
-  if len(homeElmnt.objectValues(['Mail Host'])) == 1:
-    mailhost = homeElmnt.objectValues(['Mail Host'])[0]
-  elif getattr(homeElmnt, 'MailHost', None) is not None:
-    mailhost = getattr(homeElmnt, 'MailHost', None)
-
   # Assemble MIME object.
   #mime_msg = MIMEMultipart('related') # => attachments do not show up in iOS Mail (just as paperclip indicator)
   mime_msg = MIMEMultipart()
@@ -2397,14 +2389,24 @@ def sendMail(context, mto, msubject, mbody, REQUEST=None, mattach=None):
         part.add_header('Content-Disposition', 'attachment; filename="%s"'%filename)
         mime_msg.attach(part)
 
+  # Get MailHost.
+  mailhost = None
+  homeElmnt = context.getHome()
+  if len(homeElmnt.objectValues(['Mail Host'])) == 1:
+    mailhost = homeElmnt.objectValues(['Mail Host'])[0]
+  elif getattr(homeElmnt, 'MailHost', None) is not None:
+    mailhost = getattr(homeElmnt, 'MailHost', None)
+
+
   # Send mail.
-  try:
-    #writeBlock( context, "[sendMail]: %s"%mime_msg.as_string())
-    mailhost.send(mime_msg.as_string())
-    return 0
-  except:
-    writeError(context, '[sendMail]: can\'t send')
-    return -1
+  if mailhost is not None:
+    try:
+      #writeBlock( context, "[sendMail]: %s"%mime_msg.as_string())
+      mailhost.send(mime_msg.as_string())
+      return 0
+    except:
+      writeError(context, '[sendMail]: can\'t send')
+  return -1
 
 
 security.declarePublic('getPlugin')

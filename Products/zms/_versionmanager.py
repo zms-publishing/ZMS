@@ -558,7 +558,8 @@ class VersionItem(object):
                ob_version.getObjProperty('major_version', REQUEST) == major_version:
               ids.append( ob_version.id)
           standard.writeLog( self, "[_commitObjChanges]: Remove previous minor-versions: ids=%s"%str(ids))
-          self.manage_delObjects( ids=ids)
+          if ids:
+            self.manage_delObjects( ids=ids)
         
         else:
           if self.getObjStateNames(REQUEST) and \
@@ -585,7 +586,7 @@ class VersionItem(object):
             delete_child = child._commitObjChanges( self, REQUEST, False, do_history, False)
             if delete_child:
               ids.append( child.id)
-        if len( ids) > 0:
+        if ids:
           self.moveObjsToTrashcan( ids, REQUEST)
       
       ##### Reset object-state. ####
@@ -602,7 +603,7 @@ class VersionItem(object):
               if id != self.version_live_id and id != self.version_work_id:
                 ids.append( id)
           self.version_work_id = None
-          if len( ids) > 0:
+          if ids:
             standard.writeLog( self, "[_commitObjChanges]: Remove work-version: ids=%s"%str(ids))
             self.manage_delObjects( ids=ids)
         elif self.version_work_id in attrCntnrIds:

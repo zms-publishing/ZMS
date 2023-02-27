@@ -202,6 +202,11 @@ class ZMSWorkflowProvider(
       d = {}
       for k in r:
           v  = r[k]
+          for key in ['activities','transitions']:
+            l = []
+            lx = v.get(key.capitalize(),[])
+            [l.extend([x['id'],x]) for x in lx]
+            v[key] = l
           d = v
       return d
 

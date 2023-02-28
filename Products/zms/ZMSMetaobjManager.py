@@ -854,9 +854,10 @@ class ZMSMetaobjManager(object):
           newCustom += 'SELECT * FROM tablename\n'
       
       # Handle resources.
-      if (newType in ['resource']) or \
+      if ((newType in ['resource']) or \
          (newMandatory and newType in self.getMetaobjIds()) or \
-         (newRepetitive and newType in self.getMetaobjIds()):
+         (newRepetitive and newType in self.getMetaobjIds())) and not \
+         (oldId==newId and newCustom in ['',None]):
         if not newCustom:
           if oldId is not None and id+'.'+oldId in self.objectIds():
             self.manage_delObjects(ids=[id+'.'+oldId])
@@ -926,7 +927,7 @@ class ZMSMetaobjManager(object):
       ob['attrs'] = attrs
       
       # Handle native Zope-Objects.
-      if newType in self.valid_zopetypes:
+      if (newType in self.valid_zopetypes) and not (oldId==newId and newCustom in ['',None]):
         # Get container.
         container = self.getHome()
         for ob_id in newId.split('/')[:-1]:

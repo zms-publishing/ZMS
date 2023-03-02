@@ -15,9 +15,6 @@ class zms_formulator_lib:
 	# Id
 	id = "zms.formulator.lib"
 
-	# Name
-	name = "zms.formulator.lib"
-
 	# Lang_dict
 	lang_dict = {"zms.formulator.lib.BUTTON_RESTORE":{"eng":"Restore"
 			,"fra":"Restaurer"
@@ -136,6 +133,9 @@ class zms_formulator_lib:
 		,"zms.formulator.lib.HINT_MULTISELECT":{"eng":"Hint: Select multiple entries by holding cmd- or Ctrl-key."
 			,"fra":"Hint: Select multiple entries by holding cmd- or Ctrl-key."
 			,"ger":"Tipp: Sie können mehrere Einträge durch das Halten der cmd- bzw. Strg-Taste auswählen."}}
+
+	# Name
+	name = "zms.formulator.lib"
 
 	# Package
 	package = "zms.formulator"

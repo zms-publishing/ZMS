@@ -36,7 +36,7 @@
 <![CDATA[2023/02/18 17:28:01]]></lang><lang id="eng">
 <![CDATA[2023/02/18 17:28:01]]></lang></change_dt>
       <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
-      <attr_dc_type><lang id="ger"><![CDATA[Sequence Diagram]]></lang></attr_dc_type>
+      <attr_dc_type><![CDATA[Sequence Diagram]]></attr_dc_type>
       <diagram_code><lang id="ger"><![CDATA[sequenceDiagram
     participant web as Web Browser
     participant blog as Blog Service
@@ -91,7 +91,7 @@
 <![CDATA[2023/02/18 17:28:01]]></lang><lang id="eng">
 <![CDATA[2023/02/18 17:28:01]]></lang></change_dt>
       <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
-      <attr_dc_type><lang id="ger"><![CDATA[Entity Relationship Model]]></lang></attr_dc_type>
+      <attr_dc_type><![CDATA[Entity Relationship Model]]></attr_dc_type>
       <diagram_code><lang id="ger"><![CDATA[erDiagram
           CUSTOMER }|..|{ DELIVERY-ADDRESS : has
           CUSTOMER ||--o{ ORDER : places
@@ -126,7 +126,7 @@
 <![CDATA[2023/02/18 17:28:01]]></lang><lang id="eng">
 <![CDATA[2023/02/18 17:28:01]]></lang></change_dt>
       <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
-      <attr_dc_type><lang id="ger">Mindmap</lang></attr_dc_type>
+      <attr_dc_type>Mindmap</attr_dc_type>
       <diagram_code><lang id="ger"><![CDATA[mindmap
   root((mindmap))
     Origins
@@ -169,7 +169,7 @@
 <![CDATA[2023/02/18 17:40:56]]></lang><lang id="eng">
 <![CDATA[2023/02/18 17:28:02]]></lang></change_dt>
       <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
-      <attr_dc_type><lang id="ger">Gitgraph</lang></attr_dc_type>
+      <attr_dc_type>Gitgraph</attr_dc_type>
       <diagram_code><lang id="ger"><![CDATA[gitGraph
     commit "Ashish"
     branch newbranch
@@ -208,7 +208,7 @@
 <![CDATA[2023/02/18 17:38:38]]></lang><lang id="eng">
 <![CDATA[2023/02/18 17:28:02]]></lang></change_dt>
       <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
-      <attr_dc_type><lang id="ger">Timeline</lang></attr_dc_type>
+      <attr_dc_type>Timeline</attr_dc_type>
       <diagram_code><lang id="ger"><![CDATA[timeline
     title Industrial Revolution
     section 17th-20th century
@@ -257,7 +257,7 @@
       <change_dt><lang id="ger">
 <![CDATA[2023/02/18 17:41:28]]></lang></change_dt>
       <active><lang id="ger">1</lang><lang id="eng">0</lang></active>
-      <attr_dc_type><lang id="ger"><![CDATA[Business Process Model and Notation]]></lang></attr_dc_type>
+      <attr_dc_type><![CDATA[Business Process Model and Notation]]></attr_dc_type>
       <diagram_file><lang id="ger">
 <data content_type="text/xml" filename="diagram.bpmn"></data></lang></diagram_file>
     </ZMSDiagram>

@@ -300,7 +300,7 @@
 
 </div><!-- #zmi-tab -->
 <script>
-
+//<!--//
 /**
  * Save active theme.
  */
@@ -350,8 +350,8 @@ function zmiPreviewBtnClick(sender) {
 	var container = $(sender).parent('td')
 	var additional_url = $('a span',container).text(); 
 	// alert(additional_url);
-	$.get( additional_url, function( data ) {
-		$('pre',container).html( data ).toggle();
+	$.get( url=additional_url, dataType='text', function( data ) {
+		$('pre',container).html( data.replaceAll('<','&lt;').replaceAll('>','&gt;') ).toggle();
 		$('i.fa-caret-right',container).toggleClass('fa-rotate-90');
 		$(container).toggleClass('open');
 	});
@@ -359,13 +359,14 @@ function zmiPreviewBtnClick(sender) {
 }
 
 $(function(){
-		zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800,remove:true});
-		$('button[name=btn][value=BTN_CLOSE]').click(function() {
-			zmiModal("hide");
-			return false;
-		});
+	zmiModal('#editObj',{title:getZMILangStr('BTN_EDIT'),minWidth:800,remove:true});
+	$('button[name=btn][value=BTN_CLOSE]').click(function() {
+		zmiModal("hide");
+		return false;
+	});
 });
 
+//-->//
 </script>
 
 <script tal:define="
@@ -375,5 +376,6 @@ $(function(){
 	tal:content="python:'$(function(){ $(\'a[href=\042?id=%s\042]\').prev().click() })'%(ref_edited)">
 </script>
 
+<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>

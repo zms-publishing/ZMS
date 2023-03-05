@@ -365,7 +365,7 @@ class ZMSMetaobjManager(object):
         filename = 'export.metaobj.xml'
       # Export value with filename.
       content_type = 'text/xml; charset=utf-8'
-      processing_instruction = '<?zms version=\'%s\'?>'%(self.zms_version())
+      processing_instruction = '<?zms version=\"%s\"?>'%(self.zms_version().strip())
       export = self.getXmlHeader() + processing_instruction + standard.toXmlString(self, value, xhtml=True)
       if RESPONSE:
         RESPONSE.setHeader('Content-Type', content_type)
@@ -1314,7 +1314,11 @@ class ZMSMetaobjManager(object):
               xmlfile = f
             if REQUEST.get('init'):
               file = REQUEST['init']
-              filename,xmlfile = self.getConfXmlFile( file)
+              try:
+                filename,xmlfile = self.getConfXmlFile( file)
+              except:
+                standard.writeError(self,'[getConfXmlFile]: file %s not found'%file)
+                xmlfile = None
             if xmlfile is not None:
               # extract xml from zip
               if filename.endswith('.zip'):

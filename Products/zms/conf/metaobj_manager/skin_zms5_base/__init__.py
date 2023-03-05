@@ -22,7 +22,7 @@ class skin_zms5_base:
 	package = ""
 
 	# Revision
-	revision = "5.0.0"
+	revision = "5.0.1"
 
 	# Type
 	type = "ZMSLibrary"

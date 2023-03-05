@@ -2129,7 +2129,7 @@ $ZMI.registerReady(function(){
 		} else {
 			scrollToTopButton.className = "back-to-top hide";
 		}
-		if (stickyControls) {
+		if (stickyControls!=undefined) {
 			if ( !isScrolledIntoView(stickyControls) ){
 				stickyControls.classList.add('sticky-controls-activated');
 			}
@@ -2139,12 +2139,14 @@ $ZMI.registerReady(function(){
 		}
 	};
 	// Scroll back-to-top after button click
-	scrollToTopButton.onclick = () => {
-		$('html, body').animate({
-			scrollTop: 0
-		}, 600);
-		return false;
-	};
+	if (scrollToTopButton) {
+		scrollToTopButton.onclick = () => {
+			$('html, body').animate({
+				scrollTop: 0
+			}, 600);
+			return false;
+		};
+	}
 });
 
 // /////////////////////////////////////////////////////////////////////////////

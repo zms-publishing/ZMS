@@ -946,11 +946,13 @@ class ZMSMetaobjManager(object):
             oldObId = oldId.split('/')[-1]
             zopeutil.removeObject(oldContainer, oldObId)
         # Insert Zope-Object.
-        if isinstance(newCustom,_blobfields.MyBlob): newCustom = newCustom.getData()
+        if isinstance(newCustom,_blobfields.MyBlob):
+          newCustom = newCustom.getData()
         # Line-breaks.
-        if isinstance(newCustom, str): newCustom = newCustom.replace('\r', '')
+        if isinstance(newCustom, str):
+          newCustom = newCustom.replace('\r', '')
          # Strip errors.
-        if isinstance(newCustom,str): 
+        if isinstance(newCustom,str):
            if newCustom.find("## Errors:") >= 0:
              lines = [x for x in newCustom.split('\n')]
              remove = False

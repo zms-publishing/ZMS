@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<?zms version='ZMS5-5.1.0
-'?>
+<?zms version="ZMS5-5.1.0"?>
 <dictionary>
   <item key="key">ZMSFigure</item>
   <item key="value" type="dictionary">

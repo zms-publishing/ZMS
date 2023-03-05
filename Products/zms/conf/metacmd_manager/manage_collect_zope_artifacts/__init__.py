@@ -30,6 +30,9 @@ class manage_collect_zope_artifacts:
 	# Nodes
 	nodes = "{$}"
 
+	# Package
+	package = ""
+
 	# Revision
 	revision = "5.0.2"
 

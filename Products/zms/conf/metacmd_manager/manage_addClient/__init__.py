@@ -30,6 +30,9 @@ class manage_addClient:
 	# Nodes
 	nodes = "{$}"
 
+	# Package
+	package = ""
+
 	# Revision
 	revision = "5.0.0"
 

@@ -31,6 +31,9 @@ class manage_searchReplace:
 	# Nodes
 	nodes = "{$}"
 
+	# Package
+	package = ""
+
 	# Revision
 	revision = "5.3.1"
 

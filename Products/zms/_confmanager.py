@@ -177,8 +177,12 @@ class ConfManager(
           container = zopeutil.getObject(self,container_id)
           if container is not None:
               l = container.translateRepositoryModel(r)
-              xml = standard.toXmlString(self, l)
-              xml = bytes(xml, "utf-8")
+              try:
+                xml = standard.toXmlString(self, l)
+                xml = bytes(xml, "utf-8")
+              except:
+                standard.writeError(self,'[getConfXmlFile]: cannot xmlize %s'%filename)
+                xml = bytes('', "utf-8")
               xmlfile = io.BytesIO( xml)
           else:
               standard.writeError(self,'[getConfXmlFile]: container %s not found'%container_id)

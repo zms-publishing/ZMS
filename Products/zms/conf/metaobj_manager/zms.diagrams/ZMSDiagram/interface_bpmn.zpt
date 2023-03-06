@@ -1,0 +1,132 @@
+<tal:block
+	tal:define="zmscontext options/zmscontext;
+		diagram_file python:zmscontext.attr('diagram_file');"
+	tal:condition="not:python:request.get('ZMS_INSERT')">
+<script tal:attributes="src python:zmscontext.breadcrumbs_obj_path()[0].metaobj_manager.absolute_url()+'/ZMSDiagram.bpmn-viewer.js'"></script>
+<div class="form-group row" id="interface_bpmn">
+	<label class="col-sm-2 control-label"></label>
+	<div class="col-sm-10">
+	    <small>
+	    	Export &amp; Upload <strong>BPMN.io</strong> file from <a href="https://demo.bpmn.io/new" target="_blank">Live Editor</a>
+	    	| <a href="https://camunda.com/download/modeler/" target="_blank">Desktop Modeler</a>
+	    </small>
+		<div class="canvas">
+			<a target="_blank"
+				tal:attributes="href python:'%s/bpmn-viewer.html'%zmscontext.absolute_url()">
+				<div id="js-canvas"></div>
+			</a>
+  		</div>
+		<script>
+		//<!-- jQuery is required
+			var viewer = new BpmnJS({
+				container: $('#js-canvas'),
+				height: 600
+			});
+
+			function log(str) {
+				var console = $('#js-console');
+				console.val(console.val() + str + '\n');
+			}
+
+			function openFromUrl(url) {
+				log('attempting to open <' + url + '>');
+				$.ajax(url, {dataType: 'text'}).done(async function (xml) {
+					try {
+						await viewer.importXML(xml);
+						viewer.get('canvas').zoom('fit-viewport');
+						log('success');
+					} catch (err) {
+						log('error: ' + err.message);
+						console.error(err);
+					}
+				});
+			}
+
+			function toggleDiagramInterface() {
+				if (($('#attr_dc_type').val() === 'Business Process Model and Notation') || ($('#attr_dc_type').val() === 'Decision Model and Notation')) {
+					$('#interface_mermaid').hide();
+					$('#tr_diagram_code_'+getZMILang()).hide();
+					$('#interface_bpmn').show();
+					$('#tr_diagram_file_'+getZMILang()).show();
+				}
+				else {
+					$('#interface_mermaid').show();
+					$('#tr_diagram_code_'+getZMILang()).show();
+					$('#interface_bpmn').hide();
+					$('#tr_diagram_file_'+getZMILang()).hide();
+					if ($('#attr_dc_type').val() === 'Entity Relationship Model') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/entityRelationshipDiagram.html');
+					}
+					if ($('#attr_dc_type').val() === 'Requirement Diagram') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/requirementDiagram.html');
+					}
+					if ($('#attr_dc_type').val() === 'Sequence Diagram') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/sequenceDiagram.html');
+					}
+					if ($('#attr_dc_type').val() === 'Class Diagram') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/classDiagram.html');
+					}
+					if ($('#attr_dc_type').val() === 'State Diagram') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/stateDiagram.html');
+					}
+					if ($('#attr_dc_type').val() === 'User Journey') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/userJourney.html');
+					}
+					if ($('#attr_dc_type').val() === 'Gantt Chart') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/gantt.html');
+					}
+					if ($('#attr_dc_type').val() === 'Pie Chart') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/pie.html');
+					}
+					if ($('#attr_dc_type').val() === 'Flowchart') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/flowchart.html');
+					}
+					if ($('#attr_dc_type').val() === 'Gitgraph') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/gitgraph.html');
+					}
+					if ($('#attr_dc_type').val() === 'Timeline') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/timeline.html');
+					}
+					if ($('#attr_dc_type').val() === 'Mindmap') {
+						$('#reference_mermaid_href').attr('href', 'https://mermaid.js.org/syntax/mindmap.html');
+					}
+				}
+			}
+			$ZMI.registerReady(function() {
+				toggleDiagramInterface();
+				$('#attr_dc_type').change(function () {
+					toggleDiagramInterface();
+				});
+			});
+		//-->
+			(function () {
+				var url = '<tal:block tal:condition="diagram_file" tal:replace="python:'%s/%s'%(zmscontext.absolute_url(), zmscontext.attr('diagram_file').getFilename())"></tal:block>?preview=preview';
+				openFromUrl(url);
+			})();
+		</script>
+		<style>
+		/*<!--*/
+			body {
+			  font-family: 'Arial', sans-serif;
+			}
+
+			.header input[type=text] {
+			  width: 500px;
+			  max-width: 100%;
+			}
+
+			.console textarea {
+			  width: 100%;
+			  min-height: 80px;
+			  border: none;
+			  padding: 0;
+			}
+
+			.canvas {
+			  border: solid 1px black;
+			}
+		/*-->*/
+		</style>
+	</div>
+</div>
+</tal:block>

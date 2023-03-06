@@ -92,13 +92,14 @@ class ZMSMetaobjManager(object):
 
     # Globals.
     # --------
-    valid_types =     ['amount', 'autocomplete', 'boolean', 'color', 'date', 'datetime', 'dictionary', 'file', 'float', 'identifier', 'image', 'int', 'list', 'multiautocomplete', 'multiselect', 'password', 'richtext', 'select', 'string', 'text', 'time', 'url', 'xml']
-    valid_zopeattrs = ['method', 'py', 'zpt', 'interface', 'resource']
-    valid_xtypes =    ['constant', 'delimiter', 'hint'] + valid_zopeattrs
-    valid_datatypes = sorted(valid_types + valid_xtypes)
-    valid_objtypes =  [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
-    valid_zopetypes = [ 'DTML Method', 'DTML Document', 'External Method', 'File', 'Folder', 'Image', 'Page Template', 'Script (Python)', 'Z SQL Method']
-    deprecated_types = [ 'DTML Method', 'DTML Document', 'method']
+    valid_types =       ['amount', 'autocomplete', 'boolean', 'color', 'date', 'datetime', 'dictionary', 'file', 'float', 'identifier', 'image', 'int', 'list', 'multiautocomplete', 'multiselect', 'password', 'richtext', 'select', 'string', 'text', 'time', 'url', 'xml']
+    valid_zopeattrs =   ['method', 'py', 'zpt', 'interface', 'resource']
+    valid_uploadtypes = ['resource', 'File', 'Folder', 'Image']
+    valid_xtypes =      ['constant', 'delimiter', 'hint'] + valid_zopeattrs
+    valid_datatypes =   sorted(valid_types + valid_xtypes)
+    valid_objtypes =    [ 'ZMSDocument', 'ZMSObject', 'ZMSTeaserElement', 'ZMSRecordSet', 'ZMSResource', 'ZMSReference', 'ZMSLibrary', 'ZMSPackage', 'ZMSModule']
+    valid_zopetypes =   [ 'DTML Method', 'DTML Document', 'External Method', 'File', 'Folder', 'Image', 'Page Template', 'Script (Python)', 'Z SQL Method']
+    deprecated_types =  [ 'DTML Method', 'DTML Document', 'method']
 
 
     ############################################################################
@@ -1155,8 +1156,8 @@ class ZMSMetaobjManager(object):
               newCustom = REQUEST.get('attr_custom_%s'%old_id, '')
               newDefault = REQUEST.get('attr_default_%s'%old_id, '')
               # Upload resource.
-              if isinstance(newCustom, ZPublisher.HTTPRequest.FileUpload):
-                  if len(getattr(newCustom, 'filename', '')) > 0:
+              if newType in self.valid_uploadtypes or isinstance(newCustom, ZPublisher.HTTPRequest.FileUpload):
+                  if len(getattr(newCustom, 'filename', '')):
                       newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, newCustom)
                   else:
                       REQUEST.set('attr_custom_%s_modified'%old_id, '0')

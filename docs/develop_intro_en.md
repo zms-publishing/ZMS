@@ -24,11 +24,45 @@ The first step is to setup a virtual Python environment which is a kind of copy 
 ~$: python3 -m venv /home/zope/vpy3
 ```
 ## 2. Install ZMS into the virtual Python environment
-After changing to the `bin`-folder of the installed virtual environment, simply install ZMS with `pip` from the ZMS-github-master: https://github.com/zms-publishing/ZMS5
+After changing to the `bin`-folder of the installed virtual environment, simply install ZMS with `pip` from the ZMS-github-master: https://github.com/zms-publishing/ZMS
+
 ```console
 ~$: cd /home/zope/vpy3/bin/
-~$: ./pip install https://github.com/zms-publishing/ZMS5/archive/master.zip
+~$: ./pip install https://github.com/zms-publishing/ZMS/archive/master.zip
 ```
+**Developing ZMS**: If you intend to work on the code of ZMS (or Zope or any other site-package), please, pip-install it's source-code in the _editable-mode_ again: first add a folder for the git sources, clone the sources and finally install the module without dependencies:
+
+```console
+~$: cd /home/zope/
+~$: mkdir src
+~$: cd src
+~$: git clone git@github.com:zms-publishing/ZMS.git
+~$: cd /home/zope/vpy3/bin/
+~$: ./pip install --no-deps -e /home/zope/src/ZMS/.
+```
+After this procedure the virtual-python has ommited the formely installed ZMS package and will reference the ZMS code from your git repository. The as _editable_ installed modules appear in the pip-list with it's source link:
+
+```console
+~$: cd /home/zope/vpy3/bin/
+~$: ./pip list
+
+Package                        Version     Location             
+------------------------------ --------- -----------------------
+AccessControl                  5.7      
+...
+zipp                           3.14.0   
+ZMS                            5.1.0    /home/zope/src/ZMS
+ZODB                           5.8.0    
+zodbpickle                     2.6      
+Zope                           5.8.1    /home/zope/src/Zope/src
+zope.annotation                4.8      
+...
+
+~$:
+```
+
+
+
 ## 3. Add new Zope instance
 After the ZMS installation the bin-folder of the virtual environment contains a lot of new scipts. Please use `mkwsgiinstance` to generate an new zope-instance, named zms5_dev as an example:
 ```console

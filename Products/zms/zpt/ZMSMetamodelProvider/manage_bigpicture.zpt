@@ -84,7 +84,7 @@
 	</tal:block>
 </form>
 
-<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+<tal:block tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</tal:block>
 
 <script>
 	$ZMI.registerReady(function(){

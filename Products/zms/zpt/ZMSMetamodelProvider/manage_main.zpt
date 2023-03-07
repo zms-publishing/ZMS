@@ -260,9 +260,6 @@
 								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
 								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']"/>
 								<tal:block tal:condition="python:objAttr.get('ob')">
-									<input type="checkbox" tal:attributes="name python:'attr_custom_%s_active'%objAttr['id']" value="1" checked="checked" 
-										onclick="if(!$(this).is(':checked')){$(this).next().css({opacity:.5})}else{$(this).next().css({opacity:1})}"
-										title="Deactivate the checkbox for clearing the resource to 0 byte on saving this content model"/>
 									<a tal:define="fname python:objAttr['ob'].title" tal:attributes="href python:objAttr['ob'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['ob'].get_size()))" target="_blank" style="text-decoration:none;">
 										<i class="fas fa-file-alt"></i>
 										<tal:block tal:content="fname">FILE NAME</tal:block>

@@ -1521,11 +1521,17 @@ div.pull-left div.single-line.input-append.zmi-nodes textarea {
 	align-items: center;
 	margin: -.5rem;
 }
+.zmi.metas table.table-sm td.meta-resource.input-group-sm {
+	vertical-align: middle;
+}
 .zmi.metas table.table-sm td.meta-resource.input-group-sm .meta-resource-container .btn {
 	margin: 0 0;
-	background: #f5f5f5;
+	background: rgba(182, 182, 182, 0.15);
 	padding:0.5rem;
 	border-radius: 0;
+}
+.zmi.metas table.table-sm td.meta-resource.input-group-sm .meta-resource-container .btn.form-modified {
+	background: rgba(51, 122, 182, 0.15);
 }
 .zmi.metas table.table-sm td.meta-resource.input-group-sm a i {
 	margin: 0 .35rem;

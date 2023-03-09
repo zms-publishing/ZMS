@@ -14,6 +14,7 @@
 			<label for="connection_id" class="col-sm-3 col-md-2 control-label mandatory">
 				<span>Connection ID</span>
 			</label>
+			<input type="hidden" id="connection_id" name="connection_id" tal:attributes="value python:getattr(here,'connection_id','')"/>
 			<div class="col-sm-9 col-md-10">
 				<div class="btn-group">
 					<button type="button" class="btn btn-secondary" style="min-width:10rem;">Select the SQL-Connection-ID...</button>

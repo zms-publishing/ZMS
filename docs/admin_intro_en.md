@@ -66,22 +66,52 @@ Using language neutral labels _need_ the corresponding translations in the langu
 The second option for translating display names is getting its translation by the key-value as a word stem. This happens implicitly if a language dict item is found according to the conventions (TYPE_/ATTR_-Prefix) and thus will overwrite the given display name (so display name can stay in natural language and will work without a translation dictionary, too)
 
 
-## Paragraph Formats: Text Block Formats
-Text can be edited in two modes: plain or rich text. The plain text editor uses a paragraph format for the whole block whereas the rich text can apply the paragraph formats for any segment of the text stream in the input field.
+## Paragraph Formats and Formatting Text Blocks
+Text blocks can be edited in two modes: plain or _rich text_. The plain text editor uses a paragraph format for the whole block whereas the _rich text_ can apply the paragraph formats for any segment of the text stream in the input field.
 Individual paragraph formats are defined by:
 1. id
 2. display name
 3. nesting html element
 4. html attributes
 5. newline-tag
-6. format may be used in plain text or/and rich text editor
+6. format may be used in plain text or/and _rich text_ editor
 7. format ist used as a default
-8. force the text block using the rich text editor gui
+8. force the text block using the _rich text_ editor GUI
 
 The configuraton form ends up with a preview of the rendered html output.
 
 ![Paragraph Formats](images/admin_contentmodel_paragraph.gif)
 _Paragraph formats can be simply added by filling a small form for its properties._
+
+### Standard Editor (Plain Text)
+The Standard Text Editor provides plain text in a standard input field; besides declaring a format to the whole text block it is possible, to add inline HTML-tags manually. It easily can happen that the manually edited html code gets invalid. To prevent this, a config parameter `ZMS.ZMSTextarea.show_htmlcheck` adds a small helper line, that constantly shows the result of a realtime HTML validity checking.
+
+![HTML Validity Check can be activated or deactivated by ZMS config parameter ZMS.ZMSTextarea.show_htmlcheck](images/edit_gui_textarea_show_htmlcheck.png)
+_HTML Validity Check can be activated or deactivated by ZMS config parameter ZMS.ZMSTextarea.show_htmlcheck_
+
+### Rich Text Editors (RTE)
+ZMS comes with three RTE GUIs by default:
+1. [CKEditor (HTML)](https://ckeditor.com)
+2. [TinyMCE (HTML)](https://www.tiny.cloud/tinymce)
+3. [Simple MDE (Markdown)](https://simplemde.com/)
+
+The applied RTE is configured as a _system_ parameter "ZMS.richtext.plugin":
+
+![Configuration of the rich text editor by system parameter ZMS.richtext.plugin](images/admin_config_rte.gif)
+
+### Adding More Rich Text Editors as a Plugin (RTE)
+The ZMS source code has a plugin folder `Products/zms/plugins/rte` (see on [github](https://github.com/zms-publishing/ZMS/tree/main/Products/zms/plugins)); here you can add the RTE code of your choice. It needs just a new folder and a TAL-template `Products/zms/plugins/rte/MyRTE/manage_form.zpt` that generates the RTE's HTML snippet and references the necessary CSS/JS modules as ZMS-resource links
+```html
+<link rel="stylesheet" href="/++resource++zms_/MyRTE/MyRTE.min.css">
+<script src="/++resource++zms_/MyRTE/MyRTE.min.js"></script>
+```
+Actually these resource files are placed in the www-resource folder:
+```
+Products/zms/plugins/www/MyRTE/MyRTE.css
+Products/zms/plugins/www/MyRTE/MyRTE.js
+```
+
+If these resources are available in the ZMS source code, it offers the new RTE "MyRTE" as an further select option for the configuration parameter ZMS.richtext.plugin
 
 ## Character-Formats: Text Inline Formats
 Similar to the paragraph configuration ZMS allows adding individual character formats (_inline formats_). The inline formats are shown with the text field GUI and can be applied by mouse click.

@@ -1164,7 +1164,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def manage_get_node_json(self):
       """ ZMSObject.manage_get_node_json """
-      content_type = 'text/json; charset=utf-8'
+      content_type = 'application/json; charset=utf-8'
       filename = '%s.json'%self.id
       request = self.REQUEST
       RESPONSE = request.RESPONSE

@@ -1,40 +1,66 @@
-<!DOCTYPE html>
-<html lang="en" tal:define="
-	dummy0 python:here.zmi_page_request(here,request);
+<tal:block tal:define="dummy0 python:here.zmi_page_request(here,request);
 	zmscontext python:here.getSelf();
-	standard modules/Products.zms/standard">
-<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
-<body tal:attributes="class python:here.zmi_body_class(id='bigpicture')">
+	standard modules/Products.zms/standard;
+	packageId python:request.get('id');
+	metaObjIds python:here.getMetaobjIds();
+	metaObjs python:[here.getMetaobj(x) for x in metaObjIds if (here.getMetaobj(x)['package']==packageId or packageId==None)];
+	sort_on python:(('package', 'cmp', 'asc'),('id','cmp','asc'));"
+><tal:block tal:condition="python:request.get('content_type','html')=='json'"
+	><tal:block 
+		tal:define="set_resp_content_type python:request.RESPONSE.setHeader('Content-Type','application/json')"
+		tal:content="python:standard.str_json(metaObjs,encoding='utf-8')"
+	></tal:block
+></tal:block
+><tal:block tal:condition="python:request.get('content_type','html')!='json'"
+><!DOCTYPE html>
+<html lang="en">
+	<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+<body tal:attributes="class python:here.zmi_body_class(id='bigpicture')" data-template-ids="manage_bigpicture">
 <form class="form-horizontal card" 
-	tal:define="global
-		packageId request/id;
-		metaObjIds python:here.getMetaobjIds();
-		metaObjIds_sorted python:metaObjIds.sort();
-		metaObjs python:[here.getMetaobj(x) for x in metaObjIds]">
-	<legend class="navbar navbar-nav navbar-expand navbar-dark" 
-		tal:content="python:'BigPicture::LogicalView::%s'%packageId">the legend</legend>
+	tal:attributes="class python:'form-horizontal card %s'%(packageId and 'single-package' or 'all-packages')">
+	<legend class="navbar navbar-nav navbar-expand navbar-dark">
+		<tal:block tal:content="python:'BigPicture :: LogicalView :: %s'%(packageId or 'all')"></tal:block>
+		<a href="./manage_bigpicture" class="ml-3 text-light" tal:condition="packageId" title="Show All Packages"><i class="fas fa-plus"></i></a>
+		
+	</legend>
 	<i id="toggle_menu" title="Toggle Menu" class="fas fa-times"></i>
 	<ol id="toc" class="objlist">
-		<li tal:repeat="metaObj python:[x for x in metaObjs if x['package']==packageId]">
-			<tal:block tal:define="
-					oid python:metaObj.get('id','');
-					oname python:metaObj.get('name','');
-					odisplay python:oid!=oname and '({})'.format(oname) or ''">
-				<a data-turbolinks="false" tal:attributes="href python:'#%s'%(metaObj.get('id','')); title metaObj/name"
-					tal:content="python:oid">the name</a>
-				<span tal:replace="odisplay"></span>
+		<tal:block tal:repeat="metaObj python:sequence.sort(metaObjs, sort_on, mapping=1)"
+			><tal:block tal:define="
+				id python:metaObj.get('id','');
+				package_id python:metaObj.get('package');
+				objtype python:metaObj.get('type');
+				oname python:metaObj.get('name','');
+				odisplay python:id!=oname and '({})'.format(oname) or '';"
+				tal:condition="python:objtype!='ZMSPackage'">
+				<header class="package_id" role="separator" tal:condition="python:package_id!=request.get('package_id')"><a href="#" 
+						tal:attributes="href python:'./manage_bigpicture?id=%s'%(metaObj.get('package'))" 
+						tal:content="python:'ZMSPackage %s'%(metaObj.get('package'))"></a></header>
+				<li class="meta_id">
+					<a data-turbolinks="false" 
+						tal:attributes="href python:'#%s'%(id); title python:'%s :: %s'%(metaObj.get('package'),metaObj.get('name'));"
+						tal:content="python:id">the name</a>
+					<span tal:replace="odisplay"></span>
+				</li>
+				<tal:block tal:define="set_req_package_id python:request.set('package_id',package_id);"></tal:block>
 			</tal:block>
-		</li>
+		</tal:block>
 	</ol>
 
-	<tal:block tal:repeat="metaObj python:[x for x in metaObjs if x['package']==packageId]">
-		<div class="box" tal:attributes="id metaObj/id">
-			<p class="box_number" tal:content="repeat/metaObj/number">1</p>
-			<div class="objtype" tal:content="metaObj/type" title="Object Type">the type</div>
+	<tal:block tal:repeat="metaObj python:sequence.sort(metaObjs, sort_on, mapping=1)">
+		<div class="box"
+			tal:define="
+				id metaObj/id;
+				box_number repeat/metaObj/number;
+				objtype metaObj/type" 
+			tal:attributes="id id"
+			tal:condition="python:objtype!='ZMSPackage'">
+			<p class="box_number" tal:content="box_number">1</p>
+			<div class="objtype" tal:content="objtype" title="Object Type">the type</div>
 			<div class="objid">
 				<a title="Edit Model..." target="_blank" tal:attributes="href python:'manage_main?id=%s'%(metaObj['id'])">
 				<i tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>
-				<span class="objid" tal:content="metaObj/id">the id</span>
+				<span class="objid" tal:content="id">the id</span>
 				<span class="objname" title="Display Name"
 					tal:define="l python:request.get('manage_lang','ger');
 						n python:metaObj.get('name','');
@@ -57,8 +83,10 @@
 								data-toggle python:has_defaults and 'tooltip' or None;"
 							>the type</span>
 						<span class="attrId" tal:content="metaObjAttr/id">the id</span>:
-						<span class="attrName">(<tal:block tal:content="structure metaObjAttr/name" 
-							tal:condition="python:metaObjAttr['type'] not in ['hint']">the name</tal:block>)</span>
+						<span class="attrName" 
+							tal:condition="python:metaObjAttr['type'] not in ['hint','Image','File','Page Template']"
+							tal:content="structure python:'(%s)'%(metaObjAttr['name'])">the name
+						</span>
 					</div><!-- .attr -->
 					<div class="ref" tal:condition="python:metaObjAttr['type'] in ['*']+metaObjIds">
 						<table cellspacing="0" cellpadding="0" border="0">
@@ -175,8 +203,22 @@ p.box_number {
 #toc.scrolled {
 	top: 0;
 }
+form.all-packages #toc {
+	position: relative;
+	right: 0;
+	top: 0;
+	float: right;
+}
 #toc li {
 	line-height: 1.75;
+}
+#toc header {
+	margin: 0 -2rem 0 -3rem;
+	padding: .5rem 2rem;
+	background: #cfdae5;
+	font-weight: bold;
+	color: #354f67;
+	font-size: 100%;
 }
 @media (min-width: 768px) {
 	#toc {
@@ -240,6 +282,7 @@ p.box_number {
 	font-size:smaller;
 	margin-top:0.8em
 }
+
 @media print {
 	ol.objlist {
 		position: relative;
@@ -284,3 +327,5 @@ p.box_number {
 
 </body>
 </html>
+</tal:block>
+</tal:block>

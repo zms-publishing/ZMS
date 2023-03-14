@@ -13,7 +13,7 @@ constraints = {}
 request = zmscontext.REQUEST
 obj_attr = zmscontext.getObjAttr('text')
 text = zmscontext.getObjAttrValue(obj_attr,request)
-if text.startswith('## Script (Python)') or text.find('<dtml-')>=0 or text.find('<tal:')>=0:
+if text.startswith('##') or text.find('<dtml-')>=0 or text.find('<tal:')>=0:
   if zmscontext.attr('format') not in ['markdown']:
     constraints['RESTRICTIONS'] = constraints.get('RESTRICTIONS',[])
     constraints['RESTRICTIONS'].append(('restricted-access','Text contains executable-code (py, tal, dtml)',['ZMS Administrator']))

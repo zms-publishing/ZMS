@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<list>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">wysiwyg</item>
+			<item key="value" type="dictionary">
+			<dictionary>
+				<item key="attrs"></item>
+				<item key="default" type="int">0</item>
+				<item key="display" type="dictionary">
+				<dictionary>
+					<item key="eng">WYSIWYG</item>
+					<item key="esp">WYSIWYG</item>
+					<item key="fra">WYSIWYG</item>
+					<item key="ger">WYSIWYG</item>
+					<item key="ita">WYSIWYG</item>
+				</dictionary>
+				</item>
+				<item key="richedit">ckeditor</item>
+				<item key="subtag"></item>
+				<item key="tag"></item>
+			</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">markdown</item>
+			<item key="value" type="dictionary">
+			<dictionary>
+				<item key="attrs"></item>
+				<item key="default" type="int">1</item>
+				<item key="display" type="dictionary">
+				<dictionary>
+					<item key="eng">Markdown</item>
+					<item key="esp">Markdown</item>
+					<item key="fra">Markdown</item>
+					<item key="ger">Markdown</item>
+					<item key="ita">Markdown</item>
+				</dictionary>
+				</item>
+				<item key="richedit" type="int">1</item>
+				<item key="subtag"></item>
+				<item key="tag"></item>
+				<item key="usage" type="list">
+				<list>
+					<item>standard</item>
+				</list>
+				</item>
+			</dictionary>
+			</item>
+		</dictionary>
+	</item>
+	<item type="dictionary">
+		<dictionary>
+			<item key="key">plain_html</item>
+			<item key="value" type="dictionary">
+				<dictionary>
+					<item key="attrs"></item>
+					<item key="default" type="int">0</item>
+					<item key="display" type="dictionary">
+						<dictionary>
+						<item key="eng">HTML</item>
+						<item key="esp">HTML</item>
+						<item key="fra">HTML</item>
+						<item key="ger">HTML</item>
+						<item key="ita">HTML</item>
+						</dictionary>
+					</item>
+					<item key="subtag"></item>
+					<item key="tag"></item>
+				</dictionary>
+			</item>
+		</dictionary>
+	</item>
+</list>

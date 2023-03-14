@@ -950,7 +950,8 @@ li.zmi-item span.zmi-ids {
 	content:attr(title);
 	font-family:var(--font-family-sans-serif);
 	font-weight: 400;
-	margin-left:.5rem
+	margin-left:.5rem;
+	line-height: 1.5;
 }
 .zmi.properties .card > .zmi-children {
 	background: #F5F5F5;

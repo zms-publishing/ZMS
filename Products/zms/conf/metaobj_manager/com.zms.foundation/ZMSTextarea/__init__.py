@@ -26,7 +26,7 @@ class ZMSTextarea:
 	package = "com.zms.foundation"
 
 	# Revision
-	revision = "5.0.1"
+	revision = "5.0.2"
 
 	# Type
 	type = "ZMSObject"
@@ -52,7 +52,7 @@ class ZMSTextarea:
 			,"repetitive":0
 			,"type":"interface"}
 
-		format = {"default":"##\nreturn context.getTextFormatDefault()"
+		format = {"default":"##\r\nreturn context.getTextFormatDefault()"
 			,"id":"format"
 			,"keys":[]
 			,"mandatory":1

@@ -9,17 +9,14 @@
 ##
 # --// check_constraints //--
 
+from Products.zms import standard
 constraints = {}
 request = zmscontext.REQUEST
 obj_attr = zmscontext.getObjAttr('text')
 text = zmscontext.getObjAttrValue(obj_attr,request)
-if text.startswith('##') or text.find('<dtml-')>=0 or text.find('<tal:')>=0:
-  if zmscontext.attr('format') not in ['markdown']:
-    constraints['RESTRICTIONS'] = constraints.get('RESTRICTIONS',[])
-    constraints['RESTRICTIONS'].append(('restricted-access','Text contains executable-code (py, tal, dtml)',['ZMS Administrator']))
-  else:
-    constraints['WARNINGS'] = constraints.get('WARNINGS',[])
-    constraints['WARNINGS'].append(('','Markdown text starts with ZMS markers for executable-code (##, <tal:, <dtml-) and thus cannot be rendered properly. Please, remove these markers.',[]))
+if standard.dt_executable(text):
+  constraints['RESTRICTIONS'] = constraints.get('RESTRICTIONS',[])
+  constraints['RESTRICTIONS'].append(('restricted-access','Text contains executable-code (py, tal, dtml)',['ZMS Administrator']))
 return constraints
 
 # --// /check_constraints //--

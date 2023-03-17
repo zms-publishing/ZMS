@@ -2169,7 +2169,7 @@ def dt_executable(context, v):
   @rtype: C{Bool}
   """
   if isinstance(v, bytes) or isinstance(v, str):
-    if v.startswith('##'):
+    if v.startswith('##') and v.find('return ') > 0:
       return 'py'
     elif v.find('<tal:') >= 0:
       return 'zpt'
@@ -2191,7 +2191,7 @@ def dt_exec(context, v, o={}):
   @rtype: C{any}
   """
   if type(v) is str:
-    if v.startswith('##'):
+    if v.startswith('##') and v.find('return ') > 0:
       v = dt_py(context, v, o)
     elif v.find('<tal:') >= 0:
       v = dt_tal(context, v, dict(o))

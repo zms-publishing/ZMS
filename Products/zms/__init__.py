@@ -18,7 +18,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from App.Common import package_home
 import OFS.misc_
 import codecs

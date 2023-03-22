@@ -17,14 +17,12 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from DateTime.DateTime import DateTime
-from ZPublisher import HTTPRangeSupport, HTTPRequest
+from ZPublisher import HTTPRangeSupport
 from OFS.Image import Image, File
 # from mimetools import choose_boundary
 from email.generator import _make_boundary as choose_boundary
 import base64
-import copy
 import io
 import re
 import time

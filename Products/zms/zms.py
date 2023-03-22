@@ -17,11 +17,9 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
-from sys import *
 import collections
 import os
 import sys

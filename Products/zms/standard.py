@@ -26,7 +26,6 @@ Scripts.  It can be accessed from Python with the statement
 "import Products.zms.standard"
 """
 # Imports.
-from __future__ import absolute_import
 from AccessControl.SecurityInfo import ModuleSecurityInfo
 from App.Common import package_home
 from App.config import getConfiguration

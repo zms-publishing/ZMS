@@ -19,7 +19,6 @@
 ################################################################################
 
 # Imports
-from __future__ import absolute_import
 import pyexpat
 import time
 # Product Imports.

@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from zope.interface import implementer
 # Product Imports.
 from Products.zms import IZMSMetamodelProvider, IZMSFormatProvider

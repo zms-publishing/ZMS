@@ -17,12 +17,10 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-# TODO from Products.ZCatalog import CatalogPathAwareness
 import ZPublisher.HTTPRequest
 import collections
 import re

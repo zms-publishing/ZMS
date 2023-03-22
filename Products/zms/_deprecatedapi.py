@@ -16,8 +16,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ################################################################################
 
-# Imports.
-from __future__ import absolute_import
 # Product Imports.
 from Products.zms import _fileutil
 from Products.zms import _xmllib

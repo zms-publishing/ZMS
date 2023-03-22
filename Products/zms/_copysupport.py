@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 import time
 from OFS import Moniker
 from OFS.CopySupport import _cb_decode, _cb_encode, CopyError # TODO , eNoData, eNotFound, eInvalid

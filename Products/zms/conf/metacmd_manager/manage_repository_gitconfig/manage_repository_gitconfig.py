@@ -43,7 +43,7 @@ def manage_repository_gitconfig(self, request=None):
 		self.setConfProperty('ZMSRepository.git.server.branch',request.get('git_branch'))
 		self.setConfProperty('ZMSRepository.git.server.branch.checkout', int(request.get('git_checkout',0)))
 		message.append(self.getZMILangStr('MSG_CHANGED'))
-		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+		request.response.redirect(standard.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
 	# --- Checkout.
 	# ---------------------------------
@@ -56,7 +56,7 @@ def manage_repository_gitconfig(self, request=None):
 	# --- Cancel.
 	# ---------------------------------
 	elif btn=='BTN_CANCEL':
-		request.response.redirect(self.url_append_params(came_from,{'lang':request['lang']}))
+		request.response.redirect(standard.url_append_params(came_from,{'lang':request['lang']}))
 
 	# --- Display initial form.
 	# -------------------------

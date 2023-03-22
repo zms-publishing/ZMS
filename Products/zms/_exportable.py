@@ -304,7 +304,7 @@ class Exportable(_filtermanager.FilterItem):
       # Export Filter.
       elif export_format in self.getFilterManager().getFilterIds():
         if REQUEST.get('debug'):
-          url = self.url_append_params( 'manage_importexportDebugFilter', { 'lang': lang, 'filterId': export_format, 'debug': 1})
+          url = standard.url_append_params( 'manage_importexportDebugFilter', { 'lang': lang, 'filterId': export_format, 'debug': 1})
           return RESPONSE.redirect( url)
         else:
           filename, export, content_type = _filtermanager.exportFilter(self, export_format, REQUEST)
@@ -317,7 +317,7 @@ class Exportable(_filtermanager.FilterItem):
       else:
         message = 'Exported to %s (%s)'%(export, content_type)
         url = '%s/manage_importexport'%self.absolute_url()
-        url = self.url_append_params( url, { 'lang': lang, 'manage_tabs_message': message})
+        url = standard.url_append_params( url, { 'lang': lang, 'manage_tabs_message': message})
         RESPONSE.redirect( url)
 
 

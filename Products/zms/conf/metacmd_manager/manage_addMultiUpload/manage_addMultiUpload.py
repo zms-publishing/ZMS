@@ -134,7 +134,7 @@ def manage_addMultiUpload(self):
 
 		msg.append('<br/>')
 		html += '<div class="alert alert-success">%s</div><!-- .alert.alert-success -->'%('<br/>')
-		request.response.redirect(self.url_append_params('%s/manage_main'%self.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(msg)}))
+		request.response.redirect(standard.url_append_params('%s/manage_main'%self.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(msg)}))
 
 	# --- Display initial import form.
 	# ---------------------------------

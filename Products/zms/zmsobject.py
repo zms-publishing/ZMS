@@ -796,7 +796,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         target_ob = self
         REQUEST.set( 'manage_target', '%s/preview_html'%target_ob.absolute_url())
       target = REQUEST.get( 'manage_target', '%s/manage_main'%target_ob.absolute_url())
-      target = self.url_append_params( target, { 'lang': lang, messagekey: message},sep='&')
+      target = standard.url_append_params( target, { 'lang': lang, messagekey: message},sep='&')
       target = '%s#zmi_item_%s'%( target, self.id)
       if RESPONSE is not None:
         return RESPONSE.redirect( target)
@@ -905,7 +905,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         # Assemble href.
         if REQUEST.get('ZMS_INDEX_HTML', 0)==1 or fct != 'index' or len(self.getLangIds())>1:
           href += '%s_%s%s'%(fct, REQUEST.get('lang', self.getPrimaryLanguage()), pageext)
-        if REQUEST.get('preview', '')=='preview': href=self.url_append_params(href, {'preview':'preview'})
+        if REQUEST.get('preview', '')=='preview': href=standard.url_append_params(href, {'preview':'preview'})
       if (REQUEST.get('ZMS_PATHCROPPING', False) or self.getConfProperty('ZMS.pathcropping', 0)==1) and REQUEST.get('export_format', '') == '':
         base = REQUEST.get('BASE0', '')
         if href.find( base) == 0:
@@ -999,7 +999,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           value = self.absolute_url()
           for param in ['lang', 'preview']:
             if REQUEST.get(param, '') != '': 
-              value = self.url_append_params(value, {param:REQUEST[param]})
+              value = standard.url_append_params(value, {param:REQUEST[param]})
         else:
           if deep:
             def get_page_with_elements(node):

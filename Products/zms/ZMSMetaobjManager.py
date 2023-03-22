@@ -1378,9 +1378,9 @@ class ZMSMetaobjManager(object):
         if RESPONSE:
           if len( message) > 0:
             message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-            target = self.url_append_params( target, { messagekey: message}, sep='&')
-          target = self.url_append_params( target, { 'lang': lang, 'id':id, 'attr_id':REQUEST.get('attr_id', '')}, sep='&')
-          target = self.url_append_params( target, extra, sep='&')
+            target = standard.url_append_params( target, { messagekey: message}, sep='&')
+          target = standard.url_append_params( target, { 'lang': lang, 'id':id, 'attr_id':REQUEST.get('attr_id', '')}, sep='&')
+          target = standard.url_append_params( target, extra, sep='&')
           if 'inp_id_name' in REQUEST:
             target += '&inp_id_name=%s'%REQUEST.get('inp_id_name')
             target += '&inp_name_name=%s'%REQUEST.get('inp_name_name')

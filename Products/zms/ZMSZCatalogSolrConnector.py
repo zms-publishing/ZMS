@@ -100,7 +100,7 @@ class ZMSZCatalogSolrConnector(
       solr_url = self.getConfProperty('solr.url', 'http://localhost:8983/solr')
       solr_core = self.getConfProperty('solr.core', self.getAbsoluteHome().id)
       url = '%s/%s/select'%(solr_url, solr_core)
-      url = self.url_append_params(url, p, sep='&')
+      url = standard.url_append_params(url, p, sep='&')
       result = standard.http_import(self, url, method='GET', debug=debug)
       result = standard.re_sub('name="(.*?)_[ist]"', 'name="\\1"', standard.pystr(result))
       return result

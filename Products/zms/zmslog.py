@@ -212,6 +212,6 @@ class ZMSLog(ZMSItem.ZMSItem):
         _fileutil.exportObj( obj, filename)
         message = "Upload complete."
       
-      return REQUEST.RESPONSE.redirect( self.url_append_params( REQUEST[ 'HTTP_REFERER'], { 'manage_tabs_message' :message }))
+      return REQUEST.RESPONSE.redirect( standard.url_append_params( REQUEST[ 'HTTP_REFERER'], { 'manage_tabs_message' :message }))
 
 ################################################################################

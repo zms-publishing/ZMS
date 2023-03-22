@@ -1078,7 +1078,7 @@ class ObjAttrs(object):
           h = self.getConfProperty('ZMS.image.default.height', 400)
         rtn['height'] = int(h)
         rtn['filename'] = blob.getFilename()
-        rtn['src'] = self.url_append_params(file.absolute_url(), {'ts':time.time()})
+        rtn['src'] = standard.url_append_params(file.absolute_url(), {'ts':time.time()})
         # extra
         rtn['lang'] = thumbkey
         rtn['key'] = thumbkey
@@ -1147,7 +1147,7 @@ class ObjAttrs(object):
         if len(fileurl.split('//')) > 2:
         # Fix ocasionally missing temp_folder path
           fileurl = '%s//temp_folder/%s'%(fileurl.rsplit('//',1)[0],fileurl.rsplit('//',1)[1])
-        rtn['src'] = self.url_append_params(fileurl, {'ts':time.time()})
+        rtn['src'] = standard.url_append_params(fileurl, {'ts':time.time()})
       # Return JSON.
       if format == 'json':
         rtn = self.str_json(rtn)

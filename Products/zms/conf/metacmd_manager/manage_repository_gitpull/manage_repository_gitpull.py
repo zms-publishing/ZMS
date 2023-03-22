@@ -59,12 +59,12 @@ def manage_repository_gitpull(self, request=None):
 		else:
 			message.append('Error: To execute this function a user role Manager or ZMSAdministrator is needed.')
 		### return with message
-		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':''.join(message)}))
+		request.response.redirect(standard.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':''.join(message)}))
 
 	# --- Cancel.
 	# ---------------------------------
 	elif btn=='BTN_CANCEL':
-		request.response.redirect(self.url_append_params(came_from,{'lang':request['lang']}))
+		request.response.redirect(standard.url_append_params(came_from,{'lang':request['lang']}))
 
 	# --- Display initial form.
 	# -------------------------

@@ -174,7 +174,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
           message = "[ConstraintViolation]: " + str( sys.exc_info()[1])
       
       # Return with message.
-      target = self.url_append_params( target, { 'lang': lang, 'manage_tabs_message': message})
+      target = standard.url_append_params( target, { 'lang': lang, 'manage_tabs_message': message})
       target = '%s#zmi_item_%s'%( target, self.id)
       return RESPONSE.redirect( target)
 

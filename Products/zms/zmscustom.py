@@ -123,7 +123,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
     if redirect_self:
       target = '%s/%s'%(target, obj.id)
     target = REQUEST.get( 'manage_target', '%s/manage_main'%target)
-    target = self.url_append_params( target, { 'lang': lang, messagekey: message})
+    target = standard.url_append_params( target, { 'lang': lang, messagekey: message})
     target = '%s#zmi_item_%s'%( target, obj.id)
     RESPONSE.redirect(target)
   
@@ -547,7 +547,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       
       # Return with message.
       params[messagekey] = message
-      target = self.url_append_params( target, params)
+      target = standard.url_append_params( target, params)
       return REQUEST.RESPONSE.redirect(target)
 
 
@@ -657,7 +657,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       
       # Return with message.
       params[messagekey] = message
-      target = self.url_append_params( target, params)
+      target = standard.url_append_params( target, params)
       return REQUEST.RESPONSE.redirect(target)
 
 

@@ -383,14 +383,14 @@ class ZMSMetadictManager(object):
           error = str( sys.exc_info()[0])
           if sys.exc_info()[1]:
             error += ': ' + str( sys.exc_info()[1])
-          target = self.url_append_params( target, { 'manage_tabs_error_message':error})
+          target = standard.url_append_params( target, { 'manage_tabs_error_message':error})
         
         # Return with message.
-        target = self.url_append_params( target, { 'lang':lang, 'id':id})
-        target = self.url_append_params( target, extra)
+        target = standard.url_append_params( target, { 'lang':lang, 'id':id})
+        target = standard.url_append_params( target, extra)
         if len( message) > 0:
           message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-          target = self.url_append_params( target, { 'manage_tabs_message':message})
+          target = standard.url_append_params( target, { 'manage_tabs_message':message})
         return RESPONSE.redirect( target)
 
 ################################################################################

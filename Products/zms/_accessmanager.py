@@ -1162,7 +1162,7 @@ class AccessManager(AccessableContainer):
       # Return with message.
       if RESPONSE:
         target = REQUEST.get( 'manage_target', 'manage_users')
-        target = self.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
+        target = standard.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
         return RESPONSE.redirect(target)
 
 
@@ -1418,7 +1418,7 @@ class AccessManager(AccessableContainer):
       # Return with message.
       if RESPONSE:
         target = REQUEST.get( 'manage_target', 'manage_users')
-        target = self.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
+        target = standard.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
         return RESPONSE.redirect(target)
 
 ################################################################################

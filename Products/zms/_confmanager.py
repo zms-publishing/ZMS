@@ -764,7 +764,7 @@ class ConfManager(
         d = {'lang': lang,'manage_tabs_message': message}
         for param in params:
           d[param] = REQUEST.get( param, '')
-        return RESPONSE.redirect( self.url_append_params( 'manage_customize', d) + '#%s'%key)
+        return RESPONSE.redirect( standard.url_append_params( 'manage_customize', d) + '#%s'%key)
       
       return message
 

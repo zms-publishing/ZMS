@@ -58,7 +58,7 @@ class ZMSCharformatManager(object):
         self.charformats = copy.deepcopy(self.charformats)
 
     def importCharformatXml(self, xml):
-      v = self.parseXmlString(xml)
+      v = standard.parseXmlString(xml)
       if isinstance(v, list):
         for item in v:
           self._importCharformatXml(item)

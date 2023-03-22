@@ -184,7 +184,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         self.model = []
       if container_xml != model_xml:
         self.model_xml = container_xml
-        self.model = self.parseXmlString(self.model_xml)
+        self.model = standard.parseXmlString(self.model_xml)
       return self.model
 
 
@@ -1560,7 +1560,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             if remote is None:
               value = self._delete_blob(tablename=tablename, id=id, rowid=rowid)
             else:
-              value = self.http_import(self.url_append_params(remote+'/delete_blob', {'auth_user':blob.get('auth_user', auth_user.getId()),'tablename':tablename,'id':id,'rowid':rowid}), method='POST')
+              value = self.http_import(standard.url_append_params(remote+'/delete_blob', {'auth_user':blob.get('auth_user', auth_user.getId()),'tablename':tablename,'id':id,'rowid':rowid}), method='POST')
             c.append({'id':id,'value':value})
           elif values.get('blob_%s'%id, None) is not None and values.get('blob_%s'%id).filename:
             data = values.get('blob_%s'%id, None)
@@ -1569,7 +1569,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
               value = self._set_blob(tablename=tablename, id=id, rowid=rowid, file=file)
             else:
               xml = file.toXml()
-              value = self.http_import(self.url_append_params(remote+'/set_blob', {'auth_user':blob.get('auth_user', auth_user.getId()),'tablename':tablename,'id':id,'rowid':rowid,'xml':xml}), method='POST')
+              value = self.http_import(standard.url_append_params(remote+'/set_blob', {'auth_user':blob.get('auth_user', auth_user.getId()),'tablename':tablename,'id':id,'rowid':rowid,'xml':xml}), method='POST')
             c.append({'id':id,'value':value})
           consumed = True
         if not consumed and tablecol.get('fk') and tablecol.get('fk').get('editable'):
@@ -1782,7 +1782,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       blob = column['blob']
       path = blob['path']
       if file is None and xml is not None:
-        file = self.parseXmlString( xml)
+        file = standard.parseXmlString( xml)
       # Normalize filename (crop path in local-fs)
       filename = file.filename
       i = max( filename.rfind('/'), filename.rfind('\\'))
@@ -2170,10 +2170,10 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         message = self.getZMILangStr('MSG_MOVEDOBJTOPOS')%(("<i>%s</i>"%attr_id), (pos+1))
       
       # Return with message.
-      target = self.url_append_params( target, { 'lang':lang, 'id':id, 'attr_id':REQUEST.get('attr_id', '')})
+      target = standard.url_append_params( target, { 'lang':lang, 'id':id, 'attr_id':REQUEST.get('attr_id', '')})
       if len( message) > 0:
         message += ' (in '+str(int((time.time()-t0)*100.0)/100.0)+' secs.)'
-        target = self.url_append_params( target, { 'manage_tabs_message':message})
+        target = standard.url_append_params( target, { 'manage_tabs_message':message})
       return RESPONSE.redirect( target)
 
 

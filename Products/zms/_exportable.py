@@ -262,7 +262,7 @@ class Exportable(_filtermanager.FilterItem):
     def manage_export(self, export_format, lang, REQUEST, RESPONSE):
       """ Exportable.manage_export """
       
-      title = self.getHome().id + '_' + self.id_quote( self.getTitlealt( REQUEST))
+      title = self.getHome().id + '_' + standard.id_quote( self.getTitlealt( REQUEST))
       
       # Get export format.
       try:

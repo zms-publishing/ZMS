@@ -550,7 +550,7 @@ class ZMSZCatalogConnector(
     #  ZMSZCatalogConnector.reindex_node:
     # --------------------------------------------------------------------------
     def reindex_node(self, node):
-      node.writeLog('[ZMSZCatalogConnector.reindex_node]')
+      standard.writeLog( node, '[ZMSZCatalogConnector.reindex_node]')
       zcm = self.getCatalogAdapter()
       # Reindex item to catalog.
       def cb(node, d):

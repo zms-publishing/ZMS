@@ -30,6 +30,7 @@
               <item key="custom"><![CDATA[<!DOCTYPE html>
 <html lang="en" tal:define="
 		Std modules/Products.PythonScripts/standard;
+		standard modules/Products.zms/standard;
 		newline_to_br nocall:Std/newline_to_br;
 		zmscontext options/zmscontext;
 		dummy0 python:zmscontext.f_standard_html_request();
@@ -48,7 +49,7 @@
 		common python:container.common.absolute_url();
 		tmpl_url python:container.absolute_url();
 		channels python:{};
-		dummy0 python:[x.operator_setitem(channels,x.id_quote(x.getTitlealt(request)),x) for x in zmscontext.getDocumentElement().filteredChildNodes(request,zmscontext.PAGES)];
+		dummy0 python:[x.operator_setitem(channels,standard.id_quote(x.getTitlealt(request)),x) for x in zmscontext.getDocumentElement().filteredChildNodes(request,zmscontext.PAGES)];
 		">
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />

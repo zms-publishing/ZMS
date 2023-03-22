@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html tal:define="
+    standard modules/Products.zms/standard;
     zmscontext options/zmscontext;
     dummy0 python:zmscontext.f_standard_html_request(); 
     zmsroot python:zmscontext.getDocumentElement();
     lang request/lang; 
     theme_common python:here.common.absolute_url();
     channels python:{};
-    dummy0 python:map(lambda x:x.operator_setitem(channels,x.id_quote(x.getTitlealt(request)),x),zmscontext.getDocumentElement().filteredChildNodes(request,zmscontext.PAGES));
+    dummy0 python:map(lambda x:x.operator_setitem(channels,standard.id_quote(x.getTitlealt(request)),x),zmscontext.getDocumentElement().filteredChildNodes(request,zmscontext.PAGES));
     teasers python:zmscontext.getTeaserElements()"
   xmlns="http://www.w3.org/1999/xhtml"
   xml:lang="de" lang="de"

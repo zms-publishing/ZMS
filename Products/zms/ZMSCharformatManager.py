@@ -44,7 +44,7 @@ class ZMSCharformatManager(object):
     # --------------------------------------------------------------------------
 
     def _importCharformatXml(self, item):
-        newId = self.id_quote(item.get('display', ''))
+        newId = standard.id_quote(item.get('display', ''))
         if len(newId) == 0:
           newId = self.getNewId('fmt')
         newId = item.get('id', newId)

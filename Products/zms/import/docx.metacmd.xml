@@ -53,7 +53,7 @@ def process_images(docbookxml):
     q = pq[1]
     r = re.compile(p)
     for f in r.findall(docbookxml):
-      d = dict(re.findall('\\s(.*?)=&quot;(.*?)&quot;',f))
+      d = dict(re.findall(r'\\s(.*?)=&quot;(.*?)&quot;',f))
       read_image(d)
       index = len(images)
       name = d['src'].split('/')[-1]
@@ -294,7 +294,7 @@ def process_paragraphs(html):
   return docbookxml
 
 def html2docbook(html):
-  r = re.compile('<(.*?)>')
+  r = re.compile(r'<(.*?)>')
   for f in r.findall(html):
     n = f
     if n.find(' ') > 0:

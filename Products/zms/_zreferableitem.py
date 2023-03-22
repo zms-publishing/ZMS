@@ -53,7 +53,7 @@ def getInternalLinkDict(self, url):
   ref_params = {}
   if url.find(';') > 0:
     anchor = url[url.find(';'):-1]
-    ref_params = dict(re.findall(';(\w*)=(\w*)', anchor))
+    ref_params = dict(re.findall(r';(\w*)=(\w*)', anchor))
     url = '{$%s}'%url[2:url.find(';')]
   # Anchor.
   ref_anchor = ''
@@ -386,7 +386,7 @@ class ZReferableItem(object):
       # Params.
       ref_params = {}
       if url.find(';') > 0:
-        ref_params = dict(re.findall(';(\w*)=(\w*)', url[url.find(';'):-1]))
+        ref_params = dict(re.findall(r';(\w*)=(\w*)', url[url.find(';'):-1]))
         url = '{$%s}'%url[2:url.find(';')]
       # Get object.
       if url.startswith('{$') and url.endswith('}'):
@@ -435,7 +435,7 @@ class ZReferableItem(object):
       # Params.
       ref_params = {}
       if url.find(';') > 0:
-        ref_params = dict(re.findall(';(\w*)=(\w*)', url[url.find(';'):-1]))
+        ref_params = dict(re.findall(r';(\w*)=(\w*)', url[url.find(';'):-1]))
         url = '{$%s}'%url[2:url.find(';')]
       # Anchor.
       ref_anchor = ''

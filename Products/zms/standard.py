@@ -686,7 +686,7 @@ def id_prefix(s):
   @return: Id-prefix
   @rtype: C{str}
   """
-  return re.findall('^(\\D*)', s)[0]
+  return re.findall(r'^(\\D*)', s)[0]
 
 
 security.declarePublic('id_quote')

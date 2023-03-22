@@ -317,7 +317,7 @@ class ZMSRepositoryManager(
           d['version'] = [int(x) for x in o.get('revision', '0.0.0').split('.')]
         except:
           # version schmeme 0.0.0 must not contain strings
-          d['version'] = list(map(int, re.findall('\d+', o.get('revision', '0.0.0'))))
+          d['version'] = list(map(int, re.findall(r'\d+', o.get('revision', '0.0.0'))))
         d['meta_type'] = 'Script (Python)'
         l[d['filename']] = d
       return l

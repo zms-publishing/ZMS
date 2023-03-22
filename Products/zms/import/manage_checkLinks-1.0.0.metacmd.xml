@@ -84,12 +84,12 @@ def manage_checkLinks( self):
   
   def handleInline(node,v): 
     l = []
-    p = '<a(.*?)>(.*?)<\\/a>'
+    p = r'<a(.*?)>(.*?)<\\/a>'
     r = re.compile(p)
     for f in r.findall(v):
       internal = False
       ref = None
-      d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
+      d = dict(re.findall(r'\\s(.*?)="(.*?)"',f[0]))
       if d.get('data-id',None)!=None:
         data_id = d['data-id']
         ref = node.getLinkObj(data_id)

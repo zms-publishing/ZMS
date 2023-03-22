@@ -157,7 +157,7 @@ def localIndexHtml(self, obj, level, html, xhtml=False):
    url = url[url.find('/'):]
    base_url = doc_url
    base_url = base_url[ : base_url.find(url)]
-   html = re.sub( '"([^("\')]*?)'+url+'([^("\')]*?)"', '"'+base_url+url+'\\2"', standard.pystr(html))
+   html = re.sub(r'"([^("\')]*?)'+url+'([^("\')]*?)"', '"'+base_url+url+'\\2"', standard.pystr(html))
    
    # Process absolute URLs.
    s_new = '%s'%sRoot

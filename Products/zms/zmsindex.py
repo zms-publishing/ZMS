@@ -438,7 +438,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
         for f in r.findall(v):
           data_data = ''
           brain = None
-          d = dict(re.findall(r'\\s(.*?)="(.*?)"',f[0]))
+          d = dict(re.findall(r'\s(.*?)="(.*?)"',f[0]))
           if brain is None and 'data-id' in d:
             data_id = d['data-id']
             log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline data_id=%s'%data_id))
@@ -447,13 +447,13 @@ class ZMSIndex(ZMSItem.ZMSItem):
               data_data = data_id[data_id.find(';'):-1]
           if brain is None and 'href' in d:
             href = d['href']
-            href = re.sub('http://localhost:(\\d)*','',href)
+            href = re.sub(r'http://localhost:(\d)*','',href)
             for domain in domains:
               path = domains[domain]
               href = re.sub(domain,path,href)
             log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline href=%s'%href))
             if href.startswith('.') or href.startswith('/'):
-              nf = re.compile(r'(.*?)\\?op=not_found&url={\\$(.*?)}').findall(href)
+              nf = re.compile(r'(.*?)\?op=not_found&url={\$(.*?)}').findall(href)
               if nf:
                 url = nf[0][1]
               else:

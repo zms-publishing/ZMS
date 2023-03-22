@@ -173,7 +173,7 @@ class DeprecatedAPI(object):
       data = stylesheet.raw
     elif stylesheet.meta_type in ['File']:
       data = stylesheet.data
-    data = re.sub( r'/\*(.*?)\*/', '', data)
+    data = re.sub(r'/\*(.*?)\*/', '', data)
     value = {}
     for elmnt in data.split('}'):
       i = elmnt.find('{')

@@ -20,7 +20,6 @@
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import inspect
 import os
 import re
 import time

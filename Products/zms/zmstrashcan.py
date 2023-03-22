@@ -18,10 +18,8 @@
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-import copy
 import time
 # Product Imports.
-from Products.zms import _confmanager
 from Products.zms import standard
 from Products.zms import zmscontainerobject
 

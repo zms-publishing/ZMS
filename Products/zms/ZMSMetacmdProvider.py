@@ -20,12 +20,9 @@
 # Imports.
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.PageTemplates import ZopePageTemplate
 import copy
-import os
 from zope.interface import implementer
 # Product Imports.
-from Products.zms import _fileutil
 from Products.zms import standard
 from Products.zms import zopeutil
 from Products.zms import IZMSMetacmdProvider, IZMSConfigurationProvider, IZMSRepositoryProvider

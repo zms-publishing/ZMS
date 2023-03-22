@@ -17,12 +17,9 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
-import ZPublisher.HTTPRequest
 import copy
 # Product Imports.
 from Products.zms import standard
-from Products.zms import _blobfields
 
 
 ################################################################################

@@ -20,10 +20,8 @@
 from ZPublisher.Iterators import filestream_iterator
 from App.config import getConfiguration
 import fnmatch
-import io
 import os
 import shutil
-import sys
 import tempfile
 import zipfile
 import zope.contenttype

@@ -17,11 +17,9 @@
 ################################################################################
 
 # Imports.
-from DateTime.DateTime import DateTime
 from OFS.Image import Image, File
 import ZPublisher.HTTPRequest
 import datetime
-import fnmatch
 import math
 import string
 import time

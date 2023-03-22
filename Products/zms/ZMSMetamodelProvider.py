@@ -22,7 +22,6 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 from zope.interface import implementer
 # Product Imports.
-from Products.zms import _confmanager
 from Products.zms import standard
 from Products.zms import IZMSConfigurationProvider, IZMSRepositoryProvider
 from Products.zms import IZMSMetamodelProvider, ZMSMetaobjManager, ZMSMetadictManager

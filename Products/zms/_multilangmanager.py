@@ -19,7 +19,6 @@
 # Imports.
 from App.Common import package_home
 import OFS.misc_
-import copy
 from zope.interface import implementer
 # Product Imports.
 from Products.zms import IZMSLocale

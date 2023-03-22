@@ -20,22 +20,14 @@
 # Imports.
 from distutils.version import LooseVersion
 import ZPublisher.HTTPRequest
-import collections
 import copy
 import io
-import os
-import sys
 import time
-import zExceptions
-import zope.interface
 # Product Imports.
-from Products.zms import IZMSRepositoryProvider
 from Products.zms import standard
 from Products.zms import zopeutil
 from Products.zms import _blobfields
-from Products.zms import _fileutil
 from Products.zms import _globals
-from Products.zms import _multilangmanager
 from Products.zms import _ziputil
 
 

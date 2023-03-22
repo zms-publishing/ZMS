@@ -22,14 +22,12 @@ from AccessControl.class_init import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
 import operator
-import sys
 import time
 import zExceptions
 # Product Imports.
 from Products.zms import standard
 from Products.zms import zopeutil 
 from Products.zms import _blobfields
-from Products.zms import _confmanager
 from Products.zms import _globals
 from Products.zms import _zmsattributecontainer
 

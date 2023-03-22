@@ -27,8 +27,6 @@ import sys
 import time
 import zExceptions
 # Product Imports.
-from Products.zms import _confmanager
-from Products.zms import _globals
 from Products.zms import _xmllib
 from Products.zms import standard
 

@@ -17,15 +17,10 @@
 ################################################################################
 
 # Imports.
-from App.Common import package_home
-from io import StringIO
 import ZPublisher.HTTPRequest
 import collections
 import os
-import sys
 import tempfile
-import time
-import transaction
 import zExceptions
 # Product Imports.
 from Products.zms import standard

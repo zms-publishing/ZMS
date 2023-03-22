@@ -18,7 +18,6 @@
 
 # Imports.
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-import copy
 import logging
 import os
 import time

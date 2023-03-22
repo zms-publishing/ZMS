@@ -21,7 +21,6 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from zope.interface import implementer
 # Product Imports.
 from Products.zms import IZMSCatalogConnector
-from Products.zms import ZMSZCatalogAdapter
 from Products.zms import ZMSItem
 from Products.zms import standard
 

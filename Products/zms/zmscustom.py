@@ -22,10 +22,8 @@ from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import sys
 import time
 # Product Imports.
-from Products.zms import _confmanager
 from Products.zms import _fileutil
 from Products.zms import _importable
 from Products.zms import _ziputil

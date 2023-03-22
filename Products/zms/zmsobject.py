@@ -27,12 +27,10 @@ import ZPublisher.HTTPRequest
 import collections
 import re
 import time
-import zExceptions
 # Product Imports.
 from Products.zms import _accessmanager
 from Products.zms import _blobfields
 from Products.zms import _cachemanager
-from Products.zms import _confmanager
 from Products.zms import _copysupport
 from Products.zms import _deprecatedapi
 from Products.zms import _exportable
@@ -46,7 +44,6 @@ from Products.zms import _pathhandler
 from Products.zms import _versionmanager
 from Products.zms import _xmllib
 from Products.zms import _textformatmanager
-from Products.zms import _zmsattributecontainer
 from Products.zms import _zreferableitem
 from Products.zms import ZMSItem
 from Products.zms import ZMSWorkflowItem

@@ -26,9 +26,7 @@ from Products.zms import zmscustom
 from Products.zms import zmsobject
 from Products.zms import zmsproxyobject
 from Products.zms import standard
-from Products.zms import _confmanager
 from Products.zms import _xmllib
-from Products.zms import _zreferableitem
 from Products.zms import zmslinkelement
 
 """

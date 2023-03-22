@@ -49,7 +49,6 @@ import sys
 import time
 import traceback
 import zExceptions
-import six
 
 # Product Imports.
 from Products.zms import _globals

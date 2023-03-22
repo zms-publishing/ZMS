@@ -21,8 +21,7 @@ from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import ZPublisher.HTTPRequest
 import copy
-import time
-from zope.interface import implementer, providedBy
+from zope.interface import implementer
 # Product Imports.
 from Products.zms import _blobfields
 from Products.zms import IZMSConfigurationProvider, IZMSRepositoryProvider

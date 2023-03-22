@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from App.Common import package_home
 import copy
 # Product Imports.
 from Products.zms import ZMSTextformat

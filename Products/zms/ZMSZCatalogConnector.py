@@ -26,12 +26,10 @@ from zope.interface import implementer
 import copy
 import sys
 import time
-import zExceptions
 # Product Imports.
 from Products.zms import standard
 from Products.zms import IZMSCatalogConnector
 from Products.zms import ZMSItem
-from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------

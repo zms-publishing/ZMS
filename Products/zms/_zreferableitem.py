@@ -17,14 +17,10 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import base64
-import copy
 import re
 # Product Imports.
-from Products.zms import _confmanager
-from Products.zms import _objattrs
 from Products.zms import standard
 
 # ------------------------------------------------------------------------------

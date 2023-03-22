@@ -19,26 +19,16 @@
 # Imports.
 from io import StringIO
 from DateTime import DateTime
+from OFS.Image import File
 import collections
-import copy
-import os
 import pyexpat
 import re
-import tempfile
 import time
-import unicodedata
 import xml.dom
-
-from App.Common import package_home
-# import Globals
-from OFS.Image import File
-
 # Product Imports
 from Products.zms import standard
 from Products.zms import _blobfields
-from Products.zms import _fileutil
 from Products.zms import _globals
-from Products.zms import _objattrs
 from Products.zms import zopeutil
 
 

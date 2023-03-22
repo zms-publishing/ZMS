@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from fnmatch import fnmatch
 from io import StringIO
 from AccessControl import ClassSecurityInfo
@@ -27,24 +26,18 @@ from DateTime.DateTime import DateTime
 from OFS.Image import Image
 from OFS.Folder import Folder
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.PageTemplates import ZopePageTemplate
-from Products.PythonScripts import PythonScript
 import OFS.misc_
 import configparser
 import importlib
 import io
 import operator
 import os
-import tempfile
-import time
-import xml.dom.minidom
 import zExceptions
 from zope.interface import implementer, providedBy
 # Product imports.
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
 from Products.zms import standard
 from Products.zms import ZMSFilterManager, IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
-from Products.zms import _exportable
 from Products.zms import _fileutil
 from Products.zms import _repositoryutil
 from Products.zms import _mediadb

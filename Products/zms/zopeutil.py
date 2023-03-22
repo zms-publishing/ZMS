@@ -326,7 +326,7 @@ def addZSqlMethod(container, id, title, data):
     d['max_cache'] = ob.max_cache_
     d['cache_time'] = ob.cache_time_
     for key in d:
-      f = re.findall('<%s>((.|\s)*?)</%s>\n'%(key,key),data)
+      f = re.findall(r'<%s>((.|\s)*?)</%s>\n'%(key,key),data)
       if f:
         value = f[0][0]
         d[key] = value

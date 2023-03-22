@@ -1098,11 +1098,11 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             fk_fieldname = tablecol['fk']['fieldname']
             if fk_fieldname.upper().find(fk_tablename.upper()+'.') < 0:
               fk_fieldname = fk_tablename+'.'+fk_fieldname
-            fk_fieldname = standard.re_sub( fk_tablename+'\.', fk_tablename_alias+'.', fk_fieldname, ignorecase=True)
+            fk_fieldname = standard.re_sub( fk_tablename+r'\.', fk_tablename_alias+'.', fk_fieldname, ignorecase=True)
             fk_displayfield = tablecol['fk']['displayfield']
             if fk_displayfield.upper().find(fk_tablename.upper()+'.') < 0:
               fk_displayfield = fk_tablename+'.'+fk_displayfield
-            fk_displayfield = standard.re_sub( fk_tablename+'\.', fk_tablename_alias+'.', fk_displayfield, ignorecase=True)
+            fk_displayfield = standard.re_sub( fk_tablename+r'\.', fk_tablename_alias+'.', fk_displayfield, ignorecase=True)
             selectClause.append( '%s AS %s'%(fk_displayfield, tablecol['id']))
             fromClause.append( 'LEFT JOIN %s %s %s ON %s.%s=%s'%(fk_tablename, table_AS, fk_tablename_alias, tablename, tablecol['id'], fk_fieldname))
           elif tablecol.get('type', '?') != '?':
@@ -1240,7 +1240,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                 if fk_displayfield.find(fk_tablename+'.') < 0:
                   fk_displayfield = fk_tablename+'.'+fk_displayfield
                 coltable = fk_tablename
-                colname = standard.re_sub( fk_tablename+'\.', fk_tablename_alias+'.', fk_displayfield, ignorecase=True)
+                colname = standard.re_sub( fk_tablename+r'\.', fk_tablename_alias+'.', fk_displayfield, ignorecase=True)
                 qualifiedname = colname
                 if sessionop == '':
                   sessionop = 'LIKE'

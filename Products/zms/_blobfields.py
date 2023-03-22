@@ -155,7 +155,7 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
     pass
   f = None
   if isinstance(file,str):
-    f = re.findall('^data:(.*?);base64,([\s\S]*)$',file)
+    f = re.findall(r'^data:(.*?);base64,([\s\S]*)$',file)
   if f:
     mt = f[0][0]
     file = base64.b64decode(f[0][1])

@@ -12,6 +12,7 @@ def manage_zcatalog_export_data( self):
       <item key="execution" type="int">0</item>
       <item key="icon_clazz"><![CDATA[fas fa-cogs]]></item>
       <item key="id">manage_zcatalog_export_data</item>
+      <item key="package">com.zms.foundation.zcatalog.opensearch</item>
       <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">
         <list>
@@ -52,7 +53,8 @@ def manage_zcatalog_export_schema( self):
       <item key="execution" type="int">0</item>
       <item key="icon_clazz"><![CDATA[fas fa-cogs]]></item>
       <item key="id">manage_zcatalog_export_schema</item>
-      <item key="meta_type"><![CDATA[External Method]]></item>
+      <item key="package">com.zms.foundation.zcatalog.opensearch</item>
+     <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">
         <list>
           <item>*</item>

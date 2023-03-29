@@ -524,7 +524,7 @@ class ZMSContainerObject(
       ob = None
       root = standard.nvl(root, self.getDocumentElement())
       while True:
-        children = self.filteredChildNodes(REQUEST, self.PAGES)
+        children = [childNode for childNode in self.filteredChildNodes(REQUEST, self.PAGES) if ((incResource==False and not childNode.isResource(REQUEST)) or incResource==True) ]
         if len(children) > 0:
           ob = children[0]
         else:

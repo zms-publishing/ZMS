@@ -2,7 +2,7 @@
 
 <div class="ZMSZCatalogConnector ZMSZCatalogOpensearchConnector"
 	tal:define="
-		opensearch_url python:here.getConfProperty('opensearch.url','https://localhost:9200');">
+		opensearch_url python:here.getConfProperty('opensearch.url','https://admin:admin@localhost:9200');">
 	<div class="form-group row">
 		<label class="col-sm-2 control-label" for="opensearch_url"><span>URL</span></label>
 		<div class="col-sm-10"><input type="text" class="form-control" name="opensearch_url" tal:attributes="value opensearch_url"></div>

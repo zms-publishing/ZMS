@@ -90,7 +90,7 @@ class ZMSZCatalogOpensearchConnector(
       p['wt'] = 'xml'
       p['start'] = page_index
       p['rows'] = page_size
-      opensearch_url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
+      opensearch_url = self.getConfProperty('opensearch.url', 'https://admin:admin@localhost:9200')
       url = standard.url_append_params(opensearch_url, p, sep='&')
       result = standard.http_import(self, url, method='GET', debug=debug)
       result = standard.re_sub('name="(.*?)_[ist]"', 'name="\\1"', standard.pystr(result))

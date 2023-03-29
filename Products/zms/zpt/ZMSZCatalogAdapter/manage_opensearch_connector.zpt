@@ -1,6 +1,6 @@
 <tal:block tal:define="zmscontext python:here.getSelf(); standard modules/Products.zms/standard;">
 
-<div id="ZCatalogOpensearchConnector" 
+<div class="ZMSZCatalogConnector ZMSZCatalogOpensearchConnector"
 	tal:define="
 		opensearch_url python:here.getConfProperty('opensearch.url','https://localhost:9200');">
 	<div class="form-group row">
@@ -30,7 +30,7 @@
 	<div class="form-group row">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10">
-			<tal:block tal:define="meta_cmds python:standard.sort_list(here.getMetaCmds(here,'zcatalog'),'name')">
+			<tal:block tal:define="meta_cmds python:standard.sort_list([x for x in here.getMetaCmds(here,'zcatalog') if x.get('package','').endswith('.opensearch')],'name')">
 				<div class="btn-group dropdown" tal:condition="meta_cmds">
 					<button class="btn btn-warning dropdown-toggle" type="button" id="teamDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>

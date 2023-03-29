@@ -22,7 +22,7 @@
 	</div>
 </div>
 
-<div id="ZCatalogSolrConnector" 
+<div class="ZMSZCatalogConnector ZMSZCatalogSolrConnector"
 	tal:define="
 		solr_url python:here.getConfProperty('solr.url','http://localhost:8983/solr');
 		solr_core python:here.getConfProperty('solr.core',here.getAbsoluteHome().id);
@@ -92,7 +92,7 @@
 	<div class="form-group row">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10">
-			<tal:block tal:define="meta_cmds python:standard.sort_list(here.getMetaCmds(here,'zcatalog'),'name')">
+			<tal:block tal:define="meta_cmds python:standard.sort_list([x for x in here.getMetaCmds(here,'zcatalog') if x.get('package','').endswith('.solr')],'name')">
 				<div class="btn-group dropdown" tal:condition="meta_cmds">
 					<button class="btn btn-warning dropdown-toggle" type="button" id="teamDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<tal:block tal:content="python:'----- %s -----'%here.getZMILangStr('ACTION_SELECT')%here.getZMILangStr('ATTR_ACTION')">ZCatalog-Interaction</tal:block>

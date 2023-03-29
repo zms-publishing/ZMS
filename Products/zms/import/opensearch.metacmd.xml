@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<list>
+  <item type="dictionary">
+    <dictionary>
+      <item key="data"><![CDATA[# Example code:
+
+def manage_zcatalog_export_data( self):
+  return "This is the external method manage_zcatalog_export_data"]]>
+      </item>
+      <item key="description"><![CDATA[Export JSON data?]]></item>
+      <item key="execution" type="int">0</item>
+      <item key="icon_clazz"><![CDATA[fas fa-cogs]]></item>
+      <item key="id">manage_zcatalog_export_data</item>
+      <item key="meta_type"><![CDATA[External Method]]></item>
+      <item key="meta_types" type="list">
+        <list>
+          <item>*</item>
+        </list>
+      </item>
+      <item key="name"><![CDATA[Export data]]></item>
+      <item key="revision">0.0.0</item>
+      <item key="roles" type="list">
+        <list>
+          <item>*</item>
+        </list>
+      </item>
+      <item key="title"><![CDATA[Export JSON data]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
+      <item key="data"><![CDATA[import json
+
+def manage_zcatalog_export_schema( self):
+  zmscontext = self
+  properties = {}
+  zca = zmscontext.getCatalogAdapter()
+  attrs = zca.getAttrs()
+  for attr_id in zca._getAttrIds():
+    attr = attrs.get(attr_id,{})
+    attr_type = attr.get('type', 'string')
+    attr_type = {'string':'text'}.get(attr_type,attr_type)
+    property = {}
+    property['type'] = attr_type
+    properties[attr_id] = property
+  mappings = {'properties':properties}
+  dictionary = {'mappings':mappings}
+  return json.dumps(dictionary, indent = 4)]]>
+      </item>
+      <item key="description"><![CDATA[Export JSON schema?]]></item>
+      <item key="execution" type="int">0</item>
+      <item key="icon_clazz"><![CDATA[fas fa-cogs]]></item>
+      <item key="id">manage_zcatalog_export_schema</item>
+      <item key="meta_type"><![CDATA[External Method]]></item>
+      <item key="meta_types" type="list">
+        <list>
+          <item>*</item>
+        </list>
+      </item>
+      <item key="name"><![CDATA[Export schema]]></item>
+      <item key="revision">0.0.0</item>
+      <item key="roles" type="list">
+        <list>
+          <item>*</item>
+        </list>
+      </item>
+      <item key="title"><![CDATA[Export JSON schema]]></item>
+    </dictionary>
+  </item>
+</list>

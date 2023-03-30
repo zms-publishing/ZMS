@@ -3,6 +3,66 @@
 <list>
   <item type="dictionary">
     <dictionary>
+      <item key="data"><![CDATA[import json
+
+def manage_zcatalog_export_schema( self):
+  zmscontext = self
+  properties = {}
+  properties['loc'] = {'type':'text'}
+  properties['index_html'] = {'type':'text'}
+  properties['meta_id'] = {'type':'keyword'}
+  properties['lang'] = {'type':'keyword'}
+  zca = zmscontext.getCatalogAdapter()
+  attrs = zca.getAttrs()
+  for attr_id in zca._getAttrIds():
+    attr = attrs.get(attr_id,{})
+    attr_type = attr.get('type', 'string')
+    attr_type = {'string':'text'}.get(attr_type,attr_type)
+    property = {}
+    property['type'] = attr_type
+    properties[attr_id] = property
+  mappings = {'properties':properties}
+  dictionary = {'mappings':mappings}
+  
+  import requests
+  from requests.auth import HTTPBasicAuth
+  url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
+  home_id = self.getHome().id
+  username = self.getConfProperty('opensearch.username', 'admin')
+  password = self.getConfProperty('opensearch.password', 'admin')
+  verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
+  auth = HTTPBasicAuth(username,password)
+  headers = {'Content-type': 'application/x-ndjson'}
+  response = requests.delete('%s/%s'%(url,home_id),auth=auth,verify=verify)
+  response = requests.put('%s/%s'%(url,home_id),auth=auth,headers=headers,json=dictionary,verify=verify)
+  response.raise_for_status()
+  data = response.json()
+
+  return json.dumps(dictionary, indent = 4)]]>
+      </item>
+      <item key="description"><![CDATA[Export JSON schema?]]></item>
+      <item key="execution" type="int">0</item>
+      <item key="icon_clazz"><![CDATA[fas fa-cogs]]></item>
+      <item key="id">manage_zcatalog_export_schema</item>
+      <item key="meta_type"><![CDATA[External Method]]></item>
+      <item key="meta_types" type="list">
+        <list>
+          <item>*</item>
+        </list>
+      </item>
+      <item key="name"><![CDATA[#1 Export schema]]></item>
+      <item key="package">com.zms.foundation.zcatalog.opensearch</item>
+      <item key="revision">0.0.0</item>
+      <item key="roles" type="list">
+        <list>
+          <item>*</item>
+        </list>
+      </item>
+      <item key="title"><![CDATA[Export JSON schema]]></item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
       <item key="data"><![CDATA[# --// manage_zcatalog_export_data //--
 
 import json
@@ -64,13 +124,13 @@ def manage_zcatalog_export_data( self):
     for k in ['id','home_id','custom']:
       if k in d:
         del d[k]
-    data.append(json.dumps(dindex, indent = 4))
-    data.append(json.dumps(d, indent = 4))
+    data.append(json.dumps(dindex))
+    data.append(json.dumps(d))
   zca.get_sitemap(cb, zmscontext, recursive=True)
-  data = '\n'.join([standard.pystr(x) for x in data])
+  data = '\n'.join([standard.pystr(x) for x in data])+'\n'
   data = data.replace(zmscontext.getHref2IndexHtml(request),zmscontext.absolute_url()[len(request['SERVER_URL']):]+'/')
   
-  jsonpath = '%s/var/%s/sitemap.json'%(inst_home,path)
+  jsonpath = '%s/var/%s/opensearch/%s.json'%(inst_home,path,home_id)
   try:
       bak = standard.localfs_read(jsonpath,mode='b')
       standard.localfs_write('%s.bak'%jsonpath,bak,mode='b')
@@ -95,7 +155,7 @@ def manage_zcatalog_export_data( self):
           <item>*</item>
         </list>
       </item>
-      <item key="name"><![CDATA[Export data]]></item>
+      <item key="name"><![CDATA[#2 Export data]]></item>
       <item key="package">com.zms.foundation.zcatalog.opensearch</item>
       <item key="revision">0.0.0</item>
       <item key="roles" type="list">
@@ -108,35 +168,54 @@ def manage_zcatalog_export_data( self):
   </item>
   <item type="dictionary">
     <dictionary>
-      <item key="data"><![CDATA[import json
+      <item key="data"><![CDATA[# --// manage_zcatalog_put_data //--
 
-def manage_zcatalog_export_schema( self):
-  zmscontext = self
-  properties = {}
-  zca = zmscontext.getCatalogAdapter()
-  attrs = zca.getAttrs()
-  for attr_id in zca._getAttrIds():
-    attr = attrs.get(attr_id,{})
-    attr_type = attr.get('type', 'string')
-    attr_type = {'string':'text'}.get(attr_type,attr_type)
-    property = {}
-    property['type'] = attr_type
-    properties[attr_id] = property
-  mappings = {'properties':properties}
-  dictionary = {'mappings':mappings}
-  return json.dumps(dictionary, indent = 4)]]>
+def manage_zcatalog_put_data( self):
+  request = self.REQUEST
+  RESPONSE =  request.RESPONSE
+  zmscontext = self.getLinkObj(request.get('uid','{$}'))
+  home = zmscontext.getDocumentElement()
+  home_id = home.getPhysicalPath()
+  home_id = home_id[home_id.index('content')-1]
+  inst_home = zmscontext.Control_Panel.getINSTANCE_HOME()
+  path = home_id
+  node = home
+  while True:
+    node = node.getPortalMaster()
+    if node is None: break
+    path = node.getHome().getId() + '/' + path
+  jsonpath = '%s/var/%s/opensearch/%s.json'%(inst_home,path,home_id)
+  f = open(jsonpath,'r')
+  dictionary = f.read()
+  f.close()
+
+  import requests
+  from requests.auth import HTTPBasicAuth
+  url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
+  home_id = self.getHome().id
+  username = self.getConfProperty('opensearch.username', 'admin')
+  password = self.getConfProperty('opensearch.password', 'admin')
+  verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
+  auth = HTTPBasicAuth(username,password)
+  headers = {'Content-type': 'application/x-ndjson'}
+  response = requests.put('%s/%s/_bulk'%(url,home_id),auth=auth,headers=headers,data=dictionary,verify=verify)
+  response.raise_for_status()
+  data = response.json()
+  return data
+
+# --// /manage_zcatalog_put_data //--]]>
       </item>
-      <item key="description"><![CDATA[Export JSON schema?]]></item>
+      <item key="description"><![CDATA[Put data?]]></item>
       <item key="execution" type="int">0</item>
       <item key="icon_clazz"><![CDATA[fas fa-cogs]]></item>
-      <item key="id">manage_zcatalog_export_schema</item>
+      <item key="id">manage_zcatalog_put_data</item>
       <item key="meta_type"><![CDATA[External Method]]></item>
       <item key="meta_types" type="list">
         <list>
           <item>*</item>
         </list>
       </item>
-      <item key="name"><![CDATA[Export schema]]></item>
+      <item key="name"><![CDATA[#3 Put data]]></item>
       <item key="package">com.zms.foundation.zcatalog.opensearch</item>
       <item key="revision">0.0.0</item>
       <item key="roles" type="list">
@@ -144,7 +223,7 @@ def manage_zcatalog_export_schema( self):
           <item>*</item>
         </list>
       </item>
-      <item key="title"><![CDATA[Export JSON schema]]></item>
+      <item key="title"><![CDATA[Put data]]></item>
     </dictionary>
   </item>
 </list>

@@ -2,10 +2,19 @@
 
 <div class="ZMSZCatalogConnector ZMSZCatalogOpensearchConnector"
 	tal:define="
-		opensearch_url python:here.getConfProperty('opensearch.url','https://admin:admin@localhost:9200');">
+		opensearch_url python:here.getConfProperty('opensearch.url','https://localhost:9200');
+		opensearch_username python:here.getConfProperty('opensearch.username','admin');">
 	<div class="form-group row">
 		<label class="col-sm-2 control-label" for="opensearch_url"><span>URL</span></label>
 		<div class="col-sm-10"><input type="text" class="form-control" name="opensearch_url" tal:attributes="value opensearch_url"></div>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-2 control-label" for="opensearch_username"><span>Username</span></label>
+		<div class="col-sm-10"><input type="text" class="form-control" name="opensearch_username" tal:attributes="value opensearch_username"></div>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-2 control-label" for="opensearch_password"><span>Password</span></label>
+		<div class="col-sm-10"><input type="password" class="form-control" name="opensearch_password" value="********"></div>
 	</div>
 	<div class="form-group row">
 		<div class="col-sm-2"></div>
@@ -15,6 +24,20 @@
 			</button>
 		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
+	<div class="form-group row">
+		<label class="col-sm-2 control-label" for="opensearch_qsearch"><span>Query</span></label>
+		<div class="col-sm-10">
+			<div class="input-group">
+				<input type="text" class="form-control" id="opensearch_qsearch" title="Enter Search Term..." 
+					placeholder="*" name="q" tal:attributes="value python:request.get('q','*')">
+				<div class="input-group-append">
+					<button class="btn btn-primary" 
+						tal:attributes="onclick python:'javascript:$ZMI.iframe(\'%s/search_json\',{q:$(\'#opensearch_qsearch\').val()},{iframe:true,title:\'Opensearch: Query <kbd style=\042cursor:pointer\042 class=\042badge-primary\042 title=\042Reopen as JSON\042 onclick=\042open_as_json()\042><i class=\042fas fa-external-link-square-alt\042></i> json</kbd>\',id:\'connector_results\'});;return false'%(here.absolute_url())"
+						><i class="fas fa-external-link-alt"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="form-group row">
 		<div class="col-sm-2">&nbsp;</div>
 		<div class="col-sm-10">
@@ -49,8 +72,8 @@
 </div>
 <script>
 //<!--
-	function open_as_xml() {
-		window.open($('iframe').attr('src').replace('&debug=1',''), name='_blank');
+	function open_as_json() {
+		window.open($('iframe').attr('src'), name='_blank');
 	}
 //-->
 </script>

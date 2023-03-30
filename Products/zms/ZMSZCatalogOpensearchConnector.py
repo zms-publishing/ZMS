@@ -22,7 +22,6 @@ from zope.interface import implementer
 # Product Imports.
 from Products.zms import IZMSCatalogConnector
 from Products.zms import ZMSItem
-from Products.zms import standard
 
 
 ################################################################################
@@ -65,84 +64,23 @@ class ZMSZCatalogOpensearchConnector(
 
 
     # --------------------------------------------------------------------------
-    #  ZMSZCatalogOpensearchConnector.search_xml:
+    #  ZMSZCatalogOpensearchConnector.search_json:
     # --------------------------------------------------------------------------
-    def search_xml(self, q, page_index=0, page_size=10, debug=0, REQUEST=None, RESPONSE=None):
-      """ ZMSZCatalogOpensearchConnector.search_xml """
-      # Check constraints.
-      zcm = self.getCatalogAdapter()
-      attrs = zcm.getAttrs()
-      page_index = int(page_index)
-      page_size = int(page_size)
-      REQUEST.set('lang', REQUEST.get('lang', self.getPrimaryLanguage()))
-      RESPONSE = REQUEST.RESPONSE
-      content_type = 'text/xml; charset=utf-8'
-      debug = int(debug)
-      if debug:
-        content_type = 'text/plain; charset=utf-8'
-      RESPONSE.setHeader('Content-Type', content_type)
-      RESPONSE.setHeader('Cache-Control', 'no-cache')
-      RESPONSE.setHeader('Pragma', 'no-cache')
-      RESPONSE.setHeader('Access-Control-Allow-Origin', '*')
-      # Execute query.
-      p = {}
-      p['q'] = q
-      p['wt'] = 'xml'
-      p['start'] = page_index
-      p['rows'] = page_size
-      opensearch_url = self.getConfProperty('opensearch.url', 'https://admin:admin@localhost:9200')
-      url = standard.url_append_params(opensearch_url, p, sep='&')
-      result = standard.http_import(self, url, method='GET', debug=debug)
-      result = standard.re_sub('name="(.*?)_[ist]"', 'name="\\1"', standard.pystr(result))
-      return result
-
-
-    def _get_field_name(self, k):
-      zcm = self.getCatalogAdapter()
-      attrs = zcm.getAttrs()
-      if k not in ['id']:
-        suffix = 's'
-        if k in attrs:
-          attr_type = attrs[k].get('type', 'text')
-          attr_suffix = {'text':'t','string':'t','select':'s','multiselect':'s','int':'i'}
-          suffix = attr_suffix.get(attr_type, suffix)
-        k = '%s_%s'%(k, suffix)
-      return k
-
-
-    def __get_add_xml(self, node, recursive, xmlattrs={}):
-      results = []
-      zcm = self.getCatalogAdapter()
-      attrs = zcm.getAttrs()
-      def cb(node, d):
-        xml =  []
-        xml.append('<doc>')
-        text = []
-        for k in d:
-          name = k
-          boost = 1.0
-          v = d[k]
-          if k not in ['id']:
-            if k in attrs:
-              boost = attrs[k]['boost']
-              if isinstance(v, str):
-                name = '%s_t'%k
-                text.append(v)
-            else:
-              if isinstance(v, str):
-                name = '%s_s'%k
-          xml.append('<field name="%s" boost="%.1f">%s</field>'%(name, boost, v))
-        xml.append('<field name="text_t">%s</field>'%' '.join([x for x in text if x]))
-        xml.append('</doc>')
-        try:
-          results.extend(xml)
-        except:
-          standard.writeError(node,"can't cb")
-      zcm.get_sitemap(cb, node, recursive)
-      results.insert(0, '<?xml version="1.0"?>')
-      results.insert(1, '<add'+' '.join(['']+['%s="%s"'%(x, str(xmlattrs[x])) for x in xmlattrs])+'>')
-      results.append('</add>')
-      return '\n'.join(results)
+    def search_json(self, q, REQUEST, RESPONSE=None):
+      """ ZMSZCatalogOpensearchConnector.search_json """
+      import requests
+      from requests.auth import HTTPBasicAuth
+      d = {"query":{"match":{"title":q}}}
+      url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
+      home_id = self.getHome().id
+      username = self.getConfProperty('opensearch.username', 'admin')
+      password = self.getConfProperty('opensearch.password', 'admin')
+      verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
+      auth = HTTPBasicAuth(username,password)
+      response = requests.get('%s/%s/_search?pretty=true'%(url,home_id),auth=auth,json=d,verify=verify)
+      response.raise_for_status()
+      data = response.json()
+      return data
 
 
     # --------------------------------------------------------------------------
@@ -180,6 +118,9 @@ class ZMSZCatalogOpensearchConnector(
         # -----
         if btn == 'Save':
           self.setConfProperty('opensearch.url', REQUEST['opensearch_url'])
+          if REQUEST.get('opensearch_password','********') != '********':
+            self.setConfProperty('opensearch.username', REQUEST['opensearch_username'])
+            self.setConfProperty('opensearch.password', REQUEST['opensearch_password'])
         
         return message
 

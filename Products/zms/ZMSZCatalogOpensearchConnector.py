@@ -70,7 +70,8 @@ class ZMSZCatalogOpensearchConnector(
       """ ZMSZCatalogOpensearchConnector.search_json """
       import requests
       from requests.auth import HTTPBasicAuth
-      d = {"query":{"match":{"title":q}}}
+      import json
+      d = {"query":{"query_string":{"query":q}}}
       url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
       home_id = self.getHome().id
       username = self.getConfProperty('opensearch.username', 'admin')
@@ -79,7 +80,9 @@ class ZMSZCatalogOpensearchConnector(
       auth = HTTPBasicAuth(username,password)
       response = requests.get('%s/%s/_search?pretty=true'%(url,home_id),auth=auth,json=d,verify=verify)
       response.raise_for_status()
-      data = response.json()
+      json_obj = response.json()
+      data = json.dumps(json_obj, separators=(",", ":"), indent=4)
+      REQUEST.RESPONSE.setHeader('Content-Type','text/json; charset=utf-8')
       return data
 
 

@@ -140,11 +140,11 @@
 															<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 																<td style="text-align:center;">
 																	<input type="checkbox" name="ids:list" tal:attributes="value metaObj/id;
-																			data-attrs python:','.join(
-																				['%s(%s)'%(xx['id'],xx['type']) for xx in
-																					[here.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['type'] not in ['*','constant','delimiter','file','hint','image','interface']]]);
-																			checked python:['','checked'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])];
-																			disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()"/>
+																		data-attrs python:','.join(
+																			['%s(%s)'%(xx['id'],xx['type']) for xx in
+																				[here.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['type'] not in ['*','constant','delimiter','file','hint','image','interface']]]);
+																		checked python:['','checked'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])];
+																		disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()"/>
 																</td>
 																<td>
 																	<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>&nbsp;
@@ -274,12 +274,12 @@ function zmiExecuteCatalog(url) {
 				url:url,
 				data:data,
 				error: function (xhr, ajaxOptions, thrownError) {
-					$a.next('.response').addClass('alert-danger').html('( '+thrownError+' )');
+					$a.next('.response').addClass('alert-danger').html(thrownError);
 					i++;
 					fn();
 				},
 				success:function(response) {
-					$a.next('.response').addClass('alert-success').html('( '+response+' )');
+					$a.next('.response').addClass('alert-success').html(response);
 					i++;
 					fn();
 				}
@@ -305,12 +305,12 @@ function zmiReindexCatalog() {
 				url:"manage_reindex",
 				data:data,
 				error: function (xhr, ajaxOptions, thrownError) {
-					$a.next('.response').addClass('alert-danger').html('( '+thrownError+' )');
+					$a.next('.response').addClass('alert-danger').html(thrownError);
 					i++;
 					fn();
 				},
 				success:function(response) {
-					$a.next('.response').addClass('alert-success').html('( '+response+' )');
+					$a.next('.response').addClass('alert-success').html(response);
 					i++;
 					fn();
 				}

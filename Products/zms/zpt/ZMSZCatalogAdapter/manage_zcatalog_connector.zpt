@@ -75,3 +75,10 @@
 	}
 //-->
 </script>
+<style>
+/*<!--*/
+	.zmi-sitemap .response.zmi-code {
+		white-space:pre;
+	}
+/*-->*/
+</style>

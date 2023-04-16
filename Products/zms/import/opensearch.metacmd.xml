@@ -36,9 +36,10 @@ def manage_zcatalog_export_schema( self):
   response = requests.delete('%s/%s'%(url,home_id),auth=auth,verify=verify)
   response = requests.put('%s/%s'%(url,home_id),auth=auth,headers=headers,json=dictionary,verify=verify)
   response.raise_for_status()
-  data = response.json()
-
-  return json.dumps(dictionary, indent = 4)]]>
+  json_obj = response.json()
+  # data = json.dumps(json_obj, separators=(",", ":"), indent=2)
+  data = json.dumps(dictionary, indent=2)
+  return data]]>
       </item>
       <item key="description"><![CDATA[Export JSON schema?]]></item>
       <item key="execution" type="int">0</item>
@@ -52,7 +53,7 @@ def manage_zcatalog_export_schema( self):
       </item>
       <item key="name"><![CDATA[#1 Export schema]]></item>
       <item key="package">com.zms.foundation.zcatalog.opensearch</item>
-      <item key="revision">0.0.0</item>
+      <item key="revision">0.0.1</item>
       <item key="roles" type="list">
         <list>
           <item>*</item>
@@ -146,7 +147,7 @@ def manage_zcatalog_export_data( self):
 # --// /manage_zcatalog_create_sitemap //--]]>
       </item>
       <item key="description"><![CDATA[Export JSON data?]]></item>
-      <item key="execution" type="int">0</item>
+      <item key="execution" type="int">False</item>
       <item key="icon_clazz"><![CDATA[fas fa-cogs]]></item>
       <item key="id">manage_zcatalog_export_data</item>
       <item key="meta_type"><![CDATA[External Method]]></item>
@@ -191,6 +192,7 @@ def manage_zcatalog_put_data( self):
 
   import requests
   from requests.auth import HTTPBasicAuth
+  import json
   url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
   home_id = self.getHome().id
   username = self.getConfProperty('opensearch.username', 'admin')
@@ -200,7 +202,8 @@ def manage_zcatalog_put_data( self):
   headers = {'Content-type': 'application/x-ndjson'}
   response = requests.put('%s/%s/_bulk'%(url,home_id),auth=auth,headers=headers,data=dictionary,verify=verify)
   response.raise_for_status()
-  data = response.json()
+  json_obj = response.json()
+  data = json.dumps(json_obj, separators=(",", ":"), indent=2)
   return data
 
 # --// /manage_zcatalog_put_data //--]]>
@@ -217,7 +220,7 @@ def manage_zcatalog_put_data( self):
       </item>
       <item key="name"><![CDATA[#3 Put data]]></item>
       <item key="package">com.zms.foundation.zcatalog.opensearch</item>
-      <item key="revision">0.0.0</item>
+      <item key="revision">0.0.1</item>
       <item key="roles" type="list">
         <list>
           <item>*</item>

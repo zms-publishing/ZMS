@@ -71,7 +71,17 @@ class ZMSZCatalogOpensearchConnector(
       import requests
       from requests.auth import HTTPBasicAuth
       import json
-      d = {"query":{"query_string":{"query":q}}}
+      d = {
+        "query":{
+          "query_string":{"query":q}
+        },
+        "highlight": {
+          "fields": {
+            "title": { "type": "plain"},
+            "standard_html": { "type": "plain"}
+          }
+        }      
+      }
       url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
       home_id = self.getHome().id
       username = self.getConfProperty('opensearch.username', 'admin')

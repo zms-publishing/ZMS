@@ -4,6 +4,10 @@
   <item type="dictionary">
     <dictionary>
       <item key="data"><![CDATA[import json
+import requests
+from requests.auth import HTTPBasicAuth
+requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
+import pdb
 
 def manage_zcatalog_export_schema( self):
   zmscontext = self
@@ -24,9 +28,7 @@ def manage_zcatalog_export_schema( self):
     properties[attr_id] = property
   mappings = {'properties':properties}
   dictionary = {'mappings':mappings}
-  
-  import requests
-  from requests.auth import HTTPBasicAuth
+
   url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
   home_id = self.getHome().id
   username = self.getConfProperty('opensearch.username', 'admin')
@@ -34,6 +36,7 @@ def manage_zcatalog_export_schema( self):
   verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
   auth = HTTPBasicAuth(username,password)
   headers = {'Content-type': 'application/x-ndjson'}
+  # pdb.set_trace()
   response = requests.delete('%s/%s'%(url,home_id),auth=auth,verify=verify)
   response = requests.put('%s/%s'%(url,home_id),auth=auth,headers=headers,json=dictionary,verify=verify)
   response.raise_for_status()

@@ -1152,16 +1152,12 @@ class ZMSMetaobjManager(object):
                   if len(getattr(newCustom, 'filename', '')):
                       newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, newCustom)
                   else:
-                      REQUEST.set('attr_custom_%s_modified'%old_id, '0')
-              # Restore resource.
-              if REQUEST.get('attr_custom_%s_modified'%old_id, '1') == '0' and \
-                 REQUEST.get('attr_custom_%s_active'%old_id, '0') == '1':
-                  savedAttr = [x for x in savedAttrs if x['id'] == old_id][0]
-                  syncZopeMetaobjAttr( self, newValue, savedAttr)
-                  if savedAttr['ob']:
-                    filename = savedAttr['ob'].title
-                    data = bytes(zopeutil.readData(savedAttr['ob']))
-                    newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
+                    savedAttr = [x for x in savedAttrs if x['id'] == old_id][0]
+                    syncZopeMetaobjAttr( self, newValue, savedAttr)
+                    if savedAttr['ob']:
+                      filename = savedAttr['ob'].title
+                      data = bytes(zopeutil.readData(savedAttr['ob']))
+                      newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})
               # Change attribute.
               message += self.setMetaobjAttr( id, old_id, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
             # Return with message.

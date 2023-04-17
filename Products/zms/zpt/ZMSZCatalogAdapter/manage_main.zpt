@@ -90,7 +90,7 @@
 					<label class="col-sm-2 control-label" for="catalog_model"><span>Model</span></label>
 					<div class="col-sm-10"
 						tal:define="metaObjIds python:here.getMetaobjIds();
-							metaObjs python:[x for x in [here.getMetaobj(y) for y in metaObjIds] if x['id'] not in ['ZMS'] and x['type'] in ['ZMSPackage','ZMSDocument','ZMSObject','ZMSRecordSet']];
+							metaObjs python:[x for x in [here.getMetaobj(y) for y in metaObjIds] if x['id'] not in ['X_ZMS'] and x['type'] in ['ZMSPackage','ZMSDocument','ZMSObject','ZMSRecordSet']];
 							metaObjPackages python:here.sort_list(['']+[x['id'] for x in metaObjs if x['type']=='ZMSPackage']);
 							metaObjPackages2 python:[x.get('package') for x in metaObjs if x.get('package') not in metaObjPackages]">
 

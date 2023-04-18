@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<?zms version='ZMS5-5.1.0
-'?>
+<?zms version='ZMS5-5.1.0'?>
 <list>
   <item type="dictionary">
     <dictionary>
-      <item key="key">LgOpensearch</item>
+      <item key="key">opensearch</item>
       <item key="value" type="dictionary">
         <dictionary>
           <item key="__obj_attrs__" type="list">
             <list>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[fas fa-file-alt]]></item>
+                  <item key="custom"><![CDATA[fas fa-search text-primary]]></item>
                   <item key="default"></item>
                   <item key="id">icon_clazz</item>
                   <item key="keys" type="list">
@@ -5388,7 +5387,7 @@ return /******/ (function(modules) { // webpackBootstrap
               </item>
               <item type="dictionary">
                 <dictionary>
-                  <item key="custom"><![CDATA[<!-- LgOpensearch.standard_html -->
+                  <item key="custom"><![CDATA[<!-- opensearch.standard_html -->
 
 <template id="hb_hit_html" type="text/x-handlebars-template">
 	{{#.}}
@@ -5437,7 +5436,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/%s.script.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
 </tal:block>
 
-<!-- /LgOpensearch.standard_html -->]]>
+<!-- /opensearch.standard_html -->]]>
                   </item>
                   <item key="default"></item>
                   <item key="id">standard_html</item>
@@ -5476,7 +5475,7 @@ return /******/ (function(modules) { // webpackBootstrap
             </dictionary>
           </item>
           <item key="enabled" type="int">0</item>
-          <item key="id">LgOpensearch</item>
+          <item key="id">opensearch</item>
           <item key="name">Opensearch</item>
           <item key="package">com.zms.foundation.zcatalog.opensearch</item>
           <item key="revision">0.0.0</item>

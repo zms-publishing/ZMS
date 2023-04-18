@@ -30,15 +30,15 @@ def manage_zcatalog_export_schema( self):
   dictionary = {'mappings':mappings}
 
   url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
-  home_id = self.getHome().id
+  root_id = self.getRootElement().getHome().id
   username = self.getConfProperty('opensearch.username', 'admin')
   password = self.getConfProperty('opensearch.password', 'admin')
   verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
   auth = HTTPBasicAuth(username,password)
   headers = {'Content-type': 'application/x-ndjson'}
   # pdb.set_trace()
-  response = requests.delete('%s/%s'%(url,home_id),auth=auth,verify=verify)
-  response = requests.put('%s/%s'%(url,home_id),auth=auth,headers=headers,json=dictionary,verify=verify)
+  response = requests.delete('%s/%s'%(url,root_id),auth=auth,verify=verify)
+  response = requests.put('%s/%s'%(url,root_id),auth=auth,headers=headers,json=dictionary,verify=verify)
   response.raise_for_status()
   # json_obj = response.json()
   # data = json.dumps(json_obj, separators=(",", ":"), indent=2)
@@ -78,6 +78,7 @@ def manage_zcatalog_export_data( self):
   request = self.REQUEST
   RESPONSE =  request.RESPONSE
   zmscontext = self.getLinkObj(request.get('uid','{$}'))
+  root_id = zmscontext.getRootElement().getHome().id
   home = zmscontext.getDocumentElement()
   home_id = home.getPhysicalPath()
   home_id = home_id[home_id.index('content')-1]
@@ -125,8 +126,8 @@ def manage_zcatalog_export_data( self):
       except:
         standard.writeError(node,"can't pdfminer")
         d['standard_html'] = '@@%s:%s'%('/'.join(node.getPhysicalPath()),'file')
-    dindex = {"index":{"_index":d['home_id'],"_id":node.get_uid()}}
-    for k in ['id','home_id','custom']:
+    dindex = {"index":{"_index":root_id,"_id":node.get_uid()}}
+    for k in ['id','custom']:
       if k in d:
         del d[k]
     data.append(json.dumps(dindex))
@@ -198,13 +199,13 @@ def manage_zcatalog_put_data( self):
   from requests.auth import HTTPBasicAuth
   import json
   url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
-  home_id = self.getHome().id
+  root_id = zmscontext.getRootElement().getHome().id
   username = self.getConfProperty('opensearch.username', 'admin')
   password = self.getConfProperty('opensearch.password', 'admin')
   verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
   auth = HTTPBasicAuth(username,password)
   headers = {'Content-type': 'application/x-ndjson'}
-  response = requests.put('%s/%s/_bulk'%(url,home_id),auth=auth,headers=headers,data=dictionary,verify=verify)
+  response = requests.put('%s/%s/_bulk'%(url,root_id),auth=auth,headers=headers,data=dictionary,verify=verify)
   response.raise_for_status()
   json_obj = response.json()
   data = json.dumps(json_obj, separators=(",", ":"), indent=2)

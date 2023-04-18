@@ -16,7 +16,6 @@ def manage_zcatalog_export_schema( self):
   properties['index_html'] = {'type':'text'}
   properties['meta_id'] = {'type':'keyword'}
   properties['lang'] = {'type':'keyword'}
-  # properties['home_id'] = {'type':'keyword'}
   zca = zmscontext.getCatalogAdapter()
   attrs = zca.getAttrs()
   for attr_id in zca._getAttrIds():
@@ -27,6 +26,7 @@ def manage_zcatalog_export_schema( self):
     property = {}
     property['type'] = attr_type
     properties[attr_id] = property
+  properties['home_id'] = {'type':'keyword'}
   mappings = {'properties':properties}
   dictionary = {'mappings':mappings}
 

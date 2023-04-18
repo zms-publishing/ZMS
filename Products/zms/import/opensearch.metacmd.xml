@@ -16,6 +16,7 @@ def manage_zcatalog_export_schema( self):
   properties['index_html'] = {'type':'text'}
   properties['meta_id'] = {'type':'keyword'}
   properties['lang'] = {'type':'keyword'}
+  # properties['home_id'] = {'type':'keyword'}
   zca = zmscontext.getCatalogAdapter()
   attrs = zca.getAttrs()
   for attr_id in zca._getAttrIds():
@@ -126,7 +127,7 @@ def manage_zcatalog_export_data( self):
         standard.writeError(node,"can't pdfminer")
         d['standard_html'] = '@@%s:%s'%('/'.join(node.getPhysicalPath()),'file')
     dindex = {"index":{"_index":d['home_id'],"_id":node.get_uid()}}
-    for k in ['id','home_id','custom']:
+    for k in ['id','custom']:
       if k in d:
         del d[k]
     data.append(json.dumps(dindex))

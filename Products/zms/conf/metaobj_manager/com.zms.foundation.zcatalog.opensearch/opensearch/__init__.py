@@ -26,7 +26,7 @@ class opensearch:
 	package = "com.zms.foundation.zcatalog.opensearch"
 
 	# Revision
-	revision = "0.0.2"
+	revision = "0.0.3"
 
 	# Type
 	type = "ZMSDocument"
@@ -87,6 +87,15 @@ class opensearch:
 			,"name":"Handlebars: JS 4.7.7"
 			,"repetitive":0
 			,"type":"resource"}
+
+		get_breadcrumbs_by_uuid = {"default":""
+			,"id":"get_breadcrumbs_by_uuid"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Get Object Path from ZMSIndex as HTML"
+			,"repetitive":0
+			,"type":"Script (Python)"}
 
 		standard_html = {"default":""
 			,"id":"standard_html"

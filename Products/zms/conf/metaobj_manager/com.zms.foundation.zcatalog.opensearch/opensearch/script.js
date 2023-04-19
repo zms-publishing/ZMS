@@ -21,7 +21,7 @@ const compile_results = (q, data) => {
 	GetPagination(fn,total,10,0);
 	//####################################
 
-	return false;	
+	return false;
 };
 
 const postprocess_results = (q, data) => {
@@ -44,15 +44,26 @@ const postprocess_results = (q, data) => {
 		}
 		res.hits.push(hit)
 	})
-	return res
+	return res;
+};
+
+const render_path = async (el) => {
+	$.get(url='get_breadcrumbs_by_uuid', data={ 'id' : el.dataset.id }, function(data, status) {
+		$(el).html(data);
+		console.log(el.dataset.id, status)
+	});
 };
 
 $(function() {
-	$(".search-form form").submit(function() {
+	$(".search-form form").submit(async function() {
 		var q = $("input",this).val();
 		console.log("q",q);
 		$(".search-results").html(`<h2>Suche nach <code>${q}</code></h2><div title="Loading..." class="spin"></div>`);
-		get_results(q);
+		await get_results(q);
+		$('ul.path').each(function() {
+			$(this).removeClass('hidden');
+			render_path(this);
+		})
 		return false;
 	});
 });

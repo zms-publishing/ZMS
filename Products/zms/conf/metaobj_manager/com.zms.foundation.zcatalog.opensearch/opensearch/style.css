@@ -24,7 +24,11 @@
 	list-style: none;
 	padding-left: 0;
 	margin-left: 0;
-	font-size: .88888889em;
+	font-size: .7em;
+	margin:2em 0 0.1em 0
+}
+.search-results .path li a {
+	color:#aaa;
 }
 .search-results .hit em {
 	font-style: normal;

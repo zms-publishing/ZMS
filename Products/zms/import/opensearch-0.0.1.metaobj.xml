@@ -60,36 +60,44 @@
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="application/javascript" filename="script.js" type="file"><![CDATA[$(function() {
+                    <data content_type="application/javascript" filename="script.js" type="file"><![CDATA[function compile_results(data) {
+	debugger;
+    var res = {'hits':[]};
+    data["hits"]["hits"].forEach(x => {
+        var source = x["_source"];
+        var highlight = x["highlight"];
+        var hit = {"path":x["_id"], "href":source["loc"], "title":source["title"], "snippet":source["standard_html"]}; 
+        if (typeof highlight !== "undefined") {
+            if (typeof highlight["title"] !== "undefined") {
+                hit["title"] = highlight["title"];
+            }
+            if (typeof highlight["standard_html"] !== "undefined") {
+                hit["snippet"] = highlight["standard_html"];
+            }
+        }
+        if (hit["snippet"].length > 200) {
+            hit["snippet"] = hit["snippet"].substr(0,200) + "...";
+        }
+        res.hits.push(hit)
+    })
+	var hb_results_tmpl = Handlebars.compile( $('#hb_results_html').html() );
+	var hb_results_html = hb_results_tmpl(res);
+	$('.search-results').html( hb_results_html );
+};
+
+const get_results = async (q) => {
+	const response = await fetch(`zcatalog_adapter/zcatalog_opensearch_connector/search_json?q=${q}`);
+	const data = await response.json();
+	compile_results(data)
+};
+
+$(function() {
     $(".search-form form").submit(function() {
         var q = $("input",this).val();
         console.log("q",q);
         $(".search-results").html("Searching for " + q);
-        $.get("zcatalog_adapter/zcatalog_opensearch_connector/search_json",{q:q},function(data) {
-            console.log("data",data);
-            $(".search-results").html(data);
-            var html = "";
-            var hb_template = Handlebars.compile( $('#hb_hit_html').html());
-            data["hits"]["hits"].forEach(x => {
-                var source = x["_source"];
-                var highlight = x["highlight"];
-                var hit = {"path":x["_id"], "href":source["loc"], "title":source["title"], "snippet":source["standard_html"]}; 
-                if (typeof highlight !== "undefined") {
-                    if (typeof highlight["title"] !== "undefined") {
-                        hit["title"] = highlight["title"];
-                    }
-                    if (typeof highlight["standard_html"] !== "undefined") {
-                        hit["snippet"] = highlight["standard_html"];
-                    }
-                }
-                if (hit["snippet"].length > 200) {
-                    hit["snippet"] = hit["snippet"].substr(0,200) + "...";
-                }
-                html += hb_template(hit); 
-            });
-            $(".search-results").html(html);
-        });
-        return false; 
+        get_results(q);
+        return false;
     });
 });]]></data>
                   </item>
@@ -5389,19 +5397,18 @@ return /******/ (function(modules) { // webpackBootstrap
                 <dictionary>
                   <item key="custom"><![CDATA[<!-- opensearch.standard_html -->
 
-<template id="hb_hit_html" type="text/x-handlebars-template">
-	{{#.}}
+<template id="hb_results_html" type="text/x-handlebars-template">
+	{{#each hits}}
 	<article class="hit">
-		<ul class="path">{{{path}}}</ul><!-- .path -->
-		<a href={{href}}" target="_blank">{{{title}}}</a>
+		<ul class="path">{{{this.path}}}</ul><!-- .path -->
+		<a href={{this.href}}" target="_blank">{{{this.title}}}</a>
 		<br/>
-		<p>{{{snippet}}}</p>
+		<p>{{{this.snippet}}}</p>
 	</article><!-- .hit -->
-	{{/.}}
+	{{/each}}
 </template>
 
-<tal:block tal:define="
-		zmscontext options/zmscontext">
+<tal:block tal:define="zmscontext options/zmscontext">
 
   <div class="container-fluid skin-bg-gray">
     <div class="container">
@@ -5474,11 +5481,11 @@ return /******/ (function(modules) { // webpackBootstrap
               </item>
             </dictionary>
           </item>
-          <item key="enabled" type="int">0</item>
+          <item key="enabled" type="int">1</item>
           <item key="id">opensearch</item>
           <item key="name">Opensearch</item>
           <item key="package">com.zms.foundation.zcatalog.opensearch</item>
-          <item key="revision">0.0.0</item>
+          <item key="revision">0.0.1</item>
           <item key="type">ZMSDocument</item>
         </dictionary>
       </item>
@@ -5497,7 +5504,7 @@ return /******/ (function(modules) { // webpackBootstrap
           <item key="id">com.zms.foundation.zcatalog.opensearch</item>
           <item key="name">com.zms.foundation.zcatalog.opensearch</item>
           <item key="package"></item>
-          <item key="revision">0.0.0</item>
+          <item key="revision">0.0.1</item>
           <item key="type">ZMSPackage</item>
         </dictionary>
       </item>

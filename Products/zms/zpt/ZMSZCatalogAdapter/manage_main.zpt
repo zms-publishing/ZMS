@@ -345,27 +345,47 @@ $(function() {
 	}
 	toggleMetaobj();
 
+	function zmiExpandObjectTree(max) {
+		var fn = function() {
+			var done = false;
+			$(".zmi-sitemap .toggle[title='+']").each(function() {
+					var $toggle = $(this);
+					var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
+					var $container = $($toggle.parents("li")[0]);
+					var level = $parents.length - 1;
+					if (level < max || -1 == max) {
+						$ZMI.objectTree.toggleClick($toggle,fn);
+						done = true;
+					}
+				});
+			if (!done) {
+				reset_progress()
+			}
+		}
+		fn();
+		return false;
+	}
+
 	// Sitemap
 	var href = $ZMI.getPhysicalPath();
 	$ZMI.objectTree.init(".zmi-sitemap",href,{
 		'params':{meta_types:'ZMS'},
 		'init.href':'ajaxGetNode',
 		'init.callback':function() {
-			var fn = function() {
-				var $toggle = $(".zmi-sitemap .toggle[title='+']");
-				if ($toggle.length > 0) {
-					$ZMI.objectTree.toggleClick($($toggle[0]),fn);
-				} else {
-					$(".zmi-sitemap ."+$ZMI.icon_clazz("icon-home").replace(/\s/gi,'.')).each(function() {
-						var $a = $(this).parent("a");
-						var uid = $a.attr('data-uid');
-						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked"> ');
+				zmiExpandObjectTree(1);
+			},
+		'addPages.callback':function() {
+				console.log('addPages.callback')
+				$(".zmi-sitemap a:not(.checkboxed)").each(function() {
+						var $a = $(this);
+						$a.addClass("checkboxed");
+						var phys_path = $a.attr('data-page-physical-path');
+						var uid = '{'+'$'+phys_path.substr(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
+						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 					});
-				}
-			}
-			fn();
-		}
-	});
+			},
+		});
+	$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 
 });
 //-->

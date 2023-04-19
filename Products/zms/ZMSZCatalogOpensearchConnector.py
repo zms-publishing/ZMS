@@ -80,15 +80,17 @@ class ZMSZCatalogOpensearchConnector(
             "title": { "type": "plain"},
             "standard_html": { "type": "plain"}
           }
-        }      
+        }
       }
       url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
-      home_id = self.getHome().id
+      # ID of opensearch index is ZMS multisite root node id or explicitly given by request variable 'opensearch_index_id'
+      root_id = self.getRootElement().getHome().id
+      index_id = REQUEST.get('opensearch_index_id',root_id)
       username = self.getConfProperty('opensearch.username', 'admin')
       password = self.getConfProperty('opensearch.password', 'admin')
       verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
       auth = HTTPBasicAuth(username,password)
-      response = requests.get('%s/%s/_search?pretty=true'%(url,home_id),auth=auth,json=d,verify=verify)
+      response = requests.get('%s/%s/_search?pretty=true'%(url,index_id),auth=auth,json=d,verify=verify)
       response.raise_for_status()
       json_obj = response.json()
       data = json.dumps(json_obj, separators=(",", ":"), indent=4)

@@ -77,4 +77,13 @@
 	}
 //-->
 </script>
+<style>
+/*<!--*/
+	.ZMSZCatalogConnector .response.alert-success,
+	.ZMSZCatalogConnector .response.alert-danger {
+		max-height: 4.75rem;
+		overflow-y: auto;
+	}
+/*-->*/
+</style>
 </tal:block>

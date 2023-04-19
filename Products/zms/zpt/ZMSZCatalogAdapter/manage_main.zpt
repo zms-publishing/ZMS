@@ -349,18 +349,15 @@ $(function() {
 		var fn = function() {
 			var done = false;
 			$(".zmi-sitemap .toggle[title='+']").each(function() {
-					var $toggle = $(this);
-					var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
-					var $container = $($toggle.parents("li")[0]);
-					var level = $parents.length - 1;
-					if (level < max || -1 == max) {
-						$ZMI.objectTree.toggleClick($toggle,fn);
-						done = true;
-					}
-				});
-			if (!done) {
-				reset_progress()
-			}
+				var $toggle = $(this);
+				var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
+				var $container = $($toggle.parents("li")[0]);
+				var level = $parents.length - 1;
+				if (level < max || -1 == max) {
+					$ZMI.objectTree.toggleClick($toggle,fn);
+					done = true;
+				}
+			});
 		}
 		fn();
 		return false;

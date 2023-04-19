@@ -6,11 +6,20 @@ const get_results = async (q) => {
 };
 
 const compile_results = (q, data) => {
-	debugger;
 	data = postprocess_results(q, data);
 	var hb_results_tmpl = Handlebars.compile( $('#hb_results_html').html() );
 	var hb_results_html = hb_results_tmpl(data);
 	$('.search-results').html( hb_results_html );
+
+	//###@WORK############################
+	debugger;
+	var fn = function(pageIndex) {
+		var url = window.location.href;
+		return AssembleUrlParameter(url,{"pageIndex:int":pageIndex});
+	};
+	GetPagination(fn,148,10,0);
+	//####################################
+
 	return false;	
 };
 

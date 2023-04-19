@@ -4,6 +4,7 @@
 	{{#.}}
 		<h2>{{{this.count}}} Treffer f&uuml;r <code>{{{this.query}}}</code></h2>
 	{{/.}}
+	<div class="pagination"></div>
 	{{#each hits}}
 		<article class="hit">
 			<ul class="path hidden" data-id="{{this.path}}"></ul>
@@ -12,6 +13,7 @@
 			<p>{{{this.snippet}}}</p>
 		</article>
 	{{/each}}
+	<div class="pagination"></div>
 </template>
 
 <tal:block tal:define="zmscontext options/zmscontext">
@@ -44,6 +46,7 @@
 		</div>
 	</div>
 
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
 	<link type="text/css" rel="stylesheet"	tal:attributes="href python:'%s/%s.style.css'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"/>
 	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/%s.handlebars.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
 	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/%s.script.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>

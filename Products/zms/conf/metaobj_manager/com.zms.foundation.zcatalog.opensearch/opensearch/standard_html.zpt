@@ -1,0 +1,53 @@
+<!-- opensearch.standard_html -->
+
+<template id="hb_results_html" type="text/x-handlebars-template">
+	{{#.}}
+		<h2>{{{this.count}}} Treffer f&uuml;r <code>{{{this.query}}}</code></h2>
+	{{/.}}
+	{{#each hits}}
+		<article class="hit">
+			<ul class="path hidden" data-id="{{this.path}}"></ul>
+			<a title="{{this.path}}" href={{this.href}}" target="_blank">{{{this.title}}}</a>
+			<br/>
+			<p>{{{this.snippet}}}</p>
+		</article>
+	{{/each}}
+</template>
+
+<tal:block tal:define="zmscontext options/zmscontext">
+
+	<div class="container-fluid skin-bg-gray">
+		<div class="container">
+			<section class="search-form">
+				 <form id="site-search-content" action="#" method="get" data-ajax-url="ajax/search" >
+					<div class="row skin-gutter-wide search-form no-margin-bottom">
+						<div class="col-lg-6">
+							<h2 class="small-font">Suche nach Stichworten</h2>
+							<label for="form-keyword" class="sr-only">Stichwort</label>
+						<input type="text" name="eingabe" id="form-keyword" class="form-control"	value="" autofocus/>	
+						</div>
+					</div>
+					<div class="row skin-gutter-wide search-form">
+						<div class="col-lg-12">
+						 <br> <button class="btn btn-primary btn-lg" type="submit">Suchen</button>
+						</div>
+					</div>
+				</form>
+			</section>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="container">
+			<section id="search_results" class="search-results content-tabs">
+			</section>
+		</div>
+	</div>
+
+	<link type="text/css" rel="stylesheet"	tal:attributes="href python:'%s/%s.style.css'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"/>
+	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/%s.handlebars.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
+	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/%s.script.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
+
+</tal:block>
+
+<!-- /opensearch.standard_html -->

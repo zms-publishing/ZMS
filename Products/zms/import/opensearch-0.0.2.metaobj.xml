@@ -3,6 +3,25 @@
 <list>
   <item type="dictionary">
     <dictionary>
+      <item key="key">com.zms.foundation.zcatalog.opensearch</item>
+      <item key="value" type="dictionary">
+        <dictionary>
+          <item key="__obj_attrs__" type="list">
+            <list>
+            </list>
+          </item>
+          <item key="enabled" type="int">1</item>
+          <item key="id">com.zms.foundation.zcatalog.opensearch</item>
+          <item key="name">com.zms.foundation.zcatalog.opensearch</item>
+          <item key="package"></item>
+          <item key="revision">0.0.2</item>
+          <item key="type">ZMSPackage</item>
+        </dictionary>
+      </item>
+    </dictionary>
+  </item>
+  <item type="dictionary">
+    <dictionary>
       <item key="key">opensearch</item>
       <item key="value" type="dictionary">
         <dictionary>
@@ -60,9 +79,25 @@
               <item type="dictionary">
                 <dictionary>
                   <item key="custom">
-                    <data content_type="application/javascript" filename="script.js" type="file"><![CDATA[function compile_results(data) {
+                    <data content_type="application/javascript" filename="script.js" type="file"><![CDATA[const get_results = async (q) => {
+	const response = await fetch(`zcatalog_adapter/zcatalog_opensearch_connector/search_json?q=${q}`);
+	const data = await response.json();
+	compile_results(q, data);
+	return false;
+};
+
+const compile_results = (q, data) => {
 	debugger;
-    var res = {'hits':[]};
+    data = postprocess_results(q, data);
+	var hb_results_tmpl = Handlebars.compile( $('#hb_results_html').html() );
+	var hb_results_html = hb_results_tmpl(data);
+	$('.search-results').html( hb_results_html );
+	return false;	
+};
+
+const postprocess_results = (q, data) => {
+    var total = data.hits.total.value;
+    var res = { 'hits':[], 'count':total, 'query':q };
     data["hits"]["hits"].forEach(x => {
         var source = x["_source"];
         var highlight = x["highlight"];
@@ -80,22 +115,14 @@
         }
         res.hits.push(hit)
     })
-	var hb_results_tmpl = Handlebars.compile( $('#hb_results_html').html() );
-	var hb_results_html = hb_results_tmpl(res);
-	$('.search-results').html( hb_results_html );
-};
-
-const get_results = async (q) => {
-	const response = await fetch(`zcatalog_adapter/zcatalog_opensearch_connector/search_json?q=${q}`);
-	const data = await response.json();
-	compile_results(data)
+    return res
 };
 
 $(function() {
     $(".search-form form").submit(function() {
         var q = $("input",this).val();
         console.log("q",q);
-        $(".search-results").html("Searching for " + q);
+        $(".search-results").html(`<h2>Suche nach <code>${q}</code></h2><div title="Loading..." class="spin"></div>`);
         get_results(q);
         return false;
     });
@@ -149,7 +176,31 @@ $(function() {
 .search-results .hit em {
     font-weight: bold;
     background-color: #f5f5f5;
-}]]></data>
+}
+
+/* Loading Spinner */
+.spin {
+	display: block;
+	width: 50px;
+	height: 50px;
+	border: 3px solid rgba(0, 0, 0, .1);
+	border-radius: 50%;
+	border-top-color: #d6002b;
+	animation: spin 1s ease-in-out infinite;
+	-webkit-animation: spin 1s ease-in-out infinite;
+	margin:0 auto calc(100vh - 360px);
+}
+@keyframes spin {
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+@-webkit-keyframes spin {
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+]]></data>
                   </item>
                   <item key="default"></item>
                   <item key="id">style.css</item>
@@ -5398,13 +5449,16 @@ return /******/ (function(modules) { // webpackBootstrap
                   <item key="custom"><![CDATA[<!-- opensearch.standard_html -->
 
 <template id="hb_results_html" type="text/x-handlebars-template">
+	{{#.}}
+		<h2>{{{this.count}}} Treffer f&uuml;r <code>{{{this.query}}}</code></h2>
+	{{/.}}
 	{{#each hits}}
-	<article class="hit">
-		<ul class="path">{{{this.path}}}</ul><!-- .path -->
-		<a href={{this.href}}" target="_blank">{{{this.title}}}</a>
-		<br/>
-		<p>{{{this.snippet}}}</p>
-	</article><!-- .hit -->
+		<article class="hit">
+			<ul class="path hidden" data-id="{{this.path}}"></ul>
+			<a title="{{this.path}}" href={{this.href}}" target="_blank">{{{this.title}}}</a>
+			<br/>
+			<p>{{{this.snippet}}}</p>
+		</article>
 	{{/each}}
 </template>
 
@@ -5433,7 +5487,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
   <div class="container-fluid">
     <div class="container">
-      <section class="search-results content-tabs">
+      <section id="search_results" class="search-results content-tabs">
       </section>
     </div>
   </div>
@@ -5485,27 +5539,8 @@ return /******/ (function(modules) { // webpackBootstrap
           <item key="id">opensearch</item>
           <item key="name">Opensearch</item>
           <item key="package">com.zms.foundation.zcatalog.opensearch</item>
-          <item key="revision">0.0.1</item>
+          <item key="revision">0.0.2</item>
           <item key="type">ZMSDocument</item>
-        </dictionary>
-      </item>
-    </dictionary>
-  </item>
-  <item type="dictionary">
-    <dictionary>
-      <item key="key">com.zms.foundation.zcatalog.opensearch</item>
-      <item key="value" type="dictionary">
-        <dictionary>
-          <item key="__obj_attrs__" type="list">
-            <list>
-            </list>
-          </item>
-          <item key="enabled" type="int">1</item>
-          <item key="id">com.zms.foundation.zcatalog.opensearch</item>
-          <item key="name">com.zms.foundation.zcatalog.opensearch</item>
-          <item key="package"></item>
-          <item key="revision">0.0.1</item>
-          <item key="type">ZMSPackage</item>
         </dictionary>
       </item>
     </dictionary>

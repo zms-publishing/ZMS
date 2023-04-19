@@ -27,8 +27,11 @@
 	font-size: .88888889em;
 }
 .search-results .hit em {
-	font-weight: bold;
-	background-color: #f5f5f5;
+	font-style: normal;
+	font-weight: initial !important;
+	padding-left:.15em;
+	padding-right:.15em;
+	background-color: #d6002b1c !important;
 }
 
 /* Loading Spinner */
@@ -72,4 +75,17 @@
 }
 .pagination i.fas.fa-chevron-right:after {
 	content: "\e602";
+}
+.pagination > li > a, 
+.pagination > li > span {
+	color: #d6002b;
+}
+.pagination > .active > a, 
+.pagination > .active > span, 
+.pagination > .active > a:hover, 
+.pagination > .active > span:hover, 
+.pagination > .active > a:focus, 
+.pagination > .active > span:focus {
+	background-color: #d6002b;
+	border-color: #d6002b;
 }

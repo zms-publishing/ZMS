@@ -2,7 +2,7 @@
 
 <template id="hb_results_html" type="text/x-handlebars-template">
 	{{#.}}
-		<h2>{{{this.count}}} Treffer f&uuml;r <code>{{{this.query}}}</code></h2>
+		<h2>{{{this.total}}} Treffer f&uuml;r <code>{{{this.query}}}</code></h2>
 	{{/.}}
 	<div class="pagination"></div>
 	{{#each hits}}
@@ -26,7 +26,7 @@
 						<div class="col-lg-6">
 							<h2 class="small-font">Suche nach Stichworten</h2>
 							<label for="form-keyword" class="sr-only">Stichwort</label>
-						<input type="text" name="eingabe" id="form-keyword" class="form-control"	value="" autofocus/>	
+						<input type="text" name="eingabe" id="form-keyword" class="form-control" value="" autofocus/>	
 						</div>
 					</div>
 					<div class="row skin-gutter-wide search-form">

@@ -13,11 +13,12 @@ const compile_results = (q, data) => {
 
 	//###@WORK############################
 	debugger;
+	var total = data.total;
 	var fn = function(pageIndex) {
 		var url = window.location.href;
 		return AssembleUrlParameter(url,{"pageIndex:int":pageIndex});
 	};
-	GetPagination(fn,148,10,0);
+	GetPagination(fn,total,10,0);
 	//####################################
 
 	return false;	
@@ -25,7 +26,7 @@ const compile_results = (q, data) => {
 
 const postprocess_results = (q, data) => {
 	var total = data.hits.total.value;
-	var res = { 'hits':[], 'count':total, 'query':q };
+	var res = { 'hits':[], 'total':total, 'query':q };
 	data["hits"]["hits"].forEach(x => {
 		var source = x["_source"];
 		var highlight = x["highlight"];

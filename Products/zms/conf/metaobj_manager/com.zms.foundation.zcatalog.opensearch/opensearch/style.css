@@ -27,6 +27,10 @@
 	font-size: .7em;
 	margin:2em 0 0.1em 0
 }
+.search-results .path li:before {
+	line-height: .5;
+	font-size: 200%;
+}
 .search-results .path li a {
 	color:#aaa;
 }

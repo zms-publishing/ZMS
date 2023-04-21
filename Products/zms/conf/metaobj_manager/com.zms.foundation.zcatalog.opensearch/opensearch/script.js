@@ -1,24 +1,30 @@
+//# ######################################
+//# Init function show_results() as global
+//# ######################################
+var show_results;
+//# ######################################
 $(function() {
 
 	//# Compile HB templ on docready into global var
 	const hb_results_tmpl = Handlebars.compile( $('#hb_results_html').html() );
 	const hb_spinner_tmpl = Handlebars.compile( $('#hb_spinner_html').html() );
 
-	const show_results = async (q) => {
+	// Finally define show_results() on ready
+	show_results = async (q, pageIndex) => {
 		// debugger;
-		const response = await fetch(`zcatalog_adapter/zcatalog_opensearch_connector/search_json?q=${q}`);
+		const qurl = `zcatalog_adapter/zcatalog_opensearch_connector/search_json?q=${q}&pageIndex:int=${pageIndex}`;
+		const response = await fetch(qurl);
 		const res = await response.json();
 		const res_processed = postprocess_results(q, res);
 		var total = res_processed.total;
 		var hb_results_html = hb_results_tmpl(res_processed);
 		$('.search-results').html( hb_results_html );
 	
-		//# @WORK ############################
+		//# Add pagination ###################
 		var fn = (pageIndex) => {
-			var url = window.location.href;
-			return AssembleUrlParameter(url,{"pageIndex:int":pageIndex});
+			return `javascript:show_results('${q}',${pageIndex})`
 		};
-		GetPagination(fn,total,10,0);
+		GetPagination(fn, total, 10, pageIndex);
 		//# ##################################
 
 		// Add object path on UUID/ZMSIndex
@@ -61,7 +67,7 @@ $(function() {
 	$(".search-form form").submit(function() {
 		var q = $("input",this).val();
 		$(".search-results").html(hb_spinner_tmpl(q));
-		show_results(q);
+		show_results(q, 0);
 		return false;
 	});
 

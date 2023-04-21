@@ -11,6 +11,7 @@ $(function() {
 
 	// Finally define show_results() on ready
 	show_results = async (q, pageIndex) => {
+		$(".search-results").html(hb_spinner_tmpl(q));
 		// debugger;
 		const qurl = `zcatalog_adapter/zcatalog_opensearch_connector/search_json?q=${q}&pageIndex:int=${pageIndex}`;
 		const response = await fetch(qurl);
@@ -66,7 +67,6 @@ $(function() {
 	//# Execute on submit event
 	$(".search-form form").submit(function() {
 		var q = $("input",this).val();
-		$(".search-results").html(hb_spinner_tmpl(q));
 		show_results(q, 0);
 		return false;
 	});

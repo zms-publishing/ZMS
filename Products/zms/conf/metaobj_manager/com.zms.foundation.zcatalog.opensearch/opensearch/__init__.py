@@ -26,7 +26,7 @@ class opensearch:
 	package = "com.zms.foundation.zcatalog.opensearch"
 
 	# Revision
-	revision = "0.0.3"
+	revision = "0.1.0"
 
 	# Type
 	type = "ZMSDocument"
@@ -94,6 +94,24 @@ class opensearch:
 			,"mandatory":0
 			,"multilang":0
 			,"name":"Get Object Path from ZMSIndex as HTML"
+			,"repetitive":0
+			,"type":"Script (Python)"}
+
+		add_docmt_to_opensearch_index = {"default":""
+			,"id":"add_docmt_to_opensearch_index"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"(Re-)Index an ZMS node by given UUID"
+			,"repetitive":0
+			,"type":"External Method"}
+
+		beforeCommitObjChangesEvt = {"default":""
+			,"id":"beforeCommitObjChangesEvt"
+			,"keys":[]
+			,"mandatory":0
+			,"multilang":0
+			,"name":"Calling Global Change-Event Handler for (Re-)Indexing a Document"
 			,"repetitive":0
 			,"type":"Script (Python)"}
 

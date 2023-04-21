@@ -1,5 +1,12 @@
 <!-- opensearch.standard_html -->
 
+<template id="hb_spinner_html" type="text/x-handlebars-template">
+	{{#.}}
+		<h2>Suche nach <code>{{{this}}}</code></h2>
+		<div title="Loading..." class="spin"></div>
+	{{/.}}
+</template>
+
 <template id="hb_results_html" type="text/x-handlebars-template">
 	{{#.}}
 		<h2>{{{this.total}}} Treffer f&uuml;r <code>{{{this.query}}}</code></h2>

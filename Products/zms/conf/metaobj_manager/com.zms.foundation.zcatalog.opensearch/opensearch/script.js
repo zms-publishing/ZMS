@@ -2,6 +2,7 @@ $(function() {
 
 	//# Compile HB templ on docready into global var
 	const hb_results_tmpl = Handlebars.compile( $('#hb_results_html').html() );
+	const hb_spinner_tmpl = Handlebars.compile( $('#hb_spinner_html').html() );
 
 	const show_results = async (q) => {
 		// debugger;
@@ -18,7 +19,13 @@ $(function() {
 			return AssembleUrlParameter(url,{"pageIndex:int":pageIndex});
 		};
 		GetPagination(fn,total,10,0);
-		//####################################
+		//# ##################################
+
+		// Add object path on UUID/ZMSIndex
+		$('ul.path').each(function() {
+			show_breadcrumbs(this);
+		})
+
 	};
 
 	const postprocess_results = (q, res) => {
@@ -53,17 +60,8 @@ $(function() {
 	//# Execute on submit event
 	$(".search-form form").submit(function() {
 		var q = $("input",this).val();
-		var msg = `<h2>Suche nach <code>${q}</code></h2><div title="Loading..." class="spin"></div>`;
-		$(".search-results").html(msg);
+		$(".search-results").html(hb_spinner_tmpl(q));
 		show_results(q);
-		//# @WORK ############################
-		//# How to promise on show_results()?
-		//# ##################################
-		setTimeout(() => {
-			$('ul.path').each(function() {
-				show_breadcrumbs(this);
-			})
-		}, 1500);
 		return false;
 	});
 

@@ -2433,22 +2433,18 @@ body.lazy_select_form footer .controls {
 	margin-top:10px;
 	direction: ltr;
 }
-.ZMSZCatalogConnector .zmi-sitemap-expand,
-#zmsindex .zmi-sitemap-expand {
-	display: block;
+.zmi-sitemap-controls {
 	top:0;
+	right: 15px;
 	position: absolute;
-	color: #333;
-	right: 16px;
-	background: #ccc;
-	padding: .35em .65em;
-	border-radius: 4px;
-	border-top-left-radius: 0;
-	border-bottom-right-radius: 0;
-	cursor: pointer;
 }
-.ZMSZCatalogConnector .zmi-sitemap.full,
-#zmsindex .zmi-sitemap.full {
+.zmi-sitemap-controls > div:first-child {
+	border-top-left-radius: 0;
+}
+.zmi-sitemap-controls > div:last-child {
+	border-bottom-right-radius: 0;
+}
+.zmi-sitemap.full {
 	max-height: unset;
 }
 .ZMSZCatalogConnector .zmi-sitemap div#loading,
@@ -2464,8 +2460,10 @@ body.lazy_select_form footer .controls {
 #zmsindex .zmi-sitemap:not(.full) div#loading {
 	top: 2rem;
 	position: absolute;
-	right: 5rem;
+	right: 1rem;
 	zoom: 1;
+	background: #b1bbc1;
+	padding:1rem;
 }
 body.loading .ZMSZCatalogConnector .zmi-sitemap {
 	background:#b1bbc1;

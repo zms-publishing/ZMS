@@ -325,6 +325,24 @@ function zmiSelectObject() {
 	return false;
 }
 
+function zmiExpandObjectTree(max) {
+	var fn = function() {
+		var done = false;
+		$(".zmi-sitemap .toggle[title='+']").each(function() {
+			var $toggle = $(this);
+			var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
+			var $container = $($toggle.parents("li")[0]);
+			var level = $parents.length - 1;
+			if (level < max || -1 == max) {
+				$ZMI.objectTree.toggleClick($toggle,fn);
+				done = true;
+			}
+		});
+	}
+	fn();
+	return false;
+}
+
 $(function() {
 
 	// select tab
@@ -344,24 +362,6 @@ $(function() {
 		$('input[name="boost_'+k+'"]').val(attrs[k].boost);
 	}
 	toggleMetaobj();
-
-	function zmiExpandObjectTree(max) {
-		var fn = function() {
-			var done = false;
-			$(".zmi-sitemap .toggle[title='+']").each(function() {
-				var $toggle = $(this);
-				var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
-				var $container = $($toggle.parents("li")[0]);
-				var level = $parents.length - 1;
-				if (level < max || -1 == max) {
-					$ZMI.objectTree.toggleClick($toggle,fn);
-					done = true;
-				}
-			});
-		}
-		fn();
-		return false;
-	}
 
 	// Sitemap
 	var href = $ZMI.getPhysicalPath();

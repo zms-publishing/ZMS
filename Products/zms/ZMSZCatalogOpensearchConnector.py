@@ -71,7 +71,14 @@ class ZMSZCatalogOpensearchConnector(
       import requests
       from requests.auth import HTTPBasicAuth
       import json
+
+      qpage_index = REQUEST.get('pageIndex',0)
+      qsize = REQUEST.get('size', 10)
+      qfrom = REQUEST.get('from', qpage_index*qsize)
+
       d = {
+        "size": qsize,
+        "from":qfrom,
         "query":{
           "query_string":{"query":q}
         },
@@ -82,6 +89,7 @@ class ZMSZCatalogOpensearchConnector(
           }
         }
       }
+
       url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
       # ID of opensearch index is ZMS multisite root node id or explicitly given by request variable 'opensearch_index_id'
       root_id = self.getRootElement().getHome().id

@@ -1,4 +1,5 @@
 from Products.zms import standard
+# import pdb
 
 def get_child_nodes(node):
   return sorted(node.getChildNodes(), key=lambda x:'%s_%s'%(standard.id_prefix(x.id),getattr(x,'sort_id','')))
@@ -23,6 +24,7 @@ def get_next_node(node, allow_children=True):
 
 def traverse(data, node, page_size):
   count = 0
+  # pdb.set_trace()
   while node and count < page_size:
     data['log'].append([count,'/'.join(node.getPhysicalPath())])
     # TODO do something with this node
@@ -51,7 +53,8 @@ def manage_opensearch_export_data_paged( self):
       data['count'] = {}
       for meta_id in ids:
         q = catalog({'meta_id':meta_id})
-        r = q # [1 for x in q if x['getPath'].__contains__(path)]
+        r = catalog({'meta_id':meta_id}, path={'query':path})
+        # r = q # [1 for x in q if x['getPath'].__contains__(path)]
         data['count']['_'+meta_id] = len(q)
         data['count'][meta_id] = len(r)
         data['total'] = data['total'] + len(r)
@@ -118,7 +121,7 @@ def manage_opensearch_export_data_paged( self):
   prt.append('</button>')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
-  prt.append('<div class="d-none progress">')
+  prt.append('<div class="d-none progress mx-3">')
   prt.append('<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>')
   prt.append('</div>')
   prt.append('<div class="d-none alert alert-primary" role="alert">')
@@ -186,6 +189,9 @@ function stop() {
 function progress(i) {
   count = count + i;
   var perc = Math.floor(10.0*count*100/total)/10.0;
+  // debugger;
+  var log = `PROGRESS: total=${total}, count=${count}, per=${perc}`;
+  console.log(log)
   $(".progress .progress-bar").css("width",perc+"%").attr({"aria-valuenow":perc,"title":count+"/"+total}).html(perc+"%");
 }
 function ajaxCount(cb) {
@@ -193,6 +199,7 @@ function ajaxCount(cb) {
     var params = {'json':true,'count':true,'uid':uid};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
         total = data['total'];
+        // debugger;
         progress(0);
         cb();
     });

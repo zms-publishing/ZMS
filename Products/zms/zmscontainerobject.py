@@ -44,6 +44,44 @@ def isPageWithElements(obs):
   return False
 
 
+# ------------------------------------------------------------------------------
+#  zmscontainerobject.getPrevSibling: 
+#
+#  The node immediately preceding this node, otherwise returns None. 
+# ------------------------------------------------------------------------------
+def getPrevSibling(self, REQUEST, incResource=False):
+  parent = self.getParentNode()
+  if parent is not None:
+    siblings = parent.getChildNodes(REQUEST, [self.PAGES, self.NORESOLVEREF]) 
+    if self in siblings:
+      i = siblings.index(self) - 1
+      while i >= 0:
+        ob = siblings[i]
+        if ob.isVisible(REQUEST) and (incResource or not ob.isResource(REQUEST)):
+          return ob
+        i = i - 1
+  return None
+
+# ------------------------------------------------------------------------------
+#  zmscontainerobject.getNextSibling: 
+#
+#  The node immediately following this node, otherwise returns None. 
+# ------------------------------------------------------------------------------
+def getNextSibling(self, REQUEST, incResource=False):
+  parent = self.getParentNode()
+  if parent is not None:
+    siblings = parent.getChildNodes(REQUEST, [self.PAGES, self.NORESOLVEREF]) 
+    siblingIds = [x.id for x in siblings]
+    if self.id in siblingIds:
+      i = siblingIds.index( self.id) + 1
+      while i < len(siblings):
+        ob = siblings[i]
+        if ob.isVisible(REQUEST) and (incResource or not ob.isResource(REQUEST)):
+          return ob
+        i = i + 1
+  return None
+
+
 ################################################################################
 ################################################################################
 ###
@@ -416,6 +454,114 @@ class ZMSContainerObject(
       xml += '<result code="%i" message="%s">\n'%(rc, message)
       xml += "</result>\n"
       return xml
+
+    ############################################################################
+    ###
+    ###  Page-Navigation
+    ###
+    ############################################################################
+
+    # --------------------------------------------------------------------------
+    #  ZMSContainerObject.getFirstPage:
+    # --------------------------------------------------------------------------
+    def getFirstPage(self, REQUEST, incResource=False, root=None):
+      """
+      Returns the first page of the tree from root (or document-element if root
+      is not given).
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: the first page
+      @rtype: C{zmsobject.ZMSObject}
+      """
+      root = standard.nvl(root, self.getDocumentElement())
+      return root
+    
+    # --------------------------------------------------------------------------
+    #  ZMSContainerObject.getPrevPage:
+    # --------------------------------------------------------------------------
+    def getPrevPage(self, REQUEST, incResource=False, root=None):
+      """
+      Returns the previous page of this node from root (or document-element if root
+      is not given).
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: the previous page
+      @rtype: C{zmsobject.ZMSObject}
+      """
+      ob = None
+      root = standard.nvl(root, self.getDocumentElement())
+      while True:
+        ob = getPrevSibling(self, REQUEST, incResource)
+        if ob is None:
+          parent = self.getParentNode()
+          if parent is not None:
+            if self.getHref2IndexHtml(REQUEST) == parent.getHref2IndexHtml(REQUEST):
+              ob = parent.getPrevPage(REQUEST, incResource, parent)
+            else:
+              ob = parent
+        else:
+          ob = ob.getLastPage(REQUEST, incResource, ob)
+        if not ob is None and not ob.isMetaType(self.PAGES, REQUEST):
+          ob = ob.getPrevPage(REQUEST, incResource, root)
+        if ob is None or ob.isMetaType(self.PAGES, REQUEST):
+          break
+      return ob
+
+    # --------------------------------------------------------------------------
+    #  ZMSContainerObject.getNextPage:
+    # --------------------------------------------------------------------------
+    def getNextPage(self, REQUEST, incResource=False, root=None): 
+      """
+      Returns the next page of this node from root (or document-element if root
+      is not given).
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: the next page
+      @rtype: C{zmsobject.ZMSObject}
+      """
+      ob = None
+      root = standard.nvl(root, self.getDocumentElement())
+      while True:
+        children = [childNode for childNode in self.filteredChildNodes(REQUEST, self.PAGES) if ((incResource==False and not childNode.isResource(REQUEST)) or incResource==True) ]
+        if len(children) > 0:
+          ob = children[0]
+        else:
+          current = self
+          while ob is None and current is not None:
+            ob = getNextSibling(current, REQUEST, incResource)
+            current = current.getParentNode()
+        if not ob is None and not ob.isMetaType(self.PAGES, REQUEST):
+          ob = ob.getNextPage(REQUEST, incResource, root)
+        if ob is None or ob.isMetaType(self.PAGES, REQUEST):
+          break
+      return ob
+
+    # --------------------------------------------------------------------------
+    #  ZMSContainerObject.getLastPage:
+    # --------------------------------------------------------------------------
+    def getLastPage(self, REQUEST, incResource=False, root=None):
+      """
+      Returns the last page of the tree from root (or document-element if root
+      is not given).
+      @param REQUEST: the triggering request
+      @type REQUEST: C{ZPublisher.HTTPRequest}
+      @return: the last page
+      @rtype: C{zmsobject.ZMSObject}
+      """
+      ob = None
+      root = standard.nvl(root, self.getDocumentElement())
+      children = [root]
+      while len( children) > 0:
+        i = len( children)-1
+        while i >= 0:
+          if (incResource or not children[i].isResource(REQUEST)):
+            ob = children[i]
+            i = 0
+          i = i - 1
+        if ob == self:
+          break
+        children = ob.filteredChildNodes(REQUEST, self.PAGES)
+      return ob
 
 
     ############################################################################

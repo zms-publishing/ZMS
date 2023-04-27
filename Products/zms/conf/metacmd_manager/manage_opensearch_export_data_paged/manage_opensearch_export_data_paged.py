@@ -1,20 +1,18 @@
 from Products.zms import standard
-# import pdb
+import pdb
 
-def get_child_nodes(node):
-  return sorted(node.getChildNodes(), key=lambda x:'%s_%s'%(standard.id_prefix(x.id),getattr(x,'sort_id','')))
-
-def get_next_node(node, allow_children=True):
+# TODO fixme in Products/zms/zmscontainerobject.py [607]
+def get_next_node(self, allow_children=True):
   # children
   if allow_children:
-    children = get_child_nodes(node)
+    children = self.getChildNodes()
     if children:
       return children[0]
   # siblings
-  parent  = node.getParentNode()
+  parent  = self.getParentNode()
   if parent:
-    siblings = get_child_nodes(parent)
-    index = siblings.index(node)
+    siblings = parent.getChildNodes()
+    index = siblings.index(self)
     if index < len(siblings) - 1:
       return siblings[index+1]
     # parent
@@ -22,12 +20,14 @@ def get_next_node(node, allow_children=True):
   # none
   return None
 
-def traverse(data, node, page_size):
+def traverse(data, node, meta_ids=[], page_size=100):
   count = 0
-  # pdb.set_trace()
+  #pdb.set_trace()
   while node and count < page_size:
-    data['log'].append([count,'/'.join(node.getPhysicalPath())])
-    # TODO do something with this node
+    log = {'index':count,'path':'/'.join(node.getPhysicalPath())}
+    if not meta_ids or node.meta_id in meta_ids:
+      log['action'] = 'TODO implement here'
+    data['log'].append(log)
     node = get_next_node(node)
     data['next_node'] = None if not node else '{$%s}'%node.get_uid()
     count += 1
@@ -52,17 +52,14 @@ def manage_opensearch_export_data_paged( self):
       data['total'] = 0
       data['count'] = {}
       for meta_id in ids:
-        q = catalog({'meta_id':meta_id})
         r = catalog({'meta_id':meta_id}, path={'query':path})
-        # r = q # [1 for x in q if x['getPath'].__contains__(path)]
-        data['count']['_'+meta_id] = len(q)
         data['count'][meta_id] = len(r)
         data['total'] = data['total'] + len(r)
     if request.get('traverse'):
       page_size = int(request['page_size'])
       data['log'] = []
       data['next_node'] = None
-      traverse(data,node,page_size)
+      traverse(data,node,ids,page_size)
     return json.dumps(data)
   
   home_id = self.getHome().id
@@ -113,18 +110,25 @@ def manage_opensearch_export_data_paged( self):
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label"></label>')
   prt.append('<div class="col-sm-5">')
-  prt.append('<button id="start-button" class="btn btn-danger">')
-  prt.append('<i class="fas fa-play"></i>')
+  prt.append('<button id="start-button" class="btn btn-light">')
+  prt.append('<i class="fas fa-play text-success"></i>')
   prt.append('</button>')
   prt.append('<button id="stop-button" class="btn btn-light" disabled="disabled">')
   prt.append('<i class="fas fa-stop"></i>')
   prt.append('</button>')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
+  prt.append('<div class="form-group row">')
+  prt.append('<label class="col-sm-2 control-label"></label>')
+  prt.append('<div class="col-sm-5">')
+  prt.append('<div id="count">')
+  prt.append('</div>')
+  prt.append('</div>')
+  prt.append('</div><!-- .form-group -->')
   prt.append('<div class="d-none progress mx-3">')
   prt.append('<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>')
   prt.append('</div>')
-  prt.append('<div class="d-none alert alert-primary" role="alert">')
+  prt.append('<div class="d-none alert alert-info" role="alert">')
   prt.append('</div>')
   btn = request.form.get('btn')
   uid = request.form.get('uid')
@@ -156,35 +160,38 @@ var paused = false;
 var stopped = false;
 function start() {
     stopped = false;
-    $(".progress .progress-bar").removeClass("bg-danger bg-warning");
+    $(".progress .progress-bar").removeClass("bg-danger bg-warning bg-success");
     $("#stop-button").prop("disabled","");
     $(".progress.d-none").removeClass("d-none");
-    $(".alert.alert-primary").removeClass("d-none");
+    $(".alert.alert-info").removeClass("d-none");
+    $(".alert.alert-info").html('<div class="spinner-border text-primary mx-auto" role="status"><span class="sr-only">Loading...</span></div>');
     if (!started) {
       count = 0;
       started = true;
       paused = false;
-      $("#start-button i").removeClass("fa-play").addClass("fa-pause");
+      $("#start-button i").removeClass("fa-play text-success").addClass("fa-pause text-info");
       ajaxCount(ajaxTraverse);
     }
     else if (!paused) {
       paused = true;
-      $("#start-button i").removeClass("fa-pause").addClass("fa-play");
+      $("#start-button i").removeClass("fa-pause text-info").addClass("fa-play text-success");
       $(".progress .progress-bar").addClass("bg-warning");
     }
     else {
       paused = false;
-      $("#start-button i").removeClass("fa-play").addClass("fa-pause");
+      $("#start-button i").removeClass("fa-play text-success").addClass("fa-pause text-info");
       ajaxTraverse();
     }
+    return false;
 }
 function stop() {
     started = false;
     stopped = true;
-    $(".progress .progress-bar").removeClass("bg-danger bg-warning");
+    $(".progress .progress-bar").removeClass("bg-success bg-warning bg-success");
     $("#start-button i").removeClass("fa-pause").addClass("fa-play");
     $("#stop-button").prop("disabled","disabled");
-    $(".progress .progress-bar").addClass("bg-danger");
+    $(".progress .progress-bar").addClass("bg-warning");
+    return false;
 }
 function progress(i) {
   count = count + i;
@@ -199,7 +206,17 @@ function ajaxCount(cb) {
     var params = {'json':true,'count':true,'uid':uid};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
         total = data['total'];
-        // debugger;
+        var html = '';
+        html += '<table class="table table-bordered">';
+        Object.entries(data['count']).forEach((k,v) => {
+          html += '<tr class="' + k[0] + '">';
+          html += '<td class="id">' + k[0] + '</td>';
+          html += '<td class="total">' + k[1] + '</td>';
+          html += '<td class="count">' + 0 + '</td>';
+          html += '</tr>';
+        });
+        html += '</table>';
+        $("#count").html(html);
         progress(0);
         cb();
     });
@@ -208,28 +225,23 @@ function ajaxTraverse() {
     var page_size = $("input#page_size").val();
     var params = {'json':true,'traverse':true,'uid':uid,'page_size':page_size};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
-        $(".alert.alert-primary").html(JSON.stringify(data));
+        $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
         if (!stopped && !paused) {
           uid = data['next_node'];
-          progress(data['log'].length);
+          progress(data['log'].filter(x => x['action']).length);
           if (uid) {
             ajaxTraverse();
           }
           else {
             stop();
+            $(".progress .progress-bar").addClass("bg-success")
           }
         }
     });
 }
 $(function() {
-  $("#start-button").click(function() {
-    start();
-    return false;
-  });	
-  $("#stop-button").click(function() {
-    stop();
-    return false;
-  });	
+  $("#start-button").click(start);
+  $("#stop-button").click(stop);
 });
 </script>
   ''')

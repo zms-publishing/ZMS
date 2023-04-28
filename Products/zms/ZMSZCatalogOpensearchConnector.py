@@ -87,6 +87,14 @@ class ZMSZCatalogOpensearchConnector(
             "title": { "type": "plain"},
             "standard_html": { "type": "plain"}
           }
+        },
+        "aggs": {
+          "response_codes": {
+            "terms": {
+              "field": "meta_id",
+              "size": 5
+            }
+          }
         }
       }
 

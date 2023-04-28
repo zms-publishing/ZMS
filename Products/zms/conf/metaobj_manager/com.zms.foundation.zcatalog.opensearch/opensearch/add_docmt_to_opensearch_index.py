@@ -30,6 +30,7 @@ def add_docmt_to_opensearch_index(self):
 			.replace('\"',' ')
 		text = ' '.join(text.split())
 		content_obj[a] = text
+	content_obj['meta_id'] = self.meta_id
 
 	### TEST
 	# content_list.append(content_obj)

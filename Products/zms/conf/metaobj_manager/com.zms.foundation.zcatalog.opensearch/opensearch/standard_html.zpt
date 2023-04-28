@@ -11,6 +11,21 @@
 	{{#.}}
 		<h2>{{{this.total}}} Treffer f&uuml;r <code>{{{this.query}}}</code></h2>
 	{{/.}}
+	{{#if buckets}}
+		<ul class="nav nav-tabs responsive" role="tablist">
+			{{#each buckets}}
+				<li id="tab-label-{{@index}}" data-tabid="pane_{{this.doc_key}}" 
+					aria-controls="tab-pane-{{@index}}" role="tab"
+					class="{{#if @first}}active{{/if}}"
+					><a data-toggle="tab" href="#tab-pane-{{@index}}">
+						{{{this.key}}}
+						<span class="badge badge-tabs">{{{this.doc_count}}}</span>
+						<span class="sr-only">Treffer</span>
+					</a>
+				</li>
+			{{/each}}
+		</ul>
+	{{/if}}
 	<div class="pagination" style="margin-bottom: 0em;"></div>
 	{{#each hits}}
 		<article class="hit">
@@ -33,7 +48,7 @@
 						<div class="col-lg-6">
 							<h2 class="small-font">Suche nach Stichworten</h2>
 							<label for="form-keyword" class="sr-only">Stichwort</label>
-						<input type="text" name="eingabe" id="form-keyword" class="form-control" value="" autofocus/>	
+						<input type="text" name="eingabe" id="form-keyword" class="form-control" value="" autofocus/>
 						</div>
 					</div>
 					<div class="row skin-gutter-wide search-form">

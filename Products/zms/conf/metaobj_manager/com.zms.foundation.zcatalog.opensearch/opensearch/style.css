@@ -97,3 +97,6 @@
 	background-color: #d6002b;
 	border-color: #d6002b;
 }
+.search-results .nav-tabs > li {
+	margin-bottom: 2px;
+}

@@ -37,7 +37,14 @@ $(function() {
 
 	const postprocess_results = (q, res) => {
 		var total = res.hits.total.value;
-		var res_processed = { 'hits':[], 'total':total, 'query':q };
+		var buckets = []
+		try {
+			buckets = res.aggregations.response_codes.buckets;
+		} catch {
+			log.console('INFO: Result does not contain buckets-element')
+		}
+		var res_processed = { 'hits':[], 'total':total, 'query':q, 'buckets':buckets};
+
 		res["hits"]["hits"].forEach(x => {
 			var source = x["_source"];
 			var highlight = x["highlight"];

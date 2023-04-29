@@ -2,6 +2,7 @@
 //# Init function show_results() as global
 //# ######################################
 var show_results;
+var winloc = new URL(window.location);
 //# ######################################
 $(function() {
 
@@ -74,8 +75,16 @@ $(function() {
 	//# Execute on submit event
 	$(".search-form form").submit(function() {
 		var q = $("input",this).val();
+		winloc.searchParams.set('q', q);
+		history.pushState({}, '', winloc);
 		show_results(q, 0);
 		return false;
 	});
+
+	// POSSIBLE SECURITY ISSUE: auto-execute on ULR parameter
+	if ( winloc.searchParams.get('q', undefined) ) {
+		$('#form-keyword').val(encodeURI(winloc.searchParams.get('q','')));
+		$(".search-form form").trigger("submit");
+	}
 
 });

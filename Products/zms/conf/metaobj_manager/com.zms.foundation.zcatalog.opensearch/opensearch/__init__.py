@@ -33,7 +33,7 @@ class opensearch:
 
 	# Attrs
 	class Attrs:
-		icon_clazz = {"custom":"fas fa-search text-primary"
+		icon_clazz = {"custom":"fas fa-search text-danger"
 			,"default":""
 			,"id":"icon_clazz"
 			,"keys":[]

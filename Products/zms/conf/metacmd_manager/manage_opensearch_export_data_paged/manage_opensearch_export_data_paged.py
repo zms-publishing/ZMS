@@ -1,34 +1,13 @@
 from Products.zms import standard
-# import pdb
-
-# TODO fixme in Products/zms/zmscontainerobject.py [607]
-def get_next_node(self, allow_children=True):
-  # children
-  if allow_children:
-    children = self.getChildNodes()
-    if children:
-      return children[0]
-  # siblings
-  parent  = self.getParentNode()
-  if parent:
-    siblings = parent.getChildNodes()
-    index = siblings.index(self)
-    if index < len(siblings) - 1:
-      return siblings[index+1]
-    # parent
-    return get_next_node(parent,allow_children=False)
-  # none
-  return None
 
 def traverse(data, node, meta_ids=[], page_size=100):
   count = 0
-  #pdb.set_trace()
   while node and count < page_size:
     log = {'index':count,'path':'/'.join(node.getPhysicalPath())}
     if not meta_ids or node.meta_id in meta_ids:
       log['action'] = 'TODO implement here'
     data['log'].append(log)
-    node = get_next_node(node)
+    node = node.get_next_node()
     data['next_node'] = None if not node else '{$%s}'%node.get_uid()
     count += 1
 

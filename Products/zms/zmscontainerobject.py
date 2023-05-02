@@ -750,10 +750,10 @@ class ZMSContainerObject(
         if children:
           return children[0]
       # siblings
-      parent  = node.getParentNode()
+      parent  = self.getParentNode()
       if parent:
         siblings = parent.getChildNodes()
-        index = siblings.index(node)
+        index = siblings.index(self)
         if index < len(siblings) - 1:
           return siblings[index+1]
         # parent

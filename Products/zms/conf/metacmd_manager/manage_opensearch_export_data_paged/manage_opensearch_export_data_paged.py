@@ -1,15 +1,71 @@
 from Products.zms import standard
+from abc import abstractmethod
 
-def traverse(data, node, meta_ids=[], page_size=100):
+# Abstract Interface for Handler
+class IHandler:
+    @abstractmethod
+    def handle(self): raise NotImplementedError
+
+# Implementation of Opensearch Handler
+class OpensearchHandler(IHandler):
+    def __init__(self, catalog_adapter, client, index, meta_ids):
+       self.catalog_adapter = catalog_adapter
+       self.client = client
+       self.index = index
+       self.meta_ids = meta_ids
+    def handle(self, node):
+        # Node in Meta-IDs of ZCatalog-Adapter
+        if not self.meta_ids or node.meta_id in self.meta_ids:
+          response = [None]
+          # Callback for document
+          def callback(node, document):
+            response.append(self.client.index(
+                index = self.index,
+                body = document,
+                id = node.get_uid(),
+                refresh = True
+            ))
+          document = self.catalog_adapter.get_sitemap(callback, node, recursive=False)
+          return response[-1]
+        return None
+
+# Traverse and handle nodes of this page.
+def traverse(data, node, handler, page_size=100):
   count = 0
   while node and count < page_size:
     log = {'index':count,'path':'/'.join(node.getPhysicalPath())}
-    if not meta_ids or node.meta_id in meta_ids:
-      log['action'] = 'TODO implement here'
+    log['action'] = handler.handle(node);
     data['log'].append(log)
     node = node.get_next_node()
     data['next_node'] = None if not node else '{$%s}'%node.get_uid()
     count += 1
+
+# Get Opensearch Client:
+#
+# ${opensearch.url:https://localhost:9200}
+# ${opensearch.username:admin}
+# ${opensearch.password:admin}
+# ${opensearch.ssl.verify:}
+def get_opensearch_client(self):
+  from opensearchpy import OpenSearch
+  url = self.getConfProperty('opensearch.url', 'https://localhost:9200')
+  username = self.getConfProperty('opensearch.username', 'admin')
+  password = self.getConfProperty('opensearch.password', 'admin')
+  verify = bool(self.getConfProperty('opensearch.ssl.verify', ''))
+  url = url[len('https://'):]
+  host = url[:url.find(':')]
+  port = int(url[url.find(':')+1:])
+  auth = (username, password)
+  standard.writeBlock(self, "host=%s, port=%i, username=%s, password=%s"%(host,port,username,password))
+  return OpenSearch(
+    hosts = [{'host': host, 'port': port}],
+    http_compress = True, # enables gzip compression for request bodies
+    http_auth = auth,
+    use_ssl = True,
+    verify_certs = verify,
+    ssl_assert_hostname = False,
+    ssl_show_warn = False,
+  ) 
 
 def manage_opensearch_export_data_paged( self):
   request = self.REQUEST
@@ -38,7 +94,10 @@ def manage_opensearch_export_data_paged( self):
       page_size = int(request['page_size'])
       data['log'] = []
       data['next_node'] = None
-      traverse(data,node,ids,page_size)
+      opensearch_client = get_opensearch_client(self)
+      root_id = self.getRootElement().getHome().id
+      handler = OpensearchHandler(catalog_adapter, opensearch_client, root_id, ids)
+      traverse(data,node,handler,page_size)
     return json.dumps(data)
   
   home_id = self.getHome().id
@@ -216,6 +275,10 @@ function ajaxTraverse() {
             $(".progress .progress-bar").addClass("bg-success")
           }
         }
+    })
+    .fail(function(e) {
+      stop();
+      alert(JSON.stringify(e));
     });
 }
 $(function() {

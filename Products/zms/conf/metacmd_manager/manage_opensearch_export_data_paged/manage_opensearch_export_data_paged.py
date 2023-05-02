@@ -129,10 +129,10 @@ def manage_opensearch_export_data_paged( self):
   prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label"></label>')
   prt.append('<div class="col-sm-5">')
-  prt.append('<button id="start-button" class="btn btn-light">')
+  prt.append('<button id="start-button" class="btn btn-secondary mr-2">')
   prt.append('<i class="fas fa-play text-success"></i>')
   prt.append('</button>')
-  prt.append('<button id="stop-button" class="btn btn-light" disabled="disabled">')
+  prt.append('<button id="stop-button" class="btn btn-secondary" disabled="disabled">')
   prt.append('<i class="fas fa-stop"></i>')
   prt.append('</button>')
   prt.append('</div>')
@@ -221,7 +221,7 @@ function progress(i) {
   $(".progress .progress-bar").css("width",perc+"%").attr({"aria-valuenow":perc,"title":count+"/"+total}).html(perc+"%");
 }
 function ajaxCount(cb) {
-    uid = $("input[name='uid']").val();
+    uid = $('#uid').val();
     var params = {'json':true,'count':true,'uid':uid};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
         total = data['total'];
@@ -263,8 +263,17 @@ function ajaxTraverse() {
     });
 }
 $(function() {
-  $("#start-button").click(start);
-  $("#stop-button").click(stop);
+  $('#start-button').click(start);
+  $('#stop-button').click(stop);
+  $('#uid').change( function() {
+    // Hide progress/log infos
+    $('.progress').addClass('d-none');
+    $('.progress .progress-bar').css("width",0);
+    $('.alert.alert-info').addClass('d-none').empty();
+    $("#count").html('<div class="spinner-border text-primary mx-auto" role="status"><span class="sr-only">Loading...</span></div>');
+    // Show object classes table
+    ajaxCount(stop);
+  })
 });
 </script>
   ''')

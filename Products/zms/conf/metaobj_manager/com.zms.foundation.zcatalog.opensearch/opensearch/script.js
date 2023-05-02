@@ -58,6 +58,13 @@ $(function() {
 					hit["snippet"] = highlight["standard_html"];
 				}
 			}
+			if ( typeof hit["snippet"] == "undefined") {
+				if (typeof source["attr_dc_description"] == "undefined") {
+					hit["snippet"] = '';
+				} else {
+					hit["snippet"] = source["attr_dc_description"];
+				}
+			}
 			if (hit["snippet"].length > 200) {
 				hit["snippet"] = hit["snippet"].substr(0,200) + "...";
 			}

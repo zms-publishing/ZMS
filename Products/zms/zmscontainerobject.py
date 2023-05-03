@@ -19,7 +19,7 @@
 # Imports.
 from OFS.role import RoleManager
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from OFS.CopySupport import _cb_decode
+from OFS.CopySupport import _cb_decode, _cb_encode
 import re
 import sys
 import time

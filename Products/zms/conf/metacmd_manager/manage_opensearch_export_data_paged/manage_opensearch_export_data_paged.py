@@ -83,7 +83,7 @@ def manage_opensearch_export_data_paged( self):
     import json
     data = {'pid':self.Control_Panel.process_id(),'uid':uid}
     if request.get('count'):
-      path = '%s/content'%('/'.join(node.getHome().getPhysicalPath()))
+      path = '/'.join(node.getPhysicalPath())
       data['total'] = 0
       data['count'] = {}
       for meta_id in ids:
@@ -273,7 +273,7 @@ $(function() {
     $("#count").html('<div class="spinner-border text-primary mx-auto" role="status"><span class="sr-only">Loading...</span></div>');
     // Show object classes table
     ajaxCount(stop);
-  })
+  }).change();
 });
 </script>
   ''')

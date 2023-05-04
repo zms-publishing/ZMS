@@ -131,7 +131,7 @@ def manage_opensearch_export_data_paged( self):
   prt.append('<input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}">')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
-  prt.append('<div class="form-group row">')
+  prt.append('<div class="form-group row d-none">')
   prt.append('<label class="col-sm-2 control-label">Node</label>')
   prt.append('<div class="col-sm-5">')
   prt.append('<input class="form-control url-input" id="uid" name="uid" type="text" readonly="readonly">')

@@ -77,24 +77,25 @@ def manage_opensearch_export_data_paged( self):
   catalog = self.getZMSIndex().get_catalog()
   catalog_adapter = self.getCatalogAdapter()
   ids = catalog_adapter.getIds()
-  
-  uid = request.get('uid')
-  if request.get('json') and uid:
-    request.RESPONSE.setHeader("Content-Type","text/json")
-    node = self.getLinkObj(uid)
-    home_id = node.getHome().id
+
+  # REST Endpoints  
+  if request.get('json'):
     import json
-    data = {'pid':self.Control_Panel.process_id(),'uid':uid}
+    request.RESPONSE.setHeader("Content-Type","text/json")
+    root_node = self.getLinkObj(request['root_node'])
+    data = {'pid':self.Control_Panel.process_id(),'root_node':request['root_node']}
+    # REST Endpoint: ajaxCount
     if request.get('count'):
-      path = '/'.join(node.getPhysicalPath())
-      data['total'] = 0
+      path = '/'.join(root_node.getPhysicalPath())
       data['count'] = {}
       for meta_id in ids:
         r = catalog({'meta_id':meta_id}, path={'query':path})
         data['count'][meta_id] = len(r)
-        data['total'] = data['total'] + len(r)
+      r = catalog(path={'query':path})
+      data['total'] = len(r)
+    # REST Endpoint: ajaxTraverse
     if request.get('traverse'):
-      root_node = self.getLinkObj(request['root_node'])
+      node = self.getLinkObj(request['uid'])
       page_size = int(request['page_size'])
       data['log'] = []
       data['next_node'] = None
@@ -125,9 +126,15 @@ def manage_opensearch_export_data_paged( self):
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
+  prt.append('<label class="col-sm-2 control-label">Root</label>')
+  prt.append('<div class="col-sm-5">')
+  prt.append('<input class="form-control url-input" id="root_node" name="root_node" type="text" value="{$}">')
+  prt.append('</div>')
+  prt.append('</div><!-- .form-group -->')
+  prt.append('<div class="form-group row">')
   prt.append('<label class="col-sm-2 control-label">Node</label>')
   prt.append('<div class="col-sm-5">')
-  prt.append('<input class="form-control url-input" id="uid" name="uid" type="text" value="{$}">')
+  prt.append('<input class="form-control url-input" id="uid" name="uid" type="text" readonly="readonly">')
   prt.append('</div>')
   prt.append('</div><!-- .form-group -->')
   prt.append('<div class="form-group row">')
@@ -153,20 +160,6 @@ def manage_opensearch_export_data_paged( self):
   prt.append('</div>')
   prt.append('<div class="d-none alert alert-info" role="alert">')
   prt.append('</div>')
-  btn = request.form.get('btn')
-  uid = request.form.get('uid')
-  page_size = request.form.get('page_size')
-  if btn and uid and page_size:
-    node = self.getLinkObj(uid)
-    prt.append('<div class="form-group row">')
-    prt.append('<label class="col-sm-2 control-label">&nbsp;</label>')
-    prt.append('<div class="col-sm-10">')
-    prt.append('<ul>')
-    prt.extend(['<li>%s</li>'%str(x) for x in traverse(node,page_size)])
-    prt.append('</ul>')
-    prt.append('</div>')
-    prt.append('</div>')
-  
   prt.append('</div><!-- .card-body -->')
   prt.append('</form><!-- .form-horizontal -->')
   prt.append('</div><!-- #zmi-tab -->')
@@ -179,6 +172,7 @@ var map = undefined;
 var started = false;
 var paused = false;
 var stopped = false;
+
 function start() {
     stopped = false;
     $(".progress .progress-bar").removeClass("bg-danger bg-warning bg-success");
@@ -209,6 +203,7 @@ function start() {
     }
     return false;
 }
+
 function stop() {
     started = false;
     stopped = true;
@@ -218,18 +213,20 @@ function stop() {
     $(".progress .progress-bar").addClass("bg-warning");
     return false;
 }
+
 function progress() {
   const count = parseInt($("#count_table tr.Total .count").text());
   const total = parseInt($("#count_table tr.Total .total").text());
   const perc = Math.floor(10.0*count*100/total)/10.0;
   $(".progress .progress-bar").css("width",perc+"%").attr({"aria-valuenow":perc,"title":count+"/"+total}).html(perc+"%");
 }
+
 function ajaxCount(cb) {
-    const uid = $('#uid').val();
-    const params = {'json':true,'count':true,'uid':uid};
+    const root_node = $('#root_node').val();
+    const params = {'json':true,'count':true,'root_node':root_node};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
+        $('#uid').val(root_node);
         var html = '';
-        var total = 0;
         html += '<table id="count_table" class="table table-bordered">';
         Object.entries(data['count']).forEach((k,v) => {
           html += '<tr class="' + k[0] + '">';
@@ -237,11 +234,10 @@ function ajaxCount(cb) {
           html += '<td class="total">' + k[1] + '</td>';
           html += '<td class="count">' + 0 + '</td>';
           html += '</tr>';
-          total += k[1];
         });
         html += '<tr class="Total">';
         html += '<td class="id"><strong>Total</strong></td>';
-        html += '<td class="total">' + total + '</td>';
+        html += '<td class="total">' + data['total'] + '</td>';
         html += '<td class="count">' + 0 + '</td>';
         html += '</tr>';
         html += '</table>';
@@ -252,8 +248,10 @@ function ajaxCount(cb) {
         cb(uid);
     });
 }
-function ajaxTraverse(uid) {
-    const root_node = $('#uid').val();
+
+function ajaxTraverse() {
+    const root_node = $('#root_node').val();
+    const uid = $('#uid').val();
     const page_size = $("input#page_size").val();
     const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
@@ -261,24 +259,26 @@ function ajaxTraverse(uid) {
         if (!stopped && !paused) {
           const log = data['log'];
           if (log) {
-              log.filter(x => x['action']).forEach(x =>  {
+            log.filter(x => x['action']).forEach(x =>  {
               // increase counter
               const meta_id = x['meta_id'];
               map[meta_id] = map[meta_id] + 1;
-              map['Total'] = map['Total'] + 1;
               $("#count_table tr." + meta_id + " .count").html(map[meta_id]);
-              $("#count_table tr." + 'Total' + " .count").html(map['Total']);
-              // show progress
-              progress();
             });
+            // absolute total
+            map['Total'] = map['Total'] + log.length;
+            $("#count_table tr." + 'Total' + " .count").html(map['Total']);
+            // show progress
+            progress();
           }
           const next_node = data['next_node'];
           if (next_node) {
-            ajaxTraverse(next_node);
+            $('#uid').val(next_node);
+            ajaxTraverse();
           }
           else {
             stop();
-            $(".progress .progress-bar").addClass("bg-success")
+            $(".progress .progress-bar").removeClass("bg-warning").addClass("bg-success")
           }
         }
     })
@@ -287,10 +287,11 @@ function ajaxTraverse(uid) {
       alert(JSON.stringify(e));
     });
 }
+
 $(function() {
   $('#start-button').click(start);
   $('#stop-button').click(stop);
-  $('#uid').change( function() {
+  $('#root_node').change( function() {
     // Hide progress/log infos
     $('.progress').addClass('d-none');
     $('.progress .progress-bar').css("width",0);

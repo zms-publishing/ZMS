@@ -259,16 +259,19 @@ function ajaxTraverse(uid) {
     $.get('manage_opensearch_export_data_paged',params,function(data) {
         $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
         if (!stopped && !paused) {
-          data['log'].filter(x => x['action']).forEach(x =>  {
-            // increase counter
-            const meta_id = x['meta_id'];
-            map[meta_id] = map[meta_id] + 1;
-            map['Total'] = map['Total'] + 1;
-            $("#count_table tr." + meta_id + " .count").html(map[meta_id]);
-            $("#count_table tr." + 'Total' + " .count").html(map['Total']);
-            // show progress
-            progress();
-          });
+          const log = data['log'];
+          if (log) {
+              log.filter(x => x['action']).forEach(x =>  {
+              // increase counter
+              const meta_id = x['meta_id'];
+              map[meta_id] = map[meta_id] + 1;
+              map['Total'] = map['Total'] + 1;
+              $("#count_table tr." + meta_id + " .count").html(map[meta_id]);
+              $("#count_table tr." + 'Total' + " .count").html(map['Total']);
+              // show progress
+              progress();
+            });
+          }
           const next_node = data['next_node'];
           if (next_node) {
             ajaxTraverse(next_node);

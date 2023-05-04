@@ -30,13 +30,16 @@ class OpensearchHandler(IHandler):
         return None
 
 # Traverse and handle nodes of this page.
-def traverse(data, node, handler, page_size=100):
+def traverse(data, root_node, node, handler, page_size=100):
   count = 0
+  root_path = '/'.join(root_node.getPhysicalPath())
   while node and count < page_size:
-    log = {'index':count,'path':'/'.join(node.getPhysicalPath())}
+    path = '/'.join(node.getPhysicalPath())
+    log = {'index':count,'path':path,'meta_id':node.meta_id}
     log['action'] = handler.handle(node);
     data['log'].append(log)
     node = node.get_next_node()
+    if node and not '/'.join(node.getPhysicalPath()).startswith(root_path): node = None
     data['next_node'] = None if not node else '{$%s}'%node.get_uid()
     count += 1
 
@@ -91,13 +94,14 @@ def manage_opensearch_export_data_paged( self):
         data['count'][meta_id] = len(r)
         data['total'] = data['total'] + len(r)
     if request.get('traverse'):
+      root_node = self.getLinkObj(request['root_node'])
       page_size = int(request['page_size'])
       data['log'] = []
       data['next_node'] = None
       opensearch_client = get_opensearch_client(self)
       root_id = self.getRootElement().getHome().id
       handler = OpensearchHandler(catalog_adapter, opensearch_client, root_id, ids)
-      traverse(data,node,handler,page_size)
+      traverse(data,root_node,node,handler,page_size)
     return json.dumps(data)
   
   home_id = self.getHome().id
@@ -171,9 +175,7 @@ def manage_opensearch_export_data_paged( self):
 <style>
 </style>
 <script>
-var uid = undefined;
-var total = undefined;
-var count = undefined;
+var map = undefined;
 var started = false;
 var paused = false;
 var stopped = false;
@@ -185,7 +187,11 @@ function start() {
     $(".alert.alert-info").removeClass("d-none");
     $(".alert.alert-info").html('<div class="spinner-border text-primary mx-auto" role="status"><span class="sr-only">Loading...</span></div>');
     if (!started) {
-      count = 0;
+      // prepare counters
+      map = {};
+      $("#count_table tr td.id").each(function() {
+        map[$(this).text()] = 0;
+      });
       started = true;
       paused = false;
       $("#start-button i").removeClass("fa-play text-success").addClass("fa-pause text-info");
@@ -212,44 +218,60 @@ function stop() {
     $(".progress .progress-bar").addClass("bg-warning");
     return false;
 }
-function progress(i) {
-  count = count + i;
-  var perc = Math.floor(10.0*count*100/total)/10.0;
-  // debugger;
-  var log = `PROGRESS: total=${total}, count=${count}, per=${perc}`;
-  console.log(log)
+function progress() {
+  const count = parseInt($("#count_table tr.Total .count").text());
+  const total = parseInt($("#count_table tr.Total .total").text());
+  const perc = Math.floor(10.0*count*100/total)/10.0;
   $(".progress .progress-bar").css("width",perc+"%").attr({"aria-valuenow":perc,"title":count+"/"+total}).html(perc+"%");
 }
 function ajaxCount(cb) {
-    uid = $('#uid').val();
-    var params = {'json':true,'count':true,'uid':uid};
+    const uid = $('#uid').val();
+    const params = {'json':true,'count':true,'uid':uid};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
-        total = data['total'];
         var html = '';
-        html += '<table class="table table-bordered">';
+        var total = 0;
+        html += '<table id="count_table" class="table table-bordered">';
         Object.entries(data['count']).forEach((k,v) => {
           html += '<tr class="' + k[0] + '">';
           html += '<td class="id">' + k[0] + '</td>';
           html += '<td class="total">' + k[1] + '</td>';
           html += '<td class="count">' + 0 + '</td>';
           html += '</tr>';
+          total += k[1];
         });
+        html += '<tr class="Total">';
+        html += '<td class="id"><strong>Total</strong></td>';
+        html += '<td class="total">' + total + '</td>';
+        html += '<td class="count">' + 0 + '</td>';
+        html += '</tr>';
         html += '</table>';
         $("#count").html(html);
-        progress(0);
-        cb();
+        // show progress
+        progress();
+        // execute callback
+        cb(uid);
     });
 }
-function ajaxTraverse() {
-    var page_size = $("input#page_size").val();
-    var params = {'json':true,'traverse':true,'uid':uid,'page_size':page_size};
+function ajaxTraverse(uid) {
+    const root_node = $('#uid').val();
+    const page_size = $("input#page_size").val();
+    const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size};
     $.get('manage_opensearch_export_data_paged',params,function(data) {
         $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
         if (!stopped && !paused) {
-          uid = data['next_node'];
-          progress(data['log'].filter(x => x['action']).length);
-          if (uid) {
-            ajaxTraverse();
+          data['log'].filter(x => x['action']).forEach(x =>  {
+            // increase counter
+            const meta_id = x['meta_id'];
+            map[meta_id] = map[meta_id] + 1;
+            map['Total'] = map['Total'] + 1;
+            $("#count_table tr." + meta_id + " .count").html(map[meta_id]);
+            $("#count_table tr." + 'Total' + " .count").html(map['Total']);
+            // show progress
+            progress();
+          });
+          const next_node = data['next_node'];
+          if (next_node) {
+            ajaxTraverse(next_node);
           }
           else {
             stop();

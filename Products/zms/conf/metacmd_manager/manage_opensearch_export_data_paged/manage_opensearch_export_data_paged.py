@@ -166,6 +166,15 @@ def manage_opensearch_export_data_paged( self):
   prt.append(self.zmi_body_footer(self,request))
   prt.append('''
 <style>
+  @media (prefers-reduced-motion: reduce) {
+    .progress-bar-animated {
+      -webkit-animation: 1s linear infinite progress-bar-stripes;
+      animation: 1s linear infinite width;
+    }
+    .progress-bar {
+      transition: width .6s ease;
+    }
+  }
 </style>
 <script>
 var map = undefined;
@@ -217,7 +226,7 @@ function stop() {
 function progress() {
   const count = parseInt($("#count_table tr.Total .count").text());
   const total = parseInt($("#count_table tr.Total .total").text());
-  const perc = Math.floor(10.0*count*100/total)/10.0;
+  const perc = Math.round(Math.floor(10.0*count*100/total)/10.0);
   $(".progress .progress-bar").css("width",perc+"%").attr({"aria-valuenow":perc,"title":count+"/"+total}).html(perc+"%");
 }
 

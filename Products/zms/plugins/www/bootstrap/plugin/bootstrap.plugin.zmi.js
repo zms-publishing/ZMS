@@ -301,12 +301,12 @@ $ZMI.registerReady(function(){
 		if ($("span.input-group-append",this).length==0) {
 			$(this).addClass("input-group");
 			if ($textarea.prev('i').length==1) {
-				$textarea.prev('i').wrap('<div class="input-group-prepend"><span class="btn btn-secondary"></span></div>')
+				$textarea.prev('i').wrap('<div class="input-group-prepend"><span class="btn btn-secondary btn-sm"></span></div>')
 			}
 			if ($textarea.attr('data-style')) {
-				$(this).append('<div class="input-group-append"><a href="javascript:;" class="btn btn-secondary" title="Click for Code Popup or Dbl-Click for Native Editor!" style="' + $textarea.attr('data-style') + '"></a></div>');
+				$(this).append('<div class="input-group-append"><a href="javascript:;" class="btn btn-secondary btn-sm" title="Click for Code Popup or Dbl-Click for Native Editor!" style="' + $textarea.attr('data-style') + '"></a></div>');
 			} else {
-				$(this).append('<div class="input-group-append"><a href="javascript:;" class="btn btn-secondary">...</a></div>');
+				$(this).append('<div class="input-group-append"><a href="javascript:;" class="btn btn-secondary btn-sm"><i class="fas fa-ellipsis-v"></i></a></div>');
 			};
 			var clicks, timer, delay;
 			clicks=0;delay=500;timer=null;

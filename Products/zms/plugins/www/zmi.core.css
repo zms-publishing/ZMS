@@ -986,13 +986,22 @@ li.zmi-item span.zmi-ids {
 	border-color: #545b62;
 } 
 .zmi table.table td.meta-sort .btn.btn-secondary i.fas.fa-times,
-.zmi table.table td.meta-default .btn.btn-secondary i.fas.fa-key {
+.zmi table.table td.meta-default .btn.btn-secondary i.fas.fa-key,
+.zmi table.table td.meta-default .btn.btn-secondary i.fas.fa-ellipsis-v,
+.zmi .meta-languages .single-line.input-group i.fas,
+.zmi table.table .single-line.input-group .input-group-append i.fas {
 	color: #999;
 }
 .zmi table.table td.meta-sort .btn.btn-secondary:hover i.fas.fa-times,
-.zmi table.table td.meta-default .btn.btn-secondary:hover i.fas.fa-key {
+.zmi table.table td.meta-default .btn.btn-secondary:hover i.fas.fa-key,
+.zmi table.table td.meta-default .btn.btn-secondary:hover i.fas.fa-ellipsis-v {
 	color: #fff;
 }
+.zmi table.table td.meta-default.input-group-sm i.fas,
+.zmi table.table .single-line.input-group .input-group-append i.fas {
+	font-size: small;
+}
+
 .zmi form table.table td.meta-sort select.zmi-sort {
 	direction:rtl;
 	border: 1px solid silver;
@@ -1061,9 +1070,10 @@ input.btn.btn-file {
 }
 .zmi .single-line textarea {
 	overflow:hidden;
-	font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",Courier,monospace  !important;
+	font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",Courier,monospace !important;
 	width:100%;
 	min-width:3rem;
+	min-height:1.95rem;
 }
 .zmi-code {
 	font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",Courier,monospace !important;

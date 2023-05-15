@@ -101,7 +101,6 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         'manage_moveObjUp', 'manage_moveObjDown', 'manage_moveObjToPos',
         'manage_cutObjects', 'manage_copyObjects', 'manage_pasteObjs',
         'manage_userForm', 'manage_user',
-        'manage_zmi_input_form', 
         'manage_zmi_details_grid', 'manage_zmi_details_form',
         'manage_zmi_lazy_select_form',
         )
@@ -116,7 +115,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
 
     # Management Interface.
     # ---------------------
-    manage_zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
+    zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/filter_form', globals())
+    zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
     manage_zmi_details_grid = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_grid', globals())
     manage_zmi_details_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_form', globals())
     manage_zmi_lazy_select_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_lazy_select_form', globals())

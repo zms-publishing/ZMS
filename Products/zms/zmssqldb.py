@@ -255,8 +255,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         except:
           return "NULL"
       else:
-        if v.find("\'") >= 0: 
-          v=''.join(v.split("\'"))
+        if str(v).find("\'") >= 0:
+          v=''.join(str(v).split("\'"))
         return "'%s'"%v
 
 

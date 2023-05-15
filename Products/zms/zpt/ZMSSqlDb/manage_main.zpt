@@ -64,16 +64,16 @@
 			<tal:block tal:condition="python:'blob' in column and int(request.get('del_%s'%column['id'].lower(),0))==1"><tal:block tal:define="dummy0 python:here.operator_setitem(values,'delete_blob_%s'%column['id'],True)"></tal:block></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['insert']">
-			recordSet_Insert=<tal:block tal:content="python:here.recordSet_Insert(tablename=entity['id'],values=values, update_intersections=True)"
+			<tal:block tal:content="python:here.recordSet_Insert(tablename=entity['id'],values=values, update_intersections=True)"
 					tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_INSERTED')%here.getZMILangStr('ATTR_RECORD'))"></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['update']">
-			recordSet_Update=<tal:block tal:content="python:here.recordSet_Update(tablename=entity['id'],rowid=request['rowid'],values=values, update_intersections=True)"
+			<tal:block tal:content="python:here.recordSet_Update(tablename=entity['id'],rowid=request['rowid'],values=values, update_intersections=True)"
 					tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_CHANGED'))"></tal:block>
 		</tal:block>
 		<tal:block tal:condition="python:request.get('action') in ['delete']">
 			<tal:block tal:repeat="rowid python:request.get('qindices',[request['qindex']])">
-				recordSet_Delete=<tal:block tal:content="python:here.recordSet_Delete(tablename=entity['id'],rowid=rowid)"
+				<tal:block tal:content="python:here.recordSet_Delete(tablename=entity['id'],rowid=rowid)"
 					tal:define="dummy0 python:message.append(here.getZMILangStr('MSG_DELETED')%1)"></tal:block>
 			</tal:block>
 		</tal:block>

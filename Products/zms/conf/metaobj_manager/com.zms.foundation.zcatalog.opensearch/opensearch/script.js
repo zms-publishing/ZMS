@@ -12,7 +12,7 @@ $(function() {
 
 	// Finally define show_results() on ready
 	show_results = async (q, pageIndex) => {
-		$(".search-results").html(hb_spinner_tmpl(q));
+		$('.search-results').html(hb_spinner_tmpl(q));
 		// debugger;
 		const qurl = `zcatalog_adapter/zcatalog_opensearch_connector/search_json?q=${q}&pageIndex:int=${pageIndex}`;
 		const response = await fetch(qurl);
@@ -46,27 +46,31 @@ $(function() {
 		}
 		var res_processed = { 'hits':[], 'total':total, 'query':q, 'buckets':buckets};
 
-		res["hits"]["hits"].forEach(x => {
-			var source = x["_source"];
-			var highlight = x["highlight"];
-			var hit = {"path":x["_id"], "href":source["loc"], "title":source["title"], "snippet":source["standard_html"]}; 
-			if (typeof highlight !== "undefined") {
-				if (typeof highlight["title"] !== "undefined") {
-					hit["title"] = highlight["title"];
+		res['hits']['hits'].forEach(x => {
+			var source = x['_source'];
+			var highlight = x['highlight'];
+			var hit = { 'path':x['_id'], 'href':source['loc'], 'title':source['title'], 'snippet':source['standard_html'] }; 
+			if (typeof highlight !== 'undefined') {
+				if (typeof highlight['title'] !== 'undefined') {
+					hit['title'] = highlight['title'];
 				}
-				if (typeof highlight["standard_html"] !== "undefined") {
-					hit["snippet"] = highlight["standard_html"];
+				if (typeof highlight['standard_html'] !== 'undefined') {
+					hit['snippet'] = highlight['standard_html'];
 				}
 			}
-			if ( typeof hit["snippet"] == "undefined") {
-				if (typeof source["attr_dc_description"] == "undefined") {
-					hit["snippet"] = '';
+			if ( typeof hit['snippet'] == 'undefined') {
+				if (typeof source['attr_dc_description'] == 'undefined') {
+					hit['snippet'] = '';
 				} else {
-					hit["snippet"] = source["attr_dc_description"];
+					hit['snippet'] = source['attr_dc_description'];
 				}
 			}
-			if (hit["snippet"].length > 200) {
-				hit["snippet"] = hit["snippet"].substr(0,200) + "...";
+			// Attachment: field-name = 'data'
+			if ( typeof source['attachment'] !== 'undefined' && hit['snippet']=='' ) {
+				hit['snippet'] = source['attachment']['content'];
+			}
+			if (hit['snippet'].length > 200) {
+				hit['snippet'] = hit['snippet'].substr(0,200) + '...';
 			}
 			res_processed.hits.push(hit)
 		})
@@ -80,8 +84,8 @@ $(function() {
 	}
 
 	//# Execute on submit event
-	$(".search-form form").submit(function() {
-		var q = $("input",this).val();
+	$('.search-form form').submit(function() {
+		var q = $('input',this).val();
 		winloc.searchParams.set('q', q);
 		history.pushState({}, '', winloc);
 		show_results(q, 0);
@@ -91,7 +95,7 @@ $(function() {
 	// POSSIBLE SECURITY ISSUE: auto-execute on ULR parameter
 	if ( winloc.searchParams.get('q', undefined) ) {
 		$('#form-keyword').val(encodeURI(winloc.searchParams.get('q','')));
-		$(".search-form form").trigger("submit");
+		$('.search-form form').trigger('submit');
 	}
 
 });

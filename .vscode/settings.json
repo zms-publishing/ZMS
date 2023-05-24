@@ -1,5 +1,6 @@
 {
 	"python.defaultInterpreterPath": "~/vpy38/bin/python3",
+	"python.linting.enabled": false,
 	// "python.testing.unittestArgs": [
 	// 	"-v",
 	// 	"-s",

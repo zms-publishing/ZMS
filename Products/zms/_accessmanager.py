@@ -347,11 +347,11 @@ class AccessableObject(object):
                 v = creds[x]
                 if self.getUserAttr(auth_user,name,v) != v:
                   self.setUserAttr(auth_user,name,v)
-      # manage must not be accessible for Anonymous
+      # manage must not be accessible for Anonymous (cave: <UnrestrictedUser>.has_role()==1 )
       if request['URL0'].find('/manage') >= 0:
         lower = self.getUserAttr(auth_user,'attrActiveStart','')
         upper = self.getUserAttr(auth_user,'attrActiveEnd','')
-        if not standard.todayInRange(lower, upper) or auth_user.has_role('Anonymous'):
+        if not standard.todayInRange(lower, upper) or ('Anonymous' in request['AUTHENTICATED_USER'].getRolesInContext(request)):
           import zExceptions
           raise zExceptions.Unauthorized
       # manage may be registrable for Authenticated without permissions
@@ -740,8 +740,8 @@ class AccessManager(AccessableContainer):
         for userName in userFldr.getUserNames():
           if without_node_check or (local_userFldr == userFldr) or self.get_local_roles_for_userid(userName):
             if (exact_match and search_term==userName) or \
-               search_term == '' or \
-               search_term.find(userName) >= 0:
+              search_term == '' or \
+              str(search_term).find(userName) >= 0:
               users.append({'name':userName})
       for user in users:
         login_name = user[login_attr]

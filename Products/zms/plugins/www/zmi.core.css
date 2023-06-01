@@ -986,13 +986,22 @@ li.zmi-item span.zmi-ids {
 	border-color: #545b62;
 } 
 .zmi table.table td.meta-sort .btn.btn-secondary i.fas.fa-times,
-.zmi table.table td.meta-default .btn.btn-secondary i.fas.fa-key {
+.zmi table.table td.meta-default .btn.btn-secondary i.fas.fa-key,
+.zmi table.table td.meta-default .btn.btn-secondary i.fas.fa-ellipsis-v,
+.zmi .meta-languages .single-line.input-group i.fas,
+.zmi table.table .single-line.input-group .input-group-append i.fas {
 	color: #999;
 }
 .zmi table.table td.meta-sort .btn.btn-secondary:hover i.fas.fa-times,
-.zmi table.table td.meta-default .btn.btn-secondary:hover i.fas.fa-key {
+.zmi table.table td.meta-default .btn.btn-secondary:hover i.fas.fa-key,
+.zmi table.table td.meta-default .btn.btn-secondary:hover i.fas.fa-ellipsis-v {
 	color: #fff;
 }
+.zmi table.table td.meta-default.input-group-sm i.fas,
+.zmi table.table .single-line.input-group .input-group-append i.fas {
+	font-size: small;
+}
+
 .zmi form table.table td.meta-sort select.zmi-sort {
 	direction:rtl;
 	border: 1px solid silver;
@@ -1061,9 +1070,10 @@ input.btn.btn-file {
 }
 .zmi .single-line textarea {
 	overflow:hidden;
-	font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",Courier,monospace  !important;
+	font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",Courier,monospace !important;
 	width:100%;
 	min-width:3rem;
+	min-height:1.95rem;
 }
 .zmi-code {
 	font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",Courier,monospace !important;
@@ -2352,15 +2362,13 @@ body.lazy_select_form footer .controls {
 /* ZMS-Sitemap of ZMSIndex and ZMSZCatalog */
 /* --------------------------------------- */
 
-#ZMSZCatalogAdapter #indexes td,
-#ZMSZMSZCatalogSolrConnector #indexes td {
+#ZMSZCatalogAdapter #indexes td {
 	padding:.3rem;
 }
 #zmsindex select.form-control:not([size]):not([multiple]) {
 	height: inherit;
 }
-#ZMSZCatalogConnector .zmi-sitemap,
-#ZMSZCatalogSolrConnector .zmi-sitemap,
+.ZMSZCatalogConnector .zmi-sitemap,
 #zmsindex .zmi-sitemap-container {
 	width:100%;
 	max-height: 30rem;
@@ -2430,36 +2438,27 @@ body.lazy_select_form footer .controls {
 	position:absolute;
 	margin-top:1.5em;
 }
-#ZMSZCatalogConnector .zmi-sitemap > ul,
-#ZMSZCatalogSolrConnector .zmi-sitemap > ul,
+.ZMSZCatalogConnector .zmi-sitemap > ul,
 #zmsindex .zmi-sitemap > ul {
 	margin-top:10px;
 	direction: ltr;
 }
-#ZMSZCatalogConnector .zmi-sitemap-expand,
-#ZMSZCatalogSolrConnector .zmi-sitemap-expand,
-#zmsindex .zmi-sitemap-expand {
-	display: block;
+.zmi-sitemap-controls {
 	top:0;
+	right: 15px;
 	position: absolute;
-	color: #333;
-	right: 16px;
-	background: #ccc;
-	padding: .35em .65em;
-	border-radius: 4px;
-	border-top-left-radius: 0;
-	border-bottom-right-radius: 0;
-	cursor: pointer;
 }
-#ZMSZCatalogConnector .zmi-sitemap.full,
-#ZMSZCatalogSolrConnector .zmi-sitemap.full,
-#zmsindex .zmi-sitemap.full {
+.zmi-sitemap-controls > div:first-child {
+	border-top-left-radius: 0;
+}
+.zmi-sitemap-controls > div:last-child {
+	border-bottom-right-radius: 0;
+}
+.zmi-sitemap.full {
 	max-height: unset;
 }
-#ZMSZCatalogConnector .zmi-sitemap div#loading,
-#ZMSZCatalogConnector .zmi-sitemap div#loading .fa-spinner,
-#ZMSZCatalogSolrConnector .zmi-sitemap div#loading,
-#ZMSZCatalogSolrConnector .zmi-sitemap div#loading .fa-spinner,
+.ZMSZCatalogConnector .zmi-sitemap div#loading,
+.ZMSZCatalogConnector .zmi-sitemap div#loading .fa-spinner,
 #zmsindex .zmi-sitemap div#loading,
 #zmsindex .zmi-sitemap div#loading .fa-spinner {
 	color: #08c !important;
@@ -2467,38 +2466,31 @@ body.lazy_select_form footer .controls {
 #zmsindex .zmi-sitemap .fa-spinner.fa-spin {
 	zoom: 1.5;
 }
-#ZMSZCatalogConnector .zmi-sitemap:not(.full) div#loading,
-#ZMSZCatalogSolrConnector .zmi-sitemap:not(.full) div#loading,
+.ZMSZCatalogConnector .zmi-sitemap:not(.full) div#loading,
 #zmsindex .zmi-sitemap:not(.full) div#loading {
 	top: 2rem;
 	position: absolute;
-	right: 5rem;
+	right: 1rem;
 	zoom: 1;
+	background: #b1bbc1;
+	padding:1rem;
 }
-body.loading #ZMSZCatalogConnector .zmi-sitemap,
-body.loading #ZMSZCatalogSolrConnector .zmi-sitemap {
+body.loading .ZMSZCatalogConnector .zmi-sitemap {
 	background:#b1bbc1;
 }
-body.loading #ZMSZCatalogConnector .zmi-sitemap a,
-body.loading #ZMSZCatalogConnector .zmi-sitemap .toggle,
-body.loading #ZMSZCatalogConnector .zmi-sitemap div#loading,
-body.loading #ZMSZCatalogConnector .zmi-sitemap div#loading .fa-spinner,
-body.loading #ZMSZCatalogSolrConnector .zmi-sitemap a,
-body.loading #ZMSZCatalogSolrConnector .zmi-sitemap .toggle,
-body.loading #ZMSZCatalogSolrConnector .zmi-sitemap div#loading,
-body.loading #ZMSZCatalogSolrConnector .zmi-sitemap div#loading .fa-spinner {
+body.loading .ZMSZCatalogConnector .zmi-sitemap a,
+body.loading .ZMSZCatalogConnector .zmi-sitemap .toggle,
+body.loading .ZMSZCatalogConnector .zmi-sitemap div#loading,
+body.loading .ZMSZCatalogConnector .zmi-sitemap div#loading .fa-spinner {
 	color: #fff !important;
 }
-#ZMSZCatalogConnector .zmi-sitemap .fa-spinner.fa-spin,
-#ZMSZCatalogSolrConnector .zmi-sitemap .fa-spinner.fa-spin,
+.ZMSZCatalogConnector .zmi-sitemap .fa-spinner.fa-spin,
 #zmsindex .zmi-sitemap .fa-spinner.fa-spin {
 	zoom: 1.8;
 	margin: -.8rem .25rem;
 }
-#ZMSZCatalogConnector .response.alert-success,
-#ZMSZCatalogConnector .response.alert-danger,
-#ZMSZCatalogSolrConnector .response.alert-success,
-#ZMSZCatalogSolrConnector .response.alert-danger {
+.ZMSZCatalogConnector .response.alert-success,
+.ZMSZCatalogConnector .response.alert-danger {
 	display: block;
 }
 #zmsindex .response.text-success,

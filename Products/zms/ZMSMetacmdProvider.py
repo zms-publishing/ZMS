@@ -532,6 +532,7 @@ class ZMSMetacmdProvider(
               metaCmd = self.getMetaCmd(id)
               revision = metaCmd.get('revision', '0.0.0')
               el_id = metaCmd['id']
+              el_package = metaCmd['package']
               el_name = metaCmd['name']
               el_title = metaCmd.get('title', '')
               el_meta_type = metaCmd['meta_type']
@@ -542,7 +543,7 @@ class ZMSMetacmdProvider(
               el_execution = metaCmd['execution']
               el_data = zopeutil.readObject(metaCmd['home'], metaCmd['id'])
               # Value.
-              value.append({'id':el_id,'revision':revision,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'execution':el_execution,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
+              value.append({'id':el_id,'package':el_package,'revision':revision,'name':el_name,'title':el_title,'description':el_description,'meta_types':el_meta_types,'roles':el_roles,'execution':el_execution,'icon_clazz':el_icon_clazz,'meta_type':el_meta_type,'data':el_data})
           # XML.
           if len(ids)==1:
             filename = '%s-%s.metacmd.xml'%(ids[0], revision)
@@ -564,7 +565,7 @@ class ZMSMetacmdProvider(
           else:
             filename = REQUEST['init']
             self.importConf(filename)
-          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%f.filename)
+          message = self.getZMILangStr('MSG_IMPORTED')%('<i>%s</i>'%filename)
         
         # Insert.
         # -------

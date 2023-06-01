@@ -199,7 +199,7 @@ class ZMSZCatalogAdapter(ZMSItem.ZMSItem):
     #  ZMSZCatalogAdapter.getConnectorMetaTypes
     # --------------------------------------------------------------------------
     def getConnectorMetaTypes(self):
-      return ['ZMSZCatalogConnector', 'ZMSZCatalogSolrConnector']
+      return ['ZMSZCatalogConnector', 'ZMSZCatalogSolrConnector', 'ZMSZCatalogOpensearchConnector']
 
 
     # --------------------------------------------------------------------------

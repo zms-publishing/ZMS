@@ -45,5 +45,5 @@ jobs:
         pip install -e .
     - name: Test
       run: |
-        tree -L 2
-        zope-testrunner -pvc --test-path=ZMS/. 
+        tree -L 1
+        zope-testrunner -pvc --test-path=tests/. 

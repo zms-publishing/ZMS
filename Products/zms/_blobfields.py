@@ -17,14 +17,12 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from DateTime.DateTime import DateTime
-from ZPublisher import HTTPRangeSupport, HTTPRequest
+from ZPublisher import HTTPRangeSupport
 from OFS.Image import Image, File
 # from mimetools import choose_boundary
 from email.generator import _make_boundary as choose_boundary
 import base64
-import copy
 import io
 import re
 import time
@@ -53,6 +51,17 @@ def rfc1123_date(dt):
   stamp = time.mktime(time.gmtime(dt))
   return format_date_time(stamp)
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+_blobfields.bytes_hex:
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+def bytes_hex(data):
+    hexdata = None
+    try:
+        hexdata = bytes(data).hex()
+    except:
+        hexdata = bytes(data, encoding='utf-8').hex()
+    return hexdata
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 _blobfields.recurse_downloadRessources:
@@ -157,7 +166,7 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
     pass
   f = None
   if isinstance(file,str):
-    f = re.findall('^data:(.*?);base64,([\s\S]*)$',file)
+    f = re.findall(r'^data:(.*?);base64,([\s\S]*)$',file)
   if f:
     mt = f[0][0]
     file = base64.b64decode(f[0][1])
@@ -874,7 +883,7 @@ class MyImage(MyBlob, Image):
           if sdata.find('<![CDATA[') < 0 and sdata.find(']]>') < 0:
             hexdata = '<![CDATA[%s]]>'%sdata
         if hexdata is None:
-          hexdata = bytes(data).hex()
+          hexdata = bytes_hex(data)
         data = hexdata
         objtype = ' type="image"'
       else:
@@ -990,7 +999,7 @@ class MyFile(MyBlob, File):
           if sdata.find('<![CDATA[') < 0 and sdata.find(']]>') < 0:
             hexdata = '<![CDATA[%s]]>'%sdata
         if hexdata is None:
-          hexdata = bytes(data).hex()
+          hexdata = bytes_hex(data)
         data = hexdata
         objtype = ' type="file"'
       else:
@@ -1070,6 +1079,6 @@ class MyBlobWrapper(object):
     """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     __str____roles__ = None
     def __str__(self):
-      return bytes(self.getData())
+      return self.getData().decode()
 
 ################################################################################

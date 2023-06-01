@@ -1,0 +1,43 @@
+<tal:block tal:replace="nothing">
+################################################################################
+###  SimpleMDE
+###  please refer to https://github.com/sparksuite/simplemde-markdown-editor
+################################################################################
+</tal:block>
+
+<textarea tal:attributes="id python:'editor_%s'%request['elName']; name python:'editor_%s'%request['elName']"></textarea>
+
+<tal:block tal:condition="python:request.get('f_zmiRichtextOnSubmitEventHandler',True)">
+
+<link rel="stylesheet" href="/++resource++zms_/simplemde/simplemde.min.css">
+<script src="/++resource++zms_/simplemde/simplemde.min.js"></script>
+
+<tal:block tal:content="structure python:'<script>'"></tal:block>
+
+var elName = "text_" + getZMILang();
+
+$("textarea#editor_" + elName).val($("textarea#" + elName).val());
+
+var simplemde = new SimpleMDE({
+	element: document.getElementById("editor_" + elName)
+});
+
+function zmiStandardOnSubmitEventHandler(fm) {
+	var data = simplemde.value();
+	$('#' + elName).val(data);
+}
+
+function zmiRichtextOnSubmitEventHandler(fm) {
+	var data = simplemde.value();
+	$('#' + elName).val(data);
+}
+
+function zmiRichtextInit(id) {
+	var data = simplemde.value();
+	$('#' + elName).val(data);
+}
+
+<tal:block tal:content="structure python:'</script>'"></tal:block>
+
+<tal:block tal:define="dummy0 python:request.set('f_zmiRichtextOnSubmitEventHandler',False)"></tal:block>
+</tal:block>

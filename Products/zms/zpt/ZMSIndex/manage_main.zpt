@@ -37,23 +37,25 @@ function openWindow(url) {
 	<div class="form-group zms4-row">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10 form-inline">
-			<div class="input-group" style="margin-right:1em">
-				<div class="btn btn-default btn-secondary">
-					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" />
-				</div>
-				<a class="btn btn-default btn-secondary" target="_blank" href="javascript:;" onclick="return zmiExpandObjectTree(-1);">
-						<i class="icon fas fa-plus-square"></i>
-				</a>
-			</div>
 			<a class="btn btn-default btn-secondary" target="_blank" style="margin-right:1em"
 				tal:attributes="href python:'%s/manage_catalogView?filterpath=/'%zmscontext.zcatalog_index.absolute_url()">
-					<i class="icon icon-search fas fa-search"></i> zcatalog_index
+					<i class="fas fa-search"></i> zcatalog_index
 			</a>
-			<button name="btn" class="btn btn-warning" style="margin-right:1em"
-				title="REINDEX: Rebuilding the ZCatalog index of all selected (multisite) hierarchy objects."
-				onclick="return zmiFuncIndex('manage_reindex');">Reindex
-			</button>
+			<div class="btn-group" style="margin-right:1em">
+				<button name="btn" class="btn btn-warning" 
+					title="REINDEX: Rebuilding the ZCatalog index of all selected (multisite) hierarchy objects."
+					onclick="return zmiFuncIndex('manage_reindex');">Reindex
+				</button>
+				<div class="btn btn-default btn-secondary" 
+					title="UID RENEWAL: Apply with care; all links may get invalid!!"
+					onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { alert('UID RENEWAL: Apply with care; all links may get invalid!!');$('#regenerate_duplicates').prop('checked', true) }">
+					UID Renewal:
+					<input id="regenerate_duplicates" name="regenerate_duplicates" type="checkbox"
+						style="display:block;margin:0.25rem 0 0 0.5rem;float:right;"
+						onclick="if( $('#regenerate_duplicates').prop('checked') ){ $('#regenerate_duplicates').prop('checked', false) } else { $('#regenerate_duplicates').prop('checked', true) }"
+					/>
+				</div>
+			</div>
 			<button name="btn" class="btn btn-info" style="margin-right:1em"
 				title="TEST: Test the ZCatalog index."
 				onclick="return zmiFuncIndex('manage_test');">Test
@@ -63,10 +65,12 @@ function openWindow(url) {
 				onclick="return zmiFuncIndex('manage_resync');">Resync
 			</button>
 			<div class="input-group">
-				<select class="form-control" id="loglevel" name="loglevel" style="display:inline-block;width:unset;"
-					title="Select the Debug-Level for Logging Messages while Indexing">
-					<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
-				</select>
+				<div class="input-group-prepend">
+					<select class="form-control" id="loglevel" name="loglevel" 
+						title="Select the Debug-Level for Logging Messages while Indexing">
+						<option tal:repeat="loglevel loglevels" tal:attributes="selected python:['','selected'][int(loglevel=='INFO')]" tal:content="loglevel">the loglevel</option>
+					</select>
+				</div>
 				<div class="btn btn-default btn-secondary input-group-addon"
 					title="Show all Logging Info Directly ">
 					<input id="logshow" name="logshow" type="checkbox" />
@@ -78,8 +82,23 @@ function openWindow(url) {
 	<div class="form-group zms4-row">
 		<label class="col-sm-2 control-label">&nbsp;</label>
 		<div class="col-sm-10">
-			<div class="zmi-sitemap-expand" onclick="$('#zmsindex .zmi-sitemap-container').toggleClass('full');$('#zmsindex .zmi-sitemap-expand i').toggleClass('icon-resize-small')">
-				<i class="icon icon-resize-full fas fa-expand-arrows-alt" title="Seitenanfang"></i>
+			<div class="btn-group zmi-sitemap-controls">
+				<div title="De-/Select All" 
+					class="btn btn-dark">
+					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
+						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" 
+					/>
+				</div>
+				<div title="Expand Object Tree (Hint: Mind System Load in Case!)" 
+					class="btn btn-dark" 
+					onclick="return zmiExpandObjectTree(-1);">
+					<i class="fas fa-plus-square"></i>
+				</div>
+				<div title="Expand/Compress Sitemap View"
+					class="btn btn-dark" id="zmi-sitemap-expand" 
+					onclick="$('.zmi-sitemap').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+					<i class="fas fa-expand-arrows-alt"></i>
+				</div>
 			</div>
 			<div class="zmi-sitemap-container">
 				<div class="progress">
@@ -153,45 +172,50 @@ function zmiFuncIndex(func_) {
 	$(".zmi-sitemap .response").remove();
 	reset_progress();
 	var $inputs = $(".zmi-sitemap input:checked");
+	var $regenerate_duplicates = $("#regenerate_duplicates:checked")
 	var i = 0;
 	var n = $inputs.length
 	var fn = function() {
-			if (i < n ) {
-				var $input = $($inputs[i]);
-				var uid = $input.val();
-				var data = {oid_:$('#oid_').val(),url:uid,loglevel:$('#loglevel').val(),i:i};
-				var $a = $input.next("a");
-				var viewport_pos = $(window).scrollTop();
-				var btn_close = '<'+'a class="close" data-dismiss="alert" href="#">×<'+'/a>';
-				$a.after('<'+'span class="response">&nbsp;&nbsp;<'+'i class="fas fa-spinner fa-spin text-primary"><'+'/i><'+'/span>');
-				// Show syncing node
-				$('#zmsindex .zmi-sitemap .fa-spinner').get(0).scrollIntoView();
-				$(window).scrollTop(viewport_pos);
-				$.ajax({
-					url:func_,
-					data:data,
-					error: function (xhr, ajaxOptions, thrownError) {
-							$a.next('.response').addClass('alert modal-content alert-danger text-danger').html( btn_close + '( '+thrownError+' )' );
-							if ( !$('#logshow').prop('checked') ) {
-								$(".zmi-sitemap .response").remove();
-							}
-							i++;
-							console.log('Indexing Client No.' + i + ': ERROR');
-							$('#zmsindex .progress').addClass('error');
-							set_progress( v=(i/n), func_name=func_ );
-							fn();
-						},
-					success:function(response) {
-							$a.next('.response').addClass('alert modal-content alert-success text-success').html( btn_close + '( '+response+' )' );
-							if ( !$('#logshow').prop('checked') ) {
-								$(".zmi-sitemap .response").remove();
-							}
-							i++;
-							console.log('Indexing Client No.' + i + ': done');
-							set_progress( v=(i/n), func_name=func_ );
-							fn();
+		if (i < n ) {
+			var $input = $($inputs[i]);
+			var uid = $input.val();
+			var data = {oid_:$('#oid_').val(),url:uid,loglevel:$('#loglevel').val(),i:i};
+			var $a = $input.next("a");
+			var viewport_pos = $(window).scrollTop();
+			var btn_close = '<'+'a class="close" data-dismiss="alert" href="#">×<'+'/a>';
+			$a.after('<'+'span class="response">&nbsp;&nbsp;<'+'i class="fas fa-spinner fa-spin text-primary"><'+'/i><'+'/span>');
+			// Show syncing node
+			$('#zmsindex .zmi-sitemap .fa-spinner').get(0).scrollIntoView();
+			$(window).scrollTop(viewport_pos);
+			if ($regenerate_duplicates) {
+				data['regenerate_duplicates'] = 1;
+			}
+			// debugger;
+			$.ajax({
+				url:func_,
+				data:data,
+				error: function (xhr, ajaxOptions, thrownError) {
+						$a.next('.response').addClass('alert modal-content alert-danger text-danger').html( btn_close + '( '+thrownError+' )' );
+						if ( !$('#logshow').prop('checked') ) {
+							$(".zmi-sitemap .response").remove();
 						}
-					});
+						i++;
+						console.log('Indexing Client No.' + i + ': ERROR');
+						$('#zmsindex .progress').addClass('error');
+						set_progress( v=(i/n), func_name=func_ );
+						fn();
+					},
+				success:function(response) {
+						$a.next('.response').addClass('alert modal-content alert-success text-success').html( btn_close + '( '+response+' )' );
+						if ( !$('#logshow').prop('checked') ) {
+							$(".zmi-sitemap .response").remove();
+						}
+						i++;
+						console.log('Indexing Client No.' + i + ': done');
+						set_progress( v=(i/n), func_name=func_ );
+						fn();
+					}
+				});
 			}
 		}
 	fn();
@@ -303,7 +327,7 @@ $(function() {
 	}
 	#zmsindex .zmi-sitemap-container .progress {
 		padding-left:0;
-		margin-right: 30px;
+		margin-right: 7rem;
 		background: #337ab740;
 		height:1.25rem;
 		direction: ltr;
@@ -405,7 +429,7 @@ $(function() {
 
 </form>
 </div><!-- #zmi-tab -->
-<footer tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>
 </tal:block>

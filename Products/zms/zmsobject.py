@@ -17,22 +17,18 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from DateTime.DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-# TODO from Products.ZCatalog import CatalogPathAwareness
 import ZPublisher.HTTPRequest
 import collections
 import re
 import time
-import zExceptions
 # Product Imports.
 from Products.zms import _accessmanager
 from Products.zms import _blobfields
 from Products.zms import _cachemanager
-from Products.zms import _confmanager
 from Products.zms import _copysupport
 from Products.zms import _deprecatedapi
 from Products.zms import _exportable
@@ -46,7 +42,6 @@ from Products.zms import _pathhandler
 from Products.zms import _versionmanager
 from Products.zms import _xmllib
 from Products.zms import _textformatmanager
-from Products.zms import _zmsattributecontainer
 from Products.zms import _zreferableitem
 from Products.zms import ZMSItem
 from Products.zms import ZMSWorkflowItem
@@ -233,7 +228,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.set_request_context:
     # --------------------------------------------------------------------------
     def set_request_context(self, REQUEST, d):
-      prefix = '%s_'%(self.id_quote(self.get_oid()))
+      prefix = '%s_'%(standard.id_quote(self.get_oid()))
       # Remove old context-values.
       for key in [x for x in REQUEST.keys() if x.startswith(prefix)]:
         standard.writeLog(self, "[set_request_context]: DEL "+key)
@@ -249,7 +244,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.get_request_context:
     # --------------------------------------------------------------------------
     def get_request_context(self, REQUEST, key, defaultValue=None):
-      context = '%s_%s'%(self.id_quote(self.get_oid()), key)
+      context = '%s_%s'%(standard.id_quote(self.get_oid()), key)
       # Get context-value.
       value = REQUEST.get(context, None)
       if value is not None:
@@ -801,7 +796,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         target_ob = self
         REQUEST.set( 'manage_target', '%s/preview_html'%target_ob.absolute_url())
       target = REQUEST.get( 'manage_target', '%s/manage_main'%target_ob.absolute_url())
-      target = self.url_append_params( target, { 'lang': lang, messagekey: message},sep='&')
+      target = standard.url_append_params( target, { 'lang': lang, messagekey: message},sep='&')
       target = '%s#zmi_item_%s'%( target, self.id)
       if RESPONSE is not None:
         return RESPONSE.redirect( target)
@@ -910,7 +905,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         # Assemble href.
         if REQUEST.get('ZMS_INDEX_HTML', 0)==1 or fct != 'index' or len(self.getLangIds())>1:
           href += '%s_%s%s'%(fct, REQUEST.get('lang', self.getPrimaryLanguage()), pageext)
-        if REQUEST.get('preview', '')=='preview': href=self.url_append_params(href, {'preview':'preview'})
+        if REQUEST.get('preview', '')=='preview': href=standard.url_append_params(href, {'preview':'preview'})
       if (REQUEST.get('ZMS_PATHCROPPING', False) or self.getConfProperty('ZMS.pathcropping', 0)==1) and REQUEST.get('export_format', '') == '':
         base = REQUEST.get('BASE0', '')
         if href.find( base) == 0:
@@ -940,6 +935,22 @@ class ZMSObject(ZMSItem.ZMSItem,
         context = args[1]['context']
         abs_url = args[1]['abs_url']
         forced = args[1]['forced']
+        if context.getConfProperty('ZMSObject.getAbsoluteUrlInContext', False):
+          if context.getHome() != context.getHome():
+            protocol = context.getConfProperty('ASP.protocol', 'http')
+            domain = context.getConfProperty('ASP.ip_or_domain', None)
+            if domain:
+              l = abs_url.split('/')
+              if 'content' in l:
+                i = l.index('content')
+                if l[i-1] != context.getHome().id and context.getRootElement().getHome().id in l:
+                  i = l.index(context.getRootElement().getHome().id)
+                else:
+                  i += 1
+                l = l[i:]
+                abs_url = protocol + '://' + domain  
+                if l:
+                  abs_url = abs_url + '/' + '/'.join(l)
         return abs_url
       return self.evalExtensionPoint('ExtensionPoint.ZMSObject.getAbsoluteUrlInContext',default,context=context,abs_url=abs_url,forced=forced)
     
@@ -971,8 +982,8 @@ class ZMSObject(ZMSItem.ZMSItem,
             index_html = protocol + '://' + domain + '/' + '/'.join(l)
       elif REQUEST.get('ZMS_RELATIVATE_URL', True) and self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.relativate', True) and self.getHome() == context.getHome():
         path = REQUEST['URL']
-        path = re.sub('\\/index_(.*?)\\/index_html$','/index_\\1',path)
-        path = re.sub('\\/index_html$','/',path)
+        path = re.sub(r'\/index_(.*?)\/index_html$','/index_\\1',path)
+        path = re.sub(r'\/index_html$','/',path)
         index_html = self.getRelativeUrl(path,index_html)
       return index_html
     
@@ -988,7 +999,7 @@ class ZMSObject(ZMSItem.ZMSItem,
           value = self.absolute_url()
           for param in ['lang', 'preview']:
             if REQUEST.get(param, '') != '': 
-              value = self.url_append_params(value, {param:REQUEST[param]})
+              value = standard.url_append_params(value, {param:REQUEST[param]})
         else:
           if deep:
             def get_page_with_elements(node):
@@ -1148,7 +1159,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     # --------------------------------------------------------------------------
     def manage_get_node_json(self):
       """ ZMSObject.manage_get_node_json """
-      content_type = 'text/json; charset=utf-8'
+      content_type = 'application/json; charset=utf-8'
       filename = '%s.json'%self.id
       request = self.REQUEST
       RESPONSE = request.RESPONSE

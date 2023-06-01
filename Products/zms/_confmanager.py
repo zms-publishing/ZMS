@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from fnmatch import fnmatch
 from io import StringIO
 from AccessControl import ClassSecurityInfo
@@ -27,24 +26,18 @@ from DateTime.DateTime import DateTime
 from OFS.Image import Image
 from OFS.Folder import Folder
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.PageTemplates import ZopePageTemplate
-from Products.PythonScripts import PythonScript
 import OFS.misc_
 import configparser
 import importlib
 import io
 import operator
 import os
-import tempfile
-import time
-import xml.dom.minidom
 import zExceptions
 from zope.interface import implementer, providedBy
 # Product imports.
 from .IZMSConfigurationProvider import IZMSConfigurationProvider
 from Products.zms import standard
 from Products.zms import ZMSFilterManager, IZMSMetamodelProvider, IZMSFormatProvider, IZMSCatalogAdapter, ZMSZCatalogAdapter, IZMSRepositoryManager
-from Products.zms import _exportable
 from Products.zms import _fileutil
 from Products.zms import _repositoryutil
 from Products.zms import _mediadb
@@ -73,11 +66,13 @@ class ConfDict(object):
             for home in [PRODUCT_HOME, standard.getINSTANCE_HOME()]:
               fp = os.path.join(home, 'etc', 'zms.conf')
               if os.path.exists(fp):
+                ffp = open(fp)
                 cfp = configparser.ConfigParser()
-                cfp.readfp(open(fp))
+                cfp.read_file(ffp)
                 for section in cfp.sections():
                     for option in cfp.options(section):
                         cls.__confdict__[section+'.'+option] = cfp.get( section, option)
+                ffp.close()
         return cls.__confdict__
 
     @classmethod
@@ -769,7 +764,7 @@ class ConfManager(
         d = {'lang': lang,'manage_tabs_message': message}
         for param in params:
           d[param] = REQUEST.get( param, '')
-        return RESPONSE.redirect( self.url_append_params( 'manage_customize', d) + '#%s'%key)
+        return RESPONSE.redirect( standard.url_append_params( 'manage_customize', d) + '#%s'%key)
       
       return message
 

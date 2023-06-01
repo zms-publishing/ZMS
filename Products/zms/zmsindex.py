@@ -22,7 +22,6 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.ZCatalog import ZCatalog
 from Products.PluginIndexes.FieldIndex.FieldIndex import FieldIndex
 from Products.PluginIndexes.PathIndex.PathIndex import PathIndex
-import os
 import re
 import sys
 import time
@@ -83,7 +82,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       base = list(self.getRootElement().getPhysicalPath())[:-1]
       url = list(self.getDocumentElement().getPhysicalPath())[len(base):-1]
       request.set('url','{$'+['','/'.join(url)+'@'][len(url)>0]+'}')
-      if self.getConfProperty('ZMSIndexZCatalog.ObjectImported.reindex',True) == False:
+      if self.getConfProperty('ZMSIndexZCatalog.ObjectImported.reindex',False) == True:
         self.manage_reindex(regenerate_duplicates=True)
       if self.getConfProperty('ZMSIndexZCatalog.ObjectImported.resync',False) == True:
         self.manage_resync()
@@ -103,6 +102,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
           traverse(childNode)
       traverse(context)
       return True
+
 
     ##############################################################################
     # Event: Object Moved
@@ -423,7 +423,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
         return ref
 
       def handleInline(node,v):
-        p = '<dtml-var "getLinkUrl\(\'(.*?)\'(,REQUEST)?\)">'
+        p = r'<dtml-var "getLinkUrl\(\'(.*?)\'(,REQUEST)?\)">'
         r = re.compile(p)
         for f in r.findall(v):
           data_id = f[0]
@@ -433,12 +433,12 @@ class ZMSIndex(ZMSItem.ZMSItem):
             new = ref.absolute_url()
             log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline %s->%s'%(old,new)))
             v = v.replace(old,new)
-        p = '<a(.*?)>(.*?)<\\/a>'
+        p = r'<a(.*?)>(.*?)<\\/a>'
         r = re.compile(p)
         for f in r.findall(v):
           data_data = ''
           brain = None
-          d = dict(re.findall('\\s(.*?)="(.*?)"',f[0]))
+          d = dict(re.findall(r'\s(.*?)="(.*?)"',f[0]))
           if brain is None and 'data-id' in d:
             data_id = d['data-id']
             log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline data_id=%s'%data_id))
@@ -447,13 +447,13 @@ class ZMSIndex(ZMSItem.ZMSItem):
               data_data = data_id[data_id.find(';'):-1]
           if brain is None and 'href' in d:
             href = d['href']
-            href = re.sub('http://localhost:(\\d)*','',href)
+            href = re.sub(r'http://localhost:(\d)*','',href)
             for domain in domains:
               path = domains[domain]
               href = re.sub(domain,path,href)
             log.append('INFO %s'%standard.writeBlock(node,'[ZMSIndex] handleInline href=%s'%href))
             if href.startswith('.') or href.startswith('/'):
-              nf = re.compile('(.*?)\\?op=not_found&url={\\$(.*?)}').findall(href)
+              nf = re.compile(r'(.*?)\?op=not_found&url={\$(.*?)}').findall(href)
               if nf:
                 url = nf[0][1]
               else:

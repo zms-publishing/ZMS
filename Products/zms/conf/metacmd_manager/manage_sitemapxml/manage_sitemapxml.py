@@ -146,4 +146,4 @@ def manage_sitemapxml(self):
 	else:
 		# Returns ZMI with message
 		message = '<a href="%s" target="_blank">sitemap.xml</a> successfully generated on %s visible pages'%(f.absolute_url(),node_count)
-		request.response.redirect(self.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':message}))
+		request.response.redirect(standard.url_append_params('manage_main',{'lang':request['lang'],'manage_tabs_message':message}))

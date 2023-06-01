@@ -31,7 +31,7 @@ def manage_addClient(self):
 				zms_inst.metaobj_manager.acquireMetaobj(id)
 		self.setConfProperty('Portal.Clients',self.getConfProperty('Portal.Clients',[])+[request['id']])
 		message.append(self.getZMILangStr('MSG_INSERTED')%request['id'])
-		request.response.redirect(self.url_append_params('%s/manage_main'%zms_inst.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+		request.response.redirect(standard.url_append_params('%s/manage_main'%zms_inst.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
 	# --- Display initial insert form.
 	# ---------------------------------

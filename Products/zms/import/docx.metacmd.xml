@@ -53,7 +53,7 @@ def process_images(docbookxml):
     q = pq[1]
     r = re.compile(p)
     for f in r.findall(docbookxml):
-      d = dict(re.findall('\\s(.*?)=&quot;(.*?)&quot;',f))
+      d = dict(re.findall(r'\s(.*?)=&quot;(.*?)&quot;',f))
       read_image(d)
       index = len(images)
       name = d['src'].split('/')[-1]
@@ -294,7 +294,7 @@ def process_paragraphs(html):
   return docbookxml
 
 def html2docbook(html):
-  r = re.compile('<(.*?)>')
+  r = re.compile(r'<(.*?)>')
   for f in r.findall(html):
     n = f
     if n.find(' ') > 0:
@@ -307,11 +307,11 @@ def html2docbook(html):
       html = html.replace('<%s>'%f,'')
     elif regions[n]['type']=='drawing':
       html = html.replace('<%s>'%f,'[[%s]]'%f)
-  html = re.sub('<a .*?href="javascript:.*?".*?>((\\S|\\s)*?)<\\/a>','\\1',html)
-  html = re.sub('<!--(.*?)-->','',html)
-  html = re.sub('&nbsp;',' ',html)
-  html = re.sub('&sect;','§',html)
-  html = re.sub('&(.*?);','&amp;\\1;',html)
+  html = re.sub(r'<a .*?href="javascript:.*?".*?>((\S|\s)*?)<\/a>','\\1',html)
+  html = re.sub(r'<!--(.*?)-->','',html)
+  html = re.sub(r'&nbsp;',' ',html)
+  html = re.sub(r'&sect;','§',html)
+  html = re.sub(r'&(.*?);','&amp;\\1;',html)
   html = html.replace('\n',' ')
   html = html.replace('\r',' ')
   html = html.replace('\t',' ')

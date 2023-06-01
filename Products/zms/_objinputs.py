@@ -18,7 +18,6 @@
 
 # Product Imports.
 from Products.zms import standard
-from Products.zms import _zreferableitem
 
 
 class ObjInputs(object):
@@ -60,15 +59,14 @@ class ObjInputs(object):
     if value is not None and self.parseLangFmtDate(value) is None:
       value = ''
     placeholder = self.getZMILangStr(fmt_str)
-    if enabled:
-      if fmt_str == 'DATE_FMT':
-        css += ' datepicker'
-      elif fmt_str == 'TIME_FMT':
-        css += ' timepicker'
-        input_type = 'time'
-      elif fmt_str == 'DATETIME_FMT':
-        css += ' datetimepicker'
-        input_type = 'datetime-local'
+    if fmt_str == 'DATE_FMT':
+      if enabled: css += ' datepicker'
+    elif fmt_str == 'TIME_FMT':
+      if enabled: css += ' timepicker'
+      input_type = 'time'
+    elif fmt_str == 'DATETIME_FMT':
+      if enabled: css += ' datetimepicker'
+      input_type = 'datetime-local'
     html.append(self.getTextInput(fmName, elName, size, value, input_type, enabled, css=css, placeholder=placeholder))
     return ''.join(html)
 

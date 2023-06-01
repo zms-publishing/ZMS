@@ -17,14 +17,10 @@
 ################################################################################
 
 # Imports.
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-import ZPublisher.HTTPRequest
-import copy
 import os
 import tempfile
 import zExceptions
 # Product Imports.
-from Products.zms import _blobfields
 from Products.zms import _fileutil
 from Products.zms import standard
 from Products.zms import zopeutil

@@ -2,7 +2,7 @@
 docutils
 configparser
 requests
-Zope[wsgi]
+Zope[wsgi] <= 5.8.0
 Products.GenericSetup
 Products.MailHost
 Products.ExternalMethod

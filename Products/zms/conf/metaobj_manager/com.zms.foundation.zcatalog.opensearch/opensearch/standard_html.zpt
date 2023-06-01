@@ -1,0 +1,80 @@
+<!-- opensearch.standard_html -->
+
+<template id="hb_spinner_html" type="text/x-handlebars-template">
+	{{#.}}
+		<h2>Suche nach <code>{{{this}}}</code></h2>
+		<div title="Loading..." class="spin"></div>
+	{{/.}}
+</template>
+
+<template id="hb_results_html" type="text/x-handlebars-template">
+	{{#.}}
+		<h2>{{{this.total}}} Treffer f&uuml;r <code>{{{this.query}}}</code></h2>
+	{{/.}}
+	{{#if buckets}}
+		<ul class="nav nav-tabs responsive" role="tablist">
+			{{#each buckets}}
+				<li id="tab-label-{{@index}}" data-tabid="pane_{{this.doc_key}}" 
+					aria-controls="tab-pane-{{@index}}" role="tab"
+					class="{{#if @first}}active{{/if}}"
+					><a data-toggle="tab" href="#tab-pane-{{@index}}">
+						{{{this.key}}}
+						<span class="badge badge-tabs">{{{this.doc_count}}}</span>
+						<span class="sr-only">Treffer</span>
+					</a>
+				</li>
+			{{/each}}
+		</ul>
+	{{/if}}
+	<div class="pagination" style="margin-bottom: 0em;"></div>
+	{{#each hits}}
+		<article class="hit">
+			<ul class="path" data-id="{{this.path}}">&nbsp;</ul>
+			<a title="{{this.path}}" href={{this.href}}" target="_blank">{{{this.title}}}</a>
+			<br/>
+			<p>{{{this.snippet}}}</p>
+		</article>
+	{{/each}}
+	<div class="pagination"></div>
+</template>
+
+<tal:block tal:define="zmscontext options/zmscontext">
+
+	<div class="container-fluid skin-bg-gray">
+		<div class="container">
+			<section class="search-form">
+				 <form id="site-search-content" action="#" method="get" data-ajax-url="ajax/search" >
+					<div class="row skin-gutter-wide search-form no-margin-bottom">
+						<div class="col-lg-6">
+							<h2 class="small-font">Suche nach Stichworten</h2>
+							<label for="form-keyword" class="sr-only">Stichwort</label>
+							<input type="text" name="eingabe" id="form-keyword" 
+								class="form-control" value="" autofocus
+								tal:attributes="value python:request.get('q','')" />
+						</div>
+					</div>
+					<div class="row skin-gutter-wide search-form">
+						<div class="col-lg-12">
+						 <br> <button class="btn btn-primary btn-lg" type="submit">Suchen</button>
+						</div>
+					</div>
+				</form>
+			</section>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="container">
+			<section id="search_results" class="search-results content-tabs">
+			</section>
+		</div>
+	</div>
+
+	<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
+	<link type="text/css" rel="stylesheet"	tal:attributes="href python:'%s/%s.style.css'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"/>
+	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/%s.handlebars.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
+	<script type="text/javascript" charset="UTF-8" tal:attributes="src python:'%s/%s.script.js'%(zmscontext.getMetaobjManager().absolute_url(),zmscontext.meta_id)"></script>
+
+</tal:block>
+
+<!-- /opensearch.standard_html -->

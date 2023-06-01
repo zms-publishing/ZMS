@@ -22,7 +22,6 @@ import re
 # Product Imports.
 from Products.zms import standard
 from Products.zms import _blobfields
-from Products.zms import _confmanager
 from Products.zms import _fileutil
 from Products.zms import _globals
 

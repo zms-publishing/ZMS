@@ -126,7 +126,7 @@ return '<br />'.join(msg)
 			</div>
 		</form>
 	</div>
-	<footer tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+	<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>]]>
       </item>

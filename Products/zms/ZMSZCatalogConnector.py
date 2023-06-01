@@ -26,12 +26,10 @@ from zope.interface import implementer
 import copy
 import sys
 import time
-import zExceptions
 # Product Imports.
 from Products.zms import standard
 from Products.zms import IZMSCatalogConnector
 from Products.zms import ZMSItem
-from Products.zms import _globals
 
 
 # ------------------------------------------------------------------------------
@@ -552,7 +550,7 @@ class ZMSZCatalogConnector(
     #  ZMSZCatalogConnector.reindex_node:
     # --------------------------------------------------------------------------
     def reindex_node(self, node):
-      node.writeLog('[ZMSZCatalogConnector.reindex_node]')
+      standard.writeLog( node, '[ZMSZCatalogConnector.reindex_node]')
       zcm = self.getCatalogAdapter()
       # Reindex item to catalog.
       def cb(node, d):

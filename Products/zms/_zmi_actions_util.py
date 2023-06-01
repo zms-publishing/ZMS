@@ -174,7 +174,6 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
           container.writeError( '[zmi_insert_actions]: %s.%s contains invalid meta_id \'%s\''%(container.meta_id, objAttr['id'], meta_id))
     else:
       meta_ids.append( objAttr['type'])
-    print(meta_ids)
     for meta_id in meta_ids:
       metaObj = container.getMetaobj(meta_id)
       ob_access = True

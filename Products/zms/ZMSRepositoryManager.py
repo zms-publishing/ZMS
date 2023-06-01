@@ -20,7 +20,6 @@
 from DateTime import DateTime
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import inspect
 import os
 import re
 import time
@@ -280,7 +279,7 @@ class ZMSRepositoryManager(
             py.append('\t# %s'%k.capitalize())
             py.append('\tclass %s:'%standard.id_quote(k).capitalize())
             # Are there duplicated ids after id-quoting?
-            id_list = [ self.id_quote(i['id']) for i in v if i.get('ob') is None ] 
+            id_list = [ standard.id_quote(i['id']) for i in v if i.get('ob') is None ] 
             id_duplicates =  [ i for i in id_list if id_list.count(i) > 1 ]
             for i in v:
               if 'id' in i:
@@ -303,7 +302,7 @@ class ZMSRepositoryManager(
                   del i['ob']
                 try:
                   # Prevent id-quoting if duplicates may result
-                  id_quoted = ( i['id'].startswith('_') and ( self.id_quote(i['id']) in id_duplicates) ) and i['id'] or self.id_quote(i['id'])
+                  id_quoted = ( i['id'].startswith('_') and ( standard.id_quote(i['id']) in id_duplicates) ) and i['id'] or standard.id_quote(i['id'])
                   py.append('\t\t%s = %s'%(id_quoted, standard.str_json(i, encoding="utf-8", formatted=True, level=3, allow_booleans=False)))
                 except:
                   py.append('\t\t# ERROR: '+standard.writeError(self,'can\'t localFiles \'%s\''%i['id']))
@@ -318,7 +317,7 @@ class ZMSRepositoryManager(
           d['version'] = [int(x) for x in o.get('revision', '0.0.0').split('.')]
         except:
           # version schmeme 0.0.0 must not contain strings
-          d['version'] = list(map(int, re.findall('\d+', o.get('revision', '0.0.0'))))
+          d['version'] = list(map(int, re.findall(r'\d+', o.get('revision', '0.0.0'))))
         d['meta_type'] = 'Script (Python)'
         l[d['filename']] = d
       return l

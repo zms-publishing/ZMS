@@ -4,6 +4,7 @@
   <item type="dictionary">
     <dictionary>
       <item key="data"><![CDATA[from Products.PythonScripts.standard import html_quote
+from Products.zms import standard
 
 def manage_addZIPMultiUpload(self):
 	request = self.REQUEST
@@ -132,7 +133,7 @@ def manage_addZIPMultiUpload(self):
 														},request)
 				c += 1
 		message.append(self.getZMILangStr('MSG_IMPORTED')%temp_filename+' [%i/%i]'%(c,len(files)))
-		request.response.redirect(self.url_append_params('%s/manage_main'%self.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
+		request.response.redirect(standard.url_append_params('%s/manage_main'%self.absolute_url(),{'lang':request['lang'],'manage_tabs_message':'<br/>'.join(message)}))
 
 	# --- Display initial import form.
 	# ---------------------------------

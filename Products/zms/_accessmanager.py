@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.userfolder import UserFolder
 import copy
@@ -27,8 +26,6 @@ import sys
 import time
 import zExceptions
 # Product Imports.
-from Products.zms import _confmanager
-from Products.zms import _globals
 from Products.zms import _xmllib
 from Products.zms import standard
 
@@ -1165,7 +1162,7 @@ class AccessManager(AccessableContainer):
       # Return with message.
       if RESPONSE:
         target = REQUEST.get( 'manage_target', 'manage_users')
-        target = self.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
+        target = standard.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
         return RESPONSE.redirect(target)
 
 
@@ -1348,7 +1345,7 @@ class AccessManager(AccessableContainer):
               except:
                 xml += '<nodeurl></nodeurl>'
               try:  
-                title = re.sub('&.*;', '', self.getLinkObj(nodekey).getTitle(REQUEST).strip())
+                title = re.sub(r'&.*;', '', self.getLinkObj(nodekey).getTitle(REQUEST).strip())
                 xml += '<nodetitle><![CDATA[%s]]></nodetitle>'%title
               except:
                 xml += '<nodetitle></nodetitle>'
@@ -1421,7 +1418,7 @@ class AccessManager(AccessableContainer):
       # Return with message.
       if RESPONSE:
         target = REQUEST.get( 'manage_target', 'manage_users')
-        target = self.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
+        target = standard.url_append_params( target, { 'lang': lang, messagekey: message, 'id':id})
         return RESPONSE.redirect(target)
 
 ################################################################################

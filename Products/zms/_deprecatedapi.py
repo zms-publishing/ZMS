@@ -17,9 +17,7 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
-from App.Common import package_home
-import tempfile
+import re
 # Product Imports.
 from Products.zms import _fileutil
 from Products.zms import _xmllib
@@ -62,7 +60,7 @@ class DeprecatedAPI(object):
 
   def f_selectInput(self, *args, **kwargs):
     warn(self, 'f_selectInput', 'getSelect')
-    return here.getSelect(fmName=kwargs['fmName'], elName=kwargs['elName'], value=kwargs['value'], inputtype=kwargs['inputtype'], lang_str=kwargs['lang_str'], required=kwargs['required'], optpl=kwargs['optpl'], enabled=kwargs['enabled'])
+    return self.getSelect(fmName=kwargs['fmName'], elName=kwargs['elName'], value=kwargs['value'], inputtype=kwargs['inputtype'], lang_str=kwargs['lang_str'], required=kwargs['required'], optpl=kwargs['optpl'], enabled=kwargs['enabled'])
 
   def f_headline(self, *args, **kwargs):
     warn(self, 'f_headline', 'None')
@@ -81,7 +79,7 @@ class DeprecatedAPI(object):
     return self.getObjProperty('file', REQUEST)
 
   def getFormat(self, REQUEST):
-    warnings.warn("[getFormat]: @deprecated: returns \"getObjProperty('format',REQUEST)\" for compatibility reasons!")
+    warn("[getFormat]: @deprecated: returns \"getObjProperty('format',REQUEST)\" for compatibility reasons!")
     return self.getObjProperty('format', REQUEST)
 
   def meta_id_or_type(self):
@@ -175,7 +173,7 @@ class DeprecatedAPI(object):
       data = stylesheet.raw
     elif stylesheet.meta_type in ['File']:
       data = stylesheet.data
-    data = re.sub( '/\*(.*?)\*/', '', data)
+    data = re.sub(r'/\*(.*?)\*/', '', data)
     value = {}
     for elmnt in data.split('}'):
       i = elmnt.find('{')

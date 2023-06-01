@@ -17,7 +17,7 @@ def manage_repository_gitstatus( self ):
 		came_from = came_from[:came_from.find('?')]
 
 	if btn=='BTN_CANCEL':
-		request.response.redirect(self.url_append_params(came_from,{'lang':request['lang']}))
+		request.response.redirect(standard.url_append_params(came_from,{'lang':request['lang']}))
 	elif btn=='BTN_GITPULL':
 		request.response.redirect('manage_repository_gitpull')
 	elif btn=='BTN_GITPUSH':

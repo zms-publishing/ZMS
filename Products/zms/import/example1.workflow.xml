@@ -98,21 +98,23 @@
      +-  F o r m
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
 <tal:block tal:condition="python:request.get('btn','')==''">
-<form class="form-horizontal" name="form0" method="post">
+<form class="form-horizontal card" name="form0" method="post">
 	<input type="hidden" name="preview" value="preview"/>
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<input type="hidden" name="custom" tal:attributes="value request/custom"/>
 	<legend tal:content="request/custom">the headline</legend>
-	<div class="control-group">
-	<label class="control-label mandatory" for="comment"><span>Comment</span></label>
-		<div class="controls"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
-			<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
-			<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+  <div class="card-body">
+		<div class="form-group row">
+			<label class="col-sm-2 control-label mandatory" for="comment"><span>Comment</span></label>
+			<div class="col-sm-10"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .col-sm-10 -->
+		</div><!-- .form-group.row -->
+		<div class="form-group row">
+			<div class="controls save">
+				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
+				<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+			</div><!-- .controls.save -->
+		</div><!-- .form-group.row -->
+  </div><!-- .card-body -->
 </form>
 </tal:block>
 
@@ -181,21 +183,23 @@
      +-  F o r m
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
 <tal:block tal:condition="python:request.get('btn','')==''">
-<form class="form-horizontal" name="form0" method="post">
+<form class="form-horizontal card" name="form0" method="post">
 	<input type="hidden" name="preview" value="preview"/>
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<input type="hidden" name="custom" tal:attributes="value request/custom"/>
 	<legend tal:content="request/custom">the headline</legend>
-	<div class="control-group">
-	<label class="control-label mandatory" for="comment"><span>Comment</span></label>
-		<div class="controls"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
-			<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
-			<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+  <div class="card-body">
+		<div class="form-group row">
+			<label class="col-sm-2 control-label mandatory" for="comment"><span>Comment</span></label>
+			<div class="col-sm-10"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .col-sm-10 -->
+		</div><!-- .form-group.row -->
+		<div class="form-group row">
+			<div class="controls save">
+				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
+				<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+			</div><!-- .controls.save -->
+		</div><!-- .form-group.row -->
+	</div><!-- .card-body -->
 </form>
 </tal:block>
 
@@ -295,21 +299,23 @@
      +-  F o r m
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
 <tal:block tal:condition="python:request.get('btn','')==''">
-<form class="form-horizontal" name="form0" method="post">
+<form class="form-horizontal card" name="form0" method="post">
 	<input type="hidden" name="preview" value="preview"/>
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<input type="hidden" name="custom" tal:attributes="value request/custom"/>
 	<legend tal:content="request/custom">the headline</legend>
-	<div class="control-group">
-	<label class="control-label mandatory" for="comment"><span>Comment</span></label>
-		<div class="controls"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
-			<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
-			<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+	<div class="card-body">
+		<div class="form-group row">
+			<label class="col-sm-2 control-label mandatory" for="comment"><span>Comment</span></label>
+			<div class="col-sm-10"><input type="text" name="comment" class="form-control form-control-sm" /><br /></div><!-- .col-sn-12 -->
+		</div><!-- .form-group.row -->
+		<div class="form-group row">
+			<div class="controls save">
+				<button name="btn" class="btn btn-primary" value="BTN_SEND" tal:content="python:here.getZMILangStr('BTN_SEND')">Send</button>
+				<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+			</div><!-- .controls.save -->
+		</div><!-- .form-group.row -->
+  </div><!-- .card-body -->
 </form>
 </tal:block>
 
@@ -562,21 +568,23 @@ return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransiti
      +-  F o r m
      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- -->
 <tal:block tal:condition="python:request.get('btn','')==''">
-<form class="form-horizontal" name="form0" method="post">
+<form class="form-horizontal card" name="form0" method="post">
 	<input type="hidden" name="preview" value="preview"/>
 	<input type="hidden" name="lang" tal:attributes="value request/lang"/>
 	<input type="hidden" name="custom" tal:attributes="value request/custom"/>
 	<legend tal:content="request/custom">the headline</legend>
-	<div class="control-group">
-	<label class="control-label mandatory" for="version_nr"><span>Master-Version</span></label>
-		<div class="controls"><input type="text" name="version_nr" tal:attributes="value python:'%i.*.*'%(zmscontext.attr('master_version')+1)" class="form-control form-control-sm" /><br /></div><!-- .controls -->
-	</div><!-- .control-group -->
-	<div class="control-group">
-		<div class="controls">
-			<button name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
-		</div><!-- .controls -->
-	</div><!-- .control-group -->
+  <div class="card-body">
+		<div class="form-group row">
+			<label class="col-sm-2 control-label mandatory" for="version_nr"><span>Master-Version</span></label>
+			<div class="col-sm-10"><input type="text" name="version_nr" tal:attributes="value python:'%i.*.*'%(zmscontext.attr('master_version')+1)" class="form-control form-control-sm" /><br /></div><!-- .col-sm-10 -->
+		</div><!-- .form-group.row -->
+		<div class="form-group row">
+			<div class="controls save">
+				<button name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
+				<button name="btn" class="btn" value="BTN_CANCEL" tal:content="python:here.getZMILangStr('BTN_CANCEL')">Cancel</button>
+			</div><!-- .controls.save -->
+		</div><!-- .form-group.row -->
+  </div><!-- .card-body -->
 </form>
 </tal:block>
 
@@ -588,7 +596,7 @@ return request.RESPONSE.redirect(zmscontext.url_append_params('manage_wfTransiti
 			dummy0 python:zmscontext.tagObjVersions(zmscontext.attr('master_version')+1,request);
 			message python:'Created Master Version %s.*.* .'%zmscontext.attr('master_version');
 			dummy0 python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':message}))"
-		tal:on-error="python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_message':'ERROR: New Master Version can not be created.'}))">			>
+		tal:on-error="python:request.RESPONSE.redirect(here.url_append_params('manage_main',{'lang':request['lang'],'custom':request['custom'],'manage_tabs_error_message':'ERROR: New Master Version can not be created.'}))">
 	</tal:block>
 </tal:block>
 

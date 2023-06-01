@@ -17,18 +17,13 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from App.Common import package_home
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS.Folder import Folder
-from sys import *
 import collections
-import copy
 import os
-import shutil
 import sys
 import time
-import transaction
 import zExceptions
 # Product imports.
 from Products.zms import standard
@@ -40,14 +35,10 @@ from Products.zms import _fileutil
 from Products.zms import _importable
 from Products.zms import _mediadb
 from Products.zms import _objattrs
-from Products.zms import _xmllib
 from Products.zms import _zcatalogmanager
-from Products.zms import _zmsattributecontainer
-from Products.zms import ZMSMetacmdProvider, ZMSMetamodelProvider, ZMSFormatProvider, ZMSWorkflowProvider
+from Products.zms import ZMSMetacmdProvider, ZMSMetamodelProvider, ZMSFormatProvider
 from Products.zms.zmscustom import ZMSCustom
-from Products.zms.zmslinkcontainer import ZMSLinkContainer
 from Products.zms.zmslinkelement import ZMSLinkElement
-from Products.zms.zmsindex import ZMSIndex
 from Products.zms.zmslog import ZMSLog
 from Products.zms.zmsobject import ZMSObject
 from Products.zms.zmssqldb import ZMSSqlDb

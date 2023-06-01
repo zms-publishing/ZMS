@@ -17,15 +17,12 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from AccessControl import ClassSecurityInfo
 from AccessControl.class_init import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 import copy
-import sys
 import time
 # Product Imports.
-from Products.zms import _confmanager
 from Products.zms import _fileutil
 from Products.zms import _importable
 from Products.zms import _ziputil
@@ -126,7 +123,7 @@ def manage_addZMSCustom(self, meta_id, lang, _sort_id, btn, REQUEST, RESPONSE):
     if redirect_self:
       target = '%s/%s'%(target, obj.id)
     target = REQUEST.get( 'manage_target', '%s/manage_main'%target)
-    target = self.url_append_params( target, { 'lang': lang, messagekey: message})
+    target = standard.url_append_params( target, { 'lang': lang, messagekey: message})
     target = '%s#zmi_item_%s'%( target, obj.id)
     RESPONSE.redirect(target)
   
@@ -550,7 +547,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       
       # Return with message.
       params[messagekey] = message
-      target = self.url_append_params( target, params)
+      target = standard.url_append_params( target, params)
       return REQUEST.RESPONSE.redirect(target)
 
 
@@ -660,7 +657,7 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
       
       # Return with message.
       params[messagekey] = message
-      target = self.url_append_params( target, params)
+      target = standard.url_append_params( target, params)
       return REQUEST.RESPONSE.redirect(target)
 
 

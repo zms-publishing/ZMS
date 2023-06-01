@@ -1,0 +1,85 @@
+<!-- ZMSDiagram.standard_html -->
+<div tal:define="zmscontext options/zmscontext;
+		id python:zmscontext.getId();
+		css_class python:zmscontext.meta_id;
+		type python:zmscontext.attr('attr_dc_type');
+		is_bpmn python:type in ('Business Process Model and Notation', 'Decision Model and Notation') and True or False;
+		diagram_code python:zmscontext.attr('diagram_code');
+		diagram_file python:zmscontext.attr('diagram_file');"
+	tal:attributes="id id;class css_class">
+
+	<tal:block tal:condition="python: not is_bpmn and diagram_code">
+		<script type="module" 
+			tal:define="dgrm_load python:request.set('dgrm_load',request.get('dgrm_load',0)+1)"
+			tal:condition="python:request.get('dgrm_load',0)==1">
+			import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.esm.min.mjs';
+			$(document).on('ready turbolinks:load', function() {
+				$('body').attr('data-turbolinks','false');
+				mermaid.initialize({ startOnLoad: true });
+			});
+		</script>
+		<div class="mermaid" tal:content="diagram_code">diagram_code</div>
+	</tal:block>
+	<div class="alert alert-warning" tal:condition="python:not is_bpmn and not diagram_code">
+		No diagram code available
+	</div>
+
+	<tal:block tal:condition="python:is_bpmn and diagram_file">
+		<script tal:attributes="src python:zmscontext.breadcrumbs_obj_path()[0].metaobj_manager.absolute_url()+'/ZMSDiagram.bpmn-viewer.js'"></script>
+
+		<div class="canvas">
+			<div id="js-canvas" tal:attributes="id python:'js-canvas_%s'%(id)"></div>
+  		</div>
+		<script>
+			var canvas_id = '<tal:block tal:replace="python:'#js-canvas_%s'%(id)"></tal:block>';
+			var viewer_<tal:block tal:replace="id"></tal:block> = new BpmnJS({
+				container: canvas_id,
+				height: 600
+			});
+			 function openFromUrl(url) {
+				fetch(url)
+					.then(function(response) {
+						return response.text();
+					})
+					.then(async function(xml) {
+						await viewer_<tal:block tal:replace="id"></tal:block>.importXML(xml);
+						viewer_<tal:block tal:replace="id"></tal:block>.get('canvas').zoom('fit-viewport');
+					})
+					.catch(function(error) {
+						console.log(error);
+					});
+			}
+			(function () {
+				var url = '<tal:block tal:replace="python:'%s/%s'%(zmscontext.absolute_url(), zmscontext.attr('diagram_file').getFilename())"></tal:block>?preview=preview';
+				openFromUrl(url);
+			})();
+		</script>
+		<style>
+		/*<!--*/
+			body {
+			  font-family: 'Arial', sans-serif;
+			}
+
+			.header input[type=text] {
+			  width: 500px;
+			  max-width: 100%;
+			}
+
+			.console textarea {
+			  width: 100%;
+			  min-height: 80px;
+			  border: none;
+			  padding: 0;
+			}
+
+			.canvas {
+			  /*border: solid 1px black;*/
+			}
+		/*-->*/
+		</style>
+	</tal:block>
+	<div class="alert alert-warning" tal:condition="python:is_bpmn and not diagram_file">
+		No BPMN file available
+	</div>
+</div>
+<!-- ZMSDiagram.standard_html -->

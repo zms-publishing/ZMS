@@ -90,7 +90,7 @@
 		</tal:block>
 	</select>
 
-	<div class="d-flex flex-row justify-content-between align-items-start py-2">
+	<div class="d-flex flex-row justify-content-between align-items-start py-2 sticky-controls">
 		<div class="btn-group m-2 text-nowrap" role="group" aria-label="Object Class Selector">
 			<div class="zmi-action btn-group dropleft nav-metaobj" tal:attributes="title python:here.getZMILangStr('CAPTION_CHOOSEOBJ')">
 				<input tal:condition="python:metaObj.get('acquired')" type="hidden" name="id" tal:attributes="value metaObj/id">
@@ -126,12 +126,14 @@
 					</tal:block>
 				</div>
 			</div>
-			<a target="_blank" class="btn btn-secondary" value="BTN_SEARCH" 
+			<a class="btn btn-secondary" target="_blank" value="BTN_SEARCH" 
 				tal:attributes="
 					href python:'manage_analyze?lang=%s&id=%s'%(request['lang'],metaObj['id']); 
 					title python:'Click for content analysis of \042%s\042. Please, apply carefully!'%metaObj['id']"
-				><i class="fas fa-search"></i></a>
-			<button type="button" name="btn" class="btn btn-secondary" value="BTN_EXPORT" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')" onclick="return zmiExportBtnClick(this)"><i class="fas fa-download"></i></button>
+				><i class="fas fa-search"></i>
+			</a>
+			<button class="btn btn-secondary" type="button" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="$ZMI.iframe('manage_main_import',{lang:getZMILang()},{iframe:true,height:'600',title:$(this).attr('title')});return false"><i class="fas fa-upload"></i></button>
+			<button class="btn btn-secondary" type="button" name="btn" value="BTN_EXPORT" tal:attributes="title python:here.getZMILangStr('BTN_EXPORT')" onclick="return zmiExportBtnClick(this)"><i class="fas fa-download"></i></button>
 		</div>
 
 		<div class="form-row m-2">
@@ -220,7 +222,7 @@
 					<td class="meta-name" tal:attributes="title python:here.getZMILangStr('ATTR_DISPLAY')"><input type="text" tal:attributes="name python:'attr_name_%s'%objAttrId; value python:objAttr['name']; class python:['form-control form-control-sm','form-control form-control-sm zmi-element-disabled'][isMetaDictAttr]"/></td>
 
 					<tal:block tal:condition="python:objAttr['type'] in ['interface','method','py','resource','zpt']+here.valid_zopetypes">
-						<td tal:condition="python:objAttr['type'] not in ['resource','File','Folder','Image'] and objAttr.get('ob') is not None" 
+						<td tal:condition="python:objAttr['type'] not in here.valid_uploadtypes and objAttr.get('ob') is not None" 
 							tal:attributes="title python:here.getZMILangStr('ATTR_TYPE')"
 							colspan="5" class="meta-code"
 							><tal:block tal:define="
@@ -251,26 +253,19 @@
 								</div>
 							</tal:block>
 						</td>
-						<td tal:condition="python:objAttr['type'] in ['resource','File','Image']" 
+						<td tal:condition="python:objAttr['type'] in here.valid_uploadtypes" 
 							tal:attributes="title python:here.getZMILangStr('ATTR_TYPE')"
 							colspan="5" class="meta-resource input-group-sm"
 							><div class="meta-resource-container">
 								<input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
-								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']" />
+								<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']"/>
 								<tal:block tal:condition="python:objAttr.get('ob')">
-									<input type="checkbox" tal:attributes="name python:'attr_custom_%s_active'%objAttr['id']" value="1" checked="checked"/>
 									<a tal:define="fname python:objAttr['ob'].title" tal:attributes="href python:objAttr['ob'].absolute_url(); title python:'%s [%s]'%(fname,here.getDataSizeStr(objAttr['ob'].get_size()))" target="_blank" style="text-decoration:none;">
 										<i class="fas fa-file-alt"></i>
 										<tal:block tal:content="fname">FILE NAME</tal:block>
 									</a>
 								</tal:block>
 							</div>
-						</td>
-						<td tal:condition="python:objAttr['type'] in ['Folder']"
-							tal:attributes="title python:here.getZMILangStr('ATTR_TYPE')"
-							colspan="5" class="meta-resource input-group-sm"
-							><input type="hidden" tal:attributes="name python:'attr_type_%s'%objAttr['id']; value objAttr/type"/>
-							<input class="btn btn-file" type="file" tal:attributes="name python:'attr_custom_%s'%objAttr['id']" />
 						</td>
 					</tal:block>
 
@@ -360,14 +355,6 @@
 		></tal:block
 	></div>
 	<!-- EO Usage -->
-
-	<div class="form-row">
-		<div class="controls save text-nowrap">
-			<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
-			<a href="./manage_main" class="btn btn-secondary" value="BTN_BACK" tal:content="python:here.getZMILangStr('BTN_BACK')">Back</a>
-		</div><!-- .controls.save -->
-	</div><!-- .form-row -->
-
 
 	<!-- BO Languages -->
 	<div class="meta-languages mt-3" tal:define="langIds python:here.getLangIds(sort=True)">
@@ -564,7 +551,7 @@
 
 </div><!-- #zmi-tab -->
 
-<footer tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 
 <script>
 // <!--

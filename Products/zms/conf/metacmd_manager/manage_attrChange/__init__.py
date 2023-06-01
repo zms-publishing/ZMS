@@ -13,7 +13,7 @@ class manage_attrChange:
 	description = ""
 
 	# Execution
-	execution = False
+	execution = 0
 
 	# Icon_clazz
 	icon_clazz = "fas fa-exchange-alt"
@@ -32,8 +32,11 @@ class manage_attrChange:
 	# Nodes
 	nodes = "{$}"
 
+	# Package
+	package = "com.zms.foundation.metacmd.maintenance"
+
 	# Revision
-	revision = "5.1.0"
+	revision = "5.2.1"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

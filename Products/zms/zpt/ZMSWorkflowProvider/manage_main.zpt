@@ -135,6 +135,10 @@
 		border: 0;
 		padding: 2rem 0.5rem .5rem !important;
 	}
+	.ace_editor {
+		border: 1px solid #e4e4e4;
+		border-radius: 4px;
+	}
 	/*-->*/
 </style>
 
@@ -309,14 +313,30 @@
 				<tal:block tal:condition="python:ob is None">
 					<input type="hidden" name="inpType" value=""/>
 				</tal:block>
-				<tal:block tal:condition="python:ob is not None">
+				<div class="form-row" tal:condition="python:ob is not None">
 					<input type="hidden" name="inpType" tal:attributes="value ob/meta_type"/>
-					<tal:block tal:content="structure python:here.zmi_ace_editor(here,request,name='inpData',id='wftransition_%s'%(ob.getId()),ob=ob)">
-						ACE Editor
-					</tal:block>
-				</tal:block>
+					<div class="control-label-ace-editor w-100 mb-1">
+						<a target="_blank" class="w-100" title="Link to Zope Object"
+							tal:attributes="href python:'%s/manage_main'%ob.absolute_url(); title ob/meta_type" 
+							tal:content="python:ob.getId()">
+							id
+						</a> 
+					</div>
+					<div class="single-line zmi-code">
+						<textarea name="inpData" title="Doubleclick for ACE-Editor"
+							data-content_type="text/html"
+							class="form-control-ace-editor form-control form-control-sm zpt"
+							style="min-height: 20rem;"
+							ondblclick="show_ace_editor(this,true)"
+							tal:attributes="id python:'wftransition_%s'%(ob.getId())" 
+							tal:content="python:zopeutil.readObject(here,ob.getId())">
+							code data
+						</textarea>
+					</div>
+				</div>
+				<script type="text/javascript" defer charset="UTF-8" src="/++resource++zms_/common/zmi_ace_editor.js"></script>
 			</tal:block>
-			<div class="form-row">
+			<div class="form-row mt-3">
 				<div class="controls save">
 					<button type="submit" name="btn" class="btn btn-primary" value="BTN_SAVE" tal:content="python:here.getZMILangStr('BTN_SAVE')">Save</button>
 				</div><!-- .controls.save -->
@@ -546,7 +566,9 @@
 		<div class="form-group row" id="tr_revision">
 			<label for="revision" class="col-sm-2 control-label mandatory"><span tal:content="python:here.getZMILangStr('ATTR_VERSION')">Version</span></label>
 			<div class="col-md-6 col-sm-8 col-xs-10">
-				<input class="form-control" name="revision" type="text" size="8" tal:attributes="value python:here.getRevision()" />
+				<input class="form-control" name="revision" placeholder="0.0.0" type="text" size="8"
+					title="Please, enter the version number of this workflow configuration in Semantic Versioning Syntax MAJOR.MINOR.PATCH"
+					tal:attributes="value python:here.getRevision()" />
 			</div>
 		</div><!-- .form-group -->
 		<div class="form-group row " id="tr_workflow" style="align-items:baseline">
@@ -605,7 +627,7 @@
 </div><!-- .tab-content -->
 
 </div><!-- #zmi-tab -->
-<footer tal:content="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
+<footer tal:replace="structure python:here.zmi_body_footer(here,request)">zmi_body_footer</footer>
 </body>
 </html>
 </tal:block>

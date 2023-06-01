@@ -18,18 +18,15 @@
 ################################################################################
 
 # Imports.
-from __future__ import absolute_import
 from App.Common import package_home
 import OFS.misc_
 import codecs
-import fnmatch
 import os
 import re
 # Product Imports.
 from Products.zms import _confmanager
 from Products.zms import _multilangmanager
 from Products.zms import _mediadb
-from Products.zms import _sequence
 from Products.zms import _zmsattributecontainer
 from Products.zms import standard
 from Products.zms import zms
@@ -37,12 +34,6 @@ from Products.zms import zmscustom
 from Products.zms import zmssqldb
 from Products.zms import zmslinkcontainer
 from Products.zms import zmslinkelement
-from Products.zms import ZMSZCatalogAdapter
-from Products.zms import ZMSFilterManager
-from Products.zms import ZMSFormatProvider, ZMSFormatProviderAcquired
-from Products.zms import ZMSMetacmdProvider, ZMSMetacmdProviderAcquired
-from Products.zms import ZMSWorkflowProvider, ZMSWorkflowProviderAcquired
-from Products.zms import ZMSRepositoryManager
 
 # ### Allow additional Python modules in restricted context
 # ### Use with:
@@ -168,16 +159,16 @@ def initialize(context):
                 s3 = []
                 if fn.endswith('.js'):
                   s0 = [ \
-                      '\$ZMI\.writeDebug\((.*?)\);', \
-                      '/\*(\!|\*|\s)((.|\n|\r|\t)*?)\*/', \
-                      '//( |-|\$)((.|\r|\t)*?)\n', \
+                      r'\$ZMI\.writeDebug\((.*?)\);', \
+                      r'/\*(\!|\*|\s)((.|\n|\r|\t)*?)\*/', \
+                      r'//( |-|\$)((.|\r|\t)*?)\n', \
                     ]
                   s1 = ['=', '+', '-', '(', ')', ';', ',', ':', '&', '|']
                   s2 = []
                   s3 = ['\t', ' ', '{ ', '{', '{\n', '{', ' }', '}', ';}', '}', ',\n', ',', ';\n', ';', '\n ', '\n', '  ', ' ', '\n\n', '\n', '}\n}\n', '}}\n']
                 elif fn.endswith('.css'):
                   s0 = [ \
-                      '/\*((.|\n|\r|\t)*?)\*/', \
+                      r'/\*((.|\n|\r|\t)*?)\*/', \
                     ]
                   s1 = ['=', '+', '{', '}', '(', ';', ',', ':']
                   s2 = [') ', '}\n']

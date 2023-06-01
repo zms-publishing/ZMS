@@ -17,7 +17,6 @@
 ################################################################################
 
 # Imports.
-import copy
 import re
 # Product Imports.
 from Products.zms import standard

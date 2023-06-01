@@ -1,0 +1,211 @@
+<tal:block tal:condition="python:'zcatalog_index' not in here.getAbsoluteHome()">
+	<tal:block tal:define="url_redirect python:context.url_append_params('manage_main', {'manage_tabs_error_message': 'ZMSIndex not found.'})">
+		<tal:block tal:define="redirect python:request.RESPONSE.redirect(url_redirect)"></tal:block>
+	</tal:block>
+</tal:block>
+<!DOCTYPE html>
+<html lang="en" 
+	tal:define="standard modules/Products.zms/standard;
+		meta_id python:request.get('id', '');
+		path_filter python:request.get('filter', '');
+		max_objs python:request.get('limit', '100').strip()!='' and int(request.get('limit', '100')) or 100;
+		num_objs python:request.get('num_objs', False);
+		res_objs python:here.getAbsoluteHome().zcatalog_index({'meta_id':meta_id});
+		res python:filter(lambda x: path_filter in x.getPath(), res_objs);
+		total python:len(res);
+		metaObjIds python:here.getMetaobjIds();
+		meta_list python:standard.sort_list(filter(lambda x: here.getMetaobj(x)['type'] in ['ZMSDocument','ZMSObject','ZMSTeaserElement','ZMSRecordSet'], metaObjIds));
+		meta_pack python:standard.sort_list(filter(lambda x: here.getMetaobj(x)['type'] in ['ZMSPackage'], metaObjIds));
+		meta_types python:filter( lambda x: x not in ['ZMS'], metaObjIds);
+		metaObjAttrIds python:here.getMetaobjAttrIds(meta_id);
+		attrIds python:filter(lambda x: x in metaObjAttrIds,here.getObjAttrs(meta_id).keys());
+		subObjectIds python:map(lambda x: x['id'],filter(lambda x: x['type'] in meta_types+['*'],here.getMetaobjAttrs(meta_id)));
+		stat1 python:{};
+		dummy0 python:map(lambda x:here.operator_setitem(stat1,x,[]),attrIds+subObjectIds);
+		stat0 python:{};
+		dummy0 python:map(lambda x:here.operator_setitem(stat0,x,[]),attrIds+subObjectIds);
+		global count_visible python:0">
+
+<head tal:replace="structure python:here.zmi_html_head(here,request)">zmi_html_head</head>
+
+<body tal:attributes="class python:here.zmi_body_class(id='analyze')">
+
+<header tal:replace="structure python:here.zmi_body_header(here,request)">zmi_body_header</header>
+
+<div id="zmi-tab">
+
+<tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
+
+<div class="alert alert-info mb-3" 
+    tal:condition="python:len(res)>max_objs">
+	There are <strong tal:content="python:'%s %s'%(len(res),meta_id)"></strong> objects in 
+	<strong tal:content="python:path_filter.strip()=='' and 'all clients' or 'clients '+path_filter.strip()"></strong>.
+	Please select a client to limit your search or increase the maximum number of results.
+</div>
+
+<form id="form_tab_statistics" class="form-horizontal" method="GET" action="manage_tab_statistics">
+<div class="form-inline p-3">
+	<select id="meta_id" name="id" class="form-control mr-2">
+		<option value>---Object---</option>
+		<optgroup tal:repeat="package meta_pack" tal:attributes="label package">
+			<option tal:repeat="obj python:filter(lambda x: here.getMetaobj(x)['package']==package, meta_list);" 
+			    tal:attributes="value obj" 
+			    tal:content="python:num_objs is not False and '{} ({:,})'.format(obj,len(here.getAbsoluteHome().zcatalog_index({'meta_id':obj}))) or obj">
+			    obj
+		    </option>
+		</optgroup>
+	</select>
+	<select id="path_filter" name="filter" class="form-control mr-2"
+		tal:define="
+		    portal_master python:here.getHome();
+			portal_clients python:here.getPortalClients()">
+		<option value>---Client---</option>
+		<option tal:attributes="value python:portal_master.absolute_url().split(request['SERVER_URL'])[-1]">All</option>
+		<tal:block tal:condition="python:here.getHome().getId()!='unibe'">
+		    <option tal:attributes="value python:here.getDocumentElement().absolute_url().split(request['SERVER_URL'])[-1]" tal:content="python:here.getHome().getId()">Master</option>
+		    <option tal:repeat="portal_client portal_clients" tal:attributes="value python:portal_client.absolute_url().split(request['SERVER_URL'])[-1]" tal:content="python:portal_client.getHome().getId()">Client</option>
+		</tal:block>
+		<tal:block tal:condition="python:here.getHome().getId()=='unibe'">
+    		<option value="/portal/content">Portal</option>
+    		<option value="/uniintern/content">Uni Intern</option>
+    		<option value="/uniapp/content">UniBE Mobile</option>
+    		<option value="/jahresbericht_">Jahresberichte (all)</option>
+    		<option value="/portal/fak_">Faculties (all)</option>
+    		<option value="/micro_">Microsites (all)</option>
+    		<option value="/portal/microsites">Microsites (portal)</option>
+    		<option value="/uniintern/Microsites">Microsites (uniintern)</option>
+		</tal:block>
+	</select>
+	<select id="max_objs" name="limit" class="form-control mr-2">
+		<option value>---Maximum---</option>
+		<option value="500">500</option>
+		<option value="1000">1000</option>
+		<option value="2000">2000</option>
+		<option value="5000">5000</option>
+	</select>
+	<button type="submit" class="btn btn-primary mr-2">Analyze...</button>
+	<div class="form-check form-check-inline">
+    	<span class="btn btn-secondary">
+    	    <input type="checkbox" id="num_objs" name="num_objs"
+    	        tal:attributes="checked python:num_objs is not False and 'selected' or False" />
+    	</span>
+    	<label for="num_objs" class="mx-2"><em>show total number of content objects in select box</em></label>
+	</div>
+</div>
+
+<tal:block tal:condition="python:len(res)<max_objs">
+	<tal:block tal:repeat="ob res"
+		><tal:block tal:define="
+		    is_visible python:ob.getObject().is_visible();
+		    global count_visible python:is_visible and count_visible+1 or count_visible;
+		    statrec python:[{'abs_url':ob.getObject().absolute_url(),'titlealt':ob.getObject().getTitlealt(request),'is_visible':is_visible}]"
+			><tal:block tal:repeat="key attrIds"
+				><tal:block tal:define="value python:ob.getObject().attr(key)"
+					><tal:block tal:condition="python:value"><tal:block tal:define="dummy0 python:here.operator_setitem(stat1,key,stat1[key]+statrec)"></tal:block></tal:block
+					><tal:block tal:condition="not:python:value"><tal:block tal:define="dummy0 python:here.operator_setitem(stat0,key,stat0[key]+statrec)"></tal:block></tal:block
+				></tal:block
+			></tal:block
+			><tal:block tal:repeat="key subObjectIds"
+				><tal:block tal:define="value python:ob.getObject().getObjChildren(key,request)"
+					><tal:block tal:condition="python:value"><tal:block tal:define="dummy0 python:here.operator_setitem(stat1,key,stat1[key]+statrec)"></tal:block></tal:block
+					><tal:block tal:condition="not:python:value"><tal:block tal:define="dummy0 python:here.operator_setitem(stat0,key,stat0[key]+statrec)"></tal:block></tal:block
+				></tal:block
+			></tal:block
+		></tal:block
+	></tal:block>
+
+	<table class="table mb-0">
+	<thead>
+	<tr>
+		<th width="33%" tal:content="python:'Meta-Name: %s'%(here.display_type(request,meta_id))">the display-type</th>
+		<th width="33%">Usage [ % (Abs.) ]</th>
+		<th width="33%">Empty [ % (Abs.)]</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tal:block tal:repeat="key python:attrIds+subObjectIds">
+		<tr tal:define="global metaObjAttr python:here.getMetaobjAttr(meta_id,key)">
+			<td>
+				<tal:block tal:content="metaObjAttr/name">the name</tal:block>
+				(<tal:block tal:content="metaObjAttr/id">the id</tal:block>: <tal:block tal:content="metaObjAttr/type">the type</tal:block>)
+			</td>
+			<td>
+				<a tal:attributes="href python:'javascript:toggleElement(\'img_%s1\',\'ol_%s1\')'%(metaObjAttr['id'],metaObjAttr['id'])" style="text-decoration:none;">
+					<i tal:attributes="id python:'img_%s1'%metaObjAttr['id']" class="icon-caret-right fas fa-caret-right toggle"></i>
+					<tal:block 
+						tal:content="python:round(100*len(stat1[metaObjAttr['id']])/len(res))">perc</tal:block>% (<tal:block tal:content="python:len(stat1[metaObjAttr['id']])">abs</tal:block>)
+				</a>
+				<ol tal:attributes="id python:'ol_%s1'%metaObjAttr['id']" style="visibility:hidden;display:none;">
+					<li tal:repeat="ob python:stat1[metaObjAttr['id']]">
+                        <i class="far fa-square" title="Is Visible" 
+                            tal:attributes="class python:ob['is_visible'] and 'far fa-check-square is_visible text-muted' or 'far fa-square is_not_visible text-warning'"></i>
+					    <a tal:attributes="title python:'%s/manage_main'%ob['abs_url'];href python:'%s/manage_main'%ob['abs_url']; class python:ob['is_visible']==False and 'text-warning' or None"
+							target="_blank" tal:content="python:(ob['abs_url']).split(path_filter)[-1]"
+							>the url</a></li>
+				</ol>
+			</td>
+			<td>
+				<a tal:attributes="href python:'javascript:toggleElement(\'img_%s0\',\'ol_%s0\')'%(metaObjAttr['id'],metaObjAttr['id'])" style="text-decoration:none;">
+					<i tal:attributes="id python:'img_%s1'%metaObjAttr['id']" class="icon-caret-right fas fa-caret-right toggle"></i>
+					<tal:block tal:on-error="string: 0"
+						tal:content="python:round(100*len(stat0[metaObjAttr['id']])/len(res))">perc</tal:block>% (<tal:block tal:content="python:len(stat0[metaObjAttr['id']])">abs</tal:block>)
+				</a>
+				<ol tal:attributes="id python:'ol_%s0'%metaObjAttr['id']" style="visibility:hidden;display:none;">
+					<li tal:repeat="ob python:stat0[metaObjAttr['id']]">
+                        <i class="far fa-square" title="Is Visible" 
+                            tal:attributes="class python:ob['is_visible'] and 'far fa-check-square is_visible text-muted' or 'far fa-square is_not_visible text-warning'"></i>
+					    <a tal:attributes="title python:'%s/manage_main'%ob['abs_url'];href python:'%s/manage_main'%ob['abs_url']; class python:ob['is_visible']==False and 'text-warning' or None"
+							target="_blank" tal:content="python:(ob['abs_url']).split(path_filter)[-1]"
+							>the url</a></li>
+				</ol>
+			</td>
+		</tr>
+	</tal:block>
+	<tr>
+		<th>Total:</th>
+		<td colspan="2">
+            <strong title="Total Number of Items" tal:content="python:'%s Items of %s'%(total, meta_id)">total items</strong>
+            <br/>
+            <em title="Number of Visible Items" tal:content="python:'%s visible'%(count_visible)">count_visible</em>
+            <br/>
+            <em title="Number of Visible Items" tal:content="python:'%s invisible'%(total-count_visible)">count_invisible</em>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+</tal:block>
+
+</form>
+
+</div>
+
+<tal:block tal:content="structure python:here.zmi_html_foot(here,request)">zmi_html_foot</tal:block>
+
+<script language="JavaScript">
+//<!--
+	function toggleElement( sender, id) {
+		var speed = "normal";
+		var img = $('#'+sender);
+		var el = $('#'+id);
+		if ( el.css("display").toLowerCase()=="none") {
+			img.attr( { class: "icon-caret-down fas fa-caret-down toggle", title: "-"});
+			el.css({'visibility':'visible','display':''});
+		}
+		else {
+			img.attr( { class: "icon-caret-right fas fa-caret-right toggle", title: "+"});
+			el.css({'visibility':'hidden','display':'none'});
+		}
+	}
+
+	$ZMI.registerReady(function() {
+		var url = new URL(document.location);
+		var params = url.searchParams;
+
+		$("#meta_id").val(params.get("id"));
+		$("#path_filter").val(params.get("filter"));
+		$("#max_objs").val(params.get("limit"));
+	});
+// -->
+</script>
+</body>
+</html>

@@ -1,40 +1,51 @@
 <tal:block tal:define="
 	zmscontext options/zmscontext;
+	show_htmlcheck python:bool(int(zmscontext.getConfProperty('ZMS.ZMSTextarea.show_htmlcheck',1)));
 	dummy0 python:request.set('CKEDITOR_config_removeButtons','JustifyLeft,JustifyCenter,JustifyRight')">
 <script type="text/javascript">
-
-$(function(){
-	$('#text_'+getZMILang()).parent('form').submit(function() {
+//<!-- ### Realtime HTML Validity Info ###
+	function validate_html(txt) {
+		var xmlString = txt.replace(/\&(\w*)\;/g,'');
+		var parser=new DOMParser();
+		var doc=parser.parseFromString(xmlString,"application/xml");
+		var errorNode = doc.querySelector('parsererror');
+		var msg = 'HTML-Check: ';
+		if (errorNode) {
+			msg += errorNode.querySelector('div').textContent;
+		} else {
+			msg += 'Valid!';
+		}
+		return msg
+	};
+	$(function(){
+		var txt = '<xml>'+$('#text_'+getZMILang()).val().replace('&','')+'</xml>';
+		var msg = validate_html(txt);
+		$('.zmi-richtext').attr('data-msg',msg);
+		$('#text_'+getZMILang()).keyup( function() {
+			txt = '<xml>'+$('#text_'+getZMILang()).val().replace('&','')+'</xml>';
+			msg = validate_html(txt);
+			$('.zmi-richtext').attr('data-msg',msg);
+		});
+		$('.controls.save button[value="BTN_SAVE"]').on('click', function() {
 			var b = true;
-			if (self.btnClicked != getZMILangStr('BTN_CANCEL') &&
-					self.btnClicked != getZMILangStr('BTN_BACK')) {
-				var txt = '<'+'xml>'+$('#text_'+getZMILang()).val().replace('&','')+'<'+'/xml>';
-				if ( txt.indexOf( '<'+'dtml-') < 0) {
-					try {
-						var xmlString = txt.replace(/\&(\w*)\;/g,'');
-						if (window.DOMParser) {
-							var parser=new DOMParser();
-							var doc=parser.parseFromString(xmlString,"text/xml");
-							if ( doc.childNodes[0].nodeName == 'parsererror') {
-								b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+doc.childNodes[0].childNodes[0].nodeValue+'\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
-							}
-						} else if (window.ActiveXObject) {
-							var xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
-							xmlDoc.async="false";
-							xmlDoc.loadXML(xmlString);
-							if ( xmlDoc.childNodes.length == 0) {
-								b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+'Invalid (X)HTML!\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
-							}
-						}
-					}
-					catch(e) {
-						alert(e.message);
-					}
-				}
+			if ( $('.zmi-richtext').attr('data-msg')!='HTML-Check: Valid!' ) {
+				b = confirm(getZMILangStr('CAPTION_WARNING')+'\n'+$('.zmi-richtext').attr('data-msg')+'\n'+getZMILangStr('MSG_CHANGE_ANYWAY')+'\n');
 			}
 			return b;
 		});
 	});
-
+//-->
 </script>
+<style tal:condition="show_htmlcheck">
+/*<!-- ### Remove this CSS for Hiding HTML Validity Info ### */
+	.zmi-richtext:after {
+		content:attr(data-msg);
+		display:block;
+		font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+		font-size: 87.5%;
+		color: #e83e8c;
+		word-wrap: break-word;
+	}
+/*-->*/
+</style>
 </tal:block>

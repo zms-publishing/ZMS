@@ -1,4 +1,11 @@
-<form method="get" class="form-horizontal" tal:define="filter_columns python:[x for x in entity['columns'] if len(standard.intersection_list(['blob','details','multiselect','multimultiselect'],list(x)))==0]">
+<tal:block tal:define="
+	standard modules/Products.zms/standard;
+	entity options/entity;
+	tables options/tables;
+	resSlctStmnt options/resSlctStmnt">
+
+<form method="get" class="form-horizontal" 
+	tal:define="filter_columns python:[x for x in entity['columns'] if len(standard.intersection_list(['blob','details','multiselect','multimultiselect'],list(x)))==0]">
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
 	<input tal:condition="python:'qorder' in request" type="hidden" name="qorder" tal:attributes="value request/qorder">
@@ -81,3 +88,5 @@
 		</div><!-- .collapse -->
 	</div><!-- .card -->
 </form>
+
+</tal:block>

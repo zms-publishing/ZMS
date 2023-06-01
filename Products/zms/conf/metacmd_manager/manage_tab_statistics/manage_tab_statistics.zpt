@@ -37,7 +37,7 @@
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 
 <div class="alert alert-info mb-3" 
-    tal:condition="python:len(res)>max_objs">
+	tal:condition="python:len(res)>max_objs">
 	There are <strong tal:content="python:'%s %s'%(len(res),meta_id)"></strong> objects in 
 	<strong tal:content="python:path_filter.strip()=='' and 'all clients' or 'clients '+path_filter.strip()"></strong>.
 	Please select a client to limit your search or increase the maximum number of results.
@@ -49,15 +49,15 @@
 		<option value>---Object---</option>
 		<optgroup tal:repeat="package meta_pack" tal:attributes="label package">
 			<option tal:repeat="obj python:filter(lambda x: here.getMetaobj(x)['package']==package, meta_list);" 
-			    tal:attributes="value obj" 
-			    tal:content="python:num_objs is not False and '{} ({:,})'.format(obj,len(here.getAbsoluteHome().zcatalog_index({'meta_id':obj}))) or obj">
-			    obj
-		    </option>
+				tal:attributes="value obj" 
+				tal:content="python:num_objs is not False and '{} ({:,})'.format(obj,len(here.getAbsoluteHome().zcatalog_index({'meta_id':obj}))) or obj">
+				obj
+			</option>
 		</optgroup>
 	</select>
 	<select id="path_filter" name="filter" class="form-control mr-2"
 		tal:define="
-		    portal_master python:here.getHome();
+			portal_master python:here.getHome();
 			portal_clients python:here.getPortalClients()">
 		<option value>---Client---</option>
 		<option tal:attributes="value python:portal_master.absolute_url().split(request['SERVER_URL'])[-1]">All</option>
@@ -66,14 +66,14 @@
 		    <option tal:repeat="portal_client portal_clients" tal:attributes="value python:portal_client.absolute_url().split(request['SERVER_URL'])[-1]" tal:content="python:portal_client.getHome().getId()">Client</option>
 		</tal:block>
 		<tal:block tal:condition="python:here.getHome().getId()=='unibe'">
-    		<option value="/portal/content">Portal</option>
-    		<option value="/uniintern/content">Uni Intern</option>
-    		<option value="/uniapp/content">UniBE Mobile</option>
-    		<option value="/jahresbericht_">Jahresberichte (all)</option>
-    		<option value="/portal/fak_">Faculties (all)</option>
-    		<option value="/micro_">Microsites (all)</option>
-    		<option value="/portal/microsites">Microsites (portal)</option>
-    		<option value="/uniintern/Microsites">Microsites (uniintern)</option>
+			<option value="/portal/content">Portal</option>
+			<option value="/uniintern/content">Uni Intern</option>
+			<option value="/uniapp/content">UniBE Mobile</option>
+			<option value="/jahresbericht_">Jahresberichte (all)</option>
+			<option value="/portal/fak_">Faculties (all)</option>
+			<option value="/micro_">Microsites (all)</option>
+			<option value="/portal/microsites">Microsites (portal)</option>
+			<option value="/uniintern/Microsites">Microsites (uniintern)</option>
 		</tal:block>
 	</select>
 	<select id="max_objs" name="limit" class="form-control mr-2">
@@ -85,20 +85,20 @@
 	</select>
 	<button type="submit" class="btn btn-primary mr-2">Analyze...</button>
 	<div class="form-check form-check-inline">
-    	<span class="btn btn-secondary">
-    	    <input type="checkbox" id="num_objs" name="num_objs"
-    	        tal:attributes="checked python:num_objs is not False and 'selected' or False" />
-    	</span>
-    	<label for="num_objs" class="mx-2"><em>show total number of content objects in select box</em></label>
+		<span class="btn btn-secondary">
+			<input type="checkbox" id="num_objs" name="num_objs"
+				tal:attributes="checked python:num_objs is not False and 'selected' or False" />
+		</span>
+		<label for="num_objs" class="mx-2"><em>show total number of content objects in select box</em></label>
 	</div>
 </div>
 
 <tal:block tal:condition="python:len(res)<max_objs">
 	<tal:block tal:repeat="ob res"
 		><tal:block tal:define="
-		    is_visible python:ob.getObject().is_visible();
-		    global count_visible python:is_visible and count_visible+1 or count_visible;
-		    statrec python:[{'abs_url':ob.getObject().absolute_url(),'titlealt':ob.getObject().getTitlealt(request),'is_visible':is_visible}]"
+			is_visible python:ob.getObject().is_visible();
+			global count_visible python:is_visible and count_visible+1 or count_visible;
+			statrec python:[{'abs_url':ob.getObject().absolute_url(),'titlealt':ob.getObject().getTitlealt(request),'is_visible':is_visible}]"
 			><tal:block tal:repeat="key attrIds"
 				><tal:block tal:define="value python:ob.getObject().attr(key)"
 					><tal:block tal:condition="python:value"><tal:block tal:define="dummy0 python:here.operator_setitem(stat1,key,stat1[key]+statrec)"></tal:block></tal:block
@@ -131,32 +131,46 @@
 			</td>
 			<td>
 				<a tal:attributes="href python:'javascript:toggleElement(\'img_%s1\',\'ol_%s1\')'%(metaObjAttr['id'],metaObjAttr['id'])" style="text-decoration:none;">
-					<i tal:attributes="id python:'img_%s1'%metaObjAttr['id']" class="icon-caret-right fas fa-caret-right toggle"></i>
-					<tal:block 
-						tal:content="python:round(100*len(stat1[metaObjAttr['id']])/len(res))">perc</tal:block>% (<tal:block tal:content="python:len(stat1[metaObjAttr['id']])">abs</tal:block>)
+					<tal:block tal:condition="python:len(res)!=0">
+						<i tal:attributes="id python:'img_%s1'%metaObjAttr['id']" class="icon-caret-right fas fa-caret-right toggle"></i>
+						<tal:block tal:content="python:round(100*len(stat1[metaObjAttr['id']])/len(res))">perc</tal:block>% (<tal:block tal:content="python:len(stat1[metaObjAttr['id']])">abs</tal:block>)
+					</tal:block>
+					<tal:block tal:condition="python:len(res)==0">
+						0% (0)
+					</tal:block>
 				</a>
 				<ol tal:attributes="id python:'ol_%s1'%metaObjAttr['id']" style="visibility:hidden;display:none;">
 					<li tal:repeat="ob python:stat1[metaObjAttr['id']]">
-                        <i class="far fa-square" title="Is Visible" 
-                            tal:attributes="class python:ob['is_visible'] and 'far fa-check-square is_visible text-muted' or 'far fa-square is_not_visible text-warning'"></i>
-					    <a tal:attributes="title python:'%s/manage_main'%ob['abs_url'];href python:'%s/manage_main'%ob['abs_url']; class python:ob['is_visible']==False and 'text-warning' or None"
-							target="_blank" tal:content="python:(ob['abs_url']).split(path_filter)[-1]"
-							>the url</a></li>
+						<i class="far fa-square" title="Is Visible" 
+							tal:attributes="class python:ob['is_visible'] and 'far fa-check-square is_visible text-muted' or 'far fa-square is_not_visible text-warning'"></i>
+						<a tal:attributes="title python:'%s/manage_main'%ob['abs_url'];href python:'%s/manage_main'%ob['abs_url']; class python:ob['is_visible']==False and 'text-warning' or None"
+							target="_blank">
+							<tal:block tal:condition="path_filter" tal:content="python:(ob['abs_url']).split(path_filter)[-1]"></tal:block>
+							<tal:block tal:condition="not:path_filter" tal:content="python:(ob['abs_url']).split('content')[-1]"></tal:block>
+						</a>
+					</li>
 				</ol>
 			</td>
 			<td>
 				<a tal:attributes="href python:'javascript:toggleElement(\'img_%s0\',\'ol_%s0\')'%(metaObjAttr['id'],metaObjAttr['id'])" style="text-decoration:none;">
-					<i tal:attributes="id python:'img_%s1'%metaObjAttr['id']" class="icon-caret-right fas fa-caret-right toggle"></i>
-					<tal:block tal:on-error="string: 0"
-						tal:content="python:round(100*len(stat0[metaObjAttr['id']])/len(res))">perc</tal:block>% (<tal:block tal:content="python:len(stat0[metaObjAttr['id']])">abs</tal:block>)
+					<tal:block tal:condition="python:len(res)!=0">
+						<i tal:attributes="id python:'img_%s0'%metaObjAttr['id']" class="icon-caret-right fas fa-caret-right toggle"></i>
+						<tal:block tal:content="python:round(100*len(stat0[metaObjAttr['id']])/len(res))">perc</tal:block>% (<tal:block tal:content="python:len(stat0[metaObjAttr['id']])">abs</tal:block>)
+					</tal:block>
+					<tal:block tal:condition="python:len(res)==0">
+						0% (0)
+					</tal:block>
 				</a>
 				<ol tal:attributes="id python:'ol_%s0'%metaObjAttr['id']" style="visibility:hidden;display:none;">
 					<li tal:repeat="ob python:stat0[metaObjAttr['id']]">
-                        <i class="far fa-square" title="Is Visible" 
-                            tal:attributes="class python:ob['is_visible'] and 'far fa-check-square is_visible text-muted' or 'far fa-square is_not_visible text-warning'"></i>
-					    <a tal:attributes="title python:'%s/manage_main'%ob['abs_url'];href python:'%s/manage_main'%ob['abs_url']; class python:ob['is_visible']==False and 'text-warning' or None"
-							target="_blank" tal:content="python:(ob['abs_url']).split(path_filter)[-1]"
-							>the url</a></li>
+						<i class="far fa-square" title="Is Visible" 
+							tal:attributes="class python:ob['is_visible'] and 'far fa-check-square is_visible text-muted' or 'far fa-square is_not_visible text-warning'"></i>
+						<a tal:attributes="title python:'%s/manage_main'%ob['abs_url'];href python:'%s/manage_main'%ob['abs_url']; class python:ob['is_visible']==False and 'text-warning' or None"
+							target="_blank">
+							<tal:block tal:condition="path_filter" tal:content="python:(ob['abs_url']).split(path_filter)[-1]"></tal:block>
+							<tal:block tal:condition="not:path_filter" tal:content="python:(ob['abs_url']).split('content')[-1]"></tal:block>
+						</a>
+					</li>
 				</ol>
 			</td>
 		</tr>
@@ -164,11 +178,11 @@
 	<tr>
 		<th>Total:</th>
 		<td colspan="2">
-            <strong title="Total Number of Items" tal:content="python:'%s Items of %s'%(total, meta_id)">total items</strong>
-            <br/>
-            <em title="Number of Visible Items" tal:content="python:'%s visible'%(count_visible)">count_visible</em>
-            <br/>
-            <em title="Number of Visible Items" tal:content="python:'%s invisible'%(total-count_visible)">count_invisible</em>
+			<strong title="Total Number of Items" tal:content="python:'%s Items of %s'%(total, meta_id)">total items</strong>
+			<br/>
+			<em title="Number of Visible Items" tal:content="python:'%s visible'%(count_visible)">count_visible</em>
+			<br/>
+			<em title="Number of Visible Items" tal:content="python:'%s invisible'%(total-count_visible)">count_invisible</em>
 		</td>
 	</tr>
 	</tbody>

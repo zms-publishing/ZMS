@@ -1,0 +1,102 @@
+.container-fluid.skin-bg-gray {
+	background-color: #f5f5f5;
+}
+.container-fluid {
+	margin-right: auto;
+	margin-left: auto;
+	padding-left: 12px;
+	padding-right: 12px;
+}
+.search-form {
+	margin-bottom: 48px;
+}
+.search-form h2.small-font {
+	font-size: .83333333em;
+}
+.row.skin-gutter-wide {
+	margin-left: -24px;
+	margin-right: -24px;
+}
+.no-margin-bottom {
+	margin-bottom: 0!important;
+}
+.search-results .path {
+	list-style: none;
+	padding-left: 0;
+	margin-left: 0;
+	font-size: .7em;
+	margin:2em 0 0.1em 0
+}
+.search-results .path li:before {
+	line-height: .5;
+	font-size: 200%;
+}
+.search-results .path li a {
+	color:#aaa;
+}
+.search-results .hit em {
+	font-style: normal;
+	font-weight: initial !important;
+	padding-left:.15em;
+	padding-right:.15em;
+	background-color: #d6002b1c !important;
+}
+
+/* Loading Spinner */
+.spin {
+	display: block;
+	width: 50px;
+	height: 50px;
+	border: 3px solid rgba(0, 0, 0, .1);
+	border-radius: 50%;
+	border-top-color: #d6002b;
+	animation: spin 1s ease-in-out infinite;
+	-webkit-animation: spin 1s ease-in-out infinite;
+	margin:0 auto calc(100vh - 360px);
+}
+@keyframes spin {
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+@-webkit-keyframes spin {
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+.pagination i.fas.fa-chevron-left:after,
+.pagination i.fas.fa-chevron-right:after {
+	font-family: unibe-iconset;
+	speak: none;
+	font-size:200%;
+	font-style: normal;
+	font-weight: 400;
+	font-variant: normal;
+	text-transform: none;
+	line-height: .75em;
+	vertical-align: -.25em;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+.pagination i.fas.fa-chevron-left:after {
+	content: "\e603";
+}
+.pagination i.fas.fa-chevron-right:after {
+	content: "\e602";
+}
+.pagination > li > a, 
+.pagination > li > span {
+	color: #d6002b;
+}
+.pagination > .active > a, 
+.pagination > .active > span, 
+.pagination > .active > a:hover, 
+.pagination > .active > span:hover, 
+.pagination > .active > a:focus, 
+.pagination > .active > span:focus {
+	background-color: #d6002b;
+	border-color: #d6002b;
+}
+.search-results .nav-tabs > li {
+	margin-bottom: 2px;
+}

@@ -37,15 +37,6 @@ function openWindow(url) {
 	<div class="form-group zms4-row">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10 form-inline">
-			<div class="btn-group" style="margin-right:1em">
-				<div class="btn btn-default btn-secondary">
-					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
-						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" />
-				</div>
-				<a class="btn btn-default btn-secondary" target="_blank" href="javascript:;" onclick="return zmiExpandObjectTree(-1);">
-						<i class="fas fa-plus-square"></i>
-				</a>
-			</div>
 			<a class="btn btn-default btn-secondary" target="_blank" style="margin-right:1em"
 				tal:attributes="href python:'%s/manage_catalogView?filterpath=/'%zmscontext.zcatalog_index.absolute_url()">
 					<i class="fas fa-search"></i> zcatalog_index
@@ -91,8 +82,23 @@ function openWindow(url) {
 	<div class="form-group zms4-row">
 		<label class="col-sm-2 control-label">&nbsp;</label>
 		<div class="col-sm-10">
-			<div class="zmi-sitemap-expand" onclick="$('#zmsindex .zmi-sitemap-container').toggleClass('full');$('#zmsindex .zmi-sitemap-expand i').toggleClass('icon-resize-small')">
-				<i class="icon icon-resize-full fas fa-expand-arrows-alt" title="Seitenanfang"></i>
+			<div class="btn-group zmi-sitemap-controls">
+				<div title="De-/Select All" 
+					class="btn btn-dark">
+					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
+						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" 
+					/>
+				</div>
+				<div title="Expand Object Tree (Hint: Mind System Load in Case!)" 
+					class="btn btn-dark" 
+					onclick="return zmiExpandObjectTree(-1);">
+					<i class="fas fa-plus-square"></i>
+				</div>
+				<div title="Expand/Compress Sitemap View"
+					class="btn btn-dark" id="zmi-sitemap-expand" 
+					onclick="$('.zmi-sitemap').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+					<i class="fas fa-expand-arrows-alt"></i>
+				</div>
 			</div>
 			<div class="zmi-sitemap-container">
 				<div class="progress">
@@ -321,7 +327,7 @@ $(function() {
 	}
 	#zmsindex .zmi-sitemap-container .progress {
 		padding-left:0;
-		margin-right: 30px;
+		margin-right: 7rem;
 		background: #337ab740;
 		height:1.25rem;
 		direction: ltr;

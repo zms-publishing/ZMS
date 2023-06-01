@@ -90,7 +90,7 @@
 					<label class="col-sm-2 control-label" for="catalog_model"><span>Model</span></label>
 					<div class="col-sm-10"
 						tal:define="metaObjIds python:here.getMetaobjIds();
-							metaObjs python:[x for x in [here.getMetaobj(y) for y in metaObjIds] if x['id'] not in ['ZMS'] and x['type'] in ['ZMSPackage','ZMSDocument','ZMSObject','ZMSRecordSet']];
+							metaObjs python:[x for x in [here.getMetaobj(y) for y in metaObjIds] if x['id'] not in ['X_ZMS'] and x['type'] in ['ZMSPackage','ZMSDocument','ZMSObject','ZMSRecordSet']];
 							metaObjPackages python:here.sort_list(['']+[x['id'] for x in metaObjs if x['type']=='ZMSPackage']);
 							metaObjPackages2 python:[x.get('package') for x in metaObjs if x.get('package') not in metaObjPackages]">
 
@@ -140,11 +140,11 @@
 															<tr tal:condition="python:metaObj['type']!='ZMSPackage' and metaObj.get('package')==metaObjPackage">
 																<td style="text-align:center;">
 																	<input type="checkbox" name="ids:list" tal:attributes="value metaObj/id;
-																			data-attrs python:','.join(
-																				['%s(%s)'%(xx['id'],xx['type']) for xx in
-																					[here.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['type'] not in ['*','constant','delimiter','file','hint','image','interface']]]);
-																			checked python:['','checked'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])];
-																			disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()"/>
+																		data-attrs python:','.join(
+																			['%s(%s)'%(xx['id'],xx['type']) for xx in
+																				[here.getMetaobjAttr(metaObj['id'],x['id']) for x in metaObj['attrs'] if x['type'] not in ['*','constant','delimiter','file','hint','image','interface']]]);
+																		checked python:['','checked'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])];
+																		disabled python:['','disabled'][int('catalog_index' in [x['id'] for x in metaObj['attrs']])]" onclick="toggleMetaobj()"/>
 																</td>
 																<td>
 																	<i tal:on-error="string:ERROR icon" tal:attributes="class python:zmscontext.zmi_icon(metaObj['id'])"></i>&nbsp;
@@ -269,17 +269,17 @@ function zmiExecuteCatalog(url) {
 			var uid = $input.val();
 			var data = {uid:uid};
 			var $a = $input.next("a");
-			$a.after(`<span class="response alert zmi-code"><i class="fas fa-spinner fa-spin"></i></span>`);
+			$a.after(`<span class="response alert zmi-code text-truncate"><i class="fas fa-spinner fa-spin"></i></span>`);
 			$.ajax({
 				url:url,
 				data:data,
 				error: function (xhr, ajaxOptions, thrownError) {
-					$a.next('.response').addClass('alert-danger').html('( '+thrownError+' )');
+					$a.next('.response').addClass('alert-danger').html(thrownError);
 					i++;
 					fn();
 				},
 				success:function(response) {
-					$a.next('.response').addClass('alert-success').html('( '+response+' )');
+					$a.next('.response').addClass('alert-success').html(response);
 					i++;
 					fn();
 				}
@@ -305,12 +305,12 @@ function zmiReindexCatalog() {
 				url:"manage_reindex",
 				data:data,
 				error: function (xhr, ajaxOptions, thrownError) {
-					$a.next('.response').addClass('alert-danger').html('( '+thrownError+' )');
+					$a.next('.response').addClass('alert-danger').html(thrownError);
 					i++;
 					fn();
 				},
 				success:function(response) {
-					$a.next('.response').addClass('alert-success').html('( '+response+' )');
+					$a.next('.response').addClass('alert-success').html(response);
 					i++;
 					fn();
 				}
@@ -322,6 +322,24 @@ function zmiReindexCatalog() {
 }
 
 function zmiSelectObject() {
+	return false;
+}
+
+function zmiExpandObjectTree(max) {
+	var fn = function() {
+		var done = false;
+		$(".zmi-sitemap .toggle[title='+']").each(function() {
+			var $toggle = $(this);
+			var $parents = $toggle.parentsUntil(".zmi-sitemap","ul");
+			var $container = $($toggle.parents("li")[0]);
+			var level = $parents.length - 1;
+			if (level < max || -1 == max) {
+				$ZMI.objectTree.toggleClick($toggle,fn);
+				done = true;
+			}
+		});
+	}
+	fn();
 	return false;
 }
 
@@ -351,21 +369,20 @@ $(function() {
 		'params':{meta_types:'ZMS'},
 		'init.href':'ajaxGetNode',
 		'init.callback':function() {
-			var fn = function() {
-				var $toggle = $(".zmi-sitemap .toggle[title='+']");
-				if ($toggle.length > 0) {
-					$ZMI.objectTree.toggleClick($($toggle[0]),fn);
-				} else {
-					$(".zmi-sitemap ."+$ZMI.icon_clazz("icon-home").replace(/\s/gi,'.')).each(function() {
-						var $a = $(this).parent("a");
-						var uid = $a.attr('data-uid');
-						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked"> ');
+				zmiExpandObjectTree(1);
+			},
+		'addPages.callback':function() {
+				console.log('addPages.callback')
+				$(".zmi-sitemap a:not(.checkboxed)").each(function() {
+						var $a = $(this);
+						$a.addClass("checkboxed");
+						var phys_path = $a.attr('data-page-physical-path');
+						var uid = '{'+'$'+phys_path.substr(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
+						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 					});
-				}
-			}
-			fn();
-		}
-	});
+			},
+		});
+	$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 
 });
 //-->

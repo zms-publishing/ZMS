@@ -6,7 +6,7 @@ import time
 import unittest
 
 # Product imports.
-from .zms_test_util import *
+from tests.zms_test_util import *
 from Products.zms import zms
 
 # /Products/zms> python -m unittest discover -s unit_tests

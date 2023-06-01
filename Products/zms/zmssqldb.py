@@ -900,6 +900,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       #-- retrieve entities from table-browsers
       if len( entities) == 0:
         p = re.compile(getattr(self,'table_filter','(.*?)'))
+        # The pattern matches digits in parenthesis.To get the digits use .group(1).
+        size_p = re.compile(r'\(\s*?([0-9]+)\s*?\)')
         for tableBrwsr in tableBrwsrs:
           tableName = str(getattr(tableBrwsr, 'Name', getattr(tableBrwsr, 'name', None))())
           tableType = str(getattr(tableBrwsr, 'Type', getattr(tableBrwsr, 'type', None))())
@@ -957,11 +959,9 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                 elif colDescr.find('CHAR') >= 0 or \
                      colDescr.find('STRING') >= 0:
                   colSize = 255
-                  i = colDescr.find('(')
-                  if i >= 0:
-                    j = colDescr.find(')')
-                    if j >= 0:
-                      colSize = int(colDescr[i+1:j])
+                  match = size_p.search(colDescr)
+                  if match:
+                     colSize = int(match.group(1))
                   if colSize > 255:
                     colType = 'text'
                   else:

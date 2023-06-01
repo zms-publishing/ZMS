@@ -46,4 +46,4 @@ jobs:
     - name: Test
       run: |
         tree -L 1
-        zope-testrunner -pvc --test-path=./ 
+        pytest ./tests/

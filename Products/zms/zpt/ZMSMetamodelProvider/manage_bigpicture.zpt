@@ -203,11 +203,15 @@ p.box_number {
 #toc.scrolled {
 	top: 0;
 }
-form.all-packages #toc {
-	position: relative;
-	right: 0;
-	top: 0;
-	float: right;
+@media screen {
+	form.all-packages #toc {
+		height: calc(100vh - 42px);
+		overflow-y: scroll;
+		direction: rtl;
+	}
+	form.all-packages #toc > * {
+		direction: ltr;
+	}
 }
 #toc li {
 	line-height: 1.75;
@@ -284,6 +288,9 @@ form.all-packages #toc {
 }
 
 @media print {
+	form.all-packages #toc {
+		break-after: page;
+	}
 	ol.objlist {
 		position: relative;
 		border: unset;

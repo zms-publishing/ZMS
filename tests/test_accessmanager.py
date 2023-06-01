@@ -6,7 +6,7 @@ import time
 import unittest
 
 # Product imports.
-from .zms_test_util import *
+from tests.zms_test_util import *
 from Products.zms import zms
 
 # /ZMS> python3 -m unittest discover -s tests
@@ -28,4 +28,3 @@ class AccessManagerTest(ZMSTestCase):
     context.setUserAttr('johndoe','foo',expected)
     v = context.getUserAttr('johndoe','foo')
     self.assertEqual(expected,v)
-

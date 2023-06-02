@@ -34,7 +34,7 @@ class manage_tab_statistics:
 	package = ""
 
 	# Revision
-	revision = "5.0.4"
+	revision = "5.0.5"
 
 	# Roles
 	roles = ["ZMSAdministrator"]

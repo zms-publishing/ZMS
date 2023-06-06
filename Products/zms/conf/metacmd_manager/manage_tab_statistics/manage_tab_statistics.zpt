@@ -56,7 +56,7 @@
 				<select id="meta_id" name="id" class="form-control mr-2">
 					<option value>---Object---</option>
 					<optgroup tal:repeat="package meta_pack" tal:attributes="label package">
-						<option tal:repeat="obj python:filter(lambda x: here.getMetaobj(x)['package']==package, meta_list);" 
+						<option tal:repeat="obj python:list(filter(lambda x: here.getMetaobj(x)['package']==package, meta_list))" 
 							tal:attributes="value obj" 
 							tal:content="python:num_objs is not False and '{} ({:,})'.format(obj,len(here.getAbsoluteHome().zcatalog_index({'meta_id':obj}))) or obj">
 							obj

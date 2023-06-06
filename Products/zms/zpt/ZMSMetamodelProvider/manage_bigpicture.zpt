@@ -271,11 +271,17 @@ p.box_number {
 	left:30em;
 	margin-top:-2.5em;
 }
+.box .ref:hover {
+	z-index:100000;
+}
 .box .ref .cardinality {
 	border-bottom:1px solid #C00;
 	padding:2px;
 	min-width:10em;
 	font-size:smaller;
+}
+.box .ref:hover .cardinality {
+	border-bottom: 3px solid #C00;
 }
 .box .ref .attr {
 	background-color:#FFE;
@@ -285,6 +291,14 @@ p.box_number {
 	min-width:10em;
 	font-size:smaller;
 	margin-top:0.8em
+}
+.box .ref:hover .attr {
+	cursor:pointer;
+	box-shadow:0 6px 16px -3px #0008;
+	background:#C00;
+	color:white;
+	border: 3px solid #C00;
+	transform:scale(1.1)
 }
 
 @media print {

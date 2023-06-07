@@ -598,12 +598,12 @@ class ZMSObject(ZMSItem.ZMSItem,
       name = 'fas fa-exclamation-triangle'
       title = self.display_type(meta_type=id)
       extra = ''
-      if id in self.getMetaobjIds( sort=0):
+      if id in self.getMetaobjIds( sort=0) + ['ZMSTrashcan']:
         name = self.evalMetaobjAttr( '%s.%s'%(id, 'icon_clazz'))
         if not name:
           metaObj = self.getMetaobj(id)
           names = {'ZMSResource':'fas fa-asterisk icon-asterisk','ZMSLibrary':'fas fa-flask icon-beaker','ZMSPackage':'fas fa-suitcase icon-suitcase','ZMSRecordSet':'far fa-list-alt icon-list','ZMSReference':'fas fa-link icon-link','ZMSTrashcan':'fas fa-trash'}
-          name = names.get(metaObj.get('type'), 'fas fa-file-alt icon-file-alt')
+          name = names.get(id, 'fas fa-file-alt icon-file-alt')
         if meta_type is None:
           constraints = self.attr('check_constraints')
           if isinstance(constraints, dict):

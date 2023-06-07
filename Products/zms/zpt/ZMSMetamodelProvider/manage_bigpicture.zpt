@@ -117,22 +117,22 @@
 	$ZMI.registerReady(function(){
 		$('#toggle_menu').click( function() {
 			if ( $('#toggle_menu').hasClass('fa-times') ) {
-				$('ol#toc').hide('fast');
+				$('ol#toc.objlist').hide('fast');
 				$('#toggle_menu').removeClass('fa-times').addClass('fa-bars');
 			} else {
-				$('ol#toc').show('fast');
+				$('ol#toc.objlist').show('fast');
 				$('#toggle_menu').removeClass('fa-bars').addClass('fa-times');
 			}
 		});
 		$(window).scroll(function() { 
 			if($(window).scrollTop() > 42) {
-				$('#toc').addClass('scrolled');
+				$('#toc.objlist').addClass('scrolled');
 			} else {
-				$('#toc').removeClass('scrolled');
+				$('#toc.objlist').removeClass('scrolled');
 			}
 		});
-		$('ol#toc a').click( function() { 
-			$('#toc a').removeClass('active');
+		$('ol#toc.objlist a').click( function() { 
+			$('#toc.objlist a').removeClass('active');
 			$('.box').removeClass('focused');
 			$(this).addClass('active'); 
 			$($(this).attr('href')).addClass('focused');
@@ -161,7 +161,7 @@
 	#toggle_menu {
 		display:none;
 	}
-	#toc {
+	#toc.objlist {
 		display:block !important;
 	}
 }
@@ -191,7 +191,7 @@ p.box_number {
 	padding: 0 .5rem;
 	text-align: right;
 }
-#toc {
+#toc.objlist {
 	top: 42px;
 	padding: 1rem 2rem 1.25rem 3rem;
 	background: #e9ecef;
@@ -199,23 +199,23 @@ p.box_number {
 	height: fit-content;
 	z-index:1;
 }
-#toc.scrolled {
+#toc.objlist.scrolled {
 	top: 0;
 }
 @media screen {
-	form.all-packages #toc {
+	form.all-packages #toc.objlist {
 		height: calc(100vh - 42px);
 		overflow-y: scroll;
 		direction: rtl;
 	}
-	form.all-packages #toc > * {
+	form.all-packages #toc.objlist > * {
 		direction: ltr;
 	}
 }
-#toc li {
+#toc.objlist li {
 	line-height: 1.75;
 }
-#toc header {
+#toc.objlist header {
 	margin: 0 -2rem 0 -3rem;
 	padding: .5rem 2rem;
 	background: #cfdae5;
@@ -224,7 +224,7 @@ p.box_number {
 	font-size: 100%;
 }
 @media (min-width: 768px) {
-	#toc {
+	#toc.objlist {
 		position: fixed;
 		right: 0;
 	}
@@ -308,10 +308,10 @@ p.box_number {
 }
 
 @media print {
-	form.all-packages #toc {
+	form.all-packages #toc.objlist {
 		break-after: page;
 	}
-	ol.objlist {
+	ol#toc.objlist {
 		position: relative;
 		border: unset;
 		padding: 2.5em;

@@ -1274,7 +1274,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         xml += self.getXmlHeader()
       # Start-tag.
       xml += "<pages"
-      for key in REQUEST.form.keys():
+      for key in REQUEST.form:
         if key.find('get_') < 0 and key not in ['lang', 'preview', 'http_referer', 'meta_types']:
           xml += " %s=\"%s\""%(key, str(REQUEST.form.get(key)))
       xml += " level=\"%i\""%self.getLevel()
@@ -1323,7 +1323,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         xml += self.getXmlHeader()
       
       xml += "<pages"
-      for key in REQUEST.form.keys():
+      for key in REQUEST.form:
         if key.find('get_') < 0 and key not in ['lang', 'preview', 'http_referer', 'meta_types']:
           xml += " %s=\"%s\""%(key, str(REQUEST.form.get(key)))
       xml += " level=\"%i\""%self.getLevel()

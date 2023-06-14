@@ -117,6 +117,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
     # ---------------------
     zmi_filter_form = PageTemplateFile('zpt/ZMSSqlDb/filter_form', globals())
     zmi_input_form = PageTemplateFile('zpt/ZMSSqlDb/input_form', globals())
+    zmi_main = PageTemplateFile('zpt/ZMSSqlDb/main', globals())
     manage_zmi_details_grid = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_grid', globals())
     manage_zmi_details_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_details_form', globals())
     manage_zmi_lazy_select_form = PageTemplateFile('zpt/ZMSSqlDb/zmi_lazy_select_form', globals())

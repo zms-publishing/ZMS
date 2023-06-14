@@ -1130,20 +1130,17 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       standard.set_session_value(self,'qentity_%s'%self.id, '')
       REQUEST.set('primary_key', '')
       REQUEST.set('grid_cols', [])
-      sqlStatement = REQUEST.get('sqlStatement', [])
-      if not isinstance(sqlStatement, list):
-        sqlStatement = []
+      sqlStatement = []
       if len(tabledefs) > 0:
         if tablename not in [x['id'] for x in tabledefs]:
           tablename = tabledefs[0]['id']
-        tablename = REQUEST.form.get('qentity', tablename)
+        tablename = REQUEST.get('qentity', tablename)
         tabledef = [x for x in tabledefs if x['id'].upper()==tablename.upper()][0]
         sqlStatement.append( self.recordSet_Select( tablename))
         tablecols = tabledef['columns']
         # Primary Key.
-        primary_key = [x['id'] for x in tablecols if x.get('pk', 0)==1]
-        primary_key.append(None)
-        #-- Set environment.
+        primary_key = [x['id'] for x in tablecols if x.get('pk', 0)]+[None]
+        # Set environment.
         standard.set_session_value(self,'qentity_%s'%self.id, tablename)
         REQUEST.set('qentity', tablename)
         REQUEST.set('tabledef', tabledef)
@@ -1204,7 +1201,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             # reset session-value
             standard.set_session_value(self, sessionkey, '')
             # get value from request
-            requestvalue = REQUEST.form.get(requestkey, '')
+            requestvalue = REQUEST.get(requestkey, '')
             # reset value
             if REQUEST.get('btn') == 'BTN_RESET':
               requestvalue = ''

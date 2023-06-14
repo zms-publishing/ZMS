@@ -1176,14 +1176,14 @@ class ZMSMetaobjManager(object):
               message += self.setMetaobjAttr( id, None, attr_id, newName, newMandatory, newMultilang, newRepetitive, newType, newKeys, newCustom, newDefault)
               message += self.getZMILangStr('MSG_INSERTED')%attr_id
             # Lang-Dict.
-            for key in REQUEST.form.keys():
+            for key in REQUEST.form:
               if key.startswith('_lang_dict_key_'):
                 i = int(key[len('_lang_dict_key_'):])
                 if REQUEST[key]:
                   lang_dict = self.get_lang_dict()
                   k = '%s.%s'%(id,REQUEST[key].strip())
                   lang_dict[k] = {}
-                  for key2 in REQUEST.form.keys():
+                  for key2 in REQUEST.form:
                     if key2.startswith('_lang_dict_value_%i_'%i):
                       lang_id = key2[len('_lang_dict_value_%i_'%i):]
                       lang_dict[k][lang_id] = REQUEST[key2].strip()

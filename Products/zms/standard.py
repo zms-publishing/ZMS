@@ -363,7 +363,7 @@ def url_inherit_params(url, REQUEST, exclude=[], sep='&amp;'):
     anchor = url[i:]
     url = url[:i]
   if REQUEST.form:
-    for key in REQUEST.form.keys():
+    for key in REQUEST.form:
       if not key in exclude:
         v = REQUEST.form.get( key, None )
         if key is not None:

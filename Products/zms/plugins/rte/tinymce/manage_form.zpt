@@ -20,7 +20,7 @@ function zmiStandardOnSubmitEventHandler(fm) {
 
 function zmiRichtextOnSubmitEventHandler(fm) {
 	for (var id in tinyMCE.editors) {
-		var elName = id.substr(id.indexOf('_')+1);
+		var elName = id.substring(id.indexOf('_')+1);
 		var el = document.getElementById('zmiRichtextEditor'+elName);
 		if ( el != null && el.style.display != 'none' && el.style.visibility != 'hidden') {
 			// Get value from editor.

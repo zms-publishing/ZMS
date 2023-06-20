@@ -1,4 +1,5 @@
 from Products.PythonScripts.standard import html_quote
+from Products.zms import standard
 
 def manage_addClient(self):
 	request = self.REQUEST

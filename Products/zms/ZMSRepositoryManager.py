@@ -258,7 +258,8 @@ class ZMSRepositoryManager(
       local = provider.provideRepository(ids)
       for id in local:
         o = local[id]
-        filename = o.get('__filename__', [id, '__init__.py'])
+        acquired = int(o.get('acquired',0))
+        filename = o.get('__filename__', [id, '__%s__.py'%['init','acquired'][acquired]])
         # Write python-representation.
         py = []
         py.append('class %s:'%id.replace('.','_').replace('-','_'))
@@ -362,7 +363,7 @@ class ZMSRepositoryManager(
                   standard.writeLog(self,"[commitChanges]: remove file %s"%filepath)
                   _fileutil.remove(filepath)
             # Clear folders.
-            dir = list(set([os.path.join(basepath,x[:x.rfind(os.path.sep)]) for x in files if x.endswith('__init__.py')]))
+            dir = list(set([os.path.join(basepath,x[:x.rfind(os.path.sep)]) for x in files if x.endswith('__.py')]))
             dir = [x for x in dir if x.split(os.path.sep)[-1] in [y.split(':')[-1] for y in ids]]
             [[os.remove(z) for z in [os.path.join(x,y) for y in os.listdir(x)] if os.path.isfile(z)] for x in dir if os.path.isdir(x)]
             # Write files.

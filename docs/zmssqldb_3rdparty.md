@@ -22,3 +22,19 @@ Initialize ZMI Explicitly:
 ```
 
 Include Template zmi_main from Datasource:
+
+```
+<tal:block tal:define="standard modules/Products.zms/standard;
+        db python:here.getLinkObj(here.getConfProperty('ZMS.permalink.db'));
+        entities python:db.getEntities();
+        tables python:[x for x in entities if x['type'].upper()=='TABLE'];
+        dummy0 python:request.set('qentity','employees');
+        dummy0 python:standard.operator_setitem(request.form,'qentity',request['qentity']);
+        dummy0 python:request.set('rowid',request.get('rowid',1));
+        dummy0 python:request.set('qindex',request.get('qindex',-1));
+        dummy0 python:request.set('ZMS_EXCLUDE_IDS',[]);
+        dummy0 python:request.set('ZMS_DETAILS_EXCLUDE_IDS',[]);
+        dummy0 python:request.set('action',request.get('action','updateForm'));">
+    <tal:block tal:content="structure python:db.zmi_main(db,request)">zmi_main</tal:block>
+</tal:block>
+```

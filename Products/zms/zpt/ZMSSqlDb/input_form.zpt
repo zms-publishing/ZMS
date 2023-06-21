@@ -33,7 +33,7 @@
 			</div><!-- card-header -->
 			<div class="card-body">
 				<tal:block tal:repeat="column entity/columns">
-					<tal:block tal:condition="python:'details' not in column" 
+					<tal:block tal:condition="python:column['id'] not in request.get('qexcludeids',[]) and 'details' not in column" 
 						tal:define="global metaObjAttr python:here.getEntityColumn(entity['id'],column['id'],row);">
 						<tal:block tal:on-error="python:'ERROR: %s %s'%(str(metaObjAttr),standard.writeError(here,''))" 
 							tal:define="global

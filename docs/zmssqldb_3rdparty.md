@@ -26,22 +26,25 @@ Initialize ZMI explicitly:
 ```
 
 ## Grid
-_TODO_
+Include Template with *noFilterForm* through ```zmi_main``` from datasource:
+
+```html
+<tal:block tal:define="standard modules/Products.zms/standard;
+        db python:here.getLinkObj(here.getConfProperty('ZMS.permalink.db'));
+        dummy0 python:request.set('qentity','employees');
+        dummy0 python:request.set('action',request.get('action','noFilterForm'));">
+    <tal:block tal:content="structure python:db.zmi_main(db,request)">zmi_main</tal:block>
+</tal:block>
+```
 
 ## Edit-Form
 Include Template with *updateForm* through ```zmi_main``` from datasource:
 
-```
-<tal:block tal:define="standard modules/Products.zms/standard;
-        db python:here.getLinkObj(here.getConfProperty('ZMS.permalink.db'));
-        entities python:db.getEntities();
-        tables python:[x for x in entities if x['type'].upper()=='TABLE'];
+```html
+<tal:block tal:define="db python:here.getLinkObj(here.getConfProperty('ZMS.permalink.db'));
         dummy0 python:request.set('qentity','employees');
-        dummy0 python:standard.operator_setitem(request.form,'qentity',request['qentity']);
         dummy0 python:request.set('rowid',request.get('rowid',1));
-        dummy0 python:request.set('qindex',request.get('qindex',-1));
-        dummy0 python:request.set('ZMS_EXCLUDE_IDS',[]);
-        dummy0 python:request.set('ZMS_DETAILS_EXCLUDE_IDS',[]);
+        dummy0 python:request.set('qexcludeids',['PHONE','FAX']);
         dummy0 python:request.set('action',request.get('action','updateForm'));">
     <tal:block tal:content="structure python:db.zmi_main(db,request)">zmi_main</tal:block>
 </tal:block>

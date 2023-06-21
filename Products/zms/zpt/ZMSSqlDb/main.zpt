@@ -75,6 +75,8 @@
 					resSlctStmnt=resSlctStmnt)">
 					Filter Form
 				</tal:block>
+			</tal:block>
+			<tal:block tal:condition="python:request.get('action') not in ['noGridForm','updateForm','insertForm']">
 				<tal:block tal:define="
 					dummy0 python:[here.operator_setitem(x,'name',x['label']) for x in metaObjAttrs];
 					colNames python:[x['id'] for x in metaObjAttrs if x.get('hide',0) == 0]">

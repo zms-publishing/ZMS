@@ -141,6 +141,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       'checkbox': 1,
       'password': 1,
       'richtext': 1,
+      'string': 1,
       'text': 1,
       'time': 1,
       'url': 1,
@@ -256,8 +257,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         except:
           return "NULL"
       else:
-        if str(v).find("\'") >= 0:
-          v=''.join(str(v).split("\'"))
+        if v.find("\'") >= 0: 
+          v=''.join(v.split("\'"))
         return "'%s'"%v
 
 
@@ -904,8 +905,8 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
         # The pattern matches digits in parenthesis.To get the digits use .group(1).
         size_p = re.compile(r'\(\s*?([0-9]+)\s*?\)')
         for tableBrwsr in tableBrwsrs:
-          tableName = str(getattr(tableBrwsr, 'Name', getattr(tableBrwsr, 'name', None))())
-          tableType = str(getattr(tableBrwsr, 'Type', getattr(tableBrwsr, 'type', None))())
+          tableName = str(getattr(tableBrwsr, 'Name', getattr(tableBrwsr, 'name', None))()).replace('"','').replace('[','').replace(']','')
+          tableType = str(getattr(tableBrwsr, 'Type', getattr(tableBrwsr, 'type', None))()).replace('"','').replace('[','').replace(']','')
           if tableType.upper() == 'TABLE' and p.match(tableName):
             
             # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
@@ -928,9 +929,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
                         c += l + ' '
                     cl = [x for x in c.split(' ') if x.strip()]
                     if len(cl) >= 2:
-                      cid = cl[0]
-                      if cid.startswith('"') and cid.endswith('"'):
-                        cid = cid[1:-1]
+                      cid = cl[0].replace('"','').replace('[','').replace(']','')
                       ucid = cid.upper() 
                       uctype = cl[1].upper()
                       if not ucid in ['CHECK', 'FOREIGN', 'PRIMARY'] and not uctype.startswith('KEY') and not uctype.startswith('(') and not ucid.startswith('\''):
@@ -941,7 +940,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
               else:
                 for columnBrwsr in tableBrwsr.tpValues():
                   col = {}
-                  col["id"] = columnBrwsr.tpId()
+                  col["id"] = columnBrwsr.tpId().replace('"','').replace('[','').replace(']','')
                   col["description"] = getattr(columnBrwsr, 'Description', getattr(columnBrwsr, 'description', None))().upper()
                   columnBrwsrs.append(col)
               for columnBrwsr in columnBrwsrs:
@@ -1130,17 +1129,20 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
       standard.set_session_value(self,'qentity_%s'%self.id, '')
       REQUEST.set('primary_key', '')
       REQUEST.set('grid_cols', [])
-      sqlStatement = []
+      sqlStatement = REQUEST.get('sqlStatement', [])
+      if not isinstance(sqlStatement, list):
+        sqlStatement = []
       if len(tabledefs) > 0:
         if tablename not in [x['id'] for x in tabledefs]:
           tablename = tabledefs[0]['id']
-        tablename = REQUEST.get('qentity', tablename)
+        tablename = REQUEST.form.get('qentity', tablename)
         tabledef = [x for x in tabledefs if x['id'].upper()==tablename.upper()][0]
         sqlStatement.append( self.recordSet_Select( tablename))
         tablecols = tabledef['columns']
         # Primary Key.
-        primary_key = [x['id'] for x in tablecols if x.get('pk', 0)]+[None]
-        # Set environment.
+        primary_key = [x['id'] for x in tablecols if x.get('pk', 0)==1]
+        primary_key.append(None)
+        #-- Set environment.
         standard.set_session_value(self,'qentity_%s'%self.id, tablename)
         REQUEST.set('qentity', tablename)
         REQUEST.set('tabledef', tabledef)
@@ -1201,7 +1203,7 @@ class ZMSSqlDb(zmscustom.ZMSCustom):
             # reset session-value
             standard.set_session_value(self, sessionkey, '')
             # get value from request
-            requestvalue = REQUEST.get(requestkey, '')
+            requestvalue = REQUEST.form.get(requestkey, '')
             # reset value
             if REQUEST.get('btn') == 'BTN_RESET':
               requestvalue = ''

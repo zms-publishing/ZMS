@@ -1,9 +1,13 @@
 # Using ZMSSqlDb-Forms in 3rd-View
-
 Include Javascript and CSS from ZMI:
 
+*all*
 ```html
-<!-- <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zms-all.min.js"></script> -->
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zms-all.min.js"></script>
+```
+
+*individual*
+```html
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/plugin/jquery.plugin.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/jquery/plugin/jquery.plugin.extensions.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.core.js"></script>
@@ -11,7 +15,7 @@ Include Javascript and CSS from ZMI:
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/bootstrap/plugin/bootstrap.plugin.zmi.js"></script>
 ```
 
-Initialize ZMI Explicitly:
+Initialize ZMI explicitly:
 
 ```html
 <script>
@@ -21,7 +25,11 @@ Initialize ZMI Explicitly:
 </script>
 ```
 
-Include Template zmi_main from Datasource:
+## Grid
+_TODO_
+
+## Edit-Form
+Include Template with *updateForm* through ```zmi_main``` from datasource:
 
 ```
 <tal:block tal:define="standard modules/Products.zms/standard;
@@ -38,3 +46,6 @@ Include Template zmi_main from Datasource:
     <tal:block tal:content="structure python:db.zmi_main(db,request)">zmi_main</tal:block>
 </tal:block>
 ```
+
+## Links
+* [SQLite Sample Database](https://www.sqlitetutorial.net/sqlite-sample-database/)

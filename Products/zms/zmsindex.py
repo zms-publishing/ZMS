@@ -258,7 +258,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
           l.extend(visit(childNode))
         return l
       
-      urls = [x for x in request['url'].split(',') if x]
+      urls = [x for x in request.get('url').split(',') if x]
       for url in urls:
         catalog = self.get_catalog()
         log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] ### reindex for %s'%url))

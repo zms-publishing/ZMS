@@ -17,7 +17,7 @@ class AccessManagerTest(ZMSTestCase):
 
   def setUp(self):
     folder = Folder('myzmsx')
-    folder.REQUEST = HTTPRequest({'lang':'eng','preview':'preview'})
+    folder.REQUEST = MockHTTPRequest({'lang':'eng','preview':'preview'})
     zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
     self.context = zmscontext
 

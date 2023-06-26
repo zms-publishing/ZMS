@@ -630,11 +630,11 @@ def getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST):
 # ------------------------------------------------------------------------------
 #  _xmllib.getObjPropertyToXml:
 # ------------------------------------------------------------------------------
-def getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST):
+def getObjPropertyToXml(self, REQUEST, base_path='', data2hex=False, obj_attr={}, multilang=True):
   xml = ''
   # Multi-Language Attributes.
   indentlevel = len(base_path.split('/'))
-  if obj_attr['multilang']:
+  if obj_attr['multilang'] and multilang==True:
     lang = REQUEST.get('lang')
     langIds = self.getLangIds()
     for langId in langIds:
@@ -653,7 +653,7 @@ def getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST):
 # ------------------------------------------------------------------------------
 #  _xmllib.getObjToXml:
 # ------------------------------------------------------------------------------
-def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False):
+def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False, multilang=True):
   # Check Constraints.
   root = getattr(self, '__root__', None)
   if root is not None:
@@ -678,12 +678,12 @@ def getObjToXml(self, REQUEST, deep=True, base_path='', data2hex=False):
   for key in keys:
     obj_attr = self.getObjAttr(key)
     if obj_attr['xml'] or key in ['change_dt','change_uid','created_dt','created_uid']:
-      ob_prop = getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST)
+      ob_prop = getObjPropertyToXml(self, REQUEST, base_path, data2hex, obj_attr, multilang)
       if len(ob_prop) > 0:
         xml.append('%s<%s>%s</%s>\n' % ( (indentlevel+1) * INDENTSTR, key, ob_prop, key ) )
   # Process children.
   if deep:
-    xml.extend([getObjToXml(x, REQUEST, deep, base_path + x.id + '/', data2hex) for x in self.getChildNodes()])
+    xml.extend([getObjToXml(x, REQUEST, deep, base_path + x.id + '/', data2hex, multilang) for x in self.getChildNodes()])
   # End tag.
   xml.append('%s</%s>\n' % ( indentlevel * INDENTSTR, self.meta_id ) )
   # Return xml.

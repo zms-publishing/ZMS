@@ -100,7 +100,7 @@
 								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="meta_type">meta_type</option>
 							</tal:block
 							><tal:block tal:repeat="meta_type python:here.getMetaobjIds(sort=True)"
-								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
+								><option tal:attributes="value meta_type; selected python:['','selected'][int(meta_type in metaCmd.get('meta_types',[]))]" tal:content="python:here.display_type(meta_id=meta_type)">meta_type</option>
 							</tal:block
 							><tal:block tal:repeat="objtype python:here.metaobj_manager.valid_objtypes"
 								><tal:block tal:define="global meta_type python:'type(%s)'%objtype"

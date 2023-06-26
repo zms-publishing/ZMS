@@ -57,7 +57,6 @@ from Products.zms import _mimetypes
 security = ModuleSecurityInfo('Products.zms.standard')
 
 security.declarePublic('pystr')
-pystr_ = str
 def pystr(v, encoding='utf-8', errors='strict'):
   if isinstance(v, bytes):
     v = v.decode(encoding, errors)
@@ -112,10 +111,10 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   
   ##### Add ZMS ####
   from Products.zms import zms
-  zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
-  zms.initContent(homeElmnt.content, 'content.default.zip', REQUEST)
+  content = zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
+  zms.initContent(content, 'content.default.zip', REQUEST)
 
-  return "initZMS"
+  return content
 
 security.declarePublic('getPRODUCT_HOME')
 def getPRODUCT_HOME():
@@ -1802,11 +1801,7 @@ def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
     tl = [(_globals.sort_item(x[qorder]), x) for x in l]
   if ignorecase and len(tl) > 0 and isinstance(tl[0][0], str):
     tl = [(str(x[0]).upper(), x[1]) for x in tl]
-  try:
-    tl = sorted(tl,key=lambda x:x[0])
-  except:
-    writeError(context, '[sort_list]: mixed datatypes normalized to strings')
-    tl = sorted(tl,key=lambda x:str(x[0]))
+  tl = sorted(tl,key=lambda x:x[0])
   tl = [x[1] for x in tl]
   if qorderdir == 'desc':
     tl.reverse()

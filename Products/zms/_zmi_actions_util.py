@@ -208,7 +208,7 @@ def zmi_insert_actions(container, context, objAttr, objChildren, objPath=''):
           value = 'manage_addZMSCustomDefault'
         else:
           value = 'manage_addProduct/zms/manage_addzmscustomform'
-        action = (container.display_type(REQUEST, meta_id), value, container.display_icon(REQUEST, meta_id), meta_id)
+        action = (container.display_type(meta_id=meta_id), value, container.display_icon(meta_id=meta_id), meta_id)
         if action not in actions:
           actions.append( action)
   

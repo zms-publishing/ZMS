@@ -412,7 +412,7 @@ class AccessableObject(object):
       # AccessableObject and ZMSContainerObject is inherited from 
       # AccessableContainer!
       restricted = self.hasRestrictedAccess()
-      if self is not None and self.meta_type == 'ZMSLinkElement' and self.isEmbedded( self.REQUEST):
+      if self is not None and self.meta_type == 'ZMSLinkElement' and self.isEmbedded():
         ob = self.getRefObj()
         if ob is not None:
           for item in ob.breadcrumbs_obj_path():

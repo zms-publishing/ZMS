@@ -83,8 +83,8 @@
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10">
 			<div class="btn-group">
-				<span class="btn btn-warning" tal:attributes="title python:'ZCatalog %s'%(here.getZMILangStr('BTN_REFRESH')); data-id here/id" onclick="return zmiReindexCatalog()">
-					<i class="fas fa-sync mr-1"></i>
+				<span class="btn btn-warning" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id here/id" onclick="return zmiReindexCatalog()">
+					<i class="fas fa-sync"></i>
 					<tal:block tal:content="python:here.getZMILangStr('BTN_REFRESH')"></tal:block>
 				</span>
 			</div>

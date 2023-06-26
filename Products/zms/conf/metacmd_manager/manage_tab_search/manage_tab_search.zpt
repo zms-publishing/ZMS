@@ -34,7 +34,7 @@
 
 
 		<tal:comment replace="nothing">
-			<div class="form-group row" tal:define="global optpl python:[ [x, here.display_type(request,x)] for x in here.getMetaobjIds(excl_ids=['ZMS']) ]">
+			<div class="form-group row" tal:define="global optpl python:[ [x, here.display_type(meta_id=x)] for x in here.getMetaobjIds(excl_ids=['ZMS']) ]">
 				<div class="col-sm-9 col-md-10" tal:content="structure python:here.zmi_input_multiselect(here,name='search_meta_types',value=request.get('search_meta_types',[]),type='multiselect',lang_str='ATTR_TYPE',options=optpl)">the control</div>
 			</div><!-- .form-group -->
 		</tal:comment>

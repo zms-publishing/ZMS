@@ -383,12 +383,11 @@ class Exportable(_filtermanager.FilterItem):
     # --------------------------------------------------------------------------
     #  Exportable.toXml:
     # --------------------------------------------------------------------------
-    def toXml(self, REQUEST, deep=True, data2hex=False):
+    def toXml(self, REQUEST, deep=True, data2hex=False, multilang=True):
       xml = ''
       xml += _xmllib.xml_header()
-      xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex)
+      xml += _xmllib.getObjToXml( self, REQUEST, deep, base_path='', data2hex=data2hex, multilang=multilang)
       return xml 
-
 
     # --------------------------------------------------------------------------
     #  Exportable.exportRessources:

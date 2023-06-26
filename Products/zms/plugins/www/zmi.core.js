@@ -10,6 +10,30 @@ Array.prototype.lastIndexOf = function(obj) {this.reverse();var i,idx=-1;for(i=0
 Array.prototype.contains = function(obj) {var i,listed=false;for(i=0;i<this.length;i++){if(this[i]==obj){listed=true;break;}}return listed;};
 
 /**
+ * Get Document Element URL.
+ */
+ZMI.prototype.get_document_element_url = function(url) {
+	let i;
+    if (url.indexOf('/content') >= 0) {
+        i = url.indexOf('/content')+'/content'.length;
+	}
+    else if (url.indexOf('://') >= 0) {
+        i = url.indexOf('://')+'://'.length;
+        i = i+url.substr(i).indexOf('/');
+}
+    return url.substr(0,i);
+}
+
+/**
+ * Get REST API URL.
+ */
+ZMI.prototype.get_rest_api_url = function(url) {
+	const document_element_url = this.get_document_element_url(url);
+	const i = document_element_url.length;
+    return document_element_url+'/++rest_api'+url.substr(i);
+}
+
+/**
  * Parse url-params.
  */
 ZMI.prototype.parseURLParams = function(url) {
@@ -249,10 +273,8 @@ ZMI.prototype.getLangStr = function(key, lang) {
 		var url = this.getBaseUrl();
 		v = $.ajax({
 			url: url+'/get_lang_dict',
-			datatype: 'json',
-			contentType:'text/plain; charset=UTF-8',
 			async: false
-			}).responseText;
+			}).responseJSON;
 		this.setCachedValue(k,v);
 	};
 	if (typeof lang=="undefined") {
@@ -335,7 +357,6 @@ ZMI.prototype.getConfProperty = function(key, defaultValue) {
 /**
  * Returns conf-properties.
  */
-
 ZMI.prototype.getConfProperties = function(prefix) {
 	var r = this.getCachedValue(prefix);
 	if (typeof r=="undefined") {

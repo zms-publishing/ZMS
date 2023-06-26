@@ -55,7 +55,7 @@
 		mbody python:[];
 		dummy0 python:mbody.append(''
 			+ 'INFO: Folgendes Objekt wude publiziert:\n'
-			+ '%s: \t'%zmscontext.display_type(request)
+			+ '%s: \t'%zmscontext.display_type()
 			+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 			+ 'MANAGE: \t%s/manage\n'%zmscontext.absolute_url()
 			+ 'PREVIEW: \t%s/preview_html\n\n'%zmscontext.absolute_url()

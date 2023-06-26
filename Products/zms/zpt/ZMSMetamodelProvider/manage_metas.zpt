@@ -161,7 +161,7 @@ function zmiFormSubmit(sender,d) {
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
 				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype; selected python:['','selected'][int(metadictAttr['type']==datatype)]" tal:content="datatype">datatype</option>
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>
-				<option tal:repeat="meta_type python:here.getMetaobjIds(sort=True,excl_ids=['ZMS'])" tal:attributes="value meta_type; selected python:['','selected'][int(metadictAttr['type']==meta_type)]" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
+				<option tal:repeat="meta_type python:here.getMetaobjIds(sort=True,excl_ids=['ZMS'])" tal:attributes="value meta_type; selected python:['','selected'][int(metadictAttr['type']==meta_type)]" tal:content="python:here.display_type(meta_id=meta_type)">meta_type</option>
 			</select>
 		</td>
 		<tal:block tal:condition="python:metadictAttr['type'] in ['method']">
@@ -197,7 +197,7 @@ function zmiFormSubmit(sender,d) {
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_PRIMITIVE')">Primitive</tal:block> ---</option>
 				<option tal:repeat="datatype python:here.valid_datatypes" tal:attributes="value datatype" tal:content="datatype">datatype</option>
 				<option value="">--- <tal:block tal:content="python:here.getZMILangStr('ATTR_OBJECTS')">Objects</tal:block> ---</option>
-				<option tal:repeat="meta_type python:here.getMetaobjIds(sort=True,excl_ids=['ZMS'])" tal:attributes="value meta_type" tal:content="python:here.display_type(request,meta_type)">meta_type</option>
+				<option tal:repeat="meta_type python:here.getMetaobjIds(sort=True,excl_ids=['ZMS'])" tal:attributes="value meta_type" tal:content="python:here.display_type(meta_id=meta_type)">meta_type</option>
 			</select>
 		</td>
 		<td class="meta-mandatory"><input type="checkbox" name="_mandatory:int" value="1" /></td>

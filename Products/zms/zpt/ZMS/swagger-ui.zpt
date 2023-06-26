@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link type="text/css" rel="stylesheet" href="/++resource++zms_/swagger-ui/swagger-ui.css">
+    <link rel="shortcut icon" href="/++resource++zms_/swagger-ui/favicon-16x16.png">
+    <title>ZMSAPI - Swagger UI</title>
+  </head>
+  <body>
+    <div id="swagger-ui">
+    </div>
+  <script src="/++resource++zms_/swagger-ui/swagger-ui-bundle.js"></script>
+  <!-- `SwaggerUIBundle` is now available on the page -->
+  <script>
+    const ui = SwaggerUIBundle({
+        url: './openapi_yaml',
+            "dom_id": "#swagger-ui",
+            "layout": "BaseLayout",
+            "deepLinking": true,
+            "showExtensions": true,
+            "showCommonExtensions": true,
+            "defaultModelsExpandDepth": 1,
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIBundle.SwaggerUIStandalonePreset
+                ],
+        })
+    </script>
+  </body>
+</html>
+    

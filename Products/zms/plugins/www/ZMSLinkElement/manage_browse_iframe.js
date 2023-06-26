@@ -151,16 +151,14 @@ function zmiBodyContentSearchDone() {
 					'data-page-titlealt':titlealt
 					})
 				.click(function() {
-						var phys_path = $(this).attr('href');
-						var result = $.ajax({
-									url: phys_path.replace('/manage','/ajaxGetNode'),
-									contentType:'text/xml;charset=UTF-8',
-									async: false
-									}).responseText;
-						var $resultXML = $.parseXML(result);
-						var uid = $('page',$resultXML).attr('uid');
-						$(this).attr('data-uid',uid);
-						return zmiSelectObject(this);
-					});
+					var href = $(this).attr('href').replace('/manage','');
+					var result = $.ajax({
+								url: $ZMI.get_rest_api_url(href),
+								async: false
+								}).responseJSON;
+					var uid = '{$'+result.uid+'}';
+					$(this).attr('data-uid',uid);
+					return zmiSelectObject(this);
+				});
 		});
 }

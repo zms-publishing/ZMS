@@ -21,7 +21,7 @@
 		rkey python:request.get('rkey', '')">
 
 	<select class="form-control" id="addItemSelect" name=":action" tal:attributes="onchange python:'location.href=\'%s/\'+this.options[this.selectedIndex].value'%request['URL1']">
-		<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type(request)">----- Insert -----</option>
+		<option value="manage_workspace" tal:content="python:'----- %s -----'%zmscontext.getZMILangStr('ACTION_INSERT')%zmscontext.display_type()">----- Insert -----</option>
 		<tal:block tal:repeat="meta_type python:[x for x in zmscontext.sort_list(zmscontext.filtered_meta_types(),'name') if x['name'].find('ZMS')!=0]">
 			<option tal:attributes="value python:meta_type['action']" tal:content="python:meta_type['name']">the name</option>
 		</tal:block>

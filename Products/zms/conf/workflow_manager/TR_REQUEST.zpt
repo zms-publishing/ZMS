@@ -69,7 +69,7 @@
 		global mbody python:[];
 		dummy0 python:mbody.append(''
 			+ 'INFO: Bitte publizieren Sie folgende Ãnderungen\n'
-			+ '%s: \t'%zmscontext.display_type(request)
+			+ '%s: \t'%zmscontext.display_type()
 			+ '>> '.join([x.getTitlealt(request) for x in zmscontext.breadcrumbs_obj_path()]) + '\n'
 			+ 'MANAGE: \t%s/manage\n'%zmscontext.absolute_url()
 			+ 'PREVIEW: \t%s/preview_html\n\n'%zmscontext.absolute_url()
@@ -78,7 +78,7 @@
 	<tal:block tal:repeat="childNode python:[x for x in [zmscontext]+zmscontext.getChildNodes(request) if x.isObjModified(request)]">
 		<tal:block tal:define="global
 			dummy0 python:mbody.append(''
-				+ '- %s '%(zmscontext.display_type(request))
+				+ '- %s '%zmscontext.display_type()
 					+ '[' + ','.join([here.getZMILangStr(x) for x in ['STATE_NEW','STATE_MODIFIED','STATE_DELETED'] if childNode.inObjStates(x,request)]) + '] '
 				+ '%s '%(childNode.getLangFmtDate(childNode.attr('change_dt')))
 				+ '%s %s '%(childNode.getZMILangStr('BY'),childNode.attr('change_uid'))

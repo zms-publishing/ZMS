@@ -98,7 +98,7 @@
 								&nbsp;
 							</td>
 							<td>
-								<div class="attr" tal:condition="python:metaObjAttr['type'] in ['*']" tal:content="structure python:'<br/>'.join([here.display_type(request,x) for x in metaObjAttr['keys']])"></div>
+								<div class="attr" tal:condition="python:metaObjAttr['type'] in ['*']" tal:content="structure python:'<br/>'.join([here.display_type(meta_id=x) for x in metaObjAttr['keys']])"></div>
 								<div class="attr" tal:condition="python:metaObjAttr['type'] in metaObjIds" tal:content="python:metaObjAttr['type']"></div>
 							</td>
 							</tr>

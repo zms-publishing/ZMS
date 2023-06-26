@@ -250,24 +250,23 @@ function zmiExpandObjectTree(max) {
 $(function() {
 	// Sitemap
 	set_progress( 0, func_name='test');
-	var href = $ZMI.getPhysicalPath();
+	var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
 	$ZMI.objectTree.init(".zmi-sitemap",href,{
-		'params':{meta_types:'ZMS'},
-		'init.href':'ajaxGetNode',
-		'init.callback':function() {
+		filter: x => x.meta_id === 'ZMS',
+		'init.callback': function() {
 				zmiExpandObjectTree(1);
 			},
-		'addPages.callback':function() {
+		'addPages.callback': function() {
 				console.log('addPages.callback')
 				$(".zmi-sitemap a:not(.checkboxed)").each(function() {
 						var $a = $(this);
-						var href_manage = $a.attr('href')+'/manage';
+						var phys_path = $a.attr('href');
+						var href_manage = phys_path + '/manage';
 						$a.addClass("checkboxed")
 							.removeAttr('onclick')
 							.attr('target','_blank')
 							.attr('href',href_manage)
 							.attr('title',href_manage);
-						var phys_path = $a.attr('data-page-physical-path');
 						var uid = '{'+'$'+phys_path.substr(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
 						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 					});

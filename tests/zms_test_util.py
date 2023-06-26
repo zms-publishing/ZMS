@@ -1,10 +1,6 @@
 # encoding: utf-8
 
 from OFS.Folder import Folder
-import inspect
-import os
-import sys
-import time
 import unittest
 # Product imports.
 from Products.zms import standard
@@ -18,7 +14,7 @@ class ZMSTestCase(unittest.TestCase):
     def setUp(self):
         print(self,"ZMSTestCase.setUp")
         folder = Folder('myzmsx')
-        folder.REQUEST = HTTPRequest({'lang':'eng','preview':'preview'})
+        folder.REQUEST = MockHTTPRequest({'lang':'eng','preview':'preview'})
         zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
         self.context = zmscontext
 
@@ -34,32 +30,24 @@ class ZMSTestCase(unittest.TestCase):
     def writeError(self, s):
         self.context.write(logging.ERROR,s)
 
-    def read_image(self, filename):
-        filepath = "../plugins/www/img/%s"%filename
-        modulepath = os.sep.join(inspect.getfile(self.__class__).split(os.sep)[:-1])
-        file = open(os.path.join(modulepath,filepath),"rb")
-        filedata = file.read()
-        file.close()
-        return standard.ImageFromData(self.context,filedata,filename)
+class MockUser:
 
-    def startMeasurement(self, category):
-        self.measurements[category] = time.time()
+    def __init__(self, id):
+        self.id = id
 
-    def stopMeasurement(self, category):
-        if self.measurements.has_key(category):
-            print('[stopMeasurement] | PERFORMANCE | %s | %.2fsecs.'%(category,time.time()-self.measurements[category]))
-            del self.measurements[category]
+    def getId(self):
+        return self.id
+    
+class MockDict:
 
-
-class HTTPRequest:
-
-    def __init__(self, d={}, other={}):
+    def __init__(self, d={}):
         self.d = d
-        self.other = other
 
+    __getitem____roles = None
     def __getitem__(self, k, v=None):
         return self.get(k)
 
+    __setitem____roles = None
     def __setitem__(self, k, v):
         self.set(k,v)
 
@@ -83,6 +71,31 @@ class HTTPRequest:
     def keys(self):
         return self.d.keys()
 
+class MockHTTPResponse:
+
+    def __init__(self):
+        self.headers = {}
+    
+    def setHeader(self, k, v):
+        self.headers[k] = v
+
+class MockHTTPSession(MockDict):
+
+    pass
+
+class MockHTTPRequest(MockDict):
+
+    def __init__(self, d={}, form={}, environ={}, other={}):
+        self.d = d
+        self.form = form
+        self.environ = environ
+        self.other = other
+        self.AUTHENTICATED_USER = MockUser("test")
+        self.RESPONSE = MockHTTPResponse()
+        self.SESSION = MockHTTPSession()
+        self.set('AUTHENTICATED_USER', self.AUTHENTICATED_USER)
+        self.set('RESPONSE', self.RESPONSE)
+        self.set('SESSION', self.SESSION)
 
 def addClient(zmscontext, id):
     """

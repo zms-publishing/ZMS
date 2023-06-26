@@ -51,7 +51,7 @@ class ZMSObjectSet:
 				,"metaobj_manager = context.getMetaobjManager()"
 				,"l = [metaobj_manager.getMetaobj(x) for x in metaobj_manager.getMetaobjIds()]"
 				,"l = [x for x in l if x['type'] in ['ZMSDocument','ZMSObject','ZMSRecordSet']]"
-				,"l = [(x['id'],('%s %s'%(context.display_icon(request,x['id']),context.display_type(request,x['id']))).replace('<','<!--').replace('>','-->')) for x in l]"
+				,"l = [(x['id'],('%s %s'%(context.display_icon(meta_id=x['id']),context.display_type(meta_id=x['id']))).replace('<','<!--').replace('>','-->')) for x in l]"
 				,"return l"]
 			,"mandatory":1
 			,"multilang":0

@@ -132,7 +132,7 @@
 				<table class="table mb-0">
 					<thead>
 						<tr>
-							<th width="33%" tal:content="python:'Meta-Name: %s'%(here.display_type(request,meta_id))">the display-type</th>
+							<th width="33%" tal:content="python:'Meta-Name: %s'%(here.display_type(meta_id=meta_id))">the display-type</th>
 							<th width="33%">Attribute Usage [ % (Abs.) ]</th>
 							<th width="33%">Attribute Empty [ % (Abs.)]</th>
 						</tr>

@@ -17,7 +17,7 @@ def equals(o, d):
   return True
 
 request = zmscontext.REQUEST
-lang = request['lang']
+lang = request.get('lang')
 if request.get('btn') == 'BTN_SAVE':
   align = zmscontext.attr('align')
   # Save.

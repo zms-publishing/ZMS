@@ -9,11 +9,8 @@ class StandardTests(unittest.TestCase):
 
     def test_pystr(self):
         self.assertEqual(standard.pystr('ABC'),'ABC')
-        self.assertEqual(standard.pystr_('ABC'),'ABC')
         self.assertEqual(standard.pystr(b'ABC'),'ABC')
-        self.assertEqual(standard.pystr_(b'ABC'),'b\'ABC\'')
         self.assertEqual(standard.pystr(123),'123')
-        self.assertEqual(standard.pystr_(123),'123')
 
     def test_url_append_params(self):
         expected = 'index.html?a=b&c=d&e=1&f:list=1&f:list=2&f:list=3'

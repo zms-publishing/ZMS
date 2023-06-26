@@ -500,7 +500,7 @@ class ZMSMetaobjManager(object):
         ids = [x for x in ids if x not in excl_ids]
       # sort
       if sort == True:
-        ids = sorted(ids,key=lambda x:self.display_type(self.REQUEST, x))
+        ids = sorted(ids,key=lambda x:self.display_type(meta_id=x))
       elif sort == False:
         ids = sorted(ids,key=lambda x:obs[x].get('name',x))
       return ids
@@ -545,7 +545,7 @@ class ZMSMetaobjManager(object):
     # --------------------------------------------------------------------------
     def getMetaobjId(self, name):
       for id in self.getMetaobjIds():
-        if name == self.display_type(meta_type=id):
+        if name == self.display_type(meta_id=id):
           return id
       return None
 
@@ -1158,7 +1158,7 @@ class ZMSMetaobjManager(object):
                 else:
                   savedAttr = [x for x in savedAttrs if x['id'] == old_id][0]
                   syncZopeMetaobjAttr( self, newValue, savedAttr)
-                  if savedAttr['ob']:
+                  if savedAttr.get('ob'):
                     filename = savedAttr['ob'].title
                     data = bytes(zopeutil.readData(savedAttr['ob']))
                     newCustom = _blobfields.createBlobField( self, _blobfields.MyFile, {'filename':filename,'data':data})

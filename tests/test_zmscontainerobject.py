@@ -10,14 +10,14 @@ from tests.zms_test_util import *
 from Products.zms import zms
 
 # /Products/zms> python -m unittest discover -s unit_tests
-# /Products/zms> python -m unittest unit_tests.test_zmscontainerobject.ZMSContainerObjectTest
+# /Products/zms> python -m unittest test_zmscontainerobject.ZMSContainerObjectTest
 class ZMSContainerObjectTest(ZMSTestCase):
 
   temp_title = 'temp-test'
 
   def setUp(self):
     folder = Folder('myzmsx')
-    folder.REQUEST = HTTPRequest({'lang':'eng','preview':'preview'})
+    folder.REQUEST = MockHTTPRequest({'lang':'eng','preview':'preview'})
     zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
     self.context = zmscontext
     print('[setUp] create %s'%self.temp_title)

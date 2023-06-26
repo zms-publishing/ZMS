@@ -400,11 +400,12 @@ class ZReferableItem(object):
           q = catalog({'get_uid':url})
           for r in q:
             zmspath  = '%s/'%r['getPath']
-            l = zmspath[1:-1].split('/')
+            l = [x for x in zmspath.split('/') if x]
             ob = self
             try:
-              for id in [x for x in l if x]:
-                ob = getattr(ob,id,None)
+              for id in l:
+                if id not in ob.getPhysicalPath():
+                    ob = getattr(ob,id,None)
               break
             except:
               pass

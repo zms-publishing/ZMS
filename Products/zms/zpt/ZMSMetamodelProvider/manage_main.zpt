@@ -69,7 +69,7 @@
 		<tal:block tal:condition="metaObjRecordSet">
 			<option id="type_objects" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_FK')"></option>
 			<tal:block tal:repeat="metaObj python:[x for x in metaObjs if x['type']=='ZMSRecordSet' and x.get('package')==metaObj.get('package')]">
-				<option tal:attributes="value metaObj/id" tal:content="python:here.display_type(request,metaObj['id'])">type</option>
+				<option tal:attributes="value metaObj/id" tal:content="python:here.display_type(meta_id=metaObj['id'])">type</option>
 			</tal:block>
 		</tal:block>
 		<tal:block tal:condition="not:metaObjRecordSet">
@@ -79,7 +79,7 @@
 			</tal:block>
 			<option id="type_objects" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_OBJECTS')"></option>
 			<tal:block tal:repeat="metaObj python:[x for x in metaObjs if x['type'] != 'ZMSPackage']">
-				<option tal:attributes="value python:metaObj['id']" tal:content="python:here.display_type(request,metaObj['id'])">type</option>
+				<option tal:attributes="value python:metaObj['id']" tal:content="python:here.display_type(meta_id=metaObj['id'])">type</option>
 			</tal:block>
 			<option id="type_objects_sequence" value="" tal:content="python:'--- %s ---'%here.getZMILangStr('ATTR_SEQUENCE')"></option>
 			<option value="*" tal:content="python:'%s (*)'%here.getZMILangStr('ATTR_CUSTOM')">*</option>

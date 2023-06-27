@@ -31,7 +31,7 @@ class manage_zmsindex_reindex_paged:
 	nodes = "{$}"
 
 	# Package
-	package = "com.zms.foundation.zmsindex"
+	package = "com.zms.index"
 
 	# Revision
 	revision = "0.0.2"

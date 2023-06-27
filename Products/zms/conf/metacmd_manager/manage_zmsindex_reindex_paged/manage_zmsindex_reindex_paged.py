@@ -6,12 +6,13 @@ class IHandler:
     @abstractmethod
     def handle(self): raise NotImplementedError
 
-# Implementation of Opensearch Handler
+# Implementation of ZMSIndexReindex Handler
 class ZMSIndexReindexHandler(IHandler):
-    def __init__(self, catalog):
+    def __init__(self, zmsindex, catalog):
+       self.zmsindex = zmsindex
        self.catalog = catalog
     def handle(self, node):
-      return str(node.getPhysicalPath())
+      return '\n'.join(self.zmsindex.reindex_node(node, self.catalog))
 
 # Traverse and handle nodes of this page.
 def traverse(data, root_node, node, handler, page_size=100):
@@ -24,12 +25,19 @@ def traverse(data, root_node, node, handler, page_size=100):
     data['log'].append(log)
     node = node.get_next_node()
     if node and not '/'.join(node.getPhysicalPath()).startswith(root_path): node = None
-    data['next_node'] = None if not node else '{$%s}'%node.get_uid()
+    data['next_node'] = None
+    if node:
+      root_element = node.getRootElement()
+      root = '/'.join(root_element.getHome().getPhysicalPath())
+      path = path[len(root):]
+      i = path.find('/content')
+      data['next_node'] = '{$%s@%s}'%(path[:i],path[i+len('/content')+1:])
     count += 1
 
 def manage_zmsindex_reindex_paged( self):
   request = self.REQUEST
-  RESPONSE =  request.RESPONSE
+  zmsindex = self.getZMSIndex()
+  catalog = zmsindex.get_catalog()
 
   # REST Endpoints  
   if request.get('json'):
@@ -49,8 +57,7 @@ def manage_zmsindex_reindex_paged( self):
       page_size = int(request['page_size'])
       data['log'] = []
       data['next_node'] = None
-      catalog = self.getZMSIndex().get_catalog()
-      handler = ZMSIndexReindexHandler(catalog)
+      handler = ZMSIndexReindexHandler(zmsindex,catalog)
       traverse(data,root_node,node,handler,page_size)
     return json.dumps(data)
   
@@ -211,7 +218,7 @@ function ajaxTraverse() {
     const uid = $('#uid').val();
     const page_size = $("input#page_size").val();
     const params = {'json':true,'traverse':true,'root_node':root_node,'uid':uid,'page_size':page_size};
-    $.get('manage_opensearch_export_data_paged',params,function(data) {
+    $.get('manage_zmsindex_reindex_paged',params,function(data) {
         $(".alert.alert-info").html($('<pre/>',{text:JSON.stringify(data,null,2)}))
         if (!stopped && !paused) {
           const log = data['log'];

@@ -99,6 +99,10 @@
 		max-height: 4.75rem;
 		overflow-y: auto;
 	}
+	.ZMSZCatalogConnector .response.alert-success.full,
+	.ZMSZCatalogConnector .response.alert-danger.full {
+		max-height: unset;
+	}
 /*-->*/
 </style>
 </tal:block>

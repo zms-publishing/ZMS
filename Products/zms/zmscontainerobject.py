@@ -746,9 +746,10 @@ class ZMSContainerObject(
     def get_next_node(self, allow_children=True):
       # children
       if allow_children:
-        children = self.getChildNodes()
-        if children:
-          return children[0]
+        if self.meta_id != 'ZMSLinkElement':
+          children = self.getChildNodes()
+          if children:
+            return children[0]
       # siblings
       parent  = self.getParentNode()
       if parent:

@@ -6,8 +6,8 @@
 
 <form method="get" class="form-horizontal" 
 	tal:define="filter_columns python:[x for x in entity['columns'] if len(standard.intersection_list(['blob','details','multiselect','multimultiselect'],list(x)))==0]">
-	<input type="hidden" name="lang" tal:attributes="value request/lang">
-	<input type="hidden" name="preview" tal:attributes="value request/preview">
+	<input tal:condition="python:'lang' in request" type="hidden" name="lang" tal:attributes="value request/lang">
+	<input tal:condition="python:'preview' in request" type="hidden" name="preview" tal:attributes="value request/preview">
 	<input tal:condition="python:'qorder' in request" type="hidden" name="qorder" tal:attributes="value request/qorder">
 	<input tal:condition="python:'qorderdir' in request" type="hidden" name="qorderdir" tal:attributes="value request/qorderdir">
 	<div class="card">

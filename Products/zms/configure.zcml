@@ -15,7 +15,7 @@
       xmlns:zcml="http://namespaces.zope.org/zcml"
       zcml:condition="installed Products.CMFCore"
       >
-    <cmf:registerDirectory name="skins" directory="/opt/zope/Products/zms" recursive="True"/>
+    <cmf:registerDirectory name="assets" directory="../../../../frontend/web/estatico-handlebars/dist" recursive="True"/>
 
     <!-- Hint: Add your ZMS skins as a site-package like Product.zms-skins -->
     <!-- or register them via adding a zcml file to the etc-folder of the Zope instance -->

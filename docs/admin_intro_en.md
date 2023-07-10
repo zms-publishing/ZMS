@@ -144,10 +144,10 @@ To show the search functionality in the 3rd view the templates need to provide t
 1. location of the search form
 2. linking the JavaScript-Libs for asynchronous listing of the search results
 
-First a ZMS document node is needed for showing the search form and the results; this can be an ordinary ZMSDocument object having an ordinary ZMSTextare containing the TAL code for the search form:
+First a ZMS document node is needed for showing the search form and the results; this can be an ordinary ZMSDocument object having an ordinary ZMSTextarea containing the TAL code for the search form:
 
 ```html
-<form class="search" method="get">
+<form class="search" method="get" xmlns:tal="http://xml.zope.org/namespaces/tal">
 
 	<tal:block tal:condition="python:request.get('searchform',True)">
 	<input tal:condition="python:request.get('searchform')" type="hidden" name="searchform" tal:attributes="value python:request.get('searchform')" />
@@ -159,9 +159,9 @@ First a ZMS document node is needed for showing the search form and the results;
 			<div class="input-group">
 				<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
 				<span class="input-group-btn">
-			<button type="submit" class="btn btn-primary">
-				<i class="fa fa-search icon-search"></i>
-			</button>
+					<button type="submit" class="btn btn-primary">
+						<i class="fa fa-search icon-search"></i>
+					</button>
 				</span>
 			</div>
 		</div>

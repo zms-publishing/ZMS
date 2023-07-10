@@ -145,13 +145,6 @@ def createBlobField(self, objtype, file=b''):
     blob = uploadBlobField( self, objtype, file)
   elif isinstance(file, dict):
     data = file.get( 'data', '')
-    if isinstance(data, str):
-      if file.get('content_type') == 'application/pdf': 
-        # PDFs are stored as text, e.g. pdfmake.js (DESY/v22)
-        data = io.StringIO ( data)
-      else:
-        data = bytes(data,'utf-8')
-        data = io.BytesIO( data)
     blob = uploadBlobField( self, objtype, data, file.get('filename', ''))
     if file.get('content_type'):
       blob.content_type = file.get('content_type')
@@ -171,6 +164,7 @@ def uploadBlobField(self, clazz, file=b'', filename=''):
   f = None
   if isinstance(file,str):
     f = re.findall(r'^data:(.*?);base64,([\s\S]*)$',file)
+    file = bytes(file,'utf-8')
   if f:
     mt = f[0][0]
     file = base64.b64decode(f[0][1])

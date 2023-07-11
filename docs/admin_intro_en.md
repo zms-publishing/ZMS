@@ -258,6 +258,29 @@ The diff-perspective can be changed between the working modes Export vs. Import:
 _ZMS Repository Manager menu: code files containg differences can be synct by "Export" (ZODB to file-system) or "Import" (file-system to ZODB)_
 
 
+### ZMSRepositoryManager Properties
+
+1. **System Path**: location of the source-code in the file system
+2. **Working Mode**: export vs. import
+3. **Ignore Orphans**: ignore unilateral files
+4. **Auto-Sync**: implicit export on ZMS model changes (needs ZMS config parameter `ZMS.debug = True`)
+5. **Last-Update**: logs the date/time of the last sync
+
+
+The *System Path* entry of the ZMS Repository Manager allows to define the target folder where the ZMS code is replicated into the file system. The default path is located in the var-folder of the Zope instance following the pattern: `$INSTANCE_HOME/var/$my_zms_id`.
+The variable `$INSTANCE_HOME` actually can be used to set the path to the Zope instance folder. The path itself can contain _path components_ to declare relative paths. This is illustrated by the following picture:
+
+![ZMSRepositoryManager Properties](images/admin_repo_properties.png)
+
+The path of the used repository is stored as system property `ZMS.conf.path`. Hint: The system property `ZMS.conf.paths` can be preset with a comma-separated list of repository paths for selection.
+
+The *Working Mode* allows to switch between the two working modes _Export_ and _Import_. In code diff blocks the Export-mode marks new code edited in ZODB as green whereas the Import-View will marks newer code from filesystem as green (indicating the it will get overwritten on import). Removed code is marked as red.
+
+The option *Ignore Orphans* allows to ignore unilateral files which are not managed by the version control system.
+
+The *Auto-Sync* option allows to automatically export the ZMS code on changes of the ZMS model. This is very useful for development and testing purposes. The Auto-Sync option is only available if the ZMS config parameter `ZMS.debug = True` is set.
+By default it works only along with the _Export_ mode. If the _Import_ mode is selected, the Auto-Sync option still needs the users interaction to be triggered.
+
 ### ZMS Git Bridge
 
 The ZMS Git bridge is a very simple approach to establish Git-based collaboration to the code management in ZMS. Thus the TTW-coding, which is very efficient for many project setups, still can be applied while combined with a professional code version management and deployment. 

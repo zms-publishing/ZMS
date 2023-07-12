@@ -315,7 +315,7 @@
 				</tal:block>
 			</tr>
 			<tr class="row_insert">
-				<td class="meta-sort text-right"><span class="btn btn-add"><i class="fas fa-plus')"></i></span></td>
+				<td class="meta-sort text-right"><span class="btn btn-add mr-1"><i class="fas fa-plus"></i></span></td>
 				<td class="meta-id"><input class="form-control form-control-sm" type="text" name="attr_id"/></td>
 				<td class="meta-name"><input class="form-control form-control-sm" type="text" name="attr_name"/></td>
 				<td class="meta-type">
@@ -357,31 +357,32 @@
 	<!-- EO Usage -->
 
 	<!-- BO Languages -->
-	<div class="meta-languages mt-3" tal:define="langIds python:here.getLangIds(sort=True)">
-	<table class="table table-sm table-striped table-bordered table-hover">
-	<thead>
-	<tr>
-		<th tal:content="python:here.getZMILangStr('ATTR_DICTIONARY')"></th>
-		<th tal:content="python:here.getZMILangStr('ATTR_KEY')">Key</th>
-		<th tal:repeat="langId langIds" tal:content="python:here.getLanguageLabel(langId)">Language-Label</th>
-	</tr>
-	</thead>
-	<tbody>
-	<tal:block tal:repeat="langDict python:here.getLangDict()">
-	<tr tal:condition="python:langDict['key'].startswith(request['id'])" tal:define="i python:repeat['langDict'].index+1">
-		<td class="text-center"></td>
-		<td><input type="text" class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_key_%i'%i; value python:langDict['key'][len(request['id'])+1:];"></td>
-		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_value_%i_%s'%(i,langId);" tal:content="python:langDict.get(langId,'')"></textarea></div></td>
-	</tr>
-	</tal:block>
-	<tr class="row_insert" tal:define="i python:0">
-		<td class="text-center"><i class="fas fa-plus"></i></td>
-		<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'_lang_dict_key_%i'%i" /></td>
-		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_value_%i_%s'%(i,langId)"></textarea></div></td>
-	</tr>
-	</tbody>
+	<table id="meta_languages" 
+		tal:define="langIds python:here.getLangIds(sort=True)"
+		class="table table-sm table-striped table-bordered table-hover mt-3">
+		<thead>
+			<tr>
+				<th class="meta-sort"></th>
+				<th tal:content="python:'%s - %s'%(here.getZMILangStr('ATTR_DICTIONARY'), here.getZMILangStr('ATTR_KEY'))">Key</th>
+				<th tal:repeat="langId langIds" tal:content="python:here.getLanguageLabel(langId)">Language-Label</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tal:block tal:repeat="langDict python:here.getLangDict()">
+			<tr tal:condition="python:langDict['key'].startswith(request['id'])" tal:define="i python:repeat['langDict'].index+1">
+				<td class="meta-sort"></td>
+				<td><input type="text" class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_key_%i'%i; value python:langDict['key'][len(request['id'])+1:];"></td>
+				<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_value_%i_%s'%(i,langId);" tal:content="python:langDict.get(langId,'')"></textarea></div></td>
+			</tr>
+		</tal:block>
+		<tr class="row_insert" tal:define="i python:0">
+			<td class="meta-sort text-right"><span class="btn btn-add mr-1"><i class="fas fa-plus"></i></span></td>
+			<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'_lang_dict_key_%i'%i" /></td>
+			<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_lang_dict_value_%i_%s'%(i,langId)"></textarea></div></td>
+		</tr>
+		</tbody>
 	</table>
-	</div>
+	<!-- EO Languages -->
 
 	<!-- BO Access -->
 	<div class="meta-access">
@@ -793,6 +794,56 @@ $(function(){
 var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default icon-repeat fas fa-redo-alt text-primary text-center\" style=\"cursor:pointer;display:block;position:absolute;text-align:right !important;right:0.75em;padding:0.5em;\"></i>';
 $(function(){
 	$('#meta_properties input[name="attr_type_standard_html"] ~ .zmi-code').prepend( zmi_code_default_btn);
+
+
+	// ++++++++++++
+	// Add rows to tables #meta_properties or #meta_languages on button click
+	// ++++++++++++
+	let new_row_counter = 0;
+	// Determine the number of language terms
+	let lang_count = Object.keys(JSON.parse(ZMI.prototype.getCachedValue('get_lang_dict'))).length
+
+	// Add Event to Add-Buttons
+	$(".row_insert .btn-add").click(function(){
+		new_row_counter++;
+
+		// Where to insert the new row 
+		let $where_insert = $(this).closest('tr');
+
+		// Determine the container table id  #meta_properties or #meta_languages
+		let table_id = $(this).closest('table').attr('id');
+		let new_name = `new_row_${table_id}_${new_row_counter}`;
+
+		// Clone(true) to get a deep copy including select options
+		let $new_row = $where_insert.clone(true);
+
+		// Prepare the clone to work as an "old" row
+		$new_row.removeAttr('class');
+		$new_row.find('.btn-add').remove();
+		$new_row.attr('id',new_name);
+		$new_row.find('td.meta-sort').html('<input type="hidden" name="old_ids:list" value="new'+ new_row_counter +'"><span style="color:#999" class="btn btn-default btn-sm mr-1" onclick="javascript:$(this).closest(\'tr\').remove()"><i class="fas fa-times"></i></span>');
+		$new_row.find('input[name="attr_id"]').attr('name','attr_id_new'+new_row_counter)
+		if ( $new_row.find('input[name="attr_id_new'+ new_row_counter +'"]').val()=='' ) {
+			$new_row.find('input[name="attr_id_new'+ new_row_counter +'"]').val('new'+new_row_counter);
+		};
+		$new_row.find('input[name="attr_name"]').attr('name','attr_name_new'+new_row_counter)
+		if ( $new_row.find('input[name="attr_name_new'+ new_row_counter +'"]').val()=='' ) {
+			$new_row.find('input[name="attr_name_new'+ new_row_counter +'"]').val('new'+new_row_counter);
+		};
+		// TODO: selected option should be shown in the cloned row
+		$new_row.find('select[name="_type"]').attr('name','attr_type_new'+ new_row_counter);
+		$new_row.find('input[name="_mandatory:int"]').attr('name','attr_mandatory_new' + new_row_counter + ':int');
+		$new_row.find('input[name="_multilang:int]').attr('name','attr_multilang_new' + new_row_counter + ':int');
+		$new_row.find('input[name="_repetitive:int]').attr('name','attr_repetitive_new' + new_row_counter + ':int');
+		$new_row.find('[name^="_lang_dict_"]').each(function(){
+			let new_lang_dict_count = lang_count + new_row_counter;
+			$(this).attr('name',$(this).attr('name').replace('_0', '_' + new_lang_dict_count ));
+		});
+
+		// Insert the new row
+		$new_row.insertBefore($where_insert);
+	});
+
 });
 // -->
 </script>

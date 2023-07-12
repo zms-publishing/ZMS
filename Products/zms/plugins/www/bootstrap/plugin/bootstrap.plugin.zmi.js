@@ -357,7 +357,7 @@ $ZMI.registerReady(function(){
 		}
 	});
 
-	// Double-Clickable
+	// Double-Clickable (TODO: to be specified for data grids that lead row-wise to a dataset form!)
 	$('table.table-hover tbody tr')
 		.dblclick( function(evt) {
 			var href = null;

@@ -1142,7 +1142,21 @@ class ZMSMetaobjManager(object):
           self.setMetaobj( newValue)
           # Change attributes.
           for old_id in REQUEST.get('old_ids', []):
-            attr_id = REQUEST['attr_id_%s'%old_id].strip()
+
+            try:
+              attr_id = REQUEST['attr_id_%s'%old_id].strip()
+            except:
+              if type(REQUEST.get('attr_id_%s'%old_id))==list:
+                # Error: doubled attribute ids
+                standard.writeLog(self, "[ZMSMetaobjManager.manage_changeProperties Doubled Attribute IDs]: %s"%(REQUEST.get('old_ids', [])))
+                message+='IGNORED Doubled ID: attr_id_%s<br/>'%(old_id)
+                attr_id = REQUEST['attr_id_%s'%old_id][0].strip()
+                continue
+              else:
+                standard.writeLog(self, "[ZMSMetaobjManager.manage_changeProperties Key Error]: attr_id_%s"%(old_id))
+                message+='IGNORED Key: attr_id_%s<br/>'%(old_id)
+                continue
+
             newName = REQUEST.get('attr_name_%s'%old_id, '').strip()
             newMandatory = REQUEST.get( 'attr_mandatory_%s'%old_id, 0)
             newMultilang = REQUEST.get( 'attr_multilang_%s'%old_id, 0)

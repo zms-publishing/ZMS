@@ -810,38 +810,53 @@ $(function(){
 		// Where to insert the new row 
 		let $where_insert = $(this).closest('tr');
 
-		// Determine the container table id  #meta_properties or #meta_languages
-		let table_id = $(this).closest('table').attr('id');
-		let new_name = `new_row_${table_id}_${new_row_counter}`;
+		// Set variables
+		let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
+		let new_row_name = `new_row_${table_id}_${new_row_counter}`;
+		let new_btn_html = `
+			<input type="hidden" name="old_ids:list" value="new${new_row_counter}">
+			<span class="btn btn-default btn-sm mr-1" style="color:#999" 
+				onclick="javascript:$(this).closest('tr').remove()">
+				<i class="fas fa-times"></i>
+			</span>
+			`;
 
 		// Clone(true) to get a deep copy including select options
 		let $new_row = $where_insert.clone(true);
 
-		// Prepare the clone to work as an "old" row
-		$new_row.removeAttr('class');
-		$new_row.find('.btn-add').remove();
-		$new_row.attr('id',new_name);
-		$new_row.find('td.meta-sort').html('<input type="hidden" name="old_ids:list" value="new'+ new_row_counter +'"><span style="color:#999" class="btn btn-default btn-sm mr-1" onclick="javascript:$(this).closest(\'tr\').remove()"><i class="fas fa-times"></i></span>');
-		$new_row.find('input[name="attr_id"]').attr('name','attr_id_new'+new_row_counter)
-		if ( $new_row.find('input[name="attr_id_new'+ new_row_counter +'"]').val()=='' ) {
-			$new_row.find('input[name="attr_id_new'+ new_row_counter +'"]').val('new'+new_row_counter);
-		};
-		$new_row.find('input[name="attr_name"]').attr('name','attr_name_new'+new_row_counter)
-		if ( $new_row.find('input[name="attr_name_new'+ new_row_counter +'"]').val()=='' ) {
-			$new_row.find('input[name="attr_name_new'+ new_row_counter +'"]').val('new'+new_row_counter);
-		};
-		// TODO: selected option should be shown in the cloned row
-		$new_row.find('select[name="_type"]').attr('name','attr_type_new'+ new_row_counter);
-		$new_row.find('input[name="_mandatory:int"]').attr('name','attr_mandatory_new' + new_row_counter + ':int');
-		$new_row.find('input[name="_multilang:int]').attr('name','attr_multilang_new' + new_row_counter + ':int');
-		$new_row.find('input[name="_repetitive:int]').attr('name','attr_repetitive_new' + new_row_counter + ':int');
-		$new_row.find('[name^="_lang_dict_"]').each(function(){
-			let new_lang_dict_count = lang_count + new_row_counter;
-			$(this).attr('name',$(this).attr('name').replace('_0', '_' + new_lang_dict_count ));
+		// Process table cells of the clone like "old" row
+		$new_row.find('td').each(function() {
+			$(this).find('input,select,textarea').each(function() {
+				let tagname = $(this).prop('tagName');
+				let rename =  $(this).attr('name').split('_')[1];
+				let rename_type =  rename.includes(':') && ':int' || '';
+				// Set new names
+				if (table_id=='meta_properties') {
+					$(this).attr('name', `attr_${rename}_new${new_row_counter}${rename_type}`);
+				} else if (table_id=='meta_languages') {
+					$(this).attr('name',$(this).attr('name').replace('_0', '_' + (lang_count + new_row_counter)));
+				};
+				// Transfer values to clone
+				if ( $(this).prop('tagName') != 'SELECT') {
+					$(this).val($(this).val()=='' && ('new'+new_row_counter) || $(this).val());
+				} else {
+					let selected = $("option:selected", $('.row_insert select')).val();
+					if (selected!='') {
+						$('option[value="' + selected +'"]',$(this)).prop('selected', true);
+					}
+				}
+			})
 		});
+		// Process td:first-child
+		$new_row.find('td.meta-sort').html(new_btn_html);
+		$new_row.attr('id',new_row_name).removeAttr('class');
 
 		// Insert the new row
 		$new_row.insertBefore($where_insert);
+		// Reset the cloned row
+		$where_insert.find('input,select,textarea').each(function() {
+			$(this).val('');
+		});
 	});
 
 });

@@ -488,7 +488,7 @@
 				<td colspan="2" class="meta-id">
 					<tal:block tal:condition="python:metaObjPackage"
 						><i tal:condition="python:metaObj.get('acquired',None)" class="fas fa-share" title="acquired"></i>
-						<a tal:condition="python:metaObjPackage" 
+						<a tal:condition="python:metaObjPackage" data-turbolinks="false" 
 							tal:attributes="href python:'manage_bigpicture?lang=%s&id=%s'%(request['lang'],metaObjPackage); title python:'%s - Click for big picture...'%metaObjPackage" target="_blank"
 							><i class="fas fa-briefcase"></i></a>
 						&nbsp;

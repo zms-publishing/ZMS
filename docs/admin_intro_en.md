@@ -144,10 +144,10 @@ To show the search functionality in the 3rd view the templates need to provide t
 1. location of the search form
 2. linking the JavaScript-Libs for asynchronous listing of the search results
 
-First a ZMS document node is needed for showing the search form and the results; this can be an ordinary ZMSDocument object having an ordinary ZMSTextare containing the TAL code for the search form:
+First a ZMS document node is needed for showing the search form and the results; this can be an ordinary ZMSDocument object having an ordinary ZMSTextarea containing the TAL code for the search form:
 
 ```html
-<form class="search" method="get">
+<form class="search" method="get" xmlns:tal="http://xml.zope.org/namespaces/tal">
 
 	<tal:block tal:condition="python:request.get('searchform',True)">
 	<input tal:condition="python:request.get('searchform')" type="hidden" name="searchform" tal:attributes="value python:request.get('searchform')" />
@@ -159,9 +159,9 @@ First a ZMS document node is needed for showing the search form and the results;
 			<div class="input-group">
 				<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
 				<span class="input-group-btn">
-			<button type="submit" class="btn btn-primary">
-				<i class="fa fa-search icon-search"></i>
-			</button>
+					<button type="submit" class="btn btn-primary">
+						<i class="fa fa-search icon-search"></i>
+					</button>
 				</span>
 			</div>
 		</div>
@@ -257,6 +257,29 @@ The diff-perspective can be changed between the working modes Export vs. Import:
 ![ZMS Repository Manager Menu](images/admin_repo_view.png)
 _ZMS Repository Manager menu: code files containg differences can be synct by "Export" (ZODB to file-system) or "Import" (file-system to ZODB)_
 
+
+### ZMSRepositoryManager Properties
+
+1. **System Path**: location of the source-code in the file system
+2. **Working Mode**: export vs. import
+3. **Ignore Orphans**: ignore unilateral files
+4. **Auto-Sync**: implicit export on ZMS model changes (needs ZMS config parameter `ZMS.debug = True`)
+5. **Last-Update**: logs the date/time of the last sync
+
+
+The *System Path* entry of the ZMS Repository Manager allows to define the target folder where the ZMS code is replicated into the file system. The default path is located in the var-folder of the Zope instance following the pattern: `$INSTANCE_HOME/var/$my_zms_id`.
+The variable `$INSTANCE_HOME` actually can be used to set the path to the Zope instance folder. The path itself can contain _path components_ to declare relative paths. This is illustrated by the following picture:
+
+![ZMSRepositoryManager Properties](images/admin_repo_properties.png)
+
+The path of the used repository is stored as system property `ZMS.conf.path`. Hint: The system property `ZMS.conf.paths` can be preset with a comma-separated list of repository paths for selection.
+
+The *Working Mode* allows to switch between the two working modes _Export_ and _Import_. In code diff blocks the Export-mode marks new code edited in ZODB as green whereas the Import-View will marks newer code from filesystem as green (indicating the it will get overwritten on import). Removed code is marked as red.
+
+The option *Ignore Orphans* allows to ignore unilateral files which are not managed by the version control system.
+
+The *Auto-Sync* option allows to automatically export the ZMS code on changes of the ZMS model. This is very useful for development and testing purposes. The Auto-Sync option is only available if the ZMS config parameter `ZMS.debug = True` is set.
+By default it works only along with the _Export_ mode. If the _Import_ mode is selected, the Auto-Sync option still needs the users interaction to be triggered.
 
 ### ZMS Git Bridge
 

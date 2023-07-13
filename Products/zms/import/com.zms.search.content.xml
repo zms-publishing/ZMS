@@ -18,42 +18,55 @@
 	<ZMSTextarea id_prefix="e">
 		<format><![CDATA[plain_html]]></format>
 		<text>
-			<lang id="ger"><![CDATA[<form class="search" method="get">
+			<lang id="ger"><![CDATA[<form class="search" method="get" xmlns:tal="http://xml.zope.org/namespaces/tal">
 
-	<tal:block tal:condition="python:request.get('searchform')">
-	<input tal:condition="python:request.get('searchform')" type="hidden" name="searchform" tal:attributes="value python:request.get('searchform')" />
-	<input tal:condition="python:request.get('lang')" type="hidden" name="lang" tal:attributes="value python:request.get('lang')" />
-	<input tal:condition="python:request.get('preview')" type="hidden" name="preview" tal:attributes="value python:request.get('preview')" />
-	<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
-	<div class="form-group row">
-		<div class="col-md-12">
-			<div class="input-group">
-				<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
-				<div class="input-group-append">
-					<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+	<tal:block tal:condition="python:request.get('searchform',True)">
+		<input tal:condition="python:request.get('searchform')" type="hidden" name="searchform" tal:attributes="value python:request.get('searchform')" />
+		<input tal:condition="python:request.get('lang')" type="hidden" name="lang" tal:attributes="value python:request.get('lang')" />
+		<input tal:condition="python:request.get('preview')" type="hidden" name="preview" tal:attributes="value python:request.get('preview')" />
+		<legend tal:content="python:here.getZMILangStr('SEARCH_HEADER')">Search header</legend>
+		<div class="form-group">
+			<div class="col-md-12">
+				<div class="input-group">
+					<tal:block tal:content="structure python:here.getTextInput(fmName='searchform',elName='search',value=request.get('search',''))">the value</tal:block>
+					<span class="input-group-btn">
+						<button type="submit" class="btn btn-primary">
+							<i class="fa fa-search icon-search"></i>
+						</button>
+					</span>
 				</div>
 			</div>
-		</div>
-	</div><!-- .form-group -->
+		</div><!-- .form-group -->
+		<div class="form-group row" tal:condition="python:here.getPortalMaster() is not None or len(here.getPortalClients())>0">
+			<div class="control-label col-md-12" tal:define="home_id python:here.getHome().id">
+				<input type="hidden" name="home_id" tal:attributes="value python:request.get('home_id',home_id); data-value home_id">
+				<input type="checkbox" class="form-check-input" onchange="var $i=$('input[name=home_id]');$i.val(this.checked?$i.attr('data-value'):'');" tal:attributes="checked python:['','checked'][request.get('home_id',home_id)==home_id]">
+				<label class="form-check-label control-label">
+					<strong tal:content="home_id">the home-id</strong> (local)
+				</label>
+			</div>
+		</div><!-- .form-group -->
 	</tal:block>
 
-<div id="search_results" class="form-group row" style="display:none">
-	<div class="col-md-12">
-		<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">Result</h4>
-		<div class="header row">
-			<div class="col-md-12">
-				<span class="small-head">
-					<i class="text-primary fas fa-spinner fa-spin"></i>
-					<tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>
-				</span>
-			</div>
-		</div><!-- .header.row -->
-		<div class="line row"></div><!-- .row -->
-			<div class="pull-right">
-				<ul class="pagination"></ul>
-			</div>
+	<div id="search_results" class="form-group" style="display:none">
+		<div class="col-md-12">
+			<h4 tal:content="python:here.getZMILangStr('SEARCH_HEADERRESULT')">
+				Result
+			</h4>
+			<div class="header row">
+				<div class="col-md-12">
+					<span class="small-head">
+						<span class="glyphicon glyphicon-refresh fas fa-spinner fa-spin" alt="Loading..."></span>
+						<tal:block tal:content="python:here.getZMILangStr('MSG_LOADING')">loading</tal:block>
+					</span>
+				</div>
+			</div><!-- .header.row -->
+			<div class="line row"></div><!-- .row -->
+				<div class="pull-right">
+					<ul class="pagination"></ul>
+				</div>
+		</div>
 	</div>
-</div>
 
 </form>
 

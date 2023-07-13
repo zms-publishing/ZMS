@@ -1773,6 +1773,7 @@ table.table-sm tr.row_insert td .btn-add {
 .zmi.repository_manager_main .tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo {
 	color: #fff;
 	background-color: #4CAF50;
+	border-color: #28a745;
 }
 .zmi.repository_manager_main .tab-content.update_direction-Loading.auto_update-True.debug-1 #btn_load_from_repo:hover,
 .zmi.repository_manager_main .tab-content.update_direction-Saving.auto_update-True.debug-1 #btn_save_to_repo:hover {

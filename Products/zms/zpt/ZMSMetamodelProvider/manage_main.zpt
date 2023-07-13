@@ -834,19 +834,25 @@ $(function(){
 				// Set new form elemnt names
 				if (table_id=='meta_properties') {
 					switch (newname.includes(':')) {
-						case true:
+						case true: // Checkboxes (:int-suffix)
 							$(this).attr('name', `attr_${newname.split(':')[0]}_new${new_row_counter}:${newname.split(':')[1]}`);
 							break;
-						default:
+						default: // String Inputs
 							$(this).attr('name', `attr_${newname}_new${new_row_counter}`);
 					}
 				} else if (table_id=='meta_languages') {
 					$(this).attr('name',$(this).attr('name').replace('_0', '_' + (lang_count + new_row_counter)));
 				};
 				// Transfer values to clone
-				if ( $(this).prop('tagName') != 'SELECT' && !newname.includes(':') ) {
-					$(this).val($(this).val()=='' ? ('new'+new_row_counter) : $(this).val());
-				} else {
+				if ( $(this).prop('tagName') == 'INPUT'||'TEXTAREA') {
+					if (newname.includes(':')) {
+						// Checkboxes (:int-suffix)
+						$(this).val($(this).val()=='1' ? 1 : 0 );
+					} else {
+						// String Inputs
+						$(this).val($(this).val()=='' ? ('new'+new_row_counter) : $(this).val());
+					};
+				} else if ( $(this).prop('tagName') == 'SELECT' ) {
 					let selected = $("option:selected", $('.row_insert select')).val();
 					if (selected!='') {
 						$('option[value="' + selected +'"]',$(this)).prop('selected', true);
@@ -861,7 +867,7 @@ $(function(){
 		// Insert the new row
 		$new_row.insertBefore($where_insert);
 		// Reset the clone template
-		$where_insert.find('input,select,textarea').each(function() {
+		$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
 			$(this).val('');
 		});
 	});

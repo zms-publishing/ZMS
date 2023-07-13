@@ -792,18 +792,19 @@ $(function(){
 }
 // Add Execute Button for TAL-Code-Regeneration om a ZPT-Method named standard_html
 var zmi_code_default_btn = '<i onclick="set_zmi_code_default(event)" title=\"Replace by Default-Code-Template\" class=\"zmi-code-default icon-repeat fas fa-redo-alt text-primary text-center\" style=\"cursor:pointer;display:block;position:absolute;text-align:right !important;right:0.75em;padding:0.5em;\"></i>';
+
+// Execute on DOM-Ready
 $(function(){
 	$('#meta_properties input[name="attr_type_standard_html"] ~ .zmi-code').prepend( zmi_code_default_btn);
-
 
 	// ++++++++++++
 	// Add rows to tables #meta_properties or #meta_languages on button click
 	// ++++++++++++
 	let new_row_counter = 0;
-	// Determine the number of language terms
+	// Get number of language terms
 	let lang_count = Object.keys(JSON.parse(ZMI.prototype.getCachedValue('get_lang_dict'))).length
 
-	// Add Event to Add-Buttons
+	// Add click event function to add-buttons
 	$(".row_insert .btn-add").click(function(){
 		new_row_counter++;
 
@@ -828,17 +829,23 @@ $(function(){
 		$new_row.find('td').each(function() {
 			$(this).find('input,select,textarea').each(function() {
 				let tagname = $(this).prop('tagName');
-				let rename =  $(this).attr('name').split('_')[1];
-				let rename_type =  rename.includes(':') && ':int' || '';
-				// Set new names
+				let newname =  $(this).attr('name').split('_')[1];
+
+				// Set new form elemnt names
 				if (table_id=='meta_properties') {
-					$(this).attr('name', `attr_${rename}_new${new_row_counter}${rename_type}`);
+					switch (newname.includes(':')) {
+						case true:
+							$(this).attr('name', `attr_${newname.split(':')[0]}_new${new_row_counter}:${newname.split(':')[1]}`);
+							break;
+						default:
+							$(this).attr('name', `attr_${newname}_new${new_row_counter}`);
+					}
 				} else if (table_id=='meta_languages') {
 					$(this).attr('name',$(this).attr('name').replace('_0', '_' + (lang_count + new_row_counter)));
 				};
 				// Transfer values to clone
-				if ( $(this).prop('tagName') != 'SELECT') {
-					$(this).val($(this).val()=='' && ('new'+new_row_counter) || $(this).val());
+				if ( $(this).prop('tagName') != 'SELECT' && !newname.includes(':') ) {
+					$(this).val($(this).val()=='' ? ('new'+new_row_counter) : $(this).val());
 				} else {
 					let selected = $("option:selected", $('.row_insert select')).val();
 					if (selected!='') {
@@ -853,7 +860,7 @@ $(function(){
 
 		// Insert the new row
 		$new_row.insertBefore($where_insert);
-		// Reset the cloned row
+		// Reset the clone template
 		$where_insert.find('input,select,textarea').each(function() {
 			$(this).val('');
 		});

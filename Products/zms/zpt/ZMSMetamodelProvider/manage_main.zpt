@@ -844,7 +844,7 @@ $(function(){
 					$(this).attr('name',$(this).attr('name').replace('_0', '_' + (lang_count + new_row_counter)));
 				};
 				// Transfer values to clone
-				if ( $(this).prop('tagName') == 'INPUT'||'TEXTAREA') {
+				if ( ['TEXTAREA', 'INPUT'].includes(tagname) ) {
 					if (newname.includes(':')) {
 						// Checkboxes (:int-suffix)
 						$(this).val($(this).val()=='1' ? 1 : 0 );
@@ -852,7 +852,7 @@ $(function(){
 						// String Inputs
 						$(this).val($(this).val()=='' ? ('new'+new_row_counter) : $(this).val());
 					};
-				} else if ( $(this).prop('tagName') == 'SELECT' ) {
+				} else if ( tagname == 'SELECT' ) {
 					let selected = $("option:selected", $('.row_insert select')).val();
 					if (selected!='') {
 						$('option[value="' + selected +'"]',$(this)).prop('selected', true);
@@ -860,9 +860,10 @@ $(function(){
 				}
 			})
 		});
+
 		// Process td:first-child
 		$new_row.find('td.meta-sort').html(new_btn_html);
-		$new_row.attr('id',new_row_name).removeAttr('class');
+		$new_row.removeAttr('class').attr('id',new_row_name);
 
 		// Insert the new row
 		$new_row.insertBefore($where_insert);

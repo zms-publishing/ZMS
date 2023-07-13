@@ -831,34 +831,41 @@ $(function(){
 				let tagname = $(this).prop('tagName');
 				let newname =  $(this).attr('name').split('_')[1];
 
-				// Set new form elemnt names
-				if (table_id=='meta_properties') {
-					switch (newname.includes(':')) {
-						case true: // Checkboxes (:int-suffix)
-							$(this).attr('name', `attr_${newname.split(':')[0]}_new${new_row_counter}:${newname.split(':')[1]}`);
-							break;
-						default: // String Inputs
-							$(this).attr('name', `attr_${newname}_new${new_row_counter}`);
-					}
-				} else if (table_id=='meta_languages') {
-					$(this).attr('name',$(this).attr('name').replace('_0', '_' + (lang_count + new_row_counter)));
-				};
-				// Transfer values to clone
-				if ( ['TEXTAREA', 'INPUT'].includes(tagname) ) {
-					if (newname.includes(':')) {
-						// Checkboxes (:int-suffix)
-						$(this).val($(this).val()=='1' ? 1 : 0 );
-					} else {
-						// String Inputs
-						$(this).val($(this).val()=='' ? ('new'+new_row_counter) : $(this).val());
-					};
-				} else if ( tagname == 'SELECT' ) {
-					let selected = $("option:selected", $('.row_insert select')).val();
-					if (selected!='') {
-						$('option[value="' + selected +'"]',$(this)).prop('selected', true);
-					}
+				// #### NAMES: Set new form elemnt names according to table_id
+				switch (table_id) {
+					case 'meta_properties':
+						console.log(newname.includes(':'));
+						console.log(newname.split(':')[0]);
+						switch (newname.includes(':')) {
+							case true: // Checkboxes (:int-suffix)
+								$(this).attr('name', `attr_${newname.split(':')[0]}_new${new_row_counter}:${newname.split(':')[1]}`);
+								break
+							default: // String Inputs
+								$(this).attr('name', `attr_${newname}_new${new_row_counter}`);
+						};
+					case 'meta_languages':
+						$(this).attr('name',$(this).attr('name').replace('_0', '_' + (lang_count + new_row_counter)));
 				}
-			})
+
+				// #### VALUES: Transfer values from template to clone according to tag-name
+				switch (tagname) {
+					case 'INPUT':
+						switch (newname.includes(':')) {
+							case true: // Checkboxes (:int-suffix)
+								$(this).val($(this).val()=='1' ? 1 : 0 );
+								break
+							default: // String Inputs
+								$(this).val($(this).val()=='' ? ('new'+new_row_counter) : $(this).val());
+						};
+					case 'SELECT':
+						let selected = $("option:selected", $('.row_insert select')).val();
+						if (selected!='') {
+							$('option[value="' + selected +'"]',$(this)).prop('selected', true);
+						};
+					case 'TEXTAREA':
+						$(this).val($(this).val()=='' ? ('new'+new_row_counter) : $(this).val());
+				}
+			});
 		});
 
 		// Process td:first-child

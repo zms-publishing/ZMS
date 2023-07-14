@@ -845,7 +845,7 @@ $(function(){
 				};
 				$(this).attr('name',newname);
 
-				// #### VALUES: Transfer values from template to clone
+				// #### VALUES: Transfer initially entered values from template to clone
 				if ( tagname == 'SELECT') {
 					let selected = $("option:selected", $('.row_insert select')).val();
 					if (selected!='') {
@@ -870,7 +870,7 @@ $(function(){
 		$new_row.insertBefore($where_insert);
 		// Reset the clone template
 		$where_insert.find('input:not([type="checkbox"]),select,textarea').each(function() {
-			$(this).val('');
+			$(this).val(undefined);
 		});
 	});
 

@@ -73,7 +73,7 @@
 					</tal:block>
 					<div class="dropdown-divider"></div> 
 					<a class="dropdown-item" href="manage_zmi_logout" data-turbolinks="false"
-						tal:attributes="href python:'{}?lang={}'.format(here.getConfProperty('ZMS.logout.href',''),request['lang']) if here.getConfProperty('ZMS.logout.href','')!='' else 'manage_zmi_logout';
+						tal:attributes="href python:'{}?lang={}&__ac_name={}'.format(here.getConfProperty('ZMS.logout.href',''),request['lang'],request.get('AUTHENTICATED_USER')) if here.getConfProperty('ZMS.logout.href','')!='' else 'manage_zmi_logout';
 							accesskey python:accesskey_map.get('LOGOUT',None)">
 						<i class="fas fa-sign-out-alt"></i>
 						Logout

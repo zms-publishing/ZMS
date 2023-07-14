@@ -988,7 +988,6 @@ li.zmi-item span.zmi-ids {
 .zmi table.table td.meta-sort .btn.btn-secondary i.fas.fa-times,
 .zmi table.table td.meta-default .btn.btn-secondary i.fas.fa-key,
 .zmi table.table td.meta-default .btn.btn-secondary i.fas.fa-ellipsis-v,
-.zmi .meta-languages .single-line.input-group i.fas,
 .zmi table.table .single-line.input-group .input-group-append i.fas {
 	color: #999;
 }

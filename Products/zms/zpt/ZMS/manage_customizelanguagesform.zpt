@@ -62,7 +62,7 @@ function zmiFormSubmit(sender,d) {
 	<table class="table table-sm table-striped table-bordered">
 	<thead>
 	<tr>
-		<th></th>
+		<th class="meta-sort"></th>
 		<th title="ISO-639/2" tal:content="python:here.getZMILangStr('ATTR_ID')">Id</th>
 		<th tal:content="python:here.getZMILangStr('ATTR_LANG')">Language</th>
 		<th tal:content="python:here.getZMILangStr('ATTR_PARENT')">Parent</th>
@@ -82,7 +82,7 @@ function zmiFormSubmit(sender,d) {
 					<tal:block tal:define="dummy python:langStack.append(si['parent'])"></tal:block>
 				</tal:block>
 				<tr tal:attributes="id python:'lang%s'%'_'.join(langStack+[langId])">
-					<td class="text-center"><input type="checkbox" name="ids:list" tal:attributes="value python:langId" tal:condition="python:langId!=here.getPrimaryLanguage()"></td>
+					<td class="meta-sort text-center"><input type="checkbox" name="ids:list" tal:attributes="value python:langId" tal:condition="python:langId!=here.getPrimaryLanguage()"></td>
 					<td><tal:block tal:content="langId">langId</tal:block></td>
 					<td><input class="form-control form-control-sm" type="text" tal:attributes="name python:'%s_label'%langId; value python:langObj['label']"></td>
 					<td>
@@ -101,7 +101,7 @@ function zmiFormSubmit(sender,d) {
 		</tal:block>
 	</tal:block>
 	<tr class="row_insert">
-		<td class="text-center"><i class="fas fa-plus"></i></td>
+		<td class="meta-sort text-center"><span class="btn btn-add mr-1"><i class="fas fa-plus"></i></span></td>
 		<td class="language_id"><input class="form-control form-control-sm" type="text" name="language_id" /></td>
 		<td class="language_label"><input class="form-control form-control-sm" type="text" name="language_label" /></td>
 		<td class="language_parent">
@@ -147,19 +147,19 @@ function zmiFormSubmit(sender,d) {
 		</th>
 	</tr>
 	<tr>
-		<th></th>
+		<th class="meta-sort"></th>
 		<th tal:content="python:here.getZMILangStr('ATTR_KEY')">Key</th>
 		<th tal:repeat="langId langIds" tal:content="python:here.getLanguageLabel(langId)">Language-Label</th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr tal:repeat="langDict python:here.getLangDict()">
-		<td class="text-center"><input type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/></td>
+		<td class="meta-sort text-center"><input type="checkbox" name="ids:list" tal:attributes="value python:langDict['key']; disabled python:['','disabled'][int(len(langDict.get('acquired',[]))>0)]"/></td>
 		<td tal:attributes="title python:'getLangStr(\'%s\',lang)'%langDict['key']" tal:content="python:langDict['key']">Key</td>
 		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'%s_value_%s'%(langDict['key'],langId); disabled python:['','disabled'][int(langId in langDict.get('acquired',[]))]" tal:content="python:langDict.get(langId,'')"></textarea></div></td>
 	</tr>
 	<tr class="row_insert">
-		<td class="text-center"><i class="fas fa-plus"></i></td>
+		<td class="meta-sort text-center"><span class="btn btn-add mr-1"><i class="fas fa-plus"></i></span></td>
 		<td><input class="form-control form-control-sm" type="text" name="_key" /></td>
 		<td tal:repeat="langId langIds"><div class="single-line"><textarea class="form-control form-control-sm" tal:attributes="name python:'_value_%s'%(langId)"></textarea></div></td>
 	</tr>

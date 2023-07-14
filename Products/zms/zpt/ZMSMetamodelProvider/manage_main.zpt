@@ -814,8 +814,8 @@ $(function(){
 		// Set variables
 		let table_id = $(this).closest('table').attr('id'); // meta_properties or meta_languages
 		let new_row_name = `new_row_${table_id}_${new_row_counter}`;
-		let new_btn_html = `
-			<input type="hidden" name="old_ids:list" value="new${new_row_counter}">
+		let old_id_html = (table_id != 'meta_languages') ? `<input type="hidden" name="old_ids:list" value="new${new_row_counter}">` : ``;
+		let new_btn_html = `${old_id_html}
 			<span class="btn btn-default btn-sm mr-1" style="color:#999" 
 				onclick="javascript:$(this).closest('tr').remove()">
 				<i class="fas fa-times"></i>
@@ -839,7 +839,7 @@ $(function(){
 					case 'meta_languages':
 						newname = defname.replace('_0', '_' + (lang_count + new_row_counter));
 						break
-					default:  // meta_properties with :int suffix for checkboxes
+					default:  // meta_properties
 						newname = `attr_${newname}_new${new_row_counter}`
 						newname = defname.includes(':') ? `${newname}:int` : newname;
 				};
@@ -862,7 +862,7 @@ $(function(){
 			});
 		});
 
-		// Process td:first-child
+		// Process td:first-child of the clone
 		$new_row.find('td.meta-sort').html(new_btn_html);
 		$new_row.removeAttr('class').attr('id',new_row_name);
 

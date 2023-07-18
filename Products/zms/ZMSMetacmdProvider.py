@@ -538,7 +538,7 @@ class ZMSMetacmdProvider(
               metaCmd = self.getMetaCmd(id)
               revision = metaCmd.get('revision', '0.0.0')
               el_id = metaCmd['id']
-              el_package = metaCmd['package']
+              el_package = metaCmd.get('package')
               el_name = metaCmd['name']
               el_title = metaCmd.get('title', '')
               el_meta_type = metaCmd['meta_type']

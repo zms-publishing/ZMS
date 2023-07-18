@@ -452,11 +452,11 @@ class ZMS(
     """
     def getPortalMaster(self):
       v = self.get_conf_properties().get('Portal.Master', '')
-      if len(v) > 0:
+      if v:
         try:
           return getattr( self, v).content
         except:
-          standard.writeError(self, '[getPortalMaster]: %s not found!'%str(v))
+          pass
       return None
 
     """
@@ -465,13 +465,13 @@ class ZMS(
     def getPortalClients(self):
       docElmnts = []
       v = self.get_conf_properties().get('Portal.Clients', [])
-      if len(v) > 0:
-        thisHome = self.getHome()
+      if v:
+        home = self.getHome()
         for id in v:
           try:
-            docElmnts.append(getattr(thisHome, id).content)
+            docElmnts.append(getattr(home, id).content)
           except:
-            standard.writeError(self, '[getPortalClients]: %s not found!'%str(id))
+            pass
       return docElmnts
 
 

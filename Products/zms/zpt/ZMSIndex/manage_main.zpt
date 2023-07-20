@@ -84,19 +84,19 @@ function openWindow(url) {
 		<div class="col-sm-10">
 			<div class="btn-group zmi-sitemap-controls">
 				<div title="De-/Select All" 
-					class="btn btn-dark">
+					class="btn btn-secondary">
 					<input id="zmi-sitemap-select" type="checkbox" checked="checked"
 						onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" 
 					/>
 				</div>
 				<div title="Expand Object Tree (Hint: Mind System Load in Case!)" 
-					class="btn btn-dark" 
+					class="btn btn-secondary" 
 					onclick="return zmiExpandObjectTree(-1);">
 					<i class="fas fa-plus-square"></i>
 				</div>
 				<div title="Expand/Compress Sitemap View"
-					class="btn btn-dark" id="zmi-sitemap-expand" 
-					onclick="$('.zmi-sitemap').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+					class="btn btn-secondary" id="zmi-sitemap-expand" 
+					onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
 					<i class="fas fa-expand-arrows-alt"></i>
 				</div>
 			</div>
@@ -107,7 +107,7 @@ function openWindow(url) {
 						<span></span>
 					</div>
 				</div>
-				<div class="zmi-sitemap"></div><!-- .zmi-sitemap -->
+				<div class="zmi-sitemap"><!-- .zmi-sitemap --></div>
 			</div>
 		</div><!-- .col-sm-10 -->
 	</div><!-- .form-group -->
@@ -271,159 +271,6 @@ $(function() {
 	$('#zmsindex .zmi-sitemap-container').removeClass('loading');
 });
 </script>
-<style>
-/* Make BS4-row work with ZMS4 */
-/*
-	#zmsindex .zms4-row {
-		display: -ms-flexbox;
-		display: flex;
-		-ms-flex-wrap: wrap;
-		flex-wrap: wrap;
-		margin-right: -15px;
-		margin-left: -15px;
-	}
-*/
-
-	#zmsindex select.form-control:not([size]):not([multiple]) {
-		height: inherit;
-	}
-	#zmsindex .zmi-sitemap-container {
-		width:100%;
-		max-height: 30rem;
-		height: fit-content;
-		min-height: 6rem;
-		overflow-y: scroll;
-		overflow-x: hidden;
-		background: #e8f3fb;
-		margin: 0;
-		direction: rtl;
-		display: block;
-		padding: 10px 12px;
-		line-height: 1.42857143;
-		background-image: none;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-		box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-		-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-		-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-		transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-		clear:both !important;
-	}
-	#zmsindex .zmi-sitemap-container.full {
-		max-height: unset;
-	}
-	#zmsindex .zmi-sitemap-container.loading {
-		background:#b1bbc1;
-	}
-	#zmsindex .zmi-sitemap-container.loading a,
-	#zmsindex .zmi-sitemap-container.loading .toggle,
-	#zmsindex .zmi-sitemap-container.loading div#loading,
-	.zmi #zmsindex .zmi-sitemap-container.loading div#loading .fa-spinner {
-		color: #fff !important;
-	}
-	#zmsindex .zmi-sitemap-container.loading ul li > * {
-	color:#ccc !important
-	}
-	#zmsindex .zmi-sitemap-container .progress {
-		padding-left:0;
-		margin-right: 7rem;
-		background: #337ab740;
-		height:1.25rem;
-		direction: ltr;
-	}
-	#zmsindex .zmi-sitemap-container .progress .progress-bar {
-		width:0%;
-		text-align:right;
-	}
-	#zmsindex .zmi-sitemap-container .progress .progress-bar.active {
-		min-width:5em;
-    	width: fit-content;
-	}
-	#zmsindex .zmi-sitemap-container .progress .progress-bar span {
-		margin:0 1em;
-	}
-	#zmsindex .zmi-sitemap-container.loading .progress .progress-bar {
-		width:100%;
-	}
-	#zmsindex .zmi-sitemap-container .progress.error .progress-bar {
-		background-color:#9C27B0
-	}
-	#zmsindex .zmi-sitemap-container .progress.error:after {
-		content:"INDEXING ERROR occured: details see event-log";
-		display:block;
-		color:#9C27B0;
-		position:absolute;
-		margin-top:1.5em;
-	}
-	#zmsindex .zmi-sitemap > ul {
-		margin-top:10px;
-		direction: ltr;
-	}
-	#zmsindex .zmi-sitemap-expand {
-		display: block;
-		top:0;
-		position: absolute;
-		color: #333;
-		right: 16px;
-		background: #ccc;
-		padding: .35em .65em;
-		border-radius: 4px;
-		border-top-left-radius: 0;
-		border-bottom-right-radius: 0;
-		cursor: pointer;
-	}
-	#zmsindex .zmi-sitemap div#loading,
-	#zmsindex .zmi-sitemap div#loading .fa-spinner {
-		color: #08c !important;
-	}
-	#zmsindex .zmi-sitemap .fa-spinner.fa-spin {
-		zoom: 1.5;
-	}
-	#zmsindex .response.text-success,
-	#zmsindex .response.text-danger {
-		display: block;
-		position: fixed;
-		z-index: 1000;
-		left: 125px;
-		top: 125px;
-		width: calc(100% - 250px);
-		height: calc(100vw - 250px);
-		overflow: scroll;
-		font-size:80%;
-		white-space:pre;
-		background: #dff0d8;
-	}
-	#zmsindex .response.text-success .close,
-	#zmsindex .response.text-danger .close {
-		display:block;
-		padding: .5em;
-		position: absolute;
-		opacity: .5;
-		right: 0;
-		top: 0;
-		background: #dff0d8;
-	}
-	#zmsindex .response.text-danger,
-	#zmsindex .response.text-danger .close {
-		background-color: #f2dede;
-	}
-
-	/* ZMS4+ specifics */
-	body.zmi.zms #zmsindex .icon.icon-resize-full:before {
-		font-family: 'Font Awesome 5 Free';
-		font-weight: 900;
-		font-style:normal;
-		content: "\f31e";
-	}
-	body.zmi.zms #zmsindex .icon.icon-resize-small:before {
-		font-family: 'Font Awesome 5 Free';
-		font-weight: 900;
-		font-style:normal;
-		content: "\f78c";
-	}
-
-</style>
 
 </tal:block>
 

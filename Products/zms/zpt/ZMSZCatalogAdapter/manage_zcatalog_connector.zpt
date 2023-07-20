@@ -56,24 +56,25 @@
 				<div>
 					<div class="btn-group zmi-sitemap-controls">
 						<div title="De-/Select All" 
-							class="btn btn-dark">
+							class="btn btn-secondary">
 							<input id="zmi-sitemap-select" type="checkbox" checked="checked"
 								onclick="if( this.checked ){ $('.zmi-sitemap ul input').prop('checked', true) } else { $('.zmi-sitemap ul input').prop('checked', false) }" 
 							/>
 						</div>
 						<div title="Expand Object Tree (Hint: Mind System Load in Case!)" 
-							class="btn btn-dark" 
+							class="btn btn-secondary" 
 							onclick="$('.card:not(\042#ZMSZCatalogConnector\042) .zmi-sitemap > ul').remove(); $('.card:not(\042#ZMSZCatalogConnector\042) .zmi-sitemap').html('<div class=\042 alert alert-danger mx-0\042>Please reload ...</div>'); return zmiExpandObjectTree(-1);">
 							<i class="fas fa-plus-square"></i>
 						</div>
 						<div title="Expand/Compress Sitemap View"
-							class="btn btn-dark" id="zmi-sitemap-expand" 
-							onclick="$('.zmi-sitemap').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
+							class="btn btn-secondary" id="zmi-sitemap-expand" 
+							onclick="$('.zmi-sitemap-container').toggleClass('full');$('#zmi-sitemap-expand i').toggleClass('fa-expand-arrows-alt fa-compress-arrows-alt')">
 							<i class="fas fa-expand-arrows-alt"></i>
 						</div>
 					</div>
-					<div class="zmi-sitemap mb-0">
-					</div><!-- .zmi-sitemap -->
+					<div class="zmi-sitemap-container">
+						<div class="zmi-sitemap mb-0"><!-- .zmi-sitemap --></div>
+					</div>
 				</div>
 			</div><!-- .col-sm-10 -->
 		</div><!-- .form-group -->

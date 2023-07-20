@@ -2368,7 +2368,7 @@ body.lazy_select_form footer .controls {
 #zmsindex select.form-control:not([size]):not([multiple]) {
 	height: inherit;
 }
-.ZMSZCatalogConnector .zmi-sitemap,
+.ZMSZCatalogConnector .zmi-sitemap-container,
 #zmsindex .zmi-sitemap-container {
 	width:100%;
 	max-height: 30rem;
@@ -2392,24 +2392,16 @@ body.lazy_select_form footer .controls {
 	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	clear:both !important;
 }
-#zmsindex .zmi-sitemap-container.full {
-	max-height: unset;
-}
-#zmsindex .zmi-sitemap-container.loading {
-	background:#b1bbc1;
-}
-#zmsindex .zmi-sitemap-container.loading a,
-#zmsindex .zmi-sitemap-container.loading .toggle,
-#zmsindex .zmi-sitemap-container.loading div#loading,
-#zmsindex .zmi-sitemap-container.loading div#loading .fa-spinner {
-	color: #fff !important;
+.ZMSZCatalogConnector .zmi-sitemap-container.full,
+#zmsindex .zmi-sitemap-container.full  {
+	max-height: unset !important;
 }
 #zmsindex .zmi-sitemap-container.loading ul li > * {
 	color:#ccc !important
 }
 #zmsindex .zmi-sitemap-container .progress {
 	padding-left:0;
-	margin-right: 30px;
+	margin-right: 7rem;
 	background: #337ab740;
 	height:1.25rem;
 	direction: ltr;
@@ -2456,38 +2448,6 @@ body.lazy_select_form footer .controls {
 }
 .zmi-sitemap.full {
 	max-height: unset;
-}
-.ZMSZCatalogConnector .zmi-sitemap div#loading,
-.ZMSZCatalogConnector .zmi-sitemap div#loading .fa-spinner,
-#zmsindex .zmi-sitemap div#loading,
-#zmsindex .zmi-sitemap div#loading .fa-spinner {
-	color: #08c !important;
-}
-#zmsindex .zmi-sitemap .fa-spinner.fa-spin {
-	zoom: 1.5;
-}
-.ZMSZCatalogConnector .zmi-sitemap:not(.full) div#loading,
-#zmsindex .zmi-sitemap:not(.full) div#loading {
-	top: 2rem;
-	position: absolute;
-	right: 1rem;
-	zoom: 1;
-	background: #b1bbc1;
-	padding:1rem;
-}
-body.loading .ZMSZCatalogConnector .zmi-sitemap {
-	background:#b1bbc1;
-}
-body.loading .ZMSZCatalogConnector .zmi-sitemap a,
-body.loading .ZMSZCatalogConnector .zmi-sitemap .toggle,
-body.loading .ZMSZCatalogConnector .zmi-sitemap div#loading,
-body.loading .ZMSZCatalogConnector .zmi-sitemap div#loading .fa-spinner {
-	color: #fff !important;
-}
-.ZMSZCatalogConnector .zmi-sitemap .fa-spinner.fa-spin,
-#zmsindex .zmi-sitemap .fa-spinner.fa-spin {
-	zoom: 1.8;
-	margin: -.8rem .25rem;
 }
 .ZMSZCatalogConnector .response.alert-success,
 .ZMSZCatalogConnector .response.alert-danger {

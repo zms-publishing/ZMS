@@ -11,8 +11,11 @@
 <div id="zmi-tab">
 <tal:block tal:content="structure python:here.zmi_breadcrumbs(here,request)">zmi_breadcrumbs</tal:block>
 <tal:block tal:condition="python:here.meta_id=='ZMSTrashcan'"
-	><tal:block tal:define="garbage_collection python:here.run_garbage_collection()" 
-/></tal:block>
+	><tal:block 
+		tal:define="garbage_collection python:here.run_garbage_collection()"
+		tal:on-error="structure python:'<div class=\042alert alert-danger\042>ERROR run_garbage_collection()</div>'"
+	></tal:block
+></tal:block>
 
 <tal:block tal:define=" 
 	id_prefix    python:['e',''][int(here.meta_id=='ZMSTrashcan')];

@@ -1146,7 +1146,6 @@ __REGISTRY__ = None
 def getRegistry():
     global __REGISTRY__
     if __REGISTRY__ is None:
-        print("__REGISTRY__['confdict']",__REGISTRY__)
         __REGISTRY__ = {}
         try:
           __REGISTRY__['confdict'] = ConfDict.get()

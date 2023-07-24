@@ -834,7 +834,7 @@ def triggerEvent(context, *args, **kwargs):
     # Process zope-triggers.
     m = getattr(context, name, None)
     if m is not None:
-      m(context=context, REQUEST=context.REQUEST)
+      m(context=context,REQUEST=context.get('REQUEST', {}))
   return l
 
 
@@ -2285,7 +2285,7 @@ def dt_tal(context, text, options={}):
   pt = StaticPageTemplateFile(filename='None')
   pt.setText(text)
   pt.setEnv(context, options)
-  request = context.REQUEST
+  request = {}
   rendered = pt.pt_render(extra_context={'here':context,'request':request})
   return rendered
 

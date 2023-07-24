@@ -118,7 +118,7 @@ class PathHandler(object):
     def __bobo_traverse__(self, TraversalRequest, name):
       # If this is the first time this __bob_traverse__ method has been called
       # in handling this traversal request, store the path_to_handle
-      request = self.REQUEST
+      request = {}
       url = request.get('URL', '')
       zmi = url.find('/manage') >= 0
       
@@ -141,11 +141,11 @@ class PathHandler(object):
               TraversalRequest[ 'path_to_handle'].insert( i-1, path_physical[ i])
       
       # Set language.
-      lang = request.get( 'lang')
+      lang = request.get( 'lang', self.getPrimaryLanguage())
       if lang is None:
         lang = self.getLanguageFromName(TraversalRequest['path_to_handle'][-1])
       if lang is not None:
-        request.set( 'lang', lang)
+        request['lang'] = lang
      
       # If the name is in the list of attributes, call it.
       ob = getattr( self, name, None)
@@ -155,11 +155,11 @@ class PathHandler(object):
           ob = obContext
       if ob is not None:
         if not zmi and TraversalRequest['path_to_handle'][-1] == name:
-          lang = request.get('lang')
+          lang = request.get('lang', self.getPrimaryLanguage())
           if lang is None:
             lang = self.getHttpAcceptLanguage( request)
           if lang is not None:
-            request.set( 'lang', lang)
+            request['lang'] = lang
         
         return ob
       
@@ -169,7 +169,7 @@ class PathHandler(object):
         
         if request.get('lang') is None:
           lang = self.getPrimaryLanguage()
-          request.set('lang', lang)
+          request['lang'] = lang
         
         # Package-Home.
         if name == '$ZMS_HOME':
@@ -186,10 +186,10 @@ class PathHandler(object):
         # Pathhandler-Hook.
         if 'pathhandler' in self.getMetaobjAttrIds( self.meta_id, types=['method', 'py']):
           if name == TraversalRequest['path_to_handle'][-1]:
-            request.set( 'path_', '/'.join(request.get('path_', [])+[name]))
+            request['path_'] = '/'.join(request.get('path_', [])+[name])
             return self.attr('pathhandler')
           else:
-            request.set( 'path_', request.get('path_', [])+[name])
+            request['path_'] = request.get('path_', [])+[name]
             return self
         
         if not zmi or request.get( 'ZMS_PATH_HANDLER', False):
@@ -225,9 +225,9 @@ class PathHandler(object):
                 proxy = thisOb.initProxy( proxy, proxy.absolute_url()+'/'+ob.id, ob, recursive)
                 c += 1
               if c > 0:
-                request.set( 'ZMS_PROXY_%s'%self.id, proxy)
+                request['ZMS_PROXY_%s'%self.id] = proxy
             if request.get( 'ZMS_PROXY_%s'%self.id) and request.get( 'ZMS_PROXY_%s'%self.id).id != TraversalRequest[ 'path_to_handle'][-1]:
-              v = handleBlobAttrs(request.get( 'ZMS_PROXY_%s'%self.id).proxy, TraversalRequest[ 'path_to_handle'][-1], request)
+              v = None  # handleBlobAttrs(request.get( 'ZMS_PROXY_%s'%self.id).proxy, TraversalRequest[ 'path_to_handle'][-1], request)
               if v is not None: 
                 return v
             return thisOb
@@ -281,7 +281,7 @@ class PathHandler(object):
                     lp.append( 'preview')
                   for ip in lp:
                     try:
-                      request.set( 'preview', ip)
+                      request['preview'] = ip
                       r = self.attr( key)
                       value = r[i]
                       value = value._getCopy()
@@ -295,12 +295,12 @@ class PathHandler(object):
                         return value
                     except:
                       standard.writeError( self, '[__bobo_traverse__]: ip=%s'%str(ip))
-                  request.set( 'preview', lp[ 0])
+                  request['preview'] = lp[ 0]
             except:
               standard.writeError( self, '[__bobo_traverse__]')
         
         # If the object has blob-fields find by filename and display data.
-        v = handleBlobAttrs( self, name, request)
+        v = None  # handleBlobAttrs( self, name, request)
         if v is not None: return v
         
         # If the object has executable-fields find by name and display data.
@@ -330,14 +330,14 @@ class PathHandler(object):
               zms_ext = l[j+1:]
               if zms_skin in [x.strip() for x in self.getConfProperty('ZMS.skins', 'index').split(',')] and \
                  zms_ext == self.getPageExt(request)[1:]:
-                request.set('ZMS_SKIN', zms_skin)
-                request.set('ZMS_EXT', zms_ext)
-                request.set('lang', lang)
+                request['ZMS_SKIN'] = zms_skin
+                request['ZMS_EXT'] = zms_ext
+                request['lang'] = lang
                 return self
         
         # If there's no more names left to handle, return the path handling 
         # method to the traversal machinery so it gets called next
-        standard.raiseError('NotFound',''.join([x+'/' for x in TraversalRequest['path_to_handle']]))
+        # standard.raiseError('NotFound',''.join([x+'/' for x in TraversalRequest['path_to_handle']]))
 
 
     # --------------------------------------------------------------------------

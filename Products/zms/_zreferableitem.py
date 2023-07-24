@@ -46,7 +46,7 @@ def getInternalLinkDict(self, url):
   reqBuffId = 'getInternalLinkDict.%s'%url
   try: return docelmnt.fetchReqBuff(reqBuffId)
   except: pass
-  request = self.REQUEST
+  request = self.get('request', self.get('REQUEST', {}))
   d = {}
   # Params.
   anchor = ''
@@ -66,7 +66,7 @@ def getInternalLinkDict(self, url):
     bak_params = {}
     for key in ref_params:
       bak_params[key] = request.get(key, None)
-      request.set(key, ref_params[key])
+      # request.set(key, ref_params[key])
     url = '{$%s%s}'%(self.getRefObjPath( ref_obj)[2:-1], anchor)
     d['data-id'] = url
     d['data-url'] = getInternalLinkUrl(self, url, ref_obj)
@@ -75,8 +75,8 @@ def getInternalLinkDict(self, url):
     elif self.getTrashcan().isAncestor(ref_obj):
       d['data-target'] = 'trashcan'
     # Unprepare request.
-    for key in bak_params:
-      request.set(key, bak_params[key])
+    # for key in bak_params:
+    #   request.set(key, bak_params[key])
   else:
     d['data-id'] = "{$__%s__}"%url[2:-1]
     d['data-target'] = "missing"
@@ -87,7 +87,7 @@ def getInternalLinkDict(self, url):
 #  getInternalLinkUrl:
 # ------------------------------------------------------------------------------
 def getInternalLinkUrl(self, url, ob):
-  request = self.REQUEST
+  request = self.get('request', self.get('REQUEST', {}))
   if ob is None:
     index_html = './index_%s.html?error_type=NotFound&op=not_found&url=%s'%(request.get('lang', self.getPrimaryLanguage()), str(url))
   else:
@@ -410,7 +410,7 @@ class ZReferableItem(object):
               pass
         elif not url.startswith('__'):
           url = url.replace('@','/content/')
-          l = url.split('/') 
+          l = url.split('/')
           ob =self.getDocumentElement()
           try:
             for id in [x for x in l if x]:
@@ -419,8 +419,8 @@ class ZReferableItem(object):
             pass
       # Prepare request
       if ob is not None and ob.id not in self.getPhysicalPath():
-        request = self.REQUEST
-        ob.set_request_context(request, ref_params)
+        request = self.get('request', self.get('REQUEST', {}))
+        # ob.set_request_context(request, ref_params)
     return ob
 
 
@@ -430,7 +430,7 @@ class ZReferableItem(object):
   #  Resolves internal/external links and returns URL.
   # ----------------------------------------------------------------------------
   def getLinkUrl( self, url, REQUEST=None):
-    request = self.REQUEST
+    request = self.get('request', self.get('REQUEST', {}))
     if isInternalLink(url):
       # Params.
       ref_params = {}

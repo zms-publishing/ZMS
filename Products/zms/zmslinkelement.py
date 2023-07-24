@@ -105,8 +105,9 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     #  ZMSLinkElement.getEmbedType: 
     # --------------------------------------------------------------------------
-    def getEmbedType(self):
-      embed_type = self.getObjAttrValue( self.getObjAttr( 'attr_type'), self.REQUEST)
+    def getEmbedType(self, **kwargs):
+      request = kwargs.get('request', kwargs.get('REQUEST', self.get('REQUEST', {})))
+      embed_type = self.getObjAttrValue( self.getObjAttr( 'attr_type'), request)
       if embed_type in [ 'embed', 'recursive', 'remote']:
         ref_obj = self.getRefObj()
         if ref_obj is not None and ref_obj.isAncestor( self):
@@ -374,14 +375,15 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     # --------------------------------------------------------------------------
     #  ZMSLinkElement.isPage
     # --------------------------------------------------------------------------
-    def isPage(self):
+    def isPage(self, **kwargs):
+      request = kwargs.get('request', kwargs.get('REQUEST', self.get('REQUEST', {})))
       rtnVal = False
       if self.getEmbedType() == 'remote':
         remote_obj = self.getRemoteObj()
         if isinstance(remote_obj, list):
           rtnVal = remote_obj[1]['attrs']['is_page'] in ['1', 'True']
       else:
-        if self.isEmbedded( self.REQUEST):
+        if self.isEmbedded(request):
           ref_obj = self.getRefObj()
           if ref_obj is not None:
             rtnVal = rtnVal or ref_obj.isPage()
@@ -398,13 +400,13 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
         if isinstance(remote_obj, list):
           rtnVal = remote_obj[1]['attrs']['is_pageelement'] in ['1', 'True']
       else:
-        if self.isEmbedded( self.REQUEST):
+        if self.isEmbedded( self.get('REQUEST', {})):
           ref_obj = self.getRefObj()
           if ref_obj is not None:
             rtnVal = rtnVal or ref_obj.isPageElement()
           else:
             rtnVal = rtnVal or True
-        elif self.getObjProperty('align', self.REQUEST) not in ['', 'NONE']:
+        elif self.getObjProperty('align', self.get('REQUEST', {})) not in ['', 'NONE']:
           rtnVal = rtnVal or True
       return rtnVal
 
@@ -638,9 +640,9 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #
     #  Returns self or referenced object (if embedded) as ZMSProxyObject
     # --------------------------------------------------------------------------
-    def __proxy__(self):
+    def __proxy__(self, **kwargs):
       rtn = self
-      req = self.REQUEST
+      req = kwargs.get('request', kwargs.get('REQUEST', self.get('REQUEST', {})))
       if req.get( 'ZMS_PROXY', True):
         if req.get( 'URL', '').find( '/manage') < 0 or req.get( 'ZMS_PATH_HANDLER', False):
           if self.isEmbeddedRecursive( req):
@@ -657,9 +659,9 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  Returns self or proxy-object from Path-Handler (if embedded) as 
     #  ZMSProxyObject.
     # --------------------------------------------------------------------------
-    def getProxy(self):
+    def getProxy(self, **kwargs):
       rtn = self
-      req = self.REQUEST
+      req = kwargs.get('request', kwargs.get('REQUEST', self.get('REQUEST', {})))
       if req.get( 'ZMS_PROXY', True):
         rtn = req.get( 'ZMS_PROXY_%s'%self.id, self.__proxy__())
       return rtn

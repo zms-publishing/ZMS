@@ -486,8 +486,8 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  Returns 1 if current object is visible.
     # --------------------------------------------------------------------------
     def isVisible(self, REQUEST):
-      REQUEST = standard.nvl(REQUEST, self.REQUEST)
-      lang = standard.nvl(REQUEST.get('lang'), self.getPrimaryLanguage())
+      REQUEST = standard.nvl(REQUEST, {})
+      lang = REQUEST.get('lang', self.getPrimaryLanguage())
       visible = True
       visible = visible and self.isTranslated(lang, REQUEST) # Object is translated.
       visible = visible and self.isCommitted(REQUEST) # Object has been committed.
@@ -646,7 +646,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.breadcrumbs_obj_path:
     # --------------------------------------------------------------------------
     def breadcrumbs_obj_path(self, portalMaster=True):
-      REQUEST = self.REQUEST
+      #REQUEST = self.REQUEST
       # Handle This.
       rtn = []
       obj = self
@@ -980,10 +980,10 @@ class ZMSObject(ZMSItem.ZMSItem,
               i += 1
             l = l[i:]
             index_html = protocol + '://' + domain + '/' + '/'.join(l)
-      elif REQUEST.get('ZMS_RELATIVATE_URL', True) and self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.relativate', True) and self.getHome() == context.getHome():
-        path = REQUEST['URL']
-        path = re.sub(r'\/index_(.*?)\/index_html$','/index_\\1',path)
-        path = re.sub(r'\/index_html$','/',path)
+      elif REQUEST.get('ZMS_RELATIVATE_URL', False) and self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.relativate', True) and self.getHome() == context.getHome():
+        path = REQUEST.get('URL', '')
+        path = re.sub('\\/index_(.*?)\\/index_html$','/index_\\1',path)
+        path = re.sub('\\/index_html$','/',path)
         index_html = self.getRelativeUrl(path,index_html)
       return index_html
     

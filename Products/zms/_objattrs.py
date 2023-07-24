@@ -43,7 +43,7 @@ def getobjattrdefault(obj, obj_attr, lang):
     if datatype in range(len(_globals.datatype_map)):
       default = obj_attr.get('default',_globals.datatype_map[datatype][1])
     # Default inactive in untranslated languages.
-    if obj_attr['id'] == 'active' and len(obj.getLangIds()) > 1 and not obj.isTranslated(lang,obj.REQUEST):
+    if obj_attr['id'] == 'active' and len(obj.getLangIds()) > 1 and not obj.isTranslated(lang,{}):
         default = 0
     if default is not None:
       if datatype in _globals.DT_DATETIMES and default == '{now}':
@@ -468,7 +468,7 @@ class ObjAttrs(object):
         if isinstance(value,str):
           value = None
         elif value is not None:
-          value = value._createCopy( self, obj_attr['id'])
+          value = value._createCopy( self, obj_attr['id'], lang)
           value.lang = lang
       
       #-- DateTime-Fields.
@@ -596,7 +596,7 @@ class ObjAttrs(object):
     #  attr({key0:value0,...,keyN:valueN}) -> setObjProperty(key0,value0),...
     # --------------------------------------------------------------------------
     def attr(self, *args, **kwargs):
-      request = kwargs.get('request',kwargs.get('REQUEST',self.REQUEST))
+      request = kwargs.get('request', kwargs.get('REQUEST', self.get('REQUEST', {})))
       if len(args) == 1 and isinstance(args[0], str):
         return self.getObjProperty( args[0], request, kwargs)
       elif len(args) == 2:
@@ -611,7 +611,7 @@ class ObjAttrs(object):
     # --------------------------------------------------------------------------
     def evalMetaobjAttr(self, *args, **kwargs):
       root = self
-      request = self.REQUEST
+      request = kwargs.get('request', kwargs.get('REQUEST', self.get('REQUEST', {})))
       id = request.get('ZMS_INSERT', self.meta_id)
       key = args[0]
       if key.find('.')>0:
@@ -682,23 +682,26 @@ class ObjAttrs(object):
               empty = value is None
             if not empty:
               break
-          # Toggle.
-          if key == 'active':
-            b = b and value
-          # Start time.
-          elif key == 'attr_active_start':
-            if value is not None:
-              dt = datetime.datetime.fromtimestamp(time.mktime(value))
-              b = b and now > dt
-              if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
-                self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
-          # End time.
-          elif key == 'attr_active_end':
-            if value is not None:
-              dt = datetime.datetime.fromtimestamp(time.mktime(value))
-              b = b and dt > now
-              if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
-                self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
+          try:
+            # Toggle.
+            if key == 'active':
+              b = b and value
+            # Start time.
+            elif key == 'attr_active_start':
+              if value is not None:
+                dt = datetime.datetime.fromtimestamp(time.mktime(value))
+                b = b and now > dt
+                if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
+                  self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
+            # End time.
+            elif key == 'attr_active_end':
+              if value is not None:
+                dt = datetime.datetime.fromtimestamp(time.mktime(value))
+                b = b and dt > now
+                if dt > now and self.REQUEST.get('ZMS_CACHE_EXPIRE_DATETIME', dt) >= dt:
+                  self.REQUEST.set('ZMS_CACHE_EXPIRE_DATETIME',dt)
+          except:
+            continue
           if not b: break
       return b
 

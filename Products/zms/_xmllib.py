@@ -638,11 +638,11 @@ def getObjPropertyToXml(self, base_path, data2hex, obj_attr, REQUEST):
     lang = REQUEST.get('lang')
     langIds = self.getLangIds()
     for langId in langIds:
-      REQUEST.set('lang', langId)
+      REQUEST['lang'] = langId
       s_attr_xml = getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST)
       if len(s_attr_xml) > 0:
         xml += '<lang%s>%s</lang>' % ( [ '' , ' id="%s"'%langId ][ int(len(langIds)>1) ] , s_attr_xml )
-    REQUEST.set('lang', lang)
+    REQUEST['lang'] = lang
   # Simple Attributes.
   else:
     xml += getAttrToXml(self, base_path, data2hex, obj_attr, REQUEST)

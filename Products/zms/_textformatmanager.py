@@ -42,7 +42,7 @@ class TextFormatObject(object):
         sec_no = parentNode.fetchReqBuff( '%s_%s'%(reqBuffId, self.id))
     except:
       levelnfc = parentNode.attr('levelnfc')
-      parentNode.storeReqBuff( '%s_levelnfc'%reqBuffId, levelnfc, self.REQUEST)
+      parentNode.storeReqBuff( '%s_levelnfc'%reqBuffId, levelnfc)
       if levelnfc is not None and len(levelnfc) > 0:
         parent_no = parentNode.getSecNo()
         sectionizer = _globals.MySectionizer(levelnfc)
@@ -62,7 +62,7 @@ class TextFormatObject(object):
             if self == sibling:
               sec_no = curr_no
           #-- [ReqBuff]: Store value in buffer of Http-Request.
-          parentNode.storeReqBuff( '%s_%s'%(reqBuffId, sibling.id), curr_no, self.REQUEST)
+          parentNode.storeReqBuff( '%s_%s'%(reqBuffId, sibling.id), curr_no)
     #-- [ReqBuff]: Return value.
     return sec_no
 

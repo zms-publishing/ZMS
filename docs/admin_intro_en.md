@@ -206,6 +206,7 @@ The TAL code has two sections:
 The form's request is responded by an XML stream which is transformed into an HTML list by JavaScript. That is why the frontend code need to reference a special, ready to use JS module for handling the search gui:
 
 ```html
+<script type="text/javascript" charset="UTF-8" src="/++resource++zms_/zmi.core.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/++resource++zms_/ZMS/zmi_body_content_search.js"></script>
 ```
 

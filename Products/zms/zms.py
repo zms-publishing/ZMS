@@ -99,7 +99,7 @@ def importTheme(self, theme):
 # ------------------------------------------------------------------------------
 #  initZMS:
 # ------------------------------------------------------------------------------
-# A new ZMS node can be initalized as a stand-alone client (master) or 
+# A new ZMS node can be initalized as a stand-alone client (master) or
 # as subordinated client acquiring content models and sharing the zmsindex.
 # Use a request variable 'acquire' =  1 to initalize ZMS as a client
 def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
@@ -135,7 +135,7 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   obj.setConfProperty('ZMS.autocommit', 1)
 
   ### Init ZMS default content-model.
-  _confmanager.initConf(obj, 'conf:com.zms.foundation*')
+  _confmanager.initConf(obj, 'conf:com.zms.foundation')
 
   ### Init ZMS index.
   obj.getZMSIndex()
@@ -365,7 +365,38 @@ class ZMS(
       file.close()
       zms_custom_version = os.environ.get('ZMS_CUSTOM_VERSION', '')
       if custom and zms_custom_version != '':
-        rtn += ' ({})'.format(zms_custom_version)
+        rtn += f'<samp>({zms_custom_version})</samp>'
+        # container built by unibe-cms/build.sh gathering commit hashes of git submodules
+        revisions1 = _fileutil.getOSPath('/app/zms-core/revisions.txt')
+        revisions2 = _fileutil.getOSPath('/opt/zope/src/zms/revisions.txt')  # fallback for unibe-cms-deployments
+        if os.path.exists(revisions1):
+            revisions = revisions1
+        elif os.path.exists(revisions2):
+            revisions = revisions2
+        else:
+            revisions = None
+        if revisions is not None:
+            file = open(revisions, 'r')
+            zms_submodule_revisions = file.read()
+            file.close()
+            rtn += f"""
+                <span class="d-inline-block" data-toggle="popover"
+                    title="Git revisions"
+                    data-content="{zms_submodule_revisions}">
+                    <i class="fab fa-git-square fa-lg"></i>
+                </span>
+                <script>
+                    $(function () {{
+                        $('[data-toggle="popover"]').popover()
+                    }})
+                </script>
+                <style>
+                    .popover-body {{
+                        white-space: break-spaces;
+                        width: max-content;
+                    }}
+                </style>
+                """
       if custom and os.path.exists(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD')):
         file = open(_fileutil.getOSPath(package_home(globals())+'/../../.git/FETCH_HEAD'),'r')
         FETCH_HEAD = file.read()

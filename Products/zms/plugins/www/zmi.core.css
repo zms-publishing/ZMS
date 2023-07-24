@@ -676,6 +676,7 @@ body.zmi ul.zmi-container > .zmi-item .right video {
 		max-width: 100%;
 		/* overflow:hidden; # hides dropdown menu as an unpleasant side effect */
 	}
+	.zmi header.navbar ul.navbar-nav li span.cache_label,
 	.zmi header.navbar ul.navbar-nav li span.language_label {
 		display: none;
 	}

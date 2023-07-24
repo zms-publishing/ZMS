@@ -19,10 +19,12 @@
 
 # Imports.
 from App.Common import package_home
+from App.config import getConfiguration
 import OFS.misc_
 import codecs
 import os
 import re
+import sys
 # Product Imports.
 from Products.zms import _confmanager
 from Products.zms import _multilangmanager
@@ -47,6 +49,51 @@ from Products.zms import zmslinkelement
 __doc__ = """initialization module."""
 # Version string.
 __version__ = '0.1'
+
+# if running with "debug-mode on" in zope.conf (or e.g. "python3 -m Zope2.Startup.serve --debug -v etc/zope.ini")
+# and no local pydev debugger is connected
+if getConfiguration().debug_mode and sys.gettrace() is None:
+    try:
+        print("Init PyCharm remote debugging: pydevd_pycharm.settrace('127.0.0.1', port=5678)")
+        print("Prerequisites on localhost:")
+        print("- Reverse SSH tunnel as remote port forwarding enabled: ssh -R 5678:127.0.0.1:5678 user@remotehost")
+        print("- Python Debug Server in PyCharm started: Run/Debug Configuration with path mapping local/remote")
+        import pydevd_pycharm
+        pydevd_pycharm.settrace('127.0.0.1', port=5678, stdoutToServer=True, stderrToServer=True, suspend=False)
+    except (ModuleNotFoundError, ConnectionRefusedError, AttributeError) as error:
+        print("Error on init remote debugging: {}".format(error))
+        pass
+
+#################################################################################################################
+# Memcached: Monkey patched Product.mcdutils
+#
+# Avoid raise exception if Memcached connection fails and log instead
+# as it is done by pylibmc used in Flask-Caching for unibe-cmsapi.
+# - Connection errors suddenly occur only with cluster setup in Docker Swarm mode.
+# - Docker Swarm networking seems to kill idle TCP connections after a while (15min?).
+# - Memcached is alive and can be reconnected.
+#
+# https://forums.docker.com/t/tcp-timeout-that-occurs-only-in-docker-swarm-not-simple-docker-run/58179
+# https://github.com/zulip/zulip/issues/14455#issuecomment-609472979
+# https://docs.docker.com/network/overlay/#bypass-the-routing-mesh-for-a-swarm-service
+# https://news.ycombinator.com/item?id=25328865
+# => "host" mode instead of the default "ingress" mode using "endpoint_mode: dnsrr" as workaound is not suitable
+#################################################################################################################
+from Products.mcdutils.mapping import MemCacheMapping
+
+def tpc_vote(self, txn):
+    """ See IDataManager.
+    """
+    server, key = self._p_proxy.client._get_server(self._p_key)
+    if server is None:
+        from Products.mcdutils import MemCacheError
+        # raise MemCacheError("Can't reach memcache server!")
+        import logging
+        LOGGER = logging.getLogger('Products.mcdutils')
+        LOGGER.log(logging.ERROR, MemCacheError("Can't reach memcache server!"))
+
+MemCacheMapping.tpc_vote = tpc_vote
+#################################################################################################################
 
 try:
   from Products.CMFCore.DirectoryView import registerFileExtension

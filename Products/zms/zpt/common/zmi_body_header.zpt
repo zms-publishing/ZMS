@@ -119,6 +119,16 @@
 				</div>
 			</li><!-- .dropdown -->
 			<tal:block tal:condition="python: here.getTrashcan().getId()!=here.getId()">
+				<tal:block
+					tal:condition="python:'cache_refresh' in context.metaobj_manager.getMetaobjAttrIds('unibernLib') or request.get('debug')=='on'"
+					metal:use-macro="container/cache_refresh/macros/cache_refresh">
+				</tal:block>
+				<tal:block
+					tal:condition="python:'cache_refresh' not in context.metaobj_manager.getMetaobjAttrIds('unibernLib') and request.get('debug')!='on'">
+					<!-- ERROR: unibernLib.cache_refresh.zpt - Add URL-param 'debug=on' for error message -->
+					<li><a class="text-danger" title="Add URL-param debug=on for error message">
+						<i class="fas fa-exclamation-triangle"></i>&nbsp;<span class="cache_label">Cache</span></a></li>
+				</tal:block>
 				<li class="view_preview">
 					<a target="_blank" tal:attributes="href python:'preview_html?lang=%s&preview=preview'%request['lang']">
 						<i class="far fa-eye"></i>

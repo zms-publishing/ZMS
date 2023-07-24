@@ -137,6 +137,10 @@ class ZMSItem(
         request.set('manage_lang', self.get_manage_lang())
       if not request.get('manage_tabs_message'):
         request.set( 'manage_tabs_message', self.getConfProperty('ZMS.manage_tabs_message', ''))
+      if not request.get('manage_tabs_warning_message'):
+        request.set( 'manage_tabs_warning_message',self.getConfProperty('ZMS.manage_tabs_warning_message',''))
+      if not request.get('manage_tabs_danger_message'):
+        request.set( 'manage_tabs_danger_message',self.getConfProperty('ZMS.manage_tabs_danger_message',''))
       if 'zmi-manage-system' in request.form:
         standard.set_session_value(self,'zmi-manage-system',int(request.get('zmi-manage-system',0)))
       # AccessableObject

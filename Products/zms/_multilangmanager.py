@@ -76,7 +76,7 @@ def importXml(self, xml):
 def exportXml(self, ids, REQUEST=None, RESPONSE=None):
   value = []
   d = self.get_lang_dict()
-  for id in d:
+  for id in sorted(d):
     item = d[id].copy()
     item['key'] = id
     if id in ids or len(ids) == 0:

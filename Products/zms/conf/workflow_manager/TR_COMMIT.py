@@ -35,7 +35,7 @@ message += 'Changes were committed'
 try:
   request.set('preview','')
   request.set('url',zmscontext.getHref2IndexHtml(request))
-  zmscontext.purge_cache()
+  zmscontext.purge_cache()  # TODO @deprecated
   # zmscontext.purgecache(zmscontext.getHref2IndexHtml(request))
   request.set('preview','preview')
   message += ', Cache were purged'

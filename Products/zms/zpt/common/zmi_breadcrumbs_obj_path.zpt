@@ -17,7 +17,7 @@
 	><li tal:repeat="childNode childNodes"
 		tal:attributes="class python:' '.join(['breadcrumb-item']+[['','active'][int(childNode==childNodes[-1])]])"
 		><span tal:omit-tag="python:not request['AUTHENTICATED_USER'].has_permission('ZMS Administrator',zmscontext)"
-			tal:attributes="onclick python:'javascript:window.open(\'%s/%s\',\'MetaObjectManagerWindow\')'%(zmscontext.getDocumentElement().getAbsoluteUrlInContext(here),middot)"
+			tal:attributes="onclick python:'javascript:window.open(\'%s/%s\',\'MetaObjectManagerWindow\')'%(zmscontext.getDocumentElement().absolute_url(),middot)"
 			><tal:block tal:condition="python:childNode==childNodes[-1]"
 				tal:on-error="nothing"
 				><i class="far fa-file-alt" title="Icon" tal:attributes="class python:childNode.zmi_icon();title python:childNode.meta_id"></i
@@ -25,10 +25,14 @@
 			></span>&nbsp;<a tal:define="
 				titlealt python:childNode.getTitlealt(request);
 				title python:childNode.getTitle(request);
-				accesskey repeat/childNode/number;"
-				tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.getAbsoluteUrlInContext(here),request['lang']);title title;accesskey accesskey"
+				accesskey repeat/childNode/number;
+				uid python:childNode.get_uid();
+				hover python:title+'\n\n'+uid;
+				hover python:not childNode.isVisible(request) and 'INVISIBLE\n'+hover or hover;
+				style python:not childNode.isVisible(request) and 'text-decoration:line-through;;' or '';"
+				tal:attributes="href python:'%s/manage_main?lang=%s'%(childNode.absolute_url(),request['lang']);title hover;accesskey accesskey;style style;"
 			tal:content="structure titlealt">titlealt
-	</a></li>
+	</a>&nbsp;<i class="far fa-share-square" style="color:#6c757d" title="REDIRECTED" tal:condition="python:childNode.attr('attr_dc_identifier_url_redirect')!=''"></i></li>
 	<li class="breadcrumb-item" tal:repeat="extra python:options.get('extra',[])">
 		<a tal:attributes="href extra/action" tal:content="python:here.getZMILangStr(extra['label'])">label</a>
 	</li>

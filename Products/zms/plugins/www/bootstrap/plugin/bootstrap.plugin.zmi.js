@@ -1295,9 +1295,13 @@ ZMIObjectTree.prototype.addPages = function(pages) {
 		var page_is_pageelement = $page.attr("is_pageelement")=='1' || $page.attr("is_pageelement")=='True';
 		var page_meta_type = $page.attr("meta_id");
 		var page_type = $page.attr("attr_dc_type");
+		var page_redirect = $page.attr("attr_dc_identifier_url_redirect");
 		var page_titlealt = $page.attr("titlealt");
 		var page_icon = $page.attr("zmi_icon");
 		var anchor = "";
+
+		if ((page_titlealt.toUpperCase().search('REDIRECT')>-1) &&
+			(page_redirect.trim() != '')) continue;
 
 		if (page_meta_type=='ZMSGraphic' && link_url) {
 			link_url = '<img data-id=&quot;' + page_uid + '&quot;' + ' src=&quot;' + link_url + '&quot;>';

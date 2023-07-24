@@ -922,7 +922,7 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ASP.protocol=[http]
     #  ASP.ip_or_domain=[Not empty]
     #
-    #  Contextualize absolute_url used in ZMI with subdomain from 
+    #  Contextualize absolute_url used in ZMI with subdomain from
     #  config-properties.
     #  Used to keep ZMS-users in configured subdomain-context.
     # --------------------------------------------------------------------------
@@ -948,7 +948,7 @@ class ZMSObject(ZMSItem.ZMSItem,
                 else:
                   i += 1
                 l = l[i:]
-                abs_url = protocol + '://' + domain  
+                abs_url = protocol + '://' + domain
                 if l:
                   abs_url = abs_url + '/' + '/'.join(l)
         return abs_url
@@ -981,7 +981,7 @@ class ZMSObject(ZMSItem.ZMSItem,
             l = l[i:]
             index_html = protocol + '://' + domain + '/' + '/'.join(l)
       elif REQUEST.get('ZMS_RELATIVATE_URL', True) and self.getConfProperty('ZMSObject.getHref2IndexHtmlInContext.relativate', True) and self.getHome() == context.getHome():
-        path = REQUEST['URL']
+        path = REQUEST.get('URL', '')
         path = re.sub(r'\/index_(.*?)\/index_html$','/index_\\1',path)
         path = re.sub(r'\/index_html$','/',path)
         index_html = self.getRelativeUrl(path,index_html)
@@ -1201,7 +1201,7 @@ class ZMSObject(ZMSItem.ZMSItem,
         self.f_standard_html_request( self, REQUEST)
         xml += self.getXmlHeader()
       xml += '<page'
-      xml += " absolute_url=\"%s\""%str(self.getAbsoluteUrlInContext(context))
+      xml += " absolute_url=\"%s\""%str(self.absolute_url())
       xml += " physical_path=\"%s\""%('/'.join(self.getPhysicalPath()))
       xml += " access=\"%s\""%str(int(self.hasAccess(REQUEST)))
       xml += " active=\"%s\""%str(int(self.isActive(REQUEST)))
@@ -1221,6 +1221,7 @@ class ZMSObject(ZMSItem.ZMSItem,
       xml += " titlealt=\"%s\""%standard.html_quote(self.getTitlealt(REQUEST))
       xml += " restricted=\"%s\""%str(self.hasRestrictedAccess())
       xml += " attr_dc_type=\"%s\""%(self.attr('attr_dc_type'))
+      xml += " attr_dc_identifier_url_redirect=\"%s\""%(standard.html_quote(self.attr('attr_dc_identifier_url_redirect')))
       xml += ">"
       if REQUEST.form.get('get_attrs', 0):
         obj_attrs = self.getObjAttrs()
@@ -1520,6 +1521,8 @@ class ZMSObject(ZMSItem.ZMSItem,
 
       # Return with message.
       message = standard.url_quote(message)
+      if message == 'ERROR':
+        return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_error_message=ERROR'%(target.absolute_url(), lang))
       return RESPONSE.redirect('%s/manage_main?lang=%s&manage_tabs_message=%s'%(target.absolute_url(), lang, message))
 
 

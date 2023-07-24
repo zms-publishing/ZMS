@@ -411,9 +411,28 @@ class ZMSCustom(zmscontainerobject.ZMSContainerObject):
             values = {}
             for dictitem in listitem['dictionary']['item']:
               key = dictitem.get('@key')
+              typ = dictitem.get('@type')
+              val = dictitem.get('#text')
               if key not in keys:
                 keys.append(key)
-              values[key] = dictitem.get('#text')
+              if typ == 'list' and dictitem.get('list') is not None:
+                items = dictitem.get('list').get('item')
+                if type(items) is list:
+                  val = ', '.join(items)
+                else:
+                  val = items
+              if val is not None and \
+                 val.startswith('{$uid:') and val.endswith('}'):
+                obj = self.getLinkObj(val, REQUEST)
+                if obj is not None:
+                  try:
+                    lang = self.getPrimaryLanguage()
+                    if ';lang=' in val:
+                      lang = self.re_sub(r'{\$(.*);lang=(\w*)}', r'\2', val)
+                    val = self.UniBE_zeix_('getHref2SubdomainHtml', item=obj, lang=lang)
+                  except AttributeError:
+                    val = obj.getHref2IndexHtml(REQUEST)
+              values[key] = val
             rows.append(values)
 
         csvfile = io.StringIO()

@@ -277,7 +277,11 @@ def addExternalMethod(container, id, title, data):
         if os.path.exists(filepath):
           break
         context = context.getParentNode()
-  ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
+  try:
+    ExternalMethod.manage_addExternalMethod( container, id, title, m, f)
+  except:
+    standard.writeError(container,"[addExternalMethod]: %s does not exist.\n"%id)
+    pass
 
 def addPageTemplate(container, id, title, data):
   """

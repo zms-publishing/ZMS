@@ -154,8 +154,8 @@ def recreateCatalog(self, zcm, lang):
         break
     index_name = 'zcat_index_%s'%attr_id
     index_type = zcm.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
-    if attr_id == 'home_id':
-      index_type = KeywordIndex(attr_id)
+    if index_name == 'zcat_index_home_id':
+      index_type = KeywordIndex(index_name)
     elif attr_type == 'date':
       index_type = DateIndex(attr_id)
     extra = None

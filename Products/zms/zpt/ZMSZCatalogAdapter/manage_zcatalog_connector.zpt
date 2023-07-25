@@ -1,6 +1,6 @@
 <div class="ZMSZCatalogConnector" 
 	tal:define="zmscontext python:here.getSelf();zcatalogs python:here.getDocumentElement().objectValues(['ZCatalog'])">
-	<div tal:condition="python:len(zcatalogs)==0" class="alert alert-warning">No local ZCatalog objects available.</div>
+	<div tal:condition="python:len(zcatalogs)==0" class="alert alert-warning mx-0 mb-4">No local ZCatalog objects available.</div>
 	<tal:block tal:condition="python:len(zcatalogs)>0">
 		<div class="form-group row align-items-baseline">
 			<label class="col-sm-2 control-label" for="zcatalog_objectIds"><span>ZCatalogs</span></label>
@@ -83,8 +83,8 @@
 		<div class="col-sm-2"></div>
 		<div class="col-sm-10">
 			<div class="btn-group">
-				<span class="btn btn-warning" tal:attributes="title python:here.getZMILangStr('BTN_REFRESH'); data-id here/id" onclick="return zmiReindexCatalog()">
-					<i class="fas fa-sync"></i>
+				<span class="btn btn-warning" tal:attributes="title python:'ZCatalog %s'%(here.getZMILangStr('BTN_REFRESH')); data-id here/id" onclick="return zmiReindexCatalog()">
+					<i class="fas fa-sync mr-1"></i>
 					<tal:block tal:content="python:here.getZMILangStr('BTN_REFRESH')"></tal:block>
 				</span>
 			</div>

@@ -375,10 +375,15 @@ $(function() {
 				console.log('addPages.callback')
 				$(".zmi-sitemap a:not(.checkboxed)").each(function() {
 						var $a = $(this);
-						$a.addClass("checkboxed");
+						var a_href = $a.attr('href')+'/manage';
+						$a.addClass("checkboxed")
+							.removeAttr('onclick')
+							.attr('target','_blank')
+							.attr('href',a_href)
+							.attr('title',a_href);
 						var phys_path = $a.attr('data-page-physical-path');
 						var uid = '{'+'$'+phys_path.substr(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
-						$a.before('<input name="home_ids:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
+						$a.before('<input name="home_id:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 					});
 			},
 		});

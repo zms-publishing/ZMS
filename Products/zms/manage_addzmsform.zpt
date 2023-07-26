@@ -84,10 +84,10 @@
 		}
 		else {
 			if (v.indexOf('-')>0) {
-				v = v.substr(0,v.indexOf('-'));
+				v = v.substring(0,v.indexOf('-'));
 			}
 			if (v.indexOf('.')>0) {
-				v = v.substr(0,v.indexOf('.'));
+				v = v.substring(0,v.indexOf('.'));
 			}
 			img_src = v+'.png';
 			if (v.indexOf('http://')<0) {

@@ -88,7 +88,7 @@ function zmiModalInsertUserLoad(url) {
 	var $context = $("#zmiModalinsertUser");
 	var data = {mode:'insertUser'}
 	if (typeof url=="string") {
-		var query = url.substr(url.indexOf("?")+1);
+		var query = url.substring(url.indexOf("?")+1);
 		var vars = query.split('&');
 		for (var i = 0; i < vars.length; i++) {
 			var kv = vars[i].split('=');

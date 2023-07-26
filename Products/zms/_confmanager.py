@@ -30,6 +30,7 @@ import OFS.misc_
 import configparser
 import importlib
 import io
+import json
 import operator
 import os
 import zExceptions
@@ -501,11 +502,8 @@ class ConfManager(
       if REQUEST is not None:
         import base64
         prefix = str(base64.b64decode(prefix),'utf-8')
-        r = {}
-        for x in d:
-          if x.startswith(prefix+'.'):
-            r[k] = d[k]
-        return self.str_json(r)
+        r = {x:d[x] for x in d if x.startswith(prefix+'.')}
+        return json.dumps(r)
       if inherited:
         d = list(d)
         portalMaster = self.getPortalMaster()
@@ -1149,9 +1147,9 @@ def getRegistry():
         try:
           __REGISTRY__['confdict'] = ConfDict.get()
         except:
-          import sys, traceback, string
+          import sys, traceback
           type, val, tb = sys.exc_info()
-          sys.stderr.write(string.join(traceback.format_exception(type, val, tb), ''))
+          sys.stderr.write(''.join(traceback.format_exception(type, val, tb)))
     return __REGISTRY__
 getRegistry()
 

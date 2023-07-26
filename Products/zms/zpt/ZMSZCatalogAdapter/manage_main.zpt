@@ -210,8 +210,8 @@ function toggleMetaobj() {
 			for (var i = 0; i < dataAttrs.length; i++) {
 				var dataAttr = dataAttrs[i];
 				var metaObjAttr = {
-					id:dataAttr.substr(0,dataAttr.indexOf("(")),
-					type:dataAttr.substr(dataAttr.indexOf("(")+1,dataAttr.indexOf(")")-(dataAttr.indexOf("(")+1))
+					id:dataAttr.substring(0,dataAttr.indexOf("(")),
+					type:dataAttr.substring(dataAttr.indexOf("(")+1,dataAttr.indexOf(")")-(dataAttr.indexOf("(")+1))
 				};
 				if (typeof metaObjAttrs[metaObjAttr.id] == 'undefined') {
 					metaObjAttrs[metaObjAttr.id] = metaObjAttr;
@@ -381,7 +381,7 @@ $(function() {
 							.attr('target','_blank')
 							.attr('href',href_manage)
 							.attr('title',href_manage);
-						var uid = '{'+'$'+phys_path.substr(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
+						var uid = '{'+'$'+phys_path.substring(1).replace(/\/content/gi,'@')+'}'; // $a.attr('data-uid');
 						$a.before('<input name="home_id:list" type="checkbox" title="'+uid+'" value="'+uid+'" checked="checked" /> ');
 					});
 			},

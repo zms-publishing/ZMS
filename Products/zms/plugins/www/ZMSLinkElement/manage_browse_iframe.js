@@ -5,7 +5,7 @@ function zmiSelectObject(sender) {
 	var parent = self.window.parent;
 	var uid = $(sender).attr('data-uid');
 	var selectedLang = zmiParams['selectedLang'];
-	uid = uid.substr(0,uid.lastIndexOf('}'))+(typeof selectedLang=='undefined' || selectedLang==''?'':';lang='+selectedLang)+"}";
+	uid = uid.substring(0,uid.lastIndexOf('}'))+(typeof selectedLang=='undefined' || selectedLang==''?'':';lang='+selectedLang)+"}";
 	var href = $(sender).attr('href');
 	var titlealt = $(sender).attr('data-page-titlealt');
 	console.log('zmiSelectObject: uid='+uid+'\nhref='+href+'\ntitlealt='+titlealt);
@@ -104,7 +104,7 @@ var URLParser = (function (document) {
 		PROPS.forEach(function (prop) {
 			switch (prop) {
 				case 'hash':
-					this[prop] = this.aEl[prop].substr(1);
+					this[prop] = this.aEl[prop].substring(1);
 					break;
 				default:
 					this[prop] = this.aEl[prop];
@@ -140,7 +140,7 @@ function zmiBodyContentSearchDone() {
 			$a.html(display_icon+' '+$a.html());
 			var href = $a.attr("href");
 			if (href.lastIndexOf(".html")>href.lastIndexOf("/")) {
-				href = href.substr(0,href.lastIndexOf("/"));
+				href = href.substring(0,href.lastIndexOf("/"));
 			}
 			var parser = new URLParser();
 			parser.parse(href);

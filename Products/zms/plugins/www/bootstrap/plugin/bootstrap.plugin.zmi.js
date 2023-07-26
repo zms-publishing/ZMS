@@ -83,7 +83,7 @@ $ZMI.registerReady(function(){
 						df = new Array();
 						for(dc=0;dc<dtsplit.length;dc++) {
 							df[dfsplit[dc]]=dtsplit[dc];
-							df[dfsplit[dc].substr(1)]=parseInt(dtsplit[dc]);
+							df[dfsplit[dc].substring(1)]=parseInt(dtsplit[dc]);
 						}
 						var dstring = df['%Y']+'-'+df['%m']+'-'+df['%d']+' '+df['%H']+':'+df['%M']+':'+df['%S'];
 						var date = new Date(df['Y'],df['m']-1,df['d']);
@@ -527,9 +527,9 @@ $ZMI.registerReady(function(){
 	$("#subTab ul.nav.nav-tabs").each(function() {
 		var anchor = $("a:first",this).attr("href");
 		if (self.location.href.indexOf("#")>0) {
-			anchor = self.location.href.substr(self.location.href.indexOf("#")+1);
+			anchor = self.location.href.substring(self.location.href.indexOf("#")+1);
 			if (anchor.indexOf('_')==0) {
-				anchor = anchor.substr(1);
+				anchor = anchor.substring(1);
 			}
 			anchor = '#'+anchor;
 		}
@@ -616,7 +616,7 @@ ZMI.prototype.initInputFields = function(container) {
 			$("i:first",$(".collapse.show",context).prev('.card-header')).removeClass("fa-caret-right").addClass("fa-caret-down");
 			$("a.card-toggle",this).click(function(){
 				$(this).blur();
-				var id = $(this).attr('href').substr(1);
+				var id = $(this).attr('href').substring(1);
 				var key = "ZMS."+data_root+".collapse-"+id;
 				var $icon = $("i:first",this);
 				var showing = $icon.hasClass("fa-caret-down")?1:0;
@@ -1017,7 +1017,7 @@ ZMI.prototype.initInputFields = function(container) {
 			var $richedits = $('div[id^="zmiStandardEditor"]',this);
 			if ($richedits.length > 0) {
 				$richedits.each(function() {
-					var elName = $(this).attr("id").substr("zmiStandardEditor".length);
+					var elName = $(this).attr("id").substring("zmiStandardEditor".length);
 					zmiRichtextInit(elName);
 					var v = $("#"+elName).val();
 					function matchAll(source, regexp) {
@@ -1210,9 +1210,9 @@ ZMI.prototype.iframe = function(href, data, opt) {
 			var $result = $(result);
 			if ($("div#system_msg",$result).length>0) {
 				var manage_tabs_message = $("div#system_msg",$result).text();
-				manage_tabs_message = manage_tabs_message.substr(0,manage_tabs_message.lastIndexOf("("));
+				manage_tabs_message = manage_tabs_message.substring(0,manage_tabs_message.lastIndexOf("("));
 				var href = self.location.href;
-				href = href.substr(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
+				href = href.substring(0,href.indexOf("?"))+"?lang="+getZMILang()+"&manage_tabs_message="+manage_tabs_message;
 				self.location.href = href;
 			} else {
 				opt['body'] = result;
@@ -1447,7 +1447,7 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		if (!$(el).hasClass("loading")) {
 			if ($(".fa-plus-sign",this).length==0) {
 				var action = self.location.href;
-				action = action.substr(0,action.lastIndexOf("/")+1);
+				action = action.substring(0,action.lastIndexOf("/")+1);
 				if (context_id=="") {
 					action += "manage_properties";
 				}
@@ -1468,7 +1468,7 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 	});
 	// Build action and params.
 	var action = zmiParams['base_url'];
-	action = action.substr(0,action.lastIndexOf("/"));
+	action = action.substring(0,action.lastIndexOf("/"));
 	action += "/manage_ajaxZMIActions";
 	var params = {};
 	params['lang'] = lang;
@@ -1489,8 +1489,8 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 			var action = actions[1];
 			var optlabel = action[0];
 			var opticon = '<i class="fas fa-plus-sign"></i>';
-			optlabel = optlabel.substr("-----".length);
-			optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
+			optlabel = optlabel.substring("-----".length);
+			optlabel = optlabel.substring(0,optlabel.lastIndexOf("-----"));
 			optlabel = optlabel.basicTrim();
 			$("button.split-left",el).html(opticon+' '+optlabel);
 		}
@@ -1505,8 +1505,8 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 			var opttitle = action.length>3?action[3]:'';
 			if (optlabel.indexOf("-----") == 0 && optlabel.lastIndexOf("-----") > 0) {
 				opticon = '<i class="fas fa-caret-down"></i>';
-				optlabel = optlabel.substr("-----".length);
-				optlabel = optlabel.substr(0,optlabel.lastIndexOf("-----"));
+				optlabel = optlabel.substring("-----".length);
+				optlabel = optlabel.substring(0,optlabel.lastIndexOf("-----"));
 				optlabel = optlabel.basicTrim();
 				$ul.append('<div class="dropdown-header '+optvalue+'">'+opticon+' '+optlabel+'</div>');
 			}
@@ -1633,7 +1633,7 @@ ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 		$input.prop("checked",true);
 		zmiActionButtonsRefresh(sender);
 		var params = $ZMI.parseURLParams(target);
-		var target = target.indexOf("?")>0?target.substr(0,target.indexOf("?")):target;
+		var target = target.indexOf("?")>0?target.substring(0,target.indexOf("?")):target;
 		if (this.confirm($fm,target,params)) {
 			var c = 0;
 			for (var k in params) {
@@ -1859,7 +1859,7 @@ function untagSelected(tag, leftDelimiter, rightDelimiter) {
 		range = range.slice(0,range.length-1);
 		post = " " + post;
 	}
-	var tagName = tag.indexOf(" ")>0?tag.substr(0,tag.indexOf(" ")):tag;
+	var tagName = tag.indexOf(" ")>0?tag.substring(0,tag.indexOf(" ")):tag;
 	var startTag = leftDelimiter + tag + rightDelimiter;
 	var startRe = new RegExp(leftDelimiter + tag + "(.*?)" + rightDelimiter, "gi");
 	var endTag = leftDelimiter + "/" + tagName + rightDelimiter; 
@@ -1892,8 +1892,8 @@ function tagSelected(tag, leftDelimiter, rightDelimiter) {
 		range = range.slice(0,range.length-1);
 		post = " " + post;
 	}
-	var tagName = tag.indexOf(" ")>0?tag.substr(0,tag.indexOf(" ")):tag;
-	var tagAttrs = tag.indexOf(" ")>0?tag.substr(tag.indexOf(" ")):"";
+	var tagName = tag.indexOf(" ")>0?tag.substring(0,tag.indexOf(" ")):tag;
+	var tagAttrs = tag.indexOf(" ")>0?tag.substring(tag.indexOf(" ")):"";
 	if (tagName == 'a' && tagAttrs == '') {
 		if (range.indexOf("@") > 0) {
 			tagAttrs = ' href="mailto:'+range+'"';

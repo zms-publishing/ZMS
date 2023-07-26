@@ -260,7 +260,7 @@ def initialize(context):
         This code provides traceback for anything that happened in 
         registerClass(), assuming you're running Zope in debug mode."""
         
-        import sys, traceback, string
+        import sys, traceback
         type, val, tb = sys.exc_info()
         sys.stderr.write(''.join(traceback.format_exception(type, val, tb)))
         del type, val, tb

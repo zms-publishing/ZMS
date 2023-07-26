@@ -317,7 +317,7 @@ function zmiExportBtnClick(sender) {
 	var $fm = $(sender).closest("form");
 	var id = $('input[name="ids:list"]:checked',$fm).val();
 	var baseurl = self.location.href;
-	baseurl = baseurl.substr(0,baseurl.indexOf("/content"));
+	baseurl = baseurl.substring(0,baseurl.indexOf("/content"));
 	var href = baseurl+"/manage_exportObject?download:int=1&id="+id;
 	window.open(href);
 	return false;

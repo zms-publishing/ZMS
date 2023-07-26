@@ -354,7 +354,7 @@
 							xml += '<item key="colspan" type="int">' + 1 + '</item>\n';
 							var el_inputs = $('textarea,input',el_tds[j]);
 							for ( var k=0; k < el_inputs.length; k++) {
-								var key = el_inputs[k].id.substr(0,el_inputs[k].id.indexOf('_'));
+								var key = el_inputs[k].id.substring(0,el_inputs[k].id.indexOf('_'));
 								xml += '<item key="' + key + '"><![CDATA[' + $(el_inputs[k]).val() + ']]></item>\n';
 							}
 							xml += '</dictionary></item>\n';
@@ -382,7 +382,7 @@
 				function table_cell_edit(el_td) {
 					var el = $('textarea',el_td);
 					var el_name = el.attr('id');
-					table_cell_id = el_name.substr(el_name.indexOf('_')+1);
+					table_cell_id = el_name.substring(el_name.indexOf('_')+1);
 					// Set cell background.
 					el_td.addClass("active");
 					// Apply values.
@@ -575,7 +575,7 @@
 						// Remove table with inline-links (if exists).
 						$('table',this).remove();
 						$('textarea,input',this).each(function() {
-								var key = this.id.substr(0,this.id.indexOf('_'));
+								var key = this.id.substring(0,this.id.indexOf('_'));
 								$(this).attr( 'id', key + '_' + table_cell_uid);
 								$(this).attr( 'name', key + '_' + table_cell_uid);
 								if ( key.indexOf('format') == 0) {

@@ -149,9 +149,9 @@ function onSelectMetaIdChange() {
 	var html = "";
 	for (var i = 0; i < attrsSrc.length; i++) {
 		var src = attrsSrc[i];
-		var name = src.substr(0,src.indexOf('('));
-		var type = src.substr(src.indexOf('(')+1);
-		type = type.substr(0,type.indexOf(')'));
+		var name = src.subsubstringstr(0,src.indexOf('('));
+		var type = src.substring(src.indexOf('(')+1);
+		type = type.substring(0,type.indexOf(')'));
 		html += '<div class="form-group row">'
 		html += '<label class="col-sm-6 control-label text-right">' + src+'</label>';
 		html += '<div class="col-sm-6">';

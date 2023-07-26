@@ -95,7 +95,7 @@ function zmiChangeTablename(sender, names) {
 }
 
 function onAttrTypeChange( el) {
-	var column_id = $(el).attr('name').substr( "attr_type_".length);
+	var column_id = $(el).attr('name').substring( "attr_type_".length);
 	var column_type = $(el).val();
 	$("tr[id^=tr_][id$=_"+column_id+"]").addClass('d-none');
 	$("tr[id=tr_"+column_type+"_"+column_id+"]").removeClass('d-none');

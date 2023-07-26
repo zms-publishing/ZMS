@@ -77,7 +77,7 @@
         end = end - 1;
       }
       // Insert tabs
-      var splitRange = input.value.substr(start, end-start+1).split('\n');
+      var splitRange = input.value.substring(start, end-start+1).split('\n');
       var newText = "";
       for ( var i = 0; i < splitRange.length; i++) {
         if ( splitRange[i].indexOf( insText) >= 0 && splitRange[i].indexOf( insTab) == 0) {
@@ -89,7 +89,7 @@
       }
       newText = newText.substring( 0, newText.length - 1);
       // Insert text
-      input.value = input.value.substr(0, start) + newText + input.value.substr(end+1);
+      input.value = input.value.substring(0, start) + newText + input.value.substring(end+1);
       // cursor-position
       input.selectionStart = start;
       input.selectionEnd = start + newText.length;
@@ -175,7 +175,7 @@
         end = end - 1;
       }
       // Insert tabs
-      var splitRange = input.value.substr(start, end-start+1).split('\n');
+      var splitRange = input.value.substring(start, end-start+1).split('\n');
       var newText = "";
       for ( var i = 0; i < splitRange.length; i++) {
         if ( splitRange[i].indexOf( insText) >= 0 && splitRange[i].indexOf( insTab) == 0) {
@@ -187,7 +187,7 @@
       }
       newText = newText.substring( 0, newText.length - 1);
       // Insert text
-      input.value = input.value.substr(0, start) + newText + input.value.substr(end+1);
+      input.value = input.value.substring(0, start) + newText + input.value.substring(end+1);
       // cursor-position
       input.selectionStart = start;
       input.selectionEnd = start + newText.length;

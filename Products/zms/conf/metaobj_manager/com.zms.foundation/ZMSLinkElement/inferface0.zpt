@@ -98,7 +98,7 @@ $(function(){
 								var attr_ref = $input.attr("data-value");
 								if (v!="") {
 									attr_ref = attr_ref.replace(/;lang\=\w*/gi,'');
-									attr_ref = attr_ref.substr(0,attr_ref.indexOf('}'));
+									attr_ref = attr_ref.substring(0,attr_ref.indexOf('}'));
 									attr_ref += ';lang='+v+'}';
 								}
 								$input.val(attr_ref).change();

@@ -389,7 +389,7 @@ def getZipArchive(f):
   l = []
   
   # Saved zip-file in temp-folder.
-  tempfolder = tempfile.mktemp()
+  tempfolder = tempfile.mkdtemp()
   filename = tempfolder + os.sep + extractFilename(tempfolder) + '.zip'
   exportObj(f, filename)
   

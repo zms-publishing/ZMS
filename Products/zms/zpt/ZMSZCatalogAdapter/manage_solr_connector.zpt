@@ -128,7 +128,9 @@
 <script>
 //<!--
 	function open_as_xml() {
-		window.open($('iframe').attr('src').replace('&debug=1',''), name='_blank');
+		var src = $('iframe').attr('src');
+		src = src.replace(/\&debug=./i,'').replace(/\&pretty=./i,'');
+		window.open(src, name='_blank');
 	}
 //-->
 </script>

@@ -169,7 +169,7 @@ def manage_packMediaDb(self, REQUEST=None, RESPONSE=None):
   # Get filenames.
   filenames = mediadb.valid_filenames()
   standard.writeLog( self, "[manage_packMediaDb]: filenames %s"%str(filenames))
-  tempfolder = tempfile.mktemp()
+  tempfolder = tempfile.mkdtemp()
   os.makedirs(tempfolder)
   standard.writeLog( self, "[manage_packMediaDb]: tempfolder %s"%tempfolder)
   

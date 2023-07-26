@@ -565,7 +565,7 @@ class Exportable(_filtermanager.FilterItem):
       REQUEST.set('ZMS_HTML_EXPORT', 1)
       
       #-- Create temporary folder.
-      tempfolder = tempfile.mktemp()
+      tempfolder = tempfile.mkdtemp()
       ressources = self.exportRessources( tempfolder, REQUEST, from_zms=self.getLevel()==0, from_home=True)
       
       #-- Download HTML-pages.
@@ -591,7 +591,7 @@ class Exportable(_filtermanager.FilterItem):
     def toZippedXml(self, REQUEST, get_data=True):
 
       #-- Create temporary folder.
-      tempfolder = tempfile.mktemp()
+      tempfolder = tempfile.mkdtemp()
       ressources = self.exportRessources( tempfolder, REQUEST)
       
       #-- Get xml-export.

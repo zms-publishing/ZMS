@@ -5,7 +5,9 @@ from unittest.mock import Mock, MagicMock, patch
 from Products.zms import standard
 from Products.zms import zms
 
-class StandardTests(unittest.TestCase):
+# /Products/zms> python -m unittest discover -s unit_tests
+# /Products/zms> python -m unittest tests.test_standard.StandardTest
+class StandardTest(unittest.TestCase):
 
     def test_pystr(self):
         self.assertEqual(standard.pystr('ABC'),'ABC')
@@ -16,6 +18,14 @@ class StandardTests(unittest.TestCase):
         expected = 'index.html?a=b&c=d&e=1&f:list=1&f:list=2&f:list=3'
         v = standard.url_append_params('index.html?a=b',{'c':'d','e':1,'f':[1,2,3]})
         self.assertEqual(expected,v)
+
+    def test_remove_tags(self):
+        self.assertEqual('foo bar',standard.remove_tags('foo\n<\tscript\ttype="javascript"\n>window.onload(\'<script>\')</script\t\n>bar'))
+        self.assertEqual('foo bar',standard.remove_tags('foo\n<\tstyle\t\n>body {}</style\t\n>bar'))
+
+    def test_string_maxlen(self):
+        self.assertEqual('foo\nbar',standard.string_maxlen('foo\n<\tscript\ttype="javascript"\n>window.onload(\'<script>\')</script\t\n>bar'))
+        self.assertEqual('foo\nbar',standard.string_maxlen('foo\n<\tstyle\t\n>body {}</style\t\n>bar'))
 
     class FakeHTTPConnection:
         def __init__(self, status=200, reason='OK'):

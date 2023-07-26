@@ -26,6 +26,7 @@ from zope.interface import implementer
 import copy
 import sys
 import time
+from xml.dom import minidom
 # Product Imports.
 from Products.zms import standard
 from Products.zms import IZMSCatalogConnector
@@ -154,8 +155,8 @@ def recreateCatalog(self, zcm, lang):
         break
     index_name = 'zcat_index_%s'%attr_id
     index_type = zcm.getConfProperty('ZCatalog.TextIndexType','ZCTextIndex')
-    if attr_id == 'home_id':
-      index_type = KeywordIndex(attr_id)
+    if index_name == 'zcat_index_home_id':
+      index_type = KeywordIndex(index_name)
     elif attr_type == 'date':
       index_type = DateIndex(attr_id)
     extra = None
@@ -221,7 +222,7 @@ class ZMSZCatalogConnector(
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.search_xml:
     # --------------------------------------------------------------------------
-    def search_xml(self, q, page_index=0, page_size=10, debug=0, REQUEST=None, RESPONSE=None):
+    def search_xml(self, q, page_index=0, page_size=10, debug=0, pretty=0, REQUEST=None, RESPONSE=None):
       """ ZMSZCatalogConnector.search_xml """
       # Check constraints.
       page_index = int(page_index)
@@ -229,8 +230,7 @@ class ZMSZCatalogConnector(
       REQUEST.set('lang', REQUEST.get('lang', self.getPrimaryLanguage()))
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml; charset=utf-8'
-      debug = int(debug)
-      if debug:
+      if debug!=0:
         content_type = 'text/plain; charset=utf-8'
       RESPONSE.setHeader('Content-Type', content_type)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
@@ -300,20 +300,22 @@ class ZMSZCatalogConnector(
         xmlr += '</lst>'
       xml += str(xmlr)
       xml += '</response>'
+      if pretty!=0:
+        # Prettify xml
+        xml = minidom.parseString(xml).toprettyxml(indent='  ')
       return xml
 
 
     # --------------------------------------------------------------------------
     #  ZMSZCatalogConnector.suggest_xml:
     # --------------------------------------------------------------------------
-    def suggest_xml(self, q, fq='', limit=5, debug=0, REQUEST=None, RESPONSE=None):
+    def suggest_xml(self, q, fq='', limit=5, debug=0, pretty=0, REQUEST=None, RESPONSE=None):
       """ ZMSZCatalogConnector.suggest_xml """
       # Check constraints.
       REQUEST.set('lang', REQUEST.get('lang', self.getPrimaryLanguage()))
       RESPONSE = REQUEST.RESPONSE
       content_type = 'text/xml;charset=utf-8'
-      debug = int(debug)
-      if debug:
+      if debug!=0:
         content_type = 'text/plain; charset=utf-8'
       RESPONSE.setHeader('Content-Type', content_type)
       RESPONSE.setHeader('Cache-Control', 'no-cache')
@@ -351,6 +353,9 @@ class ZMSZCatalogConnector(
         xml += '</lst>'
         xml += '</lst>'
       xml += '</response>'
+      if pretty!=0:
+        # Prettify xml
+        xml = minidom.parseString(xml).toprettyxml(indent='  ')
       return xml
 
 

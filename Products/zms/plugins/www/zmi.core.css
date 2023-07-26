@@ -2377,7 +2377,7 @@ body.lazy_select_form footer .controls {
 	overflow-y: scroll;
 	overflow-x: hidden;
 	background: #e8f3fb;
-	margin: 0 0 3rem 0;
+	margin: 0 0 1rem 0;
 	direction: rtl;
 	display: block;
 	padding: 10px 12px;
@@ -2391,6 +2391,9 @@ body.lazy_select_form footer .controls {
 	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 	clear:both !important;
+}
+#zmsindex .zmi-sitemap-container {
+	margin: 0 0 3rem 0;
 }
 .ZMSZCatalogConnector .zmi-sitemap-container.full,
 #zmsindex .zmi-sitemap-container.full  {

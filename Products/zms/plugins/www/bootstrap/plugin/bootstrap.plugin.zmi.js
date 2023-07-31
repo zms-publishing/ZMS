@@ -1239,7 +1239,8 @@ $ZMI.objectTree = new ZMIObjectTree();
 
 ZMIObjectTree.prototype.init = function(s,href,p) {
 	var that = this;
-	that.p = p;
+	that.p = p?p:{};
+	that.p.params = that.p.params?that.p.params:{};
 	// Init preselected active.
 	that.active = [];
 	$(s).html('<i class="fas fa-spinner fa-spin"></i>&nbsp;'+getZMILangStr('MSG_LOADING'));

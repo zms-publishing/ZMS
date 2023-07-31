@@ -173,6 +173,7 @@ class PathHandler(object):
           request.RESPONSE.setHeader('Content-Type','application/json; charset=utf-8')
           return rest_api.RestApiController(self, TraversalRequest)
 
+        # Default Language.
         if request.get('lang') is None:
           lang = self.getPrimaryLanguage()
           request.set('lang', lang)

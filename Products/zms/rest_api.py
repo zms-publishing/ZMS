@@ -21,6 +21,7 @@ import copy
 import json
 # Product Imports.
 from Products.zms import _blobfields
+from Products.zms import mock_http
 from Products.zms import standard
 
 class api(object):
@@ -40,19 +41,29 @@ class api(object):
         it a single argument, which is the function object.
         """
         #--print("Inside __call__()")
-        def wrapped_f(*args):
-            #--print("Inside wrapped_f()")
+        def wrapped_f(*args, **kwargs):
+            #--print("Inside wrapped_f()", args, kwargs)
             #--print("Decorator arguments:", self.kwargs)
             data = f(*args)
             #--print("After f(*args)")
-            return self.kwargs['content_type'], data
+            decoration = {x for x in kwargs if kwargs.get(x)}
+            if decoration:
+                return {x:self.kwargs.get(x) for x in decoration}, data
+            return data
         return wrapped_f
 
 
-def get_lang_context(context):
-    langs = context.getLangIds()
-    monolang = context.REQUEST.get('lang') in langs
-    langs = [context.REQUEST.get('lang')] if monolang else langs
+def _get_request(context):
+    request = getattr(context,'REQUEST',mock_http.MockHTTPRequest())
+    return request
+
+
+def _get_context(context):
+    request = _get_request(context)
+    lang_ids = context.getLangIds()
+    lang = request.get('lang',None)
+    monolang = lang is not None
+    langs = [lang] if monolang else lang_ids
     return monolang, langs
 
 
@@ -88,20 +99,21 @@ def get_attr(node, id):
     return value
 
 
-def get_attrs(self, node, REQUEST):
-    monolang, langs = get_lang_context(node)
+def get_attrs(self, node):
+    request = _get_request(node)
+    monolang, langs = _get_context(node)
     data = get_meta_data(node)
     for lang in langs:
-        REQUEST.set('lang',lang)
+        request.set('lang',lang)
         id = 'active'
-        data[id if monolang else '%s_%s'%(id,lang)] = node.isActive(REQUEST)
+        data[id if monolang else '%s_%s'%(id,lang)] = node.isActive(request)
         id = 'title'
-        data[id if monolang else '%s_%s'%(id,lang)] = node.getTitle(REQUEST)
+        data[id if monolang else '%s_%s'%(id,lang)] = node.getTitle(request)
         id = 'titlealt'
-        data[id if monolang else '%s_%s'%(id,lang)] = node.getTitlealt(REQUEST)
+        data[id if monolang else '%s_%s'%(id,lang)] = node.getTitlealt(request)
     data['is_page'] = node.isPage()
     data['is_page_element'] = node.isPageElement()
-    data['index_html'] = node.getHref2IndexHtmlInContext(node,REQUEST=REQUEST)
+    data['index_html'] = node.getHref2IndexHtmlInContext(node,REQUEST=request)
     data['parent_uid'] = node.breadcrumbs_obj_path()[-2].get_uid() if len(node.breadcrumbs_obj_path()) > 1 else None
     data['home_id'] = node.getHome().id
     data['level'] = node.getLevel()
@@ -113,7 +125,7 @@ def get_attrs(self, node, REQUEST):
         if id in obj_attrs:
             if metaobj_attr['multilang']:
                 for lang in langs:
-                    REQUEST.set('lang',lang)
+                    request.set('lang',lang)
                     data[id if monolang else '%s_%s'%(id,lang)] = get_attr(node,id)
             else:
                 data[id] = get_attr(node,id)
@@ -125,20 +137,21 @@ class RestApiController(object):
     RestApiController
     """
 
-    def __init__(self, context, TraversalRequest):
-        self.context = context
-        self.method = TraversalRequest['REQUEST_METHOD']
-        self.ids = copy.copy(TraversalRequest['path_to_handle'][1:])
-        while self.ids:
-            id = self.ids[0]
-            if id.startswith('uid:'):
-              context = context.getLinkObj('{$%s}'%id)
-            elif id not in context.getPhysicalPath():
-              context = getattr(self.context, id, None)
-            if context is None:
-                break
+    def __init__(self, context=None, TraversalRequest=None):
+        if context and TraversalRequest:
             self.context = context
-            self.ids.remove(id)
+            self.method = TraversalRequest['REQUEST_METHOD']
+            self.ids = copy.copy(TraversalRequest['path_to_handle'][1:])
+            while self.ids:
+                id = self.ids[0]
+                if id.startswith('uid:'):
+                  context = context.getLinkObj('{$%s}'%id)
+                elif id not in context.getPhysicalPath():
+                  context = getattr(self.context, id, None)
+                if context is None:
+                    break
+                self.context = context
+                self.ids.remove(id)
 
     def __bobo_traverse__(self, TraversalRequest, name):
         return self
@@ -149,38 +162,39 @@ class RestApiController(object):
         if self.method == 'GET':
             content_type, data = 'text/plain', {}
             if self.context.meta_type == 'ZMSIndex':
-                content_type, data = self.zmsindex(self.context, REQUEST)
+                decoration, data = self.zmsindex(self.context, content_type=True)
             elif self.context.meta_type == 'ZMSMetamodelProvider':
-                content_type, data = self.metaobj_manager(self.context, REQUEST)
+                decoration, data = self.metaobj_manager(self.context, content_type=True)
             elif self.ids and self.ids[0] == 'get_body_content':
-                content_type, self.get_body_content(self.context, REQUEST)
+                decoration, self.get_body_content(self.context, content_type=True)
             elif self.ids and self.ids[0] == 'list_parent_nodes':
-                content_type, data = self.list_parent_nodes(self.context, REQUEST)
+                decoration, data = self.list_parent_nodes(self.context, content_type=True)
             elif self.ids and self.ids[0] == 'list_child_nodes':
-                content_type, data = self.list_child_nodes(self.context, REQUEST)
+                decoration, data = self.list_child_nodes(self.context, content_type=True)
             elif self.ids and self.ids[0] == 'list_tree_nodes':
-                content_type, data = self.list_tree_nodes(self.context, REQUEST)
+                decoration, data = self.list_tree_nodes(self.context, content_type=True)
             elif self.ids and self.ids[0] == 'get_parent_nodes':
-                content_type, data = self.get_parent_nodes(self.context, REQUEST)
+                decoration, data = self.get_parent_nodes(self.context, content_type=True)
             elif self.ids and self.ids[0] == 'get_child_nodes':
-                content_type, data = self.get_child_nodes(self.context, REQUEST)
+                decoration, data = self.get_child_nodes(self.context, content_type=True)
             elif self.ids and self.ids[0] == 'get_tree_nodes':
-                content_type, data = self.get_tree_nodes(self.context, REQUEST)
+                decoration, data = self.get_tree_nodes(self.context, content_type=True)
             else:
-                content_type, data = self.get(self.context, REQUEST)
-            REQUEST.RESPONSE.setHeader('Content-Type',content_type)
+                decoration, data = self.get(self.context, content_type=True)
+            REQUEST.RESPONSE.setHeader('Content-Type',decoration['content_type'])
             return json.dumps(data)
         return None
     
     @api(tag="zmsindex", pattern="/zmsindex", content_type="application/json")
-    def zmsindex(self, context, REQUEST):
+    def zmsindex(self, context):
+        request = _get_request(context)
         catalog = context.get_catalog()
-        q = {k:v for k,v in REQUEST.form.items() if v != ''}
+        q = {k:v for k,v in request.form.items() if v != ''}
         l = catalog(q)
         return [{item_name:r[item_name] for item_name in catalog.schema()} for r in l]
 
     @api(tag="metamodel", pattern="/metaobj_manager", content_type="application/json")
-    def metaobj_manager(self, context, REQUEST):
+    def metaobj_manager(self, context):
         data = {}
         for id in context.getMetaobjIds():
             d = {}
@@ -189,47 +203,52 @@ class RestApiController(object):
         return data
 
     @api(tag="content", pattern="/{path}", method="GET", content_type="application/json")
-    def get(self, context, REQUEST):
-        return get_attrs(self, context, REQUEST)
+    def get(self, context):
+        return get_attrs(self, context)
 
     @api(tag="content", pattern="/{path}/get_body_content", method="GET", content_type="text/html")
-    def get_body_content(self, context, REQUEST):
-        return context.getBodyContent(REQUEST,forced=False)
+    def get_body_content(self, context):
+        request = _get_request(context)
+        return context.getBodyContent(request, forced=False)
 
     @api(tag="navigation", pattern="/{path}/list_parent_nodes", method="GET", content_type="application/json")
-    def list_parent_nodes(self, context, REQUEST):
+    def list_parent_nodes(self, context):
         nodes = context.breadcrumbs_obj_path()
         return [get_meta_data(x) for x in nodes]
 
     @api(tag="navigation", pattern="/{path}/list_child_nodes", method="GET", content_type="application/json")
-    def list_child_nodes(self, context, REQUEST):
-        id_prefix = REQUEST.get('id_prefix','e')
-        meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in REQUEST.get('meta_types').split(',')] if REQUEST.get('meta_types') else None
-        nodes = context.getObjChildren(id_prefix, REQUEST, meta_types)
+    def list_child_nodes(self, context):
+        request = _get_request(context)
+        id_prefix = request.get('id_prefix','e')
+        meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in request.get('meta_types').split(',')] if request.get('meta_types') else None
+        nodes = context.getObjChildren(id_prefix,  request, meta_types)
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
         return [get_meta_data(x) for x in nodes]
 
     @api(tag="navigation", pattern="/{path}/list_tree_nodes", method="GET", content_type="application/json")
-    def list_tree_nodes(self, context, REQUEST):
-        nodes = context.getTreeNodes(REQUEST)
+    def list_tree_nodes(self, context):
+        request = _get_request(context)
+        nodes = context.getTreeNodes(request)
         return [get_meta_data(x) for x in nodes]
 
     @api(tag="navigation", pattern="/{path}/get_parent_nodes", method="GET", content_type="application/json")
-    def get_parent_nodes(self, context, REQUEST):
+    def get_parent_nodes(self, context):
         nodes = context.breadcrumbs_obj_path()
-        return [get_attrs(self, x, REQUEST) for x in nodes]
+        return [get_attrs(self, x) for x in nodes]
 
     @api(tag="navigation", pattern="/{path}/get_child_nodes", method="GET", content_type="application/json")
-    def get_child_nodes(self, context, REQUEST):
-        id_prefix = REQUEST.get('id_prefix','e')
-        meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in REQUEST.get('meta_types').split(',')] if REQUEST.get('meta_types') else None
-        nodes = context.getObjChildren(id_prefix, REQUEST, meta_types)
+    def get_child_nodes(self, context):
+        request = _get_request(context)
+        id_prefix = request.get('id_prefix','e')
+        meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in request.get('meta_types').split(',')] if request.get('meta_types') else None
+        nodes = context.getObjChildren(id_prefix,  request, meta_types)
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
-        return [get_attrs(self, x, REQUEST) for x in nodes]
+        return [get_attrs(self, x) for x in nodes]
 
     @api(tag="navigation", pattern="/{path}/get_tree_nodes", method="GET", content_type="application/json")
-    def get_tree_nodes(self, context, REQUEST):
-        nodes = context.getTreeNodes(REQUEST)
-        return [get_attrs(self, x, REQUEST) for x in nodes]
+    def get_tree_nodes(self, context):
+        request = _get_request(context)
+        nodes = context.getTreeNodes(request)
+        return [get_attrs(self, x) for x in nodes]

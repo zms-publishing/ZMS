@@ -7,6 +7,7 @@ import unittest
 
 # Product imports.
 from tests.zms_test_util import *
+from Products.zms import mock_http
 from Products.zms import zms
 
 # /Products/zms> python -m unittest discover -s unit_tests
@@ -17,7 +18,7 @@ class ZMSContainerObjectTest(ZMSTestCase):
 
   def setUp(self):
     folder = Folder('myzmsx')
-    folder.REQUEST = MockHTTPRequest({'lang':'eng','preview':'preview'})
+    folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview'})
     zmscontext = zms.initZMS(folder, 'content', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
     self.context = zmscontext
     print('[setUp] create %s'%self.temp_title)

@@ -5,6 +5,7 @@ import json
 
 # Product imports.
 from tests.zms_test_util import *
+from Products.zms import mock_http
 from Products.zms import standard
 
 # /Products/zms> python -m unittest discover -s unit_tests
@@ -15,7 +16,7 @@ class ZMSIndexTest(ZMSTestCase):
 
   def setUp(self):
     folder = Folder('site')
-    folder.REQUEST = MockHTTPRequest({'lang':'eng','preview':'preview','url':'{$}'})
+    folder.REQUEST = mock_http.MockHTTPRequest({'lang':'eng','preview':'preview','url':'{$}'})
     self.context = standard.initZMS(folder, 'myzmsx', 'titlealt', 'title', 'eng', 'eng', folder.REQUEST)
     print('[setUp] create %s'%self.temp_title)
 
@@ -24,7 +25,7 @@ class ZMSIndexTest(ZMSTestCase):
     zmsindex = self.context.getZMSIndex()
     self.assertIsNotNone(zmsindex)
     zmsindex.manage_reindex()
-    for document in self.context.getTreeNodes(MockHTTPRequest(), 'ZMSDocument'):
+    for document in self.context.getTreeNodes(mock_http.MockHTTPRequest(), 'ZMSDocument'):
         print('{$%s}'%document.get_uid())
         actual = self.context.getLinkObj('{$%s}'%document.get_uid())
         self.assertEqual(actual.id, document.id)

@@ -24,7 +24,7 @@ Installation (GNU/Linux, OSX/Darwin and Windows/WSL)
 ::
 
 $ cd ~
-$ python3 -m venv ~/vpy3
+$ python3 -m venv ~/ZMS
            
 **(2) Install [or Upgrade] the Product**
 
@@ -65,4 +65,4 @@ Prerequisites
 
     If you get compilation errors like ``fatal error: Python.h: No such file or directory compilation terminated``, install development headers using your system's recommended package manager.
 
-Copyright (c) 2000-2021 `HOFFMANN+LIEBENBERG <http://www.hoffmannliebenberg.de>`_ in association with `SNTL Publishing <http://www.sntl-publishing.com>`_, Berlin. Code released under the `GNU General Public License v3 <http://www.gnu.org/licenses/gpl.html>`_ license.
+Copyright (c) 2000-2023 `HOFFMANN+LIEBENBERG <http://www.hoffmannliebenberg.de>`_ in association with `SNTL Publishing <http://www.sntl-publishing.com>`_, Berlin. Code released under the `GNU General Public License v3 <http://www.gnu.org/licenses/gpl.html>`_ license.

@@ -112,7 +112,7 @@ def sort_item( i):
     elif not isinstance(i, str):
         mapping = umlaut_map
         for key, value in mapping.items():
-            i = i.replace(key, value)
+            i = str(i).replace(key, value)
     return i
 
 

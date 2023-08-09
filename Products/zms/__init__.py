@@ -95,6 +95,49 @@ def tpc_vote(self, txn):
 MemCacheMapping.tpc_vote = tpc_vote
 #################################################################################################################
 
+#################################################################################################################
+# FilesystemDirectoryView: Monkey patched Products.CMFCore.zcml
+#
+# Allow directory registration outside of package context to access arbitrary paths configured in overrides.zcml
+#
+# - path if installed in default mode: ~/unibe-cms/venv/lib/python3.11/site-packages/Products/zms
+# - path if installed in editable mode: ~/unibe-cms/backend/zms-core/Products/zms
+# => are normally used to extract the subdir -- but these lengths do not match the desired location below
+#
+# - path needed to be registered: ~/unibe-cms/frontend/web/estatico-handlebars/src/assets
+#################################################################################################################
+from Products.CMFCore import zcml
+from Products.CMFCore.DirectoryView import _dirreg
+from Products.CMFCore.DirectoryView import _generateKey
+from Products.CMFCore.DirectoryView import ignore
+from os import path
+
+_directory_regs = []
+
+def registerDirectory(_context, name, directory=None, recursive=False,
+                      ignore=ignore):
+    """ Add a new directory to the registry.
+    """
+    if directory is None:
+        subdir = 'skins/%s' % str(name)
+        filepath = path.join(_context.package.__path__[0], 'skins', str(name))
+    else:
+        # subdir = str(directory[len(_context.package.__path__[0]) + 1:])
+        subdir = '/%s' % str(name)
+        filepath = str(directory)
+
+    reg_key = _generateKey(_context.package.__name__, subdir)
+    _directory_regs.append(reg_key)
+
+    _context.action(
+        discriminator=('registerDirectory', reg_key),
+        callable=_dirreg.registerDirectoryByKey,
+        args=(filepath, reg_key, int(recursive), ignore),
+        )
+
+zcml.registerDirectory = registerDirectory
+#################################################################################################################
+
 try:
   from Products.CMFCore.DirectoryView import registerFileExtension
   from Products.CMFCore.FSFile import FSFile

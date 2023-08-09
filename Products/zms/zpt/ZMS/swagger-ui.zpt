@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html>
+<tal:block tal:define="is_authenticated python:'Anonymous' not in request['AUTHENTICATED_USER'].getRolesInContext(request)"
+><!DOCTYPE html>
+<html tal:condition="is_authenticated">
   <head>
     <link type="text/css" rel="stylesheet" href="/++resource++zms_/swagger-ui/swagger-ui.css">
     <link rel="shortcut icon" href="/++resource++zms_/swagger-ui/favicon-16x16.png">
@@ -27,4 +28,12 @@
     </script>
   </body>
 </html>
-    
+<html tal:condition="not:is_authenticated">
+  <head>
+    <title>ZMSAPI - LOGIN REQUIRED</title>
+  </head>
+  <body>
+    <pre>LOGIN REQUIRED</pre>
+  </body>
+</html>
+</tal:block>

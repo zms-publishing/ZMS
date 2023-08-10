@@ -1276,16 +1276,16 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		nodes = nodes.filter(that.p.filter);
 	}
 	nodes.forEach(node => {
-		const link_url = node.index_html;
-		const icon = $ZMI.icon(that.metamodel[node.meta_id].icon_clazz);
-		const anchor = "";
+		var link_url = node.index_html;
+		var icon = $ZMI.icon(that.metamodel[node.meta_id].icon_clazz);
+		var anchor = '';
 
 		if (node.meta_id == 'ZMSGraphic' && link_url) {
-			link_url = '<img data-id=&quot;' + node.uid + '&quot;' + ' src=&quot;' + link_url + '&quot;>';
+			link_url = `<img data-id=&quot;${node.uid}&quot; src=&quot;${link_url}&quot;>`;
 		} else if (node.meta_id == 'ZMSFile' && link_url) {
 			var $path_elements = link_url.split('/');
 			var $fname = $path_elements[$path_elements.length -1 ].split('?')[0];
-			link_url = '<a data-id=&quot;' + node.uid + '&quot;' + ' href=&quot;' + link_url + '&quot; target=&quot;_blank&quot;>' + $fname + '</a>'; 
+			link_url = `<a data-id=&quot;${node.uid}&quot; src=&quot;${link_url}&quot; target=&quot;_blank&quot;>${$fname}</a>`; 
 		};
 		var callback = that.p['toggleClick.callback'];
 		var css = [];
@@ -1295,18 +1295,18 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		if (node.restricted) {
 			css.push("restricted");
 		};
-		html += '<ul data-id="' + node.uid + '" class="zmi-page ' + node.meta_id + '">';
-		html += '<li class="' + css.join(' ') + '">';
+		html += `<ul data-id="${node.uid}" class="zmi-page ${node.meta_id}">`;
+		html += `<li class="${css.join(' ')}">`;
 		html += $ZMI.icon("fas fa-caret-right toggle",'title="+" onclick="$ZMI.objectTree.toggleClick(this' + (typeof callback=="undefined"?'':',' + callback) + ')"') + ' ';
 		if (node.is_page_element) {
-			html += '<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="' + getZMILangStr('TAB_PREVIEW') + '">' + icon + '</span> ';
+			html += `<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
 		}
-		html += '<a href="' + node.getPath + '"'
-				+ ' data-link-url="' + link_url + '"'
-				+ ' data-uid="' + node.uid + '"'
-				+ ' data-anchor="' + anchor + '"'
-				+ ' data-page-titlealt="' + node.titlealt.replace(/"/g,'&quot;').replace(/'/g,'&apos;') + '"'
-				+ ' onclick="return zmiSelectObject(this);return false;">';
+		html += `<a href="${node.getPath}" 
+			data-link-url="${link_url}" 
+			data-uid="${node.uid}" 
+			data-anchor="${anchor}"
+			data-page-titlealt="${node.titlealt.replace(/"/g,'&quot;').replace(/'/g,'&apos;')}"
+			onclick="return zmiSelectObject(this);return false;">`;
 		if (!node.is_page_element) {
 			html += icon + ' ';
 		}

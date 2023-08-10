@@ -1251,21 +1251,21 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 		}).responseJSON;
 	that.p.params.lang = getZMILang();
 	$.get($ZMI.get_rest_api_url(href)+'/get_parent_nodes', that.p.params, function(result) {
-		$(s).html("");
+		$(s).html('');
 		var context = s;
 		result.forEach(node => {
 			var html = that.addPages([node]);
 			$(context).append(html);
 			if (typeof that.p['addPages.callback'] == 'function') {
 				that.p['addPages.callback']();
-			}
-			context = "ul[data-id="+node.uid+"] li";
+			};
+			context = `ul[data-id="${node.uid}"] li`;
 			// Remember preselected active.
 			that.active.push({id:node.uid});
 		});
-		$("li",s).addClass("active");
+		$('li',s).addClass('active');
 		var callback = that.p['init.callback'];
-		if (typeof callback != "undefined") {
+		if (typeof callback != 'undefined') {
 			callback();
 		}
 	});

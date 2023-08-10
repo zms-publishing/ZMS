@@ -77,7 +77,7 @@
         end = end - 1;
       }
       // Insert tabs
-      var splitRange = input.value.substring(start, end-start+1).split('\n');
+      var splitRange = input.value.substring(start, end+1).split('\n');
       var newText = "";
       for ( var i = 0; i < splitRange.length; i++) {
         if ( splitRange[i].indexOf( insText) >= 0 && splitRange[i].indexOf( insTab) == 0) {
@@ -175,7 +175,7 @@
         end = end - 1;
       }
       // Insert tabs
-      var splitRange = input.value.substring(start, end-start+1).split('\n');
+      var splitRange = input.value.substring(start, end+1).split('\n');
       var newText = "";
       for ( var i = 0; i < splitRange.length; i++) {
         if ( splitRange[i].indexOf( insText) >= 0 && splitRange[i].indexOf( insTab) == 0) {

@@ -149,7 +149,7 @@ function onSelectMetaIdChange() {
 	var html = "";
 	for (var i = 0; i < attrsSrc.length; i++) {
 		var src = attrsSrc[i];
-		var name = src.subsubstringstr(0,src.indexOf('('));
+		var name = src.substring(0,src.indexOf('('));
 		var type = src.substring(src.indexOf('(')+1);
 		type = type.substring(0,type.indexOf(')'));
 		html += '<div class="form-group row">'

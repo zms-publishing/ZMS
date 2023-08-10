@@ -1279,7 +1279,7 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 	}
 	nodes.forEach(node => {
 		var link_url = node.index_html;
-		var icon = $ZMI.icon(that.metamodel[node.meta_id].icon_clazz);
+		var icon = that.metamodel[node.meta_id] ? $ZMI.icon(that.metamodel[node.meta_id].icon_clazz) : $ZMI.icon('far fa-file-alt');
 		var anchor = '';
 		var css = [ node.is_page ? 'is_page' : 'is_page_element' ];
 		var callback = that.p['toggleClick.callback'];
@@ -1299,7 +1299,7 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		};
 		html += `<ul data-id="${node.uid}" class="zmi-page ${node.meta_id}${node.is_page_element ? ' is_page_element' :''}">`;
 		html += `<li class="${css.join(' ')}">`;
-		html += $ZMI.icon("fas fa-caret-right toggle",'title="+" onclick="$ZMI.objectTree.toggleClick(this' + (typeof callback=="undefined"?'':',' + callback) + ')"') + ' ';
+		html += `<i class="fas fa-caret-right toggle" title="+" onclick="$ZMI.objectTree.toggleClick(this ${typeof callback=='undefined' ? '' : ',' + callback})"></i> `;
 		if (node.is_page_element) {
 			html += `<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
 		}

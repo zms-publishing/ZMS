@@ -9,7 +9,7 @@ function zmiSelectObject(sender) {
 	let href = $sender.attr("href");
 	let lang = getZMILang();
 	// same origin?
-	if (href.startsWith(origin)) {
+	if (href.startsWith(origin) || href.startsWith('/')) {
 			// change location in manage_main-frame
 			window.parent.manage_main.location.href=href + "/manage_main?lang=" + lang;
 	} else {
@@ -58,9 +58,7 @@ function zmiBookmarksChanged() {
 							var absolute_url = $(this).attr("absolute_url");
 							var icon = $(this).attr("zmi_icon");
 							if (i==0) {
-								html += '<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="Bookmarks">';
-								html += $ZMI.icon('far fa-bookmark')+' ';
-								html += '</a>';
+								html += `<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="Bookmarks">${$ZMI.icon('far fa-bookmark')}</a>`;
 								html += '<div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
 								html += '<div class="dropdown-header">Bookmarks</div>';
 							}
@@ -116,9 +114,7 @@ function zmiHistoryChanged() {
 								icon = $ZMI.icon(icon);
 							}
 							if (i==0) {
-								html += '<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="History">';
-								html += $ZMI.icon('far fa-clock')+' ';
-								html += '</a>';
+								html += `<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" title="History">${$ZMI.icon('far fa-clock')}</a>`;
 								html += '<div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">';
 								html += '<div class="dropdown-header">History</div>';
 							}

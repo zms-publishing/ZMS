@@ -1279,6 +1279,8 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		var link_url = node.index_html;
 		var icon = $ZMI.icon(that.metamodel[node.meta_id].icon_clazz);
 		var anchor = '';
+		var css = [ node.is_page ? 'is_page' : 'is_page_element' ];
+		var callback = that.p['toggleClick.callback'];
 
 		if (node.meta_id == 'ZMSGraphic' && link_url) {
 			link_url = `<img data-id=&quot;${node.uid}&quot; src=&quot;${link_url}&quot;>`;
@@ -1287,15 +1289,13 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 			var $fname = $path_elements[$path_elements.length -1 ].split('?')[0];
 			link_url = `<a data-id=&quot;${node.uid}&quot; src=&quot;${link_url}&quot; target=&quot;_blank&quot;>${$fname}</a>`; 
 		};
-		var callback = that.p['toggleClick.callback'];
-		var css = [];
 		if (!node.active) {
 			css.push("inactive");
 		};
 		if (node.restricted) {
 			css.push("restricted");
 		};
-		html += `<ul data-id="${node.uid}" class="zmi-page ${node.meta_id}">`;
+		html += `<ul data-id="${node.uid}" class="zmi-page ${node.meta_id}${node.is_page_element ? ' is_page_element' :''}">`;
 		html += `<li class="${css.join(' ')}">`;
 		html += $ZMI.icon("fas fa-caret-right toggle",'title="+" onclick="$ZMI.objectTree.toggleClick(this' + (typeof callback=="undefined"?'':',' + callback) + ')"') + ' ';
 		if (node.is_page_element) {

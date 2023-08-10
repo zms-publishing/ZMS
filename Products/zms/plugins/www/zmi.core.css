@@ -1883,6 +1883,10 @@ body.browse_iframe .toggle {
 .zmi.manage-menu .zmi-sitemap li > span i {
 	color:#ccc;
 }
+.zmi.manage-menu .zmi-sitemap ul.is_page_element,
+.zmi.manage-menu .zmi-sitemap li.is_page_element {
+	display:none;
+}
 .zmi.manage-menu li.active > a,
 .zmi.manage-menu li > a:hover {
 	color:white !important;

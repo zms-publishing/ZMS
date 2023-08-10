@@ -201,6 +201,7 @@ ZMI.prototype.icon = function(name,extra) {
 	icon += '></' + tag + '>';
  	return icon;
 }
+// Obsolete: helps updating old ZMS3/BS3 class names
 ZMI.prototype.icon_clazz = function(name) {
 	return name.replace(/icon-/,'fas fa-');
 }

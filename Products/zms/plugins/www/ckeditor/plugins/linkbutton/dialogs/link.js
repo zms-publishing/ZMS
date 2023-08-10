@@ -7,7 +7,7 @@ var data_id = null;
 function zmiSelectObject(sender) {
   var uid = $(sender).attr('data-uid');
   var abs_url = $(sender).attr('data-link-url');
-  data_id = uid;
+  data_id = "{$"+uid+"}";
   zmiDialog.getContentElement('info', 'url').setValue(abs_url);
   zmiDialog.click("ok");
   return false;

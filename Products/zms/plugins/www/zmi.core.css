@@ -671,6 +671,12 @@ body.zmi ul.zmi-container > .zmi-item .right video {
 	border-color:transparent;
 	box-shadow: none;
 }
+body.zmi .zmi-sitemap span.preview_on_hover:hover::after {
+	width: 35vw;
+	height: 35vh;
+	margin: 1rem 0 0 -.5rem;
+}
+
 @media (max-width: 767px) {
 	body.zmi header.navbar {
 		max-width: 100%;

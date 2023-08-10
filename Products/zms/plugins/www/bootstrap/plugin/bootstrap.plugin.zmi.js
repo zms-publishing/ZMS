@@ -1281,7 +1281,7 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 	nodes = nodes.length==undefined ? [nodes] : nodes;
 	nodes.forEach(node => {
 		var link_url = node.index_html;
-		var icon = that.metamodel[node.meta_id] ? $ZMI.icon(that.metamodel[node.meta_id].icon_clazz) : $ZMI.icon('far fa-file-alt');
+		var icon = that.metamodel[node.meta_id] ? $ZMI.icon(that.metamodel[node.meta_id].icon_clazz) : $ZMI.icon('far fa-file');
 		var anchor = '';
 		var css = [ node.is_page ? 'is_page' : 'is_page_element' ];
 		var callback = that.p['toggleClick.callback'];
@@ -1303,7 +1303,11 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		html += `<li class="${css.join(' ')}">`;
 		html += `<i class="fas fa-caret-right toggle" title="+" onclick="$ZMI.objectTree.toggleClick(this ${typeof callback=='undefined' ? '' : ',' + callback})"></i> `;
 		if (node.is_page_element) {
-			html += `<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
+			if (node.meta_id == 'ZMSGraphic' && node.index_html) {
+				html += `<span class="preview_on_hover" style="--preview_url:url(${node.index_html});cursor:help" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
+			} else {
+				html += `<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
+			}
 		}
 		html += `<a href="${node.getPath}" 
 			data-link-url="${link_url}" 

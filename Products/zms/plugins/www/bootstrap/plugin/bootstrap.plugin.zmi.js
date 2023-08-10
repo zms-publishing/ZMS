@@ -1276,7 +1276,9 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 	var html = "";
 	if (that.p.filter) {
 		nodes = nodes.filter(that.p.filter);
-	}
+	};
+	// Ensure nodes as list type
+	nodes = nodes.length==undefined ? [nodes] : nodes;
 	nodes.forEach(node => {
 		var link_url = node.index_html;
 		var icon = that.metamodel[node.meta_id] ? $ZMI.icon(that.metamodel[node.meta_id].icon_clazz) : $ZMI.icon('far fa-file-alt');

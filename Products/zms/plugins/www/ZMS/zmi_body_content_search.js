@@ -97,7 +97,7 @@ function GetPagination(fn, size, pageSize, pageIndex) {
 		}
 		html += ''
 			+ '<li class="page-item last' + (pageIndex==pageCount-1?" disabled":"") + '">'
-			+ '<a	class="page-link" href="'+(pageIndex==pageCount-1?'javascript:;':fn(pageIndex+1))+'">'+$ZMI.icon('fa fa-chevron-right icon-chevron-right')+'</a>'
+			+ '<a class="page-link" href="'+(pageIndex==pageCount-1?'javascript:;':fn(pageIndex+1))+'">'+$ZMI.icon('fa fa-chevron-right icon-chevron-right')+'</a>'
 			+ '</li>'
 			+ '</ul>'
 			+ '</nav><!-- .pagination -->';

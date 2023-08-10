@@ -802,9 +802,14 @@ $(function(){
 	// ++++++++++++
 	let new_row_counter = 0;
 	// Get number of language terms
+	let lang_dict = ZMI.prototype.getCachedValue('get_lang_dict');
 	let lang_count = 0;
-	if ( ZMI.prototype.getCachedValue('get_lang_dict')!='undefined' ) {
-		lang_count = Object.keys(JSON.parse(ZMI.prototype.getCachedValue('get_lang_dict'))).length
+	if ( lang_dict!='undefined' ) {
+		if ( typeof lang_dict == 'object' ) {
+			lang_count = Object.keys(ZMI.prototype.getCachedValue('get_lang_dict')).length
+		} else {
+			lang_count = Object.keys(JSON.parse(ZMI.prototype.getCachedValue('get_lang_dict'))).length
+		}
 	};
 
 	// Add click event function to add-buttons

@@ -2066,32 +2066,34 @@ function isScrolledIntoView(elem) {
 $ZMI.registerReady(function(){
 	const scrollToTopButton = document.getElementById('js-top');
 	const stickyControls = document.getElementsByClassName('sticky-controls')[0];
-	window.onscroll = function () {
-		let y = window.scrollY;
-		if ( y > 42 ) {
-			// Show back-to-top button on scroll
-			scrollToTopButton.className = "back-to-top show";
-		} else {
-			scrollToTopButton.className = "back-to-top hide";
-		}
-		if (stickyControls!=undefined) {
-			if ( !isScrolledIntoView(stickyControls) ){
-				stickyControls.classList.add('sticky-controls-activated');
+	if ( scrollToTopButton || stickyControls ) {
+		window.onscroll = function () {
+			let y = window.scrollY;
+			if ( y > 42 && scrollToTopButton ) {
+				// Show back-to-top button on scroll
+				scrollToTopButton.className = "back-to-top show";
+			} else {
+				scrollToTopButton.className = "back-to-top hide";
 			}
-			if (y == 0) {
-				stickyControls.classList.remove('sticky-controls-activated');
+			if (stickyControls!=undefined) {
+				if ( !isScrolledIntoView(stickyControls) ){
+					stickyControls.classList.add('sticky-controls-activated');
+				}
+				if (y == 0) {
+					stickyControls.classList.remove('sticky-controls-activated');
+				}
 			}
-		}
-	};
-	// Scroll back-to-top after button click
-	if (scrollToTopButton) {
-		scrollToTopButton.onclick = () => {
-			$('html, body').animate({
-				scrollTop: 0
-			}, 600);
-			return false;
 		};
-	}
+		// Scroll back-to-top after button click
+		if (scrollToTopButton) {
+			scrollToTopButton.onclick = () => {
+				$('html, body').animate({
+					scrollTop: 0
+				}, 600);
+				return false;
+			};
+		};
+	};
 });
 
 // /////////////////////////////////////////////////////////////////////////////

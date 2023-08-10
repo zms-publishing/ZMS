@@ -168,15 +168,15 @@ class PathHandler(object):
       else:
         standard.writeLog( self, '[__bobo_traverse__]: otherwise do some magic')
         
-        if request.get('lang') is None:
-          lang = self.getPrimaryLanguage()
-          request.set('lang', lang)
-        
-        # Package-Home.
+        # REST-API.
         if name == '++rest_api':
           request.RESPONSE.setHeader('Content-Type','application/json; charset=utf-8')
           return rest_api.RestApiController(self, TraversalRequest)
 
+        if request.get('lang') is None:
+          lang = self.getPrimaryLanguage()
+          request.set('lang', lang)
+        
         # Package-Home.
         if name == '$ZMS_HOME':
           i = TraversalRequest['path_to_handle'].index(name)

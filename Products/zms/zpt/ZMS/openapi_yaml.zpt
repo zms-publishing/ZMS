@@ -69,6 +69,13 @@ paths:
           schema:
             type: string
             example: /
+        - name: lang
+          in: query
+          description: language for monolingual result
+          required: false
+          schema:
+            type: string
+            example: eng
       responses:
         '200':    # status code
           description: ZMS-Object

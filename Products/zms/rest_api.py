@@ -49,10 +49,10 @@ class api(object):
         return wrapped_f
 
 
-def get_lang_context(self):
-    langs = self.context.getLangIds()
-    monolang = self.ids and self.ids[-1] in langs
-    langs = self.ids[-1:] if monolang else langs
+def get_lang_context(context):
+    langs = context.getLangIds()
+    monolang = context.REQUEST.get('lang') in langs
+    langs = [context.REQUEST.get('lang')] if monolang else langs
     return monolang, langs
 
 
@@ -89,7 +89,7 @@ def get_attr(node, id):
 
 
 def get_attrs(self, node, REQUEST):
-    monolang, langs = get_lang_context(self)
+    monolang, langs = get_lang_context(node)
     data = get_meta_data(node)
     for lang in langs:
         REQUEST.set('lang',lang)
@@ -204,7 +204,8 @@ class RestApiController(object):
     @api(tag="navigation", pattern="/{path}/list_child_nodes", method="GET", content_type="application/json")
     def list_child_nodes(self, context, REQUEST):
         id_prefix = REQUEST.get('id_prefix','e')
-        nodes = context.getObjChildren(id_prefix,REQUEST)
+        meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in REQUEST.get('meta_types').split(',')] if REQUEST.get('meta_types') else None
+        nodes = context.getObjChildren(id_prefix, REQUEST, meta_types)
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
         return [get_meta_data(x) for x in nodes]
@@ -222,7 +223,8 @@ class RestApiController(object):
     @api(tag="navigation", pattern="/{path}/get_child_nodes", method="GET", content_type="application/json")
     def get_child_nodes(self, context, REQUEST):
         id_prefix = REQUEST.get('id_prefix','e')
-        nodes = context.getObjChildren(id_prefix,REQUEST)
+        meta_types = [context.PAGES if str(x)==str(context.PAGES) else context.PAGEELEMENTS if str(x)==str(context.PAGEELEMENTS) else x for x in REQUEST.get('meta_types').split(',')] if REQUEST.get('meta_types') else None
+        nodes = context.getObjChildren(id_prefix, REQUEST, meta_types)
         if context.meta_type == 'ZMS':
             nodes.extend(context.getPortalClients())
         return [get_attrs(self, x, REQUEST) for x in nodes]

@@ -1248,7 +1248,8 @@ ZMIObjectTree.prototype.init = function(s,href,p) {
 		url: $ZMI.get_rest_api_url(href)+'/metaobj_manager',
 		async: false
 		}).responseJSON;
-	$.get($ZMI.get_rest_api_url(href)+'/get_parent_nodes/'+getZMILang(), {}, function(result) {
+	that.p.params.lang = getZMILang();
+	$.get($ZMI.get_rest_api_url(href)+'/get_parent_nodes', that.p.params, function(result) {
 		$(s).html("");
 		var context = s;
 		result.forEach(node => {
@@ -1331,7 +1332,8 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 		var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
 		// Set wait-cursor.
 		$container.append('<div id="loading" class="zmi-page"><i class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'</div>');
-		$.get($ZMI.get_rest_api_url(href)+'/'+uid+'/get_child_nodes/'+getZMILang(), {}, function(result){
+		that.p.params.lang = getZMILang();
+		$.get($ZMI.get_rest_api_url(href)+'/'+uid+'/get_child_nodes', that.p.params, function(result){
 			// Reset wait-cursor.
 			$("#loading").remove();
 			// Get and iterate result.

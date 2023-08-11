@@ -1304,9 +1304,9 @@ ZMIObjectTree.prototype.addPages = function(nodes) {
 		html += `<i class="fas fa-caret-right toggle" title="+" onclick="$ZMI.objectTree.toggleClick(this ${typeof callback=='undefined' ? '' : ',' + callback})"></i> `;
 		if (node.is_page_element) {
 			if (node.meta_id == 'ZMSGraphic' && node.index_html) {
-				html += `<span class="preview_on_hover" style="--preview_url:url(${node.index_html});cursor:help" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
+				html += `<span class="preview_on_hover preview_image preview_ready" style="--preview_url:url(${node.index_html});cursor:help" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
 			} else {
-				html += `<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
+				html += `<span class="preview_on_hover preview_text" style="cursor:help" data-preview_text="Loading ..." onmouseover="$ZMI.objectTree.preview_load(this)" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
 			}
 		}
 		html += `<a href="${node.getPath}" 
@@ -1374,30 +1374,19 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 }
 
 /**
- * Click preview.
+ * Load preview.
  */
-ZMIObjectTree.prototype.previewClick = function(sender) {
-	var that = this;
+ZMIObjectTree.prototype.preview_load = function(sender) {
 	var data_id = $(sender).closest('.zmi-page').attr('data-id');
-	if($('#zmi_preview_'+data_id).length > 0) {
-		$('#zmi_preview_'+data_id).remove();
-	}
-	else {
-		var coords = $ZMI.getCoords(sender);
+	if(!$(sender).hasClass('preview_loaded')) {
 		var abs_url = $(sender).parent('li').children('a[href]').attr('href');
 		$.get($ZMI.get_rest_api_url(abs_url)+'/get_body_content',{lang:getZMILang(),preview:'preview'},function(data){
-			$('div.zmi-browse-iframe-preview').remove();
-			$('body').append(''
-				+'<div id="zmi_preview_'+data_id+'">'
-					+'<div class="zmi-browse-iframe-preview">'
-						+'<div class="btn btn-default" title="' + getZMILangStr('BTN_CLOSE') + '" style="position:absolute;border-radius:0;" onclick="$(\'#zmi_preview_'+data_id+'\').remove()"><i class="icon-remove fas fa-times"></i></div>'
-						+data
-					+'</div><!-- .zmi-browse-iframe-preview -->'
-				+'</div><!-- #zmi-preview -->'
-			);
-			$('div.zmi-browse-iframe-preview').css({top:coords.y+$(sender).height(),left:coords.x+$(sender).width()});
+			// Clean data as plain text
+			data = $(JSON.parse(data)).text().replaceAll('\n','');
+			$(sender).attr('data-preview_text',data);
+			$(sender).addClass('preview_loaded');
 		});
-	}
+	};
 }
 
 // #############################################################################

@@ -665,6 +665,14 @@ body.zmi ul.zmi-container > .zmi-item .right video {
 	box-shadow: 5px 5px 20px #c0c0c094;
 	transition: opacity .75s, height .5s, box-shadow 1s, background-color 1s  ease; 
 }
+.preview_on_hover.preview_text:hover::after {
+	content:attr(data-preview_text);
+	background-image:none;
+	padding:0.35rem .5rem;
+	font-size:smaller;
+	overflow: hidden;
+	overflow-y:scroll;
+}
 body.zmi ul.zmi-container > .zmi-item .right video {
 	margin-top:1.5rem;
 	background-color:transparent;

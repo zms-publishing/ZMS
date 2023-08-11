@@ -166,7 +166,7 @@ class RestApiController(object):
             elif self.context.meta_type == 'ZMSMetamodelProvider':
                 decoration, data = self.metaobj_manager(self.context, content_type=True)
             elif self.ids and self.ids[0] == 'get_body_content':
-                decoration, self.get_body_content(self.context, content_type=True)
+                decoration, data = self.get_body_content(self.context, content_type=True)
             elif self.ids and self.ids[0] == 'list_parent_nodes':
                 decoration, data = self.list_parent_nodes(self.context, content_type=True)
             elif self.ids and self.ids[0] == 'list_child_nodes':

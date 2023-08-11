@@ -392,23 +392,28 @@ class MediaDb(
     def retrieveFileStreamIterator(self, filename, REQUEST=None):
       threshold = 2 << 16 # 128 kb
       local_filename = self.targetFile(filename)
-      try:
-        fsize = os.path.getsize( local_filename)
-      except:
-        fsize = 0
-        raise NotFound
-      if fsize < threshold or REQUEST.RESPONSE is None:
-        try:
-          f = open( local_filename, 'rb')
-          data = f.read()
-        finally:
-          f.close()
+      if not os.path.exists(local_filename):
+        # File not found: return dummy file.
+        msg = 'File not found: %s'%(local_filename)
+        msg = msg.encode('utf-8')
+        standard.writeBlock(self, msg)
+        filename = 'file_not_found_0.txt'
+        mt, enc, data, fsize = 'plain/text', 'utf-8', msg, len(msg)
       else:
-        data = filestream_iterator( local_filename, 'rb')
-      try:
-        mt, enc = standard.guess_content_type( local_filename, data)
-      except:
-        mt, enc = 'content/unknown', ''
+        # File found.
+        fsize = os.path.getsize( local_filename)
+        if fsize < threshold or REQUEST.RESPONSE is None:
+          try:
+            f = open( local_filename, 'rb')
+            data = f.read()
+          finally:
+            f.close()
+        else:
+          data = filestream_iterator( local_filename, 'rb')
+        try:
+          mt, enc = standard.guess_content_type( local_filename, data)
+        except:
+          mt, enc = 'application/octet-stream', ''
       # Remove timestamp from filename.
       filename = filename[:filename.rfind('_')]+filename[filename.rfind('.'):]
       standard.set_response_headers(filename,mt,fsize,REQUEST)

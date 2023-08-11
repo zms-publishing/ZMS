@@ -672,6 +672,7 @@ body.zmi ul.zmi-container > .zmi-item .right video {
 	font-size:smaller;
 	overflow: hidden;
 	overflow-y:scroll;
+	white-space: normal;
 }
 body.zmi ul.zmi-container > .zmi-item .right video {
 	margin-top:1.5rem;

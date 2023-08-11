@@ -325,7 +325,7 @@ components:
         <tal:block tal:repeat="property properties"
         ><tal:block tal:define="metaObjAttr python:here.getMetaobjAttr(metaObjId,property)"
         ><tal:block tal:content="python:property=='id' and 'attr_id' or property">the property id</tal:block>:
-          description: <tal:block tal:content="python:standard.re_sub(pattern='<[^>]*>', replacement=' ', subject=metaObjAttr.get('name'))">it's description</tal:block>
+          description: <tal:block tal:content="python:standard.re_sub(pattern='<[^>]*>|\042', replacement='', subject=metaObjAttr.get('name'))">it's description</tal:block>
           type: <tal:block tal:content="metaObjAttr/type">it's type</tal:block>
         </tal:block
         ></tal:block

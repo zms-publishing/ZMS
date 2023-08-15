@@ -5,7 +5,7 @@ function zmiSelectObject(sender) {
 	var parent = self.window.parent;
 	var uid = $(sender).attr('data-uid');
 	var selectedLang = zmiParams['selectedLang'];
-	uid = "${"+uid+(typeof selectedLang=='undefined' || selectedLang==''?'':';lang='+selectedLang)+"}";
+	uid = "{$"+uid+(typeof selectedLang=='undefined' || selectedLang==''?'':';lang='+selectedLang)+"}";
 	var href = $(sender).attr('href');
 	var titlealt = $(sender).attr('data-page-titlealt');
 	console.log('zmiSelectObject: uid='+uid+'\nhref='+href+'\ntitlealt='+titlealt);

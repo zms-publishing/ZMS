@@ -202,7 +202,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     #  ZMSLinkElement.getRemoteObj:
     # --------------------------------------------------------------------------
     def getRemoteObj(self):
-      value = None
+      value = {}
       ref = self.getRef()
       remote_ref = rest_api.get_rest_api_url( ref)  
       try:
@@ -292,7 +292,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     def getTitlealt(self, REQUEST):
       rtn = ''
       if self.getEmbedType() == 'remote':
-        return self.getRemoteObj()['titlealt']
+        return self.getRemoteObj().get('titlealt','Unknown')
       else:
         proxy = self.getProxy()
         rtn = self.getTitlealtPROXY( proxy, REQUEST)
@@ -320,7 +320,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     def getTitle(self, REQUEST):
       rtn = ''
       if self.getEmbedType() == 'remote':
-        return self.getRemoteObj()['title']
+        return self.getRemoteObj().get('title','Unknown')
       else:
         proxy = self.getProxy()
         rtn = self.getTitlePROXY( proxy, REQUEST)
@@ -347,7 +347,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     def isActive(self, REQUEST):
       active = super(ZMSLinkElement, self).isActive(REQUEST) 
       if self.getEmbedType() == 'remote':
-        return self.getRemoteObj()['active']
+        return self.getRemoteObj().get('active',False)
       else:
         ref_obj = self.getRefObj()
         if ref_obj is not None:
@@ -368,7 +368,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     def isPage(self):
       rtnVal = False
       if self.getEmbedType() == 'remote':
-        return self.getRemoteObj()['is_page']
+        return self.getRemoteObj().get('is_page',False)
       else:
         if self.isEmbedded():
           ref_obj = self.getRefObj()
@@ -383,7 +383,7 @@ class ZMSLinkElement(zmscustom.ZMSCustom):
     def isPageElement(self): 
       rtnVal = False
       if self.getEmbedType() == 'remote':
-        return self.getRemoteObj()['is_page_element']
+        return self.getRemoteObj().get('is_page_element',False)
       else:
         if self.isEmbedded():
           ref_obj = self.getRefObj()

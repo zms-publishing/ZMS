@@ -24,6 +24,7 @@ import sys
 import time
 from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+from Products.zms import standard
 
 # Umlauts
 umlaut_map = {
@@ -103,17 +104,19 @@ umlaut_map = {
         u'Я': 'JA',}
 
 def sort_item( i):
-    if isinstance(i, time.struct_time):
-        i = time.strftime('%Y%m%d%H%M%S',i)
-    elif isinstance(i, float):
-        pass
-    elif i is None or i == '':
-        i = 0
-    elif not isinstance(i, str):
-        mapping = umlaut_map
-        for key, value in mapping.items():
-            i = str(i).replace(key, value)
-    return i
+  if isinstance(i, time.struct_time):
+    i = time.strftime('%Y%m%d%H%M%S',i)
+  elif isinstance(i, float):
+    pass
+  elif i is None or i == '':
+    i = 0
+  elif not isinstance(i, int):
+    i = standard.pystr(i)
+    mapping = umlaut_map
+    for key in mapping:
+      try: i = i.replace(key, mapping[key])
+      except: pass
+  return i
 
 
 # Datatypes.

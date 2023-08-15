@@ -23,7 +23,7 @@ function zmiOnSubmitEventHandler(el) {
 			// Set wait-cursor.
 			$(document.body).css( "cursor", "wait");
 			// JQuery.AJAX.get
-			$.get( remoteHref+"/ajaxGetBodyContent", remoteResponse);
+			$.get( $ZMI.get_rest_api_url(remoteHref)+'/get_body_content', remoteResponse);
 			// Set time-out.
 			setTimeout("remoteResponseTimedout()",remoteHrefResponseTimeout);
 		}
@@ -64,7 +64,7 @@ initAttrRef = function() {
 		var $select = $("select#attr_type");
 		$("option",$select).each(function() {
 			$(this).prop("disabled","");
-			if (v.indexOf("{$")!=0 && $.inArray($(this).prop("value"),["embed","recursive","remote"])>=0) {
+			if (v.indexOf("{$")!=0 && $.inArray($(this).prop("value"),["embed","recursive"])>=0) {
 				$(this).prop("disabled","disable");
 			}
 		});

@@ -37,13 +37,25 @@
 		<div class="form-group row">
 			<label class="col-sm-2 control-label"><span>Interface</span></label>
 			<div class="col-sm-10">
-				<div class="single-line"><textarea title="Interface" class="form-control form-control-sm" name="interface" tal:content="python:table.get('interface','')"></textarea></div><!-- .single-line -->
+				<div class="single-line">
+					<textarea title="Interface" name="interface"
+						style="font-size:smaller!important" 
+						class="form-control form-control-sm alert-info" 
+						tal:content="python:table.get('interface','')">
+					</textarea>
+				</div><!-- .single-line -->
 			</div><!-- .col-sm-2 -->
 		</div><!-- .form-group -->
 		<div class="form-group row">
 			<label class="col-sm-2 control-label"><span>Filter</span></label>
 			<div class="col-sm-10">
-				<div class="single-line"><textarea title="Filter" class="form-control form-control-sm" name="filter" tal:content="python:table.get('filter','')"></textarea></div><!-- .single-line -->
+				<div class="single-line">
+					<textarea title="Filter" name="filter"
+						style="font-size:smaller!important" 
+						class="form-control form-control-sm alert-info" 
+						tal:content="python:table.get('filter','')">
+					</textarea>
+				</div><!-- .single-line -->
 			</div><!-- .col-sm-2 -->
 		</div><!-- .form-group -->
 		<div class="form-group row">
@@ -58,7 +70,7 @@
 						<td style="width:100%;">&nbsp;</td>
 					</tr>
 					<tr tal:repeat="action python:['insert','update','delete','select']">
-						<td><strong tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())">the action</strong></td>
+						<td tal:content="structure python:here.getZMILangStr('BTN_%s'%action.upper())">the action</td>
 						<td style="text-align:center;" tal:repeat="role python:[x for x in here.getUserDefinedRoles() if x not in ['ZMSSubscriber','ZMSUserAdministrator']]">
 							<input tal:attributes="name python:'access_%s:list'%action; value role; checked python:['','checked'][int(role in access.get(action,[role]))]" type="checkbox"/>
 						</td>
@@ -76,8 +88,8 @@
 			<th tal:content="python:here.getZMILangStr('ATTR_TYPE')">Type</th>
 		</thead>
 		<tbody>
-			<tal:block tal:repeat="column table/columns">
-			<tr tal:attributes="class python:' '.join([[],['zmi-selected']][int(column['id']==request.get('attr_id'))])">
+			<tr tal:repeat="column table/columns"
+				tal:attributes="class python:' '.join([[],['zmi-selected']][int(column['id']==request.get('attr_id'))])">
 				<td>
 					<select class="form-control form-control-sm zmi-sort"  tal:attributes="name python:'attr_index_%s:int'%column['id']; onchange python:'zmiFormSubmit(this,{btn:\'move_to\',id:\'%s\',\'attr_id\':\'%s\',key:\'attr\',\'pos:int\':this.selectedIndex})'%(table['id'],column['id'])">
 						<option tal:repeat="i python:range(0,len(table['columns']))" tal:attributes="selected python:['','selected'][int(i==table['columns'].index(column))]" tal:content="python:i+1">i+1</option>
@@ -280,7 +292,6 @@
 					</table>
 				</td>
 			</tr>
-			</tal:block>
 			<tr class="row_insert">
 				<td><span class="btn btn-light"><i class="fas fa-plus"></i></span></td>
 				<td><input class="form-control form-control-sm" name="attr_id" type="text"/></td>

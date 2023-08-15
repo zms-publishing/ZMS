@@ -49,13 +49,13 @@ def getTransFilename(self, folder, trans):
 # ------------------------------------------------------------------------------
 def processData(self, processId, data, trans=None):
   # Create temporary folder.
-  folder = tempfile.mktemp()
+  tempfolder = tempfile.mkdtemp()
   # Save data to file.
-  filename = _fileutil.getOSPath('%s/in.dat'%folder)
+  filename = _fileutil.getOSPath('%s/in.dat'%tempfolder)
   _fileutil.exportObj(data, filename)
   # Save transformation to file.
   if trans:
-      _fileutil.exportObj(trans, getTransFilename(self, folder, trans))
+      _fileutil.exportObj(trans, getTransFilename(self, tempfolder, trans))
   # Process file.
   filename = processFile(self, processId, filename, trans)
   # Read data from file.
@@ -64,7 +64,7 @@ def processData(self, processId, data, trans=None):
   f.close()
   # Remove temporary folder.
   if not self.getConfProperty('ZMS.debug', 0):
-      _fileutil.remove(folder, deep=1)
+      _fileutil.remove(tempfolder, deep=True)
   # Return data.
   return data
 
@@ -248,7 +248,7 @@ class FilterItem(object):
       ob_filter = self.getFilterManager().getFilter(id)
       ob_filter_format = ob_filter.get('format', '')
       # Create temporary folder.
-      tempfolder = tempfile.mktemp()
+      tempfolder = tempfile.mkdtemp()
       ressources = self.exportRessources( tempfolder, REQUEST, from_zms=ob_filter_format=='XHTML', from_home=ob_filter_format=='XHTML')
       # Export data to file.
       if ob_filter_format == 'export':

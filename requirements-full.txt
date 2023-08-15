@@ -21,7 +21,6 @@ beautifulsoup4
 lxml
 Markdown
 pyScss
-xmltodict
 ftfy
 pdfminer.six
 

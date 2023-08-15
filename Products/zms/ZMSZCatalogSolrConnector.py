@@ -40,7 +40,7 @@ class ZMSZCatalogSolrConnector(
     # Properties.
     # -----------
     meta_type = 'ZMSZCatalogSolrConnector'
-    icon = "++resource++zms_/img/solr.png"
+    zmi_icon = "fas fa-search"
 
     # Management Interface.
     # ---------------------

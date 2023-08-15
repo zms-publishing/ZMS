@@ -28,9 +28,9 @@ ZMILocalStorageAPI.prototype.get = function(k,d) {
 		var lsk = l[i];
 		var nv = null;
 		if (lsk.indexOf(k+".")==0) {
-			var nk = lsk.substr((k+".").length);
+			var nk = lsk.substring((k+".").length);
 			if (nk.indexOf(".") > 0) {
-				nk = nk.substr(0,nk.indexOf("."));
+				nk = nk.substring(0,nk.indexOf("."));
 				if ($.inArray(k+"."+nk,done)<0) {
 					nv = $ZMILocalStorageAPI.get(k+"."+nk);
 					done.push(k+"."+nk);

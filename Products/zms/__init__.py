@@ -48,6 +48,50 @@ __doc__ = """initialization module."""
 # Version string.
 __version__ = '0.1'
 
+#################################################################################################################
+# FilesystemDirectoryView: Monkey patched Products.CMFCore.zcml
+#
+# Allow directory registration outside of package context to access arbitrary paths configured in overrides.zcml
+# 
+# Background: 
+# The function Products.CMFCore.zcml.registerDirectory() cuts the registering directory path exactly
+# at the length of the overrides.zcml containing package path and uses the remaining right as a 'reg_key'.
+# If the registering directory path is outside the package context this will end up in strange substrings 
+# of the target path string. The patch normalizes the generation of the uses the 'reg_key' by using the 
+# name-attribute as the path root (Line 80).
+#################################################################################################################
+from Products.CMFCore import zcml
+from Products.CMFCore.DirectoryView import _dirreg
+from Products.CMFCore.DirectoryView import _generateKey
+from Products.CMFCore.DirectoryView import ignore
+from os import path
+
+_directory_regs = []
+
+def registerDirectory(_context, name, directory=None, recursive=False,
+                      ignore=ignore):
+    """ Add a new directory to the registry.
+    """
+    if directory is None:
+        subdir = 'skins/%s' % str(name)
+        filepath = path.join(_context.package.__path__[0], 'skins', str(name))
+    else:
+        # subdir = str(directory[len(_context.package.__path__[0]) + 1:])
+        subdir = '/%s' % str(name)
+        filepath = str(directory)
+
+    reg_key = _generateKey(_context.package.__name__, subdir)
+    _directory_regs.append(reg_key)
+
+    _context.action(
+        discriminator=('registerDirectory', reg_key),
+        callable=_dirreg.registerDirectoryByKey,
+        args=(filepath, reg_key, int(recursive), ignore),
+        )
+
+zcml.registerDirectory = registerDirectory
+#################################################################################################################
+
 try:
   from Products.CMFCore.DirectoryView import registerFileExtension
   from Products.CMFCore.FSFile import FSFile
@@ -260,7 +304,7 @@ def initialize(context):
         This code provides traceback for anything that happened in 
         registerClass(), assuming you're running Zope in debug mode."""
         
-        import sys, traceback, string
+        import sys, traceback
         type, val, tb = sys.exc_info()
         sys.stderr.write(''.join(traceback.format_exception(type, val, tb)))
         del type, val, tb

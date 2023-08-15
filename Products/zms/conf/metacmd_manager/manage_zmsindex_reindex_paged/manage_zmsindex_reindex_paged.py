@@ -181,7 +181,8 @@ function stop() {
 function progress() {
   const count = parseInt($("#count_table tr.Total .count").text());
   const total = parseInt($("#count_table tr.Total .total").text());
-  const perc = Math.round(Math.floor(10.0*count*100/total)/10.0);
+  let perc = Math.round(Math.floor(10.0*count*100/total)/10.0);
+  perc = (perc > 100) ? 100 : perc;
   $(".progress .progress-bar").css("width",perc+"%").attr({"aria-valuenow":perc,"title":count+"/"+total}).html(perc+"%");
 }
 

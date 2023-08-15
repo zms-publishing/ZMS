@@ -258,7 +258,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
           l.extend(visit(childNode))
         return l
       
-      urls = [x for x in request['url'].split(',') if x]
+      urls = [x for x in request.get('url').split(',') if x]
       for url in urls:
         catalog = self.get_catalog()
         log.append('INFO %s'%standard.writeBlock(self,'[ZMSIndex] ### reindex for %s'%url))
@@ -585,9 +585,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
                     if o != v:
                       self.operator_setattr(obj_vers,'%s%s'%(key,lang_suffix),v)
         except:
-          t,v,tb = sys.exc_info()
-          msg = ''.join(format_exception(t, v, tb))
-          log.append('ERROR %s'%standard.writeBlock(node,'[ZMSIndex] can\'t visit %s'%msg))
+          log.append('ERROR %s'%standard.writeError(node,'[ZMSIndex] can\'t visit %s'%msg))
 
         # premature commit
         req_key = 'ZMSIndexZCatalog.resync.transaction_count'

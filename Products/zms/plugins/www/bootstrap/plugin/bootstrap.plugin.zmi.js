@@ -265,7 +265,6 @@ $ZMI.registerReady(function(){
 						$(this).dblclick(function(e) {
 							// Show Zope Code editor only if no text is selected
 							var seltxt = window.getSelection().toString();
-							// debugger; console.log('Selected text: ' + seltxt + ' ' + seltxt.length + ' ' +!/\s/.test(seltxt) );
 							if ( seltxt.length == 0 || /\s/.test(seltxt) ) {
 								$('.zmi-code-close',$single_line).remove();
 								$('textarea',$single_line)
@@ -357,7 +356,7 @@ $ZMI.registerReady(function(){
 		}
 	});
 
-	// Double-Clickable
+	// Double-Clickable (TODO: to be specified for data grids that lead row-wise to a dataset form!)
 	$('table.table-hover tbody tr')
 		.dblclick( function(evt) {
 			var href = null;
@@ -557,7 +556,6 @@ $ZMI.registerReady(function(){
 	$('a.zmslightbox, a.fancybox')
 		.each(function() {
 				var $img = $("img",$(this));
-				console.log('Found ZMSLightbox Element');
 				$img.attr("data-hiresimg",$(this).attr("href"));
 				$(this).click(function() {
 					return showFancybox($img);
@@ -1241,106 +1239,90 @@ $ZMI.objectTree = new ZMIObjectTree();
 
 ZMIObjectTree.prototype.init = function(s,href,p) {
 	var that = this;
-	that.p = p;
+	that.p = p?p:{};
+	that.p.params = that.p.params?that.p.params:{};
 	// Init preselected active.
 	that.active = [];
-	href = href+"/"+(typeof p['init.href'] != "undefined"?p['init.href']:"ajaxGetParentNodes");
 	$(s).html('<i class="fas fa-spinner fa-spin"></i>&nbsp;'+getZMILangStr('MSG_LOADING'));
-	var params = {lang:getZMILang(),preview:'preview'};
-	if (typeof that.p["params"] == "object") {
-		for (var i in that.p["params"]) {
-			params[i] = that.p["params"][i];
-		}
-	}
-	$.get(href,params,function(result) {
-		$(s).html("");
+	var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
+	that.metamodel = $.ajax({
+		url: $ZMI.get_rest_api_url(href)+'/metaobj_manager',
+		async: false
+		}).responseJSON;
+	that.p.params.lang = getZMILang();
+	$.get($ZMI.get_rest_api_url(href)+'/get_parent_nodes', that.p.params, function(result) {
+		$(s).html('');
 		var context = s;
-		var pages = $("page",result);
-		for (var i = 0; i < pages.length; i++) {
-			var $page = $(pages[i]);
-			var page_home_id = $page.attr("home_id");
-			var page_id = $page.attr("id").substring(page_home_id.length+1);
-			var html = that.addPages([pages[i]]);
+		result.forEach(node => {
+			var html = that.addPages([node]);
 			$(context).append(html);
 			if (typeof that.p['addPages.callback'] == 'function') {
 				that.p['addPages.callback']();
-			}
-			context = "ul[data-home-id="+page_home_id+"][data-id="+page_id+"] li";
+			};
+			context = `ul[data-id="${node.uid}"] li`;
 			// Remember preselected active.
-			that.active.push({id:page_id,home_id:page_home_id});
-		}
-		$("li",s).addClass("active");
+			that.active.push({id:node.uid});
+		});
+		$('li',s).addClass('active');
 		var callback = that.p['init.callback'];
-		if (typeof callback != "undefined") {
+		if (typeof callback != 'undefined') {
 			callback();
 		}
 	});
 }
 
-ZMIObjectTree.prototype.addPages = function(pages) {
+ZMIObjectTree.prototype.addPages = function(nodes) {
 	var that = this;
 	var html = "";
-	for (var i=0; i<pages.length;i++) {
-		var $page = $(pages[i]);
-		var titlealt = "";
-		var page_uid = $page.attr("uid");
-		var page_home_id = $page.attr("home_id");
-		var page_id = $page.attr("id").substring(page_home_id.length+1);
-		var page_absolute_url = $page.attr("absolute_url");
-		var page_physical_path = $page.attr("physical_path");
-		var link_url = $page.attr("index_html");
-		var page_is_active = $page.attr("active")=='1' || $page.attr("active")=='True';
-		var page_is_restricted = $page.attr("restricted")=='1' || $page.attr("restricted")=='True';
-		var page_is_page = $page.attr("is_page")=='1' || $page.attr("is_page")=='True';
-		var page_is_pageelement = $page.attr("is_pageelement")=='1' || $page.attr("is_pageelement")=='True';
-		var page_meta_type = $page.attr("meta_id");
-		var page_type = $page.attr("attr_dc_type");
-		var page_titlealt = $page.attr("titlealt");
-		var page_icon = $page.attr("zmi_icon");
-		var anchor = "";
+	if (that.p.filter) {
+		nodes = nodes.filter(that.p.filter);
+	};
+	// Ensure nodes as list type
+	nodes = nodes.length==undefined ? [nodes] : nodes;
+	nodes.forEach(node => {
+		var link_url = node.index_html;
+		var icon = that.metamodel[node.meta_id] ? $ZMI.icon(that.metamodel[node.meta_id].icon_clazz) : $ZMI.icon('far fa-file');
+		var anchor = '';
+		var css = [ node.is_page ? 'is_page' : 'is_page_element' ];
+		var callback = that.p['toggleClick.callback'];
 
-		if (page_meta_type=='ZMSGraphic' && link_url) {
-			link_url = '<img data-id=&quot;' + page_uid + '&quot;' + ' src=&quot;' + link_url + '&quot;>';
-		} else if (page_meta_type=='ZMSFile' && link_url) {
+		if (node.meta_id == 'ZMSGraphic' && link_url) {
+			link_url = `<img data-id=&quot;${node.uid}&quot; src=&quot;${link_url}&quot;>`;
+		} else if (node.meta_id == 'ZMSFile' && link_url) {
 			var $path_elements = link_url.split('/');
 			var $fname = $path_elements[$path_elements.length -1 ].split('?')[0];
-			link_url = '<a data-id=&quot;' + page_uid + '&quot;' + ' href=&quot;' + link_url + '&quot; target=&quot;_blank&quot;>' + $fname + '</a>'; 
+			link_url = `<a data-id=&quot;${node.uid}&quot; src=&quot;${link_url}&quot; target=&quot;_blank&quot;>${$fname}</a>`; 
 		};
-		var callback = that.p['toggleClick.callback'];
-		var css = [];
-		if (!page_is_active) {
+		if (!node.active) {
 			css.push("inactive");
 		};
-		if (page_is_restricted) {
+		if (node.restricted) {
 			css.push("restricted");
 		};
-		if (typeof(page_type) != 'undefined') { 
-			if ( page_type.length > 0 ) {
-				css.push('type-'+page_type)
+		html += `<ul data-id="${node.uid}" class="zmi-page ${node.meta_id}${node.is_page_element ? ' is_page_element' :''}">`;
+		html += `<li class="${css.join(' ')}">`;
+		html += `<i class="fas fa-caret-right toggle" title="+" onclick="$ZMI.objectTree.toggleClick(this ${typeof callback=='undefined' ? '' : ',' + callback})"></i> `;
+		if (node.is_page_element) {
+			if (node.meta_id == 'ZMSGraphic' && node.index_html) {
+				html += `<span class="preview_on_hover preview_image preview_ready" style="--preview_url:url(${node.index_html});cursor:help" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
+			} else {
+				html += `<span class="preview_on_hover preview_text" style="cursor:help" data-preview_text="Loading ..." onmouseover="$ZMI.objectTree.preview_load(this)" title="${getZMILangStr('TAB_PREVIEW')}">${icon}</span> `;
 			}
-		};
-		html += '<ul data-id="' + page_id + '" data-home-id="' + page_home_id + '" class="zmi-page ' + page_meta_type + '">';
-		html += '<li class="' + css.join(' ') + '">';
-		html += $ZMI.icon("fas fa-caret-right toggle",'title="+" onclick="$ZMI.objectTree.toggleClick(this' + (typeof callback=="undefined"?'':',' + callback) + ')"') + ' ';
-		if (page_is_pageelement) {
-			html += '<span style="cursor:help" onclick="$ZMI.objectTree.previewClick(this)" title="' + getZMILangStr('TAB_PREVIEW') + '"><i class="' + page_icon + '"></i></span> ';
 		}
-		html += '<a href="' + page_absolute_url + '"'
-				+ ' data-link-url="' + link_url + '"'
-				+ ' data-uid="' + page_uid + '"'
-				+ ' data-page-physical-path="' + page_physical_path + '"'
-				+ ' data-anchor="' + anchor + '"'
-				+ ' data-page-is-page="' + page_is_page + '"'
-				+ ' data-page-titlealt="' + page_titlealt.replace(/"/g,'&quot;').replace(/'/g,'&apos;') + '"'
-				+ ' onclick="return zmiSelectObject(this);return false;">';
-		if (!page_is_pageelement) {
-			html += '<i class="' + page_icon + '"></i> ';
+		html += `<a href="${node.getPath}" 
+			data-link-url="${link_url}" 
+			data-uid="${node.uid}" 
+			data-anchor="${anchor}"
+			data-page-titlealt="${node.titlealt.replace(/"/g,'&quot;').replace(/'/g,'&apos;')}"
+			onclick="return zmiSelectObject(this);return false;">`;
+		if (!node.is_page_element) {
+			html += icon + ' ';
 		}
-		html += page_titlealt;
+		html += node.titlealt;
 		html += '</a>';
 		html += '</li>';
 		html += '</ul><!-- .zmi-page -->';
-	}
+	});
 	return html;
 }
 
@@ -1353,46 +1335,20 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 	$container.children("ul").remove();
 	if ($(toggle).hasClass("fa-caret-right")) {
 		$(toggle).removeClass("fa-caret-right").addClass("fa-caret-down").attr({title:'-'});
-		var href = '';
-		var homeId = null;
-		$(toggle).parents(".zmi-page").each(function(){
-			var dataId = $(this).attr("data-id");
-			var dataHomeId = $(this).attr("data-home-id");
-			if (homeId == null) {
-				homeId = dataHomeId;
-			}
-			if (homeId != dataHomeId) {
-				href = '/'+dataHomeId+'/'+homeId+href;
-				homeId = dataHomeId;
-			}
-			else {
-				href = '/'+dataId+href;
-			}
-		});
-		if (!href.indexOf('/'+homeId)==0) {
-			href = '/'+homeId+href;
-		}
-		var base = $ZMI.getPhysicalPath();
-		base = base.substring(0,base.indexOf('/'+homeId));
+		var uid = $("[data-uid]:first",$(toggle).parent()).attr("data-uid");
+		var href = $ZMI.get_document_element_url($ZMI.getPhysicalPath());
 		// Set wait-cursor.
 		$container.append('<div id="loading" class="zmi-page"><i class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;'+getZMILangStr('MSG_LOADING')+'</div>');
-		// JQuery.AJAX.get
-		var params = {lang:getZMILang(),preview:'preview',physical_path:$('meta[name=physical_path]').attr('content'),'get_attrs:int':0};
-		if (typeof that.p["params"] == "object") {
-			for (var i in that.p["params"]) {
-				params[i] = that.p["params"][i];
-			}
-		}
-		$.get(base+href+'/manage_ajaxGetChildNodes',params,function(result){
+		that.p.params.lang = getZMILang();
+		$.get($ZMI.get_rest_api_url(href)+'/'+uid+'/get_child_nodes', that.p.params, function(result){
 			// Reset wait-cursor.
 			$("#loading").remove();
-			// Get and iterate pages.
-			var pages = $('page',result);
-			if ( pages.length == 0) {
+			// Get and iterate result.
+			if ( result.length == 0) {
 				$(toggle).removeClass("fa-caret-down").attr({title:''});
 			}
 			else {
-				var html = that.addPages(pages);
+				var html = that.addPages(result);
 				$container.append(html);
 				if (typeof that.p['addPages.callback'] == 'function') {
 					that.p['addPages.callback']();
@@ -1400,7 +1356,7 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 				// Set preselected active.
 				for (var i = 0; i < that.active.length; i++) {
 					var d = that.active[i];
-					$('ul[data-id='+d.id+'][data-home-id='+d.home_id+'] > li').addClass('active');
+					$("ul[data-id=\'"+d.id+"] > li").addClass('active');
 				}
 			}
 			if (typeof callback == 'function') {
@@ -1418,30 +1374,19 @@ ZMIObjectTree.prototype.toggleClick = function(toggle, callback) {
 }
 
 /**
- * Click preview.
+ * Load preview.
  */
-ZMIObjectTree.prototype.previewClick = function(sender) {
-	var that = this;
+ZMIObjectTree.prototype.preview_load = function(sender) {
 	var data_id = $(sender).closest('.zmi-page').attr('data-id');
-	if($('#zmi_preview_'+data_id).length > 0) {
-		$('#zmi_preview_'+data_id).remove();
-	}
-	else {
-		var coords = $ZMI.getCoords(sender);
-		var abs_url = $(sender).parent('li').children('[data-page-physical-path]').attr('data-page-physical-path');
-		$.get(abs_url+'/ajaxGetBodyContent',{lang:getZMILang(),preview:'preview'},function(data){
-			$('div.zmi-browse-iframe-preview').remove();
-			$('body').append(''
-				+'<div id="zmi_preview_'+data_id+'">'
-					+'<div class="zmi-browse-iframe-preview">'
-						+'<div class="btn btn-default" title="' + getZMILangStr('BTN_CLOSE') + '" style="position:absolute;border-radius:0;" onclick="$(\'#zmi_preview_'+data_id+'\').remove()"><i class="icon-remove fas fa-times"></i></div>'
-						+data
-					+'</div><!-- .zmi-browse-iframe-preview -->'
-				+'</div><!-- #zmi-preview -->'
-			);
-			$('div.zmi-browse-iframe-preview').css({top:coords.y+$(sender).height(),left:coords.x+$(sender).width()});
+	if(!$(sender).hasClass('preview_loaded')) {
+		var abs_url = $(sender).parent('li').children('a[href]').attr('href');
+		$.get($ZMI.get_rest_api_url(abs_url)+'/get_body_content',{lang:getZMILang(),preview:'preview'},function(data){
+			// Clean data as plain text
+			data = $(JSON.parse(data)).text().replaceAll('\n','');
+			$(sender).attr('data-preview_text',data);
+			$(sender).addClass('preview_loaded');
 		});
-	}
+	};
 }
 
 // #############################################################################
@@ -1535,7 +1480,6 @@ ZMIActionList.prototype.over = function(el, e, cb) {
 		$(el).append('<div class="dropdown-menu"></div>');
 		$ul = $(".dropdown-menu",el);
 		var startsWithSubmenu = actions.length > 1 && actions[1][0].indexOf("-----") == 0 && actions[1][0].lastIndexOf("-----") > 0;
-		console.log("[ZMIActionList.over]: startsWithSubmenu="+startsWithSubmenu);
 		var o = 0;
 		if (startsWithSubmenu) {
 			o = 2;
@@ -1647,7 +1591,6 @@ ZMIActionList.prototype.exec = function(sender, label, target, meta_id='') {
 		// debugger;
 		if (meta_id!='') { 
 			data['meta_id'] = meta_id;
-			console.log('ZMIActionList.exec meta_id = ' + meta_id )
 		}
 		$('<li id="manage_addProduct" class="zmi-item zmi-highlighted"><div class="center">'+title+'</div></li>').insertAfter($el.parents(".zmi-item"));
 		// Show add-dialog.
@@ -2121,32 +2064,34 @@ function isScrolledIntoView(elem) {
 $ZMI.registerReady(function(){
 	const scrollToTopButton = document.getElementById('js-top');
 	const stickyControls = document.getElementsByClassName('sticky-controls')[0];
-	window.onscroll = function () {
-		let y = window.scrollY;
-		if ( y > 42 ) {
-			// Show back-to-top button on scroll
-			scrollToTopButton.className = "back-to-top show";
-		} else {
-			scrollToTopButton.className = "back-to-top hide";
-		}
-		if (stickyControls!=undefined) {
-			if ( !isScrolledIntoView(stickyControls) ){
-				stickyControls.classList.add('sticky-controls-activated');
+	if ( scrollToTopButton || stickyControls ) {
+		window.onscroll = function () {
+			let y = window.scrollY;
+			if ( y > 42 && scrollToTopButton ) {
+				// Show back-to-top button on scroll
+				scrollToTopButton.className = "back-to-top show";
+			} else {
+				scrollToTopButton.className = "back-to-top hide";
 			}
-			if (y == 0) {
-				stickyControls.classList.remove('sticky-controls-activated');
+			if (stickyControls!=undefined) {
+				if ( !isScrolledIntoView(stickyControls) ){
+					stickyControls.classList.add('sticky-controls-activated');
+				}
+				if (y == 0) {
+					stickyControls.classList.remove('sticky-controls-activated');
+				}
 			}
-		}
-	};
-	// Scroll back-to-top after button click
-	if (scrollToTopButton) {
-		scrollToTopButton.onclick = () => {
-			$('html, body').animate({
-				scrollTop: 0
-			}, 600);
-			return false;
 		};
-	}
+		// Scroll back-to-top after button click
+		if (scrollToTopButton) {
+			scrollToTopButton.onclick = () => {
+				$('html, body').animate({
+					scrollTop: 0
+				}, 600);
+				return false;
+			};
+		};
+	};
 });
 
 // /////////////////////////////////////////////////////////////////////////////

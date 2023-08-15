@@ -1337,11 +1337,6 @@ div.infobox div.ZMSFile div.title a:visited {
 .zmi .ZMSDocument h1 small {
 	color: rgb(0,138,199);
 }
-.zmi.ZMSTrashcan header .dropdown i.icon-trash,
-.zmi system header .dropdown i.icon-bolt,
-.zmi.users  header .dropdown i.icon-group {
-	color: #08c;
-}
 
 .zmi-container .carousel-item {
 	display:block;
@@ -1425,11 +1420,7 @@ div.infobox div.ZMSFile div.title a:visited {
 .zmi .ZMSDocument h1 small {
 	color: rgb(0,138,199);
 }
-.zmi.ZMSTrashcan header .dropdown i.icon-trash,
-.zmi system header .dropdown i.icon-bolt,
-.zmi.users  header .dropdown i.icon-group {
-	color: #08c;
-}]]></data>
+]]></data>
               </item>
               <item key="default"></item>
               <item key="id">skin_zms5_base/common/css/style.css</item>

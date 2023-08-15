@@ -73,7 +73,9 @@
 				<div class="form-group row">
 					<label class="col-sm-2 control-label" for="portal_master">Master</label>
 					<div class="col-sm-10">
-						<input class="form-control" type="text" name="portal_master" tal:attributes="value python:here.getConfProperty('Portal.Master','')">
+						<input class="form-control" type="text" name="portal_master" tal:attributes="
+							value python:here.getConfProperty('Portal.Master','');
+							class python:' '.join(['form-control']+[[],['text-white','bg-danger']][here.getConfProperty('Portal.Master')!='' and here.getPortalMaster() is None])">
 					</div>
 				</div><!-- .form-group -->
 				<div class="form-group row">

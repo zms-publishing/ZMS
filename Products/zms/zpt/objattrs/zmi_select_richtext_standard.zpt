@@ -46,7 +46,7 @@ function zmiRicheditInsertTab( fmName, elName) {
 		// insert text
 		var start = input.selectionStart;
 		var end = input.selectionEnd;
-		input.value = input.value.substr(0, start) + insText + input.value.substr(end);
+		input.value = input.value.substring(0, start) + insText + input.value.substring(end);
 		// cursor-position
 		var pos = start + insText.length;
 		input.selectionStart = pos;

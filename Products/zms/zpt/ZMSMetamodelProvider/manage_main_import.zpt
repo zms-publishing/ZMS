@@ -10,9 +10,9 @@
 		if (self.location.href.indexOf('manage_tabs_message=') > 0) {
 			var href = parent.location.href;
 			if (href.indexOf("?") > 0) {
-				href = href.substr(0,href.indexOf("?"));
+				href = href.substring(0,href.indexOf("?"));
 			}
-			href += "?" + self.location.href.substr(self.location.href.indexOf("?"));
+			href += "?" + self.location.href.substring(self.location.href.indexOf("?"));
 			parent.location.href = href;
 		}
 	});

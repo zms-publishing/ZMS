@@ -771,7 +771,7 @@
             var hintValue = '',
                 that = this;
             if (suggestion) {
-                hintValue = that.currentValue + suggestion.value.substr(that.currentValue.length);
+                hintValue = that.currentValue + suggestion.value.substring(that.currentValue.length);
             }
             if (that.hintValue !== hintValue) {
                 that.hintValue = hintValue;
@@ -958,7 +958,7 @@
                 return value;
             }
 
-            return currentValue.substr(0, currentValue.length - parts[parts.length - 1].length) + value;
+            return currentValue.substring(0, currentValue.length - parts[parts.length - 1].length) + value;
         },
 
         dispose: function () {

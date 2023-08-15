@@ -194,7 +194,7 @@ class ObjChildren(object):
       
       # Return with message.
       if RESPONSE is not None:
-        message = self.getZMILangStr('MSG_INSERTED')%obj.display_type(REQUEST)
+        message = self.getZMILangStr('MSG_INSERTED')%obj.display_type()
         message = standard.url_quote(message)
         target = REQUEST.get('manage_target', '%s/manage_main'%obj.id)
         RESPONSE.redirect('%s?lang=%s&manage_tabs_message=%s'%(target, lang, message))

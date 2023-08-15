@@ -410,11 +410,13 @@ class ZMSMetacmdProvider(
         if metaCmd.get('acquired', 0)==1:
           if portalMasterMetaCmds is None:
             portalMaster = self.getPortalMaster()
-            portalMasterMetaCmds = portalMaster.getMetaCmds(stereotype=stereotype)
-          l = [x for x in portalMasterMetaCmds if x['id']==metaCmd['id']]
-          if len(l) > 0:
-            metaCmd = l[0]
-            metaCmd['acquired'] = 1
+            if portalMaster is not None:
+              portalMasterMetaCmds = portalMaster.getMetaCmds(stereotype=stereotype)
+          if portalMasterMetaCmds is not None:
+            l = [x for x in portalMasterMetaCmds if x['id']==metaCmd['id']]
+            if len(l) > 0:
+              metaCmd = l[0]
+              metaCmd['acquired'] = 1
         else:
           metaCmd = metaCmd.copy()
           metaCmd['home'] = self.aq_parent
@@ -536,7 +538,7 @@ class ZMSMetacmdProvider(
               metaCmd = self.getMetaCmd(id)
               revision = metaCmd.get('revision', '0.0.0')
               el_id = metaCmd['id']
-              el_package = metaCmd['package']
+              el_package = metaCmd.get('package')
               el_name = metaCmd['name']
               el_title = metaCmd.get('title', '')
               el_meta_type = metaCmd['meta_type']

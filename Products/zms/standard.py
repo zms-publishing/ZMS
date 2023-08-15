@@ -57,7 +57,6 @@ from Products.zms import _mimetypes
 security = ModuleSecurityInfo('Products.zms.standard')
 
 security.declarePublic('pystr')
-pystr_ = str
 def pystr(v, encoding='utf-8', errors='strict'):
   if isinstance(v, bytes):
     v = v.decode(encoding, errors)
@@ -112,10 +111,10 @@ def initZMS(self, id, titlealt, title, lang, manage_lang, REQUEST):
   
   ##### Add ZMS ####
   from Products.zms import zms
-  zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
-  zms.initContent(homeElmnt.content, 'content.default.zip', REQUEST)
+  content = zms.initZMS(homeElmnt, 'content', titlealt, title, lang, manage_lang, REQUEST)
+  zms.initContent(content, 'content.default.zip', REQUEST)
 
-  return "initZMS"
+  return content
 
 security.declarePublic('getPRODUCT_HOME')
 def getPRODUCT_HOME():
@@ -407,10 +406,12 @@ def string_maxlen(s, maxlen=20, etc='...', encoding=None):
   else:
     s = str(s)
   # remove all tags.
-  s = re.sub(r'<!--(.*?)-->', '', s)
-  s = re.sub(r'<script((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</script>', '', s)
-  s = re.sub(r'<style((.|\n|\r|\t)*?)>((.|\n|\r|\t)*?)</style>', '', s)
-  s = re.sub(r'<((.|\n|\r|\t)*?)>', '', s)
+  # @see https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
+  s = re.sub(r'<[\S\s]*!--.*?--[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\S\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*style.*?\/[\S\s]*style[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*?>', '', s)
   if len(s) > maxlen:
     if s[:maxlen].rfind('&') >= 0 and not s[:maxlen].rfind('&') < s[:maxlen].rfind(';') and \
        s[maxlen:].find(';') >= 0 and not s[maxlen:].find(';') > s[maxlen:].find('&'):
@@ -505,9 +506,12 @@ def remove_tags(s):
   s = pystr(s)
   for x in d:
     s = s.replace(x,d[x])
-  s = re_sub('<script(.*?)>(.|\\n|\\r|\\t)*?</script>', ' ', s)
-  s = re_sub('<style(.*?)>(.|\\n|\\r|\\t)*?</style>', ' ', s)
-  s = re_sub('<[^>]*>', ' ', s)
+  # @see https://stackoverflow.com/questions/8554035/remove-all-javascript-tags-and-style-tags-from-html-with-python-and-the-lxml-mod
+  s = re.sub(r'<[\S\s]*!--.*?--[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*?script[\S\s]*?\/[\S\s]*?script[\S\s]*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*style.*?\/[\S\s]*style[\S\s]*>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*meta.*?>', '', s, flags=(re.IGNORECASE | re.MULTILINE | re.DOTALL))
+  s = re.sub(r'<[\S\s]*?>', '', s)
   while s.find('\t') >= 0:
     s = s.replace('\t', ' ')
   while s.find('\n') >= 0:
@@ -1802,11 +1806,7 @@ def sort_list(l, qorder=None, qorderdir='asc', ignorecase=1):
     tl = [(_globals.sort_item(x[qorder]), x) for x in l]
   if ignorecase and len(tl) > 0 and isinstance(tl[0][0], str):
     tl = [(str(x[0]).upper(), x[1]) for x in tl]
-  try:
-    tl = sorted(tl,key=lambda x:x[0])
-  except:
-    writeError(context, '[sort_list]: mixed datatypes normalized to strings')
-    tl = sorted(tl,key=lambda x:str(x[0]))
+  tl = sorted(tl,key=lambda x:x[0])
   tl = [x[1] for x in tl]
   if qorderdir == 'desc':
     tl.reverse()

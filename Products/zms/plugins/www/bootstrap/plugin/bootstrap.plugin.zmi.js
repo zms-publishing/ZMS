@@ -75,7 +75,7 @@ $ZMI.registerReady(function(){
 				$change_dt.each(function() {
 					var $el = $(this);
 					var mydate = $el.attr("title");
-					if (typeof mydate!="undefined") {
+					if (typeof mydate !== "undefined") {
 						var myformat = getZMILangStr('DATETIME_FMT');
 						var dtsplit=mydate.split(/[\/ .:]/);
 						var dfsplit=myformat.split(/[\/ .:]/);

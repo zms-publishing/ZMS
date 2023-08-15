@@ -3,7 +3,6 @@
 <tal:block tal:define="global zmscontext options/zmscontext">
 	<tal:block tal:condition="python:zmscontext.getHistory()">
 		<script>
-		<!--
 			function showHistory(el) {
 				var v = $(el).val();
 				var version_nr = v.substring(0,v.indexOf(" "));
@@ -62,7 +61,6 @@
 				historyselect.prop("selectedIndex", 1);
 			}
 			});
-		-->
 		</script>
 		<input type="hidden" id="lang" name="lang" tal:attributes="value request/lang"/>
 		<select onchange="showHistory(this)">

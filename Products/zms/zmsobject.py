@@ -647,15 +647,12 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  ZMSObject.breadcrumbs_obj_path:
     # --------------------------------------------------------------------------
     def breadcrumbs_obj_path(self, portalMaster=True):
-      REQUEST = self.REQUEST
       # Handle This.
       rtn = []
       obj = self
-      for lvl in range(self.getLevel()+1):
-        if obj is not None:
-          obj_item = [obj]
-          obj_item.extend(rtn)
-          rtn = obj_item
+      while obj is not None:
+          if obj is not None and obj.id in self.getPhysicalPath():
+              rtn.insert(0,obj)
           obj = obj.getParentNode()
       # Handle Portal Master.
       if portalMaster and self.getConfProperty('Portal.Master', ''):

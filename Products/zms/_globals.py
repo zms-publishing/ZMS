@@ -24,7 +24,6 @@ import sys
 import time
 from Products.PageTemplates.Expressions import SecureModuleImporter
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.zms import standard
 
 # Datatypes.
 DT_UNKNOWN = 0

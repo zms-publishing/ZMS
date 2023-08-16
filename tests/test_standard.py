@@ -27,6 +27,21 @@ class StandardTest(unittest.TestCase):
         self.assertEqual('foo\nbar',standard.string_maxlen('foo\n<\tscript\ttype="javascript"\n>window.onload(\'<script>\')</script\t\n>bar'))
         self.assertEqual('foo\nbar',standard.string_maxlen('foo\n<\tstyle\t\n>body {}</style\t\n>bar'))
 
+    def test_sort_item(self):
+        self.assertEqual(0.1,standard.sort_item(0.1))
+        self.assertEqual(0,standard.sort_item(None))
+        self.assertEqual(0,standard.sort_item(''))
+        self.assertEqual(0,standard.sort_item(False))
+        self.assertEqual(1,standard.sort_item(True))
+        self.assertEqual('foo',standard.sort_item('foo'))
+        self.assertEqual('bar',standard.sort_item('bar'))
+        self.assertEqual('aeoeue',standard.sort_item(u'äöü'))
+
+    def test_sort_list(self):
+        self.assertEqual([1,2,3],standard.sort_list([3,1,2]))
+        self.assertEqual([{'sort_id':1,'value':'C'},{'sort_id':2,'value':'B'},{'sort_id':3,'value':'A'}],standard.sort_list([{'sort_id':3,'value':'A'},{'sort_id':1,'value':'C'},{'sort_id':2,'value':'B'}],'sort_id'))
+
+
     class FakeHTTPConnection:
         def __init__(self, status=200, reason='OK'):
             self.status = status

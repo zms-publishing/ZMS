@@ -77,7 +77,7 @@ def registerDirectory(_context, name, directory=None, recursive=False,
         filepath = path.join(_context.package.__path__[0], 'skins', str(name))
     else:
         # subdir = str(directory[len(_context.package.__path__[0]) + 1:])
-        subdir = '/%s' % str(name)
+        subdir = str(name)
         filepath = str(directory)
 
     reg_key = _generateKey(_context.package.__name__, subdir)

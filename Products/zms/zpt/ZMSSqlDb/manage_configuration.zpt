@@ -210,35 +210,39 @@ function mms_normalize_rows(el_tbody) {
 	<input type="hidden" name="lang" tal:attributes="value request/lang">
 	<input type="hidden" name="preview" tal:attributes="value request/preview">
 
-<div class="d-none">
-	<div id="importConf" class="inner">
-		<div class="form-group row">
-			<label for="file" class="col-sm-3 col-lg-2 control-label">
-				<i class="fas fa-folder-open"></i>
-				<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
-			</label>
-			<div class="col-sm-9 col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
-		</div><!-- .form-group -->
-		<div class="form-group row">
-			<div class="col-lg-12">
-				<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
-			</div><!-- .col-lg-12-->
-		</div><!-- .form-group -->
-	</div><!-- .inner -->
-</div><!-- #importConf -->
+	<div class="d-none">
+		<div id="importConf" class="inner">
+			<div class="form-group row">
+				<label for="file" class="col-sm-3 col-lg-2 control-label">
+					<i class="fas fa-folder-open"></i>
+					<span tal:content="python:here.getZMILangStr('ATTR_FILE')">File</span>
+				</label>
+				<div class="col-sm-9 col-lg-10"><input class="btn btn-file" name="file" type="file" /></div><!-- .col-lg-10 -->
+			</div><!-- .form-group -->
+			<div class="form-group row">
+				<div class="col-lg-12">
+					<button type="submit" name="btn" class="btn btn-primary" value="BTN_IMPORT" tal:content="python:here.getZMILangStr('BTN_IMPORT')">Import</button>
+				</div><!-- .col-lg-12-->
+			</div><!-- .form-group -->
+		</div><!-- .inner -->
+	</div><!-- #importConf -->
 
 	<div class="btn-group" style="padding:1em;">
-		<span class="btn btn-secondary" tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false;"><i class="fas fa-upload"></i></span>
+		<span class="btn btn-secondary" 
+			tal:attributes="title python:here.getZMILangStr('BTN_IMPORT')+'...'" 
+			onclick="zmiModal('#importConf',{title:$(this).attr('title')});return false;">
+			<i class="fas fa-upload"></i>
+		</span>
 	</div>
 	<br/>
-	<tal:block tal:repeat="table tables">
-	<div tal:attributes="class python:' '.join(['card']+[[''],['inactive']][int(table['type']!='table')])">
+	<div tal:repeat="table tables"
+		tal:attributes="class python:' '.join(['card']+[[''],['inactive']][int(table['type']!='table')])">
 		<div class="card-header btn-collapse">
 			<a class="btn card-toggle" data-toggle="collapse" title="Show/Hide Table Definition"
 				tal:attributes="href python:'#%s-columns'%table['id']">
 				<i class="fas"></i>
-				<i tal:condition="python:table['type']!='intersection'" class="fas fa-th-list"></i>
-				<i tal:condition="python:table['type']=='intersection'" class="fas fa-link"></i>
+				<i tal:condition="python:table['type']!='intersection'" class="fas fa-th-list" tal:attributes="title string:Table"></i>
+				<i tal:condition="python:table['type']=='intersection'" class="fas fa-link" tal:attributes="title string:Intersection-Table"></i>
 				<tal:block tal:content="table/label">table-label</tal:block>
 				(<tal:block tal:content="table/id">table-id</tal:block>)
 			</a>
@@ -311,7 +315,6 @@ function mms_normalize_rows(el_tbody) {
 			</div><!-- .card-body -->
 		</div><!-- .collapse -->
 	</div><!-- .card -->
-	</tal:block>
 
 </form>
 

@@ -1,4 +1,4 @@
-FROM ep-devops.id.unibe.ch:5000/id/unibe-cms-base:python3.11.1-zope5.8
+FROM ghcr.io/idasm-unibe-ch/zms-base:python3.11.1-zope5.8
 
 COPY backend/zms-core/requirements-unibe.txt /backend/requirements-unibe.txt
 COPY backend/zms-sso-plugin /backend/sso-plugin

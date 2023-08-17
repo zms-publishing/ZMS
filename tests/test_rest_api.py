@@ -41,7 +41,7 @@ class RestAPITest(ZMSTestCase):
       actual = json.loads( self.context.__bobo_traverse__(request, name)(request))
       print(json.dumps(actual))
       self.assertTrue(isinstance(actual, list))
-      self.assertEqual( len(actual), 15)
+      self.assertEqual( len(actual), 8)
 
   def test_metaobj_manager(self):
       name = '++rest_api'

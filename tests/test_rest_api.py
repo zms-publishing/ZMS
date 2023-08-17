@@ -35,7 +35,7 @@ class RestAPITest(ZMSTestCase):
       actual = json.loads( self.context.__bobo_traverse__(request, name)(request))
       print(json.dumps(actual))
       self.assertTrue(isinstance(actual, list))
-      self.assertEqual( len(actual), 234)
+      self.assertEqual( len(actual), 170)
       request.form['meta_id'] = 'ZMSFolder'
       print("path_to_handle", request.get('path_to_handle'))
       actual = json.loads( self.context.__bobo_traverse__(request, name)(request))

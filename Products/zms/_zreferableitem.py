@@ -395,7 +395,7 @@ class ZReferableItem(object):
               pass
         elif not url.startswith('__'):
           ob = self.getDocumentElement()
-          path = path.replace('@','/content/')
+          path = url.replace('@','/content/')
           l = path.split('/') 
           try:
             for id in [x for x in l if x]:

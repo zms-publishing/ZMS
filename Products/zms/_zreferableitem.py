@@ -384,21 +384,19 @@ class ZReferableItem(object):
           catalog = self.getZMSIndex().get_catalog()
           q = catalog({'get_uid':url})
           for r in q:
-            zmspath  = '%s/'%r['getPath']
-            l = [x for x in zmspath.split('/') if x]
-            ob = self.getDocumentElement()
+            ob = self.getRootElement()
+            path  = '%s/'%r['getPath']
+            l = path.split('/')
             try:
-              for id in l:
-                ids = ob.getPhysicalPath()
-                if ob is not None and id not in ids:
-                    ob = getattr(ob,id,None)
+              for id in [x for x in l if x]:
+                ob = getattr(ob,id,None)
               break
             except:
               pass
         elif not url.startswith('__'):
-          url = url.replace('@','/content/')
-          l = url.split('/') 
           ob = self.getDocumentElement()
+          path = path.replace('@','/content/')
+          l = path.split('/') 
           try:
             for id in [x for x in l if x]:
               ob = getattr(ob,id,None)

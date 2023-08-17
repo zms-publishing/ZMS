@@ -368,21 +368,6 @@ class ZReferableItem(object):
   def getLinkObj(self, url, REQUEST=None):
     ob = None
     if isInternalLink(url):
-      def default(*args, **kwargs):
-        self = args[0]
-        url = args[1]['url']
-        ob = None
-        if not url.startswith('{$__'):
-          # Find document-element.
-          zmspath = url[2:-1].replace('@', '/content/')
-          l = zmspath.split('/') 
-          ob = self
-          try:
-            for id in [x for x in l if x]:
-              ob = getattr(ob, id, None)
-          except:
-            pass
-        return ob
       # Params.
       ref_params = {}
       if url.find(';') > 0:
@@ -401,10 +386,11 @@ class ZReferableItem(object):
           for r in q:
             zmspath  = '%s/'%r['getPath']
             l = [x for x in zmspath.split('/') if x]
-            ob = self
+            ob = self.getDocumentElement()
             try:
               for id in l:
-                if id not in ob.getPhysicalPath():
+                ids = ob.getPhysicalPath()
+                if ob is not None and id not in ids:
                     ob = getattr(ob,id,None)
               break
             except:
@@ -412,14 +398,15 @@ class ZReferableItem(object):
         elif not url.startswith('__'):
           url = url.replace('@','/content/')
           l = url.split('/') 
-          ob =self.getDocumentElement()
+          ob = self.getDocumentElement()
           try:
             for id in [x for x in l if x]:
               ob = getattr(ob,id,None)
           except:
             pass
       # Prepare request
-      if ob is not None and ob.id not in self.getPhysicalPath():
+      ids = self.getPhysicalPath()
+      if ob is not None and ob.id not in ids:
         request = self.REQUEST
         ob.set_request_context(request, ref_params)
     return ob

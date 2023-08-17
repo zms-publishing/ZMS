@@ -132,7 +132,10 @@ class ZMSObject(ZMSItem.ZMSItem,
       self.setSortId(sort_id)
 
     def getPath(self, *args, **kwargs):
-      return '/'.join(self.getPhysicalPath())
+      ids = self.getPhysicalPath()
+      # avoid content/content (seen in xml-import of zms-default-content)
+      ids = [ids[x] for x in range(len(ids)) if x == 0 or not ids[x-1] == ids[x]] 
+      return '/'.join(ids)
 
     """
     Check if feature toggle is set.

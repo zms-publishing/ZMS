@@ -399,8 +399,6 @@ class ZMS(
         doc_elmnt = portal_mstr
       return doc_elmnt
 
-      return self.breadcrumbs_obj_path()[0]
-
     # --------------------------------------------------------------------------
     #  ZMS.getAbsoluteHome
     # --------------------------------------------------------------------------

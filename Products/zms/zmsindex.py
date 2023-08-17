@@ -194,6 +194,7 @@ class ZMSIndex(ZMSItem.ZMSItem):
       path = node.getPath()
       # Sanity check: if uid is already catalogued we have to generate new uid
       uid = node.get_uid()
+      print(node,"path=%s, uid=%s"%(path,uid))
       q = catalog({'get_uid':uid})
       if len(q) > 0:
         if regenerate_duplicates:

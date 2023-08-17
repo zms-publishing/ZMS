@@ -184,7 +184,7 @@ def xmlInitObjProperty(self, key, value, lang=None):
     # -- Date-Fields
     if datatype in _globals.DT_DATETIMES:
       if isinstance(value, str) and len(value) > 0:
-        value = self.parseLangFmtDate(value)
+        value = standard.parseLangFmtDate(value)
     # -- Integer-Fields
     elif datatype in _globals.DT_INTS:
       if isinstance(value, str) and len(value) > 0:

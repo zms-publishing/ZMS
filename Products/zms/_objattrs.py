@@ -480,7 +480,7 @@ class ObjAttrs(object):
               fmt_str = 'DATE_FMT'
             elif datatype == _globals.DT_TIME:
               fmt_str = 'TIME_FMT'
-            value = self.parseLangFmtDate(value)
+            value = standard.parseLangFmtDate(value)
           elif not isinstance(value, time.struct_time):
             value = standard.getDateTime(value)
       

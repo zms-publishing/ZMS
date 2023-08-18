@@ -928,7 +928,6 @@ class ZMSObject(ZMSItem.ZMSItem,
     #  Used to keep ZMS-users in configured subdomain-context.
     # --------------------------------------------------------------------------
     def getAbsoluteUrlInContext(self, context, abs_url=None, forced=False):
-      request = self.REQUEST
       context = standard.nvl(context,self)
       if abs_url is None:
         abs_url = self.absolute_url()
